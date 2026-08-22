@@ -336,6 +336,13 @@ export const ImageSchema = z
     /** Plates only. */
     plateNumber: z.number().int().positive().optional(),
     depicts: z.string().optional(),
+    /**
+     * Plates only. What kind of real imagery this is, for the caption label.
+     * Defaults to "photograph"; set it when the plate is a published figure of
+     * another kind (a micrograph, a structural rendering, a map, a scan) so the
+     * caption never calls something a photograph that isn't one.
+     */
+    mediaType: z.string().optional(),
     provenance: z
       .object({
         photographer: z.string(),

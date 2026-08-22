@@ -7,6 +7,7 @@ import {
   caseCover,
   latestAssessment,
   loadAllCases,
+  recentChanges,
   siteImage,
 } from "@/src/domain/load";
 
@@ -15,10 +16,7 @@ export default function HomePage() {
   const hero = siteImage("IMG-SITE-HERO");
   const divider = siteImage("IMG-SITE-DIVIDER-STRATA");
   const tailpiece = siteImage("IMG-SITE-TAILPIECE");
-  const recentChanges = cases
-    .flatMap((c) => c.history.map((h) => ({ ...h, caseTitle: c.record.title })))
-    .sort((a, b) => b.date.localeCompare(a.date))
-    .slice(0, 3);
+  const feed = recentChanges(cases, 4);
 
   return (
     <div>
@@ -124,7 +122,7 @@ export default function HomePage() {
         <h2 className="font-mono text-[11px] uppercase tracking-[0.2em] text-faint mb-6">
           recent changes
         </h2>
-        <ChangeTimeline entries={recentChanges} />
+        <ChangeTimeline entries={feed} />
       </section>
 
       {/* tailpiece ornament */}

@@ -1,10 +1,21 @@
+import Link from "next/link";
 import type { ChangeLogEntry } from "@/src/domain/schema";
 
-export function ChangeTimeline({ entries }: { entries: ChangeLogEntry[] }) {
-  const sorted = [...entries].sort((a, b) => b.date.localeCompare(a.date));
+type TimelineEntry = ChangeLogEntry & {
+  /** Present on cross-case feeds (e.g. the homepage); absent on case pages. */
+  caseTitle?: string;
+  caseSlug?: string;
+};
+
+/**
+ * Pure display: entries render in the order given. Callers order them
+ * (see historyNewestFirst / recentChanges in src/domain/load.ts) so that
+ * same-date entries keep a meaningful sequence.
+ */
+export function ChangeTimeline({ entries }: { entries: TimelineEntry[] }) {
   return (
     <ol className="relative border-l border-line pl-6 space-y-7">
-      {sorted.map((entry, i) => (
+      {entries.map((entry, i) => (
         <li key={i} className="relative">
           <span
             aria-hidden
@@ -14,6 +25,14 @@ export function ChangeTimeline({ entries }: { entries: ChangeLogEntry[] }) {
             <time className="font-mono text-[11px] tracking-[0.14em] text-copper">
               {entry.date}
             </time>
+            {entry.caseTitle && entry.caseSlug ? (
+              <Link
+                href={`/cases/${entry.caseSlug}/`}
+                className="font-mono text-[10px] uppercase tracking-[0.12em] text-ink-soft underline decoration-copper/40 underline-offset-2 hover:text-copper"
+              >
+                {entry.caseTitle}
+              </Link>
+            ) : null}
             <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-faint">
               {entry.actor}
               {entry.aiAssisted ? " · AI-assisted" : ""}

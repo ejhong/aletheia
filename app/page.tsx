@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { ArtCredit } from "@/src/components/ArtCredit";
 import { CaseCard } from "@/src/components/CaseCard";
 import { ChangeTimeline } from "@/src/components/ChangeTimeline";
 import { assetPath } from "@/src/config/assets";
@@ -13,7 +12,6 @@ import {
 
 export default function HomePage() {
   const cases = loadAllCases();
-  const [featured, ...rest] = cases;
   const hero = siteImage("IMG-SITE-HERO");
   const divider = siteImage("IMG-SITE-DIVIDER-STRATA");
   const tailpiece = siteImage("IMG-SITE-TAILPIECE");
@@ -24,62 +22,48 @@ export default function HomePage() {
 
   return (
     <div>
-      <section className="mx-auto max-w-6xl px-5 pt-14 sm:pt-20 pb-10">
-        <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_460px] lg:gap-14 lg:items-center">
-          <div>
-            <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-copper">
+      <section className="mx-auto max-w-6xl px-5 pt-8 pb-5">
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+          <div className="hidden sm:block shrink-0 w-14 border border-line bg-paper-deep/40 p-1">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={assetPath(hero.file)}
+              alt={hero.alt}
+              className="block w-full"
+            />
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-copper">
               {site.subtitle}
             </p>
-            <h1 className="font-serif text-4xl sm:text-6xl tracking-tight mt-4 leading-[1.08]">
-              Controversies are argued at the wrong scale. We take them apart.
-            </h1>
-            <p className="mt-6 text-lg leading-relaxed text-ink-soft max-w-2xl">
-              {site.mission}
+            <p className="mt-1 text-[13px] leading-snug text-ink-soft max-w-2xl">
+              Atomic claims, symmetric evidence, and the tests that would settle
+              each dispute.{" "}
+              <Link
+                href="/method/"
+                className="underline decoration-copper/50 underline-offset-2 hover:text-copper"
+              >
+                How it works
+              </Link>
             </p>
-          </div>
-          <div className="mt-10 lg:mt-0">
-            <div className="border border-line bg-paper-deep/40 p-2.5">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={assetPath(hero.file)}
-                alt={hero.alt}
-                className="block w-full"
-              />
-            </div>
-            <div className="mt-1.5 flex justify-between items-baseline">
-              <span className="font-serif italic text-[13px] text-faint">
-                Aletheia: truth as unconcealment
-              </span>
-              <ArtCredit />
-            </div>
           </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-5 py-8">
+      <section className="mx-auto max-w-6xl px-5 pb-8">
         <h2 className="font-mono text-[11px] uppercase tracking-[0.2em] text-faint mb-4">
-          featured case
+          cases
         </h2>
-        {featured ? (
-          <CaseCard
-            record={featured.record}
-            verdict={latestAssessment(featured)?.caseAssessment.verdict ?? null}
-            cover={caseCover(featured)}
-            featured
-          />
-        ) : null}
-        {rest.length > 0 ? (
-          <div className="grid sm:grid-cols-2 gap-4 mt-4">
-            {rest.map((c) => (
-              <CaseCard
-                key={c.record.id}
-                record={c.record}
-                verdict={latestAssessment(c)?.caseAssessment.verdict ?? null}
-                cover={caseCover(c)}
-              />
-            ))}
-          </div>
-        ) : null}
+        <div className="grid sm:grid-cols-2 gap-4">
+          {cases.map((c) => (
+            <CaseCard
+              key={c.record.id}
+              record={c.record}
+              verdict={latestAssessment(c)?.caseAssessment.verdict ?? null}
+              cover={caseCover(c)}
+            />
+          ))}
+        </div>
       </section>
 
       <section className="bg-dossier text-dossier-text mt-10">

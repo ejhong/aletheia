@@ -1,0 +1,66 @@
+# Generate cover-art candidates for a case in the Aletheia house style and
+# open a PR for human review. Adding beauty to a new case = one workflow
+# trigger + one PR review.
+#
+# Requires the repository secret IMAGE_API_KEY (an OpenAI API key with image
+# generation access). Without it the workflow fails early with instructions.
+
+name: Generate case art
+
+on:
+  workflow_dispatch:
+    inputs:
+      case_slug:
+        description: "Case slug (e.g. megalithic-casting)"
+        required: true
+        type: string
+      count:
+        description: "Number of cover candidates"
+        required: false
+        default: "3"
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      - name: Check API key is configured
+        run: |
+          if [ -z "${{ secrets.IMAGE_API_KEY }}" ]; then
+            echo "::error::Repository secret IMAGE_API_KEY is not set. Add an OpenAI API key with image-generation access under Settings → Secrets and variables → Actions, then re-run this workflow."
+            exit 1
+          fi
+
+      - name: Generate candidates
+        env:
+          IMAGE_API_KEY: ${{ secrets.IMAGE_API_KEY }}
+        run: |
+          node scripts/generate-case-art.mjs "${{ inputs.case_slug }}" "${{ inputs.count }}" | tee art-notes.txt
+
+      - name: Open pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          slug="${{ inputs.case_slug }}"
+          branch="art/${slug}-$(date +%Y%m%d%H%M)"
+          git config user.name "aletheia-art-bot"
+          git config user.email "art-bot@users.noreply.github.com"
+          git checkout -b "$branch"
+          git add "public/images/cases/${slug}/candidates" || true
+          git add art-notes.txt
+          git commit -m "Art candidates for ${slug} (house style, awaiting human pick)"
+          git push -u origin "$branch"
+          gh pr create \
+            --title "Cover art candidates: ${slug}" \
+            --body "$(printf 'Generated cover candidates for **%s** in the Aletheia house style (see docs/IMAGE_STYLE.md).\n\nTo finish: pick a winner, convert it to cover.jpg, delete the candidates directory, and add the manifest entry from art-notes.txt (all steps are in that file). The build will fail until license/credit fields are present — that is the point.\n' "$slug")"

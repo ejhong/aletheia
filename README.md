@@ -29,6 +29,15 @@ Dependencies are deliberately minimal: Next.js (static export) + TypeScript stri
 
 Static export served from git: pushing to `main` runs CI and deploys to GitHub Pages (`.github/workflows/deploy.yml`). The base path is injected by the workflow; remove the `PAGES_BASE_PATH` env there when moving to a custom domain.
 
+## Images
+
+Two registers, never confused (full rules in `docs/IMAGE_STYLE.md`):
+
+- **Editorial artwork** — AI-generated in the house engraving style (`style-v1`), always credited, never depicting evidence. Generate candidates for a case with the **generate-case-art** workflow (Actions → Generate case art → enter the case slug); it opens a PR with candidates to pick from. Requires the `IMAGE_API_KEY` repository secret (an OpenAI API key); without it the workflow fails with instructions.
+- **Plates** — real photographs with provenance, shown as numbered museum plates with a CSS duotone (originals untouched). Add one from Wikimedia Commons with `node scripts/add-commons-image.mjs "File:..." <case-slug>` — license, credit, and provenance are auto-filled from the Commons API; you write `alt`, `depicts`, `plateNumber`, and `claimIds`.
+
+Every image needs a manifest entry with license and credit or the build fails. AI-generated images can never be plates — enforced by the schema.
+
 ## Editing content
 
 Edit files under `content/`, run `npm run dev`, and reload. Malformed records, dangling IDs, or article references to unknown claims fail loudly at build time. Provenance rules — what may be labeled `verified` vs `ai_verified` vs `unverified`, tombstones for rejected claims, confidentiality constraints — are in `docs/CONTENT_POLICY.md`.

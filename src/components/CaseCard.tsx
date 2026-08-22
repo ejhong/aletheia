@@ -1,23 +1,44 @@
 import Link from "next/link";
+import { ArtCredit } from "./ArtCredit";
 import { AssessmentBadge } from "./AssessmentBadge";
-import type { AssessmentState, CaseRecord } from "@/src/domain/schema";
+import { assetPath } from "@/src/config/assets";
+import type {
+  AssessmentState,
+  CaseRecord,
+  ImageRecord,
+} from "@/src/domain/schema";
 
 export function CaseCard({
   record,
   verdict,
+  cover,
   featured = false,
 }: {
   record: CaseRecord;
   verdict: AssessmentState | null;
+  cover?: ImageRecord | null;
   featured?: boolean;
 }) {
   return (
     <Link
       href={`/cases/${record.slug}/`}
       className={`group block border border-line bg-paper hover:border-copper/60 ${
-        featured ? "sm:grid sm:grid-cols-[1fr_auto]" : ""
+        featured
+          ? "lg:grid lg:grid-cols-[minmax(0,1fr)_400px] lg:items-center"
+          : ""
       }`}
     >
+      {cover && !featured ? (
+        <div className="border-b border-line">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={assetPath(cover.file)}
+            alt={cover.alt}
+            loading="lazy"
+            className="block w-full aspect-[21/9] object-cover"
+          />
+        </div>
+      ) : null}
       <div className={featured ? "p-6 sm:p-8" : "p-5"}>
         <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
           <span className="font-mono text-[10px] tracking-[0.16em] text-copper">
@@ -53,6 +74,20 @@ export function CaseCard({
           </span>
         </div>
       </div>
+      {cover && featured ? (
+        <div className="px-6 pb-6 sm:px-8 sm:pb-8 lg:p-6">
+          <div className="border border-line bg-paper-deep/40 p-2">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={assetPath(cover.file)}
+              alt={cover.alt}
+              loading="lazy"
+              className="block w-full"
+            />
+          </div>
+          <ArtCredit className="mt-1.5 block" />
+        </div>
+      ) : null}
     </Link>
   );
 }

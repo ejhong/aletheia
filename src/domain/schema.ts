@@ -239,6 +239,108 @@ export const AssessmentRunSchema = z.object({
 });
 export type AssessmentRun = z.infer<typeof AssessmentRunSchema>;
 
+/**
+ * Image records. HARD RULE, enforced below: AI-generated images may never be
+ * plates — anything a reader could mistake for the record must be real
+ * imagery with provenance. Generated imagery is confined to editorial roles
+ * (cover, texture) and always credited as such.
+ */
+export const ImageRole = z.enum(["cover", "plate", "texture"]);
+export type ImageRole = z.infer<typeof ImageRole>;
+
+export const ImageSource = z.enum(["generated", "commons", "user"]);
+export type ImageSource = z.infer<typeof ImageSource>;
+
+export const ImageSchema = z
+  .object({
+    id: z.string().regex(/^IMG-[A-Z0-9-]+$/, "Image id like IMG-GEO-P01"),
+    role: ImageRole,
+    file: z.string().startsWith("/images/"),
+    /** Decorative textures may use an empty alt; covers and plates may not. */
+    alt: z.string(),
+    source: ImageSource,
+    license: z.string().min(2),
+    licenseUrl: z.string().url().optional(),
+    credit: z.string().min(2),
+    /** Generated images only. */
+    prompt: z.string().optional(),
+    styleVersion: z.string().optional(),
+    model: z.string().optional(),
+    /** Plates only. */
+    plateNumber: z.number().int().positive().optional(),
+    depicts: z.string().optional(),
+    provenance: z
+      .object({
+        photographer: z.string(),
+        date: z.string().optional(),
+        sourceUrl: z.string().url(),
+        originalTitle: z.string().optional(),
+      })
+      .optional(),
+    claimIds: z.array(z.string()).default([]),
+  })
+  .superRefine((img, ctx) => {
+    if (img.role !== "texture" && img.alt.trim().length < 5) {
+      ctx.addIssue({
+        code: "custom",
+        message: `${img.id}: covers and plates need a real alt text`,
+      });
+    }
+    if (img.source === "generated") {
+      if (img.role === "plate") {
+        ctx.addIssue({
+          code: "custom",
+          message: `${img.id}: AI-generated images must never be plates (evidence imagery). This is a hard rule.`,
+        });
+      }
+      for (const field of ["prompt", "styleVersion", "model"] as const) {
+        if (!img[field]) {
+          ctx.addIssue({
+            code: "custom",
+            message: `${img.id}: generated images must record ${field}`,
+          });
+        }
+      }
+    }
+    if (img.role === "plate") {
+      if (!img.plateNumber)
+        ctx.addIssue({
+          code: "custom",
+          message: `${img.id}: plates need a plateNumber`,
+        });
+      if (!img.depicts)
+        ctx.addIssue({
+          code: "custom",
+          message: `${img.id}: plates need a depicts description`,
+        });
+      if (!img.provenance)
+        ctx.addIssue({
+          code: "custom",
+          message: `${img.id}: plates need provenance (photographer, sourceUrl)`,
+        });
+    }
+  });
+export type ImageRecord = z.infer<typeof ImageSchema>;
+
+export function romanNumeral(n: number): string {
+  const table: [number, string][] = [
+    [10, "X"],
+    [9, "IX"],
+    [5, "V"],
+    [4, "IV"],
+    [1, "I"],
+  ];
+  let out = "";
+  let rest = n;
+  for (const [value, glyph] of table) {
+    while (rest >= value) {
+      out += glyph;
+      rest -= value;
+    }
+  }
+  return out;
+}
+
 export const CaseSchema = z.object({
   id: z.string().regex(/^[A-Z]+-\d{3}$/, "Case id like GEO-001"),
   slug: z.string().regex(/^[a-z0-9-]+$/),
@@ -274,4 +376,5 @@ export interface LoadedCase {
   history: ChangeLogEntry[];
   /** Sorted by date ascending; last entry is the latest run. */
   assessmentRuns: AssessmentRun[];
+  images: ImageRecord[];
 }

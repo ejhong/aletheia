@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { AssessmentBadge } from "@/src/components/AssessmentBadge";
 import { EvidenceCard } from "@/src/components/EvidenceCard";
+import { Plate } from "@/src/components/Plate";
 import { ProvenanceBadge } from "@/src/components/ProvenanceBadge";
 import { liveClaims, loadAllCases } from "@/src/domain/load";
 import {
@@ -54,6 +55,9 @@ export default async function ClaimPage({
     }))
     .filter((x) => x.entry);
   const research = loaded.research.filter((r) => r.claimIds.includes(id));
+  const plates = loaded.images.filter(
+    (img) => img.role === "plate" && img.claimIds.includes(id),
+  );
 
   const relatedList = (label: string, ids: string[]) =>
     ids.length > 0 ? (
@@ -141,6 +145,15 @@ export default async function ClaimPage({
             </p>
           </div>
         </section>
+
+        {/* Plates linked to this claim */}
+        {plates.length > 0 ? (
+          <section className="mt-10 grid sm:grid-cols-2 gap-5">
+            {plates.map((img) => (
+              <Plate key={img.id} image={img} />
+            ))}
+          </section>
+        ) : null}
 
         {/* Evidence, symmetric */}
         <section className="mt-10">

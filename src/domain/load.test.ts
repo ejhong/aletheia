@@ -1,7 +1,18 @@
 import { describe, expect, it } from "vitest";
-import { extractClaimRefs, parseArticle, parseInlines } from "./article";
-import { getCaseBySlug, latestAssessment, liveClaims, loadAllCases } from "./load";
-import { ClaimSchema, EvidenceSchema } from "./schema";
+import {
+  extractClaimRefs,
+  extractPlateRefs,
+  parseArticle,
+  parseInlines,
+} from "./article";
+import {
+  getCaseBySlug,
+  latestAssessment,
+  liveClaims,
+  loadAllCases,
+  loadSiteImages,
+} from "./load";
+import { ClaimSchema, EvidenceSchema, ImageSchema } from "./schema";
 
 describe("real content", () => {
   it("loads and passes all integrity checks", () => {
@@ -25,6 +36,23 @@ describe("real content", () => {
     expect(blocks.some((b) => b.kind === "heading")).toBe(true);
     const refs = extractClaimRefs(geo.overviewMarkdown);
     expect(refs.length).toBeGreaterThanOrEqual(8);
+  });
+
+  it("loads case and site images with valid licenses and files", () => {
+    const geo = getCaseBySlug("megalithic-casting");
+    const plates = geo.images.filter((i) => i.role === "plate");
+    expect(plates.length).toBeGreaterThanOrEqual(3);
+    // Every plate is real imagery with provenance — never generated.
+    for (const p of plates) {
+      expect(p.source).not.toBe("generated");
+      expect(p.provenance?.sourceUrl).toMatch(/^https:/);
+    }
+    expect(loadSiteImages().length).toBeGreaterThanOrEqual(2);
+    // Plate refs in the article resolve to actual plates.
+    const plateIds = new Set(plates.map((p) => p.id));
+    for (const ref of extractPlateRefs(geo.overviewMarkdown)) {
+      expect(plateIds.has(ref)).toBe(true);
+    }
   });
 });
 
@@ -62,6 +90,48 @@ describe("schema rules", () => {
         rejectionReason: "because",
       }),
     ).not.toThrow();
+  });
+
+  it("HARD RULE: AI-generated images can never be plates", () => {
+    const base = {
+      id: "IMG-TEST-X",
+      file: "/images/site/hero.jpg",
+      alt: "a test image alt text",
+      license: "test",
+      credit: "test credit",
+      prompt: "p",
+      styleVersion: "style-v1",
+      model: "m",
+      plateNumber: 1,
+      depicts: "something",
+      provenance: {
+        photographer: "someone",
+        sourceUrl: "https://example.com",
+      },
+    };
+    expect(() =>
+      ImageSchema.parse({ ...base, role: "plate", source: "generated" }),
+    ).toThrow(/never be plates/);
+    expect(() =>
+      ImageSchema.parse({ ...base, role: "plate", source: "commons" }),
+    ).not.toThrow();
+    expect(() =>
+      ImageSchema.parse({ ...base, role: "cover", source: "generated" }),
+    ).not.toThrow();
+  });
+
+  it("images without license or credit fail validation", () => {
+    expect(() =>
+      ImageSchema.parse({
+        id: "IMG-TEST-Y",
+        role: "cover",
+        file: "/images/site/hero.jpg",
+        alt: "some alt text here",
+        source: "commons",
+        license: "",
+        credit: "",
+      }),
+    ).toThrow();
   });
 
   it("evidence requires direction and at least one claim", () => {

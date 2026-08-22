@@ -1,6 +1,10 @@
 At the granite quarries of Aswan, beside the largest abandoned obelisk in Egypt, there is a block that tourists are invited to hit. The idea is charming: pick up one of the rounded dolerite stones that ancient workers supposedly used, strike the granite, and feel the past in your hands. Guides have been running this accidental experiment for decades. According to the proponent literature, [no visitor has ever managed to reproduce one of the smooth, scooped depressions that cover the quarry walls]{claim=GEO-C002}. The stones bounce. The granite shrugs.
 
+{plate:IMG-GEO-P01}
+
 Anecdotes like this prove nothing by themselves, and this one has never been systematically surveyed. But it points at the right question, which is not *who built the monuments* — nobody serious disputes that ancient Egyptians built the pyramids and ancient Andeans built Tiwanaku — but *how the hardest stone was worked*. The megalithic casting hypothesis gives a heterodox answer: some of it wasn't worked at all. It was made — mixed, molded, and set in place, the way we make concrete — from crushed rock, mineral binders, and chemistry that a Bronze Age society could plausibly command.
+
+{plate:IMG-GEO-P02}
 
 This idea has a serious pedigree and a disreputable neighborhood. It was first proposed in scientific form by the French materials chemist Joseph Davidovits in 1979, has attracted a small body of peer-reviewed work, and is currently the subject of funded laboratory research. It also circulates in a media ecosystem of lost civilizations and ancient high technology that this case has nothing to do with. The casting hypothesis requires no aliens, no Atlantis, and no forgotten machines — only forgotten chemistry, which is a documented historical phenomenon. That is precisely what makes it testable, and what makes the fact that it remains untested so interesting.
 
@@ -22,9 +26,13 @@ Then the chemistry. The natron-route version of the hypothesis, developed by the
 
 Finally, and most importantly, the stone itself. The only laboratory evidence from an actual disputed monument comes from Pumapunku in Bolivia, where [published SEM and petrographic analyses report organic matter and microstructural features that the authors argue natural volcanic andesite should not contain]{claim=GEO-C004}. Those papers passed peer review. They also come entirely from the Davidovits team, analyzing samples whose chain of custody is contested, and no independent laboratory has ever re-examined them. In Egypt, a 2006 study by a Drexel materials scientist reported microstructural evidence of reconstituted limestone in pyramid samples — a rare non-proponent data point, though one whose subsequent critical literature this case has not yet imported. Meanwhile [the basic feasibility claim — that convincing artificial limestone can be made at all with ancient inputs]{claim=GEO-C012} — is about the only rung of the ladder in decent shape, thanks to modern geopolymer chemistry and demonstration blocks.
 
+{plate:IMG-GEO-P04}
+
 ## The ladder, and why it thins as it climbs
 
 Notice the shape of what we just walked through. At the bottom: observations, some solid, most unverified. In the middle: mechanism claims — the ingredients existed, the temperatures were reachable, the chemistry works. At the top: the attribution claims that actually matter — [that some blocks of the Great Pyramid are cast reconstituted limestone]{claim=GEO-C020}, [that Pumapunku's andesite was geopolymer-cast]{claim=GEO-C021}, and the headline disjunction that [at least one major megalithic monument, somewhere, contains man-made cast stone]{claim=GEO-C022}.
+
+{plate:IMG-GEO-P03}
 
 Each rung is weaker than the one below it, and evidence for a lower rung does not automatically climb. Natron in Egypt is well documented and proves nothing about pyramids. Feasibility is real and proves nothing about history. This decay-with-altitude is normal for ambitious hypotheses; the argument ladder below this article makes it visible for this one.
 

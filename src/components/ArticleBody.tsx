@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { parseArticle, type Block, type Inline } from "@/src/domain/article";
 import { AssessmentBadge } from "./AssessmentBadge";
+import { Plate } from "./Plate";
 import { ProvenanceBadge } from "./ProvenanceBadge";
-import type { Claim } from "@/src/domain/schema";
+import type { Claim, ImageRecord } from "@/src/domain/schema";
 
 function renderInline(inline: Inline, key: number) {
   switch (inline.kind) {
@@ -74,16 +75,28 @@ function MarginNote({ claim }: { claim: Claim }) {
 export function ArticleBody({
   markdown,
   claims,
+  images = [],
 }: {
   markdown: string;
   claims: Claim[];
+  images?: ImageRecord[];
 }) {
   const blocks: Block[] = parseArticle(markdown);
   const claimById = new Map(claims.map((c) => [c.id, c]));
+  const imageById = new Map(images.map((img) => [img.id, img]));
 
   return (
     <div className="article-prose space-y-6">
       {blocks.map((block, i) => {
+        if (block.kind === "plate") {
+          const image = imageById.get(block.imageId);
+          if (!image) throw new Error(`unknown plate ${block.imageId}`);
+          return (
+            <div key={i} className="xl:grid xl:grid-cols-[minmax(0,1fr)_270px] xl:gap-10">
+              <Plate image={image} />
+            </div>
+          );
+        }
         if (block.kind === "heading") {
           const Tag = block.level === 2 ? "h2" : "h3";
           return (

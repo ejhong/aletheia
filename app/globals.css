@@ -47,6 +47,27 @@ body {
   font-style: italic;
 }
 
+/*
+ * Museum-plate duotone: unifies heterogeneous photographs into the site
+ * palette (ink shadows on paper, faint copper warmth) without editing the
+ * source files. Hover gently restores the original color — the record stays
+ * one gesture away.
+ */
+.plate-frame {
+  background: var(--color-ink);
+}
+
+.plate-img {
+  display: block;
+  filter: grayscale(1) sepia(0.45) saturate(1.15) contrast(1.05)
+    brightness(1.04);
+  transition: filter 400ms ease;
+}
+
+.plate-frame:hover .plate-img {
+  filter: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation: none !important;

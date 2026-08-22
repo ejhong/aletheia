@@ -9,6 +9,7 @@ import { EvidenceCard } from "@/src/components/EvidenceCard";
 import { ResearchCard } from "@/src/components/ResearchCard";
 import { site } from "@/src/config/site";
 import {
+  caseCover,
   getCaseBySlug,
   latestAssessment,
   liveClaims,
@@ -65,6 +66,7 @@ export default async function CasePage({
       <DossierHeader
         record={loaded.record}
         verdict={run?.caseAssessment.verdict ?? null}
+        cover={caseCover(loaded)}
       />
 
       {/* section navigator */}
@@ -101,7 +103,11 @@ export default async function CasePage({
           <h2 className="font-mono text-[11px] uppercase tracking-[0.2em] text-faint mb-6">
             overview · marked sentences open the exact claim
           </h2>
-          <ArticleBody markdown={loaded.overviewMarkdown} claims={claims} />
+          <ArticleBody
+            markdown={loaded.overviewMarkdown}
+            claims={claims}
+            images={loaded.images}
+          />
         </section>
 
         <section id="ladder" className="pt-14 scroll-mt-16">

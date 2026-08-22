@@ -1,21 +1,25 @@
 import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml } from "yaml";
-import { extractClaimRefs } from "./article";
+import { extractClaimRefs, extractPlateRefs } from "./article";
 import {
   AssessmentRunSchema,
   CaseSchema,
   ChangeLogEntrySchema,
   ClaimSchema,
   EvidenceSchema,
+  ImageSchema,
   ResearchOpportunitySchema,
   SourceSchema,
   type AssessmentRun,
   type Claim,
+  type ImageRecord,
   type LoadedCase,
 } from "./schema";
 
 const CONTENT_DIR = path.join(process.cwd(), "content", "cases");
+const SITE_IMAGES_FILE = path.join(process.cwd(), "content", "images.yaml");
+const PUBLIC_DIR = path.join(process.cwd(), "public");
 
 class ContentError extends Error {
   constructor(caseDir: string, message: string) {
@@ -61,6 +65,40 @@ function assertUnique(caseDir: string, kind: string, ids: string[]): void {
       throw new ContentError(caseDir, `duplicate ${kind} id ${id}`);
     }
     seen.add(id);
+  }
+}
+
+function checkImages(
+  scope: string,
+  images: ImageRecord[],
+  requireLiveClaim?: (id: string, where: string) => void,
+): void {
+  const seen = new Set<string>();
+  const plateNumbers = new Set<number>();
+  for (const img of images) {
+    if (seen.has(img.id)) {
+      throw new Error(`[content:${scope}] duplicate image id ${img.id}`);
+    }
+    seen.add(img.id);
+    const onDisk = path.join(PUBLIC_DIR, img.file);
+    if (!fs.existsSync(onDisk)) {
+      throw new Error(
+        `[content:${scope}] image ${img.id} file missing on disk: public${img.file}`,
+      );
+    }
+    if (img.role === "plate" && img.plateNumber) {
+      if (plateNumbers.has(img.plateNumber)) {
+        throw new Error(
+          `[content:${scope}] duplicate plate number ${img.plateNumber}`,
+        );
+      }
+      plateNumbers.add(img.plateNumber);
+    }
+    if (requireLiveClaim) {
+      for (const cid of img.claimIds) {
+        requireLiveClaim(cid, `image ${img.id}`);
+      }
+    }
   }
 }
 
@@ -129,6 +167,25 @@ function checkIntegrity(caseDir: string, loaded: LoadedCase): void {
   for (const id of extractClaimRefs(loaded.overviewMarkdown)) {
     requireLiveClaim(id, `overview.md claim reference`);
   }
+
+  checkImages(caseDir, loaded.images, requireLiveClaim);
+
+  const imageById = new Map(loaded.images.map((i) => [i.id, i]));
+  for (const ref of extractPlateRefs(loaded.overviewMarkdown)) {
+    const img = imageById.get(ref);
+    if (!img) {
+      throw new ContentError(
+        caseDir,
+        `overview.md embeds unknown image ${ref}`,
+      );
+    }
+    if (img.role !== "plate") {
+      throw new ContentError(
+        caseDir,
+        `overview.md embeds ${ref} as a plate but its role is "${img.role}" — only real plates may appear in the record position`,
+      );
+    }
+  }
 }
 
 export function loadCase(caseDir: string): LoadedCase {
@@ -171,6 +228,16 @@ export function loadCase(caseDir: string): LoadedCase {
     ChangeLogEntrySchema,
   );
 
+  const imagesPath = path.join(CONTENT_DIR, caseDir, "images.yaml");
+  const images: ImageRecord[] = fs.existsSync(imagesPath)
+    ? parseList(
+        caseDir,
+        "images.yaml",
+        parseYaml(fs.readFileSync(imagesPath, "utf8")),
+        ImageSchema,
+      )
+    : [];
+
   const assessmentsDir = path.join(CONTENT_DIR, caseDir, "assessments");
   const assessmentRuns: AssessmentRun[] = fs.existsSync(assessmentsDir)
     ? fs
@@ -206,9 +273,38 @@ export function loadCase(caseDir: string): LoadedCase {
     research,
     history,
     assessmentRuns,
+    images,
   };
   checkIntegrity(caseDir, loaded);
   return loaded;
+}
+
+/** Site-level images (hero, textures) from content/images.yaml. */
+export function loadSiteImages(): ImageRecord[] {
+  if (!fs.existsSync(SITE_IMAGES_FILE)) return [];
+  const raw = parseYaml(fs.readFileSync(SITE_IMAGES_FILE, "utf8"));
+  if (!Array.isArray(raw)) {
+    throw new Error("[content:site] images.yaml must be a YAML list");
+  }
+  const images = raw.map((item, i) => {
+    try {
+      return ImageSchema.parse(item);
+    } catch (e) {
+      throw new Error(`[content:site] images.yaml[${i}] invalid: ${String(e)}`);
+    }
+  });
+  checkImages("site", images);
+  return images;
+}
+
+export function siteImage(id: string): ImageRecord {
+  const found = loadSiteImages().find((i) => i.id === id);
+  if (!found) throw new Error(`no site image with id ${id}`);
+  return found;
+}
+
+export function caseCover(loaded: LoadedCase): ImageRecord | null {
+  return loaded.images.find((i) => i.role === "cover") ?? null;
 }
 
 export function loadAllCases(): LoadedCase[] {

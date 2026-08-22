@@ -18,7 +18,10 @@ export type Block =
   | { kind: "paragraph"; inlines: Inline[] }
   | { kind: "blockquote"; inlines: Inline[] }
   | { kind: "list"; items: Inline[][] }
-  | { kind: "rule" };
+  | { kind: "rule" }
+  | { kind: "plate"; imageId: string };
+
+const PLATE_BLOCK = /^\{plate:(IMG-[A-Z0-9-]+)\}$/;
 
 const CLAIM_REF = /\[([^\]]+)\]\{claim=([A-Z]+-C\d{3})\}/;
 const LINK = /\[([^\]]+)\]\(([^)\s]+)\)/;
@@ -81,7 +84,10 @@ export function parseArticle(markdown: string): Block[] {
     .filter((c) => c.length > 0);
 
   for (const chunk of chunks) {
-    if (chunk === "---") {
+    const plateMatch = PLATE_BLOCK.exec(chunk);
+    if (plateMatch) {
+      blocks.push({ kind: "plate", imageId: plateMatch[1] });
+    } else if (chunk === "---") {
       blocks.push({ kind: "rule" });
     } else if (chunk.startsWith("### ")) {
       const text = chunk.slice(4).trim();
@@ -121,6 +127,17 @@ export function extractClaimRefs(markdown: string): string[] {
   let m: RegExpExecArray | null;
   while ((m = re.exec(markdown)) !== null) {
     if (!ids.includes(m[2])) ids.push(m[2]);
+  }
+  return ids;
+}
+
+/** All plate image ids embedded in the article. */
+export function extractPlateRefs(markdown: string): string[] {
+  const ids: string[] = [];
+  const re = /^\{plate:(IMG-[A-Z0-9-]+)\}$/gm;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(markdown)) !== null) {
+    if (!ids.includes(m[1])) ids.push(m[1]);
   }
   return ids;
 }

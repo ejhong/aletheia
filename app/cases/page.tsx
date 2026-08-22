@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { CaseCard } from "@/src/components/CaseCard";
-import { latestAssessment, loadAllCases } from "@/src/domain/load";
+import { caseCover, latestAssessment, loadAllCases } from "@/src/domain/load";
 
 export const metadata: Metadata = { title: "Cases" };
 
@@ -20,6 +20,7 @@ export default function CasesPage() {
             key={c.record.id}
             record={c.record}
             verdict={latestAssessment(c)?.caseAssessment.verdict ?? null}
+            cover={caseCover(c)}
           />
         ))}
       </div>

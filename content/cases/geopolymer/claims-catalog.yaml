@@ -1,0 +1,1590 @@
+# Catalog layer. Bulk import of the remaining geo-project topic catalog
+# (~/prj/geo/topics.md, 95 T-numbered entries) as lightweight catalog-tier
+# claims — one reversible run, runId geo-catalog-import-2026-08-22, recorded
+# in history.yaml.
+#
+# ID scheme: GEO-C(500 + T-number), so T-006 → GEO-C506. Derivable and
+# collision-free against the featured set (< C100) and tombstones (C9xx).
+#
+# Excluded from this import:
+#   - T-001, T-003, T-004, T-005, T-012, T-013, T-014, T-021, T-034, T-060,
+#     T-072, T-077, T-078, T-087 — already carried by featured claims
+#     (GEO-C001..C006, C010..C013, C020..C022, C030).
+#   - T-073 — killed upstream in the geo catalog (2026-05-06, too tangential);
+#     not re-proposed here.
+#   - The numerology cluster remains tombstoned as GEO-C900.
+#
+# Confidentiality: T-089–T-093 are framed neutrally as general methodological
+# claims anchored in the open cement-science / petrography literature. No
+# confidential source is cited and no site-specific measurement from one is
+# reproduced.
+#
+# Everything here is ai_extracted and unreviewed: honest backlog, not canon
+# findings. Promotion = flip tier to featured and supply what the validator
+# then demands.
+
+# ── From Fóti, Ch 1: Humble Beginnings ──────────────────────────────────────
+
+- id: GEO-C502
+  tier: catalog
+  statement: >-
+    The orthodox pounding-stone account of Aswan granite quarrying rests
+    principally on Engelbach's 1922 report, whose stated basis was a single
+    self-conducted one-hour trial with no measurement of mass removed and a
+    workforce estimate from a count-divided-by-four heuristic.
+  theme: tool-marks
+  rung: observation
+  claimType: historical
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Ch 1, pp ~17–18; Engelbach (1922), The Aswan Obelisk"
+  origin:
+    ref: "geo catalog T-002"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C506
+  tier: catalog
+  statement: >-
+    Great Pyramid stones carry readily detectable surface NaCl at
+    concentrations that comparable natural limestone monuments do not
+    exhibit.
+  theme: materials-evidence
+  rung: observation
+  claimType: measurement
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Ch 1, pp ~26–29"
+  origin:
+    ref: "geo catalog T-006"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C507
+  tier: catalog
+  statement: >-
+    Standard archaeological analytical methods (ICP-MS, XRF, NMR, Raman,
+    XRD) systematically miss or misattribute the hydrogen, carbon, and
+    oxygen signal that would distinguish artificial geopolymer or
+    agglomerate stone from natural rock, and default calibrations bake in
+    the natural-stone assumption.
+  theme: methodology
+  rung: mechanism
+  claimType: methodological
+  reviewState: ai_extracted
+  independenceGroup: provenance-method-critique
+  sourceAnchor:
+    locator: "Fóti Ch 1, pp ~30–37 (methods table)"
+  origin:
+    ref: "geo catalog T-007"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C508
+  tier: catalog
+  statement: >-
+    A Great Pyramid limestone sample analyzed for Fóti measured ~89%
+    Ca-equivalent CaCO₃, below the 93–95% lower bound reported for
+    commercially marketed natural limestone quarries.
+  theme: materials-evidence
+  rung: observation
+  claimType: measurement
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Ch 1, pp ~31–32"
+  origin:
+    ref: "geo catalog T-008"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C509
+  tier: catalog
+  statement: >-
+    Granite can be chemically etched and disaggregated with molten natron
+    alone under pre-industrially accessible conditions, leaving a softened
+    zone removable with a soft brush.
+  theme: replication
+  rung: mechanism
+  claimType: mechanistic
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Ch 1, pp ~17–18 (etched red granite demonstration)"
+  origin:
+    ref: "geo catalog T-009"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C510
+  tier: catalog
+  statement: >-
+    No gravity-fed pre-industrial mechanism near Aswan could generate the
+    ~1,450 psi (a ~1 km water column) that waterjet granite-cutting
+    requires, ruling out waterjet hypotheses for ancient stone working at
+    the site.
+  theme: tool-marks
+  rung: mechanism
+  claimType: mechanistic
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Ch 1, pp ~19–20"
+  origin:
+    ref: "geo catalog T-010"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C511
+  tier: catalog
+  statement: >-
+    The hundreds of dolerite spheres transported to Aswan served a purpose
+    other than pounding granite — candidate uses include grinding mineral
+    inputs for a casting slurry, tamping cast surfaces, and finishing.
+  theme: tool-marks
+  rung: mechanism
+  claimType: interpretive
+  reviewState: ai_extracted
+  independenceGroup: aswan-pounder-function
+  sourceAnchor:
+    locator: "Fóti Ch 1, p ~25"
+  origin:
+    ref: "geo catalog T-011"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+# ── From Fóti, Ch 2: The Five Musketeers ────────────────────────────────────
+
+- id: GEO-C515
+  tier: catalog
+  statement: >-
+    Petrie's 1906 Researches in Sinai describes a buried temple in southern
+    Sinai knee-deep in wood ash — an estimated several hundred tons in one
+    location, a quantity suggestive of an industrial rather than ritual
+    process.
+  theme: historical-record
+  rung: observation
+  claimType: historical
+  reviewState: ai_extracted
+  independenceGroup: ash-footprint
+  sourceAnchor:
+    locator: "Fóti Ch 2, pp ~70–71; Petrie (1906), Researches in Sinai, p. 99"
+  origin:
+    ref: "geo catalog T-015"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C516
+  tier: catalog
+  statement: >-
+    Casting-scale stone production would have required wood-ash inputs
+    large enough to leave region-scale deforestation signals in pollen,
+    charcoal, and isotopic records dated to major construction periods.
+  theme: ingredients
+  rung: mechanism
+  claimType: causal
+  reviewState: ai_extracted
+  independenceGroup: ash-footprint
+  sourceAnchor:
+    locator: "Fóti Ch 2, pp ~71–72"
+  origin:
+    ref: "geo catalog T-016"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C517
+  tier: catalog
+  statement: >-
+    Imhotep invented a limestone-adhesive technique for binding fragments
+    of natural limestone into apparently monolithic blocks — an achievement
+    consistent with what later Egyptian and Greco-Roman sources attribute
+    to him.
+  theme: historical-record
+  rung: attribution
+  claimType: historical
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Ch 2, pp ~75–77"
+  origin:
+    ref: "geo catalog T-017"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C518
+  tier: catalog
+  statement: >-
+    Fresh, non-carbonated wood ash mixed with waterglass sets into a
+    stone-like material within minutes, with set time depending on wood
+    species and the product surviving a 20-minute boil and a 100 kg point
+    load.
+  theme: replication
+  rung: mechanism
+  claimType: mechanistic
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Ch 2, pp ~64–67"
+  origin:
+    ref: "geo catalog T-018"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C519
+  tier: catalog
+  statement: >-
+    The natron route to artificial limestone (Na₂CO₃ + CaO → CaCO₃ +
+    2NaOH) sidesteps the implausible fuel demand of lime-burning at pyramid
+    scale, but its own feasibility at that scale is untested.
+  theme: ingredients
+  rung: mechanism
+  claimType: mechanistic
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Ch 2, pp ~75–77"
+  origin:
+    ref: "geo catalog T-019"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C520
+  tier: catalog
+  statement: >-
+    Lime mortar and whitewash — themselves artificial-limestone products —
+    pre-date the pyramids by millennia across many cultures, establishing
+    that manufactured stone was a familiar concept to pre-pyramid
+    civilizations.
+  theme: historical-record
+  rung: mechanism
+  claimType: historical
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Ch 2, p ~76"
+  origin:
+    ref: "geo catalog T-020"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+# ── From Fóti, Ch 3: Ancient Secrets ────────────────────────────────────────
+
+- id: GEO-C522
+  tier: catalog
+  statement: >-
+    Many of Europe's ~50,000 menhirs lack an identified source quarry, and
+    where geochemistry names one, the claimed transport distances — often
+    hundreds of miles — are implausible for the attributed sociotechnical
+    level.
+  theme: methodology
+  rung: observation
+  claimType: statistical
+  reviewState: ai_extracted
+  independenceGroup: provenance-method-critique
+  sourceAnchor:
+    locator: "Fóti Ch 3, pp ~93–95"
+  origin:
+    ref: "geo catalog T-022"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C523
+  tier: catalog
+  statement: >-
+    Some menhirs, such as Menhir da Meada in Spain, show vertical streaks
+    and flow features along their sides consistent with material flow
+    during setting rather than with carving from quarried rock.
+  theme: site-morphology
+  rung: observation
+  claimType: observation
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Ch 3, pp ~93–94 (Menhir da Meada)"
+  origin:
+    ref: "geo catalog T-023"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C524
+  tier: catalog
+  statement: >-
+    A significant fraction of European menhirs and dolmens — some up to
+    100 tons — are limestone dated millennia before Imhotep; if cast, they
+    demonstrate artificial-limestone production long before its
+    conventionally credited invention.
+  theme: attribution
+  rung: attribution
+  claimType: existence
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Ch 3, pp ~95–96"
+  origin:
+    ref: "geo catalog T-024"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C525
+  tier: catalog
+  statement: >-
+    Mixing carbonated old wood ash with fresh CaO-bearing ash and water
+    yields artificial limestone (CaO + K₂CO₃ + H₂O → CaCO₃ + KOH) that
+    hardens within ~24 hours once the lye byproduct is neutralized or
+    pressed out.
+  theme: replication
+  rung: mechanism
+  claimType: mechanistic
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Ch 3, pp ~96–98"
+  origin:
+    ref: "geo catalog T-025"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C526
+  tier: catalog
+  statement: >-
+    The pure white limestone holding the sword at San Galgano Abbey
+    (Montesiepi, Italy) is cast or artificial stone that set around the
+    inserted object, rather than natural rock carved around it.
+  theme: site-morphology
+  rung: attribution
+  claimType: existence
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Ch 3, p ~98"
+  origin:
+    ref: "geo catalog T-026"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C527
+  tier: catalog
+  statement: >-
+    Some dolmens, including one near Gelendzhik on the Russian Black Sea
+    coast, bear raised decorative motifs that would require removing ~2 cm
+    of material across the whole surface if carved, plus surface bubbles
+    consistent with a poured-cast origin.
+  theme: site-morphology
+  rung: observation
+  claimType: observation
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Ch 3, pp ~100–104 (Gelendzhik dolmen)"
+  origin:
+    ref: "geo catalog T-027"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C528
+  tier: catalog
+  statement: >-
+    Polygonal megalithic walls in Peru, Japan, Greece, and elsewhere
+    achieve sub-millimeter fit between non-identical multi-ton stones at
+    lift-check-recut cycle counts implausible for carve-and-fit methods.
+  theme: site-morphology
+  rung: observation
+  claimType: observation
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Ch 3, pp ~105–108"
+  origin:
+    ref: "geo catalog T-028"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C529
+  tier: catalog
+  statement: >-
+    A Machu Picchu wall stone bears surface impressions matching
+    wooden-board profiles, consistent with wood formwork retaining cast
+    material against the wall during setting.
+  theme: site-morphology
+  rung: observation
+  claimType: observation
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Ch 3, p ~106"
+  origin:
+    ref: "geo catalog T-029"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C530
+  tier: catalog
+  statement: >-
+    A doorway in the Coricancha (Cusco) features dozens of granite holes
+    with no evident purpose, whose geometry is reportedly impossible to
+    replicate by drilling but trivial to produce by casting around
+    removable rods.
+  theme: site-morphology
+  rung: observation
+  claimType: observation
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Ch 3, p ~107"
+  origin:
+    ref: "geo catalog T-030"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C531
+  tier: catalog
+  statement: >-
+    A class of Peruvian megalithic stones bears textile-like surface
+    patterning better explained as fabric-mold imprints from casting than
+    as wind erosion.
+  theme: site-morphology
+  rung: observation
+  claimType: observation
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Ch 3, p ~107"
+  origin:
+    ref: "geo catalog T-031"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+# ── From Fóti, Ch 4: How to produce waterglass? ─────────────────────────────
+
+- id: GEO-C532
+  tier: catalog
+  statement: >-
+    Traditional potters in some regions still spray water-dissolved natron
+    into hot kilns to etch glazes — surviving empirical knowledge that
+    natron attacks silica at high temperature, transmitted from older
+    practitioners without articulated chemistry.
+  theme: historical-record
+  rung: observation
+  claimType: historical
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Ch 4, pp ~110–113 (the potter's kiln)"
+  origin:
+    ref: "geo catalog T-032"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C533
+  tier: catalog
+  statement: >-
+    Egyptian blue could have originated as a byproduct of natron-on-granite
+    etching: molten natron at ~851 °C on trace-copper-bearing red granite
+    yields a blue compound visually similar to the pigment without
+    separately added copper.
+  theme: materials-evidence
+  rung: mechanism
+  claimType: mechanistic
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Ch 4, pp ~115–117"
+  origin:
+    ref: "geo catalog T-033"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C535
+  tier: catalog
+  statement: >-
+    An open-air replication of the proposed Rekhmire method — natron held
+    on a granite slab, charcoal with forced air bringing the surface to
+    ~851 °C — produced thorough granite etching, with ~106 g natron
+    yielding ~122 g dry waterglass.
+  theme: replication
+  rung: mechanism
+  claimType: mechanistic
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Ch 4, pp ~125–128"
+  origin:
+    ref: "geo catalog T-035"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C536
+  tier: catalog
+  statement: >-
+    The ~5 m deep narrow shafts beside the Aswan unfinished obelisk match
+    the tall, narrow, water-tight geometry that experimental practice
+    converges on for settling and decanting sodium silicate, and sit at
+    the bottom of excavated trenches where processing vessels — not
+    extraction features — would sit.
+  theme: site-morphology
+  rung: observation
+  claimType: interpretive
+  reviewState: ai_extracted
+  independenceGroup: silicate-processing-vessels
+  sourceAnchor:
+    locator: "Fóti Ch 4, pp ~130–131"
+  origin:
+    ref: "geo catalog T-036"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C537
+  tier: catalog
+  statement: >-
+    The Aswan dolerite pounding stones were used to break up and pulverize
+    the brittle waterglass foam formed by molten-natron etching cycles —
+    predicting mortar-and-pestle abrasion wear on glassy material rather
+    than granite-percussion wear.
+  theme: tool-marks
+  rung: mechanism
+  claimType: interpretive
+  reviewState: ai_extracted
+  independenceGroup: aswan-pounder-function
+  sourceAnchor:
+    locator: "Fóti Ch 4, pp ~128–130"
+  origin:
+    ref: "geo catalog T-037"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+# ── From Fóti, Ch 5: Scoop Marks Worldwide ──────────────────────────────────
+
+- id: GEO-C538
+  tier: catalog
+  statement: >-
+    A massive never-moved boulder beside the road to Ollantaytambo bears
+    two distinct scoop-mark styles and no associated chiseling debris —
+    consistent with material extraction rather than block shaping.
+  theme: site-morphology
+  rung: observation
+  claimType: observation
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Ch 5, pp ~135–137"
+  origin:
+    ref: "geo catalog T-038"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C539
+  tier: catalog
+  statement: >-
+    Scoop marks on the granite face beside the Sigiriya staircase
+    (Sri Lanka) are misplaced and mis-proportioned for steps and match the
+    Aswan scoop-mark signature.
+  theme: site-morphology
+  rung: observation
+  claimType: observation
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Ch 5, pp ~137–139"
+  origin:
+    ref: "geo catalog T-039"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C540
+  tier: catalog
+  statement: >-
+    Stonehenge Stone-59 shows surface depressions with raised edges
+    consistent with natron-etching scoop marks rather than chisel marks,
+    with visible foam-scraping traces.
+  theme: site-morphology
+  rung: observation
+  claimType: observation
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Ch 5, pp ~139–142"
+  origin:
+    ref: "geo catalog T-040"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C541
+  tier: catalog
+  statement: >-
+    The polished geometric granite interiors of the Barabar Caves (India)
+    were cast rather than carved, with scoop marks on the opposing rock
+    face outside the entrance marking the production site.
+  theme: attribution
+  rung: attribution
+  claimType: existence
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Ch 5, pp ~142–144"
+  origin:
+    ref: "geo catalog T-041"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C542
+  tier: catalog
+  statement: >-
+    Q'enqo's so-called ceremonial stairs near Cusco are geometrically
+    unsuited to walking, and the site is a candidate waterglass-production
+    site for Sacsayhuamán one kilometre away.
+  theme: site-morphology
+  rung: observation
+  claimType: interpretive
+  reviewState: ai_extracted
+  independenceGroup: stairs-to-nowhere
+  sourceAnchor:
+    locator: "Fóti Ch 5, pp ~144–146"
+  origin:
+    ref: "geo catalog T-042"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C543
+  tier: catalog
+  statement: >-
+    "Staircases" whose proportions or placement rule out walking recur at
+    sites worldwide (Q'enqo, the Bomarzo pyramid, several Asian sites) and
+    are better read as tiered surfaces for retaining molten reagent or
+    casting in sequential layers.
+  theme: site-morphology
+  rung: observation
+  claimType: interpretive
+  reviewState: ai_extracted
+  independenceGroup: stairs-to-nowhere
+  sourceAnchor:
+    locator: "Fóti Ch 5, pp ~144–147"
+  origin:
+    ref: "geo catalog T-043"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C544
+  tier: catalog
+  statement: >-
+    The side holes in the large stone bowls at Abu Ghorab (Egypt) function
+    as silicate settling-basin drains — plug, fill with slurry, let
+    insolubles settle below hole level, drain the soluble fraction —
+    rather than as drainage for blood sacrifice.
+  theme: site-morphology
+  rung: observation
+  claimType: interpretive
+  reviewState: ai_extracted
+  independenceGroup: silicate-processing-vessels
+  sourceAnchor:
+    locator: "Fóti Ch 5, p ~147"
+  origin:
+    ref: "geo catalog T-044"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+# ── From Fóti, Ch 6: The Past Was Cast ──────────────────────────────────────
+
+- id: GEO-C545
+  tier: catalog
+  statement: >-
+    Aerial photographs of the Great Pyramid summit show two rectangular
+    peg-holes in limestone and a deep multi-stone compression imprint
+    consistent with an upper layer placed before the lower had set.
+  theme: site-morphology
+  rung: observation
+  claimType: observation
+  reviewState: ai_extracted
+  independenceGroup: soft-layer-compression
+  sourceAnchor:
+    locator: "Fóti Ch 6, pp ~153–157"
+  origin:
+    ref: "geo catalog T-045"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C546
+  tier: catalog
+  statement: >-
+    Deep depressions in hard basalt at Ollantaytambo match the geometry of
+    the Great Pyramid summit compression imprint — the same
+    next-layer-placed-too-soon signature on a different continent and
+    lithology.
+  theme: site-morphology
+  rung: observation
+  claimType: observation
+  reviewState: ai_extracted
+  independenceGroup: soft-layer-compression
+  sourceAnchor:
+    locator: "Fóti Ch 6, p ~157"
+  origin:
+    ref: "geo catalog T-046"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C547
+  tier: catalog
+  statement: >-
+    The chullpa towers at Sillustani (Peru) pair precision-fit external
+    facades with piled-rubble-and-mortar cores visible inside ruined
+    examples — consistent with the "precision stones" being a thin cast or
+    plaster veneer over rubble.
+  theme: site-morphology
+  rung: observation
+  claimType: observation
+  reviewState: ai_extracted
+  independenceGroup: inca-veneer
+  sourceAnchor:
+    locator: "Fóti Ch 6, pp ~160–166"
+  origin:
+    ref: "geo catalog T-047"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C548
+  tier: catalog
+  statement: >-
+    A gateway in the Sacsayhuamán complex shows precision-fit lines
+    continuing from one stone onto the adjacent stone, as if scribed after
+    both were in place — impossible for separately carved-and-fitted
+    stones, trivial for scored surface plaster.
+  theme: site-morphology
+  rung: observation
+  claimType: observation
+  reviewState: ai_extracted
+  independenceGroup: inca-veneer
+  sourceAnchor:
+    locator: "Fóti Ch 6, pp ~157–160"
+  origin:
+    ref: "geo catalog T-048"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C549
+  tier: catalog
+  statement: >-
+    Handprints in sandstone at White Mountain, Utah are confined strictly
+    within an applied surface layer and never extend across the boundary
+    into the underlying native sandstone.
+  theme: site-morphology
+  rung: observation
+  claimType: observation
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Ch 6, pp ~168–170"
+  origin:
+    ref: "geo catalog T-049"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C550
+  tier: catalog
+  statement: >-
+    A regular heptagonal hole in stone at Volda, Norway has no documented
+    origin, and a regular heptagon is far easier to produce by pressing a
+    formed object into soft material before setting than by any known
+    drilling method.
+  theme: site-morphology
+  rung: observation
+  claimType: observation
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Ch 6, p ~166"
+  origin:
+    ref: "geo catalog T-050"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C551
+  tier: catalog
+  statement: >-
+    The reverse face of the Rosetta Stone shows trowel-like surface marks
+    rather than chisel marks, with no applied-plaster layer visible —
+    the marks are in the stone itself.
+  theme: materials-evidence
+  rung: observation
+  claimType: observation
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Ch 6, pp ~171–173"
+  origin:
+    ref: "geo catalog T-051"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C552
+  tier: catalog
+  statement: >-
+    Hatshepsut's 320-ton, 30 m obelisk stands inside a Karnak precinct
+    courtyard built before the obelisk, with no documented mechanism by
+    which the monolith could have been brought into the pre-existing
+    enclosure in one piece.
+  theme: site-morphology
+  rung: observation
+  claimType: historical
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Ch 6, pp ~173–174"
+  origin:
+    ref: "geo catalog T-052"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C553
+  tier: catalog
+  statement: >-
+    A consistent set of soft-stone deformation signatures — compression
+    imprints from upper layers, figures pressed into surfaces, knife-scored
+    patterns that expanded like cut dough, fit lines continuing across
+    stone boundaries — recurs across geographically distant megalithic
+    sites.
+  theme: site-morphology
+  rung: observation
+  claimType: observation
+  reviewState: ai_extracted
+  independenceGroup: cross-site-signature-surveys
+  sourceAnchor:
+    locator: "Fóti Ch 6, pp ~157–172 (multi-site examples)"
+  origin:
+    ref: "geo catalog T-053"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C554
+  tier: catalog
+  statement: >-
+    The ~40,000 stone vases recovered beneath Djoser's pyramid show
+    internal geometries and tolerances widely cited as beyond ancient
+    hand-tool capability, and mold-cast manufacture has never been
+    evaluated against the corpus.
+  theme: site-morphology
+  rung: observation
+  claimType: measurement
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Ch 6, p ~149"
+  origin:
+    ref: "geo catalog T-054"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+# ── From Fóti, Ch 7: Anomalies ──────────────────────────────────────────────
+
+- id: GEO-C555
+  tier: catalog
+  statement: >-
+    Transporting the ~1,000-ton Baalbek megaliths (the Pregnant Woman, the
+    Trilithon stones, and the ~1,600-ton block found in 2019) by
+    documented pre-industrial haulage is infeasible because the required
+    workforce cannot physically fit around the stones.
+  theme: site-morphology
+  rung: mechanism
+  claimType: mechanistic
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Ch 7, pp ~177–181"
+  origin:
+    ref: "geo catalog T-055"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C556
+  tier: catalog
+  statement: >-
+    Under specific lighting, photographs reproducibly show a greenish
+    color discrepancy between the Aswan unfinished obelisk and the
+    surrounding granite — invisible to the eye but consistent across
+    cameras, suggesting the same raw material in a different chemical
+    arrangement.
+  theme: materials-evidence
+  rung: observation
+  claimType: observation
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Ch 7, pp ~181–183"
+  origin:
+    ref: "geo catalog T-056"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C557
+  tier: catalog
+  statement: >-
+    Davidovits reported guano traces inside some Easter Island Moai —
+    impossible in stone carved from solid quarry rock, expected in stone
+    cast from a slurry contaminated during mixing or curing.
+  theme: materials-evidence
+  rung: observation
+  claimType: measurement
+  reviewState: ai_extracted
+  independenceGroup: moai-composition
+  sourceAnchor:
+    locator: "Fóti Ch 7, pp ~184–186; Davidovits 2016 examination"
+  origin:
+    ref: "geo catalog T-057"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C558
+  tier: catalog
+  statement: >-
+    A roadside Moai destroyed in a 2020 vehicle collision crumbled
+    entirely — behavior incompatible with solid tuff or basalt but
+    consistent with a friable cast-stone matrix with a degraded binder.
+  theme: materials-evidence
+  rung: observation
+  claimType: observation
+  reviewState: ai_extracted
+  independenceGroup: moai-composition
+  sourceAnchor:
+    locator: "Fóti Ch 7, p ~186"
+  origin:
+    ref: "geo catalog T-058"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C559
+  tier: catalog
+  statement: >-
+    High-precision spherical stone artifacts across cultures — the five
+    magnetic Pito Kura spheres, the Costa Rican stone spheres, the
+    round-bottomed Olmec heads — lack identified source quarries and match
+    rotational-casting geometry better than carving.
+  theme: site-morphology
+  rung: observation
+  claimType: observation
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Ch 7, pp ~187–188"
+  origin:
+    ref: "geo catalog T-059"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+# ── From Fóti, Ch 8: The Wonderful World of Unlimited Natron ────────────────
+
+- id: GEO-C561
+  tier: catalog
+  statement: >-
+    In-situ alkali production from kelp and seaweed burning could have
+    supplied casting-scale natron demand on Easter Island — which has no
+    natural natron deposits — making the island's documented deforestation
+    a candidate resource signature of the technology.
+  theme: ingredients
+  rung: mechanism
+  claimType: mechanistic
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Ch 8, pp ~193–195"
+  origin:
+    ref: "geo catalog T-061"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C562
+  tier: catalog
+  statement: >-
+    From the late 1600s until Leblanc's process (1791), potash demand for
+    glass, soap, and textiles drove documented continent-scale forest
+    destruction across Europe and the Atlantic world — a real historical
+    precedent for civilizations burning forests for a single chemical
+    reagent.
+  theme: historical-record
+  rung: observation
+  claimType: historical
+  reviewState: ai_extracted
+  independenceGroup: ash-footprint
+  sourceAnchor:
+    locator: "Fóti Ch 8, pp ~195–211"
+  origin:
+    ref: "geo catalog T-062"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C563
+  tier: catalog
+  statement: >-
+    Anthropogenic over-burning of vegetation for industrial-scale
+    natron/potash production caused or accelerated the Sahara's rapid
+    desertification ~5–6 ka ago, immediately preceding the rise of
+    Egyptian civilization.
+  theme: ingredients
+  rung: attribution
+  claimType: causal
+  reviewState: ai_extracted
+  independenceGroup: green-sahara
+  sourceAnchor:
+    locator: "Fóti Ch 8, pp ~214–219"
+  origin:
+    ref: "geo catalog T-063"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C564
+  tier: catalog
+  statement: >-
+    The ~6,000 Saharan desert kites and the Garamantian Empire's cities
+    and underground waterworks document sophisticated ancient Saharan
+    peoples capable of industrial-scale environmental modification —
+    candidate contexts for cast-stone technology.
+  theme: historical-record
+  rung: observation
+  claimType: historical
+  reviewState: ai_extracted
+  independenceGroup: green-sahara
+  sourceAnchor:
+    locator: "Fóti Ch 8, pp ~219–226"
+  origin:
+    ref: "geo catalog T-064"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C565
+  tier: catalog
+  statement: >-
+    The Sayre & Smith dual-oxide criterion (MgO and K₂O both >2% marks
+    plant-ash glass) permits a glass-composition timeline of natron supply
+    across millennia, and the documented gap in Egyptian glass between
+    Badari and the Old Kingdom is consistent with natron being redirected
+    to large-scale stone production.
+  theme: ingredients
+  rung: mechanism
+  claimType: statistical
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Ch 8, pp ~220–223; Sayre & Smith (1961), Science 133(3467):1824–1826"
+  origin:
+    ref: "geo catalog T-065"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+# ── From Fóti, Ch 9: The Marvelous World of Nubs ────────────────────────────
+
+- id: GEO-C566
+  tier: catalog
+  statement: >-
+    Bottom nubs form when artificial-limestone slurry cast in a
+    fabric-lined mold bulges through a bottom drainage hole as excess
+    water and NaOH drain — predicting nubs for limestone-chemistry casts
+    and none for silicate casts.
+  theme: replication
+  rung: mechanism
+  claimType: mechanistic
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Ch 9, pp ~231–245"
+  origin:
+    ref: "geo catalog T-066"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C567
+  tier: catalog
+  statement: >-
+    Nubs appear consistently at the bottom of candidate cast stones across
+    many sites — Cusco's twelve-angled stone, the Acropolis, Menkaure's
+    pyramid, Russian dolmens, Moai pedestals — and where they appear on
+    top or sides, the stone shows evidence of having been rotated.
+  theme: site-morphology
+  rung: observation
+  claimType: observation
+  reviewState: ai_extracted
+  independenceGroup: cross-site-signature-surveys
+  sourceAnchor:
+    locator: "Fóti Ch 9, pp ~231–245"
+  origin:
+    ref: "geo catalog T-067"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C568
+  tier: catalog
+  statement: >-
+    The colossal "unfinished" stele block at Yangshan Quarry (Ming-era
+    China, ~14,000 t across components) is itself cast rather than a
+    half-extracted carved monolith, its window openings and protrusions
+    reflecting the casting process.
+  theme: attribution
+  rung: attribution
+  claimType: existence
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Ch 9, p ~245"
+  origin:
+    ref: "geo catalog T-068"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+# ── From Fóti, Ch 10: Artificial (or fake) granite ──────────────────────────
+
+- id: GEO-C569
+  tier: catalog
+  statement: >-
+    The "polished" surfaces of the Saqqara Serapeum granite sarcophagi are
+    a waterglass coating carbonated over time to amorphous silica — 
+    evidenced by drip marks on the underside of a displaced lid — rather
+    than mechanical polishing.
+  theme: materials-evidence
+  rung: observation
+  claimType: observation
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Ch 10, pp ~248–253"
+  origin:
+    ref: "geo catalog T-069"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C570
+  tier: catalog
+  statement: >-
+    Wadi Kalabsha — Egypt's only open kaolinite field, ~60 miles from the
+    Aswan Unfinished Obelisk — is the most plausible raw-material source
+    if ancient Egyptian casting used metakaolin, and should carry ancient
+    extraction signatures if it did.
+  theme: ingredients
+  rung: mechanism
+  claimType: historical
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Ch 10, p ~256"
+  origin:
+    ref: "geo catalog T-070"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C571
+  tier: catalog
+  statement: >-
+    Two pre-industrially feasible pathways — silica hydrogel from
+    waterglass + NaHCO₃, and sol-gel precipitation from waterglass +
+    ethanol — yield transparent binders that, mixed with granite powder,
+    produce material passing visual and Mohs 6–7 hardness comparison with
+    natural granite.
+  theme: replication
+  rung: mechanism
+  claimType: mechanistic
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Ch 10, pp ~258–267"
+  origin:
+    ref: "geo catalog T-071"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+# ── From Fóti, Ch 11 + Conclusion + Appendix ────────────────────────────────
+
+- id: GEO-C574
+  tier: catalog
+  statement: >-
+    Traditional Sri Lankan wawe reservoir agriculture unintentionally
+    generates natron-bearing salt deposits even today, which would have
+    provided an in-situ alkali source for ancient construction such as
+    Sigiriya.
+  theme: ingredients
+  rung: mechanism
+  claimType: mechanistic
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Ch 11, p ~273"
+  origin:
+    ref: "geo catalog T-074"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C575
+  tier: catalog
+  statement: >-
+    The Nash et al. 2020 Stonehenge provenance chain (PXRF + ICP-MS)
+    matched Stone-58 to West Woods but cannot in principle distinguish
+    transported natural sarsen from sarsen cast using crushed West Woods
+    material, because the methods are blind to hydrogen, carbon, and
+    oxygen.
+  theme: methodology
+  rung: observation
+  claimType: methodological
+  reviewState: ai_extracted
+  independenceGroup: provenance-method-critique
+  sourceAnchor:
+    locator: "Fóti Appendix, p ~370; Nash et al. (2020), Science Advances 6(31):eabc0133"
+  origin:
+    ref: "geo catalog T-075"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C576
+  tier: catalog
+  statement: >-
+    The conventional ~4,500-year dating of the Great Pyramid rests on
+    weaker evidential foundations than commonly cited — no direct dating
+    of the limestone, wood fragments found on the ground rather than in
+    masonry, a single Khufu graffito, and no interior burials, artifacts,
+    or construction records.
+  theme: historical-record
+  rung: attribution
+  claimType: historical
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Fóti Appendix, pp ~362–369"
+  origin:
+    ref: "geo catalog T-076"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+# ── From Davidovits, Ancient Geopolymers in S.A. and Easter Island ──────────
+
+- id: GEO-C579
+  tier: catalog
+  statement: >-
+    The caliche walls of the 13th-century Hohokam Casa Grande structure
+    (Arizona) were made workable by plant-acid disaggregation with an
+    added hardener — a technique conventional accounts of caliche do not
+    recognize — and have endured over 600 years in a harsh climate.
+  theme: attribution
+  rung: mechanism
+  claimType: mechanistic
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Davidovits Ch 9, pp ~104–106"
+  origin:
+    ref: "geo catalog T-079"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C580
+  tier: catalog
+  statement: >-
+    Davidovits' three-stage Andean chemistry — plant acids disaggregating
+    limestone or caliche into a paste, mixing with crushed rock, and guano
+    as an ammonium-rich hardener — produces durable artificial stone under
+    pre-industrially accessible conditions.
+  theme: replication
+  rung: mechanism
+  claimType: mechanistic
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Davidovits Ch 9, pp ~104–112; Davidovits, Bonnet & Mariotte (1982)"
+  origin:
+    ref: "geo catalog T-080"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C581
+  tier: catalog
+  statement: >-
+    Llama caravans carried coastal guano from Ilo up to Tiwanaku
+    (~3,800 m, hundreds of km) around AD 600, peaking during the
+    Tiwanaku/Pumapunku construction period — although the raised-field
+    system already provided fertilizer on site.
+  theme: historical-record
+  rung: observation
+  claimType: historical
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Davidovits Ch 9, pp ~107–112; Minkes (2005), Wrap the Dead, Ch 5.5.2/6.5.2"
+  origin:
+    ref: "geo catalog T-081"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C582
+  tier: catalog
+  statement: >-
+    The Easter Island Bird Man cult — centered on retrieving the first
+    tern egg from the guano islets and emerging around AD 1550 as Moai
+    construction ended — is a cultural memory of guano's earlier use as a
+    stone hardener.
+  theme: historical-record
+  rung: attribution
+  claimType: interpretive
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Davidovits Ch 9, pp ~106–107"
+  origin:
+    ref: "geo catalog T-082"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C583
+  tier: catalog
+  statement: >-
+    The Vinapu wall on Easter Island (~AD 850–950, benmoreite) and the
+    Akapana base wall at Tiwanaku (AD 600, red sandstone) are constructed
+    in the same distinctive fitting style despite different materials and
+    separation by the Pacific.
+  theme: attribution
+  rung: observation
+  claimType: observation
+  reviewState: ai_extracted
+  independenceGroup: tiwanaku-easter-island
+  sourceAnchor:
+    locator: "Davidovits Ch 10, p ~115; Heyerdahl (1947); Langton (1997), Rapanui Journal"
+  origin:
+    ref: "geo catalog T-083"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C584
+  tier: catalog
+  statement: >-
+    At least one Eastern (South American) migration wave reached Easter
+    Island before European contact — supported by architectural parallels,
+    reported pre-European Native-American genetic admixture in the
+    Rapanui, and oral-tradition reports.
+  theme: attribution
+  rung: attribution
+  claimType: historical
+  reviewState: ai_extracted
+  independenceGroup: tiwanaku-easter-island
+  sourceAnchor:
+    locator: "Davidovits Ch 10–13, pp 113–146; Moreno-Mayar et al. (2014); Fehren-Schmitz et al. (2017)"
+  origin:
+    ref: "geo catalog T-084"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C585
+  tier: catalog
+  statement: >-
+    Cieza de León's 1553 chronicle records his firsthand visit to
+    Tiwanaku/Pumapunku and indigenous oral tradition that the structures
+    were built "in a single night" by bearded men who arrived before the
+    Incas, alongside his own bewilderment about the tools used.
+  theme: historical-record
+  rung: observation
+  claimType: historical
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Davidovits Ch 4, pp 31–42; Cieza de León (1553), Crónica del Perú I, Ch 105"
+  origin:
+    ref: "geo catalog T-085"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C586
+  tier: catalog
+  statement: >-
+    Documented stone-softening and artificial-stone knowledge has been
+    lost from mainstream memory repeatedly across eras — the 19th-century
+    artificial-stone industry (Coade stone, Pulhamite, Belgian patents),
+    indigenous softening-plant traditions, conquistador-era chronicles,
+    and traveler accounts each record working knowledge later forgotten.
+  theme: historical-record
+  rung: observation
+  claimType: historical
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Cross-source: Fóti Ch 11; Davidovits Ch 1/4/9; Bingham; Father Lira (1983); Feuchtwanger (1873), Soluble Glass"
+  origin:
+    ref: "geo catalog T-086"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+# ── Cross-cutting synthesis and method topics ───────────────────────────────
+
+- id: GEO-C588
+  tier: catalog
+  statement: >-
+    If megaliths were cast, the world's sites should bear a recognizable
+    co-occurring suite of production signatures — scoop marks near
+    candidate stones, bottom nubs, flow features, soft-stone deformation,
+    joints continuing across stone boundaries, surface bubbles, formwork
+    imprints — and the presence or absence of that cross-continental suite
+    is itself testable.
+  theme: site-morphology
+  rung: attribution
+  claimType: interpretive
+  reviewState: ai_extracted
+  independenceGroup: cross-site-signature-surveys
+  sourceAnchor:
+    locator: "geo catalog cross-cutting entry (2026-05-06); Fóti correspondence and X feed"
+  origin:
+    ref: "geo catalog T-088"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C589
+  tier: catalog
+  statement: >-
+    Radiometric measurements — absolute K/Th/U activities and
+    radon-emanation coefficients — can in principle distinguish
+    reconstituted or cast stone from its natural parent rock, because
+    grinding, leaching, and re-binding alter emanation surface area and
+    radionuclide distributions.
+  theme: methodology
+  rung: mechanism
+  claimType: methodological
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "geo catalog T-089 (cross-source, neutrally framed); radon-emanation and gamma-spectrometry methods in concrete-science literature"
+  origin:
+    ref: "geo catalog T-089"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C590
+  tier: catalog
+  statement: >-
+    Bulk chlorine content is a candidate cast-stone discriminator for
+    igneous lithologies: natural andesite is essentially chlorine-free,
+    while stone cast with brine or salt-bearing inputs would show bulk —
+    not surface-confined — chlorine enrichment.
+  theme: methodology
+  rung: mechanism
+  claimType: methodological
+  reviewState: ai_extracted
+  independenceGroup: cusco-surface-chemistry
+  sourceAnchor:
+    locator: "geo catalog T-090 (cross-source, neutrally framed)"
+  origin:
+    ref: "geo catalog T-090"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C591
+  tier: catalog
+  statement: >-
+    365 nm UV fluorescence can serve as a cheap, non-destructive in-situ
+    screen for alkali-activated cementitious material, whose carbonation
+    products fluoresce differently from natural igneous rock surfaces and
+    conventional mortar.
+  theme: methodology
+  rung: mechanism
+  claimType: methodological
+  reviewState: ai_extracted
+  independenceGroup: cusco-surface-chemistry
+  sourceAnchor:
+    locator: "geo catalog T-091 (cross-source, neutrally framed); UV-fluorescence behavior of alkali-activated materials in cement-science literature"
+  origin:
+    ref: "geo catalog T-091"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C592
+  tier: catalog
+  statement: >-
+    Persistent large-scale carbonate efflorescence on a stone wall
+    indicates continuing alkali migration from within the substrate —
+    normal for cementitious composites undergoing slow carbonation,
+    atypical of natural igneous rock, which is a closed silicate system.
+  theme: methodology
+  rung: observation
+  claimType: methodological
+  reviewState: ai_extracted
+  independenceGroup: cusco-surface-chemistry
+  sourceAnchor:
+    locator: "geo catalog T-092 (cross-source, neutrally framed); efflorescence behavior in cement-science literature (Longhi et al. 2022; Zhang et al. 2014, 2018; Shi et al. 2006)"
+  origin:
+    ref: "geo catalog T-092"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C593
+  tier: catalog
+  statement: >-
+    Strong geochemical phase partitioning between a microporous matrix and
+    in-situ-grown (authigenic) crystal precipitates is a petrographic
+    hallmark of a once-wet engineered composite and distinguishes it from
+    the uniform mineralogy of naturally cooled igneous rock.
+  theme: methodology
+  rung: mechanism
+  claimType: methodological
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "geo catalog T-093 (cross-source, neutrally framed); standard petrographic methods for authigenic vs detrital mineralization"
+  origin:
+    ref: "geo catalog T-093"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C594
+  tier: catalog
+  statement: >-
+    Almost no megalithic site has a complete published restoration
+    history, so any surface-evidence claim — coatings, anomalous mortar,
+    veneer appearances, unusual tooling — may reflect undocumented modern
+    intervention rather than ancient practice.
+  theme: methodology
+  rung: observation
+  claimType: methodological
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "geo catalog cross-source entry (2026-05-06 / 2026-07-18)"
+  origin:
+    ref: "geo catalog T-094"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: GEO-C595
+  tier: catalog
+  statement: >-
+    No structured catalog exists of already-accessible cast-stone-relevant
+    material — detached fragments, museum specimens, old cores, surviving
+    thin sections, restoration debris — forcing every analytical proposal
+    to re-solve the sample-access problem from scratch.
+  theme: methodology
+  rung: observation
+  claimType: methodological
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "geo catalog cross-source entry (2026-05-06 / 2026-07-18)"
+  origin:
+    ref: "geo catalog T-095"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-import-2026-08-22"
+    date: "2026-08-22"

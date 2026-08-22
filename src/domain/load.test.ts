@@ -6,6 +6,8 @@ import {
   parseInlines,
 } from "./article";
 import {
+  catalogClaims,
+  featuredClaims,
   getCaseBySlug,
   latestAssessment,
   liveClaims,
@@ -28,6 +30,37 @@ describe("real content", () => {
     for (const id of extractClaimRefs(geo.overviewMarkdown)) {
       expect(liveClaims(geo).some((c) => c.id === id)).toBe(true);
     }
+  });
+
+  it("carries the bulk-imported geo catalog with honest provenance", () => {
+    const geo = getCaseBySlug("megalithic-casting");
+    const catalog = catalogClaims(geo);
+    expect(catalog.length).toBe(80);
+    expect(featuredClaims(geo).length).toBe(14);
+    for (const c of catalog) {
+      // One reversible run: a single runId stamped on every record.
+      expect(c.origin.runId).toBe("geo-catalog-import-2026-08-22");
+      expect(c.reviewState).toBe("ai_extracted");
+      expect(c.sourceAnchor.locator.length).toBeGreaterThan(3);
+      // T-number origin, always.
+      expect(c.origin.ref).toMatch(/T-\d{3}/);
+    }
+    // Dedupe held: no catalog claim re-imports a T-number already carried
+    // by a featured claim, the killed topic, or the tombstoned cluster.
+    const excluded = [
+      "T-001", "T-003", "T-004", "T-005", "T-012", "T-013", "T-014",
+      "T-021", "T-034", "T-060", "T-072", "T-073", "T-077", "T-078",
+      "T-087",
+    ];
+    for (const c of catalog) {
+      const t = c.origin.ref.match(/T-\d{3}/)?.[0];
+      expect(excluded).not.toContain(t);
+    }
+    // Confidentiality: neutrally-framed method topics never cite the
+    // confidential source.
+    const text = JSON.stringify(catalog);
+    expect(text).not.toMatch(/hawke/i);
+    expect(text).not.toMatch(/harmonic research/i);
   });
 
   it("article parses into blocks with claim refs", () => {
@@ -59,6 +92,7 @@ describe("real content", () => {
 describe("schema rules", () => {
   const baseClaim = {
     id: "GEO-C999",
+    tier: "featured",
     statement: "A test statement long enough to pass.",
     plainLanguage: "A plain language gloss long enough.",
     theme: "tool-marks",
@@ -79,6 +113,22 @@ describe("schema rules", () => {
     strongestObjection: "none",
   };
 
+  const baseCatalogClaim = {
+    id: "GEO-C998",
+    tier: "catalog",
+    statement: "A lightweight catalog statement long enough to pass.",
+    theme: "tool-marks",
+    rung: "observation",
+    reviewState: "ai_extracted",
+    origin: {
+      ref: "geo catalog T-999",
+      extractedBy: "test",
+      runId: "test-run",
+      date: "2026-01-01",
+    },
+    sourceAnchor: { locator: "Fóti Ch 1, pp ~14–17" },
+  };
+
   it("rejected claims require a rejectionReason (tombstone rule)", () => {
     expect(() =>
       ClaimSchema.parse({ ...baseClaim, reviewState: "rejected" }),
@@ -90,6 +140,54 @@ describe("schema rules", () => {
         rejectionReason: "because",
       }),
     ).not.toThrow();
+    // The tombstone rule applies to catalog-tier claims too.
+    expect(() =>
+      ClaimSchema.parse({ ...baseCatalogClaim, reviewState: "rejected" }),
+    ).toThrow();
+  });
+
+  it("catalog claims validate without featured-level richness", () => {
+    expect(() => ClaimSchema.parse(baseCatalogClaim)).not.toThrow();
+    const parsed = ClaimSchema.parse(baseCatalogClaim);
+    expect(parsed.tier).toBe("catalog");
+  });
+
+  it("catalog claims require a source anchor", () => {
+    const { sourceAnchor: _drop, ...unanchored } = baseCatalogClaim;
+    void _drop;
+    expect(() => ClaimSchema.parse(unanchored)).toThrow();
+    expect(() =>
+      ClaimSchema.parse({ ...baseCatalogClaim, sourceAnchor: { locator: "" } }),
+    ).toThrow();
+  });
+
+  it("promotion is a one-field edit that then demands the full workup", () => {
+    // Flipping tier alone fails loudly: the validator lists the editorial
+    // fields still missing. That failure is the promotion checklist.
+    expect(() =>
+      ClaimSchema.parse({ ...baseCatalogClaim, tier: "featured" }),
+    ).toThrow();
+    // Supplying the featured fields completes the promotion.
+    expect(() =>
+      ClaimSchema.parse({
+        ...baseCatalogClaim,
+        tier: "featured",
+        plainLanguage: "A plain language gloss long enough.",
+        claimType: "observation",
+        importance: "supporting",
+        credibility: "unresolved",
+        credibilitySummary: "none yet",
+        diagnosticity: "low",
+        diagnosticitySummary: "none yet",
+        strongestObjection: "none recorded yet",
+      }),
+    ).not.toThrow();
+  });
+
+  it("featured claims still require the full editorial fields", () => {
+    const { plainLanguage: _pl, ...missingGloss } = baseClaim;
+    void _pl;
+    expect(() => ClaimSchema.parse(missingGloss)).toThrow();
   });
 
   it("HARD RULE: AI-generated images can never be plates", () => {

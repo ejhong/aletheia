@@ -22,6 +22,50 @@ Goal: a repeatable AI pipeline that turns source books/papers into candidate cla
 
 Also feeds case #2 (vasocomputation): mine the "Knots of Existence" Substack article (`research/vasocomputation/`) and Michael Johnson's published QRI works.
 
+## Confirmed case slate (eight cases; recorded 2026-08-22)
+
+Research documents for cases 3–7 live in `research/` (filenames as present):
+
+1. **Geopolymer / cast megalithic stone** — live (case #1).
+2. **Vasocomputation + foam rolling / muscle knots** — in flight on branch
+   `case/vasocomputation`. Research: `Knots, Vasocomputation, and the
+   Biology of Stored Tension_ A Critical Research Report.pdf` and
+   `research/vasocomputation/`.
+3. **Orch OR (Penrose–Hameroff)** — orchestrated objective reduction as a
+   theory of consciousness. Research: `Orch OR Ascending - by Eugene -
+   Strange Loops In My Head.pdf` (essay) and `Orch OR Consciousness
+   Theory_ Claims, Evidence, Replication, Anesthesia, and Experimental
+   Roadmap.pdf`.
+4. **Beatriz Villarroel's VASCO transients** — vanishing and appearing
+   sources in century-spanning sky surveys. Research: `Adapting the
+   Villarroel transient research to Aletheia.pdf`.
+5. **Lucadou's Model of Pragmatic Information** — entanglement-inspired
+   account of psi effects and their systematic elusiveness. Research:
+   `Entangled Minds and Pragmatic Information_ A Comprehensive Synthesis
+   of Psi Theory.pdf`.
+6. **Zero Worlds** (working title; confirmed standalone case) —
+   observer-first theories of reality: Donald Hoffman (interface theory /
+   conscious agents), Markus Müller (algorithmic idealism / "law without
+   law"), Stephen Wolfram (observer theory / ruliad). Based on the essay
+   `Zero Worlds_ The Observer, the Coincidence, and the Collapse.pdf`
+   plus a forthcoming research report.
+7. **CCC — Penrose's Conformal Cyclic Cosmology** — concentric low-variance
+   CMB circles, Hawking points, and the disputed null-model statistics of
+   the rebuttals. Research report forthcoming.
+8. **Younger Dryas Impact Hypothesis (YDIH)** — a cosmic impact/airburst
+   ~12,800 years ago as the trigger for the Younger Dryas cooling,
+   megafaunal extinctions, and cultural disruption. Research-rich in both
+   directions: the Comet Research Group's evidence lines (platinum
+   anomalies, nanodiamonds, black mat stratigraphy) versus comprehensive
+   critiques (e.g. Holliday et al. 2023, the "requiem" paper). An
+   Athanatos Foundation–funded research area (UofSC/UCSB). No research
+   doc in `research/` yet.
+
+There is no Hancock category or meta-case: its constituent questions are
+split into standalone cases (geopolymer and YDIH already are), and other
+formerly-Hancock-adjacent questions (e.g. cultural motif transmission)
+may become future standalone cases as warranted.
+
 ## Phase 2 — Canonical content system
 
 Goal: make structured records durable and versioned.

@@ -7,7 +7,9 @@ import { ProvenanceBadge } from "@/src/components/ProvenanceBadge";
 import { liveClaims, loadAllCases } from "@/src/domain/load";
 import {
   directionLabels,
+  isFeatured,
   rungLabels,
+  type CatalogClaim,
   type Claim,
   type EvidenceDirection,
   type LoadedCase,
@@ -31,6 +33,106 @@ export function generateMetadata({
   return params.then(({ id }) => ({ title: `Claim ${id}` }));
 }
 
+/**
+ * Catalog-tier claims render honestly sparse: the statement, its source
+ * anchor, and provenance — plus an explicit account of what is missing and
+ * how promotion works. No pretending a backlog record is an assessed claim.
+ */
+function CatalogClaimView({
+  claim,
+  loaded,
+}: {
+  claim: CatalogClaim;
+  loaded: LoadedCase;
+}) {
+  const missing = [
+    "plain-language gloss",
+    "credibility assessment",
+    "diagnosticity assessment",
+    "evidence records",
+    "strongest objection",
+    "what would change our mind",
+  ];
+  return (
+    <div>
+      <section className="bg-dossier text-dossier-text">
+        <div className="mx-auto max-w-5xl px-5 py-10">
+          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-dossier-faint">
+            <Link
+              href={`/cases/${loaded.record.slug}/`}
+              className="text-copper hover:underline"
+            >
+              {loaded.record.title}
+            </Link>{" "}
+            · claim {claim.id} · {rungLabels[claim.rung]} rung ·{" "}
+            {loaded.record.themes[claim.theme]}
+          </p>
+          <h1 className="font-serif text-2xl sm:text-[2rem] leading-snug tracking-tight mt-4 max-w-3xl">
+            {claim.statement}
+          </h1>
+          {claim.plainLanguage ? (
+            <p className="font-serif italic text-dossier-faint mt-3 max-w-3xl text-lg">
+              {claim.plainLanguage}
+            </p>
+          ) : null}
+          <div className="mt-5 flex flex-wrap items-center gap-2">
+            <span className="inline-flex items-center rounded-xs border border-ochre/50 px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-[0.12em] text-ochre">
+              Catalog tier — unreviewed backlog
+            </span>
+            <ProvenanceBadge
+              state={claim.reviewState}
+              detail={`${claim.origin.extractedBy} · run ${claim.origin.runId} · ${claim.origin.date}`}
+            />
+            <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-dossier-faint">
+              origin: {claim.origin.ref}
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <div className="mx-auto max-w-5xl px-5 py-10 space-y-8">
+        <section className="border border-line bg-paper p-5">
+          <h2 className="font-mono text-[11px] uppercase tracking-[0.18em] text-faint">
+            source anchor
+          </h2>
+          <p className="mt-2.5 text-[14.5px] leading-relaxed text-ink-soft">
+            {claim.sourceAnchor.locator}
+          </p>
+          {claim.sourceAnchor.quote ? (
+            <blockquote className="mt-3 border-l-2 border-copper pl-4 font-serif italic text-[15px] text-ink-soft">
+              “{claim.sourceAnchor.quote}”
+            </blockquote>
+          ) : null}
+          {claim.independenceGroup ? (
+            <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.12em] text-faint">
+              independence group: {claim.independenceGroup} — related
+              extractions in this group are not independent evidence
+            </p>
+          ) : null}
+        </section>
+
+        <section className="border border-line bg-paper-deep/50 p-5">
+          <h2 className="font-mono text-[11px] uppercase tracking-[0.18em] text-copper">
+            an honest empty state
+          </h2>
+          <p className="mt-2.5 text-[14.5px] leading-relaxed text-ink-soft max-w-3xl">
+            This claim sits in the unreviewed catalog: it was extracted from
+            the source literature and imported in bulk, with no individual
+            human review and no editorial workup yet. Nothing here has been
+            assessed — that absence is information, not an oversight.
+          </p>
+          <p className="mt-3 text-[14px] leading-relaxed text-ink-soft max-w-3xl">
+            Still missing: {missing.join(", ")}. Promotion to featured
+            treatment is a one-field edit (<code>tier: featured</code>) —
+            after which the build fails loudly until each of those fields is
+            supplied.
+          </p>
+        </section>
+      </div>
+    </div>
+  );
+}
+
 export default async function ClaimPage({
   params,
 }: {
@@ -40,6 +142,9 @@ export default async function ClaimPage({
   const entry = allLiveClaims().find(({ claim }) => claim.id === id);
   if (!entry) throw new Error(`unknown claim ${id}`);
   const { claim, loaded } = entry;
+  if (!isFeatured(claim)) {
+    return <CatalogClaimView claim={claim} loaded={loaded} />;
+  }
   const claims = liveClaims(loaded);
   const claimById = new Map(claims.map((c) => [c.id, c]));
   const sourceById = new Map(loaded.sources.map((s) => [s.id, s]));
@@ -47,7 +152,9 @@ export default async function ClaimPage({
   const evidence = loaded.evidence.filter((e) => e.claimIds.includes(id));
   const byDirection = (d: EvidenceDirection) =>
     evidence.filter((e) => e.direction === d);
-  const children = claims.filter((c) => c.parentClaimIds.includes(id));
+  const children = claims.filter(
+    (c) => isFeatured(c) && c.parentClaimIds.includes(id),
+  );
   const assessmentHistory = loaded.assessmentRuns
     .map((run) => ({
       run,

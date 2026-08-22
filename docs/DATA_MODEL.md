@@ -34,6 +34,29 @@ Identity (id, slug, title, subtitle, domain), status, and the **dossier header**
 
 One atomic proposition with a reasonably clear truth condition.
 
+Claims come in two **tiers**:
+
+- **`featured`** — full editorial treatment: plain-language gloss, both
+  assessment axes, objections, relationships, "what would change our mind."
+  The shape every claim had before tiers existed.
+- **`catalog`** — a lightweight, honestly-unreviewed backlog record: one
+  atomic statement, a theme, a ladder rung, a required **source anchor**
+  (`locator`, optional verbatim `quote`, optional `sourceId`), provenance
+  (`reviewState`, `origin` with runId), and an optional `independenceGroup`
+  tying near-duplicate extractions together so they are never counted as
+  independent evidence. Validation deliberately does not demand
+  featured-level richness here.
+
+**Promotion is a one-field edit**: flip `tier: catalog` → `featured` and the
+build fails loudly, listing exactly which editorial fields are still missing.
+That failure is the promotion checklist.
+
+Catalog-scale imports live in an optional per-case `claims-catalog.yaml`
+(same schema as `claims.yaml`), so a bulk import stays one reversible file
+and the hand-curated canon stays readable. The loader concatenates both.
+
+Claim fields:
+
 - `id` — stable, human-readable (`GEO-C001`).
 - `statement` / `plainLanguage` — the proposition and its accessible restatement.
 - `theme` — grouping key for the explorer (e.g. `tool-marks`, `ingredients`).

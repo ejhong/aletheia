@@ -1,8 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { CatalogExplorer } from "@/src/components/CatalogExplorer";
 import { ClaimCard } from "@/src/components/ClaimCard";
 import { ProvenanceBadge } from "@/src/components/ProvenanceBadge";
-import { getCaseBySlug, liveClaims, loadAllCases } from "@/src/domain/load";
+import {
+  catalogClaims,
+  featuredClaims,
+  getCaseBySlug,
+  loadAllCases,
+} from "@/src/domain/load";
 
 export function generateStaticParams() {
   return loadAllCases().map((c) => ({ slug: c.record.slug }));
@@ -25,13 +31,14 @@ export default async function ClaimsExplorerPage({
 }) {
   const { slug } = await params;
   const loaded = getCaseBySlug(slug);
-  const claims = liveClaims(loaded);
+  const featured = featuredClaims(loaded);
+  const catalog = catalogClaims(loaded);
   const tombstones = loaded.claims.filter((c) => c.reviewState === "rejected");
 
   const themes = Object.entries(loaded.record.themes).filter(([key]) =>
-    claims.some((c) => c.theme === key),
+    featured.some((c) => c.theme === key),
   );
-  const headliners = claims.filter((c) => c.importance === "headline");
+  const headliners = featured.filter((c) => c.importance === "headline");
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-12">
@@ -43,8 +50,11 @@ export default async function ClaimsExplorerPage({
       </p>
       <h1 className="font-serif text-4xl tracking-tight mt-3">Claims</h1>
       <p className="mt-3 text-ink-soft max-w-2xl">
-        {claims.length} live claims, grouped by theme, headline claims first.
-        Every claim shows its provenance — most of this case is AI-extracted
+        {featured.length} featured claims with full treatment
+        {catalog.length > 0
+          ? ` and a ${catalog.length}-claim unreviewed catalog below`
+          : ""}
+        . Every claim shows its provenance — most of this case is AI-extracted
         and awaiting human review, and the interface says so.
       </p>
 
@@ -61,10 +71,10 @@ export default async function ClaimsExplorerPage({
 
       <section className="mt-10 space-y-3">
         <h2 className="font-mono text-[11px] uppercase tracking-[0.18em] text-faint">
-          by theme
+          featured, by theme
         </h2>
         {themes.map(([key, label]) => {
-          const themeClaims = claims.filter((c) => c.theme === key);
+          const themeClaims = featured.filter((c) => c.theme === key);
           return (
             <details
               key={key}
@@ -89,6 +99,30 @@ export default async function ClaimsExplorerPage({
           );
         })}
       </section>
+
+      {catalog.length > 0 ? (
+        <section className="mt-14">
+          <div className="border-t border-line pt-8">
+            <h2 className="font-serif text-2xl tracking-tight">
+              The unreviewed catalog
+            </h2>
+            <p className="mt-2 text-[14px] text-ink-soft max-w-2xl">
+              {catalog.length} lightweight claims extracted from the source
+              literature and imported without individual human review. Each is
+              one atomic statement anchored to its source — no assessments, no
+              evidence records yet. Promoting a catalog claim to full featured
+              treatment is a one-field edit followed by the full editorial
+              workup the validator then demands.
+            </p>
+            <div className="mt-5">
+              <CatalogExplorer
+                claims={catalog}
+                themes={loaded.record.themes}
+              />
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       {tombstones.length > 0 ? (
         <section className="mt-10">

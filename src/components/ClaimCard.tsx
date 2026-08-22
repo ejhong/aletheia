@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { AssessmentBadge } from "./AssessmentBadge";
 import { ProvenanceBadge } from "./ProvenanceBadge";
-import { rungLabels, type Claim } from "@/src/domain/schema";
+import { rungLabels, type FeaturedClaim } from "@/src/domain/schema";
 
-export function ClaimCard({ claim }: { claim: Claim }) {
+export function ClaimCard({ claim }: { claim: FeaturedClaim }) {
   return (
     <Link
       href={`/claims/${claim.id}/`}

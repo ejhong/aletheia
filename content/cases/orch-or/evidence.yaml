@@ -1,0 +1,1111 @@
+# Evidence ledger. `sourceStatement` is confined to what the source itself
+# states or shows — quoted or closely paraphrased from text this import
+# actually read. `editorInference` is where any reading, weighing, or
+# extrapolation goes. Where a figure comes from a paper body this import did
+# not read directly, that is said on the record rather than smoothed over.
+#
+# Supporting and undermining records are interleaved by topic rather than
+# segregated, so the ledger reads as one argument rather than two briefs.
+
+# ── Microtubule photophysics ───────────────────────────────────────────────
+
+- id: ORCH-E001
+  title: "Electronic excitation diffuses ~6.6 nm in microtubules, beyond Förster prediction"
+  claimIds: [ORCH-C020, ORCH-C013]
+  sourceId: SRC-KALRA-2023
+  direction: supports
+  strength: moderate
+  exactLocator: "Abstract; Kalra et al. 2023, ACS Central Science 9(3): 352–361"
+  sourceStatement: >-
+    The abstract states: "By studying how the quencher concentration alters
+    tryptophan autofluorescence lifetimes, we demonstrate that electronic
+    energy can diffuse over 6.6 nm in microtubules"; that "this diffusion
+    length is not sufficiently explained by accepted Förster resonance energy
+    transfer models, even after accounting for the contribution of
+    tryptophan-tyrosine interactions"; and concludes that "microtubules are,
+    unexpectedly, effective light harvesters." Diffusion was observed to
+    depend on polymerization state but not on protofilament number.
+  editorInference: >-
+    This is the strongest single piece of experimental support for the
+    biological half of Orch OR, and its limits are as important as its
+    content. The measured length scale is roughly one tubulin dimer, and the
+    quantity measured is an excitation diffusion length, not a coherence
+    time — the paper's modeling explicitly includes an incoherent
+    energy-migration comparison. Structure-dependence (polymerization matters,
+    protofilament architecture does not) argues against artifact. Treated
+    here as strong evidence that microtubules are electronically nontrivial
+    (ORCH-C013) and as no evidence at all for the millisecond coherence
+    ORCH-C010 requires.
+  limitations:
+    - "Diffusion length is inferred from concentration-dependent quenching, not directly imaged."
+    - "Not replicated by an independent laboratory as of this import."
+    - "Purified in vitro microtubules, not neurons: no MAPs, no cytosolic crowding, no membrane environment."
+    - "Independence caveat: Hameroff, Penrose, Craddock, and Tuszyński are all co-authors, so this is a collaboration including the theory's authors rather than an outside test of it."
+  reviewState: ai_extracted
+  origin:
+    ref: "Kalra et al. 2023 abstract, read via PubMed (PMID 36968538); bibliographic record verified via Crossref"
+    extractedBy: "Fable (AI agent)"
+    runId: "orch-or-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: ORCH-E002
+  title: "Etomidate and isoflurane reduce microtubule exciton diffusion"
+  claimIds: [ORCH-C020, ORCH-C011, ORCH-C002]
+  sourceId: SRC-KALRA-2023
+  direction: supports
+  strength: moderate
+  exactLocator: "Abstract, final sentences; specific reduced values from the Results as reported in the deep-research report"
+  sourceStatement: >-
+    The abstract states: "We also demonstrate that the presence of the
+    anesthetics etomidate and isoflurane reduce exciton diffusion." The
+    concluding sentence is that these results "may have implications in
+    various physiological processes, including in anesthetic action." The
+    deep-research report gives the reduced diffusion lengths as approximately
+    5.6 nm (etomidate) and 5.8 nm (isoflurane) at 50 μM against the 6.6 nm
+    baseline; those specific values are from the paper body, which this
+    import did not read directly, and are recorded here as reported rather
+    than as verified.
+  editorInference: >-
+    A direct experimental link between clinical anesthetics and a measured
+    microtubule physical property — the observation that makes the anesthesia
+    arm of Orch OR worth testing rather than merely worth asserting. The
+    effect is modest, roughly a 13% reduction if the reported values are
+    right, and the concentration is at or above the clinical range. Crucially
+    this establishes that anesthetics perturb microtubule photophysics
+    (ORCH-C011) without establishing that the perturbation has anything to do
+    with unconsciousness; the specificity control in the same paper
+    (ORCH-E003) is what stops this from carrying more weight.
+  limitations:
+    - "Two agents only; no potency series, no nonimmobilizer controls, no hydrophobic non-anesthetic controls."
+    - "Free aqueous concentration not established, so effective exposure is uncertain."
+    - "Specific reduced values not verified against the paper body by this import."
+    - "In vitro purified microtubules; no demonstrated relationship to any behavioral endpoint."
+  reviewState: ai_extracted
+  origin:
+    ref: "Kalra et al. 2023 abstract (verified) plus Results figures as relayed by the deep-research report (unverified)"
+    extractedBy: "Fable (AI agent)"
+    runId: "orch-or-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: ORCH-E003
+  title: "Picrotoxin, a convulsant, produced a comparable effect on the same assay"
+  claimIds: [ORCH-C011, ORCH-C002]
+  sourceId: SRC-KALRA-2023
+  direction: undermines
+  strength: moderate
+  exactLocator: "Kalra et al. 2023, Results — reported via the deep-research report's specificity discussion"
+  sourceStatement: >-
+    The deep-research report states that the same study found picrotoxin — a
+    GABA_A antagonist and convulsant, pharmacologically the opposite of an
+    anesthetic — reducing tryptophan quenching comparably to the anesthetics
+    tested. This detail is from the paper body rather than the abstract and
+    was not directly verified by this import; it is recorded because it is
+    the single most important qualification on ORCH-E002 and omitting it
+    would misrepresent the experiment.
+  editorInference: >-
+    If a convulsant and two anesthetics all suppress the assay, then what is
+    being measured is the perturbability of microtubule photophysics by
+    small hydrophobic molecules, not something specific to anesthesia. This
+    is the sharpest available objection to the anesthesia arm and it comes
+    from inside the theory's own flagship experiment rather than from
+    critics — which is to the authors' credit for reporting it. It does not
+    show the anesthetic effect is spurious; it shows the experiment as
+    performed cannot distinguish an anesthesia-specific mechanism from
+    general pharmacological perturbation. Only a potency series with proper
+    controls can.
+  limitations:
+    - "Detail not directly verified against the paper by this import; carried as reported by the deep-research report."
+    - "A single comparison compound, not a systematic specificity panel — the absence of specificity is not itself established, only unaddressed."
+  reviewState: ai_extracted
+  origin:
+    ref: "Orch OR deep-research report, specificity discussion of Kalra et al. 2023"
+    extractedBy: "Fable (AI agent)"
+    runId: "orch-or-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: ORCH-E004
+  title: "Superradiant collective tryptophan states predicted and quantum-yield enhancement measured"
+  claimIds: [ORCH-C021, ORCH-C013]
+  sourceId: SRC-BABCOCK-2024
+  direction: supports
+  strength: moderate
+  exactLocator: "Abstract; Babcock et al. 2024, J. Phys. Chem. B 128(17): 4035–4046"
+  sourceStatement: >-
+    The abstract states that theoretical analysis "predicts the formation of
+    strongly superradiant states due to collective interactions among
+    organized arrangements of up to >10^5 Trp UV-excited transition dipoles
+    in microtubule architectures, which leads to an enhancement of the
+    fluorescence quantum yield (QY) that is confirmed by our experiments."
+    It further reports that these states are "remarkably resilient to
+    disorder" and persist "at room temperature," with the brightest states
+    having radiative lifetimes of "hundreds of femtoseconds" and the darkest
+    "tens of seconds."
+  editorInference: >-
+    Partly independent corroboration that microtubules are optically
+    collective, from a group outside the Hameroff–Penrose line — which
+    matters for ORCH-C013. The "tens of seconds" figure is the one that
+    travels in secondary discussion and it is routinely misread: it is the
+    radiative lifetime of a modeled dark collective eigenstate, a measure of
+    how weakly a state couples to the light field, not a decoherence time. A
+    state can be radiatively dark for seconds and dephase in femtoseconds.
+    On the quantity Orch OR actually needs, this paper is silent.
+  limitations:
+    - "Predominantly theoretical; the experimental component is a bulk fluorescence quantum-yield measurement, which is an indirect witness of collective states."
+    - "Quantum yield can be raised by several mechanisms; the collective-state interpretation is model-dependent."
+    - "Superradiance is cooperative light–matter coupling, a different physical process from the state reduction Orch OR requires."
+    - "In vitro; no anesthetic manipulation and no neural preparation."
+  reviewState: ai_extracted
+  origin:
+    ref: "Babcock et al. 2024 abstract, read via PubMed (PMID 38641327); bibliographic record verified via Crossref"
+    extractedBy: "Fable (AI agent)"
+    runId: "orch-or-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: ORCH-E005
+  title: "Scale-free 'triplet of triplet' resonances reported across tubulin, microtubule, and neuron"
+  claimIds: [ORCH-C022, ORCH-C013]
+  sourceId: SRC-SAXENA-2020
+  direction: supports
+  strength: weak
+  exactLocator: "Abstract; Saxena et al. 2020, Fractal and Fractional 4(2): 11"
+  sourceStatement: >-
+    The abstract reports "a self-similar triplet of triplet resonance
+    frequency pattern for the four-4 nm-wide tubulin protein, for the 25-nm-
+    wide microtubule nanowire and 1-μm-wide axon initial segment of a
+    neuron," and describes the finding as suggesting a scale-free
+    organizational principle spanning those levels.
+  editorInference: >-
+    Offered by proponents as the scale-bridging mechanism Orch OR needs to
+    get from molecular events to whole-brain conscious moments, which would
+    make it important if it held up. Two things hold it back and they compound
+    rather than merely add: electromagnetic resonance is a classical
+    observable — self-similar frequency ratios across scales are not an
+    entanglement witness and would not become one if replicated — and no
+    independent laboratory has reproduced the measurements in the years
+    since. The related Sahu 2013 work is the same group and is not
+    independent corroboration. Graded weak on both counts.
+  limitations:
+    - "No independent protocol-level replication identified; single laboratory lineage."
+    - "Resonance structure is a classical electromagnetic observable, not a quantum coherence or entanglement measure."
+    - "Bespoke measurement apparatus spanning an unusually wide frequency range; sensitive to setup artifacts."
+    - "Published in a considerably lower-profile venue than the primer's misattribution to Scientific Reports implies."
+  reviewState: ai_extracted
+  origin:
+    ref: "Saxena et al. 2020 abstract via Crossref; venue corrected from the primer's citation during verification"
+    extractedBy: "Fable (AI agent)"
+    runId: "orch-or-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: ORCH-E006
+  title: "Delayed luminescence measured in tubulin constructs — but with no anesthetic finding"
+  claimIds: [ORCH-C013]
+  sourceId: SRC-ZOGHI-2025
+  direction: context
+  strength: weak
+  exactLocator: "Full published abstract, Optica Biophotonics Congress 2025, paper DTu1A.5"
+  sourceStatement: >-
+    The abstract reads in full: "We report, for the first time, measurements
+    of delayed luminescence on tubulin constructs. The results demonstrate
+    the role of mesoscopic structure on emission strength and decay dynamics,
+    which provides a new perspective on radiative phenomena." It makes no
+    mention of anesthetics or of any anesthetic comparison.
+  editorInference: >-
+    Recorded primarily as a correction. Eugene's primer states that
+    "anesthetics shorten this delayed luminescence time, while structurally
+    similar non-anesthetics do not" and attributes that to this work; no text
+    available to this import supports it, and the accessible abstract is
+    explicitly about mesoscopic structure rather than pharmacology. If such a
+    result exists it is in a fuller presentation this project has not seen,
+    and it should not be counted until it is. On its own terms the abstract
+    is mild support for structure-dependent collective radiative behavior,
+    which is ORCH-C013 territory — hence direction "context" rather than
+    "supports" for any anesthesia claim.
+  limitations:
+    - "Conference proceedings abstract, not a peer-reviewed full paper; weakest source in the case."
+    - "The anesthetic claim attributed to this work in the case editor's own primer is unsupported by any text this import could verify."
+    - "Delayed luminescence is a bulk optical observable and not a coherence measure."
+  reviewState: ai_extracted
+  origin:
+    ref: "Zoghi et al. 2025 abstract via Crossref; discrepancy with Jhong 2026 identified during verification"
+    extractedBy: "Fable (AI agent)"
+    runId: "orch-or-import-2026-08-22"
+    date: "2026-08-22"
+
+# ── Decoherence: the calculations that disagree ────────────────────────────
+
+- id: ORCH-E007
+  title: "Tegmark: microtubule decoherence 10⁻¹³–10⁻²⁰ s, far too fast for neural relevance"
+  claimIds: [ORCH-C010, ORCH-C001]
+  sourceId: SRC-TEGMARK-2000
+  direction: undermines
+  strength: moderate
+  exactLocator: "Abstract; Tegmark 2000, Physical Review E 61(4): 4194–4206"
+  sourceStatement: >-
+    The abstract reports calculated decoherence timescales for superposed
+    neural states — specifically "for superpositions of neuron firing
+    (coherent or not)" and "for either separated coherent states of a single
+    tubulin or for two tubulins in the same state" — in the range 10⁻¹³ to
+    10⁻²⁰ seconds, against dynamical timescales of neural processes of
+    10⁻³ to 10⁻¹ seconds. The conclusion drawn is that "the degrees of
+    freedom of the human brain that relate to cognitive processes should be
+    thought of as a classical rather than quantum system."
+  editorInference: >-
+    For twenty-five years this has been the reason most neuroscientists
+    considered the question closed, and the gap it reports — ten to seventeen
+    orders of magnitude — is large enough that no amount of refinement at the
+    margins would close it. Its evidential status should be stated plainly
+    though: it is a calculation about a modeled state, not a measurement of a
+    microtubule, and its force depends entirely on whether the state it
+    modeled is the state the theory proposes. That is precisely what the
+    Hagan reply contests, which is why this is graded moderate rather than
+    strong.
+  limitations:
+    - "A theoretical calculation, not a measurement; no microtubule was observed."
+    - "Models specific superposed states whose correspondence to the Orch OR proposal is disputed by Hagan et al. 2002."
+    - "Predates the ordered-lattice and collective-state work of 2023–2024, which changes some of the assumed environment."
+    - "Assumes environmental coupling parameters that the proponent reply argues are inappropriate for ordered biological structures."
+  reviewState: ai_extracted
+  origin:
+    ref: "Tegmark 2000 abstract, read via PubMed (PMID 11088215); bibliographic record verified via Crossref"
+    extractedBy: "Fable (AI agent)"
+    runId: "orch-or-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: ORCH-E008
+  title: "Hagan, Hameroff & Tuszyński: revised estimate 10⁻⁵–10⁻⁴ s — still short of requirement"
+  claimIds: [ORCH-C010]
+  sourceId: SRC-HAGAN-2002
+  direction: qualifies
+  strength: moderate
+  exactLocator: "Abstract; Hagan, Hameroff & Tuszyński 2002, Physical Review E 65(6): 061901"
+  sourceStatement: >-
+    The abstract states that the authors "critically examine the assumptions
+    made in [Tegmark's] model and re-examine the decoherence times for
+    superposed states of microtubule tubulins," and that "correction of
+    Tegmark's assumptions yields decoherence times of 10⁻⁵ to 10⁻⁴ seconds"
+    — up to seven to eight orders of magnitude longer than Tegmark's figures.
+    The paper enumerates several specific objections, the most consequential
+    being that Tegmark modeled a soliton in superposition along the
+    microtubule rather than the superposed protein conformations of the
+    Orch OR proposal.
+  editorInference: >-
+    The central objection lands: the two papers computed decoherence for
+    different physical states, so the seven-to-eight-order-of-magnitude gap
+    between them is partly an artifact of modeling different things. That is
+    a genuine correction and it is why "the brain is warm and wet, therefore
+    no" is an inadequate argument. But this record is filed as `qualifies`
+    rather than `supports` because even the proponents' own revised number
+    does not reach their requirement: 10⁻⁵–10⁻⁴ s is one to two orders of
+    magnitude short of the ~25 ms conscious moment the theory needs. Two
+    calculations disagreeing by orders of magnitude, neither anchored to a
+    measurement, is the actual state of this rung — and it is why ORCH-C010
+    is assessed as unresolved rather than refuted.
+  limitations:
+    - "Also a calculation, not a measurement."
+    - "Authored by two of the theory's principals; not an independent reanalysis."
+    - "Even the favorable estimate falls one to two orders of magnitude short of the theory's own requirement."
+    - "The competing estimates have never been adjudicated by experiment, which is the only thing that would settle them."
+  reviewState: ai_extracted
+  origin:
+    ref: "Hagan et al. 2002 abstract, read via PubMed (PMID 12188753); bibliographic record verified via Crossref"
+    extractedBy: "Fable (AI agent)"
+    runId: "orch-or-import-2026-08-22"
+    date: "2026-08-22"
+
+# ── Anesthesia: molecular target ───────────────────────────────────────────
+
+- id: ORCH-E009
+  title: "β-tubulin identified as a direct anesthetic target with functional consequences in vivo"
+  claimIds: [ORCH-C011, ORCH-C012]
+  sourceId: SRC-EMERSON-2013
+  direction: supports
+  strength: moderate
+  exactLocator: "Abstract; Emerson et al. 2013, JACS 135(14): 5389–5398"
+  sourceStatement: >-
+    The abstract reports that the general anesthetic 1-aminoanthracene
+    photolabeled β-tubulin, identified by mass spectrometry, with binding
+    localized near the colchicine site; that the compound inhibited
+    microtubule polymerization in vitro; and that pretreatment of tadpoles
+    with the microtubule stabilizers epothilone D and discodermolide
+    increased the concentration of anesthetic required to produce
+    immobilization. The authors conclude that microtubules are "on-pathway
+    targets" for this class of anesthetic.
+  editorInference: >-
+    The best causal molecular evidence in the case that tubulin can lie on an
+    anesthetic pathway, and it is strengthened rather than weakened by its
+    provenance: this comes from an established anesthesia-mechanisms
+    laboratory with no Orch OR commitment, which found the result while
+    asking a different question. Two limits on its reach. The anesthetic is a
+    research compound rather than a clinical volatile, so generalization is
+    not established. And the epothilone-D direction here — stabilization
+    producing anesthetic *resistance* — is opposite to the chronic
+    epothilone-D result in mice (ORCH-E013), which is one more reason the
+    stabilizer literature does not cohere into a rule.
+  limitations:
+    - "1-aminoanthracene is a research anesthetic; results may not generalize to clinical volatile or intravenous agents."
+    - "Tadpole immobilization endpoint, which is an immobility rather than hypnosis measure."
+    - "Binding near the colchicine site implies ordinary pharmacological interaction; nothing quantum is measured or implied."
+    - "The authors' own conclusion is the modest 'on-pathway targets', not a mechanism claim."
+  reviewState: ai_extracted
+  origin:
+    ref: "Emerson et al. 2013 abstract, read via PubMed (PMID 23484901); bibliographic record verified via Crossref"
+    extractedBy: "Fable (AI agent)"
+    runId: "orch-or-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: ORCH-E010
+  title: "Computational prediction that anesthetic effects on tubulin terahertz modes track clinical potency"
+  claimIds: [ORCH-C011]
+  sourceId: SRC-CRADDOCK-2017
+  direction: supports
+  strength: weak
+  exactLocator: "Abstract; Craddock et al. 2017, Scientific Reports 7: 9877"
+  sourceStatement: >-
+    The abstract describes the methods as binding-site prediction, molecular
+    docking, quantum chemistry, and theoretical modeling, and reports that
+    modeled anesthetic action on collective terahertz dipole oscillations in
+    tubulin correlates with clinical anesthetic potency.
+  editorInference: >-
+    Frequently cited in proponent summaries as if it were experimental
+    support for the anesthesia arm; it is not, and the distinction matters
+    enough to record explicitly. This is a modeling study, so it cannot
+    confirm anything — but it does something else of real value: it states
+    the potency-correlation prediction in advance, which means a future
+    experimental potency series would be a genuine prospective test rather
+    than a post-hoc fit. Graded weak as evidence and flagged as high value
+    as a prespecified hypothesis.
+  limitations:
+    - "Entirely computational; no experimental measurement of the predicted correlation."
+    - "Proponent authorship (Hameroff, Tuszynski, Craddock, Kurian)."
+    - "Docking and quantum-chemical modeling of anesthetic binding carries substantial known uncertainty."
+    - "No experiment has yet tested the prediction prospectively."
+  reviewState: ai_extracted
+  origin:
+    ref: "Craddock et al. 2017 abstract via Crossref; methods confirmed as computational during verification"
+    extractedBy: "Fable (AI agent)"
+    runId: "orch-or-import-2026-08-22"
+    date: "2026-08-22"
+
+# ── Anesthesia: the animal experiments, both directions ────────────────────
+
+- id: ORCH-E011
+  title: "Epothilone B delays loss of righting reflex by 69 s in rats (d = 1.9)"
+  claimIds: [ORCH-C023, ORCH-C012, ORCH-C002]
+  sourceId: SRC-KHAN-2024
+  direction: supports
+  strength: moderate
+  exactLocator: "Abstract; Khan et al. 2024, eNeuro 11(8): ENEURO.0291-24.2024"
+  sourceStatement: >-
+    The abstract reports that rats given a low dose of epothilone B
+    (0.75 mg/kg subcutaneous) three hours before exposure to 4% isoflurane
+    "took an average of 69 s longer to become unconscious as measured by
+    latency to LORR," a statistically significant difference with Cohen's
+    d = 1.9, described in the paper as a "large" normalized effect size. The
+    authors state the delay "cannot be explained by tolerance to
+    isoflurane," having tested for it, and note the result is "consistent
+    with the hypothesis that anesthetic binding to MTs is a critical step in
+    the mechanism of isoflurane-induced LORR."
+  editorInference: >-
+    The cleanest behavioral result on the proponent side: blinded, with a
+    tolerance control, and a large standardized effect. What it does not do
+    is discriminate between explanations — no quantum variable was measured,
+    and epothilone B changes microtubule stability, axonal transport,
+    metabolism, and cellular integrity all at once, each of which offers a
+    conventional route to altered anesthetic latency. The abstract's closing
+    framing about "a quantum physical state of neural MTs" is the authors'
+    interpretive gloss and is not a result of the experiment.
+  limitations:
+    - "N = 8 in the main analysis; male rats only."
+    - "Not a counterbalanced crossover — every animal received the drug phase after the pre-drug phase."
+    - "Latency at a single high isoflurane concentration (4%), not a full concentration–response curve."
+    - "No microtubule quantum variable measured; drug effects on transport and metabolism are uncontrolled alternatives."
+    - "LORR is a behavioral proxy, and anesthetic endpoints fractionate."
+  reviewState: ai_extracted
+  origin:
+    ref: "Khan et al. 2024 abstract, read via PubMed (PMID 39147581); bibliographic record verified via Crossref"
+    extractedBy: "Fable (AI agent)"
+    runId: "orch-or-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: ORCH-E012
+  title: "Same effect in mice (+29 s, d = 0.8) — same laboratory, not independent"
+  claimIds: [ORCH-C023, ORCH-C012]
+  sourceId: SRC-HUANG-2026
+  direction: supports
+  strength: weak
+  exactLocator: "Abstract; Huang et al. 2026, Neuropharmacology 287: 110834"
+  sourceStatement: >-
+    The abstract reports that a single 8 mg/kg subcutaneous dose of
+    epothilone B delayed isoflurane-induced LORR in mice by 29 seconds in a
+    within-subject comparison, with Cohen's d = 0.8, and that the effect
+    decayed over subsequent days. The abstract states the effect "is not
+    large compared to the variability among different animals" and cites the
+    contradictory independent finding of Li et al. 2025.
+  editorInference: >-
+    A cross-species extension that reproduces the direction of the rat
+    result, which is worth something — but it is a within-program replication
+    with a shared senior author, not the independent confirmation that would
+    matter, and the effect is smaller in both absolute and standardized
+    terms. Graded weak for that reason. The authors deserve explicit credit
+    for citing the contradictory independent study in their own abstract
+    rather than omitting it; that is the behavior of a research program
+    engaging with disconfirmation.
+  limitations:
+    - "Same senior author and research program as ORCH-E011; a replication of direction within one laboratory, not independent confirmation."
+    - "Smaller effect than the rat study and acknowledged by the authors as modest against inter-animal variability."
+    - "Effect decayed on subsequent days, which the paper reports but does not explain."
+    - "No quantum variable measured; same wholesale-perturbation confounds as the rat study."
+  reviewState: ai_extracted
+  origin:
+    ref: "Huang et al. 2026 abstract, read via PubMed (PMID 41519196); bibliographic record verified via Crossref"
+    extractedBy: "Fable (AI agent)"
+    runId: "orch-or-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: ORCH-E013
+  title: "Independent laboratory: chronic epothilone D and vinblastine both INCREASE isoflurane sensitivity"
+  claimIds: [ORCH-C024, ORCH-C012, ORCH-C002]
+  sourceId: SRC-LI-2025
+  direction: undermines
+  strength: strong
+  exactLocator: "Abstract, Results; Li et al. 2025, BMC Anesthesiology 25(1): 109"
+  sourceStatement: >-
+    The abstract reports that "compared with saline treatment, epothilone D
+    and vinblastine induced a leftward (more sensitive) shift of LORR
+    response curves (95% confidence intervals for EC50: epothilone D,
+    0.75[0.73, 0.77] vs. saline, 0.97[0.96, 0.98]; vinblastine, 0.74[0.73,
+    0.75] vs. saline, 0.98[0.97, 0.99])," while paclitaxel produced a small
+    rightward shift (1.05[1.03, 1.06] vs. saline 0.98[0.97, 0.99]) and the
+    opioid control morphine produced a larger rightward shift (1.16[1.15,
+    1.17]). Mice received the microtubule-modulating drugs for more than two
+    weeks. The study was randomized and blinded.
+  editorInference: >-
+    The most methodologically complete animal study in the case, and it runs
+    against the theory in the form the theory is usually stated. Two features
+    make it more informative than a single contrary data point. First, it
+    measured full concentration–response curves rather than latency at one
+    concentration, which is the better-specified quantity. Second, it
+    included a destabilizer — and vinblastine shifted sensitivity in the same
+    direction as the stabilizer epothilone D, which no account based on
+    microtubule stability predicts, and which suggests the operative variable
+    may be general cellular disruption. This does not refute the acute
+    epothilone-B result (different compound, different regimen), but it does
+    refute the generalization that stabilizing microtubules protects
+    consciousness from anesthetics.
+  limitations:
+    - "Chronic dosing (>2 weeks) versus the single acute injection of the Wellesley studies; chronic modulation invites compensatory remodeling."
+    - "Epothilone D rather than epothilone B — and Emerson et al. found epothilone D producing resistance in tadpoles, so the compound's direction is not consistent across preparations either."
+    - "Authors acknowledge saline was an imperfect vehicle control for poorly soluble compounds."
+    - "LORR rather than MAC; isoflurane only; outbred CD1 mice."
+    - "Epothilone D altered blood pH and CO₂, offering a physiological confound."
+  reviewState: ai_extracted
+  origin:
+    ref: "Li et al. 2025 abstract, read via PubMed; every EC50 figure quoted from the abstract Results with published confidence intervals"
+    extractedBy: "Fable (AI agent)"
+    runId: "orch-or-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: ORCH-E014
+  title: "Nuclear-spin-bearing xenon isotopes are markedly weaker anesthetics at identical polarizability"
+  claimIds: [ORCH-C025, ORCH-C002]
+  sourceId: SRC-LI-2018
+  direction: supports
+  strength: moderate
+  exactLocator: "Abstract, Results and Conclusions; Li et al. 2018, Anesthesiology 129(2): 271–277"
+  sourceStatement: >-
+    The abstract reports that in 80 randomized mice, "for xenon alone, the
+    loss of righting reflex ED50 values of Xe, Xe, Xe, and Xe were 70 ± 4%,
+    72 ± 5%, 99 ± 5%, and 105 ± 7%, respectively," with the two
+    higher values corresponding to the nuclear-spin-bearing isotopes
+    xenon-129 and xenon-131 and the two lower to spin-zero xenon-132 and
+    xenon-134. It states that all "four isotopes had a same exact
+    polarizability of 3.60 Å," and concludes that nuclear spin attenuates
+    anesthetic potency. Because of xenon's low potency the primary
+    comparisons were made against a 0.50% isoflurane background.
+  editorInference: >-
+    A genuinely hard result to explain in a pharmacology containing no
+    quantum degrees of freedom: the isotopes are chemically identical and
+    their calculated polarizability is identical, so the standard
+    lipid-solubility and polarizability accounts predict no difference, and a
+    40–50% potency gap appeared anyway. Its relevance to this case is
+    bounded, though, and the bound is severe: nuclear spin implicates *some*
+    spin-sensitive molecular process and says nothing about where. Radical-pair
+    mechanisms are a well-established alternative class elsewhere in biology.
+    This supports "quantum effects participate somewhere in anesthesia" and
+    not "microtubules are the site."
+  limitations:
+    - "Single study; no independent replication identified."
+    - "Primary comparisons required a 0.50% isoflurane background, so the isotope effect is not measured on xenon alone in the main assay."
+    - "Molecular substrate of the spin effect is unidentified; microtubules are not implicated in any way."
+    - "LORR behavioral endpoint only."
+  reviewState: ai_extracted
+  origin:
+    ref: "Li et al. 2018 abstract, read via PubMed (PMID 29642079); bibliographic record verified via Crossref"
+    extractedBy: "Fable (AI agent)"
+    runId: "orch-or-import-2026-08-22"
+    date: "2026-08-22"
+
+# ── The conventional account ───────────────────────────────────────────────
+
+- id: ORCH-E015
+  title: "A single GABA_A β3 point mutation abolishes intravenous anesthetic action in vivo"
+  claimIds: [ORCH-C003, ORCH-C002]
+  sourceId: SRC-JURD-2003
+  direction: supports
+  strength: strong
+  exactLocator: "Abstract; Jurd et al. 2003, FASEB J 17(2): 250–252"
+  sourceStatement: >-
+    The abstract reports that mice carrying the β3(N265M) point mutation,
+    which renders GABA_A receptors containing the β3 subunit insensitive to
+    etomidate and propofol, showed abolished immobilizing action of both
+    drugs and a profound reduction in their hypnotic effect (duration of
+    loss of righting reflex). The same mutation only slightly reduced the
+    effects of the volatile anesthetics enflurane and halothane. The authors
+    conclude that the volatile agents "act via a broader spectrum of
+    molecular targets."
+  editorInference: >-
+    The steelman anchor, and the reason the conventional account is assessed
+    as well supported: this is target-level causal evidence of a kind no
+    microtubule study in this case approaches — change one residue, lose the
+    drug effect. Any serious treatment of Orch OR has to reckon with the fact
+    that its main rival has this and it does not. The record is filed as
+    supporting ORCH-C003 and undermining the strong anesthesia claim, but
+    with an honest boundary: the result is about intravenous agents, and the
+    authors' own conclusion about volatiles acting through a broader target
+    spectrum is the specific opening through which a microtubule contribution
+    to volatile anesthesia could still enter. Orch OR proponents are entitled
+    to that opening; they are not entitled to ignore the rest.
+  limitations:
+    - "Establishes the mechanism for etomidate and propofol; does not transfer to volatile agents, which are the agents most Orch OR experiments use."
+    - "Shows a target is necessary for these drugs' action, not that consciousness is exhausted by receptor pharmacology."
+    - "Cautionary precedent from the same literature: TREK-1 knockout anesthetic resistance was initially reported and later not reproduced, so genetic anesthetic-target findings are not automatically durable."
+  reviewState: ai_extracted
+  origin:
+    ref: "Jurd et al. 2003 abstract, read via PubMed (PMID 12475885); bibliographic record verified via Crossref"
+    extractedBy: "Fable (AI agent)"
+    runId: "orch-or-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: ORCH-E016
+  title: "Quantum chemists: the revised Orch OR proposal is not scientifically justified"
+  claimIds: [ORCH-C001]
+  sourceId: SRC-REIMERS-2014
+  direction: undermines
+  strength: weak
+  exactLocator: "Title and venue; Reimers et al. 2014, Physics of Life Reviews 11(1): 101–103"
+  sourceStatement: >-
+    A three-page commentary in Physics of Life Reviews, published alongside
+    the Hameroff–Penrose 2014 review, titled "The revised Penrose–Hameroff
+    orchestrated objective-reduction proposal for human consciousness is not
+    scientifically justified." Crossref holds no abstract for this comment
+    and this import did not read the full text, so its specific arguments are
+    not characterized here beyond what the title states.
+  editorInference: >-
+    Recorded for completeness as the principal published skeptical response
+    to the current version of the theory, and graded weak deliberately —
+    partly because it is a short commentary rather than an experimental
+    result, and partly because this import could not read its argument. An
+    unread critique should not carry weight merely because its title is
+    emphatic. Hameroff and Penrose replied in the same issue, and a reader
+    following this thread should read both rather than either.
+  limitations:
+    - "Full text not read by this import; argument characterized only at the level the title supports."
+    - "A commentary, not new data."
+    - "Answered directly by the authors in the same issue; the exchange is not resolved on the public record."
+  reviewState: ai_extracted
+  origin:
+    ref: "Reimers et al. 2014 bibliographic record verified via Crossref; no abstract available"
+    extractedBy: "Fable (AI agent)"
+    runId: "orch-or-import-2026-08-22"
+    date: "2026-08-22"
+
+# ── Objective reduction as physics ─────────────────────────────────────────
+
+- id: ORCH-E017
+  title: "Gran Sasso null result excludes the parameter-free Diósi–Penrose model"
+  claimIds: [ORCH-C031, ORCH-C030]
+  sourceId: SRC-DONADI-2021
+  direction: undermines
+  strength: strong
+  exactLocator: "Abstract, closing sentences; Donadi et al. 2021, Nature Physics 17(1): 74–78"
+  sourceStatement: >-
+    The abstract reports a dedicated search for the spontaneous radiation
+    predicted by gravity-related dynamical collapse, performed with an
+    ultra-low-background germanium detector at the Gran Sasso underground
+    laboratory, and states: "Our result sets a lower bound on the effective
+    size of the mass density of nuclei, which is about three orders of
+    magnitude larger than previous bounds. This rules out the natural
+    parameter-free version of the Diósi–Penrose model."
+  editorInference: >-
+    Methodologically the strongest experiment anywhere in this case,
+    conducted with the model's own co-originator among the authors, and it
+    came out negative. It substantially damages the physics conjunct
+    ORCH-C001 requires. The scope of the exclusion is precisely stated in the
+    authors' own words and should not be inflated: it kills the natural
+    parameter-free stochastic completion, not every conceivable gravity-
+    related collapse theory, and specifically not Penrose's original
+    heuristic ℏ/E_G criterion, which makes no radiation prediction. That
+    qualification is real (see ORCH-E019) and is also exactly the kind of
+    escape that costs a theory its testability.
+  limitations:
+    - "Tests a specific stochastic master equation; the map from Penrose's geometric argument to that equation is not unique."
+    - "Constrains a parameter range rather than closing the question — non-Markovian and non-local variants evading the radiation prediction have been proposed."
+    - "Does not test the ℏ/E_G lifetime scaling itself, which remains unmeasured."
+  reviewState: ai_extracted
+  origin:
+    ref: "Donadi et al. 2021 abstract, read on the Nature Physics publisher page; bibliographic record verified via Crossref"
+    extractedBy: "Fable (AI agent)"
+    runId: "orch-or-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: ORCH-E018
+  title: "The Gran Sasso experimenters apply their own bound to Orch OR: 'highly implausible'"
+  claimIds: [ORCH-C001, ORCH-C030]
+  sourceId: SRC-DERAKHSHANI-2022
+  direction: undermines
+  strength: moderate
+  exactLocator: "Abstract, conclusion; Derakhshani et al. 2022, Physics of Life Reviews 42: 8–14"
+  sourceStatement: >-
+    The abstract states that the authors analyze Orch OR against the
+    spontaneous-radiation bounds from the Gran Sasso measurements and
+    conclude that Orch OR, "when based on the simplest version of
+    gravity-related dynamical collapse, is highly implausible in all the
+    cases analyzed."
+  editorInference: >-
+    Weighty because of who wrote it: the experimenters themselves, plus
+    Diósi, applying their own result to the theory rather than leaving the
+    inference to others — the people best placed to know what their bound
+    excludes. The conditional in their own sentence carries the whole
+    argument, though, and they wrote it deliberately: "when based on the
+    simplest version." What is excluded is a class of implementations, and
+    the theory's ability to survive by not being one of them is both a
+    legitimate defense and a symptom of underspecification.
+  limitations:
+    - "Conclusion is explicitly conditional on 'the simplest version of gravity-related dynamical collapse'."
+    - "An analysis paper applying an existing bound rather than a new measurement."
+    - "Contested by McQueen 2023 on the question of whether Penrose OR is committed to the version tested."
+  reviewState: ai_extracted
+  origin:
+    ref: "Derakhshani et al. 2022 abstract, read via PubMed (PMID 35617922); bibliographic record verified via Crossref"
+    extractedBy: "Fable (AI agent)"
+    runId: "orch-or-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: ORCH-E019
+  title: "McQueen: the radiation bound does not reach Penrose's own criterion"
+  claimIds: [ORCH-C030, ORCH-C031]
+  sourceId: SRC-MCQUEEN-2023
+  direction: qualifies
+  strength: weak
+  exactLocator: "Title and venue; McQueen 2023, Physics of Life Reviews 44: 201–203"
+  sourceStatement: >-
+    A short comment in Physics of Life Reviews titled "Have underground
+    radiation measurements refuted the Orch OR theory?", replying to
+    Derakhshani et al. 2022. Crossref holds no abstract and this import did
+    not read the full text; per the deep-research report, the argument is
+    that Penrose's OR criterion is a characteristic-lifetime relation
+    (τ ≈ ℏ/E_G) rather than a stochastic dynamical model, and therefore does
+    not entail the spontaneous radiation the Gran Sasso experiment searched
+    for. That characterization is relayed rather than verified.
+  editorInference: >-
+    The argument is sound as far as it goes and this case accepts it, which
+    is why ORCH-C030 is assessed as unresolved rather than refuted. It is
+    graded weak for two reasons. Its content is relayed from a secondary
+    summary rather than read. And a distinction that saves a theory from an
+    experiment by locating it outside the experiment's reach is not evidence
+    for the theory — it converts a refuted specific model into an untested
+    vague one, which is a worse epistemic position than it sounds.
+  limitations:
+    - "Full text not read by this import; argument relayed from the deep-research report's summary."
+    - "A short comment, not new data or new theory."
+    - "Its force is entirely negative: it blocks an inference without supporting the theory."
+  reviewState: ai_extracted
+  origin:
+    ref: "McQueen 2023 bibliographic record verified via Crossref; argument content relayed from the deep-research report"
+    extractedBy: "Fable (AI agent)"
+    runId: "orch-or-import-2026-08-22"
+    date: "2026-08-22"
+
+# ── Nonclassical brain signals ─────────────────────────────────────────────
+
+- id: ORCH-E020
+  title: "Consciousness-dependent zero-quantum-coherence signals in living human brains"
+  claimIds: [ORCH-C026]
+  sourceId: SRC-KERSKENS-2022
+  direction: supports
+  strength: moderate
+  exactLocator: "Abstract; Kerskens & López Pérez 2022, J. Phys. Commun. 6(10): 105001"
+  sourceStatement: >-
+    The authors report using a zero-quantum-coherence MRI protocol, derived
+    from proposals for witnessing quantum gravity, in which detected signals
+    should not arise from classical sources. They observed heartbeat-evoked
+    potential-like signals in living human brains that did not correlate with
+    any conventional MRI contrast, and which changed in relation to conscious
+    awareness — subjects reported the signal disappearing as they fell
+    asleep. The abstract concludes: "Our findings suggest that we may have
+    witnessed entanglement mediated by consciousness-related brain functions.
+    Those brain functions must then operate non-classically, which would mean
+    that consciousness is non-classical."
+  editorInference: >-
+    The single most consequential result in this case if it survives — direct
+    evidence of non-classical function in a living brain would be a landmark
+    independent of Orch OR. Two things restrain the weight given here. It is
+    contested on methodological grounds by a leading NMR authority
+    (ORCH-E021) and has not been independently replicated. And its scope is
+    narrower than proponent summaries suggest: the experiment does not
+    implicate microtubules at all, the mediator is unidentified, and the
+    known quantum systems in the measurement are proton spins of bulk water.
+    A fully validated result would establish non-classical brain function
+    while leaving every microtubule claim untouched.
+  limitations:
+    - "Entanglement-witness interpretation disputed in the same journal; no independent replication."
+    - "Mediating system unidentified; microtubules not implicated by the experiment."
+    - "Small sample; consciousness manipulation was naturalistic sleep onset rather than a controlled intervention."
+    - "The authors' own wording is heavily hedged ('suggest that we may have witnessed'), and secondary summaries frequently drop the hedge."
+  reviewState: disputed
+  origin:
+    ref: "Kerskens & López Pérez 2022 abstract read in full via Crossref; bibliographic record verified"
+    extractedBy: "Fable (AI agent)"
+    runId: "orch-or-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: ORCH-E021
+  title: "Warren: the MRI data provide no evidence for entanglement"
+  claimIds: [ORCH-C026]
+  sourceId: SRC-WARREN-2023
+  direction: undermines
+  strength: moderate
+  exactLocator: "Abstract; Warren 2023, J. Phys. Commun. 7(3): 038001"
+  sourceStatement: >-
+    Warren's comment argues that the Kerskens–López Pérez paper "provides no
+    evidence to justify this claim" of witnessed entanglement, and that the
+    observations show only "what we already knew: the brain (and any other
+    living tissue) is complex, multicompartmental, and imprecisely
+    characterized by MRI." In a reply published in the same issue, Kerskens
+    and López Pérez maintain that their observations cannot be explained by
+    the classical intermolecular multiple-quantum-coherence mechanism Warren
+    invokes.
+  editorInference: >-
+    A substantive methodological objection from someone with standing to make
+    it, published in the appropriate venue — this is how a technical dispute
+    should look. The general point is well taken: NMR signals in
+    heterogeneous living tissue are precisely the regime in which classical
+    multi-compartment effects can imitate exotic ones, and entanglement
+    witnesses require ruling those out affirmatively rather than by
+    elimination. The authors' reply is not obviously wrong either, and this
+    import has no basis for adjudicating a technical NMR dispute. Recorded as
+    genuinely unresolved, which is why ORCH-C026 carries reviewState
+    `disputed`.
+  limitations:
+    - "A comment, not an independent replication attempt — the decisive experiment has not been run."
+    - "Authors replied specifically to the mechanism Warren proposed; the exchange is unresolved on the public record."
+    - "This project has no independent basis for adjudicating the technical NMR question."
+  reviewState: ai_extracted
+  origin:
+    ref: "Warren 2023 abstract read in full via Crossref; the Kerskens reply (DOI 10.1088/2399-6528/acc636) verified via Crossref. Year corrected from the deep-research report's 2022"
+    extractedBy: "Fable (AI agent)"
+    runId: "orch-or-import-2026-08-22"
+    date: "2026-08-22"
+
+# ── The non-computability motivation and the AI-mathematics challenge ──────
+
+- id: ORCH-E022
+  title: "An AI model disproved a 1946 Erdős conjecture, confirmed by an independent mathematician"
+  claimIds: [ORCH-C041, ORCH-C040]
+  sourceId: SRC-SAWIN-2026
+  direction: undermines
+  strength: moderate
+  exactLocator: "Abstract; Sawin 2026, arXiv:2605.20579, submitted 20 May 2026"
+  sourceStatement: >-
+    Sawin's abstract states that sets of n points exist in the plane
+    containing more than n^1.014 pairs at unit distance, and that this
+    "improves on very recent work of a team at OpenAI, who proved the same
+    result with an inexplicit exponent greater than 1, drastically improving
+    on the best previous lower bound and disproving a conjecture of Erdős."
+    Per Sawin's paper, the OpenAI work was carried out by Lijie Chen using an
+    internal model, with Mark Sellke and Mehtaab Sawhney verifying
+    correctness.
+  editorInference: >-
+    This is the load-bearing verification for the whole AI-mathematics line,
+    and it is deliberately anchored on Sawin rather than on OpenAI's
+    announcement: an independent working mathematician states the result in
+    his own paper and builds on the construction, so the fact does not rest
+    on a company's word about its own unreleased model. As evidence it is
+    filed against ORCH-C040 because it is the strongest available instance of
+    a machine producing genuinely new research-level mathematics. Its force
+    is bounded by the scoping recorded on ORCH-C041: it bears on the
+    motivation rung only, and the Penrose-side response (ORCH-E025) contests
+    whether a novel result inside an existing framework touches the argument
+    at all.
+  limitations:
+    - "Preprint, not journal-published at import."
+    - "Attribution of the original result depends on Sawin's characterization plus Quanta reporting; the OpenAI announcement page itself timed out on two direct fetch attempts and was not read by this import."
+    - "The model is internal and unreleased, so the process that produced the result cannot be independently examined."
+    - "Bears on the Gödelian motivation only — no bearing whatever on microtubule, anesthesia, or collapse claims."
+  reviewState: ai_extracted
+  origin:
+    ref: "Sawin 2026 abstract retrieved directly via the arXiv API; cross-checked against Quanta Magazine reporting of 3 August 2026"
+    extractedBy: "Fable (AI agent)"
+    runId: "orch-or-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: ORCH-E023
+  title: "AlphaProof: Lean-verified silver-medal IMO performance, peer-reviewed in Nature"
+  claimIds: [ORCH-C041, ORCH-C040]
+  sourceId: SRC-HUBERT-2025
+  direction: undermines
+  strength: moderate
+  exactLocator: "Abstract; Hubert et al. 2025, Nature 651(8106): 607–613"
+  sourceStatement: >-
+    The abstract reports that AlphaProof, a reinforcement-learning system
+    operating on formal mathematics in Lean, solved three of the five
+    non-geometry problems at the 2024 International Mathematical Olympiad,
+    including the competition's hardest problem (P6), and that combined with
+    AlphaGeometry 2 the system achieved a score equivalent to a silver
+    medal — reported by DeepMind as 28 of 42 points, one point below the
+    gold threshold. Solutions were formally verified in Lean. Some problems
+    required multi-day computation rather than the contest time limit.
+  editorInference: >-
+    The most rigorously verified item in this evidence line: Lean
+    machine-checking means the mathematical correctness is not a matter of
+    opinion, and Nature peer review covers the methodology. As a challenge to
+    Penrose the relevant limitation is conceptual rather than methodological,
+    and it is substantial — competition problems are known to be solvable
+    within an existing framework by construction, which is exactly the
+    category the Penrose-side response says was never in dispute. Filed as
+    undermining because the accumulation of formerly-human-only mathematical
+    performance is what the critics' argument rests on, and graded moderate
+    because that argument is contested at ORCH-E025.
+  limitations:
+    - "IMO problems have known solutions within existing frameworks; not framework extension."
+    - "Multi-day computation rather than contest conditions for some problems."
+    - "Corporate-authored research about the authors' own system, though Lean verification substantially offsets this."
+    - "Bears on the motivation rung only."
+  reviewState: ai_extracted
+  origin:
+    ref: "Hubert et al. 2025 abstract read on the Nature publisher page; bibliographic record verified via Crossref"
+    extractedBy: "Fable (AI agent)"
+    runId: "orch-or-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: ORCH-E024
+  title: "Gemini Deep Think: officially graded IMO gold, in natural language"
+  claimIds: [ORCH-C041]
+  sourceId: SRC-DEEPMIND-IMO-2025
+  direction: supports
+  strength: weak
+  exactLocator: "Google DeepMind announcement, 21 July 2025"
+  sourceStatement: >-
+    DeepMind reports that an advanced version of Gemini with Deep Think
+    solved five of six problems at the 2025 International Mathematical
+    Olympiad for 35 of 42 points, achieving gold-medal standard. The
+    announcement states the solutions were graded and certified by IMO
+    coordinators using the same criteria applied to student contestants, and
+    that the system worked end-to-end in natural language within the 4.5-hour
+    competition limit — without the Lean formalization used in 2024. The page
+    attributes a confirming statement to IMO President Gregor Dolinar.
+  editorInference: >-
+    Included for two specific facts the Nature paper predates: official IMO
+    grading under contest conditions, and natural-language rather than
+    formalized operation. Graded weak as a source because it is a corporate
+    blog post with no accompanying paper and an unreleased model, so it rests
+    on DeepMind's account — though the load-bearing element, external grading
+    by IMO coordinators, is the part least susceptible to self-report bias.
+    Same scoping as the rest of this theme: motivation rung only.
+  limitations:
+    - "Corporate announcement; no peer-reviewed paper and no released model."
+    - "Solutions in natural language were not machine-verified, unlike the 2024 Lean work."
+    - "Competition mathematics, not open research problems."
+    - "Bears on the motivation rung only."
+  reviewState: ai_extracted
+  origin:
+    ref: "Official Google DeepMind announcement page, 21 July 2025, read via search retrieval"
+    extractedBy: "Fable (AI agent)"
+    runId: "orch-or-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: ORCH-E025
+  title: "A DeepMind researcher argues the systems deduce but cannot abduct"
+  claimIds: [ORCH-C041, ORCH-C040]
+  sourceId: SRC-ZAHAVY-2026
+  direction: qualifies
+  strength: moderate
+  exactLocator: "Accepted abstract, ICML 2026 position-paper track, poster 67091"
+  sourceStatement: >-
+    The position paper argues that generative AI "has mastered Induction...
+    and is rapidly conquering Deduction" but "lacks the mechanism for
+    Abduction." Its stated claim is that an LLM "could plausibly execute the
+    deductive phase of proving theorems from established premises" while
+    being "structurally incapable of the abductive 'Jump' required to
+    formulate those premises."
+  editorInference: >-
+    The most interesting item in this theme, because of where it comes from:
+    the author co-authored AlphaProof and the AlphaZero work, so this is a
+    concession about the location of the gap made from inside the laboratory
+    doing the closing — not a defensive move by Penrose's supporters. It
+    supplies the critics' own strongest counterargument, and it maps almost
+    exactly onto the framework/result distinction that Penrose's defenders
+    press. Filed as `qualifies` rather than `supports` because it is an
+    argument in a position-paper track, not a measurement: it changes how the
+    AI results should be read without adding or removing any fact.
+  limitations:
+    - "A position paper — explicitly argumentative, so classified by its own venue as a viewpoint rather than a finding."
+    - "One researcher's framework; the induction/deduction/abduction taxonomy is a philosophical choice, not an empirical result."
+    - "Makes a structural claim about current architectures, not a claim about physical non-computability — it does not vindicate Penrose's argument, only complicates its refutation."
+  reviewState: ai_extracted
+  origin:
+    ref: "Abstract read on the official ICML 2026 virtual-conference page for poster 67091"
+    extractedBy: "Fable (AI agent)"
+    runId: "orch-or-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: ORCH-E026
+  title: "The editor's own audit: Penrose's testable examples have mostly settled against him"
+  claimIds: [ORCH-C040, ORCH-C041]
+  sourceId: SRC-JHONG-ERDOS-2026
+  direction: qualifies
+  strength: weak
+  exactLocator: "Jhong 2026, 'The Erdős Unit Distance Problem and Penrose Understanding' — the survey of Penrose's concrete examples and the closing argument"
+  sourceStatement: >-
+    The essay surveys the concrete examples Penrose offered as marks of
+    non-computable understanding and concludes that those which were testable
+    have mostly settled against him — most cleanly the pawn-fortress chess
+    position released by the Penrose Institute in 2017, which modern engines
+    handle correctly, and now the Erdős unit-distance conjecture. It argues
+    that the examples aging best are the least testable ones. Against that,
+    it advances the distinction it calls "the escalator, not the steps": the
+    claim was never that any particular insight is permanently
+    non-computable, but that the open-ended capacity to keep generating new
+    frameworks is — so each formalized insight becoming computable in
+    hindsight is what the view predicts rather than evidence against it.
+  editorInference: >-
+    Included as an honestly-labeled editorial source rather than as evidence
+    of fact: it is the case editor's own essay, and its value is that it
+    states the Penrose-side response in its strongest form while conceding
+    the empirical scoreboard. The concession is what makes it usable — an
+    advocacy piece that reports its own side losing the testable cases is
+    more informative than one that does not. The essay is also the only
+    verifiable record available to this import of the critic's wording: the
+    linked X post returned HTTP 403 to unauthenticated fetch and was never
+    read, so the tweet is not cited as a source anywhere in this case. Graded
+    weak because it is argument and curation, not research.
+  limitations:
+    - "The case editor's own essay — not independent of this case's editorial judgment."
+    - "Philosophical argument and curation rather than original research; substantially composed of quoted AI-model outputs, which the essay labels as such."
+    - "The 'escalator, not the steps' distinction is precisely the move that critics call unfalsifiable; the essay presents it without resolving that objection."
+    - "The social-media claim that prompted this line was never directly readable and is not cited."
+  reviewState: ai_extracted
+  origin:
+    ref: "Jhong 2026, held in the project library; the X post at the center of the discussion returned HTTP 403 and was not read"
+    extractedBy: "Fable (AI agent)"
+    runId: "orch-or-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: ORCH-E027
+  title: "The AI-mathematics evidence line has a documented false-positive history"
+  claimIds: [ORCH-C041]
+  sourceId: SRC-OPENAI-UNITDIST-2026
+  direction: qualifies
+  strength: weak
+  exactLocator: "Quanta Magazine, 'Why the Legendary Erdős Problems Are Falling to AI', 3 August 2026"
+  sourceStatement: >-
+    Quanta's reporting documents that an earlier round of AI Erdős-problem
+    claims in October 2025 collapsed when the purported solutions were found
+    already to exist in the literature, and that a widely-publicized claim
+    about Erdős Problem 333 was withdrawn within hours after a user of
+    Thomas Bloom's problem site identified a 1977 resolution by Erdős
+    himself. Subsequent claimed solutions have been checked against prior
+    work before announcement.
+  editorInference: >-
+    Recorded so this evidence line carries its own error history rather than
+    only its successes — the same standard applied to the microtubule
+    results. The pattern is specific and worth naming: the recurring failure
+    mode is inadequate literature search rather than incorrect mathematics,
+    which is a claim about novelty rather than about capability. It does not
+    touch the unit-distance result, which was verified by named
+    mathematicians and independently improved upon. It does mean claims in
+    this area should be checked against the literature before being counted,
+    which is why this case anchors on Sawin's paper rather than on
+    announcements.
+  limitations:
+    - "Secondary journalism, not a primary source."
+    - "Does not bear on the verified unit-distance result, which survived independent checking."
+    - "Filed under the OpenAI announcement record for locality; the retracted claims involved several systems and venues, not only OpenAI."
+  reviewState: ai_extracted
+  origin:
+    ref: "Quanta Magazine article of 3 August 2026, read directly during the verification run"
+    extractedBy: "Fable (AI agent)"
+    runId: "orch-or-import-2026-08-22"
+    date: "2026-08-22"
+
+# ── Proponent synthesis ────────────────────────────────────────────────────
+
+- id: ORCH-E029
+  title: "The claim of independent confirmation does not hold"
+  claimIds: [ORCH-C023, ORCH-C012, ORCH-C002]
+  sourceId: SRC-JHONG-ORCHOR-2026
+  direction: qualifies
+  strength: weak
+  exactLocator: "Jhong 2026, 'Orch OR Ascending' — the section scoring Hameroff's 2020 predictions"
+  sourceStatement: >-
+    The primer states that Hameroff's two 2020 predictions — that anesthetics
+    would be found to act on microtubule quantum states, and that microtubule
+    quantum effects would be detected — "have been confirmed by multiple
+    independent laboratories (Princeton, UCF, NIMS Japan, and Wellesley)."
+  editorInference: >-
+    Recorded because the case's own backbone article makes a claim the
+    verification run could not sustain, and inheriting it silently would
+    corrupt the ledger. The four institutions did produce relevant results,
+    but they do not constitute independent confirmation of the anesthesia
+    prediction specifically: the Princeton experiment lists Hameroff and
+    Penrose as co-authors; the two Wellesley epothilone-B studies share a
+    senior author and research program with each other; the NIMS resonance
+    work is unreplicated and measures a classical observable; and the one
+    genuinely independent stabilizer study, from Massachusetts General, found
+    the effect running the opposite direction. "Multiple laboratories have
+    produced results consistent with the prediction" would be defensible.
+    "Confirmed by multiple independent laboratories" is not.
+  limitations:
+    - "The case editor's own essay; not independent of this case's editorial judgment."
+    - "Self-described as assembled 'with the help of various chatbots', which plausibly explains the citation errors found elsewhere in it."
+    - "This record scores a characterization, not an experiment — it adds no new empirical fact, only a correction to how existing facts were summarized."
+  reviewState: ai_extracted
+  origin:
+    ref: "Jhong 2026, held in the project library; independence checked against the author lists of Kalra 2023, Khan 2024, Huang 2026, Saxena 2020, and Li 2025"
+    extractedBy: "Fable (AI agent)"
+    runId: "orch-or-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: ORCH-E028
+  title: "The strongest affirmative synthesis — and its independence problem"
+  claimIds: [ORCH-C001, ORCH-C002]
+  sourceId: SRC-WIEST-2025
+  direction: context
+  strength: weak
+  exactLocator: "Abstract; Wiest 2025, Neuroscience of Consciousness 2025(1): niaf011"
+  sourceStatement: >-
+    The review argues that a quantum microtubule substrate of consciousness
+    is experimentally supported and that it addresses the binding problem and
+    the epiphenomenalism problem in ways classical accounts do not. It
+    characterizes the Kerskens result as "direct physical evidence of a
+    macroscopic quantum entangled state in the living human brain."
+  editorInference: >-
+    Included as the best available statement of the affirmative case, and as
+    the entry point Eugene's primer recommends to skeptical readers — a fair
+    map should point at the strongest version of the view it is examining.
+    Two caveats keep it at `context` and `weak`. The author is senior author
+    of the epothilone-B experiments, so this is not an independent review of
+    the evidence it assesses. And the Kerskens characterization quoted above
+    is stronger than the original paper's own hedged wording and than the
+    unresolved state of the Warren dispute — an instance of the general
+    pattern in this literature where hedges are dropped as claims travel.
+  limitations:
+    - "Review and argument, not new data."
+    - "Not independent of the primary evidence it reviews."
+    - "Characterizes contested results more strongly than their source papers do."
+  reviewState: ai_extracted
+  origin:
+    ref: "Wiest 2025 abstract, read via PubMed (PMID 40342554); bibliographic record verified via Crossref"
+    extractedBy: "Fable (AI agent)"
+    runId: "orch-or-import-2026-08-22"
+    date: "2026-08-22"

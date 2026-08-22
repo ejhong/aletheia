@@ -1,0 +1,497 @@
+# Evidence records: the specific observation/result extracted from a source
+# and connected to claims. Direction is explicit; sourceStatement (what the
+# source says) is kept separate from editorInference (what we infer).
+
+# ── The neural signature ─────────────────────────────────────────────────────
+
+- id: VASO-E001
+  title: "Spontaneous EMG activity confined to the trigger-point nidus"
+  claimIds: [VASO-C002]
+  sourceId: SRC-HUBBARD-BERKOFF-1993
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    Monopolar needle EMG recorded simultaneously from trapezius trigger
+    points and adjacent non-tender fibers found sustained spontaneous
+    activity in the 1–2 mm nidus of all trigger points and none in the
+    non-tender sites; amplitude was higher in tension-headache and
+    fibromyalgia patients than in normals. The authors hypothesized
+    sympathetically activated intrafusal (spindle) contractions.
+  editorInference: >-
+    Whatever a knot is, it is electrically maintained: a discrete island of
+    ongoing activity in muscle that is nominally at rest — state, not scar.
+  limitations:
+    - "1993, small sample, one lab; the signal's generator is still contested (endplate potentials vs spindles)."
+    - "The recorded activity is skeletal-muscle electrophysiology; nothing here measures vasculature."
+  reviewState: ai_extracted
+  origin:
+    ref: "Knots of Existence essay §two experiments; verified 2026-08-22"
+    extractedBy: "Fable (AI agent)"
+    runId: "vaso-extract-2026-08"
+    date: "2026-08-22"
+
+- id: VASO-E002
+  title: "Mental arithmetic selectively raises trigger-point activity"
+  claimIds: [VASO-C003]
+  sourceId: SRC-MCNULTY-1994
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    With needle electrodes in trapezius trigger points and adjacent control
+    sites, a psychological stressor (mental arithmetic) increased EMG
+    activity at the trigger points while control sites in the same muscle
+    remained comparatively quiet, without generalized muscle tensing.
+  editorInference: >-
+    A purely mental event, involving no movement, turned up the signal
+    inside one tender point and not a centimeter away: the write half of
+    any storage account, caught in motion.
+  limitations:
+    - "n=14, 1994, same lineage as Hubbard & Berkoff — the two EMG studies are one line of evidence."
+    - "The essay's follow-up claims (relaxation training lowering activity; phentolamine infusion quieting the site) come from the same lineage and were not independently verified in this project — no primary citation located."
+    - "No vascular endpoint was measured; sympathetic drive to spindles or endplates fits the data without any vascular storage."
+  reviewState: ai_extracted
+  origin:
+    ref: "Knots of Existence essay §two experiments; verified 2026-08-22"
+    extractedBy: "Fable (AI agent)"
+    runId: "vaso-extract-2026-08"
+    date: "2026-08-22"
+
+# ── The latch ────────────────────────────────────────────────────────────────
+
+- id: VASO-E003
+  title: "The latch-bridge model: force maintained after activation falls"
+  claimIds: [VASO-C010]
+  sourceId: SRC-HAI-MURPHY-1988
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    A minimum kinetic model of smooth-muscle cross-bridge interaction in
+    which dephosphorylated but still-attached cross-bridges ("latch
+    bridges") detach only slowly, reproducing the experimental observation
+    of high sustained stress at low levels of myosin phosphorylation —
+    economical force maintenance after activation subsides.
+  editorInference: >-
+    Biology ships a cheap, history-dependent hold: the mechanism the
+    featured hypothesis needs exists and is textbook physiology. Whether it
+    is engaged at tender points is a separate, untested question.
+  limitations:
+    - "Established in vascular/visceral smooth-muscle preparations over minutes-to-hours timescales; indefinite in-vivo holds at addressable sites are an extrapolation."
+    - "Molecular interpretation still under refinement (regulated phosphatase activity, cooperativity)."
+  reviewState: ai_extracted
+  origin:
+    ref: "Knots of Existence essay §latch-bridge; verified 2026-08-22"
+    extractedBy: "Fable (AI agent)"
+    runId: "vaso-extract-2026-08"
+    date: "2026-08-22"
+
+# ── Blood and computation ────────────────────────────────────────────────────
+
+- id: VASO-E004
+  title: "The hemo-neural hypothesis as proposed"
+  claimIds: [VASO-C012]
+  sourceId: SRC-MOORE-CAO-2008
+  direction: context
+  strength: moderate
+  sourceStatement: >-
+    Moore and Cao propose that hemodynamics — blood flow and volume — may
+    actively modulate neuronal information processing rather than merely
+    supplying metabolic support, through candidate mechanical, thermal, and
+    chemical pathways, and predict consequences for sensory gating and
+    disease.
+  editorInference: >-
+    The read path of the loop, stated as a hypothesis in 2008: this paper
+    defines the claim rather than demonstrating it. The essay's "Rosalind
+    Cao" should be Rosa Cao.
+  limitations:
+    - "A hypothesis paper: proposes mechanisms, presents no new experimental demonstration."
+  reviewState: ai_extracted
+  origin:
+    ref: "Knots of Existence essay §hemo-neural; verified 2026-08-22"
+    extractedBy: "Fable (AI agent)"
+    runId: "vaso-extract-2026-08"
+    date: "2026-08-22"
+
+- id: VASO-E005
+  title: "Blood-pressure pulsations modulate neurons via mechanosensitive channels"
+  claimIds: [VASO-C012]
+  sourceId: SRC-SALAMEH-2024
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    Physiological blood-pressure pulsations were shown to modulate central
+    neuronal activity through mechanosensitive ion channels in rat
+    preparations and awake animals, on rapid timescales.
+  editorInference: >-
+    Direct causal evidence for the vascular-mechanical-to-neural direction
+    the hemo-neural hypothesis requires — sixteen years after it was
+    proposed, the read path has a demonstrated mechanism.
+  limitations:
+    - "Rat brain, not human periphery; demonstrates instantaneous mechanosensation, not storage or content-specific readout."
+  reviewState: ai_extracted
+  origin:
+    ref: "Stored Tension critical report §neurovascular signaling; verified 2026-08-22"
+    extractedBy: "Fable (AI agent)"
+    runId: "vaso-extract-2026-08"
+    date: "2026-08-22"
+
+# ── Objective local correlates ───────────────────────────────────────────────
+
+- id: VASO-E006
+  title: "Acidic, mediator-rich biochemical milieu at active trigger points"
+  claimIds: [VASO-C005]
+  sourceId: SRC-SHAH-2008
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    Microdialysis-style sampling found biochemicals associated with pain and
+    inflammation — including bradykinin, substance P, and CGRP, in a more
+    acidic milieu — elevated at active myofascial trigger points, in sites
+    both near to and remote from the points, relative to comparison
+    conditions.
+  editorInference: >-
+    Something is there and it is chemically angry — exactly the milieu
+    chronic local ischemia would produce, though guarding-induced
+    compression would produce it too. Note the title's own qualifier: the
+    elevation was not purely local.
+  limitations:
+    - "Small study (the critical report's audit gives nine volunteers); localization vs systemic effects hard to separate."
+  reviewState: ai_extracted
+  origin:
+    ref: "Knots of Existence essay §Shah microdialysis; verified 2026-08-22"
+    extractedBy: "Fable (AI agent)"
+    runId: "vaso-extract-2026-08"
+    date: "2026-08-22"
+
+- id: VASO-E007
+  title: "Imaging systematic review: trigger points are quantifiably distinct"
+  claimIds: [VASO-C005]
+  sourceId: SRC-MAZZA-2021
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    Per the critical report's audit of this systematic review (33 studies):
+    biomechanical and blood-flow imaging parameters can distinguish active
+    and latent trigger points from healthy tissue, with the review
+    emphasizing the need for better reproducibility and diagnostic-accuracy
+    research.
+  editorInference: >-
+    The imaging literature's positive residue — including the Doppler flow
+    abnormalities the essay reads as the latch's footprint — survives
+    systematic review, with reproducibility caveats attached. This record's
+    characterization is second-hand from the critical report; the review's
+    full text has not been checked.
+  limitations:
+    - "Heterogeneous techniques and trigger-point definitions across the included studies."
+    - "Characterization taken from the critical report; not verified against the paper's full text."
+  reviewState: ai_extracted
+  origin:
+    ref: "Stored Tension critical report §trigger-point audit; citation verified 2026-08-22"
+    extractedBy: "Fable (AI agent)"
+    runId: "vaso-extract-2026-08"
+    date: "2026-08-22"
+
+# ── Attention, breath, and the autonomic lever ──────────────────────────────
+
+- id: VASO-E008
+  title: "Attention regulates acute inflammation (histamine skin prick)"
+  claimIds: [VASO-C006]
+  sourceId: SRC-MIZRACHI-2026
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    In preregistered within-subject experiments (57 volunteers), directing
+    attention toward the sensations of a standardized histamine skin prick
+    produced ~1.5-fold smaller and faster-resolving wheal and flare
+    responses than distraction, in ~90% of participants across two cohorts.
+    Skin conductance, heart rate, skin temperature, and self-reported
+    anxiety did not differ between conditions, while heart-rate variability
+    was higher under internal attention; a sensory route (degraded by
+    lidocaine) and a top-down vagal route (surviving lidocaine) both
+    contributed.
+  editorInference: >-
+    A controlled existence proof of the channel the synthesis needs:
+    voluntary interoceptive attention, with no arousal change, measurably
+    regulating peripheral physiology at a specific site. The measured tissue
+    was a vascular bed — but the demonstrated route is vagal immune
+    regulation over ~20 minutes, not seconds-scale latch release.
+  limitations:
+    - "Single lab, published 2026-08-17; acute model in healthy skin; molecular mediators not directly measured (authors' own caution)."
+    - "The authors note the parasympathetic system does not innervate skin directly; nothing here concerns trigger points or smooth-muscle latches."
+  reviewState: ai_extracted
+  origin:
+    ref: "Knots of Existence essay §attention study; verified against the NHB paper 2026-08-22"
+    extractedBy: "Fable (AI agent)"
+    runId: "vaso-extract-2026-08"
+    date: "2026-08-22"
+
+- id: VASO-E009
+  title: "Slow breathing's documented autonomic correlates"
+  claimIds: [VASO-C013]
+  sourceId: SRC-ZACCARO-2018
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    A systematic review of slow-breathing studies in healthy humans found
+    reproducible increases in respiratory sinus arrhythmia and heart-rate
+    variability and related autonomic and central nervous system changes,
+    consistent with a shift toward parasympathetic dominance.
+  editorInference: >-
+    The breath is a real autonomic lever — the one voluntary handle on the
+    system. This establishes the global shift only; the local, site-specific
+    unlatching the featured hypothesis adds on top is exactly what has never
+    been measured.
+  limitations:
+    - "Global cardiovascular indices in healthy subjects; no local tissue or tender-point measurements."
+  reviewState: ai_extracted
+  origin:
+    ref: "Stored Tension critical report §does exhalation release knots; verified 2026-08-22"
+    extractedBy: "Fable (AI agent)"
+    runId: "vaso-extract-2026-08"
+    date: "2026-08-22"
+
+# ── The construct critique (undermining the observational base) ─────────────
+
+- id: VASO-E010
+  title: "The Quintner–Bove–Cohen critique of the trigger-point construct"
+  claimIds: [VASO-C030]
+  sourceId: SRC-QUINTNER-2015
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    The authors argue the myofascial trigger-point construct rests on
+    circular reasoning and unproven assumptions: the lesion has never been
+    demonstrated, examiner reliability is poor, and the clinical phenomena
+    attributed to trigger points can be better explained by other mechanisms
+    (they propose neurogenic inflammation of peripheral nerves).
+  editorInference: >-
+    The serious peer-reviewed case against the entire observational base of
+    this case's featured hypothesis. Its force against the latch reading is
+    partial: the critique targets the classic taut-band construct and its
+    diagnosis, not the existence of tenderness or of the instrumented
+    abnormalities — and a vascular mechanism is, if anything, closer to the
+    critics' "it isn't the muscle" instinct than the classic theory is.
+  limitations:
+    - "Answered point-by-point by Dommerholt & Gerwin (2015); the debate remains open rather than settled in the critics' favor."
+  reviewState: ai_extracted
+  origin:
+    ref: "Stored Tension critical report §trigger-point audit; verified 2026-08-22"
+    extractedBy: "Fable (AI agent)"
+    runId: "vaso-extract-2026-08"
+    date: "2026-08-22"
+
+- id: VASO-E011
+  title: "Systematic review: trigger-point palpation is not reliably reproducible"
+  claimIds: [VASO-C030]
+  sourceId: SRC-LUCAS-2009
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    A systematic review of examination-reliability studies concluded that
+    manual physical examination for myofascial trigger points has not been
+    demonstrated to be reliable or valid, in part because no accepted
+    reference standard exists, and could not currently be recommended as an
+    objective diagnostic test.
+  editorInference: >-
+    The measurement problem underneath everything: studies on both sides of
+    this case locate their object by palpation. Any decisive experiment must
+    first solve blinded, instrumented localization — which is why the
+    keystone study design requires it.
+  limitations:
+    - "Assesses the manual exam, not instrumented detection; imaging-anchored localization may escape the problem."
+  reviewState: ai_extracted
+  origin:
+    ref: "Stored Tension critical report §trigger-point audit; verified 2026-08-22"
+    extractedBy: "Fable (AI agent)"
+    runId: "vaso-extract-2026-08"
+    date: "2026-08-22"
+
+- id: VASO-E012
+  title: "Even the 'palpable discrete spot' is disputed, not just its mechanism"
+  claimIds: [VASO-C001]
+  sourceId: SRC-STORED-TENSION-2026
+  direction: qualifies
+  strength: moderate
+  sourceStatement: >-
+    The critical report finds that the essay overstates one point: it is not
+    true that skeptics dispute only the mechanism while conceding that
+    precisely localizable palpable spots exist. The reproducibility and
+    ontological status of the spots themselves are part of the academic
+    debate.
+  editorInference: >-
+    A correction imported against the featured essay's own framing: the
+    observation rung is softer than the essay presents it.
+  limitations:
+    - "The report's synthesis judgment, resting on the Lucas and Quintner lines above rather than on new data."
+  reviewState: ai_extracted
+  origin:
+    ref: "Stored Tension critical report §trigger-point audit"
+    extractedBy: "Fable (AI agent)"
+    runId: "vaso-extract-2026-08"
+    date: "2026-08-22"
+
+# ── The synthesis and its gaps ───────────────────────────────────────────────
+
+- id: VASO-E013
+  title: "Johnson's three vasocomputation hypotheses"
+  claimIds: [VASO-C021, VASO-C020]
+  sourceId: SRC-JOHNSON-2023
+  direction: context
+  strength: moderate
+  sourceStatement: >-
+    Johnson proposes three hypotheses: Compressive Vasomotion (vasomotion
+    functions as a compression sweep collapsing ambiguous neural patterns),
+    Vascular Clamp (vascular contractions freeze local neural patterns for
+    their duration, functioning as predictions and medium-term memory), and
+    Latched Hyperprior (contractions held long enough engage the smooth-
+    muscle latch-bridge, durably freezing nearby circuitry until the
+    corresponding prediction resolves) — mapping the stack onto Buddhist
+    tanha.
+  editorInference: >-
+    The synthesis this case examines, stated by its originator. It is a
+    self-published theoretical program: as of August 2026 its experimental
+    projects (per Edge City materials cited in the critical report) seek
+    direct evidence rather than reporting it.
+  limitations:
+    - "Not peer reviewed; no experimental validation published; the mapping from latch physiology to cognitive content is the theory's central unproven step."
+  reviewState: ai_extracted
+  origin:
+    ref: "opentheory.net essay; verified against the live page 2026-08-22"
+    extractedBy: "Fable (AI agent)"
+    runId: "vaso-extract-2026-08"
+    date: "2026-08-22"
+
+- id: VASO-E014
+  title: "First-person report: the two-key release protocol"
+  claimIds: [VASO-C004]
+  sourceId: SRC-JHONG-2026
+  direction: supports
+  strength: weak
+  sourceStatement: >-
+    The essay reports, as first-person and practitioner experience: pressure
+    locates a knot but does not release it; release comes with breath —
+    press into a knot, breathe slowly, and on a long exhale something lets
+    go, in seconds. Fresh knots yield in a session; old ones take months.
+  editorInference: >-
+    The anchor phenomenon of the whole case, honestly labeled: first-person
+    phenomenology from the hypothesis's proponent (in an essay whose text
+    was AI-generated at the author's direction), consistent with widespread
+    practitioner lore, measured by no one.
+  limitations:
+    - "Testimony, not measurement; proponent source; expectation and attention effects cannot be excluded from any first-person release report."
+  reviewState: ai_extracted
+  origin:
+    ref: "Knots of Existence essay §phenomenology"
+    extractedBy: "Fable (AI agent)"
+    runId: "vaso-extract-2026-08"
+    date: "2026-08-22"
+
+- id: VASO-E015
+  title: "Tender-point ubiquity and the missing census"
+  claimIds: [VASO-C001]
+  sourceId: SRC-JHONG-2026
+  direction: supports
+  strength: weak
+  sourceStatement: >-
+    The essay reports that anyone with a foam roller can locate dozens of
+    tender points, densest around hips and shoulders and more numerous with
+    age; it cites fibromyalgia-era community tender-point exams (medians of
+    6 in women and 3 in men, counts tracking distress) as the closest
+    existing data — and observes that no knot census (count, distribution,
+    or age curve) has ever been performed.
+  editorInference: >-
+    The community-exam figures are the essay's second-hand characterization
+    — the underlying rheumatology survey has not been located and verified
+    in this project. The census gap itself is confirmed by the critical
+    report and is the case's cheapest decisive research opportunity.
+  limitations:
+    - "Second-hand statistics; underlying citation unverified — figures should not carry weight until traced."
+  reviewState: ai_extracted
+  origin:
+    ref: "Knots of Existence essay §the census nobody has taken"
+    extractedBy: "Fable (AI agent)"
+    runId: "vaso-extract-2026-08"
+    date: "2026-08-22"
+
+- id: VASO-E016
+  title: "The critical report's grade-D audit of the two linchpins"
+  claimIds: [VASO-C020]
+  sourceId: SRC-STORED-TENSION-2026
+  direction: undermines
+  strength: strong
+  sourceStatement: >-
+    The report's graded evidence matrix assigns grade D — no direct evidence
+    located — to both linchpin propositions: "a knot releases objectively in
+    seconds during exhalation" (no synchronized time-resolved imaging study
+    found) and "the releasing element is vascular smooth muscle" (no study
+    identifies a smooth-muscle latch at a trigger point; the EMG chatter is
+    neuromuscular, not vascular).
+  editorInference: >-
+    The featured hypothesis's two load-bearing empirical steps are currently
+    unevidenced, not merely under-evidenced: the mechanism is borrowed from
+    vascular physiology, not observed at a tender point. This is the case's
+    single most important undermining record.
+  limitations:
+    - "Absence of evidence after one AI literature search is not a completed systematic review; the report itself frames these as unrun experiments rather than refutations."
+  reviewState: ai_extracted
+  origin:
+    ref: "Stored Tension critical report — evidence matrix"
+    extractedBy: "Fable (AI agent)"
+    runId: "vaso-extract-2026-08"
+    date: "2026-08-22"
+
+- id: VASO-E017
+  title: "Hysteresis is not yet memory: the missing write–store–read demonstration"
+  claimIds: [VASO-C021]
+  sourceId: SRC-STORED-TENSION-2026
+  direction: qualifies
+  strength: moderate
+  sourceStatement: >-
+    The report argues that biological memory requires state that depends on
+    prior input, can later be read out, and discriminates between different
+    prior inputs — criteria the latch literature does not address. It notes
+    that the closest empirical precedent is not mammalian: Physarum slime
+    mold demonstrably stores nutrient locations in the tube-diameter
+    hierarchy of its living flow network (Kramar & Alim 2021), a genuine
+    write–store–read loop — in an organism whose tubes are its own motile
+    body.
+  editorInference: >-
+    A thermostat's hysteresis is not autobiographical memory. The weak form
+    of vasocomputation (vascular state shapes neural computation) is now
+    plausible; the strong form (latches store thoughts) has no direct
+    evidence, and the best evidence that flow networks can store information
+    comes from an organism very unlike us.
+  limitations:
+    - "The Kramar & Alim citation was reproduced from the report and its PNAS identifier not independently re-verified; used here as the report's argument, not as an imported source."
+  reviewState: ai_extracted
+  origin:
+    ref: "Stored Tension critical report §Physarum; §latch is not yet a memory register"
+    extractedBy: "Fable (AI agent)"
+    runId: "vaso-extract-2026-08"
+    date: "2026-08-22"
+
+- id: VASO-E018
+  title: "A whole-body ultrasound platform exists — as a prototype, for composition"
+  claimIds: [VASO-C001]
+  sourceId: SRC-BUTTERFLY-MIDJOURNEY-2026
+  direction: context
+  strength: weak
+  sourceStatement: >-
+    Butterfly Network confirmed Midjourney Medical's June 2026 announcement
+    of a full-body tomographic ultrasound scanner: a prototype ring of 40
+    Ultrasound-on-Chip modules scanning a submerged body in about sixty
+    seconds, body-composition imaging as the announced application, spa
+    deployment planned for 2027, and no diagnostic clearance.
+  editorInference: >-
+    Relevant to feasibility of the knot census, not to any mechanism claim:
+    the coverage problem that made whole-body tissue mapping impractical is
+    being attacked commercially. The essay's "just a firmware update" gloss
+    overstates it — volumetric elastography and microvascular Doppler on
+    this hardware are undemonstrated engineering, per the critical report.
+  limitations:
+    - "Prototype announcement with commercial incentives; images composition (structure), not the stiffness/flow state channels a census needs; unverified performance claims; no clearance."
+  reviewState: ai_extracted
+  origin:
+    ref: "Knots of Existence essay §scanner; verified against Butterfly press release 2026-08-22"
+    extractedBy: "Fable (AI agent)"
+    runId: "vaso-extract-2026-08"
+    date: "2026-08-22"

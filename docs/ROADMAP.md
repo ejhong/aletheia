@@ -22,6 +22,22 @@ Goal: a repeatable AI pipeline that turns source books/papers into candidate cla
 
 Also feeds case #2 (vasocomputation): mine the "Knots of Existence" Substack article (`research/vasocomputation/`) and Michael Johnson's published QRI works.
 
+## Confirmed future case slate (recorded 2026-08-22)
+
+In rough order of readiness, after the geopolymer case:
+
+1. **Vasocomputation + foam rolling / muscle knots** — in progress on branch
+   `case/vasocomputation`.
+2. **Orch OR (Penrose–Hameroff)** — orchestrated objective reduction as a
+   theory of consciousness; quantum effects in microtubules.
+3. **Beatriz Villarroel's VASCO transients** — vanishing and appearing
+   sources in century-spanning sky surveys.
+4. **Graham Hancock's pre-Ice-Age civilization / common cultural motifs** —
+   candidate structure: a meta-case with sub-cases (individual sites and
+   motif families each get their own claim ladder; the meta-case aggregates).
+5. **Lucadou's Model of Pragmatic Information** — entanglement-inspired
+   account of psi effects and their systematic elusiveness.
+
 ## Phase 2 — Canonical content system
 
 Goal: make structured records durable and versioned.

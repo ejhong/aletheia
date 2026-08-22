@@ -12,6 +12,7 @@ import {
   caseCover,
   featuredClaims,
   getCaseBySlug,
+  historyNewestFirst,
   latestAssessment,
   loadAllCases,
 } from "@/src/domain/load";
@@ -183,7 +184,7 @@ export default async function CasePage({
             Trust comes partly from showing changed minds. {site.name} records
             what changed, why, and who — including the AI&apos;s role.
           </p>
-          <ChangeTimeline entries={loaded.history} />
+          <ChangeTimeline entries={historyNewestFirst(loaded.history)} />
         </section>
       </div>
     </div>

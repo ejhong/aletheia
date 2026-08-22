@@ -9,10 +9,12 @@ import {
   catalogClaims,
   featuredClaims,
   getCaseBySlug,
+  historyNewestFirst,
   latestAssessment,
   liveClaims,
   loadAllCases,
   loadSiteImages,
+  recentChanges,
 } from "./load";
 import { ClaimSchema, EvidenceSchema, ImageSchema } from "./schema";
 
@@ -63,6 +65,26 @@ describe("real content", () => {
     expect(text).not.toMatch(/harmonic research/i);
   });
 
+  it("every live case surfaces its latest change in the homepage feed", () => {
+    // Regression: with a date-only sort and a hard cap, a burst of same-day
+    // entries on one case evicted the vasocomputation launch entirely.
+    const cases = loadAllCases();
+    const feed = recentChanges(cases, 4);
+    for (const c of cases) {
+      const latest = historyNewestFirst(c.history)[0];
+      expect(latest).toBeDefined();
+      expect(
+        feed.some(
+          (e) => e.caseSlug === c.record.slug && e.change === latest?.change,
+        ),
+      ).toBe(true);
+    }
+    // Newest-first display order.
+    for (let i = 1; i < feed.length; i++) {
+      expect(feed[i - 1]!.date >= feed[i]!.date).toBe(true);
+    }
+  });
+
   it("article parses into blocks with claim refs", () => {
     const geo = getCaseBySlug("megalithic-casting");
     const blocks = parseArticle(geo.overviewMarkdown);
@@ -86,6 +108,50 @@ describe("real content", () => {
     for (const ref of extractPlateRefs(geo.overviewMarkdown)) {
       expect(plateIds.has(ref)).toBe(true);
     }
+  });
+});
+
+describe("recent-changes feed", () => {
+  const entry = (date: string, change: string) => ({
+    date,
+    change,
+    reason: "r",
+    actor: "a",
+    aiAssisted: false,
+  });
+
+  it("a busy case cannot evict another case's latest change", () => {
+    const busy = {
+      record: { title: "Busy", slug: "busy" },
+      history: [
+        entry("2026-08-22", "busy-1"),
+        entry("2026-08-22", "busy-2"),
+        entry("2026-08-22", "busy-3"),
+        entry("2026-08-22", "busy-4"),
+      ],
+    };
+    const fresh = {
+      record: { title: "Fresh", slug: "fresh" },
+      history: [entry("2026-08-22", "fresh launch")],
+    };
+    const feed = recentChanges([busy, fresh], 3);
+    expect(feed.length).toBe(3);
+    expect(feed.some((e) => e.change === "fresh launch")).toBe(true);
+    // The busy case's own most recent entry (last appended) is there too.
+    expect(feed.some((e) => e.change === "busy-4")).toBe(true);
+  });
+
+  it("orders same-date history entries newest-appended-first", () => {
+    const sorted = historyNewestFirst([
+      entry("2026-08-01", "old"),
+      entry("2026-08-22", "first that day"),
+      entry("2026-08-22", "second that day"),
+    ]);
+    expect(sorted.map((e) => e.change)).toEqual([
+      "second that day",
+      "first that day",
+      "old",
+    ]);
   });
 });
 

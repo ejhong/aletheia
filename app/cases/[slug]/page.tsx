@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { ArgumentLadder } from "@/src/components/ArgumentLadder";
 import { ArticleBody } from "@/src/components/ArticleBody";
 import { AssessmentPanel } from "@/src/components/AssessmentPanel";
@@ -7,6 +6,7 @@ import { ChangeTimeline } from "@/src/components/ChangeTimeline";
 import { DossierHeader } from "@/src/components/DossierHeader";
 import { EvidenceCard } from "@/src/components/EvidenceCard";
 import { ResearchCard } from "@/src/components/ResearchCard";
+import { SectionNav } from "@/src/components/SectionNav";
 import { site } from "@/src/config/site";
 import {
   caseCover,
@@ -69,28 +69,7 @@ export default async function CasePage({
         cover={caseCover(loaded)}
       />
 
-      {/* section navigator */}
-      <nav className="border-b border-line bg-paper sticky top-0 z-10">
-        <div className="mx-auto max-w-6xl px-5 overflow-x-auto">
-          <div className="flex gap-6 py-3 whitespace-nowrap">
-            {sections.map(([id, label]) => (
-              <a
-                key={id}
-                href={`#${id}`}
-                className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-soft hover:text-copper"
-              >
-                {label}
-              </a>
-            ))}
-            <Link
-              href={`/cases/${slug}/claims/`}
-              className="font-mono text-[11px] uppercase tracking-[0.14em] text-copper ml-auto"
-            >
-              all claims →
-            </Link>
-          </div>
-        </div>
-      </nav>
+      <SectionNav sections={sections} slug={slug} />
 
       <div className="mx-auto max-w-6xl px-5">
         {run ? (

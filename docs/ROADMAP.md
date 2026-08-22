@@ -52,9 +52,19 @@ Research documents for cases 3–7 live in `research/` (filenames as present):
 7. **CCC — Penrose's Conformal Cyclic Cosmology** — concentric low-variance
    CMB circles, Hawking points, and the disputed null-model statistics of
    the rebuttals. Research report forthcoming.
-8. **Graham Hancock's pre-Ice-Age civilization** — meta-case; sub-cases
-   referenced rather than rebuilt (the geopolymer case already counts).
-   Scoping deliberately deferred pending a dedicated discussion.
+8. **Younger Dryas Impact Hypothesis (YDIH)** — a cosmic impact/airburst
+   ~12,800 years ago as the trigger for the Younger Dryas cooling,
+   megafaunal extinctions, and cultural disruption. Research-rich in both
+   directions: the Comet Research Group's evidence lines (platinum
+   anomalies, nanodiamonds, black mat stratigraphy) versus comprehensive
+   critiques (e.g. Holliday et al. 2023, the "requiem" paper). An
+   Athanatos Foundation–funded research area (UofSC/UCSB). No research
+   doc in `research/` yet.
+
+There is no Hancock category or meta-case: its constituent questions are
+split into standalone cases (geopolymer and YDIH already are), and other
+formerly-Hancock-adjacent questions (e.g. cultural motif transmission)
+may become future standalone cases as warranted.
 
 ## Phase 2 — Canonical content system
 

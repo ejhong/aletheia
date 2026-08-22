@@ -1,0 +1,728 @@
+# Canon layer. Claims extracted by an AI agent (Fable) from the transients
+# research report (research/ folder) and the independently verified source
+# literature, 2026-08-22. reviewState is honest provenance: nothing here has
+# been hand-checked by a human yet.
+#
+# The ladder deliberately separates five propositions the popular story
+# fuses: (1) the marks are real features of the plate material, (2) they
+# were made by light entering the telescope, (3) the light came from objects
+# near Earth, (4) those objects were artificial, (5) they were
+# extraterrestrial. Evidence for one rung must not silently climb.
+
+# ── Attribution rung ────────────────────────────────────────────────────────
+
+- id: TRN-C022
+  statement: >-
+    Artificial objects capable of producing the reported plate detections
+    were present near Earth before the launch of Sputnik 1 in October 1957.
+  plainLanguage: >-
+    The headline claim. If any pre-Sputnik plate transient really was a
+    sunlight glint from an artificial object, something manufactured was in
+    orbit before the first satellite officially existed — a discovery-grade
+    result no matter whose object it was.
+  theme: attribution
+  rung: attribution
+  tier: featured
+  claimType: existence
+  importance: headline
+  reviewState: ai_extracted
+  origin:
+    ref: "transients research report — proposed AST-C034"
+    extractedBy: "Fable (AI agent)"
+    runId: "transients-import-2026-08-22"
+    date: "2026-08-22"
+  credibility: unresolved
+  credibilitySummary: >-
+    Nothing in the present record establishes this. Every path to it runs
+    through TRN-C020 (real incident light) and TRN-C021 (near-Earth
+    reflective origin), both unresolved; the ensemble statistics offered in
+    its support are contested and lineage-bound.
+  diagnosticity: high
+  diagnosticitySummary: >-
+    This is the thesis the case exists to test; the ladder below it exists
+    to keep evidence for weaker claims from silently counting as evidence
+    for this one.
+  parentClaimIds: []
+  dependsOnClaimIds: [TRN-C020, TRN-C021]
+  strongestObjection: >-
+    The entire evidentiary base is single-exposure marks on photographic
+    material with a documented copy-defect pathway (TRN-C007), and the one
+    observation that would rule that pathway out — the marks' presence on
+    the original telescope negatives with incident-light signatures — has
+    never been made.
+  whatWouldChangeOurMind:
+    - "Blinded confirmation that canonical candidates exist on the original POSS-I telescope negatives with optical signatures of incident light (TRN-R001)."
+    - "An Earth-shadow deficit or equivalent orbital signature reproduced in an independently extracted candidate population (TRN-R005)."
+    - "Demonstration that the canonical events are copy-stage defects, which would remove the claim's physical basis."
+
+- id: TRN-C023
+  statement: >-
+    The reflective objects responsible for pre-Sputnik plate transients were
+    extraterrestrial technological artifacts.
+  plainLanguage: >-
+    The maximal reading, made explicit so it can be graded honestly rather
+    than smuggled in: even a proven pre-Sputnik artificial object would
+    still need a separate origin argument — ruling out secret human
+    programs, unknown natural reflectors, and measurement error — before
+    "extraterrestrial" followed.
+  theme: attribution
+  rung: attribution
+  tier: featured
+  claimType: existence
+  importance: major
+  reviewState: ai_extracted
+  origin:
+    ref: "transients research report — proposed AST-C035"
+    extractedBy: "Fable (AI agent)"
+    runId: "transients-import-2026-08-22"
+    date: "2026-08-22"
+  credibility: unresolved
+  credibilitySummary: >-
+    Unsupported on present evidence — and, in practice, untestable today:
+    no observation now on the table can bear on this claim until the rungs
+    below it resolve, and even a demonstrated pre-Sputnik artificial object
+    would require a separate historical and engineering argument about
+    origin. Graded unresolved for consistency with the other open
+    attribution rungs; the absence of any currently decisive test is
+    recorded here rather than in the label.
+  diagnosticity: high
+  diagnosticitySummary: >-
+    Maximum stakes, maximum distance from the data. Its role in the case is
+    to be visibly separated from TRN-C022, which does not imply it.
+  parentClaimIds: [TRN-C022]
+  dependsOnClaimIds: [TRN-C022]
+  strongestObjection: >-
+    Every lower rung of the ladder is unresolved or contested, and the
+    prior literature on archival optical transients (the GRB-search era)
+    shows how often star-like plate marks dissolved into emulsion defects
+    under scrutiny.
+  whatWouldChangeOurMind:
+    - "Resolution of TRN-C022 in either direction — this claim has no independent evidence stream of its own."
+
+- id: TRN-C021
+  statement: >-
+    At least some of the disputed pre-Sputnik flashes were sunlight
+    reflected from objects physically near Earth (at geosynchronous-like
+    altitudes) rather than light from distant astronomical sources.
+  plainLanguage: >-
+    The near-Earth rung: if the flashes were real and came from glinting
+    objects in high orbit, they should behave geometrically — vanishing in
+    Earth's shadow, repeating along orbital paths — in ways distant
+    astrophysical sources would not.
+  theme: attribution
+  rung: attribution
+  tier: featured
+  claimType: interpretive
+  importance: major
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Villarroel et al. 2022, Acta Astronautica 194: 106–113, abstract (the hypothesis-statement paper; read via arXiv 2110.15217)"
+    quote: >-
+      even the small pieces of reflective debris in orbit around the Earth
+      can be identified through searches for multiple transients in old
+      photographic plate material exposed before the launch of first human
+      satellite in 1957.
+    sourceId: SRC-VILLARROEL-2022-GLINT
+  origin:
+    ref: "transients research report — proposed AST-C031/C032"
+    extractedBy: "Fable (AI agent)"
+    runId: "transients-import-2026-08-22"
+    date: "2026-08-22"
+  credibility: unresolved
+  credibilitySummary: >-
+    The supporting geometry (Earth-shadow deficit) replicates only
+    conditional on the VASCO working catalog (TRN-C005) and is disputed in
+    vetted subsets; multiple simultaneous point flashes across tens of
+    arcminutes do argue against most distant-source explanations if the
+    flashes were real — but that premise (TRN-C020) is exactly what is
+    unresolved.
+  diagnosticity: high
+  diagnosticitySummary: >-
+    The discriminating rung between "unknown astrophysics" and "something
+    in orbit": an orbital population makes specific, testable geometric
+    predictions that plate defects and distant sources do not share.
+  parentClaimIds: [TRN-C022]
+  dependsOnClaimIds: [TRN-C020]
+  strongestObjection: >-
+    The one geometric signature claimed so far — the Earth-shadow deficit —
+    fails to appear when the analysis is run on more heavily vetted
+    candidate sets with the background's spatial non-uniformity modeled
+    (Watters et al. 2026), so the near-Earth reading currently rests on the
+    least-vetted data.
+  whatWouldChangeOurMind:
+    - "A preregistered Earth-shadow analysis reproducing the deficit across independently constructed catalogs (TRN-R005)."
+    - "Demonstration that the multiple-transient events are copy-stage defects, which would dissolve the geometry entirely."
+
+- id: TRN-C020
+  statement: >-
+    At least some of the disputed pre-Sputnik plate marks were produced by
+    light entering the telescope during the original exposure, rather than
+    being introduced afterwards in the emulsion, the copying chain, or
+    digitization.
+  plainLanguage: >-
+    The crux of the whole case: were the marks made by photons from the sky
+    at the moment of exposure, or manufactured later — as chemistry,
+    handling damage, or copying defects? Every exotic reading depends on
+    this; no ensemble statistic can substitute for settling it.
+  theme: attribution
+  rung: attribution
+  tier: featured
+  claimType: existence
+  importance: headline
+  reviewState: ai_extracted
+  origin:
+    ref: "transients research report — proposed AST-C030"
+    extractedBy: "Fable (AI agent)"
+    runId: "transients-import-2026-08-22"
+    date: "2026-08-22"
+  credibility: unresolved
+  credibilitySummary: >-
+    Genuinely open. Against: the canonical marks are unusually sharp in
+    exactly the way plate artifacts are (TRN-C002 as read by Hambly &
+    Blair), and a concrete copy-defect pathway exists (TRN-C007). For:
+    sub-second flashes are also expected to be sharp, and Hamburg
+    candidates — outside the Palomar copy lineage — reportedly carry coma
+    signatures of light through the optics (TRN-C011). The decisive
+    observation (original negatives, blinded) has never been made.
+  diagnosticity: high
+  diagnosticitySummary: >-
+    The gate between "interesting plate forensics" and "real sky events."
+    Everything above it is conditional; everything below it is secure
+    regardless of how it resolves.
+  parentClaimIds: [TRN-C022]
+  dependsOnClaimIds: [TRN-C001]
+  strongestObjection: >-
+    Hambly & Blair inspected the actual glass and found the canonical
+    marks morphologically grouped with artifacts, embedded in plate
+    material that visibly carries emulsion holes, bubbles, and copy
+    blemishes — and showed both major digitizations descend from a shared
+    copy stage where a single defect could enter every later dataset.
+  whatWouldChangeOurMind:
+    - "Blinded high-resolution examination of the original telescope negatives at the candidate positions (TRN-R001)."
+    - "Blind validation (or failure) of the coma-aberration discriminant on known flashes and known defects (TRN-R003)."
+    - "Measured copy-stage defect rates high enough to account for the canonical events (TRN-R007)."
+
+# ── Mechanism rung ──────────────────────────────────────────────────────────
+
+- id: TRN-C007
+  statement: >-
+    The DSS and SuperCOSMOS digitizations of POSS-I derive from separate
+    glass copy negatives that share a common intermediate positive, so a
+    defect introduced at the shared copy stage can appear in both modern
+    datasets without existing on the original telescope negative.
+  plainLanguage: >-
+    The conventional account's keystone, stated as a mechanism rather than
+    a vibe: "it's in two independent scans" sounds like independent
+    confirmation, but the two scans are cousins — they share a photographic
+    ancestor, and a flaw in that ancestor propagates to both descendants.
+  theme: plate-forensics
+  rung: mechanism
+  tier: featured
+  claimType: mechanistic
+  importance: major
+  reviewState: ai_extracted
+  origin:
+    ref: "transients research report — proposed AST-C022/C023"
+    extractedBy: "Fable (AI agent)"
+    runId: "transients-import-2026-08-22"
+    date: "2026-08-22"
+  credibility: well_supported
+  credibilitySummary: >-
+    Hambly & Blair reconstruct the atlas-copying procedure (contact
+    printing through an intermediate glass positive) from the archival
+    record and their own institutional knowledge of the SuperCOSMOS
+    program; the genealogy itself is not disputed by the proponents.
+  diagnosticity: high
+  diagnosticitySummary: >-
+    Defeats the strongest cheap argument for reality ("present in two
+    independent digitizations") and defines what the decisive test must
+    be: the original negatives, not more copies. It does not, by itself,
+    show that any particular mark is a copy defect.
+  parentClaimIds: [TRN-C020]
+  dependsOnClaimIds: []
+  strongestObjection: >-
+    A shared-ancestor pathway proves possibility, not occurrence: no one
+    has yet measured how often copy-stage defects of star-like appearance
+    actually arise, and the mechanism does not touch candidates found on
+    independent plate lineages such as Hamburg's.
+  whatWouldChangeOurMind:
+    - "A defect census across original/positive/copy generations quantifying the star-like defect rate at each stage (TRN-R007)."
+    - "Examination of the original negatives: marks present there would make the copy-genealogy point moot for those events (TRN-R001)."
+
+# ── Observation rung ────────────────────────────────────────────────────────
+
+- id: TRN-C001
+  statement: >-
+    Nine star-like point sources are present at the reported positions on
+    surviving glass copy material of the POSS-I red plate exposed on 12
+    April 1950 (field E0070), and are absent from the overlapping plate
+    exposed six days later and from deeper modern surveys.
+  plainLanguage: >-
+    The canonical event, reduced to what nobody disputes: nine dots exist
+    on the physical plate material — they are not scanner glitches — they
+    appeared together, and nothing at those positions has ever been seen
+    again.
+  theme: canonical-events
+  rung: observation
+  tier: featured
+  claimType: observation
+  importance: major
+  reviewState: ai_extracted
+  origin:
+    ref: "transients research report — proposed AST-C001/C002/C003"
+    extractedBy: "Fable (AI agent)"
+    runId: "transients-import-2026-08-22"
+    date: "2026-08-22"
+  credibility: well_supported
+  credibilitySummary: >-
+    Unusually solid for this literature: reported by the proponents
+    (Villarroel et al. 2021), physically confirmed on the Royal Observatory
+    Edinburgh glass copy by the case's principal critics (Hambly & Blair
+    2024), and recovered by an independent detection pipeline (Hayes 2026).
+    Skeptics and proponents agree the marks exist; they disagree about what
+    made them.
+  diagnosticity: low
+  diagnosticitySummary: >-
+    "The marks exist on plate material" is compatible with every hypothesis
+    in the case, from emulsion defects to artificial glints. Its value is
+    as the secure floor the dispute stands on.
+  parentClaimIds: [TRN-C020]
+  dependsOnClaimIds: []
+  strongestObjection: >-
+    Not to existence, but to uniqueness: Hambly & Blair also found similar
+    one-plate-only detections on the neighboring field E0086 that are
+    absent from E0070 — suggesting the phenomenon is a property of plates
+    generally, which fits a defect population at least as well as a sky
+    population.
+  whatWouldChangeOurMind:
+    - "Examination of the original 1950 telescope negative: absence there would reassign the event to the copying chain (TRN-R001)."
+
+- id: TRN-C002
+  statement: >-
+    The nine April 1950 detections are systematically sharper and more
+    concentrated than stellar images of comparable brightness on the same
+    plate, with all nine falling on the sharp side of the plate's
+    profile-statistic distribution.
+  plainLanguage: >-
+    The pivotal shared observation: both camps agree the dots are too sharp
+    to be ordinary star images. Skeptics read sharpness as the signature of
+    emulsion artifacts; proponents read it as exactly what a sub-second
+    flash should look like on a 50-minute exposure. One measurement, two
+    stories — and no calibration experiment to arbitrate.
+  theme: image-morphology
+  rung: observation
+  tier: featured
+  claimType: measurement
+  importance: major
+  reviewState: ai_extracted
+  origin:
+    ref: "transients research report — proposed AST-C004"
+    extractedBy: "Fable (AI agent)"
+    runId: "transients-import-2026-08-22"
+    date: "2026-08-22"
+  credibility: well_supported
+  credibilitySummary: >-
+    Measured by Hambly & Blair from SuperCOSMOS profile statistics (all
+    nine in the sharp tail; jointly vanishingly unlikely draws from the
+    stellar distribution), consistent with their microscope inspection, and
+    not disputed by the proponents — who embrace the same measurement with
+    the opposite interpretation.
+  diagnosticity: moderate
+  diagnosticitySummary: >-
+    High information content, ambiguous direction: sharpness discriminates
+    "ordinary star" from "flash or artifact" but cannot by itself split
+    flash from artifact. The flash-profile calibration experiment
+    (TRN-R002) exists to convert this observation into a decisive one.
+  parentClaimIds: [TRN-C020]
+  dependsOnClaimIds: [TRN-C001]
+  strongestObjection: >-
+    In the SuperCOSMOS classification vocabulary, "sharper than stellar" is
+    the known morphological neighborhood of spurious detections — the
+    conservative reading is artifact until a flash calibration curve shows
+    otherwise.
+  whatWouldChangeOurMind:
+    - "Experimental calibration of sub-second flash profiles on period-appropriate Schmidt emulsions against continuously exposed stars (TRN-R002)."
+
+- id: TRN-C003
+  statement: >-
+    Three point sources of roughly 16th magnitude within 10 arcseconds of
+    each other appear on a POSS-I exposure of 19 July 1952 and are absent
+    from the consecutive exposure taken within the hour, and from all
+    subsequent imaging down to magnitude 25.5.
+  plainLanguage: >-
+    The second canonical event: a tight triple that was bright, then gone
+    within about 50 minutes — implying a dimming of more than ten
+    magnitudes — with deep 2023 follow-up confirming nothing is there now.
+  theme: canonical-events
+  rung: observation
+  tier: featured
+  claimType: observation
+  importance: major
+  reviewState: ai_extracted
+  origin:
+    ref: "transients research report — proposed AST-C005"
+    extractedBy: "Fable (AI agent)"
+    runId: "transients-import-2026-08-22"
+    date: "2026-08-22"
+  credibility: well_supported
+  credibilitySummary: >-
+    Peer-reviewed (MNRAS 2024) with modern 10.4-m follow-up, and the three
+    detections are independently recovered by the Hayes pipeline. Unlike
+    the 1950 nine, however, no published physical inspection of the
+    surviving plate material exists, and the report comes entirely from
+    the proponent team.
+  diagnosticity: moderate
+  diagnosticitySummary: >-
+    A second multi-source event makes single-plate freak accidents less
+    comfortable and gives the copy-defect hypothesis a second target it
+    must also explain. It remains one plate lineage and one team's
+    characterization.
+  parentClaimIds: [TRN-C020]
+  dependsOnClaimIds: []
+  strongestObjection: >-
+    Everything known about the triple passes through the same digitized
+    Palomar copy lineage as the 1950 event — the paper's own profile
+    finding (the isolated source looks like the comparison stars, unlike
+    the sharp 1950 nine) shows the "canonical events" are not even
+    morphologically uniform.
+  whatWouldChangeOurMind:
+    - "Physical inspection of the 1952 plate material and, ideally, the original negative (TRN-R001)."
+
+- id: TRN-C004
+  statement: >-
+    Independent source-extraction pipelines recover the canonical
+    detections (eight of nine from April 1950; three of three from July
+    1952) and roughly two-thirds of the published 5,399-candidate catalog,
+    without reference to the original team's software or candidate lists.
+  plainLanguage: >-
+    The detections are not an artifact of one team's private code: an
+    independent pipeline built from scratch finds nearly all the canonical
+    marks and most of the public catalog in the same digitized data.
+  theme: independent-replication
+  rung: observation
+  tier: featured
+  claimType: methodological
+  importance: major
+  reviewState: ai_extracted
+  origin:
+    ref: "transients research report — proposed AST-C006/C007/C008"
+    extractedBy: "Fable (AI agent)"
+    runId: "transients-import-2026-08-22"
+    date: "2026-08-22"
+  credibility: well_supported
+  credibilitySummary: >-
+    Hayes 2026 documents the recovery rates with benchmark controls and
+    synthetic-injection tests. The same work shows the flip side: his
+    full-sky sweep produced 2.85 million candidates against Solano's
+    5,399 — the population's size and composition swing enormously with
+    extraction and vetting choices.
+  diagnosticity: moderate
+  diagnosticitySummary: >-
+    Kills "it's all one team's software bug" cleanly. It cannot address
+    physical origin — the independent pipeline reads the same digitized
+    descendants of the same photographic copies.
+  parentClaimIds: [TRN-C020]
+  dependsOnClaimIds: [TRN-C001]
+  strongestObjection: >-
+    Reproducible detection of marks in shared source imagery is exactly
+    what a defect population would also produce; and the 500-fold spread
+    between independently constructed catalogs shows how little the
+    population's headline size means.
+  whatWouldChangeOurMind:
+    - "A full independent reconstruction of the working catalog from whole-plate scans with published cuts (TRN-R004) — divergence there would undercut every ensemble statistic at once."
+
+- id: TRN-C005
+  statement: >-
+    The ~107,875-object VASCO working catalog shows a deficit of transient
+    candidates inside the modeled Earth shadow at geosynchronous altitude
+    (roughly 0.46% observed against 1.4% geometric expectation).
+  plainLanguage: >-
+    The shadow argument: things that shine by reflected sunlight go dark in
+    Earth's shadow, so a glint population should avoid the shadow cone —
+    and in the big working catalog, it does. The fight is over whether
+    that catalog and that expectation are sound.
+  theme: population-statistics
+  rung: observation
+  tier: featured
+  claimType: statistical
+  importance: major
+  reviewState: ai_extracted
+  origin:
+    ref: "transients research report — proposed AST-C009/C010"
+    extractedBy: "Fable (AI agent)"
+    runId: "transients-import-2026-08-22"
+    date: "2026-08-22"
+  credibility: mixed
+  credibilitySummary: >-
+    Replicated by independent code on the same catalog (Doherty 2026) and
+    reportedly stronger among ML-vetted candidates (Bruehl et al. 2026) —
+    but Watters et al. 2026 show the uniform-background assumption is
+    false for these data and find no significant deficit in more heavily
+    vetted subsets, and the proponents' reply is about statistical power,
+    not a counter-demonstration. Reproducible conditional on the working
+    catalog; unestablished beyond it.
+  diagnosticity: high
+  diagnosticitySummary: >-
+    If real in a clean catalog, this is the single best geometric evidence
+    for a sunlight-reflecting near-Earth population (TRN-C021). If it is
+    an artifact of catalog composition, the strongest ensemble argument
+    collapses.
+  parentClaimIds: [TRN-C021]
+  dependsOnClaimIds: []
+  strongestObjection: >-
+    The deficit is computed against a uniform-random background that the
+    features demonstrably do not follow — their spatial distribution is
+    heterogeneous, edge-concentrated, and shaped like plate and scan
+    artifacts — and it fails to appear in the datasets vetted hardest
+    against exactly those artifacts.
+  whatWouldChangeOurMind:
+    - "A preregistered shadow analysis with frozen masks, thresholds, and geometry, run across at least three independently constructed catalogs (TRN-R005)."
+
+- id: TRN-C006
+  statement: >-
+    Transient-candidate detection rates in the ~107,875-object VASCO
+    working catalog are elevated within one day of atmospheric nuclear
+    weapons tests (relative risk approximately 1.45).
+  plainLanguage: >-
+    The strangest correlation in the case: candidate-rich days cluster
+    around nuclear test dates. Even if real, note what it does not say —
+    fallout dust settling on photographic plates predicts the same
+    correlation as glinting objects do.
+  theme: population-statistics
+  rung: observation
+  tier: featured
+  claimType: statistical
+  importance: major
+  reviewState: ai_extracted
+  origin:
+    ref: "transients research report — proposed AST-C011/C012"
+    extractedBy: "Fable (AI agent)"
+    runId: "transients-import-2026-08-22"
+    date: "2026-08-22"
+  credibility: mixed
+  credibilitySummary: >-
+    Splits cleanly by replication type: independent statistics on the
+    original catalog reproduce it (Doherty: RR 1.45, p = .011; permutation
+    p = .006), and it persists after ML artifact-scoring (Bruehl et al.
+    2026) and Kp control (Cann, TRN-C103) — but the one fully independent
+    extraction (Hayes 2026) finds nothing once nightly survey coverage is
+    modeled (IRR 1.03, p = .71), and Watters et al. attribute the original
+    signal to the observation schedule. Replicates within the catalog
+    lineage; fails across it.
+  diagnosticity: moderate
+  diagnosticitySummary: >-
+    Direction-ambiguous even if real: radioactive contamination of
+    emulsions (a mundane mechanism) and increased observation or glint
+    activity (exotic ones) all predict it. Its main value is as a stress
+    test of catalog integrity and analysis discipline.
+  parentClaimIds: [TRN-C021]
+  dependsOnClaimIds: []
+  strongestObjection: >-
+    When the disputed source-extraction step is actually varied — Hayes's
+    independently built catalog with per-night sky coverage as exposure —
+    the association vanishes; a correlation that only survives inside one
+    team's working sample is more likely a property of the sample than of
+    the sky.
+  whatWouldChangeOurMind:
+    - "A preregistered re-analysis with the exposure denominator built from raw plate logs and the window definition frozen in advance (TRN-R008)."
+
+- id: TRN-C010
+  statement: >-
+    Single-exposure transient candidates analogous to the POSS-I events
+    occur on Hamburg Observatory Schmidt plates — an independent telescope,
+    emulsion stock, plate archive, and digitization lineage.
+  plainLanguage: >-
+    The first evidence that the phenomenon, whatever it is, exists outside
+    the Palomar plate-copy family: rapid same-night Hamburg plate pairs
+    show the same kind of appear-once sources.
+  theme: independent-replication
+  rung: observation
+  tier: featured
+  claimType: observation
+  importance: major
+  reviewState: ai_extracted
+  origin:
+    ref: "transients research report — proposed AST-C013"
+    extractedBy: "Fable (AI agent)"
+    runId: "transients-import-2026-08-22"
+    date: "2026-08-22"
+  credibility: provisionally_supported
+  credibilitySummary: >-
+    Preprint-level: an explicitly preliminary search (41 plates in the
+    initial sample) by one independent researcher, with no false-positive
+    calibration or matched-control rate published yet.
+  diagnosticity: high
+  diagnosticitySummary: >-
+    Because the Hamburg archive shares nothing with the Palomar copying
+    genealogy, candidates there are immune to the copy-defect mechanism
+    (TRN-C007) — though not to plate defects in general. This is the
+    diagnostic axis along which the case can actually move.
+  parentClaimIds: [TRN-C020]
+  dependsOnClaimIds: []
+  strongestObjection: >-
+    Every plate archive has defects, and a search that has not yet
+    published its false-positive rate against matched control pairs cannot
+    distinguish "the sky did this at both observatories" from "old
+    emulsions fail similarly everywhere."
+  whatWouldChangeOurMind:
+    - "A rate-based independent-observatory search with matched controls and injection/recovery calibration (TRN-R006)."
+
+- id: TRN-C011
+  statement: >-
+    A subset of Hamburg transient candidates exhibits the coma aberration
+    pattern expected for off-axis point sources imaged through the
+    telescope optics — a signature that plate-surface artifacts should not
+    naturally reproduce.
+  plainLanguage: >-
+    Potentially the most important new development in the case: a
+    telescope's optical fingerprint (the little comet-shaped distortion it
+    stamps on off-axis light) reportedly appears in candidate transients.
+    Chemistry and scratches don't know where the optical axis is; light
+    does.
+  theme: independent-replication
+  rung: mechanism
+  tier: featured
+  claimType: measurement
+  importance: major
+  reviewState: ai_extracted
+  origin:
+    ref: "transients research report — proposed AST-C014/C025"
+    extractedBy: "Fable (AI agent)"
+    runId: "transients-import-2026-08-22"
+    date: "2026-08-22"
+  credibility: provisionally_supported
+  credibilitySummary: >-
+    A single preprint by one researcher, using a 0.6-m telescope chosen
+    precisely because its coma is strong; the discriminant has not been
+    blind-validated against known defects and deliberately produced short
+    flashes, and the author states plainly that the data do not establish
+    the physical origin of the light.
+  diagnosticity: high
+  diagnosticitySummary: >-
+    If it survives blind validation, this is the closest thing the case
+    has to a physical incident-light detector — it would move specific
+    candidates from "mark" to "light through the optics" (TRN-C020)
+    without touching the original negatives. If it fails validation, the
+    strongest new positive line closes.
+  parentClaimIds: [TRN-C020]
+  dependsOnClaimIds: [TRN-C010]
+  strongestObjection: >-
+    Nobody has yet shown that emulsion or copy defects never mimic
+    coma-like asymmetries, nor that the classifier was protected from the
+    analyst knowing which images were candidates — the blind corpus test
+    (TRN-R003) exists because both failure modes are live.
+  whatWouldChangeOurMind:
+    - "Blind validation of the coma discriminant on a corpus of known stars, known flashes, and known defects with labels frozen in advance (TRN-R003)."
+
+# ── Catalog tier: honestly-unreviewed backlog ────────────────────────────────
+
+- id: TRN-C101
+  statement: >-
+    Ordinary emulsion, copying, and scanning defects produce isolated,
+    approximately star-like point detections on archival photographic
+    plates at rates sufficient to contaminate single-exposure transient
+    searches.
+  plainLanguage: >-
+    The base-rate fact behind the whole mundane-explanation space, learned
+    the hard way by two decades of archival searches for gamma-ray-burst
+    flashes.
+  theme: plate-forensics
+  rung: mechanism
+  tier: catalog
+  claimType: observation
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Watters et al. 2026 (arXiv:2601.21946), §2, review of GRB-era archival optical-transient searches"
+    quote: >-
+      following decades of work, researchers were unable to make a
+      confident identification of a GRB-associated optical transient.
+    sourceId: SRC-WATTERS-2026
+  origin:
+    ref: "transients research report — proposed AST-C026"
+    extractedBy: "Fable (AI agent)"
+    runId: "transients-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: TRN-C102
+  statement: >-
+    A sub-second optical flash recorded during a long photographic exposure
+    is expected to appear sharper and more circular than a star image,
+    because stars accumulate seeing and guiding blur over the exposure.
+  plainLanguage: >-
+    The proponents' physics answer to "too sharp to be real": a real flash
+    should be too sharp to look like a star. Plausible, and never
+    calibrated on period emulsions.
+  theme: image-morphology
+  rung: mechanism
+  tier: catalog
+  claimType: mechanistic
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Villarroel, Solano & Marcy 2025 (arXiv:2507.15896), abstract"
+    quote: >-
+      unresolved flashes lasting less than a second naturally appear
+      sharper and more circular than stellar images, particularly on
+      long-exposure plates where stars are significantly blurred by seeing
+      and tracking errors.
+    sourceId: SRC-VILLARROEL-2025-PROFILES
+  origin:
+    ref: "transients research report — proposed AST-C020"
+    extractedBy: "Fable (AI agent)"
+    runId: "transients-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: TRN-C103
+  statement: >-
+    Transient-candidate detection rates in the VASCO working catalog
+    decline monotonically with geomagnetic activity (Kp index), and
+    controlling for Kp strengthens the reported nuclear-window association.
+  plainLanguage: >-
+    A reported dose-response between space weather and candidate counts in
+    the same working catalog. Recorded here as the measured association
+    only: the paper's leap to "this rules out plate defects" is an
+    interpretation the shared-catalog design cannot carry.
+  theme: population-statistics
+  rung: observation
+  tier: catalog
+  claimType: statistical
+  independenceGroup: vasco-107875-lineage
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: "Cann 2026 (arXiv:2604.04950), §3, Tables 1 and 3"
+    quote: >-
+      Transient detection rates follow a monotonic dose-response across
+      five Kp intensity bins, from 17.4% during geomagnetically quiet
+      periods to 2.4% at Kp 8–9.
+    sourceId: SRC-CANN-2026
+  origin:
+    ref: "transients research report — 'Cann geomagnetic work' entry"
+    extractedBy: "Fable (AI agent)"
+    runId: "transients-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: TRN-C104
+  statement: >-
+    Some POSS-I multiple-transient events are reported to form linear
+    alignments consistent with point sources along a shared sky-projected
+    path.
+  plainLanguage: >-
+    The alignment argument from the 2025 PASP paper. Carried as unreviewed
+    backlog: Watters et al. report that a third of the aligned features
+    were never confidently distinguished from catalog stars.
+  theme: population-statistics
+  rung: observation
+  tier: catalog
+  claimType: statistical
+  independenceGroup: vasco-107875-lineage
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: >-
+      Villarroel et al. 2025, PASP 137: 104504 — characterized here via the
+      paper's title and its discussion in Watters et al. 2026 §4; the paper
+      itself has not been read in full for this record.
+    sourceId: SRC-VILLARROEL-2025-PASP
+  origin:
+    ref: "transients research report — alignment-claims entry"
+    extractedBy: "Fable (AI agent)"
+    runId: "transients-import-2026-08-22"
+    date: "2026-08-22"

@@ -1,0 +1,720 @@
+# Source records. Every citation below was independently checked during the
+# 2026-08-22 import run rather than trusted from the deep-research report that
+# proposed it: DOIs resolved through the Crossref API, and abstracts/author
+# lists read through PubMed, the publisher page, the arXiv API, or the
+# conference program. Verification labels are honest about who checked what:
+#   verified     — the document itself is held in the project library
+#   ai_verified  — citation located and checked by an AI agent; no human re-check
+#   unverified   — cited second-hand; locator or content unconfirmed
+#
+# Three corrections to the input documents were produced by this process and
+# are recorded on the relevant records below: the Kalra 2023 page range, the
+# journal for Saxena 2020, and the year of Warren's comment. A fourth (the
+# Zoghi anesthetic claim) is recorded as an unsupported characterization.
+
+# ── Theory: the primary statements of the hypothesis ───────────────────────
+
+- id: SRC-PENROSE-1996
+  title: "On Gravity's role in Quantum State Reduction"
+  authors: ["Penrose, Roger"]
+  year: "1996"
+  sourceType: paper
+  identifier: "General Relativity and Gravitation 28(5): 581–600. DOI: 10.1007/BF02105068"
+  url: "https://doi.org/10.1007/BF02105068"
+  verification: ai_verified
+  verificationNote: >-
+    Bibliographic record verified via the Crossref API (2026-08-22 run):
+    title, author, journal, volume 28, issue 5, pages 581–600, May 1996.
+  reliabilityNotes:
+    - "The physics half of the theory, independently motivated: this paper argues for gravity-induced state reduction as a problem in quantum foundations, with no reference to biology."
+    - "Supplies a characteristic timescale criterion (τ ≈ ℏ/E_G), not a fully specified stochastic dynamical theory. That underspecification is exactly what makes the Gran Sasso bound hard to apply cleanly (see SRC-MCQUEEN-2023)."
+
+- id: SRC-HAMEROFF-PENROSE-2014
+  title: "Consciousness in the universe: A review of the 'Orch OR' theory"
+  authors: ["Hameroff, Stuart", "Penrose, Roger"]
+  year: "2014"
+  sourceType: paper
+  identifier: "Physics of Life Reviews 11(1): 39–78. DOI: 10.1016/j.plrev.2013.08.002"
+  url: "https://doi.org/10.1016/j.plrev.2013.08.002"
+  verification: ai_verified
+  verificationNote: >-
+    Verified via the Crossref API (2026-08-22 run): authors, journal, volume
+    11, issue 1, pages 39–78, March 2014. Crossref stores the title in
+    truncated form ("Consciousness in the universe"); the full subtitle is
+    confirmed by the PubMed record (PMID 24070914).
+  reliabilityNotes:
+    - "The current canonical statement of the theory, and the one a test should be written against."
+    - "Proponent review, not an experimental report. Published with seven commentaries and two authors' replies — an unusually open exchange, and the best single entry point to the dispute."
+    - "A generation caveat that matters for testing: the original 1996 formulation (Hameroff & Penrose, Mathematics and Computers in Simulation 40(3–4): 453–480) treated tubulin conformational states as qubit-like units, and that version was later replaced by collective dipole and excitonic formulations. An experiment should specify which generation it addresses, because they do not make the same demands."
+
+- id: SRC-WIEST-2025
+  title: "A quantum microtubule substrate of consciousness is experimentally supported and solves the binding and epiphenomenalism problems"
+  authors: ["Wiest, Michael C."]
+  year: "2025"
+  sourceType: paper
+  identifier: "Neuroscience of Consciousness 2025(1): niaf011. DOI: 10.1093/nc/niaf011"
+  url: "https://doi.org/10.1093/nc/niaf011"
+  verification: ai_verified
+  verificationNote: >-
+    Verified via Crossref and PubMed (PMID 40342554, PMCID PMC12060853);
+    abstract read directly (2026-08-22 run). Published 6 May 2025.
+  reliabilityNotes:
+    - "The strongest recent affirmative synthesis, and the source Eugene's primer recommends as the best entry point for a skeptical reader."
+    - "Author is the senior author of the Wellesley epothilone-B experiments (SRC-KHAN-2024, SRC-HUANG-2026) — this review is not independent of the evidence it reviews."
+    - "The abstract describes the Kerskens result as 'direct physical evidence of a macroscopic quantum entangled state in the living human brain.' That characterization is contested in the source literature itself (SRC-WARREN-2023) and is stronger than this case adopts."
+
+# ── The microtubule photophysics line ──────────────────────────────────────
+
+- id: SRC-KALRA-2023
+  title: "Electronic Energy Migration in Microtubules"
+  authors:
+    - "Kalra, Aarat P."
+    - "Benny, Alfy"
+    - "Travis, Sophie M."
+    - "Zizzi, Eric A."
+    - "Morales-Sanchez, Austin"
+    - "Oblinsky, Daniel G."
+    - "Craddock, Travis J. A."
+    - "Hameroff, Stuart R."
+    - "MacIver, M. Bruce"
+    - "Tuszyński, Jack A."
+    - "Petry, Sabine"
+    - "Penrose, Roger"
+    - "Scholes, Gregory D."
+  year: "2023"
+  sourceType: paper
+  identifier: "ACS Central Science 9(3): 352–361. DOI: 10.1021/acscentsci.2c01114"
+  url: "https://doi.org/10.1021/acscentsci.2c01114"
+  verification: ai_verified
+  verificationNote: >-
+    Verified via Crossref and PubMed (PMID 36968538, PMCID PMC10037452);
+    abstract read directly (2026-08-22 run). CORRECTION: Eugene's primer
+    cites the pages as "9(3), 519–529"; the published range is 352–361.
+    Volume, issue, and year in the primer are correct. Open access (ACS
+    author-choice), so the full text is publicly checkable.
+  reliabilityNotes:
+    - "The single most important experiment for the biological half of the theory: senior author Gregory Scholes is a mainstream ultrafast-spectroscopy figure at Princeton, and the work is published in a high-quality general chemistry journal."
+    - "Independence caveat that proponent summaries usually omit: Hameroff and Penrose are both co-authors, as are Craddock and Tuszyński. This is not a disinterested outside laboratory testing Orch OR — it is a collaboration including the theory's authors, run in an outside laboratory."
+    - "The abstract's own framing is modest — 'microtubules are, unexpectedly, effective light harvesters' — and makes no coherence, entanglement, or consciousness claim."
+    - "No independent exact replication as of this import."
+
+- id: SRC-BABCOCK-2024
+  title: "Ultraviolet Superradiance from Mega-Networks of Tryptophan in Biological Architectures"
+  authors:
+    - "Babcock, Nathan S."
+    - "Montes-Cabrera, Gabriel"
+    - "Oberhofer, Kearnan E."
+    - "Chergui, Majed"
+    - "Celardo, Gian Luca"
+    - "Kurian, Philip"
+  year: "2024"
+  sourceType: paper
+  identifier: "The Journal of Physical Chemistry B 128(17): 4035–4046. DOI: 10.1021/acs.jpcb.3c07936"
+  url: "https://doi.org/10.1021/acs.jpcb.3c07936"
+  verification: ai_verified
+  verificationNote: >-
+    Verified via Crossref and PubMed (PMID 38641327, PMCID PMC11075083);
+    abstract read directly (2026-08-22 run). Published online 19 April 2024.
+  reliabilityNotes:
+    - "Partly independent of the Hameroff/Penrose group (Howard University Quantum Biology Laboratory, with EPFL and Florence collaborators); a genuine outside line of evidence for collective microtubule optics."
+    - "Predominantly a theory paper with a confirming fluorescence-quantum-yield measurement, not a coherence measurement. The abstract's 'darkest (tens of seconds)' figure is a radiative lifetime of a modeled collective eigenstate — not a decoherence time, and not a claim that any state survives dephasing for seconds."
+
+- id: SRC-ZOGHI-2025
+  title: "Dynamics of Delayed Luminescence in Tubulin and Microtubule Constructs: an Insight into Collective Radiative Effects"
+  authors:
+    - "Zoghi, M."
+    - "Batarseh, M."
+    - "Wu, R."
+    - "Tuszynski, J. A."
+    - "Dogariu, A."
+  year: "2025"
+  sourceType: paper
+  identifier: "Optica Biophotonics Congress 2025, paper DTu1A.5. DOI: 10.1364/boda.2025.dtu1a.5"
+  url: "https://doi.org/10.1364/boda.2025.dtu1a.5"
+  verification: ai_verified
+  verificationNote: >-
+    Bibliographic record and abstract verified via the Crossref API
+    (2026-08-22 run). CORRECTION RECORDED: the accessible abstract reads in
+    full — "We report, for the first time, measurements of delayed
+    luminescence on tubulin constructs. The results demonstrate the role of
+    mesoscopic structure on emission strength and decay dynamics, which
+    provides a new perspective on radiative phenomena." It says nothing about
+    anesthetics. Eugene's primer states that "anesthetics shorten this
+    delayed luminescence time, while structurally similar non-anesthetics do
+    not"; that claim is NOT supported by any text this import could verify,
+    and is not carried as evidence here.
+  reliabilityNotes:
+    - "Conference proceedings abstract, not a peer-reviewed full paper. Weakest source in this case."
+    - "Included specifically so the correction above is on the record rather than silently dropped."
+
+- id: SRC-SAXENA-2020
+  title: "Fractal, Scale Free Electromagnetic Resonance of a Single Brain Extracted Microtubule Nanowire, a Single Tubulin Protein and a Single Neuron"
+  authors:
+    - "Saxena, Komal"
+    - "Singh, Pushpendra"
+    - "Sahoo, Pathik"
+    - "Sahu, Satyajit"
+    - "Ghosh, Subrata"
+    - "Ray, Kanad"
+    - "Fujita, Daisuke"
+    - "Bandyopadhyay, Anirban"
+  year: "2020"
+  sourceType: paper
+  identifier: "Fractal and Fractional 4(2): 11. DOI: 10.3390/fractalfract4020011"
+  url: "https://doi.org/10.3390/fractalfract4020011"
+  verification: ai_verified
+  verificationNote: >-
+    Verified via Crossref (2026-08-22 run); abstract read directly.
+    CORRECTION: Eugene's primer cites this as "Scientific Reports, 10,
+    20128"; it was published in Fractal and Fractional 4(2):11. The
+    deep-research report flagged the same error independently, and this
+    import confirmed the correct venue.
+  reliabilityNotes:
+    - "MDPI journal with a substantially lower profile than the primer's attribution implies — relevant because the result's weight rests on its reliability, not its novelty."
+    - "The measured quantity is electromagnetic resonance structure, which is not a quantum-coherence witness. Self-similar frequency ratios across scales are consistent with, but not evidence for, entanglement across those scales."
+    - "No independent protocol-level replication identified. This is the field's most-cited unreplicated result and the report treats it as one of the largest open replication gaps."
+    - "Not independent of the same group's earlier electrical work (Sahu et al., Biosensors and Bioelectronics 47: 141–148, 2013, verified via Crossref), which established that microtubules are electrically non-inert — now uncontroversial, and also silent on coherence. The two should not be counted as corroborating each other."
+
+# ── The anesthesia line: proponent side ────────────────────────────────────
+
+- id: SRC-KHAN-2024
+  title: "Microtubule-Stabilizer Epothilone B Delays Anesthetic-Induced Unconsciousness in Rats"
+  authors:
+    - "Khan, Sana"
+    - "Huang, Yixiang"
+    - "Timuçin, Derin"
+    - "Bailey, Shantelle"
+    - "Lee, Sophia"
+    - "Lopes, Jessica"
+    - "Gaunce, Emeline"
+    - "Mosberger, Jasmine"
+    - "Zhan, Michelle"
+    - "Abdelrahman, Bothina"
+    - "Zeng, Xiran"
+    - "Wiest, Michael C."
+  year: "2024"
+  sourceType: paper
+  identifier: "eNeuro 11(8): ENEURO.0291-24.2024. DOI: 10.1523/ENEURO.0291-24.2024"
+  url: "https://doi.org/10.1523/ENEURO.0291-24.2024"
+  verification: ai_verified
+  verificationNote: >-
+    Verified via Crossref and PubMed (PMID 39147581, PMCID PMC11363512);
+    abstract read directly (2026-08-22 run). The +69 s figure, Cohen's
+    d = 1.9, the 0.75 mg/kg subcutaneous dose, 4% isoflurane, male rats, and
+    the tolerance control are all confirmed in the abstract text.
+  reliabilityNotes:
+    - "Open-access, peer-reviewed, and the effect is behaviourally large. LORR measurements were blinded."
+    - "Main analysis is N = 8 rats, male only, and every animal receives the epothilone-B phase after the pre-drug phase rather than in a counterbalanced crossover."
+    - "Measured no microtubule quantum variable. The abstract's closing sentence ('predicted by models that posit consciousness as a property of a quantum physical state of neural MTs') is an interpretive frame, not a result."
+
+- id: SRC-HUANG-2026
+  title: "Brain-penetrant microtubule-stabilizer epothilone B delays isoflurane-induced unconsciousness in mice"
+  authors:
+    - "Huang, Yixiang"
+    - "Qiu, Zitong"
+    - "Yu, Xinyue"
+    - "Lee, Sophia"
+    - "Zeng, Xiran"
+    - "Chang, Abbie"
+    - "Wiest, Michael C."
+  year: "2026"
+  sourceType: paper
+  identifier: "Neuropharmacology 287: 110834. DOI: 10.1016/j.neuropharm.2026.110834"
+  url: "https://doi.org/10.1016/j.neuropharm.2026.110834"
+  verification: ai_verified
+  verificationNote: >-
+    Verified via Crossref and PubMed (PMID 41519196); abstract read directly
+    (2026-08-22 run). The +29 s within-subject figure, Cohen's d = 0.8, the
+    8 mg/kg single subcutaneous dose, and the decay of the effect on
+    subsequent days are confirmed in the abstract.
+  reliabilityNotes:
+    - "Cross-species extension of SRC-KHAN-2024, same senior author and research program at Wellesley — a useful replication of direction, NOT an independent-laboratory replication."
+    - "Creditably, the abstract itself cites the contradictory independent mouse study (SRC-LI-2025) rather than omitting it."
+    - "The abstract concedes the 29 s effect 'is not large compared to the variability among different animals.'"
+
+- id: SRC-EMERSON-2013
+  title: "Direct Modulation of Microtubule Stability Contributes to Anthracene General Anesthesia"
+  authors:
+    - "Emerson, Daniel J."
+    - "Weiser, Brian P."
+    - "Psonis, John"
+    - "Liao, Zhengzheng"
+    - "Taratula, Olena"
+    - "Fiamengo, Ashley"
+    - "Wang, Xiaozhao"
+    - "Sugasawa, Keizo"
+    - "Smith, Amos B. III"
+    - "Eckenhoff, Roderic G."
+    - "Dmochowski, Ivan J."
+  year: "2013"
+  sourceType: paper
+  identifier: "Journal of the American Chemical Society 135(14): 5389–5398. DOI: 10.1021/ja311171u"
+  url: "https://doi.org/10.1021/ja311171u"
+  verification: ai_verified
+  verificationNote: >-
+    Verified via Crossref and PubMed (PMID 23484901, PMCID PMC3671381);
+    abstract read directly (2026-08-22 run). β-tubulin identification by
+    mass spectrometry, binding near the colchicine site, and the epothilone-D
+    and discodermolide protection effects in tadpoles are all confirmed.
+  reliabilityNotes:
+    - "The best causal molecular evidence that tubulin can sit on an anesthetic pathway; from an established anesthesia-mechanisms laboratory (Eckenhoff, Dmochowski at Penn) with no Orch OR commitment."
+    - "The anesthetic is 1-aminoanthracene, a research compound, and the endpoint is tadpole immobilization — not clinical volatile hypnosis. The authors' conclusion is the careful 'on-pathway targets,' not a quantum claim."
+    - "Worth noting against SRC-LI-2025: here epothilone D produced anesthetic resistance, the opposite direction from chronic epothilone D in mice."
+
+- id: SRC-CRADDOCK-2017
+  title: "Anesthetic Alterations of Collective Terahertz Oscillations in Tubulin Correlate with Clinical Potency: Implications for Anesthetic Action and Post-Operative Cognitive Dysfunction"
+  authors:
+    - "Craddock, Travis J. A."
+    - "Kurian, Philip"
+    - "Preto, Jordane"
+    - "Sahu, Kamlesh"
+    - "Hameroff, Stuart R."
+    - "Klobukowski, Mariusz"
+    - "Tuszynski, Jack A."
+  year: "2017"
+  sourceType: paper
+  identifier: "Scientific Reports 7: 9877. DOI: 10.1038/s41598-017-09992-7"
+  url: "https://doi.org/10.1038/s41598-017-09992-7"
+  verification: ai_verified
+  verificationNote: >-
+    Verified via Crossref (2026-08-22 run); abstract read directly. The
+    abstract confirms the methods are binding-site prediction, molecular
+    docking, quantum chemistry, and theoretical modeling — computational
+    throughout.
+  reliabilityNotes:
+    - "Frequently cited as experimental support for the anesthesia arm; it is not. It is a modeling study that generates the potency-correlation prediction later experiments should test prospectively."
+    - "Proponent authorship (Hameroff, Tuszynski, Craddock, Kurian)."
+    - "Its value is as a prespecifiable hypothesis: if a potency series is run against a defined observable, this paper is what predicted the correlation in advance."
+
+- id: SRC-LI-2018
+  title: "Nuclear Spin Attenuates the Anesthetic Potency of Xenon Isotopes in Mice: Implications for the Mechanisms of Anesthesia and Consciousness"
+  authors:
+    - "Li, Na"
+    - "Lu, Dongshi"
+    - "Yang, Lei"
+    - "Tao, Huan"
+    - "Xu, Younian"
+    - "Wang, Chenchen"
+    - "Fu, Lisha"
+    - "Liu, Hui"
+    - "Chummum, Yatisha"
+    - "Zhang, Shihai"
+  year: "2018"
+  sourceType: paper
+  identifier: "Anesthesiology 129(2): 271–277. DOI: 10.1097/ALN.0000000000002226"
+  url: "https://doi.org/10.1097/ALN.0000000000002226"
+  verification: ai_verified
+  verificationNote: >-
+    Verified via Crossref and PubMed (PMID 29642079); abstract read directly
+    (2026-08-22 run). The 80-mouse randomization, the four isotopes, the
+    xenon-alone ED50 values (70 ± 4%, 72 ± 5%, 99 ± 5%, 105 ± 7%), and the
+    identical calculated polarizability of 3.60 Å are confirmed.
+  reliabilityNotes:
+    - "Published in the leading anesthesiology journal, randomized, with an accompanying editorial (Anesthesiology 129(2): 228–231)."
+    - "Nuclear spin is genuinely a quantum degree of freedom with no classical-polarizability explanation, which is what makes this result interesting."
+    - "Does not implicate microtubules at all — any spin-sensitive molecular target would do. Xenon had to be tested against a 0.50% isoflurane background because of its low potency, adding a confound."
+
+# ── The anesthesia line: the independent contradictory result ──────────────
+
+- id: SRC-LI-2025
+  title: "Microtubule-modulating drugs alter sensitivity to isoflurane in mice"
+  authors:
+    - "Li, Na"
+    - "You, Zerong"
+    - "Ren, Yang"
+    - "Kim, Hyung Hwan"
+    - "Yang, Jinsheng"
+    - "Li, Ge"
+    - "Doheny, Jason T."
+    - "Ding, Weihua"
+    - "Xia, Suyun"
+    - "Wang, Shiyu"
+    - "Chen, Lucy"
+    - "Mao, Jianren"
+    - "Martyn, J. A. Jeevendra"
+  year: "2025"
+  sourceType: paper
+  identifier: "BMC Anesthesiology 25(1): 109. DOI: 10.1186/s12871-025-02956-9"
+  url: "https://doi.org/10.1186/s12871-025-02956-9"
+  verification: ai_verified
+  verificationNote: >-
+    Verified via Crossref and PubMed; abstract read directly (2026-08-22
+    run). Every EC50 figure used in this case is quoted from the abstract's
+    Results section with its published confidence interval: epothilone D
+    0.75 [0.73, 0.77] vs saline 0.97 [0.96, 0.98]; vinblastine 0.74 [0.73,
+    0.75] vs saline 0.98 [0.97, 0.99]; paclitaxel 1.05 [1.03, 1.06] vs
+    saline 0.98 [0.97, 0.99]; morphine 1.16 [1.15, 1.17].
+  reliabilityNotes:
+    - "Independent of the Wellesley program (Massachusetts General Hospital / Harvard), randomized, blinded, with full incremental LORR concentration–response curves rather than latency at a single concentration — methodologically the strongest animal study in this case."
+    - "Tests four agents including a destabilizer (vinblastine) and an opioid control, which is what makes the pattern informative rather than a single contrary data point."
+    - "Author-acknowledged limitations: saline was an imperfect vehicle control for poorly soluble agents; LORR rather than MAC; isoflurane only; outbred CD1 mice; epothilone D altered blood pH and CO₂."
+    - "Regimen differs from the Wellesley studies (>2 weeks chronic dosing vs a single acute injection) and the compound differs (epothilone D vs B) — so this is a constraint on the general 'stabilization protects consciousness' claim rather than a direct refutation of the acute epothilone-B effect."
+
+# ── The conventional account ───────────────────────────────────────────────
+
+- id: SRC-JURD-2003
+  title: "General anesthetic actions in vivo strongly attenuated by a point mutation in the GABA_A receptor β3 subunit"
+  authors:
+    - "Jurd, Rachel"
+    - "Arras, Margarete"
+    - "Lambert, Sachar"
+    - "Drexler, Berthold"
+    - "Siegwart, Roberta"
+    - "Crestani, Florence"
+    - "Zaugg, Michael"
+    - "Vogt, Kaspar E."
+    - "Ledermann, Birgit"
+    - "Antkowiak, Bernd"
+    - "Rudolph, Uwe"
+  year: "2003"
+  sourceType: paper
+  identifier: "The FASEB Journal 17(2): 250–252. DOI: 10.1096/fj.02-0611fje"
+  url: "https://doi.org/10.1096/fj.02-0611fje"
+  verification: ai_verified
+  verificationNote: >-
+    Verified via Crossref and PubMed (PMID 12475885); abstract read directly
+    (2026-08-22 run). Note on the year: Crossref records an online date of
+    3 December 2002 with an issue date of February 2003; the conventional
+    citation year is 2003, used here.
+  reliabilityNotes:
+    - "The steelman anchor for the conventional account, and methodologically the cleanest causal evidence in this entire case: a single engineered residue change producing a large, specific behavioral dissociation."
+    - "Cuts precisely, and that precision matters in both directions: the β3(N265M) mutation abolishes etomidate and propofol immobility and greatly reduces their hypnotic effect, but only slightly decreases the effect of the volatile agents enflurane and halothane. The authors' own conclusion is that volatile anesthetics 'act via a broader spectrum of molecular targets' — which is the door through which a microtubule contribution to volatile anesthesia could still enter."
+
+- id: SRC-TEGMARK-2000
+  title: "Importance of quantum decoherence in brain processes"
+  authors: ["Tegmark, Max"]
+  year: "2000"
+  sourceType: paper
+  identifier: "Physical Review E 61(4): 4194–4206. DOI: 10.1103/PhysRevE.61.4194"
+  url: "https://doi.org/10.1103/PhysRevE.61.4194"
+  verification: ai_verified
+  verificationNote: >-
+    Verified via Crossref and PubMed (PMID 11088215); abstract read directly
+    (2026-08-22 run). The decoherence range 10⁻¹³–10⁻²⁰ s and the comparison
+    dynamical timescales 10⁻³–10⁻¹ s are quoted from the abstract.
+  reliabilityNotes:
+    - "The canonical skeptical citation, and for twenty-five years the reason most neuroscientists considered the question closed."
+    - "A calculation, not a measurement — and explicitly a calculation about particular modeled superpositions (charge separations, soliton-like microtubule excitations), which is the basis of the Hagan reply."
+    - "Eugene's primer says Tegmark 'incorrectly assumed thermal equilibrium — i.e. a dead brain.' That is a proponent characterization (via Wiest), sharper than the exchange in the published record; the specific objections Hagan et al. actually raised are recorded on the evidence record."
+
+- id: SRC-HAGAN-2002
+  title: "Quantum computation in brain microtubules: Decoherence and biological feasibility"
+  authors: ["Hagan, S.", "Hameroff, S. R.", "Tuszyński, J. A."]
+  year: "2002"
+  sourceType: paper
+  identifier: "Physical Review E 65(6): 061901. DOI: 10.1103/PhysRevE.65.061901"
+  url: "https://doi.org/10.1103/PhysRevE.65.061901"
+  verification: ai_verified
+  verificationNote: >-
+    Verified via Crossref and PubMed (PMID 12188753); abstract read directly
+    (2026-08-22 run). The revised decoherence estimate of 10⁻⁵–10⁻⁴ s and
+    the eight enumerated objections are confirmed in the abstract.
+  reliabilityNotes:
+    - "Published in the same journal as the critique it answers — a real scientific exchange rather than a blog rebuttal."
+    - "Its central point is well taken and often missed: Tegmark modeled a soliton in superposition along the microtubule, not the superposed protein conformations of the Orch OR model, so the two calculations are not about the same physical state."
+    - "Even on its own numbers this does not reach Orch OR's requirement: 10⁻⁵–10⁻⁴ s is one to two orders of magnitude short of the ~25 ms gamma-band conscious moment the theory needs. Both papers are calculations; neither measured a living microtubule."
+
+- id: SRC-REIMERS-2014
+  title: "The revised Penrose–Hameroff orchestrated objective-reduction proposal for human consciousness is not scientifically justified"
+  authors:
+    - "Reimers, Jeffrey R."
+    - "McKemmish, Laura K."
+    - "McKenzie, Ross H."
+    - "Mark, Alan E."
+    - "Hush, Noel S."
+  year: "2014"
+  sourceType: paper
+  identifier: "Physics of Life Reviews 11(1): 101–103. DOI: 10.1016/j.plrev.2013.11.003"
+  url: "https://doi.org/10.1016/j.plrev.2013.11.003"
+  verification: ai_verified
+  verificationNote: >-
+    Bibliographic record verified via Crossref (2026-08-22 run): all five
+    authors, journal, volume 11, issue 1, pages 101–103, March 2014.
+    Crossref holds no abstract for this comment; full text not read, so its
+    argument is characterized here only at the level its title supports.
+  reliabilityNotes:
+    - "The principal published skeptical commentary on the 2014 revision, from quantum chemists rather than neuroscientists."
+    - "A three-page commentary, answered directly by Hameroff & Penrose in the same issue (DOI 10.1016/j.plrev.2013.11.014, verified via Crossref). Readers should read both."
+
+# ── Objective reduction as physics ─────────────────────────────────────────
+
+- id: SRC-DONADI-2021
+  title: "Underground test of gravity-related wave function collapse"
+  authors:
+    - "Donadi, Sandro"
+    - "Piscicchia, Kristian"
+    - "Curceanu, Catalina"
+    - "Diósi, Lajos"
+    - "Laubenstein, Matthias"
+    - "Bassi, Angelo"
+  year: "2021"
+  sourceType: paper
+  identifier: "Nature Physics 17(1): 74–78. DOI: 10.1038/s41567-020-1008-4"
+  url: "https://doi.org/10.1038/s41567-020-1008-4"
+  verification: ai_verified
+  verificationNote: >-
+    Verified via Crossref and by reading the publisher's abstract page
+    directly (2026-08-22 run). The abstract's own words confirm the result
+    used here: the measurement "sets a lower bound on the effective size of
+    the mass density of nuclei, which is about three orders of magnitude
+    larger than previous bounds. This rules out the natural parameter-free
+    version of the Diósi–Penrose model." Published online 7 September 2020;
+    issue date January 2021.
+  reliabilityNotes:
+    - "The highest-quality experiment in this case by conventional standards: a dedicated ultra-low-background germanium measurement at the Gran Sasso underground laboratory, with Diósi himself — co-originator of the model being tested — as a co-author."
+    - "A null result, and null results of this kind are unusually informative because the prediction was quantitative."
+    - "Tests a specific stochastic completion of gravity-related collapse, not Penrose's original heuristic criterion. What it rules out is precisely stated in the abstract and should not be overstated (see SRC-MCQUEEN-2023)."
+
+- id: SRC-DERAKHSHANI-2022
+  title: "At the crossroad of the search for spontaneous radiation and the Orch OR consciousness theory"
+  authors:
+    - "Derakhshani, Maaneli"
+    - "Diósi, Lajos"
+    - "Laubenstein, Matthias"
+    - "Piscicchia, Kristian"
+    - "Curceanu, Catalina"
+  year: "2022"
+  sourceType: paper
+  identifier: "Physics of Life Reviews 42: 8–14. DOI: 10.1016/j.plrev.2022.05.004"
+  url: "https://doi.org/10.1016/j.plrev.2022.05.004"
+  verification: ai_verified
+  verificationNote: >-
+    Verified via Crossref and PubMed (PMID 35617922); abstract read directly
+    (2026-08-22 run). The abstract's conclusion is quoted as published: Orch
+    OR "when based on the simplest version of gravity-related dynamical
+    collapse, is highly implausible in all the cases analyzed."
+  reliabilityNotes:
+    - "Written by the Gran Sasso experimenters themselves, applying their own bound to Orch OR — the authors best placed to know what their result does and does not exclude."
+    - "The abstract's careful conditional ('when based on the simplest version') is the whole ballgame, and is exactly the qualification McQueen presses."
+
+- id: SRC-MCQUEEN-2023
+  title: "Have underground radiation measurements refuted the Orch OR theory?"
+  authors: ["McQueen, Kelvin J."]
+  year: "2023"
+  sourceType: paper
+  identifier: "Physics of Life Reviews 44: 201–203. DOI: 10.1016/j.plrev.2023.01.021"
+  url: "https://doi.org/10.1016/j.plrev.2023.01.021"
+  verification: ai_verified
+  verificationNote: >-
+    Bibliographic record verified via Crossref (2026-08-22 run): title,
+    author, journal, volume 44, pages 201–203, March 2023. Crossref holds no
+    abstract; the full text was not read for this import, so the argument is
+    characterized here from the deep-research report's summary and is
+    labeled as such on the evidence record.
+  reliabilityNotes:
+    - "A philosopher of physics, not an Orch OR proponent, making a model-theoretic point about what the Gran Sasso bound licenses."
+    - "The point cuts both ways and this case treats it that way: escaping an experimental bound by retreating to an incompletely specified version of the theory is not positive evidence for that version."
+
+- id: SRC-HOWL-2019
+  title: "Exploring the unification of quantum theory and general relativity with a Bose–Einstein condensate"
+  authors: ["Howl, Richard", "Penrose, Roger", "Fuentes, Ivette"]
+  year: "2019"
+  sourceType: paper
+  identifier: "New Journal of Physics 21(4): 043047. DOI: 10.1088/1367-2630/ab104a"
+  url: "https://doi.org/10.1088/1367-2630/ab104a"
+  verification: ai_verified
+  verificationNote: >-
+    Bibliographic record verified via Crossref (2026-08-22 run): all three
+    authors, journal, volume 21, issue 4, article 043047, April 2019.
+  reliabilityNotes:
+    - "Included as the design basis for the research agenda's physics track, not as evidence for or against any claim."
+    - "Penrose is a co-author, so this is the proposal's own account of its testability. Scaling is the acknowledged obstacle: the proposed test needs a condensate orders of magnitude larger than current experiments achieve."
+
+# ── Nonclassical signals in the living brain ───────────────────────────────
+
+- id: SRC-KERSKENS-2022
+  title: "Experimental indications of non-classical brain functions"
+  authors: ["Kerskens, Christian Matthias", "López Pérez, David"]
+  year: "2022"
+  sourceType: paper
+  identifier: "Journal of Physics Communications 6(10): 105001. DOI: 10.1088/2399-6528/ac94be"
+  url: "https://doi.org/10.1088/2399-6528/ac94be"
+  verification: ai_verified
+  verificationNote: >-
+    Verified via Crossref (2026-08-22 run); full abstract read directly. The
+    authors' own conclusion is quoted verbatim on the evidence record rather
+    than paraphrased, because the strength of their hedging ("suggest that we
+    may have witnessed") is itself contested in secondary discussion.
+  reliabilityNotes:
+    - "A real measurement in living human brains using a zero-quantum-coherence protocol designed to suppress conventional MRI contrast — genuinely novel, and the signal's dependence on conscious awareness is the striking part."
+    - "Says nothing about microtubules. The proposed mediator is unidentified; proton spins of bulk water are the known systems."
+    - "Contested in the same journal (SRC-WARREN-2023), with an authors' reply (DOI 10.1088/2399-6528/acc636, verified via Crossref). No independent exact replication identified."
+
+- id: SRC-WARREN-2023
+  title: "Comment on: 'Experimental indications of non-classical brain function' 2022 Journal of Physics Communications 6 105001"
+  authors: ["Warren, Warren S."]
+  year: "2023"
+  sourceType: paper
+  identifier: "Journal of Physics Communications 7(3): 038001. DOI: 10.1088/2399-6528/acc4a8"
+  url: "https://doi.org/10.1088/2399-6528/acc4a8"
+  verification: ai_verified
+  verificationNote: >-
+    Verified via Crossref (2026-08-22 run); full abstract read directly.
+    CORRECTION: the deep-research report places this critique in 2022
+    alongside the paper it answers; it was published in the March 2023 issue,
+    volume 7, article 038001.
+  reliabilityNotes:
+    - "From a leading NMR methodologist, published in the same journal — the appropriate venue for a technical dispute about what an NMR signal can witness."
+    - "Unusually blunt for a journal comment: the paper 'provides no evidence to justify this claim' and shows only 'what we already knew: the brain (and any other living tissue) is complex, multicompartmental, and imprecisely characterized by MRI.'"
+    - "Kerskens and López Pérez replied that their observations cannot be explained by the specific classical intermolecular multiple-quantum-coherence mechanism Warren invokes. The dispute is unresolved on the public record."
+
+# ── The non-computability motivation, and the AI-mathematics challenge ─────
+
+- id: SRC-OPENAI-UNITDIST-2026
+  title: "An OpenAI model has disproved a central conjecture in discrete geometry"
+  organization: "OpenAI"
+  authors: []
+  year: "2026"
+  sourceType: webpage
+  url: "https://openai.com/index/model-disproves-discrete-geometry-conjecture/"
+  verification: ai_verified
+  verificationNote: >-
+    Announcement dated 20 May 2026. Two direct fetches of the OpenAI page
+    timed out during this import, so the page text itself was NOT read
+    end-to-end by this agent; the claim is instead anchored on independent
+    verification (see SRC-SAWIN-2026, an arXiv paper by a mathematician
+    unaffiliated with OpenAI that states the result and its attribution) and
+    on Quanta Magazine's 3 August 2026 reporting, which was read directly.
+    Per Sawin's paper, the OpenAI team was Lijie Chen (using an internal
+    model) with Mark Sellke and Mehtaab Sawhney verifying correctness. The
+    labeling here is deliberately ai_verified-with-caveat rather than
+    verified, and the primary evidential weight is placed on the arXiv paper.
+  reliabilityNotes:
+    - "A company announcement about its own unreleased internal model — the least independent link in this chain, which is why the mathematics is cited through Sawin instead."
+    - "The result itself does not depend on OpenAI's word: the disproof has been checked by outside mathematicians, a companion paper was written by nine of them, and the bound has since been sharpened independently."
+    - "Context that belongs on this record: an earlier round of AI Erdős-problem claims (October 2025) collapsed when the 'solutions' were found already in the literature, and a widely-publicized Christmas 2025 claim on Erdős Problem 333 was withdrawn within hours after a user identified a 1977 resolution by Erdős himself. This evidence line has a documented false-positive history."
+
+- id: SRC-SAWIN-2026
+  title: "An explicit lower bound for the unit distance problem"
+  authors: ["Sawin, Will"]
+  year: "2026"
+  sourceType: preprint
+  identifier: "arXiv:2605.20579"
+  url: "https://arxiv.org/abs/2605.20579"
+  verification: ai_verified
+  verificationNote: >-
+    Verified through the arXiv API (2026-08-22 run): title, sole author,
+    submission date 20 May 2026, and abstract retrieved directly. The
+    abstract states that sets of n points exist containing more than
+    n^1.014 unit-distance pairs, and that this "improves on very recent work
+    of a team at OpenAI, who proved the same result with an inexplicit
+    exponent greater than 1, drastically improving on the best previous
+    lower bound and disproving a conjecture of Erdős."
+  reliabilityNotes:
+    - "This is the load-bearing verification for the AI-mathematics evidence line: an independent working mathematician, in a paper of his own, states that the Erdős conjecture was disproved by the OpenAI team and builds on the construction."
+    - "Preprint, not yet journal-published at import. The mathematical content is checkable by anyone; the method (algebraic number fields via a Golod–Shafarevich argument) is described in the abstract."
+    - "Says nothing about consciousness, Penrose, or non-computability. Its relevance here is entirely as the verified factual anchor for what an AI system actually did."
+
+- id: SRC-HUBERT-2025
+  title: "Olympiad-level formal mathematical reasoning with reinforcement learning"
+  authors:
+    - "Hubert, Thomas"
+    - "Mehta, Rishi"
+    - "Sartran, Laurent"
+    - "Horváth, Miklós Z."
+    - "Žužić, Goran"
+    - "Wieser, Eric"
+    - "Huang, Aja"
+    - "Schrittwieser, Julian"
+    - "Schroecker, Yannick"
+    - "Masoom, Hussain"
+  year: "2025"
+  sourceType: paper
+  identifier: "Nature 651(8106): 607–613. DOI: 10.1038/s41586-025-09833-y (AlphaProof; author list abridged)"
+  url: "https://doi.org/10.1038/s41586-025-09833-y"
+  verification: ai_verified
+  verificationNote: >-
+    Verified via Crossref (2026-08-22 run) and by reading the published
+    abstract: Nature volume 651, issue 8106, pages 607–613, published
+    12 November 2025. The abstract confirms AlphaProof solved three of the
+    five non-geometry problems at the 2024 IMO including the hardest problem
+    (P6), that combining with AlphaGeometry 2 reached a silver-medal-equivalent
+    score, and that this took multi-day computation. The 28-of-42 score and
+    the one-point-below-gold threshold are confirmed from Google DeepMind's
+    own accompanying announcement.
+  reliabilityNotes:
+    - "Peer-reviewed in Nature, with proofs machine-checked in Lean — formal verification means the mathematical results are not in question, whatever one concludes about their significance."
+    - "Corporate-authored research about the authors' own system, but the Lean verification and the IMO's official framing substantially offset the usual self-report concern."
+    - "The relevant limitation for this case is conceptual rather than methodological: competition problems have known-solvable answers within an existing framework, which is precisely the distinction the Penrose-side response turns on."
+
+- id: SRC-DEEPMIND-IMO-2025
+  title: "Advanced version of Gemini with Deep Think officially achieves gold-medal standard at the International Mathematical Olympiad"
+  organization: "Google DeepMind"
+  authors: []
+  year: "2025"
+  sourceType: webpage
+  url: "https://deepmind.google/blog/advanced-version-of-gemini-with-deep-think-officially-achieves-gold-medal-standard-at-the-international-mathematical-olympiad/"
+  verification: ai_verified
+  verificationNote: >-
+    Announcement dated 21 July 2025; content read via search retrieval of the
+    official DeepMind page (2026-08-22 run). Confirmed: five of six problems
+    solved, 35 of 42 points, gold-medal standard, graded and certified by IMO
+    coordinators using the same criteria and the 4.5-hour limit as student
+    contestants, and operating end-to-end in natural language rather than
+    through Lean formalization as in 2024. The confirming quotation is
+    attributed on the page to IMO President Gregor Dolinar.
+  reliabilityNotes:
+    - "A corporate blog post, but the load-bearing fact — official IMO grading — is externally attested and was the point of the exercise."
+    - "Not peer-reviewed and no accompanying paper; the model is unreleased. Weaker as a citable source than the Nature AlphaProof paper, and used here only for the natural-language and officially-graded details the Nature paper predates."
+
+- id: SRC-ZAHAVY-2026
+  title: "Position: LLMs can't jump"
+  authors: ["Zahavy, Tom"]
+  organization: "Google DeepMind"
+  year: "2026"
+  sourceType: paper
+  identifier: "Proceedings of the 43rd International Conference on Machine Learning (ICML 2026), position paper track; poster 67091"
+  url: "https://icml.cc/virtual/2026/poster/67091"
+  verification: ai_verified
+  verificationNote: >-
+    Verified against the official ICML 2026 virtual-conference page
+    (2026-08-22 run), which carries the full abstract as accepted. Confirmed:
+    sole author Tom Zahavy (Google DeepMind), position-paper track, accepted
+    as a poster. The abstract's own framing is that generative AI "has
+    mastered Induction... and is rapidly conquering Deduction" but "lacks the
+    mechanism for Abduction," and that an LLM "could plausibly execute the
+    deductive phase of proving theorems from established premises" while
+    being "structurally incapable of the abductive 'Jump' required to
+    formulate those premises."
+  reliabilityNotes:
+    - "A position paper, explicitly argumentative rather than an empirical result — its own venue classifies it that way, and this case treats it as an argument, not a finding."
+    - "Its evidential interest is its provenance: the author co-authored AlphaProof and the AlphaZero work that dissolved Penrose's own composed chess position, so this is a concession about the location of the gap from inside the laboratory closing it."
+    - "Peer-reviewed through ICML's public OpenReview process. Secondary reporting indicates the author softened a conclusion from 'confirms' to 'suggests' during review; this project did not read the review thread directly and does not rely on that detail."
+
+# ── The user's own essays (primary inputs, honestly labeled) ───────────────
+
+- id: SRC-JHONG-ORCHOR-2026
+  title: "Orch OR Ascending: Primer 2020–2026"
+  authors: ["Jhong, Eugene"]
+  year: "2026"
+  sourceType: webpage
+  organization: "Strange Loops In My Head (Substack)"
+  verification: verified
+  verificationNote: >-
+    Held in the project library (research/). Published 22 April 2026. This is
+    the case editor's own essay and the backbone of the overview article. No
+    URL recorded because the copy consulted was the PDF in the project
+    library rather than the live post.
+  reliabilityNotes:
+    - "Advocacy-oriented map by the case's own editor, explicitly assembled 'with the help of various chatbots' — a self-declared limitation this case takes seriously."
+    - "Three of its citations did not survive independent checking: the Kalra 2023 page range, the journal for Saxena 2020, and the claim that anesthetics shorten delayed luminescence in Zoghi et al. Each correction is recorded on the relevant source record."
+    - "Its central overstatement is recorded as a correction in history.yaml: the essay says Hameroff's two 2020 predictions 'have been confirmed by multiple independent laboratories (Princeton, UCF, NIMS Japan, and Wellesley).' The anesthesia-potency prediction has not been independently confirmed; the two epothilone-B studies share a senior author and program, and the one independent stabilizer study found the opposite direction."
+    - "Used here as a primary statement of the proponent case and of the editor's own view, never as evidence for a factual claim."
+
+- id: SRC-JHONG-ERDOS-2026
+  title: "The Erdős Unit Distance Problem and Penrose 'Understanding': What might stay out of the reach of classical computational AI?"
+  authors: ["Jhong, Eugene"]
+  year: "2026"
+  sourceType: webpage
+  organization: "Strange Loops In My Head (Substack)"
+  verification: verified
+  verificationNote: >-
+    Held in the project library (research/). Published 21 May 2026. Consulted
+    as the PDF in the project library. This essay is the source of the
+    non-computability rung's structure in this case, including the
+    "escalator, not the steps" formulation and the audit of how Penrose's
+    concrete examples have aged.
+  reliabilityNotes:
+    - "The case editor's own essay; philosophical argument and curation rather than original research, and substantially composed of quoted AI-model outputs which the essay labels as such."
+    - "It quotes the critic's position verbatim (the @psychiel posts) and is the only verifiable record of that wording available to this import — the linked X post returned HTTP 403 to an unauthenticated fetch and was never read directly."
+    - "Notably even-handed against interest: the essay concedes that Penrose's concrete testable examples have 'mostly settled against' him, and that the examples aging best are the least testable ones."

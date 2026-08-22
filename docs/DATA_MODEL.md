@@ -105,6 +105,8 @@ Crux-directed projects: title, summary, affected `claimIds`, effort tier, expect
 
 Date, what changed, why, actor, and AI-assistance disclosure.
 
+Convention: whoever makes a material change to a case appends the entry to that case's `history.yaml` **in the same PR** — this includes the initial case launch, which must get an entry summarizing what was published (claims, evidence records, sources, verification status). `history.yaml` is an append-only log: add new entries at the end, never reorder or rewrite old ones. Dates are day-granular, so within a date, file order is the timeline (later in the file = more recent); the homepage "recent changes" feed and case-page history rely on this ordering (`historyNewestFirst` / `recentChanges` in `src/domain/load.ts`).
+
 ## Integrity rules (enforced at build time)
 
 The loader fails the build loudly on: dangling claim/evidence/source/assessment IDs, claim refs in `overview.md` that don't resolve, dependency references to rejected claims, and any schema violation. No silent data repair.

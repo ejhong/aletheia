@@ -2,10 +2,11 @@ import { assetPath } from "@/src/config/assets";
 import { romanNumeral, type ImageRecord } from "@/src/domain/schema";
 
 /**
- * A numbered museum plate: a real photograph with provenance, unified into
- * the site's palette by a CSS duotone treatment (the original file is not
+ * A numbered museum plate: real imagery with provenance, unified into the
+ * site's palette by a CSS duotone treatment (the original file is not
  * edited). Only real imagery may be rendered as a plate — enforced by the
- * schema and loader.
+ * schema and loader. The caption says "photograph" unless the record's
+ * mediaType says otherwise, so a rendering or micrograph is never mislabeled.
  *
  * Sized like a printed-journal figure, not a hero image: capped on both
  * axes (landscape binds on width, portrait on height), centered, with the
@@ -37,8 +38,9 @@ export function Plate({ image }: { image: ImageRecord }) {
         <p className="plate-caption-label">
           plate {romanNumeral(image.plateNumber ?? 0)}
           <span className="text-faint normal-case tracking-normal">
-            {"  ·  "}photograph — duotone applied in display; original
-            unmodified
+            {"  ·  "}
+            {image.mediaType ?? "photograph"} — duotone applied in display;
+            original unmodified
           </span>
         </p>
         <p className="plate-caption-text mt-1">{image.depicts}</p>

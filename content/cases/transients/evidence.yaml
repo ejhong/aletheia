@@ -1,0 +1,506 @@
+# Evidence records: the specific observation/result extracted from a source
+# and connected to claims. Direction is explicit; sourceStatement (what the
+# source says) is kept separate from editorInference (what we infer).
+#
+# Replication independence matters unusually much in this case, so each
+# record's limitations state which kind of "independent" it is: independent
+# statistics on the same catalog, independent extraction from the same
+# digitized lineage, independent physical copy, or independent observatory.
+
+- id: TRN-E001
+  title: "The April 1950 nine-transient discovery report"
+  claimIds: [TRN-C001]
+  sourceId: SRC-VILLARROEL-2021
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    Nine point sources appeared within half an hour in a region of ~10
+    arcminutes on a red-sensitive POSS-I plate from April 1950; all nine
+    are absent from earlier and later photographic images and from modern
+    CCD surveys several magnitudes deeper. Deep Gran Telescopio Canarias
+    imaging (r ~ 26) shows possible counterparts that could equally be
+    chance projections. The paper itself names an unknown type of plate
+    contamination as one explanation, and fast (<0.5 s) solar reflections
+    from objects near geosynchronous orbit as another, if contamination
+    can be fully excluded.
+  editorInference: >-
+    The discovery paper is more cautious than the popular retellings: its
+    own first-listed explanation is contamination, and the exotic reading
+    is explicitly conditional on excluding it — a condition that remains
+    unmet.
+  exactLocator: "Abstract (read via arXiv 2106.11780)"
+  limitations:
+    - "Proponent-team report; the transient interpretation and the incidence-rate comparison have not been independently reviewed against a defect model."
+    - "Based on digitized copies; the original telescope negative was not examined."
+  reviewState: ai_extracted
+  origin:
+    ref: "transients research report — source-mining layer"
+    extractedBy: "Fable (AI agent)"
+    runId: "transients-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: TRN-E002
+  title: "Physical confirmation of the nine marks on the Edinburgh glass copy"
+  claimIds: [TRN-C001]
+  sourceId: SRC-HAMBLY-BLAIR-2024
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    Visual inspection of the Royal Observatory Edinburgh glass copy plates
+    of POSS-I fields E0070 and E0086 confirmed the presence of nine
+    point-like detections on E0070 at the positions reported by Villarroel
+    et al., absent from the overlapping plate E0086 exposed six days later
+    — while also finding similar detections on E0086 not present on E0070,
+    and various blemishes (emulsion holes, bubbles, scratch-like marks) on
+    both copy plates.
+  editorInference: >-
+    Independent physical confirmation from the critics' side settles the
+    lowest rung — the marks are real features of surviving plate material,
+    not scanner artifacts. The same inspection seeds the undermining case:
+    the phenomenon recurs on a neighboring field, and the plates carry a
+    visible defect population.
+  exactLocator: "§2.1 and Fig. 1 (read via arXiv 2402.00497)"
+  limitations:
+    - "Independent physical copy, not the original negative: the ROE copy is itself a descendant of the intermediate positive (see TRN-C007)."
+  reviewState: ai_extracted
+  origin:
+    ref: "transients research report — source-mining layer"
+    extractedBy: "Fable (AI agent)"
+    runId: "transients-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: TRN-E003
+  title: "Profile statistics: all nine 1950 marks are sharper than stars"
+  claimIds: [TRN-C002]
+  sourceId: SRC-HAMBLY-BLAIR-2024
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    SuperCOSMOS profile statistics for the nine candidates all fall on the
+    sharp (negative) side of the zero-mean stellar distribution, roughly
+    −3 ≲ η < −1; the joint probability of drawing nine such values from the
+    stellar profile distribution is of order 0.1⁹. Under the microscope the
+    marks appear more concentrated and circular than stellar images of
+    similar brightness.
+  editorInference: >-
+    The measurement itself is common ground between the camps; only its
+    interpretation divides them. This record carries the observation;
+    TRN-E004 and TRN-E006 carry the rival readings.
+  exactLocator: "§2.2 and Fig. 2 (read via arXiv 2402.00497)"
+  limitations:
+    - "Measured on the digitized copy lineage; profile statistics for the original negative do not exist."
+  reviewState: ai_extracted
+  origin:
+    ref: "transients research report — source-mining layer"
+    extractedBy: "Fable (AI agent)"
+    runId: "transients-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: TRN-E004
+  title: "Automated morphology classification groups the marks with artifacts"
+  claimIds: [TRN-C020, TRN-C002]
+  sourceId: SRC-HAMBLY-BLAIR-2024
+  direction: undermines
+  strength: moderate
+  sourceStatement: >-
+    A random-forest classifier trained on Gaia-confirmed stars,
+    Pan-STARRS-confirmed galaxies, and unmatched (likely spurious)
+    detections assigns the putative transients artifact-like morphology;
+    the authors conclude the sources are likely spurious artifacts of the
+    photographic emulsion.
+  editorInference: >-
+    The strongest published argument that the sharpness observation points
+    down the artifact branch. Note its dependence structure: the classifier
+    is built on the same profile statistics as TRN-E003, so this is an
+    interpretation layer over the same measurement, not a second
+    independent detection.
+  exactLocator: "§2.3, Tables 1–3, and conclusions (read via arXiv 2402.00497)"
+  limitations:
+    - "The training set's 'spurious' class is defined by absence of a modern counterpart — the very property that defines transient candidates — so a real transient population would also be labeled artifact-like by construction; the proponents press exactly this circularity objection."
+    - "Morphological similarity to artifacts is not a demonstration that any specific mark is one."
+  reviewState: ai_extracted
+  origin:
+    ref: "transients research report — source-mining layer"
+    extractedBy: "Fable (AI agent)"
+    runId: "transients-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: TRN-E005
+  title: "The plate-copy genealogy: DSS and SuperCOSMOS share an ancestor"
+  claimIds: [TRN-C007]
+  sourceId: SRC-HAMBLY-BLAIR-2024
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    Atlas copy production used contact printing: an intermediate glass
+    positive was made from each original POSS-I negative, and
+    second-generation copy negatives were printed from that positive. The
+    DSS and SuperCOSMOS data used in the transient studies are independent
+    scans of independent copy negatives that were generated from the same
+    copy positive of the one original negative.
+  editorInference: >-
+    This dissolves the "found in two independent digitizations" argument
+    that made the candidates look robust: a defect on the shared
+    intermediate positive would propagate into both datasets. It
+    simultaneously defines the decisive test — only the original negatives
+    sit above the shared stage.
+  exactLocator: "§2 (read via arXiv 2402.00497)"
+  limitations:
+    - "Establishes a pathway, not an occurrence rate; no census of star-like copy-stage defects exists (TRN-R007)."
+  reviewState: ai_extracted
+  origin:
+    ref: "transients research report — source-mining layer"
+    extractedBy: "Fable (AI agent)"
+    runId: "transients-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: TRN-E006
+  title: "The proponent physics reply: flashes should be sharp"
+  claimIds: [TRN-C002, TRN-C020]
+  sourceId: SRC-VILLARROEL-2025-PROFILES
+  direction: qualifies
+  strength: moderate
+  sourceStatement: >-
+    Optical principles and atmospheric physics imply that unresolved
+    flashes lasting less than a second naturally appear sharper and more
+    circular than stellar images, particularly on long-exposure plates
+    where stars are blurred by seeing and tracking errors; the sharp
+    profiles are therefore consistent with the transient interpretation.
+  editorInference: >-
+    This converts the sharpness observation from an artifact signature
+    into an ambiguous one — but only argumentatively. No one has exposed
+    period-appropriate emulsion to controlled sub-second flashes and
+    measured whether real flash profiles match the nine marks (TRN-R002).
+  exactLocator: "Abstract (arXiv 2507.15896)"
+  limitations:
+    - "A physics argument, not a measurement; the two profile distributions (flash vs artifact) may overlap entirely, in which case sharpness discriminates nothing."
+    - "Proponent-team preprint, not peer reviewed."
+  reviewState: ai_extracted
+  origin:
+    ref: "transients research report — source-mining layer"
+    extractedBy: "Fable (AI agent)"
+    runId: "transients-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: TRN-E007
+  title: "The July 1952 triple transient and its deep follow-up"
+  claimIds: [TRN-C003]
+  sourceId: SRC-SOLANO-2024
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    Three optically bright (~16 mag) point sources within 10 arcsec of each
+    other appear on one Palomar exposure of 1952 July 19 and vanished
+    within the hour, based on two consecutive exposures; they remain absent
+    in 71 years of subsequent imaging, including 2023 Gran Telescopio
+    Canarias exposures reaching magnitude 25.5, implying dimming of more
+    than 10 magnitudes within an hour. The most isolated of the three has a
+    profile nearly the same as comparison stars, implying sub-arcsecond
+    angular size and no elongation from movement.
+  editorInference: >-
+    A second canonical multi-source event, peer reviewed with modern
+    follow-up. Note the internal tension it creates: these profiles look
+    like stars, while the 1950 nine are distinctly sharper — the canonical
+    events are not morphologically uniform, which any single-mechanism
+    explanation (defect or flash) must eventually accommodate.
+  exactLocator: "Abstract (read via Crossref and arXiv 2310.09035)"
+  limitations:
+    - "Proponent-team report on the same digitized Palomar lineage; no published physical inspection of the 1952 plate material."
+  reviewState: ai_extracted
+  origin:
+    ref: "transients research report — source-mining layer"
+    extractedBy: "Fable (AI agent)"
+    runId: "transients-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: TRN-E008
+  title: "Independent pipeline recovers the canonical events and most of the catalog"
+  claimIds: [TRN-C004, TRN-C001, TRN-C003]
+  sourceId: SRC-HAYES-2026
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    A from-scratch detection pipeline (sigma-clipped detection, PSF
+    filtering, local astrometric refinement, cross-epoch matching against
+    POSS-I Blue and POSS-II Red, Pan-STARRS DR1 rejection) recovers 8 of 9
+    April 1950 sources and 3 of 3 July 1952 sources, with ~0.2 false
+    positives per 10-arcmin control field; a full-footprint sweep yields
+    2.85 million candidates, of which 3,450 of Solano's 5,399 published
+    candidates (63.9%) are matched at a median separation of 0.94 arcsec.
+    None of the unrecovered Solano sources within the footprint has a
+    Pan-STARRS DR1 counterpart within 3 arcsec.
+  editorInference: >-
+    The canonical detections do not depend on the VASCO team's private
+    software. The 500-fold gap between his 2.85-million-candidate sweep
+    and the vetted 5,399 also demonstrates how completely the "population"
+    depends on extraction and vetting choices.
+  exactLocator: "Abstract, §III.1–III.2, Tables 1 and Figs. 3–4 (read via arXiv 2604.04810)"
+  limitations:
+    - "Independent extraction, not independent material: the pipeline reads the same digitized DSS descendants of the same photographic copies."
+    - "The full-sky sweep ran with preliminary (looser) parameters; the author flags that a calibrated reprocessing should yield a substantially smaller catalog."
+  reviewState: ai_extracted
+  origin:
+    ref: "transients research report — source-mining layer"
+    extractedBy: "Fable (AI agent)"
+    runId: "transients-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: TRN-E009
+  title: "Independent extraction finds no significant nuclear-window effect"
+  claimIds: [TRN-C006]
+  sourceId: SRC-HAYES-2026
+  direction: undermines
+  strength: strong
+  sourceStatement: >-
+    Applying nuclear-test temporal windows to the independently extracted
+    catalog over 368 POSS-I observation nights gives a post-test
+    calendar-day relative risk of 1.35 ([+1] window) that is not
+    statistically significant (95% CI 0.91–2.00, Fisher p = .17) and is
+    schedule-sensitive; a negative binomial model of nightly counts with
+    nightly patch coverage as exposure is null (IRR = 1.03, 95% CI
+    0.89–1.18, p = .71), as are all asymmetric windows tested.
+  editorInference: >-
+    The single most probative negative result for the nuclear correlation,
+    because it varies the disputed step (source extraction) and models the
+    observing schedule — the two main confound channels. A correlation
+    that replicates on the original rows but not in an independently built
+    catalog looks like a property of the catalog.
+  exactLocator: "Abstract, §III.4, Table 2 (read via arXiv 2604.04810)"
+  limitations:
+    - "The independent catalog was built with preliminary parameters and averages ~7,250 candidates per night — mostly noise — so a real but weak effect could be diluted below detectability."
+    - "Preprint; single author."
+  reviewState: ai_extracted
+  origin:
+    ref: "transients research report — source-mining layer"
+    extractedBy: "Fable (AI agent)"
+    runId: "transients-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: TRN-E010
+  title: "Independent statistics reproduce both ensemble effects on the original catalog"
+  claimIds: [TRN-C005, TRN-C006]
+  sourceId: SRC-DOHERTY-2026
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    Using the original 107,875-object dataset supplied by the authors and
+    independently written analysis code, the nuclear-window contingency
+    result reproduces (relative risk 1.45, p = .011), survives negative
+    binomial regression with precipitation, lunar-illumination, and
+    cloud-cover controls (IRR 1.80 all transients; 3.98 sunlit-only), and
+    passes a 10,000-iteration permutation test (p = .006); the Earth-shadow
+    classification finds 0.46% of sources in the umbral cone (0.45% in a
+    center-of-plate subset) against a geometric expectation of ~1.4%.
+  editorInference: >-
+    The published correlations are not coding errors unique to the VASCO
+    authors — a genuine and useful replication, but of the analysis only.
+    It starts from the authors' own candidate rows, so it cannot speak to
+    whether those rows describe real sky events.
+  exactLocator: "Abstract, §2–3 (read via arXiv 2604.00056)"
+  limitations:
+    - "Independent statistic, not independent extraction: the catalog under analysis is author-supplied (contrast TRN-E009)."
+    - "Preprint; single author; later co-authored the Bruehl et al. 2026 ML paper, so these two records are not fully independent of each other."
+  reviewState: ai_extracted
+  origin:
+    ref: "transients research report — source-mining layer"
+    extractedBy: "Fable (AI agent)"
+    runId: "transients-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: TRN-E011
+  title: "The Watters reanalysis: no shadow deficit, schedule-driven timing, unvalidated datasets"
+  claimIds: [TRN-C005, TRN-C006, TRN-C020]
+  sourceId: SRC-WATTERS-2026
+  direction: undermines
+  strength: strong
+  sourceStatement: >-
+    Using two previously published datasets closely related to those in the
+    Villarroel et al. studies: the uniform-random background assumption
+    essential to the Earth-shadow analysis is false (feature counts are
+    spatially heterogeneous, rising toward plate corners and edges, with
+    geometric clusters and voids); after deriving the proper null
+    distribution there is no statistically significant shadow deficit; the
+    nuclear-test correlation becomes insignificant after normalizing by the
+    number of observation days and is almost completely determined by the
+    Palomar observing schedule; at least 91% of the features used in the
+    ensemble studies belong to a set earlier removed for lying within 5
+    arcsec of catalog stars; a third of the reported linear-cluster
+    features were not confidently distinguished from catalog stars; and it
+    has not been shown that any features in these datasets represent
+    optical transients.
+  editorInference: >-
+    The most comprehensive undermining record in the case: it attacks the
+    dataset definitions underneath both headline correlations, not just
+    the statistics on top. Its force depends on how well its
+    closely-related-but-not-identical datasets proxy the actual working
+    catalog — the exact point the proponents' rebuttal presses.
+  exactLocator: "Abstract, §4–7 (read via arXiv 2601.21946; published as PASA, DOI 10.1017/pasa.2026.10230)"
+  limitations:
+    - "Works from related public datasets rather than the exact 107,875-row working catalog used in the disputed papers."
+    - "The vetted subsets it favors are much smaller; the proponents argue the resulting power loss can hide a real effect (TRN-E012)."
+  reviewState: ai_extracted
+  origin:
+    ref: "transients research report — source-mining layer"
+    extractedBy: "Fable (AI agent)"
+    runId: "transients-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: TRN-E012
+  title: "The proponents' rebuttal to Watters"
+  claimIds: [TRN-C005, TRN-C006]
+  sourceId: SRC-VILLARROEL-2026-RESPONSE
+  direction: qualifies
+  strength: weak
+  sourceStatement: >-
+    The critique conflates object-level validation with ensemble-level
+    statistical inference; it relies on a heterogeneously filtered subset
+    twenty times smaller than the working catalog, built for a different
+    purpose, lacking complete temporal information, and statistically
+    underpowered for testing the shadow deficit; the plate-assignment
+    metric depends on a cos(Dec) factor whose omission would corrupt
+    inferred observation times; and the critique's analyses carry no
+    uncertainty estimates. The authors conclude their principal findings
+    are not invalidated.
+  editorInference: >-
+    A genuine methodological dispute, not a resolution: the reply defends
+    the working catalog's power without answering the deeper charge that
+    the working catalog itself was never validated against star
+    contamination and scan artifacts. Both sides are arguing about the
+    same unvalidated rows; the preregistered multi-pipeline designs
+    (TRN-R004, TRN-R005) exist to end that argument.
+  exactLocator: "Abstract (arXiv 2602.15171)"
+  limitations:
+    - "Preprint response by the criticized authors; qualifying argument, not new data."
+  reviewState: ai_extracted
+  origin:
+    ref: "transients research report — source-mining layer"
+    extractedBy: "Fable (AI agent)"
+    runId: "transients-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: TRN-E013
+  title: "Analogous candidates on Hamburg Observatory plates"
+  claimIds: [TRN-C010]
+  sourceId: SRC-BUSKO-2026A
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    A search of rapidly repeated (≈30 minutes apart) same-night plate
+    pairs from the Hamburg Observatory 1.2-m Großer Schmidtspiegel,
+    digitized by the APPLAUSE archive, finds evidence of transients
+    similar to those reported by the VASCO project on POSS plates,
+    including systematically narrow FWHM relative to stellar point-spread
+    functions; the initial sample comprises 41 plates from 1954–1957, and
+    the author labels the findings preliminary.
+  editorInference: >-
+    If it holds up, this is the first appearance of the phenomenon outside
+    the Palomar plate-copy genealogy — the copy-defect mechanism
+    (TRN-C007) cannot reach it. What it does not yet have is a measured
+    candidate rate against matched controls, so "similar phenomenon" and
+    "similar defect susceptibility" remain indistinguishable.
+  exactLocator: "Abstract and §I–II (read via arXiv 2603.20407)"
+  limitations:
+    - "Preprint, explicitly preliminary; no false-positive calibration or injection/recovery testing published."
+    - "Different methodology (plate-pair differencing, no external catalogs) — a strength for independence, a weakness for comparability."
+  reviewState: ai_extracted
+  origin:
+    ref: "transients research report — source-mining layer"
+    extractedBy: "Fable (AI agent)"
+    runId: "transients-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: TRN-E014
+  title: "Coma aberration reported in Hamburg transient images"
+  claimIds: [TRN-C011, TRN-C020]
+  sourceId: SRC-BUSKO-2026B
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    Working with 532 plate pairs (1934–1957) from the Hamburg 0.6-m
+    Doppel-Reflektor — chosen because its parabolic optics produce strong
+    off-axis coma — the author reports that transient candidate images
+    exhibit the coma aberration pattern expected from off-axis point
+    sources recorded through the telescope optics, a signature plate
+    artifacts cannot naturally reproduce; the paper states the data do not
+    by themselves establish the physical origin of the light.
+  editorInference: >-
+    Potentially the highest-information positive development in the case:
+    a physical discriminant between light-through-the-optics and
+    after-the-fact marks that does not require the original Palomar
+    negatives. Everything now rests on whether the discriminant survives
+    blind validation against known defects and deliberately produced short
+    flashes (TRN-R003).
+  exactLocator: "Abstract, §2–3 (read via arXiv 2606.08319)"
+  limitations:
+    - "Single-author preprint; the coma classifier has not been blind-validated, and defect classes that mimic directional asymmetry have not been excluded."
+    - "Applies to Hamburg candidates only; it does not validate any Palomar event."
+  reviewState: ai_extracted
+  origin:
+    ref: "transients research report — source-mining layer"
+    extractedBy: "Fable (AI agent)"
+    runId: "transients-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: TRN-E015
+  title: "ML artifact-scoring: ensemble effects persist among likelier-real candidates"
+  claimIds: [TRN-C005, TRN-C006]
+  sourceId: SRC-BRUEHL-2026-ML
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    A model trained on 250 transient image pairs classified as real versus
+    plate defect by expert visual review (out-of-fold AUC = 0.81;
+    sensitivity and specificity 0.71) assigned each of the 107,875
+    catalog transients a probability of being real. After controlling for
+    ML-identified artifacts, nuclear-window counts remained significantly
+    elevated (p = .024), the highest-probability transients were more
+    likely to fall in nuclear windows (p < .0001), and the shadow deficit
+    remained significant (p < .001) and was largest among
+    highest-probability transients (p = .003).
+  editorInference: >-
+    A real internal-robustness result: the obvious visually recognizable
+    defect classes do not trivially explain the ensemble signals. It is
+    not external validation — the training labels are expert judgments
+    about the same kind of imagery under dispute, not physical ground
+    truth, and the whole analysis stays inside the contested catalog
+    lineage.
+  exactLocator: "Abstract (read on nature.com, DOI 10.1038/s41598-026-66148-2)"
+  limitations:
+    - "Training labels derive from expert visual classification, not from independently known photons-versus-defects ground truth."
+    - "Same 107,875-object lineage as the original claims; author overlap with both the original papers and the Doherty replication."
+  reviewState: ai_extracted
+  origin:
+    ref: "transients research report — source-mining layer"
+    extractedBy: "Fable (AI agent)"
+    runId: "transients-import-2026-08-22"
+    date: "2026-08-22"
+
+- id: TRN-E016
+  title: "Construction of the public candidate catalogs (298,165 → 5,399)"
+  claimIds: [TRN-C004, TRN-C005, TRN-C006]
+  sourceId: SRC-SOLANO-2022
+  direction: context
+  strength: moderate
+  sourceStatement: >-
+    A Virtual Observatory search for POSS-I red sources absent from
+    Pan-STARRS DR2 and Gaia EDR3 found 298,165 POSS-I-only sources;
+    crossmatching and classification removed infrared counterparts,
+    asteroids, variables, high-proper-motion stars, and 3,592 artifacts
+    identified by comparison with the SuperCOSMOS digitization, leaving
+    5,399 unidentified transients in the public archive.
+  editorInference: >-
+    The dataset-definition context every ensemble claim depends on: the
+    contested statistics run not on this vetted 5,399 set but on a
+    ~107,875-object working sample drawn from the broader workflow — a
+    sample the discovery papers themselves describe as containing
+    substantial false positives. Which rows count as "transients" is not a
+    technicality here; it is where the Watters dispute lives.
+  exactLocator: "Abstract (read via arXiv 2206.00907)"
+  limitations:
+    - "The artifact vetting relies on cross-digitization comparison, which the copy genealogy (TRN-C007) shows cannot catch defects on the shared intermediate positive."
+  reviewState: ai_extracted
+  origin:
+    ref: "transients research report — source-mining layer"
+    extractedBy: "Fable (AI agent)"
+    runId: "transients-import-2026-08-22"
+    date: "2026-08-22"

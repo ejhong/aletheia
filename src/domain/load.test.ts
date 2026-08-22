@@ -59,6 +59,7 @@ describe("real content", () => {
 describe("schema rules", () => {
   const baseClaim = {
     id: "GEO-C999",
+    tier: "featured",
     statement: "A test statement long enough to pass.",
     plainLanguage: "A plain language gloss long enough.",
     theme: "tool-marks",
@@ -79,6 +80,22 @@ describe("schema rules", () => {
     strongestObjection: "none",
   };
 
+  const baseCatalogClaim = {
+    id: "GEO-C998",
+    tier: "catalog",
+    statement: "A lightweight catalog statement long enough to pass.",
+    theme: "tool-marks",
+    rung: "observation",
+    reviewState: "ai_extracted",
+    origin: {
+      ref: "geo catalog T-999",
+      extractedBy: "test",
+      runId: "test-run",
+      date: "2026-01-01",
+    },
+    sourceAnchor: { locator: "Fóti Ch 1, pp ~14–17" },
+  };
+
   it("rejected claims require a rejectionReason (tombstone rule)", () => {
     expect(() =>
       ClaimSchema.parse({ ...baseClaim, reviewState: "rejected" }),
@@ -90,6 +107,54 @@ describe("schema rules", () => {
         rejectionReason: "because",
       }),
     ).not.toThrow();
+    // The tombstone rule applies to catalog-tier claims too.
+    expect(() =>
+      ClaimSchema.parse({ ...baseCatalogClaim, reviewState: "rejected" }),
+    ).toThrow();
+  });
+
+  it("catalog claims validate without featured-level richness", () => {
+    expect(() => ClaimSchema.parse(baseCatalogClaim)).not.toThrow();
+    const parsed = ClaimSchema.parse(baseCatalogClaim);
+    expect(parsed.tier).toBe("catalog");
+  });
+
+  it("catalog claims require a source anchor", () => {
+    const { sourceAnchor: _drop, ...unanchored } = baseCatalogClaim;
+    void _drop;
+    expect(() => ClaimSchema.parse(unanchored)).toThrow();
+    expect(() =>
+      ClaimSchema.parse({ ...baseCatalogClaim, sourceAnchor: { locator: "" } }),
+    ).toThrow();
+  });
+
+  it("promotion is a one-field edit that then demands the full workup", () => {
+    // Flipping tier alone fails loudly: the validator lists the editorial
+    // fields still missing. That failure is the promotion checklist.
+    expect(() =>
+      ClaimSchema.parse({ ...baseCatalogClaim, tier: "featured" }),
+    ).toThrow();
+    // Supplying the featured fields completes the promotion.
+    expect(() =>
+      ClaimSchema.parse({
+        ...baseCatalogClaim,
+        tier: "featured",
+        plainLanguage: "A plain language gloss long enough.",
+        claimType: "observation",
+        importance: "supporting",
+        credibility: "unresolved",
+        credibilitySummary: "none yet",
+        diagnosticity: "low",
+        diagnosticitySummary: "none yet",
+        strongestObjection: "none recorded yet",
+      }),
+    ).not.toThrow();
+  });
+
+  it("featured claims still require the full editorial fields", () => {
+    const { plainLanguage: _pl, ...missingGloss } = baseClaim;
+    void _pl;
+    expect(() => ClaimSchema.parse(missingGloss)).toThrow();
   });
 
   it("HARD RULE: AI-generated images can never be plates", () => {

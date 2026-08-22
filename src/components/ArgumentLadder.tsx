@@ -4,7 +4,7 @@ import {
   assessmentLabels,
   rungLabels,
   rungOrder,
-  type Claim,
+  type FeaturedClaim,
 } from "@/src/domain/schema";
 
 const dotClasses: Record<string, string> = {
@@ -25,7 +25,7 @@ const rungGloss: Record<string, string> = {
  * attribution at the top; the reader sees credibility decay as the argument
  * climbs from what is observable toward what is claimed.
  */
-export function ArgumentLadder({ claims }: { claims: Claim[] }) {
+export function ArgumentLadder({ claims }: { claims: FeaturedClaim[] }) {
   const rungs = [...rungOrder].reverse(); // attribution on top
 
   return (

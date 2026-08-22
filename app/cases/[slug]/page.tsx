@@ -10,9 +10,9 @@ import { ResearchCard } from "@/src/components/ResearchCard";
 import { site } from "@/src/config/site";
 import {
   caseCover,
+  featuredClaims,
   getCaseBySlug,
   latestAssessment,
-  liveClaims,
   loadAllCases,
 } from "@/src/domain/load";
 
@@ -47,7 +47,7 @@ export default async function CasePage({
 }) {
   const { slug } = await params;
   const loaded = getCaseBySlug(slug);
-  const claims = liveClaims(loaded);
+  const claims = featuredClaims(loaded);
   const run = latestAssessment(loaded);
   const sourceById = new Map(loaded.sources.map((s) => [s.id, s]));
 

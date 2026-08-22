@@ -9,10 +9,14 @@ import {
   ClaimSchema,
   EvidenceSchema,
   ImageSchema,
+  isCatalog,
+  isFeatured,
   ResearchOpportunitySchema,
   SourceSchema,
   type AssessmentRun,
+  type CatalogClaim,
   type Claim,
+  type FeaturedClaim,
   type ImageRecord,
   type LoadedCase,
 } from "./schema";
@@ -126,11 +130,20 @@ function checkIntegrity(caseDir: string, loaded: LoadedCase): void {
         `claim ${claim.id} has unknown theme "${claim.theme}"`,
       );
     }
-    for (const pid of claim.parentClaimIds) {
-      requireLiveClaim(pid, `claim ${claim.id} parent`);
+    if (claim.tier === "featured") {
+      for (const pid of claim.parentClaimIds) {
+        requireLiveClaim(pid, `claim ${claim.id} parent`);
+      }
+      for (const did of claim.dependsOnClaimIds) {
+        requireLiveClaim(did, `claim ${claim.id} dependsOn`);
+      }
     }
-    for (const did of claim.dependsOnClaimIds) {
-      requireLiveClaim(did, `claim ${claim.id} dependsOn`);
+    const anchorSourceId = claim.sourceAnchor?.sourceId;
+    if (anchorSourceId && !sourceIds.has(anchorSourceId)) {
+      throw new ContentError(
+        caseDir,
+        `claim ${claim.id} sourceAnchor references unknown source ${anchorSourceId}`,
+      );
     }
   }
 
@@ -203,6 +216,22 @@ export function loadCase(caseDir: string): LoadedCase {
     readYaml(caseDir, "claims.yaml"),
     ClaimSchema,
   );
+
+  // Bulk-imported / pipeline-proposed catalog claims live in a separate
+  // file so large imports stay reversible (one file, one commit) and the
+  // hand-curated canon stays readable. Same schema; claims here typically
+  // carry tier: catalog until individually promoted.
+  const catalogPath = path.join(CONTENT_DIR, caseDir, "claims-catalog.yaml");
+  if (fs.existsSync(catalogPath)) {
+    claims.push(
+      ...parseList<Claim>(
+        caseDir,
+        "claims-catalog.yaml",
+        parseYaml(fs.readFileSync(catalogPath, "utf8")),
+        ClaimSchema,
+      ),
+    );
+  }
   const evidence = parseList(
     caseDir,
     "evidence.yaml",
@@ -327,6 +356,16 @@ export function getCaseBySlug(slug: string): LoadedCase {
 /** Live (non-rejected) claims only — what reader views should show. */
 export function liveClaims(loaded: LoadedCase): Claim[] {
   return loaded.claims.filter((c) => c.reviewState !== "rejected");
+}
+
+/** Live featured-tier claims — the fully-treated editorial set. */
+export function featuredClaims(loaded: LoadedCase): FeaturedClaim[] {
+  return liveClaims(loaded).filter(isFeatured);
+}
+
+/** Live catalog-tier claims — the lightweight unreviewed backlog. */
+export function catalogClaims(loaded: LoadedCase): CatalogClaim[] {
+  return liveClaims(loaded).filter(isCatalog);
 }
 
 export function latestAssessment(loaded: LoadedCase): AssessmentRun | null {

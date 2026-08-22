@@ -1,0 +1,354 @@
+# Evidence records: the specific observation/result extracted from a source
+# and connected to claims. Direction is explicit; sourceStatement (what the
+# source says) is kept separate from editorInference (what we infer).
+
+- id: GEO-E001
+  title: "Measured dolerite-pounder removal rate: 216 cm³/h"
+  claimIds: [GEO-C001]
+  sourceId: SRC-MARCIS-2023
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    Photogrammetric measurement of experimental granite quarrying with a
+    dolerite pounder recorded a material removal rate of 216 cm³ per hour at
+    85 strikes per minute; the authors conclude the results speak against
+    dolerite pounders as the sole quarrying method.
+  editorInference: >-
+    At face value the rate implies dramatically extended timelines for the
+    Unfinished Obelisk under the orthodox account, or the use of supplemental
+    techniques.
+  limitations:
+    - "Single study, single team, single granite and tool configuration."
+    - "Skilled ancient crews with maintained tools may outperform the experimental protocol."
+  reviewState: ai_extracted
+  origin:
+    ref: "geo catalog T-003 (corrected framing)"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-2026-05"
+    date: "2026-05-02"
+
+- id: GEO-E002
+  title: "The evidentiary base of the pounding orthodoxy (Engelbach 1922)"
+  claimIds: [GEO-C001, GEO-C002]
+  sourceId: SRC-ENGELBACH-1922
+  direction: context
+  strength: moderate
+  sourceStatement: >-
+    Engelbach's monograph on the Aswan obelisk is the original source of the
+    dolerite-pounder account, including his own brief working trial and
+    workforce estimates.
+  editorInference: >-
+    Per the proponent literature's characterization, the orthodox rate
+    estimate rests on one self-conducted one-hour trial (~5 mm progress,
+    scaled by an efficiency multiplier) and a count-divided-by-four workforce
+    heuristic — a thin base for a century of textbook confidence. This
+    characterization should be checked against the monograph itself.
+  limitations:
+    - "The characterization of Engelbach's method is taken from Fóti's account and has not been verified against the 1922/1923 texts (that verification is geo topic T-002)."
+  reviewState: ai_extracted
+  origin:
+    ref: "geo catalog T-002"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-2026-05"
+    date: "2026-05-02"
+
+- id: GEO-E003
+  title: "Reported failure of tourist scoop-mark reproduction at Aswan"
+  claimIds: [GEO-C002]
+  sourceId: SRC-FOTI-2024
+  direction: supports
+  strength: weak
+  sourceStatement: >-
+    Fóti reports that visitors at the Unfinished Obelisk site, invited to
+    strike a designated test block with original dolerite pounders, have
+    collectively produced no successful reproduction of a scoop mark.
+  limitations:
+    - "Anecdotal; attempt rates and cumulative effort are unquantified."
+    - "No systematic survey of the test block's wear exists."
+  reviewState: ai_extracted
+  origin:
+    ref: "geo catalog T-001"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-2026-05"
+    date: "2026-05-02"
+
+- id: GEO-E004
+  title: "The Al-Ma'mun salt-layer report and proponent taste tests"
+  claimIds: [GEO-C003]
+  sourceId: SRC-GEOPOLYMER-INST
+  direction: supports
+  strength: weak
+  sourceStatement: >-
+    The Geopolymer Institute's account recounts that Al-Ma'mun's party
+    (c. 820 AD) found interior pyramid chamber walls covered with a salt
+    layer, and documents Davidovits' own repeated taste tests of Cheops
+    stone fragments (1984–2003) reporting a salty character.
+  editorInference: >-
+    If the 820 AD report survives contact with primary Arabic sources, it
+    becomes the strongest historical anchor for the natron reading; today it
+    is an untraced secondary report from the hypothesis's own proponents.
+  limitations:
+    - "Primary Arabic sources untraced (the express purpose of geo topic T-005)."
+    - "Salt has mundane candidate origins: mortar efflorescence, groundwater wicking, visitor contamination."
+    - "Proponent organization reporting on its own hypothesis."
+  reviewState: ai_extracted
+  origin:
+    ref: "geo catalog T-005 / verified-citations batch"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-2026-05"
+    date: "2026-05-02"
+
+- id: GEO-E005
+  title: "Narrow vertical shafts beside the Unfinished Obelisk"
+  claimIds: [GEO-C006]
+  sourceId: SRC-FOTI-2024
+  direction: supports
+  strength: weak
+  sourceStatement: >-
+    Fóti describes vertical shafts roughly sixteen feet deep adjacent to the
+    unfinished obelisk as too narrow for a worker to occupy a posture from
+    which effective pounding strikes could reach the bottom.
+  limitations:
+    - "Shaft dimensions not independently surveyed; biomechanical claim untested."
+  reviewState: ai_extracted
+  origin:
+    ref: "geo catalog T-004"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-2026-05"
+    date: "2026-05-02"
+
+- id: GEO-E006
+  title: "SEM and petrographic anomalies in Pumapunku andesite"
+  claimIds: [GEO-C004, GEO-C021]
+  sourceId: SRC-DAVIDOVITS-2019-ML
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    The authors report SEM and petrographic evidence in Pumapunku monument
+    andesite that they interpret as indicating geopolymeric (artificial)
+    origin.
+  limitations:
+    - "Authored by the hypothesis's principal proponents; no independent replication."
+    - "Sample provenance and chain of custody have been questioned."
+  reviewState: ai_extracted
+  origin:
+    ref: "geo catalog T-077"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-2026-05"
+    date: "2026-05-02"
+
+- id: GEO-E007
+  title: "Organic matter reported inside Pumapunku andesite"
+  claimIds: [GEO-C004, GEO-C021]
+  sourceId: SRC-DAVIDOVITS-2019-CI
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    The authors report organic matter within Pumapunku andesite stone,
+    interpreted as residue of an organo-mineral binder used in casting.
+  limitations:
+    - "Same team and sample set as GEO-E006 — not independent evidence; treat the pair as one line."
+    - "Volcanic rocks can host organic and glassy phases naturally; discriminating criteria not blind-tested."
+  reviewState: ai_extracted
+  origin:
+    ref: "geo catalog T-077"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-2026-05"
+    date: "2026-05-02"
+
+- id: GEO-E008
+  title: "1971 provenance attribution of Pumapunku sandstones to natural quarries"
+  claimIds: [GEO-C021]
+  sourceId: SRC-PONCE-1971
+  direction: undermines
+  strength: moderate
+  sourceStatement: >-
+    The Bolivian Academy of Sciences study attributes the red sandstones of
+    the Pumapunku temple to identifiable natural quarry sources.
+  editorInference: >-
+    The standard provenance counter-argument to Andean casting. Its force
+    depends on whether provenance methods could distinguish cast-from-
+    aggregate stone at all (see GEO-C030) — and on 1971 methods holding up.
+  limitations:
+    - "Pre-modern analytical methods; re-examination is itself proposed (geo topic T-078)."
+  reviewState: ai_extracted
+  origin:
+    ref: "geo catalog T-078"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-2026-05"
+    date: "2026-05-02"
+
+- id: GEO-E009
+  title: "Stonehenge sarsen provenance: Stone 58 matches West Woods"
+  claimIds: [GEO-C022, GEO-C030]
+  sourceId: SRC-NASH-2020
+  direction: undermines
+  strength: moderate
+  sourceStatement: >-
+    Immobile-trace-element analysis found that 50 of 52 Stonehenge sarsens
+    share a uniform geochemical profile, and Stone 58's signature directly
+    matches the West Woods area — identifying the probable source region.
+  editorInference: >-
+    For Stonehenge, provenance evidence fits conventional sourcing well.
+    Proponents respond that bulk trace-element methods would give the same
+    result for stone cast from West Woods aggregate — but that response
+    (GEO-C030) is itself an untested methodological claim. Note: the geo
+    project corrected Fóti's "only a statistical correlation" framing;
+    the published match is stronger than he presents.
+  limitations:
+    - "Bears directly on Stonehenge sarsens, not on the Egyptian or Andean claims."
+  reviewState: ai_extracted
+  origin:
+    ref: "geo catalog T-075 / verified-citations batch"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-2026-05"
+    date: "2026-05-02"
+
+- id: GEO-E010
+  title: "Documented natron sources and their medieval decline"
+  claimIds: [GEO-C011]
+  sourceId: SRC-SHORTLAND-2006
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    Wadi el Natrun and al-Barnuj are identified as the primary ancient
+    Egyptian natron sources for the vitreous-materials industry, with a
+    documented decline and replacement by plant ash in the 7th–9th
+    centuries AD.
+  editorInference: >-
+    Establishes ingredient availability at scale and a documented supply
+    discontinuity — the kind of discontinuity a lost-craft narrative needs,
+    though the paper itself makes no claim about stone.
+  limitations:
+    - "The paper concerns glass and faience; it says nothing about stone-making."
+  reviewState: ai_extracted
+  origin:
+    ref: "geo catalog T-012 / T-060"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-2026-05"
+    date: "2026-05-02"
+
+- id: GEO-E011
+  title: "Compositional typology separating natron glass from plant-ash glass"
+  claimIds: [GEO-C011]
+  sourceId: SRC-SAYRE-SMITH-1961
+  direction: context
+  strength: moderate
+  sourceStatement: >-
+    Ancient glasses divide into compositional categories; plant-ash glass is
+    marked by both MgO and K₂O above roughly 2%, natron glass by low values
+    of both.
+  editorInference: >-
+    Provides the analytical tool behind natron-supply timelines. The geo
+    project corrected Fóti's ">1% K" paraphrase to the paper's dual-oxide
+    criterion.
+  limitations: []
+  reviewState: ai_extracted
+  origin:
+    ref: "geo catalog T-065 / verified-citations batch"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-2026-05"
+    date: "2026-05-02"
+
+- id: GEO-E012
+  title: "Reported microstructural evidence of reconstituted limestone in pyramid samples"
+  claimIds: [GEO-C012, GEO-C020]
+  sourceId: SRC-BARSOUM-2006
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    The authors report microstructural features in Great Pyramid samples
+    that they interpret as evidence of reconstituted (cast) limestone in
+    some blocks.
+  editorInference: >-
+    The only non-proponent laboratory support in the corpus — which is
+    exactly why its unverified citation status matters and why the
+    subsequent critical literature must be imported before this line is
+    weighed.
+  limitations:
+    - "Source citation unverified in this project (see SRC-BARSOUM-2006)."
+    - "Interpretations disputed in subsequent petrographic literature, not yet imported into this case."
+  reviewState: ai_extracted
+  origin:
+    ref: "geo project working discussion (rfp-review note 16)"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-2026-05"
+    date: "2026-08-05"
+
+- id: GEO-E013
+  title: "Davidovits' demonstration blocks of re-agglomerated limestone"
+  claimIds: [GEO-C012]
+  sourceId: SRC-GEOPOLYMER-INST
+  direction: supports
+  strength: weak
+  sourceStatement: >-
+    The Geopolymer Institute reports having produced large demonstration
+    blocks (including a multi-ton limestone block) using its proposed
+    ancient-feasible recipes.
+  limitations:
+    - "Self-reported by the proponent organization; no independent analysis of a demonstration block has been published (proposed as geo topic T-072)."
+    - "Modern production knowledge does not establish ancient production."
+  reviewState: ai_extracted
+  origin:
+    ref: "geo catalog T-072 context"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-2026-05"
+    date: "2026-05-02"
+
+- id: GEO-E014
+  title: "Reinterpretation of the Rekhmire 'casting a metal door' scene"
+  claimIds: [GEO-C005]
+  sourceId: SRC-FOTI-2024
+  direction: supports
+  strength: weak
+  sourceStatement: >-
+    Fóti argues that the scale of the depicted operation and details of the
+    depicted apparatus in the Tomb of Rekhmire mural fit mineral/waterglass
+    processing better than bronze casting.
+  limitations:
+    - "Interpretive argument by a proponent; conventional Egyptology reads the scene as metal casting and has not engaged the reinterpretation."
+  reviewState: ai_extracted
+  origin:
+    ref: "geo catalog T-034"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-2026-05"
+    date: "2026-05-02"
+
+- id: GEO-E015
+  title: "Reported accidental stone formation in a long-cycle fire pit"
+  claimIds: [GEO-C013]
+  sourceId: SRC-FOTI-2024
+  direction: supports
+  strength: weak
+  sourceStatement: >-
+    Fóti recounts a reported observation of rock-like material forming in a
+    repeatedly used outdoor fire pit over a long period.
+  limitations:
+    - "Unattributed anecdote — flagged as under-sourced in the geo project's own 2026-08-05 skeptical review."
+    - "No controlled replication has been attempted."
+  reviewState: ai_extracted
+  origin:
+    ref: "geo catalog T-021"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-2026-05"
+    date: "2026-05-02"
+
+- id: GEO-E016
+  title: "Pre-Egyptian glassmaking as a temperature precedent"
+  claimIds: [GEO-C010]
+  sourceId: SRC-FOTI-2024
+  direction: supports
+  strength: weak
+  sourceStatement: >-
+    Fóti cites Badari-period glassmaking as demonstrating pyrotechnology in
+    the ~850 °C range before the pyramid age, within reach of charcoal and
+    bellows.
+  limitations:
+    - "The Badari dating and temperature basis need independent verification (geo topic T-013)."
+    - "Crucible-scale heat is not industrial-scale processing (see GEO-C010's objection)."
+  reviewState: ai_extracted
+  origin:
+    ref: "geo catalog T-013 / T-014"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-2026-05"
+    date: "2026-05-02"

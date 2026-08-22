@@ -1,0 +1,564 @@
+# Canon layer. AI-extracted claims from the geo project catalog (Fóti and
+# Davidovits source books), imported 2026-08-22. reviewState is honest
+# provenance: nothing here has been hand-checked by a human yet.
+
+# ── Attribution rung ────────────────────────────────────────────────────────
+
+- id: GEO-C022
+  statement: >-
+    At least one major megalithic monument contains man-made cast stone —
+    blocks produced by binding processed mineral inputs rather than by
+    carving natural rock alone.
+  plainLanguage: >-
+    The headline thesis, stated as a disjunction: the casting hypothesis wins
+    if it is true anywhere — one monument, one confirmed cast block. It does
+    not require that every megalith was cast.
+  theme: attribution
+  rung: attribution
+  claimType: existence
+  importance: headline
+  reviewState: ai_extracted
+  origin:
+    ref: "geo catalog — hypothesis statement (rfp.md)"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-2026-05"
+    date: "2026-05-02"
+  credibility: unresolved
+  credibilitySummary: >-
+    No disputed monument stone has ever been subjected to a blinded,
+    prespecified discriminating test. The proponent evidence is real but
+    proponent-generated; the mainstream rejection is broad but has not
+    engaged the specific discriminating experiments either.
+  diagnosticity: high
+  diagnosticitySummary: >-
+    This is the thesis itself; everything below the ladder exists to test it.
+  parentClaimIds: []
+  dependsOnClaimIds: [GEO-C012]
+  strongestObjection: >-
+    Forty-five years after the hypothesis was proposed, no independently
+    replicated physical evidence from an actual monument supports it, while
+    quarries, tools, unfinished pieces, and provenance matches accumulate on
+    the conventional side.
+  whatWouldChangeOurMind:
+    - "A blinded microstructural comparison finding (or failing to find) prespecified cast-stone signatures in disputed monument samples."
+    - "Independent replication (or failed replication) of the published Pumapunku SEM findings."
+
+- id: GEO-C020
+  statement: >-
+    Some blocks of the Great Pyramid are cast reconstituted limestone rather
+    than quarried natural stone.
+  plainLanguage: >-
+    The Egyptian branch of the thesis, associated with Davidovits since 1979:
+    parts of the pyramid (most versions say upper-course or casing blocks)
+    were made from limestone slurry or aggregate re-bound with a
+    natron/lime-based binder.
+  theme: attribution
+  rung: attribution
+  claimType: existence
+  importance: headline
+  reviewState: ai_extracted
+  origin:
+    ref: "geo catalog — Davidovits pyramid corpus (T-005..T-019 cluster)"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-2026-05"
+    date: "2026-05-02"
+  credibility: mixed
+  credibilitySummary: >-
+    One peer-reviewed microstructural study (Barsoum 2006) reported features
+    its authors read as reconstituted limestone; mainstream petrography
+    disputes the interpretation, and no blinded follow-up has been run.
+    Historical anchors (the salt-layer account) remain untraced to primary
+    sources.
+  diagnosticity: high
+  diagnosticitySummary: >-
+    Directly decides the Egyptian branch of the thesis and would validate
+    GEO-C022 by itself.
+  parentClaimIds: [GEO-C022]
+  dependsOnClaimIds: [GEO-C012]
+  strongestObjection: >-
+    Petrographic re-examinations attribute the reported anomalies to natural
+    limestone variability and to sampling/contamination issues, and quarry
+    provenance at Giza is conventionally considered settled.
+  whatWouldChangeOurMind:
+    - "Blinded comparison of pyramid core/casing samples against Tura and Mokattam quarry stone using prespecified microstructural criteria."
+    - "Tracing the Al-Ma'mun salt account to credible primary sources (or showing it is a later embellishment)."
+
+- id: GEO-C021
+  statement: >-
+    Some andesite and red sandstone blocks at Pumapunku and Tiwanaku were
+    produced by geopolymer casting.
+  plainLanguage: >-
+    The Andean branch of the thesis: the famously precise H-blocks and
+    architraves of Pumapunku were cast in molds from volcanic rock processed
+    with organic binders, not carved with stone and bronze tools.
+  theme: attribution
+  rung: attribution
+  claimType: existence
+  importance: headline
+  reviewState: ai_extracted
+  origin:
+    ref: "geo catalog T-077 / T-078"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-2026-05"
+    date: "2026-05-02"
+  credibility: mixed
+  credibilitySummary: >-
+    Two peer-reviewed papers from the Davidovits team report SEM and
+    petrographic features they interpret as geopolymeric, but no independent
+    laboratory has re-analyzed the samples, and the 1971 Bolivian provenance
+    study attributes the sandstones to natural quarries.
+  diagnosticity: high
+  diagnosticitySummary: >-
+    Directly decides the Andean branch and would validate GEO-C022 by itself.
+  parentClaimIds: [GEO-C022]
+  dependsOnClaimIds: []
+  strongestObjection: >-
+    All supporting analyses come from one proponent team; the samples' chain
+    of custody is contested; and provenance work attributes the stone to
+    identifiable quarries.
+  whatWouldChangeOurMind:
+    - "Independent re-analysis of the Pumapunku samples (geo topic T-077) confirming or refuting the SEM findings."
+
+# ── Mechanism rung ──────────────────────────────────────────────────────────
+
+- id: GEO-C012
+  statement: >-
+    Limestone can be reconstituted into large, hard blocks visually similar
+    to natural stone using materials and temperatures available to ancient
+    builders.
+  plainLanguage: >-
+    The feasibility keystone: can you actually make convincing artificial
+    limestone with Bronze Age inputs? Modern demonstrations (Davidovits'
+    multi-ton blocks) say yes at some scale; how faithfully they reproduce
+    ancient conditions is debated.
+  theme: ingredients
+  rung: mechanism
+  claimType: mechanistic
+  importance: major
+  reviewState: ai_extracted
+  origin:
+    ref: "geo catalog — Davidovits/Barsoum feasibility line (T-019, T-072 context)"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-2026-05"
+    date: "2026-05-02"
+  credibility: provisionally_supported
+  credibilitySummary: >-
+    Modern geopolymer chemistry is established science, and proponent
+    demonstration blocks exist; what is unproven is that the specific
+    ancient-feasible recipes produce stone that matches monument blocks
+    under close analysis.
+  diagnosticity: moderate
+  diagnosticitySummary: >-
+    Necessary but not sufficient: feasibility opens the door, but attribution
+    (GEO-C020/C021) requires signatures found in the monuments themselves.
+  parentClaimIds: [GEO-C020]
+  dependsOnClaimIds: [GEO-C010, GEO-C011]
+  strongestObjection: >-
+    Demonstrations use modern knowledge, tools, and quality control; no
+    demonstration block has been independently analyzed and compared to
+    monument stone under blind conditions.
+  whatWouldChangeOurMind:
+    - "Independent analytical study of a demonstration block against monument and quarry stone (geo topic T-072)."
+
+- id: GEO-C010
+  statement: >-
+    Temperatures on the order of 850 °C required for natron-based silicate
+    chemistry were achievable with charcoal-and-bellows pyrotechnology
+    available to ancient builders.
+  plainLanguage: >-
+    The heat question: nothing in the proposed chemistry requires furnaces
+    beyond what ancient glassmakers and metalworkers demonstrably had.
+  theme: ingredients
+  rung: mechanism
+  claimType: mechanistic
+  importance: supporting
+  reviewState: ai_extracted
+  origin:
+    ref: "geo catalog T-013 / T-014"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-2026-05"
+    date: "2026-05-02"
+  credibility: provisionally_supported
+  credibilitySummary: >-
+    Ancient glassmaking and copper smelting operated in this temperature
+    range; the Badari glassmaking precedent cited by Fóti still needs
+    independent verification of its dating and temperature basis.
+  diagnosticity: low
+  diagnosticitySummary: >-
+    Removes an impossibility objection; establishes nothing about what was
+    actually done.
+  parentClaimIds: [GEO-C012]
+  dependsOnClaimIds: []
+  strongestObjection: >-
+    Reaching a temperature in a small crucible is very different from
+    sustaining industrial-scale processing; the scale-up question is open.
+  whatWouldChangeOurMind:
+    - "Feasibility analysis of pyramid-scale natron or calcine processing (geo topic T-019)."
+
+- id: GEO-C011
+  statement: >-
+    Egypt possessed industrial-scale natron sources (Wadi el Natrun,
+    al-Barnuj) exploited from antiquity, with supply declining in the
+    7th–9th centuries AD.
+  plainLanguage: >-
+    The ingredient question: the key reagent in the natron-route chemistry
+    existed nearby, at scale, and its documented supply history even offers
+    a candidate explanation for why a stone-casting craft could have died.
+  theme: ingredients
+  rung: mechanism
+  claimType: historical
+  importance: supporting
+  reviewState: ai_extracted
+  origin:
+    ref: "geo catalog T-012 / T-060"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-2026-05"
+    date: "2026-05-02"
+  credibility: well_supported
+  credibilitySummary: >-
+    Mainstream archaeology (Shortland et al. 2006) documents both the sources
+    and the 7th–9th-century decline; this claim is uncontroversial on its own.
+  diagnosticity: low
+  diagnosticitySummary: >-
+    Availability of an ingredient is weak evidence that it was used for
+    stone-making; natron's documented uses (glass, mummification) are
+    conventional.
+  parentClaimIds: [GEO-C012]
+  dependsOnClaimIds: []
+  strongestObjection: >-
+    Documented natron consumption is fully accounted for by glass, faience,
+    and ritual use; no ancient text connects natron to building stone.
+  whatWouldChangeOurMind:
+    - "Quantitative reconstruction of ancient Wadi el Natrun yields against hypothesized stone-making demand (geo topic T-060)."
+
+- id: GEO-C013
+  statement: >-
+    Long-cycle outdoor fire pits can accidentally produce hardened artificial
+    stone through ash-carbonation chemistry, providing a plausible discovery
+    pathway for stone-making.
+  plainLanguage: >-
+    How would anyone discover stone-casting without chemistry? Fóti's answer:
+    by accident, in fire pits, where ash plus rain can slowly mineralize —
+    if that replicates, the "discovery problem" weakens as an objection.
+  theme: ingredients
+  rung: mechanism
+  claimType: causal
+  importance: supporting
+  reviewState: ai_extracted
+  origin:
+    ref: "geo catalog T-021"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-2026-05"
+    date: "2026-05-02"
+  credibility: unresolved
+  credibilitySummary: >-
+    Rests on an unattributed anecdote in the proponent literature; no
+    controlled replication has been attempted.
+  diagnosticity: low
+  diagnosticitySummary: >-
+    Bears on plausibility of discovery, not on whether any monument was cast.
+  parentClaimIds: [GEO-C012]
+  dependsOnClaimIds: []
+  strongestObjection: >-
+    The originating anecdote is unattributed, and ash-carbonation over months
+    may produce crumbly sinter rather than structural stone.
+  whatWouldChangeOurMind:
+    - "Documented long-cycle fire-pit replication with material testing (geo topic T-021)."
+
+- id: GEO-C030
+  statement: >-
+    Standard geochemical provenance methods attribute stone to a quarry but
+    cannot, by design, distinguish carved quarry stone from stone cast using
+    aggregate collected at that same quarry.
+  plainLanguage: >-
+    The methodological hinge of the whole dispute. Provenance studies match
+    trace-element fingerprints of monument stone to quarry stone — but
+    crushed quarry rock re-bound with a few percent of binder would carry
+    the same fingerprint. If true, "provenance settled it" settles less
+    than it seems; it is also the escape hatch that keeps the casting
+    hypothesis from being falsified by provenance data.
+  theme: methodology
+  rung: mechanism
+  claimType: methodological
+  importance: major
+  reviewState: ai_extracted
+  origin:
+    ref: "geo catalog T-087"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-2026-05"
+    date: "2026-05-02"
+  credibility: mixed
+  credibilitySummary: >-
+    The logical point is sound for bulk trace-element methods, but binders
+    should leave detectable signatures of their own (hydrogen, carbon,
+    microstructure), so "cannot by design" may overstate the blindness —
+    exactly what a methods re-examination would establish.
+  diagnosticity: high
+  diagnosticitySummary: >-
+    Decides how much weight the strongest conventional evidence class
+    (provenance matching) actually carries against casting.
+  parentClaimIds: [GEO-C022]
+  dependsOnClaimIds: []
+  strongestObjection: >-
+    Cast stone requires a binder, and binders are physically detectable;
+    a methodology that looked for them and found none would refute rather
+    than evade the casting reading.
+  whatWouldChangeOurMind:
+    - "A published re-examination of quarry-attribution studies under cast-stone-aware methodology (geo topic T-087)."
+
+# ── Observation rung ────────────────────────────────────────────────────────
+
+- id: GEO-C001
+  statement: >-
+    Controlled photogrammetric measurement of granite quarrying with a
+    dolerite pounder yields a removal rate of roughly 216 cm³ per hour at
+    85 strikes per minute.
+  plainLanguage: >-
+    The one modern, peer-reviewed number in the tool-rate debate. At that
+    pace, the authors conclude, dolerite pounders alone are hard to square
+    with the accepted timeline for the Unfinished Obelisk.
+  theme: tool-marks
+  rung: observation
+  claimType: measurement
+  importance: major
+  reviewState: ai_extracted
+  origin:
+    ref: "geo catalog T-003"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-2026-05"
+    date: "2026-05-02"
+  credibility: provisionally_supported
+  credibilitySummary: >-
+    Peer-reviewed (Marčiš et al. 2023) and quantitative, but a single study
+    by a single team; the geo project corrected Fóti's second-hand "36
+    months instead of 7" framing to the paper's actual rate figure.
+  diagnosticity: moderate
+  diagnosticitySummary: >-
+    A slow measured rate stresses the orthodox account's timeline but is
+    equally consistent with supplemental conventional techniques (fire
+    setting, better tooling) as with casting.
+  parentClaimIds: [GEO-C022]
+  dependsOnClaimIds: []
+  strongestObjection: >-
+    One team, one protocol, one granite; experienced ancient crews with
+    optimized technique could plausibly beat the measured rate.
+  whatWouldChangeOurMind:
+    - "Independent replication with sensitivity analysis on technique, tool mass, and rock type (geo topic T-003)."
+
+- id: GEO-C002
+  statement: >-
+    Decades of visitor attempts to reproduce a scoop mark on the designated
+    test block at the Aswan Unfinished Obelisk site, using ancient dolerite
+    pounders, have produced no documented success.
+  plainLanguage: >-
+    An accidental long-running experiment: tourists are invited to pound the
+    test block, and — per the proponent account — the characteristic scoop
+    marks never appear.
+  theme: tool-marks
+  rung: observation
+  claimType: observation
+  importance: supporting
+  reviewState: ai_extracted
+  origin:
+    ref: "geo catalog T-001"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-2026-05"
+    date: "2026-05-02"
+  credibility: unresolved
+  credibilitySummary: >-
+    Anecdotal: attempt rates, cumulative person-hours, and wear on the block
+    have never been systematically surveyed.
+  diagnosticity: low
+  diagnosticitySummary: >-
+    Even if verified, casual tourist effort is a weak proxy for skilled
+    ancient labor; the observation motivates a study rather than carrying
+    one.
+  parentClaimIds: [GEO-C022]
+  dependsOnClaimIds: []
+  strongestObjection: >-
+    Unskilled visitors pounding briefly for novelty tell us little about
+    trained crews working in organized shifts with maintained tools.
+  whatWouldChangeOurMind:
+    - "A quantitative field survey of the test block: wear documentation, attempt-rate estimates, photogrammetric comparison (geo topic T-001)."
+
+- id: GEO-C006
+  statement: >-
+    Vertical shafts roughly sixteen feet deep beside the Aswan unfinished
+    obelisk are too narrow for a worker to deliver effective pounding-stone
+    strikes at their bottom.
+  plainLanguage: >-
+    A physical-geometry challenge to the orthodox account: if you cannot
+    swing a pounder at the bottom of the shaft, pounding did not make the
+    shaft.
+  theme: tool-marks
+  rung: observation
+  claimType: observation
+  importance: supporting
+  reviewState: ai_extracted
+  origin:
+    ref: "geo catalog T-004"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-2026-05"
+    date: "2026-05-02"
+  credibility: unresolved
+  credibilitySummary: >-
+    The shaft dimensions and the biomechanical claim both come from the
+    proponent literature; no anthropometric study has been done.
+  diagnosticity: moderate
+  diagnosticitySummary: >-
+    If confirmed, the orthodox explanation fails for these specific features
+    — a bounded, meaningful falsification. It would not by itself establish
+    casting.
+  parentClaimIds: [GEO-C022]
+  dependsOnClaimIds: []
+  strongestObjection: >-
+    Alternative conventional techniques (smaller tools, abrasives, child
+    labor, chiseling from above) have not been excluded.
+  whatWouldChangeOurMind:
+    - "On-site measurement plus anthropometric envelope analysis (geo topic T-004)."
+
+- id: GEO-C003
+  statement: >-
+    Accounts of Caliph Al-Ma'mun's forced entry into the Great Pyramid
+    (c. 820 AD) report interior chamber walls coated with a layer of salt.
+  plainLanguage: >-
+    The historical anchor of the "salty pyramid" argument. A sealed limestone
+    structure growing a centimeter-scale salt coat is easier to explain if
+    the stone itself was cast wet with natron than if it is dry quarried
+    rock — if the account is real.
+  theme: historical-record
+  rung: observation
+  claimType: historical
+  importance: major
+  reviewState: ai_extracted
+  origin:
+    ref: "geo catalog T-005"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-2026-05"
+    date: "2026-05-02"
+  credibility: unresolved
+  credibilitySummary: >-
+    The report circulates through proponent literature (Geopolymer Institute,
+    Fóti); it has never been traced to primary Arabic sources — which is
+    precisely the proposed research project.
+  diagnosticity: moderate
+  diagnosticitySummary: >-
+    If verified in credible primary sources, hard to explain conventionally;
+    but salt has mundane candidate sources (mortar efflorescence, groundwater
+    wicking), so verification alone would not be decisive.
+  parentClaimIds: [GEO-C020]
+  dependsOnClaimIds: []
+  strongestObjection: >-
+    A ninth-century report surviving through later compilations may be
+    embellishment or mistranslation; until the primary sources are traced,
+    the anchor is hearsay.
+  whatWouldChangeOurMind:
+    - "Primary-source verification in Al-Maqrīzī, Ibn Khaldūn, Al-Idrīsī and related Arabic accounts (geo topic T-005)."
+
+- id: GEO-C005
+  statement: >-
+    An 18th-Dynasty mural in the Tomb of Rekhmire, conventionally read as
+    metal-casting, depicts a large-scale casting operation whose details
+    have been argued to fit mineral processing better than bronze work.
+  plainLanguage: >-
+    The strongest candidate for a period depiction of casting at scale. The
+    conventional reading is a bronze door being cast; Fóti argues the scale
+    and details fit stone/waterglass processing.
+  theme: historical-record
+  rung: observation
+  claimType: interpretive
+  importance: supporting
+  reviewState: ai_extracted
+  origin:
+    ref: "geo catalog T-034"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-2026-05"
+    date: "2026-05-02"
+  credibility: unresolved
+  credibilitySummary: >-
+    The mural is real and well documented; the reinterpretation is a
+    proponent argument that Egyptologists have not engaged.
+  diagnosticity: low
+  diagnosticitySummary: >-
+    Iconographic reinterpretation is weak evidence on its own; its value is
+    as a target for expert re-examination.
+  parentClaimIds: [GEO-C020]
+  dependsOnClaimIds: []
+  strongestObjection: >-
+    The conventional metal-casting reading is consistent with the scene's
+    inscriptions and with known bronze-casting practice; reinterpreting
+    iconography to fit a hypothesis is a classic degrees-of-freedom trap.
+  whatWouldChangeOurMind:
+    - "A joint Egyptology / history-of-technology re-examination of the scene and its inscriptions (geo topic T-034)."
+
+- id: GEO-C004
+  statement: >-
+    Published SEM and petrographic analyses of Pumapunku andesite report
+    organic matter and microstructural features that the authors argue are
+    inconsistent with natural volcanic stone.
+  plainLanguage: >-
+    The only laboratory evidence from an actual disputed monument: the
+    Davidovits team's peer-reviewed reports of organics and anomalous
+    microstructure inside Pumapunku stone.
+  theme: materials-evidence
+  rung: observation
+  claimType: measurement
+  importance: major
+  reviewState: ai_extracted
+  origin:
+    ref: "geo catalog T-077"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-2026-05"
+    date: "2026-05-02"
+  credibility: mixed
+  credibilitySummary: >-
+    Peer-reviewed publications exist (Materials Letters and Ceramics
+    International, 2019), but both come from the proponent team, are not
+    independent of each other, and have not been replicated by any outside
+    laboratory.
+  diagnosticity: high
+  diagnosticitySummary: >-
+    If independently replicated, this would be the single most probative
+    evidence class for the Andean attribution claim; if refuted, that claim
+    loses its physical basis.
+  parentClaimIds: [GEO-C021]
+  dependsOnClaimIds: []
+  strongestObjection: >-
+    Proponent-only findings with contested sample chain-of-custody;
+    volcanic rocks can contain organic and glassy phases naturally.
+  whatWouldChangeOurMind:
+    - "Independent re-analysis of the PP1-A and PP4 samples or fresh sampling under agreed protocols (geo topic T-077)."
+
+# ── Tombstone (rejected at extraction; kept so re-runs don't re-propose) ────
+
+- id: GEO-C900
+  statement: >-
+    Dimensional coincidences in the Great Pyramid (royal cubit ≈ π/6 m;
+    site latitude matching the speed of light in m/s) encode advanced
+    ancient knowledge.
+  plainLanguage: >-
+    Numerology claims that appear in the source literature's framing
+    chapters.
+  theme: out-of-scope
+  rung: attribution
+  claimType: interpretive
+  importance: supporting
+  reviewState: rejected
+  rejectionReason: >-
+    Rejected at extraction (geo decisions log, 2026-05-02 working notes):
+    not falsifiable in any form that bears on the casting hypothesis, and
+    featuring it would attract numerology-focused submissions. Kept as a
+    tombstone so future extraction runs do not re-propose it.
+  origin:
+    ref: "geo working notes — Fóti Foreword deferrals"
+    extractedBy: "Fable (AI agent)"
+    runId: "geo-catalog-2026-05"
+    date: "2026-05-02"
+  credibility: unresolved
+  credibilitySummary: "Not assessed — rejected before assessment."
+  diagnosticity: indeterminate
+  diagnosticitySummary: "Not assessed — rejected before assessment."
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  strongestObjection: "Not applicable — rejected claim."
+  whatWouldChangeOurMind: []

@@ -24,18 +24,16 @@ export function Plate({ image }: { image: ImageRecord }) {
           />
         </div>
       </div>
-      <figcaption className="mt-2.5 px-1">
-        <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-copper">
+      <figcaption className="plate-caption mt-2 px-1">
+        <p className="plate-caption-label">
           plate {romanNumeral(image.plateNumber ?? 0)}
           <span className="text-faint normal-case tracking-normal">
             {"  ·  "}photograph — duotone applied in display; original
             unmodified
           </span>
         </p>
-        <p className="mt-1 text-[13px] leading-relaxed text-ink-soft">
-          {image.depicts}
-        </p>
-        <p className="mt-1 font-mono text-[10px] tracking-[0.06em] text-faint">
+        <p className="plate-caption-text mt-1">{image.depicts}</p>
+        <p className="plate-caption-credit mt-1">
           {image.provenance.photographer}
           {image.provenance.date ? ` · ${image.provenance.date}` : ""} ·{" "}
           <a

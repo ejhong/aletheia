@@ -1,14 +1,14 @@
 # Product Specification
 
-## Working title
+## Name
 
-**Athanatos Evidence Atlas**
+**Aletheia** (decided 2026-08-22; see `docs/DECISIONS.md`)
 
 Subtitle:
 
 **Contested claims, mapped to evidence and experiments.**
 
-The title and subtitle must be configurable.
+The title and subtitle are configurable in the site config object.
 
 ## Product thesis
 

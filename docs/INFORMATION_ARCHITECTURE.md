@@ -1,98 +1,41 @@
-# Information Architecture
+# Aletheia Information Architecture
 
-## Global navigation
+Six routes. The case page is the center of gravity; everything else supports descent from it or entry into it.
 
-- Home
-- Cases
-- Method
-- Research Agenda
-- Search
+## Routes
 
-Future, not functional in Phase 1:
+| Route | Purpose |
+|---|---|
+| `/` | Mission, featured case, case list, method summary, recent changes |
+| `/cases` | Case index |
+| `/cases/[slug]` | **The case page** (one long page, see anatomy below) |
+| `/cases/[slug]/claims` | Claim explorer: grouped by theme, collapsed by default, headline claims first |
+| `/claims/[id]` | Claim detail: statement, rung, provenance, credibility vs. diagnosticity, evidence, dependencies, assessment history |
+| `/sources/[id]` | Source record: bibliographic identity, verification status, connected evidence and claims |
+| `/method` | Methodology: atomic claims, the ladder, evidence direction, credibility vs. diagnosticity, provenance labels, how AI is and is not used |
 
-- Contribute
-- Editor
-- Sign in
+## Case page anatomy (top to bottom)
 
-## Homepage hierarchy
+1. **Dossier header** (dark register): case ID, title, and three questions — *What is claimed? Where does the disagreement live? What would settle it?* — plus assessment state and last-review date.
+2. **Current assessment** — the AI structural roll-up (argued synthesis over the ladder), clearly labeled with model/date/review status.
+3. **Overview article** (paper register) — magazine-quality prose; consequential sentences carry claim marks that open margin notes (desktop) or inline disclosures (mobile) showing the exact claim, its credibility, and a link deeper.
+4. **Argument ladder** (dark register) — the case's claims arranged observation → mechanism → attribution, showing credibility decaying up the rungs. Hand-built SVG/CSS.
+5. **Evidence highlights** — strongest supporting and strongest undermining, structurally symmetric.
+6. **Best conventional explanation** — steelmanned.
+7. **Research agenda** — crux-directed opportunities, linked to the public ResearchHub RFP.
+8. **Change history** — dated, reasoned, with AI-assistance disclosure.
 
-1. Brand and mission
-2. Featured Case
-3. Explore Cases
-4. Recently updated Claims
-5. How the Atlas works
-6. Research opportunities
-7. Method and transparency
-8. Footer
+## Two typographic registers
 
-## Case page hierarchy
+- **Paper register** (default): warm paper surfaces, ink text, editorial serif. The narrative voice.
+- **Dossier register** (accent): deep ink panels, monospace ID tags and labels, stat callouts. The record voice. Used for the dossier header, ladder, and evidence machinery so a reader always knows whether they're reading narrative or examining the record.
 
-1. Case identity
-2. Current assessment
-3. Central crux
-4. Overview article
-5. Strongest evidence for and against
-6. Competing hypotheses
-7. Claim hierarchy
-8. Evidence ledger summary
-9. What would change the assessment
-10. Research agenda
-11. Recent changes
-12. Provenance and review disclosure
+## Navigation behavior
 
-## Claim page hierarchy
+- Article sentences link to claims; claims link to evidence; evidence links to sources; every deep page links back to case context.
+- Claim IDs (`GEO-C001`) are visible, stable, and copyable.
+- Mobile: margin notes become tap-to-expand disclosures under the paragraph; the for/against comparison stacks rather than shrinking side-by-side.
 
-1. Claim ID and atomic statement
-2. Plain-language interpretation
-3. Credibility assessment
-4. Diagnosticity assessment
-5. Importance to parent thesis
-6. Evidence balance
-7. Supporting evidence
-8. Undermining evidence
-9. Qualifying evidence
-10. Dependencies and alternatives
-11. Predictions and disconfirmers
-12. What would change our mind
-13. Assessment history
-14. Provenance and review
+## Future (not in Phase 1)
 
-## Source page hierarchy
-
-1. Bibliographic identity
-2. Source status
-3. Reliability and limitations
-4. Exact locators
-5. Connected evidence records
-6. Connected claims
-7. Source statements
-8. Editor inferences
-9. Version, correction, or retraction status
-
-## Research agenda hierarchy
-
-1. Highest-priority crux
-2. Ranked research opportunities
-3. Expected information gain
-4. Cost or effort tier
-5. Feasibility
-6. Claims affected
-7. Proposed success and failure criteria
-
-## Key navigation behavior
-
-- Overview sentences may link to Claims.
-- Claims link to Evidence.
-- Evidence links to Sources.
-- Every detailed page links back to the relevant Case context.
-- A reader can copy a stable link to a specific Claim.
-- Search results identify object type before title.
-- Filters are reflected in the URL when practical.
-
-## Mobile behavior
-
-- Replace persistent side navigation with a compact section menu.
-- Keep Claim statements readable without horizontal scrolling.
-- Collapse secondary metadata behind accessible disclosure controls.
-- Preserve the for/against comparison without placing tiny columns side by side.
-- Make touch targets generous.
+Contribute, editor workspace, sign-in, search.

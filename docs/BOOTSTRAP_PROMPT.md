@@ -1,3 +1,5 @@
+ > **HISTORICAL DOCUMENT (2026-08-22).** This was the starter kit's original bootstrap prompt for a placeholder-content mockup. The project has since been renamed **Aletheia** and re-scoped to a real-content static site (see `docs/DECISIONS.md`, `docs/CONTENT_POLICY.md`, and the revised `docs/INFORMATION_ARCHITECTURE.md`). Kept for reference; where it conflicts with the decisions log, the decisions log wins.
+
 # Build the Athanatos Evidence Atlas mockup
 
 You are the lead product designer and senior full-stack engineer for a new project called **Athanatos Evidence Atlas**.

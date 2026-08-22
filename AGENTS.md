@@ -1,8 +1,10 @@
-# AGENTS.md — Athanatos Evidence Atlas
+# AGENTS.md — Aletheia
+
+> Read `docs/DECISIONS.md` first — it records the current confirmed direction and supersedes anything here that conflicts with it.
 
 ## 1. Mission
 
-Athanatos Evidence Atlas is a versioned, public map of contested hypotheses.
+Aletheia is a versioned, public map of contested hypotheses.
 
 It connects:
 
@@ -144,17 +146,19 @@ AI must not silently:
 
 A named human remains accountable for consequential published judgments.
 
-## 4. Mockup-stage rules
+## 4. Phase-1 rules (real content, static site)
 
 Until explicitly moved into a later phase:
 
-- use local typed fixture data;
-- label all demo material clearly;
-- do not fabricate genuine citations or identifiers;
-- do not imply that demo assessments are Athanatos conclusions;
-- do not build production authentication or database infrastructure;
-- do not add live AI or web-research calls;
-- optimize for product clarity and visual learning.
+- content lives in versioned files under `content/` (folder-of-files per case), loaded and Zod-validated at build time — a malformed record or dangling ID fails the build;
+- **real citations only, with honest verification labels** (`verified` / `ai_verified` / `unverified`) — never fabricate a citation, identifier, or locator; see `docs/CONTENT_POLICY.md`;
+- claim provenance is displayed, not hidden: `ai_extracted` claims are labeled as such; AI assessments are append-only overlay files stamped with runId/model/date/promptVersion and labeled as AI-generated drafts;
+- do not imply that AI-generated assessments are reviewed human conclusions;
+- do not build authentication, databases, or servers — the site is a Next.js static export served from git via GitHub Pages;
+- do not add live AI calls or autonomous web research to the site itself;
+- respect the geo-project confidentiality constraints (no `arc/` or `notes.txt` material; Hawke-derived topics framed neutrally, confidential papers never cited);
+- minimal dependencies: Next + TypeScript strict + Tailwind + Zod (+ `yaml` parser, vitest dev-only); hand-built SVG/CSS visuals; no chart or UI libraries;
+- three zones, one-way flow: content files → domain loader → pure UI components; one component per domain concept.
 
 ## 5. Domain objects
 

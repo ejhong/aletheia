@@ -1,253 +1,87 @@
-# Initial Data Model
+# Aletheia Data Model
 
-The TypeScript implementation may refine field names, but it should preserve these concepts.
+Four core objects — **Case, Claim, Evidence, Source** — plus append-only **assessment overlays** and supporting records (research opportunities, change log). Assessments, relationships, and provenance are fields or overlay records, not separate top-level object types. The authoritative schema is the Zod definitions in `src/domain/schema.ts`; this document explains the concepts.
 
-```ts
-type ID = string;
+## Layering principle
 
-type AssessmentState =
-  | "established"
-  | "well_supported"
-  | "provisionally_supported"
-  | "mixed"
-  | "weakly_supported"
-  | "contradicted"
-  | "unresolved"
-  | "presently_untestable";
+Content is layered and reversible:
 
-type EvidenceDirection =
-  | "supports"
-  | "undermines"
-  | "qualifies"
-  | "context";
+- **Canon layer** — the claim/evidence/source files. Human-editable, versioned in git. A claim's *statement* never silently changes; corrections are new revisions in git history.
+- **Overlay layer** — AI-generated assessments in `assessments/<runId>.yaml`. Append-only: a new run adds a new file; nothing mutates the canon. Every AI-generated record carries a `runId`, model label, date, and prompt version. The UI shows the latest overlay and can show history.
 
-type ReviewState = "draft" | "frozen" | "reviewed" | "superseded";
+## Content folder layout
 
-type ClaimType =
-  | "observation"
-  | "measurement"
-  | "historical"
-  | "causal"
-  | "mechanistic"
-  | "statistical"
-  | "interpretive"
-  | "existence"
-  | "prediction";
-
-type ClaimRelationshipType =
-  | "depends_on"
-  | "refines"
-  | "duplicates"
-  | "alternative_to"
-  | "contradicts"
-  | "supersedes"
-  | "is_example_of";
-
-interface CaseRecord {
-  id: ID;
-  slug: string;
-  title: string;
-  subtitle: string;
-  summary: string;
-  domain: string;
-  status: "active" | "incubating" | "archived";
-  overallAssessment: AssessmentState;
-  assessmentSummary: string;
-  centralCrux: string;
-  bestConventionalAlternative: string;
-  whatWouldChangeOurMind: string[];
-  hypothesisIds: ID[];
-  rootClaimIds: ID[];
-  researchCruxIds: ID[];
-  researchOpportunityIds: ID[];
-  editorNames: string[];
-  lastComprehensiveReview: string;
-  isDemo: boolean;
-}
-
-interface HypothesisRecord {
-  id: ID;
-  caseId: ID;
-  title: string;
-  shortLabel: string;
-  description: string;
-  isFeatured: boolean;
-  predictions: string[];
-  explainsWell: string[];
-  strugglesWith: string[];
-  discriminatingObservations: string[];
-}
-
-interface ClaimRecord {
-  id: ID;
-  caseId: ID;
-  statement: string;
-  plainLanguage: string;
-  type: ClaimType;
-  importance: "core" | "major" | "supporting" | "peripheral";
-  reviewState: ReviewState;
-  credibilityAssessment: AssessmentState;
-  credibilitySummary: string;
-  diagnosticity:
-    | "high"
-    | "moderate"
-    | "low"
-    | "indeterminate";
-  diagnosticitySummary: string;
-  parentClaimIds: ID[];
-  childClaimIds: ID[];
-  predictionIds?: ID[];
-  predictions: string[];
-  disconfirmers: string[];
-  whatWouldChangeOurMind: string[];
-  strongestObjection: string;
-  lastReviewed: string;
-  isDemo: boolean;
-}
-
-interface ClaimRelationshipRecord {
-  id: ID;
-  fromClaimId: ID;
-  toClaimId: ID;
-  type: ClaimRelationshipType;
-  note?: string;
-}
-
-interface EvidenceRecord {
-  id: ID;
-  caseId: ID;
-  claimIds: ID[];
-  sourceId: ID;
-  title: string;
-  summary: string;
-  direction: EvidenceDirection;
-  strength: "decisive" | "strong" | "moderate" | "weak";
-  independenceGroup: string;
-  exactLocator?: string;
-  sourceStatement: string;
-  editorInference?: string;
-  limitations: string[];
-  replicationStatus:
-    | "not_applicable"
-    | "unreplicated"
-    | "partially_replicated"
-    | "independently_replicated"
-    | "failed_replication"
-    | "mixed";
-  isDemo: boolean;
-}
-
-interface SourceRecord {
-  id: ID;
-  title: string;
-  authors: string[];
-  organization?: string;
-  date?: string;
-  sourceType:
-    | "paper"
-    | "preprint"
-    | "dataset"
-    | "book"
-    | "interview"
-    | "archive"
-    | "artifact_record"
-    | "image"
-    | "webpage"
-    | "other";
-  identifier?: string;
-  url?: string;
-  status:
-    | "verified"
-    | "placeholder"
-    | "unverified"
-    | "corrected"
-    | "retracted";
-  reliabilityNotes: string[];
-  versionNotes?: string;
-  isDemo: boolean;
-}
-
-interface AssessmentRecord {
-  id: ID;
-  objectType: "case" | "claim";
-  objectId: ID;
-  state: AssessmentState;
-  summary: string;
-  confidenceLabel: "high" | "moderate" | "low";
-  probabilityRange?: {
-    min: number;
-    max: number;
-  };
-  supportingEvidenceIds: ID[];
-  underminingEvidenceIds: ID[];
-  qualifyingEvidenceIds: ID[];
-  strongestObjection: string;
-  whatWouldChangeOurMind: string[];
-  assessedAt: string;
-  humanReviewer: string;
-  aiAssistance?: {
-    used: boolean;
-    modelLabel?: string;
-    purpose?: string;
-  };
-  supersedesAssessmentId?: ID;
-}
-
-interface ResearchCruxRecord {
-  id: ID;
-  caseId: ID;
-  title: string;
-  question: string;
-  whyItMatters: string;
-  affectedClaimIds: ID[];
-  discriminatingOutcomes: {
-    outcome: string;
-    favorsHypothesisIds: ID[];
-    explanation: string;
-  }[];
-}
-
-interface ResearchOpportunityRecord {
-  id: ID;
-  caseId: ID;
-  title: string;
-  summary: string;
-  affectedClaimIds: ID[];
-  expectedInformationGain: "very_high" | "high" | "moderate" | "low";
-  effortTier: "small" | "medium" | "large" | "major_program";
-  feasibility: "high" | "moderate" | "low";
-  prerequisites: string[];
-  failureModes: string[];
-  proposedSuccessCriteria: string[];
-}
-
-interface UpdateRecord {
-  id: ID;
-  caseId: ID;
-  date: string;
-  objectType: "case" | "claim" | "evidence" | "source" | "research";
-  objectId: ID;
-  title: string;
-  summary: string;
-  previousState?: string;
-  newState?: string;
-  reason: string;
-  triggeringSourceIds: ID[];
-  humanReviewer: string;
-  aiAssisted: boolean;
-}
+```
+content/
+  cases/
+    geopolymer/
+      case.yaml          # Case metadata, dossier fields, editorial state
+      overview.md        # The article; inline claim refs: [text]{claim=GEO-C001}
+      claims.yaml        # Claim records (canon)
+      evidence.yaml      # Evidence records (canon)
+      sources.yaml       # Source records (canon)
+      research.yaml      # Research opportunities (from the RFP)
+      history.yaml       # Change log entries
+      assessments/
+        2026-08-22-fable-1.yaml   # One AI assessment run (overlay, append-only)
 ```
 
-## Validation invariants
+## Case
 
-- Every referenced ID exists.
-- Every Claim belongs to one Case.
-- Parent and child references agree.
-- A Claim cannot be its own ancestor.
-- Every Evidence record has at least one Claim and one Source.
-- Demo Evidence may use only demo or placeholder Sources.
-- A verified-looking identifier may not be invented for demo content.
-- Evidence direction is independent from Evidence strength.
-- Assessment records identify both favorable and unfavorable evidence when available.
-- A superseded Assessment remains readable in history.
-- Case slugs and object IDs are stable.
+Identity (id, slug, title, subtitle, domain), status, and the **dossier header** fields: `whatIsClaimed`, `whereDisagreementLives` (the central crux), `whatWouldSettleIt`. Plus the best conventional explanation, editors, last-review date, and an optional external research link (the ResearchHub RFP).
+
+## Claim
+
+One atomic proposition with a reasonably clear truth condition.
+
+- `id` — stable, human-readable (`GEO-C001`).
+- `statement` / `plainLanguage` — the proposition and its accessible restatement.
+- `theme` — grouping key for the explorer (e.g. `tool-marks`, `ingredients`).
+- `rung` — position on the argument ladder: `observation` | `mechanism` | `attribution`. Credibility tends to decay up the ladder; the UI makes this visible.
+- `importance` — `headline` | `major` | `supporting`.
+- `claimType` — observation / measurement / historical / causal / mechanistic / interpretive / methodological / existence.
+- `reviewState` — **provenance, displayed honestly in the UI**:
+  - `ai_extracted` — machine-extracted from sources, no human hand-check.
+  - `human_reviewed` — a named human checked statement and sourcing.
+  - `disputed` — flagged during review; contested internally.
+  - `rejected` — kept as a tombstone with `rejectionReason` so future extraction runs don't re-propose it. Not rendered in normal views.
+- `origin` — where the claim came from (e.g. geo catalog T-number, extraction agent, run).
+- `credibility` (state + summary) and `diagnosticity` (level + summary) — the two axes the product exists to distinguish: is the local claim true, and how much does it favor one hypothesis over alternatives?
+- `parentClaimIds` / `dependsOnClaimIds` — hierarchy and dependency (must reference existing, non-rejected claims).
+- `strongestObjection`, `whatWouldChangeOurMind`.
+
+Assessment states: `established`, `well_supported`, `provisionally_supported`, `mixed`, `weakly_supported`, `contradicted`, `unresolved`, `presently_untestable`. The UI groups these into four visual families (supported / contested / against / can't-tell-yet) with the precise label on the badge.
+
+## Evidence
+
+The specific observation/result/quotation extracted from a Source and connected to Claims. Direction is explicit: `supports` | `undermines` | `qualifies` | `context`. Also: strength, `sourceStatement` (what the source says) kept separate from `editorInference` (what we infer), limitations, and provenance (`ai_extracted` etc.).
+
+## Source
+
+The provenance container: bibliographic identity, type, identifier/URL, and a **verification status**:
+
+- `verified` — the document itself is held in the project library.
+- `ai_verified` — an AI agent located and checked the citation against the claimed content; no human re-check. (All of geo's 2026-05-02 verified-citations batch is this.)
+- `unverified` — cited from memory or second-hand; locator not confirmed.
+- `placeholder` — illustrative only (must be visibly synthetic; not used in real cases).
+
+Never invent locators. If a locator is not verified, label it.
+
+## Assessment run (overlay)
+
+One file per run: `runId`, `model`, `date`, `promptVersion`, plus:
+
+- `caseAssessment` — the structural roll-up: verdict state, `loadBearing` (which claims the thesis actually rests on), `weakestLinks`, and an argued `synthesis` in prose. Not a score.
+- `claimAssessments[]` — `{claimId, verdict, reasoning, confidence}` per claim.
+
+## ResearchOpportunity
+
+Crux-directed projects: title, summary, affected `claimIds`, effort tier, expected information gain, RFP topic reference (T-number), track (prize/grant).
+
+## ChangeLogEntry
+
+Date, what changed, why, actor, and AI-assistance disclosure.
+
+## Integrity rules (enforced at build time)
+
+The loader fails the build loudly on: dangling claim/evidence/source/assessment IDs, claim refs in `overview.md` that don't resolve, dependency references to rejected claims, and any schema violation. No silent data repair.

@@ -1,20 +1,26 @@
 # Roadmap
 
-## Phase 1 — Product mockup
+## Phase 1 — Real-content static site (current; scope revised 2026-08-22)
 
-Goal: validate the public experience, information architecture, editorial hierarchy, visual language, and core Claim-to-Evidence navigation.
+Goal: validate the public experience with real content — the geopolymer case built from the geo project's AI-extracted catalog, honestly labeled.
 
 Build:
 
-- polished public routes;
-- local typed fixture data;
-- search and filters;
-- responsive design;
-- editor-workflow preview;
-- documentation;
-- validation and smoke tests.
+- the six public routes (see `INFORMATION_ARCHITECTURE.md`);
+- folder-of-files content under `content/` with build-time Zod validation;
+- static export deployed to GitHub Pages from git;
+- responsive paper-toned design with the dossier register;
+- CI (typecheck, lint, test, build).
 
-Do not build a backend.
+Do not build a backend, search, filters, or the editor preview.
+
+## Next workstream — Extraction pipeline (immediately after Phase 1)
+
+Goal: a repeatable AI pipeline that turns source books/papers into candidate claims, evidence, and sources in the Aletheia content format, as append-only proposals for human review.
+
+**First test: re-run the Fóti and Davidovits books through the pipeline and diff the output against the geo catalog (95 T-numbered topics) as ground truth.** The diff measures recall (topics the pipeline missed), precision (hallucinated or non-atomic claims), and stability (ID/wording churn between runs). Rejected-claim tombstones must suppress re-proposal.
+
+Also feeds case #2 (vasocomputation): mine the "Knots of Existence" Substack article (`research/vasocomputation/`) and Michael Johnson's published QRI works.
 
 ## Phase 2 — Canonical content system
 

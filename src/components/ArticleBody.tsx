@@ -3,7 +3,7 @@ import { parseArticle, type Block, type Inline } from "@/src/domain/article";
 import { AssessmentBadge } from "./AssessmentBadge";
 import { Plate } from "./Plate";
 import { ProvenanceBadge } from "./ProvenanceBadge";
-import type { Claim, ImageRecord } from "@/src/domain/schema";
+import type { FeaturedClaim, ImageRecord } from "@/src/domain/schema";
 
 function renderInline(inline: Inline, key: number) {
   switch (inline.kind) {
@@ -45,7 +45,7 @@ function claimIdsIn(inlines: Inline[]): string[] {
     .map((i) => i.claimId);
 }
 
-function MarginNote({ claim }: { claim: Claim }) {
+function MarginNote({ claim }: { claim: FeaturedClaim }) {
   return (
     <Link
       href={`/claims/${claim.id}/`}
@@ -78,7 +78,7 @@ export function ArticleBody({
   images = [],
 }: {
   markdown: string;
-  claims: Claim[];
+  claims: FeaturedClaim[];
   images?: ImageRecord[];
 }) {
   const blocks: Block[] = parseArticle(markdown);
@@ -143,7 +143,7 @@ export function ArticleBody({
         const ids = claimIdsIn(block.inlines);
         const refClaims = ids
           .map((id) => claimById.get(id))
-          .filter((c): c is Claim => Boolean(c));
+          .filter((c): c is FeaturedClaim => Boolean(c));
         return (
           <div
             key={i}

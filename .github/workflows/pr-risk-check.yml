@@ -1,0 +1,44 @@
+# Enforces the tiered merge policy (docs/MAINTENANCE.md): a PR labeled
+# auto:low-risk must actually be low-risk per scripts/classify-pr-risk.mjs
+# (proposals/inbox changes, new append-only assessment overlays, append-only
+# catalog/source additions — nothing touching featured content or code).
+# If the label claims low-risk but the diff says otherwise, this check FAILS,
+# which blocks auto-merge. Fails closed: unlabeled PRs just get an advisory
+# classification in the log.
+
+name: PR risk check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled, unlabeled]
+
+permissions:
+  contents: read
+
+jobs:
+  classify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Classify and enforce
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+          LABELS: ${{ join(github.event.pull_request.labels.*.name, ',') }}
+        run: |
+          risk=$(node scripts/classify-pr-risk.mjs "$BASE" | tee /dev/stderr | tail -1)
+          echo "classifier says: $risk"
+          case ",$LABELS," in
+            *,auto:low-risk,*)
+              if [ "$risk" != "low-risk" ]; then
+                echo "::error::PR is labeled auto:low-risk but the diff is not low-risk (see classification above). Remove the label or reduce the diff — failing closed."
+                exit 1
+              fi
+              ;;
+            *)
+              echo "No auto:low-risk label — advisory classification only: $risk"
+              ;;
+          esac

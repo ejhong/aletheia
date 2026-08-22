@@ -92,18 +92,56 @@ export const OriginSchema = z.object({
   date: z.string(),
 });
 
-export const ClaimSchema = z
+/**
+ * Claim tiers.
+ *
+ * - `featured` — full editorial treatment: plain-language gloss, the two
+ *   assessment axes, objections, relationships. The original claim shape.
+ * - `catalog` — a lightweight, honestly-unreviewed backlog record: one
+ *   atomic statement anchored to a source, with provenance. Validation
+ *   deliberately does not demand featured-level richness here.
+ *
+ * Promotion is a one-field edit: flip `tier` to `featured` and the build
+ * fails loudly listing exactly which editorial fields are still missing.
+ */
+export const ClaimTier = z.enum(["featured", "catalog"]);
+export type ClaimTier = z.infer<typeof ClaimTier>;
+
+/** Where in a source a claim is anchored. Never invent a locator. */
+export const SourceAnchorSchema = z.object({
+  /** Exact-as-possible locator, e.g. "Fóti Ch 5, pp ~135–137". */
+  locator: z.string().min(3),
+  /** Verbatim quote from the source (required for pipeline extractions). */
+  quote: z.string().optional(),
+  /** Optional link to a Source record in sources.yaml. */
+  sourceId: z.string().optional(),
+});
+export type SourceAnchor = z.infer<typeof SourceAnchorSchema>;
+
+const claimCore = {
+  id: z.string().regex(/^[A-Z]+-C\d{3}$/, "Claim id like GEO-C001"),
+  statement: z.string().min(10),
+  theme: z.string(),
+  rung: Rung,
+  reviewState: ReviewState,
+  rejectionReason: z.string().optional(),
+  origin: OriginSchema,
+};
+
+const tombstoneRule = {
+  check: (c: { reviewState: ReviewState; rejectionReason?: string }) =>
+    c.reviewState !== "rejected" || Boolean(c.rejectionReason),
+  message: "rejected claims must carry a rejectionReason (tombstone rule)",
+};
+
+export const FeaturedClaimSchema = z
   .object({
-    id: z.string().regex(/^[A-Z]+-C\d{3}$/, "Claim id like GEO-C001"),
-    statement: z.string().min(10),
+    ...claimCore,
+    tier: z.literal("featured"),
     plainLanguage: z.string().min(10),
-    theme: z.string(),
-    rung: Rung,
     claimType: ClaimType,
     importance: Importance,
-    reviewState: ReviewState,
-    rejectionReason: z.string().optional(),
-    origin: OriginSchema,
+    sourceAnchor: SourceAnchorSchema.optional(),
     credibility: AssessmentState,
     credibilitySummary: z.string(),
     diagnosticity: z.enum(["high", "moderate", "low", "indeterminate"]),
@@ -113,10 +151,39 @@ export const ClaimSchema = z
     strongestObjection: z.string(),
     whatWouldChangeOurMind: z.array(z.string()).default([]),
   })
-  .refine((c) => c.reviewState !== "rejected" || Boolean(c.rejectionReason), {
-    message: "rejected claims must carry a rejectionReason (tombstone rule)",
-  });
+  .refine(tombstoneRule.check, { message: tombstoneRule.message });
+export type FeaturedClaim = z.infer<typeof FeaturedClaimSchema>;
+
+export const CatalogClaimSchema = z
+  .object({
+    ...claimCore,
+    tier: z.literal("catalog"),
+    /** Catalog claims must be source-anchored; richness is optional. */
+    sourceAnchor: SourceAnchorSchema,
+    claimType: ClaimType.optional(),
+    /**
+     * Near-duplicate / dependent-extraction grouping: claims sharing a
+     * group must not be counted as independent evidence.
+     */
+    independenceGroup: z.string().optional(),
+    plainLanguage: z.string().min(10).optional(),
+  })
+  .refine(tombstoneRule.check, { message: tombstoneRule.message });
+export type CatalogClaim = z.infer<typeof CatalogClaimSchema>;
+
+export const ClaimSchema = z.discriminatedUnion("tier", [
+  FeaturedClaimSchema,
+  CatalogClaimSchema,
+]);
 export type Claim = z.infer<typeof ClaimSchema>;
+
+export function isFeatured(claim: Claim): claim is FeaturedClaim {
+  return claim.tier === "featured";
+}
+
+export function isCatalog(claim: Claim): claim is CatalogClaim {
+  return claim.tier === "catalog";
+}
 
 export const EvidenceDirection = z.enum([
   "supports",

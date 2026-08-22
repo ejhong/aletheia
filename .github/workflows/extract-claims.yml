@@ -1,0 +1,79 @@
+# Run the extraction pipeline on a source document already in the repository
+# and open a PR with the proposed catalog-tier claims for human review.
+#
+# Requires one repository secret: ANTHROPIC_API_KEY (preferred) or
+# OPENAI_API_KEY. Without either, the pipeline fails early with instructions.
+#
+# The pipeline writes append-only proposals under proposals/<case>/<runId>/ —
+# nothing enters content/ (and therefore the published site) until a human
+# reviews the PR and merges accepted claims into claims-catalog.yaml.
+
+name: Extract claims
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_path:
+        description: "Path to the source document in the repo (txt/md)"
+        required: true
+        type: string
+      case_slug:
+        description: "Case slug (e.g. megalithic-casting)"
+        required: true
+        type: string
+      source_id:
+        description: "Source record id (e.g. SRC-FOTI-2023)"
+        required: true
+        type: string
+      only:
+        description: "Optional regex to limit sections (e.g. 'Chapter Five')"
+        required: false
+        type: string
+      max_sections:
+        description: "Optional cap on sections processed"
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      - name: Run extraction pipeline
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          extra=()
+          [ -n "${{ inputs.only }}" ] && extra+=(--only "${{ inputs.only }}")
+          [ -n "${{ inputs.max_sections }}" ] && extra+=(--max-sections "${{ inputs.max_sections }}")
+          outdir=$(node scripts/extract-claims.mjs \
+            "${{ inputs.source_path }}" "${{ inputs.case_slug }}" \
+            --source-id "${{ inputs.source_id }}" "${extra[@]}")
+          echo "OUTDIR=$outdir" >> "$GITHUB_ENV"
+
+      - name: Open pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          runid=$(basename "$OUTDIR")
+          branch="extract/${runid}"
+          git config user.name "aletheia-extract-bot"
+          git config user.email "extract-bot@users.noreply.github.com"
+          git checkout -b "$branch"
+          git add proposals/
+          git commit -m "Extraction proposals: ${runid} (awaiting human review)"
+          git push -u origin "$branch"
+          gh pr create \
+            --title "Claim proposals: ${{ inputs.case_slug }} ← ${{ inputs.source_path }}" \
+            --body "$(printf 'Pipeline run **%s** — proposed catalog-tier claims extracted from `%s`.\n\nReview checklist:\n- read `coverage.yaml` (sections with zero claims or errors need manual attention);\n- spot-check quotes in `claims.yaml` against the source;\n- read `rejected.yaml` for anything wrongly dropped;\n- complete the source record skeleton in `sources.yaml` (verification label!);\n- move accepted claims into `content/cases/%s/claims-catalog.yaml`, renumber ids if needed, and record the run in the case history.\n\nNothing in `proposals/` is published; the site only builds from `content/`.\n' "$runid" "${{ inputs.source_path }}" "${{ inputs.case_slug }}")"

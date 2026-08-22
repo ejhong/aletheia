@@ -1,0 +1,110 @@
+# The commentator-in-chief maintenance loop (docs/MAINTENANCE.md):
+# weekly (and on demand) this workflow
+#   1. processes inbox/ drops (commentary, links, documents) into proposals,
+#   2. refreshes AI assessment overlays for cases whose evidence changed,
+#   3. opens ONE PR with a plain-language digest body (readable on a phone),
+#      classified by scripts/classify-pr-risk.mjs:
+#        low-risk       → labeled, auto-merge enabled (merges when CI is green)
+#        needs-approval → labeled, review requested — read the digest, tap merge.
+#
+# Requires ANTHROPIC_API_KEY or OPENAI_API_KEY as a repository secret; fails
+# early with instructions when neither is set. Optional: a MAINTENANCE_PAT
+# fine-grained token (contents+pull-requests write) so that CI runs on the
+# PRs this workflow opens — PRs created with the default GITHUB_TOKEN do not
+# trigger other workflows, which would leave auto-merge waiting forever.
+
+name: Maintain
+
+on:
+  schedule:
+    - cron: "0 14 * * 1" # Mondays 14:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  maintain:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # reassess-changed compares git dates
+          token: ${{ secrets.MAINTENANCE_PAT || github.token }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      - name: Check LLM API key is configured
+        run: |
+          if [ -z "${{ secrets.ANTHROPIC_API_KEY }}" ] && [ -z "${{ secrets.OPENAI_API_KEY }}" ]; then
+            echo "::error::No LLM API key configured. Add ANTHROPIC_API_KEY (preferred) or OPENAI_API_KEY under Settings → Secrets and variables → Actions, then re-run. See docs/MAINTENANCE.md."
+            exit 1
+          fi
+
+      - name: Process inbox
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          node scripts/process-inbox.mjs | tee inbox-out.txt
+          outdir=$(tail -1 inbox-out.txt)
+          if [ -f "$outdir/report.md" ]; then
+            cp "$outdir/report.md" inbox-digest.md
+          fi
+
+      - name: Refresh stale assessments
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: node scripts/reassess-changed.mjs
+
+      - name: Open classified PR
+        env:
+          GH_TOKEN: ${{ secrets.MAINTENANCE_PAT || github.token }}
+        run: |
+          rm -f inbox-out.txt
+          # Digest body from the run reports; the temp digests themselves
+          # are not committed.
+          {
+            echo "Weekly maintenance run. Plain-language summary:"
+            echo
+            [ -f inbox-digest.md ] && cat inbox-digest.md && echo
+            [ -f reassess-digest.md ] && cat reassess-digest.md && echo
+          } > pr-body.md
+          rm -f inbox-digest.md reassess-digest.md
+
+          if git status --porcelain | grep -qv '^?? pr-body.md'; then :; else
+            echo "No changes produced — nothing to open a PR for."
+            exit 0
+          fi
+
+          date=$(date +%Y-%m-%d)
+          branch="maintain/${date}-${GITHUB_RUN_ID}"
+          git config user.name "aletheia-maintenance-bot"
+          git config user.email "maintenance-bot@users.noreply.github.com"
+          git checkout -b "$branch"
+          git add -A -- ':!pr-body.md'
+          git commit -m "Maintenance run ${date}: inbox processing + assessment refresh"
+          git push -u origin "$branch"
+
+          # Conservative risk classification; the pr-risk-check workflow
+          # re-verifies this on the PR itself and fails closed.
+          risk=$(node scripts/classify-pr-risk.mjs "origin/${GITHUB_REF_NAME}" | tail -1)
+          echo "classification: $risk"
+          echo -e "\n---\nRisk classification: **${risk}** (verified by the PR risk check)." >> pr-body.md
+
+          pr_url=$(gh pr create \
+            --title "Maintenance: ${date} run" \
+            --body-file pr-body.md \
+            --label "$( [ "$risk" = "low-risk" ] && echo auto:low-risk || echo needs-approval )")
+          echo "opened $pr_url"
+
+          if [ "$risk" = "low-risk" ]; then
+            gh pr merge --auto --squash "$pr_url" || echo "::warning::Could not enable auto-merge (is it enabled in repo settings, with required checks configured?). The PR stays open for manual merge."
+          else
+            gh pr edit "$pr_url" --add-reviewer "${GITHUB_REPOSITORY_OWNER}" || true
+          fi

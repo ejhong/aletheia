@@ -1,0 +1,90 @@
+# Maintenance: the commentator-in-chief loop
+
+You are the editor-in-chief; the pipeline is your staff. You feed it
+documents, links, and opinions; it drafts; you approve from your phone.
+Nothing publishes without either your tap or a conservatively-classified
+low-risk auto-merge — and everything is revertable by runId.
+
+## Your day-to-day
+
+**Feed it** (any time, from anywhere):
+
+- Drop files into `inbox/` — from your phone via the GitHub app or
+  [github.dev](https://github.dev/ejhong/aletheia), or push from a laptop.
+- Three kinds of drops (full convention in `inbox/README.md`):
+  - **commentary note** — your opinions in your words
+    (`inbox/2026-08-22-note.md` with `case: geopolymer` front matter);
+  - **link list** — URLs worth turning into source records;
+  - **document** — a text file to mine for catalog claims.
+
+**Wait** (or don't): the **Maintain** workflow runs every Monday, or run it
+now from the Actions tab (workflow_dispatch).
+
+**Read and tap**: each run opens one PR whose body is a plain-language
+digest — what changed and why, readable on a phone. Two classes:
+
+| Label | Meaning | What you do |
+| --- | --- | --- |
+| `auto:low-risk` | Reversible-by-runId, touches no featured content: new proposals, inbox moves, **new** append-only assessment overlays, append-only catalog-claim/source additions. | Nothing. It auto-merges when CI is green. Skim the digest if curious. |
+| `needs-approval` | Anything touching featured claims, article/overview text, case records, review states, existing human-attributed content, or code. | Read the digest in the GitHub phone app notification, tap **Merge** (or comment / request changes). |
+
+The classification is **enforced, fail-closed**: the `PR risk check`
+workflow re-derives the class from the actual diff
+(`scripts/classify-pr-risk.mjs`), and a PR labeled `auto:low-risk` whose
+diff exceeds the allowlist fails the check, which blocks auto-merge.
+
+## What happens automatically
+
+Weekly (or on demand), the Maintain workflow:
+
+1. **Processes the inbox** (`scripts/process-inbox.mjs`):
+   - commentary → proposed editorial actions in `proposals/inbox/<runId>/`,
+     each carrying your verbatim quote; your full note is preserved as the
+     authoritative `sourceStatement`;
+   - links → fetched, verified, proposed as source records with honest
+     verification labels (`ai_verified` only when actually fetched);
+   - documents → the extraction pipeline (`docs/EXTRACTION_PIPELINE.md`);
+   - processed items move to `inbox/processed/<runId>/`.
+2. **Refreshes assessments** (`scripts/reassess-changed.mjs`): for each case
+   whose claims/evidence/sources changed in git after its latest assessment
+   overlay, drafts a **new** overlay file (never edits an old one), stamped
+   `humanReviewed: false` with runId/model/promptVersion; structurally
+   validated before writing, discarded (and reported) if invalid.
+3. **Opens the PR** with the digest body and the risk label.
+
+## Where accountability lives
+
+- **Your commentary is the human editorial record.** The AI only translates
+  your position into proposed updates; every proposal shows your exact
+  words beside it, and the record names you as editor. If a translation
+  misreads you, the record shows both texts — yours wins.
+- Everything machine-produced stays honestly labeled: `ai_extracted`
+  claims, `humanReviewed: false` overlays, `ai_verified`/`unverified`
+  sources. Nothing pretends to be reviewed until you review it.
+
+## Reverting a run
+
+Every generated record carries one `runId`. To undo a run:
+
+1. `git log --oneline | grep <runId>` (or find the merge PR) and revert the
+   commit(s); or
+2. surgically: delete `proposals/**/<runId>/`, delete the overlay file named
+   `<runId>.yaml`, move files back out of `inbox/processed/<runId>/`, and
+   remove any records whose `origin.runId` matches.
+
+Since low-risk changes are append-only by policy, reverting them never
+damages surrounding content.
+
+## Setup requirements (once)
+
+- Repository secret `ANTHROPIC_API_KEY` (preferred) or `OPENAI_API_KEY` —
+  without one the workflow fails early with instructions. Optional
+  `EXTRACT_MODEL` to pin a model.
+- Optional but recommended: `MAINTENANCE_PAT` (fine-grained token, contents
+  + pull-requests write). PRs opened with the default Actions token do not
+  trigger CI, which would leave auto-merge waiting; a PAT fixes that.
+- Repo auto-merge is enabled (`allow_auto_merge`). For strict
+  "merge only when CI is green" semantics, add a branch ruleset requiring
+  the CI and PR-risk checks once direct-push agent traffic to `main` winds
+  down — with no required checks, GitHub may merge an auto-merge PR before
+  CI finishes.

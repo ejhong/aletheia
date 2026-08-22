@@ -1,0 +1,250 @@
+# Source records. Verification labels are honest about who checked what:
+#   verified     — the document itself is held in the project library
+#   ai_verified  — citation located and checked by an AI agent (transients
+#                  verification batch, 2026-08-22); no human re-check
+#   unverified   — cited second-hand or from memory; locator unconfirmed
+#
+# Every source below was independently verified on 2026-08-22 against
+# Crossref, arXiv, and/or the publisher page before import. The research
+# report that seeded this case (research/Adapting the Villarroel transient
+# research to Aletheia.pdf) was treated as a mining layer only; none of its
+# citations were imported without an independent check.
+
+- id: SRC-VILLARROEL-2021
+  title: "Exploring nine simultaneously occurring transients on April 12th 1950"
+  authors: ["Villarroel, B.", "Marcy, G. W.", "Geier, S.", "Streblyanska, A.", "Solano, E.", "Andruk, V. N.", "Shultz, M. E.", "Gupta, A. C.", "Mattsson, L."]
+  year: "2021"
+  sourceType: paper
+  identifier: "Scientific Reports 11: 12794. DOI: 10.1038/s41598-021-92162-7. arXiv: 2106.11780"
+  url: "https://doi.org/10.1038/s41598-021-92162-7"
+  verification: ai_verified
+  verificationNote: >-
+    DOI, title, author list, and article number verified via the Crossref API
+    (2026-08-22 batch); abstract read via arXiv 2106.11780.
+  reliabilityNotes:
+    - "The discovery paper for the canonical April 1950 nine-transient event; peer-reviewed."
+    - "Authored by the VASCO team (proponents of the transient interpretation), but the abstract itself lists an unknown plate contamination as the first candidate explanation, before solar reflections from objects near geosynchronous orbits."
+
+- id: SRC-SOLANO-2022
+  title: "Discovering vanishing objects in POSS I red images using the Virtual Observatory"
+  authors: ["Solano, E.", "Villarroel, B.", "Rodrigo, C."]
+  year: "2022"
+  sourceType: paper
+  identifier: "Monthly Notices of the Royal Astronomical Society 515(1): 1380–1391. DOI: 10.1093/mnras/stac1552. arXiv: 2206.00907"
+  url: "https://doi.org/10.1093/mnras/stac1552"
+  verification: ai_verified
+  verificationNote: >-
+    DOI, journal, volume, and pages verified via the Crossref API (2026-08-22
+    batch); abstract read via arXiv 2206.00907.
+  reliabilityNotes:
+    - "The source of the public candidate catalogs: 298,165 POSS-I-only sources reduced to 5,399 unidentified transients after crossmatching and artifact vetting."
+    - "VASCO-team pipeline; the later ensemble statistics (Earth shadow, nuclear windows) run on a ~107,875-object working sample derived from this workflow, not on the vetted 5,399 subset — a dataset-definition point at the center of the Watters critique."
+
+- id: SRC-VILLARROEL-2022-GLINT
+  title: "A glint in the eye: Photographic plate archive searches for non-terrestrial artefacts"
+  authors: ["Villarroel, B.", "Mattsson, L.", "Guergouri, H.", "Solano, E.", "Geier, S.", "Dom, O. N.", "Ward, M. J."]
+  year: "2022"
+  sourceType: paper
+  identifier: "Acta Astronautica 194: 106–113. DOI: 10.1016/j.actaastro.2022.01.039. arXiv: 2110.15217"
+  url: "https://doi.org/10.1016/j.actaastro.2022.01.039"
+  verification: ai_verified
+  verificationNote: >-
+    DOI, journal, volume, and pages verified via the Crossref API (2026-08-22
+    batch); abstract read via arXiv 2110.15217.
+  reliabilityNotes:
+    - "The hypothesis-statement paper: proposes searching pre-Sputnik plates for sunlight glints from reflective objects near geosynchronous orbit, with alignment-probability calculations."
+    - "A strategy and methods proposal, not an evidence report; useful as the canonical formulation of the exotic hypothesis being tested."
+
+- id: SRC-SOLANO-2024
+  title: "A bright triple transient that vanished within 50 min"
+  authors: ["Solano, E.", "Marcy, G. W.", "Villarroel, B.", "Geier, S.", "Streblyanska, A.", "Lombardi, G.", "Bär, R. E.", "Andruk, V. N."]
+  year: "2024"
+  sourceType: paper
+  identifier: "Monthly Notices of the Royal Astronomical Society 527(3): 6312–6320. DOI: 10.1093/mnras/stad3422. arXiv: 2310.09035"
+  url: "https://doi.org/10.1093/mnras/stad3422"
+  verification: ai_verified
+  verificationNote: >-
+    DOI, journal, volume, and pages verified via the Crossref API (2026-08-22
+    batch); abstract read via Crossref and arXiv 2310.09035.
+  reliabilityNotes:
+    - "The July 1952 triple-transient paper: three ~16 mag point sources within 10 arcsec, present in one exposure of 1952 July 19 and absent ~50 minutes later, with 2023 Gran Telescopio Canarias follow-up to magnitude 25.5."
+    - "VASCO-team authorship; no independent physical inspection of the original plate has been published."
+
+- id: SRC-HAMBLY-BLAIR-2024
+  title: "On the nature of apparent transient sources on the National Geographic Society–Palomar Observatory Sky Survey glass copy plates"
+  authors: ["Hambly, N. C.", "Blair, A."]
+  year: "2024"
+  sourceType: paper
+  identifier: "RAS Techniques and Instruments 3(1): 73–79. DOI: 10.1093/rasti/rzae004. arXiv: 2402.00497"
+  url: "https://doi.org/10.1093/rasti/rzae004"
+  verification: ai_verified
+  verificationNote: >-
+    Full text read via arXiv 2402.00497 (2026-08-22 batch); journal, volume,
+    and pages confirmed via the Crossref API.
+  reliabilityNotes:
+    - "The central skeptical paper: physical inspection of the Royal Observatory Edinburgh glass copy plates, profile statistics, a random-forest morphology classifier, and a reconstruction of the plate-copying genealogy."
+    - "Hambly is an author of the SuperCOSMOS Sky Survey — expert on exactly this plate material, and institutionally invested in the quality of the digitized archives."
+
+- id: SRC-VILLARROEL-2025-PROFILES
+  title: "On the Image Profiles of Transients in the Palomar Sky Survey"
+  authors: ["Villarroel, B.", "Solano, E.", "Marcy, G. W."]
+  year: "2025"
+  sourceType: preprint
+  identifier: "arXiv: 2507.15896 (July 2025)"
+  url: "https://arxiv.org/abs/2507.15896"
+  verification: ai_verified
+  verificationNote: >-
+    arXiv record and abstract verified via the arXiv API (2026-08-22 batch).
+  reliabilityNotes:
+    - "The proponent response to the Hambly & Blair morphology argument: sub-second flashes are expected to be sharper and rounder than star images on long exposures."
+    - "Preprint; a physics argument, not a new measurement — no calibration of flash profiles on period emulsions exists yet."
+
+- id: SRC-VILLARROEL-2025-PASP
+  title: "Aligned, Multiple-transient Events in the First Palomar Sky Survey"
+  authors: ["Villarroel, B.", "Solano, E.", "Guergouri, H.", "Streblyanska, A.", "Bruehl, S.", "Andruk, V. M.", "Mattsson, L.", "Bär, R. E.", "Mimouni, J.", "Geier, S.", "et al."]
+  year: "2025"
+  sourceType: paper
+  identifier: "Publications of the Astronomical Society of the Pacific 137(10): 104504. DOI: 10.1088/1538-3873/ae0afe"
+  url: "https://doi.org/10.1088/1538-3873/ae0afe"
+  verification: ai_verified
+  verificationNote: >-
+    DOI, journal, volume, and article number verified via the Crossref API
+    (2026-08-22 batch). Content characterization drawn from the title and
+    from its description in Watters et al. 2026 and Doherty 2026; the paper
+    itself was not read in full.
+  reliabilityNotes:
+    - "The Earth-shadow and alignments paper targeted by the Watters critique; source of the ~107,875-object working catalog's shadow-deficit result."
+    - "VASCO-team authorship; the paper itself acknowledges the working sample is expected to contain substantial false positives (as quoted by Watters et al. 2026, §1)."
+
+- id: SRC-BRUEHL-VILLARROEL-2025
+  title: "Transients in the Palomar Observatory Sky Survey (POSS-I) may be associated with nuclear testing and reports of unidentified anomalous phenomena"
+  authors: ["Bruehl, S.", "Villarroel, B."]
+  year: "2025"
+  sourceType: paper
+  identifier: "Scientific Reports 15: 34125. DOI: 10.1038/s41598-025-21620-3"
+  url: "https://doi.org/10.1038/s41598-025-21620-3"
+  verification: ai_verified
+  verificationNote: >-
+    DOI, title, authors, and article number verified via the Crossref API
+    (2026-08-22 batch). Note: Cann (arXiv 2604.04950) cites this paper with
+    the wrong article number (21620, read off the DOI, instead of 34125) —
+    an example of why citations here are checked rather than copied.
+  reliabilityNotes:
+    - "The nuclear-window correlation paper (relative risk ≈ 1.45 for ±1 day of atmospheric tests) on the ~107,875-object working catalog."
+    - "Peer-reviewed, but the correlation is direction-ambiguous even if real: fallout contamination of plates and glinting near-Earth objects both predict it."
+
+- id: SRC-WATTERS-2026
+  title: "Critical Evaluation of Studies Alleging Evidence for Technosignatures in the POSS1-E Photographic Plates"
+  authors: ["Watters, W. A.", "Dominé, L.", "Little, S.", "Pratt, C.", "Knuth, K. H.", "Szenher, M."]
+  year: "2026"
+  sourceType: paper
+  identifier: "Publications of the Astronomical Society of Australia (2026). DOI: 10.1017/pasa.2026.10230. arXiv: 2601.21946"
+  url: "https://doi.org/10.1017/pasa.2026.10230"
+  verification: ai_verified
+  verificationNote: >-
+    Full text read via arXiv 2601.21946 (2026-08-22 batch); journal
+    publication and DOI confirmed via the Crossref API.
+  reliabilityNotes:
+    - "The most comprehensive skeptical reanalysis: dataset-definition audit, spatial-distribution analysis, Earth-shadow null result, and observation-schedule explanation for the nuclear correlation."
+    - "Several authors are affiliated with UAP-research organizations that take anomaly claims seriously — this is a within-field methodological critique, not a hostile outsider dismissal."
+
+- id: SRC-VILLARROEL-2026-RESPONSE
+  title: "A Response to paper Critical Evaluation of Studies Alleging Evidence for Technosignatures in the POSS1-E Photographic Plates by Watters et al. (2026)"
+  authors: ["Villarroel, B.", "Streblyanska, A.", "Bruehl, S.", "Geier, S."]
+  year: "2026"
+  sourceType: preprint
+  identifier: "arXiv: 2602.15171 (February 2026)"
+  url: "https://arxiv.org/abs/2602.15171"
+  verification: ai_verified
+  verificationNote: >-
+    arXiv record and abstract verified via the arXiv API (2026-08-22 batch).
+  reliabilityNotes:
+    - "The proponent rebuttal: argues the Watters subset is twenty-fold smaller, spatially heterogeneous, statistically underpowered, and built for a different purpose."
+    - "Preprint; a methodological defense, not new data."
+
+- id: SRC-DOHERTY-2026
+  title: "Independent Replication of Nuclear Test-Transient Correlations and Earth Shadow Deficit in POSS-I Photographic Plates"
+  authors: ["Doherty, B."]
+  year: "2026"
+  sourceType: preprint
+  identifier: "arXiv: 2604.00056 (March 2026)"
+  url: "https://arxiv.org/abs/2604.00056"
+  verification: ai_verified
+  verificationNote: >-
+    Full text read via arXiv 2604.00056 (2026-08-22 batch).
+  reliabilityNotes:
+    - "Independent statistical replication with independently written code — but performed on the original author-supplied 107,875-row catalog, so it tests the analysis, not the source extraction."
+    - "Independent researcher; later a co-author of the Bruehl et al. 2026 machine-learning paper, so the two are not fully independent of each other."
+
+- id: SRC-HAYES-2026
+  title: "Independent Recovery of Vanishing Sources on POSS-I Photographic Plates Using Automated Source Detection and Cross-Epoch Matching"
+  authors: ["Hayes, Z."]
+  year: "2026"
+  sourceType: preprint
+  identifier: "arXiv: 2604.04810 (April 2026)"
+  url: "https://arxiv.org/abs/2604.04810"
+  verification: ai_verified
+  verificationNote: >-
+    Full text read via arXiv 2604.04810 (2026-08-22 batch).
+  reliabilityNotes:
+    - "The only fully independent source-extraction replication: new pipeline, no reference to existing transient catalogs, benchmarked with synthetic injections."
+    - "Independent researcher; preprint. The full-sky sweep used preliminary (looser) detection parameters — the author flags this limitation explicitly."
+
+- id: SRC-BUSKO-2026A
+  title: "Searching for Fast Astronomical Transients in Archival Photographic Plates"
+  authors: ["Busko, I."]
+  year: "2026"
+  sourceType: preprint
+  identifier: "arXiv: 2603.20407 (March 2026, revised June 2026)"
+  url: "https://arxiv.org/abs/2603.20407"
+  verification: ai_verified
+  verificationNote: >-
+    Full text read via arXiv 2603.20407 (2026-08-22 batch).
+  reliabilityNotes:
+    - "First search outside the Palomar plate lineage: Hamburg Observatory 1.2-m Schmidt plates digitized by APPLAUSE, using rapid same-night plate pairs rather than catalog crossmatching."
+    - "Independent researcher (retired STScI developer); explicitly preliminary — 41 plates in the initial sample, no false-positive calibration yet."
+
+- id: SRC-BUSKO-2026B
+  title: "Fast Astronomical Transients in Archival Photographic Plates: Using optical aberrations as a tool for discerning real images, from plate artifacts"
+  authors: ["Busko, I."]
+  year: "2026"
+  sourceType: preprint
+  identifier: "arXiv: 2606.08319 (June 2026)"
+  url: "https://arxiv.org/abs/2606.08319"
+  verification: ai_verified
+  verificationNote: >-
+    Full text read via arXiv 2606.08319 (2026-08-22 batch).
+  reliabilityNotes:
+    - "Proposes and applies the most diagnostically important positive test in the case: coma aberration as a physical signature of light that passed through the telescope optics."
+    - "Preprint; the discriminant has not been blind-validated against known defects and deliberately produced short flashes. The paper itself states the data do not establish the physical origin of the light."
+
+- id: SRC-BRUEHL-2026-ML
+  title: "Use of machine learning to enhance detection of transient astronomical phenomena in historical observatory images"
+  authors: ["Bruehl, S.", "Doherty, B.", "Streblyanska, A.", "Villarroel, B."]
+  year: "2026"
+  sourceType: paper
+  identifier: "Scientific Reports (2026). DOI: 10.1038/s41598-026-66148-2. Published 2026-08-10"
+  url: "https://doi.org/10.1038/s41598-026-66148-2"
+  verification: ai_verified
+  verificationNote: >-
+    DOI verified via the Crossref API and the abstract read on nature.com
+    (2026-08-22 batch).
+  reliabilityNotes:
+    - "The latest peer-reviewed support: ML artifact-scoring of the 107,875-object catalog, with nuclear-window and shadow effects persisting (and strengthening) among candidates scored more likely to be real."
+    - "Training labels are expert visual classifications, not physical ground truth; the analysis stays within the same 107,875-object lineage; author overlap with both the original claims (Bruehl, Villarroel) and the Doherty replication."
+
+- id: SRC-CANN-2026
+  title: "Geomagnetic storm suppression of photographic plate transient detections in the POSS-I archive: an independent physical variable strengthening the nuclear test correlation"
+  authors: ["Cann, K."]
+  year: "2026"
+  sourceType: preprint
+  identifier: "arXiv: 2604.04950 (April 2026)"
+  url: "https://arxiv.org/abs/2604.04950"
+  verification: ai_verified
+  verificationNote: >-
+    Full text read via arXiv 2604.04950 (2026-08-22 batch). The paper's own
+    citation of Bruehl & Villarroel 2025 carries a wrong article number
+    (correct DOI, wrong number); recorded on the Bruehl & Villarroel source.
+  reliabilityNotes:
+    - "Reports a monotonic decline of transient detection rates with geomagnetic activity in the same 107,875-object catalog — an association worth recording separately from the paper's much stronger causal interpretation."
+    - "Independent researcher; preprint; same candidate lineage as the original claims, so it cannot address whether the candidates are real sky events."

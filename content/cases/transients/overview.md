@@ -1,0 +1,45 @@
+On the night of April 12, 1950, the 48-inch Schmidt telescope on Palomar Mountain exposed a red-sensitive glass plate for about fifty minutes — routine work for the first great photographic atlas of the sky. Seventy years later, researchers comparing that plate against everything photographed since noticed something odd: [nine star-like points, clustered within about ten arcminutes, that appear on that one exposure and on nothing before or since]{claim=TRN-C001}. Not on the overlapping plate taken six days later. Not in modern digital surveys that see several magnitudes deeper. Nine lights, one night, gone.
+
+{plate:IMG-TRN-P01}
+
+The project that found them — VASCO, for Vanishing and Appearing Sources during a Century of Observations, led by astronomer Beatriz Villarroel — went on to catalog thousands of such single-exposure candidates, and to propose an explanation of last resort with a first-rate pedigree of strangeness: that some of these flashes are sunlight glinting off reflective objects near Earth, photographed years before any nation had launched a satellite. That is the version that makes headlines. It is worth being precise about what the plates actually show, because the interesting dispute lives several rungs below the headline.
+
+## What nobody disputes
+
+Start with what the fiercest critics concede. Nick Hambly — an astronomer at the Royal Observatory Edinburgh who helped build one of the two great digitizations of the Palomar survey — walked to his own institution's plate archive and put the relevant glass under a microscope. The nine marks are there, physically, at the reported positions. They are not scanner glitches or software errors. An [independent detection pipeline, built from scratch by an outside researcher, recovers eight of the nine — plus most of the published candidate catalog]{claim=TRN-C004}. And the 1950 event is not alone: [three bright point sources appeared together on a plate from July 19, 1952 and were gone within about fifty minutes]{claim=TRN-C003}, with deep 2023 follow-up imaging confirming that whatever flashed there has never returned.
+
+So the marks are real. The question is what makes a mark.
+
+{plate:IMG-TRN-P02}
+
+## The case for chemistry
+
+Photographic emulsion is a chemical medium, and chemistry does not need the sky's permission to make a dot. Archival astronomers spent two decades hunting old plates for optical flashes from gamma-ray bursts, and that campaign's sobering legacy is a bestiary of star-like impostors — emulsion holes, development spots, static discharges, envelope stains — and not one confidently confirmed archival transient.
+
+Hambly and his coauthor Blair added two sharper points. First, a measurement: [the nine 1950 marks are systematically sharper and more concentrated than real star images of the same brightness]{claim=TRN-C002} — all nine sit in the morphological neighborhood where their classifier puts spurious detections. Second, and more structurally damaging, a genealogy: the two modern digitizations that both show the candidates — the ones whose agreement seemed to rule out simple flaws — [descend from glass copies that share a common photographic ancestor, so a single defect introduced at the shared copying stage would be inherited by both]{claim=TRN-C007}. "It's in two independent datasets" turns out to mean "it's in two cousins."
+
+That is the conventional account at full strength, and it is strong. It also has an unpaid debt: nobody has ever measured how often the copying process actually mints star-like fakes, and the account's simplest form does not reach evidence gathered outside the Palomar plate family.
+
+## The case for light
+
+The proponents' reply begins with physics rather than indignation. A star sits on the plate for the whole exposure, smeared by atmosphere and imperfect tracking; a flash lasting under a second has no time to smear. Sub-second flashes should look sharper than stars — which would make the critics' morphology argument point in either direction, or in none. The argument is plausible and, so far, uncalibrated: no one has exposed period-appropriate emulsion to controlled flashes and drawn the curve.
+
+The stronger development came from outside the Palomar archive entirely. In 2026 Ivo Busko, a retired Space Telescope Science Institute developer, searched rapid same-night plate pairs from the Hamburg Observatory — [a different telescope, different emulsion stock, different archive, different digitization, where analogous appear-once candidates duly showed up]{claim=TRN-C010}. Because Hamburg's plates share no ancestor with Palomar's, the copy-defect mechanism cannot touch them. His follow-up work went further: on a telescope chosen for its strong off-axis coma — the little comet-shaped distortion optics stamp on incoming light — [candidate transient images reportedly carry the coma signature of light that passed through the telescope]{claim=TRN-C011}. Scratches and chemistry do not know where the optical axis is; photons do. If that discriminant survives blind validation, the case changes character. It has not yet been blind-validated.
+
+## The statistics, honestly
+
+Above the individual events sits an ensemble argument, and here the record is genuinely, instructively mixed.
+
+The VASCO team's working catalog of roughly 107,875 candidates shows two celebrated patterns: [a deficit of candidates inside Earth's shadow at satellite altitudes]{claim=TRN-C005} — where sunlight-reflecting objects would go dark — and [elevated candidate rates within a day of atmospheric nuclear tests]{claim=TRN-C006}. Both patterns replicate. Both also fail to replicate. The difference is entirely in what "replicate" means. Independent statisticians re-analyzing the same catalog reproduce both effects, and a 2026 machine-learning study found them persisting among candidates scored most likely to be real. But a comprehensive critique by Watters and colleagues showed the shadow analysis assumes a uniform background the data visibly violate, found no significant deficit in more heavily vetted subsets, and traced the nuclear timing largely to the observatory's schedule. And the one fully independent reconstruction — Hayes's pipeline, which rebuilt a candidate catalog from scratch rather than accepting anyone's rows — found no significant nuclear effect once nightly sky coverage was modeled.
+
+The pattern is the tell: the correlations reproduce *conditional on the working catalog* and dissolve when the catalog itself is rebuilt. That does not prove they are artifacts. It proves the catalog is the battleground. Note too what the nuclear correlation could not establish even if it survived: radioactive fallout settling on photographic plates predicts it just as well as glinting objects do — a mundane reading the discovery papers themselves acknowledged.
+
+## The ladder, and where it actually breaks
+
+Climb the ladder and watch the support thin. That the marks exist on plate material: settled, by the critics themselves. That they are reproducible by independent software: settled. That the population statistics mean anything: contested at the level of dataset definition. [That any mark was made by light entering the telescope during the original exposure]{claim=TRN-C020}: unresolved — this is the crux, and every rung above it is conditional. [That the light came from objects near Earth]{claim=TRN-C021}: unresolved, resting on the contested shadow geometry. [That artificial objects orbited before Sputnik]{claim=TRN-C022}: the headline claim, unresolved. [That they were extraterrestrial artifacts]{claim=TRN-C023}: presently untestable, and honestly labeled as such — even a proven pre-Sputnik object would need a separate origin argument before that word earned its place.
+
+## The one observation nobody has made
+
+Here is the strange fact at the center of this case: the original telescope negatives — the sheets of glass that were physically inside the telescope on those nights in 1950 and 1952 — have never been examined for these candidates. Every analysis, proponent and skeptic alike, works from copies of copies, or scans of copies of copies. The decisive test has been sitting in an archive for seventy-five years: image the candidate positions on the originals, blind, at high resolution, and record at which generation of the copying chain each mark first appears. Present on the original with the signature of incident light, and the artifact economy collapses. First appearing on a copy, and the canonical events close forever.
+
+Until someone runs it, this case ends the only place an honest map can end: with a research agenda instead of a verdict — the negative-plate examination, the flash-profile calibration that would give the sharpness debate a ruler, the blind test of the coma discriminant, and preregistered reruns of the ensemble statistics on catalogs nobody's thumb has touched. The full agenda, with what each test would tell us, is below.

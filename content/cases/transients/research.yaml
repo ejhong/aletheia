@@ -1,0 +1,139 @@
+# Research agenda: decisive tests ranked by information gain, each attached
+# to the claims it would actually move. The ordering principle: physical
+# provenance first (does the mark exist on the original negative, made by
+# light?), ensemble statistics second — no correlation on a contested
+# catalog can substitute for settling measurement origin.
+
+- id: TRN-R001
+  title: "Blind examination of the original POSS-I telescope negatives"
+  summary: >-
+    Locate the original negatives for the April 1950 nine-source field and
+    the July 1952 triple, plus all surviving intermediate positives and
+    duplicate negatives. Image every candidate coordinate at high
+    resolution — with analysts blinded to which positions are candidates —
+    and record at which generation of the copying chain each mark first
+    appears. This single study distinguishes original-exposure mark from
+    intermediate-copy defect from later-copy defect from scanner artifact.
+  claimIds: [TRN-C020, TRN-C001, TRN-C003, TRN-C007]
+  track: either
+  effortTier: lab
+  informationGain: >-
+    Extremely high — no ensemble statistic has comparable diagnostic power.
+    Present on the original with stellar-like grain structure: the artifact
+    economy collapses. First appearing on a copy: the canonical events are
+    closed as defects.
+
+- id: TRN-R002
+  title: "Flash-profile calibration on historical Schmidt emulsions"
+  summary: >-
+    Expose comparable photographic emulsions in a Schmidt system to
+    controlled flashes from milliseconds to seconds alongside continuously
+    illuminated artificial stars; quantify FWHM, profile shape, grain
+    structure, and guiding contribution. Converts the "sharp means
+    artifact" versus "sharp means sub-second flash" standoff into a
+    calibration curve.
+  claimIds: [TRN-C002, TRN-C020, TRN-C102]
+  track: small_grant
+  effortTier: lab
+  informationGain: >-
+    Turns the case's pivotal shared observation (TRN-C002) from
+    direction-ambiguous into diagnostic, in whichever direction the
+    calibration falls.
+
+- id: TRN-R003
+  title: "Blind validation of the coma-aberration discriminant"
+  summary: >-
+    Build a corpus of known stellar images, deliberately generated
+    sub-second flashes, and the full defect bestiary (scratches, emulsion
+    holes, dust, copy defects, scanner artifacts), plus unknown historical
+    candidates. Freeze Busko's coma classifier before labels are revealed
+    and measure its confusion matrix.
+  claimIds: [TRN-C011, TRN-C020]
+  track: publication_prize
+  effortTier: lab
+  informationGain: >-
+    The June 2026 coma result is the strongest new positive line in the
+    case; this test either certifies a physical incident-light detector
+    usable across every plate archive, or closes the line.
+
+- id: TRN-R004
+  title: "Full independent reconstruction of the VASCO working catalog"
+  summary: >-
+    Starting from archived whole-plate scans, publish every cut and attempt
+    to reproduce — not merely receive — the ~107,875-object working set.
+    The Hayes result shows why this matters: reasonable independent
+    extraction preserves the canonical events while generating a background
+    population 500 times larger, and every ensemble statistic inherits the
+    catalog it runs on.
+  claimIds: [TRN-C004, TRN-C005, TRN-C006]
+  track: either
+  effortTier: desk
+  informationGain: >-
+    Decides whether the ensemble evidence base is an object of study or an
+    artifact of one workflow; prerequisite for every preregistered
+    statistical test below.
+
+- id: TRN-R005
+  title: "Preregistered Earth-shadow analysis across independent pipelines"
+  summary: >-
+    At least three teams independently define candidate catalogs; plate
+    masks, detection thresholds, shadow-geometry assumptions, background
+    model, and statistical tests are frozen before any shadow calculation
+    is run. A deficit appearing across independently constructed catalogs
+    would be qualitatively stronger than any re-analysis of the same rows.
+  claimIds: [TRN-C005, TRN-C021]
+  track: publication_prize
+  effortTier: desk
+  informationGain: >-
+    The shadow deficit is the best geometric evidence the near-Earth
+    hypothesis has; this design gives it a fair chance to survive or fail
+    in public, with the Watters background objection built into the nulls.
+
+- id: TRN-R006
+  title: "Rate-based independent-observatory search with matched controls"
+  summary: >-
+    Extend the Hamburg/APPLAUSE approach to additional plate archives with
+    matched plate-pair cadence and known exposure metadata. The deliverable
+    is not "examples found" but a measured transient-candidate rate versus
+    matched controls, with injection/recovery completeness and per-archive
+    defect rates.
+  claimIds: [TRN-C010, TRN-C020]
+  track: small_grant
+  effortTier: desk
+  informationGain: >-
+    Distinguishes "the sky did this everywhere" from "old emulsions fail
+    similarly everywhere" — the question the preliminary Hamburg sample
+    cannot yet answer.
+
+- id: TRN-R007
+  title: "Copy-stage defect census across plate generations"
+  summary: >-
+    Measure how often star-like marks are created at each stage of
+    photographic duplication — original, intermediate positive, copy
+    negative, scan — using archives where multiple generations survive.
+    Hambly & Blair supplied the mechanism; this measures its base rate.
+  claimIds: [TRN-C007, TRN-C101]
+  track: small_grant
+  effortTier: lab
+  informationGain: >-
+    Converts the case's strongest mundane mechanism from a possibility
+    argument into a quantitative prior — with the side effect of
+    calibrating every historical plate-transient search, VASCO or not.
+
+- id: TRN-R008
+  title: "Nuclear-window correlation with a preregistered exposure denominator"
+  summary: >-
+    Rebuild the temporal analysis using raw plate logs to compute the
+    actual searchable solid-angle × time × efficiency for each night, with
+    the nuclear-window definition frozen before outcomes are examined. The
+    Doherty/Hayes split — replicates on the original catalog, vanishes
+    under independent extraction with exposure modeling — makes this the
+    cleanest outstanding statistical crux.
+  claimIds: [TRN-C006, TRN-C103]
+  track: publication_prize
+  effortTier: desk
+  informationGain: >-
+    Either retires the case's strangest correlation as a scheduling
+    artifact or establishes it against the strongest known confound —
+    and if it survives, forces the fallout-contamination versus
+    glint-population question into the open.

@@ -47,6 +47,31 @@ body {
   font-style: italic;
 }
 
+/* Plate captions sit inside article prose but must stay small metadata. */
+.article-prose .plate-caption-label {
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  line-height: 1.4;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-copper);
+}
+
+.article-prose .plate-caption-text {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  line-height: 1.55;
+  color: var(--color-ink-soft);
+}
+
+.article-prose .plate-caption-credit {
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  line-height: 1.45;
+  letter-spacing: 0.06em;
+  color: var(--color-faint);
+}
+
 /*
  * Museum-plate duotone: unifies heterogeneous photographs into the site
  * palette (ink shadows on paper, faint copper warmth) without editing the

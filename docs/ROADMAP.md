@@ -22,21 +22,39 @@ Goal: a repeatable AI pipeline that turns source books/papers into candidate cla
 
 Also feeds case #2 (vasocomputation): mine the "Knots of Existence" Substack article (`research/vasocomputation/`) and Michael Johnson's published QRI works.
 
-## Confirmed future case slate (recorded 2026-08-22)
+## Confirmed case slate (eight cases; recorded 2026-08-22)
 
-In rough order of readiness, after the geopolymer case:
+Research documents for cases 3–7 live in `research/` (filenames as present):
 
-1. **Vasocomputation + foam rolling / muscle knots** — in progress on branch
-   `case/vasocomputation`.
-2. **Orch OR (Penrose–Hameroff)** — orchestrated objective reduction as a
-   theory of consciousness; quantum effects in microtubules.
-3. **Beatriz Villarroel's VASCO transients** — vanishing and appearing
-   sources in century-spanning sky surveys.
-4. **Graham Hancock's pre-Ice-Age civilization / common cultural motifs** —
-   candidate structure: a meta-case with sub-cases (individual sites and
-   motif families each get their own claim ladder; the meta-case aggregates).
+1. **Geopolymer / cast megalithic stone** — live (case #1).
+2. **Vasocomputation + foam rolling / muscle knots** — in flight on branch
+   `case/vasocomputation`. Research: `Knots, Vasocomputation, and the
+   Biology of Stored Tension_ A Critical Research Report.pdf` and
+   `research/vasocomputation/`.
+3. **Orch OR (Penrose–Hameroff)** — orchestrated objective reduction as a
+   theory of consciousness. Research: `Orch OR Ascending - by Eugene -
+   Strange Loops In My Head.pdf` (essay) and `Orch OR Consciousness
+   Theory_ Claims, Evidence, Replication, Anesthesia, and Experimental
+   Roadmap.pdf`.
+4. **Beatriz Villarroel's VASCO transients** — vanishing and appearing
+   sources in century-spanning sky surveys. Research: `Adapting the
+   Villarroel transient research to Aletheia.pdf`.
 5. **Lucadou's Model of Pragmatic Information** — entanglement-inspired
-   account of psi effects and their systematic elusiveness.
+   account of psi effects and their systematic elusiveness. Research:
+   `Entangled Minds and Pragmatic Information_ A Comprehensive Synthesis
+   of Psi Theory.pdf`.
+6. **Zero Worlds** (working title; confirmed standalone case) —
+   observer-first theories of reality: Donald Hoffman (interface theory /
+   conscious agents), Markus Müller (algorithmic idealism / "law without
+   law"), Stephen Wolfram (observer theory / ruliad). Based on the essay
+   `Zero Worlds_ The Observer, the Coincidence, and the Collapse.pdf`
+   plus a forthcoming research report.
+7. **CCC — Penrose's Conformal Cyclic Cosmology** — concentric low-variance
+   CMB circles, Hawking points, and the disputed null-model statistics of
+   the rebuttals. Research report forthcoming.
+8. **Graham Hancock's pre-Ice-Age civilization** — meta-case; sub-cases
+   referenced rather than rebuilt (the geopolymer case already counts).
+   Scoping deliberately deferred pending a dedicated discussion.
 
 ## Phase 2 — Canonical content system
 

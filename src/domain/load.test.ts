@@ -6,6 +6,8 @@ import {
   parseInlines,
 } from "./article";
 import {
+  catalogClaims,
+  featuredClaims,
   getCaseBySlug,
   latestAssessment,
   liveClaims,
@@ -28,6 +30,37 @@ describe("real content", () => {
     for (const id of extractClaimRefs(geo.overviewMarkdown)) {
       expect(liveClaims(geo).some((c) => c.id === id)).toBe(true);
     }
+  });
+
+  it("carries the bulk-imported geo catalog with honest provenance", () => {
+    const geo = getCaseBySlug("megalithic-casting");
+    const catalog = catalogClaims(geo);
+    expect(catalog.length).toBe(80);
+    expect(featuredClaims(geo).length).toBe(14);
+    for (const c of catalog) {
+      // One reversible run: a single runId stamped on every record.
+      expect(c.origin.runId).toBe("geo-catalog-import-2026-08-22");
+      expect(c.reviewState).toBe("ai_extracted");
+      expect(c.sourceAnchor.locator.length).toBeGreaterThan(3);
+      // T-number origin, always.
+      expect(c.origin.ref).toMatch(/T-\d{3}/);
+    }
+    // Dedupe held: no catalog claim re-imports a T-number already carried
+    // by a featured claim, the killed topic, or the tombstoned cluster.
+    const excluded = [
+      "T-001", "T-003", "T-004", "T-005", "T-012", "T-013", "T-014",
+      "T-021", "T-034", "T-060", "T-072", "T-073", "T-077", "T-078",
+      "T-087",
+    ];
+    for (const c of catalog) {
+      const t = c.origin.ref.match(/T-\d{3}/)?.[0];
+      expect(excluded).not.toContain(t);
+    }
+    // Confidentiality: neutrally-framed method topics never cite the
+    // confidential source.
+    const text = JSON.stringify(catalog);
+    expect(text).not.toMatch(/hawke/i);
+    expect(text).not.toMatch(/harmonic research/i);
   });
 
   it("article parses into blocks with claim refs", () => {

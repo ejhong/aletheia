@@ -1,0 +1,28 @@
+import type { Metadata } from "next";
+import { CaseCard } from "@/src/components/CaseCard";
+import { latestAssessment, loadAllCases } from "@/src/domain/load";
+
+export const metadata: Metadata = { title: "Cases" };
+
+export default function CasesPage() {
+  const cases = loadAllCases();
+  return (
+    <div className="mx-auto max-w-6xl px-5 py-12">
+      <h1 className="font-serif text-4xl tracking-tight">Cases</h1>
+      <p className="mt-3 text-ink-soft max-w-2xl">
+        Each case maps one contested hypothesis: an overview you can read, a
+        claim ladder you can audit, evidence with provenance, and the
+        experiments that would settle it.
+      </p>
+      <div className="grid sm:grid-cols-2 gap-4 mt-8">
+        {cases.map((c) => (
+          <CaseCard
+            key={c.record.id}
+            record={c.record}
+            verdict={latestAssessment(c)?.caseAssessment.verdict ?? null}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}

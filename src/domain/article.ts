@@ -25,18 +25,22 @@ const LINK = /\[([^\]]+)\]\(([^)\s]+)\)/;
 const STRONG = /\*\*([^*]+)\*\*/;
 const EM = /\*([^*]+)\*/;
 
+type MatchKind = "claimRef" | "link" | "strong" | "em";
+
 export function parseInlines(text: string): Inline[] {
   const out: Inline[] = [];
   let rest = text;
   while (rest.length > 0) {
-    const candidates = [
-      { m: CLAIM_REF.exec(rest), kind: "claimRef" as const },
-      { m: LINK.exec(rest), kind: "link" as const },
-      { m: STRONG.exec(rest), kind: "strong" as const },
-      { m: EM.exec(rest), kind: "em" as const },
-    ].filter((c): c is { m: RegExpExecArray; kind: Inline["kind"] & string } =>
-      Boolean(c.m),
-    );
+    const candidates: { m: RegExpExecArray; kind: MatchKind }[] = [];
+    for (const [re, kind] of [
+      [CLAIM_REF, "claimRef"],
+      [LINK, "link"],
+      [STRONG, "strong"],
+      [EM, "em"],
+    ] as [RegExp, MatchKind][]) {
+      const m = re.exec(rest);
+      if (m) candidates.push({ m, kind });
+    }
     if (candidates.length === 0) {
       out.push({ kind: "text", text: rest });
       break;

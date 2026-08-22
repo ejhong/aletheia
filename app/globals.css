@@ -1,26 +1,55 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* Paper register */
+  --color-paper: #f6f1e8;
+  --color-paper-deep: #ede6d8;
+  --color-ink: #201b12;
+  --color-ink-soft: #4c453a;
+  --color-faint: #877e6c;
+  --color-line: #d9d0be;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Dossier register */
+  --color-dossier: #171310;
+  --color-dossier-soft: #241f19;
+  --color-dossier-line: #3c352a;
+  --color-dossier-text: #e8e0cf;
+  --color-dossier-faint: #a1977f;
+
+  /* Accents (muted, non-moralizing) */
+  --color-copper: #9a5b33;
+  --color-ochre: #96731f;
+  --color-verdigris: #47705f;
+  --color-terracotta: #8e4a38;
+  --color-slate-mist: #5d6672;
+
+  --font-serif: var(--font-newsreader), "Iowan Old Style", Georgia, serif;
+  --font-sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, "SF Mono", monospace;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Editorial prose defaults for the article body */
+.article-prose p {
+  font-family: var(--font-serif);
+  font-size: 1.155rem;
+  line-height: 1.72;
+  color: var(--color-ink);
+}
+
+.article-prose em {
+  font-style: italic;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
 }

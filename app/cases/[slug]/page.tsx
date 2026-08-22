@@ -1,0 +1,206 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { ArgumentLadder } from "@/src/components/ArgumentLadder";
+import { ArticleBody } from "@/src/components/ArticleBody";
+import { AssessmentPanel } from "@/src/components/AssessmentPanel";
+import { ChangeTimeline } from "@/src/components/ChangeTimeline";
+import { DossierHeader } from "@/src/components/DossierHeader";
+import { EvidenceCard } from "@/src/components/EvidenceCard";
+import { ResearchCard } from "@/src/components/ResearchCard";
+import { site } from "@/src/config/site";
+import {
+  getCaseBySlug,
+  latestAssessment,
+  liveClaims,
+  loadAllCases,
+} from "@/src/domain/load";
+
+export function generateStaticParams() {
+  return loadAllCases().map((c) => ({ slug: c.record.slug }));
+}
+
+export function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  return params.then(({ slug }) => ({
+    title: getCaseBySlug(slug).record.title,
+  }));
+}
+
+const sections = [
+  ["assessment", "Assessment"],
+  ["article", "Article"],
+  ["ladder", "Claim ladder"],
+  ["evidence", "Evidence"],
+  ["conventional", "Conventional view"],
+  ["research", "Research agenda"],
+  ["history", "History"],
+] as const;
+
+export default async function CasePage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const loaded = getCaseBySlug(slug);
+  const claims = liveClaims(loaded);
+  const run = latestAssessment(loaded);
+  const sourceById = new Map(loaded.sources.map((s) => [s.id, s]));
+
+  const strongest = (direction: "supports" | "undermines") =>
+    loaded.evidence
+      .filter((e) => e.direction === direction)
+      .sort(
+        (a, b) =>
+          ["decisive", "strong", "moderate", "weak"].indexOf(a.strength) -
+          ["decisive", "strong", "moderate", "weak"].indexOf(b.strength),
+      )
+      .slice(0, 3);
+
+  return (
+    <div>
+      <DossierHeader
+        record={loaded.record}
+        verdict={run?.caseAssessment.verdict ?? null}
+      />
+
+      {/* section navigator */}
+      <nav className="border-b border-line bg-paper sticky top-0 z-10">
+        <div className="mx-auto max-w-6xl px-5 overflow-x-auto">
+          <div className="flex gap-6 py-3 whitespace-nowrap">
+            {sections.map(([id, label]) => (
+              <a
+                key={id}
+                href={`#${id}`}
+                className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-soft hover:text-copper"
+              >
+                {label}
+              </a>
+            ))}
+            <Link
+              href={`/cases/${slug}/claims/`}
+              className="font-mono text-[11px] uppercase tracking-[0.14em] text-copper ml-auto"
+            >
+              all claims →
+            </Link>
+          </div>
+        </div>
+      </nav>
+
+      <div className="mx-auto max-w-6xl px-5">
+        {run ? (
+          <section id="assessment" className="pt-10 scroll-mt-16">
+            <AssessmentPanel run={run} claims={claims} />
+          </section>
+        ) : null}
+
+        <section id="article" className="pt-12 scroll-mt-16">
+          <h2 className="font-mono text-[11px] uppercase tracking-[0.2em] text-faint mb-6">
+            overview · marked sentences open the exact claim
+          </h2>
+          <ArticleBody markdown={loaded.overviewMarkdown} claims={claims} />
+        </section>
+
+        <section id="ladder" className="pt-14 scroll-mt-16">
+          <ArgumentLadder claims={claims} />
+        </section>
+
+        <section id="evidence" className="pt-14 scroll-mt-16">
+          <h2 className="font-serif text-3xl tracking-tight">
+            Evidence highlights
+          </h2>
+          <p className="mt-2 text-[14px] text-ink-soft max-w-2xl">
+            The strongest records on each side, structurally symmetric. Every
+            record separates what the source states from what we infer.
+          </p>
+          <div className="grid lg:grid-cols-2 gap-4 mt-6">
+            <div className="space-y-4">
+              <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-verdigris">
+                strongest supporting
+              </h3>
+              {strongest("supports").map((e) => (
+                <EvidenceCard
+                  key={e.id}
+                  evidence={e}
+                  source={sourceById.get(e.sourceId)!}
+                  showClaims
+                />
+              ))}
+            </div>
+            <div className="space-y-4">
+              <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-terracotta">
+                strongest undermining
+              </h3>
+              {strongest("undermines").map((e) => (
+                <EvidenceCard
+                  key={e.id}
+                  evidence={e}
+                  source={sourceById.get(e.sourceId)!}
+                  showClaims
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="conventional" className="pt-14 scroll-mt-16">
+          <div className="border border-line bg-paper-deep/50 p-6 sm:p-8">
+            <h2 className="font-serif text-3xl tracking-tight">
+              The best conventional explanation
+            </h2>
+            <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-faint">
+              steelmanned — the account the featured hypothesis must beat
+            </p>
+            <p className="mt-4 text-[15.5px] leading-[1.75] text-ink-soft max-w-3xl">
+              {loaded.record.bestConventionalExplanation}
+            </p>
+          </div>
+        </section>
+
+        <section id="research" className="pt-14 scroll-mt-16">
+          <h2 className="font-serif text-3xl tracking-tight">
+            Research agenda
+          </h2>
+          <p className="mt-2 text-[14px] text-ink-soft max-w-2xl">
+            The case does not end in a verdict; it ends in the studies that
+            would move it. Curated from the public request for proposals.
+            The program funds tests in either direction.
+          </p>
+          {loaded.record.externalResearch ? (
+            loaded.record.externalResearch.url ? (
+              <a
+                href={loaded.record.externalResearch.url}
+                className="inline-block mt-3 font-mono text-[12px] uppercase tracking-[0.14em] text-copper underline underline-offset-4"
+              >
+                {loaded.record.externalResearch.label} →
+              </a>
+            ) : (
+              <p className="mt-3 font-mono text-[11px] uppercase tracking-[0.14em] text-faint">
+                {loaded.record.externalResearch.label} — forthcoming
+              </p>
+            )
+          ) : null}
+          <div className="grid sm:grid-cols-2 gap-4 mt-6">
+            {loaded.research.map((r) => (
+              <ResearchCard key={r.id} item={r} />
+            ))}
+          </div>
+        </section>
+
+        <section id="history" className="pt-14 pb-6 scroll-mt-16">
+          <h2 className="font-serif text-3xl tracking-tight mb-2">
+            Change history
+          </h2>
+          <p className="text-[14px] text-ink-soft max-w-2xl mb-6">
+            Trust comes partly from showing changed minds. {site.name} records
+            what changed, why, and who — including the AI&apos;s role.
+          </p>
+          <ChangeTimeline entries={loaded.history} />
+        </section>
+      </div>
+    </div>
+  );
+}

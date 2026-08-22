@@ -1,23 +1,44 @@
 # Aletheia
 
-A public map of contested hypotheses: magazine-quality overview articles whose consequential sentences open into atomic claims, evidence for and against, exact sources, unresolved cruxes, and the experiments that would settle them.
+**Contested claims, mapped to evidence and experiments.**
 
-Working title was "Athanatos Evidence Atlas"; renamed Aletheia (see `docs/DECISIONS.md`).
+Aletheia decomposes controversial hypotheses into atomic claims, maps the evidence for and against each one with honest provenance labels, and points at the experiment that would settle the dispute. First case: **Cast, Not Carved?** — the megalithic casting hypothesis, curated from the [geo research project](https://github.com/ejhong/geo)'s AI-extracted catalog.
 
-## Status
+## Commands
 
-Pre-scaffold. The repo currently holds product documentation and research inputs; the Next.js site is not yet built.
+```bash
+npm install        # once
+npm run dev        # dev server at localhost:3000
+npm run typecheck  # tsc --noEmit
+npm run lint       # eslint
+npm test           # vitest (schema/loader/parser tests)
+npm run build      # static export to out/ (fails loudly on invalid content)
+```
+
+## Architecture
+
+Three zones, one-way flow — see `docs/DATA_MODEL.md` and `docs/DECISIONS.md`:
+
+1. **Content** (`content/cases/<case>/`) — plain YAML + markdown per case: `case.yaml`, `overview.md` (article with `[text]{claim=GEO-C001}` refs), `claims.yaml`, `evidence.yaml`, `sources.yaml`, `research.yaml`, `history.yaml`, and append-only AI assessment overlays in `assessments/<runId>.yaml`.
+2. **Domain** (`src/domain/`) — Zod schemas, the loader (fails the build on dangling IDs or unresolved claim refs), and the constrained article parser.
+3. **UI** (`src/components/`, `app/`) — pure components, one per domain concept; six routes (home, cases, case page, claim explorer, claim detail, source record, method).
+
+Dependencies are deliberately minimal: Next.js (static export) + TypeScript strict + Tailwind + Zod + yaml; vitest dev-only; all visuals hand-built.
+
+## Deployment
+
+Static export served from git: pushing to `main` runs CI and deploys to GitHub Pages (`.github/workflows/deploy.yml`). The base path is injected by the workflow; remove the `PAGES_BASE_PATH` env there when moving to a custom domain.
+
+## Editing content
+
+Edit files under `content/`, run `npm run dev`, and reload. Malformed records, dangling IDs, or article references to unknown claims fail loudly at build time. Provenance rules — what may be labeled `verified` vs `ai_verified` vs `unverified`, tombstones for rejected claims, confidentiality constraints — are in `docs/CONTENT_POLICY.md`.
 
 ## Layout
 
 | Path | Role |
 |---|---|
-| `AGENTS.md` | Persistent rules for coding/research agents (epistemic rules, code rules, workflow) |
-| `docs/` | Product spec, data model, information architecture, roadmap, decisions log |
-| `docs/DECISIONS.md` | Append-only log of material decisions — read first for current direction |
-| `docs/BOOTSTRAP_PROMPT.md`, `docs/STARTER_README.md` | Original starter-kit instructions (historical; superseded where DECISIONS.md says so) |
-| `research/` | Source material for cases (e.g. `research/vasocomputation/`) |
-
-## Related work
-
-The megalithic casting / geopolymer research project at `~/prj/geo` (private repo `ejhong/geo`) — a 95-topic catalog, verified citations, and a ResearchHub RFP draft — is expected to seed the first deeply-realized case.
+| `AGENTS.md` | Rules for coding/research agents (epistemic rules, code rules, workflow) |
+| `docs/DECISIONS.md` | Append-only decisions log — read first for current direction |
+| `docs/` | Product spec, data model, IA, content policy, roadmap |
+| `content/cases/geopolymer/` | Case GEO-001, "Cast, Not Carved?" |
+| `research/` | Source material for future cases (vasocomputation is next) |

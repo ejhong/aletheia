@@ -39,6 +39,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
+import { noKeyMessage, parseJsonReply, pickProvider } from "./lib/llm.mjs";
 
 const PROMPT_VERSION_EXTRACT = "extract-v1";
 const PROMPT_VERSION_VERIFY = "verify-v1";
@@ -83,93 +84,12 @@ if (!fs.existsSync(path.join(caseDir, "case.yaml"))) {
 
 // ------------------------------------------------------------- LLM client
 
-const providers = {
-  anthropic: {
-    key: process.env.ANTHROPIC_API_KEY,
-    model: process.env.EXTRACT_MODEL || "claude-sonnet-4-5",
-    async call(system, user) {
-      const res = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-          "x-api-key": this.key,
-          "anthropic-version": "2023-06-01",
-        },
-        body: JSON.stringify({
-          model: this.model,
-          max_tokens: 8192,
-          system,
-          messages: [{ role: "user", content: user }],
-        }),
-      });
-      if (!res.ok) {
-        throw new Error(`Anthropic API ${res.status}: ${await res.text()}`);
-      }
-      const data = await res.json();
-      return data.content.map((b) => b.text ?? "").join("");
-    },
-  },
-  openai: {
-    key: process.env.OPENAI_API_KEY,
-    model: process.env.EXTRACT_MODEL || "gpt-4o",
-    async call(system, user) {
-      const res = await fetch("https://api.openai.com/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-          authorization: `Bearer ${this.key}`,
-        },
-        body: JSON.stringify({
-          model: this.model,
-          messages: [
-            { role: "system", content: system },
-            { role: "user", content: user },
-          ],
-        }),
-      });
-      if (!res.ok) {
-        throw new Error(`OpenAI API ${res.status}: ${await res.text()}`);
-      }
-      const data = await res.json();
-      return data.choices[0].message.content;
-    },
-  },
-};
-
-const providerName =
-  opts.provider ??
-  (process.env.ANTHROPIC_API_KEY
-    ? "anthropic"
-    : process.env.OPENAI_API_KEY
-      ? "openai"
-      : null);
-const provider = providers[providerName];
-if (!provider || !provider.key) {
-  console.error(
-    [
-      "",
-      "ERROR: no LLM API key configured.",
-      "",
-      "This pipeline calls an LLM API for extraction and verification.",
-      "Set ONE of these environment variables (locally, or as a repository",
-      "secret under GitHub → Settings → Secrets and variables → Actions):",
-      "",
-      "  ANTHROPIC_API_KEY   Anthropic Messages API (preferred)",
-      "  OPENAI_API_KEY      OpenAI Chat Completions API",
-      "",
-      "Optional: EXTRACT_MODEL to override the default model.",
-      "See docs/EXTRACTION_PIPELINE.md.",
-      "",
-    ].join("\n"),
-  );
+const provider = pickProvider(opts.provider);
+if (!provider) {
+  console.error(noKeyMessage());
   process.exit(1);
 }
-
-function parseJsonReply(text) {
-  // Models occasionally wrap JSON in a code fence; strip it.
-  const m = text.match(/```(?:json)?\s*([\s\S]*?)```/);
-  return JSON.parse((m ? m[1] : text).trim());
-}
+const providerName = provider.name;
 
 // ------------------------------------------------------------- sectioning
 

@@ -408,6 +408,98 @@ export function romanNumeral(n: number): string {
   return out;
 }
 
+/**
+ * Literature-watch configuration — an optional `watch.yaml` per case.
+ *
+ * Each query drives the weekly `scripts/watch-literature.mjs` run, which
+ * searches arXiv and Crossref (and optionally OpenAlex) for newly
+ * published/indexed items and surfaces them as DISCOVERY-ONLY proposals
+ * under `proposals/watch/<runId>/`. Nothing enters sources.yaml
+ * automatically; every surfaced item is labeled unverified.
+ */
+export const WatchSource = z.enum(["arxiv", "crossref", "openalex"]);
+export type WatchSource = z.infer<typeof WatchSource>;
+
+export const WatchQuerySchema = z.object({
+  /** Stable slug for the query — cursor state and dedup key on the run side. */
+  id: z.string().regex(/^[a-z0-9-]+$/, "watch query id like trigger-point-imaging"),
+  /** Free-text search string sent to each API. */
+  query: z.string().min(3),
+  /** Which APIs to search. Default: arXiv + Crossref (both free, keyless). */
+  sources: z.array(WatchSource).min(1).default(["arxiv", "crossref"]),
+  /** Optional author filter: keep items with at least one matching author. */
+  authors: z.array(z.string().min(2)).optional(),
+  /**
+   * Optional keyword filter: keep items whose title or abstract contains at
+   * least one of these (case-insensitive). Tames broad queries.
+   */
+  keywords: z.array(z.string().min(2)).optional(),
+  /** Why this query exists — shown in the proposal for the reviewer. */
+  note: z.string().optional(),
+});
+export type WatchQuery = z.infer<typeof WatchQuerySchema>;
+
+export const WatchConfigSchema = z
+  .object({
+    queries: z.array(WatchQuerySchema).min(1),
+  })
+  .superRefine((cfg, ctx) => {
+    const seen = new Set<string>();
+    for (const q of cfg.queries) {
+      if (seen.has(q.id)) {
+        ctx.addIssue({
+          code: "custom",
+          message: `duplicate watch query id ${q.id}`,
+        });
+      }
+      seen.add(q.id);
+    }
+  });
+export type WatchConfig = z.infer<typeof WatchConfigSchema>;
+
+/**
+ * Curated learning resources — an optional `resources.yaml` per case.
+ *
+ * These are reading-guide materials (talks, books, explainers), NOT evidence:
+ * evidence lives in sources.yaml/evidence.yaml. Real links only — a curated
+ * resource must carry a URL and an honest verification label, same vocabulary
+ * as sources.
+ */
+export const CuratedResourceType = z.enum([
+  "book",
+  "talk",
+  "explainer",
+  "article",
+  "course",
+  "podcast",
+  "reference",
+]);
+export type CuratedResourceType = z.infer<typeof CuratedResourceType>;
+
+export const curatedResourceTypeLabels: Record<CuratedResourceType, string> = {
+  book: "Book",
+  talk: "Talk",
+  explainer: "Explainer",
+  article: "Article",
+  course: "Course",
+  podcast: "Podcast",
+  reference: "Reference",
+};
+
+export const CuratedResourceSchema = z.object({
+  title: z.string().min(3),
+  url: z.string().url(),
+  type: CuratedResourceType,
+  /** Author, speaker, or publishing organization. */
+  by: z.string().optional(),
+  year: z.string().optional(),
+  /** One line on why it is worth the reader's time. */
+  note: z.string().optional(),
+  verification: SourceVerification,
+  verificationNote: z.string().optional(),
+});
+export type CuratedResource = z.infer<typeof CuratedResourceSchema>;
+
 export const CaseSchema = z.object({
   id: z.string().regex(/^[A-Z]+-\d{3}$/, "Case id like GEO-001"),
   slug: z.string().regex(/^[a-z0-9-]+$/),
@@ -444,4 +536,8 @@ export interface LoadedCase {
   /** Sorted by date ascending; last entry is the latest run. */
   assessmentRuns: AssessmentRun[];
   images: ImageRecord[];
+  /** Optional literature-watch config (watch.yaml). */
+  watch: WatchConfig | null;
+  /** Optional curated reading-guide entries (resources.yaml). */
+  curatedResources: CuratedResource[];
 }

@@ -2,7 +2,10 @@
 # weekly (and on demand) this workflow
 #   1. processes inbox/ drops (commentary, links, documents) into proposals,
 #   2. refreshes AI assessment overlays for cases whose evidence changed,
-#   3. opens ONE PR with a plain-language digest body (readable on a phone),
+#   3. runs the literature watch (scripts/watch-literature.mjs): new
+#      arXiv/Crossref items matching each case's watch.yaml queries become
+#      unverified, discovery-only proposals under proposals/watch/,
+#   4. opens ONE PR with a plain-language digest body (readable on a phone),
 #      classified by scripts/classify-pr-risk.mjs:
 #        low-risk       → labeled, auto-merge enabled (merges when CI is green)
 #        needs-approval → labeled, review requested — read the digest, tap merge.
@@ -62,6 +65,22 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: node scripts/reassess-changed.mjs
 
+      # Discovery only: new arXiv/Crossref items become unverified proposals
+      # under proposals/watch/ — low-risk by construction (never touches
+      # published content). Works without an LLM key; a key only adds
+      # labeled relevance notes.
+      - name: Watch literature
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          node scripts/watch-literature.mjs | tee watch-out.txt
+          outdir=$(tail -1 watch-out.txt)
+          if [ -f "$outdir/report.md" ]; then
+            cp "$outdir/report.md" watch-digest.md
+          fi
+          rm -f watch-out.txt
+
       - name: Open classified PR
         env:
           GH_TOKEN: ${{ secrets.MAINTENANCE_PAT || github.token }}
@@ -74,8 +93,9 @@ jobs:
             echo
             [ -f inbox-digest.md ] && cat inbox-digest.md && echo
             [ -f reassess-digest.md ] && cat reassess-digest.md && echo
+            [ -f watch-digest.md ] && cat watch-digest.md && echo
           } > pr-body.md
-          rm -f inbox-digest.md reassess-digest.md
+          rm -f inbox-digest.md reassess-digest.md watch-digest.md
 
           if git status --porcelain | grep -qv '^?? pr-body.md'; then :; else
             echo "No changes produced — nothing to open a PR for."
@@ -88,7 +108,7 @@ jobs:
           git config user.email "maintenance-bot@users.noreply.github.com"
           git checkout -b "$branch"
           git add -A -- ':!pr-body.md'
-          git commit -m "Maintenance run ${date}: inbox processing + assessment refresh"
+          git commit -m "Maintenance run ${date}: inbox, assessments, literature watch"
           git push -u origin "$branch"
 
           # Conservative risk classification; the pr-risk-check workflow

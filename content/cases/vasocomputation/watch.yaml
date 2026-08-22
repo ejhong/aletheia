@@ -1,0 +1,38 @@
+# Literature watch (docs/MAINTENANCE.md § literature watch).
+# Weekly, scripts/watch-literature.mjs runs these queries against arXiv and
+# Crossref (OpenAlex optional) and surfaces new items as discovery-only
+# proposals under proposals/watch/<runId>/. Nothing lands in sources.yaml
+# without human review. Schema: WatchConfigSchema in src/domain/schema.ts.
+
+queries:
+  - id: trigger-point-imaging
+    query: "myofascial trigger point imaging elastography ultrasound"
+    sources: [crossref]
+    keywords: ["trigger point", myofascial, elastography]
+    note: >-
+      Objective-imaging work on trigger points — the decisive experiment for
+      this case is a time-locked elastography/Doppler study (VASO crux).
+
+  - id: smooth-muscle-latch
+    query: "latch bridge smooth muscle cross-bridge regulation"
+    sources: [crossref]
+    keywords: [latch, "smooth muscle"]
+    note: >-
+      Developments in latch-bridge physiology, the mechanism rung the
+      hypothesis rests on (Hai & Murphy lineage).
+
+  - id: hemo-neural
+    query: "hemodynamics neural activity modulation blood flow information"
+    sources: [crossref, arxiv]
+    keywords: [hemo-neural, hemodynamic, vascular, neurovascular]
+    note: >-
+      The blood-and-computation rung: follow-ups to Moore & Cao 2008 and
+      Jammal Salameh 2024 on vascular modulation of neural processing.
+
+  - id: slow-breathing-local-tissue
+    query: "slow breathing vagal local blood flow muscle tension"
+    sources: [crossref]
+    keywords: [breathing, autonomic, vasomotion]
+    note: >-
+      Whether slow-breathing effects reach local tissue state (perfusion,
+      stiffness) rather than only global autonomic indices (VASO-C010 area).

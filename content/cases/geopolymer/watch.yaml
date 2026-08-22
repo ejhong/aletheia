@@ -1,0 +1,40 @@
+# Literature watch (docs/MAINTENANCE.md § literature watch).
+# Weekly, scripts/watch-literature.mjs runs these queries against arXiv and
+# Crossref (OpenAlex optional) and surfaces new items as discovery-only
+# proposals under proposals/watch/<runId>/. Nothing lands in sources.yaml
+# without human review. Schema: WatchConfigSchema in src/domain/schema.ts.
+
+queries:
+  - id: geopolymer-archaeology
+    query: "geopolymer ancient monument archaeology"
+    sources: [crossref]
+    # Deliberately archaeology-specific: the bare word "geopolymer" matches
+    # the enormous modern-concrete engineering literature.
+    keywords: [ancient, archaeolog, pyramid, megalith, monument]
+    note: >-
+      New work on geopolymer/cast-stone interpretations of ancient
+      monuments — proponent or critical.
+
+  - id: pyramid-limestone-analysis
+    query: "pyramid limestone casing microstructure petrographic"
+    sources: [crossref]
+    keywords: [pyramid, casing, Giza, limestone]
+    note: >-
+      Analyses of Great Pyramid / Egyptian limestone that bear on the
+      Barsoum–Jana exchange (GEO-C022 cluster).
+
+  - id: davidovits-team
+    query: "geopolymer archaeological"
+    sources: [crossref]
+    authors: [Davidovits]
+    note: >-
+      Anything new from the hypothesis's principal proponents, so the case
+      tracks the proponent literature it must weigh.
+
+  - id: megalith-provenance-methods
+    query: "megalith stone provenance geochemical attribution"
+    sources: [crossref]
+    keywords: [megalith, sarsen, quarry, obelisk]
+    note: >-
+      Provenance-methodology work relevant to whether attribution studies
+      could distinguish cast from carved stone (GEO-C030, GEO-R003).

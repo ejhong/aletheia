@@ -1,0 +1,675 @@
+# Evidence records: the specific observation/result extracted from a source
+# and connected to claims. Direction is explicit and read against the listed
+# claims; sourceStatement (what the source says) is kept separate from
+# editorInference (what we infer).
+#
+# Structural note: because the observation claims are split between "the
+# features exist" (CCC-C001) and "the features are anomalous" (CCC-C002,
+# CCC-C004), the independent reanalyses appear twice with different
+# directions — they SUPPORT the existence claim while UNDERMINING the
+# anomaly claims. That split is the case's central discipline.
+
+# ── The founding circles claim ───────────────────────────────────────────────
+
+- id: CCC-E001
+  title: "Gurzadyan & Penrose 2010: concentric low-variance circles at up to 6σ"
+  claimIds: [CCC-C001, CCC-C002, CCC-C009]
+  sourceId: SRC-GURZADYAN-PENROSE-2010
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    Analysis of the WMAP 7-year maps "does indeed reveal such concentric
+    circles, of up to 6σ significance," with the same analysis applied to
+    BOOMERanG98 data "eliminating the possibility of an instrumental cause
+    for the effects." The authors state these observational predictions of
+    CCC "would not be easily explained within standard inflationary
+    cosmology."
+  editorInference: >-
+    The founding detection claim of the observational program. Its
+    strength here is capped at moderate despite the headline 6σ because
+    the significance was computed against the pure-Gaussian-plus-noise
+    ensemble that every subsequent independent reanalysis identifies as
+    the inadequate null (CCC-C003) — and the paper itself was never
+    journal-published.
+  exactLocator: "arXiv:1011.3706, abstract"
+  limitations:
+    - "Preprint only; the significance methodology was never refereed in this form."
+    - "Authored by the theory's originator and his collaborator."
+    - "The cross-instrument (BOOMERanG) check addresses instrumental artifacts, not the null-ensemble objection."
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 (arXiv API, abstract verbatim)"
+    extractedBy: "Fable (AI agent)"
+    runId: "ccc-case-2026-08-22"
+    date: "2026-08-22"
+
+- id: CCC-E002
+  title: "Wehus & Eriksen 2011: rings reproduced; simulations disagree; sky consistent with ΛCDM"
+  claimIds: [CCC-C001, CCC-C002]
+  sourceId: SRC-WEHUS-ERIKSEN-2011
+  direction: undermines
+  strength: strong
+  sourceStatement: >-
+    An independent search employing both χ² statistics and matched filters:
+    "We do reproduce the claimed ring structures observed in the WMAP data
+    as presented by Gurzadyan and Penrose, thereby verifying their
+    computational procedures. However, the results from our simulations do
+    not agree with those presented by Gurzadyan and Penrose. On the
+    contrary we obtain a substantially larger variance in our simulations,
+    to the extent that the observed WMAP sky maps are fully consistent with
+    the LCDM model as measured by these statistics."
+  editorInference: >-
+    Read against CCC-C001 this is a confirmation (the features are real
+    outputs of the procedure); read against CCC-C002 it is a direct
+    contradiction, and it localizes the disagreement precisely where
+    CCC-C003 says it lives — in the simulated null, not in the data.
+  exactLocator: "ApJL 733: L29, abstract"
+  limitations:
+    - "Uses ΛCDM-spectrum simulations, which the proponents dispute as the appropriate null (CCC-C003) — the force of this record depends on that methodological question."
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 (Crossref + arXiv abstract)"
+    extractedBy: "Fable (AI agent)"
+    runId: "ccc-case-2026-08-22"
+    date: "2026-08-22"
+
+- id: CCC-E003
+  title: "Moss, Scott & Zibin 2011: the variations are entirely expected in a structured sky"
+  claimIds: [CCC-C002, CCC-C010]
+  sourceId: SRC-MOSS-SCOTT-ZIBIN-2011
+  direction: undermines
+  strength: strong
+  sourceStatement: >-
+    "We can indeed confirm that such variations do exist in the temperature
+    variance for annuli around points in the data. However, we find that
+    this variation is entirely expected in a sky which contains the usual
+    CMB anisotropies. In other words, properly simulated Gaussian CMB data
+    contain just the sorts of variations claimed. Gurzadyan & Penrose have
+    not found evidence for pre-Big Bang phenomena, but have simply
+    re-discovered that the CMB contains structure."
+  editorInference: >-
+    Undermines the anomaly claim (CCC-C002) and supplies the rival
+    thesis's slogan (CCC-C010). The direction here is logged against
+    CCC-C002; the same record's confirmation of the features' existence is
+    carried by CCC-E002's parallel finding rather than double-counted.
+  exactLocator: "JCAP 2011(04): 033, abstract"
+  limitations:
+    - "Same ensemble-choice dependence as all critical reanalyses (CCC-C003)."
+    - "The paper also notes the low-variance circles are dominated by low-multipole structure, an explanatory detail not separately imported."
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 (Crossref + arXiv abstract)"
+    extractedBy: "Fable (AI agent)"
+    runId: "ccc-case-2026-08-22"
+    date: "2026-08-22"
+
+- id: CCC-E004
+  title: "Hajian 2011: with realistic anisotropic noise, all three circle families are unremarkable"
+  claimIds: [CCC-C002]
+  sourceId: SRC-HAJIAN-2011
+  direction: undermines
+  strength: strong
+  sourceStatement: >-
+    "We reassess the statistical significance of those circles by comparing
+    with Monte Carlo simulations of the CMB sky with realistic modeling of
+    the anisotropic noise in WMAP data. We find that the circles are not
+    anomalous and that all three groups are consistent at 3sigma level with
+    a Gaussian CMB sky as predicted by inflationary cosmology model."
+  editorInference: >-
+    Closes the loophole that the earlier critiques might have mismodeled
+    WMAP's spatially varying noise — the one technical objection the
+    proponents' first response raised that a better simulation could
+    answer. Three independent groups now reach the same verdict by
+    different routes.
+  exactLocator: "ApJ 740(2): 52, abstract"
+  limitations:
+    - "Tests the three specific circle families of the founding paper, not every later variant of the claim."
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 (Crossref + arXiv abstract)"
+    extractedBy: "Fable (AI agent)"
+    runId: "ccc-case-2026-08-22"
+    date: "2026-08-22"
+
+- id: CCC-E005
+  title: "Gurzadyan & Penrose's response: the dispute is over what the null sky is"
+  claimIds: [CCC-C003]
+  sourceId: SRC-GURZADYAN-PENROSE-2010B
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    "Two groups have confirmed the results of our paper concerning the
+    actual existence of low variance circles in the cosmic microwave
+    background (CMB) sky... We point out two discrepancies between their
+    treatment and ours, however, one technical, the other having to do
+    with the very understanding of what constitutes a Gaussian random
+    signal. Both groups simulate maps using the CMB power spectrum for
+    LCDM, while we simulate a pure Gaussian sky plus the WMAP's noise...
+    we particularly emphasize that the low variance circles occur in
+    concentric families, and this key fact cannot be explained as a purely
+    random effect."
+  editorInference: >-
+    The clearest primary-source statement that both sides agree on the
+    data and disagree on the null ensemble — this record evidences what
+    the disagreement is, not who is right. Note the position taken:
+    ΛCDM-spectrum simulations are held to be the wrong standard of
+    "chance" because, on the proponents' view, most of the CMB signal is
+    not random.
+  exactLocator: "arXiv:1012.1486, abstract"
+  limitations:
+    - "A three-page unrefereed response note."
+    - "The claim that concentric families 'cannot be explained as a purely random effect' is asserted, not quantified against the ΛCDM ensemble."
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 (arXiv API, abstract verbatim)"
+    extractedBy: "Fable (AI agent)"
+    runId: "ccc-case-2026-08-22"
+    date: "2026-08-22"
+
+- id: CCC-E006
+  title: "Gurzadyan & Penrose 2013: the sky-twist test and the anisotropy of concentric sets"
+  claimIds: [CCC-C002, CCC-C503, CCC-C504]
+  sourceId: SRC-GURZADYAN-PENROSE-2013
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    "A new 'sky-twist' procedure, directly analysing WMAP data, without
+    appeal to simulations, shows that the prevalence of these concentric
+    sets depends on the rings being circular, rather than even slightly
+    elliptical, numbers dropping off dramatically with increasing
+    ellipticity. This is consistent with CCC's expectations; so also is
+    the crucial fact that whereas some of the rings' radii are found to
+    reach around 15°, none exceed 20°." The paper also reports a "highly
+    non-isotropic" distribution of concentric sets.
+  editorInference: >-
+    The proponents' most substantive structural argument: it sidesteps the
+    ensemble dispute by comparing the real sky against distorted versions
+    of itself. If the circle features were generic products of the search
+    procedure, mild ellipticity should not collapse them. No independent
+    group has replicated the sky-twist test under artifact screening and
+    proper masks — an open item the research agenda targets (CCC-R001).
+  exactLocator: "Eur. Phys. J. Plus 128: 22, abstract"
+  limitations:
+    - "The test statistic and its expected behavior under the null were introduced in the same paper that reports its success — an a-posteriori construction (CCC-C011)."
+    - "Bodnia et al. 2024 report that few-pixel spots also produce concentric circle sets, which could interact with the ellipticity comparison in unassessed ways."
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 (Crossref + arXiv abstract)"
+    extractedBy: "Fable (AI agent)"
+    runId: "ccc-case-2026-08-22"
+    date: "2026-08-22"
+
+- id: CCC-E007
+  title: "Meissner, Nurowski & Ruszczycki 2013: ring-type structures at 99.7%"
+  claimIds: [CCC-C002, CCC-C501]
+  sourceId: SRC-MEISSNER-NUROWSKI-RUSZCZYCKI-2013
+  direction: supports
+  strength: weak
+  sourceStatement: >-
+    "We compare the actual WMAP maps with artificial, purely statistical
+    maps of the same harmonic content to argue that there are, with
+    confidence level 99.7%, ring-type structures in the observed cosmic
+    microwave background."
+  editorInference: >-
+    A different statistic from a different (Warsaw) group reporting a
+    significant ring effect in a Royal Society venue. Weight is limited by
+    the group's proximity to the program — Meissner and Nurowski later
+    co-author the Hawking-points paper with Penrose — and by the same
+    a-posteriori statistic concern that attaches to the whole exchange.
+  exactLocator: "Proc. R. Soc. A 469: 20130116, abstract"
+  limitations:
+    - "Proponent-adjacent group; not an independent replication in the sense of Wehus & Eriksen or Hajian."
+    - "'Maps of the same harmonic content' sidesteps rather than settles the ensemble dispute: the comparison preserves the power spectrum but the statistic and threshold were chosen post hoc."
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 (Crossref + arXiv abstract)"
+    extractedBy: "Fable (AI agent)"
+    runId: "ccc-case-2026-08-22"
+    date: "2026-08-22"
+
+- id: CCC-E008
+  title: "DeAbreu, Contreras & Scott 2015: proponents' own parameters, Planck data, same verdict"
+  claimIds: [CCC-C001, CCC-C002]
+  sourceId: SRC-DEABREU-2015
+  direction: undermines
+  strength: strong
+  sourceStatement: >-
+    "We are able to reproduce the analysis these authors presented for data
+    from the WMAP satellite and we confirm the existence of these
+    apparently special directions in the newer Planck data. However, we
+    also find that these features are present at the same level of
+    abundance in simulated Gaussian CMB skies, i.e. they are entirely
+    consistent with the predictions of the standard cosmological model."
+  editorInference: >-
+    Methodologically the strictest of the circle reanalyses: it froze the
+    search parameters to the proponents' own published choices (a de facto
+    prespecification), extended the search to Planck data, and still found
+    the features at chance abundance. The proponents' published response
+    is that it did not repeat the sky-twist ellipticity test and did not
+    explain the anisotropy of the centers — both true, both recorded
+    (CCC-E006, CCC-C504).
+  exactLocator: "JCAP 2015(12): 031, abstract"
+  limitations:
+    - "Did not test the sky-twist/ellipticity statistic, which the proponents regard as their strongest point."
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 (Crossref + arXiv abstract)"
+    extractedBy: "Fable (AI agent)"
+    runId: "ccc-case-2026-08-22"
+    date: "2026-08-22"
+
+# ── The Hawking-points exchange ──────────────────────────────────────────────
+
+- id: CCC-E009
+  title: "An, Meissner, Nurowski & Penrose 2020: Hawking points at 99.98%, co-located in Planck and WMAP"
+  claimIds: [CCC-C004, CCC-C009]
+  sourceId: SRC-AN-MEISSNER-NUROWSKI-PENROSE-2020
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    The paper reports "numerous previously unobserved anomalous circular
+    spots, of significantly raised temperature" with angular radii between
+    0.03 and 0.04 radians and "a clear cut-off at that size," found "at a
+    99.98% confidence level" against 10,000 simulations; "the five
+    strongest anomalous regions of the Planck map were found to occupy
+    precisely the same locations as five of the strongest locations found
+    in the WMAP data," and the authors argue that "Planck and WMAP have
+    very different noise properties and it seems exceedingly unlikely that
+    the observed presence of anomalous points in the same directions on
+    both maps may come entirely from the noise."
+  editorInference: >-
+    The program's strongest published claim, in a mainstream astronomy
+    journal. Two components should be weighed separately: the headline
+    significance (which Jow & Scott's marginalization removes, CCC-E010)
+    and the cross-instrument co-location of the top spots (which survives
+    as an unexplained observation — though co-location is expected if the
+    spots are real features of the shared sky, artifact or not, since both
+    instruments observe the same CMB).
+  exactLocator: "MNRAS 495(3): 3403–3408, abstract"
+  limitations:
+    - "The ring size defining the statistic was selected after inspecting the data — the specific defect the independent reanalysis corrects."
+    - "All four authors are CCC proponents."
+    - "Cross-map co-location distinguishes sky features from instrument noise, but not previous-aeon signals from ΛCDM fluctuations or data artifacts present in both maps."
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 (Crossref + full text read)"
+    extractedBy: "Fable (AI agent)"
+    runId: "ccc-case-2026-08-22"
+    date: "2026-08-22"
+
+- id: CCC-E010
+  title: "Jow & Scott 2020: marginalize over ring size and the 99.98% becomes 87%"
+  claimIds: [CCC-C004, CCC-C010]
+  sourceId: SRC-JOW-SCOTT-2020
+  direction: undermines
+  strength: strong
+  sourceStatement: >-
+    "We investigate recent claims for a detection of 'Hawking points'...
+    at the 99.98% confidence level. We find that, after marginalization
+    over the size of the rings, an excess is detected in Planck satellite
+    maps at only an 87% confidence level (i.e., little more than 1σ).
+    Therefore, we conclude that there is no statistically significant
+    evidence for the presence of Hawking points in the CMB."
+  editorInference: >-
+    A textbook look-elsewhere correction: the proponents searched a family
+    of ring sizes but quoted significance for the best one. This is the
+    cleanest single demonstration in the case that the headline numbers
+    live in the analysis choices — the data are unchanged; only the
+    accounting for the search is.
+  exactLocator: "JCAP 2020(03): 021, abstract"
+  limitations:
+    - "Does not address the Planck–WMAP co-location argument."
+    - "An 87% excess is a residue, not a zero; the record honestly leaves ~1σ on the table."
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 (Crossref + full text read)"
+    extractedBy: "Fable (AI agent)"
+    runId: "ccc-case-2026-08-22"
+    date: "2026-08-22"
+
+- id: CCC-E011
+  title: "López et al. 2022: purpose-built ring detector finds no significant structures"
+  claimIds: [CCC-C004]
+  sourceId: SRC-LOPEZ-2022
+  direction: undermines
+  strength: moderate
+  sourceStatement: >-
+    A ring-detection method validated on an artificial dataset of Hawking
+    points constructed according to CCC ("we were able to retrieve 95% of
+    ring-like anomalies from it") was applied to Planck maps and compared
+    against ΛCDM simulations: "Even though no significant ring-like
+    structures were observed, we report the largest excess of HP
+    candidates found at α = 1% significance level for the analyzed sky
+    maps (CMB at 70GHz, SEVEM, SMICA, and Commander-Ruler)."
+  editorInference: >-
+    An independent group that built a detector demonstrably capable of
+    finding CCC-style Hawking points (95% retrieval on synthetic signals)
+    and then failed to find a significant population in the real sky —
+    which answers the objection that critics' methods might simply be
+    insensitive to the predicted signal. The honestly reported 1%-level
+    candidate excess is the kind of residue only a preregistered follow-up
+    can adjudicate.
+  exactLocator: "MNRAS 519(1): 922–930, abstract"
+  limitations:
+    - "The synthetic training signals encode one specific reading of CCC's qualitative prediction; a different profile assumption could change sensitivity."
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 (Crossref + arXiv abstract)"
+    extractedBy: "Fable (AI agent)"
+    runId: "ccc-case-2026-08-22"
+    date: "2026-08-22"
+
+- id: CCC-E012
+  title: "Bodnia et al. 2024: few-pixel spots manufacture the signatures; nulls at full resolution"
+  claimIds: [CCC-C002, CCC-C004, CCC-C010]
+  sourceId: SRC-BODNIA-2024
+  direction: undermines
+  strength: strong
+  sourceStatement: >-
+    A maximum-resolution search of Planck and WMAP data: "We find that
+    spots consisting of a few unusually bright (high-temperature) or dark
+    (low-temperature) pixels, erroneously lead to regions with many
+    low-variance circles, and consequently sets of near-concentric
+    low-variance circles, when applying the search criteria used in
+    previous work. After removing those spots from the data, no
+    statistically significant low-variance circles can be found."
+    HawkingNet, a ResNet18-based search, likewise finds no significant
+    Hawking points, and the authors state that spots "with a magnitude in
+    the range from 100 to 400 µK amplitude and spatial Gaussian extend
+    between 0.7 and 1.2 degrees... can be ruled out." They add: "The
+    absence of such statistically-significant distinct features in the
+    currently available CMB data does not disprove the CCC model, but
+    implies that higher resolution CMB data and/or refined CCC based
+    predictions are needed."
+  editorInference: >-
+    The most consequential record in the case: it does not merely fail to
+    confirm the signatures, it identifies the generating mechanism for
+    false positives under the proponents' own criterion (anomalous
+    few-pixel spots inflating the local baseline variance) and publishes
+    open-source code. It also models the epistemics this site asks for —
+    an explicit statement of what its null does and does not establish,
+    and a call for quantitative predictions (taken up as CCC-R005).
+  exactLocator: "JCAP 2024(05): 009, abstract, §2, §5"
+  limitations:
+    - "The ruled-out Hawking-point amplitude/size box is specific to the assumed Gaussian profile; fainter or differently shaped imprints are unconstrained."
+    - "The artifact diagnosis explains false circles around anomalous spots; it does not by itself account for every concentric family reported earlier."
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 (Crossref + full text read)"
+    extractedBy: "Fable (AI agent)"
+    runId: "ccc-case-2026-08-22"
+    date: "2026-08-22"
+
+- id: CCC-E013
+  title: "The proponents' rejoinder inside the 2020 paper: critiques show need for better analysis, not absence of signal"
+  claimIds: [CCC-C011]
+  sourceId: SRC-AN-MEISSNER-NUROWSKI-PENROSE-2020
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    Addressing the circle critiques, the paper argues that DeAbreu et al.
+    "did not, however, repeat the further analysis actually given by
+    Gurzadyan and Penrose," that their objection to the sky-twist
+    procedure rests on "a point which is actually irrelevant to the
+    analysis," and that the earlier null claims (Wehus & Eriksen, Hajian)
+    "are not demonstrations that such signals do not actually exist, but
+    indicate that a more sophisticated analysis is needed."
+  editorInference: >-
+    Filed under the methodological crux rather than the anomaly claims:
+    the passage documents how each side treats the other's analyses as
+    missing the point — nulls are answered with new statistics, new
+    statistics with new nulls — which is the pattern CCC-C011 names and
+    the preregistration agenda (CCC-R001) is designed to break.
+  exactLocator: "MNRAS 495(3): 3403–3408, response-to-critics passages"
+  limitations:
+    - "Quoted from the proponents' side; the critics' parallel framing appears in their own abstracts (CCC-E003, CCC-E008)."
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 (full text read)"
+    extractedBy: "Fable (AI agent)"
+    runId: "ccc-case-2026-08-22"
+    date: "2026-08-22"
+
+# ── The theory's content and its costs ───────────────────────────────────────
+
+- id: CCC-E014
+  title: "CCC stated in 2006, before any circle search: the priority record"
+  claimIds: [CCC-C009]
+  sourceId: SRC-PENROSE-2006-EPAC
+  direction: context
+  strength: moderate
+  sourceStatement: >-
+    The 2006 proceedings paper presents CCC in full outline: "With
+    conformal invariance both in the remote future and at the Big-Bang
+    origin, we can try to argue that the two situations are physically
+    identical, so the remote future of one phase of the universe becomes
+    the Big Bang of the next."
+  editorInference: >-
+    Establishes that the theory precedes the data claims by four years —
+    the circles were presented in 2010 as predictions of an existing
+    framework, not a pattern found first and theorized after. This
+    matters for fairness: whatever the statistics of the searches, CCC is
+    not a just-so story fitted to known anomalies. The specific
+    quantitative signatures, however, were never specified in advance
+    (CCC-C011).
+  exactLocator: "Proc. EPAC 2006: 2759–2767"
+  limitations:
+    - "Priority of the framework is not priority of the specific statistical signatures; ring abundance, amplitude, and profile were not predicted in 2006."
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 (full text retrieved from JACoW archive)"
+    extractedBy: "Fable (AI agent)"
+    runId: "ccc-case-2026-08-22"
+    date: "2026-08-22"
+
+- id: CCC-E015
+  title: "Penrose 2018: mass fade-out required and admittedly unconventional"
+  claimIds: [CCC-C005]
+  sourceId: SRC-PENROSE-2018-FOP
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    "There will, however, be a residue of a relatively small number of
+    massive particles, and for the strict requirements of the theory one
+    must apparently assume that there is a mechanism whereby in the hugely
+    long-term future, mass eventually fades away, asymptotically — which I
+    shall refer to as 'mass fade-out' — an admittedly unconventional
+    hypothesis, but not contradicted by current observation, and not
+    implausible on the basis of a particle physics which is extended from
+    current ideas by the presence of a positive Λ."
+  editorInference: >-
+    The theory's own author states the requirement and concedes the
+    mechanism is unconventional — this record supports CCC-C005 (which is
+    a claim about the theory's costs) directly from the primary source,
+    with the mitigation (de Sitter group, mass not a Casimir operator)
+    recorded in the same breath.
+  exactLocator: "Found. Phys. 48(10): 1177–1190, §2"
+  limitations:
+    - "A theory paper: this evidences what CCC requires, not whether nature obliges."
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 (full text read)"
+    extractedBy: "Fable (AI agent)"
+    runId: "ccc-case-2026-08-22"
+    date: "2026-08-22"
+
+- id: CCC-E016
+  title: "Tod 2022: the sympathetic open-problems inventory"
+  claimIds: [CCC-C005, CCC-C006]
+  sourceId: SRC-TOD-2022
+  direction: qualifies
+  strength: moderate
+  sourceStatement: >-
+    Tod's question list for CCC includes: "Can one implement mass
+    fade-out? (Massless charged particles are usually regarded as
+    problematical.)" — and, on the perturbation spectrum, whether one can
+    "make sense of the statement inflation happens before the Bang, in the
+    previous aeon? And if so, can one then derive the familiar spectrum of
+    density perturbations?" The note also reviews Penrose's "delayed rest
+    mass hypothesis" and alternative choices for fixing the conformal
+    factor.
+  editorInference: >-
+    Qualifies the mechanism rung from the friendliest competent quarter:
+    the relativist who built CCC's mathematical machinery treats mass
+    fade-out and the perturbation spectrum as open problems, not solved
+    ones. This is the honest midpoint between proponent confidence and
+    dismissal.
+  exactLocator: "arXiv:2202.10864, question list"
+  limitations:
+    - "An unrefereed talk write-up, though by the field's central technical contributor."
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 (arXiv full text)"
+    extractedBy: "Fable (AI agent)"
+    runId: "ccc-case-2026-08-22"
+    date: "2026-08-22"
+
+- id: CCC-E017
+  title: "Eckstein 2023: information loss raises entropy instead of resetting it"
+  claimIds: [CCC-C006]
+  sourceId: SRC-ECKSTEIN-2023
+  direction: undermines
+  strength: moderate
+  sourceStatement: >-
+    "We show that the assumed loss of degrees of freedom in black holes is
+    not compatible with the quantum notion of entropy." The paper argues
+    that information loss as Penrose describes it "leads to the increase
+    of global entropy," which "undermines the idea of 'entropy
+    renormalisation' needed to match the degrees of freedom on the
+    crossover hypersurface between the aeons," and proposes a unitary
+    variant of CCC in which quantum information is globally preserved.
+  editorInference: >-
+    A direct published attack on the entropy accounting (CCC-C006), from
+    an author engaged enough to repair rather than dismiss the framework.
+    If the argument holds, CCC's answer to its own motivating question —
+    why each aeon starts with low entropy — fails in its original form,
+    independent of anything in the CMB.
+  exactLocator: "Gen. Rel. Grav. 55(2): 26, abstract and §§3–4"
+  limitations:
+    - "One analysis in a live quantum-gravity controversy; Penrose's information-loss position has its own defenders."
+    - "The proposed unitary variant preserves CCC's observational program, so this record bears on the mechanism, not the sky claims."
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 (Crossref + publisher abstract)"
+    extractedBy: "Fable (AI agent)"
+    runId: "ccc-case-2026-08-22"
+    date: "2026-08-22"
+
+- id: CCC-E018
+  title: "Penrose 2018: erebons — the dark-matter prediction in full"
+  claimIds: [CCC-C007, CCC-C008]
+  sourceId: SRC-PENROSE-2018-FOP
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    Erebons are introduced as gravitation-only particles: "their mass
+    would have to be something of the order of a Planck mass (10−5 g) or
+    thereabouts, perhaps with some factor such as 8π involved... erebons
+    should be able to decay, with a lifetime of perhaps something like
+    10^11 years."     Their decay replaces inflation as the source of CMB
+    fluctuations: "there is no inflation in CCC." On
+    detection: "There is an intriguing issue concerning whether such
+    erebon decays in our own aeon might be detectable by gravitational
+    wave detectors such as LIGO."
+  editorInference: >-
+    Supports CCC-C007 and CCC-C008 as statements of what the theory
+    predicts — the record establishes that CCC has a forward-looking,
+    laboratory-adjacent commitment, which most pre-Big-Bang proposals
+    lack. The vagueness of the parameters ("perhaps," "or thereabouts")
+    is the claim's own recorded objection.
+  exactLocator: "Found. Phys. 48(10): 1177–1190, §5"
+  limitations:
+    - "Order-of-magnitude proposal without a computed decay spectrum or event rate."
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 (full text read)"
+    extractedBy: "Fable (AI agent)"
+    runId: "ccc-case-2026-08-22"
+    date: "2026-08-22"
+
+- id: CCC-E019
+  title: "Penrose 2017: the LIGO-noise conjecture"
+  claimIds: [CCC-C007, CCC-C505]
+  sourceId: SRC-PENROSE-2017-ARXIV
+  direction: context
+  strength: weak
+  sourceStatement: >-
+    Responding to a report of correlated noise between the two LIGO
+    detectors with the same time delay as the gravitational-wave signals,
+    the note proposes "that what seems to be spuriously generated noise
+    may in fact be gravitational events caused by the decay of dark-matter
+    particles (erebons) of mass around 10^-5g."
+  editorInference: >-
+    Context for the erebon prediction's one contact with existing
+    instrument data. The underlying correlated-noise claim (Cresswell et
+    al.) was disputed and largely deflated in subsequent LIGO analyses,
+    and no erebon-specific search was ever published — the conjecture
+    remains exactly that.
+  exactLocator: "arXiv:1707.04169, abstract"
+  limitations:
+    - "Unrefereed; premised on a contested noise analysis; no follow-up."
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 (arXiv API, abstract verbatim)"
+    extractedBy: "Fable (AI agent)"
+    runId: "ccc-case-2026-08-22"
+    date: "2026-08-22"
+
+# ── The conventional baseline ────────────────────────────────────────────────
+
+- id: CCC-E020
+  title: "Planck 2018 inflation constraints: the rival's quantitative scorecard"
+  claimIds: [CCC-C010]
+  sourceId: SRC-PLANCK-2018-X
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    The Planck 2018 inflation analysis reports precision fits of the
+    ΛCDM+inflation framework to the full temperature, polarization, and
+    lensing dataset: a measured red spectral tilt, tight Gaussianity
+    constraints, and parameter-level agreement of simple slow-roll models
+    with the data.
+  editorInference: >-
+    The steelman's positive case, distinct from its critiques of CCC: the
+    framework the reanalyses assume as the null is not a placeholder but
+    the most precisely tested model in cosmology. Any CCC alternative must
+    reproduce this scorecard before its distinctive signatures add net
+    evidence (the debt recorded at CCC-C008).
+  exactLocator: "A&A 641: A10"
+  limitations:
+    - "Precision fit is not proof of inflation: the inflationary sector's parameters are fitted, not independently confirmed, and the tensor sector remains undetected (CCC-E021)."
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 (Crossref)"
+    extractedBy: "Fable (AI agent)"
+    runId: "ccc-case-2026-08-22"
+    date: "2026-08-22"
+
+- id: CCC-E021
+  title: "BICEP/Keck 2021: still no primordial B-modes (r < 0.036)"
+  claimIds: [CCC-C010, CCC-C008]
+  sourceId: SRC-BICEP-KECK-2021
+  direction: qualifies
+  strength: moderate
+  sourceStatement: >-
+    The combined BICEP/Keck, Planck, and WMAP analysis through the 2018
+    observing season constrains the tensor-to-scalar ratio to r < 0.036
+    at 95% confidence, with no detection of primordial gravitational-wave
+    B-modes.
+  editorInference: >-
+    Qualifies the inflationary steelman rather than supporting CCC: the
+    one signature that would evidence an inflationary era in our own aeon
+    directly remains unseen, so the discriminating measurement between
+    the two frameworks (CCC-R003) is still open in both directions.
+    Recorded symmetrically: a future detection would create a signal CCC
+    has no mechanism for; continued nulls constrain inflationary models
+    without confirming CCC.
+  exactLocator: "PRL 127: 151301"
+  limitations:
+    - "Many viable inflation models predict r below current sensitivity, so the null does not currently damage the steelman."
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 (Crossref)"
+    extractedBy: "Fable (AI agent)"
+    runId: "ccc-case-2026-08-22"
+    date: "2026-08-22"

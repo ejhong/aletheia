@@ -85,6 +85,7 @@ mineral-pigment saturation. Defined in `scripts/generate-case-art.mjs`
 | `orch-or` | Amethyst and gold | muted violet-grey and indigo forms, one antique-gold shaft of light |
 | `ydih` | Sage and vermilion | sage and olive-green plain, buff sky, one faded vermilion comet streak |
 | `mpi` | Verdigris | verdigris and muted teal, grey-green shadows, one pale sulfur-yellow butterfly accent |
+| `ccc` | Slate and ember | deep charcoal-slate night sky, pale cream and faded antique-gold concentric rings, one small ember-red accent at the rings' center |
 
 Rules of thumb:
 

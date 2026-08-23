@@ -123,7 +123,7 @@ Assessment rules:
 Verdict vocabulary (exact tokens): ${VERDICTS.join(" | ")}
 Confidence tokens: high | moderate | low
 
-Output RAW YAML ONLY — no markdown fences, no commentary. Use block scalars (>-) for all prose fields. Schema:
+Output RAW YAML ONLY — no markdown fences, no commentary. You are operating autonomously in a pipeline: your reply IS the YAML document. Begin your response directly with the runId line — never with a statement of intent like "Let me work through this". Produce the complete document in this single response. Use block scalars (>-) for all prose fields. Schema:
 
 runId: "${new Date().toISOString().slice(0, 10)}-check-<TAG>"
 model: "<MODEL_LABEL>"
@@ -163,7 +163,12 @@ async function callVendor(name, cfg) {
     url = "https://api.anthropic.com/v1/messages";
     body = {
       model: cfg.model,
-      max_tokens: 32000,
+      // Opus writes long reasonings; 32k proved one claim short on a
+      // 14-claim case. Thinking is adaptive by default and shares the
+      // max_tokens budget with the visible reply — there is no thinking
+      // budget parameter on this model; effort is the depth control.
+      max_tokens: 64000,
+      output_config: { effort: "high" },
       system: instructions,
       messages: [{ role: "user", content: userMsg }],
     };

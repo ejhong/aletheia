@@ -5,7 +5,9 @@ import { assetPath } from "@/src/config/assets";
 import { site } from "@/src/config/site";
 import {
   caseCover,
+  crossModelSummary,
   displayAssessment,
+  isHousekeepingEntry,
   loadAllCases,
   recentChanges,
   reviewCoverage,
@@ -16,8 +18,18 @@ export default function HomePage() {
   const cases = loadAllCases();
   const divider = siteImage("IMG-SITE-DIVIDER-STRATA");
   const tailpiece = siteImage("IMG-SITE-TAILPIECE");
-  // At least one slot per live case, so a new case's launch always shows.
-  const feed = recentChanges(cases, Math.max(4, cases.length));
+  // Epistemic changes lead the homepage feed; artwork/tooling entries stay
+  // on each case's own history. At least one slot per live case, so a new
+  // case's launch always shows.
+  const contentOnly = cases.map((c) => ({
+    record: c.record,
+    history: c.history.filter((h) => !isHousekeepingEntry(h)),
+  }));
+  const feed = recentChanges(contentOnly, Math.max(4, cases.length));
+  const housekeepingCount = cases.reduce(
+    (n, c) => n + c.history.filter(isHousekeepingEntry).length,
+    0,
+  );
 
   return (
     <div>
@@ -48,6 +60,7 @@ export default function HomePage() {
         <div className="grid sm:grid-cols-2 gap-4">
           {cases.map((c) => {
             const shown = displayAssessment(c);
+            const sum = crossModelSummary(c);
             return (
               <CaseCard
                 key={c.record.id}
@@ -55,6 +68,14 @@ export default function HomePage() {
                 verdict={shown?.run.caseAssessment.verdict ?? null}
                 verdictHumanEndorsed={shown?.humanEndorsed ?? false}
                 reviewCoverage={reviewCoverage(c)}
+                check={
+                  sum
+                    ? {
+                        models: sum.models.length,
+                        concur: sum.caseUnanimousWithDisplayed,
+                      }
+                    : null
+                }
                 cover={caseCover(c)}
               />
             );
@@ -67,7 +88,7 @@ export default function HomePage() {
           <h2 className="font-mono text-[11px] uppercase tracking-[0.2em] text-copper">
             how the atlas works
           </h2>
-          <div className="grid sm:grid-cols-3 gap-px bg-dossier-line border border-dossier-line mt-5">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-dossier-line border border-dossier-line mt-5">
             {[
               [
                 "01 · Atomic claims",
@@ -79,7 +100,11 @@ export default function HomePage() {
               ],
               [
                 "03 · Decisive experiments",
-                "A case doesn't end in a verdict; it ends in a research agenda. Each unresolved crux is attached to the funded study that would move it — and the assessment says in advance what would change its mind.",
+                "A case doesn't end in a verdict; it ends in a research agenda. Each unresolved crux is attached to the study that would move it — and the assessment says in advance what would change its mind.",
+              ],
+              [
+                "04 · Honest provenance",
+                "Every case shows two outputs — what the evidence supports today, and how valuable resolving it would be. Assessments are labeled AI draft until a named human endorses them, and independent models from rival vendors re-judge each case blind; where they disagree is published, not smoothed over.",
               ],
             ].map(([title, text]) => (
               <div key={title} className="bg-dossier-soft p-6">
@@ -118,9 +143,15 @@ export default function HomePage() {
 
       <section className="mx-auto max-w-6xl px-5 py-12">
         <h2 className="font-mono text-[11px] uppercase tracking-[0.2em] text-faint mb-6">
-          recent changes
+          recent changes · evidence &amp; assessments
         </h2>
         <ChangeTimeline entries={feed} />
+        {housekeepingCount > 0 ? (
+          <p className="mt-5 font-mono text-[10px] uppercase tracking-[0.14em] text-faint">
+            + {housekeepingCount} housekeeping changes (artwork, tooling) —
+            recorded in each case&apos;s full history
+          </p>
+        ) : null}
       </section>
 
       {/* tailpiece ornament */}

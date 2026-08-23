@@ -1,0 +1,317 @@
+# Cross-model check run — an independent judge (GPT-5.1 (OpenAI)),
+# blind to all prior assessments (scripts/cross-model-check.mjs,
+# promptVersion aletheia-check-v1). role: check — never displayed as the case
+# narrative; feeds the concurrence panel. Append-only; NOT human reviewed.
+runId: 2026-08-23-check-gpt
+model: GPT-5.1 (OpenAI) — independent check run via gpt-5.1
+date: 2026-08-23
+promptVersion: aletheia-check-v1
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: unresolved
+  loadBearing:
+    - TRN-C020
+    - TRN-C007
+    - TRN-C002
+    - TRN-C005
+    - TRN-C010
+    - TRN-C011
+  weakestLinks:
+    - TRN-C005
+    - TRN-C006
+    - TRN-C010
+    - TRN-C011
+  synthesis: >-
+    The dossier draws a sharp ladder from minimally contentious observations up
+    to headline claims about pre-Sputnik artificial or even extraterrestrial
+    objects. At the bottom, the observational claims about the Palomar plates
+    (TRN-C001, TRN-C003) are well supported: both proponents and critics have
+    confirmed that the nine 1950 marks and the 1952 triple exist on surviving
+    glass copies and are absent from overlapping plates and deep follow-up
+    imaging. Independent software (Hayes) recovers these events without relying
+    on the VASCO pipeline (TRN-C004), ruling out simple code bugs as an
+    explanation for their catalog appearance.
+
+    The skeptical mechanism centered on the plate-copy genealogy (TRN-C007) is
+    also well supported by documentary and institutional evidence (TRN-E005). It
+    undercuts a key early argument for reality: that detection in two
+    digitizations implied independent confirmation. Instead, both DSS and
+    SuperCOSMOS descend from the same intermediate positive, so a single defect
+    there would appear in both. However, this mechanism currently provides only
+    a *pathway*, not measured rates of star-like defects at each copying stage.
+    Without that census (TRN-R007), the mundane explanation remains
+    qualitatively plausible but not quantitatively grounded.
+
+    Morphology of the 1950 nine is a central shared observation. Hambly & Blair
+    show the marks are systematically sharper than comparison stars and occupy
+    the “spurious” region of their classifier’s feature space (TRN-C002,
+    TRN-E003, TRN-E004). This clearly disfavours ordinary continuously exposed
+    stars. Whether it favours artifacts or real sub-second flashes is
+    unresolved. The proponents’ physics argument (TRN-E006) that true flashes on
+    long exposures should also be unusually sharp is plausible, but
+    uncalibrated: no controlled experiment on period emulsions exists
+    (TRN-R002). Thus morphology is diagnostic against simple backgrounds, but
+    not yet between light and defect. That ambiguity drives the core attribution
+    claim TRN-C020 to an unresolved state: the evidence supports both a defect
+    interpretation (copy genealogy, classifier) and a flash-compatible one
+    (sharpness, repeated multi-source events, Hamburg results), with no decisive
+    arbiter yet.
+
+    Above this, ensemble statistics are genuinely mixed. Using the
+    107,875-object working catalog, an Earth-shadow deficit (TRN-C005) and
+    nuclear-window correlation (TRN-C006) are reproduced by independent
+    statistical code (TRN-E010) and appear to strengthen under machine-learning
+    artifact scoring (TRN-E015). However, these replications are all conditional
+    on the same unvalidated candidate lineage. Watters et al. (TRN-E011)
+    demonstrate that the background is strongly non-uniform, that most features
+    come from previously rejected sets near catalog stars, and that with a more
+    appropriate null the shadow deficit is not significant; they also attribute
+    most of the nuclear signal to observation scheduling. Hayes’s fully
+    independent extraction, explicitly varying the contentious source-detection
+    step, finds no significant nuclear effect once nightly exposure is modeled
+    (TRN-E009). This pattern—robustness within a single catalog but fragility
+    across catalog reconstructions—strongly suggests that current ensemble
+    signatures are properties of how that catalog was built, not robust features
+    of a physical transient population.
+
+    The most important new line of evidence comes from outside the Palomar
+    genealogy. Busko’s Hamburg searches report analogous single-exposure
+    candidates on independent plates (TRN-C010, TRN-E013) and, more
+    significantly, coma-shaped images consistent with off-axis light through the
+    telescope optics (TRN-C011, TRN-E014). If the coma discriminant survives
+    blind validation (TRN-R003), it would establish incident light for at least
+    some Hamburg candidates and thus support TRN-C020 in a way immune to
+    Palomar-specific copy mechanisms. However, these results are preprint-level,
+    single-author, and lack blind tests against well-characterized defect
+    populations. At present they are promising but not conclusive.
+
+    Because the decisive tests have not yet been run—most notably a blinded
+    inspection of the original Palomar negatives (TRN-R001), flash-profile
+    calibration (TRN-R002), and blind validation of the coma discriminant
+    (TRN-R003)—the core attribution rung (TRN-C020) remains unresolved. The
+    near-Earth interpretation (TRN-C021) relies heavily on contested geometric
+    statistics, and the stronger artificial (TRN-C022) and extraterrestrial
+    (TRN-C023) claims have no direct support in the present record. The global
+    case verdict is therefore unresolved: there are compelling marks, plausible
+    mundane mechanisms, intriguing but fragile ensemble correlations, and one
+    promising independent-observatory signal, but no line of evidence yet
+    crosses the threshold from suggestive to decisive.
+claimAssessments:
+  - claimId: TRN-C022
+    verdict: contradicted
+    confidence: moderate
+    reasoning: No evidence record directly supports the existence of artificial
+      objects near Earth before Sputnik; all such inferences must pass through
+      TRN-C020 (real incident light) and TRN-C021 (near-Earth origin), both of
+      which remain unresolved. The Earth-shadow and nuclear-test statistics that
+      were invoked to support an orbital reflective population are strongly
+      undermined by Watters’s background-corrected reanalysis (TRN-E011) and
+      Hayes’s failure to reproduce the nuclear effect under independent
+      extraction with exposure modeling (TRN-E009). Given that the primary
+      putative geometric signatures are not robust across catalog constructions,
+      the best-supported explanation from the case file remains that the marks
+      are plate or copy defects and/or unrelated astrophysical sources, which
+      makes pre-Sputnik artificial satellites unnecessary and implausible on
+      both evidential and prior grounds. The strongest opposing consideration is
+      the persistence of ensemble correlations within the original working
+      catalog after ML artifact scoring (TRN-E015), but those are lineage-bound
+      and do not overcome the methodological critiques.
+  - claimId: TRN-C023
+    verdict: presently_untestable
+    confidence: high
+    reasoning: This claim concerns the origin of putative artificial objects and
+      presupposes that pre-Sputnik artificial reflectors existed at all
+      (TRN-C022), which is itself contradicted on current evidence. No
+      observation or analysis in the dossier can distinguish hypothetical
+      extraterrestrial technology from secret human programs, unknown natural
+      reflectors, or plate defects; even a future demonstration of a pre-Sputnik
+      artificial object would require independent historical or engineering
+      arguments to ascribe a non-human origin. Since there is currently no
+      proposed, feasible test that can bear directly on this claim, its status
+      is best captured as presently_untestable rather than merely unresolved.
+      The strongest opposing consideration is that, in principle,
+      extraordinarily detailed forensic evidence on a confirmed object could
+      someday inform origin, but nothing like that exists in the current record.
+  - claimId: TRN-C021
+    verdict: weakly_supported
+    confidence: low
+    reasoning: The main line of support for a near-Earth reflective population is
+      the reported Earth-shadow deficit and nuclear-test timing correlation in
+      the 107,875-object working catalog (TRN-E010, TRN-E015), which are
+      consistent with objects shining by reflected sunlight and avoiding Earth’s
+      umbra. However, these effects vanish or become insignificant when the
+      spatially non-uniform background is modeled properly and when more heavily
+      vetted subsets are used (TRN-E011), and the nuclear correlation disappears
+      in an independently extracted catalog with per-night exposure modeling
+      (TRN-E009). The multi-source events (TRN-C001, TRN-C003) do not by
+      themselves demonstrate near-Earth geometry, and TRN-C020 (real flashes) is
+      not established. Thus any support for a near-Earth origin is very weak and
+      heavily conditional on a contested catalog. The strongest opposing
+      consideration is the Watters/Hayes combination showing that ensemble
+      effects are highly sensitive to catalog definition and likely reflect
+      survey logistics and artifacts rather than orbital geometry.
+  - claimId: TRN-C020
+    verdict: unresolved
+    confidence: moderate
+    reasoning: Evidence against real incident light includes the sharp, concentrated
+      morphology of the 1950 nine, which lies in the region where the Hambly &
+      Blair classifier places spurious detections, and their reconstruction of a
+      copy-stage pathway that could create such defects in both digitizations
+      (TRN-E003–E005). In favour of incident light are the physical reality of
+      the marks, their repeated occurrence in multi-source configurations
+      (TRN-E001, TRN-E007), the plausible physics that genuine sub-second
+      flashes should also be unusually sharp (TRN-E006), and the Hamburg coma
+      results suggesting some independent candidates carry an optical-aberration
+      signature (TRN-E014). However, there has been no blinded inspection of the
+      original Palomar negatives (TRN-R001), no experimental calibration of
+      flash versus artifact profiles (TRN-R002), and no blind validation of the
+      coma discriminant (TRN-R003). Given these gaps and the existence of a
+      concrete but unquantified copy-defect mechanism, the balance of evidence
+      neither establishes nor rules out real incident light. The strongest
+      opposing consideration to “no light” is exactly the Hamburg coma line,
+      which, if validated, would directly support this claim for at least some
+      events.
+  - claimId: TRN-C007
+    verdict: well_supported
+    confidence: high
+    reasoning: Hambly & Blair draw on detailed knowledge of the POSS-I atlas
+      production process and the SuperCOSMOS project to show that the original
+      telescope negatives were contact-printed to intermediate glass positives,
+      from which separate copy negatives were made for DSS and SuperCOSMOS
+      (TRN-E005). This directly supports the claim that both major digitizations
+      share a common photographic ancestor. There is no contrary evidence in the
+      dossier, and proponents do not dispute this genealogy. The strongest
+      opposing consideration is that, while the pathway is clear, no
+      quantitative measurement yet exists of how often such copy stages generate
+      star-like defects, so the mechanism’s impact on any specific candidate
+      remains probabilistic rather than demonstrated.
+  - claimId: TRN-C001
+    verdict: well_supported
+    confidence: high
+    reasoning: The existence and basic properties of the nine April 1950 marks are
+      documented by the original discovery paper (TRN-E001), physically
+      confirmed on the Edinburgh glass copy by skeptics (TRN-E002), and
+      recovered independently by Hayes’s detection pipeline (TRN-E008). Their
+      absence from overlapping plates and deeper surveys is reported
+      consistently across these sources. No evidence contradicts the
+      observational statement; disputes concern origin, not existence. The
+      strongest opposing consideration is Hambly & Blair’s finding of similar
+      one-plate-only detections in a neighbouring field, which suggests such
+      features may be common plate phenomena, but that does not undercut the
+      factual claim here.
+  - claimId: TRN-C002
+    verdict: well_supported
+    confidence: high
+    reasoning: Hambly & Blair’s analysis of SuperCOSMOS profile statistics shows all
+      nine 1950 candidates lying in the sharp tail of the stellar distribution,
+      with a very low joint probability of arising from the same distribution as
+      comparison stars, and this is corroborated by microscope inspection
+      (TRN-E003). Proponents accept this measurement and instead offer a
+      different physical interpretation (TRN-E006). Thus the empirical
+      statement—that the nine are systematically sharper and more concentrated
+      than comparable stars—is secure. The strongest opposing consideration is
+      that these statistics are measured on digitized copies, not the original
+      negative, leaving a theoretical possibility that copy or scan processes
+      altered profiles, but there is no specific evidence of such distortion
+      here.
+  - claimId: TRN-C003
+    verdict: well_supported
+    confidence: moderate
+    reasoning: The July 1952 triple transient is documented in a peer-reviewed MNRAS
+      paper with deep 10.4-m follow-up imaging confirming the absence of
+      persistent sources down to magnitude 25.5 (TRN-E007), and the detections
+      are independently recovered by Hayes’s pipeline (TRN-E008). This supports
+      the occurrence of three point sources in one exposure and their absence in
+      a consecutive one and later data. However, unlike the 1950 nine, there is
+      no published independent physical inspection of the plate material, and
+      all information comes from the proponent team and digitized copies, which
+      slightly lowers confidence relative to TRN-C001. The strongest opposing
+      consideration is that the event lies on the same copy lineage and could be
+      subject to similar unmeasured defect mechanisms, but that does not
+      directly contradict the observational claim.
+  - claimId: TRN-C004
+    verdict: well_supported
+    confidence: high
+    reasoning: Hayes’s independent detection pipeline, developed without access to
+      the VASCO software or candidate list, recovers eight of nine 1950 sources,
+      all three 1952 sources, and about two-thirds of the public 5,399-candidate
+      catalog, with documented matching statistics and injection tests
+      (TRN-E008). This clearly shows that the canonical detections and a
+      substantial fraction of the catalog are not artifacts of a particular
+      codebase. No contrary evidence suggests that other independent pipelines
+      fail to recover these when applied to the same data. The strongest
+      opposing consideration is that both pipelines operate on the same
+      digitized copy lineage, so while software independence is established,
+      physical independence is not.
+  - claimId: TRN-C005
+    verdict: mixed
+    confidence: moderate
+    reasoning: Using the 107,875-object working catalog, Doherty reproduces the
+      Earth-shadow deficit originally reported by the VASCO team, and Bruehl et
+      al. find that it persists and even strengthens among candidates scored
+      more likely to be real by an ML classifier (TRN-E010, TRN-E015),
+      supporting the existence of a deficit in that catalog. In contrast,
+      Watters et al. show that the assumed uniform background is empirically
+      false, that candidate spatial distributions resemble plate/scan artifacts,
+      and that with a more appropriate null the deficit is not significant in
+      more vetted subsets (TRN-E011); the proponents’ rebuttal emphasizes power
+      but does not re-establish the effect (TRN-E012). Because the signal is
+      robust within an unvalidated, artifact-rich working sample but collapses
+      when stricter vetting and background modeling are applied, the status of a
+      genuine physical shadow deficit is genuinely mixed. The strongest opposing
+      consideration to “real deficit” is that the catalog itself appears heavily
+      contaminated and structurally biased, so the observed pattern may well be
+      an artifact of selection rather than of the sky.
+  - claimId: TRN-C006
+    verdict: mixed
+    confidence: moderate
+    reasoning: On the original working catalog, independent statistical analysis
+      reproduces the elevated candidate rate near atmospheric nuclear tests
+      (TRN-E010), and the correlation survives certain controls and ML artifact
+      scoring (TRN-E015), supporting that the association exists within that
+      dataset. However, Watters et al. attribute most of the signal to the
+      Palomar observing schedule and normalization choices (TRN-E011), and
+      Hayes’s independent catalog—constructed with a separate pipeline and
+      modeled nightly exposure—shows no significant nuclear-window effect
+      (TRN-E009). The correlation is therefore sensitive to catalog construction
+      and exposure modeling, making it unclear whether it reflects physical
+      processes or survey logistics. The strongest opposing consideration to “no
+      real effect” is the consistency of the result under multiple analyses of
+      the same rows, but that consistency is lineage-bound and does not survive
+      across catalog reconstructions.
+  - claimId: TRN-C010
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: Busko’s Hamburg study reports single-exposure candidates on plate
+      pairs that resemble the Palomar events morphologically, with narrow FWHM
+      relative to stars, in an independent telescope, emulsion, and digitization
+      lineage (TRN-E013). This supports the claim that analogous candidates
+      occur outside the POSS-I archive, and the author explicitly frames the
+      results as preliminary. However, the study has not yet published matched
+      control rates, false-positive calibration, or injection-recovery
+      completeness, so it remains unclear whether the reported candidates exceed
+      what one would expect from generic plate defects. The strongest opposing
+      consideration is that all plate archives are known to contain star-like
+      defects (TRN-C101 in the backlog), so without rate comparisons and
+      controls, “similar candidates” can be fully explained as similar failure
+      modes.
+  - claimId: TRN-C011
+    verdict: provisionally_supported
+    confidence: low
+    reasoning: Busko’s coma-aberration preprint presents candidates from a Hamburg
+      telescope chosen for its strong off-axis coma and reports that these
+      candidates exhibit coma patterns consistent with off-axis point sources
+      imaged through the optics (TRN-E014). If correct, this would be strong
+      evidence that at least some marks are produced by light entering the
+      telescope, because plate-surface artifacts should not systematically
+      encode the optical-axis geometry. However, there has been no blind
+      validation of the coma classifier against well-labeled sets of known
+      defects and controlled flashes, and the possibility that some defect
+      morphologies mimic coma-like asymmetries has not yet been excluded. Given
+      that this is a single-author preprint and the discriminant’s performance
+      has not been independently tested, the claim is only provisionally
+      supported with low confidence. The strongest opposing consideration is
+      exactly the lack of blind, ground-truth validation (TRN-R003), which could
+      reveal that the apparent coma signature is not a reliable indicator of
+      incident light.

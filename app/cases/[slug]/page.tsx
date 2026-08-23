@@ -101,7 +101,12 @@ export default async function CasePage({
                 above.
               </p>
             ) : null}
-            {checks ? <CrossModelPanel summary={checks} /> : null}
+            {checks ? (
+              <CrossModelPanel
+                summary={checks}
+                runs={loaded.assessmentRuns.filter((r) => r.role === "check")}
+              />
+            ) : null}
           </section>
         ) : null}
 

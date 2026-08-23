@@ -7,6 +7,7 @@ import { DossierHeader } from "@/src/components/DossierHeader";
 import { EvidenceCard } from "@/src/components/EvidenceCard";
 import { ResearchCard } from "@/src/components/ResearchCard";
 import { SectionNav } from "@/src/components/SectionNav";
+import { LinkedRecordText } from "@/src/components/LinkedRecordText";
 import { site } from "@/src/config/site";
 import {
   caseCover,
@@ -141,7 +142,7 @@ export default async function CasePage({
               steelmanned — the account the featured hypothesis must beat
             </p>
             <p className="mt-4 text-[15.5px] leading-[1.75] text-ink-soft max-w-3xl">
-              {loaded.record.bestConventionalExplanation}
+              <LinkedRecordText text={loaded.record.bestConventionalExplanation} />
             </p>
           </div>
         </section>

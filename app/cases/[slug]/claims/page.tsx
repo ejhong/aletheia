@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { CatalogExplorer } from "@/src/components/CatalogExplorer";
 import { ClaimCard } from "@/src/components/ClaimCard";
+import { LinkedRecordText } from "@/src/components/LinkedRecordText";
 import { ProvenanceBadge } from "@/src/components/ProvenanceBadge";
 import {
   catalogClaims,
@@ -146,7 +147,7 @@ export default async function ClaimsExplorerPage({
                     {c.statement}
                   </p>
                   <p className="mt-2 text-[13px] text-ink-soft">
-                    {c.rejectionReason}
+                    <LinkedRecordText text={c.rejectionReason ?? ""} />
                   </p>
                 </div>
               ))}

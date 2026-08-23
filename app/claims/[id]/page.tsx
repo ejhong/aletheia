@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { AssessmentBadge } from "@/src/components/AssessmentBadge";
 import { EvidenceCard } from "@/src/components/EvidenceCard";
+import { LinkedRecordText } from "@/src/components/LinkedRecordText";
 import { Plate } from "@/src/components/Plate";
 import { ProvenanceBadge } from "@/src/components/ProvenanceBadge";
 import { liveClaims, loadAllCases } from "@/src/domain/load";
@@ -237,7 +238,7 @@ export default async function ClaimPage({
               <AssessmentBadge state={claim.credibility} size="lg" />
             </div>
             <p className="mt-3 text-[14px] leading-relaxed text-ink-soft">
-              {claim.credibilitySummary}
+              <LinkedRecordText text={claim.credibilitySummary} />
             </p>
           </div>
           <div className="bg-paper p-5">
@@ -248,7 +249,7 @@ export default async function ClaimPage({
               {claim.diagnosticity}
             </p>
             <p className="mt-3 text-[14px] leading-relaxed text-ink-soft">
-              {claim.diagnosticitySummary}
+              <LinkedRecordText text={claim.diagnosticitySummary} />
             </p>
           </div>
         </section>
@@ -303,7 +304,7 @@ export default async function ClaimPage({
               strongest unresolved objection
             </h2>
             <p className="mt-2.5 text-[14.5px] leading-relaxed text-ink-soft">
-              {claim.strongestObjection}
+              <LinkedRecordText text={claim.strongestObjection} />
             </p>
           </div>
           <div className="border border-line bg-paper-deep/50 p-5">
@@ -312,7 +313,9 @@ export default async function ClaimPage({
             </h2>
             <ul className="mt-2.5 list-disc pl-4 space-y-1.5 text-[14.5px] leading-relaxed text-ink-soft">
               {claim.whatWouldChangeOurMind.map((w, i) => (
-                <li key={i}>{w}</li>
+                <li key={i}>
+                  <LinkedRecordText text={w} />
+                </li>
               ))}
             </ul>
           </div>
@@ -374,7 +377,7 @@ export default async function ClaimPage({
                     </span>
                   </div>
                   <p className="mt-2 text-[14px] leading-relaxed text-ink-soft">
-                    {entry!.reasoning}
+                    <LinkedRecordText text={entry!.reasoning} />
                   </p>
                 </div>
               ))}

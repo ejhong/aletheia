@@ -24,37 +24,37 @@ The point is not to issue verdicts. It's to make the disagreement precise enough
 
 ## The six cases
 
-![Engraved illustration of a polygonal megalithic wall, one central block shaded in copper](https://ejhong.github.io/aletheia/images/cases/geopolymer/cover.jpg)
+![Hand-tinted engraving of a polygonal megalithic wall in ochre and raw sienna beneath a pale grey-blue sky](https://ejhong.github.io/aletheia/images/cases/geopolymer/cover.jpg)
 
 ### [Cast, Not Carved?](https://ejhong.github.io/aletheia/cases/megalithic-casting/)
 
 Were some megalithic monuments cast in place — mixed and molded like concrete — rather than carved and hauled? The idea has a forty-five-year pedigree, a small peer-reviewed proponent literature, a mainstream consensus against it, and one genuinely surprising 2023 measurement: granite removal with a dolerite pounder clocks in around 216 cubic centimeters per hour, a real strain on the orthodox timeline that still says nothing about casting. The sharpest open question: why has nobody run the blinded mineralogical comparison of disputed monument stone against matched natural rock that would settle it either way?
 
-![Engraved vessel-like tree with a knot in its trunk, between a skeleton and a meditating figure](https://ejhong.github.io/aletheia/images/cases/vasocomputation/cover.jpg)
+![Hand-tinted anatomical engraving in madder red: a skeleton beside a tightly knotted vessel joined by a slender tube to a brain](https://ejhong.github.io/aletheia/images/cases/vasocomputation/cover.jpg)
 
 ### [State, Not Scar?](https://ejhong.github.io/aletheia/cases/vasocomputation/)
 
 Anyone with a foam roller can find dozens of exquisitely tender points in their own body, yet the literature still argues about what they are. The hypothesis mapped here says knots are maintained states, not damaged tissue — vascular smooth muscle locked in its low-energy latch — and decades-old needle-electrode studies show these spots chattering electrically, louder when the subject is given mental arithmetic: the brain has the knot's address. The open question: does anything objective change at a knot within seconds, time-locked to a slow exhale? No one has ever looked.
 
-![Engraving of a small telescope beside an archive box of glass plates, one flaring star above](https://ejhong.github.io/aletheia/images/cases/transients/cover.jpg)
+![Hand-tinted engraving of an observer at a brass telescope under a deep Prussian-blue night sky, one bright star flaring overhead](https://ejhong.github.io/aletheia/images/cases/transients/cover.jpg)
 
 ### [Before Sputnik?](https://ejhong.github.io/aletheia/cases/transients/)
 
 On one Palomar sky-survey plate from April 1950, nine star-like points appear within about ten arcminutes — and on nothing photographed before or since. The marks are physically on the glass (critics confirmed that themselves), but the skeptical keystone is a genealogy: both modern digitizations descend from a shared photographic copy, so a single copying flaw can appear "independently" twice. The open question: are the canonical candidates on the original telescope negatives, bearing the optical signature of light that actually came through the telescope?
 
-![Engraved brain on a classical column, struck by a shaft of light flaring copper](https://ejhong.github.io/aletheia/images/cases/orch-or/cover.jpg)
+![Hand-tinted engraving in muted violet-grey: a robed figure sleeps beneath an antique-gold shaft of light falling from a brain and a microtubule lattice](https://ejhong.github.io/aletheia/images/cases/orch-or/cover.jpg)
 
 ### [Collapse, Not Computation?](https://ejhong.github.io/aletheia/cases/orch-or/)
 
 I've written about Orch OR here before, mostly with enthusiasm; this case is where I made myself take the rungs apart. Between 2023 and 2026 the biology got real — microtubules move electronic excitation further than standard theory predicts, anesthetics shorten that transport, and a microtubule-stabilizing drug delays anesthetic unconsciousness in rats — but none of it measured a coherence time, an underground experiment at Gran Sasso ruled out the most natural version of the collapse physics, and an independent lab found the anesthesia effect running the opposite direction. The open question is a number that doesn't exist yet: the measured coherence time of a physiological microtubule at 37 °C.
 
-![Engraved mammoth and bison facing skulls and a fluted spear point as a copper comet streaks down](https://ejhong.github.io/aletheia/images/cases/ydih/cover.jpg)
+![Hand-tinted engraving of a sage-green plain holding a tusked skull and an upright fluted point as a faded vermilion comet streaks down](https://ejhong.github.io/aletheia/images/cases/ydih/cover.jpg)
 
 ### [Fire From the Sky?](https://ejhong.github.io/aletheia/cases/ydih/)
 
 Did a fragmenting comet trigger the Younger Dryas cooling 12,800 years ago? Nineteen years in, independent labs repeatedly fail to find the claimed boundary layer, the only blind test found the boundary unremarkable, the candidate crater dated 4,500 times too old, and 2026 brought the retraction of the hypothesis's two newest flagship papers plus a formal correction withdrawing the extraterrestrial-source conclusion of its best-known platinum study. Yet the Greenland platinum anomaly is real — found by geochemists with no stake in the fight — and its source is officially unresolved. The open question: what made the platinum?
 
-![Engraved hooded figure swinging a butterfly net the butterfly has escaped, holding an oversized copper key](https://ejhong.github.io/aletheia/images/cases/mpi/cover.jpg)
+![Hand-tinted engraving in verdigris of an open book in a meadow beneath a cloud holding a diagram of linked nodes, a pale yellow butterfly flying free](https://ejhong.github.io/aletheia/images/cases/mpi/cover.jpg)
 
 ### [Elusive by Law?](https://ejhong.github.io/aletheia/cases/mpi/)
 
@@ -68,6 +68,6 @@ The strangest case on the site. Walter von Lucadou's Model of Pragmatic Informat
 
 Browse the atlas at [ejhong.github.io/aletheia](https://ejhong.github.io/aletheia/). Every case ends with a "what would settle it" section, and every assessment states what would change our mind — meaning literally that: the observation which, if it arrived tomorrow, would force the verdict to move. The weekly watch means cases update as the literature does, and every update is versioned.
 
-One honest note on the artwork: the engravings above are AI-generated editorial covers in the site's house style, credited as such on every page. They are illustrations, never evidence; the real photographs on the site carry their own provenance and licenses.
+One honest note on the artwork: the hand-tinted engravings above are AI-generated editorial covers in the site's house style, credited as such on every page. They are illustrations, never evidence; the real photographs on the site carry their own provenance and licenses.
 
 If you know a paper I've missed, a replication I've mischaracterized, or a claim you think the ledger scores wrongly — I want to hear it. That's not a pleasantry. The whole design is meant to make "you're wrong about X" a precise, answerable statement. Send it my way.

@@ -1,0 +1,73 @@
+# Literature watch (docs/MAINTENANCE.md § literature watch).
+# Weekly, scripts/watch-literature.mjs runs these queries against arXiv and
+# Crossref (OpenAlex optional) and surfaces new items as discovery-only
+# proposals under proposals/watch/<runId>/. Nothing lands in sources.yaml
+# without human review. Schema: WatchConfigSchema in src/domain/schema.ts.
+#
+# Coverage mirrors the ladder: the flagship program's output, the
+# reconstruction literature (the proven half of the bridge), the
+# neighbouring programs, the empirical benchmarks, and — per the fairness
+# rules — the critical/no-go literature watched with the same machinery.
+# Disambiguation note: an arXiv series "Algorithmic Idealism I–III" by
+# K. Sienicki is a different author from Markus P. Müller; reviewers of
+# watch proposals should not conflate them (see history.yaml).
+
+queries:
+  - id: algorithmic-idealism-program
+    query: "algorithmic idealism observer states universal induction"
+    sources: [arxiv, crossref]
+    keywords: ["algorithmic idealism", "law without law", "self-state", "Solomonoff", "algorithmic probability"]
+    note: >-
+      The flagship program's evidence line: new formal results from Müller
+      and collaborators, strengthenings of the preliminary Bell theorem
+      (ZW-C005), progress on the erasure problem (ZW-C504, ZW-R005), or
+      critiques of the emergence theorems (ZW-C004).
+
+  - id: quantum-reconstruction-theorems
+    query: "reconstruction quantum theory operational axioms"
+    sources: [arxiv, crossref]
+    keywords: ["reconstruction", "informational derivation", "generalized probabilistic", "purification", "local tomography"]
+    note: >-
+      The proven half of the bridge (ZW-C001): new axiom sets, derivations
+      of purification or continuity from deeper principles, or — most
+      valuable — anything connecting operational axioms to first-person or
+      agent-based postulates (ZW-R001, ZW-R003).
+
+  - id: observer-first-proponents
+    query: "conscious agents ruliad observer emergence quantum"
+    sources: [arxiv, crossref]
+    authors: [Hoffman, Prakash, Prentner, Gorard, Arsiwalla, McQueen]
+    note: >-
+      New output from the neighbouring programs and their formal
+      collaborators, so the case weighs current formulations rather than
+      the 2023–2026 snapshot (ZW-C006, ZW-C007); includes any response to
+      the McQueen–Müller adversarial collaboration (ZW-E005).
+
+  - id: tsirelson-and-nonclassicality-derivations
+    query: "Tsirelson bound derivation information principles"
+    sources: [arxiv, crossref]
+    keywords: ["Tsirelson", "information causality", "almost quantum", "no-signalling", "Born rule derivation"]
+    note: >-
+      The decisive benchmark literature (ZW-R002, ZW-R004): principles
+      that single out quantum correlations from generic no-signalling
+      structure, and derivations (or failed derivations) of the Born
+      rule's specific form.
+
+  - id: wigner-friend-experiments
+    query: "Wigner's friend no-go theorem experiment"
+    sources: [arxiv, crossref]
+    keywords: ["Wigner", "local friendliness", "absoluteness of observed events", "extended Wigner"]
+    note: >-
+      The empirical benchmark line (ZW-C003): stronger local-friendliness
+      tests, scaled-up 'friends', or theoretical work on what such
+      experiments can and cannot establish about observer-independence.
+
+  - id: critiques-of-observer-first
+    query: "critique idealism physics emergence observer"
+    sources: [arxiv, crossref]
+    keywords: ["against idealism", "physicalism", "measure problem", "Solomonoff prior", "uncomputab"]
+    note: >-
+      The steelman's evidence base, watched with the same machinery per
+      the fairness rules (ZW-C009): critiques of algorithmic priors as
+      explanations, machine-dependence objections, and philosophical
+      no-go arguments against deriving physics from observers.

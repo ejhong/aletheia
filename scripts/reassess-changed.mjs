@@ -89,6 +89,7 @@ const ASSESS_SYSTEM = `You draft an AI assessment overlay for a case in an evide
 - Repeated/derived reports are not independent evidence. Feasibility is not occurrence. Consensus is not proof; outsider status is not evidence.
 - The synthesis is an argued structural roll-up over the claim ladder (observation → mechanism → attribution), at least 150 words, in plain language. Not a score.
 - Name the load-bearing claims (what the featured thesis actually rests on) and the weakest links (where the argument most likely fails).
+- When citing other records in synthesis or reasoning prose, use exact ids (e.g. ZW-C004, SRC-MULLER-2020, ZW-E010, ZW-R003, ZW-001). The site auto-links these in the UI.
 - Assess each FEATURED claim individually with a verdict, 1-3 sentence reasoning, and confidence (high|moderate|low).
 - You are given the previous assessment run: focus on what the NEW evidence changes; do not churn verdicts without a stated reason grounded in the changed material.
 

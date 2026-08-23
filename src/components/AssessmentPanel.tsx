@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { AssessmentBadge } from "./AssessmentBadge";
+import { LinkedRecordText } from "./LinkedRecordText";
 import type { AssessmentRun, Claim } from "@/src/domain/schema";
 
 /**
@@ -47,7 +48,7 @@ export function AssessmentPanel({
           </p>
         </div>
         <p className="mt-4 text-[15px] leading-[1.75] text-ink-soft whitespace-pre-line">
-          {run.caseAssessment.synthesis}
+          <LinkedRecordText text={run.caseAssessment.synthesis} />
         </p>
         <div className="mt-5 grid sm:grid-cols-2 gap-4">
           <div>

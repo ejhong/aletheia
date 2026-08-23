@@ -1,6 +1,7 @@
 import { ArtCredit } from "./ArtCredit";
 import { AssessmentBadge } from "./AssessmentBadge";
 import { ComponentVerdicts } from "./ComponentVerdicts";
+import { LinkedRecordText } from "./LinkedRecordText";
 import { PriorityBadge } from "./PriorityBadge";
 import { assetPath } from "@/src/config/assets";
 import type {
@@ -100,7 +101,7 @@ export function DossierHeader({
                 {label}
               </h2>
               <p className="mt-2.5 text-[15px] leading-relaxed text-dossier-text/90">
-                {text}
+                <LinkedRecordText text={text} />
               </p>
             </div>
           ))}

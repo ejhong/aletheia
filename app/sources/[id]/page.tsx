@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { EvidenceCard } from "@/src/components/EvidenceCard";
+import { LinkedRecordText } from "@/src/components/LinkedRecordText";
 import { VerificationBadge } from "@/src/components/VerificationBadge";
 import { loadAllCases } from "@/src/domain/load";
 import type { LoadedCase, Source } from "@/src/domain/schema";
@@ -92,7 +93,7 @@ export default async function SourcePage({
               verification note
             </dt>
             <dd className="mt-0.5 text-[14px] text-ink-soft">
-              {source.verificationNote}
+              <LinkedRecordText text={source.verificationNote} />
             </dd>
           </div>
         ) : null}
@@ -104,7 +105,9 @@ export default async function SourcePage({
             <dd className="mt-0.5">
               <ul className="list-disc pl-4 space-y-1 text-[14px] text-ink-soft">
                 {source.reliabilityNotes.map((n, i) => (
-                  <li key={i}>{n}</li>
+                  <li key={i}>
+                    <LinkedRecordText text={n} />
+                  </li>
                 ))}
               </ul>
             </dd>

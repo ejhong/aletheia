@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { DirectionTag } from "./DirectionTag";
+import { LinkedRecordText } from "./LinkedRecordText";
 import type { Evidence, Source } from "@/src/domain/schema";
 import { VerificationBadge } from "./VerificationBadge";
 
@@ -13,7 +14,10 @@ export function EvidenceCard({
   showClaims?: boolean;
 }) {
   return (
-    <article className="border border-line bg-paper p-4 sm:p-5">
+    <article
+      id={`evidence-${evidence.id}`}
+      className="scroll-mt-28 border border-line bg-paper p-4 sm:p-5"
+    >
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <DirectionTag direction={evidence.direction} strength={evidence.strength} />
         <span className="font-mono text-[10px] tracking-[0.14em] text-faint">
@@ -26,14 +30,18 @@ export function EvidenceCard({
           <dt className="font-mono text-[10px] uppercase tracking-[0.16em] text-faint">
             what the source states
           </dt>
-          <dd className="text-ink-soft mt-0.5">{evidence.sourceStatement}</dd>
+          <dd className="text-ink-soft mt-0.5">
+            <LinkedRecordText text={evidence.sourceStatement} />
+          </dd>
         </div>
         {evidence.editorInference ? (
           <div>
             <dt className="font-mono text-[10px] uppercase tracking-[0.16em] text-faint">
               what we infer
             </dt>
-            <dd className="text-ink-soft mt-0.5">{evidence.editorInference}</dd>
+            <dd className="text-ink-soft mt-0.5">
+              <LinkedRecordText text={evidence.editorInference} />
+            </dd>
           </div>
         ) : null}
         {evidence.limitations.length > 0 ? (
@@ -44,7 +52,9 @@ export function EvidenceCard({
             <dd className="mt-0.5">
               <ul className="list-disc pl-4 space-y-1 text-ink-soft">
                 {evidence.limitations.map((l, i) => (
-                  <li key={i}>{l}</li>
+                  <li key={i}>
+                    <LinkedRecordText text={l} />
+                  </li>
                 ))}
               </ul>
             </dd>

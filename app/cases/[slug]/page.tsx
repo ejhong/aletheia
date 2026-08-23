@@ -10,13 +10,15 @@ import { SectionNav } from "@/src/components/SectionNav";
 import { LinkedRecordText } from "@/src/components/LinkedRecordText";
 import { site } from "@/src/config/site";
 import { ConjectureCard } from "@/src/components/ConjectureCard";
+import { CrossModelPanel } from "@/src/components/CrossModelPanel";
 import {
   caseCover,
+  crossModelSummary,
   displayAssessment,
   featuredClaims,
   getCaseBySlug,
   historyNewestFirst,
-  latestAssessment,
+  latestDraftAssessment,
   loadAllCases,
 } from "@/src/domain/load";
 
@@ -53,12 +55,13 @@ export default async function CasePage({
   const loaded = getCaseBySlug(slug);
   const claims = featuredClaims(loaded);
   const shown = displayAssessment(loaded);
-  const latest = latestAssessment(loaded);
-  /** A newer unreviewed AI run disagreeing with the editorial assessment is a review alert. */
+  const latestDraft = latestDraftAssessment(loaded);
+  /** A newer unreviewed AI draft disagreeing with the editorial assessment is a review alert. */
   const pendingDraft =
-    shown?.humanEndorsed && latest && latest.runId !== shown.run.runId
-      ? latest
+    shown?.humanEndorsed && latestDraft && latestDraft.runId !== shown.run.runId
+      ? latestDraft
       : null;
+  const checks = crossModelSummary(loaded);
   const sourceById = new Map(loaded.sources.map((s) => [s.id, s]));
 
   const strongest = (direction: "supports" | "undermines") =>
@@ -98,6 +101,7 @@ export default async function CasePage({
                 above.
               </p>
             ) : null}
+            {checks ? <CrossModelPanel summary={checks} /> : null}
           </section>
         ) : null}
 

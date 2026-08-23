@@ -569,6 +569,20 @@ export function reviewCoverage(loaded: LoadedCase): {
   };
 }
 
+/**
+ * Display-layer classification of history entries. History files are
+ * append-only, so past entries are never rewritten to carry `kind`; this
+ * heuristic ranks them for the homepage feed instead (an explicit `kind`
+ * on new entries always wins). Epistemic changes lead; artwork, watch
+ * configuration, and tooling are housekeeping.
+ */
+export function isHousekeepingEntry(entry: ChangeLogEntry): boolean {
+  if (entry.kind) return entry.kind === "housekeeping";
+  return /literature watch|watch\.yaml|cover art|cover candidates|artwork|style-v2|generate-case-art|images\.yaml/i.test(
+    entry.change,
+  );
+}
+
 /** A change-log entry attributed to its case, for cross-case feeds. */
 export type FeedEntry = ChangeLogEntry & {
   caseTitle: string;

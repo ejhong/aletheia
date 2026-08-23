@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { CaseCard } from "@/src/components/CaseCard";
 import {
   caseCover,
+  crossModelSummary,
   displayAssessment,
   loadAllCases,
   reviewCoverage,
@@ -22,6 +23,7 @@ export default function CasesPage() {
       <div className="grid sm:grid-cols-2 gap-4 mt-8">
         {cases.map((c) => {
           const shown = displayAssessment(c);
+          const sum = crossModelSummary(c);
           return (
             <CaseCard
               key={c.record.id}
@@ -29,6 +31,14 @@ export default function CasesPage() {
               verdict={shown?.run.caseAssessment.verdict ?? null}
               verdictHumanEndorsed={shown?.humanEndorsed ?? false}
               reviewCoverage={reviewCoverage(c)}
+              check={
+                sum
+                  ? {
+                      models: sum.models.length,
+                      concur: sum.caseUnanimousWithDisplayed,
+                    }
+                  : null
+              }
               cover={caseCover(c)}
             />
           );

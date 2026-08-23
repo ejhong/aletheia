@@ -1,0 +1,83 @@
+# Change history, append-only.
+
+- date: "2026-08-22"
+  change: >-
+    Case seeded from two documents in research/: the "Zero Worlds" essay
+    (Substack, 2026-07-04) and the AI-generated research report "From
+    'Zero Worlds' to Quantum Worlds" (runId zw-case-2026-08-22). Both were
+    read in full and mined for claims, evidence, and sources; every
+    citation was then independently re-verified against arXiv, publisher
+    pages, or retrieved full text before import. Read in full during
+    verification: Müller's mpmueller.net/aid exposition (flagged to this
+    import by the editor), both Wolfram essays ("Observer Theory" 2023 and
+    "What Ultimately Is There?" 2026), and the Hoffman & Prakash 2014 full
+    text; all other sources verified at the abstract/record level. The
+    essay's speculative synthesis of algorithmic idealism with Lucadou's
+    MPI was deliberately left out of scope — it belongs to the MPI case's
+    orbit, and the essay itself labels it a conditional construction, not
+    a claim of Müller's.
+  reason: "Real citations only: AI-generated seed documents may not carry assessments second-hand."
+  actor: "Fable (AI agent), directed by Eugene"
+  aiAssisted: true
+
+- date: "2026-08-22"
+  change: >-
+    Verification notes recorded on import. (1) Citation trap: an arXiv
+    series titled "Algorithmic Idealism I–III" (2412.20485, 2502.08653, et
+    al.) is authored by Krzysztof Sienicki, not Markus P. Müller; it is
+    excluded from this case and flagged in watch.yaml so future watch
+    reviewers do not conflate the two. (2) Wording calibration: the seed
+    report describes Bell violation, no-signalling, and quantum
+    computation as future "litmus tests" for algorithmic idealism, while
+    Müller's own exposition also records a 2020 theorem that Bell
+    violation with no-signalling "can sometimes be expected" — "a valid
+    theorem, but 'preliminary' because it still rests on too many
+    assumptions." Claims ZW-C002/ZW-C005 carry the calibrated version:
+    neither "derived" nor mere aspiration. (3) The ruliad definition
+    circulating in the seed documents ("everything that is computationally
+    possible") differs slightly from the retrieved 2026 text ("the
+    entangled limit of all possible computational processes"); the
+    verbatim form is used. (4) The Jones–Müller Wigner's-friend paper is
+    cited in the essay by its 2024 arXiv year; the journal version is
+    Quantum 10: 2147 (2026) — recorded on SRC-JONES-MULLER-2026.
+  reason: >-
+    The epistemic rules require observation before interpretation and
+    forbid imported characterizations from carrying assessments when the
+    primary record says otherwise.
+  actor: "Fable (AI agent), directed by Eugene"
+  aiAssisted: true
+
+- date: "2026-08-22"
+  change: >-
+    Case published: 10 featured claims across the three rungs, 4 catalog
+    claims, 18 evidence records, 19 sources (all ai_verified with
+    per-source verification notes; none unverified, none fabricated), 6
+    research opportunities, and a first AI assessment overlay labeled as
+    an unreviewed draft. All claims labeled ai_extracted pending human
+    review. Structural notes recorded: the case verdict is unresolved and
+    the featured thesis is labeled presently_untestable — the first use of
+    both labels on this site — because the decisive uncertainty is a
+    missing theorem (the observer-to-operational-axioms bridge, ZW-C010)
+    rather than contested data; and the research agenda is accordingly
+    all desk-tier mathematics. No cover artwork yet: to be generated via
+    the generate-case-art workflow (Actions → Generate case art →
+    zero-worlds) and reviewed in a separate PR, per the image rules.
+  reason: "Launch the case with honest provenance labels and the derivation gap modeled explicitly rather than argued away."
+  actor: "Fable (AI agent), directed by Eugene"
+  aiAssisted: true
+
+- date: "2026-08-22"
+  change: >-
+    Literature watch configured (watch.yaml): six discovery-only queries
+    covering the flagship program's output, the reconstruction-theorem
+    literature, the neighbouring observer-first programs, the
+    Tsirelson/Born-rule derivation literature, Wigner's-friend
+    experiments, and — per the fairness rules — critiques of observer-
+    first ontologies watched with the same machinery.
+  reason: >-
+    The case's verdict is hostage to a small set of live mathematical
+    threads (bridge theorems, strengthened Bell results, the erasure
+    problem); the weekly watch surfaces movement on them without letting
+    anything into sources.yaml unreviewed.
+  actor: "Fable (AI agent), directed by Eugene"
+  aiAssisted: true

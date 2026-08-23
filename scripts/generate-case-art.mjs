@@ -43,6 +43,10 @@ const CASE_TONES = {
   ccc:
     "deep charcoal-slate night sky, concentric rings in pale cream and " +
     "faded antique gold, one small ember-red accent at the rings' center",
+  "zero-worlds":
+    "faint graphite-grey and warm dove-grey washes over generous expanses " +
+    "of bare cream paper — the sparest cover in the set — with one small " +
+    "deep-lapis accent at the observer's lantern",
 };
 
 /**
@@ -61,6 +65,14 @@ const CASE_SUBJECTS = {
     "engraved rings filling the night sky, a globe on a tripod stand beside " +
     "her in a quiet rocky landscape — cycles within cycles, an allegorical " +
     "emblem, never a depiction of any real dataset as documentation.",
+  "zero-worlds":
+    "A small cloaked observer seen from behind, standing on a tiny island " +
+    "of finely engraved ground that frays at its edges into blank paper, " +
+    "holding up a lantern whose single beam is the only place a world " +
+    "exists: within the beam, engraved hills, stars, and a thin geometric " +
+    "lattice condense out of nothing; outside it, bare cream paper — " +
+    "world as output, not backdrop. An allegorical emblem, never a " +
+    "depiction of any real experiment or dataset as documentation.",
 };
 
 /** One reversible generation run: a single runId stamped on every record. */

@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { AssessmentBadge } from "./AssessmentBadge";
+import { ComponentVerdicts } from "./ComponentVerdicts";
+import { PriorityBadge } from "./PriorityBadge";
 import { assetPath } from "@/src/config/assets";
 import type {
   AssessmentState,
@@ -7,13 +9,22 @@ import type {
   ImageRecord,
 } from "@/src/domain/schema";
 
+/**
+ * A case card leads with the question and shows two outputs, not one:
+ * the evidence state (component rows where a single word would mislead)
+ * and the research priority — plus honest review provenance.
+ */
 export function CaseCard({
   record,
   verdict,
+  verdictHumanEndorsed,
+  reviewCoverage,
   cover,
 }: {
   record: CaseRecord;
   verdict: AssessmentState | null;
+  verdictHumanEndorsed: boolean;
+  reviewCoverage: { reviewed: number; total: number };
   cover?: ImageRecord | null;
 }) {
   return (
@@ -47,10 +58,24 @@ export function CaseCard({
         <p className="font-serif italic text-[15px] text-ink-soft mt-2">
           {record.subtitle}
         </p>
-        <div className="mt-4 flex flex-wrap items-center gap-3">
-          {verdict ? <AssessmentBadge state={verdict} /> : null}
+        <div className="mt-4">
+          {record.components.length > 0 ? (
+            <ComponentVerdicts components={record.components} />
+          ) : verdict ? (
+            <AssessmentBadge state={verdict} />
+          ) : null}
+        </div>
+        <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5">
+          <PriorityBadge level={record.researchPriority.level} />
           <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-faint">
-            last review {record.lastReviewed}
+            {verdict
+              ? verdictHumanEndorsed
+                ? "editorial assessment"
+                : "AI draft · unreviewed"
+              : "no assessment yet"}
+          </span>
+          <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-faint">
+            human review {reviewCoverage.reviewed}/{reviewCoverage.total} claims
           </span>
         </div>
       </div>

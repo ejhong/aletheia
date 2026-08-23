@@ -80,7 +80,23 @@ export const ClaimType = z.enum([
   "interpretive",
   "methodological",
   "existence",
+  /** What a theory says — its credibility grades the description, not the theory. */
+  "theory_description",
+  /** Status of a mathematical question — its credibility is not empirical support. */
+  "mathematical",
 ]);
+export type ClaimType = z.infer<typeof ClaimType>;
+
+/**
+ * Captions rendered under the credibility badge for claim types whose
+ * "supported" label could otherwise be misread as empirical confirmation.
+ */
+export const claimTypeCaptions: Partial<Record<ClaimType, string>> = {
+  theory_description:
+    "grades the accuracy of the description — not whether the theory is true",
+  mathematical:
+    "grades the status of a mathematical question — not empirical support",
+};
 
 export const Importance = z.enum(["headline", "major", "supporting"]);
 
@@ -509,6 +525,41 @@ export const CuratedResourceSchema = z.object({
 });
 export type CuratedResource = z.infer<typeof CuratedResourceSchema>;
 
+/**
+ * The case's second output, alongside the evidence state: how valuable it
+ * would be to resolve the uncertainty (importance × neglectedness ×
+ * testability ÷ cost), as a plain level with a stated reason — never a
+ * false-precision score. "Weak evidence, strong reason to investigate" is
+ * a first-class state here, not a contradiction.
+ */
+export const ResearchPriorityLevel = z.enum(["high", "medium", "low"]);
+export type ResearchPriorityLevel = z.infer<typeof ResearchPriorityLevel>;
+
+export const researchPriorityLabels: Record<ResearchPriorityLevel, string> = {
+  high: "High research priority",
+  medium: "Medium research priority",
+  low: "Low research priority",
+};
+
+export const ResearchPrioritySchema = z.object({
+  level: ResearchPriorityLevel,
+  /** One or two sentences: why this level — usually the decisive test's cost and yield. */
+  reason: z.string().min(10),
+});
+export type ResearchPriority = z.infer<typeof ResearchPrioritySchema>;
+
+/**
+ * Component verdicts: where a single case verdict would lie by compression,
+ * the separable parts of the question carry their own states. Editorial
+ * canon (human-editable), not an AI overlay.
+ */
+export const CaseComponentSchema = z.object({
+  label: z.string().min(3),
+  state: AssessmentState,
+  note: z.string().optional(),
+});
+export type CaseComponent = z.infer<typeof CaseComponentSchema>;
+
 export const CaseSchema = z.object({
   id: z.string().regex(/^[A-Z]+-\d{3}$/, "Case id like GEO-001"),
   slug: z.string().regex(/^[a-z0-9-]+$/),
@@ -524,6 +575,9 @@ export const CaseSchema = z.object({
   /** Dossier header, question 3. */
   whatWouldSettleIt: z.string(),
   bestConventionalExplanation: z.string(),
+  researchPriority: ResearchPrioritySchema,
+  /** Optional component verdicts; 2–4 rows where one word would mislead. */
+  components: z.array(CaseComponentSchema).max(6).default([]),
   themes: z.record(z.string(), z.string()),
   editors: z.array(z.string()),
   lastReviewed: z.string(),
@@ -532,6 +586,32 @@ export const CaseSchema = z.object({
     .optional(),
 });
 export type CaseRecord = z.infer<typeof CaseSchema>;
+
+/**
+ * Editorial conjecture — an optional `conjectures.yaml` per case.
+ *
+ * A named person's on-the-record bet: intuition admitted as intuition,
+ * with predicted findings and explicit disconfirmers, so the site's own
+ * editors are falsifiable. Conjectures never carry evidential weight;
+ * they set research agendas and keep the founder honest.
+ */
+export const ConjectureSchema = z.object({
+  id: z.string().regex(/^[A-Z]+-J\d{3}$/, "Conjecture id like GEO-J001"),
+  by: z.string().min(2),
+  date: z.string(),
+  statement: z.string().min(10),
+  /** Plain-language confidence — no false precision. */
+  confidence: z.string().min(3),
+  /** Why the person believes it — intuitive rationale stated as such. */
+  rationale: z.string().min(10),
+  predictedFindings: z.array(z.string().min(5)).min(1),
+  /** What would count against it — required; a conjecture without disconfirmers is advocacy. */
+  disconfirmers: z.array(z.string().min(5)).min(1),
+  /** ResearchOpportunity ids that would test it. */
+  decisiveTestIds: z.array(z.string()).default([]),
+  status: z.enum(["open", "supported", "refuted", "withdrawn"]).default("open"),
+});
+export type Conjecture = z.infer<typeof ConjectureSchema>;
 
 /** A fully loaded, integrity-checked case. */
 export interface LoadedCase {
@@ -549,4 +629,6 @@ export interface LoadedCase {
   watch: WatchConfig | null;
   /** Optional curated reading-guide entries (resources.yaml). */
   curatedResources: CuratedResource[];
+  /** Optional on-the-record editorial conjectures (conjectures.yaml). */
+  conjectures: Conjecture[];
 }

@@ -7,6 +7,7 @@ import { Plate } from "@/src/components/Plate";
 import { ProvenanceBadge } from "@/src/components/ProvenanceBadge";
 import { liveClaims, loadAllCases } from "@/src/domain/load";
 import {
+  claimTypeCaptions,
   directionLabels,
   isFeatured,
   rungLabels,
@@ -237,6 +238,11 @@ export default async function ClaimPage({
             <div className="mt-2.5">
               <AssessmentBadge state={claim.credibility} size="lg" />
             </div>
+            {claimTypeCaptions[claim.claimType] ? (
+              <p className="mt-2 font-mono text-[10px] tracking-[0.06em] text-copper">
+                ⚠ {claimTypeCaptions[claim.claimType]}
+              </p>
+            ) : null}
             <p className="mt-3 text-[14px] leading-relaxed text-ink-soft">
               <LinkedRecordText text={claim.credibilitySummary} />
             </p>

@@ -1,6 +1,16 @@
 import Link from "next/link";
-import { assessmentLabels, type AssessmentState } from "@/src/domain/schema";
+import { AssessmentBadge } from "./AssessmentBadge";
+import {
+  assessmentLabels,
+  type AssessmentRun,
+  type AssessmentState,
+} from "@/src/domain/schema";
 import type { CrossModelSummary } from "@/src/domain/load";
+
+/** "GPT-5.1 (OpenAI), independent judge run" → "GPT-5.1 (OpenAI)". */
+function shortModel(label: string): string {
+  return label.replace(/\s*(,\s*independent.*|—\s*independent.*)$/i, "");
+}
 
 /**
  * Concurrence of independent cross-model check runs with the displayed
@@ -10,8 +20,23 @@ import type { CrossModelSummary } from "@/src/domain/load";
  * model's disposition. Disagreement is displayed just as prominently:
  * split claims are exactly where human review should start.
  */
-export function CrossModelPanel({ summary }: { summary: CrossModelSummary }) {
+export function CrossModelPanel({
+  summary,
+  runs,
+}: {
+  summary: CrossModelSummary;
+  runs: AssessmentRun[];
+}) {
   const s = summary;
+  const chip = (id: string) => (
+    <Link
+      key={id}
+      href={`/claims/${id}/`}
+      className="inline-flex items-center border border-line bg-paper px-1.5 py-0.5 font-mono text-[10px] tracking-[0.12em] text-ink-soft hover:border-copper/60 hover:text-copper"
+    >
+      {id}
+    </Link>
+  );
   const caseTally = Object.entries(s.caseVerdicts)
     .map(
       ([v, n]) =>
@@ -53,10 +78,58 @@ export function CrossModelPanel({ summary }: { summary: CrossModelSummary }) {
           ))}
         </p>
       ) : null}
-      <p className="mt-1.5 font-mono text-[10px] tracking-[0.04em] text-faint">
-        models: {s.models.join(" · ")} — full verdicts per claim on each
-        claim page
-      </p>
+      <div className="mt-3 border-t border-line pt-1">
+        {runs.map((run) => (
+          <details
+            key={run.runId}
+            id={`check-${run.runId}`}
+            className="group border-b border-line/60 last:border-b-0"
+          >
+            <summary className="flex cursor-pointer flex-wrap items-center gap-2.5 py-2 list-none [&::-webkit-details-marker]:hidden">
+              <span
+                aria-hidden
+                className="font-mono text-[10px] text-faint transition-transform group-open:rotate-90"
+              >
+                ▸
+              </span>
+              <span className="font-mono text-[11px] tracking-[0.06em] text-ink-soft">
+                {shortModel(run.model)}
+              </span>
+              <AssessmentBadge state={run.caseAssessment.verdict} />
+              <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-faint">
+                what it said
+              </span>
+            </summary>
+            <div className="pb-4 pl-6">
+              <p className="text-[14px] leading-[1.7] text-ink-soft whitespace-pre-line">
+                {run.caseAssessment.synthesis}
+              </p>
+              <div className="mt-3 grid sm:grid-cols-2 gap-3">
+                <div>
+                  <h4 className="font-mono text-[10px] uppercase tracking-[0.16em] text-faint">
+                    it saw as load-bearing
+                  </h4>
+                  <div className="mt-1 flex flex-wrap gap-1.5">
+                    {run.caseAssessment.loadBearing.map(chip)}
+                  </div>
+                </div>
+                <div>
+                  <h4 className="font-mono text-[10px] uppercase tracking-[0.16em] text-faint">
+                    it saw as weakest links
+                  </h4>
+                  <div className="mt-1 flex flex-wrap gap-1.5">
+                    {run.caseAssessment.weakestLinks.map(chip)}
+                  </div>
+                </div>
+              </div>
+              <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.12em] text-faint">
+                run {run.runId} · {run.date} · not human reviewed — per-claim
+                verdicts on each claim page
+              </p>
+            </div>
+          </details>
+        ))}
+      </div>
     </aside>
   );
 }

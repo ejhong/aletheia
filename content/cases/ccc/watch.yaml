@@ -1,0 +1,67 @@
+# Literature watch (docs/MAINTENANCE.md § literature watch).
+# Weekly, scripts/watch-literature.mjs runs these queries against arXiv and
+# Crossref (OpenAlex optional) and surfaces new items as discovery-only
+# proposals under proposals/watch/<runId>/. Nothing lands in sources.yaml
+# without human review. Schema: WatchConfigSchema in src/domain/schema.ts.
+#
+# Coverage mirrors the ladder: the theory's own literature, both disputed
+# CMB signatures, the erebon forward prediction, the B-mode discriminator,
+# and — per the fairness rules — the critical/statistical side watched with
+# the same machinery as the proponent side.
+
+queries:
+  - id: conformal-cyclic-cosmology
+    query: "conformal cyclic cosmology"
+    sources: [arxiv, crossref]
+    note: >-
+      The umbrella query: new theory developments, critiques, or signature
+      analyses anywhere in the CCC literature (all rungs; most items will
+      touch CCC-C005–C009). The phrase is distinctive enough to run
+      unfiltered.
+
+  - id: hawking-points-cmb
+    query: "Hawking points cosmic microwave background"
+    sources: [arxiv, crossref]
+    keywords: ["Hawking point", "Hawking points"]
+    note: >-
+      The live signature dispute: new searches, reanalyses, or proponent
+      responses on the Hawking-point claim (CCC-C004; the CCC-R001
+      preregistered reanalysis and CCC-R005 quantitative predictions, if
+      anyone produces them).
+
+  - id: cmb-circles-anomalies
+    query: "concentric low variance circles CMB"
+    sources: [arxiv, crossref]
+    keywords: ["low variance", "low-variance", concentric, "ring-type", "ring-like"]
+    note: >-
+      The original circles controversy (CCC-C001–C003): follow-ups to the
+      Gurzadyan–Penrose line, the sky-twist/ellipticity test, or artifact
+      analyses in the Bodnia 2024 vein.
+
+  - id: erebon-dark-matter
+    query: "Planck mass dark matter decay"
+    sources: [arxiv, crossref]
+    keywords: [erebon, "Planck mass", "planckian", "impulsive gravitational"]
+    note: >-
+      CCC's laboratory-adjacent forward prediction (CCC-C007, CCC-C505;
+      the CCC-R002 search): any dedicated erebon search, constraint, or
+      theoretical refinement of Planck-mass dark-matter decay signals.
+
+  - id: proponent-output
+    query: "cosmic microwave background anomalies"
+    sources: [arxiv, crossref]
+    authors: [Gurzadyan, Meissner, Nurowski, Penrose]
+    note: >-
+      New output from the theory's principal proponents, so the case
+      weighs the current formulation and the newest claimed signatures
+      rather than the 2020 snapshot (CCC-C009).
+
+  - id: primordial-b-modes
+    query: "primordial gravitational waves tensor-to-scalar ratio"
+    sources: [arxiv, crossref]
+    keywords: ["tensor-to-scalar", "B-mode", "B modes", LiteBIRD, "CMB-S4", "Simons Observatory"]
+    note: >-
+      The framework discriminator (CCC-C008, CCC-R003): a confirmed
+      primordial B-mode detection would evidence an inflationary era CCC
+      has no mechanism for; watched with the same machinery as the
+      proponent side per the fairness rules.

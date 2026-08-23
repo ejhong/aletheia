@@ -302,6 +302,16 @@ export const AssessmentRunSchema = z.object({
   date: z.string(),
   promptVersion: z.string(),
   humanReviewed: z.boolean(),
+  /**
+   * `draft` (default): a house assessment run — the candidate narrative the
+   * case page displays (unless a human-endorsed run exists).
+   * `check`: an independent cross-model judge run, produced blind to all
+   * prior assessments by a different model (scripts/cross-model-check.mjs).
+   * Check runs never display as the case narrative; they feed the
+   * concurrence panel, which reports how far independent models agree with
+   * the displayed assessment.
+   */
+  role: z.enum(["draft", "check"]).default("draft"),
   caseAssessment: z.object({
     verdict: AssessmentState,
     /** Claims the featured thesis actually rests on. */

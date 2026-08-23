@@ -7,19 +7,23 @@ import {
   CaseSchema,
   ChangeLogEntrySchema,
   ClaimSchema,
+  CuratedResourceSchema,
   EvidenceSchema,
   ImageSchema,
   isCatalog,
   isFeatured,
   ResearchOpportunitySchema,
   SourceSchema,
+  WatchConfigSchema,
   type AssessmentRun,
   type CatalogClaim,
   type ChangeLogEntry,
   type Claim,
+  type CuratedResource,
   type FeaturedClaim,
   type ImageRecord,
   type LoadedCase,
+  type WatchConfig,
 } from "./schema";
 
 const CONTENT_DIR = path.join(process.cwd(), "content", "cases");
@@ -268,6 +272,32 @@ export function loadCase(caseDir: string): LoadedCase {
       )
     : [];
 
+  // Optional literature-watch config. Validated here so a malformed query
+  // fails the build, not the weekly watch run.
+  const watchPath = path.join(CONTENT_DIR, caseDir, "watch.yaml");
+  let watch: WatchConfig | null = null;
+  if (fs.existsSync(watchPath)) {
+    try {
+      watch = WatchConfigSchema.parse(
+        parseYaml(fs.readFileSync(watchPath, "utf8")),
+      );
+    } catch (e) {
+      throw new ContentError(caseDir, `watch.yaml invalid: ${String(e)}`);
+    }
+  }
+
+  // Optional curated reading-guide entries. Real links only — the schema
+  // demands a URL and an honest verification label on every entry.
+  const resourcesPath = path.join(CONTENT_DIR, caseDir, "resources.yaml");
+  const curatedResources: CuratedResource[] = fs.existsSync(resourcesPath)
+    ? parseList(
+        caseDir,
+        "resources.yaml",
+        parseYaml(fs.readFileSync(resourcesPath, "utf8")),
+        CuratedResourceSchema,
+      )
+    : [];
+
   const assessmentsDir = path.join(CONTENT_DIR, caseDir, "assessments");
   const assessmentRuns: AssessmentRun[] = fs.existsSync(assessmentsDir)
     ? fs
@@ -304,6 +334,8 @@ export function loadCase(caseDir: string): LoadedCase {
     history,
     assessmentRuns,
     images,
+    watch,
+    curatedResources,
   };
   checkIntegrity(caseDir, loaded);
   return loaded;

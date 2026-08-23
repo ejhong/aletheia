@@ -50,7 +50,59 @@ Weekly (or on demand), the Maintain workflow:
    overlay, drafts a **new** overlay file (never edits an old one), stamped
    `humanReviewed: false` with runId/model/promptVersion; structurally
    validated before writing, discarded (and reported) if invalid.
-3. **Opens the PR** with the digest body and the risk label.
+3. **Watches the literature** (`scripts/watch-literature.mjs`): runs each
+   case's declared watch queries against arXiv and Crossref (OpenAlex
+   optionally) and surfaces newly published/indexed items as
+   **discovery-only** proposals — see the next section.
+4. **Opens the PR** with the digest body and the risk label.
+
+## Literature watch
+
+Each case may declare watch queries in an optional
+`content/cases/<case>/watch.yaml` (schema: `WatchConfigSchema` in
+`src/domain/schema.ts`, validated at build time):
+
+```yaml
+queries:
+  - id: trigger-point-imaging        # stable slug — dedup/cursor key
+    query: "myofascial trigger point elastography"
+    sources: [crossref, arxiv]       # optional; default arxiv + crossref;
+                                     # openalex also supported
+    authors: [Davidovits]            # optional: keep only matching authors
+    keywords: [elastography, knot]   # optional: title/abstract must contain one
+    note: why this query exists      # shown to the reviewer
+```
+
+Weekly, the watch step searches each API for items published/indexed since
+the case's last run (per-case cursor and already-surfaced-item list live in
+`proposals/watch/state.yaml`; the state file is machine-maintained and safe
+to delete). Items already in the case's `sources.yaml` (matched by DOI or
+arXiv id) or surfaced by an earlier run are skipped. Results land in
+`proposals/watch/<runId>/<case>.yaml` with title, authors, venue, date,
+DOI/arXiv id, abstract snippet, and the matching query — **exactly as the
+APIs returned them, all labeled `unverified`**. Nothing is added to
+`sources.yaml` or `evidence.yaml` automatically. If an LLM key is present,
+items also carry a short relevance note explicitly labeled as an
+AI-generated draft; with no key the step runs the same, minus the notes.
+
+Watch proposals only touch `proposals/**`, so a weekly run that contains
+nothing else stays `auto:low-risk`.
+
+**Promoting a surfaced paper into a real source** (your call, two routes):
+
+1. **Inbox**: drop the paper's DOI/URL as a link list —
+   `inbox/<case>/links.md` or front matter `case: <case>` — optionally with
+   a commentary note saying what it is evidence for. The next run
+   fetch-verifies it and proposes a source record with an honest label.
+2. **Chat**: tell the agent which item to import; it verifies the citation
+   against Crossref/the publisher and writes the source (and any evidence
+   records) for review.
+
+Either way the item enters `sources.yaml` only after verification, and the
+DOI/arXiv dedup means the watch will not surface it again.
+
+Local run: `node scripts/watch-literature.mjs [--dry-run] [--case <dir>]
+[--days <n>] [--no-llm]` — no API key required.
 
 ## Where accountability lives
 

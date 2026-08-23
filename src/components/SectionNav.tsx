@@ -59,12 +59,20 @@ export function SectionNav({
               {label}
             </a>
           ))}
-          <Link
-            href={`/cases/${slug}/claims/`}
-            className="font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-copper ml-auto"
-          >
-            all claims →
-          </Link>
+          <span className="ml-auto flex gap-6">
+            <Link
+              href={`/cases/${slug}/resources/`}
+              className="font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-copper"
+            >
+              resources →
+            </Link>
+            <Link
+              href={`/cases/${slug}/claims/`}
+              className="font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-copper"
+            >
+              all claims →
+            </Link>
+          </span>
         </div>
       </div>
     </nav>

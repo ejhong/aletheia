@@ -78,6 +78,9 @@ function latestAssessment(caseDir) {
       file: f,
       run: parseYaml(fs.readFileSync(path.join(dir, f), "utf8")),
     }))
+    // Cross-model check runs corroborate; they are not the house draft
+    // that a reassessment should build on.
+    .filter((r) => r.run.role !== "check")
     .sort((a, b) => String(a.run.date).localeCompare(String(b.run.date)));
   return runs.at(-1) ?? null;
 }

@@ -17,6 +17,7 @@ import {
   SourceSchema,
   WatchConfigSchema,
   type AssessmentRun,
+  type AssessmentState,
   type CatalogClaim,
   type ChangeLogEntry,
   type Claim,
@@ -448,18 +449,112 @@ export function editorialAssessment(loaded: LoadedCase): AssessmentRun | null {
   return null;
 }
 
+/** The latest draft-role run — cross-model check runs never narrate. */
+export function latestDraftAssessment(loaded: LoadedCase): AssessmentRun | null {
+  for (let i = loaded.assessmentRuns.length - 1; i >= 0; i--) {
+    if (loaded.assessmentRuns[i].role !== "check")
+      return loaded.assessmentRuns[i];
+  }
+  return null;
+}
+
 /**
  * The assessment to display for a case: the editorial (human-endorsed) run
- * when one exists, otherwise the latest AI draft. The flag tells the UI
- * which label to print.
+ * when one exists, otherwise the latest AI draft. Check runs are excluded —
+ * they corroborate (or contest) the displayed assessment via the
+ * concurrence panel rather than replacing its narrative.
  */
 export function displayAssessment(
   loaded: LoadedCase,
 ): { run: AssessmentRun; humanEndorsed: boolean } | null {
   const editorial = editorialAssessment(loaded);
   if (editorial) return { run: editorial, humanEndorsed: true };
-  const latest = latestAssessment(loaded);
+  const latest = latestDraftAssessment(loaded);
   return latest ? { run: latest, humanEndorsed: false } : null;
+}
+
+/** Concurrence of independent cross-model check runs with the displayed assessment. */
+export interface CrossModelSummary {
+  /** Model labels of the check runs, in run-date order. */
+  models: string[];
+  latestDate: string;
+  /** Case-verdict tally across check runs, e.g. { unresolved: 4 }. */
+  caseVerdicts: Record<string, number>;
+  /** Whether every check run's case verdict matches the displayed run's. */
+  caseUnanimousWithDisplayed: boolean;
+  claimsCompared: number;
+  exact: number;
+  /** Within one step on the graded scale (open verdicts never count as adjacent). */
+  adjacent: number;
+  split: number;
+  splitClaimIds: string[];
+}
+
+const gradedScale: Partial<Record<AssessmentState, number>> = {
+  established: 6,
+  well_supported: 5,
+  provisionally_supported: 4,
+  mixed: 3,
+  weakly_supported: 2,
+  contradicted: 1,
+};
+
+export function crossModelSummary(
+  loaded: LoadedCase,
+): CrossModelSummary | null {
+  const checks = loaded.assessmentRuns.filter((r) => r.role === "check");
+  const shown = displayAssessment(loaded);
+  if (checks.length === 0 || !shown) return null;
+
+  const baseline = new Map(
+    shown.run.claimAssessments.map((ca) => [ca.claimId, ca.verdict]),
+  );
+  let exact = 0;
+  let adjacent = 0;
+  const splitIds = new Set<string>();
+  let compared = 0;
+  for (const [claimId, base] of baseline) {
+    const verdicts = checks
+      .map((r) => r.claimAssessments.find((ca) => ca.claimId === claimId))
+      .filter((ca) => ca !== undefined)
+      .map((ca) => ca.verdict);
+    if (verdicts.length === 0) continue;
+    compared++;
+    const all = [base, ...verdicts];
+    if (all.every((v) => v === base)) {
+      exact++;
+      continue;
+    }
+    const nums = all.map((v) => gradedScale[v]);
+    if (
+      nums.every((n) => n !== undefined) &&
+      Math.max(...(nums as number[])) - Math.min(...(nums as number[])) <= 1
+    ) {
+      adjacent++;
+    } else {
+      splitIds.add(claimId);
+    }
+  }
+
+  const caseVerdicts: Record<string, number> = {};
+  for (const r of checks) {
+    const v = r.caseAssessment.verdict;
+    caseVerdicts[v] = (caseVerdicts[v] ?? 0) + 1;
+  }
+
+  return {
+    models: checks.map((r) => r.model),
+    latestDate: checks[checks.length - 1].date,
+    caseVerdicts,
+    caseUnanimousWithDisplayed: checks.every(
+      (r) => r.caseAssessment.verdict === shown.run.caseAssessment.verdict,
+    ),
+    claimsCompared: compared,
+    exact,
+    adjacent,
+    split: splitIds.size,
+    splitClaimIds: [...splitIds],
+  };
 }
 
 /** Human-review coverage over the featured claims, for honest card labels. */

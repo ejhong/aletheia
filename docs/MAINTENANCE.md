@@ -155,3 +155,16 @@ damages surrounding content.
   the CI and PR-risk checks once direct-push agent traffic to `main` winds
   down — with no required checks, GitHub may merge an auto-merge PR before
   CI finishes.
+
+## Cross-model checks
+
+`node scripts/cross-model-check.mjs <case-slug>` re-assesses one case with
+every vendor whose API key is configured (ANTHROPIC/OPENAI/GEMINI/XAI),
+each judge blind to all prior assessments. Passing replies install as
+append-only `role: check` overlays in the case's `assessments/` directory
+(auto:low-risk by the standard rules); malformed replies land in
+`proposals/cross-model-failures/` and are never installed. The case page's
+concurrence panel then reports agreement with the displayed assessment,
+naming split claims as review entry points. Cost: one long completion per
+vendor (a few dollars per case). Re-run after a case changes materially;
+each run is dated and stamped, so history accumulates like any overlay.

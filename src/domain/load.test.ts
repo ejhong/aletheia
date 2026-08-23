@@ -10,6 +10,7 @@ import {
   featuredClaims,
   getCaseBySlug,
   historyNewestFirst,
+  crossModelSummary,
   displayAssessment,
   editorialAssessment,
   latestAssessment,
@@ -411,5 +412,33 @@ describe("v1.1 governance", () => {
         disconfirmers: [],
       }),
     ).toThrow();
+  });
+});
+
+describe("cross-model checks", () => {
+  it("check runs never narrate; the draft still displays", () => {
+    const orch = getCaseBySlug("orch-or");
+    const checks = orch.assessmentRuns.filter((r) => r.role === "check");
+    expect(checks.length).toBe(4);
+    const shown = displayAssessment(orch);
+    // The house draft (2026-08-22) displays even though checks are newer.
+    expect(shown?.run.role).toBe("draft");
+    expect(shown?.run.runId).toBe("orch-or-2026-08-22-fable-1");
+  });
+
+  it("concurrence summary reports agreement against the displayed run", () => {
+    const orch = getCaseBySlug("orch-or");
+    const s = crossModelSummary(orch);
+    expect(s).not.toBeNull();
+    expect(s!.models.length).toBe(4);
+    expect(s!.caseUnanimousWithDisplayed).toBe(true);
+    expect(s!.claimsCompared).toBe(18);
+    expect(s!.exact).toBe(15);
+    expect(s!.adjacent).toBe(3);
+    expect(s!.split).toBe(0);
+  });
+
+  it("cases without checks have no summary", () => {
+    expect(crossModelSummary(getCaseBySlug("mpi"))).toBeNull();
   });
 });

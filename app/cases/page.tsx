@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import { CaseCard } from "@/src/components/CaseCard";
-import { caseCover, latestAssessment, loadAllCases } from "@/src/domain/load";
+import {
+  caseCover,
+  displayAssessment,
+  loadAllCases,
+  reviewCoverage,
+} from "@/src/domain/load";
 
 export const metadata: Metadata = { title: "Cases" };
 
@@ -15,14 +20,19 @@ export default function CasesPage() {
         experiments that would settle it.
       </p>
       <div className="grid sm:grid-cols-2 gap-4 mt-8">
-        {cases.map((c) => (
-          <CaseCard
-            key={c.record.id}
-            record={c.record}
-            verdict={latestAssessment(c)?.caseAssessment.verdict ?? null}
-            cover={caseCover(c)}
-          />
-        ))}
+        {cases.map((c) => {
+          const shown = displayAssessment(c);
+          return (
+            <CaseCard
+              key={c.record.id}
+              record={c.record}
+              verdict={shown?.run.caseAssessment.verdict ?? null}
+              verdictHumanEndorsed={shown?.humanEndorsed ?? false}
+              reviewCoverage={reviewCoverage(c)}
+              cover={caseCover(c)}
+            />
+          );
+        })}
       </div>
     </div>
   );

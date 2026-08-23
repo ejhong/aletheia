@@ -1,7 +1,11 @@
 import Link from "next/link";
 import { AssessmentBadge } from "./AssessmentBadge";
 import { ProvenanceBadge } from "./ProvenanceBadge";
-import { rungLabels, type FeaturedClaim } from "@/src/domain/schema";
+import {
+  claimTypeCaptions,
+  rungLabels,
+  type FeaturedClaim,
+} from "@/src/domain/schema";
 
 export function ClaimCard({ claim }: { claim: FeaturedClaim }) {
   return (
@@ -33,6 +37,11 @@ export function ClaimCard({ claim }: { claim: FeaturedClaim }) {
           diagnosticity: {claim.diagnosticity}
         </span>
       </div>
+      {claimTypeCaptions[claim.claimType] ? (
+        <p className="mt-1.5 font-mono text-[10px] tracking-[0.06em] text-faint">
+          ⚠ {claimTypeCaptions[claim.claimType]}
+        </p>
+      ) : null}
     </Link>
   );
 }

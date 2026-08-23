@@ -152,17 +152,18 @@
 
 - id: ORCH-C003
   statement: >-
-    Anesthetic-induced unconsciousness and, more broadly, cognition are fully
-    accounted for by classical mechanisms — multi-target receptor and
-    ion-channel pharmacology acting on network dynamics — without any
-    quantum-coherent contribution.
+    Anesthetic-induced unconsciousness is substantially accounted for by
+    classical mechanisms — multi-target receptor and ion-channel
+    pharmacology acting on network dynamics — with target-specific causal
+    evidence for the intravenous agents.
   plainLanguage: >-
-    The conventional alternative, stated as a claim so it can be assessed
-    rather than assumed. This is the hypothesis the case is actually testing
-    Orch OR against, and on the anesthesia side it is in considerably better
-    shape than its challenger. Its own weak point is stated honestly in its
-    strongest objection: it explains the mechanics of unconsciousness well
-    and offers nothing about why any of it is experienced.
+    The conventional alternative's well-evidenced core, stated as a claim so
+    it can be assessed rather than assumed. This is the hypothesis the case
+    is actually testing Orch OR against, and on the anesthesia side it is in
+    considerably better shape than its challenger. The stronger, exhaustive
+    version — that classical mechanisms explain everything and exclude any
+    quantum contribution — is deliberately split out as ORCH-C004, because
+    the evidence for this claim does not carry that one.
   theme: conventional
   rung: attribution
   tier: featured
@@ -188,10 +189,10 @@
     enflurane and halothane, so the intravenous result does not transfer to
     the agents Orch OR mostly concerns; and the TREK-1 story — initial
     knockout resistance later not reproduced — shows that apparently strong
-    anesthetic-target claims can dissolve on genetic replication. The claim
-    as worded ("fully accounted for", "without any quantum-coherent
-    contribution") is therefore better supported for intravenous agents than
-    for volatiles, and its universal quantifier is not established.
+    anesthetic-target claims can dissolve on genetic replication. The
+    exhaustive version of this claim ("fully accounted for", "without any
+    quantum-coherent contribution") lives separately as ORCH-C004, where
+    those quantifiers are assessed on their own.
   diagnosticity: high
   diagnosticitySummary: >-
     Steelmanning this properly is what keeps the case honest. Because it is a
@@ -217,6 +218,61 @@
     - "Any demonstrated anesthetic effect on a validated quantum observable that survives controls for ion-channel signaling, metabolism, transport, and pharmacokinetics."
     - "Independent replication of the xenon nuclear-spin isotope effect (ORCH-C025) without a background volatile agent, which would be hard to accommodate in a purely classical pharmacology."
     - "Conversely, a tubulin knock-in showing anesthesia is unchanged when anesthetic binding to tubulin is removed would strengthen this claim considerably."
+
+- id: ORCH-C004
+  statement: >-
+    Anesthetic-induced unconsciousness and, more broadly, cognition are
+    fully accounted for by classical mechanisms, without any quantum-coherent
+    contribution.
+  plainLanguage: >-
+    The exhaustive version of the conventional position, split from
+    ORCH-C003 during the 2026-08-23 review because the receptor-level
+    evidence, however strong, does not establish a universally quantified
+    negative. Believing the classical account keeps working is not the same
+    as having shown that nothing quantum contributes anywhere — and the
+    conventional account's own literature concedes the volatile agents act
+    through a broader, less resolved target spectrum.
+  theme: conventional
+  rung: attribution
+  tier: featured
+  claimType: causal
+  importance: major
+  reviewState: ai_extracted
+  origin:
+    ref: "Split from ORCH-C003 on 2026-08-23 after external review and the multi-model assessment experiment independently flagged the universal quantifier as unsupported by the cited evidence"
+    extractedBy: "Fable (AI agent)"
+    runId: "phase1-v1.1-2026-08-23"
+    date: "2026-08-23"
+  credibility: unresolved
+  credibilitySummary: >-
+    A universally-quantified negative over an unmeasured domain: the
+    load-bearing quantum quantity (ORCH-C010) has never been measured in
+    either direction, so neither this claim nor its rival can currently be
+    graded above unresolved on that front. The receptor-level causal
+    evidence carried by ORCH-C003 raises the plausibility of this claim
+    without entailing it, and the case's own record contains unresolved
+    anomalies (the xenon nuclear-spin potency split, ORCH-C025; the
+    epothilone effects, ORCH-C023/C024) that a completed classical account
+    would need to absorb.
+  diagnosticity: high
+  diagnosticitySummary: >-
+    This is the true rival to ORCH-C001. Because it is a negative
+    existential, it cannot be proved by accumulating conventional successes
+    — only defeated by a demonstrated quantum contribution, or indefinitely
+    sustained by the continued absence of one. Keeping it separate from
+    ORCH-C003 prevents the receptor evidence from silently underwriting the
+    universal conclusion.
+  parentClaimIds: [ORCH-C003]
+  dependsOnClaimIds: []
+  strongestObjection: >-
+    Parsimony is on its side: every anesthetic endpoint so far explained has
+    been explained classically, no quantum-coherent contribution to any
+    cognitive function has ever been demonstrated, and the burden of proof
+    sits with the challenger. Treating "unresolved" as the grade may
+    overprice a hypothesis space nothing yet occupies.
+  whatWouldChangeOurMind:
+    - "A measured coherence witness in physiological microtubules (ORCH-R001) in either direction — the same measurement that decides ORCH-C010."
+    - "Independent replication, or failed replication, of the xenon isotope and epothilone anomalies under preregistered protocols (ORCH-R004)."
 
 - id: ORCH-C030
   statement: >-

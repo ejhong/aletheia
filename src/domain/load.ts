@@ -7,6 +7,7 @@ import {
   CaseSchema,
   ChangeLogEntrySchema,
   ClaimSchema,
+  ConjectureSchema,
   CuratedResourceSchema,
   EvidenceSchema,
   ImageSchema,
@@ -19,6 +20,7 @@ import {
   type CatalogClaim,
   type ChangeLogEntry,
   type Claim,
+  type Conjecture,
   type CuratedResource,
   type FeaturedClaim,
   type ImageRecord,
@@ -170,6 +172,18 @@ function checkIntegrity(caseDir: string, loaded: LoadedCase): void {
     }
   }
 
+  const researchIds = new Set(loaded.research.map((r) => r.id));
+  for (const cj of loaded.conjectures) {
+    for (const rid of cj.decisiveTestIds) {
+      if (!researchIds.has(rid)) {
+        throw new ContentError(
+          caseDir,
+          `conjecture ${cj.id} references unknown research opportunity ${rid}`,
+        );
+      }
+    }
+  }
+
   for (const run of loaded.assessmentRuns) {
     for (const ca of run.claimAssessments) {
       requireLiveClaim(ca.claimId, `assessment run ${run.runId}`);
@@ -298,6 +312,18 @@ export function loadCase(caseDir: string): LoadedCase {
       )
     : [];
 
+  // Optional on-the-record editorial conjectures. Never evidential weight;
+  // required disconfirmers keep the site's own editors falsifiable.
+  const conjecturesPath = path.join(CONTENT_DIR, caseDir, "conjectures.yaml");
+  const conjectures: Conjecture[] = fs.existsSync(conjecturesPath)
+    ? parseList(
+        caseDir,
+        "conjectures.yaml",
+        parseYaml(fs.readFileSync(conjecturesPath, "utf8")),
+        ConjectureSchema,
+      )
+    : [];
+
   const assessmentsDir = path.join(CONTENT_DIR, caseDir, "assessments");
   const assessmentRuns: AssessmentRun[] = fs.existsSync(assessmentsDir)
     ? fs
@@ -323,6 +349,7 @@ export function loadCase(caseDir: string): LoadedCase {
   assertUnique(caseDir, "source", sources.map((s) => s.id));
   assertUnique(caseDir, "research", research.map((r) => r.id));
   assertUnique(caseDir, "assessment run", assessmentRuns.map((r) => r.runId));
+  assertUnique(caseDir, "conjecture", conjectures.map((c) => c.id));
 
   const loaded: LoadedCase = {
     record,
@@ -336,6 +363,7 @@ export function loadCase(caseDir: string): LoadedCase {
     images,
     watch,
     curatedResources,
+    conjectures,
   };
   checkIntegrity(caseDir, loaded);
   return loaded;
@@ -403,6 +431,47 @@ export function catalogClaims(loaded: LoadedCase): CatalogClaim[] {
 
 export function latestAssessment(loaded: LoadedCase): AssessmentRun | null {
   return loaded.assessmentRuns.at(-1) ?? null;
+}
+
+/**
+ * The last human-endorsed assessment run, or null if none exists yet.
+ *
+ * Governance rule: only a human-reviewed run may present as the case's
+ * editorial assessment. Newer unreviewed AI runs are shown separately as
+ * drafts — their disagreement with the editorial assessment is a review
+ * alert, never a silent replacement (AGENTS.md §3.15).
+ */
+export function editorialAssessment(loaded: LoadedCase): AssessmentRun | null {
+  for (let i = loaded.assessmentRuns.length - 1; i >= 0; i--) {
+    if (loaded.assessmentRuns[i].humanReviewed) return loaded.assessmentRuns[i];
+  }
+  return null;
+}
+
+/**
+ * The assessment to display for a case: the editorial (human-endorsed) run
+ * when one exists, otherwise the latest AI draft. The flag tells the UI
+ * which label to print.
+ */
+export function displayAssessment(
+  loaded: LoadedCase,
+): { run: AssessmentRun; humanEndorsed: boolean } | null {
+  const editorial = editorialAssessment(loaded);
+  if (editorial) return { run: editorial, humanEndorsed: true };
+  const latest = latestAssessment(loaded);
+  return latest ? { run: latest, humanEndorsed: false } : null;
+}
+
+/** Human-review coverage over the featured claims, for honest card labels. */
+export function reviewCoverage(loaded: LoadedCase): {
+  reviewed: number;
+  total: number;
+} {
+  const featured = featuredClaims(loaded);
+  return {
+    reviewed: featured.filter((c) => c.reviewState === "human_reviewed").length,
+    total: featured.length,
+  };
 }
 
 /** A change-log entry attributed to its case, for cross-case feeds. */

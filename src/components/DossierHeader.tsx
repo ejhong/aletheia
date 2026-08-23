@@ -1,6 +1,8 @@
 import { ArtCredit } from "./ArtCredit";
 import { AssessmentBadge } from "./AssessmentBadge";
+import { ComponentVerdicts } from "./ComponentVerdicts";
 import { LinkedRecordText } from "./LinkedRecordText";
+import { PriorityBadge } from "./PriorityBadge";
 import { assetPath } from "@/src/config/assets";
 import type {
   AssessmentState,
@@ -16,10 +18,12 @@ import type {
 export function DossierHeader({
   record,
   verdict,
+  verdictHumanEndorsed,
   cover,
 }: {
   record: CaseRecord;
   verdict: AssessmentState | null;
+  verdictHumanEndorsed: boolean;
   cover?: ImageRecord | null;
 }) {
   return (
@@ -45,13 +49,30 @@ export function DossierHeader({
               {record.subtitle}
             </p>
             {verdict ? (
-              <div className="mt-5 flex items-center gap-3">
+              <div className="mt-5 flex flex-wrap items-center gap-3">
                 <AssessmentBadge state={verdict} size="lg" />
                 <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-dossier-faint">
-                  current AI-drafted assessment · unreviewed
+                  {verdictHumanEndorsed
+                    ? "editorial assessment · human-reviewed"
+                    : "AI-drafted assessment · awaiting human review"}
                 </span>
+                <PriorityBadge level={record.researchPriority.level} size="lg" />
               </div>
             ) : null}
+            {record.components.length > 0 ? (
+              <div className="mt-4">
+                <h2 className="font-mono text-[10px] uppercase tracking-[0.18em] text-dossier-faint mb-2">
+                  by component — one word would mislead
+                </h2>
+                <ComponentVerdicts components={record.components} dark />
+              </div>
+            ) : null}
+            <p className="mt-4 text-[13.5px] leading-relaxed text-dossier-text/80 max-w-2xl">
+              <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-copper mr-2">
+                why this priority
+              </span>
+              {record.researchPriority.reason}
+            </p>
           </div>
           {cover ? (
             <div className="mt-8 lg:mt-1">

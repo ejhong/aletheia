@@ -9,8 +9,10 @@ import { ResearchCard } from "@/src/components/ResearchCard";
 import { SectionNav } from "@/src/components/SectionNav";
 import { LinkedRecordText } from "@/src/components/LinkedRecordText";
 import { site } from "@/src/config/site";
+import { ConjectureCard } from "@/src/components/ConjectureCard";
 import {
   caseCover,
+  displayAssessment,
   featuredClaims,
   getCaseBySlug,
   historyNewestFirst,
@@ -50,7 +52,13 @@ export default async function CasePage({
   const { slug } = await params;
   const loaded = getCaseBySlug(slug);
   const claims = featuredClaims(loaded);
-  const run = latestAssessment(loaded);
+  const shown = displayAssessment(loaded);
+  const latest = latestAssessment(loaded);
+  /** A newer unreviewed AI run disagreeing with the editorial assessment is a review alert. */
+  const pendingDraft =
+    shown?.humanEndorsed && latest && latest.runId !== shown.run.runId
+      ? latest
+      : null;
   const sourceById = new Map(loaded.sources.map((s) => [s.id, s]));
 
   const strongest = (direction: "supports" | "undermines") =>
@@ -69,14 +77,35 @@ export default async function CasePage({
 
       <DossierHeader
         record={loaded.record}
-        verdict={run?.caseAssessment.verdict ?? null}
+        verdict={shown?.run.caseAssessment.verdict ?? null}
+        verdictHumanEndorsed={shown?.humanEndorsed ?? false}
         cover={caseCover(loaded)}
       />
 
       <div className="mx-auto max-w-6xl px-5">
-        {run ? (
+        {shown ? (
           <section id="assessment" className="pt-10 scroll-mt-28">
-            <AssessmentPanel run={run} claims={claims} />
+            <AssessmentPanel
+              run={shown.run}
+              humanEndorsed={shown.humanEndorsed}
+              claims={claims}
+            />
+            {pendingDraft ? (
+              <p className="mt-3 border border-ochre/40 bg-ochre/8 px-4 py-2.5 font-mono text-[11px] tracking-[0.06em] text-ochre">
+                A newer AI reassessment ({pendingDraft.runId}, verdict:{" "}
+                {pendingDraft.caseAssessment.verdict}) exists and has not been
+                human-reviewed. It does not replace the editorial assessment
+                above.
+              </p>
+            ) : null}
+          </section>
+        ) : null}
+
+        {loaded.conjectures.length > 0 ? (
+          <section id="conjectures" className="pt-10 scroll-mt-28 space-y-4">
+            {loaded.conjectures.map((c) => (
+              <ConjectureCard key={c.id} conjecture={c} />
+            ))}
           </section>
         ) : null}
 

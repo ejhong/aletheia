@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${newsreader.variable} ${plexMono.variable}`}>
       <body className="min-h-screen flex flex-col">
-        <header className="border-b border-line">
+        <header className="sticky top-0 z-20 border-b border-line bg-paper">
           <div className="mx-auto max-w-6xl px-5 py-4 flex items-baseline justify-between gap-6">
             <Link href="/" className="group flex items-baseline gap-3">
               <span className="font-serif text-2xl tracking-tight">

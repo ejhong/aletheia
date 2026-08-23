@@ -1,8 +1,8 @@
 # Aletheia Image Style Guide
 
-Current style version: **style-v1** (2026-08-22). Bump the version when the
-canonical prompt changes, so regenerated art stays consistent within a version
-and diffs between versions are deliberate.
+Current style version: **style-v2** (2026-08-22, hand-tinted color). Bump the
+version when the canonical prompt changes, so regenerated art stays consistent
+within a version and diffs between versions are deliberate.
 
 ## The two image registers — never confused
 
@@ -35,14 +35,79 @@ Corollaries:
 - Diagrams (ladder, timelines) stay hand-built SVG/CSS — never raster,
   never generated.
 
-## House style: expedition lithograph (style-v1)
+## House style: hand-tinted expedition lithograph (style-v2)
 
 The signature is a 19th-century scientific expedition lithograph /
 copperplate engraving — the visual language of Darwin-era journals: patient,
 exact, beautiful because it is careful. It says "we looked closely" in a way
 no stock photo can.
 
-### Canonical prompt template (style-v1)
+style-v2 keeps the engraving language of style-v1 but replaces the
+monochrome palette lock with **hand-tinted full color**: think
+chromolithographs and hand-colored plates from a vintage scientific atlas.
+Full polychrome imagery, but only muted mineral pigments — ochres, slate
+blues, sage greens, oxblood, faded vermilion — faded as if printed in 1870,
+never saturated modern digital color. Each case cover gets its own dominant
+tone suited to its subject (assigned below), so the case grid reads as one
+atlas with plates from different expeditions rather than six copies of the
+same plate. What stays locked: the engraving linework, the cream paper
+(`#f6f1e8`), the quiet composition, and the muted-pigment ceiling on
+saturation.
+
+### Canonical prompt template (style-v2)
+
+> Hand-tinted 19th-century scientific expedition lithograph, chromolithograph
+> plate from a vintage natural-history atlas. **[SUBJECT — one or two
+> sentences, allegorical or typological, never a specific evidence scene].**
+> Fine copperplate cross-hatching and stipple engraving beneath soft,
+> translucent hand-applied watercolor washes. Full color in subdued antique
+> mineral pigments — **[CASE TONE — dominant pigments and where they sit]** —
+> over warm-black ink linework on aged warm cream paper (#f6f1e8). Colors
+> muted and slightly faded as if printed in 1870; never saturated modern
+> digital color, no gradients, no glow. Darwin-era natural-history journal
+> plate aesthetic, generous plain paper margins, quiet composition.
+> Absolutely no text, no labels, no captions, no border frame lines.
+> Unmistakably a hand-tinted engraving — stylized editorial artwork, not
+> photorealistic, no photograph.
+
+### Case tone assignments (style-v2)
+
+Chosen to suit each subject and to harmonize as a set on the paper-toned
+homepage grid: two warms, two cools, two greens, all at the same faded
+mineral-pigment saturation. Defined in `scripts/generate-case-art.mjs`
+(`CASE_TONES`); keep the two in sync.
+
+| case | tone | pigments |
+|---|---|---|
+| `geopolymer` | Sandstone ochre | yellow ochre and raw sienna stone, umber shadows, pale grey-blue sky wash |
+| `vasocomputation` | Anatomical madder | madder red and oxblood vessels, faded rose flesh tones, ivory bone, faint sage |
+| `transients` | Prussian night | deep Prussian and slate blue night sky, silver-cream stars, small warm brass accent on the instrument |
+| `orch-or` | Amethyst and gold | muted violet-grey and indigo forms, one antique-gold shaft of light |
+| `ydih` | Sage and vermilion | sage and olive-green plain, buff sky, one faded vermilion comet streak |
+| `mpi` | Verdigris | verdigris and muted teal, grey-green shadows, one pale sulfur-yellow butterfly accent |
+
+Rules of thumb:
+
+- **Paper is still the site token** `#f6f1e8`; linework stays warm-black.
+- One dominant tone per piece, one small counter-accent at most. If a
+  candidate looks like modern digital color — saturated, glowing, gradient —
+  reject it and regenerate.
+- Ban text in the image (models garble it; captions belong in HTML).
+- Covers ship at exactly 16:9 — the case-grid card renders `aspect-[16/9]`,
+  so what you crop is what readers see. The model often draws its own plate
+  frame despite the prompt; strip the frame line and paper margin, then cut
+  the 16:9 band that keeps the composition's key emblems (comet, star,
+  butterfly) — they tend to sit in the upper third.
+- Post-process: crop as above, resize to ≤1600 px wide, JPEG quality ~75
+  (`sips -s format jpeg -s formatOptions 75 -Z 1600 in.png --out out.jpg`).
+
+### Superseded: style-v1 (monochrome)
+
+The original house style was the same engraving language with a locked
+monochrome palette. Site-level art (hero, textures) still uses it and does
+not need regeneration; new covers should use style-v2.
+
+### Canonical prompt template (style-v1, superseded for covers)
 
 > 19th-century scientific expedition lithograph, copperplate engraving.
 > **[SUBJECT — one or two sentences, allegorical or typological, never a
@@ -72,7 +137,10 @@ Rules of thumb:
 | `IMG-SITE-HERO` | brand | parted strata, light, standing stone (unconcealment) |
 | `IMG-SITE-DIVIDER-STRATA` | texture | sedimentary strata band with copper seam |
 | `IMG-SITE-TAILPIECE` | texture | balance scale weighing stone against feather |
-| `IMG-GEO-COVER` | cover | polygonal megalithic wall, copper keystone |
+
+(All six case covers were regenerated in style-v2 on 2026-08-22; run
+`cover-style-v2-2026-08-22`, recorded per image in each case's
+`images.yaml`.)
 
 ## Plates: sourcing and treatment
 

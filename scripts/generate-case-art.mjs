@@ -14,8 +14,48 @@ import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml } from "yaml";
 
-const STYLE_VERSION = "style-v1";
+const STYLE_VERSION = "style-v2";
 const MODEL = "gpt-image-1";
+
+/**
+ * style-v2 per-case tone assignments (see docs/IMAGE_STYLE.md, "Case tone
+ * assignments" — keep the two in sync). Each case cover is full color in
+ * subdued antique mineral pigments, with its own dominant tone.
+ */
+const CASE_TONES = {
+  geopolymer:
+    "yellow ochre and raw sienna sandstone tones on the stonework, umber " +
+    "shadows, a pale grey-blue wash in the sky",
+  vasocomputation:
+    "madder red and oxblood on the vessel-like forms, faded rose flesh " +
+    "tones, ivory bone, a faint sage undertone",
+  transients:
+    "deep Prussian blue and slate blue in the night sky, silver-cream " +
+    "stars, one small warm brass accent on the instrument",
+  "orch-or":
+    "muted violet-grey and indigo forms, one antique-gold shaft of light",
+  ydih:
+    "sage and olive-green grassland, buff sky, one faded vermilion comet " +
+    "streak",
+  mpi:
+    "verdigris and muted teal, grey-green shadows, one pale sulfur-yellow " +
+    "accent on the butterfly",
+};
+
+/**
+ * Optional composition overrides for cases whose canonical cover subject is
+ * more specific than what the dossier fields would generate.
+ */
+const CASE_SUBJECTS = {
+  geopolymer:
+    "A monumental polygonal megalithic wall of interlocking many-angled " +
+    "cyclopean stones, viewed at a slight angle with raking light — an " +
+    "allegorical, typological composition, not a depiction of any real " +
+    "site as documentation.",
+};
+
+/** One reversible generation run: a single runId stamped on every record. */
+const RUN_ID = `cover-${STYLE_VERSION}-${new Date().toISOString().slice(0, 10)}`;
 
 const [slug, countArg] = process.argv.slice(2);
 const count = Math.min(Number(countArg ?? 3) || 3, 4);
@@ -50,23 +90,37 @@ if (!fs.existsSync(caseFile)) {
 }
 const record = parseYaml(fs.readFileSync(caseFile, "utf8"));
 
-// The canonical style-v1 template from docs/IMAGE_STYLE.md, with a subject
-// derived from the case's own dossier fields (ideas, never evidence scenes).
+// The canonical style-v2 template from docs/IMAGE_STYLE.md, with a subject
+// derived from the case's own dossier fields (ideas, never evidence scenes)
+// and the case's assigned tone.
 const subject =
+  CASE_SUBJECTS[slug] ??
   `An allegorical emblem for a case titled "${record.title}" in the domain of ` +
-  `${record.domain}: a symbolic, typological composition suggesting the ` +
-  `question — ${record.subtitle} — without depicting any real site, artifact, ` +
-  `or dataset as documentation.`;
+    `${record.domain}: a symbolic, typological composition suggesting the ` +
+    `question — ${record.subtitle} — without depicting any real site, artifact, ` +
+    `or dataset as documentation.`;
+
+const tone = CASE_TONES[slug];
+if (!tone) {
+  console.error(
+    `No style-v2 tone assigned for "${slug}". Add it to CASE_TONES here and ` +
+      `to the tone table in docs/IMAGE_STYLE.md, then re-run.`,
+  );
+  process.exit(1);
+}
 
 const prompt =
-  `19th-century scientific expedition lithograph, copperplate engraving. ` +
-  `${subject} Fine cross-hatching and stipple shading, hand-engraved ` +
-  `linework. Monochrome deep warm-black ink (#201b12) on aged warm cream ` +
-  `paper (#f6f1e8), with one restrained oxidized-copper (#9a5b33) accent on ` +
-  `the compositional focal point. Darwin-era natural-history journal plate ` +
-  `aesthetic, generous plain paper margins, quiet composition. Absolutely no ` +
-  `text, no labels, no captions, no border frame lines. Unmistakably an ` +
-  `engraving — stylized editorial artwork, not photorealistic, no photograph.`;
+  `Hand-tinted 19th-century scientific expedition lithograph, ` +
+  `chromolithograph plate from a vintage natural-history atlas. ${subject} ` +
+  `Fine copperplate cross-hatching and stipple engraving beneath soft, ` +
+  `translucent hand-applied watercolor washes. Full color in subdued ` +
+  `antique mineral pigments — ${tone} — over warm-black ink linework on ` +
+  `aged warm cream paper (#f6f1e8). Colors muted and slightly faded as if ` +
+  `printed in 1870; never saturated modern digital color, no gradients, no ` +
+  `glow. Darwin-era natural-history journal plate aesthetic, generous plain ` +
+  `paper margins, quiet composition. Absolutely no text, no labels, no ` +
+  `captions, no border frame lines. Unmistakably a hand-tinted engraving — ` +
+  `stylized editorial artwork, not photorealistic, no photograph.`;
 
 const outDir = path.join(
   process.cwd(),
@@ -124,6 +178,7 @@ console.log(`
   credit: "AI-generated editorial artwork, Aletheia house style"
   styleVersion: ${STYLE_VERSION}
   model: "${MODEL}"
+  runId: "${RUN_ID}"
   prompt: >-
     ${prompt}
 `);

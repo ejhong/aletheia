@@ -1,0 +1,71 @@
+# Literature watch (docs/MAINTENANCE.md § literature watch).
+# Weekly, scripts/watch-literature.mjs runs these queries against arXiv and
+# Crossref (OpenAlex optional) and surfaces new items as discovery-only
+# proposals under proposals/watch/<runId>/. Nothing lands in sources.yaml
+# without human review. Schema: WatchConfigSchema in src/domain/schema.ts.
+#
+# One query per live rung of the ladder, so a surfaced item lands next to
+# the theme it would actually move. Query strings are kept short because
+# the arXiv search ANDs every word.
+
+queries:
+  - id: microtubule-quantum-coherence
+    query: "microtubule quantum coherence"
+    # arXiv only: its search requires all three words, which is the right
+    # filter for this intersection topic. Crossref's loose relevance search
+    # returns either the microtubule-oncology or the quantum-information
+    # firehose, and an OR keyword list cannot hold both sides at once.
+    sources: [arxiv]
+    note: >-
+      The case's crux measurement: any coherence/dephasing result in
+      polymerized microtubules, especially near physiological conditions
+      (ORCH-C010, ORCH-C013; the ORCH-R001 experiment, if anyone runs it).
+
+  - id: tryptophan-superradiance
+    query: "tryptophan superradiance"
+    sources: [arxiv, crossref]
+    keywords: [superradian, "delayed luminescence"]
+    note: >-
+      Follow-ups to Babcock 2024 (collective UV emission in tryptophan
+      mega-networks) and the Zoghi delayed-luminescence line — the
+      strongest recent measurements on the microtubule-physics rung.
+
+  - id: anesthetic-microtubule-mechanism
+    query: "anesthetic microtubule"
+    sources: [arxiv, crossref]
+    # Keywords hold the anesthesia side (the query's loose Crossref matches
+    # otherwise include the vast microtubule oncology literature); the
+    # microtubule side is carried by the query string.
+    keywords: [anesthe, anaesthe, epothilone]
+    note: >-
+      The anesthesia arm: energy-migration suppression (Kalra lineage),
+      the epothilone contradiction between Wellesley and Mass General
+      (ORCH-C012, ORCH-R004), and potency-series work with proper
+      controls (ORCH-R002).
+
+  - id: objective-reduction-tests
+    query: "wave function collapse gravitational"
+    sources: [arxiv, crossref]
+    keywords: ["wave function collapse", "wavefunction collapse", "objective reduction", "Diósi", "Diosi"]
+    note: >-
+      The physics conjunct on its own track: Gran Sasso-style radiation
+      bounds, non-Markovian escape routes, and mesoscopic-superposition
+      proposals testing ℏ/E_G scaling (ORCH-C030, ORCH-C031, ORCH-R007).
+
+  - id: nonclassical-brain-signals
+    query: "non-classical brain function"
+    sources: [arxiv, crossref]
+    keywords: [nonclassical, "non-classical", "zero quantum", "multiple quantum", entangle]
+    note: >-
+      The Kerskens line and its classical-mechanism critique (Warren):
+      whether the zero-quantum-coherence MRI protocol witnesses anything
+      non-classical (ORCH-C026, ORCH-R006).
+
+  - id: hameroff-penrose-proponents
+    query: "orchestrated objective reduction"
+    sources: [arxiv, crossref]
+    authors: [Hameroff, Penrose, Wiest]
+    note: >-
+      New statements of the theory from its principal proponents and
+      advocates, so the case weighs the current proponent formulation
+      rather than a 2014 snapshot.

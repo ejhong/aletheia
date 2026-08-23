@@ -52,6 +52,7 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          EXTRACT_MODEL: ${{ vars.EXTRACT_MODEL }}
         run: |
           node scripts/process-inbox.mjs | tee inbox-out.txt
           outdir=$(tail -1 inbox-out.txt)
@@ -63,6 +64,7 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          EXTRACT_MODEL: ${{ vars.EXTRACT_MODEL }}
         run: node scripts/reassess-changed.mjs
 
       # Discovery only: new arXiv/Crossref items become unverified proposals
@@ -73,6 +75,7 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          EXTRACT_MODEL: ${{ vars.EXTRACT_MODEL }}
         run: |
           node scripts/watch-literature.mjs | tee watch-out.txt
           outdir=$(tail -1 watch-out.txt)

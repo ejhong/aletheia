@@ -130,8 +130,14 @@ damages surrounding content.
 ## Setup requirements (once)
 
 - Repository secret `ANTHROPIC_API_KEY` (preferred) or `OPENAI_API_KEY` —
-  without one the workflow fails early with instructions. Optional
-  `EXTRACT_MODEL` to pin a model.
+  without one the workflow fails early with instructions. The model is pinned
+  by the repository Actions **variable** `EXTRACT_MODEL` (currently
+  `claude-fable-5`, matching the code default in `scripts/lib/llm.mjs`);
+  switch models with
+  `gh variable set EXTRACT_MODEL --repo ejhong/aletheia --body "<model-id>"` —
+  no code edit needed. Assessment overlays stamp the model that actually ran
+  (`runId`/`model`/`promptVersion`), so overlays produced by different models
+  remain distinguishable.
 - Optional but recommended: `MAINTENANCE_PAT` (fine-grained token, contents
   + pull-requests write). PRs opened with the default Actions token do not
   trigger CI, which would leave auto-merge waiting; a PAT fixes that.

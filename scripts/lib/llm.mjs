@@ -10,7 +10,7 @@
 const providers = {
   anthropic: {
     key: process.env.ANTHROPIC_API_KEY,
-    model: process.env.EXTRACT_MODEL || "claude-sonnet-4-5",
+    model: process.env.EXTRACT_MODEL || "claude-fable-5",
     async call(system, user) {
       const res = await fetch("https://api.anthropic.com/v1/messages", {
         method: "POST",

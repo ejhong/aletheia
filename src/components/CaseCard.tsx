@@ -19,12 +19,15 @@ export function CaseCard({
   verdict,
   verdictHumanEndorsed,
   reviewCoverage,
+  check,
   cover,
 }: {
   record: CaseRecord;
   verdict: AssessmentState | null;
   verdictHumanEndorsed: boolean;
   reviewCoverage: { reviewed: number; total: number };
+  /** Cross-model check summary line: judge count and case-level concurrence. */
+  check?: { models: number; concur: boolean } | null;
   cover?: ImageRecord | null;
 }) {
   return (
@@ -77,6 +80,14 @@ export function CaseCard({
           <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-faint">
             human review {reviewCoverage.reviewed}/{reviewCoverage.total} claims
           </span>
+          {check ? (
+            <span
+              className={`font-mono text-[10px] uppercase tracking-[0.14em] ${check.concur ? "text-verdigris" : "text-ochre"}`}
+              title="Independent models re-assessed this case blind to all prior assessments"
+            >
+              {check.models}-model check · {check.concur ? "concur" : "diverge"}
+            </span>
+          ) : null}
         </div>
       </div>
     </Link>

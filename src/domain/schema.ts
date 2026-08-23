@@ -292,6 +292,14 @@ export const ChangeLogEntrySchema = z.object({
   reason: z.string(),
   actor: z.string(),
   aiAssisted: z.boolean(),
+  /**
+   * `content` (default): evidence, claims, assessments, corrections —
+   * what the homepage feed leads with. `housekeeping`: artwork, watch
+   * configuration, tooling. Optional so the append-only history files
+   * never need rewriting; entries without it are classified for display
+   * by `isHousekeepingEntry` in load.ts.
+   */
+  kind: z.enum(["content", "housekeeping"]).optional(),
 });
 export type ChangeLogEntry = z.infer<typeof ChangeLogEntrySchema>;
 

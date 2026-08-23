@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { ArtCredit } from "@/src/components/ArtCredit";
 import { CaseCard } from "@/src/components/CaseCard";
 import { ChangeTimeline } from "@/src/components/ChangeTimeline";
 import { assetPath } from "@/src/config/assets";
@@ -14,7 +13,6 @@ import {
 
 export default function HomePage() {
   const cases = loadAllCases();
-  const hero = siteImage("IMG-SITE-HERO");
   const divider = siteImage("IMG-SITE-DIVIDER-STRATA");
   const tailpiece = siteImage("IMG-SITE-TAILPIECE");
   // At least one slot per live case, so a new case's launch always shows.
@@ -23,38 +21,23 @@ export default function HomePage() {
   return (
     <div>
       <section className="mx-auto max-w-6xl px-5 pt-10 sm:pt-12 pb-8">
-        <div className="md:grid md:grid-cols-[minmax(0,1fr)_240px] md:gap-10 md:items-start">
-          <div>
-            <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-copper">
-              {site.subtitle}
-            </p>
-            <h1 className="font-serif text-2xl sm:text-3xl tracking-tight mt-3 leading-[1.15] max-w-2xl">
-              Controversies are argued at the wrong scale. We take them apart.
-            </h1>
-            <p className="mt-4 text-[15px] leading-relaxed text-ink-soft max-w-2xl">
-              {site.mission}
-            </p>
-            <p className="mt-4">
-              <Link
-                href="/method/"
-                className="font-mono text-[11px] uppercase tracking-[0.14em] text-copper underline underline-offset-4 hover:text-ink"
-              >
-                How the atlas works →
-              </Link>
-            </p>
-          </div>
-          <div className="mt-6 md:mt-1 max-w-[240px]">
-            <div className="border border-line bg-paper-deep/40 p-2">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={assetPath(hero.file)}
-                alt={hero.alt}
-                className="block w-full"
-              />
-            </div>
-            <ArtCredit className="mt-1.5 block" />
-          </div>
-        </div>
+        <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-copper">
+          {site.subtitle}
+        </p>
+        <h1 className="font-serif text-2xl sm:text-3xl tracking-tight mt-3 leading-[1.15] max-w-2xl">
+          Controversies are argued at the wrong scale. We take them apart.
+        </h1>
+        <p className="mt-4 text-[15px] leading-relaxed text-ink-soft max-w-2xl">
+          {site.mission}
+        </p>
+        <p className="mt-4">
+          <Link
+            href="/method/"
+            className="font-mono text-[11px] uppercase tracking-[0.14em] text-copper underline underline-offset-4 hover:text-ink"
+          >
+            How the atlas works →
+          </Link>
+        </p>
       </section>
 
       <section className="mx-auto max-w-6xl px-5 pb-8">

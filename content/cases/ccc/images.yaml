@@ -1,0 +1,59 @@
+# Case imagery. Two kinds, never confused:
+#   cover  — AI-generated editorial artwork in the house engraving style,
+#            honestly credited; may never depict evidence.
+#   plate  — real imagery with provenance and license, presented as numbered
+#            museum plates. Duotone treatment is applied in CSS at display
+#            time; the original files are unmodified apart from resizing.
+
+- id: IMG-CCC-COVER
+  role: cover
+  file: /images/cases/ccc/cover.jpg
+  alt: >-
+    Hand-tinted engraving of a seated muse in a laurel wreath, a closed
+    book on her knee, raising a small telescope toward an enormous disc of
+    concentric cream rings with a single ember-red center, under a
+    charcoal-slate night sky beside a globe on a tripod.
+  source: generated
+  license: "Project artwork (AI-generated)"
+  credit: "AI-generated editorial artwork, Aletheia house style"
+  styleVersion: style-v2
+  model: "gpt-image-1"
+  runId: "cover-style-v2-2026-08-22"
+  prompt: >-
+    Hand-tinted 19th-century scientific expedition lithograph. A seated
+    allegorical muse with a laurel wreath, a closed book on her knee,
+    raising a small telescope toward an enormous disc of concentric
+    engraved rings filling the night sky, a globe on a tripod stand beside
+    her — cycles within cycles, never a depiction of any real dataset.
+    Fine copperplate cross-hatching beneath soft watercolor washes. Full
+    color in subdued antique mineral pigments — deep charcoal-slate night
+    sky, concentric rings in pale cream and faded antique gold, one small
+    ember-red accent at the rings' center — on aged cream paper.
+    Absolutely no text, no labels, no captions, no border frame lines.
+
+- id: IMG-CCC-P01
+  role: plate
+  file: /images/cases/ccc/plates/ilc-9yr-moll4096.png
+  alt: >-
+    Oval all-sky map speckled with fine red, yellow, green and blue
+    mottling on a turquoise ground — the temperature fluctuations of the
+    cosmic microwave background across the whole sky.
+  source: commons
+  license: "Public domain"
+  credit: "NASA / WMAP Science Team, via Wikimedia Commons"
+  plateNumber: 1
+  mediaType: "spacecraft data map"
+  depicts: >-
+    The nine-year WMAP internal linear combination map: the temperature
+    anisotropies of the cosmic microwave background over the full sky, in
+    Mollweide projection, with the ±200 microkelvin fluctuations
+    color-coded. This is the dataset (in its final-release form) in which
+    Gurzadyan and Penrose reported concentric low-variance circles
+    (CCC-C001); whether such structure records a previous aeon or is the
+    ordinary texture of a ΛCDM sky is exactly what the case contests.
+  provenance:
+    photographer: "NASA / WMAP Science Team"
+    date: "2012-12-21"
+    sourceUrl: "https://commons.wikimedia.org/wiki/File:WMAP_2012.png"
+    originalTitle: "File:Ilc 9yr moll4096.png"
+  claimIds: [CCC-C001]

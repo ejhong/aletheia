@@ -40,6 +40,9 @@ const CASE_TONES = {
   mpi:
     "verdigris and muted teal, grey-green shadows, one pale sulfur-yellow " +
     "accent on the butterfly",
+  ccc:
+    "deep charcoal-slate night sky, concentric rings in pale cream and " +
+    "faded antique gold, one small ember-red accent at the rings' center",
 };
 
 /**
@@ -52,6 +55,12 @@ const CASE_SUBJECTS = {
     "cyclopean stones, viewed at a slight angle with raking light — an " +
     "allegorical, typological composition, not a depiction of any real " +
     "site as documentation.",
+  ccc:
+    "A seated allegorical muse with a laurel wreath, a closed book on her " +
+    "knee, raising a small telescope toward an enormous disc of concentric " +
+    "engraved rings filling the night sky, a globe on a tripod stand beside " +
+    "her in a quiet rocky landscape — cycles within cycles, an allegorical " +
+    "emblem, never a depiction of any real dataset as documentation.",
 };
 
 /** One reversible generation run: a single runId stamped on every record. */

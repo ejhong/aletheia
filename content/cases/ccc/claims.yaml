@@ -1,0 +1,781 @@
+# Canon layer. Claims built directly from published primary literature —
+# there is no seeding research document for this case. Every citation was
+# verified against Crossref, the arXiv API, publisher pages, or retrieved
+# full text before import (2026-08-22 batch). reviewState is honest
+# provenance: nothing here has been hand-checked by a human yet.
+#
+# Ladder note: this case's central discipline is separating three things
+# that the polemics tend to fuse — (1) what features the maps contain
+# (observation: both sides agree they are there), (2) what the theory
+# actually requires and predicts (mechanism), and (3) what explains the
+# features (attribution: a previous aeon versus the statistics of
+# searching a Gaussian sky).
+
+# ── Observation rung ─────────────────────────────────────────────────────────
+
+- id: CCC-C001
+  statement: >-
+    The WMAP and Planck temperature maps contain directions around which
+    annular rings show low temperature variance, often in concentric sets,
+    and these features are reproducible by independent groups applying the
+    published search procedure.
+  plainLanguage: >-
+    If you scan the microwave sky for rings that are unusually "quiet" —
+    less patchy than their surroundings — you find them, sometimes several
+    sharing one center. This is not in dispute: the critics who reject the
+    cosmological interpretation reproduce the rings themselves.
+  theme: circles
+  rung: observation
+  tier: featured
+  claimType: observation
+  importance: major
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 — Gurzadyan & Penrose 2010; reproduced in Wehus & Eriksen 2011, Moss/Scott/Zibin 2011, DeAbreu et al. 2015"
+    extractedBy: "Fable (AI agent)"
+    runId: "ccc-case-2026-08-22"
+    date: "2026-08-22"
+  sourceAnchor:
+    locator: "Wehus & Eriksen 2011, abstract"
+    quote: >-
+      We do reproduce the claimed ring structures observed in the WMAP data
+      as presented by Gurzadyan and Penrose, thereby verifying their
+      computational procedures.
+    sourceId: SRC-WEHUS-ERIKSEN-2011
+  credibility: well_supported
+  credibilitySummary: >-
+    Confirmed by every group that has looked, on both sides of the dispute,
+    across WMAP and Planck data. The features exist as outputs of the
+    search procedure; what they mean is a separate question.
+  diagnosticity: low
+  diagnosticitySummary: >-
+    By itself this discriminates nothing: the independent reanalyses find
+    the same features in simulated skies that contain no previous aeon.
+    Everything turns on whether the features are anomalous (CCC-C002), not
+    on whether they are present.
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  strongestObjection: >-
+    "Feature" here is procedure-relative: a low-variance ring is whatever
+    the Gurzadyan–Penrose variance criterion flags, and the 2024 Bodnia et
+    al. analysis shows the criterion is triggered by few-pixel bright or
+    dark spots that inflate the baseline variance — so reproducing the
+    rings partly means reproducing an artifact of the method.
+  whatWouldChangeOurMind:
+    - "A demonstration that the ring features disappear entirely under artifact screening (which would collapse this claim into CCC-C010's artifact account)."
+
+- id: CCC-C002
+  statement: >-
+    The concentric low-variance circle families in the CMB are statistically
+    anomalous — present at significance (reported up to 6σ) incompatible
+    with a standard ΛCDM sky.
+  plainLanguage: >-
+    The proponents' actual evidence claim: not just that quiet rings exist,
+    but that there are far more of them, in concentric families, than a
+    universe without a previous aeon should produce. This is the claim the
+    independent reanalyses reject.
+  theme: circles
+  rung: observation
+  tier: featured
+  claimType: statistical
+  importance: major
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 — Gurzadyan & Penrose 2010/2013 vs four independent reanalyses"
+    extractedBy: "Fable (AI agent)"
+    runId: "ccc-case-2026-08-22"
+    date: "2026-08-22"
+  sourceAnchor:
+    locator: "Gurzadyan & Penrose 2010 (arXiv:1011.3706), abstract"
+    quote: >-
+      The analysis of Wilkinson Microwave Background Probe's (WMAP) cosmic
+      microwave background 7-year maps does indeed reveal such concentric
+      circles, of up to 6σ significance.
+    sourceId: SRC-GURZADYAN-PENROSE-2010
+  credibility: contradicted
+  credibilitySummary: >-
+    Four independent reanalyses (Wehus & Eriksen; Moss, Scott & Zibin;
+    Hajian; DeAbreu, Contreras & Scott) each found the observed circle
+    abundance fully consistent with properly simulated ΛCDM skies, and the
+    2024 Bodnia et al. high-resolution study additionally identified the
+    mechanism by which the search criterion manufactures concentric
+    low-variance circles around few-pixel spots. No independent group has
+    reproduced the claimed significance. The proponents' counter-arguments
+    (ensemble choice, ellipticity tests, anisotropic center distribution)
+    are recorded at CCC-C003 and in the evidence ledger.
+  diagnosticity: high
+  diagnosticitySummary: >-
+    If the circles really were anomalous under a sound null, they would be
+    among the most important observations in cosmology — no conventional
+    mechanism marks the sky with concentric low-variance families. The
+    claim's diagnostic power is exactly why its statistical footing gets
+    the scrutiny it does.
+  parentClaimIds: [CCC-C001]
+  dependsOnClaimIds: []
+  strongestObjection: >-
+    Every independent group that simulated the sky with the observed ΛCDM
+    power spectrum found the same features at the same abundance in
+    synthetic data containing no previous aeon; the reported 6σ arises
+    only against a Gaussian-sky-plus-noise null that lacks the known
+    large-scale correlations of the real CMB.
+  whatWouldChangeOurMind:
+    - "A preregistered, adversarial reanalysis (CCC-R001) finding excess concentric circle families against a jointly agreed ΛCDM ensemble."
+    - "Independent confirmation of the ellipticity drop-off (CCC-C503) under artifact screening and proper masks."
+
+- id: CCC-C003
+  statement: >-
+    The disagreement over circle significance traces to the construction of
+    the null ensemble: Gurzadyan and Penrose computed significance against
+    simulations of a pure Gaussian sky plus instrument noise, while all
+    independent reanalyses simulated skies drawing on the full ΛCDM angular
+    power spectrum, under which the observed features are typical.
+  plainLanguage: >-
+    Both camps agree what is in the real data; they disagree about what
+    "expected by chance" means. The proponents tested against a sky with
+    no built-in large-scale correlations; the critics tested against the
+    standard cosmological model's sky, which is full of them. The same
+    rings are a 6σ anomaly against the first null and unremarkable against
+    the second.
+  theme: statistics
+  rung: observation
+  tier: featured
+  claimType: methodological
+  importance: major
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 — documented on both sides: Gurzadyan & Penrose arXiv:1012.1486; Moss/Scott/Zibin 2011; Bodnia et al. 2024 §1"
+    extractedBy: "Fable (AI agent)"
+    runId: "ccc-case-2026-08-22"
+    date: "2026-08-22"
+  sourceAnchor:
+    locator: "Gurzadyan & Penrose 2010 (arXiv:1012.1486), abstract"
+    quote: >-
+      Both groups simulate maps using the CMB power spectrum for LCDM,
+      while we simulate a pure Gaussian sky plus the WMAP's noise.
+    sourceId: SRC-GURZADYAN-PENROSE-2010B
+  credibility: well_supported
+  credibilitySummary: >-
+    Uncontroversial as a description of what each side did — the ensemble
+    difference is stated in the proponents' own response note and in every
+    critical paper. What remains contested is which null is the right one,
+    and that is the attribution dispute (CCC-C009 vs CCC-C010), not this
+    claim.
+  diagnosticity: high
+  diagnosticitySummary: >-
+    This claim locates the crux. Under the standard understanding of
+    hypothesis testing, the null must include everything the rival
+    hypothesis (ΛCDM) actually predicts — including the observed power
+    spectrum — which is why the independent choice is near-universally
+    regarded as correct. The proponents' contrary position, that the CMB's
+    non-random component invalidates ΛCDM-spectrum simulations as a null,
+    is itself a substantive cosmological claim requiring defense.
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  strongestObjection: >-
+    Calling this a symmetric "choice of ensembles" understates the
+    asymmetry: testing a detection claim against a null that omits the
+    known statistical properties of the data is a textbook error, and the
+    proponents' justification (that the CMB signal is mostly non-random)
+    presupposes part of what is in dispute.
+  whatWouldChangeOurMind:
+    - "A published derivation showing the ΛCDM-spectrum ensemble is inappropriate for this statistic — or proponent adoption of the standard ensemble with the anomaly surviving."
+
+- id: CCC-C004
+  statement: >-
+    The Planck and WMAP maps contain anomalous compact regions of raised
+    temperature ("Hawking points") with angular radii of 0.03–0.04 radians
+    and a size cut-off, at 99.98% statistical confidence.
+  plainLanguage: >-
+    The 2020 claim by An, Meissner, Nurowski and Penrose: about the sky's
+    quota of small hot spots. They report finding a family of unusually
+    energetic spots of a characteristic size — matching what evaporating
+    supermassive black holes from a previous aeon should leave — with only
+    a 0.02% chance of arising in a standard sky.
+  theme: hawking
+  rung: observation
+  tier: featured
+  claimType: statistical
+  importance: major
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 — An, Meissner, Nurowski & Penrose 2020 (MNRAS); full text read"
+    extractedBy: "Fable (AI agent)"
+    runId: "ccc-case-2026-08-22"
+    date: "2026-08-22"
+  sourceAnchor:
+    locator: "An, Meissner, Nurowski & Penrose 2020, abstract"
+    quote: >-
+      This paper presents strong observational evidence of numerous
+      previously unobserved anomalous circular spots, of significantly
+      raised temperature, in the CMB sky.
+    sourceId: SRC-AN-MEISSNER-NUROWSKI-PENROSE-2020
+  credibility: contradicted
+  credibilitySummary: >-
+    The headline confidence does not survive independent scrutiny: Jow &
+    Scott showed the 99.98% figure depends on fixing the ring size after
+    inspection — marginalizing over sizes leaves an 87% (about 1σ) excess —
+    and two further independent searches (López et al. 2022; Bodnia et al.
+    2024) found no significant Hawking-point signal, the latter ruling out
+    Gaussian-profile spots of 100–400 µK at 0.7–1.2° extent and tracing the
+    strongest candidates to individual anomalous pixels. The proponents'
+    cross-map coincidence argument (same locations in Planck and WMAP)
+    remains their strongest surviving point.
+  diagnosticity: high
+  diagnosticitySummary: >-
+    A genuine population of compact, size-capped hot spots would be very
+    hard for standard cosmology to produce and is among CCC's most
+    distinctive signatures — which is why the look-elsewhere correction
+    matters so much here.
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  strongestObjection: >-
+    The significance was computed for the best ring size found in the data
+    rather than for the family of sizes searched; correcting this single
+    a-posteriori choice removes essentially the entire effect (99.98% →
+    87%), before even reaching the anomalous-pixel artifact identified in
+    2024.
+  whatWouldChangeOurMind:
+    - "A preregistered Hawking-point search with the profile, amplitude range, and look-elsewhere correction fixed in advance (CCC-R001, CCC-R005) returning a significant excess."
+    - "Verification that the Planck–WMAP co-location of the strongest spots survives artifact screening and is itself statistically surprising."
+
+# ── Mechanism rung ───────────────────────────────────────────────────────────
+
+- id: CCC-C005
+  statement: >-
+    CCC's aeon-to-aeon matching requires all rest mass to fade out in the
+    remote future, and no accepted particle-physics mechanism for mass
+    fade-out exists; Penrose presents it as an admittedly unconventional
+    hypothesis.
+  plainLanguage: >-
+    For the far future of one universe to be conformally identical to the
+    Big Bang of the next, the far future must contain nothing that carries
+    a built-in clock — and rest mass is a clock. Electrons are the sharp
+    case: they are the lightest charged particle, charge conservation
+    forbids their decay, and yet CCC needs their mass gone. Penrose
+    proposes the mass simply fades asymptotically; he concedes this is
+    unconventional, and sympathetic reviewers list it among the theory's
+    open problems.
+  theme: theory
+  rung: mechanism
+  tier: featured
+  claimType: mechanistic
+  importance: major
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 — Penrose 2018 (Found. Phys.) full text; Tod 2022 (arXiv:2202.10864)"
+    extractedBy: "Fable (AI agent)"
+    runId: "ccc-case-2026-08-22"
+    date: "2026-08-22"
+  sourceAnchor:
+    locator: "Penrose 2018, Foundations of Physics 48(10), §2"
+    quote: >-
+      For the strict requirements of the theory one must apparently assume
+      that there is a mechanism whereby in the hugely long-term future,
+      mass eventually fades away, asymptotically — which I shall refer to
+      as "mass fade-out" — an admittedly unconventional hypothesis.
+    sourceId: SRC-PENROSE-2018-FOP
+  credibility: well_supported
+  credibilitySummary: >-
+    Well supported as a statement about the theory: the requirement and
+    the absence of a mechanism are documented in Penrose's own papers and
+    in Tod's sympathetic open-questions review ("Can one implement mass
+    fade-out? Massless charged particles are usually regarded as
+    problematical."). Whether the hypothesis is true is untested and
+    currently untestable.
+  diagnosticity: moderate
+  diagnosticitySummary: >-
+    A theoretical cost rather than an observational discriminator: it does
+    not bear on whether the CMB features are anomalous, but it prices the
+    theory those features are meant to support. A demonstrated no-go
+    theorem would remove CCC from contention regardless of the statistics.
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  strongestObjection: >-
+    Penrose notes that mass is not a Casimir operator of the de Sitter
+    group, so exact mass constancy is less sacrosanct with a positive
+    cosmological constant than Poincaré-invariant intuition suggests — the
+    gap is a missing mechanism, not a proven impossibility.
+  whatWouldChangeOurMind:
+    - "A concrete field-theoretic implementation of mass fade-out consistent with observation (CCC-R004)."
+    - "A no-go result showing conformal crossover incompatible with charged massive relics."
+
+- id: CCC-C006
+  statement: >-
+    CCC's entropy accounting is self-consistent: information loss in
+    black-hole evaporation, together with the conformal rescaling at
+    crossover, legitimately resets the gravitational entropy so that each
+    aeon can begin in a low-entropy state without violating the Second Law.
+  plainLanguage: >-
+    A cyclic universe has a bookkeeping problem: entropy must always rise,
+    so how can each new aeon start pristine? Penrose's answer is that
+    black holes destroy information (contrary to the mainstream view that
+    quantum evolution preserves it), which licenses discarding the
+    associated entropy. Whether that move is coherent is contested
+    territory in quantum gravity.
+  theme: theory
+  rung: mechanism
+  tier: featured
+  claimType: mechanistic
+  importance: major
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 — Penrose 2010 (Cycles of Time), Penrose 2013 (Found. Phys. 44); critique in Eckstein 2023 (Gen. Rel. Grav.)"
+    extractedBy: "Fable (AI agent)"
+    runId: "ccc-case-2026-08-22"
+    date: "2026-08-22"
+  sourceAnchor:
+    locator: "Penrose 2013, Foundations of Physics 44(8): 873–890 (CCC's entropy discussion); book-length treatment in Cycles of Time (2010)"
+    sourceId: SRC-PENROSE-2013-FOP
+  credibility: mixed
+  credibilitySummary: >-
+    The proposal is worked out at the level of Penrose's own writings and
+    depends on black-hole information loss, which most of the quantum
+    gravity community rejects. Eckstein's 2023 analysis argues the assumed
+    loss of degrees of freedom is incompatible with the quantum notion of
+    entropy and that information loss would increase rather than reset
+    global entropy — while, notably, proposing a unitary variant of CCC
+    rather than dismissing the framework.
+  diagnosticity: moderate
+  diagnosticitySummary: >-
+    Like mass fade-out, this prices the theory: if the entropy reset fails,
+    CCC loses its central motivation (explaining the Second Law's initial
+    condition) even if some sky features were anomalous.
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  strongestObjection: >-
+    Information loss in Hawking evaporation contradicts the unitarity that
+    the AdS/CFT-era consensus and the recent Page-curve calculations
+    support; and Eckstein argues that even granting loss, discarding
+    degrees of freedom raises global entropy instead of renormalizing it —
+    the reset does the opposite of what CCC needs.
+  whatWouldChangeOurMind:
+    - "A rigorous demonstration that the crossover entropy accounting balances (or provably cannot), engaging the modern information-paradox literature."
+    - "Adoption of a unitary CCC variant (Eckstein 2023) by proponents, which would change what this claim asserts."
+
+- id: CCC-C007
+  statement: >-
+    CCC predicts that dark matter consists of Planck-mass particles
+    ("erebons") created at the crossover, which interact only
+    gravitationally, decay completely within an aeon, and whose decays
+    could register as impulsive signals in gravitational-wave detectors.
+  plainLanguage: >-
+    The theory's most laboratory-adjacent commitment: dark matter is made
+    of particles about the mass of a dust grain (~10⁻⁵ g), each one born
+    at the aeon boundary, each one eventually dying in a burst of
+    high-frequency gravitational radiation. Penrose has suggested such
+    bursts might already lurk in LIGO's noise. Unlike the CMB signatures,
+    this prediction is about future data.
+  theme: erebons
+  rung: mechanism
+  tier: featured
+  claimType: mechanistic
+  importance: supporting
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 — Penrose 2018 (Found. Phys.) full text; Penrose 2017 (arXiv:1707.04169)"
+    extractedBy: "Fable (AI agent)"
+    runId: "ccc-case-2026-08-22"
+    date: "2026-08-22"
+  sourceAnchor:
+    locator: "Penrose 2018, Foundations of Physics 48(10), §5"
+    quote: >-
+      Since no other physical interactions (electromagnetic, weak, or
+      strong) are involved, their mass would have to be something of the
+      order of a Planck mass (10−5 g) or thereabouts... erebons should be
+      able to decay, with a lifetime of perhaps something like 10^11 years.
+    sourceId: SRC-PENROSE-2018-FOP
+  credibility: well_supported
+  credibilitySummary: >-
+    Well supported as a statement of what CCC predicts — the erebon
+    proposal is developed in print by Penrose himself. No detection exists;
+    no dedicated search has been published; the one suggestive connection
+    (correlated LIGO noise) was floated by Penrose in a 2017 preprint and
+    has not been pursued to a result in either direction.
+  diagnosticity: high
+  diagnosticitySummary: >-
+    This is CCC's cleanest forward-looking discriminator: a demonstrated
+    population of impulsive, non-astrophysical Planck-frequency events
+    would be evidence no rival account expects, and a well-characterized
+    null constrains the theory's dark-matter sector. Unlike the CMB
+    claims, nothing here depends on a-posteriori statistics yet.
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  strongestObjection: >-
+    The prediction is an order-of-magnitude sketch, not a spectrum: mass
+    "perhaps with some factor such as 8π," lifetime "perhaps something
+    like 10^11 years." Until amplitudes and rates are specified, a null
+    search can always be absorbed by parameter adjustment — the same
+    unfalsifiability risk the CMB signatures face.
+  whatWouldChangeOurMind:
+    - "A published erebon-decay search in LIGO/Virgo/KAGRA data with prespecified waveform and rate assumptions (CCC-R002), in either direction."
+
+- id: CCC-C008
+  statement: >-
+    CCC contains no inflationary phase: the near scale-invariance of the
+    CMB temperature fluctuations is instead attributed to erebon decay
+    during the exponential expansion of the previous aeon.
+  plainLanguage: >-
+    Standard cosmology explains the CMB's almost-even texture by a burst
+    of inflation just after the Big Bang. CCC deletes inflation and
+    assigns the same job to the previous aeon's dark-matter decay during
+    its dark-energy-driven expansion — the "inflation" of our aeon
+    happened, in effect, before our Big Bang.
+  theme: theory
+  rung: mechanism
+  tier: featured
+  claimType: mechanistic
+  importance: supporting
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 — Penrose 2018 (Found. Phys.) full text, §5"
+    extractedBy: "Fable (AI agent)"
+    runId: "ccc-case-2026-08-22"
+    date: "2026-08-22"
+  sourceAnchor:
+    locator: "Penrose 2018, Foundations of Physics 48(10), §5"
+    quote: >-
+      there is no inflation in CCC
+    sourceId: SRC-PENROSE-2018-FOP
+  credibility: well_supported
+  credibilitySummary: >-
+    Well supported as a statement of the theory's structure, in Penrose's
+    own words. Whether the erebon mechanism can quantitatively reproduce
+    the measured spectral index and acoustic peak structure has not been
+    demonstrated; Penrose reports only that a CCC explanation "can be
+    found" with details to be published.
+  diagnosticity: moderate
+  diagnosticitySummary: >-
+    Replacing inflation creates obligations: everything inflation
+    quantitatively explains (spectral tilt, Gaussianity, acoustic
+    coherence) becomes an unpaid debt for CCC until derived. It also
+    creates an exposure — evidence specific to an inflationary era in our
+    own aeon, such as primordial tensor B-modes, would have no CCC
+    mechanism (see CCC-R003).
+  parentClaimIds: [CCC-C007]
+  dependsOnClaimIds: []
+  strongestObjection: >-
+    Inflationary ΛCDM fits the Planck data to sub-percent precision with a
+    handful of parameters; CCC currently offers no published computation
+    of the fluctuation spectrum it predicts, so assigning that role to
+    erebon decay is a promissory note rather than a result.
+  whatWouldChangeOurMind:
+    - "A published CCC derivation of the CMB power spectrum (amplitude, tilt, peak structure) compared against Planck data."
+    - "A confirmed primordial tensor B-mode detection, which would evidence an inflationary era CCC does not contain."
+
+# ── Attribution rung ─────────────────────────────────────────────────────────
+
+- id: CCC-C009
+  statement: >-
+    The reported concentric low-variance circles and Hawking points in the
+    CMB are real imprints of supermassive black-hole encounters and
+    evaporations in an aeon preceding our Big Bang, as predicted by
+    conformal cyclic cosmology.
+  plainLanguage: >-
+    The featured thesis: the microwave sky is a palimpsest, and the faint
+    rings and hot spots are legible writing from the universe before ours.
+    If true, these would be the oldest observable events in existence —
+    older than the Big Bang.
+  theme: attribution
+  rung: attribution
+  tier: featured
+  claimType: interpretive
+  importance: headline
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 — central thesis of Gurzadyan & Penrose 2010–2013 and An, Meissner, Nurowski & Penrose 2020"
+    extractedBy: "Fable (AI agent)"
+    runId: "ccc-case-2026-08-22"
+    date: "2026-08-22"
+  credibility: contradicted
+  credibilitySummary: >-
+    The verdict presently follows the signature claims it rests on: every
+    independent reanalysis of the circles (four groups) and of the Hawking
+    points (three groups) finds no significant anomaly once the null
+    ensemble and look-elsewhere effects are handled, and the strongest
+    recent candidates trace to few-pixel artifacts. What keeps the thesis
+    from being closed rather than contradicted: the genuine pre-2010
+    prediction of ring-type signatures, the unexplained Planck–WMAP
+    co-location of the strongest spots, the proponents' untested
+    ellipticity and anisotropy arguments, and the fact that current-data
+    nulls cannot rule out fainter imprints (Bodnia et al. say exactly
+    this).
+  diagnosticity: high
+  diagnosticitySummary: >-
+    This is the thesis itself, and it is unusually well-formed for a
+    pre-Big-Bang proposal: it stakes observable, in-principle-decidable
+    claims on data everyone shares — which is why the case can be mapped
+    at all.
+  parentClaimIds: []
+  dependsOnClaimIds: [CCC-C002, CCC-C004]
+  strongestObjection: >-
+    The thesis inherits every statistical defect of CCC-C002 and CCC-C004,
+    and adds one: the predictions were qualitative (some rings, some
+    spots, somewhere), so any flagged feature can be claimed as a match —
+    abundance, amplitude, and profile were never specified in advance,
+    which is what allowed the significance to live entirely in
+    after-the-fact analysis choices.
+  whatWouldChangeOurMind:
+    - "The adversarial preregistered reanalysis (CCC-R001) finding a surviving excess — or the proponents accepting its null as binding."
+    - "Quantitative CCC signature predictions (CCC-R005) succeeding on held-out data."
+    - "An erebon-decay detection (CCC-R002), which would transform the prior for every other CCC claim."
+
+- id: CCC-C010
+  statement: >-
+    Standard inflationary ΛCDM, combined with a-posteriori statistics —
+    inadequate null ensembles, look-elsewhere effects, and search criteria
+    sensitive to few-pixel artifacts — fully accounts for every reported
+    CCC signature in the CMB.
+  plainLanguage: >-
+    The rival thesis: nothing from before the Big Bang has been seen. The
+    standard model's sky, being a correlated random field, is full of
+    rings and spots; the proponents' significance came from comparing
+    against the wrong kind of randomness, choosing parameters after
+    looking, and — in the strongest recent cases — from a handful of
+    freak pixels. The CMB has been re-discovered to contain structure,
+    nothing more.
+  theme: conventional
+  rung: attribution
+  tier: featured
+  claimType: interpretive
+  importance: headline
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 — Moss/Scott/Zibin 2011, Wehus & Eriksen 2011, Hajian 2011, DeAbreu et al. 2015, Jow & Scott 2020, López et al. 2022, Bodnia et al. 2024"
+    extractedBy: "Fable (AI agent)"
+    runId: "ccc-case-2026-08-22"
+    date: "2026-08-22"
+  sourceAnchor:
+    locator: "Moss, Scott & Zibin 2011, abstract"
+    quote: >-
+      Gurzadyan & Penrose have not found evidence for pre-Big Bang
+      phenomena, but have simply re-discovered that the CMB contains
+      structure.
+    sourceId: SRC-MOSS-SCOTT-ZIBIN-2011
+  credibility: well_supported
+  credibilitySummary: >-
+    Seven independent analyses across fourteen years converge on it, the
+    2024 artifact diagnosis supplies the missing mechanism for how the
+    proponent method generates false positives, and the account requires
+    nothing beyond standard cosmology plus documented statistical
+    practices. Kept short of established because the account's own
+    proponents note residual loose ends: the marginalized Hawking-point
+    excess is 87%, not 0%, and the co-location of the strongest spots
+    across independent instruments has not been specifically explained.
+  diagnosticity: high
+  diagnosticitySummary: >-
+    The direct rival to CCC-C009. If it holds, the CMB evidence line for
+    CCC dissolves entirely and the theory returns to being an elegant
+    untested idea; if it can be shown insufficient under preregistered
+    conditions, what remains is genuinely extraordinary.
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  strongestObjection: >-
+    The critics' analyses are themselves post-hoc — each was designed in
+    response to a proponent claim, none was preregistered either — and the
+    proponents' strongest structural points (the ellipticity drop-off of
+    concentric sets, the extreme anisotropy of circle centers, cross-map
+    spot coincidence) have been answered only partially, mostly by noting
+    they were not predicted in advance.
+  whatWouldChangeOurMind:
+    - "A preregistered search (CCC-R001) in which a proponent-specified signature survives the agreed null and corrections."
+    - "Demonstration that the Planck–WMAP co-location of top spots is statistically surprising after artifact screening."
+
+- id: CCC-C011
+  statement: >-
+    No CCC-signature search on either side has used a preregistered or
+    blind-analysis protocol: every reported significance, positive and
+    negative, reflects choices of statistic, null ensemble, mask, and
+    search parameters made after inspecting the data.
+  plainLanguage: >-
+    The methodological crux, stated as a fact about practice: this entire
+    fourteen-year dispute has been conducted post-hoc. The proponents
+    chose their variance criterion and ring sizes after exploring the
+    maps; the critics chose their counter-statistics after reading the
+    proponents; nobody froze an analysis before looking. That is why the
+    same sky keeps supporting both conclusions.
+  theme: statistics
+  rung: attribution
+  tier: featured
+  claimType: methodological
+  importance: major
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 — editorial synthesis over the full exchange (Gurzadyan & Penrose 2010–2013; An et al. 2020 §responses; Jow & Scott 2020; Bodnia et al. 2024)"
+    extractedBy: "Fable (AI agent)"
+    runId: "ccc-case-2026-08-22"
+    date: "2026-08-22"
+  credibility: well_supported
+  credibilitySummary: >-
+    Visible on the face of the record: the Hawking-point ring size was
+    optimized in-sample (the specific defect Jow & Scott corrected), the
+    sky-twist and ellipticity tests were introduced in response to
+    criticism, and each critical reanalysis was constructed after — and
+    because of — the claim it tested. No party has published a
+    preregistered protocol. The claim is an editorial synthesis of the
+    exchange rather than a statement any single source makes, and is
+    labeled accordingly.
+  diagnosticity: high
+  diagnosticitySummary: >-
+    Decides how much the existing record can ever settle. If all
+    significances on both sides are post-hoc, the current stalemate is a
+    property of the methodology, not the sky — and the only exit is the
+    preregistered adversarial design the research agenda proposes.
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  strongestObjection: >-
+    The asymmetry objection: post-hoc analysis is far more corrosive to
+    detection claims than to null results — DeAbreu et al. deliberately
+    froze their parameters to the proponents' own published choices, which
+    is a form of prespecification, and a null found under the claimant's
+    own criteria carries weight that a post-hoc positive does not.
+  whatWouldChangeOurMind:
+    - "Publication of any preregistered CCC-signature search, which would make this claim historical."
+
+# ── Catalog claims (unreviewed backlog) ──────────────────────────────────────
+
+- id: CCC-C501
+  statement: >-
+    Meissner, Nurowski and Ruszczycki (2013) reported ring-type structures
+    in the WMAP maps at 99.7% confidence relative to artificial maps of the
+    same harmonic content.
+  plainLanguage: >-
+    A proponent-adjacent Warsaw group ran its own ring search with a
+    different statistic and reported a significant effect — one of the two
+    supporting analyses the Hawking-points paper builds on.
+  theme: circles
+  rung: observation
+  tier: catalog
+  claimType: statistical
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 — Crossref + arXiv abstract"
+    extractedBy: "Fable (AI agent)"
+    runId: "ccc-case-2026-08-22"
+    date: "2026-08-22"
+  sourceAnchor:
+    locator: "Meissner, Nurowski & Ruszczycki 2013, abstract"
+    quote: >-
+      We compare the actual WMAP maps with artificial, purely statistical
+      maps of the same harmonic content to argue that there are, with
+      confidence level 99.7 %, ring-type structures in the observed cosmic
+      microwave background.
+    sourceId: SRC-MEISSNER-NUROWSKI-RUSZCZYCKI-2013
+
+- id: CCC-C502
+  statement: >-
+    An, Meissner and Nurowski (2017) reported ring-type structures in the
+    Planck CMB map at 99.4% confidence.
+  plainLanguage: >-
+    The Warsaw-line analysis repeated on Planck data, again reporting a
+    significant ring effect — cited in the 2020 Hawking-points paper as
+    independent confirmation.
+  theme: circles
+  rung: observation
+  tier: catalog
+  claimType: statistical
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 — Crossref record + description in An et al. 2020"
+    extractedBy: "Fable (AI agent)"
+    runId: "ccc-case-2026-08-22"
+    date: "2026-08-22"
+  sourceAnchor:
+    locator: "An, Meissner & Nurowski 2017, MNRAS 473(3): 3251–3255; characterized in An et al. 2020, introduction"
+    quote: >-
+      Subsequently, An, Meissner and Nurowski (An, Meissner & Nurowski
+      2018) examined the Planck satellite data, again finding a significant
+      effect, at a 99.4% confidence level.
+    sourceId: SRC-AN-MEISSNER-NUROWSKI-2017
+
+- id: CCC-C503
+  statement: >-
+    Gurzadyan and Penrose (2013) reported that the prevalence of concentric
+    low-variance ring sets in WMAP data drops sharply when the search is
+    modified to look for elliptical rather than circular shapes, and that
+    ring radii cut off near 15–20 degrees.
+  plainLanguage: >-
+    The proponents' "sky-twist" test: real concentric families should be
+    circular if they come from expanding spherical wavefronts, and the
+    proponents report that the signal indeed prefers circles over
+    ellipses — their main structural answer to the it's-all-chance
+    critique. No independent group has confirmed the test under artifact
+    screening.
+  theme: circles
+  rung: observation
+  tier: catalog
+  claimType: statistical
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 — arXiv/EPJ Plus abstract"
+    extractedBy: "Fable (AI agent)"
+    runId: "ccc-case-2026-08-22"
+    date: "2026-08-22"
+  sourceAnchor:
+    locator: "Gurzadyan & Penrose 2013, Eur. Phys. J. Plus 128: 22, abstract"
+    quote: >-
+      A new "sky-twist" procedure, directly analysing WMAP data, without
+      appeal to simulations, shows that the prevalence of these concentric
+      sets depends on the rings being circular, rather than even slightly
+      elliptical, numbers dropping off dramatically with increasing
+      ellipticity.
+    sourceId: SRC-GURZADYAN-PENROSE-2013
+
+- id: CCC-C504
+  statement: >-
+    An, Meissner, Nurowski and Penrose (2020) reported that the centers of
+    concentric low-variance ring triples are extremely anisotropically
+    distributed, with about 83% of 1134 centers lying within three regions
+    covering roughly 3% of the searched sky.
+  plainLanguage: >-
+    The proponents' second structural argument: the ring centers clump
+    enormously instead of scattering evenly. They read the clumping as
+    superclusters in the previous aeon; critics have not specifically
+    explained it, though clustered artifacts (bright-spot regions) would
+    also clump.
+  theme: circles
+  rung: observation
+  tier: catalog
+  claimType: statistical
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 — An et al. 2020 full text"
+    extractedBy: "Fable (AI agent)"
+    runId: "ccc-case-2026-08-22"
+    date: "2026-08-22"
+  sourceAnchor:
+    locator: "An, Meissner, Nurowski & Penrose 2020, discussion of DeAbreu et al."
+    quote: >-
+      The vast majority (in fact around 83%) of the 1134 centres found lie
+      within three roughly elliptical regions (two in the southern and one
+      in the northern galactic hemisphere), each of not more than about 3%
+      of the entire region of the sky being examined.
+    sourceId: SRC-AN-MEISSNER-NUROWSKI-PENROSE-2020
+
+- id: CCC-C505
+  statement: >-
+    Penrose (2017) proposed that reported correlated noise between the two
+    LIGO detectors, with the same time delay as the gravitational-wave
+    signals, could be impulsive gravitational events from erebon decay.
+  plainLanguage: >-
+    A speculative bridge from CCC's dark-matter sector to existing
+    instruments: when a 2017 controversy claimed LIGO's noise showed odd
+    correlations, Penrose suggested the "noise" might partly be
+    erebon-decay bursts from distant galaxies. The underlying noise claim
+    itself remained disputed, and no follow-up search has been published.
+  theme: erebons
+  rung: observation
+  tier: catalog
+  claimType: interpretive
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 — arXiv abstract"
+    extractedBy: "Fable (AI agent)"
+    runId: "ccc-case-2026-08-22"
+    date: "2026-08-22"
+  sourceAnchor:
+    locator: "Penrose 2017, arXiv:1707.04169, abstract"
+    quote: >-
+      What seems to be spuriously generated noise may in fact be
+      gravitational events caused by the decay of dark-matter particles
+      (erebons) of mass around 10^-5g.
+    sourceId: SRC-PENROSE-2017-ARXIV

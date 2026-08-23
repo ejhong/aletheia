@@ -14,7 +14,14 @@
  *     with honest verification labels (no LLM needed);
  *   - documents (.txt/.md bodies) → the extraction pipeline
  *     (scripts/extract-claims.mjs), producing catalog-tier claim proposals;
- *   - PDFs/binaries     → flagged in the report ("convert to text first").
+ *   - PDFs              → converted with pdftotext when available (poppler),
+ *     then routed like any text drop; otherwise flagged in the report;
+ *   - other binaries    → flagged in the report ("convert to text first").
+ *
+ * Attribution: front matter `editor:` names the accountable human editor;
+ * optional `from:` / `provenance:` record that the words are a third
+ * party's (e.g. researcher correspondence), so contributed text is never
+ * silently attributed to the editor who dropped it.
  *
  * Everything lands under proposals/, runId-stamped, never in content/.
  * Processed items move to inbox/processed/<runId>/ so the inbox stays
@@ -25,6 +32,7 @@
  */
 import { spawnSync } from "node:child_process";
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
 import { noKeyMessage, parseJsonReply, pickProvider } from "./lib/llm.mjs";
@@ -75,6 +83,21 @@ function parseFrontMatter(text) {
   return { meta, body: text.slice(m[0].length) };
 }
 
+/**
+ * Convert a PDF to plain text via poppler's pdftotext, if installed.
+ * Returns null when the tool is missing or conversion fails — the caller
+ * falls back to the old "convert to text first" skip message.
+ */
+function pdfToText(file) {
+  const res = spawnSync("pdftotext", ["-layout", file, "-"], {
+    encoding: "utf8",
+    maxBuffer: 64 * 1024 * 1024,
+  });
+  if (res.error || res.status !== 0) return null;
+  const text = (res.stdout ?? "").trim();
+  return text.length > 0 ? text : null;
+}
+
 const caseDirs = fs.existsSync(CASES_DIR)
   ? fs.readdirSync(CASES_DIR).filter((d) =>
       fs.existsSync(path.join(CASES_DIR, d, "case.yaml")),
@@ -89,10 +112,10 @@ function detectCase(filePath, meta) {
   return null;
 }
 
-function detectType(filePath, meta, body) {
+function detectType(filePath, meta, body, treatAsText = false) {
   if (["commentary", "links", "document"].includes(meta.type)) return meta.type;
   const ext = path.extname(filePath).toLowerCase();
-  if (![".md", ".txt"].includes(ext)) return "binary";
+  if (![".md", ".txt"].includes(ext) && !treatAsText) return "binary";
   const lines = body
     .split("\n")
     .map((l) => l.trim())
@@ -139,11 +162,14 @@ async function processCommentary(item, provider, runId, today) {
       );
     }
   }
+  const attribution = item.meta.from
+    ? `Third-party contribution from ${item.meta.from}, submitted by editor ${item.meta.editor ?? "Eugene"} — the words below are the contributor's, not the editor's.`
+    : `Editor commentary`;
   const reply = await provider.call(
     COMMENTARY_SYSTEM,
     `Case: ${item.case}\n\nExisting claims (id [tier/reviewState]: statement):\n${claimIndex.join(
       "\n",
-    )}\n\nEditor commentary (from ${path.basename(item.file)}):\n\n${item.body}`,
+    )}\n\n${attribution} (from ${path.basename(item.file)}):\n\n${item.body}`,
   );
   const actions = parseJsonReply(reply);
   if (!Array.isArray(actions)) throw new Error("commentary reply not an array");
@@ -161,6 +187,12 @@ async function processCommentary(item, provider, runId, today) {
     kind: "editorial-proposals",
     case: item.case,
     editor: item.meta.editor ?? "Eugene",
+    /** Third-party attribution: when `from`/`provenance` front matter is
+        present, the verbatim words below are a contributor's (researcher
+        correspondence etc.), submitted via the named editor — never the
+        editor's own statement. */
+    from: item.meta.from ?? null,
+    provenance: item.meta.provenance ?? null,
     sourceFile: path.basename(item.file),
     /** The human editorial record, verbatim. This text is authoritative;
         the proposals below are an AI translation of it. */
@@ -246,16 +278,40 @@ async function main() {
   const parsed = items.map((file) => {
     const ext = path.extname(file).toLowerCase();
     const isText = [".md", ".txt"].includes(ext);
-    const raw = isText ? fs.readFileSync(file, "utf8") : null;
-    const { meta, body } = isText ? parseFrontMatter(raw) : { meta: {}, body: "" };
+    let raw = isText ? fs.readFileSync(file, "utf8") : null;
+    let convertedFromPdf = false;
+    if (ext === ".pdf") {
+      const text = pdfToText(file);
+      if (text) {
+        raw = text;
+        convertedFromPdf = true;
+      }
+    }
+    const usable = isText || convertedFromPdf;
+    const { meta, body } = usable ? parseFrontMatter(raw) : { meta: {}, body: "" };
     return {
       file,
       meta,
       body,
+      convertedFromPdf,
       case: detectCase(file, meta),
-      type: isText ? detectType(file, meta, body) : "binary",
+      type: usable ? detectType(file, meta, body, convertedFromPdf) : "binary",
     };
   });
+
+  // Dry run = classification only: report what each item would become,
+  // without LLM calls, extraction runs, writes, or moves.
+  if (dryRun) {
+    console.log(`# Inbox dry run (${today})\n`);
+    for (const item of parsed) {
+      const name = path.relative(INBOX, item.file);
+      console.log(
+        `- ${name} → type: ${item.type}${item.convertedFromPdf ? " (converted from PDF)" : ""}, case: ${item.case ?? "NONE — would be left in inbox"}`,
+      );
+    }
+    console.log("\n(dry run: no LLM calls, nothing written, nothing moved)");
+    return;
+  }
 
   const needsLlm = parsed.some(
     (p) => p.type === "commentary" || p.type === "document",
@@ -276,7 +332,11 @@ async function main() {
   for (const item of parsed) {
     const name = path.relative(INBOX, item.file);
     if (item.type === "binary") {
-      skipped.push(`**${name}** — binary file (PDF?). Convert to text (.txt/.md) and re-drop; the pipeline does not parse binaries.`);
+      skipped.push(
+        path.extname(item.file).toLowerCase() === ".pdf"
+          ? `**${name}** — PDF could not be converted (is \`pdftotext\` installed? \`brew install poppler\` / \`apt-get install poppler-utils\`). Convert to text (.txt/.md) and re-drop, or install poppler and re-run.`
+          : `**${name}** — binary file. Convert to text (.txt/.md) and re-drop; the pipeline does not parse binaries.`,
+      );
       continue;
     }
     if (item.type === "empty") {
@@ -311,11 +371,22 @@ async function main() {
     } else if (item.type === "document") {
       console.error(`document: ${name} → extraction pipeline (case ${item.case})`);
       const srcId = `SRC-INBOX-${path.parse(item.file).name.replace(/[^a-zA-Z0-9]+/g, "-").toUpperCase().slice(0, 24).replace(/^-+|-+$/g, "")}`;
+      // Converted PDFs: the extractor reads a file path, so hand it the
+      // extracted text via a temp file; the original PDF still moves to
+      // processed/ as the provenance artifact.
+      let extractPath = item.file;
+      if (item.convertedFromPdf) {
+        extractPath = path.join(
+          fs.mkdtempSync(path.join(os.tmpdir(), "aletheia-inbox-")),
+          `${path.parse(item.file).name}.txt`,
+        );
+        fs.writeFileSync(extractPath, item.body);
+      }
       const res = spawnSync(
         process.execPath,
         [
           path.join(ROOT, "scripts", "extract-claims.mjs"),
-          item.file,
+          extractPath,
           item.case,
           "--source-id",
           srcId,

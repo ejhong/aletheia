@@ -1,0 +1,258 @@
+# Cross-model check run — an independent judge (GPT-5.1 (OpenAI)),
+# blind to all prior assessments (scripts/cross-model-check.mjs,
+# promptVersion aletheia-check-v1). role: check — never displayed as the case
+# narrative; feeds the concurrence panel. Append-only; NOT human reviewed.
+runId: 2026-08-23-check-gpt
+model: GPT-5.1 (OpenAI) — independent check run via gpt-5.1
+date: 2026-08-23
+promptVersion: aletheia-check-v1
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: mixed
+  loadBearing:
+    - ZW-C001
+    - ZW-C002
+    - ZW-C004
+    - ZW-C005
+    - ZW-C009
+    - ZW-C010
+  weakestLinks:
+    - ZW-C005
+    - ZW-C006
+    - ZW-C007
+  synthesis: >-
+    The dossier documents a sharp distinction between what is mathematically
+    established and what remains promissory. On the established side, the
+    reconstruction theorems (ZW-C001, backed by ZW-E006–E008) rigorously show
+    that finite-dimensional complex quantum theory follows from operational
+    axioms about information, without postulating Hilbert space. This gives a
+    rock-solid “stage two”: once one has a convex operational state space with
+    principles like purification and continuous reversible transformations, one
+    gets the quantum formalism as a theorem. These results are uncontroversial
+    and ontologically neutral; they define a precise target any observer-first
+    program must hit.
+
+    Müller’s algorithmic idealism contributes a comparably clear but more
+    limited “stage zero/one”: from postulated self-states and an uncomputable
+    universal-induction rule, his 2020 paper (ZW-E001) proves that almost all
+    continuations of an observer’s data look like membership in a stable world
+    governed by simple computable probabilistic laws (ZW-C004). It also proves a
+    heavily qualified result that Bell inequality violations with no-signalling
+    “can sometimes be expected” (ZW-C005, ZW-E003). These are genuine theorems,
+    and they decisively show that an observer-first, zero-worlds ontology can
+    output “some” lawful external world instead of merely assuming it. However,
+    the model’s idealizations (monotone information, exact universal induction)
+    and the extreme non-uniqueness of what induction can learn mean that what is
+    recovered is generic computable lawfulness, not specifically quantum
+    structure. Müller’s own exposition underscores this: he “hopes” some
+    nonclassical aspects of quantum theory will become predictions, and
+    explicitly catalogs the Bell result as preliminary and the erasure problem
+    as open (ZW-E003).
+
+    The neighboring programs add ambition without yet adding decisive
+    derivations. Hoffman’s work yields a well-defined conscious-agent dynamics
+    and an interface/fitness theorem, plus a correspondence with a free-particle
+    wavefunction (ZW-C006, ZW-E010–E011), but nothing close to a derivation of
+    general quantum theory. Wolfram’s observer theory and ruliad ontology
+    (ZW-C007, ZW-E012–E014) assert that bounded persistent observers “seem” to
+    see quantum mechanics, and there is a formal embedding of ZX-calculus into
+    his rewriting systems, but the arguments remain informal and circular at the
+    level of defining observers, and embedding already-quantum structure into a
+    universal computational substrate shows compatibility, not inevitability.
+
+    On the empirical side, modern Bell tests and Wigner’s-friend-style
+    experiments (ZW-C003, ZW-E017–E018, plus the Jones–Müller classical analysis
+    ZW-E004) constrain combinations of locality, realism, and absoluteness of
+    events, but they do not pick between observer-first and standard physicalist
+    quantum theories so long as both reproduce the same Tsirelson-bounded
+    correlations. These results define benchmarks (especially the quantitative
+    CHSH value and the Tsirelson limit) that any observer-first derivation must
+    reach; they do not yet discriminate ontologies.
+
+    The strongest counterweight to the zero-worlds thesis is the physicalist
+    “relocated complexity” argument (ZW-C009, supported by ZW-E009 and ZW-E015).
+    Universal induction will asymptotically fit any simple computable law;
+    without an internal reason to privilege quantum over classical, stochastic,
+    or superquantum but no-signalling regularities, the observer-first reversal
+    currently explains only why there is some simple law, not why the law has
+    the specific quantum features captured by the reconstruction axioms.
+    Meanwhile, standard physicalist quantum theory retains a wide and
+    uncontested quantitative lead in concrete predictions (Hamiltonians,
+    spectra, cross-sections), and ontologically neutral reconstructions already
+    deliver much of the advertised explanatory compression without committing to
+    idealism.
+
+    The dossier is unusually clear that the crux is mathematical: the
+    observer-to-operational bridge (ZW-C010). That problem is indeed well-posed
+    and open: can self-state plus induction-type postulates entail a convex
+    operational theory satisfying purification, continuous reversibility, and
+    the specific Tsirelson-bounded nonlocality embodied in quantum mechanics? A
+    positive solution would greatly strengthen the zero-worlds program and
+    falsify the “explanatorily idle” charge against it; a rigorous no-go theorem
+    or demonstration that the same postulates equally favor non-quantum
+    regularities would cement the physicalist steelman.
+
+    On the central ontological claim (ZW-C008), the evidence warrants only
+    “presently untestable”: no experiment yet distinguishes zero-worlds from its
+    physicalist rival, and the flagship program has not delivered the promised
+    quantum derivations. Yet the mathematical and conceptual progress documented
+    here shows the program is non-trivial and reasonably healthy as a research
+    line. Overall, the case is mixed: strongly established on the existence and
+    power of reconstructions and on algorithmic idealism’s world-emergence
+    results; weak and unfinished on specifically quantum derivations; and
+    neutral empirically between the competing ontologies, pending resolution of
+    the bridge theorems in either direction.
+claimAssessments:
+  - claimId: ZW-C001
+    verdict: established
+    confidence: high
+    reasoning: Multiple independent reconstruction programs (Hardy; Chiribella et
+      al.; Masanes–Müller) are documented in mainstream venues and explicitly
+      state that finite-dimensional quantum theory is recovered from
+      operational/informational axioms without taking Hilbert space as primitive
+      (ZW-E006–E008). The hardest opposing consideration is that axioms like
+      purification may already encode much of what is distinct about quantum
+      theory, so the explanatory gain is partly a relocation of structure rather
+      than “derivation from nothing,” but that does not undercut the correctness
+      of the reconstructions as theorems.
+  - claimId: ZW-C002
+    verdict: well_supported
+    confidence: high
+    reasoning: Müller’s own exposition states that he “hopes” nonclassical quantum
+      aspects will emerge from algorithmic idealism and labels the existing Bell
+      result as preliminary with too many assumptions (ZW-E003), while his 2026
+      paper treats quantum reconstruction as an open target rather than an
+      achievement (ZW-E002). Hoffman's and Wolfram's programs are shown to have,
+      at best, correspondences and embeddings, not full derivations of Hilbert
+      space, the Born rule, or Tsirelson-bound nonlocality (ZW-E010–E014). The
+      main opposing consideration is that “not yet derived” is the normal state
+      of an active program and the existence of a partial Bell theorem does
+      suggest a plausible pathway, but that does not negate the factual claim
+      that a full derivation is currently absent.
+  - claimId: ZW-C003
+    verdict: well_supported
+    confidence: high
+    reasoning: Loophole-free Bell tests (Hensen et al., ZW-E017) and Bong et al.’s
+      local-friendliness experiment (ZW-E018) demonstrably constrain
+      conjunctions of locality, realism, and absoluteness of observed events but
+      merely confirm standard quantum statistics, which both observer-first and
+      physicalist interpretations already accept. Jones & Müller’s classical
+      analysis of Wigner’s-friend-type structures (ZW-E004) further shows that
+      some “observer puzzles” are not even specifically quantum, reinforcing the
+      non-discriminating character of current data. The strongest objection is
+      that taxing the absoluteness of observed events arguably presses harder on
+      naive physicalism than on observer-relative frameworks, but that is a
+      difference in theoretical comfort, not in experimental discrimination.
+  - claimId: ZW-C004
+    verdict: well_supported
+    confidence: high
+    reasoning: Müller’s 2020 Quantum paper (ZW-E001) explicitly postulates
+      self-states and a universal-induction state-change rule, and proves that
+      almost all continuations under this prior look like an apparently
+      objective external world governed by simple computable probabilistic laws,
+      while quantitatively disfavoring Boltzmann-brain type histories. The main
+      caveat, acknowledged by Müller himself in later exposition (ZW-E003), is
+      that these theorems are derived in an idealized bit-string model with
+      monotone information and uncomputable induction, so they may not yet apply
+      to realistic observers who forget or compress, but that qualifies scope
+      rather than the correctness of the stated results.
+  - claimId: ZW-C005
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: The consistency claim follows almost tautologically from the fact
+      that universal induction converges to any computable regularity, including
+      those generated by quantum theory, and Müller’s exposition explicitly
+      presents this asymptotic consistency (ZW-E001, ZW-E003). He also
+      describes, and labels as preliminary, a theorem that Bell inequality
+      violations with no-signalling “can sometimes be expected” under additional
+      assumptions (ZW-E003). The strongest opposing consideration is that such
+      generic consistency is non-selective—it would equally accommodate
+      classical or superquantum no-signalling worlds—and that a “sometimes”
+      Bell-violation result under heavy assumptions falls well short of a robust
+      prediction of specifically quantum nonlocality, which justifies the
+      cautious provisional verdict.
+  - claimId: ZW-C006
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: Hoffman & Prakash 2014 define conscious agents mathematically and
+      demonstrate that certain harmonic functions of their space-time chain are
+      identical in form to a free-particle wavefunction, while the FBT theorem
+      (Prakash et al. 2021) establishes that fitness-tuned perceptual strategies
+      can outcompete truth-tracking ones in a formal model (ZW-E010–E011). There
+      is no evidence in the dossier of any derivation of full quantum state
+      spaces, Born rule, or entanglement structure from these primitives, and
+      the authors themselves present “conscious realism” as a developing
+      hypothesis. The primary opposing concern is that the interface and
+      wavefunction-correspondence results might be overinterpreted by critics or
+      advocates alike, but the claim here is carefully limited and matches the
+      documented mathematical achievements.
+  - claimId: ZW-C007
+    verdict: mixed
+    confidence: moderate
+    reasoning: Wolfram’s own “Observer Theory” essay explicitly asserts that “we
+      seem to be able to derive” general relativity, quantum mechanics, and the
+      Second Law from boundedness and persistence of observers in the ruliad,
+      and acknowledges circularity in the observer concept (ZW-E012), while a
+      separate preprint shows that ZX-calculus embeds in multiway rewriting
+      systems (ZW-E014), establishing at least compatibility. However, these
+      derivations are self-published and informal, with no referee-checked
+      proofs that the quantum laws are inevitable for such observers, and the
+      ruliad ontology actually posits an all-encompassing computational
+      structure rather than “zero worlds” (ZW-E013). The strongest objection is
+      that embedding an already-quantum calculus into a universal rewriting
+      system carries little selective force—universal systems embed many
+      structures—so the evidential weight of “we seem to be able to derive”
+      remains weak, justifying a mixed verdict.
+  - claimId: ZW-C008
+    verdict: presently_untestable
+    confidence: high
+    reasoning: "The central zero-worlds thesis, as characterized here, goes beyond
+      what any current theorem or experiment adjudicates: both observer- first
+      and physicalist quantum theories can accommodate all existing empirical
+      data, and algorithmic idealism has not yet derived specifically quantum
+      structure from its primitives (ZW-C002, ZW-E001– E003). The framework’s
+      distinctive empirical content lies in exotic first-person scenarios that
+      are not presently operationalized as reproducible third-person tests, and
+      its quantum content is still underived, so current evidence neither
+      supports nor contradicts the ontological reversal itself. The strongest
+      opposing consideration is that some may argue existing Bell/Wigner-type
+      constraints subtly favor observer-relative formulations, but those
+      constraints are equally compatible with standard non-realist or relational
+      physicalist interpretations, preserving the “presently untestable”
+      status."
+  - claimId: ZW-C009
+    verdict: well_supported
+    confidence: high
+    reasoning: The dossier documents that universal induction in algorithmic
+      idealism is unselective among computable laws (ZW-E001), that Müller only
+      claims asymptotic consistency with whatever law governs the data rather
+      than a preference for quantum structure (ZW-E003), and that QBism—closest
+      in spirit to observer-first views—treats the Born rule as an “empirical
+      addition to Bayesian reasoning” rather than a derivable consequence
+      (ZW-E009). Spekkens’ toy theory (ZW-E015) reinforces how cheaply many
+      quantum-like phenomena can be reproduced without full quantum structure,
+      highlighting the gap between generic lawfulness and specifically quantum
+      explanatory power, while nothing in the observer-first programs presently
+      yields the detailed quantitative machinery of standard quantum field
+      theory. The main opposing consideration is that physicalism itself
+      relocates complexity into primitive formal structures and lacks an
+      explanation of why the reconstruction axioms hold, but that symmetry does
+      not undermine the descriptive accuracy of the steelman as stated.
+  - claimId: ZW-C010
+    verdict: well_supported
+    confidence: high
+    reasoning: "The case file consistently describes a two-stage architecture: the
+      operational-axioms-to-quantum step is already rigorously solved by
+      reconstruction theorems (ZW-C001), while the observer-to-operational step
+      is explicitly identified by Müller as an open goal rather than an
+      accomplished fact (ZW-C002, ZW-E002–E003). The research agenda enumerates
+      concrete bridge projects—deriving convex state spaces, purification, and
+      Tsirelson bounds from self-state postulates—whose success or failure would
+      dramatically tilt the attribution dispute, making this a genuinely
+      decisive, precisely posed mathematical question. The strongest opposing
+      concern is that “decisive” might be too strong—some weaker forms of
+      observer-first or physicalist views could survive either outcome, and
+      “observer” may resist formalization tightly enough to block a clean
+      theorem—but within the scope defined here, the characterization of this
+      bridge as the central open problem is well substantiated."

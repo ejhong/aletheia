@@ -34,7 +34,7 @@ const slug = args.find((a) => !a.startsWith("--"));
 const dryRun = args.includes("--dry-run");
 const vendorArg = args.includes("--vendors")
   ? args[args.indexOf("--vendors") + 1].split(",")
-  : ["anthropic", "openai", "gemini", "xai"];
+  : ["anthropic", "openai", "gemini", "xai", "venice"];
 
 if (!slug) {
   console.error("usage: node scripts/cross-model-check.mjs <case-slug> [--vendors a,b] [--dry-run]");
@@ -71,6 +71,12 @@ const VENDORS = {
     model: "grok-4.6",
     label: "Grok 4.6 (xAI)",
     tag: "grok",
+  },
+  venice: {
+    key: process.env.VENICE_API_KEY,
+    model: "kimi-k3",
+    label: "Kimi K3 (Moonshot, via Venice)",
+    tag: "kimi",
   },
 };
 
@@ -181,7 +187,9 @@ async function callVendor(name, cfg) {
     url =
       name === "xai"
         ? "https://api.x.ai/v1/chat/completions"
-        : "https://api.openai.com/v1/chat/completions";
+        : name === "venice"
+          ? "https://api.venice.ai/api/v1/chat/completions"
+          : "https://api.openai.com/v1/chat/completions";
     body = {
       model: cfg.model,
       messages: [

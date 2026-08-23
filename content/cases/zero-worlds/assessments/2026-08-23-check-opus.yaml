@@ -1,0 +1,221 @@
+# Cross-model check run — an independent judge (Opus 5 (Anthropic)),
+# blind to all prior assessments (scripts/cross-model-check.mjs,
+# promptVersion aletheia-check-v1). role: check — never displayed as the case
+# narrative; feeds the concurrence panel. Append-only; NOT human reviewed.
+runId: 2026-08-23-check-opus
+model: Opus 5 (Anthropic) — independent check run via claude-opus-5
+date: 2026-08-23
+promptVersion: aletheia-check-v1
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: presently_untestable
+  loadBearing:
+    - ZW-C001
+    - ZW-C002
+    - ZW-C004
+    - ZW-C009
+    - ZW-C010
+  weakestLinks:
+    - ZW-C005
+    - ZW-C006
+    - ZW-C007
+  synthesis: "The case is unusually well posed, and the evidence record supports a
+    clean structural verdict: the featured thesis (zero worlds) is, on the
+    record assembled here, not currently discriminable from its physicalist
+    rival by any measurement, and its distinctive mathematical content has not
+    been produced. Both halves of that judgment rest on solid evidence rather
+    than on caution. ZW-C003 establishes the empirical half by a logical
+    argument, not a gap in data: Hensen's S = 2.42 ± 0.20 and Bong's local
+    friendliness theorem constrain assumption bundles, and since every contender
+    here reproduces quantum statistics, no such experiment can separate them.
+    The deflationary reading is reinforced by evidence from the proponents' own
+    side (ZW-E004, Jones and Müller: the Wigner's-friend structure is
+    reproducible classically), which is the strongest single move in the file
+    against triumphalist readings of those experiments. ZW-C002 establishes the
+    mathematical half from inside every program — Müller's \"I hope,\" his own
+    \"preliminary\" label on the 2020 Bell result, Hoffman's single
+    free-particle form-match, Wolfram's \"we seem to be able to derive\" plus
+    his conceded circularity. No proponent contests it. Steelmanning the
+    idealist side: the program genuinely has theorems (ZW-C004), the emergence
+    of a lawful world as output rather than input is a non-trivial result, the
+    Boltzmann-brain dissolution is a real explanatory payoff physicalism does
+    not obviously match, and ZW-C010's rival (ZW-C009) is exposed — it has bet
+    against theorems that may yet arrive, and it has no non-circular account of
+    why nature satisfies purification or continuous reversibility either.
+    Steelmanning the physicalist side: Solomonoff induction is unselective by
+    construction, so the framework would have accommodated a classical or
+    post-quantum world with equal serenity; the Spekkens calibration (ZW-E015)
+    prices quantum resemblance cheaply; and the reconstruction theorems
+    (ZW-C001) deliver the promised compression with no idealism attached. Two
+    evidentiary caveats temper everything: many records are abstract-level AI
+    extractions rather than re-derived proofs, and the sharpest quotes come from
+    a living self-published page. The case turns entirely on ZW-C010, and
+    nothing here moves it."
+claimAssessments:
+  - claimId: ZW-C001
+    verdict: established
+    confidence: high
+    reasoning: "Three independent theorem sets in mainstream venues (Hardy 2001;
+      Chiribella–D'Ariano– Perinotti 2011; Masanes–Müller 2011), standing for
+      fifteen to twenty-five years, with no alleged flaw from any party to this
+      dispute; ZW-E006/E007/E008 characterize them accurately and their
+      conditional force is correctly stated. The strongest opposing
+      consideration is deflationary rather than corrective: purification and
+      continuous reversibility may already encode most of the distinctly quantum
+      content, so the result is explanatory compression, not creation from
+      neutral ground — and Hardy's \"delete one word\" punchline arguably
+      demonstrates precisely how much work the fifth axiom does. That objection
+      does not touch the claim as stated, which asserts derivation from
+      operational axioms without Hilbert space as primitive. Note the records
+      are abstract-level verifications, but these are among the most widely
+      re-checked results in quantum foundations, so priors carry little weight
+      here."
+  - claimId: ZW-C002
+    verdict: well_supported
+    confidence: high
+    reasoning: "A negative existence claim about a literature is hard to prove
+      exhaustively, but this one is corroborated from inside every program
+      named: Müller's \"I hope that some nonclassical aspects... can be shown to
+      be predictions\" (ZW-E003), his 2026 paper treating quantum reconstruction
+      as an open target (ZW-E002), Hoffman's published result being a single
+      free-particle form-match (ZW-E010), and Wolfram's hedged verb plus
+      admitted circularity (ZW-E012). No proponent asserts the contrary, which
+      is the strongest available form of evidence for a claim of this shape. The
+      strongest opposing consideration is that \"not yet derived\" is the normal
+      condition of young programs and carries no negative evidential weight
+      against them — correct, and the claim as stated does not assert otherwise.
+      Residual risk: the evidence base is abstract- and webpage-level, so an
+      unnoticed technical result elsewhere cannot be fully excluded."
+  - claimId: ZW-C003
+    verdict: well_supported
+    confidence: high
+    reasoning: "The experimental facts (ZW-E017, ZW-E018) are among the most secure
+      in physics, and the non-discrimination conclusion follows logically:
+      theories agreeing on quantum statistics cannot be separated by experiments
+      confirming quantum statistics. Bong's \"friend\" being a photon path is
+      correctly flagged as blocking any inference that minds or first-person
+      states play a causal role, and Jones–Müller (ZW-E004) further shows the
+      Wigner's-friend structure is not even specifically quantum. The strongest
+      opposing consideration, noted in the claim's own objection field, is that
+      the local friendliness theorem is not perfectly symmetric — it taxes
+      absoluteness of observed events, a commitment ordinary physicalism
+      typically holds and observer-relative frameworks do not. That asymmetry is
+      a real cost differential, but it is a constraint on assumption bundles
+      rather than a discriminating measurement, so the claim stands."
+  - claimId: ZW-C004
+    verdict: well_supported
+    confidence: moderate
+    reasoning: "The 2020 Quantum paper is peer-reviewed, its theorems are
+      unchallenged as mathematics (ZW-E001), and the claim is carefully scoped —
+      asymptotic emergence within a specified model, not a claim that the
+      emergent laws are quantum. Confidence is held at moderate rather than high
+      for three documented reasons: the evidence record was characterized from
+      the abstract and the author's exposition rather than a re-derived proof,
+      the result is single-author and has not been independently rederived, and
+      the bit-string model forbids forgetting (the erasure problem,
+      ZW-C504/ZW-R005). The strongest opposing consideration is exactly that
+      last one: an emergence theorem that requires monotone information
+      accumulation describes an idealization no actual observer instantiates,
+      and Müller himself treats extension to forgetting observers as open — so
+      it is not yet known whether the theorem survives realistic memory."
+  - claimId: ZW-C005
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: "Both conjuncts are documented in the theorist's own hedged words
+      (ZW-E003), and the claim deliberately avoids the stronger glosses that
+      circulate — this is descriptively careful. The verdict is held below
+      well_supported because the load-bearing evidence is a living
+      self-published webpage plus a journal abstract, with no independent check
+      of the Bell theorem's assumption set, and because \"can sometimes be
+      expected\" is a statement whose precise content cannot be assessed from
+      the records provided. The strongest opposing consideration cuts against
+      the claim's evidential significance rather than its truth: asymptotic
+      consistency with quantum mechanics is consistency with anything
+      computable, so the first conjunct is nearly vacuous as support for the
+      program, and a heavily conditioned theorem that Bell violation can
+      sometimes be expected is far from a prediction that it must occur with
+      quantum statistics capped at 2√2."
+  - claimId: ZW-C006
+    verdict: well_supported
+    confidence: moderate
+    reasoning: "As a description of what Hoffman's program has and has not produced,
+      this is accurate against ZW-E010 and ZW-E011: the FBT theorem is a genuine
+      result inside a specified evolutionary-game model, the free-particle
+      correspondence is a genuine but asymptotic form-match, and no Born rule,
+      tensor-product composition, or nonclassical correlation is derived.
+      Confidence is moderate because the negative half rests on abstract- and
+      full-text-level reading of two papers plus a bibliographic record for the
+      2023 Entropy paper that was not directly retrieved (403), leaving a small
+      chance that later work contains more than characterized. The strongest
+      opposing consideration is that the FBT theorem is a theorem about model
+      assumptions, and its extension to real perceptual evolution is empirical
+      and unsettled — but that objection weakens the program's reach, not this
+      claim, which already prices the correspondence against the Spekkens
+      calibration as below the relevant bar."
+  - claimId: ZW-C007
+    verdict: well_supported
+    confidence: moderate
+    reasoning: "Every component is verbatim-verified from the primary texts
+      (ZW-E012, ZW-E013, ZW-E014): the derivation assertion, the hedged verb,
+      the circularity admission, and the ZX-calculus embedding whose logical
+      force is compatibility rather than inevitability. The claim is a
+      description of a program's state, and as such it is accurate. Confidence
+      is moderate rather than high only because the corpus is self-published and
+      voluminous, so an exhaustive survey of what has been \"presented
+      formally\" somewhere in the Wolfram orbit is not possible from these
+      records. The strongest opposing consideration is that informality is a
+      presentational choice, not a substantive defect — the arguments might be
+      formalizable by others; but no evidence record shows anyone outside the
+      Wolfram project has attempted that, and universal rewriting frameworks
+      embed almost everything, so the embedding result selects nothing."
+  - claimId: ZW-C008
+    verdict: presently_untestable
+    confidence: moderate
+    reasoning: 'Nothing in the record supports or contradicts this thesis over
+      physicalism: ZW-C003 shows no experiment discriminates them, ZW-C002 shows
+      its quantum content is conceded underived, and ZW-E016 (PBR) constrains a
+      neighbour of both positions rather than either principal. Its distinctive
+      content lives in duplication, teletransportation, and simulation-shutdown
+      scenarios (ZW-C503) for which no protocol with prespecified quantitative
+      deviations exists. The strongest opposing consideration is that "presently
+      untestable" may be too generous a holding pattern: a thesis whose entire
+      current scientific content is a promissory research program could equally
+      be scored as unresolved-with-no-purchase, and ZW-C010 shows there is a
+      live mathematical test, so the label is dated and revisable rather than
+      permanent. I flag that my comfort with the label rests partly on general
+      norms about metaphysical theses, not on the evidence records alone.'
+  - claimId: ZW-C009
+    verdict: well_supported
+    confidence: moderate
+    reasoning: "The three conjuncts are separately well evidenced: unselectivity
+      follows from the structure of universal induction and is visible in the
+      consistency argument itself (ZW-E001/ZW-E003); ontology-free compression
+      is delivered by ZW-C001; the quantitative advantage — Hamiltonians,
+      spectra, cross-sections — is disputed by no one, and QBism's own flagship
+      paper concedes the Born rule is \"an empirical addition\" (ZW-E009). The
+      strongest opposing consideration is that \"relocated complexity\" is a
+      charge physicalism also faces: standard quantum theory buys precision by
+      taking the whole formalism as primitive and offers no non-circular account
+      of why the operational axioms hold, so the parsimony ledger is not
+      one-sided. Confidence is moderate because the claim's normative core —
+      that the ontological reversal is explanatorily idle — is a forward-
+      looking bet against bridge theorems, and ZW-C010 shows that bet is live
+      and falsifiable rather than secured."
+  - claimId: ZW-C010
+    verdict: well_supported
+    confidence: moderate
+    reasoning: "That the problem is open is uncontested; that it is decisive follows
+      from the case's two-stage architecture, with stage two proven (ZW-C001)
+      and stage one absent (ZW-C002); and Müller's own framing of quantum
+      reconstruction as the benchmark makes this near-common-ground. The
+      concrete targets named — purification, the Tsirelson bound, Born-rule
+      measure selection — are specific enough to be attempted, which is what
+      \"precisely posed\" requires. The strongest opposing consideration is the
+      one the claim itself flags: the bridge may be neither provable nor
+      refutable if \"observer\" cannot be formalized tightly enough for a
+      theorem to bind it, which would end the dispute in definitional stalemate
+      rather than resolution — Wolfram's admitted circularity is a live instance
+      of that failure mode. The secondary weakness is \"would settle most of the
+      case\": a negative resolution would strand strong zero-worlds idealism but
+      leave weaker observer-first positions, including QBism, untouched."

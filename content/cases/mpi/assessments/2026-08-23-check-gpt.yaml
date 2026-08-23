@@ -1,0 +1,266 @@
+# Cross-model check run — an independent judge (GPT-5.1 (OpenAI)),
+# blind to all prior assessments (scripts/cross-model-check.mjs,
+# promptVersion aletheia-check-v1). role: check — never displayed as the case
+# narrative; feeds the concurrence panel. Append-only; NOT human reviewed.
+runId: 2026-08-23-check-gpt
+model: GPT-5.1 (OpenAI) — independent check run via gpt-5.1
+date: 2026-08-23
+promptVersion: aletheia-check-v1
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: mixed
+  loadBearing:
+    - MPI-C001
+    - MPI-C002
+    - MPI-C005
+    - MPI-C006
+    - MPI-C007
+    - MPI-C008
+    - MPI-C009
+    - MPI-C010
+  weakestLinks:
+    - MPI-C001
+    - MPI-C007
+    - MPI-C009
+    - MPI-C010
+  synthesis: >-
+    Across the dossier, two structures are clear. First, the existence and
+    content of the Model of Pragmatic Information (MPI) are well attested:
+    Generalized Quantum Theory is a published, internally coherent formal
+    framework; MPI’s no‑transmission axiom and the decline/displacement
+    corollaries are stated explicitly in 2007; and the correlation‑matrix design
+    is very clearly presented as the model’s own proposed test-bed. These
+    mechanism‑level claims (MPI‑C004–C006) are not in dispute as descriptions of
+    the theory.
+
+    Second, the empirical record on that test‑bed is genuinely conflicted. The
+    founding Lucadou experiments and Walach’s 2020 two‑lab replication reported
+    surpluses of significant cells, and Flores’ thesis work retains three of
+    five significant studies even under more conservative analyses. Taken at
+    face value, MPI‑C001 and the positive parts of MPI‑C007 do indicate that
+    some non‑trivial structure was present in at least a subset of datasets.
+    However, two developments substantially weaken how much anomaly one can
+    safely read into those reports. The strongest modern tests — Walach et al.’s
+    preregistered consensus‑protocol replications and Grote’s fully blind
+    200‑participant study — are cleanly null (MPI‑C002). And Flores’ own
+    Monte‑Carlo work (MPI‑C009) shows that the original significance counting
+    violated independence assumptions and that dependence‑aware simulations
+    shrink those founding surpluses.
+
+    On the attribution rung, the strictly anomalous reading (MPI‑C007) and the
+    conventional steelman (MPI‑C008) both find some support but neither closes
+    the case. The conventional mechanisms — regression to the mean, analytic
+    flexibility, publication bias, coding error, and especially matrix
+    dependence — are all documented in or adjacent to this corpus, often by
+    sympathetic insiders. That makes “null plus method/artifact” not just
+    plausible in the abstract but concretely instantiated, and provisionally
+    supports MPI‑C008. At the same time, a small residue of positive or
+    suggestive results remains under conditions that at least partially
+    addressed those issues (Walach 2020, parts of Flores 2021, Flores &
+    Rapazote‑Flores 2023’s true‑vs‑pseudo RNG split). These prevent a confident
+    collapse of MPI‑C007 to “pure artifact” on current evidence, especially
+    given the relatively small size and heterogeneity of the matrix corpus. From
+    a Bayesian perspective, general scientific priors on psi‑like anomalies are
+    low, so in the absence of very strong, preregistered and replicated
+    positives the posterior for MPI‑style correlations remains correspondingly
+    low — but that inference leans on priors more than on decisive in‑corpus
+    falsification.
+
+    Falsifiability (MPI‑C010) is the crux for how much weight we can ever assign
+    this program. The record does show a problematic practice: proponents
+    explicitly read their own failed replications as “likely part of the
+    systematic nature of such effects,” so that both success and failure are
+    treated as confirmatory in post hoc commentary. This undermines the
+    evidential force of the replication record for MPI’s supporters. However,
+    the model as written is not logically unfalsifiable: it forbids any stable,
+    exploitable psi channel and asserts testable fine structure (e.g., stronger
+    initial effects should decline faster, displacement into related
+    observables). Those predictions simply have not yet been bound into
+    prospective, dependence‑aware, blind‑analysis tests.
+
+    Taking these strands together, the case does not justify either a confident
+    endorsement of genuine MPI‑style mind–matter correlations or a fully secure
+    reduction of the entire record to known artifacts. The empirical evidence
+    under modern controls tilts toward the conventional account, but modest
+    surviving anomalies, internal statistical critiques that are not yet fully
+    quantified across all datasets, and unresolved design questions about what
+    exactly constitutes a “matrix hit” keep the overall verdict at mixed.
+    Well‑designed adversarial replications and a formal dependence‑aware
+    reanalysis of the founding datasets, as outlined in the research agenda,
+    would have high leverage in shifting that verdict toward either
+    well_supported conventional explanation or genuine, constrained anomaly.
+claimAssessments:
+  - claimId: MPI-C001
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: "The existence and qualitative direction of the founding reports are
+      well documented: Lucadou’s group and Walach’s 2020 paper clearly state
+      that experimental sessions yielded more significant psychological–physical
+      correlations than chance or control matrices (MPI‑E001, MPI‑E002). What is
+      in doubt is the strength and anomaly‑content of those surpluses, because
+      Flores’ later work shows that psychological variables were highly
+      intercorrelated and that dependence‑aware simulations reduce the apparent
+      excess (MPI‑E007, MPI‑E009). The strongest opposing consideration is
+      precisely that dependence critique: if the original analyses substantially
+      over‑counted significance by ignoring clustered structure, then the “far
+      more than chance” characterization is overstated, and in the absence of a
+      full reanalysis of the 1986–2006 raw data we cannot upgrade this claim
+      beyond provisional support."
+  - claimId: MPI-C002
+    verdict: well_supported
+    confidence: high
+    reasoning: Multiple independent lines of evidence show that the strictest
+      replications have been null. Walach et al.’s two consensus‑protocol
+      replications, with preregistered methods and nonparametric randomization
+      tests, both failed to find significant excesses and concluded that the
+      matrix paradigm is not replicable (MPI‑E003). Grote’s 200‑participant
+      blind‑analysis study, in which the entire analysis pipeline was frozen
+      before unblinding, likewise found results squarely in the range of chance
+      (MPI‑E004). These tests specifically target the original matrix effect
+      with modern safeguards against bias. The main opposing consideration is
+      that Walach 2020, a preregistration‑era replication, did report a
+      significant surplus, and Flores’ thesis reports three of five significant
+      studies; thus “predominantly failed” does allow non‑negligible exceptions
+      and the record is not uniformly null.
+  - claimId: MPI-C003
+    verdict: well_supported
+    confidence: high
+    reasoning: As a purely descriptive statement about the published sequence, this
+      claim matches the evidence closely. Lucadou’s early experiments and Walach
+      2020 reported positive surpluses; Walach 2021 described that effect as
+      “significant but fragile” whose significance broke down under improved
+      analysis and then presented two clear null replications (MPI‑E002,
+      MPI‑E003). Grote’s own series shows an initial significant result followed
+      by strictly null preplanned analyses and a final blind null (MPI‑E005,
+      MPI‑E006, MPI‑E004). Flores’ corpus includes both significant and
+      non‑significant studies, with patterns appearing in different variables
+      and analyses (MPI‑E007, MPI‑E008). The strongest opposing point is that
+      “decline and displacement” is a narrative imposed retrospectively across
+      heterogeneous designs, without a single prespecified metric of decline
+      evaluated across the full corpus.
+  - claimId: MPI-C004
+    verdict: well_supported
+    confidence: high
+    reasoning: Atmanspacher et al. 2002 explicitly present “Weak Quantum Theory” as
+      an axiomatic extension of complementarity and entanglement to arbitrary
+      systems, dropping the usual physical constants and Hilbert‑space machinery
+      (MPI‑E010). Subsequent writings place MPI as a special case of this
+      formalism applied to psychophysical systems with pragmatic information as
+      the ordering quantity. The claim here is only about the existence and
+      internal coherence of that framework, not its empirical truth, and the
+      Foundations of Physics venue plus the clear formalization support that.
+      The main opposing consideration is that by discarding probability
+      assignments, GQT keeps quantum vocabulary while losing most predictive
+      specificity, so its role is more to organize concepts than to yield
+      testable quantitative predictions.
+  - claimId: MPI-C005
+    verdict: well_supported
+    confidence: high
+    reasoning: The 2007 JCS paper states the no‑transmission axiom verbatim and
+      explicitly derives the corollary that attempts to corroborate apparent
+      causal effects by improved statistics will wipe them out, with stronger
+      original effects declining faster, possible sign reversals, and
+      reappearance in different observables or subsystems (MPI‑E009). These
+      derivations were published before the major null replications and thus
+      count as genuine forward‑looking predictions within the theory. The
+      strongest opposing consideration is that the same qualitative prediction —
+      weaker effects in larger, stricter replications — is exactly what
+      regression to the mean and selection from null data also forecast, so this
+      axiom’s empirical content is not uniquely diagnostic unless its fine
+      structure is specified and tested quantitatively.
+  - claimId: MPI-C006
+    verdict: well_supported
+    confidence: high
+    reasoning: "Von Lucadou, Römer, and Walach explicitly introduce the
+      correlation‑matrix method as a way to “make positive use of the evasion
+      phenomenon” by registering many correlations simultaneously so that psi
+      effects can appear as “transitory, jumping unexpected and statistically
+      unlikely patterns in the correlation matrix,” while conceding this will
+      never fully overcome the decline effect (MPI‑E011). Later sources and
+      reviews consistently treat this design as MPI’s self‑nominated
+      experimental test. The principal opposing point is methodological
+      criticism: by predicting “jumping unexpected patterns” in a very large
+      matrix, the design’s signature resembles what multiple testing of
+      dependent variables produces under pure noise, so without stringent
+      dependence‑aware analysis it is hard to distinguish the theorized
+      entanglement correlations from ordinary statistical artifacts."
+  - claimId: MPI-C007
+    verdict: weakly_supported
+    confidence: low
+    reasoning: "Some elements in the record align superficially with MPI’s
+      narrative: founding and early replications reported matrix surpluses; some
+      later studies, such as Flores’ 3/5 significant thesis experiments and the
+      Random.org arm of the 2023 online replication, preserve non‑null structure
+      when more conservative analyses are used (MPI‑E002, MPI‑E007, MPI‑E008).
+      Proponents also published null replications and interpreted them as part
+      of the predicted decline/displacement pattern. However, the strongest
+      tests — notably Grote 2021’s blind analysis and Walach 2021’s
+      consensus‑protocol replications — are null (MPI‑E004, MPI‑E003), and
+      dependence‑aware work undercuts the founding surpluses (MPI‑E007,
+      MPI‑E009). All conventional mechanisms needed to explain the observed
+      pattern (QRPs, bias, dependence, coding error) are documented elsewhere in
+      the same domain (MPI‑E006, MPI‑E015, MPI‑E016, MPI‑E017). The strongest
+      opposing consideration is that the observed decline and heterogeneity can
+      be accounted for by these mundane mechanisms without invoking genuine
+      non‑local correlations, and MPI has not yet produced prespecified,
+      quantitatively confirmed fine‑structure predictions that would force a
+      different conclusion."
+  - claimId: MPI-C008
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: Each component of the conventional explanation is independently
+      evidenced. Bösch’s meta‑analysis finds that REG micro‑PK as a whole is
+      best explained by publication bias and small‑study effects (MPI‑E015);
+      Bierman’s simulations show that QRPs at realistic rates can explain a
+      large fraction of reported psi‑like effects (MPI‑E016); Maier & Dechamps
+      demonstrate a concrete case where a software error produced a spurious
+      micro‑PK correlation (MPI‑E017); and Flores’ Monte‑Carlo work identifies
+      high intercorrelations among matrix variables and shows that
+      dependence‑aware simulations diminish the original surpluses (MPI‑E007,
+      MPI‑E009). Grote’s 2017 study provides a direct example of post‑hoc
+      analysis choices extracting a significant result from data where all
+      preplanned tests are null (MPI‑E006). Together, these make it plausible
+      that the matrix record could arise from null data subject to these
+      influences. The strongest opposing consideration is that no single
+      quantitative model has yet been fit to the actual matrix corpus to
+      demonstrate sufficiency — and some preregistered or dependence‑aware
+      positives (Walach 2020; parts of Flores’ work) remain unexplained in
+      detail, leaving a residual ambiguity.
+  - claimId: MPI-C009
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: Flores’ thesis and subsequent preprint explicitly report that
+      psychological variables in the matrix experiments exhibit high
+      intercorrelations and that simulations incorporating this dependence
+      reduce the apparent significance of earlier studies; this is quoted
+      verbatim in MPI‑E009 and comes from within the same research program that
+      had previously reported positive results. This concession against interest
+      strongly supports the methodological critique that the founding analyses
+      over‑counted significant cells by assuming independence. The main opposing
+      consideration is that we do not yet have a fully independent, published,
+      dependence‑aware reanalysis of all founding datasets quantifying
+      “substantially diminish” in standardized effect‑size or p‑value terms, and
+      Flores herself still finds some significant results under permutation
+      tests, suggesting the critique weakens but may not fully erase the
+      anomalies.
+  - claimId: MPI-C010
+    verdict: mixed
+    confidence: moderate
+    reasoning: "There is clear textual support for the charge that, in practice,
+      proponents have treated failures as further confirmation: Walach et al.
+      2021 explicitly interpret their two null consensus‑protocol replications
+      as “likely part of the systematic nature of such effects” (MPI‑E003), and
+      the 2007 theory paper anticipates that the matrix design will never
+      convince skeptics while presenting decline itself as a prediction
+      (MPI‑E009, MPI‑E011). This lends weight to the claim that within the
+      actual research discourse, both success and failure have been read as
+      consistent with MPI. However, the model’s structure is not logically
+      immune to disconfirmation: the no‑transmission axiom forbids any stable,
+      exploitable psi signal, and the published theory makes specific
+      fine‑structure claims (strength–reproducibility reciprocity, structured
+      displacement) that could be bound into prospective tests. The strongest
+      opposing consideration is therefore that the insulation observed to date
+      arises from how proponents have chosen to interpret results and from a
+      lack of prespecified, binding criteria, rather than from the theory being
+      inherently unfalsifiable in principle."

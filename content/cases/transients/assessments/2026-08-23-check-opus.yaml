@@ -1,0 +1,269 @@
+# Cross-model check run — an independent judge (Opus 5 (Anthropic)),
+# blind to all prior assessments (scripts/cross-model-check.mjs,
+# promptVersion aletheia-check-v1). role: check — never displayed as the case
+# narrative; feeds the concurrence panel. Append-only; NOT human reviewed.
+runId: 2026-08-23-check-opus
+model: Opus 5 (Anthropic) — independent check run via claude-opus-5
+date: 2026-08-23
+promptVersion: aletheia-check-v1
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: unresolved
+  loadBearing:
+    - TRN-C020
+    - TRN-C021
+    - TRN-C007
+    - TRN-C005
+    - TRN-C011
+  weakestLinks:
+    - TRN-C005
+    - TRN-C006
+    - TRN-C010
+    - TRN-C011
+  synthesis: "The case has an unusually clean structure: a secure observational
+    floor, a contested statistical middle, and an unbridged gap at exactly the
+    rung the headline needs. The floor is genuinely secure. The nine 1950 marks
+    were physically confirmed on glass by the case's principal critic, an author
+    of one of the digitizations, and recovered 8/9 by a from-scratch outside
+    pipeline; the 1952 triple was recovered 3/3 by that same pipeline. Nobody
+    should be arguing about whether the marks exist, and the record shows nobody
+    is. But every one of those confirmations reads descendants of a shared
+    photographic ancestor (TRN-C007), and that genealogy — reconstructed by the
+    people who ran the digitization program, and undisputed by the proponents —
+    dissolves the strongest cheap argument for reality. \"Present in two
+    independent scans\" is not independent confirmation when the scans are
+    cousins. The decisive discriminator, imaging the original telescope
+    negatives blind and recording at which copy generation each mark first
+    appears, has never been performed in seventy-five years. That single fact
+    dominates the case: the evidence base is not merely thin at the crux, it is
+    structurally incapable of settling the crux, and both camps know it.
+    Steelmanning the skeptics: the GRB-era archival searches spent two decades
+    producing star-like impostors and zero confirmed archival transients; the
+    canonical nine sit in the morphological neighborhood where a trained
+    classifier puts spurious detections; the candidate population is spatially
+    heterogeneous, edge-concentrated, and clustered in ways plates and scanners
+    are known to produce; and the two headline ensemble correlations reproduce
+    when the analysis is rerun on the same rows and vanish when the rows are
+    rebuilt or the exposure denominator is modeled. That last pattern is the
+    single most informative structural fact in the ensemble literature:
+    replication type, not replication count, sorts the results. Steelmanning the
+    proponents: the sharpness argument genuinely cuts both ways — a sub-second
+    flash on a fifty-minute exposure should be sharper than seeing-blurred
+    stars, and no one has exposed period emulsion to controlled flashes to draw
+    the discriminating curve, so the critics' best morphological argument is
+    uncalibrated; the Hambly-Blair classifier defines its spurious class by
+    absence of a modern counterpart, which is the defining property of a real
+    transient, so it is partly circular by construction; the copy-defect
+    mechanism is a demonstrated pathway with no measured occurrence rate; and
+    the Hamburg work sits entirely outside the Palomar lineage, where the copy
+    mechanism cannot reach, with a physically principled discriminant (coma from
+    off-axis optics) that chemistry has no reason to imitate. Neither side has
+    closed. The honest reading is that the mundane account is favored by base
+    rates and by the copy genealogy, while the two highest-diagnosticity
+    positive lines — the coma signature and independent-archive rates — are each
+    a single unblinded preprint. Verdict unresolved, not as a hedge but as a
+    description: the discriminating observations exist, are cheap relative to
+    their information gain, and have simply not been made."
+claimAssessments:
+  - claimId: TRN-C022
+    verdict: unresolved
+    confidence: moderate
+    reasoning: No evidence record in the file supports this directly; every route to
+      it passes through TRN-C020 (incident light) and TRN-C021 (near-Earth
+      reflective origin), both open, and the only ensemble support offered is
+      lineage-bound and contested. The strongest opposing consideration is that
+      the mundane account has a documented mechanism (TRN-C007) plus a
+      discouraging base rate from two decades of GRB-era archival searches, so
+      priors legitimately disfavor the claim — but priors are not the evidence
+      records, and the copy-defect pathway has never had its occurrence rate
+      measured, so a confident negative is not warranted either. I decline
+      "weakly_supported" because nothing in the record raises the claim above
+      its prior; I decline "contradicted" because no test capable of falsifying
+      it has been run.
+  - claimId: TRN-C023
+    verdict: presently_untestable
+    confidence: moderate
+    reasoning: 'Not one evidence record in the file bears on extraterrestrial origin
+      even in principle: the entire discriminating apparatus on the table
+      (negative inspection, flash calibration, coma validation, preregistered
+      shadow and nuclear reruns) speaks to whether marks were made by light and
+      whether light came from near-Earth reflectors, and stops there. Even a
+      demonstrated pre-Sputnik artificial object would require a separate
+      historical and engineering argument excluding classified human programs
+      and unrecognized natural reflectors. The strongest opposing consideration
+      is that "presently_untestable" can shade into an excuse: if TRN-C022 ever
+      resolved affirmatively, archival and engineering evidence would become
+      relevant, so the untestability is conditional rather than permanent —
+      which is why I record it as presently untestable rather than as a
+      permanent category error.'
+  - claimId: TRN-C021
+    verdict: unresolved
+    confidence: moderate
+    reasoning: "The near-Earth reading rests almost entirely on the Earth-shadow
+      deficit, and that deficit is computed against a uniform-random background
+      that Watters et al. show the data visibly violate, with no significant
+      deficit surviving in more heavily vetted subsets. The proponents' rebuttal
+      is a power argument, not a counter-demonstration, and the claim is in any
+      case conditional on TRN-C020, which is open. The strongest opposing
+      consideration in the claim's favor is genuinely non-trivial: multiple
+      simultaneous point flashes within ten arcminutes, or three within ten
+      arcseconds vanishing inside an hour, are geometrically awkward for most
+      distant-source astrophysics if the flashes were real at all — so a
+      demonstration of incident light would immediately make this rung far more
+      plausible than it now is."
+  - claimId: TRN-C020
+    verdict: unresolved
+    confidence: high
+    reasoning: "This is the crux and it is genuinely open in the file's own terms:
+      against it, the canonical nine group morphologically with spurious
+      detections and a concrete shared-copy-stage pathway exists; for it,
+      sub-second flashes are independently expected to be sharp, the
+      classifier's \"spurious\" label is defined by the very property that
+      defines a transient candidate, and the Hamburg coma report describes a
+      signature outside the Palomar copy lineage. Neither side has a calibrated
+      discriminant: no flash-profile curve on period emulsion, no measured
+      copy-stage defect rate, no blind coma validation, and no examination of
+      the original negatives. The strongest opposing consideration is that the
+      mundane branch has a proven mechanism and an ugly historical track record
+      while the exotic branch has only arguments and one unblinded preprint — so
+      if forced to bet I would bet artifact, but that is a prior, not a finding,
+      and I choose \"unresolved\" over \"mixed\" because the opposing evidence
+      bodies are each too weakly diagnostic to constitute a real split."
+  - claimId: TRN-C007
+    verdict: well_supported
+    confidence: high
+    reasoning: "The genealogy is reconstructed from the archival record by an author
+      of the SuperCOSMOS program describing his own institution's holdings and
+      the standard contact-printing workflow, and the proponents do not dispute
+      it; it is also intrinsically plausible given how atlas copies were made.
+      The claim as stated is modal — a defect at the shared stage *can* appear
+      in both datasets — and that modal form is close to unassailable. The
+      strongest opposing consideration is scope, not truth: the mechanism
+      establishes possibility without any measured occurrence rate for star-like
+      copy defects, and it has no reach at all over the Hamburg lineage. I
+      withhold \"established\" only because the reconstruction rests on a single
+      expert account with no independent documentary corroboration in the
+      record."
+  - claimId: TRN-C001
+    verdict: established
+    confidence: high
+    reasoning: "This is the rare adversarially confirmed observation: the marks were
+      reported by the proponents, then physically located under a microscope on
+      the Edinburgh glass by the case's principal critics at the stated
+      positions, then recovered 8/9 by an independent from-scratch pipeline with
+      benchmarked false-positive rates. Absence on the six-days-later
+      overlapping plate and in Pan-STARRS/Gaia-depth surveys is likewise
+      multiply attested. The strongest opposing consideration is a small
+      qualifier on the absence conjunct: the discovery paper's own r~26 GTC
+      imaging shows possible counterparts that could be chance projections, so
+      \"absent from all deeper imaging\" is not quite exact — and Hambly & Blair
+      found similar one-plate-only marks on the neighboring field, which bears
+      on the event's significance rather than on its existence."
+  - claimId: TRN-C002
+    verdict: well_supported
+    confidence: high
+    reasoning: The measurement is explicit — all nine profile statistics in the
+      sharp tail, roughly −3 ≲ η < −1, with a joint draw probability of order
+      0.1⁹ from the stellar distribution — corroborated by direct microscope
+      inspection, and accepted by the proponents, who dispute only its
+      interpretation. Rare agreement across a hostile divide is strong evidence
+      that the measurement itself is sound. The strongest opposing consideration
+      is that it comes from a single group using one digitization's profile
+      statistic on copy material, with no equivalent measurement from the
+      original negative and no independent re-measurement in the record; note
+      also that the 1952 triple's isolated source reportedly looks stellar, so
+      the sharpness property is not general to the canonical events.
+  - claimId: TRN-C003
+    verdict: well_supported
+    confidence: moderate
+    reasoning: "Peer-reviewed in MNRAS with 10.4-m follow-up to r ≈ 25.5 confirming
+      nothing at the positions today, and all three detections independently
+      recovered by the Hayes pipeline from the digitized data without reference
+      to the original team's lists. That combination secures the detections as
+      features of the plate material and their absence from later imaging. The
+      strongest opposing consideration is provenance depth: characterization,
+      photometry and the \"vanished within 50 minutes\" inference all come from
+      one proponent team working the same Palomar copy lineage, with no
+      published physical inspection of the 1952 glass — so the numbers (~16 mag,
+      10 arcsec, >10 mag dimming) rest on a single calibration chain."
+  - claimId: TRN-C004
+    verdict: well_supported
+    confidence: moderate
+    reasoning: "Hayes documents concrete recovery rates (8/9, 3/3, 3,450 of 5,399
+      matched at 0.94 arcsec median separation) with control fields and
+      synthetic injections, which cleanly kills the \"one team's software bug\"
+      explanation for the canonical detections. Confidence is capped at moderate
+      because the claim's plural framing (\"pipelines\") rests on exactly one
+      single-author preprint run with acknowledged preliminary parameters. The
+      strongest opposing consideration is what the same work reveals rather than
+      what it confirms: a 2.85-million-candidate sweep against a vetted 5,399
+      shows the population's composition is almost entirely a function of
+      extraction and vetting choices, so reproducible detection here
+      demonstrates data fidelity, not physical origin."
+  - claimId: TRN-C005
+    verdict: mixed
+    confidence: moderate
+    reasoning: "The observed shadow fraction (0.46%, and 0.45% in a center-of-plate
+      subset) reproduces under independently written code, and persists — indeed
+      strengthens — among ML-scored likelier-real candidates, so the arithmetic
+      on the working catalog is not in dispute. But the claim as stated asserts
+      a *deficit*, which is defined against the ~1.4% geometric expectation, and
+      Watters et al. show that expectation assumes a uniform background the
+      features demonstrably violate (edge- and corner-concentrated, clustered),
+      with no significant deficit surviving in vetted subsets. The strongest
+      opposing consideration for the skeptical side is the proponents' power
+      objection: the vetted subsets are roughly twentyfold smaller and were
+      assembled for another purpose, so their null is not a clean refutation
+      either — which is precisely why \"mixed\" rather than \"contradicted\" or
+      \"provisionally_supported\" is the warranted reading."
+  - claimId: TRN-C006
+    verdict: mixed
+    confidence: moderate
+    reasoning: "The raw association within the working catalog is robust to
+      re-analysis: RR 1.45 (p = .011), permutation p = .006, surviving weather
+      and lunar controls, ML artifact-scoring, and Kp control. It is not robust
+      to varying the disputed upstream step: Watters finds it insignificant
+      after normalizing by observation days and largely determined by the
+      Palomar schedule, and Hayes's independently extracted catalog with nightly
+      coverage as exposure is flatly null (IRR 1.03, p = .71). A correlation
+      that survives every downstream statistical stress test but dies when the
+      exposure denominator or the extraction is rebuilt is most parsimoniously a
+      property of the sample. The strongest opposing consideration is that
+      Hayes's catalog averages ~7,250 candidates per night under loose
+      preliminary parameters, so genuine dilution of a weak real effect cannot
+      be excluded — and even a surviving effect would be equally predicted by
+      fallout contamination of emulsion, a point the discovery papers concede."
+  - claimId: TRN-C010
+    verdict: provisionally_supported
+    confidence: low
+    reasoning: "One independent researcher, one independent archive, one independent
+      digitization, and a differencing method that does not depend on external
+      catalogs: the finding that appear-once candidates with narrow FWHM turn up
+      on Hamburg plate pairs is the case's only evidence that the phenomenology
+      is not a Palomar copy-lineage peculiarity, and that is genuinely valuable.
+      But the claim's substantive content is \"analogous to the POSS-I events,\"
+      and with 41 plates, no published false-positive rate, and no
+      injection/recovery calibration, the record cannot yet distinguish \"the
+      sky did this at both observatories\" from \"old emulsions fail similarly
+      everywhere.\" The strongest opposing consideration is that every plate
+      archive has a defect population, so finding candidates at all is close to
+      guaranteed absent a matched-control rate; the claim is supported as stated
+      but carries almost no diagnostic weight until TRN-R006 is run."
+  - claimId: TRN-C011
+    verdict: weakly_supported
+    confidence: low
+    reasoning: "This is the highest-diagnosticity positive line in the case and also
+      its thinnest: a single unblinded single-author preprint, on a telescope
+      selected because its coma is strong, with no published confusion matrix
+      against known stars, deliberately generated flashes, or the defect
+      bestiary, and with the author himself stating the data do not establish
+      the light's physical origin. The physical logic is sound — an off-axis
+      optical fingerprint is something photons through the telescope have and
+      surface chemistry has no reason to imitate — which is why I rate it
+      supported at all rather than unresolved. The strongest opposing
+      consideration is that directional asymmetry is a common failure mode of
+      scratches, dust shadows, drying marks and scan artifacts, and that an
+      analyst who knows which images are candidates can find comet-shaped
+      asymmetry in noise; until TRN-R003 freezes the labels, this cannot bear
+      the weight the case would like to put on it."

@@ -69,7 +69,8 @@ describe("real content", () => {
     // Regression: with a date-only sort and a hard cap, a burst of same-day
     // entries on one case evicted the vasocomputation launch entirely.
     const cases = loadAllCases();
-    const feed = recentChanges(cases, 4);
+    // Same sizing rule as the homepage: at least one slot per live case.
+    const feed = recentChanges(cases, Math.max(4, cases.length));
     for (const c of cases) {
       const latest = historyNewestFirst(c.history)[0];
       expect(latest).toBeDefined();

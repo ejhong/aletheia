@@ -16,7 +16,8 @@ export default function HomePage() {
   const hero = siteImage("IMG-SITE-HERO");
   const divider = siteImage("IMG-SITE-DIVIDER-STRATA");
   const tailpiece = siteImage("IMG-SITE-TAILPIECE");
-  const feed = recentChanges(cases, 4);
+  // At least one slot per live case, so a new case's launch always shows.
+  const feed = recentChanges(cases, Math.max(4, cases.length));
 
   return (
     <div>

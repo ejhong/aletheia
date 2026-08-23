@@ -1,0 +1,339 @@
+# Source records. Verification labels are honest about who checked what:
+#   verified     — the document itself is held in the project library
+#   ai_verified  — citation located and checked against Crossref, the arXiv
+#                  API, publisher pages, or retrieved full text by an AI
+#                  agent (2026-08-22 batch); no human re-check
+#   unverified   — cited second-hand; locator unconfirmed
+#
+# Import note: this case has no seeding research document. Every source
+# below was located and verified directly against the primary record
+# (Crossref DOI lookup, arXiv API metadata and abstracts, publisher pages,
+# or retrieved full text) before import. Nothing is cited from memory.
+
+# ── Theory statements (proponent) ────────────────────────────────────────────
+
+- id: SRC-PENROSE-2006-EPAC
+  title: "Before the Big Bang: An Outrageous New Perspective and its Implications for Particle Physics"
+  authors: ["Penrose, R."]
+  year: "2006"
+  sourceType: paper
+  identifier: "Proceedings of EPAC 2006 (10th European Particle Accelerator Conference), Edinburgh: 2759–2767 (Conf. Proc. C 060626)"
+  url: "https://proceedings.jacow.org/e06/PAPERS/THESPA01.pdf"
+  verification: ai_verified
+  verificationNote: >-
+    Full text retrieved from the JACoW proceedings archive during the
+    2026-08-22 verification batch; bibliographic details cross-checked
+    against INSPIRE-HEP (literature record 739171). Page ranges vary
+    across citations (2759–2762 in Penrose's own later reference lists,
+    2759–2767 per INSPIRE); the INSPIRE range is used here.
+  reliabilityNotes:
+    - "The first published statement of CCC — establishes that the theory and its general CMB-signature reasoning predate the 2010 circle searches."
+    - "Conference proceedings, not journal peer review."
+
+- id: SRC-PENROSE-2010-CYCLES
+  title: "Cycles of Time: An Extraordinary New View of the Universe"
+  authors: ["Penrose, R."]
+  year: "2010"
+  sourceType: book
+  identifier: "The Bodley Head, London, 23 September 2010. xii + 288 pp. ISBN 978-0-224-08036-1"
+  verification: ai_verified
+  verificationNote: >-
+    Bibliographic details confirmed against the British National
+    Bibliography record and publisher listings. Full text not held; the
+    book's content is characterized here via Penrose's journal
+    presentations of the same material (2013, 2018 Foundations of Physics).
+  reliabilityNotes:
+    - "The canonical book-length statement of CCC, including the Second Law motivation and the entropy/information-loss accounting."
+    - "A trade book: arguments are presented without the quantitative apparatus a referee could audit."
+
+- id: SRC-PENROSE-2013-FOP
+  title: "On the Gravitization of Quantum Mechanics 2: Conformal Cyclic Cosmology"
+  authors: ["Penrose, R."]
+  year: "2014"
+  sourceType: paper
+  identifier: "Foundations of Physics 44(8): 873–890. DOI: 10.1007/s10701-013-9763-z"
+  verification: ai_verified
+  verificationNote: >-
+    DOI and bibliographic details confirmed via Crossref (which registers
+    the online publication year as 2013; the issue is 44(8), 2014).
+  reliabilityNotes:
+    - "Penrose's own journal-length statement of CCC's structure, including the entropy accounting and the role of black-hole information loss."
+
+- id: SRC-PENROSE-2018-FOP
+  title: "The Big Bang and its Dark-Matter Content: Whence, Whither, and Wherefore"
+  authors: ["Penrose, R."]
+  year: "2018"
+  sourceType: paper
+  identifier: "Foundations of Physics 48(10): 1177–1190. DOI: 10.1007/s10701-018-0162-3"
+  verification: ai_verified
+  verificationNote: >-
+    DOI confirmed via Crossref; full text read on the publisher's page
+    during the 2026-08-22 verification batch. Quotes in the claim and
+    evidence records (mass fade-out, erebons, no inflation in CCC) are
+    verbatim from that text.
+  reliabilityNotes:
+    - "The primary source for the erebon dark-matter proposal and for Penrose's own characterization of mass fade-out as 'an admittedly unconventional hypothesis.'"
+
+- id: SRC-PENROSE-2017-ARXIV
+  title: "Correlated \"noise\" in LIGO gravitational wave signals: an implication of Conformal Cyclic Cosmology"
+  authors: ["Penrose, R."]
+  year: "2017"
+  sourceType: preprint
+  identifier: "arXiv:1707.04169"
+  url: "https://arxiv.org/abs/1707.04169"
+  verification: ai_verified
+  verificationNote: >-
+    arXiv metadata and abstract confirmed via the arXiv API. Never
+    journal-published as far as the verification batch could determine.
+  reliabilityNotes:
+    - "A speculative note: the underlying claim of correlated LIGO noise (Cresswell et al.) was itself contested, and no erebon search has followed."
+
+# ── The circle claims (proponent) ────────────────────────────────────────────
+
+- id: SRC-GURZADYAN-PENROSE-2010
+  title: "Concentric circles in WMAP data may provide evidence of violent pre-Big-Bang activity"
+  authors: ["Gurzadyan, V. G.", "Penrose, R."]
+  year: "2010"
+  sourceType: preprint
+  identifier: "arXiv:1011.3706"
+  url: "https://arxiv.org/abs/1011.3706"
+  verification: ai_verified
+  verificationNote: >-
+    arXiv metadata and abstract confirmed via the arXiv API. The founding
+    circle-detection claim was never published in a peer-reviewed journal
+    in this form; the closest published successor is Gurzadyan & Penrose
+    2013 (Eur. Phys. J. Plus).
+  reliabilityNotes:
+    - "The founding observational claim of the whole program (circles at up to 6σ), by the theory's author and his collaborator."
+    - "Preprint only — the significance methodology was never itself refereed."
+
+- id: SRC-GURZADYAN-PENROSE-2010B
+  title: "More on the low variance circles in CMB sky"
+  authors: ["Gurzadyan, V. G.", "Penrose, R."]
+  year: "2010"
+  sourceType: preprint
+  identifier: "arXiv:1012.1486"
+  url: "https://arxiv.org/abs/1012.1486"
+  verification: ai_verified
+  verificationNote: "arXiv metadata and abstract confirmed via the arXiv API."
+  reliabilityNotes:
+    - "The proponents' immediate response to the first wave of critiques — the clearest single statement of the null-ensemble disagreement, in their own words."
+
+- id: SRC-GURZADYAN-PENROSE-2011
+  title: "CCC-predicted low-variance circles in CMB sky and LCDM"
+  authors: ["Gurzadyan, V. G.", "Penrose, R."]
+  year: "2011"
+  sourceType: preprint
+  identifier: "arXiv:1104.5675"
+  url: "https://arxiv.org/abs/1104.5675"
+  verification: ai_verified
+  verificationNote: "arXiv metadata and abstract confirmed via the arXiv API."
+  reliabilityNotes:
+    - "Concedes that circles arise at similar frequency in simulations using the WMAP-derived power spectrum, while arguing the theoretical ΛCDM spectrum makes them disappear — the most technical proponent statement of the ensemble dispute."
+
+- id: SRC-GURZADYAN-PENROSE-2013
+  title: "On CCC-predicted concentric low-variance circles in the CMB sky"
+  authors: ["Gurzadyan, V. G.", "Penrose, R."]
+  year: "2013"
+  sourceType: paper
+  identifier: "European Physical Journal Plus 128(2): 22. DOI: 10.1140/epjp/i2013-13022-4 (arXiv:1302.5162)"
+  verification: ai_verified
+  verificationNote: "DOI confirmed via Crossref; abstract confirmed via the arXiv API."
+  reliabilityNotes:
+    - "The peer-reviewed form of the circles claim, introducing the sky-twist (ellipticity) test and the anisotropic distribution of concentric sets."
+
+# ── Independent reanalyses of the circles ────────────────────────────────────
+
+- id: SRC-WEHUS-ERIKSEN-2011
+  title: "A search for concentric circles in the 7 year WMAP temperature sky maps"
+  authors: ["Wehus, I. K.", "Eriksen, H. K."]
+  year: "2011"
+  sourceType: paper
+  identifier: "The Astrophysical Journal Letters 733(2): L29. DOI: 10.1088/2041-8205/733/2/L29 (arXiv:1012.1268)"
+  verification: ai_verified
+  verificationNote: "DOI confirmed via Crossref; abstract confirmed via the arXiv API."
+  reliabilityNotes:
+    - "Independent reanalysis (Oslo): reproduces the ring structures, finds substantially larger variance in ΛCDM simulations than Gurzadyan & Penrose report, concludes the maps are fully consistent with ΛCDM."
+
+- id: SRC-MOSS-SCOTT-ZIBIN-2011
+  title: "No evidence for anomalously low variance circles on the sky"
+  authors: ["Moss, A.", "Scott, D.", "Zibin, J. P."]
+  year: "2011"
+  sourceType: paper
+  identifier: "Journal of Cosmology and Astroparticle Physics 2011(04): 033. DOI: 10.1088/1475-7516/2011/04/033 (arXiv:1012.1305)"
+  verification: ai_verified
+  verificationNote: "DOI confirmed via Crossref; abstract confirmed via the arXiv API."
+  reliabilityNotes:
+    - "Independent reanalysis (UBC): confirms the variance variations exist, shows properly simulated Gaussian CMB data contain the same variations; source of the 're-discovered that the CMB contains structure' verdict."
+
+- id: SRC-HAJIAN-2011
+  title: "Are There Echoes From The Pre-Big-Bang Universe? A Search for Low-Variance Circles in the Cosmic Microwave Background Sky"
+  authors: ["Hajian, A."]
+  year: "2011"
+  sourceType: paper
+  identifier: "The Astrophysical Journal 740(2): 52. DOI: 10.1088/0004-637X/740/2/52 (arXiv:1012.1656)"
+  verification: ai_verified
+  verificationNote: "DOI confirmed via Crossref; abstract confirmed via the arXiv API."
+  reliabilityNotes:
+    - "Independent reanalysis (CITA/Princeton) with realistic modeling of WMAP's anisotropic noise: all three claimed circle families consistent with a Gaussian ΛCDM sky at 3σ."
+
+- id: SRC-DEABREU-2015
+  title: "Searching for concentric low variance circles in the cosmic microwave background"
+  authors: ["DeAbreu, A.", "Contreras, D.", "Scott, D."]
+  year: "2015"
+  sourceType: paper
+  identifier: "Journal of Cosmology and Astroparticle Physics 2015(12): 031. DOI: 10.1088/1475-7516/2015/12/031 (arXiv:1508.05158)"
+  verification: ai_verified
+  verificationNote: "DOI confirmed via Crossref; abstract confirmed via the arXiv API."
+  reliabilityNotes:
+    - "Extends the reanalysis to Planck data using the proponents' own published parameter choices; confirms the special directions exist and finds them at the same abundance in simulated Gaussian skies."
+
+# ── The Hawking-points exchange ──────────────────────────────────────────────
+
+- id: SRC-MEISSNER-NUROWSKI-RUSZCZYCKI-2013
+  title: "Structures in the microwave background radiation"
+  authors: ["Meissner, K. A.", "Nurowski, P.", "Ruszczycki, B."]
+  year: "2013"
+  sourceType: paper
+  identifier: "Proceedings of the Royal Society A 469(2155): 20130116. DOI: 10.1098/rspa.2013.0116 (arXiv:1207.2498)"
+  verification: ai_verified
+  verificationNote: "DOI confirmed via Crossref; abstract confirmed via the arXiv API."
+  reliabilityNotes:
+    - "The Warsaw group's ring-structure analysis (99.7% confidence); proponent-adjacent — Meissner and Nurowski are Penrose's later co-authors."
+
+- id: SRC-AN-MEISSNER-NUROWSKI-2017
+  title: "Ring-type structures in the Planck map of the CMB"
+  authors: ["An, D.", "Meissner, K. A.", "Nurowski, P."]
+  year: "2017"
+  sourceType: paper
+  identifier: "Monthly Notices of the Royal Astronomical Society 473(3): 3251–3255. DOI: 10.1093/mnras/stx2299"
+  verification: ai_verified
+  verificationNote: >-
+    DOI and bibliographic details confirmed via Crossref. Full text not
+    examined; its result (99.4% confidence) is characterized via the
+    description in An, Meissner, Nurowski & Penrose 2020.
+  reliabilityNotes:
+    - "Planck-data follow-up by the same collaboration that later reported Hawking points; not an independent confirmation of the Gurzadyan–Penrose line."
+
+- id: SRC-AN-MEISSNER-NUROWSKI-PENROSE-2020
+  title: "Apparent evidence for Hawking points in the CMB Sky"
+  authors: ["An, D.", "Meissner, K. A.", "Nurowski, P.", "Penrose, R."]
+  year: "2020"
+  sourceType: paper
+  identifier: "Monthly Notices of the Royal Astronomical Society 495(3): 3403–3408. DOI: 10.1093/mnras/staa1343 (arXiv:1808.01740)"
+  verification: ai_verified
+  verificationNote: >-
+    DOI confirmed via Crossref; the arXiv v5 full text (matching the
+    published version) was read during the 2026-08-22 verification batch.
+    Quotes in the claim and evidence records are verbatim from that text.
+  reliabilityNotes:
+    - "The flagship Hawking-points claim (99.98% confidence), including the proponents' responses to the circle critiques and the anisotropy argument."
+    - "All four authors are CCC proponents; the significance methodology is the object of the Jow & Scott critique."
+
+- id: SRC-JOW-SCOTT-2020
+  title: "Re-evaluating evidence for Hawking points in the CMB"
+  authors: ["Jow, D. L.", "Scott, D."]
+  year: "2020"
+  sourceType: paper
+  identifier: "Journal of Cosmology and Astroparticle Physics 2020(03): 021. DOI: 10.1088/1475-7516/2020/03/021 (arXiv:1909.09672)"
+  verification: ai_verified
+  verificationNote: >-
+    DOI confirmed via Crossref; the arXiv full text was read during the
+    2026-08-22 verification batch.
+  reliabilityNotes:
+    - "The direct independent test of the 99.98% claim: marginalizing over ring size reduces the excess to 87% confidence (about 1σ)."
+
+# ── Recent independent searches ──────────────────────────────────────────────
+
+- id: SRC-LOPEZ-2022
+  title: "Searching for ring-like structures in the cosmic microwave background"
+  authors: ["López, M.", "Bonizzi, P.", "Driessens, K.", "Koekoek, G.", "de Vries, J. W.", "Westra, D."]
+  year: "2022"
+  sourceType: paper
+  identifier: "Monthly Notices of the Royal Astronomical Society 519(1): 922–930. DOI: 10.1093/mnras/stac3485 (arXiv:2105.03990)"
+  verification: ai_verified
+  verificationNote: >-
+    DOI and bibliographic details confirmed via Crossref (author list
+    truncated there; first five family names verified). Abstract confirmed
+    via the arXiv API. Crossref registers online publication in 2022; the
+    issue is 519(1), January 2023.
+  reliabilityNotes:
+    - "Independent Hawking-point search with a purpose-built ring-detection method validated on synthetic CCC signals (95% retrieval): no significant structures in Planck maps, with a small 1%-level excess of candidates honestly reported."
+
+- id: SRC-BODNIA-2024
+  title: "The quest for CMB signatures of conformal cyclic cosmology"
+  authors: ["Bodnia, E.", "Isenbaev, V.", "Colburn, K.", "Swearngin, J.", "Bouwmeester, D."]
+  year: "2024"
+  sourceType: paper
+  identifier: "Journal of Cosmology and Astroparticle Physics 2024(05): 009. DOI: 10.1088/1475-7516/2024/05/009 (arXiv:2208.06021)"
+  verification: ai_verified
+  verificationNote: >-
+    DOI confirmed via Crossref; the published full text was read during
+    the 2026-08-22 verification batch.
+  reliabilityNotes:
+    - "The most thorough search to date: maximum-resolution data, both signatures, an artifact diagnosis (few-pixel spots manufacture low-variance circles under the GP criterion), and a machine-learning Hawking-point search (HawkingNet) with open-source code."
+    - "Explicitly notes its nulls do not disprove CCC and calls for refined quantitative CCC predictions."
+
+# ── Theory development and critique ──────────────────────────────────────────
+
+- id: SRC-TOD-2015
+  title: "The equations of Conformal Cyclic Cosmology"
+  authors: ["Tod, P."]
+  year: "2015"
+  sourceType: paper
+  identifier: "General Relativity and Gravitation 47(3): 17. DOI: 10.1007/s10714-015-1859-7 (arXiv:1309.7248)"
+  verification: ai_verified
+  verificationNote: "DOI confirmed via Crossref; abstract confirmed via the arXiv API (arXiv title: 'The equations of CCC')."
+  reliabilityNotes:
+    - "The main independent mathematical development of CCC's crossover equations, by the relativist whose isotropic-singularity work CCC builds on."
+
+- id: SRC-TOD-2022
+  title: "Some questions about Conformal Cyclic Cosmology"
+  authors: ["Tod, P."]
+  year: "2022"
+  sourceType: preprint
+  identifier: "arXiv:2202.10864"
+  url: "https://arxiv.org/abs/2202.10864"
+  verification: ai_verified
+  verificationNote: >-
+    arXiv metadata, abstract, and full text confirmed during the
+    2026-08-22 verification batch. An extended version of a talk at the
+    'Ninety minutes of CCC' meeting for Penrose's 90th birthday; no
+    journal publication found.
+  reliabilityNotes:
+    - "A sympathetic expert's open-problems list — the clearest published inventory of CCC's theoretical gaps (mass fade-out, the choice of conformal factor, deriving the perturbation spectrum)."
+
+- id: SRC-ECKSTEIN-2023
+  title: "Conformal Cyclic Cosmology, gravitational entropy and quantum information"
+  authors: ["Eckstein, M."]
+  year: "2023"
+  sourceType: paper
+  identifier: "General Relativity and Gravitation 55(2): 26. DOI: 10.1007/s10714-023-03070-2"
+  verification: ai_verified
+  verificationNote: "DOI and bibliographic details confirmed via Crossref; abstract read on the publisher's page."
+  reliabilityNotes:
+    - "The sharpest published critique of CCC's entropy accounting: argues black-hole information loss is incompatible with quantum entropy, and constructively proposes a unitary CCC variant."
+
+# ── The conventional baseline ────────────────────────────────────────────────
+
+- id: SRC-PLANCK-2018-X
+  title: "Planck 2018 results. X. Constraints on inflation"
+  authors: ["Planck Collaboration", "Akrami, Y.", "et al."]
+  year: "2020"
+  sourceType: paper
+  identifier: "Astronomy & Astrophysics 641: A10. DOI: 10.1051/0004-6361/201833887"
+  verification: ai_verified
+  verificationNote: "DOI and bibliographic details confirmed via Crossref."
+  reliabilityNotes:
+    - "The rival hypothesis's quantitative scorecard: measured spectral tilt, Gaussianity constraints, and inflationary parameter fits to the full Planck dataset."
+
+- id: SRC-BICEP-KECK-2021
+  title: "Improved Constraints on Primordial Gravitational Waves using Planck, WMAP, and BICEP/Keck Observations through the 2018 Observing Season"
+  authors: ["Ade, P. A. R.", "Ahmed, Z.", "et al. (BICEP/Keck Collaboration)"]
+  year: "2021"
+  sourceType: paper
+  identifier: "Physical Review Letters 127(15): 151301. DOI: 10.1103/PhysRevLett.127.151301"
+  verification: ai_verified
+  verificationNote: "DOI and bibliographic details confirmed via Crossref."
+  reliabilityNotes:
+    - "The current observational frontier for primordial tensor B-modes (r < 0.036 at 95% CL): no detection yet — the forward-looking discriminator between inflationary ΛCDM and non-inflationary scenarios like CCC remains open."

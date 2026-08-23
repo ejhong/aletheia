@@ -43,12 +43,13 @@ Research documents for cases 3–7 live in `research/` (filenames as present):
    account of psi effects and their systematic elusiveness. Research:
    `Entangled Minds and Pragmatic Information_ A Comprehensive Synthesis
    of Psi Theory.pdf`.
-6. **Zero Worlds** (working title; confirmed standalone case) —
+6. **Zero Worlds** — live as case `zero-worlds` ("No World Underneath?"):
    observer-first theories of reality: Donald Hoffman (interface theory /
    conscious agents), Markus Müller (algorithmic idealism / "law without
-   law"), Stephen Wolfram (observer theory / ruliad). Based on the essay
+   law"), Stephen Wolfram (observer theory / ruliad). Built from the essay
    `Zero Worlds_ The Observer, the Coincidence, and the Collapse.pdf`
-   plus a forthcoming research report.
+   plus the research report `From "Zero Worlds" to Quantum Worlds_ ...pdf`
+   (both in `research/`).
 7. **CCC — Penrose's Conformal Cyclic Cosmology** — concentric low-variance
    CMB circles, Hawking points, and the disputed null-model statistics of
    the rebuttals. Research report forthcoming.

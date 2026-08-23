@@ -86,6 +86,7 @@ mineral-pigment saturation. Defined in `scripts/generate-case-art.mjs`
 | `ydih` | Sage and vermilion | sage and olive-green plain, buff sky, one faded vermilion comet streak |
 | `mpi` | Verdigris | verdigris and muted teal, grey-green shadows, one pale sulfur-yellow butterfly accent |
 | `ccc` | Slate and ember | deep charcoal-slate night sky, pale cream and faded antique-gold concentric rings, one small ember-red accent at the rings' center |
+| `zero-worlds` | Graphite and lapis | faint graphite and warm dove-grey washes, generous bare cream paper (the sparest cover in the set), one small deep-lapis accent at the observer's lantern |
 
 Rules of thumb:
 

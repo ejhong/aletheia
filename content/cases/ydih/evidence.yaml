@@ -1,0 +1,1067 @@
+# Evidence records: the specific observation/result extracted from a source
+# and connected to claims. Direction is explicit and relative to the listed
+# claims; sourceStatement (what the source says) is kept strictly separate
+# from editorInference (what we infer). Supporting and undermining records
+# carry the same structure and seriousness.
+
+# ── Platinum ─────────────────────────────────────────────────────────────────
+
+- id: YDIH-E001
+  title: "The GISP2 Greenland platinum anomaly"
+  claimIds: [YDIH-C001]
+  sourceId: SRC-PETAEV-2013
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    High-resolution (2.5–4.6 year) ICP-MS time series of GISP2 ice identified
+    a platinum anomaly near the Younger Dryas onset — per the 2026 corrected
+    characterization: spanning ~21 years, average ~30 ppt, single-sample peak
+    ~80 ppt — with rising Pt over ~14 years and a fall over ~7, which the
+    authors interpreted as consistent with atmospheric deposition of Pt-rich
+    dust from an unusual, Ir-deficient, possibly extraterrestrial source
+    whose identity could not be established with certainty.
+  editorInference: >-
+    The best-attested single observation in the case: an independent
+    (non-CRG) laboratory, a premier archive, a real geochemical event. It is
+    evidential grade one of four — an elemental anomaly with no identified
+    carrier — and everything beyond that grade is interpretation.
+  exactLocator: "PNAS 110(32): 12917–12920"
+  limitations:
+    - "The anomaly's source and carrier remain unidentified; a contemporaneous PNAS comment (Boslough 2013) proposed a non-cataclysmic meteorite entry as sufficient."
+    - "~30 ppt over ~21 years is a subtle influx, not by itself a catastrophe signature."
+  reviewState: ai_extracted
+  origin:
+    ref: "YDIH research report §platinum; values cross-checked against the 2026 correction text"
+    extractedBy: "Fable (AI agent)"
+    runId: "ydih-extract-2026-08"
+    date: "2026-08-22"
+
+- id: YDIH-E002
+  title: "North American sedimentary platinum enrichments at eleven sites"
+  claimIds: [YDIH-C002]
+  sourceId: SRC-MOORE-2017
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    Fire-assay and ICP-MS analyses at 11 sites in six U.S. states reported
+    Pt abundances in the boundary layer averaging 6.0 ppb (range 0.3–65.6)
+    against above/below background averaging 0.3 ppb — roughly 12× — with
+    all sites showing peaks near strata dated to the Younger Dryas onset.
+  editorInference: >-
+    Real measurements that extend the Greenland observation onto the
+    continent — made by a proponent-affiliated team, sampled around
+    pre-identified horizons, and now formally decoupled (by the authors'
+    own 2026 correction) from the extraterrestrial-source conclusion the
+    paper originally drew.
+  limitations:
+    - "Single research group with CRG-affiliated authors; no independent-laboratory replication of these specific measurements."
+    - "Sampling targeted the putative boundary; without continuous background sampling the peaks' extraordinariness is unquantified."
+  reviewState: ai_extracted
+  origin:
+    ref: "YDIH research report §platinum"
+    extractedBy: "Fable (AI agent)"
+    runId: "ydih-extract-2026-08"
+    date: "2026-08-22"
+
+- id: YDIH-E003
+  title: "The May 2026 correction: extraterrestrial-source conclusion withdrawn"
+  claimIds: [YDIH-C001, YDIH-C002, YDIH-C011]
+  sourceId: SRC-MOORE-CORRECTION-2026
+  direction: qualifies
+  strength: strong
+  sourceStatement: >-
+    The formal correction replaces the original's description of the
+    Greenland anomaly as "the most compelling evidence to date for a
+    catastrophic extraterrestrial event" with source-neutral language,
+    corrects the Petaev values (~21-year span, ~30 ppt average, ~80 ppt
+    peak), adds the Boslough comment and Petaev reply as references, and
+    rewrites the conclusion: the North American enrichments are "compatible
+    with interpretations involving a continentally distributed influx of
+    Pt-rich material" but "do not independently resolve the ultimate source
+    of the Greenland anomaly or the specific mechanism responsible."
+  editorInference: >-
+    An official, author-signed example of the distinction this whole case
+    turns on: the observation stands; the attribution is withdrawn. Every
+    secondary summary that still cites Moore et al. 2017 as platinum proof
+    of an impact is now citing language the authors themselves no longer
+    stand behind.
+  exactLocator: "Scientific Reports 16: 14395 (2026-05-06)"
+  limitations:
+    - "A correction is not a retraction: the measurements themselves are unchallenged by this action."
+  reviewState: ai_extracted
+  origin:
+    ref: "Correction full text fetched and read from nature.com, 2026-08-22"
+    extractedBy: "Fable (AI agent)"
+    runId: "ydih-extract-2026-08"
+    date: "2026-08-22"
+
+- id: YDIH-E004
+  title: "Hall's Cave: osmium isotopes point to volcanism, not a cosmic source"
+  claimIds: [YDIH-C011]
+  sourceId: SRC-SUN-2020
+  direction: undermines
+  strength: strong
+  sourceStatement: >-
+    Highly-siderophile-element abundances and 187Os/188Os ratios in Hall's
+    Cave (Texas) sediments spanning the Younger Dryas showed that the
+    reported geochemical anomalies there are most consistent with distant
+    volcanic gas emissions, not with an extraterrestrial impactor.
+  editorInference: >-
+    The one time source-discriminating isotope geochemistry has been applied
+    to a claimed YD platinum-group anomaly, it returned a terrestrial
+    answer. This does not make every anomaly volcanic; it demonstrates that
+    "platinum peak = impact" is not a valid inference rule — which is the
+    diagnosticity claim's core problem.
+  limitations:
+    - "One site; explicitly does not resolve the origin of the Greenland anomaly or other localities."
+  reviewState: ai_extracted
+  origin:
+    ref: "YDIH research report §platinum and geochemistry"
+    extractedBy: "Fable (AI agent)"
+    runId: "ydih-extract-2026-08"
+    date: "2026-08-22"
+
+# ── The founding assemblage and the spherule war ────────────────────────────
+
+- id: YDIH-E005
+  title: "Firestone et al. 2007: the founding boundary-assemblage claim"
+  claimIds: [YDIH-C004, YDIH-C020]
+  sourceId: SRC-FIRESTONE-2007
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    At Clovis-age sites across North America, the authors reported a thin
+    sediment layer containing magnetic grains with elevated iridium,
+    magnetic microspherules, charcoal, soot, carbon spherules, glass-like
+    carbon with nanodiamonds, and fullerenes with extraterrestrial helium —
+    proposing that one or more large, low-density extraterrestrial objects
+    exploded over northern North America ~12.9 ka, destabilizing the ice
+    sheet, triggering the cooling, and contributing to megafaunal extinction
+    and Clovis disruption.
+  editorInference: >-
+    The paper that created the field: a maximal claim resting on a
+    multi-proxy assemblage. Nearly every proxy on its list was subsequently
+    challenged on replication, identification, or diagnosticity — several
+    (fullerenes, extraterrestrial helium) quietly dropped out of even the
+    proponent literature.
+  exactLocator: "PNAS 104(41): 16016–16021"
+  limitations:
+    - "Proxy identifications made without standardized criteria; subsequent independent work could not reproduce key peaks (see the replication records)."
+    - "The proposed physical scenario (a low-density object fragmenting over the ice sheet) has been substantially revised by proponents since."
+  reviewState: ai_extracted
+  origin:
+    ref: "YDIH research report §background and claims architecture"
+    extractedBy: "Fable (AI agent)"
+    runId: "ydih-extract-2026-08"
+    date: "2026-08-22"
+
+- id: YDIH-E006
+  title: "Wittke et al. 2013: ten million tonnes of spherules on four continents"
+  claimIds: [YDIH-C004]
+  sourceId: SRC-WITTKE-2013
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    Analyses of boundary sediments at 18 sites on four continents reported
+    abundance peaks in silica- and iron-rich microspherules whose
+    geochemistry and morphology the authors interpreted as melt products of
+    a cosmic impact event, estimating ~10 million tonnes of spherules
+    deposited across ~50 million km².
+  editorInference: >-
+    The proponents' widest observational claim — the hypothesis's footprint
+    at maximum extent. Its force depends entirely on identification criteria
+    and boundary dating that independent workers dispute; the tonnage
+    estimate compounds every upstream uncertainty.
+  limitations:
+    - "Proponent-team study; sites and horizons selected and identified by the same investigators whose earlier results were under challenge."
+    - "No blinded identification; the 2016 blind test later found no standard criteria exist for these objects."
+  reviewState: ai_extracted
+  origin:
+    ref: "YDIH research report §microspherules"
+    extractedBy: "Fable (AI agent)"
+    runId: "ydih-extract-2026-08"
+    date: "2026-08-22"
+
+- id: YDIH-E007
+  title: "Surovell et al. 2009: seven-site independent replication failure"
+  claimIds: [YDIH-C004]
+  sourceId: SRC-SUROVELL-2009
+  direction: undermines
+  strength: strong
+  sourceStatement: >-
+    An independent seven-site study — including two sites from the original
+    Firestone sample — attempted to reproduce the reported boundary peaks in
+    magnetic grains and magnetic microspherules and did not find spherule
+    enrichment at the Younger Dryas boundary at any site.
+  editorInference: >-
+    The first serious outside test of the founding observation, and it
+    failed cleanly. The proponents' answer (LeCompte et al., carried below)
+    is that the protocol differed in ways that lose spherules — a live
+    methodological dispute rather than a settled verdict, but the burden it
+    creates is real: the signature proxy appears only under proponent
+    protocols.
+  exactLocator: "PNAS 106(43): 18155–18158"
+  limitations:
+    - "LeCompte et al. 2012 documented concrete protocol deviations (size-fraction handling, magnetic separation) that could plausibly cause real spherules to be missed."
+  reviewState: ai_extracted
+  origin:
+    ref: "YDIH research report §microspherules"
+    extractedBy: "Fable (AI agent)"
+    runId: "ydih-extract-2026-08"
+    date: "2026-08-22"
+
+- id: YDIH-E008
+  title: "LeCompte et al. 2012: the proponents' methodological rebuttal"
+  claimIds: [YDIH-C004]
+  sourceId: SRC-LECOMPTE-2012
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    Re-examination of sites common to the Firestone and Surovell studies
+    reported that Surovell's protocol deviated from the original in ways
+    the authors argue explain the null result (including size-fraction and
+    magnetic-separation differences), and reported successful recovery of
+    boundary microspherules at shared sites using the original protocol.
+  editorInference: >-
+    The strongest proponent answer in the replication war: a concrete,
+    testable diagnosis of why an independent team found nothing. What it is
+    not: a blinded or criteria-locked demonstration — it recovers the
+    phenomenon using the protocol whose validity is the thing in question.
+  limitations:
+    - "Lead author later a Comet Research Group co-founder; 'independent evaluation' in the title overstates the distance from the original team."
+    - "The subsequent blind test (2016), designed to transcend exactly this stalemate, again found little at the boundary."
+  reviewState: ai_extracted
+  origin:
+    ref: "YDIH research report §microspherules"
+    extractedBy: "Fable (AI agent)"
+    runId: "ydih-extract-2026-08"
+    date: "2026-08-22"
+
+- id: YDIH-E009
+  title: "The 2016 blind test: little at the boundary, more above it"
+  claimIds: [YDIH-C004]
+  sourceId: SRC-HOLLIDAY-2016
+  direction: undermines
+  strength: strong
+  sourceStatement: >-
+    Two laboratories analyzed identical splits from a stratigraphic
+    sequence, blinded to the target layer: the study reported very low or
+    absent Younger Dryas boundary microspherule and nanodiamond abundance,
+    a substantially larger microspherule peak in a younger (post-YD)
+    sample, and the absence of standardized criteria for identifying
+    magnetic microspherules.
+  editorInference: >-
+    The single best-designed test in the literature, and the pattern it
+    found — boundary unremarkable, bigger peak elsewhere — is what
+    background-plus-selective-emphasis looks like. One principal site
+    limits its geographic reach; nothing limits its methodological lesson.
+  exactLocator: "PLOS ONE 11(7): e0155470"
+  limitations:
+    - "Essentially a single-site test; proponents dispute its sample handling and argue its sites were not their strongest."
+  reviewState: ai_extracted
+  origin:
+    ref: "YDIH research report §microspherules and methodological assessment"
+    extractedBy: "Fable (AI agent)"
+    runId: "ydih-extract-2026-08"
+    date: "2026-08-22"
+
+# ── Nanodiamonds ────────────────────────────────────────────────────────────
+
+- id: YDIH-E010
+  title: "Kennett et al. 2009: nanodiamonds reported in the boundary layer"
+  claimIds: [YDIH-C003]
+  sourceId: SRC-KENNETT-DJ-2009
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    The authors reported nanodiamonds (including cubic and hexagonal forms)
+    within the Younger Dryas boundary sediment layer at multiple North
+    American locations, interpreted as consistent with a cosmic impact
+    event at ~12.9 ka.
+  editorInference: >-
+    The proxy that gave the hypothesis its most exotic-sounding physical
+    evidence. Its evidential weight rests on identification calls
+    (diamond versus graphene-family aggregates; hexagonal versus cubic)
+    that independent microscopy subsequently rejected — the dispute below
+    is not about whether the sediments were analyzed but about what was in
+    them.
+  exactLocator: "Science 323(5910): 94"
+  limitations:
+    - "A one-page report; the detailed identification evidence lives in supplements and follow-ups whose interpretations remain contested."
+  reviewState: ai_extracted
+  origin:
+    ref: "YDIH research report §nanodiamonds"
+    extractedBy: "Fable (AI agent)"
+    runId: "ydih-extract-2026-08"
+    date: "2026-08-22"
+
+- id: YDIH-E011
+  title: "Daulton et al. 2010: no nanodiamonds found; lonsdaleite identification disputed"
+  claimIds: [YDIH-C003]
+  sourceId: SRC-DAULTON-2010
+  direction: undermines
+  strength: strong
+  sourceStatement: >-
+    Transmission-electron-microscopy and electron-diffraction re-examination
+    found no nanodiamonds in the tested Younger Dryas sediments and
+    concluded that particles previously identified as impact-diagnostic
+    hexagonal diamond (lonsdaleite) were misidentified — consistent instead
+    with aggregates of graphene/graphane-family sheets.
+  editorInference: >-
+    A direct, specialist-level challenge to the identification itself, aimed
+    at the diagnostically crucial form. Later proponent reports at other
+    sites keep the existence question open; the shock-diagnostic lonsdaleite
+    call has never been independently confirmed.
+  exactLocator: "PNAS 107(37): 16043–16047"
+  limitations:
+    - "Tested specific sediments; proponents argue other sites and preparations still show diamonds, so the negative does not automatically generalize."
+  reviewState: ai_extracted
+  origin:
+    ref: "YDIH research report §nanodiamonds"
+    extractedBy: "Fable (AI agent)"
+    runId: "ydih-extract-2026-08"
+    date: "2026-08-22"
+
+# ── Melt products ───────────────────────────────────────────────────────────
+
+- id: YDIH-E012
+  title: "Bunch et al. 2012: very high-temperature melt products"
+  claimIds: [YDIH-C005]
+  sourceId: SRC-BUNCH-2012
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    Meltglass and related phases from boundary-age strata at sites in the
+    Carolinas, Pennsylvania, and Venezuela were reported with mineralogy
+    interpreted to require formation temperatures of roughly 1,730 to
+    >2,200 °C, which the authors attributed to cosmic airbursts/impacts.
+  editorInference: >-
+    Interesting mineralogy carrying an attribution it cannot support alone:
+    extreme temperature narrows but does not name the heat source, and the
+    materials' depositional age, in-situ context, and exclusion of mundane
+    analogues (fulgurites, historical fires, industrial contamination)
+    remain the unmet burden.
+  limitations:
+    - "Proponent-team study, largely unreplicated independently."
+    - "Temperature estimates depend on phase interpretations that have not had blinded confirmation."
+  reviewState: ai_extracted
+  origin:
+    ref: "YDIH research report §melt products"
+    extractedBy: "Fable (AI agent)"
+    runId: "ydih-extract-2026-08"
+    date: "2026-08-22"
+
+- id: YDIH-E013
+  title: "Abu Hureyra: melt claims extended to a Syrian archaeological site"
+  claimIds: [YDIH-C005]
+  sourceId: SRC-MOORE-AH-2020
+  direction: supports
+  strength: weak
+  sourceStatement: >-
+    Meltglass associated with the Younger Dryas onset at Abu Hureyra, Syria
+    was reported with phases interpreted to require melting above ~2,200 °C,
+    which the authors attributed to a low-altitude cosmic airburst near the
+    settlement.
+  editorInference: >-
+    The geographically boldest melt claim, at a site whose tell stratigraphy
+    is archaeologically complex. Carried at weak strength: the paper
+    received a November 2025 correction (content not reviewed for this
+    case), and none of its identifications have blinded independent
+    confirmation.
+  limitations:
+    - "2025 correction of unreviewed content; treat specifics provisionally."
+    - "Anthropogenic high-temperature contexts (settlement fires, later occupation) are exactly the analogues hardest to exclude at a tell site."
+  reviewState: ai_extracted
+  origin:
+    ref: "YDIH research report §melt products; correction found via Crossref 2026-08-22"
+    extractedBy: "Fable (AI agent)"
+    runId: "ydih-extract-2026-08"
+    date: "2026-08-22"
+
+# ── Black mats ──────────────────────────────────────────────────────────────
+
+- id: YDIH-E014
+  title: "Haynes 2008: the black mats documented — as wetland deposits"
+  claimIds: [YDIH-C006]
+  sourceId: SRC-HAYNES-2008
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    A survey of terminal-Pleistocene sites documented widespread dark,
+    organic-rich "black mat" horizons overlying the Rancholabrean surface —
+    frequently draping the last in-place megafaunal remains and Clovis
+    occupations — attributing the mats to elevated water tables, spring
+    discharge, and organic accumulation during the moist Younger Dryas
+    interval.
+  editorInference: >-
+    Supports the observation claim precisely because it is the careful
+    version of it: the mats are real, striking, and stratigraphically
+    associated with the transition — and their documenter's own account of
+    what they are (wetland facies) is the strongest reason they cannot
+    serve as an impact marker.
+  exactLocator: "PNAS 105(18): 6520–6525"
+  limitations:
+    - "Black mats occur at many other times and places; the association with the YD onset is environmental, not event-diagnostic."
+  reviewState: ai_extracted
+  origin:
+    ref: "YDIH research report §black mats"
+    extractedBy: "Fable (AI agent)"
+    runId: "ydih-extract-2026-08"
+    date: "2026-08-22"
+
+- id: YDIH-E015
+  title: "Pigati et al. 2012: 'impact markers' accumulate in ordinary wetlands"
+  claimIds: [YDIH-C011]
+  sourceId: SRC-PIGATI-2012
+  direction: undermines
+  strength: moderate
+  sourceStatement: >-
+    Measurements in desert-wetland sequences of multiple ages found that
+    candidate impact markers (including magnetic spherules) accumulate in
+    such settings through ordinary processes, concentrated by the wetland
+    environment, and concluded these materials and black mats are not
+    uniquely diagnostic of an impact horizon.
+  editorInference: >-
+    A background-rate result: the materials the hypothesis counts as event
+    markers occur, and concentrate, without any event. Any boundary claim
+    must therefore beat the wetland background — which returns the burden
+    to sampling designs that measure background at all.
+  exactLocator: "PNAS 109(19): 7208–7212"
+  limitations:
+    - "Proponents dispute whether the wetland-accumulated materials are equivalent to their best boundary markers."
+  reviewState: ai_extracted
+  origin:
+    ref: "YDIH research report §black mats"
+    extractedBy: "Fable (AI agent)"
+    runId: "ydih-extract-2026-08"
+    date: "2026-08-22"
+
+# ── Fire ────────────────────────────────────────────────────────────────────
+
+- id: YDIH-E016
+  title: "Marlon et al. 2009: no continent-wide fire pulse at the onset"
+  claimIds: [YDIH-C007]
+  sourceId: SRC-MARLON-2009
+  direction: undermines
+  strength: strong
+  sourceStatement: >-
+    A synthesis of sedimentary charcoal records across North America found
+    biomass burning increasing gradually from glacial times through the
+    deglaciation, with fire regimes responding to abrupt climate changes —
+    and no continent-wide fire signal specific to the Younger Dryas onset.
+  editorInference: >-
+    The unprejudiced baseline: a database built by the fire-history
+    community for its own purposes, examined across this interval, shows
+    climate-tracking fire — not a hemispheric conflagration. Any
+    extraordinary-burning claim has to explain why the reference synthesis
+    cannot see it.
+  exactLocator: "PNAS 106(8): 2519–2524"
+  limitations:
+    - "Charcoal databases have taphonomic and chronological smoothing limits; a very short pulse could in principle be underrepresented."
+  reviewState: ai_extracted
+  origin:
+    ref: "YDIH research report §fire"
+    extractedBy: "Fable (AI agent)"
+    runId: "ydih-extract-2026-08"
+    date: "2026-08-22"
+
+- id: YDIH-E017
+  title: "Wolbach et al. 2018: the impact-winter compilation"
+  claimIds: [YDIH-C007]
+  sourceId: SRC-WOLBACH-2018
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    A two-part compilation of ice-core combustion aerosols and lake/marine
+    charcoal and soot proxies reported synchronous peaks at the Younger
+    Dryas onset, interpreted as an extraordinary biomass-burning episode —
+    on the order of ~9–10% of Earth's biomass burned — followed by an
+    impact winter.
+  editorInference: >-
+    The proponents' strongest consequence claim, and the one whose
+    statistics were most directly challenged: the "extraordinary" verdict
+    depends on proxy selection and exceptionalism tests that independent
+    reanalysis could not reproduce (next record). The burned-fraction
+    figure should not be quoted without that context.
+  exactLocator: "Journal of Geology 126(2): 165–184, 185–205"
+  limitations:
+    - "Proxy selection and statistical methods formally disputed by Holliday et al. 2020; the authors replied in the same journal."
+  reviewState: ai_extracted
+  origin:
+    ref: "YDIH research report §fire"
+    extractedBy: "Fable (AI agent)"
+    runId: "ydih-extract-2026-08"
+    date: "2026-08-22"
+
+- id: YDIH-E018
+  title: "Holliday et al. 2020: the burning compilation challenged"
+  claimIds: [YDIH-C007]
+  sourceId: SRC-HOLLIDAY-FIRE-2020
+  direction: undermines
+  strength: moderate
+  sourceStatement: >-
+    A formal discussion of the Wolbach compilation challenged its data
+    selection, its treatment of chronological uncertainty, the claimed
+    statistical exceptionalism of the onset-age peaks, and the
+    reproducibility of the global-burning interpretation, concluding the
+    evidence does not support an extraordinary synchronous episode.
+  editorInference: >-
+    Two of the authors built the global charcoal database the compilation
+    drew on — this is the data's own custodians disputing the use made of
+    it. With Wolbach's reply, the honest status of the fire claim is
+    "disputed, with the independent synthesis against it," not "refuted."
+  exactLocator: "Journal of Geology 128(1): 69–94"
+  limitations:
+    - "Answered point-by-point by Wolbach et al. in the same volume (10.1086/706265); the exchange remains open."
+  reviewState: ai_extracted
+  origin:
+    ref: "YDIH research report §fire"
+    extractedBy: "Fable (AI agent)"
+    runId: "ydih-extract-2026-08"
+    date: "2026-08-22"
+
+# ── Chronology ──────────────────────────────────────────────────────────────
+
+- id: YDIH-E019
+  title: "Meltzer et al. 2014: 3 of 29 claimed boundary sites securely dated"
+  claimIds: [YDIH-C010]
+  sourceId: SRC-MELTZER-2014
+  direction: undermines
+  strength: strong
+  sourceStatement: >-
+    A site-by-site chronological audit of 29 localities claimed to contain
+    the Younger Dryas boundary layer concluded that only 3 had radiocarbon
+    control adequate to place their proxy horizon at ~12,800 cal BP; at the
+    rest, the dating was too imprecise, too sparse, or stratigraphically
+    disconnected from the sampled horizon to support an isochron.
+  editorInference: >-
+    The synchroneity claim's foundation examined stone by stone: most of
+    the "synchronous" sites turn out to be synchronous only if one assumes
+    the conclusion when assigning the boundary. Apparent global simultaneity
+    built from loose local chronologies is the specific failure mode the
+    2026 retractions later exhibited.
+  limitations:
+    - "Kennett et al.'s 2015 Bayesian reanalysis answered with a formal synchrony model; the dispute over date selection and boundary assignment continues."
+  reviewState: ai_extracted
+  origin:
+    ref: "YDIH research report §dating and chronology"
+    extractedBy: "Fable (AI agent)"
+    runId: "ydih-extract-2026-08"
+    date: "2026-08-22"
+
+- id: YDIH-E020
+  title: "Kennett et al. 2015: the Bayesian synchrony model"
+  claimIds: [YDIH-C010]
+  sourceId: SRC-KENNETT-2015
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    Bayesian chronological modeling of radiocarbon dates from boundary
+    sites on four continents concluded the data are consistent with a
+    synchronous Younger Dryas boundary age of 12,835–12,735 cal BP.
+  editorInference: >-
+    The proponents' formal answer to the chronology audit. "Consistent
+    with synchrony" is weaker than "demonstrates synchrony": the model's
+    force depends on which dates and boundary assignments enter it, which
+    is exactly what critics contest — and the paper carries a 2024
+    correction (content not reviewed here).
+  limitations:
+    - "Date inclusion/exclusion rules and boundary assignments were not independent of the event hypothesis (the circularity objection)."
+    - "2024 correction recorded by Crossref; unreviewed."
+  reviewState: ai_extracted
+  origin:
+    ref: "YDIH research report §dating and chronology; correction found via Crossref 2026-08-22"
+    extractedBy: "Fable (AI agent)"
+    runId: "ydih-extract-2026-08"
+    date: "2026-08-22"
+
+- id: YDIH-E021
+  title: "The Younger Dryas onset independently dated to ~12,870 ± 30 BP"
+  claimIds: [YDIH-C010]
+  sourceId: SRC-CHENG-2020
+  direction: context
+  strength: moderate
+  sourceStatement: >-
+    High-resolution speleothem and ice-core chronologies place the Younger
+    Dryas onset at approximately 12,870 ± 30 years before present, with
+    structure suggesting the transition unfolded over decades.
+  editorInference: >-
+    The target any synchrony claim must hit — and a reminder that the
+    familiar "12,800 years ago" is a rounded convention, not an exact
+    timestamp. A proxy layer synchronous at 12,785 and a climate onset at
+    12,870 are only "the same event" within generous uncertainties.
+  limitations:
+    - "Different archives sit on different age scales; cross-archive comparison at decadal precision remains genuinely hard."
+  reviewState: ai_extracted
+  origin:
+    ref: "YDIH research report §background; citation verified via Crossref 2026-08-22"
+    extractedBy: "Fable (AI agent)"
+    runId: "ydih-extract-2026-08"
+    date: "2026-08-22"
+
+# ── The impactor and the missing crater ─────────────────────────────────────
+
+- id: YDIH-E022
+  title: "Napier 2010: the fragmented-comet / Taurid scenario"
+  claimIds: [YDIH-C012]
+  sourceId: SRC-NAPIER-2010
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    A dynamical model proposing that Earth encountered dense debris from
+    the fragmentation of a formerly giant (roughly 50–100 km) short-period
+    comet — whose residue survives as the Taurid Complex — with such
+    encounters capable of producing multiple dispersed airbursts and
+    surface impacts within hours, around the Younger Dryas onset epoch.
+  editorInference: >-
+    The scenario that modernized the hypothesis: it explains why no single
+    crater need exist and gives the event an astronomical genealogy. It is
+    a possibility argument — nothing in it shows the encounter happened,
+    and no recovered material ties any YD deposit to the Taurids.
+  exactLocator: "MNRAS 405(3): 1901–1906"
+  limitations:
+    - "Giant-comet fragmentation histories are model-dependent; the 12.8-ka crossing is posited, not derived from observation."
+  reviewState: ai_extracted
+  origin:
+    ref: "YDIH research report §impactor"
+    extractedBy: "Fable (AI agent)"
+    runId: "ydih-extract-2026-08"
+    date: "2026-08-22"
+
+- id: YDIH-E023
+  title: "Hiawatha discovered: a 31-km crater with an initially open age"
+  claimIds: [YDIH-C009]
+  sourceId: SRC-KJAER-2018
+  direction: context
+  strength: moderate
+  sourceStatement: >-
+    Airborne radar sounding revealed a ~31-km-wide impact crater beneath
+    Hiawatha Glacier in northwest Greenland; the discovery paper argued the
+    crater could be as old as the Pleistocene's start or as young as its
+    end, explicitly leaving a Younger Dryas age possible.
+  editorInference: >-
+    Why the crater mattered to this case: for four years it was the
+    candidate smoking gun under the ice sheet the original hypothesis had
+    pointed at. Recorded as context because its relevance was extinguished
+    by the direct dating that followed.
+  limitations:
+    - "The discovery paper's age discussion was explicitly provisional, pending direct dating."
+  reviewState: ai_extracted
+  origin:
+    ref: "YDIH research report §impactor"
+    extractedBy: "Fable (AI agent)"
+    runId: "ydih-extract-2026-08"
+    date: "2026-08-22"
+
+- id: YDIH-E024
+  title: "Hiawatha dated: 58 million years — excluded as a YDIH candidate"
+  claimIds: [YDIH-C009]
+  sourceId: SRC-KENNY-2022
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    40Ar/39Ar dating of impact-heated sand and U-Pb dating of zircon in
+    impact-melt pebbles, sampled from glaciofluvial sediment draining the
+    crater, converged on an impact age of 57.99 ± 0.54 million years (Late
+    Paleocene).
+  editorInference: >-
+    Clean, dual-method, direct dating that removes the only proposed crater
+    from the case — supporting the no-crater claim and, in the process,
+    demonstrating what decisive evidence in this field actually looks like.
+    Retractions cut both ways and so do datings: proponents dropped
+    Hiawatha; the hypothesis's airburst wing never needed it.
+  limitations:
+    - "Dates the one candidate structure; cannot exclude undiscovered structures, though none with credible ~12.8-ka dating has been proposed."
+  reviewState: ai_extracted
+  origin:
+    ref: "YDIH research report §impactor"
+    extractedBy: "Fable (AI agent)"
+    runId: "ydih-extract-2026-08"
+    date: "2026-08-22"
+
+# ── Extinctions and the Clovis record ───────────────────────────────────────
+
+- id: YDIH-E025
+  title: "Faith & Surovell 2009: a geologically concentrated extinction"
+  claimIds: [YDIH-C008]
+  sourceId: SRC-FAITH-SUROVELL-2009
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    Analysis of last-appearance radiocarbon data for North American
+    megafaunal genera found the record statistically consistent with a
+    synchronous extinction concentrated in the terminal Pleistocene
+    (assessed interval ~12,000–10,000 radiocarbon years BP, roughly
+    13.8–11.4 ka calibrated), rather than a long staggered decline.
+  editorInference: >-
+    Supports the extinction observation while setting its resolution
+    honestly: "synchronous" at the scale of this analysis means a window of
+    two millennia. The paper is regularly miscited as dating the extinction
+    to the impact horizon; it cannot and does not.
+  exactLocator: "PNAS 106(49): 20641–20645"
+  limitations:
+    - "Last-appearance dates systematically underestimate true extinction times (Signor-Lipps effect); species-level chronologies remain sparse."
+  reviewState: ai_extracted
+  origin:
+    ref: "YDIH research report §megafauna"
+    extractedBy: "Fable (AI agent)"
+    runId: "ydih-extract-2026-08"
+    date: "2026-08-22"
+
+- id: YDIH-E026
+  title: "Buchanan et al. 2008: no demographic crash in the radiocarbon record"
+  claimIds: [YDIH-C023]
+  sourceId: SRC-BUCHANAN-2008
+  direction: undermines
+  strength: strong
+  sourceStatement: >-
+    Analysis of ~1,500 archaeological radiocarbon dates from across North
+    America found no evidence of the human population decline at 12.9 ka
+    predicted by the extraterrestrial-impact hypothesis; date frequencies
+    show continuity through the boundary.
+  editorInference: >-
+    A direct test of a distinctive prediction, published within a year of
+    the hypothesis — and negative. Radiocarbon-frequency demography is an
+    imperfect proxy, but the predicted signal was a continent-wide
+    catastrophe, which is exactly the size of signal the method should see.
+  exactLocator: "PNAS 105(33): 11651–11654"
+  limitations:
+    - "Radiocarbon date frequencies conflate population size with site preservation and research intensity."
+  reviewState: ai_extracted
+  origin:
+    ref: "YDIH research report §megafauna and Clovis"
+    extractedBy: "Fable (AI agent)"
+    runId: "ydih-extract-2026-08"
+    date: "2026-08-22"
+
+- id: YDIH-E027
+  title: "Holliday & Meltzer 2010: technological transition, not termination"
+  claimIds: [YDIH-C023]
+  sourceId: SRC-HOLLIDAY-MELTZER-2010
+  direction: undermines
+  strength: strong
+  sourceStatement: >-
+    A review of the Paleoindian archaeological record concluded it provides
+    no evidence of a continent-wide catastrophe at 12.9 ka: Clovis lithic
+    technology gives way to Folsom and regional successors in a pattern of
+    normal cultural transition, with no occupation gap, and "Clovis" itself
+    denotes a technocomplex rather than a bounded population.
+  editorInference: >-
+    The archaeological specialists' verdict on the hypothesis's most
+    checkable human claim. The category correction matters as much as the
+    data: a projectile-point style cannot "collapse" the way a civilization
+    can, and the case treats conflation of the two as a red flag wherever
+    it appears.
+  exactLocator: "Current Anthropology 51(5): 575–607"
+  limitations:
+    - "Regional archaeological records vary in resolution; absence of a visible gap is weaker in poorly sampled regions."
+  reviewState: ai_extracted
+  origin:
+    ref: "YDIH research report §megafauna and Clovis"
+    extractedBy: "Fable (AI agent)"
+    runId: "ydih-extract-2026-08"
+    date: "2026-08-22"
+
+# ── The trigger ─────────────────────────────────────────────────────────────
+
+- id: YDIH-E028
+  title: "AMOC weakening as the Younger Dryas's proximate mechanism"
+  claimIds: [YDIH-C013]
+  sourceId: SRC-LYNCH-STIEGLITZ-2017
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    A review of paleoceanographic evidence concludes that multiple
+    independent proxies support reduced Atlantic Meridional Overturning
+    Circulation during the Younger Dryas, consistent with the cold
+    reversal's North Atlantic pattern, while noting ongoing debate over the
+    initiating freshwater forcing's routing and magnitude.
+  editorInference: >-
+    The common ground both camps stand on — and the reason the impact is
+    evidentially optional: the mechanism that actually produced the cold
+    is well supported and has candidate initiators that require nothing
+    from the sky.
+  exactLocator: "Annual Review of Marine Science 9: 83–104"
+  limitations:
+    - "The initiating trigger remains genuinely open; 'known processes suffice' is a plausibility judgment, not a demonstration."
+  reviewState: ai_extracted
+  origin:
+    ref: "YDIH research report §paleoclimate; citation verified via Crossref 2026-08-22"
+    extractedBy: "Fable (AI agent)"
+    runId: "ydih-extract-2026-08"
+    date: "2026-08-22"
+
+- id: YDIH-E029
+  title: "Page-Ladson 2026: a volcanic rival for the trigger and the geochemistry"
+  claimIds: [YDIH-C011, YDIH-C021]
+  sourceId: SRC-NANAYOBO-2026
+  direction: undermines
+  strength: moderate
+  sourceStatement: >-
+    Highly-siderophile-element and osmium-isotope geochemistry at
+    Page-Ladson, Florida reported volcanic signatures in Younger Dryas
+    onset sediments and proposed volcanic forcing as a contributing trigger
+    for the cooling.
+  editorInference: >-
+    A second site where discriminating geochemistry favors volcanism over
+    impact, and — more importantly for the attribution — a rival exotic
+    trigger with actual source evidence behind it. Carried at moderate
+    strength: it is one very recent study and should itself be treated as
+    an emerging hypothesis, not a new consensus.
+  limitations:
+    - "Published April 2026; needs replication, independent age synchronization, and climate-model testing."
+    - "A volcanic trigger for the YD would be a rival hypothesis, not a confirmation of the conventional meltwater account."
+  reviewState: ai_extracted
+  origin:
+    ref: "YDIH research report §executive summary and paleoclimate"
+    extractedBy: "Fable (AI agent)"
+    runId: "ydih-extract-2026-08"
+    date: "2026-08-22"
+
+# ── Reviews, rebuttals, and the state of the record ─────────────────────────
+
+- id: YDIH-E030
+  title: "Pinter et al. 2011: the first requiem"
+  claimIds: [YDIH-C020]
+  sourceId: SRC-PINTER-2011
+  direction: undermines
+  strength: moderate
+  sourceStatement: >-
+    A cross-disciplinary critical review concluded that many of the
+    hypothesis's original evidence lines were non-reproducible or
+    non-diagnostic — with some early markers (fullerenes, extraterrestrial
+    helium) effectively abandoned — and that the remaining evidence did not
+    support a Younger Dryas impact.
+  editorInference: >-
+    The field's first systematic negative verdict. Its title proved
+    premature as sociology — the literature grew for fifteen more years —
+    which is itself a datum about how contested hypotheses persist; the
+    substantive criticisms largely stand and were extended by the 2023
+    review.
+  exactLocator: "Earth-Science Reviews 106(3–4): 247–264"
+  limitations:
+    - "Predates the platinum line, the Bayesian chronology, and everything since 2011."
+  reviewState: ai_extracted
+  origin:
+    ref: "YDIH research report §comparative study table"
+    extractedBy: "Fable (AI agent)"
+    runId: "ydih-extract-2026-08"
+    date: "2026-08-22"
+
+- id: YDIH-E031
+  title: "Sweatman 2021: the proponent synthesis"
+  claimIds: [YDIH-C020]
+  sourceId: SRC-SWEATMAN-2021
+  direction: supports
+  strength: weak
+  sourceStatement: >-
+    A review of the impact evidence argued that the accumulated proxy
+    record — spherules, platinum, nanodiamonds, melt products, burning
+    signals across many sites — collectively supports the Younger Dryas
+    impact hypothesis strongly, and that the critical literature has
+    mischaracterized the state of the evidence.
+  editorInference: >-
+    The strongest peer-reviewed statement of the proponent case, carried at
+    weak strength because it is a synthesis of the same primary studies
+    whose replication and identification problems this case documents —
+    aggregation does not launder non-independent, disputed lines into
+    strong evidence.
+  exactLocator: "Earth-Science Reviews 218: 103677"
+  limitations:
+    - "Its consensus characterization drew a published methodological comment (Jorgeson et al. 2022) and author response."
+    - "Single author, closely identified with the proponent research program."
+  reviewState: ai_extracted
+  origin:
+    ref: "YDIH research report §comparative study table"
+    extractedBy: "Fable (AI agent)"
+    runId: "ydih-extract-2026-08"
+    date: "2026-08-22"
+
+- id: YDIH-E032
+  title: "Holliday et al. 2023: the comprehensive refutation"
+  claimIds: [YDIH-C020]
+  sourceId: SRC-HOLLIDAY-2023
+  direction: undermines
+  strength: strong
+  sourceStatement: >-
+    A thirteen-author cross-disciplinary review concluded the hypothesis
+    fails across every examined domain — impact physics, geology,
+    geochemistry, chronology, ecology, and archaeology — finding no
+    self-consistent physical and stratigraphic case for a Younger Dryas
+    cosmic event: proxy peaks non-reproducible or non-diagnostic,
+    chronologies inadequate for synchrony, proposed impact scenarios
+    physically inconsistent, and the claimed consequences explained by
+    conventional processes.
+  editorInference: >-
+    The current center of gravity of independent expert assessment. Its
+    force comes from breadth (every evidence line addressed in one place)
+    rather than from new data; the proponents' 2024 "Rejection" and the
+    authors' further "Rebuttal" (both carried in the sources) leave the
+    exchange formally open and substantively where it stood.
+  exactLocator: "Earth-Science Reviews 247: 104502"
+  limitations:
+    - "Authored substantially by the hypothesis's long-standing critics — thoroughness and partisanship are both real here."
+    - "Answered by Sweatman, Powell & West 2024 (ESR 258: 104960); the authors rebutted (ESR 258: 104961)."
+  reviewState: ai_extracted
+  origin:
+    ref: "YDIH research report §current consensus"
+    extractedBy: "Fable (AI agent)"
+    runId: "ydih-extract-2026-08"
+    date: "2026-08-22"
+
+- id: YDIH-E033
+  title: "The 2024 exchange: proponents' rejection and the critics' rebuttal"
+  claimIds: [YDIH-C020]
+  sourceId: SRC-SWEATMAN-2024
+  direction: supports
+  strength: weak
+  sourceStatement: >-
+    Sweatman, Powell, and West published a detailed response arguing the
+    2023 review misrepresented the evidence, applied asymmetric standards,
+    and did not refute the hypothesis; Holliday and colleagues answered
+    with a same-journal rebuttal maintaining their conclusions.
+  editorInference: >-
+    Carried as (weak) support because a formal, journal-published defense
+    is part of the hypothesis's live standing — and as a marker that
+    "debated in the literature" is true while "evenly divided" is not. The
+    exchange is argumentative on both sides; neither installment contains
+    new primary evidence.
+  exactLocator: "Earth-Science Reviews 258: 104960 (response); 258: 104961 (rebuttal)"
+  limitations:
+    - "Two of three response authors are closely associated with the Comet Research Group."
+    - "Rebutted in the same volume; the review's authors did not concede any principal point."
+  reviewState: ai_extracted
+  origin:
+    ref: "YDIH research report §current consensus; both DOIs verified via Crossref 2026-08-22"
+    extractedBy: "Fable (AI agent)"
+    runId: "ydih-extract-2026-08"
+    date: "2026-08-22"
+
+- id: YDIH-E034
+  title: "The Baffin Bay retraction notice, in the editors' own words"
+  claimIds: [YDIH-C031]
+  sourceId: SRC-PLOS-RETRACT-BAFFIN-2026
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    The PLOS One Editors retracted the article on 2026-02-11, citing:
+    incorrect citations "raising concerns about undisclosed use of AI
+    tools"; multiple citations that do not support the associated
+    statements; chronology problems including missing foraminifera dating
+    information, unaccounted 5-cm sampling uncertainty, and a calibration
+    method not recommended for the site's latitude and period — with
+    recommended calibration producing ages "outside the Younger Dryas";
+    misidentification of claimed cosmic "spherule fragments" that consulted
+    experts identified as marine foraminifera; sampling insufficient to
+    assess long-term particle variability, including an out-of-boundary
+    peak equal in magnitude to the claimed boundary peak; and unclear data
+    attribution. One author agreed with the retraction; eight disagreed;
+    one was neutral; the rest did not respond or could not be reached.
+  editorInference: >-
+    The most consequential of the 2026 editorial actions, because its
+    defect list reads as a checklist of this case's methodological themes:
+    calibration choices that manufacture synchrony, particle identification
+    by morphology, and no background sampling. It documents error — not
+    fabrication — and the recorded author dissent is honest provenance, not
+    exoneration.
+  exactLocator: "PLOS ONE 21(2): e0342613"
+  limitations:
+    - "Retraction is evidence about a paper, not about the Pleistocene: it removes claimed support without demonstrating the event's absence."
+  reviewState: ai_extracted
+  origin:
+    ref: "Notice full text fetched and read from journals.plos.org, 2026-08-22"
+    extractedBy: "Fable (AI agent)"
+    runId: "ydih-extract-2026-08"
+    date: "2026-08-22"
+
+- id: YDIH-E035
+  title: "The shocked-quartz retraction notice, in the editors' own words"
+  claimIds: [YDIH-C031]
+  sourceId: SRC-PLOS-RETRACT-QUARTZ-2026
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    The PLOS One Editors retracted the article on 2026-02-11 after expert
+    consultation, citing: an age model that did not include all available
+    published radiocarbon samples, with some dates untraceable to source
+    studies and included ages ranging "centuries before and after the
+    Younger Dryas onset"; and incomplete core sampling that precludes
+    ruling out comparable proxy spikes at other depths, prevents any
+    background comparison, and — absent reported age models — leaves open
+    that the claimed spike reflects sedimentation-rate change rather than
+    an event. Eight authors disagreed with the retraction; the rest did not
+    respond or could not be reached.
+  editorInference: >-
+    The second 2026 editorial action, with a defect list matching the
+    chronology and sampling critiques the independent literature had been
+    making since 2009 — the same failure modes, a decade later, in the
+    hypothesis's newest flagship evidence. As with Baffin Bay: error and
+    method, not fabrication.
+  exactLocator: "PLOS ONE 21(2): e0342620"
+  limitations:
+    - "The underlying claim (shock-metamorphosed quartz at the boundary) could in principle be re-established by properly sampled, properly dated future work."
+  reviewState: ai_extracted
+  origin:
+    ref: "Notice full text fetched and read from journals.plos.org, 2026-08-22"
+    extractedBy: "Fable (AI agent)"
+    runId: "ydih-extract-2026-08"
+    date: "2026-08-22"
+
+- id: YDIH-E036
+  title: "The Comet Research Group's public posture"
+  claimIds: [YDIH-C020]
+  sourceId: SRC-CRG-SITE
+  direction: context
+  strength: weak
+  sourceStatement: >-
+    The proponent organization's website (fetched 2026-08-22) states that
+    "12,800 years ago, a fragmented comet detonated over Earth's northern
+    hemisphere. The evidence is undeniable: a global burn layer, mass
+    extinctions, and the near-erasure of human civilization," and solicits
+    donations for Greenland ice-core and Gulf of St. Lawrence crater
+    expeditions.
+  editorInference: >-
+    Recorded so readers can calibrate sources: the advocacy organization's
+    public certainty ("undeniable") exceeds anything in the peer-reviewed
+    literature — including its own members' papers, two of which were
+    retracted and one corrected in 2026. Funding and organizational overlap
+    are disclosed facts to weigh, not misconduct; but "independent
+    replication" claims should be checked against this network.
+  limitations:
+    - "Website language changes over time; specifics should be archived before being cited."
+  reviewState: ai_extracted
+  origin:
+    ref: "Site fetched and read 2026-08-22"
+    extractedBy: "Fable (AI agent)"
+    runId: "ydih-extract-2026-08"
+    date: "2026-08-22"
+
+- id: YDIH-E037
+  title: "The joint-inference problem: eight links, each contested"
+  claimIds: [YDIH-C020]
+  sourceId: SRC-YDIH-REPORT-2026
+  direction: qualifies
+  strength: moderate
+  sourceStatement: >-
+    The research report's methodological synthesis: a convincing YDIH case
+    requires a chain of independent propositions to all hold — anomaly
+    exists → correctly identified → extraordinary against background →
+    securely dated → synchronous across sites → extraterrestrial in origin
+    → energetically sufficient → causally responsible for climate,
+    extinction, and cultural change — and evidence for an early link does
+    not validate later ones. No proposed marker has achieved the
+    combination of specificity, reproducibility, chronology, and causal
+    linkage across the claimed footprint.
+  editorInference: >-
+    The case's structural summary: most public YDIH argument jumps from
+    grade one (an anomaly exists) to grade four (an impact did it). The
+    ladder in this case is built to make that jump visible — and every
+    disputed link is separately recorded above.
+  limitations:
+    - "An AI-generated synthesis judgment, imported as the framing it is rather than as primary evidence."
+  reviewState: ai_extracted
+  origin:
+    ref: "YDIH research report §methodological assessment"
+    extractedBy: "Fable (AI agent)"
+    runId: "ydih-extract-2026-08"
+    date: "2026-08-22"

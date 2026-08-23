@@ -1,0 +1,51 @@
+# Literature watch (docs/MAINTENANCE.md § literature watch).
+# Weekly, scripts/watch-literature.mjs runs these queries against arXiv and
+# Crossref (OpenAlex optional) and surfaces new items as discovery-only
+# proposals under proposals/watch/<runId>/. Nothing lands in sources.yaml
+# without human review. Schema: WatchConfigSchema in src/domain/schema.ts.
+
+queries:
+  - id: ydb-proxy-replication
+    query: "Younger Dryas boundary nanodiamond microspherule replication"
+    sources: [crossref]
+    keywords: [nanodiamond, spherule, lonsdaleite, "melt glass"]
+    note: >-
+      New attempts, in either direction, to reproduce the claimed Younger
+      Dryas boundary proxy assemblage — the case's central crux (YDIH-C030;
+      the decisive test is a blind interlaboratory replication).
+
+  - id: platinum-anomaly
+    query: "platinum anomaly Younger Dryas ice core sediment"
+    sources: [crossref]
+    keywords: [platinum, iridium, osmium]
+    note: >-
+      Follow-ups to the GISP2 platinum anomaly (YDIH-C001) after the May
+      2026 correction; an independent re-measurement in a second Greenland
+      core is one of the case's decisive tests.
+
+  - id: hiawatha-crater-dating
+    query: "Hiawatha impact structure Greenland age dating"
+    sources: [crossref]
+    keywords: [Hiawatha]
+    note: >-
+      Anything bearing on the Hiawatha crater's age (YDIH-C009): the ~58 Ma
+      zircon/apatite dates removed it as a Younger Dryas candidate — watch
+      for challenges to or confirmations of that dating.
+
+  - id: ydih-critiques-rebuttals
+    query: "Younger Dryas impact hypothesis"
+    sources: [crossref]
+    keywords: [impact, airburst, comet, cosmic]
+    note: >-
+      The running Holliday–Sweatman exchange: new comprehensive critiques,
+      proponent rebuttals, and editorial actions (retractions/corrections)
+      in this literature bear directly on the attribution rung (YDIH-C020).
+
+  - id: yd-trigger-alternatives
+    query: "Younger Dryas onset trigger meltwater overturning circulation"
+    sources: [crossref]
+    keywords: [meltwater, AMOC, "overturning circulation", "Lake Agassiz"]
+    note: >-
+      The best conventional alternative (YDIH-C013): progress on meltwater
+      routing and AMOC weakening changes the impact hypothesis's residual
+      explanatory burden independently of any proxy dispute.

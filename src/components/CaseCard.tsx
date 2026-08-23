@@ -28,7 +28,7 @@ export function CaseCard({
             src={assetPath(cover.file)}
             alt={cover.alt}
             loading="lazy"
-            className="block w-full aspect-[21/9] object-cover"
+            className="block w-full aspect-[16/9] object-cover"
           />
         </div>
       ) : null}

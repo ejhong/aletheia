@@ -333,6 +333,8 @@ export const ImageSchema = z
     prompt: z.string().optional(),
     styleVersion: z.string().optional(),
     model: z.string().optional(),
+    /** Generated images only: the generation run that produced the file. */
+    runId: z.string().optional(),
     /** Plates only. */
     plateNumber: z.number().int().positive().optional(),
     depicts: z.string().optional(),

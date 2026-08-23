@@ -10,13 +10,20 @@ import {
   featuredClaims,
   getCaseBySlug,
   historyNewestFirst,
+  displayAssessment,
+  editorialAssessment,
   latestAssessment,
   liveClaims,
   loadAllCases,
   loadSiteImages,
   recentChanges,
 } from "./load";
-import { ClaimSchema, EvidenceSchema, ImageSchema } from "./schema";
+import {
+  ClaimSchema,
+  ConjectureSchema,
+  EvidenceSchema,
+  ImageSchema,
+} from "./schema";
 
 describe("real content", () => {
   it("loads and passes all integrity checks", () => {
@@ -337,5 +344,72 @@ describe("article parser", () => {
 
   it("rejects unsupported heading levels", () => {
     expect(() => parseArticle("# Top level")).toThrow();
+  });
+});
+
+describe("v1.1 governance", () => {
+  const mkRun = (runId: string, humanReviewed: boolean, date: string) => ({
+    runId,
+    model: "test",
+    date,
+    promptVersion: "t",
+    humanReviewed,
+    caseAssessment: {
+      verdict: "unresolved" as const,
+      loadBearing: [],
+      weakestLinks: [],
+      synthesis: "x".repeat(120),
+    },
+    claimAssessments: [],
+  });
+  const withRuns = (runs: ReturnType<typeof mkRun>[]) =>
+    ({ assessmentRuns: runs }) as unknown as Parameters<
+      typeof editorialAssessment
+    >[0];
+
+  it("only a human-reviewed run presents as editorial", () => {
+    const draftOnly = withRuns([mkRun("a", false, "2026-01-01")]);
+    expect(editorialAssessment(draftOnly)).toBeNull();
+    expect(displayAssessment(draftOnly)?.humanEndorsed).toBe(false);
+  });
+
+  it("a newer unreviewed run never displaces an endorsed one", () => {
+    const both = withRuns([
+      mkRun("endorsed", true, "2026-01-01"),
+      mkRun("newer-draft", false, "2026-02-01"),
+    ]);
+    const shown = displayAssessment(both);
+    expect(shown?.humanEndorsed).toBe(true);
+    expect(shown?.run.runId).toBe("endorsed");
+    // ...while latestAssessment still exposes the draft for the review alert.
+    expect(
+      latestAssessment(both as unknown as Parameters<typeof latestAssessment>[0])
+        ?.runId,
+    ).toBe("newer-draft");
+  });
+
+  it("every case carries a research priority; no editorial assessment is claimed yet", () => {
+    for (const c of loadAllCases()) {
+      expect(["high", "medium", "low"]).toContain(
+        c.record.researchPriority.level,
+      );
+      // As of v1.1 launch no run is human-endorsed; cards must say so.
+      expect(displayAssessment(c)?.humanEndorsed).toBe(false);
+    }
+  });
+
+  it("conjectures require disconfirmers", () => {
+    expect(() =>
+      ConjectureSchema.parse({
+        id: "GEO-J099",
+        by: "x",
+        date: "2026-08-23",
+        statement: "something bold and specific",
+        confidence: "high",
+        rationale: "intuition, stated as such",
+        predictedFindings: ["a finding"],
+        disconfirmers: [],
+      }),
+    ).toThrow();
   });
 });

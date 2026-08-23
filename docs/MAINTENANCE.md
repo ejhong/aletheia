@@ -33,6 +33,15 @@ workflow re-derives the class from the actual diff
 (`scripts/classify-pr-risk.mjs`), and a PR labeled `auto:low-risk` whose
 diff exceeds the allowlist fails the check, which blocks auto-merge.
 
+Why auto-merging **new** assessment overlays stays low-risk (v1.1
+governance rule): the site never displays an unreviewed run as the
+editorial assessment. `displayAssessment()` shows the last
+`humanReviewed: true` run when one exists; newer unendorsed runs render
+as clearly-labeled AI drafts, and their disagreement with the editorial
+assessment appears as a review alert on the case page. An auto-merged
+overlay therefore cannot silently change what the public reads as the
+verdict.
+
 ## What happens automatically
 
 Weekly (or on demand), the Maintain workflow:

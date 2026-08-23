@@ -5,9 +5,10 @@ import { assetPath } from "@/src/config/assets";
 import { site } from "@/src/config/site";
 import {
   caseCover,
-  latestAssessment,
+  displayAssessment,
   loadAllCases,
   recentChanges,
+  reviewCoverage,
   siteImage,
 } from "@/src/domain/load";
 
@@ -45,14 +46,19 @@ export default function HomePage() {
           cases
         </h2>
         <div className="grid sm:grid-cols-2 gap-4">
-          {cases.map((c) => (
-            <CaseCard
-              key={c.record.id}
-              record={c.record}
-              verdict={latestAssessment(c)?.caseAssessment.verdict ?? null}
-              cover={caseCover(c)}
-            />
-          ))}
+          {cases.map((c) => {
+            const shown = displayAssessment(c);
+            return (
+              <CaseCard
+                key={c.record.id}
+                record={c.record}
+                verdict={shown?.run.caseAssessment.verdict ?? null}
+                verdictHumanEndorsed={shown?.humanEndorsed ?? false}
+                reviewCoverage={reviewCoverage(c)}
+                cover={caseCover(c)}
+              />
+            );
+          })}
         </div>
       </section>
 

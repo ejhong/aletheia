@@ -43,7 +43,13 @@ export default function HomePage() {
         <p className="mt-4 text-[15px] leading-relaxed text-ink-soft max-w-2xl">
           {site.mission}
         </p>
-        <p className="mt-4">
+        <p className="mt-4 flex flex-wrap gap-x-8 gap-y-2">
+          <Link
+            href="/research/"
+            className="font-mono text-[11px] uppercase tracking-[0.14em] text-copper underline underline-offset-4 hover:text-ink"
+          >
+            The Price of Truth — every decisive test, priced →
+          </Link>
           <Link
             href="/method/"
             className="font-mono text-[11px] uppercase tracking-[0.14em] text-copper underline underline-offset-4 hover:text-ink"

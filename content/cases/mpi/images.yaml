@@ -2,10 +2,8 @@
 #   cover  — AI-generated editorial artwork in the house engraving style,
 #            honestly credited; may never depict evidence.
 #   plate  — real imagery with provenance and license. This case currently
-#            carries no plates: the candidate imagery (lab equipment photos,
-#            portraits) added nothing evidential, and the epistemic rules
-#            forbid decorating an evidence ledger with imagery that could be
-#            mistaken for the record.
+#            may carry plates that are context only: real apparatus of the
+#            kind the experiments use, never a result and never a portrait.
 
 - id: IMG-MPI-COVER
   role: cover
@@ -40,3 +38,30 @@
     quiet composition. Absolutely no text, no labels, no captions, no border
     frame lines. Unmistakably a hand-tinted engraving — stylized editorial
     artwork, not photorealistic, no photograph.
+
+- id: IMG-MPI-P01
+  role: plate
+  file: /images/cases/mpi/plates/sbm-20-geiger-m-ller-tubes.jpg
+  alt: >-
+    Close stack of brass Geiger–Müller tubes with dark reddish collars
+    and grey end-caps, photographed from the tip end with shallow focus.
+  source: commons
+  license: "CC BY-SA 4.0"
+  licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0"
+  credit: "ArticCynda, via Wikimedia Commons"
+  plateNumber: 1
+  mediaType: "photograph"
+  depicts: >-
+    Context only — this photograph is not of any MPI experiment and is
+    evidence for nothing in this case. SBM-20 Geiger–Müller tubes, a
+    common hardware entropy source of the kind used in true-random
+    event generators. The MPI literature's physical channel is such a
+    generator; a later online replication reported a surplus with a
+    true-random source and a null with a deterministic pseudo-random
+    one. The tubes illustrate the hardware, not a result.
+  provenance:
+    photographer: "ArticCynda"
+    date: "2020-07-04"
+    sourceUrl: "https://commons.wikimedia.org/wiki/File:SBM-20_Geiger-M%C3%BCller_Tubes.jpg"
+    originalTitle: "File:SBM-20 Geiger-Müller Tubes.jpg"
+  claimIds: [MPI-C503]

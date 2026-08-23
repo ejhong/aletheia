@@ -43,7 +43,7 @@ Research documents for cases 3–7 live in `research/` (filenames as present):
    account of psi effects and their systematic elusiveness. Research:
    `Entangled Minds and Pragmatic Information_ A Comprehensive Synthesis
    of Psi Theory.pdf`.
-6. **Zero Worlds** — live as case `zero-worlds` ("No World Underneath?"):
+6. **Zero Worlds** — live as case `zero-worlds`:
    observer-first theories of reality: Donald Hoffman (interface theory /
    conscious agents), Markus Müller (algorithmic idealism / "law without
    law"), Stephen Wolfram (observer theory / ruliad). Built from the essay

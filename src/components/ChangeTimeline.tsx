@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { LinkedRecordText } from "./LinkedRecordText";
 import type { ChangeLogEntry } from "@/src/domain/schema";
+import type { RecordLinkTarget } from "@/src/domain/recordLinks";
 
 type TimelineEntry = ChangeLogEntry & {
   /** Present on cross-case feeds (e.g. the homepage); absent on case pages. */
@@ -12,7 +14,13 @@ type TimelineEntry = ChangeLogEntry & {
  * (see historyNewestFirst / recentChanges in src/domain/load.ts) so that
  * same-date entries keep a meaningful sequence.
  */
-export function ChangeTimeline({ entries }: { entries: TimelineEntry[] }) {
+export function ChangeTimeline({
+  entries,
+  registry,
+}: {
+  entries: TimelineEntry[];
+  registry?: Map<string, RecordLinkTarget>;
+}) {
   return (
     <ol className="relative border-l border-line pl-6 space-y-7">
       {entries.map((entry, i) => (
@@ -39,10 +47,10 @@ export function ChangeTimeline({ entries }: { entries: TimelineEntry[] }) {
             </span>
           </div>
           <p className="mt-1.5 text-[14px] leading-relaxed text-ink">
-            {entry.change}
+            <LinkedRecordText text={entry.change} registry={registry} />
           </p>
           <p className="mt-1 text-[13px] leading-relaxed text-faint italic font-serif">
-            Why: {entry.reason}
+            Why: <LinkedRecordText text={entry.reason} registry={registry} />
           </p>
         </li>
       ))}

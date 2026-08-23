@@ -64,22 +64,22 @@ export default async function CasePage({
 
   return (
     <div>
+      <SectionNav sections={sections} slug={slug} />
+
       <DossierHeader
         record={loaded.record}
         verdict={run?.caseAssessment.verdict ?? null}
         cover={caseCover(loaded)}
       />
 
-      <SectionNav sections={sections} slug={slug} />
-
       <div className="mx-auto max-w-6xl px-5">
         {run ? (
-          <section id="assessment" className="pt-10 scroll-mt-16">
+          <section id="assessment" className="pt-10 scroll-mt-28">
             <AssessmentPanel run={run} claims={claims} />
           </section>
         ) : null}
 
-        <section id="article" className="pt-12 scroll-mt-16">
+        <section id="article" className="pt-12 scroll-mt-28">
           <h2 className="font-mono text-[11px] uppercase tracking-[0.2em] text-faint mb-6">
             overview · marked sentences open the exact claim
           </h2>
@@ -90,11 +90,11 @@ export default async function CasePage({
           />
         </section>
 
-        <section id="ladder" className="pt-14 scroll-mt-16">
+        <section id="ladder" className="pt-14 scroll-mt-28">
           <ArgumentLadder claims={claims} />
         </section>
 
-        <section id="evidence" className="pt-14 scroll-mt-16">
+        <section id="evidence" className="pt-14 scroll-mt-28">
           <h2 className="font-serif text-3xl tracking-tight">
             Evidence highlights
           </h2>
@@ -132,7 +132,7 @@ export default async function CasePage({
           </div>
         </section>
 
-        <section id="conventional" className="pt-14 scroll-mt-16">
+        <section id="conventional" className="pt-14 scroll-mt-28">
           <div className="border border-line bg-paper-deep/50 p-6 sm:p-8">
             <h2 className="font-serif text-3xl tracking-tight">
               The best conventional explanation
@@ -146,7 +146,7 @@ export default async function CasePage({
           </div>
         </section>
 
-        <section id="research" className="pt-14 scroll-mt-16">
+        <section id="research" className="pt-14 scroll-mt-28">
           <h2 className="font-serif text-3xl tracking-tight">
             Research agenda
           </h2>
@@ -176,7 +176,7 @@ export default async function CasePage({
           </div>
         </section>
 
-        <section id="history" className="pt-14 pb-6 scroll-mt-16">
+        <section id="history" className="pt-14 pb-6 scroll-mt-28">
           <h2 className="font-serif text-3xl tracking-tight mb-2">
             Change history
           </h2>

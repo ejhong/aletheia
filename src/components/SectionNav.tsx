@@ -19,14 +19,18 @@ export function SectionNav({
 
   useEffect(() => {
     let ticking = false;
+    const stickyOffset = () => {
+      const header = document.querySelector("header");
+      const nav = document.getElementById("case-section-nav");
+      return (header?.offsetHeight ?? 64) + (nav?.offsetHeight ?? 44);
+    };
     const update = () => {
       ticking = false;
       let current: string | null = null;
+      const threshold = stickyOffset();
       for (const [id] of sections) {
         const el = document.getElementById(id);
-        // The nav is ~44px tall; a section is "current" once its top passes
-        // just below the stuck nav.
-        if (el && el.getBoundingClientRect().top <= 96) current = id;
+        if (el && el.getBoundingClientRect().top <= threshold) current = id;
       }
       setActive(current);
     };
@@ -42,7 +46,10 @@ export function SectionNav({
   }, [sections]);
 
   return (
-    <nav className="border-b border-line bg-paper sticky top-0 z-10">
+    <nav
+      id="case-section-nav"
+      className="border-b border-line bg-paper sticky top-16 z-10"
+    >
       <div className="mx-auto max-w-6xl px-5 overflow-x-auto">
         <div className="flex gap-6 py-3 whitespace-nowrap">
           {sections.map(([id, label]) => (

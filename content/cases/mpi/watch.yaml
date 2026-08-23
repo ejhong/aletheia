@@ -1,0 +1,70 @@
+# Literature watch (docs/MAINTENANCE.md § literature watch).
+# Weekly, scripts/watch-literature.mjs runs these queries against arXiv and
+# Crossref (OpenAlex optional) and surfaces new items as discovery-only
+# proposals under proposals/watch/<runId>/. Nothing lands in sources.yaml
+# without human review. Schema: WatchConfigSchema in src/domain/schema.ts.
+#
+# Coverage mirrors the ladder: the matrix replication record (the case's
+# central evidence line), the GQT formalism, proponent output, the
+# RNG-source contrast, and — per the fairness rules — the critical
+# QRP/decline literature watched with the same machinery.
+
+queries:
+  - id: matrix-experiment-replications
+    query: "correlation matrix experiment random event generator"
+    sources: [crossref]
+    # Keywords hold the psi side; without them Crossref's loose relevance
+    # search returns the general correlation-matrix statistics firehose.
+    keywords: [psychokinesis, micro-PK, parapsycholog, anomalistic, "matrix experiment"]
+    note: >-
+      The case's central evidence line: new correlation-matrix replications
+      or reanalyses in either direction (MPI-C001, MPI-C002; the MPI-R001
+      adversarial replication and MPI-R002 dependence-aware reanalysis, if
+      anyone runs them).
+
+  - id: generalized-quantum-theory
+    query: "generalized quantum theory entanglement"
+    sources: [arxiv, crossref]
+    keywords: ["generalized quantum", "weak quantum", psychophysical, "mind-matter", "dual-aspect"]
+    note: >-
+      Developments in the formalism MPI sits inside — extensions, critiques,
+      or (most valuable) any derivation with quantitative predictions, which
+      MPI-C004 currently lacks.
+
+  - id: proponent-and-experimenter-output
+    query: "mind-matter correlation psychokinesis"
+    sources: [crossref]
+    authors: [Walach, Lucadou, Hinterberger, Grote, Maier, Dechamps, Flores]
+    note: >-
+      New output from the model's theorists and the active matrix/micro-PK
+      experimenters, so the case weighs the current formulation and the
+      newest data rather than the 2021 snapshot (MPI-C007; Flores's online
+      paradigm is still a preprint, MPI-E008).
+
+  - id: rng-source-dependence
+    query: "micro-psychokinesis random number generator"
+    sources: [crossref]
+    keywords: ["pseudo-random", "pseudorandom", "true random", "quantum random"]
+    note: >-
+      The true-RNG vs pseudo-RNG contrast — one of the few forward-looking
+      disagreements between MPI-family theories and the null hypothesis
+      (MPI-C503, MPI-R003).
+
+  - id: decline-effect-explanations
+    query: "decline effect replication regression"
+    sources: [crossref]
+    keywords: [parapsycholog, psi, "decline effect", "regression to the mean"]
+    note: >-
+      The attribution rung's contested territory: work explaining decline
+      arcs as regression/selection artifacts, or claiming structure beyond
+      them (MPI-C003, MPI-C005 vs MPI-C008).
+
+  - id: qrp-publication-bias-psi
+    query: "questionable research practices publication bias parapsychology"
+    sources: [crossref]
+    keywords: [QRP, "publication bias", "questionable research", preregist]
+    note: >-
+      The conventional steelman's evidence base, watched with the same
+      machinery as the proponent side per the fairness rules: QRP
+      simulations, bias-corrected meta-analyses, preregistration audits
+      (MPI-C008, MPI-C009; extends the Bösch/Bierman line, MPI-E015/E016).

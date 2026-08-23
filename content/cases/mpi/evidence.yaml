@@ -1,0 +1,506 @@
+# Evidence records: the specific observation/result extracted from a source
+# and connected to claims. Direction is explicit and read against the listed
+# claims; sourceStatement (what the source says) is kept separate from
+# editorInference (what we infer).
+
+# ── The founding program ─────────────────────────────────────────────────────
+
+- id: MPI-E001
+  title: "Lucadou's original matrix experiments report excess correlations"
+  claimIds: [MPI-C001]
+  sourceId: SRC-LUCADOU-2006
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    The 2006 proceedings paper presents the Model of Pragmatic Information
+    and Lucadou's correlation-matrix experiments, reported by the author and
+    his co-workers as producing more significant psychological–physical
+    correlations in experimental sessions than expected by chance or seen in
+    control matrices.
+  editorInference: >-
+    This is the founding evidence line of the whole program. Its weight
+    depends entirely on whether the significance counting survives the
+    dependence critique (MPI-C009), which had not been formulated when these
+    analyses were run.
+  limitations:
+    - "Full text not examined for this import; results characterization follows the descriptions in Walach et al. (2020, 2021) and Grote (2021)."
+    - "Author's own experiments, pre-preregistration era; the original 1986–1987 series was published mainly in German-language venues."
+    - "Original raw data have not been published for independent reanalysis."
+  reviewState: ai_extracted
+  origin:
+    ref: "MPI synthesis document; cross-checked against successor-paper descriptions"
+    extractedBy: "Fable (AI agent)"
+    runId: "mpi-case-2026-08-22"
+    date: "2026-08-22"
+
+- id: MPI-E002
+  title: "Walach et al. 2020: a large two-lab replication reports a significant surplus"
+  claimIds: [MPI-C001, MPI-C007]
+  sourceId: SRC-WALACH-2020
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    A two-laboratory replication with rebuilt hardware and software and a
+    45×45-variable matrix (2,025 cells) reported evidence for anomalistic
+    correlations between human behavior and a random event generator,
+    evaluated against 10,000 simulated experiments.
+  editorInference: >-
+    The strongest positive result in the modern record — and qualified by
+    its own authors a year later, who described it as "a significant but
+    fragile effect, as significance broke down in reasonably improved
+    methods of analysis" (Walach et al. 2021). Both halves belong in the
+    ledger.
+  exactLocator: "Psychology of Consciousness 7(2): 173–188"
+  limitations:
+    - "Co-authored by the model's originator."
+    - "Significance was not robust across analysis variants, per the authors' own successor paper."
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 (Crossref + Walach 2021 full text)"
+    extractedBy: "Fable (AI agent)"
+    runId: "mpi-case-2026-08-22"
+    date: "2026-08-22"
+
+# ── The strict replications ──────────────────────────────────────────────────
+
+- id: MPI-E003
+  title: "Nailing Jelly: two preregistered consensus-protocol replications fail"
+  claimIds: [MPI-C002, MPI-C003]
+  sourceId: SRC-WALACH-2021
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    Following a consensus protocol deposited on OSF before commencement, two
+    independent replications of the 2020 experiment were run with the same
+    equipment: 64 participants (post-hoc power 0.88) and 40 participants
+    (power 0.69), analyzed by a nonparametric randomization test with 10,000
+    iterations. "Neither of the two experiments was significant." The
+    authors conclude "that the matrix experiment in and of itself is not a
+    replicable paradigm in PSI research."
+  editorInference: >-
+    The proponents' own team, on the model's own chosen benchmark, under a
+    protocol they froze in advance — the cleanest confirmation that the
+    excess-correlation effect does not replicate on demand. Note the
+    interpretive move that follows in the same abstract: the failure is
+    read as "likely part of the systematic nature of such effects," which
+    is the falsifiability crux (MPI-C010) in action.
+  exactLocator: "JSE 35(4): 788–828, abstract and Tables 1–2"
+  limitations:
+    - "Power for the second replication was low (0.69); the first was adequately powered."
+    - "Standard power analysis is itself contested under a model that denies stable effects — the authors provide theirs only post hoc."
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 (full text read)"
+    extractedBy: "Fable (AI agent)"
+    runId: "mpi-case-2026-08-22"
+    date: "2026-08-22"
+
+- id: MPI-E004
+  title: "Grote 2021: full blind analysis of 200 participants finds nothing"
+  claimIds: [MPI-C002]
+  sourceId: SRC-GROTE-2021
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    An independent conceptual replication built from scratch tested 200
+    participants under a blind-analysis protocol in which the complete
+    analysis software was written and tested before the data were analyzed;
+    the unblinding was performed live at the 2019 Parapsychological
+    Association convention. "The main result was found to be not
+    statistically significant and fell well within the expected random
+    distribution of possible results." Two secondary/post-hoc analyses each
+    yielded p = 0.06.
+  editorInference: >-
+    The methodologically strictest test in the corpus, by an experimenter
+    independent of Lucadou's group, on the model's nominated paradigm:
+    null. Under the conventional account this is the expected result; under
+    MPI it is absorbed as decline — which is why this record weighs more
+    against MPI-C007 than any single positive weighs for it.
+  exactLocator: "JSE 35(2): 287–310, abstract"
+  limitations:
+    - "The two p = 0.06 secondary results are reported by the author as suggestive anecdota, not confirmations."
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 (DOI + journal page)"
+    extractedBy: "Fable (AI agent)"
+    runId: "mpi-case-2026-08-22"
+    date: "2026-08-22"
+
+- id: MPI-E005
+  title: "Grote 2015: initial study reports a significant distribution result"
+  claimIds: [MPI-C003]
+  sourceId: SRC-GROTE-2015
+  direction: supports
+  strength: weak
+  sourceStatement: >-
+    Grote's first correlation study between human intention and a binary
+    random event generator was published in JSE 29(2). Per his own later
+    description, "a former study of this kind had found a significant
+    result" for the distribution-of-hit-rates analysis (Grote 2017,
+    abstract).
+  editorInference: >-
+    The first step of a textbook decline arc within a single careful
+    experimenter's series: 2015 significant, 2017 null on all preplanned
+    analyses, 2021 null under full blinding.
+  limitations:
+    - "Full 2015 text not examined; the result is characterized via the author's own 2017 abstract."
+    - "Not a matrix experiment in the strict Lucadou design; part of the broader micro-PK correlation family."
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 (journal archive page + Grote 2017 abstract)"
+    extractedBy: "Fable (AI agent)"
+    runId: "mpi-case-2026-08-22"
+    date: "2026-08-22"
+
+- id: MPI-E006
+  title: "Grote 2017: preplanned analyses null; a post-hoc variant significant"
+  claimIds: [MPI-C002, MPI-C008]
+  sourceId: SRC-GROTE-2017
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    Twenty participants, 720,000 bits, three analyses defined and tested
+    before looking at the data — including a conceptual replication of the
+    correlation-matrix method. Results: p = 0.438, p = 0.703, and p = 0.0949
+    for the three preplanned analyses (combined p = 0.315). "While none of
+    the pre-defined analysis results is found significant, a post-hoc
+    variant of analysis 3 that includes the control data is significant
+    with p = 0.012."
+  editorInference: >-
+    One study, both lessons: the preplanned nulls extend the failed
+    replication record (MPI-C002), and the significant post-hoc variant is
+    a live demonstration of how analytic flexibility can conjure a positive
+    from the same data (MPI-C008). The synthesis document that seeded this
+    case cited the post-hoc figure as a replication success — an error this
+    import corrects.
+  exactLocator: "JSE 31(2): 231–254, abstract"
+  limitations:
+    - "Small sample (20 participants) limits what the preplanned nulls can exclude."
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 (journal article page)"
+    extractedBy: "Fable (AI agent)"
+    runId: "mpi-case-2026-08-22"
+    date: "2026-08-22"
+
+- id: MPI-E007
+  title: "Flores 2021: five in-house replications, three significant under permutation tests"
+  claimIds: [MPI-C007, MPI-C009]
+  sourceId: SRC-FLORES-2021
+  direction: qualifies
+  strength: moderate
+  sourceStatement: >-
+    A doctoral thesis under Watt and Walach ran five replication studies,
+    the first two exact replications using Lucadou's own RNG, software, and
+    protocol, with new control and analysis methods introduced and compared
+    against the originals. Per the successor preprint's summary, Flores
+    "still reports significant results in three out of five studies," while
+    her Monte Carlo work found that high intercorrelations among
+    psychological variables had inflated the original studies' significance.
+  editorInference: >-
+    The most double-edged record in the case: partial positive results that
+    survive her own dependence-aware analyses, produced inside the same
+    project that sharpened the strongest statistical critique of the
+    founding experiments. It qualifies both the clean-null narrative and
+    the founding results at once.
+  exactLocator: "Edinburgh Research Archive, handle 1842/38225"
+  limitations:
+    - "Thesis examination rather than journal peer review; the five studies share equipment, personnel, and analytic choices, so they are not five independent confirmations."
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 (ERA record + Flores 2023 preprint)"
+    extractedBy: "Fable (AI agent)"
+    runId: "mpi-case-2026-08-22"
+    date: "2026-08-22"
+
+- id: MPI-E008
+  title: "Flores & Rapazote-Flores 2023: large online replication splits by RNG type"
+  claimIds: [MPI-C007]
+  sourceId: SRC-FLORES-2023
+  direction: qualifies
+  strength: weak
+  sourceStatement: >-
+    An online-game implementation with 726 participants and ~10,900 sessions
+    found a significant experimental–control difference for the 64×64 matrix
+    with the Random.org true-random source (Welch's t = 3.811, p = 0.00013,
+    power 94%) but not with the Mersenne Twister pseudo-random generator
+    (t = 1.813, p = 0.070, power 67%).
+  editorInference: >-
+    Directionally interesting for quantum-flavored theories, which want
+    genuine indeterminacy to matter (see MPI-C503) — but an unreviewed
+    preprint with an uneven power split between the two arms, and the
+    gamified online protocol departs far from the laboratory paradigm.
+  limitations:
+    - "Preprint; not peer reviewed."
+    - "The pseudo-RNG arm had lower achieved power, so the split is weaker evidence than the headline p-values suggest."
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 (preprint full text)"
+    extractedBy: "Fable (AI agent)"
+    runId: "mpi-case-2026-08-22"
+    date: "2026-08-22"
+
+# ── The theory's content ─────────────────────────────────────────────────────
+
+- id: MPI-E009
+  title: "The NT axiom and the decline derivation, in the theorists' own words"
+  claimIds: [MPI-C005]
+  sourceId: SRC-LUCADOU-ROMER-WALACH-2007
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    "Entanglement correlations cannot be used for transmitting signals or
+    controllable causal influences." From this the paper derives: an
+    apparent causal effect "will be wiped out, if one tries to corroborate
+    it by improving statistics through attempts at replicating the effect.
+    This is the well known and often experienced decline effect. The
+    decline effect will be faster, if the original effect was stronger: the
+    reciprocity of effect strength and reproducibility is a further
+    prediction of Generalized Quantum Theory." Correlations "may even
+    change sign or disappear altogether, or else show up again in different
+    observables and/or between different parts of the system."
+  editorInference: >-
+    Establishes that the decline/displacement predictions are genuinely in
+    print (2007) rather than retrofitted to the 2017–2021 failures. Note
+    the strength–reproducibility reciprocity: a distinctive, testable piece
+    of fine structure that no replication has yet targeted with a
+    prespecified metric.
+  exactLocator: "JCS 14(4): 50–74, at pp. 10–12 of the text"
+  limitations:
+    - "A theory paper: this record evidences what the model predicts, not that the predictions are true."
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 (full text read)"
+    extractedBy: "Fable (AI agent)"
+    runId: "mpi-case-2026-08-22"
+    date: "2026-08-22"
+
+- id: MPI-E010
+  title: "GQT: the formal framework in a physics-foundations venue"
+  claimIds: [MPI-C004]
+  sourceId: SRC-ATMANSPACHER-2002
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    The paper axiomatizes a "weak" quantum theory retaining complementarity
+    and entanglement for arbitrary systems while dropping Hilbert-space
+    structure and Planck's constant, explicitly anticipating macroscopic,
+    non-physical applications.
+  editorInference: >-
+    The formalism is real and published where physicists could object to
+    it. What it purchases in generality it pays for in predictive force:
+    without quantified probabilities, GQT cannot say how big a matrix
+    surplus should be — only that unexploitable correlations may exist.
+  exactLocator: "Foundations of Physics 32(3): 379–406"
+  limitations:
+    - "Framework, not evidence: no empirical result in this record bears on whether psychophysical entanglement exists."
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 (Crossref)"
+    extractedBy: "Fable (AI agent)"
+    runId: "mpi-case-2026-08-22"
+    date: "2026-08-22"
+
+- id: MPI-E011
+  title: "The matrix design's stated rationale: use evasion, don't fight it"
+  claimIds: [MPI-C006]
+  sourceId: SRC-LUCADOU-ROMER-WALACH-2007
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    "In order to reduce the decline effect, one should make positive use of
+    the evasion phenomenon. This can be done by simultaneous registration of
+    as many different correlations as possible. Psi effects will then show
+    up as transitory, jumping unexpected and statistically unlikely patterns
+    in the correlation matrix. Clearly, by such measures it will never be
+    possible to overcome the decline effect completely and to convince every
+    sceptic."
+  editorInference: >-
+    The design rationale concedes in advance that the paradigm will not
+    produce skeptic-proof replication — a candor that reads either as
+    theoretical consistency or as a pre-announced excuse, depending on the
+    attribution rung. Either way, it binds MPI to the matrix record as its
+    best available test.
+  exactLocator: "JCS 14(4), at p. 12 of the text"
+  limitations:
+    - "Same source and authors as MPI-E009; not an independent attestation."
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 (full text read)"
+    extractedBy: "Fable (AI agent)"
+    runId: "mpi-case-2026-08-22"
+    date: "2026-08-22"
+
+- id: MPI-E012
+  title: "The 2015 Praeger chapter: MPI presented as the answer to the repeatability problem"
+  claimIds: [MPI-C006]
+  sourceId: SRC-LUCADOU-2015
+  direction: context
+  strength: weak
+  sourceStatement: >-
+    Lucadou's chapter in the May & Marwaha theory volume presents the Model
+    of Pragmatic Information among the field's principal theoretical
+    frameworks; reference lists cite the volume's treatment of the
+    correlation-matrix method as "a new light upon the repeatability
+    problem of parapsychology."
+  editorInference: >-
+    Marks the model's arrival in the field's canonical theory anthology —
+    context for its standing among psi theories, not evidence for its
+    truth.
+  limitations:
+    - "Full text not examined; chapter title varies across citations (see source verificationNote)."
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 (publisher TOC + reference lists)"
+    extractedBy: "Fable (AI agent)"
+    runId: "mpi-case-2026-08-22"
+    date: "2026-08-22"
+
+# ── Field test and background patterns ───────────────────────────────────────
+
+- id: MPI-E013
+  title: "Watt & Tierney 2013: MPI's first field test returns null, underpowered"
+  claimIds: [MPI-C007]
+  sourceId: SRC-WATT-TIERNEY-2013
+  direction: qualifies
+  strength: weak
+  sourceStatement: >-
+    A three-year, sixteen-country collaborative study — described by its
+    authors as the first systematic test of the MPI — used a waiting-list
+    design on spontaneous RSPK-type cases, predicting that cases viewed and
+    documented in detail would show reduced anomalous experiences relative
+    to undocumented cases. Of 43 referrals, 14 cases completed the study
+    (6 documented). "Analysis of the two formal study hypotheses did not
+    provide support for the predictions of the MPI, and it was concluded
+    that this aspect of the research was of limited success due to low
+    statistical power."
+  editorInference: >-
+    The only attempt to test MPI's documentation-suppresses-phenomena
+    prediction outside the laboratory. As evidence it is nearly mute — 14
+    cases cannot decide anything — but it demonstrates that the model's
+    field predictions are operationalizable, which matters for MPI-C010.
+  exactLocator: "JCS 20(11–12): 205–220, abstract"
+  limitations:
+    - "Severely underpowered (14 completed cases against the planned sample)."
+    - "Referral flow collapsed for documented sociological reasons (rise of amateur ghost-hunting groups), confounding the recruitment base."
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 (author proof read in full)"
+    extractedBy: "Fable (AI agent)"
+    runId: "mpi-case-2026-08-22"
+    date: "2026-08-22"
+
+- id: MPI-E014
+  title: "Kennedy 2003: the elusiveness pattern documented field-wide"
+  claimIds: [MPI-C003, MPI-C502]
+  sourceId: SRC-KENNEDY-2003
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    Kennedy's review argues from the field's own record that psi effects
+    are "capricious, actively evasive, and unsustainable": initially
+    significant paradigms decline, effects shift between variables and
+    experimenters, and no protocol has ever produced sustained,
+    exploitable results.
+  editorInference: >-
+    Confirms that the explanandum MPI targets is real as a sociological and
+    statistical pattern in the literature. It does not favor MPI's
+    explanation of the pattern over the null-plus-selection explanation —
+    Kennedy himself canvasses both directions.
+  exactLocator: "Journal of Parapsychology 67(1): 53–74"
+  limitations:
+    - "Narrative review by a single author; the pattern description is not itself a quantitative meta-analysis."
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 (full text read)"
+    extractedBy: "Fable (AI agent)"
+    runId: "mpi-case-2026-08-22"
+    date: "2026-08-22"
+
+# ── The conventional steelman's own evidence ─────────────────────────────────
+
+- id: MPI-E015
+  title: "Bösch 2006: micro-PK meta-analysis — tiny effects, huge heterogeneity, publication bias"
+  claimIds: [MPI-C008]
+  sourceId: SRC-BOSCH-2006
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    A meta-analysis of 380 REG-intention studies found a very small but
+    significant overall effect, extreme heterogeneity, and a strong
+    small-study effect, concluding that publication bias appears to be the
+    easiest and most encompassing explanation for the primary findings.
+  editorInference: >-
+    The base-rate backdrop for the whole case: the broader literature the
+    matrix experiments grew from is consistent with selection processes
+    acting on null effects. Radin and colleagues' published rebuttal (same
+    issue) contests the smallest-studies weighting — the dispute is noted,
+    not resolved, here.
+  exactLocator: "Psychological Bulletin 132(4): 497–523"
+  limitations:
+    - "Targets classical hit-rate micro-PK, not the matrix paradigm itself."
+    - "A published comment (Radin et al. 2006) disputes the meta-analytic weighting choices."
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 (Crossref, incl. comment/reply)"
+    extractedBy: "Fable (AI agent)"
+    runId: "mpi-case-2026-08-22"
+    date: "2026-08-22"
+
+- id: MPI-E016
+  title: "Bierman 2016: QRP simulation explains much — not all — of a flagship psi effect"
+  claimIds: [MPI-C008]
+  sourceId: SRC-BIERMAN-2016
+  direction: qualifies
+  strength: moderate
+  sourceStatement: >-
+    Simulating questionable research practices at empirically observed
+    frequencies against the ganzfeld meta-analytic database, the authors
+    conclude "that QRPs are capable of explaining about 60% of the effect
+    size reported in the GF meta-analysis," that the reported significance
+    "is likely inflated by QRPs, though results are still significant
+    (p = 0.003) with QRPs," and that a good fit with no anomalous effect
+    required unrealistic QRP parameter values.
+  editorInference: >-
+    Cuts both ways, and is filed that way: it quantifies how far QRPs
+    really go (a long way), and it documents that in the best-studied
+    neighboring database they did not, under this model, cover the whole
+    distance. Applying either lesson to the much smaller matrix corpus is
+    an extrapolation.
+  exactLocator: "PLOS ONE 11(5): e0153049, abstract and discussion"
+  limitations:
+    - "Ganzfeld telepathy data, not matrix experiments; QRP frequencies were borrowed from psychology surveys under an untested assumption of comparability."
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 (full abstract and conclusions read)"
+    extractedBy: "Fable (AI agent)"
+    runId: "mpi-case-2026-08-22"
+    date: "2026-08-22"
+
+- id: MPI-E017
+  title: "Maier & Dechamps 2022: a celebrated micro-PK effect traced to a coding error"
+  claimIds: [MPI-C008]
+  sourceId: SRC-MAIER-DECHAMPS-2022
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    In a preregistered replication program of a correlational micro-PK
+    effect, the authors report discovering a coding error in their earlier
+    work that had produced a false-positive result, and analyze what the
+    corrected record implies about their previous conclusions.
+  editorInference: >-
+    A documented instance, inside the modern correlational micro-PK
+    literature, of an ordinary software mistake manufacturing an
+    "anomalous" effect that survived until a replication forced the audit —
+    exactly the class of mundane mechanism the conventional steelman says
+    the founding matrix results need to be screened against. Credit where
+    due: the authors found and published the error themselves.
+  exactLocator: "JSE 36(2): 251–263"
+  limitations:
+    - "Concerns the Maier/Dechamps experimental line, not Lucadou's matrix datasets; its force here is as a documented failure mode, not a direct audit."
+  reviewState: ai_extracted
+  origin:
+    ref: "Verification batch 2026-08-22 (Crossref + abstract)"
+    extractedBy: "Fable (AI agent)"
+    runId: "mpi-case-2026-08-22"
+    date: "2026-08-22"

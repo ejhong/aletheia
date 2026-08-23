@@ -96,9 +96,6 @@ export function CrossModelPanel({
                 {shortModel(run.model)}
               </span>
               <AssessmentBadge state={run.caseAssessment.verdict} />
-              <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-faint">
-                what it said
-              </span>
             </summary>
             <div className="pb-4 pl-6">
               <p className="text-[14px] leading-[1.7] text-ink-soft whitespace-pre-line">

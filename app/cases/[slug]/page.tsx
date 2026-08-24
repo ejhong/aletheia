@@ -18,6 +18,7 @@ import {
   featuredClaims,
   getCaseBySlug,
   historyNewestFirst,
+  latestCheckPerModel,
   latestDraftAssessment,
   loadAllCases,
 } from "@/src/domain/load";
@@ -104,7 +105,7 @@ export default async function CasePage({
             {checks ? (
               <CrossModelPanel
                 summary={checks}
-                runs={loaded.assessmentRuns.filter((r) => r.role === "check")}
+                runs={latestCheckPerModel(loaded)}
               />
             ) : null}
           </section>

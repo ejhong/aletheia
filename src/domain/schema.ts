@@ -379,12 +379,24 @@ export const ImageSchema = z
      * caption never calls something a photograph that isn't one.
      */
     mediaType: z.string().optional(),
+    /**
+     * Where real imagery came from. Two legitimate forms, and a plate must
+     * satisfy one of them (enforced below):
+     *   published  — `sourceUrl` points at the public record it came from;
+     *   supplied   — material given directly by a named person, which has
+     *                no URL: `suppliedBy` names them and `permission`
+     *                records how the right to publish was obtained.
+     * The second form exists because provenance is not the same thing as a
+     * hyperlink; what it must never be is unrecorded.
+     */
     provenance: z
       .object({
         photographer: z.string(),
         date: z.string().optional(),
-        sourceUrl: z.string().url(),
+        sourceUrl: z.string().url().optional(),
         originalTitle: z.string().optional(),
+        suppliedBy: z.string().optional(),
+        permission: z.string().optional(),
       })
       .optional(),
     claimIds: z.array(z.string()).default([]),
@@ -426,7 +438,15 @@ export const ImageSchema = z
       if (!img.provenance)
         ctx.addIssue({
           code: "custom",
-          message: `${img.id}: plates need provenance (photographer, sourceUrl)`,
+          message: `${img.id}: plates need provenance (photographer, plus either sourceUrl or suppliedBy + permission)`,
+        });
+      else if (
+        !img.provenance.sourceUrl &&
+        !(img.provenance.suppliedBy && img.provenance.permission)
+      )
+        ctx.addIssue({
+          code: "custom",
+          message: `${img.id}: plate provenance needs either a sourceUrl (published material) or both suppliedBy and permission (material supplied directly). Provenance may never be unrecorded.`,
         });
     }
   });
@@ -598,6 +618,12 @@ export const CaseSchema = z.object({
   components: z.array(CaseComponentSchema).max(6).default([]),
   themes: z.record(z.string(), z.string()),
   editors: z.array(z.string()),
+  /**
+   * Last human editorial review of the case framing (what is claimed /
+   * where disagreement lives / what would settle it). Hand-set; intake
+   * and assessment overlays do not update it. The dossier header shows
+   * `lastContentUpdate()` from history.yaml instead.
+   */
   lastReviewed: z.string(),
   externalResearch: z
     .object({ label: z.string(), url: z.string().url().nullable() })

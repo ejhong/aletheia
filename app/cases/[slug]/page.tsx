@@ -18,6 +18,7 @@ import {
   featuredClaims,
   getCaseBySlug,
   historyNewestFirst,
+  lastContentUpdate,
   latestCheckPerModel,
   latestDraftAssessment,
   loadAllCases,
@@ -81,6 +82,7 @@ export default async function CasePage({
 
       <DossierHeader
         record={loaded.record}
+        lastUpdated={lastContentUpdate(loaded)}
         verdict={shown?.run.caseAssessment.verdict ?? null}
         verdictHumanEndorsed={shown?.humanEndorsed ?? false}
         cover={caseCover(loaded)}

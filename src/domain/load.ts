@@ -624,6 +624,25 @@ export function isHousekeepingEntry(entry: ChangeLogEntry): boolean {
   );
 }
 
+/**
+ * Date shown on the case dossier as "last update": the newest
+ * content-bearing history entry. Housekeeping (art, watch config) does
+ * not count. Falls back to `lastReviewed` when the log has no content
+ * entries — that field is a hand-set human-review date on the case
+ * record, not auto-updated by intake.
+ */
+export function lastContentUpdate(loaded: {
+  record: { lastReviewed: string };
+  history: ChangeLogEntry[];
+}): string {
+  const newest = loaded.history
+    .filter((h) => !isHousekeepingEntry(h))
+    .map((h) => h.date)
+    .sort()
+    .at(-1);
+  return newest ?? loaded.record.lastReviewed;
+}
+
 /** A change-log entry attributed to its case, for cross-case feeds. */
 export type FeedEntry = ChangeLogEntry & {
   caseTitle: string;

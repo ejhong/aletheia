@@ -1,0 +1,231 @@
+# Cross-model check run — an independent judge (Gemini 3.1 Pro (Google)),
+# blind to all prior assessments (scripts/cross-model-check.mjs,
+# promptVersion aletheia-check-v1). role: check — never displayed as the case
+# narrative; feeds the concurrence panel. Append-only; NOT human reviewed.
+runId: 2026-08-24-check-gemini-r2
+model: Gemini 3.1 Pro (Google) — independent check run via gemini-3.1-pro-preview
+date: 2026-08-24
+promptVersion: aletheia-check-v1
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: unresolved
+  loadBearing:
+    - TRN-C020
+  weakestLinks:
+    - TRN-C022
+    - TRN-C023
+    - TRN-C005
+    - TRN-C006
+  synthesis: >-
+    The "Before Sputnik?" case investigates whether anomalous, single-exposure
+    star-like points on historical photographic plates are mundane artifacts or
+    genuine optical flashes—potentially from near-Earth artificial objects. The
+    case structure is a ladder of dependency, and it breaks precisely at the
+    crux of physical origin.
+
+    Steelmanning the proponent side, the fundamental anomalies are real and
+    robust. The canonical 1950 and 1952 marks physically exist on the surviving
+    plates, are sharply defined in a manner consistent with sub-second flashes,
+    and are reliably recovered by independent extraction pipelines. Recent
+    microscopy of the original telescope negatives decisively places the 1950
+    sources on the original glass, completely neutralizing the strongest
+    skeptical mechanism—that the marks were introduced during a shared
+    intermediate copying stage. Furthermore, independent plate lineages (the
+    Hamburg archive) exhibit analogous transients, some of which tentatively
+    show off-axis optical coma, a physical signature that surface chemistry
+    cannot easily fake. Within the proponents' working catalog, intriguing
+    statistical correlations—such as an Earth-shadow deficit—survive
+    machine-learning vetting and replication by independent statisticians.
+
+    Steelmanning the skeptic side, historical photographic plates are inherently
+    noisy chemical mediums. Two decades of archival searches for gamma-ray
+    bursts repeatedly demonstrated that seemingly perfect "transients"
+    frequently dissolve into emulsion flaws under scrutiny. While the new
+    microscopy confirms the marks are on the original negative, the independent
+    microscopist leaned heavily toward the emulsion-defect interpretation based
+    on morphology, and the manuscript itself concedes that microscopy cannot
+    physically differentiate a chemical flaw from a brief flash. Moreover, the
+    ensemble statistics that drive the near-Earth and nuclear hypotheses
+    collapse under closer inspection: the Earth-shadow deficit vanishes when the
+    catalog's profound spatial non-uniformity is properly modeled, and the
+    nuclear timing effect disappears when observation scheduling and independent
+    source extraction are applied. 
+
+    Ultimately, the headline claims of pre-Sputnik artificial satellites and
+    near-Earth reflections (TRN-C022, TRN-C021) remain entirely unresolved
+    because the foundational physical crux (TRN-C020)—whether the marks were
+    made by photons or plate chemistry—cannot currently be answered. The
+    available evidence presents an intriguing historical anomaly, but it is
+    deeply intertwined with the well-documented failure modes of historical
+    photographic emulsions and the inherent biases of the unvalidated working
+    catalog.
+claimAssessments:
+  - claimId: TRN-C022
+    verdict: unresolved
+    confidence: high
+    reasoning: There is currently no direct evidence establishing the presence of
+      artificial objects near Earth before 1957. The claim rests entirely on the
+      assumption that contested transient marks represent actual optical flashes
+      (TRN-C020) and that the geometry of these flashes implies a near-Earth
+      reflective origin (TRN-C021). Both of these underlying premises are deeply
+      contested and unresolved. The strongest opposing consideration is that the
+      entire base of physical evidence perfectly matches the morphology and
+      behavior of historical emulsion defects, and the ensemble statistics
+      supporting the artificiality hypothesis are heavily dependent on contested
+      catalog-lineage definitions.
+  - claimId: TRN-C023
+    verdict: presently_untestable
+    confidence: high
+    reasoning: No evidence in the current record bears on this extraterrestrial
+      origin claim, and no observation currently on the table can distinguish it
+      from other exotic origins. Even if the presence of a pre-Sputnik
+      artificial object were definitively proven, establishing an
+      extraterrestrial origin would require an entirely separate chain of
+      historical and engineering evidence that astronomy archives cannot
+      provide. The strongest opposing consideration is that any finding of an
+      anomalous artificial object would first have to exhaustively exclude
+      secret terrestrial aerospace programs, classified military tests, or
+      unknown natural phenomena before reaching for an extraterrestrial
+      attribution.
+  - claimId: TRN-C021
+    verdict: unresolved
+    confidence: high
+    reasoning: The near-Earth reflective origin hypothesis depends entirely on
+      ensemble geometric signatures, primarily the Earth-shadow deficit, which
+      has yielded deeply conflicting results based on dataset definitions.
+      Furthermore, recently proposed natural mechanisms, such as storm-driven
+      dusty plasmas, offer alternative explanations for near-Earth optical
+      phenomena without requiring solid reflective objects. The strongest
+      opposing consideration is that the foundational Earth-shadow deficit fails
+      to appear when the analysis is run on more heavily vetted candidate sets
+      that properly account for the spatial non-uniformity and clustering
+      inherent in the background data.
+  - claimId: TRN-C020
+    verdict: unresolved
+    confidence: high
+    reasoning: "This is the critical physical crux of the entire case: were the
+      marks made by incident photons or by chemistry? While recent unpublished
+      microscopy places the canonical 1950 marks on the original telescope
+      negative—ruling out the specific intermediate-copy-defect pathway for
+      those events—the microscopist noted they strongly resemble emulsion
+      defects, and the manuscript itself admits that microscopy cannot
+      definitively distinguish a sub-second flash from a chemical flaw. The
+      strongest opposing consideration is the historical failure of similar
+      archival searches, which routinely found that sharp, star-like transient
+      candidates ultimately dissolved into emulsion defects, development spots,
+      or handling damage under rigorous scrutiny."
+  - claimId: TRN-C007
+    verdict: well_supported
+    confidence: high
+    reasoning: The historical reconstruction by Hambly & Blair clearly establishes
+      that the DSS and SuperCOSMOS digitizations of POSS-I descend from a shared
+      intermediate glass positive. This firmly demonstrates a mechanistic
+      pathway where a single defect introduced during the copying process would
+      be inherited by both modern datasets, dissolving the argument that
+      presence in both databases guarantees an original sky event. The strongest
+      opposing consideration is that demonstrating a shared historical ancestor
+      only proves a pathway for defects to propagate; it does not measure the
+      actual occurrence rate of such star-like defects, nor does it apply to the
+      newly inspected canonical events found on the original negatives.
+  - claimId: TRN-C001
+    verdict: established
+    confidence: high
+    reasoning: There is universal agreement across proponents, independent
+      pipelines, and skeptical critics that the nine marks physically exist on
+      the surviving plate material at the reported positions. Recent microscopy
+      of the original 1950 glass plate at Caltech confirms their presence on the
+      original emulsion, decisively proving they are not scanning glitches or
+      software artifacts. The strongest opposing consideration is not about
+      their existence but their uniqueness; similar single-plate marks are found
+      in neighboring fields, suggesting the phenomenon may be a general property
+      of the photographic plates rather than a unique celestial event.
+  - claimId: TRN-C002
+    verdict: established
+    confidence: high
+    reasoning: 'Both skeptical critics and proponents accept the morphological
+      measurement that the 1950 marks are systematically sharper and more
+      concentrated than standard stellar images of comparable brightness. The
+      dispute lies entirely in the interpretation of this shared measurement:
+      skeptics read the sharpness as the signature of an emulsion artifact,
+      while proponents argue it perfectly matches the physics of a sub-second
+      flash on a long exposure. The strongest opposing consideration is that
+      automated morphological classifiers, trained on confirmed sources and
+      artifacts, map this specific "sharper than stellar" space directly to
+      spurious detections.'
+  - claimId: TRN-C003
+    verdict: well_supported
+    confidence: high
+    reasoning: The July 1952 triple transient is well documented in the
+      peer-reviewed literature, has been successfully recovered by an
+      independent extraction pipeline, and is confirmed to lack any modern
+      counterparts in deep 2023 follow-up imaging. Recent manuscript reports
+      also confirm its presence in the original survey digitization and on a
+      Harvard copy plate, lending further physical credence. The strongest
+      opposing consideration is that the most isolated of these three marks
+      morphologically resembles standard comparison stars, contradicting the
+      "sharper-than-stars" argument applied to the 1950 event and fracturing the
+      uniformity of the proposed flash hypothesis.
+  - claimId: TRN-C004
+    verdict: established
+    confidence: high
+    reasoning: Hayes's 2026 independent, from-scratch detection pipeline
+      successfully recovers nearly all of the canonical marks (eight of nine
+      from 1950, three of three from 1952) and roughly 64% of the public
+      candidate catalog. This robustly demonstrates that the detections are
+      reproducible features of the digitized data rather than artifacts of the
+      original team's private software code. The strongest opposing
+      consideration is that reproducible recovery from the same shared
+      digitizations proves only software reliability; a population of shared
+      copy-defects or emulsion flaws would be identically recovered by any
+      competent pipeline.
+  - claimId: TRN-C005
+    verdict: mixed
+    confidence: high
+    reasoning: The shadow deficit replicates robustly when independent statisticians
+      and machine-learning models analyze the original 107,875-object working
+      catalog. However, comprehensive skeptical reanalysis demonstrates that
+      this working catalog violates the uniform-background assumption required
+      for the geometry, as feature counts are spatially heterogeneous and
+      clustered at plate edges. The strongest opposing consideration is that
+      when the analysis is applied to more heavily vetted candidate subsets that
+      properly model the background spatial non-uniformity, the shadow deficit
+      completely fails to reach statistical significance.
+  - claimId: TRN-C006
+    verdict: mixed
+    confidence: high
+    reasoning: The correlation between transient candidate rates and atmospheric
+      nuclear tests replicates successfully when analysts use the original
+      working catalog, even surviving latent random-walk modeling and
+      artifact-scoring controls. However, the correlation collapses entirely
+      under fully independent source extraction when nightly sky coverage is
+      modeled, and critics attribute the original signal to the observatory's
+      scheduling biases. The strongest opposing consideration is that the
+      association vanishes when the disputed source-extraction step is actually
+      varied, indicating that the correlation is likely a property of the
+      specific working sample and observation schedules rather than a genuine
+      physical interaction.
+  - claimId: TRN-C010
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: A preliminary search of the Hamburg Observatory archives by an
+      independent researcher confirms the existence of analogous, appear-once
+      single-exposure candidates on independent plate material. This
+      successfully bypasses the Palomar copy-defect mechanism, proving the
+      underlying phenomenon exists in other independent archives. The strongest
+      opposing consideration is that this preprint-level search has not yet
+      published its false-positive rate against matched control pairs, leaving
+      it unclear whether these marks represent shared sky phenomena or simply a
+      universal failure mode of historical photographic emulsions.
+  - claimId: TRN-C011
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: Busko's preprint reports that transient candidates in the Hamburg
+      archive exhibit off-axis coma, an optical aberration that physically
+      distinguishes light passing through a telescope from surface chemistry. If
+      validated, this represents the most important physical discriminant for
+      incident light in the case. The strongest opposing consideration is that
+      the coma classifier has not yet been blind-validated against a frozen
+      corpus of known flashes and deliberate defects, leaving open the risk that
+      scratches, smears, or emulsion artifacts might naturally mimic directional
+      optical asymmetries.

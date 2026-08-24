@@ -460,6 +460,15 @@ async function main() {
       continue;
     }
 
+    // A forced run exists to reach the editorial audit, and it will usually
+    // re-derive verdicts identical to the last run. Writing that overlay
+    // anyway would pad the assessment history with runs that changed nothing,
+    // making the genuinely changed ones harder to find.
+    const unchanged =
+      prev &&
+      JSON.stringify([draft.caseAssessment, draft.claimAssessments]) ===
+        JSON.stringify([prev.run.caseAssessment, prev.run.claimAssessments]);
+
     const runId = `${today}-auto-${Math.random().toString(36).slice(2, 6)}`;
     const overlay = {
       runId,
@@ -479,15 +488,21 @@ async function main() {
     ].join("\n");
     const outFile = path.join(CASES_DIR, caseDir, "assessments", `${runId}.yaml`);
 
-    if (dryRun) {
+    if (unchanged) {
+      console.error(`${caseDir}: reassessment reproduced the previous run exactly — no overlay written`);
+      digest.push(
+        `**${caseDir}**: reassessed; every verdict came back identical to run ${prev.run.date}, so no new overlay was written.`,
+      );
+    } else if (dryRun) {
       console.log(`(dry run) would write ${path.relative(ROOT, outFile)}`);
     } else {
       fs.writeFileSync(outFile, header + stringifyYaml(overlay));
       written.push(path.relative(ROOT, outFile));
     }
-    digest.push(
-      `**${caseDir}**: new AI assessment overlay (run ${runId}, verdict ${draft.caseAssessment.verdict}). What changed since the previous run: ${draft.whatChanged ?? "not stated"}`,
-    );
+    if (!unchanged)
+      digest.push(
+        `**${caseDir}**: new AI assessment overlay (run ${runId}, verdict ${draft.caseAssessment.verdict}). What changed since the previous run: ${draft.whatChanged ?? "not stated"}`,
+      );
 
     // The assessment layer self-heals; the editorial layer does not. Audit
     // the article and research agenda against the same ledger and correct

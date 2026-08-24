@@ -504,3 +504,104 @@
     extractedBy: "Fable (AI agent)"
     runId: "transients-import-2026-08-22"
     date: "2026-08-22"
+
+# ── 2026-08-24 intake (runId trn-villarroel-2026-08-24) ──────────────────────
+
+- id: TRN-E017
+  title: "Cann 2026b: geomagnetic activity does not change plate sensitivity — one artifact route closed"
+  claimIds: [TRN-C006, TRN-C005]
+  sourceId: SRC-CANN-2026B
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    Testing 12,510 Harvard exposures and 638 Palomar fields against the Kp
+    geomagnetic index, the paper reports no significant trend in reference
+    populations (stellar counts, limiting magnitude) with storm intensity,
+    and constrains atmospheric airglow to ≤12% of the reported POSS-I
+    transient suppression at 95% confidence. It presents this as a general
+    protocol for artifact control in historical plate archives.
+  editorInference: >-
+    Does the useful negative work that most of this literature does not:
+    it names a specific environmental confounder that could manufacture
+    the temporal patterns, tests it against reference populations, and
+    reports that it does not survive. That does not make the nuclear-window
+    correlation real — it removes one way of making it spurious, which is
+    a different and smaller thing. Recorded here because the
+    artifact-versus-signal question in this case has largely been argued
+    rather than measured, and this is a measurement.
+  exactLocator: "arXiv:2604.16470, abstract"
+  limitations:
+    - "Star counts and limiting magnitude are proxies for plate sensitivity; a confounder acting specifically on transient-like detections rather than on general sensitivity would not be caught by this test."
+    - "Unreviewed preprint from within the proponent-adjacent author network."
+    - "Closes one confounder among many; the Watters et al. critique's central objections concern the null distribution and observation-day normalization, which this does not address."
+  reviewState: ai_extracted
+  origin:
+    ref: "Correspondence from the VASCO group's principal investigator, 2026-08-24, used as a literature pointer; citation located and verified independently"
+    extractedBy: "Fable (AI agent)"
+    runId: "trn-villarroel-2026-08-24"
+    date: "2026-08-24"
+- id: TRN-E018
+  title: "Doherty 2026b: linear alignments among ML-scored candidates on seven plates"
+  claimIds: [TRN-C003, TRN-C022]
+  sourceId: SRC-DOHERTY-2026B
+  direction: qualifies
+  strength: weak
+  sourceStatement: >-
+    Using machine-learning scoring of transient candidates on POSS-I plates
+    from 1949–1957, the paper reports seven plates carrying alignments of
+    five to eight sources exceeding Monte Carlo expectations (p < 0.03),
+    argues the sources are point-like rather than trailed, and reports
+    angular rates it characterizes as inconsistent with known satellites
+    of that era.
+  editorInference: >-
+    Extends the aligned-multiple-transient line rather than replicating
+    it: same archive, same candidate family, new statistic. Its weight is
+    limited by exactly what makes it interesting — alignment searches over
+    many plates with a post-hoc-chosen alignment criterion are the classic
+    setting for look-elsewhere inflation, and the p-values reported are
+    modest. Filed as qualifying rather than supporting because it adds a
+    pattern claim without addressing whether the underlying marks are on
+    the original exposures at all, which is where this case's crux sits.
+  exactLocator: "arXiv:2605.01190, abstract"
+  limitations:
+    - "Unreviewed preprint by an author now affiliated with the proponent group (see SRC-DOHERTY-2026 independence note)."
+    - "Alignment significance depends on the alignment criterion and the trials-factor accounting; neither is preregistered."
+    - "Inherits the catalog's contested provenance — if candidates include copy-plate defects, alignments among them inherit that problem."
+  reviewState: ai_extracted
+  origin:
+    ref: "Correspondence from the VASCO group's principal investigator, 2026-08-24, used as a literature pointer; citation located and verified independently"
+    extractedBy: "Fable (AI agent)"
+    runId: "trn-villarroel-2026-08-24"
+    date: "2026-08-24"
+- id: TRN-E019
+  title: "Sinkkoinen 2026: open Bayesian reanalysis reports the association on occurrence, not count"
+  claimIds: [TRN-C006]
+  sourceId: SRC-SINKKOINEN-2026
+  direction: qualifies
+  strength: weak
+  sourceStatement: >-
+    A public Bayesian hierarchical reanalysis (Stan models and R scripts,
+    CC BY 4.0) of the nuclear-test/UAP/transient correlations models
+    transient counts with latent random-walk temporal autocorrelation and
+    excludes plate-edge artifacts. It reports nuclear tests at one-day lag
+    p = 0.037, UAP reports at two-day lag p < 0.001, same-day UAP
+    p = 0.048, and notes the effects appear to act on occurrence
+    probability rather than count magnitude.
+  editorInference: >-
+    Methodologically the most useful item in this batch and evidentially
+    among the weakest: it reruns the same catalog under a model that
+    handles temporal autocorrelation, which the original chi-square
+    framing did not, and the association survives — but attenuated, and
+    the strongest term is the UAP-report lag rather than the nuclear one.
+    Its real contribution is that the code is public and rerunnable, which
+    no published analysis on either side of this dispute currently offers.
+  limitations:
+    - "Not peer reviewed and not a paper; a code repository with a README."
+    - "Same underlying catalog as the analyses it extends — a check on the statistics, not independent evidence."
+    - "Results not re-run for this import; reported figures are the author's own."
+  reviewState: ai_extracted
+  origin:
+    ref: "Correspondence from the VASCO group's principal investigator, 2026-08-24, used as a literature pointer; citation located and verified independently"
+    extractedBy: "Fable (AI agent)"
+    runId: "trn-villarroel-2026-08-24"
+    date: "2026-08-24"

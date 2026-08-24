@@ -1,0 +1,260 @@
+# Cross-model check run — an independent judge (Opus 5 (Anthropic)),
+# blind to all prior assessments (scripts/cross-model-check.mjs,
+# promptVersion aletheia-check-v1). role: check — never displayed as the case
+# narrative; feeds the concurrence panel. Append-only; NOT human reviewed.
+runId: 2026-08-24-check-opus-r2
+model: Opus 5 (Anthropic) — independent check run via claude-opus-5
+date: 2026-08-24
+promptVersion: aletheia-check-v1
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: unresolved
+  loadBearing:
+    - TRN-C020
+    - TRN-C021
+    - TRN-C005
+    - TRN-C007
+    - TRN-C011
+  weakestLinks:
+    - TRN-C011
+    - TRN-C010
+    - TRN-C006
+    - TRN-C023
+  synthesis: "The case is built as a ladder and the ladder holds: the lower rungs
+    are secure and nearly non-diagnostic, and the diagnostic rungs are open.
+    That the nine April 1950 marks and the July 1952 triple exist as physical
+    features of plate material is as close to settled as archival astronomy gets
+    — asserted by proponents, confirmed on glass by the case's principal
+    critics, recovered by a from-scratch pipeline that never touched the
+    proponents' code, and now reported present on the original Caltech negative.
+    Nothing about that discriminates between chemistry and sky. The crux is
+    TRN-C020, and the honest reading of the new microscopy is that it has
+    narrowed rather than resolved it. Two of the three manufacture pathways —
+    digitization and the shared intermediate positive — are removed for the two
+    flagship events, which strips TRN-C007 of its reach exactly where it was
+    sharpest, while leaving it fully in force over the ~100,000 uninspected
+    rows. What replaces it is a pathway the skeptics always had in reserve and
+    never needed until now: an intrinsic emulsion defect on the original. The
+    manuscript concedes that single-source morphology cannot separate that from
+    a sub-second flash, and its own microscopist, directed to the objects by the
+    copy-defect argument's author, leaned defect. Steelmanning the proponents:
+    sharpness genuinely is expected of a sub-second flash on a fifty-minute
+    exposure, the artifact classifier's \"spurious\" training class is defined
+    by the very property that defines transient candidates, the phenomenon now
+    appears in an archive with no shared photographic ancestry, and a physical
+    incident-light discriminant (coma) has been proposed. Steelmanning the
+    skeptics: two decades of GRB-era plate searches produced a bestiary of
+    star-like impostors and not one confirmed transient; the ensemble
+    correlations replicate within the working catalog and dissolve whenever the
+    extraction step is independently varied or the null distribution is computed
+    properly; and much of the supporting corpus is single-author unreviewed
+    preprints from an increasingly correlated author network, which inflates
+    apparent replication count without adding independent information. My
+    judgment that TRN-C022 carries a heavy prior cost — no plausible 1950s human
+    capability places reflective objects at geosynchronous altitude — rests on
+    background, not on any evidence record here, and is stated as such. The
+    case's remaining discriminating power lies where the agenda now puts it:
+    blind validation of the coma signature, ensemble statistics on catalogs
+    rebuilt from raw scans, a copy-stage defect base rate, and prospective
+    two-station imaging."
+claimAssessments:
+  - claimId: TRN-C022
+    verdict: unresolved
+    confidence: moderate
+    reasoning: 'No evidence record bears on this claim except through TRN-C020 and
+      TRN-C021, both of which are open, and the geometric argument that would
+      carry it (the shadow deficit) is contested at the level of dataset
+      definition. TRN-E020 sharpens the problem from the proponent side: a
+      natural near-Earth population would satisfy TRN-C021 while removing any
+      reason to say "artificial," so even a successful near-Earth result would
+      not deliver this rung. The strongest opposing consideration is a prior
+      rather than a record — placing reflective objects at geosynchronous-like
+      altitudes before 1957 has no known human pathway, so the claim demands
+      evidence far stronger than single-exposure marks on aging emulsion. I
+      record it as unresolved rather than contradicted because nothing in the
+      file positively excludes it.'
+  - claimId: TRN-C023
+    verdict: presently_untestable
+    confidence: moderate
+    reasoning: "This rung has no independent evidence stream: every record in the
+      file either sits below it or, like TRN-E021, simply assumes the transients
+      are real and substitutes a different exotic interpretation. No observation
+      currently proposed — coma validation, catalog reconstruction,
+      multi-station imaging — could discriminate extraterrestrial origin from a
+      terrestrial or natural one even if it succeeded completely. The strongest
+      opposing consideration is that \"presently_untestable\" can function as an
+      evasion; I use it here because the claim's own dependency structure, not
+      merely present ignorance, makes it inaccessible until TRN-C022 resolves
+      and a separate origin argument is constructed."
+  - claimId: TRN-C021
+    verdict: unresolved
+    confidence: moderate
+    reasoning: The near-Earth reading rests almost entirely on the shadow deficit,
+      which reproduces only conditional on the VASCO working catalog (TRN-E010,
+      TRN-E015) and fails once the background's demonstrated spatial
+      heterogeneity is modeled and vetted subsets are used (TRN-E011). The
+      rebuttal (TRN-E012) is a power argument, not a counter-demonstration.
+      Multiple simultaneous point sources across tens of arcminutes would indeed
+      argue against distant astrophysical origin if the flashes were real, but
+      that premise is TRN-C020 and is unresolved. The strongest consideration on
+      the other side is that TRN-E020's dusty-plasma proposal, if it survived,
+      would satisfy this claim by a wholly natural route — so this rung is not
+      intrinsically exotic and could in principle resolve positively without the
+      headline following.
+  - claimId: TRN-C020
+    verdict: unresolved
+    confidence: high
+    reasoning: "The evidence is close to symmetrically balanced and the file
+      documents why. Against: the marks group morphologically with unmatched
+      detections (TRN-E004), sit in a plate corner where defects congregate, and
+      the GRB-era archival record is a long list of star-like impostors; an
+      experienced microscopist looking at the original glass called emulsion
+      defects a reasonable attribution (TRN-E024). For: sharpness is exactly
+      what a sub-second flash should produce (TRN-E006), the digitization and
+      copy-stage pathways are now excluded for the flagship events (TRN-E022),
+      and a coma signature has been reported outside the Palomar lineage
+      (TRN-E014). The strongest opposing consideration to any positive verdict
+      is TRN-E024's own admission that microscopy cannot separate flash from
+      intrinsic emulsion defect at the single-source level, which means the
+      observation everyone waited for returned a null on the actual question."
+  - claimId: TRN-C007
+    verdict: well_supported
+    confidence: high
+    reasoning: "As stated, this is a claim about photographic genealogy and
+      possibility, not occurrence, and it is documented by an author of the
+      SuperCOSMOS program reconstructing the atlas copying procedure (TRN-E005)
+      and is not disputed by the proponents. It correctly dissolves the \"two
+      independent digitizations\" argument. Two limits, neither contradicting
+      the claim as written: no one has measured the star-like defect rate at any
+      copy generation (TRN-R007), and TRN-E023 reports that for the two
+      canonical events the marks appear above the shared stage, so the
+      mechanism's reach — though not its truth — is now confined to the
+      uninspected catalog bulk. The strongest opposing consideration is that the
+      genealogy rests on one paper by one institutionally invested group and has
+      not been separately audited."
+  - claimId: TRN-C001
+    verdict: established
+    confidence: high
+    reasoning: "This is the rare claim in a contested case confirmed by the opposing
+      camp: Hambly and Blair put the Edinburgh glass under a microscope and
+      found the nine at the reported positions (TRN-E002), an independent
+      pipeline recovers eight of nine (TRN-E008), and microscopy of the original
+      Caltech negative reports all nine at their published coordinates
+      (TRN-E022). Absence from the six-days-later overlapping plate and from
+      deeper modern surveys is reported consistently across proponent and
+      critic. The strongest opposing consideration is not to existence but to
+      significance: the same inspection found comparable one-plate-only marks on
+      the neighbouring field E0086, which is what a defect population would also
+      produce — but that bears on TRN-C020, not on this claim as stated."
+  - claimId: TRN-C002
+    verdict: well_supported
+    confidence: high
+    reasoning: The measurement is quantitative (SuperCOSMOS profile statistics, all
+      nine in the sharp tail, joint probability of order 0.1^9 under the stellar
+      distribution; TRN-E003), consistent with the same team's microscope
+      inspection, corroborated qualitatively by independent microscopy of the
+      original glass describing the features as point-like and marginally
+      sharper than stars with sharp edges (TRN-E022), and explicitly accepted by
+      the proponents who dispute only its interpretation. It is held below
+      "established" because it comes from a single measurement team on a single
+      digitization lineage and no independent re-derivation of the profile
+      statistics has been published. The strongest opposing consideration is
+      that "sharper than stellar" is the SuperCOSMOS classifier's known artifact
+      neighbourhood, which makes the measurement's direction, though not its
+      validity, contestable.
+  - claimId: TRN-C003
+    verdict: well_supported
+    confidence: moderate
+    reasoning: Peer-reviewed with 10.4-m follow-up to magnitude 25.5 (TRN-E007),
+      independently recovered three-of-three by a from-scratch pipeline
+      (TRN-E008), and now reported present on a Harvard copy plate and in the
+      original survey digitization (TRN-E022). Confidence stops short of high
+      because everything known about the triple originates with the proponent
+      team, no examination of the original 1952 negative has been made (its
+      presence there is inferred from co-presence in the original digitization),
+      and the disappearance timescale rests on exactly two consecutive
+      exposures. The strongest opposing consideration is TRN-E007's own profile
+      finding — the isolated member looks like the comparison stars, unlike the
+      sharp 1950 nine — showing the canonical events are not morphologically
+      uniform, which any single mechanism, exotic or mundane, must eventually
+      reconcile.
+  - claimId: TRN-C004
+    verdict: well_supported
+    confidence: moderate
+    reasoning: "Hayes documents 8/9, 3/3, and 3,450 of 5,399 (63.9%) at median 0.94
+      arcsec separation, with control-field false-positive rates and synthetic
+      injection tests (TRN-E008) — this cleanly retires the \"one team's
+      software bug\" explanation. Confidence is moderate because it is a
+      single-author preprint whose full-sky sweep admittedly ran with loose
+      preliminary parameters, and no one has re-run it. The strongest opposing
+      consideration is that the claim is far less probative than it first
+      appears: independent extraction from the same digitized descendants of the
+      same photographic copies is exactly what a defect population would also
+      reproduce, and the 500-fold spread between the 2.85-million sweep and the
+      vetted 5,399 shows how much the \"population\" is a product of vetting
+      choices."
+  - claimId: TRN-C005
+    verdict: mixed
+    confidence: moderate
+    reasoning: "The arithmetic reproduces under independently written code on the
+      author-supplied catalog (0.46% umbral against ~1.4% geometric expectation;
+      TRN-E010) and survives ML artifact-scoring, strengthening among
+      higher-probability candidates (TRN-E015). But the word \"deficit\" is
+      defined by the expectation, and TRN-E011 shows the uniform-random
+      background the expectation assumes is demonstrably false for these
+      features — counts rise toward corners and edges — with no significant
+      deficit once a proper null is derived or once heavily vetted subsets are
+      used. So the claim is true as a description of one catalog against one
+      questionable baseline and unestablished as a statement about a real
+      spatial deficit. The strongest opposing consideration to reading this as
+      artifact is TRN-E012's power argument: the vetted subsets are twentyfold
+      smaller and could hide a genuine effect."
+  - claimId: TRN-C006
+    verdict: mixed
+    confidence: moderate
+    reasoning: "The split is clean and diagnostic: the association reproduces on the
+      original rows with independent code (RR 1.45, p = .011, permutation p =
+      .006; TRN-E010), survives ML artifact-scoring (TRN-E015) and a Bayesian
+      model with temporal autocorrelation, though attenuated (TRN-E019); it
+      vanishes in the one independently extracted catalog once nightly coverage
+      is used as exposure (IRR 1.03, p = .71; TRN-E009) and is attributed to the
+      Palomar schedule by TRN-E011. Because the claim as written is about
+      detection rates, the exposure denominator is not a technicality but
+      constitutive, and the two analyses that model it find nothing. TRN-E017
+      usefully closes one confounder (geomagnetic effects on plate sensitivity)
+      without addressing that one. The strongest opposing consideration is that
+      Hayes's catalog averages ~7,250 candidates per night of mostly noise,
+      which could dilute a weak real effect below detection."
+  - claimId: TRN-C010
+    verdict: weakly_supported
+    confidence: moderate
+    reasoning: 'This is the single most diagnostic axis in the case — Hamburg shares
+      no photographic ancestry with Palomar, so the copy-defect mechanism cannot
+      reach it — and the evidence for it is one explicitly preliminary
+      single-author preprint over 41 plates with narrow-FWHM candidates and no
+      published false-positive calibration (TRN-E013). Without a matched control
+      rate, "appear-once candidates occur in an old plate archive" is nearly
+      guaranteed to be true and nearly uninformative; the substantive word is
+      "analogous," and that is precisely what is uncalibrated. The strongest
+      consideration on the supporting side is methodological independence:
+      plate-pair differencing without external catalogs avoids the crossmatching
+      failure modes that dominate the POSS-I dispute, so if the rate survives
+      calibration it will mean something.'
+  - claimId: TRN-C011
+    verdict: weakly_supported
+    confidence: low
+    reasoning: The physical logic is genuinely strong — an off-axis coma pattern is
+      something incident light stamps and surface chemistry has no reason to
+      know about — and this is the only proposed test that could establish
+      TRN-C020 without touching the Palomar originals. But the evidence is a
+      single-author preprint on a telescope selected for strong coma, with no
+      blind validation against known defects and deliberately produced short
+      flashes, no demonstration that defect classes never mimic directional
+      asymmetry, and no protection recorded against the analyst knowing which
+      images were candidates; the author himself states the data do not
+      establish the light's physical origin (TRN-E014). The strongest opposing
+      consideration is that classifier-style results in exactly this
+      configuration — chosen instrument, unblinded labels, no confusion matrix —
+      have a poor track record, so the claim should be treated as a promising
+      hypothesis awaiting TRN-R003, not as a result.

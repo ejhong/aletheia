@@ -489,7 +489,16 @@ export function latestCheckPerModel(loaded: LoadedCase): AssessmentRun[] {
     if (run.role !== "check") continue;
     const key = run.model.trim().split(/[\s,(]/)[0].toLowerCase();
     const prev = byModel.get(key);
-    if (!prev || run.date > prev.date) byModel.set(key, run);
+    // Same-date ties happen when a case is re-checked the day it changed
+    // (append-only means both runs stay). runId breaks the tie: the re-run
+    // convention suffixes -r2, -r3, …, and a suffixed id string-compares
+    // after its own unsuffixed prefix, so the newest run wins.
+    if (
+      !prev ||
+      run.date > prev.date ||
+      (run.date === prev.date && run.runId > prev.runId)
+    )
+      byModel.set(key, run);
   }
   return [...byModel.values()].sort((a, b) => a.date.localeCompare(b.date));
 }

@@ -312,13 +312,21 @@ async function main() {
     }
     // Normalize the stamped fields regardless of what the model wrote.
     const d = outcome.data;
-    d.runId = `${date}-check-${VENDORS[vendor].tag}`;
+    // Overlays are append-only; a same-day re-check must not overwrite the
+    // morning's run. On collision, suffix -r2, -r3, … — the loader breaks
+    // same-date ties by runId, and "…-r2" sorts after its unsuffixed prefix,
+    // so the newest run wins deterministically.
+    let base = `${date}-check-${VENDORS[vendor].tag}`;
+    for (let n = 2; fs.existsSync(path.join(caseDir, "assessments", `${base}.yaml`)); n++) {
+      base = `${date}-check-${VENDORS[vendor].tag}-r${n}`;
+    }
+    d.runId = base;
     d.date = date;
     d.promptVersion = PROMPT_VERSION;
     d.humanReviewed = false;
     d.role = "check";
     d.model = `${VENDORS[vendor].label} — independent check run via ${VENDORS[vendor].model}`;
-    const file = path.join(caseDir, "assessments", `${date}-check-${VENDORS[vendor].tag}.yaml`);
+    const file = path.join(caseDir, "assessments", `${base}.yaml`);
     const header = `# Cross-model check run — an independent judge (${VENDORS[vendor].label}),\n# blind to all prior assessments (scripts/cross-model-check.mjs,\n# promptVersion ${PROMPT_VERSION}). role: check — never displayed as the case\n# narrative; feeds the concurrence panel. Append-only; NOT human reviewed.\n`;
     fs.writeFileSync(file, header + stringifyYaml(d));
     installed.push(path.relative(ROOT, file));

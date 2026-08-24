@@ -65,6 +65,12 @@ export function CrossModelPanel({
         {s.adjacent > 0 ? `, ${s.adjacent} within one step` : ""}
         {s.split > 0 ? `, ${s.split} split` : ", none split"}.
       </p>
+      {s.staleSince ? (
+        <p className="mt-2 font-mono text-[11px] tracking-[0.06em] text-ochre">
+          the case file has changed since this check (content updated{" "}
+          {s.staleSince}) — these judgments were made on an earlier version
+        </p>
+      ) : null}
       {s.splitClaimIds.length > 0 ? (
         <p className="mt-1.5 font-mono text-[11px] tracking-[0.06em] text-ochre">
           split claims — where review should start:{" "}

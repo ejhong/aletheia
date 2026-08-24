@@ -175,6 +175,7 @@
   reliabilityNotes:
     - "Independent statistical replication with independently written code — but performed on the original author-supplied 107,875-row catalog, so it tests the analysis, not the source extraction."
     - "Independent researcher; later a co-author of the Bruehl et al. 2026 machine-learning paper, so the two are not fully independent of each other."
+    - "Sequence clarified 2026-08-24 via correspondence from the proponent group: this author was initially unconvinced by the transient claims, produced this replication from that starting position, and subsequently joined the group while continuing to work semi-independently. That order matters in both directions - it strengthens the replication itself, which was performed from outside and while skeptical, and it means later output under this name is group-affiliated rather than independent. Volunteered by the proponent side, against interest."
 
 - id: SRC-HAYES-2026
   title: "Independent Recovery of Vanishing Sources on POSS-I Photographic Plates Using Automated Source Detection and Cross-Epoch Matching"
@@ -209,11 +210,15 @@
   authors: ["Busko, I."]
   year: "2026"
   sourceType: preprint
-  identifier: "arXiv: 2606.08319 (June 2026)"
+  identifier: "arXiv: 2606.08319 (June 2026); reported accepted at Scientific Reports, in press"
   url: "https://arxiv.org/abs/2606.08319"
   verification: ai_verified
   verificationNote: >-
     Full text read via arXiv 2606.08319 (2026-08-22 batch).
+    Publication status (accepted at Scientific Reports, in press) is
+    reported by the proponent group in 2026-08-24 correspondence and is
+    NOT confirmed against the journal; the arXiv record showed no journal
+    reference at the time of checking.
   reliabilityNotes:
     - "Proposes and applies the most diagnostically important positive test in the case: coma aberration as a physical signature of light that passed through the telescope optics."
     - "Preprint; the discriminant has not been blind-validated against known defects and deliberately produced short flashes. The paper itself states the data do not establish the physical origin of the light."
@@ -248,3 +253,63 @@
   reliabilityNotes:
     - "Reports a monotonic decline of transient detection rates with geomagnetic activity in the same 107,875-object catalog — an association worth recording separately from the paper's much stronger causal interpretation."
     - "Independent researcher; preprint; same candidate lineage as the original claims, so it cannot address whether the candidates are real sky events."
+
+# ── 2026-08-24 intake (runId trn-villarroel-2026-08-24) ──────────────────────
+# Surfaced by correspondence from the VASCO group's principal investigator.
+# Every citation below was located and verified independently against the
+# arXiv/repository record before entry; the correspondence is not a source.
+
+- id: SRC-DOHERTY-2026B
+  title: "Statistically Significant Linear Alignments Among High-Confidence Transient Candidates on POSS-I Photographic Plates"
+  authors: ["Doherty, B."]
+  year: "2026"
+  sourceType: preprint
+  identifier: "arXiv: 2605.01190 (submitted 2026-05-02)"
+  url: "https://arxiv.org/abs/2605.01190"
+  verification: ai_verified
+  verificationNote: >-
+    arXiv record retrieved and abstract read 2026-08-24. Reports 7 plates
+    carrying alignments of 5–8 sources exceeding Monte Carlo expectations
+    (p < 0.03), with machine-learning candidate scoring. Full text not
+    read.
+  reliabilityNotes:
+    - "Second Doherty preprint; extends the alignment line rather than the replication line, using ML-scored candidates from the same POSS-I catalog family."
+    - "Unreviewed preprint. Shares the catalog and, by 2026, the author network of the proponent group — see the independence note on SRC-DOHERTY-2026."
+
+- id: SRC-CANN-2026B
+  title: "Plate Sensitivity Is Invariant Across Geomagnetic Storm Intensity at Harvard and Palomar: A Protocol for Artifact Control in Historical Plate Archive Studies"
+  authors: ["Cann, K."]
+  year: "2026"
+  sourceType: preprint
+  identifier: "arXiv: 2604.16470 (submitted 2026-04-09; revised 2026-05-04)"
+  url: "https://arxiv.org/abs/2604.16470"
+  verification: ai_verified
+  verificationNote: >-
+    arXiv record retrieved and abstract read 2026-08-24: 12,510 Harvard
+    exposures and 638 Palomar fields tested against the Kp index, no
+    significant trend in stellar counts or limiting magnitude, airglow
+    constrained to ≤12% of POSS-I transient suppression at 95% CI. Full
+    text not read.
+  reliabilityNotes:
+    - "A negative control paper: it tests and rejects one specific environmental confounder rather than arguing for the transient interpretation."
+    - "Unreviewed preprint; the reference populations (star counts, limiting magnitude) are proxies for plate sensitivity, not direct measurements of transient detectability."
+
+- id: SRC-SINKKOINEN-2026
+  title: "plates — Bayesian reanalysis of nuclear test, UAP and plate-transient correlations"
+  authors: ["Sinkkoinen (GitHub: euxoa)"]
+  year: "2026"
+  sourceType: dataset
+  identifier: "GitHub repository euxoa/plates (Stan models and R analysis scripts); CC BY 4.0"
+  url: "https://github.com/euxoa/plates"
+  verification: ai_verified
+  verificationNote: >-
+    Repository retrieved and README read 2026-08-24: Bayesian hierarchical
+    reanalysis modelling transient counts with latent random-walk temporal
+    autocorrelation and edge-artifact exclusion, reported against the
+    Scientific Reports paper (DOI 10.1038/s41598-025-21620-3). Reported
+    associations: nuclear tests at 1-day lag p = 0.037; UAP reports at
+    2-day lag p < 0.001; same-day UAP p = 0.048. Code is public; results
+    not independently re-run for this import.
+  reliabilityNotes:
+    - "Self-published analysis code, not a peer-reviewed paper; its value is that the statistical machinery is open and rerunnable, which no published analysis in this dispute currently offers."
+    - "Reanalyzes the same underlying catalog as the papers it extends — a methodological check, not independent data."

@@ -14,8 +14,10 @@
 queries:
   - id: vasco-vanishing-sources
     query: "vanishing transients Palomar"
-    sources: [arxiv, crossref]
-    keywords: [Palomar, "POSS-I", "vanishing source", "vanishing transient"]
+    sources: [arxiv]
+    keywordGroups:
+      - [POSS, Palomar, "photographic plate", "plate archive", vanishing, transient]
+      - [survey, sky, astronom, catalog, candidate, source]
     note: >-
       The core thread: new work on POSS-I vanishing point sources, proponent
       (Villarroel/Solano/Bruehl lineage) or critical (Watters lineage) —
@@ -23,7 +25,7 @@ queries:
 
   - id: villarroel-team
     query: "transients"
-    sources: [arxiv, crossref]
+    sources: [arxiv]
     authors: [Villarroel]
     note: >-
       Anything new from the hypothesis's principal proponent, so the case
@@ -32,8 +34,10 @@ queries:
 
   - id: plate-archive-transient-searches
     query: "photographic plates transients"
-    sources: [arxiv, crossref]
-    keywords: ["photographic plate", "plate archive", Schmidt, APPLAUSE]
+    sources: [arxiv]
+    keywordGroups:
+      - ["photographic plate", "plate archive", Schmidt, APPLAUSE, emulsion]
+      - [transient, vanishing, appear, "point source", candidate]
     note: >-
       Independent searches outside the Palomar plate lineage — the
       Busko Hamburg/APPLAUSE approach (TRN-R006) and follow-ups to the
@@ -41,8 +45,10 @@ queries:
 
   - id: plate-defect-forensics
     query: "photographic plate defects astronomical"
-    sources: [arxiv, crossref]
-    keywords: ["photographic emulsion", "photographic plate", "plate defect", "copy plate"]
+    sources: [arxiv]
+    keywordGroups:
+      - ["photographic emulsion", "photographic plate", "plate defect", "copy plate"]
+      - [defect, artifact, artefact, spurious, contaminant, forensic, microscop]
     note: >-
       The strongest mundane mechanism: copy-stage defects in plate
       genealogies (Hambly & Blair, TRN-C007) and any measurement of the
@@ -50,8 +56,10 @@ queries:
 
   - id: earth-shadow-ensemble-statistics
     query: "Earth shadow transients"
-    sources: [arxiv, crossref]
-    keywords: ["Earth shadow", "Earth's shadow", "nuclear test", geosynchronous]
+    sources: [arxiv]
+    keywordGroups:
+      - ["Earth shadow", "Earth's shadow", "nuclear test", geosynchronous, geostationary]
+      - [transient, candidate, catalog, VASCO, POSS]
     note: >-
       The ensemble-statistics thread — shadow-deficit and nuclear-window
       analyses, replications, and catalog-construction critiques

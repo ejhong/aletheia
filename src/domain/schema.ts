@@ -494,9 +494,23 @@ export const WatchQuerySchema = z.object({
   authors: z.array(z.string().min(2)).optional(),
   /**
    * Optional keyword filter: keep items whose title or abstract contains at
-   * least one of these (case-insensitive). Tames broad queries.
+   * least one of these (case-insensitive, matched at a word boundary so a
+   * stem like `archaeolog` still matches `archaeological`). One flat list is
+   * an OR, which is only as narrow as its broadest term.
    */
   keywords: z.array(z.string().min(2)).optional(),
+  /**
+   * Optional concept filter: an AND of ORs. Each inner array is one concept
+   * (any alternative matches); an item must hit EVERY group to be kept.
+   *
+   * This exists because a flat OR list cannot express "about anaesthesia AND
+   * about microtubules" — and the difference is not academic. A single-term
+   * match on `anesthe` surfaced seven clinical nerve-block papers under Orch
+   * OR, and `nanodiamond` alone surfaced nanodiamond contact lenses under
+   * YDIH. Requiring a second concept removes both without touching a real
+   * hit. Prefer this over `keywords` for any query aimed at Crossref.
+   */
+  keywordGroups: z.array(z.array(z.string().min(2)).min(1)).optional(),
   /** Why this query exists — shown in the proposal for the reviewer. */
   note: z.string().optional(),
 });

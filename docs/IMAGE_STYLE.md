@@ -12,7 +12,7 @@ within a version and diffs between versions are deliberate.
    for a photograph or for evidence.
 2. **Plates (real imagery).** Photographs of sites, artifacts, murals,
    samples, micrographs, documents, data. Always real, always with
-   provenance (photographer, date, source URL) and a verified license.
+   recorded provenance and a verified license.
    Presented as numbered museum plates with a CSS duotone treatment —
    originals are never destructively edited, and hovering a plate restores
    the original color.
@@ -167,3 +167,29 @@ Every image — generated or real — must have `license` and `credit`, or the
 build fails. Generated images must also record `prompt`, `styleVersion`, and
 `model`. Plates must also record `plateNumber`, `depicts`, and `provenance`.
 An image file missing from `public/` fails the build.
+
+### Two forms of plate provenance
+
+Provenance may never be blank, but it comes in two shapes, and the schema
+requires exactly one of them:
+
+- **Published material** — the plate was taken from something publicly
+  available. Record `sourceUrl` (plus `photographer`, and `date` and
+  `originalTitle` where known). A reader can go to the source and check.
+- **Supplied material** — a researcher sent the figure to the editor
+  directly, and it is not published anywhere a reader can be pointed to.
+  Record both `suppliedBy` (who supplied it, in what capacity, by what
+  route, on what date) and `permission` (that publication permission was
+  actually given, by whom, when). Both fields are required together:
+  without `permission` we have no right to publish, and without
+  `suppliedBy` the reader cannot weigh who the figure came from.
+
+The second form exists because the alternative is worse. A case's most
+clarifying figure is often one a working researcher will send on request
+long before it appears in a paper, and a rule admitting only published
+imagery quietly selects for whatever the publication pipeline has already
+processed. What the rule must never allow is *unrecorded* provenance, and
+it does not: supplied plates carry the supplier's name in the credit line,
+so a reader always knows the figure came from a party to the dispute and
+can discount accordingly. Supplied provenance is not weaker provenance —
+it is differently checkable, and it must say so on its face.

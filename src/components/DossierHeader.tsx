@@ -17,11 +17,14 @@ import type {
  */
 export function DossierHeader({
   record,
+  lastUpdated,
   verdict,
   verdictHumanEndorsed,
   cover,
 }: {
   record: CaseRecord;
+  /** Newest content-bearing changelog date; links to #history. */
+  lastUpdated: string;
   verdict: AssessmentState | null;
   verdictHumanEndorsed: boolean;
   cover?: ImageRecord | null;
@@ -38,9 +41,12 @@ export function DossierHeader({
               <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-dossier-faint">
                 {record.domain}
               </span>
-              <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-dossier-faint">
-                last review {record.lastReviewed}
-              </span>
+              <a
+                href="#history"
+                className="font-mono text-[11px] uppercase tracking-[0.2em] text-dossier-faint underline decoration-dossier-faint/40 underline-offset-4 hover:text-copper hover:decoration-copper/50"
+              >
+                last update {lastUpdated}
+              </a>
             </div>
             <h1 className="font-serif text-4xl sm:text-5xl mt-4 tracking-tight">
               {record.title}

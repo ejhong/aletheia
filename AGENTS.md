@@ -203,7 +203,7 @@ The public interface should:
 - always provide a route to the underlying Claim;
 - present supporting and undermining evidence symmetrically;
 - explain unfamiliar epistemic terms in place;
-- show the last review date;
+- show the last content-update date, linking to the case changelog;
 - make “what would change our mind” prominent;
 - reveal AI involvement and human review;
 - work well on mobile;

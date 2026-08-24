@@ -18,6 +18,8 @@ Photographic emulsion is a chemical medium, and chemistry does not need the sky'
 
 Hambly and his coauthor Blair added two sharper points. First, a measurement: [the nine 1950 marks are systematically sharper and more concentrated than real star images of the same brightness]{claim=TRN-C002} — all nine sit in the morphological neighborhood where their classifier puts spurious detections. Second, and more structurally damaging, a genealogy: the two modern digitizations that both show the candidates — the ones whose agreement seemed to rule out simple flaws — [descend from glass copies that share a common photographic ancestor, so a single defect introduced at the shared copying stage would be inherited by both]{claim=TRN-C007}. "It's in two independent datasets" turns out to mean "it's in two cousins."
 
+{plate:IMG-TRN-P03}
+
 That is the conventional account at full strength, and it is strong. It also has an unpaid debt: nobody has ever measured how often the copying process actually mints star-like fakes, and the account's simplest form does not reach evidence gathered outside the Palomar plate family.
 
 ## The case for light

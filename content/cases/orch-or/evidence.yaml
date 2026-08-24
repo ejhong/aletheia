@@ -1109,3 +1109,173 @@
     extractedBy: "Fable (AI agent)"
     runId: "orch-or-import-2026-08-22"
     date: "2026-08-22"
+
+# ── 2026-08-24 intake (runId orch-pointers-2026-08-24) ───────────────────────
+# Prompted by private correspondence from a proponent-side researcher; every
+# record below cites the primary literature, independently verified. The
+# correspondence itself is not a source and is not quoted.
+
+- id: ORCH-E030
+  title: "Jurd/Zeller β3(N265M) line: propofol's immobility and hypnosis endpoints separate"
+  claimIds: [ORCH-C003, ORCH-C004]
+  sourceId: SRC-JURD-2007
+  direction: qualifies
+  strength: moderate
+  sourceStatement: >-
+    In the same β3(N265M) knock-in line used by Jurd et al. 2003, the
+    endpoints of intravenous anesthesia dissociate: suppression of
+    noxious-evoked movement (immobility) is abolished in the mutants,
+    while loss-of-righting-reflex duration — the standard rodent surrogate
+    for hypnosis — is profoundly reduced but not abolished.
+  editorInference: >-
+    Sharpens what the receptor-level evidence in this case does and does
+    not establish. The β3 mutation's cleanest, most complete effect is on
+    immobility, a spinal endpoint; its effect on the consciousness-adjacent
+    endpoint is real but partial. That distinction supports keeping the
+    narrow claim (ORCH-C003) separate from the exhaustive one (ORCH-C004),
+    and it means "change one amino acid and the drug stops working" is
+    strictly true of immobility and only partly true of hypnosis.
+  limitations:
+    - "Loss of righting reflex is a coarse surrogate for consciousness; a reduced-but-present hypnotic response does not establish where the residual effect acts."
+    - "Bibliographic details incomplete (see source verificationNote); the finding is corroborated across independent descriptions but the exact journal/volume is unconfirmed."
+  reviewState: ai_extracted
+  origin:
+    ref: "Private correspondence from a proponent-side researcher, 2026-08-24, used as a pointer; citation located and verified independently"
+    extractedBy: "Fable (AI agent)"
+    runId: "orch-pointers-2026-08-24"
+    date: "2026-08-24"
+
+- id: ORCH-E031
+  title: "Eger et al. 2008: no single channel, and no combination, sufficient for immobility"
+  claimIds: [ORCH-C004]
+  sourceId: SRC-EGER-2008
+  direction: qualifies
+  strength: moderate
+  sourceStatement: >-
+    "A paradox arises from present information concerning the mechanism(s)
+    by which inhaled anesthetics produce immobility... two decades of
+    focused investigation have not identified a ligand- or voltage-gated
+    channel that alone is sufficient to mediate immobility. Opioid, 5-HT3,
+    GABA-A and glutamate receptors, and potassium and calcium channels
+    appear to be irrelevant or play only minor roles. Furthermore, no
+    combination of actions on ligand- or voltage-gated channels seems
+    sufficient."
+  editorInference: >-
+    The paper's own framing is a paradox in need of a new paradigm, and its
+    scope is immobility from inhaled agents — a spinal endpoint — not
+    consciousness and not intravenous agents. Both readings that circulate
+    are therefore partly wrong: it does not vindicate any alternative
+    target (it names none, microtubules included), and it does not leave
+    the classical account complete either, since its authors report that
+    no known channel or combination suffices for the endpoint they studied.
+    That unresolved residue is precisely why the exhaustive classical claim
+    (ORCH-C004) is graded unresolved rather than supported.
+  exactLocator: "Anesthesia & Analgesia 107(3): 832–848, abstract"
+  limitations:
+    - "Concerns immobility from inhaled agents; carries no direct implication for propofol-induced unconsciousness."
+    - "A 2008 review — later work on specific targets postdates it."
+  reviewState: ai_extracted
+  origin:
+    ref: "Private correspondence pointer, 2026-08-24; abstract re-verified independently against the published record"
+    extractedBy: "Fable (AI agent)"
+    runId: "orch-pointers-2026-08-24"
+    date: "2026-08-24"
+
+- id: ORCH-E032
+  title: "Linganna 2015: taxane-treated surgical patients show altered hemodynamic response — not a measured dose difference"
+  claimIds: [ORCH-C012]
+  sourceId: SRC-LINGANNA-2015
+  direction: qualifies
+  strength: weak
+  sourceStatement: >-
+    A retrospective study of surgery for nonmetastatic breast cancer
+    compared patients who had received neoadjuvant taxane chemotherapy —
+    which hyperstabilizes microtubules — against those who had not, using
+    hemodynamic change in response to incision as a surrogate for
+    anesthetic depth. Taxane-treated patients showed a greater
+    blood-pressure change on incision.
+  editorInference: >-
+    Filed with a correction attached, because the paraphrase that
+    circulates ("patients on microtubule stabilizers required more
+    anesthetic") overstates what was measured: the published endpoint is a
+    hemodynamic surrogate, not a titrated dose requirement. As evidence for
+    a microtubule contribution in humans it is suggestive and weak — an
+    uncontrolled retrospective in patients who differ in many ways beyond
+    their microtubules — but it is the only human observation in this case's
+    epothilone/taxane line, and it points the same direction as the rodent
+    work.
+  exactLocator: "Journal of Clinical Anesthesia 27(6): 481–485"
+  limitations:
+    - "Retrospective and uncontrolled; neoadjuvant chemotherapy patients differ systematically in fitness, medication, and disease burden."
+    - "Blood-pressure response to incision is a weak surrogate for anesthetic depth and is influenced by autonomic and cardiovascular factors independent of consciousness."
+    - "Full text not read; characterization from the publisher record and abstract-level sources."
+  reviewState: ai_extracted
+  origin:
+    ref: "Private correspondence pointer, 2026-08-24; citation located and results characterization corrected during verification"
+    extractedBy: "Fable (AI agent)"
+    runId: "orch-pointers-2026-08-24"
+    date: "2026-08-24"
+
+- id: ORCH-E033
+  title: "Carhart-Harris 2012: vivid reported experience alongside decreased blood flow and BOLD signal"
+  claimIds: [ORCH-C004]
+  sourceId: SRC-CARHART-HARRIS-2012
+  direction: qualifies
+  strength: weak
+  sourceStatement: >-
+    Arterial spin labelling and BOLD fMRI before and after intravenous
+    psilocybin found only decreases in cerebral blood flow and BOLD
+    signal, maximal in hub regions such as the thalamus, while subjects
+    reported intense subjective experience.
+  editorInference: >-
+    Proponents cite this dissociation as evidence that rich conscious
+    content need not track metabolic expenditure — relevant to the claim
+    that consciousness is the metabolically cheap part rather than the
+    expensive membrane machinery. The inference is weaker than the citation
+    suggests: reduced hemodynamic signal in hub regions is a change in
+    network dynamics, not a measurement of the energetic cost of experience,
+    and the authors themselves draw an entropy/network interpretation with
+    no quantum content. Recorded because the observation is real and
+    load-bearing for one side's argument, and because its limits should be
+    on the record next to it.
+  exactLocator: "PNAS 109(6): 2138–2143"
+  limitations:
+    - "A psychedelic state, not anesthesia — its bearing on anesthetic mechanism is indirect at best."
+    - "The authors' own interpretation is network/entropy-based and makes no claim about quantum processes or metabolic accounting for consciousness."
+  reviewState: ai_extracted
+  origin:
+    ref: "Private correspondence pointer, 2026-08-24; citation and finding direction verified independently"
+    extractedBy: "Fable (AI agent)"
+    runId: "orch-pointers-2026-08-24"
+    date: "2026-08-24"
+
+- id: ORCH-E034
+  title: "The proponent reading of the xenon isotope result, in a flagship anesthesiology venue"
+  claimIds: [ORCH-C025]
+  sourceId: SRC-HAMEROFF-2018-EDITORIAL
+  direction: context
+  strength: weak
+  sourceStatement: >-
+    An invited editorial accompanying the Li et al. xenon isotope study
+    argues that spin-½ isotopes being less potent supports quantum
+    involvement in consciousness, noting that spin ½ is optimal for
+    entanglement and suggesting that added nuclear spin could increase
+    entanglement and thereby oppose the anesthetic effect.
+  editorInference: >-
+    Filed as context, not support: this is the theory's co-originator
+    interpreting a result in his own favor, in an editorial rather than a
+    research report. Its evidential value is in showing that the
+    proponent side's own reading of the isotope effect is available in a
+    mainstream venue and is specific enough to argue with — including the
+    concession, made on the same side, that nuclear-spin dynamics are slow
+    relative to the timescale of moment-to-moment experience.
+  exactLocator: "Anesthesiology 129(2): 228–231"
+  limitations:
+    - "Editorial, not primary research; no new data."
+    - "Author is the theory's co-originator — an interested reading by construction."
+  reviewState: ai_extracted
+  origin:
+    ref: "Private correspondence pointer, 2026-08-24; citation verified against the publisher record"
+    extractedBy: "Fable (AI agent)"
+    runId: "orch-pointers-2026-08-24"
+    date: "2026-08-24"

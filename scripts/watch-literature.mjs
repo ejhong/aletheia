@@ -43,6 +43,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
 import { pickProvider } from "./lib/llm.mjs";
+import { matchesKeywords, nearDuplicateOf } from "./lib/watch-matching.mjs";
 
 const PROMPT_VERSION = "watch-relevance-v1";
 // Crossref polite pool + arXiv contact. The repo owner's public git email.
@@ -270,16 +271,20 @@ const searchers = {
 
 // ------------------------------------------------------------- filtering
 
-function matchesKeywords(item, query) {
-  if (!query.keywords?.length) return true;
-  const haystack = `${item.title} ${item.abstractSnippet ?? ""}`.toLowerCase();
-  return query.keywords.some((k) => haystack.includes(k.toLowerCase()));
-}
-
 function matchesAuthors(item, query) {
   if (!query.authors?.length) return true;
   const names = item.authors.join("; ").toLowerCase();
   return query.authors.some((a) => names.includes(a.toLowerCase()));
+}
+
+/** The case's existing source records, for exact and near-duplicate checks. */
+function caseSources(caseDir) {
+  const p = path.join(CASES_DIR, caseDir, "sources.yaml");
+  if (!fs.existsSync(p)) return [];
+  return (parseYaml(fs.readFileSync(p, "utf8")) ?? []).map((s) => ({
+    id: s.id,
+    title: s.title ?? "",
+  }));
 }
 
 /** DOIs and arXiv ids already carried by the case's source records. */
@@ -360,6 +365,7 @@ async function main() {
     const since = sinceDate.toISOString().slice(0, 10);
 
     const knownKeys = new Set([...knownSourceKeys(caseDir), ...caseState.seen]);
+    const existingSources = caseSources(caseDir);
     const byKey = new Map(); // first key -> item (deduped within run)
 
     for (const query of watch.queries) {
@@ -400,7 +406,20 @@ async function main() {
                 existing.matchedQueries.push(matched);
               }
             } else {
-              const record = { ...item, matchedQueries: [matched] };
+              // A preprint later published under a different title keeps a
+              // different id, so exact-key dedup misses it. Label, never drop:
+              // silently suppressing a genuinely new paper is the one failure
+              // a discovery tool must not have.
+              const dup = nearDuplicateOf(item, existingSources);
+              const record = {
+                ...item,
+                ...(dup
+                  ? {
+                      possibleDuplicateOf: `${dup.id} — "${dup.title}" (title overlap ${dup.score}); check whether this is the same work in another venue before promoting`,
+                    }
+                  : {}),
+                matchedQueries: [matched],
+              };
               for (const k of keys) byKey.set(k, record);
             }
           }

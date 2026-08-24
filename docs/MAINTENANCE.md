@@ -105,15 +105,42 @@ queries:
     sources: [crossref, arxiv]       # optional; default arxiv + crossref;
                                      # openalex also supported
     authors: [Davidovits]            # optional: keep only matching authors
-    keywords: [elastography, knot]   # optional: title/abstract must contain one
+    keywords: [elastography, knot]   # optional OR list: match any one
+    keywordGroups:                   # optional AND of ORs: match every group
+      - ["trigger point", myofascial]
+      - [imaging, ultrasound, elastograph]
     note: why this query exists      # shown to the reviewer
 ```
+
+**Prefer `keywordGroups` to `keywords` for anything aimed at Crossref.** A
+flat OR list is only as narrow as its broadest term, and Crossref ranks by
+loose relevance over everything ever published. In the 2026-08-24 run that
+combination surfaced seven clinical nerve-block papers under Orch OR (one
+term, `anesthe`), nanodiamond contact lenses under YDIH (`nanodiamond`), and
+a novel review under geopolymer (`ancient`). Requiring a second concept —
+"about anaesthesia AND about microtubules" — removed all of it without
+costing a single real hit: replaying that run's 42 items through the current
+configs keeps 12 and drops 30.
+
+Terms match at a **word boundary**, so a stem like `archaeolog` still finds
+`archaeological` while `psi` no longer matches inside `epsilon`.
+
+Where a field's literature is arXiv-native, drop Crossref rather than
+filtering it: CCC, transients, Zero Worlds and Orch OR's physics queries are
+arXiv-only for that reason. Crossref stays where the literature genuinely is
+not on arXiv — YDIH (geology), geopolymer (archaeology/materials), MPI
+(psychology), vasocomputation (physiology).
 
 Weekly, the watch step searches each API for items published/indexed since
 the case's last run (per-case cursor and already-surfaced-item list live in
 `proposals/watch/state.yaml`; the state file is machine-maintained and safe
 to delete). Items already in the case's `sources.yaml` (matched by DOI or
-arXiv id) or surfaced by an earlier run are skipped. Results land in
+arXiv id) or surfaced by an earlier run are skipped. A preprint later
+published under a **different title** keeps a different identifier, so exact
+dedup misses it; those items are surfaced anyway and labeled
+`possibleDuplicateOf: <SRC-ID>`, never dropped — silently suppressing a
+genuinely new paper is the one failure a discovery tool must not have, so
+the guess is shown to a human instead of acted on. Results land in
 `proposals/watch/<runId>/<case>.yaml` with title, authors, venue, date,
 DOI/arXiv id, abstract snippet, and the matching query — **exactly as the
 APIs returned them, all labeled `unverified`**. Nothing is added to

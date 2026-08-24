@@ -12,6 +12,7 @@ import {
   historyNewestFirst,
   lastContentUpdate,
   crossModelSummary,
+  latestCheckPerModel,
   displayAssessment,
   editorialAssessment,
   latestAssessment,
@@ -464,6 +465,25 @@ describe("cross-model checks", () => {
     // Every compared claim lands in exactly one bucket.
     expect(s!.exact + s!.adjacent + s!.split).toBe(18);
     expect(s!.splitClaimIds.length).toBe(s!.split);
+  });
+
+  it("a same-day re-check wins the per-model tie, and the superseded run is not double-counted", () => {
+    // Append-only means a re-checked case carries two runs per model with the
+    // same date. The -r2 suffix convention must win the tie, and the panel
+    // must count each vendor once — "10 independent models" from 5 vendors
+    // was the original double-counting bug.
+    const trn = getCaseBySlug("transients");
+    const perModel = latestCheckPerModel(trn);
+    const opusRuns = trn.assessmentRuns.filter(
+      (r) => r.role === "check" && r.model.startsWith("Opus"),
+    );
+    if (opusRuns.length >= 2) {
+      const shownOpus = perModel.filter((r) => r.model.startsWith("Opus"));
+      expect(shownOpus).toHaveLength(1);
+      expect(shownOpus[0].runId).toMatch(/-r\d+$/);
+    }
+    const keys = perModel.map((r) => r.model.trim().split(/[\s,(]/)[0].toLowerCase());
+    expect(new Set(keys).size).toBe(keys.length);
   });
 
   it("cases without check runs have no summary", () => {

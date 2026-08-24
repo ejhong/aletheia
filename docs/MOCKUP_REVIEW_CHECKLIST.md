@@ -46,7 +46,7 @@ Do not begin Phase 2 until the product owner has reviewed these questions.
 
 ## Trust and provenance
 
-- [ ] Is the last review date visible?
+- [ ] Is the last update date visible, and does it link to the changelog?
 - [ ] Is AI involvement disclosed without clutter?
 - [ ] Does the change history increase trust?
 - [ ] Are demonstration materials unmistakably labeled?

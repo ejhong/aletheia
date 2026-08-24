@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Sibling checkouts for parallel agents: their own code is linted in
+    // their own tree, and their build output is not ours to fix.
+    ".worktrees/**",
   ]),
 ]);
 

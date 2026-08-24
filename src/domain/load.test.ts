@@ -10,6 +10,7 @@ import {
   featuredClaims,
   getCaseBySlug,
   historyNewestFirst,
+  lastContentUpdate,
   crossModelSummary,
   displayAssessment,
   editorialAssessment,
@@ -148,6 +149,34 @@ describe("recent-changes feed", () => {
     expect(feed.some((e) => e.change === "fresh launch")).toBe(true);
     // The busy case's own most recent entry (last appended) is there too.
     expect(feed.some((e) => e.change === "busy-4")).toBe(true);
+  });
+
+  it("lastContentUpdate uses newest content history, not lastReviewed", () => {
+    const loaded = {
+      record: { lastReviewed: "2026-08-22" },
+      history: [
+        entry("2026-08-22", "launch"),
+        {
+          ...entry("2026-08-23", "cover art regenerated"),
+          kind: "housekeeping" as const,
+        },
+        { ...entry("2026-08-24", "inbox intake"), kind: "content" as const },
+      ],
+    };
+    expect(lastContentUpdate(loaded)).toBe("2026-08-24");
+  });
+
+  it("lastContentUpdate ignores housekeeping and falls back to lastReviewed", () => {
+    const loaded = {
+      record: { lastReviewed: "2026-08-22" },
+      history: [
+        {
+          ...entry("2026-08-23", "cover art regenerated"),
+          kind: "housekeeping" as const,
+        },
+      ],
+    };
+    expect(lastContentUpdate(loaded)).toBe("2026-08-22");
   });
 
   it("orders same-date history entries newest-appended-first", () => {

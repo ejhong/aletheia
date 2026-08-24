@@ -24,7 +24,9 @@ queries:
   - id: tryptophan-superradiance
     query: "tryptophan superradiance"
     sources: [arxiv, crossref]
-    keywords: [superradian, "delayed luminescence"]
+    keywordGroups:
+      - [tryptophan, superradian, "delayed luminescence"]
+      - [microtubule, tubulin, protein, biolog, quantum, cytoskelet]
     note: >-
       Follow-ups to Babcock 2024 (collective UV emission in tryptophan
       mega-networks) and the Zoghi delayed-luminescence line — the
@@ -33,10 +35,12 @@ queries:
   - id: anesthetic-microtubule-mechanism
     query: "anesthetic microtubule"
     sources: [arxiv, crossref]
-    # Keywords hold the anesthesia side (the query's loose Crossref matches
-    # otherwise include the vast microtubule oncology literature); the
-    # microtubule side is carried by the query string.
-    keywords: [anesthe, anaesthe, epothilone]
+    # Both concepts are required. Holding only the anesthesia side let
+    # Crossref return seven clinical nerve-block papers in one run; the
+    # microtubule group is what makes the query mean what it says.
+    keywordGroups:
+      - [anesthe, anaesthe]
+      - [microtubule, tubulin, epothilone, cytoskelet]
     note: >-
       The anesthesia arm: energy-migration suppression (Kalra lineage),
       the epothilone contradiction between Wellesley and Mass General
@@ -45,8 +49,10 @@ queries:
 
   - id: objective-reduction-tests
     query: "wave function collapse gravitational"
-    sources: [arxiv, crossref]
-    keywords: ["wave function collapse", "wavefunction collapse", "objective reduction", "Diósi", "Diosi"]
+    sources: [arxiv]
+    keywordGroups:
+      - ["wave function collapse", "wavefunction collapse", "objective reduction", "Diósi", Diosi, "collapse model"]
+      - [gravit, quantum, decoherence, superposition]
     note: >-
       The physics conjunct on its own track: Gran Sasso-style radiation
       bounds, non-Markovian escape routes, and mesoscopic-superposition
@@ -55,7 +61,9 @@ queries:
   - id: nonclassical-brain-signals
     query: "non-classical brain function"
     sources: [arxiv, crossref]
-    keywords: [nonclassical, "non-classical", "zero quantum", "multiple quantum", entangle]
+    keywordGroups:
+      - [nonclassical, non-classical, "zero quantum", "multiple quantum", entangl]
+      - [brain, neural, neuro, consciousness, cogniti]
     note: >-
       The Kerskens line and its classical-mechanism critique (Warren):
       whether the zero-quantum-coherence MRI protocol witnesses anything
@@ -63,7 +71,7 @@ queries:
 
   - id: hameroff-penrose-proponents
     query: "orchestrated objective reduction"
-    sources: [arxiv, crossref]
+    sources: [arxiv]
     authors: [Hameroff, Penrose, Wiest]
     note: >-
       New statements of the theory from its principal proponents and

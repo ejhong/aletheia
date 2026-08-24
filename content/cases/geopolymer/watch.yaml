@@ -10,7 +10,9 @@ queries:
     sources: [crossref]
     # Deliberately archaeology-specific: the bare word "geopolymer" matches
     # the enormous modern-concrete engineering literature.
-    keywords: [ancient, archaeolog, pyramid, megalith, monument]
+    keywordGroups:
+      - [geopolymer, alkali-activat, geopolymeric, reagglomerat, binder]
+      - [ancient, archaeolog, pyramid, megalith, monument, Egypt]
     note: >-
       New work on geopolymer/cast-stone interpretations of ancient
       monuments — proponent or critical.
@@ -18,7 +20,9 @@ queries:
   - id: pyramid-limestone-analysis
     query: "pyramid limestone casing microstructure petrographic"
     sources: [crossref]
-    keywords: [pyramid, casing, Giza, limestone]
+    keywordGroups:
+      - [limestone, casing, petrograph, microstructure, cement]
+      - [pyramid, Giza, Egypt, megalith, ancient]
     note: >-
       Analyses of Great Pyramid / Egyptian limestone that bear on the
       Barsoum–Jana exchange (GEO-C022 cluster).
@@ -26,6 +30,8 @@ queries:
   - id: davidovits-team
     query: "geopolymer archaeological"
     sources: [crossref]
+    keywordGroups:
+      - [geopolymer, archaeolog, pyramid, ancient, limestone, megalith]
     authors: [Davidovits]
     note: >-
       Anything new from the hypothesis's principal proponents, so the case
@@ -34,7 +40,9 @@ queries:
   - id: megalith-provenance-methods
     query: "megalith stone provenance geochemical attribution"
     sources: [crossref]
-    keywords: [megalith, sarsen, quarry, obelisk]
+    keywordGroups:
+      - [megalith, sarsen, quarry, obelisk, provenanc]
+      - [geochem, isotop, petrograph, attribution, archaeolog, ancient]
     note: >-
       Provenance-methodology work relevant to whether attribution studies
       could distinguish cast from carved stone (GEO-C030, GEO-R003).

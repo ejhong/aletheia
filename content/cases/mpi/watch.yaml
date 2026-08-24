@@ -15,7 +15,9 @@ queries:
     sources: [crossref]
     # Keywords hold the psi side; without them Crossref's loose relevance
     # search returns the general correlation-matrix statistics firehose.
-    keywords: [psychokinesis, micro-PK, parapsycholog, anomalistic, "matrix experiment"]
+    keywordGroups:
+      - [psychokinesis, micro-PK, parapsycholog, anomalistic, "matrix experiment"]
+      - [experiment, replicat, "random event", "random number", correlation]
     note: >-
       The case's central evidence line: new correlation-matrix replications
       or reanalyses in either direction (MPI-C001, MPI-C002; the MPI-R001
@@ -25,7 +27,9 @@ queries:
   - id: generalized-quantum-theory
     query: "generalized quantum theory entanglement"
     sources: [arxiv, crossref]
-    keywords: ["generalized quantum", "weak quantum", psychophysical, "mind-matter", "dual-aspect"]
+    keywordGroups:
+      - ["generalized quantum", "weak quantum", psychophysical, mind-matter, dual-aspect]
+      - [entangl, correlation, consciousness, psycholog, "quantum theor"]
     note: >-
       Developments in the formalism MPI sits inside — extensions, critiques,
       or (most valuable) any derivation with quantitative predictions, which
@@ -34,6 +38,8 @@ queries:
   - id: proponent-and-experimenter-output
     query: "mind-matter correlation psychokinesis"
     sources: [crossref]
+    keywordGroups:
+      - [psychokinesis, mind-matter, parapsycholog, anomalistic, micro-PK]
     authors: [Walach, Lucadou, Hinterberger, Grote, Maier, Dechamps, Flores]
     note: >-
       New output from the model's theorists and the active matrix/micro-PK
@@ -44,7 +50,9 @@ queries:
   - id: rng-source-dependence
     query: "micro-psychokinesis random number generator"
     sources: [crossref]
-    keywords: ["pseudo-random", "pseudorandom", "true random", "quantum random"]
+    keywordGroups:
+      - [pseudo-random, pseudorandom, "true random", "quantum random"]
+      - [psychokinesis, micro-PK, parapsycholog, anomalistic, intention]
     note: >-
       The true-RNG vs pseudo-RNG contrast — one of the few forward-looking
       disagreements between MPI-family theories and the null hypothesis
@@ -53,7 +61,9 @@ queries:
   - id: decline-effect-explanations
     query: "decline effect replication regression"
     sources: [crossref]
-    keywords: [parapsycholog, psi, "decline effect", "regression to the mean"]
+    keywordGroups:
+      - ["decline effect", "regression to the mean"]
+      - [parapsycholog, psychokinesis, anomalistic, "psi phenomen", replicat]
     note: >-
       The attribution rung's contested territory: work explaining decline
       arcs as regression/selection artifacts, or claiming structure beyond
@@ -62,7 +72,9 @@ queries:
   - id: qrp-publication-bias-psi
     query: "questionable research practices publication bias parapsychology"
     sources: [crossref]
-    keywords: [QRP, "publication bias", "questionable research", preregist]
+    keywordGroups:
+      - [QRP, "publication bias", "questionable research", preregist]
+      - [parapsycholog, psychokinesis, anomalistic, "psi phenomen"]
     note: >-
       The conventional steelman's evidence base, watched with the same
       machinery as the proponent side per the fairness rules: QRP

@@ -1,0 +1,22 @@
+# Literature watch watch-2026-08-24-7806
+
+Searched 8 case(s) with watch queries on 2026-08-24.
+
+## New literature surfaced
+
+- **The Aeon Before Ours?**: 15 new item(s) since 2026-02-25 — “Pseudosymmetry, Ricci soliton and Curvature Inheritance symmetries of Friedmann Lemaître Robertson Walker spacetime” (arXiv (math.GM), 2026-05-25); “Integrability of Conformal Killing Vectors in the Eisenhart Lift of Scalar-Field FLRW Cosmology” (arXiv (gr-qc), 2026-04-24); “Influence of an organic-inorganic hybrid silica coating on cyclic deformation behavior and fatigue life of low-alloy steel” (Elsevier BV, 2026); +12 more. 10 carry AI-drafted relevance notes.
+- **Cast, Not Carved?**: 4 new item(s) since 2026-08-15 — “Robert Harris returns to ancient Rome with Agrippa – a novel about an empire’s forgotten architect” (The Conversation, 2026-08-24); “Phylogenomics of Musa acuminata subsp. banksii Elucidates Its Biogeographic History in New Guinea and Ancient, Natural Dispersal to Australia” (Journal of Biogeography, 2026-08); “Life-Cycle Sustainability Assessment of Limestone Calcined Clay Cement (LC3) as Sustainable Alternative in Concrete Structures” (Lecture Notes in Civil Engineering, 2026); +1 more. 4 carry AI-drafted relevance notes.
+- **Elusive by Law?**: 1 new item(s) since 2026-02-25 — “Words matter when talking about pain: A scoping review of humanistic approaches to SDM in cancer-related pain care” (Patient Education and Counseling, 2026-11). 1 carry AI-drafted relevance notes.
+- **Collapse, Not Computation?**: 10 new item(s) since 2026-02-25 — “How many labels can a biological oscillator carry? A quality-factor screen for proposed information carriers” (arXiv (q-bio.NC), 2026-08-11); “Popliteal Sciatic Block as a Safe Anesthetic Alternative for High-risk Below-knee Surgeries” (Annals of African Medicine, 2026-08-25); “Managing What You Cannot Measure: Anesthetic Implications of Takayasu’s Arteritis in Hypertensive Intracranial Hemorrhage” (Annals of African Medicine, 2026-08-25); +7 more. 10 carry AI-drafted relevance notes.
+- **Before Sputnik?**: 5 new item(s) since 2026-02-25 — “Mysterious Transients in the Palomar Observatory Sky Survey (POSS-1) as profound manifestation of the Dark Matter physics” (arXiv (hep-ph), 2026-08-10); “Statistically Significant Linear Alignments Among High-Confidence Transient Candidates on POSS-I Photographic Plates” (arXiv (astro-ph.IM), 2026-05-02); “Machine Learning Supports Existence of Previously Unrecognized Transient Astronomical Phenomena in Historical Observatory Images” (arXiv (astro-ph.IM), 2026-04-20); +2 more. 5 carry AI-drafted relevance notes.
+- **State, Not Scar?**: nothing new since 2026-02-25 (4 queries).
+- **Fire From the Sky?**: 4 new item(s) since 2026-02-25 — “Fluorescent nanodiamond and gold nanoparticle hybrid-embedded contact lenses for multifunctional ocular therapy” (Journal of Controlled Release, 2026-08); “A mixed methods study exploring factors that impact physiotherapy participation for people with Parkinson’s disease” (Disability and Rehabilitation, 2026-03-13); “Use of non-parametric methods to investigate the impact of toilet and containment design and operational factors on faecal sludge characteristics at community level: a case study of Mlalakuwa, Dar Es Salaam” (Water Practice &amp; Technology, 2026-08-08); +1 more. 4 carry AI-drafted relevance notes.
+- **Zero Worlds?**: 3 new item(s) since 2026-02-25 — “Harnessing Rare-Earth Materials as Exogenous Contrast Agents for Enhanced Photoacoustic Imaging” (Chemical &amp; Biomedical
+Imaging, 2026-03-26); “Quantum Computing in the Cloud: Opportunities and Challenges” (Next‐Generation Technologies in Cloud Computing, 2026-05-22); “Derivation of the Born Rule and Operational Quantum Formalism in the Accessibility Framework through Boundary Reduction” (arXiv (quant-ph), 2026-04-29). 3 carry AI-drafted relevance notes.
+
+## Ground rules
+
+- Discovery only: every item is `unverified`, recorded exactly as the API returned it; nothing touched sources.yaml or evidence.yaml.
+- Relevance notes, where present, are AI-generated drafts and labeled as such.
+- To promote an item: drop its DOI/URL as an inbox link list (`inbox/<case>/…`), or ask the maintainer agent to verify and import it.
+- Fully revertable: delete `proposals/watch/watch-2026-08-24-7806/` and the matching `seen`/`lastRun` entries in `proposals/watch/state.yaml`.

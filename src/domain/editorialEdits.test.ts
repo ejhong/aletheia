@@ -3,6 +3,7 @@ import {
   applyTextEdits,
   claimRefs,
   foldScalar,
+  narrativeGuardFailure,
   plateRefs,
 } from "../../scripts/lib/editorial-edits.mjs";
 
@@ -108,6 +109,55 @@ describe("annotation invariants", () => {
     const edited = md.replace("[an annotated span]{claim=TRN-C001}", "a plain span");
     const lost = claimRefs(md).filter((id) => !claimRefs(edited).includes(id));
     expect(lost).toEqual(["TRN-C001"]);
+  });
+});
+
+describe("narrativeGuardFailure", () => {
+  const article = [
+    "A sentence with [an annotated span]{claim=CCC-C001} inside.",
+    "",
+    "{plate:IMG-CCC-P01}",
+    "",
+    "A catalog claim the article legitimately cites: [detail]{claim=CCC-C503}.",
+  ].join("\n");
+  const known = new Set(["CCC-C001", "CCC-C503", "CCC-C002"]);
+
+  it("passes an edit that changes only prose", () => {
+    const edited = article.replace("A sentence with", "A revised sentence with");
+    expect(narrativeGuardFailure(article, edited, known)).toBeNull();
+  });
+
+  it("rejects an edit that drops an annotation", () => {
+    const edited = article.replace("[an annotated span]{claim=CCC-C001}", "a plain span");
+    expect(narrativeGuardFailure(article, edited, known)).toMatch(
+      /dropped claim annotations \(CCC-C001\)/,
+    );
+  });
+
+  it("rejects an edit that invents a claim id", () => {
+    const edited = article.replace("inside.", "inside [new]{claim=CCC-C999}.");
+    expect(narrativeGuardFailure(article, edited, known)).toMatch(
+      /unknown claim ids \(CCC-C999\)/,
+    );
+  });
+
+  it("rejects an edit that moves or removes a plate", () => {
+    const edited = article.replace("{plate:IMG-CCC-P01}\n\n", "");
+    expect(narrativeGuardFailure(article, edited, known)).toMatch(/plate placement changed/);
+  });
+
+  it("allows adding an annotation for a claim that exists", () => {
+    const edited = article.replace("inside.", "inside [more]{claim=CCC-C002}.");
+    expect(narrativeGuardFailure(article, edited, known)).toBeNull();
+  });
+
+  it("accepts catalog-tier annotations, which are not in the assessment bundle", () => {
+    // Regression: scoping known ids to featured claims read CCC's legitimate
+    // catalog annotations as unknown and reverted every edit to that case.
+    const featuredOnly = new Set(["CCC-C001"]);
+    const edited = article.replace("A sentence with", "A revised sentence with");
+    expect(narrativeGuardFailure(article, edited, featuredOnly)).toMatch(/CCC-C503/);
+    expect(narrativeGuardFailure(article, edited, known)).toBeNull();
   });
 });
 

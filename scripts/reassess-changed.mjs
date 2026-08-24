@@ -5,8 +5,13 @@
  * new evidence has outdated.
  *
  * Usage:
- *   node scripts/reassess-changed.mjs [--dry-run] [--case <case-dir>]
+ *   node scripts/reassess-changed.mjs [--dry-run] [--force]
+ *                                     [--case <case-dir>]
  *                                     [--provider anthropic|openai]
+ *
+ * --force runs even when the assessment is already current, which is how you
+ * audit the editorial layer of a case that was last reassessed before this
+ * pass existed.
  *
  * For each case under content/cases/:
  *   1. find the latest assessment overlay in <case>/assessments/;
@@ -49,9 +54,8 @@ import { parse as parseYaml, parseDocument, stringify as stringifyYaml } from "y
 import { noKeyMessage, parseJsonReply, pickProvider } from "./lib/llm.mjs";
 import {
   applyTextEdits,
-  claimRefs,
   foldScalar,
-  plateRefs,
+  narrativeGuardFailure,
 } from "./lib/editorial-edits.mjs";
 
 const PROMPT_VERSION = "aletheia-assess-v1-auto";
@@ -71,6 +75,12 @@ const VERDICTS = [
 
 const args = process.argv.slice(2);
 const dryRun = args.includes("--dry-run");
+/**
+ * Run even when the assessment is already current. The editorial audit only
+ * fires behind a reassessment, so without this a case whose evidence changed
+ * before the audit existed would never have its article checked at all.
+ */
+const force = args.includes("--force");
 const onlyCase = args.includes("--case") ? args[args.indexOf("--case") + 1] : null;
 const forcedProvider = args.includes("--provider")
   ? args[args.indexOf("--provider") + 1]
@@ -293,24 +303,20 @@ async function auditEditorialLayer(caseDir, bundle, newAssessment) {
     rejected,
   );
 
-  // Annotations are the article's link into the claim graph; an edit that
-  // drops one degrades the page silently. Growth is fine, loss is not.
-  const before = claimRefs(overview);
-  const after = claimRefs(newOverview);
-  const knownClaims = new Set(bundle.claims.map((c) => c.id));
-  const lost = before.filter((id) => !after.includes(id));
-  const unknown = after.filter((id) => !knownClaims.has(id));
-  const platesBefore = plateRefs(overview).join(",");
-  const platesAfter = plateRefs(newOverview).join(",");
+  // Every claim the loader would accept an annotation for — not just the
+  // featured ones the assessment covers.
+  const knownClaims = new Set(
+    ["claims.yaml", "claims-catalog.yaml"]
+      .map((f) => path.join(dir, f))
+      .filter((p) => fs.existsSync(p))
+      .flatMap((p) => parseYaml(fs.readFileSync(p, "utf8")) ?? [])
+      .filter((c) => c.reviewState !== "rejected")
+      .map((c) => c.id),
+  );
+  const guardFailure = narrativeGuardFailure(overview, newOverview, knownClaims);
   let overviewOut = newOverview;
-  if (lost.length > 0 || unknown.length > 0 || platesBefore !== platesAfter) {
-    rejected.push(
-      `overview.md: ALL narrative edits reverted — ${
-        lost.length > 0 ? `dropped claim annotations (${lost.join(", ")}); ` : ""
-      }${unknown.length > 0 ? `unknown claim ids (${unknown.join(", ")}); ` : ""}${
-        platesBefore !== platesAfter ? "plate placement changed; " : ""
-      }the article's links into the claim graph must survive an automated edit`,
-    );
+  if (guardFailure) {
+    rejected.push(`overview.md: ${guardFailure}`);
     overviewOut = overview;
     appliedNarrative.length = 0;
   }
@@ -436,7 +442,7 @@ async function main() {
       .sort((a, b) => b - a)[0];
 
     if (!lastContentChange) continue;
-    if (prev && new Date(prev.run.date) >= lastContentChange) {
+    if (!force && prev && new Date(prev.run.date) >= lastContentChange) {
       console.error(`${caseDir}: assessment current (last run ${prev.run.date}) — skip`);
       continue;
     }

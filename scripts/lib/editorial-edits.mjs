@@ -77,3 +77,30 @@ export function applyTextEdits(text, edits, label, rejected) {
   }
   return { out, applied };
 }
+
+/**
+ * Why an edited article must be rejected wholesale, or null if it is safe.
+ *
+ * The article's `{claim=...}` annotations and `{plate:...}` blocks are its
+ * links into the claim graph; an edit that drops one degrades the page in a
+ * way no reader or reviewer would notice. Annotations may be added (any new
+ * id must resolve) but never lost, and plate placement must be untouched.
+ *
+ * `knownClaimIds` must cover every claim the loader accepts an annotation
+ * for — featured AND catalog. Scoping it to the featured set alone reads a
+ * legitimate catalog annotation as an unknown id and reverts every edit to
+ * that case forever.
+ */
+export function narrativeGuardFailure(before, after, knownClaimIds) {
+  const lost = claimRefs(before).filter((id) => !claimRefs(after).includes(id));
+  const unknown = claimRefs(after).filter((id) => !knownClaimIds.has(id));
+  const platesMoved = plateRefs(before).join(",") !== plateRefs(after).join(",");
+  if (lost.length === 0 && unknown.length === 0 && !platesMoved) return null;
+  return (
+    "ALL narrative edits reverted — " +
+    (lost.length > 0 ? `dropped claim annotations (${lost.join(", ")}); ` : "") +
+    (unknown.length > 0 ? `unknown claim ids (${unknown.join(", ")}); ` : "") +
+    (platesMoved ? "plate placement changed; " : "") +
+    "the article's links into the claim graph must survive an automated edit"
+  );
+}

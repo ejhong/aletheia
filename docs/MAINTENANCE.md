@@ -59,11 +59,38 @@ Weekly (or on demand), the Maintain workflow:
    overlay, drafts a **new** overlay file (never edits an old one), stamped
    `humanReviewed: false` with runId/model/promptVersion; structurally
    validated before writing, discarded (and reported) if invalid.
-3. **Watches the literature** (`scripts/watch-literature.mjs`): runs each
+3. **Corrects the editorial layer** (same script, second pass): verdicts
+   re-derive from the ledger on every run, but the overview article and
+   research agenda do not — prose written six months ago goes on asserting
+   whatever it asserted. So for each case that was reassessed, a second pass
+   reads `overview.md` and `research.yaml` against the current records and
+   **makes the correction**, rather than filing a to-do that leaves a false
+   sentence on the public page until someone gets to it. It corrects only
+   factual conflicts (the article says nobody has examined X; a record now
+   reports someone has), never style, tone, or additions. Safety comes from
+   structure, not from restraint:
+
+   - edits are exact string replacements — a `find` span that is missing,
+     ambiguous, or under 60 characters is rejected, never approximated;
+   - the article's `{claim=...}` annotations and `{plate:...}` placements
+     must survive; losing one reverts every narrative edit for that case;
+   - research edits splice a single YAML scalar's source span and are then
+     verified by re-parsing — if any other record or field moved, revert;
+   - only prose fields are editable (`title`, `summary`, `informationGain`);
+     ids, claim links and taxonomy are canon;
+   - every applied edit appends a `history.yaml` entry naming the model, the
+     run and that it is pending human approval;
+   - the diff touches featured content, so the risk classifier marks the PR
+     `needs-approval`. **Nothing in this pass reaches the site on its own.**
+
+   Run `node scripts/reassess-changed.mjs --dry-run --case <slug>` to see the
+   proposed prose printed as a before/after diff without writing anything.
+   Silence is the normal result: most cases most weeks need zero edits.
+4. **Watches the literature** (`scripts/watch-literature.mjs`): runs each
    case's declared watch queries against arXiv and Crossref (OpenAlex
    optionally) and surfaces newly published/indexed items as
    **discovery-only** proposals — see the next section.
-4. **Opens the PR** with the digest body and the risk label.
+5. **Opens the PR** with the digest body and the risk label.
 
 ## Literature watch
 

@@ -1,0 +1,1 @@
+The Yang & Villarroel microscopy manuscript (processed 2026-08-24, runId trn-microscopy-2026-08-24) is intentionally NOT stored in this repository: it is unpublished, and making it public is the authors's decision, not this project's. The editor retains the file privately. See SRC-YANG-VILLARROEL-2026 in content/cases/transients/sources.yaml for full provenance.

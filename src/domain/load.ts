@@ -473,6 +473,27 @@ export function displayAssessment(
   return latest ? { run: latest, humanEndorsed: false } : null;
 }
 
+/**
+ * The newest check run from each judging model, oldest-model-first by date.
+ *
+ * Check runs are append-only, so re-checking a case after its content
+ * changes leaves the superseded runs on disk. The concurrence panel must
+ * report the *current* judgment of each model, not count a vendor twice
+ * because it judged the case in two different weeks. Models are keyed by
+ * the first token of their label ("GPT-5.1 (OpenAI)…" → `gpt-5.1`), which
+ * is stable across the label wording used by different run generations.
+ */
+export function latestCheckPerModel(loaded: LoadedCase): AssessmentRun[] {
+  const byModel = new Map<string, AssessmentRun>();
+  for (const run of loaded.assessmentRuns) {
+    if (run.role !== "check") continue;
+    const key = run.model.trim().split(/[\s,(]/)[0].toLowerCase();
+    const prev = byModel.get(key);
+    if (!prev || run.date > prev.date) byModel.set(key, run);
+  }
+  return [...byModel.values()].sort((a, b) => a.date.localeCompare(b.date));
+}
+
 /** Concurrence of independent cross-model check runs with the displayed assessment. */
 export interface CrossModelSummary {
   /** Model labels of the check runs, in run-date order. */
@@ -483,6 +504,12 @@ export interface CrossModelSummary {
   /** Whether every check run's case verdict matches the displayed run's. */
   caseUnanimousWithDisplayed: boolean;
   claimsCompared: number;
+  /**
+   * Date of the newest content-bearing history entry, when that entry is
+   * more recent than the newest check run — i.e. the case file moved
+   * after these judges read it. Null when the checks are current.
+   */
+  staleSince: string | null;
   exact: number;
   /** Within one step on the graded scale (open verdicts never count as adjacent). */
   adjacent: number;
@@ -502,9 +529,22 @@ const gradedScale: Partial<Record<AssessmentState, number>> = {
 export function crossModelSummary(
   loaded: LoadedCase,
 ): CrossModelSummary | null {
-  const checks = loaded.assessmentRuns.filter((r) => r.role === "check");
   const shown = displayAssessment(loaded);
+  const checks = latestCheckPerModel(loaded);
   if (checks.length === 0 || !shown) return null;
+
+  // The case file moved after the newest judge read it? Say so.
+  const newestCheck = checks
+    .map((r) => r.date)
+    .sort()
+    .at(-1)!;
+  const newestContent = loaded.history
+    .filter((h) => !isHousekeepingEntry(h))
+    .map((h) => h.date)
+    .sort()
+    .at(-1);
+  const staleSince =
+    newestContent && newestContent > newestCheck ? newestContent : null;
 
   const baseline = new Map(
     shown.run.claimAssessments.map((ca) => [ca.claimId, ca.verdict]),
@@ -550,6 +590,7 @@ export function crossModelSummary(
       (r) => r.caseAssessment.verdict === shown.run.caseAssessment.verdict,
     ),
     claimsCompared: compared,
+    staleSince,
     exact,
     adjacent,
     split: splitIds.size,

@@ -1,0 +1,416 @@
+# Source records. Verification labels are honest about who checked what:
+#   verified     — the document itself is held in the project library
+#   ai_verified  — citation located and checked by an AI agent (TIK
+#                  verification batch, 2026-08-25); no human re-check
+#   unverified   — cited second-hand; locator unconfirmed
+#
+# Every source below was independently verified on 2026-08-25 against the
+# Crossref API, publisher pages, PubMed/PMC metadata, or the live document
+# itself before import. The two intake research briefs that seeded this
+# case (inbox, 2026-08-25) were treated as a mining layer only; none of
+# their citations were imported without an independent check. One primary
+# source could not be obtained (Juan-Tresserras 2002 — see its record and
+# TIK-R004), and Burkert 1987 is held as background pending an
+# exact-wording audit rather than being quoted second-hand.
+#
+# Interest-network disclosure (see also the case overview): the Yale
+# Ancient Pharmacology Program named in two records below is funded by,
+# among others, E. Jhong — the founder of this project — alongside the
+# Athanatos Foundation and Brian Muraresku, the author whose thesis this
+# case examines. Funding is provenance metadata, not evidence; it is
+# flagged on the affected records so source-counting cannot silently
+# overstate independence.
+
+# ── The claim bundle under test ─────────────────────────────────────────────
+
+- id: SRC-MURARESKU-2020
+  title: "The Immortality Key: The Secret History of the Religion with No Name"
+  authors: ["Muraresku, Brian C."]
+  year: "2020"
+  sourceType: book
+  identifier: "St. Martin's Press, 2020. ISBN 9781250207142"
+  url: "https://brianmuraresku.com/"
+  verification: ai_verified
+  verificationNote: >-
+    Bibliographic existence, publisher, and reception (NYT bestseller;
+    Audible Best of 2020, History) verified via the author's site and the
+    Brown 2021 review (2026-08-25 batch). The book itself is not yet held
+    in the project library; sentence-level claim extraction is future
+    pipeline work.
+  reliabilityNotes:
+    - "The subject of this case: the strongest published statement of the ergot-kykeon hypothesis extended into a psychedelic-Eucharist thesis."
+    - "Kept as reading-guide background until the full text is mined; the case's claims are anchored to independently verified sources instead."
+  background: true
+
+- id: SRC-MURARESKU-SITE
+  title: "brianmuraresku.com — author's presentation of The Immortality Key"
+  authors: ["Muraresku, Brian C."]
+  year: "2024"
+  sourceType: webpage
+  url: "https://brianmuraresku.com/"
+  verification: ai_verified
+  verificationNote: >-
+    Fetched and read 2026-08-25. Carries the strong-form framing ("Did the
+    Ancient Greeks use drugs to find God? And did the earliest Christians
+    inherit the same, secret tradition?", the "holy beer," the "suppressed
+    history of women consecrating a forbidden, drugged Eucharist") and the
+    concession "the smoking gun remains elusive," verbatim.
+  reliabilityNotes:
+    - "Promotional self-presentation; used here to fix the strong form of the claim and the author's own published concession, not as evidence about antiquity."
+
+- id: SRC-CSWR-2021
+  title: "Video: Psychedelics: The Ancient Religion with No Name? (Charles Stang in discussion with Brian Muraresku, with transcript)"
+  authors: ["Stang, Charles M.", "Muraresku, Brian C."]
+  organization: "Center for the Study of World Religions, Harvard Divinity School"
+  year: "2021"
+  sourceType: webpage
+  url: "https://cswr.hds.harvard.edu/news/2021/02/12/video-psychedelics-ancient-religion-no-name"
+  verification: ai_verified
+  verificationNote: >-
+    Page fetched and transcript read 2026-08-25 (discussion held
+    2021-02-01, posted 2021-02-12). Key exchanges verified verbatim,
+    including "I don't hang my hat on that claim," "if the Dionysian wine
+    was psychedelic — which I know is a big if," and the Dioscorides
+    drug-wine discussion.
+  reliabilityNotes:
+    - "The most useful proponent source in the corpus: the author states on the record which claims he does and does not defend strongly."
+    - "A friendly venue (Stang hosts a psychedelics-and-religion series), so the pushback recorded here is a floor, not a ceiling, on scholarly objection."
+
+# ── The pro-hypothesis lineage ──────────────────────────────────────────────
+
+- id: SRC-WASSON-1978
+  title: "The Road to Eleusis: Unveiling the Secret of the Mysteries"
+  authors: ["Wasson, R. Gordon", "Hofmann, Albert", "Ruck, Carl A. P."]
+  year: "1978"
+  sourceType: book
+  identifier: "Harcourt Brace Jovanovich, 1978 (Ethno-Mycological Studies 4); 30th-anniversary edition 2008"
+  verification: ai_verified
+  verificationNote: >-
+    Bibliographic record and content characterization verified 2026-08-25
+    via the Antonopoulos et al. 2026 paper (which identifies it as the
+    origin of the hypothesis and quotes Hofmann's caveat about ancient
+    ergot chemistry) and the Webster/Perrine/Ruck 2000 paper built on it.
+    Book not held in the project library.
+  reliabilityNotes:
+    - "The founding formulation of the ergot-kykeon hypothesis; advocacy by its own originators, with no archaeological data of its own."
+
+- id: SRC-WEBSTER-2000
+  title: "Mixing the Kykeon"
+  authors: ["Webster, Peter", "Perrine, Daniel M.", "Ruck, Carl A. P."]
+  year: "2000"
+  sourceType: paper
+  identifier: "Eleusis: Journal of Psychoactive Plants and Compounds, New Series 4, 2000"
+  url: "https://www.erowid.org/chemicals/lsa/lsa_article1.pdf"
+  verification: ai_verified
+  verificationNote: >-
+    Erowid mirror PDF downloaded and first pages read 2026-08-25; title,
+    authors, venue, and the "Ergine Hypothesis" framing confirmed against
+    the document itself.
+  reliabilityNotes:
+    - "The direct intellectual precursor of the 2026 experiment: proposes alkaline hydrolysis of ergot alkaloids as the kykeon mechanism."
+    - "Advocacy venue and hypothesis-originator co-authorship (Ruck); a proposal, not an experimental result."
+
+- id: SRC-JUAN-TRESSERRAS-2002
+  title: "Estudis dels residus orgànics per a la identificació de possibles ritus i ofrenes; Els productes vegetals per a ús domèstic (chapters in Mas Castellar de Pontós (Alt Empordà): Un complex arqueològic d'època ibèrica (Excavacions 1990–1998), ed. E. Pons i Brun)"
+  authors: ["Juan-Tresserras, Jordi"]
+  year: "2002"
+  sourceType: book
+  identifier: "Museu d'Arqueologia de Catalunya–Girona / Generalitat de Catalunya, Girona/Barcelona, 2002; pp. 548–556 and 477–481"
+  verification: unverified
+  verificationNote: >-
+    The primary chapters have NOT been obtained. The exact chapter
+    citations above are transcribed from the reference list of
+    Antonopoulos et al. 2026 (refs. 23–24), read in full on 2026-08-25.
+    Everything this case says about the find is therefore secondhand;
+    obtaining and re-verifying the primary publication is research item
+    TIK-R004, and the record is labeled unverified until then.
+  reliabilityNotes:
+    - "The single archaeological hinge of the Eleusinian case: reported ergot in a ceremonial vessel and in human dental calculus at a Demeter/Kore-linked site."
+    - "A 2002 analysis never independently replicated; note the documented source-drift risk — 'fragments of ergot identified' has been converted downstream into 'hallucinogenic alkaloids detected,' which the primary wording (as quoted by the 2026 paper) does not state."
+
+- id: SRC-ANTONOPOULOS-2026
+  title: "Investigating the psychedelic hypothesis of kykeon, the sacred elixir of the Eleusinian Mysteries"
+  authors: ["Antonopoulos, Romanos K.", "Dadiotis, Evangelos", "Ioannidis, Kostas", "Cheilari, Antigoni", "Mitsis, Vangelis", "Garcia-Campaña, Ana M.", "Gámiz-Gracia, Laura", "Hernández-Mesa, Maykel", "Narváez, Alfonso", "Hoffman, Mark A.", "Ruck, Carl A. P.", "Gonou-Zagou, Zacharoula", "Aligiannis, Nektarios", "Magiatis, Prokopios"]
+  year: "2026"
+  sourceType: paper
+  identifier: "Scientific Reports 16: 8757 (2026-02-13). DOI: 10.1038/s41598-026-39568-3. PMC12982482"
+  url: "https://doi.org/10.1038/s41598-026-39568-3"
+  verification: ai_verified
+  verificationNote: >-
+    DOI, journal, article number, date, and full author list verified via
+    the Crossref API; open-access full text read at nature.com on
+    2026-08-25, including the results (48 experiments; complete
+    ergopeptide hydrolysis at 5% w/v ergot, initial lye pH 12.5, 120 min
+    reflux; 0.54 mg LSA and 0.48 mg iso-LSA per gram of ergot), the
+    discussion's statement that no systematic residue research at Eleusis
+    has ever been conducted or permitted, the closing feasibility-scope
+    language, and the affiliations and declarations.
+  reliabilityNotes:
+    - "The one post-book development that directly tests a load-bearing mechanism of the Eleusinian hypothesis; peer-reviewed, methods fully published."
+    - "Interested-network authorship: three co-authors affiliated with the Hellenic Center for Entheogenic Research, plus Mark A. Hoffman (Wasson Ruck Entheogenic Research Institute) and Carl Ruck, the hypothesis's co-originator. The paper declares no competing interests and no external funding; the affiliations are stated openly. Independent replication is TIK-R002."
+    - "The authors themselves frame the result as feasibility, not evidence of ancient practice, and call for residue analysis of Eleusis material."
+
+- id: SRC-CASTRO-2025
+  title: "Lysergic Acid Amide (LSA), an LSD Analog: Systematic Review of Pharmacological Effects, Adverse Outcomes, and Therapeutic Potentials"
+  authors: ["Castro, P. S. C. C.", "Leopoldo, K.", "Pedro, M. O. P.", "Takitane, J.", "Bombana, H. S.", "Negrão, A. B.", "Scholz, J. R.", "Castaldelli-Maia, J. M."]
+  year: "2025"
+  sourceType: paper
+  identifier: "Pharmacy (Basel) 13(4): 98 (2025-07-21). DOI: 10.3390/pharmacy13040098. PMC12286086"
+  url: "https://doi.org/10.3390/pharmacy13040098"
+  verification: ai_verified
+  verificationNote: >-
+    Title, journal, volume/issue, date, DOI, and author list verified via
+    NCBI PMC metadata (2026-08-25 batch); full text not re-read at import
+    (PMC blocked automated access), characterization follows the abstract
+    and the intake brief's reading, cross-checked against the record.
+  reliabilityNotes:
+    - "The systematic review used here to keep 'LSA was produced' from silently becoming 'an LSD-like experience would predictably result': LSA is psychoactive but weaker and messier than LSD, with prominent nausea, autonomic effects, and occasional severe adverse outcomes."
+
+- id: SRC-GRIFFITHS-2006
+  title: "Psilocybin can occasion mystical-type experiences having substantial and sustained personal meaning and spiritual significance"
+  authors: ["Griffiths, R. R.", "Richards, W. A.", "McCann, U.", "Jesse, R."]
+  year: "2006"
+  sourceType: paper
+  identifier: "Psychopharmacology 187: 268–283 (2006). DOI: 10.1007/s00213-006-0457-5"
+  url: "https://doi.org/10.1007/s00213-006-0457-5"
+  verification: ai_verified
+  verificationNote: >-
+    DOI, title, journal, volume, and pages verified via the Crossref API
+    (2026-08-25 batch).
+  reliabilityNotes:
+    - "Modern clinical evidence that pharmacologically induced mystical-type experience is real; strictly an analogy for this case — it says nothing about what happened in antiquity."
+
+# ── The archaeochemical comparison corpus (independent of the TIK network) ──
+
+- id: SRC-ROBINSON-2020
+  title: "Datura quids at Pinwheel Cave, California, provide unambiguous confirmation of the ingestion of hallucinogens at a rock art site"
+  authors: ["Robinson, David W.", "Brown, Kelly", "McMenemy, Moira", "Dennany, Lynn", "Baker, Matthew J.", "et al."]
+  year: "2020"
+  sourceType: paper
+  identifier: "PNAS 117(49): 31026–31037 (2020-11-23). DOI: 10.1073/pnas.2014529117"
+  url: "https://doi.org/10.1073/pnas.2014529117"
+  verification: ai_verified
+  verificationNote: >-
+    DOI, title, journal, volume/issue, and pages verified via the Crossref
+    API (2026-08-25 batch).
+  reliabilityNotes:
+    - "Methodological benchmark: chemistry (atropine/scopolamine in chewed quids) connecting a psychoactive plant, human consumption, and a ritualized space."
+    - "California; no geographic or cultural link to Eleusis or Christianity — comparative evidence only."
+
+- id: SRC-ARIE-2020
+  title: "Cannabis and Frankincense at the Judahite Shrine of Arad"
+  authors: ["Arie, Eran", "Rosen, Baruch", "Namdar, Dvory"]
+  year: "2020"
+  sourceType: paper
+  identifier: "Tel Aviv 47(1): 5–28 (2020). DOI: 10.1080/03344355.2020.1732046"
+  url: "https://doi.org/10.1080/03344355.2020.1732046"
+  verification: ai_verified
+  verificationNote: >-
+    DOI, title, journal, volume/issue, and pages verified via the Crossref
+    API (2026-08-25 batch).
+  reliabilityNotes:
+    - "Residue evidence of cannabis (with dung, consistent with controlled heating) and frankincense on altars of the eighth-century BCE Judahite shrine — psychoactive ritual technology inside the broad religious world Judaism emerged from."
+    - "Burning on an altar in Iron Age Judah is a different substance, route, cult, and century from a drinkable Eucharist; a prior update, not a link."
+
+- id: SRC-GUERRA-DOCE-2023
+  title: "Direct evidence of the use of multiple drugs in Bronze Age Menorca (Western Mediterranean) from human hair analysis"
+  authors: ["Guerra-Doce, E.", "Rihuete-Herrada, C.", "Micó, R.", "Risch, R.", "Lull, V.", "et al."]
+  year: "2023"
+  sourceType: paper
+  identifier: "Scientific Reports 13: 4782 (2023-04-06). DOI: 10.1038/s41598-023-31064-2"
+  url: "https://doi.org/10.1038/s41598-023-31064-2"
+  verification: ai_verified
+  verificationNote: >-
+    DOI, title, journal, and article number verified via the Crossref API
+    (2026-08-25 batch).
+  reliabilityNotes:
+    - "The strongest single background datum for the Western Mediterranean: alkaloids measured in human hair (direct consumption evidence), ~1000 BCE, from a burial/cult cave."
+    - "Says nothing about which ceremony, what purpose, or any connection to later Greek mysteries."
+
+- id: SRC-TANASI-2024
+  title: "Multianalytical investigation reveals psychotropic substances in a ptolemaic Egyptian vase"
+  authors: ["Tanasi, Davide", "van Oppen de Ruiter, Branko F.", "Florian, Fiorella", "Pavlovic, Radmila", "Chiesa, Luca Maria", "et al."]
+  year: "2024"
+  sourceType: paper
+  identifier: "Scientific Reports 14: 27891 (2024-11-13). DOI: 10.1038/s41598-024-78721-8"
+  url: "https://doi.org/10.1038/s41598-024-78721-8"
+  verification: ai_verified
+  verificationNote: >-
+    DOI, title, journal, and article number verified via the Crossref API
+    (2026-08-25 batch).
+  reliabilityNotes:
+    - "Multimodal chemistry (metabolomics, proteomics, DNA) finding Peganum harmala, Nymphaea, fermented liquid, and honey in a Bes-shaped ritual vessel — complex psychotropic ritual concoctions are archaeochemically real in the Hellenistic world."
+    - "Provenance caveat the popular coverage loses: the vessel was bought on the Cairo art market in 1960; its Fayum origin and date rest on typology, not excavation. Analytical strength and provenance quality are separate axes."
+
+# ── Primary ancient texts ───────────────────────────────────────────────────
+
+- id: SRC-HOMERIC-HYMN
+  title: "Homeric Hymn to Demeter (Hymn 2), trans. H. G. Evelyn-White"
+  organization: "Perseus Digital Library, Tufts University"
+  year: "1914"
+  sourceType: archive
+  identifier: "Perseus text 1999.01.0138, Hymn 2; kykeon passage at lines ~205–211"
+  url: "https://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.01.0138%3Ahymn%3D2"
+  verification: ai_verified
+  verificationNote: >-
+    Text fetched and the kykeon passage read 2026-08-25: Demeter refuses
+    wine and "bade them mix meal and water with soft mint and give her to
+    drink," which Metaneira mixes and the goddess receives "to observe the
+    sacrament."
+  reliabilityNotes:
+    - "The only ancient recipe for the kykeon: barley meal, water, pennyroyal/mint. It names nothing psychoactive — a fact both sides must explain."
+
+- id: SRC-IRENAEUS-AH1
+  title: "Irenaeus, Against Heresies, Book I, chapter 13 (on Marcus), trans. Roberts & Rambaut (Ante-Nicene Fathers vol. 1)"
+  authors: ["Irenaeus of Lyons"]
+  organization: "New Advent"
+  year: "c. 180"
+  sourceType: archive
+  identifier: "Adversus Haereses 1.13.2"
+  url: "https://www.newadvent.org/fathers/0103113.htm"
+  verification: ai_verified
+  verificationNote: >-
+    Chapter fetched and read 2026-08-25; the cup passage verified verbatim
+    ("Pretending to consecrate cups mixed with wine ... he contrives to
+    give them a purple and reddish color"), along with the philters and
+    love-potions accusation in 1.13.5.
+  reliabilityNotes:
+    - "The closest thing to a 'drugged cup' text in the early Christian record — and it is hostile heresiology describing a conjuring trick and love-philters, written to condemn the practice as fraud, not to document a psychedelic sacrament."
+
+- id: SRC-JUSTIN-APOLOGY
+  title: "Justin Martyr, First Apology, chapters 65–67, trans. Dods & Reith (Ante-Nicene Fathers vol. 1)"
+  authors: ["Justin Martyr"]
+  organization: "New Advent"
+  year: "c. 155"
+  sourceType: archive
+  identifier: "First Apology 65–67"
+  url: "https://www.newadvent.org/fathers/0126.htm"
+  verification: ai_verified
+  verificationNote: >-
+    Chapters fetched and read 2026-08-25: "bread and a cup of wine mixed
+    with water" (ch. 65), the christological framing of the food (ch. 66),
+    and the polemic that the mysteries of Mithras imitate the rite.
+  reliabilityNotes:
+    - "The earliest detailed outsider-facing description of the Eucharistic liturgy: ordinary bread and wine-with-water, framed against pagan mysteries as demonic imitation rather than shared inheritance."
+
+- id: SRC-DIDACHE
+  title: "The Didache (Teaching of the Twelve Apostles), chapters 9–10, trans. M. B. Riddle (Ante-Nicene Fathers vol. 7)"
+  organization: "New Advent"
+  year: "c. 50–120"
+  sourceType: archive
+  identifier: "Didache 9–10"
+  url: "https://www.newadvent.org/fathers/0714.htm"
+  verification: ai_verified
+  verificationNote: >-
+    Text fetched and read 2026-08-25: the thanksgiving over the cup ("the
+    holy vine of David") and the broken bread, with no ingredient beyond
+    bread and the cup.
+  reliabilityNotes:
+    - "The earliest church-order Eucharistic prayers: Jewish-style berakah thanksgivings over cup and bread. Form and content are Second-Temple Jewish, not mystery-cult."
+
+# ── The countercase ─────────────────────────────────────────────────────────
+
+- id: SRC-MOSURINJOHN-2026
+  title: "Psychedelics, Eleusis, and the Invention of Religious Experience"
+  authors: ["Mosurinjohn, Sharday", "Ascough, Richard"]
+  year: "2026"
+  sourceType: paper
+  identifier: "Psychedelic Medicine 4(1): 35–44. DOI: 10.1177/28314425251361835 (online 2026-02-19 per Crossref)"
+  url: "https://doi.org/10.1177/28314425251361835"
+  verification: ai_verified
+  verificationNote: >-
+    DOI, journal, volume/issue, pages, and full structured abstract
+    verified via the Crossref API 2026-08-25. The intake brief dates an
+    online-first version to mid-2025; Crossref records online publication
+    2026-02-19 — six days after the Antonopoulos paper — and whether the
+    article engages that experiment is unverified (full text paywalled).
+  reliabilityNotes:
+    - "The strongest scholarly countercase since the book: identifies the genre's core move — claims plus mild circumstantial evidence rhetorically solidified into 'fact,' on which each next round of conjecture is built ('evidentiary mirages')."
+    - "Its further theses (the history as 'pseudo-history' and 'a kind of religious fundamentalism') concern modern legitimation politics, not the archaeological truth of the kykeon recipe; tagged separately and given no evidential weight on the ancient claims."
+
+- id: SRC-BROWN-2021
+  title: "The Immortality Key: The Secret History of the Religion with No Name (review)"
+  authors: ["Brown, Jerry B."]
+  year: "2021"
+  sourceType: paper
+  identifier: "Journal of Psychedelic Studies 5(1): 5–8 (2021). DOI: 10.1556/2054.2021.00170"
+  url: "https://doi.org/10.1556/2054.2021.00170"
+  verification: ai_verified
+  verificationNote: >-
+    DOI and bibliographic record verified via the Crossref API; open-access
+    full text fetched from akjournals.com and key passages read verbatim
+    on 2026-08-25.
+  reliabilityNotes:
+    - "An intra-movement critique — Brown is himself an entheogen-history author — which makes its verdict on the grand theory weightier than hostile reviews: sympathetic to the Eleusis half, harsh on the synthesis."
+
+- id: SRC-REASON-2025
+  title: "The Strange Case of The Immortality Key"
+  authors: ["Kitchens, Travis"]
+  organization: "Reason"
+  year: "2025"
+  sourceType: webpage
+  identifier: "Reason, 2025-02-09"
+  url: "https://reason.com/2025/02/09/the-strange-case-of-the-immortality-key/"
+  verification: ai_verified
+  verificationNote: >-
+    Article fetched and read in full 2026-08-25; the McGovern, Clinton,
+    Bremmer, Ehrman, Hillman, Ruck, and Hewett quotations used in this
+    case were verified verbatim against it.
+  reliabilityNotes:
+    - "Investigative journalism, not scholarship: treated here as a map to dissenting experts and as expert testimony about interpretation, never as archaeological evidence. Where its experts make dataset claims, the follow-up belongs with their scholarly publications (TIK-R006)."
+
+- id: SRC-BURKERT-1987
+  title: "Ancient Mystery Cults"
+  authors: ["Burkert, Walter"]
+  year: "1987"
+  sourceType: book
+  identifier: "Harvard University Press, 1987"
+  verification: unverified
+  verificationNote: >-
+    Standard bibliographic record; the book is not held in the project
+    library and its exact wording on non-pharmacological mechanisms has
+    not been independently checked, so no evidence record quotes it. Held
+    as reading-guide background until the exact-wording audit (part of
+    TIK-R006's philological work).
+  reliabilityNotes:
+    - "The mainstream non-drug model of mystery-cult experience: fasting, ritual, and collective emotion as sufficient generators of 'communal bliss' — the principal alternative causal model to the pharmacological hypothesis."
+  background: true
+
+# ── The institutional and funding layer ─────────────────────────────────────
+
+- id: SRC-ATHANATOS-YAPP
+  title: "Yale Ancient Pharmacology Program (Athanatos Foundation project page)"
+  organization: "Athanatos Foundation"
+  year: "2026"
+  sourceType: webpage
+  url: "https://www.athanatosfoundation.org/yapp/"
+  verification: ai_verified
+  verificationNote: >-
+    Page fetched and read 2026-08-25. The mission language quoted in this
+    case ("reframes our understanding of early Christian ritual and its
+    pharmacological roots"), the goals (systematic ORA, reconstruction of
+    wine-based ritual substances, open phytochemical archive), and the
+    Delphi / Vatican "Pope's Pharmacy" project descriptions verified
+    verbatim. The page does not state that YAPP was the foundation's
+    first grantee; that stronger formulation circulates elsewhere and is
+    not relied on here.
+  reliabilityNotes:
+    - "The funder's own framing of the research program: the stronger early-Christian goal language appears here, on the funder's page, rather than in Yale's scientific publications."
+    - "Interest network: Athanatos was founded by Brian Muraresku, the author under examination; the program it supports is also funded by E. Jhong, this project's founder. Disclosed prominently; see SRC-LUKE-KOH-2025."
+
+- id: SRC-LUKE-KOH-2025
+  title: "Antikyran Hellebore in the Time of Caligula"
+  authors: ["Luke, Trevor S.", "Koh, Andrew J."]
+  year: "2025"
+  sourceType: paper
+  identifier: "Proceedings of the European Academy of Sciences & Arts 4: 56 (2025)"
+  url: "https://www.peasa.eu/site/article/download/56/105"
+  verification: ai_verified
+  verificationNote: >-
+    PDF downloaded and read 2026-08-25. The funding disclosure verified
+    verbatim: "the Yale Ancient Pharmacology Program has been generously
+    supported by E. Jhong, Robert and MeiLi Hefner Foundation, Athanatos
+    Foundation, and B. Muraresku."
+  reliabilityNotes:
+    - "Used here for its peer-reviewed funding disclosure, which documents the interest network around the case's research program — including E. Jhong, the founder of this project. This is a conflict-of-interest disclosure for Aletheia itself, recorded rather than hidden."
+    - "The paper's own subject (hellebore at Antikyra) is not evidence in this case."

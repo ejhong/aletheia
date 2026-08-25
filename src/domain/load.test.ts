@@ -563,16 +563,26 @@ describe("ratification governance (stage 3)", () => {
     expect(shown?.ratification.status).toBe("ratified");
   });
 
-  it("every live case derives a valid standing from a full panel", () => {
+  it("every live case derives a valid standing; checked cases have a full panel", () => {
+    // A freshly imported case legitimately has zero check runs — it must
+    // still derive a valid standing (unratified, with the reason saying no
+    // model has checked it), and it stays visibly unratified until the
+    // cross-model panel judges it. But once any check runs exist, a partial
+    // panel is a pipeline defect: checks are produced as a full sweep.
     for (const c of loadAllCases()) {
       const shown = displayAssessment(c);
       expect(shown).not.toBeNull();
       expect(["ratified", "contested", "unratified"]).toContain(
         shown!.ratification.status,
       );
-      expect(shown!.ratification.panel).toBeGreaterThanOrEqual(
-        RATIFICATION_MIN_PANEL,
-      );
+      const hasChecks = c.assessmentRuns.some((a) => a.role === "check");
+      if (hasChecks) {
+        expect(shown!.ratification.panel).toBeGreaterThanOrEqual(
+          RATIFICATION_MIN_PANEL,
+        );
+      } else {
+        expect(shown!.ratification.status).toBe("unratified");
+      }
       expect(shown!.ratification.reason.length).toBeGreaterThan(10);
     }
   });

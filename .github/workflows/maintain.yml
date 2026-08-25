@@ -110,6 +110,17 @@ jobs:
           fi
           rm -f triage-out.txt
 
+      - name: Harvest governance and write the weekly digest
+        env:
+          GH_TOKEN: ${{ secrets.MAINTENANCE_PAT || secrets.GITHUB_TOKEN }}
+        run: |
+          node scripts/harvest-governance.mjs --digest || echo "::warning::governance harvest failed; continuing"
+          if [ -f weekly-digest.md ]; then
+            date=$(date +%Y-%m-%d)
+            gh issue create --title "Weekly digest — ${date}" --body-file weekly-digest.md \
+              || echo "::warning::could not open the digest issue"
+            rm -f weekly-digest.md
+          fi
       - name: Open classified PR
         env:
           GH_TOKEN: ${{ secrets.MAINTENANCE_PAT || github.token }}
@@ -137,7 +148,7 @@ jobs:
           git config user.name "aletheia-maintenance-bot"
           git config user.email "maintenance-bot@users.noreply.github.com"
           git checkout -b "$branch"
-          git add -A -- ':!pr-body.md'
+          git add -A -- ':!pr-body.md' ':!weekly-digest.md' ':!casework'
           git commit -m "Maintenance run ${date}: inbox, assessments, literature watch, triage"
           git push -u origin "$branch"
 

@@ -700,3 +700,34 @@ export interface LoadedCase {
   /** Optional on-the-record editorial conjectures (conjectures.yaml). */
   conjectures: Conjecture[];
 }
+
+/**
+ * A harvested arbiter verdict — the machine record of one constitutional
+ * panel vote on a pull request (scripts/arbiter.mjs embeds the data in the
+ * PR comment; scripts/harvest-governance.mjs copies it here after merge or
+ * closure so the site can display governance, not just assessments).
+ * Verbatim record of a public comment; append-only like all run records.
+ */
+export const ArbiterSeatSchema = z.object({
+  seat: z.string(),
+  vote: z.enum(["complies", "violates", "unsure"]),
+  rules: z.array(z.string()).default([]),
+  reasoning: z.string(),
+});
+export const ArbiterRecordSchema = z.object({
+  pr: z.number().int(),
+  title: z.string(),
+  url: z.string().url(),
+  /** pass | park — the tally's outcome at the time of harvest. */
+  verdict: z.enum(["pass", "park"]),
+  reason: z.string(),
+  /** What happened to the PR: merged (and when) or closed unmerged. */
+  outcome: z.enum(["merged", "closed"]),
+  outcomeAt: z.string(),
+  /** Short sha of the AGENTS.md revision the panel judged against. */
+  judgedAgainst: z.string(),
+  promptVersion: z.string(),
+  seats: z.array(ArbiterSeatSchema).min(1),
+  harvestedAt: z.string(),
+});
+export type ArbiterRecord = z.infer<typeof ArbiterRecordSchema>;

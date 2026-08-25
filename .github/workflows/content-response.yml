@@ -1,0 +1,79 @@
+# The site's fast metabolism: any canon content landing on main — an
+# intake, a correction, a new case — triggers reassessment, re-panels
+# whatever went stale, and proposes the results as a PR through the normal
+# gates. Overlay-only merges (this workflow's own output) do not match the
+# path filter, so the loop terminates: canon change → judgment PR →
+# overlays merge → silence.
+name: Content response
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "content/cases/**"
+      - "!content/cases/*/assessments/**"
+
+concurrency:
+  group: content-response
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  respond:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Reassess changed cases (drafts + editorial audit)
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: node scripts/reassess-changed.mjs || echo "::warning::reassessment failed; panels still run"
+      - name: Re-panel stale cases
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
+          VENICE_API_KEY: ${{ secrets.VENICE_API_KEY }}
+        run: |
+          for c in $(node scripts/stale-checks.mjs); do
+            echo "re-paneling $c"
+            node scripts/cross-model-check.mjs "$c" || echo "::warning::panel failed for $c"
+          done
+      - name: Open classified PR
+        env:
+          GH_TOKEN: ${{ secrets.MAINTENANCE_PAT }}
+        run: |
+          rm -f reassess-digest.md arbiter-report.md
+          if git diff --quiet && [ -z "$(git status --porcelain)" ]; then
+            echo "no judgment changes — the loop rests"
+            exit 0
+          fi
+          date=$(date +%Y-%m-%d)
+          branch="respond/${date}-${GITHUB_RUN_ID}"
+          git config user.name "aletheia-maintenance-bot"
+          git config user.email "maintenance-bot@users.noreply.github.com"
+          git checkout -b "$branch"
+          git add content/cases/*/assessments content/cases/*/overview.md content/cases/*/research.yaml content/cases/*/history.yaml proposals/cross-model-failures 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "nothing stageable — the loop rests"
+            exit 0
+          fi
+          git commit -m "Content response ${date}: reassessment and panels for the latest canon change"
+          git push -u origin "$branch"
+          risk=$(node scripts/classify-pr-risk.mjs "origin/${GITHUB_REF_NAME}" | tail -1)
+          pr_url=$(gh pr create \
+            --title "Content response: ${date}" \
+            --body "Automatic judgment ripple after a canon content change: reassessment drafts, editorial-audit corrections if any, and fresh panels for stale cases. Standing derives on merge." \
+            --label "$( [ "$risk" = "low-risk" ] && echo auto:low-risk || echo needs-approval )")
+          gh pr merge --auto --squash "$pr_url" || echo "::warning::auto-merge unavailable; PR waits on checks"

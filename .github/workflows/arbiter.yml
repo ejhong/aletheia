@@ -81,6 +81,15 @@ jobs:
           else
             gh api "repos/${{ github.repository }}/issues/$PR/comments" -F body=@arbiter-report.md >/dev/null
           fi
+      - name: Auto-merge on a passing verdict
+        if: steps.classify.outputs.class == 'needs-approval' && steps.vote.outputs.verdict == '0'
+        env:
+          # The PAT, deliberately: merges made with the Actions token do not
+          # trigger downstream workflows, and a merged content PR must fire
+          # the deploy and the content-response ripple.
+          GH_TOKEN: ${{ secrets.MAINTENANCE_PAT }}
+        run: |
+          gh pr merge --auto --squash "${{ github.event.pull_request.number }}"             || echo "::warning::could not enable auto-merge; the PR waits with a green arbiter check"
       - name: Mirror the verdict in the check result
         if: steps.classify.outputs.class == 'needs-approval'
         run: |

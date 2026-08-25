@@ -1,0 +1,79 @@
+# Literature watch (docs/MAINTENANCE.md § literature watch).
+# Weekly, scripts/watch-literature.mjs runs these queries against arXiv and
+# Crossref and surfaces new items as discovery-only proposals under
+# proposals/watch/<runId>/. Nothing lands in sources.yaml without human
+# review. Schema: WatchConfigSchema in src/domain/schema.ts.
+#
+# This case's literature is Crossref-first (archaeology, classics,
+# pharmacology journals; almost nothing on arXiv), so every query includes
+# Crossref and uses keywordGroups: Crossref relevance search is loose, and
+# single generic words (wine, ritual, vessel) admit food science and
+# viticulture wholesale.
+
+queries:
+  - id: eleusis-kykeon-ergot
+    query: "Eleusinian mysteries kykeon ergot"
+    sources: [crossref]
+    keywordGroups:
+      - [Eleusis, Eleusinian, kykeon]
+      - [ergot, Claviceps, psychedelic, psychoactive, hallucinogen, entheogen, residue]
+    note: >-
+      The core thread: anything new on the ergot-kykeon hypothesis itself —
+      follow-ups to the 2026 hydrolysis experiment (TIK-C005, TIK-R002),
+      responses from classics, and any movement on residue analysis at
+      Eleusis (TIK-R001).
+
+  - id: ancient-residue-psychoactive
+    query: "organic residue analysis psychoactive ritual"
+    sources: [crossref]
+    keywordGroups:
+      - ["residue analysis", archaeobotan, archaeochemi, "dental calculus", chromatograph]
+      - [psychoactive, psychotropic, hallucinogen, entheogen, alkaloid, ergot, opium, cannabis]
+    note: >-
+      The background rung's feed (TIK-C001, TIK-C002): new
+      substance-in-context finds move the base rate (TIK-R008), and a
+      Demeter/Kore-context find anywhere would bear directly on TIK-C004
+      and TIK-C007.
+
+  - id: mas-castellar-pontos
+    query: "Mas Castellar Pontos"
+    sources: [crossref]
+    keywordGroups:
+      - ["Mas Castellar", Pontós, Pontos, Emporion, Empúries]
+    note: >-
+      The case's one hard archaeological datum: any re-analysis,
+      re-publication, or critique of the 2002 ergot identification
+      (TIK-C004, TIK-R004).
+
+  - id: lsa-lysergamide-pharmacology
+    query: "lysergic acid amide pharmacology"
+    sources: [crossref]
+    keywordGroups:
+      - ["lysergic acid amide", LSA, ergine, lysergamide, ergoline]
+      - [pharmacolog, psychoactive, human, clinical, toxicity, receptor]
+    note: >-
+      The pharmacology gap (TIK-C006, TIK-R003): human or receptor-level
+      work on LSA/iso-LSA that would say whether the reconstructed
+      preparation could deliver the experience the hypothesis needs.
+
+  - id: eucharist-origins-archaeology
+    query: "early Christian Eucharist origins ritual meal"
+    sources: [crossref]
+    keywordGroups:
+      - [Eucharist, "Lord's Supper", "early Christian", "Christian origins"]
+      - [archaeolog, residue, vessel, chalice, "mystery cult", Dionys, psychedelic, pharmacolog]
+    note: >-
+      The Christian half (TIK-C010–C013): any chemical work on
+      early-Christian vessels (TIK-R005), and scholarship moving the
+      mystery-cult-derivation framework in either direction.
+
+  - id: yale-ancient-pharmacology
+    query: "ancient pharmacology residue Yale"
+    sources: [crossref]
+    keywordGroups:
+      - ["ancient pharmacology", archaeochemi, "residue analysis", alabastron, YAPP]
+      - [wine, ritual, sacrament, ancient, classical, Roman, Greek, Egyptian]
+    note: >-
+      The interested program's output: YAPP publications enter this ledger
+      only with the funding flag (TIK-E027) attached, which requires seeing
+      them when they appear.

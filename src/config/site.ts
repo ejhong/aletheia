@@ -7,6 +7,7 @@ export const site = {
     { label: "Cases", href: "/cases" },
     { label: "Research", href: "/research" },
     { label: "Method", href: "/method" },
+    { label: "Panel", href: "/panel" },
   ],
   // Set when the RFP is live on ResearchHub; rendered only if non-null.
   researchHubRfpUrl: null as string | null,

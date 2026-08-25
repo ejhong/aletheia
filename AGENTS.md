@@ -148,7 +148,7 @@ AI must never, inside or outside that process:
 
 - fabricate a citation, source, locator, or provenance detail;
 - present an unratified draft as a ratified judgment, or an AI record as a human one;
-- publish material supplied in confidence (unpublished manuscripts, private correspondence beyond recorded provenance);
+- publish material supplied in confidence — where "in confidence" means without the supplier's permission to publish or cite. Permission converts supplied material into citable material only when it is recorded with the same rigor as any provenance: who granted it, on what date, by what channel, and where the correspondence is held. An unpublished manuscript or private correspondence without such a recorded permission may never be quoted, paraphrased, or cited;
 - contact people without leaving a public record;
 - weaken the checks in this section or reclassify a change to dodge them.
 

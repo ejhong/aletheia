@@ -1,0 +1,164 @@
+# Reconsideration draft — the one deliberately NON-BLIND draft in the
+# pipeline: written with the panel's dissents in hand, required to engage
+# each one (scripts/reconcile-contested.mjs). Append-only; not reviewed.
+runId: 2026-08-25-reconsider-zaqo
+model: "anthropic/claude-opus-5 (reconsideration — deliberately non-blind:
+  engages the panel's dissents)"
+date: 2026-08-25
+promptVersion: aletheia-reconsider-v1
+humanReviewed: false
+role: draft
+caseAssessment:
+  verdict: weakly_supported
+  loadBearing:
+    - MPI-C001
+    - MPI-C002
+    - MPI-C005
+    - MPI-C006
+    - MPI-C009
+  weakestLinks:
+    - MPI-C007
+    - MPI-C001
+    - MPI-C010
+  synthesis: >-
+    I hold weakly_supported, with two adjustments to the load-bearing set and
+    explicit answers to the two seats that dissent on the verdict.
+
+
+    Gemini argues for unresolved on the ground that neither side has closed: no
+    calibrated simulation reproduces the founding matrix record, and MPI's
+    distinctive fine structure (the strength–reproducibility reciprocity and
+    displacement corollaries of MPI-E009, the RNG-type split in MPI-E008) has
+    never been prespecified and tested. Both premises are correct and are
+    already in the draft. They do not, however, entail evidential symmetry.
+    'Unresolved' should mean the record cannot presently discriminate; here it
+    can, partially. The model nominated its own benchmark (MPI-C006, MPI-E011),
+    and that benchmark failed under the strictest available designs — two
+    OSF-preregistered consensus replications reported by the proponents
+    themselves (MPI-E003) and Grote's 200-participant frozen-software blind
+    analysis (MPI-E004). That is asymmetric information about MPI-C007, not a
+    tie. What is untested is the model's distinctive fine structure, and
+    untested content earns no credit; it is precisely why the verdict is
+    'weakly' rather than higher, not why it should be 'unresolved'.
+
+
+    GPT-5.1 argues for mixed, on the strength of the surviving positives. But
+    mixed implies two comparably weighted bodies of evidence pulling opposite
+    ways, and the residue does not weigh that much. MPI-E002 was disowned as
+    'significant but fragile' by its own authors in their next paper; MPI-E007's
+    five studies share equipment, personnel and analytic choices, so three
+    significant results are not three independent confirmations; MPI-E008 is an
+    unreviewed preprint whose headline split is confounded by unequal achieved
+    power (94% vs 67%). Against that stand two preregistered nulls and a blind
+    null, plus every mundane mechanism caught operating in or beside the corpus:
+    post-hoc rescue live in MPI-E006, dependence inflation from the program's
+    own statistician (MPI-E007, MPI-C009), publication-bias dominance in the
+    parent literature (MPI-E015), and a manufactured false positive from a
+    coding error (MPI-E017). Credibility is not diagnosticity, and repetition
+    inside one lab is not independence. Weakly_supported already records that
+    the residue is non-zero.
+
+
+    The three concurring seats add points I accept and now make explicit. Grok,
+    Kimi and Opus are right that the decline record is evidentially inert
+    between the rivals: regression to the mean on selected noise predicts the
+    same curve, so MPI's advance publication of the decline (MPI-C005, MPI-E009)
+    buys integrity against the retrofitting charge but no discriminating credit.
+    Opus's further point — that non-signalling correlations in physics are
+    perfectly replicable in aggregate, which is why the matrix design was
+    supposed to work at all — is a real strain on the model's own logic and
+    strengthens rather than weakens the present verdict; I note it without
+    downgrading MPI-C005, which is a claim about what the model says and when,
+    both matters of record. Gemini's rating of MPI-C001 as well_supported reads
+    the claim as pure reportage; the word 'significantly' imports the validity
+    of the significance count, which MPI-C009 undercuts and no one has audited,
+    so MPI-C001 stays mixed and stays a weakest link. MPI-C002 joins the
+    load-bearing set because the nulls, not the founding reports, now carry the
+    verdict. Highest-value next steps are unchanged: a dependence-aware
+    reanalysis of the founding datasets, and a prespecified test of the
+    reciprocity corollary.
+  synthesisNote: ""
+claimAssessments:
+  - claimId: MPI-C001
+    verdict: mixed
+    reasoning: The reports exist and were made in good faith, but the claim asserts
+      a *significant* surplus, and the significance counting assumed independent
+      cells among intercorrelated variables — a critique originating inside the
+      program (MPI-E007). Raw data remain unpublished, so the founding result is
+      unauditable. Gemini's reading as a pure reportage claim understates what
+      the word 'significantly' commits to.
+    confidence: moderate
+  - claimId: MPI-C002
+    verdict: well_supported
+    reasoning: Grote's full blind analysis (MPI-E004) and both consensus-protocol
+      replications (MPI-E003), the latter reported by proponents, are clean
+      nulls under the strictest designs in the corpus; MPI-E006's preplanned
+      nulls extend the pattern. No record contests it.
+    confidence: high
+  - claimId: MPI-C003
+    verdict: well_supported
+    reasoning: Documented within one experimenter's series (MPI-E005 significant,
+      MPI-E006 preplanned null, MPI-E004 blind null) and field-wide in MPI-E014.
+      It remains narrative rather than a measured pattern — no prespecified
+      decline metric has been applied — so confidence stays moderate.
+    confidence: moderate
+  - claimId: MPI-C004
+    verdict: provisionally_supported
+    reasoning: "GQT is published and internally coherent (MPI-E010) and MPI
+      instantiates it as claimed, but dropping quantified probabilities by
+      construction leaves it minimal empirical purchase. Gemini's 'established'
+      overstates: the framework's existence is established, its adequacy as a
+      psychophysical instantiation is not."
+    confidence: moderate
+  - claimId: MPI-C005
+    verdict: well_supported
+    reasoning: The decline, sign-change and displacement corollaries appear verbatim
+      in 2007 (MPI-E009), before the strictest failures. Opus is right that the
+      entailment from non-signalling to decline is looser than the rhetoric
+      implies — physical entanglement is non-signalling yet aggregate-replicable
+      — but this claim concerns what the model asserts and when, which is
+      documentary.
+    confidence: high
+  - claimId: MPI-C006
+    verdict: well_supported
+    reasoning: MPI-E011 gives the design rationale in the theorists' own words and
+      MPI-E012 corroborates its presentation as the field's answer to
+      repeatability. This is what binds the nulls of MPI-C002 to the model
+      rather than to a bystander paradigm.
+    confidence: high
+  - claimId: MPI-C007
+    verdict: weakly_supported
+    reasoning: "A residue survives (MPI-E002, three of five in MPI-E007, the
+      MPI-E008 split), but each is qualified: fragility conceded by its authors,
+      non-independence within one lab, unreviewed and power-asymmetric
+      respectively. The strictest tests are null and every rival mechanism is
+      instantiated in-corpus. Against GPT-5.1: this is not parity with the null
+      account; against Gemini: it is not an absence of information either."
+    confidence: moderate
+  - claimId: MPI-C008
+    verdict: provisionally_supported
+    reasoning: Every component is documented nearby — analytic flexibility
+      (MPI-E006), publication bias (MPI-E015), coding error (MPI-E017),
+      dependence (MPI-E007) — and MPI-E004 is its predicted outcome. Short of
+      well_supported because no calibrated simulation reproduces this specific
+      record and MPI-E016 shows the analog effort covered only ~60% of a
+      neighboring effect. Gemini's and GPT's caution here is conceded and
+      already priced in.
+    confidence: moderate
+  - claimId: MPI-C009
+    verdict: provisionally_supported
+    reasoning: The dependence critique is a concession against interest from inside
+      the program (MPI-E007), which raises credibility, but it has not appeared
+      as a standalone peer-reviewed reanalysis of the founding datasets, so the
+      'substantially diminish' half remains unaudited.
+    confidence: moderate
+  - claimId: MPI-C010
+    verdict: mixed
+    reasoning: MPI-E013 shows a field prediction operationalized and formally
+      tested, cutting against blanket unfalsifiability, and the no-transmission
+      axiom is a genuine universal risk. Against that, MPI-E011 concedes in
+      advance that no skeptic-proof replication is expected and MPI-E003's own
+      abstract reads its null as the predicted systematicity. GPT-5.1's framing
+      — unfalsifiable in practice, falsifiable on paper — is exactly this
+      two-sidedness.
+    confidence: moderate

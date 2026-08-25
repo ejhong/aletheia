@@ -120,7 +120,7 @@ const votes = await Promise.all(Object.keys(VENDORS).map(seatVote));
 // every time a panel convenes — counting them would spend the budget on
 // the machinery's own heartbeat (the first live run parked a 5/5-complies
 // PR at "41/10" for exactly that reason).
-const CANON = ["content/cases/", ":!content/cases/*/assessments"];
+const CANON = ["content/cases/", ":(exclude)content/cases/*/assessments/**"];
 const touchesContent = git(
   "diff",
   "--name-only",
@@ -128,8 +128,10 @@ const touchesContent = git(
   "--",
   ...CANON,
 ).trim().length > 0;
+// --first-parent: one squash/merge = one landing on the base branch, so
+// the budget counts what a reader saw change, not how many commits built it.
 const mergesThisWeek = new Set(
-  git("log", "--since=7.days", "--format=%H", base, "--", ...CANON)
+  git("log", "--first-parent", "--since=7.days", "--format=%H", base, "--", ...CANON)
     .split("\n")
     .filter(Boolean),
 ).size;

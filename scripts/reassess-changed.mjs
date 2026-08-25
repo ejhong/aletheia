@@ -563,7 +563,12 @@ async function main() {
           reason:
             audit.historyReason ||
             "The article or research agenda asserted something the current evidence records contradict or supersede.",
-          actor: `${provider.name}/${provider.model} (scheduled maintenance run, ${EDIT_PROMPT_VERSION}), pending human approval`,
+          // "publishes only through the gate": pre-pivot wording said
+          // "pending human approval", which promised a review mechanism
+          // that no longer exists — and drew a substantiated arbiter park
+          // on PR #66 for exactly that reason. The label must state the
+          // real mechanism (AGENTS.md §3.15).
+          actor: `${provider.name}/${provider.model} (scheduled maintenance run, ${EDIT_PROMPT_VERSION}); publishes only through the constitutional gate's multi-model concurrence, per AGENTS.md §3.15`,
           aiAssisted: true,
         };
         fs.appendFileSync(historyPath, "\n" + stringifyYaml([entry]));

@@ -60,7 +60,10 @@ export default function RootLayout({
               </p>
             </div>
             <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-faint self-end">
-              AI-operated · content versioned in git · provenance on every record
+              <Link href="/panel" className="hover:text-copper underline underline-offset-4 decoration-line">
+                AI-operated
+              </Link>{" "}
+              · content versioned in git · provenance on every record
             </p>
           </div>
         </footer>

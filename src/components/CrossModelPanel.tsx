@@ -46,9 +46,12 @@ export function CrossModelPanel({
   return (
     <aside className="mt-3 border border-line bg-paper px-5 py-4">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-copper">
-          cross-model check · {s.latestDate}
-        </h3>
+        <Link
+          href="/panel"
+          className="font-mono text-[11px] uppercase tracking-[0.18em] text-copper hover:underline underline-offset-4"
+        >
+          cross-model check · {s.latestDate} → the panel
+        </Link>
         <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-faint">
           independent · blind to prior assessments
         </span>

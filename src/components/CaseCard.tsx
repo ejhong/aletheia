@@ -70,7 +70,10 @@ export function CaseCard({
         </div>
         <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5">
           <PriorityBadge level={record.researchPriority.level} />
-          <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-faint">
+          <Link
+            href={`/panel#${record.slug}`}
+            className="font-mono text-[10px] uppercase tracking-[0.14em] text-faint hover:text-copper"
+          >
             {verdict
               ? standing === "ratified"
                 ? "assessment · ratified"
@@ -78,7 +81,7 @@ export function CaseCard({
                   ? "assessment · contested"
                   : "AI draft · unratified"
               : "no assessment yet"}
-          </span>
+          </Link>
           <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-faint">
             human review {reviewCoverage.reviewed}/{reviewCoverage.total} claims
           </span>

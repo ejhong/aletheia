@@ -60,7 +60,7 @@ export function DossierHeader({
                 <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-dossier-faint">
                   {verdictHumanEndorsed
                     ? "editorial assessment · human-reviewed"
-                    : "AI-drafted assessment · awaiting human review"}
+                    : "AI-drafted assessment · not yet independently ratified"}
                 </span>
                 <PriorityBadge level={record.researchPriority.level} size="lg" />
               </div>

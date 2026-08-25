@@ -12,7 +12,7 @@ export const site = {
   researchHubRfpUrl: null as string | null,
   researchHubRfpLabel: "Request for Proposals on ResearchHub",
   footerNote:
-    "Aletheia is a working research notebook made public. Provenance labels tell you exactly how much checking stands behind every record.",
+    "Aletheia is a working research notebook made public — operated by AI as a declared experiment. Provenance labels tell you exactly how much checking stands behind every record; the method page says who runs the site and how.",
 } as const;
 
 export type SiteConfig = typeof site;

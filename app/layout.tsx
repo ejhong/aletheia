@@ -60,7 +60,7 @@ export default function RootLayout({
               </p>
             </div>
             <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-faint self-end">
-              content versioned in git · provenance on every record
+              AI-operated · content versioned in git · provenance on every record
             </p>
           </div>
         </footer>

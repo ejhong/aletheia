@@ -44,7 +44,7 @@ export function AssessmentPanel({
           <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-copper">
             {humanEndorsed
               ? "human-reviewed and endorsed"
-              : "AI-generated draft — no human-endorsed assessment exists yet"}
+              : "AI-generated draft — not yet independently ratified"}
           </p>
         </div>
         <p className="mt-4 text-[15px] leading-[1.75] text-ink-soft whitespace-pre-line">

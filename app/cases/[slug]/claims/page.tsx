@@ -56,7 +56,7 @@ export default async function ClaimsExplorerPage({
           ? ` and a ${catalog.length}-claim unreviewed catalog below`
           : ""}
         . Every claim shows its provenance — most of this case is AI-extracted
-        and awaiting human review, and the interface says so.
+        and unreviewed, and the interface says so.
       </p>
 
       <section className="mt-8">

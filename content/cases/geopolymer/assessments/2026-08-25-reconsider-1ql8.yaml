@@ -1,0 +1,177 @@
+# Reconsideration draft — the one deliberately NON-BLIND draft in the
+# pipeline: written with the panel's dissents in hand, required to engage
+# each one (scripts/reconcile-contested.mjs). Append-only; not reviewed.
+runId: 2026-08-25-reconsider-1ql8
+model: "anthropic/claude-opus-5 (reconsideration — deliberately non-blind:
+  engages the panel's dissents)"
+date: 2026-08-25
+promptVersion: aletheia-reconsider-v1
+humanReviewed: false
+role: draft
+caseAssessment:
+  verdict: unresolved
+  loadBearing:
+    - GEO-C022
+    - GEO-C020
+    - GEO-C021
+    - GEO-C030
+    - GEO-C012
+  weakestLinks:
+    - GEO-C021
+    - GEO-C004
+    - GEO-C002
+    - GEO-C006
+    - GEO-C013
+    - GEO-C003
+  synthesis: >-
+    I concede the case verdict to the four seats (Gemini 3.1 Pro, GPT-5.1, Grok
+    4.6, Kimi K3) who argue that 'mixed' misdescribes the structure of a
+    disjunctive claim. Their shared point is decisive and I had underweighted
+    it: GEO-C022 is existential ('at least one monument'), so the case verdict
+    cannot be a weighted average across branches. The Egyptian branch has been
+    tested with binder-aware methods and, in the recipe tested, failed
+    (GEO-E018, GEO-E019, GEO-E020, GEO-E021, with GEO-E020's genuine Davidovits
+    positive control showing the alkali-aluminosilicate signature is plainly
+    visible when present). The surviving branch — Pumapunku (GEO-E006, GEO-E007)
+    — is one team, one sample set, contested custody, never rerun by anyone
+    outside the proponent group, with only a 1971 provenance attribution
+    (GEO-E008) on the other side, and that study addresses red sandstones while
+    the microscopy addresses andesite, so the two partly talk past each other.
+    That is not a genuine conflict of comparable independent evidence; it is an
+    untested branch. 'Mixed' implies a real evidential collision at case level;
+    'unresolved' correctly names the fact that the one discriminating test class
+    (blinded, prespecified, binder-aware comparison of provenance-secure
+    monument stone against natural and cast controls) has been run essentially
+    once, on one recipe, at one site.
+
+
+    Opus 5's weakly_supported does not compel. It requires a net positive lean,
+    but the only material still holding the disjunction up is unreplicated,
+    proponent-adjacent, custody-contested microscopy; the disjunction
+    'surviving' is not the same as being weakly supported by evidence. Opus's
+    stronger contribution is the observation that GEO-E020's control cuts
+    against GEO-C012's 'visually similar' component — I engage but hold, because
+    GEO-C012 claims visual similarity and achievable hardness at block scale,
+    not analytical indistinguishability; the control in fact confirms large cast
+    blocks exist.
+
+
+    Kimi K3's push to 'contradicted' for GEO-C020 I answer rather than accept.
+    The negatives are strong but sample-thin against a claim about 'some blocks'
+    of a monument, GEO-E023 fixes the claimed scope to casings/backing/tops
+    (which does aim the negatives correctly, as the house draft said), yet the
+    currently advanced C–S–H binder of GEO-E017 has drawn no published rebuttal,
+    and the Lauer-sample identity dispute conditioning GEO-E019 and GEO-E020 is
+    a factual disagreement about which object was analysed. Weakly_supported,
+    not contradicted.
+
+
+    Gemini and Grok's methodological framing (GEO-C030, GEO-E024) I accept in
+    its narrow form and no further: H/C/O blindness is real for PXRF and ICP-MS
+    and legitimately qualifies GEO-E009-style provenance reasoning, but the
+    claim as written also names XRD, which is phase-sensitive and did report no
+    zeolitic binder, and GEO-E024 is one author, one independence group, with a
+    methods table that misstates NMR. It therefore stays mixed and does not
+    blunt GEO-E018–E021.
+
+
+    The Aswan material (GEO-C001, GEO-C002, GEO-C006) still bears on
+    completeness of the pounding account, not on casting; GEO-E001 is a single
+    protocol compatible with fire-setting, chisels, or more labour. Decisive
+    next steps unchanged: provenance-secure Egyptian samples tested for a C–S–H
+    binder, and an independent modern Pumapunku re-analysis.
+claimAssessments:
+  - claimId: GEO-C022
+    verdict: unresolved
+    reasoning: Existential disjunction. Its best-tested instance (Egypt) failed
+      under binder-aware methods with a positive control, and its surviving
+      instance (Pumapunku) has never been independently re-examined.
+      Conflicting-evidence language overstates the Andean file, which is
+      unreplicated rather than contested by comparable work.
+    confidence: moderate
+  - claimId: GEO-C020
+    verdict: weakly_supported
+    reasoning: GEO-E023 fixes the claim to casings, backing and top blocks, exactly
+      what GEO-E019, GEO-E020 and GEO-E021 examined, so the negatives are on
+      target. Support persists only through two author-overlapping lines
+      (GEO-E012, GEO-E017), an unrebutted C-S-H variant, contested provenance,
+      and the unresolved Lauer-sample identity dispute. Not contradicted,
+      because sampling is thin against a 'some blocks' claim and the currently
+      advanced binder is untested.
+    confidence: moderate
+  - claimId: GEO-C021
+    verdict: mixed
+    reasoning: One proponent evidence line (GEO-E006 and GEO-E007 are the same team
+      and samples) against a 1971 provenance study (GEO-E008) that addresses
+      sandstones with pre-modern methods. Genuine contestation with no modern
+      independent test on either side.
+    confidence: moderate
+  - claimId: GEO-C012
+    verdict: provisionally_supported
+    reasoning: GEO-E022 shows C-S-H forms from lime and diatomaceous earth at room
+      temperature and GEO-E013 reports large demonstration blocks. Opus's point
+      from GEO-E020 shows cast stone is analytically distinguishable, but the
+      claim asserts visual similarity and ancient-feasible materials, not
+      analytical indistinguishability. Feasibility, not occurrence.
+    confidence: moderate
+  - claimId: GEO-C010
+    verdict: provisionally_supported
+    reasoning: 850 C is plausibly within charcoal-and-bellows reach, but GEO-E016's
+      Badari precedent is unverified and crucible heat is not industrial scale.
+      GEO-E022 reduces the claim's load, since the revised binder needs no
+      firing.
+    confidence: moderate
+  - claimId: GEO-C011
+    verdict: well_supported
+    reasoning: "Mainstream and uncontested (GEO-E010, GEO-E011), but weakly
+      diagnostic: the source literature concerns glass and faience, not building
+      stone."
+    confidence: high
+  - claimId: GEO-C013
+    verdict: unresolved
+    reasoning: Unattributed anecdote (GEO-E015) flagged in the project's own
+      skeptical review; no replication attempted.
+    confidence: low
+  - claimId: GEO-C030
+    verdict: mixed
+    reasoning: The H/C/O-blindness core is correct for PXRF and ICP-MS and rightly
+      qualifies quarry-match inferences such as GEO-E009, as Gemini, GPT-5.1,
+      Grok and Kimi all note. But the claim as worded also names XRD, which is
+      phase-sensitive, and GEO-E024 contains method errors (NMR) from a single
+      author and independence group. It does not reach the binder-aware
+      petrography of GEO-E018 to GEO-E021.
+    confidence: moderate
+  - claimId: GEO-C001
+    verdict: provisionally_supported
+    reasoning: Single peer-reviewed quantitative measurement (GEO-E001), one team,
+      one tool configuration. Speaks to completeness of the pounding account,
+      not to casting.
+    confidence: moderate
+  - claimId: GEO-C002
+    verdict: unresolved
+    reasoning: Unquantified anecdote (GEO-E003) with no survey of attempts, effort,
+      or test-block wear.
+    confidence: low
+  - claimId: GEO-C006
+    verdict: unresolved
+    reasoning: Bounded and testable but resting on unsurveyed proponent-reported
+      dimensions and an untested biomechanical assertion (GEO-E005).
+    confidence: low
+  - claimId: GEO-C003
+    verdict: unresolved
+    reasoning: Untraced secondary report relayed by the proponent organisation
+      (GEO-E004), with mundane candidate origins for interior salt. Tracing the
+      primary Arabic sources remains the cheap decisive test.
+    confidence: low
+  - claimId: GEO-C005
+    verdict: unresolved
+    reasoning: Proponent reinterpretation (GEO-E014) of a scene conventionally read
+      as metal casting, with no engagement from Egyptology either way.
+    confidence: low
+  - claimId: GEO-C004
+    verdict: mixed
+    reasoning: GEO-E006 and GEO-E007 are one proponent line with questioned
+      provenance and no independent replication; the reported features are
+      credible observations whose diagnosticity against natural volcanic rock
+      has not been blind-tested.
+    confidence: moderate

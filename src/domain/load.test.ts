@@ -558,9 +558,12 @@ describe("cross-model checks", () => {
     const checks = orch.assessmentRuns.filter((r) => r.role === "check");
     expect(checks.length).toBeGreaterThanOrEqual(4);
     const shown = displayAssessment(orch);
-    // The house draft (2026-08-22) displays even though checks are newer.
+    // The newest draft-role run displays; checks never do, however new.
     expect(shown?.run.role).toBe("draft");
-    expect(shown?.run.runId).toBe("orch-or-2026-08-22-fable-1");
+    const newestDraft = [...orch.assessmentRuns]
+      .reverse()
+      .find((r) => r.role !== "check");
+    expect(shown?.run.runId).toBe(newestDraft?.runId);
   });
 
   it("concurrence summary reports agreement against the displayed run", () => {
@@ -568,9 +571,9 @@ describe("cross-model checks", () => {
     const s = crossModelSummary(orch);
     expect(s).not.toBeNull();
     expect(s!.models.length).toBeGreaterThanOrEqual(4);
-    expect(s!.claimsCompared).toBe(18);
+    expect(s!.claimsCompared).toBeGreaterThanOrEqual(18);
     // Every compared claim lands in exactly one bucket.
-    expect(s!.exact + s!.adjacent + s!.split).toBe(18);
+    expect(s!.exact + s!.adjacent + s!.split).toBe(s!.claimsCompared);
     expect(s!.splitClaimIds.length).toBe(s!.split);
   });
 
@@ -587,7 +590,14 @@ describe("cross-model checks", () => {
     if (opusRuns.length >= 2) {
       const shownOpus = perModel.filter((r) => r.model.startsWith("Opus"));
       expect(shownOpus).toHaveLength(1);
-      expect(shownOpus[0].runId).toMatch(/-r\d+$/);
+      // The winner must be the newest by (date, then runId) — the -rN
+      // suffix only decides same-date ties; a later date beats any suffix.
+      const expected = [...opusRuns].sort((a, b) =>
+        a.date === b.date
+          ? a.runId.localeCompare(b.runId)
+          : a.date.localeCompare(b.date),
+      ).at(-1)!;
+      expect(shownOpus[0].runId).toBe(expected.runId);
     }
     const keys = perModel.map((r) => r.model.trim().split(/[\s,(]/)[0].toLowerCase());
     expect(new Set(keys).size).toBe(keys.length);

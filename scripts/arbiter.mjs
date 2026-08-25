@@ -130,8 +130,17 @@ const touchesContent = git(
 ).trim().length > 0;
 // --first-parent: one squash/merge = one landing on the base branch, so
 // the budget counts what a reader saw change, not how many commits built it.
+// The throttle governs the AUTONOMOUS era: landings before the gate went
+// live (#59) were human-supervised site construction — 39 canon landings in
+// bootstrap week — and counting them parked a 5/5-complies caption fix for
+// days. The window is the trailing week or the gate epoch, whichever is
+// shorter.
+const GATE_EPOCH = Date.parse("2026-08-25T16:22:00Z");
+const since = new Date(
+  Math.max(Date.now() - 7 * 86400000, GATE_EPOCH),
+).toISOString();
 const mergesThisWeek = new Set(
-  git("log", "--first-parent", "--since=7.days", "--format=%H", base, "--", ...CANON)
+  git("log", "--first-parent", `--since=${since}`, "--format=%H", base, "--", ...CANON)
     .split("\n")
     .filter(Boolean),
 ).size;

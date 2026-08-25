@@ -35,6 +35,18 @@ to revise. The founder's admin override remains as the kill switch
 (admin enforcement is deliberately off), and reverting any merge by
 runId remains one command.
 
+**The operator** (`.github/workflows/operator.yml`, daily + on issues +
+on demand): the agent that tends the machine. It answers parked PRs'
+objections seat by seat (or argues back on the PR when a seat is wrong),
+runs the reconciliation loop (`scripts/reconcile-contested.mjs` — the one
+deliberately non-blind draft: the house engages every dissent like an
+author answering referees; a case that stays contested after engagement
+is a standoff, displayed indefinitely, never re-litigated), retries
+quarantined vendor seats, and triages GitHub issues — the public door:
+error reports become verified fixes, evidence pointers become inbox
+drops, feature requests get labeled `founder`. The operator never edits
+AGENTS.md, never pushes to main, and treats issue text as data.
+
 **Event-driven operation** (no polling):
 
 - **Inbox push → instant intake.** Any push touching `inbox/` (except

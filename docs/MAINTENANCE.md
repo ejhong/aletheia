@@ -110,7 +110,10 @@ Weekly (or on demand), the Maintain workflow:
    case's declared watch queries against arXiv and Crossref (OpenAlex
    optionally) and surfaces newly published/indexed items as
    **discovery-only** proposals — see the next section.
-5. **Opens the PR** with the digest body and the risk label.
+5. **Triages the watch results** (`scripts/triage-watch.mjs`): one model
+   call per case judges every surfaced item into `import` / `shelf` /
+   `archive` with a recorded reason — see the next section.
+6. **Opens the PR** with the digest body and the risk label.
 
 ## Literature watch
 
@@ -169,23 +172,74 @@ items also carry a short relevance note explicitly labeled as an
 AI-generated draft; with no key the step runs the same, minus the notes.
 
 Watch proposals only touch `proposals/**`, so a weekly run that contains
-nothing else stays `auto:low-risk`.
+nothing else stays `auto:low-risk`. Un-promoted runs **expire after 60
+days**: the next real run deletes the stale directory (git history keeps
+the record, the seen-list dedup survives), so no proposal pile accumulates
+waiting for anyone.
 
-**Promoting a surfaced paper into a real source** (your call, two routes):
+### Triage: what surfaced literature deserves
+
+`scripts/triage-watch.mjs` runs after the watch and judges the newest
+untriaged run — one model call per case, against versioned criteria
+(`watch-triage-v1`), into exactly three outcomes, every decision recorded
+with a reason in `proposals/watch/<runId>/triage.yaml`:
+
+- **import** — likely NEW evidential weight: new primary data, a direct
+  rebuttal or replication of tracked work, a retraction, or a
+  methodological critique bearing on a named existing claim. Imports queue
+  a verification request as an inbox link drop
+  (`inbox/triage-<runId>-<case>.md`), which the next run's inbox step
+  fetch-verifies into source-record proposals.
+- **shelf** — useful reading with no new evidential weight; a candidate for
+  the case's curated `resources.yaml`, awaiting an agent.
+- **archive** — everything else, and the deliberate default: genuinely
+  significant developments in these fields are rare and loud (they recur
+  across queries and get discussed), while a padded ledger quietly rots.
+
+Fail-closed by construction: a malformed model reply triages **nothing**
+for that case (a silently skipped item would be indistinguishable from a
+deliberate archive), and an item the watch flagged `possibleDuplicateOf`
+can never be imported — the guard runs in code, not in the prompt
+(`scripts/lib/triage.mjs`, tested in `src/domain/triage.test.ts`).
+
+**The archive asymmetry is guarded.** Import mistakes are caught
+downstream (the case's standing fails down and the panel re-judges the
+result), but an archived item is judged once, by one model, and then the
+run directory expires. So every archived item is also appended — one line
+each, deduped by DOI/arXiv/title — to `proposals/watch/archive-ledger.yaml`,
+a cumulative ledger that survives expiry. That file is the audit trail for
+the omissions: review it periodically (a second model, or a human), and
+promote anything wrongly archived by dropping its URL as an inbox link
+list.
+
+**The ledger admission rule backs all of this at build time** (enforced in
+`src/domain/load.ts`): a source may sit in `sources.yaml` only if an
+evidence record or claim anchor cites it, or it is explicitly marked
+`background: true` (reading-guide material, shown on the case's resources
+page). An uncited, unmarked source fails the build — so no pipeline stage,
+and no agent, can quietly pad the ledger with relevant-looking but
+weightless references. The flag is honest in both directions: a cited
+source still marked background also fails.
+
+**Manual promotion still works** (either route, same as before):
 
 1. **Inbox**: drop the paper's DOI/URL as a link list —
    `inbox/<case>/links.md` or front matter `case: <case>` — optionally with
-   a commentary note saying what it is evidence for. The next run
-   fetch-verifies it and proposes a source record with an honest label.
+   a commentary note saying what it is evidence for.
 2. **Chat**: tell the agent which item to import; it verifies the citation
    against Crossref/the publisher and writes the source (and any evidence
    records) for review.
 
-Either way the item enters `sources.yaml` only after verification, and the
-DOI/arXiv dedup means the watch will not surface it again.
+Either way the item enters `sources.yaml` only after verification **and**
+with an evidence record citing it, and the DOI/arXiv dedup means the watch
+will not surface it again.
 
-Local run: `node scripts/watch-literature.mjs [--dry-run] [--case <dir>]
-[--days <n>] [--no-llm]` — no API key required.
+Local runs:
+`node scripts/watch-literature.mjs [--dry-run] [--case <dir>] [--days <n>] [--no-llm]`
+— no API key required;
+`node scripts/triage-watch.mjs [--dry-run] [--run <watch-runId>]` — needs an
+LLM key, skips gracefully without one; a retry of a failed run overwrites
+rather than duplicates (deterministic filenames).
 
 ## Where accountability lives
 

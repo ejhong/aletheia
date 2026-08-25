@@ -55,6 +55,11 @@ const DEFAULT_FIRST_RUN_DAYS = 180;
 // seen-list dedup makes the overlap harmless.
 const CURSOR_OVERLAP_DAYS = 7;
 const MAX_RELEVANCE_NOTES_PER_CASE = 10;
+// Un-promoted watch runs expire: after this many days the run directory is
+// deleted by the next real run. Git history is the archive, and the
+// seen-list (state.yaml) survives, so expired items never resurface. No
+// guilt pile of stale proposals accumulates for anyone — human or agent.
+const EXPIRY_DAYS = 60;
 
 const args = process.argv.slice(2);
 const dryRun = args.includes("--dry-run");
@@ -313,6 +318,33 @@ async function relevanceNote(provider, caseRecord, item) {
   return reply.trim();
 }
 
+// ---------------------------------------------------------------- expiry
+
+/**
+ * Delete watch-run directories older than EXPIRY_DAYS (by the date in the
+ * directory name). Returns the expired run ids. Never touches state.yaml —
+ * dedup must outlive the proposals it deduplicates.
+ */
+function expireOldRuns(watchDir) {
+  if (!fs.existsSync(watchDir)) return [];
+  const cutoff = new Date(Date.now() - EXPIRY_DAYS * 86400000)
+    .toISOString()
+    .slice(0, 10);
+  const expired = [];
+  for (const entry of fs.readdirSync(watchDir, { withFileTypes: true })) {
+    // The archive ledger survives expiry — it is the audit trail for the
+    // omissions, the whole point of expiring runs without losing reviewability.
+    if (!entry.isDirectory()) continue;
+    const m = entry.name.match(/^watch-(\d{4}-\d{2}-\d{2})-/);
+    if (!m) continue;
+    if (m[1] < cutoff) {
+      fs.rmSync(path.join(watchDir, entry.name), { recursive: true });
+      expired.push(entry.name);
+    }
+  }
+  return expired;
+}
+
 // ------------------------------------------------------------------ main
 
 async function main() {
@@ -335,6 +367,17 @@ async function main() {
 
   const provider = noLlm ? null : pickProvider(forcedProvider);
   const runId = `watch-${today}-${Math.random().toString(36).slice(2, 6)}`;
+
+  // Expire stale, never-promoted runs before adding a new one. Dry runs
+  // must not delete anything.
+  const expired = dryRun
+    ? []
+    : expireOldRuns(path.join(ROOT, "proposals", "watch"));
+  if (expired.length > 0) {
+    console.error(
+      `expired ${expired.length} watch run(s) older than ${EXPIRY_DAYS} days: ${expired.join(", ")} (git history keeps the record; seen-list dedup unaffected)`,
+    );
+  }
 
   const perCaseOutputs = [];
   const digest = [];
@@ -465,9 +508,10 @@ async function main() {
         window: { since, queries: watch.queries.map((q) => q.id) },
         note:
           "DISCOVERY ONLY. Items are exactly as returned by the APIs named in " +
-          "foundVia — nothing verified, nothing added to sources.yaml. A human " +
-          "(or the inbox pipeline, via a link-list drop) promotes an item into " +
-          "a real source record after checking it. See docs/MAINTENANCE.md.",
+          "foundVia — nothing verified, nothing added to sources.yaml. The " +
+          "triage step (scripts/triage-watch.mjs) judges each item against " +
+          "versioned criteria; imports queue a verification request via the " +
+          "inbox pipeline. See docs/MAINTENANCE.md.",
         verification: "unverified",
         items: newItems.map((i) => ({ ...i, verification: "unverified" })),
       },
@@ -506,11 +550,20 @@ async function main() {
     ...(errors.length
       ? ["## Degraded lookups (non-fatal)", "", ...errors.map((e) => `- ${e}`), ""]
       : []),
+    ...(expired.length
+      ? [
+          "## Expired proposals",
+          "",
+          `- Deleted ${expired.length} watch run(s) older than ${EXPIRY_DAYS} days, never promoted: ${expired.join(", ")}. Git history keeps the record; the seen-list dedup is unaffected.`,
+          "",
+        ]
+      : []),
     "## Ground rules",
     "",
     "- Discovery only: every item is `unverified`, recorded exactly as the API returned it; nothing touched sources.yaml or evidence.yaml.",
     "- Relevance notes, where present, are AI-generated drafts and labeled as such.",
-    "- To promote an item: drop its DOI/URL as an inbox link list (`inbox/<case>/…`), or ask the maintainer agent to verify and import it.",
+    "- Next step: scripts/triage-watch.mjs judges every item (import / shelf / archive, with reasons); imports queue verification via inbox link drops. Manual promotion still works the same way.",
+    `- Un-promoted runs expire after ${EXPIRY_DAYS} days (directory deleted; git history keeps the record).`,
     `- Fully revertable: delete \`proposals/watch/${runId}/\` and the matching \`seen\`/\`lastRun\` entries in \`proposals/watch/state.yaml\`.`,
     "",
   ].join("\n");
@@ -548,8 +601,10 @@ async function main() {
       promptVersions: provider ? [PROMPT_VERSION] : [],
       errors,
       note:
-        "Discovery-only proposal run. A human reviews; promotion to " +
-        "sources.yaml goes through verification (inbox link list or agent).",
+        "Discovery-only proposal run. Triage (scripts/triage-watch.mjs) " +
+        "judges the items; promotion to sources.yaml goes through " +
+        "verification (inbox pipeline or agent) and the build-time source " +
+        "admission rule.",
     }),
   );
   fs.mkdirSync(path.dirname(STATE_FILE), { recursive: true });

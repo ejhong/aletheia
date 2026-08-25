@@ -271,6 +271,16 @@ export const SourceSchema = z.object({
   verification: SourceVerification,
   verificationNote: z.string().optional(),
   reliabilityNotes: z.array(z.string()).default([]),
+  /**
+   * Reading-shelf material: a real, honestly-labeled source kept for the
+   * case's reading guide but not (yet) cited by any evidence record or
+   * claim anchor. The loader enforces the admission rule both ways: a
+   * source that is neither cited nor background fails the build, and a
+   * cited source still marked background fails too (AGENTS.md §3.6 —
+   * sources are not evidence by themselves; the ledger lists only what
+   * carries weight).
+   */
+  background: z.boolean().default(false),
 });
 export type Source = z.infer<typeof SourceSchema>;
 

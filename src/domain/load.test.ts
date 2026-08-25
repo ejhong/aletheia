@@ -21,6 +21,7 @@ import {
   loadAllCases,
   loadSiteImages,
   recentChanges,
+  sourceAdmissionErrors,
 } from "./load";
 import {
   ClaimSchema,
@@ -192,6 +193,54 @@ describe("recent-changes feed", () => {
       "first that day",
       "old",
     ]);
+  });
+});
+
+describe("source admission rule", () => {
+  const src = (id: string, background = false) => ({ id, background });
+  const anchorClaim = (sourceId: string) => ({
+    sourceAnchor: { sourceId, locator: "p. 1" },
+  });
+
+  it("rejects an uncited source without the background flag", () => {
+    const errors = sourceAdmissionErrors([src("SRC-A")], [], []);
+    expect(errors).toHaveLength(1);
+    expect(errors[0]).toContain("SRC-A");
+    expect(errors[0]).toContain("background: true");
+  });
+
+  it("accepts an uncited source marked background", () => {
+    expect(sourceAdmissionErrors([src("SRC-A", true)], [], [])).toEqual([]);
+  });
+
+  it("accepts a source cited by an evidence record", () => {
+    expect(
+      sourceAdmissionErrors([src("SRC-A")], [{ sourceId: "SRC-A" }], []),
+    ).toEqual([]);
+  });
+
+  it("accepts a source anchoring a claim", () => {
+    expect(
+      sourceAdmissionErrors([src("SRC-A")], [], [anchorClaim("SRC-A")]),
+    ).toEqual([]);
+  });
+
+  it("rejects a cited source still mislabeled background", () => {
+    const errors = sourceAdmissionErrors(
+      [src("SRC-A", true)],
+      [{ sourceId: "SRC-A" }],
+      [],
+    );
+    expect(errors).toHaveLength(1);
+    expect(errors[0]).toContain("remove background: true");
+  });
+
+  it("holds across all live content — the ledger carries no weightless sources", () => {
+    for (const c of loadAllCases()) {
+      expect(
+        sourceAdmissionErrors(c.sources, c.evidence, c.claims),
+      ).toEqual([]);
+    }
   });
 });
 

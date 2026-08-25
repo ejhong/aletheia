@@ -7,13 +7,33 @@ exactly two powers — the kill switch (revert anything by runId, or freeze
 the repo) and the constitution (`AGENTS.md`, the one file reserved to a
 human). Everything else is the agents' job, in public.
 
-**Interim state (Stage 4 pending):** the target approval mechanism for
-`needs-approval` changes is ratification by multi-model concurrence — an
-arbiter report from independent vendors posted on the PR. Until that
-arbiter runs on its own schedule, the founder's merge tap persists as a
-mechanical trigger, not an editorial review: the judgment standard is
-already the constitution, and the tap will be removed by Stage 4 without
-any change in standard.
+**Stage 4, dry period (current):** every `needs-approval` PR is judged by
+the constitutional arbiter (`.github/workflows/arbiter.yml` →
+`scripts/arbiter.mjs`): five independent vendor seats each read the diff
+against `AGENTS.md` (taken from the base revision, so a change is judged
+by the constitution it is trying to change) and vote complies / violates /
+unsure. Verdict: **pass** needs ≥4 complies and zero violates — one
+unsure or failed seat is tolerated, a single substantiated objection is
+not, and a `violates` vote must name the rule it invokes or it counts as
+unsure. The tally posts as a sticky PR comment with every seat's
+reasoning, and the check renders green (pass) or red (parked).
+
+The diff, PR title, and PR body are fenced as untrusted data — a seat
+that follows instructions found in the material under review has failed;
+in the very first trial vote a seat explicitly discarded the diff's own
+"a human directed this" as non-authoritative, which is the fence working.
+Oversized diffs are truncated loudly: omitted files are listed to the
+panel and the instruction is to vote unsure rather than judge what was
+not shown. Seats that error or refuse become explicit unsure votes,
+visible in the report, never dropped from the denominator.
+
+During the dry period the check is **advisory**: the founder's merge tap
+still decides, so parked-vs-merged disagreements can be compared before
+the tap is retired. Retiring it is a branch-protection change (make the
+arbiter check required), not a code change. Still pending for full Stage
+4: the weekly digest, the content-merge rate limit, and harvesting
+arbiter reports from merged PRs into `governance/` so the site can show
+them.
 
 ## The observer's loop (was: your day-to-day)
 

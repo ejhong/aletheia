@@ -1,0 +1,339 @@
+# Cross-model check run — an independent judge (GPT-5.1 (OpenAI)),
+# blind to all prior assessments (scripts/cross-model-check.mjs,
+# promptVersion aletheia-check-v1). role: check — never displayed as the case
+# narrative; feeds the concurrence panel. Append-only; NOT human reviewed.
+runId: 2026-08-25-check-gpt
+model: GPT-5.1 (OpenAI) — independent check run via gpt-5.1
+date: 2026-08-25
+promptVersion: aletheia-check-v1
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: unresolved
+  loadBearing:
+    - ORCH-C010
+    - ORCH-C002
+    - ORCH-C030
+    - ORCH-C003
+  weakestLinks:
+    - ORCH-C010
+    - ORCH-C002
+    - ORCH-C012
+    - ORCH-C022
+  synthesis: >-
+    Weighing only the case file, Orch OR as a conjunction remains unresolved,
+    but for tightly circumscribed reasons. The strongest pieces of evidence sit
+    on rungs that are orthogonal to the theory’s core speculative steps. On the
+    biology side, it is now well established that microtubules are
+    electronically and optically nontrivial: Kalra’s 6.6 nm exciton transport
+    and Babcock’s superradiance-like quantum-yield enhancement convincingly show
+    collective behavior beyond a passive-scaffold model. However, these results
+    live at nanometre and femtosecond–picosecond scales and are explicitly not
+    coherence or entanglement measurements. The decisive quantity for the
+    mechanism rung — a defined coherence or entanglement witness, measured in
+    physiological microtubules at 37 °C — has simply never been obtained. That
+    is why ORCH-C010, not any negative result, is the central unresolved
+    bottleneck.
+
+    On anesthesia, the conventional multi-target receptor/ion-channel account is
+    backed by target-specific causal experiments (notably the β3(N265M)
+    knock-in) that Orch OR currently cannot match. The best that can be said for
+    the microtubule pathway is that anesthetics clearly perturb microtubule
+    photophysics and microtubule-active drugs modulate anesthetic sensitivity in
+    vivo. But the key specificity claims are undermined by the field’s own data:
+    the Kalra assay responds similarly to a convulsant, and the most rigorous
+    microtubule-drug study finds chronic epothilone D and vinblastine both
+    increasing sensitivity, directly contradicting the simple “stabilization
+    protects consciousness” narrative. None of these animal studies measures any
+    quantum variable, and all have abundant classical alternative explanations
+    (stability, transport, metabolism, blood-gas changes). As a result, the
+    strong claim that anesthetic unconsciousness is substantially mediated by
+    disruption of a quantum-coherent microtubule state (ORCH-C002) is at best
+    weakly supported.
+
+    On the physics half, the Gran Sasso underground experiment is a
+    methodologically exemplary null: it excludes the natural parameter-free
+    Diósi–Penrose stochastic model and, via Derakhshani et al., renders Orch OR
+    “highly implausible” when built on that completion. McQueen’s point that
+    Penrose’s published τ ≈ ℏ/E_G criterion does not strictly entail the tested
+    radiation, however, is sound. That keeps ORCH-C030 formally unrefuted but at
+    the cost of retreating to an underspecified theory that has yet to be tested
+    in its own terms. The non-computability/Gödel theme and the AI mathematics
+    results, while interesting, turn out to be almost diagnostically irrelevant
+    for the mechanism: they bear on why Penrose went looking, not on whether
+    microtubules and gravitational collapse in fact implement consciousness.
+
+    The overall picture is thus structurally clean. Several lower rungs are well
+    supported (nontrivial microtubule photophysics, classical anesthetic
+    mechanisms, a stringent bound on one collapse model), but the two critical
+    positive rungs — long-lived microtubule coherence in vivo, and a
+    substantial, quantum-specific microtubule contribution to anesthesia —
+    remain unmeasured or only weakly evidenced, with some sharp internal
+    contradictions. No experiment in the file jointly connects a defined quantum
+    observable in microtubules, its modulation by anesthetics in a
+    potency-specific way, and a collapse process obeying ℏ/E_G. Because the
+    headline thesis is conjunctive, any firm failure on coherence or on the
+    collapse physics would sink it; such a failure has not been demonstrated,
+    but on present evidence neither conjunct comes close to being established.
+    The agenda rightly prioritizes (1) a direct coherence measurement in
+    physiological microtubules and (2) a potency-graded anesthetic series with
+    the right controls. Until those data exist, the most accurate global verdict
+    given the ledger is that Orch OR remains unresolved, with its weakest links
+    at exactly the points where it makes its strongest, and as yet untested,
+    claims.
+claimAssessments:
+  - claimId: ORCH-C001
+    verdict: unresolved
+    confidence: high
+    reasoning: The conjunction requires (i) Penrose-style objective collapse, (ii)
+      microtubule states with long-lived, extended quantum coherence in vivo,
+      and (iii) an identification of conscious moments with such collapses. The
+      evidence file contains no experiment that jointly tests even two of these,
+      and the load-bearing coherence quantity has never been measured. Collapse
+      physics is constrained but not ruled out (Gran Sasso excludes only a
+      specific stochastic completion), and the anesthesia data bear only weakly
+      on consciousness per se. The strongest opposing consideration is that
+      several partial strands (microtubule collective physics, anesthetic
+      perturbations, a rejected collapse model) each look strained when
+      combined, making the overall conjunctive hypothesis a priori unlikely, but
+      that rests on priors rather than direct disconfirmation.
+  - claimId: ORCH-C002
+    verdict: weakly_supported
+    confidence: moderate
+    reasoning: Supporting evidence shows that anesthetics alter microtubule optical
+      behavior (Kalra) and that microtubule modulators shift isoflurane
+      sensitivity (Wellesley and MGH studies), so an anesthetic–microtubule link
+      of some sort is real. However, the claim’s core content is “substantial”
+      mediation of unconsciousness via disruption of a quantum-coherent
+      microtubule state, and no study has measured any quantum-coherence
+      observable in microtubules or shown that its suppression tracks clinical
+      potency. The strongest counter is the combination of (a) picrotoxin
+      affecting the same Kalra assay as anesthetics and (b) chronic epothilone D
+      and vinblastine making mice more, not less, sensitive to isoflurane, which
+      undercuts both anesthesia specificity and a simple stability-based
+      mechanism.
+  - claimId: ORCH-C003
+    verdict: well_supported
+    confidence: high
+    reasoning: The β3(N265M) knock-in work shows that removing sensitivity of β3
+      GABA_A receptors to etomidate and propofol abolishes immobility and
+      greatly reduces hypnosis, which is strong causal evidence for a classical
+      receptor-based mechanism for intravenous agents. The wider anesthetic
+      literature supports a multi-target, ion-channel–centric view with endpoint
+      fractionation that fits many data without invoking new physics. The main
+      limiting factor is that these results do not fully generalize to volatile
+      anesthetics or to all aspects of consciousness, and reviews like Eger et
+      al. note that no single channel or combination yet suffices to explain
+      volatile immobility; but that gap weakens only the exhaustive classical
+      claim, not the “substantially accounted for” statement here.
+  - claimId: ORCH-C004
+    verdict: unresolved
+    confidence: moderate
+    reasoning: "While no clear quantum-coherent contribution to cognition or
+      anesthesia has been demonstrated, the key quantum-decoherence quantity in
+      microtubules has never been measured, and anomalies like the xenon
+      nuclear-spin effect are not yet absorbed into a fully classical story.
+      Moreover, authoritative reviews concede that known ligand- and
+      voltage-gated channels cannot by themselves explain volatile immobility
+      and that β3 knock-in only partially removes hypnotic effects. The
+      strongest opposing consideration is parsimony: all well-understood
+      anesthetic mechanisms to date are classical, and decades of work have
+      turned up no compelling need for a quantum-coherent ingredient, but this
+      absence of evidence does not logically establish a universal negative."
+  - claimId: ORCH-C030
+    verdict: unresolved
+    confidence: moderate
+    reasoning: "Donadi et al. provide a strong null result that rules out the
+      parameter-free Diósi–Penrose stochastic model, so one natural
+      implementation of gravity-related collapse is experimentally dead.
+      However, Penrose’s own published proposal is a lifetime scaling relation τ
+      ≈ ℏ/E_G rather than a specified stochastic dynamics, and McQueen’s
+      critique that it does not by itself predict spontaneous radiation is
+      correct. No experiment in the file directly measures ℏ/E_G scaling in
+      mesoscopic superpositions. The main opposing consideration is that
+      surviving by remaining underspecified is not evidentially virtuous: each
+      completed model in this class that gets ruled out incrementally erodes the
+      plausibility of the underlying heuristic."
+  - claimId: ORCH-C040
+    verdict: unresolved
+    confidence: moderate
+    reasoning: The claim is philosophical and about “understanding,” and the
+      evidence here cannot decisively settle it. AI systems now solve
+      research-level problems and obtain IMO medals, but this demonstrates the
+      existence of powerful formal procedures, not that any knowably sound
+      algorithm captures the full notion of human mathematical understanding
+      Penrose targets. Conversely, the Gödel-based argument has retreated toward
+      ever-less-testable territory, and many of Penrose’s concrete examples
+      (chess, specific problems) have been matched or surpassed by machines. The
+      strongest opposing consideration is precisely that pattern of retreat,
+      which raises concerns about unfalsifiability, but that remains an
+      interpretive rather than a strictly evidential objection.
+  - claimId: ORCH-C010
+    verdict: unresolved
+    confidence: high
+    reasoning: No experiment in the dossier measures a decoherence time, coherence
+      length, or entanglement witness in either purified or physiological
+      microtubules, so the core factual content of this claim is currently
+      unmeasured. The Tegmark and Hagan computations disagree by 7–8 orders of
+      magnitude and both are purely theoretical, with even the favorable Hagan
+      estimate still short of the tens-of-milliseconds requirement. The
+      strongest opposing consideration is the general expectation, based on
+      warm, wet, noisy environments, that coherence will be extremely
+      short-lived, but the case rules that in as a prior, not as a measured
+      fact; in strict evidential terms the state of this claim is ignorance.
+  - claimId: ORCH-C011
+    verdict: provisionally_supported
+    confidence: high
+    reasoning: "Kalra’s spectroscopy shows that etomidate and isoflurane reduce
+      exciton-diffusion length in polymerized microtubules, directly
+      demonstrating alteration of microtubule optical behavior by clinical
+      anesthetics. Emerson et al. independently identify β-tubulin as a
+      photolabeled target of an anthracene anesthetic and show microtubule
+      stabilizers shift anesthetic immobilization thresholds in tadpoles. The
+      main counterpoint is specificity: the same Kalra assay responds comparably
+      to picrotoxin, a convulsant, indicating the observable may simply reflect
+      generic perturbation by small hydrophobic molecules, and only two
+      anesthetics have been tested so far."
+  - claimId: ORCH-C012
+    verdict: mixed
+    confidence: high
+    reasoning: "Multiple drugs that modulate microtubules (epothilone B, epothilone
+      D, vinblastine, paclitaxel) have been shown to alter isoflurane-induced
+      LORR or EC50 in rodents, so the broad statement that pharmacologically
+      changing microtubule stability impacts anesthetic susceptibility is
+      clearly supported. Yet the directions sharply conflict: acute epothilone B
+      delays LORR, whereas chronic epothilone D and the destabilizer vinblastine
+      both increase sensitivity, and paclitaxel only modestly shifts resistance.
+      The strongest objection, therefore, is that these patterns are equally,
+      and perhaps better, explained by general cellular disruption, compensatory
+      remodeling, and blood-gas changes rather than by microtubule stability or
+      a quantum mechanism."
+  - claimId: ORCH-C013
+    verdict: well_supported
+    confidence: high
+    reasoning: Independent optical studies demonstrate that polymerized microtubules
+      support exciton transport beyond simple Förster predictions and show
+      organization-dependent quantum-yield enhancements consistent with
+      collective states, establishing that they are electronically active,
+      structured media rather than passive scaffolds. Structure dependence
+      (polymerization matters, protofilament number does not) and convergent
+      methods (diffusion-length quenching and fluorescence) support the
+      robustness of this conclusion. The strongest caveat is that all these
+      phenomena are fully compatible with conventional condensed-matter physics
+      of ordered aromatic networks and do not imply long-lived coherence or
+      computational roles.
+  - claimId: ORCH-C020
+    verdict: well_supported
+    confidence: high
+    reasoning: "The Kalra experiment is well controlled and quantitative: it infers
+      a diffusion length of about 6.6 nm in polymerized microtubules using
+      quencher-dependent lifetime measurements and reports reduced diffusion in
+      the presence of 50 μM etomidate or isoflurane, with these statements
+      appearing in the abstract. The polymerization dependence argues against
+      artifact, and the magnitude of the measured changes is consistent across
+      conditions. The main opposing consideration is that the diffusion length
+      is inferred rather than directly imaged and has not yet been independently
+      replicated, so numerical values might shift with methodology even if the
+      qualitative findings stand."
+  - claimId: ORCH-C021
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: Babcock et al. combine a detailed theoretical model of collective
+      tryptophan states with measurements showing increased fluorescence quantum
+      yield as tubulin organization becomes more hierarchical, in the direction
+      predicted by superradiance theory, at room temperature. This supports the
+      statement that quantum yield tracks hierarchy as modeled, though quantum
+      yield is an indirect witness and other mechanisms could contribute. The
+      main caveat is that the experimental side is relatively limited and the
+      striking “tens of seconds” lifetimes are modelled radiative lifetimes, not
+      measured decoherence times, which proponents often blur.
+  - claimId: ORCH-C022
+    verdict: unresolved
+    confidence: moderate
+    reasoning: Saxena et al. do report “triplet of triplet” resonance patterns
+      across tubulin, microtubules, and neurons, but the entire line of such
+      measurements comes from one laboratory lineage and has not been
+      independently replicated over more than a decade. The measured quantity is
+      classical electromagnetic resonance, not a quantum-coherence observable,
+      so even faithful replication would not imply entanglement or
+      scale-bridging quantum dynamics. The strongest opposing consideration is
+      precisely that duration without replication, which, while not decisive—no
+      contrary replication failures are shown—makes it inappropriate to treat
+      this as established.
+  - claimId: ORCH-C023
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: The Wellesley studies show, with blinded LORR scoring and tolerance
+      controls, that a single low-dose epothilone B injection produces
+      statistically robust delays in isoflurane-induced LORR in both rats and
+      mice, with large (rats) to moderate (mice) standardized effect sizes.
+      These are straightforward behavioral findings and are internally
+      consistent across species within the same program. The main limiting
+      factors are small sample sizes, lack of counterbalanced crossover, shared
+      authorship between the rat and mouse experiments, and the direct
+      contradiction from an independent lab’s chronic epothilone D result, which
+      shows that stabilizer effects are not uniformly protective.
+  - claimId: ORCH-C024
+    verdict: well_supported
+    confidence: high
+    reasoning: Li et al. use randomized, blinded designs and full LORR
+      concentration– response curves to show that chronic epothilone D and
+      vinblastine both shift isoflurane EC50 leftward (greater sensitivity),
+      while paclitaxel modestly shifts it rightward, with narrow,
+      non-overlapping confidence intervals. This directly supports the claim’s
+      numeric content and directional descriptions. The strongest counterpoint
+      is that chronic dosing and epothilone D’s physiological side effects
+      (blood pH, CO₂) introduce confounds and make direct comparison with acute
+      epothilone B difficult, but they do not undermine the measurement itself.
+  - claimId: ORCH-C025
+    verdict: provisionally_supported
+    confidence: high
+    reasoning: The xenon isotope study in Anesthesiology, with 80 randomized mice,
+      finds spin-bearing isotopes (129, 131) requiring ~40–50% higher
+      concentrations to induce LORR than spin-zero isotopes (132, 134), while
+      calculated polarizabilities are identical; these findings are clearly
+      stated in the abstract. This robustly supports a spin-dependent potency
+      effect at the behavioral level. The principal limitation is that the
+      mechanism and target are unidentified, and the primary measurements are
+      made against a 0.50% isoflurane background, leaving open classical or
+      non-microtubule quantum explanations.
+  - claimId: ORCH-C026
+    verdict: mixed
+    confidence: moderate
+    reasoning: Kerskens & López Pérez report consciousness-correlated,
+      heartbeat-timed, zero-quantum-coherence MRI signals in humans and
+      tentatively interpret them as evidence of entanglement-mediated
+      non-classical brain function. However, Warren’s detailed NMR critique
+      argues that the data provide no evidence of entanglement and are
+      consistent with classical multi-compartment effects, and no independent
+      replication or phantom validation has yet been published. The strongest
+      opposing consideration is precisely this unresolved methodological
+      dispute, combined with the fact that the protocol has not yet been shown
+      to be a reliable entanglement witness even in systems of known ground
+      truth.
+  - claimId: ORCH-C031
+    verdict: well_supported
+    confidence: high
+    reasoning: "Donadi et al.’s Gran Sasso experiment is a high-quality, targeted
+      test of the spontaneous radiation predicted by a specific gravity-related
+      collapse model, and it finds none, explicitly ruling out the “natural
+      parameter-free version” of the Diósi–Penrose model and tightening bounds
+      by three orders of magnitude; this is clearly stated in the abstract. The
+      design, setting, and authorship (including Diósi) support the robustness
+      of the null result. The main caveat is scope: the exclusion applies to
+      that particular stochastic completion and parameter range, not to all
+      conceivable collapse models or to Penrose’s heuristic τ ≈ ℏ/E_G relation."
+  - claimId: ORCH-C041
+    verdict: well_supported
+    confidence: high
+    reasoning: "Sawin’s arXiv paper independently states that an OpenAI model
+      disproved Erdős’s unit-distance conjecture and builds on that result,
+      while Nature’s AlphaProof paper and the DeepMind IMO announcement document
+      Lean-verified silver-medal and officially-graded gold-medal IMO
+      performances, respectively. These sources collectively establish that AI
+      systems have produced correct, novel, research-level mathematics and
+      achieved medal-level contest performance. The strongest counterpoint is
+      not factual but interpretive: some argue these feats remain within
+      established frameworks, and that the systems’ novelty may ultimately be
+      viewed as sophisticated interpolation over the human mathematical corpus,
+      but this does not change the truth of the claim as worded."

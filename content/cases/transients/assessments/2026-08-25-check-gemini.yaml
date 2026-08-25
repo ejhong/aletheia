@@ -1,0 +1,184 @@
+# Cross-model check run — an independent judge (Gemini 3.1 Pro (Google)),
+# blind to all prior assessments (scripts/cross-model-check.mjs,
+# promptVersion aletheia-check-v1). role: check — never displayed as the case
+# narrative; feeds the concurrence panel. Append-only; NOT human reviewed.
+runId: 2026-08-25-check-gemini
+model: Gemini 3.1 Pro (Google) — independent check run via gemini-3.1-pro-preview
+date: 2026-08-25
+promptVersion: aletheia-check-v1
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: unresolved
+  loadBearing:
+    - TRN-C020
+    - TRN-C001
+    - TRN-C007
+  weakestLinks:
+    - TRN-C022
+    - TRN-C023
+    - TRN-C005
+    - TRN-C006
+  synthesis: >-
+    The hypothesis that pre-Sputnik photographic plates record real optical
+    flashes from near-Earth objects rests on two evidentiary pillars: the
+    canonical multi-transient events of 1950 and 1952, and the ensemble
+    statistics of a ~107,000-object working catalog. On the first pillar, the
+    physical reality of the marks on the emulsion is now firmly established.
+    Recent unpublished microscopy locates the 1950 marks on the original
+    telescope negative, decisively bypassing the strongest mundane explanation—a
+    shared copy-stage defect—for those specific events. However, this same
+    microscopy confirms that the morphological distinction between a sub-second
+    flash and an intrinsic emulsion defect is currently irresolvable at the
+    single-source level. An independent microscopist consulting on the
+    examination concluded that emulsion defects remain a reasonable attribution.
+    The crux thus remains fully open: the marks exist, and they were not born in
+    digitization or copying, but whether they were made by photons or chemistry
+    is unsettled.
+
+    On the second pillar, the ensemble statistics (Earth-shadow deficit, nuclear
+    test timing) are highly sensitive to catalog construction. Replications run
+    on the authors' original candidate rows consistently reproduce the claimed
+    signals, but independent source extraction and spatial modeling dissolve
+    them entirely, suggesting the correlations may be properties of an
+    unvalidated dataset and the observatory's schedule rather than the sky. 
+
+    Steelman for the proponents: The canonical marks are real, reside on the
+    original glass, and exhibit the sharp morphology expected of genuine
+    sub-second flashes. New independent evidence outside the Palomar lineage
+    shows similar transients and, crucially, reports coma aberrations—an optical
+    signature of incident light that plate chemistry cannot naturally mimic. 
+
+    Steelman for the critics: Archival astronomy is replete with star-like
+    emulsion artifacts. The canonical marks' sharp profiles map perfectly to
+    known spurious defects, and the population-level claims evaporate when
+    subjected to independent extraction and basic controls for spatial
+    clustering. 
+
+    With the central crux unresolved and the ensemble evidence heavily disputed,
+    the headline claim of pre-Sputnik artificial objects is entirely
+    unsupported, and its extraterrestrial extension is presently untestable. The
+    case now hinges on upcoming blind validations of the coma discriminant and
+    prospective multi-station simultaneous imaging.
+claimAssessments:
+  - claimId: TRN-C022
+    verdict: unresolved
+    confidence: high
+    reasoning: There is no direct evidence establishing the presence of artificial
+      objects before Sputnik. The claim relies entirely on contested population
+      statistics and unverified near-Earth geometric inferences. The strongest
+      opposing consideration is that the foundational optical detections may
+      simply be photographic emulsion defects, as the essential physical crux
+      remains unproven either way.
+  - claimId: TRN-C023
+    verdict: presently_untestable
+    confidence: high
+    reasoning: There is no observational evidence in the case file that could test
+      the extraterrestrial origin of these purported artifacts. Every supporting
+      rung of the ladder remains unresolved. The strongest opposing
+      consideration is that we have not even established if the marks are real
+      astronomical events, let alone artificial or extraterrestrial.
+  - claimId: TRN-C021
+    verdict: unresolved
+    confidence: high
+    reasoning: The geometric evidence for near-Earth origin (the Earth-shadow
+      deficit) replicates on the proponents' working catalog but fails when
+      spatial clustering and background nonuniformity are controlled for.
+      Furthermore, even if near-Earth origin were true, natural mechanisms like
+      dusty plasmas have been proposed. The strongest opposing consideration is
+      that the core geometric signal dissolves under strict independent
+      reanalysis of spatial distributions.
+  - claimId: TRN-C020
+    verdict: unresolved
+    confidence: high
+    reasoning: Unpublished microscopy confirms the canonical marks are present on
+      the original negatives, ruling out digitization artifacts, but also
+      concedes that microscopy cannot distinguish between a short-duration flash
+      and an original emulsion defect. The strongest opposing consideration is
+      that the canonical marks morphologically group with known artifact
+      classes, and independent visual inspection leaned toward emulsion defects.
+  - claimId: TRN-C007
+    verdict: well_supported
+    confidence: high
+    reasoning: The plate-copy genealogy tracing modern digitizations back to a
+      common intermediate positive is well-established by photographic archive
+      experts. While recent examinations bypass this mechanism for the two
+      canonical events by verifying the original negatives, the mechanism
+      remains valid for the broader catalog. The strongest opposing
+      consideration is that proving a shared pathway exists does not provide an
+      actual measured occurrence rate for copy-stage defects.
+  - claimId: TRN-C001
+    verdict: established
+    confidence: high
+    reasoning: The physical presence of the nine marks on the plate material is
+      agreed upon by proponents and critics alike, having been confirmed via
+      independent inspection of copy plates and unpublished microscopy of the
+      original telescope negative. The strongest opposing consideration is that
+      similar anomalous marks appear on neighboring plates, suggesting a
+      systemic defect issue rather than a unique sky event.
+  - claimId: TRN-C002
+    verdict: established
+    confidence: high
+    reasoning: "Both skeptics and proponents agree on the measurement itself: the
+      marks are systematically sharper and more concentrated than typical
+      stellar images. The conflict lies strictly in interpretation, with
+      proponents citing sub-second flashes and critics citing artifacts. The
+      strongest opposing consideration is that in automated morphology
+      classification, this exact sharpness profile is the known signature for
+      spurious plate defects."
+  - claimId: TRN-C003
+    verdict: well_supported
+    confidence: high
+    reasoning: The 1952 triple transient event is detailed in a peer-reviewed paper,
+      was followed up by deep modern imaging, and was successfully recovered by
+      an independent detection pipeline. The strongest opposing consideration is
+      that, unlike the 1950 event, there is no published independent physical
+      inspection of the surviving original plate material to definitively rule
+      out a copy defect.
+  - claimId: TRN-C004
+    verdict: well_supported
+    confidence: high
+    reasoning: An independent extraction pipeline successfully rebuilt a catalog
+      from scratch that recovered the canonical events and most of the public
+      candidate dataset, ruling out simple software bugs. The strongest opposing
+      consideration is that reproducing detections from the same underlying
+      digitized copies does not prove physical origin, and the vast size of the
+      raw background highlights sensitivity to vetting choices.
+  - claimId: TRN-C005
+    verdict: mixed
+    confidence: high
+    reasoning: Independent analysts reproduce the Earth-shadow deficit when using
+      the exact candidate rows supplied by the authors, even when augmented by
+      ML artifact scoring. However, the signal vanishes completely in reanalyses
+      that correct for non-uniform spatial clustering across the plates. The
+      strongest opposing consideration is that the uniform-random background
+      assumption underpinning the deficit claim is demonstrably false for these
+      images.
+  - claimId: TRN-C006
+    verdict: mixed
+    confidence: high
+    reasoning: The correlation with atmospheric nuclear tests successfully
+      replicates when statistical tests are run on the authors' original catalog
+      rows. Yet, an independent extraction pipeline that models nightly sky
+      coverage and observatory scheduling finds no statistically significant
+      effect. The strongest opposing consideration is that a correlation
+      surviving only on one specific set of unvalidated rows is likely a
+      schedule artifact.
+  - claimId: TRN-C010
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: A preliminary search of Hamburg Observatory plates found analogous
+      single-exposure candidates, demonstrating the phenomenon exists outside
+      the Palomar copy lineage. The strongest opposing consideration is that the
+      search currently lacks a measured candidate rate against matched controls,
+      making it impossible to separate a real sky phenomenon from universal
+      emulsion degradation.
+  - claimId: TRN-C011
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: A preprint reports coma aberration signatures in Hamburg transient
+      candidates, providing a potential physical discriminant for actual
+      incident light that chemical defects should not possess. The strongest
+      opposing consideration is that the classifier has not been blind-validated
+      against a corpus of known defects to rule out artifacts mimicking
+      directional asymmetry.

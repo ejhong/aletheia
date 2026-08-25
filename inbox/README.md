@@ -84,3 +84,14 @@ in place with a note in the run report.
   clean and every run is traceable (and revertable) by its runId.
 - You get a PR with a plain-language digest — read it on your phone, tap
   merge (or request changes). See `docs/MAINTENANCE.md`.
+
+## What does NOT belong here
+
+Material for a case that does not exist yet. The inbox is the intake for
+existing cases — its contents are committed to the public repository and
+swept by the maintenance pipeline. New-case source material goes in
+`casework/` (gitignored, local-only) and is worked on directly with an
+agent; it enters the repository only when the case is scaffolded, record
+by record, with provenance. Decided 2026-08-25 after a blanket `git add`
+nearly published pre-case documents — caught by the arbiter's first live
+vote.

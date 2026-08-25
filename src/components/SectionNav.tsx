@@ -74,6 +74,12 @@ export function SectionNav({
               resources →
             </Link>
             <Link
+              href={`/cases/${slug}/evidence/`}
+              className="font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-copper"
+            >
+              all evidence →
+            </Link>
+            <Link
               href={`/cases/${slug}/claims/`}
               className="font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-copper"
             >

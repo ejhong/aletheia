@@ -1,0 +1,29 @@
+# Instant intake (event-driven, no polling): a push that touches the inbox
+# — a drop from the founder's phone, a link list, a document — dispatches
+# the Maintain pipeline in inbox mode within seconds. Moves INTO
+# inbox/processed/ do not retrigger (that's the pipeline's own tidying),
+# and a run that finds nothing to process exits as a no-op, so the loop
+# terminates by construction.
+name: Inbox response
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "inbox/**"
+      - "!inbox/processed/**"
+
+concurrency:
+  group: inbox-response
+  cancel-in-progress: false
+
+permissions:
+  actions: write
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run maintain.yml -f mode=inbox --repo "${{ github.repository }}"

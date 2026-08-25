@@ -12,9 +12,10 @@ import {
   historyNewestFirst,
   lastContentUpdate,
   crossModelSummary,
+  RATIFICATION_MIN_PANEL,
+  ratification,
   latestCheckPerModel,
   displayAssessment,
-  editorialAssessment,
   latestAssessment,
   liveClaims,
   loadAllCases,
@@ -378,54 +379,160 @@ describe("article parser", () => {
   });
 });
 
-describe("v1.1 governance", () => {
-  const mkRun = (runId: string, humanReviewed: boolean, date: string) => ({
+describe("ratification governance (stage 3)", () => {
+  const mkDraft = (
+    runId: string,
+    date: string,
+    verdict = "unresolved",
+    loadBearing: string[] = [],
+    claimVerdicts: Record<string, string> = {},
+  ) => ({
     runId,
-    model: "test",
+    model: "house/test",
     date,
     promptVersion: "t",
-    humanReviewed,
+    humanReviewed: false,
+    role: "draft" as const,
     caseAssessment: {
-      verdict: "unresolved" as const,
-      loadBearing: [],
+      verdict,
+      loadBearing,
       weakestLinks: [],
       synthesis: "x".repeat(120),
     },
-    claimAssessments: [],
+    claimAssessments: Object.entries(claimVerdicts).map(
+      ([claimId, verdict]) => ({
+        claimId,
+        verdict,
+        reasoning: "test reasoning",
+        confidence: "moderate",
+      }),
+    ),
   });
-  const withRuns = (runs: ReturnType<typeof mkRun>[]) =>
-    ({ assessmentRuns: runs }) as unknown as Parameters<
-      typeof editorialAssessment
-    >[0];
+  const mkCheck = (
+    model: string,
+    date: string,
+    verdict = "unresolved",
+    claimVerdicts: Record<string, string> = {},
+  ) => ({
+    ...mkDraft(`${date}-check-${model}`, date, verdict, [], claimVerdicts),
+    model: `${model} (Vendor) — independent check`,
+    role: "check" as const,
+  });
+  const caseWith = (
+    runs: unknown[],
+    history: { date: string; kind?: string }[] = [],
+  ) =>
+    ({
+      assessmentRuns: runs,
+      history: history.map((h) => ({
+        date: h.date,
+        kind: h.kind,
+        change: "c",
+        reason: "r",
+        actor: "a",
+        aiAssisted: true,
+      })),
+    }) as unknown as Parameters<typeof ratification>[0];
+  const fiveChecks = (verdict: string, dissenters = 0, date = "2026-02-01") =>
+    ["alpha", "beta", "gamma", "delta", "epsilon"].map((m, i) =>
+      mkCheck(m, date, i < dissenters ? "mixed" : verdict),
+    );
 
-  it("only a human-reviewed run presents as editorial", () => {
-    const draftOnly = withRuns([mkRun("a", false, "2026-01-01")]);
-    expect(editorialAssessment(draftOnly)).toBeNull();
-    expect(displayAssessment(draftOnly)?.humanEndorsed).toBe(false);
+  it("no checks → unratified, and the reason says so", () => {
+    const r = ratification(caseWith([mkDraft("d", "2026-01-01")]));
+    expect(r?.status).toBe("unratified");
+    expect(r?.reason).toMatch(/no independent model/);
   });
 
-  it("a newer unreviewed run never displaces an endorsed one", () => {
-    const both = withRuns([
-      mkRun("endorsed", true, "2026-01-01"),
-      mkRun("newer-draft", false, "2026-02-01"),
-    ]);
-    const shown = displayAssessment(both);
-    expect(shown?.humanEndorsed).toBe(true);
-    expect(shown?.run.runId).toBe("endorsed");
-    // ...while latestAssessment still exposes the draft for the review alert.
+  it("a panel below the minimum cannot ratify", () => {
+    const r = ratification(
+      caseWith([
+        mkDraft("d", "2026-01-01"),
+        ...fiveChecks("unresolved").slice(0, RATIFICATION_MIN_PANEL - 1),
+      ]),
+    );
+    expect(r?.status).toBe("unratified");
+  });
+
+  it("full agreement ratifies; one dissenter is tolerated; two are not", () => {
+    const draft = mkDraft("d", "2026-01-01");
+    expect(ratification(caseWith([draft, ...fiveChecks("unresolved")]))?.status).toBe(
+      "ratified",
+    );
     expect(
-      latestAssessment(both as unknown as Parameters<typeof latestAssessment>[0])
-        ?.runId,
-    ).toBe("newer-draft");
+      ratification(caseWith([draft, ...fiveChecks("unresolved", 1)]))?.status,
+    ).toBe("ratified");
+    const two = ratification(caseWith([draft, ...fiveChecks("unresolved", 2)]));
+    expect(two?.status).toBe("contested");
+    expect(two?.reason).toMatch(/2 of 5 models dispute/);
   });
 
-  it("every case carries a research priority; no editorial assessment is claimed yet", () => {
+  it("content newer than the panel resets standing to unratified — never to ratified", () => {
+    const r = ratification(
+      caseWith(
+        [mkDraft("d", "2026-01-01"), ...fiveChecks("unresolved")],
+        [{ date: "2026-03-01" }],
+      ),
+    );
+    expect(r?.status).toBe("unratified");
+    expect(r?.staleSince).toBe("2026-03-01");
+  });
+
+  it("housekeeping history does not stale the panel", () => {
+    const r = ratification(
+      caseWith(
+        [mkDraft("d", "2026-01-01"), ...fiveChecks("unresolved")],
+        [{ date: "2026-03-01", kind: "housekeeping" }],
+      ),
+    );
+    expect(r?.status).toBe("ratified");
+  });
+
+  it("a load-bearing claim the panel rejects blocks ratification even with case-verdict agreement", () => {
+    const draft = mkDraft("d", "2026-01-01", "unresolved", ["C1"], {
+      C1: "well_supported",
+    });
+    const checks = ["alpha", "beta", "gamma", "delta", "epsilon"].map((m, i) =>
+      mkCheck(m, "2026-02-01", "unresolved", {
+        C1: i < 3 ? "contradicted" : "well_supported",
+      }),
+    );
+    const r = ratification(caseWith([draft, ...checks]));
+    expect(r?.status).toBe("contested");
+    expect(r?.contestedLoadBearing).toEqual(["C1"]);
+  });
+
+  it("displayAssessment always shows the latest draft, stamped with its standing", () => {
+    const shown = displayAssessment(
+      caseWith([
+        mkDraft("old", "2026-01-01", "mixed"),
+        mkDraft("new", "2026-02-01"),
+        ...fiveChecks("unresolved", 0, "2026-02-02"),
+      ]) as unknown as Parameters<typeof displayAssessment>[0],
+    );
+    expect(shown?.run.runId).toBe("new");
+    expect(shown?.ratification.status).toBe("ratified");
+  });
+
+  it("every live case derives a valid standing from a full panel", () => {
+    for (const c of loadAllCases()) {
+      const shown = displayAssessment(c);
+      expect(shown).not.toBeNull();
+      expect(["ratified", "contested", "unratified"]).toContain(
+        shown!.ratification.status,
+      );
+      expect(shown!.ratification.panel).toBeGreaterThanOrEqual(
+        RATIFICATION_MIN_PANEL,
+      );
+      expect(shown!.ratification.reason.length).toBeGreaterThan(10);
+    }
+  });
+
+  it("every case carries a research priority", () => {
     for (const c of loadAllCases()) {
       expect(["high", "medium", "low"]).toContain(
         c.record.researchPriority.level,
       );
-      // As of v1.1 launch no run is human-endorsed; cards must say so.
-      expect(displayAssessment(c)?.humanEndorsed).toBe(false);
     }
   });
 

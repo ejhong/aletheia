@@ -17,14 +17,14 @@ import type {
 export function CaseCard({
   record,
   verdict,
-  verdictHumanEndorsed,
+  standing,
   reviewCoverage,
   check,
   cover,
 }: {
   record: CaseRecord;
   verdict: AssessmentState | null;
-  verdictHumanEndorsed: boolean;
+  standing: "ratified" | "contested" | "unratified" | null;
   reviewCoverage: { reviewed: number; total: number };
   /** Cross-model check summary line: judge count and case-level concurrence. */
   check?: { models: number; concur: boolean } | null;
@@ -72,9 +72,11 @@ export function CaseCard({
           <PriorityBadge level={record.researchPriority.level} />
           <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-faint">
             {verdict
-              ? verdictHumanEndorsed
-                ? "editorial assessment"
-                : "AI draft · unreviewed"
+              ? standing === "ratified"
+                ? "assessment · ratified"
+                : standing === "contested"
+                  ? "assessment · contested"
+                  : "AI draft · unratified"
               : "no assessment yet"}
           </span>
           <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-faint">

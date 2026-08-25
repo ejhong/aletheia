@@ -116,13 +116,20 @@ const votes = await Promise.all(Object.keys(VENDORS).map(seatVote));
 // Weekly content throttle: count distinct commits on the base branch in the
 // last 7 days that touch published case content. Applies only when this
 // change itself touches content, and only ever downgrades pass -> park.
+// Canon only: assessment overlays are mechanical, append-only, and land
+// every time a panel convenes — counting them would spend the budget on
+// the machinery's own heartbeat (the first live run parked a 5/5-complies
+// PR at "41/10" for exactly that reason).
+const CANON = ["content/cases/", ":!content/cases/*/assessments"];
 const touchesContent = git(
   "diff",
   "--name-only",
   `${mergeBase}..${head}`,
-).split("\n").some((f) => f.startsWith("content/cases/"));
+  "--",
+  ...CANON,
+).trim().length > 0;
 const mergesThisWeek = new Set(
-  git("log", "--since=7.days", "--format=%H", base, "--", "content/cases/")
+  git("log", "--since=7.days", "--format=%H", base, "--", ...CANON)
     .split("\n")
     .filter(Boolean),
 ).size;

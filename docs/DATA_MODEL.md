@@ -90,6 +90,15 @@ The provenance container: bibliographic identity, type, identifier/URL, and a **
 
 Never invent locators. If a locator is not verified, label it.
 
+**Admission rule (build-time, fail-closed):** a source may sit in
+`sources.yaml` only if an evidence record or claim anchor cites it —
+load-bearing, not merely relevant — or if it carries `background: true`,
+the honest label for reading-guide material (shown on the case's resources
+page, carrying no evidential weight). The label fails in both directions:
+an uncited source without the flag fails the build, and a cited source
+still marked background fails too. Enforced by `sourceAdmissionErrors` in
+`src/domain/load.ts`.
+
 ## Assessment run (overlay)
 
 One file per run: `runId`, `model`, `date`, `promptVersion`, plus:

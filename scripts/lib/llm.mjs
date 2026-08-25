@@ -10,7 +10,13 @@
 const providers = {
   anthropic: {
     key: process.env.ANTHROPIC_API_KEY,
-    model: process.env.EXTRACT_MODEL || "claude-fable-5",
+    // claude-opus-5, not claude-fable-5 (reversing decision #15): Fable's
+    // safety filter refuses plain pharmacology statements about anesthetic
+    // mechanisms — 11 of orch-or's 18 claims individually return
+    // stop_reason "refusal" ("general anesthetics bind tubulin…"), which is
+    // why that case's reassessment failed three times with empty replies.
+    // Opus answers the identical prompts. Verified 2026-08-25.
+    model: process.env.EXTRACT_MODEL || "claude-opus-5",
     async call(system, user) {
       const res = await fetch("https://api.anthropic.com/v1/messages", {
         method: "POST",
@@ -21,7 +27,13 @@ const providers = {
         },
         body: JSON.stringify({
           model: this.model,
-          max_tokens: 8192,
+          // Adaptive thinking shares this budget with the visible reply —
+          // there is no thinking-budget parameter on this model family. A
+          // large case (18 claims) can burn a small budget entirely on
+          // thinking and return zero text blocks, which is how the orch-or
+          // reassessment kept failing with an empty reply.
+          max_tokens: 64000,
+          output_config: { effort: "medium" },
           system,
           messages: [{ role: "user", content: user }],
         }),
@@ -96,8 +108,21 @@ export function noKeyMessage() {
   ].join("\n");
 }
 
-/** Models occasionally wrap JSON in a code fence; strip it and parse. */
+/**
+ * Models occasionally wrap JSON in a code fence, preface it with a sentence,
+ * or trail it with commentary. Try the obvious parses first; fall back to
+ * the outermost brace span. Still throws on genuinely malformed JSON —
+ * callers are fail-closed and must stay that way.
+ */
 export function parseJsonReply(text) {
-  const m = text.match(/```(?:json)?\s*([\s\S]*?)```/);
-  return JSON.parse((m ? m[1] : text).trim());
+  const fence = text.match(/```(?:json)?\s*([\s\S]*?)```/);
+  const candidate = (fence ? fence[1] : text).trim();
+  try {
+    return JSON.parse(candidate);
+  } catch {
+    const start = candidate.indexOf("{");
+    const end = candidate.lastIndexOf("}");
+    if (start === -1 || end <= start) throw new Error("no JSON object in reply");
+    return JSON.parse(candidate.slice(start, end + 1));
+  }
 }

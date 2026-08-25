@@ -230,8 +230,31 @@ async function callVendor(name, cfg) {
   return t.trim();
 }
 
+/**
+ * Parse a model's YAML reply, tolerating trailing non-YAML junk. Some
+ * replies arrive with a stray footer line after the document (observed
+ * twice from the Anthropic vendor on ccc: a "Refusal: … Bias: …" scoring
+ * line that is not part of the assessment) — a top-level line like that
+ * breaks the whole parse and quarantines an otherwise valid run. Strategy:
+ * parse as-is; on failure, drop trailing lines one at a time (up to 5) and
+ * retry. Content is never modified above the failure point, and a reply
+ * that is genuinely malformed still fails closed.
+ */
+function parseYamlReply(yamlText) {
+  const lines = yamlText.split("\n");
+  let lastErr;
+  for (let drop = 0; drop <= Math.min(5, lines.length - 1); drop++) {
+    try {
+      return parseYaml(lines.slice(0, lines.length - drop).join("\n"));
+    } catch (err) {
+      lastErr = err;
+    }
+  }
+  throw lastErr;
+}
+
 function validate(name, yamlText) {
-  const d = parseYaml(yamlText);
+  const d = parseYamlReply(yamlText);
   const problems = [];
   if (d.role !== "check") problems.push("role is not 'check'");
   if (!VERDICTS.includes(d.caseAssessment?.verdict))

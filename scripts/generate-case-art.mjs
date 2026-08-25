@@ -47,6 +47,10 @@ const CASE_TONES = {
     "faint graphite-grey and warm dove-grey washes over generous expanses " +
     "of bare cream paper — the sparest cover in the set — with one small " +
     "deep-lapis accent at the observer's lantern",
+  "immortality-key":
+    "muted Tyrian purple and wine-dark washes on the cup and vine, pale " +
+    "barley-gold ears of grain, warm umber shadows, one small pale-mint " +
+    "green accent on the herb sprig",
 };
 
 /**
@@ -73,6 +77,15 @@ const CASE_SUBJECTS = {
     "lattice condense out of nothing; outside it, bare cream paper — " +
     "world as output, not backdrop. An allegorical emblem, never a " +
     "depiction of any real experiment or dataset as documentation.",
+  "immortality-key":
+    "A two-handled ancient Greek drinking cup standing on a plain stone " +
+    "ledge in a quiet niche, sheaves of barley leaning beside it with a " +
+    "few grain heads bearing darkened, hornlike sclerotia, a small sprig " +
+    "of mint laid at its foot, and a grapevine climbing one handle; two " +
+    "crossed unlit ceremonial torches rest behind the cup. The cup's " +
+    "interior is dark and unreadable — the question is what it held. An " +
+    "allegorical emblem, never a depiction of any real excavated vessel, " +
+    "sanctuary, or laboratory result as documentation.",
 };
 
 /** One reversible generation run: a single runId stamped on every record. */

@@ -25,6 +25,12 @@ on:
   schedule:
     - cron: "0 14 * * 1" # Mondays 14:00 UTC
   workflow_dispatch:
+    inputs:
+      mode:
+        description: "full = everything; inbox = intake + reassess only (event-triggered drops)"
+        type: choice
+        options: [full, inbox]
+        default: full
 
 permissions:
   contents: write
@@ -79,6 +85,7 @@ jobs:
       # labeled relevance notes. Runs older than 60 days expire (deleted;
       # git history keeps the record).
       - name: Watch literature
+        if: ${{ (inputs.mode || 'full') == 'full' }}
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -98,6 +105,7 @@ jobs:
       # run's inbox step — nothing touches sources.yaml directly, and the
       # build-time source admission rule holds regardless.
       - name: Triage watch results
+        if: ${{ (inputs.mode || 'full') == 'full' }}
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -111,12 +119,17 @@ jobs:
           rm -f triage-out.txt
 
       - name: Harvest governance and write the weekly digest
+        if: ${{ (inputs.mode || 'full') == 'full' }}
         env:
-          GH_TOKEN: ${{ secrets.MAINTENANCE_PAT || secrets.GITHUB_TOKEN }}
+          # Deliberately the Actions bot token, not the PAT: GitHub
+          # suppresses notifications for your own activity, and the digest
+          # exists to be emailed to the founder.
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           node scripts/harvest-governance.mjs --digest || echo "::warning::governance harvest failed; continuing"
           if [ -f weekly-digest.md ]; then
             date=$(date +%Y-%m-%d)
+            printf '\n\ncc @%s\n' "${GITHUB_REPOSITORY_OWNER}" >> weekly-digest.md
             gh issue create --title "Weekly digest — ${date}" --body-file weekly-digest.md \
               || echo "::warning::could not open the digest issue"
             rm -f weekly-digest.md

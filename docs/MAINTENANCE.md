@@ -27,10 +27,28 @@ panel and the instruction is to vote unsure rather than judge what was
 not shown. Seats that error or refuse become explicit unsure votes,
 visible in the report, never dropped from the denominator.
 
-During the dry period the check is **advisory**: the founder's merge tap
-still decides, so parked-vs-merged disagreements can be compared before
-the tap is retired. Retiring it is a branch-protection change (make the
-arbiter check required), not a code change. The Stage-4 tail is in place:
+**The dry period ended 2026-08-25: the gate is live.** The `arbiter`
+check is required on main and a passing verdict auto-merges the PR (via
+the maintenance PAT, so downstream workflows fire). A parked PR cannot
+merge and waits publicly — in the digest, on /panel, and for the operator
+to revise. The founder's admin override remains as the kill switch
+(admin enforcement is deliberately off), and reverting any merge by
+runId remains one command.
+
+**Event-driven operation** (no polling):
+
+- **Inbox push → instant intake.** Any push touching `inbox/` (except
+  the pipeline's own moves into `inbox/processed/`) dispatches Maintain
+  in `inbox` mode within seconds. Dropping a file from the GitHub phone
+  app IS the trigger.
+- **Canon merge → judgment ripple.** Any push to `content/cases/`
+  outside `assessments/` triggers reassessment plus fresh panels for
+  whatever went stale, proposed back as a PR through the normal gates.
+  Overlay-only merges do not match the filter, so the ripple terminates.
+- **Weekly (Mondays)**: literature watch, triage, governance harvest,
+  and the digest issue — created with the Actions bot token and
+  cc-ing the founder, because GitHub suppresses notifications for
+  one's own PAT activity and the digest exists to be emailed. The Stage-4 tail is in place:
 
 - **Governance harvest** (`scripts/harvest-governance.mjs`, in the weekly
   Maintain run): each settled PR's arbiter verdict — the machine blob the

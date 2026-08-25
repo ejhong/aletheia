@@ -31,7 +31,13 @@ import fs from "node:fs";
 import path from "node:path";
 import { parseJsonReply } from "./lib/llm.mjs";
 import { callVendor, VENDORS } from "./lib/vendors.mjs";
-import { capDiff, tallyVerdict, validateVote } from "./lib/arbiter-core.mjs";
+import {
+  capDiff,
+  CONTENT_MERGES_PER_WEEK,
+  rateLimitGate,
+  tallyVerdict,
+  validateVote,
+} from "./lib/arbiter-core.mjs";
 
 const PROMPT_VERSION = "aletheia-arbiter-v1";
 const args = process.argv.slice(2);
@@ -106,7 +112,24 @@ async function seatVote(name) {
 }
 
 const votes = await Promise.all(Object.keys(VENDORS).map(seatVote));
-const verdict = tallyVerdict(votes);
+
+// Weekly content throttle: count distinct commits on the base branch in the
+// last 7 days that touch published case content. Applies only when this
+// change itself touches content, and only ever downgrades pass -> park.
+const touchesContent = git(
+  "diff",
+  "--name-only",
+  `${mergeBase}..${head}`,
+).split("\n").some((f) => f.startsWith("content/cases/"));
+const mergesThisWeek = new Set(
+  git("log", "--since=7.days", "--format=%H", base, "--", "content/cases/")
+    .split("\n")
+    .filter(Boolean),
+).size;
+const verdict = rateLimitGate(tallyVerdict(votes), {
+  touchesContent,
+  mergesThisWeek,
+});
 
 const report = [
   `<!-- aletheia-arbiter -->`,
@@ -127,7 +150,19 @@ const report = [
   omitted.length > 0
     ? `> ⚠️ ${omitted.length} file(s) exceeded the diff budget and were not shown to the panel: ${omitted.join(", ")}`
     : "",
+  verdict.rateLimited
+    ? `> ⏳ Rate limit: ${mergesThisWeek}/${CONTENT_MERGES_PER_WEEK} content merges in the trailing week.`
+    : "",
   `> Dry-period note: this report is advisory while the founder's merge tap remains; the same exit code will gate auto-merge when the tap is retired (docs/MAINTENANCE.md).`,
+  // Machine-readable record for scripts/harvest-governance.mjs — kept
+  // inside an HTML comment so the human report stays clean.
+  `<!-- aletheia-arbiter-data ${JSON.stringify({
+    verdict: verdict.outcome,
+    reason: verdict.reason,
+    judgedAgainst: mergeBase.slice(0, 10),
+    promptVersion: PROMPT_VERSION,
+    seats: votes,
+  })} -->`,
 ].join("\n");
 
 console.log(report);

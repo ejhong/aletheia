@@ -30,10 +30,30 @@ visible in the report, never dropped from the denominator.
 During the dry period the check is **advisory**: the founder's merge tap
 still decides, so parked-vs-merged disagreements can be compared before
 the tap is retired. Retiring it is a branch-protection change (make the
-arbiter check required), not a code change. Still pending for full Stage
-4: the weekly digest, the content-merge rate limit, and harvesting
-arbiter reports from merged PRs into `governance/` so the site can show
-them.
+arbiter check required), not a code change. The Stage-4 tail is in place:
+
+- **Governance harvest** (`scripts/harvest-governance.mjs`, in the weekly
+  Maintain run): each settled PR's arbiter verdict — the machine blob the
+  report embeds, or a fail-closed parse of the legacy markdown for the
+  first dry-period reports — is copied verbatim into
+  `governance/arbiter/pr-<n>.yaml`. Append-only, harvested only after a PR
+  settles (a verdict on an open PR may still change), classified low-risk
+  because a harvested record cannot mint standing. This is what makes
+  governance visible to the static site (`/panel`).
+- **Weekly digest**: the same run opens a GitHub issue — what settled,
+  what the panel said, whether anything merged against a parked verdict,
+  what is open. The founder's observer artifact; subscribing to issues is
+  the whole loop.
+- **Content rate limit** (`CONTENT_MERGES_PER_WEEK` in
+  `scripts/lib/arbiter-core.mjs`): an otherwise-passing change that
+  touches `content/cases/` parks once the trailing week has spent the
+  budget. Never upgrades a verdict; never throttles code or docs.
+- **Prioritized diff delivery**: when a PR exceeds the panel's diff
+  budget, files are kept by scrutiny tier (governance surface, then
+  content canon, then mechanically-guarded records) instead of by
+  position — the first dry-period parks were partly "unsure because I
+  could not see sources.yaml" while bulky append-only overlays filled the
+  budget. Omissions remain loud.
 
 ## The observer's loop (was: your day-to-day)
 

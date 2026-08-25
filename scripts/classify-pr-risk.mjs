@@ -65,6 +65,12 @@ for (const { status, file } of nameStatus) {
   if (file.startsWith("proposals/") || file.startsWith("inbox/")) {
     continue; // always low-risk: never published
   }
+  if (/^governance\/arbiter\/pr-\d+\.yaml$/.test(file) && status === "A") {
+    // Harvested arbiter verdicts: verbatim machine copies of public PR
+    // comments, append-only. They display on /panel but cannot mint
+    // standing or change any assessment — same rationale as new overlays.
+    continue;
+  }
   if (/^content\/cases\/[^/]+\/assessments\/[^/]+\.yaml$/.test(file)) {
     if (status === "A") continue; // new append-only overlay
     lowRisk = false;

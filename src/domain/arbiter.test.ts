@@ -2,6 +2,8 @@ import { describe, expect, it } from "vitest";
 import {
   ARBITER_MIN_COMPLIES,
   capDiff,
+  CONTENT_MERGES_PER_WEEK,
+  rateLimitGate,
   tallyVerdict,
   validateVote,
 } from "../../scripts/lib/arbiter-core.mjs";
@@ -96,5 +98,38 @@ describe("capDiff — truncation is loud", () => {
     const { text, omitted } = capDiff(d, 500);
     expect(text).toContain("kept.ts");
     expect(omitted).toEqual(["dropped/one.ts", "dropped/two.ts"]);
+  });
+
+  it("drops mechanically-guarded files before canon content, regardless of position", () => {
+    // Regression for the dry-period parks: positional truncation dropped
+    // sources.yaml while keeping bulky append-only overlays.
+    const d =
+      section("content/cases/x/assessments/2026-01-01-check-opus.yaml", 600) +
+      section("content/cases/x/sources.yaml", 300) +
+      section("scripts/arbiter.mjs", 200);
+    const { text, omitted } = capDiff(d, 700);
+    expect(text).toContain("sources.yaml");
+    expect(text).toContain("scripts/arbiter.mjs");
+    expect(omitted).toEqual(["content/cases/x/assessments/2026-01-01-check-opus.yaml"]);
+  });
+});
+
+describe("rateLimitGate", () => {
+  const pass = { outcome: "pass", counts: { complies: 5, violates: 0, unsure: 0 }, reason: "5 of 5" };
+  const park = { outcome: "park", counts: { complies: 2, violates: 0, unsure: 3 }, reason: "only 2 of 5" };
+
+  it("parks a passing content change once the weekly budget is spent", () => {
+    const v = rateLimitGate(pass, { touchesContent: true, mergesThisWeek: CONTENT_MERGES_PER_WEEK });
+    expect(v.outcome).toBe("park");
+    expect(v.rateLimited).toBe(true);
+  });
+
+  it("never throttles code/docs changes, and never upgrades a park", () => {
+    expect(rateLimitGate(pass, { touchesContent: false, mergesThisWeek: 99 }).outcome).toBe("pass");
+    expect(rateLimitGate(park, { touchesContent: true, mergesThisWeek: 0 }).outcome).toBe("park");
+  });
+
+  it("leaves a passing change alone under budget", () => {
+    expect(rateLimitGate(pass, { touchesContent: true, mergesThisWeek: CONTENT_MERGES_PER_WEEK - 1 }).outcome).toBe("pass");
   });
 });

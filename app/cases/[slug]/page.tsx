@@ -20,7 +20,6 @@ import {
   historyNewestFirst,
   lastContentUpdate,
   latestCheckPerModel,
-  latestDraftAssessment,
   loadAllCases,
 } from "@/src/domain/load";
 
@@ -57,12 +56,6 @@ export default async function CasePage({
   const loaded = getCaseBySlug(slug);
   const claims = featuredClaims(loaded);
   const shown = displayAssessment(loaded);
-  const latestDraft = latestDraftAssessment(loaded);
-  /** A newer unreviewed AI draft disagreeing with the editorial assessment is a review alert. */
-  const pendingDraft =
-    shown?.humanEndorsed && latestDraft && latestDraft.runId !== shown.run.runId
-      ? latestDraft
-      : null;
   const checks = crossModelSummary(loaded);
   const sourceById = new Map(loaded.sources.map((s) => [s.id, s]));
 
@@ -84,7 +77,7 @@ export default async function CasePage({
         record={loaded.record}
         lastUpdated={lastContentUpdate(loaded)}
         verdict={shown?.run.caseAssessment.verdict ?? null}
-        verdictHumanEndorsed={shown?.humanEndorsed ?? false}
+        standing={shown?.ratification ?? null}
         cover={caseCover(loaded)}
       />
 
@@ -93,15 +86,14 @@ export default async function CasePage({
           <section id="assessment" className="pt-10 scroll-mt-28">
             <AssessmentPanel
               run={shown.run}
-              humanEndorsed={shown.humanEndorsed}
+              standing={shown.ratification}
               claims={claims}
             />
-            {pendingDraft ? (
+            {shown.ratification.status !== "ratified" ? (
               <p className="mt-3 border border-ochre/40 bg-ochre/8 px-4 py-2.5 font-mono text-[11px] tracking-[0.06em] text-ochre">
-                A newer AI reassessment ({pendingDraft.runId}, verdict:{" "}
-                {pendingDraft.caseAssessment.verdict}) exists and has not been
-                human-reviewed. It does not replace the editorial assessment
-                above.
+                {shown.ratification.status === "contested"
+                  ? `Contested: ${shown.ratification.reason}. The disagreement is shown below, not resolved by hiding it.`
+                  : `Not yet ratified: ${shown.ratification.reason}.`}
               </p>
             ) : null}
             {checks ? (

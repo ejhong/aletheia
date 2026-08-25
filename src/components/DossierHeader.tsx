@@ -19,14 +19,15 @@ export function DossierHeader({
   record,
   lastUpdated,
   verdict,
-  verdictHumanEndorsed,
+  standing,
   cover,
 }: {
   record: CaseRecord;
   /** Newest content-bearing changelog date; links to #history. */
   lastUpdated: string;
   verdict: AssessmentState | null;
-  verdictHumanEndorsed: boolean;
+  /** Ratification standing of the displayed assessment (load.ts). */
+  standing: { status: "ratified" | "contested" | "unratified"; agreeing: number; panel: number } | null;
   cover?: ImageRecord | null;
 }) {
   return (
@@ -57,10 +58,18 @@ export function DossierHeader({
             {verdict ? (
               <div className="mt-5 flex flex-wrap items-center gap-3">
                 <AssessmentBadge state={verdict} size="lg" />
-                <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-dossier-faint">
-                  {verdictHumanEndorsed
-                    ? "editorial assessment · human-reviewed"
-                    : "AI-drafted assessment · not yet independently ratified"}
+                <span
+                  className={`font-mono text-[10px] uppercase tracking-[0.14em] ${
+                    standing?.status === "contested"
+                      ? "text-ochre"
+                      : "text-dossier-faint"
+                  }`}
+                >
+                  {standing?.status === "ratified"
+                    ? `AI assessment · ratified by ${standing.agreeing} of ${standing.panel} independent models`
+                    : standing?.status === "contested"
+                      ? "AI assessment · contested — independent models split"
+                      : "AI-drafted assessment · not yet independently ratified"}
                 </span>
                 <PriorityBadge level={record.researchPriority.level} size="lg" />
               </div>

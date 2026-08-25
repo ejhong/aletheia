@@ -9,11 +9,16 @@ import type { AssessmentRun, Claim } from "@/src/domain/schema";
  */
 export function AssessmentPanel({
   run,
-  humanEndorsed,
+  standing,
   claims,
 }: {
   run: AssessmentRun;
-  humanEndorsed: boolean;
+  /** Ratification standing (load.ts ratification()). */
+  standing: {
+    status: "ratified" | "contested" | "unratified";
+    reason: string;
+    checksDate: string | null;
+  } | null;
   claims: Claim[];
 }) {
   const claimById = new Map(claims.map((c) => [c.id, c]));
@@ -37,14 +42,18 @@ export function AssessmentPanel({
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <AssessmentBadge state={run.caseAssessment.verdict} size="lg" />
-            <h3 className="font-serif text-xl">
-              {humanEndorsed ? "Editorial assessment" : "Current assessment"}
-            </h3>
+            <h3 className="font-serif text-xl">Current assessment</h3>
           </div>
-          <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-copper">
-            {humanEndorsed
-              ? "human-reviewed and endorsed"
-              : "AI-generated draft — not yet independently ratified"}
+          <p
+            className={`font-mono text-[10px] uppercase tracking-[0.14em] ${
+              standing?.status === "contested" ? "text-ochre" : "text-copper"
+            }`}
+          >
+            {standing?.status === "ratified"
+              ? `ratified by independent models · ${standing.checksDate}`
+              : standing?.status === "contested"
+                ? "contested by independent models"
+                : "AI-generated draft — not yet independently ratified"}
           </p>
         </div>
         <p className="mt-4 text-[15px] leading-[1.75] text-ink-soft whitespace-pre-line">

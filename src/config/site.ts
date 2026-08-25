@@ -9,6 +9,8 @@ export const site = {
     { label: "Method", href: "/method" },
     { label: "Panel", href: "/panel" },
   ],
+  /** Public repository — the ledger every page derives from. */
+  repoUrl: "https://github.com/ejhong/aletheia",
   // Set when the RFP is live on ResearchHub; rendered only if non-null.
   researchHubRfpUrl: null as string | null,
   researchHubRfpLabel: "Request for Proposals on ResearchHub",

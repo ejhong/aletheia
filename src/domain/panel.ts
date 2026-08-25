@@ -8,7 +8,8 @@ import {
   type Ratification,
 } from "./load";
 import { loadArbiterRecords } from "./governance";
-import type { AssessmentRun, AssessmentState, LoadedCase } from "./schema";
+import { site } from "../config/site";
+import type { AssessmentRun, AssessmentState } from "./schema";
 
 /**
  * Derivations for the /panel page — the site's governance made visible.
@@ -179,6 +180,9 @@ export interface OpsEvent {
   title: string;
   detail: string;
   href?: string;
+  /** Link to the verbatim underlying record (usually on GitHub). */
+  sourceHref?: string;
+  sourceLabel?: string;
 }
 
 /** The operations log: the machine's visible metabolism, newest first. */
@@ -191,7 +195,11 @@ export function opsFeed(limit = 40): OpsEvent[] {
       kind: "arbiter",
       title: `Arbiter ${r.verdict === "pass" ? "passed" : "parked"} PR #${r.pr}${r.verdict === "park" && r.outcome === "merged" ? " — founder merged anyway (dry period)" : ""}`,
       detail: r.reason,
-      href: r.url,
+      // Full seat-by-seat reasoning renders on this page (The gate);
+      // the PR itself stays one hop away as the source record.
+      href: `/panel/#arbiter-pr-${r.pr}`,
+      sourceHref: r.url,
+      sourceLabel: `PR #${r.pr}`,
     });
   }
 
@@ -208,6 +216,8 @@ export function opsFeed(limit = 40): OpsEvent[] {
         title: `Panel convened on ${c.record.title} (${runs.length} seat${runs.length === 1 ? "" : "s"})`,
         detail: runs.map((r) => seatName(r.model)).join(" · "),
         href: `/cases/${c.record.slug}/`,
+        sourceHref: `${site.repoUrl}/tree/main/content/cases/${c.record.slug}/assessments`,
+        sourceLabel: "run files",
       });
     }
     for (const h of c.history.slice(-5)) {
@@ -233,6 +243,8 @@ export function opsFeed(limit = 40): OpsEvent[] {
         title: `Reply quarantined (${m[2]})`,
         detail:
           "A vendor reply failed validation and was quarantined rather than installed — fail-closed.",
+        sourceHref: `${site.repoUrl}/tree/main/proposals/cross-model-failures/${d}`,
+        sourceLabel: "quarantined reply",
       });
     }
   }

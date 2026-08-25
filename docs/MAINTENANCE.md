@@ -202,6 +202,16 @@ deliberate archive), and an item the watch flagged `possibleDuplicateOf`
 can never be imported — the guard runs in code, not in the prompt
 (`scripts/lib/triage.mjs`, tested in `src/domain/triage.test.ts`).
 
+**The archive asymmetry is guarded.** Import mistakes are caught
+downstream (the case's standing fails down and the panel re-judges the
+result), but an archived item is judged once, by one model, and then the
+run directory expires. So every archived item is also appended — one line
+each, deduped by DOI/arXiv/title — to `proposals/watch/archive-ledger.yaml`,
+a cumulative ledger that survives expiry. That file is the audit trail for
+the omissions: review it periodically (a second model, or a human), and
+promote anything wrongly archived by dropping its URL as an inbox link
+list.
+
 **The ledger admission rule backs all of this at build time** (enforced in
 `src/domain/load.ts`): a source may sit in `sources.yaml` only if an
 evidence record or claim anchor cites it, or it is explicitly marked

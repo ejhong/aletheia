@@ -332,8 +332,11 @@ function expireOldRuns(watchDir) {
     .slice(0, 10);
   const expired = [];
   for (const entry of fs.readdirSync(watchDir, { withFileTypes: true })) {
+    // The archive ledger survives expiry — it is the audit trail for the
+    // omissions, the whole point of expiring runs without losing reviewability.
+    if (!entry.isDirectory()) continue;
     const m = entry.name.match(/^watch-(\d{4}-\d{2}-\d{2})-/);
-    if (!entry.isDirectory() || !m) continue;
+    if (!m) continue;
     if (m[1] < cutoff) {
       fs.rmSync(path.join(watchDir, entry.name), { recursive: true });
       expired.push(entry.name);

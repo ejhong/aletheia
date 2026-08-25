@@ -3,6 +3,7 @@ import {
   applyDuplicateGuard,
   validateTriageReply,
 } from "../../scripts/lib/triage.mjs";
+import { mergeLedger } from "../../scripts/triage-watch.mjs";
 
 /**
  * The triage step decides what surfaced literature deserves — the two
@@ -89,5 +90,49 @@ describe("applyDuplicateGuard", () => {
       { index: 1, decision: "shelf", reason: "useful reading" },
     ]);
     expect(out[0].decision).toBe("shelf");
+  });
+});
+
+describe("archive ledger — the omission audit trail", () => {
+  const entry = (key: string, title = key) => ({
+    key,
+    case: "ccc",
+    date: "2026-08-25",
+    title,
+    url: null,
+    reason: "tangential",
+    triageRun: "triage-2026-08-25-abcd",
+  });
+
+  it("appends new entries to an empty or existing ledger", () => {
+    const { ledger, added } = mergeLedger(null, [entry("doi:10.1/a")]);
+    expect(added).toBe(1);
+    expect(ledger.items).toHaveLength(1);
+    const again = mergeLedger(ledger, [entry("doi:10.1/b")]);
+    expect(again.added).toBe(1);
+    expect(again.ledger.items).toHaveLength(2);
+  });
+
+  it("never records the same omission twice, so a retried run is idempotent", () => {
+    const first = mergeLedger(null, [entry("doi:10.1/a"), entry("doi:10.1/b")]);
+    const retried = mergeLedger(first.ledger, [
+      entry("doi:10.1/a"),
+      entry("doi:10.1/c"),
+    ]);
+    expect(retried.added).toBe(1);
+    expect(retried.ledger.items.map((i: { key: string }) => i.key)).toEqual([
+      "doi:10.1/a",
+      "doi:10.1/b",
+      "doi:10.1/c",
+    ]);
+  });
+
+  it("dedupes within a single batch too", () => {
+    const { added, ledger } = mergeLedger(null, [
+      entry("arxiv:2601.00001"),
+      entry("arxiv:2601.00001"),
+    ]);
+    expect(added).toBe(1);
+    expect(ledger.items).toHaveLength(1);
   });
 });

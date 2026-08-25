@@ -34,6 +34,14 @@
  * Output: triage.yaml + triage.md inside the watch run's directory
  * (proposals/**, so triage stays in the low-risk allowlist), plus one
  * inbox/triage-<runId>-<case>.md link drop per case with imports.
+ *
+ * Archive asymmetry guard: import mistakes are caught downstream (the
+ * case's standing fails down and the panel re-judges the result), but an
+ * archived item is judged once, by one model, and then the run directory
+ * expires. So every archived item is also appended, one line each, to the
+ * cumulative ledger proposals/watch/archive-ledger.yaml — which survives
+ * expiry — so a periodic audit (a second model, or a human) can review
+ * the omissions without digging through deleted directories.
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -54,6 +62,7 @@ const ROOT = process.cwd();
 const WATCH_DIR = path.join(ROOT, "proposals", "watch");
 const CASES_DIR = path.join(ROOT, "content", "cases");
 const INBOX_DIR = path.join(ROOT, "inbox");
+const LEDGER_FILE = path.join(WATCH_DIR, "archive-ledger.yaml");
 
 const today = new Date().toISOString().slice(0, 10);
 
@@ -133,6 +142,64 @@ function itemsPrompt(items) {
     .join("\n\n");
 }
 
+// ---------------------------------------------------------- archive ledger
+
+/**
+ * One compact, auditable line per archived item, appended to a ledger that
+ * survives run expiry. Deduped by the item's strongest key (doi, then
+ * arXiv id, then normalized title) so a retried triage run never appends
+ * the same omission twice.
+ */
+function ledgerKey(item) {
+  if (item.doi) return `doi:${item.doi}`;
+  if (item.arxivId) return `arxiv:${item.arxivId}`;
+  return `title:${String(item.title ?? "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim()}`;
+}
+
+/**
+ * Merge new entries into an existing ledger object, deduped by key.
+ * Pure (takes and returns data; the caller owns I/O) so the dedup — the
+ * part that keeps a retried run from double-recording an omission — is
+ * unit-testable.
+ */
+export function mergeLedger(existing, entries) {
+  const items = [...(existing?.items ?? [])];
+  const known = new Set(items.map((i) => i.key));
+  let added = 0;
+  for (const e of entries) {
+    if (known.has(e.key)) continue;
+    known.add(e.key);
+    items.push(e);
+    added++;
+  }
+  return { ledger: { ...(existing ?? {}), items }, added };
+}
+
+function appendToLedger(entries) {
+  if (entries.length === 0) return 0;
+  const existing = fs.existsSync(LEDGER_FILE)
+    ? (parseYaml(fs.readFileSync(LEDGER_FILE, "utf8")) ?? {})
+    : {};
+  const { ledger, added } = mergeLedger(existing, entries);
+  if (added === 0) return 0;
+  fs.writeFileSync(
+    LEDGER_FILE,
+    [
+      "# Cumulative archive ledger: every watch item triage archived, one",
+      "# line each, surviving the 60-day run expiry. This is the audit trail",
+      "# for the triage asymmetry — import mistakes are caught downstream by",
+      "# the ratification panel; archive mistakes are caught only here.",
+      "# Review periodically (a second model or a human); an item wrongly",
+      "# archived can be promoted by dropping its URL as an inbox link list.",
+      stringifyYaml(ledger),
+    ].join("\n"),
+  );
+  return added;
+}
+
 // ------------------------------------------------------------------ main
 
 async function main() {
@@ -158,6 +225,7 @@ async function main() {
   const runId = `triage-${today}-${Math.random().toString(36).slice(2, 6)}`;
   const caseResults = [];
   const inboxDrops = [];
+  const ledgerEntries = [];
   const digest = [];
 
   for (const file of caseFiles) {
@@ -198,6 +266,19 @@ async function main() {
       reason: d.reason,
     }));
     caseResults.push({ case: caseDir, judged: true, decisions: judged, errors: [] });
+    judged.forEach((d, i) => {
+      if (d.decision === "archive") {
+        ledgerEntries.push({
+          key: ledgerKey(items[i]),
+          case: caseDir,
+          date: today,
+          title: d.title,
+          url: d.url,
+          reason: d.reason,
+          triageRun: runId,
+        });
+      }
+    });
 
     const imports = judged.filter((d) => d.decision === "import" && d.url);
     const shelved = judged.filter((d) => d.decision === "shelf");
@@ -250,6 +331,7 @@ async function main() {
     "- Imports only queue a verification request (inbox link drop); the ledger admission rule (a source enters sources.yaml only when an evidence record cites it) is enforced at build time regardless.",
     "- A watch-flagged possible duplicate can never be imported by triage; the guard runs in code.",
     "- Shelf candidates await an agent adding them to the case's resources.yaml.",
+    "- Archived items are also recorded, one line each, in `proposals/watch/archive-ledger.yaml` — the cumulative audit trail that survives run expiry, so omissions can be reviewed later.",
     `- Fully revertable: delete ${path.relative(ROOT, runDir)}/triage.yaml and any inbox/triage-${watchRunId}-*.md drops.`,
     "",
   ].join("\n");
@@ -292,9 +374,10 @@ async function main() {
   for (const drop of inboxDrops) {
     fs.writeFileSync(path.join(INBOX_DIR, drop.file), drop.content);
   }
+  const ledgerAdded = appendToLedger(ledgerEntries);
 
   console.error(
-    `\n${runId}: judged ${caseResults.length} case(s) from ${watchRunId}; ${inboxDrops.length} inbox drop(s) queued`,
+    `\n${runId}: judged ${caseResults.length} case(s) from ${watchRunId}; ${inboxDrops.length} inbox drop(s) queued; ${ledgerAdded} item(s) added to the archive ledger`,
   );
   console.log(path.relative(ROOT, runDir));
 }

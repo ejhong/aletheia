@@ -1,11 +1,26 @@
-# Maintenance: the commentator-in-chief loop
+# Maintenance: an AI-operated site, and the observer's loop
 
-You are the editor-in-chief; the pipeline is your staff. You feed it
-documents, links, and opinions; it drafts; you approve from your phone.
-Nothing publishes without either your tap or a conservatively-classified
-low-risk auto-merge — and everything is revertable by runId.
+Since 2026-08-25 (see `docs/DECISIONS.md`), this site is operated by AI as
+a declared experiment. The epistemic rules and the fail-closed pipeline are
+unchanged; what changed is who exercises judgment. The human founder holds
+exactly two powers — the kill switch (revert anything by runId, or freeze
+the repo) and the constitution (`AGENTS.md`, the one file reserved to a
+human). Everything else is the agents' job, in public.
 
-## Your day-to-day
+**Interim state (Stage 4 pending):** the target approval mechanism for
+`needs-approval` changes is ratification by multi-model concurrence — an
+arbiter report from independent vendors posted on the PR. Until that
+arbiter runs on its own schedule, the founder's merge tap persists as a
+mechanical trigger, not an editorial review: the judgment standard is
+already the constitution, and the tap will be removed by Stage 4 without
+any change in standard.
+
+## The observer's loop (was: your day-to-day)
+
+**Feed it if you feel like it** — inbox drops now enter as *contributor*
+material: quoted, attributed, weighed, and arbitrated exactly like
+correspondence from any outside researcher. Feeding it is optional; the
+watch, reassessment, and editorial-audit loops run without input.
 
 **Feed it** (any time, from anywhere):
 

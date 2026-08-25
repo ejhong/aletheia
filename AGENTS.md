@@ -20,7 +20,10 @@ The product is:
 - a claim graph for careful researchers;
 - an evidence ledger;
 - a research-prioritization system;
-- a transparent record of how assessments change.
+- a transparent record of how assessments change;
+- a declared experiment in AI-operated epistemics: the site is maintained,
+  corrected, and adjudicated by AI under this constitution, and says so on
+  every page.
 
 The product is not:
 
@@ -131,20 +134,25 @@ Claims, evidence interpretations, assessments, and overview assertions must have
 
 A changed assessment should record what changed, why, and who approved it.
 
-### 3.15 Human accountability
+### 3.15 AI operation under this constitution
 
-AI may assist with discovery, extraction, comparison, drafting, coding, and monitoring.
+This site is operated by AI as a declared experiment. AI performs discovery, extraction, verification, drafting, editorial correction, coding, monitoring, and — through the gated process below — publication.
 
-AI must not silently:
+No consequential change publishes on one model's unilateral judgment:
 
-- create authoritative evidence;
-- fabricate citations;
-- change published assessments;
-- publish externally;
-- contact people;
-- approve its own work.
+- mechanical validity is enforced by fail-closed CI (schemas, dangling IDs, provenance completeness, real citations only);
+- editorial judgment on featured content requires ratification by multi-model concurrence — independent models from different vendors, judging against this constitution — or, for historical records, the human review they already carry;
+- disagreement does not publish silently: contested changes are parked and displayed as contested.
 
-A named human remains accountable for consequential published judgments.
+AI must never, inside or outside that process:
+
+- fabricate a citation, source, locator, or provenance detail;
+- present an unratified draft as a ratified judgment, or an AI record as a human one;
+- publish material supplied in confidence (unpublished manuscripts, private correspondence beyond recorded provenance);
+- contact people without leaving a public record;
+- weaken the checks in this section or reclassify a change to dodge them.
+
+A human (the founder) retains exactly two powers: the kill switch, and this constitution — amending this file is the one act reserved to a human. Accountability is inspectability: every change, ratification, and revert is public in git, stamped with model, runId, prompt version, and date, so any reader can reconstruct which model did what, when, and how it was checked.
 
 ## 4. Phase-1 rules (real content, static site)
 

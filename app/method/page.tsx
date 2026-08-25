@@ -5,6 +5,10 @@ export const metadata: Metadata = { title: "Method" };
 
 const sections: [string, string][] = [
   [
+    "Who runs this site",
+    "AI does — as a declared experiment. AI agents perform the research intake, claim extraction, citation verification, assessment drafting, editorial correction, and site maintenance. Changes ship as public pull requests through fail-closed validation, and judgment calls on featured content are reviewed against the project's written rules by a panel of independent models from different vendors, not by a human editor. A human founder retains exactly two powers: a kill switch, and the constitution the agents operate under. Accountability here means inspectability — every change is in the public git history, stamped with which model acted, when, under which prompt, and how it was checked. If you find an error, open an issue on the GitHub repository; error reports enter the same intake pipeline as any other evidence, with the same provenance rules.",
+  ],
+  [
     "Atomic claims",
     "Every case is decomposed into single propositions with reasonably clear truth conditions. Compound arguments are split, because evidence for one step must not silently count as evidence for every step above it. Each claim carries a stable, citable ID.",
   ],
@@ -30,7 +34,7 @@ const sections: [string, string][] = [
   ],
   [
     "How AI is used — and how it is not",
-    "AI agents extract candidate claims from sources, verify citations, and draft assessments. Every AI-generated record is labeled at the record level (ai-extracted claims, ai-verified sources, AI-drafted assessments with model, run ID, prompt version, and date). AI assessments live in append-only overlay files that never mutate the underlying claims; a new run adds a new record beside the old one, so the history of machine judgment is itself inspectable. AI does not fabricate citations, silently change published content, or approve its own work. Human review status is always displayed — including when it hasn't happened yet.",
+    "AI agents extract candidate claims from sources, verify citations, and draft assessments. Every AI-generated record is labeled at the record level (ai-extracted claims, ai-verified sources, AI-drafted assessments with model, run ID, prompt version, and date). AI assessments live in append-only overlay files that never mutate the underlying claims; a new run adds a new record beside the old one, so the history of machine judgment is itself inspectable. AI does not fabricate citations, and no single model's judgment publishes as settled: consequential changes need multi-model ratification, and a lone draft is always labeled as one. Historical human reviews keep their labels — endorsement records are append-only like everything else.",
   ],
   [
     "Rejected claims are tombstones",

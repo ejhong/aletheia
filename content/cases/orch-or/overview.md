@@ -66,7 +66,7 @@ The alternative is not a shrug. On anesthesia specifically it has causal evidenc
 
 The boundary of that result is also worth stating, because it is where proponents have a legitimate opening. The same mutation only slightly reduced the effects of the volatile anesthetics enflurane and halothane, and the authors' own conclusion was that volatile agents "act via a broader spectrum of molecular targets." The volatiles are the agents most Orch OR experiments use. The door is not closed; it is just that nobody has walked through it yet.
 
-Where the conventional account is genuinely thin is not mechanism but explanation. It gives an increasingly detailed account of how consciousness is switched off and no principled account of why any of that activity is experienced, or why a conscious moment should have a characteristic duration. Orch OR at least attempts both. Attempting an explanation is not evidence for it.
+Where the conventional account is thinnest is explanation rather than mechanism — though on the inhaled agents even the mechanism is unfinished, since Eger and colleagues report that two decades of focused investigation identified no ligand- or voltage-gated channel, and no combination of them, sufficient to mediate immobility. It gives an increasingly detailed account of how consciousness is switched off and no principled account of why any of that activity is experienced, or why a conscious moment should have a characteristic duration. Orch OR at least attempts both. Attempting an explanation is not evidence for it.
 
 ## The crux
 

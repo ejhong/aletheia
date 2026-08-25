@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { ArgumentLadder } from "@/src/components/ArgumentLadder";
 import { ArticleBody } from "@/src/components/ArticleBody";
 import { AssessmentPanel } from "@/src/components/AssessmentPanel";
@@ -134,7 +135,13 @@ export default async function CasePage({
           </h2>
           <p className="mt-2 text-[14px] text-ink-soft max-w-2xl">
             The strongest records on each side, structurally symmetric. Every
-            record separates what the source states from what we infer.
+            record separates what the source states from what we infer.{" "}
+            <Link
+              href={`/cases/${slug}/evidence/`}
+              className="underline decoration-copper/50 underline-offset-2 hover:decoration-copper text-copper"
+            >
+              Browse the full ledger ({loaded.evidence.length} records) →
+            </Link>
           </p>
           <div className="grid lg:grid-cols-2 gap-4 mt-6">
             <div className="space-y-4">

@@ -434,21 +434,6 @@ export function latestAssessment(loaded: LoadedCase): AssessmentRun | null {
   return loaded.assessmentRuns.at(-1) ?? null;
 }
 
-/**
- * The last human-endorsed assessment run, or null if none exists yet.
- *
- * Governance rule: only a human-reviewed run may present as the case's
- * editorial assessment. Newer unreviewed AI runs are shown separately as
- * drafts — their disagreement with the editorial assessment is a review
- * alert, never a silent replacement (AGENTS.md §3.15).
- */
-export function editorialAssessment(loaded: LoadedCase): AssessmentRun | null {
-  for (let i = loaded.assessmentRuns.length - 1; i >= 0; i--) {
-    if (loaded.assessmentRuns[i].humanReviewed) return loaded.assessmentRuns[i];
-  }
-  return null;
-}
-
 /** The latest draft-role run — cross-model check runs never narrate. */
 export function latestDraftAssessment(loaded: LoadedCase): AssessmentRun | null {
   for (let i = loaded.assessmentRuns.length - 1; i >= 0; i--) {
@@ -459,18 +444,158 @@ export function latestDraftAssessment(loaded: LoadedCase): AssessmentRun | null 
 }
 
 /**
- * The assessment to display for a case: the editorial (human-endorsed) run
- * when one exists, otherwise the latest AI draft. Check runs are excluded —
- * they corroborate (or contest) the displayed assessment via the
- * concurrence panel rather than replacing its narrative.
+ * Ratification-by-concurrence (AGENTS.md §3.15, Stage 3 of the AI-operated
+ * pivot). The displayed assessment is always the latest draft; what varies
+ * is its standing, DERIVED at build time from the independent check runs
+ * rather than stored — so a re-check updates the standing with no record
+ * mutated, and a new draft or new evidence automatically demotes the case
+ * to unratified until the panel judges the current file. Failing safe here
+ * means failing DOWN: nothing in this function can raise a run's standing
+ * except fresh agreement from independent vendors.
+ *
+ * - `ratified`: a panel of at least RATIFICATION_MIN_PANEL independent
+ *   models, judging the current content blind, agrees with the draft's
+ *   case verdict with at most one dissenter, and no load-bearing claim is
+ *   contested.
+ * - `contested`: the panel is sufficient and current, but disagrees — on
+ *   the case verdict or on a load-bearing claim. Displayed as such;
+ *   disagreement is never resolved by hiding it.
+ * - `unratified`: the panel is too small, absent, or judged an older
+ *   version of the case file (staleSince).
+ *
+ * A load-bearing claim is contested when fewer than a strict majority of
+ * the models judging it land within one step of the draft's verdict on the
+ * graded scale (open verdicts must match exactly — "unresolved" is not
+ * adjacent to anything).
+ */
+export const RATIFICATION_MIN_PANEL = 4;
+
+export type RatificationStatus = "ratified" | "contested" | "unratified";
+
+export interface Ratification {
+  status: RatificationStatus;
+  /** Independent models whose current judgment was counted. */
+  panel: number;
+  /** How many of them agree with the draft's case verdict exactly. */
+  agreeing: number;
+  /** Load-bearing claims where the panel disagrees with the draft. */
+  contestedLoadBearing: string[];
+  /** Date of the newest counted check run, null when the panel is empty. */
+  checksDate: string | null;
+  /** Content moved after the newest check (mirrors CrossModelSummary). */
+  staleSince: string | null;
+  /** One plain sentence for the UI. */
+  reason: string;
+}
+
+function contentStaleSince(
+  loaded: LoadedCase,
+  newestCheck: string,
+): string | null {
+  const newestContent = loaded.history
+    .filter((h) => !isHousekeepingEntry(h))
+    .map((h) => h.date)
+    .sort()
+    .at(-1);
+  return newestContent && newestContent > newestCheck ? newestContent : null;
+}
+
+export function ratification(loaded: LoadedCase): Ratification | null {
+  const draft = latestDraftAssessment(loaded);
+  if (!draft) return null;
+  const checks = latestCheckPerModel(loaded);
+  const panel = checks.length;
+  const checksDate =
+    panel > 0 ? checks.map((r) => r.date).sort().at(-1)! : null;
+  const staleSince = checksDate ? contentStaleSince(loaded, checksDate) : null;
+  const agreeing = checks.filter(
+    (r) => r.caseAssessment.verdict === draft.caseAssessment.verdict,
+  ).length;
+
+  const base = {
+    panel,
+    agreeing,
+    checksDate,
+    staleSince,
+    contestedLoadBearing: [] as string[],
+  };
+
+  if (panel < RATIFICATION_MIN_PANEL) {
+    return {
+      ...base,
+      status: "unratified",
+      reason:
+        panel === 0
+          ? "no independent model has checked this case yet"
+          : `only ${panel} independent model${panel === 1 ? "" : "s"} have checked this case (${RATIFICATION_MIN_PANEL} required)`,
+    };
+  }
+  if (staleSince) {
+    return {
+      ...base,
+      status: "unratified",
+      reason: `the case file changed (${staleSince}) after the panel last judged it — standing resets until the current content is re-checked`,
+    };
+  }
+
+  // Load-bearing claims: majority of judging models within one step.
+  const contestedLB: string[] = [];
+  for (const claimId of draft.caseAssessment.loadBearing) {
+    const own = draft.claimAssessments.find(
+      (ca) => ca.claimId === claimId,
+    )?.verdict;
+    if (!own) continue;
+    const verdicts = checks
+      .map((r) => r.claimAssessments.find((ca) => ca.claimId === claimId))
+      .filter((ca) => ca !== undefined)
+      .map((ca) => ca.verdict);
+    if (verdicts.length === 0) continue;
+    const near = verdicts.filter((v) => {
+      if (v === own) return true;
+      const a = gradedScale[v];
+      const b = gradedScale[own];
+      return a !== undefined && b !== undefined && Math.abs(a - b) <= 1;
+    }).length;
+    if (near * 2 <= verdicts.length) contestedLB.push(claimId);
+  }
+
+  if (agreeing < panel - 1 || contestedLB.length > 0) {
+    const parts: string[] = [];
+    if (agreeing < panel - 1)
+      parts.push(
+        `${panel - agreeing} of ${panel} models dispute the case verdict`,
+      );
+    if (contestedLB.length > 0)
+      parts.push(`the panel splits on load-bearing ${contestedLB.join(", ")}`);
+    return {
+      ...base,
+      contestedLoadBearing: contestedLB,
+      status: "contested",
+      reason: parts.join("; "),
+    };
+  }
+
+  return {
+    ...base,
+    status: "ratified",
+    reason: `${agreeing} of ${panel} independent models concur with the case verdict, and none splits on a load-bearing claim`,
+  };
+}
+
+/**
+ * The assessment to display: always the latest draft, stamped with its
+ * ratification standing. No run is hidden behind a newer one — the
+ * narrative is current by construction, and the standing badge tells the
+ * reader exactly how much independent concurrence stands behind it.
+ * (The pre-pivot rule gated display on humanReviewed; no run ever carried
+ * it, and if one ever does, the run's own field still records it.)
  */
 export function displayAssessment(
   loaded: LoadedCase,
-): { run: AssessmentRun; humanEndorsed: boolean } | null {
-  const editorial = editorialAssessment(loaded);
-  if (editorial) return { run: editorial, humanEndorsed: true };
+): { run: AssessmentRun; ratification: Ratification } | null {
   const latest = latestDraftAssessment(loaded);
-  return latest ? { run: latest, humanEndorsed: false } : null;
+  if (!latest) return null;
+  return { run: latest, ratification: ratification(loaded)! };
 }
 
 /**
@@ -547,13 +672,7 @@ export function crossModelSummary(
     .map((r) => r.date)
     .sort()
     .at(-1)!;
-  const newestContent = loaded.history
-    .filter((h) => !isHousekeepingEntry(h))
-    .map((h) => h.date)
-    .sort()
-    .at(-1);
-  const staleSince =
-    newestContent && newestContent > newestCheck ? newestContent : null;
+  const staleSince = contentStaleSince(loaded, newestCheck);
 
   const baseline = new Map(
     shown.run.claimAssessments.map((ca) => [ca.claimId, ca.verdict]),

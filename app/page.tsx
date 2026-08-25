@@ -72,7 +72,7 @@ export default function HomePage() {
                 key={c.record.id}
                 record={c.record}
                 verdict={shown?.run.caseAssessment.verdict ?? null}
-                verdictHumanEndorsed={shown?.humanEndorsed ?? false}
+                standing={shown?.ratification.status ?? null}
                 reviewCoverage={reviewCoverage(c)}
                 check={
                   sum

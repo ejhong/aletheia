@@ -1,0 +1,122 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 55
+title: "Case #9: The Immortality Key (TIK-001) — ergot kykeon and psychedelic
+  Eucharist"
+url: https://github.com/ejhong/aletheia/pull/55
+verdict: park
+reason: "2 seat(s) find a violation: Opus 5 (Anthropic) (§3.15); Gemini 3.1 Pro
+  (Google) (§3.15); only 0 of 5 seats affirm compliance (4 required)"
+outcome: merged
+outcomeAt: 2026-08-25
+judgedAgainst: 46fd807b10
+promptVersion: aletheia-arbiter-v1
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: "The content work itself is largely exemplary — honest `ai_extracted`
+      labels, direction on every Evidence record,
+      sourceStatement/editorInference separation, exact locators, the
+      unobtainable Juan-Tresserras 2002 chapter carried explicitly as unverified
+      with retrieval logged (TIK-R004), the negative/countercase evidence
+      imported at full strength, and the founder's YAPP funding conflict
+      disclosed on the source, in TIK-E027, and in the overview. The
+      disqualifying element is the edit to `src/domain/load.test.ts`: the
+      stage-3 governance invariant previously asserted that *every* live case
+      derives its standing from a full panel (`panel >=
+      RATIFICATION_MIN_PANEL`), and the diff relaxes it so a case with zero
+      check runs only has to be `unratified`. The PR body states the purpose
+      plainly — this new featured case (13 featured claims plus article text,
+      self-classified \"needs-approval\") ships now and \"the cross-model panel
+      for this case should be run post-merge.\" That is loosening the very gate
+      that enforces §3.15's requirement that editorial judgment on featured
+      content publish only on multi-model concurrence, in order to let this
+      change through — check-weakening and reclassification to dodge the gate,
+      which §3.15 forbids outright regardless of good intent. The mitigating
+      fact that the case stays visibly labeled `unratified` does not save it:
+      the constitution bars weakening the check, not merely mislabeling the
+      result. (The omitted sources.yaml/research.yaml could hide further
+      citation issues, but the visible test edit already decides the vote.)"
+  - seat: GPT-5.1 (OpenAI)
+    vote: unsure
+    rules: []
+    reasoning: 'The change appears carefully aligned with the constitution’s
+      epistemic rules: claims are atomic and explicitly typed, evidence items
+      are clearly separated from sources with directions
+      (supports/undermines/qualifies/context), provenance is detailed with
+      locators and honest uncertainty labels (e.g., Mas Castellar 2002 marked as
+      not yet obtained), and interested networks and conflicts of interest
+      (including the founder’s funding connection) are explicitly disclosed
+      rather than hidden. The AI assessment overlay is explicitly labeled as an
+      unreviewed AI draft and append-only, not altering canonical claims, which
+      respects §3.14–3.15 and the Phase‑1 rules about AI-generated assessments.
+      The ratification-governance test change tightens behavior (allowing
+      unratified status for new cases but still enforcing full panels once any
+      checks exist), which does not weaken checks under §3.15. However, some key
+      files are omitted from the diff — notably
+      `content/cases/immortality-key/sources.yaml`, `research.yaml`, and
+      `docs/DECISIONS.md` — and these could, in principle, contain fabricated or
+      improperly labeled citations, confidentiality breaches, or governance
+      weakening that I cannot inspect. Because those unseen files are exactly
+      where source records, research items, and project-level decisions live, I
+      cannot be certain the overall PR complies, despite the visible portions
+      looking constitutionally careful. Therefore I must vote "unsure" rather
+      than assert compliance.'
+  - seat: Gemini 3.1 Pro (Google)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: The diff modifies the fail-closed CI tests in
+      `src/domain/load.test.ts` to bypass the `RATIFICATION_MIN_PANEL` assertion
+      when a case has zero check runs. This explicitly weakens the pipeline's
+      mechanical checks and allows featured content to be merged and published
+      on one model's unilateral judgment without prior multi-model concurrence,
+      directly violating the constraints in §3.15.
+  - seat: Grok 4.6 (xAI)
+    vote: unsure
+    rules:
+      - §3.8
+      - §3.15
+    reasoning: "Three files are omitted from the diff, including sources.yaml (23
+      sources, every load-bearing citation) and research.yaml. Without those
+      records I cannot check real-citations-only, honest verification labels, or
+      exact locators (§3.8 / §3.15), which is the load-bearing compliance
+      question for a new featured case. What is visible is largely careful:
+      atomic rungs, explicit evidence direction, source-statement vs inference,
+      independence/COI flags including the founder, ai_extracted and unverified
+      labels, and an append-only assessment stamped draft/unreviewed. The
+      load.test.ts change, however, relaxes “every live case has a full panel”
+      so this case can ship with zero check runs and only an unratified
+      standing, with the PR asking to run the cross-model panel post-merge — a
+      possible §3.15 check-weakening I cannot treat as decisive without the
+      omitted sources and the unseen DECISIONS.md line. Per the omitted-files
+      rule I therefore cannot vote complies or violates."
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: unsure
+    rules:
+      - §3.8
+      - §4
+      - §3.15
+    reasoning: "The visible portion is largely exemplary: claims are atomic with
+      explicit credibility-vs-diagnosticity separation, evidence records carry
+      explicit direction and source-statement/editor-inference splits, the
+      unobtainable 2002 primary is carried unverified with retrieval logged, the
+      founder conflict of interest is disclosed in the ledger and overview, and
+      the AI assessment overlay is append-only, stamped, and labeled
+      humanReviewed: false — all consistent with §3.4–3.9, §3.14, and §4. The
+      load.test.ts relaxation lets a zero-check case render as visibly
+      'unratified' while still requiring a full panel once any check run exists;
+      that preserves the fail-closed default and honest labeling rather than
+      presenting a draft as ratified, so I do not read it as check-weakening
+      under §3.15, though it is the one judgment call. However, sources.yaml —
+      the 416-line file containing the actual citation records, identifiers, and
+      verification labels for all 23 sources — is omitted, and that is precisely
+      where a fabricated citation, DOI, or locator (§3.8, §4, §3.15 fabrication
+      ban) would live; evidence.yaml's 'verified via Crossref' claims cannot be
+      cross-checked without it. research.yaml and the DECISIONS.md line are also
+      unseen. Since the omitted files could hide the paradigm violation this
+      panel exists to catch and nothing visible affirmatively decides the
+      question, I cannot certify compliance from what was shown."
+harvestedAt: 2026-08-25

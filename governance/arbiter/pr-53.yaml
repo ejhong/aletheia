@@ -1,0 +1,113 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 53
+title: "AI-operated pivot, stage 4 (dry period): the constitutional arbiter"
+url: https://github.com/ejhong/aletheia/pull/53
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-25
+judgedAgainst: cee34815d1
+promptVersion: aletheia-arbiter-v1
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff adds a multi-model constitutional arbiter (workflow + pure
+      tally logic + vendor client + tests) and documentation; it does not touch
+      AGENTS.md, so §3.15's reservation of amendments to the founder is not
+      implicated. Rather than weakening checks, it implements §3.15's required
+      multi-model concurrence: the tally is fail-closed (≥4 complies AND zero
+      violates), failed/malformed seats become explicit `unsure` votes that stay
+      in the denominator, truncated diffs list omitted files with instructions
+      to vote unsure, the constitution is read from the base revision, and the
+      founder's merge tap is explicitly preserved during the dry period
+      (MAINTENANCE.md and workflow comment both say the check is advisory and
+      not required). No content, citation, locator, assessment, or provenance is
+      altered or fabricated; DECISIONS.md is appended to, preserving its
+      append-only property. The `.gitignore` addition of `casework/` keeps
+      pre-case working material out of the public repo until records get proper
+      provenance, which supports rather than undermines §3.8/§4 confidentiality
+      constraints; no confidential material is published here (the
+      SRC-YANG-VILLARROEL-2026 permission gap is an existing content issue
+      flagged as a follow-up, not introduced by this diff). No new dependencies,
+      no live AI calls in the site itself (this runs in CI), and tests cover the
+      highest-risk failure directions. Minor gaps — the report stamps model and
+      promptVersion but no explicit runId, and the PR-body account of the trial
+      vote on #47 is not independently verifiable from the diff — are ordinary
+      imperfections, not rule breaches."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: "The change introduces a constitutional arbiter mechanism and
+      associated workflow, but it does not alter AGENTS.md itself, so the
+      reserved-human-edit rule (§3.15) is respected. The arbiter’s system prompt
+      and logic explicitly enforce core epistemic and governance rules: it
+      treats diff/title/body as untrusted, requires real rule citations for any
+      `violates` vote, forces `unsure` when diffs are truncated, and mandates a
+      `violates` judgment for substantive AGENTS.md edits. The tally logic is
+      asymmetric in a safety-preserving direction (one substantiated violation
+      parks), with malformed/failed model replies converted into explicit
+      `unsure` votes instead of being dropped, which strengthens rather than
+      weakens checks. No citations, sources, or provenance are being fabricated
+      or altered, and no confidential materials are being newly exposed; the
+      inbox/casework changes actually reduce the risk of accidentally publishing
+      private pre-case documents. The workflow remains advisory during the dry
+      period and does not bypass or weaken the existing constitutional
+      constraints, instead adding another visible layer of review. Overall this
+      PR adds process and safeguards consistent with §3 rather than undermining
+      them."
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules: []
+    reasoning: The diff introduces the Stage 4 constitutional arbiter as described
+      without altering AGENTS.md. It does not weaken any existing checks;
+      rather, it adds a new, fail-closed CI step that exits with 1 on park and 2
+      on failure. The implementation securely handles untrusted inputs by
+      passing the PR body via environment variables and writing to a file,
+      avoiding shell injection. Additionally, project confidentiality is
+      strengthened by explicitly adding pre-case 'casework/' directories to
+      .gitignore.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff does not touch AGENTS.md, content/, assessments, or any
+      citation/provenance record; it adds the Stage 4 advisory panel (workflow,
+      arbiter.mjs, arbiter-core.mjs, vendors.mjs, tests) plus append-only docs
+      and a protective casework/ gitignore. That implements §3.15’s multi-vendor
+      concurrence rather than weakening it: constitution is read from the
+      merge-base, AGENTS.md edits are flagged as founder-reserved,
+      diff/title/body are fenced as untrusted, omitted files force unsure,
+      failed seats stay in the denominator, and a violates vote without a named
+      rule cannot park. Skipping auto:low-risk PRs reuses the existing
+      classifier rather than reclassifying to dodge review; live vendor calls
+      are CI-only, not on the static site (§4). Dry-period advisory status
+      leaves the founder’s existing tap in place and posts parked verdicts
+      publicly, so disagreement is not silent and no unratified draft is
+      presented as ratified."
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "The diff implements exactly the multi-model concurrence mechanism
+      §3.15 contemplates, and it does so additively: the founder's merge tap
+      remains during the dry period, so no existing check is removed or weakened
+      — the arbiter is an advisory layer on top, and retiring the tap is
+      explicitly deferred to a branch-protection change. AGENTS.md itself is not
+      touched, and the arbiter's own system prompt hard-codes the §3.15
+      reservation (any AGENTS.md edit must be judged violates) plus the
+      base-revision rule, so a change is judged by the constitution it tries to
+      amend. The fail-closed properties align with §3.15's 'disagreement does
+      not publish silently': malformed votes and violates-without-a-named-rule
+      degrade to explicit unsure votes, failed seats stay in the denominator,
+      and capDiff lists omitted files to the panel rather than silently
+      truncating. The trust-boundary fencing (untrusted diff/title/body, env-var
+      passing in the workflow to avoid shell injection) is a sound
+      implementation of the injection defense. docs/DECISIONS.md is append-only
+      by its own header and the change only appends a dated entry; the claimed
+      trial result on PR #47 is a process record, not a fabricated citation or
+      content claim. The .gitignore/inbox changes (casework/ kept local until
+      scaffolded with provenance) strengthen the Phase-4 confidentiality
+      constraints rather than violating them. No content, citations,
+      assessments, or provenance records are modified, so the epistemic rules in
+      §3.1–§3.14 are not engaged."
+harvestedAt: 2026-08-25

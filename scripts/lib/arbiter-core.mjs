@@ -88,26 +88,86 @@ export function tallyVerdict(votes) {
 }
 
 /**
- * Cap an untrusted diff for the panel packet. When over budget, whole-file
- * sections are dropped from the end and replaced by an explicit omission
- * list — voters are told exactly which files they have not seen, because a
- * silently truncated diff judged as complete would be the arbiter passing
- * changes it never read.
+ * Scrutiny tier for one changed file — what the panel must see first when
+ * a diff exceeds the budget. Lower is more important.
+ *
+ *   0 — the governance surface: constitution, workflows, scripts, app code.
+ *       A violation here is the dangerous kind.
+ *   1 — content canon: claims, evidence, sources, narrative, research,
+ *       history, docs. Where fabrication or provenance loss would live.
+ *   2 — mechanically-guarded records: assessment overlays (append-only,
+ *       enforced by the risk classifier), proposals, harvested governance,
+ *       inbox. Dropped first, because other machinery already checks them.
  */
-export function capDiff(diff, maxChars = 120_000) {
+export function diffTier(file) {
+  if (
+    /^content\/cases\/[^/]+\/assessments\//.test(file) ||
+    file.startsWith("proposals/") ||
+    file.startsWith("governance/") ||
+    file.startsWith("inbox/")
+  )
+    return 2;
+  if (file.startsWith("content/") || file.startsWith("docs/") || file.startsWith("public/"))
+    return 1;
+  return 0;
+}
+
+/**
+ * Cap an untrusted diff for the panel packet, by scrutiny priority.
+ *
+ * The first dry-period parks were partly "unsure because I could not see
+ * sources.yaml" — positional truncation had dropped canon content while
+ * keeping bulky append-only overlays. Sections are now kept tier by tier
+ * (stable order within a tier) so what gets omitted is what other
+ * machinery already guards. Omissions stay loud: voters are told exactly
+ * which files they have not seen, because a silently truncated diff judged
+ * as complete would be the arbiter passing changes it never read.
+ */
+export function capDiff(diff, maxChars = 400_000) {
   if (diff.length <= maxChars) return { text: diff, omitted: [] };
-  const sections = diff.split(/^(?=diff --git )/m);
-  const kept = [];
-  const omitted = [];
+  const sections = diff.split(/^(?=diff --git )/m).map((text, i) => {
+    const m = text.match(/^diff --git a\/(\S+)/);
+    return { text, i, file: m ? m[1] : null, tier: m ? diffTier(m[1]) : 0 };
+  });
+  const kept = new Set();
   let used = 0;
-  for (const s of sections) {
-    if (used + s.length <= maxChars) {
-      kept.push(s);
-      used += s.length;
-    } else {
-      const m = s.match(/^diff --git a\/(\S+)/);
-      omitted.push(m ? m[1] : "(unparsed section)");
+  for (const tier of [0, 1, 2]) {
+    for (const s of sections) {
+      if (s.tier !== tier) continue;
+      if (used + s.text.length <= maxChars) {
+        kept.add(s.i);
+        used += s.text.length;
+      }
     }
   }
-  return { text: kept.join(""), omitted };
+  return {
+    text: sections.filter((s) => kept.has(s.i)).map((s) => s.text).join(""),
+    omitted: sections
+      .filter((s) => !kept.has(s.i))
+      .map((s) => s.file ?? "(unparsed section)"),
+  };
+}
+
+/**
+ * The weekly throttle. An unattended system needs a structural bound on
+ * how fast published content can change; this gate parks an otherwise
+ * passing content change once the week's merge budget is spent. It never
+ * upgrades a verdict, and non-content changes (code, docs, proposals)
+ * are not throttled — the limit protects readers, not the repo.
+ */
+export const CONTENT_MERGES_PER_WEEK = 10;
+
+export function rateLimitGate(verdict, { touchesContent, mergesThisWeek }) {
+  if (
+    verdict.outcome !== "pass" ||
+    !touchesContent ||
+    mergesThisWeek < CONTENT_MERGES_PER_WEEK
+  )
+    return verdict;
+  return {
+    ...verdict,
+    outcome: "park",
+    reason: `${verdict.reason} — but the weekly content-merge budget is spent (${mergesThisWeek}/${CONTENT_MERGES_PER_WEEK}); parked until the window rolls`,
+    rateLimited: true,
+  };
 }

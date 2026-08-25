@@ -62,4 +62,23 @@ describe("panel derivations (live data)", () => {
     expect(e?.title).toMatch(/parked/);
     expect(e?.title).toMatch(/founder merged anyway/);
   });
+
+  it("arbiter events link to their on-page verdict and to the PR as source", () => {
+    for (const e of opsFeed(100).filter((x) => x.kind === "arbiter")) {
+      // Full seat reasoning renders in The gate section; the anchor id
+      // must match ArbiterVerdictCard's `arbiter-pr-<n>`.
+      expect(e.href).toMatch(/^\/panel\/#arbiter-pr-\d+$/);
+      expect(e.sourceHref).toMatch(/^https:\/\/github\.com\/.+\/pull\/\d+$/);
+    }
+  });
+
+  it("panel and quarantine events carry a verbatim-record source link", () => {
+    const events = opsFeed(100);
+    for (const e of events.filter((x) => x.kind === "panel")) {
+      expect(e.sourceHref).toMatch(/\/tree\/main\/content\/cases\/.+\/assessments$/);
+    }
+    for (const e of events.filter((x) => x.kind === "quarantine")) {
+      expect(e.sourceHref).toMatch(/\/tree\/main\/proposals\/cross-model-failures\//);
+    }
+  });
 });

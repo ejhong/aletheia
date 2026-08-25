@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ArbiterVerdictCard } from "@/src/components/ArbiterVerdictCard";
 import { AssessmentBadge } from "@/src/components/AssessmentBadge";
 import { VerdictDot } from "@/src/components/VerdictDot";
+import { loadArbiterRecords } from "@/src/domain/governance";
 import { assessmentLabels } from "@/src/domain/schema";
 import {
   caseStandings,
@@ -35,6 +37,7 @@ export default function PanelPage() {
   const dissent = dissentGallery();
   const seats = seatRecords();
   const events = opsFeed();
+  const verdicts = loadArbiterRecords();
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-14">
@@ -226,6 +229,24 @@ export default function PanelPage() {
         </div>
       </section>
 
+      {/* ── the gate ──────────────────────────────────────────────── */}
+      {verdicts.length > 0 && (
+        <section id="gate" className="mt-14 scroll-mt-24">
+          <h2 className="font-serif text-3xl tracking-tight">The gate</h2>
+          <p className="mt-2 text-[14px] text-ink-soft max-w-2xl">
+            Every consequential change is judged by the constitutional panel
+            before it merges. Each verdict below is shown in full — every
+            seat&apos;s vote, the rules it cited, and its complete reasoning,
+            verbatim from the harvested record.
+          </p>
+          <div className="mt-6 space-y-4">
+            {verdicts.map((r) => (
+              <ArbiterVerdictCard key={r.pr} record={r} />
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* ── operations log ────────────────────────────────────────── */}
       <section id="operations" className="mt-14 scroll-mt-24">
         <h2 className="font-serif text-3xl tracking-tight">Operations log</h2>
@@ -270,6 +291,14 @@ export default function PanelPage() {
                   e.title
                 )}{" "}
                 <span className="text-faint text-[12.5px]">— {e.detail}</span>
+                {e.sourceHref && (
+                  <a
+                    href={e.sourceHref}
+                    className="ml-2 font-mono text-[10.5px] uppercase tracking-[0.1em] text-faint underline underline-offset-2 hover:text-copper whitespace-nowrap"
+                  >
+                    {e.sourceLabel ?? "record"} ↗
+                  </a>
+                )}
               </span>
             </div>
           ))}

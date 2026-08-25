@@ -5,7 +5,10 @@
 #   3. runs the literature watch (scripts/watch-literature.mjs): new
 #      arXiv/Crossref items matching each case's watch.yaml queries become
 #      unverified, discovery-only proposals under proposals/watch/,
-#   4. opens ONE PR with a plain-language digest body (readable on a phone),
+#   4. triages the newest untriaged watch run (scripts/triage-watch.mjs):
+#      import / shelf / archive with recorded reasons; imports queue
+#      verification requests as inbox link drops for the next run,
+#   5. opens ONE PR with a plain-language digest body (readable on a phone),
 #      classified by scripts/classify-pr-risk.mjs:
 #        low-risk       → labeled, auto-merge enabled (merges when CI is green)
 #        needs-approval → labeled, review requested — read the digest, tap merge.
@@ -73,7 +76,8 @@ jobs:
       # Discovery only: new arXiv/Crossref items become unverified proposals
       # under proposals/watch/ — low-risk by construction (never touches
       # published content). Works without an LLM key; a key only adds
-      # labeled relevance notes.
+      # labeled relevance notes. Runs older than 60 days expire (deleted;
+      # git history keeps the record).
       - name: Watch literature
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -86,6 +90,25 @@ jobs:
             cp "$outdir/report.md" watch-digest.md
           fi
           rm -f watch-out.txt
+
+      # Triage the newest untriaged watch run: one model call per case
+      # judges every surfaced item (import / shelf / archive, reasons
+      # recorded, fail-closed on malformed replies). Imports queue a
+      # verification request as an inbox link drop, processed by the NEXT
+      # run's inbox step — nothing touches sources.yaml directly, and the
+      # build-time source admission rule holds regardless.
+      - name: Triage watch results
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          EXTRACT_MODEL: ${{ vars.EXTRACT_MODEL }}
+        run: |
+          node scripts/triage-watch.mjs | tee triage-out.txt
+          outdir=$(tail -1 triage-out.txt)
+          if [ -f "$outdir/triage.md" ]; then
+            cp "$outdir/triage.md" triage-digest.md
+          fi
+          rm -f triage-out.txt
 
       - name: Open classified PR
         env:
@@ -100,8 +123,9 @@ jobs:
             [ -f inbox-digest.md ] && cat inbox-digest.md && echo
             [ -f reassess-digest.md ] && cat reassess-digest.md && echo
             [ -f watch-digest.md ] && cat watch-digest.md && echo
+            [ -f triage-digest.md ] && cat triage-digest.md && echo
           } > pr-body.md
-          rm -f inbox-digest.md reassess-digest.md watch-digest.md
+          rm -f inbox-digest.md reassess-digest.md watch-digest.md triage-digest.md
 
           if git status --porcelain | grep -qv '^?? pr-body.md'; then :; else
             echo "No changes produced — nothing to open a PR for."
@@ -114,7 +138,7 @@ jobs:
           git config user.email "maintenance-bot@users.noreply.github.com"
           git checkout -b "$branch"
           git add -A -- ':!pr-body.md'
-          git commit -m "Maintenance run ${date}: inbox, assessments, literature watch"
+          git commit -m "Maintenance run ${date}: inbox, assessments, literature watch, triage"
           git push -u origin "$branch"
 
           # Conservative risk classification; the pr-risk-check workflow

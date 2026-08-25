@@ -23,9 +23,11 @@ import {
   type Claim,
   type Conjecture,
   type CuratedResource,
+  type Evidence,
   type FeaturedClaim,
   type ImageRecord,
   type LoadedCase,
+  type Source,
   type WatchConfig,
 } from "./schema";
 
@@ -167,6 +169,14 @@ function checkIntegrity(caseDir: string, loaded: LoadedCase): void {
     }
   }
 
+  for (const err of sourceAdmissionErrors(
+    loaded.sources,
+    loaded.evidence,
+    loaded.claims,
+  )) {
+    throw new ContentError(caseDir, err);
+  }
+
   for (const ro of loaded.research) {
     for (const cid of ro.claimIds) {
       requireLiveClaim(cid, `research ${ro.id}`);
@@ -219,6 +229,42 @@ function checkIntegrity(caseDir: string, loaded: LoadedCase): void {
       );
     }
   }
+}
+
+/**
+ * Source admission rule (AGENTS.md §3.6): the evidence ledger lists only
+ * sources that carry weight — cited by an evidence record or anchoring a
+ * claim. Reading-guide material must say so (`background: true`), and the
+ * label must stay honest in both directions: an uncited source without the
+ * flag fails, and a cited source still carrying the flag fails. Enforced at
+ * build time so an agent can never quietly pad the ledger with relevant-
+ * looking but weightless references.
+ */
+export function sourceAdmissionErrors(
+  sources: Pick<Source, "id" | "background">[],
+  evidence: Pick<Evidence, "sourceId">[],
+  claims: Pick<Claim, "sourceAnchor">[],
+): string[] {
+  const cited = new Set<string>([
+    ...evidence.map((e) => e.sourceId),
+    ...claims
+      .map((c) => c.sourceAnchor?.sourceId)
+      .filter((id): id is string => id !== undefined),
+  ]);
+  const errors: string[] = [];
+  for (const src of sources) {
+    if (!cited.has(src.id) && !src.background) {
+      errors.push(
+        `source ${src.id} is in the ledger but no evidence record or claim anchor cites it — extract the evidence it carries, or mark it background: true (reading-guide material)`,
+      );
+    }
+    if (cited.has(src.id) && src.background) {
+      errors.push(
+        `source ${src.id} is marked background but evidence/claims cite it — remove background: true`,
+      );
+    }
+  }
+  return errors;
 }
 
 export function loadCase(caseDir: string): LoadedCase {

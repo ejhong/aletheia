@@ -66,6 +66,26 @@ export default async function SourcePage({
         </span>
       </div>
 
+      {source.sourceType === "workpaper" && source.studyId ? (
+        <div className="mt-5 border border-copper/50 bg-paper px-5 py-4 max-w-3xl">
+          <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-copper">
+            AI-authored study workpaper
+          </p>
+          <p className="mt-2 text-[13.5px] leading-relaxed text-ink-soft">
+            This source is the citable container for study{" "}
+            <Link
+              href={`/cases/${loaded.record.slug}/studies/${source.studyId.toLowerCase()}/`}
+              className="text-copper hover:underline"
+            >
+              {source.studyId}
+            </Link>{" "}
+            — the full pre-registered criteria, sourced table, and
+            limitations are on the study page. Only the study&apos;s
+            aggregate findings carry ledger weight.
+          </p>
+        </div>
+      ) : null}
+
       <dl className="mt-6 space-y-4 max-w-3xl">
         {source.identifier ? (
           <div>

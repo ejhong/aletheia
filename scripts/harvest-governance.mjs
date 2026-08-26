@@ -120,6 +120,25 @@ if (wantDigest) {
   const open = JSON.parse(
     gh("api", `repos/${repo}/pulls?state=open&per_page=50`),
   );
+  // Anti-file-drawer backstop: a pre-registered study whose collection has
+  // been pending for more than 30 days is listed until it publishes or is
+  // superseded — a frozen protocol must not quietly age out.
+  const staleCutoff = new Date(Date.now() - 30 * 86400000)
+    .toISOString()
+    .slice(0, 10);
+  const pendingStudies = [];
+  const casesDir = path.join(ROOT, "content", "cases");
+  for (const dir of fs.existsSync(casesDir) ? fs.readdirSync(casesDir) : []) {
+    const sdir = path.join(casesDir, dir, "studies");
+    if (!fs.existsSync(sdir)) continue;
+    for (const f of fs.readdirSync(sdir).filter((f) => f.endsWith(".yaml"))) {
+      const s = parse(fs.readFileSync(path.join(sdir, f), "utf8"));
+      if ((s.rows ?? []).length === 0 && s.criteria?.frozenOn <= staleCutoff)
+        pendingStudies.push(
+          `- **${s.id}** (${dir}) — pre-registered ${s.criteria.frozenOn}, collection still pending`,
+        );
+    }
+  }
   const digest = [
     `# Aletheia weekly digest — ${today}`,
     "",
@@ -140,6 +159,9 @@ if (wantDigest) {
     ...(open.length
       ? open.map((p) => `- #${p.number} ${p.title}`)
       : ["- none"]),
+    ...(pendingStudies.length
+      ? ["", "## Pre-registered studies pending more than 30 days", "", ...pendingStudies]
+      : []),
     "",
     "Standings, dissents, and every seat's reasoning: see /panel on the site.",
   ].join("\n");

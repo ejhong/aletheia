@@ -264,10 +264,20 @@ export const SourceSchema = z.object({
     "archive",
     "dataset",
     "artifact_record",
+    // An AI-authored study workpaper held in this repository (see
+    // StudySchema) — the citable container for a study's aggregate
+    // findings. Must carry studyId; always honestly labeled.
+    "workpaper",
     "other",
   ]),
   identifier: z.string().optional(),
   url: z.string().url().optional(),
+  /**
+   * Workpaper sources only: the study this source is the container for.
+   * The loader enforces both directions — a workpaper source must name a
+   * real study, and only workpaper sources may carry studyId.
+   */
+  studyId: z.string().optional(),
   verification: SourceVerification,
   verificationNote: z.string().optional(),
   reliabilityNotes: z.array(z.string()).default([]),
@@ -283,6 +293,143 @@ export const SourceSchema = z.object({
   background: z.boolean().default(false),
 });
 export type Source = z.infer<typeof SourceSchema>;
+
+/**
+ * A study row's citation — deliberately the same shape as a source
+ * anchor's (free-text citation + optional url/doi/locator + the standard
+ * verification label), so mechanical citation verification covers rows
+ * with no new code and a decisive row graduating to a full Evidence +
+ * Source record is a copy, not a translation. Row citations are inline:
+ * they never create Source records, keeping the ledger admission rule
+ * strict.
+ */
+export const StudyRowCitationSchema = z.object({
+  text: z.string().min(3),
+  url: z.string().url().optional(),
+  doi: z.string().optional(),
+  locator: z.string().optional(),
+  verification: SourceVerification,
+});
+export type StudyRowCitation = z.infer<typeof StudyRowCitationSchema>;
+
+/**
+ * A Study — a pre-registered desk workpaper (§3.12 made structural):
+ * frozen inclusion criteria, method, a sourced table, aggregate
+ * findings, limitations. Secondary synthesis of published/public
+ * material only; a study never grades a claim and never carries a
+ * standing — its influence flows through ordinary Evidence records
+ * citing the study's workpaper Source, riding the usual gates.
+ *
+ * The freeze discipline: a study lands in two PRs — the freeze PR
+ * (criteria, method, question; zero rows, zero findings; publicly
+ * rendered as "pre-registered — collection pending") and the collection
+ * PR (rows, findings, limitations). `criteriaHash` is stamped at freeze
+ * (scripts/stamp-study.mjs) and recomputed by the loader on every
+ * build, so any post-freeze edit to the criteria fails the build.
+ * Studies are append-only: a correction is a new study carrying
+ * `supersedes`, and evidence citing a superseded study's workpaper
+ * fails the build until re-pointed.
+ */
+export const StudySchema = z
+  .object({
+    id: z.string().regex(/^[A-Z]+-S\d{3}$/, "Study id like GEO-S001"),
+    title: z.string(),
+    question: z.string().min(10),
+    /** The research item(s) this study executes — studies are crux-driven. */
+    researchIds: z.array(z.string()).min(1),
+    claimIds: z.array(z.string()).default([]),
+    criteria: z.object({
+      /** Frozen BEFORE collection; the freeze PR predates every row. */
+      frozenOn: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+      inclusion: z.array(z.string()).min(1),
+      exclusion: z.array(z.string()).default([]),
+      /** Literal queries and sources — a re-runnable protocol, not a vibe. */
+      searchProtocol: z.string().min(20),
+      /**
+       * Every candidate the author already knew at freeze time, with its
+       * disposition pre-committed — post-freeze discoveries are then
+       * visibly discoveries. The hash catches post-freeze edits; this
+       * field addresses criteria written around a known population.
+       */
+      knownCandidates: z
+        .array(
+          z.object({
+            name: z.string(),
+            disposition: z.enum(["include", "exclude"]),
+            reason: z.string(),
+          }),
+        )
+        .default([]),
+      /** sha256 prefix over the criteria (src/domain/studies.ts). */
+      criteriaHash: z.string().regex(/^[0-9a-f]{12}$/),
+    }),
+    method: z.string().min(20),
+    columns: z.array(z.string()).min(1),
+    rows: z
+      .array(
+        z.object({
+          cells: z.record(z.string(), z.string()),
+          citation: StudyRowCitationSchema,
+          /** §3.10: note shared origins with other rows where relevant. */
+          independenceNote: z.string().optional(),
+        }),
+      )
+      .default([]),
+    /**
+     * Aggregate findings — plain-language placement, no small-n
+     * percentiles (§3.13), stating coverage and the direction of failed
+     * searches (§3.11 at study grain). `evidenceId` links the Evidence
+     * record that carries a finding into the ledger.
+     */
+    findings: z
+      .array(
+        z.object({
+          statement: z.string().min(20),
+          evidenceId: z.string().optional(),
+        }),
+      )
+      .default([]),
+    limitations: z.array(z.string()).default([]),
+    runId: z.string(),
+    model: z.string(),
+    date: z.string(),
+    promptVersion: z.string(),
+    humanReviewed: z.boolean(),
+    supersedes: z.string().optional(),
+  })
+  .superRefine((s, ctx) => {
+    for (const [i, row] of s.rows.entries()) {
+      for (const key of Object.keys(row.cells)) {
+        if (!s.columns.includes(key)) {
+          ctx.addIssue({
+            code: "custom",
+            message: `rows[${i}] has a cell for undeclared column "${key}"`,
+          });
+        }
+      }
+    }
+    // A collected study must carry its findings and limitations; a
+    // frozen-only study must not smuggle findings in before the rows.
+    if (s.rows.length > 0 && s.findings.length === 0) {
+      ctx.addIssue({
+        code: "custom",
+        message: "a study with rows must state its aggregate findings",
+      });
+    }
+    if (s.rows.length > 0 && s.limitations.length === 0) {
+      ctx.addIssue({
+        code: "custom",
+        message: "a study with rows must state its limitations",
+      });
+    }
+    if (s.rows.length === 0 && s.findings.length > 0) {
+      ctx.addIssue({
+        code: "custom",
+        message: "a study without rows cannot carry findings (freeze first)",
+      });
+    }
+  });
+export type Study = z.infer<typeof StudySchema>;
 
 export const ResearchOpportunitySchema = z.object({
   id: z.string().regex(/^[A-Z]+-R\d{3}$/, "Research id like GEO-R001"),
@@ -708,6 +855,8 @@ export interface LoadedCase {
   curatedResources: CuratedResource[];
   /** Optional on-the-record editorial conjectures (conjectures.yaml). */
   conjectures: Conjecture[];
+  /** Pre-registered desk workpapers (studies/<id>.yaml). */
+  studies: Study[];
 }
 
 /**

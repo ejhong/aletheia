@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { LinkedRecordText } from "./LinkedRecordText";
-import type { ResearchOpportunity } from "@/src/domain/schema";
+import type { ResearchOpportunity, Study } from "@/src/domain/schema";
 
 const trackLabels = {
   publication_prize: "Publication prize",
@@ -10,7 +10,16 @@ const trackLabels = {
 
 const effortLabels = { desk: "Desk", field: "Field", lab: "Lab" } as const;
 
-export function ResearchCard({ item }: { item: ResearchOpportunity }) {
+export function ResearchCard({
+  item,
+  study,
+  caseSlug,
+}: {
+  item: ResearchOpportunity;
+  /** A study executing this item, if one exists (pending or collected). */
+  study?: Study;
+  caseSlug?: string;
+}) {
   return (
     <article
       id={`research-${item.id}`}
@@ -37,6 +46,22 @@ export function ResearchCard({ item }: { item: ResearchOpportunity }) {
           <LinkedRecordText text={item.informationGain} />
         </p>
       </div>
+      {study && caseSlug ? (
+        <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.14em]">
+          <Link
+            href={`/cases/${caseSlug}/studies/${study.id.toLowerCase()}/`}
+            className="text-copper hover:underline"
+          >
+            study {study.id}
+          </Link>{" "}
+          <span className="text-faint">
+            —{" "}
+            {study.rows.length === 0
+              ? `pre-registered ${study.criteria.frozenOn}, collection pending`
+              : `table published, ${study.rows.length} rows`}
+          </span>
+        </p>
+      ) : null}
       <div className="mt-auto pt-3 flex flex-wrap gap-1.5">
         <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-faint self-center">
           would update:

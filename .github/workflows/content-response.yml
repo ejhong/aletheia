@@ -102,9 +102,18 @@ jobs:
           # judgments from current main, so an unmerged predecessor is
           # stale by construction (its overlays are regenerated here if
           # still warranted). Leaving it open invites merging both, which
-          # conflicts.
+          # conflicts. EXCEPT a parked PR: a park is a substantiated
+          # objection, and disagreement does not publish — or vanish —
+          # silently (AGENTS.md §3.15). A parked predecessor stays open
+          # and visible until settled deliberately.
           for old in $(gh pr list --state open --json number,headRefName \
               --jq ".[] | select(.headRefName | startswith(\"respond/\")) | select(.headRefName != \"${branch}\") | .number"); do
+            arb=$(gh pr view "$old" --json statusCheckRollup \
+              --jq '[.statusCheckRollup[]? | select(.name == "arbiter") | .conclusion] | first // ""')
+            if [ "$arb" = "FAILURE" ]; then
+              echo "leaving PR #${old} open: its arbiter verdict is a park, which must stay visible"
+              continue
+            fi
             gh pr close "$old" \
               --comment "Superseded by ${pr_url}: that run re-derives all judgments from current main, including anything this PR carried that is still warranted." \
               --delete-branch || echo "::warning::could not close superseded PR #${old}"

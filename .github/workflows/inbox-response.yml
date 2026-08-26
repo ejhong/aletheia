@@ -19,6 +19,10 @@ concurrency:
 
 permissions:
   actions: write
+  # gh resolves the default branch via the API before dispatching; without
+  # read access the dispatch fails with "Resource not accessible by
+  # integration".
+  contents: read
 
 jobs:
   dispatch:

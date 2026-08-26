@@ -27,6 +27,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
+import { fetchWithRetry } from "./lib/vendors.mjs";
 
 const ROOT = process.cwd();
 const args = process.argv.slice(2);
@@ -203,7 +204,9 @@ async function callVendor(name, cfg) {
       Authorization: `Bearer ${cfg.key}`,
     };
   }
-  const res = await fetch(url, {
+  // Transient network failures (Venice 520s, runner socket errors) are
+  // retried by fetchWithRetry rather than discarding a paid seat.
+  const res = await fetchWithRetry(name, url, {
     method: "POST",
     headers,
     body: JSON.stringify(body),

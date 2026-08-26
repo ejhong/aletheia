@@ -98,7 +98,26 @@ jobs:
             Commit installed overlays into the duty-2 PR or their own
             low-risk PR.
 
-            4. REPORT. Append one line per action taken to
+            4. NARRATIVE GAP. For each live case, compare the featured
+            article (overview.md) against the case's ledger: evidence
+            records and published study findings that a reader of the
+            article would never learn exist. Ledger-bearing findings
+            merged more than a day ago with no trace in the article are
+            a gap. For each case with a gap (at most one PR per case,
+            and skip any case that already has an open article PR):
+            draft the SMALLEST article addition that carries the
+            finding — in the case's own register, citing claims with
+            the [span]{claim=ID} syntax where anchors exist, stating
+            the deflationary or qualifying half of every finding in the
+            same paragraph as the finding itself, adding no new claims
+            and no grades the ledger does not already carry — append a
+            history entry, and open it as a needs-approval PR. NEVER
+            label article prose auto:low-risk and NEVER enable
+            auto-merge on it: the panel and the founder hold the pen on
+            featured text; your job is only that the noticing and
+            drafting never lag the ledger.
+
+            5. REPORT. Append one line per action taken to
             $GITHUB_STEP_SUMMARY. If nothing needed doing, write "nothing
             to do" and stop — an empty run is success.
 

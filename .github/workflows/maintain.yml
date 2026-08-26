@@ -118,6 +118,24 @@ jobs:
           fi
           rm -f triage-out.txt
 
+      # The generative step no other stage has: propose (never publish)
+      # new claims, research items, or studies the current ledger implies.
+      # Output is proposals/agenda/ files — adopted or ignored by the
+      # founder; the gates decide what becomes real.
+      - name: Propose agenda additions
+        if: ${{ (inputs.mode || 'full') == 'full' }}
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          EXTRACT_MODEL: ${{ vars.EXTRACT_MODEL }}
+        run: |
+          node scripts/propose-agenda.mjs | tee agenda-out.txt
+          outdir=$(tail -1 agenda-out.txt)
+          if [ -f "$outdir/report.md" ]; then
+            cp "$outdir/report.md" agenda-digest.md
+          fi
+          rm -f agenda-out.txt
+
       - name: Harvest governance and write the weekly digest
         if: ${{ (inputs.mode || 'full') == 'full' }}
         env:
@@ -148,8 +166,9 @@ jobs:
             [ -f reassess-digest.md ] && cat reassess-digest.md && echo
             [ -f watch-digest.md ] && cat watch-digest.md && echo
             [ -f triage-digest.md ] && cat triage-digest.md && echo
+            [ -f agenda-digest.md ] && cat agenda-digest.md && echo
           } > pr-body.md
-          rm -f inbox-digest.md reassess-digest.md watch-digest.md triage-digest.md
+          rm -f inbox-digest.md reassess-digest.md watch-digest.md triage-digest.md agenda-digest.md
 
           if git status --porcelain | grep -qv '^?? pr-body.md'; then :; else
             echo "No changes produced — nothing to open a PR for."

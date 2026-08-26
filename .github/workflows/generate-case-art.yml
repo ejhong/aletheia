@@ -3,7 +3,8 @@
 # trigger + one PR review.
 #
 # Requires the repository secret IMAGE_API_KEY (an OpenAI API key with image
-# generation access). Without it the workflow fails early with instructions.
+# generation access), falling back to OPENAI_API_KEY when IMAGE_API_KEY is not
+# set. Without either the workflow fails early with instructions.
 
 name: Generate case art
 
@@ -37,14 +38,15 @@ jobs:
 
       - name: Check API key is configured
         run: |
-          if [ -z "${{ secrets.IMAGE_API_KEY }}" ]; then
-            echo "::error::Repository secret IMAGE_API_KEY is not set. Add an OpenAI API key with image-generation access under Settings → Secrets and variables → Actions, then re-run this workflow."
+          if [ -z "${{ secrets.IMAGE_API_KEY }}" ] && [ -z "${{ secrets.OPENAI_API_KEY }}" ]; then
+            echo "::error::Neither IMAGE_API_KEY nor OPENAI_API_KEY repository secret is set. Add an OpenAI API key with image-generation access under Settings → Secrets and variables → Actions, then re-run this workflow."
             exit 1
           fi
 
       - name: Generate candidates
         env:
           IMAGE_API_KEY: ${{ secrets.IMAGE_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           node scripts/generate-case-art.mjs "${{ inputs.case_slug }}" "${{ inputs.count }}" | tee art-notes.txt
 

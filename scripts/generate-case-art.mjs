@@ -4,6 +4,7 @@
  * (see docs/IMAGE_STYLE.md) via the OpenAI Images API.
  *
  * Usage:  IMAGE_API_KEY=... node scripts/generate-case-art.mjs <case-slug> [count]
+ *         (falls back to OPENAI_API_KEY when IMAGE_API_KEY is not set)
  *
  * Writes candidates to public/images/cases/<slug>/candidates/ and prints a
  * manifest entry skeleton for the chosen one. Designed to run inside the
@@ -99,16 +100,17 @@ if (!slug) {
   process.exit(1);
 }
 
-const apiKey = process.env.IMAGE_API_KEY;
+const apiKey = process.env.IMAGE_API_KEY || process.env.OPENAI_API_KEY;
 if (!apiKey) {
   console.error(
     [
       "",
-      "ERROR: IMAGE_API_KEY is not set.",
+      "ERROR: neither IMAGE_API_KEY nor OPENAI_API_KEY is set.",
       "",
       "This script calls the OpenAI Images API. To enable it:",
-      "  1. Create an API key with image-generation access.",
-      "  2. Add it as the repository secret IMAGE_API_KEY",
+      "  1. Create an OpenAI API key with image-generation access.",
+      "  2. Add it as the repository secret IMAGE_API_KEY — or rely on",
+      "     OPENAI_API_KEY, which is used as a fallback",
       "     (GitHub → Settings → Secrets and variables → Actions).",
       "  3. Re-run the 'generate-case-art' workflow.",
       "",

@@ -1,0 +1,182 @@
+# Study freeze — pre-registration only (two-PR discipline; see the
+# Studies entry in docs/DECISIONS.md). Zero rows by design: the criteria
+# below are judged before anyone knows what the data will say, and any
+# later edit to them fails the build. Collection follows in a second PR.
+id: ORCH-S001
+title: The quantitative commitments of the Orch OR literature
+question: What numerical commitments does the Orch OR literature actually
+  make — collapse/integration times, gravitational self-energy configurations,
+  participating tubulin counts, required versus estimated coherence times,
+  oscillation frequencies, predicted quantitative relations — who supplied
+  each number, on what stated basis, and do the 1996 conformational-qubit
+  and the 2014 collective-dipole formulations make mutually consistent
+  demands?
+researchIds:
+  - ORCH-R008
+claimIds:
+  - ORCH-C001
+  - ORCH-C010
+  - ORCH-C002
+criteria:
+  frozenOn: 2026-08-26
+  inclusion:
+    - Publications 1994-2026 by Orch OR's proponents (Penrose, Hameroff, and
+      coauthors) that state a quantitative parameter of the proposed
+      mechanism — collapse or integration time, gravitational self-energy
+      (E_G) configuration such as superposed mass and separation, number of
+      participating tubulins or neurons, coherence time required or claimed
+      available, oscillation or beat frequency, or a predicted quantitative
+      relation (e.g. an anesthetic potency correlation).
+    - Critique or reanalysis papers that recompute or quantitatively evaluate
+      one of those committed quantities (e.g. decoherence-time estimates,
+      feasibility calculations, parameter-space constraints engaging Orch
+      OR's stated scenarios) — entering under identical rules, tagged by
+      side.
+    - Experimental papers enter only where a specification paper invokes
+      their numbers as meeting or setting a requirement; the row records the
+      invocation, tagged as measurement-invoked, and grades nothing about
+      the measurement itself.
+    - Refereed publications enter as full rows; books and arXiv-only or
+      otherwise unrefereed items enter flagged, never silently mixed.
+  exclusion:
+    - Qualitative statements of the theory with no number attached (context,
+      not rows); documented silences are findings, not rows.
+    - Popular accounts, talks, interviews, and commentary without new
+      quantitative content.
+    - Animal and behavioral anesthesia experiments (they test the theory but
+      specify none of its parameters).
+    - Bounds on generic collapse models (GRW, CSL) that do not engage Orch
+      OR's committed parameters or scenarios.
+    - Secondary summaries restating another included paper's numbers without
+      new quantitative content (§3.10 — one specification is one row, not
+      many).
+  searchProtocol: "Run only after this freeze, by the executing agent's web
+    search plus direct retrieval of primary documents (arXiv, publisher DOI
+    resolution, PubMed Central); deep-research assistants not used. Literal
+    queries: [Orch OR quantitative requirements coherence time]; [Hameroff
+    Penrose 1996 orchestrated reduction microtubules tubulins 25 ms 500 ms];
+    [orchestrated objective reduction gravitational self-energy E_G tubulin
+    number]; [Tegmark importance quantum decoherence brain processes];
+    [Hagan Hameroff Tuszynski decoherence biological feasibility
+    recalculation]; [Hameroff Penrose 2014 review Orch OR beat frequencies
+    EEG megahertz]; [Craddock anesthetic terahertz oscillations tubulin
+    clinical potency correlation]; [Hameroff 1998 Orch OR testable
+    predictions]; [orchestrated objective reduction not biologically
+    feasible]; [Orch OR Diosi Penrose spontaneous radiation underground
+    constraint tubulin scenarios]. Per-candidate follow-up: resolve the
+    DOI or arXiv identifier to the primary document; every cell is verified
+    against the primary document before entering the table; searches that
+    return nothing are reported as failed searches (§3.11)."
+  knownCandidates:
+    - name: Penrose 1994, Shadows of the Mind (book)
+      disposition: include
+      reason: book-length statement of the objective-reduction criterion the
+        1996 papers build on; enters flagged as a book with page locators
+    - name: >-
+        Hameroff & Penrose 1996, "Orchestrated reduction of quantum
+        coherence in brain microtubules" (Math. Comput. Simulation 40)
+      disposition: include
+      reason: the founding specification paper of the conformational-qubit
+        formulation
+    - name: >-
+        Hameroff & Penrose 1996, "Conscious events as orchestrated
+        space-time selections" (J. Consciousness Studies 3)
+      disposition: include
+      reason: companion statement of the model with its own stated
+        quantities
+    - name: >-
+        Hameroff 1998, "Quantum computation in brain microtubules? The
+        Penrose-Hameroff 'Orch OR' model of consciousness" (Phil. Trans. R.
+        Soc. A 356)
+      disposition: include
+      reason: restates the specification and publishes a list of testable
+        predictions
+    - name: >-
+        Tegmark 2000, "Importance of quantum decoherence in brain
+        processes" (Phys. Rev. E 61)
+      disposition: include
+      reason: the critic's decoherence estimate the feasibility exchange
+        turns on
+    - name: >-
+        Hagan, Hameroff & Tuszynski 2002, "Quantum computation in brain
+        microtubules: Decoherence and biological feasibility" (Phys. Rev. E
+        65)
+      disposition: include
+      reason: the proponents' recalculation answering Tegmark, with its own
+        committed numbers
+    - name: >-
+        McKemmish, Reimers, McKenzie, Mark & Hush 2009, "Penrose-Hameroff
+        orchestrated objective-reduction proposal for human consciousness is
+        not biologically feasible" (Phys. Rev. E 80)
+      disposition: include
+      reason: quantitative feasibility critique of the conformational-switching
+        mechanism's energetics
+    - name: >-
+        Hameroff & Penrose 2014, "Consciousness in the universe: A review of
+        the 'Orch OR' theory" (Phys. Life Rev. 11), with the same-issue
+        replies to commentaries
+      disposition: include
+      reason: the current specification — revised frequencies, revised
+        mechanism, revised tubulin counts
+    - name: >-
+        Reimers, McKemmish, McKenzie, Mark & Hush 2014, "The revised
+        Penrose-Hameroff orchestrated objective-reduction proposal for human
+        consciousness is not scientifically justified" (Phys. Life Rev. 11)
+      disposition: include
+      reason: the direct quantitative critique of the revised specification
+    - name: >-
+        Craddock et al. 2017, "Anesthetic alterations of collective
+        terahertz oscillations in tubulin correlate with clinical potency"
+        (Sci. Rep. 7)
+      disposition: include
+      reason: states the prospective potency-correlation prediction that
+        ORCH-R002 and ORCH-R009 would test
+    - name: >-
+        Sahu et al. 2013, "Atomic water channel controlling remarkable
+        properties of a single brain microtubule" (Biosens. Bioelectron. 47)
+      disposition: include
+      reason: the long-coherence measurement report proponents invoke; enters
+        measurement-invoked, graded not at all
+    - name: >-
+        Derakhshani, Diosi, Laubenstein, Piscicchia & Curceanu 2022, "At the
+        crossroad of the search for spontaneous radiation and the Orch OR
+        consciousness theory" (Phys. Life Rev. 42)
+      disposition: include
+      reason: evaluates Orch OR's committed E_G and tubulin-count scenarios
+        against the underground radiation bound
+  criteriaHash: "ca78e87d14cc"
+method: "One row per (publication, parameter) pair. Each row quotes the
+  paper's stated value with an exact locator (page, section, table, or
+  equation) in the row citation; the stated-as column records whether the
+  number is a requirement, an estimate, an invoked measurement, an
+  assumption, or a prediction — taken from the paper's own wording, never
+  inferred (§3.9). The formulation column ties each number to the 1996
+  conformational-qubit formulation, the 2014 collective-dipole formulation,
+  or both, so the consistency question the study exists to answer is
+  answerable from the table. Cross-paper comparisons are recorded as rows
+  only where a paper itself makes the comparison; the study's own
+  consistency assessment appears in the findings, in plain language, with
+  no invented precision (§3.13). Parameters ORCH-R008 names that the corpus
+  never fixes — coherence length, entanglement structure, a numerical
+  potency correlation coefficient — are documented as silences in the
+  findings (§3.11). Proponent and critique rows are graded by identical
+  rules. Either outcome publishes: a specification the field can test, or
+  a documented absence of one, which ORCH-R008 notes is itself the most
+  useful finding available at desk cost."
+columns:
+  - publication
+  - side
+  - formulation
+  - parameter
+  - stated value
+  - stated as
+  - stated basis
+  - notes
+rows: []
+findings: []
+limitations: []
+runId: 2026-08-26-study-orch-s001-freeze
+model: Kimi K3 (Moonshot), via Cursor
+date: 2026-08-26
+promptVersion: aletheia-study-freeze-v1
+humanReviewed: false

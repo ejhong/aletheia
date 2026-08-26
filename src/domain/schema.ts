@@ -347,6 +347,15 @@ export const AssessmentRunSchema = z.object({
       confidence: z.enum(["high", "moderate", "low"]),
     }),
   ),
+  /**
+   * Reconsideration drafts only (scripts/reconcile-contested.mjs): the
+   * runIds of the check runs whose dissents this draft was written with.
+   * Ratification treats exactly these checks as engaged — a reconciled
+   * draft cannot be ratified until at least one blind check OUTSIDE this
+   * list judges it (§3.15: nothing raises standing except fresh
+   * independent agreement).
+   */
+  reconciles: z.array(z.string()).optional(),
 });
 export type AssessmentRun = z.infer<typeof AssessmentRunSchema>;
 

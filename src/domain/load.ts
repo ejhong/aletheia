@@ -507,7 +507,10 @@ export function latestDraftAssessment(loaded: LoadedCase): AssessmentRun | null 
  *   the case verdict or on a load-bearing claim. Displayed as such;
  *   disagreement is never resolved by hiding it.
  * - `unratified`: the panel is too small, absent, or judged an older
- *   version of the case file (staleSince).
+ *   version of the case file (staleSince) — or the displayed draft is a
+ *   reconsideration (written non-blind, with the panel's dissents in
+ *   hand) that no fresh blind check has judged yet: the checks a
+ *   reconciliation engaged can never ratify the draft that answered them.
  *
  * A load-bearing claim is contested when fewer than a strict majority of
  * the models judging it land within one step of the draft's verdict on the
@@ -532,6 +535,36 @@ export interface Ratification {
   staleSince: string | null;
   /** One plain sentence for the UI. */
   reason: string;
+}
+
+/**
+ * A reconsideration draft is the one deliberately non-blind draft in the
+ * pipeline (scripts/reconcile-contested.mjs): written with the panel's
+ * dissents in hand. Detected by the `reconciles` stamp; the promptVersion
+ * fallback covers overlays written before the stamp existed.
+ */
+export function isReconsiderationRun(run: AssessmentRun): boolean {
+  return (
+    run.role !== "check" &&
+    (run.reconciles !== undefined || /reconsider/i.test(run.promptVersion))
+  );
+}
+
+/**
+ * The checks that can vouch for a reconsideration draft: only runs the
+ * reconciliation never saw. Stamped drafts name the engaged runIds
+ * exactly; for pre-stamp overlays, only a check dated strictly after the
+ * draft is provably fresh (a same-day check may have been in hand).
+ */
+function freshChecksFor(
+  draft: AssessmentRun,
+  checks: AssessmentRun[],
+): AssessmentRun[] {
+  return checks.filter((r) =>
+    draft.reconciles !== undefined
+      ? !draft.reconciles.includes(r.runId)
+      : r.date > draft.date,
+  );
 }
 
 function contentStaleSince(
@@ -581,6 +614,21 @@ export function ratification(loaded: LoadedCase): Ratification | null {
       ...base,
       status: "unratified",
       reason: `the case file changed (${staleSince}) after the panel last judged it — standing resets until the current content is re-checked`,
+    };
+  }
+
+  // A reconsideration draft was written WITH the panel's dissents in hand
+  // (the one non-blind draft in the pipeline). Deriving its standing from
+  // the checks it already answered would let a contested case clear by
+  // converging on the judges instead of the evidence — so those checks
+  // cannot ratify it. Standing stays down until at least one blind check
+  // the reconciliation never saw judges the case.
+  if (isReconsiderationRun(draft) && freshChecksFor(draft, checks).length === 0) {
+    return {
+      ...base,
+      status: "unratified",
+      reason:
+        "the displayed draft is a reconsideration written with the panel's dissents in hand — standing resets until a fresh blind check judges it",
     };
   }
 

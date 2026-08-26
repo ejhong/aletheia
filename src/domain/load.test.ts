@@ -537,6 +537,49 @@ describe("ratification governance (stage 3)", () => {
     expect(r?.status).toBe("ratified");
   });
 
+  it("a reconsideration cannot be ratified by the checks it engaged", () => {
+    const engaged = fiveChecks("mixed"); // all five agree with the reconciled verdict
+    const reconsider = {
+      ...mkDraft("2026-02-02-reconsider-ab12", "2026-02-02", "mixed"),
+      promptVersion: "aletheia-reconsider-v1",
+      reconciles: engaged.map((r) => r.runId),
+    };
+    const r = ratification(caseWith([reconsider, ...engaged]));
+    expect(r?.status).toBe("unratified");
+    expect(r?.reason).toMatch(/fresh blind check/);
+  });
+
+  it("one blind check outside the reconciles stamp restores normal derivation, even same-day", () => {
+    const engaged = fiveChecks("mixed").slice(0, 4);
+    const reconsider = {
+      ...mkDraft("2026-02-02-reconsider-ab12", "2026-02-02", "mixed"),
+      promptVersion: "aletheia-reconsider-v1",
+      reconciles: engaged.map((r) => r.runId),
+    };
+    const fresh = mkCheck("zeta", "2026-02-02", "mixed");
+    const r = ratification(caseWith([reconsider, ...engaged, fresh]));
+    expect(r?.status).toBe("ratified");
+  });
+
+  it("a pre-stamp reconsideration is fresh-checked only by a strictly later check", () => {
+    const sameDay = fiveChecks("mixed", 0, "2026-02-02");
+    const legacy = {
+      ...mkDraft("2026-02-02-reconsider-cd34", "2026-02-02", "mixed"),
+      promptVersion: "aletheia-reconsider-v1",
+    };
+    expect(ratification(caseWith([legacy, ...sameDay]))?.status).toBe(
+      "unratified",
+    );
+    const later = fiveChecks("mixed", 0, "2026-02-03");
+    expect(ratification(caseWith([legacy, ...later]))?.status).toBe("ratified");
+  });
+
+  it("an ordinary blind draft is unaffected by the reconsideration rule", () => {
+    const draft = mkDraft("d", "2026-02-02"); // newer than the checks
+    const r = ratification(caseWith([draft, ...fiveChecks("unresolved")]));
+    expect(r?.status).toBe("ratified");
+  });
+
   it("a load-bearing claim the panel rejects blocks ratification even with case-verdict agreement", () => {
     const draft = mkDraft("d", "2026-01-01", "unresolved", ["C1"], {
       C1: "well_supported",

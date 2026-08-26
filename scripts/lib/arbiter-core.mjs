@@ -113,15 +113,30 @@ export function diffTier(file) {
 }
 
 /**
+ * Reserved share of the packet budget per tier, first pass only. Strict
+ * tier-0-first filling had its own failure mode: tier 0 is also the
+ * default for paths diffTier does not recognize, so one bulky
+ * unclassified directory could spend the entire budget and push every
+ * content/ file into the omission list — at which point every honest
+ * seat votes unsure on a change it cannot see, and the panel reports
+ * blindness instead of judgment. Tiers 0 and 1 each hold half the
+ * budget in reserve; tier 2 holds none because it is the tier designed
+ * to be dropped first. Reserve a tier does not spend flows to the
+ * others, in scrutiny order, in the second pass.
+ */
+const TIER_RESERVED_SHARE = [0.5, 0.5, 0];
+
+/**
  * Cap an untrusted diff for the panel packet, by scrutiny priority.
  *
  * The first dry-period parks were partly "unsure because I could not see
  * sources.yaml" — positional truncation had dropped canon content while
  * keeping bulky append-only overlays. Sections are now kept tier by tier
- * (stable order within a tier) so what gets omitted is what other
- * machinery already guards. Omissions stay loud: voters are told exactly
- * which files they have not seen, because a silently truncated diff judged
- * as complete would be the arbiter passing changes it never read.
+ * (stable order within a tier), with a reserved slice per tier (see
+ * TIER_RESERVED_SHARE) so no tier can starve the ones below it. Omissions
+ * stay loud: voters are told exactly which files they have not seen,
+ * because a silently truncated diff judged as complete would be the
+ * arbiter passing changes it never read.
  */
 export function capDiff(diff, maxChars = 400_000) {
   if (diff.length <= maxChars) return { text: diff, omitted: [] };
@@ -131,15 +146,23 @@ export function capDiff(diff, maxChars = 400_000) {
   });
   const kept = new Set();
   let used = 0;
-  for (const tier of [0, 1, 2]) {
+  const fill = (tier, cap) => {
     for (const s of sections) {
-      if (s.tier !== tier) continue;
-      if (used + s.text.length <= maxChars) {
+      if (s.tier !== tier || kept.has(s.i)) continue;
+      if (used + s.text.length <= cap) {
         kept.add(s.i);
         used += s.text.length;
       }
     }
+  };
+  // First pass: each tier fills only within its own reserve, so an
+  // oversized tier 0 cannot spend tier 1's slice.
+  for (const tier of [0, 1, 2]) {
+    fill(tier, used + Math.floor(maxChars * TIER_RESERVED_SHARE[tier]));
   }
+  // Second pass: unspent reserve goes to whatever still fits, in
+  // scrutiny order — the guarantee costs nothing when tiers are small.
+  for (const tier of [0, 1, 2]) fill(tier, maxChars);
   return {
     text: sections.filter((s) => kept.has(s.i)).map((s) => s.text).join(""),
     omitted: sections

@@ -9,8 +9,12 @@
  * deliberately non-blind draft in the pipeline: the model receives every
  * seat's dissent and must answer each one, moving only where the argument
  * compels. The result is an ordinary append-only overlay (role: draft,
- * promptVersion aletheia-reconsider-v1); standing re-derives against the
- * existing fresh checks, so no new panel is needed to resolve.
+ * promptVersion aletheia-reconsider-v1) stamped with `reconciles`: the
+ * runIds of the checks whose dissents it engaged. Those checks can never
+ * ratify the draft that answered them (src/domain/load.ts ratification) —
+ * a reconciled case stays unratified until at least one fresh blind check
+ * judges it, which stale-checks.mjs arranges by listing the case for the
+ * next content-response re-panel.
  *
  * Eligibility: the newest checks are current (not stale vs content), the
  * case verdict is disputed by at least two seats, and the latest draft is
@@ -158,6 +162,9 @@ Reply ONLY JSON:
     promptVersion: PROMPT_VERSION,
     humanReviewed: false,
     role: "draft",
+    // The checks whose dissents were in hand: exactly these can never
+    // ratify this draft — only a blind check outside this list can.
+    reconciles: checks.map((r) => r.runId),
     caseAssessment: d.caseAssessment,
     claimAssessments: d.claimAssessments,
   };

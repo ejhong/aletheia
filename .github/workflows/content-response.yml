@@ -1,25 +1,33 @@
-# The site's fast metabolism: any canon content landing on main — an
-# intake, a correction, a new case — triggers reassessment, re-panels
-# whatever went stale, and proposes the results as a PR through the normal
-# gates. Overlay-only merges (this workflow's own output) do not match the
-# path filter, so the loop terminates: canon change → judgment PR →
-# overlays merge → silence.
+# The site's fast metabolism, batched hourly: reassessment and re-panels
+# run on a schedule rather than per canon push, so a burst of merges costs
+# one judgment cycle instead of one per merge. The scripts detect change
+# mechanically (content commit dates vs. overlay dates), so an hour with
+# nothing new exits without a single model call — the schedule is free
+# when idle. The loop still terminates: canon change → (within the hour)
+# judgment PR → overlays merge → the next hour finds nothing stale.
+#
+# This replaced the per-push trigger on 2026-08-26 (see docs/DECISIONS.md)
+# after a same-day burst produced two respond PRs forty minutes apart, the
+# second superseding the first — duplicate panel spend and a stale PR left
+# open. Worst-case latency for a canon change is now one hour, which the
+# judgment layer never needed to beat.
 name: Content response
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - "content/cases/**"
-      - "!content/cases/*/assessments/**"
+  schedule:
+    # Off the top of the hour: GitHub delays or drops cron jobs scheduled
+    # at :00 under load.
+    - cron: "17 * * * *"
   # Manual trigger: run the reassess/re-panel loop on demand — e.g. to
-  # recover a panel run whose output was lost, or to panel a case without
-  # waiting for a canon content change.
+  # recover a panel run whose output was lost, to panel a case without
+  # waiting for the hour, or to test.
   workflow_dispatch:
 
 concurrency:
   group: content-response
-  cancel-in-progress: true
+  # Never cancel an in-flight run: panels are paid model calls, and a
+  # cancelled run discards them. The next scheduled run waits its turn.
+  cancel-in-progress: false
 
 permissions:
   contents: write
@@ -87,6 +95,17 @@ jobs:
           risk=$(node scripts/classify-pr-risk.mjs "origin/${GITHUB_REF_NAME}" | tail -1)
           pr_url=$(gh pr create \
             --title "Content response: ${date}" \
-            --body "Automatic judgment ripple after a canon content change: reassessment drafts, editorial-audit corrections if any, and fresh panels for stale cases. Standing derives on merge." \
+            --body "Hourly judgment batch: reassessment drafts, editorial-audit corrections if any, and fresh panels for stale cases, derived from everything that landed since the last batch. Standing derives on merge." \
             --label "$( [ "$risk" = "low-risk" ] && echo auto:low-risk || echo needs-approval )")
           gh pr merge --auto --squash "$pr_url" || echo "::warning::auto-merge unavailable; PR waits on checks"
+          # Close any older respond PR still open: this run re-derived all
+          # judgments from current main, so an unmerged predecessor is
+          # stale by construction (its overlays are regenerated here if
+          # still warranted). Leaving it open invites merging both, which
+          # conflicts.
+          for old in $(gh pr list --state open --json number,headRefName \
+              --jq ".[] | select(.headRefName | startswith(\"respond/\")) | select(.headRefName != \"${branch}\") | .number"); do
+            gh pr close "$old" \
+              --comment "Superseded by ${pr_url}: that run re-derives all judgments from current main, including anything this PR carried that is still warranted." \
+              --delete-branch || echo "::warning::could not close superseded PR #${old}"
+          done

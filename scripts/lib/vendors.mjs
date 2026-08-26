@@ -41,6 +41,44 @@ export const VENDORS = {
 };
 
 /**
+ * POST with retry on transient failures. Retries (twice, backing off 5s
+ * then 20s) exactly the failure classes observed from Actions runners to
+ * vendor edges — network-level fetch errors ("TypeError: fetch failed"),
+ * HTTP 429, and HTTP 5xx (a Venice seat died on a 520 and then a socket
+ * error on two consecutive panel runs, each discarding a paid seat) —
+ * and nothing else: 4xx are real errors, and a deadline timeout is not
+ * retried because a second 30-minute wait is worse than a failed seat.
+ * Returns the first non-retryable Response; the caller still judges
+ * res.ok, so genuine HTTP errors keep their existing messages.
+ */
+export async function fetchWithRetry(name, url, init, attempts = 3) {
+  let lastErr;
+  for (let attempt = 1; attempt <= attempts; attempt++) {
+    if (attempt > 1) {
+      const delay = attempt === 2 ? 5_000 : 20_000;
+      console.error(
+        `${name}: transient failure (${lastErr}), retry ${attempt - 1}/${attempts - 1} in ${delay / 1000}s`,
+      );
+      await new Promise((r) => setTimeout(r, delay));
+    }
+    let res;
+    try {
+      res = await fetch(url, init);
+    } catch (err) {
+      if (err.name === "TimeoutError" || err.name === "AbortError") throw err;
+      lastErr = String(err.cause?.message ?? err.message);
+      continue;
+    }
+    if ((res.status === 429 || res.status >= 500) && attempt < attempts) {
+      lastErr = `HTTP ${res.status}`;
+      continue;
+    }
+    return res;
+  }
+  throw new Error(`${name}: network failure after ${attempts} attempts: ${lastErr}`);
+}
+
+/**
  * One chat call to one vendor seat. Returns the reply text; throws on HTTP
  * errors or an empty reply (an empty reply is a refusal or a burned
  * thinking budget, and callers must treat it as a failed seat, never as an
@@ -98,7 +136,7 @@ export async function callVendor(name, { system, user, maxTokens = 16000 }) {
     };
   }
 
-  const res = await fetch(url, {
+  const res = await fetchWithRetry(name, url, {
     method: "POST",
     headers,
     body: JSON.stringify(body),

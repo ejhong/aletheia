@@ -1,0 +1,263 @@
+# Cross-model check run — an independent judge (Grok 4.6 (xAI)),
+# blind to all prior assessments (scripts/cross-model-check.mjs,
+# promptVersion aletheia-check-v2). role: check — never displayed as the case
+# narrative; feeds the concurrence panel. Append-only; NOT human reviewed.
+runId: 2026-08-26-check-grok
+model: Grok 4.6 (xAI) — independent check run via grok-4.6
+date: 2026-08-26
+promptVersion: aletheia-check-v2
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: unresolved
+  loadBearing:
+    - TRN-C020
+    - TRN-C001
+    - TRN-C007
+    - TRN-C005
+  weakestLinks:
+    - TRN-C022
+    - TRN-C021
+    - TRN-C011
+  synthesis: >-
+    The featured hypothesis is a ladder, and the evidence is allowed to support
+    only the rung it actually touches. At the floor the record is unusually
+    solid. Nine point-like marks exist on the 12 April 1950 Palomar material at
+    the published positions: the discovery paper reported them, the principal
+    critics confirmed them under a microscope on surviving glass, an independent
+    pipeline recovered eight of nine, and an unpublished but fully read
+    microscopy manuscript locates all nine on the original Caltech negative. A
+    second multi-source event from 19 July 1952 is peer-reviewed with deep
+    modern follow-up, recovered independently, and likewise not confined to
+    later copy generations. The 1950 marks are systematically sharper than stars
+    of equal brightness. Independent software finds the same detections in the
+    same scans. None of that is seriously contested, and none of it decides what
+    made a mark.
+
+    Steelman the conventional account. Photographic emulsions manufacture
+    star-like impostors; two decades of archival searches for gamma-ray-burst
+    flashes never confidently confirmed one optical transient. SuperCOSMOS
+    profile statistics put all nine 1950 marks in the morphological neighborhood
+    where a trained classifier assigns spurious detections. DSS and SuperCOSMOS
+    are not independent witnesses: they descend from a shared intermediate
+    positive, so a single copying flaw can appear in both modern datasets. The
+    microscopist who examined the original 1950 glass — directed to the nine
+    objects by the copy-defect paper's own author — found them un-star-like,
+    noted a plate-corner location where defects congregate, and judged emulsion
+    defects a reasonable attribution. Above the individual events, the
+    celebrated ensemble patterns (Earth-shadow deficit, nuclear-test timing)
+    reproduce when independent statisticians re-analyse the VASCO working
+    catalog and dissolve when the catalog itself is rebuilt or the background's
+    spatial non-uniformity is modelled. On this reading the correlations are
+    properties of unvalidated rows and of Palomar's schedule, not of the sky.
+
+    Steelman the incident-light account. A sub-second flash on a fifty-minute
+    exposure should look sharper than a star that accumulated seeing and guiding
+    blur, so the morphology argument is direction-ambiguous until someone
+    calibrates period emulsions. The copy-genealogy argument, whatever its force
+    against the uninspected hundred thousand, no longer reaches the two flagship
+    events if the Yang registration holds: those marks are on the grandparent,
+    not only on two cousins. Hamburg plates — different telescope, emulsion,
+    archive, and digitization — show analogous appear-once candidates, and a
+    subset reportedly carries the coma signature of light that passed through
+    the optics. Chemistry and scratches do not know where the optical axis is;
+    photons do. Those Hamburg results are single-author preprints, uncalibrated
+    against false-positive rates and unvalidated blind, but they sit outside the
+    Palomar copy family and are the only physical discriminant currently on the
+    table.
+
+    Neither steelman currently wins. Presence on the original emulsion retires
+    scanner and copy-stage origins for the canonical events and leaves
+    flash-versus-flaw in the original emulsion, which single-source microscopy
+    cannot split. The Earth-shadow deficit is the best geometric test of a
+    near-Earth reflecting population, and it is not established beyond one
+    working catalog. Artificial objects before Sputnik (TRN-C022) remain a
+    headline with no secured path through the two unresolved rungs beneath it;
+    extraterrestrial origin (TRN-C023) is not presently testable at all. The
+    case verdict is therefore unresolved: the marks are real features of plate
+    material, the mundane mechanisms are real, and whether any prespecified
+    subset was made by photons entering a telescope in the 1950s is still an
+    open empirical question. Sensitivity: removing TRN-E022 (original-glass
+    microscopy of the 1950 nine) would most change the character of the
+    assessment, because it would restore the copy-defect account's full reach
+    over the flagship events. The unresolved verdict would survive that removal.
+    The verdict does not hang on one thread; it is held open by several
+    independent gaps (unvalidated coma, catalog-conditional statistics,
+    uncalibrated flash profiles, and the flash-versus-defect
+    indistinguishability of single-source morphology).
+claimAssessments:
+  - claimId: TRN-C022
+    verdict: unresolved
+    confidence: high
+    reasoning: "Nothing in the present record establishes that artificial objects
+      capable of producing the reported detections were near Earth before
+      October 1957. Every path runs through TRN-C020 and TRN-C021, both
+      unresolved; the shadow and nuclear ensemble results are
+      catalog-conditional and contested (E009, E011 versus E010, E015). Cann
+      2026c (E020) even offers a natural near-Earth dusty-aggregate mechanism
+      that, if it held, would undercut artificiality without touching the lower
+      rungs. Strongest opposing consideration: the entire physical base is still
+      single-exposure marks whose flash-versus-defect nature is unclassified, so
+      the headline claim is a stack of unsecured conditionals rather than a
+      contest the data have joined."
+  - claimId: TRN-C023
+    verdict: presently_untestable
+    confidence: high
+    reasoning: "No observation now on the table can bear on extraterrestrial origin.
+      The claim has no independent evidence stream; it inherits every open
+      question below TRN-C022 and would still need a separate historical and
+      engineering argument even if a pre-Sputnik artificial object were
+      demonstrated. Zhitnitsky (E021) offers a dark-matter reading that takes
+      the transients as given and does not engage plate forensics, so it cannot
+      reach this claim either. Strongest opposing consideration: the GRB-era
+      archival searches and the Hambly/Watters artifact case show how often
+      star-like plate marks dissolve into chemistry — but the deeper point is
+      that nothing currently tests this proposition at all."
+  - claimId: TRN-C021
+    verdict: unresolved
+    confidence: high
+    reasoning: "A near-Earth reflective population predicts an Earth-shadow deficit
+      and multi-point geometry that distant sources should not share, but the
+      deficit (TRN-C005) replicates only inside the VASCO working catalog and
+      vanishes when spatial non-uniformity is modelled (E011). Multiple
+      simultaneous point sources would argue against most astrophysical
+      counterparts if the marks were incident light — yet that premise is
+      TRN-C020, which is unresolved. Cann 2026c (E020) further splits near-Earth
+      from artificial by proposing storm-trapped dusty aggregates. Strongest
+      opposing consideration: Watters et al. show the shadow analysis assumes a
+      uniform background the data violate, so the geometric signature currently
+      rests on the least-vetted rows."
+  - claimId: TRN-C020
+    verdict: unresolved
+    confidence: moderate
+    reasoning: "This is the gate, and it is open. For the two flagship events,
+      original-glass microscopy (E022, E023) retires scanner and copy-stage
+      origins, but the same manuscript states that microscopy cannot separate a
+      short flash from an emulsion defect, and the inspecting microscopist
+      leaned defect (E024). Hamburg candidates outside the Palomar lineage
+      (E013) and reported coma signatures (E014) are the best positive physical
+      line, yet both are unvalidated single-author preprints. Strongest opposing
+      consideration: Hambly and Blair's classifier groups the 1950 nine with
+      artifacts (E004), the marks sit in a plate corner where defects
+      congregate, and two decades of archival GRB searches never confirmed one
+      optical transient."
+  - claimId: TRN-C007
+    verdict: well_supported
+    confidence: high
+    reasoning: "Hambly and Blair reconstruct atlas production from the archival
+      record: an intermediate glass positive sits between the original negative
+      and the copy negatives that DSS and SuperCOSMOS scanned, so a single
+      copying flaw can appear in both modern datasets (E005). The genealogy
+      itself is not disputed. Yang and Villarroel (E023) show that this pathway
+      cannot explain the two inspected canonical events if their registration
+      holds, because those marks are on the original material — but that
+      qualifies the mechanism's reach, not its existence, and it leaves the
+      uninspected catalog candidates untouched. Strongest opposing
+      consideration: a shared-ancestor pathway is a possibility argument until
+      someone measures the star-like defect rate at each copying stage, and it
+      never applied to independent archives such as Hamburg."
+  - claimId: TRN-C001
+    verdict: established
+    confidence: high
+    reasoning: "Villarroel et al. reported nine point sources on the 12 April 1950
+      red plate, absent six days later and from deeper modern surveys (E001).
+      Hambly and Blair physically confirmed the nine marks on the Edinburgh
+      glass copy at the published positions (E002), Hayes's independent pipeline
+      recovered eight of nine (E008), and Yang and Villarroel locate all nine on
+      the original Caltech negative (E022). Critics and proponents agree the
+      marks exist on plate material; they disagree about what made them.
+      Strongest opposing consideration: the same inspection found similar
+      one-plate-only detections on neighbouring field E0086, which is what a
+      defect population looks like — but that contests uniqueness, not
+      presence."
+  - claimId: TRN-C002
+    verdict: well_supported
+    confidence: high
+    reasoning: "SuperCOSMOS profile statistics place all nine 1950 marks on the
+      sharp side of the stellar distribution (roughly −3 ≲ η < −1), a joint draw
+      of vanishing probability from the stellar population, and microscope
+      inspection found them more concentrated and circular than comparison stars
+      (E003). Proponents do not dispute the measurement; they dispute its
+      meaning, arguing that a sub-second flash on a long exposure should also be
+      sharp (E006). Strongest opposing consideration: in the SuperCOSMOS
+      classification vocabulary, sharper-than-stellar is the known morphological
+      neighbourhood of spurious detections (E004), and no period-emulsion flash
+      calibration exists to split the two readings."
+  - claimId: TRN-C003
+    verdict: well_supported
+    confidence: moderate
+    reasoning: "Solano et al. (MNRAS 2024) report three roughly 16th-magnitude point
+      sources within 10 arcsec on the 19 July 1952 exposure, gone within about
+      an hour, and absent to magnitude 25.5 in 2023 GTC imaging (E007). Hayes
+      recovers all three (E008). Yang and Villarroel find the triple on a
+      Harvard copy plate and in the original survey digitization (E022), which
+      strands a copy-only account for this event as well. Strongest opposing
+      consideration: everything published about the triple still passes through
+      the Palomar digitized lineage; the isolated source's profile looks like
+      comparison stars, unlike the sharp 1950 nine, so the two canonical events
+      are not morphologically uniform."
+  - claimId: TRN-C004
+    verdict: well_supported
+    confidence: high
+    reasoning: "Hayes built a from-scratch pipeline with synthetic-injection
+      controls and recovered 8 of 9 April 1950 sources, 3 of 3 July 1952
+      sources, and 3,450 of Solano's 5,399 published candidates (63.9 percent)
+      at a median 0.94 arcsec (E008). That kills a one-team software-bug
+      explanation. The same work produced 2.85 million candidates under looser
+      cuts, showing that population size is a vetting choice, not a sky fact.
+      Strongest opposing consideration: independent extraction from shared
+      digitized copies is exactly what a defect population would also produce,
+      and it cannot speak to physical origin."
+  - claimId: TRN-C005
+    verdict: mixed
+    confidence: moderate
+    reasoning: "On the roughly 107,875-object working catalog, independent code
+      reproduces a 0.46 percent versus about 1.4 percent Earth-shadow deficit
+      (E010), and ML artifact-scoring finds the deficit stronger among
+      candidates scored likelier to be real (E015). Watters et al. show the
+      uniform-background assumption is false — features concentrate at edges and
+      corners — and find no significant deficit in more heavily vetted subsets
+      (E011). The proponents' reply is about statistical power, not a
+      counter-demonstration on a cleaned catalog (E012). Strongest opposing
+      consideration: a geometric signature that survives only inside one
+      unvalidated working sample, and disappears when the background the data
+      actually have is used, is not yet a property of the sky."
+  - claimId: TRN-C006
+    verdict: mixed
+    confidence: moderate
+    reasoning: "Independent statistics on the author-supplied catalog reproduce a
+      nuclear-window relative risk of about 1.45 (E010); the association
+      persists after ML scoring (E015) and is not explained by geomagnetic
+      changes in general plate sensitivity (E017). Hayes's independently
+      extracted catalog, with nightly sky coverage as exposure, is null (IRR
+      1.03, p = .71) (E009), and Watters attributes the original signal to
+      Palomar's observing schedule (E011). Even a real correlation would be
+      direction-ambiguous: fallout on emulsions predicts it as well as glints
+      do. Strongest opposing consideration: when the disputed extraction step is
+      actually varied, the effect vanishes, which is the signature of a catalog
+      property rather than a sky property."
+  - claimId: TRN-C010
+    verdict: provisionally_supported
+    confidence: low
+    reasoning: "Busko searched rapid same-night pairs from the Hamburg 1.2-m Schmidt
+      — different telescope, emulsion, archive, and digitization — and reports
+      appear-once candidates with systematically narrow FWHM, on an initial
+      41-plate sample he labels preliminary (E013). Because Hamburg shares no
+      ancestor with Palomar, TRN-C007 cannot produce these marks. Strongest
+      opposing consideration: every plate archive has defects, and a search that
+      has not published a false-positive rate against matched control pairs
+      cannot yet distinguish a shared sky phenomenon from shared emulsion
+      failure modes."
+  - claimId: TRN-C011
+    verdict: provisionally_supported
+    confidence: low
+    reasoning: "On Hamburg 0.6-m plates chosen for strong off-axis coma, Busko
+      reports that candidate transients exhibit the coma pattern expected for
+      light that passed through the telescope — a signature surface defects
+      should not naturally reproduce (E014). If the discriminant survives blind
+      validation, specific candidates would move from mark to incident light
+      without anyone needing the Palomar originals. Strongest opposing
+      consideration: the classifier has not been blind-tested against known
+      defects and deliberate flashes, defect classes that mimic directional
+      asymmetry have not been excluded, and the author states the data do not
+      establish the physical origin of the light."

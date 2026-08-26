@@ -113,7 +113,7 @@ const featuredIds = claims
   .map((c) => c.id);
 const caseRecord = parseYaml(read("case.yaml"));
 
-const PROMPT_VERSION = "aletheia-check-v1";
+const PROMPT_VERSION = "aletheia-check-v2"; // v2: sensitivity line (single-thread test)
 
 const instructions = `You are an independent scientific assessor for Aletheia, a public evidence ledger for contested hypotheses. You have the complete case file for "${caseRecord.title}" — dossier, overview article, atomic claims, evidence records, source records, and research agenda. You have deliberately NOT been shown any prior assessment.
 
@@ -125,7 +125,8 @@ Assessment rules:
 3. Consensus is not proof; outsider status is not evidence. Mechanisms, measurements, and replications count — paper counts and prestige do not.
 4. Choose the verdict the evidence warrants, including strong verdicts in either direction. "unresolved" and "mixed" are substantive findings requiring justification, not safe defaults.
 5. Steelman both directions in the synthesis.
-6. Never fabricate results, papers, or numbers.
+6. Sensitivity: name the single evidence record whose removal would most change your case verdict, and state whether the verdict survives without it — a verdict hanging on one thread must say so.
+7. Never fabricate results, papers, or numbers.
 
 Verdict vocabulary (exact tokens): ${VERDICTS.join(" | ")}
 Confidence tokens: high | moderate | low

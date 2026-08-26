@@ -39,7 +39,7 @@ import {
   contestedLoadBearingClaims,
 } from "./lib/reconcile-core.mjs";
 
-const PROMPT_VERSION = "aletheia-reconsider-v1";
+const PROMPT_VERSION = "aletheia-reconsider-v2"; // v2: sensitivity line
 const VERDICTS = [
   "established", "well_supported", "provisionally_supported", "mixed",
   "weakly_supported", "contradicted", "unresolved", "presently_untestable",
@@ -143,6 +143,7 @@ Rules:
 - Verdicts from this vocabulary only: ${VERDICTS.join(", ")}.
 - Distinguish credibility from diagnosticity; repeated reports are not independent; feasibility is not occurrence.
 - Synthesis at least 200 words, plain language, citing record ids.
+- Sensitivity: in the synthesis, name the single evidence record whose removal would most change the case verdict, and state plainly whether the verdict survives without it. A verdict hanging on one thread must say so.
 - loadBearing AND weakestLinks are arrays of CLAIM ids only (like XXX-C001) — never evidence ids, never prose sentences. Put the prose reasons in the synthesis. claimAssessments cover every featured claim by id.
 
 Reply ONLY JSON:

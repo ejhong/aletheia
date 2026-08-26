@@ -44,13 +44,15 @@ export function generateMetadata({
   });
 }
 
+/* Labels stay one word each: the navigator now carries up to eleven
+   entries and must survive a phone viewport without wrapping. */
 const sections = [
   ["assessment", "Assessment"],
   ["article", "Article"],
-  ["ladder", "Claim ladder"],
+  ["ladder", "Ladder"],
   ["evidence", "Evidence"],
-  ["conventional", "Conventional view"],
-  ["research", "Research agenda"],
+  ["conventional", "Conventional"],
+  ["research", "Research"],
   ["history", "History"],
 ] as const;
 
@@ -80,7 +82,11 @@ export default async function CasePage({
 
   return (
     <div>
-      <SectionNav sections={sections} slug={slug} />
+      <SectionNav
+        sections={sections}
+        slug={slug}
+        hasStudies={loaded.studies.length > 0}
+      />
 
       <DossierHeader
         record={loaded.record}

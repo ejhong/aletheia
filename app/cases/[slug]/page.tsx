@@ -22,6 +22,7 @@ import {
   lastContentUpdate,
   latestCheckPerModel,
   loadAllCases,
+  survivingObjections,
 } from "@/src/domain/load";
 import { paramsOrPlaceholder } from "@/src/domain/staticExport";
 
@@ -103,7 +104,30 @@ export default async function CasePage({
                   ? `Contested: ${shown.ratification.reason}. The disagreement is shown below, not resolved by hiding it.`
                   : `Not yet ratified: ${shown.ratification.reason}.`}
               </p>
-            ) : null}
+            ) : (
+              /* Ratification tolerates one dissenter — but a conclusion
+                 ships with its surviving objections attached, not
+                 sanitized away. */
+              survivingObjections(loaded, shown.run).map((o) => (
+                <p
+                  key={o.seat}
+                  className="mt-3 border border-line bg-paper px-4 py-2.5 text-[12.5px] leading-relaxed text-ink-soft"
+                >
+                  <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-ochre">
+                    surviving objection
+                  </span>{" "}
+                  — {o.seat} grades this case{" "}
+                  <span className="font-mono">{o.verdictLabel}</span>:{" "}
+                  {o.firstSentence}{" "}
+                  <Link
+                    href="/panel"
+                    className="font-mono text-[11px] text-copper underline underline-offset-2"
+                  >
+                    full reasoning →
+                  </Link>
+                </p>
+              ))
+            )}
             {checks ? (
               <CrossModelPanel
                 summary={checks}

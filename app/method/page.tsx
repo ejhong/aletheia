@@ -26,7 +26,7 @@ const sections: [string, string][] = [
   ],
   [
     "Sources and honest verification",
-    "A source is a provenance container: the actual paper, book, report, or page. Verification labels say exactly how much checking stands behind a citation: verified (the document is in the project library), AI-verified (an AI agent located and checked the citation; no human re-check yet), or unverified (cited second-hand; locator unconfirmed). We never invent locators — an uncertain DOI is omitted, not guessed.",
+    "A source is a provenance container: the actual paper, book, report, or page. Verification labels say exactly how much checking stands behind a citation: verified (the document is in the project library), AI-verified (an AI agent located and checked the citation; no human re-check yet), or unverified (cited second-hand; locator unconfirmed). We never invent locators — an uncertain DOI is omitted, not guessed. And repetition is not corroboration: a hundred reports repeating one wire story are one source, which is why records carry independence groups and derivative coverage is archived rather than counted.",
   ],
   [
     "Assessments are argued, not scored",
@@ -34,7 +34,7 @@ const sections: [string, string][] = [
   ],
   [
     "How AI is used — and how it is not",
-    "AI agents extract candidate claims from sources, verify citations, and draft assessments. Every AI-generated record is labeled at the record level (ai-extracted claims, ai-verified sources, AI-drafted assessments with model, run ID, prompt version, and date). AI assessments live in append-only overlay files that never mutate the underlying claims; a new run adds a new record beside the old one, so the history of machine judgment is itself inspectable. AI does not fabricate citations, and no single model's judgment publishes as settled: consequential changes need multi-model ratification, and a lone draft is always labeled as one. Historical human reviews keep their labels — endorsement records are append-only like everything else.",
+    "AI agents extract candidate claims from sources, verify citations, and draft assessments. Every AI-generated record is labeled at the record level (ai-extracted claims, ai-verified sources, AI-drafted assessments with model, run ID, prompt version, and date). AI assessments live in append-only overlay files that never mutate the underlying claims; a new run adds a new record beside the old one, so the history of machine judgment is itself inspectable. AI does not fabricate citations, and no single model's judgment publishes as settled: consequential changes need multi-model ratification, and a lone draft is always labeled as one. Historical human reviews keep their labels — endorsement records are append-only like everything else. Corpus assembly is inspectable too: the literature-watch queries that feed each case are public, versioned files in the repository, so what we searched for — and therefore what we could have missed — is itself on the record.",
   ],
   [
     "Rejected claims are tombstones",

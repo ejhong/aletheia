@@ -16,6 +16,7 @@ import {
   isFeatured,
   ResearchOpportunitySchema,
   SourceSchema,
+  StudySchema,
   WatchConfigSchema,
   type AssessmentRun,
   type AssessmentState,
@@ -29,8 +30,10 @@ import {
   type ImageRecord,
   type LoadedCase,
   type Source,
+  type Study,
   type WatchConfig,
 } from "./schema";
+import { studyIntegrityErrors } from "./studies";
 
 const CONTENT_DIR = path.join(process.cwd(), "content", "cases");
 const SITE_IMAGES_FILE = path.join(process.cwd(), "content", "images.yaml");
@@ -372,6 +375,27 @@ export function loadCase(caseDir: string): LoadedCase {
       )
     : [];
 
+  // Pre-registered desk workpapers (see StudySchema): one file per study,
+  // validated fail-closed like everything else. Cross-record integrity —
+  // frozen-criteria hash, resolvable ids, the superseded-workpaper rule —
+  // is enforced below via studyIntegrityErrors.
+  const studiesDir = path.join(CONTENT_DIR, caseDir, "studies");
+  const studies: Study[] = fs.existsSync(studiesDir)
+    ? fs
+        .readdirSync(studiesDir)
+        .filter((f) => f.endsWith(".yaml"))
+        .sort()
+        .map((f) => {
+          try {
+            return StudySchema.parse(
+              parseYaml(fs.readFileSync(path.join(studiesDir, f), "utf8")),
+            );
+          } catch (e) {
+            throw new ContentError(caseDir, `studies/${f} invalid: ${String(e)}`);
+          }
+        })
+    : [];
+
   const assessmentsDir = path.join(CONTENT_DIR, caseDir, "assessments");
   const assessmentRuns: AssessmentRun[] = fs.existsSync(assessmentsDir)
     ? fs
@@ -398,6 +422,20 @@ export function loadCase(caseDir: string): LoadedCase {
   assertUnique(caseDir, "research", research.map((r) => r.id));
   assertUnique(caseDir, "assessment run", assessmentRuns.map((r) => r.runId));
   assertUnique(caseDir, "conjecture", conjectures.map((c) => c.id));
+  assertUnique(caseDir, "study", studies.map((s) => s.id));
+
+  const studyErrors = studyIntegrityErrors({
+    studies,
+    sources,
+    evidence,
+    researchIds: new Set(research.map((r) => r.id)),
+    claimIds: new Set(
+      claims.filter((c) => c.reviewState !== "rejected").map((c) => c.id),
+    ),
+  });
+  if (studyErrors.length > 0) {
+    throw new ContentError(caseDir, studyErrors.join("; "));
+  }
 
   const loaded: LoadedCase = {
     record,
@@ -412,6 +450,7 @@ export function loadCase(caseDir: string): LoadedCase {
     watch,
     curatedResources,
     conjectures,
+    studies,
   };
   checkIntegrity(caseDir, loaded);
   return loaded;

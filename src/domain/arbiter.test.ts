@@ -112,6 +112,37 @@ describe("capDiff — truncation is loud", () => {
     expect(text).toContain("scripts/arbiter.mjs");
     expect(omitted).toEqual(["content/cases/x/assessments/2026-01-01-check-opus.yaml"]);
   });
+
+  it("a bulky unclassified section cannot starve the content tier", () => {
+    // Regression: unrecognized paths default to tier 0, and strict
+    // tier-0-first filling let one large working directory spend the
+    // whole budget — every content/ file landed in `omitted` and the
+    // panel could only report that it had not seen the change.
+    const d =
+      section("working-papers/big-draft.md", 900) +
+      section("content/cases/x/claims.yaml", 200) +
+      section("content/cases/x/sources.yaml", 150);
+    const { text, omitted } = capDiff(d, 1000);
+    expect(text).toContain("content/cases/x/claims.yaml");
+    expect(text).toContain("content/cases/x/sources.yaml");
+    expect(omitted).toEqual(["working-papers/big-draft.md"]);
+  });
+
+  it("reserve a tier does not spend flows to the others in scrutiny order", () => {
+    // Tier 0 exceeds its reserve, tier 1 leaves most of its own unspent:
+    // the second pass must hand that slack to the remaining tier-0
+    // section before tier 2 sees any of it.
+    const d =
+      section("scripts/a.mjs", 300) +
+      section("scripts/b.mjs", 300) +
+      section("content/cases/x/claims.yaml", 100) +
+      section("inbox/z.yaml", 500);
+    const { text, omitted } = capDiff(d, 900);
+    expect(text).toContain("scripts/a.mjs");
+    expect(text).toContain("scripts/b.mjs");
+    expect(text).toContain("content/cases/x/claims.yaml");
+    expect(omitted).toEqual(["inbox/z.yaml"]);
+  });
 });
 
 describe("rateLimitGate", () => {

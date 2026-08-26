@@ -22,8 +22,31 @@
 const MAX_CHECKED = 40;
 const FETCH_TIMEOUT_MS = 20_000;
 
-/** Strip punctuation that sentence context glues onto an identifier. */
-const trimTrailing = (s) => s.replace(/[.,;:)\]}>"']+$/, "");
+/**
+ * Strip punctuation that sentence context glues onto an identifier —
+ * without amputating the identifier itself. DOIs legally contain
+ * parentheses, and two common families always do (Elsevier's S-prefix
+ * journals: 10.1016/S0140-6736(20)30183-5; ASCE:
+ * 10.1061/(ASCE)0733-9399(2002)128:1(2)), so a trailing `)` is only
+ * sentence punctuation when it has no matching `(` earlier in the
+ * identifier. Getting this wrong is not cosmetic: a truncated DOI fails
+ * to resolve, and a FAILS line is presented to the seats as positive
+ * evidence of a fabricated citation — a correct source parks the PR.
+ */
+const trimTrailing = (s) => {
+  for (;;) {
+    if (/[.,;:\]}>"']$/.test(s)) {
+      s = s.slice(0, -1);
+    } else if (
+      s.endsWith(")") &&
+      (s.match(/\)/g)?.length ?? 0) > (s.match(/\(/g)?.length ?? 0)
+    ) {
+      s = s.slice(0, -1); // unbalanced — from `(see 10.1234/foo)`, not the DOI
+    } else {
+      return s;
+    }
+  }
+};
 
 /**
  * Extract citation identifiers from a unified diff: added lines only,
@@ -44,7 +67,10 @@ export function extractCitations(rawDiff) {
     const add = (kind, id) => {
       if (id) found.set(`${kind} ${id}`, { kind, id });
     };
-    for (const m of line.matchAll(/\bhttps?:\/\/[^\s"'`<>)\]]+/g)) {
+    // `)` is deliberately NOT a terminator in either pattern — DOIs (and
+    // URLs built from them) contain balanced parens; trimTrailing drops
+    // only the unbalanced ones that markdown links and prose add.
+    for (const m of line.matchAll(/\bhttps?:\/\/[^\s"'`<>\]]+/g)) {
       const url = trimTrailing(m[0]);
       const doi = url.match(/doi\.org\/(10\.\d{4,9}\/\S+)/);
       const arxiv = url.match(/arxiv\.org\/(?:abs|pdf)\/(\d{4}\.\d{4,5})(?:v\d+)?/i);
@@ -52,7 +78,7 @@ export function extractCitations(rawDiff) {
       else if (arxiv) add("arxiv", arxiv[1]);
       else add("url", url);
     }
-    for (const m of line.matchAll(/\b10\.\d{4,9}\/[^\s"'`<>)\]]+/g)) {
+    for (const m of line.matchAll(/\b10\.\d{4,9}\/[^\s"'`<>\]]+/g)) {
       add("doi", trimTrailing(m[0]));
     }
     for (const m of line.matchAll(/\barxiv[:\s]*(\d{4}\.\d{4,5})(?:v\d+)?/gi)) {

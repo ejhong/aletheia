@@ -73,6 +73,36 @@ describe("citation extraction from diffs", () => {
       { kind: "doi", id: "10.1234/xyz" },
     ]);
   });
+
+  // Regression: `)` used to terminate the identifier unconditionally, so
+  // DOIs with legal parentheses (Elsevier S-prefix, ASCE) were truncated
+  // into strings that fail to resolve — and a FAILS line reads to the
+  // seats as a fabricated citation.
+  it("keeps balanced parentheses inside DOIs", () => {
+    const d = diff(
+      "content/cases/x/sources.yaml",
+      "  doi: 10.1016/S0140-6736(20)30183-5",
+      "  doi: 10.1061/(ASCE)0733-9399(2002)128:1(2)",
+      "  url: https://doi.org/10.1016/S0140-6736(20)30183-5",
+    );
+    expect(extractCitations(d)).toEqual([
+      { kind: "doi", id: "10.1016/S0140-6736(20)30183-5" },
+      { kind: "doi", id: "10.1061/(ASCE)0733-9399(2002)128:1(2)" },
+    ]);
+  });
+
+  it("still trims unbalanced closing parens from prose and markdown links", () => {
+    const d = diff(
+      "content/cases/x/overview.md",
+      "(see 10.1234/foo) and [the site](https://example.com/a) for context.",
+      "The trial (10.1016/S0140-6736(20)30183-5), reported no effect.",
+    );
+    expect(extractCitations(d)).toEqual([
+      { kind: "url", id: "https://example.com/a" },
+      { kind: "doi", id: "10.1234/foo" },
+      { kind: "doi", id: "10.1016/S0140-6736(20)30183-5" },
+    ]);
+  });
 });
 
 describe("verification reporting", () => {

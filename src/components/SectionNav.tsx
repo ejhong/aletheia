@@ -11,9 +11,11 @@ import { useEffect, useState } from "react";
 export function SectionNav({
   sections,
   slug,
+  hasStudies = false,
 }: {
   sections: ReadonlyArray<readonly [string, string]>;
   slug: string;
+  hasStudies?: boolean;
 }) {
   const [active, setActive] = useState<string | null>(null);
 
@@ -66,7 +68,15 @@ export function SectionNav({
               {label}
             </a>
           ))}
-          <span className="ml-auto flex gap-6">
+          <span className="ml-auto flex gap-5">
+            {hasStudies ? (
+              <Link
+                href={`/cases/${slug}/studies/`}
+                className="font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-copper"
+              >
+                studies →
+              </Link>
+            ) : null}
             <Link
               href={`/cases/${slug}/resources/`}
               className="font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-copper"
@@ -77,13 +87,13 @@ export function SectionNav({
               href={`/cases/${slug}/evidence/`}
               className="font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-copper"
             >
-              all evidence →
+              evidence →
             </Link>
             <Link
               href={`/cases/${slug}/claims/`}
               className="font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-copper"
             >
-              all claims →
+              claims →
             </Link>
           </span>
         </div>

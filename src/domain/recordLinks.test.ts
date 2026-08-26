@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { buildRecordLinkRegistry, splitRecordRefs } from "./recordLinks";
-import { getCaseBySlug } from "./load";
+import { getCaseBySlug, loadAllCases } from "./load";
 
 describe("splitRecordRefs", () => {
   it("splits mixed claim, source, evidence, and research ids", () => {
@@ -46,10 +46,28 @@ describe("buildRecordLinkRegistry", () => {
       href: "/sources/SRC-MULLER-2020/",
     });
     expect(registry.get("ZW-E001")?.href).toBe(
-      "/cases/zero-worlds/#evidence-ZW-E001",
+      "/cases/zero-worlds/evidence/#evidence-ZW-E001",
     );
     expect(registry.get("ZW-R001")?.href).toBe(
       "/cases/zero-worlds/#research-ZW-R001",
     );
   });
+
+  // Regression for the TRN-E012 dead link: the case page renders only the
+  // top evidence highlights, so an #evidence-{id} anchor is only guaranteed
+  // on the full ledger route, which renders every record.
+  it("points every evidence id at the full ledger, where its anchor exists", () => {
+    const cases = loadAllCases();
+    const registry = buildRecordLinkRegistry(cases);
+
+    for (const loaded of cases) {
+      for (const evidence of loaded.evidence) {
+        expect(registry.get(evidence.id)).toEqual({
+          kind: "evidence",
+          href: `/cases/${loaded.record.slug}/evidence/#evidence-${evidence.id}`,
+        });
+      }
+    }
+  });
+
 });

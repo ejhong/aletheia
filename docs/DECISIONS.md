@@ -75,8 +75,13 @@ case asks what claim, research item, or study the current ledger
 implies but does not contain, validated fail-closed (anchored to real
 existing IDs, no culpability proposals, at most three per case, empty
 answers welcomed) and written under proposals/agenda/ — proposals
-only, low-risk by construction, surfacing in the weekly digest. The
-founder adopts or ignores; the freeze discipline, classifier, and
-arbiter still decide what becomes real. The validator checks
-well-formedness, not interestingness — taste stays human.
-(Founder-directed, 2026-08-26 session.)
+only, low-risk by construction, surfacing in the weekly digest.
+Proposals are inputs to the existing pipeline, nothing more: anything
+adopted travels the same gates as any other change (freeze discipline
+where applicable, classifier, arbiter, and the tiered merge policy) —
+no new power is created for anyone, and ignoring a proposal is the
+default outcome, not a decision. The validator checks well-formedness,
+not interestingness — editorial taste remains with the humans and
+panels the gates already empower. (This entry was written by the
+editorial AI recording a founder instruction from the 2026-08-26
+session, per §3.15's requirement that AI records be labeled as such.)

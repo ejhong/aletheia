@@ -92,7 +92,12 @@ for (const slug of slugs) {
   fs.mkdirSync(outdir, { recursive: true });
   fs.writeFileSync(
     path.join(outdir, `${slug}.md`),
-    renderProposalFile(slug, ok, { date, runId, model: provider.model }),
+    renderProposalFile(slug, ok, {
+      date,
+      runId,
+      model: provider.model,
+      promptVersion: "agenda-propose-v1",
+    }),
   );
   wrote += ok.length;
   for (const p of ok) report.push(`- ${slug}: proposed [${p.kind}] ${p.title}`);

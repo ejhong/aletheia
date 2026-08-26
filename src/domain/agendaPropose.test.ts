@@ -66,8 +66,10 @@ describe("agenda proposal validation (fail-closed)", () => {
       date: "2026-08-26",
       runId: "r",
       model: "m",
+      promptVersion: "agenda-propose-v1",
     });
     expect(file).toContain("PROPOSALS ONLY");
+    expect(file).toContain("promptVersion agenda-propose-v1");
     expect(file).toContain("Independence map");
   });
 });

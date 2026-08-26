@@ -99,6 +99,10 @@ function typeGroup(source: Source): ResourceGroupKey {
     case "archive":
       return "datasets";
     case "webpage":
+    // Workpapers are project-internal records, not reading-guide material;
+    // if one ever appears here (it would need `background: true`), the
+    // honest shelf is the weak-as-evidence one.
+    case "workpaper":
     case "other":
       return "web";
   }

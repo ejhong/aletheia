@@ -243,7 +243,12 @@ export default async function CasePage({
           ) : null}
           <div className="grid sm:grid-cols-2 gap-4 mt-6">
             {loaded.research.map((r) => (
-              <ResearchCard key={r.id} item={r} />
+              <ResearchCard
+                key={r.id}
+                item={r}
+                study={loaded.studies.find((s) => s.researchIds.includes(r.id))}
+                caseSlug={loaded.record.slug}
+              />
             ))}
           </div>
         </section>

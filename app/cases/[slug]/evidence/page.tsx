@@ -1,13 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { DirectionTag } from "@/src/components/DirectionTag";
 import { EvidenceCard } from "@/src/components/EvidenceCard";
 import { groupEvidenceByDirection } from "@/src/domain/evidence";
-import { getCaseBySlug, loadAllCases } from "@/src/domain/load";
+import { loadAllCases } from "@/src/domain/load";
+import { paramsOrPlaceholder } from "@/src/domain/staticExport";
 import { directionLabels } from "@/src/domain/schema";
 
 export function generateStaticParams() {
-  return loadAllCases().map((c) => ({ slug: c.record.slug }));
+  return paramsOrPlaceholder(
+    "slug",
+    loadAllCases().map((c) => c.record.slug),
+  );
 }
 
 export function generateMetadata({
@@ -15,9 +20,12 @@ export function generateMetadata({
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  return params.then(({ slug }) => ({
-    title: `Evidence · ${getCaseBySlug(slug).record.title}`,
-  }));
+  return params.then(({ slug }) => {
+    const loaded = loadAllCases().find((c) => c.record.slug === slug);
+    return {
+      title: loaded ? `Evidence · ${loaded.record.title}` : "Not found",
+    };
+  });
 }
 
 const sectionNote: Record<string, string> = {
@@ -38,7 +46,9 @@ export default async function EvidenceLedgerPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const loaded = getCaseBySlug(slug);
+  const found = loadAllCases().find((c) => c.record.slug === slug);
+  if (!found) notFound();
+  const loaded = found;
   const groups = groupEvidenceByDirection(loaded.evidence);
   const sourceById = new Map(loaded.sources.map((s) => [s.id, s]));
 

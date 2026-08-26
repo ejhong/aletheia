@@ -1,12 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { CuratedResourceCard } from "@/src/components/CuratedResourceCard";
 import { ResourceGroupSection } from "@/src/components/ResourceGroupSection";
-import { getCaseBySlug, loadAllCases } from "@/src/domain/load";
+import { loadAllCases } from "@/src/domain/load";
+import { paramsOrPlaceholder } from "@/src/domain/staticExport";
 import { resourceGroups } from "@/src/domain/resources";
 
 export function generateStaticParams() {
-  return loadAllCases().map((c) => ({ slug: c.record.slug }));
+  return paramsOrPlaceholder(
+    "slug",
+    loadAllCases().map((c) => c.record.slug),
+  );
 }
 
 export function generateMetadata({
@@ -14,9 +19,12 @@ export function generateMetadata({
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  return params.then(({ slug }) => ({
-    title: `Resources · ${getCaseBySlug(slug).record.title}`,
-  }));
+  return params.then(({ slug }) => {
+    const loaded = loadAllCases().find((c) => c.record.slug === slug);
+    return {
+      title: loaded ? `Resources · ${loaded.record.title}` : "Not found",
+    };
+  });
 }
 
 export default async function CaseResourcesPage({
@@ -25,7 +33,9 @@ export default async function CaseResourcesPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const loaded = getCaseBySlug(slug);
+  const found = loadAllCases().find((c) => c.record.slug === slug);
+  if (!found) notFound();
+  const loaded = found;
   const groups = resourceGroups(loaded);
   const curated = loaded.curatedResources;
 

@@ -16,10 +16,15 @@
  * judges it, which stale-checks.mjs arranges by listing the case for the
  * next content-response re-panel.
  *
- * Eligibility: the newest checks are current (not stale vs content), the
- * case verdict is disputed by at least two seats, and the latest draft is
- * NOT already a reconsideration — if the house has engaged and the panel
- * still disputes, that is a genuine standoff, displayed indefinitely and
+ * Eligibility mirrors what makes a standing "contested" in
+ * src/domain/load.ts (via scripts/lib/reconcile-core.mjs): the newest
+ * checks are current (not stale vs content); the panel disputes either
+ * the case verdict (two or more seats) or a load-bearing claim (fewer
+ * than a strict majority of judging seats within one step of the draft's
+ * verdict — the vasocomputation shape: a unanimous case verdict over a
+ * split load-bearing claim); and the latest draft is NOT already a
+ * reconsideration — if the house has engaged and the panel still
+ * disputes, that is a genuine standoff, displayed indefinitely and
  * reported here rather than re-litigated in a loop.
  *
  * Usage: node scripts/reconcile-contested.mjs [--case <dir>] [--dry-run]
@@ -28,6 +33,11 @@ import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
 import { noKeyMessage, parseJsonReply, pickProvider } from "./lib/llm.mjs";
+import {
+  caseVerdictDissenters,
+  claimDissentPacket,
+  contestedLoadBearingClaims,
+} from "./lib/reconcile-core.mjs";
 
 const PROMPT_VERSION = "aletheia-reconsider-v1";
 const VERDICTS = [
@@ -88,12 +98,13 @@ async function reconcile(dir) {
     .at(-1);
   if (newestContent && newestContent > newestCheck) return null;
 
-  const dissenting = checks.filter(
-    (r) => r.caseAssessment.verdict !== draft.caseAssessment.verdict,
-  );
-  if (dissenting.length < 2) return null; // case verdict not contested
+  // The same disagreements that display as "contested": a case-verdict
+  // dispute, or a load-bearing claim split under a unanimous verdict.
+  const dissenting = caseVerdictDissenters(draft, checks);
+  const splitClaims = contestedLoadBearingClaims(draft, checks);
+  if (dissenting.length < 2 && splitClaims.length === 0) return null;
   if (draft.promptVersion === PROMPT_VERSION) {
-    return { standoff: true, dir, draft, dissenting };
+    return { standoff: true, dir, draft, dissenting, splitClaims };
   }
 
   const claims = read("claims.yaml").filter(
@@ -112,6 +123,9 @@ async function reconcile(dir) {
       caseVerdict: r.caseAssessment.verdict,
       synthesis: r.caseAssessment.synthesis,
     })),
+    // Load-bearing claims the panel splits on, with each seat's verdict
+    // and reasoning — the claim-level dissent the draft must engage.
+    claimDissents: claimDissentPacket(draft, checks, splitClaims, seatName),
     claims: claims.map((c) => ({ id: c.id, statement: c.statement, rung: c.rung })),
     evidence: evidence.map((e) => ({
       id: e.id, title: e.title, direction: e.direction, strength: e.strength,
@@ -120,10 +134,11 @@ async function reconcile(dir) {
     })),
   };
 
-  const SYSTEM = `You write a RECONSIDERATION assessment for a case in an evidence-mapping publication. The house draft's case verdict is disputed by independent judges; your task is to engage every dissent on its merits — the way an author answers referees.
+  const SYSTEM = `You write a RECONSIDERATION assessment for a case in an evidence-mapping publication. The house draft is disputed by independent judges — on the case verdict, on one or more load-bearing claims, or both; your task is to engage every dissent on its merits — the way an author answers referees.
 
 Rules:
 - Address each dissenting seat's argument explicitly in the synthesis: either concede it and move, or answer it and hold. Silence on a dissent is failure.
+- If claimDissents is non-empty, engage each split claim BY ID: that claim's reasoning field must answer the seats' arguments (concede and regrade, or hold and say precisely why), and the synthesis must address the split where the claim is load-bearing. A reconsideration that leaves a split claim unaddressed is failure.
 - Move ONLY where the argument compels. You are not obliged to converge; you are obliged to engage. If after engagement you hold the original verdict, say precisely why the dissents do not compel.
 - Verdicts from this vocabulary only: ${VERDICTS.join(", ")}.
 - Distinguish credibility from diagnosticity; repeated reports are not independent; feasibility is not occurrence.
@@ -131,7 +146,7 @@ Rules:
 - loadBearing AND weakestLinks are arrays of CLAIM ids only (like XXX-C001) — never evidence ids, never prose sentences. Put the prose reasons in the synthesis. claimAssessments cover every featured claim by id.
 
 Reply ONLY JSON:
-{"caseAssessment": {"verdict": "...", "loadBearing": ["..."], "weakestLinks": ["..."], "synthesis": "..."}, "claimAssessments": [{"claimId": "...", "verdict": "...", "reasoning": "...", "confidence": "high|moderate|low"}], "whatChanged": "which dissents moved you, which did not, and why — 2-5 sentences"}`;
+{"caseAssessment": {"verdict": "...", "loadBearing": ["..."], "weakestLinks": ["..."], "synthesis": "..."}, "claimAssessments": [{"claimId": "...", "verdict": "...", "reasoning": "...", "confidence": "high|moderate|low"}], "whatChanged": "which dissents (case-level and claim-level) moved you, which did not, and why — 2-5 sentences"}`;
 
   const reply = await provider.call(SYSTEM, `Case: ${dir}\n\n${JSON.stringify(packet, null, 2)}`);
   const d = parseJsonReply(reply);
@@ -177,7 +192,7 @@ Reply ONLY JSON:
         "# each one (scripts/reconcile-contested.mjs). Append-only; not reviewed.\n" +
         stringifyYaml(overlay),
     );
-  return { dir, runId, from: draft.caseAssessment.verdict, to: d.caseAssessment.verdict, whatChanged: d.whatChanged, file, dryRun };
+  return { dir, runId, from: draft.caseAssessment.verdict, to: d.caseAssessment.verdict, splitClaims, whatChanged: d.whatChanged, file, dryRun };
 }
 
 const dirs = fs
@@ -190,13 +205,17 @@ for (const dir of dirs) {
     const r = await reconcile(dir);
     if (!r) continue;
     if (r.standoff) {
+      const shape = [
+        r.dissenting.length >= 2 ? `${r.dissenting.length} seats dispute the case verdict` : "",
+        r.splitClaims.length > 0 ? `the panel splits on ${r.splitClaims.join(", ")}` : "",
+      ].filter(Boolean).join("; ");
       console.log(
-        `${dir}: genuine standoff — the house has engaged (${r.draft.runId}) and ${r.dissenting.length} seats still dispute. Displayed as contested; no re-litigation.`,
+        `${dir}: genuine standoff — the house has engaged (${r.draft.runId}) and the dispute stands (${shape}). Displayed as contested; no re-litigation.`,
       );
       continue;
     }
     console.log(
-      `${dir}: reconsideration ${r.dryRun ? "(dry run) " : ""}${r.from} -> ${r.to} (${r.runId}). ${r.whatChanged}`,
+      `${dir}: reconsideration ${r.dryRun ? "(dry run) " : ""}${r.from} -> ${r.to} (${r.runId})${r.splitClaims.length > 0 ? ` — engaged split claims ${r.splitClaims.join(", ")}` : ""}. ${r.whatChanged}`,
     );
   } catch (err) {
     console.error(`${dir}: ${err.message} — nothing written`);

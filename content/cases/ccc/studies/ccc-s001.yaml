@@ -1,0 +1,108 @@
+# Study freeze — pre-registration only (two-PR discipline; see the
+# Studies entry in docs/DECISIONS.md). Zero rows by design: the criteria
+# below are judged before anyone knows what the data will say, and any
+# later edit to them fails the build. Collection follows in a second PR.
+id: CCC-S001
+title: The quantitative record of CCC signature claims and searches
+question: What quantitative signature claims exist in the CCC literature —
+  circles and Hawking points, with what abundance, amplitude, angular scale, and
+  significance — what did each search or critique actually test, and in each
+  case, who supplied the signal model, CCC or the searchers themselves?
+researchIds:
+  - CCC-R005
+claimIds:
+  - CCC-C002
+  - CCC-C004
+  - CCC-C009
+  - CCC-C011
+criteria:
+  frozenOn: 2026-08-26
+  inclusion:
+    - Papers from 2010-2026 that claim, predict, or test an observational CCC
+      signature (concentric low-variance circles, Hawking points, or another
+      stated CCC imprint) with quantitative content — a reported significance,
+      abundance, amplitude, angular scale, or derived relation.
+    - Refereed publications enter as full rows; arXiv-only preprints enter
+      flagged as unrefereed, never silently mixed — the 2025 Meissner-Penrose
+      mass-temperature fragment is the live example.
+    - Both sides enter under identical rules — proponent claims and critique
+      reanalyses are rows of the same table, tagged.
+  exclusion:
+    - Purely theoretical CCC papers with no observational-signature quantity
+      (context, not rows).
+    - Popular accounts, talks, and commentary without new quantitative content.
+    - General CMB-anomaly literature that does not engage CCC signatures
+      specifically.
+  searchProtocol: "Multi-searcher discovery, run only after this freeze, protocol
+    verbatim per searcher: (1) OpenAI deep research (o4-mini-deep-research,
+    background mode; documented substitute if unavailable, deviation recorded in
+    the limitations); (2) Gemini deep research (background mode, store enabled);
+    (3) the executing agent's own web search. Literal queries, each run in all
+    three: [Gurzadyan Penrose concentric circles CMB]; [conformal cyclic
+    cosmology observational signature search]; [Hawking points CMB An Meissner
+    Nurowski Penrose]; [concentric circles CMB reanalysis significance]; [CCC
+    circles critique Wehus Eriksen Moss Scott Zibin Hajian]; [Jow Scott Hawking
+    points re-evaluation]. Per-candidate follow-up: arXiv identifier and DOI
+    resolution to the primary document, plus the paper title with
+    \"significance\" and \"simulations\". Sources searched: arXiv, MNRAS, JCAP,
+    ApJ, EPJ and IJMPD via DOI resolution. Deep-research output is a brief; it
+    proposes candidates and is never cited; every cell is verified natively
+    against the primary document before entering the table."
+  knownCandidates:
+    - name: Gurzadyan & Penrose 2010 (concentric circles claim)
+      disposition: include
+      reason: the founding observational claim; refereed status recorded on the row at
+        collection
+    - name: Wehus & Eriksen 2011 (circles reanalysis)
+      disposition: include
+      reason: independent reanalysis with simulations
+    - name: Moss, Scott & Zibin 2011 (circles critique)
+      disposition: include
+      reason: independent critique showing comparable structures in simulated skies
+    - name: Hajian 2011 (circles reanalysis)
+      disposition: include
+      reason: independent statistical test of the circles claim
+    - name: An, Meissner, Nurowski & Penrose 2020 (Hawking points; anisotropic
+        ring-center distribution)
+      disposition: include
+      reason: the load-bearing Hawking-points significance claim (CCC-C004) and the
+        anisotropy report (CCC-C504)
+    - name: Jow & Scott 2020 (Hawking points re-evaluation)
+      disposition: include
+      reason: the direct critique re-testing the Hawking-points claim
+    - name: Bodnia et al. (signal-model gap analysis named by CCC-R005)
+      disposition: include
+      reason: names the qualitative-prediction gap this study tabulates
+    - name: Meissner & Penrose 2025 preprint (mass-temperature relation fragment)
+      disposition: include
+      reason: enters flagged as unrefereed per the frozen rule
+  criteriaHash: 906a0e73ef3c
+method: "Discovery per the frozen protocol; one row per paper, each cell citing
+  the primary document with the standard verification label. The decisive column
+  is signal-model provenance — for every search, who supplied the expected
+  abundance, amplitude, profile, and sky distribution: a derivation from CCC, or
+  a choice by the searchers. That column is what CCC-C011 asserts and what
+  CCC-R005 needs made precise, and it is recorded from each paper's own methods
+  section, never inferred. Quantitative claims are quoted with their stated
+  significances and their stated null models; proponent and critique rows are
+  graded by identical rules, and disagreements between them are recorded as the
+  papers state them, not adjudicated by this table. Failed searches are
+  reported, and the searcher-overlap coverage indicator is given. Either outcome
+  publishes."
+columns:
+  - paper
+  - side
+  - signature
+  - dataset
+  - quantitative claim (with stated significance)
+  - null model
+  - signal-model provenance
+  - status in the literature
+rows: []
+findings: []
+limitations: []
+runId: 2026-08-26-study-ccc-s001-freeze
+model: Claude Fable 5 (Anthropic), via Cursor
+date: 2026-08-26
+promptVersion: aletheia-study-freeze-v1
+humanReviewed: false

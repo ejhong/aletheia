@@ -64,3 +64,19 @@ auto:low-risk and the operator never arms auto-merge on it — the panel
 and the founder keep the pen; the operator only guarantees the noticing
 and drafting no longer depend on human memory. (Founder-directed,
 2026-08-26 session.)
+
+## 2026-08-26 — Maintenance gains agenda generation (proposals only)
+
+Every genuinely new framing in the record so far — new claims, new
+studies, new cruxes — originated as a human seed; the machinery
+executed but never asked. The weekly maintenance run gains a
+propose-agenda step (scripts/propose-agenda.mjs): one model call per
+case asks what claim, research item, or study the current ledger
+implies but does not contain, validated fail-closed (anchored to real
+existing IDs, no culpability proposals, at most three per case, empty
+answers welcomed) and written under proposals/agenda/ — proposals
+only, low-risk by construction, surfacing in the weekly digest. The
+founder adopts or ignores; the freeze discipline, classifier, and
+arbiter still decide what becomes real. The validator checks
+well-formedness, not interestingness — taste stays human.
+(Founder-directed, 2026-08-26 session.)

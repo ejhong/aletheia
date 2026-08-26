@@ -1,0 +1,182 @@
+# Cross-model check run — an independent judge (Gemini 3.1 Pro (Google)),
+# blind to all prior assessments (scripts/cross-model-check.mjs,
+# promptVersion aletheia-check-v2). role: check — never displayed as the case
+# narrative; feeds the concurrence panel. Append-only; NOT human reviewed.
+runId: 2026-08-26-check-gemini
+model: Gemini 3.1 Pro (Google) — independent check run via gemini-3.1-pro-preview
+date: 2026-08-26
+promptVersion: aletheia-check-v2
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: contradicted
+  loadBearing:
+    - CCC-C002
+    - CCC-C004
+    - CCC-C010
+  weakestLinks:
+    - CCC-C009
+  synthesis: >-
+    The evidentiary record for "The Aeon Before Ours?" presents a remarkable
+    consensus on the observational data but a fatal divergence on statistical
+    interpretation. The founding observation that low-variance rings and compact
+    hot spots exist in the cosmic microwave background maps is undisputed,
+    having been successfully reproduced by both proponents and critical
+    independent groups (CCC-C001). However, the central hypothesis that these
+    structures are anomalous signals from a previous aeon (CCC-C009) relies
+    entirely on a demonstrably flawed statistical framework. The proponents'
+    reported high significances disappear when the search algorithms are applied
+    to synthetic skies that incorporate the standard cosmological model's known
+    angular power spectrum, rather than an impoverished
+    white-noise-plus-instrument-noise null (CCC-C003). For the Hawking points,
+    the headline 99.98% confidence collapses to a mere 1-sigma excess when a
+    textbook look-elsewhere correction is applied to account for the in-sample
+    optimization of ring sizes (CCC-C004).
+
+    The steelman for the Conformal Cyclic Cosmology (CCC) hypothesis rests on
+    its theoretical priority—it predated the observations it sought—and
+    lingering structural properties of the rings, such as the drop-off with
+    ellipticity (the "sky-twist" test) and their extreme spatial clustering.
+    Furthermore, the theory makes genuine falsifiable forward predictions, most
+    notably the existence of "erebon" dark matter that might decay in
+    gravitational-wave detectors (CCC-C007). However, the theoretical framework
+    incurs severe costs, including an unproven mass fade-out mechanism
+    (CCC-C005) and contested entropy accounting that critics argue violates
+    quantum mechanics and actually raises global entropy (CCC-C006).
+
+    The conventional attribution (CCC-C010) is robustly supported, culminating
+    in the 2024 Bodnia et al. discovery that the proponents' search criteria
+    actively manufacture false-positive concentric circles around singular,
+    anomalous few-pixel spots. Removing these spots eliminates the signal
+    entirely. This record, CCC-E012, is the single piece of evidence whose
+    removal would most change the case verdict, as it transitions the
+    conventional counter-argument from a purely statistical ensemble dispute to
+    a physical artifact diagnosis that definitively explains how the methodology
+    fails. The overall case verdict of "contradicted" survives even without this
+    specific record, because the uncorrected look-elsewhere effects and the
+    improper pure-Gaussian null ensemble are independently sufficient to
+    invalidate the anomaly claims. Ultimately, the entire debate has been
+    plagued by a 14-year lack of preregistration (CCC-C011), meaning that until
+    quantitative predictions are explicitly derived and tested blindly, the
+    existing observational claims for CCC remain decisively contradicted by
+    standard inflationary cosmology.
+claimAssessments:
+  - claimId: CCC-C001
+    verdict: established
+    confidence: high
+    reasoning: Both proponents and multiple independent critical groups confirm that
+      the search procedures successfully identify the low-variance rings and
+      compact hot spots in WMAP and Planck data. The existence of these
+      algorithmic features is uncontested; the dispute lies entirely in their
+      statistical significance. The strongest opposing consideration is that
+      these "features" might simply be methodological artifacts rather than
+      genuine physical structures, but their existence as outputs is
+      established.
+  - claimId: CCC-C002
+    verdict: contradicted
+    confidence: high
+    reasoning: Four independent reanalyses demonstrated that the concentric
+      low-variance circles are not statistically anomalous when evaluated
+      against a standard LCDM null ensemble. Furthermore, high-resolution
+      analyses reveal that the search criterion generates these circles as
+      artifacts around few-pixel anomalies. The strongest opposing argument is
+      the proponents' "sky-twist" test showing a drop-off for elliptical
+      searches, but this does not overcome the failure to survive proper LCDM
+      simulation comparisons.
+  - claimId: CCC-C003
+    verdict: established
+    confidence: high
+    reasoning: The primary literature on both sides explicitly acknowledges that the
+      proponents computed significance against a pure Gaussian sky plus noise,
+      while independent critics used skies simulated with the full LCDM angular
+      power spectrum. This methodological divergence is the undisputed root of
+      the conflicting significance claims. The strongest opposing consideration
+      is whether describing this as a symmetric "disagreement" obscures the fact
+      that omitting known data correlations in a null is a standard statistical
+      error.
+  - claimId: CCC-C004
+    verdict: contradicted
+    confidence: high
+    reasoning: The headline 99.98% confidence level is a direct artifact of failing
+      to correct for the look-elsewhere effect; marginalizing over the searched
+      ring sizes reduces the significance to a statistically unremarkable 87%
+      (roughly 1-sigma). Subsequent searches with purpose-built detectors and
+      artifact screening found no significant populations. The strongest
+      surviving proponent argument is the cross-instrument co-location of the
+      strongest spots in Planck and WMAP, though this only proves they are in
+      the sky, not that they are anomalous.
+  - claimId: CCC-C005
+    verdict: well_supported
+    confidence: high
+    reasoning: Penrose explicitly states in his own published work that mass
+      fade-out is a strict requirement for the theory's conformal matching and
+      acknowledges it as an unconventional hypothesis. Sympathetic theoretical
+      reviews classify the mechanism as an open problem, though a 2025 preprint
+      derives a crossover conservation law. The strongest opposing consideration
+      is Penrose's argument that exact mass constancy is less sacrosanct in a
+      positive cosmological constant background, making the lack of mechanism a
+      gap rather than a proven impossibility.
+  - claimId: CCC-C006
+    verdict: mixed
+    confidence: moderate
+    reasoning: While Penrose presents the entropy accounting as mathematically
+      consistent via black-hole information loss, the premise is deeply
+      contested within quantum gravity. Published critiques argue that such
+      information loss is incompatible with quantum entropy and would actually
+      increase global entropy rather than reset it. The strongest opposing
+      consideration is that information loss in Hawking evaporation contradicts
+      the unitary evolution supported by the modern AdS/CFT consensus, though
+      some unitary variants of CCC have been proposed to salvage the framework.
+  - claimId: CCC-C007
+    verdict: well_supported
+    confidence: high
+    reasoning: Primary sources firmly establish that CCC formally predicts the
+      existence of erebons as Planck-mass dark matter generated at the
+      crossover. The claim accurately reflects Penrose's own theoretical
+      descriptions and his speculative suggestion that erebon decay might appear
+      in LIGO noise. The strongest opposing consideration is that the prediction
+      remains an order-of-magnitude sketch without specific amplitudes or rates,
+      rendering null searches vulnerable to parameter adjustment.
+  - claimId: CCC-C008
+    verdict: well_supported
+    confidence: high
+    reasoning: Penrose's texts confirm that CCC lacks an inflationary phase and
+      delegates the generation of near scale-invariant fluctuations to erebon
+      decay in the previous aeon. This structural claim about the theory is
+      uncontested. The strongest opposing consideration is that inflationary
+      LCDM fits the data to sub-percent precision with a few parameters, whereas
+      CCC's erebon decay mechanism currently offers no published computation of
+      the fluctuation spectrum.
+  - claimId: CCC-C009
+    verdict: contradicted
+    confidence: high
+    reasoning: The attribution of the CMB features to a previous aeon rests entirely
+      on statistical anomalies that have been thoroughly contradicted by
+      independent groups applying appropriate LCDM null ensembles and
+      look-elsewhere corrections. The identification of the features as
+      artifacts of few-pixel spots further collapses the interpretive claim. The
+      strongest opposing consideration is that the CCC predictions were
+      qualitative, meaning current-data nulls cannot rule out fainter imprints,
+      and unexplained structural observations like extreme anisotropy remain.
+  - claimId: CCC-C010
+    verdict: well_supported
+    confidence: high
+    reasoning: Seven independent analyses comprehensively demonstrate that the
+      purported CCC signatures are expected structures within a Gaussian random
+      field possessing the LCDM power spectrum. The 2024 identification of
+      few-pixel artifacts perfectly accounts for the false positives generated
+      by the proponents' search criteria. The strongest opposing objection is
+      that the critical analyses themselves were designed post-hoc in response
+      to proponent claims, and proponents' strongest structural points are only
+      partially answered.
+  - claimId: CCC-C011
+    verdict: established
+    confidence: high
+    reasoning: "The historical record shows that the entire dispute has unfolded
+      through post-hoc methodological adjustments, from the optimization of ring
+      sizes to the reactive introduction of the sky-twist test. Neither
+      proponents nor critics have ever published a formally preregistered,
+      blinded protocol for these searches. The strongest opposing consideration
+      is the asymmetry of post-hoc analysis: finding a null result using the
+      claimant's own frozen, post-hoc criteria carries significantly more
+      epistemic weight than finding a post-hoc positive."

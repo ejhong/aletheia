@@ -1,17 +1,27 @@
 {
-  "name": "Aletheia",
-  "install": "npm ci",
+  "name": "Aletheia + Erebus",
+  "repositoryDependencies": ["github.com/ejhong/erebus"],
+  "install": "cd /agent/repos/aletheia && npm ci\ncd /agent/repos/erebus && npm ci",
   "terminals": [
     {
-      "name": "dev",
-      "command": "npm run dev",
-      "description": "Next.js dev server (Turbopack) at http://localhost:3000"
+      "name": "aletheia-dev",
+      "command": "cd /agent/repos/aletheia && npm run dev",
+      "description": "Aletheia Next.js dev server (Turbopack) at http://localhost:3000"
+    },
+    {
+      "name": "erebus-dev",
+      "command": "cd /agent/repos/erebus && npm run dev -- -p 3001",
+      "description": "Erebus Next.js dev server (Turbopack) at http://localhost:3001"
     }
   ],
   "ports": [
     {
-      "name": "web",
+      "name": "aletheia-web",
       "port": 3000
+    },
+    {
+      "name": "erebus-web",
+      "port": 3001
     }
   ]
 }

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { ArgumentLadder } from "@/src/components/ArgumentLadder";
 import { ArticleBody } from "@/src/components/ArticleBody";
 import { AssessmentPanel } from "@/src/components/AssessmentPanel";
@@ -17,15 +18,18 @@ import {
   crossModelSummary,
   displayAssessment,
   featuredClaims,
-  getCaseBySlug,
   historyNewestFirst,
   lastContentUpdate,
   latestCheckPerModel,
   loadAllCases,
 } from "@/src/domain/load";
+import { paramsOrPlaceholder } from "@/src/domain/staticExport";
 
 export function generateStaticParams() {
-  return loadAllCases().map((c) => ({ slug: c.record.slug }));
+  return paramsOrPlaceholder(
+    "slug",
+    loadAllCases().map((c) => c.record.slug),
+  );
 }
 
 export function generateMetadata({
@@ -33,9 +37,10 @@ export function generateMetadata({
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  return params.then(({ slug }) => ({
-    title: getCaseBySlug(slug).record.title,
-  }));
+  return params.then(({ slug }) => {
+    const loaded = loadAllCases().find((c) => c.record.slug === slug);
+    return { title: loaded ? loaded.record.title : "Not found" };
+  });
 }
 
 const sections = [
@@ -54,7 +59,9 @@ export default async function CasePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const loaded = getCaseBySlug(slug);
+  const found = loadAllCases().find((c) => c.record.slug === slug);
+  if (!found) notFound();
+  const loaded = found;
   const claims = featuredClaims(loaded);
   const shown = displayAssessment(loaded);
   const checks = crossModelSummary(loaded);

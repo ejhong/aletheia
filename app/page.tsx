@@ -57,6 +57,25 @@ export default function HomePage() {
         <h2 className="font-mono text-[11px] uppercase tracking-[0.2em] text-faint mb-4">
           cases
         </h2>
+        {cases.length === 0 ? (
+          <div className="border border-line px-6 py-10 max-w-2xl">
+            <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-copper">
+              no cases published yet
+            </p>
+            <p className="mt-3 text-[14.5px] leading-relaxed text-ink-soft">
+              The first case dossiers are in preparation. A case is published
+              only when its claims, evidence records, and sources meet the
+              provenance standards described on the{" "}
+              <Link
+                href="/method/"
+                className="underline underline-offset-2 decoration-copper/60 hover:text-ink"
+              >
+                method page
+              </Link>
+              — nothing ships early to fill this space.
+            </p>
+          </div>
+        ) : null}
         <div className="grid sm:grid-cols-2 gap-4">
           {cases.map((c) => {
             const shown = displayAssessment(c);
@@ -145,7 +164,16 @@ export default function HomePage() {
         <h2 className="font-mono text-[11px] uppercase tracking-[0.2em] text-faint mb-6">
           recent changes · evidence &amp; assessments
         </h2>
-        <ChangeTimeline entries={feed} />
+        {feed.length === 0 ? (
+          <p className="text-[14px] text-ink-soft max-w-2xl">
+            No published changes yet. When cases go live, every change to a
+            claim, evidence record, or assessment appears here with its date,
+            reason, and the AI&apos;s role — the change history is part of the
+            publication.
+          </p>
+        ) : (
+          <ChangeTimeline entries={feed} />
+        )}
         {housekeepingCount > 0 ? (
           <p className="mt-5 font-mono text-[10px] uppercase tracking-[0.14em] text-faint">
             + {housekeepingCount} housekeeping changes (artwork, tooling) —

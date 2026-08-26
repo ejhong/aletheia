@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { EvidenceCard } from "@/src/components/EvidenceCard";
 import { LinkedRecordText } from "@/src/components/LinkedRecordText";
 import { VerificationBadge } from "@/src/components/VerificationBadge";
 import { loadAllCases } from "@/src/domain/load";
+import { paramsOrPlaceholder } from "@/src/domain/staticExport";
 import type { LoadedCase, Source } from "@/src/domain/schema";
 
 function allSources(): { source: Source; loaded: LoadedCase }[] {
@@ -13,7 +15,10 @@ function allSources(): { source: Source; loaded: LoadedCase }[] {
 }
 
 export function generateStaticParams() {
-  return allSources().map(({ source }) => ({ id: source.id }));
+  return paramsOrPlaceholder(
+    "id",
+    allSources().map(({ source }) => source.id),
+  );
 }
 
 export function generateMetadata({
@@ -31,7 +36,7 @@ export default async function SourcePage({
 }) {
   const { id } = await params;
   const entry = allSources().find(({ source }) => source.id === id);
-  if (!entry) throw new Error(`unknown source ${id}`);
+  if (!entry) notFound();
   const { source, loaded } = entry;
   const connected = loaded.evidence.filter((e) => e.sourceId === id);
 

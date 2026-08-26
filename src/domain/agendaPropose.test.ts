@@ -1,5 +1,4 @@
 import { describe, expect, it } from "vitest";
-// @ts-expect-error untyped pipeline module, contract pinned here
 import {
   buildCasePacket,
   validateProposals,

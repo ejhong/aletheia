@@ -14,6 +14,7 @@ import {
   crossModelSummary,
   RATIFICATION_MIN_PANEL,
   ratification,
+  survivingObjections,
   latestCheckPerModel,
   displayAssessment,
   latestAssessment,
@@ -713,5 +714,25 @@ describe("cross-model checks", () => {
       assessmentRuns: orch.assessmentRuns.filter((r) => r.role !== "check"),
     };
     expect(crossModelSummary(checkless)).toBeNull();
+  });
+});
+
+describe("surviving objections", () => {
+  it("a ratified case's tolerated dissent is surfaced, not sanitized", () => {
+    for (const c of loadAllCases()) {
+      const shown = displayAssessment(c);
+      if (!shown || shown.ratification.status !== "ratified") continue;
+      const objections = survivingObjections(c, shown.run);
+      // exactly the dissenters the ratification tolerated
+      expect(objections.length).toBe(
+        shown.ratification.panel - shown.ratification.agreeing,
+      );
+      for (const o of objections) {
+        expect(o.verdict).not.toBe(shown.run.caseAssessment.verdict);
+        expect(o.firstSentence.length).toBeGreaterThan(20);
+        expect(o.firstSentence.length).toBeLessThanOrEqual(260);
+        expect(o.seat).not.toMatch(/independent/);
+      }
+    }
   });
 });

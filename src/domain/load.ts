@@ -3,6 +3,7 @@ import path from "node:path";
 import { parse as parseYaml } from "yaml";
 import { extractClaimRefs, extractPlateRefs } from "./article";
 import {
+  assessmentLabels,
   AssessmentRunSchema,
   CaseSchema,
   ChangeLogEntrySchema,
@@ -674,6 +675,32 @@ export function ratification(loaded: LoadedCase): Ratification | null {
     status: "ratified",
     reason: `${agreeing} of ${panel} independent models concur with the case verdict, and none splits on a load-bearing claim`,
   };
+}
+
+/**
+ * A ratified case's tolerated dissents — "conclusions ship with their
+ * surviving objections attached, not sanitized away." For each current
+ * check whose case verdict differs from the displayed draft's, return the
+ * seat, its verdict, and the first sentence of its synthesis as the
+ * objection's one-line form (the full reasoning lives on /panel).
+ */
+export function survivingObjections(
+  loaded: LoadedCase,
+  displayed: AssessmentRun,
+): { seat: string; verdict: AssessmentState; verdictLabel: string; firstSentence: string }[] {
+  return latestCheckPerModel(loaded)
+    .filter((r) => r.caseAssessment.verdict !== displayed.caseAssessment.verdict)
+    .map((r) => {
+      const first =
+        r.caseAssessment.synthesis.match(/^[\s\S]*?[.!?](?=\s|$)/)?.[0].trim() ??
+        r.caseAssessment.synthesis.slice(0, 180).trim();
+      return {
+        seat: r.model.split("—")[0].split(", independent")[0].trim(),
+        verdict: r.caseAssessment.verdict,
+        verdictLabel: assessmentLabels[r.caseAssessment.verdict],
+        firstSentence: first.length > 260 ? first.slice(0, 257) + "…" : first,
+      };
+    });
 }
 
 /**

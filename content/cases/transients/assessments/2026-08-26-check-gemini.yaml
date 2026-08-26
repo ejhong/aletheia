@@ -1,0 +1,182 @@
+# Cross-model check run — an independent judge (Gemini 3.1 Pro (Google)),
+# blind to all prior assessments (scripts/cross-model-check.mjs,
+# promptVersion aletheia-check-v2). role: check — never displayed as the case
+# narrative; feeds the concurrence panel. Append-only; NOT human reviewed.
+runId: 2026-08-26-check-gemini
+model: Gemini 3.1 Pro (Google) — independent check run via gemini-3.1-pro-preview
+date: 2026-08-26
+promptVersion: aletheia-check-v2
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: unresolved
+  loadBearing:
+    - TRN-C020
+  weakestLinks:
+    - TRN-C005
+    - TRN-C006
+    - TRN-C022
+  synthesis: >-
+    The hypothesis that pre-Sputnik photographic plates record sunlight glints
+    from near-Earth artificial objects rests on a precarious ladder of
+    inferences, each hotly contested. A steelmanned view of the proponents' case
+    shows remarkable resilience at the foundational observation level. Skeptics
+    and independent pipelines alike confirm that the canonical nine marks from
+    April 1950 (TRN-C001) and the July 1952 triple (TRN-C003) physically exist,
+    are recoverable by independent code (TRN-C004), and are morphologically
+    sharper than surrounding stars (TRN-C002). Most strikingly, recent
+    microscopy places the 1950 marks squarely on the original telescope
+    negative, bypassing the copying chain (TRN-C007, TRN-E022). In independent
+    Hamburg archives, similar candidates (TRN-C010) reportedly exhibit coma
+    aberration—a fingerprint of genuine incident light (TRN-C011).
+
+    Conversely, a steelmanned skeptical account demonstrates how mundane
+    mechanisms can mimic these extraordinary signatures. The plate copying
+    process shares a common positive capable of distributing identical defects
+    into independent modern digitizations. The sharp morphological profile of
+    the marks perfectly matches the known neighborhood of emulsion artifacts.
+    Furthermore, the population-level statistics—the Earth-shadow deficit
+    (TRN-C005) and nuclear-window correlation (TRN-C006)—exhibit a fragile
+    dependence on catalog construction. When the working catalog is rebuilt from
+    scratch or strictly vetted against spatial heterogeneities, these ensemble
+    correlations dissolve completely, suggesting they are artifacts of dataset
+    definition rather than actual sky phenomena. 
+
+    The crux of the entire dispute remains TRN-C020: whether the marks were
+    produced by photons or plate chemistry. Here, the case reaches a structural
+    stalemate. While the marks reside on the original glass, the same microscopy
+    effort concluded that a brief flash and a microscopic emulsion defect are
+    morphologically indistinguishable at the single-source level. Because this
+    critical physical distinction cannot be made, the higher attribution
+    rungs—near-Earth origins (TRN-C021) and artificiality (TRN-C022)—must remain
+    unresolved. 
+
+    Sensitivity: TRN-E024 is the single evidence record whose removal would most
+    change the case verdict. Without TRN-E024's candid admission that
+    original-plate microscopy cannot differentiate a sub-second flash from an
+    intrinsic emulsion defect, the presence of the marks on the original glass
+    (TRN-E022, TRN-E023) would deal a nearly fatal blow to the plate-defect
+    hypothesis for the canonical events, likely tilting the crux (TRN-C020)
+    toward genuine incident light. TRN-E024 is the thread that keeps the case
+    safely unresolved.
+claimAssessments:
+  - claimId: TRN-C022
+    verdict: unresolved
+    confidence: high
+    reasoning: Even if the plate marks are genuine light flashes from near-Earth
+      orbit, nothing in the current evidence distinguishes an artificial
+      satellite from a natural phenomenon, such as the proposed dusty plasma
+      mechanism. The strongest opposing consideration is that the fundamental
+      nature of the marks (light versus emulsion defect) remains entirely
+      unresolved, and no evidence currently discriminates an artificial origin
+      from natural near-Earth mechanisms.
+  - claimId: TRN-C023
+    verdict: presently_untestable
+    confidence: high
+    reasoning: No current observational evidence or proposed test in the record can
+      address whether a hypothetical pre-Sputnik artificial object was
+      extraterrestrial. The strongest opposing consideration is that the claim
+      is inherently untestable with current data, as even establishing a
+      pre-Sputnik artificial object would require an entirely separate
+      evidentiary framework to prove it was extraterrestrial.
+  - claimId: TRN-C021
+    verdict: unresolved
+    confidence: high
+    reasoning: The primary geometric evidence for a near-Earth orbit rests on the
+      Earth-shadow deficit, which is highly contested and vanishes under
+      stricter spatial vetting or independent catalog construction. The
+      strongest opposing consideration is that the geometric Earth-shadow
+      deficit completely dissolves when the underlying catalog is subjected to
+      spatial heterogeneity vetting and strict artifact removal.
+  - claimId: TRN-C020
+    verdict: unresolved
+    confidence: high
+    reasoning: This is the central unresolved crux. While the canonical marks have
+      been found on the original glass negatives, microscopy cannot
+      morphologically distinguish a sub-second light flash from an original
+      emulsion defect. The strongest opposing consideration is the
+      microscopist's assessment in TRN-E024 that the marks lack stellar
+      elongation and perfectly resemble intrinsic emulsion defects commonly
+      found in plate corners.
+  - claimId: TRN-C007
+    verdict: well_supported
+    confidence: high
+    reasoning: The historical reconstruction of the Palomar plate-copying process is
+      undisputed by both camps and provides a proven mechanism by which a single
+      flaw on the intermediate positive can propagate to both digitizations. The
+      strongest opposing consideration is that establishing a shared copy
+      pathway only proves susceptibility to inherited defects, but does not
+      provide a measured base rate of how often such defects actually occur.
+  - claimId: TRN-C001
+    verdict: established
+    confidence: high
+    reasoning: The physical existence of the nine marks on the 1950 plate material
+      is universally accepted, physically confirmed by independent critics, and
+      recently observed on the original glass negative. The strongest opposing
+      consideration is that identical unique detections appear on neighboring
+      plates, suggesting the phenomenon may be a generic property of the plate
+      emulsion rather than unique sky events.
+  - claimId: TRN-C002
+    verdict: established
+    confidence: high
+    reasoning: Skeptics and proponents agree on the measurement that the marks are
+      significantly sharper and more concentrated than standard stellar
+      profiles, though they fiercely debate its meaning. The strongest opposing
+      consideration is that within the standard automated classification
+      vocabulary, 'sharper than stellar' is the exact morphological definition
+      of a spurious artifact.
+  - claimId: TRN-C003
+    verdict: well_supported
+    confidence: high
+    reasoning: The triple event is supported by peer-reviewed analysis, independent
+      pipeline recovery, and confirmation of its absence in deep modern
+      follow-up imaging. The strongest opposing consideration is that the
+      isolated source in this event has a profile identical to comparison stars,
+      making it morphologically inconsistent with the sharp sub-second flash
+      profiles predicted for the 1950 event.
+  - claimId: TRN-C004
+    verdict: well_supported
+    confidence: high
+    reasoning: An independent source-extraction pipeline successfully recovered the
+      majority of the canonical events and a large portion of the public catalog
+      without relying on the original team's software. The strongest opposing
+      consideration is that reproducible pipeline detection of marks in shared
+      digitized imagery is exactly what an inherited plate-defect population
+      would also produce.
+  - claimId: TRN-C005
+    verdict: mixed
+    confidence: high
+    reasoning: Independent analysts can reproduce the shadow deficit using the
+      proponents' original working catalog, but the effect completely disappears
+      when a fully independent extraction models spatial background
+      heterogeneities. The strongest opposing consideration is the Watters
+      critique demonstrating that the dataset assumes a uniform random
+      background that the features violently violate, clustering heavily near
+      plate edges.
+  - claimId: TRN-C006
+    verdict: mixed
+    confidence: high
+    reasoning: The correlation survives re-analysis on the original catalog, but
+      fails completely when a fully independent catalog is constructed and
+      nightly survey coverage is appropriately modeled. The strongest opposing
+      consideration is the Hayes independent extraction, which shows the
+      correlation disappears once observation schedules and nightly plate
+      exposures are properly modeled as the denominator.
+  - claimId: TRN-C010
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: A preliminary search of a completely independent telescope and
+      archive lineage found similar single-exposure candidates, insulating them
+      from the Palomar copy-defect mechanism. The strongest opposing
+      consideration is that the search explicitly lacks a measured
+      false-positive rate against matched controls, making it currently
+      impossible to distinguish sky events from universal emulsion degradation.
+  - claimId: TRN-C011
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: The reported coma aberration provides a highly diagnostic physical
+      signature of genuine light passing through optics that plate artifacts
+      should not naturally replicate. The strongest opposing consideration is
+      that the coma classifier has not yet been blind-validated against a corpus
+      of known emulsion defects to ensure that chemical or scanning flaws do not
+      mimic the asymmetric signature.

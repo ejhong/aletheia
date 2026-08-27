@@ -27,7 +27,11 @@ Hard rules: never propose grading anyone's guilt or state of mind;
 never propose anything an existing item already covers — you must name
 the closest existing IDs and say precisely what they miss; prefer
 proposals with a decisive record or a computable table behind them;
-zero proposals is a fine answer and better than a filler idea.
+zero proposals is a fine answer and better than a filler idea. You
+will also receive titles PREVIOUSLY PROPOSED for this case: silence
+from the editors retired them — never re-propose one unless material
+new ledger evidence changed the picture, and then it must appear as a
+NEW title that names what changed.
 
 Reply with JSON only:
 {"proposals":[{"kind":"claim|research-item|study",
@@ -62,7 +66,7 @@ export function buildCasePacket({ claims, research, studies, evidence }) {
  * AND anchored to real existing IDs; anything malformed is dropped with
  * a reason so the report can say what the model got wrong.
  */
-export function validateProposals(parsed, knownIds) {
+export function validateProposals(parsed, knownIds, priorTitles = new Set()) {
   const ok = [];
   const rejected = [];
   const seen = new Set();
@@ -88,7 +92,9 @@ export function validateProposals(parsed, knownIds) {
                       ? `dangling existing ID: ${p.closestExisting.find((id) => !knownIds.has(id))}`
                       : seen.has(p.title)
                         ? "duplicate title"
-                        : null;
+                        : priorTitles.has(p.title)
+                          ? "re-proposed from a prior run (ignored is retired)"
+                          : null;
     if (reason) rejected.push({ title: p?.title, reason });
     else {
       seen.add(p.title);

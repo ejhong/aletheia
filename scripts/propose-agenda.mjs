@@ -42,6 +42,22 @@ function loadYamlList(dir, file) {
   return Array.isArray(parsed) ? parsed : [];
 }
 
+/** Titles already proposed for a case in ANY prior run: proposing is
+ * once-only, and founder silence retires an idea (see the dedupe rule
+ * in the system prompt and the validator backstop). */
+function priorTitlesFor(slug) {
+  const base = path.join(ROOT, "proposals", "agenda");
+  const titles = new Set();
+  if (!fs.existsSync(base)) return titles;
+  for (const run of fs.readdirSync(base)) {
+    const f = path.join(base, run, `${slug}.md`);
+    if (!fs.existsSync(f)) continue;
+    for (const m of fs.readFileSync(f, "utf8").matchAll(/^## \d+\. \[[a-z-]+\] (.+)$/gm))
+      titles.add(m[1].trim());
+  }
+  return titles;
+}
+
 const report = [`## Agenda proposals (${date})`, ""];
 
 if (!provider) {
@@ -80,7 +96,12 @@ for (const dirName of slugs) {
   const knownIds = new Set(
     [...claims, ...research, ...evidence, ...studies].map((x) => x?.id).filter(Boolean),
   );
-  const packet = buildCasePacket({ claims, research, studies, evidence });
+  const priorTitles = priorTitlesFor(slug);
+  let packet = buildCasePacket({ claims, research, studies, evidence });
+  if (priorTitles.size > 0) {
+    packet += "\n\nPREVIOUSLY PROPOSED (retired by editorial silence; do not re-propose):\n";
+    packet += [...priorTitles].map((t) => `- ${t}`).join("\n");
+  }
 
   let parsed;
   try {
@@ -89,7 +110,7 @@ for (const dirName of slugs) {
     report.push(`- ${slug}: model call failed (${String(e).slice(0, 120)}) — skipped, fail-closed.`);
     continue;
   }
-  const { ok, rejected } = validateProposals(parsed, knownIds);
+  const { ok, rejected } = validateProposals(parsed, knownIds, priorTitles);
   for (const r of rejected)
     report.push(`- ${slug}: rejected malformed proposal (${r.reason}).`);
   if (ok.length === 0) {

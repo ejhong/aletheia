@@ -44,6 +44,13 @@ describe("agenda proposal validation (fail-closed)", () => {
     ]);
   });
 
+  it("retires previously proposed titles (silence means no)", () => {
+    const prior = new Set([good.title]);
+    const { ok, rejected } = validateProposals({ proposals: [good] }, known, prior);
+    expect(ok).toHaveLength(0);
+    expect(rejected[0].reason).toBe("re-proposed from a prior run (ignored is retired)");
+  });
+
   it("caps at three, drops duplicates, and survives a malformed reply", () => {
     const four = [good, { ...good, title: "Second distinct proposal title" }, good, good];
     const { ok, rejected } = validateProposals({ proposals: four }, known);

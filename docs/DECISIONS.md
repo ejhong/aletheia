@@ -103,3 +103,17 @@ parks, so raising it can be a data-driven decision later. (This entry
 was written by the editorial AI recording a founder instruction from
 the 2026-08-27 session, per §3.15's requirement that AI records be
 labeled as such.)
+
+## 2026-08-27 — The proposals shelf: agenda generation gets a page
+
+The weekly proposals were repository files only; a reader (and the
+founder) had no surface for them. /proposals renders every run's
+proposals grouped by case — kind and effort badges, the question with
+its truth condition, the closest-existing anchors and their gap, what
+either answer would settle — headed by the standing disclaimer that a
+proposal is not a claim, grade, or agenda item until adopted through
+the gates, with ignoring as the stated default. The page parses the
+generator's own format (roundtrip pinned by tests) and skips malformed
+blocks visibly rather than guessing or failing the build. Header nav
+gains the link on both sites. (AI record of a founder instruction,
+2026-08-27 session.)

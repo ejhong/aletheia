@@ -7,6 +7,7 @@ export const site = {
     { label: "Cases", href: "/cases" },
     { label: "Method", href: "/method" },
     { label: "Panel", href: "/panel" },
+    { label: "Proposals", href: "/proposals" },
   ],
   /** Public repository — the ledger every page derives from. */
   repoUrl: "https://github.com/ejhong/aletheia",

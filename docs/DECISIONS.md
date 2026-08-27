@@ -85,3 +85,21 @@ not interestingness — editorial taste remains with the humans and
 panels the gates already empower. (This entry was written by the
 editorial AI recording a founder instruction from the 2026-08-26
 session, per §3.15's requirement that AI records be labeled as such.)
+
+## 2026-08-27 — Budget epoch 2: the throttle's era accounting, applied again
+
+The weekly content-merge budget exists to bound the machine's
+autonomous pace (see the 2026-08-25 entry: "the budget now measures
+the machine's own pace, which is what it exists to bound"). The
+founder-supervised studies sprint of 2026-08-26/27 — the studies
+feature, seven studies across both sites, and the article updates,
+nearly all landed by founder tap — recreated the bootstrap-week
+condition: supervised construction spending the autonomous budget
+(34/10), freezing the lane the throttle was never meant to govern.
+GATE_EPOCH advances to 2026-08-27T10:00Z, resetting the autonomous
+count to zero from that moment. The limit itself stays at 10 per
+week: the number was never the problem, and the weekly digest reports
+parks, so raising it can be a data-driven decision later. (This entry
+was written by the editorial AI recording a founder instruction from
+the 2026-08-27 session, per §3.15's requirement that AI records be
+labeled as such.)

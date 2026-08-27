@@ -153,12 +153,18 @@ const touchesContent = git(
 ).trim().length > 0;
 // --first-parent: one squash/merge = one landing on the base branch, so
 // the budget counts what a reader saw change, not how many commits built it.
-// The throttle governs the AUTONOMOUS era: landings before the gate went
-// live (#59) were human-supervised site construction — 39 canon landings in
-// bootstrap week — and counting them parked a 5/5-complies caption fix for
-// days. The window is the trailing week or the gate epoch, whichever is
-// shorter.
-const GATE_EPOCH = Date.parse("2026-08-25T16:22:00Z");
+// The throttle governs the AUTONOMOUS era: landings during human-supervised
+// construction sprints are not the machine's pace and must not spend its
+// budget. Epoch 1 (2026-08-25T16:22Z, the #59 merge) excluded bootstrap
+// week's 39 supervised landings after they parked a 5/5-complies caption
+// fix. Epoch 2 (2026-08-27T10:00Z) closes the founder-supervised studies
+// sprint of 2026-08-26/27 (~30 founder-tapped landings: the studies
+// feature, seven studies, article updates), which had spent the budget to
+// 34/10 and would have frozen the autonomous lane for a week. Each epoch
+// bump is a founder-directed, panel-reviewed declaration that the
+// preceding landings were supervised construction; the window is the
+// trailing week or the latest epoch, whichever is shorter.
+const GATE_EPOCH = Date.parse("2026-08-27T10:00:00Z");
 const since = new Date(
   Math.max(Date.now() - 7 * 86400000, GATE_EPOCH),
 ).toISOString();

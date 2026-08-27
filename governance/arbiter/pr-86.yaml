@@ -1,0 +1,113 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 86
+title: "Urgent: remove private Villarroel correspondence from the public tree (§3.15)"
+url: https://github.com/ejhong/aletheia/pull/86
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-26
+judgedAgainst: f0aacfe503
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The substantive act — deleting `Gmail - Fwd_ testing earth
+      shadow_.pdf` and `4.png` from `inbox/processed/trn-villarroel-2026-08-24/`
+      — is exactly what §3.15 requires: private correspondence with no recorded
+      permission was sitting in a public tree, and the case history had already
+      asserted it was 'not published.' The replacement README and the appended
+      `history.yaml` entry describe only the categories of material removed
+      (personal addresses, informal remarks, a pointer to an unpublished
+      manuscript) and quote nothing from it, so the correction record does not
+      itself publish confidential content; the correspondent's institutional
+      role was already disclosed in the prior 2026-08-24 entry. The history
+      entry is a genuine append after line 346, is honestly stamped as
+      AI-authored (`actor: Fable (AI agent)`, `aiAssisted: true`), and states
+      plainly what removal from HEAD does not accomplish rather than
+      overclaiming — good calibration under §3.13/§3.14. No AGENTS.md edit, no
+      citations added (verification section is empty accordingly), no check
+      weakened; the history rewrite is explicitly deferred to founder
+      authorization rather than performed unilaterally. One defect I flag but do
+      not treat as a rule breach: the `docs/DECISIONS.md` hunk replaces the
+      trailing bullet instead of adding a new one, so the prior 'Reconciliation
+      eligibility covers load-bearing splits' entry loses its headline and its
+      body is absorbed into the new entry — the text survives verbatim and the
+      change is visible in git, and DECISIONS.md is a docs log rather than a
+      §3.14 claim/assessment record, but this should be split back into two
+      bullets in a follow-up."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: The diff removes private correspondence from the public tree and
+      replaces it with a non-sensitive tombstone README that explains the
+      confidentiality boundary, which aligns with §3.15’s prohibition on
+      publishing material supplied in confidence. The history.yaml entry is
+      append-only, accurately records the prior mistake, states that no
+      permission to publish was granted, and clarifies that case content did not
+      rely on quoting or citing the private email, preserving transparent
+      provenance and correction history (§3.8, §3.14). docs/DECISIONS.md is
+      likewise append-only, documenting both what was done (removal from HEAD)
+      and what remains to be done (history rewrite requiring founder
+      authorization), without misrepresenting current repository state. No
+      citations are added, so there is no risk of fabricated or misused
+      references. The change strengthens rather than weakens the epistemic
+      checks and confidentiality rules, and does not alter AGENTS.md or any
+      ratification logic. Overall, the PR corrects a prior constitutional
+      violation without introducing a new one, so it complies.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.14
+    reasoning: The PR correctly enforces §3.15 by removing private correspondence (a
+      Gmail PDF and an attached image) from the public repository tree that
+      lacked explicit permission to publish. The action is properly recorded in
+      the case's `history.yaml`, ensuring transparent provenance and revision
+      history in accordance with §3.14. Although the update to
+      `docs/DECISIONS.md` clumsily concatenates the new decision with the
+      previous one (dropping the preceding bullet's header), the substantive
+      text of both decisions is preserved. This formatting error is an ordinary
+      imperfection rather than an epistemic violation or data fabrication.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff deletes the two inbox binaries and replaces them with a
+      tombstone that states the correspondence is not stored, not quoted, and
+      not cited, which is the corrective action §3.15 requires for unpermitted
+      private correspondence. The transients history.yaml change is a new dated
+      append that records what was removed, why, and that the actor is an AI
+      maintainer; it does not alter prior assessments or present the correction
+      as a human ratification. No AGENTS.md edit, no new citation identifiers,
+      and no omitted files. The docs/DECISIONS.md hunk overwrites the last
+      bullet’s title and concatenates the new note onto the existing
+      reconciliation-eligibility text rather than adding a separate list item —
+      sloppy, but git still holds the prior wording and it is not a silent
+      rewrite of a claim, evidence interpretation, or published case judgment.
+      The new prose names the intake path and sensitivity class without quoting
+      or paraphrasing the email body.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.14
+    reasoning: "The change enforces §3.15 rather than breaching it: it deletes raw
+      private correspondence (a PDF email capture and an image attachment) that
+      the case history's own 2026-08-24 entry said was unpublished, and installs
+      a tombstone README recording what was removed, why, and where the intake's
+      verified public products live — without quoting or paraphrasing the
+      correspondence itself. The history.yaml addition is append-only, dated,
+      and actor-stamped, recording what changed and why per §3.14. AGENTS.md is
+      untouched, no checks are weakened, no new citations are added
+      (verification section is empty), and the irreversible history rewrite is
+      correctly deferred to the founder's explicit authorization rather than
+      executed unilaterally (§9). One wart: the DECISIONS.md edit merges the new
+      entry into the previous 2026-08-26 reconciliation bullet, consuming that
+      bullet's heading — but the prior decision's text survives verbatim,
+      carries the same date, and remains fully visible in git, so this is
+      formatting sloppiness in a same-day log, not alteration of a record.
+      Nothing in the visible diff fabricates citations, exposes confidence
+      material, presents drafts as ratified, or silently revises a published
+      judgment."
+harvestedAt: 2026-08-27

@@ -1,0 +1,149 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 97
+title: "CCC-S001 collection: thirteen rows, the signal-model-provenance column
+  unanimous"
+url: https://github.com/ejhong/aletheia/pull/97
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-26
+judgedAgainst: e131df8a16
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "All twenty identifiers the diff adds resolve, and each resolved
+      title matches the row it is attached to (e.g. 10.1093/mnras/staa1343 →
+      'Apparent evidence for Hawking points in the CMB Sky' for the 99.98%
+      proponent row; 10.1088/1475-7516/2020/03/021 → 'Re-evaluating evidence for
+      Hawking points in the CMB' for the 87% rebuttal row). The two identifiers
+      that resolve only at doi.org without Crossref metadata (stx2299,
+      epjp/i2013-13022-4) are exactly the two rows the study flags in its
+      limitations as resting on ledger notes that characterize results partly
+      through later papers of the same program — honest labeling rather than
+      concealment (§3.8). Every cell carries a `ai_verified` label from the
+      permitted vocabulary, CCC-E023 separates `sourceStatement` from
+      `editorInference` (§3.9), declares direction and strength (§3.5), is
+      stamped ai_extracted with runId/model/date (§3.14, §4), and
+      `humanReviewed: false` is preserved (§3.15). The frozen criteria and
+      column list are untouched — only rows/findings/limitations are appended,
+      with the criteria hash restated — so §3.12 holds; the runId/promptVersion
+      move from freeze-v1 to collect-v1 is a stage stamp, not a rewrite of the
+      frozen record. Independence is handled explicitly (three nulls described
+      as independent, the 2017/2020 same-program dependency disclosed) per
+      §3.10, and negative/unfavorable evidence on both sides is recorded per
+      §3.11. No AGENTS.md edit, no confidential material (the 2025 preprint is
+      public arXiv; only its discovery route is noted, in pre-existing context
+      lines), and the discarded fabricated searcher brief is disclosed rather
+      than used. Mild tension with §3.7 in that CCC-E023 cites the site's own
+      workpaper as its Source, but every row inside it anchors to a primary
+      document, so this is ordinary imperfection, not violation."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules:
+      - §3.1
+      - §3.2
+      - §3.5
+      - §3.7
+      - §3.8
+      - §3.9
+      - §3.11
+      - §3.13
+      - §3.14
+      - §3.15
+    reasoning: The change adds a study table, a synthetic workpaper source, and one
+      new Evidence record, all within existing content files; AGENTS.md is
+      untouched, so §3.15’s human-reservation rule is respected. Citations for
+      every added external paper are backed by DOIs/arXiv IDs that the
+      verification tool confirms as resolving, and the Meissner–Penrose 2025
+      preprint is correctly treated as unrefereed, satisfying the real-citation
+      and honesty requirements in §3.7 and §3.15. The added evidence CCC-E023
+      clearly separates sourceStatement (what the study/workpaper reports) from
+      editorInference (how that is interpreted), meeting §3.1 and §3.9, and it
+      is linked atomically to a single proposition about signal-model provenance
+      and preregistration, in line with §3.2. Evidence direction is explicitly
+      marked as supports with strength strong, and the text explains how the
+      table bears on the claims without conflating credibility and
+      diagnosticity, consistent with §3.4 and §3.5. Exact provenance is kept via
+      a workpaper source (SRC-CCC-S001) with studyId, criteria hash, and an
+      exactLocator inside the Evidence, and no specific page/timestamp locators
+      are fabricated; where verification is partial or coarse, this is stated in
+      limitations, honoring §3.8 and §3.13. The history entry records the new
+      evidence and study as a dated, AI-authored content change without
+      overwriting prior judgments, satisfying versioning and append-only
+      expectations in §3.14. The limitations candidly document discarded
+      fabricated AI output and reliance on prior verification notes, which
+      aligns with the no-fabrication, transparency, and negative-evidence norms
+      of §3.11 and §3.15 rather than violating them.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules:
+      - §3.6
+      - §3.8
+      - §3.9
+      - §3.15
+      - §4
+    reasoning: The change meticulously follows the epistemic and formatting rules.
+      All added arXiv and DOI citations mechanically resolve and match their
+      claimed papers, satisfying the requirement for real citations and exact
+      provenance (§3.8, §4). The agent correctly uses the study as a source
+      container to extract a specific evidence record, keeping source statements
+      distinct from editor inferences (§3.6, §3.9). AI involvement is explicitly
+      stamped and transparently documented, including the commendable rejection
+      and logging of a previous model's fabricated data, ensuring no unratified
+      or fabricated records are presented as human conclusions (§3.15, §4).
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The complete diff adds study CCC-S001's collected table, workpaper
+      SRC-CCC-S001, evidence CCC-E023, and a changelog line. Every DOI and arXiv
+      id the table newly cites resolves, and resolved titles/venues match the
+      papers named (Gurzadyan–Penrose 2010/2013, Wehus–Eriksen,
+      Moss–Scott–Zibin, Hajian, Meissner–Nurowski–Ruszczycki, DeAbreu, An et al.
+      2020, Jow–Scott, Lopez, Bodnia, Meissner–Penrose 2025). Verification is
+      labeled ai_verified, the 2025 row is flagged unrefereed, two second-hand
+      characterizations are disclosed, sourceStatement is split from
+      editorInference, and AI origin is stamped (reviewState ai_extracted,
+      humanReviewed false). No AGENTS.md edit, no invented locator visible in
+      the packet, no confidential-material citation, and no check-weakening.
+      Ordinary synthesis strength and multi-claim linking are editorial
+      judgment, not a constitutional break.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules:
+      - §3.5
+      - §3.8
+      - §3.9
+      - §3.13
+      - §3.14
+      - §3.15
+    reasoning: "All twenty added identifiers (arXiv/DOI) mechanically RESOLVE and
+      the resolved titles match the papers each row describes —
+      Gurzadyan–Penrose 2010, the three 2011 nulls, DeAbreu 2015, the 2020
+      Hawking-points claim and its Jow–Scott rebuttal, Lopez 2022, Bodnia 2024,
+      and the flagged-unrefereed 2025 preprint — so §3.15's real-citations rule
+      is satisfied, and spot-checkable quotes (Jow–Scott's 87% after
+      marginalization, Hajian's 'lacks quantitative predictions', Moss et al.'s
+      're-discovered that the CMB contains structure') match the known record
+      rather than contradicting it. The new evidence CCC-E023 is append-only,
+      carries explicit direction (supports), an honest ai_extracted review
+      state, full provenance (runId/model/date/promptVersion), and cleanly
+      separates sourceStatement from editorInference per §3.9; the
+      editorInference itself models calibrated uncertainty by stating the table
+      'neither establishes nor refutes the circles or Hawking points' (§3.13).
+      The two weaker rows (2013, 2017) disclose in limitations that their
+      characterization runs partly through later same-program papers, and the
+      PR's report that a fabricated searcher brief was discarded and three
+      misremembered arXiv IDs were corrected at native verification is the
+      §3.8/§3.15 machinery working, not evading it. SRC-CCC-S001 is honestly
+      self-labeled as an AI-authored site workpaper with per-row primary
+      anchors, so it does not smuggle a secondary source in as primary. The
+      history entry records actor and aiAssisted per §3.14, nothing published
+      judgment is silently changed, AGENTS.md is untouched, no checks are
+      weakened, and humanReviewed: false plus 'parking expected' shows the
+      change is offered for concurrence rather than presented as ratified. The
+      omitted-files list is empty and the diff is complete, so nothing hidden
+      could carry a violation."
+harvestedAt: 2026-08-27

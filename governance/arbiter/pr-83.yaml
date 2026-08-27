@@ -1,0 +1,119 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 83
+title: Surviving objections, the single-thread test, and two honesty lines
+url: https://github.com/ejhong/aletheia/pull/83
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-26
+judgedAgainst: 438815f577
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff adds no citations (verification tooling found no
+      identifiers), touches no content/ records, and does not edit AGENTS.md.
+      The main functional change, `survivingObjections`, surfaces dissenting
+      cross-model checks on ratified case pages with a link to /panel for full
+      reasoning — this strengthens rather than weakens §3.15's 'disagreement
+      does not publish silently' and §3.11's negative-evidence norm; the
+      accompanying test pins the count to exactly the dissenters the
+      ratification tolerated. The prompt changes bump PROMPT_VERSION honestly
+      (v1→v2 with an inline note in all three scripts, preserving the
+      runId/promptVersion stamping required by §3.14/§3.15) and add a
+      sensitivity requirement that makes verdicts state their single
+      load-bearing evidence record — a tightening of calibrated uncertainty
+      (§3.13), not a dodge. The method-page edits restate existing policy
+      (independence groups per §3.10, honest verification labels per §4) in
+      prose; the 'literature-watch queries are public, versioned files' sentence
+      is a self-description I cannot verify from this diff, but it is a claim
+      about repository practice rather than a fabricated citation or locator,
+      and nothing here removes provenance or relabels a draft as ratified. Minor
+      nit: the seat label strips ', independent' from the model string for
+      display, but the full run records and /panel retain the provenance, so no
+      §3.8 concern."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules:
+      - §3.3
+      - §3.10
+      - §3.11
+      - §3.13
+      - §3.14
+      - §3.15
+    reasoning: The diff does not touch AGENTS.md and introduces no citations, so
+      there is no risk of fabricated or unverifiable sources under §3.7–§3.8.
+      The new `survivingObjections` function and its UI usage simply expose
+      existing dissenting cross‑model checks for ratified cases, making
+      tolerated disagreement visible rather than hiding it; this strengthens
+      transparency and aligns with §3.3, §3.11, and §3.14. The method-page edits
+      clarify that repeated reports are not independent evidence and that corpus
+      assembly is inspectable, which operationalizes §3.10 and reinforces the
+      existing non-fabrication and inspectability requirements in §3.15. The
+      prompt updates (v2) add a sensitivity/single-thread requirement, making
+      assessors state which evidence record is load-bearing and whether the
+      verdict survives its removal, which clarifies evidential dependence and
+      supports calibrated uncertainty under §3.13 without weakening any checks.
+      No append-only or ratification constraints are relaxed; processes for
+      multi-model concurrence remain intact, and the changes are additive and
+      more conservative. Overall, the change tightens epistemic discipline and
+      public explanation of existing policies rather than undermining them.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules:
+      - §3.13
+      - §3.15
+      - §7
+    reasoning: The changes directly support the constitution's transparency and
+      epistemic requirements. Surfacing 'surviving objections' on the case page
+      ensures that tolerated multi-model dissent is visible rather than
+      sanitized away, adhering to §3.15 (inspectability) and §7 (interface
+      symmetry). Adding the 'single-thread test' (sensitivity) to the prompts
+      strengthens calibrated uncertainty (§3.13) by forcing models to identify
+      fragile verdicts. The additions to the method page accurately document
+      existing requirements regarding independence (§3.10) and accountability
+      (§3.15).
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff adds transparency rather than weakening §3.15 checks:
+      ratified case pages now surface tolerated dissent from existing
+      cross-model checks (verdict + first synthesis sentence + link to /panel),
+      which matches the constitution’s requirement that disagreement not be
+      hidden. Prompt bumps to check/assess/reconsider v2 require naming the
+      single most load-bearing evidence record and whether the verdict survives
+      without it; that is calibrated uncertainty (§3.13), not a dodge of
+      ratification, and overlay assessments remain append-only. Method-page copy
+      restates independence groups (§3.10) and inspectable corpus assembly; no
+      AGENTS.md edit, no citations/locators added or fabricated, no published
+      judgments mutated, and omitted-files is empty. Tests pin that objection
+      count equals tolerated dissenters on ratified cases. Ordinary UI/copy
+      judgment, not a rule break."
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.10
+      - §3.13
+      - §3.14
+    reasoning: "The diff strengthens rather than weakens the §3.15 gates: all three
+      prompt edits (cross-model-check, reassess-changed, reconcile-contested)
+      add a mandatory sensitivity line — name the single evidence record the
+      verdict most depends on — and honestly bump prompt versions v1→v2 with
+      explanatory comments, with no change to schemas, RATIFICATION_MIN_PANEL,
+      or CI. The new survivingObjections function is read-only over append-only
+      records and implements the constitution's requirement that disagreement
+      not publish silently: ratified cases now display their tolerated
+      dissenters' verdicts with a link to /panel for full reasoning, which is
+      more transparency, not less. Stripping the word 'independent' from the
+      seat label is display formatting while the full record remains linked —
+      not provenance removal. The method-page additions restate §3.10
+      (repetition is not corroboration, independence groups) and describe an
+      inspectable, versioned literature-watch corpus; nothing in the diff
+      contradicts those claims, so there is no positive evidence of fabrication.
+      A 21-line test covers the new domain function per §8, no citations were
+      added so the empty verification output is unremarkable, and AGENTS.md is
+      untouched."
+harvestedAt: 2026-08-27

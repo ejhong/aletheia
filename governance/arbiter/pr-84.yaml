@@ -1,0 +1,110 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 84
+title: "fix(arbiter): keep balanced parentheses in extracted DOIs; reserve a
+  budget share per diff tier"
+url: https://github.com/ejhong/aletheia/pull/84
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-26
+judgedAgainst: ba4da57e3e
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches only tooling (scripts/lib/citation-check.mjs,
+      scripts/lib/arbiter-core.mjs) and their tests; no content/ records, no
+      assessments, no AGENTS.md edit, and the verification section reports no
+      citation identifiers added. The citation-check change makes extraction
+      more faithful — `)` is no longer an unconditional terminator, and
+      trimTrailing drops a trailing paren only when closing parens outnumber
+      opening ones — so genuine Elsevier/ASCE DOIs are passed whole to the
+      registry while prose and markdown-link parens are still trimmed; a
+      fabricated identifier still FAILS, so the check is sharpened rather than
+      weakened (§3.15). The capDiff change preserves the stated contract:
+      sections are still selected by scrutiny tier, unspent reserve flows back
+      in tier order on the second pass, and omitted files are still reported
+      loudly, so nothing is silently hidden from seats and the fail-safe
+      'unsure' path is intact. I traced both new tests against the new algorithm
+      (900/1000 and 300/300/100/500 at 900) and the reserve arithmetic produces
+      the asserted kept/omitted sets. The one substantive tradeoff — a very
+      large tier-0 change can now lose sections it would previously have kept —
+      does not defeat the checks, since those losses appear in the loud OMITTED
+      list and drive an 'unsure' vote rather than a silent pass. Claims in the
+      PR body about a 'live incident' are untrusted narrative and did not affect
+      my vote; the code alone supports the compliance finding."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: The diff only changes internal arbiter tooling and tests; it does not
+      touch content under `content/` or AGENTS.md, nor does it alter any
+      epistemic or governance rules. The citation checker change makes DOI
+      extraction more accurate by preserving balanced parentheses and trimming
+      only clearly extraneous punctuation, which strengthens compliance with the
+      real-citations and non-fabrication requirements in §3.7–§3.8 and §3.15
+      rather than weakening them. The diff-tier budgeting change in `capDiff`
+      merely redistributes which diff sections are included under a fixed
+      character budget and keeps omissions explicitly reported; it does not
+      create any path where omitted material is silently treated as seen, so it
+      preserves the integrity of the panel’s review process. No fabricated
+      citations, locators, or provenance are introduced, and no existing
+      assessments or records are silently altered. Because there are no omitted
+      files and no signs of configuration that would hide violations elsewhere,
+      there is no basis here for an "unsure" vote. Overall, the changes
+      strengthen the mechanical checks instead of weakening them, so they comply
+      with the constitution.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules: []
+    reasoning: The diff correctly addresses bugs in the arbiter tooling without
+      weakening the constitutional checks. Adjusting the DOI extraction to
+      support balanced parentheses improves the accuracy of mechanical
+      verification, preventing valid DOIs from being truncated and falsely
+      flagged as failed. Allocating a reserved budget share for diff tiers
+      prevents large unclassified files from starving the context window of
+      content files, while retaining the strict requirement to report any
+      omitted files. No rules regarding provenance, evidence, or check-weakening
+      are violated.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The complete diff only touches arbiter tooling and its tests
+      (citation-check.mjs, arbiter-core.mjs, two test files); AGENTS.md is
+      untouched and no content/ records, assessments, or citations are
+      published. The DOI extractor change stops amputating legal parentheses so
+      identifiers like 10.1016/S0140-6736(20)30183-5 are resolved whole instead
+      of FAILS-truncated, which tightens §3.7/§3.15 “real citations only” rather
+      than weakening it; unbalanced prose/markdown parens are still trimmed.
+      capDiff still reports every omitted path and still fills leftover budget
+      in scrutiny order; the reserved 50/50 split only prevents unclassified
+      tier-0 bulk from starving content/, which is the opposite of silent
+      truncation or reclassification to dodge review. Tests pin both behaviors.
+      Nothing in the shown change fabricates provenance, presents unratified
+      judgment as ratified, or relaxes the gated checks.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.8
+    reasoning: This PR repairs two defects in the arbiter's own tooling without
+      weakening any check. The citation-check fix stops truncating DOIs that
+      legally contain balanced parentheses (Elsevier S-prefix, ASCE), so genuine
+      citations are no longer misreported to seats as FAILS — that strengthens
+      the real-citations-only rule (§3.8/§3.15) rather than relaxing it, since
+      extraction still feeds the same resolve-and-report pipeline and nothing
+      auto-passes. The capDiff change reserves half the packet budget for the
+      content tier so an unrecognized tier-0 directory cannot push every
+      content/ file into the omitted list; crucially it leaves diffTier's
+      classification untouched, keeps the 400k budget, and preserves the
+      loud-omission contract ({ text, omitted }) that forces 'unsure' votes and
+      parking rather than silent publication, so the fail-closed property of
+      §3.15 is intact. No reclassification of any path occurs, AGENTS.md is not
+      edited, no content/ citations are added (the verification section confirms
+      none, and the DOIs in the new tests are fixtures in test code, not content
+      records), and no confidential material appears. The added regression tests
+      directly assert both the balanced-paren extraction and the no-starvation
+      guarantee. Ordinary tooling hardening, properly parked before this panel
+      for ratification.
+harvestedAt: 2026-08-27

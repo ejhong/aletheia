@@ -1,0 +1,95 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 67
+title: "Evidence ledger page: browse every record of a case"
+url: https://github.com/ejhong/aletheia/pull/67
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-25
+judgedAgainst: 34cfe8a7ce
+promptVersion: aletheia-arbiter-v1
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff is purely presentational/domain code: a new static route
+      rendering every evidence record of a case, a pure grouping helper, unit
+      tests, and two nav links. No content files, citations, locators, or
+      assessments are touched, and AGENTS.md is untouched, so §3.15's amendment
+      reservation is not engaged. The ledger preserves the constitution's
+      requirements rather than weakening them: direction is explicit and
+      canonical (§3.5), supports and undermines are rendered with identical card
+      structure and equal prominence (§7 symmetry), and the copy explicitly
+      keeps source statement separate from inference (§3.9) while EvidenceCard
+      is reused with its source verification badge intact (§3.8). Sorting is
+      stable and non-mutating of source data (filter creates a new array), and a
+      live-content test asserts every record appears exactly once, so nothing is
+      silently dropped or repaired (§8). The only nit is the non-null assertion
+      on sourceById.get(e.sourceId), which relies on the existing dangling-ID
+      build validation — ordinary imperfection, not a violation. No fabricated
+      records, no confidential material, no check-weakening."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: The change is purely in UI and domain-layer helpers for displaying
+      existing Evidence records, plus tests enforcing that every evidence record
+      appears exactly once. It does not modify any content, sources, provenance,
+      verification labels, or assessments, so there is no risk of fabricated
+      citations or hidden provenance (§3.8, §3.15). The new page explicitly
+      emphasizes separation of source statement from inference and explicit
+      evidence direction, which aligns with §§3.5, 3.6, and 3.9. Grouping by
+      direction and ordering by strength is a presentation concern that
+      preserves underlying data and does not reclassify evidence or weaken
+      checks. All edits are outside AGENTS.md and do not touch any governance or
+      CI logic. Therefore, nothing in the diff appears to violate the
+      constitution’s epistemic or process rules.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules: []
+    reasoning: The PR successfully implements the evidence ledger requirement
+      without violating any constitutional rules. It adheres strictly to Phase-1
+      constraints by remaining a statically generated Next.js page (using
+      generateStaticParams) with no new dependencies, servers, or client JS.
+      Furthermore, it explicitly upholds the Interface rule (§7) to 'present
+      supporting and undermining evidence symmetrically' by handling the
+      opposing evidence sets with identical structure and sorting logic within
+      the pure domain layer.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff adds a static /cases/<slug>/evidence ledger, a domain
+      grouping helper with tests, and nav/case-page links. It does not edit
+      AGENTS.md, content records, citations, assessments, or verification
+      labels, and it does not weaken §3.15 checks. Evidence is grouped by the
+      existing direction field in the constitution’s four classes and shown with
+      the same card structure on both sides, which implements §3.5 and §7
+      symmetry rather than rewriting judgments. No new sources, locators, or
+      confidential material are introduced; generateStaticParams and the
+      live-case invariant only read already-loaded records. Ordinary UI copy and
+      a non-null source lookup are not constitutional violations.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules:
+      - §3.5
+      - §3.11
+      - §7
+    reasoning: "The change is a purely presentational addition: a static,
+      server-rendered ledger page that groups each case's existing evidence
+      records by their already-recorded direction (supports, undermines,
+      qualifies, context), reusing the existing EvidenceCard so source links,
+      verification badges, and the source-statement/inference split are
+      preserved. It strengthens §3.5 and §7's symmetry requirement by giving
+      undermining records identical structure and seriousness, and surfaces all
+      negative evidence rather than only highlights (§3.11). The new domain
+      helper is pure, tested, and adds a live-content invariant that every
+      record appears exactly once — this tightens rather than weakens the checks
+      (§3.15). No content, citations, locators, provenance, or assessments are
+      added or altered, so there is no fabrication surface; the non-null
+      assertion on sourceById is backstopped by the build-time no-dangling-ID
+      validation. Ordering supports before undermines in a fixed canonical order
+      is an ordinary editorial choice, not asymmetric treatment, since both
+      groups render with equal prominence and counts. No AGENTS.md edit, no
+      dependencies, no client JS, no confidence material — fully within Phase-1
+      constraints."
+harvestedAt: 2026-08-27

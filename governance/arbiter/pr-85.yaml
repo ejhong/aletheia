@@ -1,0 +1,135 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 85
+title: "The Study: pre-registered desk workpapers as a first-class domain object"
+url: https://github.com/ejhong/aletheia/pull/85
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-26
+judgedAgainst: 45c6cd1edf
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "This is pure engine/infrastructure work: no content records, no
+      citations added (the verification section confirms zero identifiers), and
+      AGENTS.md is untouched. The changes tighten rather than weaken checks —
+      StudySchema is fail-closed (freeze-before-findings ordering,
+      undeclared-column rejection, id regexes), studyIntegrityErrors adds a
+      build-failing criteria hash check, dangling-id checks for
+      researchIds/claimIds/findings.evidenceId/supersedes, and a rule that
+      evidence citing a superseded study's workpaper fails the build, all wired
+      into loadCase so violations throw ContentError. Provenance is preserved
+      and displayed, not hidden: the study page renders
+      runId/model/date/promptVersion, an explicit '— not human-reviewed' string
+      when humanReviewed is false, and text stating a study never grades a claim
+      and enters the case only via ordinary Evidence records judged by the panel
+      (§3.15, §4). Row citations reuse the existing SourceVerification
+      vocabulary (verified/ai_verified/unverified) with optional locator/url/doi
+      and an independenceNote field (§3.8, §3.10), and resources.ts deliberately
+      shelves workpapers on the weak-as-evidence shelf. The one real tension —
+      an AI-authored workpaper becoming a citable Source (§3.6/§3.7, secondary
+      synthesis) — is bounded honestly: the source kind is labeled 'AI-authored
+      study workpaper' on the source page, must name a real study in both
+      directions, and confers no standing; each study still lands through the
+      ordinary PR/panel gate. DECISIONS.md is appended to, not rewritten."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.10
+      - §3.11
+      - §3.12
+      - §3.13
+      - §3.14
+      - §3.15
+    reasoning: The change introduces a Study domain with explicit, structured
+      provenance and pre-registration mechanics that strengthen rather than
+      weaken epistemic checks. StudyRowCitationSchema mirrors existing
+      source-anchor structure and uses the standard verification enum, so there
+      is no fabrication of citations or locators and row-level provenance
+      remains honest and exact (§3.8). The StudySchema and studyIntegrityErrors
+      enforce that findings link to real Evidence IDs, researchIds/claimIds
+      resolve, and superseded studies cannot continue to carry ledger weight via
+      their workpaper sources, which promotes proper handling of dependencies
+      and avoids hidden retraction issues (§3.10, §3.11, §3.14). The
+      criteriaHash mechanism, enforced both by the loader and a separate
+      stamping script, makes pre-registration tamper-evident and directly
+      operationalizes freeze-before-broad-audit (§3.12); tests explicitly check
+      that post-freeze edits fail. The schema forbids findings without rows and
+      rows without limitations, and the comments nudge against small-n
+      faux-precision, aligning with calibrated uncertainty and discouraging
+      overconfident summaries (§3.13). UI text on study and source pages clearly
+      labels AI authorship, non-human-reviewed status, and that studies never
+      grade claims and only influence via ordinary Evidence records, thus not
+      misrepresenting standing or human review (§3.14, §3.15). No
+      constitutionally reserved files (like AGENTS.md) are altered, no checks
+      are bypassed or weakened, and no confidential or unverifiable material
+      pathways are introduced; the added weekly digest listing pending
+      pre-registrations is a transparency-enhancing governance feature, not a
+      relaxation of safeguards.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules:
+      - §3.12
+      - §3.15
+      - §4
+    reasoning: The PR introduces a new domain object (Study) that structurally
+      enforces §3.12 (Freeze before broad audit) by implementing a
+      tamper-evident `criteriaHash` evaluated at build time, preventing
+      post-freeze edits to inclusion criteria. It complies with §3.15 by
+      explicitly routing all study aggregate findings through standard
+      `Evidence` records and a new `workpaper` source type, ensuring they ride
+      the existing multi-model ratification gates without bypassing standing
+      rules. The code adheres to Phase 1 constraints, using strict Zod
+      validation, and makes no forbidden edits to AGENTS.md.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff is engine-only (schema, loader integrity, study page, stamp
+      script, digest backstop, DECISIONS.md). It does not touch AGENTS.md, add
+      content citations, expose confidential material, or alter
+      ratification/standing. Study influence is explicitly barred from grading
+      claims or carrying standing and is forced through ordinary Evidence citing
+      a labeled workpaper Source; superseded workpapers cannot keep ledger
+      weight. Frozen-criteria hashing, freeze-before-findings refinements,
+      render-from-freeze, and the 30-day pending digest implement §3.12/§3.11
+      rather than weaken §3.15. AI authorship is stamped and shown as not
+      human-reviewed unless flagged. Omitted-files is empty and citation
+      verification found nothing added under content/.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules:
+      - §3.12
+      - §3.15
+      - §3.8
+      - §3.6
+      - §3.7
+      - §4
+      - §3.14
+    reasoning: "This is a machinery-only PR: no content/ files are added, no
+      citations are fabricated (verification section confirms none added), and
+      AGENTS.md is untouched — the DECISIONS.md change is a single appended
+      entry, which is that file's documented purpose. The change implements
+      §3.12 structurally rather than weakening it: criteriaHash is stamped at
+      freeze and recomputed fail-closed by the loader, the schema forbids
+      findings before rows and requires findings plus limitations once rows
+      exist, and knownCandidates pre-commits the known population. §3.15 is
+      respected: studies carry runId/model/date/promptVersion stamps, the page
+      banner honestly states 'AI-authored project work … not human-reviewed'
+      when applicable, and no gate is weakened — the design explicitly denies
+      studies standing and routes influence through ordinary Evidence records
+      citing a honestly labeled 'workpaper' source kind, so the existing arbiter
+      gates still apply to anything entering the ledger. The workpaper kind does
+      not smuggle secondary synthesis past §3.7: row-level citations use the
+      standard source-anchor shape with the standard
+      verified/ai_verified/unverified vocabulary, and the superseded-workpaper
+      build failure enforces append-only correction per §3.14. The
+      anti-file-drawer digest addition in harvest-governance.mjs is additive and
+      strengthens transparency. The PR body's claims of prior downstream
+      ratification are untrusted context, but they are not load-bearing: this
+      change is itself before the panel, and nothing in the diff presents an
+      unratified draft as ratified or dodges a check by reclassification."
+harvestedAt: 2026-08-27

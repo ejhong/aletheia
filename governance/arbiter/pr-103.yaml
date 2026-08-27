@@ -1,0 +1,135 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 103
+title: "Content response: 2026-08-27"
+url: https://github.com/ejhong/aletheia/pull/103
+verdict: park
+reason: 5 of 5 seats affirm compliance; no seat finds a violation — but the
+  weekly content-merge budget is spent (10/10); parked until the window rolls
+outcome: merged
+outcomeAt: 2026-08-27
+judgedAgainst: d0585155ba
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff adds six new AI assessment overlay files (one CCC auto-run,
+      one Orch OR auto-run, and five vendor-diverse check runs) as new
+      append-only files, each stamped with runId, model, date and promptVersion
+      and explicitly flagged `humanReviewed: false` / 'NOT been reviewed by a
+      human' — satisfying §4's provenance-display and §3.15's
+      no-unratified-draft-as-ratified rules; no canon claim or evidence file is
+      mutated. The only edits to published narrative are a numeric correction in
+      overview.md and a rewrite of research item ORCH-R008, and both are logged
+      in history.yaml with what changed, why, and the acting model (§3.14). The
+      corrected figure is checkable from the text itself: 10⁻⁵–10⁻⁴ s against a
+      25 ms exemplar is a shortfall of roughly 2.4–3.4 orders of magnitude, so
+      'two to three orders' is more accurate than the prior 'one to two', i.e.
+      the change tightens rather than loosens accuracy. Citation tooling found
+      no new identifiers, so no real-citation question arises; the assessments
+      cite only internal ORCH-/CCC- record IDs, and referenced records
+      (ORCH-E035/E036, CCC-E023) are described as having landed in earlier
+      batches, consistent with the unchanged evidence files. AGENTS.md is
+      untouched, no confidential (arc/, notes.txt, Hawke) material appears,
+      checks are not weakened, and the assessments repeatedly enforce §3.2/§3.4
+      discipline (rungs kept apart, credibility distinguished from
+      diagnosticity) and record negative evidence (§3.11). Nothing in the PR
+      body or diff asserts human approval or attempts to reclassify the change
+      to dodge the gate."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.4
+      - §3.5
+      - §3.13
+      - §3.14
+      - §3.15
+    reasoning: "The change adds only assessment overlays, cross-model check files,
+      and modest edits to the Orch OR overview and research agenda; no citations
+      or locators are created, removed, or altered, so the real-citations and
+      exact-provenance rules are unaffected. All new assessment files are
+      clearly labeled as AI-generated drafts or cross-model checks, stamped with
+      runId/model/date/promptVersion, and marked humanReviewed: false, matching
+      the constitution’s requirements for AI operation, append-only overlays,
+      and non-misattribution of AI output as human judgments (§3.14, §3.15, §4).
+      Claim verdicts and reasoning are expressed in terms of local claim
+      credibility and evidential support, with explicit discussion of where
+      priors vs records are being invoked and frequent attention to
+      diagnosticity vs mere plausibility, aligning with §3.2, §3.4, §3.5, and
+      §3.13. The edits to overview.md and research.yaml transparently update the
+      narrative and research-crux description to reflect a completed corpus
+      audit, without erasing or silently revising prior published assessments;
+      the history.yaml entry records what changed, why, and by which AI actor,
+      preserving change history (§3.14). No confidential material is introduced,
+      no checks or workflows in §3.15 are weakened or reclassified, and
+      AGENTS.md is untouched. Given there are no failing or fabricated
+      identifiers in the verification report and no hidden files, the diff
+      appears to comply with the constitution."
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules:
+      - §3.1
+      - §3.9
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: The proposed changes strictly adhere to the constitution. The new AI
+      assessment files and cross-model checks are correctly implemented as
+      append-only overlays, explicitly stamped with run details, and labeled as
+      unreviewed AI drafts (§4, §3.15). The editorial modifications to
+      `overview.md` (correcting a mathematical orders-of-magnitude statement)
+      and `research.yaml` (updating a completed desk audit) are properly
+      documented in `history.yaml`, which accurately attributes the change to an
+      AI actor and notes the required multi-model concurrence process (§3.14).
+      No external citations are added, precluding any citation fabrication, and
+      the assessments themselves rigorously separate empirical observations from
+      theoretical interpretations (§3.1, §3.9).
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff only adds stamped, humanReviewed:false assessment overlays
+      (one CCC auto draft, one orch-or auto draft, and five vendor-diverse check
+      files labeled role:check and not the case narrative) plus a history.yaml
+      entry; that matches append-only AI drafts and does not present them as
+      human or already-ratified judgments (§3.14, §3.15, §4). Overview.md and
+      research.yaml edits are versioned in history with actor, reason, and the
+      §3.15 gate note; they correct the 10⁻⁵–10⁻⁴ s vs 25 ms shortfall from “one
+      to two” to “two to three” orders (arithmetically tighter) and mark
+      ORCH-R008 as largely done rather than inventing new external citations.
+      Citation tooling found no added DOI/arXiv/URL identifiers, AGENTS.md is
+      untouched, and nothing reclassifies or weakens the checks. Check-file
+      disagreements on a few claim grades stay in overlays that feed concurrence
+      rather than silently rewriting a published verdict. No positive internal
+      evidence of fabricated locators, confidential quotation, or
+      dangling-provenance invention is visible in the complete diff.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "The only featured-content mutations are the orch-or overview.md and
+      research.yaml edits, and they arrive with exactly the §3.15 apparatus:
+      five independent check runs from five different vendors (Google, OpenAI,
+      xAI, Moonshot, Anthropic), each honestly labeled role: check,
+      humanReviewed: false, blind, and append-only, concurring unanimously on
+      the case verdict and explicitly endorsing the substance of the edits (no
+      acceptance criterion in the corpus per ORCH-E035; the proponent estimate
+      falling two-to-three orders short per ORCH-E036). The headline overview
+      correction (one-to-two → two-to-three orders of magnitude) is
+      arithmetically warranted — 10⁻⁵–10⁻⁴ s against a 2.5×10⁻² s exemplar is
+      2.4–3.4 orders — so this is an accuracy fix, not spin, and it is recorded
+      in history.yaml with date, reason, actor, and prompt version per §3.14.
+      All seven assessment files are new append-only overlays stamped with
+      runId/model/date/promptVersion and self-labeled as unreviewed AI drafts,
+      satisfying §4; no canon claim file is mutated. No citations or locators
+      are added (verification found none), so there is nothing to fabricate; the
+      parameter values quoted in ORCH-R008 (500 ms/10⁹ tubulins 1996; 25
+      ms/2×10¹⁰ 1998–2014) match the known Orch OR corpus and show no internal
+      inconsistency. The single-model CCC overlay is a draft overlay of the kind
+      §4 expressly licenses, carries no canon edit, and is labeled as neither
+      human-reviewed nor ratified. Kimi's check writing 'one to two orders'
+      against the panel's 'two to three' is a reasoning-text slip within a
+      unanimous verdict concurrence, not a contested published judgment
+      requiring parking. No checks are weakened, no AGENTS.md edit, no
+      confidence material — nothing here breaks a rule."
+harvestedAt: 2026-08-27

@@ -1,0 +1,121 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 56
+title: "Stage-4 tail: governance harvest, weekly digest, rate limit, prioritized
+  diffs"
+url: https://github.com/ejhong/aletheia/pull/56
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-25
+judgedAgainst: edf61477fe
+promptVersion: aletheia-arbiter-v1
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "AGENTS.md is untouched, so §3.15's founder reservation is not
+      engaged. The mechanical changes move in the strengthening direction:
+      `capDiff` raises the panel budget 120k→400k and keeps files by scrutiny
+      tier so canon content (sources/claims/evidence) is never dropped before
+      mechanically-guarded append-only overlays, with the omission list still
+      loud and a regression test asserting exactly that; `rateLimitGate` is
+      explicitly one-way (pass→park only, never an upgrade, never throttling
+      code/docs) and is unit-tested for that asymmetry; `loadArbiterRecords`
+      fails the build on any governance file that fails Zod validation. The five
+      new Immortality Key files are new, append-only `role: check` overlays
+      stamped with runId/model/date/promptVersion and `humanReviewed: false`,
+      with calibrated verdicts, explicit strongest-opposing-consideration
+      reasoning, and claim-level atomicity — and the resulting 0/5 dispute is
+      displayed as contested rather than published as a house verdict, which is
+      what §3.15 requires. The harvested `governance/arbiter/pr-55.yaml` records
+      the inconvenient fact (panel PARKED, founder merged) verbatim rather than
+      hiding it, and the digest flags 'merged against a parked verdict'; that is
+      disclosure, not fabrication. The one genuine question is the
+      `classify-pr-risk.mjs` exemption making newly added
+      `governance/arbiter/pr-<n>.yaml` files low-risk, which lets harvested
+      records bypass the panel — but it is narrowly scoped to additions matching
+      a strict filename regex, mirrors the existing append-only-overlay
+      precedent, is schema-validated at build time, and is itself being
+      submitted for panel judgment rather than slipped through, so I do not read
+      it as check-weakening or reclassification-to-dodge."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: "The PR wires additional governance and panel-observer machinery
+      without touching AGENTS.md or altering any existing case content,
+      citations, or provenance records. Harvested arbiter records are explicitly
+      described and implemented as verbatim copies of already-public PR
+      comments, stored append-only under governance/arbiter and validated with
+      Zod; they do not mint new standing or change assessments, so they do not
+      weaken epistemic checks. The new weekly digest is a meta-level GitHub
+      issue summarizing outcomes, not a source or assessment, and does not
+      present unratified drafts as ratified judgments. The diff-budget logic is
+      strengthened: capDiff is made tier-aware so governance and canon content
+      (e.g., sources.yaml) are retained preferentially, reducing the risk of
+      panels deciding without seeing crucial provenance. The rateLimitGate
+      introduces a conservative weekly cap on content merges that only ever
+      downgrades a pass to park for content-changing PRs, and never upgrades or
+      bypasses an existing park, which is a safety-increasing constraint rather
+      than a §3.15 check-weakening. Tests are added for the new behaviors, and
+      no fabricated records, hidden provenance changes, or confidentiality
+      breaches appear in the diff."
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules: []
+    reasoning: "The diff introduces governance harvesting, weekly digests,
+      rate-limiting, and diff tiering without violating the constitution.
+      AGENTS.md is completely untouched, respecting the founder's reserved
+      amendment power (§3.15). Rather than weakening checks, the changes to
+      `capDiff` in `scripts/lib/arbiter-core.mjs` strengthen the arbiter by
+      prioritizing canon content and governance surface over bulky overlays,
+      preventing malicious changes from hiding in truncated diffs. The new
+      `rateLimitGate` operates in a strictly fail-closed manner by only
+      downgrading passing content merges to parked. Additionally, the new case
+      assessments under `content/cases/immortality-key/assessments/` are
+      appropriately appended, stamped with the correct metadata, and accurately
+      labeled as unreviewed AI checks (`humanReviewed: false`), strictly
+      adhering to Phase-1 assessment rules and §3.14."
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "AGENTS.md is untouched, so the founder-reserved amendment rule is
+      not implicated. The five Immortality Key files are new append-only check
+      overlays, stamped with runId/model/date/promptVersion, labeled role: check
+      and humanReviewed: false, and they do not rewrite a published house
+      verdict as ratified — DECISIONS.md even records the honest contested 0/5
+      split. Harvested pr-53/pr-55 records keep park-versus-merged distinct
+      (notably #55 parked then founder-merged) and are schema-validated,
+      append-only copies of public comments rather than standing-minting
+      judgments. The rate-limit gate only downgrades pass→park, prioritized
+      capDiff keeps governance and content canon ahead of bulky overlays, and
+      classifying new harvest YAMLs as low-risk matches the existing overlay
+      rule instead of stripping a check. DECISIONS.md is append-only; CI
+      harvest/digest runs off-site and leaves a public issue, so no silent
+      publication, confidential leak, or check-weakening is in the diff."
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "AGENTS.md is untouched, so §3.15's founder-reservation is not
+      engaged, and nothing here weakens the gates: the new rate limit
+      (arbiter-core.mjs rateLimitGate) only ever downgrades pass→park, and the
+      tiered capDiff raises the budget 120k→400k while prioritizing the
+      governance surface and content canon over mechanically-guarded overlays,
+      with omissions still loudly listed — that repairs a truncation gap rather
+      than dodging review. The five new immortality-key check overlays are
+      exactly what §4 prescribes: append-only, stamped with
+      runId/model/date/promptVersion, labeled role: check and humanReviewed:
+      false, and the PR body states the case displays contested 0/5, which is
+      §3.15's 'disagreement does not publish silently' rather than an unratified
+      draft presented as ratified. The harvested governance records (pr-53.yaml,
+      pr-55.yaml) preserve dissent verbatim — including the panel's §3.15 park
+      of #55 and the founder's merge against it — which is the inspectability
+      §3.14/§3.15 demand, not its erosion; they are Zod-validated at build and
+      classified low-risk only as new append-only files that cannot mint
+      standing. The maintain.yml change excludes casework/ and weekly-digest.md
+      from commits, strengthening the Phase-1 confidentiality boundary, and the
+      digest issue is a public record. New logic (tiering, rate limit, legacy
+      parser) carries regression tests per §8. No citation, locator, or
+      assessment visible in the diff shows signs of fabrication, and the diff is
+      complete with no omitted files."
+harvestedAt: 2026-08-27

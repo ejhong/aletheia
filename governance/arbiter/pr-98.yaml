@@ -1,0 +1,131 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 98
+title: "ORCH-S001 freeze: pre-register the quantitative-commitments study"
+url: https://github.com/ejhong/aletheia/pull/98
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-26
+judgedAgainst: e131df8a16
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff adds only two content files: an appended history entry
+      (append-only, stamped with date, actor, aiAssisted: true) and a new
+      pre-registration file with zero rows, zero findings. No AGENTS.md or
+      check-weakening edits appear, and nothing is presented as ratified — the
+      study carries runId, model, promptVersion, and an explicit `humanReviewed:
+      false`, satisfying §3.15 and the Phase-1 labeling rules. No citation
+      identifiers are added (verification tooling confirms none), and the listed
+      known candidates (Hameroff & Penrose 1996 Math. Comput. Simulation 40;
+      Tegmark 2000 PRE 61; Hagan/Hameroff/Tuszynski 2002 PRE 65; McKemmish et
+      al. 2009 PRE 80; Hameroff & Penrose 2014 and Reimers et al. 2014 Phys.
+      Life Rev. 11; Craddock et al. 2017 Sci. Rep. 7; Sahu et al. 2013 Biosens.
+      Bioelectron. 47; Derakhshani et al. 2022 Phys. Life Rev. 42) match real,
+      well-known works with venues consistent with their titles — no internal
+      inconsistency or invented locator. The design actively serves the
+      constitution: freeze-before-audit (§3.12), stated-as taken from the
+      paper's own wording rather than inferred (§3.9), symmetric grading of
+      proponent and critique rows, exclusion of secondary restatements as
+      independent entries (§3.10), documented silences recorded as findings
+      (§3.11), and plain-language consistency judgment with no invented
+      precision (§3.13). Locator quality and source support remain to be judged
+      when the collection PR lands; nothing in this freeze is a violation."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules:
+      - §3.1
+      - §3.2
+      - §3.5
+      - §3.7
+      - §3.8
+      - §3.9
+      - §3.10
+      - §3.11
+      - §3.12
+      - §3.13
+      - §3.14
+      - §3.15
+    reasoning: The change introduces a pre-registered study file and a matching
+      history entry, with zero data rows, consistent with the project’s two-PR
+      freeze/collect discipline and §3.12’s freeze-before-audit requirement. The
+      study design explicitly separates observations from interpretation (exact
+      quoted numbers vs later consistency assessment) and uses one row per
+      (publication, parameter), aligning with atomicity and explicit evidence
+      direction once rows are added (§3.1, §3.2, §3.5). It commits to primary
+      documents (named journal articles, book, arXiv/DOI retrieval) and to exact
+      locators for each numeric value, while forbidding inference of the
+      “stated-as” category, honoring §3.7–§3.9. The inclusion/exclusion rules
+      and explicit handling of secondary summaries, generic-collapse bounds, and
+      measurement-invoked rows respect independence (§3.10) and avoid
+      double-counting. Documented silences and failed searches are treated as
+      negative evidence (§3.11), and the design promises plain-language findings
+      with no spurious numerical precision (§3.13). Provenance metadata (runId,
+      model, date, promptVersion, humanReviewed flag) and the history entry
+      ensure versioning and AI-disclosure compliance (§3.14, §3.15). No
+      citations are fabricated (tooling found none to resolve), no confidential
+      material is introduced, and no constitutional checks are weakened.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules:
+      - §3.12
+      - §3.9
+      - §3.11
+      - §3.15
+    reasoning: The PR explicitly implements §3.12 (Freeze before broad audit) by
+      pre-registering the study criteria, candidates, and methodology with a
+      strict hash before data collection begins. It mandates exact source
+      wording without inference (§3.9) and commits to documenting literature
+      silences and failed searches as negative findings (§3.11). The AI
+      authorship is transparently stamped with the required metadata and marked
+      as unreviewed (§3.15), and the referenced known candidate papers are real,
+      well-known publications in the Orch OR corpus.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff is a two-file freeze: it appends one history entry and adds
+      orch-s001.yaml with empty rows/findings/limitations, humanReviewed: false,
+      and explicit AI stamps (runId, model, date, promptVersion). That is a
+      §3.12 pre-registration, not a published assessment or a ratified judgment
+      dressed as human review. No AGENTS.md edit, no identifiers or locators
+      invented (citation tooling found none), no confidential material, and
+      prior history entries are untouched. Known-candidate bibliographic names
+      are protocol commitments, not Source/Evidence records carrying a verdict;
+      the method text itself requires exact locators and stated-as labels from
+      each paper’s wording only after collection. Ordinary freeze work under the
+      existing checks."
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules:
+      - §3.12
+      - §3.15
+      - §4
+      - §3.11
+      - §3.9
+    reasoning: "This PR is itself the §3.12 freeze: it pre-registers ORCH-S001 with
+      frozen inclusion/exclusion criteria, a literal search protocol, and
+      pre-committed candidate dispositions, while rows, findings, and
+      limitations are empty by design — criteria are judged before data exists.
+      The protocol encodes the epistemic rules rather than weakening them:
+      stated-as taken from the paper's own wording (§3.9), secondary
+      restatements excluded (§3.10), failed searches and documented silences
+      reported as findings (§3.11), no invented precision (§3.13), and a
+      criteria hash that fails CI on post-freeze edits, which strengthens rather
+      than weakens the checks. The twelve known candidates are all real,
+      well-known items in the Orch OR literature (Hameroff & Penrose 1996,
+      Tegmark 2000 PRE 61, Hagan et al. 2002 PRE 65, McKemmish et al. 2009 PRE
+      80, Hameroff & Penrose 2014 Phys. Life Rev. 11, Reimers et al. 2014,
+      Craddock et al. 2017 Sci. Rep. 7, Derakhshani et al. 2022, etc.), with
+      venues and volume numbers matching what I know; the citation tool found no
+      identifiers to check and nothing in the diff contradicts itself. The
+      history entry is append-only, honestly labeled aiAssisted: true with the
+      AI actor named, and the study file declares humanReviewed: false — no
+      unratified draft is presented as ratified and no AI record is presented as
+      human. AGENTS.md is untouched, no confidential geo-project material
+      appears, and the planned web search is editorial discovery under §3.15,
+      not live AI added to the static site. Publication is proceeding through
+      this multi-model gate, exactly as §3.15 requires."
+harvestedAt: 2026-08-27

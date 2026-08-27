@@ -1,0 +1,85 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 76
+title: Vendor seat calls retry transient network failures
+url: https://github.com/ejhong/aletheia/pull/76
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-26
+judgedAgainst: 3ff49e27e7
+promptVersion: aletheia-arbiter-v2
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "This is purely operational plumbing: a `fetchWithRetry` helper for
+      vendor seat HTTP calls, wired into `callVendor` and the panel's inline
+      caller, plus unit tests. It touches no content, citations, provenance,
+      assessments, or AGENTS.md. It does not weaken §3.15 checks — retries fire
+      only on network-level errors, HTTP 429, and 5xx, never on a completed
+      reply, so a seat's substantive judgment (including a refusal or empty
+      reply, still handled by the caller) is never re-rolled until it agrees; if
+      anything it makes multi-model concurrence more likely to actually be
+      obtained rather than a seat being silently lost. Non-transient 4xx pass
+      through untouched so existing error handling and messages remain, and
+      exhaustion surfaces the last response or throws rather than fabricating
+      success. Tests pin the contract, and the diff is complete with no omitted
+      files. No epistemic rule is implicated."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: The change only affects internal scripting for vendor API calls and
+      adds tests; it does not touch content, citations, provenance records,
+      assessments, or AGENTS.md. The new fetchWithRetry helper adds
+      network-level robustness (retries for 5xx/429 and network errors) and is
+      used by callVendor in both the shared vendor library and the
+      cross-model-check script. This strengthens reliability of the multi-model
+      ratification process without altering or weakening any epistemic or
+      governance checks in §3. No rules about real citations, provenance,
+      independence, or append-only assessments are implicated. Therefore, the
+      modification is compatible with the constitution and does not introduce
+      any violations.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules: []
+    reasoning: The change introduces a well-scoped retry mechanism for transient
+      network failures (5xx, 429, and socket errors) in the scripts that contact
+      vendor models. It does not weaken the multi-model concurrence checks
+      (§3.15); rather, it makes the execution of those checks more robust
+      against edge infrastructure flakiness. The implementation passes through
+      real HTTP errors and timeouts to maintain the existing failure and
+      validation logic, and includes appropriate tests as required by §8.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff only adds fetchWithRetry in scripts/lib/vendors.mjs, wires
+      it into callVendor in vendors.mjs and the panel caller in
+      cross-model-check.mjs, and pins the contract with seven tests. It retries
+      network-level fetch errors, HTTP 429, and HTTP 5xx with bounded backoff,
+      and deliberately does not retry other 4xx or deadline timeouts, so
+      existing res.ok handling and fail-closed behavior stay intact. No content,
+      citations, assessments, provenance, or AGENTS.md are touched, and nothing
+      reclassifies or weakens §3.15 ratification, CI, or independence checks.
+      This is operational reliability for paid seat calls, not an epistemic or
+      check-dodging change. Omitted-files is empty, so the full change is in
+      view.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "This is infrastructure hardening, not a content or epistemic change:
+      it adds a fetchWithRetry helper used by the panel's vendor seat callers,
+      retrying only transient classes (network-level fetch errors, HTTP 429,
+      HTTP 5xx) with backoff, while deliberately passing through 4xx responses
+      to the caller's existing res.ok handling and rethrowing timeout/abort
+      errors. It does not weaken the §3.15 checks — the fail-closed behavior is
+      preserved (persistent failure still throws after exhaustion; genuine HTTP
+      errors keep their existing messages), no change is reclassified, and no
+      ratification path is bypassed. Retrying only occurs when no usable
+      response was received, so no successful seat output is discarded or
+      double-counted. The change touches no content, citations, provenance,
+      assessments, or AGENTS.md, and it ships with 7 tests pinning the retry
+      contract, consistent with the code rules (§8) on testing important
+      behavior. Nothing in the diff fabricates a record or exposes confidence
+      material."
+harvestedAt: 2026-08-27

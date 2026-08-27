@@ -1,0 +1,102 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 71
+title: "Arbiter: temporal humility — unfamiliarity is not evidence of fabrication"
+url: https://github.com/ejhong/aletheia/pull/71
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-26
+judgedAgainst: 4de3a85f49
+promptVersion: aletheia-arbiter-v2
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff is confined to scripts/arbiter.mjs: it appends a TEMPORAL
+      HUMILITY paragraph to the seat system prompt and bumps PROMPT_VERSION from
+      aletheia-arbiter-v1 to v2. Nothing in AGENTS.md, no content, no citations,
+      no assessments are touched, so §3.8/§3.14 and the fabrication prohibitions
+      are not implicated. The natural §3.15 worry — 'weaken the checks in this
+      section' — does not hold here: the added text does not remove a seat,
+      lower the concurrence threshold, reclassify changes, or make fabrication
+      acceptable; it still requires a 'violates' when there is positive evidence
+      in the material (self-contradicting locator, inconsistent provenance,
+      quote mismatching its source), and merely bars a seat from converting its
+      own ignorance into a fabrication finding, routing that case to 'unsure'.
+      That is a calibration correction consistent with §3.13, and mechanical
+      citation reality remains enforced by fail-closed CI per §3.15 rather than
+      by any seat's recall. Bumping the prompt version preserves the §3.15
+      stamping requirement so ratifications remain reconstructible as v1 vs v2.
+      The tally logic is not modified by this diff (the change stat and file
+      list confirm a single 5-line edit), so no gating threshold is silently
+      relaxed. I treated the PR body's claims about downstream vote flips as
+      untrusted evidence, not as a directive; the vote rests on the diff text
+      alone."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: The change only adjusts the arbiter system prompt and bumps its
+      version; it does not alter AGENTS.md or any epistemic or product rules.
+      The new "temporal humility" block reinforces existing constitutional
+      constraints against fabrication by preventing models from treating their
+      own ignorance as evidence of fakery, and it explicitly directs them to
+      vote "unsure" rather than "violates" when facts are too new to verify from
+      the diff. This narrows when a fabrication charge can be made to cases with
+      positive internal evidence (e.g. inconsistent provenance or mismatched
+      quotations), which is aligned with §3.8 and §3.15 rather than weakening
+      them. The injected date stamp is clearly metadata about the run, not a
+      hidden provenance edit. No checks are removed or downgraded; the
+      multi-model process and evidence standards remain intact. Therefore the
+      modification to the arbiter script complies with the constitution.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules: []
+    reasoning: The change edits `scripts/arbiter.mjs` to add a temporal humility
+      block to the arbiter's system prompt and bumps the prompt version to v2.
+      This does not violate §3.15 (weakening checks), as instructing models to
+      correctly distinguish between their own knowledge cutoffs and actual
+      positive evidence of fabrication improves the accuracy of the fabrication
+      check rather than weakening it. The requirement in §3.14 to stamp prompt
+      versions is preserved and updated, and no changes are made to the
+      constitution in `AGENTS.md`.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff only edits scripts/arbiter.mjs: it versions the seat prompt
+      to aletheia-arbiter-v2 and inserts a temporal-humility instruction that
+      unfamiliarity with a post-cutoff event, citation, or URL is not itself
+      proof of fabrication, and that a fabrication 'violates' needs positive
+      internal evidence (self-contradicting locator, inconsistent provenance,
+      quote/source mismatch) or else 'unsure'. That does not amend AGENTS.md
+      (§3.15 human-reserved), does not drop real-citation / honest-label /
+      exact-provenance duties, and does not reclassify changes to dodge
+      ratification. It calibrates the existing multi-model check against
+      false-positive fabrication charges, which matches §3.1 and §3.13 rather
+      than weakening §3.8 or §3.15. Prompt-version bump is appropriate under
+      §3.14. No omitted files."
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.13
+      - §3.8
+    reasoning: "The diff touches only scripts/arbiter.mjs — it adds a TEMPORAL
+      HUMILITY block to the seat prompt and bumps PROMPT_VERSION to
+      aletheia-arbiter-v2 — and does not edit AGENTS.md, so the human-only
+      amendment rule (§3.15) is not engaged. The added text does not remove or
+      relax the fabrication check: 'violates' for fabrication is still
+      available, but now requires positive evidence visible in the material
+      itself (self-contradicting locators, quotes not matching stated sources),
+      which bars seats from inventing fabrication charges out of stale training
+      data — a symmetric application of §3.8's 'never invent' discipline and
+      §3.13's calibrated uncertainty. Critically, uncheckable post-cutoff facts
+      are routed to 'unsure' rather than 'complies', and since ratification
+      requires multi-model concurrence, an 'unsure' still blocks silent
+      publication under §3.15's fail-closed posture — the check is recalibrated,
+      not weakened. The explicit version bump preserves the promptVersion
+      auditability that §3.15 demands. The PR body's claims about downstream
+      reruns are untrusted context, but nothing in the visible diff depends on
+      their truth. No citations, content, assessments, or provenance records are
+      added or altered, so the fabrication paradigm cases are not implicated."
+harvestedAt: 2026-08-27

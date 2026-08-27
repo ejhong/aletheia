@@ -1,0 +1,111 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 94
+title: "CCC-S001 freeze: the quantitative record of CCC signature claims and searches"
+url: https://github.com/ejhong/aletheia/pull/94
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-26
+judgedAgainst: 1e5fc07eee
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "This is a pre-registration freeze with zero rows, which is exactly
+      the workflow §3.12 prescribes: inclusion/exclusion criteria, literal
+      search queries, known candidates and dispositions, and a criteria hash all
+      committed before any evidence is gathered. No citations, DOIs, arXiv ids,
+      or locators are added (the verification tool found none), so there is no
+      fabrication surface here; the candidate list gives author-year names as
+      discovery targets, explicitly deferring refereed status and per-cell
+      verification labels to the collection PR, and states that deep-research
+      briefs are never cited and every cell must be verified natively against
+      the primary document. Provenance stamps are present and honest — runId,
+      model, promptVersion, date, aiAssisted: true, humanReviewed: false — so no
+      AI draft is presented as a ratified or human judgment (§3.15, Phase-1
+      labeling). The design is symmetric per §3.3/§3.11: proponent and critique
+      rows graded by identical rules, refereed vs. flagged preprint never
+      silently mixed, failed searches reported, 'either outcome publishes', and
+      the table adjudicates nothing. The history.yaml change is a pure append
+      with actor and reason, consistent with §3.14; AGENTS.md is untouched and
+      no check is weakened. The only blemish I see is the prose reference to
+      'CCC-C504' inside a free-text reason field while claimIds lists
+      CCC-C002/C004/C009/C011 — a numbering oddity in narrative text, not an ID
+      field or a provenance claim, and not enough to constitute a violation."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: The diff adds a pre-registration freeze entry to the CCC case history
+      and a new study file with zero rows, defining inclusion/exclusion
+      criteria, search protocol, and planned columns. This is clearly labeled as
+      a pre-registration/freeze, with no assessments or quantitative findings
+      yet, so there is no risk of presenting unratified drafts as ratified
+      judgments (§3.15). No new citations, DOIs, or URLs are introduced, so
+      there is no violation of the real-citations or exact-provenance
+      requirements (§3.7–§3.8); future rows will need to respect those rules,
+      but this freeze only defines structure and protocol. The method explicitly
+      states that every cell will be verified against primary documents and that
+      deep-research outputs will not be cited, which is consistent with the
+      preference for primary sources and clear provenance. The history entry
+      records actor, date, reason, and run information, preserving versioning
+      and accountability in line with §3.14 and §3.15. No constitutional checks
+      are weakened, and AGENTS.md is untouched, so the change complies with the
+      current constitution.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules:
+      - §3.12
+      - §3.3
+      - §3.11
+      - §3.14
+      - §4
+    reasoning: "The PR correctly implements a pre-registration freeze in accordance
+      with §3.12 (Freeze before broad audit) by establishing inclusion criteria
+      and a search protocol before data collection. It adheres to §3.3
+      (Competing hypotheses) and §3.11 (Negative evidence) by explicitly
+      requiring both proponent claims and critique reanalyses to be tabulated
+      under identical rules, including failed searches. AI operation is
+      transparently disclosed (§4), with the draft correctly labeled with
+      'humanReviewed: false' and stamped with run/model data. No citations are
+      fabricated, and the revision history is properly updated (§3.14)."
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules:
+      - §3.12
+      - §3.15
+      - §3.8
+      - §3.14
+    reasoning: "The diff is a complete, zero-row study freeze (ccc-s001.yaml) plus
+      an append-only history.yaml entry. That matches §3.12:
+      inclusion/exclusion, search protocol, known candidates, and the
+      signal-model-provenance column are locked before collection, with empty
+      rows/findings/limitations and humanReviewed: false, so no unratified
+      judgment is presented as ratified (§3.15). No DOI, arXiv id, URL, or page
+      locator is added (citation tooling found none), so there is no fabricated
+      citation or invented locator (§3.8); named papers appear only as
+      pre-committed candidates, not as Source/Evidence records. The changelog is
+      stamped with actor, date, runId, model, and promptVersion and does not
+      rewrite prior entries (§3.14). AGENTS.md is untouched and the checks are
+      not weakened."
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "This is a pre-registration freeze that implements §3.12 (freeze
+      before broad audit) almost textbook-fashion: criteria, inclusion/exclusion
+      rules, search protocol, and known candidates are frozen with a hash before
+      any rows exist, and rows/findings/limitations are empty by design. The
+      history.yaml entry is append-only (§3.14), records date, reason, actor,
+      and aiAssisted: true, and the study file carries
+      runId/model/date/promptVersion with humanReviewed: false — honest labeling
+      per §3.15 and Phase-1 rules, with no unratified draft presented as
+      ratified (the PR body explicitly says parking is expected). No citations,
+      DOIs, or URLs are added, so there is nothing to fabricate; the named
+      candidate papers are described as candidates to be resolved to primary
+      documents at collection time, with preprint/refereed status flagged rather
+      than hidden. The constitution is untouched and no checks are weakened — if
+      anything, the freeze mechanism strengthens them. The passing mention of
+      CCC-C504 in a prose reason field is not a claimIds reference and is a
+      schema-validation matter for CI, not a constitutional violation."
+harvestedAt: 2026-08-27

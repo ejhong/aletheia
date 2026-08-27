@@ -1,0 +1,118 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 95
+title: Content response batches hourly instead of per canon push
+url: https://github.com/ejhong/aletheia/pull/95
+verdict: park
+reason: "2 seat(s) find a violation: Opus 5 (Anthropic) (§3.14, §3.15); GPT-5.1
+  (OpenAI) (§3.15); only 3 of 5 seats affirm compliance (4 required)"
+outcome: merged
+outcomeAt: 2026-08-26
+judgedAgainst: 1e5fc07eee
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: violates
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: "The workflow half of the change is unobjectionable: moving the
+      trigger from per-push to an hourly cron, setting `cancel-in-progress:
+      false`, and keeping `workflow_dispatch` does not touch the ratification
+      gates, the fail-closed CI, or the contested-parking rule — batching only
+      shifts when the same gated panel runs. The DECISIONS.md half is the
+      problem. The header line `docs/DECISIONS.md | 2 +-` shows one line removed
+      and one added: the diff deletes the existing entry `**2026-08-26 —
+      Villarroel permission recorded; the history rewrite drops from urgent to
+      optional.**` and re-emits its entire body glued onto the tail of the new
+      batching entry, under the unrelated heading `**2026-08-26 — The
+      content-response ripple batches hourly (founder direction).**`. The file's
+      own first line states it is append-only, and the PR body describes this as
+      an addition (\"one file + decision log\"), so the destruction of a prior
+      entry's heading is undisclosed. The record that got mangled is precisely a
+      §3.15 permission record (who granted, when, by what channel, where held);
+      burying it inside a CI-scheduling entry degrades the discoverability and
+      integrity of that provenance and silently rewrites a published decision
+      rather than appending a new one (§3.14, §3.15). Secondary, and not by
+      itself decisive: the new supersede loop closes *any* open `respond/*` PR,
+      including one that may be sitting as needs-approval or parked-as-contested
+      — the rationale (re-derivation from current main) is plausible but the
+      step should exclude contested/parked PRs to stay clearly inside §3.15's
+      \"disagreement does not publish silently\". Fix is small: restore the
+      Villarroel entry as its own bullet and append the batching decision
+      separately."
+  - seat: GPT-5.1 (OpenAI)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: "The change does not touch AGENTS.md and involves only a workflow
+      file and docs/DECISIONS.md, so most core epistemic constraints are
+      unaffected. However, the final bullet in docs/DECISIONS.md is malformed:
+      it appends the entire Villarroel-permission/history-rewrite paragraph
+      directly after the new decision about batching the content-response
+      workflow, inside the same list item. That text is not introduced as a
+      separate decision and appears to have been accidentally concatenated,
+      which changes the meaning and clarity of the prior, already-ratified
+      decision record. Given §3.15’s emphasis on transparent, inspectable
+      records and not weakening or confusing the checks, silently garbling a
+      prior decision entry into a new one compromises the integrity of the
+      decision log. Because this log is the authoritative record for operational
+      rules under which AI must act, corrupting its structure is a material
+      violation. No citation or provenance fabrication appears, but the mis-edit
+      of DECISIONS.md breaks the requirement that checks and their governing
+      records not be weakened or obscured."
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules: []
+    reasoning: The PR alters the `content-response.yml` workflow to trigger on an
+      hourly schedule rather than per-push, and adds a step to close older
+      unmerged `respond/*` PRs as superseded. This does not weaken any editorial
+      or validity checks (§3.15), as the newly generated PRs still re-derive all
+      judgments from `main` and undergo the standard validation and gating
+      before merging. No content or citations are modified, so epistemic rules
+      are untouched. The update to `DECISIONS.md` clumsily concatenates the new
+      entry into the preceding entry, overwriting the old entry's title, but the
+      historical text is preserved; this is an ordinary formatting imperfection,
+      not a constitutional violation.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff only retimes the existing content-response workflow
+      (push/path filter → hourly cron plus workflow_dispatch), sets
+      cancel-in-progress to false, and closes stale open respond/* PRs after a
+      new batch PR is opened; it does not edit AGENTS.md, CI gates,
+      ratification, verification labels, or overlay append-only rules. The same
+      scripts still detect staleness mechanically, still open a labeled PR
+      through the existing risk/auto-merge path, and still terminate the loop on
+      overlay-only merges, so §3.15 checks are not weakened or reclassified. No
+      citations, locators, assessments, or confidential material are added. The
+      DECISIONS.md edit records the scheduling change on an existing 2026-08-26
+      bullet rather than a fresh append, which is sloppy log hygiene, but the
+      prior Villarroel text remains and git history still versions the
+      file—ordinary documentation imperfection, not a silent rewrite of a
+      published epistemic judgment.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "The change reschedules the content-response workflow from per-push
+      to hourly cron, disables cancel-in-progress, and adds a step closing
+      superseded respond/* PRs with a public comment. None of this touches the
+      §3.15 gates: the produced PRs still flow through classify-pr-risk
+      labeling, the same scripts, and the same required checks before merge (`gh
+      pr merge --auto` still waits on checks), so no consequential judgment
+      publishes on one model's unilateral say-so and no check is weakened or
+      reclassified. Closing an unmerged automated draft PR does not alter
+      published assessments (§3.14) — overlays on main are untouched, and the
+      closure leaves a public comment and branch record rather than silent
+      removal; the superseded content is re-derived from current main if still
+      warranted. The PR body's claim of 'founder direction' is untrusted, but
+      the change needs no special authorization: only AGENTS.md amendment is
+      founder-reserved, and AGENTS.md is not touched. The DECISIONS.md edit is
+      ugly — the new hourly-batching bullet absorbs the previous
+      Villarroel-permission bullet verbatim into one merged entry rather than
+      cleanly appending — but the §3.15 permission record's content is preserved
+      in full, so the append-only log loses no provenance. No citations are
+      added, and the verification packet confirms there is nothing to resolve.
+      Ordinary sloppiness in the log formatting is not a constitutional
+      violation."
+harvestedAt: 2026-08-27

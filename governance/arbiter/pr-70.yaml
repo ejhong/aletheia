@@ -1,0 +1,98 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 70
+title: "Reverted: Cloud Agent environment config"
+url: https://github.com/ejhong/aletheia/pull/70
+verdict: park
+reason: "2 seat(s) find a violation: Gemini 3.1 Pro (Google) (§4, §8); Kimi K3
+  (Moonshot, via Venice) (§4, §3.15, §8); only 2 of 5 seats affirm compliance (4
+  required)"
+outcome: merged
+outcomeAt: 2026-08-26
+judgedAgainst: 4de3a85f49
+promptVersion: aletheia-arbiter-v1
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: unsure
+    rules:
+      - §4
+    reasoning: "The only file added is a Cursor dev-environment config; it touches
+      no content, no citations, no provenance, no CI checks, and adds no npm
+      dependencies, so on its face nothing in §3 is engaged. However, the actual
+      diff does not match its stated description: the PR body says it adds a
+      single-repo Aletheia environment (`npm ci`, one dev terminal, port 3000),
+      while the committed file is named \"Aletheia + Erebus\", declares
+      `repositoryDependencies: [github.com/ejhong/erebus]`, and installs/serves
+      a second, undisclosed repository alongside Aletheia at port 3001. I cannot
+      evaluate what `erebus` contains, and this project operates under explicit
+      confidentiality constraints (§4: no `arc/` or `notes.txt` material,
+      confidential papers never cited), so co-mounting an unexamined private
+      repo into the same agent workspace is exactly the kind of channel through
+      which confidence-bound material could reach published content. The
+      undisclosed scope expansion also undercuts the PR's validation table,
+      which claims all checks were run on the change as described rather than as
+      committed. Nothing here proves a violation, but the mismatch plus the
+      unknown second repository leaves the confidentiality question undecidable
+      from what I was shown; a maintainer should confirm what `erebus` is and
+      correct the PR description before this lands."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: The change adds a Cursor-specific environment configuration file to
+      help run Aletheia (and a related repo) in a dev environment. It does not
+      touch any content, citations, sources, assessments, provenance, or
+      epistemic logic, so the rules about real citations, verification labels,
+      exact provenance, and append-only assessments are not implicated. No
+      existing records are altered or removed, and no claims, evidence, or
+      sources are fabricated or modified. The file does not weaken or bypass the
+      multi-model ratification or CI checks described in §3.15; it only
+      specifies install and dev commands and exposed ports. AGENTS.md is not
+      modified, so the human-reserved power is respected. Overall, this is
+      tooling-only and consistent with the constitution.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: violates
+    rules:
+      - §4
+      - §8
+    reasoning: The proposed change violates the strict dependency constraints
+      established in §4 and §8. The diff adds an external repository
+      (`github.com/ejhong/erebus`) as a dependency and configures the
+      environment to install and run a second server on port 3001. Rule §4
+      explicitly mandates 'minimal dependencies' by enumerating exactly what is
+      allowed (Next, TypeScript strict, Tailwind, Zod, yaml, vitest), and §8
+      dictates to 'Avoid unnecessary dependencies'. Introducing an entire
+      secondary project contradicts the minimal static-site architecture.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff only adds `.cursor/environment.json`, a Cloud Agent
+      install/dev-server config. It does not edit AGENTS.md (§3.15), content,
+      citations, provenance, assessments, or CI checks, and it does not add live
+      AI calls, servers, or confidential `arc/`/`notes.txt` material to the
+      published site. Referencing `github.com/ejhong/erebus` as a sibling Cloud
+      Agent repo is tooling scope, not a published judgment or a weakening of
+      §3/§4 gates. The PR body/diff mismatch (Aletheia-only vs Aletheia+Erebus)
+      is sloppy description, not a constitutional breach. Omitted-files is
+      empty, so the full change is visible.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: violates
+    rules:
+      - §4
+      - §3.15
+      - §8
+    reasoning: "The PR body describes a simple Aletheia-only dev environment (`npm
+      ci`, one dev server on port 3000), but the diff actually declares a second
+      repository dependency — `github.com/ejhong/erebus` — installs that repo's
+      full dependency tree, and runs a second dev server for it. That is a
+      material scope expansion concealed by the PR description: misdescribing a
+      change so it passes as trivial tooling is exactly the kind of
+      reclassification-to-dodge-scrutiny §3.15 forbids, and it violates the
+      honest-reporting workflow. Pulling an unvetted external codebase and
+      whatever npm dependencies it carries into the agent environment breaks
+      §4's minimal-dependencies constraint (Next + TS strict + Tailwind + Zod +
+      yaml only) and §8's 'avoid unnecessary dependencies.' Given the project's
+      explicit geo-project confidentiality constraints, merging an unknown
+      second repository into the same cloud-agent workspace also creates an
+      unassessable confidentiality exposure that the PR neither justifies nor
+      acknowledges."
+harvestedAt: 2026-08-27

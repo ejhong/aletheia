@@ -1,0 +1,25 @@
+## Agenda proposals (2026-08-27)
+
+- ccc: proposed [claim] The correlated-LIGO-noise premise of the erebon conjecture did not survive independent reanalysis
+- ccc: proposed [study] Positional cross-consistency of reported circle centers and Hawking points across datasets and papers
+- ccc: proposed [research-item] Does the erebon mechanism yield the measured scalar spectral index?
+- geopolymer: proposed [research-item] Stable C/O isotope comparison of pyramid blocks versus Mokattam/Tura quarry limestone
+- geopolymer: proposed [study] Monte Carlo audit of Great Pyramid dimensional coincidences under a frozen constant dictionary
+- geopolymer: proposed [study] Frozen-criteria comparison of bulk density, porosity, and fossil-orientation statistics: pyramid blocks vs. Giza-area quarry limestone
+- immortality-key: model call failed (Error: no JSON object in reply) — skipped, fail-closed.
+- mpi: proposed [research-item] Interaction test on the 2023 online dataset: is the true-RNG vs pseudo-RNG split itself significant?
+- mpi: proposed [study] Forward simulation: does a null model plus documented analytic flexibility reproduce the matrix program's full trajectory?
+- mpi: proposed [study] Rigor-by-outcome table: does matrix-experiment significance track methodological constraint?
+- orch-or: model call failed (Error: no JSON object in reply) — skipped, fail-closed.
+- transients: proposed [study] Kinematic consistency of linear alignments with geosynchronous glint tracks
+- transients: proposed [research-item] Per-event solar glint geometry audit for the canonical 1950 and 1952 detections
+- transients: proposed [claim] Untrailed profiles bound glint duration at GEO altitude to well under one second
+- vasocomputation: proposed [research-item] Pharmacological dissection: does a smooth-muscle-selective vasodilator release tender points when a skeletal-muscle agent does not?
+- vasocomputation: proposed [study] Frozen-criteria table of trigger-point biopsy and histology findings: active state or remodeled structure?
+- vasocomputation: proposed [study] Sympathetic-blockade ledger: do stellate ganglion and regional sympathetic blocks abolish tender points?
+- ydih: proposed [study] Megafaunal last-appearance dates versus the Younger Dryas onset: a frozen-criteria extinction chronology
+- ydih: proposed [claim] Published GISP2 platinum data show a Pt/Ir ratio inconsistent with a chondritic impactor
+- ydih: proposed [study] Does the Younger Dryas freshwater trigger need an impact? A dated-evidence table of meltwater routing at the onset
+- zero-worlds: proposed [study] Cross-reconstruction axiom concordance table
+- zero-worlds: proposed [research-item] Scope conditions and published rebuttals of the Fitness-Beats-Truth theorem
+- zero-worlds: proposed [study] Quantum-signature coverage matrix: what each observer-first or epistemic program actually reproduces

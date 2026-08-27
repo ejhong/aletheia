@@ -1,0 +1,107 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 101
+title: "Operator duty 4: draft needs-approval article updates when the ledger
+  outruns the narrative"
+url: https://github.com/ejhong/aletheia/pull/101
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-26
+judgedAgainst: 75c3ff0eab
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches only `.github/workflows/operator.yml` (adding a
+      duty 4 to the operator prompt and renumbering REPORT to 5) and appends a
+      dated entry to `docs/DECISIONS.md`; AGENTS.md is untouched, so §3.15's
+      reservation is not implicated. No content/ records or citations are added
+      — the verification tooling found no identifiers — so there is no
+      fabrication or provenance surface here. The new duty strengthens rather
+      than weakens the gates: it explicitly forbids labeling article prose
+      `auto:low-risk` and forbids arming auto-merge, requiring every drafted
+      article addition to open as a needs-approval PR so panel/founder
+      ratification is still required before featured text publishes (§3.15). Its
+      drafting constraints also track the epistemic rules — no new claims, no
+      grades the ledger does not already carry (avoiding unratified judgments),
+      claim-reference anchors preserved (§3.8/§3.9), and the
+      qualifying/deflationary half of each finding required in the same
+      paragraph (§3.11, §3.4). The DECISIONS.md entry is a genuine append at the
+      end of an append-only log, with no edits to prior entries. Nothing in the
+      change reclassifies work to dodge checks; the automation covers only
+      noticing and drafting."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff only amends the operator workflow description and the
+      DECISIONS log; it does not touch AGENTS.md or any content records under
+      content/, nor does it introduce citations or provenance details that could
+      be fabricated. The new duty 4 explicitly preserves the existing gate
+      structure: article prose remains non-auto-merge, requires needs-approval
+      PRs, and is framed as draft text subject to panel/founder judgment, which
+      aligns with §3.14–§3.15 rather than weakening them. The operator
+      instructions stress drafting the smallest addition, using existing claim
+      anchors, and not adding new claims or grades beyond what the ledger
+      already carries, which respects atomic claims, explicit evidence
+      direction, and avoids silent assessment changes. No checks are removed or
+      relaxed; instead, the change strengthens coherence between the ledger and
+      narrative without granting unilateral publication power. Because no
+      citations are added, §3.7–§3.8 real-citation and provenance constraints
+      are not implicated. Overall, the change appears consistent with the
+      constitution’s epistemic and operational requirements."
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules:
+      - §3.11
+      - §3.15
+      - §9
+    reasoning: The addition of 'Duty 4' to the operator workflow strictly adheres to
+      the constitution's safeguards. It prevents unilateral AI publication by
+      explicitly requiring the agent to open a 'needs-approval' PR and
+      forbidding 'auto:low-risk' labels or auto-merge for featured text (§3.15).
+      Furthermore, the prompt instructions to the operator enforce epistemic
+      rigor by requiring the qualifying/deflationary half of any finding to be
+      stated in the same paragraph (§3.11). The corresponding DECISIONS.md entry
+      properly records this workflow change (§9).
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules:
+      - §3.15
+    reasoning: The diff only appends operator duty 4 to
+      `.github/workflows/operator.yml` and a matching append-only entry in
+      `docs/DECISIONS.md`; it does not edit AGENTS.md. Featured-article updates
+      are explicitly drafted as needs-approval PRs, forbidden from
+      `auto:low-risk` and auto-merge, which keeps editorial publication behind
+      the multi-model/founder gate in §3.15 rather than weakening it. The duty
+      is drafting-and-noticing, which §3.15 already assigns to AI, and it
+      constrains additions to existing ledger findings, claim anchors, and
+      qualifying halves without new claims or invented grades. No citations,
+      locators, or confidential material are added, and omitted-files is empty.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.11
+      - §3.14
+      - §4
+    reasoning: The diff adds an operator duty that only notices ledger-to-article
+      drift and drafts minimal article additions, opening them strictly as
+      needs-approval PRs with an explicit NEVER on labeling article prose
+      auto:low-risk or arming auto-merge — this preserves the §3.15 gate that
+      featured content publishes only after multi-model ratification, automating
+      drafting (which AI is permitted to do) rather than judgment. The duty's
+      drafting constraints (case's own register, claim-anchor syntax, the
+      qualifying/deflationary half of every finding in the same paragraph, no
+      new claims or grades beyond the ledger) actively serve §3.11's
+      negative-evidence symmetry and §3.14's history-entry versioning. AGENTS.md
+      is untouched, no citations are added (verification section is empty), and
+      the DECISIONS.md addition is append-only process documentation, not an
+      epistemic record. The PR body's claim of founder-direction is untrusted
+      but immaterial, since this workflow edit is not an act reserved to the
+      founder. Extending an existing operator workflow does not violate §4's ban
+      on live AI calls in the site itself, which concerns the static export.
+      Nothing here weakens a check, fabricates provenance, or presents a draft
+      as ratified.
+harvestedAt: 2026-08-27

@@ -1,0 +1,90 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 69
+title: Editorial-audit history label states the real approval mechanism
+url: https://github.com/ejhong/aletheia/pull/69
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-25
+judgedAgainst: cdd83d26b6
+promptVersion: aletheia-arbiter-v1
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches one line of scripts/reassess-changed.mjs, changing
+      the `actor` string stamped into editorial-audit history entries from
+      \"...pending human approval\" to \"...publishes only through the
+      constitutional gate's multi-model concurrence, per AGENTS.md §3.15\".
+      Under §3.15 the founder retains only the kill switch and amendment power;
+      editorial ratification of featured content is by multi-model concurrence,
+      so the old wording promised a human review step that the constitution does
+      not provide — arguably implying an AI record would receive human sign-off.
+      The new wording states the actual mechanism and still preserves model
+      name, run type, and prompt version in the stamp, satisfying §3.14/§3.15
+      accountability requirements. No check is weakened or reclassified: the
+      gate itself is untouched, and the label does not claim ratification has
+      already occurred. No citations, locators, provenance, or published
+      assessments are altered, and AGENTS.md is not edited. The added comment is
+      explanatory only."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: The change only updates the human-readable `actor` string in an
+      auto-generated editorial-audit history entry to describe the actual
+      existing approval mechanism (“constitutional gate's multi-model
+      concurrence”) instead of a non-existent “pending human approval” process.
+      This makes the provenance label more accurate and aligned with §3.15’s
+      description of how publication is ratified, rather than weakening any
+      checks. No citations, sources, locators, or verification labels are
+      created, altered, or removed, so rules on real citations and exact
+      provenance (§3.7–§3.9) are unaffected. The script continues to append
+      history entries rather than silently altering previous records, preserving
+      the append-only spirit of §3.14. AGENTS.md itself is not modified, so the
+      human-only amendment restriction (§3.15) is respected. Overall the PR
+      tightens, rather than loosens, the transparency about how AI-operated
+      assessments are approved.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules:
+      - §3.15
+      - §4
+    reasoning: The change updates the script that appends history entries to
+      accurately reflect the multi-model concurrence mechanism defined in §3.15,
+      rather than claiming a 'pending human approval' step that no longer
+      exists. This ensures AI-generated assessments are not falsely implying
+      future human review (in line with §4 Phase-1 rules) and preserves the
+      transparency of the actual AI constitutional gate.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff only rewrites the future `actor` string in
+      `scripts/reassess-changed.mjs` history stamps, replacing the outdated
+      phrase “pending human approval” with a description of the actual §3.15
+      multi-model concurrence gate. AGENTS.md is untouched, so §3.15’s
+      founder-only amendment reservation is not implicated. No citations,
+      locators, assessments, or already-published records are fabricated,
+      rewritten, or presented as ratified; the comment documents why the label
+      was wrong without changing enforcement. Aligning the stamp with the real
+      approval mechanism is honesty about process, not a weakening or
+      reclassification of checks.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+    reasoning: "The diff changes only the actor-label string written into
+      editorial-audit history entries by scripts/reassess-changed.mjs. The old
+      wording, 'pending human approval,' promised a review mechanism the
+      constitution does not provide: under §3.15 the founder retains only the
+      kill switch and constitution amendment, and editorial ratification runs
+      through multi-model concurrence — so stamping AI entries as awaiting human
+      review risked presenting an AI record as carrying human oversight it would
+      never receive, which §3.15 expressly forbids. The new wording states the
+      real publication mechanism and cites §3.15, making the provenance stamp
+      more honest, not less. No gate, CI check, or ratification process is
+      modified; this is a labeling correction, not a reclassification to dodge
+      review. AGENTS.md itself is untouched, and the inline comment documenting
+      why the wording exists supports the transparency the constitution
+      requires."
+harvestedAt: 2026-08-27

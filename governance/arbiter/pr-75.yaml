@@ -1,0 +1,105 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 75
+title: "Reconciliation cannot self-ratify: engaged checks never vouch for the
+  draft that answered them"
+url: https://github.com/ejhong/aletheia/pull/75
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-26
+judgedAgainst: f72472b2a4
+promptVersion: aletheia-arbiter-v2
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff tightens rather than weakens §3.15's ratification gate: it
+      adds an optional `reconciles` stamp to AssessmentRun, has
+      `reconcile-contested.mjs` record the runIds of the checks whose dissents a
+      non-blind reconsideration draft answered, and makes `ratification()`
+      refuse ratified standing until at least one check outside that list (or,
+      for pre-stamp overlays, one dated strictly later) judges the case. That is
+      the opposite of check-weakening or reclassifying to dodge review — four
+      currently-ratified cases visibly drop to `unratified` with a stated
+      reason, and `stale-checks.mjs` mirrors the rule so those cases get
+      re-paneled. AGENTS.md is untouched; the DECISIONS.md change is a single
+      appended dated entry, consistent with its append-only header and with
+      §3.14's requirement to record what changed and why. No citations, sources,
+      locators, or provenance are introduced or removed, and no confidential
+      material is exposed; the schema field is optional so existing records
+      remain valid. New tests cover both the stamped and pre-stamp paths and
+      confirm ordinary blind drafts are unaffected. The PR body contains no
+      instructions directed at reviewers, and its claims about live effects are
+      internally consistent with the code shown."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: The change tightens governance around ratification, ensuring that
+      non-blind reconciliation drafts cannot be ratified solely by the same
+      check runs whose dissents they answered. This directly reinforces §3.15’s
+      requirement that nothing raises standing except fresh agreement from
+      independent vendors, rather than weakening it. The new `reconciles` field
+      is documented as coming from a specific script and is used only to track
+      which check runs were engaged; it does not fabricate citations, sources,
+      or provenance. Ratification logic is made more conservative
+      (reconsideration drafts default to `unratified` until fresh blind checks
+      exist), and stale-check detection is extended to re-panel such cases
+      automatically, which supports transparent, multi-model review. No existing
+      assessments are silently altered; instead, cases with previously
+      self-ratified reconciliations are explicitly downgraded to `unratified`
+      with a reason, preserving append-only assessment behavior and honest
+      status labels. No confidential material is introduced, no provenance is
+      removed, and no part of the constitutional checks is bypassed or diluted.
+      Overall, this is a procedural hardening that is aligned with, rather than
+      in violation of, the epistemic rules.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules:
+      - §3.15
+    reasoning: The change directly strengthens §3.15 by enforcing true multi-model
+      concurrence. It closes a loophole in the pipeline where a non-blind
+      reconsideration draft could achieve ratification using the same check runs
+      it was designed to appease, effectively bypassing independent
+      verification. By adding the 'reconciles' stamp to the schema and requiring
+      at least one fresh, blind check in 'src/domain/load.ts', the PR ensures
+      that no change publishes on a single model's unilateral judgment without
+      genuine independent verification.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff does not touch AGENTS.md. It tightens §3.15 rather than
+      weakening it: AssessmentRun gains an optional `reconciles` stamp of
+      engaged check runIds, `ratification()` fail-closes a reconsideration to
+      `unratified` until at least one check outside that list (or, for pre-stamp
+      overlays, strictly later by date) exists, and `stale-checks.mjs` plus
+      tests make that gate operational so the four already-reconciled cases
+      cannot keep standing minted by the panel they answered. Overlay files stay
+      append-only; only derived standing changes, with the reason stated and
+      recorded in DECISIONS.md. No citations, locators, or confidential material
+      are invented, and unratified drafts are not presented as ratified."
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.14
+    reasoning: "This change strengthens the §3.15 gate rather than weakening it: it
+      closes a real hole where a non-blind reconsideration draft — written with
+      the panel's dissents in hand — could be ratified by the very check runs it
+      answered, letting standing rise without fresh independent agreement. The
+      fix is conservative and fail-closed: a new optional `reconciles` stamp on
+      overlays, `ratification()` demoting unvouched reconsiderations to
+      `unratified` with the reason displayed (satisfying 'contested changes are
+      parked and displayed'), and `stale-checks.mjs` mirroring the rule so
+      re-paneling happens automatically. The four affected cases' assessment
+      overlays are not edited or deleted — append-only is preserved; only the
+      derived standing changes, and that change is loudly documented in an
+      append-only DECISIONS.md entry plus the on-page reason string, satisfying
+      §3.14's record-what-changed requirement. The pre-stamp date-order fallback
+      (strictly-later checks only) is the safe direction, and the stamped path
+      precisely names engaged runIds so a same-day unengaged check legitimately
+      counts. Tests cover stamped, pre-stamp, same-day, and ordinary-draft
+      paths, and no citations, provenance, or source records are touched.
+      AGENTS.md is untouched; nothing here reclassifies a change to dodge a
+      check — it adds one."
+harvestedAt: 2026-08-27

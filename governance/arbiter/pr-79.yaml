@@ -1,0 +1,84 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 79
+title: "Fix dead evidence anchors: link evidence ids to the full ledger page"
+url: https://github.com/ejhong/aletheia/pull/79
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-26
+judgedAgainst: f72472b2a4
+promptVersion: aletheia-arbiter-v2
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The change is purely mechanical routing: `buildRecordLinkRegistry`
+      now points evidence ids at `/cases/{slug}/evidence/#evidence-{id}`, the
+      ledger route that renders every record, rather than the case page which
+      only renders top-N highlights. No content, claim, evidence, source,
+      locator, verification label, or assessment file is touched, so none of the
+      §3 epistemic rules (citations, provenance, evidence direction, append-only
+      assessments) are implicated. AGENTS.md is untouched. The new
+      `scripts/audit-links.mjs` plus its wiring into `.github/workflows/ci.yml`
+      after the build step strengthens rather than weakens the fail-closed CI
+      required by §3.15 and §8's 'no dangling IDs' — it exits non-zero on any
+      unresolved internal href or fragment. The added vitest regression test
+      asserts the invariant across all loaded cases, consistent with §8's
+      testing requirement. The PR body's audit numbers (1,628 broken anchors,
+      484 pages) are claims about the repo I cannot verify from the diff, but
+      they are not published epistemic content and the CI check makes them
+      self-enforcing going forward."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: The change is confined to build tooling, CI, and internal link
+      generation; it does not touch content, claims, sources, provenance, or
+      assessments. Updating evidence links to point to the full ledger page
+      simply fixes broken anchors and improves navigability without altering any
+      epistemic judgments or metadata. The new `audit-links.mjs` script enforces
+      the existing "no dangling IDs"/link integrity expectation at the rendered
+      HTML level, which strengthens rather than weakens checks under §3.15.
+      Tests and CI integration are consistent with §4 and §8’s emphasis on
+      validation and preventing dangling IDs. There is no indication of
+      fabricated citations, altered provenance, suppressed negative evidence, or
+      any other epistemic rule violation. Accordingly, the change complies with
+      the constitution.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules:
+      - §8
+      - §4
+    reasoning: The change fixes existing dangling evidence IDs by correctly linking
+      them to the full ledger page where the anchors are guaranteed to exist.
+      Furthermore, it strengthens the mechanical validity checks by adding a
+      post-build audit script (`scripts/audit-links.mjs`) to verify all internal
+      links and fragments, enforcing the 'No dangling IDs' rule in §4 and §8.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff is a one-line routing fix in buildRecordLinkRegistry so
+      evidence ids resolve to /cases/{slug}/evidence/#evidence-{id} (the ledger
+      that actually renders every record) instead of a case-page fragment that
+      only exists for highlight rows. Accompanying test, post-build HTML
+      href/fragment audit, package script, and CI step strengthen fail-closed
+      dangling-ID checks rather than weaken §3.15. No AGENTS.md edit, no
+      content/assessment/citation/provenance changes, no confidential material,
+      and omitted-files is empty.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "This is a pure infrastructure fix: evidence-id links now target the
+      full ledger route where the anchor actually renders, with a regression
+      test asserting the mapping for every evidence record in every case. It
+      touches no content, citations, assessments, or provenance, so the
+      epistemic rules (§3.1–3.14) are not engaged. The new `check:links` script
+      is a fail-closed post-build audit (exits 1 on any broken internal
+      href/fragment) appended to CI after the build — this strengthens rather
+      than weakens the §3.15 checks, and aligns with §8's 'No dangling IDs' and
+      testing requirements. It uses only node built-ins, respecting the
+      minimal-dependencies rule in §4. AGENTS.md is untouched and no files are
+      omitted. The audit statistics in the PR body (1,628 broken anchors, 484
+      pages) are untrusted claims but are plausible, verifiable by re-running
+      the check, and nothing in the diff itself contradicts them."
+harvestedAt: 2026-08-27

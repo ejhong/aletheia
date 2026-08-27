@@ -1,0 +1,361 @@
+# Cross-model check run — an independent judge (Opus 5 (Anthropic)),
+# blind to all prior assessments (scripts/cross-model-check.mjs,
+# promptVersion aletheia-check-v2). role: check — never displayed as the case
+# narrative; feeds the concurrence panel. Append-only; NOT human reviewed.
+runId: 2026-08-27-check-opus
+model: Opus 5 (Anthropic) — independent check run via claude-opus-5
+date: 2026-08-27
+promptVersion: aletheia-check-v2
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: unresolved
+  loadBearing:
+    - ORCH-C010
+    - ORCH-C030
+    - ORCH-C031
+    - ORCH-C002
+    - ORCH-C003
+  weakestLinks:
+    - ORCH-C010
+    - ORCH-C012
+    - ORCH-C022
+    - ORCH-C026
+    - ORCH-C002
+  synthesis: "The featured hypothesis is a conjunction of three separable parts: a
+    law of physics (collapse lifetime scaling as ℏ/E_G), a biological state
+    (coherent or entangled microtubule states of order tens of milliseconds
+    across many tubulins at 37 °C), and an identification of that collapse event
+    with a conscious moment. Not one evidence record in this file tests the
+    conjunction; each bears on at most one conjunct, and the middle term has
+    never been measured in either direction. \"Unresolved\" is therefore a
+    description of the file rather than a hedge: the discriminating measurement
+    (a prespecified coherence or entanglement witness under physiological
+    conditions) has not been performed by anyone, for or against. Steelman for
+    the hypothesis: microtubules turned out to be electronically nontrivial in
+    ways a passive-scaffold model does not predict (ORCH-E001, ORCH-E004);
+    β-tubulin is a photolabeled anesthetic target found by a laboratory with no
+    Orch OR commitment (ORCH-E009); anesthetics measurably shorten exciton
+    diffusion (ORCH-E002); nuclear-spin isotopes of a chemically identical noble
+    gas differ 40–50% in potency (ORCH-E014), which is awkward for a
+    pharmacology containing no quantum degrees of freedom; the conventional
+    account's own flagship review concedes no channel or combination suffices
+    for inhaled immobility (ORCH-E031); and the strongest physics test genuinely
+    does not reach Penrose's own criterion (ORCH-E019). Steelman against: the
+    load-bearing quantity is not merely unmeasured but unreached on paper by
+    anyone's arithmetic — the proponents' own corrected estimate of 10⁻⁵–10⁻⁴ s
+    (ORCH-E008) falls two to three orders short of the theory's own 25 ms
+    exemplar, and ORCH-E036 records that the only proponent routes to
+    physiological timescales are an explicitly conditional actin-gel estimate
+    and an unreplicated single-laboratory inference. The demonstrated transport
+    is roughly one tubulin dimer on femtosecond-to- picosecond physics. The
+    natural parameter-free stochastic completion of the collapse physics is
+    experimentally dead (ORCH-E017). The anesthesia arm's specificity control
+    failed inside its own flagship experiment (picrotoxin, ORCH-E003), and the
+    only fully independent concentration–response animal study ran the opposite
+    way with a destabilizer moving sensitivity the same direction as a
+    stabilizer (ORCH-E013). The conventional rival holds target-level causal
+    evidence (ORCH-E015) that no microtubule study approaches. These steelmen
+    are compatible because they attach to different rungs, and the rungs come
+    apart cleanly: the Gödelian motivation (ORCH-C040/ORCH-C041) is not a
+    premise of the mechanism; the photophysics is not a coherence measurement; a
+    positive collapse result would not select microtubules. My expectation that
+    resolution will ultimately be negative leans on general decoherence physics
+    in warm, ionically screened media — a prior, not a record in this file, and
+    I flag it as such. Sensitivity: the single record whose removal would most
+    change this case is ORCH-E013 (Li et al. 2025). Without it the anesthesia
+    arm reads as a coherent if unproven program — stabilizer produces resistance
+    in rats, mice, and tadpoles — and ORCH-C012 would rise from mixed to
+    provisionally supported, with ORCH-C002 following. The case verdict
+    nonetheless survives its removal, because the verdict rests on an absence
+    (ORCH-C010) rather than on any single contrary thread. That is unusual
+    robustness, and it has an exact converse: one competent measurement could
+    move this case decisively in either direction, which is why the priority
+    assignment in the dossier is correct."
+claimAssessments:
+  - claimId: ORCH-C001
+    verdict: unresolved
+    confidence: moderate
+    reasoning: No record tests the conjunction, and its middle term — a microtubule
+      quantum state of the required duration and extent — has never been
+      measured. The physics conjunct's most natural completion is experimentally
+      excluded (ORCH-E017) and the biology conjunct is unreached even by
+      proponent arithmetic (ORCH-E008, ORCH-E036), so the expected direction of
+      resolution is negative, but expectation is not evidence and no null
+      measurement exists. The strongest opposing consideration to my grading it
+      "unresolved" rather than lower is that a conjunction whose parts are each
+      unconfirmed, one of whose natural implementations is dead, and which
+      publishes no acceptance criterion (ORCH-E035) may deserve worse than a
+      neutral token; I keep unresolved because the decisive experiment is cheap,
+      specified, and simply has not been run.
+  - claimId: ORCH-C002
+    verdict: weakly_supported
+    confidence: moderate
+    reasoning: "The chain's endpoints are evidenced — tubulin binding (ORCH-E009),
+      an anesthetic- induced photophysical change (ORCH-E002), a behavioral
+      latency shift (ORCH-E011) — but the chain itself is not, and the
+      \"quantum-coherent\" qualifier is wholly unmeasured. Two records cut
+      directly at the claim's specificity: picrotoxin, a convulsant, affected
+      the same assay comparably (ORCH-E003), and an independent laboratory found
+      the behavioral effect running the other way (ORCH-E013). The strongest
+      opposing consideration is that \"substantially\" is a graded word and
+      volatile agents demonstrably act through a broader, poorly resolved target
+      set (ORCH-E015, ORCH-E031), leaving room for a real microtubule
+      contribution; but room is not evidence, and nothing here supports the
+      quantum-coherent version specifically."
+  - claimId: ORCH-C003
+    verdict: well_supported
+    confidence: moderate
+    reasoning: 'The β3(N265M) knock-in abolishes etomidate and propofol immobility
+      and profoundly reduces their hypnotic effect (ORCH-E015) — target-level
+      causal manipulation of a kind no microtubule result in this file
+      approaches, and the claim is worded to restrict that strong evidence to
+      the intravenous agents. Two honest limits are on the record: the same line
+      separates endpoints, with the consciousness-adjacent measure reduced but
+      not abolished (ORCH-E030), and the mutation barely touches volatile
+      agents. The strongest opposing consideration is ORCH-E031, in which senior
+      figures of the conventional literature report that no channel or
+      combination suffices for inhaled immobility; that is why I grade
+      confidence moderate rather than high, since "substantially accounted for"
+      is markedly better evidenced for intravenous than for inhaled anesthesia.'
+  - claimId: ORCH-C004
+    verdict: unresolved
+    confidence: moderate
+    reasoning: "This is a universally quantified negative over a domain nobody has
+      measured: the coherence quantity at ORCH-C010 is unmeasured, so neither
+      this claim nor its rival can be graded on it. Unabsorbed anomalies remain
+      on the record — the xenon nuclear-spin potency split (ORCH-E014) and the
+      admitted insufficiency of known channels for inhaled immobility
+      (ORCH-E031). The strongest opposing consideration is parsimony: every
+      anesthetic endpoint yet explained has been explained classically and no
+      quantum contribution to cognition has ever been demonstrated, which makes
+      this claim highly plausible on priors; I record that as a prior rather
+      than as evidence, which is exactly why the verdict is unresolved rather
+      than supported."
+  - claimId: ORCH-C030
+    verdict: unresolved
+    confidence: moderate
+    reasoning: "No experiment has tested the ℏ/E_G lifetime scaling itself, so there
+      is no positive evidence for the claim as worded; the one high-quality
+      experiment (ORCH-E017) excluded a stochastic completion that Penrose's
+      heuristic criterion does not entail, a point conceded even by the
+      experimenters' own conditional phrasing (ORCH-E018) and pressed by McQueen
+      (ORCH-E019). The strongest opposing consideration is methodological and
+      self-inflicted: the claim survives the best available test by being less
+      specified than the model tested, converting a refuted precise theory into
+      an untested vague one, which is not a position from which to claim
+      vindication. On the current file this is genuinely open and, importantly,
+      open on a track with no biology in it."
+  - claimId: ORCH-C040
+    verdict: unresolved
+    confidence: moderate
+    reasoning: 'The attached records cannot settle this claim, because producing
+      correct novel theorems by any means does not bear on whether a knowably
+      sound algorithm captures mathematical understanding — nobody ever held
+      that algorithms cannot generate true theorems. The counter-record from
+      inside DeepMind (ORCH-E025) is an argument in a position-paper track, not
+      a measurement, and arguments do not raise credibility. The strongest
+      opposing consideration is the pattern audited in ORCH-E026: every concrete
+      testable example Penrose offered has largely settled against him while the
+      surviving examples are the untestable ones, which is at minimum a warning
+      that the claim may have been preserved by retreat; absent an agreed
+      operationalization of "understanding," it edges toward being presently
+      undecidable in the form stated.'
+  - claimId: ORCH-C010
+    verdict: unresolved
+    confidence: high
+    reasoning: "Not one record measures a dephasing time, coherence length, or
+      entanglement witness in a microtubule; the two numbers in circulation are
+      calculations of disputed models disagreeing by seven to eight orders of
+      magnitude (ORCH-E007, ORCH-E008). This is an absence, not a conflict, and
+      it is the crux of the entire case. The asymmetry deserves saying plainly:
+      every unconditional estimate on record, including the proponents' own
+      10⁻⁵–10⁻⁴ s, falls short of the theory's 25 ms exemplar (ORCH-E036), so
+      the calculational balance tilts negative even though nothing has been
+      measured. The strongest opposing consideration is that Hagan et al.
+      correctly showed Tegmark modeled a different physical state, so the
+      canonical refutation is weaker than its reputation — which blocks a
+      \"contradicted\" verdict but supplies no positive support."
+  - claimId: ORCH-C011
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: "Two partly independent lines support the claim as worded: β-tubulin
+      photolabeling with functional consequences from an anesthesia-mechanisms
+      laboratory with no Orch OR commitment (ORCH-E009), and a measured
+      reduction in exciton diffusion by etomidate and isoflurane (ORCH-E002).
+      The claim is deliberately modest — binding and altered optical behavior,
+      nothing about coherence or consciousness — and the records reach that far.
+      Limits: the Kalra effect is single-laboratory, unreplicated, roughly 13%,
+      at 50 µM with free concentration unestablished, and Emerson's agent is a
+      research anesthetic. The strongest opposing consideration is ORCH-E003:
+      picrotoxin perturbed the same assay comparably, which does not falsify the
+      observation but shows the effect may be generic to small hydrophobic
+      molecules rather than to anesthetics."
+  - claimId: ORCH-C012
+    verdict: mixed
+    confidence: moderate
+    reasoning: "Read as an intervention-level statement, the claim is well
+      evidenced: four microtubule-modulating drugs across two independent
+      laboratories all shifted isoflurane susceptibility (ORCH-E011, ORCH-E012,
+      ORCH-E013). Read as attributing the shift to microtubule stability, it is
+      undercut by its own data, since the destabilizer vinblastine moved
+      sensitivity in the same direction as the stabilizer epothilone D, and
+      epothilone D produced resistance in tadpoles but hypersensitivity in mice.
+      The strongest opposing consideration in the other direction is that
+      regimen and compound genuinely differ between the discordant studies, so
+      the contradiction may be pharmacological rather than conceptual; that
+      possibility is real but each reconciliation offered subtracts predictive
+      content, and ORCH-E013 additionally documents blood pH and CO₂ changes
+      offering a wholly conventional route to the effect."
+  - claimId: ORCH-C013
+    verdict: well_supported
+    confidence: moderate
+    reasoning: "Two partly independent measurement lines converge — an excitation
+      diffusion length exceeding Förster expectation with structure-dependence
+      that argues against artifact (ORCH-E001), and a fluorescence quantum-yield
+      trend matching a collective-state model from a group outside the
+      Hameroff–Penrose lineage (ORCH-E004) — and the underlying physics of
+      ordered aromatic networks makes the result antecedently plausible, which I
+      note as a prior calibration rather than evidence. The claim is weak enough
+      that it is comfortably reached: microtubules are not inert beams. The
+      strongest opposing consideration is that the specific anomaly (transport
+      beyond Förster) rests on one unreplicated paper with the theory's authors
+      among its co-authors, and that collective optics in geometrically regular
+      scaffolds is ordinary condensed-matter physics, so this claim is nearly
+      silent on anything Orch OR needs."
+  - claimId: ORCH-C020
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: The measurement is peer-reviewed in a strong journal, open access,
+      quantitative, and carries internal structure controls, with both the 6.6
+      nm figure and the anesthetic reduction stated in the abstract (ORCH-E001,
+      ORCH-E002). I grade it below the case file's own label because it is a
+      single unreplicated study, the diffusion length is inferred from
+      concentration-dependent quenching rather than directly imaged, and the
+      theory's principals are co-authors — the same replication standard I apply
+      to ORCH-C024 on the opposite side. The strongest opposing consideration is
+      that the finding is chemically unsurprising and mainstream-published
+      without endorsing Orch OR, which argues it is likely real; likely real and
+      independently confirmed are different grades, and only the second warrants
+      "well_supported."
+  - claimId: ORCH-C021
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: The paper is predominantly theoretical with a confirming bulk
+      fluorescence quantum-yield measurement in the predicted direction, from a
+      group substantially independent of the theory's originators (ORCH-E004).
+      Quantum yield is an indirect witness of collective states and several
+      mechanisms can raise it, so the collective-eigenstate interpretation is
+      model-dependent even though the measured trend is real. The strongest
+      opposing consideration is that Dicke-type collective emission has been
+      engineered in ordered protein scaffolds with no cognitive relevance,
+      implying geometric regularity rather than neural specialness does the work
+      — and separately that the widely circulated "tens of seconds" figure is a
+      modeled radiative lifetime, not a decoherence time, so this record cannot
+      be upgraded into evidence about coherence.
+  - claimId: ORCH-C022
+    verdict: weakly_supported
+    confidence: low
+    reasoning: A specific published measurement exists and nothing contradicts it,
+      so this is not a symmetric unknown; but it comes from a single laboratory
+      lineage, in a low-profile venue, with bespoke apparatus spanning an
+      unusually wide frequency range, and has stood without protocol-level
+      replication for over a decade (ORCH-E005). Related work from the same
+      group is not independent corroboration. The strongest opposing
+      consideration is that no one appears to have attempted and failed a
+      replication — absence of attempts is much weaker evidence than failed
+      attempts, which is why I do not grade it lower. Even if confirmed,
+      electromagnetic resonance structure is a classical observable and would
+      not witness coherence or entanglement across scales.
+  - claimId: ORCH-C023
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: "Both experiments are peer-reviewed, blinded on the LORR endpoint,
+      and controlled for isoflurane tolerance, with a large standardized effect
+      in rats and the same direction in mice (ORCH-E011, ORCH-E012). Against a
+      stronger grade: N = 8 in the main rat analysis, males only, no
+      counterbalanced crossover, latency at a single high concentration rather
+      than a concentration–response curve, and a shared senior author across
+      both studies, so this is within-program replication of direction. The
+      strongest opposing consideration is that an independent laboratory
+      measuring the better-specified quantity found the opposite sign for a
+      related compound (ORCH-E013); that does not falsify this measurement,
+      since compound and regimen differ, but it means the effect should not yet
+      be treated as a stable feature of microtubule pharmacology."
+  - claimId: ORCH-C024
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: Methodologically this is the strongest animal study in the file —
+      randomized, blinded, independent of the Wellesley program, four agents
+      including a destabilizer and an opioid control, full incremental
+      concentration–response curves, narrow non-overlapping confidence intervals
+      (ORCH-E013). I nonetheless withhold "well_supported" because it is a
+      single unreplicated study and the authors concede saline was an imperfect
+      vehicle for poorly soluble compounds, which is precisely the kind of
+      artifact that could generate a leftward EC50 shift; symmetry with my
+      grading of ORCH-C020 requires the same standard. The strongest opposing
+      consideration is that epothilone D altered blood pH and CO₂, supplying a
+      physiological route to the shift that is neither microtubule-specific nor
+      quantum — which weakens the interpretation while leaving the measurement
+      intact.
+  - claimId: ORCH-C025
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: "Eighty randomized mice, four isotopes, an orderly ~40–50% potency
+      difference tracking nuclear spin, with polarizability explicitly
+      calculated as identical, published in the leading anesthesiology journal
+      (ORCH-E014) — this closes the obvious classical explanation and is the
+      most surprising datum in the case. It remains a single study with no
+      identified replication, and the authors disclose that xenon's low potency
+      forced the primary comparisons onto a 0.50% isoflurane background, so the
+      quoted xenon-alone ED50 values (including values near or above 100%) are
+      not clean standalone measurements. The strongest opposing consideration is
+      scope rather than validity: any spin-sensitive molecular process anywhere
+      would produce this result, radical-pair mechanisms are an established
+      alternative class, and microtubules are not implicated at all."
+  - claimId: ORCH-C026
+    verdict: mixed
+    confidence: low
+    reasoning: "A real signal was recorded with heartbeat-evoked timing, no
+      correlate with conventional MRI contrast, and an apparent dependence on
+      conscious awareness (ORCH-E020); the entanglement-witness interpretation
+      is directly rejected by a leading NMR methodologist who argues the data
+      show only that living tissue is complex and multicompartmental
+      (ORCH-E021), and the authors' reply leaves the exchange unresolved. There
+      is no independent replication and no phantom validation against known
+      ground truth. The strongest opposing consideration for anyone weighting
+      this toward Orch OR is scope: the known quantum systems are proton spins
+      of bulk water and the mediator is unidentified, so even full vindication
+      would establish non-classical brain function while leaving every
+      microtubule claim exactly where it stands."
+  - claimId: ORCH-C031
+    verdict: well_supported
+    confidence: high
+    reasoning: "A dedicated ultra-low-background germanium search at Gran Sasso
+      found no spontaneous radiation, tightened the bound on the effective
+      nuclear mass-density size by about three orders of magnitude, and the
+      exclusion of the natural parameter-free Diósi–Penrose model is stated in
+      the authors' own words, with the model's co-originator among them
+      (ORCH-E017). The prediction was quantitative and derived before the
+      search, which is what makes a null informative; source data are published.
+      The strongest opposing consideration is one of scope rather than validity,
+      and the claim already encodes it: the experiment constrains a specific
+      stochastic master equation, and the map from Penrose's geometric argument
+      to that equation is not unique (ORCH-E019), so this record must not be
+      read as excluding every gravity-related collapse theory."
+  - claimId: ORCH-C041
+    verdict: well_supported
+    confidence: high
+    reasoning: "Verification here is unusually strong for a recent claim: the Erdős
+      unit-distance disproof is attested by an independent working mathematician
+      who states it in his own paper and sharpens the exponent (ORCH-E022),
+      AlphaProof's IMO solutions were machine-checked in Lean with methodology
+      peer-reviewed in Nature (ORCH-E023), and the 2025 gold-standard
+      performance was graded by IMO coordinators under contest conditions
+      (ORCH-E024). The claim as worded asserts capability and novelty, and both
+      are met. The strongest opposing consideration is the documented
+      false-positive history in this evidence line — solutions later found in
+      the literature, a claim withdrawn within hours (ORCH-E027) — which is a
+      warning about novelty verification generally, though it does not touch the
+      unit-distance result that was checked and improved upon by named
+      mathematicians."

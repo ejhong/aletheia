@@ -17,7 +17,15 @@ const providers = {
     // why that case's reassessment failed three times with empty replies.
     // Opus answers the identical prompts. Verified 2026-08-25.
     model: process.env.EXTRACT_MODEL || "claude-opus-5",
-    async call(system, user) {
+    // Fable's safety filter refuses plain pharmacology/physiology
+    // statements (stop_reason "refusal", or zero text blocks) on cases
+    // like orch-or — the documented failure above. When the configured
+    // model refuses, retry ONCE on the fallback rather than failing the
+    // whole case; the retry is logged, and the caller's fail-closed
+    // parsing still governs whatever comes back.
+    fallbackModel: "claude-opus-5",
+    async call(system, user, modelOverride) {
+      const model = modelOverride ?? this.model;
       const res = await fetch("https://api.anthropic.com/v1/messages", {
         method: "POST",
         headers: {
@@ -26,7 +34,7 @@ const providers = {
           "anthropic-version": "2023-06-01",
         },
         body: JSON.stringify({
-          model: this.model,
+          model,
           // Adaptive thinking shares this budget with the visible reply —
           // there is no thinking-budget parameter on this model family. A
           // large case (18 claims) can burn a small budget entirely on
@@ -42,7 +50,16 @@ const providers = {
         throw new Error(`Anthropic API ${res.status}: ${await res.text()}`);
       }
       const data = await res.json();
-      return data.content.map((b) => b.text ?? "").join("");
+      const text = data.content.map((b) => b.text ?? "").join("");
+      const refused =
+        data.stop_reason === "refusal" || text.trim().length === 0;
+      if (refused && model !== this.fallbackModel) {
+        console.error(
+          `model ${model} refused or returned nothing; retrying once on ${this.fallbackModel}`,
+        );
+        return this.call(system, user, this.fallbackModel);
+      }
+      return text;
     },
   },
   openai: {

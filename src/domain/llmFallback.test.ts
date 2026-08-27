@@ -1,14 +1,11 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-/** The Anthropic client retries exactly once on the fallback model when
- *  the configured model refuses (stop_reason "refusal" or empty text) —
- *  the documented Fable failure on pharmacology-adjacent cases. */
+/** Refusals are loud (typed error), and the fallback helper carries
+ *  truthful provenance: the returned model is the one that actually
+ *  produced the text — the Opus seat's §3.15 objection, pinned. */
 
 function anthropicReply(body: object) {
-  return {
-    ok: true,
-    json: async () => body,
-  } as Response;
+  return { ok: true, json: async () => body } as Response;
 }
 
 afterEach(() => {
@@ -17,8 +14,8 @@ afterEach(() => {
   vi.resetModules();
 });
 
-describe("anthropic refusal fallback", () => {
-  it("retries once on claude-opus-5 after a refusal, and not beyond", async () => {
+describe("refusal handling and provenance-true fallback", () => {
+  it("falls back once on refusal and reports the model that answered", async () => {
     vi.resetModules();
     vi.stubEnv("ANTHROPIC_API_KEY", "test-key");
     vi.stubEnv("EXTRACT_MODEL", ""); // unset: the code default (Fable) applies
@@ -37,15 +34,31 @@ describe("anthropic refusal fallback", () => {
         });
       }),
     );
-    const { pickProvider } = await import("../../scripts/lib/llm.mjs");
+    const { pickProvider, callWithRefusalFallback } = await import(
+      "../../scripts/lib/llm.mjs"
+    );
     const provider = pickProvider("anthropic");
-    expect(provider).not.toBeNull();
-    const reply = await provider!.call("system", "user");
-    expect(reply).toBe('{"answer":42}');
+    const reply = await callWithRefusalFallback(provider!, "system", "user");
+    expect(reply.text).toBe('{"answer":42}');
+    expect(reply.model).toBe("claude-opus-5");
+    expect(reply.refused).toBe(true);
     expect(calls).toEqual(["claude-fable-5", "claude-opus-5"]);
   });
 
-  it("does not loop when the fallback itself refuses", async () => {
+  it("a bare call() throws RefusalError instead of silently substituting", async () => {
+    vi.resetModules();
+    vi.stubEnv("ANTHROPIC_API_KEY", "test-key");
+    vi.stubEnv("EXTRACT_MODEL", "");
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => anthropicReply({ stop_reason: "refusal", content: [] })),
+    );
+    const { pickProvider, RefusalError } = await import("../../scripts/lib/llm.mjs");
+    const provider = pickProvider("anthropic");
+    await expect(provider!.call("system", "user")).rejects.toBeInstanceOf(RefusalError);
+  });
+
+  it("does not loop: a refusing fallback propagates the error, fail-closed", async () => {
     vi.resetModules();
     vi.stubEnv("ANTHROPIC_API_KEY", "test-key");
     vi.stubEnv("EXTRACT_MODEL", "claude-opus-5");
@@ -57,10 +70,13 @@ describe("anthropic refusal fallback", () => {
         return anthropicReply({ stop_reason: "refusal", content: [] });
       }),
     );
-    const { pickProvider } = await import("../../scripts/lib/llm.mjs");
+    const { pickProvider, callWithRefusalFallback, RefusalError } = await import(
+      "../../scripts/lib/llm.mjs"
+    );
     const provider = pickProvider("anthropic");
-    const reply = await provider!.call("system", "user");
-    expect(reply).toBe("");
+    await expect(
+      callWithRefusalFallback(provider!, "system", "user"),
+    ).rejects.toBeInstanceOf(RefusalError);
     expect(calls).toEqual(["claude-opus-5"]);
   });
 });

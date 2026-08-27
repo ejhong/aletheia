@@ -56,8 +56,15 @@ const slugs = fs
   .map((e) => e.name);
 
 let wrote = 0;
-for (const slug of slugs) {
-  const dir = path.join(CASES, slug);
+for (const dirName of slugs) {
+  const dir = path.join(CASES, dirName);
+  // Directories can predate a case rename (geopolymer -> the
+  // megalithic-casting slug); the published slug lives in case.yaml and
+  // is what pages, links, and proposal filenames must key on.
+  const caseFile = path.join(dir, "case.yaml");
+  const slug = fs.existsSync(caseFile)
+    ? (parseYaml(fs.readFileSync(caseFile, "utf8"))?.slug ?? dirName)
+    : dirName;
   const claims = loadYamlList(dir, "claims.yaml");
   const research = loadYamlList(dir, "research.yaml");
   const evidence = loadYamlList(dir, "evidence.yaml");

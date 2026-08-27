@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { loadProposalRuns } from "@/src/domain/agendaProposals";
+import { loadAllCases } from "@/src/domain/load";
 import { site } from "@/src/config/site";
 
 /**
@@ -16,6 +17,10 @@ const label = "font-mono text-[11px] uppercase tracking-[0.16em] text-faint";
 
 export default function ProposalsPage() {
   const runs = loadProposalRuns();
+  // Proposals may exist for cases that are not (yet) published pages;
+  // link only the live ones — a dead link is a checker failure and a
+  // reader betrayal alike.
+  const liveSlugs = new Set(loadAllCases().map((c) => c.record.slug));
 
   return (
     <div className="mx-auto max-w-5xl px-5 py-12">
@@ -49,12 +54,16 @@ export default function ProposalsPage() {
             {run.files.map((file) => (
               <div key={file.caseSlug} className="mt-6">
                 <p className={label}>
-                  <Link
-                    href={`/cases/${file.caseSlug}/`}
-                    className="text-copper hover:underline"
-                  >
-                    {file.caseSlug}
-                  </Link>{" "}
+                  {liveSlugs.has(file.caseSlug) ? (
+                    <Link
+                      href={`/cases/${file.caseSlug}/`}
+                      className="text-copper hover:underline"
+                    >
+                      {file.caseSlug}
+                    </Link>
+                  ) : (
+                    <span>{file.caseSlug} (case not yet published)</span>
+                  )}{" "}
                   · {file.proposals.length} proposal
                   {file.proposals.length === 1 ? "" : "s"}
                   {file.skippedBlocks > 0

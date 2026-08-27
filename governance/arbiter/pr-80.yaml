@@ -1,0 +1,104 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 80
+title: "Arbiter: mechanical citation verification feeds the seats (prompt v3)"
+url: https://github.com/ejhong/aletheia/pull/80
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-26
+judgedAgainst: 039da1b952
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches only tooling (`scripts/lib/citation-check.mjs`,
+      `scripts/arbiter.mjs`), a test file, and an appended DECISIONS.md entry;
+      AGENTS.md is untouched, so §3.15's reserved-amendment rule is not engaged.
+      The new module strengthens rather than weakens the gate: it adds
+      mechanical existence checks on DOIs/arXiv ids/URLs added under `content/`,
+      reports FAILS as positive evidence for violates, and explicitly refuses to
+      silently drop over-budget items (they surface as UNCHECKED with the
+      reason). It does not relax any voting rule — seats are told only that a
+      mechanically RESOLVED identifier removes the browsing excuse, while
+      quotations, page locators, and whether a source supports a claim remain
+      seat judgment (§3.7, §3.8 preserved). Verification informs but never
+      gates, so a Crossref outage cannot auto-pass a PR; the prompt version is
+      honestly bumped to v3 and the human report gains a tally, preserving
+      inspectability. The DECISIONS.md line is an append at the end of an
+      explicitly append-only log, not a rewrite of a published judgment (§3.14).
+      Citation verification found no identifiers in added content lines,
+      consistent with a code-only change; the URL checker treating network
+      errors as 'fails' is a conservative-strictness quibble, not a
+      constitutional breach."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: The change adds mechanical citation checking as an input to the
+      arbiter without altering any constitutional guarantees or weakening
+      checks. The new module only scans added lines under content/, deduplicates
+      identifiers, and reports resolution status; failures are surfaced as data
+      (status = fails/unchecked) and never used to bypass or auto-ratify
+      anything. The arbiter prompt update explicitly maintains the seats’
+      responsibility to judge honest use of citations and clarifies that tool
+      output is about existence, not support or interpretation, which aligns
+      with §3.7 and §3.8 rather than undermining them. No provenance is removed,
+      no prior assessments are silently edited, and there is no change to
+      AGENTS.md or to the ratification process defined in §3.15. Tests focus on
+      safety-relevant behaviors (scope of scanning, non-throwing failure modes,
+      honest empty/overflow reporting), which supports, rather than relaxes, the
+      repository’s epistemic rules. Overall, this is an internal tooling and
+      prompt improvement that helps enforce “real citations only” without
+      introducing fabrication or misrepresentation risks.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules: []
+    reasoning: The change introduces mechanical citation verification to inform the
+      arbiter panel, which strengthens the enforcement of §3.7 and §3.8 (primary
+      sources and exact provenance) by allowing models to detect fabricated or
+      dead links without needing a browser. It explicitly maintains the
+      constitutional checks without weakening them (§3.15) and correctly
+      isolates untrusted tool output from instructions in the prompt. AGENTS.md
+      is untouched, and comprehensive tests are provided.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff does not touch AGENTS.md (§3.15 reserved amendment) and
+      adds no content-layer citations, locators, or assessments. It appends a
+      DECISIONS.md note and gives the arbiter a fail-open existence check:
+      extract only added content/ lines, resolve DOI/arXiv/URL, report overflow
+      as UNCHECKED rather than dropping it, and never gate the run on tooling
+      failure. The v3 prompt keeps fabrication, honest-use, quotation, and
+      page-locator judgment with the seats; RESOLVES is existence-plus-metadata,
+      not a substitute for §3.7/§3.8 support, and quoted registry titles are
+      labeled untrusted data. That tightens the real-citations check instead of
+      weakening or reclassifying it. Tests pin scan scope and non-throwing
+      reporting; ordinary limits (40-item cap, URL 403/unreachable mapped to
+      FAILS) are imperfections the prompt still lets seats weigh, not
+      constitutional breaks."
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "The change adds a mechanical citation-resolution tool whose output
+      is fed to the arbiter seats as an informational packet section, plus a
+      prompt bump (v2→v3, stamped per §3.15 accountability) telling seats how to
+      weigh RESOLVES/FAILS/UNCHECKED. The key §3.15 question is whether this
+      weakens the checks: it does not — verification 'informs votes, never
+      gates,' tooling failures report as UNCHECKED rather than passing or
+      blocking, no existing fail-closed CI or concurrence requirement is
+      removed, and seats retain full judgment over quotations, locators, and
+      whether a source supports a claim (the prompt says so explicitly,
+      preserving §3.7/§3.8 duties). Redirecting 'unsure because I cannot browse'
+      toward 'judge honest use now that existence is mechanically resolved'
+      raises rather than lowers epistemic rigor, and FAILS is framed as positive
+      evidence for violates — anti-fabrication posture is intact. Injection
+      discipline is maintained: the prompt declares quoted registry titles
+      external data, never instructions, consistent with the trust-boundary
+      rule. Scope is honestly narrow (added content/ lines only, 40-item budget
+      reported rather than silently dropped), tests pin the safety-relevant
+      behaviors, and the DECISIONS.md entry is appended per its append-only
+      rule. AGENTS.md is untouched, no confidence material or geo-project
+      constraints are implicated, and the PR itself is passing through the panel
+      rather than dodging it."
+harvestedAt: 2026-08-27

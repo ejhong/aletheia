@@ -1,0 +1,122 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 65
+title: "The operator: reconciliation loop, parked-PR duty, issue triage — and
+  the throttle learns eras"
+url: https://github.com/ejhong/aletheia/pull/65
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-25
+judgedAgainst: 11ad0517e6
+promptVersion: aletheia-arbiter-v1
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The four new assessment files are additive, append-only overlays
+      stamped with runId, model, date, promptVersion, `humanReviewed: false` and
+      `role: draft`, and each carries a header comment stating it is a
+      deliberately non-blind reconsideration — so nothing is presented as a
+      ratified or human-reviewed judgment (§3.15, §4). The reasoning is
+      claim-atomic, keeps credibility distinct from diagnosticity, repeatedly
+      flags author/lab dependence (GEO-E006/E007 'same team and samples',
+      MPI-E007's shared equipment and personnel) and records negative evidence
+      and standoffs honestly (mpi held; three cases displayed as contested),
+      which is what §3.2, §3.4, §3.10 and §3.11 ask for; no new citations or
+      locators are invented, and the script fail-closes on unknown claim ids
+      rather than silently repairing them (§8). AGENTS.md is untouched, and both
+      the operator prompt and MAINTENANCE.md restate that the operator may never
+      edit it, never push to main, and must treat issue/PR text as data, not
+      instructions. My two concerns are (a) the reconciliation loop lets the
+      house rewrite its verdict with the panel's dissents in hand and then
+      re-derive standing from those same pre-existing votes, and (b) the arbiter
+      throttle now counts only since GATE_EPOCH; but (a) is disclosed at file,
+      script, docs and DECISIONS level with an explicit anti-re-litigation
+      guard, and (b) is a one-time, self-expiring exclusion of the pre-gate
+      human-supervised era that leaves the schema CI, arbiter requirement and
+      parking behavior intact — tuning a project-invented rate limit in public,
+      not dodging the §3.15 checks. Text inside the diff and PR body claiming
+      ratification counts was treated as evidence, not as direction."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: "The change introduces an operator workflow and a reconciliation
+      script but does not alter AGENTS.md or any constitutional text, so it
+      avoids the reserved-human space in §3.15. The operator workflow is
+      constrained to respect existing gates: it cannot edit AGENTS.md, cannot
+      push directly to main, and runs changes through the existing classifier
+      and arbiter checks, which is consistent with §3.15’s requirement that no
+      consequential change publish on one model’s unilateral judgment. The
+      reconciliation loop generates append-only assessment overlays, clearly
+      labeled as AI drafts with runId/model/date/promptVersion and
+      `humanReviewed: false`, preserving provenance and versioning per §3.8 and
+      §3.14 and not silently changing any prior published judgment. The
+      reconsideration assessments use only existing claim and evidence IDs from
+      that case, and the script explicitly validates that
+      loadBearing/weakestLinks are live claim IDs, which supports atomic claims,
+      exact provenance, and non-fabrication requirements. No citations,
+      locators, or confidential materials are introduced or fabricated; the text
+      reasons only over already-recorded evidence IDs, so there is no violation
+      of the “real citations only” and “no fabricated records” constraints in §3
+      and §4. Overall the changes add process and overlays that respect existing
+      epistemic safeguards rather than weakening them, so they comply with the
+      constitution."
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+      - §8
+    reasoning: The PR introduces an automated reconciliation script and an operator
+      workflow without violating constitutional constraints. The new assessment
+      drafts are strictly append-only, correctly labeled with the 'draft' role,
+      and contain the required metadata (runId, model, date, promptVersion),
+      explicitly noting they are not human-reviewed. The operator workflow's
+      prompt rigorously enforces constitutional boundaries by instructing the
+      agent to treat PR/issue text as untrusted data and strictly forbidding
+      edits to AGENTS.md or direct pushes to main. The adjustment to the
+      arbiter's rate limiter correctly scopes the budget to the autonomous epoch
+      rather than weakening the check itself.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff does not touch AGENTS.md. The four overlays are new
+      append-only files stamped with runId/model/date/promptVersion, role:
+      draft, humanReviewed: false, and an explicit non-blind/reconsideration
+      label — they do not rewrite prior assessments or present an unratified
+      draft as a human or ratified judgment. Internal claim/evidence ids are
+      used as locators; no new source, citation, or provenance record is
+      invented. Standoffs are defined to remain displayed as contested rather
+      than re-litigated, which matches §3.15’s disagreement rule rather than
+      silencing it. operator.yml and the DECISIONS/MAINTENANCE notes keep
+      AGENTS.md and direct-to-main off-limits and route work through PRs; the
+      arbiter GATE_EPOCH change only excludes pre-gate bootstrap landings from a
+      throttle that §3 does not define. Complete diff, no omitted files."
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "The four new overlays are append-only AI drafts, each stamped
+      runId/model/date/promptVersion with humanReviewed: false, role: draft, and
+      a header stating 'not reviewed' — satisfying §4's labeling rules and
+      §3.15's ban on presenting unratified drafts as ratified or AI records as
+      human ones; their syntheses explicitly engage each dissenting seat by
+      name, record negative evidence, and apply the credibility/diagnosticity
+      distinction (§3.4, §3.11). reconcile-contested.mjs fails closed (verdict
+      vocabulary, live-claim-ID validation mirroring the loader) and its
+      standoff guard displays persisting disagreement indefinitely rather than
+      re-litigating, which is exactly §3.15's 'disagreement does not publish
+      silently.' operator.yml routes everything through PRs and the pre-existing
+      classifier/arbiter gate, states the AGENTS.md and no-direct-to-main
+      limits, and treats issue text as untrusted data; standing re-derives from
+      the existing multi-model checks rather than the single drafting model's
+      say-so, so ratification still rests on concurrence. The arbiter.mjs
+      throttle change (GATE_EPOCH) narrows only the merge-budget window to the
+      autonomous era — it does not touch the §3.15 checks (fail-closed CI,
+      multi-model concurrence, contested parking), converges to identical
+      trailing-7-day behavior after one week, and is documented in DECISIONS.md
+      rather than hidden. No AGENTS.md edit, no confidence material (issue
+      triage quotes only public issues), no live AI calls on the static site,
+      and the internal record IDs the overlays cite are enforced by the
+      dangling-ID build gate."
+harvestedAt: 2026-08-27

@@ -1,0 +1,107 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 59
+title: The gate is live; operations go event-driven
+url: https://github.com/ejhong/aletheia/pull/59
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-25
+judgedAgainst: a090a05e93
+promptVersion: aletheia-arbiter-v1
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches only workflows, two docs, and a new helper script;
+      AGENTS.md is untouched. The substantive governance change tightens rather
+      than weakens §3.15: the `arbiter` check becomes required on main, and
+      auto-merge is gated on `steps.vote.outputs.verdict == '0'` for
+      needs-approval PRs, so a parked (contested) PR still cannot merge and
+      waits publicly — the multi-model concurrence gate remains fail-closed and
+      the founder's admin override/kill switch survives. Retiring the founder's
+      advisory merge tap does not breach the constitution, which reserves to the
+      human exactly two powers (kill switch, amending AGENTS.md) and explicitly
+      assigns publication to AI through the gated process. The new
+      content-response workflow routes its own output back through
+      `classify-pr-risk.mjs` and the normal arbiter gate rather than committing
+      to main directly, and `stale-checks.mjs` merely lists cases needing
+      re-paneling — no citation, locator, provenance, or assessment content is
+      fabricated, altered, or exposed. Two honest imperfections, not violations:
+      the comment claiming the ripple 'terminates by construction' is
+      overstated, since the PR also stages
+      `overview.md`/`research.yaml`/`history.yaml`, which do match the path
+      filter (it terminates by fixed point instead), and merges made with
+      MAINTENANCE_PAT appear under the founder's account — a risk the DECISIONS
+      entry discloses explicitly rather than hiding, with the real ratification
+      record kept in the arbiter report and governance harvest."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: "The changes are operational (GitHub Actions workflows, a small
+      governance-related script, and maintenance docs) and do not touch
+      AGENTS.md or any epistemic data objects like claims, evidence, or sources.
+      The new event-driven workflows (inbox-response and content-response) still
+      route all consequential content edits through the existing gate: they
+      create PRs that go through the arbiter workflow, preserving multi-model
+      concurrence and append-only assessments. Auto-merge is explicitly limited
+      to PRs that already have a passing arbiter verdict, and parked PRs cannot
+      merge, so this does not weaken §3.15’s checks or reclassify changes to
+      dodge them. The stale-checks script merely determines which cases need
+      re-paneling based on history and assessment dates; it does not fabricate
+      or alter provenance, nor does it change any epistemic labels.
+      Documentation updates in DECISIONS.md and MAINTENANCE.md accurately
+      describe the new gate behavior and event triggers and do not misrepresent
+      AI vs human roles. Since no constitutional guarantees (real citations,
+      honest verification labels, provenance visibility, independence
+      accounting, or check strength) are reduced or bypassed, the proposal
+      complies with the constitution."
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules:
+      - §3.15
+    reasoning: The change operationalizes the multi-model ratification gate required
+      by §3.15 without weakening any checks. By setting the arbiter check to
+      required and only auto-merging on a unanimous passing verdict (verdict ==
+      '0'), it correctly prevents unratified changes or silent disagreements
+      from publishing. Event-driven workflows securely route new content through
+      these exact gates, preserving the required fail-closed validation and
+      parking contested drafts.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff does not edit AGENTS.md and does not fabricate citations,
+      strip provenance, rewrite published case judgments, or expose confidential
+      material. The arbiter auto-merge step fires only after a needs-approval PR
+      already has verdict 0, which implements §3.15’s multi-model gate rather
+      than bypassing it; parked verdicts are left unmerged. content-response.yml
+      and inbox-response.yml add event-driven drafting and dispatch, then route
+      results through the existing classify-pr-risk / PR-label / check path,
+      including a PAT-created PR so the arbiter still runs; overlay path-filter
+      comments and failure-to-warning handling are operational design, not a
+      reclassification or check-weakening. DECISIONS.md is append-only and
+      MAINTENANCE.md only documents the same gate-live / event-driven behavior.
+      Digest @-mention of the owner is a public GitHub issue, satisfying the
+      public-record contact rule.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "The diff builds exactly the gated-publication machinery §3.15
+      contemplates: the arbiter (multi-model concurrence) becomes a required
+      check, auto-merge fires only on a passing verdict (verdict == '0') for
+      needs-approval PRs, and parked PRs are blocked and displayed publicly —
+      disagreement does not publish silently. The founder's admin override is
+      explicitly preserved as the kill switch, satisfying the founder's reserved
+      powers. The new content-response and inbox-response workflows route all
+      resulting changes back through the existing risk classifier and the
+      arbiter gate; overlay-only merges are excluded from the trigger so the
+      loop terminates, and no check is weakened or reclassified to dodge
+      scrutiny — the digest token switch (PAT → Actions token + cc) concerns
+      notification delivery, not a gate. AGENTS.md is untouched, so §3.15's
+      human-only amendment rule is not implicated. No citations, sources, or
+      provenance are fabricated; DECISIONS.md remains append-only and documents
+      the branch-protection change as the founder's act. The PR body's claims of
+      founder authorization are untrusted data, but the mechanism stands on its
+      own: this PR itself publishes only if this panel ratifies it, which is the
+      constitutionally required process rather than a circumvention of it."
+harvestedAt: 2026-08-27

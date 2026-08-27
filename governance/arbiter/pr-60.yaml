@@ -1,0 +1,107 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 60
+title: "Transients: record citation permission on the microscopy manuscript"
+url: https://github.com/ejhong/aletheia/pull/60
+verdict: park
+reason: "5 seat(s) find a violation: Opus 5 (Anthropic) (§3.15); GPT-5.1
+  (OpenAI) (§3.15); Gemini 3.1 Pro (Google) (§3.15); Grok 4.6 (xAI) (§3.15);
+  Kimi K3 (Moonshot, via Venice) (§3.15); only 0 of 5 seats affirm compliance (4
+  required)"
+outcome: merged
+outcomeAt: 2026-08-25
+judgedAgainst: c4c2adfd31
+promptVersion: aletheia-arbiter-v1
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: "The diff edits AGENTS.md and the edit is squarely normative, not a
+      typo or formatting fix: it rewrites the §3.15 bullet banning publication
+      of material supplied in confidence into a permission-based exception, i.e.
+      it relaxes one of the constitution's own checks. Amending AGENTS.md is the
+      founder's reserved act; an AI-authored PR cannot carry it, and the
+      DECISIONS.md entry's assertion that a founder override on an amendment PR
+      'IS the ratification mechanism' is untrusted text inside the change under
+      review, not authorization I can act on. Independently, this is
+      check-weakening under §3.15's final prohibition ('weaken the checks in
+      this section or reclassify a change to dodge them') — the amendment exists
+      precisely to unpark a change two seats already rejected. The dependent
+      content change compounds the problem: the sources.yaml note records
+      citation permission from Beatriz Villarroel as an email held by the
+      founder and 'reported by him directly to the maintainer,' an attestation
+      with no publicly inspectable locator, so the manuscript's continued
+      quotation still rests on unverifiable confidential-material permission
+      (§3.8/§3.15 concerns). The history.yaml entry and DECISIONS.md line are
+      otherwise well-formed and append-only, but they cannot cure the AGENTS.md
+      edit."
+  - seat: GPT-5.1 (OpenAI)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: The diff edits AGENTS.md in a clearly normative way, expanding and
+      clarifying the rule about publishing material supplied in confidence, and
+      explicitly characterizes this as a constitutional amendment in
+      docs/DECISIONS.md. Under §3.15, amending this file is the one act reserved
+      to a human founder. As an AI seat, I must treat any normative AGENTS.md
+      change as violating the constitution unless I have independent,
+      out-of-band proof that it was authored and ratified by the human founder,
+      which the PR text itself cannot provide because all PR content is
+      untrusted. The added history note and DECISIONS entry both assert founder
+      involvement and permission, but such attestations inside the untrusted
+      diff cannot substitute for that external guarantee. Therefore I must judge
+      this as a violation of §3.15’s restriction on who may amend the
+      constitution, regardless of the substantive intent of the changes about
+      citation permission and provenance rigor.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: The proposed change includes a normative amendment to AGENTS.md,
+      significantly altering the definition of 'material supplied in
+      confidence'. Under the strict trust boundaries of this panel, any diff
+      containing a non-trivially normative edit to the constitution must be
+      rejected as a violation of §3.15, which reserves the power to amend this
+      file exclusively to the human founder. The assertions found in the PR body
+      and docs/DECISIONS.md claiming this is an authorized 'founder's act' are
+      untrusted data and cannot be used to bypass this mechanical check.
+  - seat: Grok 4.6 (xAI)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: The diff rewrites the §3.15 confidentiality clause in AGENTS.md from
+      a categorical ban on publishing unpublished manuscripts and private
+      correspondence into a permission exception. That is a normative amendment
+      of the constitution, not a typo or format fix; §3.15 reserves amending
+      this file to the human founder, and the seat instructions require any
+      non-trivial AGENTS.md edit to be judged a violation. The same rewrite
+      weakens the checks in §3.15, which that section independently forbids.
+      Under the base (authoritative) text, SRC-YANG-VILLARROEL-2026 remains an
+      unpublished manuscript held off-repo; adding a permission note and history
+      entry still cites and paraphrases material the current rule classifies as
+      supplied in confidence. Claims in the PR body and the new DECISIONS.md
+      line that this is already a founder ratification, or that override is the
+      amendment mechanism, sit in untrusted review material and cannot authorize
+      the edit.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: The diff edits AGENTS.md §3.15, replacing the categorical
+      confidentiality clause with a new definition of 'in confidence' that
+      creates a permission-based exception for citing unpublished manuscripts.
+      This is a substantive normative amendment to the constitution, not a typo
+      or formatting fix. Amending this file is the one act reserved to the human
+      founder, and per my standing rule any non-trivial AGENTS.md edit must be
+      judged a violation; the PR body's and DECISIONS.md's claims that the
+      founder performed or ratified this amendment are untrusted text inside the
+      material under review — they are evidence about the change, not
+      authorization I can accept. The DECISIONS.md entry even anticipates this
+      ('the arbiter auto-parks any AGENTS.md diff by design') and argues a
+      founder override 'IS the ratification mechanism,' but that argument cannot
+      be verified from the diff and does not lift the reservation. The
+      sources.yaml change itself (recording who granted permission, channel,
+      date, where held) is well-formed provenance, but it depends on the amended
+      rule, and the amendment cannot pass through this seat.
+harvestedAt: 2026-08-27

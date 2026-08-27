@@ -1,0 +1,133 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 58
+title: "Immortality Key artwork: house-style cover and six provenance-labeled plates"
+url: https://github.com/ejhong/aletheia/pull/58
+verdict: park
+reason: "1 seat(s) find a violation: Gemini 3.1 Pro (Google) (§3.15, §3.9)"
+outcome: merged
+outcomeAt: 2026-08-25
+judgedAgainst: edf61477fe
+promptVersion: aletheia-arbiter-v1
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The change is additive: a new images.yaml, seven image files,
+      plate-placement markers in overview.md, a tone row in docs/IMAGE_STYLE.md,
+      and an appended history entry. AGENTS.md is untouched. The AI-generated
+      cover is explicitly labeled as such with model, runId, styleVersion,
+      license and the full generating prompt recorded, and its own text forbids
+      depicting any real vessel or result — so no AI artwork is passed off as
+      evidence (§3.1/§3.9 respected). Each of the six plates carries exact,
+      checkable provenance (Commons file page URL, original file title,
+      photographer, upload/capture date) plus license and licenseUrl; nothing is
+      presented with an invented locator, and the one unknown photographer is
+      honestly recorded as 'Unknown (EuroPhot slide series, after Wilpert 1903)'
+      rather than fabricated (§3.8). The captions consistently separate what the
+      photograph shows from what the case contests ('the analyzed altars
+      themselves are curated in the Israel Museum'; 'documents the organism and
+      its grain host, not any ancient practice'; 'what the painted cups held is
+      not something the frescoes show'), which is the §3.9
+      source-statement/inference distinction rather than an assessment change.
+      No claim, evidence record, or assessment was modified, and the history
+      entry is appended (not rewritten) with actor, aiAssisted flag, reason, and
+      an open disclosure that an earlier draft was parked over caption language
+      — disclosure of the §3.15 parking process, not evasion of it. The only
+      borderline item is `kind: housekeeping` suppressing the content-update
+      date while some captions carry contextual weight (e.g. 'has not been
+      independently replicated'), but that context merely restates the existing
+      overview prose and the classification is stated openly in the history
+      record, so it is not a check-dodging reclassification."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: The change adds a case-specific images.yaml, associated public image
+      files, a style-table row, history entry, and plate references in the
+      overview, all of which respect the constitution’s epistemic and
+      operational rules. Image records clearly distinguish AI-generated
+      editorial artwork from real photographic plates, and the cover prompt
+      explicitly states it must not depict real evidence, aligning with §3.6 and
+      avoiding misrepresentation. Each plate includes explicit, checkable
+      Wikimedia Commons provenance (photographer, date where available, source
+      URL, original title) and license information, satisfying §3.8’s exact
+      provenance requirement and the Phase-1 "real citations only" rule in §4.
+      The plate captions are plainly observational and carefully separate what
+      the photo shows from contested historical or interpretive claims,
+      maintaining the distinction between observation and inference per §3.1 and
+      §3.9; they also avoid making new evidential assessments or silently
+      changing claim content, preserving §3.14. The history entry transparently
+      records that earlier captions with evidential-weight language were revised
+      after arbiter feedback, which is consistent with honest documentation
+      rather than hidden alteration. No constitutional checks are disabled or
+      weakened, no confidential material is introduced, and no reserved-file
+      (AGENTS.md) edits occur, so there is no conflict with §3.15 or the broader
+      governance rules.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: violates
+    rules:
+      - §3.15
+      - §3.9
+    reasoning: The PR violates §3.15 by reclassifying a substantive content update
+      as `housekeeping` to avoid bumping the case's content-update date,
+      directly breaking the rule against reclassifying a change to dodge checks.
+      It also violates §3.15 by falsely recording in `history.yaml` that the
+      captions were previously reviewed, 'parked by the constitutional arbiter
+      panel', and 'rewritten... before merge' — a fabricated narrative that
+      attempts to present an unratified draft as a ratified judgment.
+      Furthermore, contrary to the history entry's claim that the captions are
+      'purely observational', the `depicts` fields in `images.yaml` inject
+      argumentative editorial assessments (e.g., 'exactly what the tablet does
+      not show', 'That analysis has not been independently replicated'). Mixing
+      direct visual description with editorial inference in this way violates
+      §3.9.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff does not touch AGENTS.md, assessments, claims, evidence
+      records, or the gated-check machinery. It adds a new images.yaml, six
+      Commons plates with photographer/date/sourceUrl/license locators, an AI
+      cover stamped with model, runId, styleVersion, and the full prompt, a
+      housekeeping history append, plate embeds in overview.md, and matching
+      tone/subject rows in the art script and IMAGE_STYLE.md. Cover metadata and
+      the file comment keep the engraving explicitly allegorical and
+      non-evidential; plate alt text is observational and depicts fields
+      distinguish the photograph from the contested chemical/historical claims
+      rather than minting new judgments. No confidential material, invented
+      identifiers, or unratified-as-ratified presentation appears in the change.
+      Caption context that restates already-published case facts is ordinary
+      editorial framing, not a §3 breach.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules:
+      - §3.1
+      - §3.8
+      - §3.9
+      - §3.11
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: "The change is purely additive artwork: an AI-generated cover
+      honestly credited with model, runId, and full prompt on the record,
+      explicitly framed (in both the YAML comment and the generation prompt) as
+      allegory that may not depict real evidence, keeping it clear of the
+      fabrication/evidence-confusion ban in §3.15 and §4. The six plates carry
+      exact §3.8 provenance — Commons URLs, photographers, dates, licenses, and
+      linked claim IDs — and the one record lacking a date (IMG-TIK-P06) omits
+      it rather than inventing one, with the photographer marked 'Unknown'; the
+      filenames and credits match well-known real Commons files, so nothing
+      looks fabricated. Captions observe before interpreting (§3.1) and separate
+      what the image shows from what the case contests (§3.9), and they preserve
+      negative evidence (§3.11): non-replication of the Mas Castellar analysis,
+      the distance from Eleusis, and the absence of any residue-tested Eleusis
+      vessel are stated rather than smoothed over. The history entry is
+      append-only, stamped with date/actor/aiAssisted, and transparently records
+      that a prior caption draft was parked as contested and rewritten — which
+      is exactly the 'disagreement does not publish silently' behavior §3.15
+      requires, displayed rather than hidden. The housekeeping classification is
+      disclosed in the entry itself rather than used to hide the change, so
+      §3.14's visibility requirement is met. No published judgment is altered,
+      no confidential material appears, no check is weakened, and AGENTS.md is
+      untouched; this ratification pass supplies the multi-model concurrence
+      editorial content needs."
+harvestedAt: 2026-08-27

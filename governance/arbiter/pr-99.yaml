@@ -1,0 +1,103 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 99
+title: "Land the stranded #95 fix: parked-PR exclusion and the restored
+  Villarroel entry"
+url: https://github.com/ejhong/aletheia/pull/99
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-26
+judgedAgainst: ca08f8191d
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches only `.github/workflows/content-response.yml` and
+      `docs/DECISIONS.md`; AGENTS.md is untouched, so §3.15's amendment
+      reservation is not implicated. The workflow change adds an exclusion so
+      that a `respond/*` PR whose arbiter check concluded FAILURE (a park) is
+      left open rather than auto-closed as superseded — this strengthens rather
+      than weakens the gating checks, directly serving §3.15's 'disagreement
+      does not publish silently' requirement. The DECISIONS.md change is a
+      repair of an append-only log: the previously merged Villarroel-permission
+      text is split back out under its own heading with its body preserved
+      verbatim (permission provenance — granted 2026-08-26, relayed same day,
+      correspondence held by the founder — is retained intact per §3.15), and
+      the batching entry openly records the mangling and the restoration rather
+      than silently rewriting history, which satisfies §3.14's 'what changed and
+      why'. No content/ files, citations, evidence, or assessments are touched,
+      and the citation tooling found no identifiers to check. No
+      confidence-material is newly exposed: the Villarroel text already existed
+      in main and is merely re-partitioned. Ordinary maintenance,
+      constitution-consistent."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: The diff makes two narrowly scoped changes and neither conflicts with
+      the constitution. In the workflow, the supersede-close loop now inspects
+      the `arbiter` check conclusion and *skips closing* any `respond/*` PR
+      whose arbiter verdict is FAILURE, treating it as a parked disagreement
+      that must remain visible; this strengthens adherence to §3.15’s
+      requirement that disagreement not vanish silently, rather than weakening
+      checks. The logic change is transparent and documented in comments; it
+      doesn’t fabricate data, alter provenance, or bypass any multi-model or
+      arbiter safeguards. In `docs/DECISIONS.md`, the prior entry about batching
+      is preserved and extended with a log-integrity note, and the
+      Villarroel-permission decision is restored as its own explicit bullet
+      instead of being silently absorbed — this respects the append-only,
+      non-erasing decision record implied by §3.14 and §3.15. No citations are
+      added, so there is no risk of fabricated or misused sources, and no
+      confidential material is newly exposed; the text only describes handling
+      of already-removed sensitive content and its permissions history. Overall
+      the changes tighten procedural transparency and do not alter any epistemic
+      checks or AGENTS.md, so they comply with the constitution.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: The change correctly restores the inadvertently mangled
+      Villarroel-permission entry in DECISIONS.md as a distinct bullet,
+      preserving the append-only nature of the log (§3.14) and transparently
+      noting the repair. Furthermore, modifying the CI workflow to prevent the
+      silent closure of parked PRs directly enforces the requirement that
+      contested changes remain visible and do not vanish silently (§3.15).
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff does not touch AGENTS.md, content/, citations, assessments,
+      or confidential source material. The workflow change adds an explicit skip
+      in the supersede-close loop when an older respond/* PR's arbiter check is
+      FAILURE, so a parked disagreement stays open and visible rather than being
+      closed as superseded; that implements §3.15 (disagreement must not vanish
+      silently) and does not weaken or reclassify the gates. The DECISIONS.md
+      edit un-mangles an append-only log: the Villarroel-permission bullet is
+      restored as its own heading with the same body that had been absorbed, and
+      the batching entry records both the parked-PR exception and the prior
+      overwrite instead of hiding it. No fabricated locators or
+      unratified-as-ratified presentation appear in the shown files."
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.14
+    reasoning: "The workflow change strengthens rather than weakens a §3.15 check:
+      the supersede-close loop now skips any respond/* PR whose arbiter check
+      concluded FAILURE, so a parked (contested) PR stays open and visible
+      instead of vanishing in a cleanup pass — directly implementing
+      'disagreement does not publish silently.' The DECISIONS.md edit repairs a
+      mangled append-only record transparently: the Villarroel-permission text
+      is preserved verbatim as its own dated bullet with a proper heading, and
+      the batching entry carries an explicit log-integrity note recording what
+      changed and why, which satisfies §3.14's requirement that changes record
+      what changed and why rather than hiding the edit. Nothing is deleted
+      silently — the incident itself is documented in the log. No citations are
+      added (the mechanical verification found none), AGENTS.md is untouched,
+      and there are no omitted files. The one soft spot — an absent or
+      differently-named arbiter check yields an empty verdict and the PR still
+      gets closed — is an ordinary engineering imperfection, not a
+      constitutional violation, since the change's direction is to widen what
+      stays visible."
+harvestedAt: 2026-08-27

@@ -1,0 +1,95 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 81
+title: "Zero-content bootstrap: placeholder params for empty dynamic routes,
+  empty states for homepage and case index"
+url: https://github.com/ejhong/aletheia/pull/81
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-26
+judgedAgainst: 8c4494859d
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "This is a pure engineering change with no content records, no
+      citations (verification tooling found none), and no assessments touched.
+      AGENTS.md is untouched; the only doc change is a new dated entry appended
+      to the end of docs/DECISIONS.md, which is the file's stated append-only
+      purpose. The new `src/domain/staticExport.ts` helper emits a single
+      reserved `not-yet-published` param when a route has no records, and the
+      corresponding pages call `notFound()` for it — no fabricated case, claim,
+      or source is created to fill the route; the exported document is a 404,
+      which is honest about a record that does not exist. Replacing `throw new
+      Error(...)` with `notFound()` for unknown ids does not weaken any §3.15
+      check: schema/dangling-ID validation still lives in the loader and fails
+      the build, and these throws only fired for route params that never
+      correspond to a record. The added empty states on the homepage and case
+      index explicitly say no cases are published yet and point at the method
+      page, which improves rather than degrades honesty about the publication's
+      state (§7). Nothing here alters provenance display, verification labels,
+      ratification gating, or confidentiality handling."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: The change adds zero-content bootstrap behavior and explicit empty
+      states without touching any epistemic data, citations, or provenance. No
+      content under `content/` is modified, and the new helper
+      `paramsOrPlaceholder` plus `notFound()` handling only affect routing and
+      static export mechanics, ensuring that nonexistent records correctly
+      return 404s instead of errors. The homepage and cases index now show
+      honest empty-state messaging about the absence of published cases, which
+      is aligned with the project’s transparency goals and does not misrepresent
+      any evidence or assessments. `docs/DECISIONS.md` is append-only and
+      accurately documents the code change as a product/architecture decision,
+      not a content judgment. There is no weakening of multi-model checks, no
+      alteration of AI ratification logic, and no interaction with confidential
+      material or AGENTS.md. As no citations are added and no provenance or
+      assessments are silently altered, none of the non-negotiable epistemic
+      rules are violated.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules: []
+    reasoning: The change correctly addresses a framework limitation in Next.js
+      static exports where empty dynamic routes cause build failures, adding a
+      clean workaround that yields a 404 page for a placeholder parameter. It
+      implements appropriate empty-state UI without touching any epistemic
+      structures or fabricating data, adhering strictly to the phase-1 rules for
+      a static export site. The code modifications are appropriately typed and
+      correctly record the design decision in DECISIONS.md.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff is engine/UI bootstrap only: a pure domain helper so empty
+      `generateStaticParams` still exports, six dynamic routes 404 unknown ids
+      instead of throwing, and homepage/case-index empty states. AGENTS.md is
+      untouched; no `content/` records, citations, locators, assessments, or
+      verification labels are added or rewritten. The empty-state copy and the
+      reserved `not-yet-published` param that renders `notFound()` do not
+      fabricate sources or present unratified judgments as ratified.
+      `docs/DECISIONS.md` is append-only with a dated architecture note, which
+      matches §3.14 rather than weakening §3.15 checks. Ordinary incompleteness
+      (e.g. `generateMetadata` on claims/sources not shown as updated) is not a
+      constitutional break."
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "This is a pure engineering change: it makes the static export build
+      when zero cases exist by emitting a reserved placeholder param
+      (`not-yet-published`) that renders `notFound()`, so the exported document
+      at that path is the 404 page — no record, citation, locator, or assessment
+      is fabricated or presented as real. The new empty states on the homepage
+      and case index are honest disclosures ('no cases published yet', pointing
+      to the method page's provenance standards), which aligns with the
+      constitution's transparency ethos rather than violating it. No content/
+      files are touched and the citation-verification packet is empty,
+      consistent with the absence of added citations. AGENTS.md is not edited
+      (§3.15's human-reserved power is respected), and the DECISIONS.md change
+      is a single appended entry, honoring the file's append-only rule. No check
+      is weakened: Zod build-time validation, provenance enforcement, and the
+      ratification machinery are untouched; replacing thrown errors with 404s
+      for unknown ids does not reclassify or dodge any gate. Ordinary
+      infrastructure work of exactly the kind the panel should not park."
+harvestedAt: 2026-08-27

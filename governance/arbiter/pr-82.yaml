@@ -1,0 +1,113 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 82
+title: Reconciliation eligibility covers load-bearing splits (the vasocomputation gap)
+url: https://github.com/ejhong/aletheia/pull/82
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-26
+judgedAgainst: ba4da57e3e
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "This is a tooling/eligibility change
+      (scripts/lib/reconcile-core.mjs, reconcile-contested.mjs, a vitest file,
+      one appended DECISIONS.md line) with no content/ records and no citations,
+      so the citation and provenance rules are not engaged. AGENTS.md is
+      untouched, and DECISIONS.md is only appended to, consistent with its
+      append-only header. The change broadens, rather than narrows, when the
+      house must answer dissent: cases where the panel splits on a load-bearing
+      claim under a unanimous case verdict now become eligible for a
+      reconsideration that must engage each split claim by id, and the standoff
+      guard (draft.promptVersion === PROMPT_VERSION) is left intact so no
+      re-litigation loop is created. Nothing here relaxes ratification:
+      reconsideration overlays remain stamped as AI drafts ('Append-only; not
+      reviewed') and the previously ratified `reconciles` rule still forces a
+      fresh blind check before standing can rise, so this does not let a case
+      self-ratify by converging on its judges (§3.15). The duplicated
+      graded-scale/strict-majority logic in reconcile-core.mjs cannot be diffed
+      against load.ts here, but its behavior is documented, tested (including
+      the exact 4-of-5 open-verdict shape and the within-one-step non-split),
+      and any divergence would only mis-trigger engagement rather than weaken a
+      publication gate. The 'live dry run' described in the PR body wrote
+      nothing and is not part of the diff, so no unratified judgment is
+      presented as ratified."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: The change does not touch AGENTS.md and instead adjusts internal
+      automation around reconciliation eligibility and dissent handling, plus
+      updates DECISIONS.md to document the decision — consistent with §3.14’s
+      versioning requirement. The new reconcile-core module and its tests
+      explicitly mirror existing ratification logic in load.ts, tightening,
+      rather than weakening, the conditions under which reconciliation is
+      triggered and making claim-level dissent explicit; this strengthens the
+      multi-model check process and does not reclassify changes to dodge checks
+      (§3.15). The reconciliation script continues to label overlays as
+      reconsiderations and, per the referenced prior decision, leaves
+      ratification to independent blind checks, maintaining the separation
+      between reconsideration and final standing. No sources, citations, or
+      provenance are added or altered, so there is no risk of fabricated records
+      or dishonest verification (§3.8, §3.15). The logic is append-only in
+      behavior (it broadens what is considered contested but does not silently
+      alter past judgments) and improves transparency by logging the dispute
+      shape, aligning with the constitution’s emphasis on inspectability and
+      explicit disagreement handling.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: The change strengthens the dispute-resolution system by ensuring that
+      splits on load-bearing claims are actively engaged by the reconciliation
+      loop, rather than deadlocking indefinitely. It updates the LLM prompt to
+      require explicit engagement with claim-level dissents, upholding the
+      requirement that assessment changes record what changed and why (§3.14).
+      The logic exactly mirrors the existing ratification rules without
+      weakening any multi-model concurrence requirements or bypassing checks
+      (§3.15).
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff only expands reconciliation eligibility so it matches the
+      already-contested shapes (case-verdict dissent or a load-bearing claim
+      split), extracts that rule into a tested helper, and appends a
+      DECISIONS.md entry. It does not edit AGENTS.md, does not add citations or
+      content records, and does not rewrite published assessments. The standoff
+      guard and the existing reconciles/no-self-ratify path are left in place,
+      so a house reply still cannot mint concurrence without a later blind
+      panel. Prompt-version string reuse is sloppy inspectability, not a §3.15
+      check-weakening. Ordinary incompleteness relative to unseen load.ts is not
+      a visible constitutional break.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.14
+      - §3.11
+    reasoning: "The change extends the reconciliation loop's eligibility so that a
+      panel split on a load-bearing claim under a unanimous case verdict
+      triggers mandatory house engagement with the dissent — this strengthens,
+      rather than weakens, the §3.15 requirement that disagreement not sit
+      silently: the dissent packet now carries per-claim verdicts and seat
+      reasoning, and the prompt requires answering each split claim by id.
+      Critically, the change does not let reconciliation mint concurrence: the
+      ratification gate is untouched, the standoff guard is preserved (extended
+      to claim-level standoffs), and both the PR body and the appended
+      DECISIONS.md entry explicitly rely on the prior day's fix that a
+      `reconciles`-stamped draft must wait for a fresh blind panel. Assessments
+      remain append-only overlays stamped with runId (§3.14), and DECISIONS.md
+      is appended to, not rewritten. No content/ files are touched, no citations
+      are added (verification found none, consistent with the diff), no
+      AGENTS.md edit, no confidence material, no live AI calls added to the
+      site. The one risk — reconcile-core.mjs mirroring ratification() logic
+      from load.ts, which I cannot compare directly — is ordinary duplication
+      risk the code itself flags ('load.ts is the authority'), and even a
+      divergence would mis-trigger drafts that still cannot self-ratify, so it
+      is not a constitutional violation."
+harvestedAt: 2026-08-27

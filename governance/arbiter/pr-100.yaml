@@ -1,0 +1,134 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 100
+title: "ORCH-S001 collection: the quantitative commitments of the Orch OR literature"
+url: https://github.com/ejhong/aletheia/pull/100
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-26
+judgedAgainst: d14ab0773f
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The added rows carry per-cell quotations with exact locators
+      (section, figure, caption, abstract) and honest verification labels — the
+      un-retrieved Penrose 1994 book row is explicitly `unverified` with a note
+      that the criterion is quoted as restated in a verified 1996 row, and the
+      McKemmish 2009 and Sahu 2013 retrieval failures are stated in the rows and
+      limitations rather than papered over (§3.8, §3.11). Every DOI in the diff
+      RESOLVES and the resolved titles/venues match what each row claims it
+      supports; the three FAILS are two web.archive.org URLs with an identical
+      'fetch failed' error (tool-side unreachability, not internal
+      inconsistency) and an Elsevier 403 paywall — none is positive evidence of
+      fabrication, and the underlying works are separately anchored by resolving
+      DOIs or by corroborating restatements. Independence is handled explicitly:
+      the proponent lineage rows and the single-laboratory Bandyopadhyay/Sahu
+      resonance measurements carry independenceNote fields refusing to count
+      them as corroboration (§3.10), and the review's
+      resonance-to-coherence-time step is recorded as the review's inference
+      rather than the measurement's statement (§3.9). The new evidence records
+      separate sourceStatement from editorInference, declare direction
+      (qualifies / undermines) and calibrated, non-theatrical strength, and are
+      appended as `ai_extracted` with runId/model/date and `humanReviewed:
+      false` (§3.5, §3.13, §3.14, §4). AGENTS.md is untouched and nothing
+      weakens a check. Two blemishes are ordinary imperfection, not violations:
+      history.yaml says 'nineteen' rows where the table contains twenty, and the
+      finding that 'all twelve frozen candidates ... enter the table' sits
+      awkwardly beside the admission that Sahu 2013 was never retrieved and
+      appears only inside the invoked-measurement row — both discrepancies are
+      self-disclosed within the same records and should be corrected in a
+      follow-up."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff adds a pre-registered study workpaper as a Source,
+      populates its rows/findings/limitations, and creates two Evidence records
+      linked to that study. The study clearly separates source statements from
+      editor inferences (§3.9): each row has a verbatim-styled ‘stated value’
+      plus notes, while higher-level interpretations are only in findings and in
+      the Evidence editorInference fields. Evidence directions are explicit
+      (‘qualifies’ and ‘undermines’) and justified in text (§3.5), and
+      independence notes are recorded for single-lineage proponents and
+      single-lab measurements (§3.10). Citations use real DOIs/URLs that resolve
+      per the tooling; where a book and some paywalled articles were not
+      retrieved, those rows are labeled ‘unverified’ or described as paywalled,
+      with no invented locators (§3.7, §3.8, §3.15). The Evidence items are
+      append-only additions that do not overwrite prior assessments, and their
+      provenance (AI agent, runId, date, promptVersion, humanReviewed=false) is
+      explicit, so no unratified draft is misrepresented as ratified (§3.14,
+      §3.15). There is no modification of AGENTS.md or any weakening of checks;
+      the change is a standard content extension that respects the epistemic
+      rules."
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.9
+      - §3.10
+      - §3.12
+    reasoning: The PR meticulously follows the epistemic rules for evidence
+      collection. It executes a pre-registered protocol (§3.12) with exact
+      locators for every row, honestly labeling the single unretrieved book as
+      `unverified` (§3.8). It distinguishes between primary statements and the
+      reviewer's inference, as seen in the Sahu 2013 row (§3.9), and
+      appropriately uses explicit independence notes to flag repeated authorial
+      lineages as non-corroborative (§3.10). The tool-resolved DOIs confirm the
+      existence and accurate citation of the papers, while the few URL failures
+      are standard bot-blocks (HTTP 403) or archive network errors, presenting
+      no evidence of fabrication.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff only fills the already-frozen ORCH-S001 stub and appends two
+      ai_extracted evidence rows, a workpaper source, and a history line;
+      AGENTS.md and existing published judgments are untouched. Every newly
+      added DOI resolves to a title/venue that matches the row that cites it,
+      the Penrose 1994 book is honestly labeled unverified, paywalled bodies
+      (McKemmish, Sahu) are disclosed as not retrieved, source-statement vs
+      inference and independence notes are explicit, and evidence direction is
+      classified. Three added URLs now FAIL (a malformed/dead JCS 1996 Wayback
+      link, a 403 ScienceDirect companion, a Derakhshani archive snapshot), but
+      each sits on a real paper and is not positive evidence of a fabricated
+      citation or invented locator. Review-state and humanReviewed flags stay
+      honest; this is collection under a frozen protocol, not a silent
+      ratification.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules:
+      - §3.5
+      - §3.8
+      - §3.9
+      - §3.10
+      - §3.11
+      - §3.12
+      - §3.14
+    reasoning: "This is a model execution of the freeze-before-audit discipline: the
+      study was frozen in a prior PR, the criteria hash was checked, and only
+      then were rows/findings collected (§3.12), with the study stamped
+      runId/model/date/promptVersion and humanReviewed: false. Epistemic hygiene
+      is strong throughout: every row separates what the paper states from the
+      review's inference (the resonance-to-coherence-time step is explicitly
+      flagged as the 2014 review's inference, §3.9); single-lineage proponent
+      rows and single-laboratory invoked measurements carry independenceNotes
+      (§3.10); failed retrievals (McKemmish 2009 body, Sahu 2013, Penrose 1994)
+      are recorded plainly with an unverified label rather than invented
+      locators (§3.8, §3.11); the two ledger evidence records have explicit
+      directions (qualifies/undermines, §3.5) and split sourceStatement from
+      editorInference. The three FAILS in citation verification are
+      network-level (two archive.org 'fetch failed', one ScienceDirect 403
+      bot-block), and in each case the primary DOI resolves with matching
+      title/venue metadata, so they are not positive evidence of fabrication;
+      the archive URLs carry specific 2001/2024 timestamps consistent with real
+      captures. The history.yaml entry is append-only, AI-attributed, and
+      aiAssisted: true (§3.14); AGENTS.md is untouched and no checks are
+      weakened. One imperfection worth fixing but not constitutional: the
+      history entry says 'nineteen (publication, parameter) rows' while the diff
+      and PR body contain twenty — a miscount in the changelog, ordinary error
+      rather than fabricated provenance. Quote-level fidelity cannot be
+      mechanically checked, but every quoted figure I can recognize (Tegmark
+      10^-13 s, Hagan 10^-5–10^-4 s, the 25 ms / 2×10^10 pairing) matches the
+      real literature, and nothing internally contradicts its stated source."
+harvestedAt: 2026-08-27

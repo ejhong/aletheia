@@ -1,0 +1,115 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 102
+title: "Maintenance: weekly agenda generation — the ledger proposes its own next
+  questions"
+url: https://github.com/ejhong/aletheia/pull/102
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-26
+judgedAgainst: "7130e16832"
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff adds a maintenance-only step that writes model-generated
+      *proposals* to `proposals/agenda/<runId>/`, never to `content/`, so no
+      claim, evidence, source, or assessment record is created or altered. Every
+      proposal file is headed 'PROPOSALS ONLY' and stamped with model, runId,
+      promptVersion, and date, explicitly invoking §3.15 — no unratified draft
+      is dressed as a ratified judgment (§3.15) and provenance stamping is
+      preserved (§3.14). Validation is fail-closed: proposals must anchor to IDs
+      actually present in the case files (dangling anchors rejected, matching
+      §8's no-dangling-IDs discipline), malformed replies are dropped with
+      recorded reasons, and a model-call failure skips the case rather than
+      emitting anything. No citations, DOIs, or locators are added, so §3.7/§3.8
+      are not engaged (verification tooling found no identifiers). Nothing
+      weakens an existing gate: the diff only appends a step to the workflow and
+      a digest line; the classifier/arbiter/merge policy are untouched, so
+      §3.15's anti-check-weakening clause is respected. AGENTS.md is not
+      modified, and the DECISIONS.md entry honestly labels itself as an AI
+      record of a founder instruction. The Phase-1 ban on live AI calls concerns
+      the site itself; this is an offline CI script alongside existing
+      triage/reassess model steps, and it does no web research."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.5
+      - §3.10
+      - §3.11
+      - §3.13
+      - §3.14
+      - §3.15
+    reasoning: The change adds an automated weekly agenda-proposal step that is
+      explicitly scoped to "proposals only" and writes to a separate
+      proposals/agenda/ directory, never modifying published content, respecting
+      §3.15’s requirement that AI drafts not be presented as ratified. The
+      rendered proposal files contain a clear disclaimer that nothing inside is
+      a real claim or agenda item until adopted through existing gates, and they
+      record model, runId, and promptVersion, aligning with append-only, labeled
+      AI records (§3.14, §3.15). The PROPOSAL_SYSTEM prompt reinforces
+      atomicity, asking for one proposition with a clear truth condition for new
+      claims (§3.2), and pushes toward decisive, computable items, which is
+      compatible with the evidence-led ethos. The validator is fail-closed and
+      enforces anchoring to existing IDs, limiting at most three proposals per
+      case and rejecting malformed or dangling references, which supports
+      independence tracking and avoids hidden duplication (§3.10). No citations,
+      locators, or confidential materials are fabricated or altered; the
+      DECISIONS.md entry is a labeled AI editorial record of a founder
+      directive, as §3.15 requires. Tests cover the validation and rendering
+      logic, and the workflow wiring only surfaces a digest in the maintenance
+      PR body, without granting new publication powers or weakening existing
+      checks.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules:
+      - §3.15
+      - §8
+      - §4
+    reasoning: The change correctly isolates the generative AI call to the offline
+      maintenance pipeline rather than the site itself (§4), and enforces
+      fail-closed mechanical validity by explicitly rejecting dangling existing
+      IDs (§8). Furthermore, it perfectly satisfies §3.15 by prepending
+      generated proposals with a clear unratified draft warning containing
+      runId/model metadata, and correctly labels the newly added
+      `docs/DECISIONS.md` entry as an AI-generated record of a founder
+      instruction. (The reserved human-only edit applies to `AGENTS.md`, which
+      was untouched).
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff adds a maintenance-only propose-agenda step that writes
+      labeled draft files under proposals/agenda/, not under content/, and does
+      not edit AGENTS.md. Proposal files are stamped with
+      model/runId/date/promptVersion and headed as non-claims pending existing
+      gates, which matches §3.15’s ban on presenting unratified drafts as
+      ratified judgments and does not weaken ratification, CI, or freeze
+      discipline. Validation is fail-closed (real existing IDs, capped kinds,
+      empty answers allowed) and no citations, locators, or confidential
+      material are introduced. The new DECISIONS.md note is labeled as an AI
+      record of a founder instruction rather than a silent constitution change.
+      Live model calls stay in the existing GitHub Actions maintenance job, not
+      on the static site, so phase-1 site constraints are intact.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "The change adds a maintenance step whose output is explicitly
+      quarantined: proposals land under proposals/agenda/, each file headed with
+      a nothing-here-is-real-until-adopted notice and stamped with
+      model/runId/promptVersion/date per §3.15, and the DECISIONS.md entry is
+      labeled as an AI record of a founder instruction. Nothing touches
+      content/, no citations are added (the verification section is empty), no
+      published assessment is altered, and the validator is fail-closed —
+      proposals must anchor to real existing IDs, malformed replies are dropped
+      with recorded reasons, and empty output is treated as success. Adoption is
+      explicitly routed through the existing gates (founder judgment, freeze
+      discipline, classifier, arbiter), so no check is weakened and no
+      consequential change publishes on one model's judgment; the workflow
+      merely appends a digest section to the existing weekly maintenance PR.
+      AGENTS.md is untouched. The design — model proposes, gates decide, taste
+      stays human — is consistent with the constitution's declared AI-operation
+      experiment rather than a dodge around it."
+harvestedAt: 2026-08-27

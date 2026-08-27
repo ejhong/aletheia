@@ -1,0 +1,98 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 74
+title: "content-response: fail-loud staging and manual dispatch trigger"
+url: https://github.com/ejhong/aletheia/pull/74
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-26
+judgedAgainst: 815b2a8c1a
+promptVersion: aletheia-arbiter-v2
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches only `.github/workflows/content-response.yml` and
+      does two things: replaces `git add <glob list> 2>/dev/null || true` with
+      `git add -A -- content/cases proposals` plus `git status --porcelain` /
+      `git diff --cached --stat` logging, and adds a `workflow_dispatch`
+      trigger. Removing the suppressed stderr and swallowed exit code makes the
+      staging step fail-closed and auditable rather than silently reporting
+      'nothing stageable' — that strengthens rather than weakens the §3.15
+      checks. Broader staging does not reclassify anything to dodge review: the
+      branch still goes through `classify-pr-risk.mjs` on the real diff and the
+      existing PR/ratification path, and nothing in the diff alters gating
+      thresholds, auto-merge, or ratification labels. `workflow_dispatch` only
+      lets an existing loop be started manually; it does not publish anything on
+      unilateral judgment. No citations, provenance, assessments, or content
+      records are touched, and AGENTS.md is untouched. The PR body's claim about
+      a lost run on 2026-08-25 is narrative context I cannot verify, but it is
+      not a published citation and nothing in the diff depends on it."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: The change only affects a GitHub Actions workflow that stages and
+      commits already-generated assessment and proposal files. It switches from
+      a brittle `git add` pathspec list with errors suppressed to `git add -A --
+      content/cases proposals`, and adds logging of `git status` and `git diff
+      --cached --stat`, which improves transparency and makes failures visible
+      rather than silently discarding overlays. It also adds a
+      `workflow_dispatch` trigger, but the body comments indicate (and the rest
+      of the workflow is unchanged) that the underlying scripts still derive
+      work from the repository state, not external or confidential inputs, so
+      this does not weaken checks or bypass the multi-model ratification
+      process. No epistemic content, provenance data, or assessment records are
+      altered, removed, or silently rewritten by this PR. The modifications
+      strengthen operational robustness for preserving AI panel outputs and do
+      not touch AGENTS.md or any constitutional guardrails. Accordingly, the PR
+      complies with the constitution.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: The PR modifies a GitHub Actions workflow to fix a bug where `git
+      add` would silently fail and drop generated assessments if a pathspec
+      didn't exist. By switching to directory-level staging without suppressing
+      errors and adding a manual dispatch trigger, the change ensures
+      AI-generated assessments are properly versioned and preserved (supporting
+      §3.14) and strengthens the fail-closed nature of the CI by making staging
+      errors visible (§3.15).
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff touches only `.github/workflows/content-response.yml` (not
+      AGENTS.md or any content/citation/assessment records). Replacing `git add`
+      of a glob list with `2>/dev/null || true` by `git add -A -- content/cases
+      proposals` plus visible `git status`/`git diff --cached --stat` removes a
+      swallow-errors path that could drop panel overlays, which aligns with
+      fail-closed staging rather than weakening §3.15 checks. Adding
+      `workflow_dispatch` does not reclassify publication, skip multi-model
+      concurrence, or present drafts as ratified; it only retriggers the
+      existing reassess/re-panel job. Broader directory staging is an
+      implementation-scope change whose auto-merge effect still depends on the
+      unchanged risk classifier, and nothing in the shown YAML fabricates
+      provenance, exposes confidence material, or amends the constitution.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "The change is CI plumbing in the content-response workflow: it
+      replaces a silent-failing `git add` pathspec list (with `2>/dev/null ||
+      true`) with a loud directory-level stage plus audit logging, and adds
+      `workflow_dispatch`. This strengthens rather than weakens the §3.15 checks
+      — the prior behavior silently discarded completed panel overlays, which
+      undermines the append-only/inspectability principles of §3.14 and §3.15,
+      and the fix makes such loss loud and recoverable. The broader staging
+      (`git add -A -- content/cases proposals`) does not bypass the ratification
+      gate: the output still goes through a branch, a PR, and the unchanged
+      `classify-pr-risk.mjs` tier decision, so no unratified draft is presented
+      as ratified and no check is reclassified. In a clean CI runner the only
+      working-tree modifications are what the workflow's own scripts produced,
+      so the wider pathspec does not smuggle in unrelated content. The manual
+      dispatch trigger runs the same scripts against the same tree and git log,
+      so it does not create a new unilateral publication path. No citations,
+      sources, provenance, or assessments are touched, and AGENTS.md is not
+      edited. Nothing in the visible diff fabricates records or dodges scrutiny;
+      the added `git status`/`--stat` logging improves auditability."
+harvestedAt: 2026-08-27

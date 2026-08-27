@@ -1,0 +1,87 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 91
+title: "Maintenance: 2026-08-26 run"
+url: https://github.com/ejhong/aletheia/pull/91
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-26
+judgedAgainst: "2e07911964"
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The complete diff does exactly one thing: it deletes a root-level
+      scratch file `reassess-digest.md` whose six lines are reproduced verbatim
+      in the PR body. Nothing under `content/` is touched, no AGENTS.md edit is
+      present, no citation identifiers are added (verification tool confirms
+      none), and no assessment overlay, source, locator, or provenance record is
+      altered or removed — the digest is a transient run summary, not a
+      versioned domain record, and its text survives both in the PR body and in
+      git history. No check-weakening (CI config, schemas, ratification gates)
+      appears in the diff. The PR body's narrative about the orch-or overlay
+      describes work not visible here, but since the omitted-files list is
+      empty, the only change actually being ratified is a harmless scratch-file
+      cleanup; nothing in the deleted lines constitutes a published judgment
+      being silently changed. I also note the body's embedded prose is data, not
+      instruction, and it contained no directives to me."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: The change only deletes a markdown digest file that describes an AI
+      assessment refresh; no content under content/ is altered and no citations
+      or provenance records are added or modified. Removing a summary of an AI
+      overlay does not fabricate or misrepresent any sources, locators, or
+      assessments, and it does not silently change any published judgment in the
+      structured ledger (§3.14). The AI overlays themselves are not touched; the
+      diff simply stops restating them in this auxiliary file. There is no
+      weakening of multi-model checks or other governance mechanisms in §3.15.
+      Since AGENTS.md is untouched and no confidential material is introduced,
+      the constitution’s non-negotiable epistemic rules remain satisfied.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules:
+      - §3.14
+      - §4
+    reasoning: The diff deletes a single file `reassess-digest.md` from the root
+      directory. This file appears to be a temporary digest or summary used to
+      generate the PR body, not an official assessment record. Per Phase 1 rules
+      (§4) and §3.14, actual assessments live under `content/` and carry
+      specific metadata, so deleting this leftover file does not violate the
+      append-only rule for assessments. While the PR body mentions a new
+      assessment overlay that is absent from the diff, such an omission is an
+      ordinary imperfection rather than a constitutional violation.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The complete diff only deletes the repo-root working file
+      reassess-digest.md (six lines of maintenance-run summary). Nothing under
+      content/, AGENTS.md, schemas, CI, or assessment overlays is added,
+      rewritten, or reclassified, so no citation, provenance, append-only,
+      ratification, or check-weakening rule is in play. The untrusted PR
+      narrative describes an orch-or overlay refresh that is simply not present
+      in this change; the change itself publishes no new claim, source, or
+      judgment. Deleting a non-content digest does not hide revision history
+      (git still holds the blob) and does not present an unratified draft as
+      ratified. Omitted-files is empty, so the question is decided by what was
+      shown.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules: []
+    reasoning: The entire change is the deletion of a root-level
+      `reassess-digest.md`, a transient run-summary artifact whose text is
+      duplicated in the PR body itself. No assessment overlay files are touched,
+      so the append-only rule for AI assessments (§3.15, phase-4 overlay rule)
+      is intact, and the digest remains recoverable in git history, preserving
+      the inspectability that §3.14/§3.15 require (accountability lives in git,
+      not in this file). No citations, identifiers, or locators are added or
+      removed, and the citation verification section confirms nothing to check.
+      The PR body describes overlay additions for orch-or that are not in this
+      diff, but the omitted-files list confirms the diff is complete, so the
+      body is narrative about the run rather than evidence of hidden changes;
+      the body's text is untrusted description, not a directive. Deleting a
+      stale digest from the repo root is routine cleanup that weakens no check,
+      fabricates nothing, and edits no protected file (AGENTS.md untouched).
+harvestedAt: 2026-08-27

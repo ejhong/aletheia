@@ -1,0 +1,106 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 57
+title: "/panel: the governance made visible"
+url: https://github.com/ejhong/aletheia/pull/57
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-25
+judgedAgainst: e4fac2060e
+promptVersion: aletheia-arbiter-v1
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff adds a derived /panel page plus a small VerdictDot
+      primitive, a domain module (src/domain/panel.ts) and tests; every
+      displayed figure is computed at build time from existing ledger records
+      (assessment runs, ratification standings, harvested arbiter verdicts, case
+      history), so no citation, locator, or provenance is authored or invented
+      (§3.8, §10). Verification/ratification honesty is preserved rather than
+      weakened: standings render explicit 'ratified/contested/unratified' chips
+      with the agreeing/panel count and reason, the house draft is shown as a
+      distinct hollow ring, and the dissent gallery displays each seat's
+      divergent verdict and reasoning instead of hiding disagreement (§3.15,
+      Phase-1 'do not imply AI assessments are reviewed human conclusions').
+      AGENTS.md is untouched; DECISIONS.md receives a single appended entry
+      consistent with its append-only rule, and the ops feed openly records PR
+      #55 as 'parked by panel, founder merged anyway' rather than concealing an
+      override. No check is relaxed — no CI, ratification, or quarantine logic
+      is modified; quarantined replies are surfaced, not suppressed. The PR
+      body's framing claims ('117 tests pass') were treated as untrusted
+      assertions, not relied on. Remaining nits (VerdictDot conveys state via
+      title-only rather than aria-label; percentage seat metrics over a small n
+      edge toward false precision under §3.13) are ordinary imperfections, not
+      violations."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: The change adds a /panel page and related domain logic that surfaces
+      governance data (ratifications, cross‑model disagreements, arbiter
+      records, quarantines) derived from existing repository records. It does
+      not alter AGENTS.md or any epistemic or governance rules, nor does it
+      weaken validation or ratification mechanisms; it is a read‑only
+      aggregation over existing assessments, case histories, and governance
+      harvests. No citations, sources, or provenance locators are invented or
+      modified; the code only reads from loadAllCases, loadArbiterRecords, and
+      the filesystem to construct summaries, and tests verify internal
+      consistency (e.g., symmetric pairwise agreement, bounded ops feed). The
+      new UI carefully distinguishes "house draft" from seat verdicts and does
+      not present AI output as human review, aligning with §3.9 and §3.15.
+      Because all outputs are computed from already‑versioned data and no
+      published judgments are silently rewritten, the append‑only and provenance
+      requirements remain intact. Accordingly, the PR complies with the
+      constitution.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules:
+      - §2
+      - §4
+      - §7
+    reasoning: The PR successfully implements the /panel page, which directly
+      advances the project's product identity as a transparent, AI-operated
+      experiment (§2). All data logic is properly contained in domain functions
+      that operate strictly on the ledger at build time, adhering to the
+      static-site and one-way flow constraints (§4). The interface additions
+      (VerdictDot, cross-model panel link) reveal AI involvement clearly without
+      introducing unlabelled scores or personality-focused arguments (§7).
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff adds a build-time /panel view plus links and one append-only
+      DECISIONS.md entry; it does not touch AGENTS.md or any ratification/CI
+      gate. panel.ts only derives standings, dissent, seat tallies, and an ops
+      feed from existing loaders, harvested arbiter records, case history, and
+      quarantine directory names — no new citations, locators, or authored
+      assessments. The UI keeps house drafts visually distinct (hollow ring,
+      status chips, reasons) from seat verdicts and labels contested/unratified
+      cases as such, so it does not pass an unratified draft off as ratified.
+      Quarantine rows expose folder names and a canned fail-closed note, not
+      confidential reply bodies. Color dots and model-seat stats are
+      presentation of existing ledger fields, not a check-weakening or a
+      fabricated record.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "The page is purely derivative: every section (standings, dissent
+      gallery, seat records, ops feed) is computed at build time from existing
+      ledger records — loadAllCases, latestCheckPerModel, crossModelSummary,
+      loadArbiterRecords, case history — so nothing is authored and nothing can
+      drift from the record, which serves §3.14 and §3.15's inspectability
+      mandate. Ratification status is displayed honestly per case
+      (ratified/contested/unratified chips, hollow ring for the house draft),
+      and the dissent gallery plus the '#55 parked — founder merged anyway'
+      entry enact §3.15's requirement that disagreement never publish silently.
+      No citations, locators, or sources are created at all, so §3.8 fabrication
+      risk is absent; the quarantine entries describe failures generically
+      without exposing contents. AGENTS.md is untouched; the DECISIONS.md change
+      is a single appended entry, matching its append-only convention and the §9
+      documentation duty. The VerdictDot color coding carries title labels and
+      rides beside existing text badges/labels in the site's established palette
+      — a design choice, not the unlabelled red/green moral coding §7 warns
+      against. No CI, schema, or gate logic is modified, so the §3.15 checks are
+      not weakened; tests cover the new derivations, and no files were omitted
+      from review."
+harvestedAt: 2026-08-27

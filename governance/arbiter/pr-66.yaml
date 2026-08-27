@@ -1,0 +1,96 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 66
+title: "Content response: 2026-08-25"
+url: https://github.com/ejhong/aletheia/pull/66
+verdict: pass
+reason: 4 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-25
+judgedAgainst: 34cfe8a7ce
+promptVersion: aletheia-arbiter-v1
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The bulk of the diff is new append-only assessment overlay files
+      that never mutate canon claim data and carry the required stamps (runId,
+      model, date, promptVersion) plus explicit `humanReviewed: false` and
+      header comments stating they are unreviewed AI drafts — exactly what §4
+      and §3.15 require; nothing here is dressed up as a ratified or human
+      judgment. The four cross-model check files are from genuinely different
+      vendors (Gemini/Google, GPT/OpenAI, Grok/xAI, Opus/Anthropic), are flagged
+      `role: check` and 'never displayed as the case narrative', which supports
+      rather than weakens the concurrence gate. The two canon edits are
+      corrections that tighten accuracy: MPI's overview drops the unsupported
+      'preregistered and adequately powered' description of Walach 2020 (the
+      evidence record reports rebuilt hardware and 10,000 simulations, not
+      preregistration), and orch-or's overview concedes that the conventional
+      mechanism is incomplete for inhaled agents per ORCH-E031 — both cut
+      against, not toward, the featured theses, and both are logged in
+      history.yaml with what changed, why, actor, and aiAssisted (§3.14, §3.11).
+      No citation, locator, or provenance is invented or removed; verification
+      labels and independence caveats (e.g. proponent-adjacent records,
+      within-lab non-independence, unreviewed preprints) are stated throughout,
+      and confidences are plain-language rather than false-precision scores
+      (§3.10, §3.13). AGENTS.md is untouched and no check is reclassified or
+      relaxed; the PR body's 'standing derives on merge' is a claim about
+      process, not an instruction I acted on. Omitted-files list is empty, so I
+      have seen the whole change."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: "All added assessment files are explicitly labeled as AI-generated,
+      append-only drafts or cross-model checks, with `humanReviewed: false` and
+      clear role metadata, so they do not misrepresent AI outputs as ratified
+      human judgments, respecting §3.14–3.15. The changes do not alter any canon
+      claim, evidence, or source files; they only add new timestamped overlays
+      and update history logs, preserving versioning and append-only assessment
+      behavior per §3.14. No citations, identifiers, or locators are fabricated
+      or modified; references remain internal IDs already defined elsewhere, and
+      the only content edits in overviews (MPI and Orch-OR) are corrections to
+      better align narrative text with existing evidence records, strengthening
+      rather than weakening epistemic checks (§3, esp. §3.8, §3.9). Multi-model
+      check files (Gemini, GPT, Grok, Opus) are clearly marked as independent
+      checks feeding concurrence, not as public-facing narrative, maintaining
+      the constitutional gatekeeping process in §3.15. History entries
+      transparently record what changed, why, and which AI actor did so, in line
+      with the accountability and provenance requirements (§3.14–3.15). There
+      are no edits to AGENTS.md or to any rule-enforcing mechanisms, and no sign
+      of confidential or unverifiable material being introduced. Accordingly,
+      the diff adheres to the constitution’s epistemic and operational
+      constraints."
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: The proposed changes adhere to the constitution's epistemic and
+      phase-1 rules. The AI-generated assessments are correctly formatted as
+      append-only overlay files, clearly marked as unreviewed drafts, and
+      explicitly list plain-language verdicts rather than false precision
+      numbers. Furthermore, the substantive corrections to the overview markdown
+      files are faithfully logged in the respective history.yaml files,
+      recording what changed, why, and the AI agent responsible, while deferring
+      final authority to the multi-model concurrence gate.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff only adds stamped append-only assessment overlays (auto
+      drafts plus mpi check-role files) and two documented overview corrections;
+      it does not edit AGENTS.md, mutate canon claim files, or strip provenance.
+      Every new assessment is labeled a draft, humanReviewed: false, and stamped
+      with runId/model/date/promptVersion, so unratified AI judgment is not
+      presented as ratified or human. The mpi and orch-or overview edits are
+      small observation-level corrections (Walach 2020 was not preregistered;
+      Eger leaves inhaled-agent mechanism unfinished) with matching history.yaml
+      entries that record what changed, why, and which model proposed them for
+      this gate. Internal citations are existing case IDs rather than new
+      invented sources or locators, and nothing in the files weakens §3.15
+      checks or exposes confidential material."
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: unsure
+    rules: []
+    reasoning: "seat failed: TypeError: fetch failed"
+harvestedAt: 2026-08-27

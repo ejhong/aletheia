@@ -1,0 +1,109 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 88
+title: Record Villarroel permission on the removed correspondence (§3.15 standard)
+url: https://github.com/ejhong/aletheia/pull/88
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-26
+judgedAgainst: e10477803e
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff adds no content claims, no citations (verification section
+      confirms none), and publishes no confidential material: the correspondence
+      files stay out of the tree and the tombstone README still states that the
+      raw email is not stored and is retained privately by the editor. The
+      history.yaml addition is a genuine append at the end of the file, and
+      DECISIONS.md is appended without deleting or rewriting the prior
+      2026-08-26 removal entry, so the earlier admission of the §3.15 breach
+      remains visible in full. The permission record is honest about its chain
+      of custody — granted by Villarroel to the founder on 2026-08-26, relayed
+      by him to the maintainer the same day, grant correspondence held by the
+      founder — and it attributes the relay rather than dressing hearsay up as a
+      first-hand record; contact by the founder is now publicly logged,
+      consistent with the no-silent-contact rule. My only reservation is that
+      the 'by what channel' element of §3.15's permission standard is thin
+      ('told the founder'), but nothing is published, quoted, or cited on the
+      strength of this permission, so the imprecision is not consequential.
+      Downgrading the history rewrite from urgent to optional does not weaken a
+      §3.15 check: the rewrite is a remediation reserved to the founder, it
+      remains available, and the entry candidly states the remaining third-party
+      residue (cc address, research/ captures) that still argues for it. No
+      AGENTS.md edit is present."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: The change records, in an append-only way, that permission for
+      including Villarroel’s email was granted after its removal, and explicitly
+      notes who granted it, when, by what channel/custody — aligning with
+      §3.15’s requirement that permission be treated like any other provenance.
+      It does not reintroduce the private correspondence or any confidential
+      content into the repository; instead it keeps the files out of the tree
+      specifically because of third-party personal data and remarks, which is
+      consistent with the prohibition on publishing material supplied in
+      confidence. No prior assessments, claims, or sources are silently altered
+      or weakened; instead, the history and tombstone README are updated to
+      clarify the status of the old commits and the now-optional nature of a
+      history rewrite. No citations, locators, or provenance details are
+      fabricated; the update concerns internal process history rather than
+      external literature, and the citation checker confirms no new identifiers
+      were added. AGENTS.md is not modified, so there is no attempt to alter the
+      constitutional rules themselves. Overall, the diff strengthens
+      transparency about consent and repository hygiene without weakening any
+      epistemic checks, so it complies with the constitution.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules:
+      - §3.15
+    reasoning: The PR adheres strictly to the §3.15 protocol for recording
+      permission to retain previously confidential material. It accurately
+      documents who granted the permission (Villarroel to the founder), the date
+      (2026-08-26), the channel, and the custody of the grant (held by the
+      founder). Furthermore, the PR correctly maintains the exclusion of the
+      actual files from the tree, recognizing that the newly acquired permission
+      does not cover the third-party personal data contained within the
+      correspondence. No rules are weakened, and no citations are fabricated.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff only appends a housekeeping history entry, updates the
+      tombstone README, and adds a DECISIONS.md note; it does not restore,
+      quote, paraphrase, or cite the removed correspondence, and it does not
+      edit AGENTS.md. The permission record states who granted it (Villarroel to
+      the founder), the date (2026-08-26), the relay channel, and custody (grant
+      correspondence held by the founder), which is the §3.15 provenance shape,
+      while keeping the files out because third-party addresses and remarks
+      still lack permission. Downgrading the history rewrite from urgent to
+      optional is a process judgment about residue in old commits, not a
+      weakening or reclassification of the checks themselves. No citation
+      identifiers were added, omitted-file risk is none, and there is no
+      positive internal evidence of fabricated locators or provenance.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+    reasoning: "This PR does exactly what §3.15's permission standard requires: it
+      records the grant with who (Villarroel to the founder), when (2026-08-26),
+      custody (grant correspondence held by the founder), and the relay path, in
+      append-only history.yaml and DECISIONS.md entries plus an updated
+      tombstone. Critically, it publishes nothing confidential — the
+      correspondence files stay out of the tree, explicitly because a third
+      party's cc address and remarks about colleagues are not covered by her
+      permission, and nothing in the ledger cites the email. The downgrade of
+      the history rewrite from urgent to optional is reasoned, not
+      check-weakening: the rewrite remains available and reserved to the
+      founder's authorization, and the remaining residue (third-party captures,
+      cc address in old blobs) is honestly disclosed. The permission claim
+      itself is unverifiable by the panel but internally consistent (dates align
+      with the same-day removal) and shows no positive evidence of fabrication,
+      so temporal humility applies. Updating the tombstone to reflect the
+      recorded permission is a provenance correction, not a silent change to a
+      published judgment — git preserves the prior text. The edit to
+      DECISIONS.md is an append to an append-only log, and AGENTS.md is
+      untouched. Channel of the grant is only implicit ('correspondence
+      recording the grant'), an ordinary imperfection rather than a violation."
+harvestedAt: 2026-08-27

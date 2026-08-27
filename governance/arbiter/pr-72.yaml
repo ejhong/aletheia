@@ -1,0 +1,84 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 72
+title: Remove the global research page
+url: https://github.com/ejhong/aletheia/pull/72
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-26
+judgedAgainst: 499274c3b3
+promptVersion: aletheia-arbiter-v2
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff is purely presentational: it deletes the aggregate
+      `/research` page component, its nav entry in `src/config/site.ts`, and the
+      homepage link. No content files, sources, citations, locators,
+      verification labels, or assessment overlays are touched, so §3.8, §3.14,
+      and the fabrication prohibitions are not implicated. It does not touch CI,
+      schema validation, ratification, or parking machinery, so it is not a
+      §3.15 check-weakening; AGENTS.md is untouched. Per-case decisive tests and
+      'what would change our mind' material live in each case's `research`
+      records (which the deleted page merely aggregated via `loadAllCases()`),
+      so §7's prominence requirement is still served on case pages. The PR
+      body's 'Founder call' assertion is untrusted and I give it no weight, but
+      no rule requires founder authorization for a reversible, non-normative UI
+      removal, and this panel's review is itself the required concurrence. The
+      only residual risk is stale inbound links to `/research/` from files not
+      in this complete diff, which is a routine build concern rather than a
+      constitutional violation."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: The change removes a UI page and its navigation links without
+      touching any content, epistemic records, or provenance. No claims,
+      sources, evidence, or assessments are added, altered, or deleted, so rules
+      about atomic claims, provenance, verification labels, or append-only
+      assessments are not implicated. The PR does not modify AGENTS.md or any
+      constitutional safeguards, nor does it introduce mechanisms that could
+      weaken multi-model checks or content validation. The removed page
+      aggregated existing per-case research opportunities but did not itself
+      constitute or alter evidential judgments. With no omitted files and only
+      route/config changes in the diff, there is no sign of fabrication,
+      mislabeling, or confidentiality issues. Therefore, the change complies
+      with the constitution.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules: []
+    reasoning: The PR removes the global 'Price of Truth' aggregation page and its
+      navigation links. This is a structural change to the site's interface that
+      does not alter any underlying domain data, evidence, or citations. The
+      per-case research agendas are untouched, preserving the requirement to
+      make 'what would change our mind' prominent (§7), and no epistemic or
+      procedural rules are violated.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The complete diff only deletes the global /research aggregator, its
+      homepage link, and the matching nav item. It does not edit AGENTS.md,
+      content records, citations, provenance, assessments, or the
+      ratification/CI checks in §3.15. Per-case research objects and UI are
+      untouched in the shown files, so the mission link from cases to decisive
+      tests remains. Removing a cross-case index is an ordinary product/nav
+      choice, not fabrication, check-weakening, or presentation of an unratified
+      judgment as ratified. Omitted-files is empty, so nothing else in the
+      change is hidden.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "The diff is a pure deletion: it removes the global /research
+      aggregation page (app/research/page.tsx), its nav entry in
+      src/config/site.ts, and a homepage link, while per-case research agendas
+      remain untouched according to the PR body and nothing in the diff
+      contradicts that. No content files, citations, locators, provenance,
+      assessments, or published judgments are added or altered, so §3 epistemic
+      rules (real citations, exact provenance, append-only assessments) are not
+      engaged. No CI checks, schemas, or ratification machinery are weakened
+      (§3.15), and AGENTS.md is not edited. Removing a UI aggregation page is a
+      product/IA decision, not a consequential epistemic judgment, and the
+      underlying ResearchOpportunity data stays published on each case page, so
+      no evidence or 'what would change our mind' material is being suppressed.
+      The diff is complete (no omitted files) and internally consistent."
+harvestedAt: 2026-08-27

@@ -1,0 +1,99 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 62
+title: "Immortality Key: caption discipline — captions describe, claims argue"
+url: https://github.com/ejhong/aletheia/pull/62
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-25
+judgedAgainst: 5d1946c0ff
+promptVersion: aletheia-arbiter-v1
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches only two content files in one case: image captions
+      and an appended history entry. The caption edits move evidential-standing
+      assertions (\"has not been independently replicated\", \"no vessel... has
+      ever been chemically analyzed\") out of the `depicts` descriptions and
+      replace them with pointers to the claims (TIK-C003/C004/C007/C010/C011)
+      that carry those questions — which is exactly the §3.9 distinction between
+      what a source displays and what an editor infers; the negative-evidence
+      content is not deleted from the ledger, only relocated off the caption, so
+      §3.11 is not undermined. Provenance blocks (photographer, date, sourceUrl)
+      are untouched; no citation, locator, or identifier is added, invented, or
+      removed. The history.yaml change is a strict append with date, kind,
+      change, reason, actor and aiAssisted flag, satisfying §3.14's append-only,
+      who-and-why requirement, and it honestly labels the actor as an AI agent
+      rather than a human. AGENTS.md is not edited and no check is relaxed or
+      reclassified. The PR body's framing of a prior dissent and founder
+      override is a claim about process history, not a directive, and it does
+      not present this draft as a ratified judgment."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: The change only updates an existing case’s history entry and tightens
+      several image captions so that they describe what is visibly shown and
+      refer readers to the relevant claim IDs. This aligns with §3.1 and §3.9 by
+      separating observation (what the image depicts) from inference and
+      evidential status (moved into claims/evidence records). No citations,
+      sources, or provenance locators are fabricated or weakened; existing claim
+      and evidence structures are left unchanged, as the history entry
+      explicitly notes. The history addition is a transparent record of the
+      editorial rationale, consistent with §3.14 on versioning and documenting
+      changes. No confidential material is introduced, and no checks or
+      constitutional rules are relaxed. AGENTS.md is untouched, so §3.15 is
+      respected. Therefore the PR complies with the constitution.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules:
+      - §3.1
+      - §3.9
+      - §3.14
+    reasoning: The change correctly enforces §3.1 (Observation before
+      interpretation) and §3.9 (Source statement versus inference) by removing
+      editorial statements and evidential analysis from image captions, instead
+      pointing to the claims where that analysis belongs. Additionally, the
+      history entry correctly versions this update with an explanation and actor
+      attribution, complying with §3.14 (Version everything important). There is
+      no fabrication, and provenance is preserved.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The complete diff only rewrites four image `depicts` captions and
+      appends a changelog entry; AGENTS.md and all claim/evidence/assessment
+      records are untouched. The caption edits move evidential-standing
+      assertions (unreplicated analysis, never chemically tested) out of the
+      image fields and replace them with what the plate shows plus pointers to
+      existing claim IDs, which is aligned with §3.1 and §3.9 rather than a
+      breach. The history row is an append-only content note, labeled
+      AI-authored, and does not present an unratified draft as ratified or
+      invent a citation/locator. No check in §3.15 is weakened, and
+      omitted-files is empty, so the visible change is ordinary caption
+      discipline.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules:
+      - §3.1
+      - §3.9
+      - §3.14
+    reasoning: "The diff tightens four image captions so the depicts fields state
+      only what each image shows, moving evidential-standing assertions ('not
+      independently replicated', 'never chemically analyzed') out of the caption
+      and pointing to the claim/evidence records (TIK-C003/C004/C007/C010) that
+      carry them. This is an enforcement of §3.1 (observation before
+      interpretation) and §3.9 (source statement versus inference), not a
+      weakening — no claim, evidence record, assessment, or provenance block is
+      edited, and the locators and source metadata are untouched. The change is
+      append-only: history.yaml gains a new dated entry recording what changed,
+      why, and the actor, satisfying §3.14's visible-revision requirement, and
+      the prior history entries are unmodified. The negative-evidence content is
+      not deleted but relocated by reference to the records, which is where §3.6
+      says evidentiary weight should live; the captions still flag the limits
+      explicitly ('the tablet does not depict...', 'the frescoes do not
+      show...'). The history entry's account of a prior panel dissent and
+      founder merge is metadata I cannot independently verify, but it fabricates
+      no citation, locator, or provenance, and the diff is complete with no
+      omitted files, so nothing visible breaks a rule."
+harvestedAt: 2026-08-27

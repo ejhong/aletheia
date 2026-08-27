@@ -1,0 +1,78 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 77
+title: "inbox-response: dispatch job needs contents:read to resolve the default
+  branch"
+url: https://github.com/ejhong/aletheia/pull/77
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-26
+judgedAgainst: 039da1b952
+promptVersion: aletheia-arbiter-v2
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The complete diff is four added lines in
+      .github/workflows/inbox-response.yml: a comment plus `contents: read`
+      alongside the existing `actions: write` permission block. This is a
+      read-only scope addition needed for `gh workflow run` to resolve the
+      default branch; it neither removes nor loosens any fail-closed CI gate,
+      ratification requirement, or provenance check (§3.15), and it touches no
+      content, citation, locator, or assessment file. AGENTS.md is untouched, so
+      §3.15's human-only amendment reservation is not implicated. The PR body's
+      appeal to a downstream deployment's 'upstreaming queue' is unverifiable
+      narrative, but nothing in the change depends on that claim being true —
+      the four lines stand or fall on their own and are innocuous. No omitted
+      files, so nothing could be hiding a larger change."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: "The change only modifies a GitHub Actions workflow, adding
+      `contents: read` to the permissions block alongside an explanatory
+      comment. It does not touch any content, citations, sources, assessments,
+      provenance records, or epistemic logic. No existing records or assessments
+      are altered or removed, so append-only and versioning expectations are
+      preserved. There is no interaction with confidential materials, no
+      AI/human mislabeling, and no weakening of multi-model checks or CI
+      safeguards. Since AGENTS.md is untouched and the workflow permission
+      change simply allows a dispatch job to function, this complies with the
+      constitution."
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules: []
+    reasoning: "The change solely adds a 'contents: read' permission to the
+      .github/workflows/inbox-response.yml workflow file to resolve a GitHub
+      Actions runtime error. This is a routine mechanical fix to CI/CD
+      infrastructure. It does not edit AGENTS.md, does not modify any evidence
+      or claims, and does not weaken or bypass any of the AI operational checks
+      mandated by Section 3."
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The complete diff only adds a `contents: read` permission (plus a
+      comment) to `.github/workflows/inbox-response.yml`, which already had
+      `actions: write` for a `gh workflow run` dispatch. That is a narrow CI
+      token-scope fix so the job can resolve the default branch; it does not
+      edit AGENTS.md, content, citations, assessments, or provenance, and it
+      does not weaken §3.15 ratification, CI, or epistemic checks. No omitted
+      files. Ordinary workflow-permission repair is not a constitutional
+      violation."
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "The diff is a four-line change to
+      .github/workflows/inbox-response.yml adding `contents: read` (plus an
+      explanatory comment) alongside the existing `actions: write` in the
+      dispatch job's permissions block. This is infrastructure, not content: no
+      citations, provenance, assessments, or published judgments are touched, so
+      the epistemic rules in §3 are not engaged. It does not weaken the §3.15
+      checks — it fixes a dispatch failure so the Maintain workflow actually
+      runs, and a read-only contents permission is the minimal standard grant
+      for resolving the default branch via the API. AGENTS.md is not edited, so
+      the §3.15 human-only amendment rule is not implicated. The PR body's
+      claims about a downstream deployment and an 'ENGINE.md queue' are
+      untrusted narrative but inert; the change itself is exactly what the
+      visible diff shows."
+harvestedAt: 2026-08-27

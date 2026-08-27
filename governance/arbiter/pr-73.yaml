@@ -1,0 +1,78 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 73
+title: "generate-case-art: fall back to OPENAI_API_KEY when IMAGE_API_KEY is unset"
+url: https://github.com/ejhong/aletheia/pull/73
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-26
+judgedAgainst: 209d47f506
+promptVersion: aletheia-arbiter-v2
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches only two build/CI files:
+      `scripts/generate-case-art.mjs` and
+      `.github/workflows/generate-case-art.yml`, changing API-key resolution to
+      `IMAGE_API_KEY || OPENAI_API_KEY` and updating the corresponding
+      error/usage text. No content records, citations, locators, verification
+      labels, assessments, or provenance are touched, so §3.8, §3.14 and the
+      fabrication prohibitions are not implicated. AGENTS.md is untouched, so
+      §3.15's reservation to the founder is not engaged, and nothing here
+      weakens CI checks — the key check still fails closed, only now when both
+      secrets are absent. Secrets are passed through the workflow `env:` block
+      rather than echoed, so no confidential material is exposed. This is an
+      offline maintainer-triggered art script, not a live AI call added to the
+      static site itself, so the Phase-1 constraint in §4 is unaffected. The PR
+      body's note about a 'downstream deployment's allowlisted copy' is a claim
+      about another PR and does not affect what is visible here."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: The change only affects a GitHub Actions workflow and a local utility
+      script for generating case artwork. It adjusts how OpenAI API keys are
+      sourced (falling back from IMAGE_API_KEY to OPENAI_API_KEY) and updates
+      associated error messages and usage comments. No content, citations,
+      provenance records, or epistemic logic are modified, so rules about
+      evidence, sources, and assessments are untouched. The checks and wording
+      remain honest about what is required and how the script behaves. There is
+      no weakening of constitutional safeguards, no fabrication risk, and no
+      interaction with AGENTS.md or other governance files. Therefore, the
+      modifications are consistent with the constitution.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules: []
+    reasoning: The PR simply introduces an environment variable fallback
+      (`OPENAI_API_KEY`) to an existing offline art generation script and its
+      associated GitHub Actions workflow. It does not edit AGENTS.md, alter
+      epistemic standards, weaken editorial checks, or add live AI calls to the
+      site itself, fully complying with the project's constitution.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff only changes API-key resolution in
+      scripts/generate-case-art.mjs and the matching GitHub Actions workflow so
+      IMAGE_API_KEY still wins and OPENAI_API_KEY is a documented fallback. No
+      content records, citations, provenance, assessments, or AGENTS.md are
+      touched, so §§3.8–3.15 and the phase-1 citation/confidentiality rules are
+      not implicated. The script already called the OpenAI Images API off-site;
+      this does not add live AI calls to the static site, weaken ratification/CI
+      checks, or reclassify a consequential editorial change. Ordinary tooling
+      convenience is not a constitutional violation.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "The change is confined to an offline image-generation script and its
+      manually-triggered workflow: the API key now resolves as IMAGE_API_KEY ||
+      OPENAI_API_KEY, with error text and comments updated to match. No content,
+      citations, locators, assessments, or provenance records are touched, so
+      §3.1–3.14 are not implicated. AGENTS.md is not edited, so §3.15's
+      human-amendment reservation is intact. The workflow's gating (manual
+      trigger plus PR review, per the header comment) is preserved — the
+      early-exit check still fails closed when no key exists, so no check is
+      weakened. The script is not part of the static site, consistent with the
+      phase-1 ban on live AI calls in the site itself. This is ordinary tooling
+      maintenance with no epistemic consequence."
+harvestedAt: 2026-08-27

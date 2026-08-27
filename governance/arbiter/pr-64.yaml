@@ -1,0 +1,99 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 64
+title: "Panel page: full arbiter verdicts on-site, with verbatim-record links"
+url: https://github.com/ejhong/aletheia/pull/64
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-25
+judgedAgainst: 5d1946c0ff
+promptVersion: aletheia-arbiter-v1
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The change is purely presentational/derivational: it surfaces
+      already-harvested arbiter records (governance/arbiter/pr-*.yaml) in full
+      on /panel and adds provenance links back to the PR and the verbatim YAML
+      in the repo. This strengthens rather than weakens the §3.15 checks — no
+      seat vote, reasoning, or tally is summarized away or rewritten, and the
+      'parked'/'passed' chip plus the explicit 'merged by founder tap (dry
+      period)' note keeps the honest record of contested changes visible rather
+      than silently passing. No citation, locator, or provenance detail is
+      invented; the only new constant is the public repo URL centralized in
+      src/config/site.ts, used to build links to files in the same repository,
+      not as an evidential citation. Nothing here publishes confidence-supplied
+      material — the arbiter records and quarantined replies are already in
+      public git — and no AI record is dressed up as a human one. AGENTS.md is
+      untouched, no assessment overlay is mutated, and the new tests assert the
+      anchor/source-link invariants. The PR body's mention of what 'the founder
+      wanted' is a claim about the change, not an authorization I acted on; the
+      diff itself decides the vote."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: The change adds UI and link infrastructure to surface existing
+      governance records more transparently, without altering any epistemic
+      workflows or data. Arbiter verdicts are rendered verbatim from harvested
+      YAML and cross-linked back to both the PR and the YAML file, which
+      strengthens provenance and inspectability consistent with §3.8 and §3.14.
+      The opsFeed additions simply attach source URLs (GitHub locations for
+      arbiter PRs, assessment run files, and quarantined replies) and adjust
+      arbiter event hrefs to point to the new on-page anchors; no records,
+      judgments, or verification labels are modified. No citations, locators, or
+      assessments are fabricated or edited, and no confidential material is
+      introduced — everything linked is already part of the public git ledger.
+      The constitution file itself is untouched, and there is no weakening or
+      bypassing of the multi-model checks in §3.15. Overall, the diff improves
+      transparency of the existing governance ledger without violating any
+      stated rules.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules:
+      - §4
+      - §7
+      - §8
+    reasoning: The change perfectly respects the Phase 1 and code rules by
+      introducing a single, pure UI component (`ArbiterVerdictCard`) to display
+      the data loaded via a domain function (`loadArbiterRecords`). It advances
+      the interface requirements (§7) to 'reveal AI involvement' transparently
+      by displaying verbatim constitutional panel judgments without adding any
+      external dependencies or breaking the static build architecture.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The complete diff is additive UI and ops-feed wiring: it renders
+      already-harvested `loadArbiterRecords()` on /panel via a new
+      `ArbiterVerdictCard`, and adds provenance links (on-page anchors, PR URLs,
+      `governance/arbiter/pr-*.yaml`, assessments trees, quarantine dirs).
+      Nothing edits AGENTS.md, assessments, citations, or verification labels,
+      and parked-vs-passed plus the founder-tap note keep unratified/override
+      outcomes labeled rather than presented as ordinary ratification.
+      Centralizing `site.repoUrl` and pointing readers at the YAML ledger
+      strengthens inspectability rather than weakening §3.15 checks. Tests only
+      assert those link shapes. This is ordinary Phase-1 presentation work, not
+      a fabricated record or a check dodge."
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "The change is display-only: it renders already-harvested arbiter
+      verdict records (governance/arbiter/pr-*.yaml) in full on /panel — each
+      seat's vote, cited rules, and verbatim reasoning — with provenance links
+      to the PR and the verbatim YAML in the repo. This directly serves §3.14
+      (visible revision/ratification history) and §3.15's
+      accountability-as-inspectability requirement, and parks are explicitly
+      displayed as contested ('parked', 'founder merged anyway (dry period)'),
+      which matches the rule that disagreement must not publish silently and
+      that AI records are never presented as human ones. Links to quarantined
+      replies and assessment run files point at directories already in the
+      public repo ledger; nothing new is published and no confidence material is
+      introduced. No checks are weakened, no citations or locators are
+      fabricated (URLs are constructed from harvested record fields plus a
+      centralized repoUrl per §8's 'centralize configuration'), AGENTS.md is
+      untouched, and the diff is complete with new test coverage for the link
+      behavior. The verdigris/terracotta chips for pass/park encode procedural
+      gate status rather than moral coding of hypotheses (§7), consistent with
+      the existing VerdictDot palette — ordinary imperfection at most, not a
+      violation."
+harvestedAt: 2026-08-27

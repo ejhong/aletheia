@@ -21,7 +21,7 @@ describe("anthropic refusal fallback", () => {
   it("retries once on claude-opus-5 after a refusal, and not beyond", async () => {
     vi.resetModules();
     vi.stubEnv("ANTHROPIC_API_KEY", "test-key");
-    vi.stubEnv("EXTRACT_MODEL", "claude-fable-5");
+    vi.stubEnv("EXTRACT_MODEL", ""); // unset: the code default (Fable) applies
     const calls: string[] = [];
     vi.stubGlobal(
       "fetch",

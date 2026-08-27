@@ -10,13 +10,17 @@
 const providers = {
   anthropic: {
     key: process.env.ANTHROPIC_API_KEY,
-    // claude-opus-5, not claude-fable-5 (reversing decision #15): Fable's
-    // safety filter refuses plain pharmacology statements about anesthetic
-    // mechanisms — 11 of orch-or's 18 claims individually return
-    // stop_reason "refusal" ("general anesthetics bind tubulin…"), which is
-    // why that case's reassessment failed three times with empty replies.
-    // Opus answers the identical prompts. Verified 2026-08-25.
-    model: process.env.EXTRACT_MODEL || "claude-opus-5",
+    // Default history: Fable was the original default; decision #15's
+    // reversal made it Opus after Fable's safety filter refused plain
+    // pharmacology statements (11 of orch-or's 18 claims returned
+    // stop_reason "refusal", failing that case's reassessment three
+    // times; verified 2026-08-25). With the one-shot Opus fallback
+    // below, Fable-first is safe again and is the founder's preference
+    // (2026-08-27): Fable answers where it will, Opus catches the
+    // refusals, and both repos stay identical with no per-repo
+    // EXTRACT_MODEL variable to drift. The variable still overrides
+    // when set.
+    model: process.env.EXTRACT_MODEL || "claude-fable-5",
     // Fable's safety filter refuses plain pharmacology/physiology
     // statements (stop_reason "refusal", or zero text blocks) on cases
     // like orch-or — the documented failure above. When the configured

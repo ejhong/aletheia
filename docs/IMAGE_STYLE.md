@@ -88,6 +88,7 @@ mineral-pigment saturation. Defined in `scripts/generate-case-art.mjs`
 | `ccc` | Slate and ember | deep charcoal-slate night sky, pale cream and faded antique-gold concentric rings, one small ember-red accent at the rings' center |
 | `zero-worlds` | Graphite and lapis | faint graphite and warm dove-grey washes, generous bare cream paper (the sparest cover in the set), one small deep-lapis accent at the observer's lantern |
 | `immortality-key` | Wine-dark and barley gold | muted Tyrian purple and wine-dark cup and vine, pale barley-gold grain, warm umber shadows, one small pale-mint accent on the herb sprig |
+| `pre-columbian-amazon` | Viridian and river gold | deep viridian and forest-green canopy washes, a pale ochre-gold river meander, faint umber earthwork lines beneath the canopy, one small vermilion accent on the chronicler's ribbon marker |
 
 Rules of thumb:
 

@@ -1,0 +1,513 @@
+# Evidence ledger for AMZ-001. Every record's sourceStatement was checked
+# verbatim against a natively fetched copy of the source (see VERIFICATION
+# ledger, 2026-08-28); editorInference is kept strictly separate.
+
+- id: AMZ-E001
+  title: "LiDAR documents 432 earthworks and delimits a 183,000 km² Aquiry region"
+  claimIds: [AMZ-C004]
+  sourceId: SRC-PARSSINEN-2026
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    "Our new LiDAR data, obtained from 10 ALS lines, document 432
+    earthworks, of which only 36 were previously known." LiDAR reveals
+    "five times more earthworks in the deforested areas of block 1 than
+    we had previously found along the same lines using satellite
+    imagery"; the geographic circumscription "produced an area of about
+    183,000 km²," and the study estimates "approximately 24,000–30,000
+    earthworks, of which about two thirds belonged to the Aquiry."
+  exactLocator: "Nature, 2026-07-29, results sections (verified verbatim 2026-08-28)"
+  limitations:
+    - "The 24,000–30,000 figure is a block-extrapolation from sampled densities, as the paper states."
+  reviewState: ai_extracted
+  origin:
+    ref: "verification ledger A01"
+    extractedBy: "claude-fable-5 (cursor session)"
+    runId: "amz-case-build-2026-08-28"
+    date: "2026-08-28"
+
+- id: AMZ-E002
+  title: "The paper's own single-family sensitivity collapses the population headline roughly fivefold"
+  claimIds: [AMZ-C005]
+  sourceId: SRC-PARSSINEN-2026
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    "If, as said, about 25–60% (4,165–10,000) of these earthworks were in
+    use in 100–300 ad, and if an average earthwork required 300 people to
+    build and maintain it, we arrive at a total population of about
+    1.25–3 million." And: "Only if the very unlikely estimation that each
+    approximately 25-m long house foundation (mound) belonged to a single
+    family were true would the population be about 250,000–600,000 people
+    without the invisibility effect of laser penetration, which would
+    raise the population, in this case, to approximately 315,000–760,000."
+  editorInference: >-
+    The estimate's span across its own stated assumptions — roughly
+    fivefold — is the honest error bar, and it is what this case displays
+    rather than the headline alone.
+  exactLocator: "Nature, 2026-07-29, population estimation section (verified verbatim 2026-08-28)"
+  limitations:
+    - "The authors label the single-family reading 'very unlikely'; the sensitivity is theirs, the emphasis is ours."
+  reviewState: ai_extracted
+  origin:
+    ref: "verification ledger A01"
+    extractedBy: "claude-fable-5 (cursor session)"
+    runId: "amz-case-build-2026-08-28"
+    date: "2026-08-28"
+
+- id: AMZ-E003
+  title: "The Aquiry demographic peak is dated AD 100–300 — a millennium before Orellana"
+  claimIds: [AMZ-C004, AMZ-C017]
+  sourceId: SRC-PARSSINEN-2026
+  direction: qualifies
+  strength: strong
+  sourceStatement: >-
+    "The densest overlap of calibrated dates occurs at around 100–300
+    ad, both chronologically and spatially… our results strongly suggest
+    that between ad 100 and 300 the population of the Aquiry was
+    approximately 1.25–3 million."
+  editorInference: >-
+    Superb evidence against ecological-impossibility arguments; weak
+    direct evidence about the world Carvajal saw in 1542. Spending
+    early-dated grandeur as contact-era corroboration is the chronology
+    error this case is built to avoid.
+  exactLocator: "Nature, 2026-07-29 (verified verbatim 2026-08-28)"
+  limitations: []
+  reviewState: ai_extracted
+  origin:
+    ref: "verification ledger A01"
+    extractedBy: "claude-fable-5 (cursor session)"
+    runId: "amz-case-build-2026-08-28"
+    date: "2026-08-28"
+
+- id: AMZ-E004
+  title: "Southern-rim fortified villages dated ~AD 1250–1500, with a stated-assumptions population model"
+  claimIds: [AMZ-C006]
+  sourceId: SRC-DESOUZA-2018
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    "The results show that an 1800 km stretch of southern Amazonia was
+    occupied by earth-building cultures living in fortified villages ~Cal
+    AD 1250–1500." And: "Assuming site contemporaneity, the total
+    population calculated for the UTB sites was 21,340… projected to the
+    total area of potential occurrence of ditched enclosures in the SRA,
+    the result is a population of 463,555… When projected to the total
+    area of the SRA predicted to contain earthworks, the result is
+    1,087,150 inhabitants. Therefore, we assume that a population between
+    ~500 thousand and 1 million for the SRA in late Pre-Columbian times
+    (Cal AD 1250–1500) is a reasonable estimate."
+  exactLocator: "Nat. Commun. 9:1125, abstract and results (verified verbatim 2026-08-28)"
+  limitations:
+    - "Population figures rest on site contemporaneity, ethnographically-derived formulae, and MaxEnt-projected extrapolation — all stated by the authors."
+  reviewState: ai_extracted
+  origin:
+    ref: "verification ledger A03"
+    extractedBy: "claude-fable-5 (cursor session)"
+    runId: "amz-case-build-2026-08-28"
+    date: "2026-08-28"
+
+- id: AMZ-E005
+  title: "Denevan: the extreme figures are absent from the Oviedo manuscript branch"
+  claimIds: [AMZ-C002]
+  sourceId: SRC-DENEVAN-1996
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    "There is no mention of 50,000 or 10,000 and 8,000 warriors as there
+    is in the Medina (and Muñoz) versions… nor of villages 4 or 5 leagues
+    in length. There is one mention of 5,000 warriors in the Oviedo
+    version."
+  exactLocator: "Annals AAG 86(4), pp. 662–663 (verified verbatim 2026-08-28 via full-text OCR)"
+  limitations:
+    - "Verified from a Wayback abstract plus an OCR full-text copy; page numbers per the OCR pagination."
+  reviewState: ai_extracted
+  origin:
+    ref: "verification ledger A04"
+    extractedBy: "claude-fable-5 (cursor session)"
+    runId: "amz-case-build-2026-08-28"
+    date: "2026-08-28"
+
+- id: AMZ-E006
+  title: "The bluff model: sporadic riverine settlement concentrated where channels meet bluffs"
+  claimIds: [AMZ-C001]
+  sourceId: SRC-DENEVAN-1996
+  direction: qualifies
+  strength: moderate
+  sourceStatement: >-
+    "However, bluff occupation was sporadic rather than continuous, with
+    large settlements mostly located where main river channels impinged
+    against bluffs."
+  editorInference: >-
+    A settlement geography of dense reaches alternating with empty ones
+    is exactly the pattern Carvajal reports — including his empty
+    stretches — which turns his account from "continuous metropolis"
+    rhetoric into a testable spatial prediction.
+  exactLocator: "Annals AAG 86(4), abstract (verified verbatim 2026-08-28)"
+  limitations: []
+  reviewState: ai_extracted
+  origin:
+    ref: "verification ledger A04"
+    extractedBy: "claude-fable-5 (cursor session)"
+    runId: "amz-case-build-2026-08-28"
+    date: "2026-08-28"
+
+- id: AMZ-E007
+  title: "Nunes (1538) and the Ursúa accounts (1560) independently describe the populous middle Amazon"
+  claimIds: [AMZ-C003]
+  sourceId: SRC-LOPES-2024
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    "Diogo Nunes alcança a província de Machiparo em 1538, invadindo
+    aldeias e capturando indígenas… Em 1560, seria a vez da expedição de
+    Pedro de Ursúa… contando com dez relatos, sendo os de Vazquez,
+    Almesto e Altamirano os mais completos." The accounts describe the
+    middle Solimões as "uma das áreas mais densamente habitadas do
+    rio-mar"; maize stores among the Yaguamales as "infinita"; straight
+    roads "mui largos e bons, que eram ao modo dos Incas do Peru, exceto
+    pelas paredes"; and turtle/fish abundance "na casa dos milhares."
+  editorInference: >-
+    Independent witnesses, hostile to one another and writing for
+    different crowns, repeat the mundane load-bearing features of
+    Carvajal's picture. None of them repeats his extreme numbers.
+  exactLocator: "Bol. Mus. Goeldi 19(2) e20230072 (verified verbatim 2026-08-28)"
+  limitations:
+    - "Nunes's testimony survives as a letter of 1553/54 known through Porro's modern edition."
+    - "Fortifications and organized warfare are NOT among the verified common elements; the turtle-corral detail belongs to Acuña (1639)."
+  reviewState: ai_extracted
+  origin:
+    ref: "verification ledger A17 (corrected)"
+    extractedBy: "claude-fable-5 (cursor session)"
+    runId: "amz-case-build-2026-08-28"
+    date: "2026-08-28"
+
+- id: AMZ-E008
+  title: "Newson's regional reconstruction: 88% and 62–64% declines by ~1700, by mixed mechanisms"
+  claimIds: [AMZ-C010]
+  sourceId: SRC-NEWSON-2003
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    Table 1: Napo-Aguarico 49,000–51,000 → 6,000 circa 1700 (87.8–88.2%
+    decline, depopulation ratio 8.3:1); Mainas 83,000–102,000 →
+    30,180–38,490 (62.3–63.6%). "Epidemics, enslaving raids, and
+    missionization were also the major causes of Indian depopulation in
+    the gobernación of Mainas… excessive demands for service provoked
+    widespread unrest that culminated in a major revolt in 1635." Also:
+    "most opted to flee from exposed locations along the… major rivers."
+  exactLocator: "Revista de Indias 63(227), Table 1 and following (verified verbatim 2026-08-28)"
+  limitations:
+    - "Upper-Amazon provinces with mission records; extension to the middle/lower Amazon is an extrapolation."
+  reviewState: ai_extracted
+  origin:
+    ref: "verification ledger A05"
+    extractedBy: "claude-fable-5 (cursor session)"
+    runId: "amz-case-build-2026-08-28"
+    date: "2026-08-28"
+
+- id: AMZ-E009
+  title: "Denevan rejects his own habitat-density method while retaining the order of magnitude"
+  claimIds: [AMZ-C012]
+  sourceId: SRC-DENEVAN-2003
+  direction: supports
+  strength: decisive
+  sourceStatement: >-
+    "Consequently I now reject the habitat-density method I used in the
+    past to estimate a Greater Amazonia population in 1492 of from 5.1 to
+    6.8 million. There was too much variability in densities in each
+    habitat to be able to formulate meaningful average densities on the
+    basis of a few sample densities." And: "I nevertheless still believe
+    that a total of at least 5 to 6 million is reasonable."
+  editorInference: >-
+    A number can remain plausible while the argument that generated it
+    fails — the clearest documented example of why this case audits
+    estimate dependencies rather than quoting totals.
+  exactLocator: "Revista de Indias 63(227):175–188, conclusion and abstract (verified verbatim 2026-08-28)"
+  limitations: []
+  reviewState: ai_extracted
+  origin:
+    ref: "verification ledger A10"
+    extractedBy: "claude-fable-5 (cursor session)"
+    runId: "amz-case-build-2026-08-28"
+    date: "2026-08-28"
+
+- id: AMZ-E010
+  title: "7,363 sites: river distance is the dominant occupation predictor"
+  claimIds: [AMZ-C013]
+  sourceId: SRC-MCMICHAEL-2025
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    "We updated previously published models of the likely distributions
+    of pre-Columbian people using 7,363 locations within Amazonia sensu
+    stricto from the AmazonArch database." "Distance from river… was the
+    most important predictor variable and accounted for 21.5% of the
+    permutation importance in the pre-Columbian model." The updated
+    models "differentiate probabilities of occupation in interfluvial
+    areas that were more sparsely populated than those close to rivers."
+  exactLocator: "PNAS 122(47) e2514040122 (verified verbatim 2026-08-28 via UvA repository PDF)"
+  limitations:
+    - "Site databases inherit survey-effort bias toward accessible riverine areas."
+  reviewState: ai_extracted
+  origin:
+    ref: "verification ledger A06"
+    extractedBy: "claude-fable-5 (cursor session)"
+    runId: "amz-case-build-2026-08-28"
+    date: "2026-08-28"
+
+- id: AMZ-E011
+  title: "Fourteen-region phytolith/charcoal synthesis: little to no intensive-use signal in most sampled terra firme"
+  claimIds: [AMZ-C014]
+  sourceId: SRC-PIPERNO-2024
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    The cumulative program's regional sequences "particularly in
+    interfluvial areas showed a dominance of diverse, often closed-canopy
+    forests with little to no evidence for annual crop plants or
+    significant forest clearings and few signs of persistent forest
+    burning during the pre-Columbian era" — summarized as "little to no
+    evidence for: 1) agriculture with annual seed and root crops, 2)
+    significant forest clearing, 3) anthropic soils, 4) human enrichment
+    of favored tree taxa such as palms, or 5) recurrent/extensive fires."
+  exactLocator: "Quaternary International 691:40–56 (verified verbatim 2026-08-28)"
+  limitations:
+    - "New fieldwork covers three regions; fourteen is the cumulative synthesis."
+    - "Soil-core sampling is spatially sparse; negative signals count only where the proxy could detect the activity."
+  reviewState: ai_extracted
+  origin:
+    ref: "verification ledger A11"
+    extractedBy: "claude-fable-5 (cursor session)"
+    runId: "amz-case-build-2026-08-28"
+    date: "2026-08-28"
+
+- id: AMZ-E012
+  title: "Domesticated tree species concentrate on and around archaeological sites"
+  claimIds: [AMZ-C008]
+  sourceId: SRC-LEVIS-2017
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    "Across the basin, the relative abundance and richness of
+    domesticated species increase in forests on and around archaeological
+    sites."
+  exactLocator: "Science 355(6328):925–931, abstract (verified verbatim 2026-08-28)"
+  limitations:
+    - "See AMZ-E013: post-Columbian land use confounds the modern-composition signal."
+  reviewState: ai_extracted
+  origin:
+    ref: "verification ledger A12"
+    extractedBy: "claude-fable-5 (cursor session)"
+    runId: "amz-case-build-2026-08-28"
+    date: "2026-08-28"
+
+- id: AMZ-E013
+  title: "Technical Comment: post-Columbian activities likely played the larger role in the tree signal"
+  claimIds: [AMZ-C008]
+  sourceId: SRC-MCMICHAEL-2017
+  direction: qualifies
+  strength: moderate
+  sourceStatement: >-
+    "The study, however, downplays five centuries of human influence
+    following European arrival to the Americas. We show that the effects
+    of post-Columbian activities in Amazonia are likely to have played a
+    larger role than pre-Columbian ones in shaping the observed floristic
+    patterns."
+  exactLocator: "Science 358(6361) eaan8347, abstract (verified verbatim 2026-08-28)"
+  limitations: []
+  reviewState: ai_extracted
+  origin:
+    ref: "verification ledger A12"
+    extractedBy: "claude-fable-5 (cursor session)"
+    runId: "amz-case-build-2026-08-28"
+    date: "2026-08-28"
+
+- id: AMZ-E014
+  title: "Casarabe: engineered year-round maize monoculture documented by phytoliths and hydraulic infrastructure"
+  claimIds: [AMZ-C007]
+  sourceId: SRC-LOMBARDO-2025
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    "…the Casarabe culture invested heavily in landscape engineering,
+    constructing a complex system of drainage canals (to drain excess
+    water during the rainy season) and newly documented savannah farm
+    ponds (to retain water in the dry season). Phytolith analyses of 178
+    samples from 18 soil profiles… record the singular and ubiquitous
+    presence of maize (Zea mays)… our findings show how the Casarabe
+    culture managed the savannah landscape for intensive year-round maize
+    monoculture that probably sustained its relatively large population."
+  exactLocator: "Nature 639:119–123, abstract (verified verbatim 2026-08-28)"
+  limitations:
+    - "Casarabe florescence (500–1400 CE) ends before European contact."
+  reviewState: ai_extracted
+  origin:
+    ref: "verification ledger batch 1 item 5"
+    extractedBy: "claude-fable-5 (cursor session)"
+    runId: "amz-case-build-2026-08-28"
+    date: "2026-08-28"
+
+- id: AMZ-E015
+  title: "Raised fields proposed as flood-risk mitigation, built where no alternatives existed"
+  claimIds: [AMZ-C009]
+  sourceId: SRC-LOMBARDO-2011
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    "Our alternative proposal suggests that raised field agriculture
+    allowed pre-Columbian peoples to mitigate the risk of more intense
+    and frequent flooding than is experienced today in the LM. We show
+    that raised fields were built only in those areas where there were no
+    alternatives…"
+  exactLocator: "J. Archaeol. Sci. 38(3):502–512, abstract (verified verbatim 2026-08-28)"
+  limitations: []
+  reviewState: ai_extracted
+  origin:
+    ref: "verification ledger A16"
+    extractedBy: "claude-fable-5 (cursor session)"
+    runId: "amz-case-build-2026-08-28"
+    date: "2026-08-28"
+
+- id: AMZ-E016
+  title: "Dating shows intermittent raised-field use in a few construction events"
+  claimIds: [AMZ-C009]
+  sourceId: SRC-RODRIGUES-2015
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    "…radiocarbon and optically stimulated luminescence dating, show that
+    the raised fields were in intermittent use since as early as AD
+    570–770… The data suggests that raised fields were built during a few
+    separate construction events, probably linked to periods of more
+    frequent and severe floods. The study challenges the most widely
+    accepted theory that suggests that pre-Columbians were able to
+    cultivate these fields on a continuous basis…"
+  exactLocator: "Catena 132:126–138, abstract (verified verbatim 2026-08-28)"
+  limitations:
+    - "Bermeo-area fields specifically; other complexes may differ."
+  reviewState: ai_extracted
+  origin:
+    ref: "verification ledger A16"
+    extractedBy: "claude-fable-5 (cursor session)"
+    runId: "amz-case-build-2026-08-28"
+    date: "2026-08-28"
+
+- id: AMZ-E017
+  title: "Belterra Plateau sites occupied ca. AD 1300 to seventeenth-century colonization, with dark earths, ponds, and trodden roads"
+  claimIds: [AMZ-C011]
+  sourceId: SRC-STENBORG-2018
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    "…numerous archaeological sites, dating from ca. A.D. 1300 up to the
+    time of European colonization in the seventeenth century, have been
+    found in an upland area known as the Belterra Plateau, south of the
+    present-day city of Santarém." Sites are "typically characterized by
+    large quantities of pottery sherds… as well as extensive areas of
+    anthropogenic soils (Terra Preta/Terra Mulata or Amazonian Dark
+    Earth)," with "enclosed depressions, as well as ponds and trodden
+    roads."
+  exactLocator: "J. Field Archaeology 43(1), doi:10.1080/00934690.2017.1417198 (verified verbatim 2026-08-28)"
+  limitations: []
+  reviewState: ai_extracted
+  origin:
+    ref: "verification ledger A14"
+    extractedBy: "claude-fable-5 (cursor session)"
+    runId: "amz-case-build-2026-08-28"
+    date: "2026-08-28"
+
+- id: AMZ-E018
+  title: "Cacoal dates Marajoara cultural permanence to AD 1300–1650 — into Portuguese contact"
+  claimIds: [AMZ-C011]
+  sourceId: SRC-SCHAAN-2000
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    "…o sítio PA-JO-49: Cacoal que, datado de 1.300 a 1.650 A.D., atesta
+    a permanência da cultura Marajoara à época em que os Portugueses
+    estabeleciam seus primeiros assentamentos na costa leste da Ilha de
+    Marajó. Este período tardio… é caracterizado por continuidade
+    cultural, mas também por mudanças sociopolíticas profundas."
+  exactLocator: "Revista de Arqueologia (SAB) 12(1):23–42, abstract (verified verbatim 2026-08-28)"
+  limitations: []
+  reviewState: ai_extracted
+  origin:
+    ref: "verification ledger A13"
+    extractedBy: "claude-fable-5 (cursor session)"
+    runId: "amz-case-build-2026-08-28"
+    date: "2026-08-28"
+
+- id: AMZ-E019
+  title: "Upper Xingu settlements inhabited 500–1770 CE in layouts matching living Kuikuro villages"
+  claimIds: [AMZ-C011]
+  sourceId: SRC-SCIENCE-XINGU-2024
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    "Radiocarbon dating showed the settlements were inhabited from 500
+    C.E. to 1770 C.E. Like modern villages, the ancient cities were
+    organized with pole-and-thatch huts around circular plazas, but they
+    were more than 10 times larger." The team traced "a cluster of
+    ancient cities that were laid out following the same structure of
+    modern Kuikuro villages, but far larger."
+  exactLocator: "Science news feature (Sofia Moutinho), via Pulitzer Center republication (verified verbatim 2026-08-28)"
+  limitations:
+    - "Journalism summarizing the Heckenberger/Kuikuro research program; held at secondary-source weight pending the primary reports."
+  reviewState: ai_extracted
+  origin:
+    ref: "verification ledger A08"
+    extractedBy: "claude-fable-5 (cursor session)"
+    runId: "amz-case-build-2026-08-28"
+    date: "2026-08-28"
+
+- id: AMZ-E020
+  title: "Amazon-wide radiocarbon proxy fits logistic growth to carrying capacity before colonization"
+  claimIds: [AMZ-C015]
+  sourceId: SRC-ARROYOKALIN-2021
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    "…our analyses document that the growth of pre-Columbian human
+    population over the 1700 years prior to European colonization adheres
+    to a logistic model of demographic growth. This suggests that, at an
+    aggregate level, these pre-Columbian populations had potentially
+    reached carrying capacity (however high) before the onset of European
+    colonization." The terminal proxy decline "is likely to be an outcome
+    of archaeological sampling biases, compounded by demographic decline
+    and dispersal as Europeans enter the region."
+  exactLocator: "Phil. Trans. R. Soc. B 376:20190715 (verified verbatim 2026-08-28)"
+  limitations:
+    - "SPDs are proxies for relative population change with stated biases — an aggregate signal, not a census."
+  reviewState: ai_extracted
+  origin:
+    ref: "verification ledger A15"
+    extractedBy: "claude-fable-5 (cursor session)"
+    runId: "amz-case-build-2026-08-28"
+    date: "2026-08-28"
+
+- id: AMZ-E021
+  title: "Hancock's Amazon coverage and the platforming of Pärssinen and Ranzi"
+  claimIds: [AMZ-C018]
+  sourceId: SRC-IMDB-AAS2
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    Ancient Apocalypse: The Americas S2.E1 (aired 2024-10-16) lists in
+    its top cast "Alceu Ranzi — (as Dr. Alceu Ranzi) — Self - Geographer
+    & Paleontologist" and "Martti Pärssinen — (as Dr. Martti Pärssinen) —
+    Self - Archaeologist & Anthropologist."
+  editorInference: >-
+    Together with Hancock's first-party statement of America Before's
+    Amazon coverage (AMZ-C018's anchor), this documents the advocacy
+    record: the book preceded, and the series platformed, the researchers
+    whose 2026 result now anchors this case.
+  exactLocator: "IMDb title tt33400473, S2.E1 cast listing (verified 2026-08-28)"
+  limitations:
+    - "Genealogy, not evidence: this record carries no weight for any empirical claim about the Amazon."
+  reviewState: ai_extracted
+  origin:
+    ref: "verification ledger A09"
+    extractedBy: "claude-fable-5 (cursor session)"
+    runId: "amz-case-build-2026-08-28"
+    date: "2026-08-28"

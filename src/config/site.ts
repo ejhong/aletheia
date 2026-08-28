@@ -9,6 +9,20 @@ export const site = {
     { label: "Panel", href: "/panel" },
     { label: "Proposals", href: "/proposals" },
   ],
+  /**
+   * Canonical public origin (no trailing slash), used as Next's
+   * metadataBase so link previews (iMessage, Slack, social cards)
+   * resolve the og-card image to an absolute URL. Set null if the
+   * deployment URL is unknown; previews then fall back to crawler
+   * heuristics.
+   */
+  url: "https://ejhong.github.io/aletheia" as string | null,
+  /**
+   * The social-card image served to link-preview crawlers (og:image /
+   * twitter:card). A 1200×630 crop of house cover art, at
+   * public/images/og-card.png.
+   */
+  ogImage: "/images/og-card.png",
   /** Public repository — the ledger every page derives from. */
   repoUrl: "https://github.com/ejhong/aletheia",
   // Set when the RFP is live on ResearchHub; rendered only if non-null.

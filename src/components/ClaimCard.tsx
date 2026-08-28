@@ -2,6 +2,7 @@ import Link from "next/link";
 import { AssessmentBadge } from "./AssessmentBadge";
 import { ProvenanceBadge } from "./ProvenanceBadge";
 import {
+  assessmentStateCaptions,
   claimTypeCaptions,
   rungLabels,
   type FeaturedClaim,
@@ -40,6 +41,11 @@ export function ClaimCard({ claim }: { claim: FeaturedClaim }) {
       {claimTypeCaptions[claim.claimType] ? (
         <p className="mt-1.5 font-mono text-[10px] tracking-[0.06em] text-faint">
           ⚠ {claimTypeCaptions[claim.claimType]}
+        </p>
+      ) : null}
+      {assessmentStateCaptions[claim.credibility] ? (
+        <p className="mt-1.5 font-mono text-[10px] tracking-[0.06em] text-faint">
+          ⚠ {assessmentStateCaptions[claim.credibility]}
         </p>
       ) : null}
     </Link>

@@ -25,10 +25,14 @@ import {
   sourceAdmissionErrors,
 } from "./load";
 import {
+  assessmentFamily,
+  assessmentLabels,
+  assessmentStateCaptions,
   ClaimSchema,
   ConjectureSchema,
   EvidenceSchema,
   ImageSchema,
+  SourceSchema,
 } from "./schema";
 
 describe("real content", () => {
@@ -226,6 +230,25 @@ describe("source admission rule", () => {
     ).toEqual([]);
   });
 
+  it("accepts a source documenting a claim's genealogy", () => {
+    const genealogyClaim = {
+      genealogy: {
+        firstKnown: "2016-11-03",
+        originDescription: "anonymous forum post, later amplified",
+        originSourceId: "SRC-A",
+      },
+    };
+    expect(
+      sourceAdmissionErrors([src("SRC-A")], [], [genealogyClaim]),
+    ).toEqual([]);
+    // And the honesty rule still cuts both ways.
+    const errors = sourceAdmissionErrors([src("SRC-A", true)], [], [
+      genealogyClaim,
+    ]);
+    expect(errors).toHaveLength(1);
+    expect(errors[0]).toContain("remove background: true");
+  });
+
   it("rejects a cited source still mislabeled background", () => {
     const errors = sourceAdmissionErrors(
       [src("SRC-A", true)],
@@ -315,6 +338,73 @@ describe("schema rules", () => {
     expect(() =>
       ClaimSchema.parse({ ...baseCatalogClaim, sourceAnchor: { locator: "" } }),
     ).toThrow();
+  });
+
+  it("claims of either tier may carry genealogy; malformed genealogy fails", () => {
+    const genealogy = {
+      firstKnown: "2016-11-03",
+      originDescription: "anonymous forum post, later amplified by aggregators",
+      originSourceId: "SRC-TEST",
+    };
+    expect(() =>
+      ClaimSchema.parse({ ...baseClaim, genealogy }),
+    ).not.toThrow();
+    expect(() =>
+      ClaimSchema.parse({ ...baseCatalogClaim, genealogy }),
+    ).not.toThrow();
+    // Partial dates are honest when only the year or month is known.
+    for (const firstKnown of ["2016", "2016-11"]) {
+      expect(() =>
+        ClaimSchema.parse({
+          ...baseCatalogClaim,
+          genealogy: { ...genealogy, firstKnown },
+        }),
+      ).not.toThrow();
+    }
+    // A vibe is not a date; a fragment is not an origin account.
+    expect(() =>
+      ClaimSchema.parse({
+        ...baseCatalogClaim,
+        genealogy: { ...genealogy, firstKnown: "Nov 2016" },
+      }),
+    ).toThrow();
+    expect(() =>
+      ClaimSchema.parse({
+        ...baseCatalogClaim,
+        genealogy: { ...genealogy, originDescription: "4chan" },
+      }),
+    ).toThrow();
+  });
+
+  it("misframed and provenance_failure are open-family credibility states", () => {
+    for (const credibility of ["misframed", "provenance_failure"] as const) {
+      expect(() =>
+        ClaimSchema.parse({ ...baseClaim, credibility }),
+      ).not.toThrow();
+      expect(assessmentFamily(credibility)).toBe("open");
+      expect(assessmentLabels[credibility]).toBeTruthy();
+      // Unfamiliar epistemic terms are explained in place.
+      expect(assessmentStateCaptions[credibility]).toBeTruthy();
+    }
+  });
+
+  it("sources default to an empty derivedFrom list", () => {
+    const parsed = SourceSchema.parse({
+      id: "SRC-TEST",
+      title: "A test source",
+      sourceType: "webpage",
+      verification: "unverified",
+    });
+    expect(parsed.derivedFrom).toEqual([]);
+    expect(
+      SourceSchema.parse({
+        id: "SRC-TEST",
+        title: "A test source",
+        sourceType: "webpage",
+        verification: "unverified",
+        derivedFrom: ["SRC-PARENT"],
+      }).derivedFrom,
+    ).toEqual(["SRC-PARENT"]);
   });
 
   it("promotion is a one-field edit that then demands the full workup", () => {

@@ -122,6 +122,29 @@ export default async function SourcePage({
             </dd>
           </div>
         ) : null}
+        {source.derivedFrom.length > 0 ? (
+          <div>
+            <dt className="font-mono text-[10px] uppercase tracking-[0.16em] text-faint">
+              derived from
+            </dt>
+            <dd className="mt-0.5 text-[14px] text-ink-soft">
+              This source repeats or derives from{" "}
+              {source.derivedFrom.map((pid, i) => (
+                <span key={pid}>
+                  {i > 0 ? ", " : ""}
+                  <Link
+                    href={`/sources/${pid}/`}
+                    className="text-copper hover:underline font-mono text-[12px]"
+                  >
+                    {pid}
+                  </Link>
+                </span>
+              ))}{" "}
+              without adding new evidence — it carries no independent weight
+              beyond what those establish.
+            </dd>
+          </div>
+        ) : null}
         {source.reliabilityNotes.length > 0 ? (
           <div>
             <dt className="font-mono text-[10px] uppercase tracking-[0.16em] text-faint">

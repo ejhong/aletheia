@@ -9,15 +9,42 @@ import { ProvenanceBadge } from "@/src/components/ProvenanceBadge";
 import { liveClaims, loadAllCases } from "@/src/domain/load";
 import { paramsOrPlaceholder } from "@/src/domain/staticExport";
 import {
+  assessmentStateCaptions,
   claimTypeCaptions,
   directionLabels,
   isFeatured,
   rungLabels,
   type CatalogClaim,
   type Claim,
+  type ClaimGenealogy,
   type EvidenceDirection,
   type LoadedCase,
 } from "@/src/domain/schema";
+
+/**
+ * The claim's public genealogy — earliest known appearance, rendered in the
+ * dossier strip for both tiers. "First known" is exactly that: the earliest
+ * appearance found, never asserted as absolute priority.
+ */
+function GenealogyLine({ genealogy }: { genealogy: ClaimGenealogy }) {
+  return (
+    <p className="mt-3 max-w-3xl font-mono text-[11px] leading-relaxed tracking-[0.04em] text-dossier-faint">
+      first known appearance {genealogy.firstKnown} —{" "}
+      {genealogy.originDescription}
+      {genealogy.originSourceId ? (
+        <>
+          {" "}
+          <Link
+            href={`/sources/${genealogy.originSourceId}/`}
+            className="text-copper hover:underline"
+          >
+            {genealogy.originSourceId}
+          </Link>
+        </>
+      ) : null}
+    </p>
+  );
+}
 
 function allLiveClaims(): { claim: Claim; loaded: LoadedCase }[] {
   return loadAllCases().flatMap((loaded) =>
@@ -94,6 +121,7 @@ function CatalogClaimView({
               origin: {claim.origin.ref}
             </span>
           </div>
+          {claim.genealogy ? <GenealogyLine genealogy={claim.genealogy} /> : null}
         </div>
       </section>
 
@@ -230,6 +258,7 @@ export default async function ClaimPage({
               origin: {claim.origin.ref}
             </span>
           </div>
+          {claim.genealogy ? <GenealogyLine genealogy={claim.genealogy} /> : null}
         </div>
       </section>
 
@@ -246,6 +275,11 @@ export default async function ClaimPage({
             {claimTypeCaptions[claim.claimType] ? (
               <p className="mt-2 font-mono text-[10px] tracking-[0.06em] text-copper">
                 ⚠ {claimTypeCaptions[claim.claimType]}
+              </p>
+            ) : null}
+            {assessmentStateCaptions[claim.credibility] ? (
+              <p className="mt-2 font-mono text-[10px] tracking-[0.06em] text-copper">
+                ⚠ {assessmentStateCaptions[claim.credibility]}
               </p>
             ) : null}
             <p className="mt-3 text-[14px] leading-relaxed text-ink-soft">

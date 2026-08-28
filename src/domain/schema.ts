@@ -10,6 +10,21 @@ export const AssessmentState = z.enum([
   "contradicted",
   "unresolved",
   "presently_untestable",
+  /**
+   * The proposition as it circulates fuses separate claims or has no
+   * testable truth condition as written (§3.2). Grading it on the truth
+   * scale would launder the framing error; the credibility summary states
+   * the decomposition instead. Distinct from `unresolved`, where the claim
+   * is well-posed but the evidence does not settle it.
+   */
+  "misframed",
+  /**
+   * The material the claim rests on cannot be authenticated — an
+   * unattributable screenshot, a vanished page with no archive, a document
+   * whose chain of custody fails (§3.8). Not `contradicted`: nothing shows
+   * the claim false; its support cannot be examined at all.
+   */
+  "provenance_failure",
 ]);
 export type AssessmentState = z.infer<typeof AssessmentState>;
 
@@ -28,6 +43,8 @@ export function assessmentFamily(state: AssessmentState): AssessmentFamily {
       return "against";
     case "unresolved":
     case "presently_untestable":
+    case "misframed":
+    case "provenance_failure":
       return "open";
   }
 }
@@ -41,7 +58,22 @@ export const assessmentLabels: Record<AssessmentState, string> = {
   contradicted: "Contradicted",
   unresolved: "Unresolved",
   presently_untestable: "Presently untestable",
+  misframed: "Misframed",
+  provenance_failure: "Provenance failure",
 };
+
+/**
+ * In-place explanations for assessment states a general reader will not
+ * know (interface rule: explain unfamiliar epistemic terms where they
+ * appear). Rendered under the credibility badge, like claimTypeCaptions.
+ */
+export const assessmentStateCaptions: Partial<Record<AssessmentState, string>> =
+  {
+    misframed:
+      "the proposition fuses separate claims or cannot be tested as written — the summary states the decomposition",
+    provenance_failure:
+      "the material this claim rests on cannot be authenticated — its support cannot be examined, which is not the same as being shown false",
+  };
 
 /** Claim provenance / review state. Displayed honestly in the UI. */
 export const ReviewState = z.enum([
@@ -123,6 +155,27 @@ export const OriginSchema = z.object({
 export const ClaimTier = z.enum(["featured", "catalog"]);
 export type ClaimTier = z.infer<typeof ClaimTier>;
 
+/**
+ * Claim genealogy — where and when an allegation or proposition first
+ * appeared, kept separate from `origin` (which records how OUR record was
+ * produced). For contested public events, tracing a claim to its earliest
+ * known appearance is often half the analytical work: it exposes claims
+ * born from identity conflation or source fusion, and stops fifty
+ * derivative retellings from reading as fifty independent reports.
+ * Optional on both tiers; every field is a statement about the public
+ * record and must be sourced or honestly approximate ("first known" means
+ * exactly that — earliest appearance found, never asserted as absolute).
+ */
+export const ClaimGenealogySchema = z.object({
+  /** Earliest known appearance: YYYY, YYYY-MM, or YYYY-MM-DD. */
+  firstKnown: z.string().regex(/^\d{4}(-\d{2}){0,2}$/),
+  /** Where/how it first appeared, e.g. "anonymous Reddit post, later amplified by …". */
+  originDescription: z.string().min(10),
+  /** Optional Source documenting that first appearance (loader-checked). */
+  originSourceId: z.string().optional(),
+});
+export type ClaimGenealogy = z.infer<typeof ClaimGenealogySchema>;
+
 /** Where in a source a claim is anchored. Never invent a locator. */
 export const SourceAnchorSchema = z.object({
   /** Exact-as-possible locator, e.g. "Fóti Ch 5, pp ~135–137". */
@@ -142,6 +195,8 @@ const claimCore = {
   reviewState: ReviewState,
   rejectionReason: z.string().optional(),
   origin: OriginSchema,
+  /** Optional: earliest known public appearance of the proposition itself. */
+  genealogy: ClaimGenealogySchema.optional(),
 };
 
 const tombstoneRule = {
@@ -281,6 +336,16 @@ export const SourceSchema = z.object({
   verification: SourceVerification,
   verificationNote: z.string().optional(),
   reliabilityNotes: z.array(z.string()).default([]),
+  /**
+   * §3.10 made structural at the source grain: IDs of sources this one
+   * repeats or derives from without adding new evidence — wire copy, an
+   * aggregator, a compilation, a later retelling. Loader-checked (targets
+   * must exist; no self-reference). A derivative source never adds
+   * independent weight to what its parent already establishes; if the
+   * parent is only in the ledger as a derivation target, it still needs
+   * its own admission (cited, or honestly `background: true`).
+   */
+  derivedFrom: z.array(z.string()).default([]),
   /**
    * Reading-shelf material: a real, honestly-labeled source kept for the
    * case's reading guide but not (yet) cited by any evidence record or

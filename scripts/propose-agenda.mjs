@@ -16,7 +16,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml } from "yaml";
-import { pickProvider, parseJsonReply } from "./lib/llm.mjs";
+import { callWithRefusalFallback, parseJsonReply, pickProvider } from "./lib/llm.mjs";
 import {
   PROPOSAL_SYSTEM,
   buildCasePacket,
@@ -104,8 +104,13 @@ for (const dirName of slugs) {
   }
 
   let parsed;
+  let modelUsed = provider.model;
   try {
-    parsed = parseJsonReply(await provider.call(PROPOSAL_SYSTEM, packet));
+    const reply = await callWithRefusalFallback(provider, PROPOSAL_SYSTEM, packet);
+    modelUsed = reply.model;
+    if (reply.refused)
+      report.push(`- ${slug}: primary model refused; proposals below are from ${reply.model}.`);
+    parsed = parseJsonReply(reply.text);
   } catch (e) {
     report.push(`- ${slug}: model call failed (${String(e).slice(0, 120)}) — skipped, fail-closed.`);
     continue;
@@ -123,7 +128,7 @@ for (const dirName of slugs) {
     renderProposalFile(slug, ok, {
       date,
       runId,
-      model: provider.model,
+      model: modelUsed,
       promptVersion: "agenda-propose-v1",
     }),
   );

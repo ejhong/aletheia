@@ -52,6 +52,10 @@ const CASE_TONES = {
     "muted Tyrian purple and wine-dark washes on the cup and vine, pale " +
     "barley-gold ears of grain, warm umber shadows, one small pale-mint " +
     "green accent on the herb sprig",
+  "pre-columbian-amazon":
+    "deep viridian and forest-green canopy washes, a pale ochre-gold " +
+    "river meander, faint umber earthwork lines beneath the canopy, one " +
+    "small vermilion accent on the chronicler's ribbon marker",
 };
 
 /**
@@ -87,6 +91,15 @@ const CASE_SUBJECTS = {
     "interior is dark and unreadable — the question is what it held. An " +
     "allegorical emblem, never a depiction of any real excavated vessel, " +
     "sanctuary, or laboratory result as documentation.",
+  "pre-columbian-amazon":
+    "A great river seen from high above, winding through dense engraved " +
+    "forest canopy that fills the frame; beneath the canopy along its " +
+    "banks, faint geometric enclosures — circles, squares, long causeway " +
+    "lines — show through the foliage like a memory of settlement. In one " +
+    "lower corner, small on a stone ledge, an open handwritten chronicle " +
+    "with a quill laid across it. An allegorical emblem of an account and " +
+    "a landscape answering one another — never a depiction of any real " +
+    "site, survey, or LiDAR dataset as documentation.",
 };
 
 /** One reversible generation run: a single runId stamped on every record. */

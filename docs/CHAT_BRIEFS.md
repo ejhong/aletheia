@@ -68,7 +68,10 @@ not fetched. Include the initial house assessment run (`role: draft`,
 `humanReviewed: false`) — the governance tests require a displayable
 standing. Cover art per the house style docs; plates only from real
 imagery with license and provenance. Then: full local validation
-(tests, typecheck, lint, build, link audit) before the PR.
+(tests, typecheck, lint, build, link audit) AND the citation
+pre-flight — `node scripts/preflight-citations.mjs` — which prints the
+resolved registry title beside every identifier the branch adds;
+compare each against your record before the PR exists.
 
 ### 5. Repo routing
 

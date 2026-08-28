@@ -117,3 +117,21 @@ generator's own format (roundtrip pinned by tests) and skips malformed
 blocks visibly rather than guessing or failing the build. Header nav
 gains the link on both sites. (AI record of a founder instruction,
 2026-08-27 session.)
+
+## 2026-08-27 — Model policy in code: Fable-first, loud Opus fallback, truthful stamps
+
+Decision #15's reversal (Opus as the extraction default) existed
+because Fable's safety filter refuses plain pharmacology statements on
+cases like orch-or. The default returns to claude-fable-5, with the
+refusal path redesigned after the panel rejected a first draft for
+silent substitution: a refusal now throws a typed RefusalError — never
+a quiet model swap — and callers that want the fallback use
+callWithRefusalFallback, which retries exactly once on claude-opus-5
+and returns the model that actually produced the text, which is what
+every record must stamp. Model policy thereby lives in the engine (no
+per-repo EXTRACT_MODEL variable to drift; the variable still overrides
+when deliberately set), refusal handling is visible in run reports,
+and provenance stamps stay true under §3.15. (This entry was written
+by the editorial AI recording a founder instruction from the
+2026-08-27 session, per §3.15's requirement that AI records be labeled
+as such.)

@@ -10,14 +10,29 @@
 const providers = {
   anthropic: {
     key: process.env.ANTHROPIC_API_KEY,
-    // claude-opus-5, not claude-fable-5 (reversing decision #15): Fable's
-    // safety filter refuses plain pharmacology statements about anesthetic
-    // mechanisms — 11 of orch-or's 18 claims individually return
-    // stop_reason "refusal" ("general anesthetics bind tubulin…"), which is
-    // why that case's reassessment failed three times with empty replies.
-    // Opus answers the identical prompts. Verified 2026-08-25.
-    model: process.env.EXTRACT_MODEL || "claude-opus-5",
-    async call(system, user) {
+    // Default history: Fable was the original default; decision #15's
+    // reversal made it Opus after Fable's safety filter refused plain
+    // pharmacology statements (11 of orch-or's 18 claims returned
+    // stop_reason "refusal", failing that case's reassessment three
+    // times; verified 2026-08-25). With the one-shot Opus fallback
+    // below, Fable-first is safe again and is the founder's preference
+    // (2026-08-27): Fable answers where it will, Opus catches the
+    // refusals, and both repos stay identical with no per-repo
+    // EXTRACT_MODEL variable to drift. The variable still overrides
+    // when set.
+    model: process.env.EXTRACT_MODEL || "claude-fable-5",
+    // Fable's safety filter refuses plain pharmacology/physiology
+    // statements (stop_reason "refusal", or zero text blocks) on cases
+    // like orch-or — the documented failure above. A refusal THROWS a
+    // typed error instead of silently substituting a model: silent
+    // substitution would make every downstream model stamp false
+    // (§3.15 — a reader must be able to reconstruct which model did
+    // what). Callers that want the Opus fallback use
+    // callWithRefusalFallback below, which returns the model that
+    // actually produced the text so stamps stay true.
+    fallbackModel: "claude-opus-5",
+    async call(system, user, modelOverride) {
+      const model = modelOverride ?? this.model;
       const res = await fetch("https://api.anthropic.com/v1/messages", {
         method: "POST",
         headers: {
@@ -26,7 +41,7 @@ const providers = {
           "anthropic-version": "2023-06-01",
         },
         body: JSON.stringify({
-          model: this.model,
+          model,
           // Adaptive thinking shares this budget with the visible reply —
           // there is no thinking-budget parameter on this model family. A
           // large case (18 claims) can burn a small budget entirely on
@@ -42,7 +57,11 @@ const providers = {
         throw new Error(`Anthropic API ${res.status}: ${await res.text()}`);
       }
       const data = await res.json();
-      return data.content.map((b) => b.text ?? "").join("");
+      const text = data.content.map((b) => b.text ?? "").join("");
+      if (data.stop_reason === "refusal" || text.trim().length === 0) {
+        throw new RefusalError(model);
+      }
+      return text;
     },
   },
   openai: {
@@ -71,6 +90,45 @@ const providers = {
     },
   },
 };
+
+/** A model declined to answer (safety filter), as opposed to erroring. */
+export class RefusalError extends Error {
+  constructor(model) {
+    super(`model ${model} refused or returned no text`);
+    this.name = "RefusalError";
+    this.model = model;
+  }
+}
+
+/**
+ * Call the provider; on a refusal by the configured Anthropic model,
+ * retry EXACTLY once on the fallback (claude-opus-5) — loudly, and with
+ * truthful provenance: the return value carries the model that actually
+ * produced the text, and callers MUST stamp that model, never
+ * provider.model, on any record they write (§3.15). A refusal by the
+ * fallback itself propagates as the error it is: fail closed, caller
+ * decides.
+ */
+export async function callWithRefusalFallback(provider, system, user) {
+  try {
+    const text = await provider.call(system, user);
+    return { text, model: provider.model, refused: false };
+  } catch (e) {
+    const fallback = providers.anthropic.fallbackModel;
+    if (
+      !(e instanceof RefusalError) ||
+      provider.name !== "anthropic" ||
+      provider.model === fallback
+    ) {
+      throw e;
+    }
+    console.error(
+      `model ${provider.model} refused; retrying once on ${fallback} (the record must stamp ${fallback})`,
+    );
+    const text = await provider.call(system, user, fallback);
+    return { text, model: fallback, refused: true };
+  }
+}
 
 /**
  * Pick a provider (forced name, or auto-detect by which key is set).

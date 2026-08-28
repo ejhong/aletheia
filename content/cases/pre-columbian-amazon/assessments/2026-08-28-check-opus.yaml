@@ -1,0 +1,326 @@
+# Cross-model check run — an independent judge (Opus 5 (Anthropic)),
+# blind to all prior assessments (scripts/cross-model-check.mjs,
+# promptVersion aletheia-check-v2). role: check — never displayed as the case
+# narrative; feeds the concurrence panel. Append-only; NOT human reviewed.
+runId: 2026-08-28-check-opus
+model: Opus 5 (Anthropic) — independent check run via claude-opus-5
+date: 2026-08-28
+promptVersion: aletheia-check-v2
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: provisionally_supported
+  loadBearing:
+    - AMZ-C016
+    - AMZ-C017
+    - AMZ-C003
+    - AMZ-C011
+    - AMZ-C002
+    - AMZ-C010
+    - AMZ-C013
+  weakestLinks:
+    - AMZ-C005
+    - AMZ-C015
+    - AMZ-C017
+  synthesis: "The hypothesis as filed is a compound: (a) large sedentary organized
+    populations on the major rivers before contact, (b) landscape engineering at
+    scale, (c) Carvajal as substantially accurate testimony, (d) post-contact
+    collapse and dispersal explaining the emptier later record. These parts do
+    not carry equal weight of evidence, and the honest roll-up must say so
+    rather than average them. Part (b) is effectively established by the records
+    here: Casarabe drained-field maize with 178 phytolith samples across 18
+    profiles (AMZ-E014), Belterra dark earths, ponds and trodden roads
+    (AMZ-E017), the Aquiry LiDAR corpus (AMZ-E001), and southern-rim fortified
+    villages (AMZ-E004). Part (a) is well supported in specific, dated places —
+    the southern rim at AD 1250–1500 and the Santarém, Marajó and Xingu systems
+    running into or past contact — but the basin-wide, politically integrated
+    version is not evidenced at all; the biggest numbers on offer are model
+    outputs whose spans (AMZ-E002's fivefold collapse under the paper's own
+    alternative reading; AMZ-E009's author-retracted method) exceed the quantity
+    in dispute. Part (d) is well supported where records permit counting
+    (AMZ-E008), with the important structural point that flight, capture and
+    mission aggregation move people without killing them — so an empty 1690 bank
+    is not a measurement of 1542. Part (c) is the genuinely provisional element:
+    the qualitative picture is echoed by Nunes and the Ursúa accounts on the
+    same reaches (AMZ-E007), the extreme numbers are textually unstable
+    (AMZ-E005), and the spatial test that would convert corroboration into
+    confirmation has not been run. Steelmanning the skeptic: every corroborating
+    line samples the same favored corridors that Orellana travelled and that
+    archaeologists can reach; AMZ-E010's river-distance gradient partly encodes
+    discovery effort; AMZ-E011 shows most sampled terra firme without
+    cultivation, clearing or anthropic soils; and the Aquiry florescence is a
+    millennium too early to be spent on 1542 (AMZ-E003). Steelmanning the
+    proponent: the skeptical position has already conceded the
+    ecological-impossibility thesis, its negative palaeoecology is spatially
+    minute relative to the areas it generalizes over, and no manuscript-critical
+    result touches the mundane, non-marvellous features (roads, storehouses,
+    ceramics) that three unconnected expeditions independently report. What
+    survives is precisely the mosaic of AMZ-C016 — dense engineered corridors in
+    a lightly occupied matrix — with proportions open. Sensitivity: removing
+    AMZ-E007 (Lopes et al. 2024) would do the most damage, because it is the
+    sole record establishing independent corroboration of Carvajal's world;
+    without it AMZ-C003 vacates and AMZ-C017 falls to
+    weakly_supported/unresolved, since the archaeology alone establishes that
+    such a world could exist on those reaches, not that this witness described
+    it truly. The case verdict survives that removal at provisionally_supported
+    only for the mosaic and collapse components; the Carvajal component does
+    not."
+claimAssessments:
+  - claimId: AMZ-C001
+    verdict: established
+    confidence: high
+    reasoning: "This claim is about the content of a text, not the truth of that
+      content, and the content is documented by scholarship that quotes and
+      compares the manuscript witnesses (AMZ-E005, AMZ-E007's framing, and the
+      Denevan bluff-model discussion in AMZ-E006). Both branches carry the
+      qualitative picture of alternating populous and empty reaches, which is
+      what the claim asserts. The strongest opposing consideration is that the
+      primary text was not natively verified here and everything rests on
+      secondary quotation — but the quoting sources are independent of each
+      other and none disputes the qualitative content. Its truth is
+      near-costless for the hypothesis: the case's own diagnosticity note is
+      correct that an account describing a populous Amazon is not a populous
+      Amazon."
+  - claimId: AMZ-C002
+    verdict: established
+    confidence: moderate
+    reasoning: "Denevan's verbatim statement (AMZ-E005) is a specific, checkable
+      philological observation about which figures appear in which branch, and
+      it is the kind of claim a specialist is unlikely to get wrong in a
+      peer-reviewed venue. Confidence is moderate rather than high only because
+      a single collation by one scholar carries the whole weight — no synoptic
+      witness table exists (AMZ-R002 is proposed precisely for this). The
+      strongest opposing consideration is Denevan's own implied caveat: Oviedo's
+      silence does not prove the figures were absent from the lost original,
+      since a redactor who disbelieved them could have cut them. Either way the
+      figures are unstable, which is what the claim is used for."
+  - claimId: AMZ-C003
+    verdict: well_supported
+    confidence: moderate
+    reasoning: "AMZ-E007 documents Nunes's 1538 entry into Machiparo and the ten
+      Ursúa accounts describing the middle Solimões as densely inhabited, with
+      \"infinite\" maize stores and Inca-style roads without walls, and the case
+      correctly excludes fortification and organized-warfare details that were
+      not verified. The evidentiary force lies in mundane, repeated,
+      non-marvellous details from parties writing for different crowns. The
+      strongest opposing consideration is that independence is asserted rather
+      than demonstrated: the Ursúa chroniclers wrote eighteen years after
+      Carvajal's voyage and textual dependence has not been excluded
+      philologically, and all parties travelled one corridor. Also, one
+      secondary source carries the whole record."
+  - claimId: AMZ-C004
+    verdict: well_supported
+    confidence: high
+    reasoning: The documented component — 432 earthworks from 4,430 km of ALS lines,
+      of which only 36 were previously known, a fivefold gain over satellite
+      detection — is a direct measurement reported verbatim (AMZ-E001), and
+      morphology detection by LiDAR is a mature, low-inference technique. The
+      claim states the 24,000–30,000 figure explicitly as a prediction from
+      block extrapolation, which is what the paper does, so the claim as worded
+      is accurate. The strongest opposing consideration is that the
+      extrapolation assumes comparability of unflown blocks to flown ones, and
+      the paper is weeks old with no independent replication or rebuttal; the
+      disclosed funding tie to this site's founder is a reason for caution about
+      emphasis, though not about the instrument readings themselves.
+  - claimId: AMZ-C005
+    verdict: established
+    confidence: high
+    reasoning: "The sensitivity is not an outside criticism but the paper's own
+      arithmetic, quoted verbatim in AMZ-E002: 300 people per average earthwork
+      times an assumed 25–60% simultaneous-use fraction gives 1.25–3 million,
+      while the single-family house reading gives 250,000–600,000
+      (315,000–760,000 with canopy correction). That a stated assumption swings
+      the output roughly fivefold is a fact about the model, and the claim
+      asserts only that. The strongest opposing consideration is that the
+      authors label the single-family reading \"very unlikely\" and defend the
+      300-person figure from later village sizes and labour requirements — so
+      the lower bound is an error bar, not a competing estimate. Either way,
+      this is a model output, not a census."
+  - claimId: AMZ-C006
+    verdict: well_supported
+    confidence: high
+    reasoning: "AMZ-E004 reports the 1,800 km arc of fortified earth-builder
+      villages at Cal AD 1250–1500 directly from dated sites, and this is the
+      single most chronologically relevant body of settlement evidence in the
+      case, since it overlaps the contact horizon rather than predating it by a
+      millennium. The population figure is correctly stated as conditional, and
+      the authors themselves list the dependency chain (site contemporaneity,
+      ethnographic conversion, MaxEnt projection). The strongest opposing
+      consideration is that MaxEnt suitability is not occupation: projecting
+      21,340 counted people onto a modeled suitable area to reach
+      463,555–1,087,150 does most of the demographic work, and unsurveyed
+      suitable terrain could be empty."
+  - claimId: AMZ-C007
+    verdict: well_supported
+    confidence: high
+    reasoning: 'AMZ-E014 combines hydraulic infrastructure mapped by remote sensing
+      and field survey with 178 phytolith samples from 18 profiles showing
+      ubiquitous maize in the fields themselves — this is a mechanism
+      demonstrated where the mechanism was most doubted, not an inference from
+      monument scale. It answers the carrying-capacity objection for one culture
+      area with distinctive savannah hydrology. The strongest opposing
+      consideration, which the record states, is chronological and geographic
+      scope: the Casarabe florescence ends around 1400 CE and the Llanos de
+      Mojos are not terra firme rainforest, so the result licenses "possible and
+      done here," not a general Amazonian subsistence model.'
+  - claimId: AMZ-C008
+    verdict: established
+    confidence: high
+    reasoning: Dark earths, raised fields and engineered savannah landscapes are
+      attested across multiple independent regional programs in this record
+      (AMZ-E014, AMZ-E015, AMZ-E016, AMZ-E017), and the domesticated-species
+      gradient around archaeological sites is a basin-scale published pattern
+      (AMZ-E012). The claim asserts the observed pattern, not its causal
+      attribution. The strongest opposing consideration is AMZ-E013's Technical
+      Comment, which argues post-Columbian activity likely played the larger
+      role in shaping the observed floristic pattern — that damages the use of
+      modern forest composition as a proxy for the 1491 landscape, but leaves
+      the soils, fields and forest islands untouched, since those are dated
+      deposits rather than living vegetation.
+  - claimId: AMZ-C009
+    verdict: well_supported
+    confidence: moderate
+    reasoning: "The claim's two halves are separately sourced and mutually
+      consistent: OSL and radiocarbon dating showing intermittent use from AD
+      570–770 in a few construction events (AMZ-E016) and the flood-mitigation
+      interpretation with fields built only where no alternatives existed
+      (AMZ-E015). This is a valuable discipline on the
+      earthworks-imply-agricultural-output-implies-population chain. The
+      strongest opposing consideration is scope: the dating work is Bermeo-area
+      specific, and the same research group's Casarabe result (AMZ-C007)
+      documents a genuinely intensive, year-round system elsewhere in the same
+      lowlands — so this is a local correction to one inference, not a general
+      deflation of Mojos agriculture."
+  - claimId: AMZ-C010
+    verdict: well_supported
+    confidence: moderate
+    reasoning: Newson's Table 1 gives specific reconstructed declines —
+      Napo-Aguarico 49,000–51,000 to about 6,000 by 1700, Mainas 62–64% — with
+      the mechanism mix named in her own text, including flight from exposed
+      riverine locations (AMZ-E008). The 25-point spread between adjacent
+      provinces is itself evidentiary, blocking uniform-90%-everywhere modeling.
+      The strongest opposing consideration is that the early-contact baselines
+      are themselves documentary reconstructions with assumptions, not counts,
+      and the provinces are Andean-foothill and upper-Amazon regions with
+      unusually good mission records; transferring the ratios to the middle and
+      lower Amazon, where the case actually needs them, is a further
+      extrapolation that AMZ-R005 has not yet done.
+  - claimId: AMZ-C011
+    verdict: well_supported
+    confidence: moderate
+    reasoning: "Two of the three components are anchored in primary publications
+      verified verbatim — Belterra sites from ca. AD 1300 to seventeenth-century
+      colonization with dark earths, ponds and trodden roads (AMZ-E017), and
+      Cacoal at AD 1300–1650 attesting Marajoara persistence at Portuguese
+      contact (AMZ-E018). These are the records that pass the chronological
+      filter separating evidence about Carvajal's world from evidence about
+      capability a millennium earlier. The strongest opposing consideration is
+      twofold: the Upper Xingu component rests on a Science news feature rather
+      than a primary excavation report (AMZ-E019), and all three regions are
+      exactly the corridor and hotspot settings archaeology samples best, so
+      continuity here says nothing about the interfluves."
+  - claimId: AMZ-C012
+    verdict: well_supported
+    confidence: moderate
+    reasoning: 'The Denevan half is established by verbatim self-rejection: he
+      abandons the habitat-density method behind 5.1–6.8 million because
+      densities varied too much to average, while retaining "at least 5 to 6
+      million" on other grounds (AMZ-E009). That is a clean documented instance
+      of a number outliving its argument. The general half — that published
+      estimates are model families sharing assumptions rather than independent
+      measurements — is a reasonable methodological reading but is not itself
+      demonstrated by any evidence record here; the dependency audit is proposed
+      (AMZ-R004), not done. The strongest opposing consideration is that
+      documentary, dark-earth-scaling and radiocarbon-proxy families do rest on
+      genuinely different data, so the shared-assumption charge must be proved
+      family by family.'
+  - claimId: AMZ-C013
+    verdict: well_supported
+    confidence: high
+    reasoning: AMZ-E010 reports the result from 7,363 database locations with a
+      quantified effect (21.5% permutation importance for distance from river)
+      and an explicit statement that interfluvial areas were more sparsely
+      populated. The pattern is also mechanistically expected — transport,
+      protein, floodplain soils — and it matches the independent bluff-model
+      geography (AMZ-E006), so priors reinforce the measurement here rather than
+      substituting for it. The strongest opposing consideration is that site
+      databases inherit survey effort, and rivers are how archaeologists reach
+      the forest; some unknown fraction of the gradient is discovery bias, which
+      modeling can mitigate but not eliminate. Only promise-blind transects
+      (AMZ-R003) can decompose it.
+  - claimId: AMZ-C014
+    verdict: well_supported
+    confidence: moderate
+    reasoning: The five-point negative list — no annual crops, no significant
+      clearing, no anthropic soils, no tree enrichment, no recurrent fire — is
+      quoted verbatim from a cumulative fourteen-region synthesis (AMZ-E011),
+      and phytolith and charcoal proxies are reasonably sensitive to exactly
+      those activities where deposition is continuous. This is the strongest
+      negative-space evidence in the case and the only direct check on
+      extrapolating hotspots to the basin. The strongest opposing consideration,
+      which the record itself carries, is that soil cores sample square metres
+      and are asked to speak for thousands of square kilometres, and
+      post-abandonment forest recovery can attenuate signals — so "little
+      evidence in sparse samples" understates activity by an unknown factor.
+      Confidence is moderate for that reason, not because the finding is
+      doubted.
+  - claimId: AMZ-C015
+    verdict: provisionally_supported
+    confidence: low
+    reasoning: "One study, one proxy class: summed radiocarbon distributions fitting
+      a logistic curve toward carrying capacity, with the terminal decline
+      attributed by the authors to sampling bias compounded by post-contact
+      collapse (AMZ-E020). SPDs are known to be sensitive to taphonomy,
+      calibration-curve artifacts and research intensity, and the authors' own
+      caveats say they proxy relative change only. The attribution of the
+      terminal downturn to bias plus post-contact effects rather than
+      pre-contact decline is an interpretation the same data could not easily
+      distinguish from a genuine late fall. The strongest opposing consideration
+      is regional divergence: parts of the Llanos de Mojos show agricultural
+      decline from AD 1300–1450, so the biome aggregate can conceal real
+      pre-contact reorganization."
+  - claimId: AMZ-C016
+    verdict: well_supported
+    confidence: moderate
+    reasoning: 'The mosaic is the one model that every line of evidence in this
+      ledger fits simultaneously: dense engineered nodes (AMZ-E001, E004, E014,
+      E017, E018), a demonstrably thinner matrix by two methodologically
+      independent routes — site distribution modeling (AMZ-E010) and soil
+      palaeoecology (AMZ-E011) — and an eyewitness geography of alternating
+      crowded and empty reaches (AMZ-E006, AMZ-E007). Because the corridor and
+      matrix evidence come from different instruments with opposite biases, the
+      qualitative structure is robust. The strongest opposing consideration is
+      that both halves rest on biased samples pulling in opposite directions, so
+      the proportions — the only thing still in dispute — could move
+      substantially; "mosaic" is nearly unfalsifiable at the structural level
+      and only becomes a test once matrix density is quantified.'
+  - claimId: AMZ-C017
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: "The split verdict is well constructed: the numerical half is
+      directly supported by manuscript instability (AMZ-E005), and the
+      qualitative half is supported by independent corroboration on the same
+      reaches (AMZ-E007) plus contact-horizon archaeology in commensurate
+      settings (AMZ-E004, E017, E018). Crucially the case does not spend the AD
+      100–300 Aquiry material here (AMZ-E003), which is the right discipline. It
+      remains provisional because the corroboration is categorical rather than
+      locational: no test yet shows that the specific reaches he called
+      populated are archaeologically richer than the ones he called empty. The
+      strongest opposing consideration is corridor-and-preservation circularity
+      — he travelled the richest reaches and archaeology samples those best —
+      which AMZ-R001 is designed to break and until then leaves embellishment of
+      the in-between geography unexcluded."
+  - claimId: AMZ-C018
+    verdict: well_supported
+    confidence: moderate
+    reasoning: "Both components are documented: Hancock's first-party statement of
+      seven chapters and over 90 pages on the Amazon in America Before, and the
+      S2.E1 cast listing showing Pärssinen and Ranzi appearing as themselves
+      (AMZ-E021). The claim is deliberately limited to coverage extent and
+      platforming and excludes page-level characterizations, which is the right
+      scope given that the book text was not verified. The strongest opposing
+      consideration is that first-party self-description and an IMDb listing are
+      weak sourcing for anything contested, and the word \"then-marginal\" is an
+      editorial judgment rather than a documented fact. It carries no evidential
+      weight either way for the Amazon itself, and the record correctly labels
+      it genealogy."

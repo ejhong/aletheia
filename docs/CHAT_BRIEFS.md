@@ -70,6 +70,31 @@ standing. Cover art per the house style docs; plates only from real
 imagery with license and provenance. Then: full local validation
 (tests, typecheck, lint, build, link audit) before the PR.
 
+### 4b. Coverage: every brief item gets a disposition (founder policy, 2026-08-28)
+
+The default is IN, not out. A verified item enters the case even when its
+diagnosticity is zero — "this famous exhibit is authentic and proves
+nothing" is exactly the information a reader needs — with the
+weightlessness stated, never silently dropped on editorial instinct.
+Every case PR ships a **coverage table** mapping every claim family in
+the brief to one of four dispositions:
+
+- **verified → in** (featured or catalog tier);
+- **verified but editorially excluded → listed with the reason, for the
+  founder's call** (this disposition should be rare);
+- **blocked → research item carrying the recovery route**;
+- **failed verification → documented correction**, as prominent as the
+  confirmations.
+
+Tiering keeps the UI manageable: featured tier (~20–25 claims) carries
+the full editorial workup and leads the case page; the remainder rides
+catalog tier in the collapsible explorer, promotable by a one-field
+edit. **Living-persons tier rule (downstream deployment):**
+verified-artifact and document claims may ride catalog; any claim whose
+statement names a living person gets featured treatment, so it always
+carries the objection/context fields that protect people — catalog's
+"unreviewed backlog" label must never sit on a statement about a person.
+
 ### 5. Repo routing
 
 - Science/history cases → this repo. Contested public events and

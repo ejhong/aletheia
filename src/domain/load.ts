@@ -159,6 +159,30 @@ function checkIntegrity(caseDir: string, loaded: LoadedCase): void {
         `claim ${claim.id} sourceAnchor references unknown source ${anchorSourceId}`,
       );
     }
+    const genealogySourceId = claim.genealogy?.originSourceId;
+    if (genealogySourceId && !sourceIds.has(genealogySourceId)) {
+      throw new ContentError(
+        caseDir,
+        `claim ${claim.id} genealogy references unknown source ${genealogySourceId}`,
+      );
+    }
+  }
+
+  for (const src of loaded.sources) {
+    for (const parentId of src.derivedFrom) {
+      if (parentId === src.id) {
+        throw new ContentError(
+          caseDir,
+          `source ${src.id} lists itself in derivedFrom`,
+        );
+      }
+      if (!sourceIds.has(parentId)) {
+        throw new ContentError(
+          caseDir,
+          `source ${src.id} derivedFrom references unknown source ${parentId}`,
+        );
+      }
+    }
   }
 
   for (const ev of loaded.evidence) {
@@ -237,8 +261,9 @@ function checkIntegrity(caseDir: string, loaded: LoadedCase): void {
 
 /**
  * Source admission rule (AGENTS.md §3.6): the evidence ledger lists only
- * sources that carry weight — cited by an evidence record or anchoring a
- * claim. Reading-guide material must say so (`background: true`), and the
+ * sources that carry weight — cited by an evidence record, anchoring a
+ * claim, or documenting a claim's genealogy (its first known appearance).
+ * Reading-guide material must say so (`background: true`), and the
  * label must stay honest in both directions: an uncited source without the
  * flag fails, and a cited source still carrying the flag fails. Enforced at
  * build time so an agent can never quietly pad the ledger with relevant-
@@ -247,12 +272,15 @@ function checkIntegrity(caseDir: string, loaded: LoadedCase): void {
 export function sourceAdmissionErrors(
   sources: Pick<Source, "id" | "background">[],
   evidence: Pick<Evidence, "sourceId">[],
-  claims: Pick<Claim, "sourceAnchor">[],
+  claims: Pick<Claim, "sourceAnchor" | "genealogy">[],
 ): string[] {
   const cited = new Set<string>([
     ...evidence.map((e) => e.sourceId),
     ...claims
       .map((c) => c.sourceAnchor?.sourceId)
+      .filter((id): id is string => id !== undefined),
+    ...claims
+      .map((c) => c.genealogy?.originSourceId)
       .filter((id): id is string => id !== undefined),
   ]);
   const errors: string[] = [];

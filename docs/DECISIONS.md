@@ -135,3 +135,28 @@ and provenance stamps stay true under §3.15. (This entry was written
 by the editorial AI recording a founder instruction from the
 2026-08-27 session, per §3.15's requirement that AI records be labeled
 as such.)
+
+## 2026-08-28 — Claim genealogy, derivative sources, and two honest states
+
+For contested public events, tracing where an allegation began is half
+the analytical work: it exposes claims born from identity conflation or
+source fusion, and stops fifty derivative retellings from reading as
+fifty independent reports. Three small structural additions, all
+optional, none migrating existing content: (1) claims may carry a
+`genealogy` block — earliest known public appearance (partial dates
+allowed), an origin account, and an optional loader-checked source, kept
+strictly separate from record provenance (`origin`) and counted as a
+citing use by the source-admission rule; (2) sources may declare
+`derivedFrom` — the ledger's structural answer to wire-copy duplication
+(§3.10 at the source grain), loader-checked and rendered with an
+explicit no-independent-weight note; (3) the assessment vocabulary gains
+`misframed` (the proposition fuses separate claims or has no truth
+condition as written — grading it would launder the framing error) and
+`provenance_failure` (the material the claim rests on cannot be
+authenticated — which is not the same as being shown false). Both map
+to the open family and carry in-place captions. Assessment-run scripts
+keep their narrower evidence-grading vocabulary deliberately: the new
+states are editorial framing judgments, not overlay verdicts. Motivated
+by the chat-derived research-brief workflow (2026-08-28 session), whose
+central findings were genealogical. (AI record of a founder
+instruction, 2026-08-28 session.)

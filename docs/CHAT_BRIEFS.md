@@ -110,7 +110,9 @@ carries the objection/context fields that protect people — catalog's
 
 Brief, ledger, raw captures, and URL indexes live in the constructing
 agent's persistent store (`briefs/<case-slug>/`), with the founder
-holding downloaded copies. They are inputs, not repository content —
-they contain living-persons material and unverified text that must not
-be published. If a shared private briefs repository is created later,
-they move there.
+holding downloaded copies. Founder decision (2026-08-30): raw captures
+for SCIENCE/HISTORY cases may additionally be committed to this
+repository's `briefs/` directory as durable never-citable archives (see
+briefs/README.md); captures for cases touching living private
+individuals are never committed to a public repository and live only in
+the agent store and/or a private briefs repository.

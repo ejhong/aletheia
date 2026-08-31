@@ -1,0 +1,55 @@
+kind: literature-watch-proposals
+case: ccc
+runId: watch-2026-08-31-mdja
+date: 2026-08-31
+window:
+  since: 2026-08-17
+  queries:
+    - conformal-cyclic-cosmology
+    - hawking-points-cmb
+    - cmb-circles-anomalies
+    - erebon-dark-matter
+    - proponent-output
+    - primordial-b-modes
+note: DISCOVERY ONLY. Items are exactly as returned by the APIs named in
+  foundVia — nothing verified, nothing added to sources.yaml. The triage step
+  (scripts/triage-watch.mjs) judges each item against versioned criteria;
+  imports queue a verification request via the inbox pipeline. See
+  docs/MAINTENANCE.md.
+verification: unverified
+items:
+  - title: Conformal Cyclic Cosmology from Varying Fundamental Constants
+    authors:
+      - Konrad Marosek
+      - Adam Balcerzak
+    venue: arXiv (gr-qc)
+    date: 2026-08-27
+    doi: null
+    arxivId: "2608.27014"
+    url: https://arxiv.org/abs/2608.27014
+    abstractSnippet: We investigate a bimetric cosmological model in which the
+      gravitational and matter sectors are described by distinct metrics related
+      through a time-dependent function $α(t)$. This relation leads to dynamical
+      gravitational parameters, with $G(t)\proptoα^{-3}$ and $c_{\rm
+      grav}(t)\proptoα^{-1}$, where $c_{\rm grav}$ denotes the propagation speed
+      of gravitational interactions. We consider a class of solutions for which
+      $α\rightarrow\infty$ at a finite cosmic time, resulting in $G\rightarrow0$
+      and $…
+    foundVia: arxiv
+    possibleDuplicateOf: SRC-TOD-2015 — "The equations of Conformal Cyclic
+      Cosmology" (title overlap 0.75); check whether this is the same work in
+      another venue before promoting
+    matchedQueries:
+      - id: conformal-cyclic-cosmology
+        query: conformal cyclic cosmology
+    aiRelevanceNote:
+      label: AI-generated relevance draft — not a human judgment
+      model: anthropic/claude-fable-5
+      promptVersion: watch-relevance-v1
+      note: This paper proposes a theoretical realization of Penrose-style cyclic
+        cosmology via a bimetric model with varying fundamental constants, so it
+        bears on the CCC framework at the heart of the case. However, the
+        abstract gives no indication that it addresses the CMB
+        circle/Hawking-point signatures or the statistical dispute over them, so
+        its relevance to the observational controversy appears indirect.
+    verification: unverified

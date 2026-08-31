@@ -1,0 +1,99 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 115
+title: "Pre-flight citation check: run the arbiter's mechanical verification
+  before the PR exists"
+url: https://github.com/ejhong/aletheia/pull/115
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-28
+judgedAgainst: da931e3fc6
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff adds a single new engine-side script,
+      `scripts/preflight-citations.mjs`, which reuses the repository's existing
+      `scripts/lib/citation-check.mjs` to run the same mechanical DOI/arXiv/URL
+      resolution locally over content lines a branch adds. No content records,
+      assessments, sources, or provenance are touched (the citation verification
+      tool found no identifiers in added content lines), so there is no
+      fabrication, locator, label, or confidentiality surface here. AGENTS.md is
+      untouched. The change strengthens rather than weakens §3.15 checks: it is
+      an additional pre-PR desk check that exits 1 on FAILS, and the comments
+      explicitly note the arbiter itself still does not gate on citation
+      results, so no existing gate is relaxed or reclassified. It adds no
+      dependencies (only node builtins plus an in-repo module), no live AI
+      calls, and does not affect the static site build (§4, §8). The PR body's
+      claims about incident #113 and smoke-test counts are unverifiable from
+      what I was shown, but they are narrative justification only and nothing in
+      the diff depends on them."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: The change adds a standalone Node script that runs the existing
+      mechanical citation checker locally against git diff output under
+      content/. It does not touch any content files, assessments, provenance
+      records, or AGENTS.md, so there is no risk of silently altering published
+      judgments or weakening epistemic checks. The script simply shells out to
+      git, calls extractCitations/verifyCitations/formatVerificationSection from
+      the existing library, prints what the panel sees, and exits non‑zero on
+      FAILS as a developer convenience. Its messaging reinforces core rules
+      (titles from the page, treating unexplained FAILS as potential
+      fabrication) and does not claim to gate publication or override the
+      arbiter, so it does not conflict with §3.15 or the phase-1 rules. No
+      fabricated citations or locators are introduced; the script only inspects
+      already-present identifiers. Overall, this is an internal tooling
+      enhancement that supports the existing verification norms and complies
+      with the constitution.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules:
+      - §3.15
+      - §4
+      - §8
+    reasoning: The PR adds a local developer script to preflight citations against
+      existing registry checks before creating a PR. It does not modify any
+      content, weaken any CI checks, or bypass the multi-model ratification
+      process (§3.15). Because it operates strictly as a local tooling utility,
+      it does not add live autonomous calls to the site itself (§4), while
+      actively helping to enforce the requirement for real citations and
+      accurate provenance (§3.8, §4).
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff adds only scripts/preflight-citations.mjs, a local wrapper
+      around the existing arbiter citation-check library; it does not edit
+      AGENTS.md, content/, assessments, or CI gates. It prints the same
+      RESOLVES/FAILS/UNCHECKED output seats already see and exits 1 on FAILS as
+      a desk reminder, without claiming to replace or relax mechanical validity,
+      multi-model ratification, or real-citation rules. No citations, locators,
+      or provenance are introduced, so §3.7–§3.8 and fabrication bans are not in
+      play. Phase-1 constraints on the static site (no live AI in the app, no
+      auth/servers) are untouched. This is a left-shift of an existing check,
+      not a weakening of §3.15.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "The diff adds one new local developer script that imports the
+      arbiter's existing scripts/lib/citation-check.mjs and runs it over the
+      branch's added content lines; it touches no arbiter code, no CI
+      configuration, no gates, no content files, and not AGENTS.md, so §3.15's
+      checks are not weakened or reclassified — the script's own docstring
+      states the arbiter never gates on this and frames it as a desk check. Its
+      guidance for FAILS (fix the identifier, or ensure the record's
+      verificationNote honestly names the bot-wall/paywall and the workaround
+      copy actually read) reinforces §3.8 and §4's honest-verification-labeling
+      rule rather than coaching evasion, and the seat-visible mechanical
+      verification still runs unchanged on every open PR. The tool adds no
+      citations itself (verification section confirms none found), fabricates
+      nothing, exposes no confidential material, and makes no
+      production-affecting or irreversible change (§9). The PR body's narrative
+      (incident #113, smoke-test counts, 'sync to erebus') is untrusted data but
+      describes nothing the diff itself does wrong, and it contains no
+      instructions directed at the panel. Running an existing check earlier in
+      the workflow is a strengthening, not a weakening, of the constitution's
+      real-citations-only requirement."
+harvestedAt: 2026-08-31

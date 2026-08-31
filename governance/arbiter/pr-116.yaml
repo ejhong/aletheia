@@ -1,0 +1,86 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 116
+title: "Link-preview cards: Open Graph + Twitter metadata with a house og-card image"
+url: https://github.com/ejhong/aletheia/pull/116
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-28
+judgedAgainst: 73953f84e9
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches only presentation/config: `app/layout.tsx` adds
+      Open Graph and Twitter metadata derived from existing
+      `site.name`/`site.subtitle`, `src/config/site.ts` adds a `url` and
+      `ogImage` field with documented null-safe fallback, and a new static image
+      is added under `public/images/`. No files under `content/` are touched, no
+      citations, locators, verification labels, or assessments are added or
+      altered, and the tooling found no citation identifiers to check. AGENTS.md
+      is untouched and no check (CI, ratification, provenance display) is
+      weakened or bypassed. The added dependencies are none — this uses Next's
+      built-in `Metadata` type, consistent with §4's minimal-dependency rule —
+      and the metadata is static, adding no live AI calls or servers. The only
+      unverifiable element is the binary og-card image, described as a crop of
+      existing house cover art; nothing in the diff suggests confidential
+      (`arc/`/`notes.txt`/Hawke-derived) material, so I see no positive evidence
+      of a §3.15 confidentiality problem. Ordinary imperfections (a 1.5 MB card
+      image) are style, not violation."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: The change only touches layout metadata, a new static image asset,
+      and site configuration; it does not alter any epistemic content under
+      content/ or the assessment/provenance machinery. No citations, sources, or
+      locators are added, so rules about real citations, exact provenance, and
+      calibrated uncertainty are not implicated. The comments describing the
+      og-card as a crop of existing cover art are descriptive and do not create
+      or modify evidence records. There is no modification of AGENTS.md or any
+      other constitutional file, so §3.15 is respected. No checks or safeguards
+      defined in §3.15 are weakened, and there is no indication of publishing
+      confidential material. Therefore, the diff is consistent with the
+      constitution’s requirements.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules: []
+    reasoning: The pull request adds standard Next.js metadata properties (openGraph
+      and twitter) to `app/layout.tsx` and the corresponding configuration in
+      `src/config/site.ts` to support link previews. It introduces a static
+      image file without adding new dependencies or modifying core domain
+      models. This change is purely presentational, adheres to the Phase-1
+      static site constraints, and does not alter the epistemic ledger,
+      assessments, or weaken any constitutional checks.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff only adds Open Graph/Twitter metadata in app/layout.tsx, a
+      site.url/ogImage config in src/config/site.ts, and a static
+      public/images/og-card.png. It does not touch AGENTS.md, content records,
+      citations, assessments, or provenance, and citation tooling found no
+      identifiers. No checks are weakened, no confidential-path material is
+      cited, and no live AI, auth, or extra dependencies are introduced. The
+      binary card is claimed as a crop of already-public house cover art;
+      nothing in the visible text contradicts that or fabricates a source. This
+      is ordinary Phase-1 presentation work under §§4, 7, and 8.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "This is a pure presentation-layer change: it adds Open Graph/Twitter
+      metadata in app/layout.tsx, two config values in src/config/site.ts, and a
+      static og-card image. No content under content/ is touched, no citations
+      are added (the mechanical verifier found none), no claims, evidence,
+      sources, or assessments are modified, and AGENTS.md is untouched. The new
+      site.url is deployment configuration, not a citation or locator, and is
+      consistent with the existing repoUrl origin; the null-safe metadataBase
+      pattern and honest comments about crawler fallback show no false precision
+      or deceptive labeling. The binary og-card.png cannot be inspected in a
+      diff, but the PR describes it as a crop of already-public house cover art,
+      and there is no positive evidence it exposes confidential arc/ or
+      notes.txt material — unfamiliarity with a binary asset is not itself
+      evidence of violation. No dependencies are added, the static-export
+      architecture is preserved, and none of the §3.15 checks are weakened or
+      dodged."
+harvestedAt: 2026-08-31

@@ -1,0 +1,128 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 112
+title: Claim genealogy, derivative sources, and two honest assessment states
+url: https://github.com/ejhong/aletheia/pull/112
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-28
+judgedAgainst: 15667ba79b
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "This is a pure schema/loader/UI change with no content records, no
+      citations added (verification tooling found none), and AGENTS.md
+      untouched. The additions strengthen rather than weaken the checks:
+      `derivedFrom` makes §3.10 independence structural at the source grain and
+      is loader-enforced (existence + no self-reference), and the source page
+      renders an explicit 'no independent weight' note; `genealogy` is kept
+      expressly separate from `origin` (record provenance, §3.9), rejects vague
+      dates via regex, and its `originSourceId` is fail-closed against dangling
+      IDs. Extending the source-admission rule to count a genealogy reference as
+      a citing use is a narrow, documented widening that keeps the honesty rule
+      bidirectional — the new test asserts a genealogy-cited source still fails
+      if mislabeled `background: true`. The new states `misframed` and
+      `provenance_failure` both map to the 'open' family and carry in-place
+      captions, which serves §3.2 (atomicity, refusing to grade fused
+      propositions) and §3.13 (no false precision) rather than laundering a
+      verdict; the concurrence/overlay scripts' vocabulary is untouched, so
+      §3.15 ratification is unaffected. The DECISIONS.md entry is appended (not
+      rewritten), is non-normative description of this change, and is explicitly
+      labeled an AI record of a founder instruction, matching the existing
+      2026-08-27 pattern and §3.15's labeling requirement."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.5
+      - §3.8
+      - §3.10
+      - §3.13
+      - §3.14
+      - §3.15
+    reasoning: The change only touches schema, loaders, UI, tests, and DECISIONS.md;
+      AGENTS.md (the constitution) is untouched, so §3.15’s human-only amendment
+      rule is respected. The new ClaimGenealogy block is explicitly separated
+      from record provenance (`origin`), constrained by a date regex and minimum
+      description length, and its optional `originSourceId` is loader-checked
+      against existing sources, supporting exact provenance and avoiding
+      fabricated locators (§3.8). Marking genealogy references as counting for
+      source admission and enforcing honesty in both directions via
+      `sourceAdmissionErrors` aligns with the existing "real citations only" and
+      background-label integrity rules (§3.7, §3.15). The `derivedFrom` field on
+      sources makes dependency/duplication structurally explicit and is
+      loader-checked for existence and no self-reference, reinforcing
+      independence handling rather than weakening it (§3.10). The two new
+      assessment states `misframed` and `provenance_failure` are carefully
+      defined as open-family, with in-place captions and no change to the
+      concurrence machinery, which improves calibrated uncertainty and
+      transparency about framing/provenance limits (§3.2, §3.9, §3.13, §3.14).
+      No citations are added, so there is no risk of fabricated identifiers, and
+      the tests and comments emphasize enforcement rather than loosening of
+      checks, so the epistemic safeguards remain intact (§3.15).
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules:
+      - §3.10
+      - §3.2
+      - §3.8
+      - §8
+      - §7
+    reasoning: "The proposed schema changes cleanly support the epistemic rules:
+      `derivedFrom` structuralizes §3.10 (independence), `misframed` flags §3.2
+      (atomic claims) violations, and `provenance_failure` captures §3.8
+      (provenance) breakdowns. The unfamiliar new states are properly explained
+      in the UI (§7). The loader correctly enforces the 'no dangling IDs' rule
+      (§8) for both `derivedFrom` and `originSourceId`. Despite the PR body's
+      claims about skipping panel interactions, the diff only modifies the
+      domain schema, load validation, and read-only UI components; it does not
+      touch or weaken any concurrence checks (§3.15)."
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The complete diff is schema, loader integrity, UI, tests, and an
+      append-only DECISIONS.md note; AGENTS.md is untouched, so §3.15's
+      human-only amendment reservation is intact. Optional `genealogy` is kept
+      separate from record `origin`, uses an honest “first known” locator shape,
+      and dangling `originSourceId` fails the build; `derivedFrom` encodes §3.10
+      at source grain with no self-reference and no silent independent weight.
+      New states `misframed` and `provenance_failure` extend the open family
+      with in-place captions rather than a truth-score, and no content records,
+      citations, or verification labels are added or rewritten. Source-admission
+      still fails closed in both directions (genealogy counts as a citing use;
+      derivation parents are not auto-admitted). This strengthens mechanical
+      checks rather than weakening concurrence, overlays, or provenance rules.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.8
+      - §3.10
+      - §3.15
+    reasoning: "The change is schema-and-render only: no content records, no
+      citations, no overlay assessments are added, so fabrication risk is nil
+      (the citation-verification section is empty, as expected). It strengthens
+      the checks rather than weakening them: the loader now fails the build on a
+      dangling genealogy originSourceId, on derivedFrom self-reference, and on
+      derivedFrom targets that don't exist, and the source-admission honesty
+      rule is extended (not relaxed) so a genealogy citation counts as a citing
+      use in both directions — verified by the new tests. The genealogy block
+      honors §3.8 (partial dates allowed as honest approximation; rendering
+      hard-codes 'first known' = earliest found, never absolute priority) and
+      keeps record provenance (origin) separate from claim genealogy.
+      derivedFrom makes §3.10 structural at the source grain with an explicit
+      'no independent weight' note in the UI. The two new assessment states
+      serve §3.2 (misframed flags fused/untestable propositions instead of
+      laundering them through the truth scale) and §3.8 (provenance_failure
+      distinguishes unexaminable support from falsity), both mapped to 'open'
+      with in-place captions per the interface rule on unfamiliar epistemic
+      terms. AGENTS.md is untouched; the DECISIONS.md entry is explicitly
+      labeled an AI record of a founder instruction, matching the established
+      pattern of the prior entry, and does not present an AI record as a human
+      one or an unratified draft as ratified. The overlay scripts deliberately
+      exclude the new states, which restricts rather than dodges the concurrence
+      vocabulary."
+harvestedAt: 2026-08-31

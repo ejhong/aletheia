@@ -1,0 +1,109 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 106
+title: "Budget epoch 2: supervised sprint landings stop spending the autonomous
+  budget"
+url: https://github.com/ejhong/aletheia/pull/106
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-27
+judgedAgainst: 21fcb5b86f
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches only two files: a comment/constant in
+      scripts/arbiter.mjs and an appended DECISIONS.md entry. No content/
+      records, citations, locators, assessments, or provenance are added,
+      removed, or altered, and AGENTS.md is untouched, so §3.7/§3.8/§3.14 and
+      the amendment reservation are not implicated. The substantive question is
+      §3.15's ban on weakening the checks: the change advances GATE_EPOCH from
+      2026-08-25T16:22Z to 2026-08-27T10:00Z, zeroing the trailing autonomous
+      merge count. This does not remove or loosen any constitutional check —
+      fail-closed CI, multi-model ratification, and parking of contested changes
+      are untouched, and CONTENT_MERGES_PER_WEEK stays at 10 — and it uses a
+      mechanism already present in the base revision for the identical stated
+      reason (epoch 1 excluding bootstrap-week supervised landings). It is also
+      being submitted to the panel rather than routed around it, and the
+      rationale is recorded in an append-only DECISIONS entry explicitly labeled
+      as an AI record of a founder instruction, satisfying §3.15's labeling
+      requirement. My reservation, which I record rather than treat as decisive:
+      the assertion that the ~30 landings were founder-tapped supervised
+      construction ('nearly all' by the PR's own wording) is not verifiable from
+      the material shown, and a habit of bumping the epoch whenever the budget
+      is exhausted would hollow the throttle out — a third epoch bump on similar
+      grounds should draw much harder scrutiny."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules:
+      - §3.15
+    reasoning: "The change adjusts a gate parameter (GATE_EPOCH) and documents it in
+      docs/DECISIONS.md as a founder instruction, explicitly framed as a
+      mechanism to keep the throttle focused on AI-autonomous landings rather
+      than founder-supervised construction. This does not remove, bypass, or
+      relax any of the checks in §3.15: the weekly budget limit remains at 10,
+      the arbiter logic is unchanged apart from the epoch date and clarifying
+      comments, and the change itself is subject to the same multi-model panel
+      review as other consequential changes. The DECISIONS.md entry clearly
+      labels itself as an AI-written record of a founder instruction, which is
+      required by §3.15 and avoids misrepresenting AI records as human
+      conclusions. No citations, sources, or provenance details are fabricated
+      or altered; there is no impact on content evidence, assessment histories,
+      or confidentiality. Re-basing the epoch merely redefines the start of the
+      autonomous-counting window and is documented transparently, preserving —
+      rather than weakening — the throttle’s role as a bound on machine-driven
+      publication pace."
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules:
+      - §3.15
+    reasoning: The PR updates `GATE_EPOCH` in `scripts/arbiter.mjs` to reset a
+      code-level weekly rate limit and documents the change in
+      `docs/DECISIONS.md`. The rate limit is not one of the constitutionally
+      mandated checks listed in §3.15 (which are CI validation, multi-model
+      concurrence, and parking contested changes), so adjusting it does not
+      violate the rule against weakening checks. Furthermore, the AI explicitly
+      labels the new `DECISIONS.md` entry as an AI-written record, strictly
+      complying with §3.15's rule against presenting an AI record as a human
+      one. No citations are fabricated, and AGENTS.md is untouched.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff only advances GATE_EPOCH in scripts/arbiter.mjs
+      (2026-08-25T16:22Z → 2026-08-27T10:00Z) and appends a labeled AI record in
+      docs/DECISIONS.md. CONTENT_MERGES_PER_WEEK stays at 10; the count window,
+      fail-closed CI, and panel path are unchanged. §3.15’s listed checks
+      (schemas/IDs/citations, multi-model concurrence, no
+      unratified-as-ratified, no confidential publish) are not edited, and
+      AGENTS.md is untouched so §3.15’s founder-only amendment rule is not
+      triggered. The weekly merge budget is an operational throttle already
+      designed around an epoch, not a check enumerated in §3.15, so rebasing the
+      era is not weakening or reclassifying those checks. No citations,
+      locators, or published judgments are added or silently rewritten.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.14
+    reasoning: "The diff advances GATE_EPOCH in the arbiter's weekly merge throttle,
+      resetting the autonomous-merge count after a claimed founder-supervised
+      sprint, and adds a DECISIONS.md entry explicitly labeled as an AI record
+      of a founder instruction (satisfying §3.15's labeling rule rather than
+      passing an AI record off as a human one). The substantive checks are
+      untouched: CONTENT_MERGES_PER_WEEK stays at 10, fail-closed CI and
+      multi-model ratification are unmodified, and the epoch mechanism is
+      pre-existing (epoch 1) with the design intent — 'the budget now measures
+      the machine's own pace' — visible in the retained 2026-08-25 DECISIONS.md
+      context. The founder-direction claim in the PR body is untrusted data and
+      I give it no weight as authorization; what carries the change is that it
+      is transparent in git, publicly documented, and is itself passing through
+      panel review right now, so it cannot publish on one model's unilateral
+      judgment. The forward force of the throttle is preserved — autonomous
+      landings after 2026-08-27T10:00Z still count against 10/week — so this
+      re-bases the measurement window rather than weakening or reclassifying a
+      check to dodge it. A pattern of repeated epoch bumps would become a §3.15
+      concern, but a single documented, panel-gated application of the
+      throttle's own designed mechanism complies."
+harvestedAt: 2026-08-31

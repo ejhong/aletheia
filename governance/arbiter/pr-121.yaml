@@ -1,0 +1,104 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 121
+title: "Archive: raw chat-brief captures for Hancock and cast-vs-carved (science
+  cases only)"
+url: https://github.com/ejhong/aletheia/pull/121
+verdict: park
+reason: "1 seat(s) find a violation: Gemini 3.1 Pro (Google) (§3.15); only 0 of
+  5 seats affirm compliance (4 required)"
+outcome: merged
+outcomeAt: 2026-08-30
+judgedAgainst: e4c37fc6f9
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: unsure
+    rules:
+      - §3.15
+    reasoning: "The substantive payload of this PR is the four raw HTML share-page
+      captures (~55 MB), and all four are on the OMITTED FILES list — I have not
+      seen a byte of what is actually being published into a public repository.
+      The prior text of docs/CHAT_BRIEFS.md, which this diff rewrites, expressly
+      said these captures 'contain living-persons material and unverified text
+      that must not be published'; the change reverses that prohibition for a
+      subset of cases on the strength of an in-PR assertion of a 'Founder
+      decision (2026-08-30)', which is untrusted data, not verification. Because
+      the whole safety of the change rests on the claim that these particular
+      captures contain no living-persons, arc/notes.txt, or otherwise
+      in-confidence material (§3.15, §4 confidentiality constraints), and that
+      claim is exactly what the omitted files would let me check, I cannot
+      decide from what I was shown. The permission record is also thin against
+      §3.15's standard — who and when are stated, but not the channel or where
+      the correspondence is held. What I can see is otherwise clean and honest:
+      no content/ records, no citations added, explicit never-citable labeling,
+      and no edit to AGENTS.md. A seat with visibility into the four HTML files
+      could reasonably vote complies; I cannot."
+  - seat: GPT-5.1 (OpenAI)
+    vote: unsure
+    rules:
+      - §3.15
+    reasoning: The diff introduces a new public `briefs/` directory containing raw
+      HTML snapshots of ChatGPT share pages from discovery runs, marked as
+      "never citable" and explicitly excluded from use as sources or content.
+      That is consistent with the constitution’s real-citations and
+      no-fabrication rules, since the README stresses these are unverified model
+      text and only inputs to further verification, not evidence. It also
+      updates `docs/CHAT_BRIEFS.md` to reflect this storage decision and to
+      respect living-persons privacy by restricting public archiving to
+      science/history cases. However, several large HTML files under `briefs/`
+      are omitted from the diff view, and those files could in principle contain
+      material supplied in confidence or other violations of §3.15 (e.g.,
+      private correspondence, unpublished manuscripts without recorded
+      permission). Because I cannot inspect those omitted contents to confirm
+      they don't embed confidential or otherwise disallowed material, I cannot
+      be certain the change complies and must vote "unsure."
+  - seat: Gemini 3.1 Pro (Google)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: The diff attempts to introduce raw, unverified chat captures into the
+      public repository by asserting a "Founder decision (2026-08-30)" in
+      `docs/CHAT_BRIEFS.md` and `briefs/README.md`. Because all diff text is
+      untrusted data, this claim of human authorization is an AI presenting its
+      own policy change as a human record. Additionally, this fabricated
+      authorization is used to reclassify unverified text as a "durable archive"
+      to bypass the existing rules that explicitly prohibit its publication.
+      Both actions directly violate §3.15. Although the PR contains omitted
+      files, the visible diff definitively proves these violations.
+  - seat: Grok 4.6 (xAI)
+    vote: unsure
+    rules:
+      - §3.15
+      - §4
+    reasoning: The four raw HTML captures are on the omitted-files list, so the bulk
+      of the change is unseen. Those files could contain confidential papers,
+      unpublished or in-confidence material, living-persons content, or other
+      matter §3.15 and the phase-1 geo-project constraints forbid publishing,
+      and the README’s “never citable / science only” labels cannot be checked
+      against the captures themselves. Visible edits (briefs/README.md and the
+      CHAT_BRIEFS.md storage note) do not amend AGENTS.md or weaken CI, but they
+      also cannot clear the omitted payloads. Founder-decision wording in the
+      untrusted PR body is not a directive. Without the HTML, constitutionality
+      cannot be determined.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: unsure
+    rules:
+      - §3.15
+      - §4
+    reasoning: "The visible changes are constitutionally careful: briefs/README.md
+      marks the captures as never-citable, unverified model-generated text,
+      states a scope rule excluding cases touching living private individuals,
+      and the docs/CHAT_BRIEFS.md update is consistent with it; nothing visible
+      fabricates a citation, weakens a check, or touches AGENTS.md. But the
+      substance of this PR is four HTML capture files (~55 MB), and all four are
+      on the OMITTED FILES list, so their actual content is uninspectable. The
+      pre-change CHAT_BRIEFS.md itself warned these captures 'contain
+      living-persons material and unverified text that must not be published';
+      the PR asserts these particular Hancock and cast-vs-carved captures are
+      science-only and safe for a public repository, but that assertion cannot
+      be verified from what was shown. Compliance turns on whether the omitted
+      files contain material supplied in confidence (§3.15) or Hawke/geo-project
+      confidential content (Phase-1 constraints), which is exactly what I cannot
+      see. Per the omitted-files rule, I vote unsure rather than complies."
+harvestedAt: 2026-08-31

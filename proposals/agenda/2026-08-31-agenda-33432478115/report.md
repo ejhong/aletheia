@@ -1,0 +1,34 @@
+## Agenda proposals (2026-08-31)
+
+- ccc: rejected malformed proposal (bad kind: analysis-backed claim).
+- ccc: proposed [research-item] The published-response record to Eckstein 2023's entropy objection
+- ccc: proposed [study] Do the three anisotropic ring-center regions coincide with Planck noise and foreground anisotropy?
+- megalithic-casting: proposed [study] Sample-identity concordance table for all published Giza limestone analyses
+- megalithic-casting: proposed [research-item] Radiocarbon-date the organic matter reported inside Pumapunku andesite
+- megalithic-casting: proposed [study] Degrees-of-freedom audit of the Great Pyramid numerical coincidences
+- immortality-key: primary model refused; proposals below are from claude-opus-5.
+- immortality-key: proposed [research-item] Baseline frequency of Claviceps in Iberian Iron Age non-ritual food and storage contexts
+- immortality-key: proposed [study] Dose-and-supply arithmetic: can published ergot alkaloid contents deliver an initiate dose at Eleusinian scale?
+- immortality-key: proposed [research-item] Retrieve the 2002 Mas Castellar primary publication and fix its analytical method and detection limits
+- mpi: proposed [study] Cross-study significant-cell count table: do 'failed' replications still show excess correlations in displaced locations?
+- mpi: proposed [research-item] Audit the raw random streams of the 2023 online replication for source-quality artifacts
+- mpi: proposed [research-item] Publication chronology: was the decline/displacement derivation stated before or after the matrix declines were observed?
+- orch-or: primary model refused; proposals below are from claude-opus-5.
+- orch-or: proposed [study] Does xenon isotope potency track nuclear spin or atomic mass? A regression on the published isotope data
+- orch-or: proposed [research-item] Retrospective anesthetic dose-requirement audit in taxane-treated patients versus matched controls
+- orch-or: proposed [study] Supra-clinical multiples: concentrations used in microtubule anesthetic experiments versus free clinical concentrations
+- pre-columbian-amazon: proposed [study] Terminal-occupation date table: how many Aquiry and southern-rim earthworks were still in use at the contact horizon (AD 1500)?
+- pre-columbian-amazon: proposed [research-item] Synoptic witness table for the ten Ursúa (1560) accounts and the Nunes letter: shared bedrock versus singular claims
+- pre-columbian-amazon: proposed [research-item] Reanalysis of the domesticated-tree concentration with a post-Columbian activity covariate
+- transients: proposed [claim] The nine April 1950 marks exist in the emulsion of the original telescope negative, not only on copy material
+- transients: proposed [study] Chance-alignment null calibration for the reported linear transient alignments
+- transients: proposed [research-item] Contemporaneous flight, balloon, and rocket operation logs for the two canonical event nights
+- vasocomputation: proposed [study] Replication ledger for the spontaneous-EMG linchpin: every attempt to reproduce nidus-confined electrical activity and its stress-responsiveness
+- vasocomputation: proposed [study] Latch-bridge evidence by vessel type and caliber: has latch ever been demonstrated in skeletal-muscle microvasculature?
+- vasocomputation: proposed [claim] Published latch-state durations are shorter than knot chronicity, so a chronic knot requires ongoing re-activation, not latch alone
+- ydih: proposed [study] Lonsdaleite claims versus published diagnostic criteria: a specimen-by-specimen identification audit
+- ydih: proposed [study] Greenland ice-core combustion aerosols at the Younger Dryas onset: annual-resolution NH4+, nitrate, and black-carbon proxies versus the rest of the deglaciation
+- ydih: proposed [claim] No modeled airburst regime produces the claimed >1,500 °C ground-surface melting over dispersed continental sites without leaving a crater or detectable shock field
+- zero-worlds: proposed [claim] The Hoffman–Prakash correspondence stops at the asymptotic free particle: no published extension derives interactions, composite systems, or the Born rule
+- zero-worlds: proposed [research-item] Selectivity test for the multiway–ZX embedding: do classical and supra-quantum process theories embed just as easily?
+- zero-worlds: proposed [research-item] Extract the exact assumptions of Müller's 2020 preliminary Bell theorem and check whether it permits PR-box correlations

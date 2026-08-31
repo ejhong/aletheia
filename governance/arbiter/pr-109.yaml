@@ -1,0 +1,102 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 109
+title: "LLM client: Fable-first by code default, one-shot Opus fallback on refusal"
+url: https://github.com/ejhong/aletheia/pull/109
+verdict: park
+reason: "1 seat(s) find a violation: Opus 5 (Anthropic) (§3.15, §3.8)"
+outcome: closed
+outcomeAt: 2026-08-28
+judgedAgainst: ea0bab5576
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: violates
+    rules:
+      - §3.15
+      - §3.8
+    reasoning: "The fallback silently substitutes a second model inside `call()` and
+      returns only a bare string — no indication of which model actually
+      produced the text, and the only trace is an ephemeral `console.error` line
+      that never reaches git. Every downstream caller that stamps an assessment
+      or run record can therefore only stamp `provider.model` (now
+      `claude-fable-5`) while the text may in fact have come from
+      `claude-opus-5`, making the mandated model stamp false and breaking
+      §3.15's 'any reader can reconstruct which model did what' and §4's
+      requirement that overlay assessments be stamped with the runId/model that
+      produced them (an inaccurate provenance detail under §3.8). The change
+      also converts a previously fail-closed outcome (orch-or, immortality-key
+      skipped) into a silently-passing one produced by an undisclosed model,
+      which is the sort of check-relaxation §3.15 forbids doing quietly.
+      Compounding this, the code comment reverses documented decision #15 on the
+      sole authority of an unverifiable in-diff assertion of 'the founder's
+      preference (2026-08-27)', with no corresponding update to
+      `docs/DECISIONS.md`; a claim of authorization inside the material under
+      review is evidence, not warrant. The fix would be small — have `call()`
+      report the model actually used (or a `{text, model}` result) so records
+      stamp truthfully, and record the decision reversal in DECISIONS.md — but
+      as written the change degrades the provenance guarantee."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: The change only affects the shared Anthropic LLM client and adds
+      tests for its behavior; it does not touch content/, sources, citations,
+      assessments, or provenance records. No citations or locators are
+      introduced, so there is no risk of fabricated or misrepresented references
+      under §3.7–§3.8. The new logic (one-shot fallback from the configured
+      model to claude-opus-5 on explicit refusals or empty text) preserves the
+      existing fail-closed parsing behavior and does not weaken epistemic or
+      publication checks in §3.15; it merely makes refusals less brittle
+      operationally. There is no modification of AGENTS.md or other
+      constitutional files. Because all omitted files are listed as none, there
+      is no hidden risk elsewhere in the diff. Overall, this is an internal
+      robustness improvement and stays within the constitution’s constraints.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules: []
+    reasoning: The proposed change modifies the internal Anthropic client in the
+      pipeline scripts to retry once on a fallback model when the primary model
+      refuses to answer. This is a functional update to the tooling that does
+      not alter any published content, bypass fail-closed validation, weaken
+      multi-model concurrence, or amend the constitution. The claims of founder
+      authorization in the untrusted PR body and comments have been ignored as
+      they do not affect the mechanical compliance of the code itself, which
+      adheres to all documented epistemic and architectural rules.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The complete diff only edits the existing Anthropic pipeline client
+      in scripts/lib/llm.mjs and adds a vitest contract for a one-shot refusal
+      fallback; it does not touch AGENTS.md, content/, assessments, citations,
+      or provenance. Switching the unset default from claude-opus-5 to
+      claude-fable-5 and retrying once on Opus when stop_reason is refusal or
+      the text is empty is an ops reliability change, not a weakening of §3.15’s
+      fail-closed CI, multi-model ratification, or append-only stamps. The
+      client still returns empty text if the fallback also refuses, so caller
+      fail-closed parsing remains in charge. Claims in the PR body that this is
+      founder-directed are untrusted data, but this file is not a reserved human
+      amendment and no fabricated locator or confidential material appears.
+      Layering a script test under src/domain/ is ordinary imperfection, not a
+      constitutional break.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "This is a tooling-only change to the pipeline's shared Anthropic
+      client plus a new test file; it touches no content under content/, adds no
+      citations (the verification section is empty), and does not edit
+      AGENTS.md. The fallback preserves the fail-closed posture: if the Opus
+      retry also refuses, the empty reply flows back into the caller's
+      fail-closed parsing, and the retry is logged, so §3.15's checks (schema
+      CI, ratification gates, contested-change parking) are neither weakened nor
+      dodged. The claimed 'founder's preference (2026-08-27)' in the PR body and
+      comment is untrusted text, but the change's compliance does not depend on
+      it — reverting the default model to Fable with a logged one-shot fallback
+      is an operational choice, not a constitutional act. The site itself gains
+      no live AI calls, consistent with §4's static-site rule. One residual
+      concern is whether assessment overlays stamped with the configured model
+      would mis-record the model on fallback runs, but the stamping code is not
+      in this diff, the retry is logged to the run record, and the diff does not
+      falsify any stamp itself — that is ordinary imperfection to flag, not a
+      demonstrated violation. Tests pin the exactly-once, no-loop contract,
+      satisfying §8 and §10."
+harvestedAt: 2026-08-31

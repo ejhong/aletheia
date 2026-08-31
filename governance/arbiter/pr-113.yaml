@@ -1,0 +1,144 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 113
+title: "New case: The Emptied Amazon? — pre-contact population, Carvajal, and
+  the heterogeneous mosaic (AMZ-001)"
+url: https://github.com/ejhong/aletheia/pull/113
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-28
+judgedAgainst: 22eff802ef
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "Every DOI added under content/ resolves and the resolved
+      titles/venues match what the source records claim (Newson 2003, Denevan
+      1996, Stenborg 2018, Lombardo 2025, Piperno 2024, Levis 2017 + the
+      McMichael technical comment, Schaan 2000, Arroyo-Kalin 2021, Lopes 2024 —
+      whose record even discloses a prior wrong title corrected against the DOI
+      check). Every URL marked FAILS is a 403 publisher bot-wall or an
+      unreachable journal host, and in each case the source record itself
+      already says the publisher page is bot-walled and names the workaround
+      copy actually read (Wayback, UvA/Deep Blue/Bournemouth repositories, PMC),
+      so the failures are consistent with the diff's own provenance rather than
+      evidence of fabrication; the Pärssinen 2026 Nature article postdates my
+      knowledge but resolves, and temporal humility applies. Verification labels
+      look honest: the Carvajal primary text and Hancock's book are marked
+      `unverified` with explicit instructions not to lean on their wording, and
+      the Xingu dating rests on a news feature that is labeled secondary and
+      flagged in both the claim and the assessment. The assessment overlay is
+      stamped with runId/model/date/promptVersion, `humanReviewed: false`,
+      `role: draft`, so no unratified draft is dressed as a ratified or human
+      judgment (§3.15, §4). Negative and undermining evidence is first-class
+      (AMZ-C013, C014, C009, the McMichael comment), evidence direction is set
+      on every record, source statements are kept separate from
+      `editorInference` (§3.5, §3.9), and the chronology qualifier AMZ-E003
+      explicitly refuses to spend AD 100–300 grandeur as contact-era
+      corroboration (§3.2, §3.4). The founder's funding of the central 2026
+      study is disclosed on the source record and in the article body, and the
+      case carries that paper's population model at its own least favourable
+      sensitivity (AMZ-C005), which is the honest handling rather than a
+      concealment; the Hancock genealogy claim carries diagnosticity `low` with
+      an explicit statement that advocacy history is not evidence in either
+      direction (§7). AGENTS.md is untouched; the IMAGE_STYLE.md and generator
+      edits are non-normative additions. Some claims (AMZ-C011, C014) bundle
+      several instances of one proposition, which is ordinary imperfection
+      rather than a §3.2 breach."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: "The PR adds a new case with claims, evidence, sources, research
+      agenda, images, and an AI draft assessment, all in new files; there is no
+      edit to AGENTS.md or other governance code. Claims are clearly atomic,
+      with separate Evidence records that distinguish sourceStatement from
+      editorInference, and each Evidence has an explicit direction
+      (supports/qualifies) and strength, matching the epistemic model.
+      Provenance is careful: each source has verification labels
+      (ai_verified/unverified) and detailed notes about how it was accessed
+      (Wayback, repositories, bot walls), and no locator appears invented or
+      self-contradictory; the citation tooling confirms all DOIs/URLs resolve
+      where expected, including CC-licensed images. The overview and assessments
+      explicitly frame uncertainty and model dependencies rather than presenting
+      single truth scores, and the AI assessment file is labeled as a draft,
+      unreviewed, with runId/model/date, respecting the append-only AI-judgment
+      rule. Sensitive/confidential material is not used; all content comes from
+      published papers, open web pages, or CC/Wikimedia media with licenses and
+      credits stated. No existing assessments or records are silently altered,
+      no provenance is removed or weakened, and no checks or constitutional
+      safeguards are adjusted; this is an additive content change that adheres
+      to the project’s epistemic and transparency requirements."
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules:
+      - §3.6
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: "The change perfectly adheres to the constitution's epistemic and
+      formatting rules. The AI-generated assessment is explicitly labeled as an
+      unreviewed draft with proper run and prompt metadata (§3.14, §3.15).
+      Citations are fully real: although some publisher URLs returned expected
+      HTTP 403s against the scraper, their corresponding DOIs successfully
+      resolved to Crossref metadata matching the exact claimed titles and
+      authors (§3.8). The distinction between source statements and editor
+      inference is rigorously maintained across the evidence ledger (§3.6). The
+      integration of founder-supplied context correctly treats it as workflow
+      provenance, while anchoring all substantive claims to verified public
+      sources."
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff adds a new case with claims, evidence, sources, a draft
+      assessment, and art; it does not touch AGENTS.md or weaken §3 checks.
+      Source records use honest labels (unverified for the unfetched Carvajal
+      primary and Hancock book; ai_verified elsewhere, with
+      Wayback/repository/OCR workarounds noted), evidence records split
+      sourceStatement from editorInference and mark direction, and the overlay
+      assessment is stamped role: draft / humanReviewed: false. Mechanical
+      checks show added DOIs resolving with titles that match the records (Lopes
+      2024’s title now matches the DOI after an admitted correction); publisher
+      403s are access walls on identifiers that still resolve, not missing
+      citations. The 2026 Nature paper and Commons Fig. 2 URLs resolve (HTTP
+      200); unfamiliarity with that paper is not fabrication evidence. Compound
+      featured claims and a secondary Xingu news citation are ordinary
+      imperfections already caveated in-record, not paradigm violations."
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "Every DOI the diff adds resolves to metadata matching its source
+      record — Denevan 1996 (Bluff Model), de Souza 2018, Lombardo 2025, Piperno
+      2024, Levis 2017 plus the McMichael Technical Comment, Schaan 2000,
+      Stenborg 2018, Rodrigues 2015, Lombardo 2011, and both Revista de Indias
+      DOIs (the .555 Crossref title 'Patters of Indian Depopulation…' matches
+      Newson modulo a registry typo) — satisfying real-citations-only (§3.7,
+      §4); the FAILS are uniformly HTTP 403 bot-walls (Wiley, Science, T&F,
+      SciELO, Pulitzer, grahamhancock) whose corresponding DOIs resolve, and the
+      diff's own verification notes already document those walls and the
+      Wayback/repository workarounds used, which is honest labeling rather than
+      fabrication. Verification labels are honestly graduated: the Carvajal
+      primary text and Hancock's book are marked unverified/background-only and
+      never carry load-bearing wording, while ai_verified is claimed only where
+      content was checked, with one caught-and-corrected invented title
+      (SRC-LOPES-2024) disclosed in the record itself — evidence the checks
+      worked, not that they failed. The assessment overlay is stamped
+      runId/model/date/promptVersion, humanReviewed: false, role: draft, and
+      nothing presents it as ratified (§3.15, §4); claims are stamped
+      ai_extracted with per-record provenance, editorInference is separated from
+      sourceStatement (§3.9), mixed effects are split (E012/E013), negative
+      evidence and chronology qualifiers are first-class (§3.11), and
+      uncertainty is calibrated in plain language (§3.13). The founder-funding
+      disclosure quotes the published paper's own public funding statement and
+      displays the conflict prominently rather than hiding it — no confidential
+      material is cited, since the founder-supplied brief was used only as
+      discovery input with every load-bearing cell re-verified against public
+      sources. Hancock's genealogy claim is framed neutrally at diagnosticity
+      low with symmetric treatment of mainstream skepticism, consistent with the
+      geo-project framing constraint. AGENTS.md is untouched, and the script
+      change is additive art configuration that does not weaken any check;
+      residual nits (Arroyo-Kalin 2020/2021 online-vs-issue year, PR body saying
+      '20 sources' where 21 records exist) are ordinary imperfection, not
+      violation."
+harvestedAt: 2026-08-31

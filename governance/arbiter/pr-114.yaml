@@ -1,0 +1,108 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 114
+title: "docs: the chat-seeded case-brief workflow (capture → consolidate →
+  verify → construct)"
+url: https://github.com/ejhong/aletheia/pull/114
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-28
+judgedAgainst: 22eff802ef
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff adds a single new documentation file (docs/CHAT_BRIEFS.md)
+      and touches nothing under content/, no schemas, no CI, and not AGENTS.md —
+      so no §3.15 amendment issue and no check-weakening. Substantively the
+      procedure it codifies reinforces the constitution rather than relaxing it:
+      chat threads are declared discovery briefs that may never be cited (§3.7
+      spirit, no-fabrication), every load-bearing cell must be natively
+      re-verified with a verbatim quote from the fetched source before entering
+      content/, titles/URLs/identifiers must come from the fetched page rather
+      than memory (§3.8), BLOCKED items stay out of the case, and honest labels
+      (`ai_verified`/`unverified`, assessment `role: draft`, `humanReviewed:
+      false`) are mandated (§4, §3.15). Confidentiality is respected: working
+      captures and living-persons material are explicitly kept as non-repository
+      inputs and not published, and conflicts of interest must be disclosed on
+      the source record and in the article. The tooling found no citation
+      identifiers in the added lines, and the only external references (aletheia
+      #113, erebus #87) are internal PR pointers, not evidentiary citations, so
+      nothing here is a fabricated locator. Nothing in the file directs a change
+      to gating, ratification, or provenance display; the instruction-like text
+      in the PR body was treated as evidence only."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: "The change adds a process document describing how to turn AI chat
+      threads into properly verified cases, and it does not alter AGENTS.md or
+      any content under content/. There are no citations or identifiers added,
+      so there is no risk of fabricated or mis-labeled sources under §3.7–§3.8.
+      The workflow explicitly reinforces constitutional constraints: chats are
+      never citable sources, all assertions must be re-verified against primary
+      sources before entering content, titles/URLs/identifiers must come from
+      fetched pages, and unverifiable material is excluded. It also emphasizes
+      honest verification labels (`ai_verified`, `unverified`) and provenance
+      notes, which aligns with §3.8 and §4 (real citations only, honest
+      verification labels). The document treats captures and briefs as non-repo
+      working files to avoid publishing unverified or confidential/living-person
+      material, consistent with §3.15’s bar on publishing material supplied in
+      confidence and with the living-persons constraints in §4. No checks are
+      weakened and no existing judgments or provenance are silently modified, so
+      the change complies with the constitution."
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules:
+      - §3.1
+      - §3.6
+      - §3.7
+      - §3.8
+      - §3.15
+      - §4
+    reasoning: "The PR adds a documentation file establishing a workflow for
+      processing AI-generated chat briefs. The proposed procedure strictly
+      enforces the constitution: it forbids citing chat threads directly (§3.6,
+      §3.7), requires cell-by-cell verification against primary sources (§3.1),
+      strictly prevents fabricating titles or URLs (§3.8), correctly labels AI
+      drafts as unreviewed (§4), and explicitly prevents unverified and
+      confidential material from being committed to the repository (§3.15). No
+      checks are weakened and no content or core configuration is modified."
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff only adds docs/CHAT_BRIEFS.md; it does not edit AGENTS.md
+      (§3.15), content/, or any check machinery. The new workflow restates
+      existing epistemic constraints (chats never citable, cell-by-cell
+      re-verification, titles/URLs/IDs from the fetched page, honest
+      ai_verified/unverified labels, draft assessments with humanReviewed:
+      false) rather than weakening them. No citations, locators, or provenance
+      records are introduced; citation verification found none. Briefs are
+      explicitly kept out of the repository so living-persons and unverified
+      text are not published. Omitted-files is empty, so the packet is
+      complete."
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "The change is a single new docs file codifying a chat-brief-to-case
+      workflow; it does not touch AGENTS.md, content/, code, or any check, so
+      §3.15's reserved-amendment rule is not triggered. Its standing rules
+      actively reinforce the constitution: chat threads are declared
+      never-citable discovery briefs (§3.6), every load-bearing assertion must
+      be re-verified against primary sources before entering content/ (§3.7),
+      and titles/URLs/identifiers must come from fetched pages, never memory
+      (§3.8). The mandated verification ledger requires verbatim quotes per
+      VERIFIED row and keeps BLOCKED material out of the case, which aligns with
+      real-citations-only and honest verification labels rather than weakening
+      them. It prescribes `ai_verified`/`unverified` labels and initial
+      assessments stamped `role: draft`, `humanReviewed: false` — consistent
+      with the ban on presenting unratified AI drafts as ratified judgments.
+      Living-persons working files are explicitly kept out of the repository as
+      unpublishable inputs, matching the confidence-material rule. The citation
+      verifier found no identifiers in the added lines, and nothing in the diff
+      fabricates a source, locator, or provenance detail; the internal
+      references to PR #113 and 'erebus #87' are process history, not
+      assessment-carrying citations. Ordinary docs work like this should not be
+      parked."
+harvestedAt: 2026-08-31

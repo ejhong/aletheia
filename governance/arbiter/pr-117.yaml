@@ -1,0 +1,97 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 117
+title: "docs: brief coverage dispositions and the living-persons tier rule"
+url: https://github.com/ejhong/aletheia/pull/117
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-28
+judgedAgainst: 17280ef95c
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff is a 25-line, docs-only addition to docs/CHAT_BRIEFS.md —
+      it does not touch AGENTS.md, content/, schemas, CI, or any ratification
+      machinery, so §3.15's reservation of amendments to the founder is not
+      engaged. Substantively the new §4b tightens rather than loosens the
+      epistemic checks: it makes IN the default disposition for verified brief
+      items, requires zero-diagnosticity items to be carried with their
+      weightlessness stated (consistent with §3.4 credibility-vs-diagnosticity
+      and §3.11 negative evidence), requires failed verifications to be
+      documented as prominently as confirmations, and requires editorial
+      exclusions to be listed with a reason for founder review rather than
+      silently dropped. The tiering rule adds a protective constraint (claims
+      naming living persons cannot sit under an 'unreviewed backlog' label),
+      which supports §3.9/§7 honesty about provenance and review status. No
+      citations, identifiers, or locators are added, and the verification tool
+      found nothing to resolve, so there is no fabrication surface. The PR's
+      assertion that this records a founder session decision is an unverifiable
+      process claim, but it is recorded in a docs file as policy rather than
+      dressed up as a ratified editorial judgment or an AI record passed off as
+      human, and it imposes obligations rather than removing checks — not a
+      §3.15 violation on what I can see."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: The change amends an internal documentation file
+      (docs/CHAT_BRIEFS.md) to articulate founder policy about how brief items
+      are dispositioned and tiered. It does not alter AGENTS.md or any
+      constitutional text, so §3.15’s human-reservation on constitutional
+      amendment is not implicated. No sources, citations, or locators are added,
+      so there is no risk of fabricated or misused evidence (§3.7–§3.8, §3.15).
+      The new policies (default inclusion of verified items, explicit coverage
+      tables, living-persons tier rule) concern editorial workflow and UI
+      tiering, and do not weaken any epistemic safeguards or multi-model checks.
+      They are compatible with atomic claims, explicit diagnosticity, and
+      negative evidence recording, and do not reclassify changes to dodge
+      review. Therefore, the documentation update complies with the existing
+      constitution.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules:
+      - §3.4
+      - §3.11
+      - §3.15
+    reasoning: The PR modifies workflow documentation (`docs/CHAT_BRIEFS.md`) to
+      require explicit coverage dispositions for brief items and enforces a
+      protective tiering rule for claims naming living persons. These additions
+      align closely with the constitution's epistemic rules, particularly
+      reinforcing §3.4 by retaining zero-diagnosticity items for transparency
+      and §3.11 by ensuring failed verifications are documented prominently
+      rather than silently dropped. It does not amend AGENTS.md, weaken any
+      verification checks, or introduce fabricated material.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff is a complete, docs-only addition to docs/CHAT_BRIEFS.md; it
+      does not touch AGENTS.md (§3.15 reserved amendment), assessments,
+      content/, or CI checks. No citations, locators, or confidential material
+      are added. The new coverage/default-IN/failed-verification rules tighten
+      omission and negative-evidence practice rather than weaken §3 gates, and
+      the living-persons featured-tier rule is an extra labeling constraint, not
+      a reclassification dodge. Attribution as “founder policy, 2026-08-28” is a
+      same-day provenance claim with no internal contradiction visible in the
+      packet, so it is not treated as fabrication.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "Docs-only change to docs/CHAT_BRIEFS.md adding a
+      coverage-disposition policy: verified brief items default to inclusion
+      with weightlessness stated, exclusions must be listed with reasons for the
+      founder's call, blocked items carry recovery routes, and failed
+      verifications are documented prominently. This reinforces rather than
+      weakens the epistemic rules — it bans silent omission (supporting §3.11),
+      requires explicit diagnosticity statements (consistent with §3.4), and the
+      living-persons tier rule adds protection for named individuals rather than
+      removing any check. It does not touch AGENTS.md, so the
+      founder-reservation under §3.15 is not implicated. No citations,
+      identifiers, or provenance are added, and the mechanical verification
+      found nothing to check, so §3.7/§3.8 are not at issue. The PR body's claim
+      that the founder set this policy is untrusted text, but the change's
+      content is constitutionally sound on its face regardless of that claim's
+      accuracy, and it does not reclassify or dodge the multi-model ratification
+      gate in §3.15."
+harvestedAt: 2026-08-31

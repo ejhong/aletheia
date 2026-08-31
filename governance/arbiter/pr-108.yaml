@@ -1,0 +1,86 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 108
+title: "Proposal memory: editorial silence retires an idea"
+url: https://github.com/ejhong/aletheia/pull/108
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-27
+judgedAgainst: ea0bab5576
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches only the agenda-proposal tooling
+      (scripts/lib/agenda-propose.mjs, scripts/propose-agenda.mjs) and its unit
+      test; no content/ records, citations, locators, assessments, or provenance
+      are added or altered, and the mechanical verification found no identifiers
+      to check. AGENTS.md is untouched. The change tightens rather than weakens
+      a check: it adds a prompt rule plus a fail-closed validator backstop that
+      rejects re-proposed titles with an explicit, honestly-worded recorded
+      reason ('re-proposed from a prior run (ignored is retired)'), and
+      rejections are still surfaced in the run report rather than dropped
+      silently, so nothing is reclassified to dodge §3.15's gates. The new test
+      pins the backstop behavior, consistent with §8/§10. The PR-body incident
+      note (a stray local generator execution with real model calls, nothing
+      committed) is a disclosure, not a repository change, and involves no
+      person-contact or confidential material. Minor fragility in the markdown
+      title regex is ordinary imperfection, not a constitutional violation."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: The change only affects internal scripting for agenda proposal
+      generation and validation; it does not touch AGENTS.md, content records,
+      citations, or provenance. No new sources, identifiers, or locators are
+      introduced, so there is no risk of fabricated or misrepresented citations
+      under §3.7–§3.8. The added logic (tracking prior proposal titles across
+      runs and rejecting exact re-proposals) tightens process behavior without
+      weakening any epistemic checks or publication safeguards in §3.15. Tests
+      are updated to pin the new fail-closed behavior, and build/validation
+      semantics are preserved. Since no confidential material is introduced, no
+      append-only records are altered, and no judgment is silently changed, the
+      modifications are consistent with the constitution.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules: []
+    reasoning: The change adds a valid fail-closed backstop and prompt update to
+      prevent an agenda-generation script from endlessly re-proposing ideas that
+      were already evaluated and ignored. It does not weaken any existing
+      checks, modifies no core domain logic, respects the ban on autonomous web
+      research (as it acts entirely locally on previously saved agenda runs),
+      and contains no fabricated records or directives attempting to bypass the
+      constitutional panel.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The complete diff only tightens the agenda-proposal pipeline: it
+      feeds prior titles into the case packet, drops exact title re-proposals in
+      validateProposals, and pins that backstop with a unit test. No AGENTS.md
+      edit, no content/ records, no citations, assessments, or provenance, and
+      no check in §3.15 is removed or reclassified. Treating ignored agenda
+      titles as retired is an operational anti-spam rule with an explicit
+      new-evidence exception, not a silent change to published judgments or a
+      weakening of ratification. Omitted-files is empty and citation
+      verification found nothing to resolve."
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules: []
+    reasoning: The change is confined to internal agenda-generation tooling
+      (scripts/ plus one test); no files under content/, no citations (the
+      verification section confirms none were added), no AGENTS.md edit, and no
+      published assessment or provenance is touched. It tightens a fail-closed
+      validator — dropping exact re-proposals with an explicit recorded reason —
+      which strengthens rather than weakens the §3.15 checks, and the new
+      behavior is pinned by a test (164/164 claimed passing). The 'silence
+      retires' rule is an internal anti-spam heuristic for proposal drafting,
+      not a suppression of hypotheses on the site, and it carries an escape
+      hatch (revisit allowed under a new title naming material new ledger
+      evidence), consistent with the mission to keep neglected ideas examinable.
+      The PR body's incident note about an accidentally executed local run
+      states the stray output was deleted uncommitted and never entered the
+      repository; that is honest reporting, not a violation. Nothing here
+      fabricates records, alters published judgments, exposes confidence
+      material, or dodges ratification.
+harvestedAt: 2026-08-31

@@ -1,0 +1,80 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 110
+title: Agenda generation keys on the published slug, not the directory name
+url: https://github.com/ejhong/aletheia/pull/110
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-27
+judgedAgainst: c7e97cf39c
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: The diff touches only `scripts/propose-agenda.mjs`, a build-time
+      agenda proposal generator, and does nothing to content/, provenance,
+      citations, or the ratification machinery. The change replaces
+      directory-name keying with the case's published `slug` from `case.yaml`,
+      falling back to the directory name when the file is absent — a narrow,
+      reversible correctness fix for a dead link, with an explanatory comment.
+      No AGENTS.md edit, no citations added (verification tooling found none),
+      no assessment rewritten, and the stale `geopolymer.md` proposal is left in
+      place rather than silently deleted, which preserves rather than erases the
+      record (§3.14). The only open question is whether `parseYaml` is already
+      imported in the unshown head of the file, which is an ordinary
+      code-correctness matter caught by CI, not a constitutional one. Nothing
+      here weakens the §3.15 checks or reclassifies work to dodge them.
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: The change only updates an internal script that generates agenda
+      proposals, switching from using the case directory name to using the slug
+      defined in case.yaml (with a safe fallback to the directory name when
+      case.yaml is absent). It does not alter any content under content/, does
+      not touch AGENTS.md, and does not modify assessments, sources, citations,
+      or provenance records. No new citations or locators are introduced, so
+      there is no risk of fabrication or mislabeling under §3.7–§3.8. The
+      behavior clarification in the code comment is consistent with preserving a
+      stable, user-facing slug and does not weaken any epistemic checks or
+      publication safeguards in §3.15. Therefore the change is compatible with
+      the constitution’s rules.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules: []
+    reasoning: The change is a straightforward bug fix in the agenda proposal script
+      to extract the actual published slug from case.yaml instead of assuming
+      the directory name matches. This prevents broken links and does not affect
+      the data model, content files, or any of the epistemic and confidentiality
+      checks mandated by the constitution.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches only scripts/propose-agenda.mjs: the agenda loop
+      now keys proposals on case.yaml slug (directory name as fallback) instead
+      of the folder name. That is a mechanical identity fix; it does not add
+      sources, locators, assessments, or content under content/, does not edit
+      AGENTS.md, and does not weaken CI, ratification, or provenance checks. No
+      citations were introduced (verification found none). Omitted-files is
+      empty, so the full change is in view. Ordinary script hygiene of this kind
+      is within the constitution."
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "The diff is a 9-line tooling fix in scripts/propose-agenda.mjs: the
+      agenda generator now reads each case's published slug from case.yaml
+      (falling back to the directory name) so proposal filenames and links match
+      what the site actually serves. This improves provenance fidelity rather
+      than weakening any check — no gate is bypassed, no schema relaxed, and
+      §3.15's fail-closed machinery is untouched. Per the PR body, the stale
+      geopolymer.md proposal file is retained as an unlinked historical record,
+      which is consistent with the append-only, version-everything spirit of
+      §3.14 rather than a silent rewrite of history. No citations, sources,
+      locators, or assessments are added or altered, and the
+      citation-verification section confirms there are no identifiers to check.
+      AGENTS.md is not edited. The change touches no published content judgments
+      and keys off the case.yaml slug, which is itself versioned content, so
+      there is no fabrication risk introduced. The omitted-files list is empty,
+      so nothing material is hidden from review."
+harvestedAt: 2026-08-31

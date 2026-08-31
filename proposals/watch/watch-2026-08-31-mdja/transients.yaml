@@ -1,0 +1,56 @@
+kind: literature-watch-proposals
+case: transients
+runId: watch-2026-08-31-mdja
+date: 2026-08-31
+window:
+  since: 2026-08-17
+  queries:
+    - vasco-vanishing-sources
+    - villarroel-team
+    - plate-archive-transient-searches
+    - plate-defect-forensics
+    - earth-shadow-ensemble-statistics
+note: DISCOVERY ONLY. Items are exactly as returned by the APIs named in
+  foundVia — nothing verified, nothing added to sources.yaml. The triage step
+  (scripts/triage-watch.mjs) judges each item against versioned criteria;
+  imports queue a verification request via the inbox pipeline. See
+  docs/MAINTENANCE.md.
+verification: unverified
+items:
+  - title: Microscopy assessment of two multiple-transient candidates
+    authors:
+      - Jun Yang
+      - Beatriz Villarroel
+    venue: arXiv (astro-ph.IM)
+    date: 2026-08-26
+    doi: null
+    arxivId: "2608.26371"
+    url: https://arxiv.org/abs/2608.26371
+    abstractSnippet: "We present a microscopy-based assessment of two representative
+      cases of multiple-transient candidates identified on historical
+      photographic plates: the nine-transient event of 12 April 1950 (XE325) and
+      the triple-transient event of 19 July 1952 (XE186). These events consist
+      of spatially clustered, point-like sources detected within single
+      long-exposure plates, lacking the streaks expected from moving objects and
+      therefore suggestive of short-duration flashes. We analyse microscopy
+      images of the…"
+    foundVia: arxiv
+    possibleDuplicateOf: SRC-YANG-VILLARROEL-2026 — "Microscopy assessment of two
+      multiple-transient candidates" (title overlap 1); check whether this is
+      the same work in another venue before promoting
+    matchedQueries:
+      - id: villarroel-team
+        query: transients
+      - id: plate-archive-transient-searches
+        query: photographic plates transients
+    aiRelevanceNote:
+      label: AI-generated relevance draft — not a human judgment
+      model: anthropic/claude-fable-5
+      promptVersion: watch-relevance-v1
+      note: "Directly relevant: the paper applies microscopy to the exact two events
+        central to the case — the nine transients of April 1950 and the July
+        1952 triple — which speaks straight to the debate over whether these are
+        real optical flashes or emulsion-level plate defects. The truncated
+        abstract doesn't reveal the conclusion, so the direction of the finding
+        can't be stated from the metadata alone."
+    verification: unverified

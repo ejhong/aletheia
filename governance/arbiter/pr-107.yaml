@@ -1,0 +1,102 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 107
+title: "The proposals shelf: /proposals renders the weekly agenda proposals"
+url: https://github.com/ejhong/aletheia/pull/107
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-08-27
+judgedAgainst: ea0bab5576
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "This is a presentation/loader change with no content records,
+      claims, evidence, or citations added (verification tooling found no
+      identifiers), and it does not touch AGENTS.md or any gating mechanism. The
+      new /proposals page labels the material honestly as AI-generated proposals
+      that are 'proposal only' and enter the record only through the normal
+      gates, with ignoring stated as the default — so it does not present
+      unratified drafts as ratified judgments (§3.15) or AI output as human
+      review (§4). Provenance is preserved and displayed: runId, date, model,
+      promptVersion, plus a link to the raw repository files. The parser never
+      invents fields — missing metadata falls back to the literal string
+      'unknown' and unparseable blocks are skipped and counted visibly on the
+      page, which is disclosure rather than silent data repair (§8). Minor
+      imperfections (run-level provenance taken from files[0], proposals not
+      Zod-validated like content/ records) are ordinary implementation slack,
+      not rule breaches, since proposals are not ledger records. The PR body's
+      persuasive framing was treated as evidence, not instruction, and nothing
+      in the diff weakens a check."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: "The change adds a /proposals page and supporting loader/parsing
+      logic for agenda proposals, plus a nav link and a documentation entry. No
+      content under content/ is altered and no citations, identifiers, or
+      locators are introduced, so the real-citations and exact-provenance rules
+      are not implicated. The code and copy explicitly emphasize that proposals
+      are not claims, grades, or agenda items and that they enter the record
+      only through the existing constitutional gates, which respects §3.15’s
+      constraints on presenting AI-generated material and avoids misrepresenting
+      unratified drafts as ratified judgments. The parser is conservative:
+      malformed blocks are skipped and counted without guessing or fabricating
+      missing fields, aligning with the prohibition on fabrication and silent
+      data repair. The new docs/DECISIONS.md entry is transparently labeled as
+      an AI record of a founder instruction, again consistent with §3.15. No
+      safeguards are weakened and AGENTS.md is untouched, so the proposal shelf
+      fits within the existing epistemic and operational rules."
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules: []
+    reasoning: The PR adds a viewer for AI-generated agenda proposals while strictly
+      adhering to the project's constitutional constraints. It explicitly frames
+      the proposals as unratified drafts (§3.15), displays their exact AI
+      provenance (§3.15), avoids creating dangling links to unpublished cases
+      (§8), correctly labels the decision log entry as AI-recorded (§3.15), and
+      separates the domain loader from the UI layer (§4).
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff adds a static /proposals shelf, a domain loader, tests, a
+      nav link, and a labeled DECISIONS.md record. It does not edit AGENTS.md,
+      add citations, mutate assessments, or weaken ledger/CI checks. The page
+      copy and loader comments frame the material as unadopted proposals only,
+      show model/promptVersion plus a raw-file link, skip malformed blocks with
+      a visible count rather than inventing fields, and treat a missing agenda
+      directory as an honest zero-state. The DECISIONS.md addition is stamped as
+      an AI record of a founder instruction, matching §3.15 labeling. Ordinary
+      parser brittleness (regex, first-file provenance) is not a constitutional
+      break.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §4
+      - §8
+    reasoning: "The PR adds a /proposals page rendering the weekly agenda-run files,
+      with an explicit standing frame that everything shown is a proposal only,
+      enters the record solely through the normal gates, and that ignoring is
+      the default — this satisfies §3.15's prohibition on presenting unratified
+      AI drafts as ratified judgments rather than violating it. Provenance is
+      displayed, not hidden: each run shows model, runId, and promptVersion,
+      links to the raw repository files, and unparseable metadata falls back to
+      the literal string 'unknown' rather than an invented value, so no locator
+      or provenance is fabricated (§3.8 honored in spirit). Malformed proposal
+      blocks are skipped and visibly counted on the page rather than silently
+      repaired (§8) or crashing the build; this does not weaken the fail-closed
+      CI in §3.15/§4, because that requirement governs ledger content under
+      content/ (claims, evidence, sources, assessments), while these files are
+      non-ledger suggestions whose display explicitly disclaims any epistemic
+      standing. The change stays within Phase-1 constraints: no new
+      dependencies, no servers, no live AI calls — files are read at build time
+      for the static export, and case links are guarded against live slugs to
+      avoid dangling links. Tests pin the generator→parser roundtrip and the
+      malformed-block behavior, and the DECISIONS.md entry is labeled as an AI
+      record of a founder instruction, consistent with §3.15's labeling
+      requirement. No citations were added (verification section empty), no
+      confidence material is touched, and AGENTS.md is unmodified. Ordinary
+      imperfection at most; nothing here breaks a rule."
+harvestedAt: 2026-08-31

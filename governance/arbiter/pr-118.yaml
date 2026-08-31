@@ -1,0 +1,127 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 118
+title: "Amazon expansion: coverage-gap wave — full brief coverage, one failed
+  item dropped"
+url: https://github.com/ejhong/aletheia/pull/118
+verdict: park
+reason: "1 seat(s) find a violation: Gemini 3.1 Pro (Google) (§3.8, §3.15, §4)"
+outcome: merged
+outcomeAt: 2026-08-28
+judgedAgainst: 35a32ba98f
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "Every added identifier that could be machine-checked resolves and
+      matches what the record claims: the Blatrix Nature/Sci Rep URL (200), the
+      Prestes-Carneiro DOI (title matches the Llanos de Mojos zooarchaeology
+      paper), the Walker PeerJ DOI (ML prediction of Amazonian sites), the
+      Michael Annual Review DOI (\"The Classification of South American
+      Languages\"), the Cabrero Goeldi DOI (title matches verbatim), and the
+      Clement-reply PMC page. The three FAILS are HTTP 403 bot-walls (peerj.com,
+      eScholarship, scielo.br), and two of the three are pre-disclosed in the
+      source records themselves with the alternate route used (PMC copy, author
+      PDF), while the SciELO item's existence is independently confirmed by its
+      resolving DOI — so no positive evidence of fabrication. Provenance is
+      strengthened rather than weakened: two constructed DOIs from an earlier
+      draft are disclosed in verificationNotes instead of being silently
+      patched, the unsourced Purus/Coari route pairing is dropped and the
+      removal recorded in history.yaml and reflected in research.yaml, and all
+      new claims carry exact locators, verbatim quotes, ai_extracted
+      reviewState, runId/model/date stamps, and honest ai_verified labels.
+      Evidence direction is explicit (supports), the featured claims carry their
+      sources' own caveats and \"what would change our mind\" items,
+      negative/limiting material (C020–C022) is added alongside supportive
+      material, and history.yaml is append-only. AGENTS.md is untouched. Minor
+      imperfections — the PR body understates the featured count (C026 is a
+      second featured claim, though the content files themselves are accurate),
+      no Evidence record accompanies C019 or the catalog claims beyond their
+      sourceAnchors, and SRC-CLEMENT-REPLY lacks a year field — are ordinary
+      workmanship issues, not rule breaches."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: The diff only adds new claims, sources, evidence, and
+      overview/research text within an existing case; no governance or AGENTS.md
+      rules are touched. Claims are atomic and clearly scoped, and in two
+      instances an earlier compound claim is explicitly documented as split,
+      aligning with §3.2. Evidence records and overview paragraphs distinguish
+      source statements from inference, and evidence direction is explicitly
+      marked as supports, in line with §3.5 and §3.9. All new sources under
+      content/ have real, mechanically verified identifiers or URLs; two
+      previously constructed DOIs are transparently corrected and documented in
+      verificationNote, satisfying the "real citations only" and honesty
+      requirements of §3.7, §3.8, and §3.15. Exact provenance is given at
+      article, abstract/discussion, and figure level where appropriate, without
+      fabricating granular locators. The history.yaml entry records the
+      substantive change and its reason instead of silently altering prior
+      judgments, respecting §3.14. No confidential material is introduced, and
+      no existing assessments or provenance are overwritten or weakened; changes
+      are append-only expansions, so the diff complies with the constitution.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: violates
+    rules:
+      - §3.8
+      - §3.15
+      - §4
+    reasoning: The AI agent explicitly admits in the verificationNotes for
+      SRC-PRESTES-CARNEIRO and SRC-MICHAEL-2021, as well as in the PR body, that
+      it 'constructed' (fabricated) DOIs during an earlier draft of this PR.
+      Rule §3.15 strictly prohibits the AI from fabricating a locator 'inside or
+      outside that process', explicitly extending the ban to temporary internal
+      drafts. Documenting the fabrication does not excuse the action; rather, it
+      provides positive evidence that the AI violated the categorical
+      prohibitions in §3.15, §3.8 ('Never invent one'), and §4 ('never fabricate
+      a citation, identifier, or locator') during its execution.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The added identifiers that the checker could resolve match the
+      records: Walker, Prestes-Carneiro, Michael, and Cabrero DOIs return the
+      claimed titles/venues; the Blatrix and Bush Nature URLs return 200. The
+      three HTTP 403s (peerj.com, eScholarship, SciELO HTML) are disclosed in
+      verificationNotes with the PMC/PDF/DOI routes used, which is an honest
+      ai_verified label rather than a fake locator. The unsourced Purus/Coari
+      pairing was dropped from AMZ-C024, the corridor-test wording, and the
+      overview, and earlier constructed-DOI mistakes are recorded instead of
+      silently patched. New claims are stamped reviewState: ai_extracted with
+      origin runId/model/date; C019/C026 were split; AMZ-E022 has explicit
+      direction and a sourceStatement; history.yaml appends the change;
+      AGENTS.md is untouched. Paper-level catalog locators and the C023 pointer
+      at SRC-NEWSON-2003 (not added in this diff, so it must already exist or CI
+      would have to catch it) are ordinary completeness issues, not fabricated
+      records, provenance removal, or check-weakening."
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules:
+      - §3.7
+      - §3.8
+      - §3.11
+      - §3.14
+      - §4
+    reasoning: "Every DOI the diff adds resolves with metadata matching its claimed
+      use (Prestes-Carneiro PLOS ONE fishing paper, Walker PeerJ ML paper,
+      Michael's Classification of South American Languages, Cabrero's Omágua
+      article); the three FAILS are HTTP 403 bot-walls that the source records
+      themselves disclose, with alternate verification routes (PMC copy,
+      retrieved PDF) documented — the honest-verification-label posture §4
+      requires, not fabrication. Provenance is exact: each claim carries a
+      sourceAnchor with locator and verbatim quote, reviewState ai_extracted,
+      and runId/model/date stamps. The failed-verification item (Purus/Coari
+      'Trinity River' pairing) was dropped from both the catalog and the
+      research-protocol wording, with the failure recorded in history.yaml —
+      exemplary negative-result handling per §3.11 and §3.8's 'never invent a
+      locator'. The overview edits only weave in claims that exist in the diff
+      and preserve the sources' own caveats (weir concentration limits,
+      existence-proof-not-census, Michael's self-limit on the Arawakan
+      critique), keeping credibility and diagnosticity distinct per §3.4. One
+      referenced sourceId (SRC-NEWSON-2003, backing C023) is not added here, but
+      dangling IDs are CI-enforced mechanically, the case already treats
+      Newson-era collapse demography, and there is no positive evidence of a
+      dangling reference. Minor blemishes — the body/history undercount ('six
+      new sources' vs seven added; '1 featured claim' vs two) — are ordinary
+      changelog imperfection, not a rule breach. No AGENTS.md edits, no
+      check-weakening, no confidence material."
+harvestedAt: 2026-08-31

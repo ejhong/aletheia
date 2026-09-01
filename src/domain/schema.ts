@@ -505,6 +505,13 @@ export const ResearchOpportunitySchema = z.object({
   track: z.enum(["publication_prize", "small_grant", "either"]),
   effortTier: z.enum(["desk", "field", "lab"]),
   informationGain: z.string(),
+  /**
+   * How the item entered the ledger, for machine-drafted items (the
+   * Bench's endorsement drafter writes the endorsed proposal's id into
+   * origin.ref, making the repo its own adoption registry). Optional:
+   * hand-written items predate it and need no synthetic provenance.
+   */
+  origin: OriginSchema.optional(),
 });
 export type ResearchOpportunity = z.infer<typeof ResearchOpportunitySchema>;
 

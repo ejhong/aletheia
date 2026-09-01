@@ -46,7 +46,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
-import { parseJsonReply, pickProvider } from "./lib/llm.mjs";
+import { callWithRefusalFallback, parseJsonReply, pickProvider } from "./lib/llm.mjs";
 import { applyDuplicateGuard, validateTriageReply } from "./lib/triage.mjs";
 
 const PROMPT_VERSION = "watch-triage-v1";
@@ -223,6 +223,10 @@ async function main() {
     .filter((f) => f.endsWith(".yaml") && !["run.yaml", "triage.yaml"].includes(f));
 
   const runId = `triage-${today}-${Math.random().toString(36).slice(2, 6)}`;
+  // Every model that actually answered a triage call this run (the refusal
+  // fallback may swap models mid-run) — this set, not provider.model, is
+  // what the run records stamp.
+  const modelsUsed = new Set();
   const caseResults = [];
   const inboxDrops = [];
   const ledgerEntries = [];
@@ -236,13 +240,18 @@ async function main() {
 
     let decisions = null;
     let errors = [];
+    let modelUsed = provider.model;
     try {
-      const reply = parseJsonReply(
-        await provider.call(
-          TRIAGE_SYSTEM,
-          `${caseContext(caseDir)}\n\nNewly surfaced items to triage:\n\n${itemsPrompt(items)}`,
-        ),
+      // House-drafting call: the one-shot Opus refusal fallback applies,
+      // and every stamp below must carry the model that actually answered.
+      const r = await callWithRefusalFallback(
+        provider,
+        TRIAGE_SYSTEM,
+        `${caseContext(caseDir)}\n\nNewly surfaced items to triage:\n\n${itemsPrompt(items)}`,
       );
+      modelUsed = r.model;
+      modelsUsed.add(`${provider.name}/${r.model}`);
+      const reply = parseJsonReply(r.text);
       ({ decisions, errors } = validateTriageReply(reply, items.length));
     } catch (err) {
       errors = [`model call or JSON parse failed: ${String(err)}`];
@@ -297,7 +306,7 @@ async function main() {
           `case: ${caseDir}`,
           "type: links",
           `origin: literature-watch triage (AI) — run ${runId}, judging watch run ${watchRunId}`,
-          `model: ${provider.name}/${provider.model}`,
+          `model: ${provider.name}/${modelUsed}`,
           `promptVersion: ${PROMPT_VERSION}`,
           "---",
           "",
@@ -321,7 +330,7 @@ async function main() {
   const report = [
     `# Literature triage ${runId}`,
     "",
-    `Judged watch run ${watchRunId} on ${today} (model ${provider.name}/${provider.model}, ${PROMPT_VERSION}).`,
+    `Judged watch run ${watchRunId} on ${today} (model ${[...modelsUsed].join(", ") || `${provider.name}/${provider.model}`}, ${PROMPT_VERSION}).`,
     "",
     ...digest.map((d) => `- ${d}`),
     "",
@@ -361,7 +370,7 @@ async function main() {
       runId,
       triageOf: watchRunId,
       date: today,
-      model: `${provider.name}/${provider.model}`,
+      model: [...modelsUsed].join("; ") || `${provider.name}/${provider.model}`,
       promptVersion: PROMPT_VERSION,
       note:
         "AI-generated triage of discovery-only watch proposals. Imports are " +

@@ -42,7 +42,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
-import { pickProvider } from "./lib/llm.mjs";
+import { callWithRefusalFallback, pickProvider } from "./lib/llm.mjs";
 import { matchesKeywords, nearDuplicateOf } from "./lib/watch-matching.mjs";
 
 const PROMPT_VERSION = "watch-relevance-v1";
@@ -311,11 +311,14 @@ function knownSourceKeys(caseDir) {
 // ------------------------------------------------------ optional LLM note
 
 async function relevanceNote(provider, caseRecord, item) {
-  const reply = await provider.call(
+  // House-drafting call: the one-shot Opus refusal fallback applies, and
+  // the note's model stamp must be the model that actually answered.
+  const reply = await callWithRefusalFallback(
+    provider,
     `You draft one-sentence relevance notes for a literature-watch pipeline. Given a case description and a newly surfaced paper, say in 1-2 plain sentences whether and how the paper looks relevant to the case. Ground yourself ONLY in the given title/abstract — never invent findings, numbers, or conclusions. If relevance is unclear from the metadata, say so.`,
     `Case: ${caseRecord.title} — ${caseRecord.subtitle}\n\nSummary: ${caseRecord.summary}\n\nNew item:\nTitle: ${item.title}\nVenue: ${item.venue ?? "unknown"}\nAbstract: ${item.abstractSnippet ?? "(none provided by the API)"}`,
   );
-  return reply.trim();
+  return { note: reply.text.trim(), model: reply.model };
 }
 
 // ---------------------------------------------------------------- expiry
@@ -366,6 +369,9 @@ async function main() {
   state.cases ??= {};
 
   const provider = noLlm ? null : pickProvider(forcedProvider);
+  // Every model that actually answered a relevance-note call this run (the
+  // refusal fallback may swap models per note) — run.yaml stamps this set.
+  const modelsUsed = new Set();
   const runId = `watch-${today}-${Math.random().toString(36).slice(2, 6)}`;
 
   // Expire stale, never-promoted runs before adding a new one. Dry runs
@@ -485,11 +491,13 @@ async function main() {
     if (provider) {
       for (const item of newItems.slice(0, MAX_RELEVANCE_NOTES_PER_CASE)) {
         try {
+          const { note, model } = await relevanceNote(provider, caseRecord, item);
+          modelsUsed.add(`${provider.name}/${model}`);
           item.aiRelevanceNote = {
             label: "AI-generated relevance draft — not a human judgment",
-            model: `${provider.name}/${provider.model}`,
+            model: `${provider.name}/${model}`,
             promptVersion: PROMPT_VERSION,
-            note: await relevanceNote(provider, caseRecord, item),
+            note,
           };
         } catch (err) {
           errors.push(`${caseDir} relevance note: ${String(err)}`);
@@ -597,7 +605,9 @@ async function main() {
           { newItems: record.items.length, window: record.window },
         ]),
       ),
-      model: provider ? `${provider.name}/${provider.model}` : null,
+      model: provider
+        ? [...modelsUsed].join("; ") || `${provider.name}/${provider.model}`
+        : null,
       promptVersions: provider ? [PROMPT_VERSION] : [],
       errors,
       note:

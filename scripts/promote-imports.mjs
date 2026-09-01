@@ -181,9 +181,13 @@ for (const cand of selected) {
   ].join("\n\n");
 
   let parsed;
+  // The model that actually answered (the refusal fallback may have swapped
+  // it) — stamped into each promoted record's origin below.
+  let draftModel = provider.model;
   try {
     const reply = await callWithRefusalFallback(provider, SYSTEM, user);
-    parsed = parseJsonReply(reply.text ?? reply);
+    draftModel = reply.model;
+    parsed = parseJsonReply(reply.text);
   } catch (e) {
     ledgerAdd.push({ url: src.url, disposition: "failed", reason: `draft failed: ${String(e).slice(0, 120)}`, runId, date });
     continue;
@@ -220,7 +224,7 @@ for (const cand of selected) {
     d.reviewState = "ai_extracted";
     d.origin = {
       ref: `promotion of verified import ${src.url} (proposal run ${cand.proposalRun})`,
-      extractedBy: "maintenance pipeline (promotion step)",
+      extractedBy: `maintenance pipeline (promotion step, ${provider.name}/${draftModel})`,
       runId, date,
     };
   }

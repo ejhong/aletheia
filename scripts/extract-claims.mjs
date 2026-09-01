@@ -39,7 +39,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
-import { noKeyMessage, parseJsonReply, pickProvider } from "./lib/llm.mjs";
+import { callWithRefusalFallback, noKeyMessage, parseJsonReply, pickProvider } from "./lib/llm.mjs";
 
 const PROMPT_VERSION_EXTRACT = "extract-v1";
 const PROMPT_VERSION_VERIFY = "verify-v1";
@@ -224,6 +224,10 @@ async function main() {
   const proposals = [];
   const rejected = [];
   const coverage = [];
+  // Every model that actually answered a call this run (the refusal
+  // fallback may swap models per section) — run.yaml stamps this set,
+  // and each claim's origin stamps the model that extracted it.
+  const modelsUsed = new Set();
 
   for (const section of sections) {
     const locatorBase = `${path.basename(sourceFile)} — ${section.title}`;
@@ -231,12 +235,18 @@ async function main() {
 
     let candidates = [];
     let sectionError = null;
+    let sectionModel = provider.model;
     try {
-      const reply = await provider.call(
+      // House-drafting call: the one-shot Opus refusal fallback applies,
+      // and each claim's origin stamps the model that actually answered.
+      const reply = await callWithRefusalFallback(
+        provider,
         EXTRACT_SYSTEM,
         `Case themes (choose the closest key for each claim):\n${themeList}\n\nSource text (from "${section.title}"):\n\n${section.body.slice(0, 24000)}`,
       );
-      candidates = parseJsonReply(reply);
+      sectionModel = reply.model;
+      modelsUsed.add(reply.model);
+      candidates = parseJsonReply(reply.text);
       if (!Array.isArray(candidates)) throw new Error("reply is not an array");
     } catch (err) {
       sectionError = String(err);
@@ -276,7 +286,9 @@ async function main() {
     let verified = [];
     if (anchored.length > 0) {
       try {
-        const reply = await provider.call(
+        // Also a house-drafting call — the fallback applies here too.
+        const reply = await callWithRefusalFallback(
+          provider,
           VERIFY_SYSTEM,
           JSON.stringify(
             anchored.map((c, index) => ({
@@ -288,7 +300,8 @@ async function main() {
             2,
           ),
         );
-        const verdicts = parseJsonReply(reply);
+        modelsUsed.add(reply.model);
+        const verdicts = parseJsonReply(reply.text);
         for (const c of anchored) {
           const v = verdicts.find((x) => x.index === anchored.indexOf(c));
           if (v?.verdict === "pass") {
@@ -332,7 +345,12 @@ async function main() {
               : `suppressed: near-duplicate of existing claim ${dup.id}`,
         });
       } else {
-        survivors.push({ ...c, section: section.title, locator: locatorBase });
+        survivors.push({
+          ...c,
+          section: section.title,
+          locator: locatorBase,
+          extractedByModel: sectionModel,
+        });
       }
     }
     proposals.push(...survivors);
@@ -381,7 +399,7 @@ async function main() {
     ...(groupOf.has(i) ? { independenceGroup: groupOf.get(i) } : {}),
     origin: {
       ref: `pipeline ${path.basename(sourceFile)} § ${p.section}`,
-      extractedBy: `${providerName}/${provider.model}`,
+      extractedBy: `${providerName}/${p.extractedByModel}`,
       runId,
       date: today,
     },
@@ -413,7 +431,7 @@ async function main() {
     sourceFile: path.basename(sourceFile),
     sourceId,
     provider: providerName,
-    model: provider.model,
+    model: [...modelsUsed].join("; ") || provider.model,
     promptVersions: [PROMPT_VERSION_EXTRACT, PROMPT_VERSION_VERIFY],
     sections: sections.length,
     proposed: claims.length,

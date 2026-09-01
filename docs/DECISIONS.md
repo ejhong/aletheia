@@ -333,3 +333,25 @@ already-carried arXiv items correctly deduped (one via the title guard —
 the exact aliasing that fooled the watch in August), and the one new
 source drafted with a verified evidence record. The pipe's first real
 consumer is queued: the Villarroel VASCO-blog drop of this morning.
+
+## 2026-09-01 — Bench v2 ships, with the backfill: no good proposal dies of silence unscored
+
+Build step 2, plus the founder's direction on the backlog ("I don't want
+to lose them"). The five-vendor panel now scores every agenda proposal
+for expected information gain (scripts/score-agenda.mjs, one batched
+call per seat), and the advancement rule from the thresholds decision
+applies: four of five seats high, zero constitutional concerns, thin
+panels never advance. Advancing STUDY proposals are drafted into their
+freeze files — plus the research item each executes — by
+scripts/draft-freeze.mjs (mechanical id assignment, schema-shape
+validation, hash stamping, budgets: two freezes per run, two uncollected
+studies per case), landing as one gated needs-approval PR judged by the
+panel before any data exists. The backfill is the standing rule rather
+than an exception: the scorer visits every agenda run directory lacking
+a scores.yaml, so its first run sweeps the entire un-adopted backlog —
+the transients alignment pair, the pizzagate provenance study, the
+xenon-isotope regression among them — and ignored-is-retired resumes
+afterward with five recorded opinions per retirement instead of silence.
+One-cycle latency between scoring and drafting (the bench job reads
+merged scores on main), the same clean-tier pattern as the promotion
+pipe. The scoring digest rides the weekly issue.

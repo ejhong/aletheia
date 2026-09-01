@@ -150,6 +150,24 @@ jobs:
           fi
           rm -f agenda-out.txt
 
+      # Bench v2 scoring: the five-vendor panel scores every UNSCORED
+      # agenda run (the standing rule that swept the pre-Bench backlog on
+      # its first run, per founder direction 2026-09-01 — "I don't want
+      # to lose them"). Scores ride the maintenance PR (proposals only);
+      # advancing studies are drafted one cycle later by the bench job
+      # below, from merged scores on main.
+      - name: Score agenda proposals (Bench v2)
+        if: ${{ (inputs.mode || 'full') == 'full' }}
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
+          VENICE_API_KEY: ${{ secrets.VENICE_API_KEY }}
+        run: |
+          node scripts/score-agenda.mjs > advancing.json || echo "::warning::bench scoring failed; continuing"
+          rm -f advancing.json
+
       - name: Harvest governance and write the weekly digest
         if: ${{ (inputs.mode || 'full') == 'full' }}
         env:
@@ -182,8 +200,9 @@ jobs:
             [ -f watch-digest.md ] && cat watch-digest.md && echo
             [ -f triage-digest.md ] && cat triage-digest.md && echo
             [ -f agenda-digest.md ] && cat agenda-digest.md && echo
+            [ -f bench-digest.md ] && cat bench-digest.md && echo
           } > pr-body.md
-          rm -f inbox-digest.md reassess-digest.md watch-digest.md triage-digest.md agenda-digest.md yield-digest.md yield.json
+          rm -f inbox-digest.md reassess-digest.md watch-digest.md triage-digest.md agenda-digest.md bench-digest.md yield-digest.md yield.json
 
           if git status --porcelain | grep -qv '^?? pr-body.md'; then :; else
             echo "No changes produced — nothing to open a PR for."
@@ -272,6 +291,59 @@ jobs:
           pr_url=$(gh pr create \
             --title "Promotion: ${date} — verified imports into the ledger" \
             --body "The promotion pipe (docs/AUTOMATION.md build step 1): verified import proposals drafted into sources + evidence records. Every quoted span mechanically verified verbatim against the fetched source; dedupe, enum, and claim-anchor checks fail-closed in the script. The panel judges the readings; the ledger admission rule is satisfied by construction. Ledger of dispositions (promoted / duplicate / failed, with reasons): proposals/promotions-ledger.yaml." \
+            --label needs-approval)
+          gh pr edit "$pr_url" --add-reviewer "${GITHUB_REPOSITORY_OWNER}" || true
+          echo "opened $pr_url"
+
+  # Bench v2 freeze drafting: advancing study proposals (from merged
+  # scores on main — one-cycle latency, same clean-tier pattern as the
+  # promote job) become drafted freeze files plus their research items,
+  # in ONE gated needs-approval PR. The panel judges the protocols before
+  # any data exists; collection follows the two-PR discipline.
+  bench:
+    needs: maintain
+    if: ${{ (inputs.mode || 'full') == 'full' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Draft advancing freezes
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          EXTRACT_MODEL: ${{ vars.EXTRACT_MODEL }}
+        run: |
+          count=$(node scripts/draft-freeze.mjs --scan | tail -1)
+          echo "DRAFTED=${count}" >> "$GITHUB_ENV"
+      - name: Validate the ledger still loads
+        if: ${{ env.DRAFTED != '0' }}
+        run: npx vitest run src/domain/load.test.ts
+      - name: Open the gated freeze PR
+        if: ${{ env.DRAFTED != '0' }}
+        env:
+          GH_TOKEN: ${{ secrets.MAINTENANCE_PAT }}
+        run: |
+          date=$(date +%Y-%m-%d)
+          branch="bench/${date}-${GITHUB_RUN_ID}"
+          git config user.name "aletheia-maintenance-bot"
+          git config user.email "maintenance-bot@users.noreply.github.com"
+          git checkout -b "$branch"
+          git add -A -- content/cases
+          if git diff --cached --quiet; then
+            echo "nothing stageable — the bench rests"
+            exit 0
+          fi
+          git commit -m "Bench ${date}: panel-advanced study freezes (pre-registration only)"
+          git push -u origin "$branch"
+          pr_url=$(gh pr create \
+            --title "Bench: ${date} — panel-advanced study freezes" \
+            --body "Study pre-registrations drafted by the Bench from agenda proposals four of five seats scored high-gain with no constitutional concern (scores recorded per run under proposals/agenda/). Zero rows by design; criteria hash-frozen; the panel judges the protocols here before any data is collected, and collection follows the two-PR discipline after merge." \
             --label needs-approval)
           gh pr edit "$pr_url" --add-reviewer "${GITHUB_REPOSITORY_OWNER}" || true
           echo "opened $pr_url"

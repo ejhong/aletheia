@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { parse as parseYaml } from "yaml";
 
 /**
  * Loader for the weekly agenda proposals (scripts/propose-agenda.mjs
@@ -19,6 +20,21 @@ export interface AgendaProposal {
   gap: string;
   wouldSettle: string;
   effortTier: string;
+  /** Bench panel score, when the run has been scored (scores.yaml). */
+  score?: ProposalScore;
+  /** Study id when an advancing proposal's freeze has been drafted. */
+  draftedAs?: string;
+}
+
+export interface ProposalScore {
+  /** Seats voting "high" for expected information gain. */
+  highs: number;
+  /** Advancement under the 4-of-5-with-no-concerns rule (studies only). */
+  advances: boolean;
+  /** Substantiated constitutional concerns, verbatim, seat-labeled. */
+  concerns: string[];
+  /** One entry per seat: "Seat label: high|medium|low|failed". */
+  seats: string[];
 }
 
 export interface ProposalFile {
@@ -73,9 +89,62 @@ export function parseProposalFile(caseSlug: string, text: string): ProposalFile 
   return { caseSlug, ...meta, proposals, skippedBlocks };
 }
 
+/**
+ * Bench scores for one run dir (scores.yaml, written by
+ * scripts/score-agenda.mjs), keyed by proposal title within a case.
+ * Absent file = the run predates scoring or is not yet scored; proposals
+ * render without a score strip, never with a guessed one.
+ */
+function loadRunScores(dir: string): Map<string, ProposalScore> {
+  const scoresPath = path.join(dir, "scores.yaml");
+  const out = new Map<string, ProposalScore>();
+  if (!fs.existsSync(scoresPath)) return out;
+  let parsed: unknown;
+  try {
+    parsed = parseYaml(fs.readFileSync(scoresPath, "utf8"));
+  } catch {
+    return out; // a malformed scores file loses the strip, not the page
+  }
+  const tallies = (parsed as { tallies?: unknown })?.tallies;
+  if (!Array.isArray(tallies)) return out;
+  for (const t of tallies) {
+    if (typeof t?.title !== "string" || typeof t?.case !== "string") continue;
+    out.set(`${t.case}\u0000${t.title}`, {
+      highs: Number(t.highs ?? 0),
+      advances: Boolean(t.advances),
+      concerns: Array.isArray(t.concerns) ? t.concerns.map(String) : [],
+      seats: Array.isArray(t.seats) ? t.seats.map(String) : [],
+    });
+  }
+  return out;
+}
+
+/**
+ * Which advanced proposals already have their freeze drafted: the Bench
+ * drafter writes the proposal id into each freeze file's header comment,
+ * so the repo itself is the registry (no side state).
+ */
+function loadDraftedFreezes(): Map<string, string> {
+  const out = new Map<string, string>();
+  const casesDir = path.join(process.cwd(), "content", "cases");
+  if (!fs.existsSync(casesDir)) return out;
+  for (const c of fs.readdirSync(casesDir)) {
+    const sdir = path.join(casesDir, c, "studies");
+    if (!fs.existsSync(sdir) || !fs.statSync(sdir).isDirectory()) continue;
+    for (const f of fs.readdirSync(sdir).filter((f) => f.endsWith(".yaml"))) {
+      const text = fs.readFileSync(path.join(sdir, f), "utf8");
+      const m = text.match(/panel-advanced agenda proposal \(([^)]+)\)/);
+      const id = text.match(/^id: (\S+)/m)?.[1];
+      if (m && id) out.set(m[1], id);
+    }
+  }
+  return out;
+}
+
 /** All proposal runs, newest first; [] when none exist yet. */
 export function loadProposalRuns(): ProposalRun[] {
   if (!fs.existsSync(AGENDA_DIR)) return [];
+  const drafted = loadDraftedFreezes();
   return fs
     .readdirSync(AGENDA_DIR, { withFileTypes: true })
     .filter((e) => e.isDirectory())
@@ -84,13 +153,23 @@ export function loadProposalRuns(): ProposalRun[] {
     .reverse()
     .map((runId) => {
       const dir = path.join(AGENDA_DIR, runId);
+      const scores = loadRunScores(dir);
       const files = fs
         .readdirSync(dir)
         .filter((f) => f.endsWith(".md") && f !== "report.md")
         .sort()
-        .map((f) =>
-          parseProposalFile(f.replace(/\.md$/, ""), fs.readFileSync(path.join(dir, f), "utf8")),
-        )
+        .map((f) => {
+          const pf = parseProposalFile(
+            f.replace(/\.md$/, ""),
+            fs.readFileSync(path.join(dir, f), "utf8"),
+          );
+          pf.proposals = pf.proposals.map((p, i) => ({
+            ...p,
+            score: scores.get(`${pf.caseSlug}\u0000${p.title}`),
+            draftedAs: drafted.get(`${runId}/${pf.caseSlug}/${i + 1}`),
+          }));
+          return pf;
+        })
         .filter((pf) => pf.proposals.length > 0 || pf.skippedBlocks > 0);
       const date = files[0]?.date ?? runId.slice(0, 10);
       return { runId, date, files };

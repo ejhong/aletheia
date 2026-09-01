@@ -160,3 +160,36 @@ states are editorial framing judgments, not overlay verdicts. Motivated
 by the chat-derived research-brief workflow (2026-08-28 session), whose
 central findings were genealogical. (AI record of a founder
 instruction, 2026-08-28 session.)
+
+## 2026-09-01 — The metabolism: full-automation design confirmed (docs/AUTOMATION.md)
+
+The founder's direction, after a design session reviewing every existing
+update mechanism: the site should run itself toward sharper, better-lit
+cases — "present the very best of what AI can suss out and organize in a
+beautiful way" — with the founder's role compressed to the kill switch,
+the constitution, taste, and a weekly digest. The confirmed design is
+recorded in docs/AUTOMATION.md: five loops on one gate (Watch, Expedition,
+Bench, Tribunal, Atelier), attention allocated by measured yield,
+saturation redefined as a per-case counter over verified-novelty impact
+rather than a feeling, studies automated end-to-end (panel-scored
+selection, auto-drafted freezes, a collection runner on the
+refusal-fallback path), and a rewrite tournament for presentation that
+ratchets prose the way standing already ratchets judgment.
+
+Two design principles got names. **The ledger grows; the presentation
+converges** — evidence accumulates monotonically and only the compression
+ratchets, so unbounded discovery stops being a threat and becomes the
+input. **Prose dies; records survive** — founder editorial angles and
+banked corrections are reified as pins (per-case append-only pins.yaml,
+public, mechanically checked where possible) that any rewrite must honor,
+so nothing hard-won is lost to a beautiful redraft. Pins bind
+presentation, never verdicts.
+
+Rationale for sequencing (yield metric first, pins second, Bench third,
+collection runner fourth, Expedition fifth, researcher surface anywhere,
+Atelier last as a one-case experiment): safety and measurement before
+autonomy; every later loop assumes the earlier ones' floors. Constraints
+carried from the from-scratch review the same night: no new services;
+machine artifacts declare lifecycle at birth; supplied material never
+enters git; the engine-as-package refactor is deliberately deferred until
+a third deployment exists.

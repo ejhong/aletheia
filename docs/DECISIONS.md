@@ -306,3 +306,28 @@ now written into the design constraints. Also fixed on its note:
 MAINTENANCE.md's stale EXTRACT_MODEL line. The review's framing worth
 keeping: "trustworthy but not alive" is the failure mode the build order
 now exists to prevent.
+
+## 2026-09-01 — Build step 1 ships: the promotion pipe
+
+The pipe the outside review found missing now exists.
+scripts/promote-imports.mjs consumes verified import proposals from
+proposals/inbox/, dedupes them against the ledger (identifier match plus
+the title-similarity guard the Bruehl arXiv-versus-journal aliasing
+taught), fetches each genuinely new source, and drafts its ledger entry
+with the evidence records the admission rule requires — under mechanical
+fail-closed checks: every quoted span in a drafted sourceStatement is
+verified verbatim (whitespace- and hyphenation-insensitive) against the
+fetched text, directions and strengths are enum-checked, claim anchors
+must exist, budgets cap the pace (3 promotions per run), and a proposal
+with no surviving verified evidence record is not promoted but recorded
+as failed with reasons in proposals/promotions-ledger.yaml — the
+auditable dispositions trail, in the archive-ledger tradition. The
+Maintain workflow gains a separate `promote` job on a fresh checkout of
+main (one-cycle latency by design: promotions never ride the auto-tier
+maintenance PR), opening its own needs-approval PR into the classifier,
+the citation-checking arbiter, the founder tap, and the content-response
+ripple. First dry run against live proposals, same day: both
+already-carried arXiv items correctly deduped (one via the title guard —
+the exact aliasing that fooled the watch in August), and the one new
+source drafted with a verified evidence record. The pipe's first real
+consumer is queued: the Villarroel VASCO-blog drop of this morning.

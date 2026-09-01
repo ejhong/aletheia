@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+/* Tailwind v4 scans the whole repo for class names by default. briefs/
+   holds tens of megabytes of archived single-line HTML captures (never
+   rendered by the site); scanning them stalls the postcss loader past
+   Turbopack's subprocess deadline and fails the build. */
+@source not "../briefs";
+
 @theme inline {
   /* Paper register */
   --color-paper: #f6f1e8;

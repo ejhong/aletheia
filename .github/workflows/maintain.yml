@@ -216,3 +216,62 @@ jobs:
           else
             gh pr edit "$pr_url" --add-reviewer "${GITHUB_REPOSITORY_OWNER}" || true
           fi
+
+  # The promotion pipe (docs/AUTOMATION.md build step 1): verified import
+  # proposals become drafted ledger records in their own needs-approval
+  # PR, never mixed into the maintenance proposals PR (whose auto tier
+  # they would break). Runs on a fresh checkout of main, so it consumes
+  # proposals that have already merged — this run's new imports promote
+  # on the next cycle, which trades a week of latency for a clean tier
+  # boundary. The script cannot publish: dedupe, verbatim-quote checks,
+  # enum/anchor validation and budgets are mechanical inside it, and the
+  # drafted records face the classifier, the citation-checking arbiter,
+  # the founder tap, and the content-response ripple like any canon edit.
+  promote:
+    needs: maintain
+    if: ${{ (inputs.mode || 'full') == 'full' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Draft promotions
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          EXTRACT_MODEL: ${{ vars.EXTRACT_MODEL }}
+        run: |
+          count=$(node scripts/promote-imports.mjs | tail -1)
+          echo "PROMOTED=${count}" >> "$GITHUB_ENV"
+      - name: Validate the ledger still loads
+        if: ${{ env.PROMOTED != '0' }}
+        run: npx vitest run src/domain/load.test.ts
+      - name: Open the gated promotion PR
+        if: ${{ env.PROMOTED != '0' }}
+        env:
+          GH_TOKEN: ${{ secrets.MAINTENANCE_PAT }}
+        run: |
+          date=$(date +%Y-%m-%d)
+          branch="promote/${date}-${GITHUB_RUN_ID}"
+          git config user.name "aletheia-maintenance-bot"
+          git config user.email "maintenance-bot@users.noreply.github.com"
+          git checkout -b "$branch"
+          git add -A -- content/cases proposals/promotions-ledger.yaml
+          git status --porcelain
+          if git diff --cached --quiet; then
+            echo "nothing stageable — the pipe rests"
+            exit 0
+          fi
+          git commit -m "Promotion ${date}: verified imports enter the ledger through the gates"
+          git push -u origin "$branch"
+          pr_url=$(gh pr create \
+            --title "Promotion: ${date} — verified imports into the ledger" \
+            --body "The promotion pipe (docs/AUTOMATION.md build step 1): verified import proposals drafted into sources + evidence records. Every quoted span mechanically verified verbatim against the fetched source; dedupe, enum, and claim-anchor checks fail-closed in the script. The panel judges the readings; the ledger admission rule is satisfied by construction. Ledger of dispositions (promoted / duplicate / failed, with reasons): proposals/promotions-ledger.yaml." \
+            --label needs-approval)
+          gh pr edit "$pr_url" --add-reviewer "${GITHUB_REPOSITORY_OWNER}" || true
+          echo "opened $pr_url"

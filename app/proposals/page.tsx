@@ -36,6 +36,12 @@ function fate(p: {
     return { label: "blocked — constitutional concern", cls: "text-ink-soft" };
   if (p.score.advances)
     return { label: "advancing — freeze queued", cls: "text-copper" };
+  // A high-scored claim or research-item cannot auto-advance (no freeze
+  // stage to gate it), but it is NOT retired: it is the panel telling
+  // the editor "adopt this." Losing that distinction would quietly
+  // re-create the lost-good-ideas problem the backfill existed to fix.
+  if (p.kind !== "study" && p.score.highs >= 4 && p.score.concerns.length === 0)
+    return { label: `endorsed ${p.score.highs}/5 — awaiting adoption`, cls: "text-copper" };
   return { label: `retired · ${p.score.highs}/5 high`, cls: "text-faint" };
 }
 
@@ -52,9 +58,19 @@ export default function ProposalsPage() {
     proposals: all.length,
     preRegistered: all.filter((p) => p.draftedAs).length,
     advancing: all.filter((p) => p.score?.advances && !p.draftedAs).length,
+    endorsed: scored.filter(
+      (p) =>
+        p.kind !== "study" &&
+        !p.score?.advances &&
+        (p.score?.highs ?? 0) >= 4 &&
+        (p.score?.concerns.length ?? 0) === 0,
+    ).length,
     blocked: scored.filter((p) => (p.score?.concerns.length ?? 0) > 0).length,
     retired: scored.filter(
-      (p) => !p.score?.advances && (p.score?.concerns.length ?? 0) === 0,
+      (p) =>
+        !p.score?.advances &&
+        (p.score?.concerns.length ?? 0) === 0 &&
+        !(p.kind !== "study" && (p.score?.highs ?? 0) >= 4),
     ).length,
     unscored: all.length - scored.length,
   };
@@ -84,6 +100,7 @@ export default function ProposalsPage() {
               ["proposed", totals.proposals],
               ["pre-registered", totals.preRegistered],
               ["advancing", totals.advancing],
+              ["endorsed, awaiting adoption", totals.endorsed],
               ["retired", totals.retired],
               ["blocked", totals.blocked],
               ...(totals.unscored > 0

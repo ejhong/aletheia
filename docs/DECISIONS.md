@@ -307,6 +307,8 @@ MAINTENANCE.md's stale EXTRACT_MODEL line. The review's framing worth
 keeping: "trustworthy but not alive" is the failure mode the build order
 now exists to prevent.
 
+
+
 ## 2026-09-01 — Build step 1 ships: the promotion pipe
 
 The pipe the outside review found missing now exists.

@@ -137,6 +137,24 @@ than from a fading copy — and where the evidence has parted ways with a
 founding text, the rewriter has the original in hand and says so
 honestly, instead of paraphrasing a paraphrase of it.
 
+Two rewrite laws (founder direction, 2026-09-01), carried in the
+Atelier rubric and enforced mechanically where possible:
+
+- **The first-edition rule.** A revision reads as if it were the first
+  telling: founding texts and the current ledger digested into one
+  seamless, present-tense article. No "previously this case said," no
+  "updated to reflect" — the article never narrates its own revision
+  history, which lives in the changelog and git. A candidate that
+  writes about the case's tellings instead of from current knowledge
+  loses on register.
+- **The plates-survive rule.** Every plate placed in the incumbent
+  appears in the candidate — a plate may move to a better seat in a
+  fresh telling, but may not be lost (the same mechanical guard the
+  narrow editorial pass already enforces for `{claim=…}` and
+  `{plate:…}` markers). If the case gained plates since the incumbent
+  was written, a candidate that fails to seat them is incomplete and
+  is rejected before judging.
+
 ## Pins: how editorial angles survive rewriting
 
 Prose dies; records survive. Anything that lives only as narrative

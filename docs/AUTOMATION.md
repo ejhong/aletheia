@@ -41,9 +41,19 @@ merge policy). No loop has its own door.
 
 ### 1. The Watch — hears (exists)
 
-Literature watch → triage → verification pipeline, as built. One
-addition: every import records whether it eventually moved anything (a
-verdict, a standing, a crux), feeding the yield metric.
+Literature watch → triage → verification pipeline, as built — plus the
+segment an outside review (2026-09-01) correctly found missing: **the
+promotion pipe**. Verified import proposals previously died in
+`proposals/` on a 60-day timer, because nothing authored the evidence
+records the ledger admission rule requires; promotion happened only when
+the founder opened a chat. A Maintain step now (build step 1) drafts the
+promotion — sources.yaml entry plus the evidence records that cite it —
+as a needs-approval PR through the classifier, the citation-checking
+arbiter, and the content-response ripple. Without this pipe the site is
+a metabolism for judging content, not producing it, and the yield decay
+would amplify the starvation (no promotions → no movement → cases cool).
+Every import records whether it eventually moved anything, feeding the
+yield metric.
 
 ### 2. The Expedition — explores (new)
 
@@ -188,22 +198,41 @@ contributor: reading the weekly digest, dropping material and directions
 into the inbox, all of it riding the same gates as anyone else's.
 Everything else is panel-governed inside budgets.
 
-## Build order (by dependency and risk)
+## Build order (by dependency and risk; revised 2026-09-01 after the outside review — see DECISIONS)
 
-1. **Yield metric + cadence decay** — `scripts/lib/yield.mjs`, derived
-   entirely from existing records; Maintain reads it. Pure measurement.
+1. **The promotion pipe** — verified import proposals become gated
+   sources+evidence PRs (the single highest-value fix: it is what makes
+   existing cases alive rather than beautifully maintained snapshots,
+   and it must precede any reliance on yield decay).
 2. **Bench v2** — panel scoring on agenda output; ranked report;
-   auto-drafted freeze PRs for unanimous scorers (founder tap retained
-   initially; flipping freezes to auto-merge-on-pass is a later,
-   separate merge-policy amendment).
-3. **Collection runner** — workflow that detects merged zero-row freezes
-   and executes them (refusal-fallback provider path mandatory).
-4. **Expedition** — coverage-diff tool + scheduled sweeps. Requires a
-   provider decision and a monthly budget line from the founder.
-5. **Researcher surface** — "state of the question" case header + per-case
-   JSON export of the ledger. Independent; can land any time.
-6. **Atelier** — last, as a labeled experiment on one case (transients),
-   with the mechanical fidelity floor and the narrative-inputs anchor already in force.
+   auto-drafted freeze PRs for 4-of-5-high scorers with no
+   constitutional objection (founder tap retained initially).
+3. **Collection runner** — merged zero-row freezes execute their frozen
+   protocols (refusal-fallback provider path mandatory).
+4. **Epistemic counterweights** — two small mechanisms from the outside
+   review: every check run gains a required field naming the strongest
+   argument for the featured hypothesis the assessment does not answer
+   (making the panel's shared-prior blindspot visible without giving
+   advocacy a vote), and a sampling gloss audit (one random evidence
+   record per hot case per cycle re-verified against its primary by a
+   model that did not author it), with the honest limitation stated on
+   /method: citation checking verifies existence, not readings.
+5. **Expedition** — coverage-diff tool + scheduled sweeps (now honest:
+   its output has somewhere to go). Requires a provider decision and a
+   budget line from the founder.
+6. **Researcher surface** — "state of the question" case header +
+   per-case JSON export. Independent; can land any time.
+7. **Atelier** — as a labeled experiment on one case (transients), with
+   the mechanical fidelity floor and the narrative-inputs anchor already
+   in force.
+8. **Genesis — last, deliberately.** Case creation (topic seed →
+   expedition discovery → ladder decomposition → drafted case → one
+   giant needs-approval PR → published unratified, thickening in
+   public) is the hardest, most judgment-laden job and the least
+   frequent; the founder continues to commission cases manually until
+   everything upstream has a track record. Until then, "from scratch"
+   is not automated, and the design says so rather than pretending.
+
 
 Implementation constraints throughout: no new services, no databases —
 git as state, Actions as scheduler, YAML validated fail-closed by the

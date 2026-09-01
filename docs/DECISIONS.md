@@ -278,3 +278,31 @@ superseded by a narrative-guidance bullet (founder's reserved act,
 ratified by this merge). The prior entries recording the pins design
 stand above, per this log's append-only rule — the reversal is the
 record, not an erasure.
+
+## 2026-09-01 — The outside review: the metabolism judged, corrected, and re-ordered
+
+Another agent read the full design record and the workflows and returned
+the sharpest external critique the project has had. Its findings, and
+what the founder decided: (1) **The broken pipe** — verified import
+proposals died in proposals/ on a 60-day timer because no stage authors
+the evidence records the admission rule requires; the judging half of
+the automation was strong while the producing half starved, and the new
+yield decay would have amplified the starvation into fossilization. The
+promotion pipe moves to the front of the build order. (2) **Genesis is
+absent** — nothing authors a case from scratch; every case was built in
+an interactive session. Made explicit as the deliberately-last build
+step: the founder keeps commissioning cases manually (the least frequent
+job) until everything upstream has a track record. (3) **Three quality
+risks recorded with mitigations queued**: vendor-independence is not
+epistemic independence (five seats share training-corpus priors, and
+ratification pressure runs toward the mainstream consensus on exactly
+the hypotheses this site exists to examine without pre-dismissal) — every
+check run will gain a required strongest-unanswered-pro-hypothesis
+field; no judge re-reads sources (existence-checking is not
+content-checking; a subtly wrong gloss can ratify 5/5) — a sampling
+gloss audit is queued and the limitation gets stated on /method; the
+arbiter is weakest gating code — the tests-over-mechanisms doctrine is
+now written into the design constraints. Also fixed on its note:
+MAINTENANCE.md's stale EXTRACT_MODEL line. The review's framing worth
+keeping: "trustworthy but not alive" is the failure mode the build order
+now exists to prevent.

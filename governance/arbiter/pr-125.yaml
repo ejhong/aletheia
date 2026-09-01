@@ -1,0 +1,139 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 125
+title: "VASO-S001 freeze: has the latch ever been demonstrated at the caliber
+  the knot hypothesis needs?"
+url: https://github.com/ejhong/aletheia/pull/125
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-01
+judgedAgainst: 0f663f4514
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff adds a zero-row pre-registration (VASO-S001) with an
+      explicit criteria freeze dated before any collection, which is exactly
+      what §3.12 asks for, and it is stamped runId/model/date/promptVersion with
+      humanReviewed: false, so nothing is presented as a human or ratified
+      judgment (§3.15, §4). All six DOIs added under content/ RESOLVE and their
+      resolved titles match how each is characterized in knownCandidates (e.g.
+      10.1152/ajpheart.00977.2005 is used as the 'absence of latch-bridge
+      formation in muscular saphenous arteries' row; 10.1529/biophysj.107.113977
+      is explicitly classed as model rather than arteriole measurement), so the
+      citations are used honestly (§3.7, §3.8). The one unresolved candidate —
+      the canine saphenous-vein ~11.9% shortening-velocity report — is recorded
+      as an unlocated, unverified lead with no invented identifier and a
+      commitment to report a failed search, which satisfies §3.8 and §3.11
+      rather than breaching them. The frozen design enforces two never-combined
+      grades (§3.4, §3.13), absence rows (§3.11), and shared-cohort independence
+      notes (§3.10), and declines the relayed model's proposed rewording of
+      C010/C020 pending the audit — so no published claim or assessment is
+      silently changed. The relayed pre-freeze commentary is preserved verbatim
+      in inbox/processed with its channel, date, relayer and an agent note
+      stating that none of its literature assertions entered
+      claims/evidence/sources; the supplier is the founder who pasted it for
+      this use, so I do not read this as publishing material supplied in
+      confidence. history.yaml is appended to, not rewritten, and AGENTS.md is
+      untouched."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules:
+      - §3.7
+      - §3.8
+      - §3.9
+      - §3.10
+      - §3.11
+      - §3.12
+      - §3.13
+      - §3.14
+      - §3.15
+    reasoning: The change adds a preregistered study file (VASO-S001) with zero data
+      rows, clearly labeled as a study freeze with
+      runId/model/date/promptVersion and humanReviewed=false, which aligns with
+      §3.12 and §3.14 and does not present draft analysis as ratified
+      conclusions. The criteria and method sections emphasize
+      one-row-per-experiment and explicit independence notes for shared cohorts
+      (§3.10), explicit handling of negative and absent findings and failed
+      searches as rows/records (§3.11), and calibrated, multi-axis grading
+      without collapsing into a single score (§3.13). Sources are treated
+      correctly as containers, with distinct evidence classes for models and
+      molecular reconstitutions, and there is no attempt to treat secondary
+      literature or briefs as primary evidence (§3.6, §3.7). All added DOIs in
+      knownCandidates resolve and are used in ways that match their
+      titles/venues, with one unresolved lead explicitly marked as unverified
+      rather than cited, satisfying the real-citations and no-fabrication
+      requirements (§3.7, §3.8, §3.15). The inbox commentary file is clearly
+      labeled as AI-origin commentary relayed by the founder and is used only as
+      design input, not as evidence; the file transparently documents what was
+      and wasn’t adopted, honoring source-vs-inference and provenance clarity
+      (§3.9, §3.14, §3.15). No existing claims, evidence, or assessments are
+      silently altered in their judgments, and no checks are weakened or
+      constitutional powers (like AGENTS.md) touched, so the changes remain
+      within the project’s epistemic and operational constraints.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules:
+      - §3.12
+      - §3.15
+      - §3.8
+      - §3.4
+    reasoning: "The change perfectly executes §3.12 (Freeze before broad audit) by
+      establishing the study's inclusion criteria and grading axes before any
+      data is collected. It handles the untrusted AI commentary with exemplary
+      constitutional rigor (§3.15): rather than blindly importing its literature
+      claims, the agent mechanically verified each paper, added only the
+      resolved primary documents as pre-committed candidates, and honestly
+      recorded an unlocatable paper as an 'unverified lead' rather than a
+      fabricated citation (§3.8). Furthermore, establishing independent grading
+      axes for 'latch-evidence' and 'knot-relevance' directly enforces §3.4
+      (Claim credibility is not diagnosticity). All added citations resolve
+      successfully."
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff is a §3.12 freeze of VASO-S001 with zero rows, empty
+      findings, and stamped AI provenance (humanReviewed: false); it does not
+      rewrite featured claims, invent locators, or present a draft as ratified.
+      All six DOIs added under content/ resolve, and the resolved titles match
+      the named papers (Dillon 1981, Han 2006, Call 2006, Hammell 2022, Wang
+      2008; Wingard’s DOI resolves at doi.org). The unlocated canine
+      saphenous-vein item is recorded as an unverified lead rather than a
+      citation, and the processing note keeps the relayed commentary’s
+      literature characterisations out of claims/evidence/sources. AGENTS.md is
+      untouched, history is append-only, and the founder-relayed inbox file
+      carries date, channel, and editor provenance rather than confidential
+      material used without a record."
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules:
+      - §3.12
+      - §3.11
+      - §3.8
+      - §3.7
+      - §3.10
+      - §3.15
+      - §4
+    reasoning: "This is a textbook §3.12 freeze: VASO-S001 locks inclusion/exclusion
+      criteria, search protocol, grading axes, and a criteria hash before any
+      rows exist, with rows/findings empty and the file stamped
+      runId/model/date/promptVersion and humanReviewed: false — an honestly
+      labeled AI draft, not a ratified judgment. All six added DOIs resolve, and
+      the resolved titles match what the records claim they support (Dillon
+      1981, Han 2006 absence report, Call 2006 pressurized follow-up, Hammell
+      2022 reconstitution, Wang 2008 model); the one unresolvable paper is
+      recorded explicitly as an unlocated lead rather than a citation, with the
+      failed search to be reported per §3.11. The verbatim pre-freeze commentary
+      is archived in inbox/processed/ with honest provenance ('vendor and
+      session not identified' — a labeled gap, not an invented one), and the
+      processing note records that its literature characterizations were
+      verified independently or treated as leads, with none imported into
+      claims/evidence/sources — its design suggestions adopted, its claim
+      rewordings declined precisely on §3.12 grounds. The VASO-R004 amendment
+      edits a research-opportunity design (not a published assessment), and the
+      change is logged append-only in history.yaml with what, why, and actor. No
+      AGENTS.md edit, no confidence material, no fabricated locators, no
+      weakening of any check — the criteria-hash mechanism strengthens them."
+harvestedAt: 2026-09-01

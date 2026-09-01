@@ -1,0 +1,110 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 130
+title: "Atelier design: narrative inputs anchor rewrites to the founding texts"
+url: https://github.com/ejhong/aletheia/pull/130
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-01
+judgedAgainst: b4c236bce8
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches only docs/AUTOMATION.md and docs/DECISIONS.md — no
+      AGENTS.md edit, no content/ records, no citations (verification tooling
+      found none), so no fabrication, provenance-stripping, or
+      published-judgment change is possible here. Substantively, the 'narrative
+      inputs' design is explicitly presentation-only: it states inputs are
+      'presentation references, never evidence' and forbids citing them for any
+      fact not independently in the ledger, which parallels the existing pins
+      rule ('Pins bind presentation, never verdicts', §7) and does not weaken
+      any §3.15 check — CI, panel ratification, and pins all remain in force.
+      The confidentiality boundary is handled rather than eroded: third-party
+      briefs are excluded 'forever', inputs are limited to founder-owned,
+      licensed texts (e.g. his published Substack essays), and each carries a
+      manifest recording title, origin, license, and role, which is a provenance
+      record rather than a bypass of §3.15's permission requirement; the §4 bar
+      on arc/ and notes.txt material is untouched and still governs. The
+      decision-log entry is an ordinary append documenting the direction,
+      consistent with §9.6 and §3.14. Residual risk exists only at
+      implementation time — if a case ever commits an unpublished or
+      confidence-supplied text as an 'input', that would violate §3.15 — but
+      nothing in this docs-only change authorizes it."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: The change only amends docs/AUTOMATION.md and docs/DECISIONS.md,
+      leaving AGENTS.md untouched, so it does not trespass the human-reserved
+      constitutional file. The new "narrative inputs" concept is explicitly
+      constrained as presentation-only and "never evidence," which aligns with
+      §3.6 (sources vs. evidence) and avoids weakening evidential standards. No
+      citations, locators, or provenance records are added or altered, so there
+      is no risk of fabricated or misleading references under §3.7–§3.8. The
+      documentation clarifies internal workflow (what Atelier drafts may draw
+      on) rather than altering how claims, evidence, or assessments are
+      represented to readers, and it does not weaken multi-model checks or other
+      safeguards in §3.15. Because the diff is fully shown and contains no
+      hidden code or schema changes, there is no sign of silent revision of
+      published judgments or provenance. Overall, the additions strengthen
+      editorial discipline against narrative drift without relaxing any
+      epistemic rule.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules:
+      - §3.15
+      - §4
+      - §7
+    reasoning: The diff introduces 'narrative inputs' to guide the drafting
+      process's presentation and voice, which aligns with §7's rule that founder
+      directives bind presentation, never verdicts. It explicitly forbids using
+      these inputs as sources for facts not in the ledger, maintaining the
+      strict separation of evidence and presentation. Furthermore, by requiring
+      a manifest with licensing information and explicitly excluding third-party
+      briefs, it respects the rules against publishing unlicensed or
+      confidential material (§3.15).
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff is documentation-only (AUTOMATION.md + DECISIONS.md), does
+      not touch AGENTS.md, content records, citations, or published assessments,
+      and the omitted-files list is empty. The added Atelier rule treats
+      committed founding texts as presentation references that must not supply
+      facts unless those facts are independently in the ledger, which tracks
+      §3.6–§3.9 and the existing pins doctrine that presentation may be directed
+      without moving verdicts. Third-party briefs are excluded and a licensing
+      manifest is required, which is consistent with §3.15’s
+      confidence/provenance bar rather than a weakening of it. No identifiers
+      were added (verification found none), and nothing reclassifies or dilutes
+      the §3.15 ratification, fabrication, or CI checks. Ordinary design-doc
+      incompleteness (schema/prompt wiring deferred) is not a constitutional
+      violation.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules:
+      - §3.6
+      - §3.7
+      - §3.8
+      - §3.15
+      - §7
+    reasoning: "The change is docs-only: it records an Atelier design rule that
+      committed per-case narrative inputs (founding texts with a licensing
+      manifest) anchor rewrites against voice drift. It hard-codes the
+      epistemically safe constraint that inputs are 'presentation references,
+      never evidence' — voice and framing may be drawn from them, facts only if
+      independently in the ledger — which is exactly the §3.6 source/evidence
+      and §3.7 primary-source separation, and the manifest (title, origin,
+      license, role) honors §3.8 provenance. Confidentiality is respected:
+      third-party briefs are 'excluded forever,' and the only eligible texts are
+      the founder's own licensed essays, so no §3.15 confidence-material
+      exposure. Nothing weakens the checks; pins still bind presentation, never
+      verdicts, and the decision log entry is appended (not edited) per §3.14's
+      versioning spirit. The claim of 'founder direction' cannot be verified
+      from the diff, but §7 of the base constitution (the 2026-09-01 founder
+      amendment) explicitly names docs/AUTOMATION.md and docs/DECISIONS.md as
+      the channel for such directives, and there is no internal evidence
+      contradicting it. AGENTS.md itself is untouched, so the reserved-power
+      rule is not triggered."
+harvestedAt: 2026-09-01

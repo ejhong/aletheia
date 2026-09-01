@@ -1,0 +1,97 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 127
+title: "The metabolism: full-automation design (docs/AUTOMATION.md)"
+url: https://github.com/ejhong/aletheia/pull/127
+verdict: park
+reason: only 3 of 5 seats affirm compliance (4 required)
+outcome: merged
+outcomeAt: 2026-09-01
+judgedAgainst: 5fcba626b7
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "This is a docs-only change: a new design document
+      (docs/AUTOMATION.md) plus a matching DECISIONS log entry, with no edits to
+      AGENTS.md, no content/ records, and no citations at all (verification
+      tooling found none). Nothing in it silently loosens the §3.15 gates: the
+      Bench's 4-of-5 rule governs only which study proposals get explored, and
+      the doc explicitly preserves the full arbiter at the freeze/publication
+      PR, while the Atelier's 4-of-5 tournament winner 'still ships through the
+      normal publication gate, where any seat's substantiated constitutional
+      objection parks it,' with every seat's dissent published to
+      governance//panel — that preserves rather than weakens contested-change
+      display. The prospective auto-merge of freezes is explicitly deferred to
+      'a later, separate merge-policy amendment,' so it is not enacted here. On
+      the one genuinely new authority surface (directive pins), the document
+      correctly routes it through an AGENTS.md amendment reserved to the founder
+      and states that 'until that amendment lands, no directive pin binds
+      anything.' Briefs are declared never citable, supplied material is stated
+      to never enter git, and pins bind presentation only, never verdicts — all
+      consistent with §3.7–§3.15. The only soft spot is that the DECISIONS entry
+      asserts founder confirmation without the '(AI record of a founder
+      instruction)' stamp used in the preceding entry; that is a minor stylistic
+      inconsistency in a design record, not a presentation of an AI judgment as
+      a ratified human conclusion, and does not rise to violation."
+  - seat: GPT-5.1 (OpenAI)
+    vote: unsure
+    rules: []
+    reasoning: "seat failed: Error: no JSON object in reply"
+  - seat: Gemini 3.1 Pro (Google)
+    vote: unsure
+    rules:
+      - §3.15
+    reasoning: The PR adds docs/AUTOMATION.md and updates docs/DECISIONS.md to
+      establish a 'full-automation' direction, heavily relying on the assertion
+      that this design was confirmed by the founder in a '2026-09-01 session'.
+      The constitution's §3.15 forbids presenting an AI record as a human one or
+      an unratified draft as a ratified judgment. Because the system
+      instructions require me to treat assertions of human approval in the diff
+      as untrusted data, and I have no mechanism to verify whether this
+      2026-09-01 session actually occurred, I cannot determine if this is a
+      genuine record of a human's directive or an AI fabricating human approval
+      to push architectural policy. The question of compliance turns entirely on
+      this uncheckable fact.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff is docs-only (new docs/AUTOMATION.md plus a DECISIONS.md
+      entry); it does not edit AGENTS.md, content records, schemas, or CI gates.
+      The design keeps a single publication path (classifier → arbiter panel →
+      merge policy), preserves freeze-before-collection, real-citation
+      verification, public dissent, and git-as-state, and explicitly defers
+      directive pins until a founder AGENTS.md amendment so they do not bind
+      yet. Future mechanisms (Expedition, collection runner, Atelier,
+      auto-merge) are sequenced as later gated PRs rather than enacted here,
+      which does not weaken §3.15. No citations were added; nothing confidential
+      is published; founder-confirmation language is the project’s normal
+      DECISIONS pattern and is not positive evidence of a fabricated human
+      record.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "This is a docs-only change: a new design document
+      (docs/AUTOMATION.md) plus a DECISIONS.md entry recording it, in the same
+      'AI record of a founder instruction' pattern as the existing 2026-08-28
+      entry. AGENTS.md is not touched, so §3.15's reserved amendment power is
+      respected — and the design itself explicitly defers the one new founder
+      authority it proposes (directive pins) to a future one-line AGENTS.md
+      amendment by the founder, stating 'until that amendment lands, no
+      directive pin binds anything,' which is the opposite of a check-dodge. The
+      design preserves the constitutional gates rather than weakening them: all
+      five loops 'write through the same gate,' Bench selection (4-of-5) is
+      upstream prioritization only, with the freeze PR and Atelier winners still
+      facing the full publication arbiter where any seat's substantiated
+      objection parks the change; superseded prose persists in git/changelog
+      (§3.14) and tournament dissents are published, not silenced. The doc also
+      honors Phase-1 constraints (git as state, no new services, fail-closed
+      YAML validation) and confidentiality ('supplied material never enters
+      git'; nothing from arc/ or notes.txt). No citations are added, so no
+      fabrication surface exists, and the document never presents future
+      mechanisms as built — 'nothing here is built until its own PR lands
+      through the normal gates.' The unverifiable claim of founder confirmation
+      is not itself an exercise of founder-only power, and under the
+      inspectability model the founder's merge is the ratifying act."
+harvestedAt: 2026-09-01

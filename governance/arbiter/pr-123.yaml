@@ -1,0 +1,114 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 123
+title: "Archive: Hancock twin-A later checkpoint (verified strict superset)"
+url: https://github.com/ejhong/aletheia/pull/123
+verdict: park
+reason: only 2 of 5 seats affirm compliance (4 required)
+outcome: merged
+outcomeAt: 2026-09-01
+judgedAgainst: be60d235ac
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The change touches only the never-citable `briefs/` archive area and
+      its README index: it swaps one Hancock chat-capture checkpoint for a later
+      capture of the same conversation and adds a supersession note. No case
+      record, claim, evidence, source, assessment, or citation is altered, and
+      the citation tooling found no identifiers in the added lines. The removal
+      of the 2026-08-30 checkpoint is documented rather than silent — the README
+      preserves the old filename, share id, md5, the rationale (mechanically
+      verified superset), and a pointer to the commit/PR where the file remains
+      in git history — so provenance is retained rather than destroyed, and the
+      act is reversible. AGENTS.md is untouched, no check is reclassified or
+      weakened, and nothing is presented as ratified or human-reviewed. The
+      omitted file is the deleted old capture (and the bulk of the replacement
+      capture body), but that material is archive-only, non-citable, and cannot
+      introduce fabricated citations or provenance into published content; the
+      visible README/table edits are internally consistent with the PR's stated
+      scope. Residual uncertainty about whether the new 30 MB capture contains
+      any confidentiality-constrained (`arc/`, notes.txt, Hawke) material cannot
+      be resolved from the packet, but the same archive practice already exists
+      at the base revision for sibling checkpoints."
+  - seat: GPT-5.1 (OpenAI)
+    vote: unsure
+    rules:
+      - §3.15
+    reasoning: The change only updates briefs/README.md and swaps one HTML
+      checkpoint file for another under briefs/hancock/, which is described as
+      never-citable archive material rather than published case content; no
+      citations are added, so rules on real citations and provenance do not
+      appear to be engaged directly. The README note about supersession
+      transparently documents the removal and preserves the old checkpoint’s
+      hash and git reference, which is consistent with versioning and provenance
+      norms. However, the diff omits the full contents of the removed checkpoint
+      file (briefs/hancock/checkpoint-20260830-6a942e20.html), so I cannot
+      verify that no confidential or otherwise disallowed material is being
+      deleted in a way that conflicts with the rules on publishing or handling
+      confidence-bound content in §3.15. Because omitted content could, in
+      principle, hide a violation (for example if briefs/ contained material
+      that should not have been there and its silent removal would mask that
+      history or if its handling conflicted with geo-project constraints
+      referenced in §4), I cannot definitively judge compliance from the visible
+      changes alone. Therefore my vote is unsure rather than a confident
+      complies or violates.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: unsure
+    rules:
+      - §3.15
+      - §4
+    reasoning: The OMITTED FILES list is non-empty, meaning the changes to the
+      renamed HTML checkpoint file are hidden from review. Because the PR body's
+      assertions about the file's contents and safety are untrusted data, I
+      cannot independently verify that the omitted file is free of confidential
+      `arc/` material (§4), material supplied in confidence (§3.15), or other
+      constitutional violations. Without seeing the actual file diff, I cannot
+      confidently determine compliance.
+  - seat: Grok 4.6 (xAI)
+    vote: unsure
+    rules:
+      - §3.15
+      - §3.8
+      - §4
+    reasoning: "The omitted-files list is non-empty:
+      briefs/hancock/checkpoint-20260830-6a942e20.html was not shown, and
+      change-stat treats that HTML as a rename to
+      checkpoint-20260901-6a962cd8.html, so the actual payload is unseen. The
+      visible README hunk only swaps a table row and documents supersession; it
+      does not touch AGENTS.md, content/, or assessments, and citation tooling
+      found no identifiers—so nothing in the shown patch is itself a completed
+      violation. Compliance still turns on the unseen HTML: §3.15 forbids
+      publishing unpermitted/confidential material and fabricating provenance,
+      §3.8 forbids invented locators/checksums, and §4 forbids geo-project
+      confidential papers in the tree. Git --stat of a 14-line rename is
+      compatible with long-line HTML or with chrome-only edits, so it is not
+      positive evidence of fabrication, but it also cannot confirm the claimed
+      share, md5, date, or strict-superset story. Per the omitted-files rule
+      this seat votes unsure."
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: "This is archive housekeeping under briefs/, a never-citable
+      raw-capture scope: no content/, claim, source, or assessment file is
+      touched, and citation verification found no added identifiers, so the
+      citation and assessment rules are not engaged. Removing the superseded
+      twin-A checkpoint does not violate §3.14/§3.8 — the README records the old
+      file's name, share ID, and md5, points to its preservation in git history
+      (commit d33e620, PR #121), and documents the containment check; provenance
+      is preserved and auditable, not erased. The superset claims are internally
+      consistent (307→393 = 86 new messages; 48,270−48,267 = 3 explained chrome
+      misses; the 7+/7− line stat fits a single-line embedded-JSON share
+      payload; share ID and md5 84b967a8… match between PR body and README), so
+      there is no positive evidence of fabricated provenance under §3.15. The
+      omitted file is the deleted old checkpoint; its unseen bytes cannot hide a
+      violation because the deletion is history-preserved with checksums and the
+      added capture is founder-supplied archive material in an established
+      workflow, so what is visible decides the question. No check is weakened,
+      AGENTS.md is untouched, and nothing is silently reclassified."
+harvestedAt: 2026-09-01

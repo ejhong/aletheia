@@ -1,0 +1,122 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 145
+title: The refusal fallback generalizes to every house-drafting call — and is
+  banned from panel seats
+url: https://github.com/ejhong/aletheia/pull/145
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-01
+judgedAgainst: 23662d7055
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches only scripts/ and appends to docs/DECISIONS.md —
+      AGENTS.md is untouched, so §3.15's amendment reservation is not
+      implicated. The substantive change extends an existing refusal-fallback
+      wrapper to single-provider 'house drafting' calls (triage-watch,
+      process-inbox commentary, reconcile-contested, extract-claims both passes,
+      watch-literature relevance notes) while explicitly banning it at the
+      multi-vendor panel seats (cross-model-check, arbiter, score-agenda,
+      lib/vendors callVendor) with in-code comments stating that a refusing seat
+      is a failed seat, never a swapped one — that preserves rather than weakens
+      the multi-model concurrence gate of §3.15. The accountability effect is
+      strengthening: every affected record now stamps the model that actually
+      answered (`reply.model`) instead of the configured model, multi-call runs
+      stamp the per-record model plus a run-level set, promote-imports'
+      `origin.extractedBy` now names the drafting model, and draft-freeze's
+      stamp is fixed from an interpolated provider object (`via [object
+      Object]`) to `provider.name/draftModel` — all consistent with §3.14's
+      reconstruction guarantee and with 'AI record never presented as human'
+      (the `humanReviewed: false` and 'AI-generated relevance draft — not a
+      human judgment' labels remain). No content/ records, citations, locators,
+      or published assessments are altered (verification found no identifiers),
+      no confidential material appears, and no gate or fail-closed validation is
+      removed — reconcile-contested's fail-closed validation block is untouched.
+      Remaining rough edges (extract-claims stamps only the extraction model per
+      claim while the verify pass model lands in the run-level set) are ordinary
+      imperfection, not a rule breach."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: The diff does not touch AGENTS.md and instead updates
+      docs/DECISIONS.md plus scripting around LLM calls, so the founder-reserved
+      amendment rule is respected. The new decision entry documents an audit of
+      LLM call sites and clarifies where a refusal fallback is applied or
+      explicitly banned, strengthening rather than weakening cross-model
+      independence. For panel seats (cross-model-check, arbiter, score-agenda,
+      and shared callVendor), comments now explicitly forbid the refusal
+      fallback, preserving vendor/model-specific seat identity in line with
+      §3.15’s vendor-independence requirement. For house-drafting calls (triage,
+      inbox processing, claim extraction/verification, reconsideration,
+      promotion, literature watch notes, and bench freeze drafts), the fallback
+      is applied but the code is careful to stamp records with the model that
+      actually answered, including per-record stamps and run-level model sets,
+      which improves provenance transparency and accountability (§3.14, §3.15).
+      No citations or provenance locators are fabricated; there are no changes
+      that present AI outputs as human or weaken existing checks. Overall, the
+      changes tighten honesty about which model produced which output and
+      maintain the multi-model checking guarantees, so they comply with the
+      constitution.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: The diff strengthens the inspectability guarantee of §3.15 by
+      dynamically capturing and stamping the exact model that answered a query
+      (via `callWithRefusalFallback`) rather than blindly stamping the
+      configured provider model. Additionally, it preserves the integrity of the
+      multi-model ratification checks by explicitly banning the fallback
+      mechanism in panel seats (`arbiter.mjs`, `cross-model-check.mjs`),
+      ensuring that a refusing seat fails as required for true
+      vendor-independence, rather than silently swapping models and weakening
+      the checks.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff does not touch AGENTS.md (§3.15). It only extends an
+      existing house-drafting refusal fallback to triage, inbox commentary,
+      contested reconciliation, claim extraction/verification, and
+      literature-watch notes, while explicitly banning that fallback from panel
+      seats (cross-model-check, arbiter, score-agenda, shared callVendor) so a
+      refusing seat stays a failed seat rather than a silent swap — which
+      preserves, rather than weakens, §3.15 vendor-independence. Model stamps
+      are corrected to name the model that actually answered (including fixing
+      draft-freeze’s `[object Object]` interpolations and promotion
+      `extractedBy`), which serves the reconstruction/accountability rule
+      instead of fabricating provenance. The DECISIONS.md append documents that
+      audit and does not reclassify gates or present an unratified overlay as
+      ratified. No content/, citations, or confidential material are added.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.8
+      - §4
+    reasoning: "The change strengthens the constitution's accountability guarantee
+      rather than weakening it: §3.15 stakes accountability on records being
+      'stamped with model... so any reader can reconstruct which model did
+      what,' and this diff fixes exactly that — draft-freeze.mjs no longer
+      stamps 'via [object Object]', promote-imports.mjs origins now name the
+      drafting model, and every fallback-affected call site stamps the model
+      that actually answered (per-record plus run-level sets in extract-claims,
+      triage-watch, watch-literature). The panel seats (cross-model-check,
+      arbiter, score-agenda, callVendor) get comment-only additions documenting
+      that the fallback is banned there; their behavior is unchanged, so a
+      refusing seat still fails closed, preserving §3.15 vendor-independence — a
+      refusing seat silently swapped would have been the provenance-fabrication
+      risk, and the PR forecloses it. House-drafting calls that gain the
+      fallback produce drafts that still ride the fail-closed CI and multi-model
+      ratification gates, so no consequential change publishes unilaterally and
+      no check is weakened or reclassified. The DECISIONS.md append documents a
+      material decision per §9 workflow and cites §3.15 accurately; AGENTS.md is
+      untouched. No citations are added, no published judgment is altered, and
+      no confidence material appears. Ordinary engineering work fully inside the
+      constitution."
+harvestedAt: 2026-09-01

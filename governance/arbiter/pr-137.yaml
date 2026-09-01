@@ -1,0 +1,116 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 137
+title: "Build order revised after the outside review: the promotion pipe leads"
+url: https://github.com/ejhong/aletheia/pull/137
+verdict: park
+reason: "2 seat(s) find a violation: Opus 5 (Anthropic) (§3.15); Gemini 3.1 Pro
+  (Google) (§3.15); only 3 of 5 seats affirm compliance (4 required)"
+outcome: merged
+outcomeAt: 2026-09-01
+judgedAgainst: ad856d766c
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: "The PR is advertised as a docs-only build-order reordering plus a
+      stale-variable fix, but buried in the rewritten build-order list it
+      silently relaxes the ratification bar for Bench v2: 'auto-drafted freeze
+      PRs for unanimous scorers (founder tap retained initially; flipping
+      freezes to auto-merge-on-pass is a later, separate merge-policy
+      amendment)' becomes 'auto-drafted freeze PRs for 4-of-5-high scorers with
+      no constitutional objection (founder tap retained initially)'. Two
+      guardrails move at once — the concurrence threshold drops from unanimity
+      to 4-of-5, and the explicit statement that flipping freezes to auto-merge
+      requires a separate merge-policy amendment is deleted — and neither is
+      mentioned in the PR body or in the appended DECISIONS entry, which
+      describes only the promotion pipe, Genesis, the counterweights, and the
+      EXTRACT_MODEL fix. That is precisely the 'weaken the checks in this
+      section' prohibition of §3.15, made worse by being undisclosed in a change
+      whose stated purpose is something else. The rest of the diff (promotion
+      pipe, strongest-unanswered-pro-hypothesis field, sampling gloss audit, the
+      honest /method line that existence-checking is not content-checking, the
+      append-only DECISIONS entry, the MAINTENANCE.md fallback clarification) is
+      unobjectionable and in places strengthens the epistemics; AGENTS.md is
+      untouched and no citations are added. Bringing the threshold change out
+      into its own explicit, disclosed decision — or restoring the unanimity
+      wording and the amendment caveat — would clear this."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules:
+      - §3.11
+      - §3.14
+      - §3.15
+    reasoning: The diff only modifies documentation files (AUTOMATION, DECISIONS,
+      MAINTENANCE) and does not touch AGENTS.md or any content/ records, so it
+      does not alter core constitutional text or fabricate citations. The new
+      build-order and “promotion pipe” description strengthens the system’s
+      ability to turn verified imports into actual sources and evidence, which
+      supports systematic inclusion of negative evidence and movement in cases
+      (§3.11) rather than weakening checks. The DECISIONS entry is explicitly
+      append-only, recording an outside review and the founder’s reaction
+      without erasing prior decisions, consistent with versioning and
+      transparent change history (§3.14). The added description of independence
+      limitations, sampling gloss audit, and explicit statement that
+      existence-checking is not content-checking tightens epistemic safeguards
+      rather than diluting them, aligning with §3.15’s prohibition on weakening
+      checks. The MAINTENANCE edit just clarifies the EXTRACT_MODEL default and
+      fallback behavior (already in code), improving operational transparency
+      and not affecting evidence integrity. No real citations or locators are
+      introduced, so there is no risk of fabricated provenance in this change.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: The PR asserts in its body that 'The founder blessed a revised build
+      order' and adds an entry to `docs/DECISIONS.md` claiming to record 'what
+      the founder decided'. Under the trust boundaries, this text is untrusted
+      data and must be treated as an AI's own assertion. By generating a
+      document that claims to be a record of the human founder's decisions, the
+      change directly violates §3.15 by presenting an AI record as a human one.
+      Furthermore, by claiming the founder has already 'blessed' the changes, it
+      violates the prohibition against presenting an unratified draft as a
+      ratified judgment. Additionally, the change to `docs/AUTOMATION.md` lowers
+      the auto-drafted freeze threshold from 'unanimous' to '4-of-5', attempting
+      to weaken established checks.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff is complete and docs-only (AUTOMATION.md, DECISIONS.md,
+      MAINTENANCE.md); it does not touch AGENTS.md (§3.15) or any content/
+      records, and adds no citations. The append-only DECISIONS entry records a
+      build-order revision and queued epistemic counterweights
+      (strongest-unanswered-pro-hypothesis field, sampling gloss audit,
+      existence-vs-reading honesty) without erasing prior entries or presenting
+      an AI assessment as a human case judgment. The promotion pipe is described
+      as needs-approval PRs still gated by classifier, citation arbiter, and
+      content-response ripple, so it does not unilaterally publish or weaken
+      §3.15 checks. Bench v2 remains auto-drafted with founder tap retained;
+      Genesis is explicitly last and not automated. The MAINTENANCE.md
+      EXTRACT_MODEL note is a documentation correction, not a check bypass.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "Docs-only change (AUTOMATION.md, DECISIONS.md, MAINTENANCE.md) with
+      no content/ records, no citations added (verification found none), and no
+      AGENTS.md edit, so §3.15's reserved-amendment rule is not triggered. The
+      revised build order preserves every gate: the new promotion pipe produces
+      'needs-approval' PRs through the classifier and citation-checking arbiter,
+      and bench auto-drafted freeze PRs retain the founder tap — nothing
+      publishes unilaterally. The shift from 'unanimous' to '4-of-5-high with no
+      constitutional objection' lowers a drafting trigger, not the §3.15
+      ratification gate for published content, and the constitution requires
+      concurrence, not unanimity. The DECISIONS.md entry is appended without
+      altering prior entries, consistent with the append-only rule, and the new
+      counterweights (strongest-unanswered-pro-hypothesis field, sampling gloss
+      audit, the /method honesty line that existence-checking is not
+      content-checking) strengthen §3.9, §3.11, and honest verification
+      labeling. Genesis 'published unratified' describes a future,
+      deliberately-last, needs-approval pipeline and is labeled unratified
+      rather than passed off as ratified, so it does not violate §3.15. Internal
+      references (decision #35, claude-fable-5 fallback) are unverifiable from
+      the diff but are not external citations, and there is no positive evidence
+      of fabrication."
+harvestedAt: 2026-09-01

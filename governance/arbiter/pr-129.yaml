@@ -1,0 +1,137 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 129
+title: "VASO-S001 collection: the arteriole compartment is not unexamined, and
+  what was found there is not latch"
+url: https://github.com/ejhong/aletheia/pull/129
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-01
+judgedAgainst: 7e3bd91eaf
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "All 14 DOIs added under content/ resolve, and the resolved titles
+      match the papers the rows claim to be citing (e.g.
+      10.1152/ajpheart.00977.2005 → 'Evidence for absence of latch-bridge
+      formation in muscular saphenous arteries', used as the femoral/saphenous
+      absence row; 10.1113/jphysiol.2012.243576 → the Moreno-Domínguez
+      Ca2+-sensitization paper used as the arteriole row). Provenance is honest
+      rather than padded: every citation carries locator 'Abstract' with
+      verification label ai_verified, and cells the abstract does not state are
+      explicitly recorded as 'Not stated in the accessible record' rather than
+      filled from memory, with a limitation stating no full text was accessible
+      (§3.7/§3.8 handled by disclosure, not invention). Evidence direction is
+      explicit and split into three separate records rather than bundled (§3.5),
+      independence notes flag the paired Han/Call rabbit arms and the two
+      Wingard rows as non-independent (§3.10), negative results and a failed
+      search for the unresolved canine saphenous-vein lead are recorded rather
+      than dropped (§3.11), and the excluded candidates are named. The new
+      evidence records are stamped ai_extracted with runId/model/date, the study
+      carries humanReviewed: false and promptVersion, and history.yaml is
+      appended rather than rewritten (§3.14, §3.15). The
+      criteria/method/searchProtocol blocks are only re-wrapped (YAML folding
+      leaves the strings identical) and the criteriaHash fe5e031b8b8f is
+      unchanged, so the freeze is not weakened; internal counts also cohere (13
+      vessel-level + 1 reconstitution + 2 model = the 16 rows claimed).
+      AGENTS.md is untouched and no confidential arc/notes material appears."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules:
+      - §3.1
+      - §3.2
+      - §3.5
+      - §3.6
+      - §3.7
+      - §3.8
+      - §3.9
+      - §3.10
+      - §3.11
+      - §3.13
+      - §3.14
+      - §3.15
+    reasoning: The change adds a collected study workpaper, three new Evidence
+      records, a Source entry, and a history entry, all within content/;
+      AGENTS.md is untouched. New evidence records are clearly atomic
+      propositions tied to single claims (VASO-E019 to C020, VASO-E020 to C020,
+      VASO-E021 to C010) with explicit directions (undermines/qualifies) and
+      limitations, satisfying §§3.2 and 3.5. The workpaper carefully separates
+      sourceStatement (what was in abstracts) from editorInference, and
+      distinguishes vessel-level measurements from models and molecular
+      reconstitutions, complying with §§3.6 and 3.9. All added DOIs resolve per
+      the tooling, and the text’s use of them (arterial smooth muscle latch
+      papers, energetics in carotid, model papers, microvessel physiology)
+      matches the cited venues, so there is no sign of fabricated citations,
+      meeting §§3.7, 3.8, and 3.15. The study explicitly records independence
+      relationships, negative/absent findings, failed searches, and search
+      limitations, aligning with §§3.10, 3.11, and 3.13. The history.yaml entry
+      transparently logs the new evidence and its implications, preserving
+      versioning and not overwriting prior assessments, per §3.14. Overall the
+      changes strengthen, rather than weaken, the epistemic checks and make
+      uncertainty and gaps explicit.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules: []
+    reasoning: The change flawlessly executes the evidence collection step. It
+      respects the frozen criteria (only reflowing whitespace, keeping the data
+      hash intact), faithfully records exact provenance with honest labels (all
+      DOIs mechanically resolved, locators strictly restricted to 'Abstract'
+      since full texts were inaccessible), and clearly separates source
+      statements from editor inferences. It also adheres to §3.10 by adding
+      explicit independence notes for shared tissue preparations and to §3.11 by
+      reporting a failed search in the limitations rather than silently dropping
+      it.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff only adds study collection rows, three new evidence records,
+      a workpaper source, and an append-only history entry; it does not touch
+      AGENTS.md or weaken §3.15 checks. All 14 DOIs the collection adds resolve,
+      and where Crossref returns a title it matches the paper the row claims
+      (Dillon 1981, Wingard 1994/1997, Han 2006, Moreno-Domínguez 2013, etc.).
+      Provenance is labeled at abstract grain with ai_verified / ai_extracted,
+      sourceStatement is split from editorInference, directions are unbundled
+      per §3.5, independence notes and named exclusions/failed searches are
+      recorded, and the freeze hash is left as fe5e031b8b8f. Abstract-only
+      extraction is a disclosed limitation, not a fabricated locator or an
+      unratified judgment presented as human/ratified.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules:
+      - §3.5
+      - §3.8
+      - §3.10
+      - §3.11
+      - §3.12
+      - §3.14
+      - §4
+    reasoning: "This is the collection PR of a two-PR pre-registered study: the
+      criteria block in vaso-s001.yaml is re-wrapped but semantically identical
+      under YAML plain-scalar folding, the criteriaHash fe5e031b8b8f is
+      unchanged, and rows/findings/limitations were added only after the freeze,
+      satisfying §3.12. All 14 added DOIs resolve per the mechanical check, and
+      where Crossref returns titles they match the citation text exactly (Dillon
+      1981, Wingard 1994/1997, Han 2006, Moreland 1987, Moreno-Domínguez 2013);
+      the DOIs without Crossref titles have volume/page patterns internally
+      consistent with their citations (e.g. 10.1152/ajpheart.1995.269.5.H1590).
+      Provenance is scrupulously honest: every cell states 'Abstract read at
+      native verification' with locator 'Abstract', label ai_verified, and
+      unstated fields recorded as unstated rather than filled in — exactly what
+      §3.8 requires when full text is inaccessible, and the abstract-only
+      limitation is disclosed prominently rather than buried. Evidence
+      directions are split cleanly (two undermines, one qualifies) per §3.5,
+      sourceStatement/editorInference are separated per §3.9, independence notes
+      mark the paired Wingard, Han, Call, and Zou rows per §3.10, and the
+      unresolved canine saphenous-vein candidate is recorded as a failed search
+      rather than dropped or fabricated per §3.11. The history.yaml entry is
+      append-only with actor/reason per §3.14, and the new evidence carries
+      reviewState ai_extracted with humanReviewed: false — nothing presents
+      itself as ratified. The only soft spot is E019's title ('never been
+      measured in any arteriole'), which is punchier than its own qualified
+      body, but the record's limitations state the coverage boundary explicitly,
+      so this is ordinary editorial latitude, not miscalibration. No checks are
+      weakened, no AGENTS.md edit, no confidential material."
+harvestedAt: 2026-09-01

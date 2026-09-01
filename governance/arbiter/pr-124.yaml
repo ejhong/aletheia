@@ -1,0 +1,130 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 124
+title: "Transients: adopt TRN-C024 (marks on the original negative) and record
+  the preprint publication"
+url: https://github.com/ejhong/aletheia/pull/124
+verdict: pass
+reason: 4 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-01
+judgedAgainst: be60d235ac
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The new TRN-C024 is a single atomic proposition (nine sources
+      present as emulsion features on the original negative), correctly labeled
+      reviewState: ai_extracted with runId/date/extractedBy origin, and it
+      separates credibility (provisionally_supported, single non-blind proponent
+      examination, no replication) from diagnosticity (high) exactly as
+      §3.2/§3.4/§3.13 require; the strongestObjection and whatWouldChangeOurMind
+      explicitly foreground the independence and blinding gaps (§3.10, §3.11).
+      The source upgrade replaces the 'unpublished manuscript' identifier with
+      arXiv:2608.26371 while retaining the supplied-copy history and the
+      recorded citation permission (who granted, channel, date, where held), so
+      the §3.15 confidence rule is satisfied rather than weakened — and the
+      change follows the procedure the earlier verificationNote itself
+      pre-registered. Downstream limitation lines are updated in step from
+      'unpublished' to 'preprint, not peer reviewed', which is honest
+      calibration, not a quiet upgrade in strength (strength/verification labels
+      are unchanged). history.yaml is appended, not rewritten, and names actor,
+      runId-bearing rationale, AI authorship, and what changed (§3.14). No
+      AGENTS.md edit, no check weakening. The one thing I cannot confirm is the
+      arXiv id and the verbatim re-check: the tooling reports UNCHECKED (HTTP
+      406), not FAILS, and the identifier is internally consistent (2608 = Aug
+      2026, posted 2026-08-26), so there is no positive evidence of fabrication
+      — the PR body's 'founder direction' assertion I treat as evidence about
+      the change, not authorization."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff adds a new atomic claim (TRN-C024) clearly stating a single
+      proposition and marking it as observation, with calibrated credibility and
+      diagnosticity summaries; this fits the atomic-claims and
+      evidence-direction requirements. Evidence TRN-E022 is simply linked to the
+      new claim and still marked as supports, with limitations adjusted to
+      reflect that the manuscript is now a public preprint rather than an
+      unpublished manuscript, preserving negative/limiting information and not
+      silently upgrading credibility. The source record for
+      SRC-YANG-VILLARROEL-2026 is updated to an arXiv identifier; while the
+      arXiv API check is UNCHECKED, the constitution only demands real citations
+      and honest labels, not that every resolver call succeed, and there is no
+      internal contradiction between the identifier and its description.
+      Provenance is strengthened rather than weakened: the verification note
+      explicitly records the timeline, prior supplied-manuscript status,
+      permission details, and the re-check of quoted passages, satisfying exact
+      provenance and no-fabrication rules. The history entry documents the
+      change, including founder direction and the procedure followed, aligning
+      with the versioning and transparency requirements. No checks are weakened,
+      no confidential material is exposed beyond what is now public, and
+      AGENTS.md is untouched, so the change complies with the constitution."
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: The diff adds a well-defined atomic claim (TRN-C024) and cleanly
+      transitions an existing source from a permitted private manuscript to a
+      public preprint (arXiv:2608.26371) while explicitly preserving the
+      original provenance and permission history. It appropriately appends to
+      the history log and updates evidence limitations to reflect the new
+      not-peer-reviewed status. Although the arXiv citation is marked UNCHECKED
+      due to a mechanical API error (HTTP 406), its context is highly detailed,
+      pre-registered, and shows no signs of fabrication.
+  - seat: Grok 4.6 (xAI)
+    vote: unsure
+    rules:
+      - §3.15
+      - §3.8
+    reasoning: "The only identifier this diff adds under content/ is
+      arXiv:2608.26371, now written into SRC-YANG-VILLARROEL-2026 and the
+      E022–E024 caveats, with verification: verified and a claim that every
+      quoted passage was re-checked against that preprint. Mechanical citation
+      verification returned UNCHECKED (arXiv API HTTP 406), not RESOLVES and not
+      FAILS, so existence was not confirmed from this packet. Temporal humility
+      forbids treating an unrecognized 2026 locator as fabricated, and nothing
+      in the diff is internally inconsistent (dates, prior supplied-manuscript
+      provenance, and ID shape are coherent). But §3.15/phase-1
+      real-citations-only and §3.8 (do not invent locators; unverified locators
+      must be labeled unverified) turn on whether that identifier is real, which
+      I cannot check here. The new TRN-C024 record itself is otherwise
+      well-formed: atomic observation, credibility vs high diagnosticity split,
+      ai_extracted labeling, E022 linked as supports, and a history.yaml entry;
+      omitted-files is empty."
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules:
+      - §3.7
+      - §3.8
+      - $3.14
+      - §3.15
+    reasoning: "The change converts a confidence-supplied manuscript source into a
+      public preprint citation exactly as the record's own verification note
+      pre-registered: the supplied-copy and permission history (who granted,
+      when, what channel, where held) is retained while citation no longer
+      depends on it, satisfying §3.15's confidence rule, and the identifier is
+      upgraded to a stable arXiv locator per §3.7/§3.8. The arXiv id 2608.26371
+      is UNCHECKED (registry returned HTTP 406, not a failure), and the material
+      itself is internally consistent — the id's 2608 prefix matches the stated
+      2026-08-26 posting, the timeline (searched 2026-08-24, posted 2026-08-26,
+      watch 2026-08-31, adoption 2026-09-01) coheres, and the authors/project
+      align with a real research program, so there is no positive evidence of
+      fabrication. TRN-C024 is atomic, labeled ai_extracted, distinguishes
+      credibility from diagnosticity (§3.4) with calibrated
+      'provisionally_supported' grading and honest single-non-blind-proponent
+      caveats (§3.13), and carries a strongestObjection plus
+      whatWouldChangeOurMind. TRN-E022's new anchoring of C024 matches its
+      stated content, and limitation fields are honestly re-labeled from
+      'unpublished' to 'preprint/not peer reviewed' rather than quietly
+      softened. history.yaml is strictly append-only (§3.14) with actor, runId,
+      and date recorded, and nothing in the diff touches AGENTS.md or weakens
+      any check. The claimed founder direction and verbatim quote
+      re-verification are assertions I cannot independently confirm, but they
+      are documented in the record and nothing visible contradicts them —
+      ordinary imperfection (e.g., stray whitespace in credibilitySummary) is
+      not a violation."
+harvestedAt: 2026-09-01

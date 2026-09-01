@@ -1,0 +1,91 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 134
+title: "Pins: history.yaml joins the checkable files"
+url: https://github.com/ejhong/aletheia/pull/134
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-01
+judgedAgainst: 706ac517d4
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff is a three-line engine change: it adds the string
+      \"history.yaml\" to the enum of pin-checkable files in both branches of
+      PinCheckSchema and to the loader's list of files read into checkableFiles.
+      No content records, citations, locators, assessments, or provenance fields
+      are touched, and the citation tooling found no identifiers to check.
+      AGENTS.md is untouched. Directionally this widens what the fail-closed pin
+      machinery can guard rather than narrowing or bypassing it, so §3.15's
+      prohibition on weakening the checks is not engaged; pins still bind
+      presentation only, and history.yaml remains an append-only changelog
+      (§3.14). The PR body's references to a 'downstream metabolism sync' and a
+      falsification incident are unverifiable from here but are motivation, not
+      normative claims embedded in published content, and nothing in the diff
+      depends on them. Ordinary, in-scope engine work."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: The change only extends the list of files that pins can guard and
+      that are loaded as checkable content by adding `history.yaml` alongside
+      existing content files. This strengthens provenance and change-history
+      protection, aligning with §3.14’s requirement that important changes and
+      assessments be versioned and inspectable. It does not alter any existing
+      assessments, remove provenance, or weaken verification or ratification
+      checks under §3.15; the pin system remains append-only and enforced. No
+      citations or locators are introduced, so rules about fabrication, exact
+      provenance, or citation verification are not implicated. There are no
+      edits to AGENTS.md or other constitutional text. Overall, the modification
+      tightens rather than relaxes epistemic safeguards around change history.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules: []
+    reasoning: The change cleanly extends the `PinCheckSchema` and file loader to
+      support `history.yaml`, allowing the system's pin checks to evaluate the
+      case changelog. This adheres to §7's mandate for build-time enforcement of
+      pinned commitments and supports §3.14's emphasis on versioning. The code
+      additions are purely mechanical schema updates that do not weaken any
+      checks (§3.15) or violate epistemic rules.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules:
+      - §7
+      - §3.15
+    reasoning: The diff only adds history.yaml to the pin-checkable file lists in
+      PinCheckSchema (both check kinds) and to loadCase's checkableFiles read
+      list. That extends fail-closed pin enforcement to the append-only
+      changelog so banked strings can be required to remain present, which
+      matches §7 (pins.yaml commitments, banked corrections, presentation not
+      verdicts) and does not weaken §3.15 checks. AGENTS.md is untouched; no
+      content, citations, assessments, or provenance records are added or
+      rewritten. Omitted-files is empty and citation verification found nothing
+      to resolve. Ordinary engine extension, not a constitutional break.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §7
+      - §3.14
+    reasoning: "The diff is a three-line engine extension: it adds 'history.yaml' to
+      the loader's checkable-files list and to the two file enums in
+      PinCheckSchema, letting the fail-closed pins mechanism guard the
+      append-only changelog. This strengthens rather than weakens the
+      constitution's checks (§3.15's prohibition on weakening checks is not
+      engaged; if anything it extends enforcement of §3.14's version-everything
+      requirement by letting banked corrections in history.yaml be pinned
+      against silent removal). AGENTS.md is untouched, so the human-only
+      amendment reservation is not triggered. No citations, sources,
+      assessments, or provenance are added, so the real-citations and provenance
+      rules have nothing to bite on, and the citation verifier found no
+      identifiers. The omitted-files list is empty, so the diff is complete. The
+      PR body's references to a 'downstream deployment' incident and 'metabolism
+      sync' are untrusted context I cannot verify, but the compliance question
+      turns on the diff itself, which is a small, coherent, check-expanding
+      change consistent with §7's pins design (pins bind presentation, never
+      verdicts)."
+harvestedAt: 2026-09-01

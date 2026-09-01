@@ -1,0 +1,117 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 141
+title: "Bench v2: panel-scored proposals, advancing freezes, and the backfill"
+url: https://github.com/ejhong/aletheia/pull/141
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-01
+judgedAgainst: b8f6d20568
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff is pipeline/automation code plus a DECISIONS log entry; it
+      adds no citations (verification tooling found no identifiers) and edits no
+      part of AGENTS.md. The gating checks are preserved rather than weakened:
+      the freeze drafter writes zero-row pre-registrations (§3.12-consistent),
+      assigns ids mechanically, fail-closes on incomplete drafts and unknown
+      claim ids (`unknown claim ${c}` rejection, no silent repair), stamps
+      runId/model/date/promptVersion with `humanReviewed: false`, appends an
+      `aiAssisted: true` history entry naming the drafting agent (§3.14, phase-1
+      labeling), and lands everything as a single `needs-approval` PR with a
+      reviewer added — nothing self-merges. The scorer records failed seats
+      explicitly as `failed` rather than treating them as neutral, and
+      advancement still requires 4-of-5 high with zero constitutional concerns
+      and non-thin panels, so a degraded panel yields non-advancement, not
+      silent publication (§3.15). Residual imperfections I judged as ordinary
+      rather than violations: `criteriaHash: \"000000000000\"` is a placeholder
+      immediately overwritten by `scripts/stamp-study.mjs` (a throw there fails
+      the step, so the placeholder should not reach a PR), and model-supplied
+      `knownCandidates` are pre-committed dispositions reviewed by the panel,
+      not citations or locators. The DECISIONS entry's appeal to founder
+      direction (\"I don't want to lose them\") is an unverifiable claim in
+      untrusted text, but it is consistent with the base file's own same-day
+      founder amendment and I see no positive evidence of a fabricated record."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules:
+      - §3.12
+      - §3.14
+      - §3.15
+    reasoning: The change wires in an automated but still panel-gated workflow for
+      scoring proposals and drafting study freezes without weakening
+      constitutional checks. Bench scoring explicitly uses a five-vendor panel
+      with clear advancement rules and records seat-level statuses and tallies
+      in per-run scores.yaml, preserving transparent, append-only assessments
+      (§3.14, §3.15). The freeze drafter generates pre-registered study
+      protocols before any data collection, with explicit budgets, mechanical ID
+      assignment, and fail-closed validation; drafts that fail checks are
+      dropped rather than silently repaired, which aligns with calibrated and
+      non-fabricated processing (§3.15). The system text for drafting studies
+      emphasizes pre-registration, desk-executable criteria, independence, and
+      bans on culpability grading or confidential material, reinforcing §3.11
+      and §3.15 rather than eroding them. No sources, citations, or locators are
+      added, so there is no fabrication or provenance issue under §§3.7–3.9. The
+      decisions doc update simply records the new automation as a governance
+      decision and does not alter AGENTS.md, so the reserved-human-amendment
+      rule remains intact (§3.15). Overall, this change strengthens the
+      pre-freeze workflow and maintains multi-model concurrence and fail-closed
+      CI, complying with the constitution.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules: []
+    reasoning: The PR successfully implements the Bench v2 scoring and
+      freeze-drafting workflows while strictly adhering to the constitution.
+      AI-generated records explicitly carry their model, prompt version, and
+      runId, with 'humanReviewed' set to false, complying with §3.14 and §3.15.
+      The drafted study freezes are submitted via a gated, 'needs-approval' PR
+      rather than unilaterally published, preserving the multi-model
+      ratification process (§3.15). Prompt instructions explicitly forbid
+      grading living persons' culpability or using confidential material,
+      adhering to phase-1 rules and constitutional boundaries. No citations are
+      fabricated, and AGENTS.md is untouched.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The complete diff (no omitted files, no AGENTS.md edits, no new
+      citations) adds gated Bench scoring and freeze drafting rather than
+      publishing judgments. Five-vendor scoring is fail-closed per seat
+      (failed/missing seats are recorded and not treated as neutral),
+      advancement is restricted to study proposals, and freeze files are labeled
+      AI-drafted (humanReviewed: false, runId/model/date/promptVersion),
+      zero-row, hash-stamped, and opened as a needs-approval PR for panel review
+      before any data exists. History and research items are append-only;
+      unknown claim IDs and thin drafts are dropped rather than repaired.
+      Ordinary workflow roughness (scoring warning-and-continue, one-cycle
+      latency) does not weaken §3.15 gates or reclassify featured content."
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules:
+      - §3.12
+      - §3.14
+      - §3.15
+    reasoning: "The change builds machinery that strengthens rather than weakens the
+      constitution's gates: advancement requires 4-of-5 vendor seats scoring
+      high with zero constitutional concerns and failed seats never counted
+      (multi-model concurrence per §3.15, fail-closed), and the drafted freezes
+      land only as a gated needs-approval PR with the founder added as reviewer,
+      so nothing publishes on one model's unilateral judgment. The freeze files
+      are pre-registrations with zero rows, frozen inclusion/exclusion criteria,
+      and hash-stamping — a direct implementation of §3.12's freeze-before-audit
+      rule. Provenance and accountability are preserved: history.yaml entries
+      are append-only and stamped with runId, promptVersion, actor, and
+      aiAssisted: true; study records carry humanReviewed: false and headers
+      honestly labeling them as Bench drafts pending panel judgment (§3.14,
+      §3.15's no-unratified-draft rule). No citations are added (verification
+      section empty), nothing confidential is quoted, no existing published
+      judgment is modified, and the prompts explicitly treat proposal text as
+      data rather than instructions while encoding constitutional-concern blocks
+      (living persons' culpability, confidential material, dependence counted as
+      independence). The DECISIONS.md addition is a routine dated decision log,
+      not an AGENTS.md amendment. The claimed founder quote is treated as
+      evidence, not relied upon; the change stands on its own gating
+      regardless."
+harvestedAt: 2026-09-01

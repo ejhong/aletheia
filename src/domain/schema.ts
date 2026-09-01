@@ -961,6 +961,28 @@ export const PinSchema = z.object({
 });
 export type Pin = z.infer<typeof PinSchema>;
 
+/**
+ * Narrative inputs (docs/AUTOMATION.md, "the anti-drift anchor"): the
+ * founding texts a case was built from, committed with the founder's
+ * license and consulted by every narrative-revision run so rewrites
+ * drink from the original well rather than a fading copy. Inputs are
+ * presentation references, never evidence — nothing may be cited from
+ * them that is not independently in the ledger.
+ */
+export const NarrativeInputSchema = z.object({
+  id: z.string().regex(/^[A-Z]+-IN\d{3}$/, "Input id like VASO-IN001"),
+  title: z.string(),
+  role: z.enum(["founding_narrative", "founding_research"]),
+  /**
+   * Path to the text: case-relative (inputs/…) for snapshots, or
+   * repo-relative (research/…) for the founder's committed originals.
+   */
+  file: z.string(),
+  origin: z.string().min(8),
+  license: z.string().min(8),
+});
+export type NarrativeInput = z.infer<typeof NarrativeInputSchema>;
+
 export interface LoadedCase {
   record: CaseRecord;
   overviewMarkdown: string;
@@ -982,6 +1004,8 @@ export interface LoadedCase {
   studies: Study[];
   /** Banked commitments (pins.yaml): corrections and founder directives. */
   pins: Pin[];
+  /** Founding texts (inputs/manifest.yaml): the anti-drift anchor. */
+  narrativeInputs: NarrativeInput[];
 }
 
 /**

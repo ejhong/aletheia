@@ -222,3 +222,23 @@ microscopist's against-interest quote and the permission-provenance
 history (transients). The exam caught its own first bug in development —
 a raw-substring check broke on YAML line folding — which is the level of
 pettiness a regression harness is for.
+
+## 2026-09-01 — Founding inputs frozen: the current tellings become the source texts (founder direction)
+
+The founder's call, extending the narrative-inputs design the same
+night: since the current site is the founder-approved state, every
+case's present overview is snapshotted verbatim as its founding
+narrative (inputs/founding-narrative-2026-09-01.md), and the founder's
+own essays and commissioned reports already committed under research/
+are mapped to their cases as founding research (manifest per case,
+NarrativeInputSchema, loader-validated fail-closed so inputs cannot rot
+into dangling references). Third-party captures are excluded by rule —
+inputs must be the founder's to license — and the two gray captures
+formerly under research/ were removed by the founder before this landed.
+Two rewrite laws recorded with it, to be carried into the Atelier
+rubric: the first-edition rule (a revision reads as the first telling —
+founding texts and current ledger digested seamlessly, no narration of
+the article's own revision history, which lives in the changelog) and
+the plates-survive rule (every plate placed in the incumbent appears in
+the candidate — it may move to a better seat, it may not be lost — with
+unseated new plates marking a candidate incomplete before judging).

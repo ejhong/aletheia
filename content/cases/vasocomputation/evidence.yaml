@@ -495,3 +495,116 @@
     extractedBy: "Fable (AI agent)"
     runId: "vaso-extract-2026-08"
     date: "2026-08-22"
+
+# ── Study VASO-S001: the latch by vessel type and caliber ────────────────────
+
+- id: VASO-E019
+  title: "Study table: energetic cost has never been measured in any arteriole, so the economy argument rests entirely on conduit arteries"
+  claimIds: [VASO-C020]
+  sourceId: SRC-VASO-S001
+  direction: undermines
+  strength: moderate
+  sourceStatement: >-
+    Across sixteen rows spanning 1981-2022, contemporaneous energetic
+    measurement — oxygen consumption, lactate release, or ATP turnover — appears
+    only in large tonic arterial preparations (swine and porcine carotid, at
+    zero transmural pressure), and in no arteriole or resistance microvessel of
+    any bed. No located study satisfies all four conditions the study set:
+    skeletal-muscle arteriole or smaller, physiological temperature and
+    transmural pressure, maintained force or diameter, and a contemporaneous
+    energetic or cycling measurement. The frozen literal queries aimed at
+    microvascular energetics returned nothing, as did two further searches run
+    specifically for arteriole-level oxygen consumption and ATP economy.
+  editorInference: >-
+    The energetic feasibility step under VASO-C020 — that a knot can be held
+    cheaply — is an extrapolation across both vessel class and caliber, not a
+    borrowed-and-demonstrated mechanism. The extrapolation may still be
+    correct; what the ledger can now say is that nobody has measured it where
+    the hypothesis needs it, and that this is a gap in the literature rather
+    than a gap in this case's reading of it.
+  exactLocator: "Study VASO-S001, finding 1 (full table on the study page)"
+  limitations:
+    - "Absence of a demonstration is not a demonstration of absence; the study's own limitations record that discovery ran against PubMed, Europe PMC and Crossref, which cover the older non-indexed energetics literature poorly."
+  reviewState: ai_extracted
+  origin:
+    ref: "Study VASO-S001 (criteria frozen 2026-09-01, hash fe5e031b8b8f)"
+    extractedBy: "Aletheia editorial AI (Claude Opus 5, Cursor cloud agent)"
+    runId: "2026-09-01-study-vaso-s001-collection"
+    date: "2026-09-01"
+
+- id: VASO-E020
+  title: "Study table: in pressurized skeletal-muscle arterioles, maintained constriction tracks maintained activation rather than the latch signature"
+  claimIds: [VASO-C020]
+  sourceId: SRC-VASO-S001
+  direction: undermines
+  strength: moderate
+  sourceStatement: >-
+    Three rows are pressurized skeletal-muscle resistance vessels — rat
+    cremaster and gracilis — in which LC20 phosphorylation was measured against
+    diameter. In all three, maintained constriction is accompanied by
+    maintained or rising phosphorylation rather than by force held while
+    activation falls: 27.7% at 30 mmHg rising to 39.6% at 120 mmHg (Zou, Ratz &
+    Hill 1995, at 34 degrees C in roughly 100-micrometre arterioles); a
+    monophasic rise correlated with instantaneous wall tension (Zou, Ratz & Hill
+    2000); and 40% already at 10 mmHg rising to about 55% at 80 mmHg with no
+    further change to 140 mmHg (Moreno-Dominguez et al. 2013, which attributes
+    the sustained constriction to Rho-kinase-mediated Ca2+ sensitization and
+    actin polymerization). The 2000 paper states that spontaneous arteriolar
+    tone "represents a state of maintained smooth muscle activation that
+    requires increases in [Ca2+]i and myosin light-chain phosphorylation."
+  editorInference: >-
+    This is the first record in the case bearing directly on the tissue
+    compartment VASO-C020 names, and it does not fit the latch picture: at
+    arteriole caliber the published measurements show sustained activation, not
+    an economical dephosphorylated hold. It is a mismatch rather than a
+    refutation — none of the three studies was designed as a latch test, all
+    held their stimulus present throughout, and none measured energetic cost.
+    What it removes is the assumption that the arteriole compartment is simply
+    unexamined; it has been examined with the right molecular readout, and what
+    was found there points at a different mechanism for holding constriction.
+  exactLocator: "Study VASO-S001, finding 2 (full table on the study page)"
+  limitations:
+    - "All three rows were built from published abstracts; full texts were not accessible, so temperature is recorded for only one of the three and endothelial status for none."
+    - "Myogenic tone is by construction a response to a maintained stimulus, so these studies could not have shown input-free persistence even if it exists."
+  reviewState: ai_extracted
+  origin:
+    ref: "Study VASO-S001 (criteria frozen 2026-09-01, hash fe5e031b8b8f)"
+    extractedBy: "Aletheia editorial AI (Claude Opus 5, Cursor cloud agent)"
+    runId: "2026-09-01-study-vaso-s001-collection"
+    date: "2026-09-01"
+
+- id: VASO-E021
+  title: "Study table: latch behaviour is not generic across vascular smooth muscle, and the divergence was never followed downstream"
+  claimIds: [VASO-C010]
+  sourceId: SRC-VASO-S001
+  direction: qualifies
+  strength: moderate
+  sourceStatement: >-
+    Paired rows from rabbit femoral and saphenous artery record sustained
+    isometric stress at falling intracellular calcium in the femoral
+    (1.3e5 N/m2 at 10 min, MLC phosphorylation 42%) against a 40% stress loss in
+    its own muscular branch (0.8e5 N/m2, phosphorylation 28%), which the authors
+    attribute to expressed motor proteins that do not support latch-bridge
+    formation, together with greater MLC phosphatase. The pressurized follow-up
+    reports the same asymmetry in diameter behaviour. Forward citation chaining
+    from both 2006 papers located no study extending the comparison into
+    arterioles or the microcirculation.
+  editorInference: >-
+    VASO-C010 states a capability, and the capability is real — but the ledger
+    should no longer be read as saying that vascular smooth muscle generically
+    latches. The one published comparison between a vessel and its own
+    downstream branch found the behaviour present in the parent and absent one
+    branch order later, which makes vessel type and motor-protein phenotype
+    load-bearing variables rather than incidental ones. That nobody has run the
+    comparison further down is the specific gap VASO-R004's paired-caliber
+    design now exists to close.
+  exactLocator: "Study VASO-S001, finding 3 (full table on the study page)"
+  limitations:
+    - "One publication and one laboratory supply both arms of the comparison; the femoral/saphenous divergence has not been independently replicated, and the study records the two 2006 papers as non-independent."
+    - "The saphenous artery is a named conduit artery, not a resistance microvessel, so it constrains how far downstream the finding can be read."
+  reviewState: ai_extracted
+  origin:
+    ref: "Study VASO-S001 (criteria frozen 2026-09-01, hash fe5e031b8b8f)"
+    extractedBy: "Aletheia editorial AI (Claude Opus 5, Cursor cloud agent)"
+    runId: "2026-09-01-study-vaso-s001-collection"
+    date: "2026-09-01"

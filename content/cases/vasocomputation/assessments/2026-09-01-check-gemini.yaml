@@ -1,0 +1,210 @@
+# Cross-model check run — an independent judge (Gemini 3.1 Pro (Google)),
+# blind to all prior assessments (scripts/cross-model-check.mjs,
+# promptVersion aletheia-check-v2). role: check — never displayed as the case
+# narrative; feeds the concurrence panel. Append-only; NOT human reviewed.
+runId: 2026-09-01-check-gemini
+model: Gemini 3.1 Pro (Google) — independent check run via gemini-3.1-pro-preview
+date: 2026-09-01
+promptVersion: aletheia-check-v2
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: unresolved
+  loadBearing:
+    - VASO-C020
+    - VASO-C011
+    - VASO-C004
+  weakestLinks:
+    - VASO-C021
+    - VASO-C020
+    - VASO-C004
+  synthesis: >-
+    The case for "vasocomputation" proposes that muscle knots are latched
+    vascular smooth-muscle states, and that this vascular tension functions as a
+    memory medium for the nervous system, storing predictions and psychological
+    clinging. The evidence file presents a brilliantly constructed theoretical
+    ladder that builds upon well-supported lower rungs of basic physiology but
+    severely lacks direct empirical support for its operational middle and
+    speculative upper floors.
+
+
+    Steelmanning the proponent's direction: the physiological anomalies at the
+    center of the hypothesis are real. Microdialysis and ultrasound imaging
+    (VASO-E006, VASO-E007) confirm that palpable tender points possess
+    quantifiable abnormalities in biochemistry, stiffness, and blood flow,
+    rendering pure examiner-artifact explanations insufficient. Needle EMG
+    studies (VASO-E001, VASO-E002) show knots host spontaneous millimeter-scale
+    electrical niduses that can be dialed up by purely cognitive stressors
+    without movement. Smooth muscle latch-bridge physiology (VASO-E003) is an
+    established textbook mechanism for cheap, history-dependent force
+    maintenance. Furthermore, respiration is a documented autonomic lever
+    (VASO-E009), and interoceptive attention can directly regulate peripheral
+    tissue states (VASO-E008) and neuronal modulation via blood pressure
+    (VASO-E005). 
+
+
+    Steelmanning the skeptic's direction: the specific synthesis remains
+    entirely untested in the target tissue. The latch mechanism is borrowed from
+    large conduit arteries; the specific literature audit (VASO-E019, VASO-E020)
+    reveals that pressurized skeletal-muscle arterioles do not exhibit latch
+    behavior—their maintained constriction tracks ongoing energetic activation.
+    The EMG chatter is conventionally understood as skeletal-muscle
+    electrophysiology, not vascular. Most crucially, the anchor phenomenon of
+    the case—the seconds-scale "felt release" on a slow exhale—has never been
+    objectively measured (VASO-E014, VASO-E016). The conventional
+    account—neuromuscular guarding dialed up by central stress, relieved by the
+    generalized parasympathetic shift of breathing and perceptual
+    expectation—explains all existing observations without inventing novel
+    peripheral vascular memory.
+
+
+    The case verdict must be unresolved because the foundational time-locked
+    imaging experiment has never been run. The single evidence record whose
+    removal would most change the case is VASO-E020 (the finding that arterioles
+    use maintained activation rather than cheap latch physiology). Without it,
+    the "borrowed mechanism" remains a plausible extrapolation; with it, the
+    core mechanistic claim (VASO-C020) faces active contradiction. However, even
+    without VASO-E020, the verdict would remain unresolved due to the lack of
+    objective imaging for the subjective release. Until a release is caught in
+    motion objectively, the vasocomputation hypothesis remains an elegant,
+    testable idea lacking its anchor measurement.
+claimAssessments:
+  - claimId: VASO-C021
+    verdict: unresolved
+    confidence: high
+    reasoning: While recent animal studies demonstrate that blood pressure
+      pulsations can instantaneously modulate neuronal activity via
+      mechanosensitive channels (the "read" path), there is no direct evidence
+      that vascular states store specific mental content or predictions. The
+      hysteresis of a smooth-muscle latch is not synonymous with biological
+      memory, and no experiment has demonstrated the required write-store-read
+      cycle. The strongest opposing consideration is that simple mechanical
+      modulation (or ischemic suppression) is fundamentally different from
+      content-specific information storage.
+  - claimId: VASO-C020
+    verdict: unresolved
+    confidence: moderate
+    reasoning: The hypothesis elegantly fits the phenomenology of knots, but
+      smooth-muscle latch physiology has never been observed at a tender point,
+      rendering this entirely theoretical. Furthermore, specific evidence
+      (VASO-E020) indicates that maintained constriction in skeletal-muscle
+      arterioles utilizes continuous activation rather than the cheap
+      latch-bridge state. The strongest opposing consideration is that
+      neuromuscular guarding explains the EMG findings natively, while the
+      vascular explanation must borrow a mechanism not yet proven to exist in
+      microvessels.
+  - claimId: VASO-C022
+    verdict: unresolved
+    confidence: high
+    reasoning: The phenomenological similarities between the proposed
+      vasocomputation system and Tibetan/Hindu/Chinese contemplative anatomies
+      are robust in textual comparison. However, no preregistered, blinded
+      anatomical coding study has ever tested this alignment against chance.
+      Without controlling for degrees of freedom, retrospective matching remains
+      vulnerable to post-hoc confirmation bias.
+  - claimId: VASO-C010
+    verdict: well_supported
+    confidence: high
+    reasoning: The Hai-Murphy latch-bridge model is foundational smooth-muscle
+      physiology, robustly demonstrated to provide cheap, history-dependent
+      force maintenance in large tonic arteries. The strongest opposing
+      consideration is that this mechanism is not generic across all vascular
+      smooth muscle; specific studies show it disappears in certain downstream
+      branches, complicating its extrapolation to microvessels.
+  - claimId: VASO-C011
+    verdict: provisionally_supported
+    confidence: high
+    reasoning: "The conditional logic is biologically sound: structural tissue
+      remodeling (collagen, scar tissue) operates on a timescale of days to
+      weeks, meaning any genuine seconds-scale local change must reflect an
+      actively maintained physiological state. However, because the premise (the
+      objective local release) is currently unmeasured and rests solely on
+      first-person subjective report, the claim remains a highly diagnostic but
+      untested conditional."
+  - claimId: VASO-C012
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: The proposition that hemodynamics can actively modulate neuronal
+      processing is supported by recent in vivo rat studies showing blood
+      pressure pulsations altering central neuronal activity via
+      mechanosensitive ion channels. The strongest limitation is that these
+      studies demonstrate rapid, instantaneous mechanical modulation in the
+      brain, which does not equate to the long-term storage or peripheral-nerve
+      modulation required by the broader hypothesis.
+  - claimId: VASO-C013
+    verdict: well_supported
+    confidence: high
+    reasoning: Systematic reviews provide strong, reproducible evidence that slow
+      breathing (specifically extended exhalation) shifts autonomic balance
+      toward parasympathetic dominance, increasing vagal indices like heart-rate
+      variability. The strongest counter-consideration is that this global
+      autonomic shift fully accounts for generalized relaxation, meaning breath
+      effects do not inherently prove the existence of localized vascular
+      unlatching.
+  - claimId: VASO-C030
+    verdict: well_supported
+    confidence: high
+    reasoning: Systematic reviews establish that manual palpation for myofascial
+      trigger points lacks robust inter-examiner reliability and a validated
+      reference standard, leading to valid methodological critiques of the
+      construct. The strongest opposing consideration is that objective
+      instrumented measures (microdialysis, elastography, EMG) consistently
+      locate abnormalities where practitioners point, suggesting the clinical
+      exam is weak but the underlying phenomenon is not entirely an artifact.
+  - claimId: VASO-C001
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: Widespread practitioner consensus and historical community surveys
+      support the existence of palpable, discrete tender points, and imaging
+      confirms some objective differences. However, the exact ontological status
+      of these spots—whether they are discrete, countable entities rather than
+      general tissue qualities—remains academically disputed, and a rigorous,
+      blinded natural-history census has never been performed.
+  - claimId: VASO-C002
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: Needle EMG studies consistently demonstrate spontaneous electrical
+      activity localized to millimeter-scale niduses at trigger points, absent
+      in adjacent tissue. The strongest limitation is that by every published
+      interpretation, this signal reflects skeletal-muscle electrophysiology
+      (motor endplate or muscle spindle activity), which natively supports
+      conventional guarding accounts rather than a vascular smooth-muscle
+      mechanism.
+  - claimId: VASO-C003
+    verdict: provisionally_supported
+    confidence: low
+    reasoning: A 1994 experimental study demonstrated that a purely cognitive
+      stressor (mental arithmetic) selectively increases EMG activity at a
+      trigger point without generalized movement. The primary limitation is that
+      this relies on a single small (n=14), three-decade-old study from one
+      lineage that has never been replicated with modern vascular or imaging
+      endpoints.
+  - claimId: VASO-C004
+    verdict: unresolved
+    confidence: high
+    reasoning: The core phenomenon—that a knot releases objectively in seconds upon
+      a slow exhale—rests entirely on first-person practitioner testimony. No
+      controlled, time-locked imaging experiment has ever measured local tissue
+      state during a felt release. The strongest objection is that subjective
+      release could purely reflect expectation, shifting attention, and central
+      nervous system relaxation without any local physiological change.
+  - claimId: VASO-C005
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: Multiple independent modalities (microdialysis, ultrasound
+      elastography, Doppler) show that active trigger points possess a more
+      acidic, mediator-rich biochemical milieu and abnormal stiffness/flow
+      parameters. The strongest limitation is the heterogeneity and small sample
+      sizes of these studies, along with findings that biochemical mediators are
+      also elevated remotely, complicating the strictly local "energy crisis"
+      narrative.
+  - claimId: VASO-C006
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: A rigorous 2026 preregistered trial demonstrated that voluntary
+      interoceptive attention significantly reduces acute histamine-induced
+      inflammation via a vagal route, proving a cognition-to-periphery
+      regulatory channel. The primary opposing consideration is that regulating
+      an acute immune response in healthy skin over twenty minutes may not
+      translate to the mechanical, seconds-scale unlatching of chronic
+      deep-tissue vascular smooth muscle.

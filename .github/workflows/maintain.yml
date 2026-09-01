@@ -347,3 +347,59 @@ jobs:
             --label needs-approval)
           gh pr edit "$pr_url" --add-reviewer "${GITHUB_REPOSITORY_OWNER}" || true
           echo "opened $pr_url"
+
+  # Bench endorsement adoption: endorsed non-study proposals (claims and
+  # research items four of five seats scored high-gain with no
+  # constitutional concern) become drafted ledger records — catalog-tier
+  # claims anchored only to in-ledger evidence, research items — in
+  # their own gated needs-approval PR. Same clean-tier pattern as
+  # promote and bench: a fresh checkout of main consumes scores that
+  # already merged. Runs after bench so the two Bench PRs of one run
+  # never race an append to the same research.yaml.
+  adopt:
+    needs: bench
+    if: ${{ (inputs.mode || 'full') == 'full' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Draft endorsed adoptions
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          EXTRACT_MODEL: ${{ vars.EXTRACT_MODEL }}
+        run: |
+          count=$(node scripts/draft-endorsements.mjs --scan | tail -1)
+          echo "ADOPTED=${count}" >> "$GITHUB_ENV"
+      - name: Validate the ledger still loads
+        if: ${{ env.ADOPTED != '0' }}
+        run: npx vitest run src/domain/load.test.ts
+      - name: Open the gated adoption PR
+        if: ${{ env.ADOPTED != '0' }}
+        env:
+          GH_TOKEN: ${{ secrets.MAINTENANCE_PAT }}
+        run: |
+          date=$(date +%Y-%m-%d)
+          branch="adopt/${date}-${GITHUB_RUN_ID}"
+          git config user.name "aletheia-maintenance-bot"
+          git config user.email "maintenance-bot@users.noreply.github.com"
+          git checkout -b "$branch"
+          git add -A -- content/cases
+          if git diff --cached --quiet; then
+            echo "nothing stageable — nothing endorsed awaits adoption"
+            exit 0
+          fi
+          git commit -m "Adoption ${date}: panel-endorsed claims and research items enter the ledger"
+          git push -u origin "$branch"
+          pr_url=$(gh pr create \
+            --title "Adoption: ${date} — panel-endorsed claims and research items" \
+            --body "Ledger records drafted from agenda proposals the five-vendor panel endorsed (four of five seats high-gain, zero constitutional concerns; scores under proposals/agenda/). Claims enter at catalog tier and anchor only to evidence already in the ledger — the drafter copies sourceId and locator from the anchoring record and never authors either; a draft with no in-ledger anchor is dropped with the reason and stays endorsed. Ids are mechanical; provenance is stamped in origin.ref; the panel judges the records here before anything publishes." \
+            --label needs-approval)
+          gh pr edit "$pr_url" --add-reviewer "${GITHUB_REPOSITORY_OWNER}" || true
+          echo "opened $pr_url"

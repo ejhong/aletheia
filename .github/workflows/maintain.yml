@@ -118,10 +118,24 @@ jobs:
           fi
           rm -f triage-out.txt
 
+      # Attention follows yield (docs/AUTOMATION.md): measure each case's
+      # verdict-moving events and derive its cadence band. Model-free and
+      # stateless; the JSON drives which cases the expensive loops visit
+      # this run. The cheap identifier-based watch deliberately stays
+      # weekly for every case.
+      - name: Measure yield
+        if: ${{ (inputs.mode || 'full') == 'full' }}
+        run: |
+          node scripts/yield-report.mjs > yield.json 2> yield-table.txt
+          { echo '## Attention (yield bands)'; echo '```'; cat yield-table.txt; echo '```'; } > yield-digest.md
+          echo "DUE_CASES=$(node -e 'const r=require("./yield.json");console.log(Object.entries(r.cases).filter(([,c])=>c.due).map(([s])=>s).join(","))')" >> "$GITHUB_ENV"
+          rm -f yield-table.txt
+
       # The generative step no other stage has: propose (never publish)
       # new claims, research items, or studies the current ledger implies.
       # Output is proposals/agenda/ files — adopted or ignored by the
-      # founder; the gates decide what becomes real.
+      # founder; the gates decide what becomes real. Visits only the cases
+      # whose yield band says they are due this run.
       - name: Propose agenda additions
         if: ${{ (inputs.mode || 'full') == 'full' }}
         env:
@@ -129,7 +143,7 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           EXTRACT_MODEL: ${{ vars.EXTRACT_MODEL }}
         run: |
-          node scripts/propose-agenda.mjs | tee agenda-out.txt
+          node scripts/propose-agenda.mjs --only "${DUE_CASES}" | tee agenda-out.txt
           outdir=$(tail -1 agenda-out.txt)
           if [ -f "$outdir/report.md" ]; then
             cp "$outdir/report.md" agenda-digest.md
@@ -162,13 +176,14 @@ jobs:
           {
             echo "Weekly maintenance run. Plain-language summary:"
             echo
+            [ -f yield-digest.md ] && cat yield-digest.md && echo
             [ -f inbox-digest.md ] && cat inbox-digest.md && echo
             [ -f reassess-digest.md ] && cat reassess-digest.md && echo
             [ -f watch-digest.md ] && cat watch-digest.md && echo
             [ -f triage-digest.md ] && cat triage-digest.md && echo
             [ -f agenda-digest.md ] && cat agenda-digest.md && echo
           } > pr-body.md
-          rm -f inbox-digest.md reassess-digest.md watch-digest.md triage-digest.md agenda-digest.md
+          rm -f inbox-digest.md reassess-digest.md watch-digest.md triage-digest.md agenda-digest.md yield-digest.md yield.json
 
           if git status --porcelain | grep -qv '^?? pr-body.md'; then :; else
             echo "No changes produced — nothing to open a PR for."

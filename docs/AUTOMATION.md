@@ -119,6 +119,24 @@ aesthetics and register remain governed the constitutional way — the
 founder amends the register sections (§7 and the style documents it
 points to), and panels enforce them.
 
+**Narrative inputs — the anti-drift anchor (founder direction,
+2026-09-01).** If each rewrite saw only its predecessor plus the ledger,
+the narrative would play telephone with itself: voice eroding a little
+per cycle until nothing of the founding material remained, without any
+single step dropping a pin. So each case may carry a small set of
+committed founding texts (`inputs/` with a manifest: title, origin,
+license, role) — the essays and articles the case was built from, e.g.
+the founder's own Substack pieces, committable because he owns and
+licenses them; third-party briefs remain excluded forever. Rules:
+inputs are **presentation references, never evidence** — a rewriter may
+draw voice, structure, phenomenology, and framing from them, but may not
+cite them for any fact not independently in the ledger. Every Atelier
+candidate is drafted from **ledger + pins + narrative inputs +
+incumbent**, so rewrites always drink from the original well rather
+than from a fading copy — and where the evidence has parted ways with a
+founding text, the rewriter has the original in hand and says so
+honestly, instead of paraphrasing a paraphrase of it.
+
 ## Pins: how editorial angles survive rewriting
 
 Prose dies; records survive. Anything that lives only as narrative

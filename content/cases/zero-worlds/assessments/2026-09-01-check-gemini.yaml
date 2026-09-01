@@ -1,0 +1,176 @@
+# Cross-model check run — an independent judge (Gemini 3.1 Pro (Google)),
+# blind to all prior assessments (scripts/cross-model-check.mjs,
+# promptVersion aletheia-check-v2). role: check — never displayed as the case
+# narrative; feeds the concurrence panel. Append-only; NOT human reviewed.
+runId: 2026-09-01-check-gemini
+model: Gemini 3.1 Pro (Google) — independent check run via gemini-3.1-pro-preview
+date: 2026-09-01
+promptVersion: aletheia-check-v2
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: well_supported
+  loadBearing:
+    - ZW-C001
+    - ZW-C002
+    - ZW-C004
+    - ZW-C010
+  weakestLinks:
+    - ZW-C008
+  synthesis: >-
+    The case "Zero Worlds?" evaluates whether observer-first ontological
+    programs have successfully derived quantum mechanics from their non-material
+    primitives. The architecture of the case rests on a stark derivation gap. On
+    the right side of this gap, the quantum reconstruction theorems (ZW-C001)
+    are established mathematics: E006, E007, and E008 rigorously prove that the
+    quantum formalism can be derived from operational axioms. On the left side,
+    the flagship observer-first program, Müller's algorithmic idealism, succeeds
+    in demonstrating that a stable, lawful external world mathematically emerges
+    from first-person states governed by universal induction (ZW-C004, supported
+    by E001).
+
+    However, the bridge between these two sides remains unbuilt. As stated in
+    ZW-C002, no observer-first program has derived specifically quantum
+    structures like the Tsirelson bound or the Born rule. The evidence firmly
+    supports this gap: Hoffman's conscious agents achieve only a free-particle
+    correspondence (ZW-C006, E010), Wolfram relies on informal derivations and
+    embeddings (ZW-C007, E012, E014), and Müller explicitly acknowledges that
+    predicting nonclassical quantum aspects remains a "hope" and his
+    Bell-violation result is preliminary (ZW-C005, E003). Crucially, empirical
+    benchmarks like loophole-free Bell tests and Wigner's-friend experiments
+    (E017, E018) constrain theoretical assumptions but do not discriminate
+    between physicalist and idealist ontologies (ZW-C003).
+
+    As a result, the featured thesis that no observer-independent world is
+    fundamental (ZW-C008) is presently untestable. Steelmanning the idealist
+    position, algorithmic idealism accomplishes genuine structural work,
+    elegantly dissolving the Boltzmann brain problem and demonstrating that
+    objective reality can emerge as a theorem rather than an assumption.
+    Steelmanning the physicalist position (ZW-C009), the explanatory parsimony
+    claimed by idealists is already delivered by the ontologically neutral
+    operational reconstructions; without a specific derivation of quantum
+    structure, universal induction merely relocates complexity by unselectively
+    accommodating whatever computable regularities exist. Ultimately, the debate
+    hinges on a precisely posed mathematical problem: the
+    observer-to-operational-axioms bridge theorem (ZW-C010). Until this is
+    resolved, the observer-first theories remain interpretive frameworks rather
+    than physical derivations.
+
+    Sensitivity: The single evidence record whose removal would most change the
+    case verdict is ZW-E003 (Müller's research exposition). This document
+    contains the definitive internal concession that the quantum reconstruction
+    is incomplete and the Bell result is preliminary. While the overall verdict
+    that ZW-C008 is presently untestable would survive without it—because the
+    objective absence of a derivation in the broader literature would still be
+    apparent—ZW-E003 anchors the case by proving that the gap is acknowledged by
+    the founder himself, foreclosing any debate over the flagship program's
+    current mathematical reach.
+claimAssessments:
+  - claimId: ZW-C001
+    verdict: established
+    confidence: high
+    reasoning: The quantum reconstruction theorems are rigorously proven in the
+      peer-reviewed literature, establishing that finite-dimensional quantum
+      theory can be derived from operational and informational axioms without
+      postulating Hilbert space. Evidence records E006, E007, and E008
+      independently confirm this mathematical achievement. The strongest
+      opposing consideration is that the axioms themselves (especially
+      purification) may simply relocate the specifically quantum mystery rather
+      than dissolve it.
+  - claimId: ZW-C002
+    verdict: well_supported
+    confidence: high
+    reasoning: The proponents themselves concede the derivation gap. Müller
+      explicitly states his hope that nonclassical aspects will eventually
+      become predictions and identifies current results as preliminary (E003,
+      E002), while Hoffman and Wolfram offer only correspondences and embeddings
+      (E010, E014). The strongest opposing consideration is that, like any young
+      research program, these frameworks are still developing and adjacent
+      fields are making progress on access-limitation derivations (E019).
+  - claimId: ZW-C003
+    verdict: well_supported
+    confidence: high
+    reasoning: Landmark experiments like loophole-free Bell tests (E017) and local
+      friendliness no-go theorems (E018) firmly constrain assumptions regarding
+      local realism and absolute observed events. However, because both
+      observer-first and physicalist models are designed to reproduce these
+      quantum statistics, the data cannot empirically discriminate between their
+      ontologies. The strongest opposing consideration is that the
+      Wigner's-friend theorem specifically taxes theories with absolute
+      observer-independent events, which arguably imposes a higher conceptual
+      cost on physicalism.
+  - claimId: ZW-C004
+    verdict: well_supported
+    confidence: high
+    reasoning: Müller’s 2020 paper mathematically proves that an objective external
+      world and the dissolution of the Boltzmann brain problem emerge
+      asymptotically from self-states governed by universal induction (E001).
+      This confirms algorithmic idealism as a formally explicit, theorem-backed
+      framework. The strongest opposing consideration is that the theorems
+      depend on an idealized bit-string model that prohibits forgetting (the
+      "erasure problem"), meaning no actual observer fits the mathematical
+      requirements.
+  - claimId: ZW-C005
+    verdict: well_supported
+    confidence: high
+    reasoning: Müller’s framework accommodates computable quantum regularities
+      asymptotically, and it possesses a preliminary theorem showing that Bell
+      violations can sometimes be expected (E001). The claim exactly matches
+      Müller's own assessment that this result rests on too many assumptions
+      (E003). The strongest opposing consideration is that universal induction
+      would learn any computable regularity, so achieving asymptotic consistency
+      explains nothing uniquely quantum.
+  - claimId: ZW-C006
+    verdict: well_supported
+    confidence: high
+    reasoning: Hoffman’s program has published a correspondence between
+      conscious-agent dynamics and the free-particle wavefunction (E010) and the
+      evolutionary Fitness-Beats-Truth theorem (E011). However, the evidence
+      contains no derivation of general quantum mechanisms like the Born rule or
+      entanglement. The strongest opposing consideration is that linking these
+      disjointed results into a claim about fundamental consciousness outruns
+      the mathematical reach of the specific models.
+  - claimId: ZW-C007
+    verdict: well_supported
+    confidence: high
+    reasoning: Wolfram explicitly asserts that core physics follows from observer
+      boundedness and persistence in the ruliad (E013), but his derivations are
+      presented informally, with acknowledged circularity in defining observers
+      (E012). Formal results like the ZX-calculus embedding (E014) demonstrate
+      structural compatibility rather than physical inevitability. The strongest
+      opposing consideration is that universal rewriting systems can embed
+      virtually any mathematical structure, making such embeddings explanatorily
+      unselective.
+  - claimId: ZW-C008
+    verdict: presently_untestable
+    confidence: high
+    reasoning: The featured thesis asserts that first-person states are fundamental
+      and the physical world is derivative. While mathematically coherent in
+      idealized models (E001), it yields no distinct, testable empirical
+      predictions over standard quantum mechanics in current operational setups
+      (E017, E018). The strongest opposing consideration is that if a theory
+      merely relocates ontological complexity into an uncomputable inductive
+      rule without new predictions, it should arguably be rejected on parsimony
+      grounds rather than treated as untestable.
+  - claimId: ZW-C009
+    verdict: well_supported
+    confidence: high
+    reasoning: The physicalist steelman correctly identifies that universal
+      induction unselectively learns any computable law, and that the
+      operational reconstructions achieve explanatory compression without
+      invoking idealism (E006, E007, E008). Furthermore, as shown by Spekkens'
+      toy theory (E015) and QBism's concessions (E009), merely simulating
+      quantum features or importing the Born rule is not a full derivation. The
+      strongest opposing consideration is that standard physicalism similarly
+      lacks a non-circular explanation for why nature obeys these operational
+      axioms in the first place.
+  - claimId: ZW-C010
+    verdict: well_supported
+    confidence: high
+    reasoning: 'The structure of the case isolates a definitive missing link:
+      whether observer-first postulates can entail the operational principles
+      that reconstruct quantum theory (E002, E006). A proof would validate the
+      ontological reversal, while a no-go result would severely limit its
+      relevance. The strongest opposing consideration is that the concept of an
+      "observer" may remain too loosely defined to ever bind it within a
+      rigorous bridge theorem, leading to a permanent stalemate.'

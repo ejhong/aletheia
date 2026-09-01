@@ -1,0 +1,102 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 132
+title: "Founding inputs: freeze the current tellings as source texts;
+  first-edition and plates-survive rules"
+url: https://github.com/ejhong/aletheia/pull/132
+verdict: pass
+reason: 4 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-01
+judgedAgainst: 1c6c75250c
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: unsure
+    rules: []
+    reasoning: 'seat failed: Error: anthropic HTTP 529:
+      {"type":"error","error":{"type":"overloaded_error","message":"Overloaded"},"request_id":"req_011Cec9iXkneGNk51Z3jh12L"}'
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules:
+      - §3.1
+      - §3.2
+      - §3.5
+      - §3.6
+      - §3.7
+      - §3.8
+      - §3.9
+      - §3.10
+      - §3.11
+      - §3.13
+      - §3.14
+      - §3.15
+    reasoning: The change introduces a NarrativeInput schema and per-case manifests
+      that explicitly mark founding texts as "presentation references, never
+      evidence" and are validated fail-closed by the loader. This strengthens
+      provenance and anti-drift controls without altering any existing evidence
+      records, claims, or assessments, and it preserves append-only behavior and
+      versioning through frozen snapshot files dated 2026-09-01. No citations,
+      DOIs, or URLs are added inside content/, so there is no risk of fabricated
+      or misused external sources; the CITATION VERIFICATION tool finds none.
+      The new rewrite rules in docs/AUTOMATION.md (first-edition rule,
+      plates-survive rule) operate at the narrative/editorial layer and do not
+      weaken epistemic checks or reclassify changes to dodge multi-model
+      ratification; instead they enforce completeness of plates/claims when
+      rewriting. AGENTS.md is untouched, so the human-reserved constitutional
+      power is respected. Overall, the diff tightens provenance and workflow
+      discipline while remaining consistent with the constitution’s requirements
+      on honesty, explicitness, and non-fabrication.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules: []
+    reasoning: The PR implements a structured mechanism for tracking founding
+      narratives and research inputs via Zod-validated manifests in the
+      `content/` folder, directly adhering to Phase-1 static data rules (§4).
+      The new `NarrativeInputSchema` enforces fail-closed validation for file
+      existence, preventing dangling references. The provided origins and
+      licenses in the manifests clearly document the provenance and status of
+      each text as presentation references rather than citable evidence, fully
+      satisfying exact provenance (§3.8). The editorial rewrite rules added to
+      the documentation strengthen the project's standards by strictly enforcing
+      the retention of existing visual evidence (plates) and do not weaken any
+      constitutional checks.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff does not edit AGENTS.md. It adds case-local
+      founding-narrative snapshots, per-case input manifests, a fail-closed
+      NarrativeInputSchema/loader existence check, and two additional Atelier
+      rewrite laws in docs/AUTOMATION.md and docs/DECISIONS.md — none of which
+      weaken §3 checks. Manifests label inputs as presentation references, never
+      evidence, with origin and license fields; no Source/Evidence/Assessment
+      records are fabricated or silently rewritten, and citation tooling found
+      no new DOI/arXiv/URL identifiers. Research PDF paths are declared as
+      already-committed founder work, not third-party captures. Unfamiliar 2026
+      names and events in the frozen overviews are not positive evidence of
+      fabrication under temporal humility.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules: []
+    reasoning: The change adds dated, append-only narrative-input snapshots plus
+      manifests, a NarrativeInputSchema, and fail-closed loader validation that
+      every manifest entry's file exists — this strengthens rather than weakens
+      the §3.15/§4 checks, and no AGENTS.md edit is present (the
+      docs/AUTOMATION.md and docs/DECISIONS.md additions are exactly where §7's
+      founder-amendment note says such directives are recorded). The manifests
+      explicitly fence inputs as 'presentation references, never evidence,'
+      consistent with §3.6/§3.7, and exclude third-party captures, keeping only
+      material asserted as the founder's own essays and commissioned reports —
+      so the §3.15 confidence regime for third-party-supplied material is not
+      triggered by what is shown. The frozen narratives are verbatim snapshots
+      of already-published overviews containing no new citations (the mechanical
+      verifier found none), and their 2026-dated claims are internal references
+      to existing ledger claims, not fabricated locators; per temporal humility
+      I treat unfamiliar 2026 events as unverifiable rather than fabricated. The
+      transients snapshot paraphrases an unpublished Yang–Villarroel manuscript
+      'shared with this project,' but that text pre-exists in the base overview,
+      the PR merely snapshots it, and there is no positive evidence in the diff
+      that it lacks recorded permission. The schema/loader code is orthogonal to
+      epistemic content and fails closed on dangling files. No omitted files;
+      nothing in the visible change breaks a named rule.
+harvestedAt: 2026-09-01

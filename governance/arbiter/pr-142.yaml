@@ -1,0 +1,97 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 142
+title: Editorial audit joins the refusal-fallback path; stamps the model that answered
+url: https://github.com/ejhong/aletheia/pull/142
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-01
+judgedAgainst: 08cff62845
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches only scripts/reassess-changed.mjs: both LLM call
+      sites now go through `callWithRefusalFallback` instead of `provider.call`,
+      and the resulting overlay `model:` stamp and history `actor:` line record
+      the model that actually returned text rather than the nominally configured
+      one. That makes provenance stamping more accurate, which is exactly what
+      §3.15's accountability-by-inspectability clause and the Phase-1
+      runId/model/promptVersion stamping rule want; an overlay attributed to a
+      model that refused would have been the dishonest option. No check is
+      weakened or bypassed: the editorial audit output still carries
+      `aiAssisted: true`, `humanReviewed: false`, and the actor string still
+      states that publication only occurs through the multi-model concurrence
+      gate, so nothing is presented as ratified or human-reviewed. No content/
+      files, citations, locators, or assessments are altered, and no
+      confidential material appears; the citation tooling found no identifiers
+      to check. The only imperfection I see is cosmetic-but-real: the stamp
+      interpolates `${provider.name}/${draft.modelUsed ?? provider.model}`, so
+      if the fallback ever crosses vendors the provider prefix would mislabel
+      the vendor — worth a follow-up, but it is a narrowing of an existing
+      inaccuracy, not a fabrication. AGENTS.md is untouched."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: The change is confined to a maintenance script and does not touch
+      AGENTS.md or content records, so it does not attempt to weaken checks or
+      alter constitutional text. It routes assessment and editorial calls
+      through an existing refusal-fallback helper and then explicitly stamps
+      overlays and history entries with the model that actually produced the
+      text, rather than the originally selected provider model. This improves
+      transparency and provenance of AI involvement and aligns with §3.15’s
+      requirement not to misrepresent which model generated a record. It also
+      preserves the multi-model gate language in the history actor string,
+      maintaining the publication workflow. No citations or provenance details
+      are fabricated or removed, and there is no silent alteration of past
+      assessments; the script only affects how new overlays are labeled.
+      Overall, the change strengthens accountability and versioned assessment
+      records as required by §3.14 and §3.15.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules:
+      - §3.15
+    reasoning: The pull request modifies the reassessment script to route provider
+      calls through a refusal fallback mechanism and captures the actual model
+      used when the fallback triggers. This directly complies with and enhances
+      §3.15's requirement that all AI-generated changes be accurately 'stamped
+      with model... so any reader can reconstruct which model did what.' It does
+      not weaken any checks, fabricate evidence, or bypass the ratification
+      gates.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff is a complete, 17-line edit to scripts/reassess-changed.mjs
+      only: both the assessment and editorial-audit LLM calls now go through the
+      existing callWithRefusalFallback helper, and the overlay model stamp plus
+      changelog actor line use the model that actually answered (draft.modelUsed
+      / audit.modelUsed) instead of the originally picked provider.model. That
+      is honest provenance under §3.14/§3.15, not a silent reclassification or a
+      weakening of the gated multi-model concurrence path—the actor line still
+      states publication only through that gate, and humanReviewed remains
+      false. No AGENTS.md edit, no content/ records, no citations, no fabricated
+      locators, and the omitted-files list is empty."
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "The diff routes two direct provider calls through an existing
+      refusal-fallback wrapper and, critically, stamps overlays and history
+      entries with the model that actually answered
+      (`assessModelUsed`/`editModelUsed`) rather than blindly recording the
+      configured provider model. That directly serves §3.15's accountability
+      requirement that every AI record be stamped with the true model — an
+      overlay claiming a refused model produced it would be exactly the kind of
+      false provenance the constitution forbids, so this change strengthens
+      rather than weakens the checks. No checks are bypassed: the history
+      `actor:` line retains the explicit note that publication occurs only
+      through the multi-model concurrence gate, and the PR body states the
+      resulting editorial corrections will arrive as a gated needs-approval PR.
+      No citations are added (verification section empty), no AGENTS.md edit, no
+      content files touched, and no omitted files. The
+      fallback-to-`provider.model` default when `modelUsed` is undefined is a
+      minor imperfection but not a constitutional breach."
+harvestedAt: 2026-09-01

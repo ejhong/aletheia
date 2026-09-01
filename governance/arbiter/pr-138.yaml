@@ -1,0 +1,137 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 138
+title: "Revised build order + build step 1: the promotion pipe"
+url: https://github.com/ejhong/aletheia/pull/138
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-01
+judgedAgainst: 5c01196bc6
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff adds only scripts, a workflow job, tests, and a
+      DECISIONS.md log entry — no AGENTS.md edit and no new citations under
+      content/ (verification tooling found no identifiers to resolve). The
+      promotion pipe strengthens rather than weakens the checks: it dedupes
+      against the ledger by identifier and title similarity (§3.10),
+      mechanically rejects any evidence draft whose double-quoted spans are not
+      found verbatim in the fetched text (§3.8), enum-checks direction against
+      the supports/undermines/qualifies/context vocabulary (§3.5), requires
+      existing claim anchors (no dangling IDs), separates sourceStatement from
+      editorInference (§3.9), stamps records with reviewState 'ai_extracted',
+      verification 'ai_verified', runId/date/origin (§4), writes an append-only
+      dispositions ledger and case history entry (§3.14), refuses to promote a
+      proposal with no surviving verified evidence, and cannot publish — output
+      lands in a labeled needs-approval PR with a human reviewer, never the
+      auto-tier maintenance PR (§3.15). The bench-core.mjs 4-of-5 advancement
+      rule with a one-seat concern veto is new, uncalled library code governing
+      research-proposal advancement (whose freeze PR still faces the arbiter),
+      not a relaxation of any existing publication gate; multi-model concurrence
+      is not defined as unanimity in the constitution. Two imperfections I note
+      without treating as violations: the evidence `origin` stamp records
+      runId/date/extractedBy but not the concrete model name or promptVersion
+      that §3.15 asks for, and bench-core plus its 'founder-confirmed' comment
+      are scope not disclosed in the PR body — both should be tightened, neither
+      is a fabrication, provenance removal, or check weakening."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.5
+      - §3.6
+      - §3.7
+      - §3.8
+      - §3.9
+      - §3.10
+      - §3.13
+      - §3.14
+      - §3.15
+    reasoning: The change introduces a promotion pipeline that drafts Source and
+      Evidence records but cannot publish them; they are only added on a
+      separate needs-approval PR, preserving multi-model/human gating and
+      append-only history (§3.14, §3.15). Evidence records are mechanically
+      checked for valid directions and strengths enums, claim anchors existing
+      in the case, and minimum-length sourceStatement/editorInference fields,
+      supporting atomic, anchored claims and explicit evidence direction and
+      separating source statement from inference (§3.2, §3.5, §3.6, §3.9). The
+      `unverifiedQuotes` logic enforces that every quoted span in
+      sourceStatement must be found (whitespace/hyphen-insensitive) in the
+      fetched text, reinforcing exact though not paginated provenance without
+      fabricating locators (§3.7, §3.8, §3.15). Deduplication via identifiers
+      and title similarity is explicitly aimed at not double-counting the same
+      work, aligning with independence handling (§3.10). The script refuses to
+      promote a proposal if no evidence draft survives these checks and records
+      all dispositions (promoted/duplicate/failed) in an auditable ledger,
+      avoiding silent failures and retaining calibrated uncertainty and process
+      transparency (§3.11, §3.13, §3.14). No citations, locators, or provenance
+      details are fabricated in the code; identifiers are taken from proposals
+      or model output and then mechanically constrained, and there is no change
+      to AGENTS.md or weakening of constitutional checks. The automation
+      description added to docs/DECISIONS.md accurately reflects the implemented
+      safeguards and does not misrepresent the verification level or review
+      status (§3.15).
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.15
+      - §3.9
+    reasoning: The PR introduces an automated promotion pipeline that strictly
+      adheres to the constitution's constraints. It operates entirely behind the
+      established multi-model concurrence gate by opening a 'needs-approval' PR
+      instead of publishing directly (§3.15). The pipeline guarantees exact
+      provenance by mechanically verifying every quoted span against the fetched
+      text (§3.8), fail-closing on any misquotes or bad identifiers.
+      Furthermore, AI-generated records are honestly labeled as 'ai_verified'
+      and 'ai_extracted' (§3.15), and the script distinguishes source statements
+      from editor inferences (§3.9). No core checks are bypassed or weakened.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff does not edit AGENTS.md. It adds a gated promotion path that
+      drafts source/evidence records from already-verified inbox proposals,
+      mechanically fail-closes on quote-verbatim checks, claim-anchor/enum
+      shape, dedupe (§3.10), and budgets, then opens a separate needs-approval
+      PR rather than publishing or riding the auto-tier maintenance PR (§3.15).
+      Drafted records are labeled ai_extracted / ai_verified with origin, runId,
+      date, prompt version, and a history.yaml entry, and they distinguish
+      sourceStatement from editorInference (§3.9, §4). No content/ citations are
+      added in this change (verification tooling found none); DECISIONS.md only
+      documents the pipe and does not weaken the publication gates. Ordinary
+      gaps (identifier not registry-checked in-script; unused bench-core 4/5
+      helper still defers veto to the freeze/arbiter path) are residual tooling
+      limits, not a constitutional break.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.8
+      - §3.5
+      - §4
+    reasoning: 'The pipe drafts records but cannot publish: the new `promote` job
+      opens a needs-approval PR routed through the classifier, citation-checking
+      arbiter, and founder reviewer, so the §3.15 gate is preserved rather than
+      weakened, and nothing in the diff touches the existing fail-closed checks
+      or AGENTS.md. Drafted records are honestly labeled (`reviewState:
+      "ai_extracted"`, `verification: "ai_verified"`, origin stamped with
+      runId/date/prompt version), and the verificationNote explicitly tells
+      reviewing seats to judge the readings, not the existence — no unratified
+      draft is presented as ratified. The §3.8 surface is guarded mechanically:
+      every quoted span in a drafted sourceStatement must verify verbatim
+      against the fetched text or the record is discarded and logged as failed
+      in the auditable promotions ledger, and evidence direction enums match
+      §3.5. No citation identifiers are added to content (verification section
+      confirms none), so the real-citations rule is not engaged; the DOI/arXiv
+      strings in test files are obvious fixtures exercising regex/dedupe logic,
+      not content citations. The LLM-drafted `identifier` field lacks a
+      mechanical in-text check, but any hallucinated locator would be caught by
+      the downstream citation-checking arbiter before publication, so this is
+      ordinary imperfection rather than a check-weakening. Live fetching and
+      model calls live in CI maintenance scripts, not the site itself,
+      consistent with §4. DECISIONS.md is appended, not AGENTS.md, and
+      documenting a shipped material decision there fits the §9 workflow.'
+harvestedAt: 2026-09-01

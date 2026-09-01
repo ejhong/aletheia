@@ -1,0 +1,35 @@
+## Agenda proposals (2026-09-01)
+
+- ccc: rejected malformed proposal (bad kind: analysis).
+- ccc: proposed [research-item] Independent replication of the sky-twist ellipticity control against a ΛCDM null ensemble
+- ccc: proposed [study] Are erebons compatible with published decaying-dark-matter lifetime bounds?
+- megalithic-casting: proposed [study] Blind validation of the multinuclear NMR cast-stone diagnostic on known natural vs. geopolymer limestone
+- megalithic-casting: proposed [study] Bulk density and porosity concordance table: pyramid core/casing blocks vs. Tura and Mokattam quarry stone
+- megalithic-casting: proposed [claim] Salt encrustations like those reported in the Great Pyramid occur in undisputedly carved Egyptian limestone chambers
+- immortality-key: primary model refused; proposals below are from claude-opus-5.
+- immortality-key: proposed [research-item] Basis for the Demeter/Kore attribution of the Mas Castellar de Pontós sanctuary
+- immortality-key: proposed [research-item] Inventory of curated, securely contexted Eleusis vessels actually available for sampling
+- immortality-key: proposed [study] Frozen-criteria formal comparison: earliest Eucharistic texts against Jewish meal-blessing and mystery-cult meal formularies
+- mpi: proposed [study] Random-source type across the full matrix-experiment record: does true-RNG vs pseudo-RNG retro-dict outcomes?
+- mpi: proposed [claim] The decline/displacement prediction does not follow deductively from GQT's published formalism without unstated auxiliary assumptions
+- mpi: proposed [study] Coded case-report table: do RSPK phenomena displace rather than repeat, per MPI-C501?
+- orch-or: primary model refused; proposals below are from claude-opus-5.
+- orch-or: proposed [study] Desk study: the coherence length Orch OR needs versus the exciton diffusion length microtubules show
+- orch-or: proposed [study] Substrate audit: which physical degree of freedom carries coherence in each supporting evidence line, and does it match Orch OR's committed substrate?
+- orch-or: proposed [research-item] Pharmacokinetic control for the epothilone loss-of-righting-reflex effect: measure agent concentration at endpoint, not time to endpoint
+- pre-columbian-amazon: rejected malformed proposal (bad kind: analysis).
+- pre-columbian-amazon: proposed [study] Dating the downturn: when does the Amazon-wide radiocarbon proxy actually begin its terminal decline, and does it survive taphonomic and edge-effect corrections?
+- pre-columbian-amazon: proposed [study] Is the fourteen-region null a sampling artifact? Mapping the phytolith/charcoal sampling frame against the river-distance occupation gradient
+- transients: proposed [claim] The three July 1952 sources are emulsion features on the original telescope negative at their published positions
+- transients: proposed [study] GEO-era positive control: untrailed glint rates on Schmidt plates taken when the geosynchronous belt was populated
+- transients: proposed [study] Blind head-to-head of the profile-sharpness statistic and the artifact-morphology classifier on a shared labeled corpus
+- vasocomputation: primary model refused; proposals below are from claude-opus-5.
+- vasocomputation: proposed [study] Frozen-criteria table of direct tissue oxygenation and perfusion measurements at trigger points: sign, magnitude, and ischemic threshold
+- vasocomputation: proposed [study] What else releases in seconds? A time-constant table for every candidate tissue mechanism behind the rapid-release inference
+- vasocomputation: proposed [research-item] Agonist-washout with simultaneous energetics in pressurized skeletal-muscle arterioles: the one experiment the latch economy argument requires
+- ydih: proposed [claim] The GISP2 platinum anomaly begins after, not at, the Greenland climate signal of the Younger Dryas onset on the same layer-counted timescale
+- ydih: proposed [study] Do claimed YDB microspherule peaks exceed ordinary cosmic-dust and detrital background flux? A sedimentation-rate-normalized comparison
+- ydih: proposed [study] Taurid Complex dynamical ages and masses versus what the YDIH scenario requires: a frozen literature table
+- zero-worlds: proposed [claim] Müller's 2026 two-postulate formulation still lists the erasure problem as unsolved
+- zero-worlds: proposed [claim] QBism's Born-rule derivation is conditional on the unproven existence of SICs in every dimension
+- zero-worlds: proposed [study] Local-friendliness inequality violation across theory classes: does Bong 2020 discriminate among observer-first ontologies?

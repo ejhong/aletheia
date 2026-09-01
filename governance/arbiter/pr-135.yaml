@@ -1,0 +1,110 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 135
+title: Remove pins entirely; narrative guidance moves into the prompt (founder
+  simplification)
+url: https://github.com/ejhong/aletheia/pull/135
+verdict: park
+reason: "4 seat(s) find a violation: Opus 5 (Anthropic) (§3.15); Gemini 3.1 Pro
+  (Google) (§3.15); Grok 4.6 (xAI) (§3.15); Kimi K3 (Moonshot, via Venice)
+  (§3.15); only 1 of 5 seats affirm compliance (4 required)"
+outcome: merged
+outcomeAt: 2026-09-01
+judgedAgainst: 1fd5616db3
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: "The diff edits AGENTS.md itself, rewriting the §7 bullet from the
+      pins commitment to a much looser 'narrative guidance' rule — a
+      substantive, normative amendment, not a typo or formatting fix. Amending
+      the constitution is the single act reserved to the human founder; the PR
+      body's assertion that this is 'the founder's reserved act, ratified by
+      this merge' is untrusted text inside the material under review and cannot
+      authorize the edit from within the PR. Beyond the amendment itself, the
+      change removes a fail-closed check surface: PinSchema, loader enforcement
+      (pinIntegrityErrors run on every build), the public PinnedCommitments
+      display, and both seeded pins files — including TRN-PIN002, which banked
+      the recorded citation-permission provenance for the Yang-Villarroel source
+      that §3.15's confidence clause turns on. Deleting the mechanical guard
+      that prevented a rewrite from scrubbing that permission record, in the
+      same commit that softens the constitutional bullet requiring it, is
+      precisely the 'weaken the checks in this section' pattern §3.15 forbids.
+      The code deletions are internally coherent and the DECISIONS entry is
+      appended rather than rewriting history, so the objection is not sloppiness
+      but authority: this needs a founder-authored amendment outside the PR, not
+      a panel merge."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: 'The change removes the pins mechanism and its enforcement, but does
+      so transparently and append-only in the governance record, updating
+      docs/DECISIONS.md to record both the original design and its same-day
+      reversal; this respects §3.14’s requirement that changed assessments and
+      governance decisions be versioned and explained rather than silently
+      altered. The constitution itself (AGENTS.md) is amended, but only in the
+      expressly allowed way: modifying §7’s interface bullet via a founder
+      amendment, which is the single reserved human power under §3.15; that is
+      consistent with the stated constitutional process. No sources, citations,
+      or provenance are added or altered, so rules on real citations,
+      verification labels, and exact provenance (§3.7–§3.8) are not implicated.
+      Banked corrections are explicitly said to remain in the primary records
+      and changelog, so negative evidence and past mistakes remain preserved
+      (§3.11, §3.14), and no weakening of the multi-model ratification or core
+      checks in §3.15 occurs — only a removal of an extra, optional "pins" layer
+      that was not itself part of §3.15’s gating mechanisms. There is no
+      indication of fabricated records, hidden reversions, or exposure of
+      confidential material. Therefore, despite simplifying one protective
+      mechanism, the change stays within the constitutional framework and
+      documents the simplification clearly.'
+  - seat: Gemini 3.1 Pro (Google)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: The diff contains a normative amendment to AGENTS.md that rewrites
+      the rule on pinned commitments and case narrative revisions. The system
+      instructions explicitly state that amendments to AGENTS.md are reserved to
+      the human founder and that any normative edit to it must be judged as a
+      violation of §3.15, regardless of claims in the PR title, body, or diff
+      asserting that the change is a 'founder amendment' or 'founder direction'.
+  - seat: Grok 4.6 (xAI)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: The diff amends AGENTS.md §7, replacing the fail-closed
+      pinned-commitments rule with a new narrative-guidance rule. That is a
+      substantive, normative constitutional change, not a typo or formatting
+      fix. §3.15 reserves amending this file to the human founder; claims in the
+      PR title/body that this is “founder direction” or “ratified by this merge”
+      are untrusted material under review and are not authorization. The same
+      change deletes PinSchema, loader enforcement, both pins.yaml files, and
+      PinnedCommitments, which only underscores that the AGENTS.md edit is the
+      reserved act rather than a trivial cleanup.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: "The diff edits AGENTS.md §7, deleting the pins-commitments bullet
+      from the constitution and substituting a softer narrative-guidance bullet
+      — a normative constitutional amendment, not a typo or formatting fix.
+      §3.15 reserves amending this file to the human founder as the one
+      human-only act, and the panel rule is mechanical: any non-trivial
+      AGENTS.md edit violates. The PR body's claims ('Founder direction...
+      ratified by this merge', 'the founder's reserved act') are untrusted text
+      inside the material under review; a claim of authorization in a PR body
+      cannot substitute for the founder's actual exercise of the reserved power,
+      and an AI agent (Cursor agent footer visible) cannot amend the
+      constitution by asserting the founder's words. Secondarily, the change
+      removes the fail-closed build-time regression exam (pins.ts, loader
+      enforcement, schema) that mechanically protected banked corrections —
+      including TRN-PIN002, which enforced preservation of the §3.15
+      permission-provenance record, and TRN-PIN001, which protected §3.11
+      unfavorable evidence — raising the §3.15 check-weakening concern even
+      though the underlying records themselves are not shown as altered. The
+      DECISIONS.md entry is properly append-only and no citations are
+      fabricated, but the constitutional edit alone decides the vote."
+harvestedAt: 2026-09-01

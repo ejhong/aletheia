@@ -1,0 +1,85 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 126
+title: "Fix build: exclude briefs/ archives from Tailwind source scanning"
+url: https://github.com/ejhong/aletheia/pull/126
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-01
+judgedAgainst: 5fcba626b7
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The entire diff is six lines added to app/globals.css: a comment
+      plus a Tailwind v4 `@source not \"../briefs\"` directive that removes a
+      large archive directory from class-name scanning. No content/ records,
+      citations, locators, assessments, or provenance are touched, and the
+      citation tooling found no identifiers to check. This does not weaken any
+      §3.15 check — schema validation, dangling-ID checks, provenance
+      completeness, and the ratification gate are all untouched; it only narrows
+      which files PostCSS greps for CSS class names, which cannot change
+      published output. It is also the smallest coherent change to restore a red
+      build (§9.4) and consistent with the Phase-1 minimal-dependency,
+      static-export constraints. The PR body's claims about timings and other
+      PRs are unverifiable from here but are non-normative and carry no
+      epistemic weight in published material."
+  - seat: GPT-5.1 (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: The change only amends a CSS file to add a Tailwind v4 @source
+      exclusion for a large, non-rendered archive directory. It does not touch
+      any content under `content/`, any citations, or any epistemic objects like
+      Claims, Evidence, or Sources, so the real-citation and provenance rules
+      are unaffected. No assessments, version histories, or review metadata are
+      altered, so there is no risk of silently changing published judgments.
+      AGENTS.md is untouched, so there is no attempt to modify the constitution
+      or weaken checks. The explanatory comment about build behavior concerns
+      tooling performance, not evidence or sources, so it does not implicate
+      rules on fabrication or mislabeling. As a purely technical build fix with
+      no epistemic impact, it complies with the constitution.
+  - seat: Gemini 3.1 Pro (Google)
+    vote: complies
+    rules: []
+    reasoning: The change solely adds an exclusion directive to app/globals.css to
+      prevent Tailwind from scanning large archive files in the briefs/
+      directory, which the PR states was causing build timeouts. This is a
+      routine infrastructure fix to ensure the production build passes (as
+      required by §8), and it does not alter epistemic records, provenance, or
+      weaken any constitutional validation checks.
+  - seat: Grok 4.6 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The complete diff only adds a comment and `@source not "../briefs"`
+      in app/globals.css so Tailwind v4 does not scan archived HTML for class
+      names. No content/, citations, locators, assessments, or AGENTS.md are
+      touched; citation verification found nothing added. Excluding a
+      never-rendered archive from CSS source detection does not fabricate
+      provenance, hide published judgments, expose confidence material, or
+      weaken §3.15 mechanical/editorial checks. This is a build-path change
+      consistent with §4/§8 (static site, production build must pass), not an
+      epistemic-record edit.
+  - seat: Kimi K3 (Moonshot, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §4
+    reasoning: "The diff is six lines in app/globals.css: an explanatory comment and
+      one Tailwind v4 directive, `@source not \"../briefs\";`, excluding the
+      briefs/ archive directory from automatic class-name scanning to fix a
+      PostCSS loader timeout. This is build infrastructure, not content: no
+      citations, claims, sources, assessments, or provenance records are added
+      or altered, and the citation-verification section is empty. The epistemic
+      checks in §3.15/§4 (Zod schema validation, dangling-ID failure,
+      real-citations-only) are enforced by the content loader, not by Tailwind's
+      source detection, so excluding a never-rendered archive directory does not
+      weaken any constitutional check — it restores a red CI. The change also
+      does not expose briefs/ material; it explicitly treats those archives as
+      never rendered and never citable, consistent with the confidentiality
+      posture, and whatever confidentiality concerns briefs/ may raise attach to
+      its prior addition (PR #123), not to this diff. AGENTS.md is untouched,
+      the diff is complete with no omitted files, and nothing in the material
+      contradicts the stated mechanism."
+harvestedAt: 2026-09-01

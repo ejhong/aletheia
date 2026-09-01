@@ -51,7 +51,7 @@ import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml, parseDocument, stringify as stringifyYaml } from "yaml";
-import { noKeyMessage, parseJsonReply, pickProvider } from "./lib/llm.mjs";
+import { callWithRefusalFallback, noKeyMessage, parseJsonReply, pickProvider } from "./lib/llm.mjs";
 import {
   applyTextEdits,
   foldScalar,
@@ -177,11 +177,16 @@ async function reassessCase(caseDir, prev) {
       : null,
   };
 
-  const reply = await provider.call(
+  const { text: reply, model: assessModelUsed } = await callWithRefusalFallback(
+    provider,
     ASSESS_SYSTEM,
     `Case directory: ${caseDir}\n\n${JSON.stringify(bundle, null, 2)}`,
   );
   const draft = parseJsonReply(reply);
+  // Stamp the model that actually answered: the refusal fallback (decision
+  // #35's mechanism) may have swapped it, and overlays must never claim a
+  // model that refused produced them.
+  draft.modelUsed = assessModelUsed;
 
   // Structural validation — fail closed rather than write a malformed overlay.
   const errors = [];
@@ -274,7 +279,8 @@ async function auditEditorialLayer(caseDir, bundle, newAssessment) {
     : null;
   const research = researchRaw ? parseYaml(researchRaw) ?? [] : [];
 
-  const reply = await provider.call(
+  const { text: reply, model: editModelUsed } = await callWithRefusalFallback(
+    provider,
     EDITORIAL_SYSTEM,
     [
       `Case directory: ${caseDir}`,
@@ -405,6 +411,7 @@ async function auditEditorialLayer(caseDir, bundle, newAssessment) {
   }
 
   return {
+    modelUsed: editModelUsed,
     overviewPath,
     overview: overviewOut,
     overviewChanged: overviewOut !== overview,
@@ -473,7 +480,7 @@ async function main() {
     const runId = `${today}-auto-${Math.random().toString(36).slice(2, 6)}`;
     const overlay = {
       runId,
-      model: `${provider.name}/${provider.model} (scheduled maintenance run)`,
+      model: `${provider.name}/${draft.modelUsed ?? provider.model} (scheduled maintenance run)`,
       date: today,
       promptVersion: PROMPT_VERSION,
       humanReviewed: false,
@@ -569,7 +576,7 @@ async function main() {
           // that no longer exists — and drew a substantiated arbiter park
           // on PR #66 for exactly that reason. The label must state the
           // real mechanism (AGENTS.md §3.15).
-          actor: `${provider.name}/${provider.model} (scheduled maintenance run, ${EDIT_PROMPT_VERSION}); publishes only through the constitutional gate's multi-model concurrence, per AGENTS.md §3.15`,
+          actor: `${provider.name}/${audit.modelUsed ?? provider.model} (scheduled maintenance run, ${EDIT_PROMPT_VERSION}); publishes only through the constitutional gate's multi-model concurrence, per AGENTS.md §3.15`,
           aiAssisted: true,
         };
         fs.appendFileSync(historyPath, "\n" + stringifyYaml([entry]));

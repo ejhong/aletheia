@@ -1,16 +1,16 @@
-# Study freeze — pre-registration only (two-PR discipline; see the
-# Studies entry in docs/DECISIONS.md). Zero rows by design: the criteria
-# below are judged before anyone knows what the data will say, and any
-# later edit to them fails the build. Collection follows in a second PR.
+# Collection (second PR of the two-PR study discipline; see the Studies
+# entry in docs/DECISIONS.md). The criteria below were frozen on
+# 2026-09-01 in PR #125 and are unchanged — hash fe5e031b8b8f, recomputed
+# by the loader on every build, so any post-freeze edit to them fails.
+# Rows, findings and limitations were added after the freeze merged.
 id: VASO-S001
 title: Latch-state evidence by vessel type, caliber, and persistence
-question: In which vascular preparations has sustained force or constriction
-  been demonstrated while cross-bridge cycling, myosin activation, or energetic
-  expenditure declines; does any primary study demonstrate that phenotype in a
-  skeletal-muscle arteriole or smaller resistance microvessel under
-  physiological temperature and transmural pressure; and where the phenotype is
-  demonstrated, does the maintained state survive withdrawal of the initiating
-  stimulus?
+question: In which vascular preparations has sustained force or constriction been
+  demonstrated while cross-bridge cycling, myosin activation, or energetic expenditure
+  declines; does any primary study demonstrate that phenotype in a skeletal-muscle
+  arteriole or smaller resistance microvessel under physiological temperature and
+  transmural pressure; and where the phenotype is demonstrated, does the maintained
+  state survive withdrawal of the initiating stimulus?
 researchIds:
   - VASO-R007
 claimIds:
@@ -19,159 +19,148 @@ claimIds:
 criteria:
   frozenOn: 2026-09-01
   inclusion:
-    - Primary experimental reports, any year, on vascular smooth-muscle
-      preparations that record BOTH a force or diameter time course AND at least
-      one contemporaneous readout of activation, cross-bridge cycling, or
-      energetic cost — LC20 phosphorylation, intracellular calcium, unloaded
-      shortening velocity, stiffness, ATPase or ATP turnover, oxygen
-      consumption, heat, lactate, or phosphocreatine. The energetic criterion is
-      deliberately broad, because much of the canonical economy literature
-      derives energy expenditure from oxygen consumption or lactate rather than
-      from a measured ATPase, and a narrow ATPase requirement would exclude the
+    - Primary experimental reports, any year, on vascular smooth-muscle preparations
+      that record BOTH a force or diameter time course AND at least one contemporaneous
+      readout of activation, cross-bridge cycling, or energetic cost — LC20
+      phosphorylation, intracellular calcium, unloaded shortening velocity, stiffness,
+      ATPase or ATP turnover, oxygen consumption, heat, lactate, or phosphocreatine. The
+      energetic criterion is deliberately broad, because much of the canonical economy
+      literature derives energy expenditure from oxygen consumption or lactate rather
+      than from a measured ATPase, and a narrow ATPase requirement would exclude the
       strongest evidence rather than the weakest.
-    - Reports indexed under any vocabulary variant of the phenomenon, whether or
-      not they use the word latch — high economy of force maintenance, tonic
-      force maintenance, stress-phosphorylation dissociation, slow cross-bridge
-      cycling, reduced shortening velocity at maintained force, myosin
-      dephosphorylation during sustained contraction, tonic versus phasic smooth
-      muscle. The older literature predates the term and would otherwise be
-      missed.
-    - Reports in which the phenotype was sought and NOT found enter as rows
-      under identical rules (§3.11). A vessel class where latch behavior is
-      absent is a finding of this table, not an omission from it.
-    - Purified-protein, single-molecule, and in vitro motility reconstitutions
-      enter as rows, tagged as molecular-reconstitution evidence. They can speak
-      to the bridge mechanism and say nothing about vessel class.
-    - Mathematical and computational models of latch kinetics enter as rows,
-      tagged as model evidence. A model that predicts latch maintenance in a
-      named vessel is not a measurement in that vessel.
-    - Non-vascular smooth muscle (uterine, airway, gastrointestinal, vas
-      deferens) enters only where the report supplies a phenotype or mechanism
-      comparison bearing on vessel-type variation; tagged, and never counted
-      toward the vessel-class question this study asks.
+    - Reports indexed under any vocabulary variant of the phenomenon, whether or not
+      they use the word latch — high economy of force maintenance, tonic force
+      maintenance, stress-phosphorylation dissociation, slow cross-bridge cycling,
+      reduced shortening velocity at maintained force, myosin dephosphorylation during
+      sustained contraction, tonic versus phasic smooth muscle. The older literature
+      predates the term and would otherwise be missed.
+    - Reports in which the phenotype was sought and NOT found enter as rows under
+      identical rules (§3.11). A vessel class where latch behavior is absent is a
+      finding of this table, not an omission from it.
+    - Purified-protein, single-molecule, and in vitro motility reconstitutions enter as
+      rows, tagged as molecular-reconstitution evidence. They can speak to the bridge
+      mechanism and say nothing about vessel class.
+    - Mathematical and computational models of latch kinetics enter as rows, tagged as
+      model evidence. A model that predicts latch maintenance in a named vessel is not a
+      measurement in that vessel.
+    - Non-vascular smooth muscle (uterine, airway, gastrointestinal, vas deferens)
+      enters only where the report supplies a phenotype or mechanism comparison bearing
+      on vessel-type variation; tagged, and never counted toward the vessel-class
+      question this study asks.
   exclusion:
-    - Reviews, textbook chapters, and commentary with no new primary data. They
-      may be used for discovery only, and discovery aids are never cited (§3.7).
-    - Reports of maintained force or constriction with no activation, cycling,
-      or energetic readout. Sustained tone alone cannot distinguish an
-      economical hold from ordinary continued activation, which is the whole
-      distinction this table exists to draw.
+    - Reviews, textbook chapters, and commentary with no new primary data. They may be
+      used for discovery only, and discovery aids are never cited (§3.7).
+    - Reports of maintained force or constriction with no activation, cycling, or
+      energetic readout. Sustained tone alone cannot distinguish an economical hold from
+      ordinary continued activation, which is the whole distinction this table exists to
+      draw.
     - Skeletal-muscle and cardiac-muscle preparations.
-    - Clinical, pharmacological, and imaging studies whose endpoint is a whole
-      vessel or tissue response with no cross-bridge-level measurement.
-    - Secondary reports restating another included study's measurements without
-      new data (§3.10 — one experiment is one row, not many); where a row's data
-      are shared with another row's, the shared origin is recorded in its
-      independence note.
-  searchProtocol: "Discovery runs only after this freeze, by the executing agent's
-    own web search plus direct retrieval of primary documents (PubMed and PubMed
-    Central, Crossref DOI resolution, publisher pages); no deep-research
-    assistant is used, and no brief is cited. Literal queries, each run as
-    written: [latch bridge smooth muscle force maintenance energetic cost];
-    [economy of force maintenance vascular smooth muscle oxygen consumption];
-    [stress phosphorylation dissociation arterial smooth muscle]; [latch state
-    arteriole resistance vessel]; [skeletal muscle arteriole myosin light chain
-    phosphorylation sustained constriction]; [precapillary sphincter smooth
-    muscle sustained contraction phosphorylation]; [cannulated pressurized
-    arteriole myogenic tone LC20 phosphorylation shortening velocity]; [latch
-    bridge absence saphenous artery]; [tonic versus phasic smooth muscle myosin
-    dephosphorylation force maintenance]; [smooth muscle ATP consumption
-    cross-bridge phosphorylation carotid media]. Citation chaining, forward and
-    backward, from each identified anchor paper: Dillon et al. 1981
-    (10.1126/science.6893872), Hai & Murphy 1988 (the case's
-    SRC-HAI-MURPHY-1988), Wingard et al. 1994 (10.1113/jphysiol.1994.sp020422),
-    Han et al. 2006 (10.1152/ajpheart.00977.2005), Call et al. 2006
-    (10.1152/ajpheart.00086.2006), Hammell et al. 2022 (10.1085/jgp.202213117).
-    Author-family searches: Murphy RA, Eddinger TJ, Ratz PH, Speich JE, Lauzon
-    A-M, Paul RJ, Siegman MJ, Butler TM. Every cell is verified against the
-    primary document before it enters the table; searches that return nothing
-    are reported as failed searches (§3.11)."
+    - Clinical, pharmacological, and imaging studies whose endpoint is a whole vessel or
+      tissue response with no cross-bridge-level measurement.
+    - Secondary reports restating another included study's measurements without new data
+      (§3.10 — one experiment is one row, not many); where a row's data are shared with
+      another row's, the shared origin is recorded in its independence note.
+  searchProtocol: "Discovery runs only after this freeze, by the executing agent's own web
+    search plus direct retrieval of primary documents (PubMed and PubMed Central,
+    Crossref DOI resolution, publisher pages); no deep-research assistant is used, and
+    no brief is cited. Literal queries, each run as written: [latch bridge smooth muscle
+    force maintenance energetic cost]; [economy of force maintenance vascular smooth
+    muscle oxygen consumption]; [stress phosphorylation dissociation arterial smooth
+    muscle]; [latch state arteriole resistance vessel]; [skeletal muscle arteriole
+    myosin light chain phosphorylation sustained constriction]; [precapillary sphincter
+    smooth muscle sustained contraction phosphorylation]; [cannulated pressurized
+    arteriole myogenic tone LC20 phosphorylation shortening velocity]; [latch bridge
+    absence saphenous artery]; [tonic versus phasic smooth muscle myosin
+    dephosphorylation force maintenance]; [smooth muscle ATP consumption cross-bridge
+    phosphorylation carotid media]. Citation chaining, forward and backward, from each
+    identified anchor paper: Dillon et al. 1981 (10.1126/science.6893872), Hai & Murphy
+    1988 (the case's SRC-HAI-MURPHY-1988), Wingard et al. 1994
+    (10.1113/jphysiol.1994.sp020422), Han et al. 2006 (10.1152/ajpheart.00977.2005),
+    Call et al. 2006 (10.1152/ajpheart.00086.2006), Hammell et al. 2022
+    (10.1085/jgp.202213117). Author-family searches: Murphy RA, Eddinger TJ, Ratz PH,
+    Speich JE, Lauzon A-M, Paul RJ, Siegman MJ, Butler TM. Every cell is verified
+    against the primary document before it enters the table; searches that return
+    nothing are reported as failed searches (§3.11)."
   knownCandidates:
-    - name: Dillon, Aksoy, Driska & Murphy 1981, "Myosin Phosphorylation and the
-        Cross-Bridge Cycle in Arterial Smooth Muscle" (Science;
-        10.1126/science.6893872)
+    - name: Dillon, Aksoy, Driska & Murphy 1981, "Myosin Phosphorylation and the Cross-Bridge
+        Cycle in Arterial Smooth Muscle" (Science; 10.1126/science.6893872)
       disposition: include
-      reason: the founding observation of the phenotype in arterial smooth muscle; the
-        paper the latch-bridge account was built to explain
+      reason: the founding observation of the phenotype in arterial smooth muscle; the paper
+        the latch-bridge account was built to explain
     - name: Hai & Murphy 1988, the four-state latch-bridge kinetic model (the case's
         SRC-HAI-MURPHY-1988, already cited by VASO-E003)
       disposition: include
-      reason: enters as model evidence, not a vessel-level demonstration — the
-        distinction this study exists to enforce, applied first to the case's
-        own load-bearing citation
-    - name: Wingard, Paul & Murphy 1994, "Dependence of ATP consumption on
-        cross-bridge phosphorylation in swine carotid smooth muscle" (J Physiol;
+      reason: enters as model evidence, not a vessel-level demonstration — the distinction
+        this study exists to enforce, applied first to the case's own load-bearing
+        citation
+    - name: Wingard, Paul & Murphy 1994, "Dependence of ATP consumption on cross-bridge
+        phosphorylation in swine carotid smooth muscle" (J Physiol;
         10.1113/jphysiol.1994.sp020422)
       disposition: include
-      reason: a canonical energetics measurement in a large tonic artery; the row that
-        should score high on phenotype and low on knot relevance if the two-axis
-        grading is working
+      reason: a canonical energetics measurement in a large tonic artery; the row that should
+        score high on phenotype and low on knot relevance if the two-axis grading is
+        working
     - name: Han, Speich, Eddinger, Berg, Miner et al. 2006, "Evidence for absence of
-        latch-bridge formation in muscular saphenous arteries" (Am J Physiol
-        Heart Circ Physiol; 10.1152/ajpheart.00977.2005)
+        latch-bridge formation in muscular saphenous arteries" (Am J Physiol Heart Circ
+        Physiol; 10.1152/ajpheart.00977.2005)
       disposition: include
-      reason: a titled absence report in a downstream muscular artery; if the
-        phenotype is not generic across vascular smooth muscle, this is where
-        the table will show it
+      reason: a titled absence report in a downstream muscular artery; if the phenotype is not
+        generic across vascular smooth muscle, this is where the table will show it
     - name: 'Call, Han, Speich, Eddinger & Ratz 2006, "Resistance to pressure-induced
-        dilatation in femoral but not saphenous artery: physiological role of
-        latch?" (Am J Physiol Heart Circ Physiol; 10.1152/ajpheart.00086.2006)'
+        dilatation in femoral but not saphenous artery: physiological role of latch?"
+        (Am J Physiol Heart Circ Physiol; 10.1152/ajpheart.00086.2006)'
       disposition: include
-      reason: the pressurized-vessel counterpart to the preceding ring experiments;
-        the anchor for the transmural-pressure column
-    - name: Wang, Politi, Tania, Bai & Sanderson 2008, "A Mathematical Model of Airway
-        and Pulmonary Arteriole Smooth Muscle" (Biophysical Journal;
+      reason: the pressurized-vessel counterpart to the preceding ring experiments; the anchor
+        for the transmural-pressure column
+    - name: Wang, Politi, Tania, Bai & Sanderson 2008, "A Mathematical Model of Airway and
+        Pulmonary Arteriole Smooth Muscle" (Biophysical Journal;
         10.1529/biophysj.107.113977)
       disposition: include
-      reason: enters as model evidence — an arteriole-named prediction, which is
-        precisely the kind of record that could be mistaken for an arteriole
-        measurement if the evidence classes were not separated
-    - name: Hammell, Kachmar, Balassy, IJpma & Lauzon 2022, "Molecular-level evidence
-        of force maintenance by smooth muscle myosin during LC20
-        dephosphorylation" (J Gen Physiol; 10.1085/jgp.202213117)
+      reason: enters as model evidence — an arteriole-named prediction, which is precisely the
+        kind of record that could be mistaken for an arteriole measurement if the
+        evidence classes were not separated
+    - name: Hammell, Kachmar, Balassy, IJpma & Lauzon 2022, "Molecular-level evidence of force
+        maintenance by smooth muscle myosin during LC20 dephosphorylation" (J Gen
+        Physiol; 10.1085/jgp.202213117)
       disposition: include
-      reason: enters as molecular-reconstitution evidence — deliberately
-        vessel-agnostic, so strong on the bridge mechanism and silent on
-        localization
-    - name: An unlocated canine saphenous-vein report, named in the pre-freeze
-        commentary as inferring latch formation from an approximately 11.9 per
-        cent fall in maximum shortening velocity, with no energetic measurement
+      reason: enters as molecular-reconstitution evidence — deliberately vessel-agnostic, so
+        strong on the bridge mechanism and silent on localization
+    - name: An unlocated canine saphenous-vein report, named in the pre-freeze commentary as
+        inferring latch formation from an approximately 11.9 per cent fall in maximum
+        shortening velocity, with no energetic measurement
       disposition: include
-      reason: recorded as an unverified lead, not a citation — the executing agent
-        could not resolve it to a primary document before the freeze. Include if
-        collection resolves it; if it cannot be resolved, the failed search is
-        reported rather than dropped (§3.11), because a candidate that entered
-        the design and then vanished is exactly what this field exists to expose
+      reason: recorded as an unverified lead, not a citation — the executing agent could not
+        resolve it to a primary document before the freeze. Include if collection
+        resolves it; if it cannot be resolved, the failed search is reported rather than
+        dropped (§3.11), because a candidate that entered the design and then vanished
+        is exactly what this field exists to expose
   criteriaHash: fe5e031b8b8f
-method: "One row per experimental preparation, not per paper: a study reporting
-  two vessel types under different conditions supplies two rows, and rows
-  sharing an animal cohort, tissue batch, or dataset carry an independence note
-  (§3.10). Every cell is transcribed from the primary document and cited inline
-  with the standard verification label; nothing is completed from memory or from
-  a secondary account. Each row then receives TWO independent grades, recorded
-  separately and never combined into a single score (§3.13). The latch-evidence
-  grade records how directly the report establishes the phenomenon —
-  contemporaneous energetic measurement, biochemical-mechanical measurement,
-  functional inference from shortening velocity or stiffness alone, molecular
-  reconstitution, or model only. The knot-relevance grade records how close the
-  preparation is to what VASO-C020 requires — a pressurized skeletal-muscle
-  arteriole or smaller resistance microvessel, another resistance vessel, or a
-  large artery, vein, or non-vascular preparation. Keeping the axes apart is the
-  point of the table: a carotid ring study can be strong evidence for the
-  phenotype and weak evidence for the location, and collapsing that into one
-  verdict is how a well-established result in the wrong tissue becomes direct
-  support for a claim about muscle knots. Two columns carry the weight the
-  case's own argument turns on. Caliber is recorded as an actual luminal
-  diameter WITH the transmural pressure at which it was measured, because an
-  isometric ring at nominally zero transmural pressure is a different mechanical
-  object from a cannulated vessel regulating its lumen against 40-100 mmHg.
-  Persistence is recorded as whether the activating stimulus remained present,
-  what happened to force or diameter after it was withdrawn, and over what
-  interval — the distinction between economical maintenance under continuing
-  activation and a state that holds on its own. The table reports what the
-  literature contains and does not adjudicate between papers that disagree;
-  disagreements are recorded as the papers state them. Either outcome
-  publishes."
+method: "One row per experimental preparation, not per paper: a study reporting two
+  vessel types under different conditions supplies two rows, and rows sharing an animal
+  cohort, tissue batch, or dataset carry an independence note (§3.10). Every cell is
+  transcribed from the primary document and cited inline with the standard verification
+  label; nothing is completed from memory or from a secondary account. Each row then
+  receives TWO independent grades, recorded separately and never combined into a single
+  score (§3.13). The latch-evidence grade records how directly the report establishes
+  the phenomenon — contemporaneous energetic measurement, biochemical-mechanical
+  measurement, functional inference from shortening velocity or stiffness alone,
+  molecular reconstitution, or model only. The knot-relevance grade records how close
+  the preparation is to what VASO-C020 requires — a pressurized skeletal-muscle
+  arteriole or smaller resistance microvessel, another resistance vessel, or a large
+  artery, vein, or non-vascular preparation. Keeping the axes apart is the point of the
+  table: a carotid ring study can be strong evidence for the phenotype and weak evidence
+  for the location, and collapsing that into one verdict is how a well-established
+  result in the wrong tissue becomes direct support for a claim about muscle knots. Two
+  columns carry the weight the case's own argument turns on. Caliber is recorded as an
+  actual luminal diameter WITH the transmural pressure at which it was measured, because
+  an isometric ring at nominally zero transmural pressure is a different mechanical
+  object from a cannulated vessel regulating its lumen against 40-100 mmHg. Persistence
+  is recorded as whether the activating stimulus remained present, what happened to
+  force or diameter after it was withdrawn, and over what interval — the distinction
+  between economical maintenance under continuing activation and a state that holds on
+  its own. The table reports what the literature contains and does not adjudicate
+  between papers that disagree; disagreements are recorded as the papers state them.
+  Either outcome publishes."
 columns:
   - paper
   - preparation class
@@ -193,11 +182,740 @@ columns:
   - latch-evidence grade
   - knot-relevance grade
   - notes
-rows: []
-findings: []
-limitations: []
-runId: 2026-09-01-study-vaso-s001-freeze
+rows:
+  - cells:
+      paper: Dillon, Aksoy, Driska & Murphy 1981, 'Myosin Phosphorylation and the Cross-Bridge
+        Cycle in Arterial Smooth Muscle', Science 211:495-497
+      preparation class: Vessel-level, intact tissue
+      species, sex and age as reported: Not stated in the accessible record (abstract).
+      vascular bed and named vessel: Arterial smooth muscle; the specific artery is not named in the accessible record
+      branch order: Not stated in the accessible record (abstract).
+      luminal diameter (and the pressure at which measured): Not stated in the accessible record (abstract).
+      preparation type and endothelial status: Not stated in the accessible record (abstract).
+      temperature: Not stated in the accessible record (abstract).
+      transmural pressure and flow: Not stated in the accessible record (abstract).
+      activation stimulus: Not stated in the accessible record (abstract).
+      stimulus duration and whether withdrawn: Not stated in the accessible record (abstract).
+      force or diameter time course: States that dephosphorylation can produce an attached,
+        noncycling cross-bridge ('latch-bridge') 'responsible for the high economy of
+        force maintenance in this tissue'
+      activation readout (LC20 phosphorylation, intracellular calcium): Phosphorylation of the
+        20,000-dalton myosin light chain, reported as 'closely correlated with
+        cross-bridge cycling'
+      cycling readout (shortening velocity, stiffness): Cross-bridge cycling; the measurement
+        method is not named in the accessible record
+      energetic readout (assay named): "'High economy of force maintenance' is asserted; no
+        assay is named in the accessible record"
+      simultaneity and time resolution of readouts: Not stated in the accessible record (abstract).
+      persistence after withdrawal, and relaxation kinetics: Not stated in the accessible record (abstract).
+      latch-evidence grade: Biochemical-mechanical measurement (activation and/or cycling, no energetics)
+      knot-relevance grade: Large artery, vein, or non-vascular preparation
+      notes: The founding statement of the latch-bridge concept and the origin of the
+        inferential step VASO-C020 depends on. Cells are limited by a two-sentence
+        published abstract; the full text was not accessible to this collection, so the
+        preparation, temperature and energetic assay are recorded as unstated rather
+        than supplied from elsewhere.
+    citation:
+      text: Dillon PF, Aksoy MO, Driska SP, Murphy RA. Science 1981;211(4481):495-497.
+        Abstract read at native verification 2026-09-01.
+      doi: 10.1126/science.6893872
+      locator: Abstract
+      verification: ai_verified
+  - cells:
+      paper: Wingard, Paul & Murphy 1994, 'Dependence of ATP consumption on cross-bridge
+        phosphorylation in swine carotid smooth muscle', J Physiol 481(1):111-117
+      preparation class: Vessel-level, intact tissue
+      species, sex and age as reported: Swine; sex and age not stated in the accessible record
+      vascular bed and named vessel: Carotid artery media
+      branch order: Conduit artery
+      luminal diameter (and the pressure at which measured): Not applicable — medial rings, no lumen pressure reported
+      preparation type and endothelial status: Medial rings; endothelial status not stated in the accessible record
+      temperature: Not stated in the accessible record (abstract).
+      transmural pressure and flow: None — isometric ring preparation, no transmural pressure or flow
+      activation stimulus: Depolarizing solutions and agents chosen to hold a wide range of
+        steady-state myoplasmic Ca2+ and MRLC phosphorylation
+      stimulus duration and whether withdrawn: Steady-state measurements; no withdrawal phase reported
+      force or diameter time course: Steady-state force measured across the activation range;
+        suprabasal ATP consumption rose almost linearly with MRLC phosphorylation and
+        hyperbolically with active stress
+      activation readout (LC20 phosphorylation, intracellular calcium): MRLC (LC20) phosphorylation
+      cycling readout (shortening velocity, stiffness): Not reported in the accessible record
+      energetic readout (assay named): Oxygen consumption, converted to ATP consumption rate
+      simultaneity and time resolution of readouts: Steady-state force and oxygen consumption
+        measured together; time resolution not stated in the accessible record
+      persistence after withdrawal, and relaxation kinetics: Not tested — stimulus maintained throughout
+      latch-evidence grade: Direct — contemporaneous energetic measurement
+      knot-relevance grade: Large artery, vein, or non-vascular preparation
+      notes: Reports that the economy of stress maintenance falls as suprabasal
+        phosphorylation rises — the quantitative core of the economy claim, in a conduit
+        artery at zero transmural pressure.
+    citation:
+      text: Wingard CJ, Paul RJ, Murphy RA. J Physiol 1994;481(Pt 1):111-117. PMID 7853233.
+        Abstract read at native verification 2026-09-01.
+      doi: 10.1113/jphysiol.1994.sp020422
+      locator: Abstract
+      verification: ai_verified
+    independenceNote: Same laboratory and preparation as the Wingard 1997 row below; the two
+      are not independent tissue populations.
+  - cells:
+      paper: Wingard, Paul & Murphy 1997, 'Energetic cost of activation processes during
+        contraction of swine arterial smooth muscle', J Physiol 501(1):213-223
+      preparation class: Vessel-level, intact tissue
+      species, sex and age as reported: Swine; sex and age not stated in the accessible record
+      vascular bed and named vessel: Carotid artery smooth muscle
+      branch order: Conduit artery
+      luminal diameter (and the pressure at which measured): Not applicable — no lumen pressure reported
+      preparation type and endothelial status: Arterial smooth muscle at controlled length (Lo
+        and 1.8 Lo); endothelial status not stated in the accessible record
+      temperature: Not stated in the accessible record (abstract).
+      transmural pressure and flow: None — length-controlled preparation, no transmural pressure or flow
+      activation stimulus: K+-induced depolarization and protocols varying activation at long length
+      stimulus duration and whether withdrawn: Steady-state; no withdrawal phase reported
+      force or diameter time course: Isometric contractions with force minimal at 1.8 Lo by
+        design, allowing activation cost to be separated from cross-bridge cost
+      activation readout (LC20 phosphorylation, intracellular calcium): MRLC (LC20) phosphorylation, varied from 15% to 50% across protocols
+      cycling readout (shortening velocity, stiffness): Cross-bridge cycling cost (JX) derived, not separately measured
+      energetic readout (assay named): Suprabasal oxygen consumption AND lactate release,
+        partitioned into cross-bridge (JX) and activation (JA) components
+      simultaneity and time resolution of readouts: Energetic and phosphorylation measures
+        taken under matched steady-state conditions; time resolution not stated in the
+        accessible record
+      persistence after withdrawal, and relaxation kinetics: Not tested — stimulus maintained throughout
+      latch-evidence grade: Direct — contemporaneous energetic measurement
+      knot-relevance grade: Large artery, vein, or non-vascular preparation
+      notes: "The row that vindicates the frozen decision to admit oxygen consumption and
+        lactate rather than requiring a measured ATPase: activation energy is reported
+        as 17-45% of suprabasal JO2 at Lo, so a substantial fraction of the energetic
+        budget is regulatory rather than mechanical."
+    citation:
+      text: Wingard CJ, Paul RJ, Murphy RA. J Physiol 1997;501(Pt 1):213-223. PMID 9175004.
+        Abstract read at native verification 2026-09-01.
+      doi: 10.1111/j.1469-7793.1997.213bo.x
+      locator: Abstract
+      verification: ai_verified
+    independenceNote: Same laboratory and preparation as the Wingard 1994 row above; the two
+      are not independent tissue populations.
+  - cells:
+      paper: Krisanda & Paul 1988, 'Dependence of force, velocity, and O2 consumption on
+        [Ca2+]o in porcine carotid artery', Am J Physiol 255:C393-C400
+      preparation class: Vessel-level, intact tissue
+      species, sex and age as reported: Porcine; sex and age not stated in the accessible record
+      vascular bed and named vessel: Carotid artery media
+      branch order: Conduit artery
+      luminal diameter (and the pressure at which measured): Not applicable — media strip and ring preparations
+      preparation type and endothelial status: Media strips and rings; endothelial status not stated in the accessible record
+      temperature: 37 degrees C (stated)
+      transmural pressure and flow: None — isometric strips and rings, no transmural pressure or flow
+      activation stimulus: 109 mM KCl substituted for NaCl, across extracellular Ca2+ from 0.15 to 7.5 mM
+      stimulus duration and whether withdrawn: Steady state of an isometric contraction; no withdrawal phase reported
+      force or diameter time course: Isometric force (Fo) measured at steady state across the Ca2+ range
+      activation readout (LC20 phosphorylation, intracellular calcium): Extracellular Ca2+
+        varied as the activation control; LC20 phosphorylation not reported in the
+        accessible record
+      cycling readout (shortening velocity, stiffness): Unloaded shortening velocity (Vus) by
+        the slack-test method; 1.7-fold greater at 7.5 mM than 1.6 mM Ca2+
+      energetic readout (assay named): ATP utilization rate (JATP) from steady-state tissue oxygen consumption
+      simultaneity and time resolution of readouts: Force, velocity and oxygen consumption
+        measured in the same steady state; time resolution not stated in the accessible
+        record
+      persistence after withdrawal, and relaxation kinetics: Not tested — stimulus maintained throughout
+      latch-evidence grade: Direct — contemporaneous energetic measurement
+      knot-relevance grade: Large artery, vein, or non-vascular preparation
+      notes: One of the few rows stating its temperature (37 C). Economy of tension
+        maintenance reported 3.3-fold greater over 0.15-1.6 mM Ca2+ than over 1.6-7.5
+        mM, i.e. economy varies with the degree of activation within one vessel.
+    citation:
+      text: Krisanda JM, Paul RJ. Am J Physiol 1988;255(3 Pt 1):C393-C400. PMID 3421320.
+        Abstract read at native verification 2026-09-01.
+      doi: 10.1152/ajpcell.1988.255.3.C393
+      locator: Abstract
+      verification: ai_verified
+  - cells:
+      paper: "Moreland, Moreland & Singer 1987, 'Apparent dissociation between myosin light
+        chain phosphorylation and maximal velocity of shortening in KCl depolarized
+        swine carotid artery: effect of temperature and KCl concentration', Pflugers
+        Arch 408:139-145"
+      preparation class: Vessel-level, intact tissue
+      species, sex and age as reported: Swine; sex and age not stated in the accessible record
+      vascular bed and named vessel: Carotid artery medial fibers
+      branch order: Conduit artery
+      luminal diameter (and the pressure at which measured): Not applicable — medial fibre preparation
+      preparation type and endothelial status: Medial fibres; endothelial status not stated in the accessible record
+      temperature: 37 degrees C and 23 degrees C, compared directly (stated)
+      transmural pressure and flow: None — no transmural pressure or flow
+      activation stimulus: KCl depolarization at 110 mM and at 40 mM
+      stimulus duration and whether withdrawn: Stress development followed by a
+        stress-maintenance period; no withdrawal phase reported
+      force or diameter time course: At 110 mM KCl and 37 C, stress is maintained while MLC
+        phosphorylation and Vo fall back to suprabasal levels — the latch phenotype as
+        classically described
+      activation readout (LC20 phosphorylation, intracellular calcium): MLC (LC20) phosphorylation
+      cycling readout (shortening velocity, stiffness): Maximal shortening velocity (Vo)
+      energetic readout (assay named): None reported
+      simultaneity and time resolution of readouts: Phosphorylation and velocity followed
+        across development and maintenance phases; exact time resolution not stated in
+        the accessible record
+      persistence after withdrawal, and relaxation kinetics: Not tested — depolarizing stimulus maintained throughout
+      latch-evidence grade: Biochemical-mechanical measurement (activation and/or cycling, no energetics)
+      knot-relevance grade: Large artery, vein, or non-vascular preparation
+      notes: "Directly relevant to the frozen temperature column: dropping from 37 C to 23 C
+        leaves stress and phosphorylation similar but halves Vo, and at 40 mM KCl
+        phosphorylation is sustained rather than transient while Vo is transient — so
+        the phosphorylation-velocity relationship that underwrites the latch reading is
+        not fixed, but varies with temperature and stimulus strength within a single
+        vessel type."
+    citation:
+      text: Moreland S, Moreland RS, Singer HA. Pflugers Arch 1987;408(2):139-145. PMID
+        3562201. Abstract read at native verification 2026-09-01.
+      doi: 10.1007/BF00581343
+      locator: Abstract
+      verification: ai_verified
+  - cells:
+      paper: Fulginiti, Singer & Moreland 1993, 'Phorbol ester-induced contractions of swine
+        carotid artery are supported by slowly cycling crossbridges which are not
+        dependent on calcium or myosin light chain phosphorylation', J Vasc Res
+        30:315-322
+      preparation class: Vessel-level, intact tissue
+      species, sex and age as reported: Swine; sex and age not stated in the accessible record
+      vascular bed and named vessel: Carotid artery
+      branch order: Conduit artery
+      luminal diameter (and the pressure at which measured): Not applicable — arterial strips
+      preparation type and endothelial status: Arterial strips; endothelial status not stated in the accessible record
+      temperature: Not stated in the accessible record (abstract).
+      transmural pressure and flow: None — no transmural pressure or flow
+      activation stimulus: 1.0 microM phorbol 12,13-dibutyrate in normal or Ca2+-free
+        solution, compared with 110 mM KCl
+      stimulus duration and whether withdrawn: Slow stress development to maximum; no withdrawal phase reported
+      force or diameter time course: PDBu induced maximal stress both with and without calcium
+      activation readout (LC20 phosphorylation, intracellular calcium): MLC (LC20)
+        phosphorylation and calcium dependence; stress under PDBu was independent of
+        both
+      cycling readout (shortening velocity, stiffness): Shortening velocity and the
+        stress-stiffness relationship; stress-stiffness did not differ between KCl and
+        PDBu despite significantly different phosphorylation
+      energetic readout (assay named): None reported
+      simultaneity and time resolution of readouts: Velocity and phosphorylation followed
+        together during stimulation; exact time resolution not stated in the accessible
+        record
+      persistence after withdrawal, and relaxation kinetics: Not tested — stimulus maintained throughout
+      latch-evidence grade: Biochemical-mechanical measurement (activation and/or cycling, no energetics)
+      knot-relevance grade: Large artery, vein, or non-vascular preparation
+      notes: A slowly-cycling, high-stress state reached without calcium or LC20
+        phosphorylation. Recorded here because it shows the phenotype the latch grade
+        tracks can be produced by a route other than the dephosphorylated-bridge
+        mechanism, which is why this study grades the two axes separately.
+    citation:
+      text: Fulginiti J 3rd, Singer HA, Moreland RS. J Vasc Res 1993;30(6):315-322. PMID
+        8241364. Abstract read at native verification 2026-09-01.
+      doi: 10.1159/000159012
+      locator: Abstract
+      verification: ai_verified
+  - cells:
+      paper: Han, Speich, Eddinger, Berg, Miner et al. 2006, 'Evidence for absence of
+        latch-bridge formation in muscular saphenous arteries', Am J Physiol Heart Circ
+        Physiol 291:H138-H146 — femoral artery arm
+      preparation class: Vessel-level, intact tissue
+      species, sex and age as reported: Rabbit; sex and age not stated in the accessible record
+      vascular bed and named vessel: Femoral artery (elastic)
+      branch order: Conduit artery; parent of the saphenous branch
+      luminal diameter (and the pressure at which measured): Zero-pressure lumen diameter
+        reported as roughly twice that of the saphenous artery; absolute value not
+        stated in the accessible record
+      preparation type and endothelial status: Isolated rings; endothelial status not stated in the accessible record
+      temperature: Not stated in the accessible record (abstract).
+      transmural pressure and flow: None — isometric rings at zero transmural pressure
+      activation stimulus: KCl
+      stimulus duration and whether withdrawn: At least 10 minutes, maintained; no withdrawal phase reported
+      force or diameter time course: Isometric stress rose to 1.2e5 N/m2 within 16 s and was
+        sustained at 1.3e5 N/m2 at 10 min
+      activation readout (LC20 phosphorylation, intracellular calcium): Intracellular Ca2+
+        peaked near 250 nM and declined to about 175 nM by 10 min; MLC phosphorylation
+        42% at steady state
+      cycling readout (shortening velocity, stiffness): Force redevelopment after quick
+        release (slower than saphenous); permeabilized relaxation rate
+      energetic readout (assay named): None reported
+      simultaneity and time resolution of readouts: Stress, Ca2+ and phosphorylation compared at matched timepoints (16 s, 10 min)
+      persistence after withdrawal, and relaxation kinetics: Not tested — KCl maintained throughout
+      latch-evidence grade: Biochemical-mechanical measurement (activation and/or cycling, no energetics)
+      knot-relevance grade: Large artery, vein, or non-vascular preparation
+      notes: Sustained stress at falling Ca2+ — the latch phenotype. The authors' four-state
+        Hai-Murphy simulations support latch-bridge formation here but not in the
+        saphenous row below.
+    citation:
+      text: Han YS, Speich JE, Eddinger TJ, Berg KM, Miner AS, et al. Am J Physiol Heart Circ
+        Physiol 2006;291(1):H138-H146. PMID 16461375. Abstract read at native
+        verification 2026-09-01.
+      doi: 10.1152/ajpheart.00977.2005
+      locator: Abstract
+      verification: ai_verified
+    independenceNote: Same publication and animal cohort as the saphenous row below; the two
+      arms are paired, not independent.
+  - cells:
+      paper: Han, Speich, Eddinger, Berg, Miner et al. 2006, 'Evidence for absence of
+        latch-bridge formation in muscular saphenous arteries', Am J Physiol Heart Circ
+        Physiol 291:H138-H146 — saphenous artery arm
+      preparation class: Vessel-level, intact tissue
+      species, sex and age as reported: Rabbit; sex and age not stated in the accessible record
+      vascular bed and named vessel: Saphenous artery (muscular branch of the femoral)
+      branch order: One branch order downstream of the femoral artery
+      luminal diameter (and the pressure at which measured): Zero-pressure lumen diameter
+        reported as roughly half that of the femoral artery, with roughly twice the
+        medial thickness; absolute value not stated in the accessible record
+      preparation type and endothelial status: Isolated rings; endothelial status not stated in the accessible record
+      temperature: Not stated in the accessible record (abstract).
+      transmural pressure and flow: None — isometric rings at zero transmural pressure
+      activation stimulus: KCl
+      stimulus duration and whether withdrawn: At least 10 minutes, maintained; no withdrawal phase reported
+      force or diameter time course: Isometric stress rose to 1.2e5 N/m2 within 16 s but fell
+        40% to 0.8e5 N/m2 by 10 min
+      activation readout (LC20 phosphorylation, intracellular calcium): Intracellular Ca2+
+        declined to about 175 nM as in the femoral, but MLC phosphorylation was 28%
+        versus 42%
+      cycling readout (shortening velocity, stiffness): Faster force redevelopment on quick
+        release and faster permeabilized relaxation than femoral; higher fast-to-slow
+        myosin isoform ratio
+      energetic readout (assay named): None reported
+      simultaneity and time resolution of readouts: Stress, Ca2+ and phosphorylation compared at matched timepoints (16 s, 10 min)
+      persistence after withdrawal, and relaxation kinetics: Not tested — KCl maintained throughout
+      latch-evidence grade: Biochemical-mechanical measurement (activation and/or cycling, no energetics)
+      knot-relevance grade: Large artery, vein, or non-vascular preparation
+      notes: "The published absence report, and the strongest evidence in the table that latch
+        behaviour is not generic across vascular smooth muscle: the authors attribute
+        the 40% stress loss to expressed motor proteins that do not support latch-bridge
+        formation, alongside higher MLC phosphatase. Still a named conduit artery, not a
+        resistance microvessel."
+    citation:
+      text: Han YS, Speich JE, Eddinger TJ, Berg KM, Miner AS, et al. Am J Physiol Heart Circ
+        Physiol 2006;291(1):H138-H146. PMID 16461375. Abstract read at native
+        verification 2026-09-01.
+      doi: 10.1152/ajpheart.00977.2005
+      locator: Abstract
+      verification: ai_verified
+    independenceNote: Same publication and animal cohort as the femoral row above; the two
+      arms are paired, not independent.
+  - cells:
+      paper: "Call, Han, Speich, Eddinger & Ratz 2006, 'Resistance to pressure-induced
+        dilatation in femoral but not saphenous artery: physiological role of latch?',
+        Am J Physiol Heart Circ Physiol 291:H1513-H1520 — femoral artery arm"
+      preparation class: Vessel-level, intact tissue
+      species, sex and age as reported: Rabbit; sex and age not stated in the accessible record
+      vascular bed and named vessel: Femoral artery (elastic)
+      branch order: Conduit artery; parent of the saphenous branch
+      luminal diameter (and the pressure at which measured): Lumen diameter measured under
+        pressure; absolute values not stated in the accessible record
+      preparation type and endothelial status: Cannulated, pressurized vessel; endothelial
+        status not stated in the accessible record
+      temperature: Not stated in the accessible record (abstract).
+      transmural pressure and flow: 80 mmHg baseline, tested to 150 mmHg, with a ramp from 60
+        to 120 mmHg; flow not stated in the accessible record
+      activation stimulus: KCl
+      stimulus duration and whether withdrawn: Compared at 30 s and 10 min, maintained; no withdrawal phase reported
+      force or diameter time course: Isobaric active constriction was greater at 10 min than
+        30 s (the reverse of saphenous); once constricted, the femoral held a smaller
+        diameter through a pressure ramp than it could reach by isobaric constriction at
+        the same pressure
+      activation readout (LC20 phosphorylation, intracellular calcium): Not reported in this paper's accessible record
+      cycling readout (shortening velocity, stiffness): Not reported in this paper's accessible record
+      energetic readout (assay named): None reported
+      simultaneity and time resolution of readouts: Diameter followed through the pressure ramp; other readouts absent
+      persistence after withdrawal, and relaxation kinetics: Not tested as withdrawal. The
+        authors frame the effect as temporarily resisting dilatation during transient
+        pressure increases, with KCl still present
+      latch-evidence grade: Functional inference (mechanical behaviour only)
+      knot-relevance grade: Large artery, vein, or non-vascular preparation
+      notes: The only pressurized-vessel row in the table, and the reason transmural pressure
+        is a frozen column. Note the authors' own framing is temporary resistance to
+        dilatation under a maintained stimulus, not an autonomous persistent state.
+    citation:
+      text: Call CL, Han YS, Speich JE, Eddinger TJ, Ratz PH. Am J Physiol Heart Circ Physiol
+        2006;291(4):H1513-H1520. PMID 16731652. Abstract read at native verification
+        2026-09-01.
+      doi: 10.1152/ajpheart.00086.2006
+      locator: Abstract
+      verification: ai_verified
+    independenceNote: Same publication and laboratory as the saphenous row below, and a
+      follow-up on the same vessel pair as the Han 2006 rows; not an independent
+      replication.
+  - cells:
+      paper: "Call, Han, Speich, Eddinger & Ratz 2006, 'Resistance to pressure-induced
+        dilatation in femoral but not saphenous artery: physiological role of latch?',
+        Am J Physiol Heart Circ Physiol 291:H1513-H1520 — saphenous artery arm"
+      preparation class: Vessel-level, intact tissue
+      species, sex and age as reported: Rabbit; sex and age not stated in the accessible record
+      vascular bed and named vessel: Saphenous artery (muscular branch of the femoral)
+      branch order: One branch order downstream of the femoral artery
+      luminal diameter (and the pressure at which measured): Smaller absolute diameter than
+        femoral; values not stated in the accessible record
+      preparation type and endothelial status: Cannulated, pressurized vessel; endothelial
+        status not stated in the accessible record
+      temperature: Not stated in the accessible record (abstract).
+      transmural pressure and flow: 80 mmHg baseline, tested to 150 mmHg, with a ramp from 60
+        to 120 mmHg; flow not stated in the accessible record
+      activation stimulus: KCl
+      stimulus duration and whether withdrawn: Compared at 30 s and 10 min, maintained; no withdrawal phase reported
+      force or diameter time course: Isobaric active constriction was greater at 30 s than 10
+        min — constriction faded under a maintained stimulus; the constricted saphenous
+        did not hold a smaller diameter than isobaric constriction through the pressure
+        ramp
+      activation readout (LC20 phosphorylation, intracellular calcium): Not reported in this paper's accessible record
+      cycling readout (shortening velocity, stiffness): Not reported in this paper's accessible record
+      energetic readout (assay named): None reported
+      simultaneity and time resolution of readouts: Diameter followed through the pressure ramp; other readouts absent
+      persistence after withdrawal, and relaxation kinetics: Not tested as withdrawal;
+        constriction decayed while the stimulus was still present
+      latch-evidence grade: Functional inference (mechanical behaviour only)
+      knot-relevance grade: Large artery, vein, or non-vascular preparation
+      notes: Percent isobaric active constriction was larger in saphenous than femoral
+        (roughly 80% versus 30% at 120 mmHg), which the authors attribute to absolute
+        diameter rather than contractile mechanism — a caution against reading
+        constriction magnitude as evidence of latch.
+    citation:
+      text: Call CL, Han YS, Speich JE, Eddinger TJ, Ratz PH. Am J Physiol Heart Circ Physiol
+        2006;291(4):H1513-H1520. PMID 16731652. Abstract read at native verification
+        2026-09-01.
+      doi: 10.1152/ajpheart.00086.2006
+      locator: Abstract
+      verification: ai_verified
+    independenceNote: Same publication and laboratory as the femoral row above, and a
+      follow-up on the same vessel pair as the Han 2006 rows; not an independent
+      replication.
+  - cells:
+      paper: Zou, Ratz & Hill 1995, 'Role of myosin phosphorylation and [Ca2+]i in myogenic
+        reactivity and arteriolar tone', Am J Physiol 269:H1590-H1596
+      preparation class: Vessel-level, intact microvessel
+      species, sex and age as reported: Rat; sex and age not stated in the accessible record
+      vascular bed and named vessel: Cremaster muscle arteriole — skeletal-muscle resistance microvessel
+      branch order: Arteriole; branch order not stated in the accessible record
+      luminal diameter (and the pressure at which measured): Approximately 100 micrometres, vessels initially pressurized to 70 mmHg
+      preparation type and endothelial status: Dissected free of surrounding tissue and
+        cannulated on glass pipettes; endothelial status not stated in the accessible
+        record
+      temperature: 34 degrees C (stated)
+      transmural pressure and flow: Steady-state intraluminal pressures from 30 to 170 mmHg;
+        explicitly no intraluminal flow
+      activation stimulus: Intraluminal pressure itself (myogenic activation)
+      stimulus duration and whether withdrawn: Steady-state pressures held; pressure never withdrawn to test persistence
+      force or diameter time course: Raising intraluminal pressure produced significant constriction
+      activation readout (LC20 phosphorylation, intracellular calcium): "Both measured and
+        both ROSE with pressure: fura-2 340/380 ratio 0.80 at 30 mmHg versus 1.02 at 120
+        mmHg; MLC phosphorylation 27.7% at 30 mmHg versus 39.6% at 120 mmHg, falling to
+        8.5% in Ca2+-free EGTA solution"
+      cycling readout (shortening velocity, stiffness): Not reported
+      energetic readout (assay named): None reported
+      simultaneity and time resolution of readouts: Ca2+ and phosphorylation measured at
+        matched steady-state pressures; phosphorylation required freezing the vessel, so
+        it is not a continuous time series
+      persistence after withdrawal, and relaxation kinetics: Not tested — the pressure stimulus was maintained throughout
+      latch-evidence grade: Biochemical-mechanical measurement (activation and/or cycling, no energetics)
+      knot-relevance grade: Pressurized skeletal-muscle arteriole or smaller resistance microvessel
+      notes: "The most anatomically relevant row in the table, and it runs against the latch
+        reading: in a pressurized skeletal-muscle arteriole near physiological
+        temperature, maintained constriction is accompanied by RAISED calcium and RAISED
+        LC20 phosphorylation, not by force held while activation falls. The study was
+        not designed as a latch test and its authors do not present it as one."
+    citation:
+      text: Zou H, Ratz PH, Hill MA. Am J Physiol 1995;269(5 Pt 2):H1590-H1596. PMID 7503253.
+        Abstract read at native verification 2026-09-01.
+      doi: 10.1152/ajpheart.1995.269.5.H1590
+      locator: Abstract
+      verification: ai_verified
+    independenceNote: Same laboratory and preparation as the Zou 2000 row below.
+  - cells:
+      paper: Zou, Ratz & Hill 2000, 'Temporal aspects of Ca2+ and myosin phosphorylation
+        during myogenic and norepinephrine-induced arteriolar constriction', J Vasc Res
+        37:556-567
+      preparation class: Vessel-level, intact microvessel
+      species, sex and age as reported: Rat; sex and age not stated in the accessible record
+      vascular bed and named vessel: Cremaster muscle arteriole — skeletal-muscle resistance microvessel
+      branch order: Arteriole; branch order not stated in the accessible record
+      luminal diameter (and the pressure at which measured): Not stated in the accessible record; vessel diameter was measured as an outcome
+      preparation type and endothelial status: Cannulated and loaded with fura-2; endothelial
+        status not stated in the accessible record
+      temperature: Not stated in the accessible record (abstract).
+      transmural pressure and flow: Acute increases in intraluminal pressure; values and flow
+        not stated in the accessible record
+      activation stimulus: "Two compared: acute intraluminal pressure increase (myogenic) and
+        norepinephrine"
+      stimulus duration and whether withdrawn: Followed to steady state; neither stimulus withdrawn to test persistence
+      force or diameter time course: Vessel diameter followed together with Ca2+ and
+        phosphorylation — the only time-resolved microvessel row in the table
+      activation readout (LC20 phosphorylation, intracellular calcium): Pressure gave a
+        biphasic Ca2+ rise (transient peak, then a steady state still above control)
+        with a MONOPHASIC rise in myosin phosphorylation correlated with instantaneous
+        wall tension; norepinephrine gave larger Ca2+ transients and biphasic
+        phosphorylation
+      cycling readout (shortening velocity, stiffness): Not reported
+      energetic readout (assay named): None reported
+      simultaneity and time resolution of readouts: Diameter, Ca2+ and phosphorylation related temporally within the same protocol
+      persistence after withdrawal, and relaxation kinetics: Not tested — stimuli maintained
+      latch-evidence grade: Biochemical-mechanical measurement (activation and/or cycling, no energetics)
+      knot-relevance grade: Pressurized skeletal-muscle arteriole or smaller resistance microvessel
+      notes: "The paper states its conclusion in terms this study's question needs:
+        spontaneous arteriolar tone 'represents a state of maintained smooth muscle
+        activation that requires increases in [Ca2+]i and myosin light-chain
+        phosphorylation'. At this caliber, maintained tone is reported as maintained
+        activation."
+    citation:
+      text: Zou H, Ratz PH, Hill MA. J Vasc Res 2000;37(6):556-567. PMID 11146410. Abstract
+        read at native verification 2026-09-01.
+      doi: 10.1159/000054089
+      locator: Abstract
+      verification: ai_verified
+    independenceNote: Same laboratory and preparation as the Zou 1995 row above.
+  - cells:
+      paper: Moreno-Dominguez, Colinas, El-Yazbi et al. 2013, 'Ca2+ sensitization due to
+        myosin light chain phosphatase inhibition and cytoskeletal reorganization in the
+        myogenic response of skeletal muscle resistance arteries', J Physiol
+        591:1235-1250
+      preparation class: Vessel-level, intact microvessel
+      species, sex and age as reported: Rat; sex and age not stated in the accessible record
+      vascular bed and named vessel: Gracilis and cremaster skeletal-muscle resistance arteries
+      branch order: Resistance artery / arteriole; branch order not stated in the accessible record
+      luminal diameter (and the pressure at which measured): Not stated in the accessible
+        record; arterial diameter measured as an outcome at each pressure
+      preparation type and endothelial status: Pressurized resistance arteries; endothelial
+        status not stated in the accessible record
+      temperature: Not stated in the accessible record (abstract).
+      transmural pressure and flow: Intraluminal pressures of 10, 80, 120 and 140 mmHg; flow
+        not stated in the accessible record
+      activation stimulus: Intraluminal pressure (myogenic), with H1152, GF109203X and
+        latrunculin B used to suppress Rho-kinase, PKC and actin polymerization
+      stimulus duration and whether withdrawn: Held at each pressure step; pressure not withdrawn to test persistence
+      force or diameter time course: Diameter determined at each intraluminal pressure alongside the biochemistry
+      activation readout (LC20 phosphorylation, intracellular calcium): LC20 phosphorylation
+        already high at 40% at 10 mmHg, rising to a maximum near 55% at 80 mmHg with NO
+        further change at 120 and 140 mmHg; MYPT1 phosphorylation rose and was blocked
+        by the Rho-kinase inhibitor; CPI-17 phosphorylation unchanged
+      cycling readout (shortening velocity, stiffness): Not reported; G-actin content fell by
+        about 65% at 80 mmHg, indexing cytoskeletal reorganization rather than
+        cross-bridge cycling
+      energetic readout (assay named): None reported
+      simultaneity and time resolution of readouts: Diameter and all phosphorylation measures
+        determined at matched intraluminal pressures
+      persistence after withdrawal, and relaxation kinetics: Not tested — pressure maintained
+      latch-evidence grade: Biochemical-mechanical measurement (activation and/or cycling, no energetics)
+      knot-relevance grade: Pressurized skeletal-muscle arteriole or smaller resistance microvessel
+      notes: The closest preparation in the literature to what VASO-C020 requires — named
+        skeletal-muscle resistance arteries, pressurized, with LC20 phosphorylation
+        measured against diameter. Sustained myogenic constriction is again accompanied
+        by sustained, elevated LC20 phosphorylation, and the mechanism the authors
+        identify for holding it is Rho-kinase-mediated Ca2+ sensitization plus actin
+        polymerization, not dephosphorylated latch bridges.
+    citation:
+      text: Moreno-Dominguez A, Colinas O, El-Yazbi A, et al. J Physiol 2013;591(5):1235-1250.
+        PMID 23230233. Abstract read at native verification 2026-09-01.
+      doi: 10.1113/jphysiol.2012.243576
+      locator: Abstract
+      verification: ai_verified
+  - cells:
+      paper: Hammell, Kachmar, Balassy, IJpma & Lauzon 2022, 'Molecular-level evidence of
+        force maintenance by smooth muscle myosin during LC20 dephosphorylation', J Gen
+        Physiol 154(10)
+      preparation class: Molecular reconstitution — not a vessel
+      species, sex and age as reported: Purified smooth-muscle myosin from tonic and phasic
+        sources; species not stated in the accessible record
+      vascular bed and named vessel: None — vessel-agnostic by design
+      branch order: Not applicable
+      luminal diameter (and the pressure at which measured): Not applicable
+      preparation type and endothelial status: Laser trap (single-beam) and in vitro motility
+        assay in a chamber built to inject myosin light chain phosphatase without bulk
+        flow
+      temperature: Not stated in the accessible record (abstract).
+      transmural pressure and flow: Not applicable
+      activation stimulus: Phosphorylated myosin pulling actin to a plateau force, then MLCP
+        injected to drive dephosphorylation
+      stimulus duration and whether withdrawn: Force followed through the dephosphorylation
+        period; the analogue of withdrawal is the removal of activation itself
+      force or diameter time course: Force maintained during LC20 dephosphorylation, and
+        maintained LONGER for tonic than for phasic smooth-muscle myosin
+      activation readout (LC20 phosphorylation, intracellular calcium): LC20 phosphorylation
+        level assessed in a parallel in vitro motility assay under matched conditions
+      cycling readout (shortening velocity, stiffness): Actin filament motility; strong-bond
+        behaviour inferred from force maintenance without cycling
+      energetic readout (assay named): No direct energetic assay; a mixture assay with
+        skeletal myosin indicates the strong bonds survive only if surrounding myosin
+        supplies no energy
+      simultaneity and time resolution of readouts: Force measured continuously in the trap;
+        phosphorylation assessed in a parallel matched assay rather than simultaneously
+        in the same chamber
+      persistence after withdrawal, and relaxation kinetics: "The clearest persistence result
+        in the table, but at the molecular grain only: force persists after activation
+        is removed"
+      latch-evidence grade: Molecular reconstitution
+      knot-relevance grade: Large artery, vein, or non-vascular preparation
+      notes: The strongest evidence in the table for the latch-bridge MECHANISM — strong bonds
+        from dephosphorylated, noncycling cross-bridges — and simultaneously the weakest
+        for localization, since it is deliberately vessel-agnostic. Exactly the case the
+        two-axis grading was frozen to keep apart.
+    citation:
+      text: Hammell RS, Kachmar L, Balassy Z, IJpma G, Lauzon A-M. J Gen Physiol
+        2022;154(10):e202213117. PMID 36001043. Abstract read at native verification
+        2026-09-01.
+      doi: 10.1085/jgp.202213117
+      locator: Abstract
+      verification: ai_verified
+  - cells:
+      paper: Hai & Murphy 1988, 'Cross-bridge phosphorylation and regulation of latch state in
+        smooth muscle', Am J Physiol 254:C99-C106
+      preparation class: Model — not a measurement
+      species, sex and age as reported: Not applicable
+      vascular bed and named vessel: None
+      branch order: Not applicable
+      luminal diameter (and the pressure at which measured): Not applicable
+      preparation type and endothelial status: Four-state kinetic cross-bridge model
+      temperature: Not applicable
+      transmural pressure and flow: Not applicable
+      activation stimulus: Not applicable
+      stimulus duration and whether withdrawn: Not applicable
+      force or diameter time course: Reproduces high sustained stress at low myosin
+        phosphorylation by letting dephosphorylated but attached cross-bridges detach
+        slowly
+      activation readout (LC20 phosphorylation, intracellular calcium): Phosphorylation is the model's only regulatory input
+      cycling readout (shortening velocity, stiffness): Cross-bridge cycling is modelled, not measured
+      energetic readout (assay named): Not applicable
+      simultaneity and time resolution of readouts: Not applicable
+      persistence after withdrawal, and relaxation kinetics: Not applicable
+      latch-evidence grade: Model only
+      knot-relevance grade: Large artery, vein, or non-vascular preparation
+      notes: Already in the case ledger as SRC-HAI-MURPHY-1988, cited by VASO-E003 as evidence
+        for VASO-C010. Entered here in the model class as the freeze pre-committed, to
+        make explicit that the case's load-bearing latch citation is a kinetic model,
+        not a vessel-level demonstration.
+    citation:
+      text: Hai CM, Murphy RA. Am J Physiol 1988;254(1 Pt 1):C99-C106. Ledger source
+        SRC-HAI-MURPHY-1988, verified in the 2026-08-22 citation batch.
+      doi: 10.1152/ajpcell.1988.254.1.C99
+      locator: Abstract; ledger source record
+      verification: ai_verified
+  - cells:
+      paper: Wang, Politi, Tania, Bai & Sanderson 2008, 'A mathematical model of airway and
+        pulmonary arteriole smooth muscle', Biophys J 94:2053-2064
+      preparation class: Model — not a measurement
+      species, sex and age as reported: Fitted to murine data as stated in the accessible record
+      vascular bed and named vessel: Pulmonary arteriole (modelled), alongside airway smooth muscle
+      branch order: Not applicable
+      luminal diameter (and the pressure at which measured): Not applicable
+      preparation type and endothelial status: Modified Hai-Murphy cross-bridge model
+        incorporating Ca2+ regulation of MLCK and MLCP
+      temperature: Not applicable
+      transmural pressure and flow: Not applicable
+      activation stimulus: Simulated Ca2+ signals, including oscillations versus steady elevation
+      stimulus duration and whether withdrawn: Not applicable
+      force or diameter time course: Predicts that relaxation rate is set principally by the
+        rate of release of the latch-bridge state, faster in airway than in arteriole
+      activation readout (LC20 phosphorylation, intracellular calcium): Ca2+, MLCK and MLCP are model variables
+      cycling readout (shortening velocity, stiffness): Modelled
+      energetic readout (assay named): Not applicable
+      simultaneity and time resolution of readouts: Not applicable
+      persistence after withdrawal, and relaxation kinetics: Predicted, not measured
+      latch-evidence grade: Model only
+      knot-relevance grade: Large artery, vein, or non-vascular preparation
+      notes: The frequently invoked arteriole latch reference. It names an arteriole but
+        measures nothing in one, and the arteriole is pulmonary rather than
+        skeletal-muscle. Recorded in the model class precisely so an anatomically
+        suggestive title cannot be counted as a microvascular demonstration.
+    citation:
+      text: Wang I, Politi AZ, Tania N, Bai Y, Sanderson MJ. Biophys J 2008;94(6):2053-2064.
+        PMID 18065464. Abstract read at native verification 2026-09-01.
+      doi: 10.1529/biophysj.107.113977
+      locator: Abstract
+      verification: ai_verified
+findings:
+  - statement: No study located meets all four of the conditions the question sets. Across
+      every row, contemporaneous energetic measurement appears only in large tonic
+      arterial preparations — swine and porcine carotid — and never in an arteriole or
+      any resistance microvessel. The frozen literal queries aimed at microvascular
+      energetics returned nothing, and two further searches run specifically for
+      arteriole-level oxygen consumption or ATP economy also returned nothing. The
+      energetic feasibility argument under VASO-C020 therefore rests entirely on
+      measurements made in conduit arteries at zero transmural pressure.
+    evidenceId: VASO-E019
+  - statement: "The target tissue compartment has nevertheless been examined with the right
+      molecular readout, and what it shows does not look like latch. Three rows are
+      pressurized skeletal-muscle resistance vessels — rat cremaster and gracilis — in
+      which LC20 phosphorylation was measured against diameter. In all three, maintained
+      constriction is accompanied by maintained or rising LC20 phosphorylation rather
+      than by force held while activation falls: phosphorylation rises with pressure
+      (27.7% at 30 mmHg to 39.6% at 120 mmHg), rises monophasically with wall tension,
+      and sits at 40% even at 10 mmHg rising to about 55% at 80 mmHg. One of these
+      papers states the conclusion directly, that spontaneous arteriolar tone
+      'represents a state of maintained smooth muscle activation that requires increases
+      in [Ca2+]i and myosin light-chain phosphorylation'. None of the three was designed
+      as a latch test and none frames itself as one, so this is a mismatch between the
+      hypothesis and the nearest available evidence rather than a refutation of it."
+    evidenceId: VASO-E020
+  - statement: Latch behaviour is demonstrably not generic across vascular smooth muscle,
+      and the divergence was never followed downstream. The paired rabbit femoral and
+      saphenous rows show sustained stress at falling calcium in the femoral and a 40%
+      stress loss in its own muscular branch, which the authors attribute to expressed
+      motor proteins that do not support latch-bridge formation. Forward citation
+      chaining from both 2006 papers found no study extending that comparison into
+      arterioles or the microcirculation, so the caliber series that would answer this
+      study's question has never been run — which is the specific gap VASO-R004 is now
+      designed to fill.
+    evidenceId: VASO-E021
+  - statement: Persistence after stimulus withdrawal is untested at every caliber. In all
+      thirteen vessel-level rows the activating stimulus — KCl, norepinephrine, or
+      intraluminal pressure — remained present for the duration of the measurement, and
+      no row followed force or diameter after it was removed. The only persistence
+      result in the table is the 2022 molecular reconstitution, in which purified
+      smooth-muscle myosin maintains force through LC20 dephosphorylation, longer for
+      tonic than phasic myosin. The published record therefore speaks to economical
+      maintenance under continuing activation, and is silent on the autonomous,
+      input-free persistence that a chronic knot would require.
+  - statement: Two structural cautions came out of the collection that bear on how the
+      phenotype should be read. The 1993 phorbol-ester row reaches maximal stress with
+      slowly cycling cross-bridges independent of both calcium and LC20 phosphorylation,
+      so the latch phenotype can be produced by a route other than the
+      dephosphorylated-bridge mechanism; and the 1987 temperature row shows the
+      phosphorylation-velocity relationship underwriting the latch reading is itself
+      contingent, shifting with temperature between 37 and 23 degrees C and with
+      stimulus strength. Both are reasons the two grading axes were frozen apart, and
+      both argue against treating any single preparation's economy result as a general
+      property of vascular smooth muscle.
+limitations:
+  - "Every row was built from the published abstract. No full text was accessible to
+    this collection: the three decisive skeletal-muscle arteriole papers are not in
+    PubMed Central or Europe PMC open access, and the remainder are behind publisher
+    paywalls. Cells that an abstract does not state are recorded as unstated rather than
+    completed from any other source, which is why temperature, endothelial status and
+    branch order are largely blank. A collection with full-text access would fill those
+    columns and could revise cells, though it is unlikely to change the two grades."
+  - Three candidates found by the search were excluded by the frozen criteria and are
+    named here so the exclusions are visible rather than silent. Butler, Siegman &
+    Mooers 1986 (Am J Physiol 251:C945-C950) argues from rabbit taenia coli energetics
+    that economical force maintenance reflects a general slowing of cross-bridge cycling
+    rather than a distinct class of latch bridges — directly relevant to the mechanism
+    axis, but gastrointestinal smooth muscle bearing on mechanism generally rather than
+    on vessel-type variation, which is the only ground the frozen criteria admit
+    non-vascular tissue on. Takeya et al. 2008 (Am J Physiol Renal Physiol
+    294:F1487-F1492) quantifies LC20 phosphorylation in single renal afferent arterioles
+    but reports no force or diameter time course, failing the first inclusion rule.
+    Takeya 2016 (J Smooth Muscle Res 52:45-55) is indexed as a review. A successor study
+    should widen the criteria to admit the first of these.
+  - "One pre-committed known candidate could not be resolved: the canine saphenous-vein
+    report said to infer latch formation from an approximately 11.9 per cent fall in
+    maximum shortening velocity. Searches against PubMed and Crossref did not locate it,
+    and it is recorded here as a failed search rather than dropped. Its absence does not
+    affect any finding, since a vein row would grade low on knot relevance in any case."
+  - "Discovery ran against PubMed, Europe PMC and Crossref. Literature that is not
+    indexed there — older non-indexed journals, book chapters, theses — could contain a
+    demonstration this table misses, and the pre-1970 economy literature is poorly
+    covered by these indexes. The completeness claim is therefore the one the freeze
+    committed to: an evidence map of what the frozen strategy locates, not of everything
+    that exists."
+  - The two grades on each row are the executing agent's judgment applied to the frozen
+    vocabulary, not a measurement. The knot-relevance axis in particular required a call
+    on the rabbit saphenous artery, graded here as a large-vessel preparation because it
+    is a named conduit artery, even though it is the most downstream vessel in the table
+    and carries the study's most interesting negative result.
+  - Absence of a demonstration is not a demonstration of absence. Nothing in this table
+    shows that skeletal-muscle arterioles cannot form latch bridges. It shows that
+    nobody has measured the energetic cost of maintained constriction at that caliber,
+    that the studies which did measure activation there found it maintained rather than
+    falling, and that no one has withdrawn the stimulus and watched.
+runId: 2026-09-01-study-vaso-s001-collection
 model: Claude Opus 5, via Cursor cloud agent
 date: 2026-09-01
-promptVersion: aletheia-study-freeze-v1
+promptVersion: aletheia-study-collection-v1
 humanReviewed: false

@@ -339,9 +339,11 @@ damages surrounding content.
 - Repository secret `ANTHROPIC_API_KEY` (preferred) or `OPENAI_API_KEY` —
   without one the workflow fails early with instructions. The model is pinned
   by the repository Actions **variable** `EXTRACT_MODEL` (the code default in
-  `scripts/lib/llm.mjs` is `claude-opus-5` since the 2026-08-25 reversion —
-  decision #35: Fable's safety filter refuses plain pharmacology statements —
-  with automatic refusal-fallback across providers); switch models with
+  `scripts/lib/llm.mjs` is `claude-fable-5` with an automatic one-retry
+  refusal-fallback to `claude-opus-5` — the mechanism decision #35 added
+  after Fable's safety filter refused plain pharmacology statements; pin
+  `EXTRACT_MODEL` to `claude-opus-5` to skip the refusal round-trip on
+  refusal-prone cases); switch models with
   `gh variable set EXTRACT_MODEL --repo ejhong/aletheia --body "<model-id>"` —
   no code edit needed. Assessment overlays stamp the model that actually ran
   (`runId`/`model`/`promptVersion`), so overlays produced by different models

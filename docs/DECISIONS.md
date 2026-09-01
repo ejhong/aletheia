@@ -256,3 +256,10 @@ the article's own revision history, which lives in the changelog) and
 the plates-survive rule (every plate placed in the incumbent appears in
 the candidate — it may move to a better seat, it may not be lost — with
 unseated new plates marking a candidate incomplete before judging).
+Recorded with them, the founder's general register principle for the
+whole design: the site is meant to be a thing of beauty — genuinely
+engaging for someone who wants to learn the topic — so the Atelier
+rubric makes the reader's experience the deciding dimension among
+candidates that clear the fidelity and honesty floors. A correct but
+lifeless telling loses to a correct and alive one; engagement is earned
+by material and craft, never by bait (§7's bans stand).

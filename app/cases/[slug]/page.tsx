@@ -5,7 +5,6 @@ import { ArgumentLadder } from "@/src/components/ArgumentLadder";
 import { ArticleBody } from "@/src/components/ArticleBody";
 import { AssessmentPanel } from "@/src/components/AssessmentPanel";
 import { ChangeTimeline } from "@/src/components/ChangeTimeline";
-import { PinnedCommitments } from "@/src/components/PinnedCommitments";
 import { DossierHeader } from "@/src/components/DossierHeader";
 import { EvidenceCard } from "@/src/components/EvidenceCard";
 import { ResearchCard } from "@/src/components/ResearchCard";
@@ -269,7 +268,6 @@ export default async function CasePage({
             what changed, why, and who — including the AI&apos;s role.
           </p>
           <ChangeTimeline entries={historyNewestFirst(loaded.history)} />
-          <PinnedCommitments pins={loaded.pins} />
         </section>
       </div>
     </div>

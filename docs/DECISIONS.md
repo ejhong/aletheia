@@ -256,3 +256,25 @@ the article's own revision history, which lives in the changelog) and
 the plates-survive rule (every plate placed in the incumbent appears in
 the candidate — it may move to a better seat, it may not be lost — with
 unseated new plates marking a candidate incomplete before judging).
+
+## 2026-09-01 — Pins removed the same day they landed: the founder simplifies
+
+Hours after ratifying pins, the founder examined them and found the
+design partly redundant, and the redundancy is recorded because it was
+correct: most correction pins duplicated protection the gated ledger
+already provides (a banked correction lives in the claim or evidence
+record it corrected, where any panel judging a later diff sees it in
+context), and a registry of string checks is a second, half-parallel
+memory bolted beside the one the ledger already is — a maintenance tax
+on a site that must stay convergent. The pins machinery (schema, loader
+enforcement, display, the four seeded pins, the same-day §7 amendment)
+is removed in full. What replaces it is deliberately lighter: revision
+prompts consider the founding narrative inputs for aesthetic portions —
+following them where they serve the reader, free to expand beyond —
+with judgment calls settled by candidate competition and the panel, per
+the founder's words. Banked corrections stay where they always were:
+in the records and the append-only changelog. The §7 bullet is
+superseded by a narrative-guidance bullet (founder's reserved act,
+ratified by this merge). The prior entries recording the pins design
+stand above, per this log's append-only rule — the reversal is the
+record, not an erasure.

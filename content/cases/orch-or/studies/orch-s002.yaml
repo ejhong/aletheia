@@ -1,14 +1,18 @@
+# Collection (second PR of the two-PR study discipline). The criteria
+# below were frozen on 2026-09-01 in PR #152 and are unchanged — hash
+# 4fa792b878fa, recomputed by the loader on every build. Rows, findings
+# and limitations were added after the freeze merged. The pre-committed
+# analysis code is published beside this file as orch-s002-analysis.py.
 id: ORCH-S002
-title: Xenon isotope potency regressed on nuclear spin and atomic mass, from
-  published per-isotope values
-question: "In the published xenon-isotope anesthetic-potency record — decisively
-  Li N, Lu D, Yang L, et al., 'Nuclear Spin Attenuates the Anesthetic Potency of
-  Xenon Isotopes in Mice: Implications for the Mechanisms of Anesthesia and
-  Consciousness,' Anesthesiology 2018;129(2):271–277, plus any earlier or later
-  report giving isotope-resolved potency — does a nuclear-spin coefficient
-  remain separately identifiable when atomic mass number is entered as a
-  covariate, given that in that dataset the spin-bearing isotopes (129, 131) are
-  also the lightest tested?"
+title: Xenon isotope potency regressed on nuclear spin and atomic mass, from published
+  per-isotope values
+question: "In the published xenon-isotope anesthetic-potency record — decisively Li N,
+  Lu D, Yang L, et al., 'Nuclear Spin Attenuates the Anesthetic Potency of Xenon
+  Isotopes in Mice: Implications for the Mechanisms of Anesthesia and Consciousness,'
+  Anesthesiology 2018;129(2):271–277, plus any earlier or later report giving
+  isotope-resolved potency — does a nuclear-spin coefficient remain separately
+  identifiable when atomic mass number is entered as a covariate, given that in that
+  dataset the spin-bearing isotopes (129, 131) are also the lightest tested?"
 researchIds:
   - ORCH-R010
 claimIds:
@@ -18,144 +22,132 @@ claimIds:
 criteria:
   frozenOn: 2026-09-01
   inclusion:
-    - Peer-reviewed article, preprint, thesis, or regulatory/registry document
-      that reports an anesthetic or sedative potency endpoint
-      (ED50/EC50/MAC/MAC-equivalent, loss-of-righting-reflex threshold,
-      immobility threshold, or explicit potency ratio) measured separately for
-      two or more identified xenon isotopes or for isotopically enriched versus
-      natural-abundance xenon.
+    - Peer-reviewed article, preprint, thesis, or regulatory/registry document that
+      reports an anesthetic or sedative potency endpoint (ED50/EC50/MAC/MAC-equivalent,
+      loss-of-righting-reflex threshold, immobility threshold, or explicit potency
+      ratio) measured separately for two or more identified xenon isotopes or for
+      isotopically enriched versus natural-abundance xenon.
     - The isotopic identity of each exposure arm is stated by mass number or by
-      enrichment specification, so that nuclear spin (nonzero for odd-mass 129
-      and 131; zero for even-mass 124, 126, 128, 130, 132, 134, 136) and mass
-      number can both be assigned without inference from context.
-    - At least one numeric potency estimate per isotope arm is retrievable from
-      the public text, tables, supplement, or a figure with a readable axis; a
-      figure-only value is admissible if digitizable and is flagged as such in
-      the extraction row.
-    - Full text or a public preprint/abstract carrying the numbers is reachable
-      by the desk agent without payment, credentialed access, or contact with
-      authors.
-    - Publication date on or before the freeze-execution date; language English,
-      or non-English with a machine translation of the methods and results
-      sections recorded verbatim in the row.
+      enrichment specification, so that nuclear spin (nonzero for odd-mass 129 and 131;
+      zero for even-mass 124, 126, 128, 130, 132, 134, 136) and mass number can both be
+      assigned without inference from context.
+    - At least one numeric potency estimate per isotope arm is retrievable from the
+      public text, tables, supplement, or a figure with a readable axis; a figure-only
+      value is admissible if digitizable and is flagged as such in the extraction row.
+    - Full text or a public preprint/abstract carrying the numbers is reachable by the
+      desk agent without payment, credentialed access, or contact with authors.
+    - Publication date on or before the freeze-execution date; language English, or
+      non-English with a machine translation of the methods and results sections
+      recorded verbatim in the row.
   exclusion:
-    - Reports of xenon anesthesia with no isotopic resolution (natural-abundance
-      xenon only), or isotope work with no potency endpoint (e.g., 129Xe
-      hyperpolarized MRI imaging studies, xenon solubility measurements alone).
-    - Reviews, commentaries, editorials, conference abstracts, and secondary
-      citations that restate potency numbers traceable to an included primary
-      source — these are logged as pointers in the candidate ledger but
-      contribute no rows, to prevent double-counting one cohort.
-    - Purely theoretical, computational, or simulation papers (spin-relaxation
-      models, polarizability calculations, molecular-dynamics binding studies)
-      that report no measured potency.
-    - Studies of isotope effects in non-xenon anesthetics (e.g., deuterated
-      agents, other noble gases) unless the same paper also reports xenon
-      isotope arms, in which case only the xenon arms are extracted.
-    - Any source whose numbers exist only in confidential, embargoed, or
-      personally communicated material.
-  searchProtocol: "Run only after this freeze is timestamped and published; no
-    query is issued and no number is read before that timestamp. Step 1 —
-    bibliographic search, executed verbatim in PubMed, Europe PMC, Google
-    Scholar, and Semantic Scholar: [xenon isotope anesthetic potency],
-    [\"nuclear spin\" xenon anesthesia], [xenon-129 xenon-132 anesthesia mice],
-    [xenon isotopes loss of righting reflex], [xenon isotope MAC rodent],
-    [isotope effect noble gas anesthesia], [\"Li\" \"Lu\" xenon isotopes
-    Anesthesiology 2018], [xenon isotope consciousness mechanism]. Step 2 —
-    citation sweep: retrieve the full forward-citation list of the Li et al.
-    2018 record from Google Scholar, Semantic Scholar, and Crossref, and the
-    full backward reference list of that paper; screen every entry against
-    inclusion/exclusion. Step 3 — preprint and grey sweep: [xenon isotope
-    anesthesia] on bioRxiv, arXiv (q-bio, physics.bio-ph), OSF Preprints, and
-    ProQuest theses. Step 4 — registry sweep: [xenon isotope] on
-    ClinicalTrials.gov and the AVMA/preclinical registry PreclinicalTrials.eu,
-    to record any registered-but-unpublished isotope comparison as a known gap.
-    Per-candidate verification rule: a candidate enters the table only after the
-    desk agent (i) opens the primary full text or supplement itself rather than
-    a secondary description, (ii) records DOI or stable URL, (iii) records the
-    exact locus of each number (table number, figure panel, or page and
-    sentence) together with the quoted numeric string, (iv) confirms isotope
-    mass number and stated enrichment percentage from the methods, and (v)
-    assigns a cohort_id. Any candidate meeting inclusion on its abstract but
-    whose numbers cannot be located in the retrieved text is recorded with
-    disposition 'blocked' and the blocking reason, not silently dropped. All
-    queries, dates, hit counts, and screening decisions are logged to an
-    append-only search log published with the results."
+    - Reports of xenon anesthesia with no isotopic resolution (natural-abundance xenon
+      only), or isotope work with no potency endpoint (e.g., 129Xe hyperpolarized MRI
+      imaging studies, xenon solubility measurements alone).
+    - Reviews, commentaries, editorials, conference abstracts, and secondary citations
+      that restate potency numbers traceable to an included primary source — these are
+      logged as pointers in the candidate ledger but contribute no rows, to prevent
+      double-counting one cohort.
+    - Purely theoretical, computational, or simulation papers (spin-relaxation models,
+      polarizability calculations, molecular-dynamics binding studies) that report no
+      measured potency.
+    - Studies of isotope effects in non-xenon anesthetics (e.g., deuterated agents,
+      other noble gases) unless the same paper also reports xenon isotope arms, in which
+      case only the xenon arms are extracted.
+    - Any source whose numbers exist only in confidential, embargoed, or personally
+      communicated material.
+  searchProtocol: "Run only after this freeze is timestamped and published; no query is
+    issued and no number is read before that timestamp. Step 1 — bibliographic search,
+    executed verbatim in PubMed, Europe PMC, Google Scholar, and Semantic Scholar:
+    [xenon isotope anesthetic potency], [\"nuclear spin\" xenon anesthesia], [xenon-129
+    xenon-132 anesthesia mice], [xenon isotopes loss of righting reflex], [xenon isotope
+    MAC rodent], [isotope effect noble gas anesthesia], [\"Li\" \"Lu\" xenon isotopes
+    Anesthesiology 2018], [xenon isotope consciousness mechanism]. Step 2 — citation
+    sweep: retrieve the full forward-citation list of the Li et al. 2018 record from
+    Google Scholar, Semantic Scholar, and Crossref, and the full backward reference list
+    of that paper; screen every entry against inclusion/exclusion. Step 3 — preprint and
+    grey sweep: [xenon isotope anesthesia] on bioRxiv, arXiv (q-bio, physics.bio-ph),
+    OSF Preprints, and ProQuest theses. Step 4 — registry sweep: [xenon isotope] on
+    ClinicalTrials.gov and the AVMA/preclinical registry PreclinicalTrials.eu, to record
+    any registered-but-unpublished isotope comparison as a known gap. Per-candidate
+    verification rule: a candidate enters the table only after the desk agent (i) opens
+    the primary full text or supplement itself rather than a secondary description, (ii)
+    records DOI or stable URL, (iii) records the exact locus of each number (table
+    number, figure panel, or page and sentence) together with the quoted numeric string,
+    (iv) confirms isotope mass number and stated enrichment percentage from the methods,
+    and (v) assigns a cohort_id. Any candidate meeting inclusion on its abstract but
+    whose numbers cannot be located in the retrieved text is recorded with disposition
+    'blocked' and the blocking reason, not silently dropped. All queries, dates, hit
+    counts, and screening decisions are logged to an append-only search log published
+    with the results."
   knownCandidates:
-    - name: Li N, Lu D, Yang L, Tao H, Xu Y, Wang C, Fu L, Liu H, Chummum Y, Zhang S.
-        'Nuclear Spin Attenuates the Anesthetic Potency of Xenon Isotopes in
-        Mice.' Anesthesiology 2018;129(2):271-277.
+    - name: Li N, Lu D, Yang L, Tao H, Xu Y, Wang C, Fu L, Liu H, Chummum Y, Zhang S. 'Nuclear
+        Spin Attenuates the Anesthetic Potency of Xenon Isotopes in Mice.'
+        Anesthesiology 2018;129(2):271-277.
       disposition: include
-      reason: "The decisive record: isotope-resolved potency in mice for 129Xe, 131Xe,
-        132Xe, 134Xe. Expected to supply the primary rows. Pre-committed
-        expectation, recorded here so it counts as a prediction and not a
-        post-hoc read: the spin-bearing arms (129, 131) are the two lightest
-        tested, so spin and mass number will be strongly negatively collinear
-        across the four arms; I expect a VIF above the pre-set threshold of 5
-        and a design matrix that cannot separate the two coefficients. If that
-        expectation is wrong, the freeze records it as wrong."
-    - name: Turin L, Skoulakis EMC, Horsfield AP. 'Electron spin changes during
-        general anesthesia in Drosophila.' PNAS 2014;111(34):E3524-33.
+      reason: "The decisive record: isotope-resolved potency in mice for 129Xe, 131Xe, 132Xe,
+        134Xe. Expected to supply the primary rows. Pre-committed expectation, recorded
+        here so it counts as a prediction and not a post-hoc read: the spin-bearing arms
+        (129, 131) are the two lightest tested, so spin and mass number will be strongly
+        negatively collinear across the four arms; I expect a VIF above the pre-set
+        threshold of 5 and a design matrix that cannot separate the two coefficients. If
+        that expectation is wrong, the freeze records it as wrong."
+    - name: Turin L, Skoulakis EMC, Horsfield AP. 'Electron spin changes during general
+        anesthesia in Drosophila.' PNAS 2014;111(34):E3524-33.
       disposition: exclude
-      reason: Concerns electron spin resonance signals and anesthetic-induced spin
-        changes in flies, not isotope-resolved xenon potency arms. No
-        per-isotope potency estimate. Logged as adjacent context only.
-    - name: Turin L, Skoulakis EMC. 'Electron spin resonance (EPR) in Drosophila and
-        general anesthesia.' Methods in Enzymology 2018;603:115-128.
+      reason: Concerns electron spin resonance signals and anesthetic-induced spin changes in
+        flies, not isotope-resolved xenon potency arms. No per-isotope potency estimate.
+        Logged as adjacent context only.
+    - name: Turin L, Skoulakis EMC. 'Electron spin resonance (EPR) in Drosophila and general
+        anesthesia.' Methods in Enzymology 2018;603:115-128.
       disposition: exclude
       reason: Methods chapter; no xenon isotope potency endpoint.
-    - name: Editorials, correspondence, and commentary attached to the Anesthesiology
-        2018 issue discussing the Li et al. isotope result (exact items not yet
-        identified).
+    - name: Editorials, correspondence, and commentary attached to the Anesthesiology 2018
+        issue discussing the Li et al. isotope result (exact items not yet identified).
       disposition: exclude
       reason: Secondary restatement of one cohort; excluded from rows under exclusion
-        criterion 2 but harvested for pointers to any additional primary
-        datasets.
-    - name: Hameroff SR and Penrose R review articles citing the xenon isotope result
-        (e.g., Penrose–Hameroff 'Consciousness in the universe' lineage and
-        later Hameroff commentaries).
+        criterion 2 but harvested for pointers to any additional primary datasets.
+    - name: Hameroff SR and Penrose R review articles citing the xenon isotope result (e.g.,
+        Penrose–Hameroff 'Consciousness in the universe' lineage and later Hameroff
+        commentaries).
       disposition: exclude
-      reason: Reviews restating the Li et al. numbers; no independent potency
-        measurement. Used only as a citation trail.
+      reason: Reviews restating the Li et al. numbers; no independent potency measurement.
+        Used only as a citation trail.
     - name: Any pre-2018 xenon isotope potency report
       disposition: include
-      reason: "Honest statement of ignorance: I am aware of no earlier
-        isotope-resolved xenon potency dataset. If the backward-reference sweep
-        of Li et al. surfaces one, it is a genuine discovery under this freeze
-        and enters the table under the same inclusion rules."
-    - name: Any post-2018 replication or extension with additional isotope arms (e.g.,
-        130Xe, 136Xe, or a mass-matched spin/no-spin pair)
+      reason: "Honest statement of ignorance: I am aware of no earlier isotope-resolved xenon
+        potency dataset. If the backward-reference sweep of Li et al. surfaces one, it
+        is a genuine discovery under this freeze and enters the table under the same
+        inclusion rules."
+    - name: Any post-2018 replication or extension with additional isotope arms (e.g., 130Xe,
+        136Xe, or a mass-matched spin/no-spin pair)
       disposition: include
-      reason: None known to me at freeze time. Pre-committed to inclusion precisely
-        because such a paper would break the collinearity and is the single most
-        decisive possible discovery for this question.
+      reason: None known to me at freeze time. Pre-committed to inclusion precisely because
+        such a paper would break the collinearity and is the single most decisive
+        possible discovery for this question.
   criteriaHash: 4fa792b878fa
-method: "Every included source yields one row per isotope arm. Extraction is
-  performed twice in separate passes with the second pass blind to the first
-  pass's numeric fields (the agent re-opens the source and re-reads the locus
-  without consulting the prior row); mismatches are resolved by a third read and
-  the discrepancy is logged. Independence: rows sharing a cohort_id (same
-  animals, same experimental series, same institutional batch as stated in
-  methods) are treated as one experiment; overlapping publications are collapsed
-  to the most complete report and the collapse is recorded. Potency values are
-  converted to a common scale as percent-atmosphere for 50% endpoint effect,
-  with the conversion arithmetic shown per row; dispersions are propagated, and
-  where only SEM and n are given, SD is reconstructed. Primary analysis:
-  weighted least squares of potency on (a) spin-present indicator and (b) mass
-  number, weights = inverse variance, run three ways — spin only, mass only,
-  both. Pre-committed diagnostics: variance inflation factor, design-matrix
-  condition number, and the correlation between the spin indicator and mass
-  number across arms. Identification is declared FAILED if VIF > 5 or condition
-  number > 30, in which case the study reports that the dataset cannot
-  distinguish the hypotheses and refuses to report a spin p-value as evidential.
-  Secondary: leave-one-isotope-out refits, a rank-order check (Spearman of
-  potency against mass), and a sensitivity fit substituting nuclear spin quantum
-  number I (0, 1/2, 3/2) for the binary indicator. If fewer than four
-  independent isotope arms survive extraction, no regression is run and the
-  study reports the tabulation plus an explicit statement of
-  non-identifiability. All code, extracted table, and search log are published;
-  the pre-committed expectation recorded in knownCandidates is scored as correct
-  or incorrect in the abstract."
+method: "Every included source yields one row per isotope arm. Extraction is performed
+  twice in separate passes with the second pass blind to the first pass's numeric fields
+  (the agent re-opens the source and re-reads the locus without consulting the prior
+  row); mismatches are resolved by a third read and the discrepancy is logged.
+  Independence: rows sharing a cohort_id (same animals, same experimental series, same
+  institutional batch as stated in methods) are treated as one experiment; overlapping
+  publications are collapsed to the most complete report and the collapse is recorded.
+  Potency values are converted to a common scale as percent-atmosphere for 50% endpoint
+  effect, with the conversion arithmetic shown per row; dispersions are propagated, and
+  where only SEM and n are given, SD is reconstructed. Primary analysis: weighted least
+  squares of potency on (a) spin-present indicator and (b) mass number, weights =
+  inverse variance, run three ways — spin only, mass only, both. Pre-committed
+  diagnostics: variance inflation factor, design-matrix condition number, and the
+  correlation between the spin indicator and mass number across arms. Identification is
+  declared FAILED if VIF > 5 or condition number > 30, in which case the study reports
+  that the dataset cannot distinguish the hypotheses and refuses to report a spin
+  p-value as evidential. Secondary: leave-one-isotope-out refits, a rank-order check
+  (Spearman of potency against mass), and a sensitivity fit substituting nuclear spin
+  quantum number I (0, 1/2, 3/2) for the binary indicator. If fewer than four
+  independent isotope arms survive extraction, no regression is run and the study
+  reports the tabulation plus an explicit statement of non-identifiability. All code,
+  extracted table, and search log are published; the pre-committed expectation recorded
+  in knownCandidates is scored as correct or incorrect in the abstract."
 columns:
   - row_id
   - cohort_id
@@ -192,11 +184,382 @@ columns:
   - disposition
   - disposition_reason
   - discovered_after_freeze_flag
-rows: []
-findings: []
-limitations: []
-runId: 2026-09-01-bench-freeze-local
-model: bench freeze drafter via anthropic/claude-opus-5 (bench-freeze-v1)
+rows:
+  - cells:
+      row_id: S002-R01
+      cohort_id: LI2018-C1
+      citation_short: Li et al. 2018, Anesthesiology 129(2):271-277
+      doi_or_url: 10.1097/ALN.0000000000002226
+      publication_year: "2018"
+      peer_review_status: Peer-reviewed journal article
+      species_or_preparation: Mouse, in vivo, whole animal
+      strain_and_sex: C57BL/6, male, 7 weeks old
+      n_per_arm: 20 (stated as 80 mice randomly divided into four groups; the per-group figure
+        is arithmetic, not separately stated)
+      endpoint_name: Loss of righting reflex ED50
+      endpoint_definition_quoted: "\"Due to xenon's low potency, loss of righting reflex ED50
+        for mice to xenon was determined with 0.50% isoflurane. Loss of righting reflex
+        ED50 of isoflurane was also measured, and the loss of righting reflex ED50
+        values of the four xenon isotopes were then calculated.\""
+      isotope_mass_number: "132"
+      nuclear_spin_I: "0"
+      spin_present_binary: "0"
+      isotopic_enrichment_percent: Not stated in the accessible record. The abstract names the
+        isotope groups but states no enrichment percentage or isotopic purity; the full
+        text was not accessible to this collection.
+      isotopic_impurity_profile: Not stated in the accessible record.
+      carrier_gas_and_oxygen_fraction: Not stated in the accessible record. Co-administered
+        0.50% isoflurane is stated; oxygen fraction and balance gas are not.
+      delivery_and_equilibration_time: Not stated in the accessible record.
+      potency_value_as_reported: 70 +/- 4 (xenon alone, calculated by the authors); 15 +/- 4
+        (measured with 0.50% isoflurane)
+      potency_units_as_reported: "% (percent atmosphere)"
+      potency_converted_pct_atm: 70 (no conversion required; already % atm)
+      dispersion_type_and_value: +/- 4 (alone), +/- 4 (with isoflurane). Whether these are SD
+        or SEM is NOT stated in the accessible record.
+      reconstructed_SD: Not reconstructed. With equal n across arms the inverse-variance
+        weights are proportional whether the reported +/- is an SD or an SEM, so the
+        coefficients are unaffected; only the standard-error scale would change.
+      randomization_stated: Yes — 'randomly divided into four groups'
+      blinding_stated: Not stated in the accessible record.
+      temperature_control_stated: Not stated in the accessible record.
+      source_locus: Abstract, Methods sentence 1 (group assignment) and Results sentences 1-2
+        (ED50 values)
+      quoted_numeric_string: '"the loss of righting reflex ED50 values were 15 +/- 4%, 16 +/-
+        5%, 22 +/- 5%, and 23 +/- 7% for 132Xe, 134Xe, 131Xe, and 129Xe, respectively";
+        "For xenon alone, the loss of righting reflex ED50 values of 132Xe, 134Xe,
+        131Xe, and 129Xe were 70 +/- 4%, 72 +/- 5%, 99 +/- 5%, and 105 +/- 7%,
+        respectively"'
+      figure_digitized_flag: No — values are in the running text, not a figure
+      extraction_pass1_value: 70 +/- 4 (alone) / 15 +/- 4 (with isoflurane)
+      extraction_pass2_value: 70 +/- 4 (alone) / 15 +/- 4 (with isoflurane)
+      extraction_agreement_flag: "Agree. Pass 1 was taken from the PubMed abstract rendering,
+        which STRIPS the isotope superscripts; pass 2 re-read the publisher JATS deposit
+        via Crossref, which preserves them. The numbers agreed but the isotope-to-value
+        MAPPING did not: the stripped rendering invites the order 129, 131, and the true
+        order is 131, 129. Pass 2 governs."
+      disposition: include
+      disposition_reason: "Meets every inclusion criterion: isotope-resolved potency endpoint,
+        isotope identity stated by mass number, numeric estimate retrievable from public
+        text, no payment required."
+      discovered_after_freeze_flag: No — pre-committed known candidate, disposition 'include' at freeze
+    citation: &a1
+      text: "Li N, Lu D, Yang L, Tao H, Xu Y, Wang C, Fu L, Liu H, Chummum Y, Zhang S.
+        'Nuclear Spin Attenuates the Anesthetic Potency of Xenon Isotopes in Mice:
+        Implications for the Mechanisms of Anesthesia and Consciousness.' Anesthesiology
+        2018;129(2):271-277. PMID 29642079. Numbers read from the publisher-deposited
+        JATS abstract retrieved via the Crossref API 2026-09-01, which preserves the
+        isotope superscripts."
+      doi: 10.1097/ALN.0000000000002226
+      locator: Abstract, Methods and Results sections (publisher JATS deposit)
+      verification: ai_verified
+    independenceNote: One experiment, one cohort of 80 C57BL/6 male mice split into four
+      groups; all four rows share cohort_id LI2018-C1 and are not independent
+      replications of one another.
+  - cells:
+      row_id: S002-R02
+      cohort_id: LI2018-C1
+      citation_short: Li et al. 2018, Anesthesiology 129(2):271-277
+      doi_or_url: 10.1097/ALN.0000000000002226
+      publication_year: "2018"
+      peer_review_status: Peer-reviewed journal article
+      species_or_preparation: Mouse, in vivo, whole animal
+      strain_and_sex: C57BL/6, male, 7 weeks old
+      n_per_arm: 20 (stated as 80 mice randomly divided into four groups; the per-group figure
+        is arithmetic, not separately stated)
+      endpoint_name: Loss of righting reflex ED50
+      endpoint_definition_quoted: "\"Due to xenon's low potency, loss of righting reflex ED50
+        for mice to xenon was determined with 0.50% isoflurane. Loss of righting reflex
+        ED50 of isoflurane was also measured, and the loss of righting reflex ED50
+        values of the four xenon isotopes were then calculated.\""
+      isotope_mass_number: "134"
+      nuclear_spin_I: "0"
+      spin_present_binary: "0"
+      isotopic_enrichment_percent: Not stated in the accessible record. The abstract names the
+        isotope groups but states no enrichment percentage or isotopic purity; the full
+        text was not accessible to this collection.
+      isotopic_impurity_profile: Not stated in the accessible record.
+      carrier_gas_and_oxygen_fraction: Not stated in the accessible record. Co-administered
+        0.50% isoflurane is stated; oxygen fraction and balance gas are not.
+      delivery_and_equilibration_time: Not stated in the accessible record.
+      potency_value_as_reported: 72 +/- 5 (xenon alone, calculated by the authors); 16 +/- 5
+        (measured with 0.50% isoflurane)
+      potency_units_as_reported: "% (percent atmosphere)"
+      potency_converted_pct_atm: 72 (no conversion required; already % atm)
+      dispersion_type_and_value: +/- 5 (alone), +/- 5 (with isoflurane). Whether these are SD
+        or SEM is NOT stated in the accessible record.
+      reconstructed_SD: Not reconstructed. With equal n across arms the inverse-variance
+        weights are proportional whether the reported +/- is an SD or an SEM, so the
+        coefficients are unaffected; only the standard-error scale would change.
+      randomization_stated: Yes — 'randomly divided into four groups'
+      blinding_stated: Not stated in the accessible record.
+      temperature_control_stated: Not stated in the accessible record.
+      source_locus: Abstract, Methods sentence 1 (group assignment) and Results sentences 1-2
+        (ED50 values)
+      quoted_numeric_string: '"the loss of righting reflex ED50 values were 15 +/- 4%, 16 +/-
+        5%, 22 +/- 5%, and 23 +/- 7% for 132Xe, 134Xe, 131Xe, and 129Xe, respectively";
+        "For xenon alone, the loss of righting reflex ED50 values of 132Xe, 134Xe,
+        131Xe, and 129Xe were 70 +/- 4%, 72 +/- 5%, 99 +/- 5%, and 105 +/- 7%,
+        respectively"'
+      figure_digitized_flag: No — values are in the running text, not a figure
+      extraction_pass1_value: 72 +/- 5 (alone) / 16 +/- 5 (with isoflurane)
+      extraction_pass2_value: 72 +/- 5 (alone) / 16 +/- 5 (with isoflurane)
+      extraction_agreement_flag: "Agree. Pass 1 was taken from the PubMed abstract rendering,
+        which STRIPS the isotope superscripts; pass 2 re-read the publisher JATS deposit
+        via Crossref, which preserves them. The numbers agreed but the isotope-to-value
+        MAPPING did not: the stripped rendering invites the order 129, 131, and the true
+        order is 131, 129. Pass 2 governs."
+      disposition: include
+      disposition_reason: "Meets every inclusion criterion: isotope-resolved potency endpoint,
+        isotope identity stated by mass number, numeric estimate retrievable from public
+        text, no payment required."
+      discovered_after_freeze_flag: No — pre-committed known candidate, disposition 'include' at freeze
+    citation: *a1
+    independenceNote: One experiment, one cohort of 80 C57BL/6 male mice split into four
+      groups; all four rows share cohort_id LI2018-C1 and are not independent
+      replications of one another.
+  - cells:
+      row_id: S002-R03
+      cohort_id: LI2018-C1
+      citation_short: Li et al. 2018, Anesthesiology 129(2):271-277
+      doi_or_url: 10.1097/ALN.0000000000002226
+      publication_year: "2018"
+      peer_review_status: Peer-reviewed journal article
+      species_or_preparation: Mouse, in vivo, whole animal
+      strain_and_sex: C57BL/6, male, 7 weeks old
+      n_per_arm: 20 (stated as 80 mice randomly divided into four groups; the per-group figure
+        is arithmetic, not separately stated)
+      endpoint_name: Loss of righting reflex ED50
+      endpoint_definition_quoted: "\"Due to xenon's low potency, loss of righting reflex ED50
+        for mice to xenon was determined with 0.50% isoflurane. Loss of righting reflex
+        ED50 of isoflurane was also measured, and the loss of righting reflex ED50
+        values of the four xenon isotopes were then calculated.\""
+      isotope_mass_number: "131"
+      nuclear_spin_I: 3/2
+      spin_present_binary: "1"
+      isotopic_enrichment_percent: Not stated in the accessible record. The abstract names the
+        isotope groups but states no enrichment percentage or isotopic purity; the full
+        text was not accessible to this collection.
+      isotopic_impurity_profile: Not stated in the accessible record.
+      carrier_gas_and_oxygen_fraction: Not stated in the accessible record. Co-administered
+        0.50% isoflurane is stated; oxygen fraction and balance gas are not.
+      delivery_and_equilibration_time: Not stated in the accessible record.
+      potency_value_as_reported: 99 +/- 5 (xenon alone, calculated by the authors); 22 +/- 5
+        (measured with 0.50% isoflurane)
+      potency_units_as_reported: "% (percent atmosphere)"
+      potency_converted_pct_atm: 99 (no conversion required; already % atm)
+      dispersion_type_and_value: +/- 5 (alone), +/- 5 (with isoflurane). Whether these are SD
+        or SEM is NOT stated in the accessible record.
+      reconstructed_SD: Not reconstructed. With equal n across arms the inverse-variance
+        weights are proportional whether the reported +/- is an SD or an SEM, so the
+        coefficients are unaffected; only the standard-error scale would change.
+      randomization_stated: Yes — 'randomly divided into four groups'
+      blinding_stated: Not stated in the accessible record.
+      temperature_control_stated: Not stated in the accessible record.
+      source_locus: Abstract, Methods sentence 1 (group assignment) and Results sentences 1-2
+        (ED50 values)
+      quoted_numeric_string: '"the loss of righting reflex ED50 values were 15 +/- 4%, 16 +/-
+        5%, 22 +/- 5%, and 23 +/- 7% for 132Xe, 134Xe, 131Xe, and 129Xe, respectively";
+        "For xenon alone, the loss of righting reflex ED50 values of 132Xe, 134Xe,
+        131Xe, and 129Xe were 70 +/- 4%, 72 +/- 5%, 99 +/- 5%, and 105 +/- 7%,
+        respectively"'
+      figure_digitized_flag: No — values are in the running text, not a figure
+      extraction_pass1_value: 99 +/- 5 (alone) / 22 +/- 5 (with isoflurane)
+      extraction_pass2_value: 99 +/- 5 (alone) / 22 +/- 5 (with isoflurane)
+      extraction_agreement_flag: "Agree. Pass 1 was taken from the PubMed abstract rendering,
+        which STRIPS the isotope superscripts; pass 2 re-read the publisher JATS deposit
+        via Crossref, which preserves them. The numbers agreed but the isotope-to-value
+        MAPPING did not: the stripped rendering invites the order 129, 131, and the true
+        order is 131, 129. Pass 2 governs."
+      disposition: include
+      disposition_reason: "Meets every inclusion criterion: isotope-resolved potency endpoint,
+        isotope identity stated by mass number, numeric estimate retrievable from public
+        text, no payment required."
+      discovered_after_freeze_flag: No — pre-committed known candidate, disposition 'include' at freeze
+    citation: *a1
+    independenceNote: One experiment, one cohort of 80 C57BL/6 male mice split into four
+      groups; all four rows share cohort_id LI2018-C1 and are not independent
+      replications of one another.
+  - cells:
+      row_id: S002-R04
+      cohort_id: LI2018-C1
+      citation_short: Li et al. 2018, Anesthesiology 129(2):271-277
+      doi_or_url: 10.1097/ALN.0000000000002226
+      publication_year: "2018"
+      peer_review_status: Peer-reviewed journal article
+      species_or_preparation: Mouse, in vivo, whole animal
+      strain_and_sex: C57BL/6, male, 7 weeks old
+      n_per_arm: 20 (stated as 80 mice randomly divided into four groups; the per-group figure
+        is arithmetic, not separately stated)
+      endpoint_name: Loss of righting reflex ED50
+      endpoint_definition_quoted: "\"Due to xenon's low potency, loss of righting reflex ED50
+        for mice to xenon was determined with 0.50% isoflurane. Loss of righting reflex
+        ED50 of isoflurane was also measured, and the loss of righting reflex ED50
+        values of the four xenon isotopes were then calculated.\""
+      isotope_mass_number: "129"
+      nuclear_spin_I: 1/2
+      spin_present_binary: "1"
+      isotopic_enrichment_percent: Not stated in the accessible record. The abstract names the
+        isotope groups but states no enrichment percentage or isotopic purity; the full
+        text was not accessible to this collection.
+      isotopic_impurity_profile: Not stated in the accessible record.
+      carrier_gas_and_oxygen_fraction: Not stated in the accessible record. Co-administered
+        0.50% isoflurane is stated; oxygen fraction and balance gas are not.
+      delivery_and_equilibration_time: Not stated in the accessible record.
+      potency_value_as_reported: 105 +/- 7 (xenon alone, calculated by the authors); 23 +/- 7
+        (measured with 0.50% isoflurane)
+      potency_units_as_reported: "% (percent atmosphere)"
+      potency_converted_pct_atm: 105 (no conversion required; already % atm)
+      dispersion_type_and_value: +/- 7 (alone), +/- 7 (with isoflurane). Whether these are SD
+        or SEM is NOT stated in the accessible record.
+      reconstructed_SD: Not reconstructed. With equal n across arms the inverse-variance
+        weights are proportional whether the reported +/- is an SD or an SEM, so the
+        coefficients are unaffected; only the standard-error scale would change.
+      randomization_stated: Yes — 'randomly divided into four groups'
+      blinding_stated: Not stated in the accessible record.
+      temperature_control_stated: Not stated in the accessible record.
+      source_locus: Abstract, Methods sentence 1 (group assignment) and Results sentences 1-2
+        (ED50 values)
+      quoted_numeric_string: '"the loss of righting reflex ED50 values were 15 +/- 4%, 16 +/-
+        5%, 22 +/- 5%, and 23 +/- 7% for 132Xe, 134Xe, 131Xe, and 129Xe, respectively";
+        "For xenon alone, the loss of righting reflex ED50 values of 132Xe, 134Xe,
+        131Xe, and 129Xe were 70 +/- 4%, 72 +/- 5%, 99 +/- 5%, and 105 +/- 7%,
+        respectively"'
+      figure_digitized_flag: No — values are in the running text, not a figure
+      extraction_pass1_value: 105 +/- 7 (alone) / 23 +/- 7 (with isoflurane)
+      extraction_pass2_value: 105 +/- 7 (alone) / 23 +/- 7 (with isoflurane)
+      extraction_agreement_flag: "Agree. Pass 1 was taken from the PubMed abstract rendering,
+        which STRIPS the isotope superscripts; pass 2 re-read the publisher JATS deposit
+        via Crossref, which preserves them. The numbers agreed but the isotope-to-value
+        MAPPING did not: the stripped rendering invites the order 129, 131, and the true
+        order is 131, 129. Pass 2 governs."
+      disposition: include
+      disposition_reason: "Meets every inclusion criterion: isotope-resolved potency endpoint,
+        isotope identity stated by mass number, numeric estimate retrievable from public
+        text, no payment required."
+      discovered_after_freeze_flag: No — pre-committed known candidate, disposition 'include' at freeze
+    citation: *a1
+    independenceNote: One experiment, one cohort of 80 C57BL/6 male mice split into four
+      groups; all four rows share cohort_id LI2018-C1 and are not independent
+      replications of one another.
+findings:
+  - statement: "The frozen identification-failure rule TRIPS, so this study reports no spin
+      p-value as evidential — but it trips for a reason the freeze did not anticipate.
+      The variance inflation factor is 3.25, comfortably BELOW the pre-set threshold of
+      5, so spin-versus-mass collinearity (r = -0.832) is real but not disabling: the
+      study happens to place two isotopes on each side of the spin boundary, which is
+      what makes the two hypotheses separable at all. What fails is the scaled
+      design-matrix condition number, 302.4 against a threshold of 30, and its source is
+      intercept-versus-mass, not spin-versus-mass. Atomic mass spans five units around
+      131.5, under 4 per cent relative variation, so a linear mass term is barely
+      distinguishable from a constant. That is why the mass coefficient is unstable
+      (-0.43 with a standard error of 1.92) while the intercept carries a standard error
+      of 254."
+    evidenceId: ORCH-E037
+  - statement: "Setting the frozen rule aside and describing what the four published means
+      look like: a spin term fits them far better than a linear mass term. On the
+      xenon-alone endpoint, weighted least squares with spin alone gives a weighted
+      R-squared of 0.98 and a coefficient of +30.2 per cent atmosphere; mass alone gives
+      0.62 and -7.58. The structural reason is a magnitude asymmetry that does not
+      depend on any regression: within the spin-bearing pair, two mass units change ED50
+      by -6 per cent atmosphere; within the spin-zero pair, two mass units change it by
+      +2; across the spin boundary, ONE mass unit (131 to 132) changes it by 29. A
+      smooth monotone confound in mass — diffusion scaling as one over root mass,
+      solubility — has no way to produce a step of that shape. This is reported as a
+      description of four group means from one experiment, not as an inferential result,
+      because the frozen rule forbids the latter."
+    evidenceId: ORCH-E038
+  - statement: "The published record contains exactly one isotope-resolved xenon potency
+      experiment. The frozen protocol's eight literal queries were run against PubMed
+      and Europe PMC, the full forward citation list of Li et al. 2018 was screened (37
+      citing works), its full backward reference list was screened (24 references), and
+      preprint servers (arXiv, bioRxiv and other Europe PMC preprints, OSF) and two
+      registries were swept. No replication, no extension with additional isotope arms,
+      and no pre-2018 isotope-resolved potency report exists. Two pre-committed known
+      candidates resolve as follows: 'any pre-2018 xenon isotope potency report' — none
+      found; 'any post-2018 replication or extension with additional isotope arms' —
+      none found. The single named-but-unidentified candidate at freeze, the commentary
+      attached to the Anesthesiology 2018 issue, is identified as Hameroff SR,
+      'Anesthetic Action and Quantum Consciousness: A Match Made in Olive Oil',
+      Anesthesiology 2018, and is excluded from rows as secondary restatement exactly as
+      pre-committed."
+    evidenceId: ORCH-E039
+  - statement: Everything above rests on four group means from one laboratory, and the
+      study's own extraction exposed how fragile the record is. The reported
+      plus-or-minus values are of unstated type — the abstract never says whether they
+      are standard deviations or standard errors — and no isotopic enrichment
+      percentage, purity profile, oxygen fraction, equilibration time, blinding
+      statement, or temperature control is available in the accessible record. The
+      xenon-alone ED50 values that carry the headline are not measured but calculated by
+      the authors from co-administration with 0.50 per cent isoflurane; the directly
+      measured endpoint is the isoflurane-combined one, and it gives the same
+      qualitative picture (spin coefficient +6.95, weighted R-squared 0.97, against mass
+      alone at 0.62). A result this widely cited in the quantum-consciousness literature
+      rests on a single unreplicated four-arm experiment whose dispersion type cannot be
+      determined from its own abstract.
+    evidenceId: ORCH-E040
+  - statement: "The decisive experiment is cheap and specific, and this study can now name
+      it. Because the ill-conditioning is intercept-versus-mass rather than
+      spin-versus-mass, adding isotope arms that widen the mass range while holding spin
+      class fixed would resolve it: 124Xe or 126Xe (spin zero, four to eight mass units
+      below the current spin-zero pair) would break the near-collinearity between the
+      mass column and the constant, and 136Xe (spin zero, the heavy extreme) would
+      extend it further. A spin-zero isotope lighter than 129 is the single most
+      informative addition, because it separates 'lighter is more potent' from 'spinless
+      is more potent' directly — the current design has no spin-zero isotope below 132.
+      This is a sharper specification than the freeze's own placeholder of 'a
+      mass-matched isotope pair', and it is what ORCH-R010 should now request."
+limitations:
+  - One source, one cohort, four rows. All four isotope arms come from a single
+    experiment on 80 mice in one laboratory, so the four rows are not independent
+    replications and every row carries the same independence note. No aggregate here is
+    a meta-analysis; it is a re-analysis of one experiment's four group means.
+  - Numbers were read from the abstract, not the full text. Anesthesiology is paywalled
+    and the paper is not in PubMed Central; the accessible record is the
+    publisher-deposited JATS abstract retrieved through Crossref. The frozen
+    per-candidate verification rule required confirming isotopic enrichment percentage
+    from the methods, and that part of the rule COULD NOT be satisfied. The row is
+    nonetheless dispositioned 'include' rather than 'blocked' because the frozen
+    blocking condition is that the numbers cannot be located, and the potency numbers
+    are located and quoted; the enrichment failure is recorded here instead of being
+    silently absorbed.
+  - "The freeze set a condition-number threshold of 30 without naming a scaling
+    convention, which is a genuine ambiguity in the pre-registration. Three conventions
+    are reported: raw (17,498), unit-column-norm/Belsley (302.4), and centred-and-scaled
+    (4.89). The decision follows the uncentred Belsley convention, which is the STRICTER
+    reading — it is the one that trips the rule and forces the refusal to report a spin
+    p-value. Had the centred convention been chosen the rule would not have tripped and
+    a spin p-value would have been reportable. Naming the convention is the fix for a
+    successor study; choosing the permissive one after seeing the data would have been
+    exactly the tuning the freeze exists to prevent."
+  - "Google Scholar, Semantic Scholar and ProQuest, all named in the frozen search
+    protocol, were not queried as written: Google Scholar and ProQuest expose no
+    programmatic interface this agent can use without scraping, and the Semantic Scholar
+    sweep was folded into the Crossref and Europe PMC citation sweeps. The
+    forward-citation screen therefore rests on Europe PMC's 37-item list rather than the
+    union of four sources, and a citing work indexed nowhere in Europe PMC could have
+    been missed. This is a deviation from the frozen protocol and is recorded as one
+    rather than described as complete coverage."
+  - The extraction's two passes disagreed on mapping, not on magnitude, and that
+    disagreement is the most transferable thing this study found. The PubMed rendering
+    of this abstract strips the isotope superscripts, leaving 'for Xe, Xe, Xe, and Xe,
+    respectively'. The group order introduced earlier in that same stripped text invites
+    the reading 129 then 131; the true order in the publisher deposit is 131 then 129.
+    Any re-analysis built on the PubMed rendering would silently swap the two
+    spin-bearing isotopes. The swap happens not to change the spin coefficient, since
+    both are spin-bearing, but it would corrupt the spin-quantum-number sensitivity fit
+    and any mass-resolved statement.
+  - With four observations and three parameters the two-covariate model has one residual
+    degree of freedom, and every leave-one-out refit saturates at zero. The
+    leave-one-out coefficients accordingly range from +18 to +38 for spin and flip sign
+    for mass, which is what the frozen secondary analysis was designed to expose. No
+    stability claim should be read into any coefficient reported here.
+  - This study says nothing about whether nuclear spin affects consciousness, and
+    nothing about Orch OR. It asks only whether one published dataset can separate a
+    spin effect from a mass effect, and answers that by its own pre-committed rule it
+    cannot, while describing what the numbers look like if one sets that rule aside.
+runId: 2026-09-01-study-orch-s002-collection
+model: Claude Opus 5, via Cursor cloud agent
 date: 2026-09-01
-promptVersion: bench-freeze-v1
+promptVersion: aletheia-study-collection-v1
 humanReviewed: false

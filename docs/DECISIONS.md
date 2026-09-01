@@ -223,6 +223,20 @@ history (transients). The exam caught its own first bug in development —
 a raw-substring check broke on YAML line folding — which is the level of
 pettiness a regression harness is for.
 
+## 2026-09-01 — Narrative inputs: rewrites anchor to the founding texts (founder direction)
+
+Addition to the Atelier design (docs/AUTOMATION.md), closing a drift
+failure mode the founder spotted: iterative rewriting compounds — each
+cycle seeing only its predecessor erodes the founding voice without ever
+tripping a pin. Cases may now carry committed founding texts (per-case
+inputs/ with a licensing manifest; the founder's own essays qualify,
+third-party briefs never do), and every rewrite candidate drafts from
+ledger + pins + narrative inputs + incumbent. Inputs are presentation
+references, never evidence: voice and framing may be drawn from them,
+facts may not, unless independently in the ledger. Implementation lands
+with the Atelier; the manifest schema may land earlier if input texts
+are committed ahead of it.
+
 ## 2026-09-01 — Founding inputs frozen: the current tellings become the source texts (founder direction)
 
 The founder's call, extending the narrative-inputs design the same

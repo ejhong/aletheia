@@ -1,0 +1,224 @@
+# Cross-model check run — an independent judge (Gemini 3.1 Pro (Google)),
+# blind to all prior assessments (scripts/cross-model-check.mjs,
+# promptVersion aletheia-check-v2). role: check — never displayed as the case
+# narrative; feeds the concurrence panel. Append-only; NOT human reviewed.
+runId: 2026-09-01-check-gemini
+model: Gemini 3.1 Pro (Google) — independent check run via gemini-3.1-pro-preview
+date: 2026-09-01
+promptVersion: aletheia-check-v2
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: unresolved
+  loadBearing:
+    - ORCH-C020
+    - ORCH-C013
+  weakestLinks:
+    - ORCH-C010
+    - ORCH-C022
+    - ORCH-C040
+  synthesis: >-
+    The "Collapse, Not Computation?" case file presents a remarkably segmented
+    scientific dispute where the individual observational rungs cleanly separate
+    from the headline thesis. To steelman the proponent case: Orch OR
+    successfully predicted non-trivial optical and excitonic properties of
+    microtubules long before they were experimentally verified. Between 2023 and
+    2026, those properties moved from speculative to established, with groups
+    confirming phenomena like superradiance and multi-nanometer exciton
+    diffusion. Furthermore, clinical anesthetics have been shown to measurably
+    perturb these optical properties, and microtubule-stabilizing drugs
+    demonstrably alter clinical anesthetic latency thresholds in mammals. The
+    theory uniquely attempts a unified physical mechanism for both conscious
+    experience and its phenomenal existence, a frontier where classical network
+    neuroscience remains largely silent.
+
+    To steelman the conventional case: The standard classical framework
+    possesses causal, single-target molecular evidence of a caliber that Orch OR
+    wholly lacks. A single engineered point mutation in the GABA_A receptor β3
+    subunit abolishes the immobilizing effects of propofol and etomidate,
+    creating a clean causal anchor. In contrast, Orch OR's behavioral evidence
+    relies on blunt pharmacological interventions (like epothilones) that cause
+    wholesale metabolic and cellular disruptions. Crucially, independent
+    laboratories have found that both microtubule stabilizers and destabilizers
+    can shift anesthetic sensitivity in the exact same direction, fatally
+    undermining any simple quantum-structural stability rule.
+
+    The overall verdict is strictly unresolved because the entire theory
+    balances on an unmeasured gap. There is zero direct experimental evidence
+    for macroscopic quantum entanglement or physiological coherence times in
+    living microtubules at the 25-millisecond scale required by the theory.
+    Currently, proponents and critics are merely trading theoretical models—one
+    side calculating femtosecond decoherence, the other up to millisecond
+    coherence. The case's sensitivity relies critically on ORCH-E001 (Kalra
+    2023, exciton diffusion, underlying ORCH-C020). If this foundational
+    photophysics record were removed, the biological arm of Orch OR would
+    instantly regress from "plausible but unproven" to entirely unsupported, and
+    the case verdict would collapse from unresolved to contradicted. The verdict
+    hangs heavily on this single thread. Without a prespecified coherence
+    threshold or a rigorously controlled potency series, the headline thesis
+    remains a provocative foundational architecture draped over standard
+    nanometer-scale condensed-matter physics.
+claimAssessments:
+  - claimId: ORCH-C001
+    verdict: unresolved
+    confidence: high
+    reasoning: The headline thesis is a conjunction requiring Penrose physics,
+      microtubule coherence, and a linkage between them to all hold true
+      simultaneously. Gran Sasso has heavily constrained the physics, and in
+      vivo physiological coherence remains utterly unmeasured. The strongest
+      opposing consideration is that 30 years of literature has yielded no
+      explicit, falsifiable coherence threshold, rendering the thesis currently
+      untestable as an integrated whole.
+  - claimId: ORCH-C002
+    verdict: weakly_supported
+    confidence: moderate
+    reasoning: "Anesthetics measurably alter microtubule optical properties (Kalra)
+      and microtubule stability alters anesthetic latency (Khan). However, the
+      causal chain is extremely fragile. The strongest opposing consideration is
+      the lack of pharmacological specificity: the convulsant picrotoxin
+      produces similar optical perturbations, and stabilizing/destabilizing
+      yields contradictory behavioral latency results across independent
+      laboratories."
+  - claimId: ORCH-C003
+    verdict: well_supported
+    confidence: high
+    reasoning: The conventional pharmacological account boasts target-level causal
+      evidence, most notably the N265M GABA_A point mutation which abolishes
+      propofol/etomidate immobility. The strongest opposing consideration is
+      that this specific mutation only slightly reduces the hypnotic effects of
+      volatile anesthetics, leaving an acknowledged gap where a multi-target or
+      even microtubule-based volatile mechanism could operate.
+  - claimId: ORCH-C004
+    verdict: unresolved
+    confidence: moderate
+    reasoning: The exhaustive negative claim that classical mechanisms explain all
+      cognition without any quantum-coherent contribution cannot be definitively
+      proven. The strongest opposing consideration is that classical mechanisms
+      for inhaled volatiles remain incompletely mapped, and isolated quantum
+      anomalies (like the xenon isotope effect) continue to exist as unresolved
+      residues.
+  - claimId: ORCH-C030
+    verdict: unresolved
+    confidence: high
+    reasoning: The specific parameter-free Diósi-Penrose stochastic completion is
+      decisively excluded by the Gran Sasso spontaneous radiation bounds. The
+      strongest opposing consideration is that Penrose's original heuristic
+      timescale criterion makes no spontaneous radiation prediction, leaving the
+      core concept unrefuted but fundamentally untested.
+  - claimId: ORCH-C040
+    verdict: unresolved
+    confidence: low
+    reasoning: Recent AI breakthroughs confirm machine computation can execute
+      high-level mathematical search and deduction, successfully addressing
+      testable challenges Penrose initially proposed. The strongest opposing
+      consideration is the philosophical argument that AI models operate
+      entirely within pre-existing formal frameworks, thus never demonstrating
+      the "abductive jump" to true framework generation that Penrose targets.
+  - claimId: ORCH-C010
+    verdict: unresolved
+    confidence: high
+    reasoning: This is the central missing empirical piece of the entire theory. No
+      experiment has measured a density-matrix observable in a physiological
+      microtubule. The strongest opposing consideration is that calculations
+      alone fill this void, and proponent models are wildly divergent from
+      mainstream decoherence estimates (like Tegmark's) without resolving the
+      gap via measurement.
+  - claimId: ORCH-C011
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: Kalra 2023 demonstrates exciton diffusion reduction by anesthetics,
+      and Emerson 2013 shows direct tubulin binding for an anthracene
+      anesthetic. The strongest objection is the profound lack of specificity,
+      as the convulsant picrotoxin also suppresses the same photophysical assay.
+  - claimId: ORCH-C012
+    verdict: mixed
+    confidence: high
+    reasoning: Pharmacological manipulation does change anesthetic susceptibility,
+      but not in a coherent direction. While Wellesley studies show acute EpoB
+      delays unconsciousness, the strongest opposing consideration is that an
+      independent lab (Li 2025) found chronic EpoD and the destabilizer
+      vinblastine both increase sensitivity, directly breaking any
+      straightforward stability hypothesis.
+  - claimId: ORCH-C013
+    verdict: well_supported
+    confidence: high
+    reasoning: Supported by converging approaches, notably Kalra's excitonic
+      diffusion and Babcock's superradiance modeling. Microtubules are
+      conclusively not passive structural beams. The strongest opposing
+      consideration is that while non-trivial, this is standard condensed-matter
+      physics within an ordered lattice, offering no direct evidence of coherent
+      quantum computation.
+  - claimId: ORCH-C020
+    verdict: well_supported
+    confidence: high
+    reasoning: The direct measurement in Kalra 2023 shows a 6.6 nm diffusion length
+      and a modest reduction by etomidate and isoflurane. The strongest opposing
+      consideration is the lack of independent laboratory replication, combined
+      with the fact that Hameroff and Penrose are themselves co-authors on the
+      paper, meaning it is not a fully disinterested test.
+  - claimId: ORCH-C021
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: Babcock 2024 confirms quantum-yield enhancement scaling with
+      microtubule architecture, pointing toward superradiance. The strongest
+      opposing consideration is that this measures the radiative lifetime of a
+      dark state—a phenomenon of light-matter coupling—which is fundamentally
+      distinct from physiological decoherence times.
+  - claimId: ORCH-C022
+    verdict: unresolved
+    confidence: high
+    reasoning: Bandyopadhyay's scale-free triplet-of-triplet resonance finding
+      remains entirely unreplicated by independent laboratories for over a
+      decade. Furthermore, the strongest opposing consideration is that
+      electromagnetic resonance is a classical observable, meaning it cannot
+      serve as a quantum coherence or entanglement witness even if replicated.
+  - claimId: ORCH-C023
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: Blinded studies demonstrate that acute epothilone B delays LORR in
+      rodents. The strongest opposing consideration is that epothilone B induces
+      massive cellular, transport, and metabolic disruption, offering classical
+      physiological routes to alter anesthetic latency without implicating any
+      microtubule quantum state.
+  - claimId: ORCH-C024
+    verdict: well_supported
+    confidence: high
+    reasoning: A rigorous, independent, randomized dose-response study by Li 2025
+      shows both stabilization (EpoD) and destabilization (vinblastine) shift
+      anesthetic sensitivity in the same direction. The strongest opposing
+      consideration is the difference in chronic versus acute regimens compared
+      to the Wellesley studies, though this does not negate the refutation of a
+      simple stability rule.
+  - claimId: ORCH-C025
+    verdict: unresolved
+    confidence: moderate
+    reasoning: Li 2018 originally reported a nuclear spin potency effect for xenon.
+      However, the rigorous S002 study reveals the underlying dataset is
+      ill-conditioned (mass variance too narrow), calculated rather than
+      directly measured for the headline endpoint, and entirely unreplicated.
+      The dataset cannot support a two-covariate inferential test either way.
+  - claimId: ORCH-C026
+    verdict: mixed
+    confidence: moderate
+    reasoning: Kerskens 2022 measured heartbeat-timed zero-quantum-coherence MRI
+      signals that scale with consciousness. The strongest opposing
+      consideration is from a leading NMR methodologist who argues this is
+      standard multicompartmental classical artifacting, rendering the
+      entanglement interpretation deeply disputed in the primary literature.
+  - claimId: ORCH-C031
+    verdict: well_supported
+    confidence: high
+    reasoning: Donadi 2021 sets a rigorous, null experimental bound at the Gran
+      Sasso facility, strictly ruling out the parameter-free Diósi-Penrose
+      stochastic collapse model. The strongest opposing consideration is that
+      Orch OR can retreat to non-Markovian or underspecified variants that evade
+      this specific radiation prediction.
+  - claimId: ORCH-C041
+    verdict: well_supported
+    confidence: high
+    reasoning: Verified by independent mathematicians (Sawin) and IMO coordinates,
+      systems like AlphaProof and Gemini unequivocally solve novel
+      research-level mathematical problems. The strongest objection is that they
+      operate strictly within pre-existing formal frameworks via immense search,
+      thereby avoiding the true Gödelian abduction Penrose claims is
+      non-computable.

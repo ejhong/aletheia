@@ -1,0 +1,182 @@
+# Cross-model check run — an independent judge (Gemini 3.1 Pro (Google)),
+# blind to all prior assessments (scripts/cross-model-check.mjs,
+# promptVersion aletheia-check-v2). role: check — never displayed as the case
+# narrative; feeds the concurrence panel. Append-only; NOT human reviewed.
+runId: 2026-09-01-check-gemini
+model: Gemini 3.1 Pro (Google) — independent check run via gemini-3.1-pro-preview
+date: 2026-09-01
+promptVersion: aletheia-check-v2
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: unresolved
+  loadBearing:
+    - TRN-C024
+    - TRN-C020
+  weakestLinks:
+    - TRN-C022
+    - TRN-C023
+    - TRN-C005
+    - TRN-C006
+  synthesis: >-
+    The "Before Sputnik?" case remains at a stark diagnostic impasse. Evaluating
+    the evidence requires cleanly separating the existence of the physical marks
+    from their physical origin, and their physical origin from the contested
+    statistical behaviors of the broader catalogs. 
+
+    To steelman the proponent case: The canonical single-exposure marks are
+    indisputably real physical features, visually confirmed on the glass
+    (TRN-E002), mathematically sharp (TRN-E003), and robust to independent
+    software extraction (TRN-E008). Crucially, recent microscopy places the 1950
+    flagship marks on the original telescope negative (TRN-E022), definitively
+    closing the skeptical theory that they were introduced during a shared
+    plate-copying stage. Furthermore, the phenomenon is not isolated to Palomar;
+    analogous marks appear in Hamburg Observatory plates (TRN-E013) where they
+    reportedly exhibit coma aberration (TRN-E014)—the specific optical footprint
+    of photons passing through a telescope, a signature plate chemistry cannot
+    natively mimic.
+
+    To steelman the skeptical case: The entire evidentiary base rests on a
+    photographic medium notorious for manufacturing star-like defects. The
+    flagship marks' extreme sharpness places them precisely in the morphological
+    neighborhood of emulsion artifacts (TRN-E004). The proponents' own
+    manuscript acknowledges that microscopy cannot distinguish a sub-second
+    flash from a primary emulsion flaw (TRN-E024). More devastatingly, the
+    ensemble evidence used to argue for a near-Earth orbit (shadow deficit) or
+    artificiality (nuclear timing) evaporates when the catalog is independently
+    reconstructed or when basic background non-uniformities and observatory
+    schedules are modeled (TRN-E009, TRN-E011). 
+
+    The single evidence record whose removal would most change the shape of this
+    case is TRN-E022 (Yang & Villarroel's microscopy of the original negative).
+    Without it, the shared copy-stage mechanism (TRN-E005) remains a fully
+    sufficient, mundane explanation for the canonical Palomar events. Even with
+    TRN-E022 present, the overall verdict of "unresolved" survives, because
+    while TRN-E022 proves the marks are on the original negative, it explicitly
+    fails to prove they were made by incident light (TRN-C020). Resolution now
+    depends entirely on blind validation of the Hamburg coma discriminant and
+    future multi-station simultaneous imaging.
+claimAssessments:
+  - claimId: TRN-C022
+    verdict: unresolved
+    confidence: high
+    reasoning: There is no direct evidence confirming artificiality. The primary
+      arguments for artificial objects rely on ensemble statistics (nuclear
+      correlations and shadow deficits) that dissolve when the candidate catalog
+      is heavily vetted or independently extracted. Furthermore, alternative
+      natural mechanisms for near-Earth reflective bodies have been credibly
+      proposed, leaving artificiality an unsupported leap.
+  - claimId: TRN-C023
+    verdict: presently_untestable
+    confidence: high
+    reasoning: No test currently on the table can distinguish a pre-Sputnik
+      extraterrestrial artifact from an unknown natural phenomenon or an unknown
+      human program. Because the foundational claims about whether the plates
+      record real light remain unresolved, any attribution of extraterrestrial
+      origin is completely insulated from empirical testing.
+  - claimId: TRN-C021
+    verdict: unresolved
+    confidence: moderate
+    reasoning: The near-Earth attribution relies heavily on the Earth-shadow
+      deficit, which replicates on the contested working catalog but fails in
+      subsets subjected to stricter vetting for spatial background artifacts.
+      The strongest opposing consideration is that the geometric signatures of
+      orbit collapse once uniform-background assumptions are replaced with the
+      data's actual plate-edge cluster patterns.
+  - claimId: TRN-C020
+    verdict: unresolved
+    confidence: high
+    reasoning: This is the true crux of the case. While the marks are confirmed to
+      exist on the original emulsion, the authors' own microscopy admits that a
+      sub-second flash and an intrinsic emulsion defect produce
+      indistinguishable single-source signatures. The coma aberration findings
+      in Hamburg plates offer a potential path forward but lack blind validation
+      against known directional plate defects.
+  - claimId: TRN-C007
+    verdict: well_supported
+    confidence: high
+    reasoning: The archival reconstruction of the Palomar copying process
+      successfully proves that the DSS and SuperCOSMOS datasets share a common
+      intermediate positive. The strongest opposing consideration is not that
+      this mechanism is false, but that its explanatory reach is neutralized for
+      the specific canonical events now that they have been located on the
+      original telescope negative.
+  - claimId: TRN-C001
+    verdict: well_supported
+    confidence: high
+    reasoning: The physical existence of the nine marks on the 1950 plate material
+      is universally accepted, confirmed by both the proponents and the
+      principal skeptical critics during glass inspection. The strongest caveat
+      is that similar, non-repeating marks were also found on a neighboring
+      field plate, suggesting a plate-wide susceptibility to defects rather than
+      a unique celestial event.
+  - claimId: TRN-C024
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: "Microscopy of the Caltech plate registers all nine sources on the
+      original glass, effectively ruling out a downstream copying or scanning
+      artifact for this specific event. It is provisional solely due to
+      provenance: the manuscript is an unreviewed preprint, the examination was
+      unblinded, and it was conducted by the proponent team without outside
+      replication."
+  - claimId: TRN-C002
+    verdict: well_supported
+    confidence: high
+    reasoning: "Profile statistics universally confirm the nine marks are sharper
+      and more concentrated than comparison stars. The dispute is entirely
+      interpretive: skeptics classify this sharpness as the hallmark of spurious
+      emulsion artifacts, whereas proponents argue it is the exact expected
+      physics of a sub-second flash on a 50-minute exposure."
+  - claimId: TRN-C003
+    verdict: well_supported
+    confidence: moderate
+    reasoning: The 1952 triple transient is peer-reviewed, supported by deep modern
+      follow-up imaging confirming the absence of the sources today, and
+      recovered by an independent pipeline. However, no independent physical
+      inspection of the original 1952 plate material has been published, leaving
+      it vulnerable to the same copy-defect hypotheses that plagued the 1950
+      event prior to recent microscopy.
+  - claimId: TRN-C004
+    verdict: well_supported
+    confidence: high
+    reasoning: The Hayes pipeline definitively demonstrates that independent,
+      from-scratch software can recover the canonical events and a majority of
+      the published catalog without relying on the VASCO team's proprietary
+      code. However, because this pipeline extracts from the identical digitized
+      copy descendents, it cannot determine whether it is reliably extracting
+      celestial flashes or reliably extracting shared plate defects.
+  - claimId: TRN-C005
+    verdict: mixed
+    confidence: high
+    reasoning: The Earth-shadow deficit strongly replicates when analyses are run
+      strictly against the authors' ~107,875-object working catalog, even
+      post-ML vetting. It completely fails, however, in the Watters reanalysis,
+      which demonstrates that the base catalog wildly violates the
+      uniform-random spatial background assumption required to make the shadow
+      deficit statistically significant.
+  - claimId: TRN-C006
+    verdict: mixed
+    confidence: high
+    reasoning: The nuclear-test timing correlation successfully replicates when
+      recalculating the original working catalog. Yet it vanishes entirely into
+      statistical insignificance when an independent pipeline extracts the data
+      and properly models the nightly survey coverage and observing schedule,
+      suggesting the correlation is a scheduling and extraction artifact rather
+      than a physical phenomenon.
+  - claimId: TRN-C010
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: Busko's preprint successfully identifies similar transient candidates
+      in the independent Hamburg Observatory archive, immunizing those specific
+      marks from the Palomar copy-chain debate. The support is provisional
+      because the search is explicitly preliminary and has not yet published
+      false-positive rates calibrated against matched controls for typical plate
+      defects.
+  - claimId: TRN-C011
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: The reported presence of coma aberration in Hamburg candidates
+      provides the most powerful physical discriminant for incident light in the
+      entire case. However, it remains a single-author preprint whose optical
+      classifier has not yet been subjected to a blind validation test against
+      known plate artifacts that could mimic asymmetric distortion.

@@ -1,0 +1,291 @@
+# Cross-model check run — an independent judge (GPT-5.1 (OpenAI)),
+# blind to all prior assessments (scripts/cross-model-check.mjs,
+# promptVersion aletheia-check-v2). role: check — never displayed as the case
+# narrative; feeds the concurrence panel. Append-only; NOT human reviewed.
+runId: 2026-09-01-check-gpt
+model: GPT-5.1 (OpenAI) — independent check run via gpt-5.1
+date: 2026-09-01
+promptVersion: aletheia-check-v2
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: unresolved
+  loadBearing:
+    - TRN-C020
+    - TRN-C024
+    - TRN-C011
+    - TRN-C005
+  weakestLinks:
+    - TRN-C005
+    - TRN-C006
+    - TRN-C021
+  synthesis: >-
+    Across the whole dossier the core factual base is solid at the lowest rung
+    and increasingly contested higher up. The existence and basic properties of
+    the canonical events are well documented: nine star-like points on the 1950
+    plate and a bright triple in 1952 have been recovered by independent
+    pipelines, confirmed on glass copies by the main skeptics, and now, for the
+    1950 event, reported directly on the original telescope negative. TRN-C001
+    and TRN-C003 are thus well-supported as observations. TRN-C002’s sharpness
+    finding is also strong: all nine 1950 marks are systematically sharper than
+    stars, with vanishingly small probability under the stellar profile
+    distribution. These marks are real emulsion features with atypical
+    morphology.
+
+    That base does not, however, determine origin. Hambly & Blair’s copy
+    genealogy (TRN-C007, strongly supported) showed why agreement between DSS
+    and SuperCOSMOS was not independent. The Yang & Villarroel microscopy
+    (TRN-C024, provisionally supported) weakens that mechanism’s applicability
+    to the two flagship events by putting all nine 1950 marks on the original
+    negative, and shows the 1952 triple is not confined to a single copy
+    lineage. Yet TRN-E024 makes clear that even with original-plate access,
+    microscopy cannot distinguish a brief flash from an intrinsic emulsion
+    defect; an experienced, archive-side microscopist explicitly favored a
+    defect interpretation for the 1950 nine. The flash-versus-defect crux
+    encoded in TRN-C020 therefore stays unresolved: we have genuine, unusually
+    sharp dots on the original emulsion, in a plate corner rich in blemishes,
+    with no physically discriminating signature yet validated.
+
+    Population-level arguments for a near-Earth, reflecting population
+    (TRN-C021) are likewise inconclusive. The headline Earth-shadow deficit
+    (TRN-C005) and nuclear-test timing (TRN-C006) are real patterns when one
+    accepts the VASCO working catalog: Doherty and the ML study reproduce them,
+    and Cann’s geomagnetic analyses close at least one simple environmental
+    confound. But Watters et al. show that the spatial distribution and vetting
+    of that catalog violate key assumptions; the deficits vanish or weaken in
+    more carefully vetted subsets, and the nuclear association largely tracks
+    the observatory schedule. Hayes’s fully independent extraction, with
+    explicit exposure modeling, finds no significant nuclear effect at all. The
+    consistent pattern is that ensemble signatures are highly sensitive to
+    catalog construction: they persist under re-analysis of the same rows and
+    often disappear when the rows themselves are rebuilt. That makes them weak
+    foundations for asserting TRN-C021.
+
+    The most promising new positive line is the Hamburg work: Busko’s detection
+    of analogous single-exposure candidates on independent plates (TRN-C010) and
+    especially the coma-aberration signature (TRN-C011) which, if validated,
+    would be a direct indicator that some candidates are genuine light through
+    the optics. However, these results are single-author preprints without blind
+    validation; no confusion matrix against a labeled set of known flashes and
+    known defects exists yet. As a result, they can only provisionally support
+    TRN-C020 and do not yet compel a verdict.
+
+    Climbing further, there is effectively no direct evidence for artificiality
+    (TRN-C022) once the near-Earth rung is bracketed, and none at all that can
+    presently discriminate human-made from extraterrestrial origin (TRN-C023).
+    The Cann “dusty plasma” proposal illustrates that even if a near-Earth
+    reflective population exists, natural mechanisms remain viable. Given that
+    TRN-C020 itself is unresolved and that the strongest geometric evidence
+    (TRN-C005) is lineage-bound and mixed, the case-level headline reduces to:
+    some pre-Sputnik plates show real, sharp, one-off point-like features on the
+    original emulsions, but current evidence cannot decide whether any were made
+    by sky photons, much less by artificial near-Earth objects. The overall
+    verdict is therefore unresolved, with the decisive progress likely to come
+    from (1) blind validation of the coma discriminant; (2) preregistered,
+    multi-pipeline ensemble tests on independently built catalogs; and (3)
+    prospective multi-station imaging for any future fast transients.
+claimAssessments:
+  - claimId: TRN-C022
+    verdict: unresolved
+    confidence: high
+    reasoning: No evidence record directly supports artificial objects pre-Sputnik;
+      every constructive route depends on both real incident light (TRN-C020)
+      and a near-Earth reflective origin (TRN-C021). TRN-C020 remains unresolved
+      because morphology and microscopy cannot yet separate flashes from defects
+      on the original emulsion, and TRN-C021 is at best weakly indicated, with
+      its main geometric support (TRN-C005) strongly challenged by Watters and
+      sensitive to catalog choices. On the positive side, the existence of
+      sharp, clustered events on original plates and some persistent
+      catalog-level patterns keep the possibility open. The strongest opposing
+      consideration is that all ensemble correlations sit on a heavily
+      contaminated, lineage-bound catalog and that no observation yet demands an
+      artificial explanation over plate chemistry or natural near-Earth
+      mechanisms.
+  - claimId: TRN-C023
+    verdict: presently_untestable
+    confidence: high
+    reasoning: There is currently no evidential handle on whether any hypothetical
+      artificial pre-Sputnik objects would be extraterrestrial, since even
+      artificiality itself (TRN-C022) is unresolved. None of the reported data
+      (morphology, original-plate presence, population statistics) can
+      distinguish human-made from non-human origin, and no proposed test in the
+      record presently could. The strongest opposing consideration is simply
+      that lower rungs of the attribution ladder are themselves unsettled, so
+      this question is entirely downstream of disputes not yet resolved.
+  - claimId: TRN-C021
+    verdict: unresolved
+    confidence: moderate
+    reasoning: The primary geometric support is the reported Earth-shadow deficit
+      (TRN-C005), which does replicate on the VASCO working catalog and appears
+      stronger after ML artifact scoring, and multiple simultaneous point events
+      would, if real flashes, be hard to reconcile with many distant-source
+      scenarios. However, Watters et al. show that the background is highly
+      non-uniform and edge-dominated, and find no significant deficit in vetted
+      subsets; Hayes’s independent catalog with explicit exposure modeling also
+      fails to recover an independent nuclear correlation, suggesting catalog
+      definition strongly shapes population signatures. Since TRN-C020 (incident
+      light) is itself unresolved and the ensemble evidence is mixed and
+      lineage-bound, a near-Earth reflective population cannot presently be
+      established. The strongest opposing consideration is this clear dependence
+      of the signal on one unvalidated working catalog and on modeling choices.
+  - claimId: TRN-C020
+    verdict: unresolved
+    confidence: moderate
+    reasoning: "For: the canonical marks are real emulsion features, with unusual
+      sharpness consistent with sub-second flashes, and Hamburg candidates
+      reportedly carry coma patterns characteristic of light through the optics
+      (TRN-C011), which, if confirmed, would directly support incident light.
+      Against: Hambly & Blair’s classifier groups the 1950 nine with known
+      artifact morphology, the plates show a rich defect population, and the
+      microscopist quoted by Yang & Villarroel judged the 1950 features
+      consistent with emulsion defects, noting their plate-corner location.
+      Crucially, the coma result is a single unvalidated preprint, and the
+      microscopy authors themselves state that individual features cannot be
+      classified as flash vs defect on morphology. The strongest opposing
+      consideration is thus that all currently discriminating tools (sharpness,
+      microscope appearance) are known to be shared by defects, and the only new
+      physical discriminant (coma) has not yet passed blind validation."
+  - claimId: TRN-C007
+    verdict: well_supported
+    confidence: high
+    reasoning: Hambly & Blair give a concrete archival reconstruction of the copying
+      process showing both DSS and SuperCOSMOS scans derive from separate copy
+      negatives printed from a shared intermediate positive, and this account is
+      not disputed by proponents. This mechanism is also conceptually consistent
+      with how large plate surveys were duplicated. Yang & Villarroel’s
+      microscopy (TRN-E023) weakens the relevance of this pathway specifically
+      for the canonical 1950 and 1952 events by showing the former on the
+      original negative and the latter not confined to copy material, but does
+      not contest the genealogy itself or its applicability to the broader
+      catalog. The strongest opposing consideration is that the frequency and
+      morphology of star-like defects created at the copy stage remain
+      unmeasured, so the mechanism’s quantitative importance is unknown.
+  - claimId: TRN-C001
+    verdict: well_supported
+    confidence: high
+    reasoning: "The nine 1950 sources are reported in the discovery paper,
+      physically confirmed on an Edinburgh glass copy by skeptics, and recovered
+      by an independent detection pipeline; Yang & Villarroel add that all nine
+      are visible on the original negative at the catalog positions. Independent
+      groups on opposing sides agree on the marks’ presence and on their absence
+      from overlapping plates and deep modern imaging. The only real challenge
+      is not to existence but to uniqueness: similar one-plate-only features are
+      seen on neighboring fields, which argues for a general plate phenomenon
+      rather than a singular astrophysical event."
+  - claimId: TRN-C024
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: TRN-E022 reports that all nine 1950 sources are present on the
+      original telescope negative, with registration done via field stars, and
+      this is consistent with the expectation that real exposure- or
+      emulsion-level features propagate into all descendants. There is no
+      contrary inspection in the record, and the report is internally candid
+      about limitations, which lends some credence. However, it remains an
+      unblinded, proponent-team microscopy study in preprint form, without
+      independent replication or a formal blind protocol, so registration errors
+      or confirmation bias cannot yet be excluded. The strongest opposing
+      consideration is precisely this lack of independent, blinded verification
+      of the claimed coincidences.
+  - claimId: TRN-C002
+    verdict: well_supported
+    confidence: high
+    reasoning: Hambly & Blair’s SuperCOSMOS profile statistics show all nine 1950
+      sources in the sharp tail of the stellar distribution, with joint
+      probability ~0.1⁹ if they were drawn from stars, and their microscope
+      inspection confirms they appear more concentrated than stars of similar
+      brightness. Proponents explicitly accept this measurement and reinterpret
+      its meaning, not its factuality, and Yang & Villarroel also describe the
+      1950 features as sharp-edged and compact. While its implications are
+      disputed, the underlying fact that the nine are systematically sharper
+      than stars is robust. The strongest opposing consideration is that profile
+      measurements are taken from digitized copies, not the original negative;
+      subtle systematic PSF differences across generations could, in principle,
+      influence sharpness metrics.
+  - claimId: TRN-C003
+    verdict: well_supported
+    confidence: moderate
+    reasoning: The Solano et al. paper (peer-reviewed) reports the 1952 bright
+      triple, its absence on a consecutive exposure, and deep modern follow-up
+      to r≈25.5 showing no persistent sources; Hayes’s pipeline independently
+      recovers all three detections. This convergent support makes the basic
+      observational claim credible. The missing piece is direct inspection of
+      the original or copy plates for that field to exclude copying or scanning
+      artifacts; the Yang & Villarroel work only confirms that the triple is not
+      confined to a single copy plate. The strongest opposing consideration is
+      thus that all evidence still flows through the same digitization lineage,
+      leaving room for a plate or copy artifact explanation.
+  - claimId: TRN-C004
+    verdict: well_supported
+    confidence: high
+    reasoning: "Hayes’s fully independent pipeline, with its own detection and
+      cross-matching logic, recovers almost all canonical events and about
+      two-thirds of the published 5,399-candidate catalog, demonstrating that
+      these marks are not artifacts of one team’s software. Synthetic injection
+      tests support the pipeline’s basic performance. Replication across
+      software on shared imagery is exactly what this claim asserts. The
+      strongest opposing consideration is that this independence is
+      methodological, not material: both pipelines still analyze the same
+      digitized copies and thus cannot discriminate between real transients and
+      plate or copy defects."
+  - claimId: TRN-C005
+    verdict: mixed
+    confidence: moderate
+    reasoning: Using the VASCO 107,875-object working catalog, both the original
+      authors and Doherty reproduce a deficit of candidates inside the
+      Earth-shadow cone relative to geometric expectation, and Bruehl et al.’s
+      ML scoring find it strongest among candidates deemed more likely real,
+      suggesting it is not trivially due to obvious defects. However, Watters et
+      al. demonstrate that the features’ spatial distribution is highly
+      non-uniform and edge-concentrated, invalidating the original
+      uniform-background assumption, and they find no significant deficit once
+      an appropriate null is used and subsets are more strictly vetted. The
+      signal’s dependence on a particular, contested catalog and background
+      model means its reality is uncertain. The strongest opposing consideration
+      is this failure to reproduce a significant deficit under more conservative
+      data selection and null modeling, and the lack of corroboration in
+      independently extracted catalogs.
+  - claimId: TRN-C006
+    verdict: mixed
+    confidence: moderate
+    reasoning: Analyses using the original working catalog (Bruehl & Villarroel;
+      Doherty; Cann; Sinkkoinen) consistently find elevated transient rates near
+      atmospheric nuclear tests under various models, and this persists after ML
+      artifact scoring and some environmental controls, indicating a genuine
+      association in that dataset. Yet Hayes’s independent catalog, with
+      explicit modeling of nightly sky coverage, finds no significant effect
+      (IRR ≈1.03), and Watters et al. argue that much of the original
+      correlation is driven by the observation schedule. Thus the correlation
+      appears robust within the original catalog lineage but does not generalize
+      when source extraction and exposure modeling change. The strongest
+      opposing consideration is this disappearance under independent catalog
+      construction, which strongly suggests at least some of the original effect
+      is a property of catalog definition and scheduling rather than of the sky.
+  - claimId: TRN-C010
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: Busko’s preprint reports finding appear-once candidates on Hamburg
+      Schmidt plate pairs, with systematically narrow FWHM compared to stellar
+      PSFs, indicating a phenomenon qualitatively similar to the POSS candidates
+      in a completely independent observatory, emulsion, and digitization chain.
+      This supports the existence of analogous marks outside the Palomar
+      lineage. However, the search is explicitly preliminary, covers only 41
+      plates, and lacks a quantified false-positive rate or comparison to
+      matched controls. The strongest opposing consideration is that every plate
+      archive is known to produce star-like defects, and without a rate-based
+      control analysis these Hamburg candidates could simply reflect common
+      failure modes of old emulsions.
+  - claimId: TRN-C011
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: Busko’s second preprint presents candidate images from a 0.6-m
+      telescope with strong off-axis coma and reports that transient candidates
+      show the expected coma pattern for off-axis point sources, arguing this
+      indicates light passed through the optics rather than surface defects.
+      This is plausibly a powerful discriminant and is at least consistent with
+      optical expectations. Yet no blind validation against a labeled corpus of
+      known flashes and known defects has been done, and the author explicitly
+      cautions that the data do not by themselves establish physical origin. The
+      strongest opposing consideration is that without such blind tests, one
+      cannot exclude subtle defect types or selection biases that may also
+      produce coma-like asymmetries, leaving this as a promising but not yet
+      decisive line of evidence.

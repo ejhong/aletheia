@@ -167,9 +167,13 @@ for (const p of selected) {
   ].join("\n\n");
 
   let parsed;
+  // The model that actually answered (the refusal fallback may have swapped
+  // it) — stamped into the study record below.
+  let draftModel = provider.model;
   try {
     const reply = await callWithRefusalFallback(provider, SYSTEM, user);
-    parsed = parseJsonReply(reply.text ?? reply);
+    draftModel = reply.model;
+    parsed = parseJsonReply(reply.text);
   } catch (e) {
     console.error(`${p.title}: draft failed (${String(e).slice(0, 100)}) — skipped`);
     continue;
@@ -231,7 +235,7 @@ for (const p of selected) {
     findings: [],
     limitations: [],
     runId,
-    model: `bench freeze drafter via ${provider} (${PROMPT_VERSION})`,
+    model: `bench freeze drafter via ${provider.name}/${draftModel} (${PROMPT_VERSION})`,
     date,
     promptVersion: PROMPT_VERSION,
     humanReviewed: false,

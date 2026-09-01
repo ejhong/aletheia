@@ -120,6 +120,10 @@ const packet = [
   diff,
 ].join("\n\n");
 
+// PANEL SEAT — the refusal fallback (scripts/lib/llm.mjs) is BANNED here.
+// Each seat's identity as a specific vendor/model is constitutionally
+// load-bearing (§3.15 vendor-independence of the panel): a refusing seat
+// counts as a FAILED seat ("unsure" below), never a silently swapped one.
 async function seatVote(name) {
   try {
     const reply = await callVendor(name, { system: SYSTEM, user: packet });

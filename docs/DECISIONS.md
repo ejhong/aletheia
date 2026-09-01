@@ -355,3 +355,44 @@ afterward with five recorded opinions per retirement instead of silence.
 One-cycle latency between scoring and drafting (the bench job reads
 merged scores on main), the same clean-tier pattern as the promotion
 pipe. The scoring digest rides the weekly issue.
+
+## 2026-09-01 — The refusal fallback generalizes to every house-drafting call — and is banned from panel seats
+
+The founder's direction, after the editorial audit joined the
+refusal-fallback path this morning: apply the mechanism everywhere
+appropriate, once, rather than chasing the next biology refusal
+pipeline by pipeline. The audit of every LLM call site in scripts/ and
+its outcome:
+
+**Gained the fallback** (house-drafting calls — single-provider work
+whose output is a draft that rides the gates): triage-watch.mjs (watch
+triage decisions), process-inbox.mjs (commentary→proposal translation),
+reconcile-contested.mjs (reconsideration drafts), extract-claims.mjs
+(both the extraction and the adversarial-verification passes),
+watch-literature.mjs (relevance notes). **Already covered**:
+propose-agenda.mjs, promote-imports.mjs, draft-freeze.mjs (which landed
+with bench v2 mid-audit — its study stamp, which had interpolated the
+provider object rather than any model name, now carries the model that
+answered), and — earlier on this same branch — reassess-changed.mjs
+(assessment + editorial audit).
+**Exempt, now marked in code**: the panel seats — cross-model-check.mjs,
+arbiter.mjs, score-agenda.mjs (the bench's five-seat scorer), and the
+shared seat caller in scripts/lib/vendors.mjs. A
+seat's identity as a specific vendor/model is the point of the panel
+(§3.15 vendor-independence): a refusing seat counts as a FAILED seat,
+never a silently swapped one, and each seat call site now carries a
+comment saying so, so no future agent "fixes" it. **Out of scope**:
+generate-case-art.mjs calls an image API, not the drafting path.
+
+The stamping rule rides along everywhere the fallback landed: every
+record that names a model — assessment overlays, triage run files and
+inbox drop headers, commentary-proposal files, reconsideration overlays,
+extracted claims' origin.extractedBy, watch relevance notes, promoted
+evidence origins, run.yaml model fields — carries the model that
+actually answered (the { model } the fallback returns), never the
+configured model when it refused. Where one run makes many calls
+(extraction sections, relevance notes, triage cases), per-record stamps
+carry that record's model and the run file carries the set of models
+used. A stamp a reader cannot trust to name the model that did the work
+would break the reconstruction guarantee the constitution stakes
+accountability on.

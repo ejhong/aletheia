@@ -156,6 +156,10 @@ claimAssessments MUST contain one entry for EVERY one of these ${featuredIds.len
 
 // ----------------------------------------------------------------- calls
 
+// PANEL SEAT — the refusal fallback (scripts/lib/llm.mjs) is BANNED here.
+// Each seat's identity as a specific vendor/model is constitutionally
+// load-bearing (§3.15 vendor-independence of the panel): a refusing seat
+// must count as a FAILED seat, never be silently swapped to another model.
 async function callVendor(name, cfg) {
   const userMsg = `RUN HEADER:\n  TAG: ${cfg.tag}\n  MODEL_LABEL: ${cfg.label}, independent check run\n\nCASE FILE FOLLOWS:\n\n${packet}`;
   let url, body, headers;

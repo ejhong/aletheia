@@ -83,6 +83,11 @@ export async function fetchWithRetry(name, url, init, attempts = 3) {
  * errors or an empty reply (an empty reply is a refusal or a burned
  * thinking budget, and callers must treat it as a failed seat, never as an
  * empty opinion).
+ *
+ * PANEL SEAT — the refusal fallback (scripts/lib/llm.mjs) is BANNED here.
+ * A seat's identity as a specific vendor/model is constitutionally
+ * load-bearing (§3.15 vendor-independence of the panel): a refusing seat
+ * must count as a FAILED seat, never be silently swapped to another model.
  */
 export async function callVendor(name, { system, user, maxTokens = 16000 }) {
   const cfg = VENDORS[name];

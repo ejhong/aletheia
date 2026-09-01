@@ -35,7 +35,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
-import { noKeyMessage, parseJsonReply, pickProvider } from "./lib/llm.mjs";
+import { callWithRefusalFallback, noKeyMessage, parseJsonReply, pickProvider } from "./lib/llm.mjs";
 
 const PROMPT_VERSION_COMMENTARY = "commentary-v1";
 
@@ -165,7 +165,10 @@ async function processCommentary(item, provider, runId, today) {
   const attribution = item.meta.from
     ? `Third-party contribution from ${item.meta.from}, submitted by editor ${item.meta.editor ?? "Eugene"} — the words below are the contributor's, not the editor's.`
     : `Editor commentary`;
-  const reply = await provider.call(
+  // House-drafting call: the one-shot Opus refusal fallback applies, and
+  // the record's model stamp below must be the model that actually answered.
+  const { text: reply, model: modelUsed } = await callWithRefusalFallback(
+    provider,
     COMMENTARY_SYSTEM,
     `Case: ${item.case}\n\nExisting claims (id [tier/reviewState]: statement):\n${claimIndex.join(
       "\n",
@@ -199,7 +202,7 @@ async function processCommentary(item, provider, runId, today) {
     sourceStatement: item.body.trim(),
     runId,
     date: today,
-    model: `${provider.name}/${provider.model}`,
+    model: `${provider.name}/${modelUsed}`,
     promptVersion: PROMPT_VERSION_COMMENTARY,
     proposals: actions,
   };

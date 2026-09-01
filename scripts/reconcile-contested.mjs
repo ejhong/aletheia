@@ -32,7 +32,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
-import { noKeyMessage, parseJsonReply, pickProvider } from "./lib/llm.mjs";
+import { callWithRefusalFallback, noKeyMessage, parseJsonReply, pickProvider } from "./lib/llm.mjs";
 import {
   caseVerdictDissenters,
   claimDissentPacket,
@@ -149,7 +149,14 @@ Rules:
 Reply ONLY JSON:
 {"caseAssessment": {"verdict": "...", "loadBearing": ["..."], "weakestLinks": ["..."], "synthesis": "..."}, "claimAssessments": [{"claimId": "...", "verdict": "...", "reasoning": "...", "confidence": "high|moderate|low"}], "whatChanged": "which dissents (case-level and claim-level) moved you, which did not, and why — 2-5 sentences"}`;
 
-  const reply = await provider.call(SYSTEM, `Case: ${dir}\n\n${JSON.stringify(packet, null, 2)}`);
+  // House-drafting call (the reconsideration is a draft that rides the
+  // gates like any other): the one-shot Opus refusal fallback applies, and
+  // the overlay's model stamp must be the model that actually answered.
+  const { text: reply, model: modelUsed } = await callWithRefusalFallback(
+    provider,
+    SYSTEM,
+    `Case: ${dir}\n\n${JSON.stringify(packet, null, 2)}`,
+  );
   const d = parseJsonReply(reply);
 
   // Fail-closed validation, mirroring reassess-changed.
@@ -173,7 +180,7 @@ Reply ONLY JSON:
   const runId = `${today}-reconsider-${Math.random().toString(36).slice(2, 6)}`;
   const overlay = {
     runId,
-    model: `${provider.name}/${provider.model} (reconsideration — deliberately non-blind: engages the panel's dissents)`,
+    model: `${provider.name}/${modelUsed} (reconsideration — deliberately non-blind: engages the panel's dissents)`,
     date: today,
     promptVersion: PROMPT_VERSION,
     humanReviewed: false,

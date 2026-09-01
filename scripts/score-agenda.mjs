@@ -108,6 +108,10 @@ for (const [name, cfg] of Object.entries(VENDORS)) {
     continue;
   }
   try {
+    // PANEL SEAT — the refusal fallback (scripts/lib/llm.mjs) is BANNED
+    // here. Each seat's identity as a specific vendor/model is
+    // constitutionally load-bearing (§3.15 vendor-independence): a
+    // refusing seat counts as a FAILED seat, never a swapped one.
     const text = await callVendor(name, { system: SYSTEM, user, maxTokens: 16000 });
     const map = parseSeatScores(parseJsonReply(text));
     if (map.size === 0) throw new Error("no valid rows in reply");

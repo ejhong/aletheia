@@ -1,0 +1,203 @@
+# Study freeze — pre-registration only (two-PR discipline; see the
+# Studies entry in docs/DECISIONS.md). Zero rows by design: the criteria
+# below are judged before anyone knows what the data will say, and any
+# later edit to them fails the build. Collection follows in a second PR.
+id: VASO-S001
+title: Latch-state evidence by vessel type, caliber, and persistence
+question: In which vascular preparations has sustained force or constriction
+  been demonstrated while cross-bridge cycling, myosin activation, or energetic
+  expenditure declines; does any primary study demonstrate that phenotype in a
+  skeletal-muscle arteriole or smaller resistance microvessel under
+  physiological temperature and transmural pressure; and where the phenotype is
+  demonstrated, does the maintained state survive withdrawal of the initiating
+  stimulus?
+researchIds:
+  - VASO-R007
+claimIds:
+  - VASO-C010
+  - VASO-C020
+criteria:
+  frozenOn: 2026-09-01
+  inclusion:
+    - Primary experimental reports, any year, on vascular smooth-muscle
+      preparations that record BOTH a force or diameter time course AND at least
+      one contemporaneous readout of activation, cross-bridge cycling, or
+      energetic cost — LC20 phosphorylation, intracellular calcium, unloaded
+      shortening velocity, stiffness, ATPase or ATP turnover, oxygen
+      consumption, heat, lactate, or phosphocreatine. The energetic criterion is
+      deliberately broad, because much of the canonical economy literature
+      derives energy expenditure from oxygen consumption or lactate rather than
+      from a measured ATPase, and a narrow ATPase requirement would exclude the
+      strongest evidence rather than the weakest.
+    - Reports indexed under any vocabulary variant of the phenomenon, whether or
+      not they use the word latch — high economy of force maintenance, tonic
+      force maintenance, stress-phosphorylation dissociation, slow cross-bridge
+      cycling, reduced shortening velocity at maintained force, myosin
+      dephosphorylation during sustained contraction, tonic versus phasic smooth
+      muscle. The older literature predates the term and would otherwise be
+      missed.
+    - Reports in which the phenotype was sought and NOT found enter as rows
+      under identical rules (§3.11). A vessel class where latch behavior is
+      absent is a finding of this table, not an omission from it.
+    - Purified-protein, single-molecule, and in vitro motility reconstitutions
+      enter as rows, tagged as molecular-reconstitution evidence. They can speak
+      to the bridge mechanism and say nothing about vessel class.
+    - Mathematical and computational models of latch kinetics enter as rows,
+      tagged as model evidence. A model that predicts latch maintenance in a
+      named vessel is not a measurement in that vessel.
+    - Non-vascular smooth muscle (uterine, airway, gastrointestinal, vas
+      deferens) enters only where the report supplies a phenotype or mechanism
+      comparison bearing on vessel-type variation; tagged, and never counted
+      toward the vessel-class question this study asks.
+  exclusion:
+    - Reviews, textbook chapters, and commentary with no new primary data. They
+      may be used for discovery only, and discovery aids are never cited (§3.7).
+    - Reports of maintained force or constriction with no activation, cycling,
+      or energetic readout. Sustained tone alone cannot distinguish an
+      economical hold from ordinary continued activation, which is the whole
+      distinction this table exists to draw.
+    - Skeletal-muscle and cardiac-muscle preparations.
+    - Clinical, pharmacological, and imaging studies whose endpoint is a whole
+      vessel or tissue response with no cross-bridge-level measurement.
+    - Secondary reports restating another included study's measurements without
+      new data (§3.10 — one experiment is one row, not many); where a row's data
+      are shared with another row's, the shared origin is recorded in its
+      independence note.
+  searchProtocol: "Discovery runs only after this freeze, by the executing agent's
+    own web search plus direct retrieval of primary documents (PubMed and PubMed
+    Central, Crossref DOI resolution, publisher pages); no deep-research
+    assistant is used, and no brief is cited. Literal queries, each run as
+    written: [latch bridge smooth muscle force maintenance energetic cost];
+    [economy of force maintenance vascular smooth muscle oxygen consumption];
+    [stress phosphorylation dissociation arterial smooth muscle]; [latch state
+    arteriole resistance vessel]; [skeletal muscle arteriole myosin light chain
+    phosphorylation sustained constriction]; [precapillary sphincter smooth
+    muscle sustained contraction phosphorylation]; [cannulated pressurized
+    arteriole myogenic tone LC20 phosphorylation shortening velocity]; [latch
+    bridge absence saphenous artery]; [tonic versus phasic smooth muscle myosin
+    dephosphorylation force maintenance]; [smooth muscle ATP consumption
+    cross-bridge phosphorylation carotid media]. Citation chaining, forward and
+    backward, from each identified anchor paper: Dillon et al. 1981
+    (10.1126/science.6893872), Hai & Murphy 1988 (the case's
+    SRC-HAI-MURPHY-1988), Wingard et al. 1994 (10.1113/jphysiol.1994.sp020422),
+    Han et al. 2006 (10.1152/ajpheart.00977.2005), Call et al. 2006
+    (10.1152/ajpheart.00086.2006), Hammell et al. 2022 (10.1085/jgp.202213117).
+    Author-family searches: Murphy RA, Eddinger TJ, Ratz PH, Speich JE, Lauzon
+    A-M, Paul RJ, Siegman MJ, Butler TM. Every cell is verified against the
+    primary document before it enters the table; searches that return nothing
+    are reported as failed searches (§3.11)."
+  knownCandidates:
+    - name: Dillon, Aksoy, Driska & Murphy 1981, "Myosin Phosphorylation and the
+        Cross-Bridge Cycle in Arterial Smooth Muscle" (Science;
+        10.1126/science.6893872)
+      disposition: include
+      reason: the founding observation of the phenotype in arterial smooth muscle; the
+        paper the latch-bridge account was built to explain
+    - name: Hai & Murphy 1988, the four-state latch-bridge kinetic model (the case's
+        SRC-HAI-MURPHY-1988, already cited by VASO-E003)
+      disposition: include
+      reason: enters as model evidence, not a vessel-level demonstration — the
+        distinction this study exists to enforce, applied first to the case's
+        own load-bearing citation
+    - name: Wingard, Paul & Murphy 1994, "Dependence of ATP consumption on
+        cross-bridge phosphorylation in swine carotid smooth muscle" (J Physiol;
+        10.1113/jphysiol.1994.sp020422)
+      disposition: include
+      reason: a canonical energetics measurement in a large tonic artery; the row that
+        should score high on phenotype and low on knot relevance if the two-axis
+        grading is working
+    - name: Han, Speich, Eddinger, Berg, Miner et al. 2006, "Evidence for absence of
+        latch-bridge formation in muscular saphenous arteries" (Am J Physiol
+        Heart Circ Physiol; 10.1152/ajpheart.00977.2005)
+      disposition: include
+      reason: a titled absence report in a downstream muscular artery; if the
+        phenotype is not generic across vascular smooth muscle, this is where
+        the table will show it
+    - name: 'Call, Han, Speich, Eddinger & Ratz 2006, "Resistance to pressure-induced
+        dilatation in femoral but not saphenous artery: physiological role of
+        latch?" (Am J Physiol Heart Circ Physiol; 10.1152/ajpheart.00086.2006)'
+      disposition: include
+      reason: the pressurized-vessel counterpart to the preceding ring experiments;
+        the anchor for the transmural-pressure column
+    - name: Wang, Politi, Tania, Bai & Sanderson 2008, "A Mathematical Model of Airway
+        and Pulmonary Arteriole Smooth Muscle" (Biophysical Journal;
+        10.1529/biophysj.107.113977)
+      disposition: include
+      reason: enters as model evidence — an arteriole-named prediction, which is
+        precisely the kind of record that could be mistaken for an arteriole
+        measurement if the evidence classes were not separated
+    - name: Hammell, Kachmar, Balassy, IJpma & Lauzon 2022, "Molecular-level evidence
+        of force maintenance by smooth muscle myosin during LC20
+        dephosphorylation" (J Gen Physiol; 10.1085/jgp.202213117)
+      disposition: include
+      reason: enters as molecular-reconstitution evidence — deliberately
+        vessel-agnostic, so strong on the bridge mechanism and silent on
+        localization
+    - name: An unlocated canine saphenous-vein report, named in the pre-freeze
+        commentary as inferring latch formation from an approximately 11.9 per
+        cent fall in maximum shortening velocity, with no energetic measurement
+      disposition: include
+      reason: recorded as an unverified lead, not a citation — the executing agent
+        could not resolve it to a primary document before the freeze. Include if
+        collection resolves it; if it cannot be resolved, the failed search is
+        reported rather than dropped (§3.11), because a candidate that entered
+        the design and then vanished is exactly what this field exists to expose
+  criteriaHash: fe5e031b8b8f
+method: "One row per experimental preparation, not per paper: a study reporting
+  two vessel types under different conditions supplies two rows, and rows
+  sharing an animal cohort, tissue batch, or dataset carry an independence note
+  (§3.10). Every cell is transcribed from the primary document and cited inline
+  with the standard verification label; nothing is completed from memory or from
+  a secondary account. Each row then receives TWO independent grades, recorded
+  separately and never combined into a single score (§3.13). The latch-evidence
+  grade records how directly the report establishes the phenomenon —
+  contemporaneous energetic measurement, biochemical-mechanical measurement,
+  functional inference from shortening velocity or stiffness alone, molecular
+  reconstitution, or model only. The knot-relevance grade records how close the
+  preparation is to what VASO-C020 requires — a pressurized skeletal-muscle
+  arteriole or smaller resistance microvessel, another resistance vessel, or a
+  large artery, vein, or non-vascular preparation. Keeping the axes apart is the
+  point of the table: a carotid ring study can be strong evidence for the
+  phenotype and weak evidence for the location, and collapsing that into one
+  verdict is how a well-established result in the wrong tissue becomes direct
+  support for a claim about muscle knots. Two columns carry the weight the
+  case's own argument turns on. Caliber is recorded as an actual luminal
+  diameter WITH the transmural pressure at which it was measured, because an
+  isometric ring at nominally zero transmural pressure is a different mechanical
+  object from a cannulated vessel regulating its lumen against 40-100 mmHg.
+  Persistence is recorded as whether the activating stimulus remained present,
+  what happened to force or diameter after it was withdrawn, and over what
+  interval — the distinction between economical maintenance under continuing
+  activation and a state that holds on its own. The table reports what the
+  literature contains and does not adjudicate between papers that disagree;
+  disagreements are recorded as the papers state them. Either outcome
+  publishes."
+columns:
+  - paper
+  - preparation class
+  - species, sex and age as reported
+  - vascular bed and named vessel
+  - branch order
+  - luminal diameter (and the pressure at which measured)
+  - preparation type and endothelial status
+  - temperature
+  - transmural pressure and flow
+  - activation stimulus
+  - stimulus duration and whether withdrawn
+  - force or diameter time course
+  - activation readout (LC20 phosphorylation, intracellular calcium)
+  - cycling readout (shortening velocity, stiffness)
+  - energetic readout (assay named)
+  - simultaneity and time resolution of readouts
+  - persistence after withdrawal, and relaxation kinetics
+  - latch-evidence grade
+  - knot-relevance grade
+  - notes
+rows: []
+findings: []
+limitations: []
+runId: 2026-09-01-study-vaso-s001-freeze
+model: Claude Opus 5, via Cursor cloud agent
+date: 2026-09-01
+promptVersion: aletheia-study-freeze-v1
+humanReviewed: false

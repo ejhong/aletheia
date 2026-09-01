@@ -25,3 +25,33 @@ export function loadArbiterRecords(): ArbiterRecord[] {
     })
     .sort((a, b) => b.outcomeAt.localeCompare(a.outcomeAt));
 }
+
+/** One promotions-ledger entry (proposals/promotions-ledger.yaml). */
+export interface PromotionEntry {
+  url: string;
+  disposition: "promoted" | "duplicate" | "failed";
+  [key: string]: unknown;
+}
+
+/**
+ * The promotion pipe's dispositions ledger — every verified import's
+ * fate (promoted / duplicate / failed, with reasons), appended by
+ * scripts/promote-imports.mjs in the archive-ledger tradition. Missing
+ * file = the pipe has not run yet; an unparseable file loses the vitals
+ * row, never the page.
+ */
+export function loadPromotionsLedger(): PromotionEntry[] {
+  const p = path.join(process.cwd(), "proposals", "promotions-ledger.yaml");
+  if (!fs.existsSync(p)) return [];
+  try {
+    const parsed = parseYaml(fs.readFileSync(p, "utf8"));
+    return Array.isArray(parsed)
+      ? parsed.filter(
+          (e): e is PromotionEntry =>
+            typeof e?.url === "string" && typeof e?.disposition === "string",
+        )
+      : [];
+  } catch {
+    return [];
+  }
+}

@@ -396,3 +396,21 @@ carry that record's model and the run file carries the set of models
 used. A stamp a reader cannot trust to name the model that did the work
 would break the reconstruction guarantee the constitution stakes
 accountability on.
+
+## 2026-09-01 — The shelf shows its verdicts; duplicates stop eating the budget; /panel gains vitals
+
+Three refinements after watching the first full metabolism run. (1) The
+proposals page now renders what the Bench decided: a five-seat glyph
+strip per proposal, its derived fate (pre-registered with a link,
+advancing, retired with the tally, blocked with the concern verbatim),
+and a summary strip of totals — the page had been underselling the
+system, showing "ideas under review" when every idea now carries five
+recorded opinions. Unscored runs render exactly as before; fates are
+derived, never stored. (2) The promotion pipe dispositions duplicates
+BEFORE budget selection: the first run's two known duplicates consumed
+promotion slots and deferred two genuinely new sources by a cycle —
+cheap dispositions no longer crowd out real promotions. (3) /panel gains
+a Metabolism section (KISS by founder direction): one row of totals —
+proposals scored, advanced, studies pre-registered and collected,
+sources promoted, duplicates refused — each derived live from the same
+ledgers the loops write, nothing stored, everything inspectable.

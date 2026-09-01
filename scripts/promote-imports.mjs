@@ -128,33 +128,38 @@ if (fs.existsSync(INBOX_PROPOSALS)) {
   }
 }
 
-const { selected, deferred } = selectPromotions(candidates, limit);
-for (const d of deferred) console.error(`deferred: ${d.src.url} — ${d.reason}`);
-if (selected.length === 0) {
-  console.error("promotion pipe: nothing to promote — the loop rests");
-  process.exit(0);
-}
-
+// Dispositions that cost nothing happen BEFORE budget selection: a
+// duplicate or a missing case dir is recorded immediately and never
+// consumes a promotion slot. (First run's lesson: two known duplicates
+// spent the budget and deferred two genuinely new sources by a cycle.)
 const ledgerAdd = [];
-let promoted = 0;
-
-for (const cand of selected) {
+const promotable = [];
+for (const cand of candidates) {
   const { caseDir, src } = cand;
   const caseRoot = path.join(CASES, caseDir);
   if (!fs.existsSync(caseRoot)) {
     ledgerAdd.push({ url: src.url, disposition: "failed", reason: `no case dir ${caseDir}`, runId, date });
     continue;
   }
-  const sources = loadList(path.join(caseRoot, "sources.yaml"));
-  const claims = loadList(path.join(caseRoot, "claims.yaml"));
-  const evidence = loadList(path.join(caseRoot, "evidence.yaml"));
-
-  const dupe = alreadyCarried(src, sources);
+  const dupe = alreadyCarried(src, loadList(path.join(caseRoot, "sources.yaml")));
   if (dupe) {
     console.error(`${src.url}: already carried as ${dupe.id} (via ${dupe.via}) — recorded, skipped`);
     ledgerAdd.push({ url: src.url, disposition: "duplicate", of: dupe.id, via: dupe.via, runId, date });
     continue;
   }
+  promotable.push(cand);
+}
+
+const { selected, deferred } = selectPromotions(promotable, limit);
+for (const d of deferred) console.error(`deferred: ${d.src.url} — ${d.reason}`);
+let promoted = 0;
+
+for (const cand of selected) {
+  const { caseDir, src } = cand;
+  const caseRoot = path.join(CASES, caseDir);
+  const sources = loadList(path.join(caseRoot, "sources.yaml"));
+  const claims = loadList(path.join(caseRoot, "claims.yaml"));
+  const evidence = loadList(path.join(caseRoot, "evidence.yaml"));
 
   let text;
   try {

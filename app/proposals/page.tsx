@@ -15,12 +15,49 @@ export const metadata: Metadata = { title: "Proposals" };
 
 const label = "font-mono text-[11px] uppercase tracking-[0.16em] text-faint";
 
+/** One seat's score as a quiet glyph; the full text lives in the title. */
+function seatGlyph(seat: string): { glyph: string; cls: string } {
+  if (seat.endsWith(": high")) return { glyph: "●", cls: "text-copper" };
+  if (seat.endsWith(": medium")) return { glyph: "◐", cls: "text-slate-mist" };
+  if (seat.endsWith(": low")) return { glyph: "○", cls: "text-slate-mist" };
+  return { glyph: "×", cls: "text-faint" }; // failed seat: reported, never neutral
+}
+
+/** The proposal's one-word fate, derived — never stored, never guessed. */
+function fate(p: {
+  score?: { advances: boolean; concerns: string[]; highs: number };
+  draftedAs?: string;
+  kind: string;
+}): { label: string; cls: string } | null {
+  if (!p.score) return null; // unscored run: no fate to report yet
+  if (p.draftedAs)
+    return { label: `pre-registered · ${p.draftedAs}`, cls: "text-copper" };
+  if (p.score.concerns.length > 0)
+    return { label: "blocked — constitutional concern", cls: "text-ink-soft" };
+  if (p.score.advances)
+    return { label: "advancing — freeze queued", cls: "text-copper" };
+  return { label: `retired · ${p.score.highs}/5 high`, cls: "text-faint" };
+}
+
 export default function ProposalsPage() {
   const runs = loadProposalRuns();
   // Proposals may exist for cases that are not (yet) published pages;
   // link only the live ones — a dead link is a checker failure and a
   // reader betrayal alike.
   const liveSlugs = new Set(loadAllCases().map((c) => c.record.slug));
+
+  const all = runs.flatMap((r) => r.files.flatMap((f) => f.proposals));
+  const scored = all.filter((p) => p.score);
+  const totals = {
+    proposals: all.length,
+    preRegistered: all.filter((p) => p.draftedAs).length,
+    advancing: all.filter((p) => p.score?.advances && !p.draftedAs).length,
+    blocked: scored.filter((p) => (p.score?.concerns.length ?? 0) > 0).length,
+    retired: scored.filter(
+      (p) => !p.score?.advances && (p.score?.concerns.length ?? 0) === 0,
+    ).length,
+    unscored: all.length - scored.length,
+  };
 
   return (
     <div className="mx-auto max-w-5xl px-5 py-12">
@@ -33,9 +70,34 @@ export default function ProposalsPage() {
         this page is a <em>proposal only</em>: it enters the record only if
         adopted through the same gates as any other change — editorial
         judgment, pre-registration where applicable, the risk classifier,
-        and the constitutional panel. Ignoring a proposal is the default
-        outcome, not a decision.
+        and the constitutional panel. Since 2026-09-01 every proposal is
+        also scored by the five-vendor panel for expected information
+        gain: four seats high with no constitutional concern advances a
+        study to pre-registration; everything else retires on the record,
+        with five opinions instead of silence.
       </p>
+
+      {totals.proposals > 0 && (
+        <div className="mt-8 border border-line bg-paper px-5 py-4 flex flex-wrap gap-x-8 gap-y-2">
+          {(
+            [
+              ["proposed", totals.proposals],
+              ["pre-registered", totals.preRegistered],
+              ["advancing", totals.advancing],
+              ["retired", totals.retired],
+              ["blocked", totals.blocked],
+              ...(totals.unscored > 0
+                ? ([["awaiting scores", totals.unscored]] as const)
+                : []),
+            ] as const
+          ).map(([name, n]) => (
+            <div key={name}>
+              <span className="font-serif text-2xl tracking-tight">{n}</span>
+              <span className={`ml-2 ${label}`}>{name}</span>
+            </div>
+          ))}
+        </div>
+      )}
 
       {runs.length === 0 ? (
         <p className="mt-10 border border-line bg-paper px-5 py-4 max-w-2xl text-[13.5px] text-ink-soft">
@@ -73,13 +135,42 @@ export default function ProposalsPage() {
                 <ul className="mt-3 space-y-4">
                   {file.proposals.map((p) => (
                     <li key={p.title} className="border border-line bg-paper p-5">
-                      <p className={label}>
+                      <p className={`${label} flex flex-wrap items-baseline gap-x-3 gap-y-1`}>
                         <span className="text-copper">{p.kind}</span>
-                        <span className="ml-3">effort: {p.effortTier}</span>
+                        <span>effort: {p.effortTier}</span>
+                        {p.score && (
+                          <span
+                            className="tracking-[0.3em]"
+                            title={p.score.seats.join("\n")}
+                          >
+                            {p.score.seats.map((s, i) => {
+                              const g = seatGlyph(s);
+                              return (
+                                <span key={i} className={g.cls}>
+                                  {g.glyph}
+                                </span>
+                              );
+                            })}
+                          </span>
+                        )}
+                        {(() => {
+                          const f = fate(p);
+                          return f ? (
+                            <span className={`ml-auto ${f.cls}`}>{f.label}</span>
+                          ) : null;
+                        })()}
                       </p>
                       <h3 className="mt-2 font-serif text-xl tracking-tight">
                         {p.title}
                       </h3>
+                      {p.score && p.score.concerns.length > 0 && (
+                        <p className="mt-2 text-[13px] leading-relaxed text-ink-soft border-l-2 border-line pl-3">
+                          <span className="font-mono text-[10.5px] uppercase tracking-[0.12em] text-faint">
+                            concern
+                          </span>{" "}
+                          {p.score.concerns.join(" · ")}
+                        </p>
+                      )}
                       <p className="mt-2 text-[14px] leading-relaxed">
                         {p.question}
                       </p>

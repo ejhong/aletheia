@@ -926,6 +926,7 @@ export const PinCheckSchema = z.discriminatedUnion("type", [
       "evidence.yaml",
       "sources.yaml",
       "research.yaml",
+      "history.yaml",
     ]),
     /** Long enough to be a commitment, not a coincidence. */
     value: z.string().min(12),
@@ -940,6 +941,7 @@ export const PinCheckSchema = z.discriminatedUnion("type", [
       "evidence.yaml",
       "sources.yaml",
       "research.yaml",
+      "history.yaml",
     ]),
     value: z.string().min(12),
   }),

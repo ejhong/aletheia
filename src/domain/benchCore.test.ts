@@ -72,10 +72,11 @@ describe("bench v2: panel-scored advancement", () => {
 
   it("budgets: run cap and per-case active cap, with reasons", () => {
     const advancing = [
-      { id: "A1", caseSlug: "alpha" },
-      { id: "A2", caseSlug: "alpha" },
-      { id: "B1", caseSlug: "beta" },
-      { id: "C1", caseSlug: "gamma" },
+      { id: "A1", caseSlug: "alpha" }, // fills alpha to its cap
+      { id: "A2", caseSlug: "alpha" }, // deferred: case cap (A1 just filled it)
+      { id: "B1", caseSlug: "beta" }, // deferred: case cap (already full)
+      { id: "C1", caseSlug: "gamma" }, // fills the run budget
+      { id: "D1", caseSlug: "delta" }, // deferred: run budget spent
     ];
     const { selected, deferred } = applyBudgets(
       advancing,
@@ -83,9 +84,12 @@ describe("bench v2: panel-scored advancement", () => {
       { maxFreezesPerRun: 2, maxActivePerCase: 2 },
     );
     expect(selected.map((s) => s.id)).toEqual(["A1", "C1"]);
+    expect(deferred.find((d) => d.id === "A2")?.reason).toContain(
+      "uncollected studies",
+    );
     expect(deferred.find((d) => d.id === "B1")?.reason).toContain(
       "uncollected studies",
     );
-    expect(deferred.find((d) => d.id === "A2")?.reason).toContain("run budget");
+    expect(deferred.find((d) => d.id === "D1")?.reason).toContain("run budget");
   });
 });

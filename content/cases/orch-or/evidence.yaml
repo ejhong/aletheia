@@ -1352,3 +1352,145 @@
     extractedBy: "Kimi K3 (Cursor cloud agent)"
     runId: "2026-08-26-study-orch-s001-collect"
     date: "2026-08-26"
+
+# ── Study ORCH-S002: xenon isotope potency, spin versus mass ────────────────
+
+- id: ORCH-E037
+  title: "Study re-analysis: the xenon isotope dataset fails its own pre-set identification test, but not for the reason expected"
+  claimIds: [ORCH-C025]
+  sourceId: SRC-ORCH-S002
+  direction: qualifies
+  strength: moderate
+  sourceStatement: >-
+    Weighted least squares on the four published isotope arms, under criteria
+    frozen before any number was read, gives a variance inflation factor of
+    3.25 — below the pre-set failure threshold of 5 — so spin-versus-mass
+    collinearity (r = -0.832) is real but not disabling. The scaled
+    design-matrix condition number is 302.4 against a pre-set threshold of 30,
+    which trips the frozen identification-failure rule. The source of that
+    ill-conditioning is intercept-versus-mass rather than spin-versus-mass:
+    atomic mass spans five units around 131.5, under 4 per cent relative
+    variation, leaving the mass coefficient at -0.43 with a standard error of
+    1.92 and the intercept with a standard error of 254. Per the
+    pre-registration, no spin p-value is reported as evidential.
+  editorInference: >-
+    The confound the agenda proposal worried about is not the one that bites.
+    Li et al. did place two isotopes on each side of the spin boundary, which
+    is more design than the proposal credited them with, and that is why spin
+    and mass are not fatally collinear. What defeats the regression is that
+    the mass range is far too narrow for a linear mass term to be
+    distinguished from a constant. ORCH-C025 should be read as resting on a
+    dataset that cannot support a two-covariate inferential test either way,
+    rather than as a claim refuted by one.
+  exactLocator: "Study ORCH-S002, finding 1 (analysis code published beside the study file)"
+  limitations:
+    - "The freeze set a condition-number threshold without naming a scaling convention; the study applied the stricter uncentred convention, and records that the centred convention (4.89) would not have tripped the rule."
+  reviewState: ai_extracted
+  origin:
+    ref: "Study ORCH-S002 (criteria frozen 2026-09-01, hash 4fa792b878fa)"
+    extractedBy: "Aletheia editorial AI (Claude Opus 5, Cursor cloud agent)"
+    runId: "2026-09-01-study-orch-s002-collection"
+    date: "2026-09-01"
+
+- id: ORCH-E038
+  title: "Study re-analysis: a spin step describes the four published means far better than a linear mass trend"
+  claimIds: [ORCH-C025]
+  sourceId: SRC-ORCH-S002
+  direction: supports
+  strength: weak
+  sourceStatement: >-
+    On the xenon-alone endpoint, weighted least squares with a spin indicator
+    alone yields a weighted R-squared of 0.98 and a coefficient of +30.2 per
+    cent atmosphere; mass alone yields 0.62 and -7.58. The structural reason
+    requires no regression: within the spin-bearing pair, two mass units change
+    ED50 by -6 per cent atmosphere; within the spin-zero pair, two mass units
+    change it by +2; across the spin boundary, one mass unit (131 to 132)
+    changes it by 29. The directly measured isoflurane-combined endpoint gives
+    the same picture (spin coefficient +6.95, weighted R-squared 0.97).
+  editorInference: >-
+    A smooth monotone confound in mass — diffusion scaling as the inverse root
+    of mass, or solubility — cannot produce a step of that shape, so the
+    specific alternative the agenda proposal raised is not well supported by
+    the numbers it pointed at. This is graded weak deliberately: it describes
+    four group means from a single unreplicated experiment, the frozen rule
+    forbids treating it as an inferential result, and it speaks only to
+    ordering, not to any quantum mechanism.
+  exactLocator: "Study ORCH-S002, finding 2 (analysis code published beside the study file)"
+  limitations:
+    - "Descriptive only. The frozen identification rule tripped, so no p-value from this comparison is reported as evidential."
+    - "The non-monotonicity of the point estimates is within the reported dispersions and is not itself evidence against a mass effect; the load-bearing observation is the magnitude asymmetry."
+  reviewState: ai_extracted
+  origin:
+    ref: "Study ORCH-S002 (criteria frozen 2026-09-01, hash 4fa792b878fa)"
+    extractedBy: "Aletheia editorial AI (Claude Opus 5, Cursor cloud agent)"
+    runId: "2026-09-01-study-orch-s002-collection"
+    date: "2026-09-01"
+
+- id: ORCH-E039
+  title: "Study search: the xenon isotope result has never been replicated, extended, or preceded"
+  claimIds: [ORCH-C025]
+  sourceId: SRC-ORCH-S002
+  direction: undermines
+  strength: moderate
+  sourceStatement: >-
+    The frozen protocol's eight literal queries were run against PubMed and
+    Europe PMC; the full forward citation list of Li et al. 2018 was screened
+    (37 citing works) along with its full backward reference list (24
+    references); and arXiv, bioRxiv and other Europe PMC preprints, OSF, and
+    two registries were swept. No replication, no extension with additional
+    isotope arms, and no pre-2018 isotope-resolved xenon potency report was
+    located. Every citing work that engages the result is a review, an
+    editorial, or a theoretical radical-pair paper. The commentary
+    pre-committed as a known candidate is identified as Hameroff SR,
+    'Anesthetic Action and Quantum Consciousness: A Match Made in Olive Oil',
+    Anesthesiology 2018, and excluded from rows as secondary restatement.
+  editorInference: >-
+    A result cited across the quantum-consciousness literature for eight years
+    rests on one four-arm experiment in one laboratory that no one has
+    repeated. The citation count measures interest, not corroboration, and the
+    ledger should carry the distinction explicitly.
+  exactLocator: "Study ORCH-S002, finding 3; search log recorded in the study limitations"
+  limitations:
+    - "Google Scholar, Semantic Scholar and ProQuest were named in the frozen protocol but not queried as written; the forward-citation screen rests on Europe PMC's list, a recorded protocol deviation."
+    - "Absence of a located replication is not proof that none exists."
+  reviewState: ai_extracted
+  origin:
+    ref: "Study ORCH-S002 (criteria frozen 2026-09-01, hash 4fa792b878fa)"
+    extractedBy: "Aletheia editorial AI (Claude Opus 5, Cursor cloud agent)"
+    runId: "2026-09-01-study-orch-s002-collection"
+    date: "2026-09-01"
+
+- id: ORCH-E040
+  title: "Study extraction: the dataset's dispersions are of unstated type and its headline values are calculated, not measured"
+  claimIds: [ORCH-C025]
+  sourceId: SRC-ORCH-S002
+  direction: undermines
+  strength: moderate
+  sourceStatement: >-
+    The accessible record states neither whether the reported plus-or-minus
+    values are standard deviations or standard errors, nor any isotopic
+    enrichment percentage, purity profile, oxygen fraction, equilibration time,
+    blinding statement, or temperature control. The xenon-alone ED50 values
+    that carry the headline (70, 72, 99, 105 per cent atmosphere) are
+    calculated by the authors from co-administration with 0.50 per cent
+    isoflurane; the directly measured endpoint is the isoflurane-combined one
+    (15, 16, 22, 23). Separately, the PubMed rendering of the abstract strips
+    the isotope superscripts, and its group order invites mapping the values to
+    129 then 131 when the publisher deposit gives 131 then 129.
+  editorInference: >-
+    Two things follow. The result is less auditable than its citation record
+    implies: a reader cannot recover from the public abstract whether the error
+    bars are SD or SEM, which is the difference between overlapping and
+    non-overlapping arms. And any secondary re-analysis built on the PubMed
+    rendering will silently swap the two spin-bearing isotopes — harmless for a
+    binary spin term, corrupting for any mass-resolved or spin-quantum-number
+    analysis.
+  exactLocator: "Study ORCH-S002, finding 4 and the extraction_agreement_flag column of all four rows"
+  limitations:
+    - "The full text is paywalled and not in PubMed Central; some of these fields may well be stated there. The study records them as unavailable to this collection, not as absent from the paper."
+  reviewState: ai_extracted
+  origin:
+    ref: "Study ORCH-S002 (criteria frozen 2026-09-01, hash 4fa792b878fa)"
+    extractedBy: "Aletheia editorial AI (Claude Opus 5, Cursor cloud agent)"
+    runId: "2026-09-01-study-orch-s002-collection"
+    date: "2026-09-01"

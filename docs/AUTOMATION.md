@@ -89,11 +89,10 @@ studies per case; a site-wide monthly freeze budget.
 
 Verification labels, blind check panels, derived standing (fails down,
 nothing raises it but fresh concurrence), reconciliation that cannot
-self-ratify, the constitutional arbiter. Unchanged. One addition, the
-**regression exam**: every correction the system has fought for, and
-every founder-pinned editorial commitment, becomes a frozen test that
-any future edit to that case must pass before any judge votes (see Pins
-below).
+self-ratify, the constitutional arbiter. Unchanged. Banked corrections live in the
+records they corrected and in the append-only changelog — panels judging
+a diff see the correction in context, in the record itself, not in a
+separate registry.
 
 ### 5. The Atelier — rewrites (new; experiment first)
 
@@ -102,7 +101,7 @@ each draft a competing revision of the case's narrative surfaces (the
 overview, verdict framings, crux ordering — never ledger records). The
 panel judges blind, pairwise, against the incumbent, on a constitutional
 rubric: mechanical fidelity first (all claim references survive, no
-uncited assertions, regression exam passed), then honesty of
+uncited assertions), then honesty of
 uncertainty, symmetry, readability. A challenger replaces the incumbent
 only on clear preference (4 of 5 seats) — prose ratchets the way
 standing does, and like standing, tolerated dissent is never silent:
@@ -122,8 +121,8 @@ points to), and panels enforce them.
 **Narrative inputs — the anti-drift anchor (founder direction,
 2026-09-01).** If each rewrite saw only its predecessor plus the ledger,
 the narrative would play telephone with itself: voice eroding a little
-per cycle until nothing of the founding material remained, without any
-single step dropping a pin. So each case may carry a small set of
+per cycle until nothing of the founding material remained. So each case
+may carry a small set of
 committed founding texts (`inputs/` with a manifest: title, origin,
 license, role) — the essays and articles the case was built from, e.g.
 the founder's own Substack pieces, committable because he owns and
@@ -131,8 +130,7 @@ licenses them; third-party briefs remain excluded forever. Rules:
 inputs are **presentation references, never evidence** — a rewriter may
 draw voice, structure, phenomenology, and framing from them, but may not
 cite them for any fact not independently in the ledger. Every Atelier
-candidate is drafted from **ledger + pins + narrative inputs +
-incumbent**, so rewrites always drink from the original well rather
+candidate is drafted from **ledger + narrative inputs + incumbent**, so rewrites always drink from the original well rather
 than from a fading copy — and where the evidence has parted ways with a
 founding text, the rewriter has the original in hand and says so
 honestly, instead of paraphrasing a paraphrase of it.
@@ -155,27 +153,19 @@ Atelier rubric and enforced mechanically where possible:
   was written, a candidate that fails to seat them is incomplete and
   is rejected before judging.
 
-## Pins: how editorial angles survive rewriting
+## Narrative guidance: inputs, judgment, competition
 
-Prose dies; records survive. Anything that lives only as narrative
-wording will eventually be reworded. A **pin** is a per-case,
-append-only record (`pins.yaml`) of a commitment the presentation must
-honor: a banked correction (the record-level residue of a past mistake)
-or a founder editorial directive (e.g. "this case addresses the popular
-lost-civilization reading and credits its true part" — which already
-exists in record form as a graded claim). Each pin carries its statement,
-origin and attribution, and — wherever possible — a mechanical check
-(claim ID must remain featured; string must appear / must not appear).
-Pins are public records: readers can see where emphasis was directed.
-Pins bind presentation, never verdicts; verdicts stay panel-governed.
-
-Constitutional note (from the design PR's own panel review): correction
-pins are record-keeping and need no new authority. Directive pins are a
-new founder authority surface, and new founder authority belongs in the
-constitution — so the directive kind ships together with a one-line
-AGENTS.md amendment recognizing it, which is the founder's reserved act
-and is ratified by his merge, exactly as register amendments are. Until
-that amendment lands, no directive pin binds anything.
+The rule is deliberately light (founder direction, 2026-09-01,
+superseding the same-day pins design): revision prompts instruct
+candidates to **consider the founding inputs for the aesthetic portions**
+— voice, framing, register, the phenomenology that made the case worth a
+site — following them where they serve the reader and expanding beyond
+them freely where they don't. Candidates make judgment calls; the
+competition and the panel settle them. No binding registry of
+presentation commitments exists: banked corrections live in the records
+they corrected and in the append-only changelog, and founder taste is
+exercised through the constitution's register sections and, when needed,
+ordinary directed PRs.
 
 ## The scheduler: attention follows yield
 
@@ -193,8 +183,7 @@ throttle) cap the whole metabolism, and every loop's activity logs to the
 Exactly the two constitutional powers, exercised as they always were:
 the kill switch, and the constitution — through which taste and register
 are governed (the founder amends §7 and the style documents; panels
-enforce them) and through which directive pins will be recognized when
-they ship. Beyond the two powers, the founder participates as
+enforce them). Beyond the two powers, the founder participates as
 contributor: reading the weekly digest, dropping material and directions
 into the inbox, all of it riding the same gates as anyone else's.
 Everything else is panel-governed inside budgets.
@@ -203,22 +192,18 @@ Everything else is panel-governed inside budgets.
 
 1. **Yield metric + cadence decay** — `scripts/lib/yield.mjs`, derived
    entirely from existing records; Maintain reads it. Pure measurement.
-2. **Pins + regression exam** — `pins.yaml` schema, loader validation, CI
-   check for mechanically-checkable pins; seeded from banked corrections
-   and the founder's first directives. New governance surface: ships with
-   a DECISIONS entry; the founder's merge ratifies it.
-3. **Bench v2** — panel scoring on agenda output; ranked report;
+2. **Bench v2** — panel scoring on agenda output; ranked report;
    auto-drafted freeze PRs for unanimous scorers (founder tap retained
    initially; flipping freezes to auto-merge-on-pass is a later,
    separate merge-policy amendment).
-4. **Collection runner** — workflow that detects merged zero-row freezes
+3. **Collection runner** — workflow that detects merged zero-row freezes
    and executes them (refusal-fallback provider path mandatory).
-5. **Expedition** — coverage-diff tool + scheduled sweeps. Requires a
+4. **Expedition** — coverage-diff tool + scheduled sweeps. Requires a
    provider decision and a monthly budget line from the founder.
-6. **Researcher surface** — "state of the question" case header + per-case
+5. **Researcher surface** — "state of the question" case header + per-case
    JSON export of the ledger. Independent; can land any time.
-7. **Atelier** — last, as a labeled experiment on one case (transients),
-   with pins and exams already in force as its safety floor.
+6. **Atelier** — last, as a labeled experiment on one case (transients),
+   with the mechanical fidelity floor and the narrative-inputs anchor already in force.
 
 Implementation constraints throughout: no new services, no databases —
 git as state, Actions as scheduler, YAML validated fail-closed by the

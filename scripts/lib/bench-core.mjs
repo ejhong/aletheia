@@ -115,3 +115,34 @@ export function applyBudgets(advancing, activeByCase, limits = {}) {
   }
   return { selected, deferred };
 }
+
+/**
+ * Parse one rendered agenda proposal file (renderProposalFile's format)
+ * back into structured proposals. Fail-closed per entry: a block missing
+ * its question or kind is skipped, never guessed at.
+ */
+export function parseAgendaFile(text, { caseSlug, runDir }) {
+  const out = [];
+  const blocks = String(text).split(/^## /m).slice(1);
+  for (const block of blocks) {
+    const head = block.match(/^(\d+)\. \[([a-z-]+)\] (.+)$/m);
+    const question = block.match(/\*\*Question \/ truth condition:\*\* ([\s\S]+?)\n\n\*\*/)?.[1];
+    const closest = block.match(/\*\*Closest existing:\*\* ([\s\S]+?)\n\n\*\*/)?.[1];
+    const wouldSettle = block.match(/\*\*What it would settle:\*\* ([\s\S]+?)\n\n\*\*/)?.[1];
+    const effort = block.match(/\*\*Effort:\*\* (\S+)/)?.[1];
+    if (!head || !question) continue;
+    out.push({
+      id: `${runDir}/${caseSlug}/${head[1]}`,
+      caseSlug,
+      runDir,
+      index: Number(head[1]),
+      kind: head[2],
+      title: head[3].trim(),
+      question: question.trim(),
+      closestExisting: closest?.trim() ?? "",
+      wouldSettle: wouldSettle?.trim() ?? "",
+      effortTier: effort ?? "desk",
+    });
+  }
+  return out;
+}

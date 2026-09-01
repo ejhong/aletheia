@@ -93,3 +93,37 @@ describe("bench v2: panel-scored advancement", () => {
     expect(deferred.find((d) => d.id === "D1")?.reason).toContain("run budget");
   });
 });
+
+describe("bench v2: agenda file parsing", () => {
+  it("round-trips the renderProposalFile format, fail-closed per block", async () => {
+    const { parseAgendaFile } = await import("../../scripts/lib/bench-core.mjs");
+    const text = [
+      "# Agenda proposals — transients — 2026-08-31",
+      "",
+      "PROPOSALS ONLY. …",
+      "",
+      "## 1. [study] Chance-alignment null calibration",
+      "",
+      "**Question / truth condition:** Do the alignments exceed chance?",
+      "",
+      "**Closest existing:** TRN-C104, TRN-E018 — no null model exists.",
+      "",
+      "**What it would settle:** Whether the alignment argument survives.",
+      "",
+      "**Effort:** analysis",
+      "",
+      "## 2. [claim] A malformed block with no question",
+      "",
+      "**Effort:** desk",
+      "",
+    ].join("\n");
+    const parsed = parseAgendaFile(text, { caseSlug: "transients", runDir: "2026-08-31-agenda-x" });
+    expect(parsed).toHaveLength(1);
+    expect(parsed[0]).toMatchObject({
+      id: "2026-08-31-agenda-x/transients/1",
+      kind: "study",
+      title: "Chance-alignment null calibration",
+      effortTier: "analysis",
+    });
+  });
+});

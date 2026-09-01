@@ -334,6 +334,28 @@ the exact aliasing that fooled the watch in August), and the one new
 source drafted with a verified evidence record. The pipe's first real
 consumer is queued: the Villarroel VASCO-blog drop of this morning.
 
+## 2026-09-01 — Bench v2 ships, with the backfill: no good proposal dies of silence unscored
+
+Build step 2, plus the founder's direction on the backlog ("I don't want
+to lose them"). The five-vendor panel now scores every agenda proposal
+for expected information gain (scripts/score-agenda.mjs, one batched
+call per seat), and the advancement rule from the thresholds decision
+applies: four of five seats high, zero constitutional concerns, thin
+panels never advance. Advancing STUDY proposals are drafted into their
+freeze files — plus the research item each executes — by
+scripts/draft-freeze.mjs (mechanical id assignment, schema-shape
+validation, hash stamping, budgets: two freezes per run, two uncollected
+studies per case), landing as one gated needs-approval PR judged by the
+panel before any data exists. The backfill is the standing rule rather
+than an exception: the scorer visits every agenda run directory lacking
+a scores.yaml, so its first run sweeps the entire un-adopted backlog —
+the transients alignment pair, the pizzagate provenance study, the
+xenon-isotope regression among them — and ignored-is-retired resumes
+afterward with five recorded opinions per retirement instead of silence.
+One-cycle latency between scoring and drafting (the bench job reads
+merged scores on main), the same clean-tier pattern as the promotion
+pipe. The scoring digest rides the weekly issue.
+
 ## 2026-09-01 — The refusal fallback generalizes to every house-drafting call — and is banned from panel seats
 
 The founder's direction, after the editorial audit joined the
@@ -348,10 +370,14 @@ triage decisions), process-inbox.mjs (commentary→proposal translation),
 reconcile-contested.mjs (reconsideration drafts), extract-claims.mjs
 (both the extraction and the adversarial-verification passes),
 watch-literature.mjs (relevance notes). **Already covered**:
-propose-agenda.mjs, promote-imports.mjs, and — earlier on this same
-branch — reassess-changed.mjs (assessment + editorial audit).
+propose-agenda.mjs, promote-imports.mjs, draft-freeze.mjs (which landed
+with bench v2 mid-audit — its study stamp, which had interpolated the
+provider object rather than any model name, now carries the model that
+answered), and — earlier on this same branch — reassess-changed.mjs
+(assessment + editorial audit).
 **Exempt, now marked in code**: the panel seats — cross-model-check.mjs,
-arbiter.mjs, and the shared seat caller in scripts/lib/vendors.mjs. A
+arbiter.mjs, score-agenda.mjs (the bench's five-seat scorer), and the
+shared seat caller in scripts/lib/vendors.mjs. A
 seat's identity as a specific vendor/model is the point of the panel
 (§3.15 vendor-independence): a refusing seat counts as a FAILED seat,
 never a silently swapped one, and each seat call site now carries a

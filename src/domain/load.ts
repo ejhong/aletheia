@@ -491,6 +491,7 @@ export function loadCase(caseDir: string): LoadedCase {
       "evidence.yaml",
       "sources.yaml",
       "research.yaml",
+      "history.yaml",
     ]) {
       const fp = path.join(CONTENT_DIR, caseDir, f);
       if (fs.existsSync(fp)) checkableFiles[f] = fs.readFileSync(fp, "utf8");

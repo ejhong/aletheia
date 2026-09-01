@@ -17,6 +17,7 @@ import {
   ResearchOpportunitySchema,
   SourceSchema,
   StudySchema,
+  PinSchema,
   WatchConfigSchema,
   type AssessmentRun,
   type AssessmentState,
@@ -31,9 +32,11 @@ import {
   type LoadedCase,
   type Source,
   type Study,
+  type Pin,
   type WatchConfig,
 } from "./schema";
 import { studyIntegrityErrors } from "./studies";
+import { pinIntegrityErrors } from "./pins";
 
 const CONTENT_DIR = path.join(process.cwd(), "content", "cases");
 const SITE_IMAGES_FILE = path.join(process.cwd(), "content", "images.yaml");
@@ -465,6 +468,37 @@ export function loadCase(caseDir: string): LoadedCase {
     throw new ContentError(caseDir, studyErrors.join("; "));
   }
 
+  // Banked commitments (pins.yaml, optional): corrections and founder
+  // directives the presentation must keep honoring. Enforced here, fail
+  // closed, so losing one fails the build — the regression exam.
+  const pinsPath = path.join(CONTENT_DIR, caseDir, "pins.yaml");
+  const pins: Pin[] = fs.existsSync(pinsPath)
+    ? parseList(
+        caseDir,
+        "pins.yaml",
+        parseYaml(fs.readFileSync(pinsPath, "utf8")),
+        PinSchema,
+      )
+    : [];
+  assertUnique(caseDir, "pin", pins.map((p) => p.id));
+  if (pins.length > 0) {
+    const checkableFiles: Record<string, string> = { "overview.md": overviewMarkdown };
+    for (const f of [
+      "case.yaml",
+      "claims.yaml",
+      "evidence.yaml",
+      "sources.yaml",
+      "research.yaml",
+    ]) {
+      const fp = path.join(CONTENT_DIR, caseDir, f);
+      if (fs.existsSync(fp)) checkableFiles[f] = fs.readFileSync(fp, "utf8");
+    }
+    const pinErrors = pinIntegrityErrors({ pins, claims, files: checkableFiles });
+    if (pinErrors.length > 0) {
+      throw new ContentError(caseDir, pinErrors.join("; "));
+    }
+  }
+
   const loaded: LoadedCase = {
     record,
     overviewMarkdown,
@@ -479,6 +513,7 @@ export function loadCase(caseDir: string): LoadedCase {
     curatedResources,
     conjectures,
     studies,
+    pins,
   };
   checkIntegrity(caseDir, loaded);
   return loaded;

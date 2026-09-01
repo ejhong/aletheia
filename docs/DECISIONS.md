@@ -193,3 +193,32 @@ carried from the from-scratch review the same night: no new services;
 machine artifacts declare lifecycle at birth; supplied material never
 enters git; the engine-as-package refactor is deliberately deferred until
 a third deployment exists.
+
+## 2026-09-01 — Metabolism build 1+2: yield measurement, pins, the regression exam
+
+The first two mechanisms of docs/AUTOMATION.md, shipped together because
+everything later stands on them. (1) **Yield**: scripts/lib/yield-core.mjs
+derives each case's verdict-moving events (assessment runs that changed a
+verdict, content-kind history entries, collected studies, new featured
+claims — blind checks deliberately excluded: judgment about a case is not
+movement of it) and classifies hot/warm/cool bands; scripts/yield-report.mjs
+prints the table and JSON; Maintain now measures yield each run, surfaces
+the table in the weekly digest, and visits only due cases with the agenda
+generator (the cheap identifier-based watch stays weekly for everyone —
+a missed discovery costs more than a cheap query). Cadence is stateless:
+warm and cool recurrence derive from the date, so there is no scheduler
+state to rot. (2) **Pins**: per-case append-only pins.yaml (PinSchema),
+kinds correction and directive, each with optional mechanical checks
+(claim stays featured; exact text present or absent, whitespace-
+insensitive so YAML folding cannot break a commitment that is intact
+word-for-word). The loader enforces every check fail-closed on every
+build — the regression exam: a rewrite that loses a banked correction or
+a founder directive fails before any judge votes. Pins render publicly in
+the case history section. Directive pins are recognized by a §7 amendment
+in the same PR (the founder's reserved act; his merge ratifies it), per
+the design PR's own panel review. Seeded: the Nunes-dating correction and
+the Hancock-genealogy directive (pre-columbian-amazon), the
+microscopist's against-interest quote and the permission-provenance
+history (transients). The exam caught its own first bug in development —
+a raw-substring check broke on YAML line folding — which is the level of
+pettiness a regression harness is for.

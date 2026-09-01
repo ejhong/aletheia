@@ -213,6 +213,12 @@ The public interface should:
 - explain unfamiliar epistemic terms in place;
 - show the last content-update date, linking to the case changelog;
 - make “what would change our mind” prominent;
+- honor the case's pinned commitments (per-case `pins.yaml`, public and
+  append-only, enforced fail-closed at build time): banked corrections,
+  and founder editorial directives — the founder's directed emphasis,
+  recognized here as an exercise of the constitution power. Pins bind
+  presentation, never verdicts. (Founder amendment, 2026-09-01 — see
+  docs/AUTOMATION.md and docs/DECISIONS.md.);
 - reveal AI involvement and human review;
 - work well on mobile;
 - remain readable without graph expertise.

@@ -236,3 +236,41 @@
     line the field keeps re-opening. Proposed by proponents; specifying
     the panel, the observable, and the correlation criterion in advance
     is what would make either outcome binding.
+
+- id: ORCH-R010
+  title: Spin or mass? A two-covariate re-analysis of the published xenon-isotope
+    anesthetic-potency data
+  summary: "The xenon isotope result is one of the few anesthesia findings that is
+    quantum-specific on its face: isotopes with nonzero nuclear spin (129Xe,
+    I=1/2; 131Xe, I=3/2) are reported as less potent than spin-zero isotopes
+    (132Xe, 134Xe), with polarizability held nearly constant. But in the tested
+    set, spin-bearing isotopes are also the lightest, so spin is collinear with
+    mass number, and mass plausibly affects diffusion, solubility, and uptake
+    kinetics. This desk study tabulates every published per-isotope potency
+    estimate (endpoint, n, dispersion, isotopic purity, delivery mixture,
+    blinding, cohort identity) and fits potency on spin-presence and mass
+    number, with collinearity diagnostics and leave-one-out checks. It tabulates
+    only numbers already in the public record; no new animals, no new assays.
+    The point is to determine whether the existing dataset can identify a spin
+    coefficient at all, or whether it is arithmetically incapable of separating
+    the two hypotheses."
+  claimIds:
+    - ORCH-C025
+    - ORCH-C002
+    - ORCH-C003
+    - ORCH-C004
+  track: publication_prize
+  effortTier: desk
+  informationGain: Either outcome moves the ledger. If a spin term is separately
+    identified — nonzero with mass in the model, mass null or wrong-signed,
+    condition number and VIF within pre-committed bounds — then ORCH-C025 stands
+    as a quantum-specific anesthesia observation that classical multi-target
+    pharmacology (ORCH-C004) must accommodate, and the burden shifts to
+    producing a mass-matched null. If the design matrix is rank-deficient in
+    practice (spin and mass collinear beyond the pre-set VIF threshold), then
+    ORCH-C025's inference is not supported by its own numbers regardless of how
+    the original p-values read, and the item should be re-scoped to 'awaiting a
+    mass-matched isotope pair' (e.g., a spin-zero isotope lighter than 129, or a
+    spin-bearing isotope heavier than 132). A third outcome — that the published
+    record does not report per-isotope dispersions or group sizes at all — would
+    itself be a finding about the auditability of the result.

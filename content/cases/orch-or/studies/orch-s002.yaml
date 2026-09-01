@@ -1,0 +1,202 @@
+id: ORCH-S002
+title: Xenon isotope potency regressed on nuclear spin and atomic mass, from
+  published per-isotope values
+question: "In the published xenon-isotope anesthetic-potency record — decisively
+  Li N, Lu D, Yang L, et al., 'Nuclear Spin Attenuates the Anesthetic Potency of
+  Xenon Isotopes in Mice: Implications for the Mechanisms of Anesthesia and
+  Consciousness,' Anesthesiology 2018;129(2):271–277, plus any earlier or later
+  report giving isotope-resolved potency — does a nuclear-spin coefficient
+  remain separately identifiable when atomic mass number is entered as a
+  covariate, given that in that dataset the spin-bearing isotopes (129, 131) are
+  also the lightest tested?"
+researchIds:
+  - ORCH-R010
+claimIds:
+  - ORCH-C025
+  - ORCH-C002
+  - ORCH-C004
+criteria:
+  frozenOn: 2026-09-01
+  inclusion:
+    - Peer-reviewed article, preprint, thesis, or regulatory/registry document
+      that reports an anesthetic or sedative potency endpoint
+      (ED50/EC50/MAC/MAC-equivalent, loss-of-righting-reflex threshold,
+      immobility threshold, or explicit potency ratio) measured separately for
+      two or more identified xenon isotopes or for isotopically enriched versus
+      natural-abundance xenon.
+    - The isotopic identity of each exposure arm is stated by mass number or by
+      enrichment specification, so that nuclear spin (nonzero for odd-mass 129
+      and 131; zero for even-mass 124, 126, 128, 130, 132, 134, 136) and mass
+      number can both be assigned without inference from context.
+    - At least one numeric potency estimate per isotope arm is retrievable from
+      the public text, tables, supplement, or a figure with a readable axis; a
+      figure-only value is admissible if digitizable and is flagged as such in
+      the extraction row.
+    - Full text or a public preprint/abstract carrying the numbers is reachable
+      by the desk agent without payment, credentialed access, or contact with
+      authors.
+    - Publication date on or before the freeze-execution date; language English,
+      or non-English with a machine translation of the methods and results
+      sections recorded verbatim in the row.
+  exclusion:
+    - Reports of xenon anesthesia with no isotopic resolution (natural-abundance
+      xenon only), or isotope work with no potency endpoint (e.g., 129Xe
+      hyperpolarized MRI imaging studies, xenon solubility measurements alone).
+    - Reviews, commentaries, editorials, conference abstracts, and secondary
+      citations that restate potency numbers traceable to an included primary
+      source — these are logged as pointers in the candidate ledger but
+      contribute no rows, to prevent double-counting one cohort.
+    - Purely theoretical, computational, or simulation papers (spin-relaxation
+      models, polarizability calculations, molecular-dynamics binding studies)
+      that report no measured potency.
+    - Studies of isotope effects in non-xenon anesthetics (e.g., deuterated
+      agents, other noble gases) unless the same paper also reports xenon
+      isotope arms, in which case only the xenon arms are extracted.
+    - Any source whose numbers exist only in confidential, embargoed, or
+      personally communicated material.
+  searchProtocol: "Run only after this freeze is timestamped and published; no
+    query is issued and no number is read before that timestamp. Step 1 —
+    bibliographic search, executed verbatim in PubMed, Europe PMC, Google
+    Scholar, and Semantic Scholar: [xenon isotope anesthetic potency],
+    [\"nuclear spin\" xenon anesthesia], [xenon-129 xenon-132 anesthesia mice],
+    [xenon isotopes loss of righting reflex], [xenon isotope MAC rodent],
+    [isotope effect noble gas anesthesia], [\"Li\" \"Lu\" xenon isotopes
+    Anesthesiology 2018], [xenon isotope consciousness mechanism]. Step 2 —
+    citation sweep: retrieve the full forward-citation list of the Li et al.
+    2018 record from Google Scholar, Semantic Scholar, and Crossref, and the
+    full backward reference list of that paper; screen every entry against
+    inclusion/exclusion. Step 3 — preprint and grey sweep: [xenon isotope
+    anesthesia] on bioRxiv, arXiv (q-bio, physics.bio-ph), OSF Preprints, and
+    ProQuest theses. Step 4 — registry sweep: [xenon isotope] on
+    ClinicalTrials.gov and the AVMA/preclinical registry PreclinicalTrials.eu,
+    to record any registered-but-unpublished isotope comparison as a known gap.
+    Per-candidate verification rule: a candidate enters the table only after the
+    desk agent (i) opens the primary full text or supplement itself rather than
+    a secondary description, (ii) records DOI or stable URL, (iii) records the
+    exact locus of each number (table number, figure panel, or page and
+    sentence) together with the quoted numeric string, (iv) confirms isotope
+    mass number and stated enrichment percentage from the methods, and (v)
+    assigns a cohort_id. Any candidate meeting inclusion on its abstract but
+    whose numbers cannot be located in the retrieved text is recorded with
+    disposition 'blocked' and the blocking reason, not silently dropped. All
+    queries, dates, hit counts, and screening decisions are logged to an
+    append-only search log published with the results."
+  knownCandidates:
+    - name: Li N, Lu D, Yang L, Tao H, Xu Y, Wang C, Fu L, Liu H, Chummum Y, Zhang S.
+        'Nuclear Spin Attenuates the Anesthetic Potency of Xenon Isotopes in
+        Mice.' Anesthesiology 2018;129(2):271-277.
+      disposition: include
+      reason: "The decisive record: isotope-resolved potency in mice for 129Xe, 131Xe,
+        132Xe, 134Xe. Expected to supply the primary rows. Pre-committed
+        expectation, recorded here so it counts as a prediction and not a
+        post-hoc read: the spin-bearing arms (129, 131) are the two lightest
+        tested, so spin and mass number will be strongly negatively collinear
+        across the four arms; I expect a VIF above the pre-set threshold of 5
+        and a design matrix that cannot separate the two coefficients. If that
+        expectation is wrong, the freeze records it as wrong."
+    - name: Turin L, Skoulakis EMC, Horsfield AP. 'Electron spin changes during
+        general anesthesia in Drosophila.' PNAS 2014;111(34):E3524-33.
+      disposition: exclude
+      reason: Concerns electron spin resonance signals and anesthetic-induced spin
+        changes in flies, not isotope-resolved xenon potency arms. No
+        per-isotope potency estimate. Logged as adjacent context only.
+    - name: Turin L, Skoulakis EMC. 'Electron spin resonance (EPR) in Drosophila and
+        general anesthesia.' Methods in Enzymology 2018;603:115-128.
+      disposition: exclude
+      reason: Methods chapter; no xenon isotope potency endpoint.
+    - name: Editorials, correspondence, and commentary attached to the Anesthesiology
+        2018 issue discussing the Li et al. isotope result (exact items not yet
+        identified).
+      disposition: exclude
+      reason: Secondary restatement of one cohort; excluded from rows under exclusion
+        criterion 2 but harvested for pointers to any additional primary
+        datasets.
+    - name: Hameroff SR and Penrose R review articles citing the xenon isotope result
+        (e.g., Penrose–Hameroff 'Consciousness in the universe' lineage and
+        later Hameroff commentaries).
+      disposition: exclude
+      reason: Reviews restating the Li et al. numbers; no independent potency
+        measurement. Used only as a citation trail.
+    - name: Any pre-2018 xenon isotope potency report
+      disposition: include
+      reason: "Honest statement of ignorance: I am aware of no earlier
+        isotope-resolved xenon potency dataset. If the backward-reference sweep
+        of Li et al. surfaces one, it is a genuine discovery under this freeze
+        and enters the table under the same inclusion rules."
+    - name: Any post-2018 replication or extension with additional isotope arms (e.g.,
+        130Xe, 136Xe, or a mass-matched spin/no-spin pair)
+      disposition: include
+      reason: None known to me at freeze time. Pre-committed to inclusion precisely
+        because such a paper would break the collinearity and is the single most
+        decisive possible discovery for this question.
+  criteriaHash: 4fa792b878fa
+method: "Every included source yields one row per isotope arm. Extraction is
+  performed twice in separate passes with the second pass blind to the first
+  pass's numeric fields (the agent re-opens the source and re-reads the locus
+  without consulting the prior row); mismatches are resolved by a third read and
+  the discrepancy is logged. Independence: rows sharing a cohort_id (same
+  animals, same experimental series, same institutional batch as stated in
+  methods) are treated as one experiment; overlapping publications are collapsed
+  to the most complete report and the collapse is recorded. Potency values are
+  converted to a common scale as percent-atmosphere for 50% endpoint effect,
+  with the conversion arithmetic shown per row; dispersions are propagated, and
+  where only SEM and n are given, SD is reconstructed. Primary analysis:
+  weighted least squares of potency on (a) spin-present indicator and (b) mass
+  number, weights = inverse variance, run three ways — spin only, mass only,
+  both. Pre-committed diagnostics: variance inflation factor, design-matrix
+  condition number, and the correlation between the spin indicator and mass
+  number across arms. Identification is declared FAILED if VIF > 5 or condition
+  number > 30, in which case the study reports that the dataset cannot
+  distinguish the hypotheses and refuses to report a spin p-value as evidential.
+  Secondary: leave-one-isotope-out refits, a rank-order check (Spearman of
+  potency against mass), and a sensitivity fit substituting nuclear spin quantum
+  number I (0, 1/2, 3/2) for the binary indicator. If fewer than four
+  independent isotope arms survive extraction, no regression is run and the
+  study reports the tabulation plus an explicit statement of
+  non-identifiability. All code, extracted table, and search log are published;
+  the pre-committed expectation recorded in knownCandidates is scored as correct
+  or incorrect in the abstract."
+columns:
+  - row_id
+  - cohort_id
+  - citation_short
+  - doi_or_url
+  - publication_year
+  - peer_review_status
+  - species_or_preparation
+  - strain_and_sex
+  - n_per_arm
+  - endpoint_name
+  - endpoint_definition_quoted
+  - isotope_mass_number
+  - nuclear_spin_I
+  - spin_present_binary
+  - isotopic_enrichment_percent
+  - isotopic_impurity_profile
+  - carrier_gas_and_oxygen_fraction
+  - delivery_and_equilibration_time
+  - potency_value_as_reported
+  - potency_units_as_reported
+  - potency_converted_pct_atm
+  - dispersion_type_and_value
+  - reconstructed_SD
+  - randomization_stated
+  - blinding_stated
+  - temperature_control_stated
+  - source_locus
+  - quoted_numeric_string
+  - figure_digitized_flag
+  - extraction_pass1_value
+  - extraction_pass2_value
+  - extraction_agreement_flag
+  - disposition
+  - disposition_reason
+  - discovered_after_freeze_flag
+rows: []
+findings: []
+limitations: []
+runId: 2026-09-01-bench-freeze-local
+model: bench freeze drafter via anthropic/claude-opus-5 (bench-freeze-v1)
+date: 2026-09-01
+promptVersion: bench-freeze-v1
+humanReviewed: false

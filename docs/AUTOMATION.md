@@ -66,9 +66,18 @@ nothing; any later watch hit or inbox drop resets it.**
 
 The agenda generator proposes; the five-seat panel scores each proposal
 for expected information gain (does it test a load-bearing claim, is it
-decisive in either direction, what does it cost). Only unanimous-high
-scorers advance: a study proposal auto-drafts its freeze PR (criteria
-only, panel-judged as a protocol, per the existing two-PR discipline);
+decisive in either direction, what does it cost). A proposal advances
+when **four of five seats score it high-gain and no seat identifies a
+constitutional problem** with the protocol concept — deliberately not
+unanimity: a single lukewarm seat must not be able to starve
+exploration, while a single substantiated objection retains its stopping
+power here as everywhere. (Thresholds principle, founder-confirmed
+2026-09-01: one seat has stopping power only where an honest objection
+should stop the presses — publication gates — and never starving power
+over selection; the advanced proposal's freeze PR still faces the full
+arbiter, so the real veto stays at publication.) An advancing study
+proposal auto-drafts its freeze PR (criteria only, panel-judged as a
+protocol, per the existing two-PR discipline);
 after the freeze merges, the **collection runner** executes the frozen
 search protocol — web retrieval, primary-document verification through
 the citation-check machinery, refusal-fallback model path — and opens the

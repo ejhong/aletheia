@@ -17,6 +17,14 @@ way, the studies the system itself ran, and the shortest path to settling
 the question — each one click from its primary source. The site's real
 product is a machine for pointing at decisive tests.
 
+And it is meant to be **a thing of beauty** (founder direction,
+2026-09-01): genuinely engaging for someone who arrives wanting to learn
+the topic — pages that pull a curious reader through because the material
+is fascinating and the telling does it justice. Beauty and engagement
+here are earned by the material and the craft, never manufactured: §7's
+bans on engagement bait, clutter, and lurid register stand untouched.
+Rigor is the floor of this site, not its personality.
+
 Two dynamics with opposite ideals, deliberately separated:
 
 - **The ledger grows monotonically.** Claims, evidence, sources
@@ -103,7 +111,13 @@ overview, verdict framings, crux ordering — never ledger records). The
 panel judges blind, pairwise, against the incumbent, on a constitutional
 rubric: mechanical fidelity first (all claim references survive, no
 uncited assertions, regression exam passed), then honesty of
-uncertainty, symmetry, readability. A challenger replaces the incumbent
+uncertainty and symmetry — and then, decisively among candidates that
+clear those floors, **the reader's experience**: beauty, pull, pace, the
+sense of being taught by someone who finds the material genuinely
+fascinating (founder direction, 2026-09-01). A correct but lifeless
+telling should lose to a correct and alive one; engagement is earned by
+material and craft, never by bait, and §7's register bans apply to
+candidates as to everything else. A challenger replaces the incumbent
 only on clear preference (4 of 5 seats) — prose ratchets the way
 standing does, and like standing, tolerated dissent is never silent:
 **every tournament's full record — each seat's preference and reasoning,

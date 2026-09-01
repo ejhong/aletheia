@@ -903,6 +903,64 @@ export const ConjectureSchema = z.object({
 export type Conjecture = z.infer<typeof ConjectureSchema>;
 
 /** A fully loaded, integrity-checked case. */
+/**
+ * Pins: the case's banked commitments (docs/AUTOMATION.md). Prose dies;
+ * records survive. A pin is an append-only, public, per-case record of
+ * something the presentation must keep honoring: a `correction` (the
+ * residue of a past mistake — the regression exam) or a `directive` (a
+ * founder editorial commitment, recognized in AGENTS.md §7). Pins bind
+ * presentation, never verdicts. Checks are enforced fail-closed at build
+ * time by the loader (src/domain/pins.ts): a rewrite that loses a pinned
+ * commitment fails the build before any judge votes.
+ */
+export const PinCheckSchema = z.discriminatedUnion("type", [
+  /** The named claim must exist, not be rejected, and stay featured. */
+  z.object({ type: z.literal("claim_featured"), claimId: z.string() }),
+  /** The exact string must appear in the named case file. */
+  z.object({
+    type: z.literal("string_present"),
+    file: z.enum([
+      "overview.md",
+      "case.yaml",
+      "claims.yaml",
+      "evidence.yaml",
+      "sources.yaml",
+      "research.yaml",
+    ]),
+    /** Long enough to be a commitment, not a coincidence. */
+    value: z.string().min(12),
+  }),
+  /** The exact string must NOT appear in the named case file. */
+  z.object({
+    type: z.literal("string_absent"),
+    file: z.enum([
+      "overview.md",
+      "case.yaml",
+      "claims.yaml",
+      "evidence.yaml",
+      "sources.yaml",
+      "research.yaml",
+    ]),
+    value: z.string().min(12),
+  }),
+]);
+export type PinCheck = z.infer<typeof PinCheckSchema>;
+
+export const PinSchema = z.object({
+  id: z.string().regex(/^[A-Z]+-PIN\d{3}$/, "Pin id like TRN-PIN001"),
+  kind: z.enum(["correction", "directive"]),
+  statement: z.string().min(20),
+  origin: z.object({
+    date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    /** What banked it: the incident, decision, or founder direction. */
+    ref: z.string().min(8),
+    attribution: z.string().min(4),
+  }),
+  /** Mechanically enforced where possible; empty = statement-only pin. */
+  checks: z.array(PinCheckSchema).default([]),
+});
+export type Pin = z.infer<typeof PinSchema>;
+
 export interface LoadedCase {
   record: CaseRecord;
   overviewMarkdown: string;
@@ -922,6 +980,8 @@ export interface LoadedCase {
   conjectures: Conjecture[];
   /** Pre-registered desk workpapers (studies/<id>.yaml). */
   studies: Study[];
+  /** Banked commitments (pins.yaml): corrections and founder directives. */
+  pins: Pin[];
 }
 
 /**

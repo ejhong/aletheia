@@ -66,10 +66,26 @@ if (!provider) {
   process.exit(0);
 }
 
+// Attention follows yield (docs/AUTOMATION.md): --only <slug,slug> limits
+// this run to the cases the yield report marked due. Omitted or empty =
+// all cases (local runs, and a safe default if the yield step failed).
+const onlyArg = process.argv.indexOf("--only");
+const only =
+  onlyArg > -1 && (process.argv[onlyArg + 1] ?? "").trim().length > 0
+    ? new Set(process.argv[onlyArg + 1].split(",").map((s) => s.trim()))
+    : null;
+
 const slugs = fs
   .readdirSync(CASES, { withFileTypes: true })
   .filter((e) => e.isDirectory())
-  .map((e) => e.name);
+  .map((e) => e.name)
+  .filter((name) => {
+    if (only && !only.has(name)) {
+      console.error(`${name}: not due this run (yield band) — skipped`);
+      return false;
+    }
+    return true;
+  });
 
 let wrote = 0;
 for (const dirName of slugs) {

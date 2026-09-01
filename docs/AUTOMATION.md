@@ -105,11 +105,19 @@ rubric: mechanical fidelity first (all claim references survive, no
 uncited assertions, regression exam passed), then honesty of
 uncertainty, symmetry, readability. A challenger replaces the incumbent
 only on clear preference (4 of 5 seats) — prose ratchets the way
-standing does. Superseded versions persist in git and the changelog.
-Known judge pathologies (fluency bias, length bias, family affinity) are
-mitigated by the mechanical floor, randomized pairwise order,
-cross-vendor seats, and the founder's taste veto, which remains the
-highest court for aesthetics.
+standing does, and like standing, tolerated dissent is never silent:
+**every tournament's full record — each seat's preference and reasoning,
+including the dissenter's — is published like a check run** (harvested
+to governance/, surfaced on /panel), so an outvoted seat's view is
+preserved and displayed, not overridden into silence. The winner still
+ships through the normal publication gate, where any seat's
+substantiated constitutional objection parks it as usual. Superseded
+versions persist in git and the changelog. Known judge pathologies
+(fluency bias, length bias, family affinity) are mitigated by the
+mechanical floor, randomized pairwise order, and cross-vendor seats;
+aesthetics and register remain governed the constitutional way — the
+founder amends the register sections (§7 and the style documents it
+points to), and panels enforce them.
 
 ## Pins: how editorial angles survive rewriting
 
@@ -125,6 +133,14 @@ origin and attribution, and — wherever possible — a mechanical check
 Pins are public records: readers can see where emphasis was directed.
 Pins bind presentation, never verdicts; verdicts stay panel-governed.
 
+Constitutional note (from the design PR's own panel review): correction
+pins are record-keeping and need no new authority. Directive pins are a
+new founder authority surface, and new founder authority belongs in the
+constitution — so the directive kind ships together with a one-line
+AGENTS.md amendment recognizing it, which is the founder's reserved act
+and is ratified by his merge, exactly as register amendments are. Until
+that amendment lands, no directive pin binds anything.
+
 ## The scheduler: attention follows yield
 
 One metric per case per period — verdict-moving events (verdict changes,
@@ -138,11 +154,14 @@ throttle) cap the whole metabolism, and every loop's activity logs to the
 
 ## The founder's role, after
 
-The kill switch; constitutional amendments; taste (the highest court for
-aesthetics and register); one weekly digest; the veto. Everything else is
-panel-governed inside budgets. Personal deep-research explorations remain
-welcome as inbox drops that ride the same verification as everything
-else.
+Exactly the two constitutional powers, exercised as they always were:
+the kill switch, and the constitution — through which taste and register
+are governed (the founder amends §7 and the style documents; panels
+enforce them) and through which directive pins will be recognized when
+they ship. Beyond the two powers, the founder participates as
+contributor: reading the weekly digest, dropping material and directions
+into the inbox, all of it riding the same gates as anyone else's.
+Everything else is panel-governed inside budgets.
 
 ## Build order (by dependency and risk)
 

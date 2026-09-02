@@ -4,6 +4,7 @@ import {
   capDiff,
   CONTENT_MERGES_PER_WEEK,
   rateLimitGate,
+  splitMergeLanes,
   tallyVerdict,
   validateVote,
 } from "../../scripts/lib/arbiter-core.mjs";
@@ -162,5 +163,61 @@ describe("rateLimitGate", () => {
 
   it("leaves a passing change alone under budget", () => {
     expect(rateLimitGate(pass, { touchesContent: true, mergesThisWeek: CONTENT_MERGES_PER_WEEK - 1 }).outcome).toBe("pass");
+  });
+
+  it("names the supervised exclusions in the park reason", () => {
+    const v = rateLimitGate(pass, {
+      touchesContent: true,
+      mergesThisWeek: CONTENT_MERGES_PER_WEEK,
+      supervisedExcluded: 3,
+    });
+    expect(v.reason).toContain("3 supervised excluded");
+  });
+});
+
+/**
+ * The lane split decides what the throttle is measuring, so the tests are
+ * about the failure direction: an unreadable or unmarked commit must count
+ * (an under-counting throttle is no throttle), and only an explicit,
+ * well-formed declaration may buy an exemption.
+ */
+describe("splitMergeLanes", () => {
+  const c = (hash: string, message: string) => ({ hash, message });
+
+  it("counts an ordinary merge and excludes a declared supervised one", () => {
+    const { autonomous, supervised } = splitMergeLanes([
+      c("a1", "Content response 2026-09-02: reassessment and panels\n"),
+      c("b2", "VASO-S001 collection\n\nSupervised-by: founder-directed session\n"),
+    ]);
+    expect(autonomous).toEqual(["a1"]);
+    expect(supervised).toEqual(["b2"]);
+  });
+
+  it("counts by default: no message, empty message, or a near-miss trailer", () => {
+    const { autonomous, supervised } = splitMergeLanes([
+      c("a1", ""),
+      { hash: "a2" } as { hash: string; message?: string },
+      c("a3", "mentions Supervised-by: nothing at the line start? no — inline only"),
+      c("a4", "Supervised-by:\n"),
+    ]);
+    expect(autonomous).toEqual(["a1", "a2", "a3", "a4"]);
+    expect(supervised).toEqual([]);
+  });
+
+  it("accepts the trailer as a real trailer line, indented or not", () => {
+    const { supervised } = splitMergeLanes([
+      c("b1", "title\n\nSupervised-by: founder\n"),
+      c("b2", "title\n\n  Supervised-by: founder\n"),
+    ]);
+    expect(supervised).toEqual(["b1", "b2"]);
+  });
+
+  it("drops entries with no hash and de-duplicates", () => {
+    const { autonomous } = splitMergeLanes([
+      c("a1", "x"),
+      c("a1", "x"),
+      { hash: "", message: "x" },
+    ]);
+    expect(autonomous).toEqual(["a1"]);
   });
 });

@@ -180,17 +180,70 @@ export function capDiff(diff, maxChars = 400_000) {
  */
 export const CONTENT_MERGES_PER_WEEK = 10;
 
-export function rateLimitGate(verdict, { touchesContent, mergesThisWeek }) {
+/**
+ * The budget bounds the MACHINE'S unattended pace — that is what the
+ * 2026-08-25 decision said it was for, and twice since (bootstrap week,
+ * the studies sprint) founder-directed construction spent it instead and
+ * had to be refunded by hand with a GATE_EPOCH bump. A throttle whose
+ * documented remedy is a recurring manual override is miscounting, so
+ * the count now excludes merges that declare themselves supervised.
+ *
+ * The declaration is a `Supervised-by:` trailer in the squash commit
+ * message. Three properties make that safe rather than a loophole:
+ *
+ * 1. DEFAULT COUNTS. Exemption takes an affirmative, permanent, greppable
+ *    act. The opposite arrangement — autonomous lanes opting IN — would
+ *    fail silently the day a new unattended lane forgot to stamp itself,
+ *    and an under-counting throttle is no throttle. Forgetting the
+ *    trailer merely parks something, which announces itself.
+ * 2. IT CANNOT SELF-APPLY. Only merges ALREADY on main are counted, and a
+ *    trailer got there inside a PR the panel had already approved. The
+ *    PR under judgment never exempts itself: its own body is untrusted
+ *    input (it is fenced as such for the seats) and must not steer a gate.
+ *    A supervised PR can still park behind a hot autonomous week — correct,
+ *    and the founder's override remains the release valve.
+ * 3. IT IS VISIBLE. The arbiter report prints the exclusions with every
+ *    verdict, so a drift toward blanket exemption shows up continuously
+ *    rather than in an audit nobody runs. Using the trailer to dodge the
+ *    throttle is reclassifying a change to evade a check, which AGENTS.md
+ *    §3.15 forbids outright.
+ */
+export const SUPERVISED_TRAILER = /^[ \t]*Supervised-by:[ \t]*\S/im;
+
+/**
+ * Split canon-touching merges into the lane the budget governs and the
+ * supervised lane it does not. `commits` are `{ hash, message }`; a commit
+ * whose message cannot be read counts, per the default-counts rule.
+ */
+export function splitMergeLanes(commits) {
+  const autonomous = [];
+  const supervised = [];
+  for (const c of commits ?? []) {
+    if (!c?.hash) continue;
+    (SUPERVISED_TRAILER.test(c.message ?? "") ? supervised : autonomous).push(c.hash);
+  }
+  return {
+    autonomous: [...new Set(autonomous)],
+    supervised: [...new Set(supervised)],
+  };
+}
+
+export function rateLimitGate(
+  verdict,
+  { touchesContent, mergesThisWeek, supervisedExcluded = 0 },
+) {
   if (
     verdict.outcome !== "pass" ||
     !touchesContent ||
     mergesThisWeek < CONTENT_MERGES_PER_WEEK
   )
     return verdict;
+  const excluded =
+    supervisedExcluded > 0 ? `, ${supervisedExcluded} supervised excluded` : "";
   return {
     ...verdict,
     outcome: "park",
-    reason: `${verdict.reason} — but the weekly content-merge budget is spent (${mergesThisWeek}/${CONTENT_MERGES_PER_WEEK}); parked until the window rolls`,
+    reason: `${verdict.reason} — but the weekly autonomous content-merge budget is spent (${mergesThisWeek}/${CONTENT_MERGES_PER_WEEK}${excluded}); parked until the window rolls`,
     rateLimited: true,
   };
 }

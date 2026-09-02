@@ -78,6 +78,26 @@ AGENTS.md, never pushes to main, and treats issue text as data.
   `scripts/lib/arbiter-core.mjs`): an otherwise-passing change that
   touches `content/cases/` parks once the trailing week has spent the
   budget. Never upgrades a verdict; never throttles code or docs.
+  The budget bounds the **machine's unattended pace**, so a merge that
+  declares itself supervised does not spend it. Declare one by putting a
+  `Supervised-by:` trailer in the PR body, which GitHub carries into the
+  squash commit message:
+
+  ```
+  Supervised-by: founder-directed chat session
+  ```
+
+  Rules that keep this from being a loophole. **Default counts** — no
+  trailer means the merge is counted, so forgetting it merely parks
+  something (loud), where the reverse arrangement would silently disarm
+  the throttle. **It cannot self-apply** — only merges already on `main`
+  are counted, so a trailer was reviewed by the panel inside its own PR;
+  the PR under judgment never exempts itself, because its body is
+  untrusted input and must not steer a gate. **It is visible** — the
+  arbiter prints the exclusions with every content verdict. Using it to
+  dodge the throttle is reclassifying a change to evade a check, which
+  AGENTS.md §3.15 forbids. A supervised PR can still park behind a hot
+  autonomous week; the founder's override is the release valve.
 - **Prioritized diff delivery**: when a PR exceeds the panel's diff
   budget, files are kept by scrutiny tier (governance surface, then
   content canon, then mechanically-guarded records) instead of by

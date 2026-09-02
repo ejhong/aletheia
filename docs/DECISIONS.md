@@ -443,3 +443,73 @@ counts adopted separately from endorsed-awaiting. With this, every
 proposal fate is closed-loop: pre-registered, adopted, retired, or
 blocked — nothing good dies in a queue, and nothing publishes on the
 drafter's own judgment.
+
+## 2026-09-02 — Three faults behind one conflicted PR: unique runIds, no duplicate panels, a throttle that counts the right thing
+
+PR #156 (an hourly content-response batch) arrived conflicted, and the
+three faults behind it turned out to be one causal chain rather than
+three coincidences. Tracing it: the PR **parked on the rate limit**;
+parked respond PRs are deliberately exempt from supersede-close, because
+a park is a substantiated objection and disagreement must not vanish
+silently (§3.15, added in #99); so it stayed open while the next hourly
+run re-derived **the same** 2026-09-01 Orch OR panels; and those collided
+because check overlays were named `<date>-check-<seat>`. The park caused
+the conflict.
+
+**1. Overlay runIds are unique across branches and monotonic in time.**
+`cross-model-check.mjs` avoided collisions by probing `fs.existsSync` and
+suffixing `-r2`, `-r3`. That checks the working tree, but the namespace
+that must be unique is the merged history: two runs branching off the same
+`main` each saw no file and each took the unsuffixed name. Worse, `runId`
+*is* that string, so two distinct panel runs were minted with one runId —
+breaking revert-by-runId (docs/MAINTENANCE.md) and the §3.15 guarantee
+that a reader can reconstruct which model did what. It was fail-closed
+(the loader's `assertUnique` on runId, plus git itself), which is why it
+surfaced as a conflict rather than as silent corruption. Both check and
+`auto-` overlays now suffix a UTC `HHMMSS`. The suffix has to be
+*monotonic*, not merely unique: `latestCheckPerModel` breaks same-date ties
+by string-comparing runIds, so the random token the `auto-` overlays used
+could rank the morning's draft above the afternoon's. A timestamp sorts
+chronologically, needs no filesystem probe (so concurrent runs cannot
+agree on it), and still sorts after a legacy unsuffixed id sharing its
+prefix, so existing overlays keep their order. This also dissolves the
+fear recorded in `content-response.yml` that leaving two respond PRs open
+"invites merging both, which conflicts" — append-only overlays with
+distinct runIds now simply coexist.
+
+**2. The hourly loop stops paying twice for the same panel.** With
+collisions gone, the remaining cost of a long-lived parked PR is that
+every later hour re-panels the same cases — five vendors, real money, for
+a case-day already sitting in an open PR. The re-panel step now skips any
+case a still-open `respond/` PR has already panelled today. The park
+exemption is untouched: parks stay open and visible, they just stop
+generating duplicate work while they wait.
+
+**3. The throttle counts the autonomous lane, not everything.** The budget
+exists to bound *the machine's* unattended pace (2026-08-25). It was
+counting every canon-touching merge regardless of who directed it, so
+founder-supervised construction spent it — twice refunded by hand with a
+`GATE_EPOCH` bump (bootstrap week; the studies sprint), and a third time
+on 2026-09-02 at 14/10, parking a 5-of-5-complies batch. A throttle whose
+documented remedy is a recurring manual override is miscounting. Merges
+now declare supervision with a `Supervised-by:` trailer in the squash
+commit message and are excluded per-merge. Three properties keep that from
+being a loophole, and they were chosen over the alternatives deliberately:
+**default counts**, because autonomous lanes opting *in* would fail silent
+the day a new lane forgot to stamp itself, and an under-counting throttle
+is no throttle, whereas a forgotten trailer merely parks something;
+**it cannot self-apply**, because only merges already on `main` are
+counted, so any trailer was panel-reviewed inside its own PR, and the PR
+under judgment never exempts itself — its body is untrusted input and must
+not steer a gate; **it is visible**, printed on every content verdict, so
+drift toward blanket exemption shows up continuously. A per-commit
+`gh`-API lookup of each merge's branch was considered and rejected: it
+would put an authenticated network call inside the gate itself, and the
+house rule since 2026-08-26 is that verification informs votes but never
+gates. `GATE_EPOCH` stays as the coarse remedy of last resort and should
+not need bumping again. The change is forward-looking — it cannot refund
+the 14 merges already on `main`, so the current park clears when the
+trailing week rolls past the 2026-09-01/02 burst.
+
+(AI record of a founder instruction, 2026-09-02 session: "pick what you
+think will make the site run reliably and is cleanest.")

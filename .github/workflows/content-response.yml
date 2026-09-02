@@ -57,8 +57,31 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
           VENICE_API_KEY: ${{ secrets.VENICE_API_KEY }}
+          GH_TOKEN: ${{ secrets.MAINTENANCE_PAT }}
         run: |
+          # A predecessor respond PR that PARKED stays open by design (a park
+          # must not vanish silently, §3.15). It therefore accumulates: every
+          # later hour re-panels the same cases and pays for the same seats
+          # again, and the parked PR drifts further from main. Unique runIds
+          # mean those duplicate overlays no longer COLLIDE, but paying five
+          # vendors twice for the same case-day is still waste. So skip any
+          # case a still-open respond PR has already panelled today; when that
+          # PR settles, the next hour panels it normally if it is still stale.
+          today=$(date +%Y-%m-%d)
+          covered=$(
+            for n in $(gh pr list --state open --json number,headRefName \
+                --jq '.[] | select(.headRefName | startswith("respond/")) | .number'); do
+              gh pr view "$n" --json files --jq '.files[].path'
+            done 2>/dev/null \
+              | sed -n "s#^content/cases/\([^/]*\)/assessments/${today}-check-.*#\1#p" \
+              | sort -u
+          )
+          [ -n "$covered" ] && echo "already panelled today in an open PR: $(echo "$covered" | tr '\n' ' ')"
           for c in $(node scripts/stale-checks.mjs); do
+            if echo "$covered" | grep -qx "$c"; then
+              echo "skipping $c: an open respond PR already carries today's panel"
+              continue
+            fi
             echo "re-paneling $c"
             node scripts/cross-model-check.mjs "$c" || echo "::warning::panel failed for $c"
           done

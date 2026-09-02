@@ -477,7 +477,11 @@ async function main() {
       JSON.stringify([draft.caseAssessment, draft.claimAssessments]) ===
         JSON.stringify([prev.run.caseAssessment, prev.run.claimAssessments]);
 
-    const runId = `${today}-auto-${Math.random().toString(36).slice(2, 6)}`;
+    // UTC time-of-day, not a random token: unique across concurrently open
+    // branches (no filesystem probe to race on) AND monotonic, so the
+    // loader's same-date tie-break by runId string ranks the later draft
+    // later. The random form was collision-safe but ordered arbitrarily.
+    const runId = `${today}-auto-${new Date().toISOString().slice(11, 19).replace(/:/g, "")}`;
     const overlay = {
       runId,
       model: `${provider.name}/${draft.modelUsed ?? provider.model} (scheduled maintenance run)`,

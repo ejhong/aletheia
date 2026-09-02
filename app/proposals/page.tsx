@@ -27,19 +27,21 @@ function seatGlyph(seat: string): { glyph: string; cls: string } {
 function fate(p: {
   score?: { advances: boolean; concerns: string[]; highs: number };
   draftedAs?: string;
+  adoptedAs?: string;
   kind: string;
 }): { label: string; cls: string } | null {
   if (!p.score) return null; // unscored run: no fate to report yet
   if (p.draftedAs)
     return { label: `pre-registered · ${p.draftedAs}`, cls: "text-copper" };
+  if (p.adoptedAs)
+    return { label: `adopted · ${p.adoptedAs}`, cls: "text-copper" };
   if (p.score.concerns.length > 0)
     return { label: "blocked — constitutional concern", cls: "text-ink-soft" };
   if (p.score.advances)
     return { label: "advancing — freeze queued", cls: "text-copper" };
-  // A high-scored claim or research-item cannot auto-advance (no freeze
-  // stage to gate it), but it is NOT retired: it is the panel telling
-  // the editor "adopt this." Losing that distinction would quietly
-  // re-create the lost-good-ideas problem the backfill existed to fix.
+  // An endorsed claim or research-item awaits the endorsement drafter
+  // (or a manual adoption when the drafter could not anchor it): the
+  // panel telling the editor "adopt this," never a retirement.
   if (p.kind !== "study" && p.score.highs >= 4 && p.score.concerns.length === 0)
     return { label: `endorsed ${p.score.highs}/5 — awaiting adoption`, cls: "text-copper" };
   return { label: `retired · ${p.score.highs}/5 high`, cls: "text-faint" };
@@ -58,9 +60,11 @@ export default function ProposalsPage() {
     proposals: all.length,
     preRegistered: all.filter((p) => p.draftedAs).length,
     advancing: all.filter((p) => p.score?.advances && !p.draftedAs).length,
+    adopted: all.filter((p) => p.adoptedAs).length,
     endorsed: scored.filter(
       (p) =>
         p.kind !== "study" &&
+        !p.adoptedAs &&
         !p.score?.advances &&
         (p.score?.highs ?? 0) >= 4 &&
         (p.score?.concerns.length ?? 0) === 0,
@@ -89,8 +93,9 @@ export default function ProposalsPage() {
         and the constitutional panel. Since 2026-09-01 every proposal is
         also scored by the five-vendor panel for expected information
         gain: four seats high with no constitutional concern advances a
-        study to pre-registration; everything else retires on the record,
-        with five opinions instead of silence.
+        study to pre-registration, and drafts a claim or research item
+        for adoption through the same gated review; everything else
+        retires on the record, with five opinions instead of silence.
       </p>
 
       {totals.proposals > 0 && (
@@ -100,6 +105,7 @@ export default function ProposalsPage() {
               ["proposed", totals.proposals],
               ["pre-registered", totals.preRegistered],
               ["advancing", totals.advancing],
+              ["adopted", totals.adopted],
               ["endorsed, awaiting adoption", totals.endorsed],
               ["retired", totals.retired],
               ["blocked", totals.blocked],

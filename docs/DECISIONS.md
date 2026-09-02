@@ -414,3 +414,32 @@ a Metabolism section (KISS by founder direction): one row of totals —
 proposals scored, advanced, studies pre-registered and collected,
 sources promoted, duplicates refused — each derived live from the same
 ledgers the loops write, nothing stored, everything inspectable.
+
+## 2026-09-01 — The endorsement drafter: endorsed proposals stop waiting for a human to write YAML
+
+The gap #151 surfaced, closed. A claim or research-item proposal four of
+five seats scored high-gain with no constitutional concern was
+"endorsed — awaiting adoption": the panel had told the editor to adopt
+it, and nothing drafted it — studies got a freeze drafter, everything
+else got a waiting room. Now an `adopt` job (after `bench`, same
+clean-tier pattern: fresh main, merged scores only) drafts endorsed
+proposals into ledger records and opens ONE gated needs-approval PR
+(scripts/draft-endorsements.mjs, core logic unit-tested in
+scripts/lib/adopt-core.mjs).
+
+The lines held while closing it: adopted claims enter at **catalog
+tier** — never featured content — and may anchor **only to evidence
+already in the ledger**: the model names an anchoring evidence record,
+the script copies that record's sourceId and locator, and a draft that
+cannot anchor in-ledger is dropped with the reason (it stays endorsed
+for the promotion pipe or a manual adoption; it never gains an invented
+locator). Ids are mechanical; provenance is stamped in `origin.ref`
+(ResearchOpportunity gains an optional `origin` for exactly this),
+which doubles as the adoption registry — the repo is the state, no side
+files. Budgets keep each diff arbiter-sized: three adoptions per run,
+two per case; deferred candidates stay endorsed and sweep next run. The
+proposals page now renders the terminal fate ("adopted · <id>") and
+counts adopted separately from endorsed-awaiting. With this, every
+proposal fate is closed-loop: pre-registered, adopted, retired, or
+blocked — nothing good dies in a queue, and nothing publishes on the
+drafter's own judgment.

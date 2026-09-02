@@ -91,9 +91,21 @@ protocol, per the existing two-PR discipline);
 after the freeze merges, the **collection runner** executes the frozen
 search protocol — web retrieval, primary-document verification through
 the citation-check machinery, refusal-fallback model path — and opens the
-collection PR for the panel. Proposals not advanced retire by silence, as
-now ("ignored is retired"). Budgets bound the pace: at most two active
-studies per case; a site-wide monthly freeze budget.
+collection PR for the panel.
+
+Non-study proposals get the same closure (the **endorsement drafter**,
+scripts/draft-endorsements.mjs): a claim or research-item proposal four
+seats score high-gain with no concern is *endorsed*, and auto-drafts its
+ledger record in a gated needs-approval PR — claims at catalog tier,
+anchored ONLY to evidence already in the ledger (the drafter copies the
+anchoring record's sourceId and locator; it never authors either — a
+draft with no in-ledger anchor is dropped with the reason and stays
+endorsed for the promotion pipe or a manual adoption). Ids are
+mechanical; provenance rides origin.ref, which doubles as the adoption
+registry (the repo is the state). Proposals not advanced or endorsed
+retire by silence, as now ("ignored is retired"). Budgets bound the
+pace: at most two active studies per case; a site-wide monthly freeze
+budget; three adoptions per run, at most two per case.
 
 ### 4. The Tribunal — judges (exists; gains a memory)
 

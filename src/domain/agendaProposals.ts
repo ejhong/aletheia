@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml } from "yaml";
+import { ADOPTION_REF_RE } from "../../scripts/lib/adopt-core.mjs";
 
 /**
  * Loader for the weekly agenda proposals (scripts/propose-agenda.mjs
@@ -24,6 +25,12 @@ export interface AgendaProposal {
   score?: ProposalScore;
   /** Study id when an advancing proposal's freeze has been drafted. */
   draftedAs?: string;
+  /**
+   * Record id when an endorsed claim/research-item proposal has been
+   * adopted into the ledger (scripts/draft-endorsements.mjs writes the
+   * proposal id into the record's origin.ref).
+   */
+  adoptedAs?: string;
 }
 
 export interface ProposalScore {
@@ -141,10 +148,46 @@ function loadDraftedFreezes(): Map<string, string> {
   return out;
 }
 
+/**
+ * Which endorsed proposals already became ledger records: the
+ * endorsement drafter writes the proposal id into each adopted record's
+ * origin.ref, so — like the freeze registry above — the repo itself is
+ * the state. Scans claims.yaml and research.yaml; unparseable YAML
+ * would already fail the build in load.ts, so a soft skip here is not
+ * silent repair.
+ */
+function loadAdoptedRecords(): Map<string, string> {
+  const out = new Map<string, string>();
+  const casesDir = path.join(process.cwd(), "content", "cases");
+  if (!fs.existsSync(casesDir)) return out;
+  for (const c of fs.readdirSync(casesDir)) {
+    for (const name of ["claims.yaml", "research.yaml"]) {
+      const file = path.join(casesDir, c, name);
+      if (!fs.existsSync(file)) continue;
+      let parsed: unknown;
+      try {
+        parsed = parseYaml(fs.readFileSync(file, "utf8"));
+      } catch {
+        continue;
+      }
+      if (!Array.isArray(parsed)) continue;
+      for (const rec of parsed) {
+        const ref = (rec as { origin?: { ref?: unknown } })?.origin?.ref;
+        const id = (rec as { id?: unknown })?.id;
+        if (typeof ref !== "string" || typeof id !== "string") continue;
+        const m = ref.match(ADOPTION_REF_RE);
+        if (m) out.set(m[1], id);
+      }
+    }
+  }
+  return out;
+}
+
 /** All proposal runs, newest first; [] when none exist yet. */
 export function loadProposalRuns(): ProposalRun[] {
   if (!fs.existsSync(AGENDA_DIR)) return [];
   const drafted = loadDraftedFreezes();
+  const adopted = loadAdoptedRecords();
   return fs
     .readdirSync(AGENDA_DIR, { withFileTypes: true })
     .filter((e) => e.isDirectory())
@@ -167,6 +210,7 @@ export function loadProposalRuns(): ProposalRun[] {
             ...p,
             score: scores.get(`${pf.caseSlug}\u0000${p.title}`),
             draftedAs: drafted.get(`${runId}/${pf.caseSlug}/${i + 1}`),
+            adoptedAs: adopted.get(`${runId}/${pf.caseSlug}/${i + 1}`),
           }));
           return pf;
         })

@@ -35,6 +35,7 @@ import {
   capDiff,
   CONTENT_MERGES_PER_WEEK,
   rateLimitGate,
+  splitMergeLanes,
   tallyVerdict,
   validateVote,
 } from "./lib/arbiter-core.mjs";
@@ -168,18 +169,43 @@ const touchesContent = git(
 // bump is a founder-directed, panel-reviewed declaration that the
 // preceding landings were supervised construction; the window is the
 // trailing week or the latest epoch, whichever is shorter.
+//
+// Epochs are now the fallback rather than the mechanism. Both bumps above
+// were manual refunds for the same recurring miscount, and it recurred a
+// third time on 2026-09-02 (14/10, parking a 5/5-complies content batch).
+// Supervised merges now declare themselves with a `Supervised-by:` trailer
+// and are excluded per-merge, so the epoch should not need bumping again;
+// it stays as the coarse remedy of last resort.
 const GATE_EPOCH = Date.parse("2026-08-27T10:00:00Z");
 const since = new Date(
   Math.max(Date.now() - 7 * 86400000, GATE_EPOCH),
 ).toISOString();
-const mergesThisWeek = new Set(
-  git("log", "--first-parent", `--since=${since}`, "--format=%H", base, "--", ...CANON)
-    .split("\n")
-    .filter(Boolean),
-).size;
+// Hash + full message per commit, so the trailer is readable. Unit
+// separator between fields, record separator between commits: commit
+// messages contain newlines and blank lines, so line-splitting cannot
+// delimit them.
+const mergeLog = git(
+  "log",
+  "--first-parent",
+  `--since=${since}`,
+  "--format=%H%x1f%B%x1e",
+  base,
+  "--",
+  ...CANON,
+)
+  .split("\x1e")
+  .map((rec) => {
+    const [hash, message] = rec.replace(/^\s+/, "").split("\x1f");
+    return { hash: (hash ?? "").trim(), message: message ?? "" };
+  })
+  .filter((c) => c.hash);
+const lanes = splitMergeLanes(mergeLog);
+const mergesThisWeek = lanes.autonomous.length;
+const supervisedExcluded = lanes.supervised.length;
 const verdict = rateLimitGate(tallyVerdict(votes), {
   touchesContent,
   mergesThisWeek,
+  supervisedExcluded,
 });
 
 const report = [
@@ -202,8 +228,18 @@ const report = [
     ? `> ⚠️ ${omitted.length} file(s) exceeded the diff budget and were not shown to the panel: ${omitted.join(", ")}`
     : "",
   verification.length > 0 ? `> 🔗 ${verificationSummary(verification)}.` : "",
-  verdict.rateLimited
-    ? `> ⏳ Rate limit: ${mergesThisWeek}/${CONTENT_MERGES_PER_WEEK} content merges in the trailing week.`
+  // Reported on every content verdict, not only when it bites: the
+  // supervised exclusion is the throttle's one discretionary input, so a
+  // drift toward blanket exemption has to be visible continuously rather
+  // than discoverable in an audit nobody runs.
+  touchesContent
+    ? `> ⏳ Rate limit: ${mergesThisWeek}/${CONTENT_MERGES_PER_WEEK} autonomous content merges in the window${
+        supervisedExcluded > 0
+          ? `, ${supervisedExcluded} excluded as \`Supervised-by:\` (${lanes.supervised
+              .map((h) => h.slice(0, 7))
+              .join(", ")})`
+          : ""
+      }.`
     : "",
   `> Dry-period note: this report is advisory while the founder's merge tap remains; the same exit code will gate auto-merge when the tap is retired (docs/MAINTENANCE.md).`,
   // Machine-readable record for scripts/harvest-governance.mjs — kept

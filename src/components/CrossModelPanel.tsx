@@ -110,6 +110,16 @@ export function CrossModelPanel({
               <p className="text-[14px] leading-[1.7] text-ink-soft whitespace-pre-line">
                 {run.caseAssessment.synthesis}
               </p>
+              {run.caseAssessment.steelman && (
+                <div className="mt-3 border-l-2 border-copper/50 pl-3">
+                  <h4 className="font-mono text-[10px] uppercase tracking-[0.16em] text-faint">
+                    its steelman — the strongest argument it does not answer
+                  </h4>
+                  <p className="mt-1 text-[13.5px] leading-[1.65] text-ink-soft">
+                    {run.caseAssessment.steelman}
+                  </p>
+                </div>
+              )}
               <div className="mt-3 grid sm:grid-cols-2 gap-3">
                 <div>
                   <h4 className="font-mono text-[10px] uppercase tracking-[0.16em] text-faint">

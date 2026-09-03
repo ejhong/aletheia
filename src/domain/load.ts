@@ -16,6 +16,7 @@ import {
   isFeatured,
   ResearchOpportunitySchema,
   SourceSchema,
+  steelmanRequirementError,
   StudySchema,
   NarrativeInputSchema,
   WatchConfigSchema,
@@ -234,6 +235,12 @@ function checkIntegrity(caseDir: string, loaded: LoadedCase): void {
       ...run.caseAssessment.weakestLinks,
     ]) {
       requireLiveClaim(id, `assessment run ${run.runId} roll-up`);
+    }
+    // The epistemic counterweight, fail-closed: new runs must disclose the
+    // strongest argument for the featured hypothesis they do not answer.
+    const steelmanError = steelmanRequirementError(run);
+    if (steelmanError) {
+      throw new ContentError(caseDir, steelmanError);
     }
   }
 

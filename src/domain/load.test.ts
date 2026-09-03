@@ -28,11 +28,14 @@ import {
   assessmentFamily,
   assessmentLabels,
   assessmentStateCaptions,
+  AssessmentRunSchema,
   ClaimSchema,
   ConjectureSchema,
   EvidenceSchema,
   ImageSchema,
   SourceSchema,
+  STEELMAN_REQUIRED_FROM,
+  steelmanRequirementError,
 } from "./schema";
 
 describe("real content", () => {
@@ -804,6 +807,89 @@ describe("cross-model checks", () => {
       assessmentRuns: orch.assessmentRuns.filter((r) => r.role !== "check"),
     };
     expect(crossModelSummary(checkless)).toBeNull();
+  });
+});
+
+describe("the steelman counterweight", () => {
+  const run = (over: {
+    date: string;
+    steelman?: string;
+  }) => ({
+    runId: `${over.date}-auto-test`,
+    date: over.date,
+    caseAssessment: {
+      verdict: "unresolved" as const,
+      loadBearing: [],
+      weakestLinks: [],
+      synthesis: "s".repeat(120),
+      ...(over.steelman !== undefined ? { steelman: over.steelman } : {}),
+    },
+  });
+
+  it("runs dated on or after the cutoff must carry a steelman", () => {
+    const err = steelmanRequirementError(run({ date: STEELMAN_REQUIRED_FROM }));
+    expect(err).toContain("missing caseAssessment.steelman");
+    expect(
+      steelmanRequirementError(
+        run({
+          date: STEELMAN_REQUIRED_FROM,
+          steelman:
+            "The xenon isotope potency split remains unexplained by any classical account in the ledger.",
+        }),
+      ),
+    ).toBeNull();
+  });
+
+  it("append-only history is exempt, never rewritten", () => {
+    expect(steelmanRequirementError(run({ date: "2026-09-03" }))).toBeNull();
+  });
+
+  it("a whitespace steelman is a missing steelman", () => {
+    expect(
+      steelmanRequirementError(
+        run({
+          date: "2027-01-01",
+          steelman: "                                             ",
+        }),
+      ),
+    ).not.toBeNull();
+  });
+
+  it("the schema floors a present steelman at 40 characters", () => {
+    const overlay = {
+      runId: "2026-09-04-auto-test",
+      model: "test",
+      date: "2026-09-04",
+      promptVersion: "test",
+      humanReviewed: false,
+      caseAssessment: {
+        verdict: "unresolved",
+        loadBearing: [],
+        weakestLinks: [],
+        synthesis: "s".repeat(120),
+        steelman: "too thin",
+      },
+      claimAssessments: [],
+    };
+    expect(() => AssessmentRunSchema.parse(overlay)).toThrow();
+    expect(() =>
+      AssessmentRunSchema.parse({
+        ...overlay,
+        caseAssessment: {
+          ...overlay.caseAssessment,
+          steelman:
+            "A specific unanswered proponent argument, stated at honest length.",
+        },
+      }),
+    ).not.toThrow();
+  });
+
+  it("live content passes the requirement (nothing post-cutoff is missing one)", () => {
+    for (const c of loadAllCases()) {
+      for (const r of c.assessmentRuns) {
+        expect(steelmanRequirementError(r)).toBeNull();
+      }
+    }
   });
 });
 

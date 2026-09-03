@@ -59,6 +59,22 @@ export function AssessmentPanel({
         <p className="mt-4 text-[15px] leading-[1.75] text-ink-soft whitespace-pre-line">
           <LinkedRecordText text={run.caseAssessment.synthesis} />
         </p>
+        {run.caseAssessment.steelman && (
+          <div className="mt-5 border-l-2 border-copper/50 pl-4">
+            <h4 className="font-mono text-[10px] uppercase tracking-[0.16em] text-faint">
+              the steelman — the strongest argument this assessment does not
+              answer
+            </h4>
+            <p className="mt-1.5 text-[14px] leading-[1.7] text-ink-soft">
+              <LinkedRecordText text={run.caseAssessment.steelman} />
+            </p>
+            <p className="mt-1.5 font-mono text-[10px] tracking-[0.06em] text-faint">
+              stated by the assessing model as a required disclosure — it does
+              not change the verdict; a steelman that persists unanswered
+              across runs marks where research should go next
+            </p>
+          </div>
+        )}
         <div className="mt-5 grid sm:grid-cols-2 gap-4">
           <div>
             <h4 className="font-mono text-[10px] uppercase tracking-[0.16em] text-faint">

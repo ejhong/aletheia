@@ -444,6 +444,36 @@ proposal fate is closed-loop: pre-registered, adopted, retired, or
 blocked — nothing good dies in a queue, and nothing publishes on the
 drafter's own judgment.
 
+## 2026-09-03 — The steelman field: every judgment must disclose the strongest argument it does not answer
+
+Epistemic counterweight #1 (docs/AUTOMATION.md, Tribunal section). The
+system's real failure mode on contested cases is not fabrication (CI
+catches it) or sloppiness (the panel catches it) but convergent
+dismissal: five models from the same handful of vendors, sharing
+roughly the same mainstream priors, each finding the featured
+hypothesis wanting for the same reasons — none ever stating its best
+case. The constitution forbids the obvious fix (seating an advocate:
+§2, not a believer-versus-skeptic arena), so the counterweight is a
+disclosure obligation on the assessor itself: every assessment run —
+house draft, blind check, reconsideration — must fill
+`caseAssessment.steelman` with the strongest argument FOR the featured
+hypothesis that the assessment does not answer. A limitations section,
+not a rebuttal: it never moves a verdict.
+
+Mechanics: required from 2026-09-04, enforced fail-closed in the
+loader (`steelmanRequirementError`); append-only history before the
+cutoff is exempt, never rewritten. All three drafting prompts bump
+(assess/check/reconsider → v3) and validate the field fail-closed —
+"some people disagree" length fails. Displayed beside the verdict on
+the case page and inside each check run's expansion on the concurrence
+panel, so a lazy steelman is publicly visible and every ratification
+diff carries it. Excluded from the reassessment no-change comparison:
+rephrasing the disclosure is not a change of judgment and must not
+mint churn overlays. The accumulation effect is the point: a steelman
+that stands unanswered across runs is a research crux the Bench should
+pick up — the field turns the panel's shared blind spots into visible,
+queryable records instead of silent priors.
+
 ## 2026-09-02 — Three faults behind one conflicted PR: unique runIds, no duplicate panels, a throttle that counts the right thing
 
 PR #156 (an hourly content-response batch) arrived conflicted, and the

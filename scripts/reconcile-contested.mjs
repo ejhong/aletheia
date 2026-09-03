@@ -39,7 +39,7 @@ import {
   contestedLoadBearingClaims,
 } from "./lib/reconcile-core.mjs";
 
-const PROMPT_VERSION = "aletheia-reconsider-v2"; // v2: sensitivity line
+const PROMPT_VERSION = "aletheia-reconsider-v3"; // v3: steelman field (epistemic counterweight)
 const VERDICTS = [
   "established", "well_supported", "provisionally_supported", "mixed",
   "weakly_supported", "contradicted", "unresolved", "presently_untestable",
@@ -144,10 +144,11 @@ Rules:
 - Distinguish credibility from diagnosticity; repeated reports are not independent; feasibility is not occurrence.
 - Synthesis at least 200 words, plain language, citing record ids.
 - Sensitivity: in the synthesis, name the single evidence record whose removal would most change the case verdict, and state plainly whether the verdict survives without it. A verdict hanging on one thread must say so.
+- Steelman (required): in caseAssessment.steelman, state the strongest argument FOR the featured hypothesis that your assessment does NOT answer — specific, no hedging; "some people disagree" is a failing answer. It never changes your verdict.
 - loadBearing AND weakestLinks are arrays of CLAIM ids only (like XXX-C001) — never evidence ids, never prose sentences. Put the prose reasons in the synthesis. claimAssessments cover every featured claim by id.
 
 Reply ONLY JSON:
-{"caseAssessment": {"verdict": "...", "loadBearing": ["..."], "weakestLinks": ["..."], "synthesis": "..."}, "claimAssessments": [{"claimId": "...", "verdict": "...", "reasoning": "...", "confidence": "high|moderate|low"}], "whatChanged": "which dissents (case-level and claim-level) moved you, which did not, and why — 2-5 sentences"}`;
+{"caseAssessment": {"verdict": "...", "loadBearing": ["..."], "weakestLinks": ["..."], "synthesis": "...", "steelman": "..."}, "claimAssessments": [{"claimId": "...", "verdict": "...", "reasoning": "...", "confidence": "high|moderate|low"}], "whatChanged": "which dissents (case-level and claim-level) moved you, which did not, and why — 2-5 sentences"}`;
 
   // House-drafting call (the reconsideration is a draft that rides the
   // gates like any other): the one-shot Opus refusal fallback applies, and
@@ -164,6 +165,8 @@ Reply ONLY JSON:
   const errs = [];
   if (!VERDICTS.includes(d.caseAssessment?.verdict)) errs.push("bad case verdict");
   if ((d.caseAssessment?.synthesis ?? "").length < 150) errs.push("synthesis too short");
+  if ((d.caseAssessment?.steelman ?? "").length < 40)
+    errs.push("steelman missing or too thin (the counterweight is required)");
   // Both roll-up lists are claim ids — the loader enforces exactly this
   // (load.ts requireLiveClaim on every entry), so anything looser here
   // would install an overlay that breaks the site build.

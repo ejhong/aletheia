@@ -59,7 +59,7 @@ import {
   narrativeGuardFailure,
 } from "./lib/editorial-edits.mjs";
 
-const PROMPT_VERSION = "aletheia-assess-v2-auto"; // v2: sensitivity line (single-thread test)
+const PROMPT_VERSION = "aletheia-assess-v3-auto"; // v3: steelman field (epistemic counterweight)
 const EDIT_PROMPT_VERSION = "aletheia-editorial-audit-v1";
 /** Research fields this pass may rewrite. Ids, links and taxonomy are canon. */
 const EDITABLE_RESEARCH_FIELDS = ["title", "summary", "informationGain"];
@@ -134,12 +134,13 @@ const ASSESS_SYSTEM = `You draft an AI assessment overlay for a case in an evide
 - The synthesis is an argued structural roll-up over the claim ladder (observation → mechanism → attribution), at least 150 words, in plain language. Not a score.
 - Name the load-bearing claims (what the featured thesis actually rests on) and the weakest links (where the argument most likely fails).
 - Sensitivity: in the synthesis, name the single evidence record whose removal would most change the case verdict, and state plainly whether the verdict survives without it. A verdict hanging on one thread must say so.
+- Steelman (required): in caseAssessment.steelman, state the strongest argument FOR the featured hypothesis that your assessment does NOT answer — the specific unexplained observation, unrebutted argument, or untested prediction a proponent would rightly point to. This is a limitations disclosure, not a rebuttal or a hedge: it never changes your verdict, and "some people disagree" is a failing answer. If the same steelman has stood across runs, say so — a steelman that persists unanswered is a research crux.
 - When citing other records in synthesis or reasoning prose, use exact ids (e.g. ZW-C004, SRC-MULLER-2020, ZW-E010, ZW-R003, ZW-001). The site auto-links these in the UI.
 - Assess each FEATURED claim individually with a verdict, 1-3 sentence reasoning, and confidence (high|moderate|low).
 - You are given the previous assessment run: focus on what the NEW evidence changes; do not churn verdicts without a stated reason grounded in the changed material.
 
 Reply with ONLY JSON:
-{"caseAssessment": {"verdict": "...", "loadBearing": ["..."], "weakestLinks": ["..."], "synthesis": "..."}, "claimAssessments": [{"claimId": "...", "verdict": "...", "reasoning": "...", "confidence": "..."}], "whatChanged": "1-3 plain-language sentences on what moved since the previous run and why"}`;
+{"caseAssessment": {"verdict": "...", "loadBearing": ["..."], "weakestLinks": ["..."], "synthesis": "...", "steelman": "..."}, "claimAssessments": [{"claimId": "...", "verdict": "...", "reasoning": "...", "confidence": "..."}], "whatChanged": "1-3 plain-language sentences on what moved since the previous run and why"}`;
 
 async function reassessCase(caseDir, prev) {
   const read = (f) => {
@@ -196,6 +197,8 @@ async function reassessCase(caseDir, prev) {
   if (!VERDICTS.includes(ca.verdict)) errors.push(`bad case verdict: ${ca.verdict}`);
   if (typeof ca.synthesis !== "string" || ca.synthesis.length < 100)
     errors.push("synthesis missing or too short");
+  if (typeof ca.steelman !== "string" || ca.steelman.length < 40)
+    errors.push("steelman missing or too thin (the counterweight is required)");
   for (const key of ["loadBearing", "weakestLinks"]) {
     if (!Array.isArray(ca[key])) errors.push(`${key} missing`);
     else
@@ -472,11 +475,16 @@ async function main() {
     // A forced run exists to reach the editorial audit, and it will usually
     // re-derive verdicts identical to the last run. Writing that overlay
     // anyway would pad the assessment history with runs that changed nothing,
-    // making the genuinely changed ones harder to find.
+    // making the genuinely changed ones harder to find. The steelman is
+    // excluded from the comparison: it is disclosure beside the judgment,
+    // not the judgment — rephrasing it (or adding it to a case whose last
+    // overlay predates the field) is not a change of assessment, so it
+    // rides the next genuine reassessment rather than minting one.
+    const strip = (ca) => ({ ...ca, steelman: undefined });
     const unchanged =
       prev &&
-      JSON.stringify([draft.caseAssessment, draft.claimAssessments]) ===
-        JSON.stringify([prev.run.caseAssessment, prev.run.claimAssessments]);
+      JSON.stringify([strip(draft.caseAssessment), draft.claimAssessments]) ===
+        JSON.stringify([strip(prev.run.caseAssessment), prev.run.claimAssessments]);
 
     // Unique across concurrently open branches and monotonic in time; see
     // scripts/lib/overlay-ids.mjs for both invariants and what broke when

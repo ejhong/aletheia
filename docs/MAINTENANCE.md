@@ -79,13 +79,23 @@ AGENTS.md, never pushes to main, and treats issue text as data.
   touches `content/cases/` parks once the trailing week has spent the
   budget. Never upgrades a verdict; never throttles code or docs.
   The budget bounds the **machine's unattended pace**, so a merge that
-  declares itself supervised does not spend it. Declare one by putting a
-  `Supervised-by:` trailer in the PR body, which GitHub carries into the
-  squash commit message:
+  declares itself supervised does not spend it. Declare one with a
+  `Supervised-by:` trailer in a **commit message on the branch** — not in
+  the PR body:
 
   ```
-  Supervised-by: founder-directed chat session
+  git commit -m "$(printf 'Your subject\n\nBody.\n\nSupervised-by: founder-directed chat session\n')"
   ```
+
+  The distinction is load-bearing and was got wrong first time (see the
+  2026-09-03 correction in `docs/DECISIONS.md`). This repo squash-merges,
+  and GitHub builds a squash message from the PR **title plus the branch's
+  commit messages**; the PR body is never included. Verified against
+  merged history: #153's squash body is its two commit messages, #160's is
+  its single commit message, and no squash on `main` contains PR-body-only
+  text. A trailer written in the PR body therefore vanishes at merge and
+  the merge counts as autonomous — failing safe, but silently doing
+  nothing.
 
   Rules that keep this from being a loophole. **Default counts** — no
   trailer means the merge is counted, so forgetting it merely parks

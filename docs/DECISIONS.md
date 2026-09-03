@@ -513,3 +513,41 @@ trailing week rolls past the 2026-09-01/02 burst.
 
 (AI record of a founder instruction, 2026-09-02 session: "pick what you
 think will make the site run reliably and is cleanest.")
+
+## 2026-09-03 — Correction: the supervised-lane trailer goes in a commit message, not the PR body
+
+The lane-aware throttle that landed yesterday (#160) shipped with a wrong
+instruction, caught on the first inspection of its own effect. `docs/
+MAINTENANCE.md` said to declare a supervised merge by putting a
+`Supervised-by:` trailer in the **PR body**, "which GitHub carries into
+the squash commit message". It does not. This repo squash-merges, and
+GitHub composes a squash message from the PR **title plus the branch's
+commit messages** — the body is never included. Evidence from merged
+history: #153's squash body is its two commit messages verbatim, #160's
+is its single commit message verbatim, and no squash commit on `main`
+contains text that appeared only in a PR body. #160's own declaration was
+written in its PR body and duly vanished.
+
+The mechanism itself is sound and needed no change: the counting, the
+regex, and the report are all correct, and the failure was safe in the
+designed direction — a lost trailer means the merge counts, which parks
+something rather than disarming the gate. Only the instruction was wrong,
+and it is now corrected to a commit-message trailer, with the squash
+behaviour stated so the next reader does not have to rediscover it. Worth
+recording rather than quietly editing: a governance mechanism whose
+documented trigger does not fire is indistinguishable from one nobody
+uses, and the distinction only surfaced because the throttle was checked
+against reality instead of assumed to work.
+
+Also measured while confirming this, and the reason the lane fix was
+worth making: of the 15 canon merges in the current window, **5 are
+autonomous** (two content responses, one promotion, two maintenance runs)
+and **10 are founder-directed construction** (the four study freeze/
+collection PRs, the pins simplification, founding inputs, metabolism 1+2,
+the transients adoption, and the two Amazon PRs). The machine's lane is
+frozen at 15/10 entirely on supervised work — the miscount the fix
+removes going forward, but cannot retroactively refund, since merged
+commit messages are immutable.
+
+(AI record, 2026-09-03 session, reporting a defect in the author's own
+prior change.)

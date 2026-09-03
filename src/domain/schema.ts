@@ -557,6 +557,23 @@ export const AssessmentRunSchema = z.object({
     weakestLinks: z.array(z.string()),
     /** The argued structural roll-up over the ladder. Not a score. */
     synthesis: z.string().min(100),
+    /**
+     * The steelman field (docs/AUTOMATION.md, "epistemic counterweights"):
+     * the strongest argument FOR the featured hypothesis that this
+     * assessment does not answer, stated by the same model that wrote the
+     * assessment — a limitations section, not a rebuttal and not a vote.
+     * It exists because every seat in this system shares roughly the same
+     * mainstream priors, and the constitution forbids seating an advocate
+     * (§2: not a believer-versus-skeptic arena): the counterweight is an
+     * obligation of disclosure on the assessor itself. It never moves a
+     * verdict; it is displayed beside one. A steelman that persists
+     * unanswered across runs is a research crux the system is dodging.
+     *
+     * Optional in the schema because overlays are append-only and history
+     * cannot be rewritten; required on every run dated on or after
+     * STEELMAN_REQUIRED_FROM (enforced fail-closed in load.ts).
+     */
+    steelman: z.string().min(40).optional(),
   }),
   claimAssessments: z.array(
     z.object({
@@ -577,6 +594,23 @@ export const AssessmentRunSchema = z.object({
   reconciles: z.array(z.string()).optional(),
 });
 export type AssessmentRun = z.infer<typeof AssessmentRunSchema>;
+
+/**
+ * From this date every assessment run — draft, check, reconsideration —
+ * must carry caseAssessment.steelman. Earlier runs are append-only
+ * history and are exempt rather than rewritten.
+ */
+export const STEELMAN_REQUIRED_FROM = "2026-09-04";
+
+/** The steelman requirement as a pure rule, so the loader and tests share it. */
+export function steelmanRequirementError(
+  run: Pick<AssessmentRun, "runId" | "date" | "caseAssessment">,
+): string | null {
+  if (run.date < STEELMAN_REQUIRED_FROM) return null;
+  if (run.caseAssessment.steelman && run.caseAssessment.steelman.trim().length > 0)
+    return null;
+  return `assessment run ${run.runId} (${run.date}) is missing caseAssessment.steelman — every run dated on or after ${STEELMAN_REQUIRED_FROM} must state the strongest argument for the featured hypothesis it does not answer`;
+}
 
 /**
  * Image records. HARD RULE, enforced below: AI-generated images may never be

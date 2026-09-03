@@ -113,7 +113,7 @@ const featuredIds = claims
   .map((c) => c.id);
 const caseRecord = parseYaml(read("case.yaml"));
 
-const PROMPT_VERSION = "aletheia-check-v2"; // v2: sensitivity line (single-thread test)
+const PROMPT_VERSION = "aletheia-check-v3"; // v3: steelman field (epistemic counterweight)
 
 const instructions = `You are an independent scientific assessor for Aletheia, a public evidence ledger for contested hypotheses. You have the complete case file for "${caseRecord.title}" — dossier, overview article, atomic claims, evidence records, source records, and research agenda. You have deliberately NOT been shown any prior assessment.
 
@@ -126,7 +126,8 @@ Assessment rules:
 4. Choose the verdict the evidence warrants, including strong verdicts in either direction. "unresolved" and "mixed" are substantive findings requiring justification, not safe defaults.
 5. Steelman both directions in the synthesis.
 6. Sensitivity: name the single evidence record whose removal would most change your case verdict, and state whether the verdict survives without it — a verdict hanging on one thread must say so.
-7. Never fabricate results, papers, or numbers.
+7. Steelman (required): in caseAssessment.steelman, state the strongest argument FOR the featured hypothesis that your assessment does NOT answer — the specific unexplained observation, unrebutted argument, or untested prediction a proponent would rightly point to. A limitations disclosure, not a rebuttal: it never changes your verdict, and "some people disagree" is a failing answer.
+8. Never fabricate results, papers, or numbers.
 
 Verdict vocabulary (exact tokens): ${VERDICTS.join(" | ")}
 Confidence tokens: high | moderate | low
@@ -145,6 +146,9 @@ caseAssessment:
   weakestLinks: [<claim ids>]
   synthesis: >-
     <argued structural roll-up, at least 250 words>
+  steelman: >-
+    <the strongest argument for the featured hypothesis this assessment
+    does not answer — at least 40 characters, specific, no hedging>
 claimAssessments:
   - claimId: <id>
     verdict: <token>
@@ -286,6 +290,8 @@ function validate(name, yamlText) {
   }
   if ((d.caseAssessment?.synthesis ?? "").length < 100)
     problems.push("synthesis too short");
+  if ((d.caseAssessment?.steelman ?? "").length < 40)
+    problems.push("steelman missing or too thin (the counterweight is required)");
   return { data: d, problems };
 }
 

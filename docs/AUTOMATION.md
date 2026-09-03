@@ -116,6 +116,24 @@ records they corrected and in the append-only changelog — panels judging
 a diff see the correction in context, in the record itself, not in a
 separate registry.
 
+**The steelman field (epistemic counterweight #1).** Every assessment
+run — house draft, blind check, reconsideration — must state, in
+`caseAssessment.steelman`, the strongest argument FOR the featured
+hypothesis that the assessment does not answer. It exists because every
+seat shares roughly the same mainstream priors and the constitution
+forbids seating an advocate: the counterweight is a disclosure
+obligation on the assessor itself, like a limitations section — never a
+vote, never a verdict input. It is displayed beside the verdict,
+checkable in every ratification diff (a lazy "some people disagree"
+is visible to the other seats), and cumulative: a steelman that
+persists unanswered across runs is a research crux the Bench should
+pick up. Required from 2026-09-04 (fail-closed in the loader);
+append-only history before that date is exempt, never rewritten.
+Counterweight #2, the sampling gloss audit — one random evidence
+record per hot case re-verified against its primary source by a model
+that did not author it — is deliberately deferred to last in the build
+order (founder direction, 2026-09-01).
+
 ### 5. The Atelier — rewrites (new; experiment first)
 
 Quarterly per case, or on a standing change: several independent models

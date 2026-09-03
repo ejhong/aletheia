@@ -17,6 +17,15 @@ on:
   schedule:
     # Off the top of the hour: GitHub delays or drops cron jobs scheduled
     # at :00 under load.
+    #
+    # OBSERVED, 2026-09-03: even off the hour, GitHub drops most of these.
+    # Twelve runs across 2026-09-01/03 landed roughly every three to five
+    # hours, not hourly — about five a day against twenty-four requested.
+    # Nothing downstream breaks (the loop is idempotent and exits free when
+    # nothing is stale), but worst-case latency for a canon change is a few
+    # hours rather than the one the comment below claims, and anything
+    # reasoning about this cadence should use the observed figure. Asking
+    # for hourly is still right: it is the cheapest way to get five.
     - cron: "17 * * * *"
   # Manual trigger: run the reassess/re-panel loop on demand — e.g. to
   # recover a panel run whose output was lost, to panel a case without

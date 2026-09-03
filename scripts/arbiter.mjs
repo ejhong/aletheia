@@ -176,7 +176,20 @@ const touchesContent = git(
 // Supervised merges now declare themselves with a `Supervised-by:` trailer
 // and are excluded per-merge, so the epoch should not need bumping again;
 // it stays as the coarse remedy of last resort.
-const GATE_EPOCH = Date.parse("2026-08-27T10:00:00Z");
+//
+// Epoch 3 (2026-09-03T13:00Z) is that remedy used once more, and on a
+// measurement rather than an impression. Of the 15 canon merges in the
+// window at 15/10, five were autonomous (#156, #158 content responses,
+// #148 promotion, #147 and #144 maintenance) and ten were founder-directed
+// construction (#125/#129 and #152/#153, the study freeze/collection
+// pairs; #135 pins; #132 founding inputs; #128 metabolism; #124 transients
+// adoption; #113/#118 Amazon). The autonomous lane's true usage was 5/10 —
+// half the budget — while the lane sat frozen on supervised work. The
+// per-merge exclusion cannot refund those ten, because merged commit
+// messages are immutable, so this bump clears the miscount one last time.
+// Founder-directed, 2026-09-03 session ("any fixes you need to do —
+// please let's do them"), with the structural fix already in place.
+const GATE_EPOCH = Date.parse("2026-09-03T13:00:00Z");
 const since = new Date(
   Math.max(Date.now() - 7 * 86400000, GATE_EPOCH),
 ).toISOString();

@@ -551,3 +551,50 @@ commit messages are immutable.
 
 (AI record, 2026-09-03 session, reporting a defect in the author's own
 prior change.)
+
+## 2026-09-03 — Epoch 3, the overlay-id invariant gets tests, and the observed cron cadence
+
+Follow-through on the three faults behind #156, after checking what the
+fixes actually did rather than assuming.
+
+**The overlay-id invariants are now enforced, not commented.** #160's
+central fix was a property of a generated string, and it shipped with no
+test — the tests it added covered the throttle's lane split instead. The
+id logic was also duplicated inline in the two scripts that mint it. Both
+now call `scripts/lib/overlay-ids.mjs`, whose seven tests state the two
+invariants as the failure modes that produced #156: an id must be unique
+across concurrent runs that cannot see each other's files (the #156
+scenario, written out literally), and it must be *monotonic*, because
+`latestCheckPerModel` breaks same-date ties by string-comparing runIds, so
+a merely-unique random token could rank the morning's overlay above the
+evening's. Also pinned: the date stays the first ten characters, a
+suffixed id sorts after a legacy unsuffixed one sharing its prefix, the
+`-r2`/`-r3` fallback fires only for a same-second collision in one tree,
+and the timestamp is UTC so two runners in different zones stay
+comparable. Verified separately that nothing parses the old id shapes —
+the only `runId` slicing in the tree is on agenda and inbox ids.
+
+**Epoch 3 (2026-09-03T13:00Z), the last one this should need.** The
+per-merge supervised exclusion cannot refund merges already on `main`,
+because their commit messages are immutable, so the miscount it fixes was
+still frozen into the window at 15/10. Classified: five autonomous (#156,
+#158 content responses; #148 promotion; #147, #144 maintenance) against
+ten founder-directed construction (#125/#129 and #152/#153, the two study
+freeze/collection pairs; #135 pins; #132 founding inputs; #128
+metabolism; #124 transients adoption; #113/#118 Amazon). The autonomous
+lane's true usage was **5 of 10** while the lane sat frozen. Unlike epochs
+1 and 2 this bump rests on a per-merge classification rather than an
+impression, and it is a one-time clearing rather than the mechanism.
+
+**The hourly metabolism is not hourly.** Twelve content-response runs
+across 2026-09-01/03 landed every three to five hours — about five a day
+against twenty-four requested. GitHub drops most scheduled crons even off
+the top of the hour, which the existing comment half-anticipated for :00.
+Nothing downstream breaks, since the loop is idempotent and exits free
+when nothing is stale, but worst-case latency for a canon change is a few
+hours rather than one, and the workflow now records the observed figure so
+anyone reasoning about cadence uses it. Asking for hourly stays right: it
+is the cheapest way to actually get five.
+
+(AI record of a founder instruction, 2026-09-03 session: "any fixes you
+need to do — please let's do them.")

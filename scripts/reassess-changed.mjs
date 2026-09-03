@@ -52,6 +52,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml, parseDocument, stringify as stringifyYaml } from "yaml";
 import { callWithRefusalFallback, noKeyMessage, parseJsonReply, pickProvider } from "./lib/llm.mjs";
+import { overlayRunId } from "./lib/overlay-ids.mjs";
 import {
   applyTextEdits,
   foldScalar,
@@ -477,11 +478,10 @@ async function main() {
       JSON.stringify([draft.caseAssessment, draft.claimAssessments]) ===
         JSON.stringify([prev.run.caseAssessment, prev.run.claimAssessments]);
 
-    // UTC time-of-day, not a random token: unique across concurrently open
-    // branches (no filesystem probe to race on) AND monotonic, so the
-    // loader's same-date tie-break by runId string ranks the later draft
-    // later. The random form was collision-safe but ordered arbitrarily.
-    const runId = `${today}-auto-${new Date().toISOString().slice(11, 19).replace(/:/g, "")}`;
+    // Unique across concurrently open branches and monotonic in time; see
+    // scripts/lib/overlay-ids.mjs for both invariants and what broke when
+    // the previous random token satisfied only the first.
+    const runId = overlayRunId([today, "auto"]);
     const overlay = {
       runId,
       model: `${provider.name}/${draft.modelUsed ?? provider.model} (scheduled maintenance run)`,

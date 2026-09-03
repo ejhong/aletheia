@@ -27,6 +27,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
+import { overlayRunId } from "./lib/overlay-ids.mjs";
 import { fetchWithRetry } from "./lib/vendors.mjs";
 
 const ROOT = process.cwd();
@@ -344,33 +345,12 @@ async function main() {
     // Normalize the stamped fields regardless of what the model wrote.
     const d = outcome.data;
     // Overlays are append-only; a same-day re-check must not overwrite the
-    // morning's run. The suffix is a UTC time-of-day, which has to satisfy
-    // two things at once.
-    //
-    // UNIQUE ACROSS BRANCHES, not just across this working tree. The
-    // previous form probed `fs.existsSync` and suffixed -r2, -r3 on
-    // collision. That checks the checkout, but the namespace that must be
-    // unique is the merged history: two runs branching off the same main
-    // each saw no file and each wrote the unsuffixed name, colliding on
-    // merge (PR #156) and — because runId IS this string — minting two
-    // distinct panel runs with one runId, which breaks revert-by-runId
-    // (docs/MAINTENANCE.md) and the §3.15 reconstruction guarantee. A
-    // timestamp needs no filesystem lookup, so concurrent runs cannot
-    // agree on it.
-    //
-    // MONOTONIC, not merely unique. `latestCheckPerModel` in
-    // src/domain/load.ts breaks same-date ties by string-comparing runIds,
-    // so a random token (as the auto- overlays once used) could rank the
-    // morning's panel above the afternoon's. HHMMSS sorts chronologically,
-    // and any suffixed id still sorts after a legacy unsuffixed one with
-    // the same prefix, so existing overlays keep their order.
-    const hhmmss = new Date().toISOString().slice(11, 19).replace(/:/g, "");
-    let base = `${date}-check-${VENDORS[vendor].tag}-${hhmmss}`;
-    // Same-second collision inside ONE tree is the only case a local probe
-    // can still settle; across branches the timestamps already differ.
-    for (let n = 2; fs.existsSync(path.join(caseDir, "assessments", `${base}.yaml`)); n++) {
-      base = `${date}-check-${VENDORS[vendor].tag}-${hhmmss}-r${n}`;
-    }
+    // morning's run. The id is unique across branches and monotonic in
+    // time — both invariants, and why, live in scripts/lib/overlay-ids.mjs
+    // with tests in src/domain/overlayIds.test.ts.
+    const base = overlayRunId([date, "check", VENDORS[vendor].tag], {
+      exists: (id) => fs.existsSync(path.join(caseDir, "assessments", `${id}.yaml`)),
+    });
     d.runId = base;
     d.date = date;
     d.promptVersion = PROMPT_VERSION;

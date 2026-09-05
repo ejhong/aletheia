@@ -784,6 +784,12 @@ Mondays before building; make cadences say what they do; retire the epoch
 machinery if the lane fix holds; never add a loop, lane, label, or
 document without removing one.
 
+**Struck the same day, on the founder's instruction:** the
+simplification item "do not add a new loop, lane, label, or document
+without removing one." The founder does not want constraints of that
+shape; the standard is the design itself — no duplicated code, the right
+abstractions — and the consolidation table stands on that ground alone.
+
 (AI record of a founder instruction, 2026-09-05 session.)
 
 ## 2026-09-05 — The budget panel: five seats re-picked for judgment per dollar, with effort pinned
@@ -863,18 +869,25 @@ three separate dedup implementations, and could not answer "have we
 considered this before, and what did we decide?" in one query.
 
 **The design** (docs/AUTOMATION.md, "The intake: one door in, one
-memory"): one brief format every producer emits; one mechanical key per
+memory"): one brief format every producer emits; items are candidate records in
+exactly the kinds the ledger admits (source, claim, research, study — the
+agenda generator's own vocabulary, no new noun); one mechanical key per
 item (doi / arxiv / url / title / text, the last honestly fuzzy); one
 append-only per-case `dispositions.yaml` with a six-word vocabulary (in,
 duplicate, irrelevant, blocked, failed, excluded) that is low-risk when
 append-only; one pure `coverageDiff` that every producer calls before
 writing anything. Saturation becomes derived from the dispositions file
 like standing and yield — a counter of consecutive briefs that landed
-nothing — never stored, never self-reported. Producers become five thin
+nothing — never stored, never self-reported. A disposition is a dated
+judgment against the ledger as it stood, not a verdict — the same pattern
+as assessments one layer up — so a declined candidate is handed back to
+producers with its reason and an optional `reopenIf`, may be re-proposed
+only by citing a ledger record newer than the disposition, and a variant
+is judged with the prior disposition beside it. Producers become five thin
 adapters (watch, inbox, capture, expedition, and the existing agenda
-generator, whose declined proposals stop retiring by silence and become
-dispositions with the panel's reason); the Expedition shrinks from a loop
-to the smallest adapter. The rule generalises: no loop has its own
+generator, whose packet gains the declined set and what landed since its
+last run, and whose declined proposals stop retiring by silence); the
+Expedition shrinks from a loop to the smallest adapter. The rule generalises: no loop has its own
 door, and no producer has its own memory.
 
 **What it replaces** (the design consolidates rather than adds): the watch seen-list, the archive ledger, the promotions

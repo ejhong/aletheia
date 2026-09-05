@@ -62,7 +62,7 @@ rows for the new models; the old rows are history, not error.
 | 3 | Collection runner | Not built. No backlog yet: every frozen study is collected. Build when a Bench-drafted freeze merges with no one to collect it. |
 | 4a | Steelman field | **Built** (#163). Required from 2026-09-04. |
 | 4b | Sampling gloss audit | Deferred by founder direction. The largest unaddressed epistemic risk: no judge re-reads a source. |
-| 5a | Intake (coverage diff, dispositions, brief format, capture adapter) | Design confirmed 2026-09-05; **next build**. Sequence in "The intake" below. |
+| 5a | Intake (coverage diff, dispositions, brief format, capture and agenda adapters) | Design confirmed 2026-09-05; **next build**. Sequence in "The intake" below. |
 | 5b | Expedition adapter + sweeps | Not built. **Blocked on a founder decision**: provider and budget line (a weekly o4-mini-deep-research pass over ten hot cases is roughly $17/month; o3 roughly $60). |
 | 6 | Researcher surface | Not built. Independent; the natural next build. |
 | 7 | Atelier | Not built. Founding inputs (its anchor) are committed for every case. |
@@ -84,9 +84,7 @@ line changed:
    readme) were removed 2026-09-05; the runbook was rewritten from 429
    lines of interleaved rationale to a one-page map plus a symptom table.
    Rationale goes in DECISIONS once; it is not repeated in the runbook.
-2. **Read the digest for two Mondays before adding any new loop.** The
-   intake (5a) is exempt by construction: it adds no loop and removes
-   three ledgers and two dedup copies (founder direction, 2026-09-05). Every
+2. **Read the digest for two Mondays before adding any new loop.** Every
    loop reports there. If the digest shows promotions, adoptions, and
    re-panels happening without a chat session, the metabolism works and
    the next build is step 6. If it shows nothing moving, the fault is in
@@ -103,10 +101,6 @@ line changed:
    `Supervised-by` trailer fixed the count. If no epoch bump is needed
    through September, remove the epoch machinery and the paragraphs
    describing it.
-5. **Do not add** a new loop, a new lane, a new label, or a new document
-   without removing one. The five-loop design is complete as written;
-   what remains is executing steps 3, 5, 6, 7 of the build order — each
-   a script in `scripts/lib` with tests, none a new kind of thing.
 
 ## Purpose
 
@@ -173,19 +167,24 @@ computes over a diff.
 
 **1. One brief format.** Every producer emits the same artifact: a
 *brief* — a runId-stamped list of *items*, never citable, with a declared
-lifecycle. An item is one thing a producer noticed, in one of three
-kinds:
+lifecycle. An item is a **candidate record**: one thing a producer
+noticed, in exactly the kinds the ledger admits — no new noun. The agenda
+generator already proposes in three of them (`claim`, `research`,
+`study`); the watch and inbox produce the fourth:
 
-- `source` — a document (DOI, arXiv id, URL, or a title when nothing
-  else exists);
-- `claim` — one proposition a producer extracted or a chat asserted;
-- `idea` — a proposed test, research route, or objection (the chats'
-  "T-numbers" and "RFPs"; the agenda generator's proposals).
+- `source` — a candidate Source (DOI, arXiv id, URL, or a title when
+  nothing else exists);
+- `claim` — a candidate Claim: one proposition a producer extracted or a
+  chat asserted;
+- `research` — a candidate ResearchOpportunity: a test, archival route,
+  or replication worth doing (the chats' "T-numbers" and "RFPs");
+- `study` — a candidate study protocol for the Bench.
 
 Each item carries: its **key** (below), the text *as observed* (a
 verbatim quote or the producer's own words, labelled which), the
-producer and run that observed it, the date, and any identifiers it came
-with. A brief asserts nothing about truth. It is the input to the diff.
+producer and run that observed it, the date, the ledger records it
+depends on if any, and any identifiers it came with. A brief asserts
+nothing about truth. It is the input to the diff.
 
 **2. One key per item.** Keys are mechanical and case-independent:
 
@@ -195,13 +194,13 @@ with. A brief asserts nothing about truth. It is the input to the diff.
   fragments removed, trailing slash removed;
 - `title:` the normalised title (lowercase alphanumerics and spaces),
   the form the watch seen-list already uses;
-- `text:` for claims and ideas — the normalised statement. This key is
-  honest about being fuzzy: two wordings of one idea will not collide,
-  so claim and idea matching also runs the existing title-similarity
-  test against the case's claims, research items, and prior
-  dispositions, and reports *probable duplicate of X* rather than
-  deciding. The panel judges the probable ones; the mechanical ones need
-  no judge.
+- `text:` for claims, research, and studies — the normalised statement.
+  This key is honest about being fuzzy: two wordings of one proposal
+  will not collide, so these kinds also run the existing
+  title-similarity test against the case's claims, research items,
+  studies, and prior dispositions, and report *probable duplicate of X*
+  rather than deciding. The panel judges the probable ones; the
+  mechanical ones need no judge.
 
 **3. One memory: the dispositions ledger.** Per case, one append-only
 file, `content/cases/<case>/dispositions.yaml`, Zod-validated like every
@@ -215,6 +214,8 @@ one row per item ever considered.
   as: SRC-YI-2026            # for in / duplicate: the ledger record
   reason: >-                 # required for every disposition except in
     ...
+  reopenIf: >-               # optional, for excluded / irrelevant / blocked: what would
+    ...                      #   make this worth reconsidering (mirrors whatWouldChangeOurMind)
   observed: "Xiang Yi's 2026 npj Heritage Science paper ..."   # verbatim as observed
   by: expedition-2026-09-12-geopolymer-ab12c                   # producer runId
   date: 2026-09-12
@@ -228,13 +229,34 @@ on any claim — the archive-ledger reason), **blocked** (primary not
 reachable; `route` says how), **failed** (verification contradicted the
 brief — a correction, as prominent as a confirmation), **excluded**
 (verified but editorially left out, with the reason, for the founder's
-call — meant to be rare). An `idea` row uses the same words: *in* means
-it became a research item or catalog claim; *irrelevant*, *failed*, and
-*excluded* say why it did not.
+call — meant to be rare). A `research` or `study` row uses the same
+words: *in* means it became a ResearchOpportunity or a frozen study;
+*irrelevant*, *failed*, and *excluded* say why it did not, and
+`reopenIf` says what would change that.
 
 Rows are appended only; a reversal is a new row with a later date
 pointing at the earlier one. Reading the file top to bottom is the
 case's intake history; the latest row per key is its current standing.
+
+**A disposition is a dated judgment, not a verdict.** This is the same
+pattern the site already uses one layer up: ledger records get
+assessments — append-only, dated, the latest standing, history visible —
+and candidates get dispositions. A declined candidate was declined
+*against the ledger as it stood that day*. So:
+
+- the diff never hides declined candidates from producers; it hands them
+  over as a third set, *declined*, each with its reason, date, and
+  `reopenIf`;
+- a producer may re-propose a declined key, but the re-proposal must
+  name at least one ledger record dated after the disposition — what
+  changed — or it is dropped mechanically as a repeat. New information
+  reopens; repetition does not;
+- a *variant* of a declined candidate (the same test with a different
+  control, the same claim narrowed) gets its own key, falls in the
+  `probable` band by similarity, and is judged with the prior
+  disposition beside it: *this resembles X, declined on date D for
+  reason R; here is what differs*. The judge sees the history instead of
+  re-deriving it.
 The file is **low-risk when append-only** (added to the classifier's
 allowlist beside `claims-catalog.yaml` and `sources.yaml`), because a
 row that says *irrelevant* can be reversed by a later row, exactly as a
@@ -249,9 +271,10 @@ coverageDiff(brief, case) → { novel: Item[], seen: {item, row | record, via}[]
 ```
 
 `seen` is the union of the case's ledger identifiers (sources, claims,
-research items — the identifiers `promote-core` already extracts) and the
-latest disposition per key. `probable` is the title/text similarity band
-that needs a judge. The three existing dedup copies become calls to this
+research items, studies — the identifiers `promote-core` already
+extracts) and the latest disposition per key; a declined key is returned
+in `seen` with its row so the *declined* set above is just a filter over
+it. `probable` is the title/text similarity band that needs a judge. The three existing dedup copies become calls to this
 function. Every producer runs it before writing anything, and writes the
 result next to the brief as `novelty.md` — the report the founder
 actually wants from a research run: *here is what this run found that
@@ -287,16 +310,24 @@ and promotion pipe. Five adapters, none with a private memory:
   ledger does NOT hold), returning a brief. Same diff, same pipe.
 - `agenda` — the one producer that does not look outward. As built, it
   reads the ledger and asks what claim, research item, or study should
-  exist that doesn't; its proposals are `idea` items. The change is only
-  in what happens to them afterwards: a proposal the panel does not
-  advance or endorse no longer retires by silence — it lands as an
-  `excluded` or `irrelevant` row carrying the panel's reason, so the
-  next agenda run sees it in the coverage map and does not propose it
-  again. "Ideas we have already considered" includes the ones we
-  declined, with the reason.
+  exist that doesn't, already in the candidate kinds above. Two changes
+  make it better rather than merely wired in. *Downstream*: a proposal
+  the panel does not advance or endorse no longer retires by silence —
+  it lands as an `excluded` or `irrelevant` row carrying the panel's
+  reason and, where a seat offered one, a `reopenIf`. *Upstream*: its
+  packet gains two things it has never seen — the case's declined
+  candidates with their reasons and dates, and the `in` rows landed
+  since its last run — and one standing question: *does anything new
+  reopen a declined candidate, as it stood or in variant form?* The
+  reopen rule above then applies mechanically. That is the whole answer
+  to "what if a rejected idea becomes worthwhile later": the memory
+  keeps the reason, the diff surfaces what changed, and the producer is
+  asked the question every time something lands.
 
 **The rule generalises: no loop has its own door, and no producer has
-its own memory.**
+its own memory.** Ledger records have assessments; candidates have
+dispositions; both are append-only, dated, and derived-from at build
+time. Nothing else remembers anything.
 
 **What it replaces.** The design is a consolidation, not an addition:
 each row is something the repo does today in its own way, and the one
@@ -311,11 +342,13 @@ place it moves to.
 | three dedup implementations | `coverage.mjs` |
 | CHAT_BRIEFS.md steps 1–2 (manual capture + consolidation) | the `capture` adapter; the document shrinks to standing rules, verify, construct |
 | new-claim tombstones for "don't re-propose" | a `failed`/`excluded` disposition row (existing tombstones stay; no rewrite) |
+| agenda proposals retiring by silence | an `excluded`/`irrelevant` row with the panel's reason and `reopenIf` |
 
 **What it does not do, said plainly.** Coverage is about *existence*,
 not *reading*: a source marked `in` was cited, not re-read, and the
 sampling gloss audit (build step 4b) remains the only mechanism that
-re-reads anything. Idea matching is fuzzy and says so. And the intake
+re-reads anything. Matching of claims, research, and studies is fuzzy
+and says so. And the intake
 cannot find what no producer looks for: the arXiv/Crossref watch would
 never have surfaced a ResearchHub grant registry, a ministry annual
 report, a museum's 3D scan, or a news report of vandalism — the four
@@ -339,7 +372,8 @@ says so in one place.
 1. **`coverage.mjs` + `DispositionSchema` + classifier allowlist.** The
    pure diff, the schema and loader for `dispositions.yaml` (fail-closed:
    required `reason` off `in`, `as` must resolve for `in`/`duplicate`),
-   the append-only low-risk rule. Migration in the same PR, one
+   the append-only low-risk rule, and the reopen rule (a re-proposal of
+   a declined key must cite a record newer than the disposition). Migration in the same PR, one
    reversible run: every row of the three ledgers becomes a disposition
    row with its original runId and date; the ledgers are deleted; the
    watch, promote, and triage scripts call `coverageDiff`. Tests: the
@@ -356,10 +390,12 @@ says so in one place.
    an unassigned report for Hancock, which has no case) — the first
    real test of the diff at scale (3,563 DOIs against a case holding 11).
    CHAT_BRIEFS.md rewritten to point at it.
-4. **Saturation on the researcher header** (part of build step 6): the
+4. **The agenda adapter** — the packet gains declined candidates and
+   the `in` rows since its last run; declined proposals become rows.
+5. **Saturation on the researcher header** (part of build step 6): the
    derived counter, the last `in` date, the dispositions count, and a
    link to the novelty report of the latest brief.
-5. **The `expedition` adapter** — once the founder names the provider
+6. **The `expedition` adapter** — once the founder names the provider
    and the budget line. By then it is the smallest of the four: one model
    call that returns a brief.
 

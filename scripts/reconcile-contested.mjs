@@ -33,6 +33,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
 import { callWithRefusalFallback, noKeyMessage, parseJsonReply, pickProvider } from "./lib/llm.mjs";
+import { seatKey } from "./lib/seat-key.mjs";
 import {
   caseVerdictDissenters,
   claimDissentPacket,
@@ -62,7 +63,7 @@ const seatName = (m) => m.split("—")[0].split(", independent")[0].trim();
 function latestPerModel(runs) {
   const byModel = new Map();
   for (const r of runs.filter((r) => r.role === "check")) {
-    const k = r.model.trim().split(/[\s,(]/)[0].toLowerCase();
+    const k = seatKey(r.model);
     const prev = byModel.get(k);
     if (!prev || r.date > prev.date || (r.date === prev.date && r.runId > prev.runId))
       byModel.set(k, r);

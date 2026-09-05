@@ -141,6 +141,11 @@ node scripts/yield-report.mjs
   to `claude-opus-5` (`scripts/lib/llm.mjs`); override with the Actions
   variable `EXTRACT_MODEL`. Records always stamp the model that actually
   answered. Panel seats never fall back — a refusing seat is a failed seat.
+- Panel seats: one table, `scripts/lib/vendors.mjs` — model **and** pinned
+  effort per seat (Opus 5 medium · GPT-5.6 Sol high · Gemini 3.8 Flash
+  medium · Grok 4.5 high · GLM 5.3 Flash high via Venice). Changing a seat
+  is a one-line edit there plus a DECISIONS entry; the /panel seat records
+  start a new row for a new model. Gemini's intro price doubles 2027-01-01.
 - Branch protection on `main`: the `arbiter` check is required (see the
   2026-08-25 "gate is live" decision); admin enforcement off, so the
   founder's override is the kill switch. Repo auto-merge enabled.

@@ -20,15 +20,16 @@
  * parse, misses claims, or uses bad verdict tokens is written to
  * proposals/cross-model-failures/ for inspection and NOT installed.
  *
- * Keys: ANTHROPIC_API_KEY, OPENAI_API_KEY, GEMINI_API_KEY, XAI_API_KEY.
- * Vendors without a key are skipped with a note. Costs are one long
+ * Keys: ANTHROPIC_API_KEY, OPENAI_API_KEY, GEMINI_API_KEY, XAI_API_KEY,
+ * VENICE_API_KEY (the seat table is scripts/lib/vendors.mjs). Vendors
+ * without a key are skipped with a note. Costs are one long
  * completion per vendor (typically a few dollars per case total).
  */
 import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
 import { overlayRunId } from "./lib/overlay-ids.mjs";
-import { fetchWithRetry } from "./lib/vendors.mjs";
+import { VENDORS, callVendor } from "./lib/vendors.mjs";
 
 const ROOT = process.cwd();
 const args = process.argv.slice(2);
@@ -48,39 +49,6 @@ if (!fs.existsSync(path.join(caseDir, "case.yaml"))) {
   process.exit(1);
 }
 
-// Model choices per vendor: current flagship, stable enough to cite.
-const VENDORS = {
-  anthropic: {
-    key: process.env.ANTHROPIC_API_KEY,
-    model: "claude-opus-5",
-    label: "Opus 5 (Anthropic)",
-    tag: "opus",
-  },
-  openai: {
-    key: process.env.OPENAI_API_KEY,
-    model: "gpt-5.1",
-    label: "GPT-5.1 (OpenAI)",
-    tag: "gpt",
-  },
-  gemini: {
-    key: process.env.GEMINI_API_KEY,
-    model: "gemini-3.1-pro-preview",
-    label: "Gemini 3.1 Pro (Google)",
-    tag: "gemini",
-  },
-  xai: {
-    key: process.env.XAI_API_KEY,
-    model: "grok-4.6",
-    label: "Grok 4.6 (xAI)",
-    tag: "grok",
-  },
-  venice: {
-    key: process.env.VENICE_API_KEY,
-    model: "kimi-k3",
-    label: "Kimi K3 (Moonshot, via Venice)",
-    tag: "kimi",
-  },
-};
 
 const VERDICTS = [
   "established",
@@ -161,79 +129,20 @@ claimAssessments MUST contain one entry for EVERY one of these ${featuredIds.len
 
 // ----------------------------------------------------------------- calls
 
-// PANEL SEAT — the refusal fallback (scripts/lib/llm.mjs) is BANNED here.
-// Each seat's identity as a specific vendor/model is constitutionally
-// load-bearing (§3.15 vendor-independence of the panel): a refusing seat
-// must count as a FAILED seat, never be silently swapped to another model.
-async function callVendor(name, cfg) {
+// PANEL SEAT — the seat table and HTTP path live in scripts/lib/vendors.mjs
+// (one table for the arbiter, the check, and the bench), where the refusal
+// fallback is banned: a refusing seat is a FAILED seat, never a swapped one.
+async function callSeat(name) {
+  const cfg = VENDORS[name];
   const userMsg = `RUN HEADER:\n  TAG: ${cfg.tag}\n  MODEL_LABEL: ${cfg.label}, independent check run\n\nCASE FILE FOLLOWS:\n\n${packet}`;
-  let url, body, headers;
-  if (name === "gemini") {
-    url = `https://generativelanguage.googleapis.com/v1beta/models/${cfg.model}:generateContent?key=${cfg.key}`;
-    body = {
-      system_instruction: { parts: [{ text: instructions }] },
-      contents: [{ role: "user", parts: [{ text: userMsg }] }],
-      generationConfig: { maxOutputTokens: 32000 },
-    };
-    headers = { "Content-Type": "application/json" };
-  } else if (name === "anthropic") {
-    url = "https://api.anthropic.com/v1/messages";
-    body = {
-      model: cfg.model,
-      // Opus writes long reasonings; 32k proved one claim short on a
-      // 14-claim case. Thinking is adaptive by default and shares the
-      // max_tokens budget with the visible reply — there is no thinking
-      // budget parameter on this model; effort is the depth control.
-      max_tokens: 64000,
-      output_config: { effort: "high" },
-      system: instructions,
-      messages: [{ role: "user", content: userMsg }],
-    };
-    headers = {
-      "Content-Type": "application/json",
-      "x-api-key": cfg.key,
-      "anthropic-version": "2023-06-01",
-    };
-  } else {
-    url =
-      name === "xai"
-        ? "https://api.x.ai/v1/chat/completions"
-        : name === "venice"
-          ? "https://api.venice.ai/api/v1/chat/completions"
-          : "https://api.openai.com/v1/chat/completions";
-    body = {
-      model: cfg.model,
-      messages: [
-        { role: "system", content: instructions },
-        { role: "user", content: userMsg },
-      ],
-      max_completion_tokens: 32000,
-    };
-    headers = {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${cfg.key}`,
-    };
-  }
-  // Transient network failures (Venice 520s, runner socket errors) are
-  // retried by fetchWithRetry rather than discarding a paid seat.
-  const res = await fetchWithRetry(name, url, {
-    method: "POST",
-    headers,
-    body: JSON.stringify(body),
-    signal: AbortSignal.timeout(1800_000),
+  // Long output: a 14-claim case ran one claim past 32k on Opus. Long
+  // deadline: a full blind assessment at pinned effort can take many minutes.
+  const text = await callVendor(name, {
+    system: instructions,
+    user: userMsg,
+    maxTokens: 64000,
+    timeoutMs: 1800_000,
   });
-  if (!res.ok) throw new Error(`${name} HTTP ${res.status}: ${(await res.text()).slice(0, 300)}`);
-  const data = await res.json();
-  let text;
-  if (name === "gemini") {
-    text = (data.candidates?.[0]?.content?.parts ?? [])
-      .map((p) => p.text ?? "")
-      .join("");
-  } else if (name === "anthropic") {
-    text = (data.content ?? []).map((b) => b.text ?? "").join("");
-  } else {
-    text = data.choices?.[0]?.message?.content ?? "";
-  }
   let t = text.trim();
   if (t.startsWith("```")) {
     t = t.split("\n").slice(1).join("\n");
@@ -300,8 +209,8 @@ function validate(name, yamlText) {
 
 async function main() {
   const date = new Date().toISOString().slice(0, 10);
-  const active = vendorArg.filter((v) => VENDORS[v]?.key);
-  const skippedVendors = vendorArg.filter((v) => VENDORS[v] && !VENDORS[v].key);
+  const active = vendorArg.filter((v) => VENDORS[v]?.key());
+  const skippedVendors = vendorArg.filter((v) => VENDORS[v] && !VENDORS[v].key());
   if (skippedVendors.length)
     console.error(`no key, skipping: ${skippedVendors.join(", ")}`);
   if (active.length === 0) {
@@ -318,7 +227,7 @@ async function main() {
 
   const results = await Promise.allSettled(
     active.map(async (v) => {
-      const text = await callVendor(v, VENDORS[v]);
+      const text = await callSeat(v);
       return { vendor: v, text };
     }),
   );

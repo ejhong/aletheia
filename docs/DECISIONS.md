@@ -628,3 +628,56 @@ is the cheapest way to actually get five.
 
 (AI record of a founder instruction, 2026-09-03 session: "any fixes you
 need to do — please let's do them.")
+## 2026-09-05 — The low-risk lane belongs to the diff, not to whoever opened the PR
+
+An inbox drop (#164, a Penrose-co-authored interferometer paper for
+Orch OR) sat open and green for nine hours with nothing moving it, which
+surfaced a gap between the tiered merge policy and its mechanism. The
+policy is a statement about diffs: reversible-by-runId material that
+touches no featured content may merge without a human tap. The mechanism
+was a statement about processes: `maintain.yml` and `content-response.yml`
+armed auto-merge in the same breath as `gh pr create`, so the lane was
+granted at birth by the creating workflow and never afterwards. A PR
+opened any other way — an agent session, the founder's own branch — was
+outside the only place that could grant it, and the arbiter, the one thing
+that arms a PR after creation, deliberately skips low-risk PRs because
+they are governed by the classifier and CI rather than the panel. Nothing
+was watching them.
+
+The cost was not only latency. Intake is event-driven: `inbox-response.yml`
+fires on a push to `inbox/**` on `main`. An unmerged inbox drop is not a
+queued item, it is a file on a branch, so the drop was not late — it was
+absent from the pipeline entirely, and would have stayed absent until
+someone noticed the PR.
+
+`pr-risk-check.yml` now grants the lane it was already enforcing, on the
+same classification, extended to fire on `ready_for_review` as well as
+open/push/label. The guard is the security boundary and is stated as one:
+non-draft, same-repo, author with write access, classifier says low-risk,
+no `needs-approval` label (an explicit hold outranks a favorable
+reclassification). Fork PRs are excluded twice over — by the guard, and by
+`pull_request` events from forks carrying no secrets, so the maintenance
+PAT would be empty. `src/domain/mergeLane.test.ts` reads the workflow as
+data and asserts each condition, because every condition dropped from that
+guard widens who may merge to `main` and nothing else in the repository
+would notice.
+
+Two details worth recording because both were wrong first. The step needs
+an explicit `success()` in its `if`, since a custom condition replaces the
+implicit one and the step would otherwise arm after the mislabel
+enforcement above it had failed. And GitHub refuses to arm auto-merge on a
+PR in "clean status" — nothing left to wait for — which is precisely the
+state of a PR classified after its checks already passed, so that error
+falls through to a direct squash merge, gated on no check having failed.
+Reading that gate from `.conclusion` alone scores a still-running check run
+as not-passing (its conclusion is null until it completes) and refuses a
+merge GitHub has already called clean, which is the sitting PR again by
+another route; the chain reads `.conclusion // .state // .status` and
+tolerates the pending states, while an unrecognized shape still counts as
+failing.
+
+Creation-time arming stays in the maintenance workflows. It is redundant
+now but it is the fast path, and `gh pr merge --auto` is idempotent.
+
+(AI record of a founder question, 2026-09-05 session: "the pr is just
+sitting there — should something happen to it automatically?")

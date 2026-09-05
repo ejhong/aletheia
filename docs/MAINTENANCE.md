@@ -148,6 +148,22 @@ workflow re-derives the class from the actual diff
 (`scripts/classify-pr-risk.mjs`), and a PR labeled `auto:low-risk` whose
 diff exceeds the allowlist fails the check, which blocks auto-merge.
 
+The same workflow **grants** the low-risk lane, because the lane is a
+property of the diff rather than of who opened the PR: any non-draft,
+same-repo PR from an author with write access whose diff classifies
+low-risk gets the label and auto-merge, whenever it classifies — on open,
+on a push, on being marked ready for review. Fork PRs are excluded, and a
+`needs-approval` label is a hold the classifier cannot override.
+
+This used to be granted only at the moment a maintenance workflow created
+a PR, which had a quiet failure: an inbox drop opened by an agent session
+instead of by the weekly run got no label and nothing armed, so it sat
+open indefinitely while the machine's identical drop merged in minutes —
+and, because an unmerged inbox file never reaches `main`, the intake
+ripple it should have triggered never fired either. The arbiter, the only
+other thing that arms a PR after creation, skips low-risk PRs by design,
+so nothing was watching them. (2026-09-05.)
+
 Why auto-merging **new** assessment overlays stays low-risk (stage-3
 governance rule): standing is derived, never stored, and it only fails
 DOWN. `displayAssessment()` always shows the latest draft, stamped with a

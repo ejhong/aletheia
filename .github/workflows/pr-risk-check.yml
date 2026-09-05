@@ -1,17 +1,42 @@
-# Enforces the tiered merge policy (docs/MAINTENANCE.md): a PR labeled
-# auto:low-risk must actually be low-risk per scripts/classify-pr-risk.mjs
-# (proposals/inbox changes, new append-only assessment overlays, append-only
-# catalog/source additions — nothing touching featured content or code).
-# If the label claims low-risk but the diff says otherwise, this check FAILS,
-# which blocks auto-merge. Fails closed: unlabeled PRs just get an advisory
-# classification in the log.
+# Enforces the tiered merge policy (docs/MAINTENANCE.md) on every PR, and
+# arms the lane the policy allows to merge on its own.
+#
+# Enforcement: a PR labeled auto:low-risk must actually be low-risk per
+# scripts/classify-pr-risk.mjs (proposals/inbox changes, new append-only
+# assessment overlays, append-only catalog/source additions — nothing
+# touching featured content or code). If the label claims low-risk but the
+# diff says otherwise, this check FAILS, which blocks auto-merge.
+#
+# Arming: the low-risk tier is a property of the DIFF, so it is granted here
+# rather than at the moment a PR is opened. The maintenance workflows used to
+# be the only place that armed it (gh pr create --label ... && gh pr merge
+# --auto), which meant an identical inbox drop opened by an agent session sat
+# open forever while the machine's own drop merged in minutes — and the
+# arbiter, the only other thing that arms a PR after creation, skips low-risk
+# PRs by design. Nothing was left to move them.
+#
+# Fails closed throughout: an unlabeled PR gets an advisory classification,
+# and arming requires a non-draft, same-repo PR from an author with write
+# access. Fork PRs cannot reach it — the guard excludes them, and a fork's
+# pull_request event carries no secrets, so the token would be empty anyway.
+# A needs-approval label is an explicit hold and outranks the classifier, so
+# a request for review can never be overridden by a favorable reclassification.
 
 name: PR risk check
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened, labeled, unlabeled]
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - labeled
+      - unlabeled
+      - ready_for_review
 
+# Deliberately not widened: the arming step authenticates with the
+# maintenance PAT (as the other workflows do, so that the merge fires the
+# deploy and content-response ripples), not with this job's token.
 permissions:
   contents: read
 
@@ -25,12 +50,14 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Classify and enforce
+        id: risk
         env:
           BASE: ${{ github.event.pull_request.base.sha }}
           LABELS: ${{ join(github.event.pull_request.labels.*.name, ',') }}
         run: |
           risk=$(node scripts/classify-pr-risk.mjs "$BASE" | tee /dev/stderr | tail -1)
           echo "classifier says: $risk"
+          echo "class=$risk" >> "$GITHUB_OUTPUT"
           case ",$LABELS," in
             *,auto:low-risk,*)
               if [ "$risk" != "low-risk" ]; then
@@ -42,3 +69,52 @@ jobs:
               echo "No auto:low-risk label — advisory classification only: $risk"
               ;;
           esac
+
+      - name: Arm the low-risk lane
+        if: |
+          success()
+          && steps.risk.outputs.class == 'low-risk'
+          && github.event.pull_request.draft == false
+          && github.event.pull_request.head.repo.fork == false
+          && contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.pull_request.author_association)
+          && !contains(github.event.pull_request.labels.*.name, 'needs-approval')
+        env:
+          GH_TOKEN: ${{ secrets.MAINTENANCE_PAT }}
+          PR: ${{ github.event.pull_request.number }}
+          LABELS: ${{ join(github.event.pull_request.labels.*.name, ',') }}
+        run: |
+          # The label is the visible record of the tier, so a reader of the PR
+          # list can see which lane it is in. Added only when absent: adding it
+          # fires another `labeled` run of this workflow, and a no-op add would
+          # make that recursion unbounded.
+          case ",$LABELS," in
+            *,auto:low-risk,*) ;;
+            *) gh pr edit "$PR" --add-label auto:low-risk || echo "::warning::could not label the PR; arming anyway" ;;
+          esac
+
+          err="$RUNNER_TEMP/arm-error.txt"
+          if gh pr merge --auto --squash "$PR" 2>"$err"; then
+            echo "auto-merge armed; lands when the required checks are green"
+            exit 0
+          fi
+          cat "$err"
+
+          # GitHub refuses to arm auto-merge on a PR with nothing left to wait
+          # for ("clean status") — the state a low-risk PR is in when it is
+          # classified after its checks have already passed, which is exactly
+          # the case that used to sit open. Merging directly is the same act
+          # auto-merge would have performed, so it gets the same precondition:
+          # no check may have failed. Any other arming error is left alone.
+          if ! grep -qi 'clean status' "$err"; then
+            echo "::warning::could not arm auto-merge; the PR stays open for manual merge"
+            exit 0
+          fi
+          failed=$(gh pr view "$PR" --json statusCheckRollup --jq '
+            [ (.statusCheckRollup // [])[] | (.conclusion // .state // .status // "") | ascii_upcase ]
+            - ["SUCCESS", "NEUTRAL", "SKIPPED", "PENDING", "QUEUED", "IN_PROGRESS", "EXPECTED", "WAITING", "REQUESTED"]
+            | length')
+          if [ "$failed" != "0" ]; then
+            echo "::warning::$failed check(s) are not passing; leaving the PR open"
+            exit 0
+          fi
+          gh pr merge --squash "$PR"

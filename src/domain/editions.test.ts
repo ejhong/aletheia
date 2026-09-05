@@ -36,12 +36,12 @@ function temp() {
   scratch.push(dir);
   return dir;
 }
-function receipt(run: AssessmentRun, contentHash: string) {
+function receipt(run: AssessmentRun, contentHash: string, packetHash: string) {
   return {
     protocol: "case-snapshot-v1" as const,
     contentHash,
     assessmentHash: assessmentHash(run),
-    packetHash: fingerprint("test packet"),
+    packetHash,
   };
 }
 function reviewedCase() {
@@ -52,12 +52,20 @@ function reviewedCase() {
     role: "check" as const,
     model: `${seat} (Vendor-${seat})`,
     runId: `check-${seat}`,
-    review: receipt(draft, loaded.contentHash),
+    review: receipt(draft, loaded.contentHash, loaded.reviewPacketHash),
   }));
   return { ...loaded, assessmentRuns: [draft, ...checks] };
 }
 
 describe("edition review receipts", () => {
+  it("a mismatched evidence packet cannot count even when content and draft match", () => {
+    const loaded = reviewedCase();
+    expect(ratification(loaded)?.status).toBe("ratified");
+    loaded.assessmentRuns[1].review!.packetHash =
+      fingerprint("a different packet");
+    expect(ratification(loaded)?.status).toBe("unratified");
+    expect(ratification(loaded)?.panel).toBe(3);
+  });
   it("a later history note cannot stale reviews of unchanged content", () => {
     const loaded = reviewedCase();
     loaded.history.push({
@@ -119,7 +127,11 @@ describe("edition review receipts", () => {
     expect(ratification(loaded)?.status).toBe("ratified");
     loaded.contentHash = fingerprint("same-day evidence correction");
     const draft = loaded.assessmentRuns[0];
-    loaded.assessmentRuns[1].review = receipt(draft, loaded.contentHash);
+    loaded.assessmentRuns[1].review = receipt(
+      draft,
+      loaded.contentHash,
+      loaded.reviewPacketHash,
+    );
     expect(ratification(loaded)?.panel).toBe(1);
     expect(ratification(loaded)?.status).toBe("unratified");
   });
@@ -156,7 +168,12 @@ describe("edition review receipts", () => {
       generatedAt: "2026-09-05T12:00:00Z",
     });
     expect(
-      currentChecks(loaded.assessmentRuns, draft, loaded.contentHash),
+      currentChecks(
+        loaded.assessmentRuns,
+        draft,
+        loaded.contentHash,
+        loaded.reviewPacketHash,
+      ),
     ).toHaveLength(4);
   });
 

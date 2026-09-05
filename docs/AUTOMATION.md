@@ -56,12 +56,16 @@ and model concurrence is not truth. Passage verification must be a separate
 check against the retrieved primary material. The existing PR arbiter
 continues to gate consequential publication.
 
-**An edition changes only when the change earns its place.** Start with one
-drafter and scoped edits; use whole-essay revisions when dependencies or the
-question itself changed. Preserve primary-source anchors, consequential
-objections, corrected errors, and the route from prose to records. Competing
-drafts are a later technique to evaluate, not a prerequisite for every edit.
-An unchanged edition after a useful investigation is a successful outcome.
+**An edition changes only when the change earns its place.** Scope candidate
+edits to the changed inputs; use whole-essay candidates when dependencies or
+the question itself changed. Narrative judgment calls are settled by the
+competition of candidate drafts, as AGENTS.md §7 requires. A small drafting
+run can produce alternatives, with the incumbent retained as an explicit
+option; the panel compares them before replacement. Larger tournaments with
+several independent drafters are a later scaling choice, not an exemption from
+competition. Preserve primary-source anchors, consequential objections,
+corrected errors, and the route from prose to records. An unchanged edition
+after a useful investigation is a successful outcome.
 
 **Attention follows observed value.** Record accepted corrections, new
 independent observations, resolved or reopened cruxes, useful tests, and
@@ -94,7 +98,9 @@ checks, shared proposal memory, and spend accounting are still to build.
 ### Review receipt rollout
 
 New blind checks carry `generatedAt` and a `review` receipt: protocol,
-content hash, assessment hash, and packet hash. The content snapshot covers
+content hash, assessment hash, and packet hash. All three hashes must match;
+the loader and workers recompute the packet hash with the same builder used
+to prepare the blind assessor’s inputs. The content snapshot covers
 the case, essay, both claim files, evidence, sources, research, conjectures,
 image manifest, and study files. Operational cursors and history are excluded;
 appending a check does not invalidate itself. A run checks again before
@@ -335,16 +341,18 @@ sequence above, before unattended intake is expanded.
 ### 5. The Atelier — a drafting mode within the edition workflow
 
 The edition drafter owns assessment, selection, and narrative together. Its
-first implementation uses one drafter with a scoped input diff. The Atelier
-name describes a later mode that tries several candidates when a substantial
-rewrite is warranted; it is not a separate owner of presentation state.
-Candidates compete against the incumbent on evidential fidelity, uncertainty,
+first narrative implementation generates candidate alternatives from a scoped
+input diff and submits them with the incumbent for comparison, under §7.
+The Atelier name describes that competition within the edition workflow;
+several independent drafters can later widen the candidate pool. It is not a
+separate owner of presentation state. Candidates compete against the incumbent
+on evidential fidelity, uncertainty,
 useful compression, readability, and register. Blind assessment happens before
 inspection of the candidate edition. The normal arbiter still gates any
 consequential publication, with substantiated objections parked publicly.
 
-If tournaments prove useful, publish the full comparison record, including
-dissent, and randomize candidate order. Fluency, length, and model-family
+Every comparison publishes its full record, including dissent. Randomize
+candidate order. Fluency, length, and model-family
 preferences can bias judges; winning a prose comparison cannot substitute
 for source verification or authorize dropping a consequential caveat. A
 candidate that earns no improvement leaves the incumbent in place.

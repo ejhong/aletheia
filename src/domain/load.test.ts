@@ -592,6 +592,7 @@ describe("ratification governance (stage 3)", () => {
     const originalHash = fingerprint("original content");
     return {
       record: { lastReviewed: "2026-01-01" },
+      reviewPacketHash: fingerprint("packet"),
       contentHash: history.some((h) => h.kind !== "housekeeping")
         ? fingerprint("changed content")
         : originalHash,

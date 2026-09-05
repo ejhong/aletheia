@@ -1,10 +1,14 @@
 import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml } from "yaml";
-import { readCaseSnapshot } from "../../scripts/lib/case-snapshot.mjs";
+import {
+  evidencePacket,
+  readCaseSnapshot,
+} from "../../scripts/lib/case-snapshot.mjs";
 import {
   REVIEW_MIN_PANEL,
   compareRuns,
+  fingerprint,
   currentChecks,
   latestChecks,
   latestDraft,
@@ -556,9 +560,10 @@ export function loadCase(caseDir: string): LoadedCase {
     }
   }
 
+  const snapshot = readCaseSnapshot(path.resolve(CONTENT_DIR, caseDir));
   const loaded: LoadedCase = {
-    contentHash: readCaseSnapshot(path.resolve(CONTENT_DIR, caseDir))
-      .contentHash,
+    contentHash: snapshot.contentHash,
+    reviewPacketHash: fingerprint(evidencePacket(snapshot.files)),
     record,
     overviewMarkdown,
     claims,
@@ -717,6 +722,7 @@ export function ratification(loaded: LoadedCase): Ratification | null {
     loaded.assessmentRuns,
     draft,
     loaded.contentHash,
+    loaded.reviewPacketHash,
   );
   const historicalChecks = latestCheckPerModel(loaded);
   const panel = checks.length;
@@ -820,7 +826,12 @@ export function survivingObjections(
   verdictLabel: string;
   firstSentence: string;
 }[] {
-  return currentChecks(loaded.assessmentRuns, displayed, loaded.contentHash)
+  return currentChecks(
+    loaded.assessmentRuns,
+    displayed,
+    loaded.contentHash,
+    loaded.reviewPacketHash,
+  )
     .filter(
       (r) => r.caseAssessment.verdict !== displayed.caseAssessment.verdict,
     )
@@ -915,6 +926,7 @@ export function crossModelSummary(
     loaded.assessmentRuns,
     shown.run,
     loaded.contentHash,
+    loaded.reviewPacketHash,
   );
   const staleSince =
     current.length === checks.length ? null : lastContentUpdate(loaded);

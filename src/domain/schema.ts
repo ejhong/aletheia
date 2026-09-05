@@ -1015,6 +1015,8 @@ export type NarrativeInput = z.infer<typeof NarrativeInputSchema>;
 export interface LoadedCase {
   /** Exact reader-facing input snapshot, excluding reviews and operational state. */
   contentHash: string;
+  /** Recomputed from the same blind packet builder used by the check runner. */
+  reviewPacketHash: string;
   record: CaseRecord;
   overviewMarkdown: string;
   claims: Claim[];

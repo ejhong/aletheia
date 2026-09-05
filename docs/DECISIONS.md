@@ -883,3 +883,20 @@ and an unattended three-case pilot follow in that order (AUTOMATION.md).
 
 (AI record of the founder's direction in this session; implementation remains
 subject to the repository's CI and independent publication gates.)
+
+
+### Review follow-up on the research-edition implementation
+
+The PR arbiter correctly identified that storing a packet hash without comparing
+it was insufficient: standing now checks all three hashes, recomputing the
+expected packet from the same builder as the assessment runner. A regression
+test covers a mismatched packet with otherwise matching content and draft.
+
+The design wording also made narrative competition appear optional. Corrected:
+AGENTS.md §7 continues to govern narrative judgment. Candidate alternatives,
+including retaining the incumbent, compete before replacement; a larger pool
+of independent drafters is a scaling choice. This design update does not amend
+the constitution or authorize unilateral narrative judgment. Existing correction
+workers remain until the edition writer implements that comparison.
+
+(AI record of the response to PR #172's independent review, 2026-09-05.)

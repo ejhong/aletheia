@@ -99,13 +99,15 @@ export function assessmentHash(draft) {
  * @param {Run[]} runs
  * @param {Run} draft
  * @param {string} contentHash
+ * @param {string} packetHash
  */
-export function currentChecks(runs, draft, contentHash) {
+export function currentChecks(runs, draft, contentHash, packetHash) {
   const target = assessmentHash(draft);
   return latestChecks(runs).filter(
     (r) =>
       r.review?.protocol === "case-snapshot-v1" &&
       r.review.contentHash === contentHash &&
+      r.review.packetHash === packetHash &&
       r.review.assessmentHash === target &&
       !draft.reconciles?.includes(r.runId),
   );

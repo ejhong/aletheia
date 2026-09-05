@@ -7,6 +7,7 @@ import { readCaseSnapshot, evidencePacket } from "./lib/case-snapshot.mjs";
 import {
   REVIEW_MIN_PANEL,
   currentChecks,
+  fingerprint,
   latestDraft,
   missingReviewCoverage,
 } from "./lib/review-state.mjs";
@@ -26,7 +27,12 @@ for (const dir of fs.readdirSync(CASES)) {
   // to pay five models to manufacture an assessment.
   if (!draft || !packet.assessClaimIds.length || !packet.evidence.length)
     continue;
-  const checks = currentChecks(runs, draft, snapshot.contentHash);
+  const checks = currentChecks(
+    runs,
+    draft,
+    snapshot.contentHash,
+    fingerprint(packet),
+  );
   if (
     checks.length < REVIEW_MIN_PANEL ||
     missingReviewCoverage(draft, checks).length

@@ -26,6 +26,7 @@ export function validateVote(seat, reply) {
     vote: "unsure",
     rules: [],
     reasoning: `invalid reply treated as unsure: ${why}`,
+    failed: true,
   });
   if (typeof reply !== "object" || reply === null) return bad("not an object");
   if (!VOTE_VALUES.includes(reply.vote)) return bad(`unknown vote "${reply.vote}"`);
@@ -57,10 +58,19 @@ export function validateVote(seat, reply) {
  * Failed seats (API error, refusal, empty reply) are recorded as unsure
  * with the failure as reasoning — visible in the report, never silently
  * dropped from the denominator.
+ *
+ * A seat that never voted is counted like a seat that voted unsure, but it
+ * is not described like one. "Only 3 of 5 affirm compliance" reads as a
+ * divided panel; when two of those seats were unfunded API accounts, the
+ * remedy is billing, not revision, and a report that does not say so
+ * presents an operational fault as a judgment on the change.
  */
 export function tallyVerdict(votes) {
-  const counts = { complies: 0, violates: 0, unsure: 0 };
-  for (const v of votes) counts[v.vote]++;
+  const counts = { complies: 0, violates: 0, unsure: 0, failed: 0 };
+  for (const v of votes) {
+    counts[v.vote]++;
+    if (v.failed) counts.failed++;
+  }
   const outcome =
     counts.complies >= ARBITER_MIN_COMPLIES && counts.violates === 0
       ? "pass"
@@ -76,6 +86,18 @@ export function tallyVerdict(votes) {
   if (counts.complies < ARBITER_MIN_COMPLIES)
     reasons.push(
       `only ${counts.complies} of ${votes.length} seats affirm compliance (${ARBITER_MIN_COMPLIES} required)`,
+    );
+  if (counts.failed > 0 && outcome === "park")
+    reasons.push(
+      `${counts.failed} seat(s) cast no usable vote: ${votes
+        .filter((v) => v.failed)
+        .map((v) => v.seat)
+        .join(", ")}${
+        counts.violates === 0 &&
+        counts.complies + counts.failed >= ARBITER_MIN_COMPLIES
+          ? " — no seat objected, so restoring the seats is the remedy, not revising the change"
+          : ""
+      }`,
     );
   return {
     outcome,

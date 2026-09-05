@@ -35,6 +35,18 @@ to revise. The founder's admin override remains as the kill switch
 (admin enforcement is deliberately off), and reverting any merge by
 runId remains one command.
 
+**A seat that cannot be paid for stops the gate.** Quorum is four of five
+`complies` votes, so two dead seats make every verdict a park however
+sound the change is — and since the check is required, nothing needing
+approval can merge until they are restored. This is the intended
+direction (an unfunded panel must not become a smaller panel that still
+passes things), but it needs to read as what it is, so the verdict names
+the seats that cast no usable vote and says that restoring them, not
+revising the diff, is the remedy when no seat objected. **First place to
+look when every PR is suddenly parked: the vendor billing pages.**
+It happened on 2026-09-05 — OpenAI out of credits, xAI over its monthly
+limit, three healthy seats, zero objections, nothing mergeable.
+
 **The operator** (`.github/workflows/operator.yml`, daily + on issues +
 on demand): the agent that tends the machine. It answers parked PRs'
 objections seat by seat (or argues back on the PR when a seat is wrong),
@@ -147,6 +159,22 @@ The classification is **enforced, fail-closed**: the `PR risk check`
 workflow re-derives the class from the actual diff
 (`scripts/classify-pr-risk.mjs`), and a PR labeled `auto:low-risk` whose
 diff exceeds the allowlist fails the check, which blocks auto-merge.
+
+The same workflow **grants** the low-risk lane, because the lane is a
+property of the diff rather than of who opened the PR: any non-draft,
+same-repo PR from an author with write access whose diff classifies
+low-risk gets the label and auto-merge, whenever it classifies — on open,
+on a push, on being marked ready for review. Fork PRs are excluded, and a
+`needs-approval` label is a hold the classifier cannot override.
+
+This used to be granted only at the moment a maintenance workflow created
+a PR, which had a quiet failure: an inbox drop opened by an agent session
+instead of by the weekly run got no label and nothing armed, so it sat
+open indefinitely while the machine's identical drop merged in minutes —
+and, because an unmerged inbox file never reaches `main`, the intake
+ripple it should have triggered never fired either. The arbiter, the only
+other thing that arms a PR after creation, skips low-risk PRs by design,
+so nothing was watching them. (2026-09-05.)
 
 Why auto-merging **new** assessment overlays stays low-risk (stage-3
 governance rule): standing is derived, never stored, and it only fails

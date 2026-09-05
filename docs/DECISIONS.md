@@ -723,6 +723,28 @@ then the low-risk lane still flows (the arbiter skips it by design), so
 inbox drops, proposals and overlays keep moving while judged content does
 not.
 
+## 2026-09-05 — The weekly digest was never posted: a missing `issues: write`
+
+The digest is the founder's one observer artifact (docs/AUTOMATION.md, "The
+founder's role"); every loop reports into it — arbiter parks, Bench scores,
+yield bands, pre-registrations pending, the archive ledger. It has never
+existed. Every scheduled Maintain run since 2026-08-25 wrote
+`weekly-digest.md` and then logged `could not open the digest issue`,
+swallowed by the step's `|| echo ::warning` fallback. Neither repository has
+ever had an issue created by the machine. Cause: the digest step
+deliberately uses `GITHUB_TOKEN` rather than the maintenance PAT (GitHub
+suppresses notifications for one's own PAT activity, and the digest exists
+to be emailed), but the workflow's `permissions:` block granted `contents`
+and `pull-requests` only — `gh issue create` had no `issues` scope. One
+line fixes it. Recorded because the failure mode is the one this project
+keeps meeting: a mechanism whose documented trigger does not fire is
+indistinguishable from one nobody reads, and the only reason it surfaced
+is that someone asked why the founder had never received a digest. The
+same fix applies to the downstream deployment on its next engine sync.
+
+(AI record, 2026-09-05 session, in response to the founder's question
+about what to focus on next.)
+
 ## 2026-09-05 — Reassessment: the loop, its status, and the document diet
 
 The founder's direction, after restoring the two unfunded seats: make

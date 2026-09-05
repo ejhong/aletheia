@@ -35,6 +35,11 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  # The weekly digest is a GitHub issue opened with GITHUB_TOKEN (so the
+  # founder is notified). Without this the create fails and is swallowed
+  # by the step's warning fallback — which is how no digest was ever
+  # posted between 2026-08-25 and 2026-09-05.
+  issues: write
 
 jobs:
   maintain:

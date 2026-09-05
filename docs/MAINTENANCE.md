@@ -35,6 +35,18 @@ to revise. The founder's admin override remains as the kill switch
 (admin enforcement is deliberately off), and reverting any merge by
 runId remains one command.
 
+**A seat that cannot be paid for stops the gate.** Quorum is four of five
+`complies` votes, so two dead seats make every verdict a park however
+sound the change is — and since the check is required, nothing needing
+approval can merge until they are restored. This is the intended
+direction (an unfunded panel must not become a smaller panel that still
+passes things), but it needs to read as what it is, so the verdict names
+the seats that cast no usable vote and says that restoring them, not
+revising the diff, is the remedy when no seat objected. **First place to
+look when every PR is suddenly parked: the vendor billing pages.**
+It happened on 2026-09-05 — OpenAI out of credits, xAI over its monthly
+limit, three healthy seats, zero objections, nothing mergeable.
+
 **The operator** (`.github/workflows/operator.yml`, daily + on issues +
 on demand): the agent that tends the machine. It answers parked PRs'
 objections seat by seat (or argues back on the PR when a seat is wrong),

@@ -681,3 +681,44 @@ now but it is the fast path, and `gh pr merge --auto` is idempotent.
 
 (AI record of a founder question, 2026-09-05 session: "the pr is just
 sitting there — should something happen to it automatically?")
+
+## 2026-09-05 — Two unfunded seats stop every merge, and the report has to say so
+
+Opening the low-risk-lane fix for judgment surfaced something larger. The
+panel parked it 3/5 — and two of the five seats had not voted at all:
+OpenAI returned `429 You have no credits remaining`, xAI returned `403 …
+used all available credits or reached its monthly spending limit`. Three
+seats judged, all three said complies, none objected. Quorum is four, so
+the change could not pass. The `arbiter` check is required on `main`
+(confirmed: `mergeStateStatus` BLOCKED with CI and the risk check green),
+which means that while two seats are unfunded **nothing classified
+needs-approval can merge at all** — content, code, or constitution. The
+last panel with five live seats was #163 on 2026-09-03.
+
+The park is correct and stays. An unfunded panel must not degrade into a
+smaller panel that still passes things; that is precisely the check
+§3.15 forbids weakening, and the tally has always kept failed seats in the
+denominator for that reason.
+
+What was wrong is what the report *said*. "Only 3 of 5 seats affirm
+compliance (4 required)" is true and describes a divided panel, sending
+the reader to revise a diff nobody objected to, when the operative fact
+was two unpaid invoices. The tally now counts seats that cast no usable
+vote (API failure, and equally a malformed reply — both are seats that did
+not judge), names them in the verdict, and, when no seat objected and the
+affirming seats plus the dead ones would have reached quorum, states that
+restoring the seats rather than revising the change is the remedy. It
+never alters the outcome. Presenting an operational fault as an editorial
+judgment is the same class of error as presenting an unratified draft as a
+ratified one.
+
+Also corrected: the report's footer still called itself advisory "while
+the founder's merge tap remains", language from before the dry period
+ended on 2026-08-25. It told every reader the opposite of what branch
+protection was doing. The footer now says the verdict is binding and names
+both escapes — revise, or restore a failed seat.
+
+Only the founder can clear this one: the two accounts need credit. Until
+then the low-risk lane still flows (the arbiter skips it by design), so
+inbox drops, proposals and overlays keep moving while judged content does
+not.

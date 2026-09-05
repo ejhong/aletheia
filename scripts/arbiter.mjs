@@ -135,6 +135,7 @@ async function seatVote(name) {
       vote: "unsure",
       rules: [],
       reasoning: `seat failed: ${String(err).slice(0, 200)}`,
+      failed: true,
     };
   }
 }
@@ -254,7 +255,11 @@ const report = [
           : ""
       }.`
     : "",
-  `> Dry-period note: this report is advisory while the founder's merge tap remains; the same exit code will gate auto-merge when the tap is retired (docs/MAINTENANCE.md).`,
+  // Was a dry-period note calling this report advisory. The dry period
+  // ended 2026-08-25 and the check is required on `main`, so a park now
+  // blocks the merge — a footer saying otherwise told the reader the
+  // opposite of what the branch protection was doing.
+  `> This verdict is binding: the \`arbiter\` check is required on \`main\`, so a park blocks the merge until the change is revised or a seat that failed is restored. The founder's admin override remains the kill switch (docs/MAINTENANCE.md).`,
   // Machine-readable record for scripts/harvest-governance.mjs — kept
   // inside an HTML comment so the human report stays clean.
   `<!-- aletheia-arbiter-data ${JSON.stringify({

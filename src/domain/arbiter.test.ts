@@ -83,6 +83,39 @@ describe("tallyVerdict — the asymmetric rule", () => {
     expect(t.outcome).toBe("park");
     expect(t.counts.unsure).toBe(2);
   });
+
+  it("names the seats that never voted, and says the remedy is not revision", () => {
+    // The live case: two vendor accounts ran out of credit, so the panel
+    // could not reach four however sound the change was. "Only 3 of 5
+    // affirm compliance" describes that as a divided panel, which sends
+    // the reader to rewrite a diff nobody objected to.
+    const t = tallyVerdict([
+      ...seats(["complies", "complies", "complies"]),
+      validateVote("GPT-5.1 (OpenAI)", undefined),
+      validateVote("Grok 4.6 (xAI)", undefined),
+    ]);
+    expect(t.counts.failed).toBe(2);
+    expect(t.reason).toContain("GPT-5.1 (OpenAI), Grok 4.6 (xAI)");
+    expect(t.reason).toMatch(/restoring the seats is the remedy/);
+  });
+
+  it("does not offer that remedy when a seat actually objected", () => {
+    const t = tallyVerdict([
+      ...seats(["complies", "complies", "complies", "violates"]),
+      validateVote("Dead seat", undefined),
+    ]);
+    expect(t.reason).toContain("Dead seat");
+    expect(t.reason).not.toMatch(/restoring the seats is the remedy/);
+  });
+
+  it("says nothing about failed seats when the panel passed anyway", () => {
+    const t = tallyVerdict([
+      ...seats(["complies", "complies", "complies", "complies"]),
+      validateVote("Dead seat", undefined),
+    ]);
+    expect(t.outcome).toBe("pass");
+    expect(t.reason).not.toMatch(/no usable vote/);
+  });
 });
 
 describe("capDiff — truncation is loud", () => {

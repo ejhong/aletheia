@@ -1,19 +1,134 @@
 # The metabolism: how the site runs itself
 
-**Status:** design confirmed by the founder, 2026-09-01 (see the DECISIONS
-entry of the same date). Build order at the bottom; nothing here is built
-until its own PR lands through the normal gates. The section immediately
-below is the running status report and is rewritten, not appended, on each
-reassessment; everything after it is the ratified design.
+**Direction updated 2026-09-05:** a durable research ledger and a current
+edition of each case. The founder authorized implementation after the
+reassessment and added a blank-topic trial. This is the implementation
+plan; the existing workers below are being consolidated into it. Changes
+publish only after the normal checks and independent arbiter pass.
+
+## The design we are building
+
+Aletheia is a collection of living research essays. More AI time should
+improve the questions, evidence, judgments, and explanation; it should not
+oblige the site to grow longer or sound more certain.
+
+There are **two kinds of state**:
+
+- **The ledger:** propositions, source records, exact observations,
+  dependencies, research opportunities, studies, and decisions about proposed
+  changes. Corrections and supersession preserve their history. The ledger
+  must be queryable, not repeated in full in every model prompt.
+- **The current edition:** the argued assessment, what matters most, the
+  strongest objections, next questions, and the essay. Selection and prose
+  are part of judgment. They must eventually be proposed and reviewed as a
+  coherent edition, not maintained by competing owners.
+
+The workflow is **investigate → propose a change → verify and record →
+assess and explain → independently review → publish**, then choose the
+next useful question. Investigating, drafting, and reviewing are distinct
+roles in this workflow. They do not require separate stores of the same
+judgment. The code's existing content → domain → UI separation remains.
+
+**Intake is one interface, with several adapters.** An inbox note, a source
+search, a study result, and an inward-looking reconsideration all propose
+changes to existing domain records. A proposal can add, correct, link,
+supersede, or reconsider; its envelope names its basis, affected records,
+provenance, and rationale. Source, Evidence, Claim, ResearchOpportunity,
+and Study remain the domain vocabulary. A new source identifier is not
+proof of a new observation, and a known DOI does not mean every passage
+or interpretation has been considered. Identifier equality is mechanical;
+semantic overlap is a review question with both candidates visible.
+
+**Memory records decisions in context.** A disposition is dated, reasoned,
+and tied to its inputs; it is not a permanent rejection of an idea. New
+evidence, a corrected reading, a changed test, or a better argument may
+justify reconsideration. No rule requires citing a record created after
+the rejection. A variant should be compared with its predecessor. Repeated
+wording without a substantive difference can be recorded once and rested.
+Consolidate the watch, promotion, and agenda memories behind this interface
+as their adapters migrate; do not maintain two authoritative ledgers.
+
+**Review has two acts.** First assess the evidence without the incumbent's
+grades or article. Then inspect the proposed edition for unsupported
+assertions, lost caveats, misleading selection, and constitutional fidelity.
+A blind verdict check is not independent verification of a source reading,
+and model concurrence is not truth. Passage verification must be a separate
+check against the retrieved primary material. The existing PR arbiter
+continues to gate consequential publication.
+
+**An edition changes only when the change earns its place.** Scope candidate
+edits to the changed inputs; use whole-essay candidates when dependencies or
+the question itself changed. Narrative judgment calls are settled by the
+competition of candidate drafts, as AGENTS.md §7 requires. A small drafting
+run can produce alternatives, with the incumbent retained as an explicit
+option; the panel compares them before replacement. Larger tournaments with
+several independent drafters are a later scaling choice, not an exemption from
+competition. Preserve primary-source anchors, consequential objections,
+corrected errors, and the route from prose to records. An unchanged edition
+after a useful investigation is a successful outcome.
+
+**Attention follows observed value.** Record accepted corrections, new
+independent observations, resolved or reopened cruxes, useful tests, and
+editorial improvements, alongside rejected proposals, calls, spend, and
+elapsed time. Neither DOI counts nor a model's own claim of novelty measures
+progress. A run limit and spend ceiling stop work even when a model keeps
+finding something to say; a rest state means low recent return within the
+searched scope, not proof that the topic is complete. Broader autonomous
+research must wait for enforced spend accounting; this foundation adds no
+scheduled research worker.
+
+### Implementation sequence and acceptance criteria
+
+| Step | Deliverable | Acceptance criterion / status |
+| --- | --- | --- |
+| 1 | Shared case view; exact review receipts | Implemented in this change. Essay references, claim cards, ladder, and claim detail read the displayed draft's grades. Only a full panel on the exact current content and draft can ratify; historical reviews remain available. |
+| 2 | Essay-first reading experience | Implemented in this change. Short frontispiece, inspectable claims with ordinary-link fallback, supporting detail in disclosures, mobile claim sheet. Existing essays and evidence are preserved. |
+| 3 | Blank-topic starting path | Implemented in this change. `start-case.mjs` creates an incubating proposal from a question, with no invented evidence, priority, or review. The production loader and view accept it; judgment runners skip it until it has assessable evidence. This tests startup, not autonomous discovery. |
+| 4 | Shared proposal memory and intake diff | Next. Migrate one adapter at a time; test known-source/new-observation, DOI aliases, corrections, and reconsideration without a new paper. Remove an old memory only after replay equivalence is demonstrated. |
+| 5 | Bounded research and source-reading checks | Retrieve primary passages and dependency context; propose small verified changes. Test incorrect quotation use, sample reuse, search misses, and refusal/budget exhaustion. Watch feeds alone do not cover archives, grants, museum records, or reports. |
+| 6 | Versioned edition drafting | Extend the existing append-only assessment artifact with selection and essay references, using the shared view as the compatibility boundary. Migrate one case, preserving its incumbent and history. Blind assessment precedes inspection of the candidate edition; prose remains behind the consequential-content gate. |
+| 7 | Pilot, measure, and widen | Exercise geopolymer, transients, and one question-only topic. Compare accepted changes and reading quality with the incumbent, under a single enforced budget covering research and review. The archived chats are design references and a possible held-out discovery benchmark, not an import queue. Expand only after unattended runs improve actual cases. |
+
+The first two steps deliberately do not relocate every editorial field.
+Diagnosticity, component judgments, framing, and selection still originate
+in legacy records and are labeled as recorded interpretation in the UI.
+`CaseView` is the migration boundary. The unified edition writer, retrieval
+checks, shared proposal memory, and spend accounting are still to build.
+
+### Review receipt rollout
+
+New blind checks carry `generatedAt` and a `review` receipt: protocol,
+content hash, assessment hash, and packet hash. All three hashes must match;
+the loader and workers recompute the packet hash with the same builder used
+to prepare the blind assessor’s inputs. The content snapshot covers
+the case, essay, both claim files, evidence, sources, research, conjectures,
+image manifest, and study files. Operational cursors and history are excluded;
+appending a check does not invalidate itself. A run checks again before
+installing results so a mid-call content change cannot receive those reviews.
+
+The scheduled drafter also records the hash of its evidence packet to skip
+unchanged work, including repeated runs on the same day. It now receives
+the same sources, dependency context, and study records as the assessor.
+Legacy drafts use their existing timestamp until their next reassessment;
+no input receipt is backfilled without a run.
+
+Legacy checks lack such receipts and are not retroactively certified. They
+remain visible as historical checks; current standing is unratified until
+fresh checks match. The existing content-response worker will repanel these
+cases after rollout. This is a one-time review cost on the existing cadence,
+not a declaration that their prior evidence became weaker. A reconsideration
+needs a full fresh quorum, not one new seat plus the judges it consulted.
 
 ## Where we are (reassessed 2026-09-05)
 
 The question the founder asked: is the loop — *update, surface what is
 useful, re-evaluate* — actually working? Answer in three parts.
 
-**The judging half works and has evidence.** Blind panels convene on every
-canon change and standing derives correctly (transients and YDIH ratified
-5/5; contested and unratified states display with their reasons). The
+**The judging half has a track record, with a freshness defect found in this
+reassessment.** Panels convene on canon changes, but calendar dates could
+miss same-day edits and allow one fresh check to renew older reviews. The
+receipt implementation above replaces that rule. Earlier reported standings
+are historical observations, not evidence of current snapshot coverage. The
 arbiter has judged every `needs-approval` PR since 2026-08-25 and its
 parks have been substantively right more often than wrong — including
 parking its own repository's mistakes (#47's missing permission record,
@@ -53,19 +168,13 @@ expensive. Every seat now pins its effort, so the judges are what the
 record says they are. Expect the seat-record table on /panel to start new
 rows for the new models; the old rows are history, not error.
 
-### Build order — status
+### Existing workers
 
-| # | Step | Status |
-| --- | --- | --- |
-| 1 | Promotion pipe | **Built** (#148). One live promotion. |
-| 2 | Bench v2 | **Built** (#141, #149, #155). Backfill scored; endorsement drafter awaiting first scheduled run. |
-| 3 | Collection runner | Not built. No backlog yet: every frozen study is collected. Build when a Bench-drafted freeze merges with no one to collect it. |
-| 4a | Steelman field | **Built** (#163). Required from 2026-09-04. |
-| 4b | Sampling gloss audit | Deferred by founder direction. The largest unaddressed epistemic risk: no judge re-reads a source. |
-| 5 | Expedition | Not built. **Blocked on a founder decision**: provider and budget line. |
-| 6 | Researcher surface | Not built. Independent; the natural next build. |
-| 7 | Atelier | Not built. Founding inputs (its anchor) are committed for every case. |
-| 8 | Genesis | Deliberately manual. |
+Promotion, agenda scoring, study freeze drafting, the steelman requirement,
+assessment, reconciliation, and the publication arbiter are implemented.
+Retrieval-based passage checking, study collection, Expedition, and a unified
+edition drafter still need implementation. The sequence above replaces the
+previous numbered build order.
 
 ### Simplification (founder direction, 2026-09-05: "as simple as possible")
 
@@ -83,28 +192,20 @@ line changed:
    readme) were removed 2026-09-05; the runbook was rewritten from 429
    lines of interleaved rationale to a one-page map plus a symptom table.
    Rationale goes in DECISIONS once; it is not repeated in the runbook.
-2. **Read the digest for two Mondays before building anything.** Every
-   loop reports there. If the digest shows promotions, adoptions, and
-   re-panels happening without a chat session, the metabolism works and
-   the next build is step 6. If it shows nothing moving, the fault is in
-   the producing half and no new loop should be added on top of it.
+2. **Use the digest to evaluate unattended work.** The founder has now
+   authorized construction; the earlier two-Monday pause is superseded.
+   Observing the digest remains part of validation, not a blocker to fixes.
 3. **Cadences should say what they do.** The content-response cron
    requests hourly and receives ~5/day; the operator runs daily and most
    days writes "nothing needed doing". Candidates once the digest has
    data: make content-response four fixed times a day (same latency,
    honest schedule), and make the operator event-driven (parked PR,
-   issue, quarantine) with a weekly sweep instead of a daily one. Both
-   are engine changes and should wait for the two Mondays.
+   issue, quarantine) with a weekly sweep instead of a daily one. Change them when observed latency and cost justify it.
 4. **Retire what the lane fix made redundant.** The `GATE_EPOCH` bumps
    were a workaround for the throttle miscounting founder work; the
    `Supervised-by` trailer fixed the count. If no epoch bump is needed
    through September, remove the epoch machinery and the paragraphs
    describing it.
-5. **Do not add** a new loop, a new lane, a new label, or a new document
-   without removing one. The five-loop design is complete as written;
-   what remains is executing steps 3, 5, 6, 7 of the build order — each
-   a script in `scripts/lib` with tests, none a new kind of thing.
-
 ## Purpose
 
 The site is a compression under constraint: the best honest summary AI can
@@ -120,8 +221,8 @@ product is a machine for pointing at decisive tests.
 
 Two dynamics with opposite ideals, deliberately separated:
 
-- **The ledger grows monotonically.** Claims, evidence, sources
-  accumulate forever. That is the archive doing its job; tiers keep
+- **The ledger preserves history.** Claims, evidence, and sources
+  can be corrected, merged, or superseded without losing the earlier record. That is the archive doing its job; tiers keep
   readers above water. "Saturation" is not a property of the stream —
   the stream is infinite — it is a measured property of the judgment
   layer (below).
@@ -135,9 +236,10 @@ identifier index for dedup, the claims index for coverage, dates for
 change — and pulls full records only for the claims in play. Growth costs
 storage, not context.
 
-## The five loops
+## Existing workers and their responsibilities
 
-All five write through the same gate (classifier → arbiter panel →
+These names describe capabilities being consolidated into the workflow above,
+not five separate layers of state. All write through the same gate (classifier → arbiter panel →
 merge policy). No loop has its own door.
 
 ### 1. The Watch — hears (exists)
@@ -212,7 +314,8 @@ budget; three adoptions per run, at most two per case.
 
 Verification labels, blind check panels, derived standing (fails down,
 nothing raises it but fresh concurrence), reconciliation that cannot
-self-ratify, the constitutional arbiter. Unchanged. Banked corrections live in the
+self-ratify, and the constitutional arbiter. The exact-input receipt rule
+above replaces calendar-date freshness; the publication gate is unchanged. Banked corrections live in the
 records they corrected and in the append-only changelog — panels judging
 a diff see the correction in context, in the record itself, not in a
 separate registry.
@@ -232,32 +335,27 @@ pick up. Required from 2026-09-04 (fail-closed in the loader);
 append-only history before that date is exempt, never rewritten.
 Counterweight #2, the sampling gloss audit — one random evidence
 record per hot case re-verified against its primary source by a model
-that did not author it — is deliberately deferred to last in the build
-order (founder direction, 2026-09-01).
+that did not author it — belongs with the bounded researcher in the revised
+sequence above, before unattended intake is expanded.
 
-### 5. The Atelier — rewrites (new; experiment first)
+### 5. The Atelier — a drafting mode within the edition workflow
 
-Quarterly per case, or on a standing change: several independent models
-each draft a competing revision of the case's narrative surfaces (the
-overview, verdict framings, crux ordering — never ledger records). The
-panel judges blind, pairwise, against the incumbent, on a constitutional
-rubric: mechanical fidelity first (all claim references survive, no
-uncited assertions), then honesty of
-uncertainty, symmetry, readability. A challenger replaces the incumbent
-only on clear preference (4 of 5 seats) — prose ratchets the way
-standing does, and like standing, tolerated dissent is never silent:
-**every tournament's full record — each seat's preference and reasoning,
-including the dissenter's — is published like a check run** (harvested
-to governance/, surfaced on /panel), so an outvoted seat's view is
-preserved and displayed, not overridden into silence. The winner still
-ships through the normal publication gate, where any seat's
-substantiated constitutional objection parks it as usual. Superseded
-versions persist in git and the changelog. Known judge pathologies
-(fluency bias, length bias, family affinity) are mitigated by the
-mechanical floor, randomized pairwise order, and cross-vendor seats;
-aesthetics and register remain governed the constitutional way — the
-founder amends the register sections (§7 and the style documents it
-points to), and panels enforce them.
+The edition drafter owns assessment, selection, and narrative together. Its
+first narrative implementation generates candidate alternatives from a scoped
+input diff and submits them with the incumbent for comparison, under §7.
+The Atelier name describes that competition within the edition workflow;
+several independent drafters can later widen the candidate pool. It is not a
+separate owner of presentation state. Candidates compete against the incumbent
+on evidential fidelity, uncertainty,
+useful compression, readability, and register. Blind assessment happens before
+inspection of the candidate edition. The normal arbiter still gates any
+consequential publication, with substantiated objections parked publicly.
+
+Every comparison publishes its full record, including dissent. Randomize
+candidate order. Fluency, length, and model-family
+preferences can bias judges; winning a prose comparison cannot substitute
+for source verification or authorize dropping a consequential caveat. A
+candidate that earns no improvement leaves the incumbent in place.
 
 **Narrative inputs — the anti-drift anchor (founder direction,
 2026-09-01).** If each rewrite saw only its predecessor plus the ledger,
@@ -276,8 +374,8 @@ than from a fading copy — and where the evidence has parted ways with a
 founding text, the rewriter has the original in hand and says so
 honestly, instead of paraphrasing a paraphrase of it.
 
-Two rewrite laws (founder direction, 2026-09-01), carried in the
-Atelier rubric and enforced mechanically where possible:
+Existing rewrite guidance (2026-09-01), retained as migration checks.
+Changing these behaviors requires an explicit, reviewed editorial rationale:
 
 - **The first-edition rule.** A revision reads as if it were the first
   telling: founding texts and the current ledger digested into one
@@ -310,14 +408,15 @@ ordinary directed PRs.
 
 ## The scheduler: attention follows yield
 
-One metric per case per period — verdict-moving events (verdict changes,
-standing changes, new load-bearing claims, study findings) — sets every
-cadence. Hot cases run weekly watch, monthly expeditions, tournaments on
-standing changes; cases that haven't moved cool toward quarterly sweeps
-and an annual tournament. Dormancy is a measured, reversible state, never
-abandonment. Site-wide budgets (model spend; the existing content-merge
-throttle) cap the whole metabolism, and every loop's activity logs to the
-/panel operations section.
+The current yield report counts verdict-moving events and selects watch
+cadences. The revised scheduler must also credit corrections, improved tests,
+and useful explanation without demanding a changed verdict. Its rest counter
+uses accepted changes after verification, with a bounded exploration allowance
+for missed questions. Neither a quiet fortnight nor an unchanged verdict proves
+that the source landscape is exhausted. The existing content-merge throttle
+limits publication pace; it is not a monetary budget. Shared spend accounting
+must cover research, extraction, drafting, and all review calls before wider
+unattended research is enabled.
 
 ## The founder's role, after
 
@@ -328,42 +427,6 @@ enforce them). Beyond the two powers, the founder participates as
 contributor: reading the weekly digest, dropping material and directions
 into the inbox, all of it riding the same gates as anyone else's.
 Everything else is panel-governed inside budgets.
-
-## Build order (by dependency and risk; revised 2026-09-01 after the outside review — see DECISIONS)
-
-1. **The promotion pipe** — verified import proposals become gated
-   sources+evidence PRs (the single highest-value fix: it is what makes
-   existing cases alive rather than beautifully maintained snapshots,
-   and it must precede any reliance on yield decay).
-2. **Bench v2** — panel scoring on agenda output; ranked report;
-   auto-drafted freeze PRs for 4-of-5-high scorers with no
-   constitutional objection (founder tap retained initially).
-3. **Collection runner** — merged zero-row freezes execute their frozen
-   protocols (refusal-fallback provider path mandatory).
-4. **Epistemic counterweights** — two small mechanisms from the outside
-   review: every check run gains a required field naming the strongest
-   argument for the featured hypothesis the assessment does not answer
-   (making the panel's shared-prior blindspot visible without giving
-   advocacy a vote), and a sampling gloss audit (one random evidence
-   record per hot case per cycle re-verified against its primary by a
-   model that did not author it), with the honest limitation stated on
-   /method: citation checking verifies existence, not readings.
-5. **Expedition** — coverage-diff tool + scheduled sweeps (now honest:
-   its output has somewhere to go). Requires a provider decision and a
-   budget line from the founder.
-6. **Researcher surface** — "state of the question" case header +
-   per-case JSON export. Independent; can land any time.
-7. **Atelier** — as a labeled experiment on one case (transients), with
-   the mechanical fidelity floor and the narrative-inputs anchor already
-   in force.
-8. **Genesis — last, deliberately.** Case creation (topic seed →
-   expedition discovery → ladder decomposition → drafted case → one
-   giant needs-approval PR → published unratified, thickening in
-   public) is the hardest, most judgment-laden job and the least
-   frequent; the founder continues to commission cases manually until
-   everything upstream has a track record. Until then, "from scratch"
-   is not automated, and the design says so rather than pretending.
-
 
 Implementation constraints throughout: no new services, no databases —
 git as state, Actions as scheduler, YAML validated fail-closed by the

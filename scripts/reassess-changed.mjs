@@ -1,4 +1,10 @@
 #!/usr/bin/env node
+import {
+  compareRuns,
+  draftIsCurrent,
+  fingerprint,
+} from "./lib/review-state.mjs";
+import { readCaseSnapshot, evidencePacket } from "./lib/case-snapshot.mjs";
 /**
  * Re-run AI assessment overlays for cases whose evidence or claims changed
  * since their latest assessment run, and correct the editorial layer the
@@ -50,8 +56,17 @@
 import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
-import { parse as parseYaml, parseDocument, stringify as stringifyYaml } from "yaml";
-import { callWithRefusalFallback, noKeyMessage, parseJsonReply, pickProvider } from "./lib/llm.mjs";
+import {
+  parse as parseYaml,
+  parseDocument,
+  stringify as stringifyYaml,
+} from "yaml";
+import {
+  callWithRefusalFallback,
+  noKeyMessage,
+  parseJsonReply,
+  pickProvider,
+} from "./lib/llm.mjs";
 import { overlayRunId } from "./lib/overlay-ids.mjs";
 import {
   applyTextEdits,
@@ -59,7 +74,7 @@ import {
   narrativeGuardFailure,
 } from "./lib/editorial-edits.mjs";
 
-const PROMPT_VERSION = "aletheia-assess-v3-auto"; // v3: steelman field (epistemic counterweight)
+const PROMPT_VERSION = "aletheia-assess-v4-auto"; // v4: source-aware evidence packet and input receipt
 const EDIT_PROMPT_VERSION = "aletheia-editorial-audit-v1";
 /** Research fields this pass may rewrite. Ids, links and taxonomy are canon. */
 const EDITABLE_RESEARCH_FIELDS = ["title", "summary", "informationGain"];
@@ -82,7 +97,9 @@ const dryRun = args.includes("--dry-run");
  * before the audit existed would never have its article checked at all.
  */
 const force = args.includes("--force");
-const onlyCase = args.includes("--case") ? args[args.indexOf("--case") + 1] : null;
+const onlyCase = args.includes("--case")
+  ? args[args.indexOf("--case") + 1]
+  : null;
 const forcedProvider = args.includes("--provider")
   ? args[args.indexOf("--provider") + 1]
   : undefined;
@@ -91,11 +108,6 @@ const ROOT = process.cwd();
 const CASES_DIR = path.join(ROOT, "content", "cases");
 
 const provider = pickProvider(forcedProvider);
-if (!provider) {
-  console.error(noKeyMessage());
-  process.exit(1);
-}
-
 function lastCommitDate(relPath) {
   try {
     const out = execFileSync(
@@ -122,7 +134,7 @@ function latestAssessment(caseDir) {
     // Cross-model check runs corroborate; they are not the house draft
     // that a reassessment should build on.
     .filter((r) => r.run.role !== "check")
-    .sort((a, b) => String(a.run.date).localeCompare(String(b.run.date)));
+    .sort((a, b) => compareRuns(a.run, b.run));
   return runs.at(-1) ?? null;
 }
 
@@ -136,40 +148,18 @@ const ASSESS_SYSTEM = `You draft an AI assessment overlay for a case in an evide
 - Sensitivity: in the synthesis, name the single evidence record whose removal would most change the case verdict, and state plainly whether the verdict survives without it. A verdict hanging on one thread must say so.
 - Steelman (required): in caseAssessment.steelman, state the strongest argument FOR the featured hypothesis that your assessment does NOT answer — the specific unexplained observation, unrebutted argument, or untested prediction a proponent would rightly point to. This is a limitations disclosure, not a rebuttal or a hedge: it never changes your verdict, and "some people disagree" is a failing answer. If the same steelman has stood across runs, say so — a steelman that persists unanswered is a research crux.
 - When citing other records in synthesis or reasoning prose, use exact ids (e.g. ZW-C004, SRC-MULLER-2020, ZW-E010, ZW-R003, ZW-001). The site auto-links these in the UI.
-- Assess each FEATURED claim individually with a verdict, 1-3 sentence reasoning, and confidence (high|moderate|low).
+- Assess exactly the claims listed in assessClaimIds individually with a verdict, 1-3 sentence reasoning, and confidence (high|moderate|low).
 - You are given the previous assessment run: focus on what the NEW evidence changes; do not churn verdicts without a stated reason grounded in the changed material.
 
 Reply with ONLY JSON:
 {"caseAssessment": {"verdict": "...", "loadBearing": ["..."], "weakestLinks": ["..."], "synthesis": "...", "steelman": "..."}, "claimAssessments": [{"claimId": "...", "verdict": "...", "reasoning": "...", "confidence": "..."}], "whatChanged": "1-3 plain-language sentences on what moved since the previous run and why"}`;
 
-async function reassessCase(caseDir, prev) {
-  const read = (f) => {
-    const p = path.join(CASES_DIR, caseDir, f);
-    return fs.existsSync(p) ? parseYaml(fs.readFileSync(p, "utf8")) ?? [] : [];
-  };
-  const claims = read("claims.yaml");
-  const evidence = read("evidence.yaml");
-  const featured = claims.filter(
-    (c) => (c.tier ?? "featured") === "featured" && c.reviewState !== "rejected",
+async function reassessCase(caseDir, prev, inputs) {
+  const featured = inputs.claims.filter((c) =>
+    inputs.assessClaimIds.includes(c.id),
   );
-
   const bundle = {
-    claims: featured.map((c) => ({
-      id: c.id,
-      statement: c.statement,
-      rung: c.rung,
-      reviewState: c.reviewState,
-    })),
-    evidence: evidence.map((e) => ({
-      id: e.id,
-      title: e.title,
-      direction: e.direction,
-      strength: e.strength,
-      claimIds: e.claimIds,
-      sourceStatement: e.sourceStatement ?? "",
-      editorInference: e.editorInference ?? "",
-      limitations: e.limitations ?? [],
-    })),
+    ...inputs,
     previousAssessment: prev
       ? {
           date: prev.run.date,
@@ -194,7 +184,8 @@ async function reassessCase(caseDir, prev) {
   const errors = [];
   const knownIds = new Set(featured.map((c) => c.id));
   const ca = draft.caseAssessment ?? {};
-  if (!VERDICTS.includes(ca.verdict)) errors.push(`bad case verdict: ${ca.verdict}`);
+  if (!VERDICTS.includes(ca.verdict))
+    errors.push(`bad case verdict: ${ca.verdict}`);
   if (typeof ca.synthesis !== "string" || ca.synthesis.length < 100)
     errors.push("synthesis missing or too short");
   if (typeof ca.steelman !== "string" || ca.steelman.length < 40)
@@ -203,13 +194,17 @@ async function reassessCase(caseDir, prev) {
     if (!Array.isArray(ca[key])) errors.push(`${key} missing`);
     else
       for (const id of ca[key])
-        if (!knownIds.has(id)) errors.push(`${key} references unknown claim ${id}`);
+        if (!knownIds.has(id))
+          errors.push(`${key} references unknown claim ${id}`);
   }
-  if (!Array.isArray(draft.claimAssessments)) errors.push("claimAssessments missing");
+  if (!Array.isArray(draft.claimAssessments))
+    errors.push("claimAssessments missing");
   else
     for (const a of draft.claimAssessments) {
-      if (!knownIds.has(a.claimId)) errors.push(`assessment for unknown claim ${a.claimId}`);
-      if (!VERDICTS.includes(a.verdict)) errors.push(`bad verdict for ${a.claimId}`);
+      if (!knownIds.has(a.claimId))
+        errors.push(`assessment for unknown claim ${a.claimId}`);
+      if (!VERDICTS.includes(a.verdict))
+        errors.push(`bad verdict for ${a.claimId}`);
       if (!["high", "moderate", "low"].includes(a.confidence))
         errors.push(`bad confidence for ${a.claimId}`);
       if (typeof a.reasoning !== "string" || a.reasoning.length < 10)
@@ -263,7 +258,6 @@ Reply with ONLY JSON:
  "historyChange": "2-4 sentences for the public change log describing what was corrected and to what, or empty string if no edits",
  "historyReason": "1-2 sentences on why the correction was required, or empty string"}`;
 
-
 /**
  * Audit overview.md and research.yaml against the current ledger and apply
  * any corrections. Returns the edited file contents plus a record of what
@@ -281,7 +275,7 @@ async function auditEditorialLayer(caseDir, bundle, newAssessment) {
   const researchRaw = fs.existsSync(researchPath)
     ? fs.readFileSync(researchPath, "utf8")
     : null;
-  const research = researchRaw ? parseYaml(researchRaw) ?? [] : [];
+  const research = researchRaw ? (parseYaml(researchRaw) ?? []) : [];
 
   const { text: reply, model: editModelUsed } = await callWithRefusalFallback(
     provider,
@@ -290,7 +284,11 @@ async function auditEditorialLayer(caseDir, bundle, newAssessment) {
       `Case directory: ${caseDir}`,
       "",
       "=== CURRENT LEDGER (claims, evidence) ===",
-      JSON.stringify({ claims: bundle.claims, evidence: bundle.evidence }, null, 2),
+      JSON.stringify(
+        { claims: bundle.claims, evidence: bundle.evidence },
+        null,
+        2,
+      ),
       "",
       "=== ASSESSMENT JUST DRAFTED FROM THAT LEDGER ===",
       JSON.stringify(newAssessment.caseAssessment, null, 2),
@@ -306,7 +304,9 @@ async function auditEditorialLayer(caseDir, bundle, newAssessment) {
   const rejected = [];
 
   // --- narrative ---
-  const narrativeEdits = Array.isArray(draft.narrativeEdits) ? draft.narrativeEdits : [];
+  const narrativeEdits = Array.isArray(draft.narrativeEdits)
+    ? draft.narrativeEdits
+    : [];
   const { out: newOverview, applied: appliedNarrative } = applyTextEdits(
     overview,
     narrativeEdits,
@@ -324,7 +324,11 @@ async function auditEditorialLayer(caseDir, bundle, newAssessment) {
       .filter((c) => c.reviewState !== "rejected")
       .map((c) => c.id),
   );
-  const guardFailure = narrativeGuardFailure(overview, newOverview, knownClaims);
+  const guardFailure = narrativeGuardFailure(
+    overview,
+    newOverview,
+    knownClaims,
+  );
   let overviewOut = newOverview;
   if (guardFailure) {
     rejected.push(`overview.md: ${guardFailure}`);
@@ -333,7 +337,9 @@ async function auditEditorialLayer(caseDir, bundle, newAssessment) {
   }
 
   // --- research agenda ---
-  const researchEdits = Array.isArray(draft.researchEdits) ? draft.researchEdits : [];
+  const researchEdits = Array.isArray(draft.researchEdits)
+    ? draft.researchEdits
+    : [];
   const appliedResearch = [];
   let researchOut = researchRaw;
   for (const e of researchEdits) {
@@ -399,12 +405,22 @@ async function auditEditorialLayer(caseDir, bundle, newAssessment) {
     try {
       after = parseYaml(candidate);
     } catch (err) {
-      rejected.push(`research.yaml: ${e.id}.${e.field} edit produced invalid YAML (${err.message})`);
+      rejected.push(
+        `research.yaml: ${e.id}.${e.field} edit produced invalid YAML (${err.message})`,
+      );
       continue;
     }
     const mutate = (recs) =>
-      JSON.stringify(recs.map((r) => ({ ...r, [e.field]: r.id === e.id ? null : r[e.field] })));
-    if (mutate(before) !== mutate(after) || after.find((r) => r.id === e.id)?.[e.field] !== out) {
+      JSON.stringify(
+        recs.map((r) => ({
+          ...r,
+          [e.field]: r.id === e.id ? null : r[e.field],
+        })),
+      );
+    if (
+      mutate(before) !== mutate(after) ||
+      after.find((r) => r.id === e.id)?.[e.field] !== out
+    ) {
       rejected.push(
         `research.yaml: ${e.id}.${e.field} edit changed more than the targeted field — reverted`,
       );
@@ -425,8 +441,10 @@ async function auditEditorialLayer(caseDir, bundle, newAssessment) {
     appliedNarrative,
     appliedResearch,
     rejected,
-    historyChange: typeof draft.historyChange === "string" ? draft.historyChange : "",
-    historyReason: typeof draft.historyReason === "string" ? draft.historyReason : "",
+    historyChange:
+      typeof draft.historyChange === "string" ? draft.historyChange : "",
+    historyReason:
+      typeof draft.historyReason === "string" ? draft.historyReason : "",
   };
 }
 
@@ -441,6 +459,14 @@ async function main() {
   const written = [];
 
   for (const caseDir of caseDirs) {
+    const initial = evidencePacket(
+      readCaseSnapshot(path.join(CASES_DIR, caseDir)).files,
+    );
+    if (!initial.assessClaimIds.length || !initial.evidence.length) {
+      console.error(`${caseDir}: no assessable evidence yet — skip`);
+      continue;
+    }
+    const inputHash = fingerprint(initial);
     const prev = latestAssessment(caseDir);
     const contentPaths = [
       "claims.yaml",
@@ -453,18 +479,40 @@ async function main() {
       .filter(Boolean)
       .sort((a, b) => b - a)[0];
 
-    if (!lastContentChange) continue;
-    if (!force && prev && new Date(prev.run.date) >= lastContentChange) {
-      console.error(`${caseDir}: assessment current (last run ${prev.run.date}) — skip`);
+    if (
+      !force &&
+      draftIsCurrent(
+        prev?.run ?? null,
+        inputHash,
+        lastContentChange?.toISOString() ?? null,
+      )
+    ) {
+      console.error(
+        `${caseDir}: assessment current (last run ${prev.run.date}) — skip`,
+      );
       continue;
     }
 
     console.error(
       `${caseDir}: content changed after last assessment${prev ? ` (${prev.run.date})` : " (none yet)"} — reassessing`,
     );
+    if (!provider) {
+      console.error(noKeyMessage());
+      process.exitCode = 1;
+      break;
+    }
     let draft, bundle;
     try {
-      ({ draft, bundle } = await reassessCase(caseDir, prev));
+      ({ draft, bundle } = await reassessCase(caseDir, prev, initial));
+      if (
+        fingerprint(
+          evidencePacket(readCaseSnapshot(path.join(CASES_DIR, caseDir)).files),
+        ) !== inputHash
+      ) {
+        throw new Error(
+          "evidence packet changed during drafting; no overlay installed",
+        );
+      }
     } catch (err) {
       digest.push(
         `**${caseDir}**: reassessment attempted but the draft failed validation and was discarded (${err.message}). No overlay written — a human or the next run should retry.`,
@@ -483,8 +531,12 @@ async function main() {
     const strip = (ca) => ({ ...ca, steelman: undefined });
     const unchanged =
       prev &&
+      prev.run.inputHash === inputHash &&
       JSON.stringify([strip(draft.caseAssessment), draft.claimAssessments]) ===
-        JSON.stringify([strip(prev.run.caseAssessment), prev.run.claimAssessments]);
+        JSON.stringify([
+          strip(prev.run.caseAssessment),
+          prev.run.claimAssessments,
+        ]);
 
     // Unique across concurrently open branches and monotonic in time; see
     // scripts/lib/overlay-ids.mjs for both invariants and what broke when
@@ -494,6 +546,8 @@ async function main() {
       runId,
       model: `${provider.name}/${draft.modelUsed ?? provider.model} (scheduled maintenance run)`,
       date: today,
+      generatedAt: new Date().toISOString(),
+      inputHash,
       promptVersion: PROMPT_VERSION,
       humanReviewed: false,
       caseAssessment: draft.caseAssessment,
@@ -506,10 +560,17 @@ async function main() {
       "# new file beside this one.",
       "",
     ].join("\n");
-    const outFile = path.join(CASES_DIR, caseDir, "assessments", `${runId}.yaml`);
+    const outFile = path.join(
+      CASES_DIR,
+      caseDir,
+      "assessments",
+      `${runId}.yaml`,
+    );
 
     if (unchanged) {
-      console.error(`${caseDir}: reassessment reproduced the previous run exactly — no overlay written`);
+      console.error(
+        `${caseDir}: reassessment reproduced the previous run exactly — no overlay written`,
+      );
       digest.push(
         `**${caseDir}**: reassessed; every verdict came back identical to run ${prev.run.date}, so no new overlay was written.`,
       );
@@ -539,7 +600,8 @@ async function main() {
     }
     if (!audit) continue;
 
-    for (const r of audit.rejected) console.error(`${caseDir}: rejected — ${r}`);
+    for (const r of audit.rejected)
+      console.error(`${caseDir}: rejected — ${r}`);
 
     if (!audit.overviewChanged && !audit.researchChanged) {
       digest.push(

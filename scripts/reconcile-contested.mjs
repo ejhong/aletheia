@@ -12,7 +12,7 @@
  * promptVersion aletheia-reconsider-v1) stamped with `reconciles`: the
  * runIds of the checks whose dissents it engaged. Those checks can never
  * ratify the draft that answered them (src/domain/load.ts ratification) —
- * a reconciled case stays unratified until at least one fresh blind check
+ * a reconciled case stays unratified until a full fresh blind panel
  * judges it, which stale-checks.mjs arranges by listing the case for the
  * next content-response re-panel.
  *
@@ -32,8 +32,19 @@
 import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
-import { callWithRefusalFallback, noKeyMessage, parseJsonReply, pickProvider } from "./lib/llm.mjs";
-import { seatKey } from "./lib/seat-key.mjs";
+import {
+  callWithRefusalFallback,
+  noKeyMessage,
+  parseJsonReply,
+  pickProvider,
+} from "./lib/llm.mjs";
+import { evidencePacket, readCaseSnapshot } from "./lib/case-snapshot.mjs";
+import {
+  REVIEW_MIN_PANEL,
+  currentChecks,
+  fingerprint,
+  latestDraft,
+} from "./lib/review-state.mjs";
 import {
   caseVerdictDissenters,
   claimDissentPacket,
@@ -42,13 +53,21 @@ import {
 
 const PROMPT_VERSION = "aletheia-reconsider-v3"; // v3: steelman field (epistemic counterweight)
 const VERDICTS = [
-  "established", "well_supported", "provisionally_supported", "mixed",
-  "weakly_supported", "contradicted", "unresolved", "presently_untestable",
+  "established",
+  "well_supported",
+  "provisionally_supported",
+  "mixed",
+  "weakly_supported",
+  "contradicted",
+  "unresolved",
+  "presently_untestable",
 ];
 
 const args = process.argv.slice(2);
 const dryRun = args.includes("--dry-run");
-const onlyCase = args.includes("--case") ? args[args.indexOf("--case") + 1] : null;
+const onlyCase = args.includes("--case")
+  ? args[args.indexOf("--case") + 1]
+  : null;
 const ROOT = process.cwd();
 const CASES = path.join(ROOT, "content", "cases");
 
@@ -60,21 +79,12 @@ if (!provider) {
 
 const seatName = (m) => m.split("—")[0].split(", independent")[0].trim();
 
-function latestPerModel(runs) {
-  const byModel = new Map();
-  for (const r of runs.filter((r) => r.role === "check")) {
-    const k = seatKey(r.model);
-    const prev = byModel.get(k);
-    if (!prev || r.date > prev.date || (r.date === prev.date && r.runId > prev.runId))
-      byModel.set(k, r);
-  }
-  return [...byModel.values()];
-}
-
 async function reconcile(dir) {
   const read = (f) => {
     const p = path.join(CASES, dir, f);
-    return fs.existsSync(p) ? parseYaml(fs.readFileSync(p, "utf8")) ?? [] : [];
+    return fs.existsSync(p)
+      ? (parseYaml(fs.readFileSync(p, "utf8")) ?? [])
+      : [];
   };
   const adir = path.join(CASES, dir, "assessments");
   if (!fs.existsSync(adir)) return null;
@@ -82,22 +92,16 @@ async function reconcile(dir) {
     .readdirSync(adir)
     .filter((f) => f.endsWith(".yaml"))
     .map((f) => parseYaml(fs.readFileSync(path.join(adir, f), "utf8")));
-  const drafts = runs
-    .filter((r) => r.role !== "check")
-    .sort((a, b) => String(a.date).localeCompare(String(b.date)));
-  const draft = drafts.at(-1);
+  const draft = latestDraft(runs);
   if (!draft) return null;
-  const checks = latestPerModel(runs);
-  if (checks.length < 4) return null;
-
-  // Freshness: content must not have moved after the newest check.
-  const newestCheck = checks.map((r) => String(r.date)).sort().at(-1);
-  const newestContent = (read("history.yaml") ?? [])
-    .filter((h) => h.kind !== "housekeeping")
-    .map((h) => String(h.date))
-    .sort()
-    .at(-1);
-  if (newestContent && newestContent > newestCheck) return null;
+  const snapshot = readCaseSnapshot(path.join(CASES, dir));
+  const checks = currentChecks(
+    runs,
+    draft,
+    snapshot.contentHash,
+    fingerprint(evidencePacket(snapshot.files)),
+  );
+  if (checks.length < REVIEW_MIN_PANEL) return null;
 
   // The same disagreements that display as "contested": a case-verdict
   // dispute, or a load-bearing claim split under a unanimous verdict.
@@ -109,7 +113,8 @@ async function reconcile(dir) {
   }
 
   const claims = read("claims.yaml").filter(
-    (c) => (c.tier ?? "featured") === "featured" && c.reviewState !== "rejected",
+    (c) =>
+      (c.tier ?? "featured") === "featured" && c.reviewState !== "rejected",
   );
   const evidence = read("evidence.yaml");
   const packet = {
@@ -127,10 +132,18 @@ async function reconcile(dir) {
     // Load-bearing claims the panel splits on, with each seat's verdict
     // and reasoning — the claim-level dissent the draft must engage.
     claimDissents: claimDissentPacket(draft, checks, splitClaims, seatName),
-    claims: claims.map((c) => ({ id: c.id, statement: c.statement, rung: c.rung })),
+    claims: claims.map((c) => ({
+      id: c.id,
+      statement: c.statement,
+      rung: c.rung,
+    })),
     evidence: evidence.map((e) => ({
-      id: e.id, title: e.title, direction: e.direction, strength: e.strength,
-      claimIds: e.claimIds, sourceStatement: e.sourceStatement ?? "",
+      id: e.id,
+      title: e.title,
+      direction: e.direction,
+      strength: e.strength,
+      claimIds: e.claimIds,
+      sourceStatement: e.sourceStatement ?? "",
       limitations: e.limitations ?? [],
     })),
   };
@@ -164,8 +177,10 @@ Reply ONLY JSON:
   // Fail-closed validation, mirroring reassess-changed.
   const known = new Set(claims.map((c) => c.id));
   const errs = [];
-  if (!VERDICTS.includes(d.caseAssessment?.verdict)) errs.push("bad case verdict");
-  if ((d.caseAssessment?.synthesis ?? "").length < 150) errs.push("synthesis too short");
+  if (!VERDICTS.includes(d.caseAssessment?.verdict))
+    errs.push("bad case verdict");
+  if ((d.caseAssessment?.synthesis ?? "").length < 150)
+    errs.push("synthesis too short");
   if ((d.caseAssessment?.steelman ?? "").length < 40)
     errs.push("steelman missing or too thin (the counterweight is required)");
   // Both roll-up lists are claim ids — the loader enforces exactly this
@@ -173,12 +188,14 @@ Reply ONLY JSON:
   // would install an overlay that breaks the site build.
   for (const k of ["loadBearing", "weakestLinks"])
     for (const id of d.caseAssessment?.[k] ?? [])
-      if (!known.has(id)) errs.push(`${k}: not a live claim id: ${String(id).slice(0, 60)}`);
+      if (!known.has(id))
+        errs.push(`${k}: not a live claim id: ${String(id).slice(0, 60)}`);
   for (const a of d.claimAssessments ?? []) {
     if (!known.has(a.claimId)) errs.push(`unknown claim ${a.claimId}`);
     if (!VERDICTS.includes(a.verdict)) errs.push(`bad verdict ${a.claimId}`);
   }
-  if (errs.length) throw new Error(`reconsideration failed validation: ${errs.join("; ")}`);
+  if (errs.length)
+    throw new Error(`reconsideration failed validation: ${errs.join("; ")}`);
 
   const today = new Date().toISOString().slice(0, 10);
   const runId = `${today}-reconsider-${Math.random().toString(36).slice(2, 6)}`;
@@ -186,6 +203,7 @@ Reply ONLY JSON:
     runId,
     model: `${provider.name}/${modelUsed} (reconsideration — deliberately non-blind: engages the panel's dissents)`,
     date: today,
+    generatedAt: new Date().toISOString(),
     promptVersion: PROMPT_VERSION,
     humanReviewed: false,
     role: "draft",
@@ -204,7 +222,16 @@ Reply ONLY JSON:
         "# each one (scripts/reconcile-contested.mjs). Append-only; not reviewed.\n" +
         stringifyYaml(overlay),
     );
-  return { dir, runId, from: draft.caseAssessment.verdict, to: d.caseAssessment.verdict, splitClaims, whatChanged: d.whatChanged, file, dryRun };
+  return {
+    dir,
+    runId,
+    from: draft.caseAssessment.verdict,
+    to: d.caseAssessment.verdict,
+    splitClaims,
+    whatChanged: d.whatChanged,
+    file,
+    dryRun,
+  };
 }
 
 const dirs = fs
@@ -218,9 +245,15 @@ for (const dir of dirs) {
     if (!r) continue;
     if (r.standoff) {
       const shape = [
-        r.dissenting.length >= 2 ? `${r.dissenting.length} seats dispute the case verdict` : "",
-        r.splitClaims.length > 0 ? `the panel splits on ${r.splitClaims.join(", ")}` : "",
-      ].filter(Boolean).join("; ");
+        r.dissenting.length >= 2
+          ? `${r.dissenting.length} seats dispute the case verdict`
+          : "",
+        r.splitClaims.length > 0
+          ? `the panel splits on ${r.splitClaims.join(", ")}`
+          : "",
+      ]
+        .filter(Boolean)
+        .join("; ");
       console.log(
         `${dir}: genuine standoff — the house has engaged (${r.draft.runId}) and the dispute stands (${shape}). Displayed as contested; no re-litigation.`,
       );

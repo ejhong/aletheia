@@ -5,10 +5,9 @@
  * Usage:
  *   node scripts/cross-model-check.mjs <case-slug> [--vendors anthropic,openai,gemini,xai] [--dry-run]
  *
- * For each configured vendor with an API key present, sends the case file
- * (case.yaml, overview.md, claims.yaml, evidence.yaml, sources.yaml,
- * research.yaml — deliberately EXCLUDING all prior assessments and
- * history, so every judge is blind) with the standard judge instructions,
+ * For each configured vendor with an API key present, sends an evidence
+ * packet built by case-snapshot.mjs, excluding the article, prior
+ * assessments, stored credibility/importance/strength grades, and history,
  * and writes the returned assessment as an ordinary append-only overlay:
  *
  *   content/cases/<case>/assessments/<date>-check-<vendor>.yaml
@@ -29,6 +28,12 @@ import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
 import { overlayRunId } from "./lib/overlay-ids.mjs";
+import { readCaseSnapshot, evidencePacket } from "./lib/case-snapshot.mjs";
+import {
+  assessmentHash,
+  fingerprint,
+  latestDraft,
+} from "./lib/review-state.mjs";
 import { VENDORS, callVendor } from "./lib/vendors.mjs";
 
 const ROOT = process.cwd();
@@ -40,7 +45,9 @@ const vendorArg = args.includes("--vendors")
   : ["anthropic", "openai", "gemini", "xai", "venice"];
 
 if (!slug) {
-  console.error("usage: node scripts/cross-model-check.mjs <case-slug> [--vendors a,b] [--dry-run]");
+  console.error(
+    "usage: node scripts/cross-model-check.mjs <case-slug> [--vendors a,b] [--dry-run]",
+  );
   process.exit(1);
 }
 const caseDir = path.join(ROOT, "content", "cases", slug);
@@ -48,7 +55,6 @@ if (!fs.existsSync(path.join(caseDir, "case.yaml"))) {
   console.error(`no case at content/cases/${slug}/case.yaml`);
   process.exit(1);
 }
-
 
 const VERDICTS = [
   "established",
@@ -63,28 +69,33 @@ const VERDICTS = [
 
 // ---------------------------------------------------------------- packet
 
-const read = (f) => fs.readFileSync(path.join(caseDir, f), "utf8");
-const packetFiles = [
-  "case.yaml",
-  "overview.md",
-  "claims.yaml",
-  "evidence.yaml",
-  "sources.yaml",
-  "research.yaml",
-];
-const packet = packetFiles
-  .map((f) => `===== FILE: ${f} =====\n${read(f)}`)
-  .join("\n\n");
+const snapshot = readCaseSnapshot(caseDir);
+const blind = evidencePacket(snapshot.files);
+const packet = JSON.stringify(blind, null, 2);
+const featuredIds = blind.assessClaimIds;
+const caseRecord = parseYaml(snapshot.files["case.yaml"]);
+const readDraft = () => {
+  const dir = path.join(caseDir, "assessments");
+  return latestDraft(
+    (fs.existsSync(dir) ? fs.readdirSync(dir) : [])
+      .filter((f) => f.endsWith(".yaml"))
+      .map((f) => parseYaml(fs.readFileSync(path.join(dir, f), "utf8"))),
+  );
+};
+// This reference is stamped by the runner, NEVER sent to the blind assessor.
+const targetDraft = readDraft();
+const receipt = targetDraft
+  ? {
+      protocol: "case-snapshot-v1",
+      contentHash: snapshot.contentHash,
+      assessmentHash: assessmentHash(targetDraft),
+      packetHash: fingerprint(blind),
+    }
+  : null;
 
-const claims = parseYaml(read("claims.yaml"));
-const featuredIds = claims
-  .filter((c) => (c.tier ?? "featured") === "featured" && c.reviewState !== "rejected")
-  .map((c) => c.id);
-const caseRecord = parseYaml(read("case.yaml"));
+const PROMPT_VERSION = "aletheia-check-v4"; // v4: blind evidence packet and exact input receipt
 
-const PROMPT_VERSION = "aletheia-check-v3"; // v3: steelman field (epistemic counterweight)
-
-const instructions = `You are an independent scientific assessor for Aletheia, a public evidence ledger for contested hypotheses. You have the complete case file for "${caseRecord.title}" — dossier, overview article, atomic claims, evidence records, source records, and research agenda. You have deliberately NOT been shown any prior assessment.
+const instructions = `You are an independent scientific assessor for Aletheia, a public evidence ledger for contested hypotheses. You have the recorded evidence for "${caseRecord.title}" — atomic claims, observations, source records, research agenda, and studies. You have NOT been shown the article, stored credibility/importance/strength grades, or any prior assessment. This is an assessment of the supplied record, not independent verification of the source documents. Evidence directions and inferences are editorial interpretations: question them, distinguish them from source statements, and account for shared sources and samples.
 
 Your task: produce one complete assessment run over this case, as YAML, in exactly the schema below.
 
@@ -182,6 +193,8 @@ function validate(name, yamlText) {
   if (!VERDICTS.includes(d.caseAssessment?.verdict))
     problems.push(`bad case verdict: ${d.caseAssessment?.verdict}`);
   const seen = new Set((d.claimAssessments ?? []).map((ca) => ca.claimId));
+  if (seen.size !== (d.claimAssessments ?? []).length)
+    problems.push("duplicate claim assessments");
   const missing = featuredIds.filter((id) => !seen.has(id));
   if (missing.length) problems.push(`missing claims: ${missing.join(",")}`);
   for (const ca of d.claimAssessments ?? []) {
@@ -196,12 +209,15 @@ function validate(name, yamlText) {
     ...(d.caseAssessment?.loadBearing ?? []),
     ...(d.caseAssessment?.weakestLinks ?? []),
   ]) {
-    if (!featuredIds.includes(id)) problems.push(`roll-up references unknown claim ${id}`);
+    if (!featuredIds.includes(id))
+      problems.push(`roll-up references unknown claim ${id}`);
   }
   if ((d.caseAssessment?.synthesis ?? "").length < 100)
     problems.push("synthesis too short");
   if ((d.caseAssessment?.steelman ?? "").length < 40)
-    problems.push("steelman missing or too thin (the counterweight is required)");
+    problems.push(
+      "steelman missing or too thin (the counterweight is required)",
+    );
   return { data: d, problems };
 }
 
@@ -209,21 +225,31 @@ function validate(name, yamlText) {
 
 async function main() {
   const date = new Date().toISOString().slice(0, 10);
-  const active = vendorArg.filter((v) => VENDORS[v]?.key());
-  const skippedVendors = vendorArg.filter((v) => VENDORS[v] && !VENDORS[v].key());
-  if (skippedVendors.length)
-    console.error(`no key, skipping: ${skippedVendors.join(", ")}`);
-  if (active.length === 0) {
-    console.error("no vendor keys available — nothing to run");
-    process.exit(1);
-  }
-  console.error(
-    `cross-model check: ${slug} → ${active.length} vendor(s): ${active.join(", ")} (${featuredIds.length} featured claims)`,
-  );
-  if (dryRun) {
-    console.log(`(dry run: would call ${active.join(", ")}; no API calls made)`);
+  if (!receipt || featuredIds.length === 0 || blind.evidence.length === 0) {
+    console.error(
+      "no assessable edition yet — establish claims and evidence before requesting a panel",
+    );
     return;
   }
+  if (dryRun) {
+    console.log(
+      JSON.stringify(
+        {
+          case: slug,
+          review: receipt,
+          claimCount: featuredIds.length,
+          packet: blind,
+        },
+        null,
+        2,
+      ),
+    );
+    return;
+  }
+  const active = vendorArg.filter((v) => VENDORS[v]?.key());
+  if (active.length === 0)
+    throw new Error("no vendor keys available — nothing to run");
+  console.error(`cross-model check: ${slug} → ${active.join(", ")}`);
 
   const results = await Promise.allSettled(
     active.map(async (v) => {
@@ -232,7 +258,52 @@ async function main() {
     }),
   );
 
-  const failDir = path.join(ROOT, "proposals", "cross-model-failures", `${date}-${slug}`);
+  // A long-running call cannot attest to files that moved while it ran.
+  const currentDraft = readDraft();
+  if (
+    readCaseSnapshot(caseDir).contentHash !== receipt.contentHash ||
+    !currentDraft ||
+    assessmentHash(currentDraft) !== receipt.assessmentHash
+  ) {
+    const quarantine = path.join(
+      ROOT,
+      "proposals",
+      "cross-model-failures",
+      overlayRunId([date, slug, "stale-input"]),
+    );
+    fs.mkdirSync(quarantine, { recursive: true });
+    fs.writeFileSync(
+      path.join(quarantine, "receipt.json"),
+      JSON.stringify(
+        {
+          ...receipt,
+          reason:
+            "Inputs changed during the panel; these replies cannot be installed as current checks.",
+        },
+        null,
+        2,
+      ),
+    );
+    for (const result of results) {
+      if (result.status === "fulfilled") {
+        fs.writeFileSync(
+          path.join(quarantine, `${result.value.vendor}.txt`),
+          result.value.text,
+          { flag: "wx" },
+        );
+      }
+    }
+    throw new Error(
+      "case or assessment changed during the panel; no reviews installed",
+    );
+  }
+
+  const failDir = path.join(
+    ROOT,
+    "proposals",
+    "cross-model-failures",
+    `${date}-${slug}`,
+  );
   const installed = [];
   const failed = [];
   for (const r of results) {
@@ -264,10 +335,13 @@ async function main() {
     // time — both invariants, and why, live in scripts/lib/overlay-ids.mjs
     // with tests in src/domain/overlayIds.test.ts.
     const base = overlayRunId([date, "check", VENDORS[vendor].tag], {
-      exists: (id) => fs.existsSync(path.join(caseDir, "assessments", `${id}.yaml`)),
+      exists: (id) =>
+        fs.existsSync(path.join(caseDir, "assessments", `${id}.yaml`)),
     });
     d.runId = base;
     d.date = date;
+    d.generatedAt = new Date().toISOString();
+    d.review = receipt;
     d.promptVersion = PROMPT_VERSION;
     d.humanReviewed = false;
     d.role = "check";
@@ -281,7 +355,9 @@ async function main() {
   console.error(`\ninstalled ${installed.length} check run(s):`);
   for (const f of installed) console.error(`  ${f}`);
   if (failed.length) {
-    console.error(`failed (${failed.length}) — raw replies under ${path.relative(ROOT, failDir)}/:`);
+    console.error(
+      `failed (${failed.length}) — raw replies under ${path.relative(ROOT, failDir)}/:`,
+    );
     for (const f of failed) console.error(`  ${f}`);
   }
   if (installed.length === 0) process.exit(1);

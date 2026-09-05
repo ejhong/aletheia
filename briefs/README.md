@@ -24,15 +24,22 @@ consolidation.
 
 | File | Case | Share URL | Captured (UTC) | md5 |
 |---|---|---|---|---|
-| hancock/checkpoint-20260901-6a962cd8.html | Hancock dossier (forked twin A, later checkpoint) | chatgpt.com/share/6a962cd8-26ec-83ea-b45e-62dccd9f0cc6 | 2026-09-01 | 84b967a844bd4df94cd21ead7ea8e1db |
+| hancock/checkpoint-20260905-6a9c1771.html | Hancock dossier (forked twin A, passes 1–186; later checkpoint) | chatgpt.com/share/6a9c1771-bf6c-83e9-b876-2c56470dd380 | 2026-09-05 | b152dce14583355abc185e9780cc8611 |
+| hancock/checkpoint-20260905-6a9c1697.html | Hancock dossier (continuation chat, passes 187–192, 2026-09-03/04) | chatgpt.com/share/6a9c1697-7870-83ea-94a3-0981c2cd4c82 | 2026-09-05 | ac8db24afe94614fbcda9ec72acc79cc |
 | hancock/checkpoint-20260830-6a93a3ce.html | Hancock dossier (forked twin B) | chatgpt.com/share/6a93a3ce-cb08-83e9-b170-36ba77d56ade | 2026-08-30 | 689a7f7ca8b628ff9656f173c020f820 |
-| cast-vs-carved/checkpoint-20260830-6a942eec.html | Cast-vs-carved (A) | chatgpt.com/share/6a942eec-0e20-83e9-bd70-40930a2d1fe6 | 2026-08-30 | 16a6f119e3f3cf24a274918e1a194477 |
-| cast-vs-carved/checkpoint-20260830-6a942f07.html | Cast-vs-carved (B) | chatgpt.com/share/6a942f07-c330-83ea-a447-4d97dae984b3 | 2026-08-30 | 16ae05ed9f5c6ca5945cf13d09b93af0 |
+| cast-vs-carved/checkpoint-20260905-6a9c1664.html | Cast-vs-carved (A, rounds 1–194; later checkpoint) | chatgpt.com/share/6a9c1664-08e0-83e9-82b4-3d655001e48a | 2026-09-05 | f2c636192b0a8f506a8936b1d2d1e69c |
+| cast-vs-carved/checkpoint-20260905-6a9c161a.html | Cast-vs-carved (B, rounds 1–193; later checkpoint) | chatgpt.com/share/6a9c161a-5258-83e9-b346-c0515e9f0e38 | 2026-09-05 | aa780a285bb78f46f030f878f3e32d86 |
 
-The two Hancock captures are simultaneously-running forks of one
-project (to be merged at consolidation, with divergences preserved as
-divergences); whether the cast-vs-carved pair are forks or sequential
-checkpoints is determined at consolidation.
+The Hancock twin-A and twin-B captures are simultaneously-running forks
+of one project (to be merged at consolidation, with divergences preserved
+as divergences). The 6a9c1697 file is a separate, short continuation chat
+(6 hourly passes, numbered 187–192, 2026-09-03/04) run under the same
+hourly prompt as twin A; it shares almost no text with twin B despite
+carrying the same auto-title "Hancock Dossier Pass", so it is archived as
+its own checkpoint rather than as a supersession of either twin. The two
+cast-vs-carved captures are parallel runs of two differently-worded hourly
+prompts over the same dossier (A: "cast, not carved"; B: "Cast, Not
+Carved?"), both still at 0/2 consecutive non-material rounds at capture.
 
 **Superseded checkpoints:** twin A's earlier checkpoint
 (hancock/checkpoint-20260830-6a942e20.html, share 6a942e20…, md5
@@ -44,3 +51,21 @@ messages matched exactly, 48,267 of 48,270 short strings matched (the
 alt text, and the old link's own /continue URL), and every
 non-ephemeral embedded URL is contained. The old file remains preserved
 in git history (commit d33e620, PR #121).
+
+**Superseded checkpoints (2026-09-05):** three earlier files were
+removed from the working tree after mechanical verification that the
+2026-09-05 checkpoint of the same conversation is a strict superset. The
+check decodes each share page's embedded turbo-stream, collects every
+string, and compares: all long-form strings (≥200 chars) of the earlier
+file are present verbatim in the later one; the only absent short strings
+are turbo-stream index keys and the share page's own OG image/alt text;
+the only absent URLs are the old link's own OG image/`/continue` chrome.
+
+| Removed file | Superseded by | Long strings (old ⊂ new) | Non-chrome URLs missing |
+|---|---|---|---|
+| hancock/checkpoint-20260901-6a962cd8.html (md5 84b967a844bd4df94cd21ead7ea8e1db) | 6a9c1771 (passes 1–186; old ended at pass 117, 2026-09-01) | 20,315 ⊂ 31,090 | 0 |
+| cast-vs-carved/checkpoint-20260830-6a942eec.html (md5 16a6f119e3f3cf24a274918e1a194477) | 6a9c1664 (rounds 1–194; old ended at round 50, 2026-08-30) | 11,006 ⊂ 21,555 | 0 |
+| cast-vs-carved/checkpoint-20260830-6a942f07.html (md5 16ae05ed9f5c6ca5945cf13d09b93af0) | 6a9c161a (rounds 1–193; old ended at round 94, 2026-08-30) | 7,608 ⊂ 17,700 | 0 |
+
+All three remain in git history (commits d33e620 / PR #121 and 5fcba62
+/ PR #123).

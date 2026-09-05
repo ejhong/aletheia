@@ -7,6 +7,13 @@ those links into a case. It exists so that ANY agent — not just the one
 who ran it last — can execute it identically. First run: the
 pre-Columbian Amazon and Pizzagate cases, 2026-08-28.
 
+> **Design note (2026-09-05).** Steps 1–2 below (capture and consolidate)
+> are to be replaced by the `capture` intake adapter — a script that turns
+> a share page into a brief and runs the one coverage diff against the case
+> — and the §4b coverage table by rows in the case's `dispositions.yaml`.
+> See docs/AUTOMATION.md, "The intake: one door in, one memory", build
+> sequence step 3. Until that PR lands, this procedure stands as written.
+
 ## Standing rules
 
 1. **A chat thread is a discovery brief — never a citable source.** Same

@@ -841,3 +841,55 @@ key. Note Gemini 3.8 Flash's list price doubles on 2027-01-01 (intro
 pricing); the table should be revisited then.
 
 (AI record of a founder instruction, 2026-09-05 session.)
+
+## 2026-09-05 — The intake: one door in, one memory (founder direction)
+
+The founder's direction, after the four running discovery chats were
+archived (briefs/README.md, PR #170): the chats were only ever meant to
+guide decisions, nothing from them is to be incorporated now, and the
+system, once running, should surface what they surfaced on its own. What
+he asked for was the cleanest design for "finding diffs and treating all
+things cleanly" — simplifying and making elegant the way material enters
+the site — written into the repository so the build can start.
+
+**The finding that shaped it.** The chats' own stopping rule never fired:
+after 193, 194, and 192 hourly passes, every loop still reported zero
+consecutive non-material passes, because the producer judged its own
+materiality. Without a coverage map they cycled the same sites (six
+Yonaguni passes, six Sphinx, five Gunung Padang). Meanwhile the repo held
+the memory of what it had seen in four places — the watch seen-list, the
+archive ledger, the promotions ledger, coverage tables in PR bodies — and
+three separate dedup implementations, and could not answer "have we
+considered this before, and what did we decide?" in one query.
+
+**The design** (docs/AUTOMATION.md, "The intake: one door in, one
+memory"): one brief format every producer emits; one mechanical key per
+item (doi / arxiv / url / title / text, the last honestly fuzzy); one
+append-only per-case `dispositions.yaml` with a six-word vocabulary (in,
+duplicate, irrelevant, blocked, failed, excluded) that is low-risk when
+append-only; one pure `coverageDiff` that every producer calls before
+writing anything. Saturation becomes derived from the dispositions file
+like standing and yield — a counter of consecutive briefs that landed
+nothing — never stored, never self-reported. Producers become four thin
+adapters (watch, inbox, capture, expedition); the Expedition shrinks from
+a loop to the smallest adapter. The rule generalises: no loop has its own
+door, and no producer has its own memory.
+
+**What it removes**, per the founder's rule that nothing is added without
+something removed: the watch seen-list, the archive ledger, the promotions
+ledger, the PR-body coverage tables, CHAT_BRIEFS steps 1–2, and two of the
+three dedup copies. Build step 5 splits into 5a (the intake — unblocked,
+the next build, exempt from the "two Mondays" pause because it adds no
+loop) and 5b (the expedition adapter — still blocked on the founder's
+provider and budget decision).
+
+**Stated limits.** Coverage checks existence, not reading (the sampling
+gloss audit remains the only re-reader). Idea matching is fuzzy and
+reports probable duplicates for a judge rather than deciding. And the
+intake finds only what a producer looks for: the arXiv/Crossref watch
+would not have found the four most consequential items in the archived
+chats (a grant registry, a ministry report, a museum scan, a vandalism
+report); the system matches the chats only once an expedition adapter
+runs on a provider that can browse.
+
+(AI record of a founder instruction, 2026-09-05 session.)

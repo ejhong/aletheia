@@ -62,7 +62,8 @@ rows for the new models; the old rows are history, not error.
 | 3 | Collection runner | Not built. No backlog yet: every frozen study is collected. Build when a Bench-drafted freeze merges with no one to collect it. |
 | 4a | Steelman field | **Built** (#163). Required from 2026-09-04. |
 | 4b | Sampling gloss audit | Deferred by founder direction. The largest unaddressed epistemic risk: no judge re-reads a source. |
-| 5 | Expedition | Not built. **Blocked on a founder decision**: provider and budget line. |
+| 5a | Intake (coverage diff, dispositions, brief format, capture adapter) | Design confirmed 2026-09-05; **next build**. Sequence in "The intake" below. |
+| 5b | Expedition adapter + sweeps | Not built. **Blocked on a founder decision**: provider and budget line (a weekly o4-mini-deep-research pass over ten hot cases is roughly $17/month; o3 roughly $60). |
 | 6 | Researcher surface | Not built. Independent; the natural next build. |
 | 7 | Atelier | Not built. Founding inputs (its anchor) are committed for every case. |
 | 8 | Genesis | Deliberately manual. |
@@ -83,7 +84,9 @@ line changed:
    readme) were removed 2026-09-05; the runbook was rewritten from 429
    lines of interleaved rationale to a one-page map plus a symptom table.
    Rationale goes in DECISIONS once; it is not repeated in the runbook.
-2. **Read the digest for two Mondays before building anything.** Every
+2. **Read the digest for two Mondays before adding any new loop.** The
+   intake (5a) is exempt by construction: it adds no loop and removes
+   three ledgers and two dedup copies (founder direction, 2026-09-05). Every
    loop reports there. If the digest shows promotions, adoptions, and
    re-panels happening without a chat session, the metabolism works and
    the next build is step 6. If it shows nothing moving, the fault is in
@@ -135,6 +138,221 @@ identifier index for dedup, the claims index for coverage, dates for
 change — and pulls full records only for the claims in play. Growth costs
 storage, not context.
 
+## The intake: one door in, one memory (design confirmed 2026-09-05)
+
+The gate already has one door out: nothing reaches `main` except through
+classifier → panel → merge policy. The way in has grown five doors, and
+each one keeps its own memory of what it has seen:
+
+| Producer | Door | Its own memory |
+| --- | --- | --- |
+| Literature watch (arXiv/Crossref/OpenAlex) | `watch-literature` → `triage-watch` | `proposals/watch/state.yaml` seen-list; `archive-ledger.yaml` |
+| Founder link lists, notes, documents | `inbox/` → `process-inbox` | `inbox/processed/<runId>/`; `promotions-ledger.yaml` |
+| Document extraction | `extract-claims` | `reviewState: rejected` tombstones in `claims.yaml` |
+| Chat-seeded discovery runs | `docs/CHAT_BRIEFS.md`, by hand | a coverage table in each PR body; raw captures in `briefs/` |
+| Expedition (deep research) | not built | — |
+
+Three of those scripts carry their own copy of "is this a duplicate"
+(`watch-matching`, the `promote-core` dedupe, the triage guard). None of
+them can answer the question the founder actually asks — *have we
+considered this before, and what did we decide?* — because the answer is
+spread over four ledgers, a PR body, and a tombstone convention.
+
+The chat loops archived on 2026-09-05 (briefs/README.md) show what that
+costs. Two hourly "cast, not carved" runs reached rounds 193 and 194, and
+the Hancock run reached pass 192, each instructed to stop after two
+consecutive non-material passes. None ever counted a single non-material
+pass, because the model judged its own materiality and every pass found
+something. Without a coverage map the loops cycled: Yonaguni was
+"re-audited" in six passes, the Sphinx in six, Gunung Padang in five.
+That is the failure this section removes: saturation cannot be a
+feeling the producer reports; it has to be a counter the repository
+computes over a diff.
+
+### The design in four objects
+
+**1. One brief format.** Every producer emits the same artifact: a
+*brief* — a runId-stamped list of *items*, never citable, with a declared
+lifecycle. An item is one thing a producer noticed, in one of three
+kinds:
+
+- `source` — a document (DOI, arXiv id, URL, or a title when nothing
+  else exists);
+- `claim` — one proposition a producer extracted or a chat asserted;
+- `idea` — a proposed test, research route, or objection (the chats'
+  "T-numbers" and "RFPs"; the agenda generator's proposals).
+
+Each item carries: its **key** (below), the text *as observed* (a
+verbatim quote or the producer's own words, labelled which), the
+producer and run that observed it, the date, and any identifiers it came
+with. A brief asserts nothing about truth. It is the input to the diff.
+
+**2. One key per item.** Keys are mechanical and case-independent:
+
+- `doi:` lowercased, trailing punctuation stripped;
+- `arxiv:` id without version suffix;
+- `url:` canonicalised — scheme dropped, `www.` dropped, `utm_*` and
+  fragments removed, trailing slash removed;
+- `title:` the normalised title (lowercase alphanumerics and spaces),
+  the form the watch seen-list already uses;
+- `text:` for claims and ideas — the normalised statement. This key is
+  honest about being fuzzy: two wordings of one idea will not collide,
+  so claim and idea matching also runs the existing title-similarity
+  test against the case's claims, research items, and prior
+  dispositions, and reports *probable duplicate of X* rather than
+  deciding. The panel judges the probable ones; the mechanical ones need
+  no judge.
+
+**3. One memory: the dispositions ledger.** Per case, one append-only
+file, `content/cases/<case>/dispositions.yaml`, Zod-validated like every
+content file, rendered nowhere as evidence (the conjectures precedent):
+one row per item ever considered.
+
+```yaml
+- key: doi:10.1038/s40494-026-02315-y
+  kind: source
+  disposition: in            # in | duplicate | irrelevant | blocked | failed | excluded
+  as: SRC-YI-2026            # for in / duplicate: the ledger record
+  reason: >-                 # required for every disposition except in
+    ...
+  observed: "Xiang Yi's 2026 npj Heritage Science paper ..."   # verbatim as observed
+  by: expedition-2026-09-12-geopolymer-ab12c                   # producer runId
+  date: 2026-09-12
+  route: null                # for blocked: how to recover the primary
+```
+
+The vocabulary is the CHAT_BRIEFS coverage table plus what the ledgers
+already record, and nothing more: **in** (entered the ledger as record
+`as`), **duplicate** (of record `as`), **irrelevant** (triage: no bearing
+on any claim — the archive-ledger reason), **blocked** (primary not
+reachable; `route` says how), **failed** (verification contradicted the
+brief — a correction, as prominent as a confirmation), **excluded**
+(verified but editorially left out, with the reason, for the founder's
+call — meant to be rare). An `idea` row uses the same words: *in* means
+it became a research item or catalog claim; *irrelevant*, *failed*, and
+*excluded* say why it did not.
+
+Rows are appended only; a reversal is a new row with a later date
+pointing at the earlier one. Reading the file top to bottom is the
+case's intake history; the latest row per key is its current standing.
+The file is **low-risk when append-only** (added to the classifier's
+allowlist beside `claims-catalog.yaml` and `sources.yaml`), because a
+row that says *irrelevant* can be reversed by a later row, exactly as a
+wrongly archived watch item is reversed today by dropping its URL in the
+inbox.
+
+**4. One diff.** A single pure function, `scripts/lib/coverage.mjs`,
+tested in `src/domain/coverage.test.ts`:
+
+```
+coverageDiff(brief, case) → { novel: Item[], seen: {item, row | record, via}[], probable: {item, candidates}[] }
+```
+
+`seen` is the union of the case's ledger identifiers (sources, claims,
+research items — the identifiers `promote-core` already extracts) and the
+latest disposition per key. `probable` is the title/text similarity band
+that needs a judge. The three existing dedup copies become calls to this
+function. Every producer runs it before writing anything, and writes the
+result next to the brief as `novelty.md` — the report the founder
+actually wants from a research run: *here is what this run found that
+the case did not already hold, and here is what it re-found.*
+
+### What follows from the four objects
+
+**Saturation becomes derived, like standing and yield.** A case's
+saturation counter is the number of consecutive briefs (from any
+producer) whose `novel` set, after verification, produced no `in` row.
+It is computed from `dispositions.yaml` at build time, never stored,
+displayed on the researcher header (build step 6) beside the date of the
+last `in`, and reset by construction the moment any producer lands one.
+The Expedition's "N consecutive expeditions" becomes this counter with
+N read from config; the chats' 0/2 that never moved becomes a number a
+reader can check.
+
+**Producers become adapters.** Each producer is fetch → normalise into a
+brief → `coverageDiff` → write brief + novelty report under
+`proposals/briefs/<runId>/` → hand `novel` to the existing verification
+and promotion pipe. Four adapters, none with a private memory:
+
+- `watch` — the API queries as built (the cursor stays in `state.yaml`;
+  the seen-list goes);
+- `inbox` — link lists and documents as built, now emitting a brief;
+- `capture` — a chat share page → brief. This is the procedure of
+  docs/CHAT_BRIEFS.md steps 1–2 made a script: fetch the raw page,
+  decode the embedded stream, extract every identifier and each
+  assistant turn's claims and ideas, then diff. Answering "did these
+  chats surface anything" becomes one command instead of a session.
+- `expedition` — a discovery-capable model given the case's claims
+  index and source list and the standing adversarial task (find what the
+  ledger does NOT hold), returning a brief. Same diff, same pipe.
+
+**The rule generalises: no loop has its own door, and no producer has
+its own memory.**
+
+**What it removes** (the founder's rule: nothing added without something
+removed):
+
+| Removed | Replaced by |
+| --- | --- |
+| `proposals/watch/state.yaml` seen-list (cursor stays) | dispositions rows, disposition `irrelevant`/`duplicate` |
+| `proposals/watch/archive-ledger.yaml` | dispositions rows, disposition `irrelevant` |
+| `proposals/promotions-ledger.yaml` | dispositions rows, dispositions `in`/`duplicate` |
+| coverage tables in PR bodies (CHAT_BRIEFS §4b) | dispositions rows, written by the PR |
+| three dedup implementations | `coverage.mjs` |
+| CHAT_BRIEFS.md steps 1–2 (manual capture + consolidation) | the `capture` adapter; the document shrinks to standing rules, verify, construct |
+| new-claim tombstones for "don't re-propose" | a `failed`/`excluded` disposition row (existing tombstones stay; no rewrite) |
+
+**What it does not do, said plainly.** Coverage is about *existence*,
+not *reading*: a source marked `in` was cited, not re-read, and the
+sampling gloss audit (build step 4b) remains the only mechanism that
+re-reads anything. Idea matching is fuzzy and says so. And the intake
+cannot find what no producer looks for: the arXiv/Crossref watch would
+never have surfaced a ResearchHub grant registry, a ministry annual
+report, a museum's 3D scan, or a news report of vandalism — the four
+most consequential items in the archived chats. Those need a
+web-capable producer. **The system surfaces what the chats surfaced only
+once the `expedition` adapter runs on a provider that can browse**; the
+diff makes it stop, and the budget makes it affordable (an
+o4-mini-deep-research pass is roughly $0.40 and an o3-deep-research pass
+roughly $1.50 at 2026-09 list prices; weekly passes over ten hot cases
+are tens of dollars a month, not hundreds). Provider and budget line
+remain the founder's decision.
+
+**Presentation is untouched.** This section is about the way in. The
+way the page converges — tiers, standing, the steelman, the Atelier —
+is designed below and unchanged; the intake only guarantees that what
+reaches those mechanisms is new, and that what was already considered
+says so in one place.
+
+### Build sequence for the intake (each a tested script in `scripts/lib`, each one PR)
+
+1. **`coverage.mjs` + `DispositionSchema` + classifier allowlist.** The
+   pure diff, the schema and loader for `dispositions.yaml` (fail-closed:
+   required `reason` off `in`, `as` must resolve for `in`/`duplicate`),
+   the append-only low-risk rule. Migration in the same PR, one
+   reversible run: every row of the three ledgers becomes a disposition
+   row with its original runId and date; the ledgers are deleted; the
+   watch, promote, and triage scripts call `coverageDiff`. Tests: the
+   Bruehl arXiv-versus-DOI aliasing case, the paren-truncation DOI case,
+   a reversal row, an append-only violation.
+2. **The brief format + the `inbox` and `watch` adapters emit it.**
+   `proposals/briefs/<runId>/{brief.yaml, novelty.md, run.yaml}`, with
+   the lifecycle the machine-artifact rule requires; the two existing
+   producers write briefs and novelty reports; `inbox/processed` moves
+   are unchanged.
+3. **The `capture` adapter.** Share page → brief, the decode recorded in
+   briefs/README.md made a script; run it once over the four archived
+   captures to produce their novelty reports against `geopolymer` (and
+   an unassigned report for Hancock, which has no case) — the first
+   real test of the diff at scale (3,563 DOIs against a case holding 11).
+   CHAT_BRIEFS.md rewritten to point at it.
+4. **Saturation on the researcher header** (part of build step 6): the
+   derived counter, the last `in` date, the dispositions count, and a
+   link to the novelty report of the latest brief.
+5. **The `expedition` adapter** — once the founder names the provider
+   and the budget line. By then it is the smallest of the four: one model
+   call that returns a brief.
+
 ## The five loops
 
 All five write through the same gate (classifier → arbiter panel →
@@ -142,9 +360,10 @@ merge policy). No loop has its own door.
 
 ### 1. The Watch — hears (exists)
 
-Literature watch → triage → verification pipeline, as built — plus the
-segment an outside review (2026-09-01) correctly found missing: **the
-promotion pipe**. Verified import proposals previously died in
+Literature watch → triage → verification pipeline, as built (from intake
+step 2 onward, an adapter emitting briefs and calling the one coverage
+diff — see "The intake" above) — plus the segment an outside review
+(2026-09-01) correctly found missing: **the promotion pipe**. Verified import proposals previously died in
 `proposals/` on a 60-day timer, because nothing authored the evidence
 records the ledger admission rule requires; promotion happened only when
 the founder opened a chat. A Maintain step now (build step 1) drafts the
@@ -158,20 +377,24 @@ yield metric.
 
 ### 2. The Expedition — explores (new)
 
-The deep-research sweep, formalized. On a yield-gated schedule, a
-discovery-capable model receives a case's claims index (the coverage
-map) and its source list, and is tasked adversarially: find what this
-ledger does NOT contain — new primary documents, datasets, non-English
-literature, archival material, and counter-evidence specifically. Output
-is a brief (never citable, like all briefs), mechanically coverage-diffed
-against the claims and source indexes; only verified-novel items proceed
-to citation verification and enter through the gates. Because the
-coverage map persists in the repo, each expedition judges only its diff —
-which is why this converges where ad-hoc chat-session research cannot:
+The deep-research sweep, formalized — and, after the intake design of
+2026-09-05, the smallest of the four intake adapters rather than a loop
+with its own machinery. On a yield-gated schedule, a discovery-capable
+model receives a case's claims index (the coverage map) and its source
+list, and is tasked adversarially: find what this ledger does NOT
+contain — new primary documents, datasets, non-English literature,
+archival material, and counter-evidence specifically. It returns a brief
+(never citable, like all briefs); `coverageDiff` reduces it to its
+verified-novel items; those proceed to citation verification and enter
+through the gates, and every item — novel or re-found — lands as a
+disposition row. Because the memory persists in the repo, each
+expedition judges only its diff — which is why this converges where
+ad-hoc chat-session research cannot:
 
 **Saturation is a counter, not a feeling: a case is provisionally
-saturated after N consecutive expeditions whose verified novelty moved
-nothing; any later watch hit or inbox drop resets it.**
+saturated after N consecutive briefs, from any producer, whose verified
+novelty landed nothing; any later `in` row resets it.** The counter is
+derived from `dispositions.yaml` at build time, never stored.
 
 ### 3. The Bench — tests (exists as agenda + studies; selection changes)
 
@@ -348,9 +571,14 @@ Everything else is panel-governed inside budgets.
    record per hot case per cycle re-verified against its primary by a
    model that did not author it), with the honest limitation stated on
    /method: citation checking verifies existence, not readings.
-5. **Expedition** — coverage-diff tool + scheduled sweeps (now honest:
-   its output has somewhere to go). Requires a provider decision and a
-   budget line from the founder.
+5. **The intake, then the Expedition.** 5a — the intake ("one door in,
+   one memory", above): the coverage diff, the dispositions ledger, the
+   brief format, the `capture` adapter; a consolidation that removes
+   three ledgers and two dedup copies, unblocked, and the next build
+   (founder direction, 2026-09-05). 5b — the `expedition` adapter and its
+   scheduled sweeps (now honest: its output has somewhere to go and its
+   stopping rule is computed). Requires a provider decision and a budget
+   line from the founder.
 6. **Researcher surface** — "state of the question" case header +
    per-case JSON export. Independent; can land any time.
 7. **Atelier** — as a labeled experiment on one case (transients), with

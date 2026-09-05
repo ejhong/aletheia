@@ -272,7 +272,7 @@ reader can check.
 **Producers become adapters.** Each producer is fetch → normalise into a
 brief → `coverageDiff` → write brief + novelty report under
 `proposals/briefs/<runId>/` → hand `novel` to the existing verification
-and promotion pipe. Four adapters, none with a private memory:
+and promotion pipe. Five adapters, none with a private memory:
 
 - `watch` — the API queries as built (the cursor stays in `state.yaml`;
   the seen-list goes);
@@ -285,12 +285,22 @@ and promotion pipe. Four adapters, none with a private memory:
 - `expedition` — a discovery-capable model given the case's claims
   index and source list and the standing adversarial task (find what the
   ledger does NOT hold), returning a brief. Same diff, same pipe.
+- `agenda` — the one producer that does not look outward. As built, it
+  reads the ledger and asks what claim, research item, or study should
+  exist that doesn't; its proposals are `idea` items. The change is only
+  in what happens to them afterwards: a proposal the panel does not
+  advance or endorse no longer retires by silence — it lands as an
+  `excluded` or `irrelevant` row carrying the panel's reason, so the
+  next agenda run sees it in the coverage map and does not propose it
+  again. "Ideas we have already considered" includes the ones we
+  declined, with the reason.
 
 **The rule generalises: no loop has its own door, and no producer has
 its own memory.**
 
-**What it removes** (the founder's rule: nothing added without something
-removed):
+**What it replaces.** The design is a consolidation, not an addition:
+each row is something the repo does today in its own way, and the one
+place it moves to.
 
 | Removed | Replaced by |
 | --- | --- |

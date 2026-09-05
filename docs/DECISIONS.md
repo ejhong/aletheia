@@ -870,13 +870,14 @@ duplicate, irrelevant, blocked, failed, excluded) that is low-risk when
 append-only; one pure `coverageDiff` that every producer calls before
 writing anything. Saturation becomes derived from the dispositions file
 like standing and yield — a counter of consecutive briefs that landed
-nothing — never stored, never self-reported. Producers become four thin
-adapters (watch, inbox, capture, expedition); the Expedition shrinks from
-a loop to the smallest adapter. The rule generalises: no loop has its own
+nothing — never stored, never self-reported. Producers become five thin
+adapters (watch, inbox, capture, expedition, and the existing agenda
+generator, whose declined proposals stop retiring by silence and become
+dispositions with the panel's reason); the Expedition shrinks from a loop
+to the smallest adapter. The rule generalises: no loop has its own
 door, and no producer has its own memory.
 
-**What it removes**, per the founder's rule that nothing is added without
-something removed: the watch seen-list, the archive ledger, the promotions
+**What it replaces** (the design consolidates rather than adds): the watch seen-list, the archive ledger, the promotions
 ledger, the PR-body coverage tables, CHAT_BRIEFS steps 1–2, and two of the
 three dedup copies. Build step 5 splits into 5a (the intake — unblocked,
 the next build, exempt from the "two Mondays" pause because it adds no

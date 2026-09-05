@@ -1,3 +1,4 @@
+import { caseView } from "@/src/domain/caseView";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -5,11 +6,7 @@ import { CatalogExplorer } from "@/src/components/CatalogExplorer";
 import { ClaimCard } from "@/src/components/ClaimCard";
 import { LinkedRecordText } from "@/src/components/LinkedRecordText";
 import { ProvenanceBadge } from "@/src/components/ProvenanceBadge";
-import {
-  catalogClaims,
-  featuredClaims,
-  loadAllCases,
-} from "@/src/domain/load";
+import { catalogClaims, loadAllCases } from "@/src/domain/load";
 import { paramsOrPlaceholder } from "@/src/domain/staticExport";
 
 export function generateStaticParams() {
@@ -39,7 +36,7 @@ export default async function ClaimsExplorerPage({
   const found = loadAllCases().find((c) => c.record.slug === slug);
   if (!found) notFound();
   const loaded = found;
-  const featured = featuredClaims(loaded);
+  const featured = caseView(loaded).featured;
   const catalog = catalogClaims(loaded);
   const tombstones = loaded.claims.filter((c) => c.reviewState === "rejected");
 
@@ -123,10 +120,7 @@ export default async function ClaimsExplorerPage({
               workup the validator then demands.
             </p>
             <div className="mt-5">
-              <CatalogExplorer
-                claims={catalog}
-                themes={loaded.record.themes}
-              />
+              <CatalogExplorer claims={catalog} themes={loaded.record.themes} />
             </div>
           </div>
         </section>

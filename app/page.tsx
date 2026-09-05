@@ -88,7 +88,7 @@ export default function HomePage() {
                 standing={shown?.ratification.status ?? null}
                 reviewCoverage={reviewCoverage(c)}
                 check={
-                  sum
+                  sum?.versionVerified
                     ? {
                         models: sum.models.length,
                         concur: sum.caseUnanimousWithDisplayed,

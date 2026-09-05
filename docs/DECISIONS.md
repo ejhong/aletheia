@@ -841,3 +841,45 @@ key. Note Gemini 3.8 Flash's list price doubles on 2027-01-01 (intro
 pricing); the table should be revisited then.
 
 (AI record of a founder instruction, 2026-09-05 session.)
+
+
+## 2026-09-05 — Research editions: implement the shared view, exact reviews, and a question-only start
+
+The founder authorized execution of the reassessment plan and asked for a
+blank topic as an additional test. The organizing design is a durable ledger
+and a current edition: judgment, selection, objections, research questions,
+and narrative belong together. Independent assessment and publication review
+remain separate roles. The earlier rule requiring a deletion for every new
+loop or document is withdrawn, as is the construction pause. Simplicity means
+appropriate abstractions and one authority for each piece of state.
+
+The first implementation uses a compatibility view instead of rewriting every
+case schema. Current draft credibility and reasoning now appear consistently
+on essay references, the ladder, cards, and claim detail; underlying records
+and assessment history are unchanged. Legacy diagnosticity, component
+judgments, framing, and selection remain recorded interpretations pending a
+versioned edition writer. The essay moves ahead of the long assessment panel;
+claim references open an accessible evidence sheet and retain real links.
+
+Review freshness now binds to exact case inputs and the displayed assessment.
+A same-day edit invalidates old checks. One new check cannot combine with
+consulted or stale seats to ratify a reconsideration, and missing load-bearing
+coverage fails down. Blind assessors no longer receive the existing article or
+stored credibility, importance, and strength grades. Agreement still does not
+verify source readings; that missing check remains explicit in the build plan.
+Drafters receive sources and dependencies from the same packet and record an
+input hash so unchanged evidence can rest across repeated same-day runs.
+Legacy checks stay intact and visible, without fabricated snapshot receipts;
+rollout therefore requires new panels before current-version ratification.
+
+`start-case.mjs` creates an incubating proposal containing only the supplied
+question and an honest opening. It creates no claims, sources, judgments,
+priority, or human review. Production loader/view tests exercise this path;
+assessment runners rest until there are claims and evidence to assess. This
+establishes startup mechanics, not a claim that autonomous discovery is built.
+The archived research chats remain reference material, not an incorporation
+queue. Shared intake memory, bounded primary-source research, edition drafting,
+and an unattended three-case pilot follow in that order (AUTOMATION.md).
+
+(AI record of the founder's direction in this session; implementation remains
+subject to the repository's CI and independent publication gates.)

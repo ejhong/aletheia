@@ -12,7 +12,7 @@
  * promptVersion aletheia-reconsider-v1) stamped with `reconciles`: the
  * runIds of the checks whose dissents it engaged. Those checks can never
  * ratify the draft that answered them (src/domain/load.ts ratification) —
- * a reconciled case stays unratified until at least one fresh blind check
+ * a reconciled case stays unratified until a full fresh blind panel
  * judges it, which stale-checks.mjs arranges by listing the case for the
  * next content-response re-panel.
  *
@@ -33,7 +33,8 @@ import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
 import { callWithRefusalFallback, noKeyMessage, parseJsonReply, pickProvider } from "./lib/llm.mjs";
-import { seatKey } from "./lib/seat-key.mjs";
+import { readCaseSnapshot } from "./lib/case-snapshot.mjs";
+import { REVIEW_MIN_PANEL, currentChecks, latestDraft } from "./lib/review-state.mjs";
 import {
   caseVerdictDissenters,
   claimDissentPacket,
@@ -60,17 +61,6 @@ if (!provider) {
 
 const seatName = (m) => m.split("—")[0].split(", independent")[0].trim();
 
-function latestPerModel(runs) {
-  const byModel = new Map();
-  for (const r of runs.filter((r) => r.role === "check")) {
-    const k = seatKey(r.model);
-    const prev = byModel.get(k);
-    if (!prev || r.date > prev.date || (r.date === prev.date && r.runId > prev.runId))
-      byModel.set(k, r);
-  }
-  return [...byModel.values()];
-}
-
 async function reconcile(dir) {
   const read = (f) => {
     const p = path.join(CASES, dir, f);
@@ -82,22 +72,11 @@ async function reconcile(dir) {
     .readdirSync(adir)
     .filter((f) => f.endsWith(".yaml"))
     .map((f) => parseYaml(fs.readFileSync(path.join(adir, f), "utf8")));
-  const drafts = runs
-    .filter((r) => r.role !== "check")
-    .sort((a, b) => String(a.date).localeCompare(String(b.date)));
-  const draft = drafts.at(-1);
+  const draft = latestDraft(runs);
   if (!draft) return null;
-  const checks = latestPerModel(runs);
-  if (checks.length < 4) return null;
-
-  // Freshness: content must not have moved after the newest check.
-  const newestCheck = checks.map((r) => String(r.date)).sort().at(-1);
-  const newestContent = (read("history.yaml") ?? [])
-    .filter((h) => h.kind !== "housekeeping")
-    .map((h) => String(h.date))
-    .sort()
-    .at(-1);
-  if (newestContent && newestContent > newestCheck) return null;
+  const snapshot = readCaseSnapshot(path.join(CASES, dir));
+  const checks = currentChecks(runs, draft, snapshot.contentHash);
+  if (checks.length < REVIEW_MIN_PANEL) return null;
 
   // The same disagreements that display as "contested": a case-verdict
   // dispute, or a load-bearing claim split under a unanimous verdict.
@@ -186,6 +165,7 @@ Reply ONLY JSON:
     runId,
     model: `${provider.name}/${modelUsed} (reconsideration — deliberately non-blind: engages the panel's dissents)`,
     date: today,
+    generatedAt: new Date().toISOString(),
     promptVersion: PROMPT_VERSION,
     humanReviewed: false,
     role: "draft",

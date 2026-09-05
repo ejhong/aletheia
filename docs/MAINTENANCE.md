@@ -24,7 +24,7 @@ Six workflows do the work:
 | Workflow | Trigger | Does | Output |
 | --- | --- | --- | --- |
 | **Maintain** | Mondays 14:00 UTC; dispatch; `inbox` mode on inbox pushes | Job `maintain`: process inbox → reassess changed cases → watch literature → triage → measure yield → propose agenda (due cases only) → score proposals (Bench) → harvest governance + post the **weekly digest issue** → open one PR. Jobs `promote`, `bench`, `adopt` (fresh checkouts of `main`): draft verified imports into sources+evidence; draft advancing study freezes; draft endorsed claims/research items. | One low-risk PR (proposals, moves, overlays) plus up to three `needs-approval` PRs. The digest issue, cc the founder. |
-| **Content response** | Hourly cron (GitHub delivers ~5/day); dispatch | For cases whose canon changed after their latest assessment: draft a new assessment overlay and run the editorial audit; re-panel any case whose blind checks are stale. Exits in seconds when nothing is stale. | One PR per run that produced anything; supersedes its older still-open predecessor unless that one is parked. |
+| **Content response** | Hourly cron (GitHub delivers ~5/day); dispatch | For cases whose evidence packet changed (legacy drafts use timestamps): draft a new assessment overlay and run the editorial audit; re-panel any case whose blind checks are stale. Exits in seconds when nothing is stale. | One PR per run that produced anything; supersedes its older still-open predecessor unless that one is parked. |
 | **Inbox response** | Push to `inbox/**` on `main` (not `inbox/processed/**`) | Dispatches Maintain in `inbox` mode. | — |
 | **Operator** | Daily 13:00 UTC; issues; dispatch | Answers parked PRs seat by seat, runs `reconcile-contested.mjs`, retries quarantined seats, triages issues. Never touches `AGENTS.md`, never pushes to `main`. | PR comments, fixes as PRs, issue replies. |
 | **PR risk check** | Every PR | Classifies the diff; fails a mislabeled low-risk PR; arms the low-risk lane when it qualifies. | Label + auto-merge. |
@@ -38,8 +38,10 @@ claims, `docs/EXTRACTION_PIPELINE.md`) and `Generate case art`
 **Standing is derived, never stored.** The case page always shows the
 latest draft assessment, stamped `ratified` / `contested` / `unratified`
 from the blind check runs at build time. Nothing can raise standing except
-fresh concurrence from separate vendors; any new draft or new evidence
-demotes the case until re-checked. That is why new overlays may auto-merge.
+fresh concurrence from separate vendors on the exact content snapshot and
+displayed draft; new content or a changed draft invalidates prior receipts.
+Legacy checks remain visible but cannot ratify the current version. The first
+content-response runs after receipt rollout will therefore repanel old cases. That is why new overlays may auto-merge.
 
 ## 2. Feeding it
 
@@ -124,11 +126,25 @@ never damages surrounding content.
 node scripts/reassess-changed.mjs --dry-run --case <slug>   # proposed prose edits as a diff
 node scripts/watch-literature.mjs --dry-run [--case <dir>]  # no key needed
 node scripts/triage-watch.mjs --dry-run                     # needs an LLM key
-node scripts/cross-model-check.mjs <slug>                   # blind panel, every configured vendor
+node scripts/cross-model-check.mjs <case-dir>               # paid blind panel, configured vendors
+node scripts/cross-model-check.mjs geopolymer --dry-run     # inspect exact packet + receipt; no key or calls
 node scripts/promote-imports.mjs --dry-run
 node scripts/score-agenda.mjs --dry-run
 node scripts/yield-report.mjs
 ```
+
+To start a question without inventing a dossier:
+
+```bash
+node scripts/start-case.mjs --id TOP-001 --slug a-new-topic --title "A new topic" --question "What would we like to find out?" --domain "Research domain"
+```
+
+This writes `proposals/topics/a-new-topic/`. It refuses to overwrite an
+existing directory. The folder uses the ordinary case format and may enter
+`content/cases/` through a reviewed PR; it is not published by this command.
+No priority or review date is filled in. A blank case does not trigger a paid
+assessment. The question must acquire anchored claims and evidence through
+normal intake before the assessor has something to judge.
 
 ## 7. Setup (once)
 

@@ -1,8 +1,5 @@
 import { ArtCredit } from "./ArtCredit";
 import { AssessmentBadge } from "./AssessmentBadge";
-import { ComponentVerdicts } from "./ComponentVerdicts";
-import { LinkedRecordText } from "./LinkedRecordText";
-import { PriorityBadge } from "./PriorityBadge";
 import { assetPath } from "@/src/config/assets";
 import type {
   AssessmentState,
@@ -10,11 +7,7 @@ import type {
   ImageRecord,
 } from "@/src/domain/schema";
 
-/**
- * The case dossier header — dark register. Answers the three questions above
- * the fold: what is claimed, where the disagreement lives, what would settle
- * it. Cover art is mounted like a frontispiece plate beside the title.
- */
+/** The frontispiece introduces the question; the essay is the next thing to read. */
 export function DossierHeader({
   record,
   lastUpdated,
@@ -23,103 +16,76 @@ export function DossierHeader({
   cover,
 }: {
   record: CaseRecord;
-  /** Newest content-bearing changelog date; links to #history. */
   lastUpdated: string;
   verdict: AssessmentState | null;
-  /** Ratification standing of the displayed assessment (load.ts). */
-  standing: { status: "ratified" | "contested" | "unratified"; agreeing: number; panel: number } | null;
+  standing: {
+    status: "ratified" | "contested" | "unratified";
+    agreeing: number;
+    panel: number;
+  } | null;
   cover?: ImageRecord | null;
 }) {
   return (
     <section className="bg-dossier text-dossier-text">
-      <div className="mx-auto max-w-6xl px-5 py-10 sm:py-14">
-        <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-12 lg:items-start">
+      <div className="mx-auto max-w-6xl px-5 py-8 sm:py-12">
+        <div
+          className={`grid gap-7 sm:gap-10 ${cover ? "sm:grid-cols-[minmax(0,1fr)_28%] sm:items-center" : ""}`}
+        >
           <div>
-            <div className="flex flex-wrap items-baseline gap-x-4 gap-y-2">
-              <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-dossier-faint">
-                case file {record.id}
-              </span>
-              <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-dossier-faint">
-                {record.domain}
-              </span>
-              <a
-                href="#history"
-                className="font-mono text-[11px] uppercase tracking-[0.2em] text-dossier-faint underline decoration-dossier-faint/40 underline-offset-4 hover:text-copper hover:decoration-copper/50"
-              >
-                last update {lastUpdated}
-              </a>
-            </div>
-            <h1 className="font-serif text-4xl sm:text-5xl mt-4 tracking-tight">
+            <p className="font-mono text-[10px] uppercase tracking-[0.17em] text-dossier-faint">
+              {record.domain}{" "}
+              <span className="mx-2" aria-hidden>
+                ·
+              </span>{" "}
+              {record.id}
+            </p>
+            <h1 className="mt-4 max-w-3xl font-serif text-[2.6rem] leading-[1.05] tracking-tight sm:text-6xl">
               {record.title}
             </h1>
-            <p className="font-serif italic text-lg sm:text-xl text-dossier-faint mt-3 max-w-3xl">
+            <p className="mt-4 max-w-2xl font-serif text-lg italic leading-relaxed text-dossier-faint sm:text-xl">
               {record.subtitle}
             </p>
-            {verdict ? (
-              <div className="mt-5 flex flex-wrap items-center gap-3">
-                <AssessmentBadge state={verdict} size="lg" />
-                <span
-                  className={`font-mono text-[10px] uppercase tracking-[0.14em] ${
-                    standing?.status === "contested"
-                      ? "text-ochre"
-                      : "text-dossier-faint"
-                  }`}
-                >
-                  {standing?.status === "ratified"
-                    ? `AI assessment · ratified by ${standing.agreeing} of ${standing.panel} independent models`
-                    : standing?.status === "contested"
-                      ? "AI assessment · contested — independent models split"
-                      : "AI-drafted assessment · not yet independently ratified"}
+            <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-2">
+              {verdict ? (
+                <AssessmentBadge state={verdict} />
+              ) : (
+                <span className="text-[13px] text-dossier-faint">
+                  An open research question · no assessment yet
                 </span>
-                <PriorityBadge level={record.researchPriority.level} size="lg" />
-              </div>
-            ) : null}
-            {record.components.length > 0 ? (
-              <div className="mt-4">
-                <h2 className="font-mono text-[10px] uppercase tracking-[0.18em] text-dossier-faint mb-2">
-                  by component — one word would mislead
-                </h2>
-                <ComponentVerdicts components={record.components} dark />
-              </div>
-            ) : null}
-            <p className="mt-4 text-[13.5px] leading-relaxed text-dossier-text/80 max-w-2xl">
-              <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-copper mr-2">
-                why this priority
-              </span>
-              {record.researchPriority.reason}
-            </p>
+              )}
+              {standing ? (
+                <a
+                  href="#assessment"
+                  className="text-[12px] text-dossier-faint underline decoration-dossier-line underline-offset-4 hover:text-dossier-text"
+                >
+                  {standing.status === "ratified"
+                    ? `AI assessment · ${standing.agreeing}/${standing.panel} models concur`
+                    : standing.status === "contested"
+                      ? "AI assessment · contested"
+                      : "AI assessment · awaiting current review"}
+                </a>
+              ) : null}
+            </div>
+            <a
+              href="#history"
+              className="mt-4 inline-block font-mono text-[10px] tracking-[0.06em] text-dossier-faint underline decoration-dossier-line underline-offset-4 hover:text-dossier-text"
+            >
+              Updated {lastUpdated} · view changes
+            </a>
           </div>
           {cover ? (
-            <div className="mt-8 lg:mt-1">
-              <div className="border border-dossier-line bg-paper p-2">
+            <div className="hidden sm:block">
+              <div className="border border-dossier-line bg-paper p-1.5">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={assetPath(cover.file)}
                   alt={cover.alt}
-                  className="block w-full"
+                  className="block aspect-square w-full object-cover"
                 />
               </div>
-              <ArtCredit className="mt-1.5 block text-dossier-faint" />
+              <ArtCredit className="mt-2 block text-dossier-faint" />
             </div>
           ) : null}
-        </div>
-        <div className="grid sm:grid-cols-3 gap-px bg-dossier-line border border-dossier-line mt-8">
-          {(
-            [
-              ["What is claimed", record.whatIsClaimed],
-              ["Where the disagreement lives", record.whereDisagreementLives],
-              ["What would settle it", record.whatWouldSettleIt],
-            ] as const
-          ).map(([label, text]) => (
-            <div key={label} className="bg-dossier-soft p-5">
-              <h2 className="font-mono text-[11px] uppercase tracking-[0.18em] text-copper">
-                {label}
-              </h2>
-              <p className="mt-2.5 text-[15px] leading-relaxed text-dossier-text/90">
-                <LinkedRecordText text={text} />
-              </p>
-            </div>
-          ))}
         </div>
       </div>
     </section>

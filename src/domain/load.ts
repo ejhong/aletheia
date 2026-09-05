@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml } from "yaml";
+import { seatKey } from "../../scripts/lib/seat-key.mjs";
 import { extractClaimRefs, extractPlateRefs } from "./article";
 import {
   assessmentLabels,
@@ -829,15 +830,16 @@ export function displayAssessment(
  * Check runs are append-only, so re-checking a case after its content
  * changes leaves the superseded runs on disk. The concurrence panel must
  * report the *current* judgment of each model, not count a vendor twice
- * because it judged the case in two different weeks. Models are keyed by
- * the first token of their label ("GPT-5.1 (OpenAI)…" → `gpt-5.1`), which
- * is stable across the label wording used by different run generations.
+ * because it judged the case in two different weeks. Runs are keyed by
+ * SEAT — the API vendor in the label ("GPT-5.1 (OpenAI)…" → `openai`;
+ * see scripts/lib/seat-key.mjs) — which is stable across label wordings
+ * and across model upgrades within a seat.
  */
 export function latestCheckPerModel(loaded: LoadedCase): AssessmentRun[] {
   const byModel = new Map<string, AssessmentRun>();
   for (const run of loaded.assessmentRuns) {
     if (run.role !== "check") continue;
-    const key = run.model.trim().split(/[\s,(]/)[0].toLowerCase();
+    const key = seatKey(run.model);
     const prev = byModel.get(key);
     // Same-date ties happen when a case is re-checked the day it changed
     // (append-only means both runs stay). runId breaks the tie: the re-run

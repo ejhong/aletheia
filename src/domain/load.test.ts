@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { seatKey } from "../../scripts/lib/seat-key.mjs";
 import {
   extractClaimRefs,
   extractPlateRefs,
@@ -558,7 +559,9 @@ describe("ratification governance (stage 3)", () => {
     claimVerdicts: Record<string, string> = {},
   ) => ({
     ...mkDraft(`${date}-check-${model}`, date, verdict, [], claimVerdicts),
-    model: `${model} (Vendor) — independent check`,
+    // Seats are keyed by the vendor in the parenthetical (seatKey), so each
+    // synthetic model gets its own vendor.
+    model: `${model} (Vendor-${model}) — independent check`,
     role: "check" as const,
   });
   const caseWith = (
@@ -795,7 +798,7 @@ describe("cross-model checks", () => {
       ).at(-1)!;
       expect(shownOpus[0].runId).toBe(expected.runId);
     }
-    const keys = perModel.map((r) => r.model.trim().split(/[\s,(]/)[0].toLowerCase());
+    const keys = perModel.map((r) => seatKey(r.model));
     expect(new Set(keys).size).toBe(keys.length);
   });
 

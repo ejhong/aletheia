@@ -785,3 +785,59 @@ machinery if the lane fix holds; never add a loop, lane, label, or
 document without removing one.
 
 (AI record of a founder instruction, 2026-09-05 session.)
+
+## 2026-09-05 — The budget panel: five seats re-picked for judgment per dollar, with effort pinned
+
+**Decision (founder instruction).** The five panel seats become: Opus 5 at
+`medium` effort (Anthropic), GPT-5.6 Sol at `high` (OpenAI), Gemini 3.8
+Flash at `medium` thinking (Google), Grok 4.5 at `high` (xAI), and GLM 5.3
+Flash at `high` (Z.ai open weights, MIT, hosted by Venice on the existing
+key). One table, `scripts/lib/vendors.mjs`, now feeds the arbiter, the
+cross-model check, and the bench scorer; the check script's private copy
+of the table is gone.
+
+**Why.** An audit against the Artificial Analysis Intelligence Index
+(v4.2, 2026-09-04 — the one same-harness comparison covering every
+candidate) found the panel uneven in a way nothing on the site could see:
+two seats were far weaker than the other three. `gpt-5.1` was two
+generations old and, because no effort was ever sent and that model's API
+default is *no reasoning*, the OpenAI seat had been judging without
+thinking (index ≈21; 37 even at high). `gemini-3.1-pro-preview` scored 48
+against 59 for the current Flash. Meanwhile the fifth seat, Kimi K3 via
+Venice, was the panel's second most expensive per output token
+($3.75/$18.75 per 1M). The new set scores 56–59 on every seat for a summed
+cost of about $2.08 per index task, against roughly $3.64 before with a
+panel averaging ~47; per-token price falls on four of five seats. The
+frontier option (Opus high / Sol xhigh / Flash high / Grok 4.6 / GLM-5.3
+full, ~60 on every seat at ~$4.06) was presented and declined in favor of
+cost.
+
+**Effort is now part of a seat's identity.** Every seat pins its depth in
+the vendor's own dialect (`output_config.effort`, `thinkingConfig.
+thinkingLevel`, `reasoning_effort`), so a vendor's changing default can
+never silently change which judge is running. `buildRequest()` is pure and
+tested per seat, because the only other place a wrong parameter name would
+surface is a 400 on a paid panel run.
+
+**Seats are keyed by API vendor, not model name.** The concurrence panel
+deduplicated check runs by the first token of the model label
+("GPT-5.1" ≠ "GPT-5.6", "Kimi" ≠ "GLM"), so the first re-panel after this
+change would have counted OpenAI twice and kept a Kimi judgment of
+superseded content alive beside the GLM one. `scripts/lib/seat-key.mjs`
+keys runs by the vendor in the label's parenthetical (with "via X" naming
+the seat for reseller-hosted models) and is shared by the loader, the
+/panel derivations, and the reconciliation loop. Historical runs keep
+their labels; the /panel seat records start a new row for a new model,
+which is the honest reading — a new model has a new record.
+
+**Venice, not consolidation.** The founder asked whether all five seats
+should route through Venice. No: closed models cost 13–150% more there,
+one balance or one outage would stop the whole quorum at once (this
+week's two independent billing failures were survivable precisely because
+three other vendors kept voting), model IDs on a reseller rotate under
+the record's feet, and closed-model features lag. Venice keeps the one
+job it is best at — the open-weight seat, swappable among labs on one
+key. Note Gemini 3.8 Flash's list price doubles on 2027-01-01 (intro
+pricing); the table should be revisited then.
+
+(AI record of a founder instruction, 2026-09-05 session.)

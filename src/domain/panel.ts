@@ -8,6 +8,7 @@ import {
   type Ratification,
 } from "./load";
 import { loadArbiterRecords } from "./governance";
+import { seatKey } from "../../scripts/lib/seat-key.mjs";
 import { site } from "../config/site";
 import type { AssessmentRun, AssessmentState } from "./schema";
 
@@ -24,10 +25,8 @@ export function seatName(model: string): string {
   return model.split("—")[0].split(", independent")[0].trim();
 }
 
-/** Stable key for a seat across label wordings (mirrors latestCheckPerModel). */
-export function seatKey(model: string): string {
-  return model.trim().split(/[\s,(]/)[0].toLowerCase();
-}
+/** Stable key for a seat across label wordings and model upgrades (shared with latestCheckPerModel). */
+export { seatKey };
 
 export interface CaseStanding {
   slug: string;

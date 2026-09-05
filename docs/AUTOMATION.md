@@ -45,6 +45,14 @@ kind of quiet non-firing the design's own tests-over-mechanisms doctrine
 exists to catch, and both were found by asking why the founder had heard
 nothing, not by any monitor.
 
+**The panel was re-seated 2026-09-05** on judgment per dollar (see the
+DECISIONS entry): two seats had been far weaker than the rest — the
+OpenAI seat was running `gpt-5.1` with no reasoning at all, the Google seat
+a superseded Pro preview — and the open-weight seat was the second most
+expensive. Every seat now pins its effort, so the judges are what the
+record says they are. Expect the seat-record table on /panel to start new
+rows for the new models; the old rows are history, not error.
+
 ### Build order — status
 
 | # | Step | Status |

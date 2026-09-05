@@ -1,429 +1,146 @@
-# Maintenance: an AI-operated site, and the observer's loop
+# Maintenance runbook
 
-Since 2026-08-25 (see `docs/DECISIONS.md`), this site is operated by AI as
-a declared experiment. The epistemic rules and the fail-closed pipeline are
-unchanged; what changed is who exercises judgment. The human founder holds
-exactly two powers — the kill switch (revert anything by runId, or freeze
-the repo) and the constitution (`AGENTS.md`, the one file reserved to a
-human). Everything else is the agents' job, in public.
+What runs, when, what it produces, and what to check when something looks
+wrong. The *why* behind each mechanism lives in `docs/DECISIONS.md`; the
+design of the whole system and its current status live in
+`docs/AUTOMATION.md`. This file is deliberately only the how.
 
-**Stage 4, dry period (current):** every `needs-approval` PR is judged by
-the constitutional arbiter (`.github/workflows/arbiter.yml` →
-`scripts/arbiter.mjs`): five independent vendor seats each read the diff
-against `AGENTS.md` (taken from the base revision, so a change is judged
-by the constitution it is trying to change) and vote complies / violates /
-unsure. Verdict: **pass** needs ≥4 complies and zero violates — one
-unsure or failed seat is tolerated, a single substantiated objection is
-not, and a `violates` vote must name the rule it invokes or it counts as
-unsure. The tally posts as a sticky PR comment with every seat's
-reasoning, and the check renders green (pass) or red (parked).
+The site is operated by AI (AGENTS.md §3.15). The founder holds two powers:
+the kill switch (revert any run by its `runId`, or freeze the repo) and the
+constitution (`AGENTS.md`). Everything else below runs without a human.
 
-The diff, PR title, and PR body are fenced as untrusted data — a seat
-that follows instructions found in the material under review has failed;
-in the very first trial vote a seat explicitly discarded the diff's own
-"a human directed this" as non-authoritative, which is the fence working.
-Oversized diffs are truncated loudly: omitted files are listed to the
-panel and the instruction is to vote unsure rather than judge what was
-not shown. Seats that error or refuse become explicit unsure votes,
-visible in the report, never dropped from the denominator.
+## 1. The machine on one page
 
-**The dry period ended 2026-08-25: the gate is live.** The `arbiter`
-check is required on main and a passing verdict auto-merges the PR (via
-the maintenance PAT, so downstream workflows fire). A parked PR cannot
-merge and waits publicly — in the digest, on /panel, and for the operator
-to revise. The founder's admin override remains as the kill switch
-(admin enforcement is deliberately off), and reverting any merge by
-runId remains one command.
+Every change reaches `main` through the same gate: **classifier → panel →
+merge policy**. There are two lanes.
 
-**A seat that cannot be paid for stops the gate.** Quorum is four of five
-`complies` votes, so two dead seats make every verdict a park however
-sound the change is — and since the check is required, nothing needing
-approval can merge until they are restored. This is the intended
-direction (an unfunded panel must not become a smaller panel that still
-passes things), but it needs to read as what it is, so the verdict names
-the seats that cast no usable vote and says that restoring them, not
-revising the diff, is the remedy when no seat objected. **First place to
-look when every PR is suddenly parked: the vendor billing pages.**
-It happened on 2026-09-05 — OpenAI out of credits, xAI over its monthly
-limit, three healthy seats, zero objections, nothing mergeable.
-
-**The operator** (`.github/workflows/operator.yml`, daily + on issues +
-on demand): the agent that tends the machine. It answers parked PRs'
-objections seat by seat (or argues back on the PR when a seat is wrong),
-runs the reconciliation loop (`scripts/reconcile-contested.mjs` — the one
-deliberately non-blind draft: the house engages every dissent like an
-author answering referees; a case that stays contested after engagement
-is a standoff, displayed indefinitely, never re-litigated), retries
-quarantined vendor seats, and triages GitHub issues — the public door:
-error reports become verified fixes, evidence pointers become inbox
-drops, feature requests get labeled `founder`. The operator never edits
-AGENTS.md, never pushes to main, and treats issue text as data.
-
-**Event-driven operation** (no polling):
-
-- **Inbox push → instant intake.** Any push touching `inbox/` (except
-  the pipeline's own moves into `inbox/processed/`) dispatches Maintain
-  in `inbox` mode within seconds. Dropping a file from the GitHub phone
-  app IS the trigger.
-- **Canon merge → judgment ripple.** Any push to `content/cases/`
-  outside `assessments/` triggers reassessment plus fresh panels for
-  whatever went stale, proposed back as a PR through the normal gates.
-  Overlay-only merges do not match the filter, so the ripple terminates.
-- **Weekly (Mondays)**: literature watch, triage, governance harvest,
-  and the digest issue — created with the Actions bot token and
-  cc-ing the founder, because GitHub suppresses notifications for
-  one's own PAT activity and the digest exists to be emailed. The Stage-4 tail is in place:
-
-- **Governance harvest** (`scripts/harvest-governance.mjs`, in the weekly
-  Maintain run): each settled PR's arbiter verdict — the machine blob the
-  report embeds, or a fail-closed parse of the legacy markdown for the
-  first dry-period reports — is copied verbatim into
-  `governance/arbiter/pr-<n>.yaml`. Append-only, harvested only after a PR
-  settles (a verdict on an open PR may still change), classified low-risk
-  because a harvested record cannot mint standing. This is what makes
-  governance visible to the static site (`/panel`).
-- **Weekly digest**: the same run opens a GitHub issue — what settled,
-  what the panel said, whether anything merged against a parked verdict,
-  what is open. The founder's observer artifact; subscribing to issues is
-  the whole loop.
-- **Content rate limit** (`CONTENT_MERGES_PER_WEEK` in
-  `scripts/lib/arbiter-core.mjs`): an otherwise-passing change that
-  touches `content/cases/` parks once the trailing week has spent the
-  budget. Never upgrades a verdict; never throttles code or docs.
-  The budget bounds the **machine's unattended pace**, so a merge that
-  declares itself supervised does not spend it. Declare one with a
-  `Supervised-by:` trailer in a **commit message on the branch** — not in
-  the PR body:
-
-  ```
-  git commit -m "$(printf 'Your subject\n\nBody.\n\nSupervised-by: founder-directed chat session\n')"
-  ```
-
-  The distinction is load-bearing and was got wrong first time (see the
-  2026-09-03 correction in `docs/DECISIONS.md`). This repo squash-merges,
-  and GitHub builds a squash message from the PR **title plus the branch's
-  commit messages**; the PR body is never included. Verified against
-  merged history: #153's squash body is its two commit messages, #160's is
-  its single commit message, and no squash on `main` contains PR-body-only
-  text. A trailer written in the PR body therefore vanishes at merge and
-  the merge counts as autonomous — failing safe, but silently doing
-  nothing.
-
-  Rules that keep this from being a loophole. **Default counts** — no
-  trailer means the merge is counted, so forgetting it merely parks
-  something (loud), where the reverse arrangement would silently disarm
-  the throttle. **It cannot self-apply** — only merges already on `main`
-  are counted, so a trailer was reviewed by the panel inside its own PR;
-  the PR under judgment never exempts itself, because its body is
-  untrusted input and must not steer a gate. **It is visible** — the
-  arbiter prints the exclusions with every content verdict. Using it to
-  dodge the throttle is reclassifying a change to evade a check, which
-  AGENTS.md §3.15 forbids. A supervised PR can still park behind a hot
-  autonomous week; the founder's override is the release valve.
-- **Prioritized diff delivery**: when a PR exceeds the panel's diff
-  budget, files are kept by scrutiny tier (governance surface, then
-  content canon, then mechanically-guarded records) instead of by
-  position — the first dry-period parks were partly "unsure because I
-  could not see sources.yaml" while bulky append-only overlays filled the
-  budget. Omissions remain loud.
-
-## The observer's loop (was: your day-to-day)
-
-**Feed it if you feel like it** — inbox drops now enter as *contributor*
-material: quoted, attributed, weighed, and arbitrated exactly like
-correspondence from any outside researcher. Feeding it is optional; the
-watch, reassessment, and editorial-audit loops run without input.
-
-**Feed it** (any time, from anywhere):
-
-- Drop files into `inbox/` — from your phone via the GitHub app or
-  [github.dev](https://github.dev/ejhong/aletheia), or push from a laptop.
-- Three kinds of drops (full convention in `inbox/README.md`):
-  - **commentary note** — your opinions in your words
-    (`inbox/2026-08-22-note.md` with `case: geopolymer` front matter);
-  - **link list** — URLs worth turning into source records;
-  - **document** — a text file to mine for catalog claims.
-
-**Wait** (or don't): the **Maintain** workflow runs every Monday, or run it
-now from the Actions tab (workflow_dispatch).
-
-**Read and tap**: each run opens one PR whose body is a plain-language
-digest — what changed and why, readable on a phone. Two classes:
-
-| Label | Meaning | What you do |
+| Lane | What qualifies | What happens |
 | --- | --- | --- |
-| `auto:low-risk` | Reversible-by-runId, touches no featured content: new proposals, inbox moves, **new** append-only assessment overlays, append-only catalog-claim/source additions. | Nothing. It auto-merges when CI is green. Skim the digest if curious. |
-| `needs-approval` | Anything touching featured claims, article/overview text, case records, review states, existing human-attributed content, or code. | Read the digest in the GitHub phone app notification, tap **Merge** (or comment / request changes). |
+| `auto:low-risk` | Reversible-by-runId material that touches no featured content: `proposals/**`, `inbox/**` moves, **new** append-only `assessments/*.yaml` overlays, new harvested `governance/arbiter/pr-*.yaml` verdicts, append-only catalog claims and sources. | `PR risk check` re-derives the class from the diff, labels the PR, and arms auto-merge. Merges when CI is green. |
+| `needs-approval` | Everything else: featured claims, article text, case records, research items, studies, code, workflows, docs. | The `arbiter` check convenes five vendor seats; **pass** = ≥4 `complies` and zero `violates`. A pass auto-merges. Anything else parks the PR, publicly, until revised or a seat is restored. |
 
-The classification is **enforced, fail-closed**: the `PR risk check`
-workflow re-derives the class from the actual diff
-(`scripts/classify-pr-risk.mjs`), and a PR labeled `auto:low-risk` whose
-diff exceeds the allowlist fails the check, which blocks auto-merge.
+Six workflows do the work:
 
-The same workflow **grants** the low-risk lane, because the lane is a
-property of the diff rather than of who opened the PR: any non-draft,
-same-repo PR from an author with write access whose diff classifies
-low-risk gets the label and auto-merge, whenever it classifies — on open,
-on a push, on being marked ready for review. Fork PRs are excluded, and a
-`needs-approval` label is a hold the classifier cannot override.
+| Workflow | Trigger | Does | Output |
+| --- | --- | --- | --- |
+| **Maintain** | Mondays 14:00 UTC; dispatch; `inbox` mode on inbox pushes | Job `maintain`: process inbox → reassess changed cases → watch literature → triage → measure yield → propose agenda (due cases only) → score proposals (Bench) → harvest governance + post the **weekly digest issue** → open one PR. Jobs `promote`, `bench`, `adopt` (fresh checkouts of `main`): draft verified imports into sources+evidence; draft advancing study freezes; draft endorsed claims/research items. | One low-risk PR (proposals, moves, overlays) plus up to three `needs-approval` PRs. The digest issue, cc the founder. |
+| **Content response** | Hourly cron (GitHub delivers ~5/day); dispatch | For cases whose canon changed after their latest assessment: draft a new assessment overlay and run the editorial audit; re-panel any case whose blind checks are stale. Exits in seconds when nothing is stale. | One PR per run that produced anything; supersedes its older still-open predecessor unless that one is parked. |
+| **Inbox response** | Push to `inbox/**` on `main` (not `inbox/processed/**`) | Dispatches Maintain in `inbox` mode. | — |
+| **Operator** | Daily 13:00 UTC; issues; dispatch | Answers parked PRs seat by seat, runs `reconcile-contested.mjs`, retries quarantined seats, triages issues. Never touches `AGENTS.md`, never pushes to `main`. | PR comments, fixes as PRs, issue replies. |
+| **PR risk check** | Every PR | Classifies the diff; fails a mislabeled low-risk PR; arms the low-risk lane when it qualifies. | Label + auto-merge. |
+| **Arbiter** | Every PR | Skips low-risk. Otherwise: five seats judge the diff against `AGENTS.md` at the merge base, with every added DOI/arXiv/URL mechanically resolved first. | Sticky report comment; required check; auto-merge on pass. |
 
-This used to be granted only at the moment a maintenance workflow created
-a PR, which had a quiet failure: an inbox drop opened by an agent session
-instead of by the weekly run got no label and nothing armed, so it sat
-open indefinitely while the machine's identical drop merged in minutes —
-and, because an unmerged inbox file never reaches `main`, the intake
-ripple it should have triggered never fired either. The arbiter, the only
-other thing that arms a PR after creation, skips low-risk PRs by design,
-so nothing was watching them. (2026-09-05.)
+Plus `CI` (typecheck, lint, test, build) and `Deploy` on every push to
+`main`, and two on-demand tools: `Extract claims` (document → catalog
+claims, `docs/EXTRACTION_PIPELINE.md`) and `Generate case art`
+(`docs/IMAGE_STYLE.md`).
 
-Why auto-merging **new** assessment overlays stays low-risk (stage-3
-governance rule): standing is derived, never stored, and it only fails
-DOWN. `displayAssessment()` always shows the latest draft, stamped with a
-ratification standing computed at build time from the independent check
-runs: **ratified** (≥4-model panel, at most one dissenter on the case
-verdict, no load-bearing claim contested, panel newer than the content),
-**contested** (panel disagrees — displayed, never hidden), or
-**unratified** (panel too small or the content moved after it judged). An
-auto-merged overlay can therefore change the displayed *narrative*, but it
-cannot mint *standing*: a new draft or new evidence automatically demotes
-the case to unratified until independent models re-judge the current file,
-and nothing in the pipeline can raise standing except fresh concurrence
-from separate vendors.
+**Standing is derived, never stored.** The case page always shows the
+latest draft assessment, stamped `ratified` / `contested` / `unratified`
+from the blind check runs at build time. Nothing can raise standing except
+fresh concurrence from separate vendors; any new draft or new evidence
+demotes the case until re-checked. That is why new overlays may auto-merge.
 
-## What happens automatically
+## 2. Feeding it
 
-Weekly (or on demand), the Maintain workflow:
+Drop files into `inbox/` from any device (the GitHub app or
+[github.dev](https://github.dev/ejhong/aletheia) work from a phone). The
+push is the trigger; intake runs within a minute. Full conventions in
+`inbox/README.md`; the three kinds:
 
-1. **Processes the inbox** (`scripts/process-inbox.mjs`):
-   - commentary → proposed editorial actions in `proposals/inbox/<runId>/`,
-     each carrying your verbatim quote; your full note is preserved as the
-     authoritative `sourceStatement`;
-   - links → fetched, verified, proposed as source records with honest
-     verification labels (`ai_verified` only when actually fetched);
-   - documents → the extraction pipeline (`docs/EXTRACTION_PIPELINE.md`);
-   - processed items move to `inbox/processed/<runId>/`.
-2. **Refreshes assessments** (`scripts/reassess-changed.mjs`): for each case
-   whose claims/evidence/sources changed in git after its latest assessment
-   overlay, drafts a **new** overlay file (never edits an old one), stamped
-   `humanReviewed: false` with runId/model/promptVersion; structurally
-   validated before writing, discarded (and reported) if invalid.
-3. **Corrects the editorial layer** (same script, second pass): verdicts
-   re-derive from the ledger on every run, but the overview article and
-   research agenda do not — prose written six months ago goes on asserting
-   whatever it asserted. So for each case that was reassessed, a second pass
-   reads `overview.md` and `research.yaml` against the current records and
-   **makes the correction**, rather than filing a to-do that leaves a false
-   sentence on the public page until someone gets to it. It corrects only
-   factual conflicts (the article says nobody has examined X; a record now
-   reports someone has), never style, tone, or additions. Safety comes from
-   structure, not from restraint:
+- **commentary note** — your view in your words, `case:` front matter.
+  Becomes proposed editorial actions with your verbatim text preserved as
+  the authoritative record.
+- **link list** — URLs to turn into source records. Fetched and verified;
+  labeled `ai_verified` only when actually fetched, `unverified` otherwise.
+  Verified imports are then drafted into the ledger by the `promote` job.
+- **document** — a text file to mine for catalog claims.
 
-   - edits are exact string replacements — a `find` span that is missing,
-     ambiguous, or under 60 characters is rejected, never approximated;
-   - the article's `{claim=...}` annotations and `{plate:...}` placements
-     must survive; losing one reverts every narrative edit for that case;
-   - research edits splice a single YAML scalar's source span and are then
-     verified by re-parsing — if any other record or field moved, revert;
-   - only prose fields are editable (`title`, `summary`, `informationGain`);
-     ids, claim links and taxonomy are canon;
-   - every applied edit appends a `history.yaml` entry naming the model, the
-     run and that it is pending human approval;
-   - the diff touches featured content, so the risk classifier marks the PR
-     `needs-approval`. **Nothing in this pass reaches the site on its own.**
+Everything you drop is *contributor* material: quoted, attributed, and
+arbitrated like anyone else's. Feeding is optional; the loops run without
+input.
 
-   Run `node scripts/reassess-changed.mjs --dry-run --case <slug>` to see the
-   proposed prose printed as a before/after diff without writing anything.
-   Silence is the normal result: most cases most weeks need zero edits.
-4. **Watches the literature** (`scripts/watch-literature.mjs`): runs each
-   case's declared watch queries against arXiv and Crossref (OpenAlex
-   optionally) and surfaces newly published/indexed items as
-   **discovery-only** proposals — see the next section.
-5. **Triages the watch results** (`scripts/triage-watch.mjs`): one model
-   call per case judges every surfaced item into `import` / `shelf` /
-   `archive` with a recorded reason — see the next section.
-6. **Opens the PR** with the digest body and the risk label.
-
-## Literature watch
-
-Each case may declare watch queries in an optional
-`content/cases/<case>/watch.yaml` (schema: `WatchConfigSchema` in
-`src/domain/schema.ts`, validated at build time):
+**Literature watch** needs a `content/cases/<case>/watch.yaml`:
 
 ```yaml
 queries:
   - id: trigger-point-imaging        # stable slug — dedup/cursor key
     query: "myofascial trigger point elastography"
-    sources: [crossref, arxiv]       # optional; default arxiv + crossref;
-                                     # openalex also supported
-    authors: [Davidovits]            # optional: keep only matching authors
-    keywords: [elastography, knot]   # optional OR list: match any one
-    keywordGroups:                   # optional AND of ORs: match every group
+    sources: [arxiv]                 # arxiv | crossref | openalex; default arxiv+crossref
+    authors: [Davidovits]            # optional author filter
+    keywordGroups:                   # AND of ORs — prefer this over `keywords`
       - ["trigger point", myofascial]
       - [imaging, ultrasound, elastograph]
-    note: why this query exists      # shown to the reviewer
+    note: why this query exists
 ```
 
-**Prefer `keywordGroups` to `keywords` for anything aimed at Crossref.** A
-flat OR list is only as narrow as its broadest term, and Crossref ranks by
-loose relevance over everything ever published. In the 2026-08-24 run that
-combination surfaced seven clinical nerve-block papers under Orch OR (one
-term, `anesthe`), nanodiamond contact lenses under YDIH (`nanodiamond`), and
-a novel review under geopolymer (`ancient`). Requiring a second concept —
-"about anaesthesia AND about microtubules" — removed all of it without
-costing a single real hit: replaying that run's 42 items through the current
-configs keeps 12 and drops 30.
+Use `keywordGroups`, not a flat `keywords` list, for anything aimed at
+Crossref; drop Crossref entirely where the field is arXiv-native. Terms
+match at word boundaries. Hits land in `proposals/watch/<runId>/`, all
+`unverified`, and are triaged `import` / `shelf` / `archive` (default
+archive) with reasons in `triage.yaml`. Archived items are appended to
+`proposals/watch/archive-ledger.yaml`, which survives the 60-day expiry of
+run directories and exists to be reviewed; promote a wrongly archived item
+by dropping its URL in the inbox.
 
-Terms match at a **word boundary**, so a stem like `archaeolog` still finds
-`archaeological` while `psi` no longer matches inside `epsilon`.
+## 3. Reading it
 
-Where a field's literature is arXiv-native, drop Crossref rather than
-filtering it: CCC, transients, Zero Worlds and Orch OR's physics queries are
-arXiv-only for that reason. Crossref stays where the literature genuinely is
-not on arXiv — YDIH (geology), geopolymer (archaeology/materials), MPI
-(psychology), vasocomputation (physiology).
+- **The weekly digest issue** is the one thing to read: what settled, what
+  the panel said, what parked, yield bands, Bench scores, pre-registrations
+  pending, promotions. Subscribe to issues and you have the loop.
+- **`/panel`** on the site: standings per case, every split claim with each
+  seat's reasoning, per-seat records, the operations log, metabolism totals.
+- **`/proposals`**: every agenda proposal with its Bench fate.
+- **PR bodies** are plain-language digests of what that run did.
+- `node scripts/yield-report.mjs` prints which cases moved and when.
 
-Weekly, the watch step searches each API for items published/indexed since
-the case's last run (per-case cursor and already-surfaced-item list live in
-`proposals/watch/state.yaml`; the state file is machine-maintained and safe
-to delete). Items already in the case's `sources.yaml` (matched by DOI or
-arXiv id) or surfaced by an earlier run are skipped. A preprint later
-published under a **different title** keeps a different identifier, so exact
-dedup misses it; those items are surfaced anyway and labeled
-`possibleDuplicateOf: <SRC-ID>`, never dropped — silently suppressing a
-genuinely new paper is the one failure a discovery tool must not have, so
-the guess is shown to a human instead of acted on. Results land in
-`proposals/watch/<runId>/<case>.yaml` with title, authors, venue, date,
-DOI/arXiv id, abstract snippet, and the matching query — **exactly as the
-APIs returned them, all labeled `unverified`**. Nothing is added to
-`sources.yaml` or `evidence.yaml` automatically. If an LLM key is present,
-items also carry a short relevance note explicitly labeled as an
-AI-generated draft; with no key the step runs the same, minus the notes.
+## 4. When something looks wrong
 
-Watch proposals only touch `proposals/**`, so a weekly run that contains
-nothing else stays `auto:low-risk`. Un-promoted runs **expire after 60
-days**: the next real run deletes the stale directory (git history keeps
-the record, the seen-list dedup survives), so no proposal pile accumulates
-waiting for anyone.
+| Symptom | First thing to check |
+| --- | --- |
+| Every `needs-approval` PR is parked, report says seats "cast no usable vote" | **Vendor billing.** Quorum is 4 of 5 `complies`; two dead seats park everything, by design. OpenAI: credits. xAI: the *monthly spending limit* on the team, not just credits. Restore the seat, re-run `Arbiter` on the PR. |
+| A PR is parked with a named objection | Read the seat's reasoning in the sticky comment. The operator will answer it on its next run; or revise the diff yourself. A `violates` vote must name a rule or it degrades to `unsure`. |
+| A PR parked "on the rate limit" | `CONTENT_MERGES_PER_WEEK` (10, `scripts/lib/arbiter-core.mjs`) counts autonomous canon merges in the trailing week. Founder-directed work is excluded only if its **commit message** (not the PR body — squash messages are built from title + branch commits) carries `Supervised-by: <who>`. The park clears as the week rolls. |
+| A low-risk PR sits open and green | It should have been armed by `PR risk check` on open/push/ready. If not: is it a draft, a fork, or labeled `needs-approval`? Otherwise rebase on `main` to re-trigger. |
+| No digest issue on Monday | Check the Maintain run log for `could not open the digest issue`; the step needs `issues: write` in the workflow permissions and a `weekly-digest.md` from `harvest-governance.mjs`. |
+| A case shows `unratified — awaiting a fresh blind check` | Expected after any canon change or reconciliation. Content response re-panels on its next run with a full set of live seats. |
+| A case shows `contested` | Working as designed. The operator runs reconciliation once; a case still contested afterwards is a standoff and stays displayed. |
+| Content response ran 7 minutes and produced nothing | Cold npm cache. Nothing to fix. |
+| Malformed panel replies | Quarantined under `proposals/cross-model-failures/`, never installed. The operator retries them. |
+| An inbox link came back `unverified` | The URL was unreachable at fetch time. Re-drop it, or drop the DOI/arXiv id instead. |
 
-### Triage: what surfaced literature deserves
+## 5. Reverting a run
 
-`scripts/triage-watch.mjs` runs after the watch and judges the newest
-untriaged run — one model call per case, against versioned criteria
-(`watch-triage-v1`), into exactly three outcomes, every decision recorded
-with a reason in `proposals/watch/<runId>/triage.yaml`:
+Every generated record carries one `runId`. Either revert the merge commit
+(`git log --oneline | grep <runId>`), or surgically: delete
+`proposals/**/<runId>/`, delete the overlay `assessments/<runId>.yaml`,
+move files back out of `inbox/processed/<runId>/`, and remove records whose
+`origin.runId` matches. Low-risk changes are append-only, so reverting them
+never damages surrounding content.
 
-- **import** — likely NEW evidential weight: new primary data, a direct
-  rebuttal or replication of tracked work, a retraction, or a
-  methodological critique bearing on a named existing claim. Imports queue
-  a verification request as an inbox link drop
-  (`inbox/triage-<runId>-<case>.md`), which the next run's inbox step
-  fetch-verifies into source-record proposals.
-- **shelf** — useful reading with no new evidential weight; a candidate for
-  the case's curated `resources.yaml`, awaiting an agent.
-- **archive** — everything else, and the deliberate default: genuinely
-  significant developments in these fields are rare and loud (they recur
-  across queries and get discussed), while a padded ledger quietly rots.
+## 6. Local commands
 
-Fail-closed by construction: a malformed model reply triages **nothing**
-for that case (a silently skipped item would be indistinguishable from a
-deliberate archive), and an item the watch flagged `possibleDuplicateOf`
-can never be imported — the guard runs in code, not in the prompt
-(`scripts/lib/triage.mjs`, tested in `src/domain/triage.test.ts`).
+```bash
+node scripts/reassess-changed.mjs --dry-run --case <slug>   # proposed prose edits as a diff
+node scripts/watch-literature.mjs --dry-run [--case <dir>]  # no key needed
+node scripts/triage-watch.mjs --dry-run                     # needs an LLM key
+node scripts/cross-model-check.mjs <slug>                   # blind panel, every configured vendor
+node scripts/promote-imports.mjs --dry-run
+node scripts/score-agenda.mjs --dry-run
+node scripts/yield-report.mjs
+```
 
-**The archive asymmetry is guarded.** Import mistakes are caught
-downstream (the case's standing fails down and the panel re-judges the
-result), but an archived item is judged once, by one model, and then the
-run directory expires. So every archived item is also appended — one line
-each, deduped by DOI/arXiv/title — to `proposals/watch/archive-ledger.yaml`,
-a cumulative ledger that survives expiry. That file is the audit trail for
-the omissions: review it periodically (a second model, or a human), and
-promote anything wrongly archived by dropping its URL as an inbox link
-list.
+## 7. Setup (once)
 
-**The ledger admission rule backs all of this at build time** (enforced in
-`src/domain/load.ts`): a source may sit in `sources.yaml` only if an
-evidence record or claim anchor cites it, or it is explicitly marked
-`background: true` (reading-guide material, shown on the case's resources
-page). An uncited, unmarked source fails the build — so no pipeline stage,
-and no agent, can quietly pad the ledger with relevant-looking but
-weightless references. The flag is honest in both directions: a cited
-source still marked background also fails.
-
-**Manual promotion still works** (either route, same as before):
-
-1. **Inbox**: drop the paper's DOI/URL as a link list —
-   `inbox/<case>/links.md` or front matter `case: <case>` — optionally with
-   a commentary note saying what it is evidence for.
-2. **Chat**: tell the agent which item to import; it verifies the citation
-   against Crossref/the publisher and writes the source (and any evidence
-   records) for review.
-
-Either way the item enters `sources.yaml` only after verification **and**
-with an evidence record citing it, and the DOI/arXiv dedup means the watch
-will not surface it again.
-
-Local runs:
-`node scripts/watch-literature.mjs [--dry-run] [--case <dir>] [--days <n>] [--no-llm]`
-— no API key required;
-`node scripts/triage-watch.mjs [--dry-run] [--run <watch-runId>]` — needs an
-LLM key, skips gracefully without one; a retry of a failed run overwrites
-rather than duplicates (deterministic filenames).
-
-## Where accountability lives
-
-- **Your commentary is the human editorial record.** The AI only translates
-  your position into proposed updates; every proposal shows your exact
-  words beside it, and the record names you as editor. If a translation
-  misreads you, the record shows both texts — yours wins.
-- Everything machine-produced stays honestly labeled: `ai_extracted`
-  claims, `humanReviewed: false` overlays, `ai_verified`/`unverified`
-  sources. Nothing pretends to be reviewed until you review it.
-
-## Reverting a run
-
-Every generated record carries one `runId`. To undo a run:
-
-1. `git log --oneline | grep <runId>` (or find the merge PR) and revert the
-   commit(s); or
-2. surgically: delete `proposals/**/<runId>/`, delete the overlay file named
-   `<runId>.yaml`, move files back out of `inbox/processed/<runId>/`, and
-   remove any records whose `origin.runId` matches.
-
-Since low-risk changes are append-only by policy, reverting them never
-damages surrounding content.
-
-## Setup requirements (once)
-
-- Repository secret `ANTHROPIC_API_KEY` (preferred) or `OPENAI_API_KEY` —
-  without one the workflow fails early with instructions. The model is pinned
-  by the repository Actions **variable** `EXTRACT_MODEL` (the code default in
-  `scripts/lib/llm.mjs` is `claude-fable-5` with an automatic one-retry
-  refusal-fallback to `claude-opus-5` — the mechanism decision #35 added
-  after Fable's safety filter refused plain pharmacology statements; pin
-  `EXTRACT_MODEL` to `claude-opus-5` to skip the refusal round-trip on
-  refusal-prone cases); switch models with
-  `gh variable set EXTRACT_MODEL --repo ejhong/aletheia --body "<model-id>"` —
-  no code edit needed. Assessment overlays stamp the model that actually ran
-  (`runId`/`model`/`promptVersion`), so overlays produced by different models
-  remain distinguishable.
-- Optional but recommended: `MAINTENANCE_PAT` (fine-grained token, contents
-  + pull-requests write). PRs opened with the default Actions token do not
-  trigger CI, which would leave auto-merge waiting; a PAT fixes that.
-- Repo auto-merge is enabled (`allow_auto_merge`). For strict
-  "merge only when CI is green" semantics, add a branch ruleset requiring
-  the CI and PR-risk checks once direct-push agent traffic to `main` winds
-  down — with no required checks, GitHub may merge an auto-merge PR before
-  CI finishes.
-
-## Cross-model checks
-
-`node scripts/cross-model-check.mjs <case-slug>` re-assesses one case with
-every vendor whose API key is configured (ANTHROPIC/OPENAI/GEMINI/XAI),
-each judge blind to all prior assessments. Passing replies install as
-append-only `role: check` overlays in the case's `assessments/` directory
-(auto:low-risk by the standard rules); malformed replies land in
-`proposals/cross-model-failures/` and are never installed. The case page's
-concurrence panel then reports agreement with the displayed assessment,
-naming split claims as review entry points. Cost: one long completion per
-vendor (a few dollars per case). Re-run after a case changes materially;
-each run is dated and stamped, so history accumulates like any overlay.
+- Secrets: `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, `GEMINI_API_KEY`,
+  `XAI_API_KEY`, `VENICE_API_KEY` (the five panel seats — a missing key is
+  a dead seat), `MAINTENANCE_PAT` (fine-grained, contents + pull-requests
+  write; PRs opened with the default token do not trigger CI), optional
+  `IMAGE_API_KEY`.
+- House drafting model: `claude-fable-5` with a one-retry refusal fallback
+  to `claude-opus-5` (`scripts/lib/llm.mjs`); override with the Actions
+  variable `EXTRACT_MODEL`. Records always stamp the model that actually
+  answered. Panel seats never fall back — a refusing seat is a failed seat.
+- Branch protection on `main`: the `arbiter` check is required (see the
+  2026-08-25 "gate is live" decision); admin enforcement off, so the
+  founder's override is the kill switch. Repo auto-merge enabled.

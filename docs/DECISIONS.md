@@ -722,3 +722,44 @@ Only the founder can clear this one: the two accounts need credit. Until
 then the low-risk lane still flows (the arbiter skips it by design), so
 inbox drops, proposals and overlays keep moving while judged content does
 not.
+
+## 2026-09-05 — Reassessment: the loop, its status, and the document diet
+
+The founder's direction, after restoring the two unfunded seats: make
+sure the loop — update, surface what is useful, re-evaluate — is actually
+working; record where we are in the design document; clean up the
+repository's documents; and make the whole thing as simple as possible,
+because the workflow has become hard to hold in one head.
+
+**Where we are** is now a maintained section at the top of
+`docs/AUTOMATION.md`, rewritten (not appended) on each reassessment, so
+the design document answers "what is built and is it working" without a
+reader reconstructing it from this log. Today's answer, in one line: the
+judging half works with evidence; the producing half is wired and has
+one promotion and one adoption to its name; two quiet failures (the
+never-posted digest, the unfunded seats) were found only because the
+founder asked why he had heard nothing.
+
+**The document diet.** Three documents now have three jobs — `AGENTS.md`
+(rules), `docs/AUTOMATION.md` (design and status), `docs/MAINTENANCE.md`
+(runbook) — and this log is history, not a manual. Removed: the Phase-1
+starter-kit documents that no live file referenced and that described a
+product superseded weeks ago (`STARTER_README.md`, `BOOTSTRAP_PROMPT.md`,
+`MOCKUP_REVIEW_CHECKLIST.md`, `ROADMAP.md` with its Phase-2 paste-prompt
+and human editorial phases, `PRODUCT_SPEC.md` still naming the Athanatos
+Evidence Atlas, `INFORMATION_ARCHITECTURE.md` with its six routes). Their
+live content, where any remained, is in AGENTS.md §1–2 and §7 and in the
+build order. The runbook was rewritten from 429 lines that interleaved
+how-to with the reasoning behind each mechanism into a one-page map of
+the machine, a feeding guide, and a symptom table; the reasoning stays
+here, once. `README.md` was brought current (ten cases, the three
+documents, the real route list). `CLAUDE.md` was already a symlink to
+`AGENTS.md` and needed nothing.
+
+**The simplification plan** is recorded in the status section rather than
+here, because it is a plan and will change: read the digest for two
+Mondays before building; make cadences say what they do; retire the epoch
+machinery if the lane fix holds; never add a loop, lane, label, or
+document without removing one.
+
+(AI record of a founder instruction, 2026-09-05 session.)

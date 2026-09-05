@@ -2,7 +2,100 @@
 
 **Status:** design confirmed by the founder, 2026-09-01 (see the DECISIONS
 entry of the same date). Build order at the bottom; nothing here is built
-until its own PR lands through the normal gates.
+until its own PR lands through the normal gates. The section immediately
+below is the running status report and is rewritten, not appended, on each
+reassessment; everything after it is the ratified design.
+
+## Where we are (reassessed 2026-09-05)
+
+The question the founder asked: is the loop — *update, surface what is
+useful, re-evaluate* — actually working? Answer in three parts.
+
+**The judging half works and has evidence.** Blind panels convene on every
+canon change and standing derives correctly (transients and YDIH ratified
+5/5; contested and unratified states display with their reasons). The
+arbiter has judged every `needs-approval` PR since 2026-08-25 and its
+parks have been substantively right more often than wrong — including
+parking its own repository's mistakes (#47's missing permission record,
+#55, the 2026-09-05 unfunded-seat park). Reassessment runs ~5 times a day
+and correctly does nothing when nothing changed. Reconciliation has run
+once and produced three honest standoffs. The editorial audit has made
+corrections that survived the panel.
+
+**The producing half is wired but has almost no track record.** In two
+weeks the pipes have produced: one promotion (SRC-FALL-2026 → ZW-E019,
+2026-09-01), three scored agenda runs, one adoption by founder direction,
+and two Bench-drafted study freezes that were founder-supervised through
+collection. Nearly every other verdict-moving event in the yield table is
+founder-directed construction, which is why all ten cases read "hot" — the
+metric has not yet had a quiet week to discriminate. The endorsement
+drafter (2026-09-02) has not yet had a scheduled run. The honest statement
+is: the machine can now produce, and the first unattended evidence arrives
+on the Mondays of 2026-09-07 and 2026-09-14.
+
+**Two things were not working, both fixed 2026-09-05.** (1) The weekly
+digest — the founder's one observer artifact — was never posted: the
+Maintain workflow lacked `issues: write`, and the failure was swallowed by
+a warning fallback on every run since 2026-08-25 (#167). Nothing routed to
+the digest has ever been seen. (2) Two panel seats were unfunded (OpenAI
+credits; xAI *monthly spending limit*), which closed the gate to every
+`needs-approval` change from 2026-09-03 until the founder restored them
+(#165 made the report say so). Neither is a design fault; both are the
+kind of quiet non-firing the design's own tests-over-mechanisms doctrine
+exists to catch, and both were found by asking why the founder had heard
+nothing, not by any monitor.
+
+### Build order — status
+
+| # | Step | Status |
+| --- | --- | --- |
+| 1 | Promotion pipe | **Built** (#148). One live promotion. |
+| 2 | Bench v2 | **Built** (#141, #149, #155). Backfill scored; endorsement drafter awaiting first scheduled run. |
+| 3 | Collection runner | Not built. No backlog yet: every frozen study is collected. Build when a Bench-drafted freeze merges with no one to collect it. |
+| 4a | Steelman field | **Built** (#163). Required from 2026-09-04. |
+| 4b | Sampling gloss audit | Deferred by founder direction. The largest unaddressed epistemic risk: no judge re-reads a source. |
+| 5 | Expedition | Not built. **Blocked on a founder decision**: provider and budget line. |
+| 6 | Researcher surface | Not built. Independent; the natural next build. |
+| 7 | Atelier | Not built. Founding inputs (its anchor) are committed for every case. |
+| 8 | Genesis | Deliberately manual. |
+
+### Simplification (founder direction, 2026-09-05: "as simple as possible")
+
+The workflow surface has grown faster than anyone's ability to hold it in
+one head. What exists: ten workflows, four Maintain jobs, three cadences
+(hourly, daily, weekly), a throttle with epochs and a supervision trailer,
+and three long documents. What to do about it, in order of payoff per
+line changed:
+
+1. **Three documents with three jobs, and nothing else.** `AGENTS.md`
+   (rules), this file (design + status), `docs/MAINTENANCE.md` (runbook:
+   what runs, what to check). `docs/DECISIONS.md` is history, not a
+   manual. The Phase-1 starter-kit documents (roadmap, product spec,
+   information architecture, mockup checklist, bootstrap prompt, starter
+   readme) were removed 2026-09-05; the runbook was rewritten from 429
+   lines of interleaved rationale to a one-page map plus a symptom table.
+   Rationale goes in DECISIONS once; it is not repeated in the runbook.
+2. **Read the digest for two Mondays before building anything.** Every
+   loop reports there. If the digest shows promotions, adoptions, and
+   re-panels happening without a chat session, the metabolism works and
+   the next build is step 6. If it shows nothing moving, the fault is in
+   the producing half and no new loop should be added on top of it.
+3. **Cadences should say what they do.** The content-response cron
+   requests hourly and receives ~5/day; the operator runs daily and most
+   days writes "nothing needed doing". Candidates once the digest has
+   data: make content-response four fixed times a day (same latency,
+   honest schedule), and make the operator event-driven (parked PR,
+   issue, quarantine) with a weekly sweep instead of a daily one. Both
+   are engine changes and should wait for the two Mondays.
+4. **Retire what the lane fix made redundant.** The `GATE_EPOCH` bumps
+   were a workaround for the throttle miscounting founder work; the
+   `Supervised-by` trailer fixed the count. If no epoch bump is needed
+   through September, remove the epoch machinery and the paragraphs
+   describing it.
+5. **Do not add** a new loop, a new lane, a new label, or a new document
+   without removing one. The five-loop design is complete as written;
+   what remains is executing steps 3, 5, 6, 7 of the build order — each
+   a script in `scripts/lib` with tests, none a new kind of thing.
 
 ## Purpose
 

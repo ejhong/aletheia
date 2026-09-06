@@ -149,8 +149,9 @@ export const OriginSchema = z.object({
  *   atomic statement anchored to a source, with provenance. Validation
  *   deliberately does not demand featured-level richness here.
  *
- * Promotion is a one-field edit: flip `tier` to `featured` and the build
- * fails loudly listing exactly which editorial fields are still missing.
+ * Legacy promotion changes `tier` and supplies the required editorial fields.
+ * Editions can instead select a catalog claim and take its interpretation
+ * from an assessment, leaving the anchored ledger record unchanged.
  */
 export const ClaimTier = z.enum(["featured", "catalog"]);
 export type ClaimTier = z.infer<typeof ClaimTier>;
@@ -532,6 +533,21 @@ export const ChangeLogEntrySchema = z.object({
 });
 export type ChangeLogEntry = z.infer<typeof ChangeLogEntrySchema>;
 
+/** Interpretation belongs to the assessment selected by an edition. It never
+ * changes the underlying proposition or gives an AI record human provenance. */
+const interpretationText = z.string().min(10).refine(value => value.trim().length >= 10,
+  "interpretation must contain an explanation");
+export const ClaimTreatmentSchema = z.object({
+  plainLanguage: interpretationText,
+  claimType: ClaimType,
+  importance: Importance,
+  diagnosticity: FeaturedClaimSchema.shape.diagnosticity,
+  diagnosticitySummary: interpretationText,
+  strongestObjection: interpretationText,
+  whatWouldChangeOurMind: z.array(interpretationText).min(1),
+}).strict();
+export type ClaimTreatment = z.infer<typeof ClaimTreatmentSchema>;
+
 /** One AI assessment run — an append-only overlay, never a mutation of canon. */
 export const AssessmentRunSchema = z
   .object({
@@ -597,6 +613,8 @@ export const AssessmentRunSchema = z
         verdict: AssessmentState,
         reasoning: z.string(),
         confidence: z.enum(["high", "moderate", "low"]),
+        /** Optional for immutable older runs; complete when supplied. */
+        treatment: ClaimTreatmentSchema.optional(),
       }),
     ),
     /**
@@ -617,7 +635,11 @@ export const AssessmentRunSchema = z
       });
     }
     const ids = run.claimAssessments.map((assessment) => assessment.claimId);
-    if (run.review && new Set(ids).size !== ids.length) {
+    const hasTreatment = run.claimAssessments.some(a => a.treatment);
+    if (hasTreatment && (run.role === "check" || !run.generatedAt)) {
+      context.addIssue({ code: "custom", message: "claim treatment requires a timestamped draft assessment" });
+    }
+    if ((run.review || hasTreatment) && new Set(ids).size !== ids.length) {
       context.addIssue({
         code: "custom",
         path: ["claimAssessments"],

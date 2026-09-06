@@ -3,6 +3,7 @@ import path from "node:path";
 import { parse } from "yaml";
 import { fingerprint } from "./review-state.mjs";
 import { readEditions } from "./edition-files.mjs";
+import { claimAssessmentIds } from "./claim-assessment-scope.mjs";
 
 /** Resolve a directory name or public slug without assuming they are identical. */
 export function resolveCaseDirectory(root, key) {
@@ -78,6 +79,17 @@ export function evidencePacket(files) {
     ...read("claims.yaml"),
     ...read("claims-catalog.yaml"),
   ].filter((c) => c.reviewState !== "rejected");
+  // The assessor receives all propositions, without the edition's prose,
+  // grades, treatment, or ordering. Include newly selected catalog IDs in
+  // its grading scope so these claims can receive independent checks too.
+  // readCaseSnapshot resolves the append-only chain once and supplies only its
+  // current edition. Never silently choose one if another caller violates that
+  // contract: an old selection could otherwise omit new claims from review.
+  const editionFiles = Object.keys(files).filter(file => file.startsWith("editions/"));
+  if (editionFiles.length > 1)
+    throw new Error("evidence packet requires only the current edition from readCaseSnapshot");
+  const [editionFile] = editionFiles;
+  const selected = editionFile ? read(editionFile, {}).featuredClaimIds ?? [] : [];
   return {
     case: {
       id: record.id,
@@ -85,9 +97,7 @@ export function evidencePacket(files) {
       question: record.whatIsClaimed,
       themes: record.themes,
     },
-    assessClaimIds: claims
-      .filter((c) => (c.tier ?? "featured") === "featured")
-      .map((c) => c.id),
+    assessClaimIds: claimAssessmentIds(claims, selected),
     claims: claims.map((c) => ({
       id: c.id,
       statement: c.statement,

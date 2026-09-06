@@ -4,7 +4,7 @@ import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { parse, stringify } from "yaml";
 import { afterEach, describe, expect, it } from "vitest";
-import { loadCase, displayAssessment } from "./load";
+import { loadCase, displayAssessment, ratification, reviewCoverage } from "./load";
 import { caseView } from "./caseView";
 import { topicSeed } from "../../scripts/lib/topic-seed.mjs";
 import { assessmentHash, fingerprint, currentChecks } from "../../scripts/lib/review-state.mjs";
@@ -12,7 +12,7 @@ import { readCaseSnapshot, evidencePacket } from "../../scripts/lib/case-snapsho
 import { readIntakeDecisions } from "../../scripts/lib/intake-store.mjs";
 import { seedEdition, validateEditionProposal, recordEditionProposal } from "../../scripts/lib/edition-proposals";
 import { EditionProposalSchema, type EditionProposal } from "./editionProposal";
-import type { AssessmentRun } from "./schema";
+import { AssessmentRunSchema, type AssessmentRun, type ClaimTreatment } from "./schema";
 
 const roots: string[] = [];
 afterEach(() => roots.splice(0).forEach(root => fs.rmSync(root, { recursive: true, force: true })));
@@ -63,6 +63,191 @@ function install(root: string, dir: string, proposal: EditionProposal) {
 function next(root: string, i = 2) {
   return seedEdition(root, "synthetic", { ...stamp, runId: `edition-fixture-${i}`, generatedAt: `2026-09-06T1${i}:00:00.000Z` });
 }
+
+const treatment: ClaimTreatment = {
+  plainLanguage: "Interpretation-only fixture wording for the current edition.",
+  claimType: "observation", importance: "major", diagnosticity: "low",
+  diagnosticitySummary: "The synthetic observation fits both explanations.",
+  strongestObjection: "The synthetic comparison lacks an independent control.",
+  whatWouldChangeOurMind: ["An independent synthetic control that separates the explanations."],
+};
+
+function catalogFixture() {
+  const { root, dir } = fixture(true);
+  const raw = loadCase(dir);
+  fs.writeFileSync(path.join(dir, "claims.yaml"), "[]\n");
+  fs.writeFileSync(path.join(dir, "claims-catalog.yaml"), stringify(raw.claims.map(claim => ({
+    id: claim.id, tier: "catalog", statement: claim.statement, theme: claim.theme, rung: claim.rung,
+    reviewState: claim.reviewState, origin: claim.origin, independenceGroup: "synthetic-shared-object",
+    sourceAnchor: { sourceId: "SRC-TST", locator: "Synthetic source passage." },
+  }))));
+  const proposal = seedEdition(root, "synthetic", stamp);
+  const assessment: AssessmentRun = { ...raw.assessmentRuns[0], runId: "interpreted",
+    model: "Synthetic interpretation model", generatedAt: "2026-09-06T09:30:00.000Z",
+    claimAssessments: raw.assessmentRuns[0].claimAssessments.map((claim, i) => i === 0
+      ? { ...claim, verdict: "well_supported", reasoning: "Synthetic local support does not establish the broader hypothesis.", treatment }
+      : claim),
+  };
+  proposal.assessment = assessment;
+  proposal.edition.assessment = { runId: assessment.runId, hash: assessmentHash(assessment) };
+  proposal.edition.featuredClaimIds = ["TST-C001"];
+  proposal.edition.article = "## Synthetic essay\n\n[The synthetic observation is credible locally.]{claim=TST-C001} It does not distinguish the explanations.";
+  return { root, dir, proposal, assessment };
+}
+
+function installConcurrence(dir: string, assessment: AssessmentRun) {
+  const loaded = loadCase(dir);
+  const scope = evidencePacket(readCaseSnapshot(dir).files).assessClaimIds;
+  for (const seat of ["alpha", "beta", "gamma", "delta"]) {
+    fs.writeFileSync(path.join(dir, `assessments/check-${seat}.yaml`), stringify({
+      ...assessment, runId: `check-${seat}`, role: "check", model: `${seat} (Vendor-${seat})`,
+      claimAssessments: assessment.claimAssessments.filter(a => scope.includes(a.claimId))
+        .map(({ treatment: ignored, ...a }) => { void ignored; return a; }),
+      review: { protocol: "case-snapshot-v1", contentHash: loaded.contentHash,
+        assessmentHash: assessmentHash(assessment), packetHash: loaded.reviewPacketHash },
+    }));
+  }
+}
+
+describe("assessment-owned claim interpretation", () => {
+  it("features a catalog observation through its edition without rewriting the proposition or provenance", () => {
+    const { root, dir, proposal } = catalogFixture();
+    const before = loadCase(dir);
+    const bytes = fs.readFileSync(path.join(dir, "claims-catalog.yaml"), "utf8");
+    install(root, dir, proposal);
+    const loaded = loadCase(dir);
+    const view = caseView(loaded);
+    expect(loaded.claims).toEqual(before.claims);
+    expect(fs.readFileSync(path.join(dir, "claims-catalog.yaml"), "utf8")).toBe(bytes);
+    expect(view.featured[0]).toMatchObject({ ...treatment, id: "TST-C001", credibility: "well_supported",
+      statement: before.claims[0].statement, origin: before.claims[0].origin,
+      independenceGroup: "synthetic-shared-object", reviewState: "ai_extracted",
+      assessment: { runId: "interpreted", standing: "unratified", treatment: true } });
+    expect(view.catalog.map(c => c.id)).toEqual(["TST-C002"]);
+    expect(new Set(view.claims.map(c => c.id)).size).toBe(2);
+    expect(view.claims).toHaveLength(2);
+    expect(reviewCoverage(loaded)).toEqual({ reviewed: 0, total: 1 });
+  });
+
+  it("keeps unadopted treatment out of the current presentation and preserves it for inspection", () => {
+    const { root, dir, proposal, assessment } = catalogFixture();
+    fs.writeFileSync(path.join(dir, "assessments/interpreted.yaml"), stringify(assessment));
+    const unadopted = caseView(loadCase(dir));
+    expect(unadopted.allFeatured).toEqual([]);
+    expect(unadopted.catalog).toHaveLength(2);
+    expect(loadCase(dir).assessmentRuns.some(run => run.claimAssessments.some(a => a.treatment))).toBe(true);
+    delete proposal.assessment;
+    proposal.edition.basis = seedEdition(root, "synthetic", stamp).edition.basis;
+    install(root, dir, proposal);
+    const later = { ...assessment, runId: "later-unadopted", generatedAt: "2026-09-06T11:00:00.000Z",
+      claimAssessments: assessment.claimAssessments.map(a => a.treatment
+        ? { ...a, treatment: { ...a.treatment, diagnosticity: "high" as const } } : a) };
+    fs.writeFileSync(path.join(dir, "assessments/later.yaml"), stringify(later));
+    expect(caseView(loadCase(dir)).featured[0].diagnosticity).toBe("low");
+  });
+
+  it("fails closed when a selected catalog claim lacks complete interpretation", () => {
+    const { root, proposal } = catalogFixture();
+    const incomplete = structuredClone(proposal);
+    delete incomplete.assessment!.claimAssessments[0].treatment;
+    incomplete.edition.assessment!.hash = assessmentHash(incomplete.assessment!);
+    expect(() => validateEditionProposal(root, incomplete)).toThrow(/without live editorial treatment/);
+    for (const bad of [
+      { ...treatment, plainLanguage: "             " },
+      { ...treatment, strongestObjection: "" },
+      { ...treatment, diagnosticitySummary: "             " },
+      { ...treatment, whatWouldChangeOurMind: [] },
+      { ...treatment, statement: "A treatment cannot replace the proposition." },
+    ]) {
+      const invalid = structuredClone(proposal);
+      Object.assign(invalid.assessment!.claimAssessments[0], { treatment: bad });
+      expect(EditionProposalSchema.safeParse(invalid).success).toBe(false);
+    }
+  });
+
+  it("preserves exact assessment bytes and requires timestamps, draft role, and unique judgments", () => {
+    const { assessment } = catalogFixture();
+    const raw = structuredClone(assessment);
+    raw.claimAssessments[0].treatment!.strongestObjection += "  ";
+    expect(assessmentHash(AssessmentRunSchema.parse(raw))).toBe(assessmentHash(raw));
+    expect(AssessmentRunSchema.safeParse({ ...raw, generatedAt: undefined }).success).toBe(false);
+    expect(AssessmentRunSchema.safeParse({ ...raw, role: "check" }).success).toBe(false);
+    expect(AssessmentRunSchema.safeParse({ ...raw, claimAssessments: [raw.claimAssessments[0], raw.claimAssessments[0]] }).success).toBe(false);
+  });
+
+  it("includes selected catalog claims in blind review without leaking their interpretation", () => {
+    const { root, dir, proposal } = catalogFixture();
+    install(root, dir, proposal);
+    const packet = evidencePacket(readCaseSnapshot(dir).files);
+    expect(packet.assessClaimIds).toEqual(["TST-C001"]);
+    expect(packet.claims).toHaveLength(2);
+    expect(JSON.stringify(packet)).not.toMatch(/Interpretation-only|diagnosticitySummary|strongestObjection|importance|Synthetic essay/);
+    const script = path.resolve("scripts/cross-model-check.mjs");
+    const report = JSON.parse(execFileSync(process.execPath, [script, "synthetic", "--dry-run"], { cwd: root, encoding: "utf8" }));
+    expect(report.claimCount).toBe(1);
+    expect(report.packet.assessClaimIds).toEqual(["TST-C001"]);
+    expect(execFileSync(process.execPath, [path.resolve("scripts/stale-checks.mjs")], { cwd: root, encoding: "utf8" }).trim()).toBe("synthetic");
+  });
+
+  it("reviews the latest selection across multiple editions and rejects an ambiguous snapshot", () => {
+    const { root, dir, proposal, assessment } = catalogFixture();
+    install(root, dir, proposal);
+    const second = next(root);
+    second.assessment = { ...assessment, runId: "second-catalog-assessment", generatedAt: "2026-09-06T11:30:00.000Z",
+      caseAssessment: { ...assessment.caseAssessment, loadBearing: ["TST-C002"] },
+      claimAssessments: assessment.claimAssessments.map(a => a.claimId === "TST-C002" ? { ...a, treatment } : a),
+    };
+    second.edition.assessment = { runId: second.assessment.runId, hash: assessmentHash(second.assessment) };
+    second.edition.featuredClaimIds = ["TST-C002"];
+    second.edition.article = "## Second synthetic essay\n\n[The other synthetic observation becomes the focus.]{claim=TST-C002}";
+    install(root, dir, second);
+
+    const snapshot = readCaseSnapshot(dir);
+    expect(snapshot.editions).toHaveLength(2);
+    expect(snapshot.edition?.runId).toBe(second.edition.runId);
+    expect(Object.keys(snapshot.files).filter(file => file.startsWith("editions/")))
+      .toEqual([`editions/${second.edition.runId}.yaml`]);
+    expect(evidencePacket(snapshot.files).assessClaimIds).toEqual(["TST-C002"]);
+    const report = JSON.parse(execFileSync(process.execPath, [path.resolve("scripts/cross-model-check.mjs"), "synthetic", "--dry-run"],
+      { cwd: root, encoding: "utf8" }));
+    expect(report.packet.assessClaimIds).toEqual(["TST-C002"]);
+
+    // A carried-over treatment outside this edition's scope must not inherit
+    // its standing. The independent checks here grade only the new selection.
+    installConcurrence(dir, second.assessment);
+    const loaded = loadCase(dir);
+    const view = caseView(loaded);
+    expect(ratification(loaded)?.status).toBe("ratified");
+    expect(view.allFeatured.map(c => c.id)).toEqual(["TST-C002"]);
+    expect(view.catalog.map(c => c.id)).toEqual(["TST-C001"]);
+    expect(loaded.assessmentRuns.find(run => run.runId === second.assessment!.runId)
+      ?.claimAssessments.find(a => a.claimId === "TST-C001")?.treatment).toEqual(treatment);
+
+    const oldFile = `editions/${proposal.edition.runId}.yaml`;
+    const ambiguous = { [oldFile]: fs.readFileSync(path.join(dir, oldFile), "utf8"), ...snapshot.files };
+    expect(() => evidencePacket(ambiguous)).toThrow(/only the current edition/);
+    expect(() => evidencePacket(Object.fromEntries(Object.entries(ambiguous).reverse())))
+      .toThrow(/only the current edition/);
+  });
+
+  it("requires fresh concurrence after an edition changes interpretation while preserving the earlier assessment", () => {
+    const { root, dir, proposal, assessment } = catalogFixture();
+    install(root, dir, proposal);
+    installConcurrence(dir, assessment);
+    expect(ratification(loadCase(dir))?.status).toBe("ratified");
+    const revised = next(root);
+    revised.assessment = { ...assessment, runId: "reinterpreted", generatedAt: "2026-09-06T11:30:00.000Z",
+      claimAssessments: assessment.claimAssessments.map(a => a.treatment
+        ? { ...a, treatment: { ...a.treatment, importance: "headline" } } : a) };
+    revised.edition.assessment = { runId: revised.assessment.runId, hash: assessmentHash(revised.assessment) };
+    install(root, dir, revised);
+    const after = loadCase(dir);
+    expect(caseView(after).featured[0].importance).toBe("headline");
+    expect(ratification(after)?.status).toBe("unratified");
+    expect(ratification(after)?.panel).toBe(0);
+    expect(after.assessmentRuns.find(run => run.runId === assessment.runId)).toEqual(AssessmentRunSchema.parse(assessment));
+  });
+});
 
 describe("versioned edition proposals", () => {
   it("preserves an unassessed opening without inventing a judgment or changing its prose", () => {

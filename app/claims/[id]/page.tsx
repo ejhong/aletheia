@@ -3,11 +3,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AssessmentBadge } from "@/src/components/AssessmentBadge";
+import { ClaimAssessmentHistory } from "@/src/components/ClaimAssessmentHistory";
 import { EvidenceCard } from "@/src/components/EvidenceCard";
 import { LinkedRecordText } from "@/src/components/LinkedRecordText";
 import { Plate } from "@/src/components/Plate";
 import { ProvenanceBadge } from "@/src/components/ProvenanceBadge";
-import { liveClaims, loadAllCases } from "@/src/domain/load";
+import { loadAllCases } from "@/src/domain/load";
 import { paramsOrPlaceholder } from "@/src/domain/staticExport";
 import {
   assessmentStateCaptions,
@@ -49,10 +50,7 @@ function GenealogyLine({ genealogy }: { genealogy: ClaimGenealogy }) {
 
 function allLiveClaims(): { claim: Claim; loaded: LoadedCase }[] {
   return loadAllCases().flatMap((loaded) =>
-    [
-      ...caseView(loaded).allFeatured,
-      ...liveClaims(loaded).filter((c) => !isFeatured(c)),
-    ].map((claim) => ({ claim, loaded })),
+    caseView(loaded).claims.map((claim) => ({ claim, loaded })),
   );
 }
 
@@ -87,6 +85,7 @@ function CatalogClaimView({
     ? sourceById.get(claim.sourceAnchor.sourceId)
     : null;
   const evidence = loaded.evidence.filter((e) => e.claimIds.includes(claim.id));
+  const hasAssessment = loaded.assessmentRuns.some(run => run.claimAssessments.some(a => a.claimId === claim.id));
   return (
     <div>
       <section className="bg-dossier text-dossier-text">
@@ -183,14 +182,15 @@ function CatalogClaimView({
 
         <section className="border border-line bg-paper-deep/50 p-5">
           <h2 className="font-mono text-[11px] uppercase tracking-[0.18em] text-copper">
-            Assessment still to come
+            {hasAssessment ? "Assessment awaiting adoption" : "Assessment still to come"}
           </h2>
           <p className="mt-2.5 text-[14.5px] leading-relaxed text-ink-soft max-w-3xl">
-            This claim has been recorded with its provenance. Its credibility
+            {hasAssessment ? "Judgments are recorded below. The current essay has not adopted a full assessment of this claim." : <>This claim has been recorded with its provenance. Its credibility
             and how much it distinguishes competing explanations have yet to
-            receive a full assessment.
+            receive a full assessment.</>}
           </p>
         </section>
+        <ClaimAssessmentHistory claimId={claim.id} runs={loaded.assessmentRuns} />
       </div>
     </div>
   );
@@ -210,7 +210,7 @@ export default async function ClaimPage({
   }
   const view = caseView(loaded);
   const displayedClaim = view.allFeatured.find((c) => c.id === id)!;
-  const claims = liveClaims(loaded);
+  const claims = view.claims;
   const claimById = new Map(claims.map((c) => [c.id, c]));
   const sourceById = new Map(loaded.sources.map((s) => [s.id, s]));
 
@@ -220,12 +220,6 @@ export default async function ClaimPage({
   const children = claims.filter(
     (c) => isFeatured(c) && c.parentClaimIds.includes(id),
   );
-  const assessmentHistory = loaded.assessmentRuns
-    .map((run) => ({
-      run,
-      entry: run.claimAssessments.find((ca) => ca.claimId === id),
-    }))
-    .filter((x) => x.entry);
   const research = loaded.research.filter((r) => r.claimIds.includes(id));
   const plates = loaded.images.filter(
     (img) => img.role === "plate" && img.claimIds.includes(id),
@@ -325,7 +319,7 @@ export default async function ClaimPage({
           </div>
           <div className="bg-paper p-5">
             <h2 className="font-mono text-[11px] uppercase tracking-[0.18em] text-faint">
-              recorded diagnosticity — how much does it decide the thesis?
+              {displayedClaim.assessment?.treatment ? "diagnosticity" : "recorded diagnosticity"} — how much does it decide the thesis?
             </h2>
             <p className="mt-2.5 font-mono text-[13px] uppercase tracking-[0.14em] text-copper">
               {claim.diagnosticity}
@@ -333,6 +327,11 @@ export default async function ClaimPage({
             <p className="mt-3 text-[14px] leading-relaxed text-ink-soft">
               <LinkedRecordText text={claim.diagnosticitySummary} />
             </p>
+            {displayedClaim.assessment?.treatment ? (
+              <p className="mt-3 text-[12px] text-faint">
+                AI interpretation · {displayedClaim.assessment.date} · {displayedClaim.assessment.standing}
+              </p>
+            ) : null}
           </div>
         </section>
 
@@ -437,40 +436,7 @@ export default async function ClaimPage({
           </section>
         ) : null}
 
-        {/* Assessment history (overlay records) */}
-        {assessmentHistory.length > 0 ? (
-          <section className="mt-10">
-            <h2 className="font-serif text-2xl tracking-tight">
-              Assessment history
-            </h2>
-            <p className="mt-1 text-[13px] text-faint">
-              Append-only AI overlay records; the canon claim file is never
-              mutated.
-            </p>
-            <div className="mt-4 space-y-3">
-              {assessmentHistory.map(({ run, entry }) => (
-                <div
-                  key={run.runId}
-                  className="border border-line bg-paper p-4"
-                >
-                  <div className="flex flex-wrap items-center gap-3">
-                    <AssessmentBadge state={entry!.verdict} />
-                    <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-faint">
-                      confidence: {entry!.confidence} · {run.model} · run{" "}
-                      {run.runId} ·{" "}
-                      {run.humanReviewed
-                        ? "human-reviewed"
-                        : "unreviewed draft"}
-                    </span>
-                  </div>
-                  <p className="mt-2 text-[14px] leading-relaxed text-ink-soft">
-                    <LinkedRecordText text={entry!.reasoning} />
-                  </p>
-                </div>
-              ))}
-            </div>
-          </section>
-        ) : null}
+        <ClaimAssessmentHistory claimId={id} runs={loaded.assessmentRuns} displayedRunId={displayedClaim.assessment?.runId} />
       </div>
     </div>
   );

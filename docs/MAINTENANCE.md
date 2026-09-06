@@ -68,6 +68,16 @@ basis against current main, and adopt the new edition and any new assessment
 together in an ordinary PR. The first adoption also removes `overview.md`;
 append a case changelog entry in the same PR. No command publishes directly.
 
+To feature a catalog claim, include its ID in the edition's `featuredClaimIds`
+and provide a complete `claimAssessments[].treatment` in the assessment it
+references (fields in `docs/DATA_MODEL.md`). Keep the claim's original statement,
+anchor, origin, and stored tier. The validator rejects incomplete treatment;
+the view reads the adopted assessment's verdict, importance, diagnosticity,
+explanation, and objections together. A new draft alone cannot change the
+featured set. Earlier interpretations remain in claim history. Blind checks
+include selected catalog claims and must match the new edition and assessment
+before standing can rise. These commands still make no model calls.
+
 Deep Memory is the first migrated case. Its current assessment is pinned by the
 edition, or explicitly absent. Legacy reassessment can still produce candidate
 overlays but skips its old article patcher for migrated cases. Legacy contested

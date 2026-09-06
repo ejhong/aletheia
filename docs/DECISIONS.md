@@ -904,10 +904,13 @@ workers remain until the edition writer implements that comparison.
 
 ## 2026-09-05 — Blank-topic pilot: the shared-symbols and myths question
 
-The founder replaced the generic plant-sound trial with the question explored
-in the birdmen project: proposed Göbekli Tepe parallels, bird figures, handled
-shapes, pig and lizard imagery, culture-bringer stories, and flood traditions.
-The implementation proposal uses the working title **Deep Memory**, asks
+This implementation replaces the generic plant-sound trial with the question
+explored on the public [birdmen site](https://ejhong.github.io/birdmen/):
+proposed Göbekli Tepe parallels, bird figures, handled shapes, culture-bringer
+stories, and flood traditions. The founding brief also links public excavation
+discussions of boar imagery and disputed reptile/felid identifications as
+starting points for the animal strand.
+The proposal uses the working title **Deep Memory**, asks
 whether shared symbols and myths preserve a common prehistoric inheritance,
 and starts with the visual comparisons. Narrative traditions remain in scope
 with their own source histories and assessments. Resemblance, transmission,
@@ -917,9 +920,14 @@ and a lost-civilization explanation remain distinct propositions.
 research brief records scope, alternatives, a first investigation, and the
 relationship to prior work through the existing inputs manifest. It contains
 no claims, evidence, sources, studies, or assessments and is not published.
-The birdmen site and local inputs informed this scoping, but their findings
-and raw materials are not imported. This tests startup from a research
-question, not blind rediscovery of an unseen topic.
+The public birdmen site supplies earlier exploratory work; its findings are
+not imported. This tests startup from a research question, not blind
+rediscovery of an unseen topic.
 
-(AI record of the founder's topic selection and the assistant's proposed
-framing, 2026-09-05 Pacific / 2026-09-06 UTC.)
+The arbiter parked the initial scope for citing a comparison drawn from
+supplied local material without a publication-permission record. That
+comparison and the private-input references have been removed. The revised
+brief records only public-source research leads and AI-proposed framing;
+it does not create or infer a permission record.
+
+(AI implementation record, 2026-09-05 Pacific / 2026-09-06 UTC.)

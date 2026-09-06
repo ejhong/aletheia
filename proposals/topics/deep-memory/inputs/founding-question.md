@@ -4,9 +4,9 @@
 inheritance?
 
 AI-authored scoping proposal, Codex (GPT-6), 2026-09-06 UTC / 2026-09-05 Pacific.
-The founder selected the topic and pointed to the birdmen project and its
-inputs. The scope below is an implementation proposal, not a research finding
-or a claim that the founder endorses an explanation.
+This is an implementation proposal based on the public birdmen site and
+the excavation-project publications linked below. It is not a research
+finding or a statement attributed to the founder.
 
 ## One case, several distinguishable questions
 
@@ -36,7 +36,7 @@ match and must be checked before interpreting it historically.
 | Strand | Starting leads | First task |
 | --- | --- | --- |
 | Images | Pillar 43 and proposed Rapa Nui parallels; bird and bird-human figures; the bird-and-disc comparison; handled shapes described as handbags | Identify the actual objects and complete scenes, then separate visible form from inferred identity or meaning. |
-| Animal forms | The supplied pig/boar and lizard/reptile comparisons, including the image labelled Lingjiatan | Recover object records, dates, and comparable views. These labels are search leads, not verified identifications. |
+| Animal forms | Boar imagery and the animal forms variously interpreted as reptiles or felids in the excavation project's Enclosure C and Enclosure B discussions, linked below | Recover object records and comparable views, then identify possible cross-cultural comparisons. Treat species identification itself as a question. |
 | Culture-bringer traditions | Proposed correspondences among Oannes, Viracocha, Quetzalcoatl, and other teaching figures | Locate early attestations and distinguish episodes, translations, later retellings, and possible contact histories. |
 | Flood traditions | Proposed shared narrative details and memories of catastrophe | Trace individual versions and their dependencies before comparing them; distinguish shared experience from a shared story. |
 
@@ -69,15 +69,20 @@ The [Deep Memory site](https://ejhong.github.io/birdmen/) and its
 [repository](https://github.com/ejhong/birdmen) supply the motivation and
 earlier exploratory methods. Their image, myth, culture-hero, and flood
 pilots are prior work to inspect, including their revisions and limitations.
-They are not independently verified findings in this ledger. The founder's
-local image inputs were consulted for scoping; no raw images or chat text
-are copied into this proposal.
+They are not independently verified findings in this ledger. This recorded
+brief uses the public project as its discovery reference. It contains no
+specific comparisons sourced only to supplied local images or conversations.
 
 An initial primary-source route is the Göbekli Tepe research project's
 [Pillar 43 discussion](https://www.dainst.blog/the-tepe-telegrams/2016/10/14/of-animals-and-a-headless-man-gobekli-tepe-pillar-43/).
 Use it to find the excavation photographs and underlying publications, then
 record the exact observation and locator for any claim admitted. This link
-is a research lead, not a source record or a verification label.
+is a research lead, not a source record or a verification label. The animal
+strand starts from the project's public discussions of
+[boars in Enclosure C](https://www.dainst.blog/the-tepe-telegrams/2016/07/15/boars-in-gobekli-tepes-enclosure-c-just-a-story-of-hunters-and-prey/)
+and [Enclosure B](https://www.dainst.blog/the-tepe-telegrams/2017/02/03/enclosure-b-a-short-overview/).
+The latter explicitly leaves the reptile/felid identification open. No
+cross-cultural animal pairing is admitted here on the basis of an image alone.
 
 This is a **question-seeded pilot with an empty evidence ledger**. Its scope
 was informed by earlier work, so it cannot be reported as a blind rediscovery

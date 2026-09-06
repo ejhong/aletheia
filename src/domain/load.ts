@@ -11,7 +11,7 @@ import {
   fingerprint,
   currentChecks,
   latestChecks,
-  latestDraft,
+  editionDraft,
   missingReviewCoverage,
 } from "../../scripts/lib/review-state.mjs";
 import { extractClaimRefs, extractPlateRefs } from "./article.ts";
@@ -326,12 +326,16 @@ export function sourceAdmissionErrors(
 
 export function loadCase(caseDir: string): LoadedCase {
   const record = CaseSchema.parse(readYaml(caseDir, "case.yaml"));
+  const snapshot = readCaseSnapshot(path.resolve(CONTENT_DIR, caseDir));
 
   const overviewPath = path.resolve(CONTENT_DIR, caseDir, "overview.md");
-  if (!fs.existsSync(overviewPath)) {
+  if (!snapshot.edition && !fs.existsSync(overviewPath)) {
     throw new ContentError(caseDir, "missing required file overview.md");
   }
-  const overviewMarkdown = fs.readFileSync(overviewPath, "utf8");
+  if (snapshot.edition && fs.existsSync(overviewPath)) {
+    throw new ContentError(caseDir, "versioned editions replace overview.md; keep one current article authority");
+  }
+  const overviewMarkdown = snapshot.edition?.article ?? fs.readFileSync(overviewPath, "utf8");
 
   const claims = parseList<Claim>(
     caseDir,
@@ -560,9 +564,9 @@ export function loadCase(caseDir: string): LoadedCase {
     }
   }
 
-  const snapshot = readCaseSnapshot(path.resolve(CONTENT_DIR, caseDir));
   const loaded: LoadedCase = {
     contentHash: snapshot.contentHash,
+    ledgerHash: snapshot.ledgerHash,
     reviewPacketHash: fingerprint(evidencePacket(snapshot.files)),
     record,
     overviewMarkdown,
@@ -572,6 +576,7 @@ export function loadCase(caseDir: string): LoadedCase {
     research,
     history,
     assessmentRuns,
+    editions: snapshot.editions,
     images,
     watch,
     curatedResources,
@@ -579,6 +584,21 @@ export function loadCase(caseDir: string): LoadedCase {
     studies,
     narrativeInputs,
   };
+  for (const edition of loaded.editions) {
+    const assessment = editionDraft(assessmentRuns, edition);
+    if (edition !== loaded.editions.at(-1)) continue;
+    for (const id of edition.featuredClaimIds) {
+      const claim = claims.find(c => c.id === id);
+      if (!claim || !isFeatured(claim) || claim.reviewState === "rejected")
+        throw new ContentError(caseDir, `edition features a claim without live editorial treatment: ${id}`);
+      if (!assessment?.claimAssessments.some(a => a.claimId === id))
+        throw new ContentError(caseDir, `edition lacks an assessment for featured claim: ${id}`);
+    }
+    for (const id of assessment?.caseAssessment.loadBearing ?? []) {
+      if (!edition.featuredClaimIds.includes(id))
+        throw new ContentError(caseDir, `edition omits load-bearing claim: ${id}`);
+    }
+  }
   checkIntegrity(caseDir, loaded);
   return loaded;
 }
@@ -647,11 +667,11 @@ export function latestAssessment(loaded: LoadedCase): AssessmentRun | null {
   return loaded.assessmentRuns.at(-1) ?? null;
 }
 
-/** The latest draft-role run — cross-model check runs never narrate. */
+/** The edition's chosen draft, or the latest legacy draft. Checks never narrate. */
 export function latestDraftAssessment(
   loaded: LoadedCase,
 ): AssessmentRun | null {
-  return latestDraft(loaded.assessmentRuns);
+  return editionDraft(loaded.assessmentRuns, loaded.editions.at(-1));
 }
 
 /**
@@ -850,12 +870,10 @@ export function survivingObjections(
 }
 
 /**
- * The assessment to display: always the latest draft, stamped with its
- * ratification standing. No run is hidden behind a newer one — the
- * narrative is current by construction, and the standing badge tells the
- * reader exactly how much independent concurrence stands behind it.
- * (The pre-pivot rule gated display on humanReviewed; no run ever carried
- * it, and if one ever does, the run's own field still records it.)
+ * Display the assessment selected by the current edition, with standing
+ * derived from receipts for the exact current content. A newer unadopted
+ * draft cannot change the verdict beneath a saved essay. Legacy cases use
+ * their latest draft; all runs remain available in assessment history.
  */
 export function displayAssessment(
   loaded: LoadedCase,

@@ -48,6 +48,20 @@ export function latestDraft(runs) {
   );
 }
 
+/** The published edition owns selection. New assessment drafts do not replace
+ * its essay's judgment until an edition explicitly adopts them.
+ * @param {Run[]} runs
+ * @param {import('../../src/domain/schema').Edition | null | undefined} edition
+ */
+export function editionDraft(runs, edition) {
+  if (!edition) return latestDraft(runs);
+  if (!edition.assessment) return null;
+  const run = runs.find(r => r.runId === edition.assessment.runId);
+  if (!run || run.role === "check" || assessmentHash(run) !== edition.assessment.hash)
+    throw new Error(`missing or changed edition assessment: ${edition.assessment.runId}`);
+  return run;
+}
+
 /** New drafts rest on exact evidence packets. Legacy runs use their existing
  * timestamp until their next actual reassessment supplies an input receipt.
  * @param {Run | null} run

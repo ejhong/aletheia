@@ -627,6 +627,30 @@ export const AssessmentRunSchema = z
   });
 export type AssessmentRun = z.infer<typeof AssessmentRunSchema>;
 
+const EditionHash = z.string().regex(/^[a-f0-9]{64}$/);
+export const EditionSchema = z.object({
+  version: z.literal(1),
+  runId: z.string().regex(/^[a-z0-9][a-z0-9._-]{1,119}$/),
+  generatedAt: z.string().datetime(),
+  model: z.string().min(1),
+  promptVersion: z.string().min(1),
+  rationale: z.string().min(10),
+  basis: z.object({
+    contentHash: EditionHash,
+    inputsHash: EditionHash,
+    ledgerHash: EditionHash,
+    incumbentHash: EditionHash,
+  }).strict(),
+  previous: z.object({ runId: z.string(), hash: EditionHash }).strict().nullable(),
+  /** Reference the actual assessment; never relabel its model as the editor. */
+  assessment: z.object({ runId: z.string(), hash: EditionHash }).strict().nullable(),
+  featuredClaimIds: z.array(z.string()).refine(ids => new Set(ids).size === ids.length,
+    "an edition cannot feature the same claim twice"),
+  /** One atomic file binds the essay and its selected assessment. */
+  article: z.string().min(40),
+}).strict();
+export type Edition = z.infer<typeof EditionSchema>;
+
 /**
  * From this date every assessment run — draft, check, reconsideration —
  * must carry caseAssessment.steelman. Earlier runs are append-only
@@ -1015,6 +1039,8 @@ export type NarrativeInput = z.infer<typeof NarrativeInputSchema>;
 export interface LoadedCase {
   /** Exact reader-facing input snapshot, excluding reviews and operational state. */
   contentHash: string;
+  /** The ledger alone, so a published edition can disclose later changes. */
+  ledgerHash: string;
   /** Recomputed from the same blind packet builder used by the check runner. */
   reviewPacketHash: string;
   record: CaseRecord;
@@ -1026,6 +1052,8 @@ export interface LoadedCase {
   history: ChangeLogEntry[];
   /** Sorted by date ascending; last entry is the latest run. */
   assessmentRuns: AssessmentRun[];
+  /** A single append-only chain, oldest first. Empty for legacy cases. */
+  editions: Edition[];
   images: ImageRecord[];
   /** Optional literature-watch config (watch.yaml). */
   watch: WatchConfig | null;

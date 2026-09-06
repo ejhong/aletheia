@@ -592,6 +592,8 @@ describe("ratification governance (stage 3)", () => {
     const originalHash = fingerprint("original content");
     return {
       record: { lastReviewed: "2026-01-01" },
+      editions: [],
+      ledgerHash: originalHash,
       reviewPacketHash: fingerprint("packet"),
       contentHash: history.some((h) => h.kind !== "housekeeping")
         ? fingerprint("changed content")
@@ -734,7 +736,7 @@ describe("ratification governance (stage 3)", () => {
     expect(r?.contestedLoadBearing).toEqual(["C1"]);
   });
 
-  it("displayAssessment always shows the latest draft, stamped with its standing", () => {
+  it("legacy displayAssessment shows the latest draft, stamped with its standing", () => {
     const shown = displayAssessment(
       caseWith([
         mkDraft("old", "2026-01-01", "mixed"),

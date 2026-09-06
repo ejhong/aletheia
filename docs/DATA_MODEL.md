@@ -1,6 +1,6 @@
 # Aletheia Data Model
 
-Four core objects — **Case, Claim, Evidence, Source** — plus append-only **assessment overlays** and supporting records (research opportunities, change log). Assessments, relationships, and provenance are fields or overlay records, not separate top-level object types. The authoritative schema is the Zod definitions in `src/domain/schema.ts`; this document explains the concepts.
+Four core objects — **Case, Claim, Evidence, Source** — plus append-only **assessments and editions** and supporting records (research opportunities, change log). The authoritative schema is the Zod definitions in `src/domain/schema.ts`; this document explains the concepts.
 
 ## Intake decisions
 
@@ -62,7 +62,7 @@ of the original review. These source checks do not ratify a case assessment.
 Content is layered and reversible:
 
 - **Canon layer** — the claim/evidence/source files. Human-editable, versioned in git. A claim's *statement* never silently changes; corrections are new revisions in git history.
-- **Overlay layer** — AI-generated assessments in `assessments/<runId>.yaml`. Append-only: a new run adds a new file; nothing mutates the canon. Every AI-generated record carries a `runId`, model label, date, and prompt version. The UI shows the latest overlay and can show history.
+- **Current edition** — the essay, ordered selection, and an optional reference to an immutable assessment. Deep Memory uses `editions/<runId>.yaml`; other cases still compose `overview.md`, legacy featured records, and the latest draft assessment through `CaseView`. Original assessment authorship and review history remain in `assessments/<runId>.yaml`.
 
 ## Content folder layout
 
@@ -161,6 +161,39 @@ One file per run: `runId`, `model`, `date`, `promptVersion`, plus:
 - `caseAssessment` — the structural roll-up: verdict state, `loadBearing` (which claims the thesis actually rests on), `weakestLinks`, and an argued `synthesis` in prose. Not a score.
 - `claimAssessments[]` — `{claimId, verdict, reasoning, confidence}` per claim.
 
+## Edition
+
+`editions/<runId>.yaml` binds the current reader-facing essay and selection to
+an assessment without duplicating that assessment. `assessment` is either
+`{runId, hash}` or null; null is a valid unassessed opening. The assessment's
+original model/date stay intact. The edition has its own author, timestamp,
+prompt version, rationale, ordered `featuredClaimIds`, and inline `article`.
+Its basis records content, founding-input, ledger, and incumbent hashes.
+
+The first edition has no predecessor; each later edition references its
+predecessor's ID and hash and has a later timestamp. There is one chain and no
+separate current pointer. The newest edition is displayed, even when a newer
+unadopted assessment draft exists. `overview.md` must be removed when the first
+edition is adopted; its exact text survives in that edition and git history.
+Historical essays are readable at `/cases/<slug>/editions/<runId>/`. Those pages
+preserve essay and assessment, with links and photographic captions resolved
+against current records rather than a complete historical ledger snapshot.
+
+An `EditionProposal` can include a new AI draft assessment in the same validated
+bundle. It cannot overwrite or relabel an existing assessment as human-reviewed.
+The authoring tools check its exact basis, build a prospective case, and use the
+production loader before recording a typed `edition-proposal` intake decision
+or writing a new review directory. Current selection must reference live claims
+with editorial treatment and include the chosen assessment's load-bearing
+claims. Article references and required plates follow the existing checks.
+
+The current edition enters content receipts; the ledger hash excludes its
+article and prior editions. Ledger changes invalidate old review receipts while
+the incumbent stays readable with a revision notice. Structural validity does
+not ratify selection or prose: new editions use the consequential-content gate.
+Only Deep Memory is migrated. Legacy featured fields remain the source for
+diagnosticity, objections, and component framing until their writers migrate.
+
 ## ResearchOpportunity
 
 Crux-directed projects: title, summary, affected `claimIds`, effort tier, expected information gain, RFP topic reference (T-number), track (prize/grant).
@@ -179,4 +212,4 @@ Overview articles are different: they use the inline claim-span syntax `[readabl
 
 ## Integrity rules (enforced at build time)
 
-The loader fails the build loudly on: dangling claim/evidence/source/assessment IDs, claim refs in `overview.md` that don't resolve, dependency references to rejected claims, and any schema violation. No silent data repair.
+The loader fails the build loudly on: dangling claim/evidence/source/assessment IDs, unresolved current article references, dependency references to rejected claims, invalid edition chains or assessment bindings, and any schema violation. No silent data repair.

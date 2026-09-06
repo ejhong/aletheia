@@ -86,15 +86,59 @@ scheduled research worker.
 | 3 | Blank-topic starting path | Implemented in PR #172. `start-case.mjs` creates an incubating proposal from a question, with no invented evidence, priority, or review. The production loader and view accept it; judgment runners skip it until it has assessable evidence. This tests startup, not autonomous discovery. |
 | 4 | Shared proposal memory and intake diff | Durable history for watch, promotion, and agenda; a common change envelope now validates bundles and before/after edits through the production loader, including empty topics. Source identity and identical wording are mechanical; semantic overlap remains a review question. Older producers still need adapters to the common envelope. |
 | 5 | Bounded research and source-reading checks | A manual reader accepts up to two public HTML/text URLs, drafts narrow observations, and obtains a separate reading check, with explicit source/request/token/time/spend limits. Failed retrievals remain visible. Broad discovery, PDF/OCR, and shared research-plus-publication budgeting remain to build. |
-| 6 | Versioned edition drafting | Extend the existing append-only assessment artifact with selection and essay references, using the shared view as the compatibility boundary. Migrate one case, preserving its incumbent and history. Blind assessment precedes inspection of the candidate edition; prose remains behind the consequential-content gate. |
+| 6 | Versioned edition drafting | The authoring and validation path now binds an essay, ordered selection, and optional exact assessment reference in one immutable edition. Deep Memory preserves its opening as the first saved edition. Proposals bind to current inputs, rest unchanged candidates, and pass the production loader before review. Automatic model drafting, candidate comparison, and migration of assessed cases remain to build. |
 | 7 | Pilot, measure, and widen | Exercise geopolymer, transients, and Deep Memory, the founder-selected topic about shared symbols and myths (`content/cases/deep-memory/`). Its empty starting point is preserved in PR #179; the illustrated opening adopts the first checked catalog observation. Its scope is informed by the birdmen project, so this is not blind rediscovery. Compare accepted changes and reading quality with the incumbent, under a single enforced budget covering research and review. The archived chats are design references and a possible held-out discovery benchmark, not an import queue. Expand only after unattended runs improve actual cases. |
 
-The first two steps deliberately do not relocate every editorial field.
+The migration deliberately does not relocate every editorial field at once.
 Diagnosticity, component judgments, framing, and selection still originate
 in legacy records and are labeled as recorded interpretation in the UI.
-`CaseView` is the migration boundary. The unified edition writer and aggregate
+`CaseView` is the migration boundary. The automated edition writer and aggregate
 research-plus-publication accounting are still to build. The manual reader's
 local budget is not that aggregate budget.
+
+### Versioned editions: the first authoring path
+
+An edition is `editions/<runId>.yaml`: the essay, ordered featured claim IDs,
+the reason for this revision, exact input hashes, and a predecessor reference.
+It names an immutable assessment by run ID and hash, or explicitly leaves the
+question unassessed. Reusing an assessment preserves its original authorship;
+assembling an opening essay does not impersonate an assessment model. The
+manifest is the publication unit, with no mutable current pointer. Earlier
+editions form a validated chain and have readable archive pages.
+
+`prepare-edition.ts` captures the incumbent. `review-edition.ts` reports changes,
+validates the whole proposed case, records a typed proposal in the existing
+intake store, and can materialize a new review directory. These commands make
+no model calls. Unchanged substance on the same inputs rests. Stale proposals,
+broken histories, invalid claim/plate references, and altered assessment hashes
+fail validation. The selected assessment's load-bearing claims must remain
+selected. Source interpretation and omissions still require independent review;
+these structural checks do not settle them.
+
+The current edition replaces `overview.md` for a migrated case. New assessment
+drafts remain available but cannot silently change its displayed verdict. Its
+exact bytes enter the content receipt; historical editions do not invalidate
+current checks. A ledger change resets standing and displays a quiet notice
+that the edition reflects earlier inputs; a useful investigation may still
+retain it unchanged. The archive preserves the essay and
+assessment, while record links and image captions resolve against today's
+ledger; it is not a snapshot of every old page.
+
+Only Deep Memory is migrated in this step. The old editorial audit does not
+patch a versioned essay, and legacy reconciliation retains its incumbent until
+an edition proposal is ready. Other cases continue through their existing
+workers. New editions remain consequential content under the normal PR arbiter.
+The model drafter and its independent candidate review must work before moving
+assessed cases to this path. No new schedule or paid worker is enabled here.
+
+Inbox notes and links, literature watch, inward-looking agenda proposals, and
+the planned browsing Expedition are adapters to the same research-proposal
+interface. The bounded supplied-URL reader already exercises it. Inbox/watch
+still use their older production adapters; they must migrate before the common
+path can claim to handle all inputs. Shared spend accounting across research,
+drafting, and review precedes unattended Expedition runs. An accepted ledger
+change should then prompt an edition candidate, with retaining the incumbent
+always available.
 
 ### First source-reading trial
 

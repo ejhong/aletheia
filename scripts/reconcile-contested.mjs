@@ -95,6 +95,12 @@ async function reconcile(dir) {
   const draft = latestDraft(runs);
   if (!draft) return null;
   const snapshot = readCaseSnapshot(path.join(CASES, dir));
+  // Versioned cases retain their selected assessment until an edition adopts
+  // its replacement. The edition author must explicitly engage these dissents.
+  if (snapshot.edition) {
+    console.error(`${dir}: reconsideration belongs in an edition proposal; incumbent retained`);
+    return null;
+  }
   const checks = currentChecks(
     runs,
     draft,

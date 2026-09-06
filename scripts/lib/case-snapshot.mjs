@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { parse } from "yaml";
 import { fingerprint } from "./review-state.mjs";
+import { readEditions } from "./edition-files.mjs";
 
 /** Resolve a directory name or public slug without assuming they are identical. */
 export function resolveCaseDirectory(root, key) {
@@ -54,7 +55,13 @@ export function readCaseSnapshot(caseDir) {
       .filter((name) => fs.existsSync(path.join(caseDir, name)))
       .map((name) => [name, fs.readFileSync(path.join(caseDir, name), "utf8")]),
   );
-  return { files, contentHash: fingerprint(files) };
+  const ledgerHash = fingerprint(Object.fromEntries(Object.entries(files)
+    .filter(([name]) => name !== "overview.md")));
+  const editions = readEditions(caseDir);
+  const edition = editions.at(-1) ?? null;
+  if (edition) files[`editions/${edition.runId}.yaml`] = fs.readFileSync(
+    path.join(caseDir, "editions", `${edition.runId}.yaml`), "utf8");
+  return { files, contentHash: fingerprint(files), ledgerHash, editions, edition };
 }
 
 /** The blind assessor sees propositions, source records and observations.

@@ -31,17 +31,17 @@ export function claimView(
  */
 export function caseView(loaded: LoadedCase) {
   const shown = displayAssessment(loaded);
+  const edition = loaded.editions.at(-1) ?? null;
+  const allFeatured = featuredClaims(loaded).map((claim) => claimView(
+    claim, shown?.run ?? null, shown?.ratification.status ?? "unratified"));
   return {
     record: loaded.record,
     article: loaded.overviewMarkdown,
     assessment: shown,
-    featured: featuredClaims(loaded).map((claim) =>
-      claimView(
-        claim,
-        shown?.run ?? null,
-        shown?.ratification.status ?? "unratified",
-      ),
-    ),
+    featured: edition ? edition.featuredClaimIds.map(id => allFeatured.find(c => c.id === id)!) : allFeatured,
+    allFeatured,
+    edition,
+    editionStale: Boolean(edition && edition.basis.ledgerHash !== loaded.ledgerHash),
     lastUpdated: lastContentUpdate(loaded),
     version: loaded.contentHash.slice(0, 12),
     isStarting:

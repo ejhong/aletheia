@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { unknownFields } from "./validation.ts";
 import {
   CatalogClaimSchema, FeaturedClaimSchema, EvidenceSchema,
   SourceSchema, ResearchOpportunitySchema, StudySchema,
@@ -14,16 +15,6 @@ export const recordSchemas = {
   study: StudySchema.strict(),
 };
 export type RecordKind = keyof typeof recordSchemas;
-
-function unknownFields(raw: unknown, parsed: unknown, at = "record"): string[] {
-  if (Array.isArray(raw) && Array.isArray(parsed))
-    return raw.flatMap((value, i) => unknownFields(value, parsed[i], `${at}[${i}]`));
-  if (raw && typeof raw === "object" && parsed && typeof parsed === "object")
-    return Object.entries(raw).flatMap(([key, value]) => key in parsed
-      ? unknownFields(value, (parsed as Record<string, unknown>)[key], `${at}.${key}`)
-      : [`${at}.${key}`]);
-  return [];
-}
 
 /** A short passage actually retrieved by an adapter. These are receipts,
  * not a claim that a quotation establishes the proposed interpretation. */

@@ -8,6 +8,7 @@ import { fingerprint } from "./review-state.mjs";
 import { advances } from "./bench-core.mjs";
 import { resolveCaseDirectory } from "./case-snapshot.mjs";
 import { ResearchProposalSchema } from "../../src/domain/researchProposal.ts";
+import { EditionProposalSchema } from "../../src/domain/editionProposal.ts";
 
 export const INTAKE_DIR = "proposals/intake";
 const text = z.string().min(1);
@@ -53,6 +54,7 @@ const outcomes = {
   "agenda-score": ["scored", "failed"],
   "research-proposal": ["proposed", "rejected", "failed"],
   "research-run": ["completed", "partial", "no_change", "failed", "refused", "budget_exhausted"],
+  "edition-proposal": ["proposed", "no_change", "rejected", "failed"],
 };
 const DecisionSchema = z
   .object({
@@ -62,6 +64,7 @@ const DecisionSchema = z
     source: z.record(z.string(), z.unknown()).nullable().default(null),
     proposal: AgendaCandidateSchema.nullable().default(null),
     research: ResearchProposalSchema.optional(),
+    edition: EditionProposalSchema.optional(),
     reason: z.string().nullable().default(null),
     date: day.nullable().default(null),
     generatedAt: z.iso.datetime().nullable().default(null),
@@ -109,6 +112,12 @@ const DecisionSchema = z
       entry.runId !== entry.research.runId || entry.model !== entry.research.model ||
       entry.generatedAt !== entry.research.generatedAt || entry.promptVersion !== entry.research.promptVersion))
       issue("research decision stamps differ from its proposal");
+    if (entry.stage === "edition-proposal" && ["proposed", "no_change"].includes(entry.decision) && !entry.edition)
+      issue("edition decision requires its proposal");
+    if (entry.edition && (entry.stage !== "edition-proposal" || entry.case !== entry.edition.case ||
+      entry.runId !== entry.edition.edition.runId || entry.model !== entry.edition.edition.model ||
+      entry.generatedAt !== entry.edition.edition.generatedAt || entry.promptVersion !== entry.edition.edition.promptVersion))
+      issue("edition decision stamps differ from its proposal");
     if (entry.decision === "scored" && !entry.score)
       issue("scored decision requires scores");
     if (!entry.legacy && (!entry.date || !entry.generatedAt || !entry.runId))

@@ -4,6 +4,14 @@ Four core objects — **Case, Claim, Evidence, Source** — plus append-only **a
 
 ## Layering principle
 
+Historical agenda scores are being copied to immutable intake batches before
+the durable-store cutover. The reviewed migration copy contains 78 scored
+proposals from the three existing agenda runs, including original tallies and
+committed locators. Earlier files did not retain reviewer reasoning or exact
+input receipts; those fields remain unknown. The existing `scores.yaml` files
+remain present and authoritative until the consumer migration lands. Staging
+this copy changes no scores, judgments, or public rendering.
+
 Content is layered and reversible:
 
 - **Canon layer** — the claim/evidence/source files. Human-editable, versioned in git. A claim's *statement* never silently changes; corrections are new revisions in git history.

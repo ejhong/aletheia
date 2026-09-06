@@ -459,6 +459,10 @@ async function main() {
   const written = [];
 
   for (const caseDir of caseDirs) {
+    if (readCaseSnapshot(path.join(CASES_DIR, caseDir)).edition) {
+      console.error(`${caseDir}: edition drafter owns assessment and narrative — skip legacy reassessment`);
+      continue;
+    }
     const initial = evidencePacket(
       readCaseSnapshot(path.join(CASES_DIR, caseDir)).files,
     );

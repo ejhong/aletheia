@@ -1304,3 +1304,68 @@ AI execution provenance: model `GPT-6 (OpenAI Codex)`; date `2026-09-06`;
 runId `codex-budget-intake-2026-09-06` (locally assigned session label);
 promptVersion `none` (interactive founder-directed work, no versioned
 pipeline prompt). This records the founder's direction in AI-written words.
+
+## 2026-09-06 — Compare complete editions before replacing the incumbent
+
+The founder authorized continued implementation of the research-edition plan.
+The next worker starts with the already migrated Deep Memory case. It drafts
+two complete alternatives using the configured Astra author: a focused revision
+and a fresh composition. Assessment, selection, essay and existing plate placement
+are considered together. Original claim records and image provenance remain in
+the ledger. Inputs guide voice; they do not become evidence. The model receives
+plate descriptions, not an invented record of pixel inspection.
+
+The existing independent vendor panel compares shuffled alternatives with the
+incumbent. Each ballot ranks all options and records an explicit constitutional
+status for each. A draft needs four compliant judgments, no violation and four
+rankings above the incumbent; pairwise majority chooses between two qualifying
+drafts, with a tie leaving the incumbent. Full candidates, rejected replies, reasons, failures
+and input receipts stay in the existing intake store. Comparison does not grant
+case standing: fresh evidence-only calls and the ordinary PR arbiter retain
+their distinct roles and existing thresholds. No constitution change is needed.
+
+The same inputs do not demand another rewrite. Retention and disagreement rest;
+operational failure can retry on a later UTC day. A changed ledger, founding
+inputs, constitution or drafting protocol, or explicit reasoned reconsideration,
+can reopen work. A compared proposal can resume preparation without paying
+again. Source adoption and edition preparation share validated file installation
+with rollback. A timestamp or regenerated assessment ID alone is not improvement.
+
+Content response owns this work, capped at one due case per run and the existing
+shared allowance. Legacy reassessment skips edition-owned cases early. One
+pending content batch provides backpressure; its paid work is preserved rather
+than regenerated and closed. A parked batch remains public and needs deliberate
+resolution, while intake continues. This starts conservatively with one case;
+case-specific scheduling, legacy migration, broader Expedition discovery and
+the full UI reassessment remain later work.
+
+AI execution provenance: model `GPT-6 (OpenAI Codex)`; date `2026-09-06`;
+runId `codex-edition-drafter-2026-09-06` (locally assigned session label);
+promptVersion `none` (interactive founder-directed work, no versioned pipeline
+prompt). The worker's separate protocol is `edition-drafting-v1`.
+
+The live pilot first exposed a prompt ambiguity: weakestLinks accepted strings
+in the author-facing schema, although the loader requires claim IDs. Both drafts
+were rejected, preserved with reasons, and never compared. The schema now names
+and constrains those IDs. The next comparison split its first preferences among
+two improvements and the incumbent; one seat also wrote “no constitutional
+violation” in an objections list. That original contested result is preserved.
+Comparison version 2 separates ranking from explicit constitutional status and
+can re-examine the saved candidates without redrafting or reinterpreting the old
+votes. These are development findings from the bounded pilot, not new powers for
+the publisher; the ordinary arbiter and blind-standing requirements remain.
+
+The pilot's Met retrieval returned HTTP 429 and produced no findings or paid
+model call. A follow-up to the existing excavation-team account read the upper
+Pillar 43 motifs into MEM-C002/MEM-E002, passed its separate source-reading
+check, and retained the existing object's independence group. Version 2's five
+seats judged both saved drafts compliant and ranked both above the incumbent;
+the pairwise vote selected the recomposition, three to two. Its first assessment
+leaves shared prehistoric inheritance unresolved. Fresh blind checks from all
+five vendors yield four concurrences on the case and no load-bearing split.
+One seat was initially declined before spending because concurrent reservations
+occupied the daily allowance; it succeeded alone after those reservations
+settled. The cap was not raised. The selected essay seats Pillar 43 and omits
+the unrecorded Assyrian comparison, with the reason and original illustrated
+opening preserved. The unused plate remains available in the manifest for later
+verified comparator research.

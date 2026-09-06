@@ -48,8 +48,9 @@ wording without a substantive difference can be recorded once and rested.
 Consolidate the watch, promotion, and agenda memories behind this interface
 as their adapters migrate; do not maintain two authoritative ledgers.
 
-**Review has two acts.** First assess the evidence without the incumbent's
-grades or article. Then inspect the proposed edition for unsupported
+**Review uses separate packets.** Assess the evidence without the incumbent's
+grades or article, in an independent call with no shared conversation. Inspect
+the proposed edition separately for unsupported
 assertions, lost caveats, misleading selection, and constitutional fidelity.
 A blind verdict check is not independent verification of a source reading,
 and model concurrence is not truth. Passage verification must be a separate
@@ -86,7 +87,7 @@ now uses the bounded reader; no additional research schedule is installed.
 | 3 | Blank-topic starting path | Implemented in PR #172. `start-case.mjs` creates an incubating proposal from a question, with no invented evidence, priority, or review. The production loader and view accept it; judgment runners skip it until it has assessable evidence. This tests startup, not autonomous discovery. |
 | 4 | Shared proposal memory and intake diff | Durable history for watch, promotion, and agenda; inbox links and legacy watch imports now use the common research envelope. Complete bundles and before/after edits pass the production loader, including empty topics. Notes, document extraction, and agenda adoption still need adapters. Source identity and identical wording are mechanical; semantic overlap remains a review question. |
 | 5 | Bounded research and source-reading checks | Manual URLs and the existing promotion job share one reader, capped at two public HTML/text sources per pass even across cases. A separate reading checks each drafted observation. Complete, fresh proposals can be prepared for the normal publication gate; failures and stale inputs remain visible. The shared allowance now covers research, drafting, review, operator, and artwork; broad discovery and PDF/OCR remain to build. |
-| 6 | Versioned edition drafting | The authoring path binds an essay, ordered selection, and exact assessment reference in one immutable edition. A selected assessment can now supply complete interpretation for catalog claims, without editing their ledger records. Proposals bind to current inputs, rest unchanged candidates, and pass the production loader before review. Deep Memory preserves its unassessed opening. Automatic model drafting, candidate comparison, and migration of assessed cases remain to build. |
+| 6 | Versioned edition drafting | The authoring path binds an essay, ordered selection, and exact assessment reference in one immutable edition. A selected assessment can now supply complete interpretation for catalog claims, without editing their ledger records. Proposals bind to current inputs, rest unchanged candidates, and pass the production loader before review. Two metered Astra alternatives now compete with the incumbent before preparation for the ordinary gate. Full comparison receipts preserve retention, disagreement and failures. Deep Memory is the first enabled case; migration of assessed cases remains subsequent work. |
 | 7 | Pilot, measure, and widen | Exercise geopolymer, transients, and Deep Memory, the founder-selected topic about shared symbols and myths (`content/cases/deep-memory/`). Its empty starting point is preserved in PR #179; the illustrated opening adopts the first checked catalog observation. Its scope is informed by the birdmen project, so this is not blind rediscovery. Compare accepted changes and reading quality with the incumbent, under a single enforced budget covering research and review. The archived chats are design references and a possible held-out discovery benchmark, not an import queue. Expand only after unattended runs improve actual cases. |
 | 8 | Reading experience and automation visibility, after the pipeline work | Review the whole information hierarchy across the case narrative, assessments, claims, evidence, research questions, Panel and Proposals. Try a compact current assessment near the top of the narrative, with what changed and why, followed by the essay and routes into supporting records. Make consequential judgment changes easy to notice without making change frequency a goal. Give global spend, activity, model roles and system health a quiet home; keep research decisions and edition changes within their cases. Start from durable receipts and decisions, leave missing case-level cost allocations explicit, and keep detailed run history in disclosures. Judge the result for beauty, interest and usefulness on mobile and desktop. |
 
@@ -95,19 +96,19 @@ Existing cases still obtain diagnosticity and other editorial fields from
 legacy records. A new edition can take each claim's interpretation from its
 selected assessment instead. Component judgments and case framing remain in
 the legacy case record; those fields still need an assessment-owned projection.
-`CaseView` is the migration boundary. The automated edition writer remains to
-build. Aggregate accounting now surrounds the source reader's local limits and
+`CaseView` is the migration boundary. The automated edition writer starts with
+the already migrated cases. Aggregate accounting now surrounds the source reader's local limits and
 the other paid workers; see [AI operating policy](../config/README.md).
 
-The next edition-drafting pass should compose images as part of the account:
-select existing verified plate IDs, place each beside the passage it explains,
-and write captions that distinguish visible observations from interpretations.
+The edition drafter composes images as part of the account: it selects existing
+plate IDs and places each beside the passage it explains. Manifest captions and
+credits remain intact; adjoining prose distinguishes observation from inference.
 Birdmen supplies comparative image leads for Deep Memory. Exact object
 identities, original image sources and rights must reach the ledger before a
 new evidence plate is used. Generated covers remain editorial artwork. The
 existing manifest and plate markers are the interface; no separate visual
-publishing loop is needed. Automated selection and new plate acquisition are
-still to build, under the same edition review and spending allowance.
+publishing loop is needed. New plate acquisition and caption proposals remain
+subsequent intake work, under the same review and spending allowance.
 
 ### Versioned editions: the first authoring path
 
@@ -161,8 +162,9 @@ Only Deep Memory is migrated in this step. The old editorial audit does not
 patch a versioned essay, and legacy reconciliation retains its incumbent until
 an edition proposal is ready. Other cases continue through their existing
 workers. New editions remain consequential content under the normal PR arbiter.
-The model drafter and its independent candidate review must work before moving
-assessed cases to this path. No new schedule or paid worker is enabled here.
+The automatic drafter and its independent comparison now run within Content
+response, at most one due case per invocation. Assessed legacy cases stay on
+their existing workers while the Deep Memory pilot establishes its usefulness.
 
 Inbox notes and links, literature watch, inward-looking agenda proposals, and
 the planned browsing Expedition are adapters to the same research-proposal
@@ -172,6 +174,55 @@ adapters. Shared spend accounting across research,
 drafting, and review precedes unattended Expedition runs. An accepted ledger
 change should then prompt an edition candidate, with retaining the incumbent
 always available.
+
+### Automatic edition composition and rest
+
+`draft-editions.ts` produces two complete Astra alternatives: a focused revision
+and a fresh composition. Both receive the ledger, changed-record IDs, founding
+inputs, banked corrections, the incumbent and earlier comparison reasons. Full
+context is retained for this small pilot so a diff cannot hide an indirect
+consequence. Both essay and assessment must pass the production loader before
+comparison. Selected catalog claims get complete interpretation from that
+assessment; claim records remain intact. The supplied packet and protocol are
+hashed, and the actual answering model supplies the authorship stamp.
+
+The existing five vendors compare both drafts with the incumbent. Author stamps
+are omitted, order is shuffled per seat, and the incumbent label is explicit.
+The ballot separates a complete preference ranking from a constitutional status
+for each option. A new draft needs four compliant judgments, no violation, and
+four rankings above the incumbent. If both qualify, their pairwise majority
+chooses between them; a tie rests. Missing seats and substantive disagreement
+leave the incumbent in place. These
+preferences are a drafting decision, not case standing or permission to publish.
+The selected edition still receives fresh evidence-only checks and the ordinary
+PR arbiter. No vote is reused across these distinct roles.
+
+The typed `edition-cycle` receipt in `proposals/intake` preserves both candidates,
+invalid replies, each seat's reason or error, input hashes and the derived result.
+Successful drafts are recorded immediately. Explicit reconsideration can reuse
+two valid saved drafts on unchanged case inputs, without paying to rewrite them.
+The first trial's older ballot and its derived result are preserved under its
+original comparison version. A compared winner can be prepared
+again without another paid call; stale inputs or rules prohibit adoption.
+Preparation shares the source-adoption transaction, including full validation
+and rollback, then records the change in case history. IDs or timestamps alone
+do not make an otherwise identical assessment an improvement.
+
+A finished comparison on unchanged inputs rests. A published edition does not
+trigger another rewrite merely by changing its own timestamp or content hash.
+Changes to the ledger, founding inputs, constitution or drafting prompts reopen
+consideration; explicit `--reconsider` with a reason can reopen it too. Operational
+failure may retry on a later UTC day. Retention and substantive disagreement do
+not silently become daily retries. Empty topics stay unassessed until intake
+supplies evidence. Two drafts, five comparison seats and one case bound each run;
+all calls share the existing whole-system allowance.
+
+Content response preserves one pending batch instead of superseding and paying
+for it again. While that PR is open, the workflow reports that it is resting.
+A parked batch stays visible and needs deliberate resolution; inbox and source
+intake continue independently. This conservative backpressure is appropriate
+for the single-case pilot; case-specific queues can replace it when expansion
+justifies the complexity. No new recurring workflow is added.
 
 ### Shared source reader and its first trial
 
@@ -237,7 +288,7 @@ Semantic similarity and independence still require review.
 
 `proposals/intake/` is the authority for watch-triage, historical promotion,
 agenda-proposal, agenda-score, source-request, research-run, research-proposal,
-research-adoption, and edition-proposal decisions. `intake-store.mjs` validates and writes immutable
+research-adoption, edition-proposal, and edition-cycle decisions. `intake-store.mjs` validates and writes immutable
 batches, normally one per worker run. Decision and batch hashes detect changed
 payloads. Exclusive atomic file installation makes retries safe and concurrent
 writers preserve both batches. Modifying or deleting existing history requires
@@ -531,8 +582,9 @@ The Atelier name describes that competition within the edition workflow;
 several independent drafters can later widen the candidate pool. It is not a
 separate owner of presentation state. Candidates compete against the incumbent
 on evidential fidelity, uncertainty,
-useful compression, readability, and register. Blind assessment happens before
-inspection of the candidate edition. The normal arbiter still gates any
+useful compression, readability, and register. Blind assessment uses an isolated
+evidence-only call, with no comparison transcript or candidate judgments. The
+normal arbiter still gates any
 consequential publication, with substantiated objections parked publicly.
 
 Every comparison publishes its full record, including dissent. Randomize

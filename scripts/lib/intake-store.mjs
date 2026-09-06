@@ -9,6 +9,7 @@ import { advances } from "./bench-core.mjs";
 import { resolveCaseDirectory } from "./case-snapshot.mjs";
 import { ResearchProposalSchema } from "../../src/domain/researchProposal.ts";
 import { EditionProposalSchema } from "../../src/domain/editionProposal.ts";
+import { EditionCycleSchema } from "../../src/domain/editionCycle.ts";
 
 export const INTAKE_DIR = "proposals/intake";
 const text = z.string().min(1);
@@ -55,6 +56,7 @@ const outcomes = {
   "research-proposal": ["proposed", "rejected", "failed"],
   "research-run": ["completed", "partial", "no_change", "failed", "refused", "budget_exhausted"],
   "edition-proposal": ["proposed", "no_change", "rejected", "failed"],
+  "edition-cycle": ["proposed", "retained", "contested", "failed"],
   "source-request": ["queued"],
   "research-adoption": ["prepared", "already_present", "stale", "invalid"],
 };
@@ -67,6 +69,7 @@ const DecisionSchema = z
     proposal: AgendaCandidateSchema.nullable().default(null),
     research: ResearchProposalSchema.optional(),
     edition: EditionProposalSchema.optional(),
+    editionCycle: EditionCycleSchema.optional(),
     reason: z.string().nullable().default(null),
     date: day.nullable().default(null),
     generatedAt: z.iso.datetime().nullable().default(null),
@@ -127,6 +130,17 @@ const DecisionSchema = z
       entry.runId !== entry.edition.edition.runId || entry.model !== entry.edition.edition.model ||
       entry.generatedAt !== entry.edition.edition.generatedAt || entry.promptVersion !== entry.edition.edition.promptVersion))
       issue("edition decision stamps differ from its proposal");
+    if (entry.stage === "edition-cycle" && !entry.editionCycle) issue("edition cycle requires its complete receipt");
+    if (entry.editionCycle) {
+      const cycle = entry.editionCycle;
+      if (entry.stage !== "edition-cycle" || entry.case !== cycle.case || entry.runId !== cycle.runId ||
+          entry.generatedAt !== cycle.generatedAt || entry.promptVersion !== cycle.promptVersion ||
+          entry.inputHash !== fingerprint(cycle.basis) || entry.candidateHash !== fingerprint(cycle) ||
+          entry.decision !== cycle.outcome) issue("edition decision differs from its comparison receipt");
+      for (const draft of cycle.drafts) if (draft.proposal &&
+          fingerprint(draft.proposal.edition.basis) !== fingerprint(cycle.basis))
+        issue("edition candidate uses a different basis");
+    }
     if (entry.decision === "scored" && !entry.score)
       issue("scored decision requires scores");
     if (!entry.legacy && (!entry.date || !entry.generatedAt || !entry.runId))

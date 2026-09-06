@@ -1,0 +1,509 @@
+version: 1
+decisions:
+  - id: e70a2c35c18573660195ef72ddde7358c84ea3752a7ecb89079da7400aee37e2
+    case: deep-memory
+    stage: edition-cycle
+    decision: contested
+    source: null
+    proposal: null
+    editionCycle:
+      version: 1
+      promptVersion: edition-drafting-v1
+      case: deep-memory
+      runId: edition-2026-09-06-cff21474-98e4-46fc-8992-8b2f58a75bab
+      generatedAt: 2026-09-06T23:27:20.736Z
+      basis:
+        contentHash: 08846497e27836f2b9ddb46f969bdf32f66096a7ca7f90f473204b2afed3070e
+        inputsHash: cbe1aa7da731a0c6021371074e9614d4e5a9d71d87dfd7ec6c811ed25d158e4d
+        ledgerHash: 50723b594aabc0c59afa8ec381dafb74a3ccf699c5511c91ff218fa201e896c5
+        incumbentHash: 48a70e3b28a91500d6315e91a183155de488e441c7bad877fdd9887303c8b9be
+      reconsider: null
+      packetHash: 809f4ff506939631b2d177f0a0cbd1ff8f7d5272ddee76b2b78321ff6461350d
+      rulesHash: 3beb1db658621a83e1b18e66207a9a866e1f3a9acbe3ccd4ddf334e5305f9cc0
+      recordHashes:
+        claims/MEM-C001: 44b45de2a79c7772aa26d8606c05936df2c0b67724eb7663fee3d378e055693c
+        claims/MEM-C002: 2943f96fe64d92934c93f4b2c4c804183a17245990e310cee040d4639734b63d
+        evidence/MEM-E001: c79b893f097acfd82353395bbff565a56e1eab423b0ad720bfc384c70bd44b09
+        evidence/MEM-E002: e5c4fe424e2d5b946c3fa0f6301513ae6acef64e40f4ddb6ad46de8221736d5e
+        sources/SRC-MEM-F07B22F06CD5: ea8c449d1491d86453fc5d8db25d42ef2dd0a0668b143a43d2d98f49f5cccef2
+        images/IMG-MEM-COVER: 6c4781e183838cd4722ef3340a20d3f59a6594638b0b7d36e50a63e5e2cd7a66
+        images/IMG-MEM-P01: 58d58a8065223bb626a59ac67dfee002bf9ae465d2569ef39e49c3962eed009d
+        images/IMG-MEM-P02: 24b298bc7e0cd77c437ba4baca1c9a5a2fa3db174439a8b3c65c78cef88a4803
+      drafts:
+        - option: revision
+          model: gpt-6-astra
+          inputHash: bec2fd186b3e1eaf5e383d46ddcff482e756b79f29fd1a07b974383faec1af8a
+          proposal:
+            case: deep-memory
+            edition:
+              version: 1
+              runId: edition-2026-09-06-cff21474-98e4-46fc-8992-8b2f58a75bab-revision
+              generatedAt: 2026-09-06T23:25:39.684Z
+              model: gpt-6-astra
+              promptVersion: edition-drafting-v1
+              rationale: Preserved the object-first opening, Pillar 43 plate, source link, and emphasis on
+                distinguishing resemblance from transmission. Added MEM-C002 as the central bounded
+                observation and assessed both featured claims. Removed IMG-MEM-P02 and the
+                incumbent’s Met link and interpretive discussion because the supplied ledger
+                contains no corresponding source or evidence record; the plate manifest alone cannot
+                carry that comparison. Removed unsupported attribution of several possible readings
+                to the Pillar 43 source and deferred the wider myth and animal leads rather than
+                presenting scope as evidence. The new observation expands the local description
+                without resolving shared inheritance.
+              basis:
+                contentHash: 08846497e27836f2b9ddb46f969bdf32f66096a7ca7f90f473204b2afed3070e
+                inputsHash: cbe1aa7da731a0c6021371074e9614d4e5a9d71d87dfd7ec6c811ed25d158e4d
+                ledgerHash: 50723b594aabc0c59afa8ec381dafb74a3ccf699c5511c91ff218fa201e896c5
+                incumbentHash: 48a70e3b28a91500d6315e91a183155de488e441c7bad877fdd9887303c8b9be
+              previous:
+                runId: edition-2026-09-06-opening
+                hash: caacb4700a9cf448c6f9bf93cf832b5351b25d39db8549c35073ab3a50028099
+              assessment:
+                runId: edition-2026-09-06-cff21474-98e4-46fc-8992-8b2f58a75bab-revision-assessment
+                hash: 5b8ac79d0e8648540efe61211b5c34dc5b9a79ce0ae903b72f7ec7976f4937b0
+              featuredClaimIds:
+                - MEM-C001
+                - MEM-C002
+              article: |-
+                Do similar symbols preserve a shared prehistoric memory—or do they only look alike to us? At Göbekli Tepe, Pillar 43 offers a concrete place to begin. Before tracing a symbol across cultures, we need to establish what is carved on this particular stone, and how much of its meaning we can recover.
+
+                ## What the pillar gives us
+
+                {plate:IMG-MEM-P01}
+
+                [Oliver Dietrich’s account of Pillar 43](https://www.dainst.blog/the-tepe-telegrams/2016/10/14/of-animals-and-a-headless-man-gobekli-tepe-pillar-43/) describes [three rectangular forms topped with cupola-like arches, each paired with an animal]{claim=MEM-C002}. This is a useful starting description precisely because it stops short of identifying the objects. Calling them vessels, buildings, or something else would add an interpretation that the recorded evidence does not establish. The account explicitly leaves their meaning uncertain.
+
+                The same source describes [a human figure shown without a head and with an erect penis]{claim=MEM-C001}. The ledger notes damage to the pillar; the accompanying photograph’s description also warns that foreground stones obscure part of its lower face. The plate therefore supplies context, not a complete visual check of every recorded detail.
+
+                These are two observations, but not two independent witnesses to a prehistoric tradition. Both come from the same account of the same pillar. They establish a small inventory of reported imagery: geometric forms associated with animals, and explicit human figuration. Neither observation identifies a story, a ritual, or a connection to another culture.
+
+                ## From resemblance to inheritance
+
+                The best current account is modest: Pillar 43 carries distinctive carvings whose meaning remains unsettled in the available source. **The shared-inheritance question is unresolved.** The ledger contains no documented cross-cultural comparison, transmission sequence, or myth text with which to test it.
+
+                That gap does not refute inheritance. The strongest argument for taking the possibility seriously would be a recurring combination of unusual features—not merely a similar outline—appearing in contexts that could plausibly be connected. If details and relationships survived together, and intermediate examples supported continuity, a common tradition could explain more than independent invention. No such sequence has yet been recorded here.
+
+                Several alternatives remain live. Apparent matches might reflect independent invention or common constraints on depicting objects. They might result from regional borrowing rather than a deeper prehistoric inheritance. Different motifs might have different histories. Before choosing among these explanations, we must also ask whether the proposed resemblance survives accurate identification and comparison of complete scenes.
+
+                ## What would make the comparison matter?
+
+                The next useful step is one bounded comparison, beginning with the pillar’s upper forms. Obtain primary object documentation, specify which visible features count as a match, and fix the comparison set before searching for favorable examples. Include nonmatches and ordinary look-alikes; count objects, not multiple photographs of one object.
+
+                A result would become more persuasive if an unusual combination recurred reliably, exceeded what the comparison set ordinarily produces, and had chronological and contextual links. It would lose force if the match depended on cropped views, disputed identifications, or a broad outline shared by many unrelated forms. These are proposed tests, not completed findings.
+
+                The stone gives the investigation something concrete to ask about. It does not yet give us a history connecting cultures.
+
+                *This edition and its assessments are AI-generated under Aletheia’s constitution, not human-reviewed conclusions.*
+            assessment:
+              runId: edition-2026-09-06-cff21474-98e4-46fc-8992-8b2f58a75bab-revision-assessment
+              model: gpt-6-astra
+              date: 2026-09-06
+              promptVersion: edition-drafting-v1
+              humanReviewed: false
+              generatedAt: 2026-09-06T23:25:39.684Z
+              inputHash: bec2fd186b3e1eaf5e383d46ddcff482e756b79f29fd1a07b974383faec1af8a
+              role: draft
+              caseAssessment:
+                verdict: unresolved
+                loadBearing:
+                  - MEM-C002
+                weakestLinks: []
+                synthesis: The ledger supports a narrow description of Pillar 43, not a history of shared symbols or
+                  myths. MEM-C002 supplies the immediate object of a possible comparison; MEM-C001
+                  adds local context without independently supporting transmission. Both
+                  observations share one object and one webpage, so their agreement cannot be
+                  counted as independent corroboration. Missing are authenticated counterpart
+                  records, a defined resemblance, comparative frequencies, chronology, and evidence
+                  connecting contexts. No existing claim captures those missing links, hence the
+                  empty weakestLinks list. Independent invention, common representational
+                  constraints, regional borrowing, and deeper inheritance remain unseparated by the
+                  recorded evidence. The absence of a recorded comparison is a limitation of this
+                  case, not a demonstrated failure of the hypothesis.
+                steelman: A shared tradition could become the strongest explanation if independently documented
+                  objects preserved a distinctive combination of features and relationships, with
+                  chronology and intermediate contexts supporting continuity. Uncertain meanings on
+                  one pillar do not rule out that possibility; the present ledger simply lacks the
+                  comparisons needed to test it.
+              claimAssessments:
+                - claimId: MEM-C001
+                  verdict: well_supported
+                  reasoning: MEM-E001 directly records Dietrich’s description of a headless human with an erect penis.
+                    This supports the bounded depiction claim, not an inference that an actual
+                    decapitation occurred or that a particular myth is represented. Confidence is
+                    limited by reliance on one blog summary, damage to the object, and the absence
+                    of primary documentation in the ledger. The source-reading check improves
+                    confidence in the extraction but is not independent archaeological
+                    corroboration.
+                  confidence: moderate
+                  treatment:
+                    plainLanguage: The source describes a carved male figure without a head and with an erect penis.
+                    claimType: observation
+                    importance: supporting
+                    diagnosticity: low
+                    diagnosticitySummary: The depiction adds to the pillar’s local inventory but does not distinguish
+                      shared inheritance from unrelated or locally transmitted imagery.
+                    strongestObjection: The object is damaged, and the ledger provides a single summary description
+                      rather than primary documentation allowing the figure’s preservation and
+                      identification to be checked.
+                    whatWouldChangeOurMind:
+                      - Primary excavation documentation or sufficiently detailed authenticated
+                        views showing that the figure’s recorded anatomy or headless depiction has
+                        been misidentified.
+                      - A documented clarification distinguishing deliberately omitted features from
+                        features lost through damage would refine the reading.
+                - claimId: MEM-C002
+                  verdict: well_supported
+                  reasoning: MEM-E002 records three rectangular objects with cupola-like arches and an animal
+                    associated with each. The supplied source statement supports the claim’s
+                    descriptive wording while expressly withholding an identification or meaning.
+                    The account is a single blog summary, and its separate text check does not
+                    provide a second object-level source.
+                  confidence: moderate
+                  treatment:
+                    plainLanguage: The source describes three rectangular, arch-topped forms near the pillar’s top, each
+                      associated with an animal.
+                    claimType: observation
+                    importance: major
+                    diagnosticity: low
+                    diagnosticitySummary: These forms define a possible comparison target, but no counterpart or
+                      transmission evidence is recorded, so they do not presently favor common
+                      inheritance.
+                    strongestObjection: A geometric description can be accurate while inviting a mistaken object
+                      identification; neither the forms’ function nor their symbolic meaning is
+                      established.
+                    whatWouldChangeOurMind:
+                      - Primary object documentation showing that the count, arch-topped form, or
+                        animal associations are inaccurately described would change the local
+                        assessment.
+                      - An independently documented comparison demonstrating a distinctive shared
+                        configuration with chronological and contextual links would increase its
+                        relevance to inheritance.
+          error: null
+          rejectedReply: null
+        - option: recomposition
+          model: gpt-6-astra
+          inputHash: 49cb2e8c09ff8e7d002b39e16395a6120fc62bea298486bda35eb4180343cbe4
+          proposal:
+            case: deep-memory
+            edition:
+              version: 1
+              runId: edition-2026-09-06-cff21474-98e4-46fc-8992-8b2f58a75bab-recomposition
+              generatedAt: 2026-09-06T23:26:31.179Z
+              model: gpt-6-astra
+              promptVersion: edition-drafting-v1
+              rationale: The alternative centers the edition on the two observations actually recorded in the
+                ledger, gives the newly recorded upper-register claim a prominent role, and
+                separates their local credibility from their low diagnosticity for shared
+                inheritance. IMG-MEM-P01 and the MEM-C001 reference are retained. IMG-MEM-P02 is
+                omitted because no ledger claim or evidence record establishes the proposed Assyrian
+                comparison; its manifest description alone should not carry that historical
+                argument. The incumbent’s Met link and interpretive assertions are likewise omitted
+                because that source is absent from the supplied ledger. The generated cover is not
+                used as evidence. Proposed tests are explicitly prospective, and the case receives
+                an unresolved assessment rather than an implied negative finding.
+              basis:
+                contentHash: 08846497e27836f2b9ddb46f969bdf32f66096a7ca7f90f473204b2afed3070e
+                inputsHash: cbe1aa7da731a0c6021371074e9614d4e5a9d71d87dfd7ec6c811ed25d158e4d
+                ledgerHash: 50723b594aabc0c59afa8ec381dafb74a3ccf699c5511c91ff218fa201e896c5
+                incumbentHash: 48a70e3b28a91500d6315e91a183155de488e441c7bad877fdd9887303c8b9be
+              previous:
+                runId: edition-2026-09-06-opening
+                hash: caacb4700a9cf448c6f9bf93cf832b5351b25d39db8549c35073ab3a50028099
+              assessment:
+                runId: edition-2026-09-06-cff21474-98e4-46fc-8992-8b2f58a75bab-recomposition-assessment
+                hash: a5f558bfe60bb2cb48f338a81be5de531b71ba7741ddb72cb9d29a5cc510325e
+              featuredClaimIds:
+                - MEM-C001
+                - MEM-C002
+              article: |-
+                What would it take for a carving to count as a memory—not simply an image made long ago, but a trace of a tradition inherited across places and generations? Pillar 43 at Göbekli Tepe offers a concrete starting point. Before asking whether its symbols travelled, we need to establish what is carved there and how much of its meaning we can recover.
+
+                ## A shape is not yet an identity
+
+                [Oliver Dietrich’s account of Pillar 43](https://www.dainst.blog/the-tepe-telegrams/2016/10/14/of-animals-and-a-headless-man-gobekli-tepe-pillar-43/) describes [three rectangular forms topped with cupola-like arches, each paired with an animal, at the pillar’s uppermost edge]{claim=MEM-C002}. This is a description of a configuration, not an identification of the objects. The account explicitly leaves their meaning uncertain.
+
+                {plate:IMG-MEM-P01}
+
+                The accompanying plate provides context for the pillar. Its supplied description notes that foreground stones obscure part of the lower face; it should not be treated as a complete view of every motif discussed in the source.
+
+                The same account identifies [a human figure shown without a head and with an erect penis]{claim=MEM-C001}. The pillar is damaged, and the figure is incompletely preserved. The description gives us another element of the imagery, but not a secure interpretation of the scene. It does not establish whether the figure belongs to a ritual, a myth, a narrative, or some other scheme of meaning.
+
+                These are two observations about **one object, reported in one source**. Their combination may matter to an eventual interpretation, but they are not independent witnesses to a widespread tradition. The evidence records treat them as context for the larger question, not as demonstrations of shared inheritance.
+
+                ## What the inheritance hypothesis still needs
+
+                The strongest argument worth pursuing is not that one simple outline resembles another. It is that a distinctive arrangement of forms, animals and actions might preserve a convention learned and transmitted between communities. If such an arrangement recurred in securely documented settings, its relationships could be more informative than any isolated shape.
+
+                That is a hypothesis to test, not a result in this ledger. No recorded comparison yet establishes recurrence elsewhere, shared meaning, a chronological sequence, or a route of transmission. Nor does the ledger contain evidence from myths. **The broad question remains unresolved.** This is missing evidence, not a failed test of inheritance.
+
+                Independent invention, shared constraints on representation, regional borrowing and deeper inheritance remain serious alternatives. Different motifs could also have different histories. The present observations cannot distinguish these possibilities.
+
+                ## A comparison that could teach us something
+
+                A useful next step would freeze one narrowly defined comparison before searching widely. Describe the pillar’s upper forms without naming their function; specify which features and relationships would count as a match; then assemble securely documented comparison objects, including mismatches and regional context.
+
+                The test should ask whether the proposed resemblance is unusually specific, rather than merely the best resemblance found in a large search. Chronology and independent connecting evidence would then be needed to turn a visual match into a historical argument. Ordinary matches, incompatible sequences or missing predicted features would weaken that argument.
+
+                For now, the pillar supplies an object to investigate, not a recovered ancestral story.
+
+                *This edition is an AI-generated assessment under Aletheia’s constitution, not a reviewed human conclusion.*
+            assessment:
+              runId: edition-2026-09-06-cff21474-98e4-46fc-8992-8b2f58a75bab-recomposition-assessment
+              model: gpt-6-astra
+              date: 2026-09-06
+              promptVersion: edition-drafting-v1
+              humanReviewed: false
+              generatedAt: 2026-09-06T23:26:31.179Z
+              inputHash: 49cb2e8c09ff8e7d002b39e16395a6120fc62bea298486bda35eb4180343cbe4
+              role: draft
+              caseAssessment:
+                verdict: unresolved
+                loadBearing:
+                  - MEM-C001
+                  - MEM-C002
+                weakestLinks: []
+                synthesis: The ledger supports two bounded descriptions of Pillar 43 through a single AI-verified
+                  webpage account. These claims carry the edition’s observational foundation, not an
+                  inference of prehistoric transmission. Both depend on the same object and source,
+                  so they cannot be counted as independent support for the wider hypothesis. No
+                  recorded claim captures the missing cross-cultural resemblance, shared meaning,
+                  chronology, transmission route or myth comparison; weakestLinks is therefore empty
+                  rather than assigning those gaps to the descriptive claims. There is also no
+                  completed comparative test or recorded negative result. Shared inheritance remains
+                  unresolved because the evidence has not yet reached the stage at which it can
+                  discriminate among deeper inheritance, regional borrowing, independent invention
+                  and shared representational constraints.
+                steelman: A distinctive combination of motifs and their relationships could be more informative
+                  about transmission than a generic resemblance between isolated shapes. Pillar 43’s
+                  described configuration provides a concrete candidate for such an investigation.
+                  If independent, securely contextualized comparisons recovered that configuration
+                  with a plausible historical sequence, inheritance could gain support even while
+                  the original meaning remained partly uncertain. The present ledger neither
+                  supplies nor rules out that evidence.
+              claimAssessments:
+                - claimId: MEM-C001
+                  verdict: well_supported
+                  reasoning: MEM-E001 directly records the source’s description of a “headless human with an erect
+                    penis.” This supports the narrow descriptive claim, with moderate confidence
+                    because the supplied basis is a blog account rather than a primary excavation
+                    report and the figure is incompletely preserved. The retrieved-text character
+                    locator is not a printed-page citation. Neither the description nor its separate
+                    text check establishes the figure’s meaning or provides independent evidence of
+                    cultural transmission.
+                  confidence: moderate
+                  treatment:
+                    plainLanguage: The source describes a headless human figure with an erect penis on Pillar 43; what
+                      the figure meant remains uncertain.
+                    claimType: observation
+                    importance: supporting
+                    diagnosticity: low
+                    diagnosticitySummary: A figure on one pillar does not distinguish inherited symbolism from a local
+                      image-making tradition or independent invention.
+                    strongestObjection: The claim rests here on a summary account of an incompletely preserved figure,
+                      without a primary object record or direct inspection to check the description.
+                    whatWouldChangeOurMind:
+                      - A primary excavation record or detailed object documentation showing that
+                        the figure’s anatomy or headless presentation has been misidentified would
+                        change the local assessment.
+                      - Independent, securely contextualized comparisons establishing a distinctive
+                        recurring configuration and a plausible transmission history would increase
+                        its relevance to shared inheritance.
+                - claimId: MEM-C002
+                  verdict: well_supported
+                  reasoning: MEM-E002 records three rectangular forms with cupola-like arches and an animal associated
+                    with each. The evidence record’s source summary supplies the animal association,
+                    while the quoted excerpt specifically describes the rectangular forms and
+                    arches. This is good support for the bounded description, not for identifying
+                    the forms’ function. Confidence is moderate because the supplied evidence is a
+                    single webpage account with a retrieved-text locator, and the source itself
+                    leaves meaning uncertain.
+                  confidence: moderate
+                  treatment:
+                    plainLanguage: The source describes three arch-topped rectangular forms, each paired with an animal,
+                      at the top of Pillar 43.
+                    claimType: observation
+                    importance: major
+                    diagnosticity: low
+                    diagnosticitySummary: The configuration provides a specific comparison target, but no recorded
+                      comparison shows that it favors transmission over independent invention.
+                    strongestObjection: "Descriptive resemblance can slide into assumed identity: the account does not
+                      establish what the forms represent, and a shared outline elsewhere would not
+                      by itself establish shared meaning."
+                    whatWouldChangeOurMind:
+                      - Detailed primary documentation contradicting the count, outlines or animal
+                        associations would revise the descriptive claim.
+                      - A predefined comparative study finding the same distinctive relationships in
+                        independently documented objects, with chronological and contextual
+                        connections, would strengthen an inheritance interpretation.
+                      - A fair comparison showing equally close configurations in unrelated contexts
+                        would weaken the configuration’s value as evidence of transmission.
+          error: null
+          rejectedReply: null
+      seats:
+        - vendor: anthropic
+          model: claude-opus-5
+          effort: medium
+          generatedAt: 2026-09-06T23:27:01.190Z
+          inputHash: 9a7f9fe2b246f802edf9579231045c38398277405adf90ea76eab568a72e3a6d
+          order:
+            - revision
+            - recomposition
+            - incumbent
+          vote:
+            preferred: recomposition
+            reason: "B is the only edition that both assesses the ledger and keeps strictly inside it: it
+              separates the quoted excerpt (rectangular forms with cupola-like arches) from the
+              evidence record's summary (the animal association), flags that the 'characters
+              2090–2123' anchor is a retrieved-text locator rather than a printed-page citation,
+              states that both claims rest on one object and one webpage so they are not independent
+              corroboration, and marks the case unresolved as missing evidence rather than a failed
+              test. The incumbent C, by contrast, introduces a Met collection URL and paraphrased
+              museum interpretations ('protective and purifying interpretations, with uncertainty
+              about the cone's exact nature') that exist nowhere in the source ledger — the
+              changelog explicitly records the Met retrieval as unavailable — which is a concrete
+              evidence-fidelity regression that B fixes while preserving C's careful 'resemblance /
+              shared tradition / lost civilization are different propositions' framing."
+            objections:
+              - option: incumbent
+                reason: "Section 'The first comparisons': the sentence citing 'The Met's record of this Assyrian
+                  relief' with the URL metmuseum.org/art/collection/search/322614 and reporting that
+                  'The museum discusses protective and purifying interpretations, with uncertainty
+                  about the cone's exact nature' cites a source and source-statement that appear in
+                  no Source or Evidence record (the changelog records the Met retrieval as
+                  unavailable). This violates §3.6 (sources are not evidence by themselves), §3.8/§4
+                  (real citations only, never invent a locator or provenance detail), and §3.9
+                  (source statement vs inference). The same section also asserts the excavation
+                  account 'offers several possible readings of the scene' and places the headless
+                  figure 'on the damaged lower part of the pillar' — neither is in
+                  MEM-C001/MEM-E001, so it adds unrecorded observation detail contrary to §3.1."
+              - option: revision
+                reason: caseAssessment.loadBearing lists only MEM-C002 while the article treats both observations as
+                  the edition's factual base and the claim assessment marks MEM-C001 'supporting';
+                  this is a minor internal inconsistency in the assessment record (§3.14
+                  transparency about what the assessment rests on), not a fabrication. No other
+                  constitutional objection.
+              - option: recomposition
+                reason: "No constitutional violation identified. Minor residual concern: the article's phrase 'each
+                  paired with an animal, at the pillar's uppermost edge' inside the claim span adds
+                  'uppermost edge' framing that is supported by MEM-C002's statement but not by the
+                  quoted excerpt itself; the claim assessment does disclose this split, so the §3.9
+                  distinction is preserved."
+          error: null
+          rejectedReply: null
+        - vendor: openai
+          model: gpt-5.6-sol
+          effort: high
+          generatedAt: 2026-09-06T23:27:20.736Z
+          inputHash: 9a7f9fe2b246f802edf9579231045c38398277405adf90ea76eab568a72e3a6d
+          order:
+            - revision
+            - recomposition
+            - incumbent
+          vote:
+            preferred: revision
+            reason: A concretely improves on incumbent C by incorporating the newly recorded MEM-C002,
+              separating moderate credibility of the local descriptions from their low diagnosticity
+              for inheritance, treating the two observations as dependent, and removing the
+              unsupported Assyrian comparison. Compared with B, A more accurately treats MEM-C002 as
+              the load-bearing comparison target while keeping MEM-C001 as local context.
+            objections:
+              - option: incumbent
+                reason: In “The first comparisons,” the Met object, its interpretations, and the claim that it
+                  supplies a second comparison are presented from a museum link that has no Source
+                  or Evidence record or verification label in the ledger; plate metadata supports
+                  only the object description, not the asserted museum discussion. This violates
+                  source/evidence separation and honest provenance (§§3.6, 3.8–3.9, 4). The same
+                  section discusses Pillar 43’s upper forms without routing readers to the
+                  now-recorded MEM-C002, contrary to the interface requirement to provide a route to
+                  the underlying Claim (§7), and its closing statement that only the first
+                  observation has been recorded is stale relative to the two current records.
+          error: null
+          rejectedReply: null
+        - vendor: gemini
+          model: gemini-3.8-flash
+          effort: medium
+          generatedAt: 2026-09-06T23:26:48.770Z
+          inputHash: 7f6d2387d99eaa7a633392117edec3e53538e1250ecf1875fd2215e36d1dbfd9
+          order:
+            - revision
+            - incumbent
+            - recomposition
+          vote:
+            preferred: revision
+            reason: Candidate A provides a concrete improvement over incumbent B by incorporating the newly
+              recorded observation MEM-C002 and delivering rigorous, well-calibrated assessments for
+              both claims and the case. A is preferable to C because its case-level loadBearing
+              claims strictly align with its claim-level importance ratings (treating MEM-C002 as
+              the major comparative target and MEM-C001 as supporting context).
+            objections: []
+          error: null
+          rejectedReply: null
+        - vendor: xai
+          model: grok-4.5
+          effort: high
+          generatedAt: 2026-09-06T23:26:39.265Z
+          inputHash: be62e8259095f68ec79bd23ab36afad20a8e724eae55e487ca6f8a70a402cf7b
+          order:
+            - recomposition
+            - incumbent
+            - revision
+          vote:
+            preferred: incumbent
+            reason: "Incumbent B alone stays at the founding-input opening register: empty assessment, no
+              claimAssessments, and a readable investigation seed that presents both plates and the
+              comparison frame without premature synthesis; A and C add full assessments that the
+              corrections still treat as an unassessed opening, without a concrete fidelity or
+              constitutional gain that overrides retention."
+            objections: []
+          error: null
+          rejectedReply: null
+        - vendor: venice
+          model: z-ai-glm-5-3-flash
+          effort: high
+          generatedAt: 2026-09-06T23:27:14.594Z
+          inputHash: 704537871ef3237b6d780692c293852995209eea24a2e10eb3f1702775781bca
+          order:
+            - incumbent
+            - recomposition
+            - revision
+          vote:
+            preferred: recomposition
+            reason: "B offers a concrete improvement over the incumbent A: it adds calibrated, clearly
+              AI-labeled claim and case assessments (unresolved verdict, moderate confidence, low
+              diagnosticity explicitly separated from credibility), an explicit
+              single-object/single-source independence caveat, and a precise distinction between the
+              quoted excerpt and the paraphrased animal-association in MEM-E002 (per §3.9), while
+              framing the absent cross-cultural evidence as missing evidence rather than a failed
+              test. A, by contrast, asserts specific content of the Met record that no ledger source
+              supports and that the corrections log records as an unavailable retrieval, and it
+              supplies a Met collection URL absent from the provenance records — a fabrication risk
+              under §3.7/§3.8 that B avoids by resting only on the recorded Dietrich source and
+              plate metadata."
+            objections:
+              - option: incumbent
+                reason: "§3.7/§3.8/§3.15 (real citations and exact provenance only): in the 'The first comparisons'
+                  section the article states that 'The Met's record of this Assyrian relief...
+                  discusses protective and purifying interpretations, with uncertainty about the
+                  cone's exact nature' and cites
+                  https://www.metmuseum.org/art/collection/search/322614 — but no Met source or
+                  evidence record exists in the ledger, and the 2026-09-06 correction records the
+                  Met retrieval as unavailable. The object ID and date in plate provenance support
+                  identification, but the interpretive content and URL are asserted without a
+                  verifiable source record, presenting unverified reading as if consulted."
+          error: null
+          rejectedReply: null
+      outcome: contested
+      winner: null
+    reason: Comparison contested; the incumbent remains in place. See the complete draft and seat records.
+    date: 2026-09-06
+    generatedAt: 2026-09-06T23:27:20.736Z
+    runId: edition-2026-09-06-cff21474-98e4-46fc-8992-8b2f58a75bab
+    model: Aletheia comparison counter (no model call)
+    promptVersion: edition-drafting-v1
+    inputHash: 7da5fecddcaf518c67bd9203705d4195b7aa4a0b521b5165c4e12f47edde85e4
+    candidateHash: 4aaaf6f2746b6c6203244eb65c0957a609b9de4d16fc8abb1b89734ad97db709
+    ref: null
+    caseBasis: null
+    recordId: null
+    matchMethod: null
+    retryable: false

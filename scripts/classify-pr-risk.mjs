@@ -62,6 +62,13 @@ const reasons = [];
 let lowRisk = true;
 
 for (const { status, file } of nameStatus) {
+  if (file.startsWith("proposals/intake/") && status !== "A") {
+    lowRisk = false;
+    reasons.push(
+      `${file}: existing intake history changed — decision batches are append-only`,
+    );
+    continue;
+  }
   if (file.startsWith("proposals/") || file.startsWith("inbox/")) {
     continue; // always low-risk: never published
   }
@@ -74,7 +81,9 @@ for (const { status, file } of nameStatus) {
   if (/^content\/cases\/[^/]+\/assessments\/[^/]+\.yaml$/.test(file)) {
     if (status === "A") continue; // new append-only overlay
     lowRisk = false;
-    reasons.push(`${file}: existing assessment overlay ${status === "D" ? "deleted" : "modified"} — overlays are append-only`);
+    reasons.push(
+      `${file}: existing assessment overlay ${status === "D" ? "deleted" : "modified"} — overlays are append-only`,
+    );
     continue;
   }
   if (
@@ -83,7 +92,9 @@ for (const { status, file } of nameStatus) {
   ) {
     if (appendOnly(file)) continue;
     lowRisk = false;
-    reasons.push(`${file}: diff is not append-only (existing records changed or removed)`);
+    reasons.push(
+      `${file}: diff is not append-only (existing records changed or removed)`,
+    );
     continue;
   }
   lowRisk = false;

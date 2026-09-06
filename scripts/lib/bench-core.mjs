@@ -59,10 +59,15 @@ export function tallyProposal(id, seatMaps) {
   for (const [seat, map] of seatMaps) {
     const row = map.get(id);
     if (!row) {
-      seats.push({ seat, score: null, concern: null });
+      seats.push({ seat, score: null, concern: null, reasoning: null });
       continue;
     }
-    seats.push({ seat, score: row.score, concern: row.concern });
+    seats.push({
+      seat,
+      score: row.score,
+      concern: row.concern,
+      reasoning: row.reasoning,
+    });
     if (row.score === "high") highs++;
     if (row.concern) concerns.push({ seat, concern: row.concern });
   }
@@ -126,9 +131,15 @@ export function parseAgendaFile(text, { caseSlug, runDir }) {
   const blocks = String(text).split(/^## /m).slice(1);
   for (const block of blocks) {
     const head = block.match(/^(\d+)\. \[([a-z-]+)\] (.+)$/m);
-    const question = block.match(/\*\*Question \/ truth condition:\*\* ([\s\S]+?)\n\n\*\*/)?.[1];
-    const closest = block.match(/\*\*Closest existing:\*\* ([\s\S]+?)\n\n\*\*/)?.[1];
-    const wouldSettle = block.match(/\*\*What it would settle:\*\* ([\s\S]+?)\n\n\*\*/)?.[1];
+    const question = block.match(
+      /\*\*Question \/ truth condition:\*\* ([\s\S]+?)\n\n\*\*/,
+    )?.[1];
+    const closest = block.match(
+      /\*\*Closest existing:\*\* ([\s\S]+?)\n\n\*\*/,
+    )?.[1];
+    const wouldSettle = block.match(
+      /\*\*What it would settle:\*\* ([\s\S]+?)\n\n\*\*/,
+    )?.[1];
     const effort = block.match(/\*\*Effort:\*\* (\S+)/)?.[1];
     if (!head || !question) continue;
     out.push({

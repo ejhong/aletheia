@@ -3,6 +3,24 @@ import path from "node:path";
 import { parse } from "yaml";
 import { fingerprint } from "./review-state.mjs";
 
+/** Resolve a directory name or public slug without assuming they are identical. */
+export function resolveCaseDirectory(root, key) {
+  const base = path.join(root, "content", "cases");
+  const matches = fs
+    .readdirSync(base, { withFileTypes: true })
+    .filter((dir) => {
+      if (!dir.isDirectory()) return false;
+      const file = path.join(base, dir.name, "case.yaml");
+      const record = fs.existsSync(file)
+        ? parse(fs.readFileSync(file, "utf8"))
+        : null;
+      return dir.name === key || record?.slug === key;
+    });
+  if (matches.length !== 1)
+    throw new Error(`unknown or ambiguous case: ${key}`);
+  return matches[0].name;
+}
+
 // Reader-facing content is versioned together. Operational cursors, history,
 // and assessment files are excluded: appending a review must not stale itself.
 const FILES = [

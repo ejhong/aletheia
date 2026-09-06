@@ -34,6 +34,7 @@ import { fetchWithRetry } from "./lib/vendors.mjs";
 import { promotionWasHandled, readIntakeMemory } from "./lib/intake-memory.mjs";
 import { readCaseSnapshot } from "./lib/case-snapshot.mjs";
 import { fingerprint } from "./lib/review-state.mjs";
+import { writeIntakeDecisions } from "./lib/intake-store.mjs";
 import {
   MAX_PROMOTIONS_PER_RUN,
   alreadyCarried,
@@ -43,7 +44,6 @@ import {
 
 const ROOT = process.cwd();
 const INBOX_PROPOSALS = path.join(ROOT, "proposals", "inbox");
-const LEDGER = path.join(ROOT, "proposals", "promotions-ledger.yaml");
 const CASES = path.join(ROOT, "content", "cases");
 const dryRun = process.argv.includes("--dry-run");
 const limitArg = process.argv.indexOf("--limit");
@@ -51,6 +51,7 @@ const limit =
   limitArg > -1 ? Number(process.argv[limitArg + 1]) : MAX_PROMOTIONS_PER_RUN;
 const date = new Date().toISOString().slice(0, 10);
 const runId = `${date}-promote-${process.env.GITHUB_RUN_ID ?? "local"}`;
+const generatedAt = new Date().toISOString();
 
 const PROMPT_VERSION = "promote-draft-v1";
 const SYSTEM = `You draft ledger records for an AI-operated evidence site
@@ -136,13 +137,18 @@ if (fs.existsSync(INBOX_PROPOSALS)) {
       const inputHash = fs.existsSync(path.join(caseRoot, "case.yaml"))
         ? readCaseSnapshot(caseRoot).contentHash
         : null;
-      for (const src of doc.sources ?? []) {
+      for (const [sourceIndex, src] of (doc.sources ?? []).entries()) {
         if (!src?.url || promotionWasHandled(src, doc.case, memory, inputHash))
           continue;
         const key = fingerprint({ case: doc.case, source: src });
         if (queuedCandidates.has(key)) continue;
         queuedCandidates.add(key);
-        candidates.push({ caseDir: doc.case, proposalRun: run, src });
+        candidates.push({
+          caseDir: doc.case,
+          proposalRun: run,
+          src,
+          proposalRef: `${path.relative(ROOT, path.join(dir, f))}#sources[${sourceIndex}]`,
+        });
       }
     }
   }
@@ -154,7 +160,9 @@ if (fs.existsSync(INBOX_PROPOSALS)) {
 // spent the budget and deferred two genuinely new sources by a cycle.)
 const ledgerAdd = [];
 const promotable = [];
-const basis = (caseDir, src) => ({
+const basis = ({ caseDir, src, proposalRef }) => ({
+  source: src,
+  ref: proposalRef,
   case: caseDir,
   candidateHash: fingerprint(src),
   inputHash: fs.existsSync(path.join(CASES, caseDir, "case.yaml"))
@@ -166,7 +174,7 @@ for (const cand of candidates) {
   const caseRoot = path.join(CASES, caseDir);
   if (!fs.existsSync(caseRoot)) {
     ledgerAdd.push({
-      ...basis(caseDir, src),
+      ...basis(cand),
       url: src.url,
       disposition: "failed",
       reason: `no case dir ${caseDir}`,
@@ -184,7 +192,7 @@ for (const cand of candidates) {
       `${src.url}: already carried as ${dupe.id} (via ${dupe.via}) — recorded, skipped`,
     );
     ledgerAdd.push({
-      ...basis(caseDir, src),
+      ...basis(cand),
       url: src.url,
       disposition: "duplicate",
       of: dupe.id,
@@ -209,6 +217,8 @@ for (const cand of selected) {
   const claims = parseYaml(snapshot.files["claims.yaml"]) ?? [];
   const evidence = parseYaml(snapshot.files["evidence.yaml"]) ?? [];
   const context = {
+    source: src,
+    ref: cand.proposalRef,
     case: caseDir,
     candidateHash: fingerprint(src),
     inputHash: snapshot.contentHash,
@@ -240,7 +250,16 @@ for (const cand of selected) {
     console.error(
       `${src.url}: fetch failed (${e.message}) — left for a future run`,
     );
-    continue; // not ledgered: transient, retryable next run
+    ledgerAdd.push({
+      ...context,
+      url: src.url,
+      disposition: "failed",
+      reason: `fetch failed: ${e.message}`,
+      retryable: true,
+      runId,
+      date,
+    });
+    continue;
   }
 
   const claimIndex = claims
@@ -404,6 +423,27 @@ for (const cand of selected) {
 }
 
 if (!dryRun && ledgerAdd.length > 0) {
-  fs.appendFileSync(LEDGER, "\n" + stringifyYaml(ledgerAdd));
+  writeIntakeDecisions(
+    ROOT,
+    ledgerAdd.map((entry) => ({
+      case: entry.case,
+      stage: "promotion",
+      decision: entry.disposition,
+      source: entry.source ?? { url: entry.url },
+      ref: entry.ref ?? null,
+      reason: entry.reason ?? null,
+      date: entry.date,
+      generatedAt,
+      runId: entry.runId,
+      model: entry.model ?? null,
+      promptVersion: entry.promptVersion ?? PROMPT_VERSION,
+      inputHash: entry.inputHash,
+      candidateHash: entry.candidateHash,
+      retryable: entry.retryable ?? false,
+      recordId: entry.as ?? entry.of ?? null,
+      matchMethod: entry.via ?? null,
+      details: { evidence: entry.evidence ?? [] },
+    })),
+  );
 }
 console.log(String(promoted));

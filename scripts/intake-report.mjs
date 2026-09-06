@@ -14,12 +14,13 @@ const { values } = parseArgs({
     "watch-run": { type: "string" },
   },
 });
-if (!values.case || Boolean(values.source) === Boolean(values["watch-run"])) {
+if (!values.case || (values.source && values["watch-run"])) {
   throw new Error(
-    "usage: node scripts/intake-report.mjs --case <case-directory> (--source <URL or identifier> [--title <title>] | --watch-run <run-id>)",
+    "usage: node scripts/intake-report.mjs --case <directory or slug> [--source <URL or identifier> | --watch-run <run-id>]",
   );
 }
 const memory = readIntakeMemory();
+values.case = memory.caseAliases[values.case] ?? values.case;
 if (!Object.hasOwn(memory.sourcesByCase, values.case))
   throw new Error(`unknown case: ${values.case}`);
 let items;
@@ -34,7 +35,7 @@ if (values["watch-run"]) {
   );
   items = parse(fs.readFileSync(file, "utf8"))?.items;
   if (!Array.isArray(items)) throw new Error(`${file}: missing items`);
-} else {
+} else if (values.source) {
   items = [
     {
       url: values.source,
@@ -42,15 +43,27 @@ if (values["watch-run"]) {
       title: values.title ?? "",
     },
   ];
-}
+} else items = null;
 console.log(
   JSON.stringify(
     {
       case: values.case,
-      items: items.map((source) => ({
-        source,
-        context: intakeContext({ kind: "source", source }, values.case, memory),
-      })),
+      ...(items
+        ? {
+            items: items.map((source) => ({
+              source,
+              context: intakeContext(
+                { kind: "source", source },
+                values.case,
+                memory,
+              ),
+            })),
+          }
+        : {
+            decisions: memory.decisions.filter(
+              (entry) => entry.case === values.case,
+            ),
+          }),
     },
     null,
     2,

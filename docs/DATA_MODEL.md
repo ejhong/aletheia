@@ -2,6 +2,29 @@
 
 Four core objects — **Case, Claim, Evidence, Source** — plus append-only **assessment overlays** and supporting records (research opportunities, change log). Assessments, relationships, and provenance are fields or overlay records, not separate top-level object types. The authoritative schema is the Zod definitions in `src/domain/schema.ts`; this document explains the concepts.
 
+## Intake decisions
+
+`proposals/intake/*.yaml` contains immutable, schema-validated decision batches
+(`version: 1`, `decisions`). A decision names its case, producer stage,
+candidate/source, outcome, reason, date, run, and available model and input
+receipts. The migrated stages are watch triage, source promotion, agenda
+generation, and agenda scoring. These records are workflow history, separate
+from Evidence records and ratified case assessments.
+
+New agenda scores preserve individual seat reasons and concerns; their totals
+must agree with those seats. Failed or stale reviews cannot provide actionable
+scores. Proposal Markdown remains the input artifact, and changing a proposal
+invalidates its earlier score. Directory names and public slugs resolve through
+`case.yaml` when they differ.
+
+Decision IDs and batch filenames are hashes of their data. Readers fail on
+invalid schemas or mismatched hashes. Writers install complete batches
+atomically and never replace an earlier file. Legacy entries preserve exact
+committed origins and original rows; missing historical receipts stay null.
+The migration replay in `scripts/migrate-intake.mjs` retires previous stores
+only after checking the migrated records. `scripts/intake-report.mjs` exposes
+the history without a model call.
+
 ## Layering principle
 
 Content is layered and reversible:

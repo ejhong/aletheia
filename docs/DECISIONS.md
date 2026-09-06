@@ -959,3 +959,38 @@ that the common proposal envelope, durable storage for every outcome, source
 revision monitoring, or general evidence diffing are already implemented.
 
 (AI implementation record; no research claims or constitution changes.)
+
+## 2026-09-06 — Durable intake decisions and contextual agenda reconsideration
+
+The shared read interface now has one durable store: immutable decision batches
+under `proposals/intake/`. Watch triage, promotion, agenda generation, and agenda
+scoring use it; the proposal page, governance totals, and adoption workers read
+the same authority. A committed-snapshot replay preserves 195 historical
+decisions and proposal records, including an earlier failed triage case, and
+retires eight old archive, promotion, triage, and score files. Original rows and
+their committed locators remain attached; duplicate archive/report copies are
+provenance for one decision. Missing historical metadata stays unknown.
+
+Promotion runs retain outcomes even when zero sources were imported. Failed
+watch cases remain due, and a thin or stale agenda panel remains retryable.
+New panel records preserve each seat's reasoning; the existing four-highs,
+zero-concerns rule and the independent publication gate are unchanged. Scoring
+packets carry earlier reasons without earlier vote totals or grades.
+The proposal page calls these outcomes "not advanced" and offers recorded
+panel explanations in an optional disclosure. Missing historical explanations
+are not reconstructed.
+
+The agenda generator no longer treats a title, or editorial silence, as a
+permanent rejection. It receives previous proposals and review reasons. Changed
+arguments or case inputs can reopen an earlier proposal under its original
+title; identical substance on identical inputs rests. Public slugs resolve
+through case metadata for history lookup and study/adoption paths, including
+the megalithic-casting topic in the geopolymer directory.
+
+The store validates payload hashes and installs complete files atomically.
+Existing decision batches cannot enter the low-risk lane as modifications or
+deletions. This strengthens history protection without widening publication
+authority. General change proposals, source-reading verification, aggregate
+spend controls, and edition drafting remain subsequent work.
+
+(AI implementation record for the authorized intake migration.)

@@ -13,12 +13,15 @@ import {
 } from "../../scripts/lib/source-identity.mjs";
 import {
   intakeContext,
-  promotionCase,
   promotionWasHandled,
   readIntakeMemory,
 } from "../../scripts/lib/intake-memory.mjs";
 import { fingerprint } from "../../scripts/lib/review-state.mjs";
-import { mergeLedger } from "../../scripts/triage-watch.mjs";
+import {
+  promotionCase,
+  readLegacyDecisions,
+} from "../../scripts/lib/legacy-intake.mjs";
+import { writeIntakeDecisions } from "../../scripts/lib/intake-store.mjs";
 
 const scratch: string[] = [];
 afterEach(() => {
@@ -152,37 +155,12 @@ describe("decisions in context", () => {
     expect(promotionWasHandled(source, "beta", memory, "old-inputs")).toBe(
       false,
     );
-    const entry = {
-      case: "alpha",
-      key: "doi:10.1234/test",
-      reason: "out of scope",
-      date: "2026-09-01",
-    };
-    const { ledger } = mergeLedger({ items: [entry] }, [
-      { ...entry, case: "beta" },
-    ]);
-    expect(ledger.items).toHaveLength(2);
   });
   it("keeps operational failures retryable when the case and candidate are unchanged", () => {
     const retry = { ...memory, decisions: [{ ...decision, retryable: true }] };
     expect(promotionWasHandled(source, "alpha", retry, "old-inputs")).toBe(
       false,
     );
-  });
-  it("records a changed reason or basis while an identical retry remains idempotent", () => {
-    const entry = {
-      case: "alpha",
-      key: "doi:10.1234/test",
-      reason: "out of scope",
-      date: "2026-09-01",
-    };
-    const result = mergeLedger({ items: [entry] }, [
-      entry,
-      { ...entry, reason: "a different objection" },
-      { ...entry, inputHash: "new-inputs" },
-    ]);
-    expect(result.added).toBe(2);
-    expect(result.ledger.items[0]).toEqual(entry);
   });
   it("does not assign an ambiguous legacy promotion to an invented case", () => {
     expect(
@@ -229,6 +207,7 @@ describe("decisions in context", () => {
         via: "title similarity",
       },
     ]);
+    writeIntakeDecisions(root, readLegacyDecisions(root, "a".repeat(40)));
     const loaded = readIntakeMemory(root);
     expect(loaded.decisions).toHaveLength(2);
     expect(
@@ -236,11 +215,12 @@ describe("decisions in context", () => {
         (entry) => entry.inputHash === null && entry.model === null,
       ),
     ).toBe(true);
-    expect(loaded.decisions[1].case).toBe("alpha");
-    expect(loaded.decisions[1].caseBasis).toBe(
-      "inferred from current source record",
-    );
-    expect(loaded.decisions[1].matchMethod).toBe("title similarity");
+    const promotion = loaded.decisions.find(
+      (entry) => entry.stage === "promotion",
+    )!;
+    expect(promotion.case).toBe("alpha");
+    expect(promotion.caseBasis).toBe("inferred from current source record");
+    expect(promotion.matchMethod).toBe("title similarity");
     expect(promotionWasHandled(source, "alpha", loaded, "new-inputs")).toBe(
       false,
     );
@@ -249,10 +229,14 @@ describe("decisions in context", () => {
     const { root, write } = fixture();
     write("content/cases/alpha/sources.yaml", []);
     write("proposals/promotions-ledger.yaml", { not: "a list" });
-    expect(() => readIntakeMemory(root)).toThrow(/expected a list/);
+    expect(() => readLegacyDecisions(root, "a".repeat(40))).toThrow(
+      /expected a list/,
+    );
     write("proposals/promotions-ledger.yaml", []);
     write("proposals/watch/archive-ledger.yaml", { not: "an archive" });
-    expect(() => readIntakeMemory(root)).toThrow(/missing items list/);
+    expect(() => readLegacyDecisions(root, "a".repeat(40))).toThrow(
+      /missing items list/,
+    );
   });
   it("exposes the live legacy history through a read-only command", () => {
     const output = JSON.parse(

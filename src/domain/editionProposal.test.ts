@@ -175,6 +175,36 @@ describe("assessment-owned claim interpretation", () => {
     expect(execFileSync(process.execPath, [path.resolve("scripts/stale-checks.mjs")], { cwd: root, encoding: "utf8" }).trim()).toBe("synthetic");
   });
 
+  it("reviews the latest selection across multiple editions and rejects an ambiguous snapshot", () => {
+    const { root, dir, proposal, assessment } = catalogFixture();
+    install(root, dir, proposal);
+    const second = next(root);
+    second.assessment = { ...assessment, runId: "second-catalog-assessment", generatedAt: "2026-09-06T11:30:00.000Z",
+      caseAssessment: { ...assessment.caseAssessment, loadBearing: ["TST-C002"] },
+      claimAssessments: assessment.claimAssessments.map(a => a.claimId === "TST-C002" ? { ...a, treatment } : a),
+    };
+    second.edition.assessment = { runId: second.assessment.runId, hash: assessmentHash(second.assessment) };
+    second.edition.featuredClaimIds = ["TST-C002"];
+    second.edition.article = "## Second synthetic essay\n\n[The other synthetic observation becomes the focus.]{claim=TST-C002}";
+    install(root, dir, second);
+
+    const snapshot = readCaseSnapshot(dir);
+    expect(snapshot.editions).toHaveLength(2);
+    expect(snapshot.edition?.runId).toBe(second.edition.runId);
+    expect(Object.keys(snapshot.files).filter(file => file.startsWith("editions/")))
+      .toEqual([`editions/${second.edition.runId}.yaml`]);
+    expect(evidencePacket(snapshot.files).assessClaimIds).toEqual(["TST-C002"]);
+    const report = JSON.parse(execFileSync(process.execPath, [path.resolve("scripts/cross-model-check.mjs"), "synthetic", "--dry-run"],
+      { cwd: root, encoding: "utf8" }));
+    expect(report.packet.assessClaimIds).toEqual(["TST-C002"]);
+
+    const oldFile = `editions/${proposal.edition.runId}.yaml`;
+    const ambiguous = { [oldFile]: fs.readFileSync(path.join(dir, oldFile), "utf8"), ...snapshot.files };
+    expect(() => evidencePacket(ambiguous)).toThrow(/only the current edition/);
+    expect(() => evidencePacket(Object.fromEntries(Object.entries(ambiguous).reverse())))
+      .toThrow(/only the current edition/);
+  });
+
   it("requires fresh concurrence after an edition changes interpretation while preserving the earlier assessment", () => {
     const { root, dir, proposal, assessment } = catalogFixture();
     install(root, dir, proposal);

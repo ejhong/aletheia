@@ -81,7 +81,13 @@ export function evidencePacket(files) {
   // The assessor receives all propositions, without the edition's prose,
   // grades, treatment, or ordering. Include newly selected catalog IDs in
   // its grading scope so these claims can receive independent checks too.
-  const editionFile = Object.keys(files).find(file => file.startsWith("editions/"));
+  // readCaseSnapshot resolves the append-only chain once and supplies only its
+  // current edition. Never silently choose one if another caller violates that
+  // contract: an old selection could otherwise omit new claims from review.
+  const editionFiles = Object.keys(files).filter(file => file.startsWith("editions/"));
+  if (editionFiles.length > 1)
+    throw new Error("evidence packet requires only the current edition from readCaseSnapshot");
+  const [editionFile] = editionFiles;
   const selected = editionFile ? read(editionFile, {}).featuredClaimIds ?? [] : [];
   return {
     case: {

@@ -1196,7 +1196,11 @@ when featured. Human-review coverage counts the selected ledger records, not
 the AI's grading. Blind packets add selected catalog IDs to the grading scope
 in ledger order, include every live proposition, and exclude the interpretation,
 essay, and grades. Existing exact assessment/content receipts require fresh
-checks after an interpretation changes. No concurrence threshold changes.
+checks after an interpretation changes. The snapshot resolves the edition chain
+and includes only its current edition; the packet rejects multiple edition
+files instead of choosing one. A two-edition integration test covers selection
+of a different catalog claim, including the native blind runner. No concurrence
+threshold changes.
 
 Synthetic tests exercise the transition from catalog observations to an
 interpreted edition, unadopted drafts, strict treatment validation, exact hashes,

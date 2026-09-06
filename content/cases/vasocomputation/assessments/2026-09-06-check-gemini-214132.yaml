@@ -1,0 +1,249 @@
+# Cross-model check run — an independent judge (Gemini 3.8 Flash (Google)),
+# blind to all prior assessments (scripts/cross-model-check.mjs,
+# promptVersion aletheia-check-v4). role: check — never displayed as the case
+# narrative; feeds the concurrence panel. Append-only; NOT human reviewed.
+runId: 2026-09-06-check-gemini-214132
+model: Gemini 3.8 Flash (Google) — independent check run via gemini-3.8-flash
+date: 2026-09-06
+promptVersion: aletheia-check-v4
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: weakly_supported
+  loadBearing:
+    - VASO-C020
+    - VASO-C010
+    - VASO-C004
+  weakestLinks:
+    - VASO-C021
+    - VASO-C022
+  synthesis: >-
+    The core hypothesis ("State, Not Scar") attempts an ambitious bridge across
+    three levels: the physical nature of myofascial trigger points ("knots"),
+    the biophysics of vascular smooth muscle (latch-state mechanics), and
+    high-level cognitive/contemplative phenomenology (vasocomputation and
+    Buddhist "clinging"). When disassembled along its evidentiary joints, the
+    empirical support weakens progressively as one ascends from basic physiology
+    to systemic interpretation.
+
+    At the foundational level, several peripheral components are well grounded
+    in the evidence records: vascular smooth muscle genuinely exhibits a
+    latch-bridge phenomenon allowing economical force maintenance (VASO-C010;
+    Hai & Murphy 1988), slow exhalation reproducibly shifts systemic autonomic
+    balance toward parasympathetic dominance (VASO-C013; Zaccaro 2018), and
+    trigger points display local biochemical perturbations and distinct
+    needle-EMG activity that can react to cognitive stress (VASO-C002,
+    VASO-C003, VASO-C005).
+
+    However, the critical linchpins bridging these domains fail under scrutiny.
+    First, the identification of myofascial trigger points is plagued by poor
+    inter-examiner reliability and diagnostic contestation (VASO-C030; Lucas
+    2009, Quintner 2015). Second, and most damaging to the central mechanistic
+    claim (VASO-C020), the latch-bridge mechanism has never been empirically
+    demonstrated in skeletal-muscle resistance arterioles. To the contrary,
+    Study VASO-S001 (VASO-E019, VASO-E020, VASO-E021) reveals that microvascular
+    arterioles maintain constriction via persistent activation (elevated LC20
+    phosphorylation and calcium sensitization via Rho-kinase) rather than an
+    economical, dephosphorylated latch hold, and latch behavior fails even one
+    branch downstream in muscular arteries (Han 2006).
+
+    Furthermore, the claim that vascular tone serves as a cognitive memory
+    element or physical implementation of contemplative "clinging" (VASO-C021,
+    VASO-C022) remains entirely speculative. While hemo-neural modulation exists
+    centrally on millisecond timescales (Salameh 2024), there is no evidence of
+    a write-store-read memory loop in peripheral vasculature. The hypothesis
+    survives only as a weakly supported, highly speculative framework whose
+    primary physical mechanism is currently contradicted by the nearest
+    available microvascular data.
+  steelman: The rapid, seconds-scale somatic release of localized tenderness under
+    sustained pressure and prolonged exhalation is a distinct phenomenological
+    event that conventional structural-lesion and slow-fibrotic models cannot
+    explain, leaving an open niche for state-dependent autonomic or
+    microvascular transition dynamics.
+claimAssessments:
+  - claimId: VASO-C021
+    verdict: weakly_supported
+    confidence: high
+    reasoning: This interpretive claim extrapolates basic neurovascular coupling
+      into a full computational architecture where vascular tone serves as
+      cognitive memory and Buddhist 'clinging'. While instant hemo-neural
+      mechanosensation is demonstrated centrally in rats (VASO-E005), and
+      attention can modulate dermal inflammation over 20 minutes (VASO-E008),
+      there is zero experimental evidence demonstrating a peripheral
+      write-store-read memory cycle in vascular smooth muscle (VASO-E017). The
+      strongest opposing consideration is that biological memory requires
+      input-dependent state retention that alters future readout (as seen in
+      primitive flow networks like Physarum), but mammalian vascular hysteresis
+      has never been shown to carry information or encode expectations.
+  - claimId: VASO-C020
+    verdict: weakly_supported
+    confidence: high
+    reasoning: The hypothesis that muscle knots are maintained microvascular
+      smooth-muscle latch states causing local ischemia is undermined by
+      available physiological data. While trigger points show altered
+      biochemistry (VASO-E006) and spontaneous EMG (VASO-E001), Study VASO-S001
+      demonstrates that maintained constriction in skeletal-muscle arterioles
+      operates via continuous activation (elevated LC20 phosphorylation and
+      Rho-kinase sensitization) rather than an uncoupled latch-bridge state
+      (VASO-E020), and no study has ever demonstrated energetic economy or
+      input-free persistence in arterioles (VASO-E019). The strongest opposing
+      consideration is that trigger points clearly represent an active,
+      reversible state rather than permanent structural scarring, leaving open
+      the possibility of an alternative active maintaining mechanism.
+  - claimId: VASO-C022
+    verdict: unresolved
+    confidence: high
+    reasoning: This interpretive attribution posits that traditional concepts (rtsa
+      mdud, granthis, ashi points) are empirical maps of the vascular-autonomic
+      tension system generated via trained interoception. No formal
+      cross-registration or blinded spatial mapping has been conducted between
+      traditional anatomical loci and vascular or autonomic structures
+      (VASO-R006 remains an unexecuted desk proposal). The strongest opposing
+      consideration is the remarkable qualitative convergence across disparate
+      contemplative traditions regarding somatic 'knots' releasing under
+      breath-focused attention, which may reflect genuine interoception of
+      shared autonomic physiology rather than mere coincidence.
+  - claimId: VASO-C010
+    verdict: well_supported
+    confidence: high
+    reasoning: The latch-bridge state—prolonged force maintenance at low energetic
+      cost and low myosin phosphorylation—is a validated physiological
+      phenomenon in smooth muscle (Hai & Murphy 1988, Wingard 1994, Hammell
+      2022). However, Study VASO-S001 tempers its universality by showing that
+      latch behavior is heterogeneous, appearing in conduit arteries but failing
+      in downstream muscular branches (VASO-E021), and is completely unmeasured
+      in arterioles (VASO-E019). The strongest opposing consideration is that
+      the molecular mechanism itself is proven in isolated myosin and conduit
+      vessels, establishing the biophysical plausibility of the cross-bridge
+      detachment kinetic.
+  - claimId: VASO-C011
+    verdict: well_supported
+    confidence: moderate
+    reasoning: Logically and biologically, if an objective tissue abnormality
+      normalizes within seconds, it must represent a dynamically maintained
+      physiological state (such as muscular guarding, vascular spasm, or
+      autonomic tone) rather than remodeled anatomical structure or scar tissue,
+      which requires hours to weeks to remodel. The primary limitation is that
+      objective, instrumented second-scale normalization has not yet been
+      demonstrated in time-resolved imaging studies (VASO-E016). The strongest
+      opposing consideration is that thixotropic changes in fascia or rapid
+      mechanical shifting of fluid compartments could alter local mechanical
+      properties without necessarily altering an 'actively maintained'
+      neurovascular program.
+  - claimId: VASO-C012
+    verdict: well_supported
+    confidence: high
+    reasoning: The hemo-neural hypothesis, originally conceptualized by Moore & Cao
+      (2008), posits that hemodynamics actively modulate nearby neuronal
+      activity. This was directly demonstrated by Salameh et al. (2024), who
+      showed that blood-pressure pulsations modulate central neurons via
+      mechanosensitive ion channels (VASO-E005). The strongest opposing
+      consideration is that these demonstrations are restricted to instantaneous
+      central nervous system mechanosensation in rodent brains, providing no
+      evidence that peripheral hemodynamics modulate sensory afferents in the
+      specific pattern required for myofascial knot maintenance.
+  - claimId: VASO-C013
+    verdict: established
+    confidence: high
+    reasoning: The physiological link between slow respiration (especially prolonged
+      exhalation) and parasympathetic activation is supported by extensive
+      evidence, including the Zaccaro et al. (2018) systematic review
+      demonstrating robust increases in heart rate variability and respiratory
+      sinus arrhythmia (VASO-E009). The strongest opposing consideration is that
+      this evidence reflects systemic, global cardiovascular autonomic metrics;
+      it does not demonstrate localized, site-specific autonomic efferent
+      changes or microvascular unlatching at a tender point.
+  - claimId: VASO-C030
+    verdict: established
+    confidence: high
+    reasoning: The trigger-point construct and its manual diagnosis are extensively
+      contested in the peer-reviewed medical literature. Systematic reviews
+      (Lucas et al. 2009) demonstrate that manual palpation lacks acceptable
+      inter-examiner reliability without a validated gold standard, while
+      critical evaluations (Quintner et al. 2015) vigorously challenge the
+      validity of the taut-band etiology (VASO-E010, VASO-E011, VASO-E012). The
+      strongest opposing consideration is the rebuttal literature (e.g.,
+      Dommerholt & Gerwin 2015) and imaging reviews (Mazza et al. 2021)
+      suggesting that instrumented modalities like elastography can
+      differentiate tender points from normal tissue.
+  - claimId: VASO-C001
+    verdict: well_supported
+    confidence: moderate
+    reasoning: Discrete, tender, palpable spots are a ubiquitous clinical and
+      self-reported observation in the human population, as documented across
+      physical medicine literature and rheumatological tender-point surveys
+      (VASO-E015). However, methodological audits highlight that the precise
+      localization and objective reality of these discrete entities remain
+      contested due to poor examiner agreement (VASO-E011, VASO-E012), and no
+      comprehensive population census exists. The strongest opposing
+      consideration is that despite diagnostic boundary disputes, practically
+      all humans can identify exquisitely tender spots upon manual palpation or
+      foam rolling.
+  - claimId: VASO-C002
+    verdict: provisionally_supported
+    confidence: low
+    reasoning: Hubbard & Berkoff (1993) reported sustained spontaneous needle-EMG
+      activity localized to a 1–2 mm nidus within trapezius trigger points,
+      absent in adjacent fibers (VASO-E001). However, this finding stems from a
+      single small-sample laboratory lineage that is over three decades old, has
+      faced ongoing controversy regarding the signal generator (muscle spindles
+      versus abnormal endplate noise), and records skeletal-muscle
+      electrophysiology rather than vascular mechanics. The strongest opposing
+      consideration is that subsequent electromyographic investigations continue
+      to identify focal electrical irritability at trigger sites, distinguishing
+      them from quiescent surrounding tissue.
+  - claimId: VASO-C003
+    verdict: provisionally_supported
+    confidence: low
+    reasoning: McNulty et al. (1994) showed that a cognitive stressor (mental
+      arithmetic) selectively elevated spontaneous needle-EMG activity at
+      trapezius trigger points while sparing adjacent non-tender muscle sites
+      (VASO-E002). Nevertheless, this comes from a single study with a very
+      small sample size (n=14) sharing the Hubbard laboratory lineage, and it
+      has not been replicated with modern high-density instrumentation. The
+      strongest opposing consideration is that sympathetic activation is well
+      known to influence muscle spindle sensitivity and endplate activity,
+      providing a plausible neurophysiological pathway for cognitive stress to
+      modulate focal muscle tone.
+  - claimId: VASO-C004
+    verdict: weakly_supported
+    confidence: moderate
+    reasoning: The phenomenon of combined pressure and prolonged exhalation yielding
+      a rapid, felt release of a tender point is supported strictly by
+      first-person phenomenology and practitioner lore (VASO-E014). It has never
+      been validated in a controlled trial or paired with synchronized,
+      objective time-resolved imaging (VASO-E016). The strongest opposing
+      consideration is the overwhelming clinical ubiquity of manual ischemic
+      compression and respiratory release protocols in physical therapy, which
+      suggests an underlying physiological transition even if contaminated by
+      subjective expectation and sensory adaptation.
+  - claimId: VASO-C005
+    verdict: well_supported
+    confidence: moderate
+    reasoning: Active trigger points demonstrate measurable biophysical and
+      biochemical abnormalities compared to control tissue, including elevated
+      inflammatory mediators (substance P, CGRP, bradykinin) and acidic pH on
+      microdialysis (Shah et al. 2008; VASO-E006), as well as altered stiffness
+      and Doppler flow patterns across 33 imaging studies (Mazza et al. 2021;
+      VASO-E007). The strongest opposing consideration is that Shah et al. found
+      mediator elevations in remote sites as well, suggesting potential systemic
+      or regional confounding, while imaging studies exhibit high methodological
+      heterogeneity and variable reproducibility.
+  - claimId: VASO-C006
+    verdict: well_supported
+    confidence: moderate
+    reasoning: Mizrachi et al. (2026) demonstrated in a preregistered,
+      within-subject study (n=57) that directing voluntary attention toward a
+      histamine skin prick significantly reduced wheal and flare size and
+      accelerated resolution compared to distraction, with stable autonomic
+      arousal (VASO-E008). The strongest opposing consideration is that this
+      study examined acute dermal histamine inflammation over roughly 20 minutes
+      via a vagally mediated neuroimmune axis, which cannot be directly
+      extrapolated to smooth-muscle unlatching or myofascial trigger-point
+      release occurring over seconds.
+generatedAt: 2026-09-06T21:41:32.091Z
+review:
+  protocol: case-snapshot-v1
+  contentHash: 612ab75a93caf3c21d1f3f69cdf83f9336deeb69f403fcc1ac8c323dec32634b
+  assessmentHash: e8fe3c8c5e962731daa543f7e313c31e4b7780f29c47461c55f329c6fa56d4d0
+  packetHash: cf0cfab516c32ef21203fb2b20a1738d8f5c5442bb805fc146d9e216ac5f037e

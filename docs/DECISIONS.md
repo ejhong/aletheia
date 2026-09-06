@@ -1287,3 +1287,20 @@ AI execution provenance: model `GPT-6 (OpenAI Codex)`; date `2026-09-06`;
 runId `codex-budget-intake-2026-09-06` (locally assigned session label);
 promptVersion `none` (interactive founder-directed work, no versioned
 pipeline prompt). Eugene supplied the direction; the wording is AI-written.
+
+## 2026-09-06 — Review the complete reading experience after the pipeline
+
+The founder expanded the later UI task beyond Panel and Proposals to all
+public information: make the presentation beautiful, interesting and useful
+as a whole. Try the current assessment near the top of the case narrative,
+as a concise summary, with an inspectable account of what changed and why.
+Its prominence should help readers follow meaningful revisions; the system
+does not need to manufacture more frequent changes of judgment. Review the
+essay, claims, evidence, research questions and automation history together,
+with the detailed ledger still accessible. This remains after the pipeline
+work; no public layout changes are made in this planning update.
+
+AI execution provenance: model `GPT-6 (OpenAI Codex)`; date `2026-09-06`;
+runId `codex-budget-intake-2026-09-06` (locally assigned session label);
+promptVersion `none` (interactive founder-directed work, no versioned
+pipeline prompt). This records the founder's direction in AI-written words.

@@ -994,3 +994,8 @@ authority. General change proposals, source-reading verification, aggregate
 spend controls, and edition drafting remain subsequent work.
 
 (AI implementation record for the authorized intake migration.)
+
+The first cutover review could not inspect the oversized historical batch.
+The same 195 decision identities were split by kind and reviewed in full in
+PRs #175, #176, and #177, retaining the original stores during staging. The
+cutover uses those reviewed files; no review threshold or packet limit changes.

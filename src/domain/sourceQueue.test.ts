@@ -1,3 +1,4 @@
+import { testBudget } from "./fixtures/aiBudget";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -68,7 +69,7 @@ function reader(overrides: { missing?: string; reject?: boolean; usageMissing?: 
     retrieve: (url, options) => retrieveSource(url, { ...options, fetchImpl: async () =>
       url === overrides.missing ? new Response("unavailable", { status: 429 })
         : new Response(body, { headers: { "content-type": "text/plain" } }) }),
-    complete: (budget, role, input) => boundedCompletion(budget, role, input, { apiKey: "synthetic-only", fetchImpl: modelFetch }),
+    complete: (budget, role, input) => boundedCompletion(budget, role, input, { allowance: testBudget(), apiKey: "synthetic-only", fetchImpl: modelFetch }),
   };
   return { options, calls: () => calls, packets };
 }

@@ -1,11 +1,19 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+vi.mock("../../scripts/lib/ai-budget.mjs", async importOriginal => {
+  const original = await importOriginal<typeof import("../../scripts/lib/ai-budget.mjs")>();
+  return { ...original, sharedBudget: () => {
+    let value: unknown = null; let sha: string | null = null;
+    return original.createBudget({ read: async () => ({ sha, value: structuredClone(value) }),
+      write: async (_month: string, _sha: string | null, next: unknown) => { value = structuredClone(next); sha = "fixture"; return true; } });
+  } };
+});
 
 /** Refusals are loud (typed error), and the fallback helper carries
  *  truthful provenance: the returned model is the one that actually
  *  produced the text — the Opus seat's §3.15 objection, pinned. */
 
 function anthropicReply(body: object) {
-  return { ok: true, json: async () => body } as Response;
+  return Response.json({ model: "claude-fable-5", usage: { input_tokens: 10, output_tokens: 10 }, ...body });
 }
 
 afterEach(() => {
@@ -15,6 +23,28 @@ afterEach(() => {
 });
 
 describe("refusal handling and provenance-true fallback", () => {
+  it("uses Astra by default even when both provider keys exist, with explicit Responses bounds", async () => {
+    vi.resetModules();
+    vi.stubEnv("OPENAI_API_KEY", "fixture-key");
+    vi.stubEnv("ANTHROPIC_API_KEY", "fixture-key");
+    vi.stubEnv("EXTRACT_MODEL", "");
+    const requests: Array<{ url: string; body: Record<string, unknown> }> = [];
+    vi.stubGlobal("fetch", vi.fn(async (url: string, init: RequestInit) => {
+      requests.push({ url, body: JSON.parse(String(init.body)) });
+      if (url.endsWith("input_tokens")) return Response.json({ input_tokens: 200 });
+      return Response.json({ model: "gpt-6-astra", status: "completed", usage: { input_tokens: 200, output_tokens: 100 },
+        output: [{ content: [{ type: "output_text", text: '{"answer":42}' }] }] });
+    }));
+    const { pickProvider, callWithRefusalFallback } = await import("../../scripts/lib/llm.mjs");
+    const provider = pickProvider();
+    expect(provider?.name).toBe("openai");
+    expect(await callWithRefusalFallback(provider!, "System", "Input")).toEqual({ text: '{"answer":42}', model: "gpt-6-astra", refused: false });
+    expect(requests).toHaveLength(2);
+    expect(requests[1].url).toBe("https://api.openai.com/v1/responses");
+    expect(requests[1].body).toMatchObject({ instructions: "System", input: "Input", store: false,
+      reasoning: { effort: "medium" }, max_output_tokens: 64000, service_tier: "default" });
+    expect(requests[1].body).not.toHaveProperty("temperature");
+  });
   it("falls back once on refusal and reports the model that answered", async () => {
     vi.resetModules();
     vi.stubEnv("ANTHROPIC_API_KEY", "test-key");
@@ -29,6 +59,7 @@ describe("refusal handling and provenance-true fallback", () => {
           return anthropicReply({ stop_reason: "refusal", content: [] });
         }
         return anthropicReply({
+          model: "claude-opus-5",
           stop_reason: "end_turn",
           content: [{ text: '{"answer":42}' }],
         });
@@ -67,7 +98,7 @@ describe("refusal handling and provenance-true fallback", () => {
       "fetch",
       vi.fn(async (_url: string, init: RequestInit) => {
         calls.push(JSON.parse(String(init.body)).model);
-        return anthropicReply({ stop_reason: "refusal", content: [] });
+        return anthropicReply({ model: "claude-opus-5", stop_reason: "refusal", content: [] });
       }),
     );
     const { pickProvider, callWithRefusalFallback, RefusalError } = await import(

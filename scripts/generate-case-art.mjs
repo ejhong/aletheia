@@ -11,12 +11,14 @@
  * generate-case-art GitHub workflow, which opens a PR with the results —
  * a human picks the winner during PR review.
  */
+import { AI_POLICY } from "./lib/ai-policy.mjs";
+import { meteredFetch } from "./lib/metered-model.mjs";
 import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml } from "yaml";
 
 const STYLE_VERSION = "style-v2";
-const MODEL = "gpt-image-1";
+const MODEL = AI_POLICY.imageModel;
 
 /**
  * style-v2 per-case tone assignments (see docs/IMAGE_STYLE.md, "Case tone
@@ -181,9 +183,11 @@ const outDir = path.join(
 );
 fs.mkdirSync(outDir, { recursive: true });
 
+if (Buffer.byteLength(prompt, "utf8") > 16000) throw new Error("Cover prompt exceeds the metered text limit");
+
 console.error(`Generating ${count} cover candidates for ${slug}...`);
 for (let i = 1; i <= count; i++) {
-  const res = await fetch("https://api.openai.com/v1/images/generations", {
+  const res = await meteredFetch("https://api.openai.com/v1/images/generations", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -196,7 +200,8 @@ for (let i = 1; i <= count; i++) {
       quality: "high",
       n: 1,
     }),
-  });
+    signal: AbortSignal.timeout(300000),
+  }, { model: MODEL, workload: "images", outputLimit: 6400 });
   if (!res.ok) {
     console.error(`Image API error ${res.status}: ${await res.text()}`);
     process.exit(1);

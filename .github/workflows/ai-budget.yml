@@ -1,0 +1,58 @@
+name: AI budget report
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "Report, change limits, pause or resume paid automation"
+        type: choice
+        options: [report, set, pause, resume]
+        default: report
+      monthly_usd:
+        description: "Monthly USD limit (set only; blank keeps current)"
+        type: string
+      daily_usd:
+        description: "Daily USD limit (set only; blank keeps current)"
+        type: string
+      review_reserve_usd:
+        description: "Monthly share kept for review (set only; blank keeps current)"
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - name: Apply the requested spending control
+        if: inputs.action != 'report'
+        env:
+          BUDGET_GITHUB_TOKEN: ${{ secrets.MAINTENANCE_PAT }}
+          BUDGET_ACTION: ${{ inputs.action }}
+          MONTHLY_USD: ${{ inputs.monthly_usd }}
+          DAILY_USD: ${{ inputs.daily_usd }}
+          REVIEW_RESERVE_USD: ${{ inputs.review_reserve_usd }}
+        run: |
+          case "$BUDGET_ACTION" in
+            pause) npm run ai:budget -- set --pause ;;
+            resume) npm run ai:budget -- set --resume ;;
+            set)
+              args=()
+              [ -z "$MONTHLY_USD" ] || args+=(--monthly "$MONTHLY_USD")
+              [ -z "$DAILY_USD" ] || args+=(--daily "$DAILY_USD")
+              [ -z "$REVIEW_RESERVE_USD" ] || args+=(--review-reserve "$REVIEW_RESERVE_USD")
+              npm run ai:budget -- set "${args[@]}"
+              ;;
+            *) exit 1 ;;
+          esac
+      - name: Show policy, usage and outstanding reservations
+        env:
+          BUDGET_GITHUB_TOKEN: ${{ github.token }}
+        run: npm run ai:budget -- status --summary

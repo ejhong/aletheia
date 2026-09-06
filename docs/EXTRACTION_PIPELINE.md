@@ -24,21 +24,19 @@ with the proposals.
 The pipeline calls an LLM API and **fails early with instructions** if no key
 is configured:
 
-| Variable            | Meaning                                            |
-| ------------------- | -------------------------------------------------- |
-| `ANTHROPIC_API_KEY` | Anthropic Messages API key (preferred provider)    |
-| `OPENAI_API_KEY`    | OpenAI Chat Completions API key (fallback)         |
-| `EXTRACT_MODEL`     | Optional model override for whichever provider ran |
+| Variable | Meaning |
+| --- | --- |
+| `OPENAI_API_KEY` | Main writer: Astra via Responses |
+| `ANTHROPIC_API_KEY` | Explicit local Anthropic selection / independent panel |
+| `BUDGET_GITHUB_TOKEN` | Shared spending record, repository contents write |
+| `EXTRACT_MODEL` | Optional local override, requiring a recorded matching tariff |
 
-In CI the keys come from repository secrets and `EXTRACT_MODEL` from a
-repository **variable** (GitHub → Settings → Secrets and variables → Actions),
-which the workflows pass into every LLM-calling step. The variable is
-currently set to `claude-fable-5` (also the code default for the Anthropic
-provider in `scripts/lib/llm.mjs`), so changing models later is one command:
+Models and aggregate limits are set in [`config/ai.json`](../config/ai.json).
+The main writer is `gpt-6-astra` at medium effort, with an explicit output cap.
+Actions use repository API secrets and the existing `MAINTENANCE_PAT` for the
+spending record; they no longer read a separate `EXTRACT_MODEL` variable.
+See [AI operating policy](../config/README.md) for setup and budget controls.
 
-```
-gh variable set EXTRACT_MODEL --repo ejhong/aletheia --body "<model-id>"
-```
 
 ## What a run produces
 

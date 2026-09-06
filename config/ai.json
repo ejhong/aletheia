@@ -1,0 +1,118 @@
+{
+  "version": 1,
+  "main": {
+    "provider": "openai",
+    "model": "gpt-6-astra",
+    "effort": "medium",
+    "maxOutputTokens": 64000
+  },
+  "operator": {
+    "model": "claude-opus-5",
+    "effort": "medium"
+  },
+  "sourceDraft": "gpt-5.4-mini-2026-03-17",
+  "sourceCheck": "gpt-5-mini-2025-08-07",
+  "imageModel": "gpt-image-1",
+  "rateDate": "2026-09-06",
+  "rates": {
+    "gpt-6-astra": {
+      "provider": "openai",
+      "input": 10,
+      "cacheWrite": 12.5,
+      "output": 50,
+      "context": 1050000,
+      "maxOutput": 128000,
+      "longThreshold": 272000,
+      "longInputFactor": 2,
+      "longOutputFactor": 1.5,
+      "source": "https://developers.openai.com/api/docs/models/gpt-6-astra"
+    },
+    "gpt-5.6-sol": {
+      "provider": "openai",
+      "input": 4,
+      "cacheWrite": 5,
+      "output": 20,
+      "context": 1050000,
+      "maxOutput": 128000,
+      "longThreshold": 272000,
+      "longInputFactor": 2,
+      "longOutputFactor": 1.5,
+      "source": "https://developers.openai.com/api/docs/models/gpt-5.6-sol"
+    },
+    "gpt-5.4-mini-2026-03-17": {
+      "provider": "openai",
+      "input": 0.75,
+      "output": 4.5,
+      "context": 400000,
+      "maxOutput": 128000,
+      "source": "https://developers.openai.com/api/docs/models/gpt-5.4-mini"
+    },
+    "gpt-5-mini-2025-08-07": {
+      "provider": "openai",
+      "input": 0.25,
+      "output": 2,
+      "context": 400000,
+      "maxOutput": 128000,
+      "source": "https://developers.openai.com/api/docs/models/gpt-5-mini"
+    },
+    "claude-opus-5": {
+      "provider": "anthropic",
+      "input": 5,
+      "cacheWrite": 10,
+      "output": 25,
+      "context": 1000000,
+      "maxOutput": 128000,
+      "source": "https://platform.claude.com/docs/en/about-claude/models/choosing-a-model"
+    },
+    "claude-fable-5": {
+      "provider": "anthropic",
+      "input": 10,
+      "cacheWrite": 20,
+      "output": 50,
+      "context": 1000000,
+      "maxOutput": 128000,
+      "source": "https://platform.claude.com/docs/en/about-claude/models/choosing-a-model"
+    },
+    "gemini-3.8-flash": {
+      "provider": "gemini",
+      "input": 1.5,
+      "output": 7.5,
+      "context": 1048576,
+      "maxOutput": 65536,
+      "source": "https://ai.google.dev/gemini-api/docs/latest-model"
+    },
+    "grok-4.5": {
+      "provider": "xai",
+      "input": 2,
+      "output": 6,
+      "context": 500000,
+      "maxOutput": 128000,
+      "longThreshold": 199999,
+      "longInputFactor": 2,
+      "longOutputFactor": 2,
+      "source": "https://docs.x.ai/developers/pricing"
+    },
+    "z-ai-glm-5-3-flash": {
+      "provider": "venice",
+      "input": 0.15,
+      "output": 0.5,
+      "context": 1048576,
+      "maxOutput": 131072,
+      "source": "https://docs.venice.ai/overview/pricing"
+    },
+    "gpt-image-1": {
+      "provider": "openai",
+      "input": 5,
+      "output": 40,
+      "context": 32000,
+      "maxOutput": 6400,
+      "source": "https://developers.openai.com/api/docs/models/gpt-image-1"
+    }
+  },
+  "initialBudget": {
+    "enabled": true,
+    "monthlyUsd": 150,
+    "dailyUsd": 25,
+    "reviewReserveUsd": 30
+  }
+}

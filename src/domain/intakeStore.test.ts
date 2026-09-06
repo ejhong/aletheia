@@ -1,3 +1,4 @@
+import { githubBudgetFetchFixture } from "./fixtures/aiBudget";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -182,9 +183,12 @@ describe("durable intake history", () => {
       NODE_ENV: "test",
       PATH: process.env.PATH,
       OPENAI_API_KEY: "fixture-only-never-used",
+      BUDGET_GITHUB_TOKEN: "synthetic-only",
     };
     const preload = path.join(root, "mock-fetch.mjs");
-    fs.writeFileSync(preload, `globalThis.fetch = async (url, init) => {
+    fs.writeFileSync(preload, `${githubBudgetFetchFixture()}globalThis.fetch = async (url, init) => {
+      const accounting = await fixtureBudgetFetch(url, init);
+      if (accounting) return accounting;
       if (String(url).includes("api.openai.com")) {
         const request = JSON.parse(init.body);
         return new Response(JSON.stringify({ id: "synthetic-response", model: request.model, status: "completed",

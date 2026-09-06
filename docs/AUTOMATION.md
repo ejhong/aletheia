@@ -85,18 +85,29 @@ now uses the bounded reader; no additional research schedule is installed.
 | 2 | Essay-first reading experience | Implemented in PR #172. Short frontispiece, inspectable claims with ordinary-link fallback, supporting detail in disclosures, mobile claim sheet. Existing essays and evidence are preserved. |
 | 3 | Blank-topic starting path | Implemented in PR #172. `start-case.mjs` creates an incubating proposal from a question, with no invented evidence, priority, or review. The production loader and view accept it; judgment runners skip it until it has assessable evidence. This tests startup, not autonomous discovery. |
 | 4 | Shared proposal memory and intake diff | Durable history for watch, promotion, and agenda; inbox links and legacy watch imports now use the common research envelope. Complete bundles and before/after edits pass the production loader, including empty topics. Notes, document extraction, and agenda adoption still need adapters. Source identity and identical wording are mechanical; semantic overlap remains a review question. |
-| 5 | Bounded research and source-reading checks | Manual URLs and the existing promotion job share one reader, capped at two public HTML/text sources per pass even across cases. A separate reading checks each drafted observation. Complete, fresh proposals can be prepared for the normal publication gate; failures and stale inputs remain visible. Broad discovery, PDF/OCR, and shared research-plus-publication budgeting remain to build. |
+| 5 | Bounded research and source-reading checks | Manual URLs and the existing promotion job share one reader, capped at two public HTML/text sources per pass even across cases. A separate reading checks each drafted observation. Complete, fresh proposals can be prepared for the normal publication gate; failures and stale inputs remain visible. The shared allowance now covers research, drafting, review, operator, and artwork; broad discovery and PDF/OCR remain to build. |
 | 6 | Versioned edition drafting | The authoring path binds an essay, ordered selection, and exact assessment reference in one immutable edition. A selected assessment can now supply complete interpretation for catalog claims, without editing their ledger records. Proposals bind to current inputs, rest unchanged candidates, and pass the production loader before review. Deep Memory preserves its unassessed opening. Automatic model drafting, candidate comparison, and migration of assessed cases remain to build. |
 | 7 | Pilot, measure, and widen | Exercise geopolymer, transients, and Deep Memory, the founder-selected topic about shared symbols and myths (`content/cases/deep-memory/`). Its empty starting point is preserved in PR #179; the illustrated opening adopts the first checked catalog observation. Its scope is informed by the birdmen project, so this is not blind rediscovery. Compare accepted changes and reading quality with the incumbent, under a single enforced budget covering research and review. The archived chats are design references and a possible held-out discovery benchmark, not an import queue. Expand only after unattended runs improve actual cases. |
+| 8 | Automation visibility, after the pipeline work | Redesign the current Panel and Proposals views together: a quiet global account of spend, activity, model roles and system health, with per-case research activity explaining what was considered, accepted, declined or reopened, why, and what changed in an edition. Start from durable receipts and decisions; do not infer missing case-level cost allocations or turn every run into a public feed. |
 
 The migration deliberately does not relocate every editorial field at once.
 Existing cases still obtain diagnosticity and other editorial fields from
 legacy records. A new edition can take each claim's interpretation from its
 selected assessment instead. Component judgments and case framing remain in
 the legacy case record; those fields still need an assessment-owned projection.
-`CaseView` is the migration boundary. The automated edition writer and aggregate
-research-plus-publication accounting are still to build. The source reader's
-local budget is not that aggregate budget.
+`CaseView` is the migration boundary. The automated edition writer remains to
+build. Aggregate accounting now surrounds the source reader's local limits and
+the other paid workers; see [AI operating policy](../config/README.md).
+
+The next edition-drafting pass should compose images as part of the account:
+select existing verified plate IDs, place each beside the passage it explains,
+and write captions that distinguish visible observations from interpretations.
+Birdmen supplies comparative image leads for Deep Memory. Exact object
+identities, original image sources and rights must reach the ledger before a
+new evidence plate is used. Generated covers remain editorial artwork. The
+existing manifest and plate markers are the interface; no separate visual
+publishing loop is needed. Automated selection and new plate acquisition are
+still to build, under the same edition review and spending allowance.
 
 ### Versioned editions: the first authoring path
 
@@ -180,8 +191,8 @@ the allowance is not multiplied by case. Full input-context liability is
 reserved before each request; returned usage replaces the reservation with an
 uncached tariff estimate. Unknown usage retains its reservation and stops paid
 work. There are no tool calls, hidden retries, or fallback models. These are
-per-run research controls, not an invoice or a shared limit on existing workers,
-the PR arbiter, or artwork generation. This replaces the existing promoter's
+per-run research controls, nested inside the shared monthly/daily allowance
+for all repository API workers, review, the operator, and artwork. This replaces the existing promoter's
 three-source cap and house-model fallback with a two-source, metered pass.
 Its weekly/dispatch cadence and one-cycle boundary are unchanged. Additional
 autonomous discovery schedules wait for aggregate research-and-review allocation.
@@ -588,8 +599,10 @@ uses accepted changes after verification, with a bounded exploration allowance
 for missed questions. Neither a quiet fortnight nor an unchanged verdict proves
 that the source landscape is exhausted. The existing content-merge throttle
 limits publication pace; it is not a monetary budget. Shared spend accounting
-must cover research, extraction, drafting, and all review calls before wider
-unattended research is enabled.
+now covers every existing API path, including the operator's streamed requests
+and image generation, with one policy in `config/ai.json`. Missing receipts
+retain liability; a spent allowance stops work without weakening review. Wider
+Expedition browsing must account for any hosted-tool fees before being enabled.
 
 ## The founder's role, after
 

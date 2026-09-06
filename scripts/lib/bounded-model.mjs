@@ -1,15 +1,14 @@
+import { AI_POLICY } from "./ai-policy.mjs";
+import { meteredFetch } from "./metered-model.mjs";
 import { fingerprint } from "./review-state.mjs";
 
 /** Small manual research pilots only. Rates are explicit standard-tier USD;
  * no tools, retries, cached-input discount assumptions, or unmetered fallback.
- * This ceiling does not include the independently scheduled PR arbiter. */
-export const RESEARCH_MODELS = {
-  draft: { id: "gpt-5.4-mini-2026-03-17", input: 0.75, output: 4.5, context: 400000,
-    source: "https://developers.openai.com/api/docs/models/gpt-5.4-mini" },
-  read: { id: "gpt-5-mini-2025-08-07", input: 0.25, output: 2, context: 400000,
-    source: "https://developers.openai.com/api/docs/models/gpt-5-mini" },
-};
-export const RATE_DATE = "2026-09-06";
+ * The shared allowance additionally covers the panel and all other API workers. */
+export const RESEARCH_MODELS = Object.fromEntries([
+  ["draft", AI_POLICY.sourceDraft], ["read", AI_POLICY.sourceCheck],
+].map(([role, id]) => [role, { id, ...AI_POLICY.rates[id] }]));
+export const RATE_DATE = AI_POLICY.rateDate;
 
 export class RunStopped extends Error {
   constructor(kind, message) { super(message); this.name = "RunStopped"; this.kind = kind; }
@@ -58,8 +57,13 @@ export function createResearchBudget({ maxUsd = 1, maxCalls = 4, maxOutputTokens
     persist: () => save(report()) };
 }
 
+/** @param {ReturnType<typeof createResearchBudget>} budget
+ * @param {string} role
+ * @param {{instructions: string, input: string, inputHash: string}} packet
+ * @param {{apiKey?: string, fetchImpl?: typeof fetch, allowance?: ReturnType<typeof import('./ai-budget.mjs').sharedBudget>}} options
+ */
 export async function boundedCompletion(budget, role, { instructions, input, inputHash },
-  { apiKey = process.env.OPENAI_API_KEY, fetchImpl = fetch } = {}) {
+  { apiKey = process.env.OPENAI_API_KEY, fetchImpl = fetch, allowance } = {}) {
   if (!apiKey) throw new RunStopped("failed", "OPENAI_API_KEY is not configured");
   if (typeof instructions !== "string" || typeof input !== "string" ||
     Buffer.byteLength(instructions + input, "utf8") > 200000)
@@ -72,11 +76,11 @@ export async function boundedCompletion(budget, role, { instructions, input, inp
   call.inputHash = fingerprint(request);
   budget.persist();
   try {
-    const response = await fetchImpl("https://api.openai.com/v1/responses", {
+    const response = await meteredFetch("https://api.openai.com/v1/responses", {
       method: "POST", signal: AbortSignal.timeout(Math.min(90000, budget.remainingMs())),
       headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
       body: JSON.stringify(request),
-    });
+    }, { model: call.model, workload: "research", outputLimit: budget.maxOutputTokens, fetchImpl, budget: allowance });
     if (!response.ok) {
       const detail = await response.json().catch(() => ({}));
       const safe = value => typeof value === "string" && /^[a-zA-Z0-9_.\[\]-]{1,100}$/.test(value) ? value : "unknown";

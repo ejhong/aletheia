@@ -11,6 +11,14 @@ constitution (`AGENTS.md`). Everything else below runs without a human.
 
 ## 1. The machine on one page
 
+AI settings and spend reports: **[config/README.md](../config/README.md)**.
+`config/ai.json` sets the Astra main writer, recorded tariffs and initial
+$150 monthly / $25 daily allowance, with $30 kept for review. Change live limits
+or pause/resume through the budget workflow, without a model call. Run the **AI budget report** Actions
+workflow or `npm run ai:budget -- status`; every paid job reports its allowance.
+Initialize the separate spending branch once with `npm run ai:budget -- init`.
+Local paid runs require `BUDGET_GITHUB_TOKEN` as well as the model key.
+
 Shared source reader (Node 22.18+ and `OPENAI_API_KEY` for paid readings):
 
 ```sh
@@ -22,9 +30,10 @@ node scripts/promote-imports.mjs --dry-run
 
 The reader accepts at most two HTML/text sources and four model calls, with a
 four-minute deadline and a $1 research allowance per run at the explicit rate
-card in `scripts/lib/bounded-model.mjs`. Confirm current rates there before a
-new operating period. The allowance includes the separate source-reading call;
-it excludes the ordinary PR arbiter and other existing workers. The existing
+card in `config/ai.json`. Confirm current rates there before a new operating
+period. This local allowance includes the separate source-reading call. The
+shared monthly/daily allowance additionally covers the PR arbiter, all other
+scripted model calls, the coding operator, and image generation. The existing
 promotion job uses this same allowance, including when the two sources belong
 to different cases; no additional research schedule is installed. Source
 failures, refusals, and budget exhaustion are recorded in
@@ -266,10 +275,13 @@ normal intake before the assessor has something to judge.
   a dead seat), `MAINTENANCE_PAT` (fine-grained, contents + pull-requests
   write; PRs opened with the default token do not trigger CI), optional
   `IMAGE_API_KEY`.
-- House drafting model: `claude-fable-5` with a one-retry refusal fallback
-  to `claude-opus-5` (`scripts/lib/llm.mjs`); override with the Actions
-  variable `EXTRACT_MODEL`. Records always stamp the model that actually
-  answered. Panel seats never fall back — a refusing seat is a failed seat.
+- Main drafting model: `gpt-6-astra`, medium effort, in `config/ai.json`.
+  The shared Responses client requires the OpenAI key; absence or refusal
+  never silently substitutes another vendor. An explicit local Anthropic
+  selection retains the documented Fable-to-Opus refusal fallback, with both
+  attempts metered and the answering model stamped. Actions no longer read
+  `EXTRACT_MODEL`; the repository policy is the setting. Panel seats never
+  fall back — a refusing seat is a failed seat.
 - Panel seats: one table, `scripts/lib/vendors.mjs` — model **and** pinned
   effort per seat (Opus 5 medium · GPT-5.6 Sol high · Gemini 3.8 Flash
   medium · Grok 4.5 high · GLM 5.3 Flash high via Venice). Changing a seat

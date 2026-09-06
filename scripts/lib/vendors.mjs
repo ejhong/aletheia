@@ -1,3 +1,6 @@
+import { meteredFetch } from "./metered-model.mjs";
+import { BudgetStopped } from "./ai-policy.mjs";
+
 /**
  * The independent-vendor panel: one seat per API provider, used by the
  * arbiter (scripts/arbiter.mjs), the cross-model check
@@ -71,7 +74,7 @@ export const VENDORS = {
  * Returns the first non-retryable Response; the caller still judges
  * res.ok, so genuine HTTP errors keep their existing messages.
  */
-export async function fetchWithRetry(name, url, init, attempts = 3) {
+export async function fetchWithRetry(name, url, init, attempts = 3, fetchImpl = fetch) {
   let lastErr;
   for (let attempt = 1; attempt <= attempts; attempt++) {
     if (attempt > 1) {
@@ -83,9 +86,11 @@ export async function fetchWithRetry(name, url, init, attempts = 3) {
     }
     let res;
     try {
-      res = await fetch(url, init);
+      res = await fetchImpl(url, init);
     } catch (err) {
+      if (err instanceof BudgetStopped) throw err;
       if (err.name === "TimeoutError" || err.name === "AbortError") throw err;
+      if (!(err instanceof TypeError)) throw err;
       lastErr = String(err.cause?.message ?? err.message);
       continue;
     }
@@ -134,6 +139,7 @@ export function buildRequest(name, { system, user, maxTokens = 16000 }) {
       },
       body: {
         model: cfg.model,
+        service_tier: "standard_only",
         // Adaptive thinking shares max_tokens with the visible reply; effort
         // is the depth control on this model family.
         max_tokens: Math.max(maxTokens, 32000),
@@ -158,6 +164,7 @@ export function buildRequest(name, { system, user, maxTokens = 16000 }) {
     },
     body: {
       model: cfg.model,
+      service_tier: name === "openai" ? "default" : undefined,
       messages: [
         { role: "system", content: system },
         { role: "user", content: user },
@@ -190,7 +197,11 @@ export async function callVendor(
     headers,
     body: JSON.stringify(body),
     signal: AbortSignal.timeout(timeoutMs),
-  });
+  }, 3, (url, init) => meteredFetch(url, init, {
+    model: VENDORS[name].model, workload: "review",
+    cacheWrites: name !== "anthropic", // this Messages request has no cache_control
+    outputLimit: body.max_tokens ?? body.max_completion_tokens ?? body.generationConfig.maxOutputTokens,
+  }));
   if (!res.ok)
     throw new Error(
       `${name} HTTP ${res.status}: ${(await res.text()).slice(0, 300)}`,

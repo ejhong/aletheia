@@ -41,6 +41,9 @@ permissions:
   # posted between 2026-08-25 and 2026-09-05.
   issues: write
 
+env:
+  BUDGET_GITHUB_TOKEN: ${{ secrets.MAINTENANCE_PAT }}
+
 jobs:
   maintain:
     runs-on: ubuntu-latest
@@ -69,7 +72,6 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          EXTRACT_MODEL: ${{ vars.EXTRACT_MODEL }}
         run: |
           node scripts/process-inbox.mjs | tee inbox-out.txt
           outdir=$(tail -1 inbox-out.txt)
@@ -81,7 +83,6 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          EXTRACT_MODEL: ${{ vars.EXTRACT_MODEL }}
         run: node scripts/reassess-changed.mjs
 
       # Discovery only: new arXiv/Crossref items become unverified proposals
@@ -94,7 +95,6 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          EXTRACT_MODEL: ${{ vars.EXTRACT_MODEL }}
         run: |
           node scripts/watch-literature.mjs | tee watch-out.txt
           outdir=$(tail -1 watch-out.txt)
@@ -114,7 +114,6 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          EXTRACT_MODEL: ${{ vars.EXTRACT_MODEL }}
         run: |
           node scripts/triage-watch.mjs | tee triage-out.txt
           outdir=$(tail -1 triage-out.txt)
@@ -146,7 +145,6 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          EXTRACT_MODEL: ${{ vars.EXTRACT_MODEL }}
         run: |
           node scripts/propose-agenda.mjs --only "${DUE_CASES}" | tee agenda-out.txt
           outdir=$(tail -1 agenda-out.txt)
@@ -246,6 +244,10 @@ jobs:
   # Inbox and legacy watch imports use the same bounded source reader and
   # prospective-case validator; the resulting ledger PR faces the normal
   # independent publication gate. No separate research schedule is added.
+      - name: AI allowance report
+        if: always()
+        run: npm run ai:budget -- status --summary
+
   promote:
     needs: maintain
     if: ${{ (inputs.mode || 'full') == 'full' }}
@@ -298,6 +300,10 @@ jobs:
   # promote job) become drafted freeze files plus their research items,
   # in ONE gated needs-approval PR. The panel judges the protocols before
   # any data exists; collection follows the two-PR discipline.
+      - name: AI allowance report
+        if: always()
+        run: npm run ai:budget -- status --summary
+
   bench:
     needs: maintain
     if: ${{ (inputs.mode || 'full') == 'full' }}
@@ -315,7 +321,6 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          EXTRACT_MODEL: ${{ vars.EXTRACT_MODEL }}
         run: |
           count=$(node scripts/draft-freeze.mjs --scan | tail -1)
           echo "DRAFTED=${count}" >> "$GITHUB_ENV"
@@ -354,6 +359,10 @@ jobs:
   # promote and bench: a fresh checkout of main consumes scores that
   # already merged. Runs after bench so the two Bench PRs of one run
   # never race an append to the same research.yaml.
+      - name: AI allowance report
+        if: always()
+        run: npm run ai:budget -- status --summary
+
   adopt:
     needs: bench
     if: ${{ (inputs.mode || 'full') == 'full' }}
@@ -371,7 +380,6 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          EXTRACT_MODEL: ${{ vars.EXTRACT_MODEL }}
         run: |
           count=$(node scripts/draft-endorsements.mjs --scan | tail -1)
           echo "ADOPTED=${count}" >> "$GITHUB_ENV"
@@ -401,3 +409,7 @@ jobs:
             --label needs-approval)
           gh pr edit "$pr_url" --add-reviewer "${GITHUB_REPOSITORY_OWNER}" || true
           echo "opened $pr_url"
+
+      - name: AI allowance report
+        if: always()
+        run: npm run ai:budget -- status --summary

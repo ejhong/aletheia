@@ -1225,4 +1225,6 @@ Emptied Amazon) lose only that mark. Subtitles, framing questions, source
 titles, and historical assessment quotes are unchanged. Logged as
 housekeeping on each case so the rename does not stale standing or move
 the last-content-update date. Deep Memory already had no mark. (AI record
-of a founder instruction, 2026-09-06 session.)
+of a founder instruction, 2026-09-06 session; model Cursor Grok 4.6,
+runId title-punctuation-2026-09-06, promptVersion none — founder-directed
+session, not a pipeline prompt.)

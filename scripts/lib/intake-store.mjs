@@ -55,6 +55,8 @@ const outcomes = {
   "research-proposal": ["proposed", "rejected", "failed"],
   "research-run": ["completed", "partial", "no_change", "failed", "refused", "budget_exhausted"],
   "edition-proposal": ["proposed", "no_change", "rejected", "failed"],
+  "source-request": ["queued"],
+  "research-adoption": ["prepared", "already_present", "stale", "invalid"],
 };
 const DecisionSchema = z
   .object({
@@ -98,6 +100,13 @@ const DecisionSchema = z
     const issue = (message) => ctx.addIssue({ code: "custom", message });
     if (!outcomes[entry.stage].includes(entry.decision))
       issue("invalid outcome for stage");
+    if (entry.stage === "source-request" && (!entry.case ||
+      !z.url().safeParse(entry.source?.url).success || !entry.ref || !entry.inputHash || !entry.candidateHash ||
+      typeof entry.details?.context !== "string"))
+      issue("source request requires a case, URL, input receipt, candidate receipt, context, and origin");
+    if (entry.stage === "research-adoption" && (!entry.case || !entry.ref ||
+      typeof entry.details?.proposalId !== "string" || !/^[a-f0-9]{64}$/.test(entry.details.proposalId)))
+      issue("research adoption requires its originating proposal");
     if (
       ["watch-triage", "promotion"].includes(entry.stage) &&
       entry.decision !== "failed" &&

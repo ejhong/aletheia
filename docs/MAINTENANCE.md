@@ -11,20 +11,23 @@ constitution (`AGENTS.md`). Everything else below runs without a human.
 
 ## 1. The machine on one page
 
-Manual source-reading pilot (Node 22.18+ and `OPENAI_API_KEY`):
+Shared source reader (Node 22.18+ and `OPENAI_API_KEY` for paid readings):
 
 ```sh
 node scripts/research-sources.ts deep-memory <public-https-url> [second-url]
 node scripts/review-research-proposal.ts <proposal.yaml>
 node scripts/review-research-proposal.ts <proposal.yaml> --materialize <new-directory>
+node scripts/promote-imports.mjs --dry-run
 ```
 
 The reader accepts at most two HTML/text sources and four model calls, with a
 four-minute deadline and a $1 research allowance per run at the explicit rate
 card in `scripts/lib/bounded-model.mjs`. Confirm current rates there before a
 new operating period. The allowance includes the separate source-reading call;
-it excludes the ordinary PR arbiter and other existing workers. No scheduler is
-installed. Source failures, refusals, and budget exhaustion are recorded in
+it excludes the ordinary PR arbiter and other existing workers. The existing
+promotion job uses this same allowance, including when the two sources belong
+to different cases; no additional research schedule is installed. Source
+failures, refusals, and budget exhaustion are recorded in
 `proposals/intake/`; local in-progress liability receipts live in the ignored
 `.research-runs/` directory. Unknown token usage keeps its full reservation.
 
@@ -34,6 +37,16 @@ a validated proposal to intake; `--materialize` writes a prospective case to a
 new directory for inspection. Neither publishes. Adoption still needs an
 ordinary PR, a fresh basis check, and the normal gate. A partial run may contain
 useful independently checked records; inspect its failed source outcomes too.
+
+`promote-imports.mjs --dry-run` inspects queued inbox links, legacy watch imports,
+and recorded proposals without fetching, model calls, or writes. Without
+`--dry-run`, it reads up to two queued sources and prepares fresh, validated
+proposals in the working tree, including case history and adoption receipts.
+Use an isolated branch and the normal PR gate. Its full Maintain job does this
+automatically on a fresh checkout of `main`; requests captured in that run wait
+until the next full run. A missing OpenAI key leaves sources queued and does not
+prevent model-free preparation of existing proposals. `--limit` can reduce the
+source count to one; it cannot increase the shared allowance.
 
 Manual edition authoring (Node 22.18+, no API key or model call):
 
@@ -73,7 +86,7 @@ Six workflows do the work:
 
 | Workflow | Trigger | Does | Output |
 | --- | --- | --- | --- |
-| **Maintain** | Mondays 14:00 UTC; dispatch; `inbox` mode on inbox pushes | Job `maintain`: process inbox → reassess changed cases → watch literature → triage → measure yield → propose agenda (due cases only) → score proposals (Bench) → harvest governance + post the **weekly digest issue** → open one PR. Jobs `promote`, `bench`, `adopt` (fresh checkouts of `main`): draft verified imports into sources+evidence; draft advancing study freezes; draft endorsed claims/research items. | One low-risk PR (proposals, moves, overlays) plus up to three `needs-approval` PRs. The digest issue, cc the founder. |
+| **Maintain** | Mondays 14:00 UTC; dispatch; `inbox` mode on inbox pushes | Job `maintain`: process inbox → reassess changed cases → watch literature → triage → measure yield → propose agenda (due cases only) → score proposals (Bench) → harvest governance + post the **weekly digest issue** → open one PR. Jobs `promote`, `bench`, `adopt` (fresh checkouts of `main`): read queued sources and prepare checked Source/Claim/Evidence bundles; draft advancing study freezes; draft endorsed claims/research items. | One low-risk PR (proposals, moves, overlays) plus up to three `needs-approval` PRs. The digest issue, cc the founder. |
 | **Content response** | Hourly cron (GitHub delivers ~5/day); dispatch | For cases whose evidence packet changed (legacy drafts use timestamps): draft a new assessment overlay and run the editorial audit; re-panel any case whose blind checks are stale. Exits in seconds when nothing is stale. | One PR per run that produced anything; supersedes its older still-open predecessor unless that one is parked. |
 | **Inbox response** | Push to `inbox/**` on `main` (not `inbox/processed/**`) | Dispatches Maintain in `inbox` mode. | — |
 | **Operator** | Daily 13:00 UTC; issues; dispatch | Answers parked PRs seat by seat, runs `reconcile-contested.mjs`, retries quarantined seats, triages issues. Never touches `AGENTS.md`, never pushes to `main`. | PR comments, fixes as PRs, issue replies. |
@@ -104,9 +117,10 @@ push is the trigger; intake runs within a minute. Full conventions in
 - **commentary note** — your view in your words, `case:` front matter.
   Becomes proposed editorial actions with your verbatim text preserved as
   the authoritative record.
-- **link list** — URLs to turn into source records. Fetched and verified;
-  labeled `ai_verified` only when actually fetched, `unverified` otherwise.
-  Verified imports are then drafted into the ledger by the `promote` job.
+- **link list** — URLs with any accompanying explanation, queued without a
+  model call or an assertion of verification. The `promote` job reads them
+  within its budget on the next full run; useful observations receive a
+  separate source check and become complete proposals for the normal gate.
 - **document** — a text file to mine for catalog claims.
 
 Everything you drop is *contributor* material: quoted, attributed, and
@@ -152,12 +166,15 @@ legacy decisions whose case could not be established. Unknown review metadata
 stays unknown. Triage uses the same context. A prior intake decision is not
 proof that a new observation has been considered.
 
-Promotion attempts now rest only for the same case, proposed source record,
-and case inputs; operational failures remain retryable within the same budget.
-A revised proposal or changed case can be reconsidered;
-historical attempts without receipts are checked again through the existing
-budget and admission gates. Source-only promotion still defers a possible
-duplicate for identity review before adding another source record.
+Source requests rest for the same case, URL, submitted context, and case inputs.
+Rejected and empty readings close that request; changed context or a changed
+case permits reconsideration. Operational failures remain queued within the
+same pass budget. Stale or invalid adoption reopens the original request for a
+fresh reading. Legacy imports already represented by a Source are skipped;
+an explicit inbox request can seek another observation from that same source.
+The queue is derived from `source-request`, `research-run`, and
+`research-adoption` history, without another state file. Prepared adoptions
+reference their original proposal; source-promotion totals derive from them.
 
 The agenda generator can reconsider a proposal under its existing title.
 Changed arguments or case inputs reopen it; unchanged substance rests, and
@@ -195,7 +212,7 @@ corrections and reconsiderations append a new intake decision.
 | A case shows `contested` | Working as designed. The operator runs reconciliation once; a case still contested afterwards is a standoff and stays displayed. |
 | Content response ran 7 minutes and produced nothing | Cold npm cache. Nothing to fix. |
 | Malformed panel replies | Quarantined under `proposals/cross-model-failures/`, never installed. The operator retries them. |
-| An inbox link came back `unverified` | The URL was unreachable at fetch time. Re-drop it, or drop the DOI/arXiv id instead. |
+| An inbox link has no resulting evidence | Inspect `research-run` outcomes and `promote-imports.mjs --dry-run`. Unavailable or unsupported sources remain retryable; rejected or empty readings retain their reason. Send a changed argument or better public HTML/text source when useful. PDF/OCR reading is not part of this adapter yet. |
 
 ## 5. Reverting a run
 

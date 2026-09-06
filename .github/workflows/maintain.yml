@@ -241,16 +241,11 @@ jobs:
             gh pr edit "$pr_url" --add-reviewer "${GITHUB_REPOSITORY_OWNER}" || true
           fi
 
-  # The promotion pipe (docs/AUTOMATION.md build step 1): verified import
-  # proposals become drafted ledger records in their own needs-approval
-  # PR, never mixed into the maintenance proposals PR (whose auto tier
-  # they would break). Runs on a fresh checkout of main, so it consumes
-  # proposals that have already merged — this run's new imports promote
-  # on the next cycle, which trades a week of latency for a clean tier
-  # boundary. The script cannot publish: dedupe, verbatim-quote checks,
-  # enum/anchor validation and budgets are mechanical inside it, and the
-  # drafted records face the classifier, the citation-checking arbiter,
-  # the founder tap, and the content-response ripple like any canon edit.
+  # The promotion job prepares ledger records in its own gated PR. A fresh
+  # checkout of main reads merged requests on the next full cycle.
+  # Inbox and legacy watch imports use the same bounded source reader and
+  # prospective-case validator; the resulting ledger PR faces the normal
+  # independent publication gate. No separate research schedule is added.
   promote:
     needs: maintain
     if: ${{ (inputs.mode || 'full') == 'full' }}
@@ -264,12 +259,11 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - name: Draft promotions
+      - name: Read queued sources and prepare research proposals
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          EXTRACT_MODEL: ${{ vars.EXTRACT_MODEL }}
         run: |
+          set -euo pipefail
           count=$(node scripts/promote-imports.mjs | tail -1)
           echo "PROMOTED=${count}" >> "$GITHUB_ENV"
       - name: Validate the ledger still loads
@@ -290,11 +284,11 @@ jobs:
             echo "nothing stageable — the pipe rests"
             exit 0
           fi
-          git commit -m "Promotion ${date}: retain outcomes and verified imports"
+          git commit -m "Research intake ${date}: checked proposals and outcomes"
           git push -u origin "$branch"
           pr_url=$(gh pr create \
-            --title "Promotion: ${date} — outcomes and verified imports" \
-            --body "The promotion pipe records outcomes in proposals/intake/, including runs with zero successful imports. Successful drafts contain source and evidence records: quoted spans are mechanically checked against the fetched source, with enum, claim-anchor, and duplicate checks before admission. Any content additions pass the same independent publication gate. This PR retains the attempt history even when every candidate was deferred or failed." \
+            --title "Research intake: ${date} — checked proposals and outcomes" \
+            --body "Inbox requests and legacy watch imports use one bounded source-reading pass: at most two sources, four model calls, four minutes, and one dollar at the recorded tariff, excluding this publication panel. Drafted observations receive a separate source-reading check. Complete Source/Claim/Evidence bundles are validated against their exact case inputs before preparation; stale proposals wait for reconsideration, and failures remain in intake history. The reading check does not ratify a case assessment. Any ledger additions pass the normal independent publication gate, with their provenance and a case history entry preserved." \
             --label needs-approval)
           gh pr edit "$pr_url" --add-reviewer "${GITHUB_REPOSITORY_OWNER}" || true
           echo "opened $pr_url"

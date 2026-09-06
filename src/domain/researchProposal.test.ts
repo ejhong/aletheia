@@ -125,4 +125,18 @@ describe("common research proposals", () => {
     expect(() => recordResearchProposal(root, again)).toThrow(/prior decision/);
     expect(() => writeIntakeDecisions(root, [{ ...prior, id: undefined, storageRef: undefined, case: "other" }])).toThrow();
   });
+
+  it("surfaces possible source aliases for review without equating a title match with identity", () => {
+    const { root, dir, proposal } = fixture();
+    const ready = path.join(root, "ready");
+    validateResearchProposal(root, proposal, ready);
+    fs.cpSync(ready, dir, { recursive: true });
+    const candidate = { ...proposal, basis: researchBasis(dir), themeAdditions: {}, changes: [{
+      ...proposal.changes[0], recordId: "SRC-RELATED",
+      after: { ...proposal.changes[0].after, id: "SRC-RELATED", url: "https://example.org/related", background: true },
+    }] };
+    expect(validateResearchProposal(root, candidate).warnings).toEqual([
+      "SRC-RELATED resembles the title of SRC-TEST; inspect whether these are versions of the same work",
+    ]);
+  });
 });

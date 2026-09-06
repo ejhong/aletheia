@@ -1123,3 +1123,49 @@ panel and other workers. No schedule, budget default, or publication threshold
 changes here; the panel stays enabled.
 
 (AI implementation record for the authorized research-edition migration.)
+
+## 2026-09-06 — Inbox and watch imports share the bounded reader
+
+Inbox links now become durable source requests with the submitted context and
+archived origin. Capture makes no model call and does not equate a reachable
+URL with verified content. The original file remains verbatim. Manual supplied
+URLs, queued requests, and legacy watch imports use the same reader and common
+research envelope. Legacy import files remain read-only; the queue is derived
+from immutable requests, reading outcomes, and adoption decisions.
+
+The existing promotion job replaces its three-source cap and house-model
+fallback with one two-source, four-call, four-minute, $1 reading pass, using the
+source reader's recorded tariff and conservative reservations. Two cases share
+that allowance. This is a cap on that pass, not aggregate accounting for the
+panel or other workers. The existing weekly/dispatch cadence and one-cycle
+boundary remain; no additional research schedule is introduced. Source-reading
+v3 includes the submitted context for drafting; the separate checker still
+judges the reading against the retrieved source without the drafter's rationale.
+
+Recorded proposals can be prepared without another model call. The materializer
+checks the exact basis, validates a complete prospective case, then installs the
+changed records and a history entry in the working tree. Interrupted writes
+restore the originals; a failed restoration stops publication. Adoption outcomes
+point to the original proposal and preserve its model and source-check receipts.
+Already present records remain intact. Stale or invalid adoption reopens the
+source request for a fresh reading, and failures remain retryable within the
+same pass budget. Prepared bundles still need the ordinary independent PR gate.
+
+A rejected reading rests only that request; changed context or case inputs can
+justify reconsideration. Old source-import requests already represented in the
+ledger are skipped, while an explicit new inbox request can seek an additional
+observation from a known source. Identifier matching and exact wording checks
+remain mechanical; semantic similarity and independence remain review questions.
+The retired promoter and its private validation helpers are removed; identity,
+passage, schema, budget, and integration tests cover the shared path. Governance
+promotion totals derive new source additions from adoption receipts.
+
+This integration is exercised with synthetic end-to-end cases, including an
+empty history, missing usage, source failure, stale inputs, and interrupted
+installation. Its dry run inspects the actual backlog without a paid reading.
+No new research finding is claimed by those tests. Notes, document extraction,
+and agenda adoption retain their older adapters. Automatic edition drafting,
+aggregate research-and-review budgets, and broader Expedition discovery remain
+subsequent work; the current illustrated Deep Memory edition stays intact.
+
+(AI implementation record for the authorized intake integration.)

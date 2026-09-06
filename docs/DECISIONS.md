@@ -931,3 +931,31 @@ brief records only public-source research leads and AI-proposed framing;
 it does not create or infer a permission record.
 
 (AI implementation record, 2026-09-05 Pacific / 2026-09-06 UTC.)
+
+
+## 2026-09-06 — Intake foundation: shared identity and decisions in context
+
+Following the research-edition implementation, the first intake slice creates
+one source-identity module and one read interface over existing decisions.
+Watch, triage, and promotion had separate identifier rules; DOI suffixes could
+be truncated, URL paths lowercased, and title equality treated as identity.
+The common module preserves meaningful distinctions and makes title matches
+advisory. Existing admission and independent publication gates remain.
+
+The archive deduplicated by paper across all cases; promotion used a global
+handled-URL set. Both could lose the context of a decision. Archive history
+now distinguishes cases, changed reasons, inputs, and available model stamps.
+Promotion attempts record case/candidate/input receipts and rest only while
+those inputs are unchanged; operational failures remain retryable within the
+existing budget. A revised rationale can reopen a proposal without
+requiring a newer paper. A missing historical receipt is never invented.
+
+The shared intake reader preserves the original decision files as the source
+of record. Triage sees prior reasons beside a candidate; the model-free intake
+report exposes the same context for inspection. The reader never claims that
+knowing a source means all its observations have been assessed. Ambiguous
+legacy decisions stay unscoped. This is the migration boundary, not a claim
+that the common proposal envelope, durable storage for every outcome, source
+revision monitoring, or general evidence diffing are already implemented.
+
+(AI implementation record; no research claims or constitution changes.)

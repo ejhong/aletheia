@@ -85,6 +85,26 @@ archive) with reasons in `triage.yaml`. Archived items are appended to
 run directories and exists to be reviewed; promote a wrongly archived item
 by dropping its URL in the inbox.
 
+Inspect a source across the current ledger and existing intake decisions:
+
+```sh
+node scripts/intake-report.mjs --case transients --source https://arxiv.org/abs/2605.01190
+node scripts/intake-report.mjs --case transients --watch-run watch-2026-08-24-7806
+```
+
+This is read-only and needs no model key. It reports exact source matches,
+possible title matches, earlier decisions and their file references, and
+legacy decisions whose case could not be established. Unknown review metadata
+stays unknown. Triage uses the same context. A prior intake decision is not
+proof that a new observation has been considered.
+
+Promotion attempts now rest only for the same case, proposed source record,
+and case inputs; operational failures remain retryable within the same budget.
+A revised proposal or changed case can be reconsidered;
+historical attempts without receipts are checked again through the existing
+budget and admission gates. Source-only promotion still defers a possible
+duplicate for identity review before adding another source record.
+
 ## 3. Reading it
 
 - **The weekly digest issue** is the one thing to read: what settled, what

@@ -44,6 +44,12 @@ import path from "node:path";
 import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
 import { callWithRefusalFallback, pickProvider } from "./lib/llm.mjs";
 import { matchesKeywords, nearDuplicateOf } from "./lib/watch-matching.mjs";
+import {
+  extractDoi,
+  extractArxivId,
+  sourceKeys,
+  watchItemKeys as itemKeys,
+} from "./lib/source-identity.mjs";
 
 const PROMPT_VERSION = "watch-relevance-v1";
 // Crossref polite pool + arXiv contact. The repo owner's public git email.
@@ -64,7 +70,9 @@ const EXPIRY_DAYS = 60;
 const args = process.argv.slice(2);
 const dryRun = args.includes("--dry-run");
 const noLlm = args.includes("--no-llm");
-const onlyCase = args.includes("--case") ? args[args.indexOf("--case") + 1] : null;
+const onlyCase = args.includes("--case")
+  ? args[args.indexOf("--case") + 1]
+  : null;
 const forcedDays = args.includes("--days")
   ? Number(args[args.indexOf("--days") + 1])
   : null;
@@ -84,37 +92,6 @@ const today = new Date().toISOString().slice(0, 10);
 // ------------------------------------------------------------- utilities
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-
-function extractDoi(text) {
-  if (!text) return null;
-  const m = String(text).match(/\b10\.\d{4,9}\/[^\s"'<>]+/);
-  return m ? m[0].replace(/[.,;)\]]+$/, "").toLowerCase() : null;
-}
-
-function extractArxivId(text) {
-  if (!text) return null;
-  const m = String(text).match(
-    /\barxiv(?:\.org)?[:\s/]*(?:abs\/|pdf\/)?(\d{4}\.\d{4,5})(?:v\d+)?/i,
-  );
-  return m ? m[1] : null;
-}
-
-function normalizeTitle(t) {
-  return String(t ?? "")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, " ")
-    .trim();
-}
-
-/** Dedup keys for an item, strongest first. */
-function itemKeys(item) {
-  const keys = [];
-  if (item.doi) keys.push(`doi:${item.doi}`);
-  if (item.arxivId) keys.push(`arxiv:${item.arxivId}`);
-  const nt = normalizeTitle(item.title);
-  if (nt.length > 12) keys.push(`title:${nt}`);
-  return keys;
-}
 
 function stripXml(s) {
   return String(s ?? "")
@@ -171,7 +148,8 @@ async function searchArxiv(query, since) {
   for (const m of xml.matchAll(/<entry>([\s\S]*?)<\/entry>/g)) {
     const entry = m[1];
     const pick = (tag) =>
-      entry.match(new RegExp(`<${tag}[^>]*>([\\s\\S]*?)</${tag}>`))?.[1] ?? null;
+      entry.match(new RegExp(`<${tag}[^>]*>([\\s\\S]*?)</${tag}>`))?.[1] ??
+      null;
     const published = (pick("published") ?? "").slice(0, 10);
     if (!published || published < since) continue;
     const idUrl = stripXml(pick("id"));
@@ -215,14 +193,12 @@ async function searchCrossref(query, since) {
       (p) => typeof p === "number",
     );
     const date = issued.length
-      ? issued
-          .map((p, i) => String(p).padStart(i === 0 ? 4 : 2, "0"))
-          .join("-")
+      ? issued.map((p, i) => String(p).padStart(i === 0 ? 4 : 2, "0")).join("-")
       : (w.created?.["date-time"] ?? "").slice(0, 10) || null;
     return {
       title: stripXml(w.title?.[0] ?? ""),
-      authors: (w.author ?? []).map((a) =>
-        [a.given, a.family].filter(Boolean).join(" ") || a.name || "",
+      authors: (w.author ?? []).map(
+        (a) => [a.given, a.family].filter(Boolean).join(" ") || a.name || "",
       ),
       venue: w["container-title"]?.[0] ?? w.publisher ?? null,
       date,
@@ -249,7 +225,9 @@ async function searchOpenAlex(query, since) {
     let abstract = null;
     if (w.abstract_inverted_index) {
       const words = [];
-      for (const [word, positions] of Object.entries(w.abstract_inverted_index)) {
+      for (const [word, positions] of Object.entries(
+        w.abstract_inverted_index,
+      )) {
         for (const p of positions) words[p] = word;
       }
       abstract = words.join(" ");
@@ -298,12 +276,7 @@ function knownSourceKeys(caseDir) {
   const p = path.join(CASES_DIR, caseDir, "sources.yaml");
   if (!fs.existsSync(p)) return keys;
   for (const s of parseYaml(fs.readFileSync(p, "utf8")) ?? []) {
-    for (const field of [s.identifier, s.url]) {
-      const doi = extractDoi(field);
-      if (doi) keys.add(`doi:${doi}`);
-      const arxiv = extractArxivId(field);
-      if (arxiv) keys.add(`arxiv:${arxiv}`);
-    }
+    for (const key of sourceKeys(s)) keys.add(key);
   }
   return keys;
 }
@@ -447,8 +420,12 @@ async function main() {
             if (!matchesAuthors(item, query)) continue;
             const keys = itemKeys(item);
             if (keys.length === 0) continue;
-            if (keys.some((k) => knownKeys.has(k))) continue;
-            const existing = keys.map((k) => byKey.get(k)).find(Boolean);
+            // Titles are a similarity hint, never an identity gate. Keep old
+            // title keys in the cursor during migration without letting them
+            // suppress another work that happens to share a title.
+            const exactKeys = keys.filter((key) => !key.startsWith("title:"));
+            if (exactKeys.some((k) => knownKeys.has(k))) continue;
+            const existing = exactKeys.map((k) => byKey.get(k)).find(Boolean);
             const matched = { id: query.id, query: query.query };
             if (existing) {
               if (!existing.matchedQueries.some((q) => q.id === query.id)) {
@@ -469,7 +446,9 @@ async function main() {
                   : {}),
                 matchedQueries: [matched],
               };
-              for (const k of keys) byKey.set(k, record);
+              for (const k of exactKeys) byKey.set(k, record);
+              if (exactKeys.length === 0)
+                byKey.set(`unidentified:${byKey.size}`, record);
             }
           }
         } catch (err) {
@@ -491,7 +470,11 @@ async function main() {
     if (provider) {
       for (const item of newItems.slice(0, MAX_RELEVANCE_NOTES_PER_CASE)) {
         try {
-          const { note, model } = await relevanceNote(provider, caseRecord, item);
+          const { note, model } = await relevanceNote(
+            provider,
+            caseRecord,
+            item,
+          );
           modelsUsed.add(`${provider.name}/${model}`);
           item.aiRelevanceNote = {
             label: "AI-generated relevance draft — not a human judgment",
@@ -530,7 +513,10 @@ async function main() {
       `**${caseRecord.title ?? caseDir}**: ${newItems.length} new item(s) since ${since} — ` +
         newItems
           .slice(0, 3)
-          .map((i) => `“${i.title}” (${i.venue ?? i.foundVia}${i.date ? `, ${i.date}` : ""})`)
+          .map(
+            (i) =>
+              `“${i.title}” (${i.venue ?? i.foundVia}${i.date ? `, ${i.date}` : ""})`,
+          )
           .join("; ") +
         (newItems.length > 3 ? `; +${newItems.length - 3} more` : "") +
         (withNotes ? `. ${withNotes} carry AI-drafted relevance notes.` : "."),
@@ -539,10 +525,7 @@ async function main() {
     // Cursor + seen update (written below, only on a real run).
     state.cases[caseDir] = {
       lastRun: today,
-      seen: [
-        ...caseState.seen,
-        ...newItems.flatMap((i) => itemKeys(i)),
-      ],
+      seen: [...caseState.seen, ...newItems.flatMap((i) => itemKeys(i))],
     };
   }
 
@@ -556,7 +539,12 @@ async function main() {
     ...digest.map((d) => `- ${d}`),
     "",
     ...(errors.length
-      ? ["## Degraded lookups (non-fatal)", "", ...errors.map((e) => `- ${e}`), ""]
+      ? [
+          "## Degraded lookups (non-fatal)",
+          "",
+          ...errors.map((e) => `- ${e}`),
+          "",
+        ]
       : []),
     ...(expired.length
       ? [
@@ -591,7 +579,10 @@ async function main() {
   const outDir = path.join(ROOT, "proposals", "watch", runId);
   fs.mkdirSync(outDir, { recursive: true });
   for (const { caseDir, record } of perCaseOutputs) {
-    fs.writeFileSync(path.join(outDir, `${caseDir}.yaml`), stringifyYaml(record));
+    fs.writeFileSync(
+      path.join(outDir, `${caseDir}.yaml`),
+      stringifyYaml(record),
+    );
   }
   fs.writeFileSync(path.join(outDir, "report.md"), report);
   fs.writeFileSync(

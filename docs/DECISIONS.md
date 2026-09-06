@@ -1054,3 +1054,34 @@ through the same publication gate. The research proposal and source checks do
 not publish the hypothesis as established.
 
 (AI implementation record for the authorized research-edition work.)
+
+## 2026-09-06 — Deep Memory: the first public opening
+
+The incubating topic moves from `proposals/topics/deep-memory/` into the case
+collection. Its question-only baseline, including the illustration and licensed
+photographs, remains in PR #179. Before the move, the common proposal validator
+materialized the first Source/Claim/Evidence bundle against that exact baseline;
+the adopted records retain the source runner's original values and provenance.
+The case changelog names the adopted run, and its separate reading check and
+failed Met retrieval remain in the immutable intake history.
+
+The opening essay distinguishes object description, interpretation, resemblance,
+and transmission. It uses two individually documented photographs, explicitly
+notes the lower figure partly hidden in the Pillar 43 photograph, and links the
+first catalog claim to the excavation account. The Met object is contextual
+imagery, not a finding attributed to the rate-limited automated retrieval. A
+first comparison and its controls are proposed in the essay, not reported as a
+completed study. There is no case verdict, invented priority, featured grading,
+or claim of a demonstrated shared prehistoric inheritance.
+
+The case page presents contextual observations directly when neither supporting
+nor undermining records exist, and omits an empty competing-explanations
+disclosure. Editorial covers are visible on mobile with a wide crop and their
+AI credit. Existing cases retain the symmetric evidence columns. Dataset tests
+now honor the existing incubating-case contract: an opening can have neither an
+assessment nor a research priority, without relaxing the active-case checks.
+Catalog claim pages now render their linked source and evidence, keep creation
+provenance inspectable, and describe the assessment that remains. They no
+longer assume that every catalog record was bulk-imported without evidence.
+
+(AI publication-preparation record; normal independent publication gate.)

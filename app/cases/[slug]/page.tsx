@@ -96,6 +96,9 @@ export default async function CasePage({
           ["decisive", "strong", "moderate", "weak"].indexOf(b.strength),
       )
       .slice(0, 3);
+  const supporting = strongest("supports");
+  const undermining = strongest("undermines");
+  const hasDirectionalEvidence = supporting.length > 0 || undermining.length > 0;
 
   return (
     <div>
@@ -224,29 +227,63 @@ export default async function CasePage({
 
         <section id="evidence" className="pt-14 scroll-mt-28">
           <h2 className="font-serif text-3xl tracking-tight">
-            Evidence highlights
+            {hasDirectionalEvidence ? "Evidence highlights" : "Observations so far"}
           </h2>
           <p className="mt-2 text-[14px] text-ink-soft max-w-2xl">
-            Supporting and undermining records, selected by their recorded
-            strength. Each separates what the source states from what we infer.{" "}
+            {hasDirectionalEvidence
+              ? "Supporting and undermining records, selected by their recorded strength. "
+              : "The source observations and their limitations. "}
+            Each separates what the source states from what we infer.{" "}
             <Link
               href={`/cases/${slug}/evidence/`}
               className="underline decoration-copper/50 underline-offset-2 hover:decoration-copper text-copper"
             >
-              Browse the full ledger ({loaded.evidence.length} records) →
+              Browse the full ledger ({loaded.evidence.length}{" "}
+              {loaded.evidence.length === 1 ? "record" : "records"}) →
             </Link>
           </p>
-          <div className="grid lg:grid-cols-2 gap-4 mt-6">
-            <div className="space-y-4">
-              <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-verdigris">
-                strongest supporting
-              </h3>
-              {strongest("supports").length === 0 ? (
-                <p className="text-sm text-faint">
-                  No supporting observations recorded yet.
-                </p>
-              ) : null}
-              {strongest("supports").map((e) => (
+          {hasDirectionalEvidence ? (
+            <div className="grid lg:grid-cols-2 gap-4 mt-6">
+              <div className="space-y-4">
+                <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-verdigris">
+                  strongest supporting
+                </h3>
+                {supporting.length === 0 ? (
+                  <p className="text-sm text-faint">
+                    No supporting observations recorded yet.
+                  </p>
+                ) : null}
+                {supporting.map((e) => (
+                  <EvidenceCard
+                    key={e.id}
+                    evidence={e}
+                    source={sourceById.get(e.sourceId)!}
+                    showClaims
+                  />
+                ))}
+              </div>
+              <div className="space-y-4">
+                <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-terracotta">
+                  strongest undermining
+                </h3>
+                {undermining.length === 0 ? (
+                  <p className="text-sm text-faint">
+                    No undermining observations recorded yet.
+                  </p>
+                ) : null}
+                {undermining.map((e) => (
+                  <EvidenceCard
+                    key={e.id}
+                    evidence={e}
+                    source={sourceById.get(e.sourceId)!}
+                    showClaims
+                  />
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div className="mt-6 space-y-4">
+              {loaded.evidence.slice(0, 3).map((e) => (
                 <EvidenceCard
                   key={e.id}
                   evidence={e}
@@ -254,67 +291,56 @@ export default async function CasePage({
                   showClaims
                 />
               ))}
-            </div>
-            <div className="space-y-4">
-              <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-terracotta">
-                strongest undermining
-              </h3>
-              {strongest("undermines").length === 0 ? (
+              {loaded.evidence.length === 0 ? (
                 <p className="text-sm text-faint">
-                  No undermining observations recorded yet.
+                  The first observations have yet to be recorded.
                 </p>
               ) : null}
-              {strongest("undermines").map((e) => (
-                <EvidenceCard
-                  key={e.id}
-                  evidence={e}
-                  source={sourceById.get(e.sourceId)!}
-                  showClaims
-                />
-              ))}
             </div>
-          </div>
+          )}
         </section>
 
-        <section id="conventional" className="pt-14 scroll-mt-28">
-          <details className="edition-disclosure">
-            <summary>Competing explanations and the question at stake</summary>
-            <div className="pt-4">
-              <h2 className="font-serif text-3xl tracking-tight">
-                The best conventional explanation
-              </h2>
-              <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-faint">
-                steelmanned — the account the featured hypothesis must beat
-              </p>
-              <p className="mt-4 text-[15.5px] leading-[1.75] text-ink-soft max-w-3xl">
-                <LinkedRecordText
-                  text={
-                    loaded.record.bestConventionalExplanation ||
-                    "Competing explanations have not yet been mapped."
-                  }
-                />
-              </p>
-              <dl className="mt-5 grid gap-5 sm:grid-cols-2">
-                <div>
-                  <dt className="text-sm text-copper">What is claimed</dt>
-                  <dd className="mt-2 text-[14px] leading-relaxed">
-                    <LinkedRecordText text={loaded.record.whatIsClaimed} />
-                  </dd>
-                </div>
-                <div>
-                  <dt className="text-sm text-copper">
-                    Where the disagreement lives
-                  </dt>
-                  <dd className="mt-2 text-[14px] leading-relaxed">
-                    <LinkedRecordText
-                      text={loaded.record.whereDisagreementLives}
-                    />
-                  </dd>
-                </div>
-              </dl>
-            </div>
-          </details>
-        </section>
+        {loaded.record.bestConventionalExplanation || shown ? (
+          <section id="conventional" className="pt-14 scroll-mt-28">
+            <details className="edition-disclosure">
+              <summary>Competing explanations and the question at stake</summary>
+              <div className="pt-4">
+                <h2 className="font-serif text-3xl tracking-tight">
+                  The best conventional explanation
+                </h2>
+                <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-faint">
+                  steelmanned — the account the featured hypothesis must beat
+                </p>
+                <p className="mt-4 text-[15.5px] leading-[1.75] text-ink-soft max-w-3xl">
+                  <LinkedRecordText
+                    text={
+                      loaded.record.bestConventionalExplanation ||
+                      "Competing explanations have not yet been mapped."
+                    }
+                  />
+                </p>
+                <dl className="mt-5 grid gap-5 sm:grid-cols-2">
+                  <div>
+                    <dt className="text-sm text-copper">What is claimed</dt>
+                    <dd className="mt-2 text-[14px] leading-relaxed">
+                      <LinkedRecordText text={loaded.record.whatIsClaimed} />
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-sm text-copper">
+                      Where the disagreement lives
+                    </dt>
+                    <dd className="mt-2 text-[14px] leading-relaxed">
+                      <LinkedRecordText
+                        text={loaded.record.whereDisagreementLives}
+                      />
+                    </dd>
+                  </div>
+                </dl>
+              </div>
+            </details>
+          </section>
+        ) : null}
 
         <section id="research" className="pt-14 scroll-mt-28">
           <h2 className="font-serif text-3xl tracking-tight">

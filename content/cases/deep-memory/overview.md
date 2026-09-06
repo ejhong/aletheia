@@ -10,10 +10,18 @@ Begin with the objects: establish what each image depicts, where it comes from, 
 
 Pillar 43 is the starting object. Its upper forms and bird imagery invite comparison, while the [excavation team's account](https://www.dainst.blog/the-tepe-telegrams/2016/10/14/of-animals-and-a-headless-man-gobekli-tepe-pillar-43/) offers several possible readings of the scene. Identifying what a carving represents is already a research question.
 
+The account also describes [a headless male figure on the damaged lower part of the pillar]{claim=MEM-C001}. That portion is partly obscured in this photograph. The first ledger record preserves the excavators' description and its limits; the figure's meaning remains unsettled.
+
 {plate:IMG-MEM-P02}
 
 The [Met's record of this Assyrian relief](https://www.metmuseum.org/art/collection/search/322614) provides a second, individually identified object. Its bird-headed figure holds a bucket and a cone. The museum discusses protective and purifying interpretations, with uncertainty about the cone's exact nature. That context belongs in the comparison alongside the shapes.
 
 A resemblance, a shared tradition, and a lost civilization are different propositions. Each needs evidence of its own. Göbekli Tepe is the starting point for the investigation; its role in any proposed transmission remains a question.
 
-This is an opening question, not an assessment. No claims, sources, or evidence have been recorded in this case yet.
+## What would make a comparison matter?
+
+Begin with one defined comparison: the pillar's upper forms and the handled vessels in individually identified, dated reliefs. Describe the features before deciding what they mean, include examples that do not match, and look for intermediate objects that could carry a tradition between places and periods. A shared outline is a lead. A distinctive combination, a chronology, and a plausible route would give it more weight.
+
+Independent invention, known regional borrowing, and a deeper inherited tradition remain alternatives to examine. Bird-human figures and the culture-bringer and flood stories can follow, each with its own source history. They should earn their place in the argument one comparison at a time.
+
+This is the opening of an investigation. The first observation has been recorded; no overall assessment of shared inheritance has been made.

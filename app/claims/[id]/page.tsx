@@ -72,9 +72,8 @@ export function generateMetadata({
 }
 
 /**
- * Catalog-tier claims render honestly sparse: the statement, its source
- * anchor, and provenance — plus an explicit account of what is missing and
- * how promotion works. No pretending a backlog record is an assessed claim.
+ * Catalog claims retain their source, provenance, and any linked evidence.
+ * Recording an observation does not supply a full claim assessment.
  */
 function CatalogClaimView({
   claim,
@@ -83,14 +82,11 @@ function CatalogClaimView({
   claim: CatalogClaim;
   loaded: LoadedCase;
 }) {
-  const missing = [
-    "plain-language gloss",
-    "credibility assessment",
-    "diagnosticity assessment",
-    "evidence records",
-    "strongest objection",
-    "what would change our mind",
-  ];
+  const sourceById = new Map(loaded.sources.map((s) => [s.id, s]));
+  const anchorSource = claim.sourceAnchor.sourceId
+    ? sourceById.get(claim.sourceAnchor.sourceId)
+    : null;
+  const evidence = loaded.evidence.filter((e) => e.claimIds.includes(claim.id));
   return (
     <div>
       <section className="bg-dossier text-dossier-text">
@@ -115,16 +111,23 @@ function CatalogClaimView({
           ) : null}
           <div className="mt-5 flex flex-wrap items-center gap-2">
             <span className="inline-flex items-center rounded-xs border border-ochre/50 px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-[0.12em] text-ochre">
-              Catalog tier — unreviewed backlog
+              Awaiting assessment
             </span>
             <ProvenanceBadge
               state={claim.reviewState}
               detail={`${claim.origin.extractedBy} · run ${claim.origin.runId} · ${claim.origin.date}`}
             />
-            <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-dossier-faint">
-              origin: {claim.origin.ref}
-            </span>
           </div>
+          <details className="mt-4 max-w-3xl text-[12px] leading-relaxed text-dossier-faint">
+            <summary className="cursor-pointer underline decoration-dossier-line underline-offset-4">
+              How this record was created
+            </summary>
+            <p className="mt-3">{claim.origin.extractedBy} · {claim.origin.date}</p>
+            <p className="mt-1 break-words">{claim.origin.ref}</p>
+            <p className="mt-1 break-all font-mono text-[10px]">
+              Run {claim.origin.runId}
+            </p>
+          </details>
           {claim.genealogy ? (
             <GenealogyLine genealogy={claim.genealogy} />
           ) : null}
@@ -136,6 +139,14 @@ function CatalogClaimView({
           <h2 className="font-mono text-[11px] uppercase tracking-[0.18em] text-faint">
             source anchor
           </h2>
+          {anchorSource ? (
+            <Link
+              href={`/sources/${anchorSource.id}/`}
+              className="mt-3 inline-block font-serif text-xl text-copper underline decoration-copper/50 underline-offset-4"
+            >
+              {anchorSource.title}
+            </Link>
+          ) : null}
           <p className="mt-2.5 text-[14.5px] leading-relaxed text-ink-soft">
             {claim.sourceAnchor.locator}
           </p>
@@ -152,20 +163,32 @@ function CatalogClaimView({
           ) : null}
         </section>
 
+        <section>
+          <h2 className="font-serif text-2xl tracking-tight">Recorded evidence</h2>
+          <div className="mt-4 space-y-4">
+            {evidence.map((e) => (
+              <EvidenceCard
+                key={e.id}
+                evidence={e}
+                source={sourceById.get(e.sourceId)!}
+              />
+            ))}
+            {evidence.length === 0 ? (
+              <p className="text-[14px] text-faint">
+                No evidence records are attached yet.
+              </p>
+            ) : null}
+          </div>
+        </section>
+
         <section className="border border-line bg-paper-deep/50 p-5">
           <h2 className="font-mono text-[11px] uppercase tracking-[0.18em] text-copper">
-            an honest empty state
+            Assessment still to come
           </h2>
           <p className="mt-2.5 text-[14.5px] leading-relaxed text-ink-soft max-w-3xl">
-            This claim sits in the unreviewed catalog: it was extracted from the
-            source literature and imported in bulk, with no individual human
-            review and no editorial workup yet. Nothing here has been assessed —
-            that absence is information, not an oversight.
-          </p>
-          <p className="mt-3 text-[14px] leading-relaxed text-ink-soft max-w-3xl">
-            Still missing: {missing.join(", ")}. Promotion to featured treatment
-            is a one-field edit (<code>tier: featured</code>) — after which the
-            build fails loudly until each of those fields is supplied.
+            This claim has been recorded with its provenance. Its credibility
+            and how much it distinguishes competing explanations have yet to
+            receive a full assessment.
           </p>
         </section>
       </div>

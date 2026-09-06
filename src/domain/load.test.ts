@@ -749,7 +749,11 @@ describe("ratification governance (stage 3)", () => {
   it("historical panels remain visible without being recertified as current", () => {
     for (const c of loadAllCases()) {
       const shown = displayAssessment(c);
-      expect(shown).not.toBeNull();
+      if (!shown) {
+        expect(c.record.status).toBe("incubating");
+        expect(c.assessmentRuns).toEqual([]);
+        continue;
+      }
       expect(["ratified", "contested", "unratified"]).toContain(
         shown!.ratification.status,
       );
@@ -766,8 +770,12 @@ describe("ratification governance (stage 3)", () => {
     }
   });
 
-  it("every case carries a research priority", () => {
+  it("active cases carry a priority; an opening question may remain unprioritized", () => {
     for (const c of loadAllCases()) {
+      if (c.record.researchPriority === null) {
+        expect(c.record.status).not.toBe("active");
+        continue;
+      }
       expect(["high", "medium", "low"]).toContain(
         c.record.researchPriority?.level,
       );

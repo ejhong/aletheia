@@ -1,0 +1,222 @@
+# Cross-model check run — an independent judge (Grok 4.5 (xAI)),
+# blind to all prior assessments (scripts/cross-model-check.mjs,
+# promptVersion aletheia-check-v4). role: check — never displayed as the case
+# narrative; feeds the concurrence panel. Append-only; NOT human reviewed.
+runId: 2026-09-06-check-grok-212614
+model: Grok 4.5 (xAI) — independent check run via grok-4.5
+date: 2026-09-06
+promptVersion: aletheia-check-v4
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: weakly_supported
+  loadBearing:
+    - MPI-C002
+    - MPI-C008
+    - MPI-C009
+    - MPI-C010
+  weakestLinks:
+    - MPI-C007
+    - MPI-C001
+  synthesis: >-
+    The featured hypothesis asserts that psi is real as non-local,
+    meaning-dependent observer–system correlations governed by a no-transmission
+    (NT) axiom, that this axiom forces decline, sign-change, or displacement
+    under any protocol that could convert the correlations into a stable signal,
+    and that correlation-matrix experiments are the appropriate way to detect
+    the surplus without enabling transmission. The observational skeleton of
+    that story is real in the supplied record. Original Lucadou-group matrices
+    were reported as showing excess experimental-versus-control significant
+    cells (C001; E001, E002). Later work by the same circle and by independent
+    experimenters documents instability: patterns weaken, flip, or migrate
+    across cells and analyses (C003; E003, E005, E006, E014). Preregistered
+    consensus-protocol and full-blind replications predominantly return nulls on
+    primary analyses (C002; E003, E004, E006). The theoretical claims are also
+    correctly stated as claims about the literature: Generalized Quantum Theory
+    was published as a weak, non-quantified extension of complementarity and
+    entanglement (C004; E010); the 2007 NT axiom text does derive decline and
+    displacement in advance of the 2017–2021 failures (C005; E009); and the
+    matrix design was explicitly offered as MPI’s own positive use of evasion
+    (C006; E011).
+
+    Attribution is where the hypothesis fails to earn more than weak support.
+    The founding excess-correlation counts rest on independence assumptions that
+    Flores’s Monte Carlo work showed were violated by high intercorrelation
+    among psychological variables; dependence-aware reanalyses substantially
+    diminish those results (C009; E007). Parallel conventional
+    mechanisms—regression to the mean, analytic flexibility (illustrated live by
+    Grote 2017’s significant post-hoc against null preplanned tests),
+    publication bias in the broader micro-PK literature (Bösch 2006), and
+    documented coding error in a neighboring correlational micro-PK line (Maier
+    & Dechamps 2022)—are jointly capable of generating an
+    early-positive-then-decline record without anomalous correlation (C008;
+    E006, E015, E016, E017). Bierman’s QRP simulation leaves a residual in
+    ganzfeld, so “sufficient” is not proven to exhaustion, but for the much
+    smaller and statistically dependent matrix corpus the conventional bundle is
+    the more parsimonious default. The residual positives (Walach 2020’s fragile
+    surplus, three of Flores’s five thesis studies, the 2023 true-RNG arm) are
+    real entries in the ledger yet are qualified by author-admitted analytic
+    fragility, shared lab context, preprint status, or uneven power; they do not
+    outweigh the preregistered and blind nulls.
+
+    Finally, as actually deployed, MPI absorbs both outcomes: positives are
+    entanglement, nulls are the predicted decline (C010; E003). That
+    interpretive symmetry is already visible in the 2007 design rationale’s
+    concession that the paradigm will not convince every sceptic, and it is
+    enacted in the 2021 “Nailing Jelly” abstract. A hypothesis that treats its
+    own nominated experiment’s failure as confirmation cannot be raised above
+    weak support by the same experiment’s occasional success. The net warrant is
+    therefore weakly_supported: the descriptive and theoretical claims hold, the
+    elusiveness pattern is genuine, but the central attribution to non-local
+    psychophysical entanglement is not required by the data once dependence and
+    selection are modelled, and the model’s structure blocks decisive
+    disconfirmation within the very paradigm it proposes.
+  steelman: The 2023 Flores online matrix (E008) found a clear
+    experimental–control surplus with an atmospheric-noise true-RNG source (p =
+    0.00013) but not with a deterministic Mersenne Twister, and Flores’s thesis
+    still reported three of five studies significant after dependence-aware
+    methods; no purely selection/QRP/dependence account specifically predicts a
+    true-versus-pseudo RNG split, whereas quantum-indeterminacy readings of MPI
+    do, and that split plus the residual dependence-aware positives remain the
+    strongest unrebutted empirical pointer a proponent can cite.
+  sensitivity:
+    mostChangeRecord: MPI-E003
+    verdictSurvivesWithout: true
+    note: Removing the proponents’ own preregistered dual failure (Walach et al.
+      2021) softens C002 and the cleanest illustration of C010, and would push
+      the case closer to mixed; the verdict remains weakly_supported because
+      Grote’s blind null (E004), the dependence critique (E007/C009), and the
+      conventional sufficiency bundle (C008) still undercut the attribution
+      claim C007.
+claimAssessments:
+  - claimId: MPI-C001
+    verdict: well_supported
+    confidence: high
+    reasoning: Multiple successor descriptions (Walach 2020/2021, Grote 2021) and
+      the 2006 proceedings characterization consistently state that
+      Lucadou-group matrices 1986–2006 reported more significant
+      psychological–physical cells in experimental than control sessions. The
+      claim is about what was reported, not about whether the significances were
+      valid; raw data remain unpublished and the dependence critique (C009)
+      later reduced their force, but that qualifies interpretation rather than
+      the reporting fact itself. Strongest opposing consideration is second-hand
+      access to the earliest German-language series, yet the concordance across
+      independent citers is sufficient.
+  - claimId: MPI-C002
+    verdict: well_supported
+    confidence: high
+    reasoning: Walach et al. 2021 ran two consensus-protocol, OSF-preregistered
+      replications and obtained nulls on both; Grote 2021 wrote the full
+      analysis software before unblinding 200 participants and found the primary
+      result well inside the null distribution; Grote 2017’s three preplanned
+      analyses were all non-significant. Flores’s partial positives are real but
+      were not under the same preregistered/blind constraints and do not reverse
+      the “predominantly failed” characterization. Strongest opposing
+      consideration is low power on Walach’s second arm (0.69) and the model’s
+      own denial that stable effects should appear; neither erases the primary
+      null record.
+  - claimId: MPI-C003
+    verdict: well_supported
+    confidence: high
+    reasoning: Within-experimenter arcs (Grote 2015 significant distribution result,
+      then 2017 preplanned nulls, then 2021 blind null), the Walach group’s 2020
+      surplus followed by 2021 dual failure, and Kennedy’s field-wide review of
+      decline and displacement jointly document instability of initially
+      significant patterns. Strongest opposing consideration is that some shifts
+      could be ordinary sampling variation rather than systematic displacement;
+      the repeated direction of early-positive-to-later-null across labs still
+      supports the observational claim as stated.
+  - claimId: MPI-C004
+    verdict: well_supported
+    confidence: moderate
+    reasoning: Atmanspacher, Römer & Walach 2002 in Foundations of Physics
+      axiomatizes a weak quantum theory retaining complementarity and
+      entanglement while dropping Hilbert-space structure and Planck’s constant,
+      explicitly allowing non-physical applications; MPI is presented by the
+      same authors as the psychophysical instantiation using pragmatic
+      information. The claim is descriptive of the published formalism, not a
+      validation of its empirical adequacy. Strongest opposing consideration is
+      that without quantified probabilities the framework’s predictive content
+      is thin, which limits what “provides” can mean scientifically, but does
+      not falsify the existence claim.
+  - claimId: MPI-C005
+    verdict: well_supported
+    confidence: high
+    reasoning: The 2007 JCS paper states verbatim that entanglement correlations
+      cannot be used for signal transmission and derives from that axiom that
+      attempts to corroborate an effect by replication will wipe it out, with
+      possible sign-change or displacement to other observables, including the
+      strength–reproducibility reciprocity. This is an entailment claim internal
+      to the model and is documented prior to the modern nulls. Strongest
+      opposing consideration is that an unquantified entailment is hard to risk
+      against data; that affects testability (C010), not whether the texts draw
+      the inference.
+  - claimId: MPI-C006
+    verdict: well_supported
+    confidence: high
+    reasoning: The same 2007 text explicitly recommends simultaneous registration of
+      many correlations so that psi appears as transitory, jumping patterns in a
+      matrix, precisely to make positive use of evasion rather than fight the
+      decline effect. Later program practice treats the matrix as MPI’s
+      benchmark test. Strongest opposing consideration is that the design paper
+      already concedes it will not convince every sceptic, which blurs test from
+      illustration; the construction-as-test claim itself remains well
+      documented.
+  - claimId: MPI-C007
+    verdict: weakly_supported
+    confidence: moderate
+    reasoning: Residual positives (fragile Walach 2020 surplus, three of five Flores
+      thesis studies, 2023 true-RNG arm) keep a non-zero empirical foothold, and
+      decline was predicted in advance, so outright contradiction is unavailable
+      inside MPI’s own rules. Against attribution stand the preregistered/blind
+      nulls, the dependence-driven reduction of founding results, and the
+      availability of conventional generators of the same
+      early-positive-then-decline shape. Genuine non-local correlation is
+      therefore not required by the record and remains only weakly supported.
+      Strongest opposing consideration is the true-versus-pseudo RNG split,
+      which selection alone does not predict.
+  - claimId: MPI-C008
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: Inter-variable dependence (C009), Grote 2017’s post-hoc significance
+      against null preplanned tests, Bösch’s small-study/publication-bias
+      pattern in micro-PK, Bierman’s demonstration that QRPs can account for a
+      large fraction of a flagship psi meta-analysis, and a published
+      coding-error false positive in correlational micro-PK together supply a
+      joint conventional pathway to the observed matrix record. “Jointly
+      sufficient” is provisional rather than established because Bierman’s
+      residual and Flores’s remaining positives are not fully closed, and most
+      cited mechanisms were demonstrated on neighboring rather than identical
+      datasets. Strongest opposing consideration is exactly that incomplete
+      coverage of residuals.
+  - claimId: MPI-C009
+    verdict: well_supported
+    confidence: high
+    reasoning: Flores’s thesis and the 2023 preprint report high intercorrelations
+      among psychological matrix variables and show via simulation that
+      dependence-aware treatments substantially diminish the original
+      excess-correlation significances. This is an internal-program statistical
+      finding, not an external sceptic’s assertion. Strongest opposing
+      consideration is that the reanalyses are not yet a standalone
+      peer-reviewed reanalysis of every founding dataset with public code; the
+      direction and magnitude of the correction are nonetheless clearly
+      attested.
+  - claimId: MPI-C010
+    verdict: well_supported
+    confidence: high
+    reasoning: Walach et al. 2021, after their own preregistered dual null, write
+      that the failed replication is “likely part of the systematic nature of
+      such effects,” while still retaining the model; the 2007 design rationale
+      already forecasts that the paradigm will not overcome decline completely
+      or convince every sceptic. Under that deployment rule, success confirms
+      entanglement and failure confirms the NT axiom, so no outcome of the
+      nominated experiment is treated as model-level disconfirmation. Strongest
+      opposing consideration is that a future binding fine-structure prediction
+      (as in research agenda R001) could in principle restore falsifiability; as
+      currently deployed, the insulation claim holds.
+generatedAt: 2026-09-06T21:26:14.768Z
+review:
+  protocol: case-snapshot-v1
+  contentHash: 854ac2ae85419cd64941565e12634f6b866fc5ec28caf10da9c1ef92d4e55e14
+  assessmentHash: e671753deac6d5c20618cdf99cfb2905cace8b012deaaa8d74b88400efda086d
+  packetHash: 04e995d89df21b63fcb0559b2a32b4f4a05b5bb57baf74779e131430d03d0f9f

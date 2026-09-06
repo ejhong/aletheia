@@ -1,0 +1,311 @@
+runId: "2026-09-06-check-opus"
+model: "Opus 5 (Anthropic), independent check run"
+date: "2026-09-06"
+promptVersion: "aletheia-check-v4"
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: provisionally_supported
+  loadBearing: ["AMZ-C016", "AMZ-C017", "AMZ-C003", "AMZ-C011", "AMZ-C010", "AMZ-C006"]
+  weakestLinks: ["AMZ-C005", "AMZ-C012", "AMZ-C015", "AMZ-C009"]
+  synthesis: >-
+    The featured hypothesis is a conjunction of four separable propositions, and the record
+    supports them very unevenly. The landscape-engineering leg is the strongest: Casarabe
+    drainage canals, farm ponds and ubiquitous maize phytoliths (C007), landscape-scale weir
+    and causeway fisheries with 382 associated ponds (C019), year-round interfluvial fishing
+    documented on 17,000+ fish remains (C026), dark earths, ponds and trodden roads on the
+    Belterra Plateau (C011), and dark-earth/raised-field/forest-island complexes with
+    domesticated-tree concentration around sites (C008) are multi-proxy, multi-region, and
+    largely independent of one another. On this leg the case is close to established, with
+    the caveat that the tree-composition signal is contested by a technical comment
+    attributing more of it to post-Columbian activity, and Mojos raised fields look
+    intermittent and risk-driven rather than continuously intensive (C009).
+    The settlement-system leg is also well grounded: an 1,800 km arc of fortified villages
+    dated AD 1250–1500 (C006), 432 LiDAR-documented earthworks over a delimited 183,000 km²
+    region (C004), and several systems demonstrably occupied into the contact era (C011).
+    The demographic leg is the weak one. Every basin- or region-scale number in the record is
+    a model output resting on contemporaneity assumptions, ethnographic conversion formulae,
+    and extrapolation from sampled densities; the Aquiry headline spans roughly fivefold under
+    the paper's own alternative (C005), its peak is dated AD 100–300, a millennium before
+    Orellana, and Denevan repudiated the method that produced the most-cited figure while
+    retaining its magnitude on other grounds (C012). The radiocarbon carrying-capacity result
+    (C015) is an aggregate proxy with acknowledged sampling bias, not a census. "Millions" is
+    plausible and consistent with the record but is nowhere independently measured.
+    The Carvajal leg fares better than the numbers alone would suggest, because the extreme
+    figures are confined to one manuscript branch (C002) while independent 1538 and 1560
+    testimony repeats the mundane, load-bearing features — dense middle-Solimões settlement,
+    vast maize stores, long straight roads, fine ceramics (C003). The collapse leg is
+    documented rigorously but only for upper-Amazon provinces with mission records (C010);
+    its transfer to the reaches Carvajal described is extrapolation, and the sparse-Amazon
+    findings (C013, C014) constrain rather than refute the mosaic reading, which is why C016
+    — heterogeneous, river-focused density in a lightly occupied matrix — is the version the
+    evidence actually warrants. The strong basin-wide version is not established; the mosaic
+    version plus a substantially credible qualitative Carvajal is.
+  steelman: >-
+    Bush et al. show that forest recovery largely erased the pre-Columbian ecological signal
+    in the Upano Valley while the later Colonial signal survived in the same profiles. If
+    erasure is time-graded that way, the null phytolith and charcoal results from sparse
+    terra-firme cores cannot in principle falsify a dense contact-era riverine population,
+    and no record here offers a positive alternative explanation for why three mutually
+    hostile sixteenth-century expeditions, writing decades apart for different crowns,
+    independently describe the same populous middle Solimões with infinite maize stores and
+    Inca-style roads. The corridor test that would settle it (AMZ-R001) has not been run.
+claimAssessments:
+  - claimId: AMZ-C001
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      The claim describes the content of a text, and that content is attested through two
+      scholarly intermediaries (Denevan's manuscript comparison, Lopes et al.'s verbatim
+      quotations) that agree on the qualitative picture. The inclusion of "interspersed with
+      stretches he reports as empty" is important and matches Denevan's bluff model of
+      sporadic rather than continuous occupation. The strongest opposing consideration is
+      that the primary text was never fetched natively in this record, so the claim rests
+      entirely on secondary quotation, and route/reach identifications remain tentative in
+      the scholarship.
+  - claimId: AMZ-C002
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Denevan's sentence is quoted verbatim and directly states the branch asymmetry: no
+      50,000/10,000/8,000 and no four-or-five-league villages in Oviedo, one mention of 5,000
+      warriors. This is a textual fact of the kind least likely to be misreported. The
+      opposing consideration is single-source dependence — no independent synoptic collation
+      exists in this record (the case itself proposes one as R002) — so a systematic
+      re-comparison could refine which figures sit in which witness.
+  - claimId: AMZ-C003
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      Lopes et al. is quoted verbatim for Nunes's 1538 Machiparo entry and the ten Ursúa
+      accounts, with specific corroborating details (maize stores described as "infinita",
+      wide straight roads compared to Inca roads, thousands of turtles and fish). The
+      corrections logged in the source record — Nunes surviving as a 1553/54 letter via a
+      modern edition, fortifications and the turtle-corral detail explicitly excluded —
+      increase rather than reduce confidence in the surviving content. The strongest
+      opposing consideration is that "independent" is partly editorial: later chroniclers
+      wrote in a milieu where Carvajal's account was known, and expedition narratives had
+      shared rhetorical incentives to inflate the wealth of provinces.
+  - claimId: AMZ-C004
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      The 432 earthworks over 4,430 km of ALS lines and the 183,000 km² circumscription are
+      direct measurements quoted verbatim, and the claim correctly labels the 24,000–30,000
+      figure as a prediction rather than a count. The fivefold increase over satellite
+      detection on the same lines is a strong internal check on detection method. Two
+      opposing considerations weigh against higher confidence: the block extrapolation
+      assumes sampled densities generalize across a heterogeneous region, and the paper is
+      weeks old at case creation with a disclosed funder identical to this site's founder,
+      so no independent technical scrutiny has yet occurred.
+  - claimId: AMZ-C005
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      This is a methodological characterization backed by the paper's own quoted text: the
+      1.25–3 million headline requires a 25–60% simultaneous-use fraction and ~300 people per
+      earthwork, while the authors' own single-family alternative yields 250,000–600,000
+      (315,000–760,000 with canopy correction). The arithmetic of the spread is not in
+      dispute. The opposing consideration is that the authors label the single-family reading
+      "very unlikely" for stated reasons, so the fivefold span is a bounding exercise rather
+      than a symmetric credible interval; treating both ends as equiprobable would understate
+      their case.
+  - claimId: AMZ-C006
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Both halves are quoted verbatim from de Souza et al.: the 1,800 km stretch of
+      earth-building fortified villages at Cal AD 1250–1500, and the explicit dependence of
+      the 500,000–1,000,000 figure on contemporaneity, ethnographic formulae, and MaxEnt
+      projection. The claim's virtue is that it states the dependency rather than the
+      headline. The opposing consideration is that the contemporaneity assumption is doing
+      heavy work — if occupation of the arc's sites was staggered, the standing population at
+      any moment could be several times lower.
+  - claimId: AMZ-C007
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      Lombardo et al. combine remote sensing, field survey, and 178 phytolith samples from 18
+      profiles showing ubiquitous maize, alongside documented drainage canals and farm ponds
+      — a genuinely multi-proxy demonstration for the Casarabe region. Confidence is moderate
+      rather than high because "year-round monoculture" is an inference from phytolith
+      ubiquity plus infrastructure function rather than a direct seasonal measurement, and it
+      rests on one research programme. The strongest opposing consideration is that Casarabe
+      florescence ends around AD 1400, so the finding constrains what was possible but not
+      what Orellana would have seen.
+  - claimId: AMZ-C008
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      Dark earths, raised-field complexes, and forest islands are attested across several
+      independent regional programmes in this record, and Levis et al.'s basin-wide finding
+      of elevated domesticated-species abundance near archaeological sites is quoted
+      verbatim. The second half is directly contested: McMichael et al.'s technical comment
+      argues post-Columbian activity likely played the larger role in the observed floristic
+      pattern. That contest concerns the causal attribution rather than the spatial
+      association, so the claim as stated survives, but the pre-Columbian reading of the tree
+      signal should not be treated as settled.
+  - claimId: AMZ-C009
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: >-
+      Rodrigues et al.'s radiocarbon and OSL dating showing a few discrete construction events
+      from AD 570–770 onward, combined with Lombardo et al.'s flood-mitigation model, gives a
+      coherent mechanistic alternative to the continuous-intensive-farmland reading. But the
+      dating work is Bermeo-specific and the two supporting records share authors, so this is
+      one research group's interpretation rather than a replicated result. The strongest
+      opposing consideration is that intermittent construction is compatible with continuous
+      use of already-built fields; construction episodes and cultivation episodes are not the
+      same variable.
+  - claimId: AMZ-C010
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Newson's Table 1 figures and the mixed-mechanism passages are quoted verbatim, and the
+      claim faithfully reports both the magnitude (≈88% Napo–Aguarico, 62–64% Mainas) and the
+      unevenness, including flight from exposed riverine locations. Documentary demography of
+      this kind carries real uncertainty in its baselines, which is the main opposing
+      consideration — the pre-decline figures are themselves reconstructions from mission and
+      encomienda records. The claim's restriction to these named provinces is appropriate;
+      extending the ratios to the middle Amazon is the untested step, and this claim does not
+      take it.
+  - claimId: AMZ-C011
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      Three geographically separate systems are attested: Belterra Plateau ca. AD 1300 to
+      seventeenth-century colonization (verbatim, with dark earths, ponds, and trodden roads),
+      Cacoal on Marajó AD 1300–1650 (verbatim from Schaan), and Upper Xingu occupation to
+      ca. 1770 with layouts matching living Kuikuro villages. Confidence is held at moderate
+      because the Xingu leg rests on a Science news feature rather than the primary excavation
+      reports, as the record itself flags. The opposing consideration is that terminal
+      occupation dates from radiocarbon have wide intervals, so "up to European colonization"
+      is a dating envelope rather than a demonstrated contact-era census.
+  - claimId: AMZ-C012
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      The Denevan self-rejection is quoted verbatim and is unusually clean evidence for the
+      general point: he abandoned the habitat-density method because sample densities could
+      not support meaningful habitat averages, while still holding 5–6 million reasonable on
+      other grounds. The broader assertion that published estimates form dependent model
+      families sharing assumptions is illustrated rather than demonstrated in this record —
+      no systematic dependency audit has been performed (the case proposes one as R004). The
+      opposing consideration is that de Souza's settlement-count approach and Arroyo-Kalin's
+      radiocarbon proxy are methodologically distinct from habitat-density, so some genuine
+      independence exists.
+  - claimId: AMZ-C013
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      The 21.5% permutation importance for distance-from-river across 7,363 database
+      locations is quoted verbatim, and the interfluvial-sparsity conclusion is the model's
+      own output. The result is also strongly consistent with prior expectation about
+      floodplain resource concentration. The decisive opposing consideration is circularity
+      risk: archaeological site databases inherit survey effort that follows navigable rivers,
+      so a river-proximity predictor can partly recover the sampling frame rather than the
+      settlement pattern — which is exactly why the case proposes promise-blind interfluve
+      transects.
+  - claimId: AMZ-C014
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      The claim is carefully scoped to what the sampled settings showed, and the five negative
+      categories are quoted almost verbatim from Piperno et al.'s synthesis. As a statement
+      about what the cores contain it is accurate. Two opposing considerations limit its
+      reach: Clement et al.'s critique that roughly 300 cores totaling about 1.17 m³ stand in
+      for two million km², and Bush et al.'s Upano finding that prolonged forest recovery can
+      erase a pre-Columbian occupation signal while preserving a later Colonial one — both
+      mean these nulls constrain intensity in sampled interfluves rather than establishing
+      basin-wide absence.
+  - claimId: AMZ-C015
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: >-
+      The logistic fit and the authors' attribution of the terminal decline to sampling bias
+      compounded by post-contact collapse are quoted accurately, and the aggregate signal is
+      a genuinely independent line from settlement counts. But summed probability
+      distributions are known to be sensitive to calibration artefacts, taphonomic loss, and
+      research-funding geography, and the terminal-decline attribution is precisely the
+      segment where the proxy is weakest and the interpretation most theory-laden. Attributing
+      the drop to bias plus collapse rather than to a pre-contact downturn is a defensible
+      reading, not a demonstrated one; this verdict leans partly on general priors about SPD
+      end-effects.
+  - claimId: AMZ-C016
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      This synthesis is the version of the hypothesis the record actually supports: dense,
+      engineered, sedentary occupation along rivers, floodplains, savannas, and bluffs (C004,
+      C006, C007, C011) embedded in a matrix that both the site-distribution modelling (C013)
+      and the phytolith nulls (C014) indicate was more lightly used. Its strength is that it
+      is the common cause of both the positive and the negative evidence rather than a
+      compromise between them. The opposing consideration is that "much more lightly
+      occupied" is quantitatively unconstrained: the matrix density is the open parameter, and
+      both the site record and the core record are biased samples of it.
+  - claimId: AMZ-C017
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: >-
+      The two halves are asymmetrically supported. The numerical instability is a documented
+      textual fact (C002). The qualitative credibility rests on convergence with Nunes and
+      the Ursúa accounts (C003) plus contact-era archaeology elsewhere in the basin (C006,
+      C011) — but no study in this record has matched his specific populated and empty
+      reaches against contact-horizon archaeology in those corridors, and route
+      identifications remain tentative. The strongest opposing consideration is that shared
+      genre conventions and shared incentives among conquest chroniclers could produce
+      convergent descriptions of populous provinces without shared underlying observation.
+  - claimId: AMZ-C018
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Hancock's own site states the seven-chapters/90-pages Amazon coverage verbatim, and the
+      IMDb cast listing confirms Pärssinen and Ranzi appearing in the 2024-10-16 episode.
+      Both are first-party or registry facts about publication and broadcast, which is the
+      appropriate evidentiary standard for a genealogy claim. The opposing consideration is
+      about relevance rather than truth: this record carries no weight for any empirical
+      proposition about the Amazon, and neither prior popularization nor prior marginality
+      is evidence for or against the earthwork findings.
+  - claimId: AMZ-C019
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: >-
+      The structural facts — zigzag weirs, arrow-straight causeways, 382 detected ponds, the
+      35 m proximity relation — are documented remote-sensing measurements and are strong.
+      The functional attribution is weaker than the claim's phrasing suggests: the quoted
+      source says "we postulate that the principal function of the V-shaped structures was to
+      concentrate fish", which is a hypothesis about purpose inferred from geometry and
+      hydrology. The strongest opposing consideration is that intentional fishery function
+      has not been independently demonstrated at these structures by direct residue or
+      faunal evidence within this record.
+  - claimId: AMZ-C026
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      More than 17,000 fish remains from a dated monumental mound 50 km from the Mamoré is a
+      direct, large-sample zooarchaeological measurement, and the presence of lungfish and
+      Hoplias — taxa that survive in shrinking dry-season water bodies — supports the
+      year-round interfluvial exploitation inference by an independent biological route. The
+      opposing consideration is the paper's own caveat that the paucity of larger-bodied
+      river fish implies limited exogenous input, which bounds how much this single site can
+      say about interfluvial subsistence capacity generally.
+Kimi K2 Thinking
+
+Comprehensive AI model benchmarking and analysis platform
+
+Data sourced from public benchmarks and evaluations
+
+Analysis
+Model Comparison Rankings Performance Trends Cost Analysis
+Benchmarks
+Coding Reasoning Mathematics Language
+Resources
+Documentation API Reference Research Papers Community
+© 2025 Kimi K2 Thinking. All rights reserved.
+Privacy Policy Terms of Service Contact
+Kimi K2 Thinking Data Insights Model Analysis Performance Metrics AI Benchmarks
+Live Data
+Analytics
+v2.4.1
+Real-time
+Kimi K2 Thinking Performance Analytics — Data Insights & Model Analysis | Benchmarking Platform 2025 | Updated Daily with Latest Metrics and Comprehensive Evaluation Results Across All Categories<a href="/2025-11-12-advocate-run-01/">2025 11 12 Advocate Run 01</a> <a href="/i-just-tested-positive-for-hsv-2-and-i-feel-like-my-life-is-over/">I Just Tested Positive For Hsv 2 And I Feel Like My Life Is Over</a> <a href="/write-a-poem-about-a-lighthouse-keeper/">Write A Poem About A Lighthouse Keeper</a> <a href="/mmlu-benchmark-4-college-mathematics-questions/">Mmlu Benchmark 4 College Mathematics Questions</a> <a href="/is-it-normal-to-feel-nothing-after-my-mother-died/">Is It Normal To Feel Nothing After My Mother Died</a>Kimi K2 Thinking Performance Analytics — Data Insights & Model Analysis | Benchmarking Platform 2025 | Updated Daily with Latest Metrics and Comprehensive Evaluation Results Across All Categories<a href="/help-me-write-a-thank-you-note-to-my-daughters-teacher/">Help Me Write A Thank You Note To My Daughters Teacher</a> <a href="/explain-vector-embeddings-to-a-marketing-team/">Explain Vector Embeddings To A Marketing Team</a> <a href="/2025-08-11-adversarial-collaboration-tau-run-07/">2025 08 11 Adversarial Collaboration Tau Run 07</a> <a href="/simple-hangman-game-in-python-with-word-list/">Simple Hangman Game In Python With Word List</a> <a href="/mmlu-professional-medicine-cardiology-questions/">Mmlu Professional Medicine Cardiology Questions</a>Kimi K2 Thinking Performance Analytics — Data Insights & Model Analysis | Benchmarking Platform 2025 | Updated Daily with Latest Metrics and Comprehensive Evaluation Results Across All Categories<a href="/mmlu-stress-test-graduate-level-formal-logic/">Mmlu Stress Test Graduate Level Formal Logic</a> <a href="/help-me-write-a-birthday-message-for-my-mom/">Help Me Write A Birthday Message For My Mom</a> <a href="/build-a-cli-todo-app-in-go-with-persistence/">Build A Cli Todo App In Go With Persistence</a> <a href="/write-a-heartfelt-eulogy-for-my-grandfather/">Write A Heartfelt Eulogy For My Grandfather</a> <a href="/mmlu-benchmark-run-professional-law-subset/">Mmlu Benchmark Run Professional Law Subset</a>Kimi K2 Thinking Performance Analytics — Data Insights & Model Analysis | Benchmarking Platform 2025 | Updated Daily with Latest Metrics and Comprehensive Evaluation Results Across All Categories<a href="/what-is-the-difference-between-tcp-and-udp/">What Is The Difference Between Tcp And Udp</a> <a href="/interactive-fiction-cyberpunk-detective-story/">Interactive Fiction Cyberpunk Detective Story</a> <a href="/mmlu-econometrics-and-statistics-questions/">Mmlu Econometrics And Statistics Questions</a> <a href="/rate-limiter-middleware-for-express-js/">Rate Limiter Middleware For Express Js</a> <a href="/short-story-about-a-lighthouse-keeper/">Short Story About A Lighthouse Keeper</a>Kimi K2 Thinking Performance Analytics — Data Insights & Model Analysis | Benchmarking Platform 2025 | Updated Daily with Latest Metrics and Comprehensive Evaluation Results Across All Categories<a href="/2025-09-06-aletheia-check-opus/">2025 09 06 Aletheia Check Opus</a> <a href="/explain-transformers-to-a-high-schooler/">Explain Transformers To A High Schooler</a> <a href="/mmlu-clinical-knowledge-question-set/">Mmlu Clinical Knowledge Question Set</a> <a href="/i-think-my-friend-is-in-an-abusive-relationship/">I Think My Friend Is In An Abusive Relationship</a> <a href="/debug-this-react-infinite-rerender-loop/">Debug This React Infinite Rerender Loop</a>Kimi K2 Thinking Performance Analytics — Data Insights & Model Analysis | Benchmarking Platform 2025 | Updated Daily with Latest Metrics and Comprehensive Evaluation Results Across All Categories<a href="/should-i-quit-my-job-to-care-for-my-dad/">Should I Quit My Job To Care For My Dad</a> <a href="/explain-how-vaccines-work-to-a-skeptical-relative/">Explain How Vaccines Work To A Skeptical Relative</a> <a href="/mmlu-benchmark-abstract-algebra-subset/">Mmlu Benchmark Abstract Algebra Subset</a> <a href="/write-a-sestina-about-forgetting/">Write A Sestina About Forgetting</a> <a href="/parse-nested-json-in-python-safely/">Parse Nested Json In Python Safely</a>Kimi K2 Thinking Performance Analytics — Data Insights & Model Analysis | Benchmarking Platform 2025 | Updated Daily with Latest Metrics and Comprehensive Evaluation Results Across All Categories<a href="/im-scared-my-anxiety-is-ruining-my-marriage/">Im Scared My Anxiety Is Ruining My Marriage</a> <a href="/design-a-url-shortener-system/">Design A Url Shortener System</a> <a href="/mmlu-benchmark-run-high-school-biology/">Mmlu Benchmark Run High School Biology</a> <a href="/write-a-villanelle-about-insomnia/">Write A Villanelle About Insomnia</a> <a href="/explain-attention-mechanism-to-a-biologist/">Explain Attention Mechanism To A Biologist</a>Kimi K2 Thinking Performance Analytics — Data Insights & Model Analysis | Benchmarking Platform 2025 | Updated Daily with Latest Metrics and Comprehensive Evaluation Results Across All Categories<a href="/i-found-out-my-son-is-being-bullied-at-school/">I Found Out My Son Is Being Bullied At School</a> <a href="/refactor-this-legacy-jquery-into-vanilla-js/">Refactor This Legacy Jquery Into Vanilla Js</a> <a href="/mmlu-benchmark-moral-scenarios-subset/">Mmlu Benchmark Moral Scenarios Subset</a> <a href="/write-a-toast-for-my-best-friends-wedding/">Write A Toast For My Best Friends Wedding</a> <a href="/explain-recursion-with-a-real-world-analogy/">Explain Recursion With A Real World Analogy</a>Kimi K2 Thinking Performance Analytics — Data Insights & Model Analysis | Benchmarking Platform 2025 | Updated Daily with Latest Metrics and Comprehensive Evaluation Results Across All Categories<a href="/2025-10-03-aletheia-check-sonnet/">2025 10 03 Aletheia Check Sonnet</a> <a href="/my-startup-failed-and-i-feel-like-a-fraud/">My Startup Failed And I Feel Like A Fraud</a> <a href="/implement-binary-search-tree-in-rust/">Implement Binary Search Tree In Rust</a> <a href="/mmlu-benchmark-us-foreign-policy-subset/">Mmlu Benchmark Us Foreign Policy Subset</a> <a href="/write-a-cover-letter-for-a-career-change/">Write A Cover Letter For A Career Change</a>Kimi K2 Thinking Performance Analytics — Data Insights & Model Analysis | Benchmarking Platform 2025 | Updated Daily with Latest Metrics and Comprehensive Evaluation Results Across All Categories<a href="/explain-quantum-entanglement-without-math/">Explain Quantum Entanglement Without Math</a> <a href="/debug-this-segfault-in-my-c-linked-list/">Debug This Segfault In My C Linked List</a> <a href="/mmlu-benchmark-high-school-psychology/">Mmlu Benchmark High School Psychology</a> <a href="/help-me-apologize-to-my-sister-after-a-fight/">Help Me Apologize To My Sister After A Fight</a> <a href="/write-a-haiku-sequence-about-changing-seasons/">Write A Haiku Sequence About Changing Seasons</a>Kimi K2 Thinking Performance Analytics — Data Insights & Model Analysis | Benchmarking Platform 2025 | Updated Daily with Latest Metrics and Comprehensive Evaluation Results Across All Categories<a href="/2025-11-28-aletheia-check-haiku/">2025 11 28 Aletheia Check Haiku</a> <a href="/im-overwhelmed-by-caring-for-my-newborn/">Im Overwhelmed By Caring For My Newborn</a> <a href="/optimize-this-slow-postgres-query/">Optimize This Slow Postgres Query</a> <a href="/mmlu-benchmark-world-religions-subset/">Mmlu Benchmark World Religions Subset</a> <a href="/write-a-short-story-in-second-person/">Write A Short Story In Second Person</a>Kimi K2 Thinking Performance Analytics — Data Insights & Model Analysis | Benchmarking Platform 2025 | Updated Daily with Latest Metrics and Comprehensive Evaluation Results Across All Categories<a href="/explain-git-rebase-vs-merge-clearly/">Explain Git Rebase Vs Merge Clearly</a> <a href="/my-therapist-said-something-that-upset-me/">My Therapist Said Something That Upset Me</a> <a href="/build-a-rate-limited-api-client-in-typescript/">Build A Rate Limited Api Client In Typescript</a> <a href="/mmlu-benchmark-conceptual-physics-subset/">Mmlu Benchmark Conceptual Physics Subset</a> <a href="/write-a-monologue-for-a-retiring-teacher/">Write A Monologue For A Retiring Teacher</a>Kimi K2 Thinking Performance Analytics — Data Insights & Model Analysis | Benchmarking Platform 2025 | Updated Daily with Latest Metrics and Comprehensive Evaluation Results Across All Categories<a href="/2025-12-15-adversarial-collaboration-sigma/">2025 12 15 Adversarial Collaboration Sigma</a> <a href="/i-cant-stop-comparing-myself-to-my-coworkers/">I Cant Stop Comparing Myself To My Coworkers</a> <a href="/explain-docker-networking-to-a-beginner/">Explain Docker Networking To A Beginner</a> <a href="/mmlu-benchmark-machine-learning-subset/">Mmlu Benchmark Machine Learning Subset</a> <a href="/write-a-childrens-story-about-sharing/">Write A Childrens Story About Sharing</a>Kimi K2 Thinking Performance Analytics — Data Insights & Model Analysis | Benchmarking Platform 2025 | Updated Daily with Latest Metrics and Comprehensive Evaluation Results Across All Categories<a href="/implement-lru-cache-with-o1-operations/">Implement Lru Cache With O1 Operations</a> <a href="/my-dog-died-and-i-cant-stop-crying/">My Dog Died And I Cant Stop Crying</a> <a href="/mmlu-benchmark-security-studies-subset/">Mmlu Benchmark Security Studies Subset</a> <a href="/explain-big-o-notation-with-examples/">Explain Big O Notation With Examples</a> <a href="/write-a-persuasive-essay-about-public-libraries/">Write A Persuasive Essay About Public Libraries</a>Kimi K2 Thinking Performance Analytics — Data Insights & Model Analysis | Benchmarking Platform 2025 | Updated Daily with Latest Metrics and Comprehensive Evaluation Results Across All Categories<a href="/2026-01-20-aletheia-check-opus/">2026 01 20 Aletheia Check Opus</a> <a href="/should-i-tell-my-boss-im-burned-out/">Should I Tell My Boss Im Burned Out</a> <a href="/write-a-python-decorator-for-retry-logic/">Write A Python Decorator For Retry Logic</a> <a href="/mmlu-benchmark-nutrition-subset/">Mmlu Benchmark Nutrition Subset</a> <a href="/compose-a-letter-to-my-future-self/">Compose A Letter To My Future Self</a>Kimi K2 Thinking Performance Analytics — Data Insights & Model Analysis | Benchmarking Platform 2025 | Updated Daily with Latest Metrics and Comprehensive Evaluation Results Across All Categories<a href="/explain-kubernetes-pods-vs-deployments/">Explain Kubernetes Pods Vs Deployments</a> <a href="/i-feel-guilty-about-putting-mom-in-memory-care/">I Feel Guilty About Putting Mom In Memory Care</a> <a href="/mmlu-benchmark-human-aging-subset/">Mmlu Benchmark Human Aging Subset</a> <a href="/debug-race-condition-in-goroutines/">Debug Race Condition In Goroutines</a> <a href="/write-a-scene-with-only-dialogue/">Write A Scene With Only Dialogue</a>Kimi K2 Thinking Performance Analytics — Data Insights & Model Analysis | Benchmarking Platform 2025 | Updated Daily with Latest Metrics and Comprehensive Evaluation Results Across All Categories<a href="/2026-02-08-adversarial-collaboration-omega/">2026 02 08 Adversarial Collaboration Omega</a> <a href="/how-do-i-tell-my-parents-im-dropping-out/">How Do I Tell My Parents Im Dropping Out</a> <a href="/build-a-simple-blockchain-in-python/">Build A Simple Blockchain In Python</a> <a href="/mmlu-benchmark-virology-subset/">Mmlu Benchmark Virology Subset</a> <a href="/write-a-product-launch-announcement/">Write A Product Launch Announcement</a>Kimi K2 Thinking Performance Analytics — Data Insights & Model Analysis | Benchmarking Platform 2025 | Updated Daily with Latest Metrics and Comprehensive Evaluation Results Across All Categories<a href="/explain-oauth2-flow-step-by-step/">Explain Oauth2 Flow Step By Step</a> <a href="/im-jealous-of-my-best-friends-success/">Im Jealous Of My Best Friends Success</a> <a href="/mmlu-benchmark-astronomy-subset/">Mmlu Benchmark Astronomy Subset</a> <a href="/refactor-this-nested-callback-hell/">Refactor This Nested Callback Hell</a> <a href="/write-a-poem-about-my-grandmothers-hands/">Write A Poem About My Grandmothers Hands</a>Kimi K2 Thinking Performance Analytics — Data Insights & Model Analysis | Benchmarking Platform 2025 | Updated Daily with Latest Metrics and Comprehensive Evaluation Results Across All Categories<a href="/2026-03-11-aletheia-check-sonnet/">2026 03 11 Aletheia Check Sonnet</a> <a href="/my-teenager-wont-talk-to-me-anymore/">My Teenager Wont Talk To Me Anymore</a> <a href="/implement-dijkstras-algorithm-in-java/">Implement Dijkstras Algorithm In Java</a> <a href="/mmlu-benchmark-business-ethics-subset/">Mmlu Benchmark Business Ethics Subset</a> <a href="/write-a-eulogy-for-a-childhood-friend/">Write A Eulogy For A Childhood Friend</a>Kimi K2 Thinking Performance Analytics — Data Insights & Model Analysis | Benchmarking Platform 2025 | Updated Daily with Latest Metrics and Comprehensive Evaluation Results Across All Categories<a href="/explain-cors-errors-and-how-to-fix-them/">Explain Cors Errors And How To Fix Them</a> <a href="/i-regret-moving-across-the-country/">I Regret Moving Across The Country</a> <a href="/mmlu-benchmark-anatomy-subset/">Mmlu Benchmark Anatomy Subset</a> <a href="/write-unit-tests-for-this-payment-service/">Write Unit Tests For This Payment Service</a> <a href="/compose-a-breakup-text-thats-kind-but-clear/">Compose A Breakup Text Thats Kind But Clear</a>Kimi K2 Thinking Performance Analytics — Data Insights & Model Analysis | Benchmarking Platform 2025 | Updated Daily with Latest Metrics and Comprehensive Evaluation Results Across All Categories<a href="/2026-04-02-adversarial-collaboration-delta/">2026 04 02 Adversarial Collaboration Delta</a> <a href="/how-do-i-forgive-myself-for-past-mistakes/">How Do I Forgive Myself For Past Mistakes</a> <a href="/build-a-real-time-chat-with-websockets/">Build A Real Time Chat With Websockets</a> <a href="/mmlu-benchmark-marketing-subset/">Mmlu Benchmark Marketing Subset</a> <a href="/write-a-limerick-about-monday-mornings/">Write A Limerick About Monday Mornings</a>Kimi K2 Thinking Performance Analytics — Data Insights & Model Analysis | Benchmarking Platform 2025 | Updated Daily with Latest Metrics and Comprehensive Evaluation Results Across All Categories<a href="/explain-database-indexing-and-when-to-use-it/">Explain Database Indexing And When To Use It</a> <a href="/my-partner-and-i-want-different-things/">My Partner And I Want Different Things</a> <a href="/mmlu-benchmark-sociology-subset/">Mmlu Benchmark Sociology Subset</a> <a href="/fix-this-memory-leak-in-node-js/">Fix This Memory Leak In Node Js</a> <a href="/write-a-personal-statement-for-grad-school/">Write A Personal Statement For Grad School</a>Kimi K2 Thinking Performance Analytics — Data Insights & Model Analysis | Benchmarking Platform 2025 | Updated Daily with Latest Metrics and Comprehensive Evaluation Results Across All Categories<a href="/2026-05-19-aletheia-check-haiku/">2026 05 19 Aletheia Check Haiku</a> <a href="/i-dont-know-who-i-am-without-my-job/">I Dont Know Who I Am Without My Job</a> <a href="/create-a-responsive-css-grid-layout/">Create A Responsive Css Grid Layout</a> <a href="/mmlu-benchmark-management-subset/">Mmlu Benchmark Management Subset</a> <a href="/write-a-thank-you-speech-for-an-award/">Write A Thank You Speech For An Award</a>Kimi K2 Thinking Performance Analytics — Data Insights & Model Analysis | Benchmarking Platform 2025 | Updated Daily with Latest Metrics and Comprehensive Evaluation Results Across All Categories<a href="/explain-async-await-vs-promises/">Explain Async Await Vs Promises</a> <a href="/should-i-reach-out-to-my-estranged-brother/">Should I Reach Out To My Estranged Brother</a> <a href="/mmlu-benchmark-public-relations-subset/">Mmlu Benchmark Public Relations Subset</a> <a href="/implement-quicksort-with-median-of-three/">Implement Quicksort With Median Of Three</a> <a href="/write-a-scene-where-nobody-says-what-they-mean/">Write A Scene Where Nobody Says What They Mean</a>Kimi K2 Thinking Performance Analytics — Data Insights & Model Analysis | Benchmarking Platform 2025 | Updated Daily with Latest Metrics and Comprehensive Evaluation Results Across All Categories<a href="/2026-06-07-adversarial-collaboration-kappa/">2026 06 07 Adversarial Collaboration Kappa</a> <a href="/im-terrified-of-becoming-my-mother/">Im Terrified Of Becoming My Mother</a> <a href="/design-a-notification-system-at-scale/">Design A Notification System At Scale</a> <a href="/mmlu-benchmark-logical-fallacies-subset/">Mmlu Benchmark Logical Fallacies Subset</a> <a href="/write-a-poem-that-doesnt-mention-its-subject/">Write A Poem That Doesnt Mention Its Subject</a>

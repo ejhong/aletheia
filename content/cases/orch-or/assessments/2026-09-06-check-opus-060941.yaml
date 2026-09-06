@@ -1,0 +1,352 @@
+# Cross-model check run — an independent judge (Opus 5 (Anthropic)),
+# blind to all prior assessments (scripts/cross-model-check.mjs,
+# promptVersion aletheia-check-v4). role: check — never displayed as the case
+# narrative; feeds the concurrence panel. Append-only; NOT human reviewed.
+runId: 2026-09-06-check-opus-060941
+model: Opus 5 (Anthropic) — independent check run via claude-opus-5
+date: 2026-09-06
+promptVersion: aletheia-check-v4
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: weakly_supported
+  loadBearing:
+    - ORCH-C010
+    - ORCH-C030
+    - ORCH-C002
+    - ORCH-C003
+  weakestLinks:
+    - ORCH-C010
+    - ORCH-C022
+    - ORCH-C026
+    - ORCH-C040
+  synthesis: "The featured hypothesis is a conjunction: a physics conjunct
+    (gravitationally induced collapse on a τ ≈ ℏ/E_G schedule), a biology
+    conjunct (a coherent state across many tubulins persisting for tens of
+    milliseconds at 37 °C), and an anesthesia corollary. A conjunction is no
+    stronger than its weakest term, and on this record both structural terms are
+    unsupported by measurement. Nothing in the evidence set is a coherence
+    measurement in a physiological microtubule. The rung is occupied entirely by
+    duelling calculations: Tegmark's 10⁻¹³–10⁻²⁰ s (ORCH-E007), which Hagan et
+    al. correctly show was computed for a soliton the theory does not propose
+    (ORCH-E008), and the proponents' own corrected figure of 10⁻⁵–10⁻⁴ s — still
+    short of the 25 ms exemplar by two to three orders (ORCH-E036). The only
+    proponent-side numbers reaching physiological timescales are explicitly
+    conditional (actin-gel screening) or inferred from single-laboratory
+    resonance work that has stood unreplicated for over a decade (ORCH-E005,
+    ORCH-R005). On the physics side the natural parameter-free Diósi–Penrose
+    model is experimentally excluded (ORCH-E017) and the experimenters
+    themselves call the committed tubulin scenarios \"highly implausible\"
+    (ORCH-E018); McQueen's escape (ORCH-E019) is valid but converts a refuted
+    model into an untested one, which is not evidence for the theory. What
+    genuinely survives is a lower-level, more modest finding: microtubules are
+    electronically nontrivial (ORCH-C013), anesthetics do bind tubulin and
+    perturb its photophysics (ORCH-C011), and manipulating microtubules does
+    move anesthetic susceptibility (ORCH-C012). None of that is quantum. The
+    anesthesia arm is further damaged from inside its own flagship experiment —
+    picrotoxin, a convulsant, perturbs the assay comparably (ORCH-E003) — and
+    the animal literature does not cohere: acute epothilone B delays loss of
+    righting reflex (ORCH-E011/E012, one program), while an independent,
+    better-powered study finds chronic epothilone D and the destabilizer
+    vinblastine both increasing sensitivity (ORCH-E013). Meanwhile the classical
+    rival has what Orch OR lacks: single-residue causal evidence (ORCH-E015).
+    The non-computability rung is decorative rather than load-bearing and has
+    aged badly (ORCH-E022/E023), though Zahavy's abduction argument (ORCH-E025)
+    keeps it from being closed. Net: a handful of real, interesting anomalies,
+    no established mechanism, and the theory's own quantitative commitments
+    unmet on its own literature."
+  steelman: "The xenon isotope result remains unexplained by anything in the
+    classical account recorded here: four chemically identical isotopes with
+    identical calculated polarizability (3.60 Å) show a 40–50% potency gap that
+    tracks nuclear spin, and the frozen re-analysis (ORCH-E038) shows the four
+    means form a step across the spin boundary — 29 percentage points for one
+    mass unit at 131→132, against 6 and 2 within the spin-matched pairs — a
+    shape no smooth mass-dependent confound (diffusion, solubility) produces.
+    Lipid solubility and polarizability, the workhorses of conventional
+    anesthetic pharmacology, predict no difference at all. My assessment records
+    this as unreplicated and poorly auditable, but it does not explain it, and a
+    proponent is entitled to say that a spin-sensitive, therefore quantum,
+    degree of freedom is doing real pharmacological work in an intact mammal."
+claimAssessments:
+  - claimId: ORCH-C001
+    verdict: weakly_supported
+    confidence: low
+    reasoning: "The claim is a conjunction whose two structural terms are each
+      unestablished: no coherence measurement exists (ORCH-C010) and the
+      collapse criterion has no confirming measurement while its natural
+      stochastic completion is excluded (ORCH-E017, ORCH-E018). The affirmative
+      case rests on in vitro photophysics that measures no quantum state
+      variable, a disputed MRI result that does not implicate microtubules, and
+      a review by an interested party (ORCH-E028). I stop short of
+      \"contradicted\" because the theory's 2014 formulation was never directly
+      measured and McQueen's model-theoretic objection (ORCH-E019) blocks a
+      clean refutation. The strongest opposing consideration is that absence of
+      a decisive measurement is not disconfirmation — ORCH-R001 has simply never
+      been run."
+  - claimId: ORCH-C002
+    verdict: weakly_supported
+    confidence: low
+    reasoning: "The claim requires a quantum-coherent microtubule state that is
+      itself not established, so it inherits ORCH-C010's deficit. Within its own
+      evidence, the specificity control is damaging: picrotoxin, a convulsant,
+      perturbs the flagship assay comparably to the anesthetics (ORCH-E003),
+      which is what one expects if the assay reads general perturbability by
+      small hydrophobic molecules. The animal evidence points in opposite
+      directions across laboratories (ORCH-E011/E012 vs ORCH-E013), and no study
+      measured any quantum variable. The strongest opposing consideration is
+      Jurd's own conclusion that volatile agents act through a broader target
+      spectrum (ORCH-E015), leaving a genuine opening for a microtubule
+      contribution to volatile anesthesia specifically."
+  - claimId: ORCH-C003
+    verdict: well_supported
+    confidence: moderate
+    reasoning: "The β3(N265M) knock-in is the strongest causal evidence anywhere in
+      this case: a single engineered residue abolishes etomidate and propofol
+      immobility and profoundly reduces their hypnotic effect (ORCH-E015). The
+      claim is carefully scoped — \"substantially\", with target-specific
+      evidence \"for the intravenous agents\" — and that scope is exactly what
+      the evidence supports. The strongest opposing consideration is ORCH-E030:
+      the mutation's cleanest effect is on immobility, a spinal endpoint, while
+      loss-of-righting duration is reduced but not abolished, so the
+      consciousness-adjacent endpoint is only partly explained; the cited TREK-1
+      precedent also warns that genetic anesthetic-target findings are not
+      automatically durable."
+  - claimId: ORCH-C004
+    verdict: unresolved
+    confidence: moderate
+    reasoning: 'The universal quantifier ("fully", "without any quantum
+      contribution") is not what the cited evidence establishes, and the record
+      contains explicit contrary residue: Eger et al. report that no known
+      channel and no combination of channel actions suffices for inhaled-agent
+      immobility (ORCH-E031), and the xenon nuclear-spin effect (ORCH-E014) is
+      unexplained by polarizability-based pharmacology. Neither observation
+      vindicates microtubules, and both concern endpoints (spinal immobility,
+      LORR) that fractionate from consciousness. This is a genuine open question
+      rather than a safe default: the strongest opposing consideration is that
+      decades of receptor pharmacology have explained a great deal and
+      unexplained residue is the normal state of a maturing field, not evidence
+      of a new physics.'
+  - claimId: ORCH-C030
+    verdict: unresolved
+    confidence: moderate
+    reasoning: "No measurement in the record confirms the ℏ/E_G lifetime scaling;
+      the criterion remains a theoretical proposal. The one dedicated experiment
+      excluded the natural parameter-free Diósi–Penrose completion (ORCH-E017),
+      and McQueen's reply (ORCH-E019) — which I accept as far as it goes — is
+      that Penrose's characteristic-lifetime criterion is not that stochastic
+      model and predicts no spontaneous radiation. That defence saves the claim
+      from refutation while leaving it untested, which is why unresolved rather
+      than contradicted. The strongest opposing consideration is that the escape
+      is unfalsifiability-adjacent: a criterion that survives every experiment
+      by not being the model tested is in a weaker epistemic position than the
+      token suggests."
+  - claimId: ORCH-C040
+    verdict: unresolved
+    confidence: low
+    reasoning: "No evidence record bears decisively on this claim as stated, and the
+      \"knowably sound\" qualifier makes it very difficult to test empirically:
+      any specific insight later mechanised is compatible with it. The record's
+      own audit concedes that Penrose's concrete testable examples have mostly
+      settled against him and that the surviving ones are the least testable
+      (ORCH-E026), and the \"escalator, not the steps\" reformulation is
+      precisely the move critics call unfalsifiable. My verdict leans on general
+      priors about the Gödelian argument's contested status more than on the
+      evidence records, which is worth stating. The strongest opposing
+      consideration is Zahavy's abduction argument (ORCH-E025), a concession
+      from inside DeepMind that current systems may be structurally incapable of
+      framework-generating jumps — though that is a claim about architectures,
+      not about physical non-computability."
+  - claimId: ORCH-C010
+    verdict: contradicted
+    confidence: low
+    reasoning: As stated — coherence of order tens of milliseconds across many
+      tubulins at physiological conditions — every published estimate in the
+      record falls short, including the proponents' own unconditional
+      recalculation of 10⁻⁵–10⁻⁴ s (ORCH-E008, ORCH-E036), and the critics'
+      electronic-motion bound is 10 fs–30 ps. The only routes to physiological
+      timescales are conditional gel-screening assumptions or a coherence-time
+      inference from unreplicated single-laboratory resonance data. Confidence
+      is low because no measurement exists on either side and Tegmark modelled a
+      state both sides agree was not Orch OR. The strongest opposing
+      consideration is the 2014 beat-frequency rescoping (ORCH-E035/E036), under
+      which the per-event requirement drops to 10⁻⁷–10⁻⁴ s — a range the
+      proponents' own estimate does reach — meaning the claim as worded may
+      overstate what the current theory demands.
+  - claimId: ORCH-C011
+    verdict: well_supported
+    confidence: moderate
+    reasoning: "Two independent lines converge on the local fact: Emerson et al.
+      photolabelled β-tubulin with an anesthetic, localised binding near the
+      colchicine site and inhibited polymerisation, from a laboratory with no
+      Orch OR commitment (ORCH-E009); Kalra et al. showed etomidate and
+      isoflurane reduce exciton diffusion (ORCH-E002). The claim as stated asks
+      only for binding and altered electronic/optical behaviour, not for
+      specificity or functional relevance, and that is what was measured. The
+      strongest opposing consideration is that the picrotoxin comparison
+      (ORCH-E003) suggests the optical effect may reflect generic perturbation
+      by small hydrophobic molecules — which qualifies the claim's significance
+      but not its truth."
+  - claimId: ORCH-C012
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: "As stated, the claim asks only that microtubule-stability
+      manipulation changes anesthetic susceptibility, and every relevant study
+      found a change: epothilone B delayed LORR (ORCH-E011/E012), chronic
+      epothilone D and vinblastine shifted EC50 leftward (ORCH-E013), epothilone
+      D and discodermolide produced resistance in tadpoles (ORCH-E009), and
+      taxane-treated patients showed altered hemodynamic response (ORCH-E032).
+      The strongest opposing consideration is that the directions are mutually
+      inconsistent — a stabiliser and a destabiliser moving sensitivity the same
+      way — which is exactly what one expects if the operative variable is
+      general cellular disruption (transport, metabolism, blood gases) rather
+      than microtubule stability per se."
+  - claimId: ORCH-C013
+    verdict: well_supported
+    confidence: moderate
+    reasoning: "Three partly separate lines support nontrivial collective
+      electronic/electromagnetic behaviour: exciton diffusion exceeding Förster
+      prediction and dependent on polymerisation state (ORCH-E001),
+      superradiance-consistent quantum-yield enhancement from a group outside
+      the Hameroff–Penrose lineage (ORCH-E004), and structure-dependent delayed
+      luminescence (ORCH-E006). The claim is deliberately modest — more than
+      passive scaffolding — and does not require coherence. The strongest
+      opposing consideration is shared limitations: all are in vitro on purified
+      preparations without MAPs, crowding, or membranes, the Kalra work includes
+      the theory's own authors, and the Saxena resonance line (ORCH-E005) is
+      unreplicated and measures a classical observable."
+  - claimId: ORCH-C020
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: The 6.6 nm diffusion length and the qualitative anesthetic reduction
+      are quoted directly from a verified abstract in a high-quality journal,
+      with structure-dependence arguing against artifact (ORCH-E001, ORCH-E002).
+      The specific reduced values (5.6/5.8 nm) were relayed from the
+      deep-research report and not verified against the paper body, so the
+      quantitative half of the claim is weaker than the qualitative half. The
+      strongest opposing consideration is that this is a single unreplicated
+      experiment, the diffusion length is inferred from concentration-dependent
+      quenching rather than imaged, and the author list includes the theory's
+      principals — it is a collaboration involving the proponents, not an
+      outside test.
+  - claimId: ORCH-C021
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: 'The abstract states that the predicted quantum-yield enhancement "is
+      confirmed by our experiments" (ORCH-E004), and the group is partly
+      independent of the Hameroff–Penrose line, which matters. The claim as
+      worded — enhancement in the direction a collective superradiance model
+      predicts — is what was reported. The strongest opposing consideration is
+      that the paper is predominantly theoretical and the experimental component
+      is a bulk fluorescence measurement, an indirect witness: quantum yield can
+      rise for several mundane reasons, so the collective-state attribution is
+      model-dependent and unreplicated.'
+  - claimId: ORCH-C022
+    verdict: weakly_supported
+    confidence: low
+    reasoning: "The observation is reported in a verified abstract, but the
+      supporting structure is thin: one laboratory lineage, bespoke wide-band
+      apparatus, a low-profile venue, and no protocol-level replication in the
+      years since (ORCH-E005, ORCH-R005). The related Sahu 2013 work is the same
+      group and cannot corroborate it. Independent replication is the relevant
+      test and it has not been attempted. The strongest opposing consideration
+      is that the measurement is of a classical electromagnetic observable, so
+      even a successful replication would establish an unusual scale-free
+      property, not a quantum one — the claim could be true and still carry
+      little weight for the case."
+  - claimId: ORCH-C023
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: "Both figures are quoted from verified abstracts, the rat study was
+      blinded with a tolerance control and a large standardised effect (d =
+      1.9), and the mouse study reproduced the direction across species
+      (ORCH-E011, ORCH-E012). The claim is a measurement report and does not
+      assert a mechanism. The strongest opposing consideration is independence:
+      the two studies share a senior author and research program, N = 8 male
+      rats only in the main analysis with a non-counterbalanced design, the
+      mouse effect is acknowledged as small against inter-animal variability and
+      decayed unexplained over subsequent days, and no outside laboratory has
+      attempted it."
+  - claimId: ORCH-C024
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: The EC50 values and confidence intervals are quoted from a verified
+      abstract, the study was randomized and blinded with full
+      concentration–response curves, a destabilizer arm, and an opioid positive
+      control — methodologically the strongest animal study in the case
+      (ORCH-E013). Its independence from the Wellesley program is what makes it
+      informative. The strongest opposing consideration is that the authors
+      themselves flag saline as an imperfect vehicle for poorly soluble
+      compounds and report epothilone-D-induced changes in blood pH and CO₂,
+      offering a physiological route to the leftward shift that has nothing to
+      do with microtubules; it is also a single unreplicated study.
+  - claimId: ORCH-C025
+    verdict: provisionally_supported
+    confidence: low
+    reasoning: "The reported pattern is real in the published numbers and the frozen
+      re-analysis shows a spin step describes the four means far better than a
+      linear mass term (weighted R² 0.98 vs 0.62), with a magnitude asymmetry
+      across the spin boundary that no smooth mass confound produces
+      (ORCH-E038). Against that: one four-arm experiment in one laboratory,
+      never replicated, extended, or preceded (ORCH-E039); the dispersion type
+      is not recoverable from the accessible record; and the headline
+      xenon-alone values are calculated from co-administration with 0.50%
+      isoflurane rather than measured (ORCH-E040). The strongest opposing
+      consideration is the tripped identification rule (ORCH-E037) — the
+      dataset's mass range is too narrow for a two-covariate inferential test
+      either way, so the numbers describe a pattern they cannot formally
+      license."
+  - claimId: ORCH-C026
+    verdict: weakly_supported
+    confidence: low
+    reasoning: Read literally the claim is largely a report of what was observed and
+      how the authors framed it, and that framing is quoted accurately
+      (ORCH-E020). The substantive content — that the signals are genuine and
+      awareness-dependent — is contested in the same journal by a leading NMR
+      methodologist who argues the data show only that living tissue is
+      multicompartmental and imprecisely characterised by MRI (ORCH-E021), with
+      no independent replication and no phantom-level validation. The strongest
+      opposing consideration running the other way is that the authors' reply
+      specifically addresses Warren's classical iMQC mechanism and the dispute
+      is unresolved on the public record; I have no basis to adjudicate the NMR
+      question, hence low confidence.
+  - claimId: ORCH-C031
+    verdict: well_supported
+    confidence: high
+    reasoning: "Every element of the claim is quoted verbatim from the abstract of a
+      dedicated ultra-low-background germanium measurement at Gran Sasso,
+      published in Nature Physics, with the model's co-originator among the
+      authors (ORCH-E017). The null is quantitative and the exclusion is stated
+      by the experimenters in their own words. The strongest opposing
+      consideration concerns scope rather than truth: the bound applies to a
+      specific stochastic master equation, and non-Markovian or non-local
+      variants evading the radiation prediction remain untested — but the claim
+      as worded already restricts itself to the parameter-free Diósi–Penrose
+      version."
+  - claimId: ORCH-C041
+    verdict: well_supported
+    confidence: high
+    reasoning: "The unit-distance result is anchored on an independent
+      mathematician's own paper, which states the attribution and improves on
+      the construction (ORCH-E022), and the IMO performance is doubly attested:
+      Lean-verified and peer-reviewed in Nature (ORCH-E023), plus official
+      IMO-coordinator grading under contest conditions (ORCH-E024). The claim is
+      about what happened, not about what it means. The strongest opposing
+      consideration is the documented false-positive history in this evidence
+      line (ORCH-E027), where novelty claims collapsed on inadequate literature
+      search — but that failure mode does not touch the two milestones cited
+      here, both of which survived external checking."
+6. Sensitivity: the single record whose removal would most change the case
+  verdict is ORCH-E036, the tabulation showing that no unconditional
+  proponent-side decoherence estimate meets the theory's own requirement.
+  Without it, ORCH-C010 would move from contradicted to unresolved and the case
+  would rest on the older Tegmark/Hagan standoff alone. The verdict survives —
+  ORCH-E007 and ORCH-E008 independently establish that the published estimates
+  fall short, and the physics conjunct's problems (ORCH-E017, ORCH-E018) are
+  untouched — but case confidence would drop and the honest roll-up would edge
+  toward unresolved rather than weakly_supported.
+generatedAt: 2026-09-06T06:09:41.631Z
+review:
+  protocol: case-snapshot-v1
+  contentHash: 347523da22151bf5f6afc6ede03ad8002779a585c0af1e2191531436bd148dd6
+  assessmentHash: 7b893135a5ac0fb6dcfd3f2de3a27dabc349391b1933ad99dcc1a39f0304f717
+  packetHash: 52d57b0b43490459e0db049867f67eeddd2ec8db042c8faecc66bbff8dff737b

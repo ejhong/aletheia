@@ -1,0 +1,215 @@
+# Cross-model check run — an independent judge (Opus 5 (Anthropic)),
+# blind to all prior assessments (scripts/cross-model-check.mjs,
+# promptVersion aletheia-check-v4). role: check — never displayed as the case
+# narrative; feeds the concurrence panel. Append-only; NOT human reviewed.
+runId: 2026-09-06-check-opus-060637
+model: Opus 5 (Anthropic) — independent check run via claude-opus-5
+date: 2026-09-06
+promptVersion: aletheia-check-v4
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: weakly_supported
+  loadBearing:
+    - MPI-C001
+    - MPI-C002
+    - MPI-C005
+    - MPI-C007
+    - MPI-C009
+  weakestLinks:
+    - MPI-C001
+    - MPI-C005
+    - MPI-C009
+    - MPI-C008
+  synthesis: "The featured hypothesis has three separable parts: (a) a formal
+    framework (GQT/MPI) that is genuinely published and internally coherent; (b)
+    an empirical program (the correlation matrix) nominated by the proponents
+    themselves as the model's best test; and (c) an attribution claim that the
+    program's early positives and subsequent decline are the signature of
+    unexploitable psychophysical correlations. Only (a) is well documented by
+    this record. (b) has now failed on its own terms: the proponent-led team's
+    own preregistered consensus-protocol replications were both null and
+    concluded the matrix \"is not a replicable paradigm\" (MPI-E003), and the
+    methodologically strictest test in the corpus — Grote's fully blind
+    200-participant replication with analysis software frozen before unblinding
+    — was null with the main result well inside the random distribution
+    (MPI-E004). Grote 2017 adds the diagnostic pairing that matters most: three
+    preplanned analyses null, one post-hoc variant significant at p = 0.012.
+    That is a live demonstration inside this exact literature that analytic
+    flexibility manufactures the kind of result the founding studies rest on,
+    and the founding studies (MPI-C001) predate preregistration, were reported
+    by the model's own author, and have never had their raw data released. (c)
+    is therefore left supported mainly by results whose independence and
+    robustness are contested: Walach 2020, disowned as \"fragile\" by its own
+    authors a year later; Flores's thesis, five in-house studies sharing
+    equipment, personnel and analytic choices, three significant; and an
+    unreviewed 2023 preprint with unequal power across arms. Against them stands
+    a straightforward selection account (MPI-C008) whose components are each
+    independently evidenced — publication bias in the parent REG literature
+    (Bösch), QRP inflation quantified in a neighbouring database (Bierman), a
+    documented coding-error false positive (Maier & Dechamps), and variable
+    intercorrelation inflating matrix-cell counts (Flores). The decline
+    prediction is honourably in print since 2007 rather than retrofitted, which
+    is a real point in MPI's favour; but no-signalling does not logically entail
+    decline (quantum entanglement correlations are stable and non-signalling),
+    and GQT's deliberate abandonment of quantitative machinery means the
+    prediction carries no magnitude, timescale, or displacement target. What
+    survives is a framework compatible with any outcome and an empirical program
+    that fails when blinded. That is weak support, not none: the Flores
+    positives and the RNG-type split are not explained away by anything in this
+    file."
+  steelman: Flores's exact replications on Lucadou's own hardware returned three
+    significant results out of five under permutation-based, dependence-aware
+    statistics devised by the same researcher who formulated the strongest
+    dependence critique — and the 2023 online study found the surplus with an
+    atmospheric-noise source but not with a deterministic Mersenne Twister. No
+    regression, publication-bias, or QRP account predicts that the physical
+    nature of the random source should matter at all. Nothing in this record
+    tests that contrast at equal power, and until it is tested, a genuine
+    physical dependence remains an open and unrebutted possibility.
+claimAssessments:
+  - claimId: MPI-C001
+    verdict: well_supported
+    confidence: moderate
+    reasoning: "As stated the claim is about what was reported, and that these
+      experiments reported excess significant cells relative to chance and
+      control matrices is attested consistently across Walach 2020/2021, Grote
+      2021, and the 2006 proceedings paper. Confidence is capped because no full
+      text of the founding series was examined for this record, the original
+      1986–1987 work was published in German-language venues, and the raw data
+      have never been released for independent reanalysis. The strongest
+      opposing consideration is MPI-C009: if the significance counting assumed
+      independence among heavily intercorrelated psychological variables, the
+      \"excess\" may be a statistical artefact of the counting rule rather than
+      of the data — but that bears on the results' validity, not on whether they
+      were reported."
+  - claimId: MPI-C002
+    verdict: well_supported
+    confidence: high
+    reasoning: "Three independent lines converge: Walach et al. 2021's two
+      OSF-preregistered consensus-protocol replications (both null, one
+      adequately powered), Grote 2021's full blind analysis of 200 participants
+      (null, with only two post-hoc p = 0.06 curiosities), and Grote 2017's
+      three preplanned analyses (all null, combined p = 0.315). The word
+      \"predominantly\" is what makes the claim safe. The strongest opposing
+      consideration is Flores 2021, which reports three of five replications
+      significant, but that work is a doctoral thesis with shared equipment and
+      personnel, and the record does not establish that its analyses were
+      preregistered or blinded in the sense that anchors this claim."
+  - claimId: MPI-C003
+    verdict: well_supported
+    confidence: moderate
+    reasoning: "Grote's own series is a clean within-experimenter arc: significant
+      in 2015, null on all preplanned analyses in 2017, null under full blinding
+      in 2021. Walach 2020's positive was characterised by its own authors as
+      breaking down under improved analyses, then failed twice in 2021. Kennedy
+      2003 documents the same instability field-wide. The weaker part of the
+      claim is the specific \"changed sign, or shifted to different variables or
+      cells\": the records here evidence weakening and analysis-dependence
+      robustly, but sign-reversal and cell-displacement are asserted in the
+      theory papers more than they are demonstrated with prespecified metrics in
+      the replication reports."
+  - claimId: MPI-C004
+    verdict: well_supported
+    confidence: moderate
+    reasoning: "Atmanspacher, Römer & Walach 2002 in Foundations of Physics does
+      axiomatise a generalised theory retaining complementarity and entanglement
+      for arbitrary systems while dropping Hilbert-space structure and Planck's
+      constant, and MPI's use of pragmatic information as the ordering quantity
+      is documented across the 2007 JCS paper and the 2015 chapter. So the
+      claim, read descriptively, holds. The strongest opposing consideration is
+      what \"formally explicit\" buys: dropping the quantitative machinery
+      removes the ability to derive magnitudes or probabilities, so the
+      framework is explicit about structure but empty of predictive force — a
+      point the evidence record itself concedes."
+  - claimId: MPI-C005
+    verdict: mixed
+    confidence: moderate
+    reasoning: 'The 2007 JCS text verifiably contains the decline, sign-change,
+      displacement and strength–reproducibility-reciprocity predictions in
+      print, which defeats the charge that they were retrofitted to the
+      2017–2021 failures. But the claim asserts entailment, and that is not
+      established: in ordinary quantum mechanics non-signalling coexists with
+      perfectly stable, indefinitely replicable correlations, so no-transmission
+      alone does not force decline. The derivation works only via an
+      unformalised notion of when a correlation becomes "exploitable" in a
+      psychophysical setting, and neither magnitude nor rate is specified. The
+      claim is true as an account of what MPI asserts, unsupported as a claim of
+      logical consequence.'
+  - claimId: MPI-C006
+    verdict: established
+    confidence: high
+    reasoning: "The verbatim 2007 passage states the rationale exactly as the claim
+      describes it: spread registration across as many correlations as possible
+      so that psi appears as transitory, unlikely patterns in the matrix rather
+      than in a single exploitable channel. MPI-E012 corroborates that the
+      method was presented to the field as the answer to the repeatability
+      problem. The only caveat is that MPI-E009 and MPI-E011 share one source
+      and one author team, so this is a single (if unambiguous) attestation; but
+      for a claim about what the proponents designed and why, the proponents'
+      own text is the appropriate authority."
+  - claimId: MPI-C007
+    verdict: weakly_supported
+    confidence: moderate
+    reasoning: This is the case's central attribution and the record does not carry
+      it. The paradigm's own benchmark returned null under the two strictest
+      tests available (blind analysis, preregistered consensus protocol), the
+      flagship 2020 positive was disowned as fragile by its own authors, and the
+      founding positives are exposed to the dependence critique. What keeps this
+      above "contradicted" is that the claim's presupposed pattern is partly
+      real — Flores's three of five significant results and the 2023 RNG-type
+      split are not accounted for by anything in this file, and the model
+      predicted decline before observing it. The strongest opposing
+      consideration for any higher verdict is that MPI-C008 offers a complete,
+      cheaper explanation of the same pattern requiring no new physics.
+  - claimId: MPI-C008
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: "Each component mechanism is independently evidenced within or
+      adjacent to this literature: publication and small-study bias (Bösch 2006,
+      380 studies), QRP inflation (Bierman 2016), analytic flexibility producing
+      a p = 0.012 from data whose preplanned analyses were null (Grote 2017), a
+      coding error manufacturing a micro-PK effect (Maier & Dechamps 2022), and
+      variable intercorrelation (Flores). The claim's weak word is \"jointly
+      sufficient\": Bierman's own simulation covered roughly 60% of the ganzfeld
+      effect and required implausible parameters to reach zero, and no published
+      dependence-aware reanalysis of the actual founding matrix datasets exists.
+      Sufficiency is thus argued by analogy from neighbouring literatures rather
+      than demonstrated on this corpus."
+  - claimId: MPI-C009
+    verdict: provisionally_supported
+    confidence: low
+    reasoning: "The mechanism is highly plausible on general statistical grounds —
+      if psychological variables are strongly intercorrelated, the count of
+      significant matrix cells has far more variance than an independence-based
+      null implies, inflating apparent surpluses. Flores's Monte Carlo work
+      reportedly confirms this and reports that the earlier results
+      \"diminished\" when simulation was incorporated. But the evidential base
+      is thin: one thesis and one unreviewed preprint, both from the same author
+      inside the program, with no standalone reviewed reanalysis and no access
+      to the original datasets. The strongest opposing consideration is that the
+      founding studies reportedly used control matrices and, in 2020, 10,000
+      simulated experiments, which are precisely designed to absorb some
+      dependence structure — so the critique's magnitude is asserted rather than
+      quantified here."
+  - claimId: MPI-C010
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: The Walach 2021 abstract does exactly what the claim describes —
+      reading its own failed replications as "likely part of the systematic
+      nature of such effects" — and the 2007 design rationale conceded in
+      advance that the paradigm could never convince a sceptic, so both outcomes
+      were pre-licensed. That is the structure of insulation. The strongest
+      opposing consideration is that the proponents nonetheless preregistered,
+      published their own nulls, and wrote that the matrix "is not a replicable
+      paradigm," while Watt & Tierney operationalised a distinct field
+      prediction that was tested and not supported; these are behaviours of a
+      group not wholly immune to data. The insulation attaches to the model, not
+      uniformly to the practitioners, which is why this falls short of "well
+      supported."
+generatedAt: 2026-09-06T06:06:37.788Z
+review:
+  protocol: case-snapshot-v1
+  contentHash: 130643ce18702623ed8ec6eada2665225480ff5259c2d72ecfb649f507760ae8
+  assessmentHash: e671753deac6d5c20618cdf99cfb2905cace8b012deaaa8d74b88400efda086d
+  packetHash: 555d0d9bf416ddc6bc31cdd9a42ee5ecb57ba1c75f322ce4e9d17e41078f309a

@@ -1,0 +1,201 @@
+# Cross-model check run — an independent judge (Grok 4.5 (xAI)),
+# blind to all prior assessments (scripts/cross-model-check.mjs,
+# promptVersion aletheia-check-v4). role: check — never displayed as the case
+# narrative; feeds the concurrence panel. Append-only; NOT human reviewed.
+runId: 2026-09-06-check-grok-055901
+model: Grok 4.5 (xAI) — independent check run via grok-4.5
+date: 2026-09-06
+promptVersion: aletheia-check-v4
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: contradicted
+  loadBearing:
+    - CCC-C002
+    - CCC-C003
+    - CCC-C004
+    - CCC-C009
+    - CCC-C010
+  weakestLinks:
+    - CCC-C006
+    - CCC-C009
+  synthesis: "The featured hypothesis bundles a cyclic conformal cosmology with a
+    specific observational program: that WMAP/Planck contain statistically
+    anomalous concentric low-variance circles and compact raised-temperature
+    Hawking points imprinted by black-hole activity in a prior aeon. The record
+    cleanly separates three layers. First, the procedural features exist:
+    independent groups applying the published search methods recover
+    low-variance annuli and candidate spots (CCC-C001 established). Second, the
+    anomaly claims do not survive proper nulls. Every independent reanalysis
+    that draws simulations from the full ΛCDM angular power spectrum (Wehus &
+    Eriksen 2011, Moss/Scott/Zibin 2011, Hajian 2011, DeAbreu et al. 2015) finds
+    the circle families typical of a structured Gaussian sky; the original
+    up-to-6σ figures were computed against an inadequate pure
+    Gaussian-plus-noise ensemble, a discrepancy both sides document (CCC-C003).
+    Bodnia et al. 2024 further identify a concrete false-positive generator
+    under the proponents' own criteria: few-pixel temperature outliers
+    manufacture concentric low-variance sets, and after their removal no
+    significant circles remain. For Hawking points, An et al. 2020's 99.98%
+    falls to ~1σ (87%) once ring size is marginalized (Jow & Scott 2020); a
+    purpose-built detector validated at 95% retrieval on synthetic CCC signals
+    finds no significant population (López et al. 2022); Bodnia's HawkingNet
+    likewise yields a null and rules out a stated amplitude/size box. Third, the
+    attribution claim (CCC-C009) therefore fails: without anomalous signatures
+    there is nothing left to attribute to prior-aeon encounters. Parallel
+    theoretical costs remain unpaid: mass fade-out is required and admitted
+    unconventional, with no accepted particle-physics mechanism (CCC-C005; Tod
+    2022 lists it open); entropy accounting is contested by Eckstein 2023, who
+    argues information loss raises rather than resets global entropy (CCC-C006
+    mixed). Erebon dark matter and the no-inflation fluctuation story are
+    correctly recorded as theory content (CCC-C007, CCC-C008) but supply no
+    tested quantitative spectrum. Standard inflationary ΛCDM plus documented
+    a-posteriori choices (look-elsewhere on ring size, inadequate nulls,
+    post-inspection statistics) accounts for the reported signatures (CCC-C010
+    well_supported); CCC-C011 is established—no search on either side was
+    preregistered. Shared-source caveats: proponent papers are repeatedly
+    co-authored by the same small set; critical reanalyses are independent of
+    one another in method and institution yet converge. Priors on ΛCDM's
+    precision fit (Planck 2018) calibrate why full-spectrum nulls are the right
+    standard, but the verdict is carried by the reanalyses themselves, not by
+    prestige. Removing the entire critical-reanalysis cluster would reopen the
+    case; no single positive detection survives that cluster. The hypothesis
+    that the reported CMB features are prior-aeon imprints is contradicted by
+    the supplied record."
+  steelman: The 2013 sky-twist result—concentric-set prevalence collapsing under
+    mild ellipticity, with a sharp radius cutoff near 15–20°—and the reported
+    extreme anisotropy of ring-triple centers (~83% of 1134 centers inside three
+    regions covering ~3% of searched sky) have never been independently re-run
+    under few-pixel artifact screening and a frozen mask; a proponent can still
+    say the critics dissolved simulation-based significances without answering
+    the structural, simulation-free tests the program treats as its strongest
+    internal evidence.
+claimAssessments:
+  - claimId: CCC-C001
+    verdict: established
+    confidence: high
+    reasoning: Wehus & Eriksen 2011 explicitly reproduce the claimed ring structures
+      and verify the computational procedures; DeAbreu et al. 2015 recover the
+      same special directions in both WMAP and Planck; Moss/Scott/Zibin confirm
+      annular variance variations exist in the data. The strongest opposing
+      consideration is that reproducibility of procedure outputs is not anomaly,
+      but the claim as stated only asserts presence and independent
+      reproducibility, which the record solidly supports.
+  - claimId: CCC-C002
+    verdict: contradicted
+    confidence: high
+    reasoning: Multiple independent groups using full ΛCDM-spectrum simulations find
+      the observed circle families typical of a Gaussian structured sky (Wehus &
+      Eriksen, Moss/Scott/Zibin, Hajian, DeAbreu); Bodnia et al. 2024 show
+      few-pixel outliers manufacture concentric low-variance sets under the
+      published criteria, with significance vanishing after removal. The
+      strongest opposing consideration is the proponents' sky-twist and
+      anisotropy arguments, which sidestep simulation ensembles but remain
+      unreplicated independently and a-posteriori.
+  - claimId: CCC-C003
+    verdict: established
+    confidence: high
+    reasoning: Gurzadyan & Penrose's own response note states both critical groups
+      simulated LCDM power-spectrum maps while they used pure Gaussian plus WMAP
+      noise; the reanalysis abstracts independently describe the same ensemble
+      contrast and the resulting typicality under ΛCDM. The strongest opposing
+      consideration is the proponents' further claim that concentric families
+      cannot be random under any ensemble, but that is a separate assertion; the
+      tracing of the disagreement to null construction is primary-source fact on
+      both sides.
+  - claimId: CCC-C004
+    verdict: contradicted
+    confidence: high
+    reasoning: Jow & Scott 2020 show that marginalizing over the free ring-size
+      parameter drops the quoted 99.98% to 87% (~1σ); López et al. 2022, with a
+      detector validated at 95% retrieval on synthetic Hawking points, find no
+      significant structures; Bodnia et al. 2024's HawkingNet null and
+      amplitude/size exclusion corroborate. The strongest opposing consideration
+      is Planck–WMAP co-location of the top spots, which rules out pure
+      instrument noise but not shared-sky ΛCDM fluctuations or common artifacts,
+      and does not restore the marginalized significance.
+  - claimId: CCC-C005
+    verdict: established
+    confidence: high
+    reasoning: Penrose 2018 states verbatim that strict CCC requirements demand
+      asymptotic mass fade-out, calling it an admittedly unconventional
+      hypothesis; Tod 2022 lists implementing mass fade-out as an open question;
+      the 2025 Meissner– Penrose preprint advances crossover conservation but
+      still does not supply a particle-physics fade-out mechanism. The strongest
+      opposing consideration is Penrose's de Sitter-group remark that mass is
+      not a Casimir operator for Λ>0, which motivates plausibility without
+      constituting an accepted mechanism.
+  - claimId: CCC-C006
+    verdict: mixed
+    confidence: moderate
+    reasoning: Penrose's book and Foundations of Physics treatments present
+      information loss plus conformal rescaling as a legitimate
+      gravitational-entropy reset; Eckstein 2023 publishes a direct
+      counterargument that the assumed loss is incompatible with quantum entropy
+      and increases global entropy, undermining the renormalization needed at
+      crossover, while proposing a unitary variant. The strongest opposing
+      consideration is that information-loss debates in quantum gravity remain
+      unsettled and Eckstein is one analysis; the claim of demonstrated
+      self-consistency is therefore neither established nor flatly retired.
+  - claimId: CCC-C007
+    verdict: established
+    confidence: high
+    reasoning: Penrose 2018 §5 introduces erebons as Planck-mass, gravitation-only
+      particles created at crossover, with lifetimes of order 10^11 years whose
+      decays might appear in gravitational-wave detectors; the 2017 note extends
+      the conjecture to LIGO correlated noise. The strongest opposing
+      consideration is parameter vagueness (order-of-magnitude mass and
+      lifetime, no computed spectrum or rate) and the deflation of the
+      underlying LIGO-noise premise, but the claim only asserts that CCC
+      contains this prediction, which the primary texts confirm.
+  - claimId: CCC-C008
+    verdict: established
+    confidence: high
+    reasoning: Penrose 2018 states flatly there is no inflation in CCC and
+      attributes near scale-invariance to erebon decay during the previous
+      aeon's expansion. The strongest opposing consideration is Tod 2022's open
+      question whether one can actually derive the familiar perturbation
+      spectrum from that mechanism—an unpaid theoretical debt that does not
+      falsify the descriptive claim about what CCC contains.
+  - claimId: CCC-C009
+    verdict: contradicted
+    confidence: high
+    reasoning: The claim requires CCC-C002 and CCC-C004; both anomaly legs fail
+      under independent full-spectrum nulls, look-elsewhere correction,
+      synthetic-validated non-detection, and artifact diagnosis. Priority of the
+      2006 framework (CCC-E014) shows the theory was not reverse-engineered from
+      the later searches, but priority does not convert non-anomalous features
+      into prior-aeon imprints. The strongest opposing consideration is the
+      still-unreplicated sky-twist ellipticity dependence and center anisotropy,
+      which a proponent may treat as residual structural evidence critics have
+      not directly killed.
+  - claimId: CCC-C010
+    verdict: well_supported
+    confidence: moderate
+    reasoning: Convergent independent reanalyses show the reported signatures are
+      expected under ΛCDM simulations or dissolve under look-elsewhere and
+      artifact controls; Planck 2018 supplies the positive scorecard of the
+      inflationary framework those nulls assume; Bodnia et al. name the
+      few-pixel mechanism generating false circles. The strongest opposing
+      consideration is that "fully accounts for every" overreaches slightly
+      while the sky-twist and anisotropy tests remain without independent
+      artifact-screened replication, and Bodnia explicitly notes a null does not
+      disprove CCC itself—hence moderate rather than high confidence on the
+      absolute wording.
+  - claimId: CCC-C011
+    verdict: established
+    confidence: high
+    reasoning: Study CCC-S001's twelve-row table, with signal-model provenance
+      unanimous, records that every published search on both sides supplied its
+      own statistic, size window, thresholds, and expected abundance rather than
+      binding to a CCC-derived model; Hajian 2011 and Bodnia et al. 2024 state
+      the gap explicitly; the sole derived fragment (mass–temperature) appears
+      only in a 2025 unrefereed preprint unused by any search. The strongest
+      opposing consideration is that some critiques froze parameters to
+      proponents' published choices (DeAbreu), a partial discipline that still
+      falls short of bilateral preregistration before data inspection.
+generatedAt: 2026-09-06T05:59:01.698Z
+review:
+  protocol: case-snapshot-v1
+  contentHash: 1e6a6a258f96b25cabc166d63e09ff57a2c60065b6b89e43076dc43d9b1e68cb
+  assessmentHash: 2c40f06fb18181906c82ef4204ee6b5e28ea46cb438e0db135b2180c067cbace
+  packetHash: 163511912ac767adef230e7ea993d44a1708fa8569db977508835401c76ef801

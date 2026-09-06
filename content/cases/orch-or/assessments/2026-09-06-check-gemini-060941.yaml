@@ -1,0 +1,310 @@
+# Cross-model check run — an independent judge (Gemini 3.8 Flash (Google)),
+# blind to all prior assessments (scripts/cross-model-check.mjs,
+# promptVersion aletheia-check-v4). role: check — never displayed as the case
+# narrative; feeds the concurrence panel. Append-only; NOT human reviewed.
+runId: 2026-09-06-check-gemini-060941
+model: Gemini 3.8 Flash (Google) — independent check run via gemini-3.8-flash
+date: 2026-09-06
+promptVersion: aletheia-check-v4
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: weakly_supported
+  loadBearing:
+    - ORCH-C001
+    - ORCH-C002
+    - ORCH-C010
+    - ORCH-C030
+  weakestLinks:
+    - ORCH-C010
+    - ORCH-C002
+    - ORCH-C030
+  synthesis: >-
+    The Orch OR hypothesis attempts to resolve the hard problem of consciousness
+    by synthesizing quantum gravitational state reduction with cytoskeletal
+    biophysics and anesthetic pharmacology. When evaluated strictly against the
+    recorded evidence ledger, the architecture of the theory displays an
+    unbridged chasm between demonstrated microscopic photophysics and
+    macroscopic neural function. On the proponent side, genuine progress has
+    established that microtubules are electronically and optically collective
+    rather than passive mechanical scaffolds: Kalra et al. (2023) demonstrated
+    tryptophan exciton migration over 6.6 nm (surpassing Förster predictions),
+    and Babcock et al. (2024) confirmed enhanced fluorescence quantum yield
+    matching superradiance models. Furthermore, general anesthetics demonstrably
+    bind β-tubulin (Emerson et al. 2013) and modulate exciton diffusion (Kalra
+    et al. 2023), while acute administration of epothilone B prolongs the
+    latency to anesthetic-induced loss of righting reflex in rodents (Khan et
+    al. 2024, Huang et al. 2026). At the foundations of anesthesia, anomalies
+    like the xenon isotope effect (Li et al. 2018)—where nuclear spin alters
+    anesthetic potency despite identical electronic polarizability—demonstrate
+    that quantum degrees of freedom can influence anesthesia, while classical
+    multi-target pharmacology still lacks a demonstrated sufficient set of ion
+    channels to explain volatile anesthetic immobility (Eger et al. 2008).
+
+
+    However, the skeptical evidence decisively severs the proposed causal chain.
+    On the biological substrate, study ORCH-S001 reveals that no unconditional
+    proponent calculation of microtubule decoherence time meets the theory's 25
+    ms requirement; the proponents' own most favorable estimate (Hagan et al.
+    2002) tops out at 10^-4 s, still two orders of magnitude too fast, while
+    critics calculate environmental decoherence in the femtosecond-to-picosecond
+    regime. On the physics foundation, dedicated underground radiation searches
+    at Gran Sasso (Donadi et al. 2021) rule out the parameter-free Diósi–Penrose
+    collapse model, and Derakhshani et al. (2022) show that this directly
+    refutes Orch OR's 2014 nuclear-displacement scenario under standard collapse
+    models. In anesthetic pharmacology, Jurd et al. (2003) demonstrated direct
+    target-level causality for conventional mechanisms: a single point mutation
+    in the GABA_A β3 subunit abolishes etomidate and propofol immobility and
+    profoundly impairs hypnosis in vivo. Crucially, the Kalra et al. optical
+    assay lacks anesthetic specificity, as the convulsant picrotoxin produces an
+    identical reduction in exciton diffusion, and independent in vivo
+    investigations find that chronic stabilizer treatment increases rather than
+    decreases anesthetic sensitivity (Li et al. 2025).
+
+
+    In terms of sensitivity, the single evidence record whose removal would most
+    alter this assessment is ORCH-E036 (tabulating the published decoherence
+    estimates in Study ORCH-S001). If removed, the decoherence gap would revert
+    to an informal dispute between Tegmark (2000) and Hagan et al. (2002);
+    nevertheless, the case verdict of weakly_supported solidly survives without
+    it because Donadi et al. (2021) still constrains the collapse physics and
+    Jurd et al. (2003) establishes conventional receptor sufficiency for
+    intravenous agents.
+  steelman: The nuclear-spin attenuation of xenon anesthetic potency across
+    isotopes with identical polarizability in Li et al. (2018).
+claimAssessments:
+  - claimId: ORCH-C001
+    verdict: weakly_supported
+    confidence: high
+    reasoning: The master claim requires both macroscopic quantum coherence in warm
+      neuronal microtubules and objective gravitational collapse at
+      physiological timescales. Neither condition has been experimentally
+      demonstrated, and study ORCH-S001 indicates that even proponent
+      calculations fall orders of magnitude short of the required
+      tens-of-milliseconds coherence time without unverified shielding
+      hypotheses. Furthermore, underground radiation searches (Donadi et al.
+      2021, Derakhshani et al. 2022) have ruled out the simplest parameter-free
+      versions of the Diósi–Penrose collapse model for the nuclear mass
+      separations assumed in the 2014 formulation. The strongest opposing
+      consideration is that microtubules do display collective photophysical
+      properties beyond classical expectation (Kalra 2023, Babcock 2024), but
+      this is separated by orders of magnitude from a conscious moment.
+  - claimId: ORCH-C002
+    verdict: weakly_supported
+    confidence: high
+    reasoning: "Causal evidence for classical receptor pharmacology is direct and
+      specific: a single point mutation in the GABA_A β3 subunit abolishes the
+      immobilizing action and severely attenuates the hypnotic action of
+      etomidate and propofol in vivo (Jurd et al. 2003). On the microtubule
+      side, although anesthetics alter exciton diffusion in vitro (Kalra et al.
+      2023), the convulsant picrotoxin produces a comparable reduction,
+      indicating a general hydrophobic perturbation rather than an
+      anesthesia-specific mechanism. Opposing animal studies using microtubule
+      stabilizers are contradictory in direction (Khan 2024 vs. Li 2025),
+      failing to demonstrate that disruption of microtubule states causes
+      unconsciousness. The strongest opposing point is the xenon nuclear-spin
+      isotope effect (Li et al. 2018), which implicates non-classical degrees of
+      freedom in anesthetic action, though not necessarily in microtubules."
+  - claimId: ORCH-C003
+    verdict: well_supported
+    confidence: high
+    reasoning: Target-specific causal evidence shows that intravenous anesthetic
+      endpoints depend critically on specific receptor subunits, most notably
+      demonstrated by the β3(N265M) knock-in mouse that loses responsiveness to
+      etomidate and propofol (Jurd et al. 2003). Classical receptor, channel,
+      and circuit models provide coherent accounts of hypnosis and immobility.
+      The strongest opposing consideration is that volatile anesthetics possess
+      broad, low-affinity target profiles, and reviews by senior
+      anesthesiologists (Eger et al. 2008) have noted that no single ligand- or
+      voltage-gated channel or combination thereof has been proven entirely
+      sufficient to explain inhaled anesthetic immobility.
+  - claimId: ORCH-C004
+    verdict: unresolved
+    confidence: moderate
+    reasoning: Asserting that anesthetic action and cognition are fully accounted
+      for by classical mechanisms without any quantum contribution asserts a
+      universal negative that exceeds current scientific knowledge. Inhaled
+      anesthetic mechanisms remain incompletely specified at the molecular
+      level, as highlighted by Eger et al. (2008), and unexplained quantum
+      phenomena such as xenon isotope spin effects (Li et al. 2018) remain
+      unintegrated into classical receptor models. The strongest opposing
+      consideration is that classical synaptic and network neuroscience accounts
+      for virtually all clinically monitored neurophysiological endpoints during
+      anesthesia without invoking quantum coherence.
+  - claimId: ORCH-C030
+    verdict: unresolved
+    confidence: moderate
+    reasoning: Penrose's objective reduction relation τ ≈ ℏ/E_G remains an untested
+      theoretical proposal at the intersection of general relativity and quantum
+      mechanics. The underground Gran Sasso experiment (Donadi et al. 2021)
+      ruled out the parameter-free Diósi–Penrose stochastic collapse model by
+      excluding its predicted spontaneous radiation, but McQueen (2023) argues
+      that Penrose's deterministic geometric concept does not entail this
+      spontaneous radiation. The scaling relation itself has never been directly
+      tested in mesoscopic quantum superpositions due to current experimental
+      limits on levitated nanoparticles and condensates.
+  - claimId: ORCH-C040
+    verdict: unresolved
+    confidence: low
+    reasoning: Penrose's non-computability thesis concerning human mathematical
+      understanding is a philosophical and Gödelian argument that lacks decisive
+      empirical proof. Recent advancements in artificial intelligence have
+      disproved open mathematical conjectures such as the 1946 Erdős
+      unit-distance problem (Sawin 2026) and achieved gold-medal IMO performance
+      (Gemini Deep Think 2025), refuting specific assertions that novel
+      research-level mathematics is inherently non-computable. However,
+      proponents maintain that post-hoc deductive proofs do not refute the
+      non-computability of the abductive leap required to formulate new
+      mathematical frameworks (Zahavy 2026, Jhong 2026).
+  - claimId: ORCH-C010
+    verdict: contradicted
+    confidence: high
+    reasoning: Microtubule decoherence times under physiological conditions fall
+      drastically short of the required tens of milliseconds. Tegmark (2000)
+      calculated environmental decoherence times between 10^-13 and 10^-20
+      seconds, and Reimers et al. (2014) showed electronic decoherence in
+      proteins occurs within 10 fs to 30 ps. Even the proponents' own corrected
+      estimate (Hagan et al. 2002) achieves only 10^-5 to 10^-4 s
+      unconditionally, two to three orders of magnitude below the 25 ms
+      requirement (Study ORCH-S001). The only estimate reaching physiological
+      timescales depends on unverified assumptions of actin-gel and
+      ordered-water shielding.
+  - claimId: ORCH-C011
+    verdict: well_supported
+    confidence: high
+    reasoning: Direct molecular and biophysical evidence demonstrates that general
+      anesthetics bind tubulin and alter its physical behavior. Emerson et al.
+      (2013) demonstrated photolabeling of β-tubulin near the colchicine site by
+      1-aminoanthracene, and Kalra et al. (2023) showed that 50 μM etomidate and
+      isoflurane significantly reduce exciton diffusion lengths in microtubules.
+      The primary qualification is that this optical perturbation is not
+      specific to anesthetics, as the convulsant picrotoxin produces a
+      comparable effect.
+  - claimId: ORCH-C012
+    verdict: mixed
+    confidence: high
+    reasoning: The in vivo literature testing microtubule stabilization on
+      anesthetic potency is in direct conflict. While acute epothilone B delays
+      loss of righting reflex in rats (Khan et al. 2024) and mice (Huang et al.
+      2026), a blinded and randomized concentration-response study found that
+      two weeks of epothilone D increased isoflurane sensitivity, and the
+      destabilizer vinblastine produced an identical increase in sensitivity (Li
+      et al. 2025). These opposing directional findings demonstrate that
+      microtubule stabilization does not predictably confer anesthetic
+      resistance in live animals.
+  - claimId: ORCH-C013
+    verdict: well_supported
+    confidence: high
+    reasoning: Experimental biophysics demonstrates that microtubules possess
+      collective electronic and optical properties beyond passive scaffolding.
+      Kalra et al. (2023) demonstrated electronic excitation diffusion over 6.6
+      nm in microtubules, which cannot be explained by standard Förster
+      resonance energy transfer, and Babcock et al. (2024) observed fluorescence
+      quantum yield increases matching collective superradiance models across
+      tryptophan networks. The strongest opposing consideration is that these
+      collective states represent optical dipole couplings and light harvesting
+      rather than long-lived quantum computing states.
+  - claimId: ORCH-C020
+    verdict: established
+    confidence: high
+    reasoning: Kalra et al. (2023) experimentally measured exciton diffusion over
+      6.6 nm in polymerized microtubules via tryptophan autofluorescence
+      lifetime quenching, and measured reductions to approximately 5.6 nm
+      (etomidate) and 5.8 nm (isoflurane) at 50 μM. The observation is
+      well-documented in a peer-reviewed publication from a leading ultrafast
+      spectroscopy laboratory. The main caveat is that the study was conducted
+      on purified in vitro microtubules rather than intact neurons and included
+      the theory's authors among the collaborators.
+  - claimId: ORCH-C021
+    verdict: well_supported
+    confidence: high
+    reasoning: Babcock et al. (2024) confirmed experimentally that fluorescence
+      quantum yield increases with hierarchical tubulin organization, validating
+      predictions from a single-excitation manifold superradiance model of
+      tryptophan dipole networks. The result provides independent verification
+      of collective optics in microtubules. The principal limitation is that
+      quantum yield is an indirect macroscopic witness, and the modeled
+      long-lived states reflect radiative lifetimes rather than quantum
+      dephasing or decoherence times.
+  - claimId: ORCH-C022
+    verdict: weakly_supported
+    confidence: moderate
+    reasoning: Saxena et al. (2020) reported self-similar triplet-of-triplet
+      electromagnetic resonance patterns across tubulin, microtubules, and
+      axons. However, this finding originates from a single research group using
+      bespoke apparatus and has stood unreplicated by any independent laboratory
+      for over a decade. Furthermore, electromagnetic resonance is a classical
+      impedance phenomenon that does not serve as an empirical witness of
+      quantum coherence or entanglement.
+  - claimId: ORCH-C023
+    verdict: well_supported
+    confidence: high
+    reasoning: Khan et al. (2024) observed a 69-second delay (d = 1.9) in
+      isoflurane-induced loss of righting reflex in rats following acute
+      epothilone B administration, and Huang et al. (2026) observed a 29-second
+      delay (d = 0.8) in mice. Both studies applied blinded behavioral
+      assessments and reported significant effects. However, both studies were
+      conducted by the same research group, used small cohorts at single high
+      anesthetic doses, and did not measure any quantum variable, leaving open
+      mundane physiological confounds.
+  - claimId: ORCH-C024
+    verdict: established
+    confidence: high
+    reasoning: Li et al. (2025) published a randomized, blinded study showing that
+      two weeks of epothilone D shifted the isoflurane EC50 leftward from 0.97
+      to 0.75 % atm, and that the destabilizer vinblastine caused an equivalent
+      leftward shift to 0.74 % atm. The claim accurately reports the exact
+      empirical findings of this rigorous dose-response study. The only notable
+      limitation is that chronic administration causes systemic physiological
+      changes (including blood gas perturbations) that differ from acute drug
+      protocols.
+  - claimId: ORCH-C025
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: Li et al. (2018) reported that nuclear-spin-bearing xenon isotopes
+      (129Xe, 131Xe) have significantly higher loss-of-righting-reflex ED50s
+      (lower potency) than spin-zero isotopes (132Xe, 134Xe) despite identical
+      calculated polarizability. However, study ORCH-S002 indicates that the
+      result comes from a single unreplicated four-arm study, the headline
+      xenon-alone ED50s were calculated rather than directly measured,
+      dispersion types were not specified in the abstract, and the narrow mass
+      range impedes stable regression identification.
+  - claimId: ORCH-C026
+    verdict: unresolved
+    confidence: moderate
+    reasoning: Kerskens & López Pérez (2022) reported zero-quantum-coherence MRI
+      signals synchronized with cardiac pulses that vanished when subjects fell
+      asleep, interpreting them as non-classical entanglement. However, Warren
+      (2023) presented a severe methodological critique showing that classical
+      intermolecular multiple-quantum coherences in multicompartmental tissue
+      can account for these observations without non-classical physics. The
+      dispute remains unadjudicated, and no independent exact replication has
+      confirmed the entanglement interpretation.
+  - claimId: ORCH-C031
+    verdict: established
+    confidence: high
+    reasoning: Donadi et al. (2021) in Nature Physics conducted a dedicated
+      underground search for spontaneous radiation predicted by the
+      Diósi–Penrose collapse model using an ultra-low-background germanium
+      detector at Gran Sasso. The experiment found no excess radiation,
+      tightening the spatial cutoff bound by three orders of magnitude and
+      conclusively ruling out the natural parameter-free version of the model.
+      The only caveat is that it does not rule out collapse models that avoid
+      spontaneous radiation predictions.
+  - claimId: ORCH-C041
+    verdict: established
+    confidence: high
+    reasoning: Sawin (2026) verified that an OpenAI internal system disproved a 1946
+      Erdős conjecture on unit distances, which Sawin subsequently improved
+      upon. Additionally, Hubert et al. (2025) demonstrated Lean-verified
+      silver-medal performance by AlphaProof in Nature, and Gemini Deep Think
+      (2025) attained gold-medal standard under official IMO conditions. The
+      claim accurately states these verified milestones, although their
+      philosophical bearing on Penrose's concept of understanding remains
+      contested.
+generatedAt: 2026-09-06T06:09:41.648Z
+review:
+  protocol: case-snapshot-v1
+  contentHash: 347523da22151bf5f6afc6ede03ad8002779a585c0af1e2191531436bd148dd6
+  assessmentHash: 7b893135a5ac0fb6dcfd3f2de3a27dabc349391b1933ad99dcc1a39f0304f717
+  packetHash: 52d57b0b43490459e0db049867f67eeddd2ec8db042c8faecc66bbff8dff737b

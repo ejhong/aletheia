@@ -1015,3 +1015,42 @@ The first cutover review could not inspect the oversized historical batch.
 The same 195 decision identities were split by kind and reviewed in full in
 PRs #175, #176, and #177, retaining the original stores during staging. The
 cutover uses those reviewed files; no review threshold or packet limit changes.
+
+## 2026-09-06 — Common research proposals and a bounded source-reading pilot
+
+The next intake slice proposes edits to the existing ledger records in one
+envelope. It binds to case and founding-input hashes, retains before/after
+records and prior decisions, and validates a complete prospective case through
+the production loader. This lets an empty topic acquire a source, observation,
+and claim together. Known sources can contribute additional observations.
+Reconsideration records a changed argument; it does not require a newer paper.
+Native Node TypeScript shares the site's schemas without a second domain model
+or a runtime dependency. Node 22.18+ is now explicit.
+
+The first adapter reads up to two public HTML/text URLs under per-run source,
+model-call, token, time, and tariff-based spend limits. A second model checks the
+source reading independently of the draft's justification. This remains a
+same-vendor reading check, not constitutional concurrence or a case verdict.
+Usage and failures enter the durable intake store; missing usage retains the
+full request reservation. Successful independent readings survive another
+source's retrieval failure, while stale or invalid bundles cannot advance.
+The original promoter now rejects evidence drafts with no quoted passage.
+
+Deep Memory's blank ledger was exercised against the public excavation account
+of Pillar 43 and a Met object record. The excavation source yielded a checked
+three-record proposal; the Met's rate limit remains an explicit miss. The
+request-format failures and the initial all-or-nothing partial run are retained
+as implementation evidence. No failed run is represented as a source finding.
+Public reading reasons omit quoted spans before publication, retaining the
+original review hash; original local run receipts remain available.
+
+The founder also requested artwork and plates. The topic now has a hand-tinted
+editorial engraving and two real, licensed photographs: Pillar 43 in excavation
+context (Sue Fleckney, CC BY-SA 2.0) and Met relief 32.143.7 (CC0). Captions
+distinguish observation, object context, and interpretation. All plates gain
+ordinary full-size links for keyboard and touch inspection. The topic remains
+an incubating proposal in this foundation step; its first public edition follows
+through the same publication gate. The research proposal and source checks do
+not publish the hypothesis as established.
+
+(AI implementation record for the authorized research-edition work.)

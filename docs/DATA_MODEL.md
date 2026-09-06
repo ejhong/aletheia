@@ -25,6 +25,38 @@ The migration replay in `scripts/migrate-intake.mjs` retires previous stores
 only after checking the migrated records. `scripts/intake-report.mjs` exposes
 the history without a model call.
 
+## Research change proposals
+
+`ResearchProposal` (`src/domain/researchProposal.ts`) is an envelope for proposed
+ledger edits, stored in a `research-proposal` decision in the same intake store.
+Its intent is add, correct, link, supersede, or reconsider. Each edit names its
+record kind, ID, prior-record hash (null for additions), complete proposed value,
+rationale, and any retrieved passages. The supported records are sources, claims,
+evidence, research opportunities, and studies. The envelope is not an assessment
+or permission to publish.
+
+The proposal binds to the exact case snapshot and founding-input hash. All edits
+are materialized in a temporary case and checked by the production loader
+together: the first Source, Claim, and Evidence can refer to each other. Theme
+additions permit an empty topic's first claim; existing theme meanings and frozen
+study criteria cannot be overwritten by this operation. Human review and library
+verification cannot be invented. The CLI prints before/after records and can
+materialize a new review directory, never silently update canon.
+
+Exact source identity and identical wording are mechanical checks. Semantic
+overlap and independence remain review questions. Reconsideration names the
+earlier decision and explains the changed argument; it need not cite a newer
+paper. New run timestamps alone do not create novel substance.
+
+`research-run` decisions retain source outcomes, separate reading checks, model
+requests, returned usage, and budget reservations. A partial run can preserve a
+fully checked independent bundle while recording another unavailable source.
+Passages retain URL, retrieval time, response/text hashes, extraction version,
+and a short quotation. Character locators refer to retrieved text, not invented
+printed-page positions. The hashes record what was retrieved; full source pages
+are not republished. Public reading reasons omit quoted spans and retain a hash
+of the original review. These source checks do not ratify a case assessment.
+
 ## Layering principle
 
 Content is layered and reversible:

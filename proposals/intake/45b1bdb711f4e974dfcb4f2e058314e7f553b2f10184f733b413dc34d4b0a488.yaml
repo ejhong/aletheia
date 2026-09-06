@@ -1,0 +1,124 @@
+version: 1
+decisions:
+  - id: e97b6b07804be7e9c4c73812c23b659f512c2965ba26953b8d568467c27402e0
+    case: deep-memory
+    stage: research-proposal
+    decision: proposed
+    source: null
+    proposal: null
+    research:
+      version: 1
+      case: deep-memory
+      basis:
+        contentHash: 8ad3f335e43c6467459b4baa0e63deeabc817b78de836babf54f13834a02c80f
+        inputsHash: cbe1aa7da731a0c6021371074e9614d4e5a9d71d87dfd7ec6c811ed25d158e4d
+      runId: sources-2026-09-06-d1f926e2-9a8f-4b81-a66d-bc45f406561f
+      generatedAt: 2026-09-06T13:24:27.345Z
+      model: gpt-5.4-mini-2026-03-17
+      promptVersion: source-reading-v2
+      intent: add
+      title: Primary-source observations
+      rationale: Record narrow observations with source context and a separate reading check.
+      priorDecisionIds: []
+      themeAdditions:
+        pillar-iconography: Pillar iconography
+      changes:
+        - kind: source
+          recordId: SRC-MEM-F07B22F06CD5
+          beforeHash: null
+          after:
+            id: SRC-MEM-F07B22F06CD5
+            title: Of animals and a headless man. Göbekli Tepe, Pillar 43
+            authors:
+              - Oliver Dietrich
+            year: "2016"
+            url: https://www.dainst.blog/the-tepe-telegrams/2016/10/14/of-animals-and-a-headless-man-gobekli-tepe-pillar-43/
+            sourceType: webpage
+            verification: ai_verified
+            verificationNote: Fetched and read by gpt-5.4-mini-2026-03-17; separate text check by
+              gpt-5-mini-2025-08-07.
+            reliabilityNotes:
+              - "Depends on the same object: Göbekli Tepe Pillar 43 and its carved reliefs. Any
+                other claim about Pillar 43 is not independent of this observation."
+            derivedFrom: []
+            background: false
+          rationale: Retrieved public source; metadata checked against the retrieved document.
+          passages: []
+        - kind: claim
+          recordId: MEM-C001
+          beforeHash: null
+          after:
+            id: MEM-C001
+            tier: catalog
+            statement: Pillar 43 includes a carved human figure shown without a head and with an erect penis.
+            theme: pillar-iconography
+            rung: observation
+            reviewState: ai_extracted
+            origin: &a1
+              ref: https://www.dainst.blog/the-tepe-telegrams/2016/10/14/of-animals-and-a-headless-man-gobekli-tepe-pillar-43/
+                — html-text-v1, characters 2090–2123 (retrieved text; not a printed-page locator)
+              extractedBy: gpt-5.4-mini-2026-03-17
+              runId: sources-2026-09-06-d1f926e2-9a8f-4b81-a66d-bc45f406561f
+              date: 2026-09-06
+            sourceAnchor:
+              sourceId: SRC-MEM-F07B22F06CD5
+              locator: html-text-v1, characters 2090–2123 (retrieved text; not a printed-page locator)
+            independenceGroup: Göbekli Tepe Pillar 43
+          rationale: Pillar 43 is described as preserving a carved headless human figure with an erect penis,
+            a specific local iconographic observation that is relevant context but does not
+            establish any broader prehistoric inheritance by itself.
+          passages: []
+        - kind: evidence
+          recordId: MEM-E001
+          beforeHash: null
+          after:
+            id: MEM-E001
+            title: Headless male figure on Pillar 43
+            claimIds:
+              - MEM-C001
+            sourceId: SRC-MEM-F07B22F06CD5
+            direction: context
+            strength: moderate
+            sourceStatement: "The post describing Göbekli Tepe Pillar 43 says that the pillar carries multiple
+              motifs and that a decapitated male human figure is visible on the shaft. The source
+              states: “headless human with an erect penis”."
+            editorInference: Locally, this shows that the pillar's imagery includes explicit human figuration
+              alongside animal and geometric motifs. It does not establish what the figure meant,
+              whether it was ritual, mythic, or narrative, or whether it reflects any shared
+              prehistoric inheritance beyond this pillar.
+            exactLocator: html-text-v1, characters 2090–2123 (retrieved text; not a printed-page locator)
+            limitations:
+              - The source is a blog summary rather than a primary excavation report.
+              - The pillar is damaged, so the figure is not preserved completely.
+              - The meaning of the image is explicitly uncertain in the source.
+              - A single carved figure cannot support claims about transmission of myths across
+                regions or periods.
+              - "Depends on the same object: Göbekli Tepe Pillar 43 and its carved reliefs. Any
+                other claim about Pillar 43 is not independent of this observation."
+            reviewState: ai_extracted
+            origin: *a1
+          rationale: Pillar 43 is described as preserving a carved headless human figure with an erect penis,
+            a specific local iconographic observation that is relevant context but does not
+            establish any broader prehistoric inheritance by itself.
+          passages:
+            - sourceId: SRC-MEM-F07B22F06CD5
+              url: https://www.dainst.blog/the-tepe-telegrams/2016/10/14/of-animals-and-a-headless-man-gobekli-tepe-pillar-43/
+              retrievedAt: 2026-09-06T13:24:29.788Z
+              responseHash: ed508393ef929219d55c3138e61188f732c8198f2b2ad2bd50a90932882b561c
+              textHash: 0cf133da111cf4ce76aa07d3a14836f4c287428d272e75d8cbaab6144782b95b
+              extractor: html-text-v1
+              locator: html-text-v1, characters 2090–2123 (retrieved text; not a printed-page locator)
+              quote: headless human with an erect penis
+    reason: Record narrow observations with source context and a separate reading check.
+    date: 2026-09-06
+    generatedAt: 2026-09-06T13:24:27.345Z
+    runId: sources-2026-09-06-d1f926e2-9a8f-4b81-a66d-bc45f406561f
+    model: gpt-5.4-mini-2026-03-17
+    promptVersion: source-reading-v2
+    inputHash: 8fa33c1b684b8f04ef8b1b6fc0d4f6ca26792bbf3ae7767da64ecf4c44baa31e
+    candidateHash: a2bd4e638f3e4ea6a7ddd5f4a2857724fd1aead247808aa44477acc65ad185ef
+    ref: null
+    caseBasis: 8ad3f335e43c6467459b4baa0e63deeabc817b78de836babf54f13834a02c80f
+    recordId: null
+    matchMethod: null
+    retryable: false

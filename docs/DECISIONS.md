@@ -900,3 +900,26 @@ the constitution or authorize unilateral narrative judgment. Existing correction
 workers remain until the edition writer implements that comparison.
 
 (AI record of the response to PR #172's independent review, 2026-09-05.)
+
+
+## 2026-09-05 — Blank-topic pilot: the shared-symbols and myths question
+
+The founder replaced the generic plant-sound trial with the question explored
+in the birdmen project: proposed Göbekli Tepe parallels, bird figures, handled
+shapes, pig and lizard imagery, culture-bringer stories, and flood traditions.
+The implementation proposal uses the working title **Deep Memory**, asks
+whether shared symbols and myths preserve a common prehistoric inheritance,
+and starts with the visual comparisons. Narrative traditions remain in scope
+with their own source histories and assessments. Resemblance, transmission,
+and a lost-civilization explanation remain distinct propositions.
+
+`proposals/topics/deep-memory/` replaces the plant-sound proposal. Its founding
+research brief records scope, alternatives, a first investigation, and the
+relationship to prior work through the existing inputs manifest. It contains
+no claims, evidence, sources, studies, or assessments and is not published.
+The birdmen site and local inputs informed this scoping, but their findings
+and raw materials are not imported. This tests startup from a research
+question, not blind rediscovery of an unseen topic.
+
+(AI record of the founder's topic selection and the assistant's proposed
+framing, 2026-09-05 Pacific / 2026-09-06 UTC.)

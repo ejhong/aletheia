@@ -122,8 +122,8 @@ export default async function CasePage({
         <section id="article" className="pt-10 sm:pt-14 scroll-mt-32">
           {view.editionStale ? (
             <p className="mx-auto mb-5 max-w-[46rem] border-l-2 border-copper pl-4 text-[13px] text-ink-soft">
-              The ledger has changed since this edition. Its essay and assessment
-              are retained together while a revision is prepared.{" "}
+              The ledger has changed since this edition was written. Its essay
+              and assessment are preserved together.{" "}
               <Link href={`/cases/${slug}/evidence/`} className="text-copper underline underline-offset-4">
                 Inspect the current evidence
               </Link>.

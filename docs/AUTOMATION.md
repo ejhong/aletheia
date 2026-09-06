@@ -119,7 +119,8 @@ The current edition replaces `overview.md` for a migrated case. New assessment
 drafts remain available but cannot silently change its displayed verdict. Its
 exact bytes enter the content receipt; historical editions do not invalidate
 current checks. A ledger change resets standing and displays a quiet notice
-that the incumbent is awaiting revision. The archive preserves the essay and
+that the edition reflects earlier inputs; a useful investigation may still
+retain it unchanged. The archive preserves the essay and
 assessment, while record links and image captions resolve against today's
 ledger; it is not a snapshot of every old page.
 

@@ -78,6 +78,11 @@ export function evidencePacket(files) {
     ...read("claims.yaml"),
     ...read("claims-catalog.yaml"),
   ].filter((c) => c.reviewState !== "rejected");
+  // The assessor receives all propositions, without the edition's prose,
+  // grades, treatment, or ordering. Include newly selected catalog IDs in
+  // its grading scope so these claims can receive independent checks too.
+  const editionFile = Object.keys(files).find(file => file.startsWith("editions/"));
+  const selected = editionFile ? read(editionFile, {}).featuredClaimIds ?? [] : [];
   return {
     case: {
       id: record.id,
@@ -86,7 +91,7 @@ export function evidencePacket(files) {
       themes: record.themes,
     },
     assessClaimIds: claims
-      .filter((c) => (c.tier ?? "featured") === "featured")
+      .filter((c) => (c.tier ?? "featured") === "featured" || selected.includes(c.id))
       .map((c) => c.id),
     claims: claims.map((c) => ({
       id: c.id,

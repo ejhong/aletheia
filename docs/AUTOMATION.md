@@ -86,12 +86,14 @@ now uses the bounded reader; no additional research schedule is installed.
 | 3 | Blank-topic starting path | Implemented in PR #172. `start-case.mjs` creates an incubating proposal from a question, with no invented evidence, priority, or review. The production loader and view accept it; judgment runners skip it until it has assessable evidence. This tests startup, not autonomous discovery. |
 | 4 | Shared proposal memory and intake diff | Durable history for watch, promotion, and agenda; inbox links and legacy watch imports now use the common research envelope. Complete bundles and before/after edits pass the production loader, including empty topics. Notes, document extraction, and agenda adoption still need adapters. Source identity and identical wording are mechanical; semantic overlap remains a review question. |
 | 5 | Bounded research and source-reading checks | Manual URLs and the existing promotion job share one reader, capped at two public HTML/text sources per pass even across cases. A separate reading checks each drafted observation. Complete, fresh proposals can be prepared for the normal publication gate; failures and stale inputs remain visible. Broad discovery, PDF/OCR, and shared research-plus-publication budgeting remain to build. |
-| 6 | Versioned edition drafting | The authoring and validation path now binds an essay, ordered selection, and optional exact assessment reference in one immutable edition. Deep Memory preserves its opening as the first saved edition. Proposals bind to current inputs, rest unchanged candidates, and pass the production loader before review. Automatic model drafting, candidate comparison, and migration of assessed cases remain to build. |
+| 6 | Versioned edition drafting | The authoring path binds an essay, ordered selection, and exact assessment reference in one immutable edition. A selected assessment can now supply complete interpretation for catalog claims, without editing their ledger records. Proposals bind to current inputs, rest unchanged candidates, and pass the production loader before review. Deep Memory preserves its unassessed opening. Automatic model drafting, candidate comparison, and migration of assessed cases remain to build. |
 | 7 | Pilot, measure, and widen | Exercise geopolymer, transients, and Deep Memory, the founder-selected topic about shared symbols and myths (`content/cases/deep-memory/`). Its empty starting point is preserved in PR #179; the illustrated opening adopts the first checked catalog observation. Its scope is informed by the birdmen project, so this is not blind rediscovery. Compare accepted changes and reading quality with the incumbent, under a single enforced budget covering research and review. The archived chats are design references and a possible held-out discovery benchmark, not an import queue. Expand only after unattended runs improve actual cases. |
 
 The migration deliberately does not relocate every editorial field at once.
-Diagnosticity, component judgments, framing, and selection still originate
-in legacy records and are labeled as recorded interpretation in the UI.
+Existing cases still obtain diagnosticity and other editorial fields from
+legacy records. A new edition can take each claim's interpretation from its
+selected assessment instead. Component judgments and case framing remain in
+the legacy case record; those fields still need an assessment-owned projection.
 `CaseView` is the migration boundary. The automated edition writer and aggregate
 research-plus-publication accounting are still to build. The source reader's
 local budget is not that aggregate budget.
@@ -114,6 +116,23 @@ broken histories, invalid claim/plate references, and altered assessment hashes
 fail validation. The selected assessment's load-bearing claims must remain
 selected. Source interpretation and omissions still require independent review;
 these structural checks do not settle them.
+
+An assessment's per-claim `treatment` holds the plain-language explanation,
+claim classification, importance, diagnosticity and its reason, strongest
+objection, and what would change the judgment. Its existing verdict and
+reasoning supply credibility. Treatment is optional on immutable older runs
+but must be complete when provided. Only the assessment adopted by an edition
+can supply these fields to the current presentation; a bare draft can be
+inspected in history but cannot promote a catalog claim. A selected catalog
+claim without treatment fails validation. Its proposition, anchor, origin,
+independence group, and stored tier remain intact.
+
+The case page, explorer, and claim detail share that joined view, with each
+claim appearing once. History preserves earlier interpretations in disclosures.
+The blind packet includes all live propositions and adds newly selected catalog
+IDs to its grading scope, in ledger order. It excludes treatment, prose, and
+grades. Existing assessment/content receipt checks require fresh concurrence
+after a changed interpretation; selection does not create ratification.
 
 The current edition replaces `overview.md` for a migrated case. New assessment
 drafts remain available but cannot silently change its displayed verdict. Its

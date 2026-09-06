@@ -178,6 +178,22 @@ One file per run: `runId`, `model`, `date`, `promptVersion`, plus:
 - `caseAssessment` — the structural roll-up: verdict state, `loadBearing` (which claims the thesis actually rests on), `weakestLinks`, and an argued `synthesis` in prose. Not a score.
 - `claimAssessments[]` — `{claimId, verdict, reasoning, confidence}` per claim.
 
+New draft assessments may also include a complete per-claim `treatment`:
+`plainLanguage`, `claimType`, `importance`, `diagnosticity`,
+`diagnosticitySummary`, `strongestObjection`, and `whatWouldChangeOurMind`.
+These are judgments about the proposition, not changes to its identity or
+provenance. The field is optional for immutable historical runs and requires a
+timestamped draft when supplied. It cannot contain ledger fields such as
+`statement` or `origin`. All its fields enter the assessment hash unchanged.
+
+Only an edition's selected assessment supplies treatment to the current view.
+Without it, legacy featured claims retain their existing editorial fields;
+catalog claims remain catalog entries. An adopted treatment can give a catalog
+claim full presentation without changing its stored tier or any ledger bytes.
+The joined view supplies credibility from that assessment's verdict/reasoning
+and the other evaluative fields from treatment. Unadopted drafts remain
+inspectable in claim assessment history, with their original authorship.
+
 ## Edition
 
 `editions/<runId>.yaml` binds the current reader-facing essay and selection to

@@ -21,6 +21,9 @@ permissions:
   contents: read
   pull-requests: write
 
+env:
+  BUDGET_GITHUB_TOKEN: ${{ secrets.MAINTENANCE_PAT }}
+
 jobs:
   arbiter:
     runs-on: ubuntu-latest
@@ -100,3 +103,7 @@ jobs:
           else
             echo "arbiter operational failure"; exit 2
           fi
+
+      - name: AI allowance report
+        if: always()
+        run: npm run ai:budget -- status --summary

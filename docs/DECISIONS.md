@@ -1214,3 +1214,58 @@ contract; automated drafting, candidate comparison, case-level judgment fields,
 and aggregate research-and-review accounting still remain to build.
 
 (AI implementation record for the authorized research-edition migration.)
+
+
+## 2026-09-06 — One AI allowance, Astra authoring, and Birdmen intake
+
+The founder requested whole-system cost controls and Astra as the principal
+writer in place of Fable. `config/ai.json` sets the models, tariffs and initial
+allowance: $150 per UTC month and $25 per UTC day, with $30 of the total reserved
+for independent review. These are ceilings, not targets. Existing per-pass,
+time, source-count and publication limits remain. Actions no longer consult
+the separate model variable. Astra runs at medium effort with explicit input
+and output bounds. Smaller source-reading roles and all five independent
+vendor seats keep their existing responsibilities and model identities.
+
+Shared clients reserve money in a GitHub file-SHA compare-and-swap spending
+record before each paid request. The separate `automation-budget` branch
+records rates, admitted bounds, usage and run identity without storing prompts
+or secrets. Returned usage releases unused liability; unknown and interrupted
+outcomes remain reserved, and retries need another reservation. Local and
+scheduled runs use the same record. Exhaustion or unavailable accounting stops
+work; no ratification threshold changes. New reservations use the approved
+model policy from main and live spending controls from the spending branch.
+Changing limits or pausing/resuming uses a manual workflow or CLI, with public
+history and no model call, so an exhausted budget never blocks its own controls.
+A model-policy PR cannot fund itself by altering an unapproved tariff. First-integration bootstrap records its starting main commit and is available
+only before model policy has first appeared in main history. Costs are conservative recorded-tariff amounts
+charged by admission date, not reconstructed invoices. Prior spending
+and interactive subscriptions are not retrospectively counted as zero.
+
+The existing Claude Code operator is connected through a runner-local Messages
+adapter, pinned to Opus 5 and metered per request including streamed usage. It
+is not a new web service on the static site. Unpriced hosted tools and model
+substitutions are rejected. The image generator uses the same allowance. The
+Actions budget report and CLI show totals by workload and outstanding holds;
+model policy stays in code review; live financial controls do not publish content.
+
+Five founder-directed, AI-prepared inbox leads point to Birdmen's illustrated
+overview, image pilots, culture-bringer source audit, motif catalogue and flood
+study. They are discovery context, with AI authorship explicit, not imported
+findings. Dry-run routing confirms all five resolve to Deep Memory. The founder
+also requested relevant images throughout future editions: the next drafter
+should select and seat verified plates with their passages, using existing
+manifests and markers. Image identity and provenance are intake tasks; image
+selection and captions belong to the reviewed edition. Automatic edition
+composition and broader Expedition discovery remain subsequent work.
+
+(AI implementation record for the authorized system-wide budget and model change.)
+
+The founder subsequently requested improved public visibility after the rest of
+the pipeline work: spending by purpose, automation activity and decisions, with
+global information where it describes the system and case-level information
+where it explains a particular inquiry. Redesign Panel and Proposals as part of
+that coherent interface. This is a later product task, not an expansion of the
+current budget PR. Existing receipts supply the foundation; future workers
+should attach explicit case context where available, leaving shared or
+unallocated costs labeled honestly.

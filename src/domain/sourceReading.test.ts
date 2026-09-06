@@ -1,3 +1,4 @@
+import { githubBudgetFetchFixture, testBudget } from "./fixtures/aiBudget";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -77,7 +78,7 @@ describe("bounded model calls", () => {
   it("reserves the complete input-context liability before sending and then records actual usage", async () => {
     const writes: unknown[] = [];
     const budget = createResearchBudget({ save: report => writes.push(report) });
-    const answer = await boundedCompletion(budget, "draft", input, { apiKey: "fixture-only", fetchImpl: async (_url, init) => {
+    const answer = await boundedCompletion(budget, "draft", input, { allowance: testBudget(), apiKey: "fixture-only", fetchImpl: async (_url, init) => {
       expect(writes.length).toBeGreaterThan(0);
       expect(budget.report().accountedUsd).toBe(0.327);
       const request = JSON.parse(String(init?.body));
@@ -94,26 +95,26 @@ describe("bounded model calls", () => {
     let calls = 0;
     const fetchImpl = async () => { calls++; return response("draft"); };
     await expect(boundedCompletion(createResearchBudget({ maxUsd: 0.1 }), "draft", input,
-      { apiKey: "fixture-only", fetchImpl })).rejects.toMatchObject({ kind: "budget_exhausted" });
+      { allowance: testBudget(), apiKey: "fixture-only", fetchImpl })).rejects.toMatchObject({ kind: "budget_exhausted" });
     expect(calls).toBe(0);
     const budget = createResearchBudget({ maxCalls: 1 });
-    await boundedCompletion(budget, "draft", input, { apiKey: "fixture-only", fetchImpl });
-    await expect(boundedCompletion(budget, "read", input, { apiKey: "fixture-only", fetchImpl })).rejects.toMatchObject({ kind: "budget_exhausted" });
+    await boundedCompletion(budget, "draft", input, { allowance: testBudget(), apiKey: "fixture-only", fetchImpl });
+    await expect(boundedCompletion(budget, "read", input, { allowance: testBudget(), apiKey: "fixture-only", fetchImpl })).rejects.toMatchObject({ kind: "budget_exhausted" });
     expect(calls).toBe(1);
   });
   it("retains full reservations on missing usage and transport failures, and meters refusals", async () => {
     const missing = createResearchBudget();
-    await expect(boundedCompletion(missing, "draft", input, { apiKey: "fixture-only", fetchImpl: async () => response("draft", { usage: null }) })).rejects.toThrow(/reservation retained/);
+    await expect(boundedCompletion(missing, "draft", input, { allowance: testBudget(), apiKey: "fixture-only", fetchImpl: async () => response("draft", { usage: null }) })).rejects.toThrow(/reservation retained/);
     expect(missing.report().accountedUsd).toBe(0.327);
     const network = createResearchBudget();
-    await expect(boundedCompletion(network, "draft", input, { apiKey: "fixture-only", fetchImpl: async () => { throw new Error("fixture network failure"); } })).rejects.toThrow(/network/);
+    await expect(boundedCompletion(network, "draft", input, { allowance: testBudget(), apiKey: "fixture-only", fetchImpl: async () => { throw new Error("fixture network failure"); } })).rejects.toThrow(/network/);
     expect(network.report().accountedUsd).toBe(0.327);
     const refused = createResearchBudget();
-    await expect(boundedCompletion(refused, "read", input, { apiKey: "fixture-only", fetchImpl: async () => response("read", { output: [{ content: [{ type: "refusal" }] }] }) })).rejects.toMatchObject({ kind: "refused" });
+    await expect(boundedCompletion(refused, "read", input, { allowance: testBudget(), apiKey: "fixture-only", fetchImpl: async () => response("read", { output: [{ content: [{ type: "refusal" }] }] }) })).rejects.toMatchObject({ kind: "refused" });
     expect(refused.report().accountedUsd).toBeCloseTo(0.000125);
   });
   it("rejects an incomplete answer or expired run instead of silently using partial JSON", async () => {
-    await expect(boundedCompletion(createResearchBudget(), "read", input, { apiKey: "fixture-only", fetchImpl: async () => response("read", { status: "incomplete" }) })).rejects.toThrow(/incomplete/);
+    await expect(boundedCompletion(createResearchBudget(), "read", input, { allowance: testBudget(), apiKey: "fixture-only", fetchImpl: async () => response("read", { status: "incomplete" }) })).rejects.toThrow(/incomplete/);
     let clock = 0;
     const budget = createResearchBudget({ deadlineMs: 10, now: () => clock });
     clock = 11;
@@ -136,7 +137,9 @@ describe("manual reader integration", () => {
     const goodReview = { ...failedReading, claimSupported: true, sourceStatementSupported: true,
       limitationsPreserved: true, independenceHandled: true, reason: "The shared sample and limits are preserved." };
     const preload = path.join(root, "mock-fetch.mjs");
-    fs.writeFileSync(preload, `globalThis.fetch = async (url, init) => {
+    fs.writeFileSync(preload, `${githubBudgetFetchFixture()}globalThis.fetch = async (url, init) => {
+      const accounting = await fixtureBudgetFetch(url, init);
+      if (accounting) return accounting;
       if (String(url).includes("api.openai.com")) {
         const request = JSON.parse(init.body);
         const value = request.model === ${JSON.stringify(RESEARCH_MODELS.draft.id)} ? ${JSON.stringify(goodDraft)} : ${JSON.stringify(goodReview)};
@@ -150,7 +153,7 @@ describe("manual reader integration", () => {
     const urls = ["https://example.org/fixture", "https://example.org/missing"];
     if (missingFirst) urls.reverse();
     const output = execFileSync(process.execPath, ["--import", preload, path.resolve("scripts/research-sources.ts"), "synthetic", ...urls],
-      { cwd: root, encoding: "utf8", env: { ...process.env, OPENAI_API_KEY: "fixture-only" } });
+      { cwd: root, encoding: "utf8", env: { ...process.env, OPENAI_API_KEY: "fixture-only", BUDGET_GITHUB_TOKEN: "synthetic-only" } });
     const report = JSON.parse(output);
     expect(report.decision).toBe("partial");
     expect(report.proposedRecords).toBe(3);

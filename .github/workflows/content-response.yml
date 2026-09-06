@@ -42,6 +42,9 @@ permissions:
   contents: write
   pull-requests: write
 
+env:
+  BUDGET_GITHUB_TOKEN: ${{ secrets.MAINTENANCE_PAT }}
+
 jobs:
   respond:
     runs-on: ubuntu-latest
@@ -150,3 +153,7 @@ jobs:
               --comment "Superseded by ${pr_url}: that run re-derives all judgments from current main, including anything this PR carried that is still warranted." \
               --delete-branch || echo "::warning::could not close superseded PR #${old}"
           done
+
+      - name: AI allowance report
+        if: always()
+        run: npm run ai:budget -- status --summary

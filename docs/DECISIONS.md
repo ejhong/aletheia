@@ -1169,3 +1169,15 @@ aggregate research-and-review budgets, and broader Expedition discovery remain
 subsequent work; the current illustrated Deep Memory edition stays intact.
 
 (AI implementation record for the authorized intake integration.)
+
+## 2026-09-06 — Case titles drop the trailing question mark
+
+Founder direction: published case names should not end in a question mark.
+The ten live titles that carried one (Cast, Not Carved; State, Not Scar;
+Before Sputnik; Collapse, Not Computation; Fire From the Sky; Elusive by
+Law; The Aeon Before Ours; Zero Worlds; The Religion with No Name; The
+Emptied Amazon) lose only that mark. Subtitles, framing questions, source
+titles, and historical assessment quotes are unchanged. Logged as
+housekeeping on each case so the rename does not stale standing or move
+the last-content-update date. Deep Memory already had no mark. (AI record
+of a founder instruction, 2026-09-06 session.)

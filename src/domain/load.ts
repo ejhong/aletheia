@@ -589,9 +589,10 @@ export function loadCase(caseDir: string): LoadedCase {
     if (edition !== loaded.editions.at(-1)) continue;
     for (const id of edition.featuredClaimIds) {
       const claim = claims.find(c => c.id === id);
-      if (!claim || !isFeatured(claim) || claim.reviewState === "rejected")
+      const evaluation = assessment?.claimAssessments.find(a => a.claimId === id);
+      if (!claim || claim.reviewState === "rejected" || (!isFeatured(claim) && !evaluation?.treatment))
         throw new ContentError(caseDir, `edition features a claim without live editorial treatment: ${id}`);
-      if (!assessment?.claimAssessments.some(a => a.claimId === id))
+      if (!evaluation)
         throw new ContentError(caseDir, `edition lacks an assessment for featured claim: ${id}`);
     }
     for (const id of assessment?.caseAssessment.loadBearing ?? []) {
@@ -1008,7 +1009,10 @@ export function reviewCoverage(loaded: LoadedCase): {
   reviewed: number;
   total: number;
 } {
-  const featured = featuredClaims(loaded);
+  const edition = loaded.editions.at(-1);
+  const featured = edition
+    ? liveClaims(loaded).filter(c => edition.featuredClaimIds.includes(c.id))
+    : featuredClaims(loaded);
   return {
     reviewed: featured.filter((c) => c.reviewState === "human_reviewed").length,
     total: featured.length,

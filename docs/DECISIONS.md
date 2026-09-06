@@ -1169,3 +1169,48 @@ aggregate research-and-review budgets, and broader Expedition discovery remain
 subsequent work; the current illustrated Deep Memory edition stays intact.
 
 (AI implementation record for the authorized intake integration.)
+
+## 2026-09-06 — Editions can interpret catalog claims without rewriting the ledger
+
+The source reader produces catalog observations, but the first edition schema
+could only feature claims whose editorial fields had already been written into
+the ledger. That left a manual promotion step between research and publication.
+Draft assessments now accept an optional, complete per-claim `treatment`: plain
+language, classification, importance, diagnosticity and explanation, strongest
+objection, and what would change the judgment. Credibility remains the same
+assessment's verdict and reasoning. Older runs retain their original shape.
+
+An edition may feature an anchored catalog claim when its selected assessment
+supplies that treatment. The claim's proposition, source anchor, origin,
+independence group, and stored tier do not change. A bare overlay cannot promote
+a catalog claim or replace its editorial interpretation; the adopting edition
+must pass the ordinary consequential publication gate. Historical and unadopted
+judgments remain inspectable in a shared claim-history disclosure, with their
+original model, date, and explanations. It starts closed so accumulated checks
+do not lengthen the default reading view. Nothing supplies human provenance or
+ratification by default.
+
+The case page, explorer, and claim detail use one joined view. An interpreted
+catalog claim appears once when selected. Current interpretation and independent
+grading share one claim scope: legacy featured records plus the current
+edition's selected IDs. A carried-over catalog treatment outside that scope
+remains in history and cannot inherit current standing, including after a newer
+edition is ratified. Human-review coverage counts the selected ledger records, not
+the AI's grading. Blind packets add selected catalog IDs to the grading scope
+in ledger order, include every live proposition, and exclude the interpretation,
+essay, and grades. Existing exact assessment/content receipts require fresh
+checks after an interpretation changes. The snapshot resolves the edition chain
+and includes only its current edition; the packet rejects multiple edition
+files instead of choosing one. A two-edition integration test covers selection
+of a different catalog claim, including the native blind runner. No concurrence
+threshold changes.
+
+Synthetic tests exercise the transition from catalog observations to an
+interpreted edition, unadopted drafts, strict treatment validation, exact hashes,
+blind runner coverage, and loss of standing after revised importance. No actual
+case receives a new judgment in this implementation. Deep Memory retains its
+unassessed illustrated opening. This supplies the next part of the edition
+contract; automated drafting, candidate comparison, case-level judgment fields,
+and aggregate research-and-review accounting still remain to build.
+
+(AI implementation record for the authorized research-edition migration.)

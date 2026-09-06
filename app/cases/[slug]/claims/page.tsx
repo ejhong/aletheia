@@ -6,7 +6,7 @@ import { CatalogExplorer } from "@/src/components/CatalogExplorer";
 import { ClaimCard } from "@/src/components/ClaimCard";
 import { LinkedRecordText } from "@/src/components/LinkedRecordText";
 import { ProvenanceBadge } from "@/src/components/ProvenanceBadge";
-import { catalogClaims, loadAllCases } from "@/src/domain/load";
+import { loadAllCases } from "@/src/domain/load";
 import { paramsOrPlaceholder } from "@/src/domain/staticExport";
 
 export function generateStaticParams() {
@@ -36,8 +36,9 @@ export default async function ClaimsExplorerPage({
   const found = loadAllCases().find((c) => c.record.slug === slug);
   if (!found) notFound();
   const loaded = found;
-  const featured = caseView(loaded).allFeatured;
-  const catalog = catalogClaims(loaded);
+  const view = caseView(loaded);
+  const featured = view.allFeatured;
+  const catalog = view.catalog;
   const tombstones = loaded.claims.filter((c) => c.reviewState === "rejected");
 
   const themes = Object.entries(loaded.record.themes).filter(([key]) =>

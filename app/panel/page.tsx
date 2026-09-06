@@ -284,7 +284,7 @@ export default function PanelPage() {
           <Link href="/proposals/" className="underline underline-offset-2 hover:text-copper">
             proposal shelf
           </Link>{" "}
-          for the Bench, and the promotions dispositions ledger for the
+          for the Bench, and the shared intake history for the
           import pipe. Every artifact behind these numbers rode the same
           gates as any human change.
         </p>

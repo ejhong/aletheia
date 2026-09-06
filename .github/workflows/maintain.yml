@@ -276,7 +276,6 @@ jobs:
         if: ${{ env.PROMOTED != '0' }}
         run: npx vitest run src/domain/load.test.ts
       - name: Open the gated promotion PR
-        if: ${{ env.PROMOTED != '0' }}
         env:
           GH_TOKEN: ${{ secrets.MAINTENANCE_PAT }}
         run: |
@@ -285,17 +284,17 @@ jobs:
           git config user.name "aletheia-maintenance-bot"
           git config user.email "maintenance-bot@users.noreply.github.com"
           git checkout -b "$branch"
-          git add -A -- content/cases proposals/promotions-ledger.yaml
+          git add -A -- content/cases proposals/intake
           git status --porcelain
           if git diff --cached --quiet; then
             echo "nothing stageable — the pipe rests"
             exit 0
           fi
-          git commit -m "Promotion ${date}: verified imports enter the ledger through the gates"
+          git commit -m "Promotion ${date}: retain outcomes and verified imports"
           git push -u origin "$branch"
           pr_url=$(gh pr create \
-            --title "Promotion: ${date} — verified imports into the ledger" \
-            --body "The promotion pipe (docs/AUTOMATION.md build step 1): verified import proposals drafted into sources + evidence records. Every quoted span mechanically verified verbatim against the fetched source; dedupe, enum, and claim-anchor checks fail-closed in the script. The panel judges the readings; the ledger admission rule is satisfied by construction. Ledger of dispositions (promoted / duplicate / failed, with reasons): proposals/promotions-ledger.yaml." \
+            --title "Promotion: ${date} — outcomes and verified imports" \
+            --body "The promotion pipe records outcomes in proposals/intake/, including runs with zero successful imports. Successful drafts contain source and evidence records: quoted spans are mechanically checked against the fetched source, with enum, claim-anchor, and duplicate checks before admission. Any content additions pass the same independent publication gate. This PR retains the attempt history even when every candidate was deferred or failed." \
             --label needs-approval)
           gh pr edit "$pr_url" --add-reviewer "${GITHUB_REPOSITORY_OWNER}" || true
           echo "opened $pr_url"
@@ -404,7 +403,7 @@ jobs:
           git push -u origin "$branch"
           pr_url=$(gh pr create \
             --title "Adoption: ${date} — panel-endorsed claims and research items" \
-            --body "Ledger records drafted from agenda proposals the five-vendor panel endorsed (four of five seats high-gain, zero constitutional concerns; scores under proposals/agenda/). Claims enter at catalog tier and anchor only to evidence already in the ledger — the drafter copies sourceId and locator from the anchoring record and never authors either; a draft with no in-ledger anchor is dropped with the reason and stays endorsed. Ids are mechanical; provenance is stamped in origin.ref; the panel judges the records here before anything publishes." \
+            --body "Ledger records drafted from agenda proposals the five-vendor panel endorsed (four of five seats high-gain, zero constitutional concerns; scores in the shared intake history under proposals/intake/). Claims enter at catalog tier and anchor only to evidence already in the ledger — the drafter copies sourceId and locator from the anchoring record and never authors either; a draft with no in-ledger anchor is dropped with the reason and stays endorsed. Ids are mechanical; provenance is stamped in origin.ref; the panel judges the records here before anything publishes." \
             --label needs-approval)
           gh pr edit "$pr_url" --add-reviewer "${GITHUB_REPOSITORY_OWNER}" || true
           echo "opened $pr_url"

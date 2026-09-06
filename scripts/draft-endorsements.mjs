@@ -21,8 +21,14 @@
 import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
-import { callWithRefusalFallback, parseJsonReply, pickProvider, noKeyMessage } from "./lib/llm.mjs";
-import { parseAgendaFile } from "./lib/bench-core.mjs";
+import {
+  callWithRefusalFallback,
+  parseJsonReply,
+  pickProvider,
+  noKeyMessage,
+} from "./lib/llm.mjs";
+import { readAgendaTallies } from "./lib/intake-agenda.mjs";
+import { resolveCaseDirectory } from "./lib/case-snapshot.mjs";
 import {
   ADOPTION_REF_RE,
   adoptionRef,
@@ -35,7 +41,6 @@ import {
 
 const ROOT = process.cwd();
 const CASES = path.join(ROOT, "content", "cases");
-const AGENDA = path.join(ROOT, "proposals", "agenda");
 const date = new Date().toISOString().slice(0, 10);
 const runId = `${date}-bench-adopt-${process.env.GITHUB_RUN_ID ?? "local"}`;
 const PROMPT_VERSION = "bench-adopt-v1";
@@ -118,30 +123,9 @@ function scanAdoptedIds() {
   return out;
 }
 
-/** Endorsed-but-unadopted proposals from every merged scores.yaml. */
+/** Endorsed-but-unadopted proposals from the merged intake score history. */
 function scanEndorsed() {
-  const out = [];
-  if (!fs.existsSync(AGENDA)) return out;
-  const adopted = scanAdoptedIds();
-  for (const d of fs.readdirSync(AGENDA).sort()) {
-    const scoresPath = path.join(AGENDA, d, "scores.yaml");
-    if (!fs.existsSync(scoresPath)) continue;
-    const scores = parseYaml(fs.readFileSync(scoresPath, "utf8"));
-    const tallies = (scores?.tallies ?? []).map((t) => ({
-      ...t,
-      caseSlug: t.case,
-    }));
-    for (const t of selectEndorsed(tallies, adopted)) {
-      const file = path.join(AGENDA, d, `${t.caseSlug}.md`);
-      if (!fs.existsSync(file)) continue;
-      const parsed = parseAgendaFile(fs.readFileSync(file, "utf8"), {
-        caseSlug: t.caseSlug,
-        runDir: d,
-      }).find((p) => p.id === t.id);
-      if (parsed) out.push({ ...parsed, highs: t.highs });
-    }
-  }
-  return out;
+  return selectEndorsed(readAgendaTallies(ROOT), scanAdoptedIds());
 }
 
 if (process.argv[2] !== "--scan") {
@@ -150,7 +134,9 @@ if (process.argv[2] !== "--scan") {
 }
 const endorsedAll = scanEndorsed();
 if (endorsedAll.length === 0) {
-  console.error("adopt: no endorsed proposals awaiting adoption — nothing to draft");
+  console.error(
+    "adopt: no endorsed proposals awaiting adoption — nothing to draft",
+  );
   console.log("0");
   process.exit(0);
 }
@@ -161,26 +147,37 @@ for (const d of deferred) console.error(`deferred: ${d.title} — ${d.reason}`);
 
 let drafted = 0;
 for (const p of selected) {
-  const caseRoot = path.join(CASES, p.caseSlug);
+  const caseRoot = path.join(CASES, resolveCaseDirectory(ROOT, p.caseSlug));
   if (!fs.existsSync(path.join(caseRoot, "case.yaml"))) {
-    console.error(`${p.title}: case ${p.caseSlug} not in content/cases — skipped`);
+    console.error(
+      `${p.title}: case ${p.caseSlug} not in content/cases — skipped`,
+    );
     continue;
   }
-  const record = parseYaml(fs.readFileSync(path.join(caseRoot, "case.yaml"), "utf8"));
+  const record = parseYaml(
+    fs.readFileSync(path.join(caseRoot, "case.yaml"), "utf8"),
+  );
   const claims = loadList(path.join(caseRoot, "claims.yaml"));
   const research = loadList(path.join(caseRoot, "research.yaml"));
   const evidence = loadList(path.join(caseRoot, "evidence.yaml"));
   const liveClaims = claims.filter((c) => c.reviewState !== "rejected");
   const liveClaimIds = new Set(liveClaims.map((c) => c.id));
   const claimIndex = liveClaims
-    .map((c) => `${c.id}: ${String(c.statement).replace(/\s+/g, " ").slice(0, 140)}`)
+    .map(
+      (c) =>
+        `${c.id}: ${String(c.statement).replace(/\s+/g, " ").slice(0, 140)}`,
+    )
     .join("\n");
   const themes = new Map(Object.entries(record?.themes ?? {}));
   const evidenceById = new Map(evidence.map((e) => [e.id, e]));
   const evidenceIndex = evidence
     .map(
       (e) =>
-        `${e.id} (${e.direction}, source ${e.sourceId}${e.exactLocator ? `, locator: ${e.exactLocator}` : ""}): ${String(e.sourceStatement ?? "").replace(/\s+/g, " ").slice(0, 200)}`,
+        `${e.id} (${e.direction}, source ${e.sourceId}${e.exactLocator ? `, locator: ${e.exactLocator}` : ""}): ${String(
+          e.sourceStatement ?? "",
+        )
+          .replace(/\s+/g, " ")
+          .slice(0, 200)}`,
     )
     .join("\n");
 
@@ -213,7 +210,9 @@ for (const p of selected) {
     draftModel = reply.model;
     parsed = parseJsonReply(reply.text);
   } catch (e) {
-    console.error(`${p.title}: draft failed (${String(e).slice(0, 100)}) — skipped`);
+    console.error(
+      `${p.title}: draft failed (${String(e).slice(0, 100)}) — skipped`,
+    );
     continue;
   }
 
@@ -235,13 +234,22 @@ for (const p of selected) {
       continue;
     }
     const nextC =
-      Math.max(0, ...claims.map((x) => Number((x.id?.match(/-C(\d+)$/) ?? [])[1] ?? 0))) + 1;
+      Math.max(
+        0,
+        ...claims.map((x) => Number((x.id?.match(/-C(\d+)$/) ?? [])[1] ?? 0)),
+      ) + 1;
     const cid = `${prefix}-C${String(nextC).padStart(3, "0")}`;
     fs.appendFileSync(
       path.join(caseRoot, "claims.yaml"),
       "\n" +
         stringifyYaml([
-          { id: cid, tier: "catalog", ...rec, reviewState: "ai_extracted", origin },
+          {
+            id: cid,
+            tier: "catalog",
+            ...rec,
+            reviewState: "ai_extracted",
+            origin,
+          },
         ]),
     );
     appendHistory(caseRoot, {
@@ -258,7 +266,10 @@ for (const p of selected) {
       continue;
     }
     const nextR =
-      Math.max(0, ...research.map((x) => Number((x.id?.match(/-R(\d+)$/) ?? [])[1] ?? 0))) + 1;
+      Math.max(
+        0,
+        ...research.map((x) => Number((x.id?.match(/-R(\d+)$/) ?? [])[1] ?? 0)),
+      ) + 1;
     const rid = `${prefix}-R${String(nextR).padStart(3, "0")}`;
     fs.appendFileSync(
       path.join(caseRoot, "research.yaml"),

@@ -81,10 +81,10 @@ scheduled research worker.
 
 | Step | Deliverable | Acceptance criterion / status |
 | --- | --- | --- |
-| 1 | Shared case view; exact review receipts | Implemented in this change. Essay references, claim cards, ladder, and claim detail read the displayed draft's grades. Only a full panel on the exact current content and draft can ratify; historical reviews remain available. |
-| 2 | Essay-first reading experience | Implemented in this change. Short frontispiece, inspectable claims with ordinary-link fallback, supporting detail in disclosures, mobile claim sheet. Existing essays and evidence are preserved. |
-| 3 | Blank-topic starting path | Implemented in this change. `start-case.mjs` creates an incubating proposal from a question, with no invented evidence, priority, or review. The production loader and view accept it; judgment runners skip it until it has assessable evidence. This tests startup, not autonomous discovery. |
-| 4 | Shared proposal memory and intake diff | First slice implemented: shared source identity and a read interface over existing watch/promotion decisions, used by triage and the intake report. Promotion attempts are scoped to case, candidate, and case inputs. Next: migrate durable decision writers and add the common change-proposal envelope for other record kinds. Remove an old memory only after replay equivalence is demonstrated. |
+| 1 | Shared case view; exact review receipts | Implemented in PR #172. Essay references, claim cards, ladder, and claim detail read the displayed draft's grades. Only a full panel on the exact current content and draft can ratify; historical reviews remain available. |
+| 2 | Essay-first reading experience | Implemented in PR #172. Short frontispiece, inspectable claims with ordinary-link fallback, supporting detail in disclosures, mobile claim sheet. Existing essays and evidence are preserved. |
+| 3 | Blank-topic starting path | Implemented in PR #172. `start-case.mjs` creates an incubating proposal from a question, with no invented evidence, priority, or review. The production loader and view accept it; judgment runners skip it until it has assessable evidence. This tests startup, not autonomous discovery. |
+| 4 | Shared proposal memory and intake diff | Shared identity and durable decision history implemented for watch triage, promotion, and agenda generation/scoring. Legacy stores migrate with replay checks; prior reasons survive cleanup, and revised proposals can retain their title. Next: the common change-proposal envelope and semantic/evidence diffs for other record kinds. |
 | 5 | Bounded research and source-reading checks | Retrieve primary passages and dependency context; propose small verified changes. Test incorrect quotation use, sample reuse, search misses, and refusal/budget exhaustion. Watch feeds alone do not cover archives, grants, museum records, or reports. |
 | 6 | Versioned edition drafting | Extend the existing append-only assessment artifact with selection and essay references, using the shared view as the compatibility boundary. Migrate one case, preserving its incumbent and history. Blind assessment precedes inspection of the candidate edition; prose remains behind the consequential-content gate. |
 | 7 | Pilot, measure, and widen | Exercise geopolymer, transients, and Deep Memory, the founder-selected question-only topic about shared symbols and myths (`proposals/topics/deep-memory/`). Its scope is informed by the birdmen project, so an empty ledger must not be described as blind rediscovery. Compare accepted changes and reading quality with the incumbent, under a single enforced budget covering research and review. The archived chats are design references and a possible held-out discovery benchmark, not an import queue. Expand only after unattended runs improve actual cases. |
@@ -93,41 +93,56 @@ The first two steps deliberately do not relocate every editorial field.
 Diagnosticity, component judgments, framing, and selection still originate
 in legacy records and are labeled as recorded interpretation in the UI.
 `CaseView` is the migration boundary. The unified edition writer, retrieval
-checks, unified decision storage, and spend accounting are still to build.
+checks, general change proposals, and spend accounting are still to build.
 
-### Intake memory: the first migration boundary
+### Durable intake history
 
-`scripts/lib/source-identity.mjs` is shared by watch, triage, and promotion.
-It distinguishes exact supplied identifiers from title similarity, preserves
-parenthesized DOI suffixes and significant URL distinctions, and connects a
-preprint to a DOI when both aliases appear on a source record. Watch title
-keys no longer silently suppress another work. Title similarity still flags
-possible duplicates for review through the existing admission gates.
+Watch, triage, and promotion share `source-identity.mjs`: DOI/arXiv aliases
+are exact identity hints, URL distinctions are preserved, and title similarity
+remains advisory. Knowing a source does not mean every passage or observation
+has been assessed; the source-only promoter still defers possible duplicates
+before admitting another source record.
 
-`scripts/lib/intake-memory.mjs` reads the archive, promotion decisions, and
-recent triage runs through one interface. It creates no second store. Every
-decision retains its original file reference, date, outcome, and available
-reason. Missing historical model and input receipts remain null. An old
-promotion with no case is attributed only when its referenced record has one
-unambiguous owner; otherwise it stays unscoped and cannot suppress a proposal.
-Triage receives matching prior decisions as context, not as a verdict.
+`proposals/intake/` is the authority for watch-triage, promotion, agenda-proposal,
+and agenda-score decisions. `intake-store.mjs` validates and writes immutable
+batches, normally one per worker run. Decision and batch hashes detect changed
+payloads. Exclusive atomic file installation makes retries safe and concurrent
+writers preserve both batches. Modifying or deleting existing history requires
+the consequential-change gate; new proposal-only batches retain their existing
+risk category. Workers, the proposal page, and governance totals read this store.
 
-New promotion attempts record the case, candidate hash, and exact case input
-hash. An unchanged attempt rests; changed case inputs or a revised proposal
-(including its rationale) can reopen it without a newer paper. Provider,
-parse, and invalid-ID failures remain retryable under the existing budget.
-Evidence verification failures with unchanged local inputs still rest;
-detecting an external source revision requires the future retrieval/watch
-work. A source match remains separate from whether any particular passage,
-observation, or claim has been
-considered. This first slice does not yet implement general evidence/claim
-diffing or admit additional evidence from an already-carried source.
+Every entry records the candidate or source, outcome, reason when available,
+case, date, run and model/protocol stamps, and available input receipts. A panel
+score keeps every seat's reasoning and concerns; totals must agree with those
+seats. Fewer than four returned scores or changed case inputs leave the review
+incomplete and retryable, without an actionable score. The four-highs,
+zero-concerns advancement rule and the separate publication gate are unchanged.
+Scoring packets include earlier reasons but omit earlier vote totals and grades.
 
-Archive entries now retain changed reasons and contexts separately per case.
-Recent import/shelf decisions remain subject to the existing watch-run expiry;
-moving all outcomes into durable shared storage is the next migration, not
-something this read interface claims to have done. Existing decision files
-remain authoritative and no historical records are rewritten in this change.
+A proposal's title is not its identity. The agenda generator receives prior
+proposals and review reasons, and may revisit the same title with a changed
+argument, control, or case context. Only identical substance on identical case
+inputs rests mechanically; a new title alone does not defeat that check.
+Silence means unreviewed. Source promotion similarly scopes its rest state to
+case, candidate, and case inputs. Operational failures remain retryable within
+existing budgets. None of these equality checks claims to measure semantic
+novelty, coverage, or saturation.
+
+`migrate-intake.mjs` replays a committed snapshot and verifies every migrated
+field and original row before retiring the old archive, promotions, triage, and
+score stores. A legacy row carries its original commit and locator; duplicate
+archive/report copies remain attached as provenance for one decision. Missing
+historical reviewer reasons, model identities, and input receipts stay unknown.
+The original agenda Markdown remains the candidate input, and new scores bind
+to that exact proposal. Public case slugs resolve through case metadata when
+they differ from directory names.
+
+Watch-run expiry no longer erases a triage decision. Failed watch cases stay
+due, and promotion runs save their outcomes even when no source is imported.
+The existing schedules, promotion budgets, and one-cycle adoption boundary
+remain. General change proposals, discovery/retrieval coverage, source revision
+monitoring, and aggregate spend enforcement are subsequent work; this cutover
+does not claim that every research or drafting action is already recorded here.
 
 ### Review receipt rollout
 
@@ -340,7 +355,7 @@ draft with no in-ledger anchor is dropped with the reason and stays
 endorsed for the promotion pipe or a manual adoption). Ids are
 mechanical; provenance rides origin.ref, which doubles as the adoption
 registry (the repo is the state). Proposals not advanced or endorsed
-retire by silence, as now ("ignored is retired"). Budgets bound the
+retain their scored disposition and can be reconsidered through intake. Budgets bound the
 pace: at most two active studies per case; a site-wide monthly freeze
 budget; three adoptions per run, at most two per case.
 
@@ -468,14 +483,3 @@ loader, every new mechanism a tested script in `scripts/lib`, budgets in
 one config, engine work upstream here and synced downstream. Machine
 artifacts declare their lifecycle (status, expiry, surviving record) from
 their first run — no more folders a reader cannot date.
-
-## Historical source decisions staged for review
-
-Before the durable-intake cutover, an immutable batch preserves 39 source
-decisions from the committed watch, triage, and promotion records. It includes
-a previously skipped failed triage case. Duplicate archive/report copies are
-attached as provenance for one decision, with original rows and committed
-locators retained; unknown metadata remains unknown. The original files remain
-present and authoritative during staging. This batch changes no worker,
-research record, or public assessment. The later cutover will switch readers
-only after the historical batches have passed review in full.

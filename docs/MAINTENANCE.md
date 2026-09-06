@@ -80,18 +80,21 @@ Use `keywordGroups`, not a flat `keywords` list, for anything aimed at
 Crossref; drop Crossref entirely where the field is arXiv-native. Terms
 match at word boundaries. Hits land in `proposals/watch/<runId>/`, all
 `unverified`, and are triaged `import` / `shelf` / `archive` (default
-archive) with reasons in `triage.yaml`. Archived items are appended to
-`proposals/watch/archive-ledger.yaml`, which survives the 60-day expiry of
-run directories and exists to be reviewed; promote a wrongly archived item
-by dropping its URL in the inbox.
+archive) with reasons in the durable `proposals/intake/` history. Import, shelf,
+archive, and failed-triage records survive the 60-day expiry of watch runs.
+Failed cases remain due; reconsider an archived item by dropping its URL in
+the inbox or explicitly rerunning `triage-watch.mjs --run <watch-run-id>`.
 
 Inspect a source across the current ledger and existing intake decisions:
 
 ```sh
+node scripts/intake-report.mjs --case megalithic-casting
 node scripts/intake-report.mjs --case transients --source https://arxiv.org/abs/2605.01190
 node scripts/intake-report.mjs --case transients --watch-run watch-2026-08-24-7806
 ```
 
+With only `--case`, this prints the complete decision history, including agenda
+proposals and panel reasons. Directory names and public slugs both resolve.
 This is read-only and needs no model key. It reports exact source matches,
 possible title matches, earlier decisions and their file references, and
 legacy decisions whose case could not be established. Unknown review metadata
@@ -104,6 +107,18 @@ A revised proposal or changed case can be reconsidered;
 historical attempts without receipts are checked again through the existing
 budget and admission gates. Source-only promotion still defers a possible
 duplicate for identity review before adding another source record.
+
+The agenda generator can reconsider a proposal under its existing title.
+Changed arguments or case inputs reopen it; unchanged substance rests, and
+renaming alone does not count as a change. Unscored is not rejected. New panel
+scores retain each seat's reasons; failed or stale panels remain retryable.
+Promotion outcomes reach a PR even when the successful-import count is zero.
+
+For a migration audit, `node scripts/migrate-intake.mjs` reports the replay
+without writing; `--write` performs it. Once migrated, it reuses the recorded
+legacy commit and is idempotent. It refuses to delete a legacy file changed
+after that basis. Normal workers never reread or rewrite those retired stores;
+corrections and reconsiderations append a new intake decision.
 
 ## 3. Reading it
 

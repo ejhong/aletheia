@@ -1,61 +1,30 @@
-#!/usr/bin/env node
 /**
- * Literature-watch triage — decide what surfaced literature deserves.
+ * Triage literature-watch candidates into import, shelf, or archive.
+ * Imports queue the existing verification pipeline; every decision and
+ * operational failure is retained in immutable proposals/intake/ batches.
+ * A failed case remains due. --run explicitly reconsiders an earlier run.
+ * The source admission rule, duplicate guard, and publication gates remain.
  *
- * Usage:
- *   node scripts/triage-watch.mjs [--run <watch-runId>] [--dry-run]
- *                                 [--provider anthropic|openai]
- *
- * Runs after scripts/watch-literature.mjs over one watch run (the newest
- * untriaged one by default). One model call per case judges every surfaced
- * item against versioned criteria (see TRIAGE_SYSTEM below) into exactly
- * three outcomes:
- *
- *   import  — likely NEW evidential weight for the case; queued for
- *             verification by writing an inbox link-list drop
- *             (inbox/triage-…md), which the next inbox run fetch-verifies
- *             into source-record PROPOSALS. Nothing touches sources.yaml
- *             here, and the source admission rule in src/domain/load.ts
- *             means even a verified source cannot enter the ledger without
- *             an evidence record citing it.
- *   shelf   — useful reading, no new evidential weight; a candidate for the
- *             case's curated resources.yaml, left in the report for an
- *             agent to pick up.
- *   archive — everything else. The default. Archiving means: recorded in
- *             triage.yaml with a reason, nothing more; the run directory
- *             itself expires after WATCH runs age out (git history keeps
- *             the record).
- *
- * Fail-closed: a malformed model reply triages NOTHING for that case (see
- * scripts/lib/triage.mjs), and an item the watch flagged as a possible
- * duplicate can never be imported by triage — the duplicate guard
- * downgrades it in code, not in the prompt.
- *
- * Output: triage.yaml + triage.md inside the watch run's directory
- * (proposals/**, so triage stays in the low-risk allowlist), plus one
- * inbox/triage-<runId>-<case>.md link drop per case with imports.
- *
- * Archive asymmetry guard: import mistakes are caught downstream (the
- * case's standing fails down and the panel re-judges the result), but an
- * archived item is judged once, by one model, and then the run directory
- * expires. So every archived item is also appended, one line each, to the
- * cumulative ledger proposals/watch/archive-ledger.yaml — which survives
- * expiry — so a periodic audit (a second model, or a human) can review
- * the omissions without digging through deleted directories.
+ * Usage: node scripts/triage-watch.mjs [--dry-run] [--run watch-...] [--provider ...]
  */
+
 import fs from "node:fs";
 import path from "node:path";
-import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
+import { parse as parseYaml } from "yaml";
 import {
   callWithRefusalFallback,
   parseJsonReply,
   pickProvider,
 } from "./lib/llm.mjs";
 import { applyDuplicateGuard, validateTriageReply } from "./lib/triage.mjs";
-import { normalizeTitle, sourceKeys } from "./lib/source-identity.mjs";
-import { intakeContext, readIntakeMemory } from "./lib/intake-memory.mjs";
+import {
+  intakeContext,
+  readIntakeMemory,
+  watchCaseTriaged,
+} from "./lib/intake-memory.mjs";
 import { readCaseSnapshot } from "./lib/case-snapshot.mjs";
 import { fingerprint } from "./lib/review-state.mjs";
+import { writeIntakeDecisions } from "./lib/intake-store.mjs";
 
 const PROMPT_VERSION = "watch-triage-v2";
 
@@ -72,7 +41,6 @@ const ROOT = process.cwd();
 const WATCH_DIR = path.join(ROOT, "proposals", "watch");
 const CASES_DIR = path.join(ROOT, "content", "cases");
 const INBOX_DIR = path.join(ROOT, "inbox");
-const LEDGER_FILE = path.join(WATCH_DIR, "archive-ledger.yaml");
 
 const today = new Date().toISOString().slice(0, 10);
 
@@ -93,7 +61,7 @@ Reply with ONLY a JSON array, one entry per item, no other text:
 
 // ------------------------------------------------------------------ input
 
-function findRunDir() {
+function findRunDir(memory) {
   if (forcedRun) {
     const dir = path.join(WATCH_DIR, forcedRun);
     if (!fs.existsSync(dir)) {
@@ -110,9 +78,24 @@ function findRunDir() {
     .sort()
     .reverse();
   for (const name of candidates) {
-    if (!fs.existsSync(path.join(WATCH_DIR, name, "triage.yaml"))) {
-      return path.join(WATCH_DIR, name);
-    }
+    const dir = path.join(WATCH_DIR, name);
+    const pending = fs
+      .readdirSync(dir)
+      .filter(
+        (file) =>
+          file.endsWith(".yaml") && !["run.yaml", "triage.yaml"].includes(file),
+      )
+      .some(
+        (file) =>
+          !watchCaseTriaged(
+            name,
+            file.slice(0, -5),
+            parseYaml(fs.readFileSync(path.join(dir, file), "utf8"))?.items ??
+              [],
+            memory.decisions,
+          ),
+      );
+    if (pending) return dir;
   }
   return null;
 }
@@ -155,81 +138,16 @@ function itemsPrompt(items, caseDir, memory) {
     .join("\n\n");
 }
 
-// ---------------------------------------------------------- archive ledger
-
-/**
- * Strongest supplied source key (DOI, arXiv ID, URL, then title fallback).
- * Case and decision context are combined with this key by mergeLedger.
- */
-function ledgerKey(item) {
-  return sourceKeys(item)[0] ?? `title:${normalizeTitle(item.title)}`;
-}
-
-/**
- * Merge new entries, deduped by case, source key, and decision context.
- * Pure (takes and returns data; the caller owns I/O) so the dedup — the
- * part that keeps a retried run from double-recording an omission — is
- * unit-testable.
- */
-export function mergeLedger(existing, entries) {
-  const items = [...(existing?.items ?? [])];
-  // Repeating an identical judgment rests; another case, basis, or reason
-  // gets its own historical entry. A paper is not globally "dealt with".
-  const identity = (entry) =>
-    fingerprint({
-      case: entry.case,
-      key: entry.key,
-      date: entry.date,
-      reason: entry.reason,
-      inputHash: entry.inputHash ?? null,
-      candidateHash: entry.candidateHash ?? null,
-      model: entry.model ?? null,
-      promptVersion: entry.promptVersion ?? null,
-    });
-  const known = new Set(items.map(identity));
-  let added = 0;
-  for (const e of entries) {
-    const key = identity(e);
-    if (known.has(key)) continue;
-    known.add(key);
-    items.push(e);
-    added++;
-  }
-  return { ledger: { ...(existing ?? {}), items }, added };
-}
-
-function appendToLedger(entries) {
-  if (entries.length === 0) return 0;
-  const existing = fs.existsSync(LEDGER_FILE)
-    ? (parseYaml(fs.readFileSync(LEDGER_FILE, "utf8")) ?? {})
-    : {};
-  const { ledger, added } = mergeLedger(existing, entries);
-  if (added === 0) return 0;
-  fs.writeFileSync(
-    LEDGER_FILE,
-    [
-      "# Cumulative archive ledger: every watch item triage archived, one",
-      "# line each, surviving the 60-day run expiry. This is the audit trail",
-      "# for the triage asymmetry — import mistakes are caught downstream by",
-      "# the ratification panel; archive mistakes are caught only here.",
-      "# Review periodically (a second model or a human); an item wrongly",
-      "# archived can be promoted by dropping its URL as an inbox link list.",
-      stringifyYaml(ledger),
-    ].join("\n"),
-  );
-  return added;
-}
-
 // ------------------------------------------------------------------ main
 
 async function main() {
-  const runDir = findRunDir();
+  const memory = readIntakeMemory(ROOT);
+  const runDir = findRunDir(memory);
   if (!runDir) {
     console.log("nothing to triage — no untriaged watch run found");
     return;
   }
   const watchRunId = path.basename(runDir);
-  const memory = readIntakeMemory(ROOT);
 
   const provider = pickProvider(forcedProvider);
   if (!provider) {
@@ -252,21 +170,27 @@ async function main() {
   const modelsUsed = new Set();
   const caseResults = [];
   const inboxDrops = [];
-  const ledgerEntries = [];
+  const intakeEntries = [];
+  const generatedAt = new Date().toISOString();
   const digest = [];
 
   for (const file of caseFiles) {
     const caseDir = path.basename(file, ".yaml");
     const record = parseYaml(fs.readFileSync(path.join(runDir, file), "utf8"));
     const items = record?.items ?? [];
-    if (items.length === 0) continue;
+    if (
+      items.length === 0 ||
+      (!forcedRun &&
+        watchCaseTriaged(watchRunId, caseDir, items, memory.decisions))
+    )
+      continue;
     const inputHash = readCaseSnapshot(
       path.join(CASES_DIR, caseDir),
     ).contentHash;
 
     let decisions = null;
     let errors = [];
-    let modelUsed = provider.model;
+    let modelUsed = null;
     try {
       // House-drafting call: the one-shot Opus refusal fallback applies,
       // and every stamp below must carry the model that actually answered.
@@ -294,6 +218,20 @@ async function main() {
 
     if (!decisions) {
       caseResults.push({ case: caseDir, judged: false, errors });
+      intakeEntries.push({
+        case: caseDir,
+        stage: "watch-triage",
+        decision: "failed",
+        reason: errors.join("; "),
+        date: today,
+        generatedAt,
+        runId,
+        model: modelUsed ? `${provider.name}/${modelUsed}` : null,
+        promptVersion: PROMPT_VERSION,
+        inputHash,
+        retryable: true,
+        details: { watchRunId },
+      });
       digest.push(
         `**${caseDir}**: triage FAILED closed (${errors.length} problem(s)) — ${items.length} item(s) left undecided; re-run with \`--run ${watchRunId}\` to retry (deterministic filenames make a retry overwrite, not duplicate).`,
       );
@@ -317,23 +255,24 @@ async function main() {
       decisions: judged,
       errors: [],
     });
-    judged.forEach((d, i) => {
-      if (d.decision === "archive") {
-        ledgerEntries.push({
-          key: ledgerKey(items[i]),
-          case: caseDir,
-          date: today,
-          title: d.title,
-          url: d.url,
-          reason: d.reason,
-          triageRun: runId,
-          model: `${provider.name}/${modelUsed}`,
-          promptVersion: PROMPT_VERSION,
-          inputHash,
-          candidateHash: fingerprint(items[i]),
-        });
-      }
-    });
+    judged.forEach((d, i) =>
+      intakeEntries.push({
+        case: caseDir,
+        stage: "watch-triage",
+        decision: d.decision,
+        source: items[i],
+        reason: d.reason,
+        date: today,
+        generatedAt,
+        runId,
+        model: `${provider.name}/${modelUsed}`,
+        promptVersion: PROMPT_VERSION,
+        inputHash,
+        candidateHash: fingerprint(items[i]),
+        details: { watchRunId },
+        ref: `proposals/watch/${watchRunId}/${caseDir}.yaml#items[${i}]`,
+      }),
+    );
 
     const imports = judged.filter((d) => d.decision === "import" && d.url);
     const shelved = judged.filter((d) => d.decision === "shelf");
@@ -386,8 +325,8 @@ async function main() {
     "- Imports only queue a verification request (inbox link drop); the ledger admission rule (a source enters sources.yaml only when an evidence record cites it) is enforced at build time regardless.",
     "- A watch-flagged possible duplicate can never be imported by triage; the guard runs in code.",
     "- Shelf candidates await an agent adding them to the case's resources.yaml.",
-    "- Archived items are also recorded, one line each, in `proposals/watch/archive-ledger.yaml` — the cumulative audit trail that survives run expiry, so omissions can be reviewed later.",
-    `- Fully revertable: delete ${path.relative(ROOT, runDir)}/triage.yaml and any inbox/triage-${watchRunId}-*.md drops.`,
+    "- Every outcome and its reason are retained in the shared `proposals/intake/` history, including failed runs; watch-run expiry does not remove that history.",
+    `- Reconsider with --run ${watchRunId}; prior decisions remain in the history.`,
     "",
   ].join("\n");
 
@@ -397,42 +336,14 @@ async function main() {
     return;
   }
 
-  // If every case failed closed, leave the run unmarked so the next
-  // scheduled triage retries it instead of burying the failure. Exit 0:
-  // triage is an overlay on the maintenance run, and a vendor outage here
-  // must not block the inbox/assessment work that already succeeded.
-  if (caseResults.every((c) => !c.judged)) {
-    console.error(report);
-    console.log(
-      `triage failed closed for every case in ${watchRunId} — nothing written, run stays untriaged`,
-    );
-    return;
-  }
-
-  fs.writeFileSync(
-    path.join(runDir, "triage.yaml"),
-    stringifyYaml({
-      kind: "literature-watch-triage",
-      runId,
-      triageOf: watchRunId,
-      date: today,
-      model: [...modelsUsed].join("; ") || `${provider.name}/${provider.model}`,
-      promptVersion: PROMPT_VERSION,
-      note:
-        "AI-generated triage of discovery-only watch proposals. Imports are " +
-        "queued for verification via inbox link drops; nothing here touches " +
-        "sources.yaml or evidence.yaml. See docs/MAINTENANCE.md.",
-      cases: caseResults,
-    }),
-  );
   fs.writeFileSync(path.join(runDir, "triage.md"), report);
   for (const drop of inboxDrops) {
     fs.writeFileSync(path.join(INBOX_DIR, drop.file), drop.content);
   }
-  const ledgerAdded = appendToLedger(ledgerEntries);
+  const { added: ledgerAdded } = writeIntakeDecisions(ROOT, intakeEntries);
 
   console.error(
-    `\n${runId}: judged ${caseResults.length} case(s) from ${watchRunId}; ${inboxDrops.length} inbox drop(s) queued; ${ledgerAdded} item(s) added to the archive ledger`,
+    `\n${runId}: judged ${caseResults.length} case(s) from ${watchRunId}; ${inboxDrops.length} inbox drop(s) queued; ${ledgerAdded} decision(s) added to durable intake history`,
   );
   console.log(path.relative(ROOT, runDir));
 }

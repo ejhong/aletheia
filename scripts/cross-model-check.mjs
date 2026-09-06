@@ -32,7 +32,7 @@ import { readCaseSnapshot, evidencePacket } from "./lib/case-snapshot.mjs";
 import {
   assessmentHash,
   fingerprint,
-  latestDraft,
+  editionDraft,
 } from "./lib/review-state.mjs";
 import { VENDORS, callVendor } from "./lib/vendors.mjs";
 
@@ -76,10 +76,11 @@ const featuredIds = blind.assessClaimIds;
 const caseRecord = parseYaml(snapshot.files["case.yaml"]);
 const readDraft = () => {
   const dir = path.join(caseDir, "assessments");
-  return latestDraft(
+  return editionDraft(
     (fs.existsSync(dir) ? fs.readdirSync(dir) : [])
       .filter((f) => f.endsWith(".yaml"))
       .map((f) => parseYaml(fs.readFileSync(path.join(dir, f), "utf8"))),
+    snapshot.edition,
   );
 };
 // This reference is stamped by the runner, NEVER sent to the blind assessor.

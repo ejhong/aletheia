@@ -1085,3 +1085,41 @@ provenance inspectable, and describe the assessment that remains. They no
 longer assume that every catalog record was bulk-imported without evidence.
 
 (AI publication-preparation record; normal independent publication gate.)
+
+## 2026-09-06 — Versioned editions with exact assessment references
+
+The first edition authoring path binds an essay, ordered selection, and an
+optional immutable assessment reference in one manifest. This refines the plan
+to enlarge every assessment run: an unassessed opening needs an edition too,
+and reusing an assessment must preserve the original model's authorship. The
+edition is the reader-facing publication unit; assessments remain immutable
+records with their own provenance. Newer unadopted assessment drafts do not
+silently replace the verdict beneath an incumbent essay.
+
+The authoring tools snapshot the incumbent, report the proposed difference,
+validate the complete prospective case, and record proposals in the existing
+intake store. Exact input receipts catch stale work; identical substance rests.
+They materialize a new review directory rather than writing directly to canon.
+Current edition bytes enter review receipts, with an immutable predecessor
+chain and no mutable current pointer. Selection must retain the chosen
+assessment's load-bearing claims. Structural checks complement independent
+editorial review; they do not establish the truth of an interpretation.
+
+Deep Memory's essay is preserved byte for byte as the first saved edition,
+including both plates and its first catalog claim reference, with no invented
+assessment. Readable edition pages expose the preserved essay and assessment;
+their links and image captions use current ledger records, so they are not
+advertised as complete snapshots of past pages. A ledger change leaves the
+incumbent intact with a revision notice and invalidates its old standing.
+
+This is the model-free authoring foundation, not yet an automated edition
+drafter or tournament. The older article patcher and contested reconciliation
+retain versioned incumbents; other cases keep their existing workflows until
+the edition writer is ready. The next integration brings inbox and watch onto
+the common research envelope, then joins accepted ledger changes to drafting
+and review under shared spend controls before unattended Expedition browsing.
+The $1 source-reader allowance remains per manual run, excluding the existing
+panel and other workers. No schedule, budget default, or publication threshold
+changes here; the panel stays enabled.
+
+(AI implementation record for the authorized research-edition migration.)

@@ -8,7 +8,7 @@ import {
   REVIEW_MIN_PANEL,
   currentChecks,
   fingerprint,
-  latestDraft,
+  editionDraft,
   missingReviewCoverage,
 } from "./lib/review-state.mjs";
 
@@ -20,8 +20,8 @@ for (const dir of fs.readdirSync(CASES)) {
   const runs = (fs.existsSync(adir) ? fs.readdirSync(adir) : [])
     .filter((f) => f.endsWith(".yaml"))
     .map((f) => parse(fs.readFileSync(path.join(adir, f), "utf8")));
-  const draft = latestDraft(runs);
   const snapshot = readCaseSnapshot(caseDir);
+  const draft = editionDraft(runs, snapshot.edition);
   const packet = evidencePacket(snapshot.files);
   // A question with no evidence is an honest starting point, not a reason
   // to pay five models to manufacture an assessment.

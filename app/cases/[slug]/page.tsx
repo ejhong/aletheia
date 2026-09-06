@@ -120,6 +120,15 @@ export default async function CasePage({
 
       <div className="mx-auto max-w-6xl px-5">
         <section id="article" className="pt-10 sm:pt-14 scroll-mt-32">
+          {view.editionStale ? (
+            <p className="mx-auto mb-5 max-w-[46rem] border-l-2 border-copper pl-4 text-[13px] text-ink-soft">
+              The ledger has changed since this edition. Its essay and assessment
+              are retained together while a revision is prepared.{" "}
+              <Link href={`/cases/${slug}/evidence/`} className="text-copper underline underline-offset-4">
+                Inspect the current evidence
+              </Link>.
+            </p>
+          ) : null}
           <p className="mx-auto mb-7 max-w-[46rem] font-mono text-[10px] uppercase tracking-[0.14em] text-faint">
             {view.isStarting
               ? "A question before an answer"
@@ -403,6 +412,22 @@ export default async function CasePage({
                 : " · no assessment"}
             </p>
           </details>
+          {loaded.editions.length > 0 ? (
+            <details className="edition-disclosure mt-3">
+              <summary>Read saved editions ({loaded.editions.length})</summary>
+              <ol className="py-4 space-y-4">
+                {[...loaded.editions].reverse().map((edition, index) => (
+                  <li key={edition.runId}>
+                    <Link href={`/cases/${slug}/editions/${edition.runId}/`}
+                      className="font-serif text-lg text-copper underline underline-offset-4">
+                      {edition.generatedAt.slice(0, 10)}{index === 0 ? " · current edition" : ""}
+                    </Link>
+                    <p className="mt-1 max-w-3xl text-[13px] text-ink-soft">{edition.rationale}</p>
+                  </li>
+                ))}
+              </ol>
+            </details>
+          ) : null}
         </section>
       </div>
     </div>

@@ -50,7 +50,7 @@ function GenealogyLine({ genealogy }: { genealogy: ClaimGenealogy }) {
 function allLiveClaims(): { claim: Claim; loaded: LoadedCase }[] {
   return loadAllCases().flatMap((loaded) =>
     [
-      ...caseView(loaded).featured,
+      ...caseView(loaded).allFeatured,
       ...liveClaims(loaded).filter((c) => !isFeatured(c)),
     ].map((claim) => ({ claim, loaded })),
   );
@@ -209,7 +209,7 @@ export default async function ClaimPage({
     return <CatalogClaimView claim={claim} loaded={loaded} />;
   }
   const view = caseView(loaded);
-  const displayedClaim = view.featured.find((c) => c.id === id)!;
+  const displayedClaim = view.allFeatured.find((c) => c.id === id)!;
   const claims = liveClaims(loaded);
   const claimById = new Map(claims.map((c) => [c.id, c]));
   const sourceById = new Map(loaded.sources.map((s) => [s.id, s]));

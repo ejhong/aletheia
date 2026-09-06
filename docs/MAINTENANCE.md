@@ -35,13 +35,39 @@ new directory for inspection. Neither publishes. Adoption still needs an
 ordinary PR, a fresh basis check, and the normal gate. A partial run may contain
 useful independently checked records; inspect its failed source outcomes too.
 
+Manual edition authoring (Node 22.18+, no API key or model call):
+
+```sh
+node scripts/prepare-edition.ts deep-memory > /tmp/edition-candidate.yaml
+node scripts/review-edition.ts /tmp/edition-candidate.yaml
+node scripts/review-edition.ts /tmp/edition-candidate.yaml --record
+node scripts/review-edition.ts /tmp/edition-candidate.yaml --materialize /tmp/edition-review
+```
+
+Preparation copies the incumbent, retaining the original assessment reference.
+To revise it, author the candidate and update its model/author and protocol
+stamp accurately. Review reports changed selection, removed claim references
+and plates, and whether the essay or assessment changed. It rejects stale
+inputs, missing references, invalid assessment bindings, and broken history;
+unchanged candidates can be recorded but cannot produce a replacement edition.
+The materialization directory must not exist. Inspect it, recheck the candidate
+basis against current main, and adopt the new edition and any new assessment
+together in an ordinary PR. The first adoption also removes `overview.md`;
+append a case changelog entry in the same PR. No command publishes directly.
+
+Deep Memory is the first migrated case. Its current assessment is pinned by the
+edition, or explicitly absent. Legacy reassessment can still produce candidate
+overlays but skips its old article patcher for migrated cases. Legacy contested
+reconciliation retains the incumbent; the automated edition drafter remains
+to build before assessed cases migrate. Keep the panel enabled throughout.
+
 Every change reaches `main` through the same gate: **classifier → panel →
 merge policy**. There are two lanes.
 
 | Lane | What qualifies | What happens |
 | --- | --- | --- |
 | `auto:low-risk` | Reversible-by-runId material that touches no featured content: `proposals/**`, `inbox/**` moves, **new** append-only `assessments/*.yaml` overlays, new harvested `governance/arbiter/pr-*.yaml` verdicts, append-only catalog claims and sources. | `PR risk check` re-derives the class from the diff, labels the PR, and arms auto-merge. Merges when CI is green. |
-| `needs-approval` | Everything else: featured claims, article text, case records, research items, studies, code, workflows, docs. | The `arbiter` check convenes five vendor seats; **pass** = ≥4 `complies` and zero `violates`. A pass auto-merges. Anything else parks the PR, publicly, until revised or a seat is restored. |
+| `needs-approval` | Everything else: featured claims, article text, new or changed editions, case records, research items, studies, code, workflows, docs. | The `arbiter` check convenes five vendor seats; **pass** = ≥4 `complies` and zero `violates`. A pass auto-merges. Anything else parks the PR, publicly, until revised or a seat is restored. |
 
 Six workflows do the work:
 
@@ -59,8 +85,9 @@ Plus `CI` (typecheck, lint, test, build) and `Deploy` on every push to
 claims, `docs/EXTRACTION_PIPELINE.md`) and `Generate case art`
 (`docs/IMAGE_STYLE.md`).
 
-**Standing is derived, never stored.** The case page always shows the
-latest draft assessment, stamped `ratified` / `contested` / `unratified`
+**Standing is derived, never stored.** The case page shows the assessment
+chosen by its current edition, or the latest draft on a legacy case,
+stamped `ratified` / `contested` / `unratified`
 from the blind check runs at build time. Nothing can raise standing except
 fresh concurrence from separate vendors on the exact content snapshot and
 displayed draft; new content or a changed draft invalidates prior receipts.

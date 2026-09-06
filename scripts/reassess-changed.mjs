@@ -589,6 +589,10 @@ async function main() {
     // the article and research agenda against the same ledger and correct
     // them. These edits touch featured content, so the risk classifier
     // routes the PR to human approval — nothing here publishes itself.
+    if (readCaseSnapshot(path.join(CASES_DIR, caseDir)).edition) {
+      digest.push(`  - assessment draft recorded for the next edition; the incumbent essay and its selected assessment remain together.`);
+      continue;
+    }
     let audit;
     try {
       audit = await auditEditorialLayer(caseDir, bundle, draft);

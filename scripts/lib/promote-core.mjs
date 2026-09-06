@@ -86,6 +86,8 @@ export function evidenceDraftErrors(draft, { claimIds, fetchedText }) {
   )
     errors.push("sourceStatement missing or too thin");
   else {
+    if (![...draft.sourceStatement.matchAll(/[“"]([^”"]{12,})[”"]/g)].length)
+      errors.push("sourceStatement requires a quoted source passage");
     const bad = unverifiedQuotes(draft.sourceStatement, fetchedText);
     for (const q of bad)
       errors.push(`quote not found verbatim in source: "${q.slice(0, 60)}…"`);

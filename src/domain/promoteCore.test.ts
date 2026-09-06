@@ -86,6 +86,9 @@ describe("promotion pipe core", () => {
     };
     expect(evidenceDraftErrors(base, ctx)).toEqual([]);
     expect(
+      evidenceDraftErrors({ ...base, sourceStatement: "An unsupported paraphrase with no quotation from the actual source." }, ctx),
+    ).toContain("sourceStatement requires a quoted source passage");
+    expect(
       evidenceDraftErrors({ ...base, claimIds: ["TRN-C999"] }, ctx),
     ).toContain("unknown claim TRN-C999");
     expect(

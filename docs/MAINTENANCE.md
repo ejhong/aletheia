@@ -11,6 +11,30 @@ constitution (`AGENTS.md`). Everything else below runs without a human.
 
 ## 1. The machine on one page
 
+Manual source-reading pilot (Node 22.18+ and `OPENAI_API_KEY`):
+
+```sh
+node scripts/research-sources.ts deep-memory <public-https-url> [second-url]
+node scripts/review-research-proposal.ts <proposal.yaml>
+node scripts/review-research-proposal.ts <proposal.yaml> --materialize <new-directory>
+```
+
+The reader accepts at most two HTML/text sources and four model calls, with a
+four-minute deadline and a $1 research allowance per run at the explicit rate
+card in `scripts/lib/bounded-model.mjs`. Confirm current rates there before a
+new operating period. The allowance includes the separate source-reading call;
+it excludes the ordinary PR arbiter and other existing workers. No scheduler is
+installed. Source failures, refusals, and budget exhaustion are recorded in
+`proposals/intake/`; local in-progress liability receipts live in the ignored
+`.research-runs/` directory. Unknown token usage keeps its full reservation.
+
+The common envelope is the `research` field of a `research-proposal` decision.
+Save that field as the proposal file for the review command. `--record` appends
+a validated proposal to intake; `--materialize` writes a prospective case to a
+new directory for inspection. Neither publishes. Adoption still needs an
+ordinary PR, a fresh basis check, and the normal gate. A partial run may contain
+useful independently checked records; inspect its failed source outcomes too.
+
 Every change reaches `main` through the same gate: **classifier → panel →
 merge policy**. There are two lanes.
 

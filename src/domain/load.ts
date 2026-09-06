@@ -14,7 +14,7 @@ import {
   latestDraft,
   missingReviewCoverage,
 } from "../../scripts/lib/review-state.mjs";
-import { extractClaimRefs, extractPlateRefs } from "./article";
+import { extractClaimRefs, extractPlateRefs } from "./article.ts";
 import {
   assessmentLabels,
   AssessmentRunSchema,
@@ -48,8 +48,8 @@ import {
   type Study,
   type NarrativeInput,
   type WatchConfig,
-} from "./schema";
-import { studyIntegrityErrors } from "./studies";
+} from "./schema.ts";
+import { studyIntegrityErrors } from "./studies.ts";
 
 const CONTENT_DIR = path.join(process.cwd(), "content", "cases");
 const SITE_IMAGES_FILE = path.join(process.cwd(), "content", "images.yaml");

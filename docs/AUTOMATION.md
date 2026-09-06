@@ -84,16 +84,46 @@ scheduled research worker.
 | 1 | Shared case view; exact review receipts | Implemented in PR #172. Essay references, claim cards, ladder, and claim detail read the displayed draft's grades. Only a full panel on the exact current content and draft can ratify; historical reviews remain available. |
 | 2 | Essay-first reading experience | Implemented in PR #172. Short frontispiece, inspectable claims with ordinary-link fallback, supporting detail in disclosures, mobile claim sheet. Existing essays and evidence are preserved. |
 | 3 | Blank-topic starting path | Implemented in PR #172. `start-case.mjs` creates an incubating proposal from a question, with no invented evidence, priority, or review. The production loader and view accept it; judgment runners skip it until it has assessable evidence. This tests startup, not autonomous discovery. |
-| 4 | Shared proposal memory and intake diff | Shared identity and durable decision history implemented for watch triage, promotion, and agenda generation/scoring. Legacy stores migrate with replay checks; prior reasons survive cleanup, and revised proposals can retain their title. Next: the common change-proposal envelope and semantic/evidence diffs for other record kinds. |
-| 5 | Bounded research and source-reading checks | Retrieve primary passages and dependency context; propose small verified changes. Test incorrect quotation use, sample reuse, search misses, and refusal/budget exhaustion. Watch feeds alone do not cover archives, grants, museum records, or reports. |
+| 4 | Shared proposal memory and intake diff | Durable history for watch, promotion, and agenda; a common change envelope now validates bundles and before/after edits through the production loader, including empty topics. Source identity and identical wording are mechanical; semantic overlap remains a review question. Older producers still need adapters to the common envelope. |
+| 5 | Bounded research and source-reading checks | A manual reader accepts up to two public HTML/text URLs, drafts narrow observations, and obtains a separate reading check, with explicit source/request/token/time/spend limits. Failed retrievals remain visible. Broad discovery, PDF/OCR, and shared research-plus-publication budgeting remain to build. |
 | 6 | Versioned edition drafting | Extend the existing append-only assessment artifact with selection and essay references, using the shared view as the compatibility boundary. Migrate one case, preserving its incumbent and history. Blind assessment precedes inspection of the candidate edition; prose remains behind the consequential-content gate. |
 | 7 | Pilot, measure, and widen | Exercise geopolymer, transients, and Deep Memory, the founder-selected question-only topic about shared symbols and myths (`proposals/topics/deep-memory/`). Its scope is informed by the birdmen project, so an empty ledger must not be described as blind rediscovery. Compare accepted changes and reading quality with the incumbent, under a single enforced budget covering research and review. The archived chats are design references and a possible held-out discovery benchmark, not an import queue. Expand only after unattended runs improve actual cases. |
 
 The first two steps deliberately do not relocate every editorial field.
 Diagnosticity, component judgments, framing, and selection still originate
 in legacy records and are labeled as recorded interpretation in the UI.
-`CaseView` is the migration boundary. The unified edition writer, retrieval
-checks, general change proposals, and spend accounting are still to build.
+`CaseView` is the migration boundary. The unified edition writer and aggregate
+research-plus-publication accounting are still to build. The manual reader's
+local budget is not that aggregate budget.
+
+### First source-reading trial
+
+`research-sources.ts` is a manual adapter, not a new scheduled loop. It reads
+supplied public sources, the current ledger, and recent intake reasons. A
+drafting model proposes one local observation per source; a different model
+checks the metadata, proposition, paraphrase, inference boundary, caveats, and
+independence against the retrieved text. Both are OpenAI models in this first
+adapter; this is a separate reading, not cross-vendor concurrence. The normal
+publication arbiter and assessment-standing rules remain separate.
+
+The source limit is two, the model-call limit four, the output-token limit 6,000
+per call, the deadline four minutes, and the research allowance $1 per manual
+run at the explicit standard-tier rate card. Full input-context liability is
+reserved before each request; returned usage replaces the reservation with an
+uncached tariff estimate. Unknown usage retains its reservation and stops paid
+work. There are no tool calls, hidden retries, or fallback models. These are
+per-run research controls, not an invoice or a shared limit on existing workers,
+the PR arbiter, or artwork generation. Do not schedule or widen this adapter
+until aggregate allocation covers those costs too.
+
+The Deep Memory trial began with an empty ledger and two supplied primary-source
+leads. It produced a three-record Source/Claim/Evidence proposal from the
+excavation project's Pillar 43 account. The Met returned HTTP 429 and contributes
+no automatically verified observation. The final run kept the checked bundle
+and recorded the retrieval failure, with $0.014834 estimated from returned model
+usage. Earlier request failures and the first discarded partial run remain in
+history. This demonstrates bounded source intake, not autonomous rediscovery,
+semantic saturation, or a judgment that the shared-inheritance hypothesis holds.
 
 ### Durable intake history
 
@@ -140,7 +170,7 @@ they differ from directory names.
 Watch-run expiry no longer erases a triage decision. Failed watch cases stay
 due, and promotion runs save their outcomes even when no source is imported.
 The existing schedules, promotion budgets, and one-cycle adoption boundary
-remain. General change proposals, discovery/retrieval coverage, source revision
+remain. Broad discovery/retrieval coverage, source revision
 monitoring, and aggregate spend enforcement are subsequent work; this cutover
 does not claim that every research or drafting action is already recorded here.
 

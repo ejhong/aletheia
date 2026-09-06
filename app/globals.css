@@ -42,7 +42,7 @@ body {
 }
 
 /* Editorial prose defaults for the article body */
-.article-prose p {
+.article-prose .article-block > p {
   font-family: var(--font-serif);
   font-size: 1.155rem;
   line-height: 1.72;
@@ -103,5 +103,45 @@ body {
   * {
     animation: none !important;
     transition: none !important;
+  }
+}
+
+/* A single, inspectable layer over the essay. The browser manages modal focus. */
+.claim-dialog {
+  width: min(36rem, calc(100vw - 2rem));
+  max-height: min(88dvh, 54rem);
+  margin: auto;
+  padding: 1.5rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  border: 1px solid var(--color-line);
+  box-shadow: 0 1.5rem 5rem #17131030;
+}
+.claim-dialog::backdrop {
+  background: #17131055;
+}
+.edition-disclosure {
+  border-block: 1px solid var(--color-line);
+  padding-block: 1rem;
+}
+.edition-disclosure > summary {
+  cursor: pointer;
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+}
+:focus-visible {
+  outline: 2px solid var(--color-copper);
+  outline-offset: 4px;
+}
+@media (max-width: 639px) {
+  .claim-dialog {
+    width: 100%;
+    max-width: none;
+    max-height: 85dvh;
+    margin: auto 0 0;
+    padding: 1.25rem;
+    border-radius: 1rem 1rem 0 0;
   }
 }

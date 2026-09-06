@@ -45,6 +45,12 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${newsreader.variable} ${plexMono.variable}`}>
       <body className="min-h-screen flex flex-col">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:bg-paper focus:p-3"
+        >
+          Skip to content
+        </a>
         <header className="sticky top-0 z-20 border-b border-line bg-paper">
           <div className="mx-auto max-w-6xl px-5 py-4 flex items-baseline justify-between gap-6">
             <Link href="/" className="group flex items-baseline gap-3">
@@ -55,12 +61,15 @@ export default function RootLayout({
                 evidence atlas
               </span>
             </Link>
-            <nav className="flex items-baseline gap-6">
+            <nav
+              aria-label="Main navigation"
+              className="flex items-baseline gap-3 sm:gap-6"
+            >
               {site.nav.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="font-mono text-[12px] uppercase tracking-[0.16em] text-ink-soft hover:text-copper"
+                  className="font-mono text-[10px] sm:text-[12px] uppercase tracking-[0.08em] sm:tracking-[0.16em] text-ink-soft hover:text-copper"
                 >
                   {item.label}
                 </Link>
@@ -68,7 +77,9 @@ export default function RootLayout({
             </nav>
           </div>
         </header>
-        <main className="flex-1">{children}</main>
+        <main id="main-content" className="flex-1">
+          {children}
+        </main>
         <footer className="border-t border-line mt-20">
           <div className="mx-auto max-w-6xl px-5 py-10 flex flex-col sm:flex-row justify-between gap-6">
             <div>
@@ -78,7 +89,10 @@ export default function RootLayout({
               </p>
             </div>
             <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-faint self-end">
-              <Link href="/panel" className="hover:text-copper underline underline-offset-4 decoration-line">
+              <Link
+                href="/panel"
+                className="hover:text-copper underline underline-offset-4 decoration-line"
+              >
                 AI-operated
               </Link>{" "}
               · content versioned in git · provenance on every record

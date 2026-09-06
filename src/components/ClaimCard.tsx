@@ -1,3 +1,4 @@
+import type { FeaturedClaimView } from "@/src/domain/caseView";
 import Link from "next/link";
 import { AssessmentBadge } from "./AssessmentBadge";
 import { ProvenanceBadge } from "./ProvenanceBadge";
@@ -5,10 +6,9 @@ import {
   assessmentStateCaptions,
   claimTypeCaptions,
   rungLabels,
-  type FeaturedClaim,
 } from "@/src/domain/schema";
 
-export function ClaimCard({ claim }: { claim: FeaturedClaim }) {
+export function ClaimCard({ claim }: { claim: FeaturedClaimView }) {
   return (
     <Link
       href={`/claims/${claim.id}/`}
@@ -38,6 +38,11 @@ export function ClaimCard({ claim }: { claim: FeaturedClaim }) {
           diagnosticity: {claim.diagnosticity}
         </span>
       </div>
+      <p className="mt-2 text-[11px] text-faint">
+        {claim.assessment
+          ? `AI assessment · ${claim.assessment.standing}`
+          : "Assessment recorded with the claim"}
+      </p>
       {claimTypeCaptions[claim.claimType] ? (
         <p className="mt-1.5 font-mono text-[10px] tracking-[0.06em] text-faint">
           ⚠ {claimTypeCaptions[claim.claimType]}

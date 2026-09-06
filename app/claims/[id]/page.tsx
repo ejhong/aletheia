@@ -1,3 +1,4 @@
+import { caseView } from "@/src/domain/caseView";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -48,7 +49,10 @@ function GenealogyLine({ genealogy }: { genealogy: ClaimGenealogy }) {
 
 function allLiveClaims(): { claim: Claim; loaded: LoadedCase }[] {
   return loadAllCases().flatMap((loaded) =>
-    liveClaims(loaded).map((claim) => ({ claim, loaded })),
+    [
+      ...caseView(loaded).featured,
+      ...liveClaims(loaded).filter((c) => !isFeatured(c)),
+    ].map((claim) => ({ claim, loaded })),
   );
 }
 
@@ -121,7 +125,9 @@ function CatalogClaimView({
               origin: {claim.origin.ref}
             </span>
           </div>
-          {claim.genealogy ? <GenealogyLine genealogy={claim.genealogy} /> : null}
+          {claim.genealogy ? (
+            <GenealogyLine genealogy={claim.genealogy} />
+          ) : null}
         </div>
       </section>
 
@@ -151,16 +157,15 @@ function CatalogClaimView({
             an honest empty state
           </h2>
           <p className="mt-2.5 text-[14.5px] leading-relaxed text-ink-soft max-w-3xl">
-            This claim sits in the unreviewed catalog: it was extracted from
-            the source literature and imported in bulk, with no individual
-            human review and no editorial workup yet. Nothing here has been
-            assessed — that absence is information, not an oversight.
+            This claim sits in the unreviewed catalog: it was extracted from the
+            source literature and imported in bulk, with no individual human
+            review and no editorial workup yet. Nothing here has been assessed —
+            that absence is information, not an oversight.
           </p>
           <p className="mt-3 text-[14px] leading-relaxed text-ink-soft max-w-3xl">
-            Still missing: {missing.join(", ")}. Promotion to featured
-            treatment is a one-field edit (<code>tier: featured</code>) —
-            after which the build fails loudly until each of those fields is
-            supplied.
+            Still missing: {missing.join(", ")}. Promotion to featured treatment
+            is a one-field edit (<code>tier: featured</code>) — after which the
+            build fails loudly until each of those fields is supplied.
           </p>
         </section>
       </div>
@@ -180,6 +185,8 @@ export default async function ClaimPage({
   if (!isFeatured(claim)) {
     return <CatalogClaimView claim={claim} loaded={loaded} />;
   }
+  const view = caseView(loaded);
+  const displayedClaim = view.featured.find((c) => c.id === id)!;
   const claims = liveClaims(loaded);
   const claimById = new Map(claims.map((c) => [c.id, c]));
   const sourceById = new Map(loaded.sources.map((s) => [s.id, s]));
@@ -258,7 +265,9 @@ export default async function ClaimPage({
               origin: {claim.origin.ref}
             </span>
           </div>
-          {claim.genealogy ? <GenealogyLine genealogy={claim.genealogy} /> : null}
+          {claim.genealogy ? (
+            <GenealogyLine genealogy={claim.genealogy} />
+          ) : null}
         </div>
       </section>
 
@@ -285,10 +294,15 @@ export default async function ClaimPage({
             <p className="mt-3 text-[14px] leading-relaxed text-ink-soft">
               <LinkedRecordText text={claim.credibilitySummary} />
             </p>
+            <p className="mt-3 text-[12px] text-faint">
+              {displayedClaim.assessment
+                ? `AI assessment · ${displayedClaim.assessment.date} · ${displayedClaim.assessment.standing}`
+                : "Assessment recorded with the claim; absent from the current draft"}
+            </p>
           </div>
           <div className="bg-paper p-5">
             <h2 className="font-mono text-[11px] uppercase tracking-[0.18em] text-faint">
-              diagnosticity — how much does it decide the thesis?
+              recorded diagnosticity — how much does it decide the thesis?
             </h2>
             <p className="mt-2.5 font-mono text-[13px] uppercase tracking-[0.14em] text-copper">
               {claim.diagnosticity}
@@ -412,13 +426,18 @@ export default async function ClaimPage({
             </p>
             <div className="mt-4 space-y-3">
               {assessmentHistory.map(({ run, entry }) => (
-                <div key={run.runId} className="border border-line bg-paper p-4">
+                <div
+                  key={run.runId}
+                  className="border border-line bg-paper p-4"
+                >
                   <div className="flex flex-wrap items-center gap-3">
                     <AssessmentBadge state={entry!.verdict} />
                     <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-faint">
                       confidence: {entry!.confidence} · {run.model} · run{" "}
                       {run.runId} ·{" "}
-                      {run.humanReviewed ? "human-reviewed" : "unreviewed draft"}
+                      {run.humanReviewed
+                        ? "human-reviewed"
+                        : "unreviewed draft"}
                     </span>
                   </div>
                   <p className="mt-2 text-[14px] leading-relaxed text-ink-soft">

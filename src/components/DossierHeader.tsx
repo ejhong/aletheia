@@ -74,13 +74,13 @@ export function DossierHeader({
             </a>
           </div>
           {cover ? (
-            <div className="hidden sm:block">
+            <div className="mx-auto w-full max-w-sm sm:max-w-none">
               <div className="border border-dossier-line bg-paper p-1.5">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={assetPath(cover.file)}
                   alt={cover.alt}
-                  className="block aspect-square w-full object-cover"
+                  className="block aspect-video w-full object-cover sm:aspect-square"
                 />
               </div>
               <ArtCredit className="mt-2 block text-dossier-faint" />

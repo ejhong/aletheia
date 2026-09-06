@@ -468,3 +468,14 @@ loader, every new mechanism a tested script in `scripts/lib`, budgets in
 one config, engine work upstream here and synced downstream. Machine
 artifacts declare their lifecycle (status, expiry, surviving record) from
 their first run — no more folders a reader cannot date.
+
+## Historical source decisions staged for review
+
+Before the durable-intake cutover, an immutable batch preserves 39 source
+decisions from the committed watch, triage, and promotion records. It includes
+a previously skipped failed triage case. Duplicate archive/report copies are
+attached as provenance for one decision, with original rows and committed
+locators retained; unknown metadata remains unknown. The original files remain
+present and authoritative during staging. This batch changes no worker,
+research record, or public assessment. The later cutover will switch readers
+only after the historical batches have passed review in full.

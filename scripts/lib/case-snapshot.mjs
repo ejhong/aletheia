@@ -3,6 +3,7 @@ import path from "node:path";
 import { parse } from "yaml";
 import { fingerprint } from "./review-state.mjs";
 import { readEditions } from "./edition-files.mjs";
+import { claimAssessmentIds } from "./claim-assessment-scope.mjs";
 
 /** Resolve a directory name or public slug without assuming they are identical. */
 export function resolveCaseDirectory(root, key) {
@@ -96,9 +97,7 @@ export function evidencePacket(files) {
       question: record.whatIsClaimed,
       themes: record.themes,
     },
-    assessClaimIds: claims
-      .filter((c) => (c.tier ?? "featured") === "featured" || selected.includes(c.id))
-      .map((c) => c.id),
+    assessClaimIds: claimAssessmentIds(claims, selected),
     claims: claims.map((c) => ({
       id: c.id,
       statement: c.statement,

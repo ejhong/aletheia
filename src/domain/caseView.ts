@@ -1,6 +1,7 @@
 import { catalogClaims, displayAssessment, liveClaims, lastContentUpdate } from "./load";
 import { isFeatured, type AssessmentRun, type Claim, type FeaturedClaim, type LoadedCase } from "./schema";
 import type { RatificationStatus } from "./load";
+import { claimAssessmentIds } from "../../scripts/lib/claim-assessment-scope.mjs";
 
 /** A display projection. The underlying proposition and its history never change. */
 export type FeaturedClaimView = FeaturedClaim & {
@@ -44,8 +45,10 @@ function claimView(
 export function caseView(loaded: LoadedCase) {
   const shown = displayAssessment(loaded);
   const edition = loaded.editions.at(-1) ?? null;
+  const assessed = new Set(claimAssessmentIds(loaded.claims, edition?.featuredClaimIds));
   const allFeatured = liveClaims(loaded).flatMap(claim => {
-    const view = claimView(claim, shown?.run ?? null, shown?.ratification.status ?? "unratified", Boolean(edition));
+    const view = claimView(claim, shown?.run ?? null, shown?.ratification.status ?? "unratified",
+      Boolean(edition && assessed.has(claim.id)));
     return view ? [view] : [];
   });
   const catalog = catalogClaims(loaded).filter(claim => !allFeatured.some(view => view.id === claim.id));

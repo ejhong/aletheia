@@ -95,6 +95,20 @@ function catalogFixture() {
   return { root, dir, proposal, assessment };
 }
 
+function installConcurrence(dir: string, assessment: AssessmentRun) {
+  const loaded = loadCase(dir);
+  const scope = evidencePacket(readCaseSnapshot(dir).files).assessClaimIds;
+  for (const seat of ["alpha", "beta", "gamma", "delta"]) {
+    fs.writeFileSync(path.join(dir, `assessments/check-${seat}.yaml`), stringify({
+      ...assessment, runId: `check-${seat}`, role: "check", model: `${seat} (Vendor-${seat})`,
+      claimAssessments: assessment.claimAssessments.filter(a => scope.includes(a.claimId))
+        .map(({ treatment: ignored, ...a }) => { void ignored; return a; }),
+      review: { protocol: "case-snapshot-v1", contentHash: loaded.contentHash,
+        assessmentHash: assessmentHash(assessment), packetHash: loaded.reviewPacketHash },
+    }));
+  }
+}
+
 describe("assessment-owned claim interpretation", () => {
   it("features a catalog observation through its edition without rewriting the proposition or provenance", () => {
     const { root, dir, proposal } = catalogFixture();
@@ -198,6 +212,17 @@ describe("assessment-owned claim interpretation", () => {
       { cwd: root, encoding: "utf8" }));
     expect(report.packet.assessClaimIds).toEqual(["TST-C002"]);
 
+    // A carried-over treatment outside this edition's scope must not inherit
+    // its standing. The independent checks here grade only the new selection.
+    installConcurrence(dir, second.assessment);
+    const loaded = loadCase(dir);
+    const view = caseView(loaded);
+    expect(ratification(loaded)?.status).toBe("ratified");
+    expect(view.allFeatured.map(c => c.id)).toEqual(["TST-C002"]);
+    expect(view.catalog.map(c => c.id)).toEqual(["TST-C001"]);
+    expect(loaded.assessmentRuns.find(run => run.runId === second.assessment!.runId)
+      ?.claimAssessments.find(a => a.claimId === "TST-C001")?.treatment).toEqual(treatment);
+
     const oldFile = `editions/${proposal.edition.runId}.yaml`;
     const ambiguous = { [oldFile]: fs.readFileSync(path.join(dir, oldFile), "utf8"), ...snapshot.files };
     expect(() => evidencePacket(ambiguous)).toThrow(/only the current edition/);
@@ -208,15 +233,7 @@ describe("assessment-owned claim interpretation", () => {
   it("requires fresh concurrence after an edition changes interpretation while preserving the earlier assessment", () => {
     const { root, dir, proposal, assessment } = catalogFixture();
     install(root, dir, proposal);
-    const loaded = loadCase(dir);
-    for (const seat of ["alpha", "beta", "gamma", "delta"]) {
-      fs.writeFileSync(path.join(dir, `assessments/check-${seat}.yaml`), stringify({
-        ...assessment, runId: `check-${seat}`, role: "check", model: `${seat} (Vendor-${seat})`,
-        claimAssessments: assessment.claimAssessments.map(({ treatment: ignored, ...a }) => { void ignored; return a; }),
-        review: { protocol: "case-snapshot-v1", contentHash: loaded.contentHash,
-          assessmentHash: assessmentHash(assessment), packetHash: loaded.reviewPacketHash },
-      }));
-    }
+    installConcurrence(dir, assessment);
     expect(ratification(loadCase(dir))?.status).toBe("ratified");
     const revised = next(root);
     revised.assessment = { ...assessment, runId: "reinterpreted", generatedAt: "2026-09-06T11:30:00.000Z",

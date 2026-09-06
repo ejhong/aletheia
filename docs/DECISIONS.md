@@ -1191,8 +1191,11 @@ do not lengthen the default reading view. Nothing supplies human provenance or
 ratification by default.
 
 The case page, explorer, and claim detail use one joined view. An interpreted
-claim appears once in the complete explorer and in the edition's selected set
-when featured. Human-review coverage counts the selected ledger records, not
+catalog claim appears once when selected. Current interpretation and independent
+grading share one claim scope: legacy featured records plus the current
+edition's selected IDs. A carried-over catalog treatment outside that scope
+remains in history and cannot inherit current standing, including after a newer
+edition is ratified. Human-review coverage counts the selected ledger records, not
 the AI's grading. Blind packets add selected catalog IDs to the grading scope
 in ledger order, include every live proposition, and exclude the interpretation,
 essay, and grades. Existing exact assessment/content receipts require fresh

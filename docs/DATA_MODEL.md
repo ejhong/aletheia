@@ -188,8 +188,11 @@ timestamped draft when supplied. It cannot contain ledger fields such as
 
 Only an edition's selected assessment supplies treatment to the current view.
 Without it, legacy featured claims retain their existing editorial fields;
-catalog claims remain catalog entries. An adopted treatment can give a catalog
-claim full presentation without changing its stored tier or any ledger bytes.
+catalog claims remain catalog entries. An adopted treatment gives a catalog
+claim full presentation when the edition selects it, without changing its
+stored tier or any ledger bytes. Display and independent grading share one
+claim scope. An unselected catalog treatment stays in history and cannot
+inherit the edition's standing.
 The joined view supplies credibility from that assessment's verdict/reasoning
 and the other evaluative fields from treatment. Unadopted drafts remain
 inspectable in claim assessment history, with their original authorship.

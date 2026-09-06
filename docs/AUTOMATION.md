@@ -128,7 +128,10 @@ claim without treatment fails validation. Its proposition, anchor, origin,
 independence group, and stored tier remain intact.
 
 The case page, explorer, and claim detail share that joined view, with each
-claim appearing once. History preserves earlier interpretations in disclosures.
+claim appearing once. Displayed treatments and independent grading share one
+claim scope: legacy featured records plus the current edition's selected IDs.
+An unselected catalog treatment remains in history without inheriting the
+edition's standing. History preserves earlier interpretations in disclosures.
 The blind packet includes all live propositions and adds newly selected catalog
 IDs to its grading scope, in ledger order. It excludes treatment, prose, and
 grades. Existing assessment/content receipt checks require fresh concurrence

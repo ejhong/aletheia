@@ -7,6 +7,7 @@ import { ResearchProposalSchema, type ResearchProposal, type RecordKind } from "
 import type { LoadedCase } from "../../src/domain/schema.ts";
 import { fingerprint } from "./review-state.mjs";
 import { exactSourceMatch } from "./source-identity.mjs";
+import { nearDuplicateOf } from "./watch-matching.mjs";
 import { readIntakeDecisions, writeIntakeDecisions } from "./intake-store.mjs";
 
 /** Directory names and public slugs both work; incubating topics use the
@@ -89,6 +90,8 @@ export function validateResearchProposal(root: string, raw: unknown, outputDir?:
     if (change.kind === "source" && !existing) {
       const same = exactSourceMatch(change.after, before.sources);
       if (same) throw new Error(`source already exists: ${same.source.id}; propose its new observation instead`);
+      const near = nearDuplicateOf(change.after, before.sources);
+      if (near) warnings.push(`${change.recordId} resembles the title of ${near.id}; inspect whether these are versions of the same work`);
     }
     // Existing authority cannot be minted by an extraction proposal. Human
     // material may be corrected only in a visibly AI-proposed record.

@@ -26,6 +26,7 @@ import {
 } from "../../scripts/lib/intake-memory.mjs";
 import { resolveCaseDirectory } from "../../scripts/lib/case-snapshot.mjs";
 import { migrateIntake } from "../../scripts/migrate-intake.mjs";
+import { topicSeed } from "../../scripts/lib/topic-seed.mjs";
 
 const roots: string[] = [];
 afterEach(() =>
@@ -167,11 +168,11 @@ describe("durable intake history", () => {
     ).toBe(false);
   });
 
-  it("records a zero-promotion run and rests the same unchanged attempt on retry", () => {
+  it("records a zero-result reading and rests the same unchanged request on retry", () => {
     const { root, write } = fixture();
-    write("content/cases/alpha/sources.yaml", [
-      { id: "SRC-FIXTURE", ...source },
-    ]);
+    for (const [file, value] of Object.entries(topicSeed({ id: "TST-001", slug: "alpha", title: "Synthetic fixture",
+      question: "Does this synthetic source add an observation?", domain: "Tests only", date: "2026-09-06" })))
+      fs.writeFileSync(path.join(root, "content/cases/alpha", file), value);
     write("proposals/inbox/fixture-run/sources-alpha.yaml", {
       kind: "source-proposals",
       case: "alpha",
@@ -181,20 +182,29 @@ describe("durable intake history", () => {
       NODE_ENV: "test",
       PATH: process.env.PATH,
       OPENAI_API_KEY: "fixture-only-never-used",
-      EXTRACT_MODEL: "fixture-model",
     };
+    const preload = path.join(root, "mock-fetch.mjs");
+    fs.writeFileSync(preload, `globalThis.fetch = async (url, init) => {
+      if (String(url).includes("api.openai.com")) {
+        const request = JSON.parse(init.body);
+        return new Response(JSON.stringify({ id: "synthetic-response", model: request.model, status: "completed",
+          usage: { input_tokens: 100, output_tokens: 50 }, output: [{ content: [{ type: "output_text",
+            text: JSON.stringify({ outcome: "no_change", reason: "The synthetic text adds no useful observation." }) }] }] }));
+      }
+      return new Response("This is a synthetic source used only in a test. It contains no useful new observation, and is not a real publication.",
+        { headers: { "content-type": "text/plain" } });
+    };`);
     const run = () =>
       execFileSync(
         process.execPath,
-        [path.resolve("scripts/promote-imports.mjs")],
+        ["--import", preload, path.resolve("scripts/promote-imports.mjs")],
         { cwd: root, encoding: "utf8", env, stdio: ["ignore", "pipe", "pipe"] },
       );
     expect(run().trim()).toBe("0");
     expect(readIntakeDecisions(root)).toHaveLength(1);
     expect(readIntakeDecisions(root)[0]).toMatchObject({
-      stage: "promotion",
-      decision: "duplicate",
-      source,
+      stage: "research-run",
+      decision: "no_change",
     });
     expect(run().trim()).toBe("0");
     expect(readIntakeDecisions(root)).toHaveLength(1);

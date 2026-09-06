@@ -74,8 +74,8 @@ elapsed time. Neither DOI counts nor a model's own claim of novelty measures
 progress. A run limit and spend ceiling stop work even when a model keeps
 finding something to say; a rest state means low recent return within the
 searched scope, not proof that the topic is complete. Broader autonomous
-research must wait for enforced spend accounting; this foundation adds no
-scheduled research worker.
+research must wait for enforced spend accounting. The existing promotion job
+now uses the bounded reader; no additional research schedule is installed.
 
 ### Implementation sequence and acceptance criteria
 
@@ -84,8 +84,8 @@ scheduled research worker.
 | 1 | Shared case view; exact review receipts | Implemented in PR #172. Essay references, claim cards, ladder, and claim detail read the displayed draft's grades. Only a full panel on the exact current content and draft can ratify; historical reviews remain available. |
 | 2 | Essay-first reading experience | Implemented in PR #172. Short frontispiece, inspectable claims with ordinary-link fallback, supporting detail in disclosures, mobile claim sheet. Existing essays and evidence are preserved. |
 | 3 | Blank-topic starting path | Implemented in PR #172. `start-case.mjs` creates an incubating proposal from a question, with no invented evidence, priority, or review. The production loader and view accept it; judgment runners skip it until it has assessable evidence. This tests startup, not autonomous discovery. |
-| 4 | Shared proposal memory and intake diff | Durable history for watch, promotion, and agenda; a common change envelope now validates bundles and before/after edits through the production loader, including empty topics. Source identity and identical wording are mechanical; semantic overlap remains a review question. Older producers still need adapters to the common envelope. |
-| 5 | Bounded research and source-reading checks | A manual reader accepts up to two public HTML/text URLs, drafts narrow observations, and obtains a separate reading check, with explicit source/request/token/time/spend limits. Failed retrievals remain visible. Broad discovery, PDF/OCR, and shared research-plus-publication budgeting remain to build. |
+| 4 | Shared proposal memory and intake diff | Durable history for watch, promotion, and agenda; inbox links and legacy watch imports now use the common research envelope. Complete bundles and before/after edits pass the production loader, including empty topics. Notes, document extraction, and agenda adoption still need adapters. Source identity and identical wording are mechanical; semantic overlap remains a review question. |
+| 5 | Bounded research and source-reading checks | Manual URLs and the existing promotion job share one reader, capped at two public HTML/text sources per pass even across cases. A separate reading checks each drafted observation. Complete, fresh proposals can be prepared for the normal publication gate; failures and stale inputs remain visible. Broad discovery, PDF/OCR, and shared research-plus-publication budgeting remain to build. |
 | 6 | Versioned edition drafting | The authoring and validation path now binds an essay, ordered selection, and optional exact assessment reference in one immutable edition. Deep Memory preserves its opening as the first saved edition. Proposals bind to current inputs, rest unchanged candidates, and pass the production loader before review. Automatic model drafting, candidate comparison, and migration of assessed cases remain to build. |
 | 7 | Pilot, measure, and widen | Exercise geopolymer, transients, and Deep Memory, the founder-selected topic about shared symbols and myths (`content/cases/deep-memory/`). Its empty starting point is preserved in PR #179; the illustrated opening adopts the first checked catalog observation. Its scope is informed by the birdmen project, so this is not blind rediscovery. Compare accepted changes and reading quality with the incumbent, under a single enforced budget covering research and review. The archived chats are design references and a possible held-out discovery benchmark, not an import queue. Expand only after unattended runs improve actual cases. |
 
@@ -93,7 +93,7 @@ The migration deliberately does not relocate every editorial field at once.
 Diagnosticity, component judgments, framing, and selection still originate
 in legacy records and are labeled as recorded interpretation in the UI.
 `CaseView` is the migration boundary. The automated edition writer and aggregate
-research-plus-publication accounting are still to build. The manual reader's
+research-plus-publication accounting are still to build. The source reader's
 local budget is not that aggregate budget.
 
 ### Versioned editions: the first authoring path
@@ -133,17 +133,18 @@ assessed cases to this path. No new schedule or paid worker is enabled here.
 
 Inbox notes and links, literature watch, inward-looking agenda proposals, and
 the planned browsing Expedition are adapters to the same research-proposal
-interface. The bounded supplied-URL reader already exercises it. Inbox/watch
-still use their older production adapters; they must migrate before the common
-path can claim to handle all inputs. Shared spend accounting across research,
+interface. Inbox links and watch imports now feed the bounded supplied-URL
+reader; notes, document extraction, and agenda adoption still use their older
+adapters. Shared spend accounting across research,
 drafting, and review precedes unattended Expedition runs. An accepted ledger
 change should then prompt an edition candidate, with retaining the incumbent
 always available.
 
-### First source-reading trial
+### Shared source reader and its first trial
 
-`research-sources.ts` is a manual adapter, not a new scheduled loop. It reads
-supplied public sources, the current ledger, and recent intake reasons. A
+`research-sources.ts` and the existing `promote-imports.mjs` job call the same
+reader. It reads supplied public sources, the current ledger, the submitted
+context, and recent intake reasons. A
 drafting model proposes one local observation per source; a different model
 checks the metadata, proposition, paraphrase, inference boundary, caveats, and
 independence against the retrieved text. Both are OpenAI models in this first
@@ -151,14 +152,34 @@ adapter; this is a separate reading, not cross-vendor concurrence. The normal
 publication arbiter and assessment-standing rules remain separate.
 
 The source limit is two, the model-call limit four, the output-token limit 6,000
-per call, the deadline four minutes, and the research allowance $1 per manual
-run at the explicit standard-tier rate card. Full input-context liability is
+per call, the deadline four minutes, and the research allowance $1 per pass
+at the explicit standard-tier rate card. Two cases share that one budget;
+the allowance is not multiplied by case. Full input-context liability is
 reserved before each request; returned usage replaces the reservation with an
 uncached tariff estimate. Unknown usage retains its reservation and stops paid
 work. There are no tool calls, hidden retries, or fallback models. These are
 per-run research controls, not an invoice or a shared limit on existing workers,
-the PR arbiter, or artwork generation. Do not schedule or widen this adapter
-until aggregate allocation covers those costs too.
+the PR arbiter, or artwork generation. This replaces the existing promoter's
+three-source cap and house-model fallback with a two-source, metered pass.
+Its weekly/dispatch cadence and one-cycle boundary are unchanged. Additional
+autonomous discovery schedules wait for aggregate research-and-review allocation.
+
+Inbox capture is model-free: it records a `source-request` with the supplied
+context and origin, then archives the original file unchanged. Reachability
+alone no longer creates an `ai_verified` source proposal. `source-queue.ts`
+derives pending work from requests and reading/adoption outcomes; old watch
+import files are a read-only adapter to that queue. There is no mutable queue
+cursor. Captured requests become eligible after their PR merges and are read
+on the next full maintenance run, or a manual invocation of the existing job.
+
+`research-adoption.ts` prepares recorded proposals without a model call. It
+checks the exact current basis and validates a complete prospective case before
+installing changed records and a changelog entry in the working tree. A failed
+installation restores the original files; a failed restoration aborts the job.
+Outcomes reference the original proposal, preserving the drafting model and
+reading receipts. Already present records are retained, stale proposals are
+parked for a fresh reading, and prepared bundles reach an ordinary gated PR.
+Neither the reader nor the materializer can publish or change an essay.
 
 The Deep Memory trial began with an empty ledger and two supplied primary-source
 leads. It produced a three-record Source/Claim/Evidence proposal from the
@@ -174,11 +195,16 @@ semantic saturation, or a judgment that the shared-inheritance hypothesis holds.
 Watch, triage, and promotion share `source-identity.mjs`: DOI/arXiv aliases
 are exact identity hints, URL distinctions are preserved, and title similarity
 remains advisory. Knowing a source does not mean every passage or observation
-has been assessed; the source-only promoter still defers possible duplicates
-before admitting another source record.
+has been assessed. Legacy source-import requests already carried in the ledger
+are skipped; an explicit new inbox request may seek another observation from
+that same source. The reader reuses exact source identities, and the common
+proposal validator rejects duplicate identifiers. Repeated claim wording and
+similar source titles produce review warnings, retained in the adoption outcome.
+Semantic similarity and independence still require review.
 
-`proposals/intake/` is the authority for watch-triage, promotion, agenda-proposal,
-and agenda-score decisions. `intake-store.mjs` validates and writes immutable
+`proposals/intake/` is the authority for watch-triage, historical promotion,
+agenda-proposal, agenda-score, source-request, research-run, research-proposal,
+research-adoption, and edition-proposal decisions. `intake-store.mjs` validates and writes immutable
 batches, normally one per worker run. Decision and batch hashes detect changed
 payloads. Exclusive atomic file installation makes retries safe and concurrent
 writers preserve both batches. Modifying or deleting existing history requires
@@ -197,9 +223,11 @@ A proposal's title is not its identity. The agenda generator receives prior
 proposals and review reasons, and may revisit the same title with a changed
 argument, control, or case context. Only identical substance on identical case
 inputs rests mechanically; a new title alone does not defeat that check.
-Silence means unreviewed. Source promotion similarly scopes its rest state to
-case, candidate, and case inputs. Operational failures remain retryable within
-existing budgets. None of these equality checks claims to measure semantic
+Silence means unreviewed. Source requests rest on the same case, submitted
+context, URL, and case inputs. A rejected or empty reading closes that request;
+changed context or a changed case permits a new one. Operational failures
+remain retryable, and a stale or invalid adoption reopens its source request.
+All retries use the same pass budget. None of these equality checks measures semantic
 novelty, coverage, or saturation.
 
 `migrate-intake.mjs` replays a committed snapshot and verifies every migrated
@@ -213,8 +241,8 @@ they differ from directory names.
 
 Watch-run expiry no longer erases a triage decision. Failed watch cases stay
 due, and promotion runs save their outcomes even when no source is imported.
-The existing schedules, promotion budgets, and one-cycle adoption boundary
-remain. Broad discovery/retrieval coverage, source revision
+The existing schedules and one-cycle adoption boundary remain; the promotion
+job now shares the source reader's explicit budget above. Broad discovery/retrieval coverage, source revision
 monitoring, and aggregate spend enforcement are subsequent work; this cutover
 does not claim that every research or drafting action is already recorded here.
 
@@ -372,9 +400,9 @@ segment an outside review (2026-09-01) correctly found missing: **the
 promotion pipe**. Verified import proposals previously died in
 `proposals/` on a 60-day timer, because nothing authored the evidence
 records the ledger admission rule requires; promotion happened only when
-the founder opened a chat. A Maintain step now (build step 1) drafts the
-promotion — sources.yaml entry plus the evidence records that cite it —
-as a needs-approval PR through the classifier, the citation-checking
+the founder opened a chat. The Maintain promotion step now uses the common
+reader and complete Source/Claim/Evidence proposal validator described above.
+It prepares a needs-approval PR through the classifier, the citation-checking
 arbiter, and the content-response ripple. Without this pipe the site is
 a metabolism for judging content, not producing it, and the yield decay
 would amplify the starvation (no promotions → no movement → cases cool).

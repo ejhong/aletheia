@@ -8,7 +8,8 @@ Four core objects — **Case, Claim, Evidence, Source** — plus append-only **a
 (`version: 1`, `decisions`). A decision names its case, producer stage,
 candidate/source, outcome, reason, date, run, and available model and input
 receipts. The migrated stages are watch triage, source promotion, agenda
-generation, and agenda scoring. These records are workflow history, separate
+generation, and agenda scoring. New stages also record source requests,
+research runs/proposals/adoptions, and edition proposals. These records are workflow history, separate
 from Evidence records and ratified case assessments.
 
 New agenda scores preserve individual seat reasons and concerns; their totals
@@ -24,6 +25,13 @@ committed origins and original rows; missing historical receipts stay null.
 The migration replay in `scripts/migrate-intake.mjs` retires previous stores
 only after checking the migrated records. `scripts/intake-report.mjs` exposes
 the history without a model call.
+
+`source-request` records a supplied URL, its context, exact input receipts, and
+the archived inbox origin. Capture does not assert source verification. Pending
+work is derived from these immutable requests and reading/adoption outcomes;
+legacy watch import files are read-only inputs to the same queue. Rejected or
+empty readings rest that request. Changed arguments or case inputs permit a
+new request; failures and stale adoption remain retryable within the pass budget.
 
 ## Research change proposals
 
@@ -56,6 +64,15 @@ and a short quotation. Character locators refer to retrieved text, not invented
 printed-page positions. The hashes record what was retrieved; full source pages
 are not republished. Public reading reasons omit quoted spans and retain a hash
 of the original review. These source checks do not ratify a case assessment.
+
+`research-adoption` references the original proposal by ID and storage locator.
+Its outcomes are `prepared`, `already_present`, `stale`, and `invalid`.
+Preparation checks the exact basis, validates a complete prospective case, and
+installs the bundle with a case changelog entry in a working tree. Failed writes
+restore that tree; a failed restoration aborts the publication job. `prepared`
+describes the bundle being submitted to the normal PR gate, not permission to
+publish or a ratified assessment. The committed outcome and original proposal
+also supply promotion totals, without a second promotion ledger.
 
 ## Layering principle
 

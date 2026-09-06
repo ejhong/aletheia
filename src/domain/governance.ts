@@ -40,7 +40,21 @@ export interface PromotionEntry {
 
 /** Promotion outcomes derived from the shared, validated intake history. */
 export function loadPromotionsLedger(): PromotionEntry[] {
-  return readIntakeDecisions()
+  const decisions = readIntakeDecisions();
+  const prepared: PromotionEntry[] = decisions
+    .filter(entry => entry.stage === "research-adoption" && entry.decision === "prepared")
+    .flatMap(entry => {
+      const proposal = decisions.find(candidate => candidate.id === entry.details?.proposalId)?.research;
+      if (!proposal) throw new Error("research adoption refers to an unknown proposal");
+      return proposal.changes.filter((change: { kind: string; beforeHash: string | null }) =>
+        change.kind === "source" && change.beforeHash === null)
+        .map((change: { after: Record<string, unknown> }) => ({
+          url: String(change.after.url ?? change.after.identifier ?? change.after.id),
+          disposition: "promoted" as const, date: entry.date, case: entry.case,
+          reason: entry.reason, runId: entry.runId,
+        }));
+    });
+  return [...prepared, ...decisions
     .filter((entry) => entry.stage === "promotion")
     .map((entry) => {
       if (
@@ -56,5 +70,5 @@ export function loadPromotionsLedger(): PromotionEntry[] {
         reason: entry.reason,
         runId: entry.runId,
       };
-    });
+    })];
 }

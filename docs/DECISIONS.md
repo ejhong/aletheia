@@ -960,6 +960,22 @@ revision monitoring, or general evidence diffing are already implemented.
 
 (AI implementation record; no research claims or constitution changes.)
 
+## 2026-09-06 — Review the historical intake batches before activating them
+
+The initial durable-intake cutover was parked because its main migration file
+exceeded the panel's packet budget. The migration is therefore split into
+fully visible batches: agenda proposals, agenda scores, and source decisions.
+The first batch preserves the 78 historical agenda proposals, with their
+original committed locators and the metadata actually available in the files.
+Missing input receipts remain unknown. This is a copy for review, not a new
+proposal run or assessment.
+
+Existing stores remain the authority until the implementation cutover lands.
+No reader or writer changes in this staging step, and no historical file is
+removed. The subsequent cutover can rely on history the panel has seen.
+
+(AI implementation record for the reviewable migration sequence.)
+
 ## 2026-09-06 — Durable intake decisions and contextual agenda reconsideration
 
 The shared read interface now has one durable store: immutable decision batches

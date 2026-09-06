@@ -24,8 +24,16 @@
 import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
-import { callWithRefusalFallback, parseJsonReply, pickProvider, noKeyMessage } from "./lib/llm.mjs";
+import {
+  callWithRefusalFallback,
+  parseJsonReply,
+  pickProvider,
+  noKeyMessage,
+} from "./lib/llm.mjs";
 import { fetchWithRetry } from "./lib/vendors.mjs";
+import { promotionWasHandled, readIntakeMemory } from "./lib/intake-memory.mjs";
+import { readCaseSnapshot } from "./lib/case-snapshot.mjs";
+import { fingerprint } from "./lib/review-state.mjs";
 import {
   MAX_PROMOTIONS_PER_RUN,
   alreadyCarried,
@@ -108,20 +116,32 @@ if (!provider) {
   process.exit(0);
 }
 
-const ledger = loadList(LEDGER);
-const handled = new Set(ledger.map((e) => e.url));
+const memory = readIntakeMemory(ROOT);
 
 // Gather unhandled proposals across all inbox runs, oldest first.
 const candidates = [];
+const queuedCandidates = new Set();
 if (fs.existsSync(INBOX_PROPOSALS)) {
   for (const run of fs.readdirSync(INBOX_PROPOSALS).sort()) {
     const dir = path.join(INBOX_PROPOSALS, run);
     if (!fs.statSync(dir).isDirectory()) continue;
-    for (const f of fs.readdirSync(dir).filter((f) => f.startsWith("sources-"))) {
+    for (const f of fs
+      .readdirSync(dir)
+      .filter((f) => f.startsWith("sources-"))) {
       const doc = parseYaml(fs.readFileSync(path.join(dir, f), "utf8"));
       if (doc?.kind !== "source-proposals" || !doc?.case) continue;
+      if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(doc.case))
+        throw new Error(`invalid proposal case: ${doc.case}`);
+      const caseRoot = path.join(CASES, doc.case);
+      const inputHash = fs.existsSync(path.join(caseRoot, "case.yaml"))
+        ? readCaseSnapshot(caseRoot).contentHash
+        : null;
       for (const src of doc.sources ?? []) {
-        if (!src?.url || handled.has(src.url)) continue;
+        if (!src?.url || promotionWasHandled(src, doc.case, memory, inputHash))
+          continue;
+        const key = fingerprint({ case: doc.case, source: src });
+        if (queuedCandidates.has(key)) continue;
+        queuedCandidates.add(key);
         candidates.push({ caseDir: doc.case, proposalRun: run, src });
       }
     }
@@ -134,17 +154,44 @@ if (fs.existsSync(INBOX_PROPOSALS)) {
 // spent the budget and deferred two genuinely new sources by a cycle.)
 const ledgerAdd = [];
 const promotable = [];
+const basis = (caseDir, src) => ({
+  case: caseDir,
+  candidateHash: fingerprint(src),
+  inputHash: fs.existsSync(path.join(CASES, caseDir, "case.yaml"))
+    ? readCaseSnapshot(path.join(CASES, caseDir)).contentHash
+    : null,
+});
 for (const cand of candidates) {
   const { caseDir, src } = cand;
   const caseRoot = path.join(CASES, caseDir);
   if (!fs.existsSync(caseRoot)) {
-    ledgerAdd.push({ url: src.url, disposition: "failed", reason: `no case dir ${caseDir}`, runId, date });
+    ledgerAdd.push({
+      ...basis(caseDir, src),
+      url: src.url,
+      disposition: "failed",
+      reason: `no case dir ${caseDir}`,
+      runId,
+      date,
+    });
     continue;
   }
-  const dupe = alreadyCarried(src, loadList(path.join(caseRoot, "sources.yaml")));
+  const dupe = alreadyCarried(
+    src,
+    loadList(path.join(caseRoot, "sources.yaml")),
+  );
   if (dupe) {
-    console.error(`${src.url}: already carried as ${dupe.id} (via ${dupe.via}) — recorded, skipped`);
-    ledgerAdd.push({ url: src.url, disposition: "duplicate", of: dupe.id, via: dupe.via, runId, date });
+    console.error(
+      `${src.url}: already carried as ${dupe.id} (via ${dupe.via}) — recorded, skipped`,
+    );
+    ledgerAdd.push({
+      ...basis(caseDir, src),
+      url: src.url,
+      disposition: "duplicate",
+      of: dupe.id,
+      via: dupe.via,
+      runId,
+      date,
+    });
     continue;
   }
   promotable.push(cand);
@@ -157,23 +204,51 @@ let promoted = 0;
 for (const cand of selected) {
   const { caseDir, src } = cand;
   const caseRoot = path.join(CASES, caseDir);
-  const sources = loadList(path.join(caseRoot, "sources.yaml"));
-  const claims = loadList(path.join(caseRoot, "claims.yaml"));
-  const evidence = loadList(path.join(caseRoot, "evidence.yaml"));
+  const snapshot = readCaseSnapshot(caseRoot);
+  const sources = parseYaml(snapshot.files["sources.yaml"]) ?? [];
+  const claims = parseYaml(snapshot.files["claims.yaml"]) ?? [];
+  const evidence = parseYaml(snapshot.files["evidence.yaml"]) ?? [];
+  const context = {
+    case: caseDir,
+    candidateHash: fingerprint(src),
+    inputHash: snapshot.contentHash,
+    promptVersion: PROMPT_VERSION,
+    model: null,
+  };
+  const nowCarried = alreadyCarried(src, sources);
+  if (nowCarried) {
+    ledgerAdd.push({
+      ...context,
+      url: src.url,
+      disposition: "duplicate",
+      of: nowCarried.id,
+      via: nowCarried.via,
+      runId,
+      date,
+    });
+    continue;
+  }
 
   let text;
   try {
-    const res = await fetchWithRetry("promote", src.url, { signal: AbortSignal.timeout(60_000) });
+    const res = await fetchWithRetry("promote", src.url, {
+      signal: AbortSignal.timeout(60_000),
+    });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     text = stripHtml(await res.text()).slice(0, 60_000);
   } catch (e) {
-    console.error(`${src.url}: fetch failed (${e.message}) — left for a future run`);
+    console.error(
+      `${src.url}: fetch failed (${e.message}) — left for a future run`,
+    );
     continue; // not ledgered: transient, retryable next run
   }
 
   const claimIndex = claims
     .filter((c) => c.reviewState !== "rejected")
-    .map((c) => `${c.id}: ${String(c.statement).replace(/\s+/g, " ").slice(0, 160)}`)
+    .map(
+      (c) =>
+        `${c.id}: ${String(c.statement).replace(/\s+/g, " ").slice(0, 160)}`,
+    )
     .join("\n");
   const user = [
     `Case: ${caseDir}`,
@@ -192,13 +267,26 @@ for (const cand of selected) {
   try {
     const reply = await callWithRefusalFallback(provider, SYSTEM, user);
     draftModel = reply.model;
+    context.model = `${provider.name}/${draftModel}`;
     parsed = parseJsonReply(reply.text);
+    if (!Array.isArray(parsed?.evidence))
+      throw new Error("draft has no evidence list");
   } catch (e) {
-    ledgerAdd.push({ url: src.url, disposition: "failed", reason: `draft failed: ${String(e).slice(0, 120)}`, runId, date });
+    ledgerAdd.push({
+      ...context,
+      url: src.url,
+      disposition: "failed",
+      reason: `draft failed: ${String(e).slice(0, 120)}`,
+      retryable: true,
+      runId,
+      date,
+    });
     continue;
   }
 
-  const claimIds = new Set(claims.filter((c) => c.reviewState !== "rejected").map((c) => c.id));
+  const claimIds = new Set(
+    claims.filter((c) => c.reviewState !== "rejected").map((c) => c.id),
+  );
   const surviving = [];
   const rejectedReasons = [];
   for (const d of Array.isArray(parsed?.evidence) ? parsed.evidence : []) {
@@ -208,21 +296,39 @@ for (const cand of selected) {
   }
   if (surviving.length === 0) {
     ledgerAdd.push({
-      url: src.url, disposition: "failed", runId, date,
+      ...context,
+      url: src.url,
+      disposition: "failed",
+      runId,
+      date,
       reason: `no evidence record survived verification (${rejectedReasons.join(" | ") || "model returned none"})`,
     });
     continue;
   }
   const sid = parsed?.source?.id;
-  if (!/^SRC-[A-Z0-9-]+$/.test(sid ?? "") || sources.some((s) => s.id === sid)) {
-    ledgerAdd.push({ url: src.url, disposition: "failed", reason: `bad or colliding source id ${sid}`, runId, date });
+  if (
+    !/^SRC-[A-Z0-9-]+$/.test(sid ?? "") ||
+    sources.some((s) => s.id === sid)
+  ) {
+    ledgerAdd.push({
+      ...context,
+      url: src.url,
+      disposition: "failed",
+      reason: `bad or colliding source id ${sid}`,
+      retryable: true,
+      runId,
+      date,
+    });
     continue;
   }
 
   // Assign real evidence ids mechanically: next free E-number for the case.
   const prefix = (evidence[0]?.id ?? claims[0]?.id ?? "XXX-C000").split("-")[0];
   let nextE =
-    Math.max(0, ...evidence.map((e) => Number((e.id.match(/-E(\d+)$/) ?? [])[1] ?? 0))) + 1;
+    Math.max(
+      0,
+      ...evidence.map((e) => Number((e.id.match(/-E(\d+)$/) ?? [])[1] ?? 0)),
+    ) + 1;
   for (const d of surviving) {
     d.id = `${prefix}-E${String(nextE++).padStart(3, "0")}`;
     d.sourceId = sid;
@@ -230,18 +336,29 @@ for (const cand of selected) {
     d.origin = {
       ref: `promotion of verified import ${src.url} (proposal run ${cand.proposalRun})`,
       extractedBy: `maintenance pipeline (promotion step, ${provider.name}/${draftModel})`,
-      runId, date,
+      runId,
+      date,
     };
   }
   const finalSource = {
     ...parsed.source,
     url: src.url,
     verification: "ai_verified",
-    verificationNote: `${parsed.source?.verificationNote ?? ""} Promoted from inbox proposal (run ${cand.proposalRun}) by the promotion pipe on ${date}; every quoted span in the evidence records below was mechanically verified verbatim against the fetched text. A reviewing seat should judge the readings, not the existence.`.trim(),
+    verificationNote:
+      `${parsed.source?.verificationNote ?? ""} Promoted from inbox proposal (run ${cand.proposalRun}) by the promotion pipe on ${date}; every quoted span in the evidence records below was mechanically verified verbatim against the fetched text. A reviewing seat should judge the readings, not the existence.`.trim(),
   };
 
   if (dryRun) {
-    console.error(`DRY RUN — would promote ${src.url} as ${sid} with ${surviving.length} evidence record(s)`);
+    console.error(
+      `DRY RUN — would promote ${src.url} as ${sid} with ${surviving.length} evidence record(s)`,
+    );
+    continue;
+  }
+
+  if (readCaseSnapshot(caseRoot).contentHash !== context.inputHash) {
+    console.error(
+      `${src.url}: case inputs changed during drafting; left for a future run`,
+    );
     continue;
   }
 
@@ -257,17 +374,33 @@ for (const cand of selected) {
   );
   fs.appendFileSync(
     path.join(caseRoot, "history.yaml"),
-    "\n" + stringifyYaml([{
-      date, kind: "content",
-      change: `Promotion: ${finalSource.id} enters the ledger with ${surviving.length} evidence record(s) (${surviving.map((s) => s.id).join(", ")}), drafted by the promotion pipe from the verified import ${src.url}. Every quoted span verified verbatim against the fetched source; readings await the panel like any other record.`,
-      reason: "The promotion pipe (docs/AUTOMATION.md build step 1): verified imports must reach the ledger through the gates rather than expiring in proposals/.",
-      actor: `maintenance pipeline (promotion step, ${PROMPT_VERSION})`,
-      aiAssisted: true,
-    }]),
+    "\n" +
+      stringifyYaml([
+        {
+          date,
+          kind: "content",
+          change: `Promotion: ${finalSource.id} enters the ledger with ${surviving.length} evidence record(s) (${surviving.map((s) => s.id).join(", ")}), drafted by the promotion pipe from the verified import ${src.url}. Every quoted span verified verbatim against the fetched source; readings await the panel like any other record.`,
+          reason:
+            "The promotion pipe (docs/AUTOMATION.md build step 1): verified imports must reach the ledger through the gates rather than expiring in proposals/.",
+          actor: `maintenance pipeline (promotion step, ${PROMPT_VERSION})`,
+          aiAssisted: true,
+        },
+      ]),
   );
-  ledgerAdd.push({ url: src.url, disposition: "promoted", as: finalSource.id, evidence: surviving.map((s) => s.id), case: caseDir, runId, date });
+  ledgerAdd.push({
+    ...context,
+    url: src.url,
+    disposition: "promoted",
+    as: finalSource.id,
+    evidence: surviving.map((s) => s.id),
+    case: caseDir,
+    runId,
+    date,
+  });
   promoted++;
-  console.error(`promoted ${src.url} → ${finalSource.id} + ${surviving.map((s) => s.id).join(", ")}`);
+  console.error(
+    `promoted ${src.url} → ${finalSource.id} + ${surviving.map((s) => s.id).join(", ")}`,
+  );
 }
 
 if (!dryRun && ledgerAdd.length > 0) {

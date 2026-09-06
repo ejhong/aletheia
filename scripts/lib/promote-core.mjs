@@ -11,30 +11,11 @@
  */
 
 import { nearDuplicateOf } from "./watch-matching.mjs";
+import { exactSourceMatch } from "./source-identity.mjs";
+export { extractIdentifiers } from "./source-identity.mjs";
 
 /** Site-wide cap on promotions drafted per run. */
 export const MAX_PROMOTIONS_PER_RUN = 3;
-
-const ARXIV_RE = /arxiv\.org\/(?:abs|pdf)\/([0-9]{4}\.[0-9]{4,5})(?:v\d+)?/i;
-const DOI_RE = /doi\.org\/(10\.[^\s"']+?)(?:[)\].,;]*)$/i;
-
-/** Pull comparable identifiers out of a proposed or ledger source. */
-export function extractIdentifiers(src) {
-  const hay = [src.url ?? "", src.identifier ?? ""].join(" ");
-  const arxiv = hay.match(ARXIV_RE)?.[1] ?? null;
-  // Greedy to the first whitespace/quote, then strip trailing punctuation:
-  // DOIs contain dots and parentheses internally (the paren truncation bug
-  // of 2026-08-26 is not being reintroduced by its own fix).
-  const doi =
-    hay
-      .match(/\b(10\.\d{4,9}\/[^\s"']+)/)?.[1]
-      ?.replace(/[).,;\]]+$/, "") ?? null;
-  const urlNorm = (src.url ?? "")
-    .toLowerCase()
-    .replace(/^https?:\/\/(www\.)?/, "")
-    .replace(/\/+$/, "");
-  return { arxiv, doi, urlNorm: urlNorm || null };
-}
 
 /**
  * Dedupe a proposed source against the ledger. Exact identifier matches
@@ -44,15 +25,8 @@ export function extractIdentifiers(src) {
  * than importing the same work twice (§3.10).
  */
 export function alreadyCarried(proposed, ledgerSources) {
-  const p = extractIdentifiers(proposed);
-  for (const s of ledgerSources) {
-    const l = extractIdentifiers(s);
-    if (p.arxiv && l.arxiv && p.arxiv === l.arxiv)
-      return { id: s.id, via: "arxiv id" };
-    if (p.doi && l.doi && p.doi === l.doi) return { id: s.id, via: "doi" };
-    if (p.urlNorm && l.urlNorm && p.urlNorm === l.urlNorm)
-      return { id: s.id, via: "url" };
-  }
+  const match = exactSourceMatch(proposed, ledgerSources);
+  if (match) return { id: match.source.id, via: match.via };
   const near = nearDuplicateOf({ title: proposed.title ?? "" }, ledgerSources);
   if (near) return { id: near.id ?? near, via: "title similarity" };
   return null;
@@ -106,14 +80,20 @@ export function evidenceDraftErrors(draft, { claimIds, fetchedText }) {
     errors.push(`bad direction: ${draft?.direction}`);
   if (!STRENGTHS.includes(draft?.strength))
     errors.push(`bad strength: ${draft?.strength}`);
-  if (typeof draft?.sourceStatement !== "string" || draft.sourceStatement.length < 40)
+  if (
+    typeof draft?.sourceStatement !== "string" ||
+    draft.sourceStatement.length < 40
+  )
     errors.push("sourceStatement missing or too thin");
   else {
     const bad = unverifiedQuotes(draft.sourceStatement, fetchedText);
     for (const q of bad)
       errors.push(`quote not found verbatim in source: "${q.slice(0, 60)}…"`);
   }
-  if (typeof draft?.editorInference !== "string" || draft.editorInference.length < 20)
+  if (
+    typeof draft?.editorInference !== "string" ||
+    draft.editorInference.length < 20
+  )
     errors.push("editorInference missing or too thin");
   return errors;
 }

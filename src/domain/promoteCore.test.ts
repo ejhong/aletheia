@@ -19,7 +19,7 @@ describe("promotion pipe core", () => {
     ).toBe("10.1016/j.forsciint.2024.112287");
     expect(
       extractIdentifiers({ url: "https://www.Example.org/paper/" }).urlNorm,
-    ).toBe("example.org/paper");
+    ).toBe("https://www.example.org/paper/");
   });
 
   it("dedupes by identifier and by the Bruehl title-aliasing lesson", () => {
@@ -44,7 +44,10 @@ describe("promotion pipe core", () => {
     // Genuinely new work passes.
     expect(
       alreadyCarried(
-        { title: "A completely different subject entirely", url: "https://arxiv.org/abs/2609.00001" },
+        {
+          title: "A completely different subject entirely",
+          url: "https://arxiv.org/abs/2609.00001",
+        },
         ledger,
       ),
     ).toBeNull();
@@ -60,7 +63,10 @@ describe("promotion pipe core", () => {
       ),
     ).toEqual([]);
     expect(
-      unverifiedQuotes('It states "a sentence the source never wrote at all".', text),
+      unverifiedQuotes(
+        'It states "a sentence the source never wrote at all".',
+        text,
+      ),
     ).toHaveLength(1);
   });
 

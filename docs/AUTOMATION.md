@@ -84,7 +84,7 @@ scheduled research worker.
 | 1 | Shared case view; exact review receipts | Implemented in this change. Essay references, claim cards, ladder, and claim detail read the displayed draft's grades. Only a full panel on the exact current content and draft can ratify; historical reviews remain available. |
 | 2 | Essay-first reading experience | Implemented in this change. Short frontispiece, inspectable claims with ordinary-link fallback, supporting detail in disclosures, mobile claim sheet. Existing essays and evidence are preserved. |
 | 3 | Blank-topic starting path | Implemented in this change. `start-case.mjs` creates an incubating proposal from a question, with no invented evidence, priority, or review. The production loader and view accept it; judgment runners skip it until it has assessable evidence. This tests startup, not autonomous discovery. |
-| 4 | Shared proposal memory and intake diff | Next. Migrate one adapter at a time; test known-source/new-observation, DOI aliases, corrections, and reconsideration without a new paper. Remove an old memory only after replay equivalence is demonstrated. |
+| 4 | Shared proposal memory and intake diff | First slice implemented: shared source identity and a read interface over existing watch/promotion decisions, used by triage and the intake report. Promotion attempts are scoped to case, candidate, and case inputs. Next: migrate durable decision writers and add the common change-proposal envelope for other record kinds. Remove an old memory only after replay equivalence is demonstrated. |
 | 5 | Bounded research and source-reading checks | Retrieve primary passages and dependency context; propose small verified changes. Test incorrect quotation use, sample reuse, search misses, and refusal/budget exhaustion. Watch feeds alone do not cover archives, grants, museum records, or reports. |
 | 6 | Versioned edition drafting | Extend the existing append-only assessment artifact with selection and essay references, using the shared view as the compatibility boundary. Migrate one case, preserving its incumbent and history. Blind assessment precedes inspection of the candidate edition; prose remains behind the consequential-content gate. |
 | 7 | Pilot, measure, and widen | Exercise geopolymer, transients, and Deep Memory, the founder-selected question-only topic about shared symbols and myths (`proposals/topics/deep-memory/`). Its scope is informed by the birdmen project, so an empty ledger must not be described as blind rediscovery. Compare accepted changes and reading quality with the incumbent, under a single enforced budget covering research and review. The archived chats are design references and a possible held-out discovery benchmark, not an import queue. Expand only after unattended runs improve actual cases. |
@@ -93,7 +93,41 @@ The first two steps deliberately do not relocate every editorial field.
 Diagnosticity, component judgments, framing, and selection still originate
 in legacy records and are labeled as recorded interpretation in the UI.
 `CaseView` is the migration boundary. The unified edition writer, retrieval
-checks, shared proposal memory, and spend accounting are still to build.
+checks, unified decision storage, and spend accounting are still to build.
+
+### Intake memory: the first migration boundary
+
+`scripts/lib/source-identity.mjs` is shared by watch, triage, and promotion.
+It distinguishes exact supplied identifiers from title similarity, preserves
+parenthesized DOI suffixes and significant URL distinctions, and connects a
+preprint to a DOI when both aliases appear on a source record. Watch title
+keys no longer silently suppress another work. Title similarity still flags
+possible duplicates for review through the existing admission gates.
+
+`scripts/lib/intake-memory.mjs` reads the archive, promotion decisions, and
+recent triage runs through one interface. It creates no second store. Every
+decision retains its original file reference, date, outcome, and available
+reason. Missing historical model and input receipts remain null. An old
+promotion with no case is attributed only when its referenced record has one
+unambiguous owner; otherwise it stays unscoped and cannot suppress a proposal.
+Triage receives matching prior decisions as context, not as a verdict.
+
+New promotion attempts record the case, candidate hash, and exact case input
+hash. An unchanged attempt rests; changed case inputs or a revised proposal
+(including its rationale) can reopen it without a newer paper. Provider,
+parse, and invalid-ID failures remain retryable under the existing budget.
+Evidence verification failures with unchanged local inputs still rest;
+detecting an external source revision requires the future retrieval/watch
+work. A source match remains separate from whether any particular passage,
+observation, or claim has been
+considered. This first slice does not yet implement general evidence/claim
+diffing or admit additional evidence from an already-carried source.
+
+Archive entries now retain changed reasons and contexts separately per case.
+Recent import/shelf decisions remain subject to the existing watch-run expiry;
+moving all outcomes into durable shared storage is the next migration, not
+something this read interface claims to have done. Existing decision files
+remain authoritative and no historical records are rewritten in this change.
 
 ### Review receipt rollout
 

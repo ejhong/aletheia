@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { createBudget, githubBudgetStore } from "../../scripts/lib/ai-budget.mjs";
+import { createBudget, githubBudgetStore, sharedBudget } from "../../scripts/lib/ai-budget.mjs";
 import { AI_POLICY, BudgetStopped, PolicySchema, tariff, tokenCost } from "../../scripts/lib/ai-policy.mjs";
 import { countResponseInput, meteredFetch, reserveModel, usageReceipt } from "../../scripts/lib/metered-model.mjs";
 import { anthropicStreamReceipt, meterOperator, operatorRequest } from "../../scripts/lib/operator-meter.mjs";
@@ -13,6 +13,18 @@ const policy = { ...AI_POLICY, monthlyUsd: 10, dailyUsd: 10, reviewReserveUsd: 2
 const request = { model: "gpt-6-astra", workload: "drafting", amount: 4_000_000 };
 
 describe("one shared AI allowance", () => {
+  it("applies a pause and changed limits between requests from the same worker", async () => {
+    let live = { ...policy };
+    const budget = sharedBudget({ ...memoryBudgetStore(), async policy() { return live; } });
+    const admitted = await budget.reserve(request);
+    live = { ...live, enabled: false };
+    await expect(budget.reserve({ ...request, amount: 1 })).rejects.toThrow(/allowance/);
+    await budget.settle(admitted, 123);
+    live = { ...live, enabled: true, dailyUsd: 1 };
+    await expect(budget.reserve(request)).rejects.toThrow(/allowance/);
+    await budget.reserve({ ...request, amount: 100 });
+    expect((await budget.status()).totals.month).toBe(223);
+  });
   it("changes live controls without a model call or a publication PR, preserving review policy", async () => {
     const config = JSON.parse(fs.readFileSync("config/ai.json", "utf8"));
     let allowance = { ...config.initialBudget }; let sha = 1;

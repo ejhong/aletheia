@@ -197,12 +197,11 @@ export function githubBudgetStore({ token = process.env.BUDGET_GITHUB_TOKEN || p
   };
 }
 
-export function sharedBudget() {
-  const store = githubBudgetStore();
-  // Resolve approved policy lazily; a settings PR must not fund itself or
-  // prevent its own pause/lower-limit proposal from being reviewed.
-  let instance;
-  const ready = () => instance ??= store.policy().then(policy => createBudget(store, { policy }));
+/** @param {Pick<ReturnType<typeof githubBudgetStore>, "policy" | "read" | "write">} store */
+export function sharedBudget(store = githubBudgetStore()) {
+  // Read live controls for each admission, including within a long-running
+  // worker. Running requests retain their recorded terms when controls change.
+  const ready = async () => createBudget(store, { policy: await store.policy() });
   return {
     async getPolicy() { return (await ready()).getPolicy(); },
     async reserve(request) { return (await ready()).reserve(request); },

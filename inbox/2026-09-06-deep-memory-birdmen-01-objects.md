@@ -24,3 +24,8 @@ before interpreting a resemblance. Preserve unresolved identifications and
 the differences between objects. Follow the page's excavation and museum
 references for consequential observations. A shared outline alone does not
 establish shared function, descent or a lost civilisation.
+
+AI execution provenance: model `GPT-6 (OpenAI Codex)`; date `2026-09-06`;
+runId `codex-budget-intake-2026-09-06` (locally assigned session label);
+promptVersion `none` (interactive founder-directed work, no versioned
+pipeline prompt). Eugene supplied the direction; the wording is AI-written.

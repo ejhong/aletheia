@@ -15,3 +15,8 @@ Preserve uneven documentation and cultural dependence when considering
 baselines. Trace any proposed quantitative claim to the saved data and
 method before admitting it to the case. Findings apply to this sample and
 operational definition, with broader historical implications assessed separately.
+
+AI execution provenance: model `GPT-6 (OpenAI Codex)`; date `2026-09-06`;
+runId `codex-budget-intake-2026-09-06` (locally assigned session label);
+promptVersion `none` (interactive founder-directed work, no versioned
+pipeline prompt). Eugene supplied the direction; the wording is AI-written.

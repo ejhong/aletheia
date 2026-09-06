@@ -1250,8 +1250,10 @@ work; no ratification threshold changes. New reservations use the approved
 model policy from main and live spending controls from the spending branch.
 Changing limits or pausing/resuming uses a manual workflow or CLI, with public
 history and no model call, so an exhausted budget never blocks its own controls.
-A model-policy PR cannot fund itself by altering an unapproved tariff. First-integration bootstrap records its starting main commit and is available
-only before model policy has first appeared in main history. Costs are conservative recorded-tariff amounts
+A model-policy PR cannot fund itself by altering an unapproved tariff.
+First-integration bootstrap records its starting main commit and is available
+only before model policy has first appeared in main history. Costs are
+conservative recorded-tariff amounts
 charged by admission date, not reconstructed invoices. Prior spending
 and interactive subscriptions are not retrospectively counted as zero.
 
@@ -1272,8 +1274,6 @@ manifests and markers. Image identity and provenance are intake tasks; image
 selection and captions belong to the reviewed edition. Automatic edition
 composition and broader Expedition discovery remain subsequent work.
 
-(AI implementation record for the authorized system-wide budget and model change.)
-
 The founder subsequently requested improved public visibility after the rest of
 the pipeline work: spending by purpose, automation activity and decisions, with
 global information where it describes the system and case-level information
@@ -1282,3 +1282,8 @@ that coherent interface. This is a later product task, not an expansion of the
 current budget PR. Existing receipts supply the foundation; future workers
 should attach explicit case context where available, leaving shared or
 unallocated costs labeled honestly.
+
+AI execution provenance: model `GPT-6 (OpenAI Codex)`; date `2026-09-06`;
+runId `codex-budget-intake-2026-09-06` (locally assigned session label);
+promptVersion `none` (interactive founder-directed work, no versioned
+pipeline prompt). Eugene supplied the direction; the wording is AI-written.

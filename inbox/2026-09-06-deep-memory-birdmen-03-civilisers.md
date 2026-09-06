@@ -15,3 +15,8 @@ record which details each witness actually supplies. Preserve translation,
 recording and transmission dependencies. A late recording date calls for a
 mediation inquiry; it does not by itself prove a late invention. The earlier
 lineup experiment and this source audit answer different questions.
+
+AI execution provenance: model `GPT-6 (OpenAI Codex)`; date `2026-09-06`;
+runId `codex-budget-intake-2026-09-06` (locally assigned session label);
+promptVersion `none` (interactive founder-directed work, no versioned
+pipeline prompt). Eugene supplied the direction; the wording is AI-written.

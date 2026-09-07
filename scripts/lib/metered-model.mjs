@@ -43,20 +43,20 @@ export async function reserveModel({ model, workload, inputLimit, outputLimit, c
   const input = inputLimit ?? rate.context;
   if (!integer(input) || input > rate.context || !integer(outputLimit) || outputLimit < 1 || outputLimit > rate.maxOutput)
     throw new BudgetStopped("Request exceeds the recorded model limits.");
-  // One stateless search invocation: reserve both full model input passes,
-  // including returned search content. A 'low' search setting is not a token cap.
-  if (![0, 1].includes(webSearchCalls) || (webSearchCalls && (input !== rate.context ||
+  // Reserve an initial input pass and another complete context for each hosted
+  // call. Search settings and expected report length are not token caps.
+  if (!integer(webSearchCalls) || webSearchCalls > (policy.webSearch?.maxCalls ?? 1) || (webSearchCalls && (input !== rate.context ||
       rate.provider !== "openai" || !policy.webSearch?.models.includes(model))))
     throw new BudgetStopped("No approved bounded web-search tariff for this request.");
   const inputTotal = input * (webSearchCalls + 1);
   const toolFee = webSearchCalls ? microUsd(policy.webSearch.usdPerCall) : 0;
   const ticket = await budget.reserve({ model, workload,
-    amount: tokenCost(reservedRate, inputTotal, outputLimit, { reserve: true }) + toolFee,
+    amount: tokenCost(reservedRate, inputTotal, outputLimit, { reserve: true }) + webSearchCalls * toolFee,
     terms: { inputLimit: input, outputLimit, inputRate: rate.input, cacheWriteRate: reservedRate.cacheWrite ?? rate.input,
       outputRate: rate.output, longThreshold: rate.longThreshold ?? rate.context,
       longInputFactor: rate.longInputFactor ?? 1, longOutputFactor: rate.longOutputFactor ?? 1,
       rateDate: policy.rateDate, source: rate.source,
-      ...(webSearchCalls ? { inputPasses: 2, webSearchLimit: webSearchCalls,
+      ...(webSearchCalls ? { inputPasses: webSearchCalls + 1, webSearchLimit: webSearchCalls,
         webSearchUsdPerCall: policy.webSearch.usdPerCall, webSearchSource: policy.webSearch.source,
         webSearchRateDate: policy.webSearch.checkedAt } : {}),
       ...(context ? { case: context.case, operationRun: context.runId, phase: context.phase } : {}) } });

@@ -19,7 +19,9 @@ const PolicyObject = z.strictObject({
   operator: z.strictObject({ model: z.string().min(1), effort: z.enum(["low", "medium", "high"]) }),
   sourceDraft: z.string(), sourceCheck: z.string(), imageModel: z.string(), rateDate: z.iso.date(),
   webSearch: z.strictObject({ usdPerCall: money, source: z.url(), checkedAt: z.iso.date(),
-    models: z.array(z.string()).min(1) }).optional(),
+    models: z.array(z.string()).min(1), maxCalls: tokens.max(20).optional() }).optional(),
+  researchReport: z.strictObject({ model: z.string().min(1), maxToolCalls: tokens.max(20),
+    maxOutputTokens: tokens }).optional(),
   discovery: z.strictObject({ cases: z.array(z.string()), intervalDays: tokens,
     maxQueries: tokens.max(3), maxLeads: tokens.max(2) }).optional(),
   rates: z.record(z.string(), Rate),
@@ -30,6 +32,11 @@ export const PolicySchema = PolicyObject.superRefine((p, ctx) => {
     if (!p.rates[model]) ctx.addIssue({ code: "custom", message: `no tariff for ${model}` });
   if (p.rates[p.main.model]?.provider !== p.main.provider)
     ctx.addIssue({ code: "custom", message: "main model/provider mismatch" });
+  if (p.researchReport && (p.rates[p.researchReport.model]?.provider !== "openai" ||
+      !p.webSearch?.models.includes(p.researchReport.model) ||
+      p.researchReport.maxToolCalls > (p.webSearch.maxCalls ?? 1) ||
+      p.researchReport.maxOutputTokens > p.rates[p.researchReport.model].maxOutput))
+    ctx.addIssue({ code: "custom", message: "research report requires approved model, tool tariff and limits" });
 });
 
 export const PolicyConfigSchema = PolicyObject.omit({ enabled: true, monthlyUsd: true, dailyUsd: true, reviewReserveUsd: true })

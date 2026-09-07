@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { createBudget, githubBudgetStore, sharedBudget } from "../../scripts/lib/ai-budget.mjs";
 import { AI_POLICY, BudgetStopped, PolicySchema, tariff, tokenCost } from "../../scripts/lib/ai-policy.mjs";
 import { countResponseInput, meteredFetch, reserveModel, usageReceipt } from "../../scripts/lib/metered-model.mjs";
-import { openaiResponse } from "../../scripts/lib/openai-response.mjs";
+import { openaiResponse, openaiResearch } from "../../scripts/lib/openai-response.mjs";
 import { anthropicStreamReceipt, meterOperator, operatorRequest } from "../../scripts/lib/operator-meter.mjs";
 import { memoryBudgetStore, testBudget } from "./fixtures/aiBudget";
 import fs from "node:fs";
@@ -128,6 +128,33 @@ describe("one shared AI allowance", () => {
 });
 
 describe("metered vendor requests", () => {
+  it("funds one multi-step research report within the shared allowance and settles searches, opens and finds", async () => {
+    const budget = testBudget();
+    let requestBody: Record<string, unknown> = {};
+    const response = await openaiResearch("Synthetic investigation", "Existing work and source index", {
+      budget, apiKey: "fixture-only", context: { case: "synthetic", runId: "synthetic-report", phase: "report" },
+      fetchImpl: async (_url, init) => {
+        requestBody = JSON.parse(String(init?.body));
+        expect((await budget.status()).totals.held).toBe(18_880_000); // 9 x 200k input + 20k output + 8 tools
+        return Response.json({ model: "o3-deep-research-2025-06-26", id: "synthetic-report", status: "completed",
+          usage: { input_tokens: 100000, output_tokens: 20000 },
+          output: [...["search", "open_page", "find_in_page"].map(type => ({ type: "web_search_call", status: "completed", action: { type } })),
+            { type: "message", content: [{ type: "output_text", text: "Synthetic report." }] }] });
+      } });
+    expect(requestBody).toMatchObject({ model: "o3-deep-research", max_tool_calls: 8, max_output_tokens: 20000,
+      tools: [{ type: "web_search_preview" }], store: false, service_tier: "default" });
+    expect(requestBody).not.toHaveProperty("reasoning");
+    expect(response.text).toBe("Synthetic report.");
+    expect((await budget.status()).totals).toMatchObject({ held: 0, month: 1_830_000 });
+  });
+  it("cannot enable a research model or tool count using an unapproved local policy", async () => {
+    const budget = createBudget(memoryBudgetStore(), { policy: { ...AI_POLICY, researchReport: undefined } });
+    const fetchImpl = vi.fn();
+    await expect(openaiResearch("Synthetic", "Synthetic", { budget, apiKey: "fixture", fetchImpl })).rejects.toThrow(/approved/);
+    await expect(reserveModel({ model: "o3-deep-research", workload: "research", outputLimit: 20000,
+      webSearchCalls: 9, budget: testBudget() })).rejects.toThrow(/tariff/);
+    expect(fetchImpl).not.toHaveBeenCalled();
+  });
   it("bounds hosted search in the actual request and reserves search content, tool fees and case attribution before sending", async () => {
     const budget = testBudget();
     const model = AI_POLICY.sourceDraft;

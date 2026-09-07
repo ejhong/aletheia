@@ -1471,3 +1471,37 @@ runId `codex-pdf-reader-2026-09-07` (locally assigned session label);
 promptVersion `none` (interactive founder-directed work). Pipeline protocols:
 `source-reading-v6` and `bounded-discovery-v2`; earlier trial receipts preserve
 the versions actually used.
+
+## 2026-09-07 — Test a web research report using the existing memory
+
+The founder asked for a browsing researcher and whether the preceding cleanup
+still serves that direction. Keep the durable ledger, common source identity,
+intake decisions, edition view, exact review receipts and shared allowance.
+Reconsider the narrow scout-to-one-observation sequencing: it proved parts of
+the plumbing but has not yet produced a useful broad investigation. Older-case
+assessment paths and some framing fields remain transitional. Cleaner ownership
+is demonstrable; a simpler overall system and better research require an actual
+case result, not an assertion that every earlier implementation must survive.
+
+The next trial is a manual `research-case.ts` call using o3-deep-research with
+the existing case, source/claim index, founding inputs and prior decisions.
+The report and its request/output receipts use the existing intake history.
+It can recommend useful ledger depth and a better illustrated account; its
+proposals require normal source checks and publication review. Astra remains
+the main editor. No report citation is automatically adopted as evidence.
+No schedule, third presentation layer, new debate objects or UI expansion are
+added. The earlier Orch OR follow-up is deferred with the founder's request
+to keep the present work simple; Deep Memory is the immediate live test.
+
+The same metered Responses transport supports the research API profile, with
+eight hosted search/open/find calls, 20,000 output tokens and the existing
+$150/month, $25/day limits. Its reviewed tariff must land before paid use.
+The conservative $18.88 reservation covers each potential input pass and tool
+fee; actual returned usage settles it. Requests are recorded before sending;
+failure or interruption rests pending inspection, and unchanged reports cannot
+self-trigger another run. Broader recurring use depends on the trial's value.
+
+AI execution provenance: model `GPT-6 (OpenAI Codex)`; date `2026-09-07`;
+runId `codex-case-research-report-2026-09-07` (locally assigned session label);
+promptVersion `none` (interactive founder-directed work). The research worker's
+separate protocol is `case-research-report-v1`.

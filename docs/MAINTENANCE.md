@@ -19,6 +19,15 @@ workflow or `npm run ai:budget -- status`; every paid job reports its allowance.
 Initialize the separate spending branch once with `npm run ai:budget -- init`.
 Local paid runs require `BUDGET_GITHUB_TOKEN` as well as the model key.
 
+Manual case investigation: `node scripts/research-case.ts deep-memory` supplies
+the case and prior work to the configured Deep Research model. The request,
+report, citations/tool output and outcome use `proposals/intake/`; readable local
+copies live in `.research-runs/<runId>/`. This is unverified working material,
+with no automatic adoption or schedule. Inspect the report before selecting
+source readings and proposing changes with Astra. Unchanged or interrupted work
+rests; `--reconsider 'specific reason for another investigation'` records a
+deliberate retry. See the limits and reservation in [AI operating policy](../config/README.md).
+
 Shared source reader (Node 22.18+ and `OPENAI_API_KEY` for paid readings):
 
 ```sh

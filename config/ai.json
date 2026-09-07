@@ -13,12 +13,18 @@
   "sourceDraft": "gpt-5.4-mini-2026-03-17",
   "sourceCheck": "gpt-5-mini-2025-08-07",
   "imageModel": "gpt-image-1",
-  "rateDate": "2026-09-06",
+  "rateDate": "2026-09-07",
   "webSearch": {
     "usdPerCall": 0.01,
     "source": "https://developers.openai.com/api/docs/pricing",
     "checkedAt": "2026-09-07",
-    "models": ["gpt-5.4-mini-2026-03-17"]
+    "models": ["gpt-5.4-mini-2026-03-17", "o3-deep-research"],
+    "maxCalls": 8
+  },
+  "researchReport": {
+    "model": "o3-deep-research",
+    "maxToolCalls": 8,
+    "maxOutputTokens": 20000
   },
   "discovery": {
     "cases": ["deep-memory"],
@@ -27,6 +33,14 @@
     "maxLeads": 2
   },
   "rates": {
+    "o3-deep-research": {
+      "provider": "openai",
+      "input": 10,
+      "output": 40,
+      "context": 200000,
+      "maxOutput": 100000,
+      "source": "https://developers.openai.com/api/docs/models/o3-deep-research"
+    },
     "gpt-6-astra": {
       "provider": "openai",
       "input": 10,

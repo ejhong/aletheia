@@ -1,6 +1,6 @@
 # The metabolism: how the site runs itself
 
-**Direction updated 2026-09-05:** a durable research ledger and a current
+**Direction updated 2026-09-07:** a durable research ledger and a current
 edition of each case. The founder authorized implementation after the
 reassessment and added a blank-topic trial. This is the implementation
 plan; the existing workers below are being consolidated into it. Changes
@@ -77,6 +77,26 @@ finding something to say; a rest state means low recent return within the
 searched scope, not proof that the topic is complete. Broader autonomous
 research must wait for enforced spend accounting. The existing promotion job
 now uses the bounded reader; no additional research schedule is installed.
+
+**Next product test: one investigation informed by the existing case.** A
+manual Deep Research report receives the current account, complete source and
+claim index, founding questions and prior intake outcomes. It can browse for
+missing evidence, serious competing arguments and better interpretations;
+it proposes concrete changes and useful plate choices. Astra then uses that
+working report to propose the ledger and edition changes worth checking.
+The report is an intake artifact, not a third public layer or a verified source.
+Useful depth may enter the ledger while the short essay stays unchanged.
+
+The common identity, memory, source checks, edition view and shared allowance
+remain useful. The orchestration is still transitional: older cases retain
+legacy assessment paths and the two-query scout is a narrow discovery pilot.
+Do not expand those paths merely because they now exist. Test the report's
+substantive usefulness, then let that evidence determine whether it replaces
+the scout as the usual investigation. Keep targeted source reading as a tool
+within that process. Rework remaining legacy ownership as cases adopt editions.
+More code and more receipts do not establish a cleaner or better product.
+The wider UI and structured debate work are deferred; the next live trial is
+Deep Memory only, with no additional schedule or budget increase.
 
 ### Implementation sequence and acceptance criteria
 

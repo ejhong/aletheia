@@ -1,10 +1,11 @@
 import { AI_POLICY, BudgetStopped } from "./ai-policy.mjs";
 import { countResponseInput, meteredFetch } from "./metered-model.mjs";
+import { sharedBudget } from "./ai-budget.mjs";
 
 export class OpenAIRefusalError extends Error {}
 
-/** Explicit, stateless Responses requests. Only this bounded search path may
- * attach a hosted tool; text writers share the same transport and accounting.
+/** Explicit, stateless Responses requests. Text writers and bounded research
+ * share the same transport and accounting.
  * @param {string} instructions
  * @param {string} input
  * @param {{model?: string, effort?: string, maxOutputTokens?: number, workload?: string, search?: boolean,
@@ -22,20 +23,51 @@ export async function openaiResponse(instructions, input, { model = AI_POLICY.ma
     ...(search ? { tools: [{ type: "web_search", search_context_size: "low" }],
       max_tool_calls: 1, parallel_tool_calls: false, tool_choice: "required",
       include: ["web_search_call.action.sources"] } : {}) };
-  const inputLimit = search ? undefined : await countResponseInput(body, { apiKey, fetchImpl });
+  return sendResponse(body, { workload, searchCalls: search ? 1 : 0,
+    context, budget, apiKey, fetchImpl, timeoutMs });
+}
+
+/** A research specialist receives a complete question and the case's memory.
+ * Its API profile uses the documented research tool without Astra's effort or
+ * structured-output settings. No Files API, code interpreter or hidden state.
+ * @param {string} instructions
+ * @param {string} input
+ * @param {{context?: {case: string, runId: string, phase: string}, budget?: ReturnType<typeof sharedBudget>,
+ * apiKey?: string, fetchImpl?: typeof fetch, timeoutMs?: number}} options */
+export async function openaiResearch(instructions, input, { budget = sharedBudget(), ...options } = {}) {
+  const policy = await budget.getPolicy();
+  const config = policy.researchReport;
+  if (!config) throw new BudgetStopped("No approved research-report policy; no request sent.");
+  if (typeof instructions !== "string" || typeof input !== "string")
+    throw new Error("Research requires an explicit question and case packet");
+  return sendResponse({ model: config.model, instructions, input, store: false, service_tier: "default",
+    max_output_tokens: config.maxOutputTokens, max_tool_calls: config.maxToolCalls,
+    tools: [{ type: "web_search_preview" }], include: ["web_search_call.action.sources"] },
+  { ...options, budget, workload: "research", searchCalls: config.maxToolCalls });
+}
+
+/** @param {{model: string, instructions: string, input: string, max_output_tokens: number}} body
+ * @param {{workload: string, searchCalls: number, context?: {case: string, runId: string, phase: string},
+ * budget?: ReturnType<typeof sharedBudget>, apiKey?: string, fetchImpl?: typeof fetch, timeoutMs?: number}} options */
+async function sendResponse(body, { workload, searchCalls, context, budget,
+  apiKey = process.env.OPENAI_API_KEY, fetchImpl = fetch, timeoutMs = 900000 }) {
+  if (!apiKey) throw new Error("OPENAI_API_KEY is not configured");
+  const { model, max_output_tokens: maxOutputTokens } = body;
+  const inputLimit = searchCalls ? undefined : await countResponseInput(body, { apiKey, fetchImpl });
   const res = await meteredFetch("https://api.openai.com/v1/responses", {
     method: "POST", signal: AbortSignal.timeout(timeoutMs),
     headers: { "content-type": "application/json", authorization: `Bearer ${apiKey}` },
     body: JSON.stringify(body),
   }, { model, workload, inputLimit, outputLimit: maxOutputTokens,
-    webSearchCalls: search ? 1 : 0, context, budget, fetchImpl });
+    webSearchCalls: searchCalls, context, budget, fetchImpl });
   if (!res.ok) throw new Error(`OpenAI API HTTP ${res.status}; reservation retained`);
   const data = await res.json();
   const content = (data.output ?? []).flatMap(item => item.content ?? []);
   if (content.some(item => item.type === "refusal")) throw new OpenAIRefusalError(`model ${model} refused`);
   if (data.status !== "completed") throw new Error(`OpenAI response ${data.status ?? "missing status"}`);
-  if (search && data.output.filter(item => item.type === "web_search_call").length !== 1)
+  if (searchCalls && !data.output.some(item => item.type === "web_search_call"))
     throw new BudgetStopped("Search did not run; no discovered URLs may be inferred from model prose.");
   return { text: content.filter(item => item.type === "output_text").map(item => item.text).join("\n"),
-    model: data.model, responseId: data.id, output: data.output };
+    model: data.model, responseId: data.id, output: data.output, usage: data.usage,
+    citations: content.flatMap(item => item.annotations ?? []).filter(item => item.type === "url_citation") };
 }

@@ -100,7 +100,8 @@ its separate four-call / four-minute / $1 limit. Discovery has a ten-minute
 deadline and shares the global allowance; no additional monthly budget is added.
 
 `webSearch` records $0.01 per tool call, with retrieved content billed as model
-input. The reservation covers two full model input passes plus the tool fee,
+input. The reservation covers the initial full model input pass and another for
+each permitted tool call, plus every tool fee,
 rather than guessing a token cap from `search_context_size: low`. Actual token
 and completed-tool receipts settle it; missing or unexpected tool usage retains
 the hold. Discovery cost terms also include case, operation run and phase.
@@ -114,6 +115,27 @@ before each request and accounts for returned usage, including page-image tokens
 There is no Files API upload or storage charge introduced by this adapter. See
 [OpenAI file inputs](https://developers.openai.com/api/docs/guides/file-inputs)
 for the inline PDF format and image/text token treatment (checked 2026-09-07).
+
+The manual `node scripts/research-case.ts <case>` experiment uses
+`researchReport`: **o3-deep-research**, up to eight web search/open/find calls and
+20,000 output tokens including reasoning. It receives the current case, source
+and claim index, founding inputs, intake decisions and latest previous report.
+It saves an unverified working report in the existing intake history; it does
+not publish, promote every citation or add a schedule. Astra remains the main
+editor and assessor. Unchanged completed, failed or interrupted work rests;
+`--reconsider "specific reason"` permits a deliberate further investigation.
+
+The conservative reservation is **$18.88**, covering nine full 200,000-token
+input passes, 20,000 output tokens and eight tool fees. This is a temporary
+maximum liability, not an expected charge. Returned usage releases the unused
+amount. For example, 100,000 input tokens, 20,000 output tokens and eight tool
+calls account for **$1.88**. Actual runs vary. The $150/$25 shared limits remain
+unchanged; a report waits if its reservation will not fit. Synchronous requests
+have a 15-minute timeout; an interrupted request is retained for inspection,
+never automatically paid for again. No extra code-execution or storage tools
+are enabled. See [Deep Research](https://developers.openai.com/api/docs/guides/deep-research)
+and [the model tariff](https://developers.openai.com/api/docs/models/o3-deep-research),
+checked 2026-09-07. The API profile omits Astra's reasoning-effort settings.
 
 Accounting begins with this integration. Earlier bills cannot be reconstructed
 from workers that discarded usage. ChatGPT/Codex subscriptions, this interactive

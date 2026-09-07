@@ -1405,3 +1405,69 @@ AI execution provenance: model `GPT-6 (OpenAI Codex)`; date `2026-09-07`;
 runId `codex-bounded-discovery-2026-09-07` (locally assigned session label);
 promptVersion `none` (interactive founder-directed work, no versioned pipeline
 prompt). The worker's separate protocol is `bounded-discovery-v1`.
+
+## 2026-09-07 — Let the source-reader pilot expose failure, then test the report
+
+The first live bounded discovery selected an institutional Assyrian catalogue
+for the Deep Memory comparison. The object page returned HTTP 429; the alternate
+50-page PDF was a scan without a text layer. Discovery cost about $0.40. The
+original failed retrievals made no paid source-reading calls.
+
+The reader now accepts public PDFs within a 10 MB / 60-page limit, after local
+container inspection. Both source models receive the actual file; the checker
+also receives a separately rendered image of the claimed physical PDF page.
+The original file and rendered-page hashes remain in receipts. PDF quotes are
+explicitly AI-checked; there is no invented text hash or mechanical quote match.
+HTML retains its existing exact text guard. Strict response schemas prevent
+omitted required fields, and a relevance check asks whether the observation
+addresses the supplied request. These are source checks by two OpenAI models;
+publication still requires the existing independent vendor arbiter.
+
+The development trial matters: v4 omitted an independence field and failed;
+v5 produced a checked but irrelevant inscription observation with an incorrect
+PDF page. Both models had agreed on the wrong page. The proposal is preserved
+and its adoption declined. It is not a published finding. Version 6 gives the
+checker the actual selected page image and the originating research question.
+Model agreement alone is insufficient verification. The final v6 retry returned
+no_change rather than substituting another observation. Its absence claim is
+only an unverified reader explanation, not a finding that the catalogue lacks
+the object. The three PDF reading attempts cost about $0.12 in total. No new
+canonical claims or assessments were adopted from this discovery pilot. Limits and the constitution
+are unchanged.
+
+The founder then questioned whether this work was as useful as a substantial
+research report that remembers previous work. The next product experiment will
+therefore prioritize a complete investigation of Deep Memory over expanding
+retrieval adapters. The small two-query pass proves plumbing; it is not the
+intended research experience. Supply the current edition, ledger, open questions
+and past attempts; produce a coherent report, proposed material changes and
+relevant plate suggestions; check consequential findings before an edition
+competition. Compare usefulness to the incumbent as well as factual accuracy.
+A true but unrelated fact, a new source count or a cosmetic rewrite does not
+establish improvement. The founder also clarified that the underlying record
+should become comprehensive even when the article stays compact. Useful new
+evidence, alternatives and context may enter the ledger without changing the
+article. Relevance is to the case and the assigned research question, not to
+what fits the current narrative. Periodic broader surveys must look beyond the
+incumbent's framing. The intended case-improvement proposal includes ledger
+deltas and, where useful, a better edition; a standalone report is working
+material rather than an additional permanent presentation layer. Keep the existing shared allowance and begin manually
+before adding a schedule or widening to more cases.
+
+The founder supplied Orch OR as a concrete preservation test: the strongest
+experimental objection and the limit of its applicability must both survive
+compression. The current case already distinguishes the Gran Sasso exclusion of
+a specific stochastic Diósi–Penrose completion from Penrose's lifetime criterion,
+but its narrative is more categorical than the recorded verification of the
+McQueen reply. Use Orch OR as the first mature-case pilot alongside Deep Memory:
+verify that reply, retain the serious objection and response together, and avoid
+implying a retrospective retreat without evidence of one. Absence of refutation
+is not evidence for the biological or consciousness claims. Strong competing
+arguments should be fairly weighed, without a requirement of equal support.
+
+
+AI execution provenance: model `GPT-6 (OpenAI Codex)`; date `2026-09-07`;
+runId `codex-pdf-reader-2026-09-07` (locally assigned session label);
+promptVersion `none` (interactive founder-directed work). Pipeline protocols:
+`source-reading-v6` and `bounded-discovery-v2`; earlier trial receipts preserve
+the versions actually used.

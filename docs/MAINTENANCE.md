@@ -28,7 +28,7 @@ node scripts/review-research-proposal.ts <proposal.yaml> --materialize <new-dire
 node scripts/promote-imports.mjs --dry-run
 ```
 
-The reader accepts at most two HTML/text sources and four model calls, with a
+The reader accepts at most two HTML/text or bounded PDF sources and four model calls, with a
 four-minute deadline and a $1 research allowance per run at the explicit rate
 card in `config/ai.json`. Confirm current rates there before a new operating
 period. This local allowance includes the separate source-reading call. The
@@ -39,6 +39,15 @@ to different cases; no additional research schedule is installed. Source
 failures, refusals, and budget exhaustion are recorded in
 `proposals/intake/`; local in-progress liability receipts live in the ignored
 `.research-runs/` directory. Unknown token usage keeps its full reservation.
+
+PDF reading requires Poppler (`pdfinfo`, installed in the promotion job). The
+limit is 10 MB and 60 pages, with no silent truncation. Both models receive the
+complete PDF; the checker additionally receives a separately rendered image of
+the claimed page and must confirm the quote there. It also checks relevance to
+the originating request. Page-image and original-file hashes are preserved. Page
+counts include covers and blanks, and can differ from printed pagination.
+Receipts retain the file hash and label AI page verification. They do not retain
+PDF bytes or pretend that a scan has a mechanically verified text layer.
 
 The common envelope is the `research` field of a `research-proposal` decision.
 Save that field as the proposal file for the review command. `--record` appends
@@ -69,7 +78,9 @@ node scripts/discover-sources.ts --scan
 The dry run has no network calls or writes. The live worker reads approved AI
 policy from main, records one question before searching, and queues up to two
 source leads. Astra plans and selects; the configured source-drafting model does
-at most two single-tool lookups. There are no automatic retries within a pass.
+at most two single-tool lookups. A hosted lookup may expand its planned query
+into several search strings; those actions are retained in the receipt. There
+are no automatic retries within a pass.
 The ten-minute deadline, output limits and shared allowance bound the work;
 the source reader's separate $1 limit excludes discovery and publication review.
 Only Deep Memory is enabled initially, with a seven-day revisit. New inputs
@@ -80,7 +91,8 @@ Existing requests retain their order, so discovery does not jump ahead of old
 inbox submissions. The job serializes and rests while a `promote/` PR is pending.
 To inspect an attempt, find its `discovery` decisions in `proposals/intake/`:
 `planned` was saved before searching; the final receipt contains search actions,
-selected indexes and any failures. `queued` means a lead, not verified evidence.
+selected indexes and any failures. Add `--json` to print the complete receipt;
+the default CLI output is a short summary. `queued` means a lead, not verified evidence.
 Run the same command to resume missing queue entries from a recorded selection
 without paying again. Stale selections require fresh consideration. A 429, an
 unsupported page or an empty selection must never be interpreted as an absence.
@@ -279,7 +291,7 @@ corrections and reconsiderations append a new intake decision.
 | A case shows `contested` | Working as designed. The operator runs reconciliation once; a case still contested afterwards is a standoff and stays displayed. |
 | Content response ran 7 minutes and produced nothing | Cold npm cache. Nothing to fix. |
 | Malformed panel replies | Quarantined under `proposals/cross-model-failures/`, never installed. The operator retries them. |
-| An inbox link has no resulting evidence | Inspect `research-run` outcomes and `promote-imports.mjs --dry-run`. Unavailable or unsupported sources remain retryable; rejected or empty readings retain their reason. Send a changed argument or better public HTML/text source when useful. PDF/OCR reading is not part of this adapter yet. |
+| An inbox link has no resulting evidence | Inspect `research-run` outcomes and `promote-imports.mjs --dry-run`. Unavailable or unsupported sources remain retryable; rejected or empty readings retain their reason. Send a changed argument or better public source when useful. HTML images are not inspected; PDFs are limited to 10 MB / 60 pages and need an explicit independent page check. |
 
 ## 5. Reverting a run
 

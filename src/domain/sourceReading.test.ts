@@ -24,13 +24,13 @@ function emptyCase() {
 const body = "These observations came from the same sample. The shared measurements are not independent replications. This is synthetic test text, not a real publication.";
 const capture = { url: "https://example.org/fixture", requestedUrl: "https://example.org/fixture", retrievedAt: "2026-09-06T10:00:00.000Z",
   responseHash: sha256(body), textHash: sha256(body), extractor: "plain-text-v1", text: body };
-const draft = { outcome: "observation", reason: "Synthetic reading fixture", source: { title: "Synthetic fixture", authors: [] },
+const draft = { outcome: "observation", reason: "Synthetic reading fixture", source: { title: "Synthetic fixture", authors: [], year: null, sourceType: null },
   claim: "The measurements were independent replications.", title: "A deliberately misleading reading",
-  sourceStatement: "The test text describes independent replications.", quote: "These observations came from the same sample.",
+  sourceStatement: "The test text describes independent replications.", pdfPage: null, quote: "These observations came from the same sample.",
   inference: "This synthetic draft deliberately drops a crucial qualification.", limitations: ["One synthetic document."],
   direction: "supports", strength: "weak", theme: "methods", themeLabel: "Methods", independenceNote: "Independent replication is asserted.", independenceGroup: "synthetic-sample" };
-const failedReading = { sourceMetadataSupported: true, claimSupported: false, sourceStatementSupported: false,
-  inferenceSeparated: true, limitationsPreserved: false, independenceHandled: false,
+const failedReading = { requestAddressed: true, sourceMetadataSupported: true, claimSupported: false, sourceStatementSupported: false,
+  inferenceSeparated: true, limitationsPreserved: false, independenceHandled: false, quoteSupported: null, locatorSupported: null,
   reason: "The source explicitly says these measurements are not independent replications.", dependencyNote: "One shared sample." };
 
 describe("retrieved source passages", () => {
@@ -47,7 +47,7 @@ describe("retrieved source passages", () => {
     await expect(retrieveSource(capture.url, { fetchImpl, maxBytes: 10 })).rejects.toThrow(/byte limit/);
     await expect(retrieveSource(capture.url, { fetchImpl, maxText: 20 })).rejects.toThrow(/no truncated reading/);
     await expect(retrieveSource(capture.url, { fetchImpl: async () => new Response("missing", { status: 404 }) })).rejects.toThrow(/404/);
-    await expect(retrieveSource(capture.url, { fetchImpl: async () => new Response("pdf", { headers: { "content-type": "application/pdf" } }) })).rejects.toThrow(/unsupported/);
+    await expect(retrieveSource(capture.url, { fetchImpl: async () => new Response("pdf", { headers: { "content-type": "application/octet-stream" } }) })).rejects.toThrow(/unsupported/);
   });
   it("a verbatim quotation cannot override a rejected source reading or a shared-sample warning", async () => {
     const roles: string[] = [];
@@ -58,6 +58,18 @@ describe("retrieved source passages", () => {
     expect("changes" in result).toBe(false);
     expect(result.review?.dependencyNote).toBe("One shared sample.");
   });
+  it("rejects an accurate observation that misses the supplied question", async () => {
+    const requestContext = "Synthetic question about the requested object's dating.";
+    const result = await proposeSourceReading({ capture, loaded: emptyCase(), runId: "fixture-relevance", generatedAt: capture.retrievedAt,
+      requestContext, call: async (role, _instructions, input) => {
+        if (role === "read") expect(JSON.parse(input).requestContext).toBe(requestContext);
+        return { model: `fixture-${role}`, value: role === "draft" ? draft : { ...failedReading,
+          claimSupported: true, sourceStatementSupported: true, limitationsPreserved: true, independenceHandled: true,
+          requestAddressed: false, reason: "Accurate sample metadata does not answer the requested dating question." } };
+      } });
+    expect(result.outcome).toBe("rejected");
+    expect("changes" in result).toBe(false);
+  });
   it("no useful observation and malformed reading checks cannot turn into evidence", async () => {
     let calls = 0;
     const result = await proposeSourceReading({ capture, loaded: emptyCase(), runId: "fixture", generatedAt: capture.retrievedAt,
@@ -66,6 +78,24 @@ describe("retrieved source passages", () => {
     expect(result.outcome).toBe("no_change");
     await expect(proposeSourceReading({ capture, loaded: emptyCase(), runId: "fixture", generatedAt: capture.retrievedAt,
       call: async role => ({ model: "fixture", value: role === "draft" ? draft : { approved: true } }) })).rejects.toThrow();
+  });
+});
+
+describe("PDF source checks", () => {
+  const pdfCapture = { ...capture, text: null, textHash: null, extractor: "pdf-pages-v1", pdf: { pages: 4, bytes: 100 } };
+  const review = { ...failedReading, claimSupported: true, sourceStatementSupported: true,
+    limitationsPreserved: true, independenceHandled: true };
+  it.each([undefined, false, true])("requires explicit quote and physical-page verification (%s)", async confirmation => {
+    const result = await proposeSourceReading({ capture: pdfCapture, loaded: emptyCase(), runId: "pdf-fixture", generatedAt: capture.retrievedAt,
+      call: async role => ({ model: `fixture-${role}`, pageImageHash: sha256("rendered fixture"), value: role === "draft" ? { ...draft, pdfPage: 3 } :
+        { ...review, ...(confirmation === undefined ? {} : { quoteSupported: true, locatorSupported: confirmation }) } }) });
+    expect(result.outcome).toBe(confirmation === true ? "proposed" : "rejected");
+    if (result.outcome === "proposed") {
+      const evidence = result.changes.find(c => c.kind === "evidence")!;
+      expect(evidence.passages[0]).toMatchObject({ textHash: null, pdfPage: 3,
+        pageCheck: { model: "fixture-read", quoteSupported: true, locatorSupported: true } });
+      expect(evidence.after.exactLocator).toContain("PDF page 3 of 4");
+    }
   });
 });
 
@@ -90,6 +120,25 @@ describe("bounded model calls", () => {
     } });
     expect(answer.value).toEqual({ ok: true });
     expect(budget.report().accountedUsd).toBeCloseTo(0.0003);
+  });
+  it("meters attached PDF pages and records hashes without copying file data into receipts", async () => {
+    const budget = createResearchBudget();
+    const document = { data: Buffer.from("%PDF-1.4 synthetic private request bytes").toString("base64"), pages: 4 };
+    await boundedCompletion(budget, "draft", { ...input, document }, {
+      allowance: testBudget(), apiKey: "fixture-only", fetchImpl: async (_url, init) => {
+        const request = JSON.parse(String(init?.body));
+        expect(request.input[0].content[0]).toEqual({ type: "input_file", filename: "source.pdf",
+          file_data: `data:application/pdf;base64,${document.data}` });
+        expect(request.input[0].content[1].text).toContain(input.input);
+        expect(request.tools).toBeUndefined();
+        return response("draft");
+      } });
+    expect(budget.report().calls[0].inputHash).toMatch(/^[a-f0-9]{64}$/);
+    expect(JSON.stringify(budget.report())).not.toContain(document.data);
+    const invalid = createResearchBudget();
+    await expect(boundedCompletion(invalid, "draft", { ...input, document: { ...document, pages: 61 } }, {
+      apiKey: "fixture-only", fetchImpl: async () => { throw new Error("must not fetch"); } })).rejects.toThrow(/bounded/);
+    expect(invalid.report().calls).toHaveLength(0);
   });
   it("refuses unaffordable calls without making a request, with no unmetered fallback", async () => {
     let calls = 0;
@@ -144,7 +193,7 @@ describe("manual reader integration", () => {
         const request = JSON.parse(init.body);
         const value = request.model === ${JSON.stringify(RESEARCH_MODELS.draft.id)} ? ${JSON.stringify(goodDraft)} : ${JSON.stringify(goodReview)};
         return new Response(JSON.stringify({ id: "fixture-response", model: request.model, status: "completed",
-          usage: { input_tokens: 100, output_tokens: 50 }, output: [{ content: [{ type: "output_text", text: JSON.stringify(value) }] }] }));
+          usage: { input_tokens: 100, output_tokens: 50 }, output: [{ content: [{ type: "output_text", text: JSON.stringify(request.text.format.type === "json_schema" ? { result: value } : value) }] }] }));
       }
       if (String(url) === "https://example.org/missing") return new Response("unavailable", { status: 429 });
       if (String(url) === "https://example.org/fixture") return new Response(${JSON.stringify(body)}, { headers: { "content-type": "text/plain" } });

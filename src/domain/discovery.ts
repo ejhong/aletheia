@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const DISCOVERY_PROTOCOL = "bounded-discovery-v1";
+export const DISCOVERY_PROTOCOL = "bounded-discovery-v2";
 const text = z.string().trim().min(10).max(3000);
 const hash = z.string().regex(/^[a-f0-9]{64}$/);
 export const DiscoveryPlanSchema = z.strictObject({
@@ -24,7 +24,7 @@ const Search = z.strictObject({ queryIndex: z.number().int().nonnegative(), inpu
   sources: z.array(DiscoverySourceSchema).max(100), summary: z.string(), error: z.string().optional(),
 });
 export const DiscoveryRunSchema = z.strictObject({
-  version: z.literal(1), promptVersion: z.literal(DISCOVERY_PROTOCOL),
+  version: z.literal(1), promptVersion: z.enum(["bounded-discovery-v1", DISCOVERY_PROTOCOL]),
   case: z.string().min(1), runId: z.string().min(1), generatedAt: z.iso.datetime(),
   basisHash: hash, packetHash: hash,
   reconsider: text.nullable(), plan: DiscoveryPlanSchema.nullable(),

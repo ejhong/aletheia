@@ -1,6 +1,7 @@
 import { AI_POLICY } from "./ai-policy.mjs";
 import { meteredFetch } from "./metered-model.mjs";
 import { fingerprint } from "./review-state.mjs";
+import { pdfInput, pageImageInput } from "./pdf-passages.mjs";
 
 /** Small manual research pilots only. Rates are explicit standard-tier USD;
  * no tools, retries, cached-input discount assumptions, or unmetered fallback.
@@ -31,7 +32,7 @@ export function createResearchBudget({ maxUsd = 1, maxCalls = 4, maxOutputTokens
     const config = RESEARCH_MODELS[role];
     if (!config) throw new Error("unknown research model role");
     // Reserve the model's ENTIRE input context, not a guessed token count.
-    // With a single text request and no tools, this bounds input liability.
+    // A single text/file request without tools cannot exceed this context.
     const reservedUsd = (config.context * config.input + maxOutputTokens * config.output) / 1e6;
     if (calls.length >= maxCalls || report().accountedUsd + reservedUsd > maxUsd)
       throw new RunStopped("budget_exhausted", "insufficient call or spend allowance for the next request");
@@ -59,19 +60,23 @@ export function createResearchBudget({ maxUsd = 1, maxCalls = 4, maxOutputTokens
 
 /** @param {ReturnType<typeof createResearchBudget>} budget
  * @param {string} role
- * @param {{instructions: string, input: string, inputHash: string}} packet
+ * @param {{instructions: string, input: string, inputHash: string, document?: {data: string, pages: number}, pageImage?: {data: string, page: number}, schema?: Record<string, unknown>}} packet
  * @param {{apiKey?: string, fetchImpl?: typeof fetch, allowance?: ReturnType<typeof import('./ai-budget.mjs').sharedBudget>}} options
  */
-export async function boundedCompletion(budget, role, { instructions, input, inputHash },
+export async function boundedCompletion(budget, role, { instructions, input, inputHash, document, pageImage, schema },
   { apiKey = process.env.OPENAI_API_KEY, fetchImpl = fetch, allowance } = {}) {
   if (!apiKey) throw new RunStopped("failed", "OPENAI_API_KEY is not configured");
   if (typeof instructions !== "string" || typeof input !== "string" ||
     Buffer.byteLength(instructions + input, "utf8") > 200000)
     throw new RunStopped("failed", "research packet exceeds the explicit text limit");
+  const file = document ? pdfInput(document) : null; // validate before reserving or sending
+  const image = pageImage ? pageImageInput(pageImage, document) : [];
+  const prompt = `Return the requested JSON object.\n\n${input}`;
   const call = budget.reserve(role);
-  const request = { model: call.model, instructions, input: `Return the requested JSON object.\n\n${input}`, store: false,
+  const request = { model: call.model, instructions,
+    input: file ? [{ role: "user", content: [file, ...image, { type: "input_text", text: prompt }] }] : prompt, store: false,
     service_tier: "default", max_output_tokens: budget.maxOutputTokens,
-    reasoning: { effort: "medium" }, text: { format: { type: "json_object" } } };
+    reasoning: { effort: "medium" }, text: { format: schema ? { type: "json_schema", name: "source_reading", strict: true, schema } : { type: "json_object" } } };
   call.packetHash = inputHash;
   call.inputHash = fingerprint(request);
   budget.persist();
@@ -88,6 +93,7 @@ export async function boundedCompletion(budget, role, { instructions, input, inp
       throw new RunStopped("failed", `model HTTP ${response.status}: ${call.error.code} (${call.error.parameter}); reservation retained`);
     }
     const body = await response.json();
+    call.outputHash = fingerprint(body.output ?? null);
     budget.settle(call, body.usage, body.model);
     call.responseId = body.id;
     const content = (body.output ?? []).flatMap(item => item.content ?? []);
@@ -96,7 +102,8 @@ export async function boundedCompletion(budget, role, { instructions, input, inp
     const text = content.filter(item => item.type === "output_text").map(item => item.text).join("\n");
     if (!text.trim()) throw new RunStopped("failed", "empty model response");
     budget.checkTime();
-    return { value: JSON.parse(text), model: body.model, responseId: body.id };
+    const parsed = JSON.parse(text);
+    return { value: schema ? parsed.result : parsed, model: body.model, responseId: body.id };
   } catch (error) {
     call.status = error.kind ?? "failed";
     throw error;

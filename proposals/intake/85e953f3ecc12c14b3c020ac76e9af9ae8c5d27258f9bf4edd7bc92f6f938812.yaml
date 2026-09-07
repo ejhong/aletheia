@@ -1,0 +1,456 @@
+version: 1
+decisions:
+  - id: ffa9b950d351a1c9179281f885cd00a460d6646a56286bf8a122f04307551707
+    case: deep-memory
+    stage: discovery
+    decision: queued
+    source: null
+    proposal: null
+    discovery:
+      version: 1
+      promptVersion: bounded-discovery-v1
+      case: deep-memory
+      runId: discovery-2026-09-07-97ff901b-02a0-4559-8fe7-5c5c207a018d
+      generatedAt: 2026-09-07T02:10:52.789Z
+      basisHash: 80e40a155b1b3af5d0ab2e74661abed32be92572e2b1e18c73bb1a950c8437d6
+      packetHash: 19cb358b3a18d190b30c641b2c55ee82406b7d2ed28b8ce88d68ea48de06c319
+      reconsider: null
+      plan:
+        question: Do securely documented views and contexts of Göbekli Tepe Pillar 43 and the proposed
+          Metropolitan Museum comparator, accession 32.143.7, support a resemblance more specific
+          than a rectangular form beneath an arch?
+        whyNow: "MEM-C002 establishes only a description of Pillar 43’s upper motifs. The assessment
+          identifies the missing authenticated comparison, chronology and contextual differences as
+          prerequisites to evaluating inheritance. The Met object is a founding-scope lead, not
+          admitted evidence: previous retrievals failed with HTTP 429. Retrying through
+          accession-based institutional discovery could add the missing object record rather than
+          repeat an adjudicated reading. No existing research question or completed comparative test
+          addresses this pair."
+        scope: "Freeze this pass to Pillar 43’s three upper-register forms and Met accession 32.143.7.
+          Establish both objects’ identity, dating basis, archaeological context and image
+          provenance before comparing them. Preselect these features: body outline, arch attachment,
+          internal markings, number and arrangement, relation to hands or bodies, and relation to
+          adjacent animals. Consult at most four directly relevant institutional records or original
+          research publications found through the two queries or their references. Exclude other
+          distant comparators, myth parallels and a search for intermediate transmission links. The
+          endpoint is a documented pairwise resemblance-and-difference record, not a statistical
+          test or a verdict on prehistoric inheritance."
+        inclusion: Admit observations only from institutional object records, excavation publications or
+          original research explicitly identifying one of the two objects. Images must be traceable
+          to that object, with credit or provenance and a documented date or date range; distinguish
+          object dating from photographic dating and report uncertainty. Require a full scene or a
+          reliably located detail before coding spatial relationships. Record exact verified page,
+          figure, accession or section locators. Separate visible features from published
+          interpretations such as container, handle or architecture. Preserve damaged or obscured
+          features as unobservable rather than absent. Use the existing webpage and Birdmen material
+          only as discovery routes unless separately verified for the particular observation.
+          Multiple photographs and publications of one object remain dependent.
+        disconfirmers: The proposed resemblance would strengthen if authenticated, unaltered views share
+          several preselected structural features beyond the generic rectangle-and-arch outline. It
+          would weaken if the apparent match depends on cropping, redrawing, restoration or
+          inconsistent object identification; if arch attachment, internal detail, repetition or
+          scene relationships differ; or if contextual evidence supports distinct referents, such as
+          a carried implement versus a stationary motif. A large chronological separation without
+          connecting evidence limits any transmission inference but does not by itself refute
+          inheritance. Functional constraints could explain a simple shared outline. If identity,
+          dating or adequate views cannot be established, report the comparison as unready; a search
+          miss is not evidence that parallels or historical connections do not exist.
+        queries:
+          - query: site:metmuseum.org "32.143.7"
+            purpose: primary
+            reason: Locate the accession’s official record, institutional publication or alternate museum
+              delivery route to verify identity, date, provenance and depicted attributes. Earlier
+              URL retrievals were rate-limited, not substantively negative. Accession-based
+              discovery may recover documentation needed to admit or reject this specific
+              comparator.
+          - query: '"Göbekli Tepe" ("Pillar 43" OR "Pfeiler 43") (iconography OR Rechtecke OR interpretation)'
+            purpose: counterevidence
+            reason: Seek excavation-team or original archaeological documentation of the upper forms, their
+              dating and full-scene relationships, including contextual interpretations that
+              challenge a handled-container reading. English and German terminology broadens access
+              to primary publications without expanding the object scope or assuming the motifs’
+              identity.
+      planning:
+        model: gpt-6-astra
+        responseId: resp_0d1a484c716edd0a016a9e1d2fb6c087d089e3fe42eb98a9df
+        inputHash: e403e6bde62ca550417976b899111f3c0731d78c316791b608deb64d3d9dedda
+        text: >-
+          {
+            "question": "Do securely documented views and contexts of Göbekli Tepe Pillar 43 and the proposed Metropolitan Museum comparator, accession 32.143.7, support a resemblance more specific than a rectangular form beneath an arch?",
+            "whyNow": "MEM-C002 establishes only a description of Pillar 43’s upper motifs. The assessment identifies the missing authenticated comparison, chronology and contextual differences as prerequisites to evaluating inheritance. The Met object is a founding-scope lead, not admitted evidence: previous retrievals failed with HTTP 429. Retrying through accession-based institutional discovery could add the missing object record rather than repeat an adjudicated reading. No existing research question or completed comparative test addresses this pair.",
+            "scope": "Freeze this pass to Pillar 43’s three upper-register forms and Met accession 32.143.7. Establish both objects’ identity, dating basis, archaeological context and image provenance before comparing them. Preselect these features: body outline, arch attachment, internal markings, number and arrangement, relation to hands or bodies, and relation to adjacent animals. Consult at most four directly relevant institutional records or original research publications found through the two queries or their references. Exclude other distant comparators, myth parallels and a search for intermediate transmission links. The endpoint is a documented pairwise resemblance-and-difference record, not a statistical test or a verdict on prehistoric inheritance.",
+            "inclusion": "Admit observations only from institutional object records, excavation publications or original research explicitly identifying one of the two objects. Images must be traceable to that object, with credit or provenance and a documented date or date range; distinguish object dating from photographic dating and report uncertainty. Require a full scene or a reliably located detail before coding spatial relationships. Record exact verified page, figure, accession or section locators. Separate visible features from published interpretations such as container, handle or architecture. Preserve damaged or obscured features as unobservable rather than absent. Use the existing webpage and Birdmen material only as discovery routes unless separately verified for the particular observation. Multiple photographs and publications of one object remain dependent.",
+            "disconfirmers": "The proposed resemblance would strengthen if authenticated, unaltered views share several preselected structural features beyond the generic rectangle-and-arch outline. It would weaken if the apparent match depends on cropping, redrawing, restoration or inconsistent object identification; if arch attachment, internal detail, repetition or scene relationships differ; or if contextual evidence supports distinct referents, such as a carried implement versus a stationary motif. A large chronological separation without connecting evidence limits any transmission inference but does not by itself refute inheritance. Functional constraints could explain a simple shared outline. If identity, dating or adequate views cannot be established, report the comparison as unready; a search miss is not evidence that parallels or historical connections do not exist.",
+            "queries": [
+              {
+                "query": "site:metmuseum.org \"32.143.7\"",
+                "purpose": "primary",
+                "reason": "Locate the accession’s official record, institutional publication or alternate museum delivery route to verify identity, date, provenance and depicted attributes. Earlier URL retrievals were rate-limited, not substantively negative. Accession-based discovery may recover documentation needed to admit or reject this specific comparator."
+              },
+              {
+                "query": "\"Göbekli Tepe\" (\"Pillar 43\" OR \"Pfeiler 43\") (iconography OR Rechtecke OR interpretation)",
+                "purpose": "counterevidence",
+                "reason": "Seek excavation-team or original archaeological documentation of the upper forms, their dating and full-scene relationships, including contextual interpretations that challenge a handled-container reading. English and German terminology broadens access to primary publications without expanding the object scope or assuming the motifs’ identity."
+              }
+            ]
+          }
+      searches:
+        - queryIndex: 0
+          inputHash: ac207da54e46ce46c917b26f2dc9d5e460a80290a7b5050194c3fd0e87a3233c
+          model: gpt-5.4-mini-2026-03-17
+          responseId: resp_0360dca142f8918e016a9e1d53b78087d099a11f4a6bdc0f16
+          calls:
+            - id: ws_0360dca142f8918e016a9e1d55166487d095197af11d376481
+              type: web_search_call
+              status: completed
+              action:
+                type: search
+                queries:
+                  - site:metmuseum.org "32.143.7"
+                  - site:metmuseum.org accession 32.143.7 Metropolitan Museum
+                query: site:metmuseum.org "32.143.7"
+                sources:
+                  - type: url
+                    url: https://www.metmuseum.org/art/collection/search/322614
+                  - type: url
+                    url: https://www.metmuseum.org/art/collection/search/324339
+                  - type: url
+                    url: https://resources.metmuseum.org/resources/metpublications/pdf/Assyrian_Reliefs_and_Ivories_in_The_Metropolitan_Museum_of_Art_Palace_Reliefs_of_Assurnasirpal_II_an.pdf
+                  - type: url
+                    url: https://www.metmuseum.org/press-releases/four-chats-for-four-countries-continue-march-31-2017-news
+                  - type: url
+                    url: https://www.metmuseum.org/art/collection/search/324598?amp=&searchField=All
+                  - type: url
+                    url: https://www.metmuseum.org/es/essays/mesopotamian-magic-in-the-first-millennium-bc
+                  - type: url
+                    url: https://www.metmuseum.org/pt/essays/nimrud
+                  - type: url
+                    url: https://www.metmuseum.org/ko/essays/nimrud
+                  - type: url
+                    url: https://www.metmuseum.org/art/collection/search/820668
+                  - type: url
+                    url: https://www.metmuseum.org/art/collection/search/555101
+                  - type: url
+                    url: https://www.metmuseum.org/pt/gallery-viewer/greek-and-roman
+                  - type: url
+                    url: https://www.metmuseum.org/art/collection/search/561141
+                  - type: url
+                    url: https://www.metmuseum.org/art/collection/search/570237
+                  - type: url
+                    url: https://resources.metmuseum.org/resources/metpublications/pdf/The_Metropolitan_Museum_Journal_v_47_2012.pdf
+                  - type: url
+                    url: https://www.metmuseum.org/-/media/files/art/watson-library/museumexhibitions1870-2022.pdf?sc_lang=en
+                  - type: url
+                    url: https://www.metmuseum.org/art/collection/search/322614?utm_source=openai
+                  - type: url
+                    url: https://resources.metmuseum.org/resources/metpublications/pdf/Assyrian_Reliefs_and_Ivories_in_The_Metropolitan_Museum_of_Art_Palace_Reliefs_of_Assurnasirpal_II_an.pdf?utm_source=openai
+                  - type: url
+                    url: https://www.metmuseum.org/pt/essays/nimrud?utm_source=openai
+          sources:
+            - url: https://www.metmuseum.org/art/collection/search/322614
+              title: ""
+            - url: https://www.metmuseum.org/art/collection/search/324339
+              title: ""
+            - url: https://resources.metmuseum.org/resources/metpublications/pdf/Assyrian_Reliefs_and_Ivories_in_The_Metropolitan_Museum_of_Art_Palace_Reliefs_of_Assurnasirpal_II_an.pdf
+              title: ""
+            - url: https://www.metmuseum.org/press-releases/four-chats-for-four-countries-continue-march-31-2017-news
+              title: ""
+            - url: https://www.metmuseum.org/art/collection/search/324598?amp=&searchField=All
+              title: ""
+            - url: https://www.metmuseum.org/es/essays/mesopotamian-magic-in-the-first-millennium-bc
+              title: ""
+            - url: https://www.metmuseum.org/pt/essays/nimrud
+              title: ""
+            - url: https://www.metmuseum.org/ko/essays/nimrud
+              title: ""
+            - url: https://www.metmuseum.org/art/collection/search/820668
+              title: ""
+            - url: https://www.metmuseum.org/art/collection/search/555101
+              title: ""
+            - url: https://www.metmuseum.org/pt/gallery-viewer/greek-and-roman
+              title: ""
+            - url: https://www.metmuseum.org/art/collection/search/561141
+              title: ""
+            - url: https://www.metmuseum.org/art/collection/search/570237
+              title: ""
+            - url: https://resources.metmuseum.org/resources/metpublications/pdf/The_Metropolitan_Museum_Journal_v_47_2012.pdf
+              title: ""
+            - url: https://www.metmuseum.org/-/media/files/art/watson-library/museumexhibitions1870-2022.pdf?sc_lang=en
+              title: ""
+            - url: https://www.metmuseum.org/art/collection/search/322614?utm_source=openai
+              title: Relief panel - Assyrian - Neo-Assyrian - The Metropolitan Museum of Art
+            - url: https://resources.metmuseum.org/resources/metpublications/pdf/Assyrian_Reliefs_and_Ivories_in_The_Metropolitan_Museum_of_Art_Palace_Reliefs_of_Assurnasirpal_II_an.pdf?utm_source=openai
+              title: Assyrian Reliefs and Ivories in The Metropolitan Museum of Art
+            - url: https://www.metmuseum.org/pt/essays/nimrud?utm_source=openai
+              title: Nimrud - The Metropolitan Museum of Art
+          summary: |-
+            Here are the strongest public primary-source leads surfaced in this pass for **Met accession 32.143.7**; I did **not** surface a directly admissible Göbekli Tepe Pillar 43 record from this query, so the pairwise comparison is still **unready** under your inclusion rules. ([metmuseum.org](https://www.metmuseum.org/art/collection/search/322614?utm_source=openai))
+
+            - **Met collection record for Object Number 32.143.7**: titled **“Relief panel,”** classified as **Neo-Assyrian**, dated **ca. 883–859 BCE**, from **Mesopotamia, Nimrud (ancient Kalhu)**, in **gypsum alabaster**, with a **public-domain** collection image. This is the best institutional anchor for identity, dating basis, and provenance, but the snippet does not by itself give the fine-grained structure you want for coding the three upper-register forms. ([metmuseum.org](https://www.metmuseum.org/art/collection/search/322614?utm_source=openai))
+            - **Met publication PDF, “Assyrian Reliefs and Ivories in The Metropolitan Museum of Art …”**: it includes **32.143.7** and a captioned figure note reading **“On west jamb of doorway,”** which is useful for archaeological context/original placement. The snippet does not provide a separate photographic date, so object date and photo date should not be conflated. ([resources.metmuseum.org](https://resources.metmuseum.org/resources/metpublications/pdf/Assyrian_Reliefs_and_Ivories_in_The_Metropolitan_Museum_of_Art_Palace_Reliefs_of_Assurnasirpal_II_an.pdf?utm_source=openai))
+            - **Met institutional essay “Nimrud”**: places **32.143.7** within Ashurnasirpal II’s palace relief program and describes it as **divine protective imagery**. This is supportive context, but it is secondary to the object record and the captioned publication figure. ([metmuseum.org](https://www.metmuseum.org/pt/essays/nimrud?utm_source=openai))
+
+            **Unfavorable / ambiguous finding:** from these leads alone, the evidence supports only a **broad relief-panel / doorway / protective-imagery context** for 32.143.7; it does **not** yet establish a securely documented resemblance to a specific Pillar 43 configuration beyond a generic rectangular motif under an arch-like setting. The Met materials here do not resolve the three upper-register forms, internal markings, or exact scene relations at the level your protocol requires. ([metmuseum.org](https://www.metmuseum.org/art/collection/search/322614?utm_source=openai))
+
+            URLs:
+            ```text
+            https://www.metmuseum.org/art/collection/search/322614
+            https://resources.metmuseum.org/resources/metpublications/pdf/Assyrian_Reliefs_and_Ivories_in_The_Metropolitan_Museum_of_Art_Palace_Reliefs_of_Assurnasirpal_II_an.pdf
+            https://www.metmuseum.org/pt/essays/nimrud
+            ```
+        - queryIndex: 1
+          inputHash: 891a3c0b4745c786e7fc41ad0ad07e0625401fcb6638af7c1463c47d550ec351
+          model: gpt-5.4-mini-2026-03-17
+          responseId: resp_0bee5eec221ca784016a9e1d6acfb887d0a84c6f9330803e15
+          calls:
+            - id: ws_0bee5eec221ca784016a9e1d6d01dc87d0bad6b8acdd586b02
+              type: web_search_call
+              status: completed
+              action:
+                type: search
+                queries:
+                  - '"Göbekli Tepe" "Pillar 43" upper register forms publication figure'
+                  - site:metmuseum.org 32.143.7 accession Metropolitan Museum comparator rectangle
+                    arch
+                  - site:metmuseum.org "32.143.7" Met
+                  - '"Göbekli Tepe" "Pillar 43" "32.143.7"'
+                query: '"Göbekli Tepe" "Pillar 43" upper register forms publication figure'
+                sources:
+                  - type: url
+                    url: https://www.metmuseum.org/art/collection/search/322614
+                  - type: url
+                    url: https://www.metmuseum.org/art/collection/search/324339
+                  - type: url
+                    url: https://resources.metmuseum.org/resources/metpublications/pdf/Assyrian_Reliefs_and_Ivories_in_The_Metropolitan_Museum_of_Art_Palace_Reliefs_of_Assurnasirpal_II_an.pdf
+                  - type: url
+                    url: https://www.metmuseum.org/art/collection/search/324598?amp=&searchField=All
+                  - type: url
+                    url: https://www.metmuseum.org/ja/essays/mesopotamian-magic-in-the-first-millennium-bc
+                  - type: url
+                    url: https://assets.cambridge.org/97805211/92187/frontmatter/9780521192187_frontmatter.pdf
+                  - type: url
+                    url: https://www.jstor.org/stable/jj.15135970
+                  - type: url
+                    url: https://www.metmuseum.org/it/press-releases/four-chats-for-four-countries-continue-march-31-2017-news
+                  - type: url
+                    url: https://www.metmuseum.org/ru/essays/nimrud
+                  - type: url
+                    url: https://www.metmuseum.org/ja/essays/nimrud
+                  - type: url
+                    url: https://assets.cambridge.org/97811074/43143/frontmatter/9781107443143_frontmatter.pdf
+                  - type: url
+                    url: https://assets.cambridge.org/97811070/82731/frontmatter/9781107082731_frontmatter.pdf
+                  - type: url
+                    url: https://www.cambridge.org/core/journals/cambridge-archaeological-journal/article/queer-feminist-perspective-on-the-early-neolithic-urfa-region-the-ecstatic-agency-of-the-phallus/DA7F48EBD3FA2A14380452B9E5FB7FF5
+                  - type: url
+                    url: https://resources.metmuseum.org/resources/metpublications/pdf/Armor_for_America_The_Duc_de_Dino_Collection_The_Metropolitan_Museum_Journal_v_47_2012.pdf
+                  - type: url
+                    url: https://www.metmuseum.org/art/collection/search/345470
+                  - type: url
+                    url: https://www.metmuseum.org/art/collection/search/348362
+                  - type: url
+                    url: https://www.metmuseum.org/art/collection/search/402907
+                  - type: url
+                    url: https://resources.metmuseum.org/resources/metpublications/pdf/The_Metropolitan_Museum_Journal_v_47_2012.pdf
+                  - type: url
+                    url: https://www.metmuseum.org/art/collection/search/322614?utm_source=openai
+                  - type: url
+                    url: https://assets.cambridge.org/97811074/43143/frontmatter/9781107443143_frontmatter.pdf?utm_source=openai
+                  - type: url
+                    url: https://www.jstor.org/stable/jj.15135970?utm_source=openai
+          sources:
+            - url: https://www.metmuseum.org/art/collection/search/322614
+              title: ""
+            - url: https://www.metmuseum.org/art/collection/search/324339
+              title: ""
+            - url: https://resources.metmuseum.org/resources/metpublications/pdf/Assyrian_Reliefs_and_Ivories_in_The_Metropolitan_Museum_of_Art_Palace_Reliefs_of_Assurnasirpal_II_an.pdf
+              title: ""
+            - url: https://www.metmuseum.org/art/collection/search/324598?amp=&searchField=All
+              title: ""
+            - url: https://www.metmuseum.org/ja/essays/mesopotamian-magic-in-the-first-millennium-bc
+              title: ""
+            - url: https://assets.cambridge.org/97805211/92187/frontmatter/9780521192187_frontmatter.pdf
+              title: ""
+            - url: https://www.jstor.org/stable/jj.15135970
+              title: ""
+            - url: https://www.metmuseum.org/it/press-releases/four-chats-for-four-countries-continue-march-31-2017-news
+              title: ""
+            - url: https://www.metmuseum.org/ru/essays/nimrud
+              title: ""
+            - url: https://www.metmuseum.org/ja/essays/nimrud
+              title: ""
+            - url: https://assets.cambridge.org/97811074/43143/frontmatter/9781107443143_frontmatter.pdf
+              title: ""
+            - url: https://assets.cambridge.org/97811070/82731/frontmatter/9781107082731_frontmatter.pdf
+              title: ""
+            - url: https://www.cambridge.org/core/journals/cambridge-archaeological-journal/article/queer-feminist-perspective-on-the-early-neolithic-urfa-region-the-ecstatic-agency-of-the-phallus/DA7F48EBD3FA2A14380452B9E5FB7FF5
+              title: ""
+            - url: https://resources.metmuseum.org/resources/metpublications/pdf/Armor_for_America_The_Duc_de_Dino_Collection_The_Metropolitan_Museum_Journal_v_47_2012.pdf
+              title: ""
+            - url: https://www.metmuseum.org/art/collection/search/345470
+              title: ""
+            - url: https://www.metmuseum.org/art/collection/search/348362
+              title: ""
+            - url: https://www.metmuseum.org/art/collection/search/402907
+              title: ""
+            - url: https://resources.metmuseum.org/resources/metpublications/pdf/The_Metropolitan_Museum_Journal_v_47_2012.pdf
+              title: ""
+            - url: https://www.metmuseum.org/art/collection/search/322614?utm_source=openai
+              title: Relief panel - Assyrian - Neo-Assyrian - The Metropolitan Museum of Art
+            - url: https://assets.cambridge.org/97811074/43143/frontmatter/9781107443143_frontmatter.pdf?utm_source=openai
+              title: Illustrations
+            - url: https://www.jstor.org/stable/jj.15135970?utm_source=openai
+              title: Plant Food Processing Tools at Early Neolithic Göbekli Tepe | JSTOR
+          summary: |-
+            Here are the most promising public leads from this pass, with the main ambiguities called out:
+
+            - **Metropolitan Museum accession 32.143.7** — the Met object record identifies this as a **Neo-Assyrian relief panel** from **Mesopotamia, Nimrud (ancient Kalhu)**, dated **ca. 883–859 BCE**, with an open-access image and collection/provenance metadata. The record itself is the best institutional lead for identity and dating; however, it is a **full palace relief context**, not a standalone abstract motif, so any match to Pillar 43 would still need a directly located detail from the object page. Related Met texts explicitly frame 32.143.7 as **divine/protective imagery** and as an **eagle-headed winged figure** in the Northwest Palace, which makes a simple rectangle-and-arch analogy look contextually thin rather than confirmatory. ([metmuseum.org](https://www.metmuseum.org/art/collection/search/322614?utm_source=openai))  
+              ```text
+              https://www.metmuseum.org/art/collection/search/322614
+              ```
+
+            - **Göbekli Tepe Pillar 43, Enclosure D** — the strongest discovery-route lead surfaced here is a Cambridge publication frontmatter page that explicitly labels **“the rich decorated Pillar 43 from Enclosure D”** and points to a figure at **page 76**; a Cambridge Archaeological Journal article also discusses Pillar 43 as a **decapitated, ithyphallic figure** in the site’s interpretive literature. These are useful for identity/context, but in this pass they do **not yet give a securely traceable image provenance for the specific three upper-register forms** you want to freeze on, so the resemblance question remains underdocumented. ([assets.cambridge.org](https://assets.cambridge.org/97811074/43143/frontmatter/9781107443143_frontmatter.pdf?utm_source=openai))  
+              ```text
+              https://assets.cambridge.org/97811074/43143/frontmatter/9781107443143_frontmatter.pdf
+              https://www.cambridge.org/core/journals/cambridge-archaeological-journal/article/queer-feminist-perspective-on-the-early-neolithic-urfa-region-the-ecstatic-agency-of-the-phallus/DA7F48EBD3FA2A14380452B9E5FB7FF5
+              ```
+
+            - **Ambiguous/secondary lead on Pillar 43** — a JSTOR chapter on Göbekli Tepe notes that **Pillar 43** may show a **possible representation of plants within a man-made landscape** and points to figures **9.1 and 9.2**. This is a plausible scholarly lead for iconographic context, but it is **interpretive**, not a clean object record, and it does not by itself settle the form comparison you’re asking about. ([jstor.org](https://www.jstor.org/stable/jj.15135970?utm_source=openai))  
+              ```text
+              https://www.jstor.org/stable/jj.15135970
+              ```
+
+            **Bottom line:** this search pass produced a solid institutional record for **32.143.7** and several scholarly leads for **Pillar 43**, but not yet a securely documented pair of views that support a resemblance more specific than a **rectangular form beneath an arch**. The comparison is therefore **not ready** on the evidence surfaced here.
+      selection:
+        model: gpt-6-astra
+        responseId: resp_018613abbfd4fb32016a9e1d82f9fc87d0b8abd3203249df2c
+        inputHash: c998d2214b1cdc31ad8c83efb1d89fa60005940d856687fbb388f0763a6abf40
+        text: >-
+          {
+            "leads": [
+              {
+                "index": 0,
+                "reason": "The exact institutional object record is the priority for authenticating the proposed comparator. Previous requests failed with HTTP 429, not a substantive reading; accession-based discovery now supplies a reason to retry. Verify accession, object date and its basis, provenance, and image credit before admitting visual observations.",
+                "observationToCheck": "In a museum image explicitly tied to accession 32.143.7, does the figure’s hand visibly grasp the arch of the proposed rectangular comparator? Record the image locator and preserve obscured attachment points as unobservable."
+              },
+              {
+                "index": 2,
+                "reason": "This institutional catalogue offers a newly surfaced route beyond the rate-limited object page, potentially documenting original placement and a captioned view of the exact accession. The reported doorway placement remains unverified. Its images and descriptions would concern the same object, not provide an independent comparator.",
+                "observationToCheck": "Does the catalogue explicitly assign accession 32.143.7 to the west jamb of a particular doorway? Record the exact page or figure and the stated evidentiary basis, distinguishing documented placement from reconstruction."
+              }
+            ],
+            "reason": "Prioritize the missing Met authentication through its exact record and a newly discovered institutional catalogue. The returned Pillar 43 leads are less directly targeted to the upper forms. These readings can establish comparator prerequisites and potentially reveal contextual differences; they cannot alone establish the pairwise resemblance or any transmission inference."
+          }
+      sources:
+        - url: https://www.metmuseum.org/art/collection/search/322614
+          title: ""
+        - url: https://www.metmuseum.org/art/collection/search/324339
+          title: ""
+        - url: https://resources.metmuseum.org/resources/metpublications/pdf/Assyrian_Reliefs_and_Ivories_in_The_Metropolitan_Museum_of_Art_Palace_Reliefs_of_Assurnasirpal_II_an.pdf
+          title: ""
+        - url: https://www.metmuseum.org/press-releases/four-chats-for-four-countries-continue-march-31-2017-news
+          title: ""
+        - url: https://www.metmuseum.org/art/collection/search/324598?amp=&searchField=All
+          title: ""
+        - url: https://www.metmuseum.org/es/essays/mesopotamian-magic-in-the-first-millennium-bc
+          title: ""
+        - url: https://www.metmuseum.org/pt/essays/nimrud
+          title: ""
+        - url: https://www.metmuseum.org/ko/essays/nimrud
+          title: ""
+        - url: https://www.metmuseum.org/art/collection/search/820668
+          title: ""
+        - url: https://www.metmuseum.org/art/collection/search/555101
+          title: ""
+        - url: https://www.metmuseum.org/pt/gallery-viewer/greek-and-roman
+          title: ""
+        - url: https://www.metmuseum.org/art/collection/search/561141
+          title: ""
+        - url: https://www.metmuseum.org/art/collection/search/570237
+          title: ""
+        - url: https://resources.metmuseum.org/resources/metpublications/pdf/The_Metropolitan_Museum_Journal_v_47_2012.pdf
+          title: ""
+        - url: https://www.metmuseum.org/-/media/files/art/watson-library/museumexhibitions1870-2022.pdf?sc_lang=en
+          title: ""
+        - url: https://www.metmuseum.org/art/collection/search/322614?utm_source=openai
+          title: Relief panel - Assyrian - Neo-Assyrian - The Metropolitan Museum of Art
+        - url: https://resources.metmuseum.org/resources/metpublications/pdf/Assyrian_Reliefs_and_Ivories_in_The_Metropolitan_Museum_of_Art_Palace_Reliefs_of_Assurnasirpal_II_an.pdf?utm_source=openai
+          title: Assyrian Reliefs and Ivories in The Metropolitan Museum of Art
+        - url: https://www.metmuseum.org/pt/essays/nimrud?utm_source=openai
+          title: Nimrud - The Metropolitan Museum of Art
+        - url: https://www.metmuseum.org/ja/essays/mesopotamian-magic-in-the-first-millennium-bc
+          title: ""
+        - url: https://assets.cambridge.org/97805211/92187/frontmatter/9780521192187_frontmatter.pdf
+          title: ""
+        - url: https://www.jstor.org/stable/jj.15135970
+          title: ""
+        - url: https://www.metmuseum.org/it/press-releases/four-chats-for-four-countries-continue-march-31-2017-news
+          title: ""
+        - url: https://www.metmuseum.org/ru/essays/nimrud
+          title: ""
+        - url: https://www.metmuseum.org/ja/essays/nimrud
+          title: ""
+        - url: https://assets.cambridge.org/97811074/43143/frontmatter/9781107443143_frontmatter.pdf
+          title: ""
+        - url: https://assets.cambridge.org/97811070/82731/frontmatter/9781107082731_frontmatter.pdf
+          title: ""
+        - url: https://www.cambridge.org/core/journals/cambridge-archaeological-journal/article/queer-feminist-perspective-on-the-early-neolithic-urfa-region-the-ecstatic-agency-of-the-phallus/DA7F48EBD3FA2A14380452B9E5FB7FF5
+          title: ""
+        - url: https://resources.metmuseum.org/resources/metpublications/pdf/Armor_for_America_The_Duc_de_Dino_Collection_The_Metropolitan_Museum_Journal_v_47_2012.pdf
+          title: ""
+        - url: https://www.metmuseum.org/art/collection/search/345470
+          title: ""
+        - url: https://www.metmuseum.org/art/collection/search/348362
+          title: ""
+        - url: https://www.metmuseum.org/art/collection/search/402907
+          title: ""
+        - url: https://assets.cambridge.org/97811074/43143/frontmatter/9781107443143_frontmatter.pdf?utm_source=openai
+          title: Illustrations
+        - url: https://www.jstor.org/stable/jj.15135970?utm_source=openai
+          title: Plant Food Processing Tools at Early Neolithic Göbekli Tepe | JSTOR
+      selected:
+        leads:
+          - index: 0
+            reason: The exact institutional object record is the priority for authenticating the proposed
+              comparator. Previous requests failed with HTTP 429, not a substantive reading;
+              accession-based discovery now supplies a reason to retry. Verify accession, object
+              date and its basis, provenance, and image credit before admitting visual observations.
+            observationToCheck: In a museum image explicitly tied to accession 32.143.7, does the figure’s hand
+              visibly grasp the arch of the proposed rectangular comparator? Record the image
+              locator and preserve obscured attachment points as unobservable.
+          - index: 2
+            reason: This institutional catalogue offers a newly surfaced route beyond the rate-limited object
+              page, potentially documenting original placement and a captioned view of the exact
+              accession. The reported doorway placement remains unverified. Its images and
+              descriptions would concern the same object, not provide an independent comparator.
+            observationToCheck: Does the catalogue explicitly assign accession 32.143.7 to the west jamb of a
+              particular doorway? Record the exact page or figure and the stated evidentiary basis,
+              distinguishing documented placement from reconstruction.
+        reason: Prioritize the missing Met authentication through its exact record and a newly discovered
+          institutional catalogue. The returned Pillar 43 leads are less directly targeted to the
+          upper forms. These readings can establish comparator prerequisites and potentially reveal
+          contextual differences; they cannot alone establish the pairwise resemblance or any
+          transmission inference.
+      outcome: queued
+      reason: Prioritize the missing Met authentication through its exact record and a newly discovered
+        institutional catalogue. The returned Pillar 43 leads are less directly targeted to the
+        upper forms. These readings can establish comparator prerequisites and potentially reveal
+        contextual differences; they cannot alone establish the pairwise resemblance or any
+        transmission inference.
+    reason: Prioritize the missing Met authentication through its exact record and a newly discovered
+      institutional catalogue. The returned Pillar 43 leads are less directly targeted to the upper
+      forms. These readings can establish comparator prerequisites and potentially reveal contextual
+      differences; they cannot alone establish the pairwise resemblance or any transmission
+      inference.
+    date: 2026-09-07
+    generatedAt: 2026-09-07T02:10:52.789Z
+    runId: discovery-2026-09-07-97ff901b-02a0-4559-8fe7-5c5c207a018d
+    model: gpt-6-astra
+    promptVersion: bounded-discovery-v1
+    inputHash: 80e40a155b1b3af5d0ab2e74661abed32be92572e2b1e18c73bb1a950c8437d6
+    candidateHash: 10ccf15ecadf0581c4042f0dc5537506565f7d6da20e4fbca15df42f40467318
+    ref: null
+    caseBasis: null
+    recordId: null
+    matchMethod: null
+    retryable: false

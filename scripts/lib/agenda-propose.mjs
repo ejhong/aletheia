@@ -27,12 +27,11 @@ Hard rules: never propose grading anyone's guilt or state of mind;
 never propose anything an existing item already covers — you must name
 the closest existing IDs and say precisely what they miss; prefer
 proposals with a decisive record or a computable table behind them;
-zero proposals is a fine answer and better than a filler idea. Prior
-proposals and review reasons are dated context, not permanent rejections.
-Silence means unreviewed. A corrected reading, better argument, or changed
-test can justify reconsideration without a newer paper or a new title.
-Explain the difference in the gap field and engage the earlier objection.
-Repeating the same substance on unchanged case inputs will be rested.
+zero proposals is a fine answer and better than a filler idea. You
+will also receive titles PREVIOUSLY PROPOSED for this case: silence
+from the editors retired them — never re-propose one unless material
+new ledger evidence changed the picture, and then it must appear as a
+NEW title that names what changed.
 
 Reply with JSON only:
 {"proposals":[{"kind":"claim|research-item|study",
@@ -46,27 +45,19 @@ export function buildCasePacket({ claims, research, studies, evidence }) {
   const lines = [];
   lines.push("CLAIMS:");
   for (const c of claims ?? [])
-    lines.push(
-      `- ${c.id} [${c.tier ?? "?"}]: ${String(c.statement).slice(0, 220)}`,
-    );
+    lines.push(`- ${c.id} [${c.tier ?? "?"}]: ${String(c.statement).slice(0, 220)}`);
   lines.push("\nRESEARCH AGENDA:");
   for (const r of research ?? [])
-    lines.push(
-      `- ${r.id} [${r.effortTier ?? "?"}]: ${r.title} — ${String(r.summary ?? "").slice(0, 200)}`,
-    );
+    lines.push(`- ${r.id} [${r.effortTier ?? "?"}]: ${r.title} — ${String(r.summary ?? "").slice(0, 200)}`);
   lines.push("\nSTUDIES:");
   for (const s of studies ?? []) {
-    lines.push(
-      `- ${s.id}: ${s.title} — ${String(s.question ?? "").slice(0, 200)}`,
-    );
+    lines.push(`- ${s.id}: ${s.title} — ${String(s.question ?? "").slice(0, 200)}`);
     for (const f of s.findings ?? [])
       lines.push(`  finding: ${String(f.statement ?? "").slice(0, 200)}`);
   }
   lines.push("\nRECENT EVIDENCE (titles):");
   for (const e of (evidence ?? []).slice(-25))
-    lines.push(
-      `- ${e.id} (${e.direction}): ${String(e.title ?? "").slice(0, 160)}`,
-    );
+    lines.push(`- ${e.id} (${e.direction}): ${String(e.title ?? "").slice(0, 160)}`);
   return lines.join("\n");
 }
 
@@ -75,33 +66,35 @@ export function buildCasePacket({ claims, research, studies, evidence }) {
  * AND anchored to real existing IDs; anything malformed is dropped with
  * a reason so the report can say what the model got wrong.
  */
-export function validateProposals(parsed, knownIds) {
+export function validateProposals(parsed, knownIds, priorTitles = new Set()) {
   const ok = [];
   const rejected = [];
   const seen = new Set();
   const list = Array.isArray(parsed?.proposals) ? parsed.proposals : null;
   if (!list) return { ok, rejected: [{ reason: "no proposals array" }] };
   for (const p of list.slice(0, 3)) {
-    const reason = !PROPOSAL_KINDS.includes(p?.kind)
-      ? `bad kind: ${p?.kind}`
-      : typeof p?.title !== "string" || p.title.length < 8
-        ? "missing title"
-        : typeof p?.question !== "string" || p.question.length < 20
-          ? "missing question/truth condition"
-          : typeof p?.gap !== "string" || p.gap.length < 10
-            ? "missing gap statement"
-            : typeof p?.wouldSettle !== "string" || p.wouldSettle.length < 10
-              ? "missing wouldSettle"
-              : !EFFORT_TIERS.includes(p?.effortTier)
-                ? `bad effortTier: ${p?.effortTier}`
-                : !Array.isArray(p?.closestExisting) ||
-                    p.closestExisting.length === 0
-                  ? "no closestExisting IDs"
-                  : p.closestExisting.some((id) => !knownIds.has(id))
-                    ? `dangling existing ID: ${p.closestExisting.find((id) => !knownIds.has(id))}`
-                    : seen.has(p.title)
-                      ? "duplicate title"
-                      : null;
+    const reason =
+      !PROPOSAL_KINDS.includes(p?.kind)
+        ? `bad kind: ${p?.kind}`
+        : typeof p?.title !== "string" || p.title.length < 8
+          ? "missing title"
+          : typeof p?.question !== "string" || p.question.length < 20
+            ? "missing question/truth condition"
+            : typeof p?.gap !== "string" || p.gap.length < 10
+              ? "missing gap statement"
+              : typeof p?.wouldSettle !== "string" || p.wouldSettle.length < 10
+                ? "missing wouldSettle"
+                : !EFFORT_TIERS.includes(p?.effortTier)
+                  ? `bad effortTier: ${p?.effortTier}`
+                  : !Array.isArray(p?.closestExisting) || p.closestExisting.length === 0
+                    ? "no closestExisting IDs"
+                    : p.closestExisting.some((id) => !knownIds.has(id))
+                      ? `dangling existing ID: ${p.closestExisting.find((id) => !knownIds.has(id))}`
+                      : seen.has(p.title)
+                        ? "duplicate title"
+                        : priorTitles.has(p.title)
+                          ? "re-proposed from a prior run (ignored is retired)"
+                          : null;
     if (reason) rejected.push({ title: p?.title, reason });
     else {
       seen.add(p.title);
@@ -112,11 +105,7 @@ export function validateProposals(parsed, knownIds) {
 }
 
 /** Render one case's accepted proposals as a proposal file body. */
-export function renderProposalFile(
-  caseSlug,
-  proposals,
-  { date, runId, model, promptVersion },
-) {
+export function renderProposalFile(caseSlug, proposals, { date, runId, model, promptVersion }) {
   const head = [
     `# Agenda proposals — ${caseSlug} — ${date}`,
     "",

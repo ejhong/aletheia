@@ -1,0 +1,36 @@
+kind: literature-watch-triage
+runId: triage-2026-08-31-1mhz
+triageOf: watch-2026-08-31-mdja
+date: 2026-08-31
+model: anthropic/claude-fable-5
+promptVersion: watch-triage-v1
+note: AI-generated triage of discovery-only watch proposals. Imports are queued
+  for verification via inbox link drops; nothing here touches sources.yaml or
+  evidence.yaml. See docs/MAINTENANCE.md.
+cases:
+  - case: ccc
+    judged: true
+    decisions:
+      - title: Conformal Cyclic Cosmology from Varying Fundamental Constants
+        url: https://arxiv.org/abs/2608.27014
+        doi: null
+        arxivId: "2608.27014"
+        decision: archive
+        reason: A theoretical bimetric model realizing CCC-like behavior via varying
+          constants offers no new data or analysis bearing on the CMB-signature
+          claims or the statistical dispute, and the metadata does not state it
+          supplies the mass fade-out mechanism relevant to CCC-C005.
+    errors: []
+  - case: transients
+    judged: true
+    decisions:
+      - title: Microscopy assessment of two multiple-transient candidates
+        url: https://arxiv.org/abs/2608.26371
+        doi: null
+        arxivId: "2608.26371"
+        decision: archive
+        reason: Exact title match to already-tracked SRC-YANG-VILLARROEL-2026 indicates
+          this is the same microscopy study (bearing on TRN-C020, TRN-C001,
+          TRN-C003) posted to arXiv, so importing would duplicate an existing
+          ledger entry rather than add new evidential weight.
+    errors: []

@@ -41,9 +41,6 @@ permissions:
   # posted between 2026-08-25 and 2026-09-05.
   issues: write
 
-env:
-  BUDGET_GITHUB_TOKEN: ${{ secrets.MAINTENANCE_PAT }}
-
 jobs:
   maintain:
     runs-on: ubuntu-latest
@@ -72,6 +69,7 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          EXTRACT_MODEL: ${{ vars.EXTRACT_MODEL }}
         run: |
           node scripts/process-inbox.mjs | tee inbox-out.txt
           outdir=$(tail -1 inbox-out.txt)
@@ -83,6 +81,7 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          EXTRACT_MODEL: ${{ vars.EXTRACT_MODEL }}
         run: node scripts/reassess-changed.mjs
 
       # Discovery only: new arXiv/Crossref items become unverified proposals
@@ -95,6 +94,7 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          EXTRACT_MODEL: ${{ vars.EXTRACT_MODEL }}
         run: |
           node scripts/watch-literature.mjs | tee watch-out.txt
           outdir=$(tail -1 watch-out.txt)
@@ -114,6 +114,7 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          EXTRACT_MODEL: ${{ vars.EXTRACT_MODEL }}
         run: |
           node scripts/triage-watch.mjs | tee triage-out.txt
           outdir=$(tail -1 triage-out.txt)
@@ -145,6 +146,7 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          EXTRACT_MODEL: ${{ vars.EXTRACT_MODEL }}
         run: |
           node scripts/propose-agenda.mjs --only "${DUE_CASES}" | tee agenda-out.txt
           outdir=$(tail -1 agenda-out.txt)
@@ -239,22 +241,20 @@ jobs:
             gh pr edit "$pr_url" --add-reviewer "${GITHUB_REPOSITORY_OWNER}" || true
           fi
 
-  # The promotion job prepares ledger records in its own gated PR. A fresh
-  # checkout of main reads merged requests on the next full cycle.
-  # Inbox and legacy watch imports use the same bounded source reader and
-  # prospective-case validator; the resulting ledger PR faces the normal
-  # independent publication gate. No separate research schedule is added.
-      - name: AI allowance report
-        if: always()
-        run: npm run ai:budget -- status --summary
-
+  # The promotion pipe (docs/AUTOMATION.md build step 1): verified import
+  # proposals become drafted ledger records in their own needs-approval
+  # PR, never mixed into the maintenance proposals PR (whose auto tier
+  # they would break). Runs on a fresh checkout of main, so it consumes
+  # proposals that have already merged — this run's new imports promote
+  # on the next cycle, which trades a week of latency for a clean tier
+  # boundary. The script cannot publish: dedupe, verbatim-quote checks,
+  # enum/anchor validation and budgets are mechanical inside it, and the
+  # drafted records face the classifier, the citation-checking arbiter,
+  # the founder tap, and the content-response ripple like any canon edit.
   promote:
     needs: maintain
     if: ${{ (inputs.mode || 'full') == 'full' }}
     runs-on: ubuntu-latest
-    concurrency:
-      group: research-intake
-      cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
         with:
@@ -264,32 +264,19 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      # Preserve a pending batch rather than paying again from the same main.
-      - name: Check for pending research intake
+      - name: Draft promotions
         env:
-          GH_TOKEN: ${{ secrets.MAINTENANCE_PAT }}
-        run: |
-          pending=$(gh pr list --state open --limit 1000 --json headRefName --jq '[.[] | select(.headRefName | startswith("promote/"))] | length')
-          echo "INTAKE_PENDING=${pending}" >> "$GITHUB_ENV"
-      - name: Discover sources for one due pilot case
-        if: ${{ env.INTAKE_PENDING == '0' }}
-        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: node scripts/discover-sources.ts --scan
-      - name: Read queued sources and prepare research proposals
-        if: ${{ env.INTAKE_PENDING == '0' }}
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          EXTRACT_MODEL: ${{ vars.EXTRACT_MODEL }}
         run: |
-          set -euo pipefail
-          sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils
           count=$(node scripts/promote-imports.mjs | tail -1)
           echo "PROMOTED=${count}" >> "$GITHUB_ENV"
       - name: Validate the ledger still loads
-        if: ${{ env.INTAKE_PENDING == '0' && env.PROMOTED != '0' }}
+        if: ${{ env.PROMOTED != '0' }}
         run: npx vitest run src/domain/load.test.ts
       - name: Open the gated promotion PR
-        if: ${{ env.INTAKE_PENDING == '0' }}
+        if: ${{ env.PROMOTED != '0' }}
         env:
           GH_TOKEN: ${{ secrets.MAINTENANCE_PAT }}
         run: |
@@ -298,17 +285,17 @@ jobs:
           git config user.name "aletheia-maintenance-bot"
           git config user.email "maintenance-bot@users.noreply.github.com"
           git checkout -b "$branch"
-          git add -A -- content/cases proposals/intake
+          git add -A -- content/cases proposals/promotions-ledger.yaml
           git status --porcelain
           if git diff --cached --quiet; then
             echo "nothing stageable — the pipe rests"
             exit 0
           fi
-          git commit -m "Research intake ${date}: checked proposals and outcomes"
+          git commit -m "Promotion ${date}: verified imports enter the ledger through the gates"
           git push -u origin "$branch"
           pr_url=$(gh pr create \
-            --title "Research intake: ${date} — checked proposals and outcomes" \
-            --body "A due discovery pilot records one narrow question before bounded searches, then sends at most two returned source leads to the common queue. Discovery, inbox requests and legacy watch imports share one source-reading pass: at most two sources, four model calls, four minutes and one dollar for reading, excluding discovery and review. All API work uses the shared allowance, including hosted search fees. Search results are leads, never evidence. Drafted observations receive a separate reading check. Complete Source/Claim/Evidence bundles are validated against exact case inputs before preparation; stale proposals and failures retain their reasons. The reading check does not ratify a case assessment. Ledger additions face the normal independent publication gate." \
+            --title "Promotion: ${date} — verified imports into the ledger" \
+            --body "The promotion pipe (docs/AUTOMATION.md build step 1): verified import proposals drafted into sources + evidence records. Every quoted span mechanically verified verbatim against the fetched source; dedupe, enum, and claim-anchor checks fail-closed in the script. The panel judges the readings; the ledger admission rule is satisfied by construction. Ledger of dispositions (promoted / duplicate / failed, with reasons): proposals/promotions-ledger.yaml." \
             --label needs-approval)
           gh pr edit "$pr_url" --add-reviewer "${GITHUB_REPOSITORY_OWNER}" || true
           echo "opened $pr_url"
@@ -318,10 +305,6 @@ jobs:
   # promote job) become drafted freeze files plus their research items,
   # in ONE gated needs-approval PR. The panel judges the protocols before
   # any data exists; collection follows the two-PR discipline.
-      - name: AI allowance report
-        if: always()
-        run: npm run ai:budget -- status --summary
-
   bench:
     needs: maintain
     if: ${{ (inputs.mode || 'full') == 'full' }}
@@ -339,6 +322,7 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          EXTRACT_MODEL: ${{ vars.EXTRACT_MODEL }}
         run: |
           count=$(node scripts/draft-freeze.mjs --scan | tail -1)
           echo "DRAFTED=${count}" >> "$GITHUB_ENV"
@@ -377,10 +361,6 @@ jobs:
   # promote and bench: a fresh checkout of main consumes scores that
   # already merged. Runs after bench so the two Bench PRs of one run
   # never race an append to the same research.yaml.
-      - name: AI allowance report
-        if: always()
-        run: npm run ai:budget -- status --summary
-
   adopt:
     needs: bench
     if: ${{ (inputs.mode || 'full') == 'full' }}
@@ -398,6 +378,7 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          EXTRACT_MODEL: ${{ vars.EXTRACT_MODEL }}
         run: |
           count=$(node scripts/draft-endorsements.mjs --scan | tail -1)
           echo "ADOPTED=${count}" >> "$GITHUB_ENV"
@@ -423,11 +404,7 @@ jobs:
           git push -u origin "$branch"
           pr_url=$(gh pr create \
             --title "Adoption: ${date} — panel-endorsed claims and research items" \
-            --body "Ledger records drafted from agenda proposals the five-vendor panel endorsed (four of five seats high-gain, zero constitutional concerns; scores in the shared intake history under proposals/intake/). Claims enter at catalog tier and anchor only to evidence already in the ledger — the drafter copies sourceId and locator from the anchoring record and never authors either; a draft with no in-ledger anchor is dropped with the reason and stays endorsed. Ids are mechanical; provenance is stamped in origin.ref; the panel judges the records here before anything publishes." \
+            --body "Ledger records drafted from agenda proposals the five-vendor panel endorsed (four of five seats high-gain, zero constitutional concerns; scores under proposals/agenda/). Claims enter at catalog tier and anchor only to evidence already in the ledger — the drafter copies sourceId and locator from the anchoring record and never authors either; a draft with no in-ledger anchor is dropped with the reason and stays endorsed. Ids are mechanical; provenance is stamped in origin.ref; the panel judges the records here before anything publishes." \
             --label needs-approval)
           gh pr edit "$pr_url" --add-reviewer "${GITHUB_REPOSITORY_OWNER}" || true
           echo "opened $pr_url"
-
-      - name: AI allowance report
-        if: always()
-        run: npm run ai:budget -- status --summary

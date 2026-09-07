@@ -69,10 +69,11 @@ export function CaseCard({
           ) : null}
         </div>
         <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5">
-          {record.researchPriority ? (
-            <PriorityBadge level={record.researchPriority.level} />
-          ) : null}
-          <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-faint hover:text-copper">
+          <PriorityBadge level={record.researchPriority.level} />
+          <Link
+            href={`/panel#${record.slug}`}
+            className="font-mono text-[10px] uppercase tracking-[0.14em] text-faint hover:text-copper"
+          >
             {verdict
               ? standing === "ratified"
                 ? "assessment · ratified"
@@ -80,11 +81,11 @@ export function CaseCard({
                   ? "assessment · contested"
                   : "AI draft · unratified"
               : "no assessment yet"}
-          </span>
+          </Link>
           <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-faint">
             human review {reviewCoverage.reviewed}/{reviewCoverage.total} claims
           </span>
-          {check && standing === "ratified" ? (
+          {check ? (
             <span
               className={`font-mono text-[10px] uppercase tracking-[0.14em] ${check.concur ? "text-verdigris" : "text-ochre"}`}
               title="Independent models re-assessed this case blind to all prior assessments"

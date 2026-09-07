@@ -1,403 +1,19 @@
 # The metabolism: how the site runs itself
 
-**Direction updated 2026-09-07:** a durable research ledger and a current
-edition of each case. The founder authorized implementation after the
-reassessment and added a blank-topic trial. This is the implementation
-plan; the existing workers below are being consolidated into it. Changes
-publish only after the normal checks and independent arbiter pass.
-
-## The design we are building
-
-Aletheia is a collection of living research essays. More AI time should
-improve the questions, evidence, judgments, and explanation; it should not
-oblige the site to grow longer or sound more certain.
-
-There are **two kinds of state**:
-
-- **The ledger:** propositions, source records, exact observations,
-  dependencies, research opportunities, studies, and decisions about proposed
-  changes. Corrections and supersession preserve their history. The ledger
-  must be queryable, not repeated in full in every model prompt.
-- **The current edition:** the argued assessment, what matters most, the
-  strongest objections, next questions, and the essay. Selection and prose
-  are part of judgment. They must eventually be proposed and reviewed as a
-  coherent edition, not maintained by competing owners.
-
-The workflow is **investigate → propose a change → verify and record →
-assess and explain → independently review → publish**, then choose the
-next useful question. Investigating, drafting, and reviewing are distinct
-roles in this workflow. They do not require separate stores of the same
-judgment. The code's existing content → domain → UI separation remains.
-
-**Intake is one interface, with several adapters.** An inbox note, a source
-search, a study result, and an inward-looking reconsideration all propose
-changes to existing domain records. A proposal can add, correct, link,
-supersede, or reconsider; its envelope names its basis, affected records,
-provenance, and rationale. Source, Evidence, Claim, ResearchOpportunity,
-and Study remain the domain vocabulary. A new source identifier is not
-proof of a new observation, and a known DOI does not mean every passage
-or interpretation has been considered. Identifier equality is mechanical;
-semantic overlap is a review question with both candidates visible.
-
-**Memory records decisions in context.** A disposition is dated, reasoned,
-and tied to its inputs; it is not a permanent rejection of an idea. New
-evidence, a corrected reading, a changed test, or a better argument may
-justify reconsideration. No rule requires citing a record created after
-the rejection. A variant should be compared with its predecessor. Repeated
-wording without a substantive difference can be recorded once and rested.
-Consolidate the watch, promotion, and agenda memories behind this interface
-as their adapters migrate; do not maintain two authoritative ledgers.
-
-**Review uses separate packets.** Assess the evidence without the incumbent's
-grades or article, in an independent call with no shared conversation. Inspect
-the proposed edition separately for unsupported
-assertions, lost caveats, misleading selection, and constitutional fidelity.
-A blind verdict check is not independent verification of a source reading,
-and model concurrence is not truth. Passage verification must be a separate
-check against the retrieved primary material. The existing PR arbiter
-continues to gate consequential publication.
-
-**An edition changes only when the change earns its place.** Scope candidate
-edits to the changed inputs; use whole-essay candidates when dependencies or
-the question itself changed. Narrative judgment calls are settled by the
-competition of candidate drafts, as AGENTS.md §7 requires. A small drafting
-run can produce alternatives, with the incumbent retained as an explicit
-option; the panel compares them before replacement. Larger tournaments with
-several independent drafters are a later scaling choice, not an exemption from
-competition. Preserve primary-source anchors, consequential objections,
-corrected errors, and the route from prose to records. An unchanged edition
-after a useful investigation is a successful outcome.
-
-**Attention follows observed value.** Record accepted corrections, new
-independent observations, resolved or reopened cruxes, useful tests, and
-editorial improvements, alongside rejected proposals, calls, spend, and
-elapsed time. Neither DOI counts nor a model's own claim of novelty measures
-progress. A run limit and spend ceiling stop work even when a model keeps
-finding something to say; a rest state means low recent return within the
-searched scope, not proof that the topic is complete. Broader autonomous
-research must wait for enforced spend accounting. The existing promotion job
-now uses the bounded reader; no additional research schedule is installed.
-
-**Next product test: one investigation informed by the existing case.** A
-manual Deep Research report receives the current account, complete source and
-claim index, founding questions and prior intake outcomes. It can browse for
-missing evidence, serious competing arguments and better interpretations;
-it proposes concrete changes and useful plate choices. Astra then uses that
-working report to propose the ledger and edition changes worth checking.
-The report is an intake artifact, not a third public layer or a verified source.
-Useful depth may enter the ledger while the short essay stays unchanged.
-
-The common identity, memory, source checks, edition view and shared allowance
-remain useful. The orchestration is still transitional: older cases retain
-legacy assessment paths and the two-query scout is a narrow discovery pilot.
-Do not expand those paths merely because they now exist. Test the report's
-substantive usefulness, then let that evidence determine whether it replaces
-the scout as the usual investigation. Keep targeted source reading as a tool
-within that process. Rework remaining legacy ownership as cases adopt editions.
-More code and more receipts do not establish a cleaner or better product.
-The wider UI and structured debate work are deferred; the next live trial is
-Deep Memory only, with no additional schedule or budget increase.
-
-### Implementation sequence and acceptance criteria
-
-| Step | Deliverable | Acceptance criterion / status |
-| --- | --- | --- |
-| 1 | Shared case view; exact review receipts | Implemented in PR #172. Essay references, claim cards, ladder, and claim detail read the displayed draft's grades. Only a full panel on the exact current content and draft can ratify; historical reviews remain available. |
-| 2 | Essay-first reading experience | Implemented in PR #172. Short frontispiece, inspectable claims with ordinary-link fallback, supporting detail in disclosures, mobile claim sheet. Existing essays and evidence are preserved. |
-| 3 | Blank-topic starting path | Implemented in PR #172. `start-case.mjs` creates an incubating proposal from a question, with no invented evidence, priority, or review. The production loader and view accept it; judgment runners skip it until it has assessable evidence. This tests startup, not autonomous discovery. |
-| 4 | Shared proposal memory and intake diff | Durable history for watch, promotion, and agenda; inbox links and legacy watch imports now use the common research envelope. Complete bundles and before/after edits pass the production loader, including empty topics. Notes, document extraction, and agenda adoption still need adapters. Source identity and identical wording are mechanical; semantic overlap remains a review question. |
-| 5 | Bounded research and source-reading checks | Manual URLs and the existing promotion job share one reader, capped at two public HTML/text or bounded PDF sources per pass even across cases. A separate reading checks each drafted observation. Complete, fresh proposals can be prepared for the normal publication gate; failures and stale inputs remain visible. The shared allowance now covers research, drafting, review, operator, and artwork; bounded discovery now feeds this same reader; broader retrieval coverage remains to build. |
-| 6 | Versioned edition drafting | The authoring path binds an essay, ordered selection, and exact assessment reference in one immutable edition. A selected assessment can now supply complete interpretation for catalog claims, without editing their ledger records. Proposals bind to current inputs, rest unchanged candidates, and pass the production loader before review. Two metered Astra alternatives now compete with the incumbent before preparation for the ordinary gate. Full comparison receipts preserve retention, disagreement and failures. Deep Memory is the first enabled case; migration of assessed cases remains subsequent work. |
-| 7 | Pilot, measure, and widen | Exercise geopolymer, transients, and Deep Memory, the founder-selected topic about shared symbols and myths (`content/cases/deep-memory/`). Its empty starting point is preserved in PR #179; the illustrated opening adopts the first checked catalog observation. Its scope is informed by the birdmen project, so this is not blind rediscovery. Compare accepted changes and reading quality with the incumbent, under a single enforced budget covering research and review. The archived chats are design references and a possible held-out discovery benchmark, not an import queue. Expand only after unattended runs improve actual cases. |
-| 8 | Reading experience and automation visibility, after the pipeline work | Review the whole information hierarchy across the case narrative, assessments, claims, evidence, research questions, Panel and Proposals. Try a compact current assessment near the top of the narrative, with what changed and why, followed by the essay and routes into supporting records. Make consequential judgment changes easy to notice without making change frequency a goal. Give global spend, activity, model roles and system health a quiet home; keep research decisions and edition changes within their cases. Start from durable receipts and decisions, leave missing case-level cost allocations explicit, and keep detailed run history in disclosures. Judge the result for beauty, interest and usefulness on mobile and desktop. |
-
-The migration deliberately does not relocate every editorial field at once.
-Existing cases still obtain diagnosticity and other editorial fields from
-legacy records. A new edition can take each claim's interpretation from its
-selected assessment instead. Component judgments and case framing remain in
-the legacy case record; those fields still need an assessment-owned projection.
-`CaseView` is the migration boundary. The automated edition writer starts with
-the already migrated cases. Aggregate accounting now surrounds the source reader's local limits and
-the other paid workers; see [AI operating policy](../config/README.md).
-
-The edition drafter composes images as part of the account: it selects existing
-plate IDs and places each beside the passage it explains. Manifest captions and
-credits remain intact; adjoining prose distinguishes observation from inference.
-Birdmen supplies comparative image leads for Deep Memory. Exact object
-identities, original image sources and rights must reach the ledger before a
-new evidence plate is used. Generated covers remain editorial artwork. The
-existing manifest and plate markers are the interface; no separate visual
-publishing loop is needed. New plate acquisition and caption proposals remain
-subsequent intake work, under the same review and spending allowance.
-
-### Versioned editions: the first authoring path
-
-An edition is `editions/<runId>.yaml`: the essay, ordered featured claim IDs,
-the reason for this revision, exact input hashes, and a predecessor reference.
-It names an immutable assessment by run ID and hash, or explicitly leaves the
-question unassessed. Reusing an assessment preserves its original authorship;
-assembling an opening essay does not impersonate an assessment model. The
-manifest is the publication unit, with no mutable current pointer. Earlier
-editions form a validated chain and have readable archive pages.
-
-`prepare-edition.ts` captures the incumbent. `review-edition.ts` reports changes,
-validates the whole proposed case, records a typed proposal in the existing
-intake store, and can materialize a new review directory. These commands make
-no model calls. Unchanged substance on the same inputs rests. Stale proposals,
-broken histories, invalid claim/plate references, and altered assessment hashes
-fail validation. The selected assessment's load-bearing claims must remain
-selected. Source interpretation and omissions still require independent review;
-these structural checks do not settle them.
-
-An assessment's per-claim `treatment` holds the plain-language explanation,
-claim classification, importance, diagnosticity and its reason, strongest
-objection, and what would change the judgment. Its existing verdict and
-reasoning supply credibility. Treatment is optional on immutable older runs
-but must be complete when provided. Only the assessment adopted by an edition
-can supply these fields to the current presentation; a bare draft can be
-inspected in history but cannot promote a catalog claim. A selected catalog
-claim without treatment fails validation. Its proposition, anchor, origin,
-independence group, and stored tier remain intact.
-
-The case page, explorer, and claim detail share that joined view, with each
-claim appearing once. Displayed treatments and independent grading share one
-claim scope: legacy featured records plus the current edition's selected IDs.
-An unselected catalog treatment remains in history without inheriting the
-edition's standing. History preserves earlier interpretations in disclosures.
-The blind packet includes all live propositions and adds newly selected catalog
-IDs to its grading scope, in ledger order. It excludes treatment, prose, and
-grades. Existing assessment/content receipt checks require fresh concurrence
-after a changed interpretation; selection does not create ratification.
-
-The current edition replaces `overview.md` for a migrated case. New assessment
-drafts remain available but cannot silently change its displayed verdict. Its
-exact bytes enter the content receipt; historical editions do not invalidate
-current checks. A ledger change resets standing and displays a quiet notice
-that the edition reflects earlier inputs; a useful investigation may still
-retain it unchanged. The archive preserves the essay and
-assessment, while record links and image captions resolve against today's
-ledger; it is not a snapshot of every old page.
-
-Only Deep Memory is migrated in this step. The old editorial audit does not
-patch a versioned essay, and legacy reconciliation retains its incumbent until
-an edition proposal is ready. Other cases continue through their existing
-workers. New editions remain consequential content under the normal PR arbiter.
-The automatic drafter and its independent comparison now run within Content
-response, at most one due case per invocation. Assessed legacy cases stay on
-their existing workers while the Deep Memory pilot establishes its usefulness.
-
-Inbox notes and links, literature watch, inward-looking agenda proposals, and
-the bounded browsing Expedition are adapters to the same research-proposal
-interface. Inbox links and watch imports now feed the bounded supplied-URL
-reader; notes, document extraction, and agenda adoption still use their older
-adapters. Shared spend accounting covers research,
-drafting, review and the Expedition's hosted search fees. An accepted ledger
-change should then prompt an edition candidate, with retaining the incumbent
-always available.
-
-### Automatic edition composition and rest
-
-`draft-editions.ts` produces two complete Astra alternatives: a focused revision
-and a fresh composition. Both receive the ledger, changed-record IDs, founding
-inputs, banked corrections, the incumbent and earlier comparison reasons. Full
-context is retained for this small pilot so a diff cannot hide an indirect
-consequence. Both essay and assessment must pass the production loader before
-comparison. Selected catalog claims get complete interpretation from that
-assessment; claim records remain intact. The supplied packet and protocol are
-hashed, and the actual answering model supplies the authorship stamp.
-
-The existing five vendors compare both drafts with the incumbent. Author stamps
-are omitted, order is shuffled per seat, and the incumbent label is explicit.
-The ballot separates a complete preference ranking from a constitutional status
-for each option. A new draft needs four compliant judgments, no violation, and
-four rankings above the incumbent. If both qualify, their pairwise majority
-chooses between them; a tie rests. Missing seats and substantive disagreement
-leave the incumbent in place. These
-preferences are a drafting decision, not case standing or permission to publish.
-The selected edition still receives fresh evidence-only checks and the ordinary
-PR arbiter. No vote is reused across these distinct roles.
-
-The typed `edition-cycle` receipt in `proposals/intake` preserves both candidates,
-invalid replies, each seat's reason or error, input hashes and the derived result.
-Successful drafts are recorded immediately. Explicit reconsideration can reuse
-two valid saved drafts on unchanged case inputs, without paying to rewrite them.
-The first trial's older ballot and its derived result are preserved under its
-original comparison version. A compared winner can be prepared
-again without another paid call; stale inputs or rules prohibit adoption.
-Preparation shares the source-adoption transaction, including full validation
-and rollback, then records the change in case history. IDs or timestamps alone
-do not make an otherwise identical assessment an improvement.
-
-A finished comparison on unchanged inputs rests. A published edition does not
-trigger another rewrite merely by changing its own timestamp or content hash.
-Changes to the ledger, founding inputs, constitution or drafting prompts reopen
-consideration; explicit `--reconsider` with a reason can reopen it too. Operational
-failure may retry on a later UTC day. Retention and substantive disagreement do
-not silently become daily retries. Empty topics stay unassessed until intake
-supplies evidence. Two drafts, five comparison seats and one case bound each run;
-all calls share the existing whole-system allowance.
-
-Content response preserves one pending batch instead of superseding and paying
-for it again. While that PR is open, the workflow reports that it is resting.
-A parked batch stays visible and needs deliberate resolution; inbox and source
-intake continue independently. This conservative backpressure is appropriate
-for the single-case pilot; case-specific queues can replace it when expansion
-justifies the complexity. No new recurring workflow is added.
-
-### Shared source reader and its first trial
-
-`research-sources.ts` and the existing `promote-imports.mjs` job call the same
-reader. It reads supplied public sources, the current ledger, the submitted
-context, and recent intake reasons. A
-drafting model proposes one local observation per source; a different model
-checks the metadata, proposition, paraphrase, inference boundary, caveats, and
-independence against the retrieved document. Both are OpenAI models in this first
-adapter; this is a separate reading, not cross-vendor concurrence. The normal
-publication arbiter and assessment-standing rules remain separate.
-
-HTML/plain-text passages retain exact string matching. PDFs are accepted up to
-10 MB and 60 physical pages, inspected with Poppler `pdfinfo` before a model
-call. Both readers receive the same complete PDF through inline file input,
-including scanned page images. The checker also receives a separate image of the claimed physical page,
-rendered by Poppler. A PDF proposal needs the checker to explicitly confirm the
-short quotation on that image and its physical PDF page. Both source formats
-also require an explicit check that the observation addresses the originating
-request; unrelated facts do not advance. Missing or uncertain
-confirmation rejects it. Receipts identify this as AI page reading, retain the
-original file hash, and use a null text hash: no text layer or mechanical match
-is invented. File bytes are not copied into public receipts. Larger documents,
-encrypted files and unreadable pages require another research route; they do
-not imply that the sought observation is absent.
-
-The source limit is two, the model-call limit four, the output-token limit 6,000
-per call, the deadline four minutes, and the research allowance $1 per pass
-at the explicit standard-tier rate card. Two cases share that one budget;
-the allowance is not multiplied by case. Full input-context liability is
-reserved before each request; returned usage replaces the reservation with an
-uncached tariff estimate. Unknown usage retains its reservation and stops paid
-work. There are no tool calls, hidden retries, or fallback models. These are
-per-run research controls, nested inside the shared monthly/daily allowance
-for all repository API workers, review, the operator, and artwork. This replaces the existing promoter's
-three-source cap and house-model fallback with a two-source, metered pass.
-Its weekly/dispatch cadence and one-cycle boundary are unchanged. Additional
-discovery uses the bounded Expedition adapter below and this same aggregate allowance.
-
-Inbox capture is model-free: it records a `source-request` with the supplied
-context and origin, then archives the original file unchanged. Reachability
-alone no longer creates an `ai_verified` source proposal. `source-queue.ts`
-derives pending work from requests and reading/adoption outcomes; old watch
-import files are a read-only adapter to that queue. There is no mutable queue
-cursor. Captured requests become eligible after their PR merges and are read
-on the next full maintenance run, or a manual invocation of the existing job.
-
-`research-adoption.ts` prepares recorded proposals without a model call. It
-checks the exact current basis and validates a complete prospective case before
-installing changed records and a changelog entry in the working tree. A failed
-installation restores the original files; a failed restoration aborts the job.
-Outcomes reference the original proposal, preserving the drafting model and
-reading receipts. Already present records are retained, stale proposals are
-parked for a fresh reading, and prepared bundles reach an ordinary gated PR.
-Neither the reader nor the materializer can publish or change an essay.
-
-The Deep Memory trial began with an empty ledger and two supplied primary-source
-leads. It produced a three-record Source/Claim/Evidence proposal from the
-excavation project's Pillar 43 account. The Met returned HTTP 429 and contributes
-no automatically verified observation. The final run kept the checked bundle
-and recorded the retrieval failure, with $0.014834 estimated from returned model
-usage. Earlier request failures and the first discarded partial run remain in
-history. This demonstrates bounded source intake, not autonomous rediscovery,
-semantic saturation, or a judgment that the shared-inheritance hypothesis holds.
-
-### Durable intake history
-
-Watch, triage, and promotion share `source-identity.mjs`: DOI/arXiv aliases
-are exact identity hints, URL distinctions are preserved, and title similarity
-remains advisory. Knowing a source does not mean every passage or observation
-has been assessed. Legacy source-import requests already carried in the ledger
-are skipped; an explicit new inbox request may seek another observation from
-that same source. The reader reuses exact source identities, and the common
-proposal validator rejects duplicate identifiers. Repeated claim wording and
-similar source titles produce review warnings, retained in the adoption outcome.
-Semantic similarity and independence still require review.
-
-`proposals/intake/` is the authority for watch-triage, historical promotion,
-agenda-proposal, agenda-score, source-request, research-run, research-proposal,
-research-adoption, edition-proposal, and edition-cycle decisions. `intake-store.mjs` validates and writes immutable
-batches, normally one per worker run. Decision and batch hashes detect changed
-payloads. Exclusive atomic file installation makes retries safe and concurrent
-writers preserve both batches. Modifying or deleting existing history requires
-the consequential-change gate; new proposal-only batches retain their existing
-risk category. Workers, the proposal page, and governance totals read this store.
-
-Every entry records the candidate or source, outcome, reason when available,
-case, date, run and model/protocol stamps, and available input receipts. A panel
-score keeps every seat's reasoning and concerns; totals must agree with those
-seats. Fewer than four returned scores or changed case inputs leave the review
-incomplete and retryable, without an actionable score. The four-highs,
-zero-concerns advancement rule and the separate publication gate are unchanged.
-Scoring packets include earlier reasons but omit earlier vote totals and grades.
-
-A proposal's title is not its identity. The agenda generator receives prior
-proposals and review reasons, and may revisit the same title with a changed
-argument, control, or case context. Only identical substance on identical case
-inputs rests mechanically; a new title alone does not defeat that check.
-Silence means unreviewed. Source requests rest on the same case, submitted
-context, URL, and case inputs. A rejected or empty reading closes that request;
-changed context or a changed case permits a new one. Operational failures
-remain retryable, and a stale or invalid adoption reopens its source request.
-All retries use the same pass budget. None of these equality checks measures semantic
-novelty, coverage, or saturation.
-
-`migrate-intake.mjs` replays a committed snapshot and verifies every migrated
-field and original row before retiring the old archive, promotions, triage, and
-score stores. A legacy row carries its original commit and locator; duplicate
-archive/report copies remain attached as provenance for one decision. Missing
-historical reviewer reasons, model identities, and input receipts stay unknown.
-The original agenda Markdown remains the candidate input, and new scores bind
-to that exact proposal. Public case slugs resolve through case metadata when
-they differ from directory names.
-
-Watch-run expiry no longer erases a triage decision. Failed watch cases stay
-due, and promotion runs save their outcomes even when no source is imported.
-The existing schedules and one-cycle adoption boundary remain; the promotion
-job now shares the source reader's explicit budget above. Broad discovery/retrieval coverage, source revision
-monitoring, and aggregate spend enforcement are subsequent work; this cutover
-does not claim that every research or drafting action is already recorded here.
-
-### Review receipt rollout
-
-New blind checks carry `generatedAt` and a `review` receipt: protocol,
-content hash, assessment hash, and packet hash. All three hashes must match;
-the loader and workers recompute the packet hash with the same builder used
-to prepare the blind assessor’s inputs. The content snapshot covers
-the case, essay, both claim files, evidence, sources, research, conjectures,
-image manifest, and study files. Operational cursors and history are excluded;
-appending a check does not invalidate itself. A run checks again before
-installing results so a mid-call content change cannot receive those reviews.
-
-The scheduled drafter also records the hash of its evidence packet to skip
-unchanged work, including repeated runs on the same day. It now receives
-the same sources, dependency context, and study records as the assessor.
-Legacy drafts use their existing timestamp until their next reassessment;
-no input receipt is backfilled without a run.
-
-Legacy checks lack such receipts and are not retroactively certified. They
-remain visible as historical checks; current standing is unratified until
-fresh checks match. The existing content-response worker will repanel these
-cases after rollout. This is a one-time review cost on the existing cadence,
-not a declaration that their prior evidence became weaker. A reconsideration
-needs a full fresh quorum, not one new seat plus the judges it consulted.
+**Status:** design confirmed by the founder, 2026-09-01 (see the DECISIONS
+entry of the same date). Build order at the bottom; nothing here is built
+until its own PR lands through the normal gates. The section immediately
+below is the running status report and is rewritten, not appended, on each
+reassessment; everything after it is the ratified design.
 
 ## Where we are (reassessed 2026-09-05)
 
 The question the founder asked: is the loop — *update, surface what is
 useful, re-evaluate* — actually working? Answer in three parts.
 
-**The judging half has a track record, with a freshness defect found in this
-reassessment.** Panels convene on canon changes, but calendar dates could
-miss same-day edits and allow one fresh check to renew older reviews. The
-receipt implementation above replaces that rule. Earlier reported standings
-are historical observations, not evidence of current snapshot coverage. The
+**The judging half works and has evidence.** Blind panels convene on every
+canon change and standing derives correctly (transients and YDIH ratified
+5/5; contested and unratified states display with their reasons). The
 arbiter has judged every `needs-approval` PR since 2026-08-25 and its
 parks have been substantively right more often than wrong — including
 parking its own repository's mistakes (#47's missing permission record,
@@ -437,14 +53,19 @@ expensive. Every seat now pins its effort, so the judges are what the
 record says they are. Expect the seat-record table on /panel to start new
 rows for the new models; the old rows are history, not error.
 
-### Existing workers
+### Build order — status
 
-Promotion, agenda scoring, study freeze drafting, the steelman requirement,
-assessment, reconciliation, and the publication arbiter are implemented.
-The common source reader, bounded Expedition pilot and unified edition drafter
-are now implemented. Broader case migration and discovery, improved scheduling,
-study collection and the full reading/automation UI reassessment remain. The
-sequence above replaces the previous numbered build order.
+| # | Step | Status |
+| --- | --- | --- |
+| 1 | Promotion pipe | **Built** (#148). One live promotion. |
+| 2 | Bench v2 | **Built** (#141, #149, #155). Backfill scored; endorsement drafter awaiting first scheduled run. |
+| 3 | Collection runner | Not built. No backlog yet: every frozen study is collected. Build when a Bench-drafted freeze merges with no one to collect it. |
+| 4a | Steelman field | **Built** (#163). Required from 2026-09-04. |
+| 4b | Sampling gloss audit | Deferred by founder direction. The largest unaddressed epistemic risk: no judge re-reads a source. |
+| 5 | Expedition | Not built. **Blocked on a founder decision**: provider and budget line. |
+| 6 | Researcher surface | Not built. Independent; the natural next build. |
+| 7 | Atelier | Not built. Founding inputs (its anchor) are committed for every case. |
+| 8 | Genesis | Deliberately manual. |
 
 ### Simplification (founder direction, 2026-09-05: "as simple as possible")
 
@@ -462,20 +83,28 @@ line changed:
    readme) were removed 2026-09-05; the runbook was rewritten from 429
    lines of interleaved rationale to a one-page map plus a symptom table.
    Rationale goes in DECISIONS once; it is not repeated in the runbook.
-2. **Use the digest to evaluate unattended work.** The founder has now
-   authorized construction; the earlier two-Monday pause is superseded.
-   Observing the digest remains part of validation, not a blocker to fixes.
+2. **Read the digest for two Mondays before building anything.** Every
+   loop reports there. If the digest shows promotions, adoptions, and
+   re-panels happening without a chat session, the metabolism works and
+   the next build is step 6. If it shows nothing moving, the fault is in
+   the producing half and no new loop should be added on top of it.
 3. **Cadences should say what they do.** The content-response cron
    requests hourly and receives ~5/day; the operator runs daily and most
    days writes "nothing needed doing". Candidates once the digest has
    data: make content-response four fixed times a day (same latency,
    honest schedule), and make the operator event-driven (parked PR,
-   issue, quarantine) with a weekly sweep instead of a daily one. Change them when observed latency and cost justify it.
+   issue, quarantine) with a weekly sweep instead of a daily one. Both
+   are engine changes and should wait for the two Mondays.
 4. **Retire what the lane fix made redundant.** The `GATE_EPOCH` bumps
    were a workaround for the throttle miscounting founder work; the
    `Supervised-by` trailer fixed the count. If no epoch bump is needed
    through September, remove the epoch machinery and the paragraphs
    describing it.
+5. **Do not add** a new loop, a new lane, a new label, or a new document
+   without removing one. The five-loop design is complete as written;
+   what remains is executing steps 3, 5, 6, 7 of the build order — each
+   a script in `scripts/lib` with tests, none a new kind of thing.
+
 ## Purpose
 
 The site is a compression under constraint: the best honest summary AI can
@@ -491,8 +120,8 @@ product is a machine for pointing at decisive tests.
 
 Two dynamics with opposite ideals, deliberately separated:
 
-- **The ledger preserves history.** Claims, evidence, and sources
-  can be corrected, merged, or superseded without losing the earlier record. That is the archive doing its job; tiers keep
+- **The ledger grows monotonically.** Claims, evidence, sources
+  accumulate forever. That is the archive doing its job; tiers keep
   readers above water. "Saturation" is not a property of the stream —
   the stream is infinite — it is a measured property of the judgment
   layer (below).
@@ -506,10 +135,9 @@ identifier index for dedup, the claims index for coverage, dates for
 change — and pulls full records only for the claims in play. Growth costs
 storage, not context.
 
-## Existing workers and their responsibilities
+## The five loops
 
-These names describe capabilities being consolidated into the workflow above,
-not five separate layers of state. All write through the same gate (classifier → arbiter panel →
+All five write through the same gate (classifier → arbiter panel →
 merge policy). No loop has its own door.
 
 ### 1. The Watch — hears (exists)
@@ -519,54 +147,31 @@ segment an outside review (2026-09-01) correctly found missing: **the
 promotion pipe**. Verified import proposals previously died in
 `proposals/` on a 60-day timer, because nothing authored the evidence
 records the ledger admission rule requires; promotion happened only when
-the founder opened a chat. The Maintain promotion step now uses the common
-reader and complete Source/Claim/Evidence proposal validator described above.
-It prepares a needs-approval PR through the classifier, the citation-checking
+the founder opened a chat. A Maintain step now (build step 1) drafts the
+promotion — sources.yaml entry plus the evidence records that cite it —
+as a needs-approval PR through the classifier, the citation-checking
 arbiter, and the content-response ripple. Without this pipe the site is
 a metabolism for judging content, not producing it, and the yield decay
 would amplify the starvation (no promotions → no movement → cases cool).
 Every import records whether it eventually moved anything, feeding the
 yield metric.
 
-### 2. The Expedition — explores (bounded pilot)
+### 2. The Expedition — explores (new)
 
-`discover-sources.ts` supplies the missing browsing adapter to the common source
-queue. Astra reads the ledger, assessment gaps, founding inputs and recent intake
-outcomes. It records one narrow question, inclusion criteria, disconfirmers and
-at most two planned queries before any search. One query must seek counterevidence; an
-empty plan is allowed. This is a discovery plan, not a frozen systematic-study
-protocol or a claim of exhaustive coverage.
+The deep-research sweep, formalized. On a yield-gated schedule, a
+discovery-capable model receives a case's claims index (the coverage
+map) and its source list, and is tasked adversarially: find what this
+ledger does NOT contain — new primary documents, datasets, non-English
+literature, archival material, and counter-evidence specifically. Output
+is a brief (never citable, like all briefs), mechanically coverage-diffed
+against the claims and source indexes; only verified-novel items proceed
+to citation verification and enter through the gates. Because the
+coverage map persists in the repo, each expedition judges only its diff —
+which is why this converges where ad-hoc chat-session research cannot:
 
-The configured source-drafting model performs each lookup through Responses
-`web_search`, in separate stateless calls with `max_tool_calls: 1`. Astra then
-selects at most two returned URLs by index and states what the reader should
-check. A URL appearing only in generated prose cannot enter the selection.
-Exact source matches are labeled; a known source can still warrant a new
-observation. Queue requests keep the question and rationale. Search summaries
-remain unverified leads. Only the existing separate reading/checking process
-can propose Source/Claim/Evidence records, through the ordinary publication gate.
-
-Deep Memory is the configured pilot. The existing Maintain promotion job runs
-at most one due case, with a ten-minute discovery deadline and the shared AI
-allowance. Its default revisit is seven days. Changed ledger, assessment,
-founding inputs or external inbox requests can reopen on a later UTC day;
-explicit reasoned reconsideration can reopen immediately. Discovery's own
-receipts and queue entries do not trigger another discovery. A pending research
-PR pauses the next batch, and jobs serialize instead of canceling paid work.
-
-Plans, completed search actions, returned URLs, selections, raw rejected replies
-and failures live in the immutable intake store. A recorded selection can resume
-queueing without another AI call. Stale inputs stop queueing. Model and tool
-usage share the allowance; cost entries include the case, discovery run and
-phase. The search reservation covers two full model input passes and the hosted
-tool fee, without treating a low search-context setting as a token cap.
-
-No model grades its own novelty or saturation. Repeated URLs collapse into one
-candidate, but neither a new URL nor a queued lead is an accepted finding. The
-downstream research proposal and adoption receipts record actual ledger changes.
-An empty or failed search says nothing about the absence of evidence. A future
-public progress view can derive that distinction from these receipts; there is
-no global “topic complete” badge or self-reported non-material-pass counter.
+**Saturation is a counter, not a feeling: a case is provisionally
+saturated after N consecutive expeditions whose verified novelty moved
+nothing; any later watch hit or inbox drop resets it.**
 
 ### 3. The Bench — tests (exists as agenda + studies; selection changes)
 
@@ -599,7 +204,7 @@ draft with no in-ledger anchor is dropped with the reason and stays
 endorsed for the promotion pipe or a manual adoption). Ids are
 mechanical; provenance rides origin.ref, which doubles as the adoption
 registry (the repo is the state). Proposals not advanced or endorsed
-retain their scored disposition and can be reconsidered through intake. Budgets bound the
+retire by silence, as now ("ignored is retired"). Budgets bound the
 pace: at most two active studies per case; a site-wide monthly freeze
 budget; three adoptions per run, at most two per case.
 
@@ -607,8 +212,7 @@ budget; three adoptions per run, at most two per case.
 
 Verification labels, blind check panels, derived standing (fails down,
 nothing raises it but fresh concurrence), reconciliation that cannot
-self-ratify, and the constitutional arbiter. The exact-input receipt rule
-above replaces calendar-date freshness; the publication gate is unchanged. Banked corrections live in the
+self-ratify, the constitutional arbiter. Unchanged. Banked corrections live in the
 records they corrected and in the append-only changelog — panels judging
 a diff see the correction in context, in the record itself, not in a
 separate registry.
@@ -628,28 +232,32 @@ pick up. Required from 2026-09-04 (fail-closed in the loader);
 append-only history before that date is exempt, never rewritten.
 Counterweight #2, the sampling gloss audit — one random evidence
 record per hot case re-verified against its primary source by a model
-that did not author it — belongs with the bounded researcher in the revised
-sequence above, before unattended intake is expanded.
+that did not author it — is deliberately deferred to last in the build
+order (founder direction, 2026-09-01).
 
-### 5. The Atelier — a drafting mode within the edition workflow
+### 5. The Atelier — rewrites (new; experiment first)
 
-The edition drafter owns assessment, selection, and narrative together. Its
-first narrative implementation generates candidate alternatives from a scoped
-input diff and submits them with the incumbent for comparison, under §7.
-The Atelier name describes that competition within the edition workflow;
-several independent drafters can later widen the candidate pool. It is not a
-separate owner of presentation state. Candidates compete against the incumbent
-on evidential fidelity, uncertainty,
-useful compression, readability, and register. Blind assessment uses an isolated
-evidence-only call, with no comparison transcript or candidate judgments. The
-normal arbiter still gates any
-consequential publication, with substantiated objections parked publicly.
-
-Every comparison publishes its full record, including dissent. Randomize
-candidate order. Fluency, length, and model-family
-preferences can bias judges; winning a prose comparison cannot substitute
-for source verification or authorize dropping a consequential caveat. A
-candidate that earns no improvement leaves the incumbent in place.
+Quarterly per case, or on a standing change: several independent models
+each draft a competing revision of the case's narrative surfaces (the
+overview, verdict framings, crux ordering — never ledger records). The
+panel judges blind, pairwise, against the incumbent, on a constitutional
+rubric: mechanical fidelity first (all claim references survive, no
+uncited assertions), then honesty of
+uncertainty, symmetry, readability. A challenger replaces the incumbent
+only on clear preference (4 of 5 seats) — prose ratchets the way
+standing does, and like standing, tolerated dissent is never silent:
+**every tournament's full record — each seat's preference and reasoning,
+including the dissenter's — is published like a check run** (harvested
+to governance/, surfaced on /panel), so an outvoted seat's view is
+preserved and displayed, not overridden into silence. The winner still
+ships through the normal publication gate, where any seat's
+substantiated constitutional objection parks it as usual. Superseded
+versions persist in git and the changelog. Known judge pathologies
+(fluency bias, length bias, family affinity) are mitigated by the
+mechanical floor, randomized pairwise order, and cross-vendor seats;
+aesthetics and register remain governed the constitutional way — the
+founder amends the register sections (§7 and the style documents it
+points to), and panels enforce them.
 
 **Narrative inputs — the anti-drift anchor (founder direction,
 2026-09-01).** If each rewrite saw only its predecessor plus the ledger,
@@ -668,8 +276,8 @@ than from a fading copy — and where the evidence has parted ways with a
 founding text, the rewriter has the original in hand and says so
 honestly, instead of paraphrasing a paraphrase of it.
 
-Existing rewrite guidance (2026-09-01), retained as migration checks.
-Changing these behaviors requires an explicit, reviewed editorial rationale:
+Two rewrite laws (founder direction, 2026-09-01), carried in the
+Atelier rubric and enforced mechanically where possible:
 
 - **The first-edition rule.** A revision reads as if it were the first
   telling: founding texts and the current ledger digested into one
@@ -702,18 +310,14 @@ ordinary directed PRs.
 
 ## The scheduler: attention follows yield
 
-The current yield report counts verdict-moving events and selects watch
-cadences. The revised scheduler must also credit corrections, improved tests,
-and useful explanation without demanding a changed verdict. Its rest counter
-uses accepted changes after verification, with a bounded exploration allowance
-for missed questions. Neither a quiet fortnight nor an unchanged verdict proves
-that the source landscape is exhausted. The existing content-merge throttle
-limits publication pace; it is not a monetary budget. Shared spend accounting
-now covers every existing API path, including the operator's streamed requests
-and image generation, with one policy in `config/ai.json`. Missing receipts
-retain liability; a spent allowance stops work without weakening review. Wider
-Expedition's bounded pilot now includes hosted-tool fees; wider browsing remains
-limited to models and tools whose tariffs have been reviewed on main.
+One metric per case per period — verdict-moving events (verdict changes,
+standing changes, new load-bearing claims, study findings) — sets every
+cadence. Hot cases run weekly watch, monthly expeditions, tournaments on
+standing changes; cases that haven't moved cool toward quarterly sweeps
+and an annual tournament. Dormancy is a measured, reversible state, never
+abandonment. Site-wide budgets (model spend; the existing content-merge
+throttle) cap the whole metabolism, and every loop's activity logs to the
+/panel operations section.
 
 ## The founder's role, after
 
@@ -725,40 +329,45 @@ contributor: reading the weekly digest, dropping material and directions
 into the inbox, all of it riding the same gates as anyone else's.
 Everything else is panel-governed inside budgets.
 
+## Build order (by dependency and risk; revised 2026-09-01 after the outside review — see DECISIONS)
+
+1. **The promotion pipe** — verified import proposals become gated
+   sources+evidence PRs (the single highest-value fix: it is what makes
+   existing cases alive rather than beautifully maintained snapshots,
+   and it must precede any reliance on yield decay).
+2. **Bench v2** — panel scoring on agenda output; ranked report;
+   auto-drafted freeze PRs for 4-of-5-high scorers with no
+   constitutional objection (founder tap retained initially).
+3. **Collection runner** — merged zero-row freezes execute their frozen
+   protocols (refusal-fallback provider path mandatory).
+4. **Epistemic counterweights** — two small mechanisms from the outside
+   review: every check run gains a required field naming the strongest
+   argument for the featured hypothesis the assessment does not answer
+   (making the panel's shared-prior blindspot visible without giving
+   advocacy a vote), and a sampling gloss audit (one random evidence
+   record per hot case per cycle re-verified against its primary by a
+   model that did not author it), with the honest limitation stated on
+   /method: citation checking verifies existence, not readings.
+5. **Expedition** — coverage-diff tool + scheduled sweeps (now honest:
+   its output has somewhere to go). Requires a provider decision and a
+   budget line from the founder.
+6. **Researcher surface** — "state of the question" case header +
+   per-case JSON export. Independent; can land any time.
+7. **Atelier** — as a labeled experiment on one case (transients), with
+   the mechanical fidelity floor and the narrative-inputs anchor already
+   in force.
+8. **Genesis — last, deliberately.** Case creation (topic seed →
+   expedition discovery → ladder decomposition → drafted case → one
+   giant needs-approval PR → published unratified, thickening in
+   public) is the hardest, most judgment-laden job and the least
+   frequent; the founder continues to commission cases manually until
+   everything upstream has a track record. Until then, "from scratch"
+   is not automated, and the design says so rather than pretending.
+
+
 Implementation constraints throughout: no new services, no databases —
 git as state, Actions as scheduler, YAML validated fail-closed by the
 loader, every new mechanism a tested script in `scripts/lib`, budgets in
 one config, engine work upstream here and synced downstream. Machine
 artifacts declare their lifecycle (status, expiry, surviving record) from
 their first run — no more folders a reader cannot date.
-
-### Next experiment: a substantial investigation that remembers
-
-The bounded source queue is supporting infrastructure. The next manual Deep
-Memory pilot should produce a coherent research report from the current edition,
-ledger, open questions and prior attempts. Astra should be able to pursue a useful
-question across sources, revise its search as it learns, identify meaningful
-changes and suggest relevant documentary plates. A predetermined number of new
-claims is not the objective. The report remains a proposal; verified changes
-feed the existing ledger and edition competition before publication.
-
-Evaluate the full result against the incumbent: does it answer an important
-question, sharpen uncertainty or a decisive test, preserve the strongest
-objections, and make a better article? Inspect the citations, costs and misses.
-The initial two-query discovery cap was a wiring trial, not a claim that this is
-enough research. Keep the shared $150 monthly allowance and run this comparison
-manually before setting the report cadence. Do not build another parallel intake
-store or presentation system for the experiment.
-
-The ledger may become substantially more comprehensive without lengthening the
-article. Evaluate additions against the case's research scope, not against the
-current article's selected claims. Keep useful context, negative controls,
-alternatives and documented disagreements accessible through the explorer.
-A later coverage summary should show examined areas, thin areas and past
-attempts, with links back to records rather than another competing ledger.
-The same case-improvement pass should propose ledger deltas and, when helpful,
-a better edition. Test a sparse case (Deep Memory) and a mature case (Orch OR). The founder's
-Orch OR example supplies an acceptance test: preserve both the strongest
-experimental objection and the strongest supported account of its scope. Trace
-argument, objection, response and unresolved burden to their underlying records;
-flag unsupported replies for source verification. Casting remains a later pilot.

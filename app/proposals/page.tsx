@@ -23,7 +23,7 @@ function seatGlyph(seat: string): { glyph: string; cls: string } {
   return { glyph: "×", cls: "text-faint" }; // failed seat: reported, never neutral
 }
 
-/** The proposal's current status, derived from recorded review and adoption. */
+/** The proposal's one-word fate, derived — never stored, never guessed. */
 function fate(p: {
   score?: { advances: boolean; concerns: string[]; highs: number };
   draftedAs?: string;
@@ -43,11 +43,8 @@ function fate(p: {
   // (or a manual adoption when the drafter could not anchor it): the
   // panel telling the editor "adopt this," never a retirement.
   if (p.kind !== "study" && p.score.highs >= 4 && p.score.concerns.length === 0)
-    return {
-      label: `endorsed ${p.score.highs}/5 — awaiting adoption`,
-      cls: "text-copper",
-    };
-  return { label: `not advanced · ${p.score.highs}/5 high`, cls: "text-faint" };
+    return { label: `endorsed ${p.score.highs}/5 — awaiting adoption`, cls: "text-copper" };
+  return { label: `retired · ${p.score.highs}/5 high`, cls: "text-faint" };
 }
 
 export default function ProposalsPage() {
@@ -87,13 +84,18 @@ export default function ProposalsPage() {
       <p className={label}>agenda generation · weekly</p>
       <h1 className="font-serif text-4xl tracking-tight mt-3">Proposals</h1>
       <p className="mt-3 text-ink-soft max-w-2xl">
-        Each week, AI reads the cases and suggests missing claims, research
-        questions, and studies. Independent models assess how much each could
-        teach us. Four high ratings with no constitutional concern qualify a
-        proposal for drafting; publication still requires review, and studies
-        must be pre-registered. Everything here is a <em>proposal only</em>{" "}
-        until adopted. Earlier proposals remain on the record and can be
-        reconsidered when evidence or the argument changes.
+        Once a week, the maintenance run reads each case&apos;s ledger and
+        proposes what it implies but does not yet contain — a new claim, a
+        new research item, or a new frozen-criteria study. Everything on
+        this page is a <em>proposal only</em>: it enters the record only if
+        adopted through the same gates as any other change — editorial
+        judgment, pre-registration where applicable, the risk classifier,
+        and the constitutional panel. Since 2026-09-01 every proposal is
+        also scored by the five-vendor panel for expected information
+        gain: four seats high with no constitutional concern advances a
+        study to pre-registration, and drafts a claim or research item
+        for adoption through the same gated review; everything else
+        retires on the record, with five opinions instead of silence.
       </p>
 
       {totals.proposals > 0 && (
@@ -105,7 +107,7 @@ export default function ProposalsPage() {
               ["advancing", totals.advancing],
               ["adopted", totals.adopted],
               ["endorsed, awaiting adoption", totals.endorsed],
-              ["not advanced", totals.retired],
+              ["retired", totals.retired],
               ["blocked", totals.blocked],
               ...(totals.unscored > 0
                 ? ([["awaiting scores", totals.unscored]] as const)
@@ -122,8 +124,8 @@ export default function ProposalsPage() {
 
       {runs.length === 0 ? (
         <p className="mt-10 border border-line bg-paper px-5 py-4 max-w-2xl text-[13.5px] text-ink-soft">
-          No proposals yet. The first weekly agenda-generation run to produce
-          any will populate this page.
+          No proposals yet. The first weekly agenda-generation run to
+          produce any will populate this page.
         </p>
       ) : (
         runs.map((run) => (
@@ -155,20 +157,14 @@ export default function ProposalsPage() {
                 </p>
                 <ul className="mt-3 space-y-4">
                   {file.proposals.map((p) => (
-                    <li
-                      key={p.index}
-                      className="border border-line bg-paper p-5"
-                    >
-                      <p
-                        className={`${label} flex flex-wrap items-baseline gap-x-3 gap-y-1`}
-                      >
+                    <li key={p.title} className="border border-line bg-paper p-5">
+                      <p className={`${label} flex flex-wrap items-baseline gap-x-3 gap-y-1`}>
                         <span className="text-copper">{p.kind}</span>
                         <span>effort: {p.effortTier}</span>
                         {p.score && (
                           <span
                             className="tracking-[0.3em]"
                             title={p.score.seats.join("\n")}
-                            aria-label={p.score.seats.join("; ")}
                           >
                             {p.score.seats.map((s, i) => {
                               const g = seatGlyph(s);
@@ -183,9 +179,7 @@ export default function ProposalsPage() {
                         {(() => {
                           const f = fate(p);
                           return f ? (
-                            <span className={`ml-auto ${f.cls}`}>
-                              {f.label}
-                            </span>
+                            <span className={`ml-auto ${f.cls}`}>{f.label}</span>
                           ) : null;
                         })()}
                       </p>
@@ -215,42 +209,6 @@ export default function ProposalsPage() {
                         </span>{" "}
                         {p.wouldSettle}
                       </p>
-                      {p.score?.review?.some(
-                        (seat) => seat.reasoning || seat.concern,
-                      ) && (
-                        <details className="mt-4 border-t border-line pt-3 text-[13px] text-ink-soft">
-                          <summary className="cursor-pointer text-copper focus-visible:outline-2 focus-visible:outline-offset-4">
-                            Review reasoning
-                          </summary>
-                          <ul className="mt-3 space-y-4">
-                            {p.score.review.map((seat) => (
-                              <li key={seat.seat}>
-                                <p className={label}>
-                                  {seat.seat} ·{" "}
-                                  {seat.score ?? "no score returned"}
-                                </p>
-                                <p className="mt-1 whitespace-pre-line leading-relaxed">
-                                  {seat.reasoning ??
-                                    "No reasoning was recorded for this seat."}
-                                </p>
-                                {seat.concern && (
-                                  <p className="mt-1 leading-relaxed">
-                                    Constitutional concern: {seat.concern}
-                                  </p>
-                                )}
-                              </li>
-                            ))}
-                          </ul>
-                          {p.score.reviewRef && (
-                            <a
-                              href={`${site.repoUrl}/blob/main/${p.score.reviewRef.split("#")[0]}`}
-                              className="mt-3 inline-block text-copper underline underline-offset-2"
-                            >
-                              Recorded review →
-                            </a>
-                          )}
-                        </details>
-                      )}
                     </li>
                   ))}
                 </ul>

@@ -12,8 +12,7 @@ const good = {
     "Which published site studies share authors, labs, or datasets, coded into independence groups?",
   closestExisting: ["X-R005"],
   gap: "R005 asks for replication status but never codes overlap",
-  wouldSettle:
-    "a small independent core supports; a single-network web undermines",
+  wouldSettle: "a small independent core supports; a single-network web undermines",
   effortTier: "desk",
 };
 
@@ -45,13 +44,15 @@ describe("agenda proposal validation (fail-closed)", () => {
     ]);
   });
 
+  it("retires previously proposed titles (silence means no)", () => {
+    const prior = new Set([good.title]);
+    const { ok, rejected } = validateProposals({ proposals: [good] }, known, prior);
+    expect(ok).toHaveLength(0);
+    expect(rejected[0].reason).toBe("re-proposed from a prior run (ignored is retired)");
+  });
+
   it("caps at three, drops duplicates, and survives a malformed reply", () => {
-    const four = [
-      good,
-      { ...good, title: "Second distinct proposal title" },
-      good,
-      good,
-    ];
+    const four = [good, { ...good, title: "Second distinct proposal title" }, good, good];
     const { ok, rejected } = validateProposals({ proposals: four }, known);
     expect(ok).toHaveLength(2);
     expect(rejected[0].reason).toBe("duplicate title");
@@ -61,17 +62,8 @@ describe("agenda proposal validation (fail-closed)", () => {
   it("packet and rendering carry the load-bearing text", () => {
     const packet = buildCasePacket({
       claims: [{ id: "X-C001", tier: "featured", statement: "s" }],
-      research: [
-        { id: "X-R005", title: "t", summary: "sum", effortTier: "desk" },
-      ],
-      studies: [
-        {
-          id: "X-S001",
-          title: "st",
-          question: "q",
-          findings: [{ statement: "f1" }],
-        },
-      ],
+      research: [{ id: "X-R005", title: "t", summary: "sum", effortTier: "desk" }],
+      studies: [{ id: "X-S001", title: "st", question: "q", findings: [{ statement: "f1" }] }],
       evidence: [{ id: "X-E001", direction: "supports", title: "ev" }],
     });
     for (const anchor of ["X-C001", "X-R005", "X-S001", "f1", "X-E001"]) {

@@ -149,9 +149,8 @@ export const OriginSchema = z.object({
  *   atomic statement anchored to a source, with provenance. Validation
  *   deliberately does not demand featured-level richness here.
  *
- * Legacy promotion changes `tier` and supplies the required editorial fields.
- * Editions can instead select a catalog claim and take its interpretation
- * from an assessment, leaving the anchored ledger record unchanged.
+ * Promotion is a one-field edit: flip `tier` to `featured` and the build
+ * fails loudly listing exactly which editorial fields are still missing.
  */
 export const ClaimTier = z.enum(["featured", "catalog"]);
 export type ClaimTier = z.infer<typeof ClaimTier>;
@@ -533,145 +532,68 @@ export const ChangeLogEntrySchema = z.object({
 });
 export type ChangeLogEntry = z.infer<typeof ChangeLogEntrySchema>;
 
-/** Interpretation belongs to the assessment selected by an edition. It never
- * changes the underlying proposition or gives an AI record human provenance. */
-const interpretationText = z.string().min(10).refine(value => value.trim().length >= 10,
-  "interpretation must contain an explanation");
-export const ClaimTreatmentSchema = z.object({
-  plainLanguage: interpretationText,
-  claimType: ClaimType,
-  importance: Importance,
-  diagnosticity: FeaturedClaimSchema.shape.diagnosticity,
-  diagnosticitySummary: interpretationText,
-  strongestObjection: interpretationText,
-  whatWouldChangeOurMind: z.array(interpretationText).min(1),
-}).strict();
-export type ClaimTreatment = z.infer<typeof ClaimTreatmentSchema>;
-
 /** One AI assessment run — an append-only overlay, never a mutation of canon. */
-export const AssessmentRunSchema = z
-  .object({
-    runId: z.string(),
-    model: z.string(),
-    date: z.string(),
-    promptVersion: z.string(),
-    humanReviewed: z.boolean(),
-    /** Machine-written receipt; legacy runs stay intact without invented stamps. */
-    generatedAt: z.string().datetime().optional(),
-    /** Hash of the evidence packet actually supplied to a drafter. */
-    inputHash: z
-      .string()
-      .regex(/^[a-f0-9]{64}$/)
-      .optional(),
-    review: z
-      .object({
-        protocol: z.literal("case-snapshot-v1"),
-        contentHash: z.string().regex(/^[a-f0-9]{64}$/),
-        assessmentHash: z.string().regex(/^[a-f0-9]{64}$/),
-        packetHash: z.string().regex(/^[a-f0-9]{64}$/),
-      })
-      .optional(),
+export const AssessmentRunSchema = z.object({
+  runId: z.string(),
+  model: z.string(),
+  date: z.string(),
+  promptVersion: z.string(),
+  humanReviewed: z.boolean(),
+  /**
+   * `draft` (default): a house assessment run — the candidate narrative the
+   * case page displays (unless a human-endorsed run exists).
+   * `check`: an independent cross-model judge run, produced blind to all
+   * prior assessments by a different model (scripts/cross-model-check.mjs).
+   * Check runs never display as the case narrative; they feed the
+   * concurrence panel, which reports how far independent models agree with
+   * the displayed assessment.
+   */
+  role: z.enum(["draft", "check"]).default("draft"),
+  caseAssessment: z.object({
+    verdict: AssessmentState,
+    /** Claims the featured thesis actually rests on. */
+    loadBearing: z.array(z.string()),
+    /** Where the argument is most likely to fail. */
+    weakestLinks: z.array(z.string()),
+    /** The argued structural roll-up over the ladder. Not a score. */
+    synthesis: z.string().min(100),
     /**
-     * `draft` (default): a house assessment run — the candidate narrative the
-     * case page displays (unless a human-endorsed run exists).
-     * `check`: an independent cross-model judge run, produced blind to all
-     * prior assessments by a different model (scripts/cross-model-check.mjs).
-     * Check runs never display as the case narrative; they feed the
-     * concurrence panel, which reports how far independent models agree with
-     * the displayed assessment.
+     * The steelman field (docs/AUTOMATION.md, "epistemic counterweights"):
+     * the strongest argument FOR the featured hypothesis that this
+     * assessment does not answer, stated by the same model that wrote the
+     * assessment — a limitations section, not a rebuttal and not a vote.
+     * It exists because every seat in this system shares roughly the same
+     * mainstream priors, and the constitution forbids seating an advocate
+     * (§2: not a believer-versus-skeptic arena): the counterweight is an
+     * obligation of disclosure on the assessor itself. It never moves a
+     * verdict; it is displayed beside one. A steelman that persists
+     * unanswered across runs is a research crux the system is dodging.
+     *
+     * Optional in the schema because overlays are append-only and history
+     * cannot be rewritten; required on every run dated on or after
+     * STEELMAN_REQUIRED_FROM (enforced fail-closed in load.ts).
      */
-    role: z.enum(["draft", "check"]).default("draft"),
-    caseAssessment: z.object({
+    steelman: z.string().min(40).optional(),
+  }),
+  claimAssessments: z.array(
+    z.object({
+      claimId: z.string(),
       verdict: AssessmentState,
-      /** Claims the featured thesis actually rests on. */
-      loadBearing: z.array(z.string()),
-      /** Where the argument is most likely to fail. */
-      weakestLinks: z.array(z.string()),
-      /** The argued structural roll-up over the ladder. Not a score. */
-      synthesis: z.string().min(100),
-      /**
-       * The steelman field (docs/AUTOMATION.md, "epistemic counterweights"):
-       * the strongest argument FOR the featured hypothesis that this
-       * assessment does not answer, stated by the same model that wrote the
-       * assessment — a limitations section, not a rebuttal and not a vote.
-       * It exists because every seat in this system shares roughly the same
-       * mainstream priors, and the constitution forbids seating an advocate
-       * (§2: not a believer-versus-skeptic arena): the counterweight is an
-       * obligation of disclosure on the assessor itself. It never moves a
-       * verdict; it is displayed beside one. A steelman that persists
-       * unanswered across runs is a research crux the system is dodging.
-       *
-       * Optional in the schema because overlays are append-only and history
-       * cannot be rewritten; required on every run dated on or after
-       * STEELMAN_REQUIRED_FROM (enforced fail-closed in load.ts).
-       */
-      steelman: z.string().min(40).optional(),
+      reasoning: z.string(),
+      confidence: z.enum(["high", "moderate", "low"]),
     }),
-    claimAssessments: z.array(
-      z.object({
-        claimId: z.string(),
-        verdict: AssessmentState,
-        reasoning: z.string(),
-        confidence: z.enum(["high", "moderate", "low"]),
-        /** Optional for immutable older runs; complete when supplied. */
-        treatment: ClaimTreatmentSchema.optional(),
-      }),
-    ),
-    /**
-     * Reconsideration drafts only (scripts/reconcile-contested.mjs): the
-     * runIds of the check runs whose dissents this draft was written with.
-     * Ratification treats exactly these checks as engaged — a reconciled
-     * draft needs a full current panel OUTSIDE this list. One fresh check
-     * cannot renew the standing of the checks it already consulted.
-     */
-    reconciles: z.array(z.string()).optional(),
-  })
-  .superRefine((run, context) => {
-    if (run.review && (run.role !== "check" || !run.generatedAt)) {
-      context.addIssue({
-        code: "custom",
-        path: ["review"],
-        message: "a review receipt requires a timestamped independent check",
-      });
-    }
-    const ids = run.claimAssessments.map((assessment) => assessment.claimId);
-    const hasTreatment = run.claimAssessments.some(a => a.treatment);
-    if (hasTreatment && (run.role === "check" || !run.generatedAt)) {
-      context.addIssue({ code: "custom", message: "claim treatment requires a timestamped draft assessment" });
-    }
-    if ((run.review || hasTreatment) && new Set(ids).size !== ids.length) {
-      context.addIssue({
-        code: "custom",
-        path: ["claimAssessments"],
-        message: "a review cannot assess the same claim twice",
-      });
-    }
-  });
+  ),
+  /**
+   * Reconsideration drafts only (scripts/reconcile-contested.mjs): the
+   * runIds of the check runs whose dissents this draft was written with.
+   * Ratification treats exactly these checks as engaged — a reconciled
+   * draft cannot be ratified until at least one blind check OUTSIDE this
+   * list judges it (§3.15: nothing raises standing except fresh
+   * independent agreement).
+   */
+  reconciles: z.array(z.string()).optional(),
+});
 export type AssessmentRun = z.infer<typeof AssessmentRunSchema>;
-
-const EditionHash = z.string().regex(/^[a-f0-9]{64}$/);
-export const EditionSchema = z.object({
-  version: z.literal(1),
-  runId: z.string().regex(/^[a-z0-9][a-z0-9._-]{1,119}$/),
-  generatedAt: z.string().datetime(),
-  model: z.string().min(1),
-  promptVersion: z.string().min(1),
-  rationale: z.string().min(10),
-  basis: z.object({
-    contentHash: EditionHash,
-    inputsHash: EditionHash,
-    ledgerHash: EditionHash,
-    incumbentHash: EditionHash,
-  }).strict(),
-  previous: z.object({ runId: z.string(), hash: EditionHash }).strict().nullable(),
-  /** Reference the actual assessment; never relabel its model as the editor. */
-  assessment: z.object({ runId: z.string(), hash: EditionHash }).strict().nullable(),
-  featuredClaimIds: z.array(z.string()).refine(ids => new Set(ids).size === ids.length,
-    "an edition cannot feature the same claim twice"),
-  /** One atomic file binds the essay and its selected assessment. */
-  article: z.string().min(40),
-}).strict();
-export type Edition = z.infer<typeof EditionSchema>;
 
 /**
  * From this date every assessment run — draft, check, reconsideration —
@@ -685,10 +607,7 @@ export function steelmanRequirementError(
   run: Pick<AssessmentRun, "runId" | "date" | "caseAssessment">,
 ): string | null {
   if (run.date < STEELMAN_REQUIRED_FROM) return null;
-  if (
-    run.caseAssessment.steelman &&
-    run.caseAssessment.steelman.trim().length > 0
-  )
+  if (run.caseAssessment.steelman && run.caseAssessment.steelman.trim().length > 0)
     return null;
   return `assessment run ${run.runId} (${run.date}) is missing caseAssessment.steelman — every run dated on or after ${STEELMAN_REQUIRED_FROM} must state the strongest argument for the featured hypothesis it does not answer`;
 }
@@ -838,9 +757,7 @@ export type WatchSource = z.infer<typeof WatchSource>;
 
 export const WatchQuerySchema = z.object({
   /** Stable slug for the query — cursor state and dedup key on the run side. */
-  id: z
-    .string()
-    .regex(/^[a-z0-9-]+$/, "watch query id like trigger-point-imaging"),
+  id: z.string().regex(/^[a-z0-9-]+$/, "watch query id like trigger-point-imaging"),
   /** Free-text search string sent to each API. */
   query: z.string().min(3),
   /** Which APIs to search. Default: arXiv + Crossref (both free, keyless). */
@@ -967,46 +884,37 @@ export const CaseComponentSchema = z.object({
 });
 export type CaseComponent = z.infer<typeof CaseComponentSchema>;
 
-export const CaseSchema = z
-  .object({
-    id: z.string().regex(/^[A-Z]+-\d{3}$/, "Case id like GEO-001"),
-    slug: z.string().regex(/^[a-z0-9-]+$/),
-    title: z.string(),
-    subtitle: z.string(),
-    domain: z.string(),
-    status: z.enum(["active", "incubating", "archived"]),
-    summary: z.string(),
-    /** Dossier header, question 1. */
-    whatIsClaimed: z.string(),
-    /** Dossier header, question 2 — the central crux. */
-    whereDisagreementLives: z.string(),
-    /** Dossier header, question 3. */
-    whatWouldSettleIt: z.string(),
-    bestConventionalExplanation: z.string(),
-    /** An unopened question has no assessed priority yet. Active cases require one. */
-    researchPriority: ResearchPrioritySchema.nullable(),
-    /** Optional component verdicts; 2–4 rows where one word would mislead. */
-    components: z.array(CaseComponentSchema).max(6).default([]),
-    themes: z.record(z.string(), z.string()),
-    editors: z.array(z.string()),
-    /**
-     * Last human editorial review of the case framing (what is claimed /
-     * where disagreement lives / what would settle it). Hand-set; intake
-     * and assessment overlays do not update it. The dossier header shows
-     * `lastContentUpdate()` from history.yaml instead.
-     */
-    lastReviewed: z.string().nullable(),
-    externalResearch: z
-      .object({ label: z.string(), url: z.string().url().nullable() })
-      .optional(),
-  })
-  .refine(
-    (record) => record.status !== "active" || record.researchPriority !== null,
-    {
-      message: "an active case requires an assessed research priority",
-      path: ["researchPriority"],
-    },
-  );
+export const CaseSchema = z.object({
+  id: z.string().regex(/^[A-Z]+-\d{3}$/, "Case id like GEO-001"),
+  slug: z.string().regex(/^[a-z0-9-]+$/),
+  title: z.string(),
+  subtitle: z.string(),
+  domain: z.string(),
+  status: z.enum(["active", "incubating", "archived"]),
+  summary: z.string(),
+  /** Dossier header, question 1. */
+  whatIsClaimed: z.string(),
+  /** Dossier header, question 2 — the central crux. */
+  whereDisagreementLives: z.string(),
+  /** Dossier header, question 3. */
+  whatWouldSettleIt: z.string(),
+  bestConventionalExplanation: z.string(),
+  researchPriority: ResearchPrioritySchema,
+  /** Optional component verdicts; 2–4 rows where one word would mislead. */
+  components: z.array(CaseComponentSchema).max(6).default([]),
+  themes: z.record(z.string(), z.string()),
+  editors: z.array(z.string()),
+  /**
+   * Last human editorial review of the case framing (what is claimed /
+   * where disagreement lives / what would settle it). Hand-set; intake
+   * and assessment overlays do not update it. The dossier header shows
+   * `lastContentUpdate()` from history.yaml instead.
+   */
+  lastReviewed: z.string(),
+  externalResearch: z
+    .object({ label: z.string(), url: z.string().url().nullable() })
+    .optional(),
+});
 export type CaseRecord = z.infer<typeof CaseSchema>;
 
 /**
@@ -1059,12 +967,6 @@ export const NarrativeInputSchema = z.object({
 export type NarrativeInput = z.infer<typeof NarrativeInputSchema>;
 
 export interface LoadedCase {
-  /** Exact reader-facing input snapshot, excluding reviews and operational state. */
-  contentHash: string;
-  /** The ledger alone, so a published edition can disclose later changes. */
-  ledgerHash: string;
-  /** Recomputed from the same blind packet builder used by the check runner. */
-  reviewPacketHash: string;
   record: CaseRecord;
   overviewMarkdown: string;
   claims: Claim[];
@@ -1074,8 +976,6 @@ export interface LoadedCase {
   history: ChangeLogEntry[];
   /** Sorted by date ascending; last entry is the latest run. */
   assessmentRuns: AssessmentRun[];
-  /** A single append-only chain, oldest first. Empty for legacy cases. */
-  editions: Edition[];
   images: ImageRecord[];
   /** Optional literature-watch config (watch.yaml). */
   watch: WatchConfig | null;

@@ -1,20 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml } from "yaml";
-import {
-  evidencePacket,
-  readCaseSnapshot,
-} from "../../scripts/lib/case-snapshot.mjs";
-import {
-  REVIEW_MIN_PANEL,
-  compareRuns,
-  fingerprint,
-  currentChecks,
-  latestChecks,
-  editionDraft,
-  missingReviewCoverage,
-} from "../../scripts/lib/review-state.mjs";
-import { extractClaimRefs, extractPlateRefs } from "./article.ts";
+import { seatKey } from "../../scripts/lib/seat-key.mjs";
+import { extractClaimRefs, extractPlateRefs } from "./article";
 import {
   assessmentLabels,
   AssessmentRunSchema,
@@ -48,8 +36,8 @@ import {
   type Study,
   type NarrativeInput,
   type WatchConfig,
-} from "./schema.ts";
-import { studyIntegrityErrors } from "./studies.ts";
+} from "./schema";
+import { studyIntegrityErrors } from "./studies";
 
 const CONTENT_DIR = path.join(process.cwd(), "content", "cases");
 const SITE_IMAGES_FILE = path.join(process.cwd(), "content", "images.yaml");
@@ -63,7 +51,7 @@ class ContentError extends Error {
 }
 
 function readYaml(caseDir: string, file: string): unknown {
-  const p = path.resolve(CONTENT_DIR, caseDir, file);
+  const p = path.join(CONTENT_DIR, caseDir, file);
   if (!fs.existsSync(p)) {
     throw new ContentError(caseDir, `missing required file ${file}`);
   }
@@ -143,10 +131,7 @@ function checkIntegrity(caseDir: string, loaded: LoadedCase): void {
   const requireLiveClaim = (id: string, where: string) => {
     const claim = claimById.get(id);
     if (!claim) {
-      throw new ContentError(
-        caseDir,
-        `${where} references unknown claim ${id}`,
-      );
+      throw new ContentError(caseDir, `${where} references unknown claim ${id}`);
     }
     if (claim.reviewState === "rejected") {
       throw new ContentError(
@@ -326,16 +311,12 @@ export function sourceAdmissionErrors(
 
 export function loadCase(caseDir: string): LoadedCase {
   const record = CaseSchema.parse(readYaml(caseDir, "case.yaml"));
-  const snapshot = readCaseSnapshot(path.resolve(CONTENT_DIR, caseDir));
 
-  const overviewPath = path.resolve(CONTENT_DIR, caseDir, "overview.md");
-  if (!snapshot.edition && !fs.existsSync(overviewPath)) {
+  const overviewPath = path.join(CONTENT_DIR, caseDir, "overview.md");
+  if (!fs.existsSync(overviewPath)) {
     throw new ContentError(caseDir, "missing required file overview.md");
   }
-  if (snapshot.edition && fs.existsSync(overviewPath)) {
-    throw new ContentError(caseDir, "versioned editions replace overview.md; keep one current article authority");
-  }
-  const overviewMarkdown = snapshot.edition?.article ?? fs.readFileSync(overviewPath, "utf8");
+  const overviewMarkdown = fs.readFileSync(overviewPath, "utf8");
 
   const claims = parseList<Claim>(
     caseDir,
@@ -348,7 +329,7 @@ export function loadCase(caseDir: string): LoadedCase {
   // file so large imports stay reversible (one file, one commit) and the
   // hand-curated canon stays readable. Same schema; claims here typically
   // carry tier: catalog until individually promoted.
-  const catalogPath = path.resolve(CONTENT_DIR, caseDir, "claims-catalog.yaml");
+  const catalogPath = path.join(CONTENT_DIR, caseDir, "claims-catalog.yaml");
   if (fs.existsSync(catalogPath)) {
     claims.push(
       ...parseList<Claim>(
@@ -384,7 +365,7 @@ export function loadCase(caseDir: string): LoadedCase {
     ChangeLogEntrySchema,
   );
 
-  const imagesPath = path.resolve(CONTENT_DIR, caseDir, "images.yaml");
+  const imagesPath = path.join(CONTENT_DIR, caseDir, "images.yaml");
   const images: ImageRecord[] = fs.existsSync(imagesPath)
     ? parseList(
         caseDir,
@@ -396,7 +377,7 @@ export function loadCase(caseDir: string): LoadedCase {
 
   // Optional literature-watch config. Validated here so a malformed query
   // fails the build, not the weekly watch run.
-  const watchPath = path.resolve(CONTENT_DIR, caseDir, "watch.yaml");
+  const watchPath = path.join(CONTENT_DIR, caseDir, "watch.yaml");
   let watch: WatchConfig | null = null;
   if (fs.existsSync(watchPath)) {
     try {
@@ -410,7 +391,7 @@ export function loadCase(caseDir: string): LoadedCase {
 
   // Optional curated reading-guide entries. Real links only — the schema
   // demands a URL and an honest verification label on every entry.
-  const resourcesPath = path.resolve(CONTENT_DIR, caseDir, "resources.yaml");
+  const resourcesPath = path.join(CONTENT_DIR, caseDir, "resources.yaml");
   const curatedResources: CuratedResource[] = fs.existsSync(resourcesPath)
     ? parseList(
         caseDir,
@@ -422,11 +403,7 @@ export function loadCase(caseDir: string): LoadedCase {
 
   // Optional on-the-record editorial conjectures. Never evidential weight;
   // required disconfirmers keep the site's own editors falsifiable.
-  const conjecturesPath = path.resolve(
-    CONTENT_DIR,
-    caseDir,
-    "conjectures.yaml",
-  );
+  const conjecturesPath = path.join(CONTENT_DIR, caseDir, "conjectures.yaml");
   const conjectures: Conjecture[] = fs.existsSync(conjecturesPath)
     ? parseList(
         caseDir,
@@ -440,7 +417,7 @@ export function loadCase(caseDir: string): LoadedCase {
   // validated fail-closed like everything else. Cross-record integrity —
   // frozen-criteria hash, resolvable ids, the superseded-workpaper rule —
   // is enforced below via studyIntegrityErrors.
-  const studiesDir = path.resolve(CONTENT_DIR, caseDir, "studies");
+  const studiesDir = path.join(CONTENT_DIR, caseDir, "studies");
   const studies: Study[] = fs.existsSync(studiesDir)
     ? fs
         .readdirSync(studiesDir)
@@ -452,15 +429,12 @@ export function loadCase(caseDir: string): LoadedCase {
               parseYaml(fs.readFileSync(path.join(studiesDir, f), "utf8")),
             );
           } catch (e) {
-            throw new ContentError(
-              caseDir,
-              `studies/${f} invalid: ${String(e)}`,
-            );
+            throw new ContentError(caseDir, `studies/${f} invalid: ${String(e)}`);
           }
         })
     : [];
 
-  const assessmentsDir = path.resolve(CONTENT_DIR, caseDir, "assessments");
+  const assessmentsDir = path.join(CONTENT_DIR, caseDir, "assessments");
   const assessmentRuns: AssessmentRun[] = fs.existsSync(assessmentsDir)
     ? fs
         .readdirSync(assessmentsDir)
@@ -477,44 +451,16 @@ export function loadCase(caseDir: string): LoadedCase {
             );
           }
         })
-        .sort(compareRuns)
+        .sort((a, b) => a.date.localeCompare(b.date))
     : [];
 
-  assertUnique(
-    caseDir,
-    "claim",
-    claims.map((c) => c.id),
-  );
-  assertUnique(
-    caseDir,
-    "evidence",
-    evidence.map((e) => e.id),
-  );
-  assertUnique(
-    caseDir,
-    "source",
-    sources.map((s) => s.id),
-  );
-  assertUnique(
-    caseDir,
-    "research",
-    research.map((r) => r.id),
-  );
-  assertUnique(
-    caseDir,
-    "assessment run",
-    assessmentRuns.map((r) => r.runId),
-  );
-  assertUnique(
-    caseDir,
-    "conjecture",
-    conjectures.map((c) => c.id),
-  );
-  assertUnique(
-    caseDir,
-    "study",
-    studies.map((s) => s.id),
-  );
+  assertUnique(caseDir, "claim", claims.map((c) => c.id));
+  assertUnique(caseDir, "evidence", evidence.map((e) => e.id));
+  assertUnique(caseDir, "source", sources.map((s) => s.id));
+  assertUnique(caseDir, "research", research.map((r) => r.id));
+  assertUnique(caseDir, "assessment run", assessmentRuns.map((r) => r.runId));
+  assertUnique(caseDir, "conjecture", conjectures.map((c) => c.id));
+  assertUnique(caseDir, "study", studies.map((s) => s.id));
 
   const studyErrors = studyIntegrityErrors({
     studies,
@@ -529,16 +475,12 @@ export function loadCase(caseDir: string): LoadedCase {
     throw new ContentError(caseDir, studyErrors.join("; "));
   }
 
+
   // Founding texts (inputs/manifest.yaml, optional): the anti-drift
   // anchor for narrative revision. Validated fail-closed — a manifest
   // entry whose file is missing fails the build, so inputs cannot rot
   // into dangling references.
-  const inputsManifestPath = path.resolve(
-    CONTENT_DIR,
-    caseDir,
-    "inputs",
-    "manifest.yaml",
-  );
+  const inputsManifestPath = path.join(CONTENT_DIR, caseDir, "inputs", "manifest.yaml");
   const narrativeInputs: NarrativeInput[] = fs.existsSync(inputsManifestPath)
     ? parseList(
         caseDir,
@@ -547,14 +489,10 @@ export function loadCase(caseDir: string): LoadedCase {
         NarrativeInputSchema,
       )
     : [];
-  assertUnique(
-    caseDir,
-    "narrative input",
-    narrativeInputs.map((n) => n.id),
-  );
+  assertUnique(caseDir, "narrative input", narrativeInputs.map((n) => n.id));
   for (const input of narrativeInputs) {
     const resolved = input.file.startsWith("inputs/")
-      ? path.resolve(CONTENT_DIR, caseDir, input.file)
+      ? path.join(CONTENT_DIR, caseDir, input.file)
       : path.join(process.cwd(), input.file);
     if (!fs.existsSync(resolved)) {
       throw new ContentError(
@@ -565,9 +503,6 @@ export function loadCase(caseDir: string): LoadedCase {
   }
 
   const loaded: LoadedCase = {
-    contentHash: snapshot.contentHash,
-    ledgerHash: snapshot.ledgerHash,
-    reviewPacketHash: fingerprint(evidencePacket(snapshot.files)),
     record,
     overviewMarkdown,
     claims,
@@ -576,7 +511,6 @@ export function loadCase(caseDir: string): LoadedCase {
     research,
     history,
     assessmentRuns,
-    editions: snapshot.editions,
     images,
     watch,
     curatedResources,
@@ -584,22 +518,6 @@ export function loadCase(caseDir: string): LoadedCase {
     studies,
     narrativeInputs,
   };
-  for (const edition of loaded.editions) {
-    const assessment = editionDraft(assessmentRuns, edition);
-    if (edition !== loaded.editions.at(-1)) continue;
-    for (const id of edition.featuredClaimIds) {
-      const claim = claims.find(c => c.id === id);
-      const evaluation = assessment?.claimAssessments.find(a => a.claimId === id);
-      if (!claim || claim.reviewState === "rejected" || (!isFeatured(claim) && !evaluation?.treatment))
-        throw new ContentError(caseDir, `edition features a claim without live editorial treatment: ${id}`);
-      if (!evaluation)
-        throw new ContentError(caseDir, `edition lacks an assessment for featured claim: ${id}`);
-    }
-    for (const id of assessment?.caseAssessment.loadBearing ?? []) {
-      if (!edition.featuredClaimIds.includes(id))
-        throw new ContentError(caseDir, `edition omits load-bearing claim: ${id}`);
-    }
-  }
   checkIntegrity(caseDir, loaded);
   return loaded;
 }
@@ -668,11 +586,13 @@ export function latestAssessment(loaded: LoadedCase): AssessmentRun | null {
   return loaded.assessmentRuns.at(-1) ?? null;
 }
 
-/** The edition's chosen draft, or the latest legacy draft. Checks never narrate. */
-export function latestDraftAssessment(
-  loaded: LoadedCase,
-): AssessmentRun | null {
-  return editionDraft(loaded.assessmentRuns, loaded.editions.at(-1));
+/** The latest draft-role run — cross-model check runs never narrate. */
+export function latestDraftAssessment(loaded: LoadedCase): AssessmentRun | null {
+  for (let i = loaded.assessmentRuns.length - 1; i >= 0; i--) {
+    if (loaded.assessmentRuns[i].role !== "check")
+      return loaded.assessmentRuns[i];
+  }
+  return null;
 }
 
 /**
@@ -703,7 +623,7 @@ export function latestDraftAssessment(
  * graded scale (open verdicts must match exactly — "unresolved" is not
  * adjacent to anything).
  */
-export const RATIFICATION_MIN_PANEL = REVIEW_MIN_PANEL;
+export const RATIFICATION_MIN_PANEL = 4;
 
 export type RatificationStatus = "ratified" | "contested" | "unratified";
 
@@ -736,26 +656,43 @@ export function isReconsiderationRun(run: AssessmentRun): boolean {
   );
 }
 
+/**
+ * The checks that can vouch for a reconsideration draft: only runs the
+ * reconciliation never saw. Stamped drafts name the engaged runIds
+ * exactly; for pre-stamp overlays, only a check dated strictly after the
+ * draft is provably fresh (a same-day check may have been in hand).
+ */
+function freshChecksFor(
+  draft: AssessmentRun,
+  checks: AssessmentRun[],
+): AssessmentRun[] {
+  return checks.filter((r) =>
+    draft.reconciles !== undefined
+      ? !draft.reconciles.includes(r.runId)
+      : r.date > draft.date,
+  );
+}
+
+function contentStaleSince(
+  loaded: LoadedCase,
+  newestCheck: string,
+): string | null {
+  const newestContent = loaded.history
+    .filter((h) => !isHousekeepingEntry(h))
+    .map((h) => h.date)
+    .sort()
+    .at(-1);
+  return newestContent && newestContent > newestCheck ? newestContent : null;
+}
+
 export function ratification(loaded: LoadedCase): Ratification | null {
   const draft = latestDraftAssessment(loaded);
   if (!draft) return null;
-  const checks = currentChecks(
-    loaded.assessmentRuns,
-    draft,
-    loaded.contentHash,
-    loaded.reviewPacketHash,
-  );
-  const historicalChecks = latestCheckPerModel(loaded);
+  const checks = latestCheckPerModel(loaded);
   const panel = checks.length;
   const checksDate =
-    panel > 0
-      ? checks
-          .map((r) => r.date)
-          .sort()
-          .at(-1)!
-      : null;
-  const staleSince =
-    historicalChecks.length > checks.length ? lastContentUpdate(loaded) : null;
+    panel > 0 ? checks.map((r) => r.date).sort().at(-1)! : null;
+  const staleSince = checksDate ? contentStaleSince(loaded, checksDate) : null;
   const agreeing = checks.filter(
     (r) => r.caseAssessment.verdict === draft.caseAssessment.verdict,
   ).length;
@@ -773,17 +710,31 @@ export function ratification(loaded: LoadedCase): Ratification | null {
       ...base,
       status: "unratified",
       reason:
-        historicalChecks.length === 0
+        panel === 0
           ? "no independent model has checked this case yet"
-          : `${panel} of ${RATIFICATION_MIN_PANEL} required independent checks match this exact case and assessment; earlier reviews remain in the history`,
+          : `only ${panel} independent model${panel === 1 ? "" : "s"} have checked this case (${RATIFICATION_MIN_PANEL} required)`,
     };
   }
-  const missing = missingReviewCoverage(draft, checks);
-  if (missing.length) {
+  if (staleSince) {
     return {
       ...base,
       status: "unratified",
-      reason: `the current panel has not fully assessed load-bearing ${missing.join(", ")}`,
+      reason: `the case file changed (${staleSince}) after the panel last judged it — standing resets until the current content is re-checked`,
+    };
+  }
+
+  // A reconsideration draft was written WITH the panel's dissents in hand
+  // (the one non-blind draft in the pipeline). Deriving its standing from
+  // the checks it already answered would let a contested case clear by
+  // converging on the judges instead of the evidence — so those checks
+  // cannot ratify it. Standing stays down until at least one blind check
+  // the reconciliation never saw judges the case.
+  if (isReconsiderationRun(draft) && freshChecksFor(draft, checks).length === 0) {
+    return {
+      ...base,
+      status: "unratified",
+      reason:
+        "the displayed draft is a reconsideration written with the panel's dissents in hand — standing resets until a fresh blind check judges it",
     };
   }
 
@@ -841,26 +792,13 @@ export function ratification(loaded: LoadedCase): Ratification | null {
 export function survivingObjections(
   loaded: LoadedCase,
   displayed: AssessmentRun,
-): {
-  seat: string;
-  verdict: AssessmentState;
-  verdictLabel: string;
-  firstSentence: string;
-}[] {
-  return currentChecks(
-    loaded.assessmentRuns,
-    displayed,
-    loaded.contentHash,
-    loaded.reviewPacketHash,
-  )
-    .filter(
-      (r) => r.caseAssessment.verdict !== displayed.caseAssessment.verdict,
-    )
+): { seat: string; verdict: AssessmentState; verdictLabel: string; firstSentence: string }[] {
+  return latestCheckPerModel(loaded)
+    .filter((r) => r.caseAssessment.verdict !== displayed.caseAssessment.verdict)
     .map((r) => {
       const first =
-        r.caseAssessment.synthesis
-          .match(/^[\s\S]*?[.!?](?=\s|$)/)?.[0]
-          .trim() ?? r.caseAssessment.synthesis.slice(0, 180).trim();
+        r.caseAssessment.synthesis.match(/^[\s\S]*?[.!?](?=\s|$)/)?.[0].trim() ??
+        r.caseAssessment.synthesis.slice(0, 180).trim();
       return {
         seat: r.model.split("—")[0].split(", independent")[0].trim(),
         verdict: r.caseAssessment.verdict,
@@ -871,10 +809,12 @@ export function survivingObjections(
 }
 
 /**
- * Display the assessment selected by the current edition, with standing
- * derived from receipts for the exact current content. A newer unadopted
- * draft cannot change the verdict beneath a saved essay. Legacy cases use
- * their latest draft; all runs remain available in assessment history.
+ * The assessment to display: always the latest draft, stamped with its
+ * ratification standing. No run is hidden behind a newer one — the
+ * narrative is current by construction, and the standing badge tells the
+ * reader exactly how much independent concurrence stands behind it.
+ * (The pre-pivot rule gated display on humanReviewed; no run ever carried
+ * it, and if one ever does, the run's own field still records it.)
  */
 export function displayAssessment(
   loaded: LoadedCase,
@@ -896,16 +836,29 @@ export function displayAssessment(
  * and across model upgrades within a seat.
  */
 export function latestCheckPerModel(loaded: LoadedCase): AssessmentRun[] {
-  return latestChecks(loaded.assessmentRuns);
+  const byModel = new Map<string, AssessmentRun>();
+  for (const run of loaded.assessmentRuns) {
+    if (run.role !== "check") continue;
+    const key = seatKey(run.model);
+    const prev = byModel.get(key);
+    // Same-date ties happen when a case is re-checked the day it changed
+    // (append-only means both runs stay). runId breaks the tie: the re-run
+    // convention suffixes -r2, -r3, …, and a suffixed id string-compares
+    // after its own unsuffixed prefix, so the newest run wins.
+    if (
+      !prev ||
+      run.date > prev.date ||
+      (run.date === prev.date && run.runId > prev.runId)
+    )
+      byModel.set(key, run);
+  }
+  return [...byModel.values()].sort((a, b) => a.date.localeCompare(b.date));
 }
 
 /** Concurrence of independent cross-model check runs with the displayed assessment. */
 export interface CrossModelSummary {
   /** Model labels of the check runs, in run-date order. */
   models: string[];
-  /** Historical agreement must never present as current-version ratification. */
-  versionVerified: boolean;
-  currentRunIds: string[];
   latestDate: string;
   /** Case-verdict tally across check runs, e.g. { unresolved: 4 }. */
   caseVerdicts: Record<string, number>;
@@ -941,14 +894,12 @@ export function crossModelSummary(
   const checks = latestCheckPerModel(loaded);
   if (checks.length === 0 || !shown) return null;
 
-  const current = currentChecks(
-    loaded.assessmentRuns,
-    shown.run,
-    loaded.contentHash,
-    loaded.reviewPacketHash,
-  );
-  const staleSince =
-    current.length === checks.length ? null : lastContentUpdate(loaded);
+  // The case file moved after the newest judge read it? Say so.
+  const newestCheck = checks
+    .map((r) => r.date)
+    .sort()
+    .at(-1)!;
+  const staleSince = contentStaleSince(loaded, newestCheck);
 
   const baseline = new Map(
     shown.run.claimAssessments.map((ca) => [ca.claimId, ca.verdict]),
@@ -988,8 +939,6 @@ export function crossModelSummary(
 
   return {
     models: checks.map((r) => r.model),
-    versionVerified: current.length === checks.length,
-    currentRunIds: current.map((r) => r.runId),
     latestDate: checks[checks.length - 1].date,
     caseVerdicts,
     caseUnanimousWithDisplayed: checks.every(
@@ -1009,10 +958,7 @@ export function reviewCoverage(loaded: LoadedCase): {
   reviewed: number;
   total: number;
 } {
-  const edition = loaded.editions.at(-1);
-  const featured = edition
-    ? liveClaims(loaded).filter(c => edition.featuredClaimIds.includes(c.id))
-    : featuredClaims(loaded);
+  const featured = featuredClaims(loaded);
   return {
     reviewed: featured.filter((c) => c.reviewState === "human_reviewed").length,
     total: featured.length,
@@ -1041,7 +987,7 @@ export function isHousekeepingEntry(entry: ChangeLogEntry): boolean {
  * record, not auto-updated by intake.
  */
 export function lastContentUpdate(loaded: {
-  record: { lastReviewed: string | null };
+  record: { lastReviewed: string };
   history: ChangeLogEntry[];
 }): string {
   const newest = loaded.history
@@ -1049,7 +995,7 @@ export function lastContentUpdate(loaded: {
     .map((h) => h.date)
     .sort()
     .at(-1);
-  return newest ?? loaded.record.lastReviewed ?? "not recorded";
+  return newest ?? loaded.record.lastReviewed;
 }
 
 /** A change-log entry attributed to its case, for cross-case feeds. */

@@ -20,11 +20,7 @@ export function Plate({ image }: { image: ImageRecord }) {
   return (
     <figure className="my-6 mx-auto w-fit min-w-[min(16rem,100%)] max-w-[26rem]">
       <div className="border border-line bg-paper-deep/60 p-2.5 sm:p-3 w-fit mx-auto">
-        <a
-          href={assetPath(image.file)}
-          className="plate-frame block focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-copper"
-          aria-label={`Open full-size plate ${romanNumeral(image.plateNumber ?? 0)}: ${image.alt}`}
-        >
+        <div className="plate-frame">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={assetPath(image.file)}
@@ -32,7 +28,7 @@ export function Plate({ image }: { image: ImageRecord }) {
             loading="lazy"
             className="plate-img max-h-[24rem] w-auto max-w-full"
           />
-        </a>
+        </div>
       </div>
       {/* w-0 + min-w-full locks the caption to the figure's width, so long
           caption lines can't widen the figure past the plate; the figure's
@@ -49,8 +45,6 @@ export function Plate({ image }: { image: ImageRecord }) {
         </p>
         <p className="plate-caption-text mt-1">{image.depicts}</p>
         <p className="plate-caption-credit mt-1">
-          <a href={assetPath(image.file)} className="underline underline-offset-2 hover:text-copper">Full size</a>
-          {" · "}
           {image.provenance.photographer}
           {image.provenance.date ? ` · ${image.provenance.date}` : ""} ·{" "}
           <a

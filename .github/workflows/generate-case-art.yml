@@ -25,9 +25,6 @@ permissions:
   contents: write
   pull-requests: write
 
-env:
-  BUDGET_GITHUB_TOKEN: ${{ secrets.MAINTENANCE_PAT }}
-
 jobs:
   generate:
     runs-on: ubuntu-latest
@@ -69,7 +66,3 @@ jobs:
           gh pr create \
             --title "Cover art candidates: ${slug}" \
             --body "$(printf 'Generated cover candidates for **%s** in the Aletheia house style (see docs/IMAGE_STYLE.md).\n\nTo finish: pick a winner, convert it to cover.jpg, delete the candidates directory, and add the manifest entry from art-notes.txt (all steps are in that file). The build will fail until license/credit fields are present — that is the point.\n' "$slug")"
-
-      - name: AI allowance report
-        if: always()
-        run: npm run ai:budget -- status --summary

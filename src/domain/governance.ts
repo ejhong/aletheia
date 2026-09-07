@@ -2,7 +2,6 @@ import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml } from "yaml";
 import { ArbiterRecordSchema, type ArbiterRecord } from "./schema";
-import { readIntakeDecisions } from "../../scripts/lib/intake-store.mjs";
 
 const GOVERNANCE_DIR = path.join(process.cwd(), "governance", "arbiter");
 
@@ -18,57 +17,41 @@ export function loadArbiterRecords(): ArbiterRecord[] {
     .readdirSync(GOVERNANCE_DIR)
     .filter((f) => f.endsWith(".yaml"))
     .map((f) => {
-      const raw = parseYaml(
-        fs.readFileSync(path.join(GOVERNANCE_DIR, f), "utf8"),
-      );
+      const raw = parseYaml(fs.readFileSync(path.join(GOVERNANCE_DIR, f), "utf8"));
       const parsed = ArbiterRecordSchema.safeParse(raw);
       if (!parsed.success)
-        throw new Error(
-          `governance/arbiter/${f}: ${parsed.error.issues.map((i) => i.message).join("; ")}`,
-        );
+        throw new Error(`governance/arbiter/${f}: ${parsed.error.issues.map((i) => i.message).join("; ")}`);
       return parsed.data;
     })
     .sort((a, b) => b.outcomeAt.localeCompare(a.outcomeAt));
 }
 
-/** One promotion outcome for the governance view. */
+/** One promotions-ledger entry (proposals/promotions-ledger.yaml). */
 export interface PromotionEntry {
   url: string;
   disposition: "promoted" | "duplicate" | "failed";
   [key: string]: unknown;
 }
 
-/** Promotion outcomes derived from the shared, validated intake history. */
+/**
+ * The promotion pipe's dispositions ledger — every verified import's
+ * fate (promoted / duplicate / failed, with reasons), appended by
+ * scripts/promote-imports.mjs in the archive-ledger tradition. Missing
+ * file = the pipe has not run yet; an unparseable file loses the vitals
+ * row, never the page.
+ */
 export function loadPromotionsLedger(): PromotionEntry[] {
-  const decisions = readIntakeDecisions();
-  const prepared: PromotionEntry[] = decisions
-    .filter(entry => entry.stage === "research-adoption" && entry.decision === "prepared")
-    .flatMap(entry => {
-      const proposal = decisions.find(candidate => candidate.id === entry.details?.proposalId)?.research;
-      if (!proposal) throw new Error("research adoption refers to an unknown proposal");
-      return proposal.changes.filter((change: { kind: string; beforeHash: string | null }) =>
-        change.kind === "source" && change.beforeHash === null)
-        .map((change: { after: Record<string, unknown> }) => ({
-          url: String(change.after.url ?? change.after.identifier ?? change.after.id),
-          disposition: "promoted" as const, date: entry.date, case: entry.case,
-          reason: entry.reason, runId: entry.runId,
-        }));
-    });
-  return [...prepared, ...decisions
-    .filter((entry) => entry.stage === "promotion")
-    .map((entry) => {
-      if (
-        typeof entry.source?.url !== "string" ||
-        !["promoted", "duplicate", "failed"].includes(entry.decision)
-      )
-        throw new Error("invalid promotion decision");
-      return {
-        url: entry.source.url,
-        disposition: entry.decision as PromotionEntry["disposition"],
-        date: entry.date,
-        case: entry.case,
-        reason: entry.reason,
-        runId: entry.runId,
-      };
-    })];
+  const p = path.join(process.cwd(), "proposals", "promotions-ledger.yaml");
+  if (!fs.existsSync(p)) return [];
+  try {
+    const parsed = parseYaml(fs.readFileSync(p, "utf8"));
+    return Array.isArray(parsed)
+      ? parsed.filter(
+          (e): e is PromotionEntry =>
+            typeof e?.url === "string" && typeof e?.disposition === "string",
+        )
+      : [];
+  } catch {
+    return [];
+  }
 }

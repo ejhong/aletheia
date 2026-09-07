@@ -10,8 +10,8 @@
  *     to the named human editor with their words preserved verbatim — the
  *     commentary text IS the human editorial record; the AI only translates
  *     it into proposed claim/evidence updates;
- *   - link lists        → durable reading requests; the common bounded reader
- *     verifies source passages before proposing ledger records;
+ *   - link lists        → fetch + verify each URL, propose source records
+ *     with honest verification labels (no LLM needed);
  *   - documents (.txt/.md bodies) → the extraction pipeline
  *     (scripts/extract-claims.mjs), producing catalog-tier claim proposals;
  *   - PDFs              → converted with pdftotext when available (poppler),
@@ -36,8 +36,6 @@ import os from "node:os";
 import path from "node:path";
 import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
 import { callWithRefusalFallback, noKeyMessage, parseJsonReply, pickProvider } from "./lib/llm.mjs";
-import { queueSources, SOURCE_QUEUE_PROTOCOL } from "./lib/source-queue.ts";
-import { resolveCaseDirectory } from "./lib/case-snapshot.mjs";
 
 const PROMPT_VERSION_COMMENTARY = "commentary-v1";
 
@@ -107,14 +105,11 @@ const caseDirs = fs.existsSync(CASES_DIR)
   : [];
 
 function detectCase(filePath, meta) {
-  const key = meta.case ?? path.relative(INBOX, filePath).split(path.sep)[0];
-  if (typeof key !== "string") return null;
-  try { return resolveCaseDirectory(ROOT, key); }
-  catch { return null; }
-}
-
-function archivedRef(file, runId) {
-  return path.join("inbox", "processed", runId, path.relative(INBOX, file).split(path.sep).join("--"));
+  if (meta.case && caseDirs.includes(meta.case)) return meta.case;
+  const rel = path.relative(INBOX, filePath);
+  const first = rel.split(path.sep)[0];
+  if (caseDirs.includes(first)) return first;
+  return null;
 }
 
 function detectType(filePath, meta, body, treatAsText = false) {
@@ -219,12 +214,55 @@ function extractUrls(body) {
   return [...body.matchAll(/https?:\/\/[^\s)\]>"']+/g)].map((m) => m[0]);
 }
 
-function processLinks(item, runId, generatedAt) {
-  return queueSources(ROOT, {
-    case: item.case, urls: extractUrls(item.body),
-    text: JSON.stringify({ meta: item.meta, body: item.body }),
-    ref: archivedRef(item.file, runId), runId, generatedAt,
-  });
+async function checkUrl(url) {
+  try {
+    const res = await fetch(url, {
+      redirect: "follow",
+      signal: AbortSignal.timeout(15000),
+      headers: { "user-agent": "aletheia-inbox-pipeline/1.0" },
+    });
+    const type = res.headers.get("content-type") ?? "";
+    let title = null;
+    if (res.ok && type.includes("text/html")) {
+      const html = (await res.text()).slice(0, 100000);
+      title = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1]?.trim() ?? null;
+    }
+    return { ok: res.ok, status: res.status, title };
+  } catch (err) {
+    return { ok: false, status: null, title: null, error: String(err) };
+  }
+}
+
+async function processLinks(item, runId, today) {
+  const urls = extractUrls(item.body);
+  const records = [];
+  for (const [i, url] of urls.entries()) {
+    const check = await checkUrl(url);
+    records.push({
+      id: `SRC-PROPOSED-${runId.slice(-4).toUpperCase()}-${i + 1}`,
+      title: check.title ?? url,
+      authors: [],
+      sourceType: "webpage",
+      url,
+      verification: check.ok ? "ai_verified" : "unverified",
+      verificationNote: check.ok
+        ? `URL fetched by inbox pipeline on ${today} (HTTP ${check.status}${
+            check.title ? `, title confirmed` : ""
+          }). A human should verify content relevance before use.`
+        : `URL could NOT be fetched by the pipeline on ${today}${
+            check.error ? ` (${check.error})` : ""
+          }. Do not cite until verified.`,
+      reliabilityNotes: [],
+    });
+  }
+  return {
+    kind: "source-proposals",
+    case: item.case,
+    sourceFile: path.basename(item.file),
+    runId,
+    date: today,
+    sources: records,
+  };
 }
 
 // ------------------------------------------------------------------ main
@@ -236,8 +274,7 @@ async function main() {
     return;
   }
 
-  const generatedAt = new Date().toISOString();
-  const today = generatedAt.slice(0, 10);
+  const today = new Date().toISOString().slice(0, 10);
   const runId = `inbox-${today}-${Math.random().toString(36).slice(2, 6)}`;
 
   // Parse and classify everything first.
@@ -328,9 +365,11 @@ async function main() {
       );
     } else if (item.type === "links") {
       console.error(`links: ${name} → case ${item.case}`);
-      const record = processLinks(item, runId, generatedAt);
+      const record = await processLinks(item, runId, today);
+      outputs.push({ name: `sources-${path.parse(item.file).name}.yaml`, record });
+      const ok = record.sources.filter((s) => s.verification === "ai_verified").length;
       digest.push(
-        `**Link list ${name}** (case ${item.case}): ${record.queued} reading request(s) queued, ${record.rested} already recorded on these inputs. The bounded source reader will propose checked observations through the normal publication gate.`,
+        `**Link list ${name}** (case ${item.case}): ${record.sources.length} source record(s) proposed — ${ok} fetched and reachable, ${record.sources.length - ok} unreachable (left as unverified; do not cite until checked).`,
       );
     } else if (item.type === "document") {
       console.error(`document: ${name} → extraction pipeline (case ${item.case})`);
@@ -409,14 +448,15 @@ async function main() {
       processed: moved.map((f) => path.relative(INBOX, f)),
       skipped: skipped.length,
       model: provider ? `${provider.name}/${provider.model}` : null,
-      promptVersions: [PROMPT_VERSION_COMMENTARY, SOURCE_QUEUE_PROTOCOL],
+      promptVersions: [PROMPT_VERSION_COMMENTARY],
     }),
   );
 
   if (moved.length > 0) {
     fs.mkdirSync(processedDir, { recursive: true });
     for (const f of moved) {
-      fs.renameSync(f, path.join(ROOT, archivedRef(f, runId)));
+      const flat = path.relative(INBOX, f).split(path.sep).join("--");
+      fs.renameSync(f, path.join(processedDir, flat));
     }
   }
 

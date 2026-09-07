@@ -1,85 +1,13 @@
 # Aletheia Data Model
 
-Four core objects — **Case, Claim, Evidence, Source** — plus append-only **assessments and editions** and supporting records (research opportunities, change log). The authoritative schema is the Zod definitions in `src/domain/schema.ts`; this document explains the concepts.
-
-## Intake decisions
-
-`proposals/intake/*.yaml` contains immutable, schema-validated decision batches
-(`version: 1`, `decisions`). A decision names its case, producer stage,
-candidate/source, outcome, reason, date, run, and available model and input
-receipts. The migrated stages are watch triage, source promotion, agenda
-generation, and agenda scoring. New stages also record source requests,
-research runs/proposals/adoptions, edition proposals, and edition comparisons. These records are workflow history, separate
-from Evidence records and ratified case assessments.
-
-New agenda scores preserve individual seat reasons and concerns; their totals
-must agree with those seats. Failed or stale reviews cannot provide actionable
-scores. Proposal Markdown remains the input artifact, and changing a proposal
-invalidates its earlier score. Directory names and public slugs resolve through
-`case.yaml` when they differ.
-
-Decision IDs and batch filenames are hashes of their data. Readers fail on
-invalid schemas or mismatched hashes. Writers install complete batches
-atomically and never replace an earlier file. Legacy entries preserve exact
-committed origins and original rows; missing historical receipts stay null.
-The migration replay in `scripts/migrate-intake.mjs` retires previous stores
-only after checking the migrated records. `scripts/intake-report.mjs` exposes
-the history without a model call.
-
-`source-request` records a supplied URL, its context, exact input receipts, and
-the archived inbox origin. Capture does not assert source verification. Pending
-work is derived from these immutable requests and reading/adoption outcomes;
-legacy watch import files are read-only inputs to the same queue. Rejected or
-empty readings rest that request. Changed arguments or case inputs permit a
-new request; failures and stale adoption remain retryable within the pass budget.
-
-## Research change proposals
-
-`ResearchProposal` (`src/domain/researchProposal.ts`) is an envelope for proposed
-ledger edits, stored in a `research-proposal` decision in the same intake store.
-Its intent is add, correct, link, supersede, or reconsider. Each edit names its
-record kind, ID, prior-record hash (null for additions), complete proposed value,
-rationale, and any retrieved passages. The supported records are sources, claims,
-evidence, research opportunities, and studies. The envelope is not an assessment
-or permission to publish.
-
-The proposal binds to the exact case snapshot and founding-input hash. All edits
-are materialized in a temporary case and checked by the production loader
-together: the first Source, Claim, and Evidence can refer to each other. Theme
-additions permit an empty topic's first claim; existing theme meanings and frozen
-study criteria cannot be overwritten by this operation. Human review and library
-verification cannot be invented. The CLI prints before/after records and can
-materialize a new review directory, never silently update canon.
-
-Exact source identity and identical wording are mechanical checks. Semantic
-overlap and independence remain review questions. Reconsideration names the
-earlier decision and explains the changed argument; it need not cite a newer
-paper. New run timestamps alone do not create novel substance.
-
-`research-run` decisions retain source outcomes, separate reading checks, model
-requests, returned usage, and budget reservations. A partial run can preserve a
-fully checked independent bundle while recording another unavailable source.
-Passages retain URL, retrieval time, response/text hashes, extraction version,
-and a short quotation. Character locators refer to retrieved text, not invented
-printed-page positions. The hashes record what was retrieved; full source pages
-are not republished. Public reading reasons omit quoted spans and retain a hash
-of the original review. These source checks do not ratify a case assessment.
-
-`research-adoption` references the original proposal by ID and storage locator.
-Its outcomes are `prepared`, `already_present`, `stale`, and `invalid`.
-Preparation checks the exact basis, validates a complete prospective case, and
-installs the bundle with a case changelog entry in a working tree. Failed writes
-restore that tree; a failed restoration aborts the publication job. `prepared`
-describes the bundle being submitted to the normal PR gate, not permission to
-publish or a ratified assessment. The committed outcome and original proposal
-also supply promotion totals, without a second promotion ledger.
+Four core objects — **Case, Claim, Evidence, Source** — plus append-only **assessment overlays** and supporting records (research opportunities, change log). Assessments, relationships, and provenance are fields or overlay records, not separate top-level object types. The authoritative schema is the Zod definitions in `src/domain/schema.ts`; this document explains the concepts.
 
 ## Layering principle
 
 Content is layered and reversible:
 
 - **Canon layer** — the claim/evidence/source files. Human-editable, versioned in git. A claim's *statement* never silently changes; corrections are new revisions in git history.
-- **Current edition** — the essay, ordered selection, and an optional reference to an immutable assessment. Deep Memory uses `editions/<runId>.yaml`; other cases still compose `overview.md`, legacy featured records, and the latest draft assessment through `CaseView`. Original assessment authorship and review history remain in `assessments/<runId>.yaml`.
+- **Overlay layer** — AI-generated assessments in `assessments/<runId>.yaml`. Append-only: a new run adds a new file; nothing mutates the canon. Every AI-generated record carries a `runId`, model label, date, and prompt version. The UI shows the latest overlay and can show history.
 
 ## Content folder layout
 
@@ -178,68 +106,6 @@ One file per run: `runId`, `model`, `date`, `promptVersion`, plus:
 - `caseAssessment` — the structural roll-up: verdict state, `loadBearing` (which claims the thesis actually rests on), `weakestLinks`, and an argued `synthesis` in prose. Not a score.
 - `claimAssessments[]` — `{claimId, verdict, reasoning, confidence}` per claim.
 
-New draft assessments may also include a complete per-claim `treatment`:
-`plainLanguage`, `claimType`, `importance`, `diagnosticity`,
-`diagnosticitySummary`, `strongestObjection`, and `whatWouldChangeOurMind`.
-These are judgments about the proposition, not changes to its identity or
-provenance. The field is optional for immutable historical runs and requires a
-timestamped draft when supplied. It cannot contain ledger fields such as
-`statement` or `origin`. All its fields enter the assessment hash unchanged.
-
-Only an edition's selected assessment supplies treatment to the current view.
-Without it, legacy featured claims retain their existing editorial fields;
-catalog claims remain catalog entries. An adopted treatment gives a catalog
-claim full presentation when the edition selects it, without changing its
-stored tier or any ledger bytes. Display and independent grading share one
-claim scope. An unselected catalog treatment stays in history and cannot
-inherit the edition's standing.
-The joined view supplies credibility from that assessment's verdict/reasoning
-and the other evaluative fields from treatment. Unadopted drafts remain
-inspectable in claim assessment history, with their original authorship.
-
-## Edition
-
-`editions/<runId>.yaml` binds the current reader-facing essay and selection to
-an assessment without duplicating that assessment. `assessment` is either
-`{runId, hash}` or null; null is a valid unassessed opening. The assessment's
-original model/date stay intact. The edition has its own author, timestamp,
-prompt version, rationale, ordered `featuredClaimIds`, and inline `article`.
-Its basis records content, founding-input, ledger, and incumbent hashes.
-
-The first edition has no predecessor; each later edition references its
-predecessor's ID and hash and has a later timestamp. There is one chain and no
-separate current pointer. The newest edition is displayed, even when a newer
-unadopted assessment draft exists. `overview.md` must be removed when the first
-edition is adopted; its exact text survives in that edition and git history.
-Historical essays are readable at `/cases/<slug>/editions/<runId>/`. Those pages
-preserve essay and assessment, with links and photographic captions resolved
-against current records rather than a complete historical ledger snapshot.
-
-An `EditionProposal` can include a new AI draft assessment in the same validated
-bundle. It cannot overwrite or relabel an existing assessment as human-reviewed.
-The authoring tools check its exact basis, build a prospective case, and use the
-production loader before recording a typed `edition-proposal` intake decision
-or writing a new review directory. Current selection must reference live claims
-with editorial treatment and include the chosen assessment's load-bearing
-claims. Article references and required plates follow the existing checks.
-
-The current edition enters content receipts; the ledger hash excludes its
-article and prior editions. Ledger changes invalidate old review receipts while
-the incumbent stays readable with a revision notice. Structural validity does
-not ratify selection or prose: new editions use the consequential-content gate.
-Only Deep Memory is migrated. Legacy featured fields remain the source for
-diagnosticity, objections, and component framing until their writers migrate.
-
-An `edition-cycle` intake decision holds the complete drafting comparison:
-two candidate proposals or their rejected replies, input and rule hashes,
-changed-record hashes, shuffled option order for each vendor, individual ballots
-or errors, and a mechanically derived outcome. Comparison version 2 separates
-the ranking from each option's `complies` / `violates` / `unsure` judgment.
-Earlier ballots retain their original version and tally. A later comparison may
-reference and reuse valid candidates without changing their author stamps.
-These records authorize preparation for a reviewed PR, never publication or
-case standing. Rest depends on the compared inputs and rules, not new run IDs.
-
 ## ResearchOpportunity
 
 Crux-directed projects: title, summary, affected `claimIds`, effort tier, expected information gain, RFP topic reference (T-number), track (prize/grant).
@@ -258,4 +124,4 @@ Overview articles are different: they use the inline claim-span syntax `[readabl
 
 ## Integrity rules (enforced at build time)
 
-The loader fails the build loudly on: dangling claim/evidence/source/assessment IDs, unresolved current article references, dependency references to rejected claims, invalid edition chains or assessment bindings, and any schema violation. No silent data repair.
+The loader fails the build loudly on: dangling claim/evidence/source/assessment IDs, claim refs in `overview.md` that don't resolve, dependency references to rejected claims, and any schema violation. No silent data repair.

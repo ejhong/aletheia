@@ -1,9 +1,3 @@
-import {
-  assessmentHash,
-  fingerprint,
-  latestDraft,
-} from "../../scripts/lib/review-state.mjs";
-import type { AssessmentRun } from "./schema";
 import { describe, expect, it } from "vitest";
 import { seatKey } from "../../scripts/lib/seat-key.mjs";
 import {
@@ -77,20 +71,8 @@ describe("real content", () => {
     // Dedupe held: no catalog claim re-imports a T-number already carried
     // by a featured claim, the killed topic, or the tombstoned cluster.
     const excluded = [
-      "T-001",
-      "T-003",
-      "T-004",
-      "T-005",
-      "T-012",
-      "T-013",
-      "T-014",
-      "T-021",
-      "T-034",
-      "T-060",
-      "T-072",
-      "T-073",
-      "T-077",
-      "T-078",
+      "T-001", "T-003", "T-004", "T-005", "T-012", "T-013", "T-014",
+      "T-021", "T-034", "T-060", "T-072", "T-073", "T-077", "T-078",
       "T-087",
     ];
     for (const c of catalog) {
@@ -260,15 +242,13 @@ describe("source admission rule", () => {
         originSourceId: "SRC-A",
       },
     };
-    expect(sourceAdmissionErrors([src("SRC-A")], [], [genealogyClaim])).toEqual(
-      [],
-    );
+    expect(
+      sourceAdmissionErrors([src("SRC-A")], [], [genealogyClaim]),
+    ).toEqual([]);
     // And the honesty rule still cuts both ways.
-    const errors = sourceAdmissionErrors(
-      [src("SRC-A", true)],
-      [],
-      [genealogyClaim],
-    );
+    const errors = sourceAdmissionErrors([src("SRC-A", true)], [], [
+      genealogyClaim,
+    ]);
     expect(errors).toHaveLength(1);
     expect(errors[0]).toContain("remove background: true");
   });
@@ -285,9 +265,9 @@ describe("source admission rule", () => {
 
   it("holds across all live content — the ledger carries no weightless sources", () => {
     for (const c of loadAllCases()) {
-      expect(sourceAdmissionErrors(c.sources, c.evidence, c.claims)).toEqual(
-        [],
-      );
+      expect(
+        sourceAdmissionErrors(c.sources, c.evidence, c.claims),
+      ).toEqual([]);
     }
   });
 });
@@ -370,7 +350,9 @@ describe("schema rules", () => {
       originDescription: "anonymous forum post, later amplified by aggregators",
       originSourceId: "SRC-TEST",
     };
-    expect(() => ClaimSchema.parse({ ...baseClaim, genealogy })).not.toThrow();
+    expect(() =>
+      ClaimSchema.parse({ ...baseClaim, genealogy }),
+    ).not.toThrow();
     expect(() =>
       ClaimSchema.parse({ ...baseCatalogClaim, genealogy }),
     ).not.toThrow();
@@ -585,32 +567,9 @@ describe("ratification governance (stage 3)", () => {
   const caseWith = (
     runs: unknown[],
     history: { date: string; kind?: string }[] = [],
-    stamped = true,
-  ) => {
-    const typed = runs as AssessmentRun[];
-    const draft = latestDraft(typed)!;
-    const originalHash = fingerprint("original content");
-    return {
-      record: { lastReviewed: "2026-01-01" },
-      editions: [],
-      ledgerHash: originalHash,
-      reviewPacketHash: fingerprint("packet"),
-      contentHash: history.some((h) => h.kind !== "housekeeping")
-        ? fingerprint("changed content")
-        : originalHash,
-      assessmentRuns: typed.map((r) =>
-        r.role === "check" && stamped
-          ? {
-              ...r,
-              review: {
-                protocol: "case-snapshot-v1",
-                contentHash: originalHash,
-                assessmentHash: assessmentHash(draft),
-                packetHash: fingerprint("packet"),
-              },
-            }
-          : r,
-      ),
+  ) =>
+    ({
+      assessmentRuns: runs,
       history: history.map((h) => ({
         date: h.date,
         kind: h.kind,
@@ -619,8 +578,7 @@ describe("ratification governance (stage 3)", () => {
         actor: "a",
         aiAssisted: true,
       })),
-    } as unknown as Parameters<typeof ratification>[0];
-  };
+    }) as unknown as Parameters<typeof ratification>[0];
   const fiveChecks = (verdict: string, dissenters = 0, date = "2026-02-01") =>
     ["alpha", "beta", "gamma", "delta", "epsilon"].map((m, i) =>
       mkCheck(m, date, i < dissenters ? "mixed" : verdict),
@@ -644,9 +602,9 @@ describe("ratification governance (stage 3)", () => {
 
   it("full agreement ratifies; one dissenter is tolerated; two are not", () => {
     const draft = mkDraft("d", "2026-01-01");
-    expect(
-      ratification(caseWith([draft, ...fiveChecks("unresolved")]))?.status,
-    ).toBe("ratified");
+    expect(ratification(caseWith([draft, ...fiveChecks("unresolved")]))?.status).toBe(
+      "ratified",
+    );
     expect(
       ratification(caseWith([draft, ...fiveChecks("unresolved", 1)]))?.status,
     ).toBe("ratified");
@@ -685,10 +643,10 @@ describe("ratification governance (stage 3)", () => {
     };
     const r = ratification(caseWith([reconsider, ...engaged]));
     expect(r?.status).toBe("unratified");
-    expect(r?.reason).toMatch(/0 of 4 required independent checks/);
+    expect(r?.reason).toMatch(/fresh blind check/);
   });
 
-  it("one fresh check cannot combine with four consulted checks to ratify a reconsideration", () => {
+  it("one blind check outside the reconciles stamp restores normal derivation, even same-day", () => {
     const engaged = fiveChecks("mixed").slice(0, 4);
     const reconsider = {
       ...mkDraft("2026-02-02-reconsider-ab12", "2026-02-02", "mixed"),
@@ -697,26 +655,23 @@ describe("ratification governance (stage 3)", () => {
     };
     const fresh = mkCheck("zeta", "2026-02-02", "mixed");
     const r = ratification(caseWith([reconsider, ...engaged, fresh]));
-    expect(r?.status).toBe("unratified");
-    expect(r?.panel).toBe(1);
+    expect(r?.status).toBe("ratified");
   });
 
-  it("legacy checks cannot ratify a reconsideration from dates alone", () => {
+  it("a pre-stamp reconsideration is fresh-checked only by a strictly later check", () => {
     const sameDay = fiveChecks("mixed", 0, "2026-02-02");
     const legacy = {
       ...mkDraft("2026-02-02-reconsider-cd34", "2026-02-02", "mixed"),
       promptVersion: "aletheia-reconsider-v1",
     };
-    expect(
-      ratification(caseWith([legacy, ...sameDay], [], false))?.status,
-    ).toBe("unratified");
-    const later = fiveChecks("mixed", 0, "2026-02-03");
-    expect(ratification(caseWith([legacy, ...later], [], false))?.status).toBe(
+    expect(ratification(caseWith([legacy, ...sameDay]))?.status).toBe(
       "unratified",
     );
+    const later = fiveChecks("mixed", 0, "2026-02-03");
+    expect(ratification(caseWith([legacy, ...later]))?.status).toBe("ratified");
   });
 
-  it("an ordinary draft can be ratified by a panel bound to that exact draft", () => {
+  it("an ordinary blind draft is unaffected by the reconsideration rule", () => {
     const draft = mkDraft("d", "2026-02-02"); // newer than the checks
     const r = ratification(caseWith([draft, ...fiveChecks("unresolved")]));
     expect(r?.status).toBe("ratified");
@@ -736,7 +691,7 @@ describe("ratification governance (stage 3)", () => {
     expect(r?.contestedLoadBearing).toEqual(["C1"]);
   });
 
-  it("legacy displayAssessment shows the latest draft, stamped with its standing", () => {
+  it("displayAssessment always shows the latest draft, stamped with its standing", () => {
     const shown = displayAssessment(
       caseWith([
         mkDraft("old", "2026-01-01", "mixed"),
@@ -748,38 +703,34 @@ describe("ratification governance (stage 3)", () => {
     expect(shown?.ratification.status).toBe("ratified");
   });
 
-  it("historical panels remain visible without being recertified as current", () => {
+  it("every live case derives a valid standing; checked cases have a full panel", () => {
+    // A freshly imported case legitimately has zero check runs — it must
+    // still derive a valid standing (unratified, with the reason saying no
+    // model has checked it), and it stays visibly unratified until the
+    // cross-model panel judges it. But once any check runs exist, a partial
+    // panel is a pipeline defect: checks are produced as a full sweep.
     for (const c of loadAllCases()) {
       const shown = displayAssessment(c);
-      if (!shown) {
-        expect(c.record.status).toBe("incubating");
-        expect(c.assessmentRuns).toEqual([]);
-        continue;
-      }
+      expect(shown).not.toBeNull();
       expect(["ratified", "contested", "unratified"]).toContain(
         shown!.ratification.status,
       );
-      if (shown!.ratification.status === "ratified") {
+      const hasChecks = c.assessmentRuns.some((a) => a.role === "check");
+      if (hasChecks) {
         expect(shown!.ratification.panel).toBeGreaterThanOrEqual(
           RATIFICATION_MIN_PANEL,
         );
-      }
-      if (!c.assessmentRuns.some((r) => r.review)) {
+      } else {
         expect(shown!.ratification.status).toBe("unratified");
-        expect(shown!.ratification.panel).toBe(0);
       }
       expect(shown!.ratification.reason.length).toBeGreaterThan(10);
     }
   });
 
-  it("active cases carry a priority; an opening question may remain unprioritized", () => {
+  it("every case carries a research priority", () => {
     for (const c of loadAllCases()) {
-      if (c.record.researchPriority === null) {
-        expect(c.record.status).not.toBe("active");
-        continue;
-      }
       expect(["high", "medium", "low"]).toContain(
-        c.record.researchPriority?.level,
+        c.record.researchPriority.level,
       );
     }
   });
@@ -840,13 +791,11 @@ describe("cross-model checks", () => {
       expect(shownOpus).toHaveLength(1);
       // The winner must be the newest by (date, then runId) — the -rN
       // suffix only decides same-date ties; a later date beats any suffix.
-      const expected = [...opusRuns]
-        .sort((a, b) =>
-          a.date === b.date
-            ? a.runId.localeCompare(b.runId)
-            : a.date.localeCompare(b.date),
-        )
-        .at(-1)!;
+      const expected = [...opusRuns].sort((a, b) =>
+        a.date === b.date
+          ? a.runId.localeCompare(b.runId)
+          : a.date.localeCompare(b.date),
+      ).at(-1)!;
       expect(shownOpus[0].runId).toBe(expected.runId);
     }
     const keys = perModel.map((r) => seatKey(r.model));
@@ -865,7 +814,10 @@ describe("cross-model checks", () => {
 });
 
 describe("the steelman counterweight", () => {
-  const run = (over: { date: string; steelman?: string }) => ({
+  const run = (over: {
+    date: string;
+    steelman?: string;
+  }) => ({
     runId: `${over.date}-auto-test`,
     date: over.date,
     caseAssessment: {

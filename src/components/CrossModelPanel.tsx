@@ -58,9 +58,9 @@ export function CrossModelPanel({
       </div>
       <p className="mt-2 text-[14px] leading-relaxed text-ink-soft">
         {s.models.length} independent model
-        {s.models.length === 1 ? "" : "s"} assessed the supplied case record.
-        Model agreement does not independently verify the sources. Case verdict
-        {s.models.length === 1 ? "" : "s"}: {caseTally}
+        {s.models.length === 1 ? "" : "s"} re-assessed this case from the
+        evidence file alone. Case verdict{s.models.length === 1 ? "" : "s"}:{" "}
+        {caseTally}
         {s.caseUnanimousWithDisplayed
           ? " — matching the assessment shown above."
           : " — diverging from the assessment shown above."}{" "}
@@ -68,13 +68,7 @@ export function CrossModelPanel({
         {s.adjacent > 0 ? `, ${s.adjacent} within one step` : ""}
         {s.split > 0 ? `, ${s.split} split` : ", none split"}.
       </p>
-      {!s.versionVerified ? (
-        <p className="mt-2 text-[13px] leading-relaxed text-ochre">
-          Some reviews are historical. Only reviews with a matching receipt for
-          the current case and assessment count toward its standing; earlier
-          judgments remain here for context.
-        </p>
-      ) : s.staleSince ? (
+      {s.staleSince ? (
         <p className="mt-2 font-mono text-[11px] tracking-[0.06em] text-ochre">
           the case file has changed since this check (content updated{" "}
           {s.staleSince}) — these judgments were made on an earlier version
@@ -86,10 +80,7 @@ export function CrossModelPanel({
           {s.splitClaimIds.map((id, i) => (
             <span key={id}>
               {i > 0 ? " · " : ""}
-              <Link
-                href={`/claims/${id}/`}
-                className="underline underline-offset-2 hover:text-copper"
-              >
+              <Link href={`/claims/${id}/`} className="underline underline-offset-2 hover:text-copper">
                 {id}
               </Link>
             </span>
@@ -114,11 +105,6 @@ export function CrossModelPanel({
                 {shortModel(run.model)}
               </span>
               <AssessmentBadge state={run.caseAssessment.verdict} />
-              <span className="text-[11px] text-faint">
-                {s.currentRunIds.includes(run.runId)
-                  ? "Current version"
-                  : "Historical review"}
-              </span>
             </summary>
             <div className="pb-4 pl-6">
               <p className="text-[14px] leading-[1.7] text-ink-soft whitespace-pre-line">

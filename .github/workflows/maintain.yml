@@ -252,6 +252,9 @@ jobs:
     needs: maintain
     if: ${{ (inputs.mode || 'full') == 'full' }}
     runs-on: ubuntu-latest
+    concurrency:
+      group: research-intake
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
         with:
@@ -261,7 +264,20 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      # Preserve a pending batch rather than paying again from the same main.
+      - name: Check for pending research intake
+        env:
+          GH_TOKEN: ${{ secrets.MAINTENANCE_PAT }}
+        run: |
+          pending=$(gh pr list --state open --limit 1000 --json headRefName --jq '[.[] | select(.headRefName | startswith("promote/"))] | length')
+          echo "INTAKE_PENDING=${pending}" >> "$GITHUB_ENV"
+      - name: Discover sources for one due pilot case
+        if: ${{ env.INTAKE_PENDING == '0' }}
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: node scripts/discover-sources.ts --scan
       - name: Read queued sources and prepare research proposals
+        if: ${{ env.INTAKE_PENDING == '0' }}
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
@@ -269,9 +285,10 @@ jobs:
           count=$(node scripts/promote-imports.mjs | tail -1)
           echo "PROMOTED=${count}" >> "$GITHUB_ENV"
       - name: Validate the ledger still loads
-        if: ${{ env.PROMOTED != '0' }}
+        if: ${{ env.INTAKE_PENDING == '0' && env.PROMOTED != '0' }}
         run: npx vitest run src/domain/load.test.ts
       - name: Open the gated promotion PR
+        if: ${{ env.INTAKE_PENDING == '0' }}
         env:
           GH_TOKEN: ${{ secrets.MAINTENANCE_PAT }}
         run: |
@@ -290,7 +307,7 @@ jobs:
           git push -u origin "$branch"
           pr_url=$(gh pr create \
             --title "Research intake: ${date} — checked proposals and outcomes" \
-            --body "Inbox requests and legacy watch imports use one bounded source-reading pass: at most two sources, four model calls, four minutes, and one dollar at the recorded tariff, excluding this publication panel. Drafted observations receive a separate source-reading check. Complete Source/Claim/Evidence bundles are validated against their exact case inputs before preparation; stale proposals wait for reconsideration, and failures remain in intake history. The reading check does not ratify a case assessment. Any ledger additions pass the normal independent publication gate, with their provenance and a case history entry preserved." \
+            --body "A due discovery pilot records one narrow question before bounded searches, then sends at most two returned source leads to the common queue. Discovery, inbox requests and legacy watch imports share one source-reading pass: at most two sources, four model calls, four minutes and one dollar for reading, excluding discovery and review. All API work uses the shared allowance, including hosted search fees. Search results are leads, never evidence. Drafted observations receive a separate reading check. Complete Source/Claim/Evidence bundles are validated against exact case inputs before preparation; stale proposals and failures retain their reasons. The reading check does not ratify a case assessment. Ledger additions face the normal independent publication gate." \
             --label needs-approval)
           gh pr edit "$pr_url" --add-reviewer "${GITHUB_REPOSITORY_OWNER}" || true
           echo "opened $pr_url"

@@ -10,6 +10,7 @@ import { resolveCaseDirectory } from "./case-snapshot.mjs";
 import { ResearchProposalSchema } from "../../src/domain/researchProposal.ts";
 import { EditionProposalSchema } from "../../src/domain/editionProposal.ts";
 import { EditionCycleSchema } from "../../src/domain/editionCycle.ts";
+import { DiscoveryRunSchema } from "../../src/domain/discovery.ts";
 
 export const INTAKE_DIR = "proposals/intake";
 const text = z.string().min(1);
@@ -59,6 +60,7 @@ const outcomes = {
   "edition-cycle": ["proposed", "retained", "contested", "failed"],
   "source-request": ["queued"],
   "research-adoption": ["prepared", "already_present", "stale", "invalid"],
+  discovery: ["planned", "queued", "no_change", "failed", "stale"],
 };
 const DecisionSchema = z
   .object({
@@ -70,6 +72,7 @@ const DecisionSchema = z
     research: ResearchProposalSchema.optional(),
     edition: EditionProposalSchema.optional(),
     editionCycle: EditionCycleSchema.optional(),
+    discovery: DiscoveryRunSchema.optional(),
     reason: z.string().nullable().default(null),
     date: day.nullable().default(null),
     generatedAt: z.iso.datetime().nullable().default(null),
@@ -101,6 +104,14 @@ const DecisionSchema = z
   .strict()
   .superRefine((entry, ctx) => {
     const issue = (message) => ctx.addIssue({ code: "custom", message });
+    if (entry.stage === "discovery" && !entry.discovery) issue("discovery requires its complete receipt");
+    if (entry.discovery) {
+      const run = entry.discovery;
+      if (entry.stage !== "discovery" || entry.case !== run.case || entry.runId !== run.runId ||
+          entry.generatedAt !== run.generatedAt || entry.promptVersion !== run.promptVersion ||
+          entry.inputHash !== run.basisHash || entry.candidateHash !== fingerprint(run) || entry.decision !== run.outcome)
+        issue("discovery decision differs from its receipt");
+    }
     if (!outcomes[entry.stage].includes(entry.decision))
       issue("invalid outcome for stage");
     if (entry.stage === "source-request" && (!entry.case ||

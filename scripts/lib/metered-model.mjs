@@ -1,4 +1,4 @@
-import { AI_POLICY, BudgetStopped, tariff, tokenCost } from "./ai-policy.mjs";
+import { AI_POLICY, BudgetStopped, microUsd, tariff, tokenCost } from "./ai-policy.mjs";
 import { sharedBudget } from "./ai-budget.mjs";
 
 const integer = n => Number.isSafeInteger(n) && n >= 0;
@@ -33,28 +33,51 @@ export function verifyModel(requested, returned) {
     throw new BudgetStopped("Unexpected model receipt; full reservation retained.");
 }
 
-/** @param {{model: string, workload: string, inputLimit?: number, outputLimit: number, cacheWrites?: boolean, budget?: ReturnType<typeof sharedBudget>}} options */
-export async function reserveModel({ model, workload, inputLimit, outputLimit, cacheWrites = true, budget = sharedBudget() }) {
+/** @param {{model: string, workload: string, inputLimit?: number, outputLimit: number, cacheWrites?: boolean,
+ * webSearchCalls?: number, context?: {case: string, runId: string, phase: string}, budget?: ReturnType<typeof sharedBudget>}} options */
+export async function reserveModel({ model, workload, inputLimit, outputLimit, cacheWrites = true,
+  webSearchCalls = 0, context, budget = sharedBudget() }) {
   const policy = await budget.getPolicy();
   const rate = tariff(model, policy);
   const reservedRate = cacheWrites ? rate : { ...rate, cacheWrite: rate.input };
   const input = inputLimit ?? rate.context;
   if (!integer(input) || input > rate.context || !integer(outputLimit) || outputLimit < 1 || outputLimit > rate.maxOutput)
     throw new BudgetStopped("Request exceeds the recorded model limits.");
-  const ticket = await budget.reserve({ model, workload, amount: tokenCost(reservedRate, input, outputLimit, { reserve: true }),
+  // One stateless search invocation: reserve both full model input passes,
+  // including returned search content. A 'low' search setting is not a token cap.
+  if (![0, 1].includes(webSearchCalls) || (webSearchCalls && (input !== rate.context ||
+      rate.provider !== "openai" || !policy.webSearch?.models.includes(model))))
+    throw new BudgetStopped("No approved bounded web-search tariff for this request.");
+  const inputTotal = input * (webSearchCalls + 1);
+  const toolFee = webSearchCalls ? microUsd(policy.webSearch.usdPerCall) : 0;
+  const ticket = await budget.reserve({ model, workload,
+    amount: tokenCost(reservedRate, inputTotal, outputLimit, { reserve: true }) + toolFee,
     terms: { inputLimit: input, outputLimit, inputRate: rate.input, cacheWriteRate: reservedRate.cacheWrite ?? rate.input,
       outputRate: rate.output, longThreshold: rate.longThreshold ?? rate.context,
       longInputFactor: rate.longInputFactor ?? 1, longOutputFactor: rate.longOutputFactor ?? 1,
-      rateDate: policy.rateDate, source: rate.source } });
+      rateDate: policy.rateDate, source: rate.source,
+      ...(webSearchCalls ? { inputPasses: 2, webSearchLimit: webSearchCalls,
+        webSearchUsdPerCall: policy.webSearch.usdPerCall, webSearchSource: policy.webSearch.source,
+        webSearchRateDate: policy.webSearch.checkedAt } : {}),
+      ...(context ? { case: context.case, operationRun: context.runId, phase: context.phase } : {}) } });
   return { async settle(data) {
     // Images generations report usage but do not echo a model field.
     const returnedModel = data.model ?? (model === AI_POLICY.imageModel ? model : data.modelVersion?.replace(/^models\//, ""));
     verifyModel(model, returnedModel);
     const usage = usageReceipt(rate.provider, data);
     if (!cacheWrites && usage.cacheWrite > 0) throw new BudgetStopped("Unexpected cache creation; reservation retained.");
-    if (usage.input > input || usage.output > outputLimit) throw new BudgetStopped("Usage exceeds reserved token limits; reservation retained.");
-    await budget.settle(ticket, tokenCost(rate, usage.input, usage.output, usage),
+    if (usage.input > inputTotal || usage.output > outputLimit) throw new BudgetStopped("Usage exceeds reserved token limits; reservation retained.");
+    let searches = 0;
+    if (webSearchCalls) {
+      if (!Array.isArray(data.output)) throw new BudgetStopped("Missing search usage; full reservation retained.");
+      const calls = data.output.filter(item => item.type?.endsWith("_call"));
+      if (calls.some(item => item.type !== "web_search_call" || item.status !== "completed") || calls.length > webSearchCalls)
+        throw new BudgetStopped("Unexpected or incomplete hosted tools; full reservation retained.");
+      searches = calls.length;
+    }
+    await budget.settle(ticket, tokenCost(rate, usage.input, usage.output, usage) + searches * toolFee,
       { ...usage, model: returnedModel, rateDate: policy.rateDate,
+        ...(webSearchCalls ? { webSearchCalls: searches, webSearchMicroUsd: searches * toolFee } : {}),
         ...(typeof (data.id ?? data.responseId) === "string" ? { responseId: data.id ?? data.responseId } : {}) });
   }, ticket };
 }
@@ -63,11 +86,12 @@ export async function reserveModel({ model, workload, inputLimit, outputLimit, c
  * successful refusals still cost tokens and are settled before being rejected.
  * @param {string} url
  * @param {RequestInit} init
- * @param {{model: string, workload: string, inputLimit?: number, outputLimit: number, cacheWrites?: boolean, budget?: ReturnType<typeof sharedBudget>, fetchImpl?: typeof fetch}} options
+ * @param {{model: string, workload: string, inputLimit?: number, outputLimit: number, cacheWrites?: boolean,
+ * webSearchCalls?: number, context?: {case: string, runId: string, phase: string}, budget?: ReturnType<typeof sharedBudget>, fetchImpl?: typeof fetch}} options
  */
 export async function meteredFetch(url, init, { model, workload, inputLimit,
-  outputLimit, cacheWrites, budget, fetchImpl = fetch }) {
-  const reservation = await reserveModel({ model, workload, inputLimit, outputLimit, cacheWrites, ...(budget ? { budget } : {}) });
+  outputLimit, cacheWrites, webSearchCalls, context, budget, fetchImpl = fetch }) {
+  const reservation = await reserveModel({ model, workload, inputLimit, outputLimit, cacheWrites, webSearchCalls, context, ...(budget ? { budget } : {}) });
   const res = await fetchImpl(url, init);
   if (res.ok) await reservation.settle(await res.clone().json());
   return res;

@@ -1369,3 +1369,39 @@ settled. The cap was not raised. The selected essay seats Pillar 43 and omits
 the unrecorded Assyrian comparison, with the reason and original illustrated
 opening preserved. The unused plate remains available in the manifest for later
 verified comparator research.
+
+## 2026-09-07 — Bounded discovery feeds the common source queue
+
+The founder authorized continued work toward the autonomous research publication.
+The Expedition capability starts with Deep Memory. Astra chooses one unanswered
+question using the ledger, assessment gaps, founding inputs and intake history,
+and records scope, inclusion criteria and disconfirmers before searching. The
+existing smaller source-drafting model handles at most two single-call web
+lookups; Astra selects up to two actual returned URLs and says what should be
+read. At least one planned query seeks counterevidence. An empty plan or
+selection is valid. No search summary becomes evidence or a verification label.
+
+The adapter uses the same source queue and separate reading checks as inbox and
+watch inputs. It writes immutable plans and outcome receipts; it neither edits
+the ledger nor publishes. Known sources may contain unexamined observations.
+History informs reconsideration without requiring a new dated record as the
+only possible reason. The normal revisit is seven days, changed inputs can
+reopen on the next UTC day, and a specific manual reason can reopen immediately.
+Its own output cannot self-trigger another pass. A pending promotion PR supplies
+backpressure, and the existing weekly job runs one due case before reading the
+common queue. No new recurring workflow is needed.
+
+Hosted search fees now have an explicit reviewed tariff. Each request reserves
+the fee and two full model input passes, then settles from returned tool and
+token usage. Unknown usage remains held. Discovery's reservations also record
+the case, operation run and phase for the later public activity/spending view.
+The existing $150 monthly / $25 daily allowance and $30 monthly review reserve
+are unchanged. The new tool tariff must land on main before a live trial can
+fund itself. An empty or failed search is not evidence of absence; queue counts
+are not measures of improvement. Actual accepted changes remain inspectable in
+the downstream research and adoption receipts.
+
+AI execution provenance: model `GPT-6 (OpenAI Codex)`; date `2026-09-07`;
+runId `codex-bounded-discovery-2026-09-07` (locally assigned session label);
+promptVersion `none` (interactive founder-directed work, no versioned pipeline
+prompt). The worker's separate protocol is `bounded-discovery-v1`.

@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { createBudget, githubBudgetStore, sharedBudget } from "../../scripts/lib/ai-budget.mjs";
 import { AI_POLICY, BudgetStopped, PolicySchema, tariff, tokenCost } from "../../scripts/lib/ai-policy.mjs";
 import { countResponseInput, meteredFetch, reserveModel, usageReceipt } from "../../scripts/lib/metered-model.mjs";
+import { openaiResponse } from "../../scripts/lib/openai-response.mjs";
 import { anthropicStreamReceipt, meterOperator, operatorRequest } from "../../scripts/lib/operator-meter.mjs";
 import { memoryBudgetStore, testBudget } from "./fixtures/aiBudget";
 import fs from "node:fs";
@@ -127,6 +128,46 @@ describe("one shared AI allowance", () => {
 });
 
 describe("metered vendor requests", () => {
+  it("bounds hosted search in the actual request and reserves search content, tool fees and case attribution before sending", async () => {
+    const budget = testBudget();
+    const model = AI_POLICY.sourceDraft;
+    let requestBody: Record<string, unknown> = {};
+    await openaiResponse("Synthetic source discovery", "One synthetic query", { model, search: true,
+      maxOutputTokens: 4000, workload: "research", budget, apiKey: "fixture-only",
+      context: { case: "synthetic", runId: "synthetic-discovery", phase: "search" },
+      fetchImpl: async (_url, init) => {
+        requestBody = JSON.parse(String(init?.body));
+        const status = await budget.status();
+        expect(status.totals.held).toBe(628000); // 2 x 400k input, 4k output, one $0.01 tool call
+        expect(status.entries[0].terms).toMatchObject({ case: "synthetic", operationRun: "synthetic-discovery", webSearchLimit: 1 });
+        return Response.json({ model, id: "synthetic-search", status: "completed",
+          usage: { input_tokens: 500000, output_tokens: 100 },
+          output: [{ type: "web_search_call", status: "completed", action: { type: "search", sources: [] } }] });
+      } });
+    expect(requestBody).toMatchObject({ max_tool_calls: 1, parallel_tool_calls: false, tool_choice: "required",
+      tools: [{ type: "web_search", search_context_size: "low" }], store: false });
+    const status = await budget.status();
+    expect(status.totals).toMatchObject({ held: 0, month: 385450 });
+    expect(status.entries[0].receipt).toMatchObject({ webSearchCalls: 1, webSearchMicroUsd: 10000 });
+  });
+  it("cannot fund an unapproved search tariff and retains liability for unknown or excessive tool use", async () => {
+    const old = { ...AI_POLICY, webSearch: undefined };
+    const budget = createBudget(memoryBudgetStore(), { policy: old });
+    const fetchImpl = vi.fn();
+    await expect(openaiResponse("Synthetic", "Synthetic", { model: AI_POLICY.sourceDraft,
+      search: true, maxOutputTokens: 4000, budget, apiKey: "fixture", fetchImpl })).rejects.toThrow(/tariff/);
+    expect(fetchImpl).not.toHaveBeenCalled();
+    for (const output of [undefined, [{ type: "web_search_call", status: "failed" }],
+      [{ type: "code_interpreter_call", status: "completed" }],
+      Array.from({ length: 2 }, () => ({ type: "web_search_call", status: "completed" }))]) {
+      const current = testBudget();
+      const reservation = await reserveModel({ model: AI_POLICY.sourceDraft, workload: "research",
+        outputLimit: 4000, webSearchCalls: 1, budget: current });
+      await expect(reservation.settle({ model: AI_POLICY.sourceDraft,
+        usage: { input_tokens: 1000, output_tokens: 100 }, output })).rejects.toThrow(/tools|usage/);
+      expect((await current.status()).totals.held).toBe(628000);
+    }
+  });
   it("covers cache creation and long-context premiums, including reasoning output", () => {
     const rate = tariff("gpt-6-astra");
     expect(tokenCost(rate, 1000, 100)).toBe(15000);

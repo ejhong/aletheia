@@ -87,8 +87,25 @@ adapter allowances, not a claim about the model's context-window size.
 The operator adapter admits only its pinned model, standard processing and
 client-executed tools. It meters each Messages request, including streaming
 usage and retries. Paid hosted search, code execution, or other new tools need
-their own tariffs before being enabled. Future Expedition and edition drafting
-must use the shared client instead of adding another API connection.
+their own tariffs before being enabled. Edition drafting uses the shared client.
+The bounded Expedition pilot now admits `web_search` for the configured small
+source drafter. Astra plans the question and selects useful returned leads.
+
+`discovery` sets the enabled cases, revisit interval, query and lead limits.
+Initially this is Deep Memory, seven days, two queries and two leads. Each query
+uses one stateless request with `max_tool_calls: 1`; discovery authors have an
+8,000-token output limit and the scout 4,000. The existing source reader keeps
+its separate four-call / four-minute / $1 limit. Discovery has a ten-minute
+deadline and shares the global allowance; no additional monthly budget is added.
+
+`webSearch` records $0.01 per tool call, with retrieved content billed as model
+input. The reservation covers two full model input passes plus the tool fee,
+rather than guessing a token cap from `search_context_size: low`. Actual token
+and completed-tool receipts settle it; missing or unexpected tool usage retains
+the hold. Discovery cost terms also include case, operation run and phase.
+These bounds follow the [Responses tool-call limit](https://developers.openai.com/api/reference/cli/resources/responses/methods/create)
+and [OpenAI tool pricing](https://developers.openai.com/api/docs/pricing), checked
+2026-09-07. Search outputs remain discovery leads until separately read and checked.
 
 Accounting begins with this integration. Earlier bills cannot be reconstructed
 from workers that discarded usage. ChatGPT/Codex subscriptions, this interactive

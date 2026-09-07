@@ -1,0 +1,148 @@
+version: 1
+decisions:
+  - id: ccfb229c62e1d8625de19faebbc9d0fea5d4d23fc7268fbbc6ad28be6f4df502
+    case: deep-memory
+    stage: research-run
+    decision: completed
+    source: null
+    proposal: null
+    reason: Source-read proposals recorded for review.
+    date: 2026-09-06
+    generatedAt: 2026-09-06T23:18:45.138Z
+    runId: sources-2026-09-06-a1cd26a2-7470-47a7-a4a8-483fb780f5f9
+    model: null
+    promptVersion: source-reading-v3
+    inputHash: 96f068fce430937c7a79e78f6956046ccaaf244ef9827af8f058e4116d274a03
+    candidateHash: null
+    ref: null
+    caseBasis: 9db6925f1c3b74113ea6249f735dea4eb8c9c63186a22db5eeaae4f5596b893b
+    recordId: null
+    matchMethod: null
+    retryable: false
+    details:
+      runId: sources-2026-09-06-a1cd26a2-7470-47a7-a4a8-483fb780f5f9
+      case: deep-memory
+      decision: completed
+      requests:
+        - case: deep-memory
+          url: https://www.dainst.blog/the-tepe-telegrams/2016/10/14/of-animals-and-a-headless-man-gobekli-tepe-pillar-43/
+          key: url:https://www.dainst.blog/the-tepe-telegrams/2016/10/14/of-animals-and-a-headless-man-gobekli-tepe-pillar-43/
+          ref: Founder-directed Birdmen iconography pilot; follow-up to the existing Pillar 43 source
+          context: Look for a further, narrow iconographic observation or explicit interpretive uncertainty on
+            Pillar 43 beyond the already recorded headless human. Consider the upper rounded motifs,
+            birds or circle if this primary excavation account explicitly describes them. Reuse the
+            independence group for this same object. Do not infer distant cultural transmission or
+            claim that similar-looking motifs mean the same thing. Return no_change if there is no
+            useful new observation.
+      cases:
+        - case: deep-memory
+          basis: &a1
+            contentHash: 9db6925f1c3b74113ea6249f735dea4eb8c9c63186a22db5eeaae4f5596b893b
+            inputsHash: cbe1aa7da731a0c6021371074e9614d4e5a9d71d87dfd7ec6c811ed25d158e4d
+      basis: *a1
+      urls:
+        - https://www.dainst.blog/the-tepe-telegrams/2016/10/14/of-animals-and-a-headless-man-gobekli-tepe-pillar-43/
+      proposedRecords: 2
+      proposalFile: proposals/intake/e4673315a48205e6a40fe6e7a60c55162d89d6b07f4d2a8e0f17810df27b14ef.yaml
+      proposals:
+        - case: deep-memory
+          file: proposals/intake/e4673315a48205e6a40fe6e7a60c55162d89d6b07f4d2a8e0f17810df27b14ef.yaml
+          records: 2
+          rested: false
+      outcomes:
+        - case: deep-memory
+          url: https://www.dainst.blog/the-tepe-telegrams/2016/10/14/of-animals-and-a-headless-man-gobekli-tepe-pillar-43/
+          key: url:https://www.dainst.blog/the-tepe-telegrams/2016/10/14/of-animals-and-a-headless-man-gobekli-tepe-pillar-43/
+          ref: Founder-directed Birdmen iconography pilot; follow-up to the existing Pillar 43 source
+          context: Look for a further, narrow iconographic observation or explicit interpretive uncertainty on
+            Pillar 43 beyond the already recorded headless human. Consider the upper rounded motifs,
+            birds or circle if this primary excavation account explicitly describes them. Reuse the
+            independence group for this same object. Do not infer distant cultural transmission or
+            claim that similar-looking motifs mean the same thing. Return no_change if there is no
+            useful new observation.
+          retrieval:
+            url: https://www.dainst.blog/the-tepe-telegrams/2016/10/14/of-animals-and-a-headless-man-gobekli-tepe-pillar-43/
+            requestedUrl: https://www.dainst.blog/the-tepe-telegrams/2016/10/14/of-animals-and-a-headless-man-gobekli-tepe-pillar-43/
+            retrievedAt: 2026-09-06T23:18:46.853Z
+            responseHash: fdc004feefba04062be6b2f4c48fbdbe5c86ed9fc02874e4e001b82cf71a1989
+            textHash: 0cf133da111cf4ce76aa07d3a14836f4c287428d272e75d8cbaab6144782b95b
+            extractor: html-text-v1
+          outcome: proposed
+          model: gpt-5.4-mini-2026-03-17
+          reason: null
+          review:
+            model: gpt-5-mini-2025-08-07
+            inputHash: eda9600ffc3da66993556be84a3f66ae7ae2e3a0f53e5f75fed884b319f0c1d0
+            sourceMetadataSupported: true
+            claimSupported: true
+            sourceStatementSupported: true
+            inferenceSeparated: true
+            limitationsPreserved: true
+            independenceHandled: true
+            reason: The retrieved page is the cited blog post by Oliver Dietrich from 2016 and contains the
+              passage describing the pillar's uppermost zone as a row of three rectangular objects
+              with cupola-like arches, each accompanied by a small animal, and explicitly states
+              that the meaning is uncertain. The reading's claim and sourceStatement match that
+              passage exactly. The inference (that this constitutes a separate cluster of motifs on
+              Pillar 43 distinct from the headless human figure, and that the author expresses
+              uncertainty about meaning) is a reasonable, clearly delimited inference from the text
+              rather than added factual assertion. The listed limitations (blog summary vs primary
+              report; tentative interpretation; animals not identified in that passage;
+              single-pillar data cannot establish wide transmission) are consistent with the source
+              content and with inferential limits.
+            dependencyNote: This observation depends on the same physical object, Göbekli Tepe Pillar 43 (the
+              pillar and its uppermost carved motifs). The independenceGroup correctly follows the
+              underlying object (Göbekli Tepe Pillar 43) rather than the publication URL; it is
+              therefore not independent of other claims based on the same pillar.
+            originalReviewHash: 904eb555de796034deb9725ec75e32106d372dd8314332cdd87aa7e1c09f9fda
+          proposalFile: proposals/intake/e4673315a48205e6a40fe6e7a60c55162d89d6b07f4d2a8e0f17810df27b14ef.yaml
+      failure: null
+      budget:
+        maxUsd: 1
+        maxCalls: 4
+        maxOutputTokens: 6000
+        deadlineMs: 240000
+        rateDate: 2026-09-06
+        accountedUsd: 0.01521775
+        elapsedMs: 28938
+        calls:
+          - index: 0
+            role: draft
+            model: gpt-5.4-mini-2026-03-17
+            rates:
+              id: gpt-5.4-mini-2026-03-17
+              provider: openai
+              input: 0.75
+              output: 4.5
+              context: 400000
+              maxOutput: 128000
+              source: https://developers.openai.com/api/docs/models/gpt-5.4-mini
+            reservedUsd: 0.327
+            status: accounted
+            inputHash: f0906fdd977a4a34352527a078fc73402bdc721fba96c18ff770bf55ae848fcd
+            packetHash: f6e0828dc7ef88bca99d6de6764c9662ccea8dde2960e3e180ea055da557a80a
+            usage:
+              inputTokens: 8628
+              outputTokens: 905
+            actualUsd: 0.0105435
+            responseId: resp_07076ff4b75309e7016a9df4da410487d0bf9d72d6b96dba9d
+          - index: 1
+            role: read
+            model: gpt-5-mini-2025-08-07
+            rates:
+              id: gpt-5-mini-2025-08-07
+              provider: openai
+              input: 0.25
+              output: 2
+              context: 400000
+              maxOutput: 128000
+              source: https://developers.openai.com/api/docs/models/gpt-5-mini
+            reservedUsd: 0.112
+            status: accounted
+            inputHash: 49ec41eec08d43a4fe4a63c5cc929b2a4af34f5b158d5633a3847f87ae79c7c6
+            packetHash: 9f433b73d1bf5745e5a0aae54d989ce9e4ddf5eff9a8d020200916c146e88be5
+            usage:
+              inputTokens: 6761
+              outputTokens: 1492
+            actualUsd: 0.00467425
+            responseId: resp_066ad401b87d59d5016a9df4e45b4087d0809aea2d84333e9b

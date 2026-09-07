@@ -1,7 +1,6 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { isSeq, parseDocument, stringify } from "yaml";
 import { loadCase } from "../../src/domain/load.ts";
 import type { LoadedCase } from "../../src/domain/schema.ts";
 import { recordSchemas, type ResearchProposal } from "../../src/domain/researchProposal.ts";
@@ -9,6 +8,7 @@ import { readIntakeDecisions, writeIntakeDecisions } from "./intake-store.mjs";
 import { researchBasis, resolveResearchCase, validateResearchProposal } from "./research-proposals.ts";
 import { readCaseSnapshot } from "./case-snapshot.mjs";
 import { fingerprint } from "./review-state.mjs";
+import { appendCaseHistory, installCaseFiles } from "./case-files.ts";
 
 function present(loaded: LoadedCase, proposal: ResearchProposal) {
   const records = { source: loaded.sources, claim: loaded.claims, evidence: loaded.evidence,
@@ -17,33 +17,6 @@ function present(loaded: LoadedCase, proposal: ResearchProposal) {
     const found = records[change.kind].find(record => record.id === change.recordId);
     return found && fingerprint(found) === fingerprint(recordSchemas[change.kind].parse(change.after));
   }) && Object.entries(proposal.themeAdditions).every(([key, value]) => loaded.record.themes[key] === value);
-}
-
-/** Restore successful writes if installation fails, before any PR can exist. */
-function installFiles(caseDir: string, changes: Record<string, string>) {
-  const originals = new Map<string, string | null>();
-  const written: string[] = [];
-  try {
-    for (const [file, body] of Object.entries(changes)) {
-      const target = path.join(caseDir, file);
-      originals.set(file, fs.existsSync(target) ? fs.readFileSync(target, "utf8") : null);
-      fs.mkdirSync(path.dirname(target), { recursive: true });
-      written.push(file);
-      fs.writeFileSync(target, body);
-    }
-    loadCase(caseDir);
-  } catch (error) {
-    const failures: unknown[] = [error];
-    for (const file of written.reverse()) {
-      try {
-        const before = originals.get(file)!;
-        if (before === null) fs.unlinkSync(path.join(caseDir, file));
-        else fs.writeFileSync(path.join(caseDir, file), before);
-      } catch (restoreError) { failures.push(restoreError); }
-    }
-    if (failures.length > 1) throw new AggregateError(failures, "adoption rollback failed; stop publication");
-    throw error;
-  }
 }
 
 /** Prepare already recorded change bundles in a working tree for the normal
@@ -82,20 +55,14 @@ export function prepareResearchAdoptions(root: string, stamp: { runId: string; g
             const files = readCaseSnapshot(prospective).files;
             const changes: Record<string, string> = Object.fromEntries(Object.entries(files)
               .filter(([file, body]) => body !== originalFiles[file]));
-            const historyText = fs.readFileSync(path.join(caseDir, "history.yaml"), "utf8");
-            const historyDocument = parseDocument(historyText);
             const update = {
               date: stamp.generatedAt.slice(0, 10), kind: "content", aiAssisted: true,
               change: `Recorded research proposal ${proposal.runId}: ${proposal.changes.map(c => c.recordId).join(", ")}.`,
               reason: proposal.rationale,
               actor: `${proposal.model}; ${proposal.promptVersion}; materialized by ${stamp.runId}`,
             };
-            if (isSeq(historyDocument.contents) && historyDocument.contents.items.length === 0) {
-              historyDocument.contents.flow = false;
-              historyDocument.add(update);
-              changes["history.yaml"] = historyDocument.toString();
-            } else changes["history.yaml"] = historyText + "\n" + stringify([update]);
-            installFiles(caseDir, changes);
+            changes["history.yaml"] = appendCaseHistory(caseDir, { ...update, kind: "content" });
+            installCaseFiles(caseDir, changes);
           }
           changedCases.add(proposal.case);
         }

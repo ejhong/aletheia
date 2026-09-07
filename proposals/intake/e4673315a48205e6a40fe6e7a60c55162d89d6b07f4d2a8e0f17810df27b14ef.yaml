@@ -1,0 +1,104 @@
+version: 1
+decisions:
+  - id: 2e115a9ce4eba50c04769951f37ee460aa9e621998eb18ee4ee59e4aed161bfb
+    case: deep-memory
+    stage: research-proposal
+    decision: proposed
+    source: null
+    proposal: null
+    research:
+      version: 1
+      case: deep-memory
+      basis:
+        contentHash: 9db6925f1c3b74113ea6249f735dea4eb8c9c63186a22db5eeaae4f5596b893b
+        inputsHash: cbe1aa7da731a0c6021371074e9614d4e5a9d71d87dfd7ec6c811ed25d158e4d
+      runId: sources-2026-09-06-a1cd26a2-7470-47a7-a4a8-483fb780f5f9
+      generatedAt: 2026-09-06T23:18:45.138Z
+      model: gpt-5.4-mini-2026-03-17
+      promptVersion: source-reading-v3
+      intent: add
+      title: Primary-source observations
+      rationale: Record narrow observations with source context and a separate reading check.
+      priorDecisionIds: []
+      themeAdditions: {}
+      changes:
+        - kind: claim
+          recordId: MEM-C002
+          beforeHash: null
+          after:
+            id: MEM-C002
+            tier: catalog
+            statement: The uppermost part of Pillar 43 shows three rectangular forms topped with cupola-like
+              arches, each paired with an animal.
+            theme: pillar-iconography
+            rung: observation
+            reviewState: ai_extracted
+            origin: &a1
+              ref: https://www.dainst.blog/the-tepe-telegrams/2016/10/14/of-animals-and-a-headless-man-gobekli-tepe-pillar-43/
+                — html-text-v1, characters 2596–2660 (retrieved text; not a printed-page locator)
+              extractedBy: gpt-5.4-mini-2026-03-17
+              runId: sources-2026-09-06-a1cd26a2-7470-47a7-a4a8-483fb780f5f9
+              date: 2026-09-06
+            sourceAnchor:
+              sourceId: SRC-MEM-F07B22F06CD5
+              locator: html-text-v1, characters 2596–2660 (retrieved text; not a printed-page locator)
+            independenceGroup: Göbekli Tepe Pillar 43
+          rationale: "The source explicitly describes a further, narrow motif on Pillar 43: three rectangular
+            objects with cupola-like arches at the top, each accompanied by an animal, while also
+            stating that their meaning is uncertain."
+          passages: []
+        - kind: evidence
+          recordId: MEM-E002
+          beforeHash: null
+          after:
+            id: MEM-E002
+            title: Upper-register rectangular motifs on Pillar 43
+            claimIds:
+              - MEM-C002
+            sourceId: SRC-MEM-F07B22F06CD5
+            direction: context
+            strength: moderate
+            sourceStatement: "The post says the top of Pillar 43 has three rectangular objects with cupola-like
+              arches, each with an animal added on the arch, and notes that their meaning is hard to
+              guess. The source states: “three rectangular objects with cupola-like ‘arches’ on
+              their tops”."
+            editorInference: Locally, this establishes that Pillar 43 includes a second, distinct cluster of
+              carvings besides the headless human figure. It also shows the author does not know
+              what the upper motifs mean, leaving their function or symbolism open.
+            exactLocator: html-text-v1, characters 2596–2660 (retrieved text; not a printed-page locator)
+            limitations:
+              - The source is a blog summary rather than a primary excavation report.
+              - The text gives only a tentative reading; it explicitly says the meaning is hard to
+                guess.
+              - The passage does not identify the animals or confirm the motifs' function.
+              - A single pillar's carved forms cannot by itself establish shared prehistoric myths
+                or transmission across regions.
+              - "Depends on the same object: Göbekli Tepe Pillar 43 and its uppermost carved motifs.
+                This is not independent from other observations about Pillar 43."
+            reviewState: ai_extracted
+            origin: *a1
+          rationale: "The source explicitly describes a further, narrow motif on Pillar 43: three rectangular
+            objects with cupola-like arches at the top, each accompanied by an animal, while also
+            stating that their meaning is uncertain."
+          passages:
+            - sourceId: SRC-MEM-F07B22F06CD5
+              url: https://www.dainst.blog/the-tepe-telegrams/2016/10/14/of-animals-and-a-headless-man-gobekli-tepe-pillar-43/
+              retrievedAt: 2026-09-06T23:18:46.853Z
+              responseHash: fdc004feefba04062be6b2f4c48fbdbe5c86ed9fc02874e4e001b82cf71a1989
+              textHash: 0cf133da111cf4ce76aa07d3a14836f4c287428d272e75d8cbaab6144782b95b
+              extractor: html-text-v1
+              locator: html-text-v1, characters 2596–2660 (retrieved text; not a printed-page locator)
+              quote: three rectangular objects with cupola-like ‘arches’ on their tops
+    reason: Record narrow observations with source context and a separate reading check.
+    date: 2026-09-06
+    generatedAt: 2026-09-06T23:18:45.138Z
+    runId: sources-2026-09-06-a1cd26a2-7470-47a7-a4a8-483fb780f5f9
+    model: gpt-5.4-mini-2026-03-17
+    promptVersion: source-reading-v3
+    inputHash: a5164d81fe1a92097fae5864f35893774024246e431256c4c6287175804651da
+    candidateHash: 204bea2b9e674efd4042a070a22dace4cdfd83b5a9fb1a33eccb9bca42032d05
+    ref: null
+    caseBasis: 9db6925f1c3b74113ea6249f735dea4eb8c9c63186a22db5eeaae4f5596b893b
+    recordId: null
+    matchMethod: null
+    retryable: false

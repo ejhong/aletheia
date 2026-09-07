@@ -9,7 +9,7 @@ Four core objects — **Case, Claim, Evidence, Source** — plus append-only **a
 candidate/source, outcome, reason, date, run, and available model and input
 receipts. The migrated stages are watch triage, source promotion, agenda
 generation, and agenda scoring. New stages also record source requests,
-research runs/proposals/adoptions, and edition proposals. These records are workflow history, separate
+research runs/proposals/adoptions, edition proposals, and edition comparisons. These records are workflow history, separate
 from Evidence records and ratified case assessments.
 
 New agenda scores preserve individual seat reasons and concerns; their totals
@@ -229,6 +229,16 @@ the incumbent stays readable with a revision notice. Structural validity does
 not ratify selection or prose: new editions use the consequential-content gate.
 Only Deep Memory is migrated. Legacy featured fields remain the source for
 diagnosticity, objections, and component framing until their writers migrate.
+
+An `edition-cycle` intake decision holds the complete drafting comparison:
+two candidate proposals or their rejected replies, input and rule hashes,
+changed-record hashes, shuffled option order for each vendor, individual ballots
+or errors, and a mechanically derived outcome. Comparison version 2 separates
+the ranking from each option's `complies` / `violates` / `unsure` judgment.
+Earlier ballots retain their original version and tally. A later comparison may
+reference and reuse valid candidates without changing their author stamps.
+These records authorize preparation for a reviewed PR, never publication or
+case standing. Rest depends on the compared inputs and rules, not new run IDs.
 
 ## ResearchOpportunity
 

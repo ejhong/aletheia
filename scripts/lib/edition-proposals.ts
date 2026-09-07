@@ -4,7 +4,7 @@ import path from "node:path";
 import { stringify } from "yaml";
 import { EditionProposalSchema, type EditionProposal } from "../../src/domain/editionProposal.ts";
 import { displayAssessment, featuredClaims, loadCase } from "../../src/domain/load.ts";
-import type { LoadedCase } from "../../src/domain/schema.ts";
+import type { LoadedCase, AssessmentRun } from "../../src/domain/schema.ts";
 import { extractClaimRefs, extractPlateRefs, parseArticle } from "../../src/domain/article.ts";
 import { assessmentHash, fingerprint } from "./review-state.mjs";
 import { researchBasis, resolveResearchCase } from "./research-proposals.ts";
@@ -38,9 +38,11 @@ export function seedEdition(root: string, key: string, stamp: {
   } });
 }
 
-function substance(proposal: EditionProposal) {
+function substance(proposal: EditionProposal, referenced?: AssessmentRun) {
   const e = proposal.edition;
-  return fingerprint({ article: e.article, featured: e.featuredClaimIds, assessment: e.assessment });
+  const assessment = proposal.assessment ?? referenced;
+  return fingerprint({ article: e.article, featured: e.featuredClaimIds,
+    assessment: assessment ? { caseAssessment: assessment.caseAssessment, claimAssessments: assessment.claimAssessments } : null });
 }
 
 /** No in-place publication: validate a complete prospective case and optionally
@@ -83,7 +85,12 @@ export function validateEditionProposal(root: string, raw: unknown, outputDir?: 
     fs.mkdirSync(path.join(draftDir, "editions"), { recursive: true });
     fs.writeFileSync(path.join(draftDir, "editions", `${edition.runId}.yaml`), stringify(edition), { flag: "wx" });
     const after = loadCase(draftDir);
-    const unchanged = Boolean(previous && substance({ case: proposal.case, edition: previous }) === substance(proposal));
+    // New IDs, dates and author stamps alone are not an improved edition. A
+    // genuinely changed ledger may warrant renewing an otherwise stable account.
+    const unchanged = Boolean(previous && previous.basis.ledgerHash === edition.basis.ledgerHash &&
+      previous.basis.inputsHash === edition.basis.inputsHash &&
+      substance({ case: proposal.case, edition: previous }, displayAssessment(before)?.run) ===
+      substance(proposal, after.assessmentRuns.find(run => run.runId === edition.assessment?.runId)));
     if (outputDir) {
       if (unchanged) throw new Error("unchanged edition; retain the incumbent");
       if (fs.existsSync(outputDir)) throw new Error("review directory already exists");
@@ -100,7 +107,8 @@ export function recordEditionProposal(root: string, raw: unknown) {
   const report = validateEditionProposal(root, raw);
   const e = proposal.edition;
   const inputHash = fingerprint(e.basis);
-  const candidateHash = substance(proposal);
+  const loaded = loadCase(resolveResearchCase(root, proposal.case));
+  const candidateHash = substance(proposal, loaded.assessmentRuns.find(run => run.runId === e.assessment?.runId));
   const prior = readIntakeDecisions(root).find(entry => entry.stage === "edition-proposal" &&
     entry.case === proposal.case && entry.inputHash === inputHash && entry.candidateHash === candidateHash);
   if (prior) return { ...report, rested: true, decisionId: prior.id };

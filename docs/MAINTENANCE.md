@@ -87,11 +87,30 @@ featured set. Earlier interpretations remain in claim history. Blind checks
 include selected catalog claims and must match the new edition and assessment
 before standing can rise. These commands still make no model calls.
 
-Deep Memory is the first migrated case. Its current assessment is pinned by the
-edition, or explicitly absent. Legacy reassessment can still produce candidate
-overlays but skips its old article patcher for migrated cases. Legacy contested
-reconciliation retains the incumbent; the automated edition drafter remains
-to build before assessed cases migrate. Keep the panel enabled throughout.
+Deep Memory is the first migrated case. Its edition owns the selected
+assessment; the legacy reassessment and article patcher skip it. Keep the panel
+enabled throughout. Automatic composition uses the configured main writer and
+the shared independent vendor panel:
+
+```bash
+node scripts/draft-editions.ts deep-memory --dry-run
+node scripts/draft-editions.ts deep-memory --prepare
+node scripts/draft-editions.ts deep-memory --prepare --reconsider 'A clearer argument may resolve the previous objection.'
+```
+
+The dry run is free. The other commands draft two alternatives, compare them
+with the incumbent, record the complete comparison, and optionally prepare the
+winner in the working tree for the normal gated PR. Preparation is not publication.
+No winner means the incumbent stays; the reasons remain in `proposals/intake`.
+Repeated inputs rest, a previously compared winner can resume without more calls,
+and an operational failure may retry on a later UTC day. An explicit
+reconsideration is recorded, not a bypass of comparison. Add `--reuse-drafts <cycle-run-id>`
+when two saved candidates still match current case inputs and only the comparison
+needs repeating; their original authorship remains intact. Missing money or vendor
+responses never lower the review requirement. During scheduled operation,
+Content response processes at most one due edition and rests while its preceding
+batch is still open; settle a parked batch before expecting more judgment work.
+Intake continues independently.
 
 Every change reaches `main` through the same gate: **classifier → panel →
 merge policy**. There are two lanes.
@@ -106,7 +125,7 @@ Six workflows do the work:
 | Workflow | Trigger | Does | Output |
 | --- | --- | --- | --- |
 | **Maintain** | Mondays 14:00 UTC; dispatch; `inbox` mode on inbox pushes | Job `maintain`: process inbox → reassess changed cases → watch literature → triage → measure yield → propose agenda (due cases only) → score proposals (Bench) → harvest governance + post the **weekly digest issue** → open one PR. Jobs `promote`, `bench`, `adopt` (fresh checkouts of `main`): read queued sources and prepare checked Source/Claim/Evidence bundles; draft advancing study freezes; draft endorsed claims/research items. | One low-risk PR (proposals, moves, overlays) plus up to three `needs-approval` PRs. The digest issue, cc the founder. |
-| **Content response** | Hourly cron (GitHub delivers ~5/day); dispatch | For cases whose evidence packet changed (legacy drafts use timestamps): draft a new assessment overlay and run the editorial audit; re-panel any case whose blind checks are stale. Exits in seconds when nothing is stale. | One PR per run that produced anything; supersedes its older still-open predecessor unless that one is parked. |
+| **Content response** | Hourly cron (GitHub delivers ~5/day); dispatch | Compare one due edition with its incumbent; reassess legacy cases; run fresh blind checks. Unchanged inputs rest. | One ordinary gated PR per productive run; rests while its preceding batch remains open and preserves parked work. |
 | **Inbox response** | Push to `inbox/**` on `main` (not `inbox/processed/**`) | Dispatches Maintain in `inbox` mode. | — |
 | **Operator** | Daily 13:00 UTC; issues; dispatch | Answers parked PRs seat by seat, runs `reconcile-contested.mjs`, retries quarantined seats, triages issues. Never touches `AGENTS.md`, never pushes to `main`. | PR comments, fixes as PRs, issue replies. |
 | **PR risk check** | Every PR | Classifies the diff; fails a mislabeled low-risk PR; arms the low-risk lane when it qualifies. | Label + auto-merge. |

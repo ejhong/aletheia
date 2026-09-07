@@ -18,6 +18,10 @@ const PolicyObject = z.strictObject({
     effort: z.enum(["low", "medium", "high"]), maxOutputTokens: tokens }),
   operator: z.strictObject({ model: z.string().min(1), effort: z.enum(["low", "medium", "high"]) }),
   sourceDraft: z.string(), sourceCheck: z.string(), imageModel: z.string(), rateDate: z.iso.date(),
+  webSearch: z.strictObject({ usdPerCall: money, source: z.url(), checkedAt: z.iso.date(),
+    models: z.array(z.string()).min(1) }).optional(),
+  discovery: z.strictObject({ cases: z.array(z.string()), intervalDays: tokens,
+    maxQueries: tokens.max(3), maxLeads: tokens.max(2) }).optional(),
   rates: z.record(z.string(), Rate),
 });
 export const PolicySchema = PolicyObject.superRefine((p, ctx) => {

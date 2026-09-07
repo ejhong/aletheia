@@ -1,6 +1,7 @@
 /** Shared authoring client. Model policy and spend limits live in config/ai.json. */
 import { AI_POLICY, tariff, BudgetStopped } from "./ai-policy.mjs";
-import { countResponseInput, meteredFetch } from "./metered-model.mjs";
+import { meteredFetch } from "./metered-model.mjs";
+import { openaiResponse, OpenAIRefusalError } from "./openai-response.mjs";
 
 const providers = {
   anthropic: {
@@ -30,21 +31,11 @@ const providers = {
     model: process.env.EXTRACT_MODEL || AI_POLICY.main.model,
     async call(system, user) {
       if (tariff(this.model).provider !== "openai") throw new BudgetStopped("EXTRACT_MODEL does not belong to OpenAI.");
-      const body = { model: this.model, instructions: system, input: user, store: false,
-        service_tier: "default", max_output_tokens: AI_POLICY.main.maxOutputTokens,
-        reasoning: { effort: AI_POLICY.main.effort } };
-      const inputLimit = await countResponseInput(body, { apiKey: this.key });
-      const res = await meteredFetch("https://api.openai.com/v1/responses", {
-        method: "POST", signal: AbortSignal.timeout(900000),
-        headers: { "content-type": "application/json", authorization: `Bearer ${this.key}` },
-        body: JSON.stringify(body),
-      }, { model: this.model, workload: "drafting", inputLimit, outputLimit: body.max_output_tokens });
-      if (!res.ok) throw new Error(`OpenAI API HTTP ${res.status}; reservation retained`);
-      const data = await res.json();
-      const content = (data.output ?? []).flatMap(item => item.content ?? []);
-      const text = content.filter(item => item.type === "output_text").map(item => item.text).join("\n");
-      if (content.some(item => item.type === "refusal")) throw new RefusalError(this.model);
-      if (data.status !== "completed" || !text.trim()) throw new Error(`OpenAI response ${data.status ?? "empty"}`);
+      const { text } = await openaiResponse(system, user, { model: this.model, apiKey: this.key }).catch(error => {
+        if (error instanceof OpenAIRefusalError) throw new RefusalError(this.model);
+        throw error;
+      });
+      if (!text.trim()) throw new Error("OpenAI response empty");
       return text;
     },
   },

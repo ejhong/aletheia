@@ -57,6 +57,35 @@ until the next full run. A missing OpenAI key leaves sources queued and does not
 prevent model-free preparation of existing proposals. `--limit` can reduce the
 source count to one; it cannot increase the shared allowance.
 
+Bounded discovery (the Expedition adapter):
+
+```sh
+node scripts/discover-sources.ts deep-memory --dry-run
+node scripts/discover-sources.ts deep-memory
+node scripts/discover-sources.ts deep-memory --reconsider 'A narrowed comparison may resolve the previous uncertainty.'
+node scripts/discover-sources.ts --scan
+```
+
+The dry run has no network calls or writes. The live worker reads approved AI
+policy from main, records one question before searching, and queues up to two
+source leads. Astra plans and selects; the configured source-drafting model does
+at most two single-tool lookups. There are no automatic retries within a pass.
+The ten-minute deadline, output limits and shared allowance bound the work;
+the source reader's separate $1 limit excludes discovery and publication review.
+Only Deep Memory is enabled initially, with a seven-day revisit. New inputs
+reopen on a later UTC day; a specific `--reconsider` reason can reopen earlier.
+
+The full Maintain promotion job calls discovery before reading the common queue.
+Existing requests retain their order, so discovery does not jump ahead of old
+inbox submissions. The job serializes and rests while a `promote/` PR is pending.
+To inspect an attempt, find its `discovery` decisions in `proposals/intake/`:
+`planned` was saved before searching; the final receipt contains search actions,
+selected indexes and any failures. `queued` means a lead, not verified evidence.
+Run the same command to resume missing queue entries from a recorded selection
+without paying again. Stale selections require fresh consideration. A 429, an
+unsupported page or an empty selection must never be interpreted as an absence.
+Broader case coverage is set in `config/ai.json`, through normal review.
+
 Manual edition authoring (Node 22.18+, no API key or model call):
 
 ```sh

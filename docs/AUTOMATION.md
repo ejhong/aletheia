@@ -167,11 +167,11 @@ response, at most one due case per invocation. Assessed legacy cases stay on
 their existing workers while the Deep Memory pilot establishes its usefulness.
 
 Inbox notes and links, literature watch, inward-looking agenda proposals, and
-the planned browsing Expedition are adapters to the same research-proposal
+the bounded browsing Expedition are adapters to the same research-proposal
 interface. Inbox links and watch imports now feed the bounded supplied-URL
 reader; notes, document extraction, and agenda adoption still use their older
-adapters. Shared spend accounting across research,
-drafting, and review precedes unattended Expedition runs. An accepted ledger
+adapters. Shared spend accounting covers research,
+drafting, review and the Expedition's hosted search fees. An accepted ledger
 change should then prompt an edition candidate, with retaining the incumbent
 always available.
 
@@ -407,9 +407,10 @@ rows for the new models; the old rows are history, not error.
 
 Promotion, agenda scoring, study freeze drafting, the steelman requirement,
 assessment, reconciliation, and the publication arbiter are implemented.
-Retrieval-based passage checking, study collection, Expedition, and a unified
-edition drafter still need implementation. The sequence above replaces the
-previous numbered build order.
+The common source reader, bounded Expedition pilot and unified edition drafter
+are now implemented. Broader case migration and discovery, improved scheduling,
+study collection and the full reading/automation UI reassessment remain. The
+sequence above replaces the previous numbered build order.
 
 ### Simplification (founder direction, 2026-09-05: "as simple as possible")
 
@@ -493,22 +494,45 @@ would amplify the starvation (no promotions → no movement → cases cool).
 Every import records whether it eventually moved anything, feeding the
 yield metric.
 
-### 2. The Expedition — explores (new)
+### 2. The Expedition — explores (bounded pilot)
 
-The deep-research sweep, formalized. On a yield-gated schedule, a
-discovery-capable model receives a case's claims index (the coverage
-map) and its source list, and is tasked adversarially: find what this
-ledger does NOT contain — new primary documents, datasets, non-English
-literature, archival material, and counter-evidence specifically. Output
-is a brief (never citable, like all briefs), mechanically coverage-diffed
-against the claims and source indexes; only verified-novel items proceed
-to citation verification and enter through the gates. Because the
-coverage map persists in the repo, each expedition judges only its diff —
-which is why this converges where ad-hoc chat-session research cannot:
+`discover-sources.ts` supplies the missing browsing adapter to the common source
+queue. Astra reads the ledger, assessment gaps, founding inputs and recent intake
+outcomes. It records one narrow question, inclusion criteria, disconfirmers and
+at most two queries before any search. One query must seek counterevidence; an
+empty plan is allowed. This is a discovery plan, not a frozen systematic-study
+protocol or a claim of exhaustive coverage.
 
-**Saturation is a counter, not a feeling: a case is provisionally
-saturated after N consecutive expeditions whose verified novelty moved
-nothing; any later watch hit or inbox drop resets it.**
+The configured source-drafting model performs each lookup through Responses
+`web_search`, in separate stateless calls with `max_tool_calls: 1`. Astra then
+selects at most two returned URLs by index and states what the reader should
+check. A URL appearing only in generated prose cannot enter the selection.
+Exact source matches are labeled; a known source can still warrant a new
+observation. Queue requests keep the question and rationale. Search summaries
+remain unverified leads. Only the existing separate reading/checking process
+can propose Source/Claim/Evidence records, through the ordinary publication gate.
+
+Deep Memory is the configured pilot. The existing Maintain promotion job runs
+at most one due case, with a ten-minute discovery deadline and the shared AI
+allowance. Its default revisit is seven days. Changed ledger, assessment,
+founding inputs or external inbox requests can reopen on a later UTC day;
+explicit reasoned reconsideration can reopen immediately. Discovery's own
+receipts and queue entries do not trigger another discovery. A pending research
+PR pauses the next batch, and jobs serialize instead of canceling paid work.
+
+Plans, completed search actions, returned URLs, selections, raw rejected replies
+and failures live in the immutable intake store. A recorded selection can resume
+queueing without another AI call. Stale inputs stop queueing. Model and tool
+usage share the allowance; cost entries include the case, discovery run and
+phase. The search reservation covers two full model input passes and the hosted
+tool fee, without treating a low search-context setting as a token cap.
+
+No model grades its own novelty or saturation. Repeated URLs collapse into one
+candidate, but neither a new URL nor a queued lead is an accepted finding. The
+downstream research proposal and adoption receipts record actual ledger changes.
+An empty or failed search says nothing about the absence of evidence. A future
+public progress view can derive that distinction from these receipts; there is
+no global “topic complete” badge or self-reported non-material-pass counter.
 
 ### 3. The Bench — tests (exists as agenda + studies; selection changes)
 
@@ -654,7 +678,8 @@ limits publication pace; it is not a monetary budget. Shared spend accounting
 now covers every existing API path, including the operator's streamed requests
 and image generation, with one policy in `config/ai.json`. Missing receipts
 retain liability; a spent allowance stops work without weakening review. Wider
-Expedition browsing must account for any hosted-tool fees before being enabled.
+Expedition's bounded pilot now includes hosted-tool fees; wider browsing remains
+limited to models and tools whose tariffs have been reviewed on main.
 
 ## The founder's role, after
 

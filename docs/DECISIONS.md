@@ -859,7 +859,9 @@ independent arrivals at one model is the evidence the earlier five-loop
 framing never had, and `docs/AUTOMATION.md` is rewritten around it. The
 five loops are now history: Watch, Expedition, inbox, agenda, and study
 collection are intake; the Tribunal is the ratifying role; the Atelier is
-the drafter's tournament mode. The lab's code (about half again this
+gone — one drafter, one candidate, judged against the incumbent, which is
+always the second option; several candidates become a flag only if the
+tests ask for it. The lab's code (about half again this
 repository's size, three authoring paths, two languages) is the reference
 for the abstractions, not the target for the code; three of its modules —
 the edition schema, the source-identity matcher, the report prompt — are

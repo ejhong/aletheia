@@ -90,12 +90,29 @@ visible. Nothing else in the repository remembers anything.
 **Investigate → propose → verify → assess and explain → review → publish.**
 
 Two roles act on the edition and must stay separate: the **drafter**
-produces; the **panel** ratifies. The drafter is one model call (or, when
-much has changed, several competing calls the panel compares). The panel is
-the existing cross-vendor arbiter on the PR and the blind checks that derive
-standing. Standing never comes from the drafter. That separation is the
-constitution's safety argument (§3.15) and is the one thing this design
+produces; the **panel** ratifies. The drafter is one model call. The panel
+is the existing cross-vendor arbiter on the PR and the blind checks that
+derive standing. Standing never comes from the drafter. That separation is
+the constitution's safety argument (§3.15) and is the one thing this design
 does not simplify.
+
+**When an edition is drafted, and how it is judged.** A new edition is
+due when a *material* change lands, and material is mechanical, never the
+drafter's own sense of novelty: an adopted ledger change touches a
+featured claim's anchors; reassessment moves the verdict or the
+load-bearing set; a crux is resolved or reopened; a research report
+proposes a different selection. Catalog growth alone triggers nothing;
+unchanged inputs rest by hash. One drafter writes one candidate from the
+ledger, the founding inputs, and the incumbent. The panel judges the
+candidate against the incumbent, which is always the second option by
+construction: the candidate replaces it only on clear preference,
+otherwise the incumbent stands and the reasons are recorded. That is the
+minimal competition §7 asks for, and it is the whole mechanism. An
+unchanged edition after a real investigation is a normal, good outcome.
+There is no tournament: several candidates would be a flag on the same
+script, added only if the tests show single-drafter editions being
+rejected often or the panel unable to tell a better article from a
+longer one.
 
 ### Intake is one interface
 

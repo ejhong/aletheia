@@ -841,3 +841,48 @@ key. Note Gemini 3.8 Flash's list price doubles on 2027-01-01 (intro
 pricing); the table should be revisited then.
 
 (AI record of a founder instruction, 2026-09-05 session.)
+
+## 2026-09-07 — Two layers, one workflow: the design after the overhaul and the restore
+
+Between 2026-09-05 and 09-07 the founder ran a full redesign with a
+different operator (Codex, "Astra" as author), then restored this
+publication to its 2026-09-05 tree (PR #193) and kept the redesign in
+`ejhong/alethia-lab`. Every AI workflow here is disabled under the kill
+switch. This entry records the reassessment and the confirmed direction.
+
+**What the overhaul settled.** Working from the same constitution, the lab
+converged on the model this repository's own design session had reached
+the same weekend: a ledger that grows and a per-case edition (assessment,
+featured selection, article, exact input hashes) that converges; one
+source-identity module; an immutable store of dated intake decisions. Two
+independent arrivals at one model is the evidence the earlier five-loop
+framing never had, and `docs/AUTOMATION.md` is rewritten around it. The
+five loops are now history: Watch, Expedition, inbox, agenda, and study
+collection are intake; the Tribunal is the ratifying role; the Atelier is
+the drafter's tournament mode. The lab's code (about half again this
+repository's size, three authoring paths, two languages) is the reference
+for the abstractions, not the target for the code; three of its modules —
+the edition schema, the source-identity matcher, the report prompt — are
+borrowed, the rest rebuilt small.
+
+**What the founder learned and directed.** (1) The useful producer is a
+substantial research pass given the whole case compressed and asked what
+should be added or changed; the narrow retrieval scout proved plumbing and
+nothing else. (2) Test two research models under one interface and let the
+results choose. (3) Test on an existing case first (Cast, Not Carved, where
+the archived chat briefs are an oracle), then from scratch (Deep Memory,
+founding inputs from the founder's own Birdmen pages) as a stress test of
+genesis; eight reports, two per case per model. (4) Keep the current
+layout, assessment first; the reading-experience review and the
+AI-operation views come last, rendered from existing state. (5) Formalize
+the contract, not the method: prompts become versioned files stating task,
+scope, output schema, and the few non-obvious rules, citing the
+constitution for the method; genesis stays an agent-run procedure until
+the test shows otherwise. (6) Subtract by evidence after the tests, not by
+argument before them.
+
+**Struck.** The 2026-09-05 simplification item "do not add a loop, lane,
+label, or document without removing one" — the founder wants no
+constraints of that shape; the standard is the design itself.
+
+(AI record of founder direction, 2026-09-05 to 09-07 sessions.)

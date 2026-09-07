@@ -9,6 +9,12 @@ The site is operated by AI (AGENTS.md §3.15). The founder holds two powers:
 the kill switch (revert any run by its `runId`, or freeze the repo) and the
 constitution (`AGENTS.md`). Everything else below runs without a human.
 
+> **Paused (2026-09-07).** Every AI workflow below is disabled by hand under
+> the kill switch after the restore (PR #193); CI, PR risk check, and Deploy
+> run. Workflows re-enable one at a time as the tests in `docs/AUTOMATION.md`
+> need them. Until then a `needs-approval` PR has no arbiter and is merged by
+> the founder.
+
 ## 1. The machine on one page
 
 Every change reaches `main` through the same gate: **classifier → panel →

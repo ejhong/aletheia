@@ -193,7 +193,7 @@ describe("durable intake history", () => {
         const request = JSON.parse(init.body);
         return new Response(JSON.stringify({ id: "synthetic-response", model: request.model, status: "completed",
           usage: { input_tokens: 100, output_tokens: 50 }, output: [{ content: [{ type: "output_text",
-            text: JSON.stringify({ outcome: "no_change", reason: "The synthetic text adds no useful observation." }) }] }] }));
+            text: JSON.stringify({ result: { outcome: "no_change", reason: "The synthetic text adds no useful observation." } }) }] }] }));
       }
       return new Response("This is a synthetic source used only in a test. It contains no useful new observation, and is not a real publication.",
         { headers: { "content-type": "text/plain" } });

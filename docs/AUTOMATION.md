@@ -86,7 +86,7 @@ now uses the bounded reader; no additional research schedule is installed.
 | 2 | Essay-first reading experience | Implemented in PR #172. Short frontispiece, inspectable claims with ordinary-link fallback, supporting detail in disclosures, mobile claim sheet. Existing essays and evidence are preserved. |
 | 3 | Blank-topic starting path | Implemented in PR #172. `start-case.mjs` creates an incubating proposal from a question, with no invented evidence, priority, or review. The production loader and view accept it; judgment runners skip it until it has assessable evidence. This tests startup, not autonomous discovery. |
 | 4 | Shared proposal memory and intake diff | Durable history for watch, promotion, and agenda; inbox links and legacy watch imports now use the common research envelope. Complete bundles and before/after edits pass the production loader, including empty topics. Notes, document extraction, and agenda adoption still need adapters. Source identity and identical wording are mechanical; semantic overlap remains a review question. |
-| 5 | Bounded research and source-reading checks | Manual URLs and the existing promotion job share one reader, capped at two public HTML/text sources per pass even across cases. A separate reading checks each drafted observation. Complete, fresh proposals can be prepared for the normal publication gate; failures and stale inputs remain visible. The shared allowance now covers research, drafting, review, operator, and artwork; broad discovery and PDF/OCR remain to build. |
+| 5 | Bounded research and source-reading checks | Manual URLs and the existing promotion job share one reader, capped at two public HTML/text or bounded PDF sources per pass even across cases. A separate reading checks each drafted observation. Complete, fresh proposals can be prepared for the normal publication gate; failures and stale inputs remain visible. The shared allowance now covers research, drafting, review, operator, and artwork; bounded discovery now feeds this same reader; broader retrieval coverage remains to build. |
 | 6 | Versioned edition drafting | The authoring path binds an essay, ordered selection, and exact assessment reference in one immutable edition. A selected assessment can now supply complete interpretation for catalog claims, without editing their ledger records. Proposals bind to current inputs, rest unchanged candidates, and pass the production loader before review. Two metered Astra alternatives now compete with the incumbent before preparation for the ordinary gate. Full comparison receipts preserve retention, disagreement and failures. Deep Memory is the first enabled case; migration of assessed cases remains subsequent work. |
 | 7 | Pilot, measure, and widen | Exercise geopolymer, transients, and Deep Memory, the founder-selected topic about shared symbols and myths (`content/cases/deep-memory/`). Its empty starting point is preserved in PR #179; the illustrated opening adopts the first checked catalog observation. Its scope is informed by the birdmen project, so this is not blind rediscovery. Compare accepted changes and reading quality with the incumbent, under a single enforced budget covering research and review. The archived chats are design references and a possible held-out discovery benchmark, not an import queue. Expand only after unattended runs improve actual cases. |
 | 8 | Reading experience and automation visibility, after the pipeline work | Review the whole information hierarchy across the case narrative, assessments, claims, evidence, research questions, Panel and Proposals. Try a compact current assessment near the top of the narrative, with what changed and why, followed by the essay and routes into supporting records. Make consequential judgment changes easy to notice without making change frequency a goal. Give global spend, activity, model roles and system health a quiet home; keep research decisions and edition changes within their cases. Start from durable receipts and decisions, leave missing case-level cost allocations explicit, and keep detailed run history in disclosures. Judge the result for beauty, interest and usefulness on mobile and desktop. |
@@ -231,9 +231,23 @@ reader. It reads supplied public sources, the current ledger, the submitted
 context, and recent intake reasons. A
 drafting model proposes one local observation per source; a different model
 checks the metadata, proposition, paraphrase, inference boundary, caveats, and
-independence against the retrieved text. Both are OpenAI models in this first
+independence against the retrieved document. Both are OpenAI models in this first
 adapter; this is a separate reading, not cross-vendor concurrence. The normal
 publication arbiter and assessment-standing rules remain separate.
+
+HTML/plain-text passages retain exact string matching. PDFs are accepted up to
+10 MB and 60 physical pages, inspected with Poppler `pdfinfo` before a model
+call. Both readers receive the same complete PDF through inline file input,
+including scanned page images. The checker also receives a separate image of the claimed physical page,
+rendered by Poppler. A PDF proposal needs the checker to explicitly confirm the
+short quotation on that image and its physical PDF page. Both source formats
+also require an explicit check that the observation addresses the originating
+request; unrelated facts do not advance. Missing or uncertain
+confirmation rejects it. Receipts identify this as AI page reading, retain the
+original file hash, and use a null text hash: no text layer or mechanical match
+is invented. File bytes are not copied into public receipts. Larger documents,
+encrypted files and unreadable pages require another research route; they do
+not imply that the sought observation is absent.
 
 The source limit is two, the model-call limit four, the output-token limit 6,000
 per call, the deadline four minutes, and the research allowance $1 per pass
@@ -246,7 +260,7 @@ per-run research controls, nested inside the shared monthly/daily allowance
 for all repository API workers, review, the operator, and artwork. This replaces the existing promoter's
 three-source cap and house-model fallback with a two-source, metered pass.
 Its weekly/dispatch cadence and one-cycle boundary are unchanged. Additional
-autonomous discovery schedules wait for aggregate research-and-review allocation.
+discovery uses the bounded Expedition adapter below and this same aggregate allowance.
 
 Inbox capture is model-free: it records a `source-request` with the supplied
 context and origin, then archives the original file unchanged. Reachability
@@ -499,7 +513,7 @@ yield metric.
 `discover-sources.ts` supplies the missing browsing adapter to the common source
 queue. Astra reads the ledger, assessment gaps, founding inputs and recent intake
 outcomes. It records one narrow question, inclusion criteria, disconfirmers and
-at most two queries before any search. One query must seek counterevidence; an
+at most two planned queries before any search. One query must seek counterevidence; an
 empty plan is allowed. This is a discovery plan, not a frozen systematic-study
 protocol or a claim of exhaustive coverage.
 
@@ -697,3 +711,34 @@ loader, every new mechanism a tested script in `scripts/lib`, budgets in
 one config, engine work upstream here and synced downstream. Machine
 artifacts declare their lifecycle (status, expiry, surviving record) from
 their first run — no more folders a reader cannot date.
+
+### Next experiment: a substantial investigation that remembers
+
+The bounded source queue is supporting infrastructure. The next manual Deep
+Memory pilot should produce a coherent research report from the current edition,
+ledger, open questions and prior attempts. Astra should be able to pursue a useful
+question across sources, revise its search as it learns, identify meaningful
+changes and suggest relevant documentary plates. A predetermined number of new
+claims is not the objective. The report remains a proposal; verified changes
+feed the existing ledger and edition competition before publication.
+
+Evaluate the full result against the incumbent: does it answer an important
+question, sharpen uncertainty or a decisive test, preserve the strongest
+objections, and make a better article? Inspect the citations, costs and misses.
+The initial two-query discovery cap was a wiring trial, not a claim that this is
+enough research. Keep the shared $150 monthly allowance and run this comparison
+manually before setting the report cadence. Do not build another parallel intake
+store or presentation system for the experiment.
+
+The ledger may become substantially more comprehensive without lengthening the
+article. Evaluate additions against the case's research scope, not against the
+current article's selected claims. Keep useful context, negative controls,
+alternatives and documented disagreements accessible through the explorer.
+A later coverage summary should show examined areas, thin areas and past
+attempts, with links back to records rather than another competing ledger.
+The same case-improvement pass should propose ledger deltas and, when helpful,
+a better edition. Test a sparse case (Deep Memory) and a mature case (Orch OR). The founder's
+Orch OR example supplies an acceptance test: preserve both the strongest
+experimental objection and the strongest supported account of its scope. Trace
+argument, objection, response and unresolved burden to their underlying records;
+flag unsupported replies for source verification. Casting remains a later pilot.

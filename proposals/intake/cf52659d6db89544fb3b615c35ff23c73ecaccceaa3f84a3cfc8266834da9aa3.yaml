@@ -1,0 +1,141 @@
+version: 1
+decisions:
+  - id: f807029aeaed563dd44e3bab16862260ff16d6b43937e11a9dea0d22629d5295
+    case: deep-memory
+    stage: research-proposal
+    decision: proposed
+    source: null
+    proposal: null
+    research:
+      version: 1
+      case: deep-memory
+      basis:
+        contentHash: 2636e840471f194cf96ee8d9ad94113c1759b0fbddb25dad990c6c2a0dd76f3e
+        inputsHash: cbe1aa7da731a0c6021371074e9614d4e5a9d71d87dfd7ec6c811ed25d158e4d
+      runId: sources-2026-09-07-3085637f-d06b-4f76-8ab6-2845f48c2c1f
+      generatedAt: 2026-09-07T02:50:51.326Z
+      model: gpt-5.4-mini-2026-03-17
+      promptVersion: source-reading-v5
+      intent: add
+      title: Primary-source observations
+      rationale: Record narrow observations with source context and a separate reading check.
+      priorDecisionIds: []
+      themeAdditions:
+        inscription-repetition: Inscription repetition
+      changes:
+        - kind: source
+          recordId: SRC-MEM-7E3D4A605161
+          beforeHash: null
+          after:
+            id: SRC-MEM-7E3D4A605161
+            title: "Assyrian Reliefs and Ivories in the Metropolitan Museum of Art: Palace Reliefs of
+              Assurnasirpal II and Ivory Carvings from Nimrud"
+            authors:
+              - Vaughn E. Crawford
+              - Prudence O. Harper
+              - Holly Pittman
+            year: "1980"
+            url: https://resources.metmuseum.org/resources/metpublications/pdf/Assyrian_Reliefs_and_Ivories_in_The_Metropolitan_Museum_of_Art_Palace_Reliefs_of_Assurnasirpal_II_an.pdf
+            sourceType: book
+            verification: ai_verified
+            verificationNote: Fetched and read by gpt-5.4-mini-2026-03-17; separate source check by
+              gpt-5-mini-2025-08-07. Both received the same 50-page PDF. Passage and physical PDF
+              page checked by AI; not an exact text-layer match or human verification.
+            reliabilityNotes:
+              - This observation concerns the same Northwest Palace relief slab corpus as other
+                claims about the Assurnasirpal II reliefs; it is not independent from other
+                observations derived from that same object set.
+            derivedFrom: []
+            background: false
+          rationale: Retrieved public source; metadata checked against the retrieved document.
+          passages: []
+        - kind: claim
+          recordId: MEM-C003
+          beforeHash: null
+          after:
+            id: MEM-C003
+            tier: catalog
+            statement: The Standard Inscription is repeated with only minor variations on each relief slab.
+            theme: inscription-repetition
+            rung: observation
+            reviewState: ai_extracted
+            origin: &a1
+              ref: https://resources.metmuseum.org/resources/metpublications/pdf/Assyrian_Reliefs_and_Ivories_in_The_Metropolitan_Museum_of_Art_Palace_Reliefs_of_Assurnasirpal_II_an.pdf
+                — PDF page 31 of 50 (file page count, not printed pagination; AI page reading)
+              extractedBy: gpt-5.4-mini-2026-03-17
+              runId: sources-2026-09-07-3085637f-d06b-4f76-8ab6-2845f48c2c1f
+              date: 2026-09-07
+            sourceAnchor:
+              sourceId: SRC-MEM-7E3D4A605161
+              locator: PDF page 31 of 50 (file page count, not printed pagination; AI page reading)
+            independenceGroup: Northwest Palace relief slabs
+          rationale: The museum publication explicitly states that the Standard Inscription on the Northwest
+            Palace relief slabs recurs across the panels with only minor variation, which is a
+            local, document-supported observation about repetition within this Assyrian decorative
+            program.
+          passages: []
+        - kind: evidence
+          recordId: MEM-E003
+          beforeHash: null
+          after:
+            id: MEM-E003
+            title: Standard Inscription repetition across the relief slabs
+            claimIds:
+              - MEM-C003
+            sourceId: SRC-MEM-7E3D4A605161
+            direction: context
+            strength: moderate
+            sourceStatement: "The document says the inscription carved on the Northwest Palace relief panels
+              recurs across the slabs with only minor changes. The source states: “repeated with
+              only minor variations on each of the relief slabs.”."
+            editorInference: This shows deliberate textual repetition within the palace relief corpus, but it
+              does not by itself speak to prehistoric inheritance or shared myth transmission beyond
+              this specific Assyrian context.
+            exactLocator: PDF page 31 of 50 (file page count, not printed pagination; AI page reading)
+            limitations:
+              - This is a palace-specific observation and does not establish broader cultural
+                continuity or prehistoric inheritance.
+              - The statement concerns an edited translation in a museum publication, not a new
+                excavation record.
+              - It describes repetition of an inscription, not the origin or meaning of any mythic
+                symbol.
+              - This observation concerns the same Northwest Palace relief slab corpus as other
+                claims about the Assurnasirpal II reliefs; it is not independent from other
+                observations derived from that same object set.
+              - PDF passage and physical page were read and checked by separate AI models; a scan
+                can contain illegible or misread details. This is not human verification.
+            reviewState: ai_extracted
+            origin: *a1
+          rationale: The museum publication explicitly states that the Standard Inscription on the Northwest
+            Palace relief slabs recurs across the panels with only minor variation, which is a
+            local, document-supported observation about repetition within this Assyrian decorative
+            program.
+          passages:
+            - sourceId: SRC-MEM-7E3D4A605161
+              url: https://resources.metmuseum.org/resources/metpublications/pdf/Assyrian_Reliefs_and_Ivories_in_The_Metropolitan_Museum_of_Art_Palace_Reliefs_of_Assurnasirpal_II_an.pdf
+              retrievedAt: 2026-09-07T02:50:53.865Z
+              responseHash: ee3b37d39241146724d1f195d0be926aef651adb5934c8679c9b54d0c06119e8
+              locator: PDF page 31 of 50 (file page count, not printed pagination; AI page reading)
+              quote: repeated with only minor variations on each of the relief slabs.
+              textHash: null
+              extractor: pdf-pages-v1
+              pdfPage: 31
+              pdfPageCount: 50
+              pageCheck:
+                model: gpt-5-mini-2025-08-07
+                inputHash: 3d9b054afa926018c250461ac405817fde77939e5c8b16a6d9b5b60d40e70546
+                quoteSupported: true
+                locatorSupported: true
+    reason: Record narrow observations with source context and a separate reading check.
+    date: 2026-09-07
+    generatedAt: 2026-09-07T02:50:51.326Z
+    runId: sources-2026-09-07-3085637f-d06b-4f76-8ab6-2845f48c2c1f
+    model: gpt-5.4-mini-2026-03-17
+    promptVersion: source-reading-v5
+    inputHash: c3aee8455754f2b578e16fef254e89413a5671667276eb650108a29c82741774
+    candidateHash: b3f040b21e7d9e3751f89a2cc8e270e30bd95fdcbd9345a96f098042eae4600b
+    ref: null
+    caseBasis: 2636e840471f194cf96ee8d9ad94113c1759b0fbddb25dad990c6c2a0dd76f3e
+    recordId: null
+    matchMethod: null
+    retryable: false

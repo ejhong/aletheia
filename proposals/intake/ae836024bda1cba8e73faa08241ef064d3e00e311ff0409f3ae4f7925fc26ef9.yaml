@@ -1,0 +1,197 @@
+version: 1
+decisions:
+  - id: e9392f8a0095fab7b0ae9dcb62f2472603798396b81ddc6ce34d0508aa5a76d6
+    case: deep-memory
+    stage: research-run
+    decision: failed
+    source: null
+    proposal: null
+    reason: "unsupported source type: application/pdf"
+    date: 2026-09-07
+    generatedAt: 2026-09-07T02:15:32.850Z
+    runId: sources-2026-09-07-a824bc09-1333-41eb-b125-8abe73874a92
+    model: null
+    promptVersion: source-reading-v3
+    inputHash: 64d41af4d7d5867b6d6e4ec0c9b91f7f59ee3e5b95b67021a791856431903e13
+    candidateHash: null
+    ref: null
+    caseBasis: 2636e840471f194cf96ee8d9ad94113c1759b0fbddb25dad990c6c2a0dd76f3e
+    recordId: null
+    matchMethod: null
+    retryable: true
+    details:
+      runId: sources-2026-09-07-a824bc09-1333-41eb-b125-8abe73874a92
+      case: deep-memory
+      decision: failed
+      requests:
+        - case: deep-memory
+          url: https://www.metmuseum.org/art/collection/search/322614
+          key: 2bc584a2bea82317dc1c68ba7688eab3f05d9c53cd80e5a3d24d20cdf16ca39e
+          ref: discovery:discovery-2026-09-07-97ff901b-02a0-4559-8fe7-5c5c207a018d#sources[0]
+          context: '{"question":"Do securely documented views and contexts of Göbekli Tepe Pillar 43 and the
+            proposed Metropolitan Museum comparator, accession 32.143.7, support a resemblance more
+            specific than a rectangular form beneath an arch?","inclusion":"Admit observations only
+            from institutional object records, excavation publications or original research
+            explicitly identifying one of the two objects. Images must be traceable to that object,
+            with credit or provenance and a documented date or date range; distinguish object dating
+            from photographic dating and report uncertainty. Require a full scene or a reliably
+            located detail before coding spatial relationships. Record exact verified page, figure,
+            accession or section locators. Separate visible features from published interpretations
+            such as container, handle or architecture. Preserve damaged or obscured features as
+            unobservable rather than absent. Use the existing webpage and Birdmen material only as
+            discovery routes unless separately verified for the particular observation. Multiple
+            photographs and publications of one object remain dependent.","disconfirmers":"The
+            proposed resemblance would strengthen if authenticated, unaltered views share several
+            preselected structural features beyond the generic rectangle-and-arch outline. It would
+            weaken if the apparent match depends on cropping, redrawing, restoration or inconsistent
+            object identification; if arch attachment, internal detail, repetition or scene
+            relationships differ; or if contextual evidence supports distinct referents, such as a
+            carried implement versus a stationary motif. A large chronological separation without
+            connecting evidence limits any transmission inference but does not by itself refute
+            inheritance. Functional constraints could explain a simple shared outline. If identity,
+            dating or adequate views cannot be established, report the comparison as unready; a
+            search miss is not evidence that parallels or historical connections do not
+            exist.","reason":"The exact institutional object record is the priority for
+            authenticating the proposed comparator. Previous requests failed with HTTP 429, not a
+            substantive reading; accession-based discovery now supplies a reason to retry. Verify
+            accession, object date and its basis, provenance, and image credit before admitting
+            visual observations.","observationToCheck":"In a museum image explicitly tied to
+            accession 32.143.7, does the figure’s hand visibly grasp the arch of the proposed
+            rectangular comparator? Record the image locator and preserve obscured attachment points
+            as unobservable."}'
+          queuedAt: 2026-09-07T02:10:52.789Z
+        - case: deep-memory
+          url: https://resources.metmuseum.org/resources/metpublications/pdf/Assyrian_Reliefs_and_Ivories_in_The_Metropolitan_Museum_of_Art_Palace_Reliefs_of_Assurnasirpal_II_an.pdf
+          key: 7eea898158457698e4e5c12841bd0686bcff5d1839459719288560aece4bd227
+          ref: discovery:discovery-2026-09-07-97ff901b-02a0-4559-8fe7-5c5c207a018d#sources[2]
+          context: '{"question":"Do securely documented views and contexts of Göbekli Tepe Pillar 43 and the
+            proposed Metropolitan Museum comparator, accession 32.143.7, support a resemblance more
+            specific than a rectangular form beneath an arch?","inclusion":"Admit observations only
+            from institutional object records, excavation publications or original research
+            explicitly identifying one of the two objects. Images must be traceable to that object,
+            with credit or provenance and a documented date or date range; distinguish object dating
+            from photographic dating and report uncertainty. Require a full scene or a reliably
+            located detail before coding spatial relationships. Record exact verified page, figure,
+            accession or section locators. Separate visible features from published interpretations
+            such as container, handle or architecture. Preserve damaged or obscured features as
+            unobservable rather than absent. Use the existing webpage and Birdmen material only as
+            discovery routes unless separately verified for the particular observation. Multiple
+            photographs and publications of one object remain dependent.","disconfirmers":"The
+            proposed resemblance would strengthen if authenticated, unaltered views share several
+            preselected structural features beyond the generic rectangle-and-arch outline. It would
+            weaken if the apparent match depends on cropping, redrawing, restoration or inconsistent
+            object identification; if arch attachment, internal detail, repetition or scene
+            relationships differ; or if contextual evidence supports distinct referents, such as a
+            carried implement versus a stationary motif. A large chronological separation without
+            connecting evidence limits any transmission inference but does not by itself refute
+            inheritance. Functional constraints could explain a simple shared outline. If identity,
+            dating or adequate views cannot be established, report the comparison as unready; a
+            search miss is not evidence that parallels or historical connections do not
+            exist.","reason":"This institutional catalogue offers a newly surfaced route beyond the
+            rate-limited object page, potentially documenting original placement and a captioned
+            view of the exact accession. The reported doorway placement remains unverified. Its
+            images and descriptions would concern the same object, not provide an independent
+            comparator.","observationToCheck":"Does the catalogue explicitly assign accession
+            32.143.7 to the west jamb of a particular doorway? Record the exact page or figure and
+            the stated evidentiary basis, distinguishing documented placement from
+            reconstruction."}'
+          queuedAt: 2026-09-07T02:10:52.789Z
+      cases:
+        - case: deep-memory
+          basis: &a1
+            contentHash: 2636e840471f194cf96ee8d9ad94113c1759b0fbddb25dad990c6c2a0dd76f3e
+            inputsHash: cbe1aa7da731a0c6021371074e9614d4e5a9d71d87dfd7ec6c811ed25d158e4d
+      basis: *a1
+      urls:
+        - https://www.metmuseum.org/art/collection/search/322614
+        - https://resources.metmuseum.org/resources/metpublications/pdf/Assyrian_Reliefs_and_Ivories_in_The_Metropolitan_Museum_of_Art_Palace_Reliefs_of_Assurnasirpal_II_an.pdf
+      proposedRecords: 0
+      proposalFile: null
+      proposals: []
+      outcomes:
+        - case: deep-memory
+          url: https://www.metmuseum.org/art/collection/search/322614
+          key: 2bc584a2bea82317dc1c68ba7688eab3f05d9c53cd80e5a3d24d20cdf16ca39e
+          ref: discovery:discovery-2026-09-07-97ff901b-02a0-4559-8fe7-5c5c207a018d#sources[0]
+          context: '{"question":"Do securely documented views and contexts of Göbekli Tepe Pillar 43 and the
+            proposed Metropolitan Museum comparator, accession 32.143.7, support a resemblance more
+            specific than a rectangular form beneath an arch?","inclusion":"Admit observations only
+            from institutional object records, excavation publications or original research
+            explicitly identifying one of the two objects. Images must be traceable to that object,
+            with credit or provenance and a documented date or date range; distinguish object dating
+            from photographic dating and report uncertainty. Require a full scene or a reliably
+            located detail before coding spatial relationships. Record exact verified page, figure,
+            accession or section locators. Separate visible features from published interpretations
+            such as container, handle or architecture. Preserve damaged or obscured features as
+            unobservable rather than absent. Use the existing webpage and Birdmen material only as
+            discovery routes unless separately verified for the particular observation. Multiple
+            photographs and publications of one object remain dependent.","disconfirmers":"The
+            proposed resemblance would strengthen if authenticated, unaltered views share several
+            preselected structural features beyond the generic rectangle-and-arch outline. It would
+            weaken if the apparent match depends on cropping, redrawing, restoration or inconsistent
+            object identification; if arch attachment, internal detail, repetition or scene
+            relationships differ; or if contextual evidence supports distinct referents, such as a
+            carried implement versus a stationary motif. A large chronological separation without
+            connecting evidence limits any transmission inference but does not by itself refute
+            inheritance. Functional constraints could explain a simple shared outline. If identity,
+            dating or adequate views cannot be established, report the comparison as unready; a
+            search miss is not evidence that parallels or historical connections do not
+            exist.","reason":"The exact institutional object record is the priority for
+            authenticating the proposed comparator. Previous requests failed with HTTP 429, not a
+            substantive reading; accession-based discovery now supplies a reason to retry. Verify
+            accession, object date and its basis, provenance, and image credit before admitting
+            visual observations.","observationToCheck":"In a museum image explicitly tied to
+            accession 32.143.7, does the figure’s hand visibly grasp the arch of the proposed
+            rectangular comparator? Record the image locator and preserve obscured attachment points
+            as unobservable."}'
+          queuedAt: 2026-09-07T02:10:52.789Z
+          outcome: failed
+          reason: source HTTP 429
+        - case: deep-memory
+          url: https://resources.metmuseum.org/resources/metpublications/pdf/Assyrian_Reliefs_and_Ivories_in_The_Metropolitan_Museum_of_Art_Palace_Reliefs_of_Assurnasirpal_II_an.pdf
+          key: 7eea898158457698e4e5c12841bd0686bcff5d1839459719288560aece4bd227
+          ref: discovery:discovery-2026-09-07-97ff901b-02a0-4559-8fe7-5c5c207a018d#sources[2]
+          context: '{"question":"Do securely documented views and contexts of Göbekli Tepe Pillar 43 and the
+            proposed Metropolitan Museum comparator, accession 32.143.7, support a resemblance more
+            specific than a rectangular form beneath an arch?","inclusion":"Admit observations only
+            from institutional object records, excavation publications or original research
+            explicitly identifying one of the two objects. Images must be traceable to that object,
+            with credit or provenance and a documented date or date range; distinguish object dating
+            from photographic dating and report uncertainty. Require a full scene or a reliably
+            located detail before coding spatial relationships. Record exact verified page, figure,
+            accession or section locators. Separate visible features from published interpretations
+            such as container, handle or architecture. Preserve damaged or obscured features as
+            unobservable rather than absent. Use the existing webpage and Birdmen material only as
+            discovery routes unless separately verified for the particular observation. Multiple
+            photographs and publications of one object remain dependent.","disconfirmers":"The
+            proposed resemblance would strengthen if authenticated, unaltered views share several
+            preselected structural features beyond the generic rectangle-and-arch outline. It would
+            weaken if the apparent match depends on cropping, redrawing, restoration or inconsistent
+            object identification; if arch attachment, internal detail, repetition or scene
+            relationships differ; or if contextual evidence supports distinct referents, such as a
+            carried implement versus a stationary motif. A large chronological separation without
+            connecting evidence limits any transmission inference but does not by itself refute
+            inheritance. Functional constraints could explain a simple shared outline. If identity,
+            dating or adequate views cannot be established, report the comparison as unready; a
+            search miss is not evidence that parallels or historical connections do not
+            exist.","reason":"This institutional catalogue offers a newly surfaced route beyond the
+            rate-limited object page, potentially documenting original placement and a captioned
+            view of the exact accession. The reported doorway placement remains unverified. Its
+            images and descriptions would concern the same object, not provide an independent
+            comparator.","observationToCheck":"Does the catalogue explicitly assign accession
+            32.143.7 to the west jamb of a particular doorway? Record the exact page or figure and
+            the stated evidentiary basis, distinguishing documented placement from
+            reconstruction."}'
+          queuedAt: 2026-09-07T02:10:52.789Z
+          outcome: failed
+          reason: "unsupported source type: application/pdf"
+      failure: "unsupported source type: application/pdf"
+      budget:
+        maxUsd: 1
+        maxCalls: 4
+        maxOutputTokens: 6000
+        deadlineMs: 240000
+        rateDate: 2026-09-06
+        accountedUsd: 0
+        elapsedMs: 719
+        calls: []

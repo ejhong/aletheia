@@ -92,8 +92,9 @@ The bounded Expedition pilot now admits `web_search` for the configured small
 source drafter. Astra plans the question and selects useful returned leads.
 
 `discovery` sets the enabled cases, revisit interval, query and lead limits.
-Initially this is Deep Memory, seven days, two queries and two leads. Each query
-uses one stateless request with `max_tool_calls: 1`; discovery authors have an
+Initially this is Deep Memory, seven days, two planned queries and two leads. Each
+lookup uses one stateless request with `max_tool_calls: 1`. The hosted tool can
+expand a planned query into multiple search strings, retained in its receipt; discovery authors have an
 8,000-token output limit and the scout 4,000. The existing source reader keeps
 its separate four-call / four-minute / $1 limit. Discovery has a ten-minute
 deadline and shares the global allowance; no additional monthly budget is added.
@@ -106,6 +107,13 @@ the hold. Discovery cost terms also include case, operation run and phase.
 These bounds follow the [Responses tool-call limit](https://developers.openai.com/api/reference/cli/resources/responses/methods/create)
 and [OpenAI tool pricing](https://developers.openai.com/api/docs/pricing), checked
 2026-09-07. Search outputs remain discovery leads until separately read and checked.
+
+The source reader can attach a public PDF of at most 10 MB / 60 pages to both
+its drafting and checking calls. It still reserves the whole model input context
+before each request and accounts for returned usage, including page-image tokens.
+There is no Files API upload or storage charge introduced by this adapter. See
+[OpenAI file inputs](https://developers.openai.com/api/docs/guides/file-inputs)
+for the inline PDF format and image/text token treatment (checked 2026-09-07).
 
 Accounting begins with this integration. Earlier bills cannot be reconstructed
 from workers that discarded usage. ChatGPT/Codex subscriptions, this interactive

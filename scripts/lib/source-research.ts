@@ -6,7 +6,8 @@ import { loadCase } from "../../src/domain/load.ts";
 import { readIntakeDecisions, writeIntakeDecisions } from "./intake-store.mjs";
 import { recordResearchProposal, researchBasis, resolveResearchCase } from "./research-proposals.ts";
 import { createResearchBudget, boundedCompletion } from "./bounded-model.mjs";
-import { retrieveSource } from "./source-passages.mjs";
+import { retrieveSource, sha256 } from "./source-passages.mjs";
+import { renderPdfPage } from "./pdf-passages.mjs";
 import { RESEARCH_PROMPT, proposeSourceReading } from "./source-reader.ts";
 import { fingerprint } from "./review-state.mjs";
 
@@ -65,14 +66,24 @@ export async function researchSources(root: string, requests: SourceRequest[], o
   for (const request of requests) {
     const context = contexts.find(c => c.key === request.case)!;
     const { proposal, loaded, memory } = context;
+    let retrieval: Record<string, unknown> | undefined;
     try {
       budget.checkTime();
       const capture = await retrieve(request.url, { timeoutMs: Math.min(20000, budget.remainingMs()) });
+      retrieval = Object.fromEntries(Object.entries(capture).filter(([key]) =>
+        ["url", "requestedUrl", "retrievedAt", "responseHash", "textHash", "extractor", "pdf"].includes(key)));
       const result = await proposeSourceReading({ capture, loaded, runId, generatedAt, memory,
         existingChanges: proposal.changes, requestContext: request.context,
-        call: (role, instructions, input) => complete(budget, role, {
-          instructions, input, inputHash: fingerprint({ instructions, input }),
-        }),
+        call: async (role, instructions, input, schema, pdfPage) => {
+          const pageImage = pdfPage === undefined ? undefined : await renderPdfPage(capture.document, pdfPage,
+            { timeoutMs: Math.min(20000, budget.remainingMs()) });
+          const pageImageHash = pageImage ? sha256(Buffer.from(pageImage.data, "base64")) : undefined;
+          const answer = await complete(budget, role, {
+            instructions, input, inputHash: fingerprint({ instructions, input, responseHash: capture.responseHash, pageImageHash }),
+            document: capture.document, pageImage, schema,
+          });
+          return { ...answer, pageImageHash };
+        },
       });
       if (result.outcome === "proposed") {
         for (const [theme, label] of Object.entries(result.themeAdditions))
@@ -83,13 +94,13 @@ export async function researchSources(root: string, requests: SourceRequest[], o
         proposal.model = result.model;
       }
       outcomes.push({ ...request, case: loaded.record.slug,
-        retrieval: Object.fromEntries(Object.entries(capture).filter(([key]) => key !== "text")),
+        retrieval,
         outcome: result.outcome, model: result.model,
         reason: "reason" in result ? result.reason : null, review: "review" in result ? result.review : null });
     } catch (error) {
       failure = error instanceof Error ? error.message : "source pass failed";
       failureKind = error instanceof Error && "kind" in error ? String(error.kind) : "failed";
-      outcomes.push({ ...request, case: loaded.record.slug, outcome: failureKind, reason: failure });
+      outcomes.push({ ...request, case: loaded.record.slug, ...(retrieval ? { retrieval } : {}), outcome: failureKind, reason: failure });
       if ((error instanceof Error && "kind" in error) ||
         budget.report().calls.some((call: { usage?: unknown }) => !call.usage)) break;
     }

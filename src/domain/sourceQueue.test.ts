@@ -23,15 +23,15 @@ afterEach(() => {
 const stamp = { runId: "synthetic-capture", generatedAt: "2026-09-06T12:00:00.000Z" };
 const body = "These observations came from one shared sample. They are not independent replications. This is a synthetic test source, not a real publication.";
 const draft = { outcome: "observation", reason: "Synthetic sample provenance.",
-  source: { title: "Synthetic source", authors: [] },
+  source: { title: "Synthetic source", authors: [], year: null, sourceType: null },
   claim: "The synthetic observations came from one shared sample.", title: "A shared synthetic sample",
   sourceStatement: "The test source states that its observations share a sample.",
-  quote: "These observations came from one shared sample.",
+  pdfPage: null, quote: "These observations came from one shared sample.",
   inference: "The observations cannot count as independent replications.", limitations: ["One synthetic text."],
   direction: "context", strength: "weak", theme: "methods", themeLabel: "Methods",
   independenceNote: "One shared synthetic sample.", independenceGroup: "synthetic-sample" };
-const review = { sourceMetadataSupported: true, claimSupported: true, sourceStatementSupported: true,
-  inferenceSeparated: true, limitationsPreserved: true, independenceHandled: true,
+const review = { requestAddressed: true, sourceMetadataSupported: true, claimSupported: true, sourceStatementSupported: true,
+  inferenceSeparated: true, limitationsPreserved: true, independenceHandled: true, quoteSupported: null, locatorSupported: null,
   reason: "The sample dependence is preserved.", dependencyNote: "One shared sample." };
 
 function fixture() {
@@ -63,7 +63,7 @@ function reader(overrides: { missing?: string; reject?: boolean; usageMissing?: 
       : { ...review, claimSupported: !overrides.reject };
     return new Response(JSON.stringify({ id: "synthetic-response", model: request.model,
       status: "completed", usage: overrides.usageMissing ? null : { input_tokens: 100, output_tokens: 50 },
-      output: [{ content: [{ type: "output_text", text: JSON.stringify(value) }] }] }));
+      output: [{ content: [{ type: "output_text", text: JSON.stringify(request.text.format.type === "json_schema" ? { result: value } : value) }] }] }));
   };
   const options: Parameters<typeof researchSources>[2] = {
     retrieve: (url, options) => retrieveSource(url, { ...options, fetchImpl: async () =>

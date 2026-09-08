@@ -2,48 +2,86 @@
 
 **Status:** design confirmed by the founder, 2026-09-07, after the overhaul
 experiment of 2026-09-05 to 09-07 (preserved in `ejhong/alethia-lab`) and
-the restoration of this publication to its 2026-09-05 tree (PR #193). The
-section immediately below is the running status and is rewritten, not
-appended, on each reassessment. Everything after it is the design. Nothing
+the restoration of this publication to its 2026-09-05 tree (PR #193);
+reassessed 2026-09-08 after the first paid runs. The section immediately
+below is the running status and is rewritten, not appended, on each
+reassessment. Everything after it is the design. Nothing
 in the design is built until its own PR lands. The history of how the design
 got here, including the earlier five-loop version it replaces, is in
 `docs/DECISIONS.md`.
 
-## Where we are (reassessed 2026-09-07)
+## Where we are (reassessed 2026-09-08, evening)
 
-- **The publication is frozen.** Every AI workflow (Arbiter, Content
-  response, Inbox response, Maintain, Operator, Extract claims, Generate
-  case art) is disabled by hand under the kill switch. CI, PR risk check,
-  and Deploy run. Ten cases are live; none has changed since 2026-09-05.
-  Workflows re-enable one at a time, each when a test below needs it.
-- **What the overhaul established.** Two days of implementation in the lab
-  converged on the model below independently of this document: a ledger
-  that grows and a per-case *edition* as the reader-facing unit; one
-  source-identity module; an immutable store of intake decisions. A case
-  started from a question alone reached one source, two catalog claims, and
-  two editions in a day. The narrow retrieval scout (two searches, one
-  page) cost about fifty cents and produced one irrelevant observation on
-  which two models agreed. The research-report producer was wired but never
-  run. The lab's code is roughly half again the size of this repository's
-  and carries three authoring paths; it is the reference for the
-  abstractions, not the target for the code.
-- **What has evidence and what does not.** The judging half (arbiter,
-  blind checks, derived standing) worked for two weeks and its parks were
-  substantively right. The two-layer model has two independent
-  confirmations. The producer has none. The plan is arranged to get that
-  evidence cheaply and let it decide what else survives.
+Reassessed against three questions the founder set: is it **true** (does
+every displayed thing rest on the record, and does the record say what
+happened), is it **beautiful** (one abstraction per idea, nothing twice),
+and does it **run itself**. The design holds on all three; the order of the
+remaining work changes. What follows is the state and the plan; the design
+after it is unchanged.
+
+- **The chain has run end to end, twice, on one case.** Cast, Not Carved:
+  report (house seat with web search and fetch; the OpenAI seat as the
+  comparison) → draft → verify → edition → five-seat check. Two primary
+  papers the first pass could not read (Nemoy 1939, Sessa et al. 2026)
+  entered on the second with ten evidence records; the edition retold the
+  salt line from them; four panel seats then disputed the house verdict and
+  the case displays **contested** — derived, not declared. The house report
+  costs about $3.70 cached ($37.86 the one time it ran uncached), the whole
+  pass about $12, a panel check about $3.
+- **What the runs taught, and what was fixed.** Retrieval decides what the
+  ledger can know: without PDFs and open-access fallback the pipeline
+  admitted proponent web pages and blocked the primaries that answered
+  them. The second reader is a judge, not a function: its dissent on a
+  label is now recorded on the record, not fatal. The budget guard is an
+  estimate and cannot stop a server-side turn; a run over its cap is kept
+  and flagged. A stale check is set aside, not counted. Every one of these
+  is a test now.
+- **Truth: three debts.** (1) A proposal's *correction* to an existing
+  record is proposed and said aloud but not applied — the ledger can hold
+  evidence that contradicts a claim's own wording (GEO-C003 says c. 820;
+  GEO-E028 dates it to 832). (2) The panel's spend is not metered; the
+  ledger is not yet the whole bill. (3) The Arbiter is off, so the merge
+  step of "AI-operated" is, for now, the founder's hand, and the pages do
+  not say so.
+- **Beauty: what remains twice.** One roster, one retrieval layer, one run
+  frame, one config reader, one appender, one case lookup — done. Still
+  twice: the panel is called from its own script on its own HTTP path
+  beside the metered transport; `check` and `panel` live outside the CLI;
+  reconsideration (answering the panel's dissents) is an old script beside
+  `edition`; the maintenance scripts run on a second model client. Each of
+  these folds into the chain as the loop below closes, and the folding is
+  the subtraction step 5 promised — now with named candidates.
+- **Automation: nothing yet runs unattended.** Every piece of the loop
+  exists as a verb or a script; no scheduler chooses a case, no workflow
+  runs the chain, the Arbiter is disabled, and nothing re-checks after a
+  merge or answers a contested standing. Closing this loop on the one case
+  that has run is the next step, before any second case: a second case
+  through a loop that is not closed teaches nothing the first did not.
 
 ### Build sequence — status
 
 | # | Step | Status |
 | --- | --- | --- |
-| 1 | This design | In review. |
-| 2 | The ledger and the edition: `editions/`, evaluation off claim records, one `CaseView`, ten cases migrated mechanically; check runs and editions record the ledger hash they judged; the touched scripts move to TypeScript on the shared domain | **Built** (2026-09-08, PR pending founder merge). Render diff against the pre-migration build: every difference accounted for (see the DECISIONS entry). |
-| 3a | The intake foundation: dispositions schema and loader rule, one coverage diff with mechanical keys, the packet builder, the intake store (`proposals/<runId>/`), the model transport with the spend ledger inside it, six protocol files, the `aletheia` CLI (`status`, `diff`, `migrate-memory`); the archive and promotions ledgers migrated into dispositions | **Built** (2026-09-08, PR pending founder merge). No model calls. |
-| 3b | The chain: `report` (two research seats), `draft`, `verify`, `edition` behind the CLI, each with a dry run; the budget guard on every paid call; tariffs read from the vendors' price pages | **Built** (2026-09-08, PR pending). Research seats: the house model (`claude-fable-5-1`, server-side fallback `claude-opus-5`) with web search and fetch — the default — and `o4-mini-deep-research`; ceiling $20 per run, $50 per day, $150 per month (config/budget.yaml). `check` and `panel` still run from their own scripts. |
-| 4 | The tests: Cast, Not Carved (existing case, with oracle), then Deep Memory (from scratch); two research models each | Not started. Depends on 3. |
-| 5 | Subtraction by evidence: retire what the tests show redundant; ten workflows become four | Depends on 4. |
-| 6 | Presentation: reading experience (current layout kept), then AI operation at case and global level | Last. Views over existing state. |
+| 1 | This design | Confirmed 2026-09-07; reassessed 2026-09-08. |
+| 2 | The ledger and the edition: `editions/`, evaluation off claim records, one `CaseView`, ten cases migrated mechanically; hashes on checks and editions | **Merged** (#197 / #198). Editions ordered by their `previous` chain (#200). |
+| 3a | The intake foundation: dispositions, coverage diff, packet, store, transport with the spend ledger, six protocol files, the CLI | **Merged**. |
+| 3b | The chain: `report` (two seats), `draft`, `verify`, `edition`; the budget guard; tariffs from price pages; one roster (`config/models.yaml`) | **Merged**. Protocols `draft-v2`, `verify-v2`, `edition-v2` after the first runs. |
+| 4a | First runs on Cast, Not Carved, both seats | **Done** (2026-09-08; #199, #200, #201). Evidence above and in DECISIONS. |
+| 4b | **Close the loop on one case.** (i) A correction writer: change one field of one record in place, bytes elsewhere untouched, with the history entry — so proposals' corrections apply. (ii) `check` behind the CLI on the metered transport with the roster's panel; each seat's raw reply kept beside its verdict; the Gemini seat's omitted claims fixed (contract or output room). (iii) `edition` carries the panel's dissents when standing is contested: the drafter answers them or holds, and a fresh blind check follows — reconsideration folded in, the old script retired. (iv) `aletheia next`: choose the case by staleness, saturation, and time since its last run; a weekly `chain` workflow runs report → draft → verify → edition for that case under budget and opens the PR; the Arbiter judges it; a passing edition is re-checked after merge. (v) The operation state — live or paused under the kill switch, and why — is a governance file the pages display. | **Next.** Needs the founder's toggle on the Arbiter. |
+| 4c | Breadth: a second existing case with PDF-heavy sources (YDIH or CCC) through the closed loop; then Deep Memory from the Birdmen inputs, from scratch | After 4b. |
+| 5 | Subtraction by evidence: the maintenance scripts (extract, inbox, watch, agenda, freeze, endorsements) fold into the chain or retire, each retirement citing the run that made it safe; ten workflows become a few; the changelog becomes a view | After 4c, with 4b's foldings as the first instances. |
+| 6 | Presentation: reading experience (current layout kept), then AI operation at case and global level — what ran, what it proposed, what was adopted or declined and why, what it cost, how standing derives; spend visibility and budgeting for the founder | Last. Views over state that exists. |
+
+### Two rules settled by the runs
+
+- **The second research seat runs when the first stops finding.** The
+  house seat runs on schedule; the OpenAI seat runs on a case whose last
+  house-seat pass landed nothing (saturation), as a different pair of eyes,
+  not as a second bill on every pass.
+- **A contested standing is a task, not a label.** It triggers the
+  reconsideration edition and a fresh check on the schedule's next turn for
+  that case; the standing stays displayed as contested until the panel
+  re-judges.
 
 ## Purpose
 

@@ -102,6 +102,23 @@ it:
   rules goes back to the drafter with the findings, once; the second answer
   is validated the same way. `errors.md` and `reply-repaired.json` in the
   run directory show what happened.
+- **Retrieval reads PDFs and falls back to open access.** The drafter and
+  verifier read PDFs page by page (`[p. N]` markers, so locators carry the
+  page) and, when a URL will not serve — a login wall, a bot challenge
+  served as a 200, a dead host — ask OpenAlex for an open-access copy by
+  DOI and read that, recording `via` in the proposal input and in
+  `verification.md`. Login-walled hosts without a DOI (academia.edu book
+  chapters) still block, with the route.
+- **Admission leaves marks on the source.** A retraction, withdrawal, or
+  correction notice Crossref knows (Retraction Watch data) is written into
+  the source's `reliabilityNotes`, stamped with the check date; the source
+  still enters — the notice is a fact about it. Every admitted URL gets a
+  Wayback snapshot on `archivedUrl` (best effort; a slow archive is a note).
+- **The second reader's dissent on direction is recorded, not fatal.** A
+  record whose quotes, locator, statement, independence, and bearing hold
+  enters even when the reader disputes `supports` versus `qualifies`; the
+  dissent is written into its `limitations` with the reader's model and
+  date. Everything else the reader rejects stays rejected.
 
 ## 2. Feeding it
 

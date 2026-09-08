@@ -71,13 +71,20 @@ adds:
 | **FutureSearch** (forecasting agents with a public track record; 5–11¢ per question; MCP) | **Later, and a product question.** Two or three resolvable questions per case with a monthly probability trajectory is attractive, but it is a new surface on the case page and must be reconciled with §3.13 (no theatrical single numbers) and with "presentation last". ForecastBench as a calibration check on the judge models is the cheaper, quieter first use. |
 | **Manifold market per case** | **No, for now.** Play-money markets are engagement bait by another name (§7). |
 
-## A first order of work, if the founder agrees
+## Status (2026-09-08, evening)
 
-1. Retraction and correction flags in the existing DOI checker (arbiter and `verify` inherit them).
-2. Wayback snapshots on merge, written back as `archivedUrl`.
-3. OpenAlex cited-by feed over anchor sources into the intake.
-4. Save the panel seats' raw replies beside their verdicts.
-5. Asta trial on one existing dossier.
+Done, inside the Phase A retrieval and verify work: Crossref retraction and
+correction notices on admitted sources (verified live against the Wakefield
+retraction); Wayback snapshots at admission (`archivedUrl`); OpenAlex
+open-access resolution by DOI (live: a Nature article behind a bot wall now
+reads from PMC). Not yet: the OpenAlex cited-by feed, panel raw-reply
+logging, the Asta trial.
+
+## The order of work from here
+
+1. OpenAlex cited-by feed over anchor sources into the intake.
+2. Save the panel seats' raw replies beside their verdicts.
+3. Asta trial on one existing dossier, once two more cases have run.
 
 Everything else waits for the two research seats to have run on more than
 one case, so a candidate is judged against what they miss.

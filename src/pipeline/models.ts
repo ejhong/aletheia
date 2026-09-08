@@ -309,7 +309,15 @@ export async function anthropicResearch(opts: AnthropicResearchOptions, meter: M
     system: opts.system,
     tools: [
       { type: "web_search_20260318", name: "web_search", max_uses: maxSearches },
-      { type: "web_fetch_20260209", name: "web_fetch", max_uses: maxFetches, max_content_tokens: maxContentTokens },
+      {
+        type: "web_fetch_20260318",
+        name: "web_fetch",
+        max_uses: maxFetches,
+        max_content_tokens: maxContentTokens,
+        citations: { enabled: true },
+        // Fetched bodies consumed by the model's own filtering are not echoed back: they are the bulk of the payload and of the output bill.
+        response_inclusion: "excluded",
+      },
     ],
     messages,
   }, opts.fallback);

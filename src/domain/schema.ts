@@ -315,6 +315,8 @@ export const SourceSchema = z.object({
   ]),
   identifier: z.string().optional(),
   url: z.string().url().optional(),
+  /** A Wayback Machine snapshot of `url`, written when the source was admitted (§3.8: locators that outlive the page). */
+  archivedUrl: z.string().url().optional(),
   /**
    * Workpaper sources only: the study this source is the container for.
    * The loader enforces both directions — a workpaper source must name a

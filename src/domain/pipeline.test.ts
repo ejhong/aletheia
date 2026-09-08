@@ -2,7 +2,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { getCaseBySlug, loadAllCases } from "./load.ts";
+import { currentEdition, getCaseBySlug, loadAllCases } from "./load.ts";
 import { buildPacket, PACKET_MAX_CHARS, renderPacket } from "../pipeline/packet.ts";
 import { loadProtocol, renderProtocol } from "../pipeline/protocols.ts";
 import { loadTariffs, priceOf, readSpend, recordSpend, sumCost } from "../pipeline/spend.ts";
@@ -50,7 +50,7 @@ describe("the packet", () => {
     const full = buildPacket(geo);
     expect(full.index.sources.length).toBe(geo.sources.length);
     expect(full.index.claims.find((c) => c.id === "GEO-C001")?.verdict).toBeTruthy();
-    expect(full.edition?.featured.length).toBe(14);
+    expect(full.edition?.featured.length).toBe(currentEdition(geo).featuredClaimIds.length);
     expect(full.inputs?.length).toBeGreaterThan(0);
     expect(full.ledgerHash).toBe(geo.ledgerHash);
     const blind = buildPacket(geo, { blind: true });

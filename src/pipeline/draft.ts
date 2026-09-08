@@ -17,7 +17,7 @@ import {
   SourceSchema,
   type LoadedCase,
 } from "../domain/schema.ts";
-import { fetchSource, type FetchedSource } from "./fetch.ts";
+import { doiFromUrl, doisInText, retrieve, type FetchedSource, type RetrievalTarget } from "./fetch.ts";
 import { MODELS } from "../../scripts/lib/models.mjs";
 import { anthropicJson, type Meter } from "./models.ts";
 import { buildPacket } from "./packet.ts";
@@ -242,6 +242,19 @@ export interface DraftReply {
 }
 
 /** Every http(s) URL in a report, canonicalised and deduplicated, tracking parameters dropped. */
+/** Every work the report points at: its URLs, plus DOIs written bare that no URL already carries. */
+export function retrievalTargets(markdown: string, cap = 20): RetrievalTarget[] {
+  const urls = urlsInReport(markdown, cap);
+  const covered = new Set(urls.map((u) => doiFromUrl(u)?.toLowerCase()).filter(Boolean));
+  const targets: RetrievalTarget[] = urls.map((url) => ({ url, doi: doiFromUrl(url) }));
+  for (const doi of doisInText(markdown)) {
+    if (covered.has(doi) || targets.length >= cap) continue;
+    covered.add(doi);
+    targets.push({ url: `https://doi.org/${doi}`, doi });
+  }
+  return targets;
+}
+
 export function urlsInReport(markdown: string, cap = 20): string[] {
   const seen = new Set<string>();
   const out: string[] = [];
@@ -320,6 +333,14 @@ export function assembleProposal(reply: DraftReply, ctx: AssembleContext): Assem
   ]);
   const resolve = (ref: string) => idOf.get(ref) ?? (knownIds.has(ref) ? ref : null);
   const fetchedByUrl = new Map(ctx.fetched.map((f) => [canonicalUrl(f.url), f]));
+  const fetchedByDoi = new Map(ctx.fetched.flatMap((f) => (doiFromUrl(f.url) ? [[doiFromUrl(f.url)!.toLowerCase(), f] as const] : [])));
+  /** The retrieved text for a proposed source: by its URL, or by the DOI its URL or identifier carries. */
+  const shownFor = (s: { url?: string | null; identifier?: string | null }): FetchedSource | undefined => {
+    const byUrl = s.url ? fetchedByUrl.get(canonicalUrl(s.url)) : undefined;
+    if (byUrl) return byUrl;
+    const doi = (s.url ? doiFromUrl(s.url) : null) ?? (s.identifier ? doisInText(s.identifier)[0] : null);
+    return doi ? fetchedByDoi.get(doi.toLowerCase()) : undefined;
+  };
 
   const decline = (kind: Disposition["kind"], observed: string, reason: string, key: string | null, extra: Partial<Disposition> = {}) => {
     if (!key) {
@@ -352,19 +373,29 @@ export function assembleProposal(reply: DraftReply, ctx: AssembleContext): Assem
         });
         continue;
       }
-      dispositions.push({
-        key: hit.key,
-        kind: "source",
-        disposition: hit.disposition!.disposition,
-        as: hit.disposition!.as,
-        reason: `previously ${hit.disposition!.disposition} on ${hit.disposition!.date}: ${hit.disposition!.reason ?? ""}`.trim(),
-        observed: s.title,
-        by: runId,
-        date,
-      });
-      continue;
+      // `blocked` is a pending state, not a verdict: its reopen condition is
+      // the text being obtained. When this pass has the text, the source goes
+      // forward as new (the first pass with retrieval, 2026-09-08, had
+      // re-blocked Nemoy 1939 and Sessa et al. on the strength of the previous
+      // day's row and lost seven evidence records with them).
+      const prior = hit.disposition!;
+      const nowShown = shownFor(s);
+      if (!(prior.disposition === "blocked" && nowShown?.ok)) {
+        dispositions.push({
+          key: hit.key,
+          kind: "source",
+          disposition: prior.disposition,
+          as: prior.as,
+          reason: `previously ${prior.disposition} on ${prior.date}: ${prior.reason ?? ""}`.trim(),
+          observed: s.title,
+          by: runId,
+          date,
+        });
+        continue;
+      }
+      notes.push(`${s.title.slice(0, 80)}: previously blocked on ${prior.date}; its text was retrieved this pass, so it goes forward`);
     }
-    const shown = s.url ? fetchedByUrl.get(canonicalUrl(s.url)) : undefined;
+    const shown = shownFor(s);
     const id = sourceIdFor(s, takenSourceIds);
     const record = {
       id,
@@ -587,7 +618,7 @@ export const defaultDrafter: Drafter = async (system, user, meter) => {
 export interface DraftOptions {
   dryRun?: boolean;
   root?: string;
-  deps?: { draft?: Drafter; fetch?: typeof fetchSource; now?: () => Date; cases?: () => LoadedCase[] };
+  deps?: { draft?: Drafter; fetch?: typeof retrieve; now?: () => Date; cases?: () => LoadedCase[] };
 }
 
 export interface DraftOutcome extends RunOutcome {
@@ -609,15 +640,15 @@ export async function runDraft(reportRunId: string, opts: DraftOptions = {}): Pr
   const run = openRun("draft", loaded.record.slug, { model: DRAFTER.model, promptVersion: protocol.version }, { now: now(), root });
   const { runId, date } = run;
 
-  const fetcher = opts.deps?.fetch ?? fetchSource;
+  const fetcher = opts.deps?.fetch ?? retrieve;
   const fetched: FetchedSource[] = [];
-  for (const url of urlsInReport(report)) fetched.push(await fetcher(url, {}));
+  for (const target of retrievalTargets(report)) fetched.push(await fetcher(target, {}));
   const packet = buildPacket(loaded);
   const user = JSON.stringify(
     {
       packet,
       report,
-      sources: fetched.map((f) => ({ url: f.url, retrieved: f.ok, reason: f.reason ?? null, text: f.text })),
+      sources: fetched.map((f) => ({ url: f.url, retrieved: f.ok, reason: f.reason ?? null, via: f.via ?? null, pages: f.pages ?? null, text: f.text })),
     },
     null,
     1,

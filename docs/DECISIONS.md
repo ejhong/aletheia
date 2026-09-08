@@ -1138,7 +1138,33 @@ the reader wanted `supports`), which is a protocol-wording question for
 `draft` v2. The cached-cost validation of the house seat (estimated
 $13.02) was refused by the per-day cap and waits for the next day.
 Branch `feat/first-runs`, PR to follow; the panel judges the edition
-candidate there. Ceiling: $20 per run, $50 per day,
+candidate there.
+
+**Phase A of the reassessed plan (2026-09-08, evening).** Four things from
+the day's runs, done together: (1) editions are ordered by their
+`previous` chain — two same-day editions had sorted the migration after
+its successor, so the merged edition was not the one readers saw; (2)
+retrieval reads PDFs page by page and falls back to an open-access copy
+through OpenAlex when a URL will not serve, with bot-challenge pages served
+as 200 treated as not retrieved — live, Nemoy 1939 (22 pages, archive.org)
+and Sessa et al. 2026 (via PMC) now read, where yesterday both were
+blocked; (3) verify v2: a reader dispute about the direction label is
+written on the admitted record instead of rejecting it, anchors are judged
+on quote, locator, and bearing, and draft v2 defines the labels; (4) the
+three integrations the runs had already argued for — OpenAlex (open
+access now, cited-by later), Crossref's Retraction Watch notices on
+admitted sources, and a Wayback snapshot on every admitted URL. One
+dependency was added for this, pipeline-only and dev-only: `pdfjs-dist`.
+AGENTS.md §4's dependency list does not name it; the founder is asked to
+ratify or refuse that addition when reviewing the PR — it is the only way
+to read a paper without asking a model to transcribe it. A second draft pass
+on the same report, with retrieval, then exposed the reopen rule's gap: the
+assembler re-blocked Nemoy and Sessa on the strength of the previous day's
+`blocked` rows although it now held their text, and lost seven evidence
+records with them. `blocked` is a pending state whose reopen condition is
+the text being obtained; a blocked source whose text this pass retrieved
+now goes forward as new. Verification of that pass waits for the next
+day's budget. Ceiling: $20 per run, $50 per day,
 $150 per month (`config/budget.yaml`), enough for the eight-report test
 with headroom. Tariffs were read from the vendors' own price pages on
 2026-09-08 and recorded with their sources; the four other panel seats

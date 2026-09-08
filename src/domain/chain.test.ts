@@ -399,3 +399,88 @@ describe("the report verb", () => {
     expect(readRuns(root).map((r) => r.outcome)).toEqual(["dry-run", "completed", "rested", "completed", "completed"]);
   });
 });
+
+describe("verify v2: the reader's dissent on direction is recorded, not fatal", () => {
+  it("admits a record whose only fault is the direction label, with the dissent in its limitations", async () => {
+    const { judgeProposal } = await import("../pipeline/verify.ts");
+    const c = geo();
+    const src = c.sources.find((s) => s.url)!;
+    const proposal = {
+      runId: "2026-09-08-draft-megalithic-casting-000001",
+      case: c.record.slug,
+      report: null,
+      date: "2026-09-08",
+      model: "m",
+      promptVersion: "draft-v2",
+      basis: { ledgerHash: c.ledgerHash },
+      rationale: "test",
+      adds: {
+        sources: [],
+        evidence: [
+          {
+            id: "GEO-E900",
+            title: "A test record",
+            sourceId: src.id,
+            claimIds: [c.claims[0].id],
+            direction: "qualifies",
+            strength: "weak",
+            sourceStatement: 'The page says "twelve words that certainly do occur in this text" here.',
+            exactLocator: "p. 1",
+            limitations: [],
+            reviewState: "ai_extracted",
+            origin: { ref: "test", extractedBy: "m", runId: "r", date: "2026-09-08" },
+          },
+        ],
+        claims: [],
+        research: [],
+        images: [],
+      },
+      corrections: [],
+      dispositions: [],
+      edition: null,
+    } as never;
+    const texts = new Map([[src.url!, { url: src.url!, ok: true, status: 200, contentType: "text/html", text: "… twelve words that certainly do occur in this text …" }]]);
+    const dissent = { quoteInContext: true, statementSupported: true, locatorSupported: true, directionRight: false, independenceNoted: true, relevant: true, reason: "it plainly supports the claim" };
+    const v = await judgeProposal(proposal, c, texts, new Map(), async () => dissent, { runId: "r", verb: "verify", case: c.record.slug }, { model: "reader-x", date: "2026-09-08" });
+    expect(v.accepted.evidence).toHaveLength(1);
+    expect(v.accepted.evidence[0].limitations.at(-1)).toBe("Second reader (reader-x, 2026-09-08) disputes the stated direction: it plainly supports the claim");
+    expect(v.rejected).toHaveLength(0);
+    // Any other fault still gates.
+    const bad = await judgeProposal(proposal, c, texts, new Map(), async () => ({ ...dissent, relevant: false }), { runId: "r", verb: "verify", case: c.record.slug });
+    expect(bad.accepted.evidence).toHaveLength(0);
+    expect(bad.rejected[0].reason).toMatch(/relevant/);
+  });
+});
+
+describe("reopening a blocked source", () => {
+  const nemoy = "https://ia800102.us.archive.org/27/items/TreatiseOnTheEgyptianPyramidsSuyuti_201801/Treatise%20on%20the%20Egyptian%20Pyramids_%20Suyuti.pdf";
+  const reply = () =>
+    draftReply({
+      sources: [
+        { provisionalId: "S1", url: nemoy, title: "The Treatise on the Egyptian Pyramids (tr. Nemoy 1939)", authors: ["Nemoy, L."], year: "1939", sourceType: "paper", identifier: "Isis 30(1): 17–37", verification: "ai_verified", reliabilityNotes: [] },
+      ],
+      evidence: [],
+      claims: [],
+      research: [],
+      corrections: [],
+      dispositions: [],
+      edition: null,
+    });
+  const ctx = (fetched: FetchedSource[]) => ({ loaded: geo(), reportRunId: "2026-09-08-report-megalithic-casting-100000", runId: "2026-09-09-draft-megalithic-casting-110000", model: "m", promptVersion: "draft-v2", date: "2026-09-09", fetched });
+
+  it("a source blocked for want of its text goes forward once the text is retrieved", () => {
+    // The case carries a `blocked` row for this URL from the first pass.
+    expect(geo().dispositions.some((d) => d.key === `url:${nemoy.replace(/^https?:\/\//, "")}` && d.disposition === "blocked")).toBe(true);
+    const { proposal } = assembleProposal(reply(), ctx([{ url: nemoy, ok: true, status: 200, contentType: "application/pdf", text: "[p. 1] The Treatise on the Egyptian Pyramids …", pages: 22 }]));
+    expect(proposal.adds.sources).toHaveLength(1);
+    expect(proposal.adds.sources[0].verification).toBe("ai_verified");
+    expect(proposal.dispositions.filter((d) => d.kind === "source")).toHaveLength(0);
+  });
+
+  it("…and stays blocked while it is not", () => {
+    const { proposal } = assembleProposal(reply(), ctx([{ url: nemoy, ok: false, status: 403, contentType: null, text: null, reason: "HTTP 403" }]));
+    expect(proposal.adds.sources).toHaveLength(0);
+    expect(proposal.dispositions[0].disposition).toBe("blocked");
+    expect(proposal.dispositions[0].reason).toMatch(/previously blocked/);
+  });
+});

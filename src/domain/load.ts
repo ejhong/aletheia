@@ -574,7 +574,7 @@ export function loadCase(caseDir: string): LoadedCase {
   // current edition is the latest by date, runId breaking same-day ties
   // (the same convention as check runs).
   const editionsDir = path.join(CONTENT_DIR, caseDir, "editions");
-  const editions: Edition[] = fs.existsSync(editionsDir)
+  const editionsUnordered: Edition[] = fs.existsSync(editionsDir)
     ? fs
         .readdirSync(editionsDir)
         .filter((f) => f.endsWith(".yaml"))
@@ -587,10 +587,9 @@ export function loadCase(caseDir: string): LoadedCase {
             throw new ContentError(caseDir, `editions/${f} invalid: ${String(e)}`);
           }
         })
-        .sort(
-          (a, b) => a.date.localeCompare(b.date) || a.runId.localeCompare(b.runId),
-        )
+        .sort((a, b) => a.date.localeCompare(b.date) || a.runId.localeCompare(b.runId))
     : [];
+  const editions = orderEditions(editionsUnordered);
 
   // Dispositions (dispositions.yaml, optional until a case has intake):
   // append-only, one row per candidate ever considered here.
@@ -732,6 +731,33 @@ export function liveClaims(loaded: LoadedCase): Claim[] {
 }
 
 /** The current edition — the latest by date, runId breaking ties. */
+/**
+ * Editions in succession order: the chain through `previous`, from the
+ * edition with none to the one nobody succeeds. Filename or date order is
+ * not enough — two editions written on the same day sorted the migration
+ * after its successor and the site kept showing the old one (2026-09-08).
+ * When the chain does not form a single line (an unknown predecessor, two
+ * heads), the date order is kept and editionErrors reports the break.
+ */
+export function orderEditions(editions: Edition[]): Edition[] {
+  const roots = editions.filter((e) => e.previous === null);
+  const byPrevious = new Map<string, Edition[]>();
+  for (const e of editions) {
+    if (e.previous === null) continue;
+    byPrevious.set(e.previous, [...(byPrevious.get(e.previous) ?? []), e]);
+  }
+  if (roots.length !== 1) return editions;
+  const ordered: Edition[] = [];
+  let cursor: Edition | undefined = roots[0];
+  while (cursor) {
+    ordered.push(cursor);
+    const next: Edition[] = byPrevious.get(cursor.runId) ?? [];
+    if (next.length > 1) return editions; // a fork: not one chain
+    cursor = next[0];
+  }
+  return ordered.length === editions.length ? ordered : editions;
+}
+
 export function currentEdition(loaded: LoadedCase): Edition {
   const ed = loaded.editions.at(-1);
   if (!ed) throw new Error(`[content:${loaded.record.slug}] no edition`);

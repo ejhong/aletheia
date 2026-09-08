@@ -26,7 +26,9 @@ reader:
 
 # The seats `aletheia report` can use; `default` is used when --seat is not
 # given. anthropic: Messages with the web search and web fetch server tools.
-# openai: the Responses API deep-research models in background mode.
+# openai: the Responses API with the web_search tool, high reasoning effort,
+# background mode. (OpenAI's dedicated deep-research models are no longer
+# listed for this key or on the pricing page, checked 2026-09-08.)
 research:
   default: anthropic
   seats:
@@ -36,7 +38,8 @@ research:
       maxSearches: 30
       maxFetches: 15
     openai:
-      model: o4-mini-deep-research   # o3-deep-research is the deeper option (~$10/run, $30 tail)
+      model: gpt-5.6-sol             # the panel's OpenAI seat, browsing
+      effort: high
       maxToolCalls: 40
 
 # The five-seat cross-vendor panel (check runs, the arbiter, agenda scoring):

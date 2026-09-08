@@ -15,8 +15,8 @@ export type { Meter } from "./spend.ts";
  *  - Anthropic Messages with server tools (web search, web fetch) and
  *    `pause_turn` continuation — the browsing research seat — and Messages
  *    with structured JSON output — the drafter and the verifier.
- *  - OpenAI Responses in background mode with the deep-research models —
- *    the other research seat.
+ *  - OpenAI Responses in background mode with the web_search tool and high
+ *    reasoning effort — the other research seat.
  *
  * Every call: budget check first (a refused call sends nothing), then the
  * request, then one spend row per priced thing (tokens; searches).
@@ -314,6 +314,27 @@ export async function anthropicResearch(opts: AnthropicResearchOptions, meter: M
   return { text, model: served, usage, searches, fetches, citations: dedupeCitations(citations), raw };
 }
 
+/**
+ * The vendor payload kept beside a report, without the fetched page bodies:
+ * the first run's raw.json was 4.2 MB, 3.7 MB of it web pages the model had
+ * read. Tool inputs, text, thinking, usage, and the search result lists
+ * stay; fetched and executed content is replaced by its size.
+ */
+export function compactRaw(raw: unknown[]): unknown[] {
+  return raw.map((m) => {
+    const msg = m as { content?: AnthropicBlock[] };
+    if (!Array.isArray(msg.content)) return m;
+    return {
+      ...msg,
+      content: msg.content.map((b) =>
+        b.type === "web_fetch_tool_result" || b.type === "code_execution_tool_result"
+          ? { ...b, content: { omitted: `${JSON.stringify(b.content ?? null).length} chars` } }
+          : b,
+      ),
+    };
+  });
+}
+
 function dedupeCitations(list: { url: string; title?: string }[]) {
   const seen = new Map<string, { url: string; title?: string }>();
   for (const c of list) if (!seen.has(c.url)) seen.set(c.url, c);
@@ -387,6 +408,7 @@ type ResponsesObject = {
 
 export interface OpenAIResearchOptions {
   model: string;
+  effort?: "low" | "medium" | "high" | "xhigh";
   instructions: string;
   input: string;
   maxToolCalls?: number;
@@ -398,10 +420,10 @@ export interface OpenAIResearchOptions {
 }
 
 /**
- * A deep-research call through the Responses API in background mode,
+ * A browsing research call through the Responses API in background mode,
  * polled until it completes. Search calls are counted from the output.
  */
-export async function openaiDeepResearch(opts: OpenAIResearchOptions, meter: Meter): Promise<ResearchResult> {
+export async function openaiResearch(opts: OpenAIResearchOptions, meter: Meter): Promise<ResearchResult> {
   const model = opts.model;
   const maxToolCalls = opts.maxToolCalls ?? 40;
   const maxOutputTokens = opts.maxOutputTokens ?? 40000;
@@ -424,10 +446,10 @@ export async function openaiDeepResearch(opts: OpenAIResearchOptions, meter: Met
       instructions: opts.instructions,
       input: opts.input,
       background: true,
-      tools: [{ type: "web_search_preview" }],
+      tools: [{ type: "web_search", search_context_size: "medium" }],
       max_tool_calls: maxToolCalls,
       max_output_tokens: maxOutputTokens,
-      reasoning: { summary: "auto" },
+      reasoning: { effort: opts.effort ?? "high", summary: "auto" },
     }),
     signal: AbortSignal.timeout(120_000),
   });

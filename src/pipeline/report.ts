@@ -4,7 +4,7 @@ import { sha256Hex } from "../domain/hash.ts";
 import { findCase } from "../domain/load.ts";
 import type { LoadedCase } from "../domain/schema.ts";
 import { MODELS } from "../../scripts/lib/models.mjs";
-import { anthropicResearch, openaiDeepResearch, type Meter, type ResearchResult } from "./models.ts";
+import { anthropicResearch, compactRaw, openaiResearch, type Meter, type ResearchResult } from "./models.ts";
 import { buildPacket, renderPacket } from "./packet.ts";
 import { loadProtocol, renderProtocol } from "./protocols.ts";
 import { closeRun, openRun, readRuns, runDir, writeWorkingFile, type RunOutcome } from "./store.ts";
@@ -34,8 +34,8 @@ export type Researcher = (
 
 export const defaultResearcher: Researcher = (seat, instructions, input, meter) =>
   seat === "openai"
-    ? openaiDeepResearch(
-        { model: RESEARCH_SEATS.openai.model, instructions, input, maxToolCalls: RESEARCH_SEATS.openai.maxToolCalls },
+    ? openaiResearch(
+        { model: RESEARCH_SEATS.openai.model, effort: RESEARCH_SEATS.openai.effort, instructions, input, maxToolCalls: RESEARCH_SEATS.openai.maxToolCalls },
         meter,
       )
     : anthropicResearch(
@@ -111,7 +111,7 @@ export async function runReport(caseKey: string, opts: ReportOptions): Promise<R
       ` -->\n\n`;
     const reportFile = writeWorkingFile(runId, "report.md", header + result.text.trim() + "\n", root);
     writeWorkingFile(runId, "citations.json", JSON.stringify(result.citations, null, 2), root);
-    writeWorkingFile(runId, "raw.json", JSON.stringify(result.raw, null, 1), root);
+    writeWorkingFile(runId, "raw.json", JSON.stringify(compactRaw(result.raw), null, 1), root);
     return { ...closeRun(run, "completed", { model: result.model }), reportFile };
   } catch (e) {
     return closeRun(run, "failed", { reason: (e as Error).message });

@@ -10,19 +10,6 @@
 # tool result, and the ledger prices reads and writes at their own rates —
 # a model without them is priced at the base rate throughout.
 models:
-  # --- the research pass (report verb) ------------------------------------
-  o4-mini-deep-research:
-    inputPerMTok: 2
-    outputPerMTok: 8
-    cachedInputPerMTok: 0.5
-    source: https://developers.openai.com/api/docs/models/o4-mini-deep-research
-    checked: "2026-09-08"
-  o3-deep-research:
-    inputPerMTok: 10
-    outputPerMTok: 40
-    cachedInputPerMTok: 2.5
-    source: https://developers.openai.com/api/docs/models/o3-deep-research
-    checked: "2026-09-08"
   # --- the house model (Fable 5.1, with a server-side fallback to Opus 5) ---
   claude-fable-5-1:
     inputPerMTok: 10
@@ -46,12 +33,14 @@ models:
     cacheWritePerMTok: 2.5
     source: https://platform.claude.com/docs/en/about-claude/pricing
     checked: "2026-09-08"
-  # --- the other panel seats: not yet read from a price page ---------------
+  # --- the comparison research seat and the panel's OpenAI seat -------------
   gpt-5.6-sol:
-    inputPerMTok: null
-    outputPerMTok: null
-    source: null
-    checked: null
+    inputPerMTok: 4
+    outputPerMTok: 20
+    cachedInputPerMTok: 0.4
+    source: https://developers.openai.com/api/docs/pricing
+    checked: "2026-09-08"
+  # --- the other panel seats: not yet read from a price page ---------------
   gemini-3.8-flash:
     inputPerMTok: null
     outputPerMTok: null
@@ -81,6 +70,6 @@ tools:
     checked: "2026-09-08"
   openai:web_search:
     perCallUsd: 0.01
-    note: "$10 per 1,000 calls for reasoning models, plus search content tokens at the model rate"
+    note: "$10 per 1,000 calls, plus search content tokens at the model rate"
     source: https://developers.openai.com/api/docs/pricing
     checked: "2026-09-08"

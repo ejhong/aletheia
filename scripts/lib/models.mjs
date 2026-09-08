@@ -28,7 +28,11 @@ export const ModelsSchema = z.object({
         maxSearches: z.number().int().positive(),
         maxFetches: z.number().int().positive(),
       }),
-      openai: z.object({ model: z.string().min(1), maxToolCalls: z.number().int().positive() }),
+      openai: z.object({
+        model: z.string().min(1),
+        effort: z.enum(["low", "medium", "high", "xhigh"]).optional(),
+        maxToolCalls: z.number().int().positive(),
+      }),
     }),
   }),
   panel: z.record(

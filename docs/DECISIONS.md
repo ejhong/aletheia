@@ -1099,7 +1099,17 @@ write per new token and one read per prior token per pass, which puts
 the same call near $13 cached and above $100 uncached; (3) the guard is
 a pre-call estimate and cannot stop a single server turn, so the run
 frame now flags any run whose ledger cost passed the ceiling, in its
-record and on stderr. The ledger row for the run stands as billed. Ceiling: $20 per run, $50 per day,
+record and on stderr. The ledger row for the run stands as billed. The
+same afternoon the comparison seat failed before spending: OpenAI's
+dedicated deep-research models (`o4-mini-deep-research`,
+`o3-deep-research`) are neither available to the key nor on the pricing
+page any more. The comparison seat is now `gpt-5.6-sol` — the panel's
+OpenAI seat, already trusted — with the Responses `web_search` tool at
+high reasoning effort in background mode, priced from the pricing page
+($4 / $0.40 cached / $20 per MTok), which also prices the panel seat.
+`gpt-6-astra` is available to the key and is the tool guide's own
+recommendation, but it is unpriced here and not the founder's choice for
+the house; it can be tried as a seat once a tariff row is read. Ceiling: $20 per run, $50 per day,
 $150 per month (`config/budget.yaml`), enough for the eight-report test
 with headroom. Tariffs were read from the vendors' own price pages on
 2026-09-08 and recorded with their sources; the four other panel seats

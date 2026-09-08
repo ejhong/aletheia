@@ -1,0 +1,169 @@
+# Migration assessment (2026-09-08) — a mechanical transfer, not a judgment.
+# Case-level fields come from draft 2026-08-26-auto-5996 and from the dossier
+# header formerly on case.yaml; claim-level fields come from the featured
+# claim records as they stood (the displayed credibility and editorial
+# workup). The draft's own per-claim reasoning remains in its overlay.
+# migratedFrom names the source draft; no model wrote this file.
+
+runId: 2026-09-08-migration-mpi
+model: none — mechanical migration (scripts/migrations/2026-09-08-editions.ts)
+date: 2026-09-08
+promptVersion: migration-editions-v1
+humanReviewed: false
+role: draft
+migratedFrom: 2026-08-26-auto-5996
+caseAssessment:
+  verdict: weakly_supported
+  whatIsClaimed: Psi phenomena are real but are non-local, meaning-dependent correlations between an observer and a physical system — not signals or forces. Because such correlations can never be used to transmit information (the "no-transmission" axiom), any experiment that could turn them into a reliable signal will find them declining, changing sign, or displacing to unmonitored variables. Correlation-matrix experiments, which spread the effect across many variable pairs instead of one outcome channel, are claimed to reveal these correlations as a surplus of significant matrix cells relative to control runs.
+  whereDisagreementLives: "Not over whether decline happens — everyone agrees psi effects have never replicated stably. The crux is why. MPI says decline is the lawful signature of a real but unexploitable correlation, and points to matrix experiments where the effect appeared, moved, and faded roughly as the model expects. The conventional account says the initial effects were never real: intercorrelated variables inflated the count of significant cells, flexible analysis and publication bias supplied the early positives, and regression to the mean supplied the decline. Both stories fit a declining effect; they part company over the initial positives and over the fine structure of where effects reappear."
+  whatWouldSettleIt: Adversarial, preregistered correlation-matrix replications with blind-analysis protocols, dependence-aware statistics agreed by both sides in advance, and — critically — prespecified quantitative predictions for the decline and displacement structure itself, endorsed by MPI's proponents as binding. Repeated failure of those fine-structure predictions in adequately powered blind tests would strip MPI of its distinctive content; their repeated success under conditions that exclude analytic flexibility would be extraordinary. A stable, exploitable psi signal anywhere would refute the model outright — by its own axiom.
+  bestConventionalExplanation: "No anomalous correlation exists. The psychological variables in matrix experiments are highly intercorrelated, so counting \"significant cells\" against an independence assumption overstates the evidence — Monte Carlo and permutation reanalyses shrink the founding results. Early positives are what analytic flexibility, optional stopping, and publication selection produce from null data; decline is regression to the mean; displacement is multiplicity — with enough cells, something is always significant somewhere. Each of these mechanisms is documented inside this very corpus: a coding error behind one celebrated micro-PK effect, a post-hoc contrast rescuing a null study, significance that \"broke down in reasonably improved methods of analysis\" by the replicators' own account. The strongest-designed test — a fully blind analysis of 200 participants — found nothing, exactly as this explanation predicts. Its residue: a few preregistered replications still reported structured excess correlations, and their authors were not naive statisticians."
+  components: []
+  researchPriority:
+    level: medium
+    reason: The forward-looking tests are modest in cost — an equal-power true-vs-pseudo-RNG comparison and binding fine-structure predictions (MPI-R001, MPI-R003) — but the paradigm's own proponents concede it does not replicate on demand, capping expected yield.
+  loadBearing:
+    - MPI-C001
+    - MPI-C002
+    - MPI-C005
+    - MPI-C006
+    - MPI-C009
+  weakestLinks:
+    - MPI-C007
+    - MPI-C001
+    - MPI-C010
+  synthesis: |-
+    The verdict holds at weakly_supported, and for the same structural reason as the previous run: the ladder is sound at the bottom and at the theory layer, and breaks at attribution.
+
+    On the observation rung, the founding reports (MPI-E001) are real reports but not audited results — the word 'significantly' in MPI-C001 imports a significance count computed over intercorrelated matrix cells, a defect first sharpened inside the program itself (MPI-E007), with the raw data still unpublished. Against that stand the strictest designs in the corpus: two OSF-preregistered consensus replications run by the proponents' own team and reported null (MPI-E003), Grote's 200-participant frozen-software blind analysis (MPI-E004), and the preplanned nulls of MPI-E006. The nulls, not the positives, are what the case now rests on.
+
+    On the mechanism rung, MPI-C005 and MPI-C006 are documentary and secure: the decline, sign-change and displacement corollaries are in print in 2007 (MPI-E009), and the matrix design is explicitly nominated by the theorists as the model's own best test (MPI-E011). This matters both ways — it protects the model from the retrofitting charge, and it binds it to a paradigm its own team has now declared non-replicable.
+
+    The attribution rung is where the argument fails. MPI-C007's surviving residue is thin and each part is qualified: MPI-E002 was described as 'significant but fragile' by its own authors a year later; MPI-E007's three-of-five share equipment, personnel and analytic choices and so are not three independent confirmations; MPI-E008 is an unreviewed preprint whose RNG-type split is confounded by a 94%-versus-67% power asymmetry. Meanwhile every mundane mechanism in MPI-C008 is documented operating in or adjacent to this literature — post-hoc rescue live in MPI-E006, dependence inflation in MPI-E007, publication-bias dominance in the parent micro-PK record (MPI-E015), a manufactured false positive from a coding error (MPI-E017) — while MPI-E016 warns that in the best-studied neighboring database QRPs did not cover the whole distance. Crucially, the decline pattern itself (MPI-C003, MPI-E014) is evidentially inert between the rivals: regression to the mean on selected noise predicts the same curve, so MPI earns integrity credit for predicting it in advance but no discriminating credit. The highest-value next steps are unchanged: a dependence-aware peer-reviewed reanalysis of the founding datasets, and a prespecified test of the strength–reproducibility reciprocity corollary, which remains the model's only distinctive, untested fine structure.
+claimAssessments:
+  - claimId: MPI-C001
+    verdict: provisionally_supported
+    reasoning: "That these reports exist and say what they say is well documented. That the reported surpluses were computed against valid null distributions is exactly what the dependence critique (MPI-C009) contests: the original significance counting assumed independent cells in matrices built from intercorrelated psychological variables."
+    confidence: moderate
+    treatment:
+      plainLanguage: In the founding experiments, participants pressed keys trying to "influence" a random event generator. Nobody scored hits in the ordinary sense — instead, the experimenters counted how many correlations between behavior variables and machine variables came out statistically significant, and reported far more of them than chance or control runs should give.
+      importance: major
+      diagnosticity: moderate
+      diagnosticitySummary: If the surpluses are statistically sound, something needs explaining — but the something could still be analytic artifact rather than anomaly. If they are unsound, the whole program's foundation shifts to the later, stricter replications.
+      strongestObjection: "The founding analyses counted significant cells against an independence assumption that the data violate: the psychological variables were highly intercorrelated, and dependence-aware reanalyses (Monte Carlo, permutation) diminish the reported effects."
+      whatWouldChangeOurMind:
+        - A dependence-aware reanalysis of the original 1986–2006 datasets, in either direction.
+        - Publication or archiving of the original raw data, which would make such a reanalysis possible.
+  - claimId: MPI-C002
+    verdict: well_supported
+    reasoning: "The strongest-designed tests are unambiguous: Grote's 200-participant blind analysis fell \"well within the expected random distribution,\" and the proponents' own two consensus-protocol replications were null. The partial exceptions (Walach 2020; three of Flores's five studies) predate or sidestep the strictest controls."
+    confidence: high
+    treatment:
+      plainLanguage: When the matrix experiment was rerun under the strictest modern rules — analysis plans frozen in advance, in one case the entire analysis software written and tested before anyone looked at the data — the effect mostly disappeared.
+      importance: major
+      diagnosticity: low
+      diagnosticitySummary: "This is the case's central twist: a null replication record undermines the anomaly reading and simultaneously matches MPI's own decline prediction. By itself, this observation cannot separate the hypotheses — which is why the falsifiability crux (MPI-C010) exists."
+      strongestObjection: '"Predominantly" is doing work: Walach et al. 2020 was itself a preregistration-era replication that reported a significant effect, and Flores reported three of five significant under permutation analyses — the record is messier than a clean null.'
+      whatWouldChangeOurMind:
+        - Further adversarial blind-analysis replications, in either direction.
+        - A significant result under a Grote-style full blind-analysis protocol would remove the 'strictest tests are null' pattern.
+  - claimId: MPI-C003
+    verdict: well_supported
+    reasoning: "Descriptively accurate as a sequence of published outcomes: Lucadou's positives, Walach 2020's \"significant but fragile\" effect whose significance broke down under improved analyses, Grote's 2015 positive followed by his own 2017 and 2021 nulls with a post-hoc-only signal, and the two 2021 consensus-protocol failures. What \"decline\" presumes — that there was ever a real effect to decline — is not part of this claim."
+    confidence: moderate
+    treatment:
+      plainLanguage: "Across four decades, the matrix effect has behaved like a bar of wet soap: strong in early reports, weaker or absent in stricter reruns, and when something did show up later, it tended to show up somewhere else — different cells, different analyses, different variables."
+      importance: major
+      diagnosticity: low
+      diagnosticitySummary: Regression to the mean produces exactly this trajectory from null data filtered by publication. The pattern is equally at home in both rival explanations, which is what makes the attribution rung necessary.
+      strongestObjection: '"Decline and displacement" is a narrative imposed on a small, heterogeneous set of studies with different designs, power, and analyses; no prespecified metric of decline has ever been defined and then measured across the series.'
+      whatWouldChangeOurMind:
+        - A quantitative, prespecified decline/displacement metric applied across the full corpus (see research agenda).
+  - claimId: MPI-C004
+    verdict: provisionally_supported
+    reasoning: "The framework is published in a serious foundations venue and is internally coherent as far as reviewed. Its cost is candor about lost power: without Hilbert-space structure it assigns no probabilities to outcomes, so it constrains data only qualitatively."
+    confidence: moderate
+    treatment:
+      plainLanguage: 'The model is not hand-waving about "quantum consciousness": there is a published axiomatic framework that keeps the algebraic structure of quantum theory (non-commuting observables, entanglement between parts of a system) while dropping its physical constants, and MPI is a special case of it. Whether that formalism describes reality is a separate question from whether it exists and is coherent.'
+      importance: supporting
+      diagnosticity: low
+      diagnosticitySummary: A coherent formalism proves availability, not truth. Many consistent theories describe nothing. Its main evidential role is to make MPI's predictions derivable rather than ad hoc.
+      strongestObjection: By discarding the quantitative machinery, GQT keeps quantum theory's vocabulary while giving up nearly all of its predictive risk — the entanglement here is an analogy wearing an axiom system, and no derivation says how large any effect should be, or when.
+      whatWouldChangeOurMind:
+        - A GQT derivation yielding quantitative, parameter-fixed predictions for a matrix experiment.
+        - A demonstrated internal inconsistency in the axiom system.
+  - claimId: MPI-C005
+    verdict: well_supported
+    reasoning: 'As a statement about what the model says, this is verbatim in the 2007 paper, which also derives the corollaries: decline that is faster when the original effect was stronger, sign reversal, and reappearance "in different observables and/or between different parts of the system." Whether the axiom is true of nature is the attribution question, not this claim.'
+    confidence: high
+    treatment:
+      plainLanguage: The model's core rule is that these correlations can never be used to send a message. A perfectly replicable psi experiment would be a message channel — so the model says perfect replication cannot happen, and published this consequence before the stricter replications were run. The decline effect, usually psi research's embarrassment, is here a theorem.
+      importance: headline
+      diagnosticity: high
+      diagnosticitySummary: "This is what distinguishes MPI from both conventional skepticism and conventional psi advocacy: it stakes out, in print and in advance, the prediction that stricter protocols will show weaker effects. The prediction is real; the trouble is that the null hypothesis makes the same one (MPI-C008)."
+      strongestObjection: 'A prediction shared with the null hypothesis earns no credit: regression to the mean also "predicts" that stricter, larger replications show weaker effects. The distinctive content — displacement structure, strength–reproducibility reciprocity — has never been tested against a prespecified metric.'
+      whatWouldChangeOurMind:
+        - A prespecified test of the model's distinctive fine structure (displacement patterns, decline-rate reciprocity) succeeding or failing.
+  - claimId: MPI-C006
+    verdict: well_supported
+    reasoning: "Documented as the design's stated rationale in the theorists' own words. This matters structurally: the matrix experiments are not an arbitrary paradigm but the model's self-nominated benchmark, so their replication record is the primary evidence line for and against MPI."
+    confidence: high
+    treatment:
+      plainLanguage: Lucadou did not just explain away failed replications — he designed an experiment his theory says should work anyway. If no single number counts as "the result," no signal can be coded, so the no-transmission rule is not violated and the correlations are allowed to show up as a surplus of significant cells scattered through a matrix.
+      importance: major
+      diagnosticity: moderate
+      diagnosticitySummary: Cuts both ways. It makes the CMM record binding on MPI in a way generic psi results are not — and it means the blind-analysis failures land on the model's own chosen ground.
+      strongestObjection: A design that predicts "transitory, jumping, unexpected patterns" in a large matrix describes what multiple testing produces from pure noise; the design converts the multiplicity problem into the predicted signature, which is precisely why dependence-aware statistics are decisive here.
+      whatWouldChangeOurMind:
+        - Proponent agreement on a dependence-aware analysis standard for what counts as a matrix 'hit' (see research agenda).
+  - claimId: MPI-C007
+    verdict: weakly_supported
+    reasoning: Some peer-reviewed positives exist (Walach 2020; parts of Flores 2021), and the proponents publish their failures — but the strongest-designed test (Grote's blind analysis) was null, the founding results are weakened by the dependence critique, and every conventional mechanism the rival explanation needs is documented inside this very corpus. The thesis survives mainly in the spaces the strictest tests have not yet covered.
+    confidence: moderate
+    treatment:
+      plainLanguage: "The featured thesis: the matrix experiments really did catch something — a real connection between minds and machines that by its nature cannot be pinned down — and the fading, shifting record is that something behaving exactly as the theory says it must."
+      importance: headline
+      diagnosticity: high
+      diagnosticitySummary: This is the thesis itself. Everything below the ladder exists to test it against MPI-C008.
+      strongestObjection: "The explanation is unfalsifiable in practice as deployed: successes confirm the correlations and failures confirm the elusiveness, so no outcome of the very experiments the model nominated can count against it — while the mundane account (MPI-C008) explains the same record with mechanisms already caught operating in it."
+      whatWouldChangeOurMind:
+        - Success or failure of prespecified displacement-structure predictions in adversarial replications.
+        - Dependence-aware reanalysis of the founding datasets restoring (or eliminating) the original surpluses.
+  - claimId: MPI-C008
+    verdict: provisionally_supported
+    reasoning: "Each component mechanism is documented in or near this corpus: the dependence problem (Flores's Monte Carlo work), analytic flexibility (Grote 2017's post-hoc-only significance), error-driven false positives (Maier & Dechamps), publication-bias sensitivity (Bösch 2006). What keeps this short of well_supported: no one has yet shown quantitatively that these mechanisms reproduce the specific published record, and the strongest QRP simulation in the neighborhood (Bierman 2016, on ganzfeld data) explained about 60% of that effect, not all of it."
+    confidence: moderate
+    treatment:
+      plainLanguage: 'The conventional steelman: nothing was ever there. Intercorrelated variables made "significant cells" cheap, flexible analysis and selective publication made early positives likely, and when protocols tightened, results regressed to the nothing they came from. Every one of those mechanisms has been caught red-handed somewhere in this literature.'
+      importance: headline
+      diagnosticity: high
+      diagnosticitySummary: The direct rival to MPI-C007. If it holds, MPI's central evidence line dissolves; if it can be shown insufficient under adversarial conditions, what remains is genuinely anomalous.
+      strongestObjection: Walach et al. 2020 was preregistered, adequately powered, and still reported a significant surplus; Flores found effects in three of five studies using permutation analyses designed to respect dependence. The mundane account predicts stricter methods kill the effect — mostly they did, but not cleanly everywhere.
+      whatWouldChangeOurMind:
+        - A QRP/dependence simulation calibrated to the actual CMM corpus reproducing (or failing to reproduce) its published record.
+        - A significant matrix result under full blind analysis, which this explanation predicts should not occur.
+  - claimId: MPI-C009
+    verdict: provisionally_supported
+    reasoning: Reported from inside the research program itself (Flores worked under Watt and Walach), which raises its credibility as a concession against interest. The full quantitative reanalysis of the founding datasets has not been published as a standalone, independently reviewed result.
+    confidence: moderate
+    treatment:
+      plainLanguage: 'The sharpest technical objection: counting significant cells only means something if the cells are independent. The psychological variables in these matrices strongly correlate with each other, so clusters of "significant" cells come in bundles. Simulations that respect this shrink the original headline numbers.'
+      importance: major
+      diagnosticity: high
+      diagnosticitySummary: Directly attacks the load-bearing statistic of the founding experiments (MPI-C001). If it holds in full, the program's origin story weakens from "anomaly detected" to "artifact detected."
+      strongestObjection: Flores herself still reports three of five thesis studies significant under permutation analyses that respect the dependence structure — the critique shrinks the founding results but has not, on its own terms, zeroed out the program.
+      whatWouldChangeOurMind:
+        - An independent, published dependence-aware reanalysis of the 1986–2020 matrix datasets.
+  - claimId: MPI-C010
+    verdict: mixed
+    reasoning: "The pattern is real and quotable: the proponents' response to their own consensus-protocol failures was that failure is \"likely part of the systematic nature of such effects.\" But the charge is not airtight — the model does expose itself at the aggregate level (a stable exploitable psi signal anywhere would refute the NT axiom), it nominated the matrix design as a positive prediction that could have kept failing from the start, and the 2021 authors did conclude the paradigm is \"not replicable,\" which is a concession, not an evasion."
+    confidence: moderate
+    treatment:
+      plainLanguage: "The falsifiability tension, stated as a claim about scientific practice rather than philosophy: if heads confirms the theory and tails confirms it too, the theory has stopped taking risks. The live question is whether MPI's proponents have ever specified an outcome they would accept as a refutation — and whether the model's structure permits one."
+      importance: major
+      diagnosticity: high
+      diagnosticitySummary: This is the crux that decides how much the replication record can ever mean. If MPI has no bindable predictions, the case ends in philosophy; if its fine structure can be prespecified and tested, the case returns to the laboratory.
+      strongestObjection: "MPI is falsifiable in principle and partly in practice: the NT axiom forbids any stable psi channel (a risky universal), the matrix surplus was a positive prediction, and specific corollaries — decline faster when initial effects are stronger, displacement into related observables — could be prespecified and tested tomorrow. The insulation is a habit of interpretation, not a theorem of the model."
+      whatWouldChangeOurMind:
+        - Proponents publishing binding disconfirmation criteria (see research agenda) — or explicitly declining to.
+        - A prespecified fine-structure test whose outcome proponents accept as evidence either way.

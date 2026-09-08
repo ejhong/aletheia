@@ -100,6 +100,7 @@ export function AssessmentPanel({
           ["model", run.model],
           ["prompt", run.promptVersion],
           ["date", run.date],
+          ...(run.migratedFrom ? [["transferred from", run.migratedFrom]] : []),
         ].map(([k, v]) => (
           <span
             key={k}

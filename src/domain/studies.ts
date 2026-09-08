@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import type { Evidence, Source, Study } from "./schema";
+import type { Evidence, Source, Study } from "./schema.ts";
 
 /**
  * Study integrity — the pure rules behind the pre-registration

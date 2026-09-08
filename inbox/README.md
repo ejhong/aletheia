@@ -62,7 +62,7 @@ is drafted with an honest verification label.
 
 **3. Documents** (`.txt`, `.md`, or `.pdf` full texts): routed through the
 extraction pipeline (`docs/EXTRACTION_PIPELINE.md`) into proposed
-catalog-tier claims. PDFs are converted automatically when `pdftotext`
+proposed claims (anchored, unfeatured until an edition features them). PDFs are converted automatically when `pdftotext`
 (poppler) is available — it is installed in the weekly workflow; install
 locally with `brew install poppler`. A PDF that can't be converted is left
 in place with a note in the run report.

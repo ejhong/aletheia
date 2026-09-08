@@ -18,11 +18,13 @@
  *   - content/cases/<case>/assessments/*.yaml       (NEW files only —
  *     append-only overlay convention; modifying an existing overlay is
  *     needs-approval)
- *   - content/cases/<case>/claims-catalog.yaml      (append-only diffs only)
+ *   - content/cases/<case>/claims.yaml              (append-only diffs only —
+ *     a new claim cannot feature itself; featuring is an edition decision)
  *   - content/cases/<case>/sources.yaml             (append-only diffs only)
  *
- * Everything else — featured claims, overview/article text, case records,
- * history, src/, app/, docs/, scripts/, workflows — is needs-approval.
+ * Everything else — editions (what readers see), evidence, case records,
+ * research, studies, history, src/, app/, docs/, scripts/, workflows — is
+ * needs-approval.
  */
 import { execFileSync } from "node:child_process";
 
@@ -78,7 +80,7 @@ for (const { status, file } of nameStatus) {
     continue;
   }
   if (
-    /^content\/cases\/[^/]+\/(claims-catalog|sources)\.yaml$/.test(file) &&
+    /^content\/cases\/[^/]+\/(claims|sources)\.yaml$/.test(file) &&
     status !== "D"
   ) {
     if (appendOnly(file)) continue;

@@ -140,42 +140,6 @@ export const OriginSchema = z.object({
   date: z.string(),
 });
 
-/**
- * Claim tiers.
- *
- * - `featured` — full editorial treatment: plain-language gloss, the two
- *   assessment axes, objections, relationships. The original claim shape.
- * - `catalog` — a lightweight, honestly-unreviewed backlog record: one
- *   atomic statement anchored to a source, with provenance. Validation
- *   deliberately does not demand featured-level richness here.
- *
- * Promotion is a one-field edit: flip `tier` to `featured` and the build
- * fails loudly listing exactly which editorial fields are still missing.
- */
-export const ClaimTier = z.enum(["featured", "catalog"]);
-export type ClaimTier = z.infer<typeof ClaimTier>;
-
-/**
- * Claim genealogy — where and when an allegation or proposition first
- * appeared, kept separate from `origin` (which records how OUR record was
- * produced). For contested public events, tracing a claim to its earliest
- * known appearance is often half the analytical work: it exposes claims
- * born from identity conflation or source fusion, and stops fifty
- * derivative retellings from reading as fifty independent reports.
- * Optional on both tiers; every field is a statement about the public
- * record and must be sourced or honestly approximate ("first known" means
- * exactly that — earliest appearance found, never asserted as absolute).
- */
-export const ClaimGenealogySchema = z.object({
-  /** Earliest known appearance: YYYY, YYYY-MM, or YYYY-MM-DD. */
-  firstKnown: z.string().regex(/^\d{4}(-\d{2}){0,2}$/),
-  /** Where/how it first appeared, e.g. "anonymous Reddit post, later amplified by …". */
-  originDescription: z.string().min(10),
-  /** Optional Source documenting that first appearance (loader-checked). */
-  originSourceId: z.string().optional(),
-});
-export type ClaimGenealogy = z.infer<typeof ClaimGenealogySchema>;
-
 /** Where in a source a claim is anchored. Never invent a locator. */
 export const SourceAnchorSchema = z.object({
   /** Exact-as-possible locator, e.g. "Fóti Ch 5, pp ~135–137". */
@@ -187,74 +151,97 @@ export const SourceAnchorSchema = z.object({
 });
 export type SourceAnchor = z.infer<typeof SourceAnchorSchema>;
 
-const claimCore = {
-  id: z.string().regex(/^[A-Z]+-C\d{3}$/, "Claim id like GEO-C001"),
-  statement: z.string().min(10),
-  theme: z.string(),
-  rung: Rung,
-  reviewState: ReviewState,
-  rejectionReason: z.string().optional(),
-  origin: OriginSchema,
-  /** Optional: earliest known public appearance of the proposition itself. */
-  genealogy: ClaimGenealogySchema.optional(),
-};
+/**
+ * Claim genealogy — where and when an allegation or proposition first
+ * appeared, kept separate from `origin` (which records how OUR record was
+ * produced). For contested public events, tracing a claim to its earliest
+ * known appearance is often half the analytical work: it exposes claims
+ * born from identity conflation or source fusion, and stops fifty
+ * derivative retellings from reading as fifty independent reports.
+ * Every field is a statement about the public record and must be sourced
+ * or honestly approximate ("first known" means exactly that — earliest
+ * appearance found, never asserted as absolute).
+ */
+export const ClaimGenealogySchema = z.object({
+  /** Earliest known appearance: YYYY, YYYY-MM, or YYYY-MM-DD. */
+  firstKnown: z.string().regex(/^\d{4}(-\d{2}){0,2}$/),
+  /** Where/how it first appeared, e.g. "anonymous Reddit post, later amplified by …". */
+  originDescription: z.string().min(10),
+  /** Optional Source documenting that first appearance (loader-checked). */
+  originSourceId: z.string().optional(),
+});
+export type ClaimGenealogy = z.infer<typeof ClaimGenealogySchema>;
 
-const tombstoneRule = {
-  check: (c: { reviewState: ReviewState; rejectionReason?: string }) =>
-    c.reviewState !== "rejected" || Boolean(c.rejectionReason),
-  message: "rejected claims must carry a rejectionReason (tombstone rule)",
-};
-
-export const FeaturedClaimSchema = z
+/**
+ * A Claim is a proposition with anchors — and nothing evaluative.
+ *
+ * The rule (docs/DATA_MODEL.md): on the record, what is true of the record
+ * itself — the statement, its rung, its type, where it is anchored, what it
+ * depends on, how it entered; in the assessment, anything a new piece of
+ * evidence could change — credibility, diagnosticity, importance, the
+ * plain-language gloss, the objection, what would change our mind. Those
+ * live in the adopted assessment's per-claim treatment and reach the
+ * reader through the edition (see EditionSchema). Whether a claim is
+ * featured is likewise an edition decision, not a field here.
+ */
+export const ClaimSchema = z
   .object({
-    ...claimCore,
-    tier: z.literal("featured"),
-    plainLanguage: z.string().min(10),
-    claimType: ClaimType,
-    importance: Importance,
+    id: z.string().regex(/^[A-Z]+-C\d{3}$/, "Claim id like GEO-C001"),
+    statement: z.string().min(10),
+    theme: z.string(),
+    rung: Rung,
+    /** Optional classification of the proposition itself (not a grade). */
+    claimType: ClaimType.optional(),
+    /**
+     * Where the claim is anchored in a source. Optional here because a
+     * claim may instead be anchored by evidence records citing it; the
+     * loader requires one or the other for claims dated on or after
+     * CLAIM_ANCHOR_REQUIRED_FROM.
+     */
     sourceAnchor: SourceAnchorSchema.optional(),
-    credibility: AssessmentState,
-    credibilitySummary: z.string(),
-    diagnosticity: z.enum(["high", "moderate", "low", "indeterminate"]),
-    diagnosticitySummary: z.string(),
     parentClaimIds: z.array(z.string()).default([]),
     dependsOnClaimIds: z.array(z.string()).default([]),
-    strongestObjection: z.string(),
-    whatWouldChangeOurMind: z.array(z.string()).default([]),
-  })
-  .refine(tombstoneRule.check, { message: tombstoneRule.message });
-export type FeaturedClaim = z.infer<typeof FeaturedClaimSchema>;
-
-export const CatalogClaimSchema = z
-  .object({
-    ...claimCore,
-    tier: z.literal("catalog"),
-    /** Catalog claims must be source-anchored; richness is optional. */
-    sourceAnchor: SourceAnchorSchema,
-    claimType: ClaimType.optional(),
     /**
      * Near-duplicate / dependent-extraction grouping: claims sharing a
      * group must not be counted as independent evidence.
      */
     independenceGroup: z.string().optional(),
-    plainLanguage: z.string().min(10).optional(),
+    reviewState: ReviewState,
+    rejectionReason: z.string().optional(),
+    origin: OriginSchema,
+    /** Optional: earliest known public appearance of the proposition itself. */
+    genealogy: ClaimGenealogySchema.optional(),
   })
-  .refine(tombstoneRule.check, { message: tombstoneRule.message });
-export type CatalogClaim = z.infer<typeof CatalogClaimSchema>;
-
-export const ClaimSchema = z.discriminatedUnion("tier", [
-  FeaturedClaimSchema,
-  CatalogClaimSchema,
-]);
+  .refine(
+    (c) => c.reviewState !== "rejected" || Boolean(c.rejectionReason),
+    { message: "rejected claims must carry a rejectionReason (tombstone rule)" },
+  );
 export type Claim = z.infer<typeof ClaimSchema>;
 
-export function isFeatured(claim: Claim): claim is FeaturedClaim {
-  return claim.tier === "featured";
-}
+/**
+ * From this date every claim must be anchored — a source anchor on the
+ * record, or at least one evidence record citing it. Earlier claims are
+ * history; six of them (listed in the migration PR of 2026-09-08) carry
+ * neither and are not rewritten.
+ */
+export const CLAIM_ANCHOR_REQUIRED_FROM = "2026-09-08";
 
-export function isCatalog(claim: Claim): claim is CatalogClaim {
-  return claim.tier === "catalog";
-}
+/**
+ * The per-claim treatment an assessment supplies for the claims the
+ * edition features: everything a reader needs beyond the verdict, and
+ * everything a new piece of evidence could change. Credibility is the
+ * claim assessment's own `verdict` and `reasoning`; the treatment carries
+ * the rest of what used to sit on a featured claim record.
+ */
+export const ClaimTreatmentSchema = z.object({
+  plainLanguage: z.string().min(10),
+  importance: Importance,
+  diagnosticity: z.enum(["high", "moderate", "low", "indeterminate"]),
+  diagnosticitySummary: z.string(),
+  strongestObjection: z.string(),
+  whatWouldChangeOurMind: z.array(z.string()).default([]),
+});
+export type ClaimTreatment = z.infer<typeof ClaimTreatmentSchema>;
 
 export const EvidenceDirection = z.enum([
   "supports",
@@ -532,6 +519,42 @@ export const ChangeLogEntrySchema = z.object({
 });
 export type ChangeLogEntry = z.infer<typeof ChangeLogEntrySchema>;
 
+/**
+ * The case's second output, alongside the evidence state: how valuable it
+ * would be to resolve the uncertainty (importance × neglectedness ×
+ * testability ÷ cost), as a plain level with a stated reason — never a
+ * false-precision score. "Weak evidence, strong reason to investigate" is
+ * a first-class state here, not a contradiction.
+ */
+export const ResearchPriorityLevel = z.enum(["high", "medium", "low"]);
+export type ResearchPriorityLevel = z.infer<typeof ResearchPriorityLevel>;
+
+export const researchPriorityLabels: Record<ResearchPriorityLevel, string> = {
+  high: "High research priority",
+  medium: "Medium research priority",
+  low: "Low research priority",
+};
+
+export const ResearchPrioritySchema = z.object({
+  level: ResearchPriorityLevel,
+  /** One or two sentences: why this level — usually the decisive test's cost and yield. */
+  reason: z.string().min(10),
+});
+export type ResearchPriority = z.infer<typeof ResearchPrioritySchema>;
+
+/**
+ * Component verdicts: where a single case verdict would lie by compression,
+ * the separable parts of the question carry their own states. Part of the
+ * assessment (caseAssessment.components) since 2026-09-08: a judgment,
+ * not identity.
+ */
+export const CaseComponentSchema = z.object({
+  label: z.string().min(3),
+  state: AssessmentState,
+  note: z.string().optional(),
+});
+export type CaseComponent = z.infer<typeof CaseComponentSchema>;
+
 /** One AI assessment run — an append-only overlay, never a mutation of canon. */
 export const AssessmentRunSchema = z.object({
   runId: z.string(),
@@ -549,8 +572,38 @@ export const AssessmentRunSchema = z.object({
    * the displayed assessment.
    */
   role: z.enum(["draft", "check"]).default("draft"),
+  /**
+   * Set only on the one kind of run that carries no new judgment: a
+   * mechanical transfer of previously displayed record fields and the named
+   * draft's verdicts (the editions migration of 2026-09-08). Names the draft
+   * transferred. Exempt from the steelman requirement because it asserts
+   * nothing the named draft did not; never written by a model.
+   */
+  migratedFrom: z.string().optional(),
+  /**
+   * The ledger this run judged, by content hash (src/domain/hash.ts).
+   * Staleness is a hash, not a date: a check run is current while the
+   * ledger's hash still equals the one it recorded. Optional because runs
+   * from before 2026-09-08 predate the field; the loader falls back to
+   * comparing dates for those.
+   */
+  basis: z.object({ ledgerHash: z.string().regex(/^[a-f0-9]{64}$/) }).optional(),
   caseAssessment: z.object({
     verdict: AssessmentState,
+    /**
+     * The dossier header — what is claimed, where the disagreement lives,
+     * what would settle it — and the best conventional explanation, the
+     * component verdicts, and the research priority. Judgments about the
+     * case as a whole, so they live here (draft runs) rather than on the
+     * case record. Optional because check runs grade only; the edition's
+     * adopted draft is expected to carry them.
+     */
+    whatIsClaimed: z.string().optional(),
+    whereDisagreementLives: z.string().optional(),
+    whatWouldSettleIt: z.string().optional(),
+    bestConventionalExplanation: z.string().optional(),
+    components: z.array(CaseComponentSchema).max(6).default([]),
+    researchPriority: ResearchPrioritySchema.optional(),
     /** Claims the featured thesis actually rests on. */
     loadBearing: z.array(z.string()),
     /** Where the argument is most likely to fail. */
@@ -581,6 +634,8 @@ export const AssessmentRunSchema = z.object({
       verdict: AssessmentState,
       reasoning: z.string(),
       confidence: z.enum(["high", "moderate", "low"]),
+      /** Required for every claim the adopting edition features (loader-checked). */
+      treatment: ClaimTreatmentSchema.optional(),
     }),
   ),
   /**
@@ -603,14 +658,62 @@ export type AssessmentRun = z.infer<typeof AssessmentRunSchema>;
 export const STEELMAN_REQUIRED_FROM = "2026-09-04";
 
 /** The steelman requirement as a pure rule, so the loader and tests share it. */
-export function steelmanRequirementError(
-  run: Pick<AssessmentRun, "runId" | "date" | "caseAssessment">,
-): string | null {
+export function steelmanRequirementError(run: {
+  runId: string;
+  date: string;
+  migratedFrom?: string;
+  caseAssessment: { steelman?: string };
+}): string | null {
   if (run.date < STEELMAN_REQUIRED_FROM) return null;
+  // A migration run asserts nothing its source draft did not; the
+  // requirement binds judgments, and this is a transfer.
+  if (run.migratedFrom) return null;
   if (run.caseAssessment.steelman && run.caseAssessment.steelman.trim().length > 0)
     return null;
   return `assessment run ${run.runId} (${run.date}) is missing caseAssessment.steelman — every run dated on or after ${STEELMAN_REQUIRED_FROM} must state the strongest argument for the featured hypothesis it does not answer`;
 }
+
+
+/**
+ * An Edition — the reader's unit, and the case's compression (docs/AUTOMATION.md).
+ *
+ * One immutable file binds what a reader experiences as one telling: the
+ * exact assessment run it adopts (by runId and content hash, so an edited
+ * overlay can never silently change the verdict beneath an essay), the
+ * featured claim ids in order, the crux order, and the article. The hashes
+ * in `basis` record which ledger state and founding inputs the edition was
+ * written against; they are provenance, not a gate. Editions are
+ * append-only; the current one is the latest by date (loader), and the
+ * chain is explicit through `previous`.
+ */
+const Sha256Hex = z.string().regex(/^[a-f0-9]{64}$/, "sha256 hex digest");
+
+export const EditionSchema = z
+  .object({
+    runId: z.string().regex(/^[a-z0-9][a-z0-9._-]{1,119}$/),
+    date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    model: z.string().min(1),
+    promptVersion: z.string().min(1),
+    /** Why this edition replaced its predecessor (or how the first was made). */
+    rationale: z.string().min(10),
+    basis: z.object({ ledgerHash: Sha256Hex, inputsHash: Sha256Hex }),
+    /** The edition this one replaced; null for a case's first. */
+    previous: z.string().nullable(),
+    /** The adopted assessment; null only for a question-only opening. */
+    assessment: z.object({ runId: z.string(), hash: Sha256Hex }).nullable(),
+    featuredClaimIds: z
+      .array(z.string())
+      .refine(
+        (ids) => new Set(ids).size === ids.length,
+        "an edition cannot feature the same claim twice",
+      ),
+    /** Research item ids, in the order the edition presents them. */
+    cruxOrder: z.array(z.string()).default([]),
+    /** The article: constrained markdown with [text]{claim=…} and {plate:…} markers. */
+    article: z.string().min(40),
+  })
+  .strict();
+export type Edition = z.infer<typeof EditionSchema>;
 
 /**
  * Image records. HARD RULE, enforced below: AI-generated images may never be
@@ -849,40 +952,7 @@ export const CuratedResourceSchema = z.object({
 });
 export type CuratedResource = z.infer<typeof CuratedResourceSchema>;
 
-/**
- * The case's second output, alongside the evidence state: how valuable it
- * would be to resolve the uncertainty (importance × neglectedness ×
- * testability ÷ cost), as a plain level with a stated reason — never a
- * false-precision score. "Weak evidence, strong reason to investigate" is
- * a first-class state here, not a contradiction.
- */
-export const ResearchPriorityLevel = z.enum(["high", "medium", "low"]);
-export type ResearchPriorityLevel = z.infer<typeof ResearchPriorityLevel>;
 
-export const researchPriorityLabels: Record<ResearchPriorityLevel, string> = {
-  high: "High research priority",
-  medium: "Medium research priority",
-  low: "Low research priority",
-};
-
-export const ResearchPrioritySchema = z.object({
-  level: ResearchPriorityLevel,
-  /** One or two sentences: why this level — usually the decisive test's cost and yield. */
-  reason: z.string().min(10),
-});
-export type ResearchPriority = z.infer<typeof ResearchPrioritySchema>;
-
-/**
- * Component verdicts: where a single case verdict would lie by compression,
- * the separable parts of the question carry their own states. Editorial
- * canon (human-editable), not an AI overlay.
- */
-export const CaseComponentSchema = z.object({
-  label: z.string().min(3),
-  state: AssessmentState,
-  note: z.string().optional(),
-});
-export type CaseComponent = z.infer<typeof CaseComponentSchema>;
 
 export const CaseSchema = z.object({
   id: z.string().regex(/^[A-Z]+-\d{3}$/, "Case id like GEO-001"),
@@ -891,17 +961,8 @@ export const CaseSchema = z.object({
   subtitle: z.string(),
   domain: z.string(),
   status: z.enum(["active", "incubating", "archived"]),
+  /** One paragraph on what the question is — framing, not a judgment. */
   summary: z.string(),
-  /** Dossier header, question 1. */
-  whatIsClaimed: z.string(),
-  /** Dossier header, question 2 — the central crux. */
-  whereDisagreementLives: z.string(),
-  /** Dossier header, question 3. */
-  whatWouldSettleIt: z.string(),
-  bestConventionalExplanation: z.string(),
-  researchPriority: ResearchPrioritySchema,
-  /** Optional component verdicts; 2–4 rows where one word would mislead. */
-  components: z.array(CaseComponentSchema).max(6).default([]),
   themes: z.record(z.string(), z.string()),
   editors: z.array(z.string()),
   /**
@@ -968,7 +1029,10 @@ export type NarrativeInput = z.infer<typeof NarrativeInputSchema>;
 
 export interface LoadedCase {
   record: CaseRecord;
-  overviewMarkdown: string;
+  /** The case's directory name under content/cases (may differ from the slug). */
+  dir: string;
+  /** sha256 of the ledger (claims, evidence, sources, research, studies, images) — derived at load, never stored. */
+  ledgerHash: string;
   claims: Claim[];
   evidence: Evidence[];
   sources: Source[];
@@ -976,6 +1040,8 @@ export interface LoadedCase {
   history: ChangeLogEntry[];
   /** Sorted by date ascending; last entry is the latest run. */
   assessmentRuns: AssessmentRun[];
+  /** Sorted by date then runId; the last is the current edition. */
+  editions: Edition[];
   images: ImageRecord[];
   /** Optional literature-watch config (watch.yaml). */
   watch: WatchConfig | null;

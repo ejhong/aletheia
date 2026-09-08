@@ -1,0 +1,291 @@
+# Migration assessment (2026-09-08) — a mechanical transfer, not a judgment.
+# Case-level fields come from draft 2026-08-29-auto-j0qa and from the dossier
+# header formerly on case.yaml; claim-level fields come from the featured
+# claim records as they stood (the displayed credibility and editorial
+# workup). The draft's own per-claim reasoning remains in its overlay.
+# migratedFrom names the source draft; no model wrote this file.
+
+runId: 2026-09-08-migration-pre-columbian-amazon
+model: none — mechanical migration (scripts/migrations/2026-09-08-editions.ts)
+date: 2026-09-08
+promptVersion: migration-editions-v1
+humanReviewed: false
+role: draft
+migratedFrom: 2026-08-29-auto-j0qa
+caseAssessment:
+  verdict: well_supported
+  whatIsClaimed: That immediately before European contact the Amazon basin held large, sedentary, politically organized populations — millions of people — living in networked settlement systems along the major rivers; that they engineered their landscape at scale (raised fields, causeways, canals, fish weirs, anthropogenic forests, dark-earth soils); that Carvajal's 1542 account is substantially accurate eyewitness testimony to that world; and that Old World epidemics, slave raiding, missionization, and displacement destroyed and dispersed it fast enough that the emptier Amazon met by later travelers is a record of collapse, not proof the earlier account was false.
+  whereDisagreementLives: "Not over whether complex Amazonian societies existed — earthworks, dark earths, and planned settlements are established beyond argument. The live cruxes are proportion and inference: how representative the populated corridors were of the basin (river-proximity is the dominant predictor of known occupation, and many sampled interfluves and western terra-firme settings show little intensive modification); whether population estimates survive their own assumptions (the largest recent figure falls roughly fivefold under the paper's own alternative house-count reading); how much of Carvajal is textual bedrock versus transmission artifact (the most famous warrior counts appear in the Medina manuscript branch but not Oviedo's); and whether spectacular but much earlier sites are being silently spent as evidence about 1542."
+  whatWouldSettleIt: "A preregistered Carvajal corridor test: classify his populated and empty reaches from the manuscript witnesses alone, model route and palaeochannel uncertainty, then compare contact-horizon archaeological intensity in predicted corridors against matched controls — before consulting the archaeological layers. Alongside it: representative surveys of interfluves chosen blind to archaeological promise, a synoptic manuscript-witness table separating what all Carvajal versions share from what only one branch carries, and demographic estimates re-derived under a common assumption set so that model families stop masquerading as independent censuses."
+  bestConventionalExplanation: "The modern skeptical position is not the old ecological-impossibility argument; it concedes major regional societies and argues limits. Orellana traveled the richest corridors — precisely the environments where settlement concentrated and where archaeology preferentially looks and preserves — so substantial corroboration there cannot license basin-wide extrapolation. Sampled western and interfluvial palaeoecology shows large areas without intensive cultivation, clearing, or soil modification. The famous population totals are model outputs whose assumptions (site contemporaneity, persons per earthwork, extrapolation domains) do most of the work. And Carvajal's extreme figures are textually unstable across manuscript branches, consistent with a truthful observer whose numbers grew in the telling. On this view the mosaic is real but modest: dense hotspots, thin matrix, and a chronicle that is qualitatively honest and numerically unreliable."
+  components:
+    - label: Basin-wide pristine-wilderness model
+      state: contradicted
+      note: Untenable against earthworks, dark earths, and settlement systems; survives only as a description of some interfluves.
+    - label: Heterogeneous mosaic — dense engineered corridors in a lightly occupied matrix
+      state: well_supported
+    - label: Carvajal's qualitative social geography (populous organized river corridors)
+      state: provisionally_supported
+      note: Independently echoed by Nunes's 1538 journey (letter of 1553/54) and the 1560 Ursúa accounts; corridor test pending.
+    - label: Carvajal's literal extreme numbers (50,000 warriors; villages leagues long)
+      state: weakly_supported
+      note: Textually unstable — present in the Medina/Muñoz manuscript branch, absent from Oviedo's.
+    - label: Basin-wide dense, politically integrated civilization
+      state: weakly_supported
+      note: Strong regional systems are established; synchronous basin-wide integration is not.
+  researchPriority:
+    level: high
+    reason: "The decisive test is unusually concrete and mostly desk-executable: the Carvajal corridor comparison needs manuscript work, route modeling, and existing survey data rather than new excavation, and canopy-penetrating LiDAR coverage is expanding yearly. Few contested historical claims offer this clean a preregistered discriminator."
+  loadBearing:
+    - AMZ-C004
+    - AMZ-C011
+    - AMZ-C013
+    - AMZ-C010
+    - AMZ-C002
+  weakestLinks:
+    - AMZ-C017
+    - AMZ-C015
+    - AMZ-C019
+  synthesis: "The central thesis — a strongly heterogeneous pre-contact Amazon, with dense engineered corridors and hotspots set in a lightly occupied forest matrix — continues to be carried from both directions. Positively: earthworks at enormous scale (AMZ-C004, AMZ-E001), contact-horizon continuity at Santarém, Marajó, and the Xingu (AMZ-C011), engineered subsistence where the carrying-capacity objection was strongest (AMZ-C007, AMZ-E014), and independent sixteenth-century testimony converging on the same corridors (AMZ-E007). Negatively: the river-distance gradient across 7,363 sites (AMZ-E010) and the thin palaeoecological signal in sampled interfluves (AMZ-E011) cap maximalist readings. The new fisheries material (AMZ-C019, AMZ-C026, AMZ-E022) adds a genuinely diagnostic nuance: it shows some interfluvial areas could support year-round sedentary populations via engineered aquatic resources, which softens — without overturning — the strict river-distance reading of the matrix. Demography remains a set of assumption-driven envelopes (AMZ-C005, AMZ-C012, AMZ-E002, AMZ-E009), not a number. Sensitivity: the single record whose removal would most change the case is AMZ-E007; without it, the Carvajal rehabilitation (AMZ-C017) would drop toward weakly supported because independent contact-era corroboration would vanish, but the case verdict itself survives on the archaeological legs alone. No single thread carries the mosaic conclusion."
+claimAssessments:
+  - claimId: AMZ-C001
+    verdict: established
+    reasoning: That the account contains these descriptions is documented directly by the scholarly literature that quotes and compares its manuscript witnesses (Denevan 1996; Lopes et al. 2024, which reproduces the ceramics praise verbatim). Both branches carry the qualitative picture.
+    confidence: high
+    treatment:
+      plainLanguage: The earliest eyewitness account of the Amazon describes a crowded, organized river world in some stretches and nobody at all in others. This claim is about what the account says — whether it was right is graded separately.
+      importance: headline
+      diagnosticity: moderate
+      diagnosticitySummary: "An account describing a populous Amazon is not a populous Amazon: the claim's weight depends entirely on the independent tests — other 16th-century accounts (AMZ-C003) and contact-horizon archaeology (AMZ-C011). It is the case's anchor document, not its verdict."
+      strongestObjection: A missionary chronicler on a starving expedition had reasons to magnify both the marvels and the hostility of the lands traversed, and the account's most dramatic numbers demonstrably grew in one transmission branch (AMZ-C002).
+      whatWouldChangeOurMind:
+        - A synoptic manuscript-witness table showing the qualitative picture itself (not just the numbers) diverging materially between branches would force re-anchoring every downstream claim.
+  - claimId: AMZ-C002
+    verdict: established
+    reasoning: "Denevan's manuscript comparison states this directly, verified verbatim: \"There is no mention of 50,000 or 10,000 and 8,000 warriors as there is in the Medina (and Muñoz) versions… nor of villages 4 or 5 leagues in length. There is one mention of 5,000 warriors in the Oviedo version.\""
+    confidence: high
+    treatment:
+      plainLanguage: The famous huge numbers are only in one family of manuscript copies. The other family describes the same crowded world — with far smaller numbers. So the numbers are shaky in a way the general picture is not.
+      importance: major
+      diagnosticity: high
+      diagnosticitySummary: "This single textual fact reorganizes the whole Carvajal debate: it licenses trusting the qualitative account while refusing the extreme counts, and it undercuts both wholesale-vindication and wholesale-dismissal readings at once."
+      strongestObjection: Absence from Oviedo's redaction does not prove the figures were absent from Carvajal's lost original — Oviedo may have trimmed numbers he disbelieved. The instability cuts against relying on the figures either way.
+      whatWouldChangeOurMind:
+        - A full collation of the Muñoz/T'Serclaes–Medina/Oviedo witnesses locating where each figure enters the transmission.
+  - claimId: AMZ-C003
+    verdict: established
+    reasoning: Verified against Lopes et al. 2024, which documents the Nunes journey ("Diogo Nunes alcança a província de Machiparo em 1538"), the Ursúa expedition's ten accounts (Vazquez, Almesto, Altamirano the fullest), the "infinite" maize stores, and the roads "ao modo dos Incas do Peru, exceto pelas paredes." Fortifications and organized warfare are NOT among the verified common elements and are deliberately excluded.
+    confidence: high
+    treatment:
+      plainLanguage: Carvajal isn't the only witness. A Portuguese soldier got there four years before him, and a Spanish expedition passed through eighteen years after — and their surviving accounts describe the same kind of world in the same places.
+      importance: major
+      diagnosticity: high
+      diagnosticitySummary: Independent repetition of mundane features by hostile, unconnected expeditions is the strongest available check on invention. It does not validate Carvajal's numbers — none of these accounts carries his extreme figures — but it makes the qualitative world he described much harder to dismiss as fantasy.
+      strongestObjection: All these expeditions travelled the same favored corridor; agreement among corridor travelers cannot establish anything about the basin beyond it, and later chroniclers may have read earlier accounts.
+      whatWouldChangeOurMind:
+        - Philological evidence that the Ursúa chroniclers relied on Carvajal's text rather than observation would collapse the independence this claim rests on.
+  - claimId: AMZ-C004
+    verdict: established
+    reasoning: 'All figures verified verbatim against the open-access paper: 432 documented ("of which only 36 were previously known"), the 5× LiDAR multiplier over satellite detection, the ~183,000 km² circumscription, and the 24,000–30,000 extrapolation with its block structure.'
+    confidence: high
+    treatment:
+      plainLanguage: Lasers that see through the forest canopy found five times more monuments than satellite imagery had, and the study estimates the region holds tens of thousands — as many as had been guessed for the whole Amazon.
+      importance: headline
+      diagnosticity: moderate
+      diagnosticitySummary: Decisive against ecological-impossibility arguments; weak as direct evidence about 1542, because the earthwork florescence is dated a millennium earlier (see the dating qualifier in the evidence). LiDAR detects morphology; excavation and dating establish history.
+      strongestObjection: The 24,000–30,000 figure is an extrapolation from sampled densities across assumed-comparable blocks, not a count; the authors themselves condition wider implications on similar concentrations being found elsewhere.
+      whatWouldChangeOurMind:
+        - LiDAR lines flown across the assumed low-density periphery finding densities far from the extrapolation would revise the total in either direction.
+  - claimId: AMZ-C005
+    verdict: established
+    reasoning: "The sensitivity structure is stated in the paper itself, verified verbatim: \"Only if the very unlikely estimation that each approximately 25-m long house foundation (mound) belonged to a single family were true would the population be about 250,000–600,000 people…\". This claim grades the estimate's architecture, not the ancient population."
+    confidence: high
+    treatment:
+      plainLanguage: The headline "millions" number depends on how many people you assume each monument implies. Read one assumption differently — as the paper itself shows — and the number falls roughly fivefold. The monuments are certain; the census is not.
+      importance: headline
+      diagnosticity: high
+      diagnosticitySummary: Whether southwestern Amazonia held three million people or a third of a million at its peak controls how much weight the region can bear in basin-wide demographic arguments — and this claim shows that question is currently decided by an assumption, not a measurement.
+      strongestObjection: The authors argue the 300-person figure matches later village sizes and workforce requirements, and label the single-family reading "very unlikely" — the sensitivity range is not a refutation, it is the honest error bar.
+      whatWouldChangeOurMind:
+        - Excavation-based household archaeology at a sample of dated earthworks establishing occupants-per-structure empirically.
+  - claimId: AMZ-C006
+    verdict: well_supported
+    reasoning: Dating and estimate verified verbatim from de Souza et al. 2018, including the dependency chain the authors state themselves ("Assuming site contemporaneity… ethnographically-derived formulae… projected to the total area predicted by the model").
+    confidence: high
+    treatment:
+      plainLanguage: Along the Amazon's southern edge, walled villages were still occupied in the centuries right before Columbus — and the half-million-plus population figure attached to them is a model, with its assumptions stated.
+      importance: major
+      diagnosticity: high
+      diagnosticitySummary: Unlike the much earlier Aquiry florescence, this arc's dates overlap the contact horizon — making it directly relevant to what the sixteenth-century accounts could have described.
+      strongestObjection: The population projection extrapolates from a sampled basin to a modeled suitability area; MaxEnt suitability is not occupation.
+      whatWouldChangeOurMind:
+        - Systematic survey of predicted-suitable areas finding earthwork densities materially below the model's assumption.
+  - claimId: AMZ-C007
+    verdict: established
+    reasoning: 'Verified verbatim from Lombardo et al. 2025 (Nature 639): "intensive year-round maize monoculture," drainage canals, "newly documented savannah farm ponds," 178 phytolith samples across 18 profiles.'
+    confidence: high
+    treatment:
+      plainLanguage: At least one Amazonian urban system solved the "how did they feed everyone" question with engineered, year-round corn farming — canals to drain the wet season, ponds to store the dry.
+      importance: major
+      diagnosticity: moderate
+      diagnosticitySummary: Answers the carrying-capacity objection where it was strongest — but for one culture area with unusual savannah hydrology, so it licenses "possible and done here," not "general."
+      strongestObjection: The Casarabe florescence (500–1400 CE) ends before European contact; its subsistence system says nothing direct about 1542.
+      whatWouldChangeOurMind:
+        - Phytolith/isotope evidence from contact-horizon sites showing comparable intensive systems persisting to European arrival.
+  - claimId: AMZ-C008
+    verdict: established
+    reasoning: Dark earths and engineered savannah landscapes are established across the literature this case verified (Stenborg 2018 for Santarém ADE; the Rostain/McKey imagery; Levis 2017 for the domesticated-species gradient) — with the post-Columbian confounder on the tree signal carried as a first-class qualifier, not a footnote.
+    confidence: high
+    treatment:
+      plainLanguage: People didn't just live in the Amazon — they made soils, fields, islands of forest, and orchards that still mark the land today.
+      importance: major
+      diagnosticity: moderate
+      diagnosticitySummary: Establishes capability and long habitation; by itself it quantifies neither population nor extent — the McMichael comment shows even the strongest basin-wide vegetation signal partly reflects the last five centuries.
+      strongestObjection: Post-Columbian land use is a major confounder for present-day forest composition signals (McMichael et al. Technical Comment), so modern vegetation cannot straightforwardly measure the 1491 landscape.
+      whatWouldChangeOurMind:
+        - Dated palaeoecological profiles at the Levis gradient sites separating pre- from post-Columbian enrichment.
+  - claimId: AMZ-C009
+    verdict: well_supported
+    reasoning: 'Both halves verified verbatim: the 2011 flood-mitigation proposal (Lombardo et al.) and the 2015 dating study (Rodrigues et al.: "intermittent use… a few separate construction events… challenges the… continuous basis" model).'
+    confidence: moderate
+    treatment:
+      plainLanguage: The famous raised fields prove serious engineering — but the dirt says they were used on and off, likely against floods, not as a nonstop breadbasket. Impressive earthworks are not automatically a population number.
+      importance: supporting
+      diagnosticity: moderate
+      diagnosticitySummary: Directly disciplines the inference from earthwork scale to agricultural output to population — the chain on which the largest demographic claims lean.
+      strongestObjection: Findings are from specific Bermeo-area fields; other raised-field complexes (and the separate Casarabe drained-field system, AMZ-C007) show genuinely intensive cultivation — the correction is local, not general.
+      whatWouldChangeOurMind:
+        - OSL/radiocarbon construction histories from raised-field complexes in other sectors showing continuous multi-century maintenance.
+  - claimId: AMZ-C010
+    verdict: well_supported
+    reasoning: Verified verbatim from Newson 2003 (Table 1 and mechanism passages), which restates her 1995 book-length reconstruction. Decline ratios and the named mechanisms are the source's own.
+    confidence: high
+    treatment:
+      plainLanguage: Where records let us count, about nine in ten people of one river province were gone within 160 years — killed by disease, taken by slavers, gathered into missions, or fled. The crash was real, regional, and had many causes, not one.
+      importance: major
+      diagnosticity: high
+      diagnosticitySummary: "This is the bridge between Carvajal's crowded 1542 and the emptier later Amazon: if decline of this scale and speed is documented where records exist, populous corridors becoming quiet ones needs no exaggeration hypothesis. It also blocks lazy uniform \"90% everywhere\" modeling — the two provinces differ by 25 points."
+      strongestObjection: The reconstructed provinces are Andean-foothill and upper-Amazon regions with mission records; extending their ratios to the middle and lower Amazon is itself an extrapolation.
+      whatWouldChangeOurMind:
+        - Comparable documentary reconstructions for the Solimões/Machiparo reaches themselves.
+  - claimId: AMZ-C011
+    verdict: well_supported
+    reasoning: Santarém/Belterra verified verbatim (Stenborg et al. 2018); Cacoal verified verbatim (Schaan 2000, "atesta a permanência da cultura Marajoara" at Portuguese contact); the Xingu range (500–1770 CE, Kuikuro-pattern layouts) verified from a Science news feature — a secondary source, held to that weight pending the primary reports.
+    confidence: moderate
+    treatment:
+      plainLanguage: Some of the archaeology lines up in time with the eyewitnesses — towns that were still lived in when Europeans arrived, and in the Xingu, village plans that today's Kuikuro communities still use. "Lost civilization" is the wrong frame; some of it is continuity.
+      importance: major
+      diagnosticity: high
+      diagnosticitySummary: Contact-horizon dating is what separates evidence about Carvajal's world from evidence about capability a millennium earlier. These are the sites that pass that filter.
+      strongestObjection: These are the corridor and hotspot regions archaeology samples best; their continuity does not establish continuity — or occupation — in the interfluves.
+      whatWouldChangeOurMind:
+        - Primary publication of the Xingu dating (replacing the news-feature citation) shifting the terminal dates materially.
+  - claimId: AMZ-C012
+    verdict: established
+    reasoning: 'Verified verbatim from Denevan 2003: "Consequently I now reject the habitat-density method I used in the past to estimate a Greater Amazonia population in 1492 of from 5.1 to 6.8 million… I nevertheless still believe that a total of at least 5 to 6 million is reasonable."'
+    confidence: high
+    treatment:
+      plainLanguage: A dozen published population numbers are not a dozen independent counts — many descend from the same assumptions. The field's most cited estimator publicly abandoned his own original method while keeping his bottom line. A number can stay plausible after the argument that produced it fails.
+      importance: major
+      diagnosticity: high
+      diagnosticitySummary: "Reframes the entire demography debate: the published range (~1M to >10M) reflects competing model families, so progress requires dependency-corrected re-derivation, not quoting more totals."
+      strongestObjection: Method retirement by one scholar does not itself invalidate other estimate families (documentary, dark-earth scaling, radiocarbon proxies) — each has to be audited on its own dependencies.
+      whatWouldChangeOurMind:
+        - A published dependency graph of major estimates showing more independence among them than this claim assumes.
+  - claimId: AMZ-C013
+    verdict: well_supported
+    reasoning: 'Verified verbatim from McMichael et al. 2025 (PNAS): "Distance from river… was the most important predictor variable" (21.5% permutation importance); interfluves "more sparsely populated." Note: the paper contains no explicit "not empty" disclaimer — sparser presupposes occupied, and this case quotes only what is there.'
+    confidence: high
+    treatment:
+      plainLanguage: "Map every known ancient site and the pattern is blunt: people concentrated along the water. The deep between-rivers forest holds sites too — but fewer."
+      importance: major
+      diagnosticity: high
+      diagnosticitySummary: "The single most discriminating basin-scale fact: it simultaneously contradicts pristine-wilderness and uniformly-dense models, and it predicts exactly the corridor-heavy world the eyewitness accounts describe."
+      strongestObjection: Known-site databases inherit survey bias — rivers are where archaeologists can reach — so part of the gradient is discovery effort, not ancient behavior; the model updates but cannot fully escape this.
+      whatWouldChangeOurMind:
+        - Randomized interfluve survey transects finding site densities approaching riverine ones.
+  - claimId: AMZ-C014
+    verdict: well_supported
+    reasoning: 'The five-point "little to no evidence" list is verified verbatim from Piperno et al. 2024. Scope carried honestly: the 2024 fieldwork adds three regions; fourteen is the cumulative program total.'
+    confidence: moderate
+    treatment:
+      plainLanguage: Where scientists have actually drilled the soil away from the rivers, much of the western Amazon shows old, closed forest with little sign of farming or burning. Large parts of the basin really were lightly touched.
+      importance: major
+      diagnosticity: high
+      diagnosticitySummary: This is the strongest negative-space evidence in the case — the direct check on extrapolating the spectacular regions to the basin. Its force depends on proxy sensitivity (see objection), which is why the case carries the Clement-style sampling critique alongside it.
+      strongestObjection: 'Negative palaeoecological evidence counts only where the proxy could have detected the activity: soil-core sampling is spatially tiny, and post-abandonment forest recovery can erase signals — so "little evidence in samples" is not "little activity everywhere."'
+      whatWouldChangeOurMind:
+        - Denser gridded coring in a sampled interfluve turning up cultivation signals the sparse cores missed — or the same grid confirming their absence.
+  - claimId: AMZ-C015
+    verdict: provisionally_supported
+    reasoning: "Verified verbatim from Arroyo-Kalin & Riris 2021, including their own caveats: SPDs are \"proxies for relative population change\" — an aggregate signal with stated biases, not a census (the \"not a census\" phrasing is this case's paraphrase of those caveats)."
+    confidence: moderate
+    treatment:
+      plainLanguage: Dated archaeological material accumulates like a population growing toward a ceiling right up to European arrival — which argues against the idea that Amazonian societies were already collapsing on their own before contact.
+      importance: supporting
+      diagnosticity: moderate
+      diagnosticitySummary: Bears on whether the collapse explanation (AMZ-C010) suffices for the disappearance, or whether pre-contact decline must share the load — one study, proxy-grade, so it moves the needle without settling it.
+      strongestObjection: Regional signals can diverge from the biome aggregate — parts of the Llanos de Mojos show agricultural decline beginning AD 1300–1450, before contact — so the aggregate curve does not preclude regional pre-contact reorganization.
+      whatWouldChangeOurMind:
+        - Region-stratified SPDs showing widespread pre-1492 decline outside the known cases.
+  - claimId: AMZ-C016
+    verdict: well_supported
+    reasoning: "The synthesis both sides' evidence now converges on: the earthwork and settlement systems (AMZ-C004, C006, C007, C011) establish the dense nodes; the river-gradient and palaeoecological negative space (AMZ-C013, C014) establish the thin matrix; and the eyewitness accounts describe exactly this alternation (AMZ-C001, C003)."
+    confidence: high
+    treatment:
+      plainLanguage: "Neither empty wilderness nor wall-to-wall civilization: a mosaic. Crowded, engineered corridors — and vast quiet places between them."
+      importance: headline
+      diagnosticity: high
+      diagnosticitySummary: This is the case's central verdict claim; everything else feeds it. What remains genuinely open is proportions — how much corridor, how much matrix — not the mosaic structure itself.
+      strongestObjection: Both the "dense nodes" and the "thin matrix" rest on biased sampling — archaeology oversamples promising corridors, soil coring undersamples everywhere — so the mosaic's proportions could move substantially in either direction as coverage improves.
+      whatWouldChangeOurMind:
+        - Representative (promise-blind) interfluve surveys materially raising or lowering the matrix's occupation density.
+        - LiDAR programs elsewhere in the basin finding — or failing to find — Aquiry-scale earthwork concentrations.
+  - claimId: AMZ-C017
+    verdict: provisionally_supported
+    reasoning: Supported by the convergence of independent contemporaneous testimony (AMZ-C003), contact-horizon archaeology in commensurate places (AMZ-C006, C011), and the manuscript analysis that isolates the numbers as the unstable element (AMZ-C002). Provisional because the decisive location-specific test — the corridor comparison — has not been run.
+    confidence: moderate
+    treatment:
+      plainLanguage: Believe the kind of world he described; don't believe his biggest numbers. The evidence increasingly supports the first and undermines the second.
+      importance: headline
+      diagnosticity: high
+      diagnosticitySummary: "The case's second verdict claim: it converts a centuries-old credibility dispute into separable, testable parts, and its remaining uncertainty is exactly what AMZ-R001 is designed to resolve."
+      strongestObjection: "Corridor-and-preservation bias could manufacture this vindication: Orellana travelled the richest reaches, and archaeology samples those same reaches best — agreement there cannot yet exclude that he also embellished the geography between them."
+      whatWouldChangeOurMind:
+        - The preregistered corridor test (AMZ-R001) finding no excess of contact-horizon settlement in his 'populated' reaches versus matched controls.
+  - claimId: AMZ-C018
+    verdict: well_supported
+    reasoning: The coverage extent is verified first-party ("In my 2019 book America Before I devote seven chapters, more than 90 pages, to the implications of recent remarkable discoveries in the Amazon rainforest"); the S2 casting of both researchers is verified via the episode's cast listing. Page-level characterizations of the book's Carvajal argument await locators, and this claim deliberately does not include them.
+    confidence: high
+    treatment:
+      plainLanguage: "Credit where the record supports it: a writer the field dismisses kept this question in front of millions of people — and platformed the working scientists — while the evidence was still arriving. That doesn't make his larger theories right; it makes this part of the story's genealogy."
+      importance: supporting
+      diagnosticity: low
+      diagnosticitySummary: "Advocacy history is genealogy, not evidence: it bears on who kept the question alive and credits the record accurately, while carrying no weight for or against any empirical claim in this case — outsider advocacy is not evidence, in either direction."
+      strongestObjection: Highlighting one popularizer's early attention risks confusing narrative credit with evidential support, and the mainstream's numerical skepticism about Carvajal has ALSO been partly vindicated (AMZ-C002) — the credit must stay symmetric.
+      whatWouldChangeOurMind:
+        - Page-level review of America Before showing its Amazon chapters materially misrepresented the research it popularized.
+  - claimId: AMZ-C019
+    verdict: well_supported
+    reasoning: 'Verified verbatim from Blatrix et al. 2018 (Sci. Rep. 8:5998): zigzag weirs from successive V-shaped indentations; 231 of 382 ponds within 35 m of such a feature (191 of those within 35 m of a weir); "the principal function of the V-shaped structures was to concentrate fish in ponds."'
+    confidence: moderate
+    treatment:
+      plainLanguage: "They plumbed the savannah for fish: fences to steer the flood, ponds placed to trap what it carried. The waterworks are still there to map."
+      importance: major
+      diagnosticity: moderate
+      diagnosticitySummary: Landscape-scale subsistence engineering beyond agriculture — though the paper itself cautions that these weirs' fish-concentration potential is far below modern African analogues, so scale of harvest is a separate question from existence of the system.
+      strongestObjection: Dating and use-intensity vary by sector; engineered capacity is not a census (the raised-fields lesson, AMZ-C009, applies here too).
+      whatWouldChangeOurMind:
+        - Construction-history dating showing the weir network's use was brief or highly intermittent.
+  - claimId: AMZ-C026
+    verdict: well_supported
+    reasoning: "Verified verbatim from Prestes-Carneiro et al. 2019 (PLOS ONE 14(5) e0214638): \"more than 17,000 fish remains\"; the interfluvial system \"contains year round resources\"; lungfish and tiger-fish named as dry-season resources. The paper's own caveat is carried: the paucity of larger-bodied river fish suggests infrequent exogenous contributions."
+    confidence: high
+    treatment:
+      plainLanguage: The bones in one settlement's refuse show fishing all year round, far from the big river — small-water species like lungfish carried people through the dry months.
+      importance: supporting
+      diagnosticity: moderate
+      diagnosticitySummary: Direct dietary evidence against the protein-scarcity form of the carrying-capacity objection, at one well-excavated interfluvial site — it establishes viability, not population.
+      strongestObjection: One site's refuse cannot establish regional dietary patterns; its force is as an existence proof, and the claim is scoped to that.
+      whatWouldChangeOurMind:
+        - Comparable zooarchaeological assemblages elsewhere in the interfluves showing seasonal scarcity instead.

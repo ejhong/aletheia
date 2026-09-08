@@ -901,6 +901,82 @@ tournament is gone; an edition is judged against the incumbent only.
 
 (AI record of founder direction, 2026-09-05 to 09-07 sessions.)
 
+## 2026-09-08 — Build step 2: the ledger and the edition
+
+The first build of the two-layer design (docs/AUTOMATION.md). Ten cases
+migrated in one reversible, idempotent run (`scripts/migrations/2026-09-08-editions.ts`).
+
+**What changed in the files.** Claims are propositions with anchors: one
+`ClaimSchema`, no tiers, `claims-catalog.yaml` merged into `claims.yaml`
+with its comments preserved. Everything evaluative — credibility and its
+summary, diagnosticity and its summary, importance, the plain-language
+gloss, the objection, what would change our mind — moved into the adopted
+assessment's per-claim `treatment`. The dossier header, best conventional
+explanation, research priority, and component verdicts moved from
+`case.yaml` into the assessment's case level. `overview.md` became the
+`article` of edition one. Each case now has `editions/` with one edition
+adopting a **migration assessment**: a mechanical transfer, stamped
+`migratedFrom` and `model: none`, that snapshots exactly what readers saw —
+case-level judgment from the displayed draft, claim-level judgment from the
+featured records. It asserts nothing new and is exempt from the steelman
+requirement for that reason. A history entry per case records the move as
+housekeeping.
+
+**The rule that decided every field's home** is now in DATA_MODEL.md: on
+the record, what is true of the record itself; in the assessment, anything
+a new piece of evidence could change.
+
+**Loader.** `CaseView` (src/domain/view.ts) is the one join the pages
+read. Standing derives from the check runs of the edition's adopted
+assessment; `displayAssessment` shows the adopted run, so a newer
+unadopted draft cannot change the verdict beneath the essay (tested).
+Staleness is a hash: check runs and editions record the ledger hash they
+judged, and a check is stale when the ledger hashes differently; runs from
+before the field fall back to the panel-level date rule they always had.
+New fail-closed rules: an edition's adopted assessment must exist, hash
+match, and not be a check run; every featured id must be a live claim with
+a treatment; article markers resolve; plates are plates and survive between
+editions; every claim dated on or after 2026-09-08 is anchored by a source
+anchor or an evidence record.
+
+**Code.** Scripts run TypeScript directly on the shared domain (`"type":
+"module"`, `.ts` import specifiers, Node ≥ 22.18); the blind check, stale
+check, and yield report are the first three, and the blind packet is now
+the ledger only — no article, no grades, no editions. The classifier treats
+append-only `claims.yaml` as low-risk (a new claim cannot feature itself).
+`stale-checks.ts` calls the loader's own rule instead of re-implementing
+it. Six components and five pages read `CaseView`.
+
+**Exceptions, stated rather than hidden.** (1) Six featured claims carry
+neither a source anchor nor an evidence record — AMZ-C016, TRN-C023,
+VASO-C022, VASO-C011, YDIH-C022, YDIH-C030 — so the anchoring rule binds
+from 2026-09-08, not retroactively. (2) No displayed draft carried a
+steelman (all predate 2026-09-04), hence the migration exemption.
+(3) Five claims' hand-written credibility disagreed with the draft
+overlay's verdict — MPI-C001, ORCH-C025, AMZ-C019, TRN-C023, TRN-C001 —
+and the record's value was carried, because that is what claim pages
+displayed; each case's history entry lists them. Consequence: on those
+four cases the concurrence tallies (exact / adjacent / split) shift
+slightly, since checks are now compared with the adopted assessment's
+claim verdicts; no case's standing changed. (4) Copy on the claims
+explorer and on unfeatured claim pages no longer promises a "one-field
+edit" promotion, which no longer exists. (5) Nine scripts that read `tier`,
+`overview.md`, or `claims-catalog.yaml` — the reassessment, editorial
+audit, reconciliation, triage, inbox, extraction, endorsement, and adoption
+workers — are unchanged; they are disabled under the kill switch and are
+replaced (step 3) or retired (step 5) by the verbs.
+
+**Render diff against the pre-migration build** (564 pages): 293
+identical; 252 claim pages differ only by the migration run appearing in
+their assessment history; 10 case pages differ by the assessment footer
+(now the migration run, with a "transferred from" line), the history
+entry, and the concurrence tallies above; 7 claims-explorer pages by the
+copy change; the panel page by the new runs; the home page by one count.
+Tests: 258 pass. Typecheck, lint (two pre-existing warnings), production
+build, and the 563-page internal link audit pass.
+
+(AI implementation record; founder-directed session.)
+
 ## 2026-09-08 — Case titles drop the trailing question mark (reapplied)
 
 Founder direction, first given 2026-09-06 and reaffirmed after the

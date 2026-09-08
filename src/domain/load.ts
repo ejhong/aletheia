@@ -2,19 +2,20 @@ import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml } from "yaml";
 import { seatKey } from "../../scripts/lib/seat-key.mjs";
-import { extractClaimRefs, extractPlateRefs } from "./article";
+import { extractClaimRefs, extractPlateRefs } from "./article.ts";
+import { assessmentHash, ledgerHash } from "./hash.ts";
 import {
   assessmentLabels,
   AssessmentRunSchema,
   CaseSchema,
   ChangeLogEntrySchema,
+  CLAIM_ANCHOR_REQUIRED_FROM,
   ClaimSchema,
   ConjectureSchema,
   CuratedResourceSchema,
+  EditionSchema,
   EvidenceSchema,
   ImageSchema,
-  isCatalog,
-  isFeatured,
   ResearchOpportunitySchema,
   SourceSchema,
   steelmanRequirementError,
@@ -23,21 +24,20 @@ import {
   WatchConfigSchema,
   type AssessmentRun,
   type AssessmentState,
-  type CatalogClaim,
   type ChangeLogEntry,
   type Claim,
   type Conjecture,
   type CuratedResource,
+  type Edition,
   type Evidence,
-  type FeaturedClaim,
   type ImageRecord,
   type LoadedCase,
   type Source,
   type Study,
   type NarrativeInput,
   type WatchConfig,
-} from "./schema";
-import { studyIntegrityErrors } from "./studies";
+} from "./schema.ts";
+import { studyIntegrityErrors } from "./studies.ts";
 
 const CONTENT_DIR = path.join(process.cwd(), "content", "cases");
 const SITE_IMAGES_FILE = path.join(process.cwd(), "content", "images.yaml");
@@ -148,13 +148,11 @@ function checkIntegrity(caseDir: string, loaded: LoadedCase): void {
         `claim ${claim.id} has unknown theme "${claim.theme}"`,
       );
     }
-    if (claim.tier === "featured") {
-      for (const pid of claim.parentClaimIds) {
-        requireLiveClaim(pid, `claim ${claim.id} parent`);
-      }
-      for (const did of claim.dependsOnClaimIds) {
-        requireLiveClaim(did, `claim ${claim.id} dependsOn`);
-      }
+    for (const pid of claim.parentClaimIds) {
+      requireLiveClaim(pid, `claim ${claim.id} parent`);
+    }
+    for (const did of claim.dependsOnClaimIds) {
+      requireLiveClaim(did, `claim ${claim.id} dependsOn`);
     }
     const anchorSourceId = claim.sourceAnchor?.sourceId;
     if (anchorSourceId && !sourceIds.has(anchorSourceId)) {
@@ -209,6 +207,10 @@ function checkIntegrity(caseDir: string, loaded: LoadedCase): void {
     throw new ContentError(caseDir, err);
   }
 
+  for (const err of claimAnchorErrors(loaded.claims, loaded.evidence)) {
+    throw new ContentError(caseDir, err);
+  }
+
   for (const ro of loaded.research) {
     for (const cid of ro.claimIds) {
       requireLiveClaim(cid, `research ${ro.id}`);
@@ -245,28 +247,133 @@ function checkIntegrity(caseDir: string, loaded: LoadedCase): void {
     }
   }
 
-  for (const id of extractClaimRefs(loaded.overviewMarkdown)) {
-    requireLiveClaim(id, `overview.md claim reference`);
-  }
-
   checkImages(caseDir, loaded.images, requireLiveClaim);
 
+  for (const err of editionErrors(loaded)) {
+    throw new ContentError(caseDir, err);
+  }
+}
+
+/**
+ * Every claim must be anchored — a source anchor on the record or at least
+ * one evidence record citing it — from CLAIM_ANCHOR_REQUIRED_FROM onward.
+ * Earlier claims are history and are not rewritten; the six that carry
+ * neither are listed in the migration PR (2026-09-08).
+ */
+export function claimAnchorErrors(
+  claims: Pick<Claim, "id" | "sourceAnchor" | "reviewState" | "origin">[],
+  evidence: Pick<Evidence, "claimIds">[],
+): string[] {
+  const cited = new Set(evidence.flatMap((e) => e.claimIds));
+  const errors: string[] = [];
+  for (const c of claims) {
+    if (c.reviewState === "rejected") continue;
+    if (c.origin.date < CLAIM_ANCHOR_REQUIRED_FROM) continue;
+    if (c.sourceAnchor || cited.has(c.id)) continue;
+    errors.push(
+      `claim ${c.id} (${c.origin.date}) has neither a source anchor nor an evidence record citing it — every claim dated on or after ${CLAIM_ANCHOR_REQUIRED_FROM} must be anchored`,
+    );
+  }
+  return errors;
+}
+
+/**
+ * Edition integrity (docs/AUTOMATION.md, "The objects"): the reader's unit
+ * must be whole. Every featured id is a live claim with a treatment in the
+ * adopted assessment; the adopted assessment exists and its content hash
+ * matches (an edited overlay can never silently change the verdict beneath
+ * an essay); the chain through `previous` resolves; every claim marker in
+ * the article resolves to a live claim; every embedded plate is a real
+ * plate; and no plate seated in the predecessor is lost (plates survive).
+ */
+export function editionErrors(
+  loaded: Pick<
+    LoadedCase,
+    "editions" | "claims" | "assessmentRuns" | "research" | "images"
+  >,
+): string[] {
+  const errors: string[] = [];
+  if (loaded.editions.length === 0) {
+    return ["missing editions/ — every case needs at least one edition"];
+  }
+  const live = new Map(
+    loaded.claims.filter((c) => c.reviewState !== "rejected").map((c) => [c.id, c]),
+  );
+  const runs = new Map(loaded.assessmentRuns.map((r) => [r.runId, r]));
+  const researchIds = new Set(loaded.research.map((r) => r.id));
   const imageById = new Map(loaded.images.map((i) => [i.id, i]));
-  for (const ref of extractPlateRefs(loaded.overviewMarkdown)) {
-    const img = imageById.get(ref);
-    if (!img) {
-      throw new ContentError(
-        caseDir,
-        `overview.md embeds unknown image ${ref}`,
-      );
+  const byRunId = new Map(loaded.editions.map((e) => [e.runId, e]));
+
+  for (const ed of loaded.editions) {
+    const where = `edition ${ed.runId}`;
+    let adopted: AssessmentRun | null = null;
+    if (ed.assessment) {
+      adopted = runs.get(ed.assessment.runId) ?? null;
+      if (!adopted) {
+        errors.push(`${where} adopts unknown assessment run ${ed.assessment.runId}`);
+      } else if (assessmentHash(adopted) !== ed.assessment.hash) {
+        errors.push(
+          `${where} adopts assessment ${ed.assessment.runId} whose content no longer matches the recorded hash — overlays are append-only; write a new edition instead of editing the adopted run`,
+        );
+      } else if (adopted.role === "check") {
+        errors.push(`${where} adopts a check run; only draft runs narrate`);
+      }
     }
-    if (img.role !== "plate") {
-      throw new ContentError(
-        caseDir,
-        `overview.md embeds ${ref} as a plate but its role is "${img.role}" — only real plates may appear in the record position`,
-      );
+    const treated = new Set(
+      (adopted?.claimAssessments ?? [])
+        .filter((ca) => ca.treatment)
+        .map((ca) => ca.claimId),
+    );
+    for (const id of ed.featuredClaimIds) {
+      if (!live.has(id)) {
+        errors.push(`${where} features unknown or rejected claim ${id}`);
+        continue;
+      }
+      if (adopted && !treated.has(id)) {
+        errors.push(
+          `${where} features ${id} but its adopted assessment carries no treatment for it`,
+        );
+      }
+    }
+    for (const rid of ed.cruxOrder) {
+      if (!researchIds.has(rid)) {
+        errors.push(`${where} orders unknown research item ${rid}`);
+      }
+    }
+    if (ed.previous !== null) {
+      const prev = byRunId.get(ed.previous);
+      if (!prev) {
+        errors.push(`${where} names unknown predecessor ${ed.previous}`);
+      } else {
+        if (prev.date > ed.date) {
+          errors.push(`${where} is dated before its predecessor ${prev.runId}`);
+        }
+        for (const plate of extractPlateRefs(prev.article)) {
+          if (!extractPlateRefs(ed.article).includes(plate)) {
+            errors.push(
+              `${where} drops plate ${plate} seated in its predecessor — plates survive; move them, never lose them`,
+            );
+          }
+        }
+      }
+    }
+    for (const id of extractClaimRefs(ed.article)) {
+      if (!live.has(id)) {
+        errors.push(`${where} article references unknown or rejected claim ${id}`);
+      }
+    }
+    for (const ref of extractPlateRefs(ed.article)) {
+      const img = imageById.get(ref);
+      if (!img) {
+        errors.push(`${where} article embeds unknown image ${ref}`);
+      } else if (img.role !== "plate") {
+        errors.push(
+          `${where} article embeds ${ref} as a plate but its role is "${img.role}" — only real plates may appear in the record position`,
+        );
+      }
     }
   }
+  return errors;
 }
 
 /**
@@ -312,12 +419,6 @@ export function sourceAdmissionErrors(
 export function loadCase(caseDir: string): LoadedCase {
   const record = CaseSchema.parse(readYaml(caseDir, "case.yaml"));
 
-  const overviewPath = path.join(CONTENT_DIR, caseDir, "overview.md");
-  if (!fs.existsSync(overviewPath)) {
-    throw new ContentError(caseDir, "missing required file overview.md");
-  }
-  const overviewMarkdown = fs.readFileSync(overviewPath, "utf8");
-
   const claims = parseList<Claim>(
     caseDir,
     "claims.yaml",
@@ -325,21 +426,6 @@ export function loadCase(caseDir: string): LoadedCase {
     ClaimSchema,
   );
 
-  // Bulk-imported / pipeline-proposed catalog claims live in a separate
-  // file so large imports stay reversible (one file, one commit) and the
-  // hand-curated canon stays readable. Same schema; claims here typically
-  // carry tier: catalog until individually promoted.
-  const catalogPath = path.join(CONTENT_DIR, caseDir, "claims-catalog.yaml");
-  if (fs.existsSync(catalogPath)) {
-    claims.push(
-      ...parseList<Claim>(
-        caseDir,
-        "claims-catalog.yaml",
-        parseYaml(fs.readFileSync(catalogPath, "utf8")),
-        ClaimSchema,
-      ),
-    );
-  }
   const evidence = parseList(
     caseDir,
     "evidence.yaml",
@@ -454,7 +540,30 @@ export function loadCase(caseDir: string): LoadedCase {
         .sort((a, b) => a.date.localeCompare(b.date))
     : [];
 
+  // Editions (editions/<runId>.yaml): the reader's unit, append-only. The
+  // current edition is the latest by date, runId breaking same-day ties
+  // (the same convention as check runs).
+  const editionsDir = path.join(CONTENT_DIR, caseDir, "editions");
+  const editions: Edition[] = fs.existsSync(editionsDir)
+    ? fs
+        .readdirSync(editionsDir)
+        .filter((f) => f.endsWith(".yaml"))
+        .map((f) => {
+          try {
+            return EditionSchema.parse(
+              parseYaml(fs.readFileSync(path.join(editionsDir, f), "utf8")),
+            );
+          } catch (e) {
+            throw new ContentError(caseDir, `editions/${f} invalid: ${String(e)}`);
+          }
+        })
+        .sort(
+          (a, b) => a.date.localeCompare(b.date) || a.runId.localeCompare(b.runId),
+        )
+    : [];
+
   assertUnique(caseDir, "claim", claims.map((c) => c.id));
+  assertUnique(caseDir, "edition", editions.map((e) => e.runId));
   assertUnique(caseDir, "evidence", evidence.map((e) => e.id));
   assertUnique(caseDir, "source", sources.map((s) => s.id));
   assertUnique(caseDir, "research", research.map((r) => r.id));
@@ -504,13 +613,15 @@ export function loadCase(caseDir: string): LoadedCase {
 
   const loaded: LoadedCase = {
     record,
-    overviewMarkdown,
+    dir: caseDir,
+    ledgerHash: ledgerHash({ claims, evidence, sources, research, studies, images }),
     claims,
     evidence,
     sources,
     research,
     history,
     assessmentRuns,
+    editions,
     images,
     watch,
     curatedResources,
@@ -572,32 +683,33 @@ export function liveClaims(loaded: LoadedCase): Claim[] {
   return loaded.claims.filter((c) => c.reviewState !== "rejected");
 }
 
-/** Live featured-tier claims — the fully-treated editorial set. */
-export function featuredClaims(loaded: LoadedCase): FeaturedClaim[] {
-  return liveClaims(loaded).filter(isFeatured);
+/** The current edition — the latest by date, runId breaking ties. */
+export function currentEdition(loaded: LoadedCase): Edition {
+  const ed = loaded.editions.at(-1);
+  if (!ed) throw new Error(`[content:${loaded.record.slug}] no edition`);
+  return ed;
 }
 
-/** Live catalog-tier claims — the lightweight unreviewed backlog. */
-export function catalogClaims(loaded: LoadedCase): CatalogClaim[] {
-  return liveClaims(loaded).filter(isCatalog);
+/**
+ * The assessment the current edition adopts — the only run that narrates.
+ * Null for a question-only opening. Check runs never narrate; newer draft
+ * runs that no edition has adopted do not either (that is the point of
+ * editions: a newer unadopted draft cannot change the verdict beneath the
+ * essay a reader is looking at).
+ */
+export function adoptedAssessment(loaded: LoadedCase): AssessmentRun | null {
+  const ref = currentEdition(loaded).assessment;
+  if (!ref) return null;
+  return loaded.assessmentRuns.find((r) => r.runId === ref.runId) ?? null;
 }
 
 export function latestAssessment(loaded: LoadedCase): AssessmentRun | null {
   return loaded.assessmentRuns.at(-1) ?? null;
 }
 
-/** The latest draft-role run — cross-model check runs never narrate. */
-export function latestDraftAssessment(loaded: LoadedCase): AssessmentRun | null {
-  for (let i = loaded.assessmentRuns.length - 1; i >= 0; i--) {
-    if (loaded.assessmentRuns[i].role !== "check")
-      return loaded.assessmentRuns[i];
-  }
-  return null;
-}
-
 /**
  * Ratification-by-concurrence (AGENTS.md §3.15, Stage 3 of the AI-operated
- * pivot). The displayed assessment is always the latest draft; what varies
+ * pivot). The displayed assessment is the one the current edition adopts; what varies
  * is its standing, DERIVED at build time from the independent check runs
  * rather than stored — so a re-check updates the standing with no record
  * mutated, and a new draft or new evidence automatically demotes the case
@@ -673,10 +785,40 @@ function freshChecksFor(
   );
 }
 
-function contentStaleSince(
-  loaded: LoadedCase,
-  newestCheck: string,
-): string | null {
+/**
+ * Has the ledger moved since this run judged it? Staleness is a hash, not a
+ * date (docs/AUTOMATION.md): a run that recorded the ledger hash it judged
+ * is stale exactly when the current ledger hashes differently. Runs from
+ * before the field existed fall back to the date rule — content-bearing
+ * history newer than the run. Returns a short reason, or null when current.
+ */
+export function runStaleness(loaded: LoadedCase, run: AssessmentRun): string | null {
+  if (run.basis) {
+    return run.basis.ledgerHash === loaded.ledgerHash ? null : "the ledger changed";
+  }
+  const newestContent = loaded.history
+    .filter((h) => !isHousekeepingEntry(h))
+    .map((h) => h.date)
+    .sort()
+    .at(-1);
+  return newestContent && newestContent > run.date ? newestContent : null;
+}
+
+/**
+ * The staleness of a panel. Checks that recorded a ledger hash are judged
+ * one by one (any mismatch is stale). Checks from before the field existed
+ * are judged as a panel by date, as they always were: stale when
+ * content-bearing history is newer than the newest of them — a panel that
+ * re-judged after the change is current even if one older seat was not.
+ */
+function panelStaleness(loaded: LoadedCase, checks: AssessmentRun[]): string | null {
+  const hashed = checks.filter((r) => r.basis);
+  if (hashed.some((r) => r.basis!.ledgerHash !== loaded.ledgerHash)) {
+    return "the ledger changed";
+  }
+  const legacy = checks.filter((r) => !r.basis);
+  if (legacy.length === 0) return null;
+  const newestCheck = legacy.map((r) => r.date).sort().at(-1)!;
   const newestContent = loaded.history
     .filter((h) => !isHousekeepingEntry(h))
     .map((h) => h.date)
@@ -686,13 +828,13 @@ function contentStaleSince(
 }
 
 export function ratification(loaded: LoadedCase): Ratification | null {
-  const draft = latestDraftAssessment(loaded);
+  const draft = adoptedAssessment(loaded);
   if (!draft) return null;
   const checks = latestCheckPerModel(loaded);
   const panel = checks.length;
   const checksDate =
     panel > 0 ? checks.map((r) => r.date).sort().at(-1)! : null;
-  const staleSince = checksDate ? contentStaleSince(loaded, checksDate) : null;
+  const staleSince = panelStaleness(loaded, checks);
   const agreeing = checks.filter(
     (r) => r.caseAssessment.verdict === draft.caseAssessment.verdict,
   ).length;
@@ -719,7 +861,10 @@ export function ratification(loaded: LoadedCase): Ratification | null {
     return {
       ...base,
       status: "unratified",
-      reason: `the case file changed (${staleSince}) after the panel last judged it — standing resets until the current content is re-checked`,
+      reason:
+        staleSince === "the ledger changed"
+          ? "the ledger changed after the panel judged it — standing resets until the current content is re-checked"
+          : `the case file changed (${staleSince}) after the panel last judged it — standing resets until the current content is re-checked`,
     };
   }
 
@@ -783,6 +928,22 @@ export function ratification(loaded: LoadedCase): Ratification | null {
 }
 
 /**
+ * Does this case need a fresh blind panel? True when no independent model
+ * has checked it, when content moved after the newest check, or when the
+ * adopted assessment is a reconsideration no fresh blind check has judged.
+ * The single source of the rule the content-response workflow re-panels on
+ * (scripts/stale-checks.ts) — the same derivation `ratification` uses.
+ */
+export function checksStale(loaded: LoadedCase): boolean {
+  const draft = adoptedAssessment(loaded);
+  if (!draft) return false;
+  const checks = latestCheckPerModel(loaded);
+  if (checks.length === 0) return true;
+  if (panelStaleness(loaded, checks)) return true;
+  return isReconsiderationRun(draft) && freshChecksFor(draft, checks).length === 0;
+}
+
+/**
  * A ratified case's tolerated dissents — "conclusions ship with their
  * surviving objections attached, not sanitized away." For each current
  * check whose case verdict differs from the displayed draft's, return the
@@ -809,19 +970,16 @@ export function survivingObjections(
 }
 
 /**
- * The assessment to display: always the latest draft, stamped with its
- * ratification standing. No run is hidden behind a newer one — the
- * narrative is current by construction, and the standing badge tells the
- * reader exactly how much independent concurrence stands behind it.
- * (The pre-pivot rule gated display on humanReviewed; no run ever carried
- * it, and if one ever does, the run's own field still records it.)
+ * The assessment to display: the one the current edition adopts, stamped
+ * with its ratification standing. The standing badge tells the reader
+ * exactly how much independent concurrence stands behind it.
  */
 export function displayAssessment(
   loaded: LoadedCase,
 ): { run: AssessmentRun; ratification: Ratification } | null {
-  const latest = latestDraftAssessment(loaded);
-  if (!latest) return null;
-  return { run: latest, ratification: ratification(loaded)! };
+  const run = adoptedAssessment(loaded);
+  if (!run) return null;
+  return { run, ratification: ratification(loaded)! };
 }
 
 /**
@@ -894,12 +1052,8 @@ export function crossModelSummary(
   const checks = latestCheckPerModel(loaded);
   if (checks.length === 0 || !shown) return null;
 
-  // The case file moved after the newest judge read it? Say so.
-  const newestCheck = checks
-    .map((r) => r.date)
-    .sort()
-    .at(-1)!;
-  const staleSince = contentStaleSince(loaded, newestCheck);
+  // The case file moved after a judge read it? Say so.
+  const staleSince = panelStaleness(loaded, checks);
 
   const baseline = new Map(
     shown.run.claimAssessments.map((ca) => [ca.claimId, ca.verdict]),
@@ -950,18 +1104,6 @@ export function crossModelSummary(
     adjacent,
     split: splitIds.size,
     splitClaimIds: [...splitIds],
-  };
-}
-
-/** Human-review coverage over the featured claims, for honest card labels. */
-export function reviewCoverage(loaded: LoadedCase): {
-  reviewed: number;
-  total: number;
-} {
-  const featured = featuredClaims(loaded);
-  return {
-    reviewed: featured.filter((c) => c.reviewState === "human_reviewed").length,
-    total: featured.length,
   };
 }
 

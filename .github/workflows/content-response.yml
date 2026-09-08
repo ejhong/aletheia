@@ -86,13 +86,13 @@ jobs:
               | sort -u
           )
           [ -n "$covered" ] && echo "already panelled today in an open PR: $(echo "$covered" | tr '\n' ' ')"
-          for c in $(node scripts/stale-checks.mjs); do
+          for c in $(node scripts/stale-checks.ts); do
             if echo "$covered" | grep -qx "$c"; then
               echo "skipping $c: an open respond PR already carries today's panel"
               continue
             fi
             echo "re-paneling $c"
-            node scripts/cross-model-check.mjs "$c" || echo "::warning::panel failed for $c"
+            node scripts/cross-model-check.ts "$c" || echo "::warning::panel failed for $c"
           done
       - name: Open classified PR
         env:

@@ -16,14 +16,13 @@ import { CrossModelPanel } from "@/src/components/CrossModelPanel";
 import {
   caseCover,
   crossModelSummary,
-  displayAssessment,
-  featuredClaims,
   historyNewestFirst,
   lastContentUpdate,
   latestCheckPerModel,
   loadAllCases,
   survivingObjections,
 } from "@/src/domain/load";
+import { caseView } from "@/src/domain/view";
 import { paramsOrPlaceholder } from "@/src/domain/staticExport";
 
 export function generateStaticParams() {
@@ -42,6 +41,14 @@ export function generateMetadata({
     const loaded = loadAllCases().find((c) => c.record.slug === slug);
     return { title: loaded ? loaded.record.title : "Not found" };
   });
+}
+
+/** Research items in the edition's crux order; anything unordered follows in file order. */
+function orderedResearch<T extends { id: string }>(order: string[], items: T[]): T[] {
+  const rank = new Map(order.map((id, i) => [id, i]));
+  return [...items].sort(
+    (a, b) => (rank.get(a.id) ?? order.length) - (rank.get(b.id) ?? order.length),
+  );
 }
 
 /* Labels stay one word each: the navigator now carries up to eleven
@@ -65,8 +72,12 @@ export default async function CasePage({
   const found = loadAllCases().find((c) => c.record.slug === slug);
   if (!found) notFound();
   const loaded = found;
-  const claims = featuredClaims(loaded);
-  const shown = displayAssessment(loaded);
+  const view = caseView(loaded);
+  const claims = view.featured;
+  const shown =
+    view.assessment && view.standing
+      ? { run: view.assessment, ratification: view.standing }
+      : null;
   const checks = crossModelSummary(loaded);
   const sourceById = new Map(loaded.sources.map((s) => [s.id, s]));
 
@@ -90,6 +101,7 @@ export default async function CasePage({
 
       <DossierHeader
         record={loaded.record}
+        header={view.header}
         lastUpdated={lastContentUpdate(loaded)}
         verdict={shown?.run.caseAssessment.verdict ?? null}
         standing={shown?.ratification ?? null}
@@ -102,7 +114,7 @@ export default async function CasePage({
             <AssessmentPanel
               run={shown.run}
               standing={shown.ratification}
-              claims={claims}
+              claims={view.claims.map((c) => c.claim)}
             />
             {shown.ratification.status !== "ratified" ? (
               <p className="mt-3 border border-ochre/40 bg-ochre/8 px-4 py-2.5 font-mono text-[11px] tracking-[0.06em] text-ochre">
@@ -156,7 +168,7 @@ export default async function CasePage({
             overview · marked sentences open the exact claim
           </h2>
           <ArticleBody
-            markdown={loaded.overviewMarkdown}
+            markdown={view.article}
             claims={claims}
             images={loaded.images}
           />
@@ -210,19 +222,21 @@ export default async function CasePage({
           </div>
         </section>
 
-        <section id="conventional" className="pt-14 scroll-mt-28">
-          <div className="border border-line bg-paper-deep/50 p-6 sm:p-8">
-            <h2 className="font-serif text-3xl tracking-tight">
-              The best conventional explanation
-            </h2>
-            <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-faint">
-              steelmanned — the account the featured hypothesis must beat
-            </p>
-            <p className="mt-4 text-[15.5px] leading-[1.75] text-ink-soft max-w-3xl">
-              <LinkedRecordText text={loaded.record.bestConventionalExplanation} />
-            </p>
-          </div>
-        </section>
+        {view.header.bestConventionalExplanation ? (
+          <section id="conventional" className="pt-14 scroll-mt-28">
+            <div className="border border-line bg-paper-deep/50 p-6 sm:p-8">
+              <h2 className="font-serif text-3xl tracking-tight">
+                The best conventional explanation
+              </h2>
+              <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-faint">
+                steelmanned — the account the featured hypothesis must beat
+              </p>
+              <p className="mt-4 text-[15.5px] leading-[1.75] text-ink-soft max-w-3xl">
+                <LinkedRecordText text={view.header.bestConventionalExplanation} />
+              </p>
+            </div>
+          </section>
+        ) : null}
 
         <section id="research" className="pt-14 scroll-mt-28">
           <h2 className="font-serif text-3xl tracking-tight">
@@ -248,7 +262,7 @@ export default async function CasePage({
             )
           ) : null}
           <div className="grid sm:grid-cols-2 gap-4 mt-6">
-            {loaded.research.map((r) => (
+            {orderedResearch(view.edition.cruxOrder, loaded.research).map((r) => (
               <ResearchCard
                 key={r.id}
                 item={r}

@@ -3,10 +3,9 @@ import { CaseCard } from "@/src/components/CaseCard";
 import {
   caseCover,
   crossModelSummary,
-  displayAssessment,
   loadAllCases,
-  reviewCoverage,
 } from "@/src/domain/load";
+import { caseView, reviewCoverage } from "@/src/domain/view";
 
 export const metadata: Metadata = { title: "Cases" };
 
@@ -34,15 +33,17 @@ export default function CasesPage() {
       ) : null}
       <div className="grid sm:grid-cols-2 gap-4 mt-8">
         {cases.map((c) => {
-          const shown = displayAssessment(c);
+          const view = caseView(c);
           const sum = crossModelSummary(c);
           return (
             <CaseCard
               key={c.record.id}
               record={c.record}
-              verdict={shown?.run.caseAssessment.verdict ?? null}
-              standing={shown?.ratification.status ?? null}
-              reviewCoverage={reviewCoverage(c)}
+              components={view.header.components}
+              priority={view.header.researchPriority?.level ?? null}
+              verdict={view.assessment?.caseAssessment.verdict ?? null}
+              standing={view.standing?.status ?? null}
+              reviewCoverage={reviewCoverage(view)}
               check={
                 sum
                   ? {

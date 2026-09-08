@@ -1,0 +1,174 @@
+# Migration assessment (2026-09-08) — a mechanical transfer, not a judgment.
+# Case-level fields come from draft 2026-09-02-auto-tpus and from the dossier
+# header formerly on case.yaml; claim-level fields come from the featured
+# claim records as they stood (the displayed credibility and editorial
+# workup). The draft's own per-claim reasoning remains in its overlay.
+# migratedFrom names the source draft; no model wrote this file.
+
+runId: 2026-09-08-migration-zero-worlds
+model: none — mechanical migration (scripts/migrations/2026-09-08-editions.ts)
+date: 2026-09-08
+promptVersion: migration-editions-v1
+humanReviewed: false
+role: draft
+migratedFrom: 2026-09-02-auto-tpus
+caseAssessment:
+  verdict: presently_untestable
+  whatIsClaimed: "No observer-independent physical world is fundamental. What exists at bottom are first-person informational states (\"self-states\") and a lawlike rule — universal induction — governing what each observer should expect next. The apparently objective external world, with its simple computable laws, is an emergent statistical regularity, provably so within Müller's formal model. Neighbouring programs make the same demotion with different primitives: Hoffman's networks of conscious agents render spacetime a species-specific interface; Wolfram's ruliad makes physical law a consequence of how computationally bounded, persistent observers sample the space of all computation. The strongest version of the claim is that quantum theory itself — complex Hilbert space, the Born rule, Tsirelson-bounded nonlocality — should ultimately follow from observer-first postulates alone."
+  whereDisagreementLives: "Not over the reconstruction theorems — everyone grants that finite-dimensional quantum theory can be rigorously derived from operational axioms. And not, currently, over any experiment: loophole-free Bell tests and Wigner's-friend no-go results constrain assumption bundles without discriminating observer-first ontologies from ordinary physicalist quantum mechanics. The crux is the missing bridge: whether the observer-first postulates entail the operational principles from which quantum theory follows, or whether universal induction — which would learn any computable law whatsoever — merely accommodates quantum mechanics the way it would accommodate classical physics, leaving the ontological reversal explanatorily idle."
+  whatWouldSettleIt: Mathematics before instruments. A theorem deriving an operational state space — and ultimately the Tsirelson bound, purification, or the Born rule's specific coefficients — from self-states plus universal induction would convert the metaphysics into physics; a proof that the postulates cannot single out quantum structure would strand it. Alternatively, a prespecified quantitative deviation from quantum predictions in an observer-copying or first-person-exotic regime, with the deviation fixed before data collection, would make the program empirically risky in the ordinary way. Reproducing things quantum mechanics already explains settles nothing — Spekkens' toy theory shows how cheap quantum resemblance is.
+  bestConventionalExplanation: 'The physical world is fundamental, and the observer-first programs have relocated complexity rather than removed it. Universal induction is Kolmogorovian at the meta-level: it converges to whatever computable law generates the data, so it explains why some lawful world appears but not why the world is quantum rather than classical, stochastic, or post-quantum — the quantum structure is currently imported from experiment, exactly as QBism imports the Born rule as an empirical normative addition. The explanatory compression the idealists promise is already delivered, with theorems, by the operational reconstructions — which remain ontologically neutral and require no idealism. And standard physicalist quantum theory keeps a decisive quantitative advantage: Hamiltonians, quantum field theory, particle spectra, precision predictions. A theory with "only self-states" wins ontological economy only if its laws recover that structure; until then, the complexity has moved from the noun list into the transition rule.'
+  components:
+    - label: Quantum reconstruction theorems (the proven half)
+      state: established
+    - label: Müller's emergence theorems (lawful world as output)
+      state: well_supported
+    - label: The observer → quantum bridge
+      state: unresolved
+      note: The precisely posed open problem (ZW-C010) the case turns on.
+    - label: No-world-underneath thesis
+      state: presently_untestable
+  researchPriority:
+    level: medium
+    reason: The decisive work is pure mathematics — the observer-to-operational- axioms bridge theorems (ZW-R001–R003) — with high value and zero lab cost, but progress cannot be scheduled or bought, only prized.
+  loadBearing:
+    - ZW-C001
+    - ZW-C002
+    - ZW-C003
+    - ZW-C004
+    - ZW-C010
+  weakestLinks:
+    - ZW-C005
+    - ZW-C006
+    - ZW-C007
+  synthesis: "The ladder still separates cleanly at the mechanism–attribution joint. The observation rung is secure: three independent reconstruction theorem sets (ZW-E006, ZW-E007, ZW-E008) establish ZW-C001; every observer-first principal concedes the quantum package is underived in their own words (ZW-E002, ZW-E003, ZW-E010, ZW-E012), establishing ZW-C002; and the empirical benchmarks (ZW-E017, ZW-E018) plus the proponents' own deflation of Wigner's-friend structure (ZW-E004) support ZW-C003. But these credible observations are low in diagnosticity: both camps predict identical statistics, so no experiment on file discriminates the ontologies. At the mechanism rung, ZW-C004 rests on a real theorem (ZW-E001) delivering generic computable lawfulness, not quantum structure; ZW-C005 is a self-labelled preliminary foothold; ZW-C006 and ZW-C007 fall below the Spekkens calibration bar (ZW-E015). The attribution thesis ZW-C008 therefore makes no discriminating prediction, and its testability remains keyed entirely to the unsolved bridge theorem posed in ZW-C010. ZW-E019 stays adjacent context: an access-limitation derivation from a state-realist ontology that sharpens the bridge problem's shape without touching its observer-first direction. Sensitivity: the single record whose removal would most change the case is ZW-E001 — without it, ZW-C004 and ZW-C005 lose their formal foundation and the mechanism rung collapses to aspiration. The case verdict nonetheless survives its removal, because presently_untestable rests on the structural absence of a bridge theorem, which no record in the directory supplies."
+claimAssessments:
+  - claimId: ZW-C001
+    verdict: established
+    reasoning: "These are peer-reviewed theorems in mainstream physics venues, standing for fifteen to twenty-five years, and are not contested by any side of this case. What they establish is conditional: quantum theory follows once the operational axioms are granted."
+    confidence: high
+    treatment:
+      plainLanguage: "The mathematical half of the observer-first dream is real: you do not have to postulate the strange quantum formalism. Assume a handful of plain statements about information — how systems compose, what can be distinguished, that transformations are reversible and continuous, that mixed states can be purified — and quantum mechanics falls out as a theorem."
+      importance: major
+      diagnosticity: moderate
+      diagnosticitySummary: "Load-bearing for the case's architecture but neutral between ontologies: the reconstructions are ontologically agnostic, so they prove the second half of a two-stage derivation while saying nothing about whether the first half — from observers to operational axioms — can be built."
+      strongestObjection: The axioms may already smuggle in most of what is distinctly quantum — purification in particular does heavy lifting — so "derived from information principles" is explanatory compression, not creation ex nihilo; why nature satisfies those principles remains open.
+      whatWouldChangeOurMind:
+        - A demonstrated flaw in one of the reconstruction proofs (none is currently alleged).
+        - A theorem showing the axiom sets are secretly equivalent to postulating Hilbert space outright, which would deflate the compression claim.
+  - claimId: ZW-C002
+    verdict: well_supported
+    reasoning: "Supported from inside every program: Müller states the quantum reconstruction is unfinished and hopes for it; Hoffman's published results are correspondences with a free-particle wavefunction, not Hilbert-space derivations; Wolfram's derivations are informal by his own presentation, with acknowledged circularities in the observer concept. No proponent claims the package has been derived."
+    confidence: high
+    treatment:
+      plainLanguage: "The gap at the center of the case: the programs that demote the external world have not yet earned the physics. Their own leading theorist says so — the quantum reconstruction is a goal, not a result. What exists are partial correspondences and one preliminary theorem, not a derivation."
+      importance: headline
+      diagnosticity: high
+      diagnosticitySummary: This is the structural fact the whole case turns on. If the gap closes in the idealist direction, the featured thesis acquires real content; while it stays open, "quantum mechanics from the observer" is a research program, not an explanation.
+      strongestObjection: "\"Not yet derived\" is the normal condition of ambitious research programs, not evidence against them — general relativity was not derived from Mach's principle either, and the 2020 preliminary Bell theorem shows the direction is not hopeless."
+      whatWouldChangeOurMind:
+        - Publication of an observer-to-operational-axioms bridge theorem (see research agenda), which would narrow or close the gap.
+        - A no-go theorem showing observer-first postulates cannot single out quantum structure, which would harden the gap into a wall.
+  - claimId: ZW-C003
+    verdict: well_supported
+    reasoning: "The experimental results themselves are among the most secure in physics. The non-discrimination point is a matter of logic: theories that reproduce quantum statistics cannot be separated by experiments that confirm quantum statistics."
+    confidence: high
+    treatment:
+      plainLanguage: The experiments closest to this dispute referee it without picking a winner. Bell tests rule out local hidden variables; the Wigner's-friend theorem prices observer-independent "facts" — but every serious contender here, idealist or physicalist, already accepts quantum mechanics' predictions, so no current data separates them.
+      importance: major
+      diagnosticity: moderate
+      diagnosticitySummary: "Disciplines the debate in both directions: it blocks proponents from citing Bell or Wigner's-friend results as evidence that \"observation creates reality,\" and it sets the benchmark — Tsirelson-bounded nonlocality — that any genuine derivation must hit."
+      strongestObjection: "Not so fast on the symmetry: the Wigner's-friend theorem specifically taxes theories with absolute observed events, which is a real cost for ordinary physicalism that observer-relative frameworks do not pay — the constraint is not perfectly neutral even if it is not a discriminating test."
+      whatWouldChangeOurMind:
+        - A prespecified, quantitative observer-first deviation from quantum predictions surviving a real experiment — which would move this from benchmark to test.
+  - claimId: ZW-C004
+    verdict: well_supported
+    reasoning: "The theorems are published, peer-reviewed, and unchallenged as mathematics. The honest caveats are scope caveats: the results hold in an idealized bit-string model whose information accumulates monotonically (Müller's acknowledged \"erasure problem\"), universal induction is uncomputable in exact form, and the invariance theorem leaves machine-dependent constants that matter for finite predictions."
+    confidence: moderate
+    treatment:
+      plainLanguage: "The flagship program is not hand-waving: there is a 2020 paper in a mainstream quantum journal with proofs. Start from nothing but \"you are an observer with a current informational state\" and a mathematically exact version of Occam's razor, and it follows that you should expect to find yourself in a stable, lawful world — and should never expect to be a Boltzmann brain, however many of them cosmology produces."
+      importance: headline
+      diagnosticity: moderate
+      diagnosticitySummary: Proves the reversal is not empty philosophy — a lawful world really can be output rather than input. But emergence of some computable lawful world is exactly what the physicalist expects too, for different reasons, so the theorem does not by itself favor idealism.
+      strongestObjection: The bit model packs an observer's entire past into its state and forbids forgetting; Müller himself treats extending the theorems to realistic observers who erase and rewrite memory as an open problem — until then the emergence theorem describes an idealization no actual observer instantiates.
+      whatWouldChangeOurMind:
+        - A formulation with forgetting that preserves (or breaks) the emergence theorem — Müller's own stated open problem.
+        - A demonstrated error in the 2020 proofs.
+  - claimId: ZW-C005
+    verdict: provisionally_supported
+    reasoning: Both halves are documented in the theorist's own words. The asymptotic consistency result is solid but unselective; the Bell theorem is genuine but, per its author, preliminary. The characterization here deliberately follows Müller's own hedged framing rather than the stronger glosses that circulate.
+    confidence: moderate
+    treatment:
+      plainLanguage: "Where the flagship program actually stands on quantum mechanics: it is compatible with quantum physics (because universal induction learns whatever lawful world produces your data), and it has one genuine quantum foothold — a real but heavily-conditioned theorem about Bell violations. Compatibility is cheap; the foothold is preliminary; the derivation is missing."
+      importance: major
+      diagnosticity: moderate
+      diagnosticitySummary: The preliminary Bell theorem is the single most quantum-specific result any observer-first program owns, which makes it the natural seed for the bridge project (ZW-C010) — and its "too many assumptions" status is a fair measure of how far the bridge has actually been built.
+      strongestObjection: 'Consistency-with-QM is consistency-with-anything-computable: a classical stochastic world, a post-quantum no-signalling world, and our world would all be "learned" equally well, so nothing specifically quantum has been explained — and a theorem that Bell violation "can sometimes be expected" under extra assumptions is not yet a prediction that it must occur with quantum statistics.'
+      whatWouldChangeOurMind:
+        - Strengthening of the 2020 Bell result to fewer assumptions, or a Tsirelson-bound derivation (see research agenda).
+        - A proof that the framework equally 'expects' superquantum no-signalling correlations, which would blunt the foothold.
+  - claimId: ZW-C006
+    verdict: provisionally_supported
+    reasoning: "The FBT theorem and the wavefunction correspondence are published and verifiable as mathematics. What is contested is their reach: the theorem concerns perception's veridicality under model assumptions, not ontology, and the authors present conscious realism as a hypothesis to be developed, not a result."
+    confidence: moderate
+    treatment:
+      plainLanguage: 'The consciousness-first neighbour has real mathematics in two places: a theorem that natural selection can favor useful perception over true perception, and a demonstration that a certain network of "conscious agents" reproduces the form of one simple quantum object. Between those results and "consciousness generates quantum physics" lies everything that has not been done.'
+      importance: supporting
+      diagnosticity: low
+      diagnosticitySummary: A correspondence with one structural component of quantum mechanics is the kind of resemblance Spekkens' toy theory shows to be inexpensive; it neither confirms nor embarrasses the featured thesis.
+      strongestObjection: "The inference chain breaks twice: selection-need-not-favor-veridical- perception does not imply consciousness is fundamental, and a Markov chain whose harmonic functions match a free-particle wavefunction does not imply agents underlie physics — the phenomenal interpretation outruns the mathematics."
+      whatWouldChangeOurMind:
+        - A conscious-agent derivation of nonclassical correlations (Tsirelson, not just no-signalling) or of amplitude addition.
+        - Publication of the promised particle-physics predictions from decorated-permutation dynamics.
+  - claimId: ZW-C007
+    verdict: mixed
+    reasoning: "As a report of what the program claims and what it has published, this is accurate and verified against the primary texts. The mixed grade reflects the program's own state: \"we seem to be able to derive\" is self-published argument, not theorem; the strongest formal result in the vicinity (ZX-calculus embedding) shows compatibility, which Spekkens-style cautions render weak; and the circularity admission is Wolfram's own."
+    confidence: moderate
+    treatment:
+      plainLanguage: "The computational neighbour makes the boldest derivation claim of the three and documents it the least formally. The ruliad — the limit of all possible computations — is supposed to look quantum-mechanical to any bounded, persistent observer. What exists on paper: rich informal arguments, a genuine formal embedding of a quantum calculus into the rewriting framework, and the author's own admission that defining an observer is \"at least on the face of it circular.\""
+      importance: supporting
+      diagnosticity: low
+      diagnosticitySummary: An informal derivation claim cannot move the case either way until it becomes checkable; its main evidential role is to mark the second place (after Müller) where the observer-to-quantum bridge is promised.
+      strongestObjection: Universal rewriting systems can embed an enormous range of computational structures, so embedding ZX-calculus selects nothing; and a framework whose raw ontology contains all computations equally, with no simplicity measure, must extract all explanatory work from an observer concept the author concedes is not yet well defined.
+      whatWouldChangeOurMind:
+        - A formal, refereeable derivation of quantum statistics (not just structure) from stated observer axioms.
+        - A published counter-argument that bounded persistent observers could equally perceive non-quantum physics in the ruliad.
+  - claimId: ZW-C008
+    verdict: presently_untestable
+    reasoning: "Honest label for a live metaphysical thesis: nothing in the current record supports or contradicts it over its physicalist rival, because both accommodate all existing data. Its scientific content today is exhausted by the research program it generates — the bridge theorems it still owes (ZW-C010) and the exotic first-person predictions that are not yet operationalizable (ZW-C503)."
+    confidence: high
+    treatment:
+      plainLanguage: "The featured thesis, at full strength: zero worlds. Not \"spacetime is emergent,\" not \"the quantum state is knowledge,\" but no world underneath at all — the observer's informational state and a law of what to expect next are the whole inventory, and everything physics describes is output."
+      importance: headline
+      diagnosticity: high
+      diagnosticitySummary: This is the thesis itself; everything below the ladder exists to test it against ZW-C009.
+      strongestObjection: A thesis that no present observation can touch, whose quantum content is conceded to be underived, and whose distinctive predictions live in scenarios (duplication, simulation shutdown, teletransportation) we cannot run, is doing no explanatory work that the ontologically neutral reconstructions do not already do — parsimony of nouns purchased with an uncomputable transition rule is not parsimony.
+      whatWouldChangeOurMind:
+        - Resolution of the bridge problem in either direction (ZW-C010, ZW-R001–R004).
+        - An operationalized first-person experiment with a prespecified quantitative deviation (ZW-R005).
+  - claimId: ZW-C009
+    verdict: well_supported
+    reasoning: "Every component is documented from the proponents' side of the ledger: the unselectivity of induction is visible in Müller's own consistency argument; the underived Born rule is conceded; the QBism comparison (Born rule as empirical normative addition) is in the primary literature; the quantitative gap is not disputed by anyone. What this claim does not establish is that the bridge can never be built."
+    confidence: moderate
+    treatment:
+      plainLanguage: 'The rival attribution: the world is real, and the idealists have moved the mystery, not solved it. Their frameworks predict "a lawful world" but borrow the quantum part from experiment; the honest theorems in the neighbourhood (the reconstructions) need no idealism; and nothing in any observer-first program computes a spectrum, a coupling constant, or a cross-section.'
+      importance: headline
+      diagnosticity: high
+      diagnosticitySummary: 'The direct rival to ZW-C008. Note its exposure: it predicts the bridge theorems will not materialize. A derivation of the Tsirelson bound or the Born rule from observer-first postulates would falsify its central "explanatorily idle" charge overnight.'
+      strongestObjection: '"Relocated complexity" cuts against physicalism too: standard quantum theory buys its precision by taking the entire quantum formalism as primitive, which is exactly the explanatory debt the reconstructions and the observer-first programs are attempts to pay — and the physicalist has no non-circular account of why the operational axioms hold.'
+      whatWouldChangeOurMind:
+        - An observer-first derivation of any uniquely quantum quantitative structure (Tsirelson bound, Born coefficients, purification).
+        - A theorem that universal induction, suitably constrained, favors quantum probability structure over classical — which would break the unselectivity charge.
+  - claimId: ZW-C010
+    verdict: well_supported
+    reasoning: 'That the problem is precise, open, and decisive is common ground: Müller explicitly contrasts his framework with operational setups that presuppose jointly embedded agents, and identifies the quantum reconstruction as the relevant benchmark. The only contestable part is "would settle most of the case" — a negative resolution would still leave weaker observer-first positions standing.'
+    confidence: moderate
+    treatment:
+      plainLanguage: Unusually for a metaphysical dispute, there is an exact statement of what victory looks like. The right-hand half of the derivation — operational axioms to quantum mechanics — is proven. The left-hand half — observer to operational axioms — is not. Prove it and zero worlds becomes physics; prove it impossible and zero worlds becomes permanently decorative.
+      importance: major
+      diagnosticity: high
+      diagnosticitySummary: "This is the crux that converts the attribution dispute into mathematics. It plays the role the falsifiability crux plays in the MPI case: it determines how much anything else here can ever mean."
+      strongestObjection: 'The bridge may be unprovable rather than provable-or-refutable: "observer" may never be formalized tightly enough for a theorem to bind it, in which case the case ends not with a proof but with a definitional stalemate — the Wolfram circularity problem generalized.'
+      whatWouldChangeOurMind:
+        - A published observer-to-GPT bridge theorem, a Tsirelson-bound derivation, or a no-go result (ZW-R001–R003).
+        - A demonstration that the bridge question is ill-posed, which would demote this claim's 'precisely posed' clause.

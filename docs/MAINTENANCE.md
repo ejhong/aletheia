@@ -22,7 +22,7 @@ merge policy**. There are two lanes.
 
 | Lane | What qualifies | What happens |
 | --- | --- | --- |
-| `auto:low-risk` | Reversible-by-runId material that touches no featured content: `proposals/**`, `inbox/**` moves, **new** append-only `assessments/*.yaml` overlays, new harvested `governance/arbiter/pr-*.yaml` verdicts, append-only catalog claims and sources. | `PR risk check` re-derives the class from the diff, labels the PR, and arms auto-merge. Merges when CI is green. |
+| `auto:low-risk` | Reversible-by-runId material that touches no featured content: `proposals/**`, `inbox/**` moves, **new** append-only `assessments/*.yaml` overlays, new harvested `governance/arbiter/pr-*.yaml` verdicts, append-only claims and sources (a new claim cannot feature itself; featuring is an edition decision). | `PR risk check` re-derives the class from the diff, labels the PR, and arms auto-merge. Merges when CI is green. |
 | `needs-approval` | Everything else: featured claims, article text, case records, research items, studies, code, workflows, docs. | The `arbiter` check convenes five vendor seats; **pass** = ≥4 `complies` and zero `violates`. A pass auto-merges. Anything else parks the PR, publicly, until revised or a seat is restored. |
 
 Six workflows do the work:

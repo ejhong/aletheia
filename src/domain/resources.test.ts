@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { getCaseBySlug, loadAllCases } from "./load";
-import { extractArxivId, extractDoi, resourceGroups } from "./resources";
-import { CuratedResourceSchema, WatchConfigSchema } from "./schema";
+import { getCaseBySlug, loadAllCases } from "./load.ts";
+import { extractArxivId, extractDoi, resourceGroups } from "./resources.ts";
+import { CuratedResourceSchema, WatchConfigSchema } from "./schema.ts";
 
 describe("identifier extraction", () => {
   it("finds DOIs in identifier prose and strips trailing punctuation", () => {

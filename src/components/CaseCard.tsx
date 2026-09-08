@@ -5,17 +5,22 @@ import { PriorityBadge } from "./PriorityBadge";
 import { assetPath } from "@/src/config/assets";
 import type {
   AssessmentState,
+  CaseComponent,
   CaseRecord,
   ImageRecord,
+  ResearchPriorityLevel,
 } from "@/src/domain/schema";
 
 /**
  * A case card leads with the question and shows two outputs, not one:
  * the evidence state (component rows where a single word would mislead)
- * and the research priority — plus honest review provenance.
+ * and the research priority — plus honest review provenance. Judgments
+ * come from the case view's adopted assessment; identity from the record.
  */
 export function CaseCard({
   record,
+  components,
+  priority,
   verdict,
   standing,
   reviewCoverage,
@@ -23,6 +28,8 @@ export function CaseCard({
   cover,
 }: {
   record: CaseRecord;
+  components: CaseComponent[];
+  priority: ResearchPriorityLevel | null;
   verdict: AssessmentState | null;
   standing: "ratified" | "contested" | "unratified" | null;
   reviewCoverage: { reviewed: number; total: number };
@@ -62,14 +69,14 @@ export function CaseCard({
           {record.subtitle}
         </p>
         <div className="mt-4">
-          {record.components.length > 0 ? (
-            <ComponentVerdicts components={record.components} />
+          {components.length > 0 ? (
+            <ComponentVerdicts components={components} />
           ) : verdict ? (
             <AssessmentBadge state={verdict} />
           ) : null}
         </div>
         <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5">
-          <PriorityBadge level={record.researchPriority.level} />
+          {priority ? <PriorityBadge level={priority} /> : null}
           <Link
             href={`/panel#${record.slug}`}
             className="font-mono text-[10px] uppercase tracking-[0.14em] text-faint hover:text-copper"

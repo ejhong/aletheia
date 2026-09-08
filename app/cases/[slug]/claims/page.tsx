@@ -5,11 +5,8 @@ import { CatalogExplorer } from "@/src/components/CatalogExplorer";
 import { ClaimCard } from "@/src/components/ClaimCard";
 import { LinkedRecordText } from "@/src/components/LinkedRecordText";
 import { ProvenanceBadge } from "@/src/components/ProvenanceBadge";
-import {
-  catalogClaims,
-  featuredClaims,
-  loadAllCases,
-} from "@/src/domain/load";
+import { loadAllCases } from "@/src/domain/load";
+import { caseView } from "@/src/domain/view";
 import { paramsOrPlaceholder } from "@/src/domain/staticExport";
 
 export function generateStaticParams() {
@@ -39,14 +36,15 @@ export default async function ClaimsExplorerPage({
   const found = loadAllCases().find((c) => c.record.slug === slug);
   if (!found) notFound();
   const loaded = found;
-  const featured = featuredClaims(loaded);
-  const catalog = catalogClaims(loaded);
+  const view = caseView(loaded);
+  const featured = view.featured;
+  const catalog = view.catalog;
   const tombstones = loaded.claims.filter((c) => c.reviewState === "rejected");
 
   const themes = Object.entries(loaded.record.themes).filter(([key]) =>
-    featured.some((c) => c.theme === key),
+    featured.some((c) => c.claim.theme === key),
   );
-  const headliners = featured.filter((c) => c.importance === "headline");
+  const headliners = featured.filter((c) => c.treatment?.importance === "headline");
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-12">
@@ -72,7 +70,7 @@ export default async function ClaimsExplorerPage({
         </h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {headliners.map((c) => (
-            <ClaimCard key={c.id} claim={c} />
+            <ClaimCard key={c.claim.id} claim={c} />
           ))}
         </div>
       </section>
@@ -82,12 +80,12 @@ export default async function ClaimsExplorerPage({
           featured, by theme
         </h2>
         {themes.map(([key, label]) => {
-          const themeClaims = featured.filter((c) => c.theme === key);
+          const themeClaims = featured.filter((c) => c.claim.theme === key);
           return (
             <details
               key={key}
               className="group border border-line bg-paper"
-              open={themeClaims.some((c) => c.importance === "headline")}
+              open={themeClaims.some((c) => c.treatment?.importance === "headline")}
             >
               <summary className="cursor-pointer list-none p-4 flex items-baseline justify-between gap-3">
                 <span className="font-serif text-xl">{label}</span>
@@ -100,7 +98,7 @@ export default async function ClaimsExplorerPage({
               </summary>
               <div className="px-4 pb-4 grid sm:grid-cols-2 gap-3">
                 {themeClaims.map((c) => (
-                  <ClaimCard key={c.id} claim={c} />
+                  <ClaimCard key={c.claim.id} claim={c} />
                 ))}
               </div>
             </details>
@@ -115,12 +113,12 @@ export default async function ClaimsExplorerPage({
               The unreviewed catalog
             </h2>
             <p className="mt-2 text-[14px] text-ink-soft max-w-2xl">
-              {catalog.length} lightweight claims extracted from the source
-              literature and imported without individual human review. Each is
-              one atomic statement anchored to its source — no assessments, no
-              evidence records yet. Promoting a catalog claim to full featured
-              treatment is a one-field edit followed by the full editorial
-              workup the validator then demands.
+              {catalog.length} claims in the ledger that the current edition
+              does not feature — most extracted from the source literature and
+              imported without individual human review. Each is one atomic
+              statement with its anchor; none carries a judgment until an
+              edition features it and its adopted assessment supplies the full
+              treatment.
             </p>
             <div className="mt-5">
               <CatalogExplorer

@@ -131,7 +131,7 @@ jobs:
       - name: Measure yield
         if: ${{ (inputs.mode || 'full') == 'full' }}
         run: |
-          node scripts/yield-report.mjs > yield.json 2> yield-table.txt
+          node scripts/yield-report.ts > yield.json 2> yield-table.txt
           { echo '## Attention (yield bands)'; echo '```'; cat yield-table.txt; echo '```'; } > yield-digest.md
           echo "DUE_CASES=$(node -e 'const r=require("./yield.json");console.log(Object.entries(r.cases).filter(([,c])=>c.due).map(([s])=>s).join(","))')" >> "$GITHUB_ENV"
           rm -f yield-table.txt

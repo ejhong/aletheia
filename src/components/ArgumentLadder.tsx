@@ -4,8 +4,8 @@ import {
   assessmentLabels,
   rungLabels,
   rungOrder,
-  type FeaturedClaim,
 } from "@/src/domain/schema";
+import type { ClaimView } from "@/src/domain/view";
 
 const dotClasses: Record<string, string> = {
   supported: "bg-verdigris",
@@ -20,12 +20,14 @@ const rungGloss: Record<string, string> = {
   observation: "What is actually there? Measurements, records, and anomalies.",
 };
 
+const importanceOrder = ["headline", "major", "supporting"];
+
 /**
  * The argument ladder — dark register, hand-built. Rungs are stacked with
  * attribution at the top; the reader sees credibility decay as the argument
  * climbs from what is observable toward what is claimed.
  */
-export function ArgumentLadder({ claims }: { claims: FeaturedClaim[] }) {
+export function ArgumentLadder({ claims }: { claims: ClaimView[] }) {
   const rungs = [...rungOrder].reverse(); // attribution on top
 
   return (
@@ -41,11 +43,11 @@ export function ArgumentLadder({ claims }: { claims: FeaturedClaim[] }) {
       <div className="p-5 sm:p-8 space-y-0">
         {rungs.map((rung, i) => {
           const rungClaims = claims
-            .filter((c) => c.rung === rung)
+            .filter((c) => c.claim.rung === rung)
             .sort(
               (a, b) =>
-                ["headline", "major", "supporting"].indexOf(a.importance) -
-                ["headline", "major", "supporting"].indexOf(b.importance),
+                importanceOrder.indexOf(a.treatment?.importance ?? "supporting") -
+                importanceOrder.indexOf(b.treatment?.importance ?? "supporting"),
             );
           if (rungClaims.length === 0) return null;
           return (
@@ -67,8 +69,8 @@ export function ArgumentLadder({ claims }: { claims: FeaturedClaim[] }) {
                   </p>
                 </div>
                 <ul className="mt-3 mb-6 grid gap-2 sm:grid-cols-2">
-                  {rungClaims.map((claim) => {
-                    const family = assessmentFamily(claim.credibility);
+                  {rungClaims.map(({ claim, verdict, treatment }) => {
+                    const family = verdict ? assessmentFamily(verdict) : "open";
                     return (
                       <li key={claim.id}>
                         <Link
@@ -78,7 +80,7 @@ export function ArgumentLadder({ claims }: { claims: FeaturedClaim[] }) {
                           <div className="flex items-center justify-between gap-2">
                             <span className="font-mono text-[10px] tracking-[0.14em] text-dossier-faint">
                               {claim.id}
-                              {claim.importance === "headline" ? (
+                              {treatment?.importance === "headline" ? (
                                 <span className="text-copper"> · headline</span>
                               ) : null}
                             </span>
@@ -86,7 +88,7 @@ export function ArgumentLadder({ claims }: { claims: FeaturedClaim[] }) {
                               <span
                                 className={`inline-block size-1.5 rounded-full ${dotClasses[family]}`}
                               />
-                              {assessmentLabels[claim.credibility]}
+                              {verdict ? assessmentLabels[verdict] : "not yet assessed"}
                             </span>
                           </div>
                           <p className="mt-1.5 text-[13.5px] leading-snug text-dossier-text/90 group-hover:text-dossier-text line-clamp-3">

@@ -5,7 +5,7 @@ import {
   opsFeed,
   seatName,
   seatRecords,
-} from "./panel";
+} from "./panel.ts";
 
 describe("panel derivations (live data)", () => {
   it("seatName strips run-generation wording", () => {

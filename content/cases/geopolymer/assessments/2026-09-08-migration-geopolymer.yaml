@@ -1,0 +1,222 @@
+# Migration assessment (2026-09-08) — a mechanical transfer, not a judgment.
+# Case-level fields come from draft 2026-08-26-auto-cxy1 and from the dossier
+# header formerly on case.yaml; claim-level fields come from the featured
+# claim records as they stood (the displayed credibility and editorial
+# workup). The draft's own per-claim reasoning remains in its overlay.
+# migratedFrom names the source draft; no model wrote this file.
+
+runId: 2026-09-08-migration-geopolymer
+model: none — mechanical migration (scripts/migrations/2026-09-08-editions.ts)
+date: 2026-09-08
+promptVersion: migration-editions-v1
+humanReviewed: false
+role: draft
+migratedFrom: 2026-08-26-auto-cxy1
+caseAssessment:
+  verdict: unresolved
+  whatIsClaimed: "At least one major megalithic monument contains man-made cast stone: blocks produced on site by binding processed mineral inputs (geopolymer, natron/waterglass, lime, or related chemistry) rather than by carving natural rock alone."
+  whereDisagreementLives: Not over whether anomalies exist — measured quarrying rates, salt reports, proponent SEM findings — but over whether any of them survive rigorous, independent testing, and whether the provenance methods used to attribute monument stone to quarries could even detect casting if it happened, since cast stone made from quarry-sourced aggregate would inherit the quarry's geochemical signature.
+  whatWouldSettleIt: A blinded mineralogical and microstructural comparison of disputed monument samples against geologically matched natural stone, scored against prespecified cast-stone signatures — combined with primary-source verification of the historical anchors. Either result would be decisive for specific monuments.
+  bestConventionalExplanation: "Quarrying, carving, and transport with well-attested means: dolerite pounders and copper tools, ramps, sledges, levers, and large organized labor forces. This account is supported by unfinished monuments abandoned mid-carve at quarries, tool marks and tools recovered at extraction sites, worker settlements with administrative records, experimental archaeology demonstrations, and geochemical provenance studies matching monument stone to specific quarries. It requires no unattested technology — its gaps are quantitative (rates, timelines, specific features), not existential."
+  components:
+    - label: Geopolymer / reconstituted-stone feasibility with ancient materials
+      state: provisionally_supported
+      note: Modern demonstrations exist (GEO-C010, GEO-C012); scale and fidelity to specific monuments remain open.
+    - label: Great Pyramid limestone blocks are cast
+      state: weakly_supported
+    - label: Pumapunku / Tiwanaku blocks are cast
+      state: mixed
+    - label: At least one major monument contains cast stone
+      state: unresolved
+      note: The headline existential claim; open until a blinded, binder-aware analysis is run on nominated samples.
+  researchPriority:
+    level: high
+    reason: The decisive test — a blinded, binder-aware materials comparison of nominated blocks against matched quarry controls (GEO-R003, GEO-R004) — is lab-scale, affordable, and has never been performed.
+  loadBearing:
+    - GEO-C022
+    - GEO-C020
+    - GEO-C021
+    - GEO-C030
+    - GEO-C012
+  weakestLinks:
+    - GEO-C021
+    - GEO-C004
+    - GEO-C002
+    - GEO-C006
+    - GEO-C013
+    - GEO-C003
+  synthesis: "The featured thesis is existential: GEO-C022 asks only that at least one major monument contain cast stone, so the case verdict cannot be an average across branches. The Egyptian branch is the one that has actually been tested with binder-aware methods on monument stone, and in the recipe tested it failed — GEO-E018, GEO-E019, GEO-E021 and above all GEO-E020, whose genuine Davidovits-made positive control shows that an alkali-aluminosilicate binder is plainly visible when present. What survives on the Egyptian side is narrower than the original claim: the C–S–H (lime-pozzolan) binder proposed in GEO-E017, which has drawn no published rebuttal and which GEO-E020's alkali-based negative does not test, plus the microconstituent anomalies of GEO-E012 whose sample provenance is contested. The Andean branch (GEO-E006, GEO-E007) is one team, one sample set, contested custody, never independently rerun; the only counterweight, GEO-E008, is a 1971 provenance study of sandstones set against microscopy of andesite, so the two partly talk past each other. That is an untested branch, not a genuine evidential collision — hence unresolved rather than mixed or weakly_supported. The proponents' methods critique (GEO-C030, GEO-E024) holds only in its narrow form: H/C/O blindness is real for PXRF and ICP-MS and legitimately qualifies quarry-match reasoning such as GEO-E009, but it does not reach direct binder-aware petrography, and its own methods table misstates NMR. The Aswan material (GEO-C001, GEO-C002, GEO-C006) bears on the completeness of the pounding orthodoxy, not on casting; even a fully vindicated GEO-E001 is compatible with fire-setting, chisels or more labour. Decisive next steps are unchanged: provenance-secure Egyptian samples tested specifically for a C–S–H binder, and an independent modern re-analysis of Pumapunku andesite."
+claimAssessments:
+  - claimId: GEO-C022
+    verdict: unresolved
+    reasoning: No disputed monument stone has ever been subjected to a blinded, prespecified discriminating test. The proponent evidence is real but proponent-generated; the mainstream rejection is broad but has not engaged the specific discriminating experiments either.
+    confidence: moderate
+    treatment:
+      plainLanguage: "The headline thesis, stated as a disjunction: the casting hypothesis wins if it is true anywhere — one monument, one confirmed cast block. It does not require that every megalith was cast."
+      importance: headline
+      diagnosticity: high
+      diagnosticitySummary: This is the thesis itself; everything below the ladder exists to test it.
+      strongestObjection: Forty-five years after the hypothesis was proposed, no independently replicated physical evidence from an actual monument supports it, while quarries, tools, unfinished pieces, and provenance matches accumulate on the conventional side.
+      whatWouldChangeOurMind:
+        - A blinded microstructural comparison finding (or failing to find) prespecified cast-stone signatures in disputed monument samples.
+        - Independent replication (or failed replication) of the published Pumapunku SEM findings.
+  - claimId: GEO-C020
+    verdict: weakly_supported
+    reasoning: "With the response literature imported (2026-08-22): two peer-reviewed studies from the Barsoum group report anomalies they read as casting (SEM/TEM 2006; NMR 2011), but every independent petrographic examination — Folk & Campbell 1991/92, Harrell & Penrod 1993, Jana 2007, Freestone & Middleton 2007 — concludes natural limestone, and the headline anomalies have documented natural or contamination explanations (opal-CT lepispheres in natural Tura stone; a phosphate-coating contamination halo). The proposed binder chemistry also shifted (alkali-aluminosilicate → calcium-silicate gel) after the strongest negative test. Individual observations are credible; their diagnosticity for casting is what fails to hold up. No blinded test on provenance-secure samples has been run, and both sides' key specimens are under genuine chain-of-custody disputes."
+    confidence: moderate
+    treatment:
+      plainLanguage: "The Egyptian branch of the thesis, associated with Davidovits since 1979: parts of the pyramid (most versions say upper-course or casing blocks) were made from limestone slurry or aggregate re-bound with a natron/lime-based binder."
+      importance: headline
+      diagnosticity: high
+      diagnosticitySummary: Directly decides the Egyptian branch of the thesis and would validate GEO-C022 by itself.
+      strongestObjection: "Every multi-technique examination by researchers independent of the Barsoum and Davidovits groups has concluded natural limestone; Jana's 2007 study, the only one with a genuine geopolymer positive control, found the casting signature clearly detectable in the control and absent from every casing-stone sample; and macro-scale sedimentary features (bedding, burrows, marine fossils, tectonic fractures) run through the blocks themselves. The live proponent response is the methods critique (GEO-C030, GEO-E024): quarry-matching chemistry is blind to binders, so provenance results cannot carry the anti-casting conclusion alone — a response that qualifies the provenance evidence class but does not answer the direct petrography above."
+      whatWouldChangeOurMind:
+        - Blinded comparison of pyramid core/casing samples against Tura and Mokattam quarry stone using prespecified microstructural criteria.
+        - Resolution of the Lauer-sample authenticity dispute (which physical piece was analyzed), which conditions the two strongest undermining records.
+        - Independent replication of the 2006/2011 anomalies on provenance-secure samples — or a binder-aware re-test of the revised calcium-silicate recipe.
+        - Tracing the Al-Ma'mun salt account to credible primary sources (or showing it is a later embellishment).
+  - claimId: GEO-C021
+    verdict: mixed
+    reasoning: Two peer-reviewed papers from the Davidovits team report SEM and petrographic features they interpret as geopolymeric, but no independent laboratory has re-analyzed the samples, and the 1971 Bolivian provenance study attributes the sandstones to natural quarries.
+    confidence: moderate
+    treatment:
+      plainLanguage: "The Andean branch of the thesis: the famously precise H-blocks and architraves of Pumapunku were cast in molds from volcanic rock processed with organic binders, not carved with stone and bronze tools."
+      importance: headline
+      diagnosticity: high
+      diagnosticitySummary: Directly decides the Andean branch and would validate GEO-C022 by itself.
+      strongestObjection: All supporting analyses come from one proponent team; the samples' chain of custody is contested; and provenance work attributes the stone to identifiable quarries.
+      whatWouldChangeOurMind:
+        - Independent re-analysis of the Pumapunku samples (geo topic T-077) confirming or refuting the SEM findings.
+  - claimId: GEO-C012
+    verdict: provisionally_supported
+    reasoning: Modern geopolymer chemistry is established science, and proponent demonstration blocks exist; what is unproven is that the specific ancient-feasible recipes produce stone that matches monument blocks under close analysis.
+    confidence: moderate
+    treatment:
+      plainLanguage: "The feasibility keystone: can you actually make convincing artificial limestone with Bronze Age inputs? Modern demonstrations (Davidovits' multi-ton blocks) say yes at some scale; how faithfully they reproduce ancient conditions is debated."
+      importance: major
+      diagnosticity: moderate
+      diagnosticitySummary: "Necessary but not sufficient: feasibility opens the door, but attribution (GEO-C020/C021) requires signatures found in the monuments themselves."
+      strongestObjection: Demonstrations use modern knowledge, tools, and quality control; no demonstration block has been independently analyzed and compared to monument stone under blind conditions.
+      whatWouldChangeOurMind:
+        - Independent analytical study of a demonstration block against monument and quarry stone (geo topic T-072).
+  - claimId: GEO-C010
+    verdict: provisionally_supported
+    reasoning: Ancient glassmaking and copper smelting operated in this temperature range; the Badari glassmaking precedent cited by Fóti still needs independent verification of its dating and temperature basis.
+    confidence: moderate
+    treatment:
+      plainLanguage: "The heat question: nothing in the proposed chemistry requires furnaces beyond what ancient glassmakers and metalworkers demonstrably had."
+      importance: supporting
+      diagnosticity: low
+      diagnosticitySummary: Removes an impossibility objection; establishes nothing about what was actually done.
+      strongestObjection: Reaching a temperature in a small crucible is very different from sustaining industrial-scale processing; the scale-up question is open.
+      whatWouldChangeOurMind:
+        - Feasibility analysis of pyramid-scale natron or calcine processing (geo topic T-019).
+  - claimId: GEO-C011
+    verdict: well_supported
+    reasoning: Mainstream archaeology (Shortland et al. 2006) documents both the sources and the 7th–9th-century decline; this claim is uncontroversial on its own.
+    confidence: high
+    treatment:
+      plainLanguage: "The ingredient question: the key reagent in the natron-route chemistry existed nearby, at scale, and its documented supply history even offers a candidate explanation for why a stone-casting craft could have died."
+      importance: supporting
+      diagnosticity: low
+      diagnosticitySummary: Availability of an ingredient is weak evidence that it was used for stone-making; natron's documented uses (glass, mummification) are conventional.
+      strongestObjection: Documented natron consumption is fully accounted for by glass, faience, and ritual use; no ancient text connects natron to building stone.
+      whatWouldChangeOurMind:
+        - Quantitative reconstruction of ancient Wadi el Natrun yields against hypothesized stone-making demand (geo topic T-060).
+  - claimId: GEO-C013
+    verdict: unresolved
+    reasoning: Rests on an unattributed anecdote in the proponent literature; no controlled replication has been attempted.
+    confidence: low
+    treatment:
+      plainLanguage: "How would anyone discover stone-casting without chemistry? Fóti's answer: by accident, in fire pits, where ash plus rain can slowly mineralize — if that replicates, the \"discovery problem\" weakens as an objection."
+      importance: supporting
+      diagnosticity: low
+      diagnosticitySummary: Bears on plausibility of discovery, not on whether any monument was cast.
+      strongestObjection: The originating anecdote is unattributed, and ash-carbonation over months may produce crumbly sinter rather than structural stone.
+      whatWouldChangeOurMind:
+        - Documented long-cycle fire-pit replication with material testing (geo topic T-021).
+  - claimId: GEO-C030
+    verdict: mixed
+    reasoning: "The logical point is sound for bulk trace-element methods: they really are blind to H/C/O, and instrument calibrations assume natural stone. But it does not extend to binder-aware methods — Fóti's own chapter concedes petrography and microscopy exist, his methods table misstates NMR (solid-state ²⁹Si NMR is exactly what MacKenzie et al. 2011 used, on the pro-casting side), and Jana 2007's geopolymer positive control (GEO-E020) demonstrated that a real casting signature is detectable when present. So the claim is strong against \"provenance settled it\" and weak as a shield against direct materials analysis. Related catalog claims carrying the same argument (one independence group, not separate evidence): GEO-C507, GEO-C522, GEO-C575."
+    confidence: moderate
+    treatment:
+      plainLanguage: "The methodological hinge of the whole dispute, and the proponents' central counter-argument (Fóti's formulation, endorsed as the case's live crux by editor Eugene, 2026-08-22). Two different toolkits, run by different specialist communities, answer two different questions: quarry-matching fingerprints the metals in the stone and asks \"where did this material come from?\"; binder-aware materials analysis (petrography, SEM-EDS, NMR) asks \"how is this material put together?\". Crushed quarry rock re-bound with a few percent of binder keeps the quarry's metallic fingerprint — so \"we found the quarry\" does not, by itself, answer the casting question, and quarry-match conclusions can overextend into anti-casting claims the chemistry does not support. It is also, read the other way, the escape hatch that keeps the casting hypothesis from being falsified by provenance data alone."
+      importance: major
+      diagnosticity: high
+      diagnosticitySummary: Decides how much weight the strongest conventional evidence class (provenance matching) actually carries against casting.
+      strongestObjection: Cast stone requires a binder, and binders are physically detectable; a methodology that looked for them and found none would refute rather than evade the casting reading. Jana 2007 did exactly this for the alkali-aluminosilicate recipe with a positive control and found the signature absent from every casing-stone sample — so the blindness argument, valid against quarry-matching, does not neutralize the direct petrographic record.
+      whatWouldChangeOurMind:
+        - A published re-examination of quarry-attribution studies under cast-stone-aware methodology (geo topic T-087).
+        - A blind test showing standard provenance workflows do (or do not) discriminate known cast composites from their source rock (geo topic T-007).
+  - claimId: GEO-C001
+    verdict: provisionally_supported
+    reasoning: Peer-reviewed (Marčiš et al. 2023) and quantitative, but a single study by a single team; the geo project corrected Fóti's second-hand "36 months instead of 7" framing to the paper's actual rate figure.
+    confidence: moderate
+    treatment:
+      plainLanguage: The one modern, peer-reviewed number in the tool-rate debate. At that pace, the authors conclude, dolerite pounders alone are hard to square with the accepted timeline for the Unfinished Obelisk.
+      importance: major
+      diagnosticity: moderate
+      diagnosticitySummary: A slow measured rate stresses the orthodox account's timeline but is equally consistent with supplemental conventional techniques (fire setting, better tooling) as with casting.
+      strongestObjection: One team, one protocol, one granite; experienced ancient crews with optimized technique could plausibly beat the measured rate.
+      whatWouldChangeOurMind:
+        - Independent replication with sensitivity analysis on technique, tool mass, and rock type (geo topic T-003).
+  - claimId: GEO-C002
+    verdict: unresolved
+    reasoning: "Anecdotal: attempt rates, cumulative person-hours, and wear on the block have never been systematically surveyed."
+    confidence: low
+    treatment:
+      plainLanguage: "An accidental long-running experiment: tourists are invited to pound the test block, and — per the proponent account — the characteristic scoop marks never appear."
+      importance: supporting
+      diagnosticity: low
+      diagnosticitySummary: Even if verified, casual tourist effort is a weak proxy for skilled ancient labor; the observation motivates a study rather than carrying one.
+      strongestObjection: Unskilled visitors pounding briefly for novelty tell us little about trained crews working in organized shifts with maintained tools.
+      whatWouldChangeOurMind:
+        - "A quantitative field survey of the test block: wear documentation, attempt-rate estimates, photogrammetric comparison (geo topic T-001)."
+  - claimId: GEO-C006
+    verdict: unresolved
+    reasoning: The shaft dimensions and the biomechanical claim both come from the proponent literature; no anthropometric study has been done.
+    confidence: low
+    treatment:
+      plainLanguage: "A physical-geometry challenge to the orthodox account: if you cannot swing a pounder at the bottom of the shaft, pounding did not make the shaft."
+      importance: supporting
+      diagnosticity: moderate
+      diagnosticitySummary: If confirmed, the orthodox explanation fails for these specific features — a bounded, meaningful falsification. It would not by itself establish casting.
+      strongestObjection: Alternative conventional techniques (smaller tools, abrasives, child labor, chiseling from above) have not been excluded.
+      whatWouldChangeOurMind:
+        - On-site measurement plus anthropometric envelope analysis (geo topic T-004).
+  - claimId: GEO-C003
+    verdict: unresolved
+    reasoning: The report circulates through proponent literature (Geopolymer Institute, Fóti); it has never been traced to primary Arabic sources — which is precisely the proposed research project.
+    confidence: low
+    treatment:
+      plainLanguage: The historical anchor of the "salty pyramid" argument. A sealed limestone structure growing a centimeter-scale salt coat is easier to explain if the stone itself was cast wet with natron than if it is dry quarried rock — if the account is real.
+      importance: major
+      diagnosticity: moderate
+      diagnosticitySummary: If verified in credible primary sources, hard to explain conventionally; but salt has mundane candidate sources (mortar efflorescence, groundwater wicking), so verification alone would not be decisive.
+      strongestObjection: A ninth-century report surviving through later compilations may be embellishment or mistranslation; until the primary sources are traced, the anchor is hearsay.
+      whatWouldChangeOurMind:
+        - Primary-source verification in Al-Maqrīzī, Ibn Khaldūn, Al-Idrīsī and related Arabic accounts (geo topic T-005).
+  - claimId: GEO-C005
+    verdict: unresolved
+    reasoning: The mural is real and well documented; the reinterpretation is a proponent argument that Egyptologists have not engaged.
+    confidence: low
+    treatment:
+      plainLanguage: The strongest candidate for a period depiction of casting at scale. The conventional reading is a bronze door being cast; Fóti argues the scale and details fit stone/waterglass processing.
+      importance: supporting
+      diagnosticity: low
+      diagnosticitySummary: Iconographic reinterpretation is weak evidence on its own; its value is as a target for expert re-examination.
+      strongestObjection: The conventional metal-casting reading is consistent with the scene's inscriptions and with known bronze-casting practice; reinterpreting iconography to fit a hypothesis is a classic degrees-of-freedom trap.
+      whatWouldChangeOurMind:
+        - A joint Egyptology / history-of-technology re-examination of the scene and its inscriptions (geo topic T-034).
+  - claimId: GEO-C004
+    verdict: mixed
+    reasoning: Peer-reviewed publications exist (Materials Letters and Ceramics International, 2019), but both come from the proponent team, are not independent of each other, and have not been replicated by any outside laboratory.
+    confidence: moderate
+    treatment:
+      plainLanguage: "The only laboratory evidence from an actual disputed monument: the Davidovits team's peer-reviewed reports of organics and anomalous microstructure inside Pumapunku stone."
+      importance: major
+      diagnosticity: high
+      diagnosticitySummary: If independently replicated, this would be the single most probative evidence class for the Andean attribution claim; if refuted, that claim loses its physical basis.
+      strongestObjection: Proponent-only findings with contested sample chain-of-custody; volcanic rocks can contain organic and glassy phases naturally.
+      whatWouldChangeOurMind:
+        - Independent re-analysis of the PP1-A and PP4 samples or fresh sampling under agreed protocols (geo topic T-077).

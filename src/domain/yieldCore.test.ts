@@ -53,9 +53,10 @@ describe("yield: verdict-moving events", () => {
         { date: "2026-03-05", rows: [] }, // freeze only — not yet movement
       ],
       claims: [
-        { tier: "featured", origin: { date: "2026-04-01" } },
-        { tier: "catalog", origin: { date: "2026-04-02" } }, // excluded
+        { id: "X-C001", origin: { date: "2026-04-01" } },
+        { id: "X-C002", origin: { date: "2026-04-02" } }, // not featured — excluded
       ],
+      featuredIds: ["X-C001"],
     });
     expect(dates).toEqual([
       "2026-01-01",
@@ -63,6 +64,20 @@ describe("yield: verdict-moving events", () => {
       "2026-03-01",
       "2026-04-01",
     ]);
+  });
+
+  it("a migration run transfers a judgment and is not movement", () => {
+    const dates = movementDates({
+      assessmentRuns: [
+        run("2026-01-01", "unresolved", { C1: "mixed" }),
+        { ...run("2026-02-01", "unresolved", { C1: "well_supported" }), migratedFrom: "2026-01-01-auto" },
+      ],
+      history: [],
+      studies: [],
+      claims: [],
+      featuredIds: [],
+    });
+    expect(dates).toEqual(["2026-01-01"]);
   });
 
   it("classifies bands by recency of movement", () => {

@@ -1,127 +1,207 @@
 # Aletheia Data Model
 
-Four core objects — **Case, Claim, Evidence, Source** — plus append-only **assessment overlays** and supporting records (research opportunities, change log). Assessments, relationships, and provenance are fields or overlay records, not separate top-level object types. The authoritative schema is the Zod definitions in `src/domain/schema.ts`; this document explains the concepts.
+Nine kinds of record in three groups (docs/AUTOMATION.md, "The objects").
+The authoritative schema is the Zod definitions in `src/domain/schema.ts`;
+this document explains the concepts and the one rule that decides where a
+field lives.
 
-## Layering principle
+## The rule
 
-Content is layered and reversible:
+**On the record, what is true of the record itself. In the assessment,
+anything a new piece of evidence could change.**
 
-- **Canon layer** — the claim/evidence/source files. Human-editable, versioned in git. A claim's *statement* never silently changes; corrections are new revisions in git history.
-- **Overlay layer** — AI-generated assessments in `assessments/<runId>.yaml`. Append-only: a new run adds a new file; nothing mutates the canon. Every AI-generated record carries a `runId`, model label, date, and prompt version. The UI shows the latest overlay and can show history.
+A claim's statement, rung, type, anchor, dependencies, and provenance are
+facts about the record; they change rarely and by correction. Its
+credibility, diagnosticity, importance, plain-language gloss, strongest
+objection, and what would change our mind are judgments that move every
+time evidence arrives; they live in the assessment and reach the reader
+through the edition. Whether a claim is featured is an edition decision,
+not a field on the claim. Evidence direction, a claim's rung, and a
+source's verification label are judgments too, but local and stable ones
+about the record, so they stay on it. Test: if adding one evidence record
+could change the value, it is assessment.
+
+## Two layers
+
+- **The ledger** — grows, never compressed. Source, Evidence, Claim,
+  ResearchOpportunity, Study, Image. Human-editable YAML under git; a
+  record's statement never silently changes.
+- **The judgment** — append-only, dated, the latest stands, history
+  visible. Assessment runs and Editions. Every run carries `runId`, model,
+  date, and prompt version. Nothing evaluative lives anywhere else.
+
+Plus the intake (Proposal, Disposition — see AUTOMATION.md), the
+founder's two small records (`conjectures.yaml`, `inputs/`), and the
+append-only change log.
 
 ## Content folder layout
 
 ```
-content/
-  cases/
-    geopolymer/
-      case.yaml          # Case metadata, dossier fields, editorial state
-      overview.md        # The article; inline claim refs: [text]{claim=GEO-C001}
-      claims.yaml        # Claim records (canon)
-      evidence.yaml      # Evidence records (canon)
-      sources.yaml       # Source records (canon)
-      research.yaml      # Research opportunities (from the RFP)
-      history.yaml       # Change log entries
-      assessments/
-        2026-08-22-fable-1.yaml   # One AI assessment run (overlay, append-only)
+content/cases/<case>/
+  case.yaml            identity: id, slug, title, subtitle, domain, status, summary, themes, editors
+  claims.yaml          propositions with anchors — one file, no tiers
+  evidence.yaml  sources.yaml  research.yaml  images.yaml  studies/<id>.yaml
+  history.yaml         append-only changelog
+  inputs/              founding texts + manifest (founder-owned; voice, never evidence)
+  conjectures.yaml     the founder's on-the-record intuitions (no weight)
+  assessments/         append-only runs, role draft or check
+  editions/            append-only; the latest is the case page
 ```
 
 ## Case
 
-Identity (id, slug, title, subtitle, domain), status, and the **dossier header** fields: `whatIsClaimed`, `whereDisagreementLives` (the central crux), `whatWouldSettleIt`. Plus the best conventional explanation, editors, last-review date, and an optional external research link (the ResearchHub RFP).
+Identity only: `id`, `slug`, `title`, `subtitle`, `domain`, `status`, a
+one-paragraph `summary` framing the question, `themes`, `editors`,
+`lastReviewed`, and an optional external research link. The dossier header
+(what is claimed, where the disagreement lives, what would settle it), the
+best conventional explanation, the research priority, and the component
+verdicts are judgments and live in the adopted assessment.
 
 ## Claim
 
-One atomic proposition with a reasonably clear truth condition.
-
-Claims come in two **tiers**:
-
-- **`featured`** — full editorial treatment: plain-language gloss, both
-  assessment axes, objections, relationships, "what would change our mind."
-  The shape every claim had before tiers existed.
-- **`catalog`** — a lightweight, honestly-unreviewed backlog record: one
-  atomic statement, a theme, a ladder rung, a required **source anchor**
-  (`locator`, optional verbatim `quote`, optional `sourceId`), provenance
-  (`reviewState`, `origin` with runId), and an optional `independenceGroup`
-  tying near-duplicate extractions together so they are never counted as
-  independent evidence. Validation deliberately does not demand
-  featured-level richness here.
-
-**Promotion is a one-field edit**: flip `tier: catalog` → `featured` and the
-build fails loudly, listing exactly which editorial fields are still missing.
-That failure is the promotion checklist.
-
-Catalog-scale imports live in an optional per-case `claims-catalog.yaml`
-(same schema as `claims.yaml`), so a bulk import stays one reversible file
-and the hand-curated canon stays readable. The loader concatenates both.
-
-Claim fields:
+One atomic proposition with a reasonably clear truth condition — and
+nothing evaluative.
 
 - `id` — stable, human-readable (`GEO-C001`).
-- `statement` / `plainLanguage` — the proposition and its accessible restatement.
-- `theme` — grouping key for the explorer (e.g. `tool-marks`, `ingredients`).
-- `rung` — position on the argument ladder: `observation` | `mechanism` | `attribution`. Credibility tends to decay up the ladder; the UI makes this visible.
-- `importance` — `headline` | `major` | `supporting`.
-- `claimType` — observation / measurement / historical / causal / mechanistic / interpretive / methodological / existence.
-- `reviewState` — **provenance, displayed honestly in the UI**:
-  - `ai_extracted` — machine-extracted from sources, no human hand-check.
-  - `human_reviewed` — a named human checked statement and sourcing.
-  - `disputed` — flagged during review; contested internally.
-  - `rejected` — kept as a tombstone with `rejectionReason` so future extraction runs don't re-propose it. Not rendered in normal views.
-- `origin` — where the claim came from (e.g. geo catalog T-number, extraction agent, run).
-- `credibility` (state + summary) and `diagnosticity` (level + summary) — the two axes the product exists to distinguish: is the local claim true, and how much does it favor one hypothesis over alternatives?
-- `parentClaimIds` / `dependsOnClaimIds` — hierarchy and dependency (must reference existing, non-rejected claims).
-- `strongestObjection`, `whatWouldChangeOurMind`.
+- `statement` — the proposition.
+- `theme` — grouping key for the explorer.
+- `rung` — `observation` | `mechanism` | `attribution`; credibility tends
+  to decay up the ladder and the UI makes this visible.
+- `claimType` (optional) — observation / measurement / historical / causal
+  / mechanistic / statistical / interpretive / methodological / existence
+  / theory_description / mathematical. A classification, not a grade.
+- `sourceAnchor` (optional) — `locator`, optional verbatim `quote`,
+  optional `sourceId`. **Every claim dated on or after 2026-09-08 must be
+  anchored**: a source anchor here, or at least one evidence record citing
+  it (`claimAnchorErrors` in the loader). Six earlier claims carry neither
+  and are history.
+- `parentClaimIds` / `dependsOnClaimIds` — hierarchy and dependency; must
+  reference existing, non-rejected claims.
+- `independenceGroup` — near-duplicate extractions that must never count
+  as independent evidence.
+- `reviewState` — provenance, displayed honestly: `ai_extracted`,
+  `human_reviewed`, `disputed`, `rejected` (a tombstone with
+  `rejectionReason`, never rendered in normal views and never linked).
+- `origin` — how our record was produced (ref, extractedBy, runId, date).
+- `genealogy` (optional) — earliest known public appearance of the
+  proposition itself.
 
-Assessment states: `established`, `well_supported`, `provisionally_supported`, `mixed`, `weakly_supported`, `contradicted`, `unresolved`, `presently_untestable`. The UI groups these into four visual families (supported / contested / against / can't-tell-yet) with the precise label on the badge.
+There are no tiers. A claim the current edition features carries a
+treatment in the adopted assessment; a claim it does not feature is in the
+ledger's backlog, shown honestly sparse.
 
 ## Evidence
 
-The specific observation/result/quotation extracted from a Source and connected to Claims. Direction is explicit: `supports` | `undermines` | `qualifies` | `context`. Also: strength, `sourceStatement` (what the source says) kept separate from `editorInference` (what we infer), limitations, and provenance (`ai_extracted` etc.).
+The specific observation extracted from a Source and connected to Claims.
+Direction is explicit: `supports` | `undermines` | `qualifies` | `context`.
+Also strength, `sourceStatement` (what the source says) kept separate from
+`editorInference` (what we infer), `exactLocator`, limitations, provenance.
 
 ## Source
 
-The provenance container: bibliographic identity, type, identifier/URL, and a **verification status**:
+The provenance container: bibliographic identity, type, identifier/URL,
+and a verification label — `verified` (held in the project library),
+`ai_verified` (located and checked by an AI agent), `unverified`,
+`placeholder`. Never invent locators. `derivedFrom` marks a source that
+repeats another without adding evidence. **Admission rule (build-time):** a
+source may sit in the ledger only if an evidence record, claim anchor, or
+genealogy cites it, or if it carries `background: true` as reading-guide
+material; the label fails in both directions.
 
-- `verified` — the document itself is held in the project library.
-- `ai_verified` — an AI agent located and checked the citation against the claimed content; no human re-check. (All of geo's 2026-05-02 verified-citations batch is this.)
-- `unverified` — cited from memory or second-hand; locator not confirmed.
-- `placeholder` — illustrative only (must be visibly synthetic; not used in real cases).
+## Assessment run
 
-Never invent locators. If a locator is not verified, label it.
+One file per run, append-only, never a mutation of canon:
 
-**Admission rule (build-time, fail-closed):** a source may sit in
-`sources.yaml` only if an evidence record or claim anchor cites it —
-load-bearing, not merely relevant — or if it carries `background: true`,
-the honest label for reading-guide material (shown on the case's resources
-page, carrying no evidential weight). The label fails in both directions:
-an uncited source without the flag fails the build, and a cited source
-still marked background fails too. Enforced by `sourceAdmissionErrors` in
-`src/domain/load.ts`.
+- `runId`, `model`, `date`, `promptVersion`, `humanReviewed`, `role`
+  (`draft` written by the drafter; `check` written blind by another vendor).
+- `basis.ledgerHash` — the hash of the ledger this run judged. Staleness is
+  a hash, not a date: a check is current while the ledger still hashes the
+  same. Optional for runs that predate the field (date fallback).
+- `caseAssessment` — the verdict, `loadBearing`, `weakestLinks`, the argued
+  `synthesis`, the required `steelman` (the strongest argument for the
+  featured hypothesis the assessment does not answer), and, on draft runs,
+  the dossier header (`whatIsClaimed`, `whereDisagreementLives`,
+  `whatWouldSettleIt`), `bestConventionalExplanation`, `components`, and
+  `researchPriority`.
+- `claimAssessments[]` — `{claimId, verdict, reasoning, confidence}` per
+  claim, plus a `treatment` (`plainLanguage`, `importance`,
+  `diagnosticity` and summary, `strongestObjection`,
+  `whatWouldChangeOurMind`) for every claim the adopting edition features.
+- `migratedFrom` — set only on the 2026-09-08 migration runs, which
+  transfer previously displayed fields and assert nothing new; exempt from
+  the steelman requirement for that reason.
 
-## Assessment run (overlay)
+Assessment states: `established`, `well_supported`,
+`provisionally_supported`, `mixed`, `weakly_supported`, `contradicted`,
+`unresolved`, `presently_untestable`, `misframed`, `provenance_failure`.
+The UI groups them into four families with the precise label on the badge.
 
-One file per run: `runId`, `model`, `date`, `promptVersion`, plus:
+## Edition
 
-- `caseAssessment` — the structural roll-up: verdict state, `loadBearing` (which claims the thesis actually rests on), `weakestLinks`, and an argued `synthesis` in prose. Not a score.
-- `claimAssessments[]` — `{claimId, verdict, reasoning, confidence}` per claim.
+The reader's unit: one immutable file binds what a reader experiences as
+one telling.
 
-## ResearchOpportunity
+- `runId`, `date`, `model`, `promptVersion`, `rationale` (why this edition
+  replaced its predecessor).
+- `assessment` — `{runId, hash}` of the adopted draft run; the loader
+  recomputes the hash and fails the build on a mismatch, so an edited
+  overlay can never silently change the verdict beneath an essay. Null only
+  for a question-only opening.
+- `featuredClaimIds` — the selection, in order. Every id must be a live
+  claim with a treatment in the adopted assessment.
+- `cruxOrder` — research item ids in presentation order.
+- `article` — constrained markdown (`## / ###`, paragraphs, quotes, lists,
+  rules, `**bold**`, `*italic*`, links, `[text]{claim=GEO-C001}` claim
+  spans, `{plate:IMG-…}` plate blocks). Every claim marker must resolve to
+  a live claim; every plate must be a real plate; a plate seated in the
+  predecessor must survive.
+- `basis` — `ledgerHash` and `inputsHash`: which ledger state and founding
+  inputs this edition compressed. Provenance, not a gate.
+- `previous` — the predecessor's runId, or null.
 
-Crux-directed projects: title, summary, affected `claimIds`, effort tier, expected information gain, RFP topic reference (T-number), track (prize/grant).
+The current edition is the latest by date (runId breaks ties). An edition
+that changes only the article re-adopts the same assessment and inherits
+its standing; only a new judgment needs new blind checks. Standing itself
+is derived at build time from the check runs of the adopted assessment
+(`ratification` in `src/domain/load.ts`) — never stored.
+
+## CaseView
+
+The one join the pages read (`src/domain/view.ts`): every live claim once
+with its treatment from the adopted assessment or none, the featured set in
+edition order, the backlog, the dossier header, the article, the standing.
+Pages hold no logic about how judgments are made.
+
+## ResearchOpportunity, Study, Image
+
+Research items are crux-directed projects (title, summary, `claimIds`,
+effort tier, information gain, track). Studies are pre-registered desk
+workpapers with frozen criteria (`docs/AUTOMATION.md`, the Bench). Images
+are plates (real, with provenance and license; AI-generated images may
+never be plates) or covers (generated, credited as such).
 
 ## ChangeLogEntry
 
-Date, what changed, why, actor, and AI-assistance disclosure.
-
-Convention: whoever makes a material change to a case appends the entry to that case's `history.yaml` **in the same PR** — this includes the initial case launch, which must get an entry summarizing what was published (claims, evidence records, sources, verification status). `history.yaml` is an append-only log: add new entries at the end, never reorder or rewrite old ones. Dates are day-granular, so within a date, file order is the timeline (later in the file = more recent); the homepage "recent changes" feed and case-page history rely on this ordering (`historyNewestFirst` / `recentChanges` in `src/domain/load.ts`).
+Date, what changed, why, actor, AI-assistance disclosure, and an optional
+`kind` (`content` | `housekeeping`). Append-only; whoever makes a material
+change appends the entry in the same PR. Within a date, file order is the
+timeline. (The design records a later candidate: deriving this log from
+editions, adopted proposals, and assessment movements.)
 
 ## Record references in prose
 
-When another Aletheia record is cited in narrative fields (assessments, dossier copy, summaries, history, source notes, claim glosses, etc.), use the **exact record id** — e.g. `GEO-C001`, `SRC-MARCIS-2023`, `GEO-E012`, `GEO-R003`, `GEO-001`. The UI auto-linkifies these to the matching claim, source, evidence anchor, research anchor, or case page.
-
-Overview articles are different: they use the inline claim-span syntax `[readable text]{claim=GEO-C001}` (see `overview.md` above).
+Cite other records by exact id — `GEO-C001`, `SRC-MARCIS-2023`,
+`GEO-E012`, `GEO-R003`, `GEO-001` — and the UI auto-linkifies them.
+Articles use the inline claim-span syntax instead.
 
 ## Integrity rules (enforced at build time)
 
-The loader fails the build loudly on: dangling claim/evidence/source/assessment IDs, claim refs in `overview.md` that don't resolve, dependency references to rejected claims, and any schema violation. No silent data repair.
+The loader fails the build on: any schema violation; dangling claim,
+evidence, source, research, or assessment ids; references to rejected
+claims; an unanchored claim dated on or after 2026-09-08; a source that is
+neither cited nor background; an edition whose adopted assessment is
+missing, hash-mismatched, or a check run; a featured claim without a
+treatment; an article marker that does not resolve; a non-plate in the
+plate position; a plate lost between editions; a missing steelman on any
+run dated on or after 2026-09-04 (migration runs excepted). No silent data
+repair.

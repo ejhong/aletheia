@@ -5,16 +5,20 @@ import {
   extractPlateRefs,
   parseArticle,
   parseInlines,
-} from "./article";
+} from "./article.ts";
 import {
-  catalogClaims,
-  featuredClaims,
+  adoptedAssessment,
+  checksStale,
+  claimAnchorErrors,
+  currentEdition,
+  editionErrors,
   getCaseBySlug,
   historyNewestFirst,
   lastContentUpdate,
   crossModelSummary,
   RATIFICATION_MIN_PANEL,
   ratification,
+  runStaleness,
   survivingObjections,
   latestCheckPerModel,
   displayAssessment,
@@ -24,20 +28,25 @@ import {
   loadSiteImages,
   recentChanges,
   sourceAdmissionErrors,
-} from "./load";
+} from "./load.ts";
+import { assessmentHash, canonicalJson, ledgerHash, sha256Hex } from "./hash.ts";
+import { caseView, findClaimView, reviewCoverage } from "./view.ts";
 import {
   assessmentFamily,
   assessmentLabels,
   assessmentStateCaptions,
   AssessmentRunSchema,
+  CLAIM_ANCHOR_REQUIRED_FROM,
   ClaimSchema,
   ConjectureSchema,
+  EditionSchema,
   EvidenceSchema,
   ImageSchema,
   SourceSchema,
   STEELMAN_REQUIRED_FROM,
   steelmanRequirementError,
-} from "./schema";
+  type LoadedCase,
+} from "./schema.ts";
 
 describe("real content", () => {
   it("loads and passes all integrity checks", () => {
@@ -45,28 +54,30 @@ describe("real content", () => {
     expect(cases.length).toBeGreaterThan(0);
     const geo = getCaseBySlug("megalithic-casting");
     expect(geo.record.id).toBe("GEO-001");
+    expect(geo.dir).toBe("geopolymer");
     expect(liveClaims(geo).length).toBeGreaterThanOrEqual(10);
     // Tombstones are kept but excluded from live views.
     expect(geo.claims.length).toBeGreaterThan(liveClaims(geo).length);
     expect(latestAssessment(geo)).not.toBeNull();
-    // Every claim referenced by the article resolves.
-    for (const id of extractClaimRefs(geo.overviewMarkdown)) {
+    // Every claim referenced by the current edition's article resolves.
+    for (const id of extractClaimRefs(currentEdition(geo).article)) {
       expect(liveClaims(geo).some((c) => c.id === id)).toBe(true);
     }
   });
 
-  it("carries the bulk-imported geo catalog with honest provenance", () => {
-    const geo = getCaseBySlug("megalithic-casting");
-    const catalog = catalogClaims(geo);
-    expect(catalog.length).toBe(80);
-    expect(featuredClaims(geo).length).toBe(14);
-    for (const c of catalog) {
+  it("the migrated geo catalog rides the ledger backlog with honest provenance", () => {
+    const view = caseView(getCaseBySlug("megalithic-casting"));
+    expect(view.catalog.length).toBe(80);
+    expect(view.featured.length).toBe(14);
+    for (const { claim: c, treatment, verdict } of view.catalog) {
       // One reversible run: a single runId stamped on every record.
       expect(c.origin.runId).toBe("geo-catalog-import-2026-08-22");
       expect(c.reviewState).toBe("ai_extracted");
-      expect(c.sourceAnchor.locator.length).toBeGreaterThan(3);
-      // T-number origin, always.
+      expect(c.sourceAnchor?.locator.length).toBeGreaterThan(3);
+      // T-number origin, always; and no judgment until an edition features it.
       expect(c.origin.ref).toMatch(/T-\d{3}/);
+      expect(treatment).toBeNull();
+      expect(verdict).toBeNull();
     }
     // Dedupe held: no catalog claim re-imports a T-number already carried
     // by a featured claim, the killed topic, or the tombstoned cluster.
@@ -75,15 +86,60 @@ describe("real content", () => {
       "T-021", "T-034", "T-060", "T-072", "T-073", "T-077", "T-078",
       "T-087",
     ];
-    for (const c of catalog) {
+    for (const { claim: c } of view.catalog) {
       const t = c.origin.ref.match(/T-\d{3}/)?.[0];
       expect(excluded).not.toContain(t);
     }
     // Confidentiality: neutrally-framed method topics never cite the
     // confidential source.
-    const text = JSON.stringify(catalog);
+    const text = JSON.stringify(view.catalog.map((c) => c.claim));
     expect(text).not.toMatch(/hawke/i);
     expect(text).not.toMatch(/harmonic research/i);
+  });
+
+  it("every featured claim carries a full treatment and a verdict from the adopted assessment", () => {
+    for (const loaded of loadAllCases()) {
+      const view = caseView(loaded);
+      expect(view.featured.length).toBeGreaterThan(0);
+      expect(view.featured.map((c) => c.claim.id)).toEqual(
+        view.edition.featuredClaimIds,
+      );
+      for (const c of view.featured) {
+        expect(c.verdict).not.toBeNull();
+        expect(c.treatment?.plainLanguage.length).toBeGreaterThan(10);
+        expect(["headline", "major", "supporting"]).toContain(c.treatment?.importance);
+      }
+      // The dossier header came across from case.yaml into the assessment.
+      expect(view.header.whatIsClaimed?.length).toBeGreaterThan(20);
+      expect(view.header.whereDisagreementLives?.length).toBeGreaterThan(20);
+      expect(view.header.whatWouldSettleIt?.length).toBeGreaterThan(20);
+      expect(["high", "medium", "low"]).toContain(view.header.researchPriority?.level);
+      // Claim records carry nothing evaluative.
+      for (const c of loaded.claims) {
+        expect(c).not.toHaveProperty("credibility");
+        expect(c).not.toHaveProperty("tier");
+        expect(c).not.toHaveProperty("importance");
+      }
+    }
+  });
+
+  it("every case's first edition is the migration, adopting a transfer that asserts nothing new", () => {
+    for (const loaded of loadAllCases()) {
+      const ed = currentEdition(loaded);
+      expect(ed.previous).toBeNull();
+      const run = adoptedAssessment(loaded)!;
+      expect(run.migratedFrom).toBeTruthy();
+      expect(run.role).toBe("draft");
+      // The transferred draft exists and shares the case verdict.
+      const source = loaded.assessmentRuns.find((r) => r.runId === run.migratedFrom)!;
+      expect(source).toBeDefined();
+      expect(source.caseAssessment.verdict).toBe(run.caseAssessment.verdict);
+      expect(source.caseAssessment.loadBearing).toEqual(run.caseAssessment.loadBearing);
+      // The edition's hashes are the ones the loader derives now (the
+      // ledger has not moved since migration).
+      expect(ed.basis.ledgerHash).toBe(loaded.ledgerHash);
+      expect(ed.assessment?.hash).toBe(assessmentHash(run));
+    }
   });
 
   it("every live case surfaces its latest change in the homepage feed", () => {
@@ -109,9 +165,10 @@ describe("real content", () => {
 
   it("article parses into blocks with claim refs", () => {
     const geo = getCaseBySlug("megalithic-casting");
-    const blocks = parseArticle(geo.overviewMarkdown);
+    const article = currentEdition(geo).article;
+    const blocks = parseArticle(article);
     expect(blocks.some((b) => b.kind === "heading")).toBe(true);
-    const refs = extractClaimRefs(geo.overviewMarkdown);
+    const refs = extractClaimRefs(article);
     expect(refs.length).toBeGreaterThanOrEqual(8);
   });
 
@@ -127,9 +184,22 @@ describe("real content", () => {
     expect(loadSiteImages().length).toBeGreaterThanOrEqual(2);
     // Plate refs in the article resolve to actual plates.
     const plateIds = new Set(plates.map((p) => p.id));
-    for (const ref of extractPlateRefs(geo.overviewMarkdown)) {
+    for (const ref of extractPlateRefs(currentEdition(geo).article)) {
       expect(plateIds.has(ref)).toBe(true);
     }
+  });
+
+  it("findClaimView locates a claim in its case, featured or not", () => {
+    const cases = loadAllCases();
+    const featured = findClaimView(cases, "GEO-C001");
+    expect(featured?.view.featured).toBe(true);
+    expect(featured?.view.treatment).not.toBeNull();
+    expect(featured?.caseView.loaded.record.slug).toBe("megalithic-casting");
+    const backlog = findClaimView(cases, "GEO-C502");
+    expect(backlog?.view.featured).toBe(false);
+    expect(backlog?.view.treatment).toBeNull();
+    expect(findClaimView(cases, "NOPE-C000")).toBeNull();
+    expect(reviewCoverage(featured!.caseView).total).toBe(14);
   });
 });
 
@@ -275,13 +345,10 @@ describe("source admission rule", () => {
 describe("schema rules", () => {
   const baseClaim = {
     id: "GEO-C999",
-    tier: "featured",
     statement: "A test statement long enough to pass.",
-    plainLanguage: "A plain language gloss long enough.",
     theme: "tool-marks",
     rung: "observation",
     claimType: "observation",
-    importance: "supporting",
     reviewState: "ai_extracted",
     origin: {
       ref: "test",
@@ -289,17 +356,11 @@ describe("schema rules", () => {
       runId: "test-run",
       date: "2026-01-01",
     },
-    credibility: "unresolved",
-    credibilitySummary: "none",
-    diagnosticity: "low",
-    diagnosticitySummary: "none",
-    strongestObjection: "none",
   };
 
-  const baseCatalogClaim = {
+  const anchoredClaim = {
     id: "GEO-C998",
-    tier: "catalog",
-    statement: "A lightweight catalog statement long enough to pass.",
+    statement: "A lightweight anchored statement long enough to pass.",
     theme: "tool-marks",
     rung: "observation",
     reviewState: "ai_extracted",
@@ -323,44 +384,60 @@ describe("schema rules", () => {
         rejectionReason: "because",
       }),
     ).not.toThrow();
-    // The tombstone rule applies to catalog-tier claims too.
+  });
+
+  it("a claim is a proposition with anchors — nothing evaluative validates on it", () => {
+    const parsed = ClaimSchema.parse(anchoredClaim);
+    expect(parsed.parentClaimIds).toEqual([]);
+    expect(parsed.claimType).toBeUndefined();
+    // Evaluative fields are not part of the record (Zod strips unknown
+    // keys, so the schema is the guard that they never round-trip).
+    const stripped = ClaimSchema.parse({ ...baseClaim, credibility: "unresolved", tier: "featured" });
+    expect(stripped).not.toHaveProperty("credibility");
+    expect(stripped).not.toHaveProperty("tier");
+  });
+
+  it("a malformed source anchor fails", () => {
     expect(() =>
-      ClaimSchema.parse({ ...baseCatalogClaim, reviewState: "rejected" }),
+      ClaimSchema.parse({ ...anchoredClaim, sourceAnchor: { locator: "" } }),
     ).toThrow();
   });
 
-  it("catalog claims validate without featured-level richness", () => {
-    expect(() => ClaimSchema.parse(baseCatalogClaim)).not.toThrow();
-    const parsed = ClaimSchema.parse(baseCatalogClaim);
-    expect(parsed.tier).toBe("catalog");
+  it("the anchoring rule binds claims from the cutoff, not history", () => {
+    const old = { ...baseClaim, origin: { ...baseClaim.origin, date: "2026-09-07" } };
+    const fresh = { ...baseClaim, id: "GEO-C997", origin: { ...baseClaim.origin, date: CLAIM_ANCHOR_REQUIRED_FROM } };
+    const parsed = [old, fresh].map((c) => ClaimSchema.parse(c));
+    const errors = claimAnchorErrors(parsed, []);
+    expect(errors).toHaveLength(1);
+    expect(errors[0]).toContain("GEO-C997");
+    // An evidence record citing it satisfies the rule; so does a source anchor.
+    expect(claimAnchorErrors(parsed, [{ claimIds: ["GEO-C997"] }])).toEqual([]);
+    expect(
+      claimAnchorErrors([ClaimSchema.parse({ ...fresh, sourceAnchor: { locator: "p. 3" } })], []),
+    ).toEqual([]);
+    // Tombstones are exempt.
+    expect(
+      claimAnchorErrors(
+        [ClaimSchema.parse({ ...fresh, reviewState: "rejected", rejectionReason: "x" })],
+        [],
+      ),
+    ).toEqual([]);
   });
 
-  it("catalog claims require a source anchor", () => {
-    const { sourceAnchor: _drop, ...unanchored } = baseCatalogClaim;
-    void _drop;
-    expect(() => ClaimSchema.parse(unanchored)).toThrow();
-    expect(() =>
-      ClaimSchema.parse({ ...baseCatalogClaim, sourceAnchor: { locator: "" } }),
-    ).toThrow();
-  });
-
-  it("claims of either tier may carry genealogy; malformed genealogy fails", () => {
+  it("claims may carry genealogy; malformed genealogy fails", () => {
     const genealogy = {
       firstKnown: "2016-11-03",
       originDescription: "anonymous forum post, later amplified by aggregators",
       originSourceId: "SRC-TEST",
     };
     expect(() =>
-      ClaimSchema.parse({ ...baseClaim, genealogy }),
-    ).not.toThrow();
-    expect(() =>
-      ClaimSchema.parse({ ...baseCatalogClaim, genealogy }),
+      ClaimSchema.parse({ ...anchoredClaim, genealogy }),
     ).not.toThrow();
     // Partial dates are honest when only the year or month is known.
     for (const firstKnown of ["2016", "2016-11"]) {
       expect(() =>
         ClaimSchema.parse({
-          ...baseCatalogClaim,
+          ...anchoredClaim,
           genealogy: { ...genealogy, firstKnown },
         }),
       ).not.toThrow();
@@ -368,13 +445,13 @@ describe("schema rules", () => {
     // A vibe is not a date; a fragment is not an origin account.
     expect(() =>
       ClaimSchema.parse({
-        ...baseCatalogClaim,
+        ...anchoredClaim,
         genealogy: { ...genealogy, firstKnown: "Nov 2016" },
       }),
     ).toThrow();
     expect(() =>
       ClaimSchema.parse({
-        ...baseCatalogClaim,
+        ...anchoredClaim,
         genealogy: { ...genealogy, originDescription: "4chan" },
       }),
     ).toThrow();
@@ -382,9 +459,6 @@ describe("schema rules", () => {
 
   it("misframed and provenance_failure are open-family credibility states", () => {
     for (const credibility of ["misframed", "provenance_failure"] as const) {
-      expect(() =>
-        ClaimSchema.parse({ ...baseClaim, credibility }),
-      ).not.toThrow();
       expect(assessmentFamily(credibility)).toBe("open");
       expect(assessmentLabels[credibility]).toBeTruthy();
       // Unfamiliar epistemic terms are explained in place.
@@ -411,33 +485,67 @@ describe("schema rules", () => {
     ).toEqual(["SRC-PARENT"]);
   });
 
-  it("promotion is a one-field edit that then demands the full workup", () => {
-    // Flipping tier alone fails loudly: the validator lists the editorial
-    // fields still missing. That failure is the promotion checklist.
-    expect(() =>
-      ClaimSchema.parse({ ...baseCatalogClaim, tier: "featured" }),
-    ).toThrow();
-    // Supplying the featured fields completes the promotion.
-    expect(() =>
-      ClaimSchema.parse({
-        ...baseCatalogClaim,
-        tier: "featured",
-        plainLanguage: "A plain language gloss long enough.",
-        claimType: "observation",
-        importance: "supporting",
-        credibility: "unresolved",
-        credibilitySummary: "none yet",
-        diagnosticity: "low",
-        diagnosticitySummary: "none yet",
-        strongestObjection: "none recorded yet",
-      }),
-    ).not.toThrow();
+  it("a treatment is complete or absent — the featured checklist lives on the assessment", () => {
+    const run = {
+      runId: "2026-09-08-auto-test",
+      model: "test",
+      date: "2026-09-08",
+      promptVersion: "test",
+      humanReviewed: false,
+      caseAssessment: {
+        verdict: "unresolved",
+        loadBearing: [],
+        weakestLinks: [],
+        synthesis: "s".repeat(120),
+        steelman: "A specific unanswered proponent argument, stated at honest length.",
+      },
+      claimAssessments: [
+        { claimId: "GEO-C001", verdict: "unresolved", reasoning: "r", confidence: "low" },
+      ],
+    };
+    expect(() => AssessmentRunSchema.parse(run)).not.toThrow();
+    const partial = {
+      ...run,
+      claimAssessments: [{ ...run.claimAssessments[0], treatment: { plainLanguage: "A gloss long enough." } }],
+    };
+    expect(() => AssessmentRunSchema.parse(partial)).toThrow();
+    const full = {
+      ...run,
+      claimAssessments: [
+        {
+          ...run.claimAssessments[0],
+          treatment: {
+            plainLanguage: "A gloss long enough.",
+            importance: "supporting",
+            diagnosticity: "low",
+            diagnosticitySummary: "none yet",
+            strongestObjection: "none recorded yet",
+          },
+        },
+      ],
+    };
+    expect(AssessmentRunSchema.parse(full).claimAssessments[0].treatment?.whatWouldChangeOurMind).toEqual([]);
   });
 
-  it("featured claims still require the full editorial fields", () => {
-    const { plainLanguage: _pl, ...missingGloss } = baseClaim;
-    void _pl;
-    expect(() => ClaimSchema.parse(missingGloss)).toThrow();
+  it("an edition is strict: hashes are digests, featured ids are unique, the article is real", () => {
+    const hex = "a".repeat(64);
+    const edition = {
+      runId: "edition-2026-09-08-test",
+      date: "2026-09-08",
+      model: "test",
+      promptVersion: "test",
+      rationale: "a test edition, long enough",
+      basis: { ledgerHash: hex, inputsHash: hex },
+      previous: null,
+      assessment: { runId: "r", hash: hex },
+      featuredClaimIds: ["GEO-C001"],
+      article: "x".repeat(50),
+    };
+    expect(EditionSchema.parse(edition).cruxOrder).toEqual([]);
+    expect(() => EditionSchema.parse({ ...edition, featuredClaimIds: ["GEO-C001", "GEO-C001"] })).toThrow();
+    expect(() => EditionSchema.parse({ ...edition, basis: { ledgerHash: "nope", inputsHash: hex } })).toThrow();
+    expect(() => EditionSchema.parse({ ...edition, extra: true })).toThrow();
+    expect(() => EditionSchema.parse({ ...edition, assessment: null })).not.toThrow();
   });
 
   it("HARD RULE: AI-generated images can never be plates", () => {
@@ -496,6 +604,100 @@ describe("schema rules", () => {
         origin: baseClaim.origin,
       }),
     ).toThrow();
+  });
+});
+
+describe("hashes", () => {
+  it("canonical JSON is key-order independent and drops undefined", () => {
+    expect(canonicalJson({ b: 1, a: [{ d: 2, c: undefined }] })).toBe(
+      canonicalJson({ a: [{ d: 2 }], b: 1 }),
+    );
+    expect(sha256Hex("x")).toMatch(/^[a-f0-9]{64}$/);
+  });
+
+  it("the ledger hash changes when a record changes and not when key order does", () => {
+    const geo = getCaseBySlug("megalithic-casting");
+    const slice = {
+      claims: geo.claims,
+      evidence: geo.evidence,
+      sources: geo.sources,
+      research: geo.research,
+      studies: geo.studies,
+      images: geo.images,
+    };
+    expect(ledgerHash(slice)).toBe(geo.ledgerHash);
+    const moved = { ...slice, claims: [...slice.claims].reverse() };
+    expect(ledgerHash(moved)).not.toBe(geo.ledgerHash); // order of records is content
+    const edited = {
+      ...slice,
+      claims: slice.claims.map((c, i) => (i === 0 ? { ...c, statement: c.statement + "!" } : c)),
+    };
+    expect(ledgerHash(edited)).not.toBe(geo.ledgerHash);
+  });
+});
+
+describe("edition integrity", () => {
+  const geo = () => getCaseBySlug("megalithic-casting");
+
+  it("live content passes", () => {
+    for (const c of loadAllCases()) expect(editionErrors(c)).toEqual([]);
+  });
+
+  it("an edited adopted assessment breaks the edition's hash", () => {
+    const c = geo();
+    const run = adoptedAssessment(c)!;
+    const tampered = {
+      ...c,
+      assessmentRuns: c.assessmentRuns.map((r) =>
+        r.runId === run.runId
+          ? { ...r, caseAssessment: { ...r.caseAssessment, verdict: "established" as const } }
+          : r,
+      ),
+    };
+    const errors = editionErrors(tampered);
+    expect(errors.some((e) => /no longer matches the recorded hash/.test(e))).toBe(true);
+  });
+
+  it("a featured claim without a treatment, an unknown featured id, and a check run adopted all fail", () => {
+    const c = geo();
+    const ed = currentEdition(c);
+    const run = adoptedAssessment(c)!;
+    const noTreatment = {
+      ...c,
+      assessmentRuns: c.assessmentRuns.map((r) =>
+        r.runId === run.runId
+          ? { ...r, claimAssessments: r.claimAssessments.map(({ treatment: _t, ...rest }) => { void _t; return rest; }) }
+          : r,
+      ),
+    };
+    // Hash changes too, so filter to the treatment complaint.
+    expect(editionErrors(noTreatment).some((e) => /carries no treatment/.test(e))).toBe(true);
+    const unknown = { ...c, editions: [{ ...ed, featuredClaimIds: [...ed.featuredClaimIds, "GEO-C000"] }] };
+    expect(editionErrors(unknown).some((e) => /unknown or rejected claim GEO-C000/.test(e))).toBe(true);
+    const check = c.assessmentRuns.find((r) => r.role === "check")!;
+    const adoptsCheck = {
+      ...c,
+      editions: [{ ...ed, assessment: { runId: check.runId, hash: assessmentHash(check) } }],
+    };
+    expect(editionErrors(adoptsCheck).some((e) => /adopts a check run/.test(e))).toBe(true);
+  });
+
+  it("plates survive: a successor that drops a predecessor's plate fails; a broken chain fails", () => {
+    const c = geo();
+    const ed = currentEdition(c);
+    const plateless = ed.article.replace(/^\{plate:[^}]+\}$/gm, "");
+    const successor = {
+      ...ed,
+      runId: "edition-2026-09-09-test",
+      date: "2026-09-09",
+      previous: ed.runId,
+      article: plateless,
+    };
+    const errors = editionErrors({ ...c, editions: [ed, successor] });
+    expect(errors.some((e) => /drops plate/.test(e))).toBe(true);
+    const orphan = editionErrors({ ...c, editions: [ed, { ...successor, article: ed.article, previous: "edition-nope" }] });
+    expect(orphan.some((e) => /unknown predecessor/.test(e))).toBe(true);
+    expect(editionErrors({ ...c, editions: [] })[0]).toMatch(/missing editions/);
   });
 });
 
@@ -564,12 +766,38 @@ describe("ratification governance (stage 3)", () => {
     model: `${model} (Vendor-${model}) — independent check`,
     role: "check" as const,
   });
+  const HEX = "0".repeat(64);
+  /**
+   * A case fixture whose current edition adopts `adopt` (default: the first
+   * draft-role run) — the edition is what makes a draft the displayed one.
+   */
   const caseWith = (
     runs: unknown[],
     history: { date: string; kind?: string }[] = [],
-  ) =>
-    ({
+    adopt?: string,
+    ledger = "ledger-a",
+  ) => {
+    const drafts = (runs as { runId: string; role?: string }[]).filter((r) => r.role !== "check");
+    const adopted = adopt ?? drafts[0]?.runId;
+    return {
+      record: { slug: "fixture" },
+      ledgerHash: sha256Hex(ledger),
       assessmentRuns: runs,
+      editions: [
+        {
+          runId: "edition-fixture",
+          date: "2026-01-01",
+          model: "t",
+          promptVersion: "t",
+          rationale: "fixture edition",
+          basis: { ledgerHash: HEX, inputsHash: HEX },
+          previous: null,
+          assessment: adopted ? { runId: adopted, hash: HEX } : null,
+          featuredClaimIds: [],
+          cruxOrder: [],
+          article: "x".repeat(40),
+        },
+      ],
       history: history.map((h) => ({
         date: h.date,
         kind: h.kind,
@@ -578,7 +806,8 @@ describe("ratification governance (stage 3)", () => {
         actor: "a",
         aiAssisted: true,
       })),
-    }) as unknown as Parameters<typeof ratification>[0];
+    } as unknown as LoadedCase;
+  };
   const fiveChecks = (verdict: string, dissenters = 0, date = "2026-02-01") =>
     ["alpha", "beta", "gamma", "delta", "epsilon"].map((m, i) =>
       mkCheck(m, date, i < dissenters ? "mixed" : verdict),
@@ -691,16 +920,46 @@ describe("ratification governance (stage 3)", () => {
     expect(r?.contestedLoadBearing).toEqual(["C1"]);
   });
 
-  it("displayAssessment always shows the latest draft, stamped with its standing", () => {
-    const shown = displayAssessment(
-      caseWith([
-        mkDraft("old", "2026-01-01", "mixed"),
-        mkDraft("new", "2026-02-01"),
-        ...fiveChecks("unresolved", 0, "2026-02-02"),
-      ]) as unknown as Parameters<typeof displayAssessment>[0],
-    );
-    expect(shown?.run.runId).toBe("new");
+  it("displayAssessment shows the ADOPTED draft — a newer unadopted draft cannot change the verdict beneath the essay", () => {
+    const runs = [
+      mkDraft("old", "2026-01-01", "mixed"),
+      mkDraft("new", "2026-02-01"),
+      ...fiveChecks("mixed", 0, "2026-02-02"),
+    ];
+    const shown = displayAssessment(caseWith(runs, [], "old"));
+    expect(shown?.run.runId).toBe("old");
     expect(shown?.ratification.status).toBe("ratified");
+    // Adopting the newer draft is an edition change; the panel then judges that.
+    const adoptedNew = displayAssessment(caseWith(runs, [], "new"));
+    expect(adoptedNew?.run.runId).toBe("new");
+    expect(adoptedNew?.ratification.status).toBe("contested");
+  });
+
+  it("staleness is a hash when the run recorded one, a date otherwise", () => {
+    const withHash = (m: string) => ({
+      ...mkCheck(m, "2026-02-01"),
+      basis: { ledgerHash: sha256Hex("ledger-a") },
+    });
+    const current = caseWith(
+      [mkDraft("d", "2026-01-01"), ...["a", "b", "c", "d", "e"].map(withHash)],
+      [{ date: "2026-03-01" }], // history newer than the checks — ignored when hashes exist
+    );
+    expect(ratification(current)?.status).toBe("ratified");
+    expect(checksStale(current)).toBe(false);
+    const moved = caseWith(
+      [mkDraft("d", "2026-01-01"), ...["a", "b", "c", "d", "e"].map(withHash)],
+      [],
+      undefined,
+      "ledger-b",
+    );
+    const r = ratification(moved);
+    expect(r?.status).toBe("unratified");
+    expect(r?.reason).toMatch(/ledger changed/);
+    expect(checksStale(moved)).toBe(true);
+    // Legacy runs without a hash: content-bearing history newer than the run is stale.
+    const legacy = caseWith([mkDraft("d", "2026-01-01"), ...fiveChecks("unresolved")], [{ date: "2026-03-01" }]);
+    expect(runStaleness(legacy, legacy.assessmentRuns[1])).toBe("2026-03-01");
+    expect(checksStale(legacy)).toBe(true);
   });
 
   it("every live case derives a valid standing; checked cases have a full panel", () => {
@@ -727,11 +986,12 @@ describe("ratification governance (stage 3)", () => {
     }
   });
 
-  it("every case carries a research priority", () => {
+  it("every case's adopted assessment carries a research priority and the dossier header", () => {
     for (const c of loadAllCases()) {
-      expect(["high", "medium", "low"]).toContain(
-        c.record.researchPriority.level,
-      );
+      const ca = adoptedAssessment(c)!.caseAssessment;
+      expect(["high", "medium", "low"]).toContain(ca.researchPriority?.level);
+      expect(ca.whatIsClaimed).toBeTruthy();
+      expect(ca.bestConventionalExplanation).toBeTruthy();
     }
   });
 
@@ -752,17 +1012,13 @@ describe("ratification governance (stage 3)", () => {
 });
 
 describe("cross-model checks", () => {
-  it("check runs never narrate; the draft still displays", () => {
+  it("check runs never narrate; the adopted draft displays", () => {
     const orch = getCaseBySlug("orch-or");
     const checks = orch.assessmentRuns.filter((r) => r.role === "check");
     expect(checks.length).toBeGreaterThanOrEqual(4);
     const shown = displayAssessment(orch);
-    // The newest draft-role run displays; checks never do, however new.
     expect(shown?.run.role).toBe("draft");
-    const newestDraft = [...orch.assessmentRuns]
-      .reverse()
-      .find((r) => r.role !== "check");
-    expect(shown?.run.runId).toBe(newestDraft?.runId);
+    expect(shown?.run.runId).toBe(currentEdition(orch).assessment?.runId);
   });
 
   it("concurrence summary reports agreement against the displayed run", () => {
@@ -845,6 +1101,13 @@ describe("the steelman counterweight", () => {
 
   it("append-only history is exempt, never rewritten", () => {
     expect(steelmanRequirementError(run({ date: "2026-09-03" }))).toBeNull();
+  });
+
+  it("a migration run — a transfer, not a judgment — is exempt", () => {
+    expect(
+      steelmanRequirementError({ ...run({ date: "2026-09-08" }), migratedFrom: "2026-08-26-auto-x" }),
+    ).toBeNull();
+    expect(steelmanRequirementError({ ...run({ date: "2026-09-08" }), migratedFrom: undefined })).not.toBeNull();
   });
 
   it("a whitespace steelman is a missing steelman", () => {

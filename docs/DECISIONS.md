@@ -1081,6 +1081,41 @@ centralize duplicated code where worthwhile), the four verbs' repeated
 run bookkeeping became the store's run frame (`openRun`/`closeRun`), the
 three config readers became one, the case lookup moved to the loader,
 and the date stamp joined the id helpers.
+Ceiling: $20 per run, $50 per day, $150 per month (`config/budget.yaml`), enough for the eight-report test with headroom. Tariffs were read from the vendors' own price pages on 2026-09-08 and recorded with their sources; the four other panel seats stay null until someone reads theirs.
+
+**The chain** (src/pipeline). `report` builds the packet, rests when the
+same case has been sent to the same seat under the same protocol (the
+previous report is included in the packet but excluded from the rest
+hash, or a completed report would make its own case due again), and saves
+the reply as working material. `draft` extracts every URL the report
+cites, fetches them, and shows the drafter the retrieved text; the reply
+comes back in a loose structured-output shape and is made mechanical here
+— ids in the case's scheme, provenance stamped, every record validated
+with the ledger's own schema, duplicates re-pointed at existing records,
+failures dispositioned with reasons. `verify` resolves identifiers,
+fetches again, matches every quoted span verbatim (surrounding quote marks,
+hyphenation, whitespace, and case normalised; words exact), sends what
+passed to a second reader that never sees the drafter's rationale, drops
+records whose dependencies fell, checks the prospective ledger with the
+build's own rules, and only then appends records, dispositions, and a
+history entry. `edition` runs only when the ledger hash moved (or when
+forced), drafts one candidate, and refuses it if any loader rule fails —
+including that every load-bearing claim is featured and that a candidate
+whose judgment did not change re-adopts the incumbent's assessment.
+
+**The budget guard** sits inside the model calls: a conservative estimate
+(full input, whole output allowance, every permitted search) against
+run, day, and month; an unpriced model cannot be budgeted and is refused.
+Raw HTTP throughout, as every vendor call in this repository (AGENTS.md
+§4), with request shapes taken from the vendors' current documentation.
+
+**Limits stated.** (As of this entry; PDFs have been read since the evening of 2026-09-08 — see below.) PDFs are not read yet: a PDF source blocks its
+evidence with the route. The Anthropic research seat is a single turn
+continued across `pause_turn`; if it ends on `max_tokens` the run fails
+rather than returning a truncated report. Structured outputs forbid
+length constraints, so the loose schemas are validated a second time by
+the strict ones. Nothing in this step has run against a live model; the
+first paid runs are the Cast, Not Carved test.
 
 **The first paid run (2026-09-08, `2026-09-08-report-megalithic-casting-125721`)
 and what it taught.** Cast Not Carved, default seat, house model. The
@@ -1163,6 +1198,7 @@ PDFs and link lists now go through the same retrieval layer (no
 `pdftotext` needed). The founder also exempted the rest of 2026-09-08 from
 the daily cap so the first-runs stage could continue; the exemption is a
 dated row in `config/budget.yaml`, the constitutional form of such a grant.
+A second draft pass on the same report, with retrieval, then exposed the reopen rule's gap: the assembler re-blocked Nemoy and Sessa on the strength of the previous day's `blocked` rows although it now held their text, and lost seven evidence records with them. `blocked` is a pending state whose reopen condition is the text being obtained; a blocked source whose text this pass retrieved now goes forward as new. Verification of that pass waits for the next day's budget.
 
 **What the exempted evening bought (2026-09-08).** (1) The draft re-run
 with retrieval proposed Nemoy 1939 and Sessa et al. 2026 with ten evidence
@@ -1209,51 +1245,5 @@ weekly workflow, the operation state displayed — with the founder's toggle
 on the Arbiter as the only hand required. Two rules the runs settled are
 recorded there too: the second research seat runs when the first stops
 finding, and a contested standing is a task that triggers reconsideration
-and a fresh check, not a label that sits. A second draft pass
-on the same report, with retrieval, then exposed the reopen rule's gap: the
-assembler re-blocked Nemoy and Sessa on the strength of the previous day's
-`blocked` rows although it now held their text, and lost seven evidence
-records with them. `blocked` is a pending state whose reopen condition is
-the text being obtained; a blocked source whose text this pass retrieved
-now goes forward as new. Verification of that pass waits for the next
-day's budget. Ceiling: $20 per run, $50 per day,
-$150 per month (`config/budget.yaml`), enough for the eight-report test
-with headroom. Tariffs were read from the vendors' own price pages on
-2026-09-08 and recorded with their sources; the four other panel seats
-stay null until someone reads theirs.
-
-**The chain** (src/pipeline). `report` builds the packet, rests when the
-same case has been sent to the same seat under the same protocol (the
-previous report is included in the packet but excluded from the rest
-hash, or a completed report would make its own case due again), and saves
-the reply as working material. `draft` extracts every URL the report
-cites, fetches them, and shows the drafter the retrieved text; the reply
-comes back in a loose structured-output shape and is made mechanical here
-— ids in the case's scheme, provenance stamped, every record validated
-with the ledger's own schema, duplicates re-pointed at existing records,
-failures dispositioned with reasons. `verify` resolves identifiers,
-fetches again, matches every quoted span verbatim (surrounding quote marks,
-hyphenation, whitespace, and case normalised; words exact), sends what
-passed to a second reader that never sees the drafter's rationale, drops
-records whose dependencies fell, checks the prospective ledger with the
-build's own rules, and only then appends records, dispositions, and a
-history entry. `edition` runs only when the ledger hash moved (or when
-forced), drafts one candidate, and refuses it if any loader rule fails —
-including that every load-bearing claim is featured and that a candidate
-whose judgment did not change re-adopts the incumbent's assessment.
-
-**The budget guard** sits inside the model calls: a conservative estimate
-(full input, whole output allowance, every permitted search) against
-run, day, and month; an unpriced model cannot be budgeted and is refused.
-Raw HTTP throughout, as every vendor call in this repository (AGENTS.md
-§4), with request shapes taken from the vendors' current documentation.
-
-**Limits stated.** PDFs are not read yet: a PDF source blocks its
-evidence with the route. The Anthropic research seat is a single turn
-continued across `pause_turn`; if it ends on `max_tokens` the run fails
-rather than returning a truncated report. Structured outputs forbid
-length constraints, so the loose schemas are validated a second time by
-the strict ones. Nothing in this step has run against a live model; the
-first paid runs are the Cast, Not Carved test.
-
+and a fresh check, not a label that sits.
 (AI implementation record; founder-directed session.)

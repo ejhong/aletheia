@@ -45,6 +45,18 @@ export interface ResearchResult {
 
 export type FetchLike = typeof fetch;
 
+/**
+ * The house model and its fallback (docs/DECISIONS.md 2026-08-27, "Fable-first,
+ * loud Opus fallback, truthful stamps"; reaffirmed 2026-09-08). Fable 5.1 is
+ * the default for every drafting and research call on the Anthropic side; a
+ * safety-classifier decline is re-run server-side on Opus 5 inside the same
+ * request (`fallbacks`), and the run records the model that actually served —
+ * never the one that was asked. A decline by the whole chain fails the run.
+ */
+export const HOUSE_MODEL = "claude-fable-5-1";
+export const HOUSE_FALLBACK = "claude-opus-5";
+const FALLBACK_BETA = "server-side-fallback-2026-06-01";
+
 const ANTHROPIC_VERSION = "2023-06-01";
 const today = () => new Date().toISOString().slice(0, 10);
 
@@ -114,13 +126,19 @@ type AnthropicMessage = {
   };
 };
 
-async function anthropicPost(body: unknown, fetchImpl: FetchLike, timeoutMs: number): Promise<AnthropicMessage> {
+/** Fable requests carry the server-side fallback to Opus; other models are sent as they are. */
+function withFallback<T extends { model: string }>(body: T): T & { fallbacks?: { model: string }[] } {
+  return body.model === HOUSE_MODEL ? { ...body, fallbacks: [{ model: HOUSE_FALLBACK }] } : body;
+}
+
+async function anthropicPost(body: { model: string; fallbacks?: unknown }, fetchImpl: FetchLike, timeoutMs: number): Promise<AnthropicMessage> {
   const res = await fetchWithRetry("anthropic", "https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       "x-api-key": key("ANTHROPIC_API_KEY"),
       "anthropic-version": ANTHROPIC_VERSION,
+      ...(body.fallbacks ? { "anthropic-beta": FALLBACK_BETA } : {}),
     },
     body: JSON.stringify(body),
     signal: AbortSignal.timeout(timeoutMs),
@@ -163,7 +181,7 @@ export interface AnthropicResearchOptions {
  * resumes; no extra user message). Returns the whole turn's text.
  */
 export async function anthropicResearch(opts: AnthropicResearchOptions, meter: Meter): Promise<ResearchResult> {
-  const model = opts.model ?? "claude-opus-5";
+  const model = opts.model ?? HOUSE_MODEL;
   const maxTokens = opts.maxTokens ?? 32000;
   const maxSearches = opts.maxSearches ?? 30;
   const maxFetches = opts.maxFetches ?? 15;
@@ -178,7 +196,7 @@ export async function anthropicResearch(opts: AnthropicResearchOptions, meter: M
   );
 
   const messages: { role: "user" | "assistant"; content: unknown }[] = [{ role: "user", content: opts.user }];
-  const body = {
+  const body = withFallback({
     model,
     max_tokens: maxTokens,
     thinking: { type: "adaptive" },
@@ -194,9 +212,10 @@ export async function anthropicResearch(opts: AnthropicResearchOptions, meter: M
       },
     ],
     messages,
-  };
+  });
 
   const raw: unknown[] = [];
+  let served = model;
   const texts: string[] = [];
   const citations: { url: string; title?: string }[] = [];
   const usage: Usage = { inputTokens: 0, outputTokens: 0 };
@@ -206,6 +225,7 @@ export async function anthropicResearch(opts: AnthropicResearchOptions, meter: M
   for (let i = 0; i <= limit; i++) {
     const m = await anthropicPost(body, opts.fetchImpl ?? fetch, opts.timeoutMs ?? 1_800_000);
     raw.push(m);
+    served = m.model || served; // the model that actually answered (the fallback, if it ran)
     const u = usageOf(m);
     usage.inputTokens += u.inputTokens;
     usage.outputTokens += u.outputTokens;
@@ -223,11 +243,11 @@ export async function anthropicResearch(opts: AnthropicResearchOptions, meter: M
     if (m.stop_reason === "max_tokens") throw new Error(`${model} hit max_tokens (${maxTokens}) before finishing the report`);
     break;
   }
-  recordTokens(meter, model, usage);
+  recordTokens(meter, served, usage);
   recordSearches(meter, "anthropic:web_search", searches);
   const text = texts.join("\n").trim();
-  if (!text) throw new Error(`${model}: empty report`);
-  return { text, model, usage, searches, fetches, citations: dedupeCitations(citations), raw };
+  if (!text) throw new Error(`${served}: empty report`);
+  return { text, model: served, usage, searches, fetches, citations: dedupeCitations(citations), raw };
 }
 
 function dedupeCitations(list: { url: string; title?: string }[]) {
@@ -253,33 +273,34 @@ export async function anthropicJson<T = unknown>(
   opts: AnthropicJsonOptions,
   meter: Meter,
 ): Promise<{ data: T; model: string; usage: Usage; usd: number | null }> {
-  const model = opts.model ?? "claude-opus-5";
+  const model = opts.model ?? HOUSE_MODEL;
   const maxTokens = opts.maxTokens ?? 32000;
   assertWithinBudget(
     estimateUsd({ model, inputChars: opts.system.length + opts.user.length, maxOutputTokens: maxTokens }, loadTariffs(meter.root)),
     { runId: meter.runId, verb: meter.verb, root: meter.root },
   );
-  const body = {
+  const body = withFallback({
     model,
     max_tokens: maxTokens,
     thinking: { type: "adaptive" },
     output_config: { effort: opts.effort ?? "high", format: { type: "json_schema", schema: opts.schema } },
     system: opts.system,
     messages: [{ role: "user", content: opts.user }],
-  };
+  });
   const m = await anthropicPost(body, opts.fetchImpl ?? fetch, opts.timeoutMs ?? 1_800_000);
-  if (m.stop_reason === "refusal") throw new Error(`${model} refused`);
-  if (m.stop_reason === "max_tokens") throw new Error(`${model} hit max_tokens (${maxTokens}) before finishing`);
+  const served = m.model || model;
+  if (m.stop_reason === "refusal") throw new Error(`${model} (and its fallback) refused`);
+  if (m.stop_reason === "max_tokens") throw new Error(`${served} hit max_tokens (${maxTokens}) before finishing`);
   const text = m.content.filter((b) => b.type === "text").map((b) => b.text ?? "").join("");
   const usage = usageOf(m);
-  const usd = recordTokens(meter, model, usage);
+  const usd = recordTokens(meter, served, usage);
   let data: T;
   try {
     data = JSON.parse(text) as T;
   } catch (e) {
-    throw new Error(`${model}: reply was not the JSON the schema demanded (${(e as Error).message})`);
+    throw new Error(`${served}: reply was not the JSON the schema demanded (${(e as Error).message})`);
   }
-  return { data, model: m.model, usage, usd };
+  return { data, model: served, usage, usd };
 }
 
 // --------------------------------------------------------------------- OpenAI

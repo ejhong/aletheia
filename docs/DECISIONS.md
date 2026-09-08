@@ -1054,14 +1054,20 @@ lint (two pre-existing warnings) pass.
 
 ## 2026-09-08 — Build step 3b: the verb chain, and the research models and ceiling
 
-**Models and ceiling (founder-accepted recommendation).** Research seats:
-`o4-mini-deep-research` (OpenAI Responses, background mode, web search)
-and `claude-opus-5` with the web search and web fetch server tools, both
-behind one interface and one protocol; `o3-deep-research` is kept as a
-third option, not a default, because measured runs average about $10
-with a $30 tail. Drafter and editor: `claude-opus-5`. Second reader:
+**Models and ceiling (founder direction).** The house model is
+`claude-fable-5-1` with a server-side fallback to `claude-opus-5` on a
+safety-classifier decline (`fallbacks`, beta `server-side-fallback-2026-06-01`)
+— the "Fable-first, loud Opus fallback, truthful stamps" policy of
+2026-08-27, reaffirmed: every run records the model that actually served.
+It is the default research seat (with the web search and web fetch server
+tools), the drafter, and the editor. The comparison seat is
+`o4-mini-deep-research` (OpenAI Responses, background mode, web search);
+`o3-deep-research` is kept as a third option, not a default, because
+measured runs average about $10 with a $30 tail. Second reader:
 `claude-sonnet-5` — a different model, same vendor; vendor independence
-is the panel's job, not the reader's. Ceiling: $20 per run, $50 per day,
+is the panel's job, not the reader's. The founder's first instinct had
+been the OpenAI seat as default; on reflection the default is the house
+model, the OpenAI seat the comparison. Ceiling: $20 per run, $50 per day,
 $150 per month (`config/budget.yaml`), enough for the eight-report test
 with headroom. Tariffs were read from the vendors' own price pages on
 2026-09-08 and recorded with their sources; the four other panel seats

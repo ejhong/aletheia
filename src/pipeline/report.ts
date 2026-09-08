@@ -3,7 +3,7 @@ import path from "node:path";
 import { sha256Hex } from "../domain/hash.ts";
 import { loadAllCases } from "../domain/load.ts";
 import type { LoadedCase } from "../domain/schema.ts";
-import { anthropicResearch, openaiDeepResearch, type Meter, type ResearchResult } from "./models.ts";
+import { anthropicResearch, HOUSE_MODEL, openaiDeepResearch, type Meter, type ResearchResult } from "./models.ts";
 import { buildPacket, renderPacket } from "./packet.ts";
 import { loadProtocol, renderProtocol } from "./protocols.ts";
 import { spendFor, sumCost } from "./spend.ts";
@@ -23,8 +23,10 @@ export type ResearchSeat = "openai" | "anthropic";
 
 export const RESEARCH_SEATS = {
   openai: { model: "o4-mini-deep-research", maxToolCalls: 40 },
-  anthropic: { model: "claude-opus-5", maxSearches: 30, maxFetches: 15 },
+  anthropic: { model: HOUSE_MODEL, maxSearches: 30, maxFetches: 15 },
 } as const;
+/** The seat `aletheia report` uses when none is named: the house model, browsing. */
+export const DEFAULT_SEAT: ResearchSeat = "anthropic";
 
 export type Researcher = (
   seat: ResearchSeat,

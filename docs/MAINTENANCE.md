@@ -58,15 +58,18 @@ tariff in `config/tariffs.yaml`.
 ```bash
 node scripts/aletheia.ts status                                   # standing, edition, counts, saturation, spend per case
 node scripts/aletheia.ts report <case> --seat openai --dry-run    # write the packet and instructions, send nothing
-node scripts/aletheia.ts report <case> --seat anthropic           # the research pass (o4-mini-deep-research | claude-opus-5 + web tools)
+node scripts/aletheia.ts report <case>                            # the research pass: the house model (Fable 5.1, fallback Opus 5) with web search and fetch
+node scripts/aletheia.ts report <case> --seat openai              # …or o4-mini-deep-research, for the comparison
 node scripts/aletheia.ts draft <reportRunId>                      # report + fetched sources → proposals/<runId>/proposal.yaml
 node scripts/aletheia.ts verify <proposalRunId> --dry-run         # mechanical checks + second reader; writes verification.md only
 node scripts/aletheia.ts verify <proposalRunId>                   # …and appends accepted records, dispositions, history to the working tree
 node scripts/aletheia.ts edition <case>                           # a new edition when the ledger moved (rests otherwise; --force)
 ```
 
-Keys: `OPENAI_API_KEY` for the openai seat, `ANTHROPIC_API_KEY` for the
-anthropic seat, the drafter, the verifier, and the editor. A run that would
+Keys: `ANTHROPIC_API_KEY` for the default seat, the drafter, the verifier,
+and the editor; `OPENAI_API_KEY` for the openai seat. The house model is
+Fable 5.1 with a server-side fallback to Opus 5 on a safety decline; the
+run records the model that actually served. A run that would
 pass a cap ends `failed` with the cap named; a model with no tariff is
 refused unless `ALETHEIA_ALLOW_UNPRICED=1`. `verify` and `edition` change
 the working tree and stop: review the diff, then open the PR the panel

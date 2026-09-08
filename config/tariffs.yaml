@@ -20,7 +20,14 @@ models:
     cachedInputPerMTok: 2.5
     source: https://developers.openai.com/api/docs/models/o3-deep-research
     checked: "2026-09-08"
-  # --- the drafter and the house seat -------------------------------------
+  # --- the house model (Fable 5.1, with a server-side fallback to Opus 5) ---
+  claude-fable-5-1:
+    inputPerMTok: 10
+    outputPerMTok: 50
+    cachedInputPerMTok: 0.25
+    source: https://platform.claude.com/docs/en/about-claude/pricing
+    checked: "2026-09-08"
+  # --- the fallback, the drafter's second option, and the panel's house seat --
   claude-opus-5:
     inputPerMTok: 5
     outputPerMTok: 25

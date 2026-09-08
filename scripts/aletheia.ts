@@ -6,7 +6,7 @@
  *   node scripts/aletheia.ts diff <case> <candidates.yaml|json>
  *   node scripts/aletheia.ts migrate-memory [--dry-run]
  *
- *   node scripts/aletheia.ts report <case> [--seat openai|anthropic] [--dry-run] [--reconsider "why"]
+ *   node scripts/aletheia.ts report <case> [--seat anthropic|openai] [--dry-run] [--reconsider "why"]   (default seat: anthropic — the house model, browsing)
  *   node scripts/aletheia.ts draft <reportRunId> [--dry-run]
  *   node scripts/aletheia.ts verify <proposalRunId> [--dry-run]
  *   node scripts/aletheia.ts edition <case> [--dry-run] [--force]
@@ -24,7 +24,7 @@ import { coverageDiff, type Candidate } from "../src/domain/coverage.ts";
 import { loadAllCases } from "../src/domain/load.ts";
 import { migrateMemory } from "../src/pipeline/migrate-memory.ts";
 import { allStatus, renderStatusTable } from "../src/pipeline/status.ts";
-import { runReport } from "../src/pipeline/report.ts";
+import { DEFAULT_SEAT, runReport } from "../src/pipeline/report.ts";
 import { runDraft } from "../src/pipeline/draft.ts";
 import { runVerify } from "../src/pipeline/verify.ts";
 import { runEdition } from "../src/pipeline/edition.ts";
@@ -98,7 +98,7 @@ switch (verb) {
     break;
   case "report": {
     const [key] = args;
-    const seat = (flagValue("--seat") ?? "openai") as "openai" | "anthropic";
+    const seat = (flagValue("--seat") ?? DEFAULT_SEAT) as "openai" | "anthropic";
     if (!key || !["openai", "anthropic"].includes(seat)) {
       console.error('usage: aletheia report <case> [--seat openai|anthropic] [--dry-run] [--reconsider "why"]');
       process.exit(1);

@@ -16,7 +16,7 @@ import {
   type LoadedCase,
 } from "../domain/schema.ts";
 import { fetchSource, type FetchedSource } from "./fetch.ts";
-import { anthropicJson, type Meter } from "./models.ts";
+import { anthropicJson, HOUSE_MODEL, type Meter } from "./models.ts";
 import { buildPacket } from "./packet.ts";
 import { loadProtocol, renderProtocol } from "./protocols.ts";
 import { findCase } from "./report.ts";
@@ -40,7 +40,7 @@ import { newRunId, readRuns, runDir, writeProposal, writeRun, writeWorkingFile }
  * record enters.
  */
 
-export const DRAFTER_MODEL = "claude-opus-5";
+export const DRAFTER_MODEL = HOUSE_MODEL;
 
 /** Structured-output schema for the drafter (no length or numeric constraints — the API forbids them). */
 export const DRAFT_SCHEMA: Record<string, unknown> = {

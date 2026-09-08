@@ -12,7 +12,7 @@ import {
 } from "../domain/schema.ts";
 import { hhmmssUTC } from "../../scripts/lib/overlay-ids.mjs";
 import { writeYamlFile } from "./ledger-write.ts";
-import { anthropicJson, type Meter } from "./models.ts";
+import { anthropicJson, HOUSE_MODEL, type Meter } from "./models.ts";
 import { buildPacket, renderPacket } from "./packet.ts";
 import { loadProtocol, renderProtocol } from "./protocols.ts";
 import { findCase } from "./report.ts";
@@ -33,7 +33,7 @@ import { newRunId, writeRun, writeWorkingFile } from "./store.ts";
  * the incumbent in the PR.
  */
 
-export const EDITOR_MODEL = "claude-opus-5";
+export const EDITOR_MODEL = HOUSE_MODEL;
 
 const VERDICTS = [
   "established", "well_supported", "provisionally_supported", "mixed", "weakly_supported",

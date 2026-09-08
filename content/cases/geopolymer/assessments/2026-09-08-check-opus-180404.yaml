@@ -1,0 +1,322 @@
+# Cross-model check run — an independent judge (Opus 5 (Anthropic)), blind to all
+# prior assessments and to the editions (aletheia check, check-v1; run 2026-09-08-check-megalithic-casting-180404).
+# role: check — never displayed as the case narrative; feeds the concurrence panel.
+# basis.ledgerHash is the ledger it judged. Append-only; NOT human reviewed.
+runId: 2026-09-08-check-opus-180404
+model: Opus 5 (Anthropic) — independent check run via claude-opus-5
+date: 2026-09-08
+promptVersion: check-v1
+humanReviewed: false
+role: check
+basis:
+  ledgerHash: e76f3cd0085c06ae6e252ca80eb96816856c90db7bc42cdce93cd7bc5fbffe96
+caseAssessment:
+  verdict: weakly_supported
+  components: []
+  loadBearing:
+    - GEO-C022
+    - GEO-C020
+    - GEO-C021
+    - GEO-C012
+    - GEO-C030
+  weakestLinks:
+    - GEO-C003
+    - GEO-C506
+    - GEO-C013
+    - GEO-C006
+    - GEO-C002
+  synthesis: "The ledger separates cleanly into three tiers, and they do not
+    support each other as much as the case framing implies. The mechanism tier
+    is in decent shape: natron supply at scale is established by mainstream work
+    (GEO-E010), ~850 °C is trivially within ancient pyrotechnology on general
+    grounds, and a lime-pozzolan C–S–H binder from lime plus diatomaceous earth
+    is demonstrated feasible at room temperature (GEO-E022). Feasibility,
+    however, is not occurrence, and the ledger's own editorial notes say so. The
+    observation tier at the flagship site runs the other way. Four negative
+    records — in-situ sedimentary and tectonic petrography across many blocks
+    (GEO-E018), the Lauer sample re-analysis (GEO-E019), Jana's comparison
+    against a genuine Davidovits geopolymer positive control (GEO-E020), and an
+    independent multi-technique study of a museum casing fragment (GEO-E021) —
+    converge on natural limestone, and Jana's control specifically shows that a
+    real casting binder leaves a detectable Na/K/Al signature that the pyramid
+    stones lack, and that the Si-rich microspheres Barsoum highlighted also
+    occur in undisputed natural limestone. That is the single most damaging
+    structural fact in the file: the pro-casting anomalies were shown to be
+    non-diagnostic by the only study with a positive control. Against that,
+    Barsoum's element ratios \"not existing in any potential source\" and
+    MacKenzie's NMR reading of a Bent Pyramid casing stone remain unrebutted,
+    and both are at least partly independent of the Geopolymer Institute. The
+    Andean branch is weaker still — two papers, one team, one sample set, no
+    replication, no blind diagnostic criteria — and its 2020 model has now
+    migrated to natural Khapia sand as aggregate, which makes provenance
+    geochemistry non-discriminating in exactly the way GEO-C030 claims. The salt
+    line, once a headline argument, has collapsed: no medieval source for the
+    Al-Ma'mun report has been located, and halite is reported as native to Giza
+    strata and documented at the carved-bedrock Sphinx. Net: a live but thin
+    hypothesis, closest to refuted where it has been best tested, and
+    effectively untested where its remaining support lives."
+  steelman: No study in the ledger tests for the binder the proponents' own best
+    data now implies. MacKenzie et al. 2011 read a Bent Pyramid casing stone by
+    ²⁹Si/²⁷Al/⁴³Ca MAS NMR as Tura limestone grains cemented by an amorphous
+    calcium-silicate gel, and that paper has no published rebuttal. Every
+    decisive negative — Jana above all — searched for alkali- aluminosilicate
+    enrichment, which a lime-pozzolan C–S–H binder would not produce; Sierra et
+    al. 2010 shows such a binder forms at ambient temperature from materials
+    available in Egypt. Barsoum's Si:Ca:Mg microconstituent ratios "not existing
+    in any of the potential limestone sources," and hydrated
+    calcite/dolomite-like phases "not known to hydrate in nature," remain
+    unexplained by any record here. A proponent can correctly say the negative
+    literature refuted the 1980s recipe and then stopped, never running a
+    binder-aware, C–S–H-targeted test on provenance-secure samples.
+claimAssessments:
+  - claimId: GEO-C022
+    verdict: weakly_supported
+    reasoning: "As an existence claim it needs only one monument, which lowers the
+      bar, but every surviving strand is thin: the Andean support is one
+      non-independent proponent team, and the Egyptian support consists of two
+      partly-independent studies whose diagnostic features were shown by Jana's
+      positive-control comparison to occur in natural limestone too. The
+      strongest opposing consideration is that the site where the hypothesis has
+      actually been tested most often returns natural-stone verdicts from four
+      separate groups. Against that, the unrebutted NMR C–S–H reading and
+      Barsoum's anomalous element ratios keep the claim from being dead, so the
+      honest reading is a small amount of contested support rather than none."
+    confidence: low
+  - claimId: GEO-C020
+    verdict: contradicted
+    reasoning: "Four records, three of them from groups independent of the
+      proponents, report natural limestone: macro-scale sedimentary bedding,
+      burrows and fragile fossil cross-sections confined within blocks
+      (GEO-E018), no zeolite cement in the showcase Lauer sample (GEO-E019), no
+      binder signature against a genuine geopolymer control (GEO-E020), and
+      natural opal-CT rather than synthetic cristobalite in a museum casing
+      fragment (GEO-E021). The salt argument that formerly supported the claim
+      is now undercut by native Giza halite (GEO-E032). The strongest opposing
+      consideration is real and unanswered: MacKenzie's calcium-silicate-gel
+      reading of a Bent Pyramid casing stone lies outside the scope of every one
+      of those negatives, all of which tested for alkali-aluminosilicate
+      chemistry."
+    confidence: moderate
+  - claimId: GEO-C021
+    verdict: weakly_supported
+    reasoning: "Support is two peer-reviewed papers from one proponent team on one
+      sample set, explicitly flagged as non-independent, with no replication and
+      no blind test of whether the reported organic matter and microtextures
+      discriminate cast from natural andesite. The 1971 Bolivian provenance
+      attribution opposes it but is dated and, under the proponents' revised
+      natural-sand model, would not discriminate anyway. The strongest opposing
+      consideration is the Giza precedent: when SEM features claimed as
+      artificial were checked against a positive control elsewhere in this
+      corpus, they proved non-diagnostic — the same audit has never been run
+      here."
+    confidence: low
+  - claimId: GEO-C012
+    verdict: provisionally_supported
+    reasoning: 'Chemically this is the least exotic claim in the case: lime mortars,
+      Roman pozzolanic concrete and cast stone are uncontroversial technologies,
+      and GEO-E022 demonstrates a C–S–H binder forming from lime and
+      diatomaceous earth at room temperature. Part of this verdict leans on
+      general materials-science priors rather than the ledger, which offers only
+      self-reported proponent demonstration blocks (GEO-E013) for the "large
+      blocks visually similar to natural stone" portion. The strongest opposing
+      consideration is that no independent party has analysed a demonstration
+      block to confirm it would pass as natural stone under the petrographic
+      tests applied to the pyramids.'
+    confidence: moderate
+  - claimId: GEO-C010
+    verdict: well_supported
+    reasoning: "Charcoal with forced draught routinely exceeded 850 °C in Bronze Age
+      copper smelting, pottery firing and glassmaking; this is background
+      knowledge rather than something the ledger establishes, and I flag that
+      the only evidence record here (GEO-E016) is a weak proponent citation to
+      Badari glass whose dating the project itself wants verified. The claim as
+      worded is about achievable temperature, not about sustaining it over
+      industrial tonnages. The strongest opposing consideration is precisely
+      that scaling gap: crucible-scale heat says nothing about the fuel
+      logistics of monument-scale processing."
+    confidence: moderate
+  - claimId: GEO-C011
+    verdict: established
+    reasoning: GEO-E010 is a mainstream peer-reviewed archaeological-science paper
+      identifying Wadi el Natrun and al-Barnuj as the principal ancient natron
+      sources and documenting the 7th–9th century decline and substitution by
+      plant ash. Nothing in the ledger contests it and the claim's wording
+      matches the source closely. The only caveat, correctly noted on the
+      record, is that the paper concerns vitreous materials and says nothing
+      about stone — so the claim is established as stated while carrying no
+      implication for casting.
+    confidence: high
+  - claimId: GEO-C013
+    verdict: unresolved
+    reasoning: The sole evidence is an unattributed anecdote in a proponent book,
+      flagged as under-sourced by the project's own skeptical review, with no
+      controlled replication attempted (GEO-R007 remains open). Ash carbonation
+      producing weakly cemented material is chemically plausible, but "hardened
+      artificial stone" is a much stronger claim than plausibility grants. The
+      strongest opposing consideration is that a positive result here would in
+      any case be a just-so discovery story rather than evidence of ancient
+      practice, so even resolution would move little.
+    confidence: low
+  - claimId: GEO-C030
+    verdict: mixed
+    reasoning: "The narrow core is correct and important: PXRF and ICP-MS do not
+      measure H, C or O, so a bulk immobile-trace-element match cannot by itself
+      separate transported quarry stone from stone cast with aggregate from that
+      quarry. But the claim as stated overreaches by bundling XRD, which
+      resolves crystalline phases and would register carbonate or zeolitic
+      binder products, and by implying a general blindness that Jana's positive
+      control directly refutes — binder-aware SEM-EDS detected a real geopolymer
+      signature and found it absent in casing stones. Fóti's own methods table
+      contains an acknowledged error (NMR), and he concedes petrography is
+      exempt. The strongest opposing consideration is therefore internal: the
+      critique's own author excludes the very techniques that produced the
+      negative results."
+    confidence: moderate
+  - claimId: GEO-C001
+    verdict: provisionally_supported
+    reasoning: "This is a specific published measurement from a peer-reviewed
+      photogrammetric experiment, verified in the project's citation batch, and
+      the claim reproduces its numbers and conditions accurately. It stands on
+      one team, one granite, one tool configuration, with replication still an
+      open agenda item (GEO-R002). The strongest opposing consideration is skill
+      and protocol dependence: experimental strikers with unmaintained technique
+      plausibly underperform trained ancient crews, and the authors' own
+      inference about pounders being insufficient is a conclusion, not a
+      measurement."
+    confidence: moderate
+  - claimId: GEO-C002
+    verdict: weakly_supported
+    reasoning: As literally worded — "no documented success" — the claim is nearly
+      self-fulfilling, since no one documents casual tourist attempts at all,
+      and the sole source is an anecdotal proponent report with attempt counts
+      and cumulative effort unquantified. It is probably true and almost
+      uninformative. The strongest opposing consideration is that unmotivated
+      visitors striking a block for seconds is not a test of a technique that
+      the Marčiš experiment shows removes on the order of a few cubic
+      centimetres per minute of sustained skilled work.
+    confidence: low
+  - claimId: GEO-C006
+    verdict: unresolved
+    reasoning: The only support is a proponent's verbal description; shaft
+      dimensions have not been independently surveyed and the biomechanical
+      assertion has never been tested, as the evidence record concedes. Note
+      also that the catalog carries a competing proponent reading of the same
+      features as processing vessels (GEO-C536), which would make the pounding
+      objection moot rather than probative. The strongest opposing consideration
+      is that ancient quarry workings routinely include features cut by methods
+      and postures not obvious to a modern observer, including wedging,
+      fire-setting and abrasion from above with hafted tools.
+    confidence: low
+  - claimId: GEO-C003
+    verdict: contradicted
+    reasoning: "The ledger's only carrier of the salt-layer report is an uncited
+      proponent web page that also misdates the breach to 820 rather than 832
+      (GEO-E029, GEO-E028), and al-Suyūṭī's compilation of the principal
+      medieval Arabic accounts describes the breach and its finds in detail with
+      no mention of salt or any wall coating (GEO-E027). Confidence is low
+      because this is absence within one compilation: al-Maqrīzī's full Khiṭaṭ
+      chapter, ʿAbd al-Laṭīf and the Vyse extracts remain unread under GEO-R001.
+      The strongest opposing consideration is exactly that unread remainder — a
+      single located passage would flip this verdict."
+    confidence: low
+  - claimId: GEO-C506
+    verdict: contradicted
+    reasoning: "The presence half is confirmed with instruments rather than taste
+      (GEO-E030), but the claim's discriminating content is the comparison, and
+      that fails: halite efflorescence is documented at other Egyptian limestone
+      sites including the Sphinx, carved from Giza bedrock and claimed by no one
+      to be cast, and Klemm & Klemm are cited for halite as a primary
+      sedimentary constituent of the Giza nummulitic limestone (GEO-E031,
+      GEO-E032). The proponents' chosen comparator, European cathedrals, is the
+      wrong lithology and climate. The strongest opposing consideration is that
+      no study has yet compared concentrations quantitatively, or tested bulk
+      versus surface distribution, so the comparative premise is undercut rather
+      than measured — hence moderate, not high."
+    confidence: moderate
+  - claimId: GEO-C502
+    verdict: weakly_supported
+    reasoning: "The characterisation of Engelbach's evidentiary base comes entirely
+      from Fóti's account and has explicitly not been checked against the 1922
+      monograph or the 1923 expanded version (GEO-E002 says so outright), and
+      Fóti has three documented instances of mischaracterising sources in this
+      same corpus. It is plausible on priors that a 1922 field report would rest
+      on informal trials by modern standards. The strongest opposing
+      consideration is the conflation risk the source record flags: much of what
+      is attributed to the 1922 text may belong to the 1923 book, so even the
+      target of the critique is unsettled."
+    confidence: low
+  - claimId: GEO-C907
+    verdict: well_supported
+    reasoning: This is a direct, quoted reporting claim about a 2026 open-access
+      conservation paper's XRD and SEM-EDX results, with a strong Na–Cl
+      correlation and visible halite whiskers, and the evidence record
+      reproduces it accurately. The claim is about what the analyses identified,
+      and it matches. The strongest opposing consideration is the stated XRD
+      detection limit below 5 wt%, which the authors themselves say could hide
+      minor sulfate phases — and indeed an S-rich modern fill was detected by
+      XRF at a restored area, so "no widespread gypsum crusts" is a scoped
+      rather than absolute finding.
+    confidence: high
+  - claimId: GEO-C906
+    verdict: well_supported
+    reasoning: The claim is carefully worded as what Klemm & Klemm are cited for by
+      Sessa et al., and GEO-E032 reproduces that citation together with the
+      authors' own SEM-EDX finding of Na and Cl in visually unaffected
+      substrate, read as inherent to the stone matrix. Confidence is moderate
+      rather than high because Klemm & Klemm 2010 has not been read directly,
+      making this a second-hand transmission, and the "inherent" inference rests
+      on detached fragments rather than cored stone. The strongest opposing
+      consideration is that a marine-evaporite halite phase in a nummulitic
+      limestone is geologically ordinary, which makes the citation credible but
+      also means GEO-R010's direct bedrock check is still the decisive test.
+    confidence: moderate
+  - claimId: GEO-C594
+    verdict: provisionally_supported
+    reasoning: "GEO-E034 gives a concrete, damaging instance at the single
+      most-cited monument in the case: 1995–97 interior interventions with no
+      available documentation, evident cleaning and cavity filling, an S-rich
+      modern fill on the chamber walls, and efflorescence that re-formed
+      extensively within about two years. The methodological inference — that
+      surface-evidence claims may reflect undocumented modern work — follows
+      directly. The strongest opposing consideration is scope: one monument's
+      interior does not establish the universal quantifier \"almost no
+      megalithic site,\" which the ledger asserts without a survey; GEO-R005 is
+      the right test."
+    confidence: moderate
+  - claimId: GEO-C005
+    verdict: unresolved
+    reasoning: As worded the claim is almost trivially true — someone has indeed
+      argued it — so the substantive question is whether the reinterpretation
+      has merit, and on that the ledger offers only a proponent's interpretive
+      reading (GEO-E014) with no engagement from Egyptology or history of
+      technology. Neither reading has been tested against predicted residues,
+      tool assemblages, or the scene's inscriptions. The strongest opposing
+      consideration is the long-standing conventional reading backed by abundant
+      independent evidence for large-scale New Kingdom bronze work, which makes
+      the alternative a claim requiring positive support it has not received.
+    confidence: low
+  - claimId: GEO-C004
+    verdict: well_supported
+    reasoning: Read as stated — that published SEM and petrographic analyses report
+      organic matter and microstructural features their authors argue are
+      inconsistent with natural volcanic stone — this is straightforwardly
+      accurate; GEO-E006 and GEO-E007 are the two peer-reviewed papers in
+      question. The verdict speaks to the existence and content of the reports,
+      not their correctness. The strongest opposing consideration, and the
+      reason this claim's high confidence must not transfer to GEO-C021, is that
+      the pair are one team and one sample set, volcanic rocks host glassy and
+      organic phases naturally, and no blind discriminating criteria were
+      established.
+    confidence: high
+  - claimId: GEO-C903
+    verdict: well_supported
+    reasoning: "This is a theory-description claim, and GEO-E035 quotes the 2020
+      abstract directly for each element: natural uncrushed Cerro Khapia
+      andesite sand, storage at Iwawe identified with Isbell & Burkholder's
+      Stratum V, and the explicit statement that the quadrangular piedras
+      cansadas were not used. The description matches the source. The strongest
+      opposing consideration is that only the abstract and landing page were
+      read, the PDF body being inaccessible, so nuances of the model inside the
+      paper could differ from the summary — a limit on completeness rather than
+      on accuracy."
+    confidence: high

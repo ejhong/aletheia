@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { declined, type Disposition } from "../domain/intake.ts";
-import { adoptedAssessment, currentEdition } from "../domain/load.ts";
+import { adoptedAssessment, currentChecks, currentEdition, latestCheckPerModel, ratification } from "../domain/load.ts";
 import { sourceKeys } from "../domain/keys.ts";
 import type { LoadedCase } from "../domain/schema.ts";
 import { caseView } from "../domain/view.ts";
@@ -51,6 +51,24 @@ export interface Packet {
   inputs?: { id: string; title: string; role: string; file: string; text: string | null; bytes: number }[];
   declined?: Pick<Disposition, "key" | "kind" | "disposition" | "reason" | "reopenIf" | "date" | "observed">[];
   previousReport?: string;
+  /**
+   * For the edition verb: the panel's current judgment of the adopted
+   * assessment — standing, and each seat's case verdict and every
+   * per-claim verdict that differs from the adopted one. A contested
+   * standing is a task for the edition: answer each dissent or hold.
+   */
+  panel?: {
+    standing: string;
+    reason: string;
+    checks: {
+      runId: string;
+      seat: string;
+      verdict: string;
+      synthesis: string;
+      steelman: string | null;
+      dissents: { claimId: string; adopted: string; seat: string; reasoning: string }[];
+    }[];
+  };
   /** For the edition verb: the full records behind the index (featured claims, all evidence, sources, research, images). */
   detail?: {
     claims: LoadedCase["claims"];
@@ -162,6 +180,27 @@ export function buildPacket(
   }));
   if (opts.previousReport) packet.previousReport = opts.previousReport;
   if (opts.detail) {
+    const standing = ratification(loaded);
+    const checks = currentChecks(loaded, latestCheckPerModel(loaded));
+    if (standing && run && checks.length) {
+      packet.panel = {
+        standing: standing.status,
+        reason: standing.reason,
+        checks: checks.map((c) => ({
+          runId: c.runId,
+          seat: c.model,
+          verdict: c.caseAssessment.verdict,
+          synthesis: c.caseAssessment.synthesis,
+          steelman: c.caseAssessment.steelman ?? null,
+          dissents: c.claimAssessments
+            .filter((ca) => ed.featuredClaimIds.includes(ca.claimId))
+            .flatMap((ca) => {
+              const own = run.claimAssessments.find((a) => a.claimId === ca.claimId);
+              return own && own.verdict !== ca.verdict ? [{ claimId: ca.claimId, adopted: own.verdict, seat: ca.verdict, reasoning: ca.reasoning }] : [];
+            }),
+        })),
+      };
+    }
     const featured = new Set(ed.featuredClaimIds);
     packet.detail = {
       claims: loaded.claims.filter((c) => featured.has(c.id)),

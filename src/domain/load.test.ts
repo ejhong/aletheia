@@ -1216,17 +1216,18 @@ describe("edition succession", () => {
 });
 
 describe("stale checks are set aside, not counted", () => {
-  it("geopolymer: one August check without a hash drops out; the four fresh seats form the panel", async () => {
-    const { currentChecks, latestCheckPerModel, ratification } = await import("./load.ts");
-    const geo = getCaseBySlug("megalithic-casting");
-    const all = latestCheckPerModel(geo);
-    const current = currentChecks(geo, all);
-    expect(all.length).toBeGreaterThan(current.length);
-    expect(current.every((r) => r.basis?.ledgerHash === geo.ledgerHash)).toBe(true);
-    const r = ratification(geo)!;
-    expect(r.panel).toBe(current.length);
-    expect(r.staleSince).not.toBeNull(); // the set-aside check is still reported
-    if (current.length >= 4) expect(["contested", "ratified"]).toContain(r.status); // derived from the fresh seats, not reset by the stale one
-    else expect(r.reason).toMatch(/set aside/); // the ledger moved after every seat judged it: unratified, and the reason says why
+  it("a hashed check for another ledger and a legacy check older than content drop out; the rest stand", async () => {
+    const { currentChecks } = await import("./load.ts");
+    const hash = "a".repeat(64);
+    const loaded = { ledgerHash: hash, history: [{ date: "2026-09-01", kind: "content" }, { date: "2026-09-02", kind: "housekeeping" }] } as never;
+    const mk = (runId: string, date: string, basis?: string) => ({ runId, date, role: "check", ...(basis ? { basis: { ledgerHash: basis } } : {}) }) as never;
+    const fresh1 = mk("2026-09-08-check-a", "2026-09-08", hash);
+    const fresh2 = mk("2026-09-08-check-b", "2026-09-08", hash);
+    const stale = mk("2026-09-07-check-c", "2026-09-07", "b".repeat(64));
+    const legacyOld = mk("2026-08-25-check-d", "2026-08-25"); // content moved on 2026-09-01
+    expect(currentChecks(loaded, [fresh1, stale, legacyOld, fresh2]).map((r: { runId: string }) => r.runId)).toEqual(["2026-09-08-check-a", "2026-09-08-check-b"]);
+    // A legacy check newer than the last content change still stands (the panel-by-date rule).
+    const legacyNew = mk("2026-09-03-check-e", "2026-09-03");
+    expect(currentChecks(loaded, [legacyNew, stale]).map((r: { runId: string }) => r.runId)).toEqual(["2026-09-03-check-e"]);
   });
 });

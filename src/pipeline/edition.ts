@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { assessmentHash, inputsHash } from "../domain/hash.ts";
-import { adoptedAssessment, currentEdition, editionErrors, findCase } from "../domain/load.ts";
+import { adoptedAssessment, currentChecks, currentEdition, editionErrors, findCase, latestCheckPerModel, ratification } from "../domain/load.ts";
 import {
   AssessmentRunSchema,
   EditionSchema,
@@ -170,7 +170,7 @@ function inputsHashOf(loaded: LoadedCase, root: string): string {
 export function assembleEdition(
   loaded: LoadedCase,
   reply: EditionReply,
-  ctx: { model: string; promptVersion: string; now: Date; root: string },
+  ctx: { model: string; promptVersion: string; now: Date; root: string; reconciles?: string[] },
 ): AssembledEdition {
   const date = isoDate(ctx.now);
   const stamp = hhmmssUTC(ctx.now);
@@ -188,6 +188,7 @@ export function assembleEdition(
       humanReviewed: false,
       role: "draft",
       basis: { ledgerHash: loaded.ledgerHash },
+      ...(ctx.reconciles?.length ? { reconciles: ctx.reconciles } : {}),
       caseAssessment: {
         verdict: a.verdict,
         whatIsClaimed: a.whatIsClaimed,
@@ -292,8 +293,14 @@ export async function runEdition(caseKey: string, opts: EditionOptions = {}): Pr
   const run = openRun("edition", loaded.record.slug, { model: EDITOR.model, promptVersion: protocol.version }, { now: now(), root });
   const { runId, date } = run;
 
-  if (incumbent.basis.ledgerHash === loaded.ledgerHash && !opts.force) {
-    return closeRun(run, "rested", { reason: `the ledger has not moved since ${incumbent.runId} (hash ${loaded.ledgerHash.slice(0, 12)}); nothing material to re-tell — pass --force to draft anyway` });
+  // Due when the ledger moved, or when the panel contests the adopted
+  // assessment and no reconsideration has yet answered those checks.
+  const standing = ratification(loaded);
+  const contestedBy = standing?.status === "contested" ? currentChecks(loaded, latestCheckPerModel(loaded)).map((c) => c.runId) : [];
+  const adopted = adoptedAssessment(loaded);
+  const unanswered = contestedBy.filter((id) => !(adopted?.reconciles ?? []).includes(id));
+  if (incumbent.basis.ledgerHash === loaded.ledgerHash && unanswered.length === 0 && !opts.force) {
+    return closeRun(run, "rested", { reason: `the ledger has not moved since ${incumbent.runId} (hash ${loaded.ledgerHash.slice(0, 12)}) and the panel's judgment is answered; nothing material to re-tell — pass --force to draft anyway` });
   }
   const packet = buildPacket(loaded, { detail: true });
   const user = renderPacket(packet, 900_000);
@@ -306,7 +313,13 @@ export async function runEdition(caseKey: string, opts: EditionOptions = {}): Pr
     const edit = opts.deps?.edit ?? defaultEditor;
     let reply = await edit(system, user, run.meter);
     writeWorkingFile(runId, "reply.json", JSON.stringify(reply.data, null, 1), root);
-    let assembled = assembleEdition(loaded, reply.data, { model: reply.model, promptVersion: protocol.version, now: now(), root });
+    const reconciles = unanswered.length ? contestedBy : undefined;
+    if (reconciles && !reply.data.assessment) {
+      const reason = "the panel contests the adopted assessment and the candidate returned none: a reconsideration must answer the dissents with a complete assessment (edition protocol v3)";
+      writeWorkingFile(runId, "errors.md", `- ${reason}`, root);
+      return closeRun(run, "failed", { reason, model: reply.model });
+    }
+    let assembled = assembleEdition(loaded, reply.data, { model: reply.model, promptVersion: protocol.version, now: now(), root, reconciles });
     if (assembled.errors.length) {
       // One repair round: the loader's findings go back with the reply. The
       // checks are mechanical (caps, ids, coverage), so the second answer is
@@ -318,7 +331,7 @@ export async function runEdition(caseKey: string, opts: EditionOptions = {}): Pr
         `\n\nReturn the complete corrected JSON — the whole candidate, not a patch — keeping everything that was not at fault.\n\n${JSON.stringify(reply.data)}`;
       reply = await edit(system, repair, run.meter);
       writeWorkingFile(runId, "reply-repaired.json", JSON.stringify(reply.data, null, 1), root);
-      assembled = assembleEdition(loaded, reply.data, { model: reply.model, promptVersion: protocol.version, now: now(), root });
+      assembled = assembleEdition(loaded, reply.data, { model: reply.model, promptVersion: protocol.version, now: now(), root, reconciles });
     }
     const { edition, assessment, errors } = assembled;
     if (errors.length) {

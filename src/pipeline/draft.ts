@@ -611,7 +611,8 @@ export function assembleProposal(reply: DraftReply, ctx: AssembleContext): Assem
 export type Drafter = (system: string, user: string, meter: Meter) => Promise<{ data: DraftReply; model: string; strict?: boolean }>;
 
 export const defaultDrafter: Drafter = async (system, user, meter) => {
-  const r = await anthropicJson<DraftReply>({ ...DRAFTER, system, user, schema: DRAFT_SCHEMA, maxTokens: 32000 }, meter);
+  // A pass with several retrieved papers proposes more than 32k tokens carry (2026-09-08: truncated at 32k).
+  const r = await anthropicJson<DraftReply>({ ...DRAFTER, system, user, schema: DRAFT_SCHEMA, maxTokens: 64000 }, meter);
   return { data: r.data, model: r.model, strict: r.strict };
 };
 

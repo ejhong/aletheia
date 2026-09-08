@@ -2,7 +2,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { getCaseBySlug } from "./load.ts";
+import { getCaseBySlug, loadAllCases } from "./load.ts";
 import { assertWithinBudget, BudgetExceeded, estimateUsd, tokensFromChars } from "../pipeline/budget.ts";
 import { assembleProposal, urlsInReport, type DraftReply } from "../pipeline/draft.ts";
 import { assembleEdition, type EditionReply } from "../pipeline/edition.ts";
@@ -360,28 +360,31 @@ describe("assembling an edition", () => {
 });
 
 describe("the report verb", () => {
-  it("dry-runs write the packet and instructions and send nothing; unchanged inputs rest", async () => {
+  it("dry-runs write the packet and instructions and send nothing; unchanged inputs rest", { timeout: 60_000 }, async () => {
     const root = tmpRoot();
     const now = () => new Date("2026-09-08T12:00:00Z");
+    // Load the cases once; each run would otherwise reload all ten (slow on CI).
+    const loaded = loadAllCases();
+    const cases = () => loaded;
     let calls = 0;
     const research = async () => {
       calls++;
       return { text: "# Findings\n\nnothing", model: "fake", usage: { inputTokens: 1, outputTokens: 1 }, searches: 0, fetches: 0, citations: [], raw: [] };
     };
-    const dry = await runReport("megalithic-casting", { seat: "openai", dryRun: true, root, deps: { now } });
+    const dry = await runReport("megalithic-casting", { seat: "openai", dryRun: true, root, deps: { now, cases } });
     expect(dry.outcome).toBe("dry-run");
     expect(fs.existsSync(path.join(root, "proposals", dry.runId, "packet.json"))).toBe(true);
     expect(calls).toBe(0);
-    const first = await runReport("megalithic-casting", { seat: "openai", root, deps: { research, now: () => new Date("2026-09-08T12:01:00Z") } });
+    const first = await runReport("megalithic-casting", { seat: "openai", root, deps: { research, cases, now: () => new Date("2026-09-08T12:01:00Z") } });
     expect(first.outcome).toBe("completed");
     expect(calls).toBe(1);
     expect(fs.readFileSync(path.join(root, "proposals", first.runId, "report.md"), "utf8")).toMatch(/Unverified AI research report/);
-    const again = await runReport("megalithic-casting", { seat: "openai", root, deps: { research, now: () => new Date("2026-09-08T12:02:00Z") } });
+    const again = await runReport("megalithic-casting", { seat: "openai", root, deps: { research, cases, now: () => new Date("2026-09-08T12:02:00Z") } });
     expect(again.outcome).toBe("rested");
     expect(calls).toBe(1);
-    const other = await runReport("megalithic-casting", { seat: "anthropic", root, deps: { research, now: () => new Date("2026-09-08T12:03:00Z") } });
+    const other = await runReport("megalithic-casting", { seat: "anthropic", root, deps: { research, cases, now: () => new Date("2026-09-08T12:03:00Z") } });
     expect(other.outcome).toBe("completed"); // a different seat is a different input
-    const forced = await runReport("megalithic-casting", { seat: "openai", reconsider: "the founder asked for a second pass", root, deps: { research, now: () => new Date("2026-09-08T12:04:00Z") } });
+    const forced = await runReport("megalithic-casting", { seat: "openai", reconsider: "the founder asked for a second pass", root, deps: { research, cases, now: () => new Date("2026-09-08T12:04:00Z") } });
     expect(forced.outcome).toBe("completed");
     expect(readRuns(root).map((r) => r.outcome)).toEqual(["dry-run", "completed", "rested", "completed", "completed"]);
   });

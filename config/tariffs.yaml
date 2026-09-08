@@ -1,17 +1,39 @@
 # Reviewed model tariffs, USD per million tokens. The spend ledger
 # (governance/spend.yaml) records the vendor's token counts for every call
 # regardless; it prices a call ONLY from a row here, and records usd: null
-# otherwise. Fill a row from the vendor's price page and record where and
-# when it was read — a tariff is provenance too. Never estimate.
+# otherwise. Each row names where and when the price was read — a tariff is
+# provenance too. Never estimate; a null row is honest.
 #
-# Keys are the exact model ids in scripts/lib/vendors.mjs (and, once step
-# 3b lands, the research models named for the report verb).
+# Keys are the exact model ids the transport sends. Tool-call fees (web
+# search) are recorded as their own rows under `tools`, per call.
 models:
+  # --- the research pass (report verb) ------------------------------------
+  o4-mini-deep-research:
+    inputPerMTok: 2
+    outputPerMTok: 8
+    cachedInputPerMTok: 0.5
+    source: https://developers.openai.com/api/docs/models/o4-mini-deep-research
+    checked: "2026-09-08"
+  o3-deep-research:
+    inputPerMTok: 10
+    outputPerMTok: 40
+    cachedInputPerMTok: 2.5
+    source: https://developers.openai.com/api/docs/models/o3-deep-research
+    checked: "2026-09-08"
+  # --- the drafter and the house seat -------------------------------------
   claude-opus-5:
-    inputPerMTok: null
-    outputPerMTok: null
-    source: null
-    checked: null
+    inputPerMTok: 5
+    outputPerMTok: 25
+    cachedInputPerMTok: 0.5
+    source: https://platform.claude.com/docs/en/about-claude/pricing
+    checked: "2026-09-08"
+  claude-sonnet-5:
+    inputPerMTok: 2
+    outputPerMTok: 10
+    cachedInputPerMTok: 0.2
+    source: https://platform.claude.com/docs/en/about-claude/pricing
+    checked: "2026-09-08"
+  # --- the other panel seats: not yet read from a price page ---------------
   gpt-5.6-sol:
     inputPerMTok: null
     outputPerMTok: null
@@ -32,3 +54,14 @@ models:
     outputPerMTok: null
     source: null
     checked: null
+tools:
+  anthropic:web_search:
+    perCallUsd: 0.01
+    note: "$10 per 1,000 searches; results are billed as input tokens at the model rate; failed searches are not billed; web fetch has no per-call fee"
+    source: https://platform.claude.com/docs/en/about-claude/pricing
+    checked: "2026-09-08"
+  openai:web_search:
+    perCallUsd: 0.01
+    note: "$10 per 1,000 calls for reasoning models, plus search content tokens at the model rate"
+    source: https://developers.openai.com/api/docs/pricing
+    checked: "2026-09-08"

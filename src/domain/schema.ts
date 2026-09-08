@@ -1,4 +1,5 @@
 import { z } from "zod";
+import type { Disposition } from "./intake.ts";
 
 /** Assessment vocabulary. Grouped into four visual families by `assessmentFamily`. */
 export const AssessmentState = z.enum([
@@ -1042,6 +1043,8 @@ export interface LoadedCase {
   assessmentRuns: AssessmentRun[];
   /** Sorted by date then runId; the last is the current edition. */
   editions: Edition[];
+  /** Append-only: every candidate ever considered for this case (dispositions.yaml). */
+  dispositions: Disposition[];
   images: ImageRecord[];
   /** Optional literature-watch config (watch.yaml). */
   watch: WatchConfig | null;

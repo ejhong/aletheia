@@ -21,6 +21,8 @@
  *   - content/cases/<case>/claims.yaml              (append-only diffs only —
  *     a new claim cannot feature itself; featuring is an edition decision)
  *   - content/cases/<case>/sources.yaml             (append-only diffs only)
+ *   - content/cases/<case>/dispositions.yaml        (append-only diffs only —
+ *     a row records what became of a candidate; it publishes nothing)
  *
  * Everything else — editions (what readers see), evidence, case records,
  * research, studies, history, src/, app/, docs/, scripts/, workflows — is
@@ -80,7 +82,7 @@ for (const { status, file } of nameStatus) {
     continue;
   }
   if (
-    /^content\/cases\/[^/]+\/(claims|sources)\.yaml$/.test(file) &&
+    /^content\/cases\/[^/]+\/(claims|sources|dispositions)\.yaml$/.test(file) &&
     status !== "D"
   ) {
     if (appendOnly(file)) continue;

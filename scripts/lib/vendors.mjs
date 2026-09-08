@@ -179,7 +179,17 @@ export function buildRequest(name, { system, user, maxTokens = 16000 }) {
  * load-bearing (§3.15 vendor-independence of the panel): a refusing seat
  * must count as a FAILED seat, never be silently swapped to another model.
  */
-export async function callVendor(
+export async function callVendor(name, opts) {
+  return (await callVendorDetailed(name, opts)).text;
+}
+
+/**
+ * The same call, returning the reply text with the vendor's reported token
+ * usage — what the spend ledger (src/pipeline/spend.ts) records. Usage is
+ * whatever the vendor reports; when a vendor omits it, the counts are 0 and
+ * the caller records that honestly rather than estimating.
+ */
+export async function callVendorDetailed(
   name,
   { system, user, maxTokens = 16000, timeoutMs = 900_000 },
 ) {
@@ -209,5 +219,22 @@ export async function callVendor(
   }
   if (!text || text.trim().length === 0)
     throw new Error(`${name}: empty reply (stop: ${data.stop_reason ?? data.candidates?.[0]?.finishReason ?? "?"})`);
-  return text;
+  const usage =
+    name === "gemini"
+      ? {
+          inputTokens: data.usageMetadata?.promptTokenCount ?? 0,
+          outputTokens:
+            (data.usageMetadata?.candidatesTokenCount ?? 0) +
+            (data.usageMetadata?.thoughtsTokenCount ?? 0),
+        }
+      : name === "anthropic"
+        ? {
+            inputTokens: data.usage?.input_tokens ?? 0,
+            outputTokens: data.usage?.output_tokens ?? 0,
+          }
+        : {
+            inputTokens: data.usage?.prompt_tokens ?? 0,
+            outputTokens: data.usage?.completion_tokens ?? 0,
+          };
+  return { text, usage, model: VENDORS[name].model };
 }

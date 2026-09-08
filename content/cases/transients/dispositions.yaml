@@ -1,0 +1,52 @@
+# Dispositions — every candidate ever considered for this case, and what
+# became of it (docs/AUTOMATION.md, "Memory records decisions in context").
+# Append-only. Six words: in, duplicate, irrelevant, blocked, failed,
+# excluded. A row is a dated judgment against the ledger as it stood, not a
+# verdict: a later row for the same key supersedes it, and producers are
+# handed the declined set with reasons so they can re-propose by naming
+# what changed. Keys are mechanical (src/domain/keys.ts).
+
+- key: arxiv:2608.10061
+  kind: source
+  disposition: irrelevant
+  reason: A speculative dark-matter interpretation with no new data or measurements bearing on whether the plate detections are real or artifacts.
+  observed: Mysterious Transients in the Palomar Observatory Sky Survey (POSS-1) as profound manifestation of the Dark Matter physics
+  by: triage-2026-08-27-yb5k
+  date: 2026-08-27
+- key: arxiv:2604.16470
+  kind: source
+  disposition: irrelevant
+  reason: A general artifact-control protocol keyed to geomagnetic storm correlations that the case does not track; its bearing on the featured nuclear-window claim is only indirect and it presents no result about the tracked claims.
+  observed: "Plate Sensitivity Is Invariant Across Geomagnetic Storm Intensity at Harvard and Palomar: A Protocol for Artifact Control in Historical Plate Archive Studies"
+  by: triage-2026-08-27-yb5k
+  date: 2026-08-27
+- key: arxiv:2604.06234
+  kind: source
+  disposition: irrelevant
+  reason: Builds on untracked geomagnetic-storm claims via a self-citing chain, mischaracterizes the transients as sub-second, and offers a speculative mechanism rather than new evidence on any featured claim.
+  observed: "Storm-Driven Suppression and Post-Storm Enhancement of Photographic Plate Transient Detections at Geosynchronous Altitude: Empirical Evidence and a Candidate Dusty Plasma Mechanism"
+  by: triage-2026-08-27-yb5k
+  date: 2026-08-27
+- key: arxiv:2608.26371
+  kind: source
+  disposition: irrelevant
+  reason: Exact title match to already-tracked SRC-YANG-VILLARROEL-2026 indicates this is the same microscopy study (bearing on TRN-C020, TRN-C001, TRN-C003) posted to arXiv, so importing would duplicate an existing ledger entry rather than add new evidential weight.
+  observed: Microscopy assessment of two multiple-transient candidates
+  by: triage-2026-08-31-1mhz
+  date: 2026-08-31
+- key: arxiv:2605.01190
+  kind: source
+  disposition: duplicate
+  as: SRC-DOHERTY-2026B
+  reason: same work as SRC-DOHERTY-2026B (matched via arxiv id)
+  observed: https://arxiv.org/abs/2605.01190
+  by: 2026-09-01-promote-33512756583
+  date: 2026-09-01
+- key: arxiv:2604.18799
+  kind: source
+  disposition: duplicate
+  as: SRC-BRUEHL-2026-ML
+  reason: same work as SRC-BRUEHL-2026-ML (matched via title similarity)
+  observed: https://arxiv.org/abs/2604.18799
+  by: 2026-09-01-promote-33512756583
+  date: 2026-09-01

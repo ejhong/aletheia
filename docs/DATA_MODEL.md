@@ -44,6 +44,7 @@ content/cases/<case>/
   history.yaml         append-only changelog
   inputs/              founding texts + manifest (founder-owned; voice, never evidence)
   conjectures.yaml     the founder's on-the-record intuitions (no weight)
+  dispositions.yaml    append-only: every candidate ever considered here
   assessments/         append-only runs, role draft or check
   editions/            append-only; the latest is the case page
 ```
@@ -164,6 +165,38 @@ that changes only the article re-adopts the same assessment and inherits
 its standing; only a new judgment needs new blind checks. Standing itself
 is derived at build time from the check runs of the adopted assessment
 (`ratification` in `src/domain/load.ts`) — never stored.
+
+## Proposal and Disposition (the intake)
+
+Everything that ever tried to enter, and what became of it
+(`src/domain/intake.ts`).
+
+- **Proposal** — `proposals/<runId>/proposal.yaml`: a change to domain
+  records in one envelope. `adds` holds proposed records in the ledger's
+  own shapes (validated with the same Zod schemas — a candidate is a
+  complete record or it is not a candidate); `corrections` name a record,
+  a field, from, to, and a reason; `edition` is a candidate edition when the
+  report earns one; `dispositions` carries a row for every candidate the run
+  raised. `basis.ledgerHash` says which ledger it was written against.
+  Working material (report.md) sits beside it and is never a record.
+- **RunRecord** — `proposals/<runId>/run.yaml`: verb, case, date, model,
+  protocol version, input hash, outcome, and cost (tokens always; dollars
+  only from a reviewed tariff in `config/tariffs.yaml`, else null).
+- **Disposition** — one row in the case's append-only `dispositions.yaml`:
+  the mechanical `key` (`doi:` `arxiv:` `url:` `title:` `text:`,
+  `src/domain/keys.ts`), the candidate `kind`, one of six words — `in`
+  (as record X), `duplicate` (of X), `irrelevant`, `blocked` (with a
+  `route`), `failed`, `excluded` — a `reason` for everything off `in`, an
+  optional `reopenIf`, the candidate as `observed`, the run that raised it
+  (`by`), and the date. The latest row per key stands. The loader requires
+  an `in` or `duplicate` row's `as` to name a record the case holds.
+
+The coverage diff (`src/domain/coverage.ts`) compares candidates with the
+ledger's keys and the latest dispositions: identifier equality decides
+(`seen`); title or statement similarity only advises (`probable`); the
+current declined set travels with every result so producers can re-propose
+by naming what changed. Saturation is derived from run records and
+dispositions — consecutive producer runs that landed no `in` — never stored.
 
 ## CaseView
 

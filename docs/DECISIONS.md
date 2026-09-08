@@ -991,3 +991,63 @@ does not stale standing or move the last-content-update date. (AI record
 of a founder instruction, 2026-09-08 session; model Cursor Grok 4.6,
 runId title-punctuation-2026-09-08, promptVersion none — founder-directed
 session, not a pipeline prompt.)
+
+## 2026-09-08 — Build step 3a: the intake foundation
+
+The first half of the verbs (docs/AUTOMATION.md): everything the chain
+needs that does not call a model.
+
+**Objects.** `Disposition`, `Proposal`, `RunRecord`, and `SpendRow`
+(src/domain/intake.ts). A disposition is one row in a case's append-only
+`dispositions.yaml`: a mechanical key, the candidate's kind, one of six
+words, a reason for everything off `in`, an optional `reopenIf`, the
+candidate as observed, the run that raised it, the date. A proposal is one
+envelope whose candidate records are validated with the ledger's own
+schemas. The loader requires an `in` or `duplicate` row's `as` to name a
+record the case holds.
+
+**One diff, one set of keys** (src/domain/keys.ts, coverage.ts). Folds
+three copies into one: the promoter's identifier extraction (DOIs with
+balanced parentheses, doi.org URLs decoded), the watch's title containment
+at 0.7, the extraction pipeline's statement Jaccard at 0.55. URLs
+canonicalise host, tracking parameters, fragment, and trailing slash.
+Identifier equality decides; similarity advises; the declined set travels
+with every result.
+
+**Four services** (src/pipeline/): the packet builder (47–78k characters
+per case — an index with one line per record, the edition, the founding
+texts inlined only when they are text, the declined set; over-bound throws,
+never truncates), the intake store (`proposals/<runId>/` with proposal,
+run record, working files; dispositions appended with comments preserved),
+the model transport with the spend ledger inside it (tokens always; dollars
+only from a reviewed tariff in `config/tariffs.yaml`, else null — every
+tariff there is null until the founder fills it from a price page), and the
+protocol loader (`protocols/<verb>-v<N>.md`, preface not sent, placeholders
+filled or the run fails).
+
+**Six protocols committed**: report, draft, verify, edition, check, panel.
+The check and panel prompts moved out of their scripts into files, so their
+`promptVersion` stamps now name text a reader can open (`check-v1`,
+`panel-v1`). Report, draft, verify, and edition are written for the first
+time from the sources named in the design; each states the task, the
+scope, the output schema, and the few rules §3 does not make obvious.
+
+**One CLI**, `scripts/aletheia.ts`: `status` (standing, edition, counts,
+saturation, spend, per case), `diff` (a candidates file against a case),
+`migrate-memory`. The model-calling verbs answer "step 3b" until built.
+
+**Memory migrated.** 32 archive-ledger rows became `irrelevant`
+dispositions with their original reasons and triage run; 3 promotions
+rows became one `in` (SRC-FALL-2026, zero-worlds) and two `duplicate`
+rows placed by the record they matched (transients). Both ledgers are
+deleted; the two disabled workers that wrote them now exit with a pointer.
+Not migrated, and said so: the watch seen-list — surfaced items with no
+recorded decision; inventing a disposition for them would invent a
+judgment. It stays with the watch cursor until the watch is retired.
+
+**Also.** Append-only `dispositions.yaml` joins the low-risk lane. The
+packet found that three cases' founding-research inputs are PDFs of up to
+11 MB; the packet names them and inlines only text. 283 tests, typecheck,
+lint (two pre-existing warnings) pass.
+
+(AI implementation record; founder-directed session.)

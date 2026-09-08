@@ -35,7 +35,17 @@ import {
 
 const ROOT = process.cwd();
 const INBOX_PROPOSALS = path.join(ROOT, "proposals", "inbox");
+// The promotions ledger was migrated into per-case dispositions.yaml on
+// 2026-09-08 (aletheia migrate-memory); this worker is replaced by the
+// draft/verify verbs (docs/AUTOMATION.md, build step 3b) and must not
+// recreate the old file.
 const LEDGER = path.join(ROOT, "proposals", "promotions-ledger.yaml");
+if (!fs.existsSync(LEDGER)) {
+  console.error(
+    "promote-imports: superseded — the promotions ledger now lives in content/cases/<case>/dispositions.yaml (2026-09-08). Use the aletheia verbs.",
+  );
+  process.exit(2);
+}
 const CASES = path.join(ROOT, "content", "cases");
 const dryRun = process.argv.includes("--dry-run");
 const limitArg = process.argv.indexOf("--limit");

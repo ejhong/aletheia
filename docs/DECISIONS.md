@@ -1155,9 +1155,42 @@ three integrations the runs had already argued for — OpenAlex (open
 access now, cited-by later), Crossref's Retraction Watch notices on
 admitted sources, and a Wayback snapshot on every admitted URL. One
 dependency was added for this, pipeline-only and dev-only: `pdfjs-dist`.
-AGENTS.md §4's dependency list does not name it; the founder is asked to
-ratify or refuse that addition when reviewing the PR — it is the only way
-to read a paper without asking a model to transcribe it. A second draft pass
+AGENTS.md §4's dependency list does not name it; the founder ratified the
+addition in chat on 2026-09-08 ("fine to ratify") — it is the only way to
+read a paper without asking a model to transcribe it — and asked that the
+whole intake system, the inbox included, read PDFs: the inbox's dropped
+PDFs and link lists now go through the same retrieval layer (no
+`pdftotext` needed). The founder also exempted the rest of 2026-09-08 from
+the daily cap so the first-runs stage could continue; the exemption is a
+dated row in `config/budget.yaml`, the constitutional form of such a grant.
+
+**What the exempted evening bought (2026-09-08).** (1) The draft re-run
+with retrieval proposed Nemoy 1939 and Sessa et al. 2026 with ten evidence
+records; the verifier admitted both sources, all ten records (four with its
+dissent on direction written on them), two of four claims and one research
+item, for $0.92 — the two claims it refused were relevance calls. A
+drafter's provisional id had leaked into a duplicate row and the loader
+refused the ledger; draft and verify now downgrade any disposition that
+names a record the ledger does not hold, and the row was repaired by hand.
+The proposal's one correction (GEO-C003's date, 820 → 832) was not applied:
+the writer appends and cannot yet change a field in place, and the run now
+says so in `verification.md`, the history entry, and the run record instead
+of dropping it silently. (2) A new edition ($2.90): twenty featured claims,
+a new assessment, the salt line retold from the primaries. (3) The cached
+cost of the house-seat report is validated: $3.69 for the same call that
+cost $37.86 uncached, against a $13 estimate — and that report reached four
+more previously blocked papers (Kelany 2009, Túnyi & El-hemaly 2012, Hemeda
+& Sonbol 2020, Legon 1993) because the vendor's fetch reads PDFs; it awaits
+its draft. (4) The five-seat panel checked the new assessment: four seats
+returned (Gemini's reply omitted two claims and was refused), and all four
+dispute the house verdict of `unresolved` (two `mixed`, two
+`weakly_supported`), splitting on load-bearing GEO-C022 and GEO-C030. That
+is the case's honest standing, **contested**, and it is displayed. It was
+briefly hidden: one August check without a ledger hash was still counted in
+the panel and reset standing under the legacy date rule; a stale check is
+now set aside rather than counted, and does not veto the seats that
+re-judged. Recorded spend for the day: $60.71 of the $100 exemption, plus
+about $3 for the panel, which the older check script does not meter. A second draft pass
 on the same report, with retrieval, then exposed the reopen rule's gap: the
 assembler re-blocked Nemoy and Sessa on the strength of the previous day's
 `blocked` rows although it now held their text, and lost seven evidence

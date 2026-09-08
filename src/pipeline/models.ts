@@ -349,12 +349,14 @@ export async function anthropicResearch(opts: AnthropicResearchOptions, meter: M
       messages.push({ role: "assistant", content: m.content });
       continue;
     }
-    if (m.stop_reason === "refusal") throw new Error(`${model} refused the research request`);
-    if (m.stop_reason === "max_tokens") throw new Error(`${model} hit max_tokens (${maxTokens}) before finishing the report`);
     break;
   }
+  // The ledger first: a refused or truncated turn was billed all the same.
   recordTokens(meter, served, usage);
   recordSearches(meter, "anthropic:web_search", searches);
+  const last = raw.at(-1) as AnthropicMessage;
+  if (last.stop_reason === "refusal") throw new Error(`${model} refused the research request`);
+  if (last.stop_reason === "max_tokens") throw new Error(`${served} hit max_tokens (${maxTokens}) before finishing the report`);
   const text = texts.join("\n").trim();
   if (!text) throw new Error(`${served}: empty report`);
   return { text, model: served, usage, searches, fetches, citations: dedupeCitations(citations), raw };
@@ -448,11 +450,12 @@ export async function anthropicJson<T = unknown>(
     m = await anthropicPost(request(false), opts.fetchImpl ?? fetch, opts.timeoutMs ?? 1_800_000);
   }
   const served = m.model || model;
+  // The ledger first: a refused or truncated reply was billed all the same.
+  const usage = usageOf(m);
+  const usd = recordTokens(meter, served, usage);
   if (m.stop_reason === "refusal") throw new Error(`${model} (and its fallback) refused`);
   if (m.stop_reason === "max_tokens") throw new Error(`${served} hit max_tokens (${maxTokens}) before finishing`);
   const text = m.content.filter((b) => b.type === "text").map((b) => b.text ?? "").join("");
-  const usage = usageOf(m);
-  const usd = recordTokens(meter, served, usage);
   let data: T;
   try {
     data = (strict ? JSON.parse(text) : parseJsonReply(text)) as T;

@@ -42,17 +42,22 @@ describe("the budget guard", () => {
     expect(estimateUsd({ model: "m", inputChars: 10, maxOutputTokens: 10, searches: { count: 1, toolKey: "missing" } }, tariffs)).toBeNull();
     const root = tmpRoot();
     expect(() => assertWithinBudget(null, { runId: "r", verb: "report", root })).toThrow(BudgetExceeded);
+    // A dated exemption lifts the daily cap on its date only; the committed file carries one for 2026-09-08.
+    for (let i = 0; i < 5; i++) recordSpend({ date: "2026-09-08", runId: `x${i}`, verb: "report", case: "c", model: "m", calls: 1, inputTokens: 1, outputTokens: 1, usd: 9.5 }, root);
+    expect(assertWithinBudget(10, { runId: "r", verb: "report", root, today: "2026-09-08" })).toBe(10); // $47.50 + $10 under the $100 exemption
+    for (let i = 0; i < 5; i++) recordSpend({ date: "2026-09-10", runId: `y${i}`, verb: "report", case: "c", model: "m", calls: 1, inputTokens: 1, outputTokens: 1, usd: 9.5 }, root);
+    expect(() => assertWithinBudget(10, { runId: "r", verb: "report", root, today: "2026-09-10" })).toThrow(/per-day cap/);
   });
 
   it("refuses a call that would pass the per-run, per-day, or per-month cap, and says which", () => {
     const root = tmpRoot();
-    expect(assertWithinBudget(5, { runId: "r1", verb: "report", root, today: "2026-09-08" })).toBe(5);
-    recordSpend({ date: "2026-09-08", runId: "r1", verb: "report", case: "x", model: "m", calls: 1, inputTokens: 1, outputTokens: 1, usd: 18 }, root);
-    expect(() => assertWithinBudget(5, { runId: "r1", verb: "report", root, today: "2026-09-08" })).toThrow(/per-run cap/);
-    expect(assertWithinBudget(5, { runId: "r2", verb: "report", root, today: "2026-09-08" })).toBe(5);
-    recordSpend({ date: "2026-09-08", runId: "r2", verb: "report", case: "x", model: "m", calls: 1, inputTokens: 1, outputTokens: 1, usd: 30 }, root);
-    expect(() => assertWithinBudget(5, { runId: "r3", verb: "report", root, today: "2026-09-08" })).toThrow(/per-day cap/);
-    expect(assertWithinBudget(5, { runId: "r3", verb: "report", root, today: "2026-09-09" })).toBe(5);
+    expect(assertWithinBudget(5, { runId: "r1", verb: "report", root, today: "2026-09-21" })).toBe(5);
+    recordSpend({ date: "2026-09-21", runId: "r1", verb: "report", case: "x", model: "m", calls: 1, inputTokens: 1, outputTokens: 1, usd: 18 }, root);
+    expect(() => assertWithinBudget(5, { runId: "r1", verb: "report", root, today: "2026-09-21" })).toThrow(/per-run cap/);
+    expect(assertWithinBudget(5, { runId: "r2", verb: "report", root, today: "2026-09-21" })).toBe(5);
+    recordSpend({ date: "2026-09-21", runId: "r2", verb: "report", case: "x", model: "m", calls: 1, inputTokens: 1, outputTokens: 1, usd: 30 }, root);
+    expect(() => assertWithinBudget(5, { runId: "r3", verb: "report", root, today: "2026-09-21" })).toThrow(/per-day cap/);
+    expect(assertWithinBudget(5, { runId: "r3", verb: "report", root, today: "2026-09-22" })).toBe(5);
     for (let i = 0; i < 6; i++) {
       recordSpend({ date: `2026-09-1${i}`, runId: `m${i}`, verb: "report", case: "x", model: "m", calls: 1, inputTokens: 1, outputTokens: 1, usd: 19 }, root);
     }
@@ -453,11 +458,13 @@ describe("verify v2: the reader's dissent on direction is recorded, not fatal", 
 });
 
 describe("reopening a blocked source", () => {
-  const nemoy = "https://ia800102.us.archive.org/27/items/TreatiseOnTheEgyptianPyramidsSuyuti_201801/Treatise%20on%20the%20Egyptian%20Pyramids_%20Suyuti.pdf";
+  // Cooperson's chapter: blocked in the case's rows (a login wall), and not in the ledger. The URL is rebuilt from the row's own key.
+  const blockedRow = geo().dispositions.find((d) => d.disposition === "blocked" && d.kind === "source" && /Cooperson/i.test(`${d.observed} ${d.reason ?? ""}`) && d.key.startsWith("url:"))!;
+  const nemoy = `https://${blockedRow.key.slice(4)}`;
   const reply = () =>
     draftReply({
       sources: [
-        { provisionalId: "S1", url: nemoy, title: "The Treatise on the Egyptian Pyramids (tr. Nemoy 1939)", authors: ["Nemoy, L."], year: "1939", sourceType: "paper", identifier: "Isis 30(1): 17–37", verification: "ai_verified", reliabilityNotes: [] },
+        { provisionalId: "S1", url: nemoy, title: "Early Abbasid Antiquarianism: al-Maʾmūn and the Pyramid of Cheops", authors: ["Cooperson, M."], year: "2010", sourceType: "book", identifier: null, verification: "ai_verified", reliabilityNotes: [] },
       ],
       evidence: [],
       claims: [],
@@ -470,8 +477,8 @@ describe("reopening a blocked source", () => {
 
   it("a source blocked for want of its text goes forward once the text is retrieved", () => {
     // The case carries a `blocked` row for this URL from the first pass.
-    expect(geo().dispositions.some((d) => d.key === `url:${nemoy.replace(/^https?:\/\//, "")}` && d.disposition === "blocked")).toBe(true);
-    const { proposal } = assembleProposal(reply(), ctx([{ url: nemoy, ok: true, status: 200, contentType: "application/pdf", text: "[p. 1] The Treatise on the Egyptian Pyramids …", pages: 22 }]));
+    expect(blockedRow).toBeDefined();
+    const { proposal } = assembleProposal(reply(), ctx([{ url: nemoy, ok: true, status: 200, contentType: "text/html", text: "Early Abbasid Antiquarianism … the caliph's stay in Egypt in early 832 …" }]));
     expect(proposal.adds.sources).toHaveLength(1);
     expect(proposal.adds.sources[0].verification).toBe("ai_verified");
     expect(proposal.dispositions.filter((d) => d.kind === "source")).toHaveLength(0);
@@ -482,5 +489,29 @@ describe("reopening a blocked source", () => {
     expect(proposal.adds.sources).toHaveLength(0);
     expect(proposal.dispositions[0].disposition).toBe("blocked");
     expect(proposal.dispositions[0].reason).toMatch(/previously blocked/);
+  });
+});
+
+describe("dispositions may only point at records that exist", () => {
+  it("a duplicate-of-nothing becomes failed, keeping the drafter's reason", () => {
+    const c = geo();
+    const { proposal, novelty } = assembleProposal(
+      draftReply({
+        sources: [], evidence: [], claims: [], research: [], corrections: [], edition: null,
+        dispositions: [
+          { kind: "claim", observed: "Mark the salt attribution unsourced", disposition: "duplicate", as: "GEO-E603", reason: "recorded as evidence GEO-E603", url: null, reopenIf: null, route: null },
+          { kind: "research", observed: "Iwawe Stratum V", disposition: "duplicate", as: c.research[0].id, reason: "already an item", url: null, reopenIf: null, route: null },
+        ],
+      }),
+      { loaded: c, reportRunId: "2026-09-08-report-megalithic-casting-100000", runId: "2026-09-09-draft-megalithic-casting-120000", model: "m", promptVersion: "draft-v2", date: "2026-09-09", fetched: [] },
+    );
+    const bad = proposal.dispositions.find((d) => d.observed.startsWith("Mark the salt"))!;
+    expect(bad.disposition).toBe("failed");
+    expect(bad.as).toBeUndefined();
+    expect(bad.reason).toMatch(/named GEO-E603 .* does not hold/);
+    const good = proposal.dispositions.find((d) => d.observed === "Iwawe Stratum V")!;
+    expect(good.disposition).toBe("duplicate");
+    expect(good.as).toBe(c.research[0].id);
+    expect(novelty).toMatch(/is not a record/);
   });
 });

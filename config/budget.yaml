@@ -1,0 +1,10 @@
+# The spend ceiling (docs/AUTOMATION.md, "The code": budgets in one config).
+# Enforced by the model transport before every paid call (build step 3b):
+# a call that would carry the run, the day, or the month past its cap is
+# refused and the run ends `failed` with the reason — never a silent
+# partial. Founder-set, 2026-09-08, for the two tests (Cast, Not Carved;
+# Deep Memory); revisit when the first unattended cadence is chosen.
+usd:
+  perRun: 20      # one report or one edition; protects against the deep-research tail (~$30 seen)
+  perDay: 50
+  perMonth: 150

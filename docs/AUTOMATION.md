@@ -40,7 +40,7 @@ got here, including the earlier five-loop version it replaces, is in
 | 1 | This design | In review. |
 | 2 | The ledger and the edition: `editions/`, evaluation off claim records, one `CaseView`, ten cases migrated mechanically; check runs and editions record the ledger hash they judged; the touched scripts move to TypeScript on the shared domain | **Built** (2026-09-08, PR pending founder merge). Render diff against the pre-migration build: every difference accounted for (see the DECISIONS entry). |
 | 3a | The intake foundation: dispositions schema and loader rule, one coverage diff with mechanical keys, the packet builder, the intake store (`proposals/<runId>/`), the model transport with the spend ledger inside it, six protocol files, the `aletheia` CLI (`status`, `diff`, `migrate-memory`); the archive and promotions ledgers migrated into dispositions | **Built** (2026-09-08, PR pending founder merge). No model calls. |
-| 3b | The chain: `report`, `draft`, `verify`, `edition` wired to models with dry runs; `check` and `panel` folded behind the CLI | Not started. Nothing paid runs before the founder names the research models and a spend ceiling. |
+| 3b | The chain: `report` (two research seats), `draft`, `verify`, `edition` behind the CLI, each with a dry run; the budget guard on every paid call; tariffs read from the vendors' price pages | **Built** (2026-09-08, PR pending). Research seats: the house model (`claude-fable-5-1`, server-side fallback `claude-opus-5`) with web search and fetch — the default — and `o4-mini-deep-research`; ceiling $20 per run, $50 per day, $150 per month (config/budget.yaml). `check` and `panel` still run from their own scripts. |
 | 4 | The tests: Cast, Not Carved (existing case, with oracle), then Deep Memory (from scratch); two research models each | Not started. Depends on 3. |
 | 5 | Subtraction by evidence: retire what the tests show redundant; ten workflows become four | Depends on 4. |
 | 6 | Presentation: reading experience (current layout kept), then AI operation at case and global level | Last. Views over existing state. |
@@ -260,6 +260,12 @@ editions, protocols, code, the constitution — needs the panel.
   (with the spend ledger inside it, so every paid call is recorded in one
   place by construction), and the intake store (proposals and
   dispositions). No verb has its own copy of any of these.
+- **One roster.** Every model the site calls — house model and fallback,
+  second reader, research seats and default, panel seats with pinned
+  effort — is chosen in `config/models.yaml` and nowhere else. The
+  transport takes a model and an optional fallback as arguments; it names
+  none. Switching a model is an edit to that file, a tariff row in
+  `config/tariffs.yaml`, and a DECISIONS entry.
 - **One view.** `CaseView` joins the ledger with the current edition:
   every claim once, with its treatment from the adopted assessment or
   none. The case page, the explorer, and the claim page read it. Standing,

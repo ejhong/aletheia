@@ -1051,3 +1051,69 @@ packet found that three cases' founding-research inputs are PDFs of up to
 lint (two pre-existing warnings) pass.
 
 (AI implementation record; founder-directed session.)
+
+## 2026-09-08 — Build step 3b: the verb chain, and the research models and ceiling
+
+**Models and ceiling (founder direction).** The house model is
+`claude-fable-5-1` with a server-side fallback to `claude-opus-5` on a
+safety-classifier decline (`fallbacks`, beta `server-side-fallback-2026-06-01`)
+— the "Fable-first, loud Opus fallback, truthful stamps" policy of
+2026-08-27, reaffirmed: every run records the model that actually served.
+It is the default research seat (with the web search and web fetch server
+tools), the drafter, and the editor. The comparison seat is
+`o4-mini-deep-research` (OpenAI Responses, background mode, web search);
+`o3-deep-research` is kept as a third option, not a default, because
+measured runs average about $10 with a $30 tail. Second reader:
+`claude-sonnet-5` — a different model, same vendor; vendor independence
+is the panel's job, not the reader's. The founder's first instinct had
+been the OpenAI seat as default; on reflection the default is the house
+model, the OpenAI seat the comparison. **All of these choices live in one
+file, `config/models.yaml`** (founder direction, 2026-09-08: "all models
+chosen should be specified in one place"): house model and fallback,
+reader, research seats and default, the five panel seats with pinned
+effort, and the legacy OpenAI chat model. The verb chain, the panel table
+(`scripts/lib/vendors.mjs`), and the older drafting helper
+(`scripts/lib/llm.mjs`) all read it; no model id appears in code. The
+`EXTRACT_MODEL` Actions variable is retired — an override outside the
+committed file would make the file lie — and a test fails if any model
+named there lacks a tariff row. Ceiling: $20 per run, $50 per day,
+$150 per month (`config/budget.yaml`), enough for the eight-report test
+with headroom. Tariffs were read from the vendors' own price pages on
+2026-09-08 and recorded with their sources; the four other panel seats
+stay null until someone reads theirs.
+
+**The chain** (src/pipeline). `report` builds the packet, rests when the
+same case has been sent to the same seat under the same protocol (the
+previous report is included in the packet but excluded from the rest
+hash, or a completed report would make its own case due again), and saves
+the reply as working material. `draft` extracts every URL the report
+cites, fetches them, and shows the drafter the retrieved text; the reply
+comes back in a loose structured-output shape and is made mechanical here
+— ids in the case's scheme, provenance stamped, every record validated
+with the ledger's own schema, duplicates re-pointed at existing records,
+failures dispositioned with reasons. `verify` resolves identifiers,
+fetches again, matches every quoted span verbatim (surrounding quote marks,
+hyphenation, whitespace, and case normalised; words exact), sends what
+passed to a second reader that never sees the drafter's rationale, drops
+records whose dependencies fell, checks the prospective ledger with the
+build's own rules, and only then appends records, dispositions, and a
+history entry. `edition` runs only when the ledger hash moved (or when
+forced), drafts one candidate, and refuses it if any loader rule fails —
+including that every load-bearing claim is featured and that a candidate
+whose judgment did not change re-adopts the incumbent's assessment.
+
+**The budget guard** sits inside the model calls: a conservative estimate
+(full input, whole output allowance, every permitted search) against
+run, day, and month; an unpriced model cannot be budgeted and is refused.
+Raw HTTP throughout, as every vendor call in this repository (AGENTS.md
+§4), with request shapes taken from the vendors' current documentation.
+
+**Limits stated.** PDFs are not read yet: a PDF source blocks its
+evidence with the route. The Anthropic research seat is a single turn
+continued across `pause_turn`; if it ends on `max_tokens` the run fails
+rather than returning a truncated report. Structured outputs forbid
+length constraints, so the loose schemas are validated a second time by
+the strict ones. Nothing in this step has run against a live model; the
+first paid runs are the Cast, Not Carved test.
+
+(AI implementation record; founder-directed session.)

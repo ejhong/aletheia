@@ -22,17 +22,30 @@ const TariffsSchema = z.object({
       /** USD per million input tokens; null when not yet reviewed. */
       inputPerMTok: z.number().nonnegative().nullable(),
       outputPerMTok: z.number().nonnegative().nullable(),
+      cachedInputPerMTok: z.number().nonnegative().nullable().optional(),
       /** Where the price was read, and when — a tariff is provenance too. */
       source: z.string().nullable(),
       checked: z.string().nullable(),
     }),
   ),
+  /** Per-call fees for server-side tools (web search), keyed vendor:tool. */
+  tools: z
+    .record(
+      z.string(),
+      z.object({
+        perCallUsd: z.number().nonnegative().nullable(),
+        note: z.string().optional(),
+        source: z.string().nullable(),
+        checked: z.string().nullable(),
+      }),
+    )
+    .default({}),
 });
 export type Tariffs = z.infer<typeof TariffsSchema>;
 
 export function loadTariffs(root = process.cwd()): Tariffs {
   const file = tariffsFile(root);
-  if (!fs.existsSync(file)) return { models: {} };
+  if (!fs.existsSync(file)) return { models: {}, tools: {} };
   return TariffsSchema.parse(parseYaml(fs.readFileSync(file, "utf8")));
 }
 

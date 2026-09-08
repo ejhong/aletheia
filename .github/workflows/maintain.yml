@@ -69,7 +69,6 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          EXTRACT_MODEL: ${{ vars.EXTRACT_MODEL }}
         run: |
           node scripts/process-inbox.mjs | tee inbox-out.txt
           outdir=$(tail -1 inbox-out.txt)
@@ -81,7 +80,6 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          EXTRACT_MODEL: ${{ vars.EXTRACT_MODEL }}
         run: node scripts/reassess-changed.mjs
 
       # Discovery only: new arXiv/Crossref items become unverified proposals
@@ -94,7 +92,6 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          EXTRACT_MODEL: ${{ vars.EXTRACT_MODEL }}
         run: |
           node scripts/watch-literature.mjs | tee watch-out.txt
           outdir=$(tail -1 watch-out.txt)
@@ -114,7 +111,6 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          EXTRACT_MODEL: ${{ vars.EXTRACT_MODEL }}
         run: |
           node scripts/triage-watch.mjs | tee triage-out.txt
           outdir=$(tail -1 triage-out.txt)
@@ -146,7 +142,6 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          EXTRACT_MODEL: ${{ vars.EXTRACT_MODEL }}
         run: |
           node scripts/propose-agenda.mjs --only "${DUE_CASES}" | tee agenda-out.txt
           outdir=$(tail -1 agenda-out.txt)
@@ -268,7 +263,6 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          EXTRACT_MODEL: ${{ vars.EXTRACT_MODEL }}
         run: |
           count=$(node scripts/promote-imports.mjs | tail -1)
           echo "PROMOTED=${count}" >> "$GITHUB_ENV"
@@ -322,7 +316,6 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          EXTRACT_MODEL: ${{ vars.EXTRACT_MODEL }}
         run: |
           count=$(node scripts/draft-freeze.mjs --scan | tail -1)
           echo "DRAFTED=${count}" >> "$GITHUB_ENV"
@@ -378,7 +371,6 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          EXTRACT_MODEL: ${{ vars.EXTRACT_MODEL }}
         run: |
           count=$(node scripts/draft-endorsements.mjs --scan | tail -1)
           echo "ADOPTED=${count}" >> "$GITHUB_ENV"

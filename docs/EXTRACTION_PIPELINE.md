@@ -28,17 +28,12 @@ is configured:
 | ------------------- | -------------------------------------------------- |
 | `ANTHROPIC_API_KEY` | Anthropic Messages API key (preferred provider)    |
 | `OPENAI_API_KEY`    | OpenAI Chat Completions API key (fallback)         |
-| `EXTRACT_MODEL`     | Optional model override for whichever provider ran |
 
-In CI the keys come from repository secrets and `EXTRACT_MODEL` from a
-repository **variable** (GitHub → Settings → Secrets and variables → Actions),
-which the workflows pass into every LLM-calling step. The variable is
-currently set to `claude-fable-5` (also the code default for the Anthropic
-provider in `scripts/lib/llm.mjs`), so changing models later is one command:
-
-```
-gh variable set EXTRACT_MODEL --repo ejhong/aletheia --body "<model-id>"
-```
+In CI the keys come from repository secrets. The models are chosen in
+`config/models.yaml` (`house` for the Anthropic provider, with its fallback;
+`legacy.openaiChat` for the OpenAI provider) — the one place any model is
+named, so changing a model is an edit to that file. The former
+`EXTRACT_MODEL` repository variable is retired and ignored.
 
 ## What a run produces
 

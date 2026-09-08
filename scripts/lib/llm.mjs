@@ -1,38 +1,32 @@
 /**
- * Shared LLM client for the pipeline scripts.
+ * Shared LLM client for the maintenance scripts that predate the verb chain.
  *
  * Environment (see docs/EXTRACTION_PIPELINE.md and docs/MAINTENANCE.md):
  *   ANTHROPIC_API_KEY  Anthropic Messages API key (preferred provider)
  *   OPENAI_API_KEY     OpenAI Chat Completions API key (fallback)
- *   EXTRACT_MODEL      optional model override for whichever provider runs
+ * Models are chosen in config/models.yaml (house; legacy.openaiChat) — the
+ * one place any model is named. The former EXTRACT_MODEL override is
+ * retired: an override outside the committed file would make the file lie.
  */
+import { MODELS } from "./models.mjs";
 
 const providers = {
   anthropic: {
     key: process.env.ANTHROPIC_API_KEY,
-    // Default history: Fable was the original default; decision #15's
-    // reversal made it Opus after Fable's safety filter refused plain
-    // pharmacology statements (11 of orch-or's 18 claims returned
-    // stop_reason "refusal", failing that case's reassessment three
-    // times; verified 2026-08-25). With the one-shot Opus fallback
-    // below, Fable-first is safe again and is the founder's preference
-    // (2026-08-27): Fable answers where it will, Opus catches the
-    // refusals, and both repos stay identical with no per-repo
-    // EXTRACT_MODEL variable to drift. The variable still overrides
-    // when set.
-    model: process.env.EXTRACT_MODEL || "claude-fable-5",
-    // Fable's safety filter refuses plain pharmacology/physiology
-    // statements (stop_reason "refusal", or zero text blocks) on cases
-    // like orch-or — the documented failure above. A refusal THROWS a
-    // typed error instead of silently substituting a model: silent
-    // substitution would make every downstream model stamp false
-    // (§3.15 — a reader must be able to reconstruct which model did
-    // what). Callers that want the Opus fallback use
-    // callWithRefusalFallback below, which returns the model that
-    // actually produced the text so stamps stay true.
-    fallbackModel: "claude-opus-5",
-    async call(system, user, modelOverride) {
-      const model = modelOverride ?? this.model;
+    // The house model (config/models.yaml). History: Fable was the original
+    // default; decision #15's reversal made it Opus after Fable's safety
+    // filter refused plain pharmacology statements (11 of orch-or's 18
+    // claims returned stop_reason "refusal"; verified 2026-08-25). With the
+    // one-shot fallback below, Fable-first is safe again and is the
+    // founder's preference (2026-08-27): Fable answers where it will, the
+    // fallback catches the refusals. A refusal THROWS a typed error instead
+    // of silently substituting a model: silent substitution would make
+    // every downstream model stamp false (§3.15). Callers that want the
+    // fallback use callWithRefusalFallback below, which returns the model
+    // that actually produced the text so stamps stay true.
+    model: MODELS.house.model,
+    fallbackModel: MODELS.house.fallback,
+    async call(system, user, model = this.model) {
       const res = await fetch("https://api.anthropic.com/v1/messages", {
         method: "POST",
         headers: {
@@ -66,8 +60,8 @@ const providers = {
   },
   openai: {
     key: process.env.OPENAI_API_KEY,
-    model: process.env.EXTRACT_MODEL || "gpt-4o",
-    async call(system, user) {
+    model: MODELS.legacy.openaiChat.model,
+    async call(system, user, model = this.model) {
       const res = await fetch("https://api.openai.com/v1/chat/completions", {
         method: "POST",
         headers: {
@@ -75,7 +69,7 @@ const providers = {
           authorization: `Bearer ${this.key}`,
         },
         body: JSON.stringify({
-          model: this.model,
+          model,
           messages: [
             { role: "system", content: system },
             { role: "user", content: user },
@@ -102,7 +96,7 @@ export class RefusalError extends Error {
 
 /**
  * Call the provider; on a refusal by the configured Anthropic model,
- * retry EXACTLY once on the fallback (claude-opus-5) — loudly, and with
+ * retry EXACTLY once on the configured fallback — loudly, and with
  * truthful provenance: the return value carries the model that actually
  * produced the text, and callers MUST stamp that model, never
  * provider.model, on any record they write (§3.15). A refusal by the
@@ -111,13 +105,14 @@ export class RefusalError extends Error {
  */
 export async function callWithRefusalFallback(provider, system, user) {
   try {
-    const text = await provider.call(system, user);
+    const text = await provider.call(system, user, provider.model);
     return { text, model: provider.model, refused: false };
   } catch (e) {
     const fallback = providers.anthropic.fallbackModel;
     if (
       !(e instanceof RefusalError) ||
       provider.name !== "anthropic" ||
+      !fallback ||
       provider.model === fallback
     ) {
       throw e;
@@ -160,7 +155,7 @@ export function noKeyMessage() {
     "  ANTHROPIC_API_KEY   Anthropic Messages API (preferred)",
     "  OPENAI_API_KEY      OpenAI Chat Completions API",
     "",
-    "Optional: EXTRACT_MODEL to override the default model.",
+    "Models are chosen in config/models.yaml.",
     "See docs/EXTRACTION_PIPELINE.md and docs/MAINTENANCE.md.",
     "",
   ].join("\n");

@@ -5,7 +5,12 @@ import { describe, expect, it } from "vitest";
 import { getCaseBySlug, loadAllCases } from "./load.ts";
 import { buildPacket, PACKET_MAX_CHARS, renderPacket } from "../pipeline/packet.ts";
 import { loadProtocol, renderProtocol } from "../pipeline/protocols.ts";
-import { priceOf, readSpend, recordSpend, sumCost } from "../pipeline/spend.ts";
+import { loadTariffs, priceOf, readSpend, recordSpend, sumCost } from "../pipeline/spend.ts";
+import { loadModels, modelIds, MODELS } from "../../scripts/lib/models.mjs";
+import { DEFAULT_SEAT, RESEARCH_SEATS } from "../pipeline/report.ts";
+import { DRAFTER } from "../pipeline/draft.ts";
+import { READER } from "../pipeline/verify.ts";
+import { EDITOR } from "../pipeline/edition.ts";
 import { appendDispositions, newRunId, readProposal, readRuns, writeProposal, writeRun } from "../pipeline/store.ts";
 
 const tmpRoot = () => fs.mkdtempSync(path.join(os.tmpdir(), "aletheia-"));
@@ -110,12 +115,50 @@ describe("the intake store", () => {
   });
 });
 
+describe("the model roster (config/models.yaml)", () => {
+  it("is the one place a model is chosen: the verbs read their models from it", () => {
+    const m = loadModels();
+    expect(DRAFTER).toEqual(m.house);
+    expect(EDITOR).toEqual(m.house);
+    expect(READER).toEqual(m.reader);
+    expect(RESEARCH_SEATS).toEqual(m.research.seats);
+    expect(DEFAULT_SEAT).toBe(m.research.default);
+    expect(m.reader.model).not.toBe(m.house.model); // a second reader is a different model
+    expect(m.house.fallback).toBeDefined(); // the house model falls back loudly; a run records what served
+    expect(m.house.fallback).not.toBe(m.house.model);
+  });
+
+  it("every model it names has a tariff row, priced or honestly null", () => {
+    const t = loadTariffs();
+    for (const id of modelIds(MODELS)) expect(t.models[id], `config/tariffs.yaml has no row for ${id}`).toBeDefined();
+  });
+
+  it("the house model and the default research seat are priced, so the budget guard can admit them", () => {
+    const t = loadTariffs();
+    for (const id of [MODELS.house.model, MODELS.house.fallback!, MODELS.reader.model, MODELS.research.seats[MODELS.research.default].model]) {
+      expect(t.models[id].inputPerMTok, id).not.toBeNull();
+    }
+  });
+});
+
 describe("the spend ledger", () => {
+  it("the committed tariffs parse, and every priced row names its source and date", () => {
+    const t = loadTariffs();
+    for (const [id, row] of Object.entries(t.models)) {
+      if (row.inputPerMTok !== null) {
+        expect(row.source, id).toMatch(/^https:\/\//);
+        expect(row.checked, id).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      }
+    }
+    expect(t.models["claude-opus-5"].inputPerMTok).toBe(5);
+    expect(t.tools["anthropic:web_search"].perCallUsd).toBe(0.01);
+  });
+
   it("records tokens always and dollars only from a reviewed tariff", () => {
     const root = tmpRoot();
-    expect(priceOf("unknown-model", { inputTokens: 1000, outputTokens: 1000 }, { models: {} })).toBeNull();
+    expect(priceOf("unknown-model", { inputTokens: 1000, outputTokens: 1000 }, { models: {}, tools: {} })).toBeNull();
     expect(
-      priceOf("m", { inputTokens: 1_000_000, outputTokens: 500_000 }, { models: { m: { inputPerMTok: 2, outputPerMTok: 8, source: "x", checked: "2026-09-08" } } }),
+      priceOf("m", { inputTokens: 1_000_000, outputTokens: 500_000 }, { models: { m: { inputPerMTok: 2, outputPerMTok: 8, source: "x", checked: "2026-09-08" } }, tools: {} }),
     ).toBe(6);
     recordSpend({ date: "2026-09-08", runId: "r", verb: "report", case: "x", model: "m", calls: 1, inputTokens: 10, outputTokens: 20, usd: null }, root);
     recordSpend({ date: "2026-09-08", runId: "r", verb: "report", case: "x", model: "m", calls: 1, inputTokens: 5, outputTokens: 5, usd: 0.01 }, root);

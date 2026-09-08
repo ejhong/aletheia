@@ -101,9 +101,12 @@ export const DRAFT_SCHEMA: Record<string, unknown> = {
           statement: { type: "string" },
           theme: { type: "string" },
           rung: { type: "string", enum: ["observation", "mechanism", "attribution"] },
+          // A nullable enum must be written as a choice: the vendor rejects `enum` on a `["string", "null"]` type.
           claimType: {
-            type: ["string", "null"],
-            enum: ["observation", "measurement", "historical", "causal", "mechanistic", "statistical", "interpretive", "methodological", "existence", "theory_description", "mathematical", null],
+            anyOf: [
+              { type: "string", enum: ["observation", "measurement", "historical", "causal", "mechanistic", "statistical", "interpretive", "methodological", "existence", "theory_description", "mathematical"] },
+              { type: "null" },
+            ],
           },
           sourceAnchor: {
             type: ["object", "null"],

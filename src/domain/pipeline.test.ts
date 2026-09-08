@@ -12,6 +12,8 @@ import { DRAFTER } from "../pipeline/draft.ts";
 import { READER } from "../pipeline/verify.ts";
 import { EDITOR } from "../pipeline/edition.ts";
 import { appendDispositions, closeRun, newRunId, openRun, readProposal, readRuns, writeProposal, writeRun } from "../pipeline/store.ts";
+import { appendRecords } from "../pipeline/ledger-write.ts";
+import { parse as parseYaml } from "yaml";
 
 const tmpRoot = () => fs.mkdtempSync(path.join(os.tmpdir(), "aletheia-"));
 
@@ -112,6 +114,32 @@ describe("the intake store", () => {
     const file = fs.readFileSync(path.join(root, "content", "cases", "x", "dispositions.yaml"), "utf8");
     expect(file.startsWith("#")).toBe(true); // the header comment survives the second append
     expect(file.match(/key: doi:10.1234\/a/g)).toHaveLength(2);
+  });
+
+  it("appends to a ledger file without touching a byte of what was there", () => {
+    const root = tmpRoot();
+    const dir = path.join(root, "content", "cases", "x");
+    fs.mkdirSync(dir, { recursive: true });
+    const before = [
+      "# Evidence — hand-written, with folded text and flow lists.",
+      "- id: E1",
+      "  claimIds: [C1, C2]",
+      "  summary: >-",
+      "    A folded scalar that a re-serializer would",
+      "    reflow onto one line.",
+      "",
+    ].join("\n");
+    const file = path.join(dir, "evidence.yaml");
+    fs.writeFileSync(file, before);
+    expect(appendRecords("x", "evidence.yaml", [{ id: "E2", claimIds: ["C3"], summary: "new" }], root)).toBe(1);
+    const after = fs.readFileSync(file, "utf8");
+    expect(after.startsWith(before.trimEnd())).toBe(true);
+    expect(parseYaml(after)).toHaveLength(2);
+    // An empty flow list is replaced, not appended to.
+    fs.writeFileSync(file, "# header\n[]\n");
+    appendRecords("x", "evidence.yaml", [{ id: "E1" }], root);
+    expect(parseYaml(fs.readFileSync(file, "utf8"))).toEqual([{ id: "E1" }]);
+    expect(fs.readFileSync(file, "utf8").startsWith("# header")).toBe(true);
   });
 });
 

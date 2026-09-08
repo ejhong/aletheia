@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { Document, isSeq, parse as parseYaml, parseDocument, stringify as stringifyYaml } from "yaml";
+import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
 import {
   DispositionSchema,
   ProposalSchema,
@@ -14,6 +14,7 @@ import {
 import { hhmmssUTC, isoDate } from "../../scripts/lib/overlay-ids.mjs";
 import { loadBudget } from "./budget.ts";
 import { configFile } from "./config.ts";
+import { appendYamlItems } from "./ledger-write.ts";
 import { spendFor, sumCost, type Meter } from "./spend.ts";
 
 /**
@@ -151,20 +152,8 @@ const DISPOSITIONS_HEADER = `# Dispositions — every candidate ever considered 
 # what changed. Keys are mechanical (src/domain/keys.ts).
 `;
 
-/** Append rows to a case's dispositions.yaml, preserving existing comments. Rows are validated first. */
+/** Append rows to a case's dispositions.yaml, existing bytes untouched. Rows are validated first. */
 export function appendDispositions(caseDir: string, rows: Disposition[], root = process.cwd()): number {
-  if (rows.length === 0) return 0;
   const parsed = rows.map((r) => DispositionSchema.parse(r));
-  const file = path.join(root, "content", "cases", caseDir, "dispositions.yaml");
-  let doc: Document;
-  if (fs.existsSync(file)) {
-    doc = parseDocument(fs.readFileSync(file, "utf8"));
-    if (!isSeq(doc.contents)) throw new Error(`${file} is not a YAML list`);
-  } else {
-    doc = new Document([]);
-    doc.commentBefore = DISPOSITIONS_HEADER.replace(/^# ?/gm, " ").trimEnd();
-  }
-  for (const row of parsed) (doc.contents as { items: unknown[] }).items.push(doc.createNode(row));
-  fs.writeFileSync(file, doc.toString({ lineWidth: 0 }));
-  return parsed.length;
+  return appendYamlItems(path.join(root, "content", "cases", caseDir, "dispositions.yaml"), parsed, DISPOSITIONS_HEADER);
 }

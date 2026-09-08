@@ -27,6 +27,17 @@
  */
 
 /**
+ * The calendar date of a moment, as YYYY-MM-DD in UTC — the form every
+ * runId, record, spend row, and changelog entry carries.
+ *
+ * @param {Date} [now]
+ * @returns {string}
+ */
+export function isoDate(now = new Date()) {
+  return now.toISOString().slice(0, 10);
+}
+
+/**
  * UTC time-of-day as HHMMSS — lexically sortable, no separators.
  *
  * @param {Date} [now]

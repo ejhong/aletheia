@@ -1,8 +1,7 @@
-import fs from "node:fs";
-import path from "node:path";
-import { parse as parseYaml } from "yaml";
 import { z } from "zod";
 import type { Verb } from "../domain/intake.ts";
+import { isoDate } from "../../scripts/lib/overlay-ids.mjs";
+import { loadConfig } from "./config.ts";
 import { loadTariffs, readSpend, type Tariffs } from "./spend.ts";
 
 /**
@@ -25,12 +24,8 @@ const BudgetSchema = z.object({
 });
 export type Budget = z.infer<typeof BudgetSchema>;
 
-export const budgetFile = (root = process.cwd()) => path.join(root, "config", "budget.yaml");
-
 export function loadBudget(root = process.cwd()): Budget {
-  const file = budgetFile(root);
-  if (!fs.existsSync(file)) throw new Error("config/budget.yaml is missing — no paid call runs without a ceiling");
-  return BudgetSchema.parse(parseYaml(fs.readFileSync(file, "utf8")));
+  return loadConfig("budget", BudgetSchema, { root, whyRequired: "no paid call runs without a ceiling" });
 }
 
 export class BudgetExceeded extends Error {
@@ -83,7 +78,7 @@ export function assertWithinBudget(estimate: number | null, ctx: BudgetContext):
     );
   }
   const budget = loadBudget(root);
-  const today = ctx.today ?? new Date().toISOString().slice(0, 10);
+  const today = ctx.today ?? isoDate();
   const month = today.slice(0, 7);
   const rows = readSpend(root);
   const sum = (pred: (r: (typeof rows)[number]) => boolean) =>

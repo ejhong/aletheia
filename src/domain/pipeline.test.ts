@@ -11,7 +11,7 @@ import { DEFAULT_SEAT, RESEARCH_SEATS } from "../pipeline/report.ts";
 import { DRAFTER } from "../pipeline/draft.ts";
 import { READER } from "../pipeline/verify.ts";
 import { EDITOR } from "../pipeline/edition.ts";
-import { appendDispositions, newRunId, readProposal, readRuns, writeProposal, writeRun } from "../pipeline/store.ts";
+import { appendDispositions, closeRun, newRunId, openRun, readProposal, readRuns, writeProposal, writeRun } from "../pipeline/store.ts";
 
 const tmpRoot = () => fs.mkdtempSync(path.join(os.tmpdir(), "aletheia-"));
 
@@ -112,6 +112,27 @@ describe("the intake store", () => {
     const file = fs.readFileSync(path.join(root, "content", "cases", "x", "dispositions.yaml"), "utf8");
     expect(file.startsWith("#")).toBe(true); // the header comment survives the second append
     expect(file.match(/key: doi:10.1234\/a/g)).toHaveLength(2);
+  });
+});
+
+describe("the run frame", () => {
+  it("opens with one id, date, meter and stamp, and closes with the ledger's cost and the reason as notes", () => {
+    const root = tmpRoot();
+    const now = new Date("2026-09-08T10:20:30Z");
+    const run = openRun("draft", "megalithic-casting", { model: "m", promptVersion: "draft-v1" }, { now, root });
+    expect(run.runId).toBe("2026-09-08-draft-megalithic-casting-102030");
+    expect(run.meter).toEqual({ runId: run.runId, verb: "draft", case: "megalithic-casting", root });
+    expect(run.stamp.inputHash).toBeNull();
+    recordSpend({ date: run.date, runId: run.runId, verb: "draft", case: "megalithic-casting", model: "m", calls: 1, inputTokens: 10, outputTokens: 5, usd: 0.02 }, root);
+    const out = closeRun(run, "completed", { model: "m-served", reason: "wrote 3 records" });
+    expect(out).toEqual({ outcome: "completed", runId: run.runId, reason: "wrote 3 records", cost: { calls: 1, inputTokens: 10, outputTokens: 5, usd: 0.02 } });
+    const [rec] = readRuns(root);
+    expect(rec.model).toBe("m-served");
+    expect(rec.notes).toBe("wrote 3 records");
+    expect(rec.cost.usd).toBe(0.02);
+    // A rest spends nothing and says so.
+    const rest = closeRun(openRun("report", "x", { model: null, promptVersion: null }, { now, root }), "rested", { reason: "unchanged" });
+    expect(rest.cost).toEqual({ calls: 0, inputTokens: 0, outputTokens: 0, usd: 0 });
   });
 });
 

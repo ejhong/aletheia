@@ -1,7 +1,9 @@
-import type { Verb } from "../domain/intake.ts";
+import { isoDate } from "../../scripts/lib/overlay-ids.mjs";
 import { fetchWithRetry } from "../../scripts/lib/vendors.mjs";
 import { assertWithinBudget, estimateUsd } from "./budget.ts";
-import { loadTariffs, priceOf, recordSpend } from "./spend.ts";
+import { loadTariffs, priceOf, recordSpend, type Meter } from "./spend.ts";
+
+export type { Meter } from "./spend.ts";
 
 /**
  * The two model surfaces the verbs use beyond a plain chat completion
@@ -19,13 +21,6 @@ import { loadTariffs, priceOf, recordSpend } from "./spend.ts";
  * Every call: budget check first (a refused call sends nothing), then the
  * request, then one spend row per priced thing (tokens; searches).
  */
-
-export interface Meter {
-  runId: string;
-  verb: Verb;
-  case: string | null;
-  root?: string;
-}
 
 export interface Usage {
   inputTokens: number;
@@ -56,13 +51,12 @@ export type FetchLike = typeof fetch;
 const FALLBACK_BETA = "server-side-fallback-2026-06-01";
 
 const ANTHROPIC_VERSION = "2023-06-01";
-const today = () => new Date().toISOString().slice(0, 10);
 
 function recordTokens(meter: Meter, model: string, usage: Usage): number | null {
   const usd = priceOf(model, usage, loadTariffs(meter.root));
   recordSpend(
     {
-      date: today(),
+      date: isoDate(),
       runId: meter.runId,
       verb: meter.verb,
       case: meter.case,
@@ -83,7 +77,7 @@ function recordSearches(meter: Meter, toolKey: string, count: number): void {
   const usd = t && t.perCallUsd !== null ? Number((count * t.perCallUsd).toFixed(6)) : null;
   recordSpend(
     {
-      date: today(),
+      date: isoDate(),
       runId: meter.runId,
       verb: meter.verb,
       case: meter.case,

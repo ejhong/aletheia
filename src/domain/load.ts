@@ -715,10 +715,15 @@ export function loadAllCases(): LoadedCase[] {
     .sort((a, b) => a.record.id.localeCompare(b.record.id));
 }
 
-export function getCaseBySlug(slug: string): LoadedCase {
-  const found = loadAllCases().find((c) => c.record.slug === slug);
-  if (!found) throw new Error(`no case with slug ${slug}`);
+/** A case by slug or directory name — the one lookup every script and verb uses. */
+export function findCase(key: string, cases: LoadedCase[] = loadAllCases()): LoadedCase {
+  const found = cases.find((c) => c.record.slug === key || c.dir === key);
+  if (!found) throw new Error(`no case with slug or directory "${key}"`);
   return found;
+}
+
+export function getCaseBySlug(slug: string): LoadedCase {
+  return findCase(slug);
 }
 
 /** Live (non-rejected) claims only — what reader views should show. */

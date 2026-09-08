@@ -5,12 +5,14 @@ import {
   DispositionSchema,
   ProposalSchema,
   RunRecordSchema,
+  type Cost,
   type Disposition,
   type Proposal,
   type RunRecord,
   type Verb,
 } from "../domain/intake.ts";
-import { hhmmssUTC } from "../../scripts/lib/overlay-ids.mjs";
+import { hhmmssUTC, isoDate } from "../../scripts/lib/overlay-ids.mjs";
+import { spendFor, sumCost, type Meter } from "./spend.ts";
 
 /**
  * The intake store (docs/AUTOMATION.md, "The layout"): one directory per
@@ -26,7 +28,57 @@ import { hhmmssUTC } from "../../scripts/lib/overlay-ids.mjs";
 export const proposalsDir = (root = process.cwd()) => path.join(root, "proposals");
 
 export function newRunId(verb: Verb, caseSlug: string, now = new Date()): string {
-  return `${now.toISOString().slice(0, 10)}-${verb}-${caseSlug}-${hhmmssUTC(now)}`;
+  return `${isoDate(now)}-${verb}-${caseSlug}-${hhmmssUTC(now)}`;
+}
+
+/**
+ * The frame every verb runs inside: one id, one date, one meter for the
+ * spend ledger, and the stamp its run record will carry. `openRun` mints
+ * it; `closeRun` writes the record with the outcome, the reason, and the
+ * cost — always what the spend ledger holds for the run: zero for a rest,
+ * a failure's spend included, and a dry run's too when it consulted a model.
+ */
+export interface Run {
+  runId: string;
+  date: string;
+  root: string;
+  meter: Meter;
+  stamp: Pick<RunRecord, "runId" | "verb" | "case" | "date" | "model" | "promptVersion" | "inputHash">;
+}
+
+/** What every verb returns; a verb adds the files it wrote. */
+export interface RunOutcome {
+  outcome: RunRecord["outcome"];
+  runId: string;
+  reason?: string;
+  cost?: Cost;
+}
+
+export function openRun(
+  verb: Verb,
+  caseSlug: string,
+  stamp: { model: string | null; promptVersion: string | null; inputHash?: string | null },
+  opts: { now?: Date; root?: string } = {},
+): Run {
+  const now = opts.now ?? new Date();
+  const root = opts.root ?? process.cwd();
+  const runId = newRunId(verb, caseSlug, now);
+  const date = isoDate(now);
+  return {
+    runId,
+    date,
+    root,
+    meter: { runId, verb, case: caseSlug, root },
+    stamp: { runId, verb, case: caseSlug, date, model: stamp.model, promptVersion: stamp.promptVersion, inputHash: stamp.inputHash ?? null },
+  };
+}
+
+/** Write the run record and return the outcome; `model` overrides the stamp when the call answered from another model. */
+export function closeRun(run: Run, outcome: RunRecord["outcome"], extra: { reason?: string; model?: string } = {}): RunOutcome {
+  const cost = sumCost(spendFor(run.runId, run.root));
+  const stamp = extra.model === undefined ? run.stamp : { ...run.stamp, model: extra.model };
+  writeRun({ ...stamp, outcome, cost, ...(extra.reason ? { notes: extra.reason } : {}) }, run.root);
+  return { outcome, runId: run.runId, ...(extra.reason ? { reason: extra.reason } : {}), cost };
 }
 
 export function runDir(runId: string, root = process.cwd()): string {

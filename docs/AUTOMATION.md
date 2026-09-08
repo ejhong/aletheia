@@ -258,8 +258,11 @@ editions, protocols, code, the constitution — needs the panel.
   `src/pipeline/` with one test file. The modules share exactly four
   services: the packet builder, the coverage diff, the model transport
   (with the spend ledger inside it, so every paid call is recorded in one
-  place by construction), and the intake store (proposals and
-  dispositions). No verb has its own copy of any of these.
+  place by construction), and the intake store (proposals, dispositions,
+  and the run frame every verb opens and closes: one id, one date, one
+  meter, one record, its cost read back from the ledger). No verb has its
+  own copy of any of these; the committed configuration under `config/`
+  has one reader, and a case is found by one lookup in the loader.
 - **One roster.** Every model the site calls — house model and fallback,
   second reader, research seats and default, panel seats with pinned
   effort — is chosen in `config/models.yaml` and nowhere else. The

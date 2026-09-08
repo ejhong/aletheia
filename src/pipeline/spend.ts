@@ -3,6 +3,7 @@ import path from "node:path";
 import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
 import { z } from "zod";
 import { SpendRowSchema, type Cost, type SpendRow, type Verb } from "../domain/intake.ts";
+import { loadConfig } from "./config.ts";
 
 /**
  * The spend ledger (docs/AUTOMATION.md, "The code"): one place, inside the
@@ -13,7 +14,14 @@ import { SpendRowSchema, type Cost, type SpendRow, type Verb } from "../domain/i
  */
 
 export const spendFile = (root = process.cwd()) => path.join(root, "governance", "spend.yaml");
-export const tariffsFile = (root = process.cwd()) => path.join(root, "config", "tariffs.yaml");
+
+/** What a paid call is charged to: the run, its verb and case, and the repository root. */
+export interface Meter {
+  runId: string;
+  verb: Verb;
+  case: string | null;
+  root?: string;
+}
 
 const TariffsSchema = z.object({
   models: z.record(
@@ -43,10 +51,9 @@ const TariffsSchema = z.object({
 });
 export type Tariffs = z.infer<typeof TariffsSchema>;
 
+/** A root without tariffs (a test tree) prices nothing: every row is honestly null. */
 export function loadTariffs(root = process.cwd()): Tariffs {
-  const file = tariffsFile(root);
-  if (!fs.existsSync(file)) return { models: {}, tools: {} };
-  return TariffsSchema.parse(parseYaml(fs.readFileSync(file, "utf8")));
+  return loadConfig("tariffs", TariffsSchema, { root, ifMissing: () => ({ models: {}, tools: {} }) });
 }
 
 /** Dollars for a usage, or null when the model has no reviewed tariff. */

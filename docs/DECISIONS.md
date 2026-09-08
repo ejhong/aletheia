@@ -1076,7 +1076,11 @@ effort, and the legacy OpenAI chat model. The verb chain, the panel table
 (`scripts/lib/llm.mjs`) all read it; no model id appears in code. The
 `EXTRACT_MODEL` Actions variable is retired — an override outside the
 committed file would make the file lie — and a test fails if any model
-named there lacks a tariff row. Ceiling: $20 per run, $50 per day,
+named there lacks a tariff row. In the same spirit (founder, 2026-09-08:
+centralize duplicated code where worthwhile), the four verbs' repeated
+run bookkeeping became the store's run frame (`openRun`/`closeRun`), the
+three config readers became one, the case lookup moved to the loader,
+and the date stamp joined the id helpers. Ceiling: $20 per run, $50 per day,
 $150 per month (`config/budget.yaml`), enough for the eight-report test
 with headroom. Tariffs were read from the vendors' own price pages on
 2026-09-08 and recorded with their sources; the four other panel seats

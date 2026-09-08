@@ -203,7 +203,9 @@ describe("real content", () => {
     expect(featured?.view.featured).toBe(true);
     expect(featured?.view.treatment).not.toBeNull();
     expect(featured?.caseView.loaded.record.slug).toBe("megalithic-casting");
-    const backlog = findClaimView(cases, "GEO-C502");
+    const geoCase = cases.find((c) => c.record.slug === "megalithic-casting")!;
+    const unfeatured = geoCase.claims.find((c) => c.reviewState !== "rejected" && !currentEdition(geoCase).featuredClaimIds.includes(c.id))!;
+    const backlog = findClaimView(cases, unfeatured.id);
     expect(backlog?.view.featured).toBe(false);
     expect(backlog?.view.treatment).toBeNull();
     expect(findClaimView(cases, "NOPE-C000")).toBeNull();
@@ -1202,10 +1204,11 @@ describe("edition succession", () => {
     expect(orderEditions([migration, orphan] as never).map((e) => e.runId)).toEqual([migration.runId, "edition-x"]);
   });
 
-  it("the merged geopolymer edition is current, with the migration as its predecessor", () => {
+  it("geopolymer's editions form one chain from the migration to the current edition", () => {
     const geo = getCaseBySlug("megalithic-casting");
-    const ed = currentEdition(geo);
-    expect(ed.previous).toBe("edition-2026-09-08-migration");
-    expect(ed.featuredClaimIds).toContain("GEO-C506");
+    expect(geo.editions[0].runId).toBe("edition-2026-09-08-migration");
+    expect(geo.editions.length).toBeGreaterThanOrEqual(2);
+    for (let i = 1; i < geo.editions.length; i++) expect(geo.editions[i].previous).toBe(geo.editions[i - 1].runId);
+    expect(currentEdition(geo).featuredClaimIds).toContain("GEO-C506");
   });
 });

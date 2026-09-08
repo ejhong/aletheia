@@ -458,11 +458,13 @@ describe("verify v2: the reader's dissent on direction is recorded, not fatal", 
 });
 
 describe("reopening a blocked source", () => {
-  const nemoy = "https://ia800102.us.archive.org/27/items/TreatiseOnTheEgyptianPyramidsSuyuti_201801/Treatise%20on%20the%20Egyptian%20Pyramids_%20Suyuti.pdf";
+  // Cooperson's chapter: blocked in the case's rows (a login wall), and not in the ledger. The URL is rebuilt from the row's own key.
+  const blockedRow = geo().dispositions.find((d) => d.disposition === "blocked" && d.kind === "source" && /Cooperson/i.test(`${d.observed} ${d.reason ?? ""}`) && d.key.startsWith("url:"))!;
+  const nemoy = `https://${blockedRow.key.slice(4)}`;
   const reply = () =>
     draftReply({
       sources: [
-        { provisionalId: "S1", url: nemoy, title: "The Treatise on the Egyptian Pyramids (tr. Nemoy 1939)", authors: ["Nemoy, L."], year: "1939", sourceType: "paper", identifier: "Isis 30(1): 17–37", verification: "ai_verified", reliabilityNotes: [] },
+        { provisionalId: "S1", url: nemoy, title: "Early Abbasid Antiquarianism: al-Maʾmūn and the Pyramid of Cheops", authors: ["Cooperson, M."], year: "2010", sourceType: "book", identifier: null, verification: "ai_verified", reliabilityNotes: [] },
       ],
       evidence: [],
       claims: [],
@@ -475,8 +477,8 @@ describe("reopening a blocked source", () => {
 
   it("a source blocked for want of its text goes forward once the text is retrieved", () => {
     // The case carries a `blocked` row for this URL from the first pass.
-    expect(geo().dispositions.some((d) => d.key === `url:${nemoy.replace(/^https?:\/\//, "")}` && d.disposition === "blocked")).toBe(true);
-    const { proposal } = assembleProposal(reply(), ctx([{ url: nemoy, ok: true, status: 200, contentType: "application/pdf", text: "[p. 1] The Treatise on the Egyptian Pyramids …", pages: 22 }]));
+    expect(blockedRow).toBeDefined();
+    const { proposal } = assembleProposal(reply(), ctx([{ url: nemoy, ok: true, status: 200, contentType: "text/html", text: "Early Abbasid Antiquarianism … the caliph's stay in Egypt in early 832 …" }]));
     expect(proposal.adds.sources).toHaveLength(1);
     expect(proposal.adds.sources[0].verification).toBe("ai_verified");
     expect(proposal.dispositions.filter((d) => d.kind === "source")).toHaveLength(0);

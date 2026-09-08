@@ -1076,7 +1076,69 @@ effort, and the legacy OpenAI chat model. The verb chain, the panel table
 (`scripts/lib/llm.mjs`) all read it; no model id appears in code. The
 `EXTRACT_MODEL` Actions variable is retired — an override outside the
 committed file would make the file lie — and a test fails if any model
-named there lacks a tariff row. Ceiling: $20 per run, $50 per day,
+named there lacks a tariff row. In the same spirit (founder, 2026-09-08:
+centralize duplicated code where worthwhile), the four verbs' repeated
+run bookkeeping became the store's run frame (`openRun`/`closeRun`), the
+three config readers became one, the case lookup moved to the loader,
+and the date stamp joined the id helpers.
+
+**The first paid run (2026-09-08, `2026-09-08-report-megalithic-casting-125721`)
+and what it taught.** Cast Not Carved, default seat, house model. The
+report itself is strong — it found, for instance, that the al-Maʾmūn
+"salt layer" claim is absent from both accessible translations of the
+medieval accounts. It cost $37.86 against a $20 ceiling, and the first
+attempt had to be killed. Three defects, each now fixed and pinned by a
+test: (1) non-streaming requests hit Node's five-minute header timeout
+and were retried at full price — every Anthropic call now streams and is
+reassembled from events; (2) the server-side tool loop re-read the whole
+context 39 times with no prompt cache, billing 3.6M input tokens at the
+base rate — every call now carries automatic caching, the ledger prices
+cache reads and writes at their own rates (tariffs gained the write
+rates from the pricing page), and the estimate models the loop as one
+write per new token and one read per prior token per pass, which puts
+the same call near $13 cached and above $100 uncached; (3) the guard is
+a pre-call estimate and cannot stop a single server turn, so the run
+frame now flags any run whose ledger cost passed the ceiling, in its
+record and on stderr. The ledger row for the run stands as billed. The
+same afternoon the comparison seat failed before spending: OpenAI's
+dedicated deep-research models (`o4-mini-deep-research`,
+`o3-deep-research`) are neither available to the key nor on the pricing
+page any more. The comparison seat is now `gpt-5.6-sol` — the panel's
+OpenAI seat, already trusted — with the Responses `web_search` tool at
+high reasoning effort in background mode, priced from the pricing page
+($4 / $0.40 cached / $20 per MTok), which also prices the panel seat.
+`gpt-6-astra` is available to the key and is the tool guide's own
+recommendation, but it is unpriced here and not the founder's choice for
+the house; it can be tried as a seat once a tariff row is read.
+
+**The whole chain ran once on Cast Not Carved (2026-09-08).** Report
+(house seat, $37.86 uncached; OpenAI seat, $0.97) → draft ($1.78: 2
+sources, 4 evidence, 3 claims, 3 research items, 18 dispositions) →
+verify ($0.18: 1 source, 1 evidence record, 1 claim, 3 research items
+admitted; 6 rejected with reasons) → edition ($2.56: a new assessment
+with a steelman and per-claim treatments the migrated one lacked, GEO-C506
+featured, the article doubled and purged of claims not in the ledger).
+Recorded spend for the day: $46.75; unrecorded, an estimated $5–8 for a
+killed first attempt and a $3 edition whose connection died after the
+reply. Further defects found and fixed along the way, each with a test:
+the vendor rejects `enum` on a nullable type (write it as a choice) and
+refuses the draft schema as too large to compile (the call falls back to
+the schema as instructions and says so); re-serializing ledger files
+through the YAML document API reflowed every existing record (records are
+now appended as text); an edition candidate exceeded caps the strict
+schema cannot carry (protocol v2 names them; one repair round returns the
+loader's findings to the drafter); a torn socket at the end of a long
+reply discarded a paid answer (the reader keeps every byte and accepts a
+stream that reached its final event). Two observations for the next
+step rather than fixes now: the second reader is not deterministic —
+the same proposal admitted 2 evidence and 2 claims on one run and 1 and 1
+on the next, with defensible reasons each time — and three of its six
+rejections were about the drafter's direction label (`qualifies` where
+the reader wanted `supports`), which is a protocol-wording question for
+`draft` v2. The cached-cost validation of the house seat (estimated
+$13.02) was refused by the per-day cap and waits for the next day.
+Branch `feat/first-runs`, PR to follow; the panel judges the edition
+candidate there. Ceiling: $20 per run, $50 per day,
 $150 per month (`config/budget.yaml`), enough for the eight-report test
 with headroom. Tariffs were read from the vendors' own price pages on
 2026-09-08 and recorded with their sources; the four other panel seats

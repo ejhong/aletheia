@@ -1,3 +1,4 @@
+import { isoDate } from "../../scripts/lib/overlay-ids.mjs";
 import type { Verb } from "../domain/intake.ts";
 import { callVendorDetailed, VENDORS as SEAT_TABLE } from "../../scripts/lib/vendors.mjs";
 import { priceOf, recordSpend } from "./spend.ts";
@@ -48,7 +49,7 @@ export async function callSeat(
   const { text, usage, model } = await callVendorDetailed(name, prompt);
   const usd = priceOf(model, usage);
   recordSpend({
-    date: new Date().toISOString().slice(0, 10),
+    date: isoDate(),
     runId: meter.runId,
     verb: meter.verb,
     case: meter.case,

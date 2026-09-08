@@ -1,7 +1,10 @@
-import type { Verb } from "../domain/intake.ts";
+import { isoDate } from "../../scripts/lib/overlay-ids.mjs";
+import { parseJsonReply } from "../../scripts/lib/llm.mjs";
 import { fetchWithRetry } from "../../scripts/lib/vendors.mjs";
 import { assertWithinBudget, estimateUsd } from "./budget.ts";
-import { loadTariffs, priceOf, recordSpend } from "./spend.ts";
+import { loadTariffs, priceOf, recordSpend, type Meter, type TokenUsage } from "./spend.ts";
+
+export type { Meter } from "./spend.ts";
 
 /**
  * The two model surfaces the verbs use beyond a plain chat completion
@@ -13,24 +16,15 @@ import { loadTariffs, priceOf, recordSpend } from "./spend.ts";
  *  - Anthropic Messages with server tools (web search, web fetch) and
  *    `pause_turn` continuation — the browsing research seat — and Messages
  *    with structured JSON output — the drafter and the verifier.
- *  - OpenAI Responses in background mode with the deep-research models —
- *    the other research seat.
+ *  - OpenAI Responses in background mode with the web_search tool and high
+ *    reasoning effort — the other research seat.
  *
  * Every call: budget check first (a refused call sends nothing), then the
  * request, then one spend row per priced thing (tokens; searches).
  */
 
-export interface Meter {
-  runId: string;
-  verb: Verb;
-  case: string | null;
-  root?: string;
-}
-
-export interface Usage {
-  inputTokens: number;
-  outputTokens: number;
-}
+export type { TokenUsage as Usage } from "./spend.ts";
+type Usage = TokenUsage;
 
 export interface ResearchResult {
   text: string;
@@ -56,13 +50,12 @@ export type FetchLike = typeof fetch;
 const FALLBACK_BETA = "server-side-fallback-2026-06-01";
 
 const ANTHROPIC_VERSION = "2023-06-01";
-const today = () => new Date().toISOString().slice(0, 10);
 
 function recordTokens(meter: Meter, model: string, usage: Usage): number | null {
   const usd = priceOf(model, usage, loadTariffs(meter.root));
   recordSpend(
     {
-      date: today(),
+      date: isoDate(),
       runId: meter.runId,
       verb: meter.verb,
       case: meter.case,
@@ -70,6 +63,8 @@ function recordTokens(meter: Meter, model: string, usage: Usage): number | null 
       calls: 1,
       inputTokens: usage.inputTokens,
       outputTokens: usage.outputTokens,
+      cacheReadTokens: usage.cacheReadTokens ?? 0,
+      cacheWriteTokens: usage.cacheWriteTokens ?? 0,
       usd,
     },
     meter.root,
@@ -83,7 +78,7 @@ function recordSearches(meter: Meter, toolKey: string, count: number): void {
   const usd = t && t.perCallUsd !== null ? Number((count * t.perCallUsd).toFixed(6)) : null;
   recordSpend(
     {
-      date: today(),
+      date: isoDate(),
       runId: meter.runId,
       verb: meter.verb,
       case: meter.case,
@@ -105,12 +100,14 @@ function key(name: string): string {
 
 // ------------------------------------------------------------------ Anthropic
 
-type AnthropicBlock = {
+export type AnthropicBlock = {
   type: string;
   text?: string;
   citations?: { type: string; url?: string; title?: string }[];
+  /** Server-tool and thinking blocks carry more; kept whole so a paused turn can be re-sent. */
+  [k: string]: unknown;
 };
-type AnthropicMessage = {
+export type AnthropicMessage = {
   id: string;
   model: string;
   stop_reason: string;
@@ -123,6 +120,100 @@ type AnthropicMessage = {
     server_tool_use?: { web_search_requests?: number; web_fetch_requests?: number };
   };
 };
+
+/**
+ * Rebuild the message a streamed response describes. Every call streams:
+ * a research turn with thirty searches takes longer than the five minutes
+ * Node's fetch waits for response headers, and a retry after that timeout
+ * pays for the whole request again (observed 2026-09-08, first paid run).
+ * With streaming the headers arrive at once and the connection stays live
+ * on deltas and pings. Blocks are reassembled exactly — text and citation
+ * deltas appended, tool inputs parsed from their JSON fragments, thinking
+ * and signatures kept — because a `pause_turn` needs the assistant content
+ * re-sent verbatim.
+ */
+export function assembleAnthropicStream(sse: string): AnthropicMessage {
+  let message: AnthropicMessage | null = null;
+  let stopped = false;
+  const jsonBuf = new Map<number, string>();
+  for (const chunk of sse.split(/\r?\n\r?\n/)) {
+    const data = chunk
+      .split(/\r?\n/)
+      .filter((l) => l.startsWith("data:"))
+      .map((l) => l.slice(5).trim())
+      .join("");
+    if (!data) continue;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- the vendor's event union, read field by field below
+    const ev = JSON.parse(data) as Record<string, any>;
+    switch (ev.type) {
+      case "message_start":
+        message = { ...ev.message, content: [...(ev.message.content ?? [])] };
+        break;
+      case "content_block_start": {
+        const block = { ...ev.content_block } as AnthropicBlock;
+        if (block.type === "text" && block.text === undefined) block.text = "";
+        message!.content[ev.index] = block;
+        break;
+      }
+      case "content_block_delta": {
+        const block = message!.content[ev.index];
+        const d = ev.delta;
+        if (d.type === "text_delta") block.text = (block.text ?? "") + d.text;
+        else if (d.type === "input_json_delta") jsonBuf.set(ev.index, (jsonBuf.get(ev.index) ?? "") + d.partial_json);
+        else if (d.type === "thinking_delta") block.thinking = String(block.thinking ?? "") + d.thinking;
+        else if (d.type === "signature_delta") block.signature = d.signature;
+        else if (d.type === "citations_delta") block.citations = [...(block.citations ?? []), d.citation];
+        break;
+      }
+      case "content_block_stop": {
+        const buf = jsonBuf.get(ev.index);
+        if (buf !== undefined) message!.content[ev.index].input = JSON.parse(buf || "{}");
+        break;
+      }
+      case "message_delta":
+        message!.stop_reason = ev.delta?.stop_reason ?? message!.stop_reason;
+        message!.usage = { ...message!.usage, ...(ev.usage ?? {}) };
+        break;
+      case "message_stop":
+        stopped = true;
+        break;
+      case "error":
+        throw new Error(`anthropic stream error: ${ev.error?.type ?? "unknown"}: ${ev.error?.message ?? ""}`);
+      default:
+        break; // ping, message_stop
+    }
+  }
+  if (!message) throw new Error("anthropic stream ended without a message_start");
+  if (!stopped || !message.stop_reason) throw new Error(`anthropic stream ended before message_stop (last stop_reason: ${message.stop_reason ?? "none"})`);
+  return message;
+}
+
+/**
+ * Read a streamed body to the end, keeping every byte received. Twice on
+ * 2026-09-08 a long call died with undici's "terminated" — the connection
+ * closed without a clean end after the whole reply had arrived — and
+ * `res.text()` discarded a finished, paid answer. The bytes are kept and
+ * the assembler decides: a stream that carried `message_stop` is complete
+ * whatever the socket did afterwards; one that did not is an error, with
+ * the socket's reason attached.
+ */
+export async function readStreamText(body: ReadableStream<Uint8Array> | null): Promise<{ text: string; ended: Error | null }> {
+  if (!body) return { text: "", ended: new Error("no response body") };
+  const reader = body.getReader();
+  const decoder = new TextDecoder();
+  let text = "";
+  try {
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      text += decoder.decode(value, { stream: true });
+    }
+    text += decoder.decode();
+    return { text, ended: null };
+  } catch (e) {
+    return { text, ended: e as Error };
+  }
+}
 
 /** A call with a configured fallback carries it as the vendor's `fallbacks` parameter. */
 function withFallback<T extends { model: string }>(body: T, fallback: string | undefined): T & { fallbacks?: { model: string }[] } {
@@ -138,26 +229,38 @@ async function anthropicPost(body: { model: string; fallbacks?: unknown }, fetch
       "anthropic-version": ANTHROPIC_VERSION,
       ...(body.fallbacks ? { "anthropic-beta": FALLBACK_BETA } : {}),
     },
-    body: JSON.stringify(body),
+    body: JSON.stringify({ ...body, stream: true }),
     signal: AbortSignal.timeout(timeoutMs),
     // fetchWithRetry uses the global fetch; fetchImpl is honored by tests through globalThis
   });
   void fetchImpl;
   if (!res.ok) throw new Error(`anthropic HTTP ${res.status}: ${(await res.text()).slice(0, 400)}`);
-  return (await res.json()) as AnthropicMessage;
+  const { text, ended } = await readStreamText(res.body);
+  try {
+    return assembleAnthropicStream(text);
+  } catch (e) {
+    throw ended ? new Error(`${(e as Error).message}; the connection ended with: ${ended.message}`) : e;
+  }
 }
 
+/** The vendor's split: uncached input, cache reads, cache writes — each priced at its own rate. */
 function usageOf(m: AnthropicMessage): Usage {
-  // Cache writes and reads are billed at other rates; counting them as input
-  // over-states cost slightly, which is the honest direction for a ledger.
   return {
-    inputTokens:
-      (m.usage.input_tokens ?? 0) +
-      (m.usage.cache_creation_input_tokens ?? 0) +
-      (m.usage.cache_read_input_tokens ?? 0),
+    inputTokens: m.usage.input_tokens ?? 0,
     outputTokens: m.usage.output_tokens ?? 0,
+    cacheReadTokens: m.usage.cache_read_input_tokens ?? 0,
+    cacheWriteTokens: m.usage.cache_creation_input_tokens ?? 0,
   };
 }
+
+/**
+ * Automatic prompt caching on every call (the vendor moves the breakpoint
+ * forward as the turn grows). In a server-tool loop the model re-reads the
+ * whole context after each result; cached, those re-reads cost a fortieth
+ * of the base rate on the house model. The first paid run went without it
+ * and paid the base rate 39 times over.
+ */
+const AUTO_CACHE = { cache_control: { type: "ephemeral" } } as const;
 
 export interface AnthropicResearchOptions {
   model: string;
@@ -184,12 +287,14 @@ export async function anthropicResearch(opts: AnthropicResearchOptions, meter: M
   const maxTokens = opts.maxTokens ?? 32000;
   const maxSearches = opts.maxSearches ?? 30;
   const maxFetches = opts.maxFetches ?? 15;
+  const maxContentTokens = opts.maxContentTokens ?? 30000;
   assertWithinBudget(
     estimateUsd({
       model,
       inputChars: opts.system.length + opts.user.length,
       maxOutputTokens: maxTokens,
       searches: { count: maxSearches, toolKey: "anthropic:web_search" },
+      fetches: { count: maxFetches, maxContentTokens },
     }, loadTariffs(meter.root)),
     { runId: meter.runId, verb: meter.verb, root: meter.root },
   );
@@ -198,17 +303,13 @@ export async function anthropicResearch(opts: AnthropicResearchOptions, meter: M
   const body = withFallback({
     model,
     max_tokens: maxTokens,
+    ...AUTO_CACHE,
     thinking: { type: "adaptive" },
     output_config: { effort: opts.effort ?? "high" },
     system: opts.system,
     tools: [
       { type: "web_search_20260318", name: "web_search", max_uses: maxSearches },
-      {
-        type: "web_fetch_20260209",
-        name: "web_fetch",
-        max_uses: maxFetches,
-        max_content_tokens: opts.maxContentTokens ?? 30000,
-      },
+      { type: "web_fetch_20260209", name: "web_fetch", max_uses: maxFetches, max_content_tokens: maxContentTokens },
     ],
     messages,
   }, opts.fallback);
@@ -217,7 +318,7 @@ export async function anthropicResearch(opts: AnthropicResearchOptions, meter: M
   let served = model;
   const texts: string[] = [];
   const citations: { url: string; title?: string }[] = [];
-  const usage: Usage = { inputTokens: 0, outputTokens: 0 };
+  const usage: Usage = { inputTokens: 0, outputTokens: 0, cacheReadTokens: 0, cacheWriteTokens: 0 };
   let searches = 0;
   let fetches = 0;
   const limit = opts.maxContinuations ?? 8;
@@ -228,6 +329,8 @@ export async function anthropicResearch(opts: AnthropicResearchOptions, meter: M
     const u = usageOf(m);
     usage.inputTokens += u.inputTokens;
     usage.outputTokens += u.outputTokens;
+    usage.cacheReadTokens! += u.cacheReadTokens ?? 0;
+    usage.cacheWriteTokens! += u.cacheWriteTokens ?? 0;
     searches += m.usage.server_tool_use?.web_search_requests ?? 0;
     fetches += m.usage.server_tool_use?.web_fetch_requests ?? 0;
     for (const b of m.content) {
@@ -247,6 +350,27 @@ export async function anthropicResearch(opts: AnthropicResearchOptions, meter: M
   const text = texts.join("\n").trim();
   if (!text) throw new Error(`${served}: empty report`);
   return { text, model: served, usage, searches, fetches, citations: dedupeCitations(citations), raw };
+}
+
+/**
+ * The vendor payload kept beside a report, without the fetched page bodies:
+ * the first run's raw.json was 4.2 MB, 3.7 MB of it web pages the model had
+ * read. Tool inputs, text, thinking, usage, and the search result lists
+ * stay; fetched and executed content is replaced by its size.
+ */
+export function compactRaw(raw: unknown[]): unknown[] {
+  return raw.map((m) => {
+    const msg = m as { content?: AnthropicBlock[] };
+    if (!Array.isArray(msg.content)) return m;
+    return {
+      ...msg,
+      content: msg.content.map((b) =>
+        b.type === "web_fetch_tool_result" || b.type === "code_execution_tool_result"
+          ? { ...b, content: { omitted: `${JSON.stringify(b.content ?? null).length} chars` } }
+          : b,
+      ),
+    };
+  });
 }
 
 function dedupeCitations(list: { url: string; title?: string }[]) {
@@ -269,25 +393,52 @@ export interface AnthropicJsonOptions {
 }
 
 /** One structured-output call; returns the parsed JSON and the usage. */
+/** The vendor's refusal to compile a large schema into a grammar; nothing was billed. */
+const GRAMMAR_TOO_LARGE = /compiled grammar is too large/i;
+
+/**
+ * One JSON call. Strict structured output first (the vendor guarantees the
+ * shape); when the vendor refuses the schema as too large to compile — the
+ * draft schema is — the same call is made once more with the schema in the
+ * instructions and the reply parsed as JSON. The caller validates either way
+ * (every proposal and edition is Zod-checked before it is written), so the
+ * loss is only the guarantee, and the result says which mode answered.
+ */
 export async function anthropicJson<T = unknown>(
   opts: AnthropicJsonOptions,
   meter: Meter,
-): Promise<{ data: T; model: string; usage: Usage; usd: number | null }> {
+): Promise<{ data: T; model: string; usage: Usage; usd: number | null; strict: boolean }> {
   const model = opts.model;
   const maxTokens = opts.maxTokens ?? 32000;
   assertWithinBudget(
     estimateUsd({ model, inputChars: opts.system.length + opts.user.length, maxOutputTokens: maxTokens }, loadTariffs(meter.root)),
     { runId: meter.runId, verb: meter.verb, root: meter.root },
   );
-  const body = withFallback({
-    model,
-    max_tokens: maxTokens,
-    thinking: { type: "adaptive" },
-    output_config: { effort: opts.effort ?? "high", format: { type: "json_schema", schema: opts.schema } },
-    system: opts.system,
-    messages: [{ role: "user", content: opts.user }],
-  }, opts.fallback);
-  const m = await anthropicPost(body, opts.fetchImpl ?? fetch, opts.timeoutMs ?? 1_800_000);
+  const request = (strict: boolean) =>
+    withFallback({
+      model,
+      max_tokens: maxTokens,
+      ...AUTO_CACHE,
+      thinking: { type: "adaptive" },
+      output_config: strict
+        ? { effort: opts.effort ?? "high", format: { type: "json_schema", schema: opts.schema } }
+        : { effort: opts.effort ?? "high" },
+      system: strict
+        ? opts.system
+        : `${opts.system}\n\nReply with one JSON object and nothing else — no prose, no code fence. It must satisfy this JSON Schema exactly:\n${JSON.stringify(opts.schema)}`,
+      messages: [{ role: "user", content: opts.user }],
+    }, opts.fallback);
+
+  let strict = true;
+  let m: AnthropicMessage;
+  try {
+    m = await anthropicPost(request(true), opts.fetchImpl ?? fetch, opts.timeoutMs ?? 1_800_000);
+  } catch (e) {
+    if (!GRAMMAR_TOO_LARGE.test((e as Error).message)) throw e;
+    console.error(`${meter.runId}: the vendor would not compile the schema for strict output; sending it as instructions`);
+    strict = false;
+    m = await anthropicPost(request(false), opts.fetchImpl ?? fetch, opts.timeoutMs ?? 1_800_000);
+  }
   const served = m.model || model;
   if (m.stop_reason === "refusal") throw new Error(`${model} (and its fallback) refused`);
   if (m.stop_reason === "max_tokens") throw new Error(`${served} hit max_tokens (${maxTokens}) before finishing`);
@@ -296,11 +447,11 @@ export async function anthropicJson<T = unknown>(
   const usd = recordTokens(meter, served, usage);
   let data: T;
   try {
-    data = JSON.parse(text) as T;
+    data = (strict ? JSON.parse(text) : parseJsonReply(text)) as T;
   } catch (e) {
     throw new Error(`${served}: reply was not the JSON the schema demanded (${(e as Error).message})`);
   }
-  return { data, model: served, usage, usd };
+  return { data, model: served, usage, usd, strict };
 }
 
 // --------------------------------------------------------------------- OpenAI
@@ -314,13 +465,14 @@ type ResponsesObject = {
   status: string;
   model: string;
   output?: ResponsesOutputItem[];
-  usage?: { input_tokens?: number; output_tokens?: number };
+  usage?: { input_tokens?: number; output_tokens?: number; input_tokens_details?: { cached_tokens?: number } };
   error?: { message?: string } | null;
   incomplete_details?: { reason?: string } | null;
 };
 
 export interface OpenAIResearchOptions {
   model: string;
+  effort?: "low" | "medium" | "high" | "xhigh";
   instructions: string;
   input: string;
   maxToolCalls?: number;
@@ -332,10 +484,10 @@ export interface OpenAIResearchOptions {
 }
 
 /**
- * A deep-research call through the Responses API in background mode,
+ * A browsing research call through the Responses API in background mode,
  * polled until it completes. Search calls are counted from the output.
  */
-export async function openaiDeepResearch(opts: OpenAIResearchOptions, meter: Meter): Promise<ResearchResult> {
+export async function openaiResearch(opts: OpenAIResearchOptions, meter: Meter): Promise<ResearchResult> {
   const model = opts.model;
   const maxToolCalls = opts.maxToolCalls ?? 40;
   const maxOutputTokens = opts.maxOutputTokens ?? 40000;
@@ -358,10 +510,10 @@ export async function openaiDeepResearch(opts: OpenAIResearchOptions, meter: Met
       instructions: opts.instructions,
       input: opts.input,
       background: true,
-      tools: [{ type: "web_search_preview" }],
+      tools: [{ type: "web_search", search_context_size: "medium" }],
       max_tool_calls: maxToolCalls,
       max_output_tokens: maxOutputTokens,
-      reasoning: { summary: "auto" },
+      reasoning: { effort: opts.effort ?? "high", summary: "auto" },
     }),
     signal: AbortSignal.timeout(120_000),
   });
@@ -378,7 +530,13 @@ export async function openaiDeepResearch(opts: OpenAIResearchOptions, meter: Met
     resp = (await poll.json()) as ResponsesObject;
   }
   raw.push(resp);
-  const usage: Usage = { inputTokens: resp.usage?.input_tokens ?? 0, outputTokens: resp.usage?.output_tokens ?? 0 };
+  // OpenAI counts cached tokens inside input_tokens; split them out so each is priced at its rate.
+  const cached = resp.usage?.input_tokens_details?.cached_tokens ?? 0;
+  const usage: Usage = {
+    inputTokens: Math.max(0, (resp.usage?.input_tokens ?? 0) - cached),
+    outputTokens: resp.usage?.output_tokens ?? 0,
+    cacheReadTokens: cached,
+  };
   const searches = (resp.output ?? []).filter((o) => o.type === "web_search_call").length;
   recordTokens(meter, model, usage);
   recordSearches(meter, "openai:web_search", searches);

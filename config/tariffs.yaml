@@ -5,26 +5,17 @@
 # provenance too. Never estimate; a null row is honest.
 #
 # Keys are the exact model ids the transport sends. Tool-call fees (web
-# search) are recorded as their own rows under `tools`, per call.
+# search) are recorded as their own rows under `tools`, per call. Cache
+# rates matter: a research turn re-reads its whole context after every
+# tool result, and the ledger prices reads and writes at their own rates —
+# a model without them is priced at the base rate throughout.
 models:
-  # --- the research pass (report verb) ------------------------------------
-  o4-mini-deep-research:
-    inputPerMTok: 2
-    outputPerMTok: 8
-    cachedInputPerMTok: 0.5
-    source: https://developers.openai.com/api/docs/models/o4-mini-deep-research
-    checked: "2026-09-08"
-  o3-deep-research:
-    inputPerMTok: 10
-    outputPerMTok: 40
-    cachedInputPerMTok: 2.5
-    source: https://developers.openai.com/api/docs/models/o3-deep-research
-    checked: "2026-09-08"
   # --- the house model (Fable 5.1, with a server-side fallback to Opus 5) ---
   claude-fable-5-1:
     inputPerMTok: 10
     outputPerMTok: 50
-    cachedInputPerMTok: 0.25
+    cachedInputPerMTok: 0.25      # cache hits: 0.025× base on this model
+    cacheWritePerMTok: 12.5       # 5-minute cache write: 1.25× base
     source: https://platform.claude.com/docs/en/about-claude/pricing
     checked: "2026-09-08"
   # --- the fallback, the drafter's second option, and the panel's house seat --
@@ -32,20 +23,24 @@ models:
     inputPerMTok: 5
     outputPerMTok: 25
     cachedInputPerMTok: 0.5
+    cacheWritePerMTok: 6.25
     source: https://platform.claude.com/docs/en/about-claude/pricing
     checked: "2026-09-08"
   claude-sonnet-5:
     inputPerMTok: 2
     outputPerMTok: 10
     cachedInputPerMTok: 0.2
+    cacheWritePerMTok: 2.5
     source: https://platform.claude.com/docs/en/about-claude/pricing
     checked: "2026-09-08"
-  # --- the other panel seats: not yet read from a price page ---------------
+  # --- the comparison research seat and the panel's OpenAI seat -------------
   gpt-5.6-sol:
-    inputPerMTok: null
-    outputPerMTok: null
-    source: null
-    checked: null
+    inputPerMTok: 4
+    outputPerMTok: 20
+    cachedInputPerMTok: 0.4
+    source: https://developers.openai.com/api/docs/pricing
+    checked: "2026-09-08"
+  # --- the other panel seats: not yet read from a price page ---------------
   gemini-3.8-flash:
     inputPerMTok: null
     outputPerMTok: null
@@ -75,6 +70,6 @@ tools:
     checked: "2026-09-08"
   openai:web_search:
     perCallUsd: 0.01
-    note: "$10 per 1,000 calls for reasoning models, plus search content tokens at the model rate"
+    note: "$10 per 1,000 calls, plus search content tokens at the model rate"
     source: https://developers.openai.com/api/docs/pricing
     checked: "2026-09-08"

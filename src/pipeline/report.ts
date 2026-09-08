@@ -1,14 +1,13 @@
 import fs from "node:fs";
 import path from "node:path";
 import { sha256Hex } from "../domain/hash.ts";
-import { loadAllCases } from "../domain/load.ts";
+import { findCase } from "../domain/load.ts";
 import type { LoadedCase } from "../domain/schema.ts";
 import { MODELS } from "../../scripts/lib/models.mjs";
-import { anthropicResearch, openaiDeepResearch, type Meter, type ResearchResult } from "./models.ts";
+import { anthropicResearch, compactRaw, openaiResearch, type Meter, type ResearchResult } from "./models.ts";
 import { buildPacket, renderPacket } from "./packet.ts";
 import { loadProtocol, renderProtocol } from "./protocols.ts";
-import { spendFor, sumCost } from "./spend.ts";
-import { newRunId, readRuns, runDir, writeRun, writeWorkingFile } from "./store.ts";
+import { closeRun, openRun, readRuns, runDir, writeWorkingFile, type RunOutcome } from "./store.ts";
 
 /**
  * `aletheia report <case>` — investigate (docs/AUTOMATION.md, "The verbs").
@@ -35,8 +34,8 @@ export type Researcher = (
 
 export const defaultResearcher: Researcher = (seat, instructions, input, meter) =>
   seat === "openai"
-    ? openaiDeepResearch(
-        { model: RESEARCH_SEATS.openai.model, instructions, input, maxToolCalls: RESEARCH_SEATS.openai.maxToolCalls },
+    ? openaiResearch(
+        { model: RESEARCH_SEATS.openai.model, effort: RESEARCH_SEATS.openai.effort, instructions, input, maxToolCalls: RESEARCH_SEATS.openai.maxToolCalls },
         meter,
       )
     : anthropicResearch(
@@ -60,18 +59,8 @@ export interface ReportOptions {
   deps?: { research?: Researcher; now?: () => Date; cases?: () => LoadedCase[] };
 }
 
-export interface ReportOutcome {
-  outcome: "completed" | "failed" | "dry-run" | "rested";
-  runId: string;
-  reason?: string;
+export interface ReportOutcome extends RunOutcome {
   reportFile?: string;
-  cost?: ReturnType<typeof sumCost>;
-}
-
-export function findCase(key: string, cases = loadAllCases()): LoadedCase {
-  const loaded = cases.find((c) => c.record.slug === key || c.dir === key);
-  if (!loaded) throw new Error(`no case with slug or directory "${key}"`);
-  return loaded;
 }
 
 /** The latest completed report run for a case, and its text. */
@@ -99,27 +88,21 @@ export async function runReport(caseKey: string, opts: ReportOptions): Promise<R
   const inputHash = sha256Hex(
     [opts.seat, protocol.version, instructions, renderPacket(buildPacket(loaded))].join("\n \n"),
   );
-  const date = now().toISOString().slice(0, 10);
-  const runId = newRunId("report", slug, now());
   const model = RESEARCH_SEATS[opts.seat].model;
-  const base = { runId, verb: "report" as const, case: slug, date, model, promptVersion: protocol.version, inputHash };
-  const zero = { calls: 0, inputTokens: 0, outputTokens: 0, usd: 0 };
+  const run = openRun("report", slug, { model, promptVersion: protocol.version, inputHash }, { now: now(), root });
+  const { runId, date } = run;
 
   if (prior && prior.inputHash === inputHash && !opts.reconsider) {
-    const reason = `unchanged inputs since ${prior.runId} (same packet, seat, and protocol); pass --reconsider "why" to run anyway`;
-    writeRun({ ...base, outcome: "rested", cost: zero, notes: reason }, root);
-    return { outcome: "rested", runId, reason };
+    return closeRun(run, "rested", { reason: `unchanged inputs since ${prior.runId} (same packet, seat, and protocol); pass --reconsider "why" to run anyway` });
   }
   if (opts.dryRun) {
     writeWorkingFile(runId, "packet.json", input, root);
     writeWorkingFile(runId, "instructions.md", instructions, root);
-    writeRun({ ...base, outcome: "dry-run", cost: zero, notes: `would send ${input.length} chars to ${model}` }, root);
-    return { outcome: "dry-run", runId, reason: `packet and instructions written under proposals/${runId}/; nothing sent` };
+    return closeRun(run, "dry-run", { reason: `packet and instructions written under proposals/${runId}/ (${input.length} chars for ${model}); nothing sent` });
   }
 
-  const meter: Meter = { runId, verb: "report", case: slug, root };
   try {
-    const result = await (opts.deps?.research ?? defaultResearcher)(opts.seat, instructions, input, meter);
+    const result = await (opts.deps?.research ?? defaultResearcher)(opts.seat, instructions, input, run.meter);
     const header =
       `<!-- Unverified AI research report — working material, never citable (docs/AUTOMATION.md).\n` +
       `     runId ${runId} · seat ${opts.seat} · model ${result.model} · protocol ${protocol.version} · ${date}\n` +
@@ -128,13 +111,9 @@ export async function runReport(caseKey: string, opts: ReportOptions): Promise<R
       ` -->\n\n`;
     const reportFile = writeWorkingFile(runId, "report.md", header + result.text.trim() + "\n", root);
     writeWorkingFile(runId, "citations.json", JSON.stringify(result.citations, null, 2), root);
-    writeWorkingFile(runId, "raw.json", JSON.stringify(result.raw, null, 1), root);
-    const cost = sumCost(spendFor(runId, root));
-    writeRun({ ...base, model: result.model, outcome: "completed", cost }, root);
-    return { outcome: "completed", runId, reportFile, cost };
+    writeWorkingFile(runId, "raw.json", JSON.stringify(compactRaw(result.raw), null, 1), root);
+    return { ...closeRun(run, "completed", { model: result.model }), reportFile };
   } catch (e) {
-    const reason = (e as Error).message;
-    writeRun({ ...base, outcome: "failed", cost: sumCost(spendFor(runId, root)), notes: reason }, root);
-    return { outcome: "failed", runId, reason };
+    return closeRun(run, "failed", { reason: (e as Error).message });
   }
 }

@@ -21,7 +21,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml } from "yaml";
 import { coverageDiff, type Candidate } from "../src/domain/coverage.ts";
-import { loadAllCases } from "../src/domain/load.ts";
+import { findCase } from "../src/domain/load.ts";
 import { migrateMemory } from "../src/pipeline/migrate-memory.ts";
 import { allStatus, renderStatusTable } from "../src/pipeline/status.ts";
 import { DEFAULT_SEAT, runReport } from "../src/pipeline/report.ts";
@@ -42,14 +42,6 @@ for (let i = 0; i < rest.length; i++) {
 }
 const flagValue = (name: string) => values[name];
 
-function findCase(key: string) {
-  const loaded = loadAllCases().find((c) => c.record.slug === key || c.dir === key);
-  if (!loaded) {
-    console.error(`no case with slug or directory "${key}"`);
-    process.exit(1);
-  }
-  return loaded;
-}
 
 await (async () => {
 switch (verb) {

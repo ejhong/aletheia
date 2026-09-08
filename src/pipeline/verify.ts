@@ -1,7 +1,6 @@
-import path from "node:path";
 import type { Disposition, Proposal } from "../domain/intake.ts";
 import { sourceKeys, textKey } from "../domain/keys.ts";
-import { claimAnchorErrors, sourceAdmissionErrors } from "../domain/load.ts";
+import { claimAnchorErrors, findCase, sourceAdmissionErrors } from "../domain/load.ts";
 import type { Claim, Evidence, LoadedCase, ResearchOpportunity, Source } from "../domain/schema.ts";
 import { verifyCitations } from "../../scripts/lib/citation-check.mjs";
 import { fetchSource, type FetchedSource } from "./fetch.ts";
@@ -10,9 +9,7 @@ import { MODELS } from "../../scripts/lib/models.mjs";
 import { anthropicJson, type Meter } from "./models.ts";
 import { loadProtocol, renderProtocol } from "./protocols.ts";
 import { unverifiedQuotes } from "./quotes.ts";
-import { findCase } from "./report.ts";
-import { spendFor, sumCost } from "./spend.ts";
-import { appendDispositions, newRunId, readProposal, writeRun, writeWorkingFile } from "./store.ts";
+import { appendDispositions, closeRun, openRun, readProposal, writeWorkingFile, type RunOutcome } from "./store.ts";
 
 /**
  * `aletheia verify <proposalRunId>` — verify (docs/AUTOMATION.md, "The verbs").
@@ -245,13 +242,9 @@ export interface VerifyOptions {
   };
 }
 
-export interface VerifyOutcome {
-  outcome: "completed" | "failed" | "dry-run";
-  runId: string;
-  reason?: string;
+export interface VerifyOutcome extends RunOutcome {
   accepted?: { sources: number; evidence: number; claims: number; research: number };
   rejected?: number;
-  cost?: ReturnType<typeof sumCost>;
 }
 
 export async function runVerify(proposalRunId: string, opts: VerifyOptions = {}): Promise<VerifyOutcome> {
@@ -263,10 +256,8 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
   if (proposal.basis.ledgerHash !== loaded.ledgerHash) {
     throw new Error(`the ledger has changed since ${proposalRunId} was drafted (basis ${proposal.basis.ledgerHash.slice(0, 12)} ≠ current ${loaded.ledgerHash.slice(0, 12)}); re-run draft against the current ledger`);
   }
-  const date = now().toISOString().slice(0, 10);
-  const runId = newRunId("verify", loaded.record.slug, now());
-  const base = { runId, verb: "verify" as const, case: loaded.record.slug, date, model: READER.model, promptVersion: loadProtocol("verify").version, inputHash: null };
-  const meter: Meter = { runId, verb: "verify", case: loaded.record.slug, root };
+  const run = openRun("verify", loaded.record.slug, { model: READER.model, promptVersion: loadProtocol("verify").version }, { now: now(), root });
+  const { runId, date, meter } = run;
 
   try {
     // Mechanical: identifiers and texts.
@@ -310,13 +301,11 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
 
     if (notes.some((n) => n.startsWith("prospective ledger:"))) {
       const reason = `the prospective ledger fails the build's own rules; see proposals/${runId}/verification.md — nothing written`;
-      writeRun({ ...base, outcome: "failed", cost: sumCost(spendFor(runId, root)), notes: reason }, root);
-      return { outcome: "failed", runId, reason, rejected: rejected.length };
+      return { ...closeRun(run, "failed", { reason }), rejected: rejected.length };
     }
     const counts = { sources: accepted.sources.length, evidence: accepted.evidence.length, claims: accepted.claims.length, research: accepted.research.length };
     if (opts.dryRun) {
-      writeRun({ ...base, outcome: "dry-run", cost: sumCost(spendFor(runId, root)), notes: `would write ${JSON.stringify(counts)}; ${rejected.length} rejected` }, root);
-      return { outcome: "dry-run", runId, accepted: counts, rejected: rejected.length };
+      return { ...closeRun(run, "dry-run", { reason: `would write ${JSON.stringify(counts)}; ${rejected.length} rejected` }), accepted: counts, rejected: rejected.length };
     }
 
     // Materialize.
@@ -350,17 +339,9 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
       },
       root,
     );
-    const cost = sumCost(spendFor(runId, root));
-    writeRun({ ...base, outcome: "completed", cost, notes: `wrote ${JSON.stringify(counts)}; ${rejected.length} rejected` }, root);
-    return { outcome: "completed", runId, accepted: counts, rejected: rejected.length, cost };
+    return { ...closeRun(run, "completed", { reason: `wrote ${JSON.stringify(counts)}; ${rejected.length} rejected` }), accepted: counts, rejected: rejected.length };
   } catch (e) {
-    const reason = (e as Error).message;
-    writeRun({ ...base, outcome: "failed", cost: sumCost(spendFor(runId, root)), notes: reason }, root);
-    return { outcome: "failed", runId, reason };
+    return closeRun(run, "failed", { reason: (e as Error).message });
   }
-}
-
-export function proposalDirOf(runId: string, root = process.cwd()): string {
-  return path.join(root, "proposals", runId);
 }
 

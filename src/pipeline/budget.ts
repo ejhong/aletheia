@@ -1,9 +1,8 @@
-import fs from "node:fs";
-import path from "node:path";
-import { parse as parseYaml } from "yaml";
 import { z } from "zod";
 import type { Verb } from "../domain/intake.ts";
-import { loadTariffs, readSpend, type Tariffs } from "./spend.ts";
+import { isoDate } from "../../scripts/lib/overlay-ids.mjs";
+import { loadConfig } from "./config.ts";
+import { inputRates, loadTariffs, readSpend, type Tariffs } from "./spend.ts";
 
 /**
  * The spend ceiling (config/budget.yaml), enforced before every paid call.
@@ -25,12 +24,8 @@ const BudgetSchema = z.object({
 });
 export type Budget = z.infer<typeof BudgetSchema>;
 
-export const budgetFile = (root = process.cwd()) => path.join(root, "config", "budget.yaml");
-
 export function loadBudget(root = process.cwd()): Budget {
-  const file = budgetFile(root);
-  if (!fs.existsSync(file)) throw new Error("config/budget.yaml is missing — no paid call runs without a ceiling");
-  return BudgetSchema.parse(parseYaml(fs.readFileSync(file, "utf8")));
+  return loadConfig("budget", BudgetSchema, { root, whyRequired: "no paid call runs without a ceiling" });
 }
 
 export class BudgetExceeded extends Error {
@@ -46,24 +41,50 @@ export interface CallEstimate {
   maxOutputTokens: number;
   /** Server-side searches the call may perform, and the tariff key for them. */
   searches?: { count: number; toolKey: string };
+  /** Server-side page fetches the call may perform, each capped at this many tokens. */
+  fetches?: { count: number; maxContentTokens: number };
 }
 
 /** Rough tokens from characters — 3.5 chars per token, on the conservative side. */
 export const tokensFromChars = (chars: number) => Math.ceil(chars / 3.5);
+/** Input tokens one search result adds to the context. */
+export const SEARCH_RESULT_TOKENS = 4000;
 
-/** Conservative USD for a call, or null when the model (or its tool) has no reviewed tariff. */
+/**
+ * Conservative USD for a call, or null when the model (or its tool) has no
+ * reviewed tariff. A call with server tools is a loop the vendor runs for
+ * us: after every tool result the model reads the whole context again. The
+ * first paid run (2026-09-08) made 39 such passes and was billed 3.6M input
+ * tokens against a 39k-token prompt; the estimate had counted the prompt
+ * once. So: every new token — the prompt and each tool result — is written
+ * to the prompt cache once at the write rate, and every pass re-reads all
+ * that came before at the read rate. Without cache rates in the tariff both
+ * fall back to the base rate, which is what a call without caching costs.
+ */
 export function estimateUsd(call: CallEstimate, tariffs: Tariffs = loadTariffs()): number | null {
   const t = tariffs.models[call.model];
-  if (!t || t.inputPerMTok === null || t.outputPerMTok === null) return null;
-  let usd = (tokensFromChars(call.inputChars) * t.inputPerMTok + call.maxOutputTokens * t.outputPerMTok) / 1e6;
-  if (call.searches && call.searches.count > 0) {
-    const tool = tariffs.tools[call.searches.toolKey];
-    if (!tool || tool.perCallUsd === null) return null;
-    usd += call.searches.count * tool.perCallUsd;
-    // Search results are billed as input; allow roughly 4k tokens per search.
-    usd += (call.searches.count * 4000 * t.inputPerMTok) / 1e6;
+  const rates = t ? inputRates(t) : null;
+  if (!t || !rates || t.outputPerMTok === null) return null;
+  const base = tokensFromChars(call.inputChars);
+  const searches = call.searches?.count ?? 0;
+  const fetches = call.fetches?.count ?? 0;
+  const passes = searches + fetches;
+  let perMTok = call.maxOutputTokens * t.outputPerMTok;
+  let fees = 0;
+  if (passes === 0) {
+    perMTok += base * rates.input;
+  } else {
+    if (searches > 0) {
+      const tool = tariffs.tools[call.searches!.toolKey];
+      if (!tool || tool.perCallUsd === null) return null;
+      fees += searches * tool.perCallUsd;
+    }
+    const toolTokens = searches * SEARCH_RESULT_TOKENS + fetches * (call.fetches?.maxContentTokens ?? 0);
+    const writes = base + toolTokens;
+    const reads = passes * base + (toolTokens / passes) * ((passes * (passes - 1)) / 2);
+    perMTok += writes * rates.write + reads * rates.read;
   }
-  return Number(usd.toFixed(4));
+  return Number((perMTok / 1e6 + fees).toFixed(4));
 }
 
 export interface BudgetContext {
@@ -83,7 +104,7 @@ export function assertWithinBudget(estimate: number | null, ctx: BudgetContext):
     );
   }
   const budget = loadBudget(root);
-  const today = ctx.today ?? new Date().toISOString().slice(0, 10);
+  const today = ctx.today ?? isoDate();
   const month = today.slice(0, 7);
   const rows = readSpend(root);
   const sum = (pred: (r: (typeof rows)[number]) => boolean) =>

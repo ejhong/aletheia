@@ -59,7 +59,7 @@ tariff in `config/tariffs.yaml`.
 node scripts/aletheia.ts status                                   # standing, edition, counts, saturation, spend per case
 node scripts/aletheia.ts report <case> --seat openai --dry-run    # write the packet and instructions, send nothing
 node scripts/aletheia.ts report <case>                            # the research pass: the house model (Fable 5.1, fallback Opus 5) with web search and fetch
-node scripts/aletheia.ts report <case> --seat openai              # …or o4-mini-deep-research, for the comparison
+node scripts/aletheia.ts report <case> --seat openai              # …or the OpenAI seat (gpt-5.6-sol with web_search), for the comparison
 node scripts/aletheia.ts draft <reportRunId>                      # report + fetched sources → proposals/<runId>/proposal.yaml
 node scripts/aletheia.ts verify <proposalRunId> --dry-run         # mechanical checks + second reader; writes verification.md only
 node scripts/aletheia.ts verify <proposalRunId>                   # …and appends accepted records, dispositions, history to the working tree
@@ -76,6 +76,32 @@ refused unless `ALETHEIA_ALLOW_UNPRICED=1`. `verify` and `edition` change
 the working tree and stop: review the diff, then open the PR the panel
 judges. Unchanged inputs rest — `report` per seat, `edition` per ledger
 hash — and say so in `run.yaml`.
+
+What the first paid day (2026-09-08, Cast Not Carved) taught about running
+it:
+
+- **Runs are long.** A house-seat report or an edition takes ten to twenty
+  minutes. Run them detached (`nohup … &`, or a terminal that will not be
+  closed) and read `run.yaml` afterwards; a tool or shell timeout that kills
+  the process leaves the vendor's work running and unrecorded.
+- **The guard is an estimate.** It cannot stop a single server turn once
+  sent. A run whose ledger cost passed the per-run cap is kept, and its
+  record and stderr say `OVER THE PER-RUN CEILING`; when that appears, the
+  estimate in `src/pipeline/budget.ts` is wrong for that call shape and must
+  be looked at before the next run.
+- **Failures cost nothing or everything.** A 400 from the vendor (a schema
+  it will not compile, an unknown model) bills nothing and the run says so.
+  A connection that dies mid-reply may have billed the whole reply; the
+  reader keeps every byte received, so a stream that reached its final
+  event is complete whatever the socket did afterwards.
+- **The second reader is a judge, not a function.** The same proposal
+  verified twice admitted different subsets (2 evidence and 2 claims, then 1
+  and 1); its reasons are recorded either way. Read `verification.md`
+  before opening the PR.
+- **`edition` repairs once.** A candidate that fails the loader's mechanical
+  rules goes back to the drafter with the findings, once; the second answer
+  is validated the same way. `errors.md` and `reply-repaired.json` in the
+  run directory show what happened.
 
 ## 2. Feeding it
 

@@ -1,0 +1,395 @@
+# Proposal — a change to domain records, in one envelope (docs/AUTOMATION.md).
+# Never citable; nothing here is a record until adopted through the gate.
+runId: 2026-09-08-draft-megalithic-casting-132902
+date: 2026-09-08
+case: megalithic-casting
+producer: draft
+model: claude-fable-5-1
+promptVersion: draft-v1
+basis:
+  ledgerHash: 0af713936e67552679dd5150bbcdf6857dd2b7cfa0157e0036f875f2a481b346
+rationale: "Of the ten sources the report proposed, only three came back with readable text: the Geopolymer Institute 'Pyramids (3)' page (already indexed as SRC-GEOPOLYMER-INST), an amateur transcription of Petrie 1883 on the Queen's Chamber (khufupyramid.dk), and the abstract page of Davidovits & Davidovits 2020 (GPSA 1:36–43). Sessa et al. 2026 returned only a bot-challenge page; Nemoy 1939, Cooperson, Legon 1993, Túnyi & El-hemaly 2012, Janusek et al. 2013 and Kelany et al. 2009 were not retrievable. The report's most consequential findings — that the medieval al-Maʾmūn compilations contain no salt, that the salt has a sedimentary explanation, that Tiwanaku andesite is pXRF-matched to Ccapia with carved blocks abandoned en route, and the paleomagnetic pilot — therefore all stay blocked with routes to the primaries. What can be verified and enters: (1) the ledger's sole anchor for the al-Maʾmūn salt report cites no medieval source and dates the entry to 820 AD; (2) Petrie 1883 independently recorded salt incrustation in the Queen's Chamber (via transcription, to be checked against the scan); (3) the proponents' current Pumapunku model specifies uncrushed natural Khapia andesite sand stored at Iwawe Stratum V and disowns the piedras cansadas — which makes a single stratigraphic description decisive. The proposed date correction to GEO-C003 (820→832) rests on the two unretrieved compilations and is held as blocked, not applied. No edition change: the report's narrative revisions depend on the blocked sources."
+adds:
+  sources:
+    - id: SRC-THEQUEENS-ND
+      title: "The Queen's Chamber — Pyramid of Khufu (Cheops): dimensions with transcribed passages from Petrie 1883 §§41–44"
+      authors: []
+      sourceType: webpage
+      identifier: url:khufupyramid.dk/inside-dimensions/the-queens-chamber
+      url: https://khufupyramid.dk/inside-dimensions/the-queens-chamber
+      verification: ai_verified
+      verificationNote: text retrieved and shown to the drafter on 2026-09-08 (run 2026-09-08-draft-megalithic-casting-132902); passages checked by the verify verb
+      reliabilityNotes:
+        - Anonymous amateur metrology website; used here only as a carrier for its verbatim transcription of Petrie, The Pyramids and Temples of Gizeh (1883), §41 (p. 66), §42 (pp. 67–69), §43 (pp. 69–70), §44 (p. 70), which it tags with its own locator codes (e.g. S5orig-[S41]-P66-L29-37).
+        - "Transcription has not been checked against the archive.org scan of Petrie 1883 (report: OCR truncated); treat as secondary until the scan pages are read."
+        - The site's own statements (e.g. that the greater part of the walls is salt-incrusted) are its author's, not Petrie's, and are undated relative to the 1990s cleaning the report mentions.
+      derivedFrom: []
+      background: false
+    - id: SRC-DAVIDOVITS-2020
+      title: "Ancient geopolymers in South-American Monuments, Part IV: use of natural andesite volcanic sand (not crushed)"
+      authors:
+        - Joseph Davidovits
+        - Frédéric Davidovits
+      year: "2020"
+      sourceType: paper
+      identifier: doi:10.13140/RG.2.2.10021.93929/2
+      url: https://www.geopolymer.org/library/gpsa/2020-davidovits-andesite-sand/
+      verification: ai_verified
+      verificationNote: text retrieved and shown to the drafter on 2026-09-08 (run 2026-09-08-draft-megalithic-casting-132902); passages checked by the verify verb
+      reliabilityNotes:
+        - Published in the Geopolymer Institute's own Journal on Geopolymer Science Applied to Archaeology (vol. 1, pp. 36–43); proponent venue, not independent peer review.
+        - Only the abstract/landing page was shown; the PDF body was not opened. Statements recorded here are from the abstract.
+        - Same authors and institute as SRC-DAVIDOVITS-2019-ML/CI and SRC-DAVIDOVITS-2024 — same independence group.
+      derivedFrom: []
+      background: false
+  evidence:
+    - id: GEO-E025
+      title: The proponent page carrying the al-Maʾmūn salt-layer report cites no medieval source and dates the entry to 820 AD
+      claimIds:
+        - GEO-C003
+        - GEO-C901
+      sourceId: SRC-GEOPOLYMER-INST
+      direction: qualifies
+      strength: moderate
+      sourceStatement: The Geopolymer Institute page states that 'the most significant is the description made by Caliph Al Mamun' "when he opened in 820 AD the Great Pyramid", and that in the interior rooms the stone was "covered with a layer of 1.5 cm thick cooking salt", halite NaCl. No author, work, manuscript, edition or page is given for this description anywhere in the paragraph or on the page.
+      editorInference: "Editor's inference: GEO-C003's only anchor in the ledger is this uncited tertiary statement by the hypothesis's principal proponent. The claim as worded ('accounts ... report') is therefore not yet traced to any account. The report states that Nemoy's 1939 translation of al-Suyūṭī and Cooperson's study of al-Idrīsī's sources contain no salt and date the visit to 832; neither text was retrievable here, so that stays blocked (see dispositions). Until a primary passage is produced, this record should be read as weakening rather than supporting GEO-C003."
+      exactLocator: Section 'The chemical formula', paragraph beginning 'The presence of NaCl salt is just an anecdote for Egyptology' (undated page, 'Editor 10 Apr 2006')
+      limitations:
+        - Source is the principal proponent's institutional website, not a scholarly text.
+        - Absence of a citation on this page does not prove no Arabic source exists; al-Maqrīzī's Khiṭaṭ, ʿAbd al-Laṭīf al-Baghdādī and Vyse 1840 vol. 2 Appendix have not been checked.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-125721
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-08-draft-megalithic-casting-132902
+        date: 2026-09-08
+    - id: GEO-E026
+      title: Proponent taste-test anecdote and the asserted absence of salt on limestone buildings elsewhere
+      claimIds:
+        - GEO-C506
+      sourceId: SRC-GEOPOLYMER-INST
+      direction: supports
+      strength: weak
+      sourceStatement: "The page states that on visits in 1984, 1988, 1991 and 2003 Davidovits picked up small pieces of stone from the Cheops pyramid and \"he tasted these stones with his tongue: they were salty\", whereas a piece of geological limestone was not; that a colleague's daughter confirmed the phenomenon; that salt was present 'on the stones of all the chambers of the pyramids' and at Meidum; and, against the sedimentary explanation, that if it were correct \"all our cathedrals built with limestone should be covered with salt\" and they are not."
+      editorInference: "Editor's inference: this is effectively weightless as evidence for GEO-C506 — an uncontrolled taste test with no measurement, no stated sampling of the comparator, and a comparator (European cathedrals) that is the wrong control; the relevant comparator is unworked Giza/Mokattam bedrock and quarry faces, which the page does not address. The page also records that the sedimentary-origin explanation exists in Egyptology and dismisses it without argument. Entered because it is the proponents' own statement of the observation behind GEO-C506."
+      exactLocator: Section 'The chemical formula', paragraphs beginning 'Why is it meaningful? When Davidovits went to the Giza site in 1984' and 'The presence of NaCl salt is just an anecdote for Egyptology'
+      limitations:
+        - Anecdotal; no quantities, no instrument, no named comparator specimen.
+        - Proponent source; same independence group as SRC-DAVIDOVITS-* records.
+        - Does not distinguish surface efflorescence from bulk salt.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-125721
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-08-draft-megalithic-casting-132902
+        date: 2026-09-08
+    - id: GEO-E027
+      title: Petrie 1883 recorded salt incrustation in the Queen's Chamber (via transcription)
+      claimIds:
+        - GEO-C003
+        - GEO-C506
+        - GEO-C902
+      sourceId: SRC-THEQUEENS-ND
+      direction: context
+      strength: weak
+      sourceStatement: The page transcribes Petrie 1883 §41 (p. 66) as giving the Queen's Chamber size "after allowing suitably in each part for the incrustation of salt", and §43 (pp. 69–70) as stating the niche dimensions are 'All corrected for the salt exudation on the two lower laps, as estimated at each point ;' and "there is no salt on the upper three laps". The site's own text adds that "The greater part of the walls is covered with salt incrustation", making joints hard to find.
+      editorInference: "Editor's inference: this establishes, independently of the al-Maʾmūn report and of the proponents, that salt incrustation in the Queen's Chamber was substantial enough in 1880–82 to require correction in a metrological survey, and that it was vertically zoned (lower laps only). It says nothing about origin, about the King's Chamber, or about any comparator limestone, so it is context for GEO-C003 and GEO-C506 rather than support: the phenomenon is real; its diagnostic meaning is untested. Vertical zoning (salt low, none high) is at least as consistent with humidity/capillary efflorescence as with a wet-set composite. The transcription must be checked against the scan before this record is relied on."
+      exactLocator: Sections 5.8.1, 5.8.4 (quoting Petrie §41, site locator S5orig-[S41]-P66-L29-37) and 5.8.14 (quoting Petrie §43, S5orig-[S43]-P69-L31-40 and P70-L1-11)
+      limitations:
+        - Secondary transcription on an amateur site; original scan not read.
+        - Petrie's observation is 1880–82, not medieval; it does not bear on what al-Maʾmūn's party saw.
+        - No statement about origin of the salt or about comparator natural limestone.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-125721
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-08-draft-megalithic-casting-132902
+        date: 2026-09-08
+    - id: GEO-E028
+      title: "Proponents' 2020 Pumapunku model: natural Khapia andesite sand stored at Iwawe, piedras cansadas not used"
+      claimIds:
+        - GEO-C021
+        - GEO-C030
+        - GEO-C903
+      sourceId: SRC-DAVIDOVITS-2020
+      direction: qualifies
+      strength: moderate
+      sourceStatement: The abstract states that the builders of Pumapunku/Tiwanaku, around AD 600–700, could have transported andesite material 'having the consistence of sand' from the Cerro Khapia volcano and added an organo-mineral geopolymer binder; that "They did not use the many quadrangular volcanic blocks", the piedras cansadas still lying on both sides of Lake Titicaca; that the builders exploited a natural volcanic andesite sand from Cerro Khapia, "transported and stored it at the shore village of Iwawe", Stratum (V) in the excavation by Isbell & Burkholder (2002); and that "they did not need to crush andesite rock".
+      editorInference: "Editor's inference: (a) the proponents' own model now accepts a Khapia/Ccapia origin for the andesite, so a geochemical quarry match to Ccapia — which the report says Janusek et al. 2013 established by pXRF but which was not retrievable here — would not discriminate between the two accounts, exactly the situation GEO-C030 describes; (b) the model makes two things checkable without touching the monuments: whether Isbell & Burkholder 2002 describe Iwawe Stratum V as a sand-consistency andesite deposit, and how the abandoned quadrangular blocks are to be explained if they were not building material. This qualifies GEO-C021 by narrowing what the casting claim now asserts, rather than supporting or undermining it."
+      exactLocator: Abstract, geopolymer.org landing page for GPSA 2020 vol. 1 pp. 36–43 (posted 29 Dec 2020)
+      limitations:
+        - Abstract only; the paper body was not opened.
+        - Proponent-published journal; same team as GEO-E006/E007.
+        - The Iwawe Stratum V description is the proponents' reading of Isbell & Burkholder 2002, which was not opened.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-125721
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-08-draft-megalithic-casting-132902
+        date: 2026-09-08
+  claims:
+    - id: GEO-C901
+      statement: The Geopolymer Institute's published account of Caliph Al-Maʾmūn finding a 1.5 cm halite layer inside the Great Pyramid gives no medieval author, work, manuscript or edition as its source.
+      theme: historical-record
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: Section 'The chemical formula', paragraph beginning 'The presence of NaCl salt is just an anecdote for Egyptology'
+        quote: covered with a layer of 1.5 cm thick cooking salt
+        sourceId: SRC-GEOPOLYMER-INST
+      parentClaimIds:
+        - GEO-C003
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-125721
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-08-draft-megalithic-casting-132902
+        date: 2026-09-08
+    - id: GEO-C902
+      statement: Petrie's 1880–82 survey of the Great Pyramid recorded salt incrustation on the walls of the Queen's Chamber and salt exudation on the two lower laps of its niche, with none on the upper three laps.
+      theme: materials-evidence
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: Section 5.8.14, transcribing Petrie 1883 §43 (pp. 69–70), site locator S5orig-[S43]-P69-L31-40 and P70-L1-11
+        quote: there is no salt on the upper three laps
+        sourceId: SRC-THEQUEENS-ND
+      parentClaimIds:
+        - GEO-C506
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-125721
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-08-draft-megalithic-casting-132902
+        date: 2026-09-08
+    - id: GEO-C903
+      statement: Davidovits' 2020 model of Pumapunku geopolymer casting specifies uncrushed natural andesite sand from Cerro Khapia, stored at Iwawe (Isbell & Burkholder 2002, Stratum V), as the aggregate, and holds that the quadrangular 'piedras cansadas' blocks were not used as building material.
+      theme: attribution
+      rung: observation
+      claimType: theory_description
+      sourceAnchor:
+        locator: Abstract, geopolymer.org landing page (GPSA 2020, vol. 1, pp. 36–43)
+        quote: They did not use the many quadrangular volcanic blocks
+        sourceId: SRC-DAVIDOVITS-2020
+      parentClaimIds:
+        - GEO-C021
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-125721
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-08-draft-megalithic-casting-132902
+        date: 2026-09-08
+  research:
+    - id: GEO-R009
+      title: Check the Iwawe Stratum V deposit and the piedras cansadas against the excavators' own descriptions
+      summary: Desk work. Read Isbell & Burkholder 2002 on the Iwawe excavation and record exactly how Stratum V is described — andesite sand, gravel, dressing flakes, or something else — and its dating relative to Pumapunku construction (c. AD 600–700). In parallel, obtain Janusek et al. 2013 ('Building Taypikala', doi:10.1007/978-1-4614-5200-3_4) and record what it documents about roughly carved andesite blocks at Iwawe and the Ccapia foothills, and whether andesite quarry faces on Ccapia have been documented in any fieldwork since 2013. Then compare with the proponent model in GEO-C603.
+      claimIds:
+        - GEO-C903
+        - GEO-C021
+        - GEO-C030
+      track: either
+      effortTier: desk
+      informationGain: The proponents' 2020 model and the orthodox account agree on a Ccapia/Khapia origin for the andesite, so provenance geochemistry cannot separate them (GEO-C030). What separates them is a lakeshore deposit and some abandoned blocks. If Stratum V is a natural sand-consistency andesite store, the proponent model gains a non-trivial prediction; if it is dressing debris or unrelated fill, the model's aggregate source is unsupported. If carved ashlars are documented in transit, wholesale casting of andesite (GEO-C021) is undermined regardless of the SEM findings. Either outcome moves GEO-C021 without any new sampling of the monuments.
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-125721
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-08-draft-megalithic-casting-132902
+        date: 2026-09-08
+    - id: GEO-R010
+      title: Establish whether halite is native to unworked Giza/Mokattam bedrock and quarry faces
+      summary: "Open Klemm & Klemm 2010 (cited by the report via Sessa et al. 2026, not yet read) for what it says about halite within the stratigraphic layers of the Giza nummulitic limestone, and any published efflorescence surveys of unworked Mokattam quarry faces or Giza bedrock exposures. If the literature is thin, a small field task: non-destructive surface sampling (swab or scrape of natural efflorescence) at protected unworked bedrock and quarry-face locations on the plateau and at Tura/Mokattam, analysed by XRD for halite alongside a Queen's Chamber efflorescence reference. Record restoration/cleaning history of the chambers alongside (GEO-C594)."
+      claimIds:
+        - GEO-C506
+        - GEO-C003
+        - GEO-C902
+      track: either
+      effortTier: field
+      informationGain: GEO-C506 asserts that comparable natural limestone does not exhibit the pyramids' surface NaCl, but the ledger has no comparator; the proponents' comparator (European cathedrals) is the wrong lithology. If unworked Giza/Mokattam limestone effloresces halite, the salt discriminator collapses and GEO-C003's evidential interest with it; if it does not, the salt becomes a genuine anomaly worth bulk-chlorine testing under GEO-C590's logic.
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-125721
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-08-draft-megalithic-casting-132902
+        date: 2026-09-08
+    - id: GEO-R011
+      title: Blinded paleomagnetic survey of pyramid core blocks with a natural-limestone remanence baseline
+      summary: "The report describes a 2012 Europhysics News pilot (Túnyi & El-hemaly, doi:10.1051/epn/2012604; not retrievable here) that reported three of seven sampled block locations at Khufu and Khafre sharing a common N–S paleodirection and read the result as a possible mixture of natural and artificial blocks. A properly designed follow-up would: sample many blocks under a blinded protocol; measure the detrital remanence strength and stability of Mokattam quarry limestone as a baseline; treat block orientation explicitly, since bedding-horizontal placement preserves natural inclination and randomises only declination; and pre-register the criterion for 'set in place' versus 'quarried and rotated'. Non-destructive or micro-core sampling at already-damaged block faces would limit intervention."
+      claimIds:
+        - GEO-C020
+        - GEO-C589
+      track: small_grant
+      effortTier: field
+      informationGain: "Paleomagnetism is a method class absent from GEO-C589 and independent of the binder chemistry debate: a block that set in place should carry a remanence aligned with the present field regardless of recipe, while a quarried and rotated block should not. A null result with adequate power on core blocks would be the first direct in-situ physical test against GEO-C020 that does not depend on contested sample provenance; a positive at scale would force a mixed model. The 2012 pilot must first be read and its assumptions audited (blocked, see dispositions)."
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-125721
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-08-draft-megalithic-casting-132902
+        date: 2026-09-08
+  images: []
+corrections: []
+dispositions:
+  - key: url:ia800102.us.archive.org/27/items/TreatiseOnTheEgyptianPyramidsSuyuti_201801/Treatise%20on%20the%20Egyptian%20Pyramids_%20Suyuti.pdf
+    kind: source
+    disposition: blocked
+    reason: Nemoy, L. (1939) 'The Treatise on the Egyptian Pyramids', Isis 30(1):17–37 — the report says the al-Maʾmūn entries (pp. 24–25, 28–29) mention fire, vinegar, iron tools, catapults, a well, chambers and a covered basin but no salt, and that n.7 dates the visit to 217/832. The archive.org PDF could not be text-extracted, so none of this could be checked or quoted.
+    reopenIf: The PDF is read by hand or via JSTOR (stable 225578) and the al-Maʾmūn passages are transcribed.
+    observed: Treatise on the Egyptian Pyramids (al-Suyūṭī, tr. Nemoy 1939), archive.org PDF
+    by: 2026-09-08-draft-megalithic-casting-132902
+    date: 2026-09-08
+    route: Read pp. 24–25 and 28–29 of the archive.org scan directly, or JSTOR 225578; record the al-Maʾmūn passages verbatim and note presence/absence of any salt mention. Bears on GEO-C003, GEO-E004, GEO-R001.
+  - key: url:academia.edu/25357489/Early_Abbasid_Antiquarianism_al_Ma%CA%BFm%C5%ABn_and_the_Pyramid_of_Cheops
+    kind: source
+    disposition: blocked
+    reason: "Cooperson, 'Early Abbasid Antiquarianism: al-Maʾmūn and the Pyramid of Cheops' (in Schnapp ed., Traces, Collections, and Ruins) — reported to quote al-Idrīsī's sources (Ibn Mammātī, Abū al-Ṣalt) with no salt and to date the visit to early 832. academia.edu returned HTTP 403; nothing could be verified."
+    reopenIf: The chapter is obtained (print volume, publisher PDF, or author's own copy) and pp. 204–205 are read.
+    observed: Cooperson, Early Abbasid Antiquarianism, academia.edu
+    by: 2026-09-08-draft-megalithic-casting-132902
+    date: 2026-09-08
+    route: Library copy of Schnapp (ed.), Traces, Collections, and Ruins (Getty, 2013); read pp. 204–205. Bears on GEO-C003, GEO-C576, GEO-R001.
+  - key: url:nature.com/articles/s41598-026-48805-8
+    kind: source
+    disposition: blocked
+    reason: Sessa et al. 2026, Scientific Reports 16:12586 (ScanPyramids), reported by the research pass as characterising Queen's Chamber efflorescence as halite only (XRD, SEM whiskers, Na–Cl R = 0.969), citing Klemm & Klemm 2010 for halite native to Giza nummulitic limestone, and noting 1990s cleaning and re-formation since 2022. The fetch returned only a 'Client Challenge' anti-bot page; no article text was shown, so nothing can be quoted or entered.
+    reopenIf: The article text is retrieved (it is reported as open access) and the Abstract, 'Sampling' section and Figs. 5–7 are read.
+    observed: Sessa et al. 2026, 'Client Challenge' page only
+    by: 2026-09-08-draft-megalithic-casting-132902
+    date: 2026-09-08
+    route: Resolve doi:10.1038/s41598-026-48805-8 through a browser or the PMC mirror; record the XRD result, the Klemm & Klemm citation, and the cleaning-history statements. Bears on GEO-C003, GEO-C506, GEO-E004, GEO-C594, GEO-C595, and candidate plate (Fig. 5).
+  - key: text:petrie 1883 original scan archive org
+    kind: source
+    disposition: blocked
+    reason: "Petrie 1883, The Pyramids and Temples of Gizeh, §41 (p. 66) and §43 (pp. 69–70): the report reached only the khufupyramid.dk transcription (entered as SRC-KHUFUPYRAMID-QC with that limitation stated); the original scan's OCR was truncated and the scan itself was not shown."
+    reopenIf: The archive.org scan pages 66–70 are read and the transcription confirmed or corrected.
+    observed: Petrie 1883 original scan (archive.org)
+    by: 2026-09-08-draft-megalithic-casting-132902
+    date: 2026-09-08
+    route: Open the archive.org scan of Petrie 1883 at pp. 66–70 and compare with the transcription; if confirmed, re-anchor GEO-E603 and GEO-C602 to the primary. Bears on GEO-C602, GEO-C003, GEO-C506.
+  - key: url:gizamedia.rc.fas.harvard.edu/documents/legon_de_27_1993.pdf
+    kind: source
+    disposition: blocked
+    reason: Legon 1993, Discussions in Egyptology 27 — reported to refer (p. 36 area, Fig. 1 caption) to salt incrustations 'recently removed from the walls of the Queen's Chamber'. The gizamedia PDF fetch failed; not shown.
+    reopenIf: The PDF is retrieved and the passage located.
+    observed: Legon 1993, DE 27, gizamedia PDF
+    by: 2026-09-08-draft-megalithic-casting-132902
+    date: 2026-09-08
+    route: Retry the Giza Project (gizamedia) PDF or consult DE 27 in print; record the cleaning statement. Bears on GEO-C594, GEO-C003.
+  - key: url:europhysicsnews.org/articles/epn/pdf/2012/06/epn2012436p28.pdf
+    kind: source
+    disposition: blocked
+    reason: Túnyi & El-hemaly 2012, 'Paleomagnetic investigation of the great Egyptian pyramids', Europhysics News 43/6:28–31 — reported as a non-proponent pilot finding 3 of 7 sampled locations sharing a N–S paleodirection and concluding a mixed natural/artificial model is most probable. EDP Sciences PDF returned HTTP 403; not shown. Entered only as the motivation for research item GEO-R603, not as evidence.
+    reopenIf: The EPN PDF is retrieved and Figs. 3–4 and the conclusion read.
+    observed: Túnyi & El-hemaly 2012, EPN PDF
+    by: 2026-09-08-draft-megalithic-casting-132902
+    date: 2026-09-08
+    route: Resolve doi:10.1051/epn/2012604 (open access) through a browser; record the sampling locations, the demagnetisation readings and the stated assumptions about block rotation. Bears on GEO-C020, GEO-C589.
+  - key: text:demortier 2009 epn 40 1 27
+    kind: source
+    disposition: blocked
+    reason: Demortier, Europhysics News 40/1 (2009) p. 27 — named by the report as the cited precursor to the paleomagnetic pilot; the report itself did not open it.
+    reopenIf: The EPN 2009 item is retrieved and read.
+    observed: Demortier 2009, EPN 40/1:27
+    by: 2026-09-08-draft-megalithic-casting-132902
+    date: 2026-09-08
+    route: EDP Sciences Europhysics News archive, vol. 40 no. 1, p. 27. Bears on GEO-C020 as context only.
+  - key: url:academia.edu/2970308/Building_Taypikala_Telluric_Transformations_in_the_Lithic_Production_of_Tiwanaku
+    kind: source
+    disposition: blocked
+    reason: Janusek, Williams, Golitko & Lémuz Aguirre 2013, 'Building Taypikala' (Springer, Mining and Quarrying in the Ancient Andes, pp. 65–97) — reported to match Tiwanaku 'Group 1' andesite to Mount Ccapia by pXRF, document carved andesite 'tired stones' at Iwawe and the Ccapia foothills and the Kaliri sandstone quarry, and describe the andesite quarries as 'as yet undocumented'. academia.edu returned HTTP 403; not shown. This would be the relevant independent counterweight to GEO-E006/E007 and the cleanest test of GEO-C603.
+    reopenIf: The chapter is obtained and pp. 81–82, 88–90 and Figs. 4.14–4.21 are read.
+    observed: Janusek et al. 2013, 'Building Taypikala', academia.edu
+    by: 2026-09-08-draft-megalithic-casting-132902
+    date: 2026-09-08
+    route: Resolve doi:10.1007/978-1-4614-5200-3_4 via institutional access or the Springer chapter purchase; folded into GEO-R601. Bears on GEO-C021, GEO-C004, GEO-C030, GEO-E008, GEO-C603.
+  - key: url:academia.edu/5407078/Granite_quarry_survey_in_the_Aswan_region_Egypt_shedding_new_light_on_ancient_quarrying
+    kind: source
+    disposition: blocked
+    reason: Kelany, Negem, Tohami & Heldal 2009, 'Granite-quarry survey in the Aswan region', NGU Special Publication 12 (QuarryScapes) — reported to document boulder-layer extraction, 'massive amounts of charcoal, ash and burned mud bricks' at the Unfinished Obelisk quarry (fire-setting), dolerite pounders with use-wear, and pounder-production trenches in dolerite dykes. academia.edu returned HTTP 403; not shown.
+    reopenIf: The NGU SP 12 PDF is retrieved (the Geological Survey of Norway hosts QuarryScapes publications) and the relevant sections read.
+    observed: Kelany et al. 2009, NGU SP 12, academia.edu
+    by: 2026-09-08-draft-megalithic-casting-132902
+    date: 2026-09-08
+    route: Download from ngu.no (NGU Special Publication 12, QuarryScapes) and record the fire-setting, pounder-quarry and use-wear passages. Bears on GEO-C001, GEO-C002, GEO-C511, GEO-C515, GEO-C537.
+  - key: text:klemm klemm 2010 cited second hand
+    kind: source
+    disposition: blocked
+    reason: Klemm & Klemm 2010 (Stones and Quarries in Ancient Egypt / The Stones of the Pyramids) — cited via the unretrieved Sessa et al. 2026 for halite as a primary salt within Giza nummulitic limestone strata. Not opened by the report or here; the report itself proposed it only after inspection. It is the direct comparator GEO-C506 lacks.
+    reopenIf: The relevant chapter on Giza limestone mineralogy is read.
+    observed: Klemm & Klemm 2010, cited second-hand
+    by: 2026-09-08-draft-megalithic-casting-132902
+    date: 2026-09-08
+    route: Library copy; read the Giza/Mokattam limestone petrography sections for halite. Folded into GEO-R602. Bears on GEO-C506, GEO-C003.
+  - key: text:hemeda sonbol 2020 cited second hand
+    kind: source
+    disposition: blocked
+    reason: Hemeda & Sonbol 2020, Heritage Science — cited via Sessa et al. 2026 for salt in Giza limestone; not opened by the report or here.
+    reopenIf: The open-access article is read and its statements on halite/efflorescence at Giza recorded.
+    observed: Hemeda & Sonbol 2020, cited second-hand
+    by: 2026-09-08-draft-megalithic-casting-132902
+    date: 2026-09-08
+    route: Heritage Science (SpringerOpen) 2020; locate by author and read the salt/efflorescence sections. Bears on GEO-C506.
+  - key: text:geopolymer institute 2013 post on paleomagnetism study
+    kind: source
+    disposition: irrelevant
+    reason: The Geopolymer Institute's 2013 promotional post on the Túnyi & El-hemaly paleomagnetism study is a secondary proponent summary; the report judged it adds nothing beyond the EPN text, which is itself blocked. Not shown here.
+    reopenIf: The EPN primary remains permanently unobtainable and the post is the only accessible description.
+    observed: Geopolymer Institute 2013 post on paleomagnetism study
+    by: 2026-09-08-draft-megalithic-casting-132902
+    date: 2026-09-08
+  - key: text:isbell burkholder 2002 iwawe excavation
+    kind: source
+    disposition: blocked
+    reason: Isbell & Burkholder 2002 (Iwawe excavation) — raised in the report's next questions as the adjudicating source for the proponents' 'andesite sand, Stratum V' claim (GEO-C603). Not opened.
+    reopenIf: The excavation report is read and the Stratum V description recorded.
+    observed: Isbell & Burkholder 2002, Iwawe excavation
+    by: 2026-09-08-draft-megalithic-casting-132902
+    date: 2026-09-08
+    route: Locate the 2002 publication (Andean Past or edited volume) and read the Iwawe stratigraphy; this is GEO-R601's central task. Bears on GEO-C603, GEO-C021.
+  - key: text:proposed change 10 geo c003 date 820 832
+    kind: claim
+    disposition: blocked
+    as: GEO-C003
+    reason: The report proposes correcting GEO-C003's date from 'c. 820 AD' to '832 AD' and marking the salt attribution unsourced. The 832 date rests on Nemoy 1939 n.7 and Cooperson, neither retrievable here; the only shown source (SRC-GEOPOLYMER-INST) says 820. The 'unsourced' half is instead recorded as GEO-E601/GEO-C601 from the shown text. No correction applied.
+    reopenIf: Nemoy 1939 or Cooperson is read and the 217/832 dating confirmed; then correct GEO-C003 from 'c. 820 AD' to '832 AD' with those as reason.
+    observed: "Proposed change 10: GEO-C003 date 820→832"
+    by: 2026-09-08-draft-megalithic-casting-132902
+    date: 2026-09-08
+    route: Via the Nemoy and Cooperson dispositions above.
+  - key: text:next question 1 source the salt or drop it
+    kind: research
+    disposition: duplicate
+    as: GEO-R001
+    reason: "The report's next question 1 ('Source the salt or drop it': read al-Maqrīzī's Khiṭaṭ, ʿAbd al-Laṭīf al-Baghdādī, Vyse 1840 vol. 2 Appendix, ask the Geopolymer Institute for its citation) is the existing GEO-R001 with a sharper reading list; the list belongs in GEO-R001's summary rather than a new record."
+    reopenIf: GEO-R001 is closed or narrowed so that the Arabic reading list no longer fits it.
+    observed: "Next question 1: Source the salt or drop it"
+    by: 2026-09-08-draft-megalithic-casting-132902
+    date: 2026-09-08
+  - key: url:nature.com/articles/s41598-026-48805-8
+    kind: image
+    disposition: blocked
+    reason: Sessa et al. 2026 Fig. 5 (halite whiskers, SEM) proposed as a plate for the salt story. Neither the figure, its public record URL, its license statement nor its credit line was shown (the article returned a bot-challenge page).
+    reopenIf: The article is retrieved and the figure's CC licence and credit are confirmed.
+    observed: Sessa et al. 2026 Fig. 5, candidate plate
+    by: 2026-09-08-draft-megalithic-casting-132902
+    date: 2026-09-08
+    route: Retrieve the open-access article; confirm licence (report says CC-BY) and credit; then propose as plate under GEO-C003/GEO-C506.
+  - key: text:janusek et al 2013 fig 4 14 candidate plate
+    kind: image
+    disposition: blocked
+    reason: Janusek et al. 2013 Fig. 4.14 (a piedra cansada at Iwawe) proposed as a new Andean plate. The chapter was not retrievable and is a copyrighted Springer publication; no licence or credit shown.
+    reopenIf: Permission is obtained from the rights holder, or a freely licensed photograph of a piedra cansada at Iwawe or Ccapia is located with its record URL.
+    observed: Janusek et al. 2013 Fig. 4.14, candidate plate
+    by: 2026-09-08-draft-megalithic-casting-132902
+    date: 2026-09-08
+    route: Rights request to Springer / authors, or search Wikimedia Commons for a CC-licensed piedra cansada photograph with location metadata.
+  - key: text:report 4 narrative and plate caption proposals
+    kind: edition
+    disposition: blocked
+    reason: The report proposes retiring the article's 'Nobody has looked' (al-Maʾmūn), adding the paleomagnetic pilot, and rewriting the Andean paragraph around independent provenance work and the Iwawe deposit, plus caption changes to IMG-GEO-P01 and IMG-GEO-P04. Each of these rests on sources not shown here (Nemoy, Cooperson, Sessa, Túnyi, Janusek, Kelany). The one verified addition — that the proponent page cites no source for the salt report and that Petrie documented the salt in 1883 — deepens the record without changing the telling.
+    reopenIf: Two or more of Nemoy 1939, Cooperson, Sessa et al. 2026 and Janusek et al. 2013 are retrieved and confirm the report's readings; then re-run the edition with the narrative changes the report lists.
+    observed: Report §4 Narrative and plate-caption proposals
+    by: 2026-09-08-draft-megalithic-casting-132902
+    date: 2026-09-08
+    route: Via the source dispositions above.
+report: proposals/2026-09-08-report-megalithic-casting-125721/report.md

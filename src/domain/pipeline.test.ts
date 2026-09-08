@@ -11,7 +11,9 @@ import { DEFAULT_SEAT, RESEARCH_SEATS } from "../pipeline/report.ts";
 import { DRAFTER } from "../pipeline/draft.ts";
 import { READER } from "../pipeline/verify.ts";
 import { EDITOR } from "../pipeline/edition.ts";
-import { appendDispositions, newRunId, readProposal, readRuns, writeProposal, writeRun } from "../pipeline/store.ts";
+import { appendDispositions, closeRun, newRunId, openRun, readProposal, readRuns, writeProposal, writeRun } from "../pipeline/store.ts";
+import { appendRecords } from "../pipeline/ledger-write.ts";
+import { parse as parseYaml } from "yaml";
 
 const tmpRoot = () => fs.mkdtempSync(path.join(os.tmpdir(), "aletheia-"));
 
@@ -113,6 +115,53 @@ describe("the intake store", () => {
     expect(file.startsWith("#")).toBe(true); // the header comment survives the second append
     expect(file.match(/key: doi:10.1234\/a/g)).toHaveLength(2);
   });
+
+  it("appends to a ledger file without touching a byte of what was there", () => {
+    const root = tmpRoot();
+    const dir = path.join(root, "content", "cases", "x");
+    fs.mkdirSync(dir, { recursive: true });
+    const before = [
+      "# Evidence — hand-written, with folded text and flow lists.",
+      "- id: E1",
+      "  claimIds: [C1, C2]",
+      "  summary: >-",
+      "    A folded scalar that a re-serializer would",
+      "    reflow onto one line.",
+      "",
+    ].join("\n");
+    const file = path.join(dir, "evidence.yaml");
+    fs.writeFileSync(file, before);
+    expect(appendRecords("x", "evidence.yaml", [{ id: "E2", claimIds: ["C3"], summary: "new" }], root)).toBe(1);
+    const after = fs.readFileSync(file, "utf8");
+    expect(after.startsWith(before.trimEnd())).toBe(true);
+    expect(parseYaml(after)).toHaveLength(2);
+    // An empty flow list is replaced, not appended to.
+    fs.writeFileSync(file, "# header\n[]\n");
+    appendRecords("x", "evidence.yaml", [{ id: "E1" }], root);
+    expect(parseYaml(fs.readFileSync(file, "utf8"))).toEqual([{ id: "E1" }]);
+    expect(fs.readFileSync(file, "utf8").startsWith("# header")).toBe(true);
+  });
+});
+
+describe("the run frame", () => {
+  it("opens with one id, date, meter and stamp, and closes with the ledger's cost and the reason as notes", () => {
+    const root = tmpRoot();
+    const now = new Date("2026-09-08T10:20:30Z");
+    const run = openRun("draft", "megalithic-casting", { model: "m", promptVersion: "draft-v1" }, { now, root });
+    expect(run.runId).toBe("2026-09-08-draft-megalithic-casting-102030");
+    expect(run.meter).toEqual({ runId: run.runId, verb: "draft", case: "megalithic-casting", root });
+    expect(run.stamp.inputHash).toBeNull();
+    recordSpend({ date: run.date, runId: run.runId, verb: "draft", case: "megalithic-casting", model: "m", calls: 1, inputTokens: 10, outputTokens: 5, usd: 0.02 }, root);
+    const out = closeRun(run, "completed", { model: "m-served", reason: "wrote 3 records" });
+    expect(out).toEqual({ outcome: "completed", runId: run.runId, reason: "wrote 3 records", cost: { calls: 1, inputTokens: 10, outputTokens: 5, usd: 0.02 } });
+    const [rec] = readRuns(root);
+    expect(rec.model).toBe("m-served");
+    expect(rec.notes).toBe("wrote 3 records");
+    expect(rec.cost.usd).toBe(0.02);
+    // A rest spends nothing and says so.
+    const rest = closeRun(openRun("report", "x", { model: null, promptVersion: null }, { now, root }), "rested", { reason: "unchanged" });
+    expect(rest.cost).toEqual({ calls: 0, inputTokens: 0, outputTokens: 0, usd: 0 });
+  });
 });
 
 describe("the model roster (config/models.yaml)", () => {
@@ -160,6 +209,10 @@ describe("the spend ledger", () => {
     expect(
       priceOf("m", { inputTokens: 1_000_000, outputTokens: 500_000 }, { models: { m: { inputPerMTok: 2, outputPerMTok: 8, source: "x", checked: "2026-09-08" } }, tools: {} }),
     ).toBe(6);
+    // Cache reads and writes are priced at their own rates, and fall back to the base rate without one.
+    const cached = { models: { c: { inputPerMTok: 10, outputPerMTok: 50, cachedInputPerMTok: 0.25, cacheWritePerMTok: 12.5, source: "x", checked: "2026-09-08" } }, tools: {} };
+    expect(priceOf("c", { inputTokens: 0, outputTokens: 0, cacheReadTokens: 1_000_000, cacheWriteTokens: 1_000_000 }, cached)).toBe(12.75);
+    expect(priceOf("m", { inputTokens: 0, outputTokens: 0, cacheReadTokens: 1_000_000 }, { models: { m: { inputPerMTok: 2, outputPerMTok: 8, source: "x", checked: "2026-09-08" } }, tools: {} })).toBe(2);
     recordSpend({ date: "2026-09-08", runId: "r", verb: "report", case: "x", model: "m", calls: 1, inputTokens: 10, outputTokens: 20, usd: null }, root);
     recordSpend({ date: "2026-09-08", runId: "r", verb: "report", case: "x", model: "m", calls: 1, inputTokens: 5, outputTokens: 5, usd: 0.01 }, root);
     const rows = readSpend(root);

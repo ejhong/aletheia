@@ -28,10 +28,10 @@
 import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
-import { currentEdition, loadAllCases } from "../src/domain/load.ts";
+import { currentEdition, findCase } from "../src/domain/load.ts";
 import { AssessmentRunSchema, type AssessmentRun } from "../src/domain/schema.ts";
 import { loadProtocol, renderProtocol } from "../src/pipeline/protocols.ts";
-import { overlayRunId } from "./lib/overlay-ids.mjs";
+import { isoDate, overlayRunId } from "./lib/overlay-ids.mjs";
 import { VENDORS as SEAT_TABLE, callVendor } from "./lib/vendors.mjs";
 
 type Seat = { key: () => string | undefined; model: string; label: string; tag: string };
@@ -51,11 +51,7 @@ if (!key) {
   );
   process.exit(1);
 }
-const loaded = loadAllCases().find((c) => c.record.slug === key || c.dir === key);
-if (!loaded) {
-  console.error(`no case with slug or directory ${key}`);
-  process.exit(1);
-}
+const loaded = findCase(key);
 const caseDir = path.join(ROOT, "content", "cases", loaded.dir);
 
 const VERDICTS = [
@@ -79,7 +75,7 @@ const packet = packetFiles
 
 const featuredIds = currentEdition(loaded).featuredClaimIds;
 const caseRecord = loaded.record;
-const today = new Date().toISOString().slice(0, 10);
+const today = isoDate();
 
 const protocol = loadProtocol("check");
 const PROMPT_VERSION = protocol.version;

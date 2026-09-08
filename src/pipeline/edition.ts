@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { assessmentHash, inputsHash } from "../domain/hash.ts";
-import { adoptedAssessment, currentEdition, editionErrors } from "../domain/load.ts";
+import { adoptedAssessment, currentEdition, editionErrors, findCase } from "../domain/load.ts";
 import {
   AssessmentRunSchema,
   EditionSchema,
@@ -10,15 +10,13 @@ import {
   type Edition,
   type LoadedCase,
 } from "../domain/schema.ts";
-import { hhmmssUTC } from "../../scripts/lib/overlay-ids.mjs";
+import { hhmmssUTC, isoDate } from "../../scripts/lib/overlay-ids.mjs";
 import { writeYamlFile } from "./ledger-write.ts";
 import { MODELS } from "../../scripts/lib/models.mjs";
 import { anthropicJson, type Meter } from "./models.ts";
 import { buildPacket, renderPacket } from "./packet.ts";
 import { loadProtocol, renderProtocol } from "./protocols.ts";
-import { findCase } from "./report.ts";
-import { spendFor, sumCost } from "./spend.ts";
-import { newRunId, writeRun, writeWorkingFile } from "./store.ts";
+import { closeRun, openRun, writeWorkingFile, type RunOutcome } from "./store.ts";
 
 /**
  * `aletheia edition <case>` — assess and explain (docs/AUTOMATION.md).
@@ -174,7 +172,7 @@ export function assembleEdition(
   reply: EditionReply,
   ctx: { model: string; promptVersion: string; now: Date; root: string },
 ): AssembledEdition {
-  const date = ctx.now.toISOString().slice(0, 10);
+  const date = isoDate(ctx.now);
   const stamp = hhmmssUTC(ctx.now);
   const incumbent = currentEdition(loaded);
   const errors: string[] = [];
@@ -212,7 +210,9 @@ export function assembleEdition(
       })),
     });
     if (!parsed.success) {
-      errors.push(...parsed.error.issues.map((i) => `assessment ${i.path.join(".")}: ${i.message}`));
+      // Stop here: every later check would be run against the incumbent's
+      // assessment instead and report consequences, not causes.
+      return { edition: {} as Edition, assessment: null, errors: parsed.error.issues.map((i) => `assessment ${i.path.join(".")}: ${i.message}`) };
     } else {
       assessment = parsed.data;
       const steel = steelmanRequirementError(assessment);
@@ -263,11 +263,11 @@ export function assembleEdition(
   return { edition, assessment, errors };
 }
 
-export type Editor = (system: string, user: string, meter: Meter) => Promise<{ data: EditionReply; model: string }>;
+export type Editor = (system: string, user: string, meter: Meter) => Promise<{ data: EditionReply; model: string; strict?: boolean }>;
 
 export const defaultEditor: Editor = async (system, user, meter) => {
   const r = await anthropicJson<EditionReply>({ ...EDITOR, system, user, schema: EDITION_SCHEMA, maxTokens: 48000, effort: "high" }, meter);
-  return { data: r.data, model: r.model };
+  return { data: r.data, model: r.model, strict: r.strict };
 };
 
 export interface EditionOptions {
@@ -278,13 +278,9 @@ export interface EditionOptions {
   deps?: { edit?: Editor; now?: () => Date; cases?: () => LoadedCase[] };
 }
 
-export interface EditionOutcome {
-  outcome: "completed" | "failed" | "dry-run" | "rested";
-  runId: string;
-  reason?: string;
+export interface EditionOutcome extends RunOutcome {
   editionFile?: string;
   assessmentFile?: string;
-  cost?: ReturnType<typeof sumCost>;
 }
 
 export async function runEdition(caseKey: string, opts: EditionOptions = {}): Promise<EditionOutcome> {
@@ -292,35 +288,43 @@ export async function runEdition(caseKey: string, opts: EditionOptions = {}): Pr
   const now = opts.deps?.now ?? (() => new Date());
   const loaded = findCase(caseKey, opts.deps?.cases?.());
   const incumbent = currentEdition(loaded);
-  const date = now().toISOString().slice(0, 10);
-  const runId = newRunId("edition", loaded.record.slug, now());
   const protocol = loadProtocol("edition");
-  const base = { runId, verb: "edition" as const, case: loaded.record.slug, date, model: EDITOR.model, promptVersion: protocol.version, inputHash: null };
-  const zero = { calls: 0, inputTokens: 0, outputTokens: 0, usd: 0 };
+  const run = openRun("edition", loaded.record.slug, { model: EDITOR.model, promptVersion: protocol.version }, { now: now(), root });
+  const { runId, date } = run;
 
   if (incumbent.basis.ledgerHash === loaded.ledgerHash && !opts.force) {
-    const reason = `the ledger has not moved since ${incumbent.runId} (hash ${loaded.ledgerHash.slice(0, 12)}); nothing material to re-tell — pass --force to draft anyway`;
-    writeRun({ ...base, outcome: "rested", cost: zero, notes: reason }, root);
-    return { outcome: "rested", runId, reason };
+    return closeRun(run, "rested", { reason: `the ledger has not moved since ${incumbent.runId} (hash ${loaded.ledgerHash.slice(0, 12)}); nothing material to re-tell — pass --force to draft anyway` });
   }
   const packet = buildPacket(loaded, { detail: true });
   const user = renderPacket(packet, 900_000);
   const system = renderProtocol(protocol, {});
   if (opts.dryRun) {
     writeWorkingFile(runId, "packet.json", user, root);
-    writeRun({ ...base, outcome: "dry-run", cost: zero, notes: `would send ${user.length} chars to ${EDITOR.model}` }, root);
-    return { outcome: "dry-run", runId, reason: `packet written under proposals/${runId}/; nothing sent` };
+    return closeRun(run, "dry-run", { reason: `packet written under proposals/${runId}/ (${user.length} chars for ${EDITOR.model}); nothing sent` });
   }
-  const meter: Meter = { runId, verb: "edition", case: loaded.record.slug, root };
   try {
-    const reply = await (opts.deps?.edit ?? defaultEditor)(system, user, meter);
+    const edit = opts.deps?.edit ?? defaultEditor;
+    let reply = await edit(system, user, run.meter);
     writeWorkingFile(runId, "reply.json", JSON.stringify(reply.data, null, 1), root);
-    const { edition, assessment, errors } = assembleEdition(loaded, reply.data, { model: reply.model, promptVersion: protocol.version, now: now(), root });
+    let assembled = assembleEdition(loaded, reply.data, { model: reply.model, promptVersion: protocol.version, now: now(), root });
+    if (assembled.errors.length) {
+      // One repair round: the loader's findings go back with the reply. The
+      // checks are mechanical (caps, ids, coverage), so the second answer is
+      // validated exactly as the first; a second failure ends the run.
+      writeWorkingFile(runId, "errors.md", assembled.errors.map((e) => `- ${e}`).join("\n"), root);
+      const repair =
+        `${user}\n\nA previous attempt at this edition returned the JSON below. The loader rejected it for these mechanical reasons:\n` +
+        assembled.errors.map((e) => `- ${e}`).join("\n") +
+        `\n\nReturn the complete corrected JSON — the whole candidate, not a patch — keeping everything that was not at fault.\n\n${JSON.stringify(reply.data)}`;
+      reply = await edit(system, repair, run.meter);
+      writeWorkingFile(runId, "reply-repaired.json", JSON.stringify(reply.data, null, 1), root);
+      assembled = assembleEdition(loaded, reply.data, { model: reply.model, promptVersion: protocol.version, now: now(), root });
+    }
+    const { edition, assessment, errors } = assembled;
     if (errors.length) {
-      const reason = `the candidate fails the loader's rules: ${errors.join("; ")}`;
-      writeWorkingFile(runId, "errors.md", errors.map((e) => `- ${e}`).join("\n"), root);
-      writeRun({ ...base, model: reply.model, outcome: "failed", cost: sumCost(spendFor(runId, root)), notes: reason }, root);
-      return { outcome: "failed", runId, reason };
+      const reason = `the candidate fails the loader's rules after one repair round: ${errors.join("; ")}`;
+      writeWorkingFile(runId, "errors-after-repair.md", errors.map((e) => `- ${e}`).join("\n"), root);
+      return closeRun(run, "failed", { reason, model: reply.model });
     }
     const caseDir = path.join(root, "content", "cases", loaded.dir);
     let assessmentFile: string | undefined;
@@ -338,12 +342,8 @@ export async function runEdition(caseKey: string, opts: EditionOptions = {}): Pr
       `# Edition candidate written by the edition verb (${reply.model}, ${protocol.version}) on ${date}.\n# Replaces ${incumbent.runId} only if the panel prefers it; the incumbent is always the second option.`,
       edition,
     );
-    const cost = sumCost(spendFor(runId, root));
-    writeRun({ ...base, model: reply.model, outcome: "completed", cost, notes: assessment ? "new assessment" : "re-adopts the incumbent's assessment" }, root);
-    return { outcome: "completed", runId, editionFile, assessmentFile, cost };
+    return { ...closeRun(run, "completed", { model: reply.model, reason: assessment ? "new assessment" : "re-adopts the incumbent's assessment" }), editionFile, assessmentFile };
   } catch (e) {
-    const reason = (e as Error).message;
-    writeRun({ ...base, outcome: "failed", cost: sumCost(spendFor(runId, root)), notes: reason }, root);
-    return { outcome: "failed", runId, reason };
+    return closeRun(run, "failed", { reason: (e as Error).message });
   }
 }

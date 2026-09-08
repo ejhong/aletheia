@@ -7,7 +7,9 @@ import {
   type Disposition,
   type Proposal,
 } from "../domain/intake.ts";
+import { sha256Hex } from "../domain/hash.ts";
 import { canonicalUrl, sourceKeys, textKey } from "../domain/keys.ts";
+import { findCase } from "../domain/load.ts";
 import {
   ClaimSchema,
   EvidenceSchema,
@@ -20,9 +22,7 @@ import { MODELS } from "../../scripts/lib/models.mjs";
 import { anthropicJson, type Meter } from "./models.ts";
 import { buildPacket } from "./packet.ts";
 import { loadProtocol, renderProtocol } from "./protocols.ts";
-import { findCase } from "./report.ts";
-import { spendFor, sumCost } from "./spend.ts";
-import { newRunId, readRuns, runDir, writeProposal, writeRun, writeWorkingFile } from "./store.ts";
+import { closeRun, openRun, readRuns, runDir, writeProposal, writeWorkingFile, type RunOutcome } from "./store.ts";
 
 /**
  * `aletheia draft <reportRunId>` — propose (docs/AUTOMATION.md, "The verbs").
@@ -101,9 +101,12 @@ export const DRAFT_SCHEMA: Record<string, unknown> = {
           statement: { type: "string" },
           theme: { type: "string" },
           rung: { type: "string", enum: ["observation", "mechanism", "attribution"] },
+          // A nullable enum must be written as a choice: the vendor rejects `enum` on a `["string", "null"]` type.
           claimType: {
-            type: ["string", "null"],
-            enum: ["observation", "measurement", "historical", "causal", "mechanistic", "statistical", "interpretive", "methodological", "existence", "theory_description", "mathematical", null],
+            anyOf: [
+              { type: "string", enum: ["observation", "measurement", "historical", "causal", "mechanistic", "statistical", "interpretive", "methodological", "existence", "theory_description", "mathematical"] },
+              { type: "null" },
+            ],
           },
           sourceAnchor: {
             type: ["object", "null"],
@@ -574,11 +577,11 @@ export function assembleProposal(reply: DraftReply, ctx: AssembleContext): Assem
   return { proposal, novelty };
 }
 
-export type Drafter = (system: string, user: string, meter: Meter) => Promise<{ data: DraftReply; model: string }>;
+export type Drafter = (system: string, user: string, meter: Meter) => Promise<{ data: DraftReply; model: string; strict?: boolean }>;
 
 export const defaultDrafter: Drafter = async (system, user, meter) => {
   const r = await anthropicJson<DraftReply>({ ...DRAFTER, system, user, schema: DRAFT_SCHEMA, maxTokens: 32000 }, meter);
-  return { data: r.data, model: r.model };
+  return { data: r.data, model: r.model, strict: r.strict };
 };
 
 export interface DraftOptions {
@@ -587,12 +590,8 @@ export interface DraftOptions {
   deps?: { draft?: Drafter; fetch?: typeof fetchSource; now?: () => Date; cases?: () => LoadedCase[] };
 }
 
-export interface DraftOutcome {
-  outcome: "completed" | "failed" | "dry-run";
-  runId: string;
-  reason?: string;
+export interface DraftOutcome extends RunOutcome {
   proposalDir?: string;
-  cost?: ReturnType<typeof sumCost>;
 }
 
 export async function runDraft(reportRunId: string, opts: DraftOptions = {}): Promise<DraftOutcome> {
@@ -605,12 +604,10 @@ export async function runDraft(reportRunId: string, opts: DraftOptions = {}): Pr
   const reportFile = path.join(runDir(reportRunId, root), "report.md");
   const report = fs.readFileSync(reportFile, "utf8");
   const loaded = findCase(reportRun.case, opts.deps?.cases?.());
-  const date = now().toISOString().slice(0, 10);
-  const runId = newRunId("draft", loaded.record.slug, now());
   const protocol = loadProtocol("draft");
   const system = renderProtocol(protocol, {});
-  const base = { runId, verb: "draft" as const, case: loaded.record.slug, date, model: DRAFTER.model, promptVersion: protocol.version };
-  const zero = { calls: 0, inputTokens: 0, outputTokens: 0, usd: 0 };
+  const run = openRun("draft", loaded.record.slug, { model: DRAFTER.model, promptVersion: protocol.version }, { now: now(), root });
+  const { runId, date } = run;
 
   const fetcher = opts.deps?.fetch ?? fetchSource;
   const fetched: FetchedSource[] = [];
@@ -625,16 +622,14 @@ export async function runDraft(reportRunId: string, opts: DraftOptions = {}): Pr
     null,
     1,
   );
-  const inputHash = (await import("../domain/hash.ts")).sha256Hex(system + user);
+  run.stamp.inputHash = sha256Hex(system + user);
 
   if (opts.dryRun) {
     writeWorkingFile(runId, "input.json", user, root);
-    writeRun({ ...base, inputHash, outcome: "dry-run", cost: zero, notes: `would send ${user.length} chars; ${fetched.filter((f) => f.ok).length}/${fetched.length} sources retrieved` }, root);
-    return { outcome: "dry-run", runId, reason: `input written under proposals/${runId}/; nothing sent` };
+    return closeRun(run, "dry-run", { reason: `input written under proposals/${runId}/ (${user.length} chars; ${fetched.filter((f) => f.ok).length}/${fetched.length} sources retrieved); nothing sent` });
   }
-  const meter: Meter = { runId, verb: "draft", case: loaded.record.slug, root };
   try {
-    const reply = await (opts.deps?.draft ?? defaultDrafter)(system, user, meter);
+    const reply = await (opts.deps?.draft ?? defaultDrafter)(system, user, run.meter);
     const { proposal, novelty } = assembleProposal(reply.data, {
       loaded,
       reportRunId,
@@ -647,12 +642,8 @@ export async function runDraft(reportRunId: string, opts: DraftOptions = {}): Pr
     const dir = writeProposal(proposal, root);
     writeWorkingFile(runId, "novelty.md", novelty, root);
     writeWorkingFile(runId, "reply.json", JSON.stringify(reply.data, null, 1), root);
-    const cost = sumCost(spendFor(runId, root));
-    writeRun({ ...base, model: reply.model, inputHash, outcome: "completed", cost }, root);
-    return { outcome: "completed", runId, proposalDir: dir, cost };
+    return { ...closeRun(run, "completed", { model: reply.model, reason: reply.strict === false ? "schema sent as instructions (too large for strict output)" : undefined }), proposalDir: dir };
   } catch (e) {
-    const reason = (e as Error).message;
-    writeRun({ ...base, inputHash, outcome: "failed", cost: sumCost(spendFor(runId, root)), notes: reason }, root);
-    return { outcome: "failed", runId, reason };
+    return closeRun(run, "failed", { reason: (e as Error).message });
   }
 }

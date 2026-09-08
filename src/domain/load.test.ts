@@ -67,9 +67,12 @@ describe("real content", () => {
 
   it("the migrated geo catalog rides the ledger backlog with honest provenance", () => {
     const view = caseView(getCaseBySlug("megalithic-casting"));
-    expect(view.catalog.length).toBe(80);
+    // The migration's eighty; later intake adds behind them with its own run ids.
+    const migrated = view.catalog.filter(({ claim }) => claim.origin.runId === "geo-catalog-import-2026-08-22");
+    expect(migrated.length).toBe(80);
+    expect(view.catalog.length).toBeGreaterThanOrEqual(80);
     expect(view.featured.length).toBe(14);
-    for (const { claim: c, treatment, verdict } of view.catalog) {
+    for (const { claim: c, treatment, verdict } of migrated) {
       // One reversible run: a single runId stamped on every record.
       expect(c.origin.runId).toBe("geo-catalog-import-2026-08-22");
       expect(c.reviewState).toBe("ai_extracted");
@@ -135,9 +138,13 @@ describe("real content", () => {
       expect(source).toBeDefined();
       expect(source.caseAssessment.verdict).toBe(run.caseAssessment.verdict);
       expect(source.caseAssessment.loadBearing).toEqual(run.caseAssessment.loadBearing);
-      // The edition's hashes are the ones the loader derives now (the
-      // ledger has not moved since migration).
-      expect(ed.basis.ledgerHash).toBe(loaded.ledgerHash);
+      // The edition records the ledger it was written against; where the
+      // ledger has since moved, the case's changelog says so and a new
+      // edition is due (runEdition compares these two hashes).
+      expect(ed.basis.ledgerHash).toMatch(/^[a-f0-9]{64}$/);
+      if (ed.basis.ledgerHash !== loaded.ledgerHash) {
+        expect(loaded.history.some((h) => h.date >= ed.date && h.kind === "content")).toBe(true);
+      }
       expect(ed.assessment?.hash).toBe(assessmentHash(run));
     }
   });

@@ -1,7 +1,7 @@
 import { isoDate } from "../../scripts/lib/overlay-ids.mjs";
 import { fetchWithRetry } from "../../scripts/lib/vendors.mjs";
 import { assertWithinBudget, estimateUsd } from "./budget.ts";
-import { loadTariffs, priceOf, recordSpend, type Meter } from "./spend.ts";
+import { loadTariffs, priceOf, recordSpend, type Meter, type TokenUsage } from "./spend.ts";
 
 export type { Meter } from "./spend.ts";
 
@@ -22,10 +22,8 @@ export type { Meter } from "./spend.ts";
  * request, then one spend row per priced thing (tokens; searches).
  */
 
-export interface Usage {
-  inputTokens: number;
-  outputTokens: number;
-}
+export type { TokenUsage as Usage } from "./spend.ts";
+type Usage = TokenUsage;
 
 export interface ResearchResult {
   text: string;
@@ -64,6 +62,8 @@ function recordTokens(meter: Meter, model: string, usage: Usage): number | null 
       calls: 1,
       inputTokens: usage.inputTokens,
       outputTokens: usage.outputTokens,
+      cacheReadTokens: usage.cacheReadTokens ?? 0,
+      cacheWriteTokens: usage.cacheWriteTokens ?? 0,
       usd,
     },
     meter.root,
@@ -205,17 +205,24 @@ async function anthropicPost(body: { model: string; fallbacks?: unknown }, fetch
   return assembleAnthropicStream(await res.text());
 }
 
+/** The vendor's split: uncached input, cache reads, cache writes — each priced at its own rate. */
 function usageOf(m: AnthropicMessage): Usage {
-  // Cache writes and reads are billed at other rates; counting them as input
-  // over-states cost slightly, which is the honest direction for a ledger.
   return {
-    inputTokens:
-      (m.usage.input_tokens ?? 0) +
-      (m.usage.cache_creation_input_tokens ?? 0) +
-      (m.usage.cache_read_input_tokens ?? 0),
+    inputTokens: m.usage.input_tokens ?? 0,
     outputTokens: m.usage.output_tokens ?? 0,
+    cacheReadTokens: m.usage.cache_read_input_tokens ?? 0,
+    cacheWriteTokens: m.usage.cache_creation_input_tokens ?? 0,
   };
 }
+
+/**
+ * Automatic prompt caching on every call (the vendor moves the breakpoint
+ * forward as the turn grows). In a server-tool loop the model re-reads the
+ * whole context after each result; cached, those re-reads cost a fortieth
+ * of the base rate on the house model. The first paid run went without it
+ * and paid the base rate 39 times over.
+ */
+const AUTO_CACHE = { cache_control: { type: "ephemeral" } } as const;
 
 export interface AnthropicResearchOptions {
   model: string;
@@ -242,12 +249,14 @@ export async function anthropicResearch(opts: AnthropicResearchOptions, meter: M
   const maxTokens = opts.maxTokens ?? 32000;
   const maxSearches = opts.maxSearches ?? 30;
   const maxFetches = opts.maxFetches ?? 15;
+  const maxContentTokens = opts.maxContentTokens ?? 30000;
   assertWithinBudget(
     estimateUsd({
       model,
       inputChars: opts.system.length + opts.user.length,
       maxOutputTokens: maxTokens,
       searches: { count: maxSearches, toolKey: "anthropic:web_search" },
+      fetches: { count: maxFetches, maxContentTokens },
     }, loadTariffs(meter.root)),
     { runId: meter.runId, verb: meter.verb, root: meter.root },
   );
@@ -256,17 +265,13 @@ export async function anthropicResearch(opts: AnthropicResearchOptions, meter: M
   const body = withFallback({
     model,
     max_tokens: maxTokens,
+    ...AUTO_CACHE,
     thinking: { type: "adaptive" },
     output_config: { effort: opts.effort ?? "high" },
     system: opts.system,
     tools: [
       { type: "web_search_20260318", name: "web_search", max_uses: maxSearches },
-      {
-        type: "web_fetch_20260209",
-        name: "web_fetch",
-        max_uses: maxFetches,
-        max_content_tokens: opts.maxContentTokens ?? 30000,
-      },
+      { type: "web_fetch_20260209", name: "web_fetch", max_uses: maxFetches, max_content_tokens: maxContentTokens },
     ],
     messages,
   }, opts.fallback);
@@ -275,7 +280,7 @@ export async function anthropicResearch(opts: AnthropicResearchOptions, meter: M
   let served = model;
   const texts: string[] = [];
   const citations: { url: string; title?: string }[] = [];
-  const usage: Usage = { inputTokens: 0, outputTokens: 0 };
+  const usage: Usage = { inputTokens: 0, outputTokens: 0, cacheReadTokens: 0, cacheWriteTokens: 0 };
   let searches = 0;
   let fetches = 0;
   const limit = opts.maxContinuations ?? 8;
@@ -286,6 +291,8 @@ export async function anthropicResearch(opts: AnthropicResearchOptions, meter: M
     const u = usageOf(m);
     usage.inputTokens += u.inputTokens;
     usage.outputTokens += u.outputTokens;
+    usage.cacheReadTokens! += u.cacheReadTokens ?? 0;
+    usage.cacheWriteTokens! += u.cacheWriteTokens ?? 0;
     searches += m.usage.server_tool_use?.web_search_requests ?? 0;
     fetches += m.usage.server_tool_use?.web_fetch_requests ?? 0;
     for (const b of m.content) {
@@ -340,6 +347,7 @@ export async function anthropicJson<T = unknown>(
   const body = withFallback({
     model,
     max_tokens: maxTokens,
+    ...AUTO_CACHE,
     thinking: { type: "adaptive" },
     output_config: { effort: opts.effort ?? "high", format: { type: "json_schema", schema: opts.schema } },
     system: opts.system,
@@ -372,7 +380,7 @@ type ResponsesObject = {
   status: string;
   model: string;
   output?: ResponsesOutputItem[];
-  usage?: { input_tokens?: number; output_tokens?: number };
+  usage?: { input_tokens?: number; output_tokens?: number; input_tokens_details?: { cached_tokens?: number } };
   error?: { message?: string } | null;
   incomplete_details?: { reason?: string } | null;
 };
@@ -436,7 +444,13 @@ export async function openaiDeepResearch(opts: OpenAIResearchOptions, meter: Met
     resp = (await poll.json()) as ResponsesObject;
   }
   raw.push(resp);
-  const usage: Usage = { inputTokens: resp.usage?.input_tokens ?? 0, outputTokens: resp.usage?.output_tokens ?? 0 };
+  // OpenAI counts cached tokens inside input_tokens; split them out so each is priced at its rate.
+  const cached = resp.usage?.input_tokens_details?.cached_tokens ?? 0;
+  const usage: Usage = {
+    inputTokens: Math.max(0, (resp.usage?.input_tokens ?? 0) - cached),
+    outputTokens: resp.usage?.output_tokens ?? 0,
+    cacheReadTokens: cached,
+  };
   const searches = (resp.output ?? []).filter((o) => o.type === "web_search_call").length;
   recordTokens(meter, model, usage);
   recordSearches(meter, "openai:web_search", searches);

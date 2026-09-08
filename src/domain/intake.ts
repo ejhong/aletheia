@@ -193,11 +193,17 @@ export const SpendRowSchema = z.object({
   case: z.string().nullable(),
   model: z.string(),
   calls: z.number().int().nonnegative(),
+  /** Uncached input tokens, at the model's base rate. */
   inputTokens: z.number().int().nonnegative(),
   outputTokens: z.number().int().nonnegative(),
+  /** Prompt-cache reads and writes, priced at their own rates (config/tariffs.yaml). */
+  cacheReadTokens: z.number().int().nonnegative().default(0),
+  cacheWriteTokens: z.number().int().nonnegative().default(0),
   usd: z.number().nonnegative().nullable(),
 });
 export type SpendRow = z.infer<typeof SpendRowSchema>;
+/** What a caller records; the cache fields default to zero. */
+export type SpendRowInput = z.input<typeof SpendRowSchema>;
 
 /**
  * Saturation, derived (docs/AUTOMATION.md): the number of consecutive

@@ -12,6 +12,8 @@ import {
   type Verb,
 } from "../domain/intake.ts";
 import { hhmmssUTC, isoDate } from "../../scripts/lib/overlay-ids.mjs";
+import { loadBudget } from "./budget.ts";
+import { configFile } from "./config.ts";
 import { spendFor, sumCost, type Meter } from "./spend.ts";
 
 /**
@@ -73,12 +75,22 @@ export function openRun(
   };
 }
 
-/** Write the run record and return the outcome; `model` overrides the stamp when the call answered from another model. */
+/**
+ * Write the run record and return the outcome; `model` overrides the stamp
+ * when the call answered from another model. A run whose ledger cost passed
+ * the per-run ceiling is not undone — the money is spent and the work kept —
+ * but the record says so, loudly, because the estimate that admitted it was
+ * wrong and must be looked at.
+ */
 export function closeRun(run: Run, outcome: RunRecord["outcome"], extra: { reason?: string; model?: string } = {}): RunOutcome {
   const cost = sumCost(spendFor(run.runId, run.root));
+  const cap = fs.existsSync(configFile("budget", run.root)) ? loadBudget(run.root).usd.perRun : null;
+  const over = cap !== null && cost.usd !== null && cost.usd > cap ? `OVER THE PER-RUN CEILING: $${cost.usd} spent against $${cap}; the estimate under-read this call` : null;
+  const reason = [extra.reason, over].filter(Boolean).join(" — ") || undefined;
+  if (over) console.error(`${run.runId}: ${over}`);
   const stamp = extra.model === undefined ? run.stamp : { ...run.stamp, model: extra.model };
-  writeRun({ ...stamp, outcome, cost, ...(extra.reason ? { notes: extra.reason } : {}) }, run.root);
-  return { outcome, runId: run.runId, ...(extra.reason ? { reason: extra.reason } : {}), cost };
+  writeRun({ ...stamp, outcome, cost, ...(reason ? { notes: reason } : {}) }, run.root);
+  return { outcome, runId: run.runId, ...(reason ? { reason } : {}), cost };
 }
 
 export function runDir(runId: string, root = process.cwd()): string {

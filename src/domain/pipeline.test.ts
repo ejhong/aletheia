@@ -181,6 +181,10 @@ describe("the spend ledger", () => {
     expect(
       priceOf("m", { inputTokens: 1_000_000, outputTokens: 500_000 }, { models: { m: { inputPerMTok: 2, outputPerMTok: 8, source: "x", checked: "2026-09-08" } }, tools: {} }),
     ).toBe(6);
+    // Cache reads and writes are priced at their own rates, and fall back to the base rate without one.
+    const cached = { models: { c: { inputPerMTok: 10, outputPerMTok: 50, cachedInputPerMTok: 0.25, cacheWritePerMTok: 12.5, source: "x", checked: "2026-09-08" } }, tools: {} };
+    expect(priceOf("c", { inputTokens: 0, outputTokens: 0, cacheReadTokens: 1_000_000, cacheWriteTokens: 1_000_000 }, cached)).toBe(12.75);
+    expect(priceOf("m", { inputTokens: 0, outputTokens: 0, cacheReadTokens: 1_000_000 }, { models: { m: { inputPerMTok: 2, outputPerMTok: 8, source: "x", checked: "2026-09-08" } }, tools: {} })).toBe(2);
     recordSpend({ date: "2026-09-08", runId: "r", verb: "report", case: "x", model: "m", calls: 1, inputTokens: 10, outputTokens: 20, usd: null }, root);
     recordSpend({ date: "2026-09-08", runId: "r", verb: "report", case: "x", model: "m", calls: 1, inputTokens: 5, outputTokens: 5, usd: 0.01 }, root);
     const rows = readSpend(root);

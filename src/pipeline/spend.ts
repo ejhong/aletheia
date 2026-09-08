@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
 import { z } from "zod";
-import { SpendRowSchema, type Cost, type SpendRow, type Verb } from "../domain/intake.ts";
+import { SpendRowSchema, type Cost, type SpendRow, type SpendRowInput, type Verb } from "../domain/intake.ts";
 import { loadConfig } from "./config.ts";
 
 /**
@@ -30,7 +30,10 @@ const TariffsSchema = z.object({
       /** USD per million input tokens; null when not yet reviewed. */
       inputPerMTok: z.number().nonnegative().nullable(),
       outputPerMTok: z.number().nonnegative().nullable(),
+      /** Prompt-cache read (hit) rate; a missing rate prices reads at the base input rate. */
       cachedInputPerMTok: z.number().nonnegative().nullable().optional(),
+      /** Prompt-cache write rate (5-minute); a missing rate prices writes at the base input rate. */
+      cacheWritePerMTok: z.number().nonnegative().nullable().optional(),
       /** Where the price was read, and when — a tariff is provenance too. */
       source: z.string().nullable(),
       checked: z.string().nullable(),
@@ -56,18 +59,33 @@ export function loadTariffs(root = process.cwd()): Tariffs {
   return loadConfig("tariffs", TariffsSchema, { root, ifMissing: () => ({ models: {}, tools: {} }) });
 }
 
-/** Dollars for a usage, or null when the model has no reviewed tariff. */
-export function priceOf(
-  model: string,
-  usage: { inputTokens: number; outputTokens: number },
-  tariffs = loadTariffs(),
-): number | null {
-  const t = tariffs.models[model];
-  if (!t || t.inputPerMTok === null || t.outputPerMTok === null) return null;
-  return Number(((usage.inputTokens * t.inputPerMTok + usage.outputTokens * t.outputPerMTok) / 1e6).toFixed(6));
+export interface TokenUsage {
+  inputTokens: number;
+  outputTokens: number;
+  cacheReadTokens?: number;
+  cacheWriteTokens?: number;
 }
 
-export function recordSpend(row: SpendRow, root = process.cwd()): void {
+/** The three input rates a tariff implies; cache rates fall back to the base rate, the honest upper bound. */
+export function inputRates(t: Tariffs["models"][string]): { input: number; read: number; write: number } | null {
+  if (t.inputPerMTok === null) return null;
+  return { input: t.inputPerMTok, read: t.cachedInputPerMTok ?? t.inputPerMTok, write: t.cacheWritePerMTok ?? t.inputPerMTok };
+}
+
+/** Dollars for a usage, or null when the model has no reviewed tariff. */
+export function priceOf(model: string, usage: TokenUsage, tariffs = loadTariffs()): number | null {
+  const t = tariffs.models[model];
+  const rates = t ? inputRates(t) : null;
+  if (!t || !rates || t.outputPerMTok === null) return null;
+  const perMTok =
+    usage.inputTokens * rates.input +
+    (usage.cacheReadTokens ?? 0) * rates.read +
+    (usage.cacheWriteTokens ?? 0) * rates.write +
+    usage.outputTokens * t.outputPerMTok;
+  return Number((perMTok / 1e6).toFixed(6));
+}
+
+export function recordSpend(row: SpendRowInput, root = process.cwd()): void {
   const parsed = SpendRowSchema.parse(row);
   const rows = readSpend(root);
   rows.push(parsed);
@@ -97,7 +115,8 @@ export function sumCost(rows: SpendRow[]): Cost {
       : null;
   return {
     calls: rows.length,
-    inputTokens: rows.reduce((n, r) => n + r.inputTokens, 0),
+    // Every input token the model processed, cached or not.
+    inputTokens: rows.reduce((n, r) => n + r.inputTokens + r.cacheReadTokens + r.cacheWriteTokens, 0),
     outputTokens: rows.reduce((n, r) => n + r.outputTokens, 0),
     usd,
   };

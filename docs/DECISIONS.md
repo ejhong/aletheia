@@ -1080,7 +1080,26 @@ named there lacks a tariff row. In the same spirit (founder, 2026-09-08:
 centralize duplicated code where worthwhile), the four verbs' repeated
 run bookkeeping became the store's run frame (`openRun`/`closeRun`), the
 three config readers became one, the case lookup moved to the loader,
-and the date stamp joined the id helpers. Ceiling: $20 per run, $50 per day,
+and the date stamp joined the id helpers.
+
+**The first paid run (2026-09-08, `2026-09-08-report-megalithic-casting-125721`)
+and what it taught.** Cast Not Carved, default seat, house model. The
+report itself is strong — it found, for instance, that the al-Maʾmūn
+"salt layer" claim is absent from both accessible translations of the
+medieval accounts. It cost $37.86 against a $20 ceiling, and the first
+attempt had to be killed. Three defects, each now fixed and pinned by a
+test: (1) non-streaming requests hit Node's five-minute header timeout
+and were retried at full price — every Anthropic call now streams and is
+reassembled from events; (2) the server-side tool loop re-read the whole
+context 39 times with no prompt cache, billing 3.6M input tokens at the
+base rate — every call now carries automatic caching, the ledger prices
+cache reads and writes at their own rates (tariffs gained the write
+rates from the pricing page), and the estimate models the loop as one
+write per new token and one read per prior token per pass, which puts
+the same call near $13 cached and above $100 uncached; (3) the guard is
+a pre-call estimate and cannot stop a single server turn, so the run
+frame now flags any run whose ledger cost passed the ceiling, in its
+record and on stderr. The ledger row for the run stands as billed. Ceiling: $20 per run, $50 per day,
 $150 per month (`config/budget.yaml`), enough for the eight-report test
 with headroom. Tariffs were read from the vendors' own price pages on
 2026-09-08 and recorded with their sources; the four other panel seats

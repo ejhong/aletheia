@@ -5,7 +5,10 @@
 # provenance too. Never estimate; a null row is honest.
 #
 # Keys are the exact model ids the transport sends. Tool-call fees (web
-# search) are recorded as their own rows under `tools`, per call.
+# search) are recorded as their own rows under `tools`, per call. Cache
+# rates matter: a research turn re-reads its whole context after every
+# tool result, and the ledger prices reads and writes at their own rates —
+# a model without them is priced at the base rate throughout.
 models:
   # --- the research pass (report verb) ------------------------------------
   o4-mini-deep-research:
@@ -24,7 +27,8 @@ models:
   claude-fable-5-1:
     inputPerMTok: 10
     outputPerMTok: 50
-    cachedInputPerMTok: 0.25
+    cachedInputPerMTok: 0.25      # cache hits: 0.025× base on this model
+    cacheWritePerMTok: 12.5       # 5-minute cache write: 1.25× base
     source: https://platform.claude.com/docs/en/about-claude/pricing
     checked: "2026-09-08"
   # --- the fallback, the drafter's second option, and the panel's house seat --
@@ -32,12 +36,14 @@ models:
     inputPerMTok: 5
     outputPerMTok: 25
     cachedInputPerMTok: 0.5
+    cacheWritePerMTok: 6.25
     source: https://platform.claude.com/docs/en/about-claude/pricing
     checked: "2026-09-08"
   claude-sonnet-5:
     inputPerMTok: 2
     outputPerMTok: 10
     cachedInputPerMTok: 0.2
+    cacheWritePerMTok: 2.5
     source: https://platform.claude.com/docs/en/about-claude/pricing
     checked: "2026-09-08"
   # --- the other panel seats: not yet read from a price page ---------------

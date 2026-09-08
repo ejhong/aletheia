@@ -27,7 +27,17 @@ describe("the budget guard", () => {
   it("estimates conservatively and refuses an unpriced model", () => {
     expect(tokensFromChars(3500)).toBe(1000);
     expect(estimateUsd({ model: "m", inputChars: 35_000, maxOutputTokens: 10_000 }, tariffs)).toBe(0.5); // 10k in × $10 + 10k out × $40
-    expect(estimateUsd({ model: "m", inputChars: 0, maxOutputTokens: 0, searches: { count: 10, toolKey: "v:web_search" } }, tariffs)).toBe(0.5); // 10 × $0.01 + 40k tokens × $10
+    // Ten searches: ten results of 4k tokens written once ($0.40 at the base rate, no cache rates in this tariff),
+    // re-read across the passes that follow (0+4k+…+36k = 180k tokens, $1.80), plus ten $0.01 fees.
+    expect(estimateUsd({ model: "m", inputChars: 0, maxOutputTokens: 0, searches: { count: 10, toolKey: "v:web_search" } }, tariffs)).toBe(2.3);
+    // With cache rates the re-reads are cheap: the same call on a model that reads at $0.25 and writes at $12.5.
+    const cached = { models: { c: { inputPerMTok: 10, outputPerMTok: 50, cachedInputPerMTok: 0.25, cacheWritePerMTok: 12.5, source: "x", checked: "2026-09-08" } }, tools: tariffs.tools };
+    expect(estimateUsd({ model: "c", inputChars: 0, maxOutputTokens: 0, searches: { count: 10, toolKey: "v:web_search" } }, cached)).toBe(0.645); // 40k × 12.5 + 180k × 0.25 (per MTok) + $0.10
+    // The first paid run's shape — a 39k-token prompt, 30 searches, 15 fetches of up to 30k tokens — estimates under the $20 ceiling only because of caching.
+    const shape = { model: "c", inputChars: 136_500, maxOutputTokens: 32_000, searches: { count: 30, toolKey: "v:web_search" }, fetches: { count: 15, maxContentTokens: 30_000 } };
+    expect(estimateUsd(shape, cached)!).toBeGreaterThan(10);
+    expect(estimateUsd(shape, cached)!).toBeLessThan(20);
+    expect(estimateUsd(shape, { ...cached, models: { c: { ...cached.models.c, cachedInputPerMTok: undefined, cacheWritePerMTok: undefined } } })!).toBeGreaterThan(100); // uncached, the same call is ruinous
     expect(estimateUsd({ model: "nope", inputChars: 10, maxOutputTokens: 10 }, tariffs)).toBeNull();
     expect(estimateUsd({ model: "m", inputChars: 10, maxOutputTokens: 10, searches: { count: 1, toolKey: "missing" } }, tariffs)).toBeNull();
     const root = tmpRoot();

@@ -577,11 +577,11 @@ export function assembleProposal(reply: DraftReply, ctx: AssembleContext): Assem
   return { proposal, novelty };
 }
 
-export type Drafter = (system: string, user: string, meter: Meter) => Promise<{ data: DraftReply; model: string }>;
+export type Drafter = (system: string, user: string, meter: Meter) => Promise<{ data: DraftReply; model: string; strict?: boolean }>;
 
 export const defaultDrafter: Drafter = async (system, user, meter) => {
   const r = await anthropicJson<DraftReply>({ ...DRAFTER, system, user, schema: DRAFT_SCHEMA, maxTokens: 32000 }, meter);
-  return { data: r.data, model: r.model };
+  return { data: r.data, model: r.model, strict: r.strict };
 };
 
 export interface DraftOptions {
@@ -642,7 +642,7 @@ export async function runDraft(reportRunId: string, opts: DraftOptions = {}): Pr
     const dir = writeProposal(proposal, root);
     writeWorkingFile(runId, "novelty.md", novelty, root);
     writeWorkingFile(runId, "reply.json", JSON.stringify(reply.data, null, 1), root);
-    return { ...closeRun(run, "completed", { model: reply.model }), proposalDir: dir };
+    return { ...closeRun(run, "completed", { model: reply.model, reason: reply.strict === false ? "schema sent as instructions (too large for strict output)" : undefined }), proposalDir: dir };
   } catch (e) {
     return closeRun(run, "failed", { reason: (e as Error).message });
   }

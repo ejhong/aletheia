@@ -1,4 +1,5 @@
 import { isoDate } from "../../scripts/lib/overlay-ids.mjs";
+import { parseJsonReply } from "../../scripts/lib/llm.mjs";
 import { fetchWithRetry } from "../../scripts/lib/vendors.mjs";
 import { assertWithinBudget, estimateUsd } from "./budget.ts";
 import { loadTariffs, priceOf, recordSpend, type Meter, type TokenUsage } from "./spend.ts";
@@ -355,26 +356,52 @@ export interface AnthropicJsonOptions {
 }
 
 /** One structured-output call; returns the parsed JSON and the usage. */
+/** The vendor's refusal to compile a large schema into a grammar; nothing was billed. */
+const GRAMMAR_TOO_LARGE = /compiled grammar is too large/i;
+
+/**
+ * One JSON call. Strict structured output first (the vendor guarantees the
+ * shape); when the vendor refuses the schema as too large to compile — the
+ * draft schema is — the same call is made once more with the schema in the
+ * instructions and the reply parsed as JSON. The caller validates either way
+ * (every proposal and edition is Zod-checked before it is written), so the
+ * loss is only the guarantee, and the result says which mode answered.
+ */
 export async function anthropicJson<T = unknown>(
   opts: AnthropicJsonOptions,
   meter: Meter,
-): Promise<{ data: T; model: string; usage: Usage; usd: number | null }> {
+): Promise<{ data: T; model: string; usage: Usage; usd: number | null; strict: boolean }> {
   const model = opts.model;
   const maxTokens = opts.maxTokens ?? 32000;
   assertWithinBudget(
     estimateUsd({ model, inputChars: opts.system.length + opts.user.length, maxOutputTokens: maxTokens }, loadTariffs(meter.root)),
     { runId: meter.runId, verb: meter.verb, root: meter.root },
   );
-  const body = withFallback({
-    model,
-    max_tokens: maxTokens,
-    ...AUTO_CACHE,
-    thinking: { type: "adaptive" },
-    output_config: { effort: opts.effort ?? "high", format: { type: "json_schema", schema: opts.schema } },
-    system: opts.system,
-    messages: [{ role: "user", content: opts.user }],
-  }, opts.fallback);
-  const m = await anthropicPost(body, opts.fetchImpl ?? fetch, opts.timeoutMs ?? 1_800_000);
+  const request = (strict: boolean) =>
+    withFallback({
+      model,
+      max_tokens: maxTokens,
+      ...AUTO_CACHE,
+      thinking: { type: "adaptive" },
+      output_config: strict
+        ? { effort: opts.effort ?? "high", format: { type: "json_schema", schema: opts.schema } }
+        : { effort: opts.effort ?? "high" },
+      system: strict
+        ? opts.system
+        : `${opts.system}\n\nReply with one JSON object and nothing else — no prose, no code fence. It must satisfy this JSON Schema exactly:\n${JSON.stringify(opts.schema)}`,
+      messages: [{ role: "user", content: opts.user }],
+    }, opts.fallback);
+
+  let strict = true;
+  let m: AnthropicMessage;
+  try {
+    m = await anthropicPost(request(true), opts.fetchImpl ?? fetch, opts.timeoutMs ?? 1_800_000);
+  } catch (e) {
+    if (!GRAMMAR_TOO_LARGE.test((e as Error).message)) throw e;
+    console.error(`${meter.runId}: the vendor would not compile the schema for strict output; sending it as instructions`);
+    strict = false;
+    m = await anthropicPost(request(false), opts.fetchImpl ?? fetch, opts.timeoutMs ?? 1_800_000);
+  }
   const served = m.model || model;
   if (m.stop_reason === "refusal") throw new Error(`${model} (and its fallback) refused`);
   if (m.stop_reason === "max_tokens") throw new Error(`${served} hit max_tokens (${maxTokens}) before finishing`);
@@ -383,11 +410,11 @@ export async function anthropicJson<T = unknown>(
   const usd = recordTokens(meter, served, usage);
   let data: T;
   try {
-    data = JSON.parse(text) as T;
+    data = (strict ? JSON.parse(text) : parseJsonReply(text)) as T;
   } catch (e) {
     throw new Error(`${served}: reply was not the JSON the schema demanded (${(e as Error).message})`);
   }
-  return { data, model: served, usage, usd };
+  return { data, model: served, usage, usd, strict };
 }
 
 // --------------------------------------------------------------------- OpenAI

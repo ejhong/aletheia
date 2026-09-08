@@ -8,3 +8,10 @@ usd:
   perRun: 20      # one report or one edition; the first house-seat report cost $37.86 uncached, ~$13 is the cached estimate
   perDay: 50
   perMonth: 150
+# Dated exceptions to the daily cap, granted by the founder, on the record
+# and self-expiring. The guard uses the exemption's perDay on that date only.
+exemptions:
+  - date: "2026-09-08"
+    perDay: 100
+    reason: "Founder direction: continue the first-runs stage today (re-run draft and verify with retrieval, validate the cached house-seat cost, run the panel check on Cast Not Carved) rather than wait for the next day's cap."
+    by: "founder (chat direction, 2026-09-08)"

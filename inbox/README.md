@@ -62,10 +62,12 @@ is drafted with an honest verification label.
 
 **3. Documents** (`.txt`, `.md`, or `.pdf` full texts): routed through the
 extraction pipeline (`docs/EXTRACTION_PIPELINE.md`) into proposed
-proposed claims (anchored, unfeatured until an edition features them). PDFs are converted automatically when `pdftotext`
-(poppler) is available — it is installed in the weekly workflow; install
-locally with `brew install poppler`. A PDF that can't be converted is left
-in place with a note in the run report.
+proposed claims (anchored, unfeatured until an edition features them). PDFs
+are read page by page by the pipeline itself (the same extractor the verb
+chain uses; no external tool), with `[p. N]` markers so claims can cite the
+page. A scanned PDF with no text layer is left in place with a note in the
+run report. Link lists are fetched the same way: PDFs and HTML alike, with
+an open-access copy found by DOI when a URL will not serve.
 
 ## Routing rules (plain version)
 

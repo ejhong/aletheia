@@ -21,6 +21,21 @@ const BudgetSchema = z.object({
     perDay: z.number().positive(),
     perMonth: z.number().positive(),
   }),
+  /**
+   * Founder-granted, dated exceptions to the daily cap — the constitutional
+   * way to spend past it: on the record, for one day, with a reason and a
+   * name, self-expiring. Never an environment variable.
+   */
+  exemptions: z
+    .array(
+      z.object({
+        date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+        perDay: z.number().positive(),
+        reason: z.string().min(3),
+        by: z.string().min(1),
+      }),
+    )
+    .default([]),
 });
 export type Budget = z.infer<typeof BudgetSchema>;
 
@@ -106,6 +121,8 @@ export function assertWithinBudget(estimate: number | null, ctx: BudgetContext):
   const budget = loadBudget(root);
   const today = ctx.today ?? isoDate();
   const month = today.slice(0, 7);
+  const exemption = budget.exemptions.find((e) => e.date === today);
+  const perDay = exemption ? exemption.perDay : budget.usd.perDay;
   const rows = readSpend(root);
   const sum = (pred: (r: (typeof rows)[number]) => boolean) =>
     rows.filter(pred).reduce((n, r) => n + (r.usd ?? 0), 0);
@@ -117,7 +134,7 @@ export function assertWithinBudget(estimate: number | null, ctx: BudgetContext):
       `${scope} cap: $${spent.toFixed(2)} spent + $${estimate.toFixed(2)} estimated > $${cap.toFixed(2)} (config/budget.yaml); nothing was sent`,
     );
   if (run + estimate > budget.usd.perRun) throw fail("per-run", run, budget.usd.perRun);
-  if (day + estimate > budget.usd.perDay) throw fail("per-day", day, budget.usd.perDay);
+  if (day + estimate > perDay) throw fail("per-day", day, perDay);
   if (mon + estimate > budget.usd.perMonth) throw fail("per-month", mon, budget.usd.perMonth);
   return estimate;
 }

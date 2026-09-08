@@ -42,17 +42,22 @@ describe("the budget guard", () => {
     expect(estimateUsd({ model: "m", inputChars: 10, maxOutputTokens: 10, searches: { count: 1, toolKey: "missing" } }, tariffs)).toBeNull();
     const root = tmpRoot();
     expect(() => assertWithinBudget(null, { runId: "r", verb: "report", root })).toThrow(BudgetExceeded);
+    // A dated exemption lifts the daily cap on its date only; the committed file carries one for 2026-09-08.
+    for (let i = 0; i < 5; i++) recordSpend({ date: "2026-09-08", runId: `x${i}`, verb: "report", case: "c", model: "m", calls: 1, inputTokens: 1, outputTokens: 1, usd: 9.5 }, root);
+    expect(assertWithinBudget(10, { runId: "r", verb: "report", root, today: "2026-09-08" })).toBe(10); // $47.50 + $10 under the $100 exemption
+    for (let i = 0; i < 5; i++) recordSpend({ date: "2026-09-10", runId: `y${i}`, verb: "report", case: "c", model: "m", calls: 1, inputTokens: 1, outputTokens: 1, usd: 9.5 }, root);
+    expect(() => assertWithinBudget(10, { runId: "r", verb: "report", root, today: "2026-09-10" })).toThrow(/per-day cap/);
   });
 
   it("refuses a call that would pass the per-run, per-day, or per-month cap, and says which", () => {
     const root = tmpRoot();
-    expect(assertWithinBudget(5, { runId: "r1", verb: "report", root, today: "2026-09-08" })).toBe(5);
-    recordSpend({ date: "2026-09-08", runId: "r1", verb: "report", case: "x", model: "m", calls: 1, inputTokens: 1, outputTokens: 1, usd: 18 }, root);
-    expect(() => assertWithinBudget(5, { runId: "r1", verb: "report", root, today: "2026-09-08" })).toThrow(/per-run cap/);
-    expect(assertWithinBudget(5, { runId: "r2", verb: "report", root, today: "2026-09-08" })).toBe(5);
-    recordSpend({ date: "2026-09-08", runId: "r2", verb: "report", case: "x", model: "m", calls: 1, inputTokens: 1, outputTokens: 1, usd: 30 }, root);
-    expect(() => assertWithinBudget(5, { runId: "r3", verb: "report", root, today: "2026-09-08" })).toThrow(/per-day cap/);
-    expect(assertWithinBudget(5, { runId: "r3", verb: "report", root, today: "2026-09-09" })).toBe(5);
+    expect(assertWithinBudget(5, { runId: "r1", verb: "report", root, today: "2026-09-21" })).toBe(5);
+    recordSpend({ date: "2026-09-21", runId: "r1", verb: "report", case: "x", model: "m", calls: 1, inputTokens: 1, outputTokens: 1, usd: 18 }, root);
+    expect(() => assertWithinBudget(5, { runId: "r1", verb: "report", root, today: "2026-09-21" })).toThrow(/per-run cap/);
+    expect(assertWithinBudget(5, { runId: "r2", verb: "report", root, today: "2026-09-21" })).toBe(5);
+    recordSpend({ date: "2026-09-21", runId: "r2", verb: "report", case: "x", model: "m", calls: 1, inputTokens: 1, outputTokens: 1, usd: 30 }, root);
+    expect(() => assertWithinBudget(5, { runId: "r3", verb: "report", root, today: "2026-09-21" })).toThrow(/per-day cap/);
+    expect(assertWithinBudget(5, { runId: "r3", verb: "report", root, today: "2026-09-22" })).toBe(5);
     for (let i = 0; i < 6; i++) {
       recordSpend({ date: `2026-09-1${i}`, runId: `m${i}`, verb: "report", case: "x", model: "m", calls: 1, inputTokens: 1, outputTokens: 1, usd: 19 }, root);
     }

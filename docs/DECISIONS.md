@@ -1155,9 +1155,14 @@ three integrations the runs had already argued for — OpenAlex (open
 access now, cited-by later), Crossref's Retraction Watch notices on
 admitted sources, and a Wayback snapshot on every admitted URL. One
 dependency was added for this, pipeline-only and dev-only: `pdfjs-dist`.
-AGENTS.md §4's dependency list does not name it; the founder is asked to
-ratify or refuse that addition when reviewing the PR — it is the only way
-to read a paper without asking a model to transcribe it. A second draft pass
+AGENTS.md §4's dependency list does not name it; the founder ratified the
+addition in chat on 2026-09-08 ("fine to ratify") — it is the only way to
+read a paper without asking a model to transcribe it — and asked that the
+whole intake system, the inbox included, read PDFs: the inbox's dropped
+PDFs and link lists now go through the same retrieval layer (no
+`pdftotext` needed). The founder also exempted the rest of 2026-09-08 from
+the daily cap so the first-runs stage could continue; the exemption is a
+dated row in `config/budget.yaml`, the constitutional form of such a grant. A second draft pass
 on the same report, with retrieval, then exposed the reopen rule's gap: the
 assembler re-blocked Nemoy and Sessa on the strength of the previous day's
 `blocked` rows although it now held their text, and lost seven evidence

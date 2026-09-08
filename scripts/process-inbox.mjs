@@ -30,12 +30,12 @@
  * Exit code 0 with "nothing to process" when the inbox is empty — the
  * scheduled workflow treats that as a no-op, not a failure.
  */
-import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
 import { callWithRefusalFallback, noKeyMessage, parseJsonReply, pickProvider } from "./lib/llm.mjs";
+import { pdfText, retrieve } from "../src/pipeline/fetch.ts";
 
 const PROMPT_VERSION_COMMENTARY = "commentary-v1";
 
@@ -88,14 +88,19 @@ function parseFrontMatter(text) {
  * Returns null when the tool is missing or conversion fails — the caller
  * falls back to the old "convert to text first" skip message.
  */
-function pdfToText(file) {
-  const res = spawnSync("pdftotext", ["-layout", file, "-"], {
-    encoding: "utf8",
-    maxBuffer: 64 * 1024 * 1024,
-  });
-  if (res.error || res.status !== 0) return null;
-  const text = (res.stdout ?? "").trim();
-  return text.length > 0 ? text : null;
+/**
+ * A dropped PDF, read by the same extractor the verb chain uses
+ * (src/pipeline/fetch.ts): page by page, `[p. N]` markers, no external tool.
+ * Null when the file has no extractable text (a scan needs OCR).
+ */
+async function pdfToText(file) {
+  try {
+    const { text } = await pdfText(new Uint8Array(fs.readFileSync(file)));
+    const body = text.replace(/\[p\. \d+\]/g, "").trim();
+    return body.length > 0 ? text : null;
+  } catch {
+    return null;
+  }
 }
 
 const caseDirs = fs.existsSync(CASES_DIR)
@@ -214,23 +219,15 @@ function extractUrls(body) {
   return [...body.matchAll(/https?:\/\/[^\s)\]>"']+/g)].map((m) => m[0]);
 }
 
+/**
+ * A dropped link, fetched through the retrieval layer the verb chain uses:
+ * HTML or PDF, a bot wall counted as a miss, an open-access copy found by
+ * DOI when the URL will not serve. The title is the first line of the text.
+ */
 async function checkUrl(url) {
-  try {
-    const res = await fetch(url, {
-      redirect: "follow",
-      signal: AbortSignal.timeout(15000),
-      headers: { "user-agent": "aletheia-inbox-pipeline/1.0" },
-    });
-    const type = res.headers.get("content-type") ?? "";
-    let title = null;
-    if (res.ok && type.includes("text/html")) {
-      const html = (await res.text()).slice(0, 100000);
-      title = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1]?.trim() ?? null;
-    }
-    return { ok: res.ok, status: res.status, title };
-  } catch (err) {
-    return { ok: false, status: null, title: null, error: String(err) };
-  }
+  const r = await retrieve({ url }, {});
+  const title = r.ok && r.text ? (r.text.replace(/^\[p\. 1\]\n?/, "").split("\n").find((l) => l.trim().length > 3)?.trim().slice(0, 200) ?? null) : null;
+  return { ok: r.ok, status: r.status, title, via: r.via ?? null, pages: r.pages ?? null, error: r.ok ? null : r.reason };
 }
 
 async function processLinks(item, runId, today) {
@@ -248,7 +245,7 @@ async function processLinks(item, runId, today) {
       verificationNote: check.ok
         ? `URL fetched by inbox pipeline on ${today} (HTTP ${check.status}${
             check.title ? `, title confirmed` : ""
-          }). A human should verify content relevance before use.`
+          }${check.pages ? `, PDF of ${check.pages} pages` : ""}${check.via ? `; ${check.via}` : ""}). A human should verify content relevance before use.`
         : `URL could NOT be fetched by the pipeline on ${today}${
             check.error ? ` (${check.error})` : ""
           }. Do not cite until verified.`,
@@ -278,13 +275,14 @@ async function main() {
   const runId = `inbox-${today}-${Math.random().toString(36).slice(2, 6)}`;
 
   // Parse and classify everything first.
-  const parsed = items.map((file) => {
+  const parsed = [];
+  for (const file of items) {
     const ext = path.extname(file).toLowerCase();
     const isText = [".md", ".txt"].includes(ext);
     let raw = isText ? fs.readFileSync(file, "utf8") : null;
     let convertedFromPdf = false;
     if (ext === ".pdf") {
-      const text = pdfToText(file);
+      const text = await pdfToText(file);
       if (text) {
         raw = text;
         convertedFromPdf = true;
@@ -292,15 +290,15 @@ async function main() {
     }
     const usable = isText || convertedFromPdf;
     const { meta, body } = usable ? parseFrontMatter(raw) : { meta: {}, body: "" };
-    return {
+    parsed.push({
       file,
       meta,
       body,
       convertedFromPdf,
       case: detectCase(file, meta),
       type: usable ? detectType(file, meta, body, convertedFromPdf) : "binary",
-    };
-  });
+    });
+  }
 
   // Dry run = classification only: report what each item would become,
   // without LLM calls, extraction runs, writes, or moves.
@@ -337,7 +335,7 @@ async function main() {
     if (item.type === "binary") {
       skipped.push(
         path.extname(item.file).toLowerCase() === ".pdf"
-          ? `**${name}** — PDF could not be converted (is \`pdftotext\` installed? \`brew install poppler\` / \`apt-get install poppler-utils\`). Convert to text (.txt/.md) and re-drop, or install poppler and re-run.`
+          ? `**${name}** — PDF has no extractable text (a scanned image needs OCR). Convert to text (.txt/.md) and re-drop.`
           : `**${name}** — binary file. Convert to text (.txt/.md) and re-drop; the pipeline does not parse binaries.`,
       );
       continue;

@@ -887,4 +887,16 @@ argument before them.
 label, or document without removing one" — the founder wants no
 constraints of that shape; the standard is the design itself.
 
+**Reassessed the same day for elegance of objects and flow.** The design
+is restated as nine record kinds in three groups (ledger: Source, Evidence,
+Claim, Research item, Study, Image; judgment: Assessment, Edition; intake:
+Proposal, Disposition), one flow of six verbs each one CLI command and one
+protocol file, four shared services (packet, coverage diff, model transport
+with the spend ledger inside it, intake store), one `CaseView`, four
+workflows, one language. The panel gains a narrow veto and a wide voice:
+verdicts stop only named violations; everything else returns as at most
+three review notes per seat, entered as intake candidates with dispositions
+so they feed the next draft and are never lost or silently ignored. The
+tournament is gone; an edition is judged against the incumbent only.
+
 (AI record of founder direction, 2026-09-05 to 09-07 sessions.)

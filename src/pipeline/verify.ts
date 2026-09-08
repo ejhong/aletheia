@@ -332,6 +332,14 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
       `## Rejected`,
       ...rejected.map((r) => `- ${r.kind} ${r.id} (${r.disposition}) — ${r.reason}${r.route ? ` — route: ${r.route}` : ""}`),
       ``,
+      ...(proposal.corrections.length
+        ? [
+            `## Corrections proposed — NOT applied`,
+            `The ledger writer appends; it cannot yet change a field in place. Apply by hand in the PR, with the reason, or leave the record as it stands.`,
+            ...proposal.corrections.map((c) => `- ${c.record}.${c.field}: "${String(c.from).slice(0, 120)}" → "${String(c.to).slice(0, 120)}" — ${c.reason}`),
+            ``,
+          ]
+        : []),
       `## Retrieval`,
       ...[...texts.entries()].map(([key, f]) => `- ${key} — ${f.ok ? `retrieved${f.pages ? `, ${f.pages} pages` : ""}${f.via ? ` (${f.via})` : ""}` : `not retrieved: ${f.reason}`}`),
       ``,
@@ -365,13 +373,24 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
       const key = r.kind === "source" ? sourceKeys({ title: r.observed })[0] ?? textKey(r.observed) : textKey(r.observed);
       if (key) rows.push({ key, kind: r.kind, disposition: r.disposition, reason: r.reason, observed: r.observed, by: runId, date, proposal: `proposals/${proposalRunId}`, ...(r.route ? { route: r.route } : {}) });
     }
-    rows.push(...proposal.dispositions);
+    const known = new Set<string>([
+      ...loaded.sources.map((s) => s.id), ...loaded.claims.map((c) => c.id), ...loaded.evidence.map((e) => e.id), ...loaded.research.map((r) => r.id),
+      ...accepted.sources.map((s) => s.id), ...accepted.claims.map((c) => c.id), ...accepted.evidence.map((e) => e.id), ...accepted.research.map((r) => r.id),
+    ]);
+    for (const d of proposal.dispositions) {
+      if (d.as && !known.has(d.as)) {
+        notes.push(`${d.key}: disposition named ${d.as}, which is not a record; recorded as failed`);
+        const { as: _as, ...rest } = d;
+        void _as;
+        rows.push({ ...rest, disposition: "failed", reason: `Drafter named ${d.as} as the record, which the ledger does not hold. Its reason as written: ${d.reason ?? ""}` });
+      } else rows.push(d);
+    }
     appendDispositions(loaded.dir, rows, root);
     appendHistory(
       loaded.dir,
       {
         date,
-        change: `Intake from report ${proposal.report ?? proposal.runId}: ${counts.sources} source(s), ${counts.evidence} evidence record(s), ${counts.claims} claim(s), ${counts.research} research item(s) verified and added (proposal ${proposalRunId}, verification ${runId}); ${rejected.length} candidate(s) rejected with reasons in dispositions.yaml.`,
+        change: `Intake from report ${proposal.report ?? proposal.runId}: ${counts.sources} source(s), ${counts.evidence} evidence record(s), ${counts.claims} claim(s), ${counts.research} research item(s) verified and added (proposal ${proposalRunId}, verification ${runId}); ${rejected.length} candidate(s) rejected with reasons in dispositions.yaml.${proposal.corrections.length ? ` ${proposal.corrections.length} correction(s) to existing records proposed and NOT applied — see proposals/${runId}/verification.md.` : ""}`,
         reason: proposal.rationale,
         actor: `aletheia verify (${READER.model} second reader; drafter ${proposal.model ?? "unknown"})`,
         aiAssisted: true,
@@ -379,7 +398,11 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
       },
       root,
     );
-    return { ...closeRun(run, "completed", { reason: `wrote ${JSON.stringify(counts)}; ${rejected.length} rejected` }), accepted: counts, rejected: rejected.length };
+    return {
+      ...closeRun(run, "completed", { reason: `wrote ${JSON.stringify(counts)}; ${rejected.length} rejected${proposal.corrections.length ? `; ${proposal.corrections.length} correction(s) proposed, not applied (see verification.md)` : ""}` }),
+      accepted: counts,
+      rejected: rejected.length,
+    };
   } catch (e) {
     return closeRun(run, "failed", { reason: (e as Error).message });
   }

@@ -551,18 +551,34 @@ export function assembleProposal(reply: DraftReply, ctx: AssembleContext): Assem
   }
 
   // ---- the drafter's own dispositions, keyed mechanically ----------------
+  // Ids a disposition may point at: the ledger's, and this proposal's final ids (provisional ones resolve through idOf).
+  const dispositionTargets = new Set<string>([
+    ...loaded.sources.map((s) => s.id), ...loaded.claims.map((c) => c.id), ...loaded.evidence.map((e) => e.id), ...loaded.research.map((r) => r.id),
+    ...sources.map((s) => s.id), ...claims.map((c) => c.id), ...evidence.map((e) => e.id), ...research.map((r) => r.id),
+  ]);
   for (const d of reply.dispositions) {
     const key = d.url ? sourceKeys({ url: d.url, title: d.observed })[0] : textKey(d.observed);
     if (!key) {
       notes.push(`disposition without a mechanical key skipped: ${d.kind} "${d.observed.slice(0, 80)}"`);
       continue;
     }
+    let as = d.as ? idOf.get(d.as) ?? d.as : undefined;
+    let disposition = d.disposition;
+    let reason = d.reason;
+    if (as && !dispositionTargets.has(as)) {
+      // The drafter pointed at a record that does not exist (its own provisional id, usually). The row keeps its
+      // reason but cannot claim a duplicate of nothing; it is a failed candidate until someone names the real record.
+      notes.push(`disposition for "${d.observed.slice(0, 60)}" named ${as}, which is not a record; recorded as failed`);
+      reason = `Drafter named ${as} as the record, which the ledger does not hold. Its reason as written: ${d.reason}`;
+      disposition = "failed";
+      as = undefined;
+    }
     const row = DispositionSchema.safeParse({
       key,
       kind: d.kind,
-      disposition: d.disposition,
-      as: d.as ?? undefined,
-      reason: d.reason,
+      disposition,
+      as,
+      reason,
       reopenIf: d.reopenIf ?? undefined,
       observed: d.observed,
       by: runId,

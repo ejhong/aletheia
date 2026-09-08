@@ -489,3 +489,27 @@ describe("reopening a blocked source", () => {
     expect(proposal.dispositions[0].reason).toMatch(/previously blocked/);
   });
 });
+
+describe("dispositions may only point at records that exist", () => {
+  it("a duplicate-of-nothing becomes failed, keeping the drafter's reason", () => {
+    const c = geo();
+    const { proposal, novelty } = assembleProposal(
+      draftReply({
+        sources: [], evidence: [], claims: [], research: [], corrections: [], edition: null,
+        dispositions: [
+          { kind: "claim", observed: "Mark the salt attribution unsourced", disposition: "duplicate", as: "GEO-E603", reason: "recorded as evidence GEO-E603", url: null, reopenIf: null, route: null },
+          { kind: "research", observed: "Iwawe Stratum V", disposition: "duplicate", as: c.research[0].id, reason: "already an item", url: null, reopenIf: null, route: null },
+        ],
+      }),
+      { loaded: c, reportRunId: "2026-09-08-report-megalithic-casting-100000", runId: "2026-09-09-draft-megalithic-casting-120000", model: "m", promptVersion: "draft-v2", date: "2026-09-09", fetched: [] },
+    );
+    const bad = proposal.dispositions.find((d) => d.observed.startsWith("Mark the salt"))!;
+    expect(bad.disposition).toBe("failed");
+    expect(bad.as).toBeUndefined();
+    expect(bad.reason).toMatch(/named GEO-E603 .* does not hold/);
+    const good = proposal.dispositions.find((d) => d.observed === "Iwawe Stratum V")!;
+    expect(good.disposition).toBe("duplicate");
+    expect(good.as).toBe(c.research[0].id);
+    expect(novelty).toMatch(/is not a record/);
+  });
+});

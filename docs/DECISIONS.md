@@ -976,6 +976,7 @@ Tests: 258 pass. Typecheck, lint (two pre-existing warnings), production
 build, and the 563-page internal link audit pass.
 
 (AI implementation record; founder-directed session.)
+
 ## 2026-09-08 — Case titles drop the trailing question mark (reapplied)
 
 Founder direction, first given 2026-09-06 and reaffirmed after the

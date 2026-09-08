@@ -1212,3 +1212,18 @@ describe("edition succession", () => {
     expect(currentEdition(geo).featuredClaimIds).toContain("GEO-C506");
   });
 });
+
+describe("stale checks are set aside, not counted", () => {
+  it("geopolymer: one August check without a hash drops out; the four fresh seats form the panel", async () => {
+    const { currentChecks, latestCheckPerModel, ratification } = await import("./load.ts");
+    const geo = getCaseBySlug("megalithic-casting");
+    const all = latestCheckPerModel(geo);
+    const current = currentChecks(geo, all);
+    expect(all.length).toBeGreaterThan(current.length);
+    expect(current.every((r) => r.basis?.ledgerHash === geo.ledgerHash)).toBe(true);
+    const r = ratification(geo)!;
+    expect(r.panel).toBe(current.length);
+    expect(r.staleSince).not.toBeNull(); // the set-aside check is still reported
+    expect(["contested", "ratified"]).toContain(r.status); // derived from the fresh seats, not reset by the stale one
+  });
+});

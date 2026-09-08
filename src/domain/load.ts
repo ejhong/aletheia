@@ -901,14 +901,28 @@ function panelStaleness(loaded: LoadedCase, checks: AssessmentRun[]): string | n
   return newestContent && newestContent > newestCheck ? newestContent : null;
 }
 
+/**
+ * The checks that still speak to the case as it stands: hashed checks whose
+ * ledger hash is current, and legacy checks unless content-bearing history
+ * is newer than the newest of them. A stale seat is set aside, not counted —
+ * and does not veto the seats that re-judged (2026-09-08: one August check
+ * with no hash held four fresh seats at "unratified").
+ */
+export function currentChecks(loaded: LoadedCase, checks: AssessmentRun[]): AssessmentRun[] {
+  const legacyStale = panelStaleness(loaded, checks.filter((r) => !r.basis));
+  return checks.filter((r) => (r.basis ? r.basis.ledgerHash === loaded.ledgerHash : !legacyStale));
+}
+
 export function ratification(loaded: LoadedCase): Ratification | null {
   const draft = adoptedAssessment(loaded);
   if (!draft) return null;
-  const checks = latestCheckPerModel(loaded);
+  const all = latestCheckPerModel(loaded);
+  const checks = currentChecks(loaded, all);
+  const setAside = all.length - checks.length;
   const panel = checks.length;
   const checksDate =
     panel > 0 ? checks.map((r) => r.date).sort().at(-1)! : null;
-  const staleSince = panelStaleness(loaded, checks);
+  const staleSince = setAside > 0 ? panelStaleness(loaded, all) : null;
   const agreeing = checks.filter(
     (r) => r.caseAssessment.verdict === draft.caseAssessment.verdict,
   ).length;
@@ -922,23 +936,19 @@ export function ratification(loaded: LoadedCase): Ratification | null {
   };
 
   if (panel < RATIFICATION_MIN_PANEL) {
+    const aside =
+      setAside === 0
+        ? ""
+        : staleSince === "the ledger changed"
+          ? ` — ${setAside} earlier check${setAside === 1 ? "" : "s"} set aside because the ledger changed after ${setAside === 1 ? "it" : "they"} judged it`
+          : ` — ${setAside} earlier check${setAside === 1 ? "" : "s"} set aside because the case file changed (${staleSince}) after ${setAside === 1 ? "it" : "they"} judged it`;
     return {
       ...base,
       status: "unratified",
       reason:
         panel === 0
-          ? "no independent model has checked this case yet"
-          : `only ${panel} independent model${panel === 1 ? "" : "s"} have checked this case (${RATIFICATION_MIN_PANEL} required)`,
-    };
-  }
-  if (staleSince) {
-    return {
-      ...base,
-      status: "unratified",
-      reason:
-        staleSince === "the ledger changed"
-          ? "the ledger changed after the panel judged it — standing resets until the current content is re-checked"
-          : `the case file changed (${staleSince}) after the panel last judged it — standing resets until the current content is re-checked`,
+          ? `no independent model has checked this case as it stands${aside}`
+          : `only ${panel} independent model${panel === 1 ? "" : "s"} have checked this case as it stands (${RATIFICATION_MIN_PANEL} required)${aside}`,
     };
   }
 

@@ -84,6 +84,11 @@ it:
   minutes. Run them detached (`nohup … &`, or a terminal that will not be
   closed) and read `run.yaml` afterwards; a tool or shell timeout that kills
   the process leaves the vendor's work running and unrecorded.
+- **The daily cap can be lifted for a day, on the record.** `config/budget.yaml`
+  takes dated `exemptions` (date, perDay, reason, by), granted by the founder;
+  the guard uses the exemption's cap on that date and the normal cap after.
+  There is no environment override — a grant that is not in the file did not
+  happen.
 - **The guard is an estimate.** It cannot stop a single server turn once
   sent. A run whose ledger cost passed the per-run cap is kept, and its
   record and stderr say `OVER THE PER-RUN CEILING`; when that appears, the

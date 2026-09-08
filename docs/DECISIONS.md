@@ -1109,7 +1109,36 @@ high reasoning effort in background mode, priced from the pricing page
 ($4 / $0.40 cached / $20 per MTok), which also prices the panel seat.
 `gpt-6-astra` is available to the key and is the tool guide's own
 recommendation, but it is unpriced here and not the founder's choice for
-the house; it can be tried as a seat once a tariff row is read. Ceiling: $20 per run, $50 per day,
+the house; it can be tried as a seat once a tariff row is read.
+
+**The whole chain ran once on Cast Not Carved (2026-09-08).** Report
+(house seat, $37.86 uncached; OpenAI seat, $0.97) → draft ($1.78: 2
+sources, 4 evidence, 3 claims, 3 research items, 18 dispositions) →
+verify ($0.18: 1 source, 1 evidence record, 1 claim, 3 research items
+admitted; 6 rejected with reasons) → edition ($2.56: a new assessment
+with a steelman and per-claim treatments the migrated one lacked, GEO-C506
+featured, the article doubled and purged of claims not in the ledger).
+Recorded spend for the day: $46.75; unrecorded, an estimated $5–8 for a
+killed first attempt and a $3 edition whose connection died after the
+reply. Further defects found and fixed along the way, each with a test:
+the vendor rejects `enum` on a nullable type (write it as a choice) and
+refuses the draft schema as too large to compile (the call falls back to
+the schema as instructions and says so); re-serializing ledger files
+through the YAML document API reflowed every existing record (records are
+now appended as text); an edition candidate exceeded caps the strict
+schema cannot carry (protocol v2 names them; one repair round returns the
+loader's findings to the drafter); a torn socket at the end of a long
+reply discarded a paid answer (the reader keeps every byte and accepts a
+stream that reached its final event). Two observations for the next
+step rather than fixes now: the second reader is not deterministic —
+the same proposal admitted 2 evidence and 2 claims on one run and 1 and 1
+on the next, with defensible reasons each time — and three of its six
+rejections were about the drafter's direction label (`qualifies` where
+the reader wanted `supports`), which is a protocol-wording question for
+`draft` v2. The cached-cost validation of the house seat (estimated
+$13.02) was refused by the per-day cap and waits for the next day.
+Branch `feat/first-runs`, PR to follow; the panel judges the edition
+candidate there. Ceiling: $20 per run, $50 per day,
 $150 per month (`config/budget.yaml`), enough for the eight-report test
 with headroom. Tariffs were read from the vendors' own price pages on
 2026-09-08 and recorded with their sources; the four other panel seats

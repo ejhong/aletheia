@@ -1157,7 +1157,14 @@ admitted sources, and a Wayback snapshot on every admitted URL. One
 dependency was added for this, pipeline-only and dev-only: `pdfjs-dist`.
 AGENTS.md §4's dependency list does not name it; the founder is asked to
 ratify or refuse that addition when reviewing the PR — it is the only way
-to read a paper without asking a model to transcribe it. Ceiling: $20 per run, $50 per day,
+to read a paper without asking a model to transcribe it. A second draft pass
+on the same report, with retrieval, then exposed the reopen rule's gap: the
+assembler re-blocked Nemoy and Sessa on the strength of the previous day's
+`blocked` rows although it now held their text, and lost seven evidence
+records with them. `blocked` is a pending state whose reopen condition is
+the text being obtained; a blocked source whose text this pass retrieved
+now goes forward as new. Verification of that pass waits for the next
+day's budget. Ceiling: $20 per run, $50 per day,
 $150 per month (`config/budget.yaml`), enough for the eight-report test
 with headroom. Tariffs were read from the vendors' own price pages on
 2026-09-08 and recorded with their sources; the four other panel seats

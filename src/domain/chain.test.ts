@@ -451,3 +451,37 @@ describe("verify v2: the reader's dissent on direction is recorded, not fatal", 
     expect(bad.rejected[0].reason).toMatch(/relevant/);
   });
 });
+
+describe("reopening a blocked source", () => {
+  const nemoy = "https://ia800102.us.archive.org/27/items/TreatiseOnTheEgyptianPyramidsSuyuti_201801/Treatise%20on%20the%20Egyptian%20Pyramids_%20Suyuti.pdf";
+  const reply = () =>
+    draftReply({
+      sources: [
+        { provisionalId: "S1", url: nemoy, title: "The Treatise on the Egyptian Pyramids (tr. Nemoy 1939)", authors: ["Nemoy, L."], year: "1939", sourceType: "paper", identifier: "Isis 30(1): 17–37", verification: "ai_verified", reliabilityNotes: [] },
+      ],
+      evidence: [],
+      claims: [],
+      research: [],
+      images: [],
+      corrections: [],
+      dispositions: [],
+      edition: null,
+    });
+  const ctx = (fetched: FetchedSource[]) => ({ loaded: geo(), reportRunId: "2026-09-08-report-megalithic-casting-100000", runId: "2026-09-09-draft-megalithic-casting-110000", model: "m", promptVersion: "draft-v2", date: "2026-09-09", fetched });
+
+  it("a source blocked for want of its text goes forward once the text is retrieved", () => {
+    // The case carries a `blocked` row for this URL from the first pass.
+    expect(geo().dispositions.some((d) => d.key === `url:${nemoy.replace(/^https?:\/\//, "")}` && d.disposition === "blocked")).toBe(true);
+    const { proposal } = assembleProposal(reply(), ctx([{ url: nemoy, ok: true, status: 200, contentType: "application/pdf", text: "[p. 1] The Treatise on the Egyptian Pyramids …", pages: 22 }]));
+    expect(proposal.adds.sources).toHaveLength(1);
+    expect(proposal.adds.sources[0].verification).toBe("ai_verified");
+    expect(proposal.dispositions.filter((d) => d.kind === "source")).toHaveLength(0);
+  });
+
+  it("…and stays blocked while it is not", () => {
+    const { proposal } = assembleProposal(reply(), ctx([{ url: nemoy, ok: false, status: 403, contentType: null, text: null, reason: "HTTP 403" }]));
+    expect(proposal.adds.sources).toHaveLength(0);
+    expect(proposal.dispositions[0].disposition).toBe("blocked");
+    expect(proposal.dispositions[0].reason).toMatch(/previously blocked/);
+  });
+});

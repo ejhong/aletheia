@@ -1,0 +1,78 @@
+# Every model Aletheia calls, named once. To change a model, change it here:
+# nothing under src/ or scripts/ names one. Every model named here needs a
+# row in config/tariffs.yaml (priced, or honestly null); the verb chain
+# refuses to call a model whose row is unpriced (config/budget.yaml).
+#
+# `fallback` (Anthropic only) is the vendor's server-side fallback: when the
+# primary model's safety classifier declines, the same request is re-run on
+# the fallback inside the same call, and the run records the model that
+# actually served — never the one that was asked. A decline by both fails
+# the run. Panel seats never fall back: a refusing seat is a failed seat.
+#
+# `effort` pins reasoning depth so that a vendor's changing default cannot
+# silently change which judge we are running; the pinned level is part of
+# the seat's identity and is recorded with each verdict.
+
+# The house model: the drafter, the editor, and the maintenance scripts
+# that predate the verb chain (scripts/*.mjs via scripts/lib/llm.mjs).
+house:
+  model: claude-fable-5-1
+  fallback: claude-opus-5
+
+# The verifier's second reader — a different model from the drafter.
+# Vendor independence is the panel's job, not the reader's.
+reader:
+  model: claude-sonnet-5
+
+# The seats `aletheia report` can use; `default` is used when --seat is not
+# given. anthropic: Messages with the web search and web fetch server tools.
+# openai: the Responses API deep-research models in background mode.
+research:
+  default: anthropic
+  seats:
+    anthropic:
+      model: claude-fable-5-1
+      fallback: claude-opus-5
+      maxSearches: 30
+      maxFetches: 15
+    openai:
+      model: o4-mini-deep-research   # o3-deep-research is the deeper option (~$10/run, $30 tail)
+      maxToolCalls: 40
+
+# The five-seat cross-vendor panel (check runs, the arbiter, agenda scoring):
+# one seat per API vendor. Seat selection 2026-09-05 (docs/DECISIONS.md, "the
+# budget panel"): every seat scores 56–59 on the Artificial Analysis
+# Intelligence Index v4.2 at the effort pinned here. The /panel seat records
+# start a new row for a new model.
+panel:
+  anthropic:
+    model: claude-opus-5
+    label: Opus 5 (Anthropic)
+    tag: opus
+    effort: medium        # adaptive thinking; effort is the depth control (AA: medium 59, $0.72/task)
+  openai:
+    model: gpt-5.6-sol
+    label: GPT-5.6 Sol (OpenAI)
+    tag: gpt
+    effort: high          # AA: high 57, $0.43/task; replaced gpt-5.1, whose API default is no reasoning (AA 21)
+  gemini:
+    model: gemini-3.8-flash
+    label: Gemini 3.8 Flash (Google)
+    tag: gemini
+    effort: medium        # thinkingLevel (AA: medium 57, $0.41/task); replaced gemini-3.1-pro-preview (48)
+  xai:
+    model: grok-4.5
+    label: Grok 4.5 (xAI)
+    tag: grok
+    effort: high          # AA: high 56, $0.43/task; reasoning cannot be disabled on this model
+  venice:
+    model: z-ai-glm-5-3-flash
+    label: GLM 5.3 Flash (Z.ai, via Venice)
+    tag: glm
+    effort: high          # open weights (MIT), Venice-hosted, $0.15/$0.50 per 1M; AA 57, $0.09/task; "high" is Venice's deepest level
+
+# The OpenAI chat model the maintenance scripts use when only an OpenAI key
+# is configured (scripts/lib/llm.mjs); the house model is preferred.
+legacy:
+  openaiChat:
+    model: gpt-4o

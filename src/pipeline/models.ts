@@ -46,15 +46,13 @@ export interface ResearchResult {
 export type FetchLike = typeof fetch;
 
 /**
- * The house model and its fallback (docs/DECISIONS.md 2026-08-27, "Fable-first,
- * loud Opus fallback, truthful stamps"; reaffirmed 2026-09-08). Fable 5.1 is
- * the default for every drafting and research call on the Anthropic side; a
- * safety-classifier decline is re-run server-side on Opus 5 inside the same
- * request (`fallbacks`), and the run records the model that actually served —
- * never the one that was asked. A decline by the whole chain fails the run.
+ * No model is named here: every choice is config/models.yaml (scripts/lib/
+ * models.mjs). A call may carry a `fallback` — Anthropic's server-side
+ * fallback (docs/DECISIONS.md 2026-08-27, "Fable-first, loud Opus fallback,
+ * truthful stamps"): a safety-classifier decline is re-run on the fallback
+ * inside the same request, and the run records the model that actually
+ * served — never the one that was asked. A decline by both fails the run.
  */
-export const HOUSE_MODEL = "claude-fable-5-1";
-export const HOUSE_FALLBACK = "claude-opus-5";
 const FALLBACK_BETA = "server-side-fallback-2026-06-01";
 
 const ANTHROPIC_VERSION = "2023-06-01";
@@ -126,9 +124,9 @@ type AnthropicMessage = {
   };
 };
 
-/** Fable requests carry the server-side fallback to Opus; other models are sent as they are. */
-function withFallback<T extends { model: string }>(body: T): T & { fallbacks?: { model: string }[] } {
-  return body.model === HOUSE_MODEL ? { ...body, fallbacks: [{ model: HOUSE_FALLBACK }] } : body;
+/** A call with a configured fallback carries it as the vendor's `fallbacks` parameter. */
+function withFallback<T extends { model: string }>(body: T, fallback: string | undefined): T & { fallbacks?: { model: string }[] } {
+  return fallback ? { ...body, fallbacks: [{ model: fallback }] } : body;
 }
 
 async function anthropicPost(body: { model: string; fallbacks?: unknown }, fetchImpl: FetchLike, timeoutMs: number): Promise<AnthropicMessage> {
@@ -162,7 +160,8 @@ function usageOf(m: AnthropicMessage): Usage {
 }
 
 export interface AnthropicResearchOptions {
-  model?: string;
+  model: string;
+  fallback?: string;
   system: string;
   user: string;
   maxTokens?: number;
@@ -181,7 +180,7 @@ export interface AnthropicResearchOptions {
  * resumes; no extra user message). Returns the whole turn's text.
  */
 export async function anthropicResearch(opts: AnthropicResearchOptions, meter: Meter): Promise<ResearchResult> {
-  const model = opts.model ?? HOUSE_MODEL;
+  const model = opts.model;
   const maxTokens = opts.maxTokens ?? 32000;
   const maxSearches = opts.maxSearches ?? 30;
   const maxFetches = opts.maxFetches ?? 15;
@@ -212,7 +211,7 @@ export async function anthropicResearch(opts: AnthropicResearchOptions, meter: M
       },
     ],
     messages,
-  });
+  }, opts.fallback);
 
   const raw: unknown[] = [];
   let served = model;
@@ -257,7 +256,8 @@ function dedupeCitations(list: { url: string; title?: string }[]) {
 }
 
 export interface AnthropicJsonOptions {
-  model?: string;
+  model: string;
+  fallback?: string;
   system: string;
   user: string;
   /** JSON Schema (structured outputs: additionalProperties false everywhere, no length or numeric constraints). */
@@ -273,7 +273,7 @@ export async function anthropicJson<T = unknown>(
   opts: AnthropicJsonOptions,
   meter: Meter,
 ): Promise<{ data: T; model: string; usage: Usage; usd: number | null }> {
-  const model = opts.model ?? HOUSE_MODEL;
+  const model = opts.model;
   const maxTokens = opts.maxTokens ?? 32000;
   assertWithinBudget(
     estimateUsd({ model, inputChars: opts.system.length + opts.user.length, maxOutputTokens: maxTokens }, loadTariffs(meter.root)),
@@ -286,7 +286,7 @@ export async function anthropicJson<T = unknown>(
     output_config: { effort: opts.effort ?? "high", format: { type: "json_schema", schema: opts.schema } },
     system: opts.system,
     messages: [{ role: "user", content: opts.user }],
-  });
+  }, opts.fallback);
   const m = await anthropicPost(body, opts.fetchImpl ?? fetch, opts.timeoutMs ?? 1_800_000);
   const served = m.model || model;
   if (m.stop_reason === "refusal") throw new Error(`${model} (and its fallback) refused`);
@@ -320,7 +320,7 @@ type ResponsesObject = {
 };
 
 export interface OpenAIResearchOptions {
-  model?: string;
+  model: string;
   instructions: string;
   input: string;
   maxToolCalls?: number;
@@ -336,7 +336,7 @@ export interface OpenAIResearchOptions {
  * polled until it completes. Search calls are counted from the output.
  */
 export async function openaiDeepResearch(opts: OpenAIResearchOptions, meter: Meter): Promise<ResearchResult> {
-  const model = opts.model ?? "o4-mini-deep-research";
+  const model = opts.model;
   const maxToolCalls = opts.maxToolCalls ?? 40;
   const maxOutputTokens = opts.maxOutputTokens ?? 40000;
   assertWithinBudget(

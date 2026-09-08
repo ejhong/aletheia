@@ -67,9 +67,10 @@ node scripts/aletheia.ts edition <case>                           # a new editio
 ```
 
 Keys: `ANTHROPIC_API_KEY` for the default seat, the drafter, the verifier,
-and the editor; `OPENAI_API_KEY` for the openai seat. The house model is
-Fable 5.1 with a server-side fallback to Opus 5 on a safety decline; the
-run records the model that actually served. A run that would
+and the editor; `OPENAI_API_KEY` for the openai seat. Every model, and the
+default seat, is chosen in `config/models.yaml`. The house model falls
+back server-side to its configured fallback on a safety decline; the run
+records the model that actually served. A run that would
 pass a cap ends `failed` with the cap named; a model with no tariff is
 refused unless `ALETHEIA_ALLOW_UNPRICED=1`. `verify` and `edition` change
 the working tree and stop: review the diff, then open the PR the panel
@@ -172,15 +173,19 @@ node scripts/yield-report.mjs
   a dead seat), `MAINTENANCE_PAT` (fine-grained, contents + pull-requests
   write; PRs opened with the default token do not trigger CI), optional
   `IMAGE_API_KEY`.
-- House drafting model: `claude-fable-5` with a one-retry refusal fallback
-  to `claude-opus-5` (`scripts/lib/llm.mjs`); override with the Actions
-  variable `EXTRACT_MODEL`. Records always stamp the model that actually
-  answered. Panel seats never fall back — a refusing seat is a failed seat.
-- Panel seats: one table, `scripts/lib/vendors.mjs` — model **and** pinned
-  effort per seat (Opus 5 medium · GPT-5.6 Sol high · Gemini 3.8 Flash
-  medium · Grok 4.5 high · GLM 5.3 Flash high via Venice). Changing a seat
-  is a one-line edit there plus a DECISIONS entry; the /panel seat records
-  start a new row for a new model. Gemini's intro price doubles 2027-01-01.
+- Models: **one file, `config/models.yaml`**, names every model the site
+  calls — the house model and its fallback (drafter, editor, the browsing
+  research seat, and the older maintenance scripts), the verifier's second
+  reader, the research seats and which is the default, the five panel
+  seats (model **and** pinned effort), and the legacy OpenAI chat model.
+  Nothing under `src/` or `scripts/` names a model id; changing one is an
+  edit there plus a DECISIONS entry, and a tariff row in
+  `config/tariffs.yaml` (a test fails without one). The house model falls
+  back server-side on a safety decline and every run and spend row stamps
+  the model that actually answered. Panel seats never fall back — a
+  refusing seat is a failed seat; the /panel seat records start a new row
+  for a new model. Gemini's intro price doubles 2027-01-01. The former
+  `EXTRACT_MODEL` Actions variable is retired and ignored.
 - Branch protection on `main`: the `arbiter` check is required (see the
   2026-08-25 "gate is live" decision); admin enforcement off, so the
   founder's override is the kill switch. Repo auto-merge enabled.

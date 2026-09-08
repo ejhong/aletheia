@@ -6,6 +6,11 @@ import { getCaseBySlug, loadAllCases } from "./load.ts";
 import { buildPacket, PACKET_MAX_CHARS, renderPacket } from "../pipeline/packet.ts";
 import { loadProtocol, renderProtocol } from "../pipeline/protocols.ts";
 import { loadTariffs, priceOf, readSpend, recordSpend, sumCost } from "../pipeline/spend.ts";
+import { loadModels, modelIds, MODELS } from "../../scripts/lib/models.mjs";
+import { DEFAULT_SEAT, RESEARCH_SEATS } from "../pipeline/report.ts";
+import { DRAFTER } from "../pipeline/draft.ts";
+import { READER } from "../pipeline/verify.ts";
+import { EDITOR } from "../pipeline/edition.ts";
 import { appendDispositions, newRunId, readProposal, readRuns, writeProposal, writeRun } from "../pipeline/store.ts";
 
 const tmpRoot = () => fs.mkdtempSync(path.join(os.tmpdir(), "aletheia-"));
@@ -107,6 +112,32 @@ describe("the intake store", () => {
     const file = fs.readFileSync(path.join(root, "content", "cases", "x", "dispositions.yaml"), "utf8");
     expect(file.startsWith("#")).toBe(true); // the header comment survives the second append
     expect(file.match(/key: doi:10.1234\/a/g)).toHaveLength(2);
+  });
+});
+
+describe("the model roster (config/models.yaml)", () => {
+  it("is the one place a model is chosen: the verbs read their models from it", () => {
+    const m = loadModels();
+    expect(DRAFTER).toEqual(m.house);
+    expect(EDITOR).toEqual(m.house);
+    expect(READER).toEqual(m.reader);
+    expect(RESEARCH_SEATS).toEqual(m.research.seats);
+    expect(DEFAULT_SEAT).toBe(m.research.default);
+    expect(m.reader.model).not.toBe(m.house.model); // a second reader is a different model
+    expect(m.house.fallback).toBeDefined(); // the house model falls back loudly; a run records what served
+    expect(m.house.fallback).not.toBe(m.house.model);
+  });
+
+  it("every model it names has a tariff row, priced or honestly null", () => {
+    const t = loadTariffs();
+    for (const id of modelIds(MODELS)) expect(t.models[id], `config/tariffs.yaml has no row for ${id}`).toBeDefined();
+  });
+
+  it("the house model and the default research seat are priced, so the budget guard can admit them", () => {
+    const t = loadTariffs();
+    for (const id of [MODELS.house.model, MODELS.house.fallback!, MODELS.reader.model, MODELS.research.seats[MODELS.research.default].model]) {
+      expect(t.models[id].inputPerMTok, id).not.toBeNull();
+    }
   });
 });
 

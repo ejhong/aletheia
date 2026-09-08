@@ -5,60 +5,28 @@
  * (scripts/score-agenda.mjs). This is the ONE table — "the panel" means
  * the same five judges everywhere it appears on the site.
  *
- * Seat selection (2026-09-05, see docs/DECISIONS.md): the "budget panel" —
- * every seat scores 56–59 on the Artificial Analysis Intelligence Index
- * v4.2 at the effort pinned here, for a summed cost of about $2.08 per
- * index task (the previous panel summed to ~$3.64 with two seats scoring
- * 21–48). Effort is pinned on EVERY seat so that a vendor's changing
- * default cannot silently change which judge we are running; the pinned
- * level is part of the seat's identity and is recorded with each verdict.
+ * The seats themselves (model, label, tag, pinned effort) are chosen in
+ * config/models.yaml — the one place any model is named — and only the
+ * API-key variable for each vendor lives here. Seat selection 2026-09-05
+ * (docs/DECISIONS.md): the "budget panel".
  */
+import { MODELS } from "./models.mjs";
 
-export const VENDORS = {
-  anthropic: {
-    key: () => process.env.ANTHROPIC_API_KEY,
-    model: "claude-opus-5",
-    label: "Opus 5 (Anthropic)",
-    tag: "opus",
-    // Adaptive thinking; effort is the depth control (AA: medium 59, $0.72/task).
-    effort: "medium",
-  },
-  openai: {
-    key: () => process.env.OPENAI_API_KEY,
-    model: "gpt-5.6-sol",
-    label: "GPT-5.6 Sol (OpenAI)",
-    tag: "gpt",
-    // AA: high 57, $0.43/task. Replaces gpt-5.1, whose API default is no
-    // reasoning at all (AA 21) and which we never pinned.
-    effort: "high",
-  },
-  gemini: {
-    key: () => process.env.GEMINI_API_KEY,
-    model: "gemini-3.8-flash",
-    label: "Gemini 3.8 Flash (Google)",
-    tag: "gemini",
-    // thinkingLevel (AA: medium 57, $0.41/task). Replaces gemini-3.1-pro-preview (48).
-    effort: "medium",
-  },
-  xai: {
-    key: () => process.env.XAI_API_KEY,
-    model: "grok-4.5",
-    label: "Grok 4.5 (xAI)",
-    tag: "grok",
-    // AA: high 56, $0.43/task. Reasoning cannot be disabled on this model.
-    effort: "high",
-  },
-  venice: {
-    key: () => process.env.VENICE_API_KEY,
-    model: "z-ai-glm-5-3-flash",
-    label: "GLM 5.3 Flash (Z.ai, via Venice)",
-    tag: "glm",
-    // Open weights (MIT), Venice-hosted, $0.15/$0.50 per 1M. AA: 57,
-    // $0.09/task. "high" is the deepest level Venice exposes for it.
-    // Replaces kimi-k3 (60, but $3.75/$18.75 per 1M on Venice).
-    effort: "high",
-  },
+const KEY_ENV = {
+  anthropic: "ANTHROPIC_API_KEY",
+  openai: "OPENAI_API_KEY",
+  gemini: "GEMINI_API_KEY",
+  xai: "XAI_API_KEY",
+  venice: "VENICE_API_KEY",
 };
+
+/** The seats, from config/models.yaml (model, label, tag, pinned effort), each with its key reader. */
+export const VENDORS = Object.fromEntries(
+  Object.entries(MODELS.panel).map(([name, seat]) => {
+    if (!KEY_ENV[name]) throw new Error(`config/models.yaml names a panel seat "${name}" with no API-key variable in scripts/lib/vendors.mjs`);
+    return [name, { ...seat, key: () => process.env[KEY_ENV[name]] }];
+  }),
+);
 
 /**
  * POST with retry on transient failures. Retries (twice, backing off 5s

@@ -1067,7 +1067,16 @@ measured runs average about $10 with a $30 tail. Second reader:
 `claude-sonnet-5` — a different model, same vendor; vendor independence
 is the panel's job, not the reader's. The founder's first instinct had
 been the OpenAI seat as default; on reflection the default is the house
-model, the OpenAI seat the comparison. Ceiling: $20 per run, $50 per day,
+model, the OpenAI seat the comparison. **All of these choices live in one
+file, `config/models.yaml`** (founder direction, 2026-09-08: "all models
+chosen should be specified in one place"): house model and fallback,
+reader, research seats and default, the five panel seats with pinned
+effort, and the legacy OpenAI chat model. The verb chain, the panel table
+(`scripts/lib/vendors.mjs`), and the older drafting helper
+(`scripts/lib/llm.mjs`) all read it; no model id appears in code. The
+`EXTRACT_MODEL` Actions variable is retired — an override outside the
+committed file would make the file lie — and a test fails if any model
+named there lacks a tariff row. Ceiling: $20 per run, $50 per day,
 $150 per month (`config/budget.yaml`), enough for the eight-report test
 with headroom. Tariffs were read from the vendors' own price pages on
 2026-09-08 and recorded with their sources; the four other panel seats

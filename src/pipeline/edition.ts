@@ -12,7 +12,8 @@ import {
 } from "../domain/schema.ts";
 import { hhmmssUTC } from "../../scripts/lib/overlay-ids.mjs";
 import { writeYamlFile } from "./ledger-write.ts";
-import { anthropicJson, HOUSE_MODEL, type Meter } from "./models.ts";
+import { MODELS } from "../../scripts/lib/models.mjs";
+import { anthropicJson, type Meter } from "./models.ts";
 import { buildPacket, renderPacket } from "./packet.ts";
 import { loadProtocol, renderProtocol } from "./protocols.ts";
 import { findCase } from "./report.ts";
@@ -33,7 +34,8 @@ import { newRunId, writeRun, writeWorkingFile } from "./store.ts";
  * the incumbent in the PR.
  */
 
-export const EDITOR_MODEL = HOUSE_MODEL;
+/** The editor is the house model (config/models.yaml); the run records the model that served. */
+export const EDITOR = MODELS.house;
 
 const VERDICTS = [
   "established", "well_supported", "provisionally_supported", "mixed", "weakly_supported",
@@ -264,7 +266,7 @@ export function assembleEdition(
 export type Editor = (system: string, user: string, meter: Meter) => Promise<{ data: EditionReply; model: string }>;
 
 export const defaultEditor: Editor = async (system, user, meter) => {
-  const r = await anthropicJson<EditionReply>({ model: EDITOR_MODEL, system, user, schema: EDITION_SCHEMA, maxTokens: 48000, effort: "high" }, meter);
+  const r = await anthropicJson<EditionReply>({ ...EDITOR, system, user, schema: EDITION_SCHEMA, maxTokens: 48000, effort: "high" }, meter);
   return { data: r.data, model: r.model };
 };
 
@@ -293,7 +295,7 @@ export async function runEdition(caseKey: string, opts: EditionOptions = {}): Pr
   const date = now().toISOString().slice(0, 10);
   const runId = newRunId("edition", loaded.record.slug, now());
   const protocol = loadProtocol("edition");
-  const base = { runId, verb: "edition" as const, case: loaded.record.slug, date, model: EDITOR_MODEL, promptVersion: protocol.version, inputHash: null };
+  const base = { runId, verb: "edition" as const, case: loaded.record.slug, date, model: EDITOR.model, promptVersion: protocol.version, inputHash: null };
   const zero = { calls: 0, inputTokens: 0, outputTokens: 0, usd: 0 };
 
   if (incumbent.basis.ledgerHash === loaded.ledgerHash && !opts.force) {
@@ -306,7 +308,7 @@ export async function runEdition(caseKey: string, opts: EditionOptions = {}): Pr
   const system = renderProtocol(protocol, {});
   if (opts.dryRun) {
     writeWorkingFile(runId, "packet.json", user, root);
-    writeRun({ ...base, outcome: "dry-run", cost: zero, notes: `would send ${user.length} chars to ${EDITOR_MODEL}` }, root);
+    writeRun({ ...base, outcome: "dry-run", cost: zero, notes: `would send ${user.length} chars to ${EDITOR.model}` }, root);
     return { outcome: "dry-run", runId, reason: `packet written under proposals/${runId}/; nothing sent` };
   }
   const meter: Meter = { runId, verb: "edition", case: loaded.record.slug, root };

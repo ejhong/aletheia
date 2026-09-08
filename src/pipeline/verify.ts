@@ -6,6 +6,7 @@ import type { Claim, Evidence, LoadedCase, ResearchOpportunity, Source } from ".
 import { verifyCitations } from "../../scripts/lib/citation-check.mjs";
 import { fetchSource, type FetchedSource } from "./fetch.ts";
 import { appendHistory, appendRecords } from "./ledger-write.ts";
+import { MODELS } from "../../scripts/lib/models.mjs";
 import { anthropicJson, type Meter } from "./models.ts";
 import { loadProtocol, renderProtocol } from "./protocols.ts";
 import { unverifiedQuotes } from "./quotes.ts";
@@ -28,7 +29,8 @@ import { appendDispositions, newRunId, readProposal, writeRun, writeWorkingFile 
  * changed for the PR the panel judges.
  */
 
-export const VERIFIER_MODEL = "claude-sonnet-5";
+/** The second reader (config/models.yaml): a different model from the drafter. */
+export const READER = MODELS.reader;
 
 export const VERIFY_SCHEMA: Record<string, unknown> = {
   type: "object",
@@ -61,7 +63,7 @@ export const defaultJudge: Judge = async (record, sourceText, context, meter) =>
   const protocol = loadProtocol("verify");
   const r = await anthropicJson<VerifyReply>(
     {
-      model: VERIFIER_MODEL,
+      ...READER,
       system: renderProtocol(protocol, {}),
       user: JSON.stringify({ record, context, sourceText }, null, 1),
       schema: VERIFY_SCHEMA,
@@ -263,7 +265,7 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
   }
   const date = now().toISOString().slice(0, 10);
   const runId = newRunId("verify", loaded.record.slug, now());
-  const base = { runId, verb: "verify" as const, case: loaded.record.slug, date, model: VERIFIER_MODEL, promptVersion: loadProtocol("verify").version, inputHash: null };
+  const base = { runId, verb: "verify" as const, case: loaded.record.slug, date, model: READER.model, promptVersion: loadProtocol("verify").version, inputHash: null };
   const meter: Meter = { runId, verb: "verify", case: loaded.record.slug, root };
 
   try {
@@ -342,7 +344,7 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
         date,
         change: `Intake from report ${proposal.report ?? proposal.runId}: ${counts.sources} source(s), ${counts.evidence} evidence record(s), ${counts.claims} claim(s), ${counts.research} research item(s) verified and added (proposal ${proposalRunId}, verification ${runId}); ${rejected.length} candidate(s) rejected with reasons in dispositions.yaml.`,
         reason: proposal.rationale,
-        actor: `aletheia verify (${VERIFIER_MODEL} second reader; drafter ${proposal.model ?? "unknown"})`,
+        actor: `aletheia verify (${READER.model} second reader; drafter ${proposal.model ?? "unknown"})`,
         aiAssisted: true,
         kind: "content",
       },

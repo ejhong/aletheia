@@ -6,7 +6,7 @@
  *   node scripts/aletheia.ts diff <case> <candidates.yaml|json>
  *   node scripts/aletheia.ts migrate-memory [--dry-run]
  *
- *   node scripts/aletheia.ts report <case> [--seat anthropic|openai] [--dry-run] [--reconsider "why"]   (default seat: anthropic — the house model, browsing)
+ *   node scripts/aletheia.ts report <case> [--seat anthropic|openai] [--dry-run] [--reconsider "why"]   (default seat and models: config/models.yaml)
  *   node scripts/aletheia.ts draft <reportRunId> [--dry-run]
  *   node scripts/aletheia.ts verify <proposalRunId> [--dry-run]
  *   node scripts/aletheia.ts edition <case> [--dry-run] [--force]

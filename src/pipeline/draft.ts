@@ -16,7 +16,8 @@ import {
   type LoadedCase,
 } from "../domain/schema.ts";
 import { fetchSource, type FetchedSource } from "./fetch.ts";
-import { anthropicJson, HOUSE_MODEL, type Meter } from "./models.ts";
+import { MODELS } from "../../scripts/lib/models.mjs";
+import { anthropicJson, type Meter } from "./models.ts";
 import { buildPacket } from "./packet.ts";
 import { loadProtocol, renderProtocol } from "./protocols.ts";
 import { findCase } from "./report.ts";
@@ -40,7 +41,8 @@ import { newRunId, readRuns, runDir, writeProposal, writeRun, writeWorkingFile }
  * record enters.
  */
 
-export const DRAFTER_MODEL = HOUSE_MODEL;
+/** The drafter is the house model (config/models.yaml); the run records the model that served. */
+export const DRAFTER = MODELS.house;
 
 /** Structured-output schema for the drafter (no length or numeric constraints — the API forbids them). */
 export const DRAFT_SCHEMA: Record<string, unknown> = {
@@ -575,7 +577,7 @@ export function assembleProposal(reply: DraftReply, ctx: AssembleContext): Assem
 export type Drafter = (system: string, user: string, meter: Meter) => Promise<{ data: DraftReply; model: string }>;
 
 export const defaultDrafter: Drafter = async (system, user, meter) => {
-  const r = await anthropicJson<DraftReply>({ model: DRAFTER_MODEL, system, user, schema: DRAFT_SCHEMA, maxTokens: 32000 }, meter);
+  const r = await anthropicJson<DraftReply>({ ...DRAFTER, system, user, schema: DRAFT_SCHEMA, maxTokens: 32000 }, meter);
   return { data: r.data, model: r.model };
 };
 
@@ -607,7 +609,7 @@ export async function runDraft(reportRunId: string, opts: DraftOptions = {}): Pr
   const runId = newRunId("draft", loaded.record.slug, now());
   const protocol = loadProtocol("draft");
   const system = renderProtocol(protocol, {});
-  const base = { runId, verb: "draft" as const, case: loaded.record.slug, date, model: DRAFTER_MODEL, promptVersion: protocol.version };
+  const base = { runId, verb: "draft" as const, case: loaded.record.slug, date, model: DRAFTER.model, promptVersion: protocol.version };
   const zero = { calls: 0, inputTokens: 0, outputTokens: 0, usd: 0 };
 
   const fetcher = opts.deps?.fetch ?? fetchSource;

@@ -260,6 +260,12 @@ editions, protocols, code, the constitution — needs the panel.
   (with the spend ledger inside it, so every paid call is recorded in one
   place by construction), and the intake store (proposals and
   dispositions). No verb has its own copy of any of these.
+- **One roster.** Every model the site calls — house model and fallback,
+  second reader, research seats and default, panel seats with pinned
+  effort — is chosen in `config/models.yaml` and nowhere else. The
+  transport takes a model and an optional fallback as arguments; it names
+  none. Switching a model is an edit to that file, a tariff row in
+  `config/tariffs.yaml`, and a DECISIONS entry.
 - **One view.** `CaseView` joins the ledger with the current edition:
   every claim once, with its treatment from the adopted assessment or
   none. The case page, the explorer, and the claim page read it. Standing,

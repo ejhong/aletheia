@@ -1,4 +1,8 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { MODELS } from "../../scripts/lib/models.mjs";
+
+const HOUSE = MODELS.house.model;
+const FALLBACK = MODELS.house.fallback!;
 
 /** Refusals are loud (typed error), and the fallback helper carries
  *  truthful provenance: the returned model is the one that actually
@@ -18,14 +22,13 @@ describe("refusal handling and provenance-true fallback", () => {
   it("falls back once on refusal and reports the model that answered", async () => {
     vi.resetModules();
     vi.stubEnv("ANTHROPIC_API_KEY", "test-key");
-    vi.stubEnv("EXTRACT_MODEL", ""); // unset: the code default (Fable) applies
     const calls: string[] = [];
     vi.stubGlobal(
       "fetch",
       vi.fn(async (_url: string, init: RequestInit) => {
         const body = JSON.parse(String(init.body));
         calls.push(body.model);
-        if (body.model === "claude-fable-5") {
+        if (body.model === HOUSE) {
           return anthropicReply({ stop_reason: "refusal", content: [] });
         }
         return anthropicReply({
@@ -40,15 +43,14 @@ describe("refusal handling and provenance-true fallback", () => {
     const provider = pickProvider("anthropic");
     const reply = await callWithRefusalFallback(provider!, "system", "user");
     expect(reply.text).toBe('{"answer":42}');
-    expect(reply.model).toBe("claude-opus-5");
+    expect(reply.model).toBe(FALLBACK);
     expect(reply.refused).toBe(true);
-    expect(calls).toEqual(["claude-fable-5", "claude-opus-5"]);
+    expect(calls).toEqual([HOUSE, FALLBACK]);
   });
 
   it("a bare call() throws RefusalError instead of silently substituting", async () => {
     vi.resetModules();
     vi.stubEnv("ANTHROPIC_API_KEY", "test-key");
-    vi.stubEnv("EXTRACT_MODEL", "");
     vi.stubGlobal(
       "fetch",
       vi.fn(async () => anthropicReply({ stop_reason: "refusal", content: [] })),
@@ -61,7 +63,6 @@ describe("refusal handling and provenance-true fallback", () => {
   it("does not loop: a refusing fallback propagates the error, fail-closed", async () => {
     vi.resetModules();
     vi.stubEnv("ANTHROPIC_API_KEY", "test-key");
-    vi.stubEnv("EXTRACT_MODEL", "claude-opus-5");
     const calls: string[] = [];
     vi.stubGlobal(
       "fetch",
@@ -73,10 +74,11 @@ describe("refusal handling and provenance-true fallback", () => {
     const { pickProvider, callWithRefusalFallback, RefusalError } = await import(
       "../../scripts/lib/llm.mjs"
     );
-    const provider = pickProvider("anthropic");
+    // A provider already running on the fallback model has nowhere to fall to.
+    const provider = { ...pickProvider("anthropic")!, model: FALLBACK };
     await expect(
-      callWithRefusalFallback(provider!, "system", "user"),
+      callWithRefusalFallback(provider, "system", "user"),
     ).rejects.toBeInstanceOf(RefusalError);
-    expect(calls).toEqual(["claude-opus-5"]);
+    expect(calls).toEqual([FALLBACK]);
   });
 });

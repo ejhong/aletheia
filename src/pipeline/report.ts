@@ -3,7 +3,8 @@ import path from "node:path";
 import { sha256Hex } from "../domain/hash.ts";
 import { loadAllCases } from "../domain/load.ts";
 import type { LoadedCase } from "../domain/schema.ts";
-import { anthropicResearch, HOUSE_MODEL, openaiDeepResearch, type Meter, type ResearchResult } from "./models.ts";
+import { MODELS } from "../../scripts/lib/models.mjs";
+import { anthropicResearch, openaiDeepResearch, type Meter, type ResearchResult } from "./models.ts";
 import { buildPacket, renderPacket } from "./packet.ts";
 import { loadProtocol, renderProtocol } from "./protocols.ts";
 import { spendFor, sumCost } from "./spend.ts";
@@ -21,12 +22,9 @@ import { newRunId, readRuns, runDir, writeRun, writeWorkingFile } from "./store.
 
 export type ResearchSeat = "openai" | "anthropic";
 
-export const RESEARCH_SEATS = {
-  openai: { model: "o4-mini-deep-research", maxToolCalls: 40 },
-  anthropic: { model: HOUSE_MODEL, maxSearches: 30, maxFetches: 15 },
-} as const;
-/** The seat `aletheia report` uses when none is named: the house model, browsing. */
-export const DEFAULT_SEAT: ResearchSeat = "anthropic";
+/** The seats and the default, from config/models.yaml — the one place a model is chosen. */
+export const RESEARCH_SEATS = MODELS.research.seats;
+export const DEFAULT_SEAT: ResearchSeat = MODELS.research.default;
 
 export type Researcher = (
   seat: ResearchSeat,
@@ -44,6 +42,7 @@ export const defaultResearcher: Researcher = (seat, instructions, input, meter) 
     : anthropicResearch(
         {
           model: RESEARCH_SEATS.anthropic.model,
+          fallback: RESEARCH_SEATS.anthropic.fallback,
           system: instructions,
           user: input,
           maxSearches: RESEARCH_SEATS.anthropic.maxSearches,

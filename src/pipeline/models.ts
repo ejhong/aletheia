@@ -99,12 +99,14 @@ function key(name: string): string {
 
 // ------------------------------------------------------------------ Anthropic
 
-type AnthropicBlock = {
+export type AnthropicBlock = {
   type: string;
   text?: string;
   citations?: { type: string; url?: string; title?: string }[];
+  /** Server-tool and thinking blocks carry more; kept whole so a paused turn can be re-sent. */
+  [k: string]: unknown;
 };
-type AnthropicMessage = {
+export type AnthropicMessage = {
   id: string;
   model: string;
   stop_reason: string;
@@ -117,6 +119,68 @@ type AnthropicMessage = {
     server_tool_use?: { web_search_requests?: number; web_fetch_requests?: number };
   };
 };
+
+/**
+ * Rebuild the message a streamed response describes. Every call streams:
+ * a research turn with thirty searches takes longer than the five minutes
+ * Node's fetch waits for response headers, and a retry after that timeout
+ * pays for the whole request again (observed 2026-09-08, first paid run).
+ * With streaming the headers arrive at once and the connection stays live
+ * on deltas and pings. Blocks are reassembled exactly — text and citation
+ * deltas appended, tool inputs parsed from their JSON fragments, thinking
+ * and signatures kept — because a `pause_turn` needs the assistant content
+ * re-sent verbatim.
+ */
+export function assembleAnthropicStream(sse: string): AnthropicMessage {
+  let message: AnthropicMessage | null = null;
+  const jsonBuf = new Map<number, string>();
+  for (const chunk of sse.split(/\r?\n\r?\n/)) {
+    const data = chunk
+      .split(/\r?\n/)
+      .filter((l) => l.startsWith("data:"))
+      .map((l) => l.slice(5).trim())
+      .join("");
+    if (!data) continue;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- the vendor's event union, read field by field below
+    const ev = JSON.parse(data) as Record<string, any>;
+    switch (ev.type) {
+      case "message_start":
+        message = { ...ev.message, content: [...(ev.message.content ?? [])] };
+        break;
+      case "content_block_start": {
+        const block = { ...ev.content_block } as AnthropicBlock;
+        if (block.type === "text" && block.text === undefined) block.text = "";
+        message!.content[ev.index] = block;
+        break;
+      }
+      case "content_block_delta": {
+        const block = message!.content[ev.index];
+        const d = ev.delta;
+        if (d.type === "text_delta") block.text = (block.text ?? "") + d.text;
+        else if (d.type === "input_json_delta") jsonBuf.set(ev.index, (jsonBuf.get(ev.index) ?? "") + d.partial_json);
+        else if (d.type === "thinking_delta") block.thinking = String(block.thinking ?? "") + d.thinking;
+        else if (d.type === "signature_delta") block.signature = d.signature;
+        else if (d.type === "citations_delta") block.citations = [...(block.citations ?? []), d.citation];
+        break;
+      }
+      case "content_block_stop": {
+        const buf = jsonBuf.get(ev.index);
+        if (buf !== undefined) message!.content[ev.index].input = JSON.parse(buf || "{}");
+        break;
+      }
+      case "message_delta":
+        message!.stop_reason = ev.delta?.stop_reason ?? message!.stop_reason;
+        message!.usage = { ...message!.usage, ...(ev.usage ?? {}) };
+        break;
+      case "error":
+        throw new Error(`anthropic stream error: ${ev.error?.type ?? "unknown"}: ${ev.error?.message ?? ""}`);
+      default:
+        break; // ping, message_stop
+    }
+  }
+  if (!message) throw new Error("anthropic stream ended without a message_start");
+  return message;
+}
 
 /** A call with a configured fallback carries it as the vendor's `fallbacks` parameter. */
 function withFallback<T extends { model: string }>(body: T, fallback: string | undefined): T & { fallbacks?: { model: string }[] } {
@@ -132,13 +196,13 @@ async function anthropicPost(body: { model: string; fallbacks?: unknown }, fetch
       "anthropic-version": ANTHROPIC_VERSION,
       ...(body.fallbacks ? { "anthropic-beta": FALLBACK_BETA } : {}),
     },
-    body: JSON.stringify(body),
+    body: JSON.stringify({ ...body, stream: true }),
     signal: AbortSignal.timeout(timeoutMs),
     // fetchWithRetry uses the global fetch; fetchImpl is honored by tests through globalThis
   });
   void fetchImpl;
   if (!res.ok) throw new Error(`anthropic HTTP ${res.status}: ${(await res.text()).slice(0, 400)}`);
-  return (await res.json()) as AnthropicMessage;
+  return assembleAnthropicStream(await res.text());
 }
 
 function usageOf(m: AnthropicMessage): Usage {

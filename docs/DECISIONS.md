@@ -976,3 +976,17 @@ Tests: 258 pass. Typecheck, lint (two pre-existing warnings), production
 build, and the 563-page internal link audit pass.
 
 (AI implementation record; founder-directed session.)
+## 2026-09-08 — Case titles drop the trailing question mark (reapplied)
+
+Founder direction, first given 2026-09-06 and reaffirmed after the
+2026-09-07 pre-overhaul restore: published case names should not end in
+a question mark. The ten live titles that carried one again (Cast, Not
+Carved; State, Not Scar; Before Sputnik; Collapse, Not Computation; Fire
+From the Sky; Elusive by Law; The Aeon Before Ours; Zero Worlds; The
+Religion with No Name; The Emptied Amazon) lose only that mark.
+Subtitles, framing questions, source titles, and historical assessment
+quotes are unchanged. Logged as housekeeping on each case so the rename
+does not stale standing or move the last-content-update date. (AI record
+of a founder instruction, 2026-09-08 session; model Cursor Grok 4.6,
+runId title-punctuation-2026-09-08, promptVersion none — founder-directed
+session, not a pipeline prompt.)

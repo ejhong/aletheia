@@ -48,5 +48,21 @@
   change: Migrated to editions (docs/AUTOMATION.md, build step 2). The article, the 13-claim featured set, and the displayed judgment now live in edition edition-2026-09-08-migration, which adopts the migration assessment 2026-09-08-migration-immortality-key. Claim records carry propositions and anchors only; evaluative fields moved into the adopted assessment's per-claim treatment; the dossier header, research priority, and component verdicts moved from case.yaml into the assessment; claims-catalog.yaml merged into claims.yaml (tiers ended). No judgment changed.
   reason: One reader-facing unit that binds verdict, selection, and article, so they cannot drift apart; one home for judgment; featuring becomes a recorded decision.
   actor: scripts/migrations/2026-09-08-editions.ts (mechanical), founder-directed session
+
+- date: "2026-09-08"
+  change: >-
+    Case title punctuation restored after the pre-overhaul publication
+    restore: "The Religion with No Name?" is again "The Religion with No Name". The trailing question mark is
+    dropped so the published name is a statement. Subtitle and framing
+    questions are unchanged.
+  reason: >-
+    Founder direction (first given 2026-09-06, reaffirmed 2026-09-08 after
+    the restore): case names should not carry question marks. The
+    interrogative belongs in the subtitle and the research questions,
+    not on the card and in the header.
+  actor: >-
+    Cursor Grok 4.6 (Cursor cloud agent), directed by the founder;
+    runId title-punctuation-2026-09-08; promptVersion none
+    (founder-directed session, not a pipeline prompt)
   aiAssisted: true
   kind: housekeeping

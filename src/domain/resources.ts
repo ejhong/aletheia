@@ -2,7 +2,7 @@ import type {
   EvidenceDirection,
   LoadedCase,
   Source,
-} from "./schema";
+} from "./schema.ts";
 
 /**
  * Reading-guide derivation: turn a case's source records into grouped,

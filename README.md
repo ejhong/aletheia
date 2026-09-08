@@ -34,7 +34,7 @@ node scripts/yield-report.mjs   # which cases moved, and when
 
 Three zones, one-way flow:
 
-1. **Content** (`content/cases/<case>/`) — YAML + markdown per case: `case.yaml`, `overview.md` (article with `[text]{claim=GEO-C001}` refs), `claims.yaml`, `evidence.yaml`, `sources.yaml`, `research.yaml`, `history.yaml`, optional `studies/`, `inputs/`, `watch.yaml`, `resources.yaml`, `conjectures.yaml`, and append-only AI assessment overlays in `assessments/<runId>.yaml`.
+1. **Content** (`content/cases/<case>/`) — YAML + markdown per case: `case.yaml`, `editions/` (the current telling: article with `[text]{claim=GEO-C001}` refs), `claims.yaml`, `evidence.yaml`, `sources.yaml`, `research.yaml`, `history.yaml`, optional `studies/`, `inputs/`, `watch.yaml`, `resources.yaml`, `conjectures.yaml`, and append-only AI assessment overlays in `assessments/<runId>.yaml`.
 2. **Domain** (`src/domain/`) — Zod schemas, the loader (fails the build on dangling IDs, uncited sources, or unresolved claim refs), derived standing and governance.
 3. **UI** (`src/components/`, `app/`) — pure components, one per domain concept. Routes: home, cases, case page, claim explorer, claim detail, source record, study, resources, proposals, panel, method.
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parseProposalFile } from "./agendaProposals";
+import { parseProposalFile } from "./agendaProposals.ts";
 import { renderProposalFile } from "../../scripts/lib/agenda-propose.mjs";
 
 const proposal = {

@@ -38,8 +38,8 @@ got here, including the earlier five-loop version it replaces, is in
 | # | Step | Status |
 | --- | --- | --- |
 | 1 | This design | In review. |
-| 2 | The ledger and the edition: `editions/`, evaluation off claim records, one `CaseView`, ten cases migrated mechanically; scripts move to TypeScript on the shared domain | Not started. Site must render identically at the end. |
-| 3 | The verbs: `report`, `draft`, `check`, `edition`, `assess`, `panel` behind one CLI; protocols as committed files; one intake store; one spend ledger | Not started. Manual invocation only. |
+| 2 | The ledger and the edition: `editions/`, evaluation off claim records, one `CaseView`, ten cases migrated mechanically; check runs and editions record the ledger hash they judged; the touched scripts move to TypeScript on the shared domain | **Built** (2026-09-08, PR pending founder merge). Render diff against the pre-migration build: every difference accounted for (see the DECISIONS entry). |
+| 3 | The verbs: `report`, `draft`, `verify`, `edition`, `check`, `panel` behind one CLI; protocols as committed files; one intake store; one spend ledger | Not started. Manual invocation only. |
 | 4 | The tests: Cast, Not Carved (existing case, with oracle), then Deep Memory (from scratch); two research models each | Not started. Depends on 3. |
 | 5 | Subtraction by evidence: retire what the tests show redundant; ten workflows become four | Depends on 4. |
 | 6 | Presentation: reading experience (current layout kept), then AI operation at case and global level | Last. Views over existing state. |
@@ -78,14 +78,19 @@ state.
 
 | Kind | One line |
 | --- | --- |
-| Assessment | one run over the ledger: case verdict, per-claim treatment (credibility, diagnosticity, importance, plain-language gloss, strongest objection, what would change our mind), the steelman, what is load-bearing, what would settle it. Role `draft` (written by the drafter) or `check` (written blind by another vendor). |
-| Edition | the reader's unit: the exact assessment it adopts, the featured claim ids in order, the crux order, the article, and hashes of the ledger and inputs it compressed. The case page *is* the current edition. |
+| Assessment | one run over the ledger: case verdict, per-claim treatment (credibility, diagnosticity, importance, plain-language gloss, strongest objection, what would change our mind), the steelman, what is load-bearing, what would settle it, the dossier header. Role `draft` (written by the drafter) or `check` (written blind by another vendor). Records the hash of the ledger it judged. |
+| Edition | the reader's unit: the exact assessment it adopts (by run id and content hash), the featured claim ids in order, the crux order, the article, and hashes of the ledger and inputs it compressed. The case page *is* the current edition. |
+
+Assessment and edition are separate files on purpose. An edition that
+changes only the article re-adopts the same assessment and **inherits its
+standing**: prose can improve without convening a new panel. Only a new
+judgment needs new blind checks.
 
 **The intake** — everything that ever tried to enter, and what became of it.
 
 | Kind | One line |
 | --- | --- |
-| Proposal | a change to domain records — add, correct, link, supersede, reconsider — in one envelope: the candidate records, the basis (case and input hashes), the provenance (producer, run, model, protocol version, date, cost), the rationale. Reports and review notes travel inside proposals as working material, never as records. |
+| Proposal | a change to domain records — add, correct, link, supersede, reconsider — in one envelope: the candidate records, the basis (case and input hashes), the provenance (producer, run, model, protocol version, date, cost), the rationale. A candidate is of a kind the repository already has: source, evidence, claim, research, study, image — or **edition**, for a proposed change to selection, framing, or prose. Reports travel inside proposals as working material, never as records. |
 | Disposition | the dated outcome of one candidate in one case: **in** (as record *X*), **duplicate** (of *X*), **irrelevant**, **blocked** (with the route to the primary), **failed** (verification contradicted it), **excluded** (verified, editorially left out, reason given). Every row off *in* carries a reason and may carry `reopenIf`. |
 
 Two symmetries hold the design together. **Ledger records get
@@ -94,6 +99,13 @@ judgments, latest per key stands. And **standing is derived, never
 stored**: the case's standing (ratified / contested / unratified) is
 computed at build time from the check runs of the adopted assessment,
 fails down, and is raised only by fresh concurrence.
+
+**Staleness is a hash, not a date.** A check run is current when the
+ledger hash it recorded equals the current ledger's hash, and stale when
+the ledger has moved since — mechanical, and independent of the changelog.
+(Runs from before the field existed fall back to comparing dates with the
+newest content-bearing history entry.) The same hash on an edition says
+which ledger state it compressed.
 
 The founder's own record lives in two small places that are neither
 ledger nor judgment: `conjectures.yaml` (on-the-record editorial
@@ -110,11 +122,11 @@ proposal or one judgment record. Nothing has a private memory.
 | Verb | Command | Reads | Writes | Model |
 | --- | --- | --- | --- | --- |
 | investigate | `report <case>` | the packet (below) | a report inside a proposal | a browsing research model — a flag |
-| propose | `draft <case>` | a report, or an inbox drop, or a watch hit | a proposal: ledger deltas with locators and quotes, a disposition for every item raised | the drafter |
-| verify | `check <proposal>` | the proposal and the fetched sources | dispositions: `in`-eligible, `failed`, `blocked` | a second model that tries to reject the reading; the rest is mechanical |
-| assess and explain | `edition <case>` | ledger, inputs, incumbent edition | a draft assessment and an edition candidate | the drafter |
-| — | `assess <case>` | the blind packet (ledger only, no incumbent, no grades) | check runs | four other vendors |
-| review | `panel <pr>` | the diff and the constitution | one verdict and up to three review notes per seat | five vendors |
+| propose | `draft <case>` | a report, or an inbox drop, or a watch hit — **and the fetched text of every source it cites** | a proposal: ledger deltas whose locators and verbatim quotes come from the retrieved text, a disposition for every item raised | the drafter, shown the source; it never writes a quote it has not been shown |
+| verify | `verify <proposal>` | the proposal and the sources, fetched again | dispositions: `in`-eligible, `failed`, `blocked` | a second model, given the retrieved source and not the drafter's rationale, tries to reject the reading; quote match and identifier resolution are mechanical |
+| assess and explain | `edition <case>` | ledger, inputs, incumbent edition | a draft assessment (when the judgment changed) and an edition candidate | the drafter |
+| — | `check <case>` | the blind packet (ledger only, no incumbent, no grades) | check runs (`role: check`), each recording the ledger hash it judged | four other vendors |
+| review | `panel <pr>` | the diff and the constitution | one verdict and up to three review notes per seat, the notes entering as `edition` or ledger candidates | five vendors |
 | publish | merge policy | the labels and checks | the merge | none |
 
 Two supporting commands, both pure: `diff <proposal> <case>` runs the
@@ -143,7 +155,9 @@ An edition is due when an adopted proposal touches a featured claim's
 anchors, when a check run moves the verdict or the load-bearing set, when a
 crux is resolved or reopened, or when a report proposes a different
 selection. Catalog growth alone triggers nothing; unchanged inputs rest by
-hash.
+hash. An edition whose judgment did not change re-adopts the incumbent's
+assessment and keeps its standing; one whose judgment did change carries a
+new draft assessment and is unratified until checked.
 
 **Roles stay separate.** The drafter produces (`draft`, `edition`); the
 judges ratify (`assess` blind, `panel` on the PR). Standing never comes
@@ -166,14 +180,16 @@ removed, a draft presented as ratified, confidence material, a weakened
 check. Everything else a seat thinks becomes *review notes*: at most three
 per seat, ranked, returned in a separate field so a preference cannot be
 smuggled into a veto or a violation softened into advice. Notes are intake:
-they enter as candidates through the coverage diff, get dispositions, and
-feed the next draft; a note that recurs across runs is a crux the case is
-dodging. The steelman field already works this way and is the model.
+each enters as a candidate — of kind `edition` when it concerns selection,
+framing, or prose; of a ledger kind when it names missing evidence — through
+the coverage diff, gets a disposition, and feeds the next draft; a note that
+recurs across runs is a crux the case is dodging. The steelman field already
+works this way and is the model.
 
 ## The protocols
 
 Prompts are committed, versioned files under `protocols/`, one per
-model-involving verb: `report`, `draft`, `check`, `edition`, `assess`,
+model-involving verb: `report`, `draft`, `verify`, `edition`, `check`,
 `panel`. A `promptVersion` stamp on any record points at text a reader can
 open. The rule is **formalize the contract, not the method**: each file
 states the task, the scope, the output schema, and the few operational
@@ -184,10 +200,10 @@ test evidence.
 | Protocol | Inherits | Non-obvious rules it carries |
 | --- | --- | --- |
 | `report` | the missing-evidence audit prompts (`research/`); the lab's `case-research-report-v1` | state actual coverage, never claim saturation; distinguish opened from snippet from inaccessible; prior failed retrievals are not findings of absence; look beyond the incumbent's framing |
-| `draft` | extract-v1 (atomic claim, one rung, theme, verbatim quote); the chat-briefs consolidate and construct steps, written down for the first time | the default is in; blocked stays out; split a load-bearing compound claim; label source statement versus inference; every item raised gets a disposition |
-| `check` | extract's anchor check and verify-v1; the verification-ledger rule; the lab's `source-reading-v6` | a quote the source never said is rejected, never repaired; model agreement is not verification; a blocked primary stays out |
-| `edition` | the assessment drafting prompt; the narrative-inputs rule (§7) | grade credibility and diagnosticity separately per claim; the featured set is a decision with a reason; consider the founding inputs for voice, follow them where they serve the reader; the article never narrates its own revisions |
-| `assess` | the blind-check prompt | blind: no incumbent, no grades; the steelman is required |
+| `draft` | extract-v1 (atomic claim, one rung, theme, verbatim quote from the shown text); the chat-briefs consolidate and construct steps, written down for the first time; the lab's source reader | a quote comes only from retrieved text the drafter was shown; the default is in; blocked stays out; split a load-bearing compound claim; label source statement versus inference; every item raised gets a disposition |
+| `verify` | extract's anchor check and verify-v1; the verification-ledger rule; the lab's `source-reading-v6` checker | a quote the source never said is rejected, never repaired; model agreement is not verification; a blocked primary stays out |
+| `edition` | the assessment drafting prompt; the narrative-inputs rule (§7) | grade credibility and diagnosticity separately per claim; the featured set is a decision with a reason; re-adopt the incumbent's assessment when the judgment did not change; consider the founding inputs for voice, follow them where they serve the reader; the article never narrates its own revisions |
+| `check` | the blind-check prompt | blind: no incumbent, no grades, no article; the steelman is required; record the ledger hash judged |
 | `panel` | the arbiter prompt | a `violates` must name the rule or degrades to `unsure`; notes are separate from verdicts |
 
 `docs/CHAT_BRIEFS.md` and `research/missing-evidence-audit-prompts.md`
@@ -207,8 +223,8 @@ content/cases/<case>/
   inputs/              founding texts + manifest (founder-owned; voice, never evidence)
   conjectures.yaml     founder's on-the-record intuitions (no weight)
   dispositions.yaml    append-only: every candidate ever considered here
-  assessments/         append-only runs, draft and check
-  editions/            append-only; the latest adopted is the case page
+  assessments/         append-only runs, draft and check, each stamped with the ledger hash it judged
+  editions/            append-only; the latest is the case page; an article-only edition re-adopts its predecessor's assessment
 proposals/<runId>/     one directory per run: proposal.yaml, report.md, novelty.md, run.yaml
 governance/            harvested panel verdicts and notes; the spend ledger
 protocols/             the six versioned prompt files
@@ -284,6 +300,14 @@ generator, scorer, endorsement drafter, and freeze drafter propose, so
 those fold into it and the inbox remains the founder's door. Nothing is
 retired on the argument alone; each retirement PR cites the test run that
 made it safe.
+
+One further candidate, once editions and dispositions carry the record:
+**the changelog becomes a view.** Editions carry rationales, adopted
+proposals carry outcomes, assessments carry verdict moves; the history a
+reader sees can be derived from those, with hand-written entries kept only
+for corrections nothing else records. Staleness no longer depends on the
+changelog (it is a hash), so `history.yaml` would stop being load-bearing
+and could stop being a file every PR must remember to append to.
 
 ## Presentation, last
 

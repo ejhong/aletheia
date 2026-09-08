@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml } from "yaml";
-import { ArbiterRecordSchema, type ArbiterRecord } from "./schema";
+import { ArbiterRecordSchema, type ArbiterRecord } from "./schema.ts";
 
 const GOVERNANCE_DIR = path.join(process.cwd(), "governance", "arbiter");
 

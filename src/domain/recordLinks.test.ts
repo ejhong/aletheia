@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { buildRecordLinkRegistry, splitRecordRefs } from "./recordLinks";
-import { getCaseBySlug, loadAllCases } from "./load";
+import { buildRecordLinkRegistry, splitRecordRefs } from "./recordLinks.ts";
+import { getCaseBySlug, loadAllCases } from "./load.ts";
 
 describe("splitRecordRefs", () => {
   it("splits mixed claim, source, evidence, and research ids", () => {

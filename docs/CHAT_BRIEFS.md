@@ -86,21 +86,17 @@ weightlessness stated, never silently dropped on editorial instinct.
 Every case PR ships a **coverage table** mapping every claim family in
 the brief to one of four dispositions:
 
-- **verified → in** (featured or catalog tier);
+- **verified → in** (featured by the edition, or in the ledger backlog);
 - **verified but editorially excluded → listed with the reason, for the
   founder's call** (this disposition should be rare);
 - **blocked → research item carrying the recovery route**;
 - **failed verification → documented correction**, as prominent as the
   confirmations.
 
-Tiering keeps the UI manageable: featured tier (~20–25 claims) carries
-the full editorial workup and leads the case page; the remainder rides
-catalog tier in the collapsible explorer, promotable by a one-field
-edit. **Living-persons tier rule (downstream deployment):**
-verified-artifact and document claims may ride catalog; any claim whose
-statement names a living person gets featured treatment, so it always
-carries the objection/context fields that protect people — catalog's
-"unreviewed backlog" label must never sit on a statement about a person.
+The edition keeps the UI manageable: its featured set (~20–25 claims)
+carries the full treatment in the adopted assessment and leads the case
+page; the remainder rides the ledger backlog in the collapsible explorer,
+featured later by an edition change.
 
 ### 5. Repo routing
 

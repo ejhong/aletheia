@@ -45,7 +45,7 @@ export function buildCasePacket({ claims, research, studies, evidence }) {
   const lines = [];
   lines.push("CLAIMS:");
   for (const c of claims ?? [])
-    lines.push(`- ${c.id} [${c.tier ?? "?"}]: ${String(c.statement).slice(0, 220)}`);
+    lines.push(`- ${c.id}: ${String(c.statement).slice(0, 220)}`);
   lines.push("\nRESEARCH AGENDA:");
   for (const r of research ?? [])
     lines.push(`- ${r.id} [${r.effortTier ?? "?"}]: ${r.title} — ${String(r.summary ?? "").slice(0, 200)}`);

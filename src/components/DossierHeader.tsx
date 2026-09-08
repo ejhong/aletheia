@@ -9,20 +9,25 @@ import type {
   CaseRecord,
   ImageRecord,
 } from "@/src/domain/schema";
+import type { CaseHeader } from "@/src/domain/view";
 
 /**
  * The case dossier header — dark register. Answers the three questions above
  * the fold: what is claimed, where the disagreement lives, what would settle
- * it. Cover art is mounted like a frontispiece plate beside the title.
+ * it. Those answers, the priority, and the component verdicts are judgments
+ * and come from the edition's adopted assessment (CaseHeader); identity comes
+ * from the case record. Cover art is mounted like a frontispiece plate.
  */
 export function DossierHeader({
   record,
+  header,
   lastUpdated,
   verdict,
   standing,
   cover,
 }: {
   record: CaseRecord;
+  header: CaseHeader;
   /** Newest content-bearing changelog date; links to #history. */
   lastUpdated: string;
   verdict: AssessmentState | null;
@@ -30,6 +35,12 @@ export function DossierHeader({
   standing: { status: "ratified" | "contested" | "unratified"; agreeing: number; panel: number } | null;
   cover?: ImageRecord | null;
 }) {
+  const questions = [
+    ["What is claimed", header.whatIsClaimed],
+    ["Where the disagreement lives", header.whereDisagreementLives],
+    ["What would settle it", header.whatWouldSettleIt],
+  ].filter((q): q is [string, string] => q[1] !== null);
+
   return (
     <section className="bg-dossier text-dossier-text">
       <div className="mx-auto max-w-6xl px-5 py-10 sm:py-14">
@@ -71,23 +82,27 @@ export function DossierHeader({
                       ? "AI assessment · contested — independent models split"
                       : "AI-drafted assessment · not yet independently ratified"}
                 </span>
-                <PriorityBadge level={record.researchPriority.level} size="lg" />
+                {header.researchPriority ? (
+                  <PriorityBadge level={header.researchPriority.level} size="lg" />
+                ) : null}
               </div>
             ) : null}
-            {record.components.length > 0 ? (
+            {header.components.length > 0 ? (
               <div className="mt-4">
                 <h2 className="font-mono text-[10px] uppercase tracking-[0.18em] text-dossier-faint mb-2">
                   by component — one word would mislead
                 </h2>
-                <ComponentVerdicts components={record.components} dark />
+                <ComponentVerdicts components={header.components} dark />
               </div>
             ) : null}
-            <p className="mt-4 text-[13.5px] leading-relaxed text-dossier-text/80 max-w-2xl">
-              <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-copper mr-2">
-                why this priority
-              </span>
-              {record.researchPriority.reason}
-            </p>
+            {header.researchPriority ? (
+              <p className="mt-4 text-[13.5px] leading-relaxed text-dossier-text/80 max-w-2xl">
+                <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-copper mr-2">
+                  why this priority
+                </span>
+                {header.researchPriority.reason}
+              </p>
+            ) : null}
           </div>
           {cover ? (
             <div className="mt-8 lg:mt-1">
@@ -103,24 +118,20 @@ export function DossierHeader({
             </div>
           ) : null}
         </div>
-        <div className="grid sm:grid-cols-3 gap-px bg-dossier-line border border-dossier-line mt-8">
-          {(
-            [
-              ["What is claimed", record.whatIsClaimed],
-              ["Where the disagreement lives", record.whereDisagreementLives],
-              ["What would settle it", record.whatWouldSettleIt],
-            ] as const
-          ).map(([label, text]) => (
-            <div key={label} className="bg-dossier-soft p-5">
-              <h2 className="font-mono text-[11px] uppercase tracking-[0.18em] text-copper">
-                {label}
-              </h2>
-              <p className="mt-2.5 text-[15px] leading-relaxed text-dossier-text/90">
-                <LinkedRecordText text={text} />
-              </p>
-            </div>
-          ))}
-        </div>
+        {questions.length > 0 ? (
+          <div className="grid sm:grid-cols-3 gap-px bg-dossier-line border border-dossier-line mt-8">
+            {questions.map(([label, text]) => (
+              <div key={label} className="bg-dossier-soft p-5">
+                <h2 className="font-mono text-[11px] uppercase tracking-[0.18em] text-copper">
+                  {label}
+                </h2>
+                <p className="mt-2.5 text-[15px] leading-relaxed text-dossier-text/90">
+                  <LinkedRecordText text={text} />
+                </p>
+              </div>
+            ))}
+          </div>
+        ) : null}
       </div>
     </section>
   );

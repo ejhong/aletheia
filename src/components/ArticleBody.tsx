@@ -3,7 +3,8 @@ import { parseArticle, type Block, type Inline } from "@/src/domain/article";
 import { AssessmentBadge } from "./AssessmentBadge";
 import { Plate } from "./Plate";
 import { ProvenanceBadge } from "./ProvenanceBadge";
-import type { FeaturedClaim, ImageRecord } from "@/src/domain/schema";
+import type { ImageRecord } from "@/src/domain/schema";
+import type { ClaimView } from "@/src/domain/view";
 
 function renderInline(inline: Inline, key: number) {
   switch (inline.kind) {
@@ -45,7 +46,8 @@ function claimIdsIn(inlines: Inline[]): string[] {
     .map((i) => i.claimId);
 }
 
-function MarginNote({ claim }: { claim: FeaturedClaim }) {
+function MarginNote({ claim: view }: { claim: ClaimView }) {
+  const { claim, verdict } = view;
   return (
     <Link
       href={`/claims/${claim.id}/`}
@@ -60,9 +62,11 @@ function MarginNote({ claim }: { claim: FeaturedClaim }) {
       <p className="mt-1 text-[12px] leading-snug text-ink-soft line-clamp-4">
         {claim.statement}
       </p>
-      <div className="mt-1.5">
-        <AssessmentBadge state={claim.credibility} />
-      </div>
+      {verdict ? (
+        <div className="mt-1.5">
+          <AssessmentBadge state={verdict} />
+        </div>
+      ) : null}
     </Link>
   );
 }
@@ -78,11 +82,11 @@ export function ArticleBody({
   images = [],
 }: {
   markdown: string;
-  claims: FeaturedClaim[];
+  claims: ClaimView[];
   images?: ImageRecord[];
 }) {
   const blocks: Block[] = parseArticle(markdown);
-  const claimById = new Map(claims.map((c) => [c.id, c]));
+  const claimById = new Map(claims.map((c) => [c.claim.id, c]));
   const imageById = new Map(images.map((img) => [img.id, img]));
 
   return (
@@ -143,7 +147,7 @@ export function ArticleBody({
         const ids = claimIdsIn(block.inlines);
         const refClaims = ids
           .map((id) => claimById.get(id))
-          .filter((c): c is FeaturedClaim => Boolean(c));
+          .filter((c): c is ClaimView => Boolean(c));
         return (
           <div
             key={i}
@@ -154,7 +158,7 @@ export function ArticleBody({
               <>
                 <aside className="hidden xl:flex flex-col gap-2 pt-1.5">
                   {refClaims.map((c) => (
-                    <MarginNote key={c.id} claim={c} />
+                    <MarginNote key={c.claim.id} claim={c} />
                   ))}
                 </aside>
                 <details className="xl:hidden mt-2 group">
@@ -168,7 +172,7 @@ export function ArticleBody({
                   </summary>
                   <div className="mt-2 flex flex-col gap-2">
                     {refClaims.map((c) => (
-                      <MarginNote key={c.id} claim={c} />
+                      <MarginNote key={c.claim.id} claim={c} />
                     ))}
                   </div>
                 </details>

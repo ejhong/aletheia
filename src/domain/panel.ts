@@ -6,11 +6,11 @@ import {
   latestCheckPerModel,
   loadAllCases,
   type Ratification,
-} from "./load";
-import { loadArbiterRecords } from "./governance";
+} from "./load.ts";
+import { loadArbiterRecords } from "./governance.ts";
 import { seatKey } from "../../scripts/lib/seat-key.mjs";
 import { site } from "../config/site";
-import type { AssessmentRun, AssessmentState } from "./schema";
+import type { AssessmentRun, AssessmentState } from "./schema.ts";
 
 /**
  * Derivations for the /panel page — the site's governance made visible.

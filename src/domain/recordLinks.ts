@@ -1,4 +1,4 @@
-import type { LoadedCase } from "./schema";
+import type { LoadedCase } from "./schema.ts";
 
 export type RecordLinkTarget = {
   kind: "case" | "claim" | "source" | "evidence" | "research";

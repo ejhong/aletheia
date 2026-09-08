@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { StudySchema, type Evidence, type Source, type Study } from "./schema";
+import { StudySchema, type Evidence, type Source, type Study } from "./schema.ts";
 import {
   computeCriteriaHash,
   isPendingStudy,
   studyIntegrityErrors,
-} from "./studies";
+} from "./studies.ts";
 
 /**
  * The pre-registration machinery: the freeze must be tamper-evident

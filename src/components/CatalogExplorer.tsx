@@ -3,9 +3,10 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { ProvenanceBadge } from "./ProvenanceBadge";
-import { rungLabels, type CatalogClaim } from "@/src/domain/schema";
+import { rungLabels } from "@/src/domain/schema";
+import type { ClaimView } from "@/src/domain/view";
 
-function CatalogRow({ claim }: { claim: CatalogClaim }) {
+function CatalogRow({ claim }: { claim: ClaimView["claim"] }) {
   return (
     <Link
       href={`/claims/${claim.id}/`}
@@ -25,24 +26,27 @@ function CatalogRow({ claim }: { claim: CatalogClaim }) {
       </p>
       <div className="mt-2 flex flex-wrap items-center gap-2">
         <ProvenanceBadge state={claim.reviewState} />
-        <span className="font-mono text-[10px] tracking-[0.12em] text-faint">
-          {claim.sourceAnchor.locator}
-        </span>
+        {claim.sourceAnchor ? (
+          <span className="font-mono text-[10px] tracking-[0.12em] text-faint">
+            {claim.sourceAnchor.locator}
+          </span>
+        ) : null}
       </div>
     </Link>
   );
 }
 
 /**
- * The unreviewed catalog: theme groups collapsed by default with visible
- * counts, plus client-side search. Deliberately quieter than the featured
- * set — a backlog, not a flat feed.
+ * The ledger's backlog: every live claim the current edition does not
+ * feature, grouped by theme (collapsed, with counts) with client-side
+ * search. Deliberately quieter than the featured set — a backlog, not a
+ * flat feed.
  */
 export function CatalogExplorer({
   claims,
   themes,
 }: {
-  claims: CatalogClaim[];
+  claims: ClaimView[];
   themes: Record<string, string>;
 }) {
   const [query, setQuery] = useState("");
@@ -52,13 +56,13 @@ export function CatalogExplorer({
     () =>
       q.length === 0
         ? claims
-        : claims.filter((c) =>
+        : claims.filter(({ claim: c }) =>
             [
               c.id,
               c.statement,
               c.origin.ref,
-              c.sourceAnchor.locator,
-              c.sourceAnchor.quote ?? "",
+              c.sourceAnchor?.locator ?? "",
+              c.sourceAnchor?.quote ?? "",
             ]
               .join(" ")
               .toLowerCase()
@@ -71,8 +75,8 @@ export function CatalogExplorer({
     .map(([key, label]) => ({
       key,
       label,
-      claims: filtered.filter((c) => c.theme === key),
-      total: claims.filter((c) => c.theme === key).length,
+      claims: filtered.filter((c) => c.claim.theme === key),
+      total: claims.filter((c) => c.claim.theme === key).length,
     }))
     .filter((g) => g.total > 0);
 
@@ -112,7 +116,7 @@ export function CatalogExplorer({
             </summary>
             <div className="px-4 pb-4 grid lg:grid-cols-2 gap-2.5">
               {g.claims.length > 0 ? (
-                g.claims.map((c) => <CatalogRow key={c.id} claim={c} />)
+                g.claims.map((c) => <CatalogRow key={c.claim.id} claim={c.claim} />)
               ) : (
                 <p className="text-[13px] text-faint italic font-serif">
                   No matches in this theme.

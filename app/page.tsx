@@ -6,13 +6,12 @@ import { site } from "@/src/config/site";
 import {
   caseCover,
   crossModelSummary,
-  displayAssessment,
   isHousekeepingEntry,
   loadAllCases,
   recentChanges,
-  reviewCoverage,
   siteImage,
 } from "@/src/domain/load";
+import { caseView, reviewCoverage } from "@/src/domain/view";
 
 export default function HomePage() {
   const cases = loadAllCases();
@@ -78,15 +77,17 @@ export default function HomePage() {
         ) : null}
         <div className="grid sm:grid-cols-2 gap-4">
           {cases.map((c) => {
-            const shown = displayAssessment(c);
+            const view = caseView(c);
             const sum = crossModelSummary(c);
             return (
               <CaseCard
                 key={c.record.id}
                 record={c.record}
-                verdict={shown?.run.caseAssessment.verdict ?? null}
-                standing={shown?.ratification.status ?? null}
-                reviewCoverage={reviewCoverage(c)}
+                components={view.header.components}
+                priority={view.header.researchPriority?.level ?? null}
+                verdict={view.assessment?.caseAssessment.verdict ?? null}
+                standing={view.standing?.status ?? null}
+                reviewCoverage={reviewCoverage(view)}
                 check={
                   sum
                     ? {

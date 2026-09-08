@@ -12,7 +12,9 @@
  *  - a content-kind history entry (housekeeping excluded by the same rule
  *    the dossier header uses);
  *  - a study reaching collection (its findings date);
- *  - a new featured claim (its origin date).
+ *  - a new featured claim (its origin date) — featured meaning named in the
+ *    current edition's featured set, which the caller passes as
+ *    `featuredIds`.
  *
  * Cadence bands, deliberately coarse (three, not a dial):
  *  - hot:  any event in the last 30 days   → weekly attention
@@ -23,8 +25,11 @@
 
 /** Dates of assessment runs that moved a verdict relative to the prior run. */
 export function assessmentMovementDates(runs) {
+  // Migration runs (`migratedFrom`) transfer a displayed judgment; they are
+  // not movement and are skipped, so the transferred draft is compared
+  // with whatever follows it.
   const graded = [...(runs ?? [])]
-    .filter((r) => (r.role ?? "draft") !== "check")
+    .filter((r) => (r.role ?? "draft") !== "check" && !r.migratedFrom)
     .sort((a, b) => String(a.date).localeCompare(String(b.date)));
   const dates = [];
   for (let i = 0; i < graded.length; i++) {
@@ -48,7 +53,7 @@ export function assessmentMovementDates(runs) {
 }
 
 /** Every verdict-moving event date for one loaded case, ascending, deduped. */
-export function movementDates({ assessmentRuns, history, studies, claims }) {
+export function movementDates({ assessmentRuns, history, studies, claims, featuredIds }) {
   const dates = new Set();
   for (const d of assessmentMovementDates(assessmentRuns)) dates.add(d);
   for (const h of history ?? []) {
@@ -57,8 +62,9 @@ export function movementDates({ assessmentRuns, history, studies, claims }) {
   for (const s of studies ?? []) {
     if ((s.rows?.length ?? 0) > 0 && s.date) dates.add(String(s.date));
   }
+  const featured = new Set(featuredIds ?? []);
   for (const c of claims ?? []) {
-    if (c.tier === "featured" && c.origin?.date) dates.add(String(c.origin.date));
+    if (featured.has(c.id) && c.origin?.date) dates.add(String(c.origin.date));
   }
   return [...dates].sort();
 }

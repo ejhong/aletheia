@@ -12,19 +12,20 @@ import {
   assessmentStateCaptions,
   claimTypeCaptions,
   directionLabels,
-  isFeatured,
   rungLabels,
-  type CatalogClaim,
-  type Claim,
   type ClaimGenealogy,
   type EvidenceDirection,
-  type LoadedCase,
 } from "@/src/domain/schema";
+import {
+  findClaimView,
+  type CaseView,
+  type ClaimView,
+} from "@/src/domain/view";
 
 /**
  * The claim's public genealogy — earliest known appearance, rendered in the
- * dossier strip for both tiers. "First known" is exactly that: the earliest
- * appearance found, never asserted as absolute priority.
+ * dossier strip. "First known" is exactly that: the earliest appearance
+ * found, never asserted as absolute priority.
  */
 function GenealogyLine({ genealogy }: { genealogy: ClaimGenealogy }) {
   return (
@@ -46,16 +47,10 @@ function GenealogyLine({ genealogy }: { genealogy: ClaimGenealogy }) {
   );
 }
 
-function allLiveClaims(): { claim: Claim; loaded: LoadedCase }[] {
-  return loadAllCases().flatMap((loaded) =>
-    liveClaims(loaded).map((claim) => ({ claim, loaded })),
-  );
-}
-
 export function generateStaticParams() {
   return paramsOrPlaceholder(
     "id",
-    allLiveClaims().map(({ claim }) => claim.id),
+    loadAllCases().flatMap((loaded) => liveClaims(loaded).map((c) => c.id)),
   );
 }
 
@@ -67,100 +62,126 @@ export function generateMetadata({
   return params.then(({ id }) => ({ title: `Claim ${id}` }));
 }
 
-/**
- * Catalog-tier claims render honestly sparse: the statement, its source
- * anchor, and provenance — plus an explicit account of what is missing and
- * how promotion works. No pretending a backlog record is an assessed claim.
- */
-function CatalogClaimView({
-  claim,
-  loaded,
+function DossierStrip({
+  view,
+  cv,
+  children,
 }: {
-  claim: CatalogClaim;
-  loaded: LoadedCase;
+  view: ClaimView;
+  cv: CaseView;
+  children?: React.ReactNode;
 }) {
+  const { claim, treatment } = view;
+  const record = cv.loaded.record;
+  return (
+    <section className="bg-dossier text-dossier-text">
+      <div className="mx-auto max-w-5xl px-5 py-10">
+        <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-dossier-faint">
+          <Link href={`/cases/${record.slug}/`} className="text-copper hover:underline">
+            {record.title}
+          </Link>{" "}
+          · claim {claim.id} · {rungLabels[claim.rung]} rung ·{" "}
+          {record.themes[claim.theme]}
+        </p>
+        <h1 className="font-serif text-2xl sm:text-[2rem] leading-snug tracking-tight mt-4 max-w-3xl">
+          {claim.statement}
+        </h1>
+        {treatment ? (
+          <p className="font-serif italic text-dossier-faint mt-3 max-w-3xl text-lg">
+            {treatment.plainLanguage}
+          </p>
+        ) : null}
+        <div className="mt-5 flex flex-wrap items-center gap-2">
+          {children}
+          <ProvenanceBadge
+            state={claim.reviewState}
+            detail={`${claim.origin.extractedBy} · run ${claim.origin.runId} · ${claim.origin.date}`}
+          />
+          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-dossier-faint">
+            origin: {claim.origin.ref}
+          </span>
+        </div>
+        {claim.genealogy ? <GenealogyLine genealogy={claim.genealogy} /> : null}
+      </div>
+    </section>
+  );
+}
+
+/**
+ * A claim the current edition does not feature renders honestly sparse:
+ * the statement, its anchor, and provenance — plus an explicit account of
+ * what is missing. No pretending a backlog record is an assessed claim.
+ */
+function UnfeaturedClaimView({ view, cv }: { view: ClaimView; cv: CaseView }) {
+  const { claim } = view;
   const missing = [
     "plain-language gloss",
     "credibility assessment",
     "diagnosticity assessment",
-    "evidence records",
     "strongest objection",
     "what would change our mind",
   ];
+  const evidence = cv.loaded.evidence.filter((e) => e.claimIds.includes(claim.id));
   return (
     <div>
-      <section className="bg-dossier text-dossier-text">
-        <div className="mx-auto max-w-5xl px-5 py-10">
-          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-dossier-faint">
-            <Link
-              href={`/cases/${loaded.record.slug}/`}
-              className="text-copper hover:underline"
-            >
-              {loaded.record.title}
-            </Link>{" "}
-            · claim {claim.id} · {rungLabels[claim.rung]} rung ·{" "}
-            {loaded.record.themes[claim.theme]}
-          </p>
-          <h1 className="font-serif text-2xl sm:text-[2rem] leading-snug tracking-tight mt-4 max-w-3xl">
-            {claim.statement}
-          </h1>
-          {claim.plainLanguage ? (
-            <p className="font-serif italic text-dossier-faint mt-3 max-w-3xl text-lg">
-              {claim.plainLanguage}
-            </p>
-          ) : null}
-          <div className="mt-5 flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center rounded-xs border border-ochre/50 px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-[0.12em] text-ochre">
-              Catalog tier — unreviewed backlog
-            </span>
-            <ProvenanceBadge
-              state={claim.reviewState}
-              detail={`${claim.origin.extractedBy} · run ${claim.origin.runId} · ${claim.origin.date}`}
-            />
-            <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-dossier-faint">
-              origin: {claim.origin.ref}
-            </span>
-          </div>
-          {claim.genealogy ? <GenealogyLine genealogy={claim.genealogy} /> : null}
-        </div>
-      </section>
+      <DossierStrip view={view} cv={cv}>
+        <span className="inline-flex items-center rounded-xs border border-ochre/50 px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-[0.12em] text-ochre">
+          Not featured in the current edition
+        </span>
+      </DossierStrip>
 
       <div className="mx-auto max-w-5xl px-5 py-10 space-y-8">
-        <section className="border border-line bg-paper p-5">
-          <h2 className="font-mono text-[11px] uppercase tracking-[0.18em] text-faint">
-            source anchor
-          </h2>
-          <p className="mt-2.5 text-[14.5px] leading-relaxed text-ink-soft">
-            {claim.sourceAnchor.locator}
-          </p>
-          {claim.sourceAnchor.quote ? (
-            <blockquote className="mt-3 border-l-2 border-copper pl-4 font-serif italic text-[15px] text-ink-soft">
-              “{claim.sourceAnchor.quote}”
-            </blockquote>
-          ) : null}
-          {claim.independenceGroup ? (
-            <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.12em] text-faint">
-              independence group: {claim.independenceGroup} — related
-              extractions in this group are not independent evidence
+        {claim.sourceAnchor ? (
+          <section className="border border-line bg-paper p-5">
+            <h2 className="font-mono text-[11px] uppercase tracking-[0.18em] text-faint">
+              source anchor
+            </h2>
+            <p className="mt-2.5 text-[14.5px] leading-relaxed text-ink-soft">
+              {claim.sourceAnchor.locator}
             </p>
-          ) : null}
-        </section>
+            {claim.sourceAnchor.quote ? (
+              <blockquote className="mt-3 border-l-2 border-copper pl-4 font-serif italic text-[15px] text-ink-soft">
+                “{claim.sourceAnchor.quote}”
+              </blockquote>
+            ) : null}
+            {claim.independenceGroup ? (
+              <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.12em] text-faint">
+                independence group: {claim.independenceGroup} — related
+                extractions in this group are not independent evidence
+              </p>
+            ) : null}
+          </section>
+        ) : null}
+
+        {evidence.length > 0 ? (
+          <section>
+            <h2 className="font-serif text-2xl tracking-tight">Evidence</h2>
+            <div className="mt-4 grid lg:grid-cols-2 gap-4">
+              {evidence.map((e) => (
+                <EvidenceCard
+                  key={e.id}
+                  evidence={e}
+                  source={cv.loaded.sources.find((s) => s.id === e.sourceId)!}
+                />
+              ))}
+            </div>
+          </section>
+        ) : null}
 
         <section className="border border-line bg-paper-deep/50 p-5">
           <h2 className="font-mono text-[11px] uppercase tracking-[0.18em] text-copper">
             an honest empty state
           </h2>
           <p className="mt-2.5 text-[14.5px] leading-relaxed text-ink-soft max-w-3xl">
-            This claim sits in the unreviewed catalog: it was extracted from
-            the source literature and imported in bulk, with no individual
-            human review and no editorial workup yet. Nothing here has been
-            assessed — that absence is information, not an oversight.
+            This claim is in the ledger but not in the current edition&apos;s
+            featured set. Nothing here has been assessed — that absence is
+            information, not an oversight.
           </p>
           <p className="mt-3 text-[14px] leading-relaxed text-ink-soft max-w-3xl">
-            Still missing: {missing.join(", ")}. Promotion to featured
-            treatment is a one-field edit (<code>tier: featured</code>) —
-            after which the build fails loudly until each of those fields is
-            supplied.
+            Still missing: {missing.join(", ")}. A claim gains them when an
+            edition features it and the edition&apos;s adopted assessment
+            supplies the full treatment — a decision the panel reviews, not a
+            field anyone flips.
           </p>
         </section>
       </div>
@@ -174,12 +195,14 @@ export default async function ClaimPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const entry = allLiveClaims().find(({ claim }) => claim.id === id);
-  if (!entry) notFound();
-  const { claim, loaded } = entry;
-  if (!isFeatured(claim)) {
-    return <CatalogClaimView claim={claim} loaded={loaded} />;
+  const found = findClaimView(loadAllCases(), id);
+  if (!found) notFound();
+  const { view, caseView: cv } = found;
+  if (!view.featured || !view.treatment || !view.verdict) {
+    return <UnfeaturedClaimView view={view} cv={cv} />;
   }
+  const { claim, treatment, verdict } = view;
+  const loaded = cv.loaded;
   const claims = liveClaims(loaded);
   const claimById = new Map(claims.map((c) => [c.id, c]));
   const sourceById = new Map(loaded.sources.map((s) => [s.id, s]));
@@ -187,9 +210,7 @@ export default async function ClaimPage({
   const evidence = loaded.evidence.filter((e) => e.claimIds.includes(id));
   const byDirection = (d: EvidenceDirection) =>
     evidence.filter((e) => e.direction === d);
-  const children = claims.filter(
-    (c) => isFeatured(c) && c.parentClaimIds.includes(id),
-  );
+  const children = claims.filter((c) => c.parentClaimIds.includes(id));
   const assessmentHistory = loaded.assessmentRuns
     .map((run) => ({
       run,
@@ -230,37 +251,7 @@ export default async function ClaimPage({
 
   return (
     <div>
-      {/* Claim dossier strip */}
-      <section className="bg-dossier text-dossier-text">
-        <div className="mx-auto max-w-5xl px-5 py-10">
-          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-dossier-faint">
-            <Link
-              href={`/cases/${loaded.record.slug}/`}
-              className="text-copper hover:underline"
-            >
-              {loaded.record.title}
-            </Link>{" "}
-            · claim {claim.id} · {rungLabels[claim.rung]} rung ·{" "}
-            {loaded.record.themes[claim.theme]}
-          </p>
-          <h1 className="font-serif text-2xl sm:text-[2rem] leading-snug tracking-tight mt-4 max-w-3xl">
-            {claim.statement}
-          </h1>
-          <p className="font-serif italic text-dossier-faint mt-3 max-w-3xl text-lg">
-            {claim.plainLanguage}
-          </p>
-          <div className="mt-5 flex flex-wrap items-center gap-2">
-            <ProvenanceBadge
-              state={claim.reviewState}
-              detail={`${claim.origin.extractedBy} · run ${claim.origin.runId} · ${claim.origin.date}`}
-            />
-            <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-dossier-faint">
-              origin: {claim.origin.ref}
-            </span>
-          </div>
-          {claim.genealogy ? <GenealogyLine genealogy={claim.genealogy} /> : null}
-        </div>
-      </section>
+      <DossierStrip view={view} cv={cv} />
 
       <div className="mx-auto max-w-5xl px-5 py-10">
         {/* The two axes, side by side */}
@@ -270,20 +261,20 @@ export default async function ClaimPage({
               credibility — is the claim itself true?
             </h2>
             <div className="mt-2.5">
-              <AssessmentBadge state={claim.credibility} size="lg" />
+              <AssessmentBadge state={verdict} size="lg" />
             </div>
-            {claimTypeCaptions[claim.claimType] ? (
+            {claim.claimType && claimTypeCaptions[claim.claimType] ? (
               <p className="mt-2 font-mono text-[10px] tracking-[0.06em] text-copper">
                 ⚠ {claimTypeCaptions[claim.claimType]}
               </p>
             ) : null}
-            {assessmentStateCaptions[claim.credibility] ? (
+            {assessmentStateCaptions[verdict] ? (
               <p className="mt-2 font-mono text-[10px] tracking-[0.06em] text-copper">
-                ⚠ {assessmentStateCaptions[claim.credibility]}
+                ⚠ {assessmentStateCaptions[verdict]}
               </p>
             ) : null}
             <p className="mt-3 text-[14px] leading-relaxed text-ink-soft">
-              <LinkedRecordText text={claim.credibilitySummary} />
+              <LinkedRecordText text={view.reasoning ?? ""} />
             </p>
           </div>
           <div className="bg-paper p-5">
@@ -291,10 +282,10 @@ export default async function ClaimPage({
               diagnosticity — how much does it decide the thesis?
             </h2>
             <p className="mt-2.5 font-mono text-[13px] uppercase tracking-[0.14em] text-copper">
-              {claim.diagnosticity}
+              {treatment.diagnosticity}
             </p>
             <p className="mt-3 text-[14px] leading-relaxed text-ink-soft">
-              <LinkedRecordText text={claim.diagnosticitySummary} />
+              <LinkedRecordText text={treatment.diagnosticitySummary} />
             </p>
           </div>
         </section>
@@ -349,7 +340,7 @@ export default async function ClaimPage({
               strongest unresolved objection
             </h2>
             <p className="mt-2.5 text-[14.5px] leading-relaxed text-ink-soft">
-              <LinkedRecordText text={claim.strongestObjection} />
+              <LinkedRecordText text={treatment.strongestObjection} />
             </p>
           </div>
           <div className="border border-line bg-paper-deep/50 p-5">
@@ -357,7 +348,7 @@ export default async function ClaimPage({
               what would change our mind
             </h2>
             <ul className="mt-2.5 list-disc pl-4 space-y-1.5 text-[14.5px] leading-relaxed text-ink-soft">
-              {claim.whatWouldChangeOurMind.map((w, i) => (
+              {treatment.whatWouldChangeOurMind.map((w, i) => (
                 <li key={i}>
                   <LinkedRecordText text={w} />
                 </li>

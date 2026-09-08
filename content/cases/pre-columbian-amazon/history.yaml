@@ -1,39 +1,23 @@
 - date: "2026-08-28"
   change: >-
-    Case created: dossier framing, 18 claims (two carrying the new
-    genealogy block), 21 evidence records, 20 sources, 5 research items,
-    overview article, cover art, and four licensed plates including
-    Figure 2 of the open-access Pärssinen et al. 2026 study.
+    Case created: dossier framing, 18 claims (two carrying the new genealogy block), 21 evidence records, 20 sources, 5 research items, overview article, cover art, and four licensed plates including Figure 2 of the open-access Pärssinen et al. 2026 study.
   reason: >-
-    Founder-directed case construction from a chat-derived research
-    brief. Every load-bearing cell was natively re-verified before entry
-    (30+ item verification ledger, 2026-08-28); the verification pass
-    corrected the brief in three places (the Nunes letter date, the
-    contact-era cluster's warfare element, and a PNAS quotation) rather
-    than importing it on trust. The founder's funding connection to the
-    central 2026 study is disclosed on the source record and in the
-    article.
+    Founder-directed case construction from a chat-derived research brief. Every load-bearing cell was natively re-verified before entry (30+ item verification ledger, 2026-08-28); the verification pass corrected the brief in three places (the Nunes letter date, the contact-era cluster's warfare element, and a PNAS quotation) rather than importing it on trust. The founder's funding connection to the central 2026 study is disclosed on the source record and in the article.
   actor: "editorial AI (claude-fable-5, cursor session amz-case-build-2026-08-28)"
   aiAssisted: true
   kind: content
 
 - date: "2026-08-28"
   change: >-
-    Expansion wave to full brief coverage: engineered fisheries
-    (featured), plus catalog-tier claims for the machine-learning extent
-    predictions, the soil-core sampling critique, the Upano
-    signal-erasure result, epidemic fade-outs, route-identification
-    uncertainty, and the connectivity/linguistics assessment; six new
-    sources, one evidence record.
+    Expansion wave to full brief coverage: engineered fisheries (featured), plus catalog-tier claims for the machine-learning extent predictions, the soil-core sampling critique, the Upano signal-erasure result, epidemic fade-outs, route-identification uncertainty, and the connectivity/linguistics assessment; six new sources, one evidence record.
   reason: >-
-    Founder disposition policy (2026-08-28): every brief family carries
-    an explicit disposition. The coverage-gap verification batch (ledger
-    A18–A24) corrected three of the brief's guessed citations (Blatrix
-    in Scientific Reports; Walker in PeerJ; the Clement critique in the
-    reply, not the article) and FAILED one item — the circulated
-    Purus/Coari identification of Carvajal's "Trinity River" is
-    unsourced and was dropped from the case and the corridor-test
-    protocol wording.
+    Founder disposition policy (2026-08-28): every brief family carries an explicit disposition. The coverage-gap verification batch (ledger A18–A24) corrected three of the brief's guessed citations (Blatrix in Scientific Reports; Walker in PeerJ; the Clement critique in the reply, not the article) and FAILED one item — the circulated Purus/Coari identification of Carvajal's "Trinity River" is unsourced and was dropped from the case and the corridor-test protocol wording.
   actor: "editorial AI (claude-fable-5, cursor session amz-expansion-2026-08-28)"
   aiAssisted: true
   kind: content
+- date: 2026-09-08
+  change: "Migrated to editions (docs/AUTOMATION.md, build step 2). The article, the 20-claim featured set, and the displayed judgment now live in edition edition-2026-09-08-migration, which adopts the migration assessment 2026-09-08-migration-pre-columbian-amazon. Claim records carry propositions and anchors only; evaluative fields moved into the adopted assessment's per-claim treatment; the dossier header, research priority, and component verdicts moved from case.yaml into the assessment; claims-catalog.yaml merged into claims.yaml (tiers ended). No judgment changed. Where a claim record's hand-written credibility differed from the draft overlay's verdict, the record's value (what claim pages displayed) was carried: AMZ-C019: record well_supported, draft provisionally_supported."
+  reason: One reader-facing unit that binds verdict, selection, and article, so they cannot drift apart; one home for judgment; featuring becomes a recorded decision.
+  actor: scripts/migrations/2026-09-08-editions.ts (mechanical), founder-directed session
+  aiAssisted: true
+  kind: housekeeping

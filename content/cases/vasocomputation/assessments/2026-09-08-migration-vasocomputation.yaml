@@ -1,0 +1,217 @@
+# Migration assessment (2026-09-08) — a mechanical transfer, not a judgment.
+# Case-level fields come from draft 2026-09-02-auto-32sj and from the dossier
+# header formerly on case.yaml; claim-level fields come from the featured
+# claim records as they stood (the displayed credibility and editorial
+# workup). The draft's own per-claim reasoning remains in its overlay.
+# migratedFrom names the source draft; no model wrote this file.
+
+runId: 2026-09-08-migration-vasocomputation
+model: none — mechanical migration (scripts/migrations/2026-09-08-editions.ts)
+date: 2026-09-08
+promptVersion: migration-editions-v1
+humanReviewed: false
+role: draft
+migratedFrom: 2026-09-02-auto-32sj
+caseAssessment:
+  verdict: unresolved
+  whatIsClaimed: "Muscle knots are latched vascular-autonomic states rather than structural lesions: microvascular smooth muscle locked in the latch-bridge state, throttling local blood flow and sensitizing local nerve endings, with secondary skeletal-muscle guarding on top. More broadly: vascular tension functions as a memory element that participates in mental life — the physical implementation of what contemplative traditions call clinging."
+  whereDisagreementLives: 'Not over whether people feel tender spots, and not over whether smooth muscle can latch — both are common ground. The crux is whether anything objective happens locally when a knot "releases" on a slow exhale: does local tissue state (stiffness, perfusion) change within seconds, time-locked to the breath, beyond what pressure, expectation, and generalized relaxation produce — and is any smooth-muscle latch actually present at these sites? No study has ever looked, and the skeptical literature disputes whether the trigger-point construct is even reliably identifiable.'
+  whatWouldSettleIt: "A time-locked imaging experiment: ultrafast elastography and sensitive Doppler over a palpated knot during breath-assisted release, with blinded site localization, calibrated pressure, factorial controls (pressure without slow breath, breath without pressure, sham sites, failed attempts), and a preregistered prediction — stiffness drops and perfusion rises within seconds, together, time-locked to the exhale, exceeding all controls. A companion study demonstrating (or excluding) smooth-muscle latch physiology at tender points would decide the mechanism claim. Either outcome would be decisive."
+  bestConventionalExplanation: 'Tenderness and its relief need no vascular memory. The conventional account explains tender points as neuromuscular guarding — sustained low-level motor drive and endplate activity in skeletal muscle, centrally maintained and stress-sensitive — plus altered fascial gliding, with the felt "release" produced by some combination of expectation, attention, pressure-induced changes in local sensation, and the well-documented generalized parasympathetic shift of slow breathing. On this reading nothing latches and nothing is stored locally: the brain simply stops guarding, globally or regionally, and interpretation supplies the rest. A stricter version adds that the trigger-point construct itself has poor examiner reliability and no validated objective marker, so the observational base may be partly an artifact of training and expectation. This account requires no new physiology, which is its strength; its gap is the set of localized objective findings (spontaneous EMG confined to a millimeter-scale nidus, abnormal local chemistry and hemodynamics) that a purely central or interpretive story must still explain.'
+  components:
+    - label: Tender points are real, measurable phenomena
+      state: well_supported
+    - label: Smooth-muscle latch-bridge physiology (the borrowed mechanism)
+      state: well_supported
+    - label: Tender points are maintained vascular latch states
+      state: unresolved
+      note: "The keystone claim (VASO-C020): no direct observation exists in either direction."
+    - label: Vascular tension participates in memory and mental life
+      state: unresolved
+      note: The theoretical extension (VASO-C021); untested and much further from measurement.
+  researchPriority:
+    level: high
+    reason: The keystone measurement — imaging a single felt release with elastography and Doppler (VASO-R001) — is cheap, uses existing clinical instruments, and no direct test of the latch hypothesis exists in either direction.
+  loadBearing:
+    - VASO-C004
+    - VASO-C010
+    - VASO-C012
+    - VASO-C020
+  weakestLinks:
+    - VASO-C020
+    - VASO-C004
+    - VASO-C021
+    - VASO-C022
+  synthesis: "The evidence directory is unchanged since the previous run, and the case retains its inverted ladder: the mechanism rung is stronger than either the observations beneath it or the attributions above it. Latch-bridge physiology is real (VASO-E003) and vascular-to-neural mechanosensation is demonstrated in animals (VASO-E005), but both are credible without being diagnostic — conventional physiology predicts them too. The anchor observation, a seconds-scale objective release of a tender point (VASO-C004), remains proponent testimony (VASO-E014), and VASO-E016 records that no time-resolved imaging of any release exists. Where the thesis needs the latch — arterioles — the published record points away from it: pressurized skeletal-muscle arterioles show maintained activation rather than an economical hold (VASO-E020), no arteriole energetic measurement exists (VASO-E019), and latch behaviour vanished one branch order downstream in the only paired comparison (VASO-E021). The observational base is itself softened by the trigger-point localization problem (VASO-E010, VASO-E011, VASO-E012), and the memory attribution fails the write–store–read test (VASO-E017). Sensitivity: the single most consequential record is VASO-E016; the verdict survives its removal as unresolved, because the arteriole-level records independently show the mechanism is extrapolated rather than observed, and no positive release measurement exists anywhere. This remains a research program awaiting its keystone experiments — neither supported nor refuted."
+claimAssessments:
+  - claimId: VASO-C021
+    verdict: unresolved
+    reasoning: "The weak form — vascular state is part of the state-space that shapes neural computation — is now scientifically live, with direct animal evidence for the vascular-to-neural direction. The strong form — that latch states store identifiable predictions or mental content — has no direct evidence: no experiment has demonstrated the full write, store, read-back cycle with content specificity."
+    confidence: moderate
+    treatment:
+      plainLanguage: "The headline thesis, from Michael Edward Johnson's vasocomputation framework: the body's blood-vessel tone is not just plumbing but part of the machinery of mind — a distributed medium in which the nervous system stores what it is holding onto."
+      importance: headline
+      diagnosticity: high
+      diagnosticitySummary: This is the thesis itself; everything below the ladder exists to test it.
+      strongestObjection: "Hysteresis is not memory: a thermostat's state also depends on its history, but nothing reads it as content. Showing that vascular tone retains information is trivial; showing that neurons later read out that information in a task-relevant way has never been done, and every demonstrated vascular effect on neurons so far is instantaneous modulation, not stored content."
+      whatWouldChangeOurMind:
+        - An animal experiment showing that an induced, persistent vascular state biases later neural responses toward a previously paired pattern after the initiating input has ceased, with oxygenation controlled (VASO-R005).
+        - "A demonstrated failure: vascular manipulation affecting neural gain only via instantaneous perfusion, with no history dependence once those variables are equalized."
+  - claimId: VASO-C020
+    verdict: unresolved
+    reasoning: "Elegant fit to the phenomenology (speed of release, metabolic-cost problem, abnormal Doppler findings) but untested where it counts: no study has demonstrated smooth-muscle latch physiology at a tender point, and no time-resolved experiment has ever caught a release objectively. The critical research report grades both linchpins D — no direct evidence located."
+    confidence: moderate
+    treatment:
+      plainLanguage: "The case's operational claim: what your foam roller finds is not a scar or an adhesion but a stuck physiological state — a clenched arteriole upstream, a starved and chemically angry patch of tissue downstream, and a nervous system guarding the whole address."
+      importance: headline
+      diagnosticity: high
+      diagnosticitySummary: Directly decides the case's central crux and would ground VASO-C021's periphery branch by itself.
+      strongestObjection: "Every observed feature of knots is also compatible with neuromuscular guarding plus expectation: sustained motor drive explains the EMG chatter, central relaxation explains breath-linked relief, and no vascular latch has ever been observed at a tender point — the mechanism is borrowed from vascular physiology, not found in the tissue."
+      whatWouldChangeOurMind:
+        - The keystone time-locked release experiment succeeding or failing against preregistered criteria (VASO-R001).
+        - Demonstration or exclusion of latch-state smooth muscle at tender points via pharmacology and vasomotor imaging (VASO-R004).
+  - claimId: VASO-C022
+    verdict: unresolved
+    reasoning: The parallels are real as comparative phenomenology, but no blinded, preregistered mapping of traditional knot locations onto modern anatomy has been attempted; apparent correspondence is currently vulnerable to post-hoc matching.
+    confidence: low
+    treatment:
+      plainLanguage: "The convergence argument: traditions that spent millennia attending to the inner body all report knots, all prescribe breath as the tool, and all claim untying them changes consciousness. Perhaps they were mapping, from the inside, the system this case describes from the outside."
+      importance: supporting
+      diagnosticity: low
+      diagnosticitySummary: Even a strong anatomical correspondence would corroborate rather than establish the mechanism claims; its absence would remove a suggestive convergence, not refute the physiology.
+      strongestObjection: "Retrospective resemblance is a degrees-of-freedom trap: with enough traditional maps and enough anatomical structures, some alignment is guaranteed. The claim earns standing only under prespecified coding rules, which have never been applied."
+      whatWouldChangeOurMind:
+        - A preregistered coding study testing whether traditional knot locations align with vascular, autonomic, or dense-fascia anatomy better than chance (VASO-R006).
+  - claimId: VASO-C010
+    verdict: well_supported
+    reasoning: The Hai–Murphy latch-bridge model is standard smooth-muscle physiology with decades of supporting work, though the precise molecular interpretation is still discussed. What is not established is the presence of this mechanism at tender points, or holds on the timescales (months, years) the synthesis requires.
+    confidence: high
+    treatment:
+      plainLanguage: "Textbook physiology since 1988: smooth muscle has a ratchet setting. Stimulate an artery and the chemical activation spikes and falls back — but the force stays, held by dephosphorylated cross-bridges that grip without cycling. A cheap, history-dependent hold."
+      importance: major
+      diagnosticity: low
+      diagnosticitySummary: "Availability of a mechanism is weak evidence that it is used: the latch exists in arteries everywhere, which says nothing about whether knots are made of it."
+      strongestObjection: Latch physiology is documented in vascular preparations over minutes to hours; treating it as an indefinite-duration storage element in vivo, at specific addressable sites, extrapolates far beyond the latch literature.
+      whatWouldChangeOurMind:
+        - Direct measurement of smooth-muscle biochemical state (myosin light-chain phosphorylation, Ca²⁺) at tender-point vasculature versus control tissue (VASO-R004).
+  - claimId: VASO-C011
+    verdict: provisionally_supported
+    reasoning: The conditional logic is solid — tissue-remodeling timescales are established, so a genuine seconds-scale local change would have to be a state change. But the antecedent rests on first-person reports (VASO-C004); if felt releases turn out to have no local objective correlate, this claim becomes vacuously true and carries nothing.
+    confidence: moderate
+    treatment:
+      plainLanguage: "The timescale argument at the heart of the case: structural change in tissue — actual remodeling of collagen or scar — takes days to weeks. A knot that can vanish mid-exhale must be something the body is actively doing and can stop doing. The inference is sound; its premise (the objective seconds-scale release) is the thing never yet measured."
+      importance: major
+      diagnosticity: high
+      diagnosticitySummary: "The hinge between phenomenology and mechanism: it converts a verified fast release into strong evidence against structural accounts (scar tissue does not release on an exhale) and toward maintained-state accounts of any kind."
+      strongestObjection: The felt release may be a perceptual and central event — reduced guarding, reinterpreted sensation — with no local tissue change at all, in which case nothing physical released and the timescale argument has no premise to work on.
+      whatWouldChangeOurMind:
+        - Time-locked elastography/Doppler showing (or failing to show) objective local change within seconds of a felt release (VASO-R001).
+  - claimId: VASO-C012
+    verdict: provisionally_supported
+    reasoning: "Still a minority position, but the evidence has moved toward it: Piezo mechanosensitive channels earned a Nobel Prize in 2021, and a 2024 Science study demonstrated blood-pressure pulsations modulating neuronal activity through mechanosensitive channels in rats. The demonstrated effects are instantaneous modulation in brain tissue, not stored information and not the periphery."
+    confidence: moderate
+    treatment:
+      plainLanguage: "Everyone agrees neurons drive blood flow (that coupling is what fMRI measures). The minority proposal, made by Moore and Cao in 2008, is that the arrow also runs backward: vessels dilating and constricting deform tissue, change temperature and chemistry, and neurons carry pressure-sensitive channels that can feel it."
+      importance: major
+      diagnosticity: moderate
+      diagnosticitySummary: Necessary for any vasocomputation reading — without a read-back path there is no loop — but instantaneous modulation is equally at home in conventional physiology.
+      strongestObjection: "A vascular effect on neurons is not yet vascular information: reduced perfusion trivially suppresses neural activity through metabolic limitation, so any claimed hemo-neural computation must be distinguished from ordinary ischemic modulation with oxygenation controlled."
+      whatWouldChangeOurMind:
+        - The vascular-memory readout experiment (VASO-R005) succeeding or failing under controlled oxygenation.
+  - claimId: VASO-C013
+    verdict: well_supported
+    reasoning: "A substantial reviewed literature documents autonomic and CNS effects of slow breathing. What it does not show is the case's needed next step: that an exhale unlatches a specific arteriole at an identified tender point."
+    confidence: high
+    treatment:
+      plainLanguage: "Why breath is the proposed key: breathing is the one bodily rhythm that is both willed and automatic — the single voluntary handle on the autonomic system — and slowing it measurably raises vagal indices like heart-rate variability."
+      importance: supporting
+      diagnosticity: low
+      diagnosticitySummary: A global autonomic shift is exactly what the conventional explanation also predicts; only a local, site-specific, time-locked effect would discriminate.
+      strongestObjection: "Global parasympathetic shift explains generalized relaxation without any local storage: the breath may simply lower the whole system's guard, with the \"release\" supplied by perception."
+      whatWouldChangeOurMind:
+        - Factorial separation of breath, pressure, and expectation effects on objective local measures (VASO-R001, VASO-R003).
+  - claimId: VASO-C030
+    verdict: well_supported
+    reasoning: The reliability finding is systematic-review-grade and largely uncontested; the stronger ontological critique (no such entity) is itself disputed — proponent researchers published a point-by-point rebuttal. Objective correlates found by EMG, microdialysis, and imaging cut against the strongest "nothing is there" reading.
+    confidence: moderate
+    treatment:
+      plainLanguage: "The skeptics' case, which this case treats as a serious claim in its own right: therapists may find trigger points partly because they are trained to find trigger points. Reviews have found examiner agreement poor and no gold standard for what a trigger point even is; one prominent critique argues the whole construct is flawed by circular reasoning."
+      importance: major
+      diagnosticity: high
+      diagnosticitySummary: 'Limits the entire observational base: if the sites cannot be reliably localized, every study of "knots" — supporting or undermining — inherits a measurement problem, and any census or release experiment must solve blinded localization first.'
+      strongestObjection: "Poor palpation reliability shows the clinical exam is weak, not that the phenomenon is absent: instrumented measures (EMG nidus, biochemical milieu, elastography and Doppler differences) repeatedly find objective local abnormality where palpation points, which pure examiner-artifact accounts struggle to explain."
+      whatWouldChangeOurMind:
+        - An imaging-anchored localization protocol achieving high inter-examiner agreement (would weaken this claim's force).
+        - Failure of instrumented localization to replicate palpation findings under blinding (would strengthen it).
+  - claimId: VASO-C001
+    verdict: well_supported
+    reasoning: 'Ubiquitous practical experience plus fibromyalgia-era tender-point exams that found tender points across community samples. The critical report cautions that even this base is not undisputed: reproducibility and the ontological status of the discrete "spot" are part of the academic debate, not outside it.'
+    confidence: moderate
+    treatment:
+      plainLanguage: "The raw phenomenon: press around your hips or shoulders with a firm object and you will find small spots that announce themselves unmistakably. They are dense where posture concentrates load, and more numerous with each decade."
+      importance: supporting
+      diagnosticity: low
+      diagnosticitySummary: "That tender points exist favors no mechanism: guarding, fascial change, and vascular latch all predict them."
+      strongestObjection: '"Palpable discrete point" may partly be an artifact of the examining finger and its training: tenderness is real, but its packaging into countable, localizable objects is exactly what the reliability literature failed to validate.'
+      whatWouldChangeOurMind:
+        - A blinded, instrumented census (algometry + elastography at fixed sites) establishing or refuting discrete focal abnormalities (VASO-R002).
+  - claimId: VASO-C002
+    verdict: provisionally_supported
+    reasoning: Peer-reviewed, replicated as "spontaneous electrical activity" in later trigger-point literature, but old and small, and what generates the signal is contested — dysfunctional motor endplates and muscle spindles are the leading candidates, neither of which is a blood vessel.
+    confidence: moderate
+    treatment:
+      plainLanguage: "The 1993 Hubbard and Berkoff finding: put a fine needle electrode in a trapezius trigger point and you record continuous electrical chatter in muscle that is supposedly at rest; move it a centimeter into non-tender muscle and the signal vanishes. The knot is an island of maintained activity."
+      importance: major
+      diagnosticity: moderate
+      diagnosticitySummary: Establishes that something localized and electrically active is being maintained — favoring state over structure — but the signal is neuromuscular, so it supports guarding accounts as readily as vascular ones.
+      strongestObjection: "The recorded activity is by every interpretation skeletal-muscle electrophysiology (endplate noise or spindle discharge), not smooth muscle: taking it as evidence for a vascular mechanism reads the finding against its own literature."
+      whatWouldChangeOurMind:
+        - Modern replication with simultaneous vasomotor measurement at the same nidus (VASO-R004).
+  - claimId: VASO-C003
+    verdict: provisionally_supported
+    reasoning: Peer-reviewed and directly on point, but n=14, three decades old, from one research lineage, and never replicated with modern instrumentation. The essay's account of follow-up work (relaxation lowering activity; phentolamine infusion quieting it) traces to the same lineage and has not been independently verified in this project.
+    confidence: low
+    treatment:
+      plainLanguage: "The remarkable 1994 follow-up: with needle electrodes in place, subjects were given mental arithmetic. Activity at the trigger point rose; activity a short distance away did not; the subject was not generally tensing. A mental event turned up the signal inside one tender point. The brain has the knot's address."
+      importance: major
+      diagnosticity: moderate
+      diagnosticitySummary: Shows the brain can write to a specific tender point without movement — the "write head" any storage account needs — but sympathetic drive to muscle spindles would produce the same trace without any vascular storage.
+      strongestObjection: 'One small, aging study carries this entire rung: until replicated under a scanner with vascular endpoints, "stress writes to the knot" is a promising signal, not an established fact.'
+      whatWouldChangeOurMind:
+        - "The stressor block of the keystone experiment: mental arithmetic under elastography/Doppler, predicting stiffening and perfusion drop during a purely cognitive event (VASO-R001)."
+  - claimId: VASO-C004
+    verdict: unresolved
+    reasoning: "Widely reported by practitioners and consistent across bodywork traditions, but purely first-person: no controlled experiment has ever measured local tissue state during a felt release, so whether anything objective and local happens — the case's central crux — is unknown."
+    confidence: low
+    treatment:
+      plainLanguage: "The two-key protocol every serious foam-roller knows: pressure locates the knot but pressure alone does not release it; release comes mid-exhale, in seconds, as a distinct letting-go. This is a first-person practitioner report — including the case author's own — and the case labels it as such."
+      importance: major
+      diagnosticity: high
+      diagnosticitySummary: If objectively verified, the seconds timescale rules out structural accounts and forces a maintained-state mechanism (via VASO-C011); if releases show no local correlate, the featured hypothesis loses its anchor phenomenon.
+      strongestObjection: "Felt release is a report about experience, not tissue: expectation, attention shift, and generalized relaxation could produce the same feeling with nothing local changing — which is precisely why the unrun keystone experiment, not more testimony, is what this claim needs."
+      whatWouldChangeOurMind:
+        - Time-locked stiffness and perfusion measurement during felt releases versus failed attempts and shams (VASO-R001).
+  - claimId: VASO-C005
+    verdict: provisionally_supported
+    reasoning: Multiple independent measurement modalities report objective local differences, and a 2021 systematic review of imaging studies concluded active and latent points are quantifiably distinguishable from healthy tissue — but samples are small, methods heterogeneous, and the biochemical study found mediator elevation remote from the points too.
+    confidence: moderate
+    treatment:
+      plainLanguage: "Instruments agree something is there: microdialysis found the fluid at active trigger points acidic and loaded with pain-signaling molecules; ultrasound studies report stiffer tissue and abnormal local blood flow, with active points separating from latent ones on flow measures."
+      importance: supporting
+      diagnosticity: moderate
+      diagnosticitySummary: Objective abnormality defeats pure examiner-artifact accounts, and the flow abnormalities are suggestively vascular — but ischemia downstream of guarding skeletal muscle would look similar; the findings do not identify the mechanism.
+      strongestObjection: 'Heterogeneous small studies with flexible definitions can manufacture apparent objectivity: until localization is blinded and criteria are fixed in advance, "instruments find the spot" inherits the reliability problem it is supposed to solve (VASO-C030).'
+      whatWouldChangeOurMind:
+        - A criteria-locked, blinded imaging replication across sites and examiners (VASO-R002).
+  - claimId: VASO-C006
+    verdict: provisionally_supported
+    reasoning: Preregistered, within-subject, published in Nature Human Behaviour (August 2026) with large effect sizes — but from a single lab, brand new, in an acute skin model; the authors note the molecular mediators were not directly measured and extrapolation to chronic conditions is uncertain.
+    confidence: moderate
+    treatment:
+      plainLanguage: "The 2026 Bar-Ilan finding: identical histamine skin pricks, twice, in the same people — the only difference being where attention went. Attending to the site cut the inflammatory response by roughly a third in about 90% of participants, with vagal engagement and no arousal difference. A controlled, preregistered cognition-to-periphery channel."
+      importance: major
+      diagnosticity: moderate
+      diagnosticitySummary: An existence proof that voluntary interoceptive attention regulates localized peripheral physiology — the channel the synthesis requires — but the demonstrated route is vagal anti-inflammatory regulation over twenty minutes, not latch removal in seconds.
+      strongestObjection: The measured effect is immune regulation through a known reflex arc; borrowing it as evidence for vascular memory conflates "attention can reach the periphery" with "attention releases stored vascular tension."
+      whatWouldChangeOurMind:
+        - Independent replication (would firm the channel); a failed replication (would remove the strongest controlled evidence on this rung).

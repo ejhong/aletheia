@@ -1,6 +1,6 @@
 # Extraction pipeline v1
 
-Turns a source document into **proposed catalog-tier claims** in the Aletheia
+Turns a source document into **proposed claims** (anchored, unfeatured) in the Aletheia
 YAML format — append-only, human-reviewed, never published directly.
 
 ## Usage
@@ -48,7 +48,7 @@ moves it:
 
 | File            | Contents                                                        |
 | --------------- | --------------------------------------------------------------- |
-| `claims.yaml`   | Proposed catalog-tier claims (schema-shaped, ids `PREFIX-C7xx`) |
+| `claims.yaml`   | Proposed claims (schema-shaped, ids `PREFIX-C7xx`; featuring is an edition decision) |
 | `sources.yaml`  | Source record skeleton (`verification: unverified`)             |
 | `rejected.yaml` | Every dropped candidate, with the reason                        |
 | `coverage.yaml` | Per-section counts: extracted / anchor-failed / verified / proposed |
@@ -74,7 +74,7 @@ moves it:
    `rejected.yaml` with reasons. If the verification call itself errors, the
    run **fails closed** — unverified candidates are rejected, not proposed.
 5. **Tombstone-aware dedupe.** Candidates near-duplicating an existing claim
-   (token-Jaccard > 0.55 against `claims.yaml` + `claims-catalog.yaml`,
+   (token-Jaccard > 0.55 against `claims.yaml`,
    including `rejected` tombstones) are suppressed with the existing id named
    in the reason. This is why tombstones are kept forever.
 6. **Independence grouping.** Near-duplicate proposals (Jaccard > 0.5) share
@@ -93,7 +93,7 @@ A pipeline PR is a proposal, not content. The reviewer:
 3. reads `rejected.yaml` for wrong rejections (the adversarial pass is
    deliberately strict);
 4. completes the source record and sets an honest verification label;
-5. moves accepted claims into `content/cases/<slug>/claims-catalog.yaml`,
+5. moves accepted claims into `content/cases/<slug>/claims.yaml`,
    renumbering ids if they collide, and records the run in the case history.
 
 ## The geo-benchmark test

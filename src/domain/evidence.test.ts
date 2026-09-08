@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { groupEvidenceByDirection } from "./evidence";
-import { loadAllCases } from "./load";
-import type { Evidence } from "./schema";
+import { groupEvidenceByDirection } from "./evidence.ts";
+import { loadAllCases } from "./load.ts";
+import type { Evidence } from "./schema.ts";
 
 const ev = (
   id: string,

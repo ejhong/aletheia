@@ -1,4 +1,4 @@
-import type { Evidence, EvidenceDirection } from "./schema";
+import type { Evidence, EvidenceDirection } from "./schema.ts";
 
 /**
  * Canonical presentation order for the evidence ledger. Supporting and

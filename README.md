@@ -11,7 +11,7 @@ Ten cases are live (`content/cases/`): megalithic casting, vasocomputation, Orch
 | Read this | For |
 | --- | --- |
 | `AGENTS.md` | The constitution: epistemic rules, code rules, what AI may and may not do. Amended only by the founder. |
-| `docs/AUTOMATION.md` | The design of the self-running site (the five loops) **and its current status** — what is built, what is working, what is next. |
+| `docs/AUTOMATION.md` | The design of the self-running site (two layers, one workflow) **and its current status** — what is built, what is working, what is next. |
 | `docs/MAINTENANCE.md` | The runbook: what runs when, what each run produces, how to feed the inbox, and what to check when something looks wrong. |
 
 `docs/DECISIONS.md` is the append-only history of why things are the way they are. Read it when a rule seems odd; it is not a manual.

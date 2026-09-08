@@ -7,6 +7,13 @@ those links into a case. It exists so that ANY agent — not just the one
 who ran it last — can execute it identically. First run: the
 pre-Columbian Amazon and Pizzagate cases, 2026-08-28.
 
+> **Design note (2026-09-07).** This procedure is the agent-run path for
+> genesis — turning founding inputs into a first anchored claim and a first
+> edition — and stays so until the Deep Memory test in `docs/AUTOMATION.md`
+> shows the drafter protocol can do it unattended. Its consolidate and
+> construct steps are the source of the `drafter` protocol; its verification
+> ledger is the source of the `source-check` protocol.
+
 ## Standing rules
 
 1. **A chat thread is a discovery brief — never a citable source.** Same

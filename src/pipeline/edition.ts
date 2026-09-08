@@ -210,7 +210,9 @@ export function assembleEdition(
       })),
     });
     if (!parsed.success) {
-      errors.push(...parsed.error.issues.map((i) => `assessment ${i.path.join(".")}: ${i.message}`));
+      // Stop here: every later check would be run against the incumbent's
+      // assessment instead and report consequences, not causes.
+      return { edition: {} as Edition, assessment: null, errors: parsed.error.issues.map((i) => `assessment ${i.path.join(".")}: ${i.message}`) };
     } else {
       assessment = parsed.data;
       const steel = steelmanRequirementError(assessment);
@@ -301,12 +303,27 @@ export async function runEdition(caseKey: string, opts: EditionOptions = {}): Pr
     return closeRun(run, "dry-run", { reason: `packet written under proposals/${runId}/ (${user.length} chars for ${EDITOR.model}); nothing sent` });
   }
   try {
-    const reply = await (opts.deps?.edit ?? defaultEditor)(system, user, run.meter);
+    const edit = opts.deps?.edit ?? defaultEditor;
+    let reply = await edit(system, user, run.meter);
     writeWorkingFile(runId, "reply.json", JSON.stringify(reply.data, null, 1), root);
-    const { edition, assessment, errors } = assembleEdition(loaded, reply.data, { model: reply.model, promptVersion: protocol.version, now: now(), root });
+    let assembled = assembleEdition(loaded, reply.data, { model: reply.model, promptVersion: protocol.version, now: now(), root });
+    if (assembled.errors.length) {
+      // One repair round: the loader's findings go back with the reply. The
+      // checks are mechanical (caps, ids, coverage), so the second answer is
+      // validated exactly as the first; a second failure ends the run.
+      writeWorkingFile(runId, "errors.md", assembled.errors.map((e) => `- ${e}`).join("\n"), root);
+      const repair =
+        `${user}\n\nA previous attempt at this edition returned the JSON below. The loader rejected it for these mechanical reasons:\n` +
+        assembled.errors.map((e) => `- ${e}`).join("\n") +
+        `\n\nReturn the complete corrected JSON — the whole candidate, not a patch — keeping everything that was not at fault.\n\n${JSON.stringify(reply.data)}`;
+      reply = await edit(system, repair, run.meter);
+      writeWorkingFile(runId, "reply-repaired.json", JSON.stringify(reply.data, null, 1), root);
+      assembled = assembleEdition(loaded, reply.data, { model: reply.model, promptVersion: protocol.version, now: now(), root });
+    }
+    const { edition, assessment, errors } = assembled;
     if (errors.length) {
-      const reason = `the candidate fails the loader's rules: ${errors.join("; ")}`;
-      writeWorkingFile(runId, "errors.md", errors.map((e) => `- ${e}`).join("\n"), root);
+      const reason = `the candidate fails the loader's rules after one repair round: ${errors.join("; ")}`;
+      writeWorkingFile(runId, "errors-after-repair.md", errors.map((e) => `- ${e}`).join("\n"), root);
       return closeRun(run, "failed", { reason, model: reply.model });
     }
     const caseDir = path.join(root, "content", "cases", loaded.dir);

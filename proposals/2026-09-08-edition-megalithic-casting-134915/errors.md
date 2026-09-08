@@ -1,0 +1,2 @@
+- assessment caseAssessment.components: Too big: expected array to have <=6 items
+- edition edition-2026-09-08-135814 features GEO-C506 but its adopted assessment carries no treatment for it

@@ -62,7 +62,20 @@ const ROOT = process.cwd();
 const WATCH_DIR = path.join(ROOT, "proposals", "watch");
 const CASES_DIR = path.join(ROOT, "content", "cases");
 const INBOX_DIR = path.join(ROOT, "inbox");
+// The archive ledger was migrated into per-case dispositions.yaml on
+// 2026-09-08 (aletheia migrate-memory); this worker is folded into the
+// intake adapters (docs/AUTOMATION.md, build step 5) and must not recreate
+// the old file.
 const LEDGER_FILE = path.join(WATCH_DIR, "archive-ledger.yaml");
+/** The guard runs when the worker runs, not when a test imports its helpers. */
+function requireLegacyLedger() {
+  if (!fs.existsSync(LEDGER_FILE)) {
+    console.error(
+      "triage-watch: superseded — archive decisions now live in content/cases/<case>/dispositions.yaml (2026-09-08). Use the aletheia verbs.",
+    );
+    process.exit(2);
+  }
+}
 
 const today = new Date().toISOString().slice(0, 10);
 
@@ -180,6 +193,7 @@ export function mergeLedger(existing, entries) {
 
 function appendToLedger(entries) {
   if (entries.length === 0) return 0;
+  requireLegacyLedger();
   const existing = fs.existsSync(LEDGER_FILE)
     ? (parseYaml(fs.readFileSync(LEDGER_FILE, "utf8")) ?? {})
     : {};

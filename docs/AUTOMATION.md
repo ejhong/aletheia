@@ -39,7 +39,8 @@ got here, including the earlier five-loop version it replaces, is in
 | --- | --- | --- |
 | 1 | This design | In review. |
 | 2 | The ledger and the edition: `editions/`, evaluation off claim records, one `CaseView`, ten cases migrated mechanically; check runs and editions record the ledger hash they judged; the touched scripts move to TypeScript on the shared domain | **Built** (2026-09-08, PR pending founder merge). Render diff against the pre-migration build: every difference accounted for (see the DECISIONS entry). |
-| 3 | The verbs: `report`, `draft`, `verify`, `edition`, `check`, `panel` behind one CLI; protocols as committed files; one intake store; one spend ledger | Not started. Manual invocation only. |
+| 3a | The intake foundation: dispositions schema and loader rule, one coverage diff with mechanical keys, the packet builder, the intake store (`proposals/<runId>/`), the model transport with the spend ledger inside it, six protocol files, the `aletheia` CLI (`status`, `diff`, `migrate-memory`); the archive and promotions ledgers migrated into dispositions | **Built** (2026-09-08, PR pending founder merge). No model calls. |
+| 3b | The chain: `report`, `draft`, `verify`, `edition` wired to models with dry runs; `check` and `panel` folded behind the CLI | Not started. Nothing paid runs before the founder names the research models and a spend ceiling. |
 | 4 | The tests: Cast, Not Carved (existing case, with oracle), then Deep Memory (from scratch); two research models each | Not started. Depends on 3. |
 | 5 | Subtraction by evidence: retire what the tests show redundant; ten workflows become four | Depends on 4. |
 | 6 | Presentation: reading experience (current layout kept), then AI operation at case and global level | Last. Views over existing state. |

@@ -4,6 +4,7 @@ import { parse as parseYaml } from "yaml";
 import { seatKey } from "../../scripts/lib/seat-key.mjs";
 import { extractClaimRefs, extractPlateRefs } from "./article.ts";
 import { assessmentHash, ledgerHash } from "./hash.ts";
+import { DispositionSchema, type Disposition } from "./intake.ts";
 import {
   assessmentLabels,
   AssessmentRunSchema,
@@ -252,6 +253,35 @@ function checkIntegrity(caseDir: string, loaded: LoadedCase): void {
   for (const err of editionErrors(loaded)) {
     throw new ContentError(caseDir, err);
   }
+
+  for (const err of dispositionErrors(loaded)) {
+    throw new ContentError(caseDir, err);
+  }
+}
+
+/**
+ * Dispositions must point at real records: an `in` or `duplicate` row's
+ * `as` is an id in this case's ledger. Everything else the schema already
+ * enforces (a reason off `in`, a mechanical key).
+ */
+export function dispositionErrors(
+  loaded: Pick<LoadedCase, "dispositions" | "claims" | "sources" | "evidence" | "research" | "studies" | "images">,
+): string[] {
+  const ids = new Set<string>([
+    ...loaded.claims.map((c) => c.id),
+    ...loaded.sources.map((s) => s.id),
+    ...loaded.evidence.map((e) => e.id),
+    ...loaded.research.map((r) => r.id),
+    ...loaded.studies.map((s) => s.id),
+    ...loaded.images.map((i) => i.id),
+  ]);
+  const errors: string[] = [];
+  for (const d of loaded.dispositions) {
+    if ((d.disposition === "in" || d.disposition === "duplicate") && d.as && !ids.has(d.as)) {
+      errors.push(`disposition ${d.key} (${d.disposition}) names unknown record ${d.as}`);
+    }
+  }
+  return errors;
 }
 
 /**
@@ -562,6 +592,18 @@ export function loadCase(caseDir: string): LoadedCase {
         )
     : [];
 
+  // Dispositions (dispositions.yaml, optional until a case has intake):
+  // append-only, one row per candidate ever considered here.
+  const dispositionsPath = path.join(CONTENT_DIR, caseDir, "dispositions.yaml");
+  const dispositions: Disposition[] = fs.existsSync(dispositionsPath)
+    ? parseList(
+        caseDir,
+        "dispositions.yaml",
+        parseYaml(fs.readFileSync(dispositionsPath, "utf8")) ?? [],
+        DispositionSchema,
+      )
+    : [];
+
   assertUnique(caseDir, "claim", claims.map((c) => c.id));
   assertUnique(caseDir, "edition", editions.map((e) => e.runId));
   assertUnique(caseDir, "evidence", evidence.map((e) => e.id));
@@ -622,6 +664,7 @@ export function loadCase(caseDir: string): LoadedCase {
     history,
     assessmentRuns,
     editions,
+    dispositions,
     images,
     watch,
     curatedResources,

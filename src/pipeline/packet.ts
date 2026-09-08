@@ -51,12 +51,20 @@ export interface Packet {
   inputs?: { id: string; title: string; role: string; file: string; text: string | null; bytes: number }[];
   declined?: Pick<Disposition, "key" | "kind" | "disposition" | "reason" | "reopenIf" | "date" | "observed">[];
   previousReport?: string;
+  /** For the edition verb: the full records behind the index (featured claims, all evidence, sources, research, images). */
+  detail?: {
+    claims: LoadedCase["claims"];
+    evidence: LoadedCase["evidence"];
+    sources: LoadedCase["sources"];
+    research: LoadedCase["research"];
+    images: LoadedCase["images"];
+  };
   ledgerHash: string;
 }
 
 export function buildPacket(
   loaded: LoadedCase,
-  opts: { blind?: boolean; previousReport?: string } = {},
+  opts: { blind?: boolean; previousReport?: string; detail?: boolean } = {},
 ): Packet {
   const view = caseView(loaded);
   const evidenceCount = new Map<string, number>();
@@ -153,6 +161,16 @@ export function buildPacket(
     observed: d.observed,
   }));
   if (opts.previousReport) packet.previousReport = opts.previousReport;
+  if (opts.detail) {
+    const featured = new Set(ed.featuredClaimIds);
+    packet.detail = {
+      claims: loaded.claims.filter((c) => featured.has(c.id)),
+      evidence: loaded.evidence,
+      sources: loaded.sources,
+      research: loaded.research,
+      images: loaded.images,
+    };
+  }
   return packet;
 }
 

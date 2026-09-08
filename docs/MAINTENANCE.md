@@ -47,6 +47,32 @@ from the blind check runs at build time. Nothing can raise standing except
 fresh concurrence from separate vendors; any new draft or new evidence
 demotes the case until re-checked. That is why new overlays may auto-merge.
 
+## 1b. The verb chain (manual until the tests decide its cadence)
+
+One CLI, four verbs, one direction (docs/AUTOMATION.md, "The verbs"). Every
+run writes `proposals/<runId>/run.yaml` with its cost; every paid call is
+checked against `config/budget.yaml` first and recorded in
+`governance/spend.yaml`. Dollars appear only for models with a reviewed
+tariff in `config/tariffs.yaml`.
+
+```bash
+node scripts/aletheia.ts status                                   # standing, edition, counts, saturation, spend per case
+node scripts/aletheia.ts report <case> --seat openai --dry-run    # write the packet and instructions, send nothing
+node scripts/aletheia.ts report <case> --seat anthropic           # the research pass (o4-mini-deep-research | claude-opus-5 + web tools)
+node scripts/aletheia.ts draft <reportRunId>                      # report + fetched sources → proposals/<runId>/proposal.yaml
+node scripts/aletheia.ts verify <proposalRunId> --dry-run         # mechanical checks + second reader; writes verification.md only
+node scripts/aletheia.ts verify <proposalRunId>                   # …and appends accepted records, dispositions, history to the working tree
+node scripts/aletheia.ts edition <case>                           # a new edition when the ledger moved (rests otherwise; --force)
+```
+
+Keys: `OPENAI_API_KEY` for the openai seat, `ANTHROPIC_API_KEY` for the
+anthropic seat, the drafter, the verifier, and the editor. A run that would
+pass a cap ends `failed` with the cap named; a model with no tariff is
+refused unless `ALETHEIA_ALLOW_UNPRICED=1`. `verify` and `edition` change
+the working tree and stop: review the diff, then open the PR the panel
+judges. Unchanged inputs rest — `report` per seat, `edition` per ledger
+hash — and say so in `run.yaml`.
+
 ## 2. Feeding it
 
 Drop files into `inbox/` from any device (the GitHub app or

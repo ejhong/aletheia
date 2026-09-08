@@ -6,7 +6,10 @@
  *   node scripts/aletheia.ts diff <case> <candidates.yaml|json>
  *   node scripts/aletheia.ts migrate-memory [--dry-run]
  *
- *   node scripts/aletheia.ts report|draft|verify|edition <…>   (build step 3b)
+ *   node scripts/aletheia.ts report <case> [--seat openai|anthropic] [--dry-run] [--reconsider "why"]
+ *   node scripts/aletheia.ts draft <reportRunId> [--dry-run]
+ *   node scripts/aletheia.ts verify <proposalRunId> [--dry-run]
+ *   node scripts/aletheia.ts edition <case> [--dry-run] [--force]
  *   node scripts/aletheia.ts check <case>                      → scripts/cross-model-check.ts
  *   node scripts/aletheia.ts panel <pr>                        → scripts/arbiter.mjs
  *
@@ -21,10 +24,23 @@ import { coverageDiff, type Candidate } from "../src/domain/coverage.ts";
 import { loadAllCases } from "../src/domain/load.ts";
 import { migrateMemory } from "../src/pipeline/migrate-memory.ts";
 import { allStatus, renderStatusTable } from "../src/pipeline/status.ts";
+import { runReport } from "../src/pipeline/report.ts";
+import { runDraft } from "../src/pipeline/draft.ts";
+import { runVerify } from "../src/pipeline/verify.ts";
+import { runEdition } from "../src/pipeline/edition.ts";
 
 const [verb, ...rest] = process.argv.slice(2);
-const flags = new Set(rest.filter((a) => a.startsWith("--")));
-const args = rest.filter((a) => !a.startsWith("--"));
+const flagNames = new Set(["--seat", "--reconsider"]);
+const flags = new Set<string>();
+const args: string[] = [];
+const values: Record<string, string> = {};
+for (let i = 0; i < rest.length; i++) {
+  const a = rest[i];
+  if (flagNames.has(a)) values[a] = rest[++i] ?? "";
+  else if (a.startsWith("--")) flags.add(a);
+  else args.push(a);
+}
+const flagValue = (name: string) => values[name];
 
 function findCase(key: string) {
   const loaded = loadAllCases().find((c) => c.record.slug === key || c.dir === key);
@@ -35,6 +51,7 @@ function findCase(key: string) {
   return loaded;
 }
 
+await (async () => {
 switch (verb) {
   case "status": {
     const rows = allStatus(args[0]);
@@ -79,16 +96,57 @@ switch (verb) {
     console.error("panel runs live in scripts/arbiter.mjs until step 3b folds them in.");
     process.exit(2);
     break;
-  case "report":
-  case "draft":
-  case "verify":
-  case "edition":
-    console.error(`${verb}: build step 3b — protocol committed (protocols/${verb}-v1.md), verb not yet built.`);
-    process.exit(2);
+  case "report": {
+    const [key] = args;
+    const seat = (flagValue("--seat") ?? "openai") as "openai" | "anthropic";
+    if (!key || !["openai", "anthropic"].includes(seat)) {
+      console.error('usage: aletheia report <case> [--seat openai|anthropic] [--dry-run] [--reconsider "why"]');
+      process.exit(1);
+    }
+    const r = await runReport(key, { seat, dryRun: flags.has("--dry-run"), reconsider: flagValue("--reconsider") });
+    console.log(JSON.stringify(r, null, 2));
+    if (r.outcome === "failed") process.exit(1);
     break;
+  }
+  case "draft": {
+    const [reportRunId] = args;
+    if (!reportRunId) {
+      console.error("usage: aletheia draft <reportRunId> [--dry-run]");
+      process.exit(1);
+    }
+    const r = await runDraft(reportRunId, { dryRun: flags.has("--dry-run") });
+    console.log(JSON.stringify(r, null, 2));
+    if (r.outcome === "failed") process.exit(1);
+    break;
+  }
+  case "verify": {
+    const [proposalRunId] = args;
+    if (!proposalRunId) {
+      console.error("usage: aletheia verify <proposalRunId> [--dry-run]");
+      process.exit(1);
+    }
+    const r = await runVerify(proposalRunId, { dryRun: flags.has("--dry-run") });
+    console.log(JSON.stringify(r, null, 2));
+    if (r.outcome === "failed") process.exit(1);
+    if (r.outcome === "completed") console.error("records written to the working tree — review, then open the PR the panel judges");
+    break;
+  }
+  case "edition": {
+    const [key] = args;
+    if (!key) {
+      console.error("usage: aletheia edition <case> [--dry-run] [--force]");
+      process.exit(1);
+    }
+    const r = await runEdition(key, { dryRun: flags.has("--dry-run"), force: flags.has("--force") });
+    console.log(JSON.stringify(r, null, 2));
+    if (r.outcome === "failed") process.exit(1);
+    if (r.outcome === "completed") console.error("edition candidate written to the working tree — the panel judges it against the incumbent in the PR");
+    break;
+  }
   default:
     console.error(
       "usage: aletheia <status [case] | diff <case> <candidates> | migrate-memory [--dry-run] | report | draft | verify | edition | check | panel>",
     );
     process.exit(1);
 }
+})();

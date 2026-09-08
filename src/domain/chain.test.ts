@@ -462,7 +462,6 @@ describe("reopening a blocked source", () => {
       evidence: [],
       claims: [],
       research: [],
-      images: [],
       corrections: [],
       dispositions: [],
       edition: null,

@@ -3,7 +3,9 @@ import { sourceKeys, textKey } from "../domain/keys.ts";
 import { claimAnchorErrors, findCase, sourceAdmissionErrors } from "../domain/load.ts";
 import type { Claim, Evidence, LoadedCase, ResearchOpportunity, Source } from "../domain/schema.ts";
 import { verifyCitations } from "../../scripts/lib/citation-check.mjs";
-import { fetchSource, type FetchedSource } from "./fetch.ts";
+import { archiveUrl, type Archived } from "./archive.ts";
+import { retrieve, type FetchedSource } from "./fetch.ts";
+import { isoDate } from "../../scripts/lib/overlay-ids.mjs";
 import { appendHistory, appendRecords } from "./ledger-write.ts";
 import { MODELS } from "../../scripts/lib/models.mjs";
 import { anthropicJson, type Meter } from "./models.ts";
@@ -90,6 +92,13 @@ function identifiersOf(s: Source): { kind: string; id: string }[] {
   return out;
 }
 
+const doiOf = (s: Source): string | null => identifiersOf(s).find((i) => i.kind === "doi")?.id ?? null;
+/** The key a source's retrieved text is filed under: its URL, or its DOI link when it has none. */
+export const textKeyOf = (s: Source): string | undefined => s.url ?? (doiOf(s) ? `https://doi.org/${doiOf(s)}` : undefined);
+
+/** A resolver note that carries a Retraction Watch finding (scripts/lib/citation-check.mjs). */
+const NOTICE = /^(RETRACTED|CORRECTED|WITHDRAWN)\b/;
+
 /**
  * The verification itself, separable from writing: given the proposal, the
  * case, retrieved texts, identifier resolutions, and a judge, decide every
@@ -102,6 +111,7 @@ export async function judgeProposal(
   resolved: Map<string, { status: string; note: string }>,
   judge: Judge,
   meter: Meter,
+  reader: { model: string; date: string } = { model: READER.model, date: isoDate() },
 ): Promise<Verdicts> {
   const rejected: Verdicts["rejected"] = [];
   const notes: string[] = [];
@@ -117,12 +127,16 @@ export async function judgeProposal(
       reject(s.id, "source", s.title, `identifier does not resolve: ${failing.map((f) => `${f.kind} ${f.id} (${resolved.get(`${f.kind}:${f.id}`)?.note})`).join("; ")}`);
       continue;
     }
-    okSources.set(s.id, s);
+    // A retraction or correction notice is a fact about the source, recorded on it (§3.11), never a reason to hide it.
+    const notices = ids.map((i) => resolved.get(`${i.kind}:${i.id}`)?.note ?? "").filter((n) => NOTICE.test(n));
+    okSources.set(s.id, notices.length ? { ...s, reliabilityNotes: [...s.reliabilityNotes, ...notices.map((n) => `${n} — Crossref/Retraction Watch, checked ${reader.date}`)] } : s);
+    if (notices.length) notes.push(`${s.id}: ${notices.join("; ")}`);
   }
   const sourceById = new Map<string, Source>([...loaded.sources.map((s) => [s.id, s] as const), ...okSources]);
   const textFor = (sourceId: string): FetchedSource | undefined => {
     const src = sourceById.get(sourceId);
-    return src?.url ? texts.get(src.url) : undefined;
+    const key = src ? textKeyOf(src) : undefined;
+    return key ? texts.get(key) : undefined;
   };
 
   // Evidence: source ok, text retrievable, quotes verbatim, second reader agrees.
@@ -146,8 +160,18 @@ export async function judgeProposal(
     const context = `Case question: ${loaded.record.subtitle}. Claims this record bears on: ${claims.map((c) => `${c!.id}: ${c!.statement}`).join(" | ")}`;
     const verdict = await judge({ ...e, editorInference: undefined }, fetched.text, context, meter);
     const flags = Object.entries(verdict).filter(([k, v]) => k !== "reason" && v === false).map(([k]) => k);
-    if (flags.length) {
-      reject(e.id, "evidence", e.title, `second reader rejected (${flags.join(", ")}): ${verdict.reason}`);
+    // Mechanical and factual failures gate. A dispute about the direction
+    // label is a judgment against a judgment: the record enters with the
+    // reader's dissent written on it, both stamped, for the editor and the
+    // panel to weigh (verify protocol v2).
+    const gating = flags.filter((f) => f !== "directionRight");
+    if (gating.length) {
+      reject(e.id, "evidence", e.title, `second reader rejected (${gating.join(", ")}): ${verdict.reason}`);
+      continue;
+    }
+    if (flags.includes("directionRight")) {
+      notes.push(`${e.id}: admitted with the second reader's dissent on direction`);
+      okEvidence.push({ ...e, limitations: [...e.limitations, `Second reader (${reader.model}, ${reader.date}) disputes the stated direction: ${verdict.reason}`] });
       continue;
     }
     okEvidence.push(e);
@@ -234,9 +258,11 @@ export interface VerifyOptions {
   dryRun?: boolean;
   root?: string;
   deps?: {
-    fetch?: typeof fetchSource;
+    fetch?: typeof retrieve;
     judge?: Judge;
     resolve?: Resolver;
+    /** Wayback lookup and save for admitted sources; injectable so tests never reach the archive. */
+    archive?: (url: string) => Promise<Archived>;
     now?: () => Date;
     cases?: () => LoadedCase[];
   };
@@ -264,21 +290,32 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
     const sourceIds = proposal.adds.sources.flatMap(identifiersOf);
     const resolvedList = await (opts.deps?.resolve ?? (verifyCitations as Resolver))(sourceIds);
     const resolved = new Map(resolvedList.map((r) => [`${r.kind}:${r.id}`, { status: r.status, note: r.note }]));
-    const urls = new Set<string>();
-    for (const s of proposal.adds.sources) if (s.url) urls.add(s.url);
+    const wanted = new Map<string, Source>();
+    for (const s of proposal.adds.sources) wanted.set(s.id, s);
     for (const e of proposal.adds.evidence) {
       const src = loaded.sources.find((s) => s.id === e.sourceId);
-      if (src?.url) urls.add(src.url);
+      if (src) wanted.set(src.id, src);
     }
     for (const c of proposal.adds.claims) {
       const src = loaded.sources.find((s) => s.id === c.sourceAnchor?.sourceId);
-      if (src?.url) urls.add(src.url);
+      if (src) wanted.set(src.id, src);
     }
-    const fetcher = opts.deps?.fetch ?? fetchSource;
+    const fetcher = opts.deps?.fetch ?? retrieve;
     const texts = new Map<string, FetchedSource>();
-    for (const url of urls) texts.set(url, await fetcher(url, {}));
+    for (const s of wanted.values()) {
+      const key = textKeyOf(s);
+      if (key && !texts.has(key)) texts.set(key, await fetcher({ url: s.url, doi: doiOf(s) }, {}));
+    }
 
-    const verdicts = await judgeProposal(proposal, loaded, texts, resolved, opts.deps?.judge ?? defaultJudge, meter);
+    const verdicts = await judgeProposal(proposal, loaded, texts, resolved, opts.deps?.judge ?? defaultJudge, meter, { model: READER.model, date });
+    // Durable locators: every admitted source with a URL gets its Wayback snapshot on the record.
+    const archive = opts.deps?.archive ?? archiveUrl;
+    for (const [i, s] of verdicts.accepted.sources.entries()) {
+      if (!s.url) continue;
+      const a = await archive(s.url);
+      verdicts.notes.push(`${s.id}: ${a.note}`);
+      if (a.archivedUrl) verdicts.accepted.sources[i] = { ...s, archivedUrl: a.archivedUrl };
+    }
     const { accepted, rejected, notes } = verdicts;
 
     const report = [
@@ -294,6 +331,9 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
       ``,
       `## Rejected`,
       ...rejected.map((r) => `- ${r.kind} ${r.id} (${r.disposition}) — ${r.reason}${r.route ? ` — route: ${r.route}` : ""}`),
+      ``,
+      `## Retrieval`,
+      ...[...texts.entries()].map(([key, f]) => `- ${key} — ${f.ok ? `retrieved${f.pages ? `, ${f.pages} pages` : ""}${f.via ? ` (${f.via})` : ""}` : `not retrieved: ${f.reason}`}`),
       ``,
       ...(notes.length ? [`## Notes`, ...notes.map((n) => `- ${n}`), ``] : []),
     ].join("\n");

@@ -96,6 +96,42 @@ async function timedFetch(url, init = {}) {
 const describe = (title, year) =>
   [title && `"${String(title).slice(0, 120)}"`, year].filter(Boolean).join(", ");
 
+/**
+ * The line a set of Crossref "update" notices earns a DOI: Crossref carries
+ * the Retraction Watch database, and `works?filter=updates:<doi>` returns
+ * every notice (retraction, correction, withdrawal, expression of concern)
+ * that updates the DOI. The strongest kind leads. Pure, for the tests.
+ */
+export function noticeNote(items, doi) {
+  const mine = [];
+  for (const it of items ?? []) {
+    for (const u of it["update-to"] ?? []) {
+      if (String(u.DOI ?? "").toLowerCase() !== String(doi).toLowerCase()) continue;
+      const kind = String(u.type ?? u.label ?? "update").toLowerCase();
+      const date = u.updated?.["date-parts"]?.[0]?.join("-") ?? it.issued?.["date-parts"]?.[0]?.join("-") ?? "";
+      mine.push({ kind, date, notice: it.DOI, title: Array.isArray(it.title) ? it.title[0] : it.title });
+    }
+  }
+  if (!mine.length) return null;
+  const rank = (k) => (/retract/.test(k) ? 0 : /withdraw/.test(k) ? 1 : /concern/.test(k) ? 2 : 3);
+  mine.sort((a, b) => rank(a.kind) - rank(b.kind));
+  const head = mine[0];
+  const word = rank(head.kind) === 0 ? "RETRACTED" : rank(head.kind) === 1 ? "WITHDRAWN" : rank(head.kind) === 2 ? "EXPRESSION OF CONCERN" : "CORRECTED";
+  return `${word} — ${head.kind} notice ${head.notice}${head.date ? ` (${head.date})` : ""}${mine.length > 1 ? `; ${mine.length - 1} further notice(s)` : ""}`;
+}
+
+async function updatesFor(id) {
+  try {
+    const res = await timedFetch(
+      `https://api.crossref.org/works?filter=updates:${encodeURIComponent(id)}&rows=10&select=DOI,title,update-to,issued`,
+    );
+    if (!res.ok) return null;
+    return noticeNote((await res.json()).message?.items, id);
+  } catch {
+    return null; // a failed notice lookup is not a failed resolution; the note simply lacks it
+  }
+}
+
 async function checkDoi(id) {
   try {
     const res = await timedFetch(
@@ -105,7 +141,8 @@ async function checkDoi(id) {
       const work = (await res.json()).message ?? {};
       const title = Array.isArray(work.title) ? work.title[0] : work.title;
       const year = work.issued?.["date-parts"]?.[0]?.[0];
-      return { status: "resolves", note: `Crossref: ${describe(title, year)}` };
+      const notice = await updatesFor(id);
+      return { status: "resolves", note: `${notice ? `${notice}. ` : ""}Crossref: ${describe(title, year)}` };
     }
     // Not in Crossref ≠ unregistered (DataCite etc.) — ask doi.org itself.
     const fallback = await timedFetch(`https://doi.org/${encodeURIComponent(id)}`, {

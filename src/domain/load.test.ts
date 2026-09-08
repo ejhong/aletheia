@@ -66,12 +66,13 @@ describe("real content", () => {
   });
 
   it("the migrated geo catalog rides the ledger backlog with honest provenance", () => {
-    const view = caseView(getCaseBySlug("megalithic-casting"));
-    // The migration's eighty; later intake adds behind them with its own run ids.
+    const geo = getCaseBySlug("megalithic-casting");
+    const view = caseView(geo);
+    // The migration's eighty are all still here; an edition may since have
+    // featured some of them, and later intake adds behind them with its own run ids.
+    expect(geo.claims.filter((c) => c.origin.runId === "geo-catalog-import-2026-08-22")).toHaveLength(80);
     const migrated = view.catalog.filter(({ claim }) => claim.origin.runId === "geo-catalog-import-2026-08-22");
-    expect(migrated.length).toBe(80);
-    expect(view.catalog.length).toBeGreaterThanOrEqual(80);
-    expect(view.featured.length).toBe(14);
+    expect(view.featured.length).toBe(currentEdition(geo).featuredClaimIds.length);
     for (const { claim: c, treatment, verdict } of migrated) {
       // One reversible run: a single runId stamped on every record.
       expect(c.origin.runId).toBe("geo-catalog-import-2026-08-22");
@@ -128,9 +129,9 @@ describe("real content", () => {
 
   it("every case's first edition is the migration, adopting a transfer that asserts nothing new", () => {
     for (const loaded of loadAllCases()) {
-      const ed = currentEdition(loaded);
+      const ed = loaded.editions[0];
       expect(ed.previous).toBeNull();
-      const run = adoptedAssessment(loaded)!;
+      const run = loaded.assessmentRuns.find((r) => r.runId === ed.assessment?.runId)!;
       expect(run.migratedFrom).toBeTruthy();
       expect(run.role).toBe("draft");
       // The transferred draft exists and shares the case verdict.
@@ -206,7 +207,7 @@ describe("real content", () => {
     expect(backlog?.view.featured).toBe(false);
     expect(backlog?.view.treatment).toBeNull();
     expect(findClaimView(cases, "NOPE-C000")).toBeNull();
-    expect(reviewCoverage(featured!.caseView).total).toBe(14);
+    expect(reviewCoverage(featured!.caseView).total).toBe(currentEdition(featured!.caseView.loaded).featuredClaimIds.length);
   });
 });
 
@@ -1183,5 +1184,28 @@ describe("surviving objections", () => {
         expect(o.seat).not.toMatch(/independent/);
       }
     }
+  });
+});
+
+describe("edition succession", () => {
+  it("orders editions by the previous chain, not by date or filename", async () => {
+    const { orderEditions } = await import("./load.ts");
+    const base = { date: "2026-09-08", model: "m", promptVersion: "edition-v2", rationale: "r", basis: { ledgerHash: "a".repeat(64), inputsHash: "b".repeat(64) }, assessment: null, featuredClaimIds: [], cruxOrder: [], article: "" };
+    const migration = { ...base, runId: "edition-2026-09-08-migration", previous: null };
+    const successor = { ...base, runId: "edition-2026-09-08-142638", previous: "edition-2026-09-08-migration" };
+    const third = { ...base, date: "2026-09-09", runId: "edition-2026-09-09-090000", previous: "edition-2026-09-08-142638" };
+    // Filename order puts "migration" after "142638"; the chain says otherwise.
+    const ordered = orderEditions([successor, migration, third] as never);
+    expect(ordered.map((e) => e.runId)).toEqual([migration.runId, successor.runId, third.runId]);
+    // A broken chain keeps the given order for editionErrors to report.
+    const orphan = { ...base, runId: "edition-x", previous: "edition-missing" };
+    expect(orderEditions([migration, orphan] as never).map((e) => e.runId)).toEqual([migration.runId, "edition-x"]);
+  });
+
+  it("the merged geopolymer edition is current, with the migration as its predecessor", () => {
+    const geo = getCaseBySlug("megalithic-casting");
+    const ed = currentEdition(geo);
+    expect(ed.previous).toBe("edition-2026-09-08-migration");
+    expect(ed.featuredClaimIds).toContain("GEO-C506");
   });
 });

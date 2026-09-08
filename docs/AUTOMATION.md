@@ -201,8 +201,8 @@ test evidence.
 | Protocol | Inherits | Non-obvious rules it carries |
 | --- | --- | --- |
 | `report` | the missing-evidence audit prompts (`research/`); the lab's `case-research-report-v1` | state actual coverage, never claim saturation; distinguish opened from snippet from inaccessible; prior failed retrievals are not findings of absence; look beyond the incumbent's framing |
-| `draft` | extract-v1 (atomic claim, one rung, theme, verbatim quote from the shown text); the chat-briefs consolidate and construct steps, written down for the first time; the lab's source reader | a quote comes only from retrieved text the drafter was shown; the default is in; blocked stays out; split a load-bearing compound claim; label source statement versus inference; every item raised gets a disposition |
-| `verify` | extract's anchor check and verify-v1; the verification-ledger rule; the lab's `source-reading-v6` checker | a quote the source never said is rejected, never repaired; model agreement is not verification; a blocked primary stays out |
+| `draft` | extract-v1 (atomic claim, one rung, theme, verbatim quote from the shown text); the chat-briefs consolidate and construct steps, written down for the first time; the lab's source reader | a quote comes only from retrieved text the drafter was shown; the default is in; blocked stays out; split a load-bearing compound claim; label source statement versus inference; every item raised gets a disposition; v2: direction labels defined (a record from the anchoring passage supports its claim), PDF page locators, `via` for open-access copies |
+| `verify` | extract's anchor check and verify-v1; the verification-ledger rule; the lab's `source-reading-v6` checker | a quote the source never said is rejected, never repaired; model agreement is not verification; a blocked primary stays out; v2: mechanical and factual failures gate, a direction dispute is recorded on the admitted record, anchors are judged on quote, locator, and bearing only |
 | `edition` | the assessment drafting prompt; the narrative-inputs rule (§7) | grade credibility and diagnosticity separately per claim; the featured set is a decision with a reason; re-adopt the incumbent's assessment when the judgment did not change; consider the founding inputs for voice, follow them where they serve the reader; the article never narrates its own revisions |
 | `check` | the blind-check prompt | blind: no incumbent, no grades, no article; the steelman is required; record the ledger hash judged |
 | `panel` | the arbiter prompt | a `violates` must name the rule or degrades to `unsure`; notes are separate from verdicts |
@@ -280,6 +280,11 @@ editions, protocols, code, the constitution — needs the panel.
   build. Nothing is repaired silently.
 - **Components one per concept, pure.** The UI reads `CaseView` and the
   governance files. It holds no logic about how judgments are made.
+- **Retrieval is a layer, not a scatter of fetches.** `src/pipeline/fetch.ts`
+  turns a URL or DOI into text: HTML reduced, PDFs read page by page (the one
+  pipeline-only dev dependency, Mozilla's pdfjs), walls detected, and an
+  open-access copy found through OpenAlex when the URL will not serve. The
+  drafter and the verifier call it and nothing else fetches.
 
 ## The tests
 

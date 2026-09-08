@@ -399,3 +399,55 @@ describe("the report verb", () => {
     expect(readRuns(root).map((r) => r.outcome)).toEqual(["dry-run", "completed", "rested", "completed", "completed"]);
   });
 });
+
+describe("verify v2: the reader's dissent on direction is recorded, not fatal", () => {
+  it("admits a record whose only fault is the direction label, with the dissent in its limitations", async () => {
+    const { judgeProposal } = await import("../pipeline/verify.ts");
+    const c = geo();
+    const src = c.sources.find((s) => s.url)!;
+    const proposal = {
+      runId: "2026-09-08-draft-megalithic-casting-000001",
+      case: c.record.slug,
+      report: null,
+      date: "2026-09-08",
+      model: "m",
+      promptVersion: "draft-v2",
+      basis: { ledgerHash: c.ledgerHash },
+      rationale: "test",
+      adds: {
+        sources: [],
+        evidence: [
+          {
+            id: "GEO-E900",
+            title: "A test record",
+            sourceId: src.id,
+            claimIds: [c.claims[0].id],
+            direction: "qualifies",
+            strength: "weak",
+            sourceStatement: 'The page says "twelve words that certainly do occur in this text" here.',
+            exactLocator: "p. 1",
+            limitations: [],
+            reviewState: "ai_extracted",
+            origin: { ref: "test", extractedBy: "m", runId: "r", date: "2026-09-08" },
+          },
+        ],
+        claims: [],
+        research: [],
+        images: [],
+      },
+      corrections: [],
+      dispositions: [],
+      edition: null,
+    } as never;
+    const texts = new Map([[src.url!, { url: src.url!, ok: true, status: 200, contentType: "text/html", text: "… twelve words that certainly do occur in this text …" }]]);
+    const dissent = { quoteInContext: true, statementSupported: true, locatorSupported: true, directionRight: false, independenceNoted: true, relevant: true, reason: "it plainly supports the claim" };
+    const v = await judgeProposal(proposal, c, texts, new Map(), async () => dissent, { runId: "r", verb: "verify", case: c.record.slug }, { model: "reader-x", date: "2026-09-08" });
+    expect(v.accepted.evidence).toHaveLength(1);
+    expect(v.accepted.evidence[0].limitations.at(-1)).toBe("Second reader (reader-x, 2026-09-08) disputes the stated direction: it plainly supports the claim");
+    expect(v.rejected).toHaveLength(0);
+    // Any other fault still gates.
+    const bad = await judgeProposal(proposal, c, texts, new Map(), async () => ({ ...dissent, relevant: false }), { runId: "r", verb: "verify", case: c.record.slug });
+    expect(bad.accepted.evidence).toHaveLength(0);
+    expect(bad.rejected[0].reason).toMatch(/relevant/);
+  });
+});

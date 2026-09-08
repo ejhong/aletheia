@@ -17,7 +17,7 @@ import {
   SourceSchema,
   type LoadedCase,
 } from "../domain/schema.ts";
-import { fetchSource, type FetchedSource } from "./fetch.ts";
+import { doiFromUrl, doisInText, retrieve, type FetchedSource, type RetrievalTarget } from "./fetch.ts";
 import { MODELS } from "../../scripts/lib/models.mjs";
 import { anthropicJson, type Meter } from "./models.ts";
 import { buildPacket } from "./packet.ts";
@@ -242,6 +242,19 @@ export interface DraftReply {
 }
 
 /** Every http(s) URL in a report, canonicalised and deduplicated, tracking parameters dropped. */
+/** Every work the report points at: its URLs, plus DOIs written bare that no URL already carries. */
+export function retrievalTargets(markdown: string, cap = 20): RetrievalTarget[] {
+  const urls = urlsInReport(markdown, cap);
+  const covered = new Set(urls.map((u) => doiFromUrl(u)?.toLowerCase()).filter(Boolean));
+  const targets: RetrievalTarget[] = urls.map((url) => ({ url, doi: doiFromUrl(url) }));
+  for (const doi of doisInText(markdown)) {
+    if (covered.has(doi) || targets.length >= cap) continue;
+    covered.add(doi);
+    targets.push({ url: `https://doi.org/${doi}`, doi });
+  }
+  return targets;
+}
+
 export function urlsInReport(markdown: string, cap = 20): string[] {
   const seen = new Set<string>();
   const out: string[] = [];
@@ -587,7 +600,7 @@ export const defaultDrafter: Drafter = async (system, user, meter) => {
 export interface DraftOptions {
   dryRun?: boolean;
   root?: string;
-  deps?: { draft?: Drafter; fetch?: typeof fetchSource; now?: () => Date; cases?: () => LoadedCase[] };
+  deps?: { draft?: Drafter; fetch?: typeof retrieve; now?: () => Date; cases?: () => LoadedCase[] };
 }
 
 export interface DraftOutcome extends RunOutcome {
@@ -609,15 +622,15 @@ export async function runDraft(reportRunId: string, opts: DraftOptions = {}): Pr
   const run = openRun("draft", loaded.record.slug, { model: DRAFTER.model, promptVersion: protocol.version }, { now: now(), root });
   const { runId, date } = run;
 
-  const fetcher = opts.deps?.fetch ?? fetchSource;
+  const fetcher = opts.deps?.fetch ?? retrieve;
   const fetched: FetchedSource[] = [];
-  for (const url of urlsInReport(report)) fetched.push(await fetcher(url, {}));
+  for (const target of retrievalTargets(report)) fetched.push(await fetcher(target, {}));
   const packet = buildPacket(loaded);
   const user = JSON.stringify(
     {
       packet,
       report,
-      sources: fetched.map((f) => ({ url: f.url, retrieved: f.ok, reason: f.reason ?? null, text: f.text })),
+      sources: fetched.map((f) => ({ url: f.url, retrieved: f.ok, reason: f.reason ?? null, via: f.via ?? null, pages: f.pages ?? null, text: f.text })),
     },
     null,
     1,

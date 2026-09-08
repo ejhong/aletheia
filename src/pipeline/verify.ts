@@ -6,7 +6,7 @@ import { verifyCitations } from "../../scripts/lib/citation-check.mjs";
 import { archiveUrl, type Archived } from "./archive.ts";
 import { retrieve, type FetchedSource } from "./fetch.ts";
 import { isoDate } from "../../scripts/lib/overlay-ids.mjs";
-import { appendHistory, appendRecords } from "./ledger-write.ts";
+import { appendHistory, appendRecords, applyCorrections, ledgerFileFor, type Correction } from "./ledger-write.ts";
 import { MODELS } from "../../scripts/lib/models.mjs";
 import { anthropicJson, type Meter } from "./models.ts";
 import { loadProtocol, renderProtocol } from "./protocols.ts";
@@ -95,6 +95,15 @@ function identifiersOf(s: Source): { kind: string; id: string }[] {
 const doiOf = (s: Source): string | null => identifiersOf(s).find((i) => i.kind === "doi")?.id ?? null;
 /** The key a source's retrieved text is filed under: its URL, or its DOI link when it has none. */
 export const textKeyOf = (s: Source): string | undefined => s.url ?? (doiOf(s) ? `https://doi.org/${doiOf(s)}` : undefined);
+
+/** Why a correction cannot apply as the ledger stands (null when it can): unknown record, no such file, or the field has moved since. */
+export function correctionBlocker(loaded: LoadedCase, c: Correction): string | null {
+  if (!ledgerFileFor(c.record)) return `no ledger file for record id ${c.record}`;
+  const rec = [...loaded.sources, ...loaded.claims, ...loaded.evidence, ...loaded.research].find((r) => r.id === c.record) as Record<string, unknown> | undefined;
+  if (!rec) return `record ${c.record} is not in the ledger`;
+  if (JSON.stringify(rec[c.field]) !== JSON.stringify(c.from)) return `the field no longer reads what the proposal saw`;
+  return null;
+}
 
 /** A resolver note that carries a Retraction Watch finding (scripts/lib/citation-check.mjs). */
 const NOTICE = /^(RETRACTED|CORRECTED|WITHDRAWN)\b/;
@@ -334,9 +343,11 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
       ``,
       ...(proposal.corrections.length
         ? [
-            `## Corrections proposed — NOT applied`,
-            `The ledger writer appends; it cannot yet change a field in place. Apply by hand in the PR, with the reason, or leave the record as it stands.`,
-            ...proposal.corrections.map((c) => `- ${c.record}.${c.field}: "${String(c.from).slice(0, 120)}" → "${String(c.to).slice(0, 120)}" — ${c.reason}`),
+            `## Corrections`,
+            ...proposal.corrections.map((c) => {
+              const why = correctionBlocker(loaded, c);
+              return `- ${c.record}.${c.field}: "${String(c.from).slice(0, 120)}" → "${String(c.to).slice(0, 120)}" — ${c.reason}${why ? ` — NOT applied: ${why}` : opts.dryRun ? " — would apply" : " — applied"}`;
+            }),
             ``,
           ]
         : []),
@@ -357,6 +368,13 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
     }
 
     // Materialize.
+    const corrected = applyCorrections(loaded.dir, proposal.corrections, {
+      date,
+      actor: `aletheia verify (${READER.model} second reader; drafter ${proposal.model ?? "unknown"}; proposal ${proposalRunId}, verification ${runId})`,
+      proposalRef: `proposals/${proposalRunId}`,
+      root,
+    });
+    for (const s of corrected.skipped) notes.push(`correction to ${s.correction.record}.${s.correction.field} not applied: ${s.reason}`);
     appendRecords(loaded.dir, "sources.yaml", accepted.sources, root);
     appendRecords(loaded.dir, "claims.yaml", accepted.claims, root);
     appendRecords(loaded.dir, "evidence.yaml", accepted.evidence, root);
@@ -390,7 +408,7 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
       loaded.dir,
       {
         date,
-        change: `Intake from report ${proposal.report ?? proposal.runId}: ${counts.sources} source(s), ${counts.evidence} evidence record(s), ${counts.claims} claim(s), ${counts.research} research item(s) verified and added (proposal ${proposalRunId}, verification ${runId}); ${rejected.length} candidate(s) rejected with reasons in dispositions.yaml.${proposal.corrections.length ? ` ${proposal.corrections.length} correction(s) to existing records proposed and NOT applied — see proposals/${runId}/verification.md.` : ""}`,
+        change: `Intake from report ${proposal.report ?? proposal.runId}: ${counts.sources} source(s), ${counts.evidence} evidence record(s), ${counts.claims} claim(s), ${counts.research} research item(s) verified and added (proposal ${proposalRunId}, verification ${runId}); ${rejected.length} candidate(s) rejected with reasons in dispositions.yaml.${corrected.skipped.length ? ` ${corrected.skipped.length} correction(s) NOT applied — see proposals/${runId}/verification.md.` : ""}`,
         reason: proposal.rationale,
         actor: `aletheia verify (${READER.model} second reader; drafter ${proposal.model ?? "unknown"})`,
         aiAssisted: true,
@@ -399,7 +417,7 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
       root,
     );
     return {
-      ...closeRun(run, "completed", { reason: `wrote ${JSON.stringify(counts)}; ${rejected.length} rejected${proposal.corrections.length ? `; ${proposal.corrections.length} correction(s) proposed, not applied (see verification.md)` : ""}` }),
+      ...closeRun(run, "completed", { reason: `wrote ${JSON.stringify(counts)}; ${rejected.length} rejected${corrected.applied.length ? `; ${corrected.applied.length} correction(s) applied` : ""}${corrected.skipped.length ? `; ${corrected.skipped.length} correction(s) not applied (see verification.md)` : ""}` }),
       accepted: counts,
       rejected: rejected.length,
     };

@@ -551,6 +551,9 @@ export function assembleProposal(reply: DraftReply, ctx: AssembleContext): Assem
   }
 
   // ---- the drafter's own dispositions, keyed mechanically ----------------
+  // Prose that names a provisional id (a reason, a route) is rewritten to the id the record received, or left as is when the record was not added.
+  const finalIds = (text: string): string =>
+    [...idOf.entries()].reduce((t, [prov, real]) => (prov === real ? t : t.replace(new RegExp(`\\b${prov.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "g"), real)), text);
   // Ids a disposition may point at: the ledger's, and this proposal's final ids (provisional ones resolve through idOf).
   const dispositionTargets = new Set<string>([
     ...loaded.sources.map((s) => s.id), ...loaded.claims.map((c) => c.id), ...loaded.evidence.map((e) => e.id), ...loaded.research.map((r) => r.id),
@@ -564,7 +567,7 @@ export function assembleProposal(reply: DraftReply, ctx: AssembleContext): Assem
     }
     let as = d.as ? idOf.get(d.as) ?? d.as : undefined;
     let disposition = d.disposition;
-    let reason = d.reason;
+    let reason = finalIds(d.reason);
     if (as && !dispositionTargets.has(as)) {
       // The drafter pointed at a record that does not exist (its own provisional id, usually). The row keeps its
       // reason but cannot claim a duplicate of nothing; it is a failed candidate until someone names the real record.
@@ -599,7 +602,7 @@ export function assembleProposal(reply: DraftReply, ctx: AssembleContext): Assem
     basis: { ledgerHash: loaded.ledgerHash },
     rationale: reply.rationale,
     adds: { sources, evidence, claims, research, images: [] },
-    corrections: reply.corrections.map((c) => ({ ...c })),
+    corrections: reply.corrections.map((c) => ({ ...c, reason: finalIds(c.reason) })),
     ...(reply.edition ? { edition: { ...reply.edition, cruxOrder: reply.edition.cruxOrder } } : {}),
     dispositions,
     report: `proposals/${ctx.reportRunId}/report.md`,

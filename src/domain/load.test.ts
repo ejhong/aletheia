@@ -986,7 +986,9 @@ describe("ratification governance (stage 3)", () => {
       );
       const hasChecks = c.assessmentRuns.some((a) => a.role === "check");
       if (hasChecks) {
-        expect(shown!.ratification.panel).toBeGreaterThanOrEqual(
+        // The sweep produced a full panel; how many of those seats still stand
+        // (ratification.panel) depends on whether the ledger moved since.
+        expect(latestCheckPerModel(c).length).toBeGreaterThanOrEqual(
           RATIFICATION_MIN_PANEL,
         );
       } else {
@@ -1224,6 +1226,7 @@ describe("stale checks are set aside, not counted", () => {
     const r = ratification(geo)!;
     expect(r.panel).toBe(current.length);
     expect(r.staleSince).not.toBeNull(); // the set-aside check is still reported
-    expect(["contested", "ratified"]).toContain(r.status); // derived from the fresh seats, not reset by the stale one
+    if (current.length >= 4) expect(["contested", "ratified"]).toContain(r.status); // derived from the fresh seats, not reset by the stale one
+    else expect(r.reason).toMatch(/set aside/); // the ledger moved after every seat judged it: unratified, and the reason says why
   });
 });

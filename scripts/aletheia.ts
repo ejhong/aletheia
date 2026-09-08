@@ -10,7 +10,7 @@
  *   node scripts/aletheia.ts draft <reportRunId> [--dry-run]
  *   node scripts/aletheia.ts verify <proposalRunId> [--dry-run]
  *   node scripts/aletheia.ts edition <case> [--dry-run] [--force]
- *   node scripts/aletheia.ts check <case>                      → scripts/cross-model-check.ts
+ *   node scripts/aletheia.ts check <case> [--seats a,b] [--dry-run]   the blind panel, every roster seat with a key
  *   node scripts/aletheia.ts panel <pr>                        → scripts/arbiter.mjs
  *
  * Every verb is one module under src/pipeline/ sharing four services — the
@@ -28,9 +28,10 @@ import { DEFAULT_SEAT, runReport } from "../src/pipeline/report.ts";
 import { runDraft } from "../src/pipeline/draft.ts";
 import { runVerify } from "../src/pipeline/verify.ts";
 import { runEdition } from "../src/pipeline/edition.ts";
+import { runCheck } from "../src/pipeline/check.ts";
 
 const [verb, ...rest] = process.argv.slice(2);
-const flagNames = new Set(["--seat", "--reconsider"]);
+const flagNames = new Set(["--seat", "--seats", "--reconsider"]);
 const flags = new Set<string>();
 const args: string[] = [];
 const values: Record<string, string> = {};
@@ -80,10 +81,18 @@ switch (verb) {
     console.log(report.join("\n"));
     break;
   }
-  case "check":
-    console.error("check runs live in scripts/cross-model-check.ts until step 3b folds them in:\n  node scripts/cross-model-check.ts <case> [--vendors …] [--dry-run]");
-    process.exit(2);
+  case "check": {
+    const [key] = args;
+    if (!key) {
+      console.error("usage: aletheia check <case> [--seats anthropic,openai,gemini,xai,venice] [--dry-run]");
+      process.exit(1);
+    }
+    const seats = flagValue("--seats")?.split(",").map((s) => s.trim()).filter(Boolean);
+    const r = await runCheck(key, { seats, dryRun: flags.has("--dry-run") });
+    console.log(JSON.stringify(r, null, 2));
+    if (r.outcome === "failed") process.exit(1);
     break;
+  }
   case "panel":
     console.error("panel runs live in scripts/arbiter.mjs until step 3b folds them in.");
     process.exit(2);

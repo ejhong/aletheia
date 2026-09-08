@@ -208,7 +208,7 @@ never damages surrounding content.
 node scripts/reassess-changed.mjs --dry-run --case <slug>   # proposed prose edits as a diff
 node scripts/watch-literature.mjs --dry-run [--case <dir>]  # no key needed
 node scripts/triage-watch.mjs --dry-run                     # needs an LLM key
-node scripts/cross-model-check.mjs <slug>                   # blind panel, every configured vendor
+node scripts/aletheia.ts check <slug> [--seats a,b]         # blind panel, every roster seat with a key; metered
 node scripts/promote-imports.mjs --dry-run
 node scripts/score-agenda.mjs --dry-run
 node scripts/yield-report.mjs

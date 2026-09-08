@@ -1190,7 +1190,26 @@ briefly hidden: one August check without a ledger hash was still counted in
 the panel and reset standing under the legacy date rule; a stale check is
 now set aside rather than counted, and does not veto the seats that
 re-judged. Recorded spend for the day: $60.71 of the $100 exemption, plus
-about $3 for the panel, which the older check script does not meter. A second draft pass
+about $3 for the panel, which the older check script does not meter.
+
+**Reassessment against beauty, truth, and automation (2026-09-08,
+evening; founder's framing).** The design holds; the order changes. The
+running status in `docs/AUTOMATION.md` is rewritten with it — that section
+is where models read the plan. Truth names three debts: corrections are
+proposed but not applied; the panel's spend is unmetered; the Arbiter is
+off and the pages do not say so. Beauty names what is still twice: the
+panel's own HTTP path beside the metered transport, `check` and `panel`
+outside the CLI, reconsideration as a script beside `edition`, and the
+maintenance scripts' second model client. Automation names the gap plainly:
+every piece exists and nothing runs unattended. The conclusion is one
+step, 4b, ahead of any second case: close the loop on Cast, Not Carved —
+a correction writer, `check` on the metered transport behind the CLI with
+raw replies kept, dissents carried into `edition`, a scheduler and one
+weekly workflow, the operation state displayed — with the founder's toggle
+on the Arbiter as the only hand required. Two rules the runs settled are
+recorded there too: the second research seat runs when the first stops
+finding, and a contested standing is a task that triggers reconsideration
+and a fresh check, not a label that sits. A second draft pass
 on the same report, with retrieval, then exposed the reopen rule's gap: the
 assembler re-blocked Nemoy and Sessa on the strength of the previous day's
 `blocked` rows although it now held their text, and lost seven evidence

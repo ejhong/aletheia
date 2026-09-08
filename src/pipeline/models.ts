@@ -134,6 +134,7 @@ export type AnthropicMessage = {
  */
 export function assembleAnthropicStream(sse: string): AnthropicMessage {
   let message: AnthropicMessage | null = null;
+  let stopped = false;
   const jsonBuf = new Map<number, string>();
   for (const chunk of sse.split(/\r?\n\r?\n/)) {
     const data = chunk
@@ -173,6 +174,9 @@ export function assembleAnthropicStream(sse: string): AnthropicMessage {
         message!.stop_reason = ev.delta?.stop_reason ?? message!.stop_reason;
         message!.usage = { ...message!.usage, ...(ev.usage ?? {}) };
         break;
+      case "message_stop":
+        stopped = true;
+        break;
       case "error":
         throw new Error(`anthropic stream error: ${ev.error?.type ?? "unknown"}: ${ev.error?.message ?? ""}`);
       default:
@@ -180,7 +184,35 @@ export function assembleAnthropicStream(sse: string): AnthropicMessage {
     }
   }
   if (!message) throw new Error("anthropic stream ended without a message_start");
+  if (!stopped || !message.stop_reason) throw new Error(`anthropic stream ended before message_stop (last stop_reason: ${message.stop_reason ?? "none"})`);
   return message;
+}
+
+/**
+ * Read a streamed body to the end, keeping every byte received. Twice on
+ * 2026-09-08 a long call died with undici's "terminated" — the connection
+ * closed without a clean end after the whole reply had arrived — and
+ * `res.text()` discarded a finished, paid answer. The bytes are kept and
+ * the assembler decides: a stream that carried `message_stop` is complete
+ * whatever the socket did afterwards; one that did not is an error, with
+ * the socket's reason attached.
+ */
+export async function readStreamText(body: ReadableStream<Uint8Array> | null): Promise<{ text: string; ended: Error | null }> {
+  if (!body) return { text: "", ended: new Error("no response body") };
+  const reader = body.getReader();
+  const decoder = new TextDecoder();
+  let text = "";
+  try {
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      text += decoder.decode(value, { stream: true });
+    }
+    text += decoder.decode();
+    return { text, ended: null };
+  } catch (e) {
+    return { text, ended: e as Error };
+  }
 }
 
 /** A call with a configured fallback carries it as the vendor's `fallbacks` parameter. */
@@ -203,7 +235,12 @@ async function anthropicPost(body: { model: string; fallbacks?: unknown }, fetch
   });
   void fetchImpl;
   if (!res.ok) throw new Error(`anthropic HTTP ${res.status}: ${(await res.text()).slice(0, 400)}`);
-  return assembleAnthropicStream(await res.text());
+  const { text, ended } = await readStreamText(res.body);
+  try {
+    return assembleAnthropicStream(text);
+  } catch (e) {
+    throw ended ? new Error(`${(e as Error).message}; the connection ended with: ${ended.message}`) : e;
+  }
 }
 
 /** The vendor's split: uncached input, cache reads, cache writes — each priced at its own rate. */

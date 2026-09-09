@@ -1,0 +1,127 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 182
+title: Unify inbox and watch imports through bounded research proposals
+url: https://github.com/ejhong/aletheia/pull/182
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-06
+judgedAgainst: 30f8e7b400
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "No AGENTS.md edit; no citations added under content/ (verification
+      section found none). The change moves inbox link capture off the old
+      'reachable URL ⇒ ai_verified' heuristic to a model-free durable
+      source-request that explicitly does not assert verification — that
+      strengthens §4's honest-verification-label rule and §3.8 (never invent a
+      locator), as the inbox/README and MAINTENANCE updates state plainly.
+      Promotion now routes through the already-existing bounded reader with a
+      separate checking model, tighter caps (three sources → two, plus
+      call/time/$ ceilings) and removal of the house-model refusal fallback;
+      adoption is model-free, checks the exact basis fingerprint, validates a
+      complete prospective case through the production loader, rolls back
+      interrupted writes, records an append-only intake outcome referencing the
+      originating proposal, and writes a history.yaml entry stamped with model,
+      promptVersion and runId (§3.14, §3.15 provenance/inspectability). Nothing
+      here publishes: prepared bundles still go to a needs-approval PR under the
+      normal independent gate, and the docs repeatedly say 'prepared' is not
+      ratification (§3.15 no unratified draft presented as ratified). The one
+      genuine relaxation is that a title-similar source, which promote-core
+      previously blocked as a probable duplicate, now yields a review warning
+      retained in the adoption outcome rather than a hard stop; exact identifier
+      matching still fails closed, the change is disclosed in
+      AUTOMATION.md/DECISIONS.md, and independence remains an explicit review
+      question, so I read this as a documented judgment call rather than a
+      §3.10/§3.15 check-weakening. Governance promotion totals derive from
+      adoption receipts and throw on an unknown proposal, so the ledger cannot
+      silently invent promotions."
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.5
+      - §3.8
+      - §3.10
+      - §3.14
+      - §3.15
+    reasoning: "The change adds no published content or citation identifiers, and
+      its synthetic fixtures explicitly disclaim being real publications. Inbox
+      URLs are now queued without claiming verification, while proposals require
+      retrieved text, a separate reading check, explicit evidence direction,
+      narrow claims, inference separation, and independence notes before
+      reaching the existing publication gate. Adoption checks the exact current
+      case basis, validates the prospective complete case, appends a stamped
+      history entry, preserves the originating proposal receipts, and rolls back
+      interrupted ledger writes. The removal of the old promoter does not
+      visibly weaken constitutional checks: exact identifier matching remains
+      mechanical, title similarity becomes an explicit review warning rather
+      than false identity, stale proposals are parked, and no AGENTS.md or
+      panel-threshold change is made."
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.6
+      - §3.7
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: The change unifies inbox URL intake and legacy watch imports under
+      the shared bounded source reader and research proposal envelope,
+      eliminating the previous behavior where reachability alone marked imported
+      URLs as verified. Proposed observations and evidence records continue to
+      require mechanical verification, claim-anchoring, and prospective case
+      validation before installation into working trees for the standard gated
+      publication PR. Exact provenance, case history tracking, and rollback on
+      failed materialization are preserved without bypassing the independent
+      publication arbiter. AGENTS.md is not modified and no constitutional
+      checks are weakened.
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff unifies inbox capture and legacy watch imports onto the
+      existing bounded source-reader path without editing AGENTS.md or weakening
+      the independent publication gate. Inbox no longer equates URL reachability
+      with ai_verified; it only records immutable source-request history plus
+      submitted context, which is stricter honest verification labeling (§3.8 /
+      phase-1). Reading remains budget-capped, separately checked, and
+      non-publishing; prepareResearchAdoptions materializes only after
+      exact-basis and prospective-case validation, with rollback on interrupted
+      writes and ordinary needs-approval PR staging. No content/ citations or
+      Deep Memory assessments are added (citation tooling found none); tests use
+      synthetic fixtures and claim no research findings. Governance totals
+      derive from adoption receipts rather than rewriting historical import
+      files, preserving provenance and append-only intake history.
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.8
+      - §4
+      - §3.14
+    reasoning: "The change removes a genuine §4/§3.8 honesty defect — inbox capture
+      previously stamped reachable URLs as `ai_verified` — and now records
+      source requests that explicitly assert no verification, preserving the
+      original contributor file verbatim and keeping submitted context as
+      provenance. The old promotion path's mechanical verbatim-quote check is
+      deleted, but the new format confines verbatim text to a short anchor
+      checked by a separate source-reading pass, complete bundles are validated
+      against the production loader with basis-hash staleness checks,
+      interrupted writes are rolled back, and every addition still faces the
+      ordinary independent publication gate (classifier, citation arbiter,
+      needs-approval PR) — so this reads as a restructure under the gates, not a
+      reclassification to dodge them, and the reading-pass budget actually
+      tightens (3 sources → 2, $1 cap, no house-model fallback). Nothing
+      publishes unilaterally: the materializer only prepares working-tree
+      changes and its outcomes are labeled as non-ratifying, adoption history
+      entries carry aiAssisted/model/promptVersion stamps, and §3.14 changelog
+      entries are appended rather than history rewritten. No AGENTS.md edit, no
+      new citation identifiers (verification section is empty), and all test
+      fixtures are explicitly synthetic with no research finding claimed. The
+      same-vendor reading check is candidly documented as not cross-vendor
+      concurrence, which is consistent with the constitution's disclosure norms
+      rather than a misrepresentation."
+harvestedAt: 2026-09-09

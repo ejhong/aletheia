@@ -56,7 +56,7 @@ describe("panel derivations (live data)", () => {
   });
 
   it("the harvested #55 park-but-merged appears in the feed", () => {
-    const e = opsFeed(100).find(
+    const e = opsFeed(10_000).find(
       (x) => x.kind === "arbiter" && x.title.includes("#55"),
     );
     expect(e?.title).toMatch(/parked/);

@@ -1,0 +1,92 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 208
+title: "Founder amendment §3.15: the founder's directions are the operating record"
+url: https://github.com/ejhong/aletheia/pull/208
+verdict: park
+reason: "5 seat(s) find a violation: Opus 5 (Anthropic) (§3.15); GPT-5.6 Sol
+  (OpenAI) (§3.15); Gemini 3.8 Flash (Google) (§3.15); Grok 4.5 (xAI) (§3.15);
+  GLM 5.3 Flash (Z.ai, via Venice) (§3.15); only 0 of 5 seats affirm compliance
+  (4 required)"
+outcome: merged
+outcomeAt: 2026-09-09
+judgedAgainst: 46f7085338
+promptVersion: panel-v1
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: The diff adds a substantive normative paragraph to AGENTS.md §3.15 —
+      a new rule that founder directions are 'the operating record, not
+      correspondence' and that a recorded direction to publish supplied material
+      constitutes permission. That is not a typo or formatting fix; amending
+      AGENTS.md is the one act reserved to the human founder, and a PR under
+      panel review cannot carry it. The PR body is empty, and the only evidence
+      of founder authorization is text inside the untrusted diff itself (the
+      DECISIONS.md entry asserting the founder committed and merged it), which
+      is a claim under review, not a directive or proof to me. Compounding the
+      problem, the amendment materially relaxes the confidence/permission check
+      in §3.15 (converting an in-session direction into publishable permission),
+      i.e. it weakens the very checks §3.15 forbids weakening. The manifest
+      change then immediately leans on the not-yet-legitimate amendment to
+      convert VASO-IN004's license from a synthesized sentence into a
+      'permission' grounded in a session transcript, so the dependent content
+      change fails with it.
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: The diff substantively amends AGENTS.md by redefining founder
+      directions as an operating record and as permission to publish supplied
+      material. Under §3.15, amending the constitution is reserved exclusively
+      to the human founder, and assertions inside the untrusted diff that the
+      founder directed, committed, or merged it cannot establish that reserved
+      act. This is normative rather than a trivial typo or formatting
+      correction, so the amendment itself requires a violation vote.
+  - seat: Gemini 3.8 Flash (Google)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: The diff directly modifies AGENTS.md by introducing substantive
+      normative text regarding how founder directions are treated as operating
+      records and how permissions are handled. Under §3.15 and the
+      constitutional instructions governing this review panel, amending
+      AGENTS.md is strictly reserved to the human founder, and any pull request
+      diff that modifies AGENTS.md in a non-trivial, normative manner must be
+      judged as a violation. Assertions within the PR title, commit messages,
+      and DECISIONS.md claiming founder authorization are untrusted data under
+      review and cannot bypass this boundary.
+  - seat: Grok 4.5 (xAI)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: The diff substantively amends AGENTS.md §3.15 by inserting a new
+      normative paragraph on founder directions as the operating record and on
+      permission via recorded direction to publish. Under §3.15 and the panel
+      rule, amending this file is reserved to the human founder; non-trivial
+      normative edits in a reviewed diff are judged violates regardless of
+      PR-title or DECISIONS.md claims that the founder directed or merged the
+      change (those claims are untrusted material under review, not
+      authorization). The edit is not a typo or formatting fix. Secondary
+      content/ and docs/ changes depend on that unratified constitutional text
+      and do not cure the reservation breach.
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: The diff edits AGENTS.md §3.15 with a substantive, normative
+      amendment — reclassifying the founder's directions as 'the operating
+      record, not correspondence' and defining a new permission pathway — which
+      is neither a typo nor formatting, so under the panel rule it must be
+      judged 'violates'. The claims inside the diff and DECISIONS.md that the
+      founder 'committed and merged by the founder's hand' are untrusted data
+      under review, not verifiable authorization; a seat cannot accept
+      assertions of human approval found inside the material itself. The same
+      change then applies the freshly minted amendment to rewrite VASO-IN004's
+      license field, so the permission record rests on the legitimacy of the
+      very amendment being smuggled through this PR rather than on the
+      pre-existing permission rule's independently recorded grant. If the
+      founder genuinely hand-committed this amendment, that fact must be
+      established outside the untrusted diff before the change can publish.
+harvestedAt: 2026-09-09

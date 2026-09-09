@@ -1,0 +1,127 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 179
+title: Common research proposals, bounded source reading, and Deep Memory imagery
+url: https://github.com/ejhong/aletheia/pull/179
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-06
+judgedAgainst: 5128c480b1
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "No AGENTS.md edit; the only check-touching changes strengthen or
+      extend gates rather than weaken them (promote-core now requires a quoted
+      source passage in evidence sourceStatements; the intake DecisionSchema
+      narrows the agenda-only 'proposed/scored requires proposal' rule but adds
+      an equivalent, stricter rule for the new research-proposal stage plus
+      stamp-consistency checks). The new research envelope validates whole
+      prospective ledgers through the production loader and explicitly forbids
+      AI from assigning human_reviewed, 'verified' library status, or
+      overwriting frozen study criteria (§3.15, §3.14). The Deep Memory proposal
+      is recorded as stage 'research-proposal'/'proposed' in append-only intake,
+      with ai_verified/ai_extracted labels, an honest locator that
+      self-describes as a retrieved-text character range and not a printed-page
+      position (§3.8), direction 'context' with strength and limitations, an
+      independence group tied to the physical pillar rather than the URL (§3.5,
+      §3.10), and the Met's HTTP 429 recorded as an explicit miss rather than
+      silently dropped (§3.11). Source statement vs editor inference are
+      separated (§3.9), and the blog-not-primary-report limitation is stated
+      (§3.7). Images are labeled: the cover as AI-generated with its prompt, the
+      two plates with photographer, license, Commons source URL and captions
+      distinguishing depiction from interpretation. The tooling reported no
+      citation identifiers under content/ because the new URLs live in
+      proposals/; the dainst.blog Pillar 43 post and Met object 322614 are
+      consistent with their described content and I see no internal
+      contradiction in the provenance."
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.5
+      - §3.8
+      - §3.9
+      - §3.10
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: The Pillar 43 bundle remains explicitly proposed and AI-extracted,
+      labels its source `ai_verified` rather than human-verified, and records
+      the URL, retrieval time, hashes, extractor, exact character locator,
+      quotation, model, runId, and date. It separates the source statement from
+      editorial inference, classifies the evidence as context, and ties
+      independence to the underlying Pillar 43 object rather than treating
+      another publication as independent evidence. The Met retrieval failure is
+      retained as an HTTP 429 miss and does not become an automatically verified
+      evidence record. The proposal mechanism validates linked records against
+      the production loader, binds them to case and input hashes, preserves
+      prior-record hashes and immutable intake decisions, and cannot directly
+      modify canon or claim ratification. No AGENTS.md amendment, fabricated
+      human review, silent assessment replacement, confidence-material
+      publication, or weakening of the publication gate is present.
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.1
+      - §3.6
+      - §3.8
+      - §3.9
+      - §3.10
+      - §3.15
+      - §4
+    reasoning: The change introduces an intake and validation pipeline for research
+      change proposals without altering AGENTS.md or weakening existing
+      publication gates. Proposed ledger edits are marked strictly as
+      ai_extracted and ai_verified, explicitly forbidding automated assignment
+      of human review or verified library status. Source locators distinguish
+      character offsets in retrieved web text from printed page numbers,
+      separating observation from inference and checking independence across
+      shared objects. The added deep-memory topic files and intake records
+      properly document AI-generated artwork, real public commons photographs,
+      and retrieval receipts without presenting unratified material as published
+      consensus.
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The PR adds a common research-proposal envelope and a bounded manual
+      source-reader that validates Source/Claim/Evidence bundles through the
+      production loader, with case/input hashes, append-only intake, and no
+      silent canon writes. The Deep Memory trial proposal stays staged as
+      proposed/partial (not published), labels verification ai_verified, uses
+      character-offset locators on retrieved text, separates sourceStatement
+      from editorInference, marks independence on the shared Pillar 43 object,
+      and keeps direction as context only. Failed runs, Met 429, and budget
+      receipts are retained honestly; images carry AI-generated and CC
+      licenses/credits; promoter now requires a quoted passage. No AGENTS.md
+      edit, no fabricated citations (none added under content/), and checks are
+      strengthened rather than weakened.
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.15
+      - §4
+    reasoning: "The diff edits no protected file (AGENTS.md is untouched), and the
+      check machinery is strengthened rather than weakened: the promoter now
+      requires a verbatim quoted passage, AI proposals are blocked from minting
+      human_reviewed/verified states, proposals bind to case and founding-input
+      hashes, and nothing publishes without the ordinary gate — the trial
+      records are explicitly labeled proposed/ai_extracted/ai_verified, with
+      failed runs (HTTP 400, 429, discarded partial run) retained honestly
+      rather than converted into findings. Provenance is exact and honestly
+      labeled: the Pillar 43 quote carries retrieved-text character locators
+      explicitly marked 'not a printed-page locator' with response/text hashes,
+      which matches the well-known Dietrich Tepe Telegrams post (2016)
+      describing the headless, ithyphallic figure; the Met relief 32.143.7
+      record and CC-licensed Wikimedia images are plausibly attributed and
+      nothing contradicts them, so temporal humility bars a fabrication vote.
+      The source-reading adapter is a manual, bounded script rather than live AI
+      calls or autonomous research in the site itself, with explicit
+      spend/token/time limits and no hidden retries, and the same-vendor reading
+      check is candidly labeled as not constitutional concurrence — nothing is
+      presented as a ratified judgment. No content/ records changed, so nothing
+      published is silently altered; the incubating topic remains incubating
+      pending a separate gated PR."
+harvestedAt: 2026-09-09

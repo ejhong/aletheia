@@ -1,0 +1,117 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 186
+title: Manage shared AI spending, use Astra for authoring, and seed Birdmen intake
+url: https://github.com/ejhong/aletheia/pull/186
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-06
+judgedAgainst: 3f9431261f
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "This is an operations/cost-control change: no files under content/
+      are touched, no citations, evidence records, assessments, or published
+      judgments are added or altered, and the citation tooling found no
+      identifiers in added content. AGENTS.md is untouched, so §3.15's
+      reservation to the founder is not engaged. The panel machinery is
+      preserved rather than weakened — scripts/lib/vendors.mjs keeps all five
+      independent seats and their models, no concurrence threshold or
+      publication gate is changed, budget exhaustion fails closed (stops paid
+      work) rather than allowing unratified publication, and a $30 monthly
+      reserve is explicitly held for review calls. Provenance discipline is if
+      anything strengthened: llm.mjs now rejects silent cross-vendor
+      substitution and keeps the refusal-fallback that stamps the model that
+      actually answered, and metered-model.mjs verifies the returned model id
+      before settling. The new inbox files are labeled AI-prepared discovery
+      leads with explicit runId/model/promptVersion stamps and repeated
+      instructions to establish object identity, rights, and source statements
+      before any claim reaches the ledger — they assert no findings. The
+      operator budget proxy binds to 127.0.0.1 on the Actions runner and is
+      documented as not part of the static export, so §4's 'no servers' rule for
+      the site is not breached; the self-authorized bootstrap policy is narrowly
+      scoped (valid only before config/ai.json first appears in main) and
+      disclosed in DECISIONS.md rather than hidden."
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.7
+      - §3.8
+      - §3.9
+      - §3.10
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: The five Birdmen entries are explicitly labeled AI-prepared discovery
+      leads rather than verified findings, and they direct later workers to
+      establish object identity, source chains, rights, dependencies, and
+      source-versus-inference distinctions before publication. They include
+      model, date, runId, promptVersion, and authorship provenance, while adding
+      no Claim, Evidence, Source, or Assessment record that falsely carries
+      these links as verified evidence. The budget implementation reserves
+      liability before each paid call, retains uncertain reservations, records
+      receipts publicly, and fails closed when accounting or tariffs are
+      unavailable; the diff does not alter panel identities, concurrence
+      thresholds, or publication gates. No AGENTS.md amendment,
+      confidential-material disclosure, fabricated locator, silently revised
+      assessment, or positive internal evidence of a false citation is present.
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+      - §4
+      - §8
+    reasoning: The pull request introduces shared cost controls, switches the main
+      authoring client to Astra, meters API requests (including the operator and
+      review seats), and adds five public research leads to the inbox directory.
+      No files under content/ or the core constitution AGENTS.md are modified.
+      The five-vendor independent review panel and fail-closed publication
+      checks under §3.15 remain completely intact, with review budget explicitly
+      protected and metering errors set to fail closed. Provenance is cleanly
+      recorded across decisions and inbox files, and all unit tests and schema
+      validations pass.
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff is complete and does not touch AGENTS.md, published case
+      ledgers under content/, assessments, or concurrence/publication gates. It
+      adds shared metered spend controls, model policy in config/ai.json,
+      workflow wiring, tests, and docs; exhaustion stops paid work without
+      lowering review independence or thresholds (§3.15). Five inbox items are
+      founder-directed link leads for deep-memory, explicitly labeled
+      AI-prepared discovery context with provenance stamps, not ratified
+      findings or confidential material. Citation tooling found no new content/
+      identifiers to verify; no positive sign of fabricated locators, silent
+      judgment edits, or check-weakening.
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §4
+    reasoning: "The diff does not touch AGENTS.md, and it explicitly preserves the
+      check architecture: all five independent panel seats keep their models and
+      concurrence rules, no publication or ratification threshold changes, and
+      failures (missing usage, exhausted allowance, unavailable accounting) stop
+      paid work fail-closed rather than bypassing gates — consistent with
+      §3.15's prohibition on weakening checks. The Birdmen inbox files are
+      labeled AI-prepared discovery leads with explicit AI provenance stamps
+      ('Eugene supplied the direction; the wording is AI-written'), presented as
+      unverified intake rather than ratified findings or human-reviewed
+      conclusions, satisfying §3.9/§3.15 honesty requirements; they add no
+      citations to content/ (the citation verifier found none), and the URLs in
+      config are tariff-source metadata, not evidence citations. The bootstrap
+      mechanism is time-limited, publicly recorded on a dedicated branch, cannot
+      resurrect itself after model policy appears in main history (tested), and
+      governs financial accounting rather than editorial ratification; the
+      founder-authorization claims in the PR body are recorded as AI records of
+      founder instruction, not passed off as human ratification. Model names
+      like 'gpt-6-astra' postdate my knowledge, but per temporal humility
+      unfamiliarity is not evidence of fabrication, and the citation tooling
+      raised no failures. Nothing here fabricates provenance, publishes
+      unratified drafts, exposes confidence material, or dodges a check, so
+      ordinary infrastructure imperfection would not warrant 'violates'."
+harvestedAt: 2026-09-09

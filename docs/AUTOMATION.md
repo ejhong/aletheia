@@ -76,9 +76,9 @@ and modular code, with the loop on. The facts first, then the plan.
    The record layer sits beneath, one component per concept: what was
    proposed and what was refused and why, the review notes, the history.
    At site level, one `/operations` page replaces `/panel` and
-   `/proposals`: the operation state, spend against the caps, the
-   schedule and the next choice, recent sittings, Arbiter verdicts, open
-   review notes. The assessment panel and the cross-model panel go as
+   `/proposals` (built 2026-09-09): the operation state, the schedule and
+   what the ledger wants next, spend against the caps, recent sittings,
+   the review notes, and everything `/panel` showed. The assessment panel and the cross-model panel go as
    separate things — their content lives in the one block — and the
    conjecture cards go. AGENTS.md §7 is the brief: no
    clutter, no unlabelled scores, terms explained where they appear,
@@ -439,7 +439,7 @@ chain's own sittings.
   docs/IMAGE_STYLE.md); their nine library modules and ten test files; the
   `/proposals` page and its `agendaProposals` domain module (the Bench's
   shelf); `docs/EXTRACTION_PIPELINE.md`. Kept: `harvest-governance` (now a
-  step of the sitting, so `/panel` stays current), `classify-pr-risk`,
+  step of the sitting, so `/operations` stays current), `classify-pr-risk`,
   `audit-links`, and the library modules the pipeline and the Arbiter
   still share (`models`, `overlay-ids`, `vendors`, `llm`, `citation-check`,
   `seat-key`, `harvest-parse`, `arbiter-core`) — the next subtraction moves

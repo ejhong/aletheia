@@ -1,0 +1,103 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 176
+title: Preserve historical agenda scores before the intake cutover
+url: https://github.com/ejhong/aletheia/pull/176
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-06
+judgedAgainst: ab69854620
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: The added file is a staging copy of historical agenda-panel tallies
+      into an intake batch; each decision carries an exact provenance pair
+      (legacy commit ab69854... plus a file-and-index locator, e.g.
+      proposals/agenda/2026-08-31-agenda-33432478115/scores.yaml#tallies[3]) and
+      duplicates the original tally verbatim in a `legacy.record` block, so
+      nothing is silently rewritten. Fields that were never recorded in the
+      source runs — runId, model, generatedAt, inputHash, reason — are
+      explicitly null rather than reconstructed, which is the honest handling
+      §3.8 asks for; no locator is invented and no score is changed or
+      re-certified. The tooling found no citation identifiers in the added
+      lines, so §3 real-citation concerns do not arise. The docs/DATA_MODEL.md
+      paragraph accurately describes the staging step, states the existing
+      scores.yaml files remain authoritative, and does not present anything as
+      ratified or human-reviewed; no check, gate, or review budget is altered,
+      and AGENTS.md is untouched. My one reservation is the repeated
+      `details.seatStatus` anchors ('scored 78' / GPT-5.1 'scored 76') applied
+      identically across three different runs while many per-item entries in the
+      2026-08-31 run record GPT-5.1 as 'failed' — a summary field that sits
+      awkwardly with the item-level data — but this is run-level bench metadata
+      with no published consequence and no locator claim, so I treat it as
+      ordinary imperfection rather than fabricated provenance. Nothing here
+      reaches readers, no assessment is mutated, and the OMITTED FILES list is
+      empty.
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: The change adds an append-only historical copy while leaving the
+      existing `scores.yaml` files present and authoritative, so it does not
+      silently alter prior judgments. Each decision preserves an exact legacy
+      commit and file locator, along with the recorded tally and named panel
+      seats. Missing reasoning, run IDs, models, generation times, and input
+      receipts are represented as null rather than reconstructed or falsely
+      attributed. No citations, confidential source material, reader-facing
+      assessments, constitutional text, or validation checks are added or
+      weakened.
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: The pull request adds an immutable intake batch under
+      `proposals/intake/` and updates `docs/DATA_MODEL.md` to stage 78
+      historical agenda scores ahead of an intake migration. No normative rules
+      or files such as `AGENTS.md` are modified. The records accurately document
+      provenance and commit refs while honestly noting where historical
+      reasoning or receipts were not retained, adhering to epistemic tracking
+      requirements without altering published canonical assessments.
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff only adds a descriptive paragraph to docs/DATA_MODEL.md
+      explaining the staging intent and a single immutable intake YAML that
+      copies 78 historical agenda tallies. Each record keeps the original
+      candidate text, highs/advances/concerns/seats exactly as tallied, points
+      at the authoritative source via legacy.commit
+      ab698546200770ac95612af49f5056d30fd6f21b plus the scores.yaml#tallies[N]
+      locator, and explicitly nulls
+      runId/model/generatedAt/inputHash/candidateHash and other fields the PR
+      states were never retained. No AGENTS.md edit, no citation identifiers, no
+      public assessment or reader change, no reconstructed reasoning presented
+      as fresh, and no check-weakening; the originals remain authoritative until
+      a later consumer cutover.
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "This is a staging migration, not a publication: it adds a new
+      immutable intake file and a documentation note, and explicitly leaves the
+      authoritative scores.yaml files and all readers/workers untouched until a
+      separate consumer PR, so no published judgment is silently changed (§3.14,
+      §3.15). Provenance is handled honestly: every record preserves the exact
+      legacy commit and tally locator (§3.8), and fields that were not retained
+      — runId, model, inputHash, generatedAt, reviewer reasoning — are set to
+      null and declared unknown rather than fabricated, which is exactly the
+      right way to migrate lossy history. No citations or identifiers are added
+      (citation verification found none), no AGENTS.md or gate/review-limit
+      change appears in the diff, and the batch is presented as unratified
+      history awaiting review, not as a fresh judgment. The visible records are
+      internally consistent between the top-level scores and their legacy
+      copies. I cannot re-verify the claimed identity match against commit
+      ab698546… myself, but the diff supplies a verifiable locator and the PR
+      runs CI, so there is no positive evidence of fabrication or
+      check-weakening here."
+harvestedAt: 2026-09-09

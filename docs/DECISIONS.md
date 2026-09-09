@@ -1770,3 +1770,20 @@ the standing's own rule (exact, adjacent within one step, split when
 fewer than a majority are within a step). `AccountsList` shows the
 edition's accounts side by side. Run records are read by the domain
 (`src/domain/runs.ts`), the pipeline's store importing them from there.
+
+**The UI pass, third PR: one operations page (2026-09-09).** `/panel`
+becomes `/operations`, and gains, at the top, what a founder or a reader
+needs to know first: the operation state with its reason (the kill
+switch, visible), the schedule read from the workflow file and said in
+words, what the ledger wants next (the scheduler's own choice at build
+time), spend today, this month and all time against the caps in force
+with their phase, the panel's own bill, the recent sittings across cases
+in a reader's words, and the review notes — harvested from their issues
+into `governance/review-notes/` by the sitting, open first, so the queue
+is public. The standings, the dissent gallery, the seats' records, the
+Arbiter's verdicts and the operations log stay; the metabolism counts of
+the earlier design go. On the way, the readers the page needed moved into
+the domain — configuration, the spend ledger's read side, the budget's
+caps — with the pipeline importing them from there, so the UI reads no
+pipeline module but the scheduler's pure choice.
+

@@ -1125,3 +1125,24 @@ export const ArbiterRecordSchema = z.object({
   harvestedAt: z.string(),
 });
 export type ArbiterRecord = z.infer<typeof ArbiterRecordSchema>;
+
+/**
+ * A review note, harvested from its GitHub issue (governance/review-notes/):
+ * a lone panel objection the change merged over, which the operator answers
+ * on the record. Mirrors the issue's state at harvest; closing it is the
+ * answer (AGENTS.md §3.15, amendment of 2026-09-09).
+ */
+export const ReviewNoteRecordSchema = z.object({
+  number: z.number().int(),
+  title: z.string(),
+  url: z.string().url(),
+  state: z.enum(["open", "closed"]),
+  pr: z.number().int().nullable(),
+  seat: z.string().nullable(),
+  rules: z.array(z.string()).default([]),
+  paradigm: z.string().nullable(),
+  createdAt: z.string(),
+  closedAt: z.string().nullable(),
+  harvestedAt: z.string(),
+});
+export type ReviewNoteRecord = z.infer<typeof ReviewNoteRecordSchema>;

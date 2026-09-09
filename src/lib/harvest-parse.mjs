@@ -35,3 +35,14 @@ export function parseLegacyArbiterComment(body) {
   if (seats.length === 0) return null;
   return { verdict, reason, judgedAgainst, promptVersion, seats };
 }
+
+/**
+ * A review note's title, as scripts/review-notes.mjs writes it:
+ * "Review note on #223 — GPT-5.6 Sol (OpenAI): §3.15, §3.8 (provenance)".
+ * Returns null for a title in another shape — never a guessed record.
+ */
+export function parseReviewNoteTitle(title) {
+  const m = String(title).match(/^Review note on #(\d+) — (.+?): (.+?)(?: \(([a-z-]+)\))?$/);
+  if (!m) return null;
+  return { pr: Number(m[1]), seat: m[2].trim(), rules: m[3].split(",").map((x) => x.trim()).filter(Boolean), paradigm: m[4] ?? null };
+}

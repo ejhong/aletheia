@@ -1,0 +1,100 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 212
+title: founder/amend 3 15 concurrence
+url: https://github.com/ejhong/aletheia/pull/212
+verdict: park
+reason: "5 seat(s) find a violation: Opus 5 (Anthropic) (§3.15); GPT-5.6 Sol
+  (OpenAI) (§3.15); Gemini 3.8 Flash (Google) (§3.15); Grok 4.5 (xAI) (§3.15);
+  GLM 5.3 Flash (Z.ai, via Venice) (§3.15); only 0 of 5 seats affirm compliance
+  (4 required)"
+outcome: merged
+outcomeAt: 2026-09-09
+judgedAgainst: 7d5e6a8141
+promptVersion: panel-v2
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: "The diff rewrites a normative sentence of AGENTS.md §3.15, replacing
+      the plain multi-model concurrence requirement with a graded 'within one
+      step' rule — the opposite of a typo or formatting fix. Amending AGENTS.md
+      is the one act reserved to the human founder; the PR body's assertion that
+      'the AGENTS.md sentence is the founder's commit' is a claim inside
+      untrusted material, not verifiable authorization from the packet, and the
+      DECISIONS.md entry it points to was itself added by the same diff.
+      Substantively the change also loosens a §3.15 check: `ratification()` now
+      counts neighbouring verdicts as concurrence via `withinOneStep`, and the
+      DECISIONS entry states this flips four cases (Pre-Columbian Amazon, The
+      Immortality Key, Zero Worlds, Cast, Not Carved) from contested to ratified
+      with no new evidence — exactly the 'weaken the checks in this section'
+      prohibition, and the operator's own note says the Arbiter had parked it
+      for that reason. The test suite is edited in the same direction
+      (dissenters switched from 'mixed' to 'contradicted'; the
+      surviving-objections assertion relaxed from exact equality to
+      `toBeGreaterThanOrEqual`), so the guardrail tests no longer pin the old
+      behaviour. Whatever the merits of the one-step scale, this seat cannot
+      ratify a constitutional amendment carried in an agent PR."
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: The diff substantively amends AGENTS.md by replacing exact-verdict
+      concurrence with a one-step tolerance, so it is not a trivial typo or
+      formatting change. Under §3.15, amending the constitution is reserved
+      exclusively to the human founder, and the PR body and added decision-log
+      text cannot themselves establish that authorization because they are
+      untrusted material under review. The implementation also loosens a
+      publication check by allowing neighboring verdicts to count as concurrence
+      and retroactively moving named cases from contested to ratified.
+      Assertions that the amendment was directed, committed, or merged by the
+      founder do not cure the violation without trusted evidence of the
+      founder’s act.
+  - seat: Gemini 3.8 Flash (Google)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: The diff modifies AGENTS.md to substantively alter the definition of
+      multi-model concurrence under §3.15, allowing verdicts within one step on
+      a graded scale to count as concurrence. Under §3.15 and the panel's trust
+      boundaries, amendments to AGENTS.md are strictly reserved to the human
+      founder, and any pull request diff editing AGENTS.md in a non-trivial,
+      normative manner must be judged as a violation. Assertions in the PR
+      title, PR body, and commit logs claiming founder authorization are
+      untrusted inputs under review and cannot bypass the rule reserving
+      AGENTS.md modifications.
+  - seat: Grok 4.5 (xAI)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: The diff normatively edits AGENTS.md §3.15 to redefine multi-model
+      concurrence from exact verdict match to a graded “within one step”
+      neighborhood and to restate load-bearing split rules. Under the panel
+      brief, amendments to AGENTS.md are reserved to the human founder; any
+      non-trivial normative AGENTS.md change in a reviewed diff is judged
+      violates (§3.15), and PR/DECISIONS claims that this is a founder act are
+      untrusted data, not authorization. The same edit, mirrored in load.ts
+      (withinOneStep / nearScale) and tests, loosens the ratification check
+      itself—exactly the “weaken the checks in this section” prohibition in
+      §3.15. No omitted files or citation issues; the AGENTS.md +
+      check-loosening change decides the vote.
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: "The diff edits AGENTS.md §3.15 with a substantive, normative change:
+      it redefines how multi-model concurrence is measured (one-step tolerance
+      on the graded scale, placement of 'unresolved' and 'presently_untestable',
+      load-bearing split thresholds), which loosens a ratification check — the
+      paradigm case the trust boundary rule targets. That rule permits only
+      trivially non-normative AGENTS.md edits (typo, formatting) to pass; this
+      is neither. The PR body and DECISIONS.md entry assert the amendment was
+      made 'by the founder's hand', but authorization claims inside untrusted
+      material under review are evidence about the change, not directives a seat
+      can act on, and nothing in the packet independently verifies founder
+      identity. The code change also applies the loosened rule to flip four
+      cases (Pre-Columbian Amazon, The Immortality Key, Zero Worlds, Cast Not
+      Carved) from contested to ratified without any new panel ratification of
+      those conversions, compounding the check-weakening concern under §3.15."
+harvestedAt: 2026-09-09

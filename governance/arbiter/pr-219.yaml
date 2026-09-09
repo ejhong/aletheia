@@ -1,0 +1,111 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 219
+title: "Subtraction, first set: the Maintain era retired, each script naming the
+  verb that replaced it"
+url: https://github.com/ejhong/aletheia/pull/219
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-09
+judgedAgainst: "12222074e1"
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "This is an infrastructure subtraction: it deletes retired workflows,
+      scripts, library modules, tests, the /proposals page and one doc, and
+      updates the runbook and decisions log. Nothing under content/ is touched
+      (the tooling found no citation identifiers in added content lines), no
+      assessment overlay or provenance stamp is rewritten, and AGENTS.md is
+      untouched, so §3.15's reserved-amendment rule is not engaged. The §3.15
+      checks themselves survive intact: `PR risk check` and `Arbiter` workflows
+      are unmodified, the five-seat panel and parking rules are only
+      re-described in docs/MAINTENANCE.md to match the founder amendment already
+      in the base constitution, and `harvest-governance` is moved into the chain
+      sitting rather than dropped (so /panel keeps displaying verdicts, i.e.
+      disagreement stays visible). Every retirement names its replacement verb
+      or honestly says there is none (Bench, study freeze, art generator) in
+      docs/AUTOMATION.md's \"Subtraction record\", and the decisions entry
+      stamps the direction's date and channel — I cannot verify the founder's
+      \"begin\" from outside the repo, but per temporal humility unfamiliarity
+      is not evidence of fabrication and the record is stamped as §3.15's
+      operating-record clause allows. One thing I would want answered on the
+      record, short of parking: with the Operator workflow retired, §3.15 still
+      requires that a lone seat's review note be \"answered on the record\" and
+      that contested cases be reconciled — the PR asserts the edition verb's
+      reconsideration and manual/founder handling cover both, but no code in
+      this diff demonstrates the review-note answering path now exists."
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: "The change edits no AGENTS.md and adds no content citations, claims,
+      evidence, or assessment records requiring epistemic verification. It
+      retires redundant workflows while retaining the consequential publication
+      gates: PR risk classification, the Arbiter, loader-derived stale-check
+      detection, and build-time study-hash verification remain in place.
+      Deleting `preflight-citations.mjs` is not check-weakening because its own
+      removed documentation says it was only a local preview and that the
+      Arbiter performs the actual citation verification. Historical proposal and
+      disposition artifacts remain in git, while `docs/DECISIONS.md` records the
+      subtraction with a date, channel, quoted founder direction, and explicit
+      identification of retirements lacking replacements."
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: This PR retires superseded legacy workflows, scripts, tests, and
+      documentation from the Maintain era as part of the transition to the
+      unified verb chain, pursuant to recorded founder direction. None of the
+      constitutional checks under §3.15 (the PR risk classifier, the multi-model
+      Arbiter, mechanical CI) are removed or weakened; AGENTS.md is untouched.
+      No content files under content/ are added or modified, and the operational
+      changes are clearly documented and traceable in docs/DECISIONS.md and
+      docs/AUTOMATION.md.
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff retires superseded Maintain-era workflows, scripts, tests,
+      the /proposals page, and EXTRACTION_PIPELINE.md; it does not edit
+      AGENTS.md. No content/ ledger citations, quotes, or provenance stamps are
+      added (citation verification is empty), and nothing confidential is
+      published. docs/DECISIONS.md and the Subtraction record name the founder
+      direction with date and channel (“in session: begin”), map each retirement
+      to its replacement verb or state none, and keep Arbiter, PR risk check,
+      CI, and harvest-governance (now a Chain sitting step). next.ts preferring
+      a non-empty inbox and chain.yml harvesting verdicts preserve the gates
+      rather than weaken §3.15."
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.7
+      - §3.8
+    reasoning: "This is a deletion/move refactor of automation, not a content
+      change: no AGENTS.md edit appears anywhere in the diff, and the
+      citation-verification section confirms no new citation identifiers were
+      added. The subtraction record in docs/AUTOMATION.md and the DECISIONS.md
+      entry are internally consistent with the change stat — every named retired
+      script, workflow, library module, and test file is in fact deleted here,
+      replacements are named (or absence of replacement is honestly declared,
+      e.g. the Bench, freeze, and art generator), and the founder direction is
+      stamped with date and channel ('in session') as §3.15's amendment
+      requires. The load-bearing checks are preserved rather than weakened: the
+      citation check survives in the kept `citation-check`/`verify` path, the
+      risk classifier, arbiter quorum (≥4 complies, zero violates), fail-closed
+      CI, and the review-note/parking semantics documented in MAINTENANCE.md
+      match the §3.15 amendment already in the constitution rather than
+      loosening it; malformed panel replies recorded as `unsure` with the defect
+      named is more honest than silent quarantine, and still cannot reach the
+      ≥4-complies pass. The reconciliation and harvest duties move into the
+      sitting (`edition` reconsideration, chain harvest step) rather than
+      vanishing. I note as review material, not violation: the disappearance of
+      the Operator's parked-PR-answering and article-gap duties leaves 'revise,
+      or the founder decides' as the answer path for two-seat parks, which the
+      operator should confirm is intentional; and the claim of 272 passing tests
+      is the PR author's own assertion, verifiable in CI."
+harvestedAt: 2026-09-09

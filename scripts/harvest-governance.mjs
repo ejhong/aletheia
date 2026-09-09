@@ -25,7 +25,7 @@ import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import { stringify as stringifyYaml } from "yaml";
-import { parseLegacyArbiterComment } from "../src/lib/harvest-parse.mjs";
+import { parseLegacyArbiterComment, parseReviewNoteTitle } from "../src/lib/harvest-parse.mjs";
 
 const dryRun = process.argv.includes("--dry-run");
 const wantDigest = process.argv.includes("--digest");
@@ -105,6 +105,50 @@ for (const pr of prs) {
 
 for (const s of skipped) console.error(`skip: ${s}`);
 console.error(`harvested ${harvested.length} verdict(s)`);
+
+// Review notes: the lone objections a change merged over, each an issue the operator answers (AGENTS.md §3.15,
+// amendment of 2026-09-09). Mirrored into governance/review-notes/<n>.yaml at their current state — an open note is
+// the queue, a closed one the answer — so the operations page can show them without asking GitHub at build time.
+const NOTES_DIR = path.join(ROOT, "governance", "review-notes");
+let notes = [];
+try {
+  notes = JSON.parse(gh("api", `repos/${repo}/issues?labels=review-note&state=all&per_page=100`)).filter((i) => !i.pull_request);
+} catch (err) {
+  console.error(`review notes not harvested: ${String(err).split("\n")[0]}`);
+}
+let noted = 0;
+for (const issue of notes) {
+  const parsed = parseReviewNoteTitle(issue.title);
+  const record = {
+    number: issue.number,
+    title: issue.title,
+    url: issue.html_url,
+    state: issue.state === "closed" ? "closed" : "open",
+    pr: parsed?.pr ?? null,
+    seat: parsed?.seat ?? null,
+    rules: parsed?.rules ?? [],
+    paradigm: parsed?.paradigm ?? null,
+    createdAt: (issue.created_at ?? "").slice(0, 10),
+    closedAt: issue.closed_at ? issue.closed_at.slice(0, 10) : null,
+    harvestedAt: today,
+  };
+  const file = path.join(NOTES_DIR, `${issue.number}.yaml`);
+  const text =
+    "# Harvested review note — the issue's state at harvest; closing the issue is the answer.\n" +
+    "# See scripts/harvest-governance.mjs and docs/MAINTENANCE.md, \"Review notes\".\n" +
+    stringifyYaml(record);
+  if (dryRun) {
+    console.error(`(dry run) would write ${path.relative(ROOT, file)} (${record.state})`);
+  } else {
+    fs.mkdirSync(NOTES_DIR, { recursive: true });
+    const before = fs.existsSync(file) ? fs.readFileSync(file, "utf8") : null;
+    // Unchanged notes are left alone, so a sitting's PR carries only what moved.
+    if (before !== null && before.replace(/harvestedAt: .*/, "") === text.replace(/harvestedAt: .*/, "")) continue;
+    fs.writeFileSync(file, text);
+  }
+  noted++;
+}
+console.error(`harvested ${noted} review note(s) (of ${notes.length})`);
 
 if (wantDigest) {
   const weekAgo = new Date(Date.now() - 7 * 86400000).toISOString().slice(0, 10);

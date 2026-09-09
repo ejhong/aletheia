@@ -1,0 +1,100 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 221
+title: "Subtraction, second set: shared libraries into src, superseded protocols
+  archived, the review-note label applied"
+url: https://github.com/ejhong/aletheia/pull/221
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-09
+judgedAgainst: ce771a77f7
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "This is a mechanical refactor: eight shared .mjs modules move from
+      scripts/lib/ to src/lib/ with 27 import paths and doc references
+      re-pointed, sixteen superseded protocol files move under
+      protocols/archive/, and one behavioural change makes the review-note label
+      a separate step after issue creation with a warning printed if it fails.
+      No content/ records, citations, locators, assessments, or provenance
+      stamps are touched, and the citation tooling found no identifiers in added
+      content lines. AGENTS.md is not edited. None of the §3.15 checks is
+      loosened: the panel's fail-closed 'unsure' handling, the vendor seat
+      table, the citation checker, and the merge rate limit are all the same
+      code at new paths; the review-note change strengthens rather than dodges
+      the lone-objection mechanism by making label failure loud and giving a
+      title-based fallback queue (documented in MAINTENANCE.md). The one thing I
+      would want confirmed is that loadProtocol, which the diff says reads only
+      the top level, can still resolve a promptVersion pointing at an archived
+      version, but the archived text remains in git either way, so provenance
+      for past runs is not lost. The DECISIONS.md entry is stamped with date and
+      channel as the constitution's founder-direction clause allows."
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: The eight shared modules and sixteen protocols are pure renames, with
+      imports and documentation updated consistently and no visible change to
+      citation, panel, or provenance-checking logic. Superseded protocol text
+      remains versioned under `protocols/archive/`, while current loading is
+      explicitly limited to top-level protocols, preserving historical prompt
+      provenance without presenting old protocols as current. The review-note
+      change still creates the constitutionally required public issue, then
+      attempts to apply the queue label; failure is reported loudly and the
+      deterministic title supplies a documented fallback search rather than
+      silently losing the objection. No `AGENTS.md` or content records are
+      changed, and no citation identifiers are added.
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules: []
+    reasoning: The pull request performs a clean refactor moving shared library
+      files from scripts/lib/ to src/lib/ and updating import paths across the
+      codebase without altering module behavior. Sixteen superseded prompt
+      protocols are archived under protocols/archive/ with no text modified,
+      preserving historical reproducibility. The review note helper script is
+      updated to reliably apply the review-note label via a follow-up edit step.
+      No content files or epistemic assertions are modified, AGENTS.md is
+      untouched, and no constitutional checks under §3.15 are weakened.
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff is a pure structural refactor: eight library modules rename
+      from scripts/lib/ to src/lib/ with import-path updates only (100%
+      similarity), sixteen superseded protocol files move to protocols/archive/
+      without content change, and review-notes.mjs applies the review-note label
+      as a separate post-create step with absence reported. No AGENTS.md edit,
+      no content/ ledger or citation changes, no check-weakening, and no run
+      records. Docs and DECISIONS.md only record the founder-directed move and
+      preserve promptVersion provenance for archived protocols."
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.14
+      - §3.7
+      - §3.8
+    reasoning: "This is a mechanical refactoring PR with no content/ additions
+      (citation verification confirms zero citation identifiers added), so
+      §3.1–§3.13 are not engaged. The eight library modules move with 100%
+      similarity (pure renames), and the citation checker, seat logic, and
+      fail-closed arbiter-core are re-pointed, not altered — no §3.15 check is
+      loosened or dodged; the panel-packet comment in scripts/arbiter.mjs still
+      states that AGENTS.md amendment is reserved to the founder and that failed
+      seats count as explicit `unsure` votes. Archiving sixteen superseded
+      protocol versions preserves every recorded run's traceability because
+      promptVersion names its file and the text stays in the tree, which honors
+      §3.14's revision-history requirement rather than eroding it. The
+      review-notes.mjs change actually strengthens the review-note queue
+      (§3.15's lone-objection mechanism): the label is now applied as a verified
+      step with its absence reported aloud, fixing the silent failure where
+      notes #217 and #220 were undiscoverable. Docs updates (AUTOMATION,
+      MAINTENANCE, INTEGRATIONS, a decisions entry stamped with date and
+      channel) accurately describe the change; the DECISIONS entry attributes
+      the direction to the founder in session, which is a recorded operating
+      direction, not an AI-record-as-human-record misattribution, and no
+      AGENTS.md edit appears in the diff."
+harvestedAt: 2026-09-09

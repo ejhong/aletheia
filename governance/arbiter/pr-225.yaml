@@ -1,0 +1,148 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 225
+title: "The UI pass, first PR: what happened lately on top, the judgment and the
+  panel in one block under one rule, the accounts side by side"
+url: https://github.com/ejhong/aletheia/pull/225
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-09
+judgedAgainst: 0874dc048e
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "This is a UI/domain refactor with no content changes:
+      AssessmentPanel and CrossModelPanel are merged into StandingPanel, a
+      LatestStrip and AccountsList are added, and readRuns moves from the
+      pipeline store into src/domain/runs.ts. No citations are added
+      (verification found none), AGENTS.md is untouched, and no
+      supplied-in-confidence material appears. The honesty labels are preserved
+      and in fact strengthened: StandingPanel prints 'an AI-generated assessment
+      · not reviewed by a human' separately from the ratification line,
+      explicitly noting that ratification by independent models 'is not human
+      review' (§4, §3.15), and each seat's footer keeps run id, model, date,
+      'not human reviewed'. Disagreement is still displayed rather than hidden —
+      dissenting seats show 'disputes', split claims are listed,
+      contested/unratified banners and the staleness notice remain, and
+      run/model/prompt/date provenance is stamped at the foot. The change to
+      claimConcurrence loosens 'adjacent' from all-seats-within-one-step to
+      majority-within-one-step, but that is the rule the §3.15 founder amendment
+      itself states ('a load-bearing claim splits the panel when fewer than a
+      majority of seats are within one step'), so it aligns display with the
+      constitution rather than dodging a check. One thing I would flag for
+      fixing as a review note, not a park: the CrossModelSummary doc comment
+      says 'adjacent' means 'every seat is within one step', which contradicts
+      the majority rule the code now applies, and the reader-facing sentence 'Y
+      within one step' could similarly overstate agreement — the wording should
+      be brought into line with the majority semantics."
+    cost:
+      model: claude-opus-5
+      inputTokens: 27059
+      outputTokens: 1158
+      usd: 0.164245
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.13
+      - §3.14
+      - §3.15
+      - §4
+      - §7
+    reasoning: The new StandingPanel keeps ratification distinct from human review,
+      explicitly labeling the judgment “an AI-generated assessment” and “not
+      reviewed by a human,” while showing each independent seat’s verdict and
+      whether it concurs or disputes. The revised claimConcurrence and
+      seatRelation functions implement the constitution’s one-step graded rule
+      and expose split claims rather than hiding disagreement. Assessment
+      provenance remains displayed through model, runId, prompt version, and
+      date, and individual panel entries show their run, model, date, verdict,
+      and AI status. LatestStrip derives its edition and sitting summaries from
+      existing edition and run records, without adding citations or content
+      records. The decision-log entry attributes the direction to the founder
+      with date and channel, and the diff neither edits AGENTS.md nor weakens a
+      constitutional check.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 17830
+      outputTokens: 3308
+      usd: 0.13748
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.15
+      - §4
+      - §7
+    reasoning: The change is a UI and domain reorganization that combines the
+      assessment and cross-model checks into StandingPanel, adds LatestStrip for
+      run activity, and displays accounts side by side. Concurrence calculation
+      is aligned with the constitutional rule established in §3.15 (within one
+      step qualifies as concurrence; claims split when fewer than a majority of
+      seats are within one step). Assessments retain required provenance stamps
+      (runId, model, promptVersion, date) and prominent labeling as AI-generated
+      drafts not reviewed by humans, satisfying §4 and §7.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 19709
+      outputTokens: 1070
+      usd: 0.018794
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "UI-only change: merges assessment and cross-model panels into
+      StandingPanel, adds LatestStrip/AccountsList, and moves run reading into
+      the domain. No content/ citations, no AGENTS.md edit, no confidence
+      material. StandingPanel restores separate AI-generated /
+      not-human-reviewed labels distinct from multi-model ratification (§4, §7).
+      claimConcurrence now uses the §3.15 one-step majority rule so the page
+      cannot show split beside ratified. DECISIONS.md records the 2026-09-09
+      founder direction with date and channel. Disagreement remains visible via
+      seat concurs/disputes and contested banners."
+    cost:
+      model: grok-4.5
+      inputTokens: 19220
+      outputTokens: 154
+      usd: 0.039364
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+      - §4
+      - §7
+    reasoning: "This is a presentation-layer change with no content, citations, or
+      provenance edits (citation verification found no identifiers in added
+      lines), and it does not touch AGENTS.md — the doc changes are to
+      docs/AUTOMATION.md and docs/DECISIONS.md, recording the founder's
+      2026-09-09 session direction with date and channel as §3.15 allows. Far
+      from weakening checks, the change strengthens them: it fixes a real
+      inconsistency where claim-level 'split' could display beside a ratified
+      standing by applying the constitution's one-step majority rule
+      (claimConcurrence) consistently, and it restores the 'an AI-generated
+      assessment · not reviewed by a human' label separately from the
+      ratification line, directly answering review note #226 and honoring §4's
+      prohibition on implying AI assessments are human-reviewed conclusions. The
+      merged StandingPanel still displays disagreement prominently — each seat's
+      verdict, its concurs/disputes relation, split claim IDs, contested and
+      stale states — so §3.15's 'disagreement does not publish silently' is
+      preserved, and run/model/promptVersion/date provenance remains stamped on
+      the judgment. The new domain/runs.ts reads records without repair
+      (unparsable records skipped, never fixed), consistent with 'no silent data
+      repair'. I would flag only a minor review-note-level item: the old
+      surviving-objections rendering for ratified cases is replaced by the
+      per-seat dispute labels, which conveys the same information; nothing here
+      rises to a violation."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 18666
+      outputTokens: 782
+      usd: 0.003191
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 102484
+  outputTokens: 6472
+  usd: 0.3631
+harvestedAt: 2026-09-09

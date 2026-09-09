@@ -1,0 +1,86 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 183
+title: Drop trailing question marks from case titles
+url: https://github.com/ejhong/aletheia/pull/183
+verdict: pass
+reason: 4 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-06
+judgedAgainst: 9b604b7b76
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff is a purely cosmetic rename: ten case `title` fields (plus
+      one matching `externalResearch.label` in geopolymer) lose a trailing
+      question mark, with no change to subtitles, claims, evidence, sources,
+      locators, or assessments. No citations are added or removed (verification
+      tooling found no identifiers), so §3.7/§3.8 are untouched, and no
+      assessment text or verification label is altered. Each rename is recorded
+      as an append-only history entry stamped with date, actor, model, runId,
+      and promptVersion (honestly noted as 'none — founder-directed session'),
+      satisfying §3.14 and the inspectability requirement of §3.15; DECISIONS.md
+      gets a parallel record explicitly labeled an AI record of a founder
+      instruction, so no AI record is dressed up as human. AGENTS.md is not
+      touched. The only mild concern is that a declarative title like 'Cast, Not
+      Carved' could read as more assertive than the interrogative form, but the
+      subtitle framing question and hypothesis structure remain intact, so
+      §3.3/§3.13 are not breached; the claim of founder direction is untrusted
+      but the change itself is non-consequential housekeeping that weakens no
+      check."
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff makes a limited editorial change to case-title punctuation
+      without altering claims, evidence, assessments, source material, or
+      framing questions. Each rename is recorded append-only in the relevant
+      history file with the date, AI identity, runId, prompt-version status,
+      reason, and `aiAssisted: true`, satisfying the transparency aims of
+      §§3.14–3.15. The retained interrogative subtitles continue to present the
+      underlying controversies as questions, so the stylized case names do not
+      by themselves create false certainty. No citations, locators, confidential
+      material, AGENTS.md amendments, or weakened validation checks are
+      introduced."
+  - seat: Gemini 3.8 Flash (Google)
+    vote: unsure
+    rules: []
+    reasoning: |-
+      seat failed: SyntaxError: Unexpected token '§', ..."["§3.14", §3.15"],
+       "... is not valid JSON
+    failed: true
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff only removes a trailing '?' from ten case title fields (and
+      one matching externalResearch label), leaving subtitles, claims, evidence,
+      sources, and assessments untouched. Each case receives an append-only
+      history.yaml entry dated 2026-09-06 stamped with actor/runId and marked
+      kind: housekeeping, plus a matching DECISIONS.md record of founder
+      direction; no AGENTS.md edit, no citations added or altered, and no
+      provenance or judgment silently rewritten. Citation verification found
+      nothing to check. The change is ordinary editorial housekeeping under
+      §3.14/§3.15 and does not touch epistemic content or weaken checks."
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+      - §3.8
+    reasoning: "The diff removes a trailing question mark from ten case titles and
+      nothing else epistemically load-bearing: subtitles, framing questions,
+      source titles, and assessment quotes are untouched, and no citations,
+      locators, or provenance details are added or altered (the citation
+      verifier found none in the added lines). Each case's append-only
+      history.yaml gains a stamped entry (date, runId, model, aiAssisted: true)
+      and the decision is recorded in docs/DECISIONS.md, so §3.14's
+      revision-history requirement is satisfied and nothing is changed silently.
+      Classifying the rename as 'housekeeping' is defensible rather than a §3.15
+      dodge: title punctuation does not alter any claim, evidence record,
+      direction, or assessment, so it is not the kind of consequential editorial
+      judgment that requires multi-model concurrence. The claim of founder
+      direction inside the PR body is untrusted data I cannot verify, but even
+      discounting it entirely, the change itself is cosmetic, fully documented,
+      honest about AI involvement, and weakens no check in §3."
+harvestedAt: 2026-09-09

@@ -1,0 +1,124 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 213
+title: The edition owns the case's question; anchors may span pages; compound
+  evidence is split and judged part by part
+url: https://github.com/ejhong/aletheia/pull/213
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-09
+judgedAgainst: 362adae154
+promptVersion: panel-v2
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff is machinery, not content: no citations are added
+      (verification found none), no assessment files are rewritten, and
+      AGENTS.md is untouched. The new `question`/`accounts` fields on
+      EditionSchema keep provenance visible rather than hiding it —
+      `questionRestatedBy` credits the earliest edition carrying the wording and
+      DossierHeader prints a note naming that edition's date/runId with the
+      founding question beneath, so the founder's original subtitle is not
+      erased (§3.14), and the restatement rides through the same panel judgment
+      as the rest of the candidate. The evidence-splitting path (split-v3,
+      verify.ts) tightens §3.2/§3.5 rather than relaxing it: the compound record
+      is still rejected with a reason naming its parts, each part must carry a
+      mechanically checked verbatim quote (`quotedSpans`/`unverifiedQuotes`),
+      each part is re-judged, and each part's `origin` stamps the splitter model
+      and verify runId. `SourceAnchor.also` requires each further passage to be
+      a verbatim quote with its own locator and the verifier now rejects the
+      anchor if any of them fails the mechanical quote check — an
+      exact-provenance strengthening (§3.8). The supplied-document changes
+      strengthen §3.15: a Source from a supplied document is refused unless it
+      carries the intake manifest's own permission line verbatim (a drafter's
+      self-asserted line is explicitly rejected), and a document with no
+      recorded permission now supplies no text at all, including legacy
+      manifests. The only thing that gave me pause is the retroactive addition
+      of \", in session\" to two existing DECISIONS.md founder-direction stamps;
+      that adds a channel detail the constitution expressly invites for founder
+      directions and does not alter any published judgment, so I read it as
+      ordinary record-keeping rather than a violation."
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: "The change strengthens atomicity by splitting compound evidence into
+      separately identified observations, mechanically checking each quoted
+      span, and submitting every surviving part to the second reader.
+      Multi-passage anchors retain a locator and verbatim quotation for every
+      passage, while a missing quotation rejects the anchor rather than
+      inventing or repairing provenance. Question restatements remain edition
+      records judged through the existing panel process, are inherited
+      append-only, and are publicly attributed to the originating edition while
+      preserving the founding question. The supplied-document path is
+      fail-closed: documents without manifest-recorded permission supply no
+      text, and proposed Sources are rejected unless they carry the intake’s
+      exact permission line."
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.2
+      - $3.5
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: The change implements architectural improvements for edition
+      questions, multi-page anchors, evidence splitting, and supplied document
+      permission handling without weakening epistemic checks. Source anchors
+      spanning pages (`also`) strictly enforce verbatim mechanical verification
+      for all quoted spans, failing if any span is not found. Compound evidence
+      splitting under §3.2 and §3.5 requires each split part to contain verified
+      verbatim quotes and subjects every part to a full verification pass while
+      recording provenance back to the parent. Display of edition-restated
+      questions preserves transparency and revision history under §3.14 by
+      linking back to the founding question and origin edition. Furthermore, the
+      pipeline enforces §3.15 by mechanically blocking supplied documents
+      lacking recorded intake permissions and requiring proposed sources to
+      carry verbatim permission records.
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff is schema/protocol/pipeline/UI work only: Edition gains
+      optional question/accounts with inheritance and page credit via
+      questionRestatedBy; SourceAnchor.also and evidence split-v3 add
+      multi-locator and per-observation checks with verbatim quote gates; verify
+      relevance uses caseQuestion/caseAccounts; supplied-document permission
+      must match the intake manifest line in reliabilityNotes or the source and
+      its text are refused. No AGENTS.md edit, no content/ ledger rows, no run
+      records, and citation tooling found no new identifiers. These changes
+      tighten §3.2, §3.5, §3.8, §3.14, and §3.15 rather than weaken them, and
+      DECISIONS.md records the 2026-09-09 founder direction without presenting
+      unratified judgments as ratified."
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: "The diff touches no AGENTS.md content and no published content
+      records; it is pipeline/protocol work (drafting, coding, verification
+      tooling), which §3.15 permits AI to perform, and it carries no run
+      records, so nothing publishes on one model's judgment here. Each
+      substantive change strengthens rather than weakens the epistemic checks:
+      compound evidence records are now split into one observation each with a
+      mechanically verbatim-checked quote (§3.2, §3.5), multi-page anchors are
+      verified quote-by-quote against retrieved text (§3.8), and the new
+      permission gate refuses any supplied document's Source without the
+      intake's verbatim permission line and cuts off text entirely where no
+      permission was recorded — a direct strengthening of §3.15's
+      confidentiality rule. The one judgment-laden change — letting an edition
+      restate the case's question and judging relevance against that restatement
+      — is not check-dodging: the restatement is a consequential editorial
+      change that the panel ratifies with the rest of the edition, the rationale
+      must say why, the founding question remains displayed beneath with a note
+      naming the restating edition and its runId (§3.14), and the founder's
+      direction is recorded in docs/DECISIONS.md stamped with date and channel
+      as §3.15's amendment permits. Citation verification found no added
+      identifiers, and no omitted files hide changes."
+harvestedAt: 2026-09-09

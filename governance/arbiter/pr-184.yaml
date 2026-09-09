@@ -1,0 +1,110 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 184
+title: Let editions feature catalog claims through versioned assessments
+url: https://github.com/ejhong/aletheia/pull/184
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-06
+judgedAgainst: 476d15bb45
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff is infrastructure only: no content/ records, no citations
+      added (verification section confirms none), and AGENTS.md is untouched.
+      The new ClaimTreatment path lets an edition present a catalog claim's
+      interpretation from the assessment it adopts while leaving the ledger
+      record byte-identical (test asserts claims.yaml/claims-catalog.yaml bytes
+      and loaded.claims unchanged), preserving statement, source anchor, origin,
+      and independence group per §3.8/§3.10. Provenance and labeling are
+      strengthened rather than weakened: the new ClaimAssessmentHistory shows
+      model, runId, date, and 'AI-generated' vs 'human-reviewed' for every
+      overlay, the claim page stamps adopted interpretations 'AI interpretation
+      · date · standing', and unadopted drafts are explicitly described as not
+      adopted (§3.15, §4 — no implying human review). The gating checks tighten
+      rather than loosen: load.ts still fails closed when a selected claim lacks
+      complete treatment, the schema requires a timestamped draft (not a 'check'
+      role) and unique claim ids, the blind packet excludes
+      treatment/essay/grades while adding selected catalog IDs to the grading
+      scope, and evidencePacket now throws on multiple edition files instead of
+      silently choosing one. Changing an interpretation alters the assessment
+      hash and voids prior receipts, so fresh concurrence is required before
+      standing returns (test asserts ratification drops to unratified, panel 0),
+      consistent with §3.14/§3.15. The reviewCoverage narrowing to the current
+      edition's selected claims tracks the displayed featured set and does not
+      misstate human review. Nothing here fabricates records, exposes
+      confidential material, or reclassifies a change to dodge the gate."
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.9
+      - §3.10
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: The change preserves catalog claims’ statements, source anchors,
+      origins, independence groups, and ledger bytes while placing new
+      interpretive fields in timestamped, hashed assessment overlays. Adopted
+      interpretations are labeled with assessment date and standing, while
+      unadopted records remain in an explicitly labeled assessment history with
+      model, run ID, review status, and confidence. Validation fails closed when
+      a selected catalog claim lacks a complete treatment, and the blind-review
+      scope includes selected catalog claims without exposing the candidate
+      interpretation or essay. The tests also show that revised interpretations
+      lose prior standing, require fresh concurrence, and preserve earlier
+      assessments; no citations, confidential material, AGENTS.md amendment, or
+      concurrence-threshold weakening is introduced.
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.9
+      - §3.14
+      - §3.15
+    reasoning: The change allows editions to feature catalog claims via versioned
+      assessment treatments without mutating ledger records or source anchors,
+      strictly adhering to §3.8 and §3.9. Clear separation between underlying
+      propositions and AI interpretation is preserved and explicitly displayed.
+      The new schema and snapshot utilities ensure that newly selected claims
+      are included in independent blind review scopes and require fresh
+      multi-model concurrence receipts if interpretation changes, upholding
+      §3.14 and §3.15. No constitution files are altered and all tests
+      demonstrate fail-closed validation.
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff extends editions so a selected assessment can supply
+      complete treatment (interpretation fields) for catalog claims without
+      mutating ledger proposition, anchor, origin, tier, or independence group.
+      Assessments stay append-only overlays; unadopted drafts are history-only;
+      changed interpretation forces fresh concurrence; blind packets add
+      selected IDs to grading scope while excluding treatment/essay/grades;
+      multi-edition snapshots fail closed. No AGENTS.md edit, no citations
+      added, no case judgments published—only synthetic fixtures and docs. UI
+      keeps AI/draft/standing labels distinct from human ratification.
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "The change keeps catalog claims' ledger bytes immutable (tests
+      assert claims-catalog.yaml is unchanged and
+      statements/anchors/origin/independence groups are preserved), presents AI
+      interpretations explicitly labeled 'AI interpretation' with date and
+      standing, and marks history entries 'AI-generated' vs 'human-reviewed',
+      satisfying §3.9, §3.14, and the no-human-provenance rule. Ratification
+      integrity is preserved and arguably strengthened: selection alone does not
+      mint standing (test asserts standing 'unratified'), fresh multi-seat
+      concurrence receipts are required after any interpretation change (loss of
+      standing after revised importance), blind packets include the new claims'
+      propositions for independent grading while excluding
+      treatment/prose/grades, and snapshots fail closed on ambiguous edition
+      files rather than silently choosing one. The strict ClaimTreatmentSchema
+      forbids ledger fields, preventing a treatment from replacing a proposition
+      or fabricating provenance, and no citations are added. The validation
+      change in load.ts still requires an assessment for every featured claim
+      and complete treatment for catalog ones, so it does not weaken the checks
+      (§3.15)."
+harvestedAt: 2026-09-09

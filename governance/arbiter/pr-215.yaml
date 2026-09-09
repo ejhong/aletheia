@@ -1,0 +1,108 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 215
+title: "The automation is on: weekly cron, operation live, the throttle's window
+  cleared"
+url: https://github.com/ejhong/aletheia/pull/215
+verdict: pass
+reason: "4 of 5 seats affirm compliance; one seat's objection is a review note
+  the operator answers on the record: GPT-5.6 Sol (OpenAI) (§3.15;
+  check-weakening)"
+outcome: merged
+outcomeAt: 2026-09-09
+judgedAgainst: 199fc1b3a5
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "Nothing in the diff touches AGENTS.md, content/, or any citation —
+      the mechanical verifier found no identifiers, and the changes are confined
+      to the workflow schedule, governance state file, two docs, and one
+      constant in scripts/arbiter.mjs. Turning on the weekly cron and setting
+      `governance/operation.yaml` to `state: live` are governance toggles the
+      constitution reserves to the founder's kill switch, and the file is
+      stamped with state, date, `by: founder`, and a reason naming the
+      direction's channel (session, 2026-09-09), which satisfies the provenance
+      discipline for founder directions in §3.15. The DECISIONS entry is dated,
+      channel-stamped, and honest about limits (\"What has not yet run in CI: a
+      check, a report, a draft, a verify\"). The AUTOMATION.md edit deliberately
+      preserves the pre-run bullet as the record rather than overwriting it,
+      which is the right append-style handling. The one item worth a note is the
+      GATE_EPOCH move in arbiter.mjs: it clears the content-merge throttle's
+      window and is at least the fourth such bump. On the face of it, though,
+      this is a rate throttle, not one of the checks enumerated in §3.15
+      (schemas, dangling IDs, provenance completeness, real citations,
+      multi-model ratification, parking on contest), and the comment gives a
+      coherent non-dodging rationale — the spent window consisted of hand-run,
+      hand-merged landings that the autonomous lane should not inherit — with
+      the direction dated and attributed. The narrow-veto and single-seat-park
+      language reproduced in operation.yaml matches §3.15 as ratified, so no
+      check is described as looser than it is."
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: The `scripts/arbiter.mjs` change advances `GATE_EPOCH` specifically
+      to exclude fourteen recent content landings after the 10-change throttle
+      had parked the chain. That clears a fail-closed gate precisely because its
+      limit was reached, rather than waiting for the window to expire, and
+      therefore weakens or dodges the check prohibited by §3.15. Recording a
+      founder direction in the comments does not itself amend that
+      constitutional prohibition. Keep the existing epoch and wait for the
+      window to clear, or implement a prospective, auditable distinction between
+      manual and autonomous landings without erasing already counted events.
+    paradigm: check-weakening
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.15
+    reasoning: "The diff implements the founder's direction given in session on
+      2026-09-09 to activate the autonomous maintenance chain on a weekly cron
+      schedule, updating governance/operation.yaml to 'state: live', resetting
+      the arbiter throttle's epoch past the day's manual landings, and updating
+      operational documentation accordingly. AGENTS.md is not modified, no
+      confidence materials or citations are involved, and all changes faithfully
+      record the founder's operating directions in DECISIONS.md and config per
+      §3.15."
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff turns the scheduled chain on, sets operation.yaml to live,
+      advances the content-merge throttle epoch past the construction-day hand
+      merges, and records the founder’s 2026-09-09 in-session direction in
+      DECISIONS/MAINTENANCE/AUTOMATION. AGENTS.md is untouched (§3.15). No
+      citations, sources, locators, or confidence material are added. The
+      GATE_EPOCH bump only clears the weekly content-merge count; it does not
+      loosen fabrication, confidence, constitution-edit, or multi-model
+      ratification checks. Spend bounds and kill-switch path remain as
+      documented.
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+    reasoning: "This is an operations/infrastructure change — enabling the weekly
+      cron, flipping governance/operation.yaml to live, and moving the Arbiter's
+      throttle epoch — with no content/ additions, no citations, and no edit to
+      AGENTS.md, so the fabrication, confidence, and constitution rules are not
+      triggered. The one rule that needs scrutiny is §3.15's prohibition on
+      weakening checks: the GATE_EPOCH bump in scripts/arbiter.mjs does clear a
+      throttle window that had parked #214, but the throttle is a merge-rate
+      limiter, not one of §3.15's epistemic checks (fail-closed CI, panel
+      ratification, provenance), all of which remain intact and are described as
+      still running on every PR. The epoch move is explicitly attributed to a
+      founder direction in session on 2026-09-09, recorded in the append-only
+      DECISIONS.md with date and channel, and mirrors the prior founder-directed
+      epoch bump of 2026-09-03 — it is a documented recalibration to clear a
+      known miscount from fourteen hand-merged landings that carried no trailer,
+      not a reclassification to dodge ratification (#214 was itself panel-judged
+      5/5 before the founder merged it). The kill-switch documentation is
+      preserved and strengthened (paused state or cron removal both stop it,
+      displayed on the pages), and spend is bounded by config/budget.yaml. The
+      unverifiable claims in the PR body (that the founder directed this in
+      session, that #214 ran and merged) are provenance assertions about an
+      operating record I cannot independently inspect, but nothing in the
+      visible material contradicts them, the account is internally consistent,
+      and no omitted file could hide a content-level violation since the diff is
+      complete and touches no content."
+harvestedAt: 2026-09-09

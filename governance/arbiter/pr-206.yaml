@@ -1,0 +1,134 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 206
+title: "The essay's propositions enter: a supplied document that is a ledger
+  source anchors claims; PDF founding inputs are read; scheduler order and
+  per-run half-done"
+url: https://github.com/ejhong/aletheia/pull/206
+verdict: park
+reason: "1 seat(s) find a violation: GPT-5.6 Sol (OpenAI) (§3.2, §3.5, §3.14,
+  §3.15); only 0 of 5 seats affirm compliance (4 required)"
+outcome: merged
+outcomeAt: 2026-09-09
+judgedAgainst: aff93682c9
+promptVersion: panel-v1
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: unsure
+    rules:
+      - §3.8
+      - §3.14
+    reasoning: "The OMITTED FILES list is very large and covers exactly the material
+      that would decide this PR: every check-seat assessment for both cases
+      (including the five seats whose split produces the 'contested' display),
+      all of vasocomputation's dispositions.yaml, evidence.yaml, sources.yaml,
+      editions and edition assessments, plus docs/DECISIONS.md and the inbox
+      statements that supposedly carry the founder's publication permission.
+      Nothing I can see decides the question against the change: AGENTS.md is
+      untouched; every added DOI/URL RESOLVES and the geopolymer records I can
+      inspect (GEO-C913/C918, GEO-E057–E066) quote and locate the shown
+      Davidovits 2019 K-eng text plausibly and honestly, with the authors' own
+      admissions recorded as qualifying/undermining evidence; the protocol edits
+      (verify-v3 atomicity, split-v2, edition-v4 feature-by-stakes) tighten
+      rather than weaken the checks, and the inbox permission gate in
+      inbox.test.ts strengthens the §3.15 confidence rule rather than relaxing
+      it. Two things trouble me but do not settle it: the new caption and
+      several history/inference texts cite record IDs the ledger does not hold
+      (GEO-C801, GEO-E809, GEO-E067–E821, GEO-C808, GEO-R801/R802), which is a
+      provenance/traceability defect a reader cannot reconstruct (§3.8, §3.14);
+      and admitted claims such as VASO-C146–C148 and VASO-C154–C156 are phrased
+      as propositions about what the essay's page says rather than about the
+      world, which split-v2 itself identifies as wrong. Because the
+      vasocomputation ledger files and all panel seats are unseen, I cannot
+      judge whether the 50 new claims, their anchors, and the contested
+      ratification were handled honestly, so I vote unsure."
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: violates
+    rules:
+      - §3.2
+      - §3.5
+      - §3.14
+      - §3.15
+    reasoning: "The new verify-v3 protocol explicitly allows an evidence record to
+      be admitted when `directionRight` is false, which weakens the
+      constitution’s mandatory evidence-direction check (§3.5, §3.15). GEO-E064
+      demonstrates the failure: it remains classified `supports` even though its
+      own recorded second-reader dissent says it instead qualifies or undermines
+      VASO-C580. GEO-E065 likewise remains supporting evidence while its
+      limitation concedes that it “Supports only part of a compound claim,”
+      contrary to §3.2’s prohibition on letting evidence for one proposition
+      count for the rest. The history also says GEO-E006 was unlinked from
+      GEO-C004, but the shown record still has GEO-C004 in `claimIds`, leaving
+      the visible revision account inconsistent with the actual change (§3.14)."
+  - seat: Gemini 3.8 Flash (Google)
+    vote: unsure
+    rules:
+      - §3.6
+      - §3.8
+      - §3.15
+    reasoning: The diff includes an extensive list of omitted files that exceed the
+      size budget, including core content files such as
+      content/cases/vasocomputation/sources.yaml, evidence.yaml,
+      inputs/manifest.yaml, and all associated new assessment files. While the
+      visible changes to geopolymer, migration scripts, protocols, and tests
+      appear diligent regarding atomicity (§3.2) and citation checks, key
+      substantive additions cannot be evaluated directly. Specifically, whether
+      the new sources, evidence records, and intake permissions for the
+      founder's essay adhere strictly to §3.8 (exact provenance) and §3.15
+      (proper recorded permission for supplied materials without exposing
+      confidential manuscripts) cannot be verified from the visible snippet
+      alone. Per the instruction that an omitted files list requires an 'unsure'
+      vote unless the visible diff alone decides the question, I vote unsure.
+  - seat: Grok 4.5 (xAI)
+    vote: unsure
+    rules:
+      - §3.2
+      - §3.7
+      - §3.8
+      - §3.15
+      - §4
+    reasoning: "The OMITTED FILES list is very large and includes the bulk of the
+      substantive ledger writes: vasocomputation evidence.yaml, sources.yaml,
+      research.yaml, dispositions, all edition candidates, all check/edition
+      assessments, inbox manifests/reports, verify outputs, and most
+      pipeline/schema changes. Without those files I cannot confirm
+      real-citation honesty beyond the mechanically resolved DOIs/URLs, exact
+      provenance on the new evidence, independence labeling,
+      permission/provenance recording for the founder-supplied essays, or that
+      assessments remain append-only AI drafts with contested standing rather
+      than silent ratification. What is visible (geopolymer adds, claim
+      splits/tombstones, protocol v4/v5 and verify-v3 tightening atomicity and
+      competition-linking, budget exemption, rejected compound claims) does not
+      by itself show a paradigm violation, but it also cannot clear the omitted
+      mass. Several visible VASO claims still read as text-about-the-passage
+      (e.g. VASO-C146–C148) despite split-v2, which is a possible §3.2 concern I
+      cannot fully judge without the omitted verify trail."
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: unsure
+    rules:
+      - §3.8
+      - §3.2
+      - §3.15
+    reasoning: "Everything visible in the diff is compliant in pattern: all added
+      DOIs and URLs mechanically resolve; quotes I could spot-check against the
+      included extraction of the first essay (VASO-C039, C040, C071, C073, C078)
+      match verbatim with [p. N] locators; compound claims from the first intake
+      were tombstoned append-only and repaired part-by-part under §3.2; the
+      verify protocol gates quotes mechanically with an adversarial second
+      reader; supplied-document permissions are recorded in §3.15's required
+      form (who, date, channel, where held); dissenting directions are recorded
+      on admitted records; and the split five-seat check is displayed as
+      contested rather than published silently, exactly as §3.15 requires. No
+      AGENTS.md edit occurs and nothing weakens the checks (the TORN_STREAM and
+      loader changes strengthen them). However, roughly half the epistemic
+      payload is in the OMITTED FILES list — the second essay's text extraction,
+      all vasocomputation evidence.yaml, sources.yaml (SRC-JHONG-2026A),
+      dispositions, and the panel seat files — so I cannot verify the 50 claims
+      anchored to that essay for exact provenance (§3.8) or confirm the seat
+      records, and the three newly added 'The passage states that…' claims
+      (VASO-C146–148) are phrased in the very form the PR's own split-v2
+      protocol declares impermissible, which is at minimum an inconsistency I
+      cannot fully assess without the omitted verification records. Because the
+      omitted files could conceal a §3.8 or §3.15 problem that the visible
+      portions do not decide, I cannot honestly vote either way."
+harvestedAt: 2026-09-09

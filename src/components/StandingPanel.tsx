@@ -93,8 +93,8 @@ export function StandingPanel({
       <div className="border-t border-line px-5 sm:px-7 py-4">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <h3 className="font-serif text-lg">The panel</h3>
-          <Link href="/panel" className="font-mono text-[10px] uppercase tracking-[0.14em] text-copper hover:underline underline-offset-4">
-            {checks.length} independent seats, blind to this judgment → the panel page
+          <Link href="/operations#standings" className="font-mono text-[10px] uppercase tracking-[0.14em] text-copper hover:underline underline-offset-4">
+            {checks.length} independent seats, blind to this judgment → all standings
           </Link>
         </div>
         {checks.length === 0 ? (

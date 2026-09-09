@@ -1,0 +1,135 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 189
+title: Compose and independently compare research editions
+url: https://github.com/ejhong/aletheia/pull/189
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-07
+judgedAgainst: 1da2e66dce
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The only new content citation (the DAI 'Tepe Telegrams' Pillar 43
+      post) RESOLVES, and MEM-C002/MEM-E002 use it honestly: reviewState
+      ai_extracted, direction 'context', an exact retrieved-text locator
+      explicitly labeled 'not a printed-page locator' (§3.8), limitations noting
+      it is a blog summary rather than a primary excavation report, and the
+      same-object independence group reused so the two Pillar 43 observations
+      are not double-counted (§3.10). The new edition and its assessment are
+      stamped model/runId/date/promptVersion with humanReviewed:false,
+      role:draft, and the essay itself states it is an AI-generated assessment,
+      not a reviewed human conclusion (§3.15, §4); the winner is only 'prepared'
+      for the ordinary PR arbiter plus five fresh blind checks, all of which are
+      recorded here including the seat that ranked the incumbent first. The
+      earlier failed and contested comparison receipts, rejected replies, seat
+      errors and dissenting reasons are preserved append-only in
+      proposals/intake with their original version-1 tallies rather than being
+      reinterpreted (§3.14). The workflow edits remove a cost-saving
+      supersede/close path in favour of resting while a pending batch (including
+      a park) stays open — that preserves rather than weakens the gate, and no
+      arbiter threshold or vendor-seat requirement is lowered. AGENTS.md is
+      untouched, and the dropped IMG-MEM-P02 plate is explained in rationale and
+      history rather than silently removed."
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.1
+      - §3.4
+      - §3.5
+      - §3.8
+      - §3.9
+      - §3.10
+      - §3.13
+      - §3.14
+      - §3.15
+    reasoning: The added Pillar 43 claim is a bounded observation tied to a
+      resolving URL, an explicitly described retrieved-text locator, retrieval
+      hashes, and a separate source-reading check; its Evidence record
+      distinguishes the source statement from editorial inference and assigns an
+      explicit context direction. MEM-C001 and MEM-C002 share the same
+      independence group, and the selected edition repeatedly warns that one
+      object and one source do not constitute independent support or establish
+      cultural transmission. The assessment remains calibrated as unresolved,
+      distinguishes local credibility from low diagnosticity, presents serious
+      alternatives, and labels itself AI-generated and not human-reviewed.
+      Failed drafts, the original contested comparison, all ballots and dissent
+      are preserved append-only, while candidate preparation rechecks recorded
+      receipts, current inputs and the ordinary publication gate; no AGENTS.md
+      amendment, fabricated citation, silent assessment replacement, or check
+      weakening is shown.
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.1
+      - §3.5
+      - §3.8
+      - §3.9
+      - §3.10
+      - §3.14
+      - §3.15
+    reasoning: The diff implements automated edition drafting and independent
+      multi-vendor candidate comparison without weakening publication checks or
+      altering AGENTS.md. In content/cases/deep-memory/, the added claim
+      MEM-C002 and evidence MEM-E002 record narrow physical observations from an
+      existing verified source, honestly labeled with exact retrieved-text
+      character locators (§3.8) and maintaining the shared object's independence
+      group (§3.10). Source statements and editor inferences are cleanly
+      separated (§3.9), and the evidence direction is explicitly marked as
+      context (§3.5). The new edition and draft assessment explicitly disclose
+      their AI-generated, unreviewed status and hold the case verdict as
+      unresolved (§3.13, §3.15). Complete receipts—including failed attempts,
+      rejected replies, and seat-by-seat comparison rankings—are preserved in
+      proposals/intake, and case history entries are strictly append-only
+      (§3.14).
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff does not edit AGENTS.md and adds Deep Memory content with
+      honest AI labels (ai_extracted, humanReviewed: false, role draft/check),
+      append-only assessments, and a single RESOLVES URL used only for bounded
+      Pillar 43 observations. MEM-C002/MEM-E002 keep exact retrieved-text
+      locators labeled non-page, direction context, shared independence group,
+      and source-statement vs inference separation; the adopted edition leaves
+      inheritance unresolved and omits the unledgered Met/Assyrian comparison.
+      Edition-cycle receipts preserve failed drafts, the contested v1 ballot,
+      and v2 ranking-vs-status judgments; preparation still requires the
+      ordinary gate and fresh blind checks. Workflow backpressure rests while a
+      respond PR is open rather than silently dropping parks, and no concurrence
+      threshold, citation rule, or check is weakened."
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.6
+      - §3.8
+      - §3.9
+      - §3.10
+      - §3.13
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: "The diff does not touch AGENTS.md and keeps every publication gate
+      intact: the edition comparison is explicitly a drafting decision, with the
+      ordinary PR arbiter, fresh blind checks, and fail-closed validation still
+      gating publication ('preparation is not publication', tests confirm a
+      forged tally and a violates-vote park the outcome). The only added content
+      citation (the DAINST Tepe Telegrams URL) mechanically RESOLVES, and all
+      new records carry honest provenance: AI-extracted reviewState,
+      retrieved-text character locators explicitly labeled 'not a printed-page
+      locator', separated sourceStatement/editorInference, a single shared
+      independence group for the one pillar, and 'humanReviewed: false' AI-draft
+      labels. The removal of the incumbent's unledgered Met link and the
+      unbacked Assyrian plate is an epistemic improvement (§3.7/§3.8), with the
+      rationale and prior opening preserved in append-only history and intake
+      receipts rather than silently deleted. The workflow change replaces
+      PR-superseding logic with conservative backpressure that keeps parked PRs
+      visible (§3.15) and does not lower any ratification threshold, budget, or
+      blind-check requirement; contested, failed, and invalid drafts are all
+      retained in immutable intake receipts, satisfying dissent-preservation and
+      append-only rules. Validation claims (tests, TS, lint, build, link audit)
+      are consistent with the diff's own test coverage of rollback, rest logic,
+      and vote integrity."
+harvestedAt: 2026-09-09

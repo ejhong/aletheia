@@ -1,0 +1,126 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 207
+title: "Founding inputs as sources, linked competition, split-and-judge,
+  editions by stakes (code half of #206)"
+url: https://github.com/ejhong/aletheia/pull/207
+verdict: park
+reason: "1 seat(s) find a violation: GPT-5.6 Sol (OpenAI) (§3.15)"
+outcome: merged
+outcomeAt: 2026-09-09
+judgedAgainst: aff93682c9
+promptVersion: panel-v1
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff is code, protocol and docs only — no content/ records and
+      no AGENTS.md edit (the only AGENTS-adjacent text is prose citing
+      §3.2/§3.3/§3.6/§3.15, not amendment). On balance the change tightens
+      rather than loosens the checks: verify-v3 adds an `atomic` gate
+      implementing §3.2, splits are attributed to the splitter's model/run in
+      `origin` rather than inheriting the drafter's (§3.14), a compound is
+      tombstoned as `rejected` with its reason rather than deleted, evidence
+      that cited a compound is re-judged part by part so one proposition's
+      evidence cannot silently count for the others, the compound's relations
+      are dropped and named aloud rather than fanned out, and dangling
+      parent/alternative/contradiction links are dropped with a note
+      (loader-checked in load.ts). The inbox permission gate moves from
+      any-words-plus-date to a closed grant vocabulary with a required
+      `granted:` date and a permission record naming grantor, date, channel and
+      where the statement is held — exactly the §3.15 rigor. The
+      remembered-judgment cache stores model/protocol/run/date and refuses
+      stale-protocol or unprovenanced entries, and reuse is stamped on the
+      record, so it saves money without laundering provenance. Residual concerns
+      are minor and not violations: the scheduler now runs a search before a
+      contested reconsideration (the case still displays contested, nothing
+      unratified publishes), the budget exemption is a spending cap not an
+      epistemic check, and load.ts reuses the label \"dependsOn\" in the
+      alternative/contradicts error messages — a cosmetic bug. The DECISIONS
+      edit that replaces a quoted founder direction with a paraphrase is
+      explained in the same log and does not alter any assessment."
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: "The diff publishes material from founder sessions without a recorded
+      permission: `config/budget.yaml`, `docs/DECISIONS.md`, and both new draft
+      protocols add paraphrased “founder direction” from chat or session. The
+      new decision entry expressly concludes that sessions are correspondence
+      covered by §3.15, that these directions are unpublishable without
+      permission, and that the operator cannot grant that permission. It then
+      leaves a standing permission as an open request rather than recording one.
+      Because §3.15 forbids quoting, paraphrasing, or citing unpublished
+      correspondence without rigorously recorded permission, the newly added
+      paraphrases violate the confidentiality rule despite the otherwise
+      fail-closed intake gate."
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.3
+      - §3.8
+      - §3.14
+      - §3.15
+      - §6
+    reasoning: The PR implements code, protocols, and tooling improvements without
+      touching AGENTS.md. It strengthens §3.2 enforcement by introducing
+      atomicity validation (verify-v3) that splits compound claims and evaluates
+      evidence against each individual split proposition to ensure evidence does
+      not silently transfer between rungs. It adds explicit relationship schema
+      support for competing and contradictory claims (`alternativeToClaimIds`,
+      `contradictsClaimIds`) per §3.3 and §6 with loader validation.
+      Furthermore, it tightens §3.15 compliance by requiring explicit, dated
+      permission grants before unpublished or supplied documents can enter the
+      pipeline, recording exact correspondence provenance.
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "This is protocol/pipeline code only (no AGENTS.md edit; no content/
+      citations added; citation tooling found none). It strengthens §3.2
+      (verify-v3 atomic gate + split-v2 world-propositions; parts judged on the
+      same anchor; evidence re-pointed only to parts it bears on, with notes),
+      §3.3/§6 (alternativeToClaimIds/contradictsClaimIds, linked not merged),
+      and §3.14/§3.15 (split origin names splitter/run; remembered judgments
+      keep answering-run provenance; inbox permission gate requires dated grant
+      vocabulary and records who/when/channel/held path). Edition-v4 features by
+      stakes while still grading thin evidence honestly, which serves §3.3
+      without lowering standards. Budget/scheduler changes are operational and
+      documented; DECISIONS explicitly parks #206 content standing and escalates
+      the founder-session/§3.15 tension rather than reclassifying checks. No
+      fabricated provenance, no confidence-material exposure path, no silent
+      judgment rewrites."
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.14
+      - §3.15
+      - §3.3
+      - §6
+    reasoning: "The diff does not touch AGENTS.md and adds no citations (the
+      verification section is empty of added identifiers, consistent with a
+      code/protocol change), so §3.15's amendment exclusivity and the
+      real-citations rule are not implicated. The substantive changes strengthen
+      the constitution's checks rather than weaken them: verify v3 adds an
+      atomicity gate with a split-and-rejudge round (§3.2, §3.7 anchors judged
+      on quote/locator/bearing), claim competition is made explicit as
+      loader-checked `alternativeToClaimIds`/`contradictsClaimIds` (§3.3, §6),
+      evidence is judged part-by-part so evidence for one rung never silently
+      counts for another, and the inbox permission gate is fail-closed
+      (GRANT_WORDS vocabulary, mandatory `granted:` date, withheld permissions
+      rejected — all tested). Append-only discipline is respected in the
+      migrations: compound claims become tombstones with named reasons,
+      link/evidence drops are named in history entries with actor, run, and
+      date, and the wholesale re-point bug is repaired by an audited pass that
+      reports nothing needed changing. The known awkward point — the operator's
+      seventh-round reading that founder session directions are §3.15
+      correspondence — is disclosed in DECISIONS.md as an open question for the
+      founder, paraphrase is substituted for verbatim quotes, and no new
+      confidence-material exposure is introduced beyond what already stands on
+      main; that honest self-flag is the constitution's contested-and-displayed
+      behavior, not a silent dodge. The scheduler reorder and dated budget
+      exemption carry recorded founder attribution and do not reclassify or
+      dodge any §3 check; nothing in the visible diff presents unratified #206
+      content as published."
+harvestedAt: 2026-09-09

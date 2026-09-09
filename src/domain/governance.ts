@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml } from "yaml";
 import { z } from "zod";
-import { ArbiterRecordSchema, type ArbiterRecord } from "./schema.ts";
+import { ArbiterRecordSchema, type ArbiterRecord, ReviewNoteRecordSchema, type ReviewNoteRecord } from "./schema.ts";
 
 const GOVERNANCE_DIR = path.join(process.cwd(), "governance", "arbiter");
 
@@ -40,6 +40,22 @@ export function loadArbiterRecords(): ArbiterRecord[] {
       return parsed.data;
     })
     .sort((a, b) => b.outcomeAt.localeCompare(a.outcomeAt));
+}
+
+const NOTES_DIR = path.join(process.cwd(), "governance", "review-notes");
+
+/** Every harvested review note, open first, then newest first. Absent directory = none yet; a bad file fails the build. */
+export function loadReviewNotes(): ReviewNoteRecord[] {
+  if (!fs.existsSync(NOTES_DIR)) return [];
+  return fs
+    .readdirSync(NOTES_DIR)
+    .filter((f) => f.endsWith(".yaml"))
+    .map((f) => {
+      const parsed = ReviewNoteRecordSchema.safeParse(parseYaml(fs.readFileSync(path.join(NOTES_DIR, f), "utf8")));
+      if (!parsed.success) throw new Error(`governance/review-notes/${f}: ${parsed.error.issues.map((i) => i.message).join("; ")}`);
+      return parsed.data;
+    })
+    .sort((a, b) => (a.state === b.state ? b.createdAt.localeCompare(a.createdAt) : a.state === "open" ? -1 : 1));
 }
 
 /** One promotions-ledger entry (proposals/promotions-ledger.yaml). */

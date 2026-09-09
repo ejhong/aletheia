@@ -3,8 +3,11 @@ import Link from "next/link";
 import { ArbiterVerdictCard } from "@/src/components/ArbiterVerdictCard";
 import { AssessmentBadge } from "@/src/components/AssessmentBadge";
 import { VerdictDot } from "@/src/components/VerdictDot";
-import { loadArbiterRecords, loadPromotionsLedger } from "@/src/domain/governance";
+import { loadArbiterRecords } from "@/src/domain/governance";
 import { loadAllCases } from "@/src/domain/load";
+import { operationsView } from "@/src/domain/operations";
+import { readRuns } from "@/src/domain/runs";
+import { draftedFrom, inboxPending, nextAction } from "@/src/pipeline/next";
 import { assessmentLabels } from "@/src/domain/schema";
 import {
   caseStandings,
@@ -13,7 +16,7 @@ import {
   seatRecords,
 } from "@/src/domain/panel";
 
-export const metadata: Metadata = { title: "The Panel" };
+export const metadata: Metadata = { title: "Operations" };
 
 const statusChip: Record<string, string> = {
   ratified: "text-verdigris border-verdigris/40",
@@ -33,46 +36,137 @@ const kindTag: Record<string, string> = {
  * at build time from the same records the rest of the site runs on —
  * nothing here is authored, so it cannot drift from the ledger.
  */
-export default function PanelPage() {
+/** The panel's own bill, summed from harvested verdicts that carry a cost (since 2026-09-09). */
+function verdictsCost(records: { cost?: { usd: number | null } | undefined }[]): { usd: number; judgments: number } {
+  const priced = records.filter((r) => typeof r.cost?.usd === "number");
+  return { usd: Number(priced.reduce((n, r) => n + (r.cost!.usd as number), 0).toFixed(2)), judgments: priced.length };
+}
+
+export default function OperationsPage() {
   const standings = caseStandings();
   const dissent = dissentGallery();
   const seats = seatRecords();
   const events = opsFeed();
 
-  // Metabolism vitals, derived from the same ledgers the loops write —
-  // no stored counters, nothing to drift. KISS by founder direction:
-  // one row of numbers, each backed by an inspectable file.
-  const promotions = loadPromotionsLedger();
-  const studies = loadAllCases().flatMap((c) => c.studies);
-  const metabolism: Array<[string, number]> = [
-    ["studies pre-registered", studies.filter((s) => s.rows.length === 0).length],
-    ["studies collected", studies.filter((s) => s.rows.length > 0).length],
-    [
-      "sources promoted",
-      promotions.filter((e) => e.disposition === "promoted").length,
-    ],
-    [
-      "duplicates refused",
-      promotions.filter((e) => e.disposition === "duplicate").length,
-    ],
-  ];
+  const ops = operationsView();
+  const cases = loadAllCases();
+  const runs = readRuns();
+  const next = nextAction(cases, runs, ops.spend.today, draftedFrom(runs), inboxPending(cases));
+  const caseTitle = (slug: string) => cases.find((c) => c.record.slug === slug)?.record.title ?? slug;
+  const usd = (n: number | null) => (n === null ? "unpriced in part" : `$${n.toFixed(2)}`);
+  const panelUsd = verdictsCost(loadArbiterRecords());
   const verdicts = loadArbiterRecords();
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-14">
       <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-copper">
-        the panel
+        operations
       </p>
       <h1 className="font-serif text-4xl tracking-tight mt-3">
-        Who judges this site, and how it is going
+        How this site runs, and how it is going
       </h1>
       <p className="mt-4 font-serif text-lg italic text-ink-soft max-w-3xl">
-        Aletheia is operated by AI. Five independent models — different
-        vendors, judging blind — ratify or contest every assessment, and a
-        constitutional panel votes on every consequential change. This page
-        is their public record, derived from the ledger at every build.
-        Disagreement is displayed, never resolved by hiding it.
+        Aletheia is operated by AI under a constitution. A weekly sitting
+        chooses a case and a verb, spends within caps the founder set, and
+        opens a pull request; five independent models — different vendors,
+        judging blind — ratify or contest every assessment and vote on
+        every consequential change. This page is the public record of all
+        of it, derived from the ledger at every build. Disagreement is
+        displayed, never resolved by hiding it.
       </p>
+
+      {/* ── state, schedule, what is next ─────────────────────────── */}
+      <section id="state" className="mt-12 scroll-mt-24">
+        <h2 className="font-serif text-3xl tracking-tight">The state</h2>
+        <div className="mt-4 grid gap-3 sm:grid-cols-3">
+          <div className="border border-line bg-paper-deep/40 px-4 py-3">
+            <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-faint">automation</p>
+            <p className={`mt-1 font-serif text-2xl ${ops.operation.state === "live" ? "text-verdigris" : "text-ochre"}`}>{ops.operation.state}</p>
+            <p className="mt-1 text-[12.5px] text-ink-soft">since {ops.operation.since}, by the {ops.operation.by}</p>
+            <p className="mt-1.5 text-[12px] leading-relaxed text-faint">{ops.operation.reason}</p>
+          </div>
+          <div className="border border-line bg-paper-deep/40 px-4 py-3">
+            <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-faint">the sitting</p>
+            <p className="mt-1 font-serif text-2xl">{ops.schedule.cron ? "scheduled" : "by hand"}</p>
+            <p className="mt-1 text-[12.5px] text-ink-soft">{ops.schedule.human}</p>
+            <p className="mt-1.5 text-[12px] leading-relaxed text-faint">Three budgeted choices a sitting; each opens one pull request the panel judges. The founder can dispatch a sitting at any time, and the state above is the kill switch.</p>
+          </div>
+          <div className="border border-line bg-paper-deep/40 px-4 py-3">
+            <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-faint">what the ledger wants next</p>
+            <p className="mt-1 font-serif text-2xl">{next.verb}{next.case ? <span className="text-ink-soft"> · {caseTitle(next.case)}</span> : null}</p>
+            <p className="mt-1.5 text-[12px] leading-relaxed text-faint">{next.reason}</p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── spend against the caps ────────────────────────────────── */}
+      <section id="spend" className="mt-14 scroll-mt-24">
+        <h2 className="font-serif text-3xl tracking-tight">Spend</h2>
+        <p className="mt-2 text-[14px] text-ink-soft max-w-2xl">
+          Every paid model call is a row in the spend ledger, priced only from a reviewed tariff. The caps are the founder&apos;s, on the record; a call that would pass one is refused, never trimmed.
+        </p>
+        <div className="mt-4 grid gap-3 sm:grid-cols-4">
+          {[
+            ["today", `${usd(ops.spend.day.usd)} of $${ops.spend.caps.perDay}`, `${ops.spend.day.rows} call(s) · ${ops.spend.caps.phase} caps`],
+            ["this month", `${usd(ops.spend.month.usd)} of $${ops.spend.caps.perMonth}`, `${ops.spend.month.rows} call(s)${ops.spend.budget.crunch ? ` · crunch until ${ops.spend.budget.crunch.until}` : ""}`],
+            ["all time", usd(ops.spend.allTime.usd), `${ops.spend.allTime.calls} call(s) · ${ops.spend.allTime.inputTokens.toLocaleString("en-US")} tokens in`],
+            ["the panel", panelUsd.judgments ? `$${panelUsd.usd.toFixed(2)}` : "unpriced before 2026-09-09", `${panelUsd.judgments} priced judgment(s), kept with each verdict below`],
+          ].map(([k, v, note]) => (
+            <div key={k} className="border border-line bg-paper-deep/40 px-4 py-3">
+              <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-faint">{k}</p>
+              <p className="mt-1 font-serif text-2xl">{v}</p>
+              <p className="mt-1 text-[12px] text-faint">{note}</p>
+            </div>
+          ))}
+        </div>
+        <p className="mt-3 font-mono text-[11px] tracking-[0.04em] text-faint">
+          by verb: {ops.spend.byVerb.map((v) => `${v.verb} ${usd(v.usd)} (${v.rows})`).join(" · ")}
+        </p>
+      </section>
+
+      {/* ── recent sittings ───────────────────────────────────────── */}
+      <section id="sittings" className="mt-14 scroll-mt-24">
+        <h2 className="font-serif text-3xl tracking-tight">Recent sittings</h2>
+        <p className="mt-2 text-[14px] text-ink-soft max-w-2xl">What the loop did lately, across cases, in a reader&apos;s words; each line is a run record, and each case&apos;s page carries its full record.</p>
+        <ul className="mt-4 border border-line bg-paper">
+          {ops.sittings.map((r) => (
+            <li key={r.runId} className="flex flex-wrap gap-x-3 gap-y-0.5 border-b border-line/60 last:border-b-0 px-4 py-2 text-[13px] leading-relaxed text-ink-soft">
+              <span className="font-mono text-[10.5px] tracking-[0.06em] text-faint w-[6.5rem] shrink-0">{r.date}</span>
+              <span className="font-mono text-[10.5px] uppercase tracking-[0.12em] text-copper w-[4.5rem] shrink-0">{r.verb}</span>
+              <Link href={`/cases/${r.case}/#sitting-${r.runId}`} className="w-[12rem] shrink-0 truncate hover:text-copper">{caseTitle(r.case)}</Link>
+              <span className="min-w-0">
+                {r.summary}
+                {r.outcome !== "completed" ? <span className="ml-2 font-mono text-[10px] uppercase tracking-[0.12em] text-ochre">{r.outcome}</span> : null}
+                {r.usd !== null ? <span className="ml-2 font-mono text-[10px] text-faint">${r.usd.toFixed(2)}</span> : null}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {/* ── review notes ──────────────────────────────────────────── */}
+      <section id="review-notes" className="mt-14 scroll-mt-24">
+        <h2 className="font-serif text-3xl tracking-tight">Review notes</h2>
+        <p className="mt-2 text-[14px] text-ink-soft max-w-2xl">
+          When four seats pass a change over one seat&apos;s objection, the objection is not lost: it becomes an issue the operator answers on the record — by a fix, or by a reply saying why not — and closing it is the answer. Open notes are the queue.
+        </p>
+        {ops.reviewNotes.length === 0 ? (
+          <p className="mt-3 text-[13.5px] text-faint">None harvested yet; the sitting copies them in.</p>
+        ) : (
+          <ul className="mt-4 border border-line bg-paper">
+            {ops.reviewNotes.map((n) => (
+              <li key={n.number} className="flex flex-wrap gap-x-3 gap-y-0.5 border-b border-line/60 last:border-b-0 px-4 py-2 text-[13px] leading-relaxed text-ink-soft">
+                <span className={`font-mono text-[10px] uppercase tracking-[0.14em] w-[3.5rem] shrink-0 ${n.state === "open" ? "text-ochre" : "text-faint"}`}>{n.state}</span>
+                <span className="font-mono text-[10.5px] tracking-[0.06em] text-faint w-[6.5rem] shrink-0">{n.createdAt}</span>
+                <a href={n.url} className="min-w-0 hover:text-copper">
+                  {n.pr !== null ? `#${n.pr} — ` : ""}{n.seat ?? "a seat"}: {n.rules.join(", ")}{n.paradigm ? ` (${n.paradigm})` : ""}
+                </a>
+                {n.closedAt ? <span className="font-mono text-[10px] text-faint">answered {n.closedAt}</span> : null}
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
 
       {/* ── standings ─────────────────────────────────────────────── */}
       <section id="standings" className="mt-12 scroll-mt-24">
@@ -265,26 +359,6 @@ export default function PanelPage() {
           </div>
         </section>
       )}
-
-      {/* ── metabolism vitals ─────────────────────────────────────── */}
-      <section id="metabolism" className="mt-14 scroll-mt-24">
-        <h2 className="font-serif text-3xl tracking-tight">Metabolism</h2>
-        <p className="mt-2 text-[14px] text-ink-soft max-w-2xl">
-          What the automated loops have produced, in totals derived from
-          the repository&apos;s own ledgers. Every artifact behind these
-          numbers rode the same gates as any human change.
-        </p>
-        <div className="mt-6 border border-line bg-paper px-5 py-4 flex flex-wrap gap-x-8 gap-y-2">
-          {metabolism.map(([name, n]) => (
-            <div key={name}>
-              <span className="font-serif text-2xl tracking-tight">{n}</span>
-              <span className="ml-2 font-mono text-[11px] uppercase tracking-[0.16em] text-faint">
-                {name}
-              </span>
-            </div>
-          ))}
-        </div>
-      </section>
 
       {/* ── operations log ────────────────────────────────────────── */}
       <section id="operations" className="mt-14 scroll-mt-24">

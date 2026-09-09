@@ -1,0 +1,116 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 181
+title: Save coherent research editions and preserve Deep Memory's opening
+url: https://github.com/ejhong/aletheia/pull/181
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-06
+judgedAgainst: fba4aa3705
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff adds an immutable, append-only edition chain
+      (content/cases/deep-memory/editions/edition-2026-09-06-opening.yaml) whose
+      article is byte-identical to the deleted overview.md, with the essay's two
+      citations and the {claim=MEM-C001} reference preserved; loadCase now
+      rejects having both overview.md and an edition, so there is one article
+      authority and no silent loss of provenance. Assessment handling
+      strengthens rather than weakens honesty: assessment is explicitly null
+      (\"This edition leaves the question unassessed\"), editionDraft throws if
+      a pinned assessment's hash changed, EditionProposalSchema refuses runs
+      with humanReviewed or role \"check\", and the original model/date are
+      referenced rather than copied into an editor's stamp (§3.14, §3.15
+      respected). Gates are not relaxed: MAINTENANCE.md explicitly adds \"new or
+      changed editions\" to the needs-approval lane, the panel stays enabled,
+      thresholds unchanged, and ledger changes invalidate old receipts plus
+      surface an editionStale notice. The reassess-changed and
+      reconcile-contested early-returns route work into edition proposals with
+      the incumbent retained and dissent still derived, which is a workflow
+      reroute, not a check bypass. AGENTS.md is untouched; the
+      DECISIONS/AUTOMATION/DATA_MODEL updates describe limits candidly. The only
+      failing citation check is the Met URL with HTTP 429 (rate limiting, not
+      nonexistence), and it is pre-existing text moved verbatim, not a newly
+      asserted source."
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: The change preserves the existing Deep Memory essay byte-for-byte in
+      a versioned edition, explicitly records that no assessment was made, and
+      keeps the edition’s model, runId, timestamp, prompt version, hashes, and
+      predecessor chain visible. Assessment references are hash-bound to the
+      original assessment record, while later unadopted drafts cannot silently
+      alter the displayed judgment; ledger changes invalidate standing and
+      produce a stale-edition notice. The DAI URL resolves, and the Met URL is
+      an identical relocation from the deleted overview; its HTTP 429 is an
+      access-rate failure rather than positive evidence of a fabricated locator.
+      The diff does not edit AGENTS.md, expose confidential material, or weaken
+      the publication panel, and it adds validation for stale inputs, dangling
+      references, assessment identity, and edition history.
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: The change introduces an immutable, versioned edition mechanism that
+      pairs an essay, claim selection, and assessment reference without mutating
+      past records or fabricating data. Deep Memory's original overview text is
+      preserved byte for byte in its initial edition, keeping the question
+      explicitly unassessed and retaining its existing photographic plates and
+      citations. All edition references, input hashes, and load-bearing claim
+      requirements are strictly validated in domain loading and schema checking.
+      Maintenance documentation and workflow policies ensure editions remain
+      classified under the consequential-content gate requiring multi-model
+      arbiter concurrence.
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff introduces immutable edition manifests that bind essay
+      text, claim selection, and an exact assessment reference (or explicit
+      null), preserving original assessment authorship rather than copying or
+      relabeling it, which aligns with §3.14 and §3.15. Deep Memory’s opening is
+      moved byte-for-byte into the first edition with assessment: null, plates
+      and MEM-C001 intact, honest model stamp “no model call,” and no fabricated
+      sources, locators, or judgments. Edition pages and UI copy disclose that
+      archive links/captions use the current ledger and that unassessed openings
+      stay unassessed; catalog/explorer wording no longer overclaims absence of
+      evidence. Authoring validates prospective cases, refuses silent overwrite
+      of assessments, keeps AGENTS.md untouched, and leaves the multi-model gate
+      and thresholds unchanged; CITATION VERIFICATION shows the Tepe URL
+      resolving and the Met URL as HTTP 429 (not non-existence), matching the
+      preserved incumbent text."
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: "The edition manifest preserves the Deep Memory opening byte-for-byte
+      (verified against the deleted overview.md), keeps both plates and the
+      MEM-C001 claim reference, and honestly records assessment: null with model
+      'Aletheia incumbent assembler (no model call)' — no fabricated judgment or
+      human review impersonation (§3.15, §4). The dainst.blog URL resolves; the
+      Met URL's HTTP 429 is a rate-limit on a URL preserved verbatim from
+      already-published content, not positive evidence of fabrication. The
+      edition chain is validated (predecessor hashes, no forks, load-bearing
+      claims must stay selected), assessment authorship is pinned by runId+hash
+      rather than relabeled, and editions are explicitly added to the
+      needs-approval arbiter lane, which strengthens rather than weakens the
+      gate (§3.15). Skipping legacy reassessment/reconciliation for migrated
+      cases does not silence disagreement: standing is still derived from blind
+      checks, stale editions show a visible notice, review receipts invalidate
+      on ledger change, and all runs remain in append-only history (§3.14). The
+      claims-explorer prose change removes a page-level blanket sentence but
+      per-record ai_extracted provenance labeling is untouched, so §4's display
+      requirements still hold. No AGENTS.md edit is present, and no source,
+      evidence, claim, or assessment record is modified."
+harvestedAt: 2026-09-09

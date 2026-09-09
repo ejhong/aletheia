@@ -1,0 +1,112 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 211
+title: "Close the loop: the Arbiter reads a run's account, budgets that crunch
+  then settle, the cadence backs off, the panel priced"
+url: https://github.com/ejhong/aletheia/pull/211
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-09
+judgedAgainst: 1f1b3d0113
+promptVersion: panel-v2
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The change is infrastructure and documentation: it does not touch
+      AGENTS.md, adds no content records, and the tooling reports no citation
+      identifiers under content/. The core addition, `runAccount` in
+      scripts/lib/arbiter-core.mjs, strengthens rather than weakens the §3.15
+      checks: it mechanically extracts run records, edition
+      headers/rationale/article, added history and disposition lines, and each
+      seat's verdict, marks every clip in place with the count not shown,
+      deliberately excludes working files, and states in its header that no
+      model wrote it; panel-v2.md tells seats the same and preserves the
+      'violates' rule for AGENTS.md edits and the OMITTED FILES instruction. The
+      reduced diff budget (PACKET_CHARS - account length) is honest because
+      omitted paths are still listed for the seats. The `crunch` block in
+      config/budget.yaml raises spend ceilings, not epistemic checks, and is
+      dated, reasoned, attributed, self-expiring, and the guard's refusal now
+      names the phase — a budget cap is not one of the §3.15 checks. Notably,
+      the one genuinely check-weakening proposal (one-step concurrence) was
+      withdrawn and is recorded in DECISIONS as reserved to the founder as a
+      constitutional amendment, with the exact-word rule and the four contested
+      standings left in place — the correct handling. The doc edits correct
+      earlier overstatements ('has run end to end, twice' → two cases by hand,
+      nothing yet in CI) toward greater candor, and the tariffs rows carry
+      source URLs and checked dates with a noted 2027 rate change; I see no
+      internal inconsistency giving positive evidence of fabrication, and
+      unfamiliarity with those price pages is not evidence against them."
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+      - §8
+    reasoning: The change does not edit AGENTS.md, alter the concurrence threshold,
+      or present a content assessment as ratified; it explicitly records that
+      the proposed looser concurrence rule was withdrawn as a §3.15 weakening.
+      The run-account mechanism is mechanically extracted, identifies its source
+      paths and head revision, marks every clipping operation, preserves an
+      omitted-files warning, and retains the instruction to vote unsure when the
+      account is insufficient. Adding the three missing vendor credentials
+      restores the intended five-seat panel rather than weakening it, while the
+      budget phases and cadence behavior are explicit, dated, and covered by
+      tests. The tariff entries provide vendor URLs and checked dates, and there
+      is no positive evidence in the packet that those post-training pricing
+      records or locators are fabricated. No content records, confidential
+      supplied materials, published judgments, or assessment histories are
+      modified.
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.15
+    reasoning: The change updates pipeline automation, tariff pricing, and arbiter
+      tooling without modifying AGENTS.md or altering content records. It
+      implements mechanical extraction of run accounts (`runAccount`) and
+      updates the panel protocol (v2) so constitutional seats can evaluate large
+      content runs without being blocked by diff truncations of working files,
+      while leaving full discretion to vote unsure if omitted files are needed.
+      Budget adjustments for bootstrap crunch and steady-state cadence properly
+      record the founder's in-session direction per §3.15, and passing missing
+      panel API keys to the CI workflow upholds the multi-model concurrence
+      requirement. No constitutional checks are weakened.
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff is infrastructure and docs only: runAccount mechanically
+      extracts run/edition/history/assessment slices for the panel when diffs
+      exceed the packet budget, with explicit clip markers and working files
+      excluded; budget crunch/standing caps and cadence backoff are
+      founder-stamped config and scheduling; tariffs fill null panel prices from
+      dated vendor URLs; chain.yml supplies the other seats' keys so CI checks
+      do not drop seats. AGENTS.md is untouched. DECISIONS records that the
+      one-step concurrence idea was withdrawn as a §3.15 weakening and left for
+      a founder amendment, so this PR does not loosen concurrence or reclassify
+      standings. No content/ citations, no run ledger mutations, no confidence
+      material, and the omitted-files list is empty."
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "The diff does not touch AGENTS.md and contains no content/ records,
+      so no citation, provenance, or assessment rules are engaged; citation
+      verification found no added identifiers. The budget crunch block is a
+      dated, reasoned, self-expiring founder direction recorded in
+      config/budget.yaml and DECISIONS.md with date and channel, matching the
+      exemptions mechanism the constitution already permits — it is a cost
+      guardrail, not a §3 epistemic check, so it is not check-weakening under
+      §3.15. The runAccount feature strengthens rather than weakens panel
+      review: it is a mechanical, clip-marked, header-declared extraction by
+      repo tooling (tested in arbiter.test.ts, working files explicitly
+      excluded), and the seats are told it was machine-generated. Most
+      importantly, the one genuinely constitution-touching proposal — one-step
+      concurrence, which would loosen the multi-model concurrence check and
+      reclassify displayed standings — was withdrawn and parked as a §3.15
+      weakening reserved to the founder, exactly the behavior the constitution
+      demands; it is not in this diff. The saturation and cadence fixes are
+      tested operational changes to scheduling, not revisions of published
+      judgments, and the withdrawn amendment plus the open case question are
+      displayed as open rather than silently decided."
+harvestedAt: 2026-09-09

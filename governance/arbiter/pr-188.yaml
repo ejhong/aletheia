@@ -1,0 +1,86 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 188
+title: Plan the later review of assessments and the full reading experience
+url: https://github.com/ejhong/aletheia/pull/188
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-06
+judgedAgainst: 09d1b103b5
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches only docs/AUTOMATION.md (one roadmap row for a
+      future, post-pipeline task) and appends a dated decision record to
+      docs/DECISIONS.md; AGENTS.md is untouched, so §3.15's amendment
+      reservation is not implicated. No content/ records, citations, locators,
+      or assessments are added or altered, and the citation tooling found no
+      identifiers, so §3.7/§3.8 are not engaged. The change does not weaken any
+      check: publication gating, append-only assessments and provenance display
+      are left intact, and the plan explicitly says missing case-level cost
+      allocations must be left explicit rather than inferred, and detailed run
+      history kept in disclosures — consistent with §3.13 and §3.15
+      inspectability. Surfacing a compact 'current assessment' with
+      what-changed-and-why near the top of a narrative is a display idea, not a
+      removal of history, and it is paired with 'the detailed ledger still
+      accessible' (§3.14). Provenance stamps (model, date, runId, promptVersion,
+      founder direction, AI-written wording) are present and honestly labeled,
+      including the candid note that runId is a locally assigned session label
+      and promptVersion is none. The PR body's claim that the founder supplied
+      the direction is untrusted data, but nothing here would be a violation
+      even if unattributed, since it is a non-normative planning note."
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+      - §7
+    reasoning: The change adds an append-only decision entry and updates a future
+      roadmap item without altering published assessments, citations, evidence
+      records, or current layout. It preserves accountability metadata by
+      recording the model, date, runId, prompt-version status, and that the
+      wording is AI-written rather than presenting it as a human-authored
+      record. The proposed interface direction emphasizes visible judgment
+      changes, access to the detailed ledger, and disclosed automation history,
+      which is consistent with versioning and AI-transparency requirements. It
+      neither edits AGENTS.md nor weakens publication, citation, provenance, or
+      multi-model checks.
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules: []
+    reasoning: The diff makes non-normative planning and documentation updates in
+      docs/AUTOMATION.md and docs/DECISIONS.md. It expands a future milestone to
+      include a holistic review of the reading experience and records the
+      founder's direction with proper provenance metadata. It does not touch
+      AGENTS.md, modify content records, or weaken any constitutional checks.
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff only amends docs/AUTOMATION.md step 8 and appends a dated
+      entry to docs/DECISIONS.md, recording an expanded later UI/planning task
+      (reading hierarchy, compact assessment placement, automation visibility)
+      after pipeline work. No content/ records, citations, assessments, layouts,
+      publication rules, or AGENTS.md are altered, so §§3.7–3.15 epistemic and
+      check-weakening constraints are untouched. Provenance stamps and the
+      explicit note that no public layout changes occur match §3.14/§4
+      versioning practice. Omitted-files list is empty and citation tooling
+      found nothing to verify.
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "The change is documentation-only: it updates a build-sequence row in
+      docs/AUTOMATION.md and appends a decision record to docs/DECISIONS.md,
+      making no change to content, assessments, provenance, or any check in §3.
+      No citations or locators are added, so §3.7/§3.8 are not implicated, and
+      the decision record honestly labels the wording as AI-written with model,
+      date, and runId per §3.14 and the Phase-1 AI-labeling rules. It does not
+      edit AGENTS.md, does not present any unratified draft as ratified, and
+      does not publish anything — it explicitly defers all layout and assessment
+      changes. The expanded task direction is attributed to the founder
+      (Eugene), which is exactly the kind of decision docs/DECISIONS.md exists
+      to record; nothing in the diff weakens checks, fabricates provenance, or
+      changes published judgments."
+harvestedAt: 2026-09-09

@@ -19,8 +19,8 @@ export interface Operations {
   schedule: { cron: string | null; human: string };
   spend: {
     today: string;
-    day: { usd: number | null; rows: number };
-    month: { usd: number | null; rows: number };
+    day: { usd: number; rows: number; unpriced: number };
+    month: { usd: number; rows: number; unpriced: number };
     allTime: Cost;
     caps: ReturnType<typeof capsFor>;
     budget: Budget;

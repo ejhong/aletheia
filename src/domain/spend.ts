@@ -43,8 +43,16 @@ export function spendByCase(root = process.cwd()): Record<string, Cost> {
   return Object.fromEntries(Object.entries(out).map(([k, v]) => [k, sumCost(v)]));
 }
 
-/** Dollars spent by rows matching a date prefix (a day "2026-09-09" or a month "2026-09"); null when any matching row is unpriced. */
-export function spentOn(rows: SpendRow[], prefix: string): { usd: number | null; rows: number } {
+/**
+ * Dollars spent by rows matching a date prefix (a day "2026-09-09" or a month
+ * "2026-09"): the sum of the priced rows, and the count of rows no tariff
+ * priced — said separately, so a total is never silently a floor.
+ */
+export function spentOn(rows: SpendRow[], prefix: string): { usd: number; rows: number; unpriced: number } {
   const hit = rows.filter((r) => r.date.startsWith(prefix));
-  return { usd: hit.length && hit.every((r) => r.usd !== null) ? Number(hit.reduce((n, r) => n + (r.usd ?? 0), 0).toFixed(2)) : hit.length ? null : 0, rows: hit.length };
+  return {
+    usd: Number(hit.reduce((n, r) => n + (r.usd ?? 0), 0).toFixed(2)),
+    rows: hit.length,
+    unpriced: hit.filter((r) => r.usd === null).length,
+  };
 }

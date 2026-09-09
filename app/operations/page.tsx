@@ -107,8 +107,8 @@ export default function OperationsPage() {
         </p>
         <div className="mt-4 grid gap-3 sm:grid-cols-4">
           {[
-            ["today", `${usd(ops.spend.day.usd)} of $${ops.spend.caps.perDay}`, `${ops.spend.day.rows} call(s) · ${ops.spend.caps.phase} caps`],
-            ["this month", `${usd(ops.spend.month.usd)} of $${ops.spend.caps.perMonth}`, `${ops.spend.month.rows} call(s)${ops.spend.budget.crunch ? ` · crunch until ${ops.spend.budget.crunch.until}` : ""}`],
+            ["today", `$${ops.spend.day.usd.toFixed(2)} of $${ops.spend.caps.perDay}`, `${ops.spend.day.rows} call(s)${ops.spend.day.unpriced ? `, ${ops.spend.day.unpriced} unpriced` : ""} · ${ops.spend.caps.phase} caps`],
+            ["this month", `$${ops.spend.month.usd.toFixed(2)} of $${ops.spend.caps.perMonth}`, `${ops.spend.month.rows} call(s)${ops.spend.month.unpriced ? `, ${ops.spend.month.unpriced} unpriced` : ""}${ops.spend.budget.crunch ? ` · crunch until ${ops.spend.budget.crunch.until}` : ""}`],
             ["all time", usd(ops.spend.allTime.usd), `${ops.spend.allTime.calls} call(s) · ${ops.spend.allTime.inputTokens.toLocaleString("en-US")} tokens in`],
             ["the panel", panelUsd.judgments ? `$${panelUsd.usd.toFixed(2)}` : "unpriced before 2026-09-09", `${panelUsd.judgments} priced judgment(s), kept with each verdict below`],
           ].map(([k, v, note]) => (

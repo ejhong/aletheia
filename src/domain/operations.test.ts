@@ -17,6 +17,8 @@ describe("the operations page", () => {
     expect(["live", "paused"]).toContain(ops.operation.state);
     expect(["exemption", "crunch", "standing"]).toContain(ops.spend.caps.phase);
     expect(ops.spend.day.rows).toBeGreaterThan(0);
+    expect(ops.spend.day.usd).toBeGreaterThan(0); // the priced sum, with the unpriced rows counted beside it
+    expect(ops.spend.day.unpriced).toBeGreaterThanOrEqual(0);
     expect(ops.spend.allTime.calls).toBeGreaterThanOrEqual(ops.spend.month.rows);
     expect(ops.sittings.length).toBeGreaterThan(0);
     expect(ops.sittings.length).toBeLessThanOrEqual(24);

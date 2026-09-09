@@ -1567,6 +1567,26 @@ the rest, and the verifier reads relevance against the current edition's
 question and competing accounts; the title is the case's name and stays
 the founder's. Not built until the founder says so.
 
+**Constitutional amendment (founder's act, 2026-09-09): concurrence is
+within one step.** The panel's five seats, from five vendors, choose
+among eight verdict words and rarely pick the same one; the standing rule
+counted a neighbouring word as dissent, so cases sat one seat short of
+ratified on wording alone. The operator proposed the one-step rule in #211
+and the Arbiter parked it — loosening a §3.15 check is not the operator's
+to do. The founder makes it the constitution's: a seat's case verdict
+within one step of the draft's on the graded scale concurs and two steps
+away disputes; "unresolved" and "presently untestable" stand between
+"weakly supported" and "mixed" — one step from either and from each
+other, two from "contradicted" and from "provisionally supported"; a
+load-bearing claim splits the panel when fewer than a majority of seats
+are within one step of the draft; and every seat's own word stays
+displayed beside the standing, neighbours included, so nothing tolerated
+is hidden. On the records of this date the rule moves Pre-Columbian
+Amazon, The Immortality Key, Zero Worlds and Cast, Not Carved from
+contested to ratified with the panel's own words unchanged; no new
+evidence enters and none is claimed. Drafted by the operator on the
+founder's direction; committed and merged by the founder's hand.
+
 **The edition owns the case's question; anchors may span pages; evidence
 splits too (founder direction, 2026-09-09).** Built as item 4 of the
 assessment, on the founder's word. (1) The subtitle a reader sees is the
@@ -1593,4 +1613,3 @@ six of twelve records from the essay had been refused with no remedy.
 Not yet done: the essay's declined rows are re-proposed only by a later
 draft on the case, after an edition under v5 has restated the question;
 that is the chain's next two steps on State, Not Scar, not a hand edit.
-

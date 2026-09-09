@@ -939,8 +939,8 @@ export function ratification(loaded: LoadedCase): Ratification | null {
   const checksDate =
     panel > 0 ? checks.map((r) => r.date).sort().at(-1)! : null;
   const staleSince = setAside > 0 ? panelStaleness(loaded, all) : null;
-  const agreeing = checks.filter(
-    (r) => r.caseAssessment.verdict === draft.caseAssessment.verdict,
+  const agreeing = checks.filter((r) =>
+    withinOneStep(r.caseAssessment.verdict, draft.caseAssessment.verdict),
   ).length;
 
   const base = {
@@ -995,12 +995,7 @@ export function ratification(loaded: LoadedCase): Ratification | null {
       .filter((ca) => ca !== undefined)
       .map((ca) => ca.verdict);
     if (verdicts.length === 0) continue;
-    const near = verdicts.filter((v) => {
-      if (v === own) return true;
-      const a = gradedScale[v];
-      const b = gradedScale[own];
-      return a !== undefined && b !== undefined && Math.abs(a - b) <= 1;
-    }).length;
+    const near = verdicts.filter((v) => withinOneStep(v, own)).length;
     if (near * 2 <= verdicts.length) contestedLB.push(claimId);
   }
 
@@ -1008,7 +1003,7 @@ export function ratification(loaded: LoadedCase): Ratification | null {
     const parts: string[] = [];
     if (agreeing < panel - 1)
       parts.push(
-        `${panel - agreeing} of ${panel} models dispute the case verdict`,
+        `${panel - agreeing} of ${panel} models place the case verdict more than one step away`,
       );
     if (contestedLB.length > 0)
       parts.push(`the panel splits on load-bearing ${contestedLB.join(", ")}`);
@@ -1023,7 +1018,7 @@ export function ratification(loaded: LoadedCase): Ratification | null {
   return {
     ...base,
     status: "ratified",
-    reason: `${agreeing} of ${panel} independent models concur with the case verdict, and none splits on a load-bearing claim`,
+    reason: `${agreeing} of ${panel} independent models concur with the case verdict within one step, and none splits on a load-bearing claim`,
   };
 }
 
@@ -1050,6 +1045,7 @@ export function checksStale(loaded: LoadedCase): boolean {
  * seat, its verdict, and the first sentence of its synthesis as the
  * objection's one-line form (the full reasoning lives on /panel).
  */
+/** Every seat whose word differs from the displayed verdict, a neighbouring word included: the standing tolerates one step, the page still shows it. */
 export function survivingObjections(
   loaded: LoadedCase,
   displayed: AssessmentRun,
@@ -1144,6 +1140,22 @@ const gradedScale: Partial<Record<AssessmentState, number>> = {
   weakly_supported: 2,
   contradicted: 1,
 };
+
+/**
+ * Concurrence (AGENTS.md §3.15, founder amendment of 2026-09-09): a seat's
+ * verdict within one step of the draft's on the graded scale concurs, two
+ * steps away disputes. The two ungraded states stand between "weakly
+ * supported" and "mixed": one step from either, and from each other; two
+ * from "contradicted" and from "provisionally supported". Five seats from
+ * five vendors choosing among eight words rarely pick the same one.
+ */
+const nearScale: Partial<Record<AssessmentState, number>> = { ...gradedScale, unresolved: 2.5, presently_untestable: 2.5 };
+export function withinOneStep(a: AssessmentState, b: AssessmentState): boolean {
+  if (a === b) return true;
+  const x = nearScale[a];
+  const y = nearScale[b];
+  return x !== undefined && y !== undefined && Math.abs(x - y) <= 1;
+}
 
 export function crossModelSummary(
   loaded: LoadedCase,

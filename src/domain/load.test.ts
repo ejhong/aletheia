@@ -28,6 +28,7 @@ import {
   loadSiteImages,
   recentChanges,
   sourceAdmissionErrors,
+  withinOneStep,
 } from "./load.ts";
 import { assessmentHash, canonicalJson, ledgerHash, sha256Hex } from "./hash.ts";
 import { caseView, findClaimView, reviewCoverage } from "./view.ts";
@@ -820,7 +821,7 @@ describe("ratification governance (stage 3)", () => {
   };
   const fiveChecks = (verdict: string, dissenters = 0, date = "2026-02-01") =>
     ["alpha", "beta", "gamma", "delta", "epsilon"].map((m, i) =>
-      mkCheck(m, date, i < dissenters ? "mixed" : verdict),
+      mkCheck(m, date, i < dissenters ? "contradicted" : verdict), // two steps from "unresolved": a dispute, not a neighbour
     );
 
   it("no checks → unratified, and the reason says so", () => {
@@ -849,7 +850,26 @@ describe("ratification governance (stage 3)", () => {
     ).toBe("ratified");
     const two = ratification(caseWith([draft, ...fiveChecks("unresolved", 2)]));
     expect(two?.status).toBe("contested");
-    expect(two?.reason).toMatch(/2 of 5 models dispute/);
+    expect(two?.reason).toMatch(/2 of 5 models place the case verdict more than one step away/);
+  });
+
+  it("a verdict one step away concurs; two steps away disputes (§3.15, amendment of 2026-09-09)", () => {
+    const draft = mkDraft("d", "2026-01-01");
+    // unresolved between weakly supported and mixed: five different words, one judgment
+    const near = ["unresolved", "mixed", "mixed", "weakly_supported", "presently_untestable"].map((v, i) => mkCheck(["a", "b", "c", "d", "e"][i], "2026-02-01", v));
+    const r = ratification(caseWith([draft, ...near]));
+    expect(r?.status).toBe("ratified");
+    expect(r?.agreeing).toBe(5);
+    expect(r?.reason).toMatch(/within one step/);
+    // contradicted and provisionally supported are two steps from unresolved
+    const far = ["contradicted", "provisionally_supported", "unresolved", "unresolved", "unresolved"].map((v, i) => mkCheck(["a", "b", "c", "d", "e"][i], "2026-02-01", v));
+    expect(ratification(caseWith([draft, ...far]))?.status).toBe("contested");
+    expect(withinOneStep("presently_untestable", "unresolved")).toBe(true);
+    expect(withinOneStep("weakly_supported", "unresolved")).toBe(true);
+    expect(withinOneStep("mixed", "unresolved")).toBe(true);
+    expect(withinOneStep("provisionally_supported", "unresolved")).toBe(false);
+    expect(withinOneStep("contradicted", "unresolved")).toBe(false);
+    expect(withinOneStep("well_supported", "established")).toBe(true);
   });
 
   it("content newer than the panel resets standing to unratified — never to ratified", () => {
@@ -933,7 +953,7 @@ describe("ratification governance (stage 3)", () => {
   it("displayAssessment shows the ADOPTED draft — a newer unadopted draft cannot change the verdict beneath the essay", () => {
     const runs = [
       mkDraft("old", "2026-01-01", "mixed"),
-      mkDraft("new", "2026-02-01"),
+      mkDraft("new", "2026-02-01", "contradicted"), // two steps from the panel's "mixed": a dispute under the one-step rule
       ...fiveChecks("mixed", 0, "2026-02-02"),
     ];
     const shown = displayAssessment(caseWith(runs, [], "old"));
@@ -1177,8 +1197,8 @@ describe("surviving objections", () => {
       const shown = displayAssessment(c);
       if (!shown || shown.ratification.status !== "ratified") continue;
       const objections = survivingObjections(c, shown.run);
-      // exactly the dissenters the ratification tolerated
-      expect(objections.length).toBe(
+      // every seat whose word differs — the neighbours the standing tolerates included, so nothing is sanitized
+      expect(objections.length).toBeGreaterThanOrEqual(
         shown.ratification.panel - shown.ratification.agreeing,
       );
       for (const o of objections) {

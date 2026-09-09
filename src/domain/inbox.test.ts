@@ -31,6 +31,8 @@ function tmpRoot(): string {
   fs.writeFileSync(path.join(root, "inbox", "other-case.md"), "---\ncase: ydih\neditor: Eugene\n---\nNot ours.\n");
   fs.writeFileSync(path.join(root, "inbox", "vasocomputation", "silent.pdf"), miniPdf("Own work sent without saying what may be done with it."));
   fs.writeFileSync(path.join(root, "inbox", "vasocomputation", "silent.md"), "---\ncase: vasocomputation\neditor: Eugene\n---\n");
+  fs.writeFileSync(path.join(root, "inbox", "vasocomputation", "withheld.pdf"), miniPdf("Sent with a permission that withholds."));
+  fs.writeFileSync(path.join(root, "inbox", "vasocomputation", "withheld.md"), "---\ncase: vasocomputation\nfrom: a colleague\npermission: private review only, do not publish\ngranted: 2026-09-09\n---\n");
   return root;
 }
 
@@ -58,8 +60,13 @@ describe("inbox items", () => {
     expect(essay.text).toMatch(/^\[p\. 1\]/);
     expect(left).toEqual([
       { name: "vasocomputation/orphan.pdf", reason: expect.stringMatching(/no statement of provenance/) },
-      { name: "vasocomputation/silent.pdf", reason: expect.stringMatching(/no dated permission to publish or cite/) }, // own work, but nothing said about what may be done with it (§3.15)
+      { name: "vasocomputation/silent.pdf", reason: expect.stringMatching(/^no permission to publish or cite/) }, // own work, but nothing said about what may be done with it (§3.15)
+      { name: "vasocomputation/withheld.pdf", reason: expect.stringMatching(/^the permission withholds something/) }, // a permission that says "only" and "not" grants nothing here
     ]);
+    const { permissionGap } = await import("../pipeline/inbox.ts");
+    expect(permissionGap({ permission: "publish and cite", granted: "2026-09-09" })).toBeNull();
+    expect(permissionGap({ permission: "for your eyes", granted: "2026-09-09" })).toMatch(/does not say it may be published/);
+    expect(permissionGap({ permission: "publish", granted: "soon" })).toMatch(/no `granted:` date/);
   });
 });
 

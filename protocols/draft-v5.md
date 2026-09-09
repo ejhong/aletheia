@@ -24,8 +24,8 @@ its author is proposed as a Source and mined for claims anchored to it.
 v4 (2026-09-09): a supplied document that the intake identifies as a
 ledger source (the founder's own essay is one) may anchor claims and yield
 evidence records, and a founder-supplied source is mined broadly for its
-propositions — that is how a case's hypotheses grow (founder direction:
-"there are many new claims in the pdf … please make those changes").
+propositions — that is how a case's hypotheses grow (founder direction,
+2026-09-09, paraphrased: the essay's many new claims should enter).
 
 v3 (2026-09-09): when the report read a source the ledger already holds
 but whose record has no `url`, propose a `corrections` entry adding the URL

@@ -1343,8 +1343,8 @@ this path has carried the founder's batch. A URL-parsing defect surfaced on
 the way (a DOI with parentheses was cut short) and is fixed with a test.
 
 **A supplied document that is a ledger source may anchor claims (founder
-direction, 2026-09-09: "there are many new claims in the pdf … please make
-those changes").** The founder's essay is the case's founding narrative
+direction, 2026-09-09, paraphrased: the essay's many new claims should
+enter the ledger and the article should reflect its ideas).** The founder's essay is the case's founding narrative
 (VASO-IN002) and a ledger source (SRC-JHONG-2026), yet the first intake
 labelled it "the supplier's words, never a source", the drafter marked its
 new ideas irrelevant because no claim concerned them, and the edition
@@ -1465,4 +1465,9 @@ exemption and the log (now paraphrased — a session is correspondence, and
 records on `main` predate this reading and stand as they are); an undated
 permission was accepted (now: the statement must carry `granted:` with
 the date of the grant, or the document is left behind); and the log spoke
-of the run's records as landed while they sit on #206 (now said).
+of the run's records as landed while they sit on #206 (now said). A
+sixth round: two quotations of the session remained, in the log and in
+the draft protocols' headers (paraphrased); and the permission gate took
+any words plus a date, so a permission that withheld ("private review
+only") would have passed (now: the words must grant — publish, cite or
+quote — and must not withhold, or the document stays in the inbox).

@@ -231,6 +231,11 @@ describe("an HTML page in the inbox", () => {
     const report = composeReport("deep-memory", "r", "2026-09-09", [page], new Map());
     expect(report).toMatch(/SUPPLIED BY ITS AUTHOR \(Eugene Jhong\).*the `\[§ …\]` section heading as the locator/);
     expect(report).not.toMatch(/\[p\. N\]/);
+    // A plain text carries no markers, and is not told to cite one (the GPT seat on #235).
+    const note = { ...page, file: path.join(root, "inbox", "deep-memory", "register.txt"), name: "deep-memory/register.txt", sidecar: undefined, text: "[{\"id\": \"myths\"}]", title: "Register" };
+    const textReport = composeReport("deep-memory", "r", "2026-09-09", [note], new Map());
+    expect(textReport).toMatch(/the heading or entry the text itself carries at that point as the locator \(the text has no page or section markers\)/);
+    expect(textReport).not.toMatch(/\[§ …\]|\[p\. N\]/);
     expect(htmlText("<h3>A &amp; B</h3><p>x &lt; y</p>")).toBe("[§ A & B]\n\nx < y");
   });
 });

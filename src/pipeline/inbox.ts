@@ -314,9 +314,12 @@ export function ledgerSourceOf(item: Pick<InboxItem, "text" | "meta">, sources: 
 }
 
 /** The report the drafter reads: supplied text verbatim, then every named work with its resolved locator. */
-/** How a quote from this document says where it is: a PDF's page marker, or an HTML page's section marker. */
+/** How a quote from this document says where it is, by what the file is: a PDF's page marker, an HTML page's section marker, or — for a plain text, which carries no markers — the heading or entry the text itself has at that point. */
 function locatorOf(it: InboxItem): string {
-  return it.pages ? "the \`[p. N]\` page as the locator" : "the \`[§ …]\` section heading as the locator";
+  const ext = path.extname(it.file).toLowerCase();
+  if (ext === ".pdf") return "the \`[p. N]\` page as the locator";
+  if (HTML_EXT.has(ext)) return "the \`[§ …]\` section heading as the locator";
+  return "the heading or entry the text itself carries at that point as the locator (the text has no page or section markers)";
 }
 
 /** A founding-role document is told to the drafter as such whichever footing it enters on: new to the ledger, or the ledger's own source. */

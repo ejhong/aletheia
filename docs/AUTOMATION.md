@@ -191,10 +191,13 @@ the ledger has moved since — mechanical, and independent of the changelog.
 newest content-bearing history entry.) The same hash on an edition says
 which ledger state it compressed.
 
-The founder's own record lives in two small places that are neither
-ledger nor judgment: `conjectures.yaml` (on-the-record editorial
-intuition, carrying no evidential weight) and `inputs/` (founding texts
-the founder owns, the voice anchor for every edition, never evidence).
+The founder's own record lives in one small place that is neither
+ledger nor judgment: `inputs/` (founding texts the founder owns, the
+voice anchor for every edition, never evidence). The conjecture cards of
+August — the founder's on-the-record bets beside the ledger — retired on
+2026-09-09: a bet with a stated confidence and a disconfirmer is a claim,
+graded honestly, and the bets themselves are banked in each case's
+changelog (docs/DECISIONS.md, 2026-09-09).
 
 ## The verbs
 
@@ -315,7 +318,6 @@ content/cases/<case>/
   evidence.yaml  sources.yaml  research.yaml  images.yaml  studies/
   history.yaml         append-only changelog
   inputs/              founding texts + manifest (founder-owned; voice, never evidence)
-  conjectures.yaml     founder's on-the-record intuitions (no weight)
   dispositions.yaml    append-only: every candidate ever considered here
   assessments/         append-only runs, draft and check, each stamped with the ledger hash it judged
   editions/            append-only; the latest is the case page; an article-only edition re-adopts its predecessor's assessment

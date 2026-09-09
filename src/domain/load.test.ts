@@ -19,7 +19,6 @@ import {
   AssessmentRunSchema,
   CLAIM_ANCHOR_REQUIRED_FROM,
   ClaimSchema,
-  ConjectureSchema,
   EditionSchema,
   EvidenceSchema,
   ImageSchema,
@@ -1007,20 +1006,6 @@ describe("ratification governance (stage 3)", () => {
     }
   });
 
-  it("conjectures require disconfirmers", () => {
-    expect(() =>
-      ConjectureSchema.parse({
-        id: "GEO-J099",
-        by: "x",
-        date: "2026-08-23",
-        statement: "something bold and specific",
-        confidence: "high",
-        rationale: "intuition, stated as such",
-        predictedFindings: ["a finding"],
-        disconfirmers: [],
-      }),
-    ).toThrow();
-  });
 });
 
 describe("cross-model checks", () => {

@@ -1002,32 +1002,6 @@ export const CaseSchema = z.object({
 });
 export type CaseRecord = z.infer<typeof CaseSchema>;
 
-/**
- * Editorial conjecture — an optional `conjectures.yaml` per case.
- *
- * A named person's on-the-record bet: intuition admitted as intuition,
- * with predicted findings and explicit disconfirmers, so the site's own
- * editors are falsifiable. Conjectures never carry evidential weight;
- * they set research agendas and keep the founder honest.
- */
-export const ConjectureSchema = z.object({
-  id: z.string().regex(/^[A-Z]+-J\d{3}$/, "Conjecture id like GEO-J001"),
-  by: z.string().min(2),
-  date: z.string(),
-  statement: z.string().min(10),
-  /** Plain-language confidence — no false precision. */
-  confidence: z.string().min(3),
-  /** Why the person believes it — intuitive rationale stated as such. */
-  rationale: z.string().min(10),
-  predictedFindings: z.array(z.string().min(5)).min(1),
-  /** What would count against it — required; a conjecture without disconfirmers is advocacy. */
-  disconfirmers: z.array(z.string().min(5)).min(1),
-  /** ResearchOpportunity ids that would test it. */
-  decisiveTestIds: z.array(z.string()).default([]),
-  status: z.enum(["open", "supported", "refuted", "withdrawn"]).default("open"),
-});
-export type Conjecture = z.infer<typeof ConjectureSchema>;
-
 /** A fully loaded, integrity-checked case. */
 /**
  * Narrative inputs (docs/AUTOMATION.md, "the anti-drift anchor"): the
@@ -1073,8 +1047,6 @@ export interface LoadedCase {
   watch: WatchConfig | null;
   /** Optional curated reading-guide entries (resources.yaml). */
   curatedResources: CuratedResource[];
-  /** Optional on-the-record editorial conjectures (conjectures.yaml). */
-  conjectures: Conjecture[];
   /** Pre-registered desk workpapers (studies/<id>.yaml). */
   studies: Study[];
   /** Founding texts (inputs/manifest.yaml): the anti-drift anchor. */

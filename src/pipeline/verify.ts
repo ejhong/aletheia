@@ -4,7 +4,7 @@ import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
 import type { Disposition, Proposal } from "../domain/intake.ts";
 import { canonicalJson, sha256Hex } from "../domain/hash.ts";
 import { sameTitle, sourceKeys, textKey } from "../domain/keys.ts";
-import { claimAnchorErrors, findCase, sourceAdmissionErrors } from "../domain/load.ts";
+import { caseAccounts, caseQuestion, claimAnchorErrors, findCase, sourceAdmissionErrors } from "../domain/load.ts";
 import type { Claim, Evidence, LoadedCase, ResearchOpportunity, Source } from "../domain/schema.ts";
 import { verifyCitations } from "../../scripts/lib/citation-check.mjs";
 import { archiveUrl, type Archived } from "./archive.ts";
@@ -14,7 +14,7 @@ import { appendHistory, appendRecords, applyCorrections, ledgerFileFor, type Cor
 import { MODELS } from "../../scripts/lib/models.mjs";
 import { anthropicJson, type Meter } from "./models.ts";
 import { loadProtocol, renderProtocol } from "./protocols.ts";
-import { unverifiedQuotes } from "./quotes.ts";
+import { quotedSpans, unverifiedQuotes } from "./quotes.ts";
 import { appendDispositions, closeRun, openRun, readProposal, writeWorkingFile, type RunOutcome } from "./store.ts";
 
 /**
@@ -81,13 +81,15 @@ export interface SplitResult {
   runId?: string;
   date?: string;
 }
-export type Splitter = (statement: string, anchorText: string, meter: Meter) => Promise<string[] | SplitResult>;
+/** What is being split: a claim's statement into propositions, or an evidence record's statement into observations, each with its verbatim quote. */
+export type SplitKind = "claim" | "evidence";
+export type Splitter = (statement: string, anchorText: string, meter: Meter, kind?: SplitKind) => Promise<string[] | SplitResult>;
 export const asSplit = (r: string[] | SplitResult): SplitResult => (Array.isArray(r) ? { parts: r } : r);
 
-export const defaultSplitter: Splitter = async (statement, anchorText, meter) => {
+export const defaultSplitter: Splitter = async (statement, anchorText, meter, kind = "claim") => {
   const protocol = loadProtocol("split");
   const r = await anthropicJson<{ parts: string[] }>(
-    { ...MODELS.house, system: renderProtocol(protocol, {}), user: JSON.stringify({ statement, anchorText }, null, 1), schema: SPLIT_SCHEMA, maxTokens: 4000, effort: "low", timeoutMs: 240_000 },
+    { ...MODELS.house, system: renderProtocol(protocol, {}), user: JSON.stringify({ kind, statement, anchorText }, null, 1), schema: SPLIT_SCHEMA, maxTokens: 4000, effort: "low", timeoutMs: 240_000 },
     meter,
   );
   return { parts: r.data.parts.map((p) => p.trim()).filter((p) => p.length > 10), model: r.model ?? MODELS.house.model, protocol: protocol.version, runId: meter.runId, date: isoDate() };
@@ -136,11 +138,11 @@ export function rememberedJudge(judge: Judge, file: string, readerModel: string,
 
 export function rememberedSplitter(split: Splitter, file: string, model: string, protocol = loadProtocol("split").version): Splitter {
   const memory = readMemory<string[]>(file);
-  return async (statement, anchorText, meter) => {
-    const key = sha256Hex(canonicalJson({ statement, anchorText, model, protocol }));
+  return async (statement, anchorText, meter, kind = "claim") => {
+    const key = sha256Hex(canonicalJson({ statement, anchorText, model, protocol, kind }));
     const had = memory[key];
     if (had) return { parts: had.answer, model: had.model, protocol: had.protocol, runId: had.runId, date: had.date };
-    const r = asSplit(await split(statement, anchorText, meter));
+    const r = asSplit(await split(statement, anchorText, meter, kind));
     const entry = { model: r.model ?? model, protocol: r.protocol ?? protocol, runId: r.runId ?? meter.runId, date: r.date ?? isoDate(), answer: r.parts };
     memory[key] = entry;
     writeMemory(file, memory);
@@ -150,8 +152,16 @@ export function rememberedSplitter(split: Splitter, file: string, model: string,
 
 /** The next free claim id in the case's scheme, given the ledger and everything proposed so far. */
 export function nextClaimId(loaded: LoadedCase, taken: Iterable<string>): string {
-  const ids = [...loaded.claims.map((c) => c.id), ...taken];
-  const prefix = ids.find((id) => /-C\d+$/.test(id))?.replace(/\d+$/, "") ?? `${loaded.record.id.split("-")[0]}-C`;
+  return nextId("C", loaded.claims.map((c) => c.id), loaded, taken);
+}
+/** The next free evidence id, the same way. */
+export function nextEvidenceId(loaded: LoadedCase, taken: Iterable<string>): string {
+  return nextId("E", loaded.evidence.map((e) => e.id), loaded, taken);
+}
+function nextId(letter: "C" | "E", existing: string[], loaded: LoadedCase, taken: Iterable<string>): string {
+  const ids = [...existing, ...taken];
+  const re = new RegExp(`-${letter}\\d+$`);
+  const prefix = ids.find((id) => re.test(id))?.replace(/\d+$/, "") ?? `${loaded.record.id.split("-")[0]}-${letter}`;
   const max = Math.max(0, ...ids.filter((id) => id.startsWith(prefix)).map((id) => Number(id.slice(prefix.length)) || 0));
   return `${prefix}${String(max + 1).padStart(3, "0")}`;
 }
@@ -209,15 +219,20 @@ export function suppliedTexts(proposal: Proposal, sources: Source[], root = proc
   if (!runDirOf) return out;
   const manifestFile = path.join(root, "proposals", runDirOf, "manifest.yaml");
   if (!fs.existsSync(manifestFile)) return out;
-  const manifest = parseYaml(fs.readFileSync(manifestFile, "utf8")) as { items?: { ledgerSource?: string | null; document?: string | null; name?: string; sha256?: string; title?: string }[] };
+  const manifest = parseYaml(fs.readFileSync(manifestFile, "utf8")) as { items?: { ledgerSource?: string | null; document?: string | null; name?: string; sha256?: string; title?: string; permission?: string | null }[] };
   for (const it of manifest.items ?? []) {
     if (!it.document) continue;
+    // A document the intake recorded no permission for supplies no text at all: nothing anchors to it, nothing
+    // quotes it, whether the Source is proposed here or already in the ledger (§3.15). A manifest without the
+    // field — written before 2026-09-09 — is a manifest without a recorded permission, and supplies none either;
+    // a document taken in then is re-dropped to be quoted again.
+    if (!it.permission) continue;
     // The source the intake identified, else a source (the ledger's or this proposal's) whose title is the document's.
     const src = sources.find((s) => it.ledgerSource && s.id === it.ledgerSource) ?? (it.title ? sources.find((s) => sameTitle(it.title!, s.title)) : undefined);
     const file = path.join(root, "proposals", runDirOf, it.document);
     if (!src || !fs.existsSync(file)) continue;
     const text = fs.readFileSync(file, "utf8");
-    out.set(textKeyOf(src), { url: textKeyOf(src), ok: true, status: null, contentType: "text/plain", text, via: `supplied document ${it.name} (sha256 ${(it.sha256 ?? "").slice(0, 12)}), ${it.ledgerSource ? `identified at intake as ${src.id}` : `matched by title to ${src.id}`}` });
+    out.set(textKeyOf(src), { url: textKeyOf(src), ok: true, status: null, contentType: "text/plain", text, via: `supplied document ${it.name} (sha256 ${(it.sha256 ?? "").slice(0, 12)}), ${it.ledgerSource ? `identified at intake as ${src.id}` : `matched by title to ${src.id}`}`, ...(it.permission ? { permission: it.permission } : {}) });
   }
   return out;
 }
@@ -255,6 +270,11 @@ export async function judgeProposal(
   const notes: string[] = [];
   /** Who judged and when — the run that answered, when the answer was remembered. */
   const readerStamp = (v: VerifyReply) => (v.remembered ? `${reader.model}, ${v.remembered.date}, run ${v.remembered.runId}` : `${reader.model}, ${reader.date}`);
+  // Relevance is judged against the question as the current edition states it and the accounts it sets side by
+  // side — not the case file's founding subtitle, which refused a founder essay's whole family of propositions
+  // as outside a question phrased around one mechanism (2026-09-09).
+  const accounts = caseAccounts(loaded);
+  const questionContext = `Case question: ${caseQuestion(loaded)}.${accounts.length ? ` The case sets these accounts side by side, and a proposition that bears on any of them bears on the case: ${accounts.map((a, i) => `(${i + 1}) ${a}`).join(" ")}` : ""}`;
   /** Compound claims replaced by their parts, for evidence that cited them. */
   const splitInto = new Map<string, string[]>();
   const reject = (id: string, kind: Disposition["kind"], observed: string, reason: string, blocked = false, route?: string) =>
@@ -280,6 +300,23 @@ export async function judgeProposal(
     const key = src ? textKeyOf(src) : undefined;
     return key ? texts.get(key) : undefined;
   };
+  // A Source whose text is a supplied document is published only on the permission the intake recorded,
+  // and the Source must carry that line (§3.15): the gate at the door travels with the record.
+  for (const s of [...okSources.values()]) {
+    const fetched = textFor(s.id);
+    if (!/^supplied document/.test(fetched?.via ?? "")) continue;
+    // The line is the intake's own record, read from its manifest — not the drafter's words. It must be on the Source exactly.
+    const expected = fetched?.permission;
+    const why = !expected
+      ? "the intake recorded no permission on which this document may be published, so no Source may be proposed from it"
+      : !s.reliabilityNotes.includes(expected)
+        ? `a supplied document's Source must carry, verbatim in reliabilityNotes, the permission line the intake recorded — "${expected.slice(0, 80)}…" — and this record ${s.reliabilityNotes.some((n) => /^Permission on which it is published:/.test(n)) ? "carries a different line" : "carries none"}`
+        : null;
+    if (!why) continue;
+    okSources.delete(s.id);
+    sourceById.delete(s.id);
+    reject(s.id, "source", s.title, `${why} (AGENTS.md §3.15)`);
+  }
 
   // Evidence: source ok, text retrievable, quotes verbatim, second reader agrees.
   const okEvidence: Evidence[] = [];
@@ -299,16 +336,47 @@ export async function judgeProposal(
       continue;
     }
     const claims = e.claimIds.map((id) => loaded.claims.find((c) => c.id === id) ?? proposal.adds.claims.find((c) => c.id === id)).filter(Boolean);
-    const context = `Case question: ${loaded.record.subtitle}. Claims this record bears on: ${claims.map((c) => `${c!.id}: ${c!.statement}`).join(" | ")}`;
+    const context = `${questionContext} Claims this record bears on: ${claims.map((c) => `${c!.id}: ${c!.statement}`).join(" | ")}`;
     const verdict = await judge({ ...e, editorInference: undefined }, fetched.text, context, meter);
     const flags = Object.entries(verdict).filter(([k, v]) => k !== "reason" && v === false).map(([k]) => k);
     // Mechanical and factual failures gate. A dispute about the direction
     // label is a judgment against a judgment: the record enters with the
     // reader's dissent written on it, both stamped, for the editor and the
-    // panel to weigh (verify protocol v2).
-    const gating = flags.filter((f) => f !== "directionRight");
+    // panel to weigh (verify protocol v2). A compound statement is split.
+    const gating = flags.filter((f) => f !== "directionRight" && f !== "atomic");
     if (gating.length) {
       reject(e.id, "evidence", e.title, `second reader rejected (${gating.join(", ")}): ${verdict.reason}`);
+      continue;
+    }
+    if (verdict.atomic === false) {
+      // One split round (§3.5: mixed effects are split): the drafter divides the statement into one
+      // observation each, every part keeping a verbatim quote; each part is checked and judged on its own.
+      const sp = asSplit(await split(e.sourceStatement, fetched.text, meter, "evidence"));
+      const admitted: Evidence[] = [];
+      for (const [n, part] of sp.parts.entries()) {
+        const label = `${e.id} part "${part.slice(0, 60)}"`;
+        if (!quotedSpans(part).length) {
+          notes.push(`${label} refused: no verbatim quote of the source`);
+          continue;
+        }
+        const missing = unverifiedQuotes(part, fetched.text);
+        if (missing.length) {
+          notes.push(`${label} refused: quoted span not found verbatim: ${missing.map((q) => `"${q.slice(0, 50)}"`).join("; ")}`);
+          continue;
+        }
+        const id = nextEvidenceId(loaded, [...proposal.adds.evidence.map((x) => x.id), ...okEvidence.map((x) => x.id), ...admitted.map((x) => x.id)]);
+        const candidate: Evidence = { ...e, id, title: `${e.title} — part ${n + 1}`, sourceStatement: part, origin: { ref: `split of ${e.id} (${e.origin.ref})`, extractedBy: sp.model ?? splitter.model, runId: sp.runId ?? splitter.runId, date: sp.date ?? reader.date } };
+        const v2 = await judge({ ...candidate, editorInference: undefined }, fetched.text, context, meter);
+        const bad = Object.entries(v2).filter(([k, v]) => k !== "reason" && v === false && k !== "directionRight").map(([k]) => k);
+        if (bad.length) {
+          notes.push(`${label} refused (${bad.join(", ")}): ${v2.reason}`);
+          continue;
+        }
+        if (v2.directionRight === false) candidate.limitations = [...candidate.limitations, `Second reader (${readerStamp(v2)}) disputes the stated direction: ${v2.reason}`];
+        admitted.push(candidate);
+      }
+      reject(e.id, "evidence", e.title, `not one observation (${verdict.reason}); split into ${admitted.length ? admitted.map((x) => x.id).join(", ") : "nothing that survived"}`);
+      okEvidence.push(...admitted);
       continue;
     }
     if (flags.includes("directionRight")) {
@@ -331,11 +399,11 @@ export async function judgeProposal(
           reject(c.id, "claim", c.statement, `anchor source not retrievable (${fetched?.reason ?? "no source id on the anchor"}) and no accepted evidence cites the claim`, true, `obtain the anchor's text and re-run verify`);
           continue;
         }
-      } else if (unverifiedQuotes(`"${c.sourceAnchor.quote}"`, fetched.text).length) {
+      } else if ([c.sourceAnchor.quote, ...(c.sourceAnchor.also ?? []).map((a) => a.quote)].some((q) => unverifiedQuotes(`"${q}"`, fetched.text ?? "").length)) {
         reject(c.id, "claim", c.statement, `anchor quote not found verbatim in ${sid}`);
         continue;
       } else {
-        const anchorContext = `Case question: ${loaded.record.subtitle}. Does the anchored passage support the proposition as stated?`;
+        const anchorContext = `${questionContext} Does the anchored passage${c.sourceAnchor.also?.length ? "s, taken together," : ""} support the proposition as stated?`;
         const verdict = await judge({ statement: c.statement, anchor: c.sourceAnchor }, fetched.text, anchorContext, meter);
         const flags = Object.entries(verdict).filter(([k, v]) => k !== "reason" && v === false && k !== "independenceNoted" && k !== "directionRight" && k !== "atomic").map(([k]) => k);
         if (flags.length) {

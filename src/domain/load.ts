@@ -770,6 +770,34 @@ export function currentEdition(loaded: LoadedCase): Edition {
   return ed;
 }
 
+/** The case's question as it stands: the current edition's restatement, else the case file's subtitle — the founding question. */
+export function caseQuestion(loaded: LoadedCase): string {
+  return loaded.editions.at(-1)?.question ?? loaded.record.subtitle;
+}
+
+/** The accounts the current edition sets side by side, when it names them. */
+export function caseAccounts(loaded: LoadedCase): string[] {
+  return loaded.editions.at(-1)?.accounts ?? [];
+}
+
+/**
+ * The edition that restated the standing question — the earliest of the
+ * unbroken run of editions carrying it, since a later candidate that says
+ * nothing inherits the wording verbatim. Null when the founding question
+ * stands. The page credits this edition, not the latest (§3.14).
+ */
+export function questionRestatedBy(loaded: LoadedCase): Edition | null {
+  const eds = loaded.editions;
+  const q = eds.at(-1)?.question;
+  if (!q) return null;
+  let origin = eds[eds.length - 1];
+  for (let i = eds.length - 2; i >= 0; i--) {
+    if (eds[i].question === q) origin = eds[i];
+    else break;
+  }
+  return origin;
+}
+
 /**
  * The assessment the current edition adopts — the only run that narrates.
  * Null for a question-only opening. Check runs never narrate; newer draft

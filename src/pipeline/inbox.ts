@@ -301,6 +301,20 @@ function registeredNote(it: InboxItem): string {
   return it.registeredAs ? ` It is also registered as founding input ${it.registeredAs}: the edition drafter reads it for framing and voice.` : "";
 }
 
+/** The permission on which a supplied document is published, as one line for the manifest and the Source — or null when the intake recorded none, which no marker string may stand in for (§3.15). */
+export function permissionOf(it: InboxItem, date: string, runId: string): string | null {
+  try {
+    return `Permission on which it is published: ${permissionRecord(it, date, runId)}`;
+  } catch {
+    return null;
+  }
+}
+
+/** The same, as the report states it for the drafter to copy; a document without one is not the drafter's to propose or quote. */
+export function permissionLine(it: InboxItem, date: string, runId: string): string {
+  return permissionOf(it, date, runId) ?? "Permission on which it is published: NONE RECORDED — do not propose this document as a Source and do not quote it.";
+}
+
 export function composeReport(slug: string, runId: string, date: string, items: InboxItem[], resolved: Map<string, Resolved[]>): string {
   const head =
     `<!-- Inbox intake — material supplied through the founder's door; working material, never citable as such (docs/AUTOMATION.md).\n` +
@@ -309,6 +323,7 @@ export function composeReport(slug: string, runId: string, date: string, items: 
   const parts = [`# Intake — ${slug} (${date})`, ``];
   for (const it of items) {
     parts.push(`## ${it.kind}: ${it.name}`, ``, `Supplied by ${it.supplier}${it.pages ? `; PDF, ${it.pages} pages` : ""}${typeof it.meta.provenance === "string" ? `; provenance: ${it.meta.provenance}` : ""}.`, ``);
+    if (it.kind === "document") parts.push(permissionLine(it, date, runId), `A Source proposed from this document carries that permission line, verbatim, in its \`reliabilityNotes\`; the verifier refuses a supplied document's Source without it (AGENTS.md §3.15).`, ``);
     if (it.ledgerSource) {
       parts.push(`THIS DOCUMENT IS THE LEDGER'S SOURCE ${it.ledgerSource} (identified by ${it.ledgerSourceBasis ?? "the intake"}). Its propositions may be proposed as claims anchored to ${it.ledgerSource} — one proposition each, a verbatim quote from the text below, and the \`[p. N]\` page as the locator — and what it states may enter as evidence records on ${it.ledgerSource}, direction and strength honest to what kind of source it is. The verifier reads this same text for ${it.ledgerSource}.${registeredNote(it)}`, ``);
     } else if (it.kind === "document" && typeof it.meta.editor !== "string" && it.meta.founderDrop) {
@@ -440,6 +455,8 @@ export async function runInbox(caseKey: string, opts: InboxOptions = {}): Promis
     ledgerSource: it.ledgerSource ?? null,
     ledgerSourceBasis: it.ledgerSourceBasis ?? null,
     document: it.kind === "document" ? `documents/${path.basename(it.file).replace(/\.[^.]+$/, "")}.txt` : null,
+    // The permission on which a document is published, as the report printed it: the verifier requires this exact line on the Source.
+    permission: it.kind === "document" ? permissionOf(it, date, runId) : null,
     references: (resolved.get(it.name) ?? []).length,
     resolved: (resolved.get(it.name) ?? []).filter((r) => r.url).length,
   }));

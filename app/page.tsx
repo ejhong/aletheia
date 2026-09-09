@@ -10,6 +10,7 @@ import {
   loadAllCases,
   recentChanges,
   siteImage,
+  caseQuestion,
 } from "@/src/domain/load";
 import { caseView, reviewCoverage } from "@/src/domain/view";
 
@@ -83,6 +84,7 @@ export default function HomePage() {
               <CaseCard
                 key={c.record.id}
                 record={c.record}
+                question={caseQuestion(c)}
                 components={view.header.components}
                 priority={view.header.researchPriority?.level ?? null}
                 verdict={view.assessment?.caseAssessment.verdict ?? null}

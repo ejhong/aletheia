@@ -2,7 +2,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { getCaseBySlug, loadAllCases } from "./load.ts";
+import { getCaseBySlug, loadAllCases, caseAccounts, caseQuestion, questionRestatedBy } from "./load.ts";
 import { capsFor, loadBudget, assertWithinBudget, BudgetExceeded, estimateUsd, tokensFromChars } from "../pipeline/budget.ts";
 import { assembleProposal, urlsInReport, type DraftReply } from "../pipeline/draft.ts";
 import { assembleEdition, type EditionReply } from "../pipeline/edition.ts";
@@ -329,9 +329,31 @@ describe("assembling an edition", () => {
   const editionReply = (over: Partial<EditionReply> = {}): EditionReply => {
     const c = geo();
     const ed = c.editions.at(-1)!;
-    return { rationale: "a test edition that re-adopts the incumbent's judgment", featuredClaimIds: ed.featuredClaimIds, cruxOrder: ed.cruxOrder, article: ed.article, assessment: null, ...over };
+    return { rationale: "a test edition that re-adopts the incumbent's judgment", question: null, accounts: [], featuredClaimIds: ed.featuredClaimIds, cruxOrder: ed.cruxOrder, article: ed.article, assessment: null, ...over };
   };
   const ctx = { model: "claude-opus-5", promptVersion: "edition-v1", now: new Date("2026-09-09T12:00:00Z"), root: process.cwd() };
+
+  it("the question and the accounts are the edition's: restated when given, inherited when not", () => {
+    const c = geo();
+    const restated = assembleEdition(c, editionReply({ question: "Were the hardest stones cast, carved, or both — and by whom?", accounts: ["The blocks were cast from a geopolymer", "The blocks were carved and dressed by hand"] }), ctx);
+    expect(restated.errors).toEqual([]);
+    expect(restated.edition.question).toBe("Were the hardest stones cast, carved, or both — and by whom?");
+    expect(restated.edition.accounts).toHaveLength(2);
+    // A later candidate that says nothing keeps them.
+    const later = { ...c, editions: [...c.editions, restated.edition] } as typeof c;
+    const kept = assembleEdition(later, editionReply({ article: restated.edition.article + "\n\nA closing paragraph." }), ctx);
+    expect(kept.errors).toEqual([]);
+    expect(kept.edition.question).toBe(restated.edition.question);
+    expect(kept.edition.accounts).toEqual(restated.edition.accounts);
+    // The question as it stands: the edition's, else the case file's founding subtitle.
+    expect(caseQuestion(later)).toBe(restated.edition.question);
+    expect(caseQuestion(c)).toBe(c.record.subtitle);
+    expect(caseAccounts(c)).toEqual([]);
+    // The page credits the edition that restated the question, not the one that inherited it (§3.14).
+    const kept2 = { ...later, editions: [...later.editions, kept.edition] } as typeof c;
+    expect(questionRestatedBy(kept2)?.runId).toBe(restated.edition.runId);
+    expect(questionRestatedBy(c)).toBeNull();
+  });
 
   it("a candidate that changes only prose re-adopts the incumbent's assessment and passes the loader's rules", () => {
     const c = geo();
@@ -613,6 +635,119 @@ describe("verify v3: atomicity", () => {
 });
 
 describe("verify remembers its judgments", () => {
+  it("an evidence record judged compound is split into one observation each, every part with its verbatim quote, and each part judged", async () => {
+    const { judgeProposal } = await import("../pipeline/verify.ts");
+    const c = geo();
+    const src = c.sources.find((s) => s.url)!;
+    const claim = c.claims[0];
+    const compound = {
+      id: "GEO-E990", title: "two findings in one record", sourceId: src.id, claimIds: [claim.id], direction: "supports", strength: "weak",
+      sourceStatement: 'The page says "twelve words that certainly do occur in this text" and also "a second span that also occurs here" about the same site.', exactLocator: "p. 1", limitations: [], reviewState: "ai_extracted", origin: { ref: "test", extractedBy: "m", runId: "r", date: "2026-09-09" },
+    };
+    const proposal = { runId: "2026-09-09-draft-megalithic-casting-000004", case: c.record.slug, report: null, date: "2026-09-09", model: "m", promptVersion: "draft-v6", basis: { ledgerHash: c.ledgerHash }, rationale: "test",
+      adds: { sources: [], evidence: [compound], claims: [], research: [], images: [] }, corrections: [], dispositions: [], edition: null } as never;
+    const texts = new Map([[src.url!, { url: src.url!, ok: true, status: 200, contentType: "text/html", text: "… twelve words that certainly do occur in this text … a second span that also occurs here …" }]]);
+    const yes = { quoteInContext: true, statementSupported: true, locatorSupported: true, directionRight: true, independenceNoted: true, relevant: true, atomic: true, reason: "fine" };
+    const judge = async (record: unknown) => ((record as { sourceStatement?: string }).sourceStatement?.includes(" and also ") ? { ...yes, atomic: false, reason: "two findings" } : yes);
+    const kinds: string[] = [];
+    const split = async (statement: string, _t: string, _m: unknown, kind?: string) => {
+      kinds.push(kind ?? "?");
+      return ['The page says "twelve words that certainly do occur in this text".', 'It also says "a second span that also occurs here" about the same site.', "A part with no quote at all."];
+    };
+    const v = await judgeProposal(proposal, c, texts, new Map(), judge, { runId: "r", verb: "verify", case: c.record.slug }, { model: "reader", date: "2026-09-09" }, split, { model: "splitter", runId: "verify-run" });
+    expect(kinds).toEqual(["evidence"]);
+    expect(v.rejected.map((r) => r.id)).toEqual(["GEO-E990"]);
+    expect(v.rejected[0].reason).toMatch(/not one observation .* split into GEO-E\d+, GEO-E\d+/);
+    expect(v.accepted.evidence.map((e) => e.sourceStatement)).toEqual(['The page says "twelve words that certainly do occur in this text".', 'It also says "a second span that also occurs here" about the same site.']);
+    expect(v.accepted.evidence.every((e) => e.claimIds[0] === claim.id && e.origin.ref === "split of GEO-E990 (test)" && e.origin.runId === "verify-run")).toBe(true);
+    expect(v.accepted.evidence.map((e) => e.title)).toEqual(["two findings in one record — part 1", "two findings in one record — part 2"]);
+    expect(v.notes.join("\n")).toMatch(/part "A part with no quote at all\." refused: no verbatim quote/);
+  });
+
+  it("a supplied document's Source is admitted only with the intake's permission line on it", async () => {
+    const { judgeProposal } = await import("../pipeline/verify.ts");
+    const c = geo();
+    const base = c.sources.find((s) => s.url)!;
+    const line = "Permission on which it is published: Permission in the supplier's words: \"publish and cite it\" — granted by Someone (own work) on 2026-09-09 in the inbox statement `essay.md`, recorded at intake on 2026-09-09, held at inbox/processed/run/essay.md.";
+    const bare = { ...base, id: "GEO-S990", title: "A supplied essay, permission not carried", url: "https://example.org/supplied-bare", reliabilityNotes: [] };
+    const carried = { ...base, id: "GEO-S991", title: "A supplied essay, permission carried", url: "https://example.org/supplied-carried", reliabilityNotes: [line] };
+    const forged = { ...base, id: "GEO-S992", title: "A supplied essay, permission asserted by the drafter", url: "https://example.org/supplied-forged", reliabilityNotes: ["Permission on which it is published: Permission granted, trust me."] };
+    const unrecorded = { ...base, id: "GEO-S993", title: "A supplied essay the intake recorded no permission for", url: "https://example.org/supplied-unrecorded", reliabilityNotes: [line] };
+    const claim = c.claims[0];
+    const cites = (id: string, sourceId: string) => ({
+      id, title: `cites ${sourceId}`, sourceId, claimIds: [claim.id], direction: "supports", strength: "weak",
+      sourceStatement: 'The essay says "twelve words that certainly do occur in this text" plainly.', exactLocator: "p. 1", limitations: [], reviewState: "ai_extracted", origin: { ref: "test", extractedBy: "m", runId: "r", date: "2026-09-09" },
+    });
+    const proposal = { runId: "2026-09-09-draft-megalithic-casting-000006", case: c.record.slug, report: null, date: "2026-09-09", model: "m", promptVersion: "draft-v6", basis: { ledgerHash: c.ledgerHash }, rationale: "test",
+      adds: { sources: [bare, carried, forged, unrecorded], evidence: [cites("GEO-E990", bare.id), cites("GEO-E991", carried.id), cites("GEO-E992", forged.id), cites("GEO-E993", unrecorded.id)], claims: [], research: [], images: [] }, corrections: [], dispositions: [], edition: null } as never;
+    const supplied = (name: string, permission?: string) => ({ ok: true as const, status: null, contentType: "text/plain", text: "… twelve words that certainly do occur in this text …", via: `supplied document ${name} (sha256 abc), identified at intake`, ...(permission ? { permission } : {}) });
+    const texts = new Map([
+      [bare.url, { url: bare.url, ...supplied("bare.pdf", line) }],
+      [carried.url, { url: carried.url, ...supplied("carried.pdf", line) }],
+      [forged.url, { url: forged.url, ...supplied("forged.pdf", line) }],
+      [unrecorded.url, { url: unrecorded.url, ...supplied("unrecorded.pdf") }],
+    ]);
+    const yes = { quoteInContext: true, statementSupported: true, locatorSupported: true, directionRight: true, independenceNoted: true, relevant: true, atomic: true, reason: "fine" };
+    const v = await judgeProposal(proposal, c, texts, new Map(), async () => yes, { runId: "r", verb: "verify", case: c.record.slug });
+    expect(v.accepted.sources.map((s) => s.id)).toEqual(["GEO-S991"]);
+    expect(v.accepted.evidence.map((e) => e.id)).toEqual(["GEO-E991"]);
+    const why = Object.fromEntries(v.rejected.map((r) => [r.id, r.reason]));
+    expect(why["GEO-S990"]).toMatch(/must carry, verbatim in reliabilityNotes, the permission line the intake recorded .* carries none/);
+    expect(why["GEO-S992"]).toMatch(/must carry, verbatim .* carries a different line/); // a drafter's own assertion is not the intake's record
+    expect(why["GEO-S993"]).toMatch(/the intake recorded no permission/);
+    expect(why["GEO-E990"]).toMatch(/its source GEO-S990 was rejected/);
+  });
+
+  it("a document the intake recorded no permission for supplies no text, whether its Source is proposed or already on the ledger", async () => {
+    const { suppliedTexts } = await import("../pipeline/verify.ts");
+    const c = geo();
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "aletheia-supplied-"));
+    const dir = path.join(root, "proposals", "2026-09-09-inbox-x-000000");
+    fs.mkdirSync(path.join(dir, "documents"), { recursive: true });
+    fs.writeFileSync(path.join(dir, "documents", "a.txt"), "text of a");
+    fs.writeFileSync(path.join(dir, "documents", "b.txt"), "text of b");
+    const a = c.sources[0];
+    const b = c.sources[1];
+    fs.writeFileSync(path.join(dir, "manifest.yaml"), [
+      "items:",
+      `  - name: x/a.pdf`, `    kind: document`, `    ledgerSource: ${a.id}`, `    document: documents/a.txt`, `    permission: "Permission on which it is published: Permission: the founder's standing direction …"`,
+      `  - name: x/b.pdf`, `    kind: document`, `    ledgerSource: ${b.id}`, `    document: documents/b.txt`, `    permission: null`,
+      `  - name: x/c.pdf`, `    kind: document`, `    ledgerSource: ${b.id}`, `    document: documents/b.txt`, // a manifest from before the field existed: no permission recorded, no text supplied
+      "",
+    ].join("\n"));
+    const proposal = { report: "proposals/2026-09-09-inbox-x-000000/report.md" } as never;
+    const texts = suppliedTexts(proposal, c.sources, root);
+    const got = [...texts.values()];
+    expect(got.map((t) => t.text)).toEqual(["text of a"]);
+    expect(got[0].permission).toMatch(/^Permission on which it is published: Permission: the founder/);
+  });
+
+  it("a claim anchor may carry further passages, each verbatim, judged together; a passage the source lacks rejects the anchor", async () => {
+    const { judgeProposal } = await import("../pipeline/verify.ts");
+    const c = geo();
+    const src = c.sources.find((s) => s.url)!;
+    const mk = (id: string, also: { locator: string; quote: string }[]) => ({
+      id, statement: "The contrast is drawn across two pages.", theme: Object.keys(c.record.themes)[0], rung: "observation", claimType: null,
+      sourceAnchor: { sourceId: src.id, locator: "p. 1", quote: "twelve words that certainly do occur in this text", also },
+      parentClaimIds: [], dependsOnClaimIds: [], alternativeToClaimIds: [], contradictsClaimIds: [], reviewState: "ai_extracted", origin: { ref: "test", extractedBy: "m", runId: "r", date: "2026-09-09" },
+    });
+    const good = mk("GEO-C990", [{ locator: "p. 2", quote: "a second span that also occurs here" }]);
+    const badAlso = mk("GEO-C991", [{ locator: "p. 7", quote: "a passage the source never contains" }]);
+    const proposal = { runId: "2026-09-09-draft-megalithic-casting-000005", case: c.record.slug, report: null, date: "2026-09-09", model: "m", promptVersion: "draft-v6", basis: { ledgerHash: c.ledgerHash }, rationale: "test",
+      adds: { sources: [], evidence: [], claims: [good, badAlso], research: [], images: [] }, corrections: [], dispositions: [], edition: null } as never;
+    const texts = new Map([[src.url!, { url: src.url!, ok: true, status: 200, contentType: "text/html", text: "… twelve words that certainly do occur in this text … a second span that also occurs here …" }]]);
+    const seen: string[] = [];
+    const judge = async (record: unknown, _t: string, context: string) => {
+      seen.push(context);
+      return { quoteInContext: true, statementSupported: true, locatorSupported: true, directionRight: true, independenceNoted: true, relevant: true, atomic: true, reason: `anchored with ${(record as { anchor?: { also?: unknown[] } }).anchor?.also?.length ?? 0} further passage(s)` };
+    };
+    const v = await judgeProposal(proposal, c, texts, new Map(), judge, { runId: "r", verb: "verify", case: c.record.slug });
+    expect(v.accepted.claims.map((k) => k.id)).toEqual(["GEO-C990"]);
+    expect(v.accepted.claims[0].sourceAnchor?.also).toEqual([{ locator: "p. 2", quote: "a second span that also occurs here" }]);
+    expect(v.rejected).toEqual([expect.objectContaining({ id: "GEO-C991", reason: expect.stringMatching(/anchor quote not found verbatim/) })]);
+    expect(seen[0]).toMatch(/^Case question: .*Does the anchored passages, taken together, support the proposition as stated\?$/);
+  });
+
   it("asks the reader once per question and reuses the answer on a re-run", async () => {
     const { rememberedJudge, rememberedSplitter } = await import("../pipeline/verify.ts");
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), "aletheia-judg-"));

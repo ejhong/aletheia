@@ -26,8 +26,11 @@ export function CaseCard({
   reviewCoverage,
   check,
   cover,
+  question,
 }: {
   record: CaseRecord;
+  /** The case's question as it stands (load.ts caseQuestion). */
+  question?: string;
   components: CaseComponent[];
   priority: ResearchPriorityLevel | null;
   verdict: AssessmentState | null;
@@ -66,7 +69,7 @@ export function CaseCard({
           {record.title}
         </h3>
         <p className="font-serif italic text-[15px] text-ink-soft mt-2">
-          {record.subtitle}
+          {question ?? record.subtitle}
         </p>
         <div className="mt-4">
           {components.length > 0 ? (

@@ -25,6 +25,8 @@ export function DossierHeader({
   verdict,
   standing,
   cover,
+  question,
+  questionNote,
 }: {
   record: CaseRecord;
   header: CaseHeader;
@@ -33,6 +35,10 @@ export function DossierHeader({
   verdict: AssessmentState | null;
   /** Ratification standing of the displayed assessment (load.ts). */
   standing: { status: "ratified" | "contested" | "unratified"; agreeing: number; panel: number } | null;
+  /** The case's question as it stands (load.ts caseQuestion); the case file's subtitle when absent. */
+  question?: string;
+  /** Shown under the question when an edition restated it, e.g. "as restated by the edition of 2026-09-10". */
+  questionNote?: string;
   cover?: ImageRecord | null;
 }) {
   const questions = [
@@ -64,8 +70,11 @@ export function DossierHeader({
               {record.title}
             </h1>
             <p className="font-serif italic text-lg sm:text-xl text-dossier-faint mt-3 max-w-3xl">
-              {record.subtitle}
+              {question ?? record.subtitle}
             </p>
+            {questionNote ? (
+              <p className="text-xs text-dossier-faint mt-1 max-w-3xl">{questionNote}</p>
+            ) : null}
             {verdict ? (
               <div className="mt-5 flex flex-wrap items-center gap-3">
                 <AssessmentBadge state={verdict} size="lg" />

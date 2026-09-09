@@ -1365,7 +1365,7 @@ names is drafted, however many later drafts exist. The scheduler-order
 change of the same day had missed #203's merge and rides along here.
 
 **Two essays, two doors, and how claims are chosen (founder direction,
-2026-09-09).** The PDF supplied as "the new essay" proved byte-identical to
+2026-09-09, in session).** The PDF supplied as "the new essay" proved byte-identical to
 the case's founding essay of August 13 (VASO-IN002), with no perforator idea
 in it; the founder then placed the actual new essay, *Knots of Existence
 Hypotheses* (2026-09-08, 41 pages), under `research/vasocomputation/`. The
@@ -1586,3 +1586,42 @@ Amazon, The Immortality Key, Zero Worlds and Cast, Not Carved from
 contested to ratified with the panel's own words unchanged; no new
 evidence enters and none is claimed. Drafted by the operator on the
 founder's direction; committed and merged by the founder's hand.
+
+**The edition owns the case's question; anchors may span pages; evidence
+splits too (founder direction, 2026-09-09, in session).** Built as item 4 of the
+assessment, on the founder's word given in session on 2026-09-09. (1) The subtitle a reader sees is the
+question as the current edition states it: the edition schema gains
+`question` and `accounts` (the serious accounts it sets side by side, one
+line each), edition protocol v5 restates the question only when the inputs
+have moved it and says why, a candidate that says nothing inherits both,
+and the pages show the standing question with a note naming the edition
+that restated it and the founding question beneath; the title is the
+case's name and stays the founder's — the edition never proposes one. The
+packet's `case.subtitle` is now the standing question for every verb, with
+`foundingQuestion` and `accounts` beside it. (2) The verifier (protocol v4)
+judges relevance against that question and those accounts — the founding
+subtitle had refused the second essay's fascial family as outside a
+question phrased around latched smooth muscle. (3) A claim's anchor may
+carry `also`: further passages of the same source, each a verbatim quote
+with its locator, checked mechanically and judged together (draft protocol
+v6) — the essay's headline claim, perforator against arteriole, fell on a
+single-page anchor where the contrast is drawn three pages on. (4) An
+evidence record the reader judges compound is split by the drafter into
+one observation each, every part keeping a verbatim quote (split protocol
+v3, `kind: evidence`), and each part is checked and judged on its own —
+six of twelve records from the essay had been refused with no remedy.
+(5) On the Arbiter's word (GPT seat, #213): the permission the intake
+records at the door now travels with the record — every document in an
+intake report carries a `Permission on which it is published:` line, the
+drafter copies it verbatim into the proposed Source's `reliabilityNotes`,
+and the verifier refuses a supplied document's Source without it — the
+line is read from the intake's own manifest and must match exactly, so a
+drafter's own assertion of permission admits nothing; and a document the
+intake recorded no permission for supplies no text at all, whether its
+Source is proposed or already on the ledger — a manifest from before the
+field existed included: the two essays' intakes of 2026-09-09 supply no
+text to a later run, and a document taken in then is re-dropped to be
+quoted again. Not yet
+done: the essay's declined rows are re-proposed only by a later draft on
+the case, after an edition under v5 has restated the question; that is
+the chain's next two steps on State, Not Scar, not a hand edit.

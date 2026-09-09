@@ -55,6 +55,12 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          # The panel's other three seats (config/models.yaml) — a check step without them loses three of five seats.
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
+          VENICE_API_KEY: ${{ secrets.VENICE_API_KEY }}
+          # The intake asks GitHub who committed a dropped file (config/founder.yaml).
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/aletheia.ts next --run --steps "${{ github.event.inputs.steps || '3' }}" | tee next.json
       - name: Open the PR the panel judges
         env:

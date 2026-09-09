@@ -129,8 +129,9 @@ try {
 let noted = 0;
 for (const issue of notes) {
   const parsed = parseReviewNoteTitle(issue.title);
-  // The answer on the record is the last comment on the issue — its author, date, first words and link — so a
-  // note closed without one shows as closed without an answer, never as answered by closure (GPT seat, #229).
+  // The answer on the record is the last qualifying reply — by a recognized answerer, opening "Answered on the
+  // record" — with its author, date, first words and link; a note closed without one shows as closed without an
+  // answer, never as answered by closure or by an aside (GPT seat, #229, #231).
   let answer = null;
   try {
     const comments = joinPages(gh("api", "--paginate", `repos/${repo}/issues/${issue.number}/comments?per_page=100`));
@@ -156,8 +157,9 @@ for (const issue of notes) {
   };
   const file = path.join(NOTES_DIR, `${issue.number}.yaml`);
   const text =
-    "# Harvested review note — the issue's state at harvest, with the last comment as the answer's receipt;\n" +
-    "# a note closed without one is shown as closed without an answer on the record.\n" +
+    "# Harvested review note — the issue's state at harvest, with the last qualifying reply (by a recognized\n" +
+    "# answerer, opening 'Answered on the record') as the answer's receipt; a note closed without one is shown\n" +
+    "# as closed without an answer on the record.\n" +
     "# See scripts/harvest-governance.mjs and docs/MAINTENANCE.md, \"Review notes\".\n" +
     stringifyYaml(record);
   if (dryRun) {

@@ -47,14 +47,20 @@ export function parseReviewNoteTitle(title) {
   return { pr: Number(m[1]), seat: m[2].trim(), rules: m[3].split(",").map((x) => x.trim()).filter(Boolean), paradigm: m[4] ?? null };
 }
 
+/** A reply is an answer on the record only when it says so: this phrase opens it. */
+export const ANSWER_MARKER = /^\s*answered on the record/i;
+
 /**
- * The answer on the record among an issue's comments: the last one by a
- * recognized answerer (the founder's login, the maintenance bot) — never
- * a passer-by's remark, never closure. Null when none was written.
+ * The answer on the record among an issue's comments: the last qualifying
+ * reply — by a recognized answerer (the founder's login, the maintenance
+ * bot) AND opening with "Answered on the record", the structured marker
+ * that makes the reply an answer rather than a remark. Never a passer-by's
+ * comment, never an authorized account's aside, never closure. Null when
+ * none was written.
  */
 export function answerFrom(comments, answerers) {
   const set = new Set((answerers ?? []).map((a) => String(a).toLowerCase()));
-  const mine = (comments ?? []).filter((c) => set.has(String(c.user?.login ?? "").toLowerCase()));
+  const mine = (comments ?? []).filter((c) => set.has(String(c.user?.login ?? "").toLowerCase()) && ANSWER_MARKER.test(String(c.body ?? "")));
   const last = mine.at(-1);
   if (!last) return null;
   return { by: last.user.login, at: String(last.created_at ?? "").slice(0, 10), excerpt: String(last.body ?? "").replace(/\s+/g, " ").trim().slice(0, 300), url: last.html_url };

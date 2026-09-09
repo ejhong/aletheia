@@ -1806,4 +1806,10 @@ the last comment by the founder's login or the maintenance bot, never a
 passer-by's remark — and the harvest paginates, so no note or comment
 falls off the end; and the scheduler's pure choice (with `editionDue`)
 now lives in the domain (`src/domain/schedule.ts`), the pipeline's `next`
-importing it from there, so the operations page reads no pipeline module.
+importing it from there, so the operations page reads no pipeline module. On the seat's third note (#231): a reply is the answer only when it
+says so — the last comment by a recognized answerer that opens "Answered
+on the record" — and the receipt is described as that, not as the issue's
+last comment; and the spend copy is date-bounded: the pipeline's calls
+since 2026-09-08, the panel's since 2026-09-09, unmetered before, so the
+all-time figure is a floor.
+

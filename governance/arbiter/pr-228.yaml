@@ -1,0 +1,157 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 228
+title: "The UI pass, third PR: one operations page — the state, the schedule,
+  what is next, spend against the caps, recent sittings, the review notes"
+url: https://github.com/ejhong/aletheia/pull/228
+verdict: pass
+reason: "4 of 5 seats affirm compliance; one seat's objection is a review note
+  the operator answers on the record: GPT-5.6 Sol (OpenAI) (§3.8, §3.9, §3.13,
+  §3.15; provenance)"
+outcome: merged
+outcomeAt: 2026-09-09
+judgedAgainst: cb68d1e65d
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The change is a presentation/infrastructure pass: `/panel` becomes
+      `/operations` with links re-pointed, readers (config, spend read side,
+      budget caps, the scheduler's pure choice) move from `src/pipeline/` into
+      `src/domain/` as re-exports with no logic change I can see, and the page
+      gains state, schedule, spend-against-caps, recent sittings and the
+      review-note queue. AGENTS.md is untouched; no content/ records or
+      citations are added (the verifier found none), and no §3.15 check is
+      loosened — the ratification derivations in `standing.ts`/`panel.ts` are
+      only re-labelled, and the harvest is additive. The new
+      `governance/arbiter/*.yaml` and `governance/review-notes/*.yaml` are
+      machine harvests stamped with `harvestedAt`, `judgedAgainst`,
+      `promptVersion`, per-seat votes and costs; notably they display
+      parked-but-merged verdicts (pr-206, pr-208, pr-212, pr-216) with every
+      dissenting seat's words intact, which shows disagreement rather than
+      hiding it, and `answerFrom` refuses closure-as-answer, marking a note
+      closed without a receipt as exactly that — a strengthening. Two things I
+      would want fixed as review notes rather than parking: the PR body says a
+      note names the commit it was raised on, yet notes 217/220/224/226/229
+      carry `commit: null` while the page text promises that provenance; and the
+      harvested `answer.by: ejhong` renders as \"answered by ejhong\", although
+      the excerpt itself says the operator wrote it on the founder's direction —
+      the display should name the operator as author so an AI reply is not read
+      as a human one (§3.15). Neither rises to fabrication or misattributed
+      stamping on the evidence shown."
+    cost:
+      model: claude-opus-5
+      inputTokens: 134417
+      outputTokens: 1522
+      usd: 0.710135
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: violates
+    rules:
+      - §3.8
+      - §3.9
+      - §3.13
+      - §3.15
+    reasoning: "The review-note harvester can mislabel a comment as the
+      constitutional answer merely because its author is on `ANSWERERS`;
+      `answerFrom` does not verify that the comment answers the objection. The
+      added test positively demonstrates the accompanying provenance description
+      is false: despite a later passer-by comment, it returns the earlier
+      founder comment, while the page and YAML header call the receipt “the last
+      comment on the issue.” This conflates the source fact—an authorized
+      account posted a comment—with the editorial inference that the objection
+      was answered, weakening the on-record answer requirement in §3.15 and
+      producing an inaccurate provenance label under §§3.8–3.9. Require an
+      explicit structured answer marker and describe the receipt as the last
+      qualifying answer, not the issue’s last comment. The Spend copy also
+      overstates coverage by saying every paid call is ledgered while the added
+      historical records describe pre-2026-09-09 Arbiter calls as unmetered and
+      the UI itself calls them unpriced; the claim should be date-bounded and
+      disclose incomplete historical coverage under §3.13."
+    paradigm: provenance
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 89348
+      outputTokens: 3369
+      usd: 0.424772
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+      - §4
+      - §7
+    reasoning: The change is a clean UI and domain refactor that transforms `/panel`
+      into `/operations`, surfacing operational status, budget and spend
+      ceilings, schedule, sittings, and the queue of review notes without
+      mutating underlying epistemic ledgers. AGENTS.md is not modified, no
+      citations or claims are added under `content/`, and mechanical citation
+      checks report no new identifiers. Read-side helpers for budget, spend,
+      configuration, and scheduling are cleanly relocated to the domain layer
+      while preserving all validation and fail-closed checks. Harvested arbiter
+      records and review note YAML files accurately record provenance, including
+      issue receipts and commit references, without presenting unratified
+      material as ratified or weakening §3.15 checks.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 98081
+      outputTokens: 857
+      usd: 0.076774
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "This is a UI/domain refactor plus governance harvest: /panel becomes
+      /operations, domain readers for config/spend/budget/schedule move out of
+      the pipeline so the page derives the same next-action and caps the loop
+      uses, and harvested arbiter verdicts plus review-notes land under
+      governance/. No AGENTS.md edit, no content/ citations (verification
+      empty), no run records, and the OMITTED FILES list is empty. Review-note
+      harvest strengthens §3.15 inspectability: last comment by founder/bot is
+      the answer receipt, closed-without-answer is shown as such, and notes name
+      the commit they were raised on. Checks are not loosened; disagreement,
+      spend, kill-switch state, and the queue stay public."
+    cost:
+      model: grok-4.5
+      inputTokens: 91680
+      outputTokens: 174
+      usd: 0.184404
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+      - §8
+    reasoning: "This is a UI/infrastructure change with no AGENTS.md edit, no
+      content/ additions, and no citation identifiers (the verification section
+      is empty), so the fabrication, constitution, and confidence rules are not
+      engaged. The large block of governance/arbiter/*.yaml files are
+      append-only, explicitly labeled verbatim harvests of public PR comments
+      with promptVersion, judgedAgainst commit, and per-seat reasoning preserved
+      — disagreement is displayed, not hidden, and the change strengthens
+      §3.15's inspectability rather than weakening any check: the harvest now
+      restricts 'answers' to the founder's login or maintenance bot, paginates
+      so no note falls off, and records a closed-without-answer note as exactly
+      that, directly implementing review notes #229/#230. The
+      schedule/budget/config/spend changes are verbatim moves from pipeline to
+      domain (the new schedule.ts and the deleted pipeline/next.ts bodies match
+      line for line), with fail-closed parsing (a bad review-note file throws at
+      build; unparsable run records are skipped, never repaired), consistent
+      with §8's no-silent-repair rule. The one item I cannot independently
+      verify — that the harvested issue states and comment texts match what
+      GitHub actually holds — is external data beyond this packet; the records
+      carry URLs and dates, are internally consistent, and postdate my training,
+      so per temporal humility their unfamiliarity is not evidence of
+      fabrication."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 90825
+      outputTokens: 1114
+      usd: 0.014181
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 504351
+  outputTokens: 7036
+  usd: 1.4103
+harvestedAt: 2026-09-09

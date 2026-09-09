@@ -19,6 +19,7 @@ import { defaultJudge, defaultSplitter, nextClaimId, suppliedTexts } from "../..
 import { newRunId } from "../../src/pipeline/store.ts";
 
 const [slug, date] = process.argv.slice(2);
+if (!slug || !date) throw new Error("usage: node scripts/migrations/2026-09-09-split-compound.ts <case> <date>");
 const loaded = getCaseBySlug(slug);
 const runId = newRunId("verify", slug);
 const meter = { runId, verb: "verify" as const, case: slug };

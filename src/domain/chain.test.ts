@@ -583,3 +583,31 @@ describe("verify v3: atomicity", () => {
     expect(v.accepted.evidence[0].claimIds).toEqual(v.accepted.claims.map((k) => k.id)); // re-pointed from the compound to its parts
   });
 });
+
+describe("verify remembers its judgments", () => {
+  it("asks the reader once per question and reuses the answer on a re-run", async () => {
+    const { rememberedJudge, rememberedSplitter } = await import("../pipeline/verify.ts");
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "aletheia-judg-"));
+    let asked = 0;
+    const base = async () => (asked++, { quoteInContext: true, statementSupported: true, locatorSupported: true, directionRight: true, independenceNoted: true, relevant: true, atomic: true, reason: `answer ${asked}` });
+    const meter = { runId: "r", verb: "verify" as const, case: "x" };
+    const j1 = rememberedJudge(base, path.join(dir, "judgments.yaml"), "reader");
+    const a = await j1({ id: "E1" }, "text", "ctx", meter);
+    const b = await j1({ id: "E1" }, "text", "ctx", meter);
+    await j1({ id: "E2" }, "text", "ctx", meter);
+    expect(asked).toBe(2);
+    expect(a).toEqual(b);
+    // A fresh verifier over the same proposal directory does not ask again.
+    const j2 = rememberedJudge(base, path.join(dir, "judgments.yaml"), "reader");
+    expect((await j2({ id: "E1" }, "text", "ctx", meter)).reason).toBe("answer 1");
+    expect(asked).toBe(2);
+    // A different reader is a different question.
+    await rememberedJudge(base, path.join(dir, "judgments.yaml"), "other")({ id: "E1" }, "text", "ctx", meter);
+    expect(asked).toBe(3);
+    let splits = 0;
+    const s1 = rememberedSplitter(async (st) => (splits++, st.split(" and ")), path.join(dir, "splits.yaml"), "m");
+    expect(await s1("a and b", "t", meter)).toEqual(["a", "b"]);
+    expect(await s1("a and b", "t", meter)).toEqual(["a", "b"]);
+    expect(splits).toBe(1);
+  });
+});

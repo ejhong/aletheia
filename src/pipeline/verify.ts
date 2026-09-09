@@ -1,7 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
-import { parse as parseYaml } from "yaml";
+import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
 import type { Disposition, Proposal } from "../domain/intake.ts";
+import { canonicalJson, sha256Hex } from "../domain/hash.ts";
 import { sourceKeys, textKey, titleContainment, TITLE_NEAR } from "../domain/keys.ts";
 import { claimAnchorErrors, findCase, sourceAdmissionErrors } from "../domain/load.ts";
 import type { Claim, Evidence, LoadedCase, ResearchOpportunity, Source } from "../domain/schema.ts";
@@ -80,6 +81,40 @@ export const defaultSplitter: Splitter = async (statement, anchorText, meter) =>
   );
   return r.data.parts.map((p) => p.trim()).filter((p) => p.length > 10);
 };
+
+/**
+ * Judgments and splits remembered beside the proposal (`judgments.yaml`),
+ * keyed by what was asked (record, context, source text, reader), so a
+ * verification cut short — by a budget cap, a torn socket — resumes without
+ * asking the same question twice (2026-09-09: $12 of judge calls were lost
+ * when the month's cap stopped a run mid-way). What was judged is also part
+ * of the record.
+ */
+export function rememberedJudge(judge: Judge, file: string, readerModel: string): Judge {
+  const memory: Record<string, VerifyReply> = fs.existsSync(file) ? ((parseYaml(fs.readFileSync(file, "utf8")) as Record<string, VerifyReply>) ?? {}) : {};
+  return async (record, sourceText, context, meter) => {
+    const key = sha256Hex(canonicalJson({ record, context, sourceText, readerModel }));
+    if (memory[key]) return memory[key];
+    const reply = await judge(record, sourceText, context, meter);
+    memory[key] = reply;
+    fs.mkdirSync(path.dirname(file), { recursive: true });
+    fs.writeFileSync(file, stringifyYaml(memory, { lineWidth: 0 }));
+    return reply;
+  };
+}
+
+export function rememberedSplitter(split: Splitter, file: string, model: string): Splitter {
+  const memory: Record<string, string[]> = fs.existsSync(file) ? ((parseYaml(fs.readFileSync(file, "utf8")) as Record<string, string[]>) ?? {}) : {};
+  return async (statement, anchorText, meter) => {
+    const key = sha256Hex(canonicalJson({ statement, anchorText, model }));
+    if (memory[key]) return memory[key];
+    const parts = await split(statement, anchorText, meter);
+    memory[key] = parts;
+    fs.mkdirSync(path.dirname(file), { recursive: true });
+    fs.writeFileSync(file, stringifyYaml(memory, { lineWidth: 0 }));
+    return parts;
+  };
+}
 
 /** The next free claim id in the case's scheme, given the ledger and everything proposed so far. */
 export function nextClaimId(loaded: LoadedCase, taken: Iterable<string>): string {
@@ -420,7 +455,10 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
       if (!texts.has(key)) texts.set(key, s.url || doiOf(s) ? await fetcher({ url: s.url, doi: doiOf(s) }, {}) : { url: key, ok: false, status: null, contentType: null, text: null, reason: "the source record has no URL or DOI and no supplied text stands in for it" });
     }
 
-    const verdicts = await judgeProposal(proposal, loaded, texts, resolved, opts.deps?.judge ?? defaultJudge, meter, { model: READER.model, date }, opts.deps?.split ?? defaultSplitter);
+    const proposalDir = path.join(root, "proposals", proposalRunId);
+    const judge = rememberedJudge(opts.deps?.judge ?? defaultJudge, path.join(proposalDir, "judgments.yaml"), READER.model);
+    const split = rememberedSplitter(opts.deps?.split ?? defaultSplitter, path.join(proposalDir, "splits.yaml"), MODELS.house.model);
+    const verdicts = await judgeProposal(proposal, loaded, texts, resolved, judge, meter, { model: READER.model, date }, split);
     // Durable locators: every admitted source with a URL gets its Wayback snapshot on the record.
     const archive = opts.deps?.archive ?? archiveUrl;
     for (const [i, s] of verdicts.accepted.sources.entries()) {

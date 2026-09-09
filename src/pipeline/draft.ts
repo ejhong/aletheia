@@ -145,7 +145,7 @@ export const DRAFT_SCHEMA: Record<string, unknown> = {
         properties: {
           record: { type: "string" },
           field: { type: "string" },
-          from: { type: "string" },
+          from: { type: ["string", "null"] },
           to: { type: "string" },
           reason: { type: "string" },
         },
@@ -227,7 +227,7 @@ export interface DraftReply {
     effortTier: string;
     informationGain: string;
   }[];
-  corrections: { record: string; field: string; from: string; to: string; reason: string }[];
+  corrections: { record: string; field: string; from: string | null; to: string; reason: string }[];
   dispositions: {
     kind: Disposition["kind"];
     disposition: Exclude<Disposition["disposition"], "in">;

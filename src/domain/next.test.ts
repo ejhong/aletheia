@@ -93,3 +93,25 @@ describe("aletheia next", () => {
     expect(getCaseBySlug("megalithic-casting").record.slug).toBe("megalithic-casting");
   });
 });
+
+describe("superseded intakes", () => {
+  it("an earlier intake whose documents a later intake of the same case took in again needs no draft", async () => {
+    const fs = await import("node:fs");
+    const os = await import("node:os");
+    const path = await import("node:path");
+    const { draftedFrom } = await import("../pipeline/next.ts");
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "aletheia-supersede-"));
+    const mk = (id: string, shas: string[]) => {
+      fs.mkdirSync(path.join(root, "proposals", id), { recursive: true });
+      fs.writeFileSync(path.join(root, "proposals", id, "manifest.yaml"), `items:\n${shas.map((s) => `  - sha256: ${s}\n`).join("")}`);
+    };
+    mk("2026-09-09-inbox-v-010000", ["aaa"]);
+    mk("2026-09-09-inbox-v-020000", ["aaa"]);
+    mk("2026-09-09-inbox-v-030000", ["bbb"]);
+    const runs = ["010000", "020000", "030000"].map((t) => run({ runId: `2026-09-09-inbox-v-${t}`, verb: "inbox", case: "v", date: "2026-09-09" }));
+    const drafted = draftedFrom(runs, root);
+    expect(drafted.has("2026-09-09-inbox-v-010000")).toBe(true); // superseded by 020000
+    expect(drafted.has("2026-09-09-inbox-v-020000")).toBe(false); // the latest intake of that document
+    expect(drafted.has("2026-09-09-inbox-v-030000")).toBe(false); // a different document
+  });
+});

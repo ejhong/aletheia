@@ -7,7 +7,10 @@ import { runCheck } from "./check.ts";
 import { runDraft } from "./draft.ts";
 import { editionDue, runEdition } from "./edition.ts";
 import { runReport, type ResearchSeat } from "./report.ts";
-import { readProposal, readRuns, type RunOutcome } from "./store.ts";
+import fs from "node:fs";
+import path from "node:path";
+import { parse as parseYaml } from "yaml";
+import { readProposal, readRuns, runDir, type RunOutcome } from "./store.ts";
 import { runVerify } from "./verify.ts";
 
 /**
@@ -55,13 +58,34 @@ const ageDays = (date: string, today: string) => (Date.parse(today) - Date.parse
 const when = (r: Pick<RunRecord, "runId" | "date">) => `${r.date}T${r.runId.slice(-6)}`;
 const after = (a: Pick<RunRecord, "runId" | "date">, b: Pick<RunRecord, "runId" | "date">) => when(a) > when(b);
 
-/** The run ids of reports and intakes some proposal was drafted from (the proposal names its report). */
+/**
+ * The run ids of reports and intakes that need no draft: those some proposal
+ * was drafted from (the proposal names its report), and intakes superseded
+ * by a later intake of the same case that took in every document they did
+ * (by sha256) — a re-run intake replaces its predecessor rather than
+ * queueing beside it (2026-09-09: two stale intakes of one essay were
+ * drafted before the current one).
+ */
 export function draftedFrom(runs: RunRecord[], root = process.cwd()): Set<string> {
   const out = new Set<string>();
   for (const r of runs) {
     if (r.verb !== "draft" || r.outcome !== "completed") continue;
     const id = readProposal(r.runId, root)?.report?.match(/^proposals\/([^/]+)\//)?.[1];
     if (id) out.add(id);
+  }
+  const intakes = runs.filter((r) => r.verb === "inbox" && r.outcome === "completed");
+  const shas = new Map<string, Set<string>>();
+  for (const r of intakes) {
+    const f = path.join(runDir(r.runId, root), "manifest.yaml");
+    if (!fs.existsSync(f)) continue;
+    const m = parseYaml(fs.readFileSync(f, "utf8")) as { items?: { sha256?: string }[] };
+    shas.set(r.runId, new Set((m.items ?? []).map((i) => i.sha256).filter((x): x is string => Boolean(x))));
+  }
+  for (const a of intakes) {
+    const mine = shas.get(a.runId);
+    if (!mine || mine.size === 0) continue;
+    const superseded = intakes.some((b) => b.case === a.case && b.runId !== a.runId && b.date + b.runId.slice(-6) > a.date + a.runId.slice(-6) && [...mine].every((s) => shas.get(b.runId)?.has(s)));
+    if (superseded) out.add(a.runId);
   }
   return out;
 }

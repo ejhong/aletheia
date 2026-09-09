@@ -1,0 +1,371 @@
+# Proposal — a change to domain records, in one envelope (docs/AUTOMATION.md).
+# Never citable; nothing here is a record until adopted through the gate.
+runId: 2026-09-09-draft-vasocomputation-035914
+date: 2026-09-09
+case: vasocomputation
+producer: draft
+model: claude-fable-5-1
+promptVersion: draft-v4
+basis:
+  ledgerHash: 38203e62c566f567a0f65b93f1a415179a4045be2527da2118d17079c919d64e
+rationale: "This is an inbox intake of the founder's own essay (already SRC-JHONG-2026 / VASO-IN002), and the report itself states the footing: supplier's words, discovery material, records only from the works it names. The item does not carry the 'THIS DOCUMENT IS THE LEDGER'S SOURCE' marker, so I have not catalogued the essay's propositions as claims here; if the founder wants that done, the marker is the route. Of the works named, two resolved to DOIs and both are already ledger records. Only Hubbard & Berkoff 1993 returned text (abstract only), which confirms the record is the right work and confirms the observation behind VASO-E001. The abstract also states two things the ledger does not yet carry — higher spontaneous-EMG amplitude in tension-headache and fibromyalgia patients than in normals, and the authors' own attribution of the nidus to sympathetically activated intrafusal (spindle) contractions — so I add two claims and three evidence records from that text, the latter being an autonomic-but-skeletal generator that competes with the vascular version of VASO-C020. Hai & Murphy returned HTTP 403 and is a duplicate anyway. Every other named work is dispositioned; most repeat the prior pass's dispositions, and the newly listed items (fibromyalgia-era community tender-point counts, radical-remission interviews, brown fat, Piezo, sham surgery, wound-healing studies) are handled fresh. The one new item that bears on a ledger claim is the community tender-point-count literature, which is a proto-census for VASO-C001; it is blocked pending a primary paper and gets a desk research item. A url correction is proposed for SRC-HUBBARD-BERKOFF-1993 since the report reached its text at the DOI. No edition change: nothing here alters the telling."
+adds:
+  sources: []
+  evidence:
+    - id: VASO-E022
+      title: "Hubbard–Berkoff abstract: spontaneous EMG amplitude higher in tension-headache and fibromyalgia patients than in normals"
+      claimIds:
+        - VASO-C031
+      sourceId: SRC-HUBBARD-BERKOFF-1993
+      direction: supports
+      strength: moderate
+      sourceStatement: The source states that monopolar needle EMG was recorded from trapezius trigger points and adjacent non-tender fibers in normal subjects and in two patient groups, tension headache and fibromyalgia, and that "Mean EMG amplitude in the patient groups was significantly greater" than in normals.
+      editorInference: This is the between-group finding of the same 1993 study whose within-muscle finding anchors VASO-E001. It shows the nidus signal scales with clinical pain status, which is consistent with any account in which the nidus is a maintained, state-sensitive generator, but it does not distinguish the vascular from the skeletal-guarding reading. Abstract only; sample sizes and statistics not shown.
+      exactLocator: Abstract, Spine 18(13):1803–1807, October 1993; publisher (Ovid/LWW) landing page reached via https://doi.org/10.1097/00007632-199310000-00015; full text is 'PDF Only' and was not shown
+      limitations:
+        - Abstract only; group sizes, amplitude values, and test statistics not visible
+        - Single lineage (Hubbard/Berkoff), never replicated with modern instrumentation
+        - Patient groups are heterogeneous (tension headache, fibromyalgia); no vascular measurement was taken
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-vasocomputation-021500
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-vasocomputation-035914
+        date: 2026-09-09
+    - id: VASO-E023
+      title: "Hubbard–Berkoff abstract: the authors attribute trigger points to sympathetically activated intrafusal contractions"
+      claimIds:
+        - VASO-C032
+      sourceId: SRC-HUBBARD-BERKOFF-1993
+      direction: supports
+      strength: weak
+      sourceStatement: The source states, as its authors' interpretation of their needle-EMG findings, that "TrPs are caused by sympathetically activated intrafusal contractions".
+      editorInference: This is the source's hypothesis, not a measured result; the study recorded EMG only and did not test sympathetic drive or spindle involvement directly. It supports VASO-C032 only in the sense that the observers who found the nidus proposed this generator; its diagnostic weight for the mechanism is near zero.
+      exactLocator: Abstract, final sentence, Spine 18(13):1803–1807, October 1993; reached via https://doi.org/10.1097/00007632-199310000-00015; abstract only
+      limitations:
+        - Hypothesis stated in an abstract, not a tested finding
+        - The article records that later literature favors endplate potentials as the generator; the question remains contested
+        - Abstract only; the discussion section was not shown
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-vasocomputation-021500
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-vasocomputation-035914
+        date: 2026-09-09
+    - id: VASO-E024
+      title: The primary observers' generator is autonomic but skeletal (intrafusal), not vascular
+      claimIds:
+        - VASO-C020
+      sourceId: SRC-HUBBARD-BERKOFF-1993
+      direction: context
+      strength: weak
+      sourceStatement: The source's authors interpret the millimeter-scale spontaneous EMG nidus as arising because "TrPs are caused by sympathetically activated intrafusal contractions" — that is, sympathetically driven contraction of muscle-spindle fibers.
+      editorInference: "For VASO-C020 this cuts both ways and so is recorded as context: it agrees with the attribution that the nidus is autonomically maintained rather than structural, but it locates the maintained element in skeletal intrafusal fibers, not in microvascular smooth muscle. The latch-arteriole account must therefore either absorb spindle activation as the 'secondary skeletal-muscle guarding' it names or displace the observers' own explanation. Weightless on its own for the vascular question."
+      exactLocator: Abstract, final sentence, Spine 18(13):1803–1807, October 1993; reached via https://doi.org/10.1097/00007632-199310000-00015; abstract only
+      limitations:
+        - Author hypothesis, untested in the study
+        - No vascular measurement taken; cannot adjudicate vascular versus spindle generator
+        - Abstract only
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-vasocomputation-021500
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-vasocomputation-035914
+        date: 2026-09-09
+  claims:
+    - id: VASO-C031
+      statement: Spontaneous needle-EMG amplitude at trapezius trigger points is higher in tension-headache and fibromyalgia patients than in healthy subjects.
+      theme: neural-signature
+      rung: observation
+      claimType: measurement
+      sourceAnchor:
+        locator: Abstract, Spine 18(13):1803–1807, October 1993; reached via https://doi.org/10.1097/00007632-199310000-00015
+        quote: Mean EMG amplitude in the patient groups was significantly greater
+        sourceId: SRC-HUBBARD-BERKOFF-1993
+      parentClaimIds:
+        - VASO-C002
+      dependsOnClaimIds:
+        - VASO-C002
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-vasocomputation-021500
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-vasocomputation-035914
+        date: 2026-09-09
+    - id: VASO-C032
+      statement: The spontaneous electrical activity recorded at trigger points is generated by sympathetically activated contraction of intrafusal (muscle-spindle) fibers.
+      theme: neural-signature
+      rung: mechanism
+      claimType: mechanistic
+      sourceAnchor:
+        locator: Abstract, final sentence, Spine 18(13):1803–1807, October 1993; reached via https://doi.org/10.1097/00007632-199310000-00015
+        quote: The authors hypothesize that TrPs are caused by sympathetically activated intrafusal contractions
+        sourceId: SRC-HUBBARD-BERKOFF-1993
+      parentClaimIds:
+        - VASO-C002
+      dependsOnClaimIds:
+        - VASO-C002
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-vasocomputation-021500
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-vasocomputation-035914
+        date: 2026-09-09
+  research:
+    - id: VASO-R010
+      title: Retrieve the fibromyalgia-era community tender-point-count surveys as a proto-census
+      summary: "The essay reports, without citation, that population-based studies using the 18-site fibromyalgia tender-point exam found tender points nearly universal (medians 6 in women, 3 in men) and counts tracking distress and sleep rather than tissue damage. If a primary paper exists — the candidates are the 1990s population surveys of tender-point counts in general-population samples (e.g., the UK and Wichita community studies) — it is the only instrumented prevalence data behind VASO-C001 and the only existing curve of tender-point burden against sex, age, and distress. Desk task: locate the primary papers, retrieve the count distributions, and record whether the exam sites and pressure protocol map onto what the case calls a 'knot'."
+      claimIds:
+        - VASO-C001
+        - VASO-C005
+      track: either
+      effortTier: desk
+      informationGain: Would give VASO-C001 its first population-level, examiner-administered evidence record (currently supported only by proponent testimony and qualified by the reliability critique), would reveal whether tender-point counts already correlate with age, and would tell VASO-R002 what the census must add beyond what rheumatology already measured and abandoned.
+      origin:
+        ref: report 2026-09-09-inbox-vasocomputation-021500
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-vasocomputation-035914
+        date: 2026-09-09
+  images: []
+corrections:
+  - record: SRC-HUBBARD-BERKOFF-1993
+    field: url
+    from: (no url recorded; index keys hold only doi:10.1097/00007632-199310000-00015)
+    to: https://doi.org/10.1097/00007632-199310000-00015
+    reason: The report reached the publisher's abstract page at this DOI URL; the verifier can only read what the record points at. Skip if a url is already present.
+dispositions:
+  - key: text:report header supplied by eugene own work pdf 34 pages the text states it was generated by kimi and fable discovery material propose records only from the published works it names index holds src jhong 2026 with the same title and year
+    kind: source
+    disposition: duplicate
+    as: SRC-JHONG-2026
+    reason: The supplied 34-page PDF is the founder's Substack essay already in the ledger as SRC-JHONG-2026 and listed as founding input VASO-IN002. On the report's stated footing it is supplier's words, not a source; its propositions were not catalogued as claims this pass because the item does not carry the 'THIS DOCUMENT IS THE LEDGER'S SOURCE' marker.
+    reopenIf: The founder resubmits the item marked as the ledger's source SRC-JHONG-2026, in which case its distinct testable propositions should be catalogued as unfeatured, ungraded claims anchored by page.
+    observed: "Report header: 'Supplied by Eugene (own work); PDF, 34 pages … the text states it was generated by Kimi and Fable. Discovery material: propose records only from the published works it names.' Index holds SRC-JHONG-2026 with the same title and year."
+    by: 2026-09-09-draft-vasocomputation-035914
+    date: 2026-09-09
+  - key: doi:10.1152/ajpcell.1988.254.1.c99
+    kind: source
+    disposition: duplicate
+    as: SRC-HAI-MURPHY-1988
+    reason: Resolved by title to doi:10.1152/ajpcell.1988.254.1.c99, which is exactly the key the ledger already holds for SRC-HAI-MURPHY-1988 (anchoring VASO-E003). Retrieval returned HTTP 403, so no new text and nothing to add.
+    reopenIf: An open-access copy is retrieved and yields passages not already in VASO-E003 (e.g., the quantitative energetics figures).
+    observed: "Report: 'Cross-bridge phosphorylation and regulation of latch state in smooth muscle (Hai, C.M., Murphy, R.A., 1988) → https://doi.org/10.1152/ajpcell.1988.254.1.c99 — matched by title on OpenAlex'. sources[0]: retrieved false, reason 'HTTP 403'."
+    by: 2026-09-09-draft-vasocomputation-035914
+    date: 2026-09-09
+  - key: doi:10.1097/00007632-199310000-00015
+    kind: source
+    disposition: duplicate
+    as: SRC-HUBBARD-BERKOFF-1993
+    reason: Resolved to doi:10.1097/00007632-199310000-00015, the key the ledger already holds. The retrieved abstract page confirms title ('Myofascial Trigger Points Show Spontaneous Needle EMG Activity'), authors (Hubbard, Berkoff), venue (Spine 18(13):1803–1807, Oct 1993) and content, so the candidate is the right work. No new source record; the abstract's two statements not yet in the ledger enter as evidence and claims (VASO-E022–E024, VASO-C031–C032).
+    reopenIf: Full text is retrieved, permitting group sizes and amplitude values to be recorded.
+    observed: "Report: '… → https://doi.org/10.1097/00007632-199310000-00015 — matched by title on OpenAlex'. sources[1]: retrieved true; abstract text shown."
+    by: 2026-09-09-draft-vasocomputation-035914
+    date: 2026-09-09
+  - key: text:report hemo neural hypothesis paper 2008 moore christopher cao rosalind 2008 no openalex result close enough in title
+    kind: source
+    disposition: duplicate
+    as: SRC-MOORE-CAO-2008
+    reason: The hemo-neural hypothesis paper is already in the ledger (doi:10.1152/jn.01366.2006), anchoring VASO-E004. No text was shown this pass. The essay names the second author 'Rosalind Cao'; the article says 'Rosa Cao'; the record's authorship should be checked against the paper when its text is next retrieved.
+    reopenIf: The paper's text is retrieved and the author name in the ledger record disagrees with it.
+    observed: "Report: 'Hemo-neural hypothesis paper (2008) (Moore, Christopher, Cao, Rosalind, 2008) — no OpenAlex result close enough in title'."
+    by: 2026-09-09-draft-vasocomputation-035914
+    date: 2026-09-09
+  - key: text:report psychological stressors and trigger point emg activity mental arithmetic study mcnulty william gevirtz richard 1994 no openalex result close enough in title
+    kind: source
+    disposition: duplicate
+    as: SRC-MCNULTY-1994
+    reason: McNulty, Gevirtz et al. 1994 on trigger-point EMG response to a psychological stressor is already in the ledger (doi:10.1111/j.1469-8986.1994.tb02220.x), anchoring VASO-E002.
+    observed: "Report: 'Psychological stressors and trigger point EMG activity (mental arithmetic study) (McNulty, William, Gevirtz, Richard, 1994) — no OpenAlex result close enough in title'."
+    by: 2026-09-09-draft-vasocomputation-035914
+    date: 2026-09-09
+  - key: text:report study on voluntary attention regulating peripheral inflammatory vascular response histamine skin prick study mizrachi 2026 no openalex result close enough in title
+    kind: source
+    disposition: duplicate
+    as: SRC-MIZRACHI-2026
+    reason: Mizrachi et al. 2026 on voluntary attention regulating acute immune responses is already in the ledger (doi:10.1038/s41562-026-02541-1), anchoring VASO-E008.
+    observed: "Report: 'Study on voluntary attention regulating peripheral inflammatory/vascular response (histamine skin prick study) (Mizrachi, 2026) — no OpenAlex result close enough in title'."
+    by: 2026-09-09-draft-vasocomputation-035914
+    date: 2026-09-09
+  - key: text:report microdialysis study of trigger point biochemistry shah jay no openalex result close enough in title
+    kind: source
+    disposition: duplicate
+    as: SRC-SHAH-2008
+    reason: Shah's microdialysis work on the biochemical milieu at active trigger points is already in the ledger (doi:10.1016/j.apmr.2007.10.018), anchoring VASO-E006.
+    reopenIf: The founder wants the earlier 2005 J Appl Physiol microdialysis primary as a separate record.
+    observed: "Report: 'Microdialysis study of trigger point biochemistry (Shah, Jay) — no OpenAlex result close enough in title'."
+    by: 2026-09-09-draft-vasocomputation-035914
+    date: 2026-09-09
+  - key: text:report fascia densification research padua group stecco carla no openalex result close enough in title essay p 3 attributes the concept to carla stecco s group in padua
+    kind: source
+    disposition: blocked
+    reason: No candidate resolved and no text retrieved. The Stecco group's fascial densification concept is a competing non-vascular state-level account of rapid release, bearing on VASO-C011 and VASO-C020 and already the subject of VASO-R008. Nothing can be anchored until a primary paper is retrieved.
+    reopenIf: A primary Stecco-group paper on hyaluronan densification and its reversibility timescale is retrieved with text.
+    observed: "Report: 'Fascia densification research (Padua group) (Stecco, Carla) — no OpenAlex result close enough in title'. Essay p. 3 attributes the concept to 'Carla Stecco's group in Padua'."
+    by: 2026-09-09-draft-vasocomputation-035914
+    date: 2026-09-09
+    route: Search Crossref/OpenAlex for Stecco C. with 'densification' and 'hyaluronan' in fascia journals (e.g., Journal of Bodywork and Movement Therapies, Surgical and Radiologic Anatomy); retrieve full text.
+  - key: text:report sensory cortex smudging in chronic pain moseley g lorimer no openalex result close enough in title
+    kind: source
+    disposition: blocked
+    reason: No candidate resolved and no text retrieved. Somatosensory cortical reorganization in chronic pain is an alternative, non-vascular account of why felt release follows attention plus pressure, bearing on VASO-C004 and the conventional explanation.
+    reopenIf: A primary Moseley or Flor paper on cortical body-map degradation in chronic pain is retrieved with text.
+    observed: "Report: 'Sensory cortex smudging in chronic pain (Moseley, G. Lorimer) — no OpenAlex result close enough in title'."
+    by: 2026-09-09-draft-vasocomputation-035914
+    date: 2026-09-09
+    route: Search for Moseley GL / Flor H on primary somatosensory cortex reorganization in chronic low back pain or CRPS; retrieve the primary experimental paper rather than reviews.
+  - key: text:report sensory motor amnesia concept hanna thomas no openalex result close enough in title
+    kind: source
+    disposition: irrelevant
+    reason: Hanna's 'sensory-motor amnesia' is a conceptual framing from somatic education, not an empirical finding; no ledger claim states or depends on it.
+    reopenIf: The founder adds a claim about chronic guarding degrading interoceptive access to the held region.
+    observed: "Report: 'Sensory-motor amnesia concept (Hanna, Thomas) — no OpenAlex result close enough in title'."
+    by: 2026-09-09-draft-vasocomputation-035914
+    date: 2026-09-09
+  - key: text:report cinderella fibers hypothesis low threshold motor unit recruitment h gg g no openalex result close enough in title
+    kind: source
+    disposition: irrelevant
+    reason: The 'Cinderella fiber' hypothesis is invoked by the essay for age-accumulation of knots; the ledger has no claim about age-accumulation mechanism.
+    reopenIf: The founder adds a claim about knot burden rising with age or low-threshold motor-unit overuse as a mechanism.
+    observed: "Report: 'Cinderella fibers hypothesis (low-threshold motor unit recruitment) (Hägg, G.) — no OpenAlex result close enough in title'."
+    by: 2026-09-09-draft-vasocomputation-035914
+    date: 2026-09-09
+  - key: text:report common neurobiology of pain and pleasure relief research leknes siri tracey irene no openalex result close enough in title
+    kind: source
+    disposition: irrelevant
+    reason: Leknes & Tracey on the neurobiology of pain and pleasure is cited for the essay's 'euphoria of release' section; no ledger claim concerns the affective phenomenology of release.
+    reopenIf: The founder adds a claim that release events produce a rateable euphoria tracking stiffness or perfusion change.
+    observed: "Report: 'Common neurobiology of pain and pleasure (relief research) (Leknes, Siri, Tracey, Irene) — no OpenAlex result close enough in title'."
+    by: 2026-09-09-draft-vasocomputation-035914
+    date: 2026-09-09
+  - key: text:report spontaneous regression of cancer classic review everson cole no openalex result close enough in title
+    kind: source
+    disposition: irrelevant
+    reason: A review of spontaneous regression of cancer concerns the essay's 'repair ceiling' argument, which is not a proposition in this ledger. A prior pass also found the DOI candidate unretrievable and unconfirmed.
+    reopenIf: The founder adds a claim about state-dependent repair or remission and the review is retrieved with title and authors confirmed.
+    observed: "Report: 'Spontaneous regression of cancer (classic review) (Everson, Cole) — no OpenAlex result close enough in title'."
+    by: 2026-09-09-draft-vasocomputation-035914
+    date: 2026-09-09
+  - key: text:report bibliography of spontaneous remission case reports no openalex result close enough in title
+    kind: source
+    disposition: irrelevant
+    reason: The spontaneous-remission bibliography bears on the repair-ceiling argument, which is not a ledger claim.
+    reopenIf: The founder adds a claim about state-dependent repair or remission.
+    observed: "Report: 'Bibliography of spontaneous remission case reports — no OpenAlex result close enough in title'."
+    by: 2026-09-09-draft-vasocomputation-035914
+    date: 2026-09-09
+  - key: text:report radical remission survivor interviews common factors research no openalex result close enough in title
+    kind: source
+    disposition: irrelevant
+    reason: Interview studies of 'radical remission' survivors concern the repair-ceiling argument, which is not a ledger claim; as retrospective self-report they would carry no diagnostic weight on any mechanism claim in any case.
+    reopenIf: The founder adds a claim about state-dependent repair or remission.
+    observed: "Report: 'Radical remission survivor interviews / common factors research — no OpenAlex result close enough in title'."
+    by: 2026-09-09-draft-vasocomputation-035914
+    date: 2026-09-09
+  - key: text:report research on bioelectric control of regeneration and morphology levin lab work levin michael no openalex result close enough in title
+    kind: source
+    disposition: irrelevant
+    reason: Levin's bioelectric regeneration work is cited for the essay's most speculative rung (repair as a callable program), which the ledger does not carry as a claim.
+    reopenIf: The founder adds a claim about contemplative or autonomic states triggering regenerative programs.
+    observed: "Report: 'Research on bioelectric control of regeneration and morphology (Levin lab work) (Levin, Michael) — no OpenAlex result close enough in title'."
+    by: 2026-09-09-draft-vasocomputation-035914
+    date: 2026-09-09
+  - key: text:report research on meditation related adverse effects cheetah house brown study britton willoughby no openalex result close enough in title
+    kind: source
+    disposition: irrelevant
+    reason: Britton's research on meditation-related adverse effects underlies the article's cascade-warning remark, made without a claim; no ledger claim concerns adverse effects.
+    reopenIf: The founder adds a claim about meditation-related adverse effects or rapid-release destabilization; then retrieve the primary 'varieties of contemplative experience' paper.
+    observed: "Report: 'Research on meditation-related adverse effects (Cheetah House / Brown study) (Britton, Willoughby) — no OpenAlex result close enough in title'."
+    by: 2026-09-09-draft-vasocomputation-035914
+    date: 2026-09-09
+  - key: text:report spiritual emergency concept grof stan no openalex result close enough in title
+    kind: source
+    disposition: irrelevant
+    reason: Grof's 'spiritual emergency' concept is cited for the cascade-warning section; no ledger claim concerns it.
+    reopenIf: The founder adds a claim about crisis states following rapid release.
+    observed: "Report: 'Spiritual emergency concept (Grof, Stan) — no OpenAlex result close enough in title'."
+    by: 2026-09-09-draft-vasocomputation-035914
+    date: 2026-09-09
+  - key: text:report autobiography on kundalini awakening crisis krishna gopi no openalex result close enough in title
+    kind: source
+    disposition: irrelevant
+    reason: Gopi Krishna's autobiography is a single first-person account cited for the cascade-warning section; no ledger claim concerns it.
+    reopenIf: The founder adds a claim about kundalini-crisis phenomenology as a first-person data class.
+    observed: "Report: 'Autobiography on kundalini awakening crisis (Krishna, Gopi) — no OpenAlex result close enough in title'."
+    by: 2026-09-09-draft-vasocomputation-035914
+    date: 2026-09-09
+  - key: text:report mastering the core teachings of the buddha ingram daniel no openalex result close enough in title
+    kind: source
+    disposition: irrelevant
+    reason: Ingram's book is cited for the harm-reduction argument, which the article records without a claim.
+    reopenIf: The founder adds a claim about adverse effects of rapid release or disclosure ethics.
+    observed: "Report: 'Mastering the Core Teachings of the Buddha (Ingram, Daniel) — no OpenAlex result close enough in title'."
+    by: 2026-09-09-draft-vasocomputation-035914
+    date: 2026-09-09
+  - key: text:report vasocomputation proposal twitter thread johnson michael edward 2024 no openalex result essay p 11 reproduces a screenshot dated 6 45 am dec 2 2024
+    kind: source
+    disposition: blocked
+    reason: The Dec 2 2024 X thread by @johnsonmxe appears in the essay only as a screenshot; the essay is supplier's words. The thread is a proponent's statement of the vasocomputation/memory hypothesis bearing on VASO-C021 at zero diagnostic weight, and can enter only once the post itself is retrieved.
+    reopenIf: The X post and thread are retrieved with text and a stable URL.
+    observed: "Report: 'Vasocomputation proposal (Twitter thread) (Johnson, Michael Edward, 2024) — no OpenAlex result'. Essay p. 11 reproduces a screenshot dated '6:45 AM · Dec 2, 2024'."
+    by: 2026-09-09-draft-vasocomputation-035914
+    date: 2026-09-09
+    route: Locate the post on x.com/johnsonmxe dated 2 Dec 2024 (or an archived copy) and retrieve its text.
+  - key: text:report full body ultrasonic ct scanner announcement 2026 no openalex result close enough in title
+    kind: source
+    disposition: duplicate
+    as: SRC-BUTTERFLY-MIDJOURNEY-2026
+    reason: The June 2026 full-body ultrasonic tomography announcement is already covered by SRC-BUTTERFLY-MIDJOURNEY-2026 (Butterfly Network's commentary), anchoring VASO-E018. The ledger record is third-party commentary; Midjourney Medical's own announcement would be a distinct primary record if retrieved.
+    reopenIf: Midjourney Medical's own announcement is retrieved with text and URL, in which case it enters as a separate primary source.
+    observed: "Report: 'Full-body ultrasonic CT scanner announcement (2026) — no OpenAlex result close enough in title'."
+    by: 2026-09-09-draft-vasocomputation-035914
+    date: 2026-09-09
+  - key: text:report 18 site tender point exam studies fibromyalgia era no openalex result close enough in title essay p 17 tender points nearly universal medians 6 in women 3 in men counts tracking distress and poor sleep
+    kind: source
+    disposition: blocked
+    reason: No specific paper named and no text retrieved. The essay's statement that community samples examined with the 18-site fibromyalgia tender-point exam show tender points nearly universal (medians 6 in women, 3 in men) with counts tracking distress would, if sourced, be the only population-level instrumented evidence behind VASO-C001. Nothing can be anchored until a primary population survey is retrieved; a desk research item (VASO-R010) is proposed.
+    reopenIf: A primary population-based tender-point-count survey is retrieved with text reporting count distributions by sex and correlates.
+    observed: "Report: '18-site tender point exam studies (fibromyalgia era) — no OpenAlex result close enough in title'. Essay p. 17: 'tender points nearly universal (medians 6 in women, 3 in men), counts tracking distress and poor sleep'."
+    by: 2026-09-09-draft-vasocomputation-035914
+    date: 2026-09-09
+    route: "Retrieve the 1990s general-population tender-point-count surveys (candidates: the UK general-practice population study of tender point counts in BMJ 1994 and the Wichita community fibromyalgia prevalence study in Arthritis & Rheumatism 1995) via Crossref and confirm the reported medians from the text."
+  - key: text:report discovery of active brown fat in adults via pet scans no openalex result close enough in title
+    kind: source
+    disposition: irrelevant
+    reason: The discovery of active brown fat in adults via PET is offered by the essay as an analogy for incidental metabolic imaging findings; no ledger claim concerns it.
+    reopenIf: The founder adds a claim about a metabolic-imaging signature at tender points.
+    observed: "Report: 'Discovery of active brown fat in adults via PET scans — no OpenAlex result close enough in title'."
+    by: 2026-09-09-draft-vasocomputation-035914
+    date: 2026-09-09
+  - key: text:report piezo ion channel discovery nobel prize 2021 2021 no openalex result close enough in title
+    kind: source
+    disposition: irrelevant
+    reason: The Piezo channel discovery and its 2021 Nobel Prize are background to mechanosensation; the ledger's mechanosensitive-channel evidence for VASO-C012 already rests on the primary 2024 Science demonstration (VASO-E005). A prize announcement is not a source for a claim.
+    reopenIf: The founder adds a claim specifically about Piezo-channel expression in peripheral sensory endings adjacent to vessels, for which the primary Piezo papers would be retrieved.
+    observed: "Report: 'Piezo ion channel discovery (Nobel Prize 2021) (2021) — no OpenAlex result close enough in title'."
+    by: 2026-09-09-draft-vasocomputation-035914
+    date: 2026-09-09
+  - key: text:report sham knee surgery trial placebo surgery study no openalex result close enough in title
+    kind: source
+    disposition: irrelevant
+    reason: The sham knee-surgery trial is cited for the essay's placebo/repair-ceiling argument, which is not a ledger claim.
+    reopenIf: The founder adds a claim about placebo-triggered endogenous repair.
+    observed: "Report: 'Sham knee surgery trial (placebo surgery study) — no OpenAlex result close enough in title'."
+    by: 2026-09-09-draft-vasocomputation-035914
+    date: 2026-09-09
+  - key: text:report wound healing and marital hostility study no openalex result close enough in title
+    kind: source
+    disposition: irrelevant
+    reason: The marital-hostility wound-healing study is cited for the essay's repair-ceiling argument; no ledger claim concerns stress and wound healing.
+    reopenIf: The founder adds a claim about sympathetic state degrading tissue repair.
+    observed: "Report: 'Wound healing and marital hostility study — no OpenAlex result close enough in title'."
+    by: 2026-09-09-draft-vasocomputation-035914
+    date: 2026-09-09
+  - key: text:report stressed caregivers wound healing study no openalex result close enough in title
+    kind: source
+    disposition: irrelevant
+    reason: The stressed-caregivers wound-healing study is cited for the essay's repair-ceiling argument; no ledger claim concerns stress and wound healing.
+    reopenIf: The founder adds a claim about sympathetic state degrading tissue repair.
+    observed: "Report: 'Stressed caregivers' wound healing study — no OpenAlex result close enough in title'."
+    by: 2026-09-09-draft-vasocomputation-035914
+    date: 2026-09-09
+report: proposals/2026-09-09-inbox-vasocomputation-021500/report.md

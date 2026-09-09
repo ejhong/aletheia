@@ -6,7 +6,7 @@ import { canonicalJson, sha256Hex } from "../domain/hash.ts";
 import { sameTitle, sourceKeys, textKey } from "../domain/keys.ts";
 import { caseAccounts, caseQuestion } from "../domain/editions.ts";
 import { claimAnchorErrors, findCase, sourceAdmissionErrors } from "../domain/load.ts";
-import type { Claim, Evidence, EvidenceDirection, LoadedCase, ResearchOpportunity, Source } from "../domain/schema.ts";
+import type { Claim, Evidence, EvidenceDirection, LoadedCase, ReaderAct, ResearchOpportunity, Source } from "../domain/schema.ts";
 import { verifyCitations } from "../lib/citation-check.mjs";
 import { archiveUrl, type Archived } from "./archive.ts";
 import { retrieve, type FetchedSource } from "./fetch.ts";
@@ -89,25 +89,46 @@ const DIRECTIONS = new Set<string>(["supports", "undermines", "qualifies", "cont
  * direction without naming one is written as a dissent, as v2 did. Null when the reader finds the
  * passage bears on none of the claims the record names: that record is not admitted.
  */
-export function applyReader(e: Evidence, verdict: VerifyReply, stamp: string): { record: Evidence; notes: string[] } | null {
+/** Who changed the record and under what: the reader's model, the verify run, the protocol, the date. */
+export interface ReaderStamp {
+  model: string;
+  runId: string;
+  promptVersion: string;
+  date: string;
+}
+
+const stampText = (s: ReaderStamp) => `${s.model}, ${s.date}, run ${s.runId}, ${s.promptVersion}`;
+
+export function applyReader(e: Evidence, verdict: VerifyReply, stamp: ReaderStamp): { record: Evidence; notes: string[] } | null {
   let record = e;
   const notes: string[] = [];
+  const act = (field: ReaderAct["field"], from: ReaderAct["from"], to: ReaderAct["to"]): ReaderAct => ({ field, from, to, ...stamp, reason: verdict.reason });
   if (Array.isArray(verdict.bearsOn)) {
     const keep = e.claimIds.filter((id) => verdict.bearsOn!.includes(id));
     if (keep.length === 0) return null;
     if (keep.length < e.claimIds.length) {
       const dropped = e.claimIds.filter((id) => !keep.includes(id));
-      record = { ...record, claimIds: keep, limitations: [...record.limitations, `Second reader (${stamp}) found the passage bears on ${keep.join(", ")} and not on ${dropped.join(", ")}; the link${dropped.length > 1 ? "s" : ""} dropped at intake: ${verdict.reason}`] };
+      record = {
+        ...record,
+        claimIds: keep,
+        limitations: [...record.limitations, `Second reader (${stampText(stamp)}) found the passage bears on ${keep.join(", ")} and not on ${dropped.join(", ")}; the link${dropped.length > 1 ? "s" : ""} dropped at intake: ${verdict.reason}`],
+        readerActs: [...(record.readerActs ?? []), act("claimIds", e.claimIds, keep)],
+      };
       notes.push(`${e.id}: link${dropped.length > 1 ? "s" : ""} to ${dropped.join(", ")} dropped by the second reader`);
     }
   }
   if (verdict.directionRight === false) {
     const d = verdict.direction;
     if (typeof d === "string" && DIRECTIONS.has(d) && d !== e.direction) {
-      record = { ...record, direction: d, limitations: [...record.limitations, `Direction set to "${d}" (from "${e.direction}") by the second reader (${stamp}) at intake: ${verdict.reason}`] };
+      record = {
+        ...record,
+        direction: d,
+        limitations: [...record.limitations, `Direction set to "${d}" (from "${e.direction}") by the second reader (${stampText(stamp)}) at intake: ${verdict.reason}`],
+        readerActs: [...(record.readerActs ?? []), act("direction", e.direction, d)],
+      };
       notes.push(`${e.id}: direction set to ${d} by the second reader`);
     } else {
-      record = { ...record, limitations: [...record.limitations, `Second reader (${stamp}) disputes the stated direction: ${verdict.reason}`] };
+      record = { ...record, limitations: [...record.limitations, `Second reader (${stampText(stamp)}) disputes the stated direction: ${verdict.reason}`] };
       notes.push(`${e.id}: admitted with the second reader's dissent on direction`);
     }
   }
@@ -310,15 +331,16 @@ export async function judgeProposal(
   resolved: Map<string, { status: string; note: string }>,
   judge: Judge,
   meter: Meter,
-  reader: { model: string; date: string } = { model: READER.model, date: isoDate() },
+  reader: { model: string; date: string; promptVersion?: string } = { model: READER.model, date: isoDate() },
   split: Splitter = defaultSplitter,
   /** Who wrote the parts of a split claim, and in which run — their `origin` (§3.14, §3.15). */
   splitter: { model: string; runId: string } = { model: MODELS.house.model, runId: "unrecorded" },
 ): Promise<Verdicts> {
   const rejected: Verdicts["rejected"] = [];
   const notes: string[] = [];
-  /** Who judged and when — the run that answered, when the answer was remembered. */
-  const readerStamp = (v: VerifyReply) => (v.remembered ? `${reader.model}, ${v.remembered.date}, run ${v.remembered.runId}` : `${reader.model}, ${reader.date}`);
+  /** Who judged, under which protocol, in which run and when — the run that answered, when the answer was remembered. */
+  const promptVersion = reader.promptVersion ?? loadProtocol("verify").version;
+  const readerStamp = (v: VerifyReply): ReaderStamp => ({ model: reader.model, promptVersion, runId: v.remembered?.runId ?? meter.runId, date: v.remembered?.date ?? reader.date });
   // Relevance is judged against the question as the current edition states it and the accounts it sets side by
   // side — not the case file's founding subtitle, which refused a founder essay's whole family of propositions
   // as outside a question phrased around one mechanism (2026-09-09).
@@ -527,7 +549,7 @@ export async function judgeProposal(
           notes.push(`${e.id} does not bear on ${pid} (part of ${id}): ${v.reason}`);
           continue;
         }
-        if (v.directionRight === false) dissents.push(`Second reader (${readerStamp(v)}) disputes the stated direction toward ${pid}: ${v.reason}`);
+        if (v.directionRight === false) dissents.push(`Second reader (${stampText(readerStamp(v))}) disputes the stated direction toward ${pid}: ${v.reason}`);
         kept.push(pid);
       }
     }

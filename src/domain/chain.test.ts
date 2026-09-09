@@ -492,7 +492,8 @@ describe("verify v5: the reader's finding on direction and bearing is applied; a
     const dissent = { quoteInContext: true, statementSupported: true, locatorSupported: true, directionRight: false, independenceNoted: true, relevant: true, reason: "it plainly supports the claim" };
     const v = await judgeProposal(proposal, c, texts, new Map(), async () => dissent, { runId: "r", verb: "verify", case: c.record.slug }, { model: "reader-x", date: "2026-09-08" });
     expect(v.accepted.evidence).toHaveLength(1);
-    expect(v.accepted.evidence[0].limitations.at(-1)).toBe("Second reader (reader-x, 2026-09-08) disputes the stated direction: it plainly supports the claim");
+    expect(v.accepted.evidence[0].limitations.at(-1)).toBe("Second reader (reader-x, 2026-09-08, run r, verify-v5) disputes the stated direction: it plainly supports the claim");
+    expect(v.accepted.evidence[0].readerActs).toBeUndefined(); // a dissent changes nothing, so it is no act
     expect(v.rejected).toHaveLength(0);
     // Any other fault still gates.
     const bad = await judgeProposal(proposal, c, texts, new Map(), async () => ({ ...dissent, relevant: false }), { runId: "r", verb: "verify", case: c.record.slug });
@@ -501,8 +502,10 @@ describe("verify v5: the reader's finding on direction and bearing is applied; a
     // v5: a direction the reader names is written on the record, stamped as the reader's act (review note #248).
     const named = await judgeProposal(proposal, c, texts, new Map(), async () => ({ ...dissent, direction: "supports" }), { runId: "r", verb: "verify", case: c.record.slug }, { model: "reader-x", date: "2026-09-09" });
     expect(named.accepted.evidence[0].direction).toBe("supports");
-    expect(named.accepted.evidence[0].limitations.at(-1)).toBe('Direction set to "supports" (from "qualifies") by the second reader (reader-x, 2026-09-09) at intake: it plainly supports the claim');
+    expect(named.accepted.evidence[0].limitations.at(-1)).toBe('Direction set to "supports" (from "qualifies") by the second reader (reader-x, 2026-09-09, run r, verify-v5) at intake: it plainly supports the claim');
     expect(named.notes).toContain("GEO-E900: direction set to supports by the second reader");
+    // The change is stamped on the record as structured provenance: field, from, to, model, run, protocol, date, reason (review note #253).
+    expect(named.accepted.evidence[0].readerActs).toEqual([{ field: "direction", from: "qualifies", to: "supports", model: "reader-x", runId: "r", promptVersion: "verify-v5", date: "2026-09-09", reason: "it plainly supports the claim" }]);
     // A named direction equal to the record's is no change and no note.
     const same = await judgeProposal(proposal, c, texts, new Map(), async () => ({ ...dissent, direction: "qualifies" }), { runId: "r", verb: "verify", case: c.record.slug }, { model: "reader-x", date: "2026-09-09" });
     expect(same.accepted.evidence[0].direction).toBe("qualifies");
@@ -553,8 +556,9 @@ describe("verify v5: the reader's finding on direction and bearing is applied; a
     const narrowed = await judgeProposal(proposal, c, texts, new Map(), async () => ({ ...fine, bearsOn: [b] }), { runId: "r", verb: "verify", case: c.record.slug }, { model: "reader-x", date: "2026-09-09" });
     expect(narrowed.accepted.evidence).toHaveLength(1);
     expect(narrowed.accepted.evidence[0].claimIds).toEqual([b]);
-    expect(narrowed.accepted.evidence[0].limitations.at(-1)).toBe(`Second reader (reader-x, 2026-09-09) found the passage bears on ${b} and not on ${a}; the link dropped at intake: bears on the second claim only`);
+    expect(narrowed.accepted.evidence[0].limitations.at(-1)).toBe(`Second reader (reader-x, 2026-09-09, run r, verify-v5) found the passage bears on ${b} and not on ${a}; the link dropped at intake: bears on the second claim only`);
     expect(narrowed.notes).toContain(`GEO-E901: link to ${a} dropped by the second reader`);
+    expect(narrowed.accepted.evidence[0].readerActs).toEqual([{ field: "claimIds", from: [a, b], to: [b], model: "reader-x", runId: "r", promptVersion: "verify-v5", date: "2026-09-09", reason: "bears on the second claim only" }]);
     // Null keeps every link; an unknown id in the list keeps only the known ones.
     const all = await judgeProposal(proposal, c, texts, new Map(), async () => ({ ...fine, bearsOn: null }), { runId: "r", verb: "verify", case: c.record.slug });
     expect(all.accepted.evidence[0].claimIds).toEqual([a, b]);

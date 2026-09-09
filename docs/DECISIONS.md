@@ -1945,3 +1945,13 @@ PR number and the session id, never a branch name or a private URL (the
 Arbiter's mechanical check reads a session page as a locator and gets 403),
 and every by-hand actor line names the model.
 
+**The reader's acts are structured provenance (2026-09-09, review note
+#253 on the v5 change).** The GPT seat's note on verify v5: a change the
+reader makes to an admitted record's direction or claim links was stamped
+only as prose in `limitations` (model and date), not with the run id and
+prompt version §3.15 asks of every change. Now each such change is also a
+`readerActs` entry on the record — field, from, to, model, run id, prompt
+version, date, reason — and the prose note names the run and the protocol
+too; `origin` stays the drafter's, since the record is theirs and the change
+is the reader's. A dissent that changes nothing is a note and no act.
+

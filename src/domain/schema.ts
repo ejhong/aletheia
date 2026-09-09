@@ -269,6 +269,19 @@ export const directionLabels: Record<EvidenceDirection, string> = {
   context: "Context",
 };
 
+/** One change the second reader made to an admitted evidence record at intake, stamped (verify protocol v5). */
+export const ReaderActSchema = z.object({
+  field: z.enum(["direction", "claimIds"]),
+  from: z.union([z.string(), z.array(z.string())]),
+  to: z.union([z.string(), z.array(z.string())]),
+  model: z.string().min(1),
+  runId: z.string().min(1),
+  promptVersion: z.string().min(1),
+  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  reason: z.string().min(1),
+});
+export type ReaderAct = z.infer<typeof ReaderActSchema>;
+
 export const EvidenceSchema = z.object({
   id: z.string().regex(/^[A-Z]+-E\d{3}$/, "Evidence id like GEO-E001"),
   title: z.string(),
@@ -284,6 +297,13 @@ export const EvidenceSchema = z.object({
   limitations: z.array(z.string()).default([]),
   reviewState: ReviewState,
   origin: OriginSchema,
+  /**
+   * Changes the second reader made to this record at intake (verify protocol v5): the direction it
+   * found, the claim links it narrowed — each stamped with model, run id, prompt version and date, and
+   * the reader's reason (§3.14, §3.15). `origin` stays the drafter's: the record is theirs, the change
+   * is the reader's.
+   */
+  readerActs: z.array(ReaderActSchema).optional(),
 });
 export type Evidence = z.infer<typeof EvidenceSchema>;
 

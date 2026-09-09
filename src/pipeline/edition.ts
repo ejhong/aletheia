@@ -267,7 +267,8 @@ export function assembleEdition(
 export type Editor = (system: string, user: string, meter: Meter) => Promise<{ data: EditionReply; model: string; strict?: boolean }>;
 
 export const defaultEditor: Editor = async (system, user, meter) => {
-  const r = await anthropicJson<EditionReply>({ ...EDITOR, system, user, schema: EDITION_SCHEMA, maxTokens: 48000, effort: "high" }, meter);
+  // A reconsideration answers every seat's dissents on top of twenty treatments and the article: 48k was not enough (2026-09-09).
+  const r = await anthropicJson<EditionReply>({ ...EDITOR, system, user, schema: EDITION_SCHEMA, maxTokens: 96000, effort: "high" }, meter);
   return { data: r.data, model: r.model, strict: r.strict };
 };
 

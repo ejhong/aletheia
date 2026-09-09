@@ -1520,3 +1520,23 @@ about authorship, and the drafter is told so. Anyone else's commit, an
 unverified one, or an uncommitted file still needs the statement of
 provenance and the dated permission.
 
+**Constitutional amendment (founder's act, 2026-09-09): concurrence is
+within one step.** The panel's five seats, from five vendors, choose
+among eight verdict words and rarely pick the same one; the standing rule
+counted a neighbouring word as dissent, so cases sat one seat short of
+ratified on wording alone. The operator proposed the one-step rule in #211
+and the Arbiter parked it — loosening a §3.15 check is not the operator's
+to do. The founder makes it the constitution's: a seat's case verdict
+within one step of the draft's on the graded scale concurs and two steps
+away disputes; "unresolved" and "presently untestable" stand between
+"weakly supported" and "mixed" — one step from either and from each
+other, two from "contradicted" and from "provisionally supported"; a
+load-bearing claim splits the panel when fewer than a majority of seats
+are within one step of the draft; and every seat's own word stays
+displayed beside the standing, neighbours included, so nothing tolerated
+is hidden. On the records of this date the rule moves Pre-Columbian
+Amazon, The Immortality Key, Zero Worlds and Cast, Not Carved from
+contested to ratified with the panel's own words unchanged; no new
+evidence enters and none is claimed. Drafted by the operator on the
+founder's direction; committed and merged by the founder's hand.
+

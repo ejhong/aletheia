@@ -5,7 +5,7 @@ import { parse as parseYaml } from "yaml";
 import { describe, expect, it } from "vitest";
 import { loadAllCases } from "./load.ts";
 import { execFileSync } from "node:child_process";
-import { composeReport, detectType, founderDrop, parseFrontMatter, permissionRecord, readInbox, runInbox, supplierOf } from "../pipeline/inbox.ts";
+import { composeReport, detectType, founderDrop, parseFrontMatter, permissionRecord, readInbox, runInbox, supplierOf, type CommitVerifier } from "../pipeline/inbox.ts";
 import { bestMatch, resolveReferences } from "../pipeline/references.ts";
 import { readRuns } from "../pipeline/store.ts";
 
@@ -86,16 +86,26 @@ describe("a file the founder commits to the inbox", () => {
     fs.writeFileSync(path.join(root, "inbox", "vasocomputation", "stranger.pdf"), miniPdf("A paper someone else committed without a statement."));
     git(root, "add", "inbox/vasocomputation/stranger.pdf");
     git(root, "commit", "-q", "-m", "drop by a stranger");
-    const { items, left } = await readInbox("vasocomputation", root);
+    // GitHub's word stands in: it attributes the founder's commits to the login and reports them verified.
+    const github: CommitVerifier = (sha, r) => {
+      const email = execFileSync("git", ["log", "-1", "--format=%ae", sha], { cwd: r, encoding: "utf8" }).trim();
+      return email === "ejhong@gmail.com" ? { login: "ejhong", verified: true, reason: "valid" } : { login: null, verified: false, reason: "unknown_key" };
+    };
+    const unverified: CommitVerifier = () => ({ login: "ejhong", verified: false, reason: "unsigned" });
+    const { items, left } = await readInbox("vasocomputation", root, github);
     const dropped = items.find((i) => i.name.endsWith("dropped.pdf"))!;
-    expect(dropped.supplier).toMatch(/^the founder \(ejhong\), by commit [0-9a-f]{10} on \d{4}-\d\d-\d\d$/);
-    expect(founderDrop(path.join(root, "inbox", "vasocomputation", "dropped.pdf"), root)?.email).toBe("ejhong@gmail.com");
-    expect(founderDrop(path.join(root, "inbox", "vasocomputation", "stranger.pdf"), root)).toBeNull();
+    expect(dropped.supplier).toMatch(/^the founder \(ejhong\), by commit [0-9a-f]{10} on \d{4}-\d\d-\d\d, under the founder's standing direction of 2026-09-09$/);
+    const d = founderDrop(path.join(root, "inbox", "vasocomputation", "dropped.pdf"), root, github);
+    expect("drop" in d && d.drop.email).toBe("ejhong@gmail.com");
+    expect(founderDrop(path.join(root, "inbox", "vasocomputation", "stranger.pdf"), root, github)).toEqual({ reason: expect.stringMatching(/not the founder's \(ejhong <stranger@example.org>\)/) });
+    // An author line alone is not enough: without GitHub's verification the drop is nobody's.
+    expect(founderDrop(path.join(root, "inbox", "vasocomputation", "dropped.pdf"), root, unverified)).toEqual({ reason: expect.stringMatching(/unverified \(unsigned\)/) });
     expect(left.map((l) => l.name)).toContain("vasocomputation/stranger.pdf");
+    expect(left.find((l) => l.name.endsWith("stranger.pdf"))!.reason).toMatch(/not taken as the founder's drop/);
     // The drafter is told the drop says nothing about authorship; the license names the commit as the grant.
     const report = composeReport("vasocomputation", "r", "2026-09-09", [dropped], new Map());
-    expect(report).toMatch(/DROPPED BY THE FOUNDER \(commit [0-9a-f]{10}, \d{4}-\d\d-\d\d\).*read the author, date and venue from the document itself/);
-    expect(permissionRecord(dropped, "2026-09-09", "run")).toMatch(/^Permission: the founder's direction, given by committing the file to inbox\/ — granted by ejhong <ejhong@gmail.com> on \d{4}-\d\d-\d\d by commit [0-9a-f]{40} \(channel: git; held: that commit\)/);
+    expect(report).toMatch(/DROPPED BY THE FOUNDER \(commit [0-9a-f]{10}, \d{4}-\d\d-\d\d; GitHub attributes it to ejhong.*under the founder's standing direction of 2026-09-09: "Files I commit.*read the author, date and venue from the document itself/);
+    expect(permissionRecord(dropped, "2026-09-09", "run")).toMatch(/^Permission: the founder's standing direction in the founder's words — "Files I commit to inbox\/ .* — given 2026-09-09 by this file, .*; this file committed under it by ejhong <ejhong@gmail.com> on \d{4}-\d\d-\d\d in commit [0-9a-f]{40} \(GitHub attributes it to ejhong and reports the signature verified \(valid\); channel: git; held: that commit\)/);
   });
 });
 

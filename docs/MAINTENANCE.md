@@ -162,9 +162,12 @@ it:
 Drop files into `inbox/` from any device (the GitHub app or
 [github.dev](https://github.dev/ejhong/aletheia) work from a phone). The
 push is the trigger; intake runs within a minute. **A file the founder
-commits needs nothing else**: the commit is the direction and, under §3.15's
-amendment of 2026-09-09, the permission — `config/founder.yaml` lists the
-identities the intake recognizes. Only someone else's document needs a
+commits from the GitHub app or website needs nothing else**: it falls
+under the founder's standing direction in `config/founder.yaml`, which
+§3.15's amendment of 2026-09-09 makes the permission; the intake requires
+GitHub to attribute the commit to the founder's login and report it
+signature-verified (app and web commits are; unsigned laptop commits are
+not — sign them, or add a statement). Only someone else's document needs a
 statement of provenance (`editor:` / `published:` / `from:` with
 `permission:` and `granted:`). Full conventions in `inbox/README.md`; the
 three kinds:

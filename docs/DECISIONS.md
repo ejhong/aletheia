@@ -1729,4 +1729,3 @@ importers re-pointed to the module that owns each name. No behaviour
 changed; the tests are the evidence. Next: the Arbiter calls vendors
 through the pipeline's metered transport and reports its own cost, the
 last seam of step 1; then step 2, the UI pass.
-

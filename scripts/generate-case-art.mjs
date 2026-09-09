@@ -60,9 +60,8 @@ const CASE_TONES = {
     "river meander, faint umber earthwork lines beneath the canopy, one " +
     "small vermilion accent on the chronicler's ribbon marker",
   "deep-memory":
-    "warm sepia and burnt-umber stone, weathered basalt grey, a pale " +
-    "sand-and-sea-mist wash behind, one small faded lapis accent on the " +
-    "held disc",
+    "pale sandstone ochre in the layered earth, faded slate blue in distant " +
+    "water, warm umber shadows, one restrained copper accent",
 };
 
 /**

@@ -90,7 +90,7 @@ direction); keep the two in sync.
 | `zero-worlds` | Graphite and lapis | faint graphite and warm dove-grey washes, generous bare cream paper (the sparest cover in the set), one small deep-lapis accent at the observer's lantern |
 | `immortality-key` | Wine-dark and barley gold | muted Tyrian purple and wine-dark cup and vine, pale barley-gold grain, warm umber shadows, one small pale-mint accent on the herb sprig |
 | `pre-columbian-amazon` | Viridian and river gold | deep viridian and forest-green canopy washes, a pale ochre-gold river meander, faint umber earthwork lines beneath the canopy, one small vermilion accent on the chronicler's ribbon marker |
-| `deep-memory` | Sepia shore and lapis | warm sepia and burnt-umber stone, weathered basalt grey, a pale sand-and-sea-mist wash, one small faded lapis accent on the held disc |
+| `deep-memory` | Sandstone shore and slate | pale sandstone ochre in the layered earth, faded slate blue in distant water, warm umber shadows, one restrained copper accent (the founder's lab cover, 2026-09-06) |
 
 Rules of thumb:
 

@@ -1302,5 +1302,9 @@ mechanically under the new one (`scripts/migrations/2026-09-09-hash-locators.ts`
 one housekeeping history entry per case); Cast, Not Carved's reconsidered
 assessment and edition, written before the Engelbach URL was added, were
 re-stamped by hand with their own entry. Standing there is contested on
-five current seats; no edition is due.
+five current seats; no edition is due. The scheduler's order is
+settled the same day (founder: "reports ahead in case new stuff is found"):
+half-done chain → edition the ledger owes → stale panel → research pass on
+the least recently reported case → reconsideration of an unanswered
+contested standing → rest.
 (AI implementation record; founder-directed session.)

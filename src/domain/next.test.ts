@@ -24,9 +24,18 @@ describe("aletheia next", () => {
 
   it("then a due edition, then the least recently reported case with the house seat, skipping the cadence window", async () => {
     const { editionDue } = await import("../pipeline/edition.ts");
-    // Cases the panel contests and nothing has answered are due an edition before any report.
-    const contested = cases.find((c) => editionDue(c)?.reason.includes("contests"));
-    if (contested) expect(nextAction([contested], [], "2026-09-20")).toMatchObject({ case: contested.record.slug, verb: "edition" });
+    // A case the panel contests and nothing has answered is searched first; the reconsideration waits until the report is within cadence.
+    const contested = cases.find((c) => editionDue(c)?.kind === "contested");
+    if (contested) {
+      expect(nextAction([contested], [], "2026-09-20")).toMatchObject({ case: contested.record.slug, verb: "report" });
+      const slug = contested.record.slug;
+      const reported = [
+        run({ runId: `2026-09-19-report-${slug}-000000`, case: slug, date: "2026-09-19" }),
+        run({ runId: `2026-09-19-draft-${slug}-010000`, verb: "draft", case: slug, date: "2026-09-19" }),
+        run({ runId: `2026-09-19-verify-${slug}-020000`, verb: "verify", case: slug, date: "2026-09-19" }),
+      ];
+      expect(nextAction([contested], reported, "2026-09-20")).toMatchObject({ case: slug, verb: "edition" });
+    }
     // Among cases whose editions are current, with no runs at all, the first never-reported case is chosen for a report.
     const settled = cases.filter((c) => c.record.slug !== "megalithic-casting" && !editionDue(c));
     expect(settled.length).toBeGreaterThan(1);
@@ -64,7 +73,7 @@ describe("aletheia next", () => {
     const { editionDue } = await import("../pipeline/edition.ts");
     const stale = cases.find((c) => checksStale(c) && !editionDue(c));
     if (stale) expect(nextAction([stale], [], "2026-09-20")).toMatchObject({ case: stale.record.slug, verb: "check" });
-    const due = cases.find((c) => checksStale(c) && editionDue(c));
+    const due = cases.find((c) => checksStale(c) && editionDue(c)?.kind === "moved");
     if (due) expect(nextAction([due], [], "2026-09-20").verb).toBe("edition");
   });
 

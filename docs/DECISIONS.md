@@ -1304,3 +1304,36 @@ assessment and edition, written before the Engelbach URL was added, were
 re-stamped by hand with their own entry. Standing there is contested on
 five current seats; no edition is due.
 (AI implementation record; founder-directed session.)
+
+**The scheduler's order (founder, 2026-09-09: "reports ahead in case new
+stuff is found").** Half-done chain → edition the ledger owes → stale panel
+→ research pass on the least recently reported case → reconsideration of an
+unanswered contested standing → rest. New evidence gets its chance to move a
+case before an old disagreement is re-argued.
+
+**The inbox becomes a producer (2026-09-09; founder: work on the inbox
+next, a big vasocomputation batch is coming).** `aletheia inbox <case>`
+turns what was dropped for a case into one report-shaped working file the
+`draft` verb consumes as it consumes a research report, so supplied
+material gets the full verification the old extraction pipeline never had:
+quotes only from retrieved text, the second reader, dispositions with
+reasons. A document enters only with a statement of provenance (`editor`,
+`published`, or `from` with `permission`); the supplied text is labelled
+its supplier's words and is never a source; the works it names are listed
+by the reader model (protocol `references-v1`) and resolved through
+OpenAlex — by title, or by author and year with a shared topic stem — and
+shown to the drafter as candidates with their similarity, to be confirmed
+against the retrieved text before anything is anchored. Originals move to
+`inbox/processed/<runId>/` (PDFs stay local; the manifest carries their
+sha256). First run: the founder's own AI-written essay on vasocomputation,
+34 pages, already in the ledger as a source; it named 22–29 works across
+three intakes, mostly descriptively and without years, and one to four
+resolved. The scheduler then drafted it ($1.26: two research items, 23
+dispositions, nothing else enterable from unretrieved works), verified
+them, and wrote a new assessment ($2.52) whose panel check is pending. That
+is the honest yield of an essay without citations as discovery material;
+the research seat now builds on an intake as its previous report, so the
+house seat can chase the named works with search. `process-inbox.mjs` and
+`extract-claims.mjs` are the first candidates for step 5's subtraction once
+this path has carried the founder's batch. A URL-parsing defect surfaced on
+the way (a DOI with parentheses was cut short) and is fixed with a test.

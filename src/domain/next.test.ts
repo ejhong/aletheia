@@ -28,7 +28,8 @@ describe("aletheia next", () => {
     const contested = cases.find((c) => editionDue(c)?.reason.includes("contests"));
     if (contested) expect(nextAction([contested], [], "2026-09-20")).toMatchObject({ case: contested.record.slug, verb: "edition" });
     // Among cases whose editions are current, with no runs at all, the first never-reported case is chosen for a report.
-    const settled = cases.filter((c) => c.record.slug !== "megalithic-casting" && !editionDue(c));
+    const { checksStale } = await import("./load.ts");
+    const settled = cases.filter((c) => c.record.slug !== "megalithic-casting" && !editionDue(c) && !checksStale(c));
     expect(settled.length).toBeGreaterThan(1);
     const n = nextAction(settled, [], "2026-09-20");
     expect(n.verb).toBe("report");

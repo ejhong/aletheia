@@ -4,6 +4,21 @@ Drop anything here — from your phone (github.dev or the GitHub app) or by
 pushing files. The maintenance pipeline picks items up on the weekly run, or
 whenever you trigger the **Maintain** workflow by hand.
 
+**How it is processed now (2026-09-09).** `node scripts/aletheia.ts inbox <case>`
+takes everything dropped for a case — notes in your words, link lists,
+documents — into one report-shaped file under `proposals/<runId>/`, with
+every work the material names resolved to a locator through OpenAlex where
+it can be, and the `draft` and `verify` verbs then treat it exactly as they
+treat a research report: quotes only from retrieved text, a second reader
+on every record, a disposition with a reason for everything raised, your
+words preserved verbatim. The scheduler (`aletheia next`) picks an intake up
+as a half-done chain. A **document enters only with a statement of
+provenance**: front matter, or a sidecar note of the same name for a PDF,
+carrying `editor:` (your own work), `published:` (the URL where it is
+public), or `from:` and `permission:` (who granted it, when, by what
+channel). Without one it stays here, with the reason in the run record
+(AGENTS.md §3.15: nothing supplied in confidence is published).
+
 **Two doors, one rule.** This folder is the capture bucket; a chat agent
 session is the full-service processor. Anything dropped here gets the
 mechanical treatment below on the next run. For material that needs

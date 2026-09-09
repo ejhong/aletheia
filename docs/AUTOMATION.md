@@ -244,6 +244,7 @@ test evidence.
 | `edition` | the assessment drafting prompt; the narrative-inputs rule (§7) | grade credibility and diagnosticity separately per claim; the featured set is a decision with a reason; re-adopt the incumbent's assessment when the judgment did not change; consider the founding inputs for voice, follow them where they serve the reader; the article never narrates its own revisions |
 | `check` | the blind-check prompt | blind: no incumbent, no grades, no article; the steelman is required; record the ledger hash judged |
 | `panel` | the arbiter prompt | a `violates` must name the rule or degrades to `unsure`; notes are separate from verdicts |
+| `references` | the inbox's link and document handling | list the works a supplied text names, exactly as written, nothing invented; OpenAlex resolves them by title, or by author and year with a shared topic stem, and the drafter is shown each as a candidate with its similarity, never as a confirmed match |
 
 `docs/CHAT_BRIEFS.md` and `research/missing-evidence-audit-prompts.md`
 retire into these files when they land. Genesis — founding inputs to a

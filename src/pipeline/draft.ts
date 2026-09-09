@@ -258,8 +258,10 @@ export function retrievalTargets(markdown: string, cap = 20): RetrievalTarget[] 
 export function urlsInReport(markdown: string, cap = 20): string[] {
   const seen = new Set<string>();
   const out: string[] = [];
-  for (const m of markdown.matchAll(/https?:\/\/[^\s)\]>"'`]+/g)) {
-    const raw = m[0].replace(/[.,;:!?]+$/, "");
+  // A URL may contain balanced parentheses (Elsevier DOIs do: 10.1016/s0305-7372(96)90023-7); only an unbalanced closing one ends it.
+  for (const m of markdown.matchAll(/https?:\/\/[^\s\]>"'`]+/g)) {
+    let raw = m[0].replace(/[.,;:!?]+$/, "");
+    while (raw.endsWith(")") && (raw.match(/\(/g) ?? []).length < (raw.match(/\)/g) ?? []).length) raw = raw.slice(0, -1).replace(/[.,;:!?]+$/, "");
     const key = canonicalUrl(raw);
     if (!key || seen.has(key)) continue;
     seen.add(key);
@@ -649,8 +651,8 @@ export async function runDraft(reportRunId: string, opts: DraftOptions = {}): Pr
   const root = opts.root ?? process.cwd();
   const now = opts.deps?.now ?? (() => new Date());
   const reportRun = readRuns(root).find((r) => r.runId === reportRunId);
-  if (!reportRun || reportRun.verb !== "report" || reportRun.outcome !== "completed") {
-    throw new Error(`${reportRunId} is not a completed report run`);
+  if (!reportRun || !(reportRun.verb === "report" || reportRun.verb === "inbox") || reportRun.outcome !== "completed") {
+    throw new Error(`${reportRunId} is not a completed report or inbox run`);
   }
   const reportFile = path.join(runDir(reportRunId, root), "report.md");
   const report = fs.readFileSync(reportFile, "utf8");

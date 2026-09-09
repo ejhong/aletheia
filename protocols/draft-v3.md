@@ -33,6 +33,7 @@ WHAT YOU RECEIVE
 - `packet`: the case — edition, index of every record, founding inputs, declined candidates with reasons.
 - `report`: the research pass's working report.
 - `sources`: for each source the report proposes, its identifier(s) and the RETRIEVED TEXT. If a source is absent from `sources`, it was not retrievable.
+- When the report is an inbox intake, the works it lists as "resolved" are CANDIDATES found by title or by author and year, each with its similarity score: confirm from the retrieved text (its title, authors, and content) that it is the work the supplied text meant before anchoring anything to it. A wrong candidate is dispositioned `failed` ("resolved to the wrong work: …") and the work the text meant stays `blocked` with the route to find it. The supplied text itself is its supplier's words, never a source.
 
 WHAT YOU PRODUCE — JSON matching the supplied schema, and nothing else
 - `adds.sources`: complete Source records for sources not already in `index` (check identifiers and titles against `index`; a probable duplicate is a disposition, not a new record). Verification label `ai_verified` only for a source whose text you were shown; `unverified` otherwise.

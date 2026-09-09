@@ -68,6 +68,9 @@ yarn-error.log*
 next-env.d.ts
 .zwtmp/
 inbox/Microscopy__Copy_.pdf
+# Processed originals that are binaries stay local; proposals/<runId>/manifest.yaml carries their sha256 and size,
+# and documents/<name>.txt the text the drafter was shown.
+inbox/processed/**/*.pdf
 
 # Pre-case working material (new cases in development with an agent).
 # Never committed: it becomes public only when a case is scaffolded and

@@ -11,6 +11,7 @@
  *   node scripts/aletheia.ts verify <proposalRunId> [--dry-run]
  *   node scripts/aletheia.ts edition <case> [--dry-run] [--force]
  *   node scripts/aletheia.ts check <case> [--seats a,b] [--dry-run]   the blind panel, every roster seat with a key
+ *   node scripts/aletheia.ts inbox <case> [--dry-run]         the founder's door as a producer: dropped items → one report the draft verb consumes
  *   node scripts/aletheia.ts next [--run]                      what the ledger wants done next (and, with --run, do it through the chain)
  *   node scripts/aletheia.ts panel <pr>                        → scripts/arbiter.mjs
  *
@@ -31,6 +32,7 @@ import { runVerify } from "../src/pipeline/verify.ts";
 import { runEdition } from "../src/pipeline/edition.ts";
 import { runCheck } from "../src/pipeline/check.ts";
 import { runNext } from "../src/pipeline/next.ts";
+import { runInbox } from "../src/pipeline/inbox.ts";
 
 const [verb, ...rest] = process.argv.slice(2);
 const flagNames = new Set(["--seat", "--seats", "--reconsider"]);
@@ -81,6 +83,17 @@ switch (verb) {
   case "migrate-memory": {
     const report = migrateMemory({ dryRun: flags.has("--dry-run") });
     console.log(report.join("\n"));
+    break;
+  }
+  case "inbox": {
+    const [key] = args;
+    if (!key) {
+      console.error("usage: aletheia inbox <case> [--dry-run]");
+      process.exit(1);
+    }
+    const r = await runInbox(key, { dryRun: flags.has("--dry-run") });
+    console.log(JSON.stringify(r, null, 2));
+    if (r.outcome === "failed") process.exit(1);
     break;
   }
   case "next": {

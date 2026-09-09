@@ -515,3 +515,10 @@ describe("dispositions may only point at records that exist", () => {
     expect(novelty).toMatch(/is not a record/);
   });
 });
+
+describe("urls in a report", () => {
+  it("keeps balanced parentheses inside a DOI and drops sentence punctuation", () => {
+    const urls = urlsInReport("see (https://doi.org/10.1016/s0305-7372(96)90023-7) and https://x.test/a). Also https://y.test/b, then https://doi.org/10.1000/plain.");
+    expect(urls).toEqual(["https://doi.org/10.1016/s0305-7372(96)90023-7", "https://x.test/a", "https://y.test/b", "https://doi.org/10.1000/plain"]);
+  });
+});

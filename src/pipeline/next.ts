@@ -57,9 +57,9 @@ export function nextAction(cases: LoadedCase[], runs: RunRecord[], today: string
   // 1. Half-done chains, oldest first.
   for (const c of cases) {
     const rs = byCase(c.record.slug);
-    const lastReport = rs.filter((r) => r.verb === "report" && r.outcome === "completed").at(-1);
+    const lastReport = rs.filter((r) => (r.verb === "report" || r.verb === "inbox") && r.outcome === "completed").at(-1);
     if (lastReport && !rs.some((r) => r.verb === "draft" && after(r, lastReport))) {
-      return { case: c.record.slug, verb: "draft", from: lastReport.runId, reason: `report ${lastReport.runId} has no draft after it` };
+      return { case: c.record.slug, verb: "draft", from: lastReport.runId, reason: `${lastReport.verb} ${lastReport.runId} has no draft after it` };
     }
     const lastDraft = rs.filter((r) => r.verb === "draft" && r.outcome === "completed").at(-1);
     if (lastDraft && !rs.some((r) => r.verb === "verify" && r.outcome === "completed" && after(r, lastDraft))) {

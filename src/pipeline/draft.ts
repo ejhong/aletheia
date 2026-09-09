@@ -632,8 +632,10 @@ export function assembleProposal(reply: DraftReply, ctx: AssembleContext): Assem
 export type Drafter = (system: string, user: string, meter: Meter) => Promise<{ data: DraftReply; model: string; strict?: boolean }>;
 
 export const defaultDrafter: Drafter = async (system, user, meter) => {
-  // A pass with several retrieved papers proposes more than 32k tokens carry (2026-09-08: truncated at 32k).
-  const r = await anthropicJson<DraftReply>({ ...DRAFTER, system, user, schema: DRAFT_SCHEMA, maxTokens: 64000 }, meter);
+  // Extraction, not deliberation: medium effort leaves the allowance to the records. A pass with several
+  // retrieved papers proposes more than 32k tokens carry (2026-09-08), and more than 64k with adaptive
+  // thinking sharing the allowance (2026-09-09, the OpenAI report plus full PDF texts): 128k.
+  const r = await anthropicJson<DraftReply>({ ...DRAFTER, system, user, schema: DRAFT_SCHEMA, maxTokens: 128000, effort: "medium" }, meter);
   return { data: r.data, model: r.model, strict: r.strict };
 };
 

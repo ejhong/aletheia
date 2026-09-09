@@ -6,7 +6,7 @@ import { canonicalJson, sha256Hex } from "../domain/hash.ts";
 import { sameTitle, sourceKeys, textKey } from "../domain/keys.ts";
 import { caseAccounts, caseQuestion } from "../domain/editions.ts";
 import { claimAnchorErrors, findCase, sourceAdmissionErrors } from "../domain/load.ts";
-import type { Claim, Evidence, LoadedCase, ResearchOpportunity, Source } from "../domain/schema.ts";
+import type { Claim, Evidence, EvidenceDirection, LoadedCase, ResearchOpportunity, Source } from "../domain/schema.ts";
 import { verifyCitations } from "../lib/citation-check.mjs";
 import { archiveUrl, type Archived } from "./archive.ts";
 import { retrieve, type FetchedSource } from "./fetch.ts";
@@ -39,7 +39,7 @@ export const READER = MODELS.reader;
 export const VERIFY_SCHEMA: Record<string, unknown> = {
   type: "object",
   additionalProperties: false,
-  required: ["quoteInContext", "statementSupported", "locatorSupported", "directionRight", "independenceNoted", "relevant", "atomic", "reason"],
+  required: ["quoteInContext", "statementSupported", "locatorSupported", "directionRight", "independenceNoted", "relevant", "atomic", "direction", "bearsOn", "reason"],
   properties: {
     quoteInContext: { type: "boolean" },
     statementSupported: { type: "boolean" },
@@ -48,6 +48,10 @@ export const VERIFY_SCHEMA: Record<string, unknown> = {
     independenceNoted: { type: "boolean" },
     relevant: { type: "boolean" },
     atomic: { type: "boolean" },
+    /** v5: the direction the reader finds right when `directionRight` is false; null otherwise. */
+    direction: { anyOf: [{ type: "string", enum: ["supports", "undermines", "qualifies", "context"] }, { type: "null" }] },
+    /** v5: the claims, among those the record names, the passage bears on — when it does not bear on all of them; null otherwise. */
+    bearsOn: { anyOf: [{ type: "array", items: { type: "string" } }, { type: "null" }] },
     reason: { type: "string" },
   },
 };
@@ -61,9 +65,53 @@ export interface VerifyReply {
   relevant: boolean;
   /** One proposition with one truth condition (§3.2); a compound claim is split, not admitted. Absent means true. */
   atomic?: boolean;
+  /**
+   * v5: when `directionRight` is false, the direction the reader finds right; verify writes it on the
+   * admitted record. Absent or null with a false `directionRight` is the v2 dissent, written as a note.
+   */
+  direction?: EvidenceDirection | null;
+  /**
+   * v5: when the record names claims the passage does not bear on, the ids it does bear on; verify keeps
+   * those links and drops the rest. An empty list refuses the record. Absent or null: every link stands.
+   */
+  bearsOn?: string[] | null;
   /** Set when the answer was remembered from an earlier run rather than asked now. */
   remembered?: { runId: string; date: string };
   reason: string;
+}
+
+const DIRECTIONS = new Set<string>(["supports", "undermines", "qualifies", "context"]);
+
+/**
+ * What the second reader's verdict does to an evidence record it admits (protocol v5): a direction it
+ * finds wrong becomes the one it names, and claims the passage does not bear on leave the record's
+ * links — each written on the record as the reader's act, stamped. A verdict that disputes the
+ * direction without naming one is written as a dissent, as v2 did. Null when the reader finds the
+ * passage bears on none of the claims the record names: that record is not admitted.
+ */
+export function applyReader(e: Evidence, verdict: VerifyReply, stamp: string): { record: Evidence; notes: string[] } | null {
+  let record = e;
+  const notes: string[] = [];
+  if (Array.isArray(verdict.bearsOn)) {
+    const keep = e.claimIds.filter((id) => verdict.bearsOn!.includes(id));
+    if (keep.length === 0) return null;
+    if (keep.length < e.claimIds.length) {
+      const dropped = e.claimIds.filter((id) => !keep.includes(id));
+      record = { ...record, claimIds: keep, limitations: [...record.limitations, `Second reader (${stamp}) found the passage bears on ${keep.join(", ")} and not on ${dropped.join(", ")}; the link${dropped.length > 1 ? "s" : ""} dropped at intake: ${verdict.reason}`] };
+      notes.push(`${e.id}: link${dropped.length > 1 ? "s" : ""} to ${dropped.join(", ")} dropped by the second reader`);
+    }
+  }
+  if (verdict.directionRight === false) {
+    const d = verdict.direction;
+    if (typeof d === "string" && DIRECTIONS.has(d) && d !== e.direction) {
+      record = { ...record, direction: d, limitations: [...record.limitations, `Direction set to "${d}" (from "${e.direction}") by the second reader (${stamp}) at intake: ${verdict.reason}`] };
+      notes.push(`${e.id}: direction set to ${d} by the second reader`);
+    } else {
+      record = { ...record, limitations: [...record.limitations, `Second reader (${stamp}) disputes the stated direction: ${verdict.reason}`] };
+      notes.push(`${e.id}: admitted with the second reader's dissent on direction`);
+    }
+  }
+  return { record, notes };
 }
 
 export const SPLIT_SCHEMA: Record<string, unknown> = {
@@ -341,9 +389,11 @@ export async function judgeProposal(
     const verdict = await judge({ ...e, editorInference: undefined }, fetched.text, context, meter);
     const flags = Object.entries(verdict).filter(([k, v]) => k !== "reason" && v === false).map(([k]) => k);
     // Mechanical and factual failures gate. A dispute about the direction
-    // label is a judgment against a judgment: the record enters with the
-    // reader's dissent written on it, both stamped, for the editor and the
-    // panel to weigh (verify protocol v2). A compound statement is split.
+    // label is a judgment against a judgment: since protocol v5 the reader
+    // names the direction it finds and the claims the passage bears on, and
+    // both are written on the admitted record, stamped (v2 wrote the dissent
+    // as a note and left the label; the GPT seat on #245 objected, review
+    // note #248). A compound statement is split.
     const gating = flags.filter((f) => f !== "directionRight" && f !== "atomic");
     if (gating.length) {
       reject(e.id, "evidence", e.title, `second reader rejected (${gating.join(", ")}): ${verdict.reason}`);
@@ -373,19 +423,26 @@ export async function judgeProposal(
           notes.push(`${label} refused (${bad.join(", ")}): ${v2.reason}`);
           continue;
         }
-        if (v2.directionRight === false) candidate.limitations = [...candidate.limitations, `Second reader (${readerStamp(v2)}) disputes the stated direction: ${v2.reason}`];
-        admitted.push(candidate);
+        const applied = applyReader(candidate, v2, readerStamp(v2));
+        if (!applied) {
+          notes.push(`${label} refused: the second reader finds it bears on none of the claims it names: ${v2.reason}`);
+          continue;
+        }
+        notes.push(...applied.notes);
+        admitted.push(applied.record);
       }
       reject(e.id, "evidence", e.title, `not one observation (${verdict.reason}); split into ${admitted.length ? admitted.map((x) => x.id).join(", ") : "nothing that survived"}`);
       okEvidence.push(...admitted);
       continue;
     }
-    if (flags.includes("directionRight")) {
-      notes.push(`${e.id}: admitted with the second reader's dissent on direction`);
-      okEvidence.push({ ...e, limitations: [...e.limitations, `Second reader (${readerStamp(verdict)}) disputes the stated direction: ${verdict.reason}`] });
+    // v5: the reader's finding on direction and on which claims the passage bears on is applied, not annotated.
+    const applied = applyReader(e, verdict, readerStamp(verdict));
+    if (!applied) {
+      reject(e.id, "evidence", e.title, `second reader: the passage bears on none of the claims the record names: ${verdict.reason}`);
       continue;
     }
-    okEvidence.push(e);
+    notes.push(...applied.notes);
+    okEvidence.push(applied.record);
   }
 
   // Claims: an anchor's quote must be verbatim and read right; otherwise an accepted evidence record must cite the claim.

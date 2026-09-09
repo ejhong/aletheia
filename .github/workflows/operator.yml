@@ -91,10 +91,10 @@ jobs:
             auto:low-risk, and enable auto-merge (gh pr merge --auto
             --squash). Report any standoffs honestly in the PR body.
 
-            3. QUARANTINES. For directories under
-            proposals/cross-model-failures/ dated within the last 3 days,
-            re-run the failed vendor:
-            node scripts/cross-model-check.ts <case> --vendors <vendor>
+            3. QUARANTINES. For check runs under proposals/<runId>/ whose
+            run.yaml names a failed seat (seat-<vendor>.problems.txt beside
+            it) within the last 3 days, re-run that seat:
+            node scripts/aletheia.ts check <case> --seats <vendor>
             Commit installed overlays into the duty-2 PR or their own
             low-risk PR.
 

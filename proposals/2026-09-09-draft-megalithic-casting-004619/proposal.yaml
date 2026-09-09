@@ -1,0 +1,750 @@
+# Proposal — a change to domain records, in one envelope (docs/AUTOMATION.md).
+# Never citable; nothing here is a record until adopted through the gate.
+runId: 2026-09-09-draft-megalithic-casting-004619
+date: 2026-09-09
+case: megalithic-casting
+producer: draft
+model: claude-fable-5-1
+promptVersion: draft-v2
+basis:
+  ledgerHash: e76f3cd0085c06ae6e252ca80eb96816856c90db7bc42cdce93cd7bc5fbffe96
+rationale: "Bounded pass. Three sources were shown: Engelbach 1922 (Project Gutenberg HTML, already indexed as SRC-ENGELBACH-1922; text shown through §44 of 56, the unseen remainder being miscellaneous objects and bibliography per the table of contents), Kelany et al. 2009 (NGU Special Publication 12, full 12-page PDF, new source; its blocked `declined` entry's reopen condition — NGU PDF retrieved — is met), and the AERA project page 'How Old Are the Pyramids?' (new webpage source, a secondary summary of Bonani et al. 2001). Túnyi & El-hemaly 2012, Hemeda & Sonbol 2020, Legon 1993, Bonani et al. 2001, Janusek et al. 2013 and Demortier 2009 were not retrieved and stay blocked; every observation the report drew from them stays out. Read directly, Engelbach §§13–15 partly contradict GEO-C502: the one-hour hand trial and absence of a mass measurement are as the claim says, but the workforce logic in the shown text is one man per double-foot from trench-floor groove spacing, the trench time rests on an assumed 8 mm/h rammer rate, and Engelbach himself was 'certain' pounders were not used entirely by hand; no count-divided-by-four heuristic appears in the shown text. Kelany et al. attribute the pounding-only reading to Röder 1965 and report massive charcoal, ash and burnt brick from the 2002 excavation, boulder extraction, local dolerite tool quarries and pounder use-wear. Engelbach §6 supplies a prior conventional reading of the deep shafts (test-shafts) that GEO-C006 and GEO-C536 currently lack. The AERA page undermines the 'wood on the ground, not in masonry' clause of GEO-C576 and qualifies GEO-C516's deforestation logic. A correction to GEO-C502's wording and to IMG-GEO-P01's caption follows from shown text. Because the article states that the proponent characterisation 'has not been checked against the monograph' and attributes the pounding orthodoxy to Engelbach, both now shown inaccurate, a light edition rewrites the Rates paragraph and the shafts sentence only; featured ids, crux order and the assessment's judgment are unchanged. Salt-section, paleomagnetic and Andean narrative changes remain blocked with their sources."
+adds:
+  sources:
+    - id: SRC-KELANY-2009
+      title: "Granite quarry survey in the Aswan region, Egypt: shedding new light on ancient quarrying"
+      authors:
+        - Adel Kelany
+        - Mohamed Negem
+        - Adel Tohami
+        - Tom Heldal
+      year: "2009"
+      sourceType: report
+      url: https://static.ngu.no/upload/Publikasjoner/Special%20publication/SP12_s87-98.pdf
+      verification: ai_verified
+      verificationNote: text retrieved and shown to the drafter on 2026-09-09 (run 2026-09-09-draft-megalithic-casting-004619); passages checked by the verify verb
+      reliabilityNotes:
+        - Chapter in Geological Survey of Norway Special Publication 12 (QuarryScapes, EU FP6), pp. 87–98; authors are Supreme Council of Antiquities inspectors and an NGU geologist.
+        - A field survey and heritage-protection report, not a laboratory study; its quarrying-technique statements summarise Röder 1965, Klemm & Klemm and the unpublished Kelany 2003 excavation report.
+        - Pounder use-wear is described qualitatively ('clearly show marks and wear'); no microwear analysis is cited.
+        - Publisher PDF shown in full (12 pages); PDF page N corresponds to print page N+86.
+      derivedFrom: []
+      background: false
+    - id: SRC-ASSOCIATES-ND
+      title: How Old Are the Pyramids?
+      authors:
+        - Ancient Egypt Research Associates
+      sourceType: webpage
+      url: https://aeraweb.org/projects/how-old-are-the-pyramids/
+      verification: ai_verified
+      verificationNote: text retrieved and shown to the drafter on 2026-09-09 (run 2026-09-09-draft-megalithic-casting-004619); passages checked by the verify verb
+      reliabilityNotes:
+        - Undated project webpage (site copyright 2025) by the organisation that administered the David H. Koch Pyramids Radiocarbon Project; a secondary summary of Bonani et al. 2001, Radiocarbon 43(3):1297–1320, which was not retrieved.
+        - States conclusions and averages but does not itemise per-sample contexts, sample counts or laboratory details.
+        - "Institutional stake: AERA directs the Giza Plateau Mapping Project and holds the conventional chronology."
+      derivedFrom: []
+      background: false
+  evidence:
+    - id: GEO-E037
+      title: Engelbach's own one-hour hand-pounding trial, his rejection of hand pounding for the trench, and his rammer hypothesis (§13)
+      claimIds:
+        - GEO-C502
+      sourceId: SRC-ENGELBACH-1922
+      direction: qualifies
+      strength: moderate
+      sourceStatement: Engelbach states that, to see how much headway could be made by hand, he tried pounding on the trench bottom and found that "after an hour’s hard work, I had extracted about five millimetres" off the surface of a foot × half-trench-width area, adding that with practice he could perhaps have done more. He then writes that he is "certain that they were not used entirely by hand" in the regular work of cutting the trench, because the work would go very slowly and would not have the regular appearance it has, and concludes that "the pounders were attached to rammers" worked on the principle of the modern mindâlah, with two or more men at the trench top and a third below directing the blows; he says he is uncertain how pounders were attached.
+      editorInference: "GEO-C502 is right that the trial was a single self-conducted hour and that no mass was measured (the record is a depth over an area). It is wrong in what it makes Engelbach's basis for: he does not rest a hand-pounding orthodoxy on the trial; he uses it to reject hand pounding for the trench and to propose rammers. The proponent characterisation therefore attacks a position the monograph does not hold. This is my reading; the source's own words are above."
+      exactLocator: §13, pp. 12–13 of the 1922 print (Project Gutenberg HTML, page markers {12}–{13})
+      limitations:
+        - Gutenberg transcription, not the printed monograph; text shown through §44 of 56.
+        - The rammer mechanism is Engelbach's conjecture, offered with stated uncertainty about attachment.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-161414
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-004619
+        date: 2026-09-09
+    - id: GEO-E038
+      title: Engelbach's trench-time estimate uses an assumed rammer rate and a workforce inferred from groove spacing (§§14–15)
+      claimIds:
+        - GEO-C502
+      sourceId: SRC-ENGELBACH-1922
+      direction: qualifies
+      strength: moderate
+      sourceStatement: Engelbach reasons from the trench bottom that the best arrangement is "for each man to have two ‘feet’ marked out for him" along the trench, each man squatting with his back to the obelisk and working one foot while spoiling onto the other; he cites Plate III no. 1 as showing there is just room for a man to squat with a foot between neighbours. For the time taken he writes, "Assuming that, with rammers, the men can extract 8 millimetres in an hour" in each quarter of the double-foot task, the deepest part (4.2 + 1.0 m) gives (4 × 5.2)/(.008 × 12 × 30) = 7.22 months of twelve-hour days, and applies the same formula to Hatshepsut's obelisk (4.4 months), which he compares with her recorded seven months.
+      editorInference: In the shown text the workforce arrangement is inferred from trench-floor groove spacing and the 8 mm/h figure is explicitly an assumption, not a measurement; the shown §§22–24 workforce numbers concern levering, computed from moments. No 'count divided by four' heuristic appears anywhere in the shown portions. GEO-C502's account of the workforce estimate is therefore not what the monograph states, so far as the shown text goes. My inference; Engelbach's arithmetic is his.
+      exactLocator: §§14–15, pp. 13–15 of the 1922 print (Project Gutenberg HTML, page markers {13}–{15})
+      limitations:
+        - Text shown through §44; §§45–56 (miscellaneous objects, bibliography) unseen.
+        - The 8 mm/h figure is unmeasured by Engelbach's own statement.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-161414
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-004619
+        date: 2026-09-09
+    - id: GEO-E039
+      title: Engelbach's 1922 reading of the deep shafts and squarish holes as test-shafts (§6)
+      claimIds:
+        - GEO-C006
+      sourceId: SRC-ENGELBACH-1922
+      direction: qualifies
+      strength: weak
+      sourceStatement: Engelbach describes squarish holes at intervals in the trench, generally going down to about the intended bottom level of the obelisk, and the deep holes C and D on Plate I. He believes the holes C and D were "made at the very commencement of the work to study the quality" of the granite, that the holes along the trench were made with the same purpose and "as a means of setting out the perimeter of the obelisk", and that there are indications they were made while "the removal of the top layers of rock were still in progress".
+      editorInference: GEO-C006 states the shafts are too narrow for effective pounding at their bottom. Engelbach's reading neither confirms nor denies their narrowness; it supplies a function — prospecting pits sunk before the trench existed — under which no one needed to pound at their bottom, so the narrowness ceases to be anomalous. It is an interpretation, not a measurement, hence weak; but the ledger and article currently imply no conventional reading exists, and one has since 1922. My inference.
+      exactLocator: §6, p. 6 of the 1922 print (Project Gutenberg HTML, page marker {6})
+      limitations:
+        - Interpretation by the excavator, without dimensions or section drawings of the holes in the shown text.
+        - Gutenberg transcription.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-161414
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-004619
+        date: 2026-09-09
+    - id: GEO-E040
+      title: A prior conventional function for the Aswan shafts — Engelbach's test-shafts — against the settling-vessel reading
+      claimIds:
+        - GEO-C536
+      sourceId: SRC-ENGELBACH-1922
+      direction: undermines
+      strength: weak
+      sourceStatement: Engelbach reads the deep holes C and D and the squarish holes along the trench as having been "made at the very commencement of the work to study the quality" of the granite and "as a means of setting out the perimeter of the obelisk", with indications they predate completion of the removal of the top rock layers.
+      editorInference: GEO-C536 reads the shafts as sodium-silicate settling and decanting vessels sited at trench bottoms. Engelbach's account gives a reason for their placement (they were sunk from the original surface before the trench was cut around them) that requires no processing function, and notes the holes can be traced up the side of the obelisk itself. The natron reading must now beat a specific prior interpretation rather than fill a vacuum. Weak because Engelbach's reading is itself unmeasured conjecture. My inference.
+      exactLocator: §6, p. 6 of the 1922 print (Project Gutenberg HTML, page marker {6})
+      limitations:
+        - No survey of the shafts' geometry or wall condition in either reading.
+        - Gutenberg transcription.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-161414
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-004619
+        date: 2026-09-09
+    - id: GEO-E041
+      title: Engelbach documents fire-setting (burnt bricks, burnt granite chips) for removing the upper rock at the obelisk quarry (§4)
+      claimIds:
+        - GEO-C001
+        - GEO-C002
+      sourceId: SRC-ENGELBACH-1922
+      direction: context
+      strength: weak
+      sourceStatement: 'Engelbach states there are abundant traces that the rock was reduced to level by burning and wedging, burning being used wherever possible: in the excavations "a large quantity of burnt and semi-burnt mud bricks were noticed", and a considerable percentage of chips round the obelisk and other quarries had "the pinkish-brown colour and crumbling texture peculiar to burnt granite". He describes stacks of dried reeds banked with brick near fissures, suggests water was poured on the hot stone, and notes so much stone has been removed without wedge or chisel marks that burning is the only explanation; a footnote adds there is no trace of burning within six feet of the obelisk.'
+      editorInference: "This does not bear on the truth of GEO-C001 (a measured pounding rate) or GEO-C002 (tourist attempts on a test block); it is weightless toward both. It matters to what the rate is inferred to stress: Engelbach's own account of the quarry already includes fire-setting for the upper layers, so a slow pounding rate constrains one technique among several. Recorded as context so the inference is not drawn against a pounding-only straw man. My inference."
+      exactLocator: §4, pp. 4–5 of the 1922 print (Project Gutenberg HTML, page markers {4}–{5})
+      limitations:
+        - "Fire-setting is documented for removing upper layers, not for cutting the trench itself (Engelbach: no burning within six feet of the obelisk)."
+        - Gutenberg transcription.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-161414
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-004619
+        date: 2026-09-09
+    - id: GEO-E042
+      title: Engelbach's observations of pounder wear, breakage and non-local origin (§§13–14)
+      claimIds:
+        - GEO-C511
+        - GEO-C537
+      sourceId: SRC-ENGELBACH-1922
+      direction: undermines
+      strength: weak
+      sourceStatement: Engelbach describes the pounders as nearly spherical dolerite balls, 8–13 inches and 9–15 lb, of almost natural water-worn formation, with the Geological Museum report identifying dolerite (specific gravity 2.93–3.05). He states the wear is not distributed evenly but in patches, showing that "the pounders were used in one position until the bruising surface" in use had become flat and useless; that in very many cases "the pounder had been broken by the great force of the blows" delivered with it, which he could not reproduce by hand; and that his examination of the Aswân quarries "has not revealed stone of precisely the same quality" as the pounders, so that "Since the pounders were imported, a certain economy was essential". He reports burying some hundreds of them under the west retaining wall to stop souvenir-hunting.
+      editorInference: "For GEO-C511: flat bruising facets and percussion fracture are the wear a stone acquires striking harder or equally hard rock, and Engelbach reports them on pounders found around the obelisk and all Aswan quarry work; this is direct if qualitative evidence for pounding use, though his 'imported' judgment does agree with the claim's 'transported' premise (Kelany et al. disagree, GEO-E709). For GEO-C537: the predicted signature is mortar-and-pestle abrasion on glassy foam; the observed signature Engelbach records is facet bruising and brittle fracture from blows. Weak because no microwear study exists on either side; the buried deposit is a recoverable test population. My inference."
+      exactLocator: §§13–14, pp. 12–14 of the 1922 print (Project Gutenberg HTML, page markers {12}–{14})
+      limitations:
+        - Qualitative 1922 observations; no microwear or fracture analysis.
+        - Engelbach's origin judgment is his own field comparison and conflicts with Kelany et al. 2009 (dykes in the granitoids).
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-161414
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-004619
+        date: 2026-09-09
+    - id: GEO-E043
+      title: Kelany et al. attribute the pounding-only reading to Röder (1965) and report massive charcoal, ash and burnt brick from the 2002 excavation
+      claimIds:
+        - GEO-C502
+      sourceId: SRC-KELANY-2009
+      direction: undermines
+      strength: moderate
+      sourceStatement: The authors state that in the Unfinished Obelisk quarry channels were made directly into the bedrock and that the massive numbers of dolerite hammer stones led Röder (1965) to the conclusion that "the channelling was made by pounding only"; however, in recent excavations (Kelany 2003) "massive amounts of charcoal, ash and burned mud bricks were found", suggesting that heat must have been an important agent in one or more steps of the quarrying process. They add that from the Ptolemaic Period iron tools took over, with chiselled channels and, in the Roman Period, iron wedges.
+      editorInference: GEO-C502 says the pounding-stone orthodoxy 'rests principally on Engelbach's 1922 report'. The survey literature attributes the pounding-only conclusion to Röder 1965, and describes the current account as boulder extraction plus fire plus pounding plus later iron. Together with GEO-E701 (Engelbach rejected hand pounding for the trench) this undermines the claim's attribution of the orthodoxy, while leaving its narrower factual points about the 1922 trial intact. My inference.
+      exactLocator: "[p. 4] (print p. 90), section 'Quarrying techniques'"
+      limitations:
+        - Kelany 2003 is an unpublished SCA report; the charcoal/ash quantities are not given.
+        - Röder 1965 not read directly.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-161414
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-004619
+        date: 2026-09-09
+    - id: GEO-E044
+      title: Boulder extraction and widespread fire-setting in the Pharaonic Aswan granite quarries
+      claimIds:
+        - GEO-C001
+        - GEO-C002
+      sourceId: SRC-KELANY-2009
+      direction: context
+      strength: moderate
+      sourceStatement: The authors state that during the Pharaonic Period "quarrying largely involved the extraction of loose boulders" from the woolsack morphology, worked with dolerite pounders, and that only when boulders were too small (as for obelisks) or technology improved (Roman Period) was solid bedrock targeted. In the Northern quarries, ashy layers with charcoal mixed with the quarry debris suggest that "fire setting was widely applied in the quarrying process" during the Pharaonic Period, also outside the Unfinished Obelisk quarry, and dolerite tools scattered across these areas suggest their use in pounding and trimming of extracted blocks. New Kingdom debris at the Hatshepsut quarry likewise contains stone-tool fragments and ash.
+      editorInference: "Weightless toward the truth of GEO-C001 and GEO-C002 themselves. It fixes what the measured 216 cm³/h can be inferred to stress: a model in which pounders alone cut bedrock channels — the exceptional obelisk case, and Röder's reading — not the general Pharaonic practice of boulder extraction with fire and pounders. My inference."
+      exactLocator: "[p. 4] (print p. 90) and [p. 6] (print p. 92)"
+      limitations:
+        - Survey-level statements; no quantified fire-setting rates or experimental controls.
+        - Fire-setting evidence is stratigraphic association of ash with debris, not direct observation of the technique.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-161414
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-004619
+        date: 2026-09-09
+    - id: GEO-E045
+      title: Dolerite pounders sourced from dykes within the Aswan granitoids, with Pharaonic tool-production quarries near the obelisk
+      claimIds:
+        - GEO-C511
+      sourceId: SRC-KELANY-2009
+      direction: undermines
+      strength: moderate
+      sourceStatement: The authors state that boulders were worked with hammer stones (pounders) "of dolerite originating from dykes in the granitoids", or less commonly aplitic granite. In the northwestern Northern quarries (S-3) they record trenches in the granite bedrock connected to dolerite and/or aplite dykes, beside which lie roughly shaped pieces of uniform size compatible with discarded pounders, so that these trenches "seem to represent quarries for the production of stone tools" in the Pharaonic Period (New Kingdom by pottery), the closest such tool quarries yet found to the Unfinished Obelisk. Near Philae "a possible new tool quarry was found very close to" the temple entrance in a high-quality dolerite layer, with stone heaps of probable tool blanks.
+      editorInference: GEO-C511 frames the spheres as 'transported to Aswan' for a non-pounding purpose. Kelany et al. place the raw material in dykes within the Aswan granitoids and identify purpose-built tool quarries adjacent to the working areas, i.e. a local pounder industry embedded in the quarry landscape. This weighs against the premise of exotic import (Engelbach's contrary 1922 opinion is recorded in GEO-E706) and, with the association of pounders with extraction debris everywhere, against a non-quarrying purpose. It does not itself test what the pounders struck. My inference.
+      exactLocator: "[p. 4] (print p. 90), [p. 6] (print p. 92), [p. 10] (print p. 96)"
+      limitations:
+        - Tool-quarry identification rests on blank size and associated pottery, not petrographic matching of pounders to specific dykes in the shown text.
+        - Engelbach 1922 judged the pounder stone not to occur in the Aswan quarries; the disagreement is unresolved here.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-161414
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-004619
+        date: 2026-09-09
+    - id: GEO-E046
+      title: Granite pounders in the Central quarries show marks and wear from use as pounders
+      claimIds:
+        - GEO-C511
+        - GEO-C537
+      sourceId: SRC-KELANY-2009
+      direction: undermines
+      strength: weak
+      sourceStatement: In the Hatshepsut quarry area the authors note the occurrence of numerous pounders of coarse-grained granite (Figure 7), uncommon elsewhere since granite is thought less suitable than dolerite or aplite; the reasons for their occurrence here are unclear, but "clearly show marks and wear from their use as pounders".
+      editorInference: "Qualitative use-wear reported by field archaeologists on pounders in quarry debris is consistent with pounding rock and is the observation GEO-C537's predicted glass-abrasion signature would have to displace. It is weak: no microwear method is described, and these particular tools are granite, not the dolerite spheres of GEO-C511/C537. My inference."
+      exactLocator: "[p. 7] (print p. 93), section 'The Central quarries', Figure 7"
+      limitations:
+        - Qualitative; no microwear study cited.
+        - Granite pounders, not dolerite; the authors themselves find their occurrence unexplained.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-161414
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-004619
+        date: 2026-09-09
+    - id: GEO-E047
+      title: "The Koch Pyramids Radiocarbon Project's own summary: organics from Old Kingdom monuments dated, Great Pyramid placed in the historical era"
+      claimIds:
+        - GEO-C576
+      sourceId: SRC-ASSOCIATES-ND
+      direction: undermines
+      strength: moderate
+      sourceStatement: 'AERA states that in 1984 it radiocarbon-dated material from Egyptian Old Kingdom monuments, that "The average radiocarbon dates were 374 years earlier than expected", and that in spite of this "the radiocarbon dates confirmed that the Great Pyramid belonged to the historical era" studied by Egyptologists. A second round in 1994–95 broadened sampling to Saqqara, Djoser, Giza, 5th/6th Dynasty and Middle Kingdom pyramids plus Lost City bakeries, returning dates 100–200 years older than the Cambridge chronology, with Khufu dates scattered over ~400 years. It explains the offset by an old-wood effect: "recycled wood was burned, for example, in mortar preparation", so charcoal can be centuries older than the mortar it was burned for. Technicians preferred wood and charcoal, with reed and straw also collected.'
+      editorInference: GEO-C576 says the pyramid's dating rests on 'wood fragments found on the ground rather than in masonry' and 'no direct dating'. The project's own account describes a programme of radiocarbon dates on organics from the monuments whose interpretation turns on charcoal burned for mortar — i.e. organics in masonry contexts — and concludes the Great Pyramid falls in the historical era. This undermines the claim's characterisation, though the page does not itemise per-sample contexts, and the wide scatter and 374-year offset it reports are genuine complications (in the direction of older, not younger). The 'no direct dating of the limestone' clause is untouched — radiocarbon dates organics, not carbonate. My inference.
+      exactLocator: Sections 'Previous estimates', '1984', '1994-1995', 'Comparison 1984/1995', 'The old-wood problem' (webpage, no pagination)
+      limitations:
+        - Secondary summary; Bonani et al. 2001 not retrieved; sample-by-sample provenance not shown.
+        - AERA is an interested party in the conventional chronology.
+        - Reported offsets and scatter are themselves unresolved by the page.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-161414
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-004619
+        date: 2026-09-09
+    - id: GEO-E048
+      title: Conventional fuel demand — gypsum mortar, copper, bread — offered as an explanation for Old Kingdom wood depletion
+      claimIds:
+        - GEO-C516
+      sourceId: SRC-ASSOCIATES-ND
+      direction: qualifies
+      strength: weak
+      sourceStatement: AERA asks whether its radiocarbon results reflect Old Kingdom deforestation and whether the builders had to scavenge wood "to burn tons of gypsum for mortar, to forge copper chisels", and to bake bread for thousands of labourers, concluding that the giant stone pyramids of the early Old Kingdom "may mark a major depletion of Egypt’s exploitable wood", which may explain the wide scatter of the dates.
+      editorInference: GEO-C516 predicts that casting-scale wood-ash demand would leave region-scale deforestation signals dated to construction periods. This page shows the conventional account already expects a construction-era fuel shock from mortar, metallurgy and bread. A deforestation signal at the pyramid age would therefore be predicted by both accounts and cannot by itself discriminate; the claim's test needs a magnitude or a chemical (alkali/ash) signature beyond a fuel-demand signal. The page's suggestion is explicitly speculative. My inference.
+      exactLocator: Section 'Conclusions' (webpage, no pagination)
+      limitations:
+        - Speculative questions, not measurements; no pollen or charcoal record cited.
+        - Secondary summary.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-161414
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-004619
+        date: 2026-09-09
+  claims:
+    - id: GEO-C908
+      statement: Engelbach's 1922 monograph reports a self-conducted one-hour hand-pounding trial at the Aswan trench bottom that removed about five millimetres over a foot × half-trench-width area, states he was certain pounders were not used entirely by hand for the trench, and proposes pounders attached to rammers worked from the trench top.
+      theme: tool-marks
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: §13, pp. 12–13 of the 1922 print (Project Gutenberg HTML)
+        quote: certain that they were not used entirely by hand
+        sourceId: SRC-ENGELBACH-1922
+      parentClaimIds:
+        - GEO-C502
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-161414
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-004619
+        date: 2026-09-09
+    - id: GEO-C909
+      statement: Engelbach (1922) interpreted the deep holes C and D and the squarish holes along the Aswan obelisk trench as test-shafts made at the very start of work to study granite quality and set out the obelisk's perimeter, with indications they were made while the top rock layers were still being removed.
+      theme: site-morphology
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: §6, p. 6 of the 1922 print (Project Gutenberg HTML)
+        quote: made at the very commencement of the work to study the quality
+        sourceId: SRC-ENGELBACH-1922
+      parentClaimIds:
+        - GEO-C006
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-161414
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-004619
+        date: 2026-09-09
+    - id: GEO-C910
+      statement: "Fire-setting is documented at the Unfinished Obelisk quarry: Engelbach (1922) recorded burnt and semi-burnt mud bricks and burnt granite chips around the obelisk, and the 2002 Supreme Council of Antiquities excavation found massive amounts of charcoal, ash and burned mud bricks (Kelany 2003, as reported by Kelany et al. 2009)."
+      theme: tool-marks
+      rung: observation
+      claimType: observation
+      sourceAnchor:
+        locator: "[p. 4] (print p. 90), section 'Quarrying techniques'"
+        quote: massive amounts of charcoal, ash and burned mud bricks were found
+        sourceId: SRC-KELANY-2009
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-161414
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-004619
+        date: 2026-09-09
+    - id: GEO-C911
+      statement: Kelany et al. (2009) attribute the conclusion that the Unfinished Obelisk channelling was made by pounding only to Röder (1965), on the basis of the massive numbers of dolerite hammer stones found in the quarry.
+      theme: tool-marks
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: "[p. 4] (print p. 90), section 'Quarrying techniques'"
+        quote: the channelling was made by pounding only
+        sourceId: SRC-KELANY-2009
+      parentClaimIds:
+        - GEO-C502
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-161414
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-004619
+        date: 2026-09-09
+    - id: GEO-C912
+      statement: Kelany et al. (2009) describe Aswan dolerite pounders as originating from dykes within the granitoids and identify trenches in dolerite/aplite dykes in the Northern quarries, with pounder-sized roughly shaped blanks, as Pharaonic tool-production quarries — the closest yet found to the Unfinished Obelisk.
+      theme: tool-marks
+      rung: observation
+      claimType: observation
+      sourceAnchor:
+        locator: "[p. 6] (print p. 92), section 'The Northern quarries'"
+        quote: quarries for the production of stone tools in the Pharaonic Period
+        sourceId: SRC-KELANY-2009
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-161414
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-004619
+        date: 2026-09-09
+    - id: GEO-C913
+      statement: The David H. Koch Pyramids Radiocarbon Project (1984 and 1994–95) reports radiocarbon dates on organic material from Old Kingdom monuments averaging 374 years (1984) and 100–200 years (1995) older than the historical midpoints, attributes the offset to an old-wood effect in fuel burned for mortar and other uses, and reads the results as placing the Great Pyramid within the historical era.
+      theme: historical-record
+      rung: observation
+      claimType: measurement
+      sourceAnchor:
+        locator: Section '1984' (webpage, no pagination)
+        quote: the radiocarbon dates confirmed that the Great Pyramid belonged to the historical era
+        sourceId: SRC-ASSOCIATES-ND
+      parentClaimIds:
+        - GEO-C576
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-161414
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-004619
+        date: 2026-09-09
+  research:
+    - id: GEO-R013
+      title: Survey the Aswan trench shafts against Engelbach's test-shaft reading
+      summary: "Measure the deep holes C and D and the squarish holes along the Unfinished Obelisk trench (Engelbach 1922, Plate I): depth, plan dimensions, wall profile, floor form, and their stratigraphic relation to the trench walls (do the holes predate the trench, as Engelbach's reading requires — traceable up the side of the obelisk?). Record any residues (ash, vitreous material, alkali salts) by non-destructive spot XRF or swab, and test the two readings' predictions: prospecting pits should show pounded floors, irregular walls and fissure-following courses; settling vessels (GEO-C536) should show water-tight walls, decant lips or channels, and silicate residues. Compare with the pounder-wear deposit Engelbach buried under the west retaining wall if the SCA permits."
+      claimIds:
+        - GEO-C006
+        - GEO-C536
+        - GEO-C909
+        - GEO-C537
+      track: small_grant
+      effortTier: field
+      informationGain: Both readings are currently unmeasured conjecture. Geometry and residues would settle whether the shafts are extraction-prospecting features (retiring GEO-C006's anomaly and GEO-C536) or bear processing signatures no conventional account explains.
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-161414
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-004619
+        date: 2026-09-09
+    - id: GEO-R014
+      title: Read Bonani et al. 2001 in full for per-sample contexts
+      summary: Obtain Radiocarbon 43(3):1297–1320 and tabulate, for every Khufu, Khafre and Menkaure sample, the material (charcoal, wood, reed, straw) and the recorded context (mortar between core blocks, casing mortar, fill, surface find, settlement deposit). Check the AERA summary's implication that dated charcoal came from mortar contexts, and record the Khufu date distribution with its old-wood interpretation.
+      claimIds:
+        - GEO-C576
+        - GEO-C913
+      track: publication_prize
+      effortTier: desk
+      informationGain: If the paper documents in-masonry mortar samples, GEO-C576's 'wood on the ground rather than in masonry' clause is struck and the claim narrows to the carbonate-dating gap; if sampling was largely surface or fill, the clause stands. Either result is decisive for that clause at desk cost.
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-161414
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-004619
+        date: 2026-09-09
+  images: []
+corrections:
+  - record: GEO-C502
+    field: statement
+    from: The orthodox pounding-stone account of Aswan granite quarrying rests principally on Engelbach's 1922 report, whose stated basis was a single self-conducted one-hour trial with no measurement of mass removed and a workforce estimate from a count-divided-by-four heuristic.
+    to: Engelbach's 1922 report, to which the pounding-stone account of Aswan granite quarrying is commonly traced, states as its experimental basis a single self-conducted one-hour hand-pounding trial recorded as about five millimetres of depth over a foot × half-trench-width area (no mass measured), a trench-time estimate from an assumed rammer rate of 8 mm per hour, and a workforce arrangement of one man per double-foot inferred from trench-floor groove spacing — while itself holding that pounders were not used entirely by hand for the trench.
+    reason: The shown monograph (§§13–15) contains the one-hour trial and no mass measurement, but the workforce logic is groove spacing and an assumed rammer rate, not a count-divided-by-four heuristic, and Engelbach rejects pure hand pounding (GEO-E037, GEO-E038); Kelany et al. 2009 attribute the pounding-only reading to Röder 1965 (GEO-E043). Text was shown through §44 of 56; the unseen sections are miscellaneous objects and bibliography per the contents.
+  - record: IMG-GEO-P01
+    field: depicts
+    from: The Unfinished Obelisk in its quarry trench at Aswan, Egypt. The scalloped "scoop marks" visible along the trench walls are the features whose production by dolerite pounders is contested (GEO-C001, GEO-C002).
+    to: The Unfinished Obelisk in its quarry trench at Aswan, Egypt. The scalloped "scoop marks" visible along the trench walls are the features whose production by dolerite pounders is contested (GEO-C001, GEO-C002). Engelbach (1922) read the deep holes beside the trench as test-shafts sunk before the trench was cut (GEO-C702) and recorded burnt brick and burnt granite chips from fire-setting of the upper rock; the 2002 excavation of the quarry found charcoal, ash and burnt brick in quantity (GEO-C703).
+    reason: Caption implied pounders were the only technique at issue; Engelbach §§4, 6 and Kelany et al. 2009 p. 90 (shown) document fire-setting and a conventional reading of the shafts.
+edition:
+  rationale: The current article states that the proponent characterisation of Engelbach 'has not been checked against the monograph' and that the standard account 'rested largely on' his 1922 report, and it presents the trench shafts as features with no conventional reading. All three are now shown inaccurate by the monograph itself (GEO-E701–E704) and by Kelany et al. 2009 (GEO-E707, GEO-E708), and GEO-C502's statement is corrected, so the article's inline paraphrase of that claim must change with it. The edit is confined to the 'Rates' subsection; the case verdict, featured claims, crux order and assessment are unchanged, because the Aswan material bears on the completeness of the pounding orthodoxy and not on casting. Salt, paleomagnetic and Andean changes remain blocked.
+  featuredClaimIds:
+    - GEO-C022
+    - GEO-C020
+    - GEO-C021
+    - GEO-C004
+    - GEO-C903
+    - GEO-C030
+    - GEO-C012
+    - GEO-C010
+    - GEO-C011
+    - GEO-C013
+    - GEO-C001
+    - GEO-C002
+    - GEO-C006
+    - GEO-C502
+    - GEO-C003
+    - GEO-C506
+    - GEO-C907
+    - GEO-C906
+    - GEO-C594
+    - GEO-C005
+  cruxOrder:
+    - GEO-R009
+    - GEO-R012
+    - GEO-R011
+    - GEO-R003
+    - GEO-R010
+    - GEO-R005
+    - GEO-R004
+    - GEO-R001
+    - GEO-R002
+    - GEO-R006
+    - GEO-R008
+    - GEO-R007
+  article: |-
+    At the granite quarries of Aswan, beside the largest abandoned obelisk in Egypt, there is a block that tourists are invited to hit. The idea is charming: pick up one of the rounded dolerite stones that ancient workers supposedly used, strike the granite, and feel the past in your hands. Guides have been running this accidental experiment for decades. According to the proponent literature, [no visitor has ever managed to reproduce one of the smooth, scooped depressions that cover the quarry walls]{claim=GEO-C002}. The stones bounce. The granite shrugs.
+
+    {plate:IMG-GEO-P01}
+
+    Anecdotes like this prove nothing by themselves, and this one has never been systematically surveyed — nobody has counted the attempts, weighed the effort, or examined the test block for wear. But it points at the right question, which is not *who built the monuments* — nobody serious disputes that ancient Egyptians built the pyramids and ancient Andeans built Tiwanaku — but *how the hardest stone was worked*. The megalithic casting hypothesis gives a heterodox answer: some of it was not worked at all. It was made — mixed, moulded, and set in place, the way we make concrete — from crushed or gathered rock, a mineral binder, and chemistry that a Bronze Age society could plausibly command.
+
+    {plate:IMG-GEO-P02}
+
+    The idea has a serious pedigree and a disreputable neighbourhood. It was put in scientific form by the French materials chemist Joseph Davidovits, whose group has since published in peer-reviewed materials journals, and it has attracted at least one laboratory with no stake in the theory. It also circulates in a media ecosystem of lost civilisations and ancient high technology that this case has nothing to do with. Casting requires no aliens, no Atlantis, and no forgotten machines — only forgotten chemistry, which is a documented historical phenomenon. That is what makes it testable. And it has been tested — at one monument thoroughly, at another not at all. The two records are different, and the difference is the whole story.
+
+    ## The conventional account, taken seriously
+
+    Any honest map of this dispute starts by steelmanning the orthodoxy, because the orthodoxy is strong.
+
+    The carved-and-transported account is not a guess. Quarries exist, with unfinished monuments still attached to bedrock — the Aswan obelisk itself is the most famous, abandoned mid-extraction after the granite cracked. Tools have been recovered in quantity. Worker settlements at Giza have been excavated. Experimental archaeologists have carved granite with dolerite and copper, slowly but genuinely. And modern geochemical provenancing has matched monument stone to specific quarries. The cleanest example is Stonehenge: immobile-trace-element analysis finds that fifty of fifty-two sarsens share a single geochemical profile, and Stone 58's signature directly matches the West Woods area about 25 km away — not a loose statistical resemblance but a match.
+
+    The conventional account's gaps are quantitative, not existential. It needs no miracle anywhere. What it needs, in a few specific places, is more time, more workers, or better technique than anyone has yet demonstrated. Those places are where this case lives.
+
+    ## Where the anomalies actually are
+
+    Strip away everything anecdotal and the residue is small but real. It comes in three kinds: rates, ingredients, and the record. A fourth — the salt on the pyramid's walls — gets its own section, because it is the anomaly on which the evidence is thick enough to reach a conclusion.
+
+    ### Rates
+
+    The pounding-stone account of granite quarrying is usually traced to Reginald Engelbach's 1922 report on the Aswan obelisk, and proponents characterise [its experimental basis as a single self-conducted one-hour hand trial that recorded depth over an area rather than mass removed, a trench time estimated from an assumed rammer rate, and a workforce inferred from the spacing of grooves on the trench floor]{claim=GEO-C502}. Read directly, the monograph is a poorer target than the proponents suppose. Engelbach did try an hour of hand pounding and took off about five millimetres; but he was “certain” the pounders were not used by hand alone for the trench, proposed pounders lashed to rammers and worked from above, and documented fire-setting — burnt mud bricks, and granite chips with the pinkish crumbling texture of burnt stone — for stripping the upper rock. The pounding-only reading is Röder's, from 1965, and a 2002 excavation of the obelisk quarry found charcoal, ash and burnt brick in quantity, so that the orthodox account of Aswan is boulder extraction, fire, pounding and, later, iron — not pounders alone. In 2023 a team finally produced a modern number for the pounders: [photogrammetric measurement of granite removal with a dolerite pounder gave roughly 216 cubic centimetres per hour at 85 strikes a minute]{claim=GEO-C001} — a rate the authors themselves say speaks against pounders as the *sole* quarrying method, which is also what Engelbach said. That is a peer-reviewed measurement, from a single team, and it is the most mainstream-legible item in the anomaly column.
+
+    Note carefully what it is evidence *for*. It stresses a pounding-only timeline that the orthodox literature itself does not hold. It says nothing about casting: fire-setting, rammers, chisels, or simply more labour would each absorb the shortfall without a single mould. The same goes for the quarry's stranger features — [vertical shafts some five metres deep, described as too narrow for a worker to swing a pounder at their bottom]{claim=GEO-C006}. Engelbach read them in 1922 as test-shafts, sunk at the start of work to check the granite and set out the obelisk's perimeter while the upper rock was still being removed. That is an interpretation, not a measurement, and no one without a stake in the answer has surveyed the shafts since; but the natron-processing reading has to beat it, not fill a vacuum.
+
+    ### Ingredients
+
+    The natron-route version of the hypothesis, developed by the researcher Marcell Fóti, starts from a fact that is not in dispute: Egypt sat on [industrial-scale deposits of natron — the alkaline salt ancient glassmakers used as a flux — exploited from antiquity, with supply declining sharply in the seventh to ninth centuries AD]{claim=GEO-C011}. Natron plus heat plus silica gives waterglass, a mineral binder, and [the roughly 850 °C required was within reach of charcoal-and-bellows pyrotechnology]{claim=GEO-C010} — a point the record supports only through a proponent's citation of early glassmaking, though what is known of ancient metallurgy makes it hard to doubt. Crucible-scale heat, however, is not industrial-scale processing, and the natron papers concern glass and faience; they say nothing about stone. The proposed discovery story — that [long-used outdoor fire pits accidentally produce hardened artificial stone through ash chemistry]{claim=GEO-C013} — rests on one unattributed anecdote and has never been replicated.
+
+    All of this is necessary for casting and none of it is evidence of casting. Ingredients on the shelf do not make a cake.
+
+    ### The record
+
+    {plate:IMG-GEO-P05}
+
+    The historical anchors are thin. In the Tomb of Rekhmire an 18th-Dynasty mural shows a large casting operation — rows of crucibles tended by workers with poles. Egyptology reads it as bronze casting. Fóti argues that [the scale and apparatus depicted fit mineral or waterglass processing better than bronze work]{claim=GEO-C005}. That is an interpretive argument by a proponent that conventional Egyptology has not engaged; a serious re-reading would ask what residues or tools each interpretation predicts in the archaeological record, and go and look.
+
+    ## The salt
+
+    The proponents' favourite historical anchor is a story about the Caliph al-Maʾmūn. When his party broke into the Great Pyramid in the ninth century, the story goes, [it found the interior chamber walls coated with a layer of salt]{claim=GEO-C003} — a centimetre and a half of cooking salt, in the Geopolymer Institute's telling. Salt is an odd thing for a sealed structure of dry quarried limestone to produce, and an expected residue of stone that set wet with natron in it. The Institute adds a modern coda: on four visits between 1984 and 2003 Davidovits picked up fragments at Giza and found them salty to the tongue, European cathedrals are not salt-encrusted, and so [Great Pyramid stone carries surface salt that comparable natural limestone does not]{claim=GEO-C506}.
+
+    Take the medieval story first. The principal Arabic accounts of the breach were gathered in the fifteenth century by al-Suyūṭī, whose compilation exists in Leon Nemoy's 1939 translation. It tells the story twice, and in detail. The workers kindled fire, applied vinegar, tempered iron tools and brought up catapults; they found the wall twenty cubits thick; behind it a jar holding a thousand dinars, a square well with doors onto chambers of shrouded corpses, a narrow shaft of black quartz, a covered granite basin in which they found “nothing but worn out pieces of rope”. Not one of these passages mentions salt, halite, or any coating on the walls. The web page that carries the salt report names no medieval author, work or manuscript for it. Even its date is unsupported: the translator places the caliph's arrival in Egypt, to suppress a rebellion, in AH 217 — that is AD 832, not the 820 the page gives. Other medieval authors remain to be read, and a single located passage would revive the story. But on what has been read, the claim that the accounts report salt is not merely unproven: the accounts that exist do not report it, and the only text that says they do cites nothing. We grade it contradicted, with low confidence, and name the unread authors as the way to reverse that.
+
+    Now the modern salt — which turns out to be real. A conservation study by the ScanPyramids mission, published in *Scientific Reports* in 2026, examined efflorescence (the white crust that forms when dissolved salts migrate to a surface and crystallise) inside the Queen's Chamber and the so-called Thieves' Corridor. [X-ray diffraction of seven samples found only halite, calcite and quartz; electron microscopy of the white crust detected only sodium and chlorine, growing as tiny whiskers; there were no nitrates and no widespread gypsum]{claim=GEO-C907}. So the taste test was right about one thing. The salt on the pyramid's inner walls is common salt.
+
+    What the study does not show is that the salt is anomalous. The same paper lists halite as a dominant efflorescence salt at limestone monuments across Egypt — the Menkaure pyramid, the Saqqara pyramid, the White Monastery at Sohag, the Imni tomb at Lisht, and the Sphinx, which is carved from Giza bedrock and which nobody claims was cast. And it cites the geologists Klemm and Klemm for the view that [halite is a primary constituent of the plateau's nummulitic limestone, present within the strata themselves and precipitated from evaporating marine or lagoonal waters when the rock formed]{claim=GEO-C906}. That citation is second-hand — the book has not been read for this case — and no one has compared salt concentrations between pyramid stone and unworked bedrock, or tested whether the salt runs through the body of a block or sits on its skin. But the natron recipe predicts salt in the blocks, and so does ordinary quarrying of a salt-bearing marine limestone. An observation both accounts predict cannot decide between them. The proponents' comparator — cathedrals — is a different rock in a different climate; the comparators that matter are the plateau's own bedrock and its neighbours, and those carry the salt. The comparative claim fails on the record as it stands.
+
+    There is a further complication that cuts deeper than the salt. The same study reports that [conservation work inside the pyramid between 1995 and 1997 is undocumented — photographs show that surfaces were cleaned and cavities filled, a sulfur-rich modern fill sits on the chamber wall, and salt that was barely visible in 2022 had spread extensively across the stone two years later]{claim=GEO-C594}. Every surface-salt observation at Giza, including four decades of tasting, is therefore a reading taken at an unknown point in a cleaning cycle whose baseline nobody recorded. That problem is not peculiar to the salt. It hangs over every surface argument at every megalithic site, almost none of which has a complete published restoration history — though that generalisation, unlike the Giza instance, has yet to be audited.
+
+    What survives of the salt line is a narrow, cheap question: does unworked Giza and Mokattam bedrock, and the quarry face at Tura, effloresce halite? If yes — as the plateau's geology predicts — the salt argument is finished. If no, the salt becomes an anomaly worth testing in the bulk of the stone rather than on its surface.
+
+    ## The stone itself
+
+    Everything above is circumstantial. The case turns on what the monument stone is actually made of, and here two branches have very different records.
+
+    ### Egypt: tested, and contradicted
+
+    {plate:IMG-GEO-P03}
+
+    The pyramid claim is that [some blocks of the Great Pyramid — not the core, but casing, tops, and backing blocks — are cast reconstituted limestone rather than quarried natural stone]{claim=GEO-C020}. Two laboratory results point that way. In 2006 a Drexel University group compared pyramid limestone under electron microscopy with six natural limestones from the area and reported microconstituents combining silicon, calcium, and magnesium “in ratios that do not exist in any of the potential limestone sources”, along with hydrated phases “not known to hydrate in nature” — while conceding that nature “could have — however unlikely — produced all the microstructures examined”. In 2011 an overlapping team applied solid-state NMR to a casing stone from the Bent Pyramid at Dahshur and read it as Tura limestone grains cemented by an amorphous calcium-silicate gel “formed by human intervention”, perhaps with diatomaceous earth added.
+
+    Notice the second result quietly changes the recipe. Davidovits proposed an alkali-aluminosilicate geopolymer; the NMR study proposes a lime-pozzolan cement — the chemistry of a mortar, not of a geopolymer. That matters for how the negatives count.
+
+    And the negatives are substantial. Four independent petrographic examinations — petrography is the study of stone under a microscope, the geologist's basic tool — every one concluding natural limestone. Folk and Campbell, working across many blocks in the field, report sedimentary bedding, burrows, sharp cross-sections of clams and fragile worm tubes, ripple lamination, and calcite-filled tectonic fractures confined to individual blocks — features that geology produces and moulds do not. Harrell and Penrod examined the “Lauer sample”, the pyramid-interior specimen proponents cite as their showcase, and found natural Mokattam limestone with “no evidence of the special textures and zeolite cement that must exist if the sample is concrete”. Freestone and Middleton ran five techniques on a British Museum casing fragment and found no feature supporting an artificial origin; the cristobalite that Davidovits once treated as a synthetic marker turned out to be opal-CT, a normal sedimentary product. And Jana did the one thing nobody else in this literature has done: he examined casing stones side by side with natural Tura limestone *and* a genuine Davidovits-made geopolymer block — a positive control, the specimen that shows what the signature looks like when it is really there. The silicon-rich spheres highlighted in 2006 appeared in casing stones and natural limestone alike. The geopolymer showed a binder heavily enriched in sodium, potassium, and aluminium that no casing stone showed. The artificial block had a smooth matrix with spherical air voids; the monument stone and the quarry stone shared a grainy texture with pores between the grains.
+
+    Weigh the whole. Every examination of Great Pyramid stone by anyone outside the proponent camp reads it as natural, and the one with a positive control shows that the features proponents called artificial occur in undisputed quarry stone, while the features a real binder leaves do not occur in the monument. On this record the claim that some Great Pyramid blocks are cast is contradicted. Two things stop that from being the end of the matter. One is a fight over the samples themselves. Davidovits contends the piece his critics analysed was not the authentic Lauer sample — wrong thickness, missing phosphate coating — though Jana reports finding and mapping that very coating on the piece he received. Egypt's antiquities authority, for its part, states that no sampling permission was ever granted for the 2006 study and that its samples' origin is unknown. The other is the recipe. Jana's decisive negative is a negative for the *alkali* recipe; it does not test the calcium-silicate binder of the 2011 NMR study, which has drawn no published rebuttal and which, at a few per cent by weight, might hide from bulk chemistry. That residue is what a proponent can still honestly point to. It is an objection to the verdict, not evidence against it: nothing in the record has looked for that binder and found it, either.
+
+    ### The Andes: the branch the case rests on
+
+    {plate:IMG-GEO-P04}
+
+    At Pumapunku in Bolivia the laboratory evidence is the only kind from a disputed monument that reads as artificial. [Published SEM and petrographic analyses of the andesite report organic matter and microstructural features the authors argue natural volcanic stone should not contain]{claim=GEO-C004}, and on that basis the claim is that [some andesite and red sandstone blocks at Pumapunku and Tiwanaku were geopolymer-cast]{claim=GEO-C021}. Those papers passed peer review in materials journals, and nothing in the record has been aimed directly against them — no independent laboratory has re-examined the stone. That makes the claim weakly supported: the only direct evidence on the stone itself points toward casting. Three cautions keep it weak. The papers come from one team — the Davidovits group — analysing one sample set whose chain of custody is contested. Volcanic rocks host glassy and organic phases naturally, and the criteria for telling natural from artificial were never blind-tested. And there is the Giza precedent: when features of exactly this kind — microstructures read as artificial under the electron microscope — were checked against a genuine geopolymer, they turned out to occur in natural limestone too. Nobody has run that check on andesite.
+
+    The standing counter-evidence is a 1971 Bolivian Academy of Sciences study attributing Pumapunku's red sandstones to identifiable natural quarries. It is a provenance study of sandstone set against microscopy of andesite, so the two partly talk past each other. The proponents' current model is more specific than it used to be, and therefore more checkable. [It holds that the andesite was cast from natural, uncrushed volcanic sand from Cerro Khapia — a material like the Roman pozzolana — carried to and stored at the lakeshore village of Iwawe, where it forms Stratum V of a 2002 excavation, and that the abandoned quadrangular blocks called *piedras cansadas*, “tired stones”, were never used as building material]{claim=GEO-C903}. Both the orthodox account and the proponents agree the andesite comes from Khapia, so quarry geochemistry cannot separate them. A lakeshore deposit, a mountain, and some abandoned blocks can. Reading the excavators' own description of Stratum V is desk work; walking Khapia's outcrops for working faces and dressing debris — or for loose sand and none — is a field season.
+
+    ### Can it be done at all?
+
+    The one rung of the ladder in decent shape is the humblest: [limestone can be reconstituted into large, hard blocks visually similar to natural stone with materials and temperatures available to ancient builders]{claim=GEO-C012}. Davidovits' institute reports multi-ton demonstration blocks, self-reported and never independently analysed; lime and diatomaceous earth form a calcium-silicate gel at room temperature in the laboratory; and the geopolymer block Jana examined is, after all, a real artificial limestone — distinguishable under the microscope, which is the point, but a stone. Feasibility is not occurrence. But it is not nothing either, and it is the reason this case is a question and not a fantasy.
+
+    ## The ladder, and why it thins as it climbs
+
+    Notice the shape. At the bottom: observations, some solid, most unverified. In the middle: mechanism claims — the ingredients existed, the temperatures were reachable, the chemistry works. At the top: the claim that actually matters, that [at least one major megalithic monument, somewhere, contains man-made cast stone]{claim=GEO-C022}. Each rung is weaker than the one below, and evidence for a lower rung does not automatically climb. Natron in Egypt is established and proves nothing about pyramids. Feasibility is real and proves nothing about history.
+
+    The headline claim is existential — *at least one* monument — so it cannot be settled by averaging. Egypt has been tested with binder-aware methods and, in the recipe tested, contradicted. The Andes have been examined by one interested team and by nobody else. An existential claim is not refuted by one failed instance, and it is not supported by an untested one. That is why the headline verdict is *unresolved*: not a shrug, but a description of a record in which the decisive test has been run at the wrong site.
+
+    ## The crux
+
+    Here is where the disagreement lives, and it is narrower than either camp usually admits.
+
+    The strongest conventional evidence class is provenance matching: monument stone chemically fingerprinted to a quarry. The casting hypothesis's most consequential reply is methodological — [that trace-element quarry-matching methods are blind to hydrogen, carbon, and oxygen, and so cannot by design tell carved quarry stone from stone cast using aggregate gathered at that same quarry]{claim=GEO-C030}. Crushed rock keeps its metallic fingerprint. The narrow point is correct: portable XRF and ICP-MS do not see the light elements a binder is made of, and a quarry match is a quarry match, not a proof of carving. Even at Stonehenge, the West Woods result tells you where the sarsen came from, not how it was shaped. At Khapia it is exactly why the two sides cannot be separated by geochemistry.
+
+    But the reply reaches less far than its authors want. The claim lists X-ray diffraction among the blind methods, when XRD reads crystalline phases and is exactly how Folk and Campbell looked for zeolite cement. Fóti's own methods table lists NMR as blind to silicon and oxygen, when solid-state silicon NMR is exactly what the pro-casting Bent Pyramid study used. And the critique does not touch the direct petrography at all. Cast stone needs a binder; binders have signatures — bound water, alkali enrichment, textures geology does not produce. Jana's positive control demonstrates those signatures are plainly visible when present. A methods audit of the provenance literature is worth doing, and it would likely show that some “we found the quarry” conclusions have been stretched into “therefore carved” conclusions the chemistry cannot carry. It would not rescue a monument in which someone has looked directly for a binder and found none.
+
+    ## What would change our mind
+
+    The strongest case for the hypothesis that this record does not answer is this: the revised calcium-silicate binder has never been tested for. The four negative Egyptian studies were built around the alkali recipe, and the one with a positive control used an alkali geopolymer as the control. A cement at five per cent by weight — exactly the kind the 2011 NMR study proposes and the 2010 laboratory work shows is easy to make — could sit inside a casing stone that reads as natural in every one of those tests. Nothing in the record rules that out, and the provenance critique means quarry matching cannot rule it out either.
+
+    The strongest case against is equally plain: every time monument stone has been examined directly for casting by anyone outside the proponent camp, it has read as natural — down to fossil worm tubes and tectonic fractures — the one historical anecdote proponents lean on has no traceable author, and the salt it describes is what the plateau's own rock is reported to shed.
+
+    So here is what would move us.
+
+    - **Toward casting:** an independent laboratory reproducing the Pumapunku organic and microstructural findings on samples with a documented chain of custody, against a natural andesite control; a provenance-secure Egyptian casing stone in which an independent lab finds a calcium-silicate cement absent from matched Tura limestone; a blinded paleomagnetic survey of many pyramid blocks, measured against the natural remanence of Mokattam quarry limestone, finding a shared magnetic direction aligned with the present field — something a block that set in place should carry regardless of recipe, and a quarried, rotated block should not; the Iwawe deposit turning out to be a natural andesite sand store dated to the construction period, with no extraction faces on Khapia; a medieval Arabic author who actually reports the salt.
+    - **Toward carving:** an independent re-analysis of Pumapunku andesite finding ordinary volcanic mineralogy, or its “artificial” features reproduced in undisputed volcanic rock; a targeted test for a calcium-silicate binder in provenance-secure casing stone returning nothing; halite efflorescing from unworked Giza bedrock, which would retire the salt argument entirely; the Iwawe deposit turning out to be dressing debris or unrelated fill, with quarry faces and carved andesite blocks documented on the way down from Khapia.
+
+    This case ends in two different places. On its most famous instance it reaches a conclusion: on the present record, the stone of the Great Pyramid reads as quarried, and the salt on its walls is what the plateau's own rock sheds. On its headline question it does not, because the one monument where the laboratory evidence points the other way has never been examined by anyone without a stake in the answer. The agenda that follows is therefore weighted toward the Andes, and much of it is cheap. Read the Iwawe excavation report. Walk Khapia's outcrops for quarry faces or for sand. Design the blinded paleomagnetic survey that tests set-in-place against quarried without arguing about recipes. Audit which provenance studies can, and cannot, see a binder. Test whether the plateau's bedrock effloresces salt. Finish tracing the salt story through the remaining medieval authors, or drop it. Audit the restoration histories that could account for any surface anomaly — starting with a pyramid interior that was cleaned in the 1990s and nobody wrote down how. Replicate the quarrying rate. Re-read the Rekhmire mural with a metallurgist and a chemist in the same room.
+
+    The scoop marks at Aswan have waited a very long time for someone to measure them properly. The full agenda, with what each project would tell us, is below.
+dispositions:
+  - key: url:europhysicsnews.org/articles/epn/pdf/2012/06/epn2012436p28.pdf
+    kind: source
+    disposition: blocked
+    reason: Túnyi & El-hemaly 2012, 'Paleomagnetic investigation of the great Egyptian pyramids', Europhysics News 43/6:28–31, doi:10.1051/epn/2012604 — the report describes a 7-location pilot with three Khufu/Khafre locations sharing a N–S paleodirection, a quarry location with no preferred direction, and a Nile-mud-plus-natron premise. Both the EPN PDF and the DOI returned HTTP 403 again; nothing could be quoted.
+    reopenIf: The EPN PDF is retrieved (EDP Sciences from a non-bot client, an author copy from the Geophysical Institute SAS Bratislava, or a library copy of EPN 43/6) and pp. 29–31 and Figs. 1–4 read.
+    observed: Túnyi & El-hemaly 2012, EPN PDF (report F3, proposal 5)
+    by: 2026-09-09-draft-megalithic-casting-004619
+    date: 2026-09-09
+    route: EDP Sciences publisher PDF or DOI 10.1051/epn/2012604 via institutional access; author reprint request.
+  - key: text:paleomagnetic pilot three locations sharing a field aligned direction proposal 5
+    kind: evidence
+    disposition: blocked
+    reason: "Report proposal 5: weak support for GEO-C020 and context for GEO-C589 from the paleomagnetic pilot, with limitations (no D/I/α95 values, one quarry site with no stable direction, orientation method unstated, clay-based recipe). Its source was not shown; no quotation is possible."
+    reopenIf: SRC for Túnyi & El-hemaly 2012 is entered from shown text.
+    observed: "Paleomagnetic pilot: three locations sharing a field-aligned direction (proposal 5)"
+    by: 2026-09-09-draft-megalithic-casting-004619
+    date: 2026-09-09
+    route: "Same as the source: retrieve the EPN PDF."
+  - key: url:nature.com/articles/s40494-020-0356-9
+    kind: source
+    disposition: blocked
+    reason: Hemeda & Sonbol 2020, 'Sustainability problems of the Giza pyramids', Heritage Science 8:8, doi:10.1186/s40494-020-0356-9 — the report describes halite as a rare bulk XRD constituent of Khufu backing limestone (Table 3), a biomicrite fabric with recrystallised microfossils, salts effloresced in storage, and halite in Khafre/Menkaure mortars. Both the nature.com URL and the DOI served bot-challenge pages; nothing shown.
+    reopenIf: The open-access article is retrieved (Springer/BMC PDF or a PubMed Central / Europe PMC copy) and the backing-limestone, mortar and thin-section sections read.
+    observed: Hemeda & Sonbol 2020, Heritage Science (report F4, proposal 6)
+    by: 2026-09-09-draft-megalithic-casting-004619
+    date: 2026-09-09
+    route: Springer/BMC PDF for doi:10.1186/s40494-020-0356-9; Europe PMC full text.
+  - key: text:halite as a bulk constituent of khufu backing limestone proposal 6
+    kind: evidence
+    disposition: blocked
+    reason: "Report proposal 6: bulk halite in Khufu backing blocks undermining GEO-C506 and GEO-C020, supporting GEO-C906, qualifying GEO-C590. Source not shown; the direct comparator for the salt line therefore remains unrecorded."
+    reopenIf: Hemeda & Sonbol 2020 is entered from shown text; then record Table 3 and the thin-section description with directions as proposed.
+    observed: Halite as a bulk constituent of Khufu backing limestone (proposal 6)
+    by: 2026-09-09-draft-megalithic-casting-004619
+    date: 2026-09-09
+    route: Retrieve Hemeda & Sonbol 2020.
+  - key: url:gizamedia.rc.fas.harvard.edu/documents/legon_de_27_1993.pdf
+    kind: source
+    disposition: blocked
+    reason: Legon 1993, 'The Air-Shafts in the Great Pyramid', Discussions in Egyptology 27:35–44 — reported to state at p. 36 n. 5 that the King's Chamber southern shaft carries salt incrustations 'similar to those recently removed from the walls of the Queen's Chamber', citing Hawass in the 1990 Petrie reprint, p. 103. The gizamedia PDF fetch failed again; not shown.
+    reopenIf: The Digital Giza PDF is retrieved or DE 27 consulted in print; then enter as a second dated cleaning episode toward GEO-C594 and a qualifier on GEO-C506/GEO-E026.
+    observed: Legon 1993, DE 27, gizamedia PDF (report F5, proposal 7)
+    by: 2026-09-09-draft-megalithic-casting-004619
+    date: 2026-09-09
+    route: Digital Giza (Harvard) document store; Discussions in Egyptology 27 in a library.
+  - key: text:queen s chamber salt incrustations recently removed before 1993 proposal 7
+    kind: evidence
+    disposition: blocked
+    reason: "Report proposal 7: a pre-1993 removal of Queen's Chamber salt incrustations supporting GEO-C594 and qualifying GEO-C506 and GEO-E026. Source not shown."
+    reopenIf: Legon 1993 is entered from shown text.
+    observed: Queen's Chamber salt incrustations 'recently removed' before 1993 (proposal 7)
+    by: 2026-09-09-draft-megalithic-casting-004619
+    date: 2026-09-09
+    route: Retrieve Legon 1993.
+  - key: url:cambridge.org/core/journals/radiocarbon/article/radiocarbon-dates-of-old-and-middle-kingdom-monuments-in-egypt/A967302ADD527BFEB9226457682C0B4A
+    kind: source
+    disposition: blocked
+    reason: Bonani, Haas, Hawass, Lehner, Nakhla, Nolan, Wenke & Wölfli 2001, 'Radiocarbon Dates of Old and Middle Kingdom Monuments in Egypt', Radiocarbon 43(3):1297–1320 — the primary for the AERA summary entered as SRC-ASSOCIATES-ND. The Cambridge Core page returned HTTP 403; the report saw only the abstract, not shown here. The '450 samples from secure context' figure the report cites from the abstract is therefore not recorded.
+    reopenIf: The full paper is obtained (Cambridge Core via institutional access, or the Radiocarbon back-issue archive) and per-sample contexts read — GEO-R702.
+    observed: Bonani et al. 2001, Radiocarbon (report F6)
+    by: 2026-09-09-draft-megalithic-casting-004619
+    date: 2026-09-09
+    route: Cambridge Core with institutional access; Radiocarbon journal back-issue archive (University of Arizona).
+  - key: text:proposed correction to geo c576 proposal 8
+    kind: claim
+    disposition: blocked
+    reason: "Report proposal 8: strike the clause 'wood fragments found on the ground rather than in masonry' from GEO-C576 if Bonani et al. 2001 confirms in-masonry sampling. The report itself says do not apply yet; only the AERA secondary summary was shown, which implies mortar-context charcoal without itemising samples. Recorded as GEO-E047 (undermines) rather than as a correction."
+    reopenIf: GEO-R702 is done and the full paper documents mortar-context samples; then correct GEO-C576 with Bonani et al. 2001 as the reason.
+    observed: Proposed correction to GEO-C576 (proposal 8)
+    by: 2026-09-09-draft-megalithic-casting-004619
+    date: 2026-09-09
+    route: Read Bonani et al. 2001 in full (GEO-R702).
+  - key: doi:10.1007/978-1-4614-5200-3_4
+    kind: source
+    disposition: blocked
+    reason: Janusek, Williams, Golitko & Lémuz Aguirre 2013, 'Building Taypikala', doi:10.1007/978-1-4614-5200-3_4 — the report saw the Springer abstract and footnotes only (pXRF instrument; Isbell & Burkholder 2002 cited at pp. 199–242 of Andean Archaeology I); the Springer page served a bot challenge here. Nothing about piedras cansadas or quarry faces could be verified. The report itself declined to anchor evidence on the abstract.
+    reopenIf: The chapter body is obtained and pp. 81–82, 88–90 and Figs. 4.14–4.21 read.
+    observed: Janusek et al. 2013, Springer chapter page (report F7)
+    by: 2026-09-09-draft-megalithic-casting-004619
+    date: 2026-09-09
+    route: Springer chapter PDF via institutional access; interlibrary loan of Mining and Quarrying in the Ancient Andes.
+  - key: text:demortier 2009 epn 40 1 27
+    kind: source
+    disposition: blocked
+    reason: Demortier, Europhysics News 40/1 (2009) p. 27 — named by the report as the Nile-mud-plus-natron precursor cited by Túnyi & El-hemaly; not opened by the report or here.
+    reopenIf: The EPN 2009 item is retrieved and read.
+    observed: Demortier 2009, EPN 40/1:27
+    by: 2026-09-09-draft-megalithic-casting-004619
+    date: 2026-09-09
+    route: EDP Sciences EPN archive, volume 40 issue 1.
+  - key: text:candidate claim the paleomagnetic pilot supports in situ setting
+    kind: claim
+    disposition: blocked
+    reason: "Report 'considered, not proposed' (b): a claim that the paleomagnetic pilot supports casting. The report rejected it as unbaselined and resting on a recipe no indexed proponent defends; independently, its only source (Túnyi & El-hemaly 2012) was not shown, so no anchor is available."
+    reopenIf: The EPN paper is retrieved; even then the report's objections (no natural-limestone baseline, no reported D/I/α95) should be carried as limitations on any claim.
+    observed: "Candidate claim: the paleomagnetic pilot supports in-situ setting"
+    by: 2026-09-09-draft-megalithic-casting-004619
+    date: 2026-09-09
+    route: Retrieve Túnyi & El-hemaly 2012.
+  - key: text:next question 3 considered item c pounder microwear study
+    kind: research
+    disposition: duplicate
+    as: GEO-R002
+    reason: Pounder microwear (compare Engelbach's buried Aswan pounders, experimental pounders from a Marčiš-style replication, and GEO-C537's predicted glass-abrasion signature) fits inside the existing GEO-R002 as an extension, as the report itself concludes; GEO-E042 and GEO-E046 record the qualitative wear observations the study would test.
+    reopenIf: GEO-R002 is closed or narrowed to rate measurement only, leaving microwear unhoused.
+    observed: "Next question 3 / considered item (c): pounder microwear study"
+    by: 2026-09-09-draft-megalithic-casting-004619
+    date: 2026-09-09
+  - key: text:next question 1 bedrock halite comparator
+    kind: research
+    disposition: duplicate
+    as: GEO-R010
+    reason: Next question 1 (bedrock halite as the decisive cheap test, with bedrock and Tura faces as comparators) is the existing GEO-R010; Klemm & Klemm 2010 remains unread and its blocked entry stands.
+    reopenIf: GEO-R010 is closed.
+    observed: "Next question 1: bedrock halite comparator"
+    by: 2026-09-09-draft-megalithic-casting-004619
+    date: 2026-09-09
+  - key: text:next question 2 geo r011 design details
+    kind: research
+    disposition: duplicate
+    as: GEO-R011
+    reason: Next question 2 (multiple in-situ Mokattam/Giza baseline sites, oriented cores with bedding recorded, report D/I/α95/n, test whether a cold-set carbonate slurry acquires stable remanence) is the design of the existing GEO-R011; the details belong in its summary once the pilot paper is shown.
+    reopenIf: GEO-R011 is closed.
+    observed: "Next question 2: GEO-R011 design details"
+    by: 2026-09-09-draft-megalithic-casting-004619
+    date: 2026-09-09
+  - key: text:next question 5 janusek 2013 and isbell burkholder 2002
+    kind: research
+    disposition: duplicate
+    as: GEO-R009
+    reason: Next question 5 (Janusek et al. 2013 and Isbell & Burkholder 2002, now with a full citation, as the adjudicating texts for Iwawe and Khapia) is the existing GEO-R009 and GEO-R012; the full Isbell & Burkholder citation (Andean Archaeology I, pp. 199–242) was reported from an unshown abstract and is not recorded.
+    reopenIf: GEO-R009 or GEO-R012 is closed.
+    observed: "Next question 5: Janusek 2013 and Isbell & Burkholder 2002"
+    by: 2026-09-09-draft-megalithic-casting-004619
+    date: 2026-09-09
+  - key: text:engelbach 1922 plates i and iii no 1 candidate plates
+    kind: image
+    disposition: blocked
+    reason: Engelbach 1922 Plate I (shafts C, D) and Plate III no. 1 (trench floor and side) proposed as plates for §6 and §14. The Gutenberg HTML text was shown but no plate image file, record URL or licence statement for the image files was shown; the public-domain status is plausible (1922, Gutenberg) but a record URL is required.
+    reopenIf: The Gutenberg or Internet Archive image files for Plates I and III are retrieved with their URLs.
+    observed: Engelbach 1922 Plates I and III no. 1, candidate plates
+    by: 2026-09-09-draft-megalithic-casting-004619
+    date: 2026-09-09
+    route: "Project Gutenberg EBook #59320 image directory or the Internet Archive scan."
+  - key: text:kelany et al 2009 fig 14 candidate plate
+    kind: image
+    disposition: blocked
+    reason: Kelany et al. 2009 Fig. 14 (possible dolerite tool quarry near Philae) proposed as a plate. The PDF text was shown but no licence statement for NGU Special Publication figures and no separate figure file URL were shown.
+    reopenIf: NGU's licence for SP 12 figures is confirmed and a figure record URL obtained.
+    observed: Kelany et al. 2009 Fig. 14, candidate plate
+    by: 2026-09-09-draft-megalithic-casting-004619
+    date: 2026-09-09
+    route: Geological Survey of Norway (NGU) publications office.
+  - key: text:t nyi el hemaly 2012 fig 1 candidate plate
+    kind: image
+    disposition: blocked
+    reason: Túnyi & El-hemaly 2012 Fig. 1 (sampling map with paleodirection arrows) proposed as a plate; the paper was not retrieved and the report did not check the licence.
+    reopenIf: The EPN PDF is retrieved and EDP Sciences' licence for the figure confirmed.
+    observed: Túnyi & El-hemaly 2012 Fig. 1, candidate plate
+    by: 2026-09-09-draft-megalithic-casting-004619
+    date: 2026-09-09
+    route: EDP Sciences.
+  - key: text:report 4 salt section and paleomagnetic narrative proposals
+    kind: edition
+    disposition: blocked
+    reason: Report §4 narrative proposals for the salt section (salt inside the blocks by XRD; the Queen's Chamber cleaned before 1993 and 1995–97) and a paleomagnetic paragraph in 'What would change our mind' rest on Hemeda & Sonbol 2020, Legon 1993 and Túnyi & El-hemaly 2012, none shown. The Rates and shafts proposals are applied in the edition candidate; these are not.
+    reopenIf: Any of the three sources is retrieved; then a light edition adds the corresponding sentence(s).
+    observed: "Report §4: salt-section and paleomagnetic narrative proposals"
+    by: 2026-09-09-draft-megalithic-casting-004619
+    date: 2026-09-09
+    route: Retrieve Hemeda & Sonbol 2020, Legon 1993, Túnyi & El-hemaly 2012.
+report: proposals/2026-09-08-report-megalithic-casting-161414/report.md

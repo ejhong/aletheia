@@ -92,7 +92,7 @@ jobs:
               continue
             fi
             echo "re-paneling $c"
-            node scripts/cross-model-check.ts "$c" || echo "::warning::panel failed for $c"
+            node scripts/aletheia.ts check "$c" || echo "::warning::panel failed for $c"
           done
       - name: Open classified PR
         env:

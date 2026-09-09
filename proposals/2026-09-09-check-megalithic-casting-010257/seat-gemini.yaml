@@ -1,0 +1,123 @@
+runId: "2026-09-09-check-gemini"
+model: "Gemini 3.8 Flash (Google), independent check run"
+date: "2026-09-09"
+promptVersion: "check-v1"
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: weakly_supported
+  loadBearing:
+    - GEO-C020
+    - GEO-C021
+    - GEO-C012
+    - GEO-C030
+  weakestLinks:
+    - GEO-C022
+    - GEO-C003
+    - GEO-C005
+    - GEO-C506
+  synthesis: >-
+    The megalithic casting hypothesis posits that key components of ancient monumental masonry were manufactured in situ from chemical slurries rather than carved from quarried bedrock. While materials-science replication demonstrates that synthetic limestone binders (such as C-S-H gels and alkali geopolymers) are chemically feasible at ambient temperatures with ancient ingredients (GEO-C012, GEO-E013, GEO-E022), the empirical evidence that such technology was actually deployed at monument scale remains tenuous and predominantly contradicted by geological observations. Proponent analyses of Great Pyramid casing stones and Pumapunku andesite (GEO-E012, GEO-E017, GEO-E006, GEO-E007) claim anomalous microstructural constituents, amorphous gels, and organic residues. However, subsequent independent petrographic investigations (GEO-E018, GEO-E019, GEO-E020, GEO-E021) demonstrate that pyramid blocks exhibit intact natural sedimentary structures (such as uninterrupted fossil shells, burrows, and tectonic fractures) entirely inconsistent with disaggregated slurry casting. Crucially, comparative petrography using an authentic geopolymeric positive control (Jana 2007) revealed that true artificial binders exhibit distinct Na/K and Al enrichment absent in pyramid casing stones, while the amorphous siliceous microstructures cited as artificial signatures naturally occur as opal-CT lepispheres. Similarly, historical and observational anomalies cited to support casting fail scrutiny: reported interior salt crusts (GEO-C003, GEO-C506) represent normal evaporite mobilization of halite native to Giza nummulitic limestone (GEO-E031, GEO-E032), not natron processing residues. Furthermore, the absence of salt mentions in early Arabic breach accounts (GEO-E027) removes a core historical pillar. While Fóti's methodological critique (GEO-C030) validly notes that elemental quarry-matching (ICP-MS, XRF) cannot separate aggregate from quarried stone, it does not inoculate the hypothesis against binder-specific petrography and macro-sedimentary bedding. With Pumapunku's evidence confined to an uncorroborated proponent team and Egyptian field evidence heavily favoring carved sedimentary stone, the overarching attribution claim (GEO-C022) remains weakly supported at best.
+  steelman: >-
+    Solid-state multinuclear NMR spectra of Bent Pyramid casing stones (MacKenzie et al. 2011) demonstrate an amorphous calcium-silicate-hydrate (C-S-H) binding gel distinct from natural quarry comparators, a specific phase detection that is unaddressed by negative tests calibrated solely against alkali-aluminosilicate geopolymers.
+claimAssessments:
+  - claimId: GEO-C022
+    verdict: weakly_supported
+    confidence: moderate
+    reasoning: >-
+      The overarching existence claim rests on ambiguous microstructural anomalies in a handful of Egyptian and Bolivian specimens (GEO-E006, GEO-E012, GEO-E017). However, robust independent petrographic surveys (GEO-E018, GEO-E020, GEO-E021) consistently identify intact natural sedimentary bedding, fossils, and lack of synthetic binder phases across surveyed monuments. The strongest opposing consideration is that testing has sampled an extremely small fraction of total monumental stones, leaving open the possibility of targeted composite use in casing or backing blocks.
+  - claimId: GEO-C020
+    verdict: contradicted
+    confidence: moderate
+    reasoning: >-
+      Extensive optical and electron petrography by multiple independent groups (GEO-E018, GEO-E019, GEO-E020, GEO-E021) demonstrates that Great Pyramid casing and core blocks possess intact sedimentary structures, fossil cross-sections, and natural opal-CT lepispheres rather than artificial matrices. Furthermore, positive-control testing confirms casing stones lack the alkali enrichment found in Davidovits' geopolymers. The strongest opposing consideration is the MacKenzie et al. (2011) multinuclear NMR study indicating an amorphous C-S-H cementing gel in a Bent Pyramid casing stone, which does not rely on the contested alkali-aluminosilicate recipe.
+  - claimId: GEO-C021
+    verdict: unresolved
+    confidence: low
+    reasoning: >-
+      Claims of geopolymer casting at Pumapunku rest on reported SEM petrography and organic inclusions by a single proponent group (GEO-E006, GEO-E007), counterbalanced by older provenance work attributing the sandstones to natural quarries (GEO-E008). No independent, blind-tested laboratory replication has examined the specific mineral matrices or organic signatures of these samples. The strongest opposing consideration is the standard geological attribution of Pumapunku stones to natural volcanic and sedimentary formations without requiring complex organic binder processing.
+  - claimId: GEO-C004
+    verdict: provisionally_supported
+    confidence: high
+    reasoning: >-
+      The claim specifically states that published SEM and petrographic analyses report organic matter and microstructural features argued to be artificial. The evidence records (GEO-E006, GEO-E007, SRC-DAVIDOVITS-2019-ML/CI) confirm that these peer-reviewed papers do exist and explicitly present these measurements and arguments. The strongest opposing consideration is that the reported features may represent natural volcanic inclusions or sample contamination rather than an artificial geopolymeric binder.
+  - claimId: GEO-C903
+    verdict: established
+    confidence: high
+    reasoning: >-
+      This is a purely descriptive claim detailing Davidovits' 2020 published hypothesis regarding Pumapunku andesite sand sourcing from Cerro Khapia and storage at Iwawe. The evidence record (GEO-E035) confirms that the abstract of Davidovits & Davidovits (2020) explicitly specifies these exact mechanisms and assertions. The strongest opposing consideration is that the underlying archaeological report by Isbell & Burkholder (2002) may characterize Stratum V differently than Davidovits asserts.
+  - claimId: GEO-C030
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Standard elemental quarry-matching methods (such as PXRF and ICP-MS) rely on heavy or immobile trace elements and do not characterize light elements (H, C, O) or hydration binder phases that bind crushed aggregate. Consequently, natural bedrock and crushed aggregate from the same bedrock will present identical metallic provenance profiles. The strongest opposing consideration is that full-spectrum characterization often integrates mineralogical techniques like XRD and thin-section petrography, which readily distinguish natural crystalline textures from reconstituted synthetic binders.
+  - claimId: GEO-C012
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Chemical and materials feasibility has been demonstrated experimentally: ambient-temperature formulations of lime, pozzolans, or diatomaceous earth readily form coherent C-S-H binders (GEO-E022), and large reconstituted limestone blocks have been physically synthesized by proponents (GEO-E013). The underlying mineral chemistry does not exceed ancient technical capabilities. The strongest opposing consideration is that producing multi-ton crack-free blocks without modern hydraulic cements poses severe rheological, setting, and drying shrinkage challenges at scale.
+  - claimId: GEO-C010
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: >-
+      Pre-industrial pyrotechnology utilizing charcoal and forced-air bellows routinely achieved temperatures of 850 °C to 1100 °C, as evidenced by ancient metallurgy, faience, and glassmaking precedents (GEO-E010, GEO-E016). The thermal requirements for basic silicate melting are historically attested within the Bronze Age. The strongest opposing consideration is that achieving such temperatures in crucible scale does not demonstrate the capacity for industrial-scale batch calcination of thousands of tons of reagents.
+  - claimId: GEO-C011
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Historical and archaeological evidence confirms that Egypt exploited vast, industrial-scale natron evaporite deposits at Wadi el Natrun and al-Barnuj throughout antiquity, with supply dropping sharply in the early medieval period (GEO-E010, GEO-E011). This resource framework is fully recognized in mainstream archaeological science. The strongest opposing consideration is that natron exploitation is overwhelmingly documented for mummification, faience, and glassmaking, with zero textual or logistical records connecting it to monumental masonry.
+  - claimId: GEO-C013
+    verdict: weakly_supported
+    confidence: low
+    reasoning: >-
+      The assertion that long-cycle fire pits accidentally produce durable artificial stone via ash carbonation relies entirely on an unattributed anecdote in proponent literature (GEO-E015). While basic soil carbonation and ash-slagging are theoretically possible under continuous alkaline conditions, no controlled experimental replication has documented the spontaneous formation of hard, structural artificial limestone. The strongest opposing consideration is that ash deposits in archaeological fire pits typically remain friable silt and charcoal without cementing into coherent stone blocks.
+  - claimId: GEO-C001
+    verdict: established
+    confidence: high
+    reasoning: >-
+      The claim reports a precise experimental photogrammetric measurement of granite removal by dolerite pounding. The published study by Marčiš et al. (2023, GEO-E001) directly measures and reports a rate of 216 cm³ per hour at 85 strikes per minute under controlled conditions. The strongest opposing consideration is that a single experimental study with modern operators may significantly underestimate the productivity of skilled, organized ancient quarry teams working with thermal assistance.
+  - claimId: GEO-C002
+    verdict: weakly_supported
+    confidence: low
+    reasoning: >-
+      This claim relies on an anecdotal observation by Fóti (GEO-E003) regarding unmonitored tourist attempts to create scoop marks on an Aswan test block. There is no controlled measurement, systematic logging, or quantified study of cumulative strikes by visitors. The strongest opposing consideration is that random strikes by unconditioned tourists using handheld rocks cannot test whether systematic, professional pounding by ancient quarrymen creates characteristic concavities.
+  - claimId: GEO-C006
+    verdict: weakly_supported
+    confidence: low
+    reasoning: >-
+      The assertion of physical impossibility relies solely on Fóti's qualitative description of trench and shaft dimensions (GEO-E005), lacking an independent biomechanical analysis or ergonomic excavation study. Conventional interpretations view these features as exploratory prospecting pits or channel clearance shafts (GEO-R013). The strongest opposing consideration is that historical miners and quarrymen routinely worked effectively in vertical shafts and slots under extremely confined conditions using rammers or weighted pounders.
+  - claimId: GEO-C502
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Engelbach's 1922 monograph explicitly bases its quarrying estimates on a single one-hour personal trial recording roughly 5 mm of depth over a limited area, scaling this to trench-time via an assumed 8 mm/hour rammer rate, and inferring worker spacing from trench grooves (GEO-E002, GEO-C502). The claim accurately summarizes the textual contents and limitations of the foundational 1922 report. The strongest opposing consideration is that later field surveys and excavations (e.g., Kelany et al. 2009, Röder 1965) substantially reinforced the pounding-trench model beyond Engelbach's initial trial.
+  - claimId: GEO-C003
+    verdict: contradicted
+    confidence: moderate
+    reasoning: >-
+      The claim that Caliph Al-Ma'mun's party reported salt-coated walls stems solely from uncited secondary proponent claims (GEO-E004, GEO-E029). Examination of Al-Suyūṭī's compilation of primary medieval Arabic accounts of Al-Ma'mun's breach (GEO-E027) details the breakthrough, tools, and chamber finds but makes no mention of salt or coatings. The strongest opposing consideration is that other unexamined medieval Arabic manuscripts (such as Al-Maqrīzī's full text or Vyse's extracts) might preserve an independent variant narrative containing the salt detail.
+  - claimId: GEO-C506
+    verdict: contradicted
+    confidence: moderate
+    reasoning: >-
+      While modern analysis confirms halite efflorescence in the Queen's Chamber (GEO-E030), geological literature demonstrates that halite is a native primary constituent of the Giza nummulitic limestone strata (GEO-E032). Furthermore, halite efflorescence is extensively documented at other Egyptian limestone sites, including the bedrock-carved Sphinx (GEO-E031), disproving the assertion that natural limestone monuments do not exhibit this phenomenon. The strongest opposing consideration is that quantitative comparative surface concentrations between the pyramids and unworked bedrock quarries have not been rigorously standardized.
+  - claimId: GEO-C907
+    verdict: established
+    confidence: high
+    reasoning: >-
+      This measurement claim describes the specific XRD and SEM-EDX findings of Sessa et al. (2026). The source record (GEO-E030, SRC-SESSA-2026) verifies that testing of efflorescence and detached fragments in the Queen's Chamber and Thieves' Corridor detected exclusively halite, calcite, and quartz, with an absence of nitrates or gypsum crusts. The strongest opposing consideration is that the detection limit of the laboratory XRD setup (~5 wt%) could have obscured minor, trace evaporite mineral phases.
+  - claimId: GEO-C906
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Geological characterizations reported by Sessa et al. (2026, GEO-E032), citing foundational work by Klemm & Klemm (2010), establish that halite occurs within the stratigraphic layers of the Giza nummulitic limestones as an evaporite precipitated during sedimentary deposition. The claim accurately represents established geological literature on the formation. The strongest opposing consideration is that the primary text of Klemm & Klemm (2010) is cited second-hand in the immediate evidence ledger rather than read directly.
+  - claimId: GEO-C594
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Megalithic sites suffer from extensive, poorly documented modern interventions; specifically, Sessa et al. (2026, GEO-E034) demonstrate that 1995–1997 conservation work inside the Khufu pyramid (cleaning, filling with sulfur-rich modern material) lacks available documentation and confounds surface analysis. This confirms that surface features can easily reflect modern restorations. The strongest opposing consideration is that some major architectural sites possess meticulously archived 19th- and 20th-century conservation records that allow researchers to isolate untouched stone.
+  - claimId: GEO-C005
+    verdict: weakly_supported
+    confidence: low
+    reasoning: >-
+      The reinterpretation of the Tomb of Rekhmire casting mural as mineral/waterglass processing is a speculative proposal by Fóti (GEO-E014) lacking support from Egyptological art history or material culture. Mainstream iconography and accompanying hieroglyphic inscriptions consistently identify the scene as bronze door casting. The strongest opposing consideration is that certain depicted crucibles, postures, and vessel scales have unusual features that proponents argue match high-temperature alkali fluxing better than metallurgical operations.

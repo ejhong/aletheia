@@ -1,0 +1,66 @@
+# The chain, unattended (docs/AUTOMATION.md, step 4b): `aletheia next --run`
+# chooses the case the ledger wants worked — a half-done chain first, then a
+# due edition, then the least recently reported case — and runs it through
+# report → draft → verify → edition under config/budget.yaml, then opens the
+# PR the Arbiter judges. One case per run; every step is its own run record
+# with its own cost under proposals/<runId>/.
+#
+# Schedule: the cron line below is the founder's toggle. It ships commented
+# out under the kill switch (governance/operation.yaml); uncommenting it is
+# the act that lets the loop run itself. Until then, workflow_dispatch.
+name: Chain
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: "17 6 * * 1"   # weekly, Monday 06:17 UTC
+concurrency:
+  group: chain
+  cancel-in-progress: false
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  chain:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Refuse to run while paused
+        run: |
+          state=$(node -e 'const y=require("yaml");console.log(y.parse(require("fs").readFileSync("governance/operation.yaml","utf8")).state)')
+          if [ "$state" != "live" ]; then
+            echo "::warning::governance/operation.yaml says the automation is $state — the chain does not run itself; dispatch it by hand or set the state to live"
+            exit 78
+          fi
+      - name: Choose and run one case through the chain
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: node scripts/aletheia.ts next --run | tee next.json
+      - name: Open the PR the panel judges
+        env:
+          GH_TOKEN: ${{ secrets.MAINTENANCE_PAT }}
+        run: |
+          rm -f next.json.tmp
+          if [ -z "$(git status --porcelain -- content proposals governance)" ]; then
+            echo "nothing changed — the chain rested"
+            exit 0
+          fi
+          date=$(date +%Y-%m-%d)
+          branch="chain/${date}-${GITHUB_RUN_ID}"
+          git config user.name "aletheia-maintenance-bot"
+          git config user.email "maintenance-bot@users.noreply.github.com"
+          git checkout -b "$branch"
+          git add -A -- content proposals governance
+          git commit -m "Chain ${date}: $(node -e 'const j=JSON.parse(require("fs").readFileSync("next.json","utf8"));console.log(j.choice.case+" — "+j.ran.map(s=>s.verb+":"+s.outcome.outcome).join(", "))')"
+          git push -u origin "$branch"
+          risk=$(node scripts/classify-pr-risk.mjs "origin/${GITHUB_REF_NAME}" | tail -1)
+          body=$(node -e 'const j=JSON.parse(require("fs").readFileSync("next.json","utf8"));console.log("`aletheia next --run` chose **"+j.choice.case+"** ("+j.choice.verb+(j.choice.seat?" via "+j.choice.seat:"")+"): "+j.choice.reason+"\n\n"+j.ran.map(s=>"- "+s.verb+" → "+s.outcome.outcome+(s.outcome.cost&&s.outcome.cost.usd!=null?" ($"+s.outcome.cost.usd.toFixed(2)+")":"")+(s.outcome.reason?" — "+s.outcome.reason:"")).join("\n")+"\n\nRun records and working material under proposals/<runId>/. The Arbiter judges this PR; standing derives on merge.")')
+          gh pr create --title "Chain: ${date}" --body "$body" --label "$( [ "$risk" = "low-risk" ] && echo auto:low-risk || echo needs-approval )"

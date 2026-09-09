@@ -1,7 +1,8 @@
 import { isoDate } from "../../scripts/lib/overlay-ids.mjs";
-import type { Verb } from "../domain/intake.ts";
 import { callVendorDetailed, VENDORS as SEAT_TABLE } from "../../scripts/lib/vendors.mjs";
-import { priceOf, recordSpend } from "./spend.ts";
+import { loadTariffs, priceOf, recordSpend, type Meter } from "./spend.ts";
+
+export type { Meter } from "./spend.ts";
 
 /**
  * The model transport (docs/AUTOMATION.md, "The code"): the one path a
@@ -23,12 +24,6 @@ export type Seat = {
 };
 export const VENDORS = SEAT_TABLE as Record<string, Seat>;
 
-export interface Meter {
-  runId: string;
-  verb: Verb;
-  case: string | null;
-}
-
 export interface Reply {
   text: string;
   model: string;
@@ -47,17 +42,20 @@ export async function callSeat(
 ): Promise<Reply> {
   if (!VENDORS[name]) throw new Error(`unknown seat ${name}`);
   const { text, usage, model } = await callVendorDetailed(name, prompt);
-  const usd = priceOf(model, usage);
-  recordSpend({
-    date: isoDate(),
-    runId: meter.runId,
-    verb: meter.verb,
-    case: meter.case,
-    model,
-    calls: 1,
-    inputTokens: usage.inputTokens,
-    outputTokens: usage.outputTokens,
-    usd,
-  });
+  const usd = priceOf(model, usage, loadTariffs(meter.root));
+  recordSpend(
+    {
+      date: isoDate(),
+      runId: meter.runId,
+      verb: meter.verb,
+      case: meter.case,
+      model,
+      calls: 1,
+      inputTokens: usage.inputTokens,
+      outputTokens: usage.outputTokens,
+      usd,
+    },
+    meter.root,
+  );
   return { text, model, usage, usd };
 }

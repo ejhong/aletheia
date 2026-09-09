@@ -89,8 +89,9 @@ describe("real content", () => {
     expect(openings.map((c) => c.record.slug)).toEqual(["deep-memory"]);
     for (const loaded of openings) {
       const ed = currentEdition(loaded);
-      expect(loaded.editions).toHaveLength(1);
-      expect(ed.previous).toBeNull();
+      // Every edition so far is question-only (a correction is a new edition, editions being append-only), chained from a first with no predecessor.
+      expect(loaded.editions[0].previous).toBeNull();
+      for (const e of loaded.editions) expect(e.assessment).toBeNull();
       expect(ed.featuredClaimIds).toEqual([]);
       expect(ed.article.length).toBeGreaterThan(40);
       expect(loaded.claims).toEqual([]);

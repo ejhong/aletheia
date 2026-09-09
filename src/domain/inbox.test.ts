@@ -4,7 +4,8 @@ import path from "node:path";
 import { parse as parseYaml } from "yaml";
 import { describe, expect, it } from "vitest";
 import { loadAllCases } from "./load.ts";
-import { detectType, parseFrontMatter, readInbox, runInbox, supplierOf } from "../pipeline/inbox.ts";
+import { execFileSync } from "node:child_process";
+import { composeReport, detectType, founderDrop, parseFrontMatter, permissionRecord, readInbox, runInbox, supplierOf } from "../pipeline/inbox.ts";
 import { bestMatch, resolveReferences } from "../pipeline/references.ts";
 import { readRuns } from "../pipeline/store.ts";
 
@@ -23,7 +24,7 @@ function tmpRoot(): string {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), "aletheia-inbox-"));
   fs.mkdirSync(path.join(root, "inbox", "vasocomputation"), { recursive: true });
   fs.mkdirSync(path.join(root, "config"));
-  for (const f of ["budget.yaml", "tariffs.yaml", "models.yaml"]) fs.copyFileSync(path.join(process.cwd(), "config", f), path.join(root, "config", f));
+  for (const f of ["budget.yaml", "tariffs.yaml", "models.yaml", "founder.yaml"]) fs.copyFileSync(path.join(process.cwd(), "config", f), path.join(root, "config", f));
   fs.writeFileSync(path.join(root, "inbox", "vasocomputation", "note.md"), "---\ncase: vasocomputation\neditor: Eugene\n---\nThe Shah 2015 review is the one to read on trigger points.\n");
   fs.writeFileSync(path.join(root, "inbox", "vasocomputation", "essay.pdf"), miniPdf("Knots of Existence, a long essay naming Shah and Thaker 2015."));
   fs.writeFileSync(path.join(root, "inbox", "vasocomputation", "essay.md"), "---\ncase: vasocomputation\neditor: Eugene\npermission: quote and cite it\ngranted: 2026-09-09\nprovenance: written 2026-08-13, AI-generated text\n---\n");
@@ -68,6 +69,33 @@ describe("inbox items", () => {
     expect(permissionGap({ permission: "publication prohibited", granted: "2026-09-09" })).toMatch(/does not grant on \(publication, prohibited\)/); // no list of forbidden words to evade: only known words pass
     expect(permissionGap({ permission: "for the site", granted: "2026-09-09" })).toMatch(/does not say it may be published/);
     expect(permissionGap({ permission: "publish", granted: "soon" })).toMatch(/no `granted:` date/);
+  });
+});
+
+describe("a file the founder commits to the inbox", () => {
+  const git = (root: string, ...a: string[]) => execFileSync("git", a, { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim();
+  it("needs no statement: the commit is the direction, and the record names it; a stranger's commit still needs one", async () => {
+    const root = tmpRoot();
+    git(root, "init", "-q");
+    git(root, "config", "user.email", "ejhong@gmail.com");
+    git(root, "config", "user.name", "ejhong");
+    fs.writeFileSync(path.join(root, "inbox", "vasocomputation", "dropped.pdf"), miniPdf("A paper the founder dropped from the phone, by Someone Else, 2019."));
+    git(root, "add", "inbox/vasocomputation/dropped.pdf");
+    git(root, "commit", "-q", "-m", "drop");
+    git(root, "config", "user.email", "stranger@example.org");
+    fs.writeFileSync(path.join(root, "inbox", "vasocomputation", "stranger.pdf"), miniPdf("A paper someone else committed without a statement."));
+    git(root, "add", "inbox/vasocomputation/stranger.pdf");
+    git(root, "commit", "-q", "-m", "drop by a stranger");
+    const { items, left } = await readInbox("vasocomputation", root);
+    const dropped = items.find((i) => i.name.endsWith("dropped.pdf"))!;
+    expect(dropped.supplier).toMatch(/^the founder \(ejhong\), by commit [0-9a-f]{10} on \d{4}-\d\d-\d\d$/);
+    expect(founderDrop(path.join(root, "inbox", "vasocomputation", "dropped.pdf"), root)?.email).toBe("ejhong@gmail.com");
+    expect(founderDrop(path.join(root, "inbox", "vasocomputation", "stranger.pdf"), root)).toBeNull();
+    expect(left.map((l) => l.name)).toContain("vasocomputation/stranger.pdf");
+    // The drafter is told the drop says nothing about authorship; the license names the commit as the grant.
+    const report = composeReport("vasocomputation", "r", "2026-09-09", [dropped], new Map());
+    expect(report).toMatch(/DROPPED BY THE FOUNDER \(commit [0-9a-f]{10}, \d{4}-\d\d-\d\d\).*read the author, date and venue from the document itself/);
+    expect(permissionRecord(dropped, "2026-09-09", "run")).toMatch(/^Permission: the founder's direction, given by committing the file to inbox\/ — granted by ejhong <ejhong@gmail.com> on \d{4}-\d\d-\d\d by commit [0-9a-f]{40} \(channel: git; held: that commit\)/);
   });
 });
 

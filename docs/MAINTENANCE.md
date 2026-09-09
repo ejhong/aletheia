@@ -161,8 +161,13 @@ it:
 
 Drop files into `inbox/` from any device (the GitHub app or
 [github.dev](https://github.dev/ejhong/aletheia) work from a phone). The
-push is the trigger; intake runs within a minute. Full conventions in
-`inbox/README.md`; the three kinds:
+push is the trigger; intake runs within a minute. **A file the founder
+commits needs nothing else**: the commit is the direction and, under §3.15's
+amendment of 2026-09-09, the permission — `config/founder.yaml` lists the
+identities the intake recognizes. Only someone else's document needs a
+statement of provenance (`editor:` / `published:` / `from:` with
+`permission:` and `granted:`). Full conventions in `inbox/README.md`; the
+three kinds:
 
 - **commentary note** — your view in your words, `case:` front matter.
   Becomes proposed editorial actions with your verbatim text preserved as

@@ -1,3 +1,4 @@
+import { execFileSync } from "node:child_process";
 import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
@@ -78,9 +79,48 @@ export function detectType(meta: Record<string, unknown>, body: string, isDocume
   return "commentary";
 }
 
+/** The commit that dropped a file into the inbox, when the founder made it (config/founder.yaml). */
+export interface FounderDrop {
+  sha: string;
+  author: string;
+  email: string;
+  date: string;
+}
+
+function founderIdentity(root: string): { name: string; githubLogin?: string; emails: string[] } | null {
+  const file = path.join(root, "config", "founder.yaml");
+  if (!fs.existsSync(file)) return null;
+  const f = parseYaml(fs.readFileSync(file, "utf8")) as { name?: string; githubLogin?: string; emails?: string[] };
+  return f?.name ? { name: f.name, githubLogin: f.githubLogin, emails: f.emails ?? [] } : null;
+}
+
+/**
+ * Was this file committed to the inbox by the founder? The adding commit's
+ * author is compared with config/founder.yaml (an email listed there, or the
+ * GitHub login's noreply address). An uncommitted file, or one outside a
+ * repository, is nobody's drop yet.
+ */
+export function founderDrop(file: string, root: string): FounderDrop | null {
+  const who = founderIdentity(root);
+  if (!who) return null;
+  let line = "";
+  try {
+    line = execFileSync("git", ["log", "--diff-filter=A", "--format=%H\x1f%an\x1f%ae\x1f%cs", "-1", "--", path.relative(root, file)], { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim();
+  } catch {
+    return null;
+  }
+  if (!line) return null;
+  const [sha, author, email, date] = line.split("\x1f");
+  const mail = (email ?? "").toLowerCase();
+  const isFounder = who.emails.some((e) => e.toLowerCase() === mail) || (who.githubLogin ? new RegExp(`(^|\\+)${who.githubLogin.toLowerCase()}@users\\.noreply\\.github\\.com$`).test(mail) : false);
+  return isFounder && sha ? { sha, author, email, date } : null;
+}
+
 /** Who supplied an item and on what footing, or null when the statement is missing. */
 export function supplierOf(meta: Record<string, unknown>): string | null {
   if (typeof meta.editor === "string" && meta.editor) return `${meta.editor} (own work)`;
+  const drop = meta.founderDrop as FounderDrop | undefined;
+  if (drop?.sha) return `the founder (${drop.author}), by commit ${drop.sha.slice(0, 10)} on ${drop.date}`;
   if (typeof meta.from === "string" && meta.from && typeof meta.permission === "string" && meta.permission) return `${meta.from} — permission: ${meta.permission}`;
   if (typeof meta.published === "string" && meta.published) return `published at ${meta.published}${typeof meta.from === "string" ? `; supplied by ${meta.from}` : ""}`;
   return null;
@@ -162,6 +202,10 @@ export async function readInbox(caseDir: string, root = process.cwd()): Promise<
     }
     const itemCase = typeof meta.case === "string" ? meta.case : inCaseDir ? caseDir : null;
     if (itemCase !== caseDir) continue;
+    // A file the founder committed to the inbox is the founder's direction to take it in (§3.15, amendment of
+    // 2026-09-09): the commit is the statement — who, date, channel, where held — and no sidecar is needed.
+    const drop = founderDrop(file, root);
+    if (drop) meta = { ...meta, founderDrop: drop };
     const kind = detectType(meta, body, ext === ".pdf");
     if (kind === "empty") {
       left.push({ name, reason: "empty" });
@@ -175,7 +219,7 @@ export async function readInbox(caseDir: string, root = process.cwd()): Promise<
     // §3.15: a document that is not already public is quoted or cited only on a recorded permission — the
     // supplier's own words, which the intake keeps as the correspondence. Own work included: the footing
     // says whose it is, the permission says what may be done with it.
-    if (kind === "document" && typeof meta.published !== "string") {
+    if (kind === "document" && typeof meta.published !== "string" && !meta.founderDrop) {
       const why = permissionGap(meta);
       if (why) {
         left.push({ name, reason: `${why}: add \`permission:\` granting what may be done with it in the gate's words ("publish", "cite", "quote" and plain connectives — any other word leaves it here, so nothing withheld can slip through) and \`granted:\` with the date you grant it (YYYY-MM-DD); the intake records who granted it, on what date, by what channel, and where the statement is held (AGENTS.md §3.15)` });
@@ -227,6 +271,9 @@ export function composeReport(slug: string, runId: string, date: string, items: 
     parts.push(`## ${it.kind}: ${it.name}`, ``, `Supplied by ${it.supplier}${it.pages ? `; PDF, ${it.pages} pages` : ""}${typeof it.meta.provenance === "string" ? `; provenance: ${it.meta.provenance}` : ""}.`, ``);
     if (it.ledgerSource) {
       parts.push(`THIS DOCUMENT IS THE LEDGER'S SOURCE ${it.ledgerSource} (identified by ${it.ledgerSourceBasis ?? "the intake"}). Its propositions may be proposed as claims anchored to ${it.ledgerSource} — one proposition each, a verbatim quote from the text below, and the \`[p. N]\` page as the locator — and what it states may enter as evidence records on ${it.ledgerSource}, direction and strength honest to what kind of source it is. The verifier reads this same text for ${it.ledgerSource}.${registeredNote(it)}`, ``);
+    } else if (it.kind === "document" && typeof it.meta.editor !== "string" && it.meta.founderDrop) {
+      const d = it.meta.founderDrop as FounderDrop;
+      parts.push(`THIS DOCUMENT IS NEW TO THE LEDGER AND WAS DROPPED BY THE FOUNDER (commit ${d.sha.slice(0, 10)}, ${d.date}) — the founder's direction to take it in, which is its permission (AGENTS.md §3.15). The drop says nothing about who wrote it: read the author, date and venue from the document itself and propose it as a Source record (title "${it.title}", author, date, sourceType, an identifier naming where it is published), and propose its propositions as claims anchored to that provisional source — one proposition each, a verbatim quote from the text below, the \`[p. N]\` page as the locator. The verifier reads this same text for that source.${registeredNote(it)}`, ``);
     } else if (it.kind === "document" && typeof it.meta.editor === "string") {
       parts.push(`THIS DOCUMENT IS NEW TO THE LEDGER AND SUPPLIED BY ITS AUTHOR (${it.meta.editor}). Propose it as a Source record (title "${it.title}", author, date, sourceType, an identifier naming where it is published and how it was written), and propose its propositions as claims anchored to that provisional source — one proposition each, a verbatim quote from the text below, the \`[p. N]\` page as the locator. The verifier reads this same text for that source.${registeredNote(it)}`, ``);
     }
@@ -267,6 +314,8 @@ export interface InboxOutcome extends RunOutcome {
 export function permissionRecord(it: InboxItem, date: string, runId: string): string {
   const statement = path.basename(it.sidecar ?? it.file);
   const held = `held at inbox/processed/${runId}/${statement}`;
+  const drop = it.meta.founderDrop as FounderDrop | undefined;
+  if (drop?.sha && !(typeof it.meta.permission === "string" && it.meta.permission.trim())) return `Permission: the founder's direction, given by committing the file to inbox/ — granted by ${drop.author} <${drop.email}> on ${drop.date} by commit ${drop.sha} (channel: git; held: that commit) — which AGENTS.md §3.15 (amendment of 2026-09-09) makes the permission to publish and cite it; recorded at intake on ${date}, ${held}${typeof it.meta.license === "string" && it.meta.license.trim() ? `; license terms in the founder's words: "${it.meta.license.trim()}"` : ""}.`;
   const permission = typeof it.meta.permission === "string" ? it.meta.permission.trim() : "";
   const grantor = typeof it.meta.editor === "string" && it.meta.editor ? `${it.meta.editor} (own work)` : typeof it.meta.from === "string" ? it.meta.from : "";
   // The grant's own date is the statement's `granted:` line — required at intake for anything not already public.

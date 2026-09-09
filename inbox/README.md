@@ -12,8 +12,19 @@ it can be, and the `draft` and `verify` verbs then treat it exactly as they
 treat a research report: quotes only from retrieved text, a second reader
 on every record, a disposition with a reason for everything raised, your
 words preserved verbatim. The scheduler (`aletheia next`) picks an intake up
-as a half-done chain. A **document enters only with a statement of
-provenance**: front matter, or a sidecar note of the same name for a PDF,
+as a half-done chain.
+
+**If you are the founder, just drop it.** A file committed to `inbox/<case>/`
+from the founder's own GitHub account (identities in `config/founder.yaml`)
+needs no sidecar and no statement: the commit is the founder's direction to
+take it in, and AGENTS.md §3.15 (amendment of 2026-09-09) makes a recorded
+direction the permission — the intake records the commit's author, date,
+channel (git) and where it is held (the commit). The drop says nothing
+about who wrote the document; the drafter reads the byline from the
+document itself. A sidecar is still the place for `role: founding_narrative`
+(to register an essay as a founding input), a `title:`, or `case:` when the
+file is not in the case's folder. Anyone else's document enters only with a
+statement of provenance: front matter, or a sidecar note of the same name for a PDF,
 carrying `editor:` (your own work), `published:` (the URL where it is
 public), or `from:` (who supplied it). A document that is not already
 public also needs the permission in the supplier's words — `permission:`

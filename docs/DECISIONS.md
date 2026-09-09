@@ -1498,3 +1498,17 @@ and committed and merged by the founder's hand — the act §3.15 reserves;
 the operator's tooling refused to commit it, which is that reservation
 working. Both #206 (the run) and #207 (the code) were merged by the
 founder on 2026-09-09.
+
+**A founder's drop is its own permission (founder direction, 2026-09-09).**
+After the §3.15 amendment, the founder asked that dropping a file from the
+founder's own GitHub account be enough. It is: the intake asks git who
+committed a file to `inbox/` (`founderDrop`); when the author is one of the
+identities in `config/founder.yaml` (an email, or the GitHub login's noreply
+address), the commit is taken as the founder's direction to take the file
+in, and the record names it — author, commit date, channel git, held in
+that commit — as the permission the amendment makes it. No sidecar is
+needed; one is still the place for `role:`, `title:` and `case:`. The drop
+says nothing about authorship, and the drafter is told so: the byline comes
+from the document. An uncommitted file, or anyone else's commit, still
+needs the statement of provenance and the dated permission.
+

@@ -7,10 +7,21 @@
 #
 # Schedule: the cron line below is the founder's toggle. It ships commented
 # out under the kill switch (governance/operation.yaml); uncommenting it is
-# the act that lets the loop run itself. Until then, workflow_dispatch.
+# the act that lets the loop run itself. Until then, workflow_dispatch — and
+# a dispatch may run while paused only when the founder says so in the
+# dispatch form (`even_if_paused`), which the run log then records.
 name: Chain
 on:
   workflow_dispatch:
+    inputs:
+      steps:
+        description: "How many choices to make in this sitting (each a budgeted run)"
+        default: "3"
+        required: false
+      even_if_paused:
+        description: "Run although governance/operation.yaml says paused (the founder launching a run by hand)"
+        type: boolean
+        default: false
   # schedule:
   #   - cron: "17 6 * * 1"   # weekly, Monday 06:17 UTC
 concurrency:
@@ -35,15 +46,16 @@ jobs:
       - name: Refuse to run while paused
         run: |
           state=$(node -e 'const y=require("yaml");console.log(y.parse(require("fs").readFileSync("governance/operation.yaml","utf8")).state)')
-          if [ "$state" != "live" ]; then
-            echo "::warning::governance/operation.yaml says the automation is $state — the chain does not run itself; dispatch it by hand or set the state to live"
+          if [ "$state" != "live" ] && [ "${{ github.event.inputs.even_if_paused }}" != "true" ]; then
+            echo "::warning::governance/operation.yaml says the automation is $state — the chain does not run itself; dispatch it by hand with even_if_paused, or set the state to live"
             exit 78
           fi
+          [ "$state" != "live" ] && echo "::notice::running while paused, on the founder's dispatch (even_if_paused=true)" || true
       - name: Choose and run one case through the chain
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: node scripts/aletheia.ts next --run | tee next.json
+        run: node scripts/aletheia.ts next --run --steps "${{ github.event.inputs.steps || '3' }}" | tee next.json
       - name: Open the PR the panel judges
         env:
           GH_TOKEN: ${{ secrets.MAINTENANCE_PAT }}
@@ -59,8 +71,8 @@ jobs:
           git config user.email "maintenance-bot@users.noreply.github.com"
           git checkout -b "$branch"
           git add -A -- content proposals governance
-          git commit -m "Chain ${date}: $(node -e 'const j=JSON.parse(require("fs").readFileSync("next.json","utf8"));console.log(j.choice.case+" — "+j.ran.map(s=>s.verb+":"+s.outcome.outcome).join(", "))')"
+          git commit -m "Chain ${date}: $(node -e 'const j=JSON.parse(require("fs").readFileSync("next.json","utf8"));const all=[j,...(j.more||[])];console.log(all.map(o=>o.choice.case+" — "+o.ran.map(s=>s.verb+":"+s.outcome.outcome).join(", ")).join("; "))')"
           git push -u origin "$branch"
           risk=$(node scripts/classify-pr-risk.mjs "origin/${GITHUB_REF_NAME}" | tail -1)
-          body=$(node -e 'const j=JSON.parse(require("fs").readFileSync("next.json","utf8"));console.log("`aletheia next --run` chose **"+j.choice.case+"** ("+j.choice.verb+(j.choice.seat?" via "+j.choice.seat:"")+"): "+j.choice.reason+"\n\n"+j.ran.map(s=>"- "+s.verb+" → "+s.outcome.outcome+(s.outcome.cost&&s.outcome.cost.usd!=null?" ($"+s.outcome.cost.usd.toFixed(2)+")":"")+(s.outcome.reason?" — "+s.outcome.reason:"")).join("\n")+"\n\nRun records and working material under proposals/<runId>/. The Arbiter judges this PR; standing derives on merge.")')
+          body=$(node -e 'const j=JSON.parse(require("fs").readFileSync("next.json","utf8"));const all=[j,...(j.more||[])];console.log(all.map(o=>"`aletheia next --run` chose **"+o.choice.case+"** ("+o.choice.verb+(o.choice.seat?" via "+o.choice.seat:"")+"): "+o.choice.reason+"\n\n"+o.ran.map(s=>"- "+s.verb+" → "+s.outcome.outcome+(s.outcome.cost&&s.outcome.cost.usd!=null?" ($"+s.outcome.cost.usd.toFixed(2)+")":"")+(s.outcome.reason?" — "+s.outcome.reason:"")).join("\n")).join("\n\n")+"\n\nRun records and working material under proposals/<runId>/. The Arbiter judges this PR; standing derives on merge.")')
           gh pr create --title "Chain: ${date}" --body "$body" --label "$( [ "$risk" = "low-risk" ] && echo auto:low-risk || echo needs-approval )"

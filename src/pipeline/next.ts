@@ -31,7 +31,10 @@ import { runVerify } from "./verify.ts";
  *
  * `--run` performs the choice and, for a report, continues the chain —
  * draft, verify, edition — stopping at the first step that does not
- * complete. Every step is its own run with its own record and cost.
+ * complete. `--steps N` repeats the choice up to N times in one sitting
+ * (a week's work in one workflow run: a check after an edition, a report
+ * after a check), stopping when the ledger rests or a step fails. Every
+ * step is its own run with its own record and cost, under the same budget.
  */
 
 export interface NextChoice {
@@ -99,10 +102,27 @@ export function nextAction(cases: LoadedCase[], runs: RunRecord[], today: string
 export interface NextOutcome {
   choice: NextChoice;
   ran: { verb: string; outcome: RunOutcome }[];
+  /** Later choices made in the same sitting (`--steps`), each with what it ran. */
+  more?: NextOutcome[];
 }
 
-/** Choose, and with `run`, do it — continuing a report through the chain until a step does not complete. */
-export async function runNext(opts: { run?: boolean; today?: string; root?: string } = {}): Promise<NextOutcome> {
+/** Choose, and with `run`, do it — continuing a report through the chain until a step does not complete; with `steps`, choose again up to that many times. */
+export async function runNext(opts: { run?: boolean; steps?: number; today?: string; root?: string } = {}): Promise<NextOutcome> {
+  const first = await runOnce(opts);
+  const steps = Math.max(1, opts.steps ?? 1);
+  if (!opts.run || steps === 1) return first;
+  const more: NextOutcome[] = [];
+  let last = first;
+  for (let i = 1; i < steps; i++) {
+    if (last.choice.verb === "rest" || last.ran.some((s) => s.outcome.outcome === "failed")) break;
+    last = await runOnce(opts);
+    more.push(last);
+    if (last.choice.verb === "rest") break;
+  }
+  return { ...first, more };
+}
+
+async function runOnce(opts: { run?: boolean; today?: string; root?: string }): Promise<NextOutcome> {
   const root = opts.root ?? process.cwd();
   const cases = loadAllCases();
   const choice = nextAction(cases, readRuns(root), opts.today ?? new Date().toISOString().slice(0, 10));

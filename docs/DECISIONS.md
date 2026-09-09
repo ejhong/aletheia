@@ -1618,7 +1618,10 @@ and the verifier refuses a supplied document's Source without it — the
 line is read from the intake's own manifest and must match exactly, so a
 drafter's own assertion of permission admits nothing; and a document the
 intake recorded no permission for supplies no text at all, whether its
-Source is proposed or already on the ledger. Not yet
+Source is proposed or already on the ledger — a manifest from before the
+field existed included: the two essays' intakes of 2026-09-09 supply no
+text to a later run, and a document taken in then is re-dropped to be
+quoted again. Not yet
 done: the essay's declined rows are re-proposed only by a later draft on
 the case, after an edition under v5 has restated the question; that is
 the chain's next two steps on State, Not Scar, not a hand edit.

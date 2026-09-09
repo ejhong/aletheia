@@ -712,6 +712,7 @@ describe("verify remembers its judgments", () => {
       "items:",
       `  - name: x/a.pdf`, `    kind: document`, `    ledgerSource: ${a.id}`, `    document: documents/a.txt`, `    permission: "Permission on which it is published: Permission: the founder's standing direction …"`,
       `  - name: x/b.pdf`, `    kind: document`, `    ledgerSource: ${b.id}`, `    document: documents/b.txt`, `    permission: null`,
+      `  - name: x/c.pdf`, `    kind: document`, `    ledgerSource: ${b.id}`, `    document: documents/b.txt`, // a manifest from before the field existed: no permission recorded, no text supplied
       "",
     ].join("\n"));
     const proposal = { report: "proposals/2026-09-09-inbox-x-000000/report.md" } as never;

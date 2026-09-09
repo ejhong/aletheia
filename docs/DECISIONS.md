@@ -1283,5 +1283,14 @@ records blocked because that source record had no URL, now added by hand
 with provenance; draft protocol v3 asks the drafter to propose such URLs),
 wrote an edition that re-adopted the reconsidered assessment, and the panel
 re-checked the moved ledger. Corrections reach `images.yaml` and can add an
-absent field. Day's recorded spend at that point: about $16 of the $50 cap.
+absent field. Day's recorded spend at that point: about $16 of the $50 cap. Two observations from that round, for the founder rather than for
+code: (a) adding Engelbach's URL by hand after the panel had judged the
+ledger moved the hash, set all five fresh checks aside, and made an edition
+due that will only re-adopt — the fail-closed rule costs a re-panel and a
+re-edition (about $6) for a locator-only change; if that proves expensive
+at scale, the decision to take is whether `url` and `archivedUrl` belong
+outside the ledger hash, since they change where a record is read, not
+what it says. (b) The scheduler now also chooses a re-check when the panel
+is stale, after any due edition and before any report, so the loop derives
+standing without a second workflow.
 (AI implementation record; founder-directed session.)

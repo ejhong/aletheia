@@ -59,9 +59,18 @@ describe("aletheia next", () => {
     if (adopted.reconciles && geo.editions.at(-1)!.basis.ledgerHash === geo.ledgerHash) expect(editionDue(geo)).toBeNull();
   });
 
+  it("a stale panel is re-checked after any due edition and before any report", async () => {
+    const { checksStale } = await import("./load.ts");
+    const { editionDue } = await import("../pipeline/edition.ts");
+    const stale = cases.find((c) => checksStale(c) && !editionDue(c));
+    if (stale) expect(nextAction([stale], [], "2026-09-20")).toMatchObject({ case: stale.record.slug, verb: "check" });
+    const due = cases.find((c) => checksStale(c) && editionDue(c));
+    if (due) expect(nextAction([due], [], "2026-09-20").verb).toBe("edition");
+  });
+
   it("the live ledger has a choice, and the operation state is on the record", () => {
     const n = nextAction(cases, [], "2026-09-20");
-    expect(["report", "edition", "draft", "verify"]).toContain(n.verb);
+    expect(["report", "edition", "draft", "verify", "check"]).toContain(n.verb);
     const op = loadOperation();
     expect(["live", "paused"]).toContain(op.state);
     expect(op.reason.length).toBeGreaterThan(10);

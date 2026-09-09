@@ -1,8 +1,9 @@
 import { saturation } from "../domain/intake.ts";
 import type { RunRecord } from "../domain/intake.ts";
-import { loadAllCases } from "../domain/load.ts";
+import { checksStale, loadAllCases } from "../domain/load.ts";
 import type { LoadedCase } from "../domain/schema.ts";
 import { MODELS } from "../../scripts/lib/models.mjs";
+import { runCheck } from "./check.ts";
 import { runDraft } from "./draft.ts";
 import { editionDue, runEdition } from "./edition.ts";
 import { runReport, type ResearchSeat } from "./report.ts";
@@ -17,12 +18,16 @@ import { runVerify } from "./verify.ts";
  *     a completed draft with no verification after it.
  *  2. An edition that is due — the ledger moved under the incumbent, or the
  *     panel contests an assessment nothing has answered.
- *  3. Otherwise a report for the case least recently reported, skipping a
+ *  3. A blind check where the panel is stale — no seat has judged the case
+ *     as it stands (the ledger moved, or the adopted assessment is a
+ *     reconsideration no fresh check has judged). After the edition, so the
+ *     panel judges what will be displayed.
+ *  4. Otherwise a report for the case least recently reported, skipping a
  *     case reported within the cadence and, unless nothing else is left, a
  *     saturated one (three passes that landed nothing). The house seat by
  *     default; the second seat when the last pass landed nothing — a
  *     different pair of eyes when the first stops finding.
- *  4. Nothing: everything rests.
+ *  5. Nothing: everything rests.
  *
  * `--run` performs the choice and, for a report, continues the chain —
  * draft, verify, edition — stopping at the first step that does not
@@ -31,7 +36,7 @@ import { runVerify } from "./verify.ts";
 
 export interface NextChoice {
   case: string | null;
-  verb: "report" | "draft" | "verify" | "edition" | "rest";
+  verb: "report" | "draft" | "verify" | "edition" | "check" | "rest";
   seat?: ResearchSeat;
   /** The run id a draft or verify continues from. */
   from?: string;
@@ -66,7 +71,11 @@ export function nextAction(cases: LoadedCase[], runs: RunRecord[], today: string
     const due = editionDue(c);
     if (due) return { case: c.record.slug, verb: "edition", reason: due.reason };
   }
-  // 3. The least recently reported case.
+  // 3. A stale panel.
+  for (const c of cases) {
+    if (checksStale(c)) return { case: c.record.slug, verb: "check", reason: "no seat has judged the case as it stands" };
+  }
+  // 4. The least recently reported case.
   const candidates = cases
     .map((c) => {
       const rs = byCase(c.record.slug);
@@ -120,6 +129,8 @@ export async function runNext(opts: { run?: boolean; today?: string; root?: stri
     await step("edition", () => runEdition(choice.case!, { root }));
   } else if (choice.verb === "edition") {
     await step("edition", () => runEdition(choice.case!, { root }));
+  } else if (choice.verb === "check") {
+    await step("check", () => runCheck(choice.case!, { root }));
   }
   return { choice, ran };
 }

@@ -55,7 +55,8 @@ describe("setField", () => {
     expect(ledgerFileFor("GEO-E027")).toBe("evidence.yaml");
     expect(ledgerFileFor("GEO-R010")).toBe("research.yaml");
     expect(ledgerFileFor("SRC-NEMOY-1939")).toBe("sources.yaml");
-    expect(ledgerFileFor("IMG-GEO-P01")).toBeNull();
+    expect(ledgerFileFor("IMG-GEO-P01")).toBe("images.yaml");
+    expect(ledgerFileFor("STUDY-X")).toBeNull();
   });
 });
 

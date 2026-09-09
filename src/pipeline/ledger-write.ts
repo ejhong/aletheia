@@ -118,9 +118,10 @@ export interface Correction {
 
 const FILE_OF_PREFIX: Record<string, LedgerFile> = { C: "claims.yaml", E: "evidence.yaml", R: "research.yaml" };
 
-/** The ledger file a record id lives in: SRC-… sources; <CASE>-C… claims, -E… evidence, -R… research. */
+/** The ledger file a record id lives in: SRC-… sources; IMG-… images; <CASE>-C… claims, -E… evidence, -R… research. */
 export function ledgerFileFor(id: string): LedgerFile | null {
   if (id.startsWith("SRC-")) return "sources.yaml";
+  if (id.startsWith("IMG-")) return "images.yaml";
   const m = id.match(/-([CER])\d+$/);
   return m ? FILE_OF_PREFIX[m[1]] : null;
 }

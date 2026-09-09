@@ -20,5 +20,17 @@ describe("the record layer", () => {
     }
     const verify = sittings.find((s) => s.verb === "verify" && s.refused.length > 0)!;
     expect(verify.summary).toMatch(/admitted|refused/);
+    expect(verify.recorded).toBe(true);
+  });
+
+  it("rows whose run left no record are shown as exactly that: no verb, outcome or cost is inferred", () => {
+    const c = loadAllCases().find((x) => x.record.slug === "ccc")!;
+    const orphan = caseRecord(c).find((s) => !s.recorded)!;
+    expect(orphan).toBeDefined();
+    expect(orphan.verb).toBeNull();
+    expect(orphan.outcome).toBeNull();
+    expect(orphan.usd).toBeNull();
+    expect(orphan.summary).toMatch(/row\(s\) written by triage-.*which left no run record/);
+    expect(orphan.date).toMatch(/^\d{4}-\d\d-\d\d$/);
   });
 });

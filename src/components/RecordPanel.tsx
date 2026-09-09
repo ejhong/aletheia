@@ -62,16 +62,19 @@ export function RecordPanel({ sittings, slug, caseDir }: { sittings: Sitting[]; 
               <summary className="flex cursor-pointer flex-wrap items-baseline gap-x-3 gap-y-1 px-4 py-2.5 list-none [&::-webkit-details-marker]:hidden">
                 <span aria-hidden className="font-mono text-[10px] text-faint transition-transform group-open:rotate-90">▸</span>
                 <span className="font-mono text-[10.5px] tracking-[0.06em] text-faint w-[6.5rem] shrink-0">{s.date}</span>
-                <span className="font-mono text-[10.5px] uppercase tracking-[0.12em] text-copper w-[4.5rem] shrink-0">{s.verb}</span>
+                <span className={`font-mono text-[10.5px] uppercase tracking-[0.12em] w-[4.5rem] shrink-0 ${s.recorded ? "text-copper" : "text-faint"}`}>{s.verb ?? "—"}</span>
                 <span className="text-[13px] text-ink-soft min-w-0">
                   {s.summary}
-                  {s.outcome !== "completed" ? <span className="ml-2 font-mono text-[10px] uppercase tracking-[0.12em] text-ochre">{s.outcome}</span> : null}
+                  {!s.recorded ? <span className="ml-2 font-mono text-[10px] uppercase tracking-[0.12em] text-ochre">no run record</span> : null}
+                  {s.recorded && s.outcome !== "completed" ? <span className="ml-2 font-mono text-[10px] uppercase tracking-[0.12em] text-ochre">{s.outcome}</span> : null}
                   {counts ? <span className="ml-2 font-mono text-[10px] text-faint">{counts}</span> : null}
                   {s.usd !== null ? <span className="ml-2 font-mono text-[10px] text-faint">${s.usd.toFixed(2)}</span> : null}
                 </span>
               </summary>
               <div className="px-4 pb-4 pl-10">
-                <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-faint">run {s.runId}</p>
+                <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-faint">
+                  {s.recorded ? `run ${s.runId}` : `rows name ${s.runId}; no run record exists for it, so its verb, outcome and cost are not known — the rows themselves are the record`}
+                </p>
                 {s.refused.length > 0 ? (
                   <>
                     <h4 className="mt-2 font-mono text-[10px] uppercase tracking-[0.16em] text-ochre">refused, with the reason</h4>

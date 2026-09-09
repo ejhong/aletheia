@@ -21,9 +21,12 @@ export interface SittingRow {
 
 export interface Sitting {
   runId: string;
-  verb: RunRecord["verb"];
+  /** False for rows whose run left no record (an earlier script, a migration): nothing about that run is inferred — no verb, no outcome, no cost. */
+  recorded: boolean;
+  verb: RunRecord["verb"] | null;
+  /** The run's own date when recorded; otherwise the date the rows carry. */
   date: string;
-  outcome: RunRecord["outcome"];
+  outcome: RunRecord["outcome"] | null;
   summary: string;
   usd: number | null;
   /** Rows by disposition, e.g. { in: 62, failed: 30, blocked: 6 }. */
@@ -52,21 +55,23 @@ export function caseRecord(loaded: LoadedCase, root = process.cwd()): Sitting[] 
   }
   const runs = readRuns(root).filter((r) => r.case === loaded.record.slug).reverse();
   const seen = new Set(runs.map((r) => r.runId));
-  const sittings: Sitting[] = runs.map((r) => sitting(r.runId, r.verb, r.date, r.outcome, describeRun(r), r.cost?.usd ?? null, byRun.get(r.runId) ?? []));
-  // Rows whose run left no record (a migration, an early script): still shown, under the run id they name.
+  const sittings: Sitting[] = runs.map((r) => sitting(r.runId, true, r.verb, r.date, r.outcome, describeRun(r), r.cost?.usd ?? null, byRun.get(r.runId) ?? []));
+  // Rows whose run left no record (an earlier script, a migration) are shown as exactly that, under the run id
+  // the rows name and on the date the rows carry — no verb, outcome or cost is inferred for a run nobody recorded.
   for (const [runId, rows] of byRun) {
     if (seen.has(runId)) continue;
-    const verb = (runId.match(/^\d{4}-\d\d-\d\d-([a-z]+)-/)?.[1] ?? "migration") as RunRecord["verb"];
-    sittings.push(sitting(runId, verb, rows[0].date, "completed", "rows written outside a recorded run", null, rows));
+    const dates = [...new Set(rows.map((d) => d.date))].sort();
+    sittings.push(sitting(runId, false, null, dates[dates.length - 1], null, `${rows.length} row(s) written by ${runId}, which left no run record`, null, rows));
   }
   return sittings.sort((a, b) => b.date.localeCompare(a.date) || b.runId.localeCompare(a.runId));
 }
 
-function sitting(runId: string, verb: RunRecord["verb"], date: string, outcome: RunRecord["outcome"], summary: string, usd: number | null, rows: Disposition[]): Sitting {
+function sitting(runId: string, recorded: boolean, verb: RunRecord["verb"] | null, date: string, outcome: RunRecord["outcome"] | null, summary: string, usd: number | null, rows: Disposition[]): Sitting {
   const counts: Sitting["counts"] = {};
   for (const d of rows) counts[d.disposition] = (counts[d.disposition] ?? 0) + 1;
   return {
     runId,
+    recorded,
     verb,
     date,
     outcome,

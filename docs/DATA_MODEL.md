@@ -95,6 +95,10 @@ The specific observation extracted from a Source and connected to Claims.
 Direction is explicit: `supports` | `undermines` | `qualifies` | `context`.
 Also strength, `sourceStatement` (what the source says) kept separate from
 `editorInference` (what we infer), `exactLocator`, limitations, provenance.
+`readerActs` (optional) records each change the second reader made to the
+record at intake under verify protocol v5 — the direction it found, the
+claim links it narrowed — as structured provenance: field, from, to, model,
+run id, prompt version, date, reason. `origin` stays the drafter's.
 
 ## Source
 

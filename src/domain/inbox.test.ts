@@ -84,7 +84,7 @@ describe("a founding-role document", () => {
     expect(added.file).toBe(path.join("research", vaso.dir, "new-essay.pdf"));
     expect(added.title).toMatch(/Knots of Existence Hypotheses/);
     // The permission to publish is recorded as provenance (§3.15): who granted it, when, by what channel, where it is held.
-    expect(added.license).toMatch(/^Permission in the supplier's words: "publish it as the case's founding input and cite it" — granted by Eugene \(own work\) on 2026-\d\d-\d\d through the inbox statement `new-essay\.md`/);
+    expect(added.license).toMatch(/^Permission in the supplier's words: "publish it as the case's founding input and cite it" — granted by Eugene \(own work\) in the inbox statement `new-essay\.md` \(the statement carries no date\), recorded at intake on 2026-\d\d-\d\d/);
     expect(added.license).toMatch(/held at inbox\/processed\/2026-\d\d-\d\d-inbox-vasocomputation-\d{6}\/new-essay\.md/);
     const report = fs.readFileSync(r.reportFile!, "utf8");
     expect(report).toMatch(/NEW TO THE LEDGER AND SUPPLIED BY ITS AUTHOR \(Eugene\)/);

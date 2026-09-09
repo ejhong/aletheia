@@ -556,7 +556,7 @@ describe("verify: links to rejected claims", () => {
 });
 
 describe("verify v3: atomicity", () => {
-  it("a compound claim is split by the drafter, each part judged on the same anchor, and evidence re-pointed", async () => {
+  it("a compound claim is split by the drafter, each part judged on the same anchor, and evidence judged part by part", async () => {
     const { judgeProposal } = await import("../pipeline/verify.ts");
     const c = geo();
     const src = c.sources.find((s) => s.url)!;
@@ -573,14 +573,23 @@ describe("verify v3: atomicity", () => {
       adds: { sources: [], evidence: [evidence], claims: [compound], research: [], images: [] }, corrections: [], dispositions: [], edition: null } as never;
     const texts = new Map([[src.url!, { url: src.url!, ok: true, status: 200, contentType: "text/html", text: "… twelve words that certainly do occur in this text …" }]]);
     const yes = { quoteInContext: true, statementSupported: true, locatorSupported: true, directionRight: true, independenceNoted: true, relevant: true, atomic: true, reason: "fine" };
-    const judge = async (record: unknown) => ((record as { statement?: string }).statement?.includes(" and ") ? { ...yes, atomic: false, reason: "two propositions" } : yes);
+    const judge = async (record: unknown, _text: string, context: string) => {
+      if ((record as { statement?: string }).statement?.includes(" and ")) return { ...yes, atomic: false, reason: "two propositions" };
+      // The evidence bears on the first part only; the reader says so when asked about the second.
+      if (context.includes("judge whether the record bears on this one part") && context.includes("re-forms")) return { ...yes, relevant: false, reason: "about halite, not re-formation" };
+      return yes;
+    };
     const split = async (statement: string) => statement.split(" and ").map((s) => s.replace(/\.$/, "") + ".");
-    const v = await judgeProposal(proposal, c, texts, new Map(), judge, { runId: "r", verb: "verify", case: c.record.slug }, { model: "reader", date: "2026-09-09" }, split);
+    const v = await judgeProposal(proposal, c, texts, new Map(), judge, { runId: "r", verb: "verify", case: c.record.slug }, { model: "reader", date: "2026-09-09" }, split, { model: "splitter", runId: "verify-run" });
     expect(v.rejected.map((r) => r.id)).toEqual(["GEO-C990"]);
     expect(v.rejected[0].reason).toMatch(/not atomic .* split into GEO-C\d+, GEO-C\d+/);
     expect(v.accepted.claims.map((k) => k.statement)).toEqual(["Salt is halite.", "it re-forms within two years of cleaning."]);
     expect(v.accepted.claims.every((k) => k.sourceAnchor?.quote === compound.sourceAnchor.quote)).toBe(true);
-    expect(v.accepted.evidence[0].claimIds).toEqual(v.accepted.claims.map((k) => k.id)); // re-pointed from the compound to its parts
+    // Each part's wording is the splitter's: its origin names the splitter and the verify run, and points back at the compound.
+    expect(v.accepted.claims.map((k) => k.origin)).toEqual(v.accepted.claims.map(() => ({ ref: "split of GEO-C990 (test)", extractedBy: "splitter", runId: "verify-run", date: "2026-09-09" })));
+    // The evidence cites only the part it bears on; the part it does not is said aloud.
+    expect(v.accepted.evidence[0].claimIds).toEqual([v.accepted.claims[0].id]);
+    expect(v.notes.join("\n")).toMatch(/GEO-E990 does not bear on GEO-C\d+ \(part of GEO-C990\): about halite/);
   });
 });
 

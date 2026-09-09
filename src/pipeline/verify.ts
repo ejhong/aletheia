@@ -216,6 +216,8 @@ export async function judgeProposal(
   meter: Meter,
   reader: { model: string; date: string } = { model: READER.model, date: isoDate() },
   split: Splitter = defaultSplitter,
+  /** Who wrote the parts of a split claim, and in which run — their `origin` (§3.14, §3.15). */
+  splitter: { model: string; runId: string } = { model: MODELS.house.model, runId: "unrecorded" },
 ): Promise<Verdicts> {
   const rejected: Verdicts["rejected"] = [];
   const notes: string[] = [];
@@ -312,7 +314,8 @@ export async function judgeProposal(
           const admitted: Claim[] = [];
           for (const part of parts) {
             const id = nextClaimId(loaded, [...proposal.adds.claims.map((k) => k.id), ...okClaims.map((k) => k.id), ...admitted.map((k) => k.id)]);
-            const candidate: Claim = { ...c, id, statement: part };
+            // The part's wording is the splitter's, not the drafter's: its origin says so.
+            const candidate: Claim = { ...c, id, statement: part, origin: { ref: `split of ${c.id} (${c.origin.ref})`, extractedBy: splitter.model, runId: splitter.runId, date: reader.date } };
             const v2 = await judge({ statement: part, anchor: c.sourceAnchor }, fetched.text, anchorContext, meter);
             const bad = Object.entries(v2).filter(([k, v]) => k !== "reason" && v === false && k !== "independenceNoted" && k !== "directionRight").map(([k]) => k);
             if (bad.length) {
@@ -336,9 +339,34 @@ export async function judgeProposal(
     okClaims.push(c);
   }
 
-  // Evidence that cited a compound claim now cites its parts.
+  // Evidence that cited a compound claim is judged against each part on its
+  // own: it cites the parts it bears on, and only those (§3.2 — evidence for
+  // one proposition must not silently count for the others).
   for (const [i, e] of okEvidence.entries()) {
-    if (e.claimIds.some((id) => splitInto.has(id))) okEvidence[i] = { ...e, claimIds: [...new Set(e.claimIds.flatMap((id) => splitInto.get(id) ?? [id]))] };
+    if (!e.claimIds.some((id) => splitInto.has(id))) continue;
+    const fetched = textFor(e.sourceId);
+    const kept: string[] = [];
+    const dissents: string[] = [];
+    for (const id of e.claimIds) {
+      const parts = splitInto.get(id);
+      if (!parts) {
+        kept.push(id);
+        continue;
+      }
+      for (const pid of parts) {
+        const part = okClaims.find((k) => k.id === pid);
+        if (!part || !fetched?.ok || !fetched.text) continue;
+        const context = `Case question: ${loaded.record.subtitle}. The compound claim ${id} this record cited was split; judge whether the record bears on this one part — ${pid}: ${part.statement}`;
+        const v = await judge({ ...e, claimIds: [pid], editorInference: undefined }, fetched.text, context, meter);
+        if (v.relevant === false) {
+          notes.push(`${e.id} does not bear on ${pid} (part of ${id}): ${v.reason}`);
+          continue;
+        }
+        if (v.directionRight === false) dissents.push(`Second reader (${reader.model}, ${reader.date}) disputes the stated direction toward ${pid}: ${v.reason}`);
+        kept.push(pid);
+      }
+    }
+    okEvidence[i] = { ...e, claimIds: [...new Set(kept)], limitations: dissents.length ? [...e.limitations, ...dissents] : e.limitations };
   }
   // Claims whose parents or dependencies were rejected (or never existed) keep the claim and lose the link, said aloud.
   const liveClaimIds = new Set([...loaded.claims.filter((c) => c.reviewState !== "rejected").map((c) => c.id), ...okClaims.map((c) => c.id)]);
@@ -459,7 +487,7 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
     const proposalDir = path.join(root, "proposals", proposalRunId);
     const judge = rememberedJudge(opts.deps?.judge ?? defaultJudge, path.join(proposalDir, "judgments.yaml"), READER.model);
     const split = rememberedSplitter(opts.deps?.split ?? defaultSplitter, path.join(proposalDir, "splits.yaml"), MODELS.house.model);
-    const verdicts = await judgeProposal(proposal, loaded, texts, resolved, judge, meter, { model: READER.model, date }, split);
+    const verdicts = await judgeProposal(proposal, loaded, texts, resolved, judge, meter, { model: READER.model, date }, split, { model: MODELS.house.model, runId });
     // Durable locators: every admitted source with a URL gets its Wayback snapshot on the record.
     const archive = opts.deps?.archive ?? archiveUrl;
     for (const [i, s] of verdicts.accepted.sources.entries()) {

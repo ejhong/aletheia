@@ -218,6 +218,22 @@ export interface InboxOutcome extends RunOutcome {
   reportFile?: string;
 }
 
+/**
+ * The permission to publish a supplied document, recorded with the rigor
+ * §3.15 asks of provenance: who granted it, on what date, by what channel,
+ * and where the statement is held. The grant is the supplier's own
+ * statement of footing (front matter or sidecar), which the intake moves to
+ * inbox/processed/<runId>/ and commits — that file is the correspondence.
+ */
+export function permissionRecord(it: InboxItem, date: string, runId: string): string {
+  const statement = path.basename(it.sidecar ?? it.file);
+  const held = `held at inbox/processed/${runId}/${statement}`;
+  if (typeof it.meta.editor === "string" && it.meta.editor) return `Own work of ${it.meta.editor}, who supplied it for publication as a founding input: granted by ${it.meta.editor} on ${date} through the inbox statement \`${statement}\` (editor: ${it.meta.editor}), ${held}.`;
+  if (typeof it.meta.from === "string" && typeof it.meta.permission === "string") return `Supplied by ${it.meta.from} with permission to publish and cite — ${it.meta.permission} — recorded on ${date} through the inbox statement \`${statement}\`, ${held}.`;
+  if (typeof it.meta.published === "string") return `Public at ${it.meta.published}; supplied${typeof it.meta.from === "string" ? ` by ${it.meta.from}` : ""} on ${date} through the inbox statement \`${statement}\`, ${held}.`;
+  throw new Error(`${it.name}: no footing on which to publish it as a founding input`);
+}
+
 export async function runInbox(caseKey: string, opts: InboxOptions = {}): Promise<InboxOutcome> {
   const root = opts.root ?? process.cwd();
   const now = opts.deps?.now ?? (() => new Date());
@@ -250,7 +266,7 @@ export async function runInbox(caseKey: string, opts: InboxOptions = {}): Promis
     fs.writeFileSync(`${dest}.txt`, `[Text extraction of the PDF by the pipeline (pdfjs), ${date}; ${it.pages ?? "?"} pages; page markers [p. N]. The PDF beside this file is the original.]\n\n${it.text}`);
     const n = Math.max(0, ...loaded.narrativeInputs.map((x) => Number(x.id.match(/-IN(\d+)$/)?.[1] ?? 0)), ...registered.map((x) => Number(x.match(/-IN(\d+)$/)?.[1] ?? 0)));
     const id = `${loaded.record.id.split("-")[0]}-IN${String(n + 1).padStart(3, "0")}`;
-    const license = typeof it.meta.license === "string" && it.meta.license.trim() ? it.meta.license : `${it.supplier}; committed as a founding input by the supplier's direction at intake (${date}, run ${runId})`;
+    const license = typeof it.meta.license === "string" && it.meta.license.trim() ? it.meta.license : permissionRecord(it, date, runId);
     appendYamlItems(path.join(root, "content", "cases", loaded.dir, "inputs", "manifest.yaml"), [
       { id, title: it.title, role, file: rel, origin: `Supplied through the inbox on ${date} (run ${runId}) by ${it.supplier}${typeof it.meta.provenance === "string" ? `; ${it.meta.provenance}` : ""}. Read by the pipeline from the text extraction committed beside the file.`, license },
     ]);

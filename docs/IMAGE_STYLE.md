@@ -74,8 +74,9 @@ saturation.
 
 Chosen to suit each subject and to harmonize as a set on the paper-toned
 homepage grid: two warms, two cools, two greens, all at the same faded
-mineral-pigment saturation. Defined in the generate-case-art script (retired 2026-09-09; the plates keep the register)
-(`CASE_TONES`); keep the two in sync.
+mineral-pigment saturation. Defined in the generate-case-art script (`CASE_TONES`; retired in the
+subtraction of 2026-09-09 and returned the same day on the founder's
+direction); keep the two in sync.
 
 | case | tone | pigments |
 |---|---|---|
@@ -89,6 +90,7 @@ mineral-pigment saturation. Defined in the generate-case-art script (retired 202
 | `zero-worlds` | Graphite and lapis | faint graphite and warm dove-grey washes, generous bare cream paper (the sparest cover in the set), one small deep-lapis accent at the observer's lantern |
 | `immortality-key` | Wine-dark and barley gold | muted Tyrian purple and wine-dark cup and vine, pale barley-gold grain, warm umber shadows, one small pale-mint accent on the herb sprig |
 | `pre-columbian-amazon` | Viridian and river gold | deep viridian and forest-green canopy washes, a pale ochre-gold river meander, faint umber earthwork lines beneath the canopy, one small vermilion accent on the chronicler's ribbon marker |
+| `deep-memory` | Sepia shore and lapis | warm sepia and burnt-umber stone, weathered basalt grey, a pale sand-and-sea-mist wash, one small faded lapis accent on the held disc |
 
 Rules of thumb:
 

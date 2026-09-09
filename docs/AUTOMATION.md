@@ -437,8 +437,10 @@ chain's own sittings.
   again), `stamp-study` (with them), `yield-report` (→ the spend ledger and
   the dispositions), `stale-checks` (→ `checksStale` in the loader),
   `preflight-citations` (→ `verify`'s citation check), `generate-case-art`
-  and `add-commons-image` (no replacement; the plates keep their register,
-  docs/IMAGE_STYLE.md); their nine library modules and ten test files; the
+  and `add-commons-image` (retired with no replacement, and returned the
+  same day on the founder's direction — he wants the covers, and plates
+  for Deep Memory; the loop makes no images, an edition seats the plates
+  that exist; docs/IMAGE_STYLE.md); their nine library modules and ten test files; the
   `/proposals` page and its `agendaProposals` domain module (the Bench's
   shelf); `docs/EXTRACTION_PIPELINE.md`. Kept: `harvest-governance` (now a
   step of the sitting, so `/operations` stays current), `classify-pr-risk`,

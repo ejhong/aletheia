@@ -34,10 +34,17 @@ Three workflows do the work, and two more build and deploy:
 | **Arbiter** | Every PR | Skips low-risk. Otherwise: five seats judge the diff — a content run by its own account — against `AGENTS.md` at the merge base, with every added DOI/arXiv/URL mechanically resolved first. A lone objection of the ordinary kind becomes a review-note issue; the change merges. | Sticky report comment; verdict as the check; review-note issues. |
 
 Plus `CI` (typecheck, lint, test, build) and `Deploy` on every push to
-`main`. The Maintain, Content response, Inbox response and Operator
-workflows and the two on-demand tools (Extract claims, Generate case art)
-were retired on 2026-09-09; the sitting does their work
-(docs/AUTOMATION.md, "Subtraction record").
+`main`, and one on-demand tool: **Generate case art** (dispatch with a
+case slug and a count) writes cover candidates in the house style to
+`public/images/cases/<slug>/candidates/` and opens a PR for the pick;
+`node scripts/add-commons-image.mjs "File:…" <slug>` fetches a Wikimedia
+Commons photograph as a plate with its licence checked and its credit and
+provenance filled from the Commons API (docs/IMAGE_STYLE.md). Both were
+retired in the subtraction of 2026-09-09 and returned the same day on the
+founder's direction; the loop makes no images — an edition seats the plates
+that exist and never loses one. The Maintain, Content response, Inbox
+response and Operator workflows and the Extract claims tool stay retired;
+the sitting does their work (docs/AUTOMATION.md, "Subtraction record").
 
 **Standing is derived, never stored.** The case page always shows the
 latest draft assessment, stamped `ratified` / `contested` / `unratified`

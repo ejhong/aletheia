@@ -67,6 +67,16 @@ describe("references", () => {
     ];
     expect(bestMatch(ref, results)?.doi).toBe("https://doi.org/10.1016/j.pmrj.2015.01.024");
     expect(bestMatch({ ...ref, year: 2009 }, results)).toBeNull();
+    // A descriptive reference resolves on author and year, never on a vague phrase alone.
+    const descriptive = { title: "Microdialysis study of trigger point biochemistry", authors: ["Shah, Jay"], year: 2005, venue: null, url: null };
+    const withAuthors = [
+      { title: "An in vivo microanalytical technique for measuring the local biochemical milieu of human skeletal muscle", doi: "https://doi.org/10.1152/japplphysiol.01331.2004", publication_year: 2005, authorships: [{ author: { display_name: "Jay P. Shah" } }, { author: { display_name: "Terry M. Phillips" } }] },
+      { title: "Microdialysis in muscle: a review", doi: "https://doi.org/10.1000/z", publication_year: 2005, authorships: [{ author: { display_name: "Someone Else" } }] },
+    ];
+    expect(bestMatch(descriptive, withAuthors)?.doi).toBe("https://doi.org/10.1152/japplphysiol.01331.2004"); // author + year + a shared stem (biochem…)
+    expect(bestMatch({ ...descriptive, title: "Trigger point research" }, withAuthors)).toBeNull(); // author + year, no topic in common
+    expect(bestMatch({ ...descriptive, year: null }, withAuthors)).toBeNull(); // no year: author alone is not enough
+    expect(bestMatch({ ...descriptive, authors: [] }, withAuthors)).toBeNull();
     const out = await resolveReferences([ref, { ...ref, title: "Some paper", url: "https://doi.org/10.1000/abc" }, { ...ref, title: "short" }], async () => results);
     expect(out[0]).toMatchObject({ doi: "10.1016/j.pmrj.2015.01.024", url: "https://doi.org/10.1016/j.pmrj.2015.01.024" });
     expect(out[1]).toMatchObject({ doi: "10.1000/abc", note: "locator written in the text" });

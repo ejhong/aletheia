@@ -63,10 +63,10 @@ export interface ReportOutcome extends RunOutcome {
   reportFile?: string;
 }
 
-/** The latest completed report run for a case, and its text. */
+/** The latest completed report — or inbox intake — for a case, and its text: the research seat builds on it and chases the works it names. */
 export function previousReport(slug: string, root = process.cwd()): { runId: string; inputHash: string | null; text: string } | null {
   const run = readRuns(root)
-    .filter((r) => r.verb === "report" && r.case === slug && r.outcome === "completed")
+    .filter((r) => (r.verb === "report" || r.verb === "inbox") && r.case === slug && r.outcome === "completed")
     .at(-1);
   if (!run) return null;
   const file = path.join(runDir(run.runId, root), "report.md");

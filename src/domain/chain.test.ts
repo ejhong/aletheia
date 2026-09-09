@@ -522,3 +522,30 @@ describe("urls in a report", () => {
     expect(urls).toEqual(["https://doi.org/10.1016/s0305-7372(96)90023-7", "https://x.test/a", "https://y.test/b", "https://doi.org/10.1000/plain"]);
   });
 });
+
+describe("verify: links to rejected claims", () => {
+  it("an admitted claim loses a parent the reader rejected, and says so", async () => {
+    const { judgeProposal } = await import("../pipeline/verify.ts");
+    const c = geo();
+    const src = c.sources.find((s) => s.url)!;
+    const claim = (id: string, statement: string, parents: string[]) => ({
+      id, statement, theme: Object.keys(c.record.themes)[0], rung: "observation", claimType: null, sourceAnchor: { sourceId: src.id, locator: "p. 1", quote: "twelve words that certainly do occur in this text" },
+      parentClaimIds: parents, dependsOnClaimIds: [], reviewState: "ai_extracted", origin: { ref: "test", extractedBy: "m", runId: "r", date: "2026-09-08" },
+    });
+    const proposal = {
+      runId: "2026-09-09-draft-megalithic-casting-000002", case: c.record.slug, report: null, date: "2026-09-09", model: "m", promptVersion: "draft-v4",
+      basis: { ledgerHash: c.ledgerHash }, rationale: "test",
+      adds: { sources: [], evidence: [], claims: [claim("GEO-C990", "A parent the reader will reject.", []), claim("GEO-C991", "A child whose parent falls.", ["GEO-C990"])], research: [], images: [] },
+      corrections: [], dispositions: [], edition: null,
+    } as never;
+    const texts = new Map([[src.url!, { url: src.url!, ok: true, status: 200, contentType: "text/html", text: "… twelve words that certainly do occur in this text …" }]]);
+    const yes = { quoteInContext: true, statementSupported: true, locatorSupported: true, directionRight: true, independenceNoted: true, relevant: true, reason: "fine" };
+    let n = 0;
+    const judge = async () => (n++ === 0 ? { ...yes, relevant: false, reason: "not this case" } : yes); // the first anchor judged (GEO-C990) is refused
+    const v = await judgeProposal(proposal, c, texts, new Map(), judge, { runId: "r", verb: "verify", case: c.record.slug });
+    expect(v.rejected.map((r) => r.id)).toEqual(["GEO-C990"]);
+    expect(v.accepted.claims.map((k) => k.id)).toEqual(["GEO-C991"]);
+    expect(v.accepted.claims[0].parentClaimIds).toEqual([]);
+    expect(v.notes.some((x) => /GEO-C991: names GEO-C990 .* dropped/.test(x))).toBe(true);
+  });
+});

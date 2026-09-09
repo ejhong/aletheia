@@ -1,0 +1,591 @@
+# Proposal — a change to domain records, in one envelope (docs/AUTOMATION.md).
+# Never citable; nothing here is a record until adopted through the gate.
+runId: 2026-09-09-draft-vasocomputation-040754
+date: 2026-09-09
+case: vasocomputation
+producer: draft
+model: claude-fable-5-1
+promptVersion: draft-v4
+basis:
+  ledgerHash: f290fe77451dad6b6d5d5791c6ea1031c0faab16cf001b1e7f26c45629d61aa3
+rationale: "Bounded pass. Of the eleven sources the report proposed, only two arrived with text: the PMC author manuscript of Ballyns et al. 2011 (full text) and the Ovid abstract page of Simons, Hong & Simons 2002. Both are new to the index and enter as ai_verified sources with evidence and observation-rung claims extracted from the shown text. Ballyns supplies the primary Doppler and elastography numbers the article currently describes second-hand (55/40/31% retrograde flow, PI 8.3 vs 3.0, area 0.57/0.36/0.17 cm²), plus the source's own alternative explanations for high outflow resistance, which keep its bearing on VASO-C020 weightless between compression and arteriolar constriction. Simons 2002 shows endplate noise at 4 of 11 non-trigger-point endplate-zone sites and none off the endplate zone, which contradicts the 'absent in adjacent non-tender muscle' half of VASO-C002; a scalar correction to that statement is proposed and the evidence is recorded as qualifying. Everything else the report reached — Banks 1998, Hubbard 1996, Chen 1998, Rivner 2001, Ge 2011, Olewnik 2025, Zhang 2009, the 2014 densification review, the Mazza abstract — returned 403s, bot-challenge pages, 'Redirecting', or a cookie wall, so their observations (relaxation lowering nidus EMG, alpha-blockade quieting it, pressure-alone stiffness reversal at 24 h, attenuated skin-flow response, densification 'easily reversible') stay blocked with routes, and no quotation from them is written. No verdict is graded here; the C002 correction and the Ballyns primary should be weighed at the next assessment. The edition is left unchanged: the pass deepens the record and sharpens one claim statement but does not show the telling wrong, misordered, or missing a load-bearing finding."
+adds:
+  sources:
+    - id: SRC-BALLYNS-2011
+      title: Objective Sonographic Measures for Characterizing Myofascial Trigger Points Associated With Cervical Pain
+      authors:
+        - Jeffrey J. Ballyns
+        - Jay P. Shah
+        - Jennifer Hammond
+        - Tadesse Gebreab
+        - Lynn H. Gerber
+        - Siddhartha Sikdar
+      year: "2011"
+      sourceType: paper
+      identifier: doi:10.7863/jum.2011.30.10.1331
+      url: https://pmc.ncbi.nlm.nih.gov/articles/PMC3493620/
+      verification: ai_verified
+      verificationNote: text retrieved and shown to the drafter on 2026-09-09 (run 2026-09-09-draft-vasocomputation-040754); passages checked by the verify verb
+      reliabilityNotes:
+        - Peer-reviewed primary study, J Ultrasound Med 30(10):1331–1340; text read from the NIH author manuscript (PMC3493620, NIHMSID 415997), not the publisher's version.
+        - n = 44 patients with acute cervical pain and at least one palpable trigger point; 169 sites imaged; sonographers blinded to clinical status, examiner not.
+        - "No pain-free control group: 'normal' sites were palpably normal sites in symptomatic patients, at least 5 cm from trigger points; the authors state the blood-flow findings do not represent normal variation."
+        - Same NIH lineage (Shah, Gerber) as SRC-SHAH-2008; not independent of that record.
+        - The report omitted Hammond from the author list; the retrieved text names six authors.
+      derivedFrom: []
+      background: false
+    - id: SRC-SIMONS-2002
+      title: Endplate Potentials Are Common to Midfiber Myofacial Trigger Points
+      authors:
+        - David G. Simons
+        - Chang-Zern Hong
+        - Lois Statham Simons
+      year: "2002"
+      sourceType: paper
+      identifier: doi:10.1097/00002060-200203000-00010
+      url: https://doi.org/10.1097/00002060-200203000-00010
+      verification: ai_verified
+      verificationNote: text retrieved and shown to the drafter on 2026-09-09 (run 2026-09-09-draft-vasocomputation-040754); passages checked by the verify verb
+      reliabilityNotes:
+        - Peer-reviewed primary study, Am J Phys Med Rehabil 81(3):212–222; only the abstract was shown (Ovid landing page), so group-level statistics beyond the abstract are unrecorded.
+        - The abstract itself describes the design as 'nonrandomized, unblinded'; 10 subjects, 11 muscles.
+        - Authors are leading proponents of the trigger-point construct (Simons is co-author of the Trigger Point Manual); the finding nonetheless cuts against exclusivity of the electrical signature.
+      derivedFrom: []
+      background: false
+  evidence:
+    - id: VASO-E022
+      title: "Ballyns 2011: arteries near active trigger points show higher pulsatility and more frequent retrograde diastolic flow — but 31% of palpably normal sites show it too"
+      claimIds:
+        - VASO-C005
+        - VASO-C031
+        - VASO-C032
+      sourceId: SRC-BALLYNS-2011
+      direction: supports
+      strength: moderate
+      sourceStatement: The source states that on colour Doppler prominent vessels were seen close to trigger points and that "vessels near active sites had a significantly higher pulsatility index" (median 8.3) than normal sites (median 3.0, P < .05). It states that in 27 of 49 active sites (55%) "retrograde diastolic flow was observed compared to 21 (40%) and 15 (31%)" for latent and normal sites, with the occurrence significantly higher in active and latent than normal sites (P < .01).
+      editorInference: "This is the primary behind the 'abnormal local hemodynamics' the ledger previously held only via the Mazza review. It supports VASO-C005 as a measurable blood-flow difference, but the difference is graded: nearly a third of palpably normal sites in these patients show the same waveform, so the signature is a gradient across symptomatic muscle, not a marker. The interrogated vessels are pulsatile arteries or enlarged arterioles typically >1 mm, within 1–2 cm of the point, not the microvessels the latch attribution names."
+      exactLocator: PMC3493620 author manuscript, Results, paragraph beginning 'On color Doppler imaging' (via open-access PMC copy)
+      limitations:
+        - Within-patient 'normal' sites in symptomatic patients; no pain-free control group.
+        - Pulsatility index was not a good classifier of site type because of large variance, per the source's ROC analysis.
+        - Vessel caliber (>1 mm, 1–2 cm from the point) is far from the arteriolar compartment VASO-C020 requires.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-report-vasocomputation-023157
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-vasocomputation-040754
+        date: 2026-09-09
+    - id: VASO-E023
+      title: "Ballyns 2011: vibration sonoelastography stiff-area measurements separate active, latent and normal sites"
+      claimIds:
+        - VASO-C005
+        - VASO-C033
+      sourceId: SRC-BALLYNS-2011
+      direction: supports
+      strength: moderate
+      sourceStatement: The source reports mean stiff-area of 0.57 ± 0.20 cm² at active sites, 0.36 ± 0.16 cm² at latent sites and 0.17 ± 0.22 cm² at palpably normal sites (P < .01), and that "active sites were significantly larger than latent sites"; ROC analysis showed "area measurements could robustly distinguish between active, latent, and normal sites" (AUC 0.9 active vs normal, 0.8 active vs latent, 0.8 latent vs normal).
+      editorInference: Direct instrumented support for the stiffness component of VASO-C005 and for the graded active/latent/normal ordering. Sonographers were blinded to clinical status, which is stronger than the palpation-only literature. It says nothing about what the stiff tissue is (contracted fibre, guarding, fascial change, or vascular).
+      exactLocator: PMC3493620 author manuscript, Abstract (Results) and Results, paragraph beginning 'Trigger point areas assessed by vibration elastography' (via open-access PMC copy)
+      limitations:
+        - Single vibration frequency from an off-the-shelf massager; the authors note frequency-independence was not confirmed and shear elasticity was not measured.
+        - Sites were selected by palpation, so the measured contrast presupposes the palpated classification.
+        - Same NIH lineage as SRC-SHAH-2008; not an independent group.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-report-vasocomputation-023157
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-vasocomputation-040754
+        date: 2026-09-09
+    - id: VASO-E024
+      title: "Ballyns 2011: resistivity index did not differ between active, latent and normal sites"
+      claimIds:
+        - VASO-C036
+      sourceId: SRC-BALLYNS-2011
+      direction: supports
+      strength: moderate
+      sourceStatement: The source states that "No differences in RI values were detected between normal", latent and active sites, and that "the PI was not a good classifier of active, latent, or normal sites because of the large variance."
+      editorInference: "A negative result recorded in its own right: one of the two Doppler indices shows no difference, and the other does not classify sites. The vascular signature at trigger points is partial, not categorical."
+      exactLocator: PMC3493620 author manuscript, Results, paragraph beginning 'On color Doppler imaging' (via open-access PMC copy)
+      limitations:
+        - Within-patient comparison in symptomatic subjects; the authors attribute the similarity partly to proximity of normal sites to trigger points.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-report-vasocomputation-023157
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-vasocomputation-040754
+        date: 2026-09-09
+    - id: VASO-E025
+      title: "Ballyns 2011: the Doppler indices do not cleanly separate sites"
+      claimIds:
+        - VASO-C005
+      sourceId: SRC-BALLYNS-2011
+      direction: qualifies
+      strength: weak
+      sourceStatement: The source states that "No differences in RI values were detected between normal", latent and active sites, and that the pulsatility index "was not a good classifier of active, latent, or normal sites" because of large variance; it adds that blood-flow measures "did not perform well as classifiers of the site type".
+      editorInference: "Narrows VASO-C005: blood flow differs on one index at group level but does not distinguish individual sites, and a second index shows no difference. The claim's 'measurably differ' survives in the weak group-level sense only."
+      exactLocator: PMC3493620 author manuscript, Results (Doppler paragraph) and Discussion, paragraph beginning 'Although most trigger points are located' (via open-access PMC copy)
+      limitations:
+        - Same subjects and sites as VASO-E025; not an independent observation.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-report-vasocomputation-023157
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-vasocomputation-040754
+        date: 2026-09-09
+    - id: VASO-E026
+      title: "Ballyns 2011: no pain-free control group; 'normal' sites sit in symptomatic muscle"
+      claimIds:
+        - VASO-C005
+        - VASO-C031
+        - VASO-C032
+      sourceId: SRC-BALLYNS-2011
+      direction: qualifies
+      strength: moderate
+      sourceStatement: The source states as a limitation that "our study did not include a control group of pain-free patients", that pain-free sites were instead marked at least 5 cm from latent and active sites, and that because all patients had at least one palpable trigger point the observed blood-flow characteristics "do not represent the normal variation".
+      editorInference: Every comparison in this source is within symptomatic patients. The 31% retrograde-flow figure at 'normal' sites may therefore be either a true baseline rate or spillover from neighbouring points; the source itself cannot say which. This caps the strength of VASO-E025 and VASO-E026.
+      exactLocator: PMC3493620 author manuscript, Discussion, paragraphs beginning 'We suspect the large variance' and 'Although we believe that measuring' (via open-access PMC copy)
+      limitations:
+        - Author-stated limitation; no external data on pain-free variation was shown.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-report-vasocomputation-023157
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-vasocomputation-040754
+        date: 2026-09-09
+    - id: VASO-E027
+      title: "Ballyns 2011: high-resistance flow near trigger points is compatible with compression by contracture, inflammation, or transducer pressure as much as with distal constriction"
+      claimIds:
+        - VASO-C020
+      sourceId: SRC-BALLYNS-2011
+      direction: supports
+      strength: weak
+      sourceStatement: 'The source reports that arteries near active and latent sites had highly pulsatile flow with retrograde diastolic flow more often than normal tissue, and that "prominent blood vessels were observed in the close vicinity of trigger points". It offers two explanations for pulsatile flow — increased compliance/volume of the vascular compartment, or increased outflow resistance — and lists possible causes of the latter: "muscle contracture at the trigger point that compresses the capillary/venous bed", anatomic geometry of the trapezius apex, local vasoconstriction due to inflammation, or externally applied pressure from the transducer. It frames its integrated-hypothesis discussion around capillary constriction, ischemia and hypoxia and notes increased vessel presence as a possible angiogenic response.'
+      editorInference: "Recorded as supporting because increased downstream resistance near trigger points is what VASO-C020's 'chronic local ischemia' predicts — but at effectively zero diagnosticity: the source itself names skeletal-muscle contracture compressing the bed (the conventional account) as a candidate cause and does not mention smooth-muscle latch. Nothing here separates arteriolar smooth muscle from mechanical compression, and the vessels observed are conduit-scale, not microvascular."
+      exactLocator: PMC3493620 author manuscript, Results (Doppler paragraph) and Discussion, paragraphs beginning 'The integrated trigger point hypothesis' and 'In this study, results from the Doppler waveforms' (via open-access PMC copy)
+      limitations:
+        - Vessels interrogated were pulsatile arteries or enlarged arterioles typically >1 mm, 1–2 cm from the point.
+        - Alternative mechanical explanations are given equal standing by the authors.
+        - No perfusion measurement in the muscle bed itself; Doppler waveform only.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-report-vasocomputation-023157
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-vasocomputation-040754
+        date: 2026-09-09
+    - id: VASO-E028
+      title: "Ballyns 2011 introduction: 'muscle knots' as a common condition with a cited prevalence estimate"
+      claimIds:
+        - VASO-C001
+      sourceId: SRC-BALLYNS-2011
+      direction: supports
+      strength: weak
+      sourceStatement: The source's introduction states that myofascial pain syndrome is "believed to affect about 23 million Americans" (citing Fishbain et al. 1986), that it "is a major progenitor of nonarticular local musculoskeletal pain" and tenderness affecting every age group, and is "commonly recognized as “muscle knots.”"
+      editorInference: Secondary, uncritical framing in an introduction; the prevalence figure is a 1986 clinic-population estimate cited at second hand, not a census. Enters at near-zero weight as one more instance of the research literature treating the palpable knot as a common phenomenon.
+      exactLocator: PMC3493620 author manuscript, Introduction, first paragraph (via open-access PMC copy)
+      limitations:
+        - Prevalence estimate is cited, not measured, and refers to a pain syndrome rather than to tender points in the general population.
+        - Introductory framing by proponents of the construct.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-report-vasocomputation-023157
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-vasocomputation-040754
+        date: 2026-09-09
+    - id: VASO-E029
+      title: "Ballyns 2011: palpation is the reference standard and remains subjective"
+      claimIds:
+        - VASO-C030
+      sourceId: SRC-BALLYNS-2011
+      direction: supports
+      strength: weak
+      sourceStatement: The source states that although most trigger points are located and classified from history and physical examination, "results can vary depending on the clinician’s training and experience", and that the visual analog scale, pressure-pain threshold and palpation are the reference standards "but they are still subjective measures".
+      editorInference: "A proponent group conceding the point the critics press: the reference standard is examiner-dependent. Weak because it is an assertion in a discussion section rather than a reliability measurement; the ledger already holds the systematic review (VASO-E011)."
+      exactLocator: PMC3493620 author manuscript, Discussion, paragraph beginning 'Although most trigger points are located' (via open-access PMC copy)
+      limitations:
+        - Statement, not measurement; this source did not test inter-examiner reliability.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-report-vasocomputation-023157
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-vasocomputation-040754
+        date: 2026-09-09
+    - id: VASO-E030
+      title: "Ballyns 2011 pilot: trigger-point area and pulsatility index fell over follow-up visits after dry needling in three active cases"
+      claimIds:
+        - VASO-C011
+      sourceId: SRC-BALLYNS-2011
+      direction: context
+      strength: weak
+      sourceStatement: 'The source reports a pilot of three active cases and one latent case imaged at later time points after dry needling: "The trigger point area and PI decreased for all 3 active cases" with time and increased slightly for the latent case; the authors state there were too few cases to draw conclusions.'
+      editorInference: "Background only for VASO-C011: an imaged change in stiffness and Doppler indices after an intervention, but over visits, not seconds, and after needling, not pressure or breath. It shows the measures move; it does not bear on the seconds-scale timescale argument."
+      exactLocator: PMC3493620 author manuscript, Discussion, paragraph beginning 'Data for a pilot study including 3 active cases' and Figure 7 caption (via open-access PMC copy)
+      limitations:
+        - n = 3 active cases, uncontrolled, author-flagged as too few for conclusions.
+        - Timescale of visits, not of a release event.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-report-vasocomputation-023157
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-vasocomputation-040754
+        date: 2026-09-09
+    - id: VASO-E031
+      title: "Simons, Hong & Simons 2002: endplate noise is characteristic of, but not restricted to, trigger points"
+      claimIds:
+        - VASO-C002
+      sourceId: SRC-SIMONS-2002
+      direction: qualifies
+      strength: moderate
+      sourceStatement: 'The source reports a needle examination at one test site and two control sites in 11 muscles of 10 subjects, with the endplate zone determined electrically: "Endplate noise without spikes occurred in all 11 muscles at trigger-point sites", "in four muscles at endplate zone sites outside of trigger points" (P = 0.024), and "did not occur in taut band sites outside of an endplate zone" (P = 0.000034). It concludes that endplate noise seems to be "characteristic of, but is not restricted to, the region" of a trigger point.'
+      editorInference: "This qualifies VASO-C002's 'confined to a nidus, absent in adjacent non-tender muscle': spontaneous activity was found at 4 of 11 non-tender endplate-zone sites. Hubbard–Berkoff's silent control sites may have lain off the endplate zone rather than demonstrating exclusivity. The correct comparator for the nidus is a matched endplate-zone site, which neither Hubbard–Berkoff 1993 nor McNulty 1994 used, as far as the ledger records. The prevalence gradient (11/11 vs 4/11 vs 0/11) still supports 'more common at trigger points'."
+      exactLocator: Abstract, Results and Conclusion, Am J Phys Med Rehabil 81(3):212–222, via the Ovid landing page at doi:10.1097/00002060-200203000-00010
+      limitations:
+        - Abstract only; per-site amplitudes and subject details not shown.
+        - Design described by the source as nonrandomized and unblinded; 10 subjects.
+        - Authors are proponents of the trigger-point construct.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-report-vasocomputation-023157
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-vasocomputation-040754
+        date: 2026-09-09
+    - id: VASO-E032
+      title: "Simons, Hong & Simons 2002: prevalence of endplate noise at trigger-point, endplate-zone and off-zone taut-band sites"
+      claimIds:
+        - VASO-C034
+        - VASO-C035
+      sourceId: SRC-SIMONS-2002
+      direction: supports
+      strength: moderate
+      sourceStatement: The source states that endplate noise occurred at all 11 trigger-point sites, "in four muscles at endplate zone sites outside of trigger points", and "did not occur in taut band sites outside of an endplate zone"; it describes the study as "This nonrandomized, unblinded needle examination of myofascial trigger points".
+      editorInference: "Direct anchor for the two observation claims: endplate noise occurs outside trigger points when the site is in the endplate zone, and not in taut bands off the zone. Together they imply the electrical signature tracks the endplate zone first and the trigger point second, which is the conventional skeletal-endplate reading."
+      exactLocator: Abstract, Design and Results, via the Ovid landing page at doi:10.1097/00002060-200203000-00010
+      limitations:
+        - Abstract only; unblinded; small sample.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-report-vasocomputation-023157
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-vasocomputation-040754
+        date: 2026-09-09
+  claims:
+    - id: VASO-C031
+      statement: In patients with acute cervical pain, pulsatile arteries within 1–2 cm of active upper-trapezius trigger points show a higher Doppler pulsatility index than arteries near palpably normal sites in the same muscle.
+      theme: phenomenon
+      rung: observation
+      claimType: measurement
+      sourceAnchor:
+        locator: PMC3493620 author manuscript, Results, Doppler paragraph (via open-access PMC copy)
+        quote: vessels near active sites had a significantly higher pulsatility index
+        sourceId: SRC-BALLYNS-2011
+      parentClaimIds:
+        - VASO-C005
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-report-vasocomputation-023157
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-vasocomputation-040754
+        date: 2026-09-09
+    - id: VASO-C032
+      statement: Retrograde diastolic flow occurs in arteries near roughly a third (31%) of palpably normal upper-trapezius sites in patients who have trigger points elsewhere in the muscle.
+      theme: phenomenon
+      rung: observation
+      claimType: measurement
+      sourceAnchor:
+        locator: PMC3493620 author manuscript, Results, Doppler paragraph (via open-access PMC copy)
+        quote: retrograde diastolic flow was observed compared to 21 (40%) and 15 (31%)
+        sourceId: SRC-BALLYNS-2011
+      parentClaimIds:
+        - VASO-C005
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-report-vasocomputation-023157
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-vasocomputation-040754
+        date: 2026-09-09
+    - id: VASO-C033
+      statement: The area of reduced vibration amplitude on sonoelastography is larger at active trigger-point sites than at latent sites, and larger at latent sites than at palpably normal sites, in the upper trapezius.
+      theme: phenomenon
+      rung: observation
+      claimType: measurement
+      sourceAnchor:
+        locator: PMC3493620 author manuscript, Results, paragraph beginning 'Trigger point areas assessed by vibration elastography' (via open-access PMC copy)
+        quote: active sites were significantly larger than latent sites
+        sourceId: SRC-BALLYNS-2011
+      parentClaimIds:
+        - VASO-C005
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-report-vasocomputation-023157
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-vasocomputation-040754
+        date: 2026-09-09
+    - id: VASO-C034
+      statement: Endplate noise on needle EMG occurs at some endplate-zone sites that are outside any trigger point, at lower prevalence than at trigger-point sites.
+      theme: neural-signature
+      rung: observation
+      claimType: observation
+      sourceAnchor:
+        locator: Abstract, Results, via Ovid landing page at doi:10.1097/00002060-200203000-00010
+        quote: in four muscles at endplate zone sites outside of trigger points
+        sourceId: SRC-SIMONS-2002
+      parentClaimIds:
+        - VASO-C002
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-report-vasocomputation-023157
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-vasocomputation-040754
+        date: 2026-09-09
+    - id: VASO-C035
+      statement: Endplate noise on needle EMG does not occur at taut-band sites that lie outside the motor endplate zone.
+      theme: neural-signature
+      rung: observation
+      claimType: observation
+      sourceAnchor:
+        locator: Abstract, Results, via Ovid landing page at doi:10.1097/00002060-200203000-00010
+        quote: did not occur in taut band sites outside of an endplate zone
+        sourceId: SRC-SIMONS-2002
+      parentClaimIds:
+        - VASO-C002
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-report-vasocomputation-023157
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-vasocomputation-040754
+        date: 2026-09-09
+    - id: VASO-C036
+      statement: The Doppler resistivity index of arteries near upper-trapezius sites does not differ between active trigger-point, latent trigger-point and palpably normal sites.
+      theme: phenomenon
+      rung: observation
+      claimType: measurement
+      sourceAnchor:
+        locator: PMC3493620 author manuscript, Results, Doppler paragraph (via open-access PMC copy)
+        quote: No differences in RI values were detected between normal
+        sourceId: SRC-BALLYNS-2011
+      parentClaimIds:
+        - VASO-C005
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-report-vasocomputation-023157
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-vasocomputation-040754
+        date: 2026-09-09
+  research:
+    - id: VASO-R011
+      title: Needle EMG at a trigger point versus a matched endplate-zone control site under mental arithmetic
+      summary: "Simons 2002 shows endplate noise occurs at non-tender endplate-zone sites, so the silent control sites in Hubbard–Berkoff 1993 and McNulty 1994 may simply have been off the endplate zone. Repeat the McNulty stressor paradigm with the endplate zone located electrically first, placing the control needle in a non-tender endplate-zone site of the same muscle and recording both sites during baseline, serial subtraction, and slow-exhalation recovery. Preregister the contrast: does the stressor raise activity selectively at the trigger point, or at any endplate-zone site?"
+      claimIds:
+        - VASO-C002
+        - VASO-C003
+        - VASO-C034
+      track: small_grant
+      effortTier: lab
+      informationGain: Selective rise at the trigger point with a quiet matched endplate-zone control would restore the 'addressable nidus' reading VASO-C003 rests on; a comparable rise at the control would relocate the phenomenon to stress-sensitive endplates generally and remove the localization argument for a discrete maintained element.
+      origin:
+        ref: report 2026-09-09-report-vasocomputation-023157
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-vasocomputation-040754
+        date: 2026-09-09
+    - id: VASO-R012
+      title: Open the located-but-unretrieved primaries behind this pass (Banks 1998, Hubbard 1996, Chen 1998, Olewnik 2025, Zhang 2009, Ge 2011)
+      summary: "The report located, but the pipeline could not retrieve, six papers each of which would anchor a record the ledger lacks: Banks et al. 1998 (autogenic relaxation lowering trigger-point needle EMG, same lineage as VASO-E002); Hubbard 1996 and Chen et al. 1998 (alpha-blockade quieting the nidus in humans and rabbits, VASO-R009); Olewnik et al. 2025 Sci Rep (blinded strain elastography showing most palpated gastrocnemius points undetectable within minutes of pressure alone and absent at 24 h, bearing on VASO-C011 and against the two-key framing of VASO-C004); Zhang et al. 2009 (attenuated skin blood-flow response at latent points); Ge et al. 2011 (open-access review recording the curare-vs-botulinum conflict on whether the nidus is cholinergic). Routes: PMC or publisher PDFs where open access (Olewnik, Ge), PubMed abstract pages with cookies enabled (Chen, Zhang, Simons full text), a library or interlibrary copy for the Haworth-journal items (Banks, Hubbard)."
+      claimIds:
+        - VASO-C002
+        - VASO-C003
+        - VASO-C004
+        - VASO-C005
+        - VASO-C011
+        - VASO-C020
+      track: either
+      effortTier: desk
+      informationGain: "Would convert five blocked observations into anchored records: bidirectional autonomic modulation of the nidus, the phentolamine result VASO-R009 asks for, the first objective imaged stiffness reversal under pressure alone, a measured autonomic-vascular abnormality at a latent point, and the cholinergic-generator conflict. Olewnik in particular would either support 'state, not scar' objectively or fail to."
+      origin:
+        ref: report 2026-09-09-report-vasocomputation-023157
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-vasocomputation-040754
+        date: 2026-09-09
+  images: []
+corrections:
+  - record: VASO-C002
+    field: statement
+    from: Trigger points exhibit sustained spontaneous needle-EMG activity confined to a millimeter-scale nidus, absent in adjacent non-tender muscle.
+    to: Trigger points exhibit sustained spontaneous needle-EMG activity at a millimeter-scale nidus, more prevalent there than at non-tender sites within the same endplate zone and absent at taut-band sites outside the endplate zone.
+    reason: Simons, Hong & Simons 2002 (SRC-SIMONS-2002, abstract shown) found endplate noise at all 11 trigger-point sites but also at 4 of 11 non-trigger-point endplate-zone sites, and at none of the taut-band sites off the endplate zone, concluding it is 'characteristic of, but is not restricted to' the trigger point. 'Absent in adjacent non-tender muscle' is contradicted when the adjacent site lies in the endplate zone; the corrected statement keeps the gradient the record supports (VASO-E001, VASO-E031, VASO-E032).
+dispositions:
+  - key: doi:10.1300/j094v06n04_03
+    kind: source
+    disposition: blocked
+    reason: "Banks, Jacobs, Gevirtz & Hubbard 1998 (J Musculoskeletal Pain 6(4), doi:10.1300/J094V06N04_03) was not retrievable: both the academia.edu copy and the DOI returned HTTP 403. The report's OCR'd Table 1 figures (TrP means ~13.4 → 7.6 → 8.7 → 12.9 µV across baseline, relaxation, post-relaxation, stressor) cannot be quoted or anchored. It would supply the 'relaxation lowers nidus EMG' half the essay mentioned, in support of VASO-C003 at moderate/weak strength from the same lineage as VASO-E002."
+    reopenIf: The paper's text is retrieved (publisher PDF, library copy, or a clean scan) and the Table 1 values can be read directly.
+    observed: Report §1 F2 and §3 item 2; sources[0] url academia.edu retrieved false 'HTTP 403'; sources[7] doi.org/10.1300/j094v06n04_03 retrieved false 'HTTP 403'.
+    by: 2026-09-09-draft-vasocomputation-040754
+    date: 2026-09-09
+    route: Taylor & Francis (successor to Haworth) landing page for doi:10.1300/J094V06N04_03; interlibrary loan of J Musculoskeletal Pain 6(4):23–32, 1998; or a clean PDF of the academia.edu copy.
+  - key: text:report 3 item 2 evidence supports vaso c003 moderate weak link to vaso e002
+    kind: evidence
+    disposition: blocked
+    reason: Proposed evidence 'autogenic relaxation lowers trigger-point needle EMG, mental arithmetic restores it' (supports VASO-C003) cannot enter without the Banks 1998 text; no quotation is available.
+    reopenIf: Banks 1998 is retrieved.
+    observed: "Report §3 item 2: 'evidence supports VASO-C003 (moderate/weak); link to VASO-E002'."
+    by: 2026-09-09-draft-vasocomputation-040754
+    date: 2026-09-09
+    route: See the Banks 1998 source row.
+  - key: doi:10.1300/j094v04n01_08
+    kind: source
+    disposition: blocked
+    reason: "Hubbard 1996, 'Chronic and recurrent muscle pain: pathophysiology and treatment, and review of pharmacologic studies' (J Musculoskeletal Pain 4(1/2):123–143, doi:10.1300/J094v04n01_08) — the human phentolamine/phenoxybenzamine report VASO-R009 asks for — returned HTTP 403; the report saw its abstract only as a search-engine snippet. Nothing can be quoted. Note for VASO-R009: the report identifies this as the lab's own pharmacologic series inside a review, not an independent primary."
+    reopenIf: The abstract page or PDF is retrieved with text.
+    observed: Report §1 F1 and §3 item 3; sources[8] doi.org/10.1300/j094v04n01_08 retrieved false 'HTTP 403'.
+    by: 2026-09-09-draft-vasocomputation-040754
+    date: 2026-09-09
+    route: Taylor & Francis landing page for the DOI; interlibrary loan of J Musculoskeletal Pain 4(1/2), 1996.
+  - key: doi:10.1016/s0003-9993(98)90357-4
+    kind: source
+    disposition: blocked
+    reason: "Chen, Chen, Kuan, Chung & Hong 1998, 'Phentolamine effect on the spontaneous electrical activity of active loci in a myofascial trigger spot of rabbit skeletal muscle' (Arch Phys Med Rehabil 79:790–794, doi:10.1016/S0003-9993(98)90357-4): the DOI resolved only to the word 'Redirecting'; no title, authors or content confirmed from retrieved text. The report itself did not open the abstract. Would bear on VASO-C002, VASO-C003 and VASO-R009 once retrieved."
+    reopenIf: The PubMed or ScienceDirect abstract page is retrieved with text confirming title and authors.
+    observed: Report §1 F1 and §3 item 4 ('not opened'); sources[10] doi.org/10.1016/s0003-9993(98)90357-4 retrieved true, text 'Redirecting'.
+    by: 2026-09-09-draft-vasocomputation-040754
+    date: 2026-09-09
+    route: PubMed search for the title with cookies enabled; ScienceDirect landing page for the DOI following the redirect.
+  - key: doi:10.1007/s11916-001-0054-6
+    kind: source
+    disposition: blocked
+    reason: "Rivner 2001, 'The neurophysiology of myofascial pain syndrome' (Curr Pain Headache Rep 5:432–440, doi:10.1007/s11916-001-0054-6): the Springer page served a bot-challenge page with HTTP 200; no text. It is a secondary review the report offers as background confirming the alpha-blockade result and listing generator hypotheses; it would enter as a background source only."
+    reopenIf: The abstract page is retrieved with text.
+    observed: Report §1 F1 and §3 item 5; sources[1] retrieved false 'bot challenge page served with HTTP 200'.
+    by: 2026-09-09-draft-vasocomputation-040754
+    date: 2026-09-09
+    route: Retry the Springer landing page with a browser session; PubMed abstract for PMID via title search.
+  - key: doi:10.1186/1749-8546-6-13
+    kind: source
+    disposition: blocked
+    reason: "Ge, Fernández-de-las-Peñas & Yue 2011, 'Myofascial trigger points: spontaneous electrical activity and its consequences for pain induction and propagation' (Chin Med 6:13, doi:10.1186/1749-8546-6-13): BMC page served a bot-challenge page; no text. The report reads it as the endplate-ACh-release interpretation and as the citing source for Kuan 2002 (botulinum toxin reduces SEA, rabbit), Chen 1998 and Zhang 2009. Open access; should be straightforwardly retrievable."
+    reopenIf: The open-access full text is retrieved from BMC or PMC.
+    observed: Report §1 F3 and §3 item 6; sources[3] retrieved false 'bot challenge page served with HTTP 200'.
+    by: 2026-09-09-draft-vasocomputation-040754
+    date: 2026-09-09
+    route: PMC copy of Chin Med 2011;6:13 (search PMC by title), or the BMC PDF link.
+  - key: text:report 3 item 6 flag the curare vs botulinum conflict as a research note under vaso r004 r009
+    kind: research
+    disposition: blocked
+    reason: The report's proposed research note — the conflict between Hubbard's statement that curare did not block trigger-point activity and Kuan 2002's report that botulinum toxin reduced it, bearing on whether the nidus is cholinergic — rests entirely on unretrieved sources (Banks 1998, Ge 2011, Kuan 2002). It is folded into VASO-R012's retrieval list rather than entered as a separate item.
+    reopenIf: Ge 2011 and Kuan 2002 are retrieved and the two statements can be quoted.
+    observed: "Report §3 item 6: 'flag the curare-vs-botulinum conflict as a research note under VASO-R004/R009'."
+    by: 2026-09-09-draft-vasocomputation-040754
+    date: 2026-09-09
+    route: Retrieve Ge 2011 (open access) and Kuan et al. 2002 (Am J Phys Med Rehabil) via PMC/PubMed.
+  - key: url:nature.com/articles/s41598-025-25902-8
+    kind: source
+    disposition: blocked
+    reason: "Olewnik et al. 2025, 'Ultrasound elastography to guide compression therapy for gastrocnemius trigger points in runners' (Sci Rep 15:41950, doi:10.1038/s41598-025-25902-8): nature.com served a bot-challenge page; no text. The report's figures (103 MTrPs in 30 runners; 75 undetectable by palpation and imaging immediately after ischemic compression, 21 non-palpable with reduced stiffness, 7 persistent; none of 96 recurred at 24 h; no Doppler, no breath instruction, no control group) cannot be quoted. This is the single most consequential unretrieved item: it would give VASO-C011 its first objective imaged record and would qualify VASO-C004/VASO-E014 (pressure alone sufficed)."
+    reopenIf: The open-access full text or PDF is retrieved.
+    observed: Report §1 F5 and §3 item 8; sources[5] retrieved false 'bot challenge page served with HTTP 200'.
+    by: 2026-09-09-draft-vasocomputation-040754
+    date: 2026-09-09
+    route: nature.com PDF link for s41598-025-25902-8; PMC copy (Sci Rep is deposited); or the DOI with a browser session.
+  - key: text:report 3 item 8 evidence supports vaso c011 moderate evidence qualifies vaso c004 pressure alone sufficed
+    kind: evidence
+    disposition: blocked
+    reason: Proposed evidence from Olewnik 2025 — objective minutes-scale, day-persistent disappearance of palpated stiff foci under pressure alone — supporting VASO-C011 and qualifying VASO-C004 cannot enter without the retrieved text.
+    reopenIf: Olewnik 2025 is retrieved.
+    observed: "Report §3 item 8: 'evidence supports VASO-C011 (moderate); evidence qualifies VASO-C004 (pressure alone sufficed)'."
+    by: 2026-09-09-draft-vasocomputation-040754
+    date: 2026-09-09
+    route: See the Olewnik 2025 source row.
+  - key: text:report 1 f5 75 103 mtrps undetectable by palpation and imaging none of the 96 recurred at 24 h no breath manipulation
+    kind: claim
+    disposition: blocked
+    reason: The proposition 'palpated trigger points can become undetectable by palpation and elastography within minutes of pressure alone, without breath instruction, and remain absent at 24 hours' would be anchored only to Olewnik 2025, which was not retrieved.
+    reopenIf: Olewnik 2025 is retrieved with a quotable passage.
+    observed: "Report §1 F5: '75/103 MTrPs undetectable by palpation and imaging … none of the 96 recurred at 24 h … no breath manipulation'."
+    by: 2026-09-09-draft-vasocomputation-040754
+    date: 2026-09-09
+    route: See the Olewnik 2025 source row.
+  - key: doi:10.1016/j.apmr.2008.06.037
+    kind: source
+    disposition: blocked
+    reason: "Zhang, Ge, Yue, Kimura & Arendt-Nielsen 2009, 'Attenuated skin blood flow response to nociceptive stimulation of latent myofascial trigger points' (Arch Phys Med Rehabil 90:325–332, doi:10.1016/j.apmr.2008.06.037): the DOI resolved only to 'Redirecting'; the report saw the abstract only as a search snippet. Nothing can be quoted. Would be the first record of an autonomic-vascular abnormality measured at a trigger point (skin flow, provocation-evoked, latent points), bearing weakly on VASO-C005 and VASO-C020."
+    reopenIf: The abstract page is retrieved with text.
+    observed: Report §1 F6 and §3 item 9; sources[12] retrieved true, text 'Redirecting'.
+    by: 2026-09-09-draft-vasocomputation-040754
+    date: 2026-09-09
+    route: PubMed abstract with cookies enabled; ScienceDirect landing page following the DOI redirect.
+  - key: text:report 3 item 9
+    kind: evidence
+    disposition: blocked
+    reason: Proposed evidence 'attenuated skin blood-flow response to glutamate at latent trigger points, read as sympathetic vasoconstrictor hyperactivity' (supports VASO-C005 weakly; context VASO-C020) cannot enter without the Zhang 2009 text.
+    reopenIf: Zhang 2009 is retrieved.
+    observed: Report §3 item 9.
+    by: 2026-09-09-draft-vasocomputation-040754
+    date: 2026-09-09
+    route: See the Zhang 2009 source row.
+  - key: doi:10.1007/s11916-014-0441-4
+    kind: source
+    disposition: blocked
+    reason: "'Painful Connections: Densification Versus Fibrosis of Fascia' (Curr Pain Headache Rep 18:8, 2014, doi:10.1007/s11916-014-0441-4): Springer served a bot-challenge page; no text. The report's reading that densification is 'an alteration that is easily reversible' with no timescale given cannot be quoted. The prior `declined` Stecco entry therefore stays blocked; VASO-R008's seconds-timescale question remains open, with Cowman et al. 2015 (F1000Res 4:622) and Stecco et al. 2011 (Surg Radiol Anat 33:891–896) as the next targets."
+    reopenIf: The abstract page or full text is retrieved; ideally together with Cowman 2015 for the hyaluronan viscosity physics.
+    observed: Report §1 F7 and §3 item 10; sources[6] retrieved false 'bot challenge page served with HTTP 200'.
+    by: 2026-09-09-draft-vasocomputation-040754
+    date: 2026-09-09
+    route: Springer landing page with a browser session; PubMed abstract by title; Cowman et al. 2015 F1000Research 4:622 is open access.
+  - key: text:report 1 f8 and 3 item 11 lww abstract page content via search result full text not opened
+    kind: evidence
+    disposition: blocked
+    reason: The report's proposed update to VASO-E007's provenance note ('second-hand' → 'abstract observed, full text pending') for SRC-MAZZA-2021 rests on an abstract the report saw only as a search result; no Mazza text was shown to me, so no correction can be written and no URL can be added to the record.
+    reopenIf: The Mazza 2021 abstract or full text (e.g., PMC8448923 or the eScholarship PDF the report names) is retrieved and shown.
+    observed: "Report §1 F8 and §3 item 11: 'LWW abstract page content, via search result; full text not opened'."
+    by: 2026-09-09-draft-vasocomputation-040754
+    date: 2026-09-09
+    route: PMC8448923; eScholarship PDF; LWW landing page for doi:10.1097/PHM.0000000000001789.
+  - key: url:pubmed.ncbi.nlm.nih.gov/11989519
+    kind: source
+    disposition: blocked
+    reason: PubMed page for Simons 2002 (PMID 11989519) returned only a 'Cookies must be enabled' notice; the same work was retrieved from the Ovid page at its DOI and added as SRC-SIMONS-2002, so this URL is redundant rather than a separate candidate.
+    reopenIf: Not needed; the DOI page sufficed. Reopen only if the full text is sought and the PubMed route offers a PMC link.
+    observed: sources[2] pubmed.ncbi.nlm.nih.gov/11989519/ retrieved true, text 'Cookies must be enabled'.
+    by: 2026-09-09-draft-vasocomputation-040754
+    date: 2026-09-09
+    route: Retry with cookies enabled if full text is wanted.
+  - key: doi:10.7863/jum.2011.30.10.1331
+    kind: source
+    disposition: duplicate
+    as: SRC-BALLYNS-2011
+    reason: The publisher DOI https://doi.org/10.7863/jum.2011.30.10.1331 returned HTTP 403, but the same article's NIH author manuscript (PMC3493620) was retrieved in full and is the record added this pass; the DOI is recorded as its identifier.
+    observed: sources[11] doi.org/10.7863/jum.2011.30.10.1331 retrieved false 'HTTP 403'; sources[4] PMC3493620 retrieved true.
+    by: 2026-09-09-draft-vasocomputation-040754
+    date: 2026-09-09
+  - key: text:report 3 considered and not proposed only its reference list was visible worth a future look as a registered imaging protocol
+    kind: research
+    disposition: blocked
+    reason: ClinicalTrials.gov NCT06060925 'Imaging Biomarkers for Myofascial Pain' was seen by the report only as a reference list in a search snippet; the report itself did not propose it. Noted as a registered imaging protocol worth reading for VASO-R001's design, but nothing was shown.
+    reopenIf: The registry record is retrieved with its protocol summary and outcome measures.
+    observed: "Report §3 'Considered and not proposed': 'only its reference list was visible — worth a future look as a registered imaging protocol'."
+    by: 2026-09-09-draft-vasocomputation-040754
+    date: 2026-09-09
+    route: https://clinicaltrials.gov/study/NCT06060925 — retrieve the record's description, arms and outcome measures.
+  - key: text:report 4 plates fig 3 or fig 5 could be candidates if the licence is confirmed cc by i inspected neither image file itself only their captions
+    kind: image
+    disposition: blocked
+    reason: "Candidate plate from Olewnik 2025 (Fig. 3 compression technique or Fig. 5 elimination outcomes): the paper was not retrieved, the licence is unconfirmed (report says 'if the licence is confirmed CC BY'), and the report inspected only captions, not the image files. No public record URL, licence or credit was shown."
+    reopenIf: Olewnik 2025 is retrieved with an explicit CC BY licence statement and the figure URL and caption are shown.
+    observed: "Report §4 Plates: 'Fig. 3 … or Fig. 5 … could be candidates if the licence is confirmed CC BY … I inspected neither image file itself, only their captions.'"
+    by: 2026-09-09-draft-vasocomputation-040754
+    date: 2026-09-09
+    route: Open the nature.com article page; read the 'Rights and permissions' section; capture the figure's direct URL and caption.
+  - key: url:pmc.ncbi.nlm.nih.gov/articles/PMC3493620
+    kind: image
+    disposition: blocked
+    reason: "Candidate plate from Ballyns 2011 Fig. 2 (Doppler waveform grades): the PMC page shows the caption but the figure file was not shown, and the reuse terms of an NIH author manuscript under a 2011 AIUM copyright are not a licence the ledger can record. The PMC page states '© 2011 by the American Institute of Ultrasound in Medicine'."
+    reopenIf: Reuse permission from AIUM/J Ultrasound Med is obtained or the figure is confirmed to fall under an open licence, and the figure URL is shown.
+    observed: "Report §4 Plates: 'Ballyns 2011 Fig. 2 … is an NIH author manuscript and its reuse terms should be checked before use.' Retrieved PMC text: '© 2011 by the American Institute of Ultrasound in Medicine'."
+    by: 2026-09-09-draft-vasocomputation-040754
+    date: 2026-09-09
+    route: Check AIUM permissions for J Ultrasound Med 2011;30:1331–1340 Figure 2; if granted, record the figure's PMC URL, credit and licence terms.
+report: proposals/2026-09-09-report-vasocomputation-023157/report.md

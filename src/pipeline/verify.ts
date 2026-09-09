@@ -243,8 +243,16 @@ export async function judgeProposal(
     okClaims.push(c);
   }
 
-  // Evidence whose claims were all rejected falls with them.
+  // Claims whose parents or dependencies were rejected (or never existed) keep the claim and lose the link, said aloud.
   const liveClaimIds = new Set([...loaded.claims.filter((c) => c.reviewState !== "rejected").map((c) => c.id), ...okClaims.map((c) => c.id)]);
+  for (const [i, c] of okClaims.entries()) {
+    const dangling = [...c.parentClaimIds, ...c.dependsOnClaimIds].filter((id) => !liveClaimIds.has(id));
+    if (dangling.length) {
+      notes.push(`${c.id}: names ${dangling.join(", ")} as parent or dependency, not a live claim — those links are dropped`);
+      okClaims[i] = { ...c, parentClaimIds: c.parentClaimIds.filter((id) => liveClaimIds.has(id)), dependsOnClaimIds: c.dependsOnClaimIds.filter((id) => liveClaimIds.has(id)) };
+    }
+  }
+  // Evidence whose claims were all rejected falls with them.
   const evidence = okEvidence.filter((e) => {
     const kept = e.claimIds.filter((id) => liveClaimIds.has(id));
     if (kept.length === 0) {

@@ -5,7 +5,7 @@ import type { Evidence, Source, Study } from "./schema.ts";
  * Study integrity — the pure rules behind the pre-registration
  * machinery (see StudySchema). Kept framework-free and separately
  * testable, like the other domain validators. The freeze-stamping
- * script (scripts/stamp-study.mjs) mirrors computeCriteriaHash in plain
+ * script (stamp-study, retired 2026-09-09; a `freeze` verb would replace it) mirrored computeCriteriaHash in plain
  * node; this file is the authority.
  */
 

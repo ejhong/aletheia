@@ -74,7 +74,7 @@ saturation.
 
 Chosen to suit each subject and to harmonize as a set on the paper-toned
 homepage grid: two warms, two cools, two greens, all at the same faded
-mineral-pigment saturation. Defined in `scripts/generate-case-art.mjs`
+mineral-pigment saturation. Defined in the generate-case-art script (retired 2026-09-09; the plates keep the register)
 (`CASE_TONES`); keep the two in sync.
 
 | case | tone | pigments |

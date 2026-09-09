@@ -865,7 +865,7 @@ export interface Ratification {
 
 /**
  * A reconsideration draft is the one deliberately non-blind draft in the
- * pipeline (scripts/reconcile-contested.mjs): written with the panel's
+ * pipeline (the `edition` verb's reconsideration, formerly scripts/reconcile-contested.mjs): written with the panel's
  * dissents in hand. Detected by the `reconciles` stamp; the promptVersion
  * fallback covers overlays written before the stamp existed.
  */
@@ -1045,7 +1045,7 @@ export function ratification(loaded: LoadedCase): Ratification | null {
  * has checked it, when content moved after the newest check, or when the
  * adopted assessment is a reconsideration no fresh blind check has judged.
  * The single source of the rule the content-response workflow re-panels on
- * (scripts/stale-checks.ts) — the same derivation `ratification` uses.
+ * (formerly scripts/stale-checks.ts, retired 2026-09-09; `next` reads `checksStale`) — the same derivation `ratification` uses.
  */
 export function checksStale(loaded: LoadedCase): boolean {
   const draft = adoptedAssessment(loaded);

@@ -7,7 +7,6 @@ export const site = {
     { label: "Cases", href: "/cases" },
     { label: "Method", href: "/method" },
     { label: "Panel", href: "/panel" },
-    { label: "Proposals", href: "/proposals" },
   ],
   /**
    * Canonical public origin (no trailing slash), used as Next's

@@ -16,7 +16,7 @@ Ten cases are live (`content/cases/`): megalithic casting, vasocomputation, Orch
 
 `docs/DECISIONS.md` is the append-only history of why things are the way they are. Read it when a rule seems odd; it is not a manual.
 
-Narrower references: `docs/CONTENT_POLICY.md` (verification labels, real-citations-only), `docs/DATA_MODEL.md` (the domain objects in prose; `src/domain/schema.ts` is authoritative), `docs/IMAGE_STYLE.md` (the two image registers), `docs/EXTRACTION_PIPELINE.md` (document → catalog claims), `docs/CHAT_BRIEFS.md` (chat-seeded case construction), `inbox/README.md` (the drop conventions).
+Narrower references: `docs/CONTENT_POLICY.md` (verification labels, real-citations-only), `docs/DATA_MODEL.md` (the domain objects in prose; `src/domain/schema.ts` is authoritative), `docs/IMAGE_STYLE.md` (the two image registers), `docs/CHAT_BRIEFS.md` (chat-seeded case construction), `inbox/README.md` (the drop conventions).
 
 ## Commands
 
@@ -27,7 +27,7 @@ npm run typecheck  # tsc --noEmit
 npm run lint       # eslint
 npm test           # vitest
 npm run build      # static export to out/ (fails loudly on invalid content)
-node scripts/yield-report.mjs   # which cases moved, and when
+node scripts/aletheia.ts next   # what the ledger wants next, and why
 ```
 
 ## Architecture
@@ -54,7 +54,7 @@ Two registers, never confused (full rules in `docs/IMAGE_STYLE.md`): AI-generate
 | --- | --- |
 | `content/cases/<slug>/` | One published case |
 | `inbox/` | Drop zone: notes, link lists, documents (see `inbox/README.md`) |
-| `proposals/` | Machine output awaiting adoption: watch hits, triage, agenda, import proposals, ledgers |
+| `proposals/` | Machine output, one directory per run (report, draft, verify, edition, check, inbox) with its `run.yaml` and working files; earlier watch, agenda and import artifacts kept as history |
 | `governance/arbiter/` | Harvested panel verdicts, one per settled PR |
 | `research/` | The founder's own essays and commissioned reports (founding inputs for cases) |
 | `briefs/` | Chat-seeded case briefs in progress (never citable) |

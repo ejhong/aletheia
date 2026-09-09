@@ -389,7 +389,7 @@ export type StudyRowCitation = z.infer<typeof StudyRowCitationSchema>;
  * (criteria, method, question; zero rows, zero findings; publicly
  * rendered as "pre-registered — collection pending") and the collection
  * PR (rows, findings, limitations). `criteriaHash` is stamped at freeze
- * (scripts/stamp-study.mjs) and recomputed by the loader on every
+ * (by the stamp-study script, retired 2026-09-09) and recomputed by the loader on every
  * build, so any post-freeze edit to the criteria fails the build.
  * Studies are append-only: a correction is a new study carrying
  * `supersedes`, and evidence citing a superseded study's workpaper
@@ -652,7 +652,7 @@ export const AssessmentRunSchema = z.object({
     }),
   ),
   /**
-   * Reconsideration drafts only (scripts/reconcile-contested.mjs): the
+   * Reconsideration drafts only (the `edition` verb's reconsideration; formerly scripts/reconcile-contested.mjs, retired 2026-09-09): the
    * runIds of the check runs whose dissents this draft was written with.
    * Ratification treats exactly these checks as engaged — a reconciled
    * draft cannot be ratified until at least one blind check OUTSIDE this
@@ -873,7 +873,7 @@ export function romanNumeral(n: number): string {
 /**
  * Literature-watch configuration — an optional `watch.yaml` per case.
  *
- * Each query drives the weekly `scripts/watch-literature.mjs` run, which
+ * Each query drove the weekly watch-literature run (retired 2026-09-09; the `report` verb searches now), which
  * searches arXiv and Crossref (and optionally OpenAlex) for newly
  * published/indexed items and surfaces them as DISCOVERY-ONLY proposals
  * under `proposals/watch/<runId>/`. Nothing enters sources.yaml

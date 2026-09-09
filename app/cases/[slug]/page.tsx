@@ -14,6 +14,8 @@ import { ConjectureCard } from "@/src/components/ConjectureCard";
 import { AccountsList } from "@/src/components/AccountsList";
 import { LatestStrip } from "@/src/components/LatestStrip";
 import { StandingPanel } from "@/src/components/StandingPanel";
+import { RecordPanel } from "@/src/components/RecordPanel";
+import { caseRecord } from "@/src/domain/record";
 import { caseActivity } from "@/src/domain/activity";
 import { caseCover, loadAllCases } from "@/src/domain/load";
 import { crossModelSummary, latestCheckPerModel } from "@/src/domain/standing";
@@ -57,6 +59,7 @@ const sections = [
   ["evidence", "Evidence"],
   ["conventional", "Conventional"],
   ["research", "Research"],
+  ["record", "Record"],
   ["history", "History"],
 ] as const;
 
@@ -243,6 +246,8 @@ export default async function CasePage({
             ))}
           </div>
         </section>
+
+        <RecordPanel sittings={caseRecord(loaded)} slug={loaded.record.slug} caseDir={loaded.dir} />
 
         <section id="history" className="pt-14 pb-6 scroll-mt-28">
           <h2 className="font-serif text-3xl tracking-tight mb-2">

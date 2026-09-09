@@ -1770,3 +1770,15 @@ the standing's own rule (exact, adjacent within one step, split when
 fewer than a majority are within a step). `AccountsList` shows the
 edition's accounts side by side. Run records are read by the domain
 (`src/domain/runs.ts`), the pipeline's store importing them from there.
+
+**The UI pass, second PR: the record layer (2026-09-09).** Beneath the
+research agenda and before the changelog, "The record": every sitting on
+the case, newest first — date, verb, what it did in a reader's words, its
+cost, and its disposition counts — and under each, what it refused with
+the reason the verifier wrote and what would reopen it, and what it
+admitted with a link to the record it became. Derived from the run
+records and the dispositions file (`src/domain/record.ts`); nothing is
+stored for it; the file itself is one click away. Review notes are not
+per case — they are about pull requests — and go on the operations page
+in the third PR.
+

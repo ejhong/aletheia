@@ -82,8 +82,8 @@ export function setField(file: string, id: string, field: string, from: unknown,
   if (!Array.isArray(before)) throw new Error(`${file} is not a YAML list`);
   const idx = before.findIndex((r) => r && r.id === id);
   if (idx === -1) throw new Error(`${path.basename(file)} has no record ${id}`);
-  if (JSON.stringify(before[idx][field]) !== JSON.stringify(from)) {
-    throw new Error(`${id}.${field} is not the value the correction was written against; current: ${JSON.stringify(before[idx][field]).slice(0, 160)}`);
+  if (JSON.stringify(before[idx][field] ?? null) !== JSON.stringify(from ?? null)) {
+    throw new Error(`${id}.${field} is not the value the correction was written against; current: ${JSON.stringify(before[idx][field] ?? null).slice(0, 160)}`);
   }
   const lines = text.split("\n");
   const startLine = lines.findIndex((l) => new RegExp(`^- id: ${id.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*$`).test(l));
@@ -91,15 +91,23 @@ export function setField(file: string, id: string, field: string, from: unknown,
   let endLine = startLine + 1;
   while (endLine < lines.length && !/^- /.test(lines[endLine])) endLine++;
   const fieldLine = lines.slice(startLine + 1, endLine).findIndex((l) => new RegExp(`^  ${field}:`).test(l));
-  if (fieldLine === -1) throw new Error(`${id} has no field ${field} written at the record's indent`);
-  const fStart = startLine + 1 + fieldLine;
-  let fEnd = fStart + 1;
-  while (fEnd < endLine && !/^  [A-Za-z_][A-Za-z0-9_]*:/.test(lines[fEnd]) && !/^\s*#/.test(lines[fEnd])) fEnd++;
   const replacement = stringifyYaml({ [field]: to }, { lineWidth: 0 })
     .replace(/\n$/, "")
     .split("\n")
     .map((l) => `  ${l}`);
-  const edited = [...lines.slice(0, fStart), ...replacement, ...lines.slice(fEnd)].join("\n");
+  let edited: string;
+  if (fieldLine === -1) {
+    // An absent field (the correction's `from` is null/undefined) is added at the end of the record.
+    if (from !== undefined && from !== null) throw new Error(`${id} has no field ${field} written at the record's indent`);
+    let insertAt = endLine;
+    while (insertAt > startLine + 1 && lines[insertAt - 1].trim() === "") insertAt--;
+    edited = [...lines.slice(0, insertAt), ...replacement, ...lines.slice(insertAt)].join("\n");
+  } else {
+    const fStart = startLine + 1 + fieldLine;
+    let fEnd = fStart + 1;
+    while (fEnd < endLine && !/^  [A-Za-z_][A-Za-z0-9_]*:/.test(lines[fEnd]) && !/^\s*#/.test(lines[fEnd])) fEnd++;
+    edited = [...lines.slice(0, fStart), ...replacement, ...lines.slice(fEnd)].join("\n");
+  }
   const after = parseYaml(edited) as Record<string, unknown>[];
   const expected = before.map((r, i) => (i === idx ? { ...r, [field]: to } : r));
   if (JSON.stringify(after) !== JSON.stringify(expected)) {

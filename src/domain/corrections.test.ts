@@ -43,6 +43,15 @@ describe("setField", () => {
     expect(after).toContain("  # a comment inside the record\n  rung: observation\n- id: GEO-C004\n  statement: \"A quoted one-liner.\"");
   });
 
+  it("adds a field a record lacks when the correction's from is null, at the end of the record", () => {
+    const { file } = tmpCase();
+    setField(file, "GEO-C001", "url", null, "https://example.test/paper");
+    const after = fs.readFileSync(file, "utf8");
+    expect(parseYaml(after)[0].url).toBe("https://example.test/paper");
+    expect(after).toContain("  parentClaimIds: [GEO-C000]\n  url: https://example.test/paper\n- id: GEO-C003");
+    expect(() => setField(file, "GEO-C001", "nope", "something", "x")).toThrow(/not the value the correction was written against/); // absent ≠ "something"
+  });
+
   it("refuses when the field has moved since the correction was written, or the record is missing", () => {
     const { file } = tmpCase();
     expect(() => setField(file, "GEO-C003", "statement", "something else", "x")).toThrow(/not the value the correction was written against/);

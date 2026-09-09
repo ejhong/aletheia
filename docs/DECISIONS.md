@@ -1275,5 +1275,13 @@ says so. Two transport lessons: a stream torn before its final event is
 sent once more (a fifteen-minute edition reply was lost to one), and spend
 is recorded before a refusal or truncation is thrown. Remaining for the
 loop to run itself: the Arbiter toggle and the schedule line — both the
-founder's.
+founder's. Then `aletheia next --run` ran its own first choice unattended
+(2026-09-09 UTC): it drafted the report that had reached Kelany 2009 and
+the AERA radiocarbon summary, verified it (2 sources, 3 evidence records, 2
+claims, 2 research items admitted, 13 rejected — six of them Engelbach 1922
+records blocked because that source record had no URL, now added by hand
+with provenance; draft protocol v3 asks the drafter to propose such URLs),
+wrote an edition that re-adopted the reconsidered assessment, and the panel
+re-checked the moved ledger. Corrections reach `images.yaml` and can add an
+absent field. Day's recorded spend at that point: about $16 of the $50 cap.
 (AI implementation record; founder-directed session.)

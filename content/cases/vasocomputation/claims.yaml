@@ -145,8 +145,7 @@
   dependsOnClaimIds: []
 
 - id: VASO-C002
-  statement: >-
-    Trigger points exhibit sustained spontaneous needle-EMG activity confined to a millimeter-scale nidus, absent in adjacent non-tender muscle.
+  statement: Trigger points exhibit sustained spontaneous needle-EMG activity at a millimeter-scale nidus, more prevalent there than at non-tender sites within the same endplate zone and absent at taut-band sites outside the endplate zone.
   theme: neural-signature
   rung: observation
   claimType: measurement
@@ -218,3 +217,1783 @@
     date: "2026-08-22"
   parentClaimIds: [ VASO-C021 ]
   dependsOnClaimIds: []
+
+- id: VASO-C031
+  statement: In patients with acute cervical pain, pulsatile arteries within 1–2 cm of active upper-trapezius trigger points show a higher Doppler pulsatility index than arteries near palpably normal sites in the same muscle.
+  theme: phenomenon
+  rung: observation
+  claimType: measurement
+  sourceAnchor:
+    locator: PMC3493620 author manuscript, Results, Doppler paragraph (via open-access PMC copy)
+    quote: vessels near active sites had a significantly higher pulsatility index
+    sourceId: SRC-BALLYNS-2011
+  parentClaimIds:
+    - VASO-C005
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-report-vasocomputation-023157
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-040754
+    date: 2026-09-09
+- id: VASO-C032
+  statement: Retrograde diastolic flow occurs in arteries near roughly a third (31%) of palpably normal upper-trapezius sites in patients who have trigger points elsewhere in the muscle.
+  theme: phenomenon
+  rung: observation
+  claimType: measurement
+  sourceAnchor:
+    locator: PMC3493620 author manuscript, Results, Doppler paragraph (via open-access PMC copy)
+    quote: retrograde diastolic flow was observed compared to 21 (40%) and 15 (31%)
+    sourceId: SRC-BALLYNS-2011
+  parentClaimIds:
+    - VASO-C005
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-report-vasocomputation-023157
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-040754
+    date: 2026-09-09
+- id: VASO-C033
+  statement: The area of reduced vibration amplitude on sonoelastography is larger at active trigger-point sites than at latent sites, and larger at latent sites than at palpably normal sites, in the upper trapezius.
+  theme: phenomenon
+  rung: observation
+  claimType: measurement
+  sourceAnchor:
+    locator: PMC3493620 author manuscript, Results, paragraph beginning 'Trigger point areas assessed by vibration elastography' (via open-access PMC copy)
+    quote: active sites were significantly larger than latent sites
+    sourceId: SRC-BALLYNS-2011
+  parentClaimIds:
+    - VASO-C005
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-report-vasocomputation-023157
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-040754
+    date: 2026-09-09
+- id: VASO-C034
+  statement: Endplate noise on needle EMG occurs at some endplate-zone sites that are outside any trigger point, at lower prevalence than at trigger-point sites.
+  theme: neural-signature
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: Abstract, Results, via Ovid landing page at doi:10.1097/00002060-200203000-00010
+    quote: in four muscles at endplate zone sites outside of trigger points
+    sourceId: SRC-SIMONS-2002
+  parentClaimIds:
+    - VASO-C002
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-report-vasocomputation-023157
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-040754
+    date: 2026-09-09
+- id: VASO-C035
+  statement: Endplate noise on needle EMG does not occur at taut-band sites that lie outside the motor endplate zone.
+  theme: neural-signature
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: Abstract, Results, via Ovid landing page at doi:10.1097/00002060-200203000-00010
+    quote: did not occur in taut band sites outside of an endplate zone
+    sourceId: SRC-SIMONS-2002
+  parentClaimIds:
+    - VASO-C002
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-report-vasocomputation-023157
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-040754
+    date: 2026-09-09
+- id: VASO-C036
+  statement: The Doppler resistivity index of arteries near upper-trapezius sites does not differ between active trigger-point, latent trigger-point and palpably normal sites.
+  theme: phenomenon
+  rung: observation
+  claimType: measurement
+  sourceAnchor:
+    locator: PMC3493620 author manuscript, Results, Doppler paragraph (via open-access PMC copy)
+    quote: No differences in RI values were detected between normal
+    sourceId: SRC-BALLYNS-2011
+  parentClaimIds:
+    - VASO-C005
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-report-vasocomputation-023157
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-040754
+    date: 2026-09-09
+
+- id: VASO-C038
+  statement: Recently formed knots release within a single session of pressure-and-breath work, while long-standing knots require months of repeated work. (True if time-to-release, measured objectively or by consistent report, scales with the knot's age.)
+  theme: phenomenon
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: "[p. 3]"
+    quote: in a session, the ancient ones take months
+    sourceId: SRC-JHONG-2026
+  parentClaimIds:
+    - VASO-C004
+  dependsOnClaimIds: []
+  reviewState: rejected
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+  rejectionReason: "Not atomic (AGENTS.md §3.2): the statement bundled more than one proposition. Split on 2026-09-09 by the atomicity pass (scripts/migrations/2026-09-09-split-compound.ts; reader claude-sonnet-5, splitter claude-fable-5-1) into VASO-C075, VASO-C076; this record stands as the tombstone."
+- id: VASO-C039
+  statement: Sustained pressure alone, without breath manipulation, does not release a knot. (True if pressure-only trials produce no felt or measured release where pressure-plus-slow-exhale trials at the same sites do; false if pressure alone suffices.)
+  theme: phenomenon
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: "[p. 3]"
+    quote: pressure locates the knots, but pressure alone does not
+    sourceId: SRC-JHONG-2026
+  parentClaimIds:
+    - VASO-C004
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+- id: VASO-C040
+  statement: The obstruction felt at a knot is a dull blockage or refusal to move, qualitatively distinct from the sharp end-range pain of a stretched muscle. (True if blinded subjects reliably classify the two sensations by quality.)
+  theme: phenomenon
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: "[p. 2]"
+    quote: A knot produces something different — a dull blockage
+    sourceId: SRC-JHONG-2026
+  parentClaimIds:
+    - VASO-C001
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+- id: VASO-C041
+  statement: The dull, diffuse ache of a knot is carried by unmyelinated interoceptive afferents rather than by the fast myelinated fibers that carry stretch pain. (True if selective nerve-fiber block abolishes knot ache while sparing stretch pain, or vice versa.)
+  theme: neural-signature
+  rung: mechanism
+  claimType: mechanistic
+  sourceAnchor:
+    locator: "[p. 3]"
+    quote: signature of visceral interoceptive channels
+    sourceId: SRC-JHONG-2026
+  parentClaimIds:
+    - VASO-C040
+  dependsOnClaimIds:
+    - VASO-C040
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+- id: VASO-C042
+  statement: Fascial densification — increased viscosity of the hyaluronan between fascial layers — is reversible by pressure, movement and warmth, and increases with age. (True if hyaluronan viscosity or fascial gliding measures change reversibly under those inputs and worsen with age.)
+  theme: latch
+  rung: mechanism
+  claimType: mechanistic
+  sourceAnchor:
+    locator: "[p. 3]"
+    quote: and warmth, and it demonstrably increases with age
+    sourceId: SRC-JHONG-2026
+  parentClaimIds:
+    - VASO-C011
+  dependsOnClaimIds: []
+  reviewState: rejected
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+  rejectionReason: "Not atomic (AGENTS.md §3.2): the statement bundled more than one proposition. Split on 2026-09-09 by the atomicity pass (scripts/migrations/2026-09-09-split-compound.ts; reader claude-sonnet-5, splitter claude-fable-5-1) into VASO-C077; this record stands as the tombstone."
+- id: VASO-C043
+  statement: In chronic pain the somatosensory cortical representation of the affected body region is degraded or blurred. (True if cortical mapping in chronic-pain patients shows reduced discrimination or displaced representation of the painful region relative to controls.)
+  theme: neural-signature
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: "[p. 4]"
+    quote: cortex map of the affected region gets smudged
+    sourceId: SRC-JHONG-2026
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+- id: VASO-C045
+  statement: The fascia of the diaphragm is anatomically continuous with the psoas at T12–L1. (True if dissection or imaging shows continuous fascial connection at that level.)
+  theme: autonomic-lever
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: "[p. 5]"
+    quote: the diaphragm’s fascia is continuous with the psoas at T12–L1
+    sourceId: SRC-JHONG-2026
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+- id: VASO-C046
+  statement: Relaxation training lowers spontaneous needle-EMG activity at trigger points. (True if EMG amplitude at the nidus falls during or after a relaxation procedure relative to baseline, in a controlled recording.)
+  theme: neural-signature
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: "[p. 6]"
+    quote: relaxation training lowering trigger point activity
+    sourceId: SRC-JHONG-2026
+  parentClaimIds:
+    - VASO-C003
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+- id: VASO-C047
+  statement: Local infusion of phentolamine, an alpha-adrenergic blocker, substantially reduces spontaneous electrical activity at a trigger point. (True if a controlled recording shows EMG amplitude at the nidus falling after phentolamine relative to vehicle.)
+  theme: neural-signature
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: "[p. 6]"
+    quote: phentolamine, a drug that blocks sympathetic signaling, substantially
+    sourceId: SRC-JHONG-2026
+  parentClaimIds:
+    - VASO-C002
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+- id: VASO-C048
+  statement: Smooth muscle in the latch state is histologically normal — latched tissue looks normal under a microscope. (True if microscopy of latched versus relaxed vascular smooth muscle shows no structural difference.)
+  theme: latch
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: "[p. 9]"
+    quote: looks normal under a microscope; it is just holding.
+    sourceId: SRC-JHONG-2026
+  parentClaimIds:
+    - VASO-C010
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+- id: VASO-C049
+  statement: Sympathetic stress chemistry promotes latch-bridge formation, and the nitric-oxide relaxation pathway promotes unlatching. (True if adrenergic agonists increase latch-state force maintenance and NO donors reverse it in vascular smooth-muscle preparations.)
+  theme: latch
+  rung: mechanism
+  claimType: mechanistic
+  sourceAnchor:
+    locator: "[p. 9]"
+    quote: stress chemistry makes latches form more easily
+    sourceId: SRC-JHONG-2026
+  parentClaimIds:
+    - VASO-C010
+  dependsOnClaimIds:
+    - VASO-C010
+  reviewState: rejected
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+  rejectionReason: "Not atomic (AGENTS.md §3.2): the statement bundled more than one proposition. Split on 2026-09-09 by the atomicity pass (scripts/migrations/2026-09-09-split-compound.ts; reader claude-sonnet-5, splitter claude-fable-5-1) into VASO-C078; this record stands as the tombstone."
+- id: VASO-C050
+  statement: "Vascular smooth muscle exhibits hysteresis: two vessels under identical present inputs can be in different contractile states depending on their history over the preceding hour. (True if a preparation's force under a fixed stimulus depends on its prior stimulation sequence.)"
+  theme: latch
+  rung: mechanism
+  claimType: mechanistic
+  sourceAnchor:
+    locator: "[p. 9]"
+    quote: signals can be in different states depending on what happened
+    sourceId: SRC-JHONG-2026
+  parentClaimIds:
+    - VASO-C010
+  dependsOnClaimIds:
+    - VASO-C010
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+- id: VASO-C051
+  statement: Dorsal root ganglia lie behind a permeable blood barrier and are directly exposed to vascular chemistry, unlike the brain. (True if tracer studies show substantially higher vascular permeability in DRG than across the blood–brain barrier.)
+  theme: hemo-neural
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: "[p. 10]"
+    quote: unlike the brain they sit behind a leaky blood barrier
+    sourceId: SRC-JHONG-2026
+  parentClaimIds:
+    - VASO-C012
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+- id: VASO-C052
+  statement: Peripheral sensory nerve endings are in many cases anatomically wrapped around the vessels whose diameter changes they would sense. (True if histology shows mechanosensory endings apposed to arteriolar walls in peripheral tissue.)
+  theme: hemo-neural
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: "[p. 10]"
+    quote: literally wrapped around the vessels whose diameter changes
+    sourceId: SRC-JHONG-2026
+  parentClaimIds:
+    - VASO-C012
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+- id: VASO-C053
+  statement: No published study reports palpable knot burden as a function of age or its distribution across the body. (True if a systematic search finds no such natural-history dataset; false if one exists.)
+  theme: phenomenon
+  rung: observation
+  claimType: existence
+  sourceAnchor:
+    locator: "[p. 13]"
+    quote: There is no graph of knot burden versus age.
+    sourceId: SRC-JHONG-2026
+  parentClaimIds:
+    - VASO-C001
+  dependsOnClaimIds: []
+  reviewState: rejected
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+  rejectionReason: "Not atomic (AGENTS.md §3.2): the statement bundled more than one proposition. Split on 2026-09-09 by the atomicity pass (scripts/migrations/2026-09-09-split-compound.ts; reader claude-sonnet-5, splitter claude-fable-5-1) into VASO-C079, VASO-C080; this record stands as the tombstone."
+- id: VASO-C055
+  statement: Shear-wave elastography and sensitive small-vessel Doppler can be acquired through the same ultrasound probe at knot depths at frame rates sufficient to observe a seconds-scale release. (True if a commercial or research system demonstrates co-registered stiffness and flow at ≥ several frames per second at 1–4 cm depth.)
+  theme: phenomenon
+  rung: observation
+  claimType: methodological
+  sourceAnchor:
+    locator: "[p. 15]"
+    quote: small-vessel flow (sensitive Doppler) through the same probe
+    sourceId: SRC-JHONG-2026
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+- id: VASO-C057
+  statement: "Conventional structural MRI largely fails to image trigger points: they are invisible on T1-weighted imaging, with only preliminary promise on T2 mapping. (True if published MRI studies report no reliable T1 correlate of palpated trigger points.)"
+  theme: phenomenon
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: "[p. 16]"
+    quote: largely failed to image trigger points — invisible on T1
+    sourceId: SRC-JHONG-2026
+  parentClaimIds:
+    - VASO-C005
+  dependsOnClaimIds: []
+  reviewState: rejected
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+  rejectionReason: "Not atomic (AGENTS.md §3.2): the statement bundled more than one proposition. Split on 2026-09-09 by the atomicity pass (scripts/migrations/2026-09-09-split-compound.ts; reader claude-sonnet-5, splitter claude-fable-5-1) into VASO-C081, VASO-C082; this record stands as the tombstone."
+- id: VASO-C059
+  statement: In community samples examined with the 18-site fibromyalgia tender-point protocol, tender points are nearly universal, with median counts of about 6 in women and 3 in men. (True if a population survey reports those distributions.)
+  theme: phenomenon
+  rung: observation
+  claimType: statistical
+  sourceAnchor:
+    locator: "[p. 17]"
+    quote: universal (medians 6 in women, 3 in men)
+    sourceId: SRC-JHONG-2026
+  parentClaimIds:
+    - VASO-C001
+  dependsOnClaimIds: []
+  reviewState: rejected
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+  rejectionReason: "Not atomic (AGENTS.md §3.2): the statement bundled more than one proposition. Split on 2026-09-09 by the atomicity pass (scripts/migrations/2026-09-09-split-compound.ts; reader claude-sonnet-5, splitter claude-fable-5-1) into VASO-C083, VASO-C084, VASO-C085, VASO-C086; this record stands as the tombstone."
+- id: VASO-C060
+  statement: Tender-point counts in community samples track psychological distress and poor sleep rather than tissue damage. (True if counts correlate with distress and sleep measures and not with injury or structural-pathology markers.)
+  theme: phenomenon
+  rung: observation
+  claimType: statistical
+  sourceAnchor:
+    locator: "[p. 17]"
+    quote: counts tracking distress and poor sleep
+    sourceId: SRC-JHONG-2026
+  parentClaimIds:
+    - VASO-C083
+    - VASO-C084
+    - VASO-C085
+    - VASO-C086
+  dependsOnClaimIds: []
+  reviewState: rejected
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+  rejectionReason: "Not atomic (AGENTS.md §3.2): the statement bundled more than one proposition. Split on 2026-09-09 by the atomicity pass (scripts/migrations/2026-09-09-split-compound.ts; reader claude-sonnet-5, splitter claude-fable-5-1) into VASO-C087, VASO-C088, VASO-C089; this record stands as the tombstone."
+- id: VASO-C061
+  statement: Bulk resting muscle stiffness on elastography can fall with age as muscle quality declines while focal stiff spots accumulate. (True if aging elastography data show declining mean stiffness alongside rising spatial variance or focal-spot count.)
+  theme: phenomenon
+  rung: observation
+  claimType: measurement
+  sourceAnchor:
+    locator: "[p. 17]"
+    quote: can fall with age as muscle quality declines, while focal spots accumulate
+    sourceId: SRC-JHONG-2026
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: rejected
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+  rejectionReason: "Not atomic (AGENTS.md §3.2): the statement bundled more than one proposition. Split on 2026-09-09 by the atomicity pass (scripts/migrations/2026-09-09-split-compound.ts; reader claude-sonnet-5, splitter claude-fable-5-1) into VASO-C090; this record stands as the tombstone."
+- id: VASO-C063
+  statement: The traditional contemplative maps place the important knots along the torso's midline and the limbs rather than in the head. (True if a blinded coding of rtsa mdud, granthi and ashi locations finds them concentrated on midline and limbs.)
+  theme: contemplative
+  rung: observation
+  claimType: historical
+  sourceAnchor:
+    locator: "[p. 19]"
+    quote: the traditional maps place the important knots along the
+    sourceId: SRC-JHONG-2026
+  parentClaimIds:
+    - VASO-C022
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+- id: VASO-C064
+  statement: Release of an old, heavily loaded knot cluster can produce a wave of euphoria with warmth radiating from the site and minutes of immobility. (True if such events are reported by multiple independent practitioners under standardized questioning and can be rated at the time.)
+  theme: phenomenon
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: "[p. 20]"
+    quote: wave of euphoria, warmth flooding outward from the site
+    sourceId: SRC-JHONG-2026
+  parentClaimIds:
+    - VASO-C004
+  dependsOnClaimIds: []
+  reviewState: rejected
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+  rejectionReason: "Not atomic (AGENTS.md §3.2): the statement bundled more than one proposition. Split on 2026-09-09 by the atomicity pass (scripts/migrations/2026-09-09-split-compound.ts; reader claude-sonnet-5, splitter claude-fable-5-1) into VASO-C091, VASO-C092; this record stands as the tombstone."
+- id: VASO-C065
+  statement: "Large releases cascade: one cluster letting go is followed by release of neighbouring holdings across a region. (True if a second probe at an adjacent or contralateral site records a release following a primary release more often than chance.)"
+  theme: phenomenon
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: "[p. 21]"
+    quote: neighboring holdings drop in sympathy, releases cascading across a region
+    sourceId: SRC-JHONG-2026
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+- id: VASO-C066
+  statement: The magnitude of euphoria at a release tracks the amplitude of the concurrent stiffness drop and perfusion rise. (True if rated release intensity correlates with imaged stiffness and flow changes across events.)
+  theme: synthesis
+  rung: mechanism
+  claimType: mechanistic
+  sourceAnchor:
+    locator: "[p. 22]"
+    quote: should track the amplitude of the stiffness drop and the perfusion rise
+    sourceId: SRC-JHONG-2026
+  parentClaimIds:
+    - VASO-C091
+    - VASO-C092
+  dependsOnClaimIds:
+    - VASO-C091
+    - VASO-C092
+  reviewState: rejected
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+  rejectionReason: "Not atomic (AGENTS.md §3.2): the statement bundled more than one proposition. Split on 2026-09-09 by the atomicity pass (scripts/migrations/2026-09-09-split-compound.ts; reader claude-sonnet-5, splitter claude-fable-5-1) into VASO-C093, VASO-C094; this record stands as the tombstone."
+- id: VASO-C067
+  statement: Contemplative traditions describe the untying of bodily knots (rtsa mdud, granthis) as accompanied by bliss and, in deep states, bodily immobility. (True if primary texts of those traditions contain such descriptions.)
+  theme: contemplative
+  rung: observation
+  claimType: historical
+  sourceAnchor:
+    locator: "[p. 22]"
+    quote: traditions describe granthi-piercing as waves of bliss and light
+    sourceId: SRC-JHONG-2026
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: rejected
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+  rejectionReason: "Not atomic (AGENTS.md §3.2): the statement bundled more than one proposition. Split on 2026-09-09 by the atomicity pass (scripts/migrations/2026-09-09-split-compound.ts; reader claude-sonnet-5, splitter claude-fable-5-1) into VASO-C095; this record stands as the tombstone."
+- id: VASO-C071
+  statement: No controlled study has shown cognition or a mental state regenerating an anatomical structure. (True if a systematic search finds none; false if one exists.)
+  theme: autonomic-lever
+  rung: observation
+  claimType: existence
+  sourceAnchor:
+    locator: "[p. 28]"
+    quote: controlled study has ever shown cognition regenerating a structure
+    sourceId: SRC-JHONG-2026
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+- id: VASO-C073
+  statement: In a breath-assisted release, local reperfusion precedes the mechanical stiffness change — blood first, stiffness second. (True if time-resolved Doppler and elastography show the perfusion rise leading the stiffness drop across events; false if stiffness leads or the two are simultaneous.)
+  theme: synthesis
+  rung: mechanism
+  claimType: mechanistic
+  sourceAnchor:
+    locator: "[p. 31]"
+    quote: reperfusion precedes mechanical change . Blood first, stiffness second
+    sourceId: SRC-JHONG-2026
+  parentClaimIds:
+    - VASO-C020
+  dependsOnClaimIds:
+    - VASO-C011
+    - VASO-C020
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+- id: VASO-C074
+  statement: Drugs that modulate the nitric-oxide pathway or sympathetic tone change how easily knots release. (True if a controlled pharmacological challenge alters release rate or threshold relative to placebo.)
+  theme: synthesis
+  rung: mechanism
+  claimType: causal
+  sourceAnchor:
+    locator: "[p. 31]"
+    quote: the nitric oxide pathway or sympathetic tone should change
+    sourceId: SRC-JHONG-2026
+  parentClaimIds:
+    - VASO-C020
+  dependsOnClaimIds:
+    - VASO-C078
+  reviewState: rejected
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+  rejectionReason: "Not atomic (AGENTS.md §3.2): the statement bundled more than one proposition. Split on 2026-09-09 by the atomicity pass (scripts/migrations/2026-09-09-split-compound.ts; reader claude-sonnet-5, splitter claude-fable-5-1) into no part the reader accepted on the same anchor; this record stands as the tombstone."
+
+- id: VASO-C075
+  statement: Recently formed (fresh) knots yield within a single session of pressure-and-breath work. (True if newly formed knots, on consistent report, typically release within one session.)
+  theme: phenomenon
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: "[p. 3]"
+    quote: in a session, the ancient ones take months
+    sourceId: SRC-JHONG-2026
+  parentClaimIds:
+    - VASO-C004
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907; split from VASO-C038 (2026-09-09-verify-vasocomputation-052024)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+
+- id: VASO-C076
+  statement: Long-standing (ancient) knots take months of repeated work to release. (True if old knots, on consistent report, typically require months of repeated work before releasing.)
+  theme: phenomenon
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: "[p. 3]"
+    quote: in a session, the ancient ones take months
+    sourceId: SRC-JHONG-2026
+  parentClaimIds:
+    - VASO-C004
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907; split from VASO-C038 (2026-09-09-verify-vasocomputation-052024)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+
+- id: VASO-C077
+  statement: Fascial densification is reversible with pressure, movement, and warmth. (True if hyaluronan viscosity or fascial gliding measures change reversibly under pressure, movement, or warmth.)
+  theme: latch
+  rung: mechanism
+  claimType: mechanistic
+  sourceAnchor:
+    locator: "[p. 3]"
+    quote: and warmth, and it demonstrably increases with age
+    sourceId: SRC-JHONG-2026
+  parentClaimIds:
+    - VASO-C011
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907; split from VASO-C042 (2026-09-09-verify-vasocomputation-052024)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+
+- id: VASO-C078
+  statement: The latch is remote-controlled by the autonomic nervous system.
+  theme: latch
+  rung: mechanism
+  claimType: mechanistic
+  sourceAnchor:
+    locator: "[p. 9]"
+    quote: stress chemistry makes latches form more easily
+    sourceId: SRC-JHONG-2026
+  parentClaimIds:
+    - VASO-C010
+  dependsOnClaimIds:
+    - VASO-C010
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907; split from VASO-C049 (2026-09-09-verify-vasocomputation-052024)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+
+- id: VASO-C079
+  statement: No published study reports palpable knot burden as a function of age (there is no graph of knot burden versus age). (True if a systematic search finds no such dataset; false if one exists.)
+  theme: phenomenon
+  rung: observation
+  claimType: existence
+  sourceAnchor:
+    locator: "[p. 13]"
+    quote: There is no graph of knot burden versus age.
+    sourceId: SRC-JHONG-2026
+  parentClaimIds:
+    - VASO-C001
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907; split from VASO-C053 (2026-09-09-verify-vasocomputation-052024)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+
+- id: VASO-C080
+  statement: No knot census — no systematic count of palpable knots in a population — has ever been conducted, not even a small or poor-quality one. (True if a systematic search finds no such census; false if one exists.)
+  theme: phenomenon
+  rung: observation
+  claimType: existence
+  sourceAnchor:
+    locator: "[p. 13]"
+    quote: There is no graph of knot burden versus age.
+    sourceId: SRC-JHONG-2026
+  parentClaimIds:
+    - VASO-C001
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907; split from VASO-C053 (2026-09-09-verify-vasocomputation-052024)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+
+- id: VASO-C081
+  statement: Conventional MRI has largely failed to image trigger points.
+  theme: phenomenon
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: "[p. 16]"
+    quote: largely failed to image trigger points — invisible on T1
+    sourceId: SRC-JHONG-2026
+  parentClaimIds:
+    - VASO-C005
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907; split from VASO-C057 (2026-09-09-verify-vasocomputation-052024)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+
+- id: VASO-C082
+  statement: Trigger points are invisible on T1-weighted MRI.
+  theme: phenomenon
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: "[p. 16]"
+    quote: largely failed to image trigger points — invisible on T1
+    sourceId: SRC-JHONG-2026
+  parentClaimIds:
+    - VASO-C005
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907; split from VASO-C057 (2026-09-09-verify-vasocomputation-052024)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+
+- id: VASO-C083
+  statement: Rheumatology's fibromyalgia-era 18-site tender-point exam has been applied to community samples.
+  theme: phenomenon
+  rung: observation
+  claimType: statistical
+  sourceAnchor:
+    locator: "[p. 17]"
+    quote: universal (medians 6 in women, 3 in men)
+    sourceId: SRC-JHONG-2026
+  parentClaimIds:
+    - VASO-C001
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907; split from VASO-C059 (2026-09-09-verify-vasocomputation-052024)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+
+- id: VASO-C084
+  statement: In community samples examined with the 18-site tender-point exam, tender points are nearly universal.
+  theme: phenomenon
+  rung: observation
+  claimType: statistical
+  sourceAnchor:
+    locator: "[p. 17]"
+    quote: universal (medians 6 in women, 3 in men)
+    sourceId: SRC-JHONG-2026
+  parentClaimIds:
+    - VASO-C001
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907; split from VASO-C059 (2026-09-09-verify-vasocomputation-052024)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+
+- id: VASO-C085
+  statement: In those community samples, the median tender-point count is about 6 in women.
+  theme: phenomenon
+  rung: observation
+  claimType: statistical
+  sourceAnchor:
+    locator: "[p. 17]"
+    quote: universal (medians 6 in women, 3 in men)
+    sourceId: SRC-JHONG-2026
+  parentClaimIds:
+    - VASO-C001
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907; split from VASO-C059 (2026-09-09-verify-vasocomputation-052024)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+
+- id: VASO-C086
+  statement: In those community samples, the median tender-point count is about 3 in men.
+  theme: phenomenon
+  rung: observation
+  claimType: statistical
+  sourceAnchor:
+    locator: "[p. 17]"
+    quote: universal (medians 6 in women, 3 in men)
+    sourceId: SRC-JHONG-2026
+  parentClaimIds:
+    - VASO-C001
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907; split from VASO-C059 (2026-09-09-verify-vasocomputation-052024)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+
+- id: VASO-C087
+  statement: In community samples, fibromyalgia-era 18-site tender-point counts track psychological distress.
+  theme: phenomenon
+  rung: observation
+  claimType: statistical
+  sourceAnchor:
+    locator: "[p. 17]"
+    quote: counts tracking distress and poor sleep
+    sourceId: SRC-JHONG-2026
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907; split from VASO-C060 (2026-09-09-verify-vasocomputation-052024)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+
+- id: VASO-C088
+  statement: In community samples, fibromyalgia-era 18-site tender-point counts track poor sleep.
+  theme: phenomenon
+  rung: observation
+  claimType: statistical
+  sourceAnchor:
+    locator: "[p. 17]"
+    quote: counts tracking distress and poor sleep
+    sourceId: SRC-JHONG-2026
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907; split from VASO-C060 (2026-09-09-verify-vasocomputation-052024)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+
+- id: VASO-C089
+  statement: In community samples, tender-point counts do not track tissue damage.
+  theme: phenomenon
+  rung: observation
+  claimType: statistical
+  sourceAnchor:
+    locator: "[p. 17]"
+    quote: counts tracking distress and poor sleep
+    sourceId: SRC-JHONG-2026
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907; split from VASO-C060 (2026-09-09-verify-vasocomputation-052024)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+
+- id: VASO-C090
+  statement: Elastography aging data show that bulk resting muscle stiffness can fall with age as muscle quality declines. (True if elastography aging studies report declining mean resting stiffness with age.)
+  theme: phenomenon
+  rung: observation
+  claimType: measurement
+  sourceAnchor:
+    locator: "[p. 17]"
+    quote: can fall with age as muscle quality declines, while focal spots accumulate
+    sourceId: SRC-JHONG-2026
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907; split from VASO-C061 (2026-09-09-verify-vasocomputation-052024)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+
+- id: VASO-C091
+  statement: Releasing an old, heavily loaded knot cluster can produce a wave of euphoria.
+  theme: phenomenon
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: "[p. 20]"
+    quote: wave of euphoria, warmth flooding outward from the site
+    sourceId: SRC-JHONG-2026
+  parentClaimIds:
+    - VASO-C004
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907; split from VASO-C064 (2026-09-09-verify-vasocomputation-052024)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+
+- id: VASO-C092
+  statement: During such a release, warmth floods outward from the release site.
+  theme: phenomenon
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: "[p. 20]"
+    quote: wave of euphoria, warmth flooding outward from the site
+    sourceId: SRC-JHONG-2026
+  parentClaimIds:
+    - VASO-C004
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907; split from VASO-C064 (2026-09-09-verify-vasocomputation-052024)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+
+- id: VASO-C093
+  statement: The magnitude of euphoria at a release tracks the amplitude of the concurrent stiffness drop. (True if rated release intensity correlates with imaged stiffness change across events.)
+  theme: synthesis
+  rung: mechanism
+  claimType: mechanistic
+  sourceAnchor:
+    locator: "[p. 22]"
+    quote: should track the amplitude of the stiffness drop and the perfusion rise
+    sourceId: SRC-JHONG-2026
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907; split from VASO-C066 (2026-09-09-verify-vasocomputation-052024)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+
+- id: VASO-C094
+  statement: The magnitude of euphoria at a release tracks the amplitude of the concurrent perfusion rise. (True if rated release intensity correlates with imaged flow change across events.)
+  theme: synthesis
+  rung: mechanism
+  claimType: mechanistic
+  sourceAnchor:
+    locator: "[p. 22]"
+    quote: should track the amplitude of the stiffness drop and the perfusion rise
+    sourceId: SRC-JHONG-2026
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907; split from VASO-C066 (2026-09-09-verify-vasocomputation-052024)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+
+- id: VASO-C095
+  statement: The kundalini traditions describe granthi-piercing as waves of bliss and light.
+  theme: contemplative
+  rung: observation
+  claimType: historical
+  sourceAnchor:
+    locator: "[p. 22]"
+    quote: traditions describe granthi-piercing as waves of bliss and light
+    sourceId: SRC-JHONG-2026
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907; split from VASO-C067 (2026-09-09-verify-vasocomputation-052024)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+
+- id: VASO-C097
+  statement: A deep inspiration produces a reflex sympathetic constriction of skin arterioles within about two seconds. (True if laser-Doppler or plethysmographic skin flow falls within ~2 s of an inspiratory gasp in healthy subjects.)
+  theme: autonomic-lever
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: "[p. 30]"
+    quote: produces a reflex sympathetic constriction of skin arterioles within a couple
+    sourceId: SRC-JHONG-2026A
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-053800
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-053853
+    date: 2026-09-09
+- id: VASO-C098
+  statement: A slow exhale lets constricted skin arterioles reopen. (True if skin perfusion at a fixed site rises during slow exhalation relative to inspiration, time-locked to the breath.)
+  theme: autonomic-lever
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: "[p. 5]"
+    quote: A slow exhale lets them open
+    sourceId: SRC-JHONG-2026A
+  parentClaimIds:
+    - VASO-C013
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-053800
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-053853
+    date: 2026-09-09
+- id: VASO-C099
+  statement: The 'star' or spark felt when a knot releases is reperfusion paresthesia in the skin territory of one perforator's cutaneous nerve. (True if the felt star maps onto a radial skin patch showing a time-locked perfusion flash; false if perfusion changes are global or absent.)
+  theme: neural-signature
+  rung: mechanism
+  claimType: mechanistic
+  sourceAnchor:
+    locator: "[p. 24]"
+    quote: a knot releasing is the same event at the scale
+    sourceId: SRC-JHONG-2026A
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-053800
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-053853
+    date: 2026-09-09
+- id: VASO-C146
+  statement: The passage states that if the sparks are hyperventilation, the perfusion changes are global rather than local to the knot.
+  theme: phenomenon
+  rung: mechanism
+  claimType: mechanistic
+  sourceAnchor: &a1
+    locator: "[p. 35]"
+    quote: If the sparks are hyperventilation, the perfusion changes are global
+    sourceId: SRC-JHONG-2026A
+  parentClaimIds: &a2 []
+  dependsOnClaimIds: &a3 []
+  alternativeToClaimIds: &a4
+    - VASO-C099
+  reviewState: ai_extracted
+  origin: &a5
+    ref: report 2026-09-09-inbox-vasocomputation-053800
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-053853
+    date: 2026-09-09
+- id: VASO-C147
+  statement: The passage states that if the sparks are hyperventilation, the perfusion changes are equal at sham sites.
+  theme: phenomenon
+  rung: mechanism
+  claimType: mechanistic
+  sourceAnchor: *a1
+  parentClaimIds: *a2
+  dependsOnClaimIds: *a3
+  alternativeToClaimIds: *a4
+  reviewState: ai_extracted
+  origin: *a5
+- id: VASO-C148
+  statement: The passage states that if the sparks are hyperventilation, the perfusion changes track carbon dioxide rather than the button press marking the felt release.
+  theme: phenomenon
+  rung: mechanism
+  claimType: mechanistic
+  sourceAnchor: *a1
+  parentClaimIds: *a2
+  dependsOnClaimIds: *a3
+  alternativeToClaimIds: *a4
+  reviewState: ai_extracted
+  origin: *a5
+- id: VASO-C101
+  statement: The loose connective tissue around a perforator is rich in hyaluronan. (True if histology or biochemical assay shows elevated hyaluronan in perivascular loose tissue at fascial perforation sites.)
+  theme: latch
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: "[p. 5]"
+    quote: The loose tissue around a perforator is rich in hyaluronan
+    sourceId: SRC-JHONG-2026A
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-053800
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-053853
+    date: 2026-09-09
+- id: VASO-C102
+  statement: "Practitioners report a strict order: the sheet-separation phase cannot begin at a site until the knots there are gone. (True if practitioner diaries or a prospective series show separation events only at sites with prior knot clearance.)"
+  theme: phenomenon
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: "[p. 2]"
+    quote: the separating cannot begin at a site until
+    sourceId: SRC-JHONG-2026A
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-053800
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-053853
+    date: 2026-09-09
+- id: VASO-C149
+  statement: Felt releases migrate upstream along a perforator tree toward its root. (True if the sequence of felt release sites in a session tracks the perforator tree's branching order toward its feeding trunk.)
+  theme: phenomenon
+  rung: observation
+  claimType: observation
+  sourceAnchor: &a6
+    locator: "[p. 6]"
+    quote: the felt release migrate up the tree and queue
+    sourceId: SRC-JHONG-2026A
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin: &a7
+    ref: report 2026-09-09-inbox-vasocomputation-053800
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-053853
+    date: 2026-09-09
+- id: VASO-C150
+  statement: Felt releases queue at the trunk's fascial entry, the root of the tree. (True if, after a session's releases converge, the site where releases accumulate and are replaced by others is the trunk perforator's fascial exit — on the posterior scalp, the occipital artery's entry at the superior nuchal line.)
+  theme: phenomenon
+  rung: observation
+  claimType: observation
+  sourceAnchor: *a6
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin: *a7
+- id: VASO-C151
+  statement: Release runs upstream because a dilation that begins at a branch propagates along the arteriole wall toward the feeding vessel at millimeters to centimeters per second (conducted vasodilation). (True if a felt traveling release is accompanied by a perfusion wave ascending the tree at that speed.)
+  theme: phenomenon
+  rung: observation
+  claimType: observation
+  sourceAnchor: *a6
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin: *a7
+- id: VASO-C152
+  statement: Release runs upstream because a downstream vessel cannot stay open while the trunk feeding it is shut, so cleared areas come back until something upstream is also cleared. (True if locally cleared knots recur until the upstream trunk perforator is released.)
+  theme: phenomenon
+  rung: observation
+  claimType: observation
+  sourceAnchor: *a6
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin: *a7
+- id: VASO-C105
+  statement: Cleared knot areas recur until an upstream site is also cleared. (True if recurrence rate at cleared sites falls after clearance of the upstream trunk relative to before.)
+  theme: phenomenon
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: "[p. 6]"
+    quote: practitioners find that cleared areas come back
+    sourceId: SRC-JHONG-2026A
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-053800
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-053853
+    date: 2026-09-09
+- id: VASO-C106
+  statement: The greater occipital nerve pierces the trapezius aponeurosis beside the occipital artery's emergence through the deep fascia at the superior nuchal line. (True if dissection or ultrasound shows the nerve and artery exiting together there.)
+  theme: phenomenon
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: "[p. 6]"
+    quote: nerve pierces the trapezius aponeurosis beside it
+    sourceId: SRC-JHONG-2026A
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-053800
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-053853
+    date: 2026-09-09
+- id: VASO-C107
+  statement: "Skin vessels are history-dependent: cold-induced constriction outlasts the cold stimulus. (True if cutaneous flow remains reduced after rewarming for a period exceeding the stimulus.)"
+  theme: latch
+  rung: mechanism
+  claimType: mechanistic
+  sourceAnchor:
+    locator: "[p. 7]"
+    quote: vessels have that too — cold-induced constriction outlasts the cold
+    sourceId: SRC-JHONG-2026A
+  parentClaimIds:
+    - VASO-C050
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-053800
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-053853
+    date: 2026-09-09
+- id: VASO-C153
+  statement: The cutaneous perforator bed does not need an economical hold (latch) to keep a knot held.
+  theme: latch
+  rung: mechanism
+  claimType: mechanistic
+  sourceAnchor:
+    locator: "[p. 27]"
+    quote: Nothing about that bed needs a latch.
+    sourceId: SRC-JHONG-2026A
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  alternativeToClaimIds:
+    - VASO-C078
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-053800
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-053853
+    date: 2026-09-09
+- id: VASO-C154
+  statement: Prolonged manipulation can leave the skin's nerves hypoesthetic. (True if the passage states that prolonged manipulation can reduce sensation in the skin's nerves.)
+  theme: phenomenon
+  rung: observation
+  claimType: observation
+  sourceAnchor: &a8
+    locator: "[p. 15]"
+    quote: leave the skin’s nerves hypoesthetic, so tenderness is not reported
+    sourceId: SRC-JHONG-2026A
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  alternativeToClaimIds: []
+  reviewState: ai_extracted
+  origin: &a9
+    ref: report 2026-09-09-inbox-vasocomputation-053800
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-053853
+    date: 2026-09-09
+- id: VASO-C155
+  statement: When the skin's nerves are hypoesthetic, tenderness is not reported even where a perforator is still stuck. (True if the passage states that a damaged finder fails to report tenderness at still-stuck perforators.)
+  theme: phenomenon
+  rung: observation
+  claimType: observation
+  sourceAnchor: *a8
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  alternativeToClaimIds: []
+  reviewState: ai_extracted
+  origin: *a9
+- id: VASO-C156
+  statement: The two states — true knot-free and damaged finder — separate cleanly. (True if the passage states that these two states are cleanly distinguishable by the listed measures.)
+  theme: phenomenon
+  rung: observation
+  claimType: observation
+  sourceAnchor: *a8
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  alternativeToClaimIds: []
+  reviewState: ai_extracted
+  origin: *a9
+- id: VASO-C121
+  statement: A band of connective tissue (the myodural bridge) runs from the rectus capitis posterior minor through the atlanto-occipital interval to the dura mater. (True if dissection or MRI shows the connection.)
+  theme: phenomenon
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: "[p. 17]"
+    quote: connective tissue running from the rectus capitis posterior minor
+    sourceId: SRC-JHONG-2026A
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-053800
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-053853
+    date: 2026-09-09
+- id: VASO-C122
+  statement: Accounts of awakening across traditions and modern first-person reports often describe the decisive moment as a release at the base of the skull. (True if a coded corpus of awakening accounts locates the event there above other body sites.)
+  theme: contemplative
+  rung: observation
+  claimType: historical
+  sourceAnchor:
+    locator: "[p. 16]"
+    quote: the decisive moment as a release at the base of the skull
+    sourceId: SRC-JHONG-2026A
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-053800
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-053853
+    date: 2026-09-09
+- id: VASO-C123
+  statement: About eighty percent of classical acupoints coincide with sites where a neurovascular bundle perforates the superficial fascia (Heine 1988). (True if the primary dissection report gives approximately that figure.)
+  theme: contemplative
+  rung: observation
+  claimType: historical
+  sourceAnchor:
+    locator: "[p. 19]"
+    quote: points coincide with sites where a neurovascular bundle perforates the superficial
+    sourceId: SRC-JHONG-2026A
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-053800
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-053853
+    date: 2026-09-09
+- id: VASO-C157
+  statement: Langevin and Yandow (2002) found that eighty percent of acupuncture points lie on connective-tissue planes between and within muscles.
+  theme: contemplative
+  rung: observation
+  claimType: historical
+  sourceAnchor: &a10
+    locator: "[p. 20]"
+    quote: eighty percent of points and half the meridians lie
+    sourceId: SRC-JHONG-2026A
+  parentClaimIds: &a11 []
+  dependsOnClaimIds: &a12 []
+  reviewState: ai_extracted
+  origin: &a13
+    ref: report 2026-09-09-inbox-vasocomputation-053800
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-053853
+    date: 2026-09-09
+- id: VASO-C158
+  statement: Langevin and Yandow (2002) found that half of the meridians lie on connective-tissue planes between and within muscles.
+  theme: contemplative
+  rung: observation
+  claimType: historical
+  sourceAnchor: *a10
+  parentClaimIds: *a11
+  dependsOnClaimIds: *a12
+  reviewState: ai_extracted
+  origin: *a13
+- id: VASO-C159
+  statement: The defining feature of each sinew channel in the text is that it 'knots' (the character jie, to bind or tie) at specific places along its course.
+  theme: contemplative
+  rung: observation
+  claimType: historical
+  sourceAnchor: &a14
+    locator: "[p. 20]"
+    quote: The Bladder sinew channel knots at the back of the head.
+    sourceId: SRC-JHONG-2026A
+  parentClaimIds: &a15
+    - VASO-C063
+  dependsOnClaimIds: &a16 []
+  reviewState: ai_extracted
+  origin: &a17
+    ref: report 2026-09-09-inbox-vasocomputation-053800
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-053853
+    date: 2026-09-09
+- id: VASO-C160
+  statement: "The places where the sinew channels knot are bony prominences: the occiput, the mastoid, the cheekbone, the shoulder, the hip, the knee, the heel."
+  theme: contemplative
+  rung: observation
+  claimType: historical
+  sourceAnchor: *a14
+  parentClaimIds: *a15
+  dependsOnClaimIds: *a16
+  reviewState: ai_extracted
+  origin: *a17
+- id: VASO-C161
+  statement: The Bladder sinew channel knots at the back of the head.
+  theme: contemplative
+  rung: observation
+  claimType: historical
+  sourceAnchor: *a14
+  parentClaimIds: *a15
+  dependsOnClaimIds: *a16
+  reviewState: ai_extracted
+  origin: *a17
+- id: VASO-C162
+  statement: Propagated sensation along a channel is accompanied by a reported rise in skin temperature along the path.
+  theme: contemplative
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: "[p. 21]"
+    quote: travels along the meridian’s course at roughly one to ten centimeters
+    sourceId: SRC-JHONG-2026A
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-053800
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-053853
+    date: 2026-09-09
+- id: VASO-C128
+  statement: Recognized cutaneous nerve entrapment syndromes (anterior cutaneous nerve entrapment, cluneal entrapment, occipital neuralgia, meralgia paresthetica) are discrete tender points where a neurovascular bundle perforates a fascial layer. (True if the clinical descriptions place the tender point at the fascial perforation site.)
+  theme: phenomenon
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: "[p. 22]"
+    quote: nerve entrapment is the same thing at the iliac crest
+    sourceId: SRC-JHONG-2026A
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-053800
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-053853
+    date: 2026-09-09
+- id: VASO-C130
+  statement: Pressure applied during an inhale-and-hold fails to release a knot. (True if pressure trials during breath-hold after inspiration produce no felt or measured release where matched exhale trials do.)
+  theme: autonomic-lever
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: "[p. 29]"
+    quote: inhale-and-hold should fail to release a knot
+    sourceId: SRC-JHONG-2026A
+  parentClaimIds:
+    - VASO-C039
+  dependsOnClaimIds:
+    - VASO-C097
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-053800
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-053853
+    date: 2026-09-09
+- id: VASO-C131
+  statement: The human body carries on average 374 cutaneous perforators of half a millimeter or more (Taylor & Palmer 1987). (True if the primary angiosome mapping reports that mean.)
+  theme: phenomenon
+  rung: observation
+  claimType: measurement
+  sourceAnchor:
+    locator: "[p. 32]"
+    quote: an average of 374 of half a millimeter or more
+    sourceId: SRC-JHONG-2026A
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-053800
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-053853
+    date: 2026-09-09
+- id: VASO-C132
+  statement: Inactivating a key trigger point inactivates its satellite trigger points without treating them (Hong & Simons 1993). (True if the primary clinical report shows satellite resolution after key-point treatment alone.)
+  theme: phenomenon
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: "[p. 32]"
+    quote: inactivating a key trigger point inactivated its satellites without treating them
+    sourceId: SRC-JHONG-2026A
+  parentClaimIds:
+    - VASO-C065
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-053800
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-053853
+    date: 2026-09-09
+- id: VASO-C133
+  statement: In the largest study of meditation-related experiences, the most common somatic report was pressure or tension that built and then released (Lindahl et al. 2017). (True if the primary paper ranks that category first among somatic reports.)
+  theme: contemplative
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: "[p. 32]"
+    quote: pressure or tension that built and then released
+    sourceId: SRC-JHONG-2026A
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-053800
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-053853
+    date: 2026-09-09
+- id: VASO-C163
+  statement: The superficial fascia is richly innervated (Fede et al. 2022).
+  theme: hemo-neural
+  rung: observation
+  claimType: measurement
+  sourceAnchor: &a18
+    locator: "[p. 31]"
+    quote: nerve fibers autonomic and concentrated around its vessels
+    sourceId: SRC-JHONG-2026A
+  parentClaimIds: &a19
+    - VASO-C052
+  dependsOnClaimIds: &a20 []
+  reviewState: ai_extracted
+  origin: &a21
+    ref: report 2026-09-09-inbox-vasocomputation-053800
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-053853
+    date: 2026-09-09
+- id: VASO-C164
+  statement: About a third of the nerve fibers of the superficial fascia are autonomic (Fede et al. 2022).
+  theme: hemo-neural
+  rung: observation
+  claimType: measurement
+  sourceAnchor: *a18
+  parentClaimIds: *a19
+  dependsOnClaimIds: *a20
+  reviewState: ai_extracted
+  origin: *a21
+- id: VASO-C165
+  statement: The autonomic nerve fibers of the superficial fascia are concentrated around its vessels (Fede et al. 2022).
+  theme: hemo-neural
+  rung: observation
+  claimType: measurement
+  sourceAnchor: *a18
+  parentClaimIds: *a19
+  dependsOnClaimIds: *a20
+  reviewState: ai_extracted
+  origin: *a21
+- id: VASO-C135
+  statement: Skin blood-flow response to nociceptive stimulation is attenuated over latent trigger points relative to control sites. (True if the primary study shows a smaller provoked cutaneous flow rise at latent points.)
+  theme: phenomenon
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: "[p. 30]"
+    quote: an attenuated skin blood-flow response over latent trigger points
+    sourceId: SRC-JHONG-2026A
+  parentClaimIds:
+    - VASO-C005
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-053800
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-053853
+    date: 2026-09-09
+- id: VASO-C136
+  statement: Ischemic compression of an active trigger point produces a transient rise in local blood flow measured by an indwelling microdialysis catheter (Moraska et al. 2013). (True if the primary paper reports that flow change.)
+  theme: phenomenon
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: "[p. 30]"
+    quote: "Release brings blood: with microdialysis catheter inside an active trigger point"
+    sourceId: SRC-JHONG-2026A
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-053800
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-053853
+    date: 2026-09-09
+- id: VASO-C166
+  statement: A single dry-needling stimulus in the trapezius raised oxygen saturation at the needled site for fifteen minutes (Cagnie et al. 2012).
+  theme: phenomenon
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: "[p. 30]"
+    quote: stimulus in the trapezius raised blood flow and oxygen saturation
+    sourceId: SRC-JHONG-2026A
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-053800
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-053853
+    date: 2026-09-09
+- id: VASO-C138
+  statement: Needle EMG of equine trigger points records the same spontaneous electrical activity reported in human trigger points. (True if the primary veterinary EMG study reports spontaneous activity at trigger points and not at controls.)
+  theme: neural-signature
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: "[p. 25]"
+    quote: found the same spontaneous activity the human studies report
+    sourceId: SRC-JHONG-2026A
+  parentClaimIds:
+    - VASO-C002
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-053800
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-053853
+    date: 2026-09-09
+- id: VASO-C167
+  statement: Cutaneous microvascular function declines with age.
+  theme: autonomic-lever
+  rung: observation
+  claimType: observation
+  sourceAnchor: &a22
+    locator: "[p. 23]"
+    quote: age and resting sympathetic tone rises
+    sourceId: SRC-JHONG-2026A
+  parentClaimIds: &a23 []
+  dependsOnClaimIds: &a24 []
+  reviewState: ai_extracted
+  origin: &a25
+    ref: report 2026-09-09-inbox-vasocomputation-053800
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-053853
+    date: 2026-09-09
+- id: VASO-C168
+  statement: Resting sympathetic tone rises with age.
+  theme: autonomic-lever
+  rung: observation
+  claimType: observation
+  sourceAnchor: *a22
+  parentClaimIds: *a23
+  dependsOnClaimIds: *a24
+  reviewState: ai_extracted
+  origin: *a25
+- id: VASO-C169
+  statement: The age curves for knot burden and cutaneous microvascular decline have never been laid on top of each other.
+  theme: autonomic-lever
+  rung: observation
+  claimType: observation
+  sourceAnchor: *a22
+  parentClaimIds: *a23
+  dependsOnClaimIds: *a24
+  reviewState: ai_extracted
+  origin: *a25
+- id: VASO-C170
+  statement: Sikdar et al. (2009) found trigger points in the upper trapezius to appear as discrete hypoechoic nodules on ultrasound.
+  theme: phenomenon
+  rung: observation
+  claimType: observation
+  sourceAnchor: &a26
+    locator: "[p. 30]"
+    quote: found discrete hypoechoic nodules, stiffer than the surrounding
+    sourceId: SRC-JHONG-2026A
+  parentClaimIds: &a27
+    - VASO-C005
+  dependsOnClaimIds: &a28 []
+  reviewState: ai_extracted
+  origin: &a29
+    ref: report 2026-09-09-inbox-vasocomputation-053800
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-053853
+    date: 2026-09-09
+- id: VASO-C171
+  statement: Sikdar et al. (2009) found trigger points in the upper trapezius to be stiffer than the surrounding tissue.
+  theme: phenomenon
+  rung: observation
+  claimType: observation
+  sourceAnchor: *a26
+  parentClaimIds: *a27
+  dependsOnClaimIds: *a28
+  reviewState: ai_extracted
+  origin: *a29
+- id: VASO-C172
+  statement: Sikdar et al. (2009) found abnormal flow around trigger points in the upper trapezius.
+  theme: phenomenon
+  rung: observation
+  claimType: observation
+  sourceAnchor: *a26
+  parentClaimIds: *a27
+  dependsOnClaimIds: *a28
+  reviewState: ai_extracted
+  origin: *a29
+- id: VASO-C173
+  statement: The second family of reported phenomena does not respond to rolling at all. (True if practitioner event logs show no change in these phenomena time-locked to rolling sessions.)
+  theme: phenomenon
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: "[p. 3]"
+    quote: and does not respond to rolling at all
+    sourceId: SRC-JHONG-2026A
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-053800
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-053853
+    date: 2026-09-09
+- id: VASO-C143
+  statement: The site-selective rise in trigger-point activity under a cognitive stressor is a regional sympathetic vasoconstriction written to a skin territory, as in blushing or blanching. (True if a mental stressor produces a localized fall in skin perfusion over the tender point and not over control skin.)
+  theme: neural-signature
+  rung: mechanism
+  claimType: mechanistic
+  sourceAnchor:
+    locator: "[p. 28]"
+    quote: the address is a skin territory and the write
+    sourceId: SRC-JHONG-2026A
+  parentClaimIds:
+    - VASO-C003
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-053800
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-053853
+    date: 2026-09-09
+- id: VASO-C174
+  statement: "What holds a knot, on the perforator picture, is a composite of three memory elements rather than one: the vessel's tone, the hyaluronan collar, and the sheet's tether."
+  theme: synthesis
+  rung: mechanism
+  claimType: mechanistic
+  sourceAnchor: &a30
+    locator: "[p. 27]"
+    quote: "three things at three timescales: the vessel’s tone (seconds, neural), the hyaluronan"
+    sourceId: SRC-JHONG-2026A
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  alternativeToClaimIds:
+    - VASO-C021
+  reviewState: ai_extracted
+  origin: &a31
+    ref: report 2026-09-09-inbox-vasocomputation-053800
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-053853
+    date: 2026-09-09
+- id: VASO-C175
+  statement: Each of the three elements has hysteresis — each stays where it was put after the input that put it there has gone.
+  theme: synthesis
+  rung: mechanism
+  claimType: mechanistic
+  sourceAnchor: *a30
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  alternativeToClaimIds:
+    - VASO-C021
+  reviewState: ai_extracted
+  origin: *a31

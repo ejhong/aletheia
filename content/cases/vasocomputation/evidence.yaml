@@ -608,3 +608,530 @@
     extractedBy: "Aletheia editorial AI (Claude Opus 5, Cursor cloud agent)"
     runId: "2026-09-01-study-vaso-s001-collection"
     date: "2026-09-01"
+
+- id: VASO-E022
+  title: "Ballyns 2011: arteries near active trigger points show higher pulsatility and more frequent retrograde diastolic flow — but 31% of palpably normal sites show it too"
+  claimIds:
+    - VASO-C005
+    - VASO-C031
+    - VASO-C032
+  sourceId: SRC-BALLYNS-2011
+  direction: supports
+  strength: moderate
+  sourceStatement: The source states that on colour Doppler prominent vessels were seen close to trigger points and that "vessels near active sites had a significantly higher pulsatility index" (median 8.3) than normal sites (median 3.0, P < .05). It states that in 27 of 49 active sites (55%) "retrograde diastolic flow was observed compared to 21 (40%) and 15 (31%)" for latent and normal sites, with the occurrence significantly higher in active and latent than normal sites (P < .01).
+  editorInference: "This is the primary behind the 'abnormal local hemodynamics' the ledger previously held only via the Mazza review. It supports VASO-C005 as a measurable blood-flow difference, but the difference is graded: nearly a third of palpably normal sites in these patients show the same waveform, so the signature is a gradient across symptomatic muscle, not a marker. The interrogated vessels are pulsatile arteries or enlarged arterioles typically >1 mm, within 1–2 cm of the point, not the microvessels the latch attribution names."
+  exactLocator: PMC3493620 author manuscript, Results, paragraph beginning 'On color Doppler imaging' (via open-access PMC copy)
+  limitations:
+    - Within-patient 'normal' sites in symptomatic patients; no pain-free control group.
+    - Pulsatility index was not a good classifier of site type because of large variance, per the source's ROC analysis.
+    - Vessel caliber (>1 mm, 1–2 cm from the point) is far from the arteriolar compartment VASO-C020 requires.
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-report-vasocomputation-023157
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-040754
+    date: 2026-09-09
+- id: VASO-E023
+  title: "Ballyns 2011: vibration sonoelastography stiff-area measurements separate active, latent and normal sites"
+  claimIds:
+    - VASO-C005
+    - VASO-C033
+  sourceId: SRC-BALLYNS-2011
+  direction: supports
+  strength: moderate
+  sourceStatement: The source reports mean stiff-area of 0.57 ± 0.20 cm² at active sites, 0.36 ± 0.16 cm² at latent sites and 0.17 ± 0.22 cm² at palpably normal sites (P < .01), and that "active sites were significantly larger than latent sites"; ROC analysis showed "area measurements could robustly distinguish between active, latent, and normal sites" (AUC 0.9 active vs normal, 0.8 active vs latent, 0.8 latent vs normal).
+  editorInference: Direct instrumented support for the stiffness component of VASO-C005 and for the graded active/latent/normal ordering. Sonographers were blinded to clinical status, which is stronger than the palpation-only literature. It says nothing about what the stiff tissue is (contracted fibre, guarding, fascial change, or vascular).
+  exactLocator: PMC3493620 author manuscript, Abstract (Results) and Results, paragraph beginning 'Trigger point areas assessed by vibration elastography' (via open-access PMC copy)
+  limitations:
+    - Single vibration frequency from an off-the-shelf massager; the authors note frequency-independence was not confirmed and shear elasticity was not measured.
+    - Sites were selected by palpation, so the measured contrast presupposes the palpated classification.
+    - Same NIH lineage as SRC-SHAH-2008; not an independent group.
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-report-vasocomputation-023157
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-040754
+    date: 2026-09-09
+- id: VASO-E024
+  title: "Ballyns 2011: resistivity index did not differ between active, latent and normal sites"
+  claimIds:
+    - VASO-C036
+  sourceId: SRC-BALLYNS-2011
+  direction: supports
+  strength: moderate
+  sourceStatement: The source states that "No differences in RI values were detected between normal", latent and active sites, and that "the PI was not a good classifier of active, latent, or normal sites because of the large variance."
+  editorInference: "A negative result recorded in its own right: one of the two Doppler indices shows no difference, and the other does not classify sites. The vascular signature at trigger points is partial, not categorical."
+  exactLocator: PMC3493620 author manuscript, Results, paragraph beginning 'On color Doppler imaging' (via open-access PMC copy)
+  limitations:
+    - Within-patient comparison in symptomatic subjects; the authors attribute the similarity partly to proximity of normal sites to trigger points.
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-report-vasocomputation-023157
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-040754
+    date: 2026-09-09
+- id: VASO-E025
+  title: "Ballyns 2011: the Doppler indices do not cleanly separate sites"
+  claimIds:
+    - VASO-C005
+  sourceId: SRC-BALLYNS-2011
+  direction: qualifies
+  strength: weak
+  sourceStatement: The source states that "No differences in RI values were detected between normal", latent and active sites, and that the pulsatility index "was not a good classifier of active, latent, or normal sites" because of large variance; it adds that blood-flow measures "did not perform well as classifiers of the site type".
+  editorInference: "Narrows VASO-C005: blood flow differs on one index at group level but does not distinguish individual sites, and a second index shows no difference. The claim's 'measurably differ' survives in the weak group-level sense only."
+  exactLocator: PMC3493620 author manuscript, Results (Doppler paragraph) and Discussion, paragraph beginning 'Although most trigger points are located' (via open-access PMC copy)
+  limitations:
+    - Same subjects and sites as VASO-E025; not an independent observation.
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-report-vasocomputation-023157
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-040754
+    date: 2026-09-09
+- id: VASO-E026
+  title: "Ballyns 2011: no pain-free control group; 'normal' sites sit in symptomatic muscle"
+  claimIds:
+    - VASO-C005
+    - VASO-C031
+    - VASO-C032
+  sourceId: SRC-BALLYNS-2011
+  direction: qualifies
+  strength: moderate
+  sourceStatement: The source states as a limitation that "our study did not include a control group of pain-free patients", that pain-free sites were instead marked at least 5 cm from latent and active sites, and that because all patients had at least one palpable trigger point the observed blood-flow characteristics "do not represent the normal variation".
+  editorInference: Every comparison in this source is within symptomatic patients. The 31% retrograde-flow figure at 'normal' sites may therefore be either a true baseline rate or spillover from neighbouring points; the source itself cannot say which. This caps the strength of VASO-E025 and VASO-E026.
+  exactLocator: PMC3493620 author manuscript, Discussion, paragraphs beginning 'We suspect the large variance' and 'Although we believe that measuring' (via open-access PMC copy)
+  limitations:
+    - Author-stated limitation; no external data on pain-free variation was shown.
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-report-vasocomputation-023157
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-040754
+    date: 2026-09-09
+- id: VASO-E027
+  title: "Ballyns 2011: high-resistance flow near trigger points is compatible with compression by contracture, inflammation, or transducer pressure as much as with distal constriction"
+  claimIds:
+    - VASO-C020
+  sourceId: SRC-BALLYNS-2011
+  direction: supports
+  strength: weak
+  sourceStatement: 'The source reports that arteries near active and latent sites had highly pulsatile flow with retrograde diastolic flow more often than normal tissue, and that "prominent blood vessels were observed in the close vicinity of trigger points". It offers two explanations for pulsatile flow — increased compliance/volume of the vascular compartment, or increased outflow resistance — and lists possible causes of the latter: "muscle contracture at the trigger point that compresses the capillary/venous bed", anatomic geometry of the trapezius apex, local vasoconstriction due to inflammation, or externally applied pressure from the transducer. It frames its integrated-hypothesis discussion around capillary constriction, ischemia and hypoxia and notes increased vessel presence as a possible angiogenic response.'
+  editorInference: "Recorded as supporting because increased downstream resistance near trigger points is what VASO-C020's 'chronic local ischemia' predicts — but at effectively zero diagnosticity: the source itself names skeletal-muscle contracture compressing the bed (the conventional account) as a candidate cause and does not mention smooth-muscle latch. Nothing here separates arteriolar smooth muscle from mechanical compression, and the vessels observed are conduit-scale, not microvascular."
+  exactLocator: PMC3493620 author manuscript, Results (Doppler paragraph) and Discussion, paragraphs beginning 'The integrated trigger point hypothesis' and 'In this study, results from the Doppler waveforms' (via open-access PMC copy)
+  limitations:
+    - Vessels interrogated were pulsatile arteries or enlarged arterioles typically >1 mm, 1–2 cm from the point.
+    - Alternative mechanical explanations are given equal standing by the authors.
+    - No perfusion measurement in the muscle bed itself; Doppler waveform only.
+    - "Second reader (claude-sonnet-5, 2026-09-09) disputes the stated direction: The quotes and paraphrases accurately reflect the Doppler paragraph and Discussion text, including the equal-standing alternative explanations for pulsatile flow. However, labeling this 'supports' VASO-C020 is questionable: the source explicitly treats compression by contracture, inflammation, or transducer artifact as equally plausible alternatives to a latch-bridge vascular-autonomic mechanism, so the passage more properly qualifies or contextualizes the claim rather than affirmatively supporting it—this is registered as dissent rather than grounds for rejection. All other elements (quote fidelity, statement scope, locator accuracy, independence, relevance to the claim) check out."
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-report-vasocomputation-023157
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-040754
+    date: 2026-09-09
+- id: VASO-E028
+  title: "Ballyns 2011 introduction: 'muscle knots' as a common condition with a cited prevalence estimate"
+  claimIds:
+    - VASO-C001
+  sourceId: SRC-BALLYNS-2011
+  direction: supports
+  strength: weak
+  sourceStatement: The source's introduction states that myofascial pain syndrome is "believed to affect about 23 million Americans" (citing Fishbain et al. 1986), that it "is a major progenitor of nonarticular local musculoskeletal pain" and tenderness affecting every age group, and is "commonly recognized as “muscle knots.”"
+  editorInference: Secondary, uncritical framing in an introduction; the prevalence figure is a 1986 clinic-population estimate cited at second hand, not a census. Enters at near-zero weight as one more instance of the research literature treating the palpable knot as a common phenomenon.
+  exactLocator: PMC3493620 author manuscript, Introduction, first paragraph (via open-access PMC copy)
+  limitations:
+    - Prevalence estimate is cited, not measured, and refers to a pain syndrome rather than to tender points in the general population.
+    - Introductory framing by proponents of the construct.
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-report-vasocomputation-023157
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-040754
+    date: 2026-09-09
+- id: VASO-E029
+  title: "Ballyns 2011: palpation is the reference standard and remains subjective"
+  claimIds:
+    - VASO-C030
+  sourceId: SRC-BALLYNS-2011
+  direction: supports
+  strength: weak
+  sourceStatement: The source states that although most trigger points are located and classified from history and physical examination, "results can vary depending on the clinician’s training and experience", and that the visual analog scale, pressure-pain threshold and palpation are the reference standards "but they are still subjective measures".
+  editorInference: "A proponent group conceding the point the critics press: the reference standard is examiner-dependent. Weak because it is an assertion in a discussion section rather than a reliability measurement; the ledger already holds the systematic review (VASO-E011)."
+  exactLocator: PMC3493620 author manuscript, Discussion, paragraph beginning 'Although most trigger points are located' (via open-access PMC copy)
+  limitations:
+    - Statement, not measurement; this source did not test inter-examiner reliability.
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-report-vasocomputation-023157
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-040754
+    date: 2026-09-09
+- id: VASO-E030
+  title: "Ballyns 2011 pilot: trigger-point area and pulsatility index fell over follow-up visits after dry needling in three active cases"
+  claimIds:
+    - VASO-C011
+  sourceId: SRC-BALLYNS-2011
+  direction: context
+  strength: weak
+  sourceStatement: 'The source reports a pilot of three active cases and one latent case imaged at later time points after dry needling: "The trigger point area and PI decreased for all 3 active cases" with time and increased slightly for the latent case; the authors state there were too few cases to draw conclusions.'
+  editorInference: "Background only for VASO-C011: an imaged change in stiffness and Doppler indices after an intervention, but over visits, not seconds, and after needling, not pressure or breath. It shows the measures move; it does not bear on the seconds-scale timescale argument."
+  exactLocator: PMC3493620 author manuscript, Discussion, paragraph beginning 'Data for a pilot study including 3 active cases' and Figure 7 caption (via open-access PMC copy)
+  limitations:
+    - n = 3 active cases, uncontrolled, author-flagged as too few for conclusions.
+    - Timescale of visits, not of a release event.
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-report-vasocomputation-023157
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-040754
+    date: 2026-09-09
+- id: VASO-E031
+  title: "Simons, Hong & Simons 2002: endplate noise is characteristic of, but not restricted to, trigger points"
+  claimIds:
+    - VASO-C002
+  sourceId: SRC-SIMONS-2002
+  direction: qualifies
+  strength: moderate
+  sourceStatement: 'The source reports a needle examination at one test site and two control sites in 11 muscles of 10 subjects, with the endplate zone determined electrically: "Endplate noise without spikes occurred in all 11 muscles at trigger-point sites", "in four muscles at endplate zone sites outside of trigger points" (P = 0.024), and "did not occur in taut band sites outside of an endplate zone" (P = 0.000034). It concludes that endplate noise seems to be "characteristic of, but is not restricted to, the region" of a trigger point.'
+  editorInference: "This qualifies VASO-C002's 'confined to a nidus, absent in adjacent non-tender muscle': spontaneous activity was found at 4 of 11 non-tender endplate-zone sites. Hubbard–Berkoff's silent control sites may have lain off the endplate zone rather than demonstrating exclusivity. The correct comparator for the nidus is a matched endplate-zone site, which neither Hubbard–Berkoff 1993 nor McNulty 1994 used, as far as the ledger records. The prevalence gradient (11/11 vs 4/11 vs 0/11) still supports 'more common at trigger points'."
+  exactLocator: Abstract, Results and Conclusion, Am J Phys Med Rehabil 81(3):212–222, via the Ovid landing page at doi:10.1097/00002060-200203000-00010
+  limitations:
+    - Abstract only; per-site amplitudes and subject details not shown.
+    - Design described by the source as nonrandomized and unblinded; 10 subjects.
+    - Authors are proponents of the trigger-point construct.
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-report-vasocomputation-023157
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-040754
+    date: 2026-09-09
+- id: VASO-E032
+  title: "Simons, Hong & Simons 2002: prevalence of endplate noise at trigger-point, endplate-zone and off-zone taut-band sites"
+  claimIds:
+    - VASO-C034
+    - VASO-C035
+  sourceId: SRC-SIMONS-2002
+  direction: supports
+  strength: moderate
+  sourceStatement: The source states that endplate noise occurred at all 11 trigger-point sites, "in four muscles at endplate zone sites outside of trigger points", and "did not occur in taut band sites outside of an endplate zone"; it describes the study as "This nonrandomized, unblinded needle examination of myofascial trigger points".
+  editorInference: "Direct anchor for the two observation claims: endplate noise occurs outside trigger points when the site is in the endplate zone, and not in taut bands off the zone. Together they imply the electrical signature tracks the endplate zone first and the trigger point second, which is the conventional skeletal-endplate reading."
+  exactLocator: Abstract, Design and Results, via the Ovid landing page at doi:10.1097/00002060-200203000-00010
+  limitations:
+    - Abstract only; unblinded; small sample.
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-report-vasocomputation-023157
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-040754
+    date: 2026-09-09
+
+- id: VASO-E033
+  title: Essay restates the stress-up / relaxation-down EMG pattern at trigger points
+  claimIds:
+    - VASO-C003
+  sourceId: SRC-JHONG-2026
+  direction: supports
+  strength: weak
+  sourceStatement: The essay states that needle-EMG studies found trigger points show spontaneous electrical chatter that rises when the "subject is given a mental stressor and falls during relaxation".
+  editorInference: "Editor's inference: this is a secondary restatement of McNulty 1994 (VASO-E002) plus the unretrieved Banks 1998 relaxation paper; it adds no independent observation and carries zero diagnostic weight beyond E002. Same independence group as E002."
+  exactLocator: "[p. 4]"
+  limitations:
+    - Secondary source; text generated by AI models (Kimi and Fable) per p. 1
+    - No citation, sample size, or effect size given
+    - Relaxation half rests on a primary (Banks 1998) the ledger has not retrieved
+    - "Second reader (claude-sonnet-5, 2026-09-09) disputes the stated direction: The quoted passage on p.4 matches the source text verbatim and is fairly summarized as the essay's own restatement of needle-EMG findings, correctly located. However, VASO-C003 specifically claims selective activation at trigger points versus quiet adjacent control sites in the same muscle, and the p.4 passage only states that trigger-point chatter rises with stress and falls with relaxation without any mention of a control site remaining quiet (that detail appears only later, on p.5, describing the McNulty study). Using this general, control-free statement to 'support' a claim whose core content is about site-selectivity is a stretch; it is better characterized as background context for the claim rather than direct support, so I dissent on the direction while agreeing the record is otherwise accurately sourced and relevant."
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+- id: VASO-E034
+  title: "Essay's description of the latch: force persists after activation disappears"
+  claimIds:
+    - VASO-C010
+  sourceId: SRC-JHONG-2026
+  direction: supports
+  strength: weak
+  sourceStatement: The essay describes the latch-bridge state as a ratchet in which "The activating signal can disappear entirely and the grip remains." and says the founding observation is activation spiking then falling while force stays.
+  editorInference: "Editor's inference: derivative of Hai & Murphy 1988 (VASO-E003); the phrase 'disappear entirely' overstates what the latch model claims, which is low, not zero, phosphorylation. Zero independent weight."
+  exactLocator: "[p. 9]"
+  limitations:
+    - Secondary, AI-generated text
+    - "Overstates the model: latch is maintained force at low activation, not at none"
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+- id: VASO-E035
+  title: The speed-of-release argument as the essay states it
+  claimIds:
+    - VASO-C011
+  sourceId: SRC-JHONG-2026
+  direction: supports
+  strength: weak
+  sourceStatement: The essay argues that structural remodeling takes days to weeks while a knot can go in five seconds mid-exhale, so "Whatever releases in that moment must therefore be" a state rather than a structure.
+  editorInference: "Editor's inference: this is the inference itself, not an observation; its premise (an objective seconds-scale local event) is the unmeasured thing. It supports the conditional logic of C011 only."
+  exactLocator: "[p. 4]"
+  limitations:
+    - Argument, not measurement
+    - Secondary, AI-generated text
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+- id: VASO-E036
+  title: Essay asserts exhalation shifts autonomic balance parasympathetic
+  claimIds:
+    - VASO-C013
+  sourceId: SRC-JHONG-2026
+  direction: supports
+  strength: weak
+  sourceStatement: The essay states that "Exhalation shifts autonomic balance toward the parasympathetic side" and lowers resting tone throughout the body.
+  editorInference: "Editor's inference: uncited restatement of what Zaccaro 2018 (VASO-E009) documents; zero independent weight."
+  exactLocator: "[p. 4]"
+  limitations:
+    - Uncited
+    - Secondary, AI-generated text
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+- id: VASO-E037
+  title: Essay's statement of the knot-as-latched-arteriole hypothesis
+  claimIds:
+    - VASO-C020
+  sourceId: SRC-JHONG-2026
+  direction: context
+  strength: weak
+  sourceStatement: 'The essay proposes the knot as a two-layer object: a latched arteriole upstream creating chronic local ischemia at near-zero energetic cost, producing the acidic milieu Shah found, "plus whatever skeletal fibers secondarily guard the region".'
+  editorInference: "Editor's inference: this is the hypothesis being stated by its proponent, not evidence for it; recorded for provenance of C020's wording."
+  exactLocator: "[p. 12]"
+  limitations:
+    - Proponent's hypothesis statement; no data
+    - Secondary, AI-generated text
+    - "Second reader (claude-sonnet-5, 2026-09-09) disputes the stated direction: The quoted phrase and paraphrase accurately reflect the essay's p.12 statement of the latch-plus-guarding hypothesis, and the locator is correct. However, labeling this 'context' undersells the relationship: this passage is essentially the essay's direct articulation of the very hypothesis that claim VASO-C020 states, so it should be marked as 'supports' (as the proponent's own statement of the claim) rather than merely contextual background."
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+- id: VASO-E038
+  title: Essay's statement of the clinging-as-latch identification
+  claimIds:
+    - VASO-C021
+  sourceId: SRC-JHONG-2026
+  direction: context
+  strength: weak
+  sourceStatement: The essay relays Johnson's framing that when the mind holds a prediction rigid, one "physical implementation is vascular smooth muscle latching around the relevant" tissue, and identifies this with tanha.
+  editorInference: "Editor's inference: hypothesis statement relayed second-hand from Johnson (SRC-JOHNSON-2023 holds the primary); no evidential weight."
+  exactLocator: "[p. 12]"
+  limitations:
+    - Second-hand relay of another author's hypothesis
+    - Secondary, AI-generated text
+    - "Second reader (claude-sonnet-5, 2026-09-09) disputes the stated direction: The quote appears verbatim at p.12 and is correctly attributed to Johnson's framing as relayed by the essay, and the sourceStatement fairly summarizes it without overreach. However, labeling this as merely 'context' undersells that the source is directly asserting the very identification (vascular latch as tanha) that the claim proposes, which more naturally reads as weak 'supports' (with the essay's own speculative caveats) rather than tangential context; this is noted as a dissent rather than a rejection. The relay nature and AI-generated/secondary status are appropriately flagged as limitations, satisfying independence concerns, and the passage is clearly relevant to claim C021."
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+- id: VASO-E039
+  title: "Essay: traditional maps cluster knots along the torso midline and limbs"
+  claimIds:
+    - VASO-C022
+  sourceId: SRC-JHONG-2026
+  direction: supports
+  strength: weak
+  sourceStatement: The essay finds it "at least suggestive that the traditional maps place the important knots along the" torso's midline and the limbs, where dorsal root ganglia, sympathetic chains and dense fascia reside, rather than in the head.
+  editorInference: "Editor's inference: an uncited assertion about the content of traditional maps, with no coding rule or chance baseline; it is the first record on C022 in either direction and carries essentially no diagnostic weight until VASO-R006 is run."
+  exactLocator: "[p. 19]"
+  limitations:
+    - No source for the map locations cited
+    - Post-hoc matching risk unaddressed
+    - Secondary, AI-generated text
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+- id: VASO-E041
+  title: "Essay's caveat: Mizrachi's route is vagal and skin is not parasympathetically innervated"
+  claimIds:
+    - VASO-C006
+  sourceId: SRC-JHONG-2026
+  direction: qualifies
+  strength: weak
+  sourceStatement: The essay notes the demonstrated route in the attention study runs through the vagal anti-inflammatory reflex over twenty minutes and that the authors note the "parasympathetic system does not innervate skin directly".
+  editorInference: "Editor's inference: a correct limit on what C006 shows for the knot hypothesis — tens of minutes, immune route, not direct vascular grip; the ledger already reads C006 this way."
+  exactLocator: "[p. 7]"
+  limitations:
+    - Relays the primary's own caveat second-hand; SRC-MIZRACHI-2026 is the record to cite
+    - "Second reader (claude-sonnet-5, 2026-09-09) disputes the stated direction: The quoted phrase appears on p.7 exactly as rendered, attributed correctly to the Mizrachi authors' own caveat as relayed by the essay, and the surrounding statement about the vagal route and twenty-minute timescale matches the source. The record properly flags this as a second-hand relay of the primary study's own caveat, recommending the primary be cited instead, which satisfies independence disclosure. However, the caveat concerns mechanism (parasympathetic non-innervation of skin) rather than the empirical magnitude/direction of the attention effect that VASO-C006 asserts, so it functions more as background/context on mechanism than as a qualification that limits or conditions the claim's truth; I'd mark this 'context' rather than 'qualifies', though this is a dissent rather than a rejection."
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+- id: VASO-E042
+  title: "Essay: Doppler as the most consistent positive imaging result"
+  claimIds:
+    - VASO-C005
+  sourceId: SRC-JHONG-2026
+  direction: context
+  strength: weak
+  sourceStatement: The essay states that "Doppler has quietly produced the most consistent positive results" in the imaging literature — retrograde flow, elevated pulsatility index, velocities separating active from latent points — and reads this as the latch's footprint.
+  editorInference: "Editor's inference: consistent with Ballyns 2011 (E022) on the positives but omits the nulls the same paper reports (E024–E026); the 'latch footprint' reading is the essay's interpretation, which Ballyns's authors do not offer."
+  exactLocator: "[p. 15]"
+  limitations:
+    - Omits the null resistivity index and 31% retrograde flow at normal sites
+    - Interpretation, not data
+    - Secondary, AI-generated text
+    - "Second reader (claude-sonnet-5, 2026-09-09) disputes the stated direction: The quoted passage about Doppler's consistent positive results does appear on p.15 and is accurately summarized as the essay's claim, with the limitations properly noting omitted null findings and the interpretive/AI-generated nature. However, the passage directly reports that active trigger points show abnormal hemodynamics distinguishable from latent/control points, which is exactly the kind of measurable biochemical/flow difference VASO-C005 asserts, so labeling the direction as merely 'context' rather than 'supports' undersells what the source states; this is recorded as dissent rather than grounds for rejection."
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+- id: VASO-E043
+  title: "Essay restates Hubbard–Berkoff: signal vanishes a centimeter away"
+  claimIds:
+    - VASO-C002
+  sourceId: SRC-JHONG-2026
+  direction: supports
+  strength: weak
+  sourceStatement: The essay says that in Hubbard and Berkoff's recordings, if you "Move the needle roughly a centimeter into non-tender muscle" of the same trapezius the signal vanishes.
+  editorInference: "Editor's inference: derivative of E001; the exclusivity it implies is already qualified by Simons 2002 (E031), which the essay does not mention. Zero independent weight."
+  exactLocator: "[p. 5]"
+  limitations:
+    - Derivative of E001
+    - Does not account for endplate-zone noise at non-tender sites
+    - Secondary, AI-generated text
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-031907
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-042321
+    date: 2026-09-09
+
+- id: VASO-E044
+  title: Second essay relocates the vascular element from intramuscular arterioles to cutaneous perforators
+  claimIds:
+    - VASO-C020
+  sourceId: SRC-JHONG-2026A
+  direction: context
+  strength: weak
+  sourceStatement: The essay states that the perforator model moves the vascular hypothesis to the arterioles of the skin and superficial fascia and 'relocates the vascular hypothesis rather than rescuing it'.
+  editorInference: A proponent's own statement of a competing account; it carries no diagnostic weight on VASO-C020 but records that the hypothesis's author no longer treats the intramuscular arteriole as the primary site.
+  exactLocator: "[p. 7]"
+  limitations:
+    - AI-generated self-published essay by the proponent; no measurement reported.
+    - "Second reader (claude-sonnet-5, 2026-09-09) disputes the stated direction: The quote and paraphrase accurately reflect page 7, where the essay relocates the vascular hypothesis from intramuscular arterioles to cutaneous perforators rather than rescuing the original latch idea. However, this relocation actually conditions/limits the specific mechanism proposed in VASO-C020 (which claims a particular microvascular smooth-muscle latch state), so it should be coded as 'qualifies' rather than merely 'context' — I record this as dissent rather than rejecting the entry. The statement is a single coherent proposition (relocation, not rescue) and clearly bears on the claim's mechanism, satisfying relevance and atomicity."
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-053800
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-053853
+    date: 2026-09-09
+- id: VASO-E045
+  title: "Second essay accepts the arteriole audit: sustained activation, not economical latch"
+  claimIds:
+    - VASO-C020
+  sourceId: SRC-JHONG-2026A
+  direction: context
+  strength: weak
+  sourceStatement: The essay states that published measurements in pressurized skeletal-muscle arterioles 'show sustained activation rather than an economical latch', calling this a mismatch rather than a refutation.
+  editorInference: This restates the ledger's own study (VASO-E020) back to it; it adds no independent observation.
+  exactLocator: "[p. 7]"
+  limitations:
+    - Derivative of SRC-VASO-S001; not independent.
+    - "Second reader (claude-sonnet-5, 2026-09-09) disputes the stated direction: The quote and page location match, and the record accurately reports the essay's characterization of the finding as a mismatch rather than a refutation. However, this passage directly addresses the intramuscular arteriole compartment invoked by VASO-C020's latch-bridge mechanism, showing sustained activation instead of an economical latch — this conditions/limits the claim's proposed mechanism rather than being merely topically adjacent, so 'qualifies' seems more apt than 'context' (dissent only, not disqualifying)."
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-053800
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-053853
+    date: 2026-09-09
+- id: VASO-E047
+  title: "Essay restates Hong & Simons 1993: inactivating a key trigger point inactivated its satellites"
+  claimIds:
+    - VASO-C065
+  sourceId: SRC-JHONG-2026A
+  direction: supports
+  strength: weak
+  sourceStatement: The essay reports that Hong and Simons found that 'inactivating a key trigger point inactivated its satellites without treating them' (1993), offered as a clinical demonstration of upstream dependence among knots.
+  editorInference: Second-hand; the primary was not retrieved. If accurate it is the closest published analogue to the cascade claim, but it concerns needling, not breath-assisted release.
+  exactLocator: "[p. 32]"
+  limitations:
+    - Secondary restatement in an AI-generated essay; primary not retrieved.
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-053800
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-053853
+    date: 2026-09-09
+- id: VASO-E050
+  title: "Essay restates Sikdar 2009: hypoechoic, stiffer nodules with abnormal flow at trapezius trigger points"
+  claimIds:
+    - VASO-C005
+  sourceId: SRC-JHONG-2026A
+  direction: supports
+  strength: weak
+  sourceStatement: The essay reports that Sikdar and colleagues, using gray-scale ultrasound, vibration sonoelastography and Doppler on upper-trapezius trigger points, 'found discrete hypoechoic nodules, stiffer than the surrounding' tissue with abnormal flow around them.
+  editorInference: Same NIH lineage as SRC-BALLYNS-2011 (VASO-E022–E023); not independent of it. Primary not retrieved.
+  exactLocator: "[p. 30]"
+  limitations:
+    - Secondary restatement; primary not retrieved; not independent of the Ballyns 2011 records.
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-053800
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-053853
+    date: 2026-09-09
+- id: VASO-E051
+  title: Essay restates an attenuated skin blood-flow response over latent trigger points
+  claimIds:
+    - VASO-C005
+  sourceId: SRC-JHONG-2026A
+  direction: supports
+  strength: weak
+  sourceStatement: The essay states that Arendt-Nielsen's group reported 'an attenuated skin blood-flow response over latent trigger points', which it calls the first hint of a cutaneous vasomotor abnormality at a knot.
+  editorInference: This is the Zhang 2009 finding already dispositioned as blocked; the essay's restatement adds no text from the primary.
+  exactLocator: "[p. 30]"
+  limitations:
+    - Secondary restatement; primary (Zhang et al. 2009) not retrieved.
+    - "Second reader (claude-sonnet-5, 2026-09-09) disputes the stated direction: The quote is accurately drawn from p.30 and correctly attributed to Arendt-Nielsen's group as reported in the essay, and the limitations note flags it as a secondary restatement of an unretrieved primary source. However, the claim VASO-C005 concerns active trigger-point sites, while the cited finding specifically concerns latent trigger points, a distinct clinical category; this mismatch makes the 'supports' direction toward an active-trigger-point claim questionable rather than clearly right."
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-053800
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-053853
+    date: 2026-09-09
+- id: VASO-E052
+  title: "Essay restates equine needle-EMG: same spontaneous activity as human trigger points"
+  claimIds:
+    - VASO-C002
+  sourceId: SRC-JHONG-2026A
+  direction: context
+  strength: weak
+  sourceStatement: The essay states that needle electromyography of trigger points in the equine cleidobrachialis 'found the same spontaneous activity the human studies report'.
+  editorInference: Cross-species background; it says nothing about the endplate-zone prevalence gradient VASO-C002 asserts. Primary not retrieved.
+  exactLocator: "[p. 25]"
+  limitations:
+    - Secondary restatement; primary (Macgregor & von Schweinitz 2006) not retrieved.
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-09-inbox-vasocomputation-053800
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-09-draft-vasocomputation-053853
+    date: 2026-09-09

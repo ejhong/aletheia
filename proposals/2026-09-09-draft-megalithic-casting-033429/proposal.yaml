@@ -1,0 +1,876 @@
+# Proposal — a change to domain records, in one envelope (docs/AUTOMATION.md).
+# Never citable; nothing here is a record until adopted through the gate.
+runId: 2026-09-09-draft-megalithic-casting-033429
+date: 2026-09-09
+case: megalithic-casting
+producer: draft
+model: claude-fable-5-1
+promptVersion: draft-v4
+basis:
+  ledgerHash: 376955e6d6018595b1104dbcbf60cafcd1597069be9899a1c77c1b17d271094f
+rationale: "Four texts were shown: the full Davidovits & Davidovits 2020 GPSA Part IV paper (already indexed as SRC-DAVIDOVITS-2020, previously seen only as an abstract), the full Davidovits/Huaman/Davidovits 2019 Materials Letters paper (SRC-DAVIDOVITS-2019-ML), the same team's 2019 twenty-page Geopolymer Institute 'Archaeological Paper #K-eng' (new source), and the full MacKenzie et al. 2011 NMR letter (SRC-MACKENZIE-2011) via an open-access reprint. The Ceramics International andesite paper, Vranich 2018, Isbell & Burkholder 2002, Isbell 2013 and the Protzen & Nair experiments were not shown (403, bot challenge, or empty page) and stay blocked. From the shown texts the report's findings F1–F4 verify: (F1) the 2020 paper itself quotes the excavators reading Iwawe Stratum V as volcanic pumice/possible tephra (2002) and as sand from shaping imported blocks (2013), rejects both by argument only, and names sample collection as its next step — a negative-evidence record; (F2) the Materials Letters paper analyses red sandstone slab No. 2 (PP4), not andesite, so GEO-E006 is retitled and unlinked from GEO-C004; (F3) the K-eng report states the andesite sample PP1 was chosen from debris outside the protected area, that an interior subsample PP1C showed the same organic matter, that nitrogen was only semi-quantitative, that guano versus binder is undetermined, and that no geological andesite comparison was made; (F4) MacKenzie et al. state that both major 29Si resonances also occur in Tura limestone, that the −84 ppm shoulder does not unambiguously prove C-S-H, that 43Ca shows at most possible slight broadening, and that broader quarry sampling may produce closer natural matches — so GEO-E017 is downgraded to weak and the caveats enter as qualifying records. F5 (Vranich) is blocked. No edition: the article's sentences remain literally true (the excavators' description is still known only as quoted by proponents; the NMR paper still has no published rebuttal), so the record deepens without the telling changing; the conditions for a light edition are named in the disposition."
+adds:
+  sources:
+    - id: SRC-DAVIDOVITS-2019
+      title: "Tiahuanaco monuments (Tiwanaku / Pumapunku) in Bolivia are made of geopolymer artificial stones created 1400 years ago (Archaeological Paper #K-eng)"
+      authors:
+        - Joseph Davidovits
+        - Luis Huaman
+        - Ralph Davidovits
+      year: "2019"
+      sourceType: report
+      identifier: doi:10.13140/RG.2.2.31223.16800
+      url: https://www.geopolymer.org/wp-content/uploads/TIWANAKU-PUMAPUNKU.pdf
+      verification: ai_verified
+      verificationNote: text retrieved and shown to the drafter on 2026-09-09 (run 2026-09-09-draft-megalithic-casting-033429); passages checked by the verify verb
+      reliabilityNotes:
+        - "Proponent source: self-published transcript of a Geopolymer Camp 2018 conference talk, hosted by the Geopolymer Institute; not peer reviewed."
+        - Same authors and same sample series (PP1, PP2, PP4, PP5) as SRC-DAVIDOVITS-2019-ML and SRC-DAVIDOVITS-2019-CI; not an independent line of evidence.
+        - Useful chiefly as the authors' own fuller account of sampling context, methods and admitted limitations; contains quotations of third parties (Protzen & Nair, Cieza de León via Markham, Minkes) that enter here only second-hand.
+        - The text itself notes the research received no external funding and that SEM data were collected at Pyromeral Systems SA.
+      derivedFrom: []
+      background: false
+  evidence:
+    - id: GEO-E049
+      title: "Proponents quote the Iwawe excavators: Stratum V microscopy 'conclusively revealed volcanic pumice', possibly airfall tephra"
+      claimIds:
+        - GEO-C903
+        - GEO-C021
+      sourceId: SRC-DAVIDOVITS-2020
+      direction: qualifies
+      strength: weak
+      sourceStatement: The source reproduces Isbell & Burkholder (2002, p. 212) as reporting that Stratum V is virtually sterile, that a volcanologist's thin-section "microscopic examination conclusively revealed volcanic pumice", that only a flotation heavy fraction was available so particle sizes could not be determined, and that Shanaka de Silva suggested the stratum could be volcanic ash from an eruption, most likely Cerro Quemado 250 km to the southwest. The source then calls this analysis 'confusing and not entirely accurate'.
+      editorInference: "Mine: the excavators' first published reading of the deposit the proponents call stockpiled andesite sand was pumice or airfall tephra. This is known here only as quoted by the proponents, who reject it by argument rather than by new analysis; it narrows GEO-C903 (the model's raw-material identification is contested by the excavators the model relies on) and weakens the Iwawe support for GEO-C021 without testing it."
+      exactLocator: "[p. 4] of the PDF at geopolymer.org/wp-content/uploads/gpsa-2020-Davidovits-J-andesite-sand.pdf (journal pp. 38–39), quotation of Isbell & Burkholder 2002 p. 212"
+      limitations:
+        - "Second-hand: Isbell & Burkholder 2002 is quoted by the proponents, not read here."
+        - The quoted analysis was on a flotation heavy fraction only; grain-size information was lost.
+        - Proponent source with a stake in rejecting the quoted reading.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-131750
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-033429
+        date: 2026-09-09
+    - id: GEO-E050
+      title: "Proponents quote Isbell 2013: Stratum V is andesite sand 'probably from intensive work shaping imported stone blocks'"
+      claimIds:
+        - GEO-C903
+        - GEO-C021
+      sourceId: SRC-DAVIDOVITS-2020
+      direction: undermines
+      strength: weak
+      sourceStatement: The source reproduces Isbell (2013, p. 175) describing Iwawe as the port where andesite blocks were landed and Stratum V as "composed of andesite sand, probably from intensive work shaping imported stone blocks", a 'grit layer' marking intensive andesite construction, later termed 'sandy debitage'. The proponents reply that carving produces shards not sand and that the stratigraphy separately labels a 'discontinuous stratum of crushed rock' between Strata VI and VII.
+      editorInference: "Mine: the excavator's own later reading is dressing debris from imported natural blocks — a conventional account directly opposed to casting from stockpiled sand. The proponents' counter (carving yields shards, not sand) is argument, not measurement; neither side has published grain-size or composition data for the layer. This record weighs against GEO-C021's Iwawe support and narrows GEO-C903."
+      exactLocator: "[p. 4] of the PDF at geopolymer.org/wp-content/uploads/gpsa-2020-Davidovits-J-andesite-sand.pdf (journal p. 39), quotation of Isbell 2013 p. 175"
+      limitations:
+        - Second-hand quotation; Isbell 2013 not read here.
+        - Isbell's 'probably' is itself an inference, not a measured result.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-131750
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-033429
+        date: 2026-09-09
+    - id: GEO-E051
+      title: No compositional test ties Iwawe Stratum V to Khapia sand or to monument stone; the proponents name sample collection as the next step
+      claimIds:
+        - GEO-C903
+        - GEO-C021
+      sourceId: SRC-DAVIDOVITS-2020
+      direction: qualifies
+      strength: moderate
+      sourceStatement: The source states in its introduction that "we could not determine the source of this volcanic sand", and concludes that "The next step should involve collecting andesite sand samples from the Stratum (V) of Iwawe" and organising a geological expedition to Cerro Khapia in the hope of discovering the exact source. The Stratum V identification is argued by analogy to Roman carbunculus and Sardinian gas-pipe tuff.
+      editorInference: "Mine: negative evidence. As of this paper the proponents present no new sample from Stratum V, no geochemical match between the layer and Khapia, and no match to monument andesite; the identification rests on analogy. GEO-C903 correctly describes the model, but the model's raw-material claim is untested by its own authors. Zero diagnosticity toward whether the stone was cast; decisive for how much weight the Iwawe argument can carry."
+      exactLocator: "[p. 3] (journal p. 38, Introduction) and [p. 7] (journal p. 42, Conclusion) of the PDF at geopolymer.org/wp-content/uploads/gpsa-2020-Davidovits-J-andesite-sand.pdf"
+      limitations:
+        - Absence of a test in this paper does not show none has been done since 2020.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-131750
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-033429
+        date: 2026-09-09
+    - id: GEO-E052
+      title: Proponents accept Stübel & Uhle's 1892 concordance between Gate of the Sun stone and Khapia outcrops
+      claimIds:
+        - GEO-C030
+        - GEO-C021
+      sourceId: SRC-DAVIDOVITS-2020
+      direction: context
+      strength: weak
+      sourceStatement: The source states that Stübel and Uhle (1892) compared samples from the Puerta del Sol with andesite outcrops at the foot of Cerro Khapia and that "There was a strong concordance between the stone of the monument and the geological rock"; the proponents accept Khapia as the geological origin.
+      editorInference: "Mine: both camps agree the andesite's chemistry matches Khapia, which is why quarry geochemistry cannot separate them at this site (the narrow form of GEO-C030). Background only; bears on neither claim's truth directly."
+      exactLocator: "[p. 3] of the PDF at geopolymer.org/wp-content/uploads/gpsa-2020-Davidovits-J-andesite-sand.pdf (journal p. 38)"
+      limitations:
+        - Stübel & Uhle 1892 not read here; the 'concordance' is characterised by the proponents.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-131750
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-033429
+        date: 2026-09-09
+    - id: GEO-E053
+      title: The 2020 model assigns the piedras cansadas to Inca-period restoration and a constructed Inca road from the Khapia crater
+      claimIds:
+        - GEO-C903
+      sourceId: SRC-DAVIDOVITS-2020
+      direction: supports
+      strength: weak
+      sourceStatement: 'The source argues the quadrangular andesite boulders on both lake shores were transported not at AD 600 but either c. AD 800–1000 or, more probably, under the Incas c. AD 1400: "The Incas used a lot of andesite materials to restore Pumapunku and Tiwanaku", fetching naturally quadrangular blocks from the Khapia crater along a constructed Inca road visible at Kanamarca (Fig. 8, credited to Bardales Vassi 2013), citing Vranich 2013 for Inca refurbishment of Pumapunku.'
+      editorInference: "Mine: this is the full statement of the 'not used as building material' clause of GEO-C903 and supports that the model says so. It also supplies a testable prediction — the tired stones and the Kanamarca road should date to the Inca period, not to the Tiwanaku construction phase. No dating of either is offered."
+      exactLocator: "[p. 6]–[p. 7] of the PDF at geopolymer.org/wp-content/uploads/gpsa-2020-Davidovits-J-andesite-sand.pdf (journal pp. 41–42, Discussion)"
+      limitations:
+        - Proponent conjecture; no dates for the boulders or the road are given.
+        - Vranich 2013 quoted second-hand.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-131750
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-033429
+        date: 2026-09-09
+    - id: GEO-E054
+      title: The Materials Letters 2019 paper analyses red sandstone from slab No. 2 (PP4), not andesite
+      claimIds:
+        - GEO-C021
+      sourceId: SRC-DAVIDOVITS-2019-ML
+      direction: supports
+      strength: weak
+      sourceStatement: The source states "The Pumapunku red sandstone studied here is from slab No. 2", sampled near the 1970s piece No. 9, and compares it by thin section, XRD and SEM/EDS with sandstone from Kausani, Amarillani and Kallamarka; its conclusion is that the slabs consist of Kallamarka sandstone grains "cemented with an amorphous ferro-sialate geopolymer matrix formed by human intervention" with natron from Laguna Cachi.
+      editorInference: "Mine: this paper is the source the ledger's GEO-E006 mis-described as andesite work; it supports only the red-sandstone half of GEO-C021 and does not bear on GEO-C004. The monument sample has a documented location on a named slab, which is a stronger archaeological provenance than the andesite fragment PP1 (GEO-E810)."
+      exactLocator: "[p. 2] (journal p. 121, Materials and methods) and [p. 1] (abstract) of the PDF at anticaciviltasarda.com/files/1556587723938-tiwanaku-geopolimeri.pdf (open-access copy of Materials Letters 235:120–124)"
+      limitations:
+        - Proponent team; single monument sample; three comparison sites.
+        - Interpretation as geopolymer is the authors'.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-131750
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-033429
+        date: 2026-09-09
+    - id: GEO-E055
+      title: Authors state they cannot distinguish natural authigenic albite from 'artificial' albite, and that wider Kallamarka sampling may yield closer XRD matches
+      claimIds:
+        - GEO-C021
+      sourceId: SRC-DAVIDOVITS-2019-ML
+      direction: qualifies
+      strength: moderate
+      sourceStatement: The source reads the high Na and an authigenic albite overgrowth as consistent with an alkaline geopolymer, but states "to our present knowledge, we cannot differentiate between authigenic" and artificial albite; it notes MAR contains calcite not found in PP4 but that "samples from this site may produce XRD spectra more similar" to PP4, and that the 1970s petrography found calcite in 15 of 20 monument samples.
+      editorInference: "Mine: the authors leave open a natural origin for the very feature they use as an alkaline marker, and concede their quarry comparison is under-sampled. This limits the sandstone support for GEO-C021 to the 'fluidal matrix' observation (GEO-E808)."
+      exactLocator: "[p. 4] of the PDF at anticaciviltasarda.com/files/1556587723938-tiwanaku-geopolimeri.pdf (journal p. 123)"
+      limitations:
+        - Self-qualification by proponents; no independent petrography of PP4 exists in the ledger.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-131750
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-033429
+        date: 2026-09-09
+    - id: GEO-E056
+      title: The 'fluidal' red ferro-sialate matrix is reported as unusual in geological sandstone and as the paper's central artificial-stone argument
+      claimIds:
+        - GEO-C021
+      sourceId: SRC-DAVIDOVITS-2019-ML
+      direction: supports
+      strength: weak
+      sourceStatement: The source states that PP4's thin section shows a thick fluidal red ferro-sialate matrix at grain boundaries, that "this feature is very unusual in sandstone formed geologically" or at least unreported in regional petrography, that it 'represents a unicum', and that 'In the absence of contrary evidence, the present conclusions are sound'. It also states that "our detailed study of their published chemical analysis contradicts this" regarding the 1971 Kausani attribution (GEO-E008), on grain size and CaO/Na differences.
+      editorInference: "Mine: a single-sample petrographic observation interpreted by its authors as artificial, with no blind comparison and no positive control — the same evidence type that at Giza (GEO-E020) proved non-diagnostic. Its dispute with the 1971 provenance study is on record but is not itself an independent result."
+      exactLocator: "[p. 4] (journal p. 123, Results and discussion; Conclusion) and [p. 1] (journal p. 120, Introduction) of the PDF at anticaciviltasarda.com/files/1556587723938-tiwanaku-geopolimeri.pdf"
+      limitations:
+        - One thin section from one sample; 'unicum' claim rests on the authors' survey of two regional reports.
+        - Proponent interpretation.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-131750
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-033429
+        date: 2026-09-09
+    - id: GEO-E057
+      title: Andesite sample PP1 was chosen from loose debris outside the protected monument area, by its flat surface
+      claimIds:
+        - GEO-C004
+        - GEO-C021
+      sourceId: SRC-DAVIDOVITS-2019
+      direction: qualifies
+      strength: moderate
+      sourceStatement: 'The source states that numerous andesite fragments lie scattered and abandoned on the site: "They are outside the protected monument area." and that by "carefully choosing this debris consisting in fact of pieces" of monumental stones with the characteristically flat surface the authors obtained their samples; PP1 A and B came from the fresh broken part of a fragment on the ground (Fig. 21), PP2 from the corner of a broken door fragment, PP5 from the surface of a flat slab.'
+      editorInference: "Mine: the andesite result is about a loose fragment attributed to the monument by appearance, with no object number, excavation context or documented refit; its transfer to the H-blocks (as in the IMG-GEO-P04 caption) is an attribution, not an observation. This narrows GEO-C004 and GEO-C021 without denying either."
+      exactLocator: "[p. 13] of the PDF at geopolymer.org/wp-content/uploads/TIWANAKU-PUMAPUNKU.pdf (§2.2.1 Andesite monument samples, Fig. 21)"
+      limitations:
+        - The peer-reviewed statement of the same context (Ceramics International, 'Andesite samples' section) was not shown; this is the authors' own longer account.
+        - "'Outside the protected area' does not by itself exclude that the fragments are from architectural blocks."
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-131750
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-033429
+        date: 2026-09-09
+    - id: GEO-E058
+      title: An interior subsample (PP1C) is reported to show the same carbon- and nitrogen-bearing amorphous matter beneath feldspar grains
+      claimIds:
+        - GEO-C004
+      sourceId: SRC-DAVIDOVITS-2019
+      direction: supports
+      strength: weak
+      sourceStatement: Anticipating a surface-contamination objection to the organic matter found in a surface hole of PP1, the authors state "we looked inside PP1A by cutting from its interior a smaller sample labeled PP1C" and report several interior spots with the same EDS spectrum (C, N, Na, Mg, Al, Si, P, S, Cl, K, Ca), including a dark sheet lying underneath two plagioclase crystals (Fig. 27).
+      editorInference: "Mine: an interior occurrence makes simple modern surface dirt an incomplete explanation and is the strongest part of the andesite result. It remains one fragment of insecure provenance, analysed by the proponents with no natural andesite control, and EDS cannot characterise the organic compound."
+      exactLocator: "[p. 15]–[p. 16] of the PDF at geopolymer.org/wp-content/uploads/TIWANAKU-PUMAPUNKU.pdf (§2.2.3, Fig. 27)"
+      limitations:
+        - Same team, same fragment as GEO-E007; not independent.
+        - EDS is elemental only; no molecular identification of the 'organic matter'.
+        - Sample provenance per GEO-E809.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-131750
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-033429
+        date: 2026-09-09
+    - id: GEO-E059
+      title: Nitrogen only semi-quantitative; authors cannot say whether the organic matter is unreacted guano or the binder
+      claimIds:
+        - GEO-C004
+        - GEO-C580
+      sourceId: SRC-DAVIDOVITS-2019
+      direction: qualifies
+      strength: moderate
+      sourceStatement: The source states that nitrogen 'cannot be determined by simple EDS' and that its quantitative analysis "cannot be carried out with our present equipment"; that the EDS of Ilo guano is similar to that of the monument organic matter; and that "we do not know whether the PP4 organic matter is the remaining part of unreacted guano" or the spectrum of the organo-mineral binder itself (the text says PP4 here, apparently meaning the andesite sample).
+      editorInference: "Mine: the guano-hardener identification rests on elemental similarity by EDS and is, by the authors' own statement, unresolved between residue and binder. This limits both the andesite observation (GEO-C004) and the Andean chemistry claim (GEO-C580) to a hypothesis."
+      exactLocator: "[p. 14], [p. 17] (§2.3.4) and [p. 18] (§2.3.5) of the PDF at geopolymer.org/wp-content/uploads/TIWANAKU-PUMAPUNKU.pdf"
+      limitations:
+        - The 'PP4' label in the source at this point conflicts with the andesite sample name PP1; read as a slip, but recorded as written.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-131750
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-033429
+        date: 2026-09-09
+    - id: GEO-E060
+      title: No geological andesite was compared with monument andesite in the 2019 study
+      claimIds:
+        - GEO-C004
+        - GEO-C021
+      sourceId: SRC-DAVIDOVITS-2019
+      direction: qualifies
+      strength: moderate
+      sourceStatement: "The source states that the 1970s Bolivian study did no petrography on the andesite, that Janusek et al. 2013 confirmed Khapia as the principal source by portable XRF on boulders, and that consequently \"we do not compare geological andesite and monument stone\" as was done for sandstone: 'In the absence of a geological study, we did not know where to look.'"
+      editorInference: "Mine: the andesite 'unicum' claim has no natural comparator at all in the published work. Volcanic rocks can host amorphous glassy phases; without a Khapia control the organic/amorphous features cannot be shown to be absent from the parent rock."
+      exactLocator: "[p. 12] of the PDF at geopolymer.org/wp-content/uploads/TIWANAKU-PUMAPUNKU.pdf (§2.2)"
+      limitations:
+        - Applies to the 2019 work; the 2020 paper (GEO-E803) still presents no andesite comparison.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-131750
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-033429
+        date: 2026-09-09
+    - id: GEO-E061
+      title: Stübel & Uhle (1892) already noted 'round nests of amorphous substance' in a thin section of Tiwanaku monument andesite
+      claimIds:
+        - GEO-C004
+      sourceId: SRC-DAVIDOVITS-2019
+      direction: context
+      strength: weak
+      sourceStatement: The source reports that its thin section of PP2 shows black areas of amorphous substance across the field, and notes that the nineteenth-century travellers' thin section of a different Tiwanaku andesite recorded, in German, "Round nests (pockets) of amorphous substance, in the middle" light brown, fading to the edges, noticed occasionally.
+      editorInference: "Mine: an 1892 observation of amorphous pockets in monument andesite predates the geopolymer hypothesis and was made by observers with no stake in it; it establishes that amorphous matter is a recurring feature of this stone but says nothing about whether it is organic or natural volcanic glass. Background only."
+      exactLocator: "[p. 13] of the PDF at geopolymer.org/wp-content/uploads/TIWANAKU-PUMAPUNKU.pdf (§2.2.2, Fig. 22)"
+      limitations:
+        - Stübel & Uhle quoted second-hand and in the proponents' translation.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-131750
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-033429
+        date: 2026-09-09
+    - id: GEO-E062
+      title: Surface bubbles and sharp interior angles offered as wet-sand-molding signatures; Protzen & Nair quoted on hammerstones
+      claimIds:
+        - GEO-C021
+      sourceId: SRC-DAVIDOVITS-2019
+      direction: supports
+      strength: weak
+      sourceStatement: The source quotes Protzen & Nair (1997) that a hammerstone point "could never produce the crisp right interior angles" of Tiwanaku stonework and that the builders' tools remain unknown, and states that the H-blocks show a dense skin and "semi-spherical air bubbles which had been trapped against the mold", read as evidence of pounding semi-dried geopolymer mortar in a mould or carving a preform before hardening.
+      editorInference: "Mine: the Protzen quotation is a conventional scholar's statement that the tooling is unexplained, not an endorsement of casting; the bubble reading is unmeasured surface morphology of the kind GEO-C594 warns may reflect weathering or intervention. Weightless as evidence of casting; recorded as the proponents' argument."
+      exactLocator: "[p. 12] of the PDF at geopolymer.org/wp-content/uploads/TIWANAKU-PUMAPUNKU.pdf (§2.1.2, Fig. 20)"
+      limitations:
+        - Protzen & Nair 1997 quoted second-hand.
+        - No measurement or comparison of the 'bubbles' against natural vesicles in andesite.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-131750
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-033429
+        date: 2026-09-09
+    - id: GEO-E063
+      title: Guano trade from Ilo to Tiwanaku via the Moquegua valley, as reported by Minkes 2005 and read by the proponents as exceeding agricultural need
+      claimIds:
+        - GEO-C581
+      sourceId: SRC-DAVIDOVITS-2019
+      direction: supports
+      strength: weak
+      sourceStatement: Citing Minkes (2005), the source states that llama caravans carried "the guano gathered in large quantities at Punta Coles, Ilo" up to Tiwanaku through the Moquegua valley, that this trade 'appears to have been intensified during the Tiwanaku / Pumapunku construction', and that because the raised-field system supplied fertilizer on site "They did not need the guano, because they produced on site their own fertilizer."
+      editorInference: "Mine: the trade route and its intensification are Minkes' (second-hand here); the claim that quantities exceeded agricultural need is the proponents' assertion without figures. Supports the descriptive part of GEO-C581 weakly; the 'did not need it' inference is unquantified."
+      exactLocator: "[p. 17] of the PDF at geopolymer.org/wp-content/uploads/TIWANAKU-PUMAPUNKU.pdf (§2.3.3, Fig. 28)"
+      limitations:
+        - Minkes 2005 not read; no quantities of guano traded are given.
+        - "'Intensified during construction' is undated in the source."
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-131750
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-033429
+        date: 2026-09-09
+    - id: GEO-E064
+      title: Plant acids do not disaggregate andesite; the acid-medium andesite binder is said to be replicated in the laboratory with modern chemicals
+      claimIds:
+        - GEO-C580
+      sourceId: SRC-DAVIDOVITS-2019
+      direction: supports
+      strength: weak
+      sourceStatement: The source states that carboxylic acids (acetic, oxalic, citric) work on limestone — any stone containing limestone "will be disaggregated but not volcanic andesite" — so the chemistry can only make a binder to agglomerate unconsolidated material; that earlier attempts could soften limestone but not re-harden it; and that the acidic-medium method with guano 'has been successfully replicated in our laboratory with modern chemicals' to test the mechanism.
+      editorInference: "Mine: consistent with GEO-C580's three-stage description, but the replication is asserted without recipe, data or product characterisation, and used modern reagents rather than plant extracts and guano. Feasibility of the mechanism is claimed, not shown."
+      exactLocator: "[p. 16] (§2.3.1–2.3.2) and [p. 18] (§3 Conclusion) of the PDF at geopolymer.org/wp-content/uploads/TIWANAKU-PUMAPUNKU.pdf"
+      limitations:
+        - No experimental data presented for the replication.
+        - Modern chemicals, not the proposed ancient inputs.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-131750
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-033429
+        date: 2026-09-09
+    - id: GEO-E065
+      title: "Cieza de León (via Markham 1864) on Tiwanaku: pre-Inca attribution and bewilderment about tools, as quoted by the proponents"
+      claimIds:
+        - GEO-C585
+      sourceId: SRC-DAVIDOVITS-2019
+      direction: supports
+      strength: weak
+      sourceStatement: "The source quotes Markham's translation of Cieza de León (visit 1549): 'For myself I fail to understand with what instruments or tools it can have been done', that in all the district 'there are no quarries whence the numerous stones can have been brought', and that the natives laughed at the question, \"affirming that they were made before the Incas ever reigned\", but could not say who made them."
+      editorInference: "Mine: the quoted passage supports the pre-Inca oral tradition and the chronicler's puzzlement in GEO-C585; it does not contain the 'single night' or 'bearded men' elements, which must be sourced separately. Second-hand and a nineteenth-century translation."
+      exactLocator: "[p. 4] of the PDF at geopolymer.org/wp-content/uploads/TIWANAKU-PUMAPUNKU.pdf (Introduction, quoting Markham 1864 pp. 376–379)"
+      limitations:
+        - Markham's translation quoted by proponents; the Spanish original not consulted.
+        - Supports only part of a compound claim.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-131750
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-033429
+        date: 2026-09-09
+    - id: GEO-E066
+      title: Radiocarbon dating of the andesite organic matter announced as the next step (2019); no result located
+      claimIds:
+        - GEO-C004
+      sourceId: SRC-DAVIDOVITS-2019
+      direction: context
+      strength: weak
+      sourceStatement: The source states that because organic matter was found inside the andesite the team will be able to carry out Carbon-14 dating, and that 'the next step of our study will be to "gather enough sample in order to implement Carbon-14 dating" and provide the exact age of the monuments.'
+      editorInference: "Mine: the report searched for and did not find a published 14C result in the following years; that is a retrieval outcome, not proof of absence. If run and published, a date near AD 600 would bear on GEO-C004 and GEO-C021 strongly; a modern date would point to contamination. Background until then."
+      exactLocator: "[p. 2] (Extended abstract) and [p. 19] (Conclusion) of the PDF at geopolymer.org/wp-content/uploads/TIWANAKU-PUMAPUNKU.pdf"
+      limitations:
+        - Announced intention only.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-131750
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-033429
+        date: 2026-09-09
+    - id: GEO-E067
+      title: "MacKenzie et al.: the −84 ppm shoulder 'does not in itself unambiguously prove' C-S-H; the expected Q1 resonance is absent"
+      claimIds:
+        - GEO-C020
+      sourceId: SRC-MACKENZIE-2011
+      direction: qualifies
+      strength: moderate
+      sourceStatement: The source states that the shoulder at about −84 ppm in the Bent Pyramid casing spectrum is characteristic of mid-chain Q2 units of C-S-H gel and absent from Tura limestone, but that the peak "does not in itself unambiguously prove the presence of C-S-H gel" because the Q1 end-chain resonance at about −79 ppm is absent; ageing may have reduced the Q1 fraction, but 'at present there is no explanation for this discrepancy'.
+      editorInference: "Mine: the paper's own authors leave the binder identification incomplete. GEO-E017 paraphrased the conclusion without this caveat; the surviving positive Egyptian result is weaker than the assessment's 'no published rebuttal' framing implies, because the reservation is internal to the paper."
+      exactLocator: "[p. 3] of the PDF at anticaciviltasarda.com/files/10.1.1.870.591-piramidi-geopolimeri.pdf (open-access reprint of Materials Letters 65:350–352; journal p. 351, Results and discussion, Fig. 1)"
+      limitations:
+        - Single casing sample; the paper's sample-provenance statement is 'outer casing blocks of Snefru's Bent Pyramid' without further documentation.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-131750
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-033429
+        date: 2026-09-09
+    - id: GEO-E068
+      title: Both major 29Si resonances of the casing stone also occur in Tura quarry limestone; the argument rests on relative intensity, and wider quarry sampling may yield closer matches
+      claimIds:
+        - GEO-C020
+      sourceId: SRC-MACKENZIE-2011
+      direction: qualifies
+      strength: moderate
+      sourceStatement: The source states that the two major 29Si resonances of the Bent Pyramid sample "also occur in the spectrum of the Tura limestone quarry", that the silica resonance is relatively dominant in the pyramid sample so that if Tura was the source "additional silica would still have been required", and in conclusion that since both quarry areas are large, 'subsequent work on samples from these quarries may produce NMR spectra more similar to that of the present BP spectra'. Table 1 (PIXE) gives bulk Si of 2.30 at% for the Bent Pyramid stone, 4.79 at% for Tura and 1.44 at% for Khufu quarry.
+      editorInference: "Mine: the artificial-binder inference rests on a visual intensity comparison against one Tura specimen, with natural variability conceded as an open alternative. Note also that bulk Si is lower in the pyramid sample than in the Tura sample by the paper's own table; the 'added silica' inference depends on NMR intensity ratios, not on bulk chemistry. This makes GEO-E017 weak support for artificial binding and moderate evidence only that the spectrum differs from two comparators."
+      exactLocator: "[p. 3] (journal p. 351, Table 1 and Results) and [p. 4] (journal p. 352, Conclusions) of the PDF at anticaciviltasarda.com/files/10.1.1.870.591-piramidi-geopolimeri.pdf"
+      limitations:
+        - Two quarry comparators only.
+        - The bulk-Si observation is mine; the authors do not discuss it.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-131750
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-033429
+        date: 2026-09-09
+    - id: GEO-E069
+      title: 43Ca NMR of the casing stone is consistent with calcite, with only 'possible slight broadening' attributed to C-S-H
+      claimIds:
+        - GEO-C020
+      sourceId: SRC-MACKENZIE-2011
+      direction: qualifies
+      strength: moderate
+      sourceStatement: The source states that the 43Ca spectra of pyramid and quarry samples contain a single resonance at 22 ppm in the position of calcite with quadrupolar coupling like pure calcite, and that the Bent Pyramid spectrum 'is therefore consistent with that of calcite, with a "possible slight broadening due to a small amount" of C-S-H gel binder', the smaller range of Ca environments than fresh gel perhaps reflecting ageing.
+      editorInference: "Mine: the calcium result is equivocal and is fitted to the C-S-H hypothesis rather than demonstrating it. Together with GEO-E819 and GEO-E820, the paper establishes a spectral difference from two quarry samples more securely than a human-made binder."
+      exactLocator: "[p. 4] of the PDF at anticaciviltasarda.com/files/10.1.1.870.591-piramidi-geopolimeri.pdf (journal p. 352, Fig. 3)"
+      limitations:
+        - Natural-abundance 43Ca at low sensitivity; 80,000–250,000 scans per spectrum per the source.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-131750
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-033429
+        date: 2026-09-09
+    - id: GEO-E070
+      title: Diffraction finds 97–98 wt% calcite and no crystalline calcium silicates in casing and quarry stone; the proposed binder is by construction amorphous and minor
+      claimIds:
+        - GEO-C020
+        - GEO-C012
+      sourceId: SRC-MACKENZIE-2011
+      direction: context
+      strength: weak
+      sourceStatement: The source states that XRD and unpublished neutron diffraction show casing and quarry samples contain about 97–98 wt% randomly oriented calcite with traces of gypsum and "quartz in some cases, but no crystalline calcium silicates", so any binding phase would be amorphous Ca-silicate; it cites work showing lime plus diatomaceous earth binds fine limestone aggregate by forming amorphous C-S-H, and reports Barsoum's 60–100 nm silica spheres as particles that "are not found in the local natural sedimentary limestone".
+      editorInference: "Mine: this frames the surviving Egyptian hypothesis as a few-per-cent amorphous phase invisible to XRD — which is exactly why bulk petrography and diffraction cannot close it, and why a targeted C-S-H test is the outstanding experiment. The spheres statement conflicts with GEO-E020 (Jana found Si-rich spheres in natural limestone too); recorded as the source's position."
+      exactLocator: "[p. 2] of the PDF at anticaciviltasarda.com/files/10.1.1.870.591-piramidi-geopolimeri.pdf (journal p. 350, Introduction)"
+      limitations:
+        - Neutron diffraction results are described as unpublished.
+        - Sphere statement rests on Barsoum 2006 and Middleton & Bradley 1989 as cited.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-131750
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-033429
+        date: 2026-09-09
+    - id: GEO-E071
+      title: "The NMR paper is itself a provenance match: Khufu quarry excluded, Tura confirmed as the casing limestone source"
+      claimIds:
+        - GEO-C020
+        - GEO-C030
+      sourceId: SRC-MACKENZIE-2011
+      direction: context
+      strength: weak
+      sourceStatement: The source states that the −111 ppm silica resonance is absent from Khufu quarry limestone, so that material "could not by itself have been the source" of the casing, and that the 27Al spectra, with Khufu showing a more intense tetrahedral peak, are read as "confirming Tura as the source of the limestone for the BP casing".
+      editorInference: "Mine: a pro-casting paper that provenances the aggregate to Tura illustrates the narrow form of GEO-C030 — a quarry match and a cast-stone claim are compatible — while the same technique (29Si NMR) is one Fóti's methods table lists as blind to silicon. Background to both claims."
+      exactLocator: "[p. 3]–[p. 4] of the PDF at anticaciviltasarda.com/files/10.1.1.870.591-piramidi-geopolimeri.pdf (journal pp. 351–352, Figs. 1–2)"
+      limitations:
+        - Two quarry specimens; the Khufu exclusion is by absence of one resonance.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-131750
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-033429
+        date: 2026-09-09
+  claims:
+    - id: GEO-C913
+      statement: The andesite sample (PP1) on which the 2019 organic-matter finding rests was selected by appearance from loose fragments lying outside the protected monument area at Pumapunku, not sampled from an identified architectural block.
+      theme: materials-evidence
+      rung: observation
+      claimType: observation
+      sourceAnchor:
+        locator: "[p. 13] of the PDF at geopolymer.org/wp-content/uploads/TIWANAKU-PUMAPUNKU.pdf, §2.2.1"
+        quote: They are outside the protected monument area.
+        sourceId: SRC-DAVIDOVITS-2019
+      parentClaimIds:
+        - GEO-C004
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-131750
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-033429
+        date: 2026-09-09
+    - id: GEO-C914
+      statement: The Iwawe Stratum V deposit has three published readings — volcanic pumice or airfall tephra (Naslund and de Silva, as reported in Isbell & Burkholder 2002), andesite sand from shaping imported blocks (Isbell 2013), and stockpiled natural Khapia sand (Davidovits & Davidovits 2020) — the first two known to this ledger only as quoted by the third.
+      theme: attribution
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: "[p. 4] of the PDF at geopolymer.org/wp-content/uploads/gpsa-2020-Davidovits-J-andesite-sand.pdf (journal p. 39)"
+        quote: probably from intensive work shaping imported stone blocks
+        sourceId: SRC-DAVIDOVITS-2020
+      parentClaimIds:
+        - GEO-C903
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-131750
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-033429
+        date: 2026-09-09
+    - id: GEO-C915
+      statement: As of the 2020 proponent paper, no compositional analysis had been published tying Iwawe Stratum V material to Cerro Khapia sand or to Pumapunku monument andesite; the proponents named collection of such samples as the next step.
+      theme: methodology
+      rung: observation
+      claimType: observation
+      sourceAnchor:
+        locator: "[p. 7] of the PDF at geopolymer.org/wp-content/uploads/gpsa-2020-Davidovits-J-andesite-sand.pdf (journal p. 42, Conclusion)"
+        quote: collecting andesite sand samples from the Stratum (V) of Iwawe
+        sourceId: SRC-DAVIDOVITS-2020
+      parentClaimIds:
+        - GEO-C903
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-131750
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-033429
+        date: 2026-09-09
+    - id: GEO-C916
+      statement: In MacKenzie et al. 2011 both major 29Si resonances of the Bent Pyramid casing stone also occur in Tura quarry limestone, the artificial-binder inference rests on their relative intensities and a −84 ppm shoulder, and the authors state the shoulder does not by itself unambiguously prove C-S-H gel because the expected Q1 resonance is absent.
+      theme: materials-evidence
+      rung: observation
+      claimType: measurement
+      sourceAnchor:
+        locator: "[p. 3] of the PDF at anticaciviltasarda.com/files/10.1.1.870.591-piramidi-geopolimeri.pdf (journal p. 351)"
+        quote: does not in itself unambiguously prove the presence of C-S-H gel
+        sourceId: SRC-MACKENZIE-2011
+      parentClaimIds:
+        - GEO-C020
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-131750
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-033429
+        date: 2026-09-09
+    - id: GEO-C917
+      statement: The 2019 Materials Letters Pumapunku paper analysed a red sandstone sample (PP4) from megalithic slab No. 2, not andesite, and interprets its grain-boundary matrix as a ferro-sialate geopolymer binding Kallamarka sandstone grains with added natron.
+      theme: materials-evidence
+      rung: observation
+      claimType: observation
+      sourceAnchor:
+        locator: "[p. 2] of the PDF at anticaciviltasarda.com/files/1556587723938-tiwanaku-geopolimeri.pdf (journal p. 121, Materials and methods)"
+        quote: red sandstone studied here is from slab No. 2
+        sourceId: SRC-DAVIDOVITS-2019-ML
+      parentClaimIds:
+        - GEO-C021
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-131750
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-033429
+        date: 2026-09-09
+    - id: GEO-C918
+      statement: An interior subsample (PP1C) cut from the Pumapunku andesite fragment PP1 is reported by its analysts to contain the same carbon- and nitrogen-bearing amorphous matter as the surface hole, lying beneath plagioclase crystals.
+      theme: materials-evidence
+      rung: observation
+      claimType: observation
+      sourceAnchor:
+        locator: "[p. 15] of the PDF at geopolymer.org/wp-content/uploads/TIWANAKU-PUMAPUNKU.pdf, §2.2.3"
+        quote: cutting from its interior a smaller sample labeled PP1C
+        sourceId: SRC-DAVIDOVITS-2019
+      parentClaimIds:
+        - GEO-C004
+      dependsOnClaimIds:
+        - GEO-C913
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-131750
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-033429
+        date: 2026-09-09
+    - id: GEO-C919
+      statement: The authigenic albite reported in Pumapunku sandstone sample PP4 cannot, by the analysts' own statement, be distinguished from albite formed naturally by burial diagenesis.
+      theme: methodology
+      rung: observation
+      claimType: methodological
+      sourceAnchor:
+        locator: "[p. 4] of the PDF at anticaciviltasarda.com/files/1556587723938-tiwanaku-geopolimeri.pdf (journal p. 123)"
+        quote: to our present knowledge, we cannot differentiate between authigenic
+        sourceId: SRC-DAVIDOVITS-2019-ML
+      parentClaimIds:
+        - GEO-C021
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-131750
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-033429
+        date: 2026-09-09
+    - id: GEO-C920
+      statement: The proposed guano hardener for Pumapunku andesite is identified only by EDS elemental similarity between Ilo guano and the andesite organic matter, with nitrogen semi-quantitative and the analysts unable to say whether the material is unreacted guano or a binder.
+      theme: materials-evidence
+      rung: observation
+      claimType: methodological
+      sourceAnchor:
+        locator: "[p. 17] of the PDF at geopolymer.org/wp-content/uploads/TIWANAKU-PUMAPUNKU.pdf, §2.3.4"
+        quote: whether the PP4 organic matter is the remaining part of unreacted guano
+        sourceId: SRC-DAVIDOVITS-2019
+      parentClaimIds:
+        - GEO-C580
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-131750
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-033429
+        date: 2026-09-09
+  research:
+    - id: GEO-R015
+      title: Compositional test of Iwawe Stratum V against Khapia andesite, regional tephra, monument andesite and experimental dressing debris
+      summary: Locate surviving Stratum V samples and field records from the 2000–2002 Iwawe excavations (Isbell & Burkholder) or obtain new whole-fraction samples, and compare — with grain-size distribution, particle morphology, thin-section petrography, glass chemistry and major/trace elements prespecified — against (a) Cerro Khapia andesite outcrops and any unconsolidated volcaniclastic deposits there, (b) Pumapunku monument andesite, (c) regional tephra including Cerro Quemado, and (d) debris produced experimentally by dressing Khapia andesite with hammerstones. This is the laboratory extension of the desk check GEO-R009.
+      claimIds:
+        - GEO-C914
+        - GEO-C915
+        - GEO-C903
+        - GEO-C021
+      track: small_grant
+      effortTier: lab
+      informationGain: "Discriminates the three live readings of the one physical deposit on which the proponents' raw-material argument rests: airfall tephra (closes the Iwawe argument), dressing debris (documents conventional block-working at the port and undermines GEO-C021), or natural Khapia sand stockpiled at AD 600 with no extraction faces (the outcome the casting model predicts). Either way it replaces argument-by-analogy with measurement."
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-131750
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-033429
+        date: 2026-09-09
+    - id: GEO-R016
+      title: Establish what andesite sample PP1 is from, and whether a documented monument fragment can be tested instead
+      summary: Request from the Geopolymer Institute and Bolivian authorities the 2017 collection permits, field photographs, coordinates and export documents for PP1/PP2/PP5, remaining fragments and thin-section numbers, and attempt a physical or petrographic refit of PP1 to a catalogued Pumapunku block. In parallel, identify a small detached andesite fragment with an object number and conservation history (site store or museum) for independent SEM/EDS and organic analysis against a Khapia andesite control. Also search for any published or unpublished 14C result on the andesite organic matter announced in 2019.
+      claimIds:
+        - GEO-C913
+        - GEO-C918
+        - GEO-C004
+        - GEO-C021
+      track: either
+      effortTier: desk
+      informationGain: Converts the andesite result from an observation about a loose surface find into evidence about (or not about) the monument. A documented refit or a provenance-secure fragment reproducing the interior organic matter would materially strengthen GEO-C004; failure to document PP1's origin caps its weight; a 14C date near AD 600 or a modern date would each be decisive for contamination versus ancient binder.
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-131750
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-033429
+        date: 2026-09-09
+    - id: GEO-R017
+      title: Blinded multinuclear NMR of Bent Pyramid and other casing stone against a stratified Tura/Dahshur/Giza limestone suite with aged C-S-H controls
+      summary: Repeat 29Si/27Al/43Ca MAS NMR on provenance-secure casing samples alongside a suite of natural limestone from multiple stratigraphic positions in the Tura, Dahshur and Giza quarries, blind-labelled, on replicate instruments, with synthetic C-S-H gels aged under dry heat and carbonation as positive controls, and with Q1/Q2 detection criteria (−79 and −84 ppm) fixed in advance. Report whether any natural sample shows the −84 ppm shoulder and dominant −111 ppm silica resonance seen in the Bent Pyramid sample.
+      claimIds:
+        - GEO-C916
+        - GEO-C020
+        - GEO-C012
+      track: small_grant
+      effortTier: lab
+      informationGain: Tests the one surviving positive Egyptian result against the alternative its own authors leave open — natural quarry variability — and supplies the positive control (aged C-S-H) that GEO-E020's alkali geopolymer control did not. A shoulder reproduced in natural Tura stone retires the result; a shoulder absent from a broad natural suite but present in casing stone, with a Q1 explanation, would be the first binder-specific positive on pyramid stone.
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-131750
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-033429
+        date: 2026-09-09
+    - id: GEO-R018
+      title: Read Protzen & Nair 2013 (The Stones of Tiahuanaco) experiments chapter for stone type, tools, durations and features reproduced
+      summary: Obtain the UCLA Cotsen monograph (open-access record at escholarship.org/uc/item/2192r04f; the page returned no text here) and record from the stone-tool experiment chapter the lithology worked, tools, time, tolerances achieved, which exterior and interior angles were reproduced, and where the authors state the method remains unresolved; also record their treatment of the piedras cansadas and transport (Chapter 6, pp. 180–181 as cited by the proponents).
+      claimIds:
+        - GEO-C021
+        - GEO-C528
+        - GEO-C903
+      track: publication_prize
+      effortTier: desk
+      informationGain: "Supplies the conventional experimental counterweight the Andean branch currently lacks: if hammerstone work reproduces the sharp interior angles the proponents call impossible, GEO-E814's argument fails; if the authors themselves report the finish unresolved, that is recorded as an honest gap rather than assumed either way."
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-131750
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-033429
+        date: 2026-09-09
+    - id: GEO-R019
+      title: Independent re-analysis of Pumapunku sandstone (PP4 or equivalent) against a broad Kimsachata/Kallamarka suite, testing the natural-albite alternative
+      summary: Re-examine PP4 or a new sample from the same documented location on slab No. 2 by thin section, SEM/EDS and XRD alongside a substantially larger suite of regional red sandstone including multiple Kallamarka beds, with criteria for the 'fluidal ferro-sialate matrix' and for authigenic versus alkali-induced albite specified in advance and samples blind-labelled.
+      claimIds:
+        - GEO-C917
+        - GEO-C919
+        - GEO-C021
+      track: small_grant
+      effortTier: lab
+      informationGain: The sandstone result has the better archaeological provenance of the two Pumapunku papers but rests on one thin section and three comparison sites, with a natural alternative the authors concede. Reproducing the matrix in natural Kimsachata sandstone closes the sandstone half of GEO-C021; failing to, across a broad suite, would be the first replicated Andean anomaly.
+      origin:
+        ref: report 2026-09-08-report-megalithic-casting-131750
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-033429
+        date: 2026-09-09
+  images: []
+corrections:
+  - record: GEO-E006
+    field: title
+    from: SEM and petrographic anomalies in Pumapunku andesite
+    to: SEM and petrographic anomalies in Pumapunku red sandstone (slab No. 2, sample PP4)
+    reason: SRC-DAVIDOVITS-2019-ML states 'The Pumapunku red sandstone studied here is from slab No. 2' ([p. 2] of the open-access PDF; journal p. 121) and analyses no andesite; the record's title mis-describes the lithology.
+  - record: GEO-E006
+    field: claimIds
+    from: GEO-C004, GEO-C021
+    to: GEO-C021
+    reason: GEO-C004 concerns SEM and petrographic analyses of Pumapunku andesite; SRC-DAVIDOVITS-2019-ML analyses red sandstone only (shown text, [p. 2]), so it cannot support GEO-C004. The andesite observation rests on SRC-DAVIDOVITS-2019-CI alone (GEO-E007).
+  - record: GEO-E017
+    field: strength
+    from: moderate
+    to: weak
+    reason: The shown full text of SRC-MACKENZIE-2011 states the −84 ppm shoulder 'does not in itself unambiguously prove the presence of C-S-H gel' ([p. 3], journal p. 351), that both major 29Si resonances 'also occur in the spectrum of the Tura limestone quarry', that 43Ca shows only 'possible slight broadening' ([p. 4], journal p. 352), and that wider quarry sampling 'may produce NMR spectra more similar' to the pyramid sample. The record paraphrased the conclusion without these caveats; the support for artificial binding is weak (see GEO-E067–E821).
+  - record: SRC-DAVIDOVITS-2019-ML
+    field: url
+    from: (none)
+    to: https://www.anticaciviltasarda.com/files/1556587723938-tiwanaku-geopolimeri.pdf
+    reason: The report reached the full text at this open-access copy of Materials Letters 235:120–124 (doi:10.1016/j.matlet.2018.10.033); the ledger record held no URL, so the verifier could not read it.
+  - record: SRC-MACKENZIE-2011
+    field: url
+    from: (none)
+    to: https://www.anticaciviltasarda.com/files/10.1.1.870.591-piramidi-geopolimeri.pdf
+    reason: The report reached the full text at this open-access ResearchGate reprint of Materials Letters 65:350–352 (doi:10.1016/j.matlet.2010.10.035); the ledger record held no URL.
+  - record: SRC-DAVIDOVITS-2020
+    field: url
+    from: https://geopolymer.org/library/gpsa/2020-davidovits-andesite-sand
+    to: https://www.geopolymer.org/wp-content/uploads/gpsa-2020-Davidovits-J-andesite-sand.pdf
+    reason: The library page previously yielded only the abstract and its PDF link returned 403; the full eight-page text was reached at this direct upload URL. The library URL remains a key; the record should point where the text can be read.
+  - record: IMG-GEO-P04
+    field: depicts
+    from: Andesite H-blocks at Puma Punku, Tiwanaku, Bolivia — the stones whose published SEM and petrographic analyses are the case's only laboratory evidence from a disputed monument (GEO-C004, GEO-C021).
+    to: "Andesite H-blocks at Puma Punku, Tiwanaku, Bolivia — the class of stone whose published SEM and petrographic analyses are the case's only laboratory evidence from a disputed monument (GEO-C004, GEO-C021). The analysed andesite sample (PP1) was not taken from a pictured block: the analysts state it was selected from loose fragments lying outside the protected monument area (GEO-C801)."
+    reason: SRC-DAVIDOVITS-2019 [p. 13] states the andesite samples came from debris 'outside the protected monument area', chosen by their flat surfaces; the caption as written transfers the PP1 finding to the pictured H-blocks.
+dispositions:
+  - key: url:nature.com/articles/s40494-018-0231-0
+    kind: source
+    disposition: blocked
+    reason: "Vranich 2018, 'Reconstructing ancient architecture at Tiwanaku, Bolivia: the potential and promise of 3D printing', Heritage Science 6:65, doi:10.1186/s40494-018-0231-0 — the report describes ~150 finished andesite modules with hoisting grips and pre-assembly decoration (Figs. 7–8). nature.com served a bot-challenge page; the DOI URL as given (trailing backtick) returned 404. Nothing quotable."
+    reopenIf: The open-access article is retrieved (Springer/BMC PDF, PMC/Europe PMC copy, or the DOI without the stray character) and the masonry/architecture section read.
+    observed: Vranich 2018, Heritage Science (report F5, proposal 5)
+    by: 2026-09-09-draft-megalithic-casting-033429
+    date: 2026-09-09
+    route: Fetch https://doi.org/10.1186/s40494-018-0231-0 or the BMC PDF; or Europe PMC full text.
+  - key: text:modular pre assembly evidence at pumapunku proposal 5
+    kind: evidence
+    disposition: blocked
+    reason: "Report proposal 5: modular pre-assembly of Pumapunku andesite (finished blocks, hoisting grips, decoration completed before assembly, refits) as evidence qualifying GEO-C021 and GEO-C022 against casting in final position. Its only source, Vranich 2018, was not shown."
+    reopenIf: Vranich 2018 is entered from shown text; then record with direction 'qualifies' toward GEO-C021 (compatible with precasting, incompatible with pouring in place) and fold next question 6 (predictions of final-position casting vs precasting vs carving) into GEO-R802 or a new item.
+    observed: Modular pre-assembly evidence at Pumapunku (proposal 5)
+    by: 2026-09-09-draft-megalithic-casting-033429
+    date: 2026-09-09
+    route: Obtain Vranich 2018 full text.
+  - key: url:sciencedirect.com/science/article/pii/S0272884219300288
+    kind: evidence
+    disposition: blocked
+    reason: Report F2/F3 and proposal 2 cite the Ceramics International 'Andesite samples' section (SRC-DAVIDOVITS-2019-CI) for PP1's selection from loose debris. Both sciencedirect URLs returned 403 and the DOI URL as given returned 404; the peer-reviewed statement was not shown. The same sampling context is entered from the authors' own extended report (GEO-E057, GEO-C913), which was shown.
+    reopenIf: The Ceramics International text is retrieved; then re-anchor GEO-C801 to the peer-reviewed source and amend GEO-E007's title to state the sample context.
+    observed: PP1 sample context via Ceramics International (proposal 2)
+    by: 2026-09-09-draft-megalithic-casting-033429
+    date: 2026-09-09
+    route: Publisher PDF via institutional access, or an author copy from the Geopolymer Institute library.
+  - key: text:proposal 2 amend geo c004 wording
+    kind: claim
+    disposition: excluded
+    reason: Proposal 2's rewrite of the featured, anchored claim GEO-C004 from 'Pumapunku andesite' to 'a loose andesite fragment collected at Pumapunku'. GEO-C004's statement ('Published SEM and petrographic analyses of Pumapunku andesite report...') remains literally true of the Ceramics International paper, whose text was not shown; the sampling context is recorded instead as a child observation (GEO-C913) with qualifying evidence (GEO-E057) and a caption correction to IMG-GEO-P04. Whether to narrow the featured claim's wording is the founder's call.
+    reopenIf: The Ceramics International paper is shown and confirms the debris provenance; then GEO-C004 may be narrowed with that source as reason.
+    observed: "Proposal 2: amend GEO-C004 wording"
+    by: 2026-09-09-draft-megalithic-casting-033429
+    date: 2026-09-09
+  - key: url:researchgate.net/publication/347188837_Ancient_geopolymers_in_South-American_Monuments_Part_IV_use_of_natural_andesite_volcanic_sand_not_crushed
+    kind: source
+    disposition: duplicate
+    as: SRC-DAVIDOVITS-2020
+    reason: The ResearchGate record of Davidovits & Davidovits 2020 (Part IV) is the same work as SRC-DAVIDOVITS-2020 (doi:10.13140/RG.2.2.10021.93929/2); the ResearchGate page returned 403, and the full text was read from the geopolymer.org PDF instead (url correction proposed).
+    observed: ResearchGate 347188837, Davidovits & Davidovits 2020
+    by: 2026-09-09-draft-megalithic-casting-033429
+    date: 2026-09-09
+  - key: text:isbell burkholder 2002 iwawi and tiwanaku
+    kind: source
+    disposition: blocked
+    reason: Isbell & Burkholder 2002, 'Iwawi and Tiwanaku', in Andean Archaeology I (Springer), pp. 211–213 on Stratum V — the adjudicating primary for GEO-C914/GEO-C915 and GEO-R009. Not retrieved; its Stratum V passage is known only as quoted in the shown Davidovits 2020 paper (GEO-E049). The report itself says not to create records from the quotation alone; none are anchored to it.
+    reopenIf: The chapter is obtained and pp. 199–242 (esp. 211–213) read; then upgrade GEO-E801 from second-hand and check the quotation.
+    observed: Isbell & Burkholder 2002, Iwawi and Tiwanaku
+    by: 2026-09-09-draft-megalithic-casting-033429
+    date: 2026-09-09
+    route: Springer chapter (Andean Archaeology I, eds. Isbell & Silverman) via library or publisher.
+  - key: text:isbell 2013 visions of tiwanaku ch 10
+    kind: source
+    disposition: blocked
+    reason: "Isbell 2013, 'Nature of an Andean City: Tiwanaku and the Production of Spectacles', Visions of Tiwanaku (Cotsen Monograph 78), p. 175 — the 'sandy debitage' reading of Stratum V, quoted by Davidovits 2020 (GEO-E050). The UCLA PDF was behind a browser challenge for the report and was not shown here."
+    reopenIf: The chapter is read (escholarship/Cotsen open-access PDF) and the p. 175 passage confirmed.
+    observed: Isbell 2013, Visions of Tiwanaku ch. 10
+    by: 2026-09-09-draft-megalithic-casting-033429
+    date: 2026-09-09
+    route: Cotsen Institute Press open-access PDF via escholarship.org.
+  - key: url:escholarship.org/uc/item/2192r04f
+    kind: source
+    disposition: blocked
+    reason: Protzen & Nair 2013, The Stones of Tiahuanaco (Cotsen Monograph 75) — the escholarship record page was fetched but returned no text (empty), so neither the experiments chapter nor Chapter 6 on transport could be read or quoted. The report itself did not propose an evidence record. Entered as research GEO-R804.
+    reopenIf: The monograph PDF is retrieved from escholarship or the Cotsen Press and the experiments chapter read.
+    observed: Protzen & Nair 2013, escholarship record (report §3.7)
+    by: 2026-09-09-draft-megalithic-casting-033429
+    date: 2026-09-09
+    route: Download the PDF linked from the escholarship record, or consult the print monograph.
+  - key: text:malformed doi urls in report citations
+    kind: source
+    disposition: failed
+    reason: Four DOI URLs in the report carried a trailing backtick (10.1016/j.matlet.2018.10.033`, 10.1016/j.ceramint.2019.01.024`, 10.13140/rg.2.2.10021.93929/2`, 10.1186/s40494-018-0231-0`) and returned HTTP 404. The DOIs themselves are the identifiers of SRC-DAVIDOVITS-2019-ML, SRC-DAVIDOVITS-2019-CI, SRC-DAVIDOVITS-2020 and the Vranich candidate; nothing new was reachable.
+    observed: Malformed DOI URLs in report citations
+    by: 2026-09-09-draft-megalithic-casting-033429
+    date: 2026-09-09
+  - key: text:proposal 6 expand geo r003 with stratum v test
+    kind: research
+    disposition: duplicate
+    as: GEO-R003
+    reason: Report proposal 6 asks to expand GEO-R003 with the Stratum V compositional test. GEO-R003 is a methods audit of quarry-attribution studies; the laboratory test of one deposit fits better as a new item extending the desk check GEO-R009, entered here as GEO-R801. No change to GEO-R003 is proposed.
+    reopenIf: GEO-R801 is rejected; then append the test design to GEO-R009's summary.
+    observed: "Proposal 6: expand GEO-R003 with Stratum V test"
+    by: 2026-09-09-draft-megalithic-casting-033429
+    date: 2026-09-09
+  - key: text:next question 8 radiocarbon follow up
+    kind: research
+    disposition: failed
+    reason: "Drafter named GEO-R802 as the record, which the ledger does not hold. Its reason as written: Next question 8 (locate the promised radiocarbon follow-up on the andesite organic matter) is folded into GEO-R802 as its final step; GEO-E818 records the 2019 announcement."
+    observed: "Next question 8: radiocarbon follow-up"
+    by: 2026-09-09-draft-megalithic-casting-033429
+    date: 2026-09-09
+  - key: text:next question 6 predictions of the modular construction sequence
+    kind: research
+    disposition: blocked
+    reason: Next question 6 (compare mould seams, fabric orientation, aggregate sorting, hoisting marks and cross-boundary decoration under final-position casting, precasting and carving) rests on the Vranich 2018 modular-construction description, which was not shown.
+    reopenIf: Vranich 2018 is entered; then add as a research item attached to GEO-C021 and GEO-C588.
+    observed: "Next question 6: predictions of the modular construction sequence"
+    by: 2026-09-09-draft-megalithic-casting-033429
+    date: 2026-09-09
+    route: Obtain Vranich 2018.
+  - key: text:davidovits 2019 ml fig 1d candidate plate
+    kind: image
+    disposition: blocked
+    reason: Davidovits et al. 2019 Materials Letters Fig. 1D (slab drawing with PP4 sampling point) proposed as a plate. The figure is in an Elsevier copyright article; no licence or figure record URL was shown.
+    reopenIf: Permission from Elsevier/the authors or a freely licensed equivalent photograph of slab No. 2 with the sampling location is obtained.
+    observed: Davidovits 2019 ML Fig. 1D, candidate plate
+    by: 2026-09-09-draft-megalithic-casting-033429
+    date: 2026-09-09
+  - key: text:davidovits 2019 k eng fig 21 candidate plate
+    kind: image
+    disposition: blocked
+    reason: Geopolymer Institute report Fig. 21 (loose andesite fragment, source of PP1) proposed as a plate to show the custody limitation. The PDF text was shown but no licence statement for the figure and no separate figure record URL.
+    reopenIf: The Geopolymer Institute grants a licence or the image is found under a stated licence with a record URL.
+    observed: "Davidovits 2019 #K-eng Fig. 21, candidate plate"
+    by: 2026-09-09-draft-megalithic-casting-033429
+    date: 2026-09-09
+  - key: text:iwawe tired stone candidate plate
+    kind: image
+    disposition: blocked
+    reason: A piedra cansada at Iwawe proposed as an Andean plate; the shown Davidovits 2020 Fig. 4b is credited to Ricardo Bardales Vassi (2013) with no licence stated, and the Janusek 2013 Fig. 4.14 alternative remains blocked.
+    reopenIf: A freely licensed photograph of a tired stone at Iwawe or Kanamarka is located with record URL, licence and credit.
+    observed: Iwawe tired stone, candidate plate
+    by: 2026-09-09-draft-megalithic-casting-033429
+    date: 2026-09-09
+  - key: text:vranich 2018 modular refit figures candidate plates
+    kind: image
+    disposition: blocked
+    reason: Vranich 2018 Model Stone 1 / modular refit figures proposed as plates; the article (CC licence likely, Heritage Science) was not shown, so licence, credit and figure URLs are unconfirmed.
+    reopenIf: Vranich 2018 is retrieved and its figure licence and URLs recorded.
+    observed: Vranich 2018 modular refit figures, candidate plates
+    by: 2026-09-09-draft-megalithic-casting-033429
+    date: 2026-09-09
+  - key: text:report 4 narrative proposals andes paragraph nmr sentence plate captions
+    kind: edition
+    disposition: blocked
+    reason: "Report §4 proposes rewriting the Andean paragraph (one paper is sandstone, the andesite sample is loose debris; three readings of Stratum V) and the Egyptian NMR sentence (shoulder, absent Q1, quarry-variability concession). All three findings are now on the ledger from shown text (GEO-E049–E803, E809, E819–E821; GEO-C913–C808; corrections to GEO-E006 and GEO-E017). The article's present sentences remain true: it already says the papers 'come from one team ... analysing one sample set whose chain of custody is contested', that Stratum V's excavator description is 'desk work' (still so — it is known only as quoted by proponents), and that the NMR study 'has drawn no published rebuttal'. The record deepens without the telling changing; a light edition should follow once the excavators' text or the Ceramics International paper is read directly."
+    reopenIf: Isbell & Burkholder 2002 or Isbell 2013 is read directly, or SRC-DAVIDOVITS-2019-CI is shown; then a light edition should (a) say that one of the two Pumapunku papers concerns sandstone and the andesite sample was a loose fragment, (b) replace 'no published rebuttal' with the authors' own three caveats, and (c) state the three-way reading of Stratum V as the Andean crux.
+    observed: Report §4 narrative proposals (Andes paragraph, NMR sentence, plate captions)
+    by: 2026-09-09-draft-megalithic-casting-033429
+    date: 2026-09-09
+report: proposals/2026-09-08-report-megalithic-casting-131750/report.md

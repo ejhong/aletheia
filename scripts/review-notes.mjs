@@ -34,15 +34,27 @@ export function notesFromReport(markdown) {
   }
 }
 
+/** The commit the report judged, from its machine blob; null for reports before the field existed. */
+export function commitFromReport(markdown) {
+  const m = markdown.match(/<!-- aletheia-arbiter-data (\{[\s\S]*?\}) -->/);
+  if (!m) return null;
+  try {
+    return JSON.parse(m[1]).commit ?? null;
+  } catch {
+    return null;
+  }
+}
+
 export function issueTitle(pr, note) {
   return `Review note on #${pr} — ${note.seat}: ${note.rules.join(", ")} (${note.paradigm ?? "other"})`;
 }
 
-export function issueBody(pr, note, promptVersion) {
+export function issueBody(pr, note, promptVersion, commit = null) {
   return [
-    `One seat of the constitutional panel objected to #${pr} without the panel; the change was allowed to merge and the objection is this note, which the operator answers on the record — by a commit that fixes it, or by a reply that says why not — and then closes (AGENTS.md §3.15, founder amendment of 2026-09-09).`,
+    `One seat of the constitutional panel objected to #${pr} without the panel; the change was allowed to merge and the objection is this note, which the operator answers on the record — by a commit that fixes it, or by a reply that says why not — and then closes (AGENTS.md §3.15, founder amendment of 2026-09-09). A note closed without an answer on the record is shown as exactly that.`,
     "",
     `**Seat:** ${note.seat}`,
+    commit ? `**Judged at:** ${commit} (the PR's commit this objection was raised on; the PR's final verdict may differ after a fix)` : "",
     `**Rules cited:** ${note.rules.join(", ")}`,
     `**Kind:** ${note.paradigm ?? "other"}`,
     promptVersion ? `**Panel protocol:** ${promptVersion}` : "",
@@ -66,6 +78,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   }
   const markdown = fs.readFileSync(reportFile, "utf8");
   const promptVersion = markdown.match(/"promptVersion":"([^"]+)"/)?.[1] ?? "";
+  const commit = commitFromReport(markdown);
   const notes = notesFromReport(markdown);
   if (notes.length === 0) {
     console.log("no review notes");
@@ -90,7 +103,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       console.log(`would open: ${title}`);
       continue;
     }
-    const url = gh("issue", "create", "--title", title, "--body", issueBody(pr, note, promptVersion));
+    const url = gh("issue", "create", "--title", title, "--body", issueBody(pr, note, promptVersion, commit));
     console.log(`opened ${url}: ${title}`);
     // The label is the queue (`gh issue list --label review-note`); the first two notes were created without it, so it is
     // applied as its own step and its absence is said aloud rather than assumed.

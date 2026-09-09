@@ -1785,5 +1785,10 @@ Arbiter's verdicts and the operations log stay; the metabolism counts of
 the earlier design go. On the way, the readers the page needed moved into
 the domain — configuration, the spend ledger's read side, the budget's
 caps — with the pipeline importing them from there, so the UI reads no
-pipeline module but the scheduler's pure choice.
+pipeline module but the scheduler's pure choice. On the GPT seat's review note (#229): a note's record now carries the
+last comment on its issue as the receipt of the answer, and a note closed
+without one is shown as closed without an answer — closure alone is not
+the answer; and a note names the commit it was raised on, since the PR's
+final verdict, given after the fix, reads differently from the objection
+that produced the note.
 

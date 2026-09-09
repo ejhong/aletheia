@@ -119,6 +119,17 @@ try {
 let noted = 0;
 for (const issue of notes) {
   const parsed = parseReviewNoteTitle(issue.title);
+  // The answer on the record is the last comment on the issue — its author, date, first words and link — so a
+  // note closed without one shows as closed without an answer, never as answered by closure (GPT seat, #229).
+  let answer = null;
+  try {
+    const comments = JSON.parse(gh("api", `repos/${repo}/issues/${issue.number}/comments?per_page=100`));
+    const last = comments.at(-1);
+    if (last) answer = { by: last.user?.login ?? "unknown", at: (last.created_at ?? "").slice(0, 10), excerpt: String(last.body ?? "").replace(/\s+/g, " ").trim().slice(0, 300), url: last.html_url };
+  } catch (err) {
+    console.error(`#${issue.number}: comments not read (${String(err).split("\n")[0]})`);
+  }
+  const commit = String(issue.body ?? "").match(/\*\*Judged at:\*\* ([0-9a-f]{7,40})/)?.[1] ?? null;
   const record = {
     number: issue.number,
     title: issue.title,
@@ -128,13 +139,16 @@ for (const issue of notes) {
     seat: parsed?.seat ?? null,
     rules: parsed?.rules ?? [],
     paradigm: parsed?.paradigm ?? null,
+    commit,
     createdAt: (issue.created_at ?? "").slice(0, 10),
     closedAt: issue.closed_at ? issue.closed_at.slice(0, 10) : null,
+    answer,
     harvestedAt: today,
   };
   const file = path.join(NOTES_DIR, `${issue.number}.yaml`);
   const text =
-    "# Harvested review note — the issue's state at harvest; closing the issue is the answer.\n" +
+    "# Harvested review note — the issue's state at harvest, with the last comment as the answer's receipt;\n" +
+    "# a note closed without one is shown as closed without an answer on the record.\n" +
     "# See scripts/harvest-governance.mjs and docs/MAINTENANCE.md, \"Review notes\".\n" +
     stringifyYaml(record);
   if (dryRun) {

@@ -296,6 +296,7 @@ const report = [
     verdict: verdict.outcome,
     reason: verdict.reason,
     judgedAgainst: mergeBase.slice(0, 10),
+    commit: git("rev-parse", head).trim().slice(0, 10),
     promptVersion: PROMPT_VERSION,
     seats: votes,
     notes: verdict.notes ?? [],

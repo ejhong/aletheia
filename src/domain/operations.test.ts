@@ -23,6 +23,9 @@ describe("the operations page", () => {
     const dates = ops.sittings.map((s) => s.date);
     expect([...dates].sort().reverse()).toEqual(dates);
     expect(Array.isArray(ops.reviewNotes)).toBe(true);
+    for (const n of ops.reviewNotes) {
+      if (n.state === "closed") expect(n.answer === null || (n.answer && n.answer.url.startsWith("https://"))).toBe(true); // a receipt or a visible absence, never closure as the answer
+    }
   });
 
   it("reads a review note's title as the review-notes script writes it, and refuses any other shape", () => {

@@ -148,7 +148,7 @@ export default function OperationsPage() {
       <section id="review-notes" className="mt-14 scroll-mt-24">
         <h2 className="font-serif text-3xl tracking-tight">Review notes</h2>
         <p className="mt-2 text-[14px] text-ink-soft max-w-2xl">
-          When four seats pass a change over one seat&apos;s objection, the objection is not lost: it becomes an issue the operator answers on the record — by a fix, or by a reply saying why not — and closing it is the answer. Open notes are the queue.
+          When four seats pass a change over one seat&apos;s objection, the objection is not lost: it becomes an issue the operator answers on the record — by a fix, or by a reply saying why not. The last comment on the issue is the receipt; a note closed without one is shown as closed without an answer. A note names the commit it was raised on, so the PR&apos;s final verdict, given after the fix, may read differently. Open notes are the queue.
         </p>
         {ops.reviewNotes.length === 0 ? (
           <p className="mt-3 text-[13.5px] text-faint">None harvested yet; the sitting copies them in.</p>
@@ -158,10 +158,20 @@ export default function OperationsPage() {
               <li key={n.number} className="flex flex-wrap gap-x-3 gap-y-0.5 border-b border-line/60 last:border-b-0 px-4 py-2 text-[13px] leading-relaxed text-ink-soft">
                 <span className={`font-mono text-[10px] uppercase tracking-[0.14em] w-[3.5rem] shrink-0 ${n.state === "open" ? "text-ochre" : "text-faint"}`}>{n.state}</span>
                 <span className="font-mono text-[10.5px] tracking-[0.06em] text-faint w-[6.5rem] shrink-0">{n.createdAt}</span>
-                <a href={n.url} className="min-w-0 hover:text-copper">
-                  {n.pr !== null ? `#${n.pr} — ` : ""}{n.seat ?? "a seat"}: {n.rules.join(", ")}{n.paradigm ? ` (${n.paradigm})` : ""}
-                </a>
-                {n.closedAt ? <span className="font-mono text-[10px] text-faint">answered {n.closedAt}</span> : null}
+                <span className="min-w-0 flex-1">
+                  <a href={n.url} className="hover:text-copper">
+                    {n.pr !== null ? `#${n.pr} — ` : ""}{n.seat ?? "a seat"}: {n.rules.join(", ")}{n.paradigm ? ` (${n.paradigm})` : ""}
+                  </a>
+                  {n.commit ? <span className="ml-2 font-mono text-[10px] text-faint">on {n.commit.slice(0, 7)}</span> : null}
+                  {n.answer ? (
+                    <span className="block text-[12px] text-ink-soft">
+                      answered by {n.answer.by} on {n.answer.at}: {n.answer.excerpt.length > 160 ? n.answer.excerpt.slice(0, 159).trimEnd() + "…" : n.answer.excerpt}{" "}
+                      <a href={n.answer.url} className="font-mono text-[10px] underline underline-offset-2 hover:text-copper">the reply</a>
+                    </span>
+                  ) : n.state === "closed" ? (
+                    <span className="block font-mono text-[10px] uppercase tracking-[0.12em] text-ochre">closed without an answer on the record</span>
+                  ) : null}
+                </span>
               </li>
             ))}
           </ul>

@@ -103,13 +103,16 @@ https://example.org/dataset
 Each link is fetched and verified reachable, and a source-record proposal
 is drafted with an honest verification label.
 
-**3. Documents** (`.txt`, `.md`, or `.pdf` full texts): mined by the `draft`
+**3. Documents** (`.txt`, `.md`, `.pdf`, or `.html` full texts): mined by the `draft`
 verb (one proposition per claim, a verbatim quote, the page as locator)
 into proposed claims (anchored, unfeatured until an edition features them). PDFs
 are read page by page by the pipeline itself (the same extractor the verb
 chain uses; no external tool), with `[p. N]` markers so claims can cite the
 page. A scanned PDF with no text layer is left in place with a note in the
-run report. Link lists are fetched the same way: PDFs and HTML alike, with
+run report. An `.html` page — a saved web page, or a site's own file — is
+read with its tags stripped and its headings kept as `[§ …]` markers, so a
+claim can cite the section the way it cites a PDF's page; its statement
+goes in a sidecar note of the same name, as a PDF's does. Link lists are fetched the same way: PDFs and HTML alike, with
 an open-access copy found by DOI when a URL will not serve.
 
 ## Routing rules (plain version)

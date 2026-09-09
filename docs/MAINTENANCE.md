@@ -96,9 +96,9 @@ auto-merge; a park waits for the founder. The loop has run itself since
 in `governance/operation.yaml` or comment the cron out — either is the
 kill switch, and the pages say so.
 
-**Two doors for a founder essay.** A document dropped with `role:
-founding_narrative` (or `founding_research`) in its sidecar is registered as
-a narrative input at intake — original and text extraction under
+**Two doors for a founder essay.** A document — a PDF, an HTML page, or a
+text — dropped with `role: founding_narrative` (or `founding_research`) in
+its sidecar or front matter is registered as a narrative input at intake — original and text extraction under
 `research/<case>/`, a manifest entry — and taken in as a producer at the same
 time. The two doors do different work: the founding input shapes the
 telling (the edition drafter reads it for framing, voice, and which

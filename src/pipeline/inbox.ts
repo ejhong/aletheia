@@ -7,7 +7,7 @@ import { sameTitle, titleContainment, TITLE_NEAR } from "../domain/keys.ts";
 import { findCase } from "../domain/load.ts";
 import type { LoadedCase } from "../domain/schema.ts";
 import { MODELS } from "../lib/models.mjs";
-import { pdfText } from "./fetch.ts";
+import { pdfText, stripHtml } from "./fetch.ts";
 import { appendYamlItems } from "./ledger-write.ts";
 import { defaultLister, openAlexSearch, resolveReferences, type Reference, type ReferenceLister, type Resolved, type Searcher } from "./references.ts";
 import { closeRun, openRun, writeWorkingFile, type RunOutcome } from "./store.ts";
@@ -166,7 +166,17 @@ export function supplierOf(meta: Record<string, unknown>): string | null {
 }
 
 const TEXT_EXT = new Set([".md", ".txt"]);
+/** A saved web page, or a site's own file: read with its tags stripped and its headings kept as `[§ …]` markers, the way a PDF's pages are kept as `[p. N]`. */
+const HTML_EXT = new Set([".html", ".htm"]);
+/** A document whose statement of provenance travels in a sidecar note of the same name. */
+const isDocumentExt = (ext: string) => ext === ".pdf" || HTML_EXT.has(ext);
 const DOC_CAP = 300_000;
+
+/** The text of an HTML page as the drafter reads it: tags stripped, each heading kept as a `[§ …]` marker so a quote can carry its section. */
+export function htmlText(html: string): string {
+  const marked = html.replace(/<h([1-4])\b[^>]*>([\s\S]*?)<\/h\1\s*>/gi, (_, _n: string, inner: string) => `\n<p>[§ ${stripHtml(inner).replace(/\s+/g, " ").trim()}]</p>\n`);
+  return stripHtml(marked);
+}
 
 /** What is missing for a non-public document to be published or cited: nothing, or the reason it stays in the inbox. Fail-closed: the permission must grant, in words that grant, and be dated. */
 /** The words a permission may be written in. Anything else — "prohibited", "only", "private" — is a word the gate does not grant on, and the document stays. */
@@ -211,11 +221,11 @@ export async function readInbox(caseDir: string, root = process.cwd(), verify: C
     let pages: number | undefined;
     let sidecar: string | undefined;
     if (TEXT_EXT.has(ext)) {
-      // A note whose stem matches a PDF is that PDF's sidecar, handled with it.
-      const pdf = files.find((f) => f !== file && f.replace(/\.[^.]+$/, "") === file.replace(/\.[^.]+$/, "") && path.extname(f).toLowerCase() === ".pdf");
-      if (pdf) continue;
+      // A note whose stem matches a PDF or an HTML page is that document's sidecar, handled with it.
+      const doc = files.find((f) => f !== file && f.replace(/\.[^.]+$/, "") === file.replace(/\.[^.]+$/, "") && isDocumentExt(path.extname(f).toLowerCase()));
+      if (doc) continue;
       ({ meta, body } = parseFrontMatter(fs.readFileSync(file, "utf8")));
-    } else if (ext === ".pdf") {
+    } else if (isDocumentExt(ext)) {
       const side = stems.get(file.replace(/\.[^.]+$/, ""));
       const sideFile = files.find((f) => f !== file && f.replace(/\.[^.]+$/, "") === file.replace(/\.[^.]+$/, "") && TEXT_EXT.has(path.extname(f).toLowerCase()));
       void side;
@@ -224,17 +234,25 @@ export async function readInbox(caseDir: string, root = process.cwd(), verify: C
         consumed.add(sideFile);
         meta = parseFrontMatter(fs.readFileSync(sideFile, "utf8")).meta;
       }
-      try {
-        const r = await pdfText(new Uint8Array(fs.readFileSync(file)));
-        body = r.text;
-        pages = r.pages;
-      } catch (e) {
-        left.push({ name, reason: `PDF could not be read: ${(e as Error).message}` });
-        continue;
-      }
-      if (!body.replace(/\[p\. \d+\]/g, "").trim()) {
-        left.push({ name, reason: "PDF has no text layer (a scan needs OCR)" });
-        continue;
+      if (ext === ".pdf") {
+        try {
+          const r = await pdfText(new Uint8Array(fs.readFileSync(file)));
+          body = r.text;
+          pages = r.pages;
+        } catch (e) {
+          left.push({ name, reason: `PDF could not be read: ${(e as Error).message}` });
+          continue;
+        }
+        if (!body.replace(/\[p\. \d+\]/g, "").trim()) {
+          left.push({ name, reason: "PDF has no text layer (a scan needs OCR)" });
+          continue;
+        }
+      } else {
+        body = htmlText(fs.readFileSync(file, "utf8"));
+        if (!body.replace(/\[§ [^\]]*\]/g, "").trim()) {
+          left.push({ name, reason: "HTML page has no text" });
+          continue;
+        }
       }
     } else {
       continue; // other binaries are not this case's, or anyone's, until converted
@@ -246,7 +264,7 @@ export async function readInbox(caseDir: string, root = process.cwd(), verify: C
     const drop = founderDrop(file, root, verify);
     if ("drop" in drop) meta = { ...meta, founderDrop: drop.drop };
     const notFounder = "reason" in drop ? drop.reason : null;
-    const kind = detectType(meta, body, ext === ".pdf");
+    const kind = detectType(meta, body, isDocumentExt(ext));
     if (kind === "empty") {
       left.push({ name, reason: "empty" });
       continue;
@@ -296,6 +314,11 @@ export function ledgerSourceOf(item: Pick<InboxItem, "text" | "meta">, sources: 
 }
 
 /** The report the drafter reads: supplied text verbatim, then every named work with its resolved locator. */
+/** How a quote from this document says where it is: a PDF's page marker, or an HTML page's section marker. */
+function locatorOf(it: InboxItem): string {
+  return it.pages ? "the \`[p. N]\` page as the locator" : "the \`[§ …]\` section heading as the locator";
+}
+
 /** A founding-role document is told to the drafter as such whichever footing it enters on: new to the ledger, or the ledger's own source. */
 function registeredNote(it: InboxItem): string {
   return it.registeredAs ? ` It is also registered as founding input ${it.registeredAs}: the edition drafter reads it for framing and voice.` : "";
@@ -325,12 +348,12 @@ export function composeReport(slug: string, runId: string, date: string, items: 
     parts.push(`## ${it.kind}: ${it.name}`, ``, `Supplied by ${it.supplier}${it.pages ? `; PDF, ${it.pages} pages` : ""}${typeof it.meta.provenance === "string" ? `; provenance: ${it.meta.provenance}` : ""}.`, ``);
     if (it.kind === "document") parts.push(permissionLine(it, date, runId), `A Source proposed from this document carries that permission line, verbatim, in its \`reliabilityNotes\`; the verifier refuses a supplied document's Source without it (AGENTS.md §3.15).`, ``);
     if (it.ledgerSource) {
-      parts.push(`THIS DOCUMENT IS THE LEDGER'S SOURCE ${it.ledgerSource} (identified by ${it.ledgerSourceBasis ?? "the intake"}). Its propositions may be proposed as claims anchored to ${it.ledgerSource} — one proposition each, a verbatim quote from the text below, and the \`[p. N]\` page as the locator — and what it states may enter as evidence records on ${it.ledgerSource}, direction and strength honest to what kind of source it is. The verifier reads this same text for ${it.ledgerSource}.${registeredNote(it)}`, ``);
+      parts.push(`THIS DOCUMENT IS THE LEDGER'S SOURCE ${it.ledgerSource} (identified by ${it.ledgerSourceBasis ?? "the intake"}). Its propositions may be proposed as claims anchored to ${it.ledgerSource} — one proposition each, a verbatim quote from the text below, and ${locatorOf(it)} — and what it states may enter as evidence records on ${it.ledgerSource}, direction and strength honest to what kind of source it is. The verifier reads this same text for ${it.ledgerSource}.${registeredNote(it)}`, ``);
     } else if (it.kind === "document" && typeof it.meta.editor !== "string" && it.meta.founderDrop) {
       const d = it.meta.founderDrop as FounderDrop;
-      parts.push(`THIS DOCUMENT IS NEW TO THE LEDGER AND WAS DROPPED BY THE FOUNDER (commit ${d.sha.slice(0, 10)}, ${d.date}; ${d.verified}) under the founder's standing direction of ${d.direction.given}: "${d.direction.words}" — the recorded direction that is its permission (AGENTS.md §3.15). The drop says nothing about who wrote it: read the author, date and venue from the document itself and propose it as a Source record (title "${it.title}", author, date, sourceType, an identifier naming where it is published), and propose its propositions as claims anchored to that provisional source — one proposition each, a verbatim quote from the text below, the \`[p. N]\` page as the locator. The verifier reads this same text for that source.${registeredNote(it)}`, ``);
+      parts.push(`THIS DOCUMENT IS NEW TO THE LEDGER AND WAS DROPPED BY THE FOUNDER (commit ${d.sha.slice(0, 10)}, ${d.date}; ${d.verified}) under the founder's standing direction of ${d.direction.given}: "${d.direction.words}" — the recorded direction that is its permission (AGENTS.md §3.15). The drop says nothing about who wrote it: read the author, date and venue from the document itself and propose it as a Source record (title "${it.title}", author, date, sourceType, an identifier naming where it is published), and propose its propositions as claims anchored to that provisional source — one proposition each, a verbatim quote from the text below, ${locatorOf(it)}. The verifier reads this same text for that source.${registeredNote(it)}`, ``);
     } else if (it.kind === "document" && typeof it.meta.editor === "string") {
-      parts.push(`THIS DOCUMENT IS NEW TO THE LEDGER AND SUPPLIED BY ITS AUTHOR (${it.meta.editor}). Propose it as a Source record (title "${it.title}", author, date, sourceType, an identifier naming where it is published and how it was written), and propose its propositions as claims anchored to that provisional source — one proposition each, a verbatim quote from the text below, the \`[p. N]\` page as the locator. The verifier reads this same text for that source.${registeredNote(it)}`, ``);
+      parts.push(`THIS DOCUMENT IS NEW TO THE LEDGER AND SUPPLIED BY ITS AUTHOR (${it.meta.editor}). Propose it as a Source record (title "${it.title}", author, date, sourceType, an identifier naming where it is published and how it was written), and propose its propositions as claims anchored to that provisional source — one proposition each, a verbatim quote from the text below, ${locatorOf(it)}. The verifier reads this same text for that source.${registeredNote(it)}`, ``);
     }
     if (it.kind === "commentary") parts.push(`The supplier's words, verbatim — the authoritative editorial statement:`, ``);
     parts.push(it.text.trim(), ``);
@@ -413,7 +436,13 @@ export async function runInbox(caseKey: string, opts: InboxOptions = {}): Promis
     const dest = path.join(root, rel);
     fs.mkdirSync(path.dirname(dest), { recursive: true });
     if (!fs.existsSync(dest)) fs.copyFileSync(it.file, dest);
-    fs.writeFileSync(`${dest}.txt`, `[Text extraction of the PDF by the pipeline (pdfjs), ${date}; ${it.pages ?? "?"} pages; page markers [p. N]. The PDF beside this file is the original.]\n\n${it.text}`);
+    const ext = path.extname(it.file).toLowerCase();
+    const how = ext === ".pdf"
+      ? `Text extraction of the PDF by the pipeline (pdfjs), ${date}; ${it.pages ?? "?"} pages; page markers [p. N]. The PDF beside this file is the original.`
+      : HTML_EXT.has(ext)
+        ? `Text extraction of the HTML page by the pipeline (tags stripped, headings kept as [§ …] section markers), ${date}. The HTML beside this file is the original.`
+        : `The supplied text, front matter removed, ${date}. The file beside this is the original.`;
+    fs.writeFileSync(`${dest}.txt`, `[${how}]\n\n${it.text}`);
     const n = Math.max(0, ...loaded.narrativeInputs.map((x) => Number(x.id.match(/-IN(\d+)$/)?.[1] ?? 0)), ...registered.map((x) => Number(x.match(/-IN(\d+)$/)?.[1] ?? 0)));
     const id = `${loaded.record.id.split("-")[0]}-IN${String(n + 1).padStart(3, "0")}`;
     const license = permissionRecord(it, date, runId);

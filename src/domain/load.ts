@@ -5,7 +5,7 @@ import { parse as parseYaml } from "yaml";
 import { extractClaimRefs, extractPlateRefs } from "./article.ts";
 import { assessmentHash, ledgerHash } from "./hash.ts";
 import { DispositionSchema, type Disposition } from "./intake.ts";
-import { AssessmentRunSchema, CaseSchema, ChangeLogEntrySchema, CLAIM_ANCHOR_REQUIRED_FROM, ClaimSchema, ConjectureSchema, CuratedResourceSchema, EditionSchema, EvidenceSchema, ImageSchema, ResearchOpportunitySchema, SourceSchema, steelmanRequirementError, StudySchema, NarrativeInputSchema, WatchConfigSchema, type AssessmentRun, type Claim, type Conjecture, type CuratedResource, type Edition, type Evidence, type ImageRecord, type LoadedCase, type Source, type Study, type NarrativeInput, type WatchConfig } from "./schema.ts";
+import { AssessmentRunSchema, CaseSchema, ChangeLogEntrySchema, CLAIM_ANCHOR_REQUIRED_FROM, ClaimSchema, CuratedResourceSchema, EditionSchema, EvidenceSchema, ImageSchema, ResearchOpportunitySchema, SourceSchema, steelmanRequirementError, StudySchema, NarrativeInputSchema, WatchConfigSchema, type AssessmentRun, type Claim, type CuratedResource, type Edition, type Evidence, type ImageRecord, type LoadedCase, type Source, type Study, type NarrativeInput, type WatchConfig } from "./schema.ts";
 import { studyIntegrityErrors } from "./studies.ts";
 import { orderEditions } from "./editions.ts";
 
@@ -190,18 +190,6 @@ function checkIntegrity(caseDir: string, loaded: LoadedCase): void {
   for (const ro of loaded.research) {
     for (const cid of ro.claimIds) {
       requireLiveClaim(cid, `research ${ro.id}`);
-    }
-  }
-
-  const researchIds = new Set(loaded.research.map((r) => r.id));
-  for (const cj of loaded.conjectures) {
-    for (const rid of cj.decisiveTestIds) {
-      if (!researchIds.has(rid)) {
-        throw new ContentError(
-          caseDir,
-          `conjecture ${cj.id} references unknown research opportunity ${rid}`,
-        );
-      }
     }
   }
 
@@ -492,18 +480,6 @@ export function loadCase(caseDir: string): LoadedCase {
       )
     : [];
 
-  // Optional on-the-record editorial conjectures. Never evidential weight;
-  // required disconfirmers keep the site's own editors falsifiable.
-  const conjecturesPath = path.join(CONTENT_DIR, caseDir, "conjectures.yaml");
-  const conjectures: Conjecture[] = fs.existsSync(conjecturesPath)
-    ? parseList(
-        caseDir,
-        "conjectures.yaml",
-        parseYaml(fs.readFileSync(conjecturesPath, "utf8")),
-        ConjectureSchema,
-      )
-    : [];
-
   // Pre-registered desk workpapers (see StudySchema): one file per study,
   // validated fail-closed like everything else. Cross-record integrity —
   // frozen-criteria hash, resolvable ids, the superseded-workpaper rule —
@@ -584,7 +560,6 @@ export function loadCase(caseDir: string): LoadedCase {
   assertUnique(caseDir, "source", sources.map((s) => s.id));
   assertUnique(caseDir, "research", research.map((r) => r.id));
   assertUnique(caseDir, "assessment run", assessmentRuns.map((r) => r.runId));
-  assertUnique(caseDir, "conjecture", conjectures.map((c) => c.id));
   assertUnique(caseDir, "study", studies.map((s) => s.id));
 
   const studyErrors = studyIntegrityErrors({
@@ -642,7 +617,6 @@ export function loadCase(caseDir: string): LoadedCase {
     images,
     watch,
     curatedResources,
-    conjectures,
     studies,
     narrativeInputs,
   };

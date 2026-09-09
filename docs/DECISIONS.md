@@ -1813,3 +1813,24 @@ last comment; and the spend copy is date-bounded: the pipeline's calls
 since 2026-09-08, the panel's since 2026-09-09, unmetered before, so the
 all-time figure is a floor.
 
+
+**Conjecture cards retired into the changelog (founder direction,
+2026-09-09, in session).** The three `conjectures.yaml` files of 2026-08-23
+— the founder's on-the-record bets (GEO-J001, ORCH-J001, VASO-J001), each a
+statement with a stated confidence, predicted findings and disconfirmers,
+carrying no evidential weight — and the card that showed them above the
+article are gone, with their schema, loader and test. Asked what they
+were, the founder was told the design had moved past them: a bet with a
+stated confidence and a disconfirmer is a claim, graded honestly against
+the evidence (his essays are founding inputs and their propositions enter
+as claims — the 2026-09-08 decision above), and the card was the one thing
+on the page that was neither a record nor a derivation of records. He
+said proceed. Each conjecture's propositions were already the ledger's
+(GEO-C022 and GEO-C030; ORCH-C001 and ORCH-C002; the vasocomputation
+release, latch and breath claims) and its decisive tests already research
+items, so nothing new is written to the ledger and no standing changes;
+what the files alone held — the founder's words on his confidence, the
+findings he predicted, what he said would prove him wrong, and for the
+casting case his rationale — is banked verbatim in each case's append-only
+changelog under this date, where AGENTS.md §7 (amendment of 2026-09-01)
+puts banked material: in the record, not a registry.

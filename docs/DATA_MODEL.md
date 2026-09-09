@@ -31,8 +31,7 @@ could change the value, it is assessment.
   date, and prompt version. Nothing evaluative lives anywhere else.
 
 Plus the intake (Proposal, Disposition — see AUTOMATION.md), the
-founder's two small records (`conjectures.yaml`, `inputs/`), and the
-append-only change log.
+founder's founding inputs (`inputs/`), and the append-only change log.
 
 ## Content folder layout
 
@@ -43,7 +42,6 @@ content/cases/<case>/
   evidence.yaml  sources.yaml  research.yaml  images.yaml  studies/<id>.yaml
   history.yaml         append-only changelog
   inputs/              founding texts + manifest (founder-owned; voice, never evidence)
-  conjectures.yaml     the founder's on-the-record intuitions (no weight)
   dispositions.yaml    append-only: every candidate ever considered here
   assessments/         append-only runs, role draft or check
   editions/            append-only; the latest is the case page

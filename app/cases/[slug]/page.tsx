@@ -10,7 +10,6 @@ import { ResearchCard } from "@/src/components/ResearchCard";
 import { SectionNav } from "@/src/components/SectionNav";
 import { LinkedRecordText } from "@/src/components/LinkedRecordText";
 import { site } from "@/src/config/site";
-import { ConjectureCard } from "@/src/components/ConjectureCard";
 import { AccountsList } from "@/src/components/AccountsList";
 import { LatestStrip } from "@/src/components/LatestStrip";
 import { StandingPanel } from "@/src/components/StandingPanel";
@@ -128,14 +127,6 @@ export default async function CasePage({
         ) : null}
 
         <AccountsList accounts={caseAccounts(loaded)} editionDate={currentEdition(loaded).date} />
-
-        {loaded.conjectures.length > 0 ? (
-          <section id="conjectures" className="pt-10 scroll-mt-28 space-y-4">
-            {loaded.conjectures.map((c) => (
-              <ConjectureCard key={c.id} conjecture={c} />
-            ))}
-          </section>
-        ) : null}
 
         <section id="article" className="pt-12 scroll-mt-28">
           <h2 className="font-mono text-[11px] uppercase tracking-[0.2em] text-faint mb-6">

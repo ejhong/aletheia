@@ -96,7 +96,7 @@ const PLAIN_WORDS = new Set(["and", "or", "it", "this", "the", "a", "an", "as", 
 export function permissionGap(meta: Record<string, unknown>): string | null {
   const permission = typeof meta.permission === "string" ? meta.permission.trim() : "";
   if (!permission) return "no permission to publish or cite";
-  const words = permission.toLowerCase().replace(/[^a-z\s'-]/g, " ").split(/\s+/).filter(Boolean);
+  const words = permission.toLowerCase().replace(/['’]s\b/g, "").replace(/[^a-z\s]/g, " ").split(/\s+/).filter(Boolean);
   const unknown = words.filter((w) => !GRANT_WORDS.has(w) && !PLAIN_WORDS.has(w));
   if (unknown.length) return `the permission uses words the gate does not grant on (${unknown.join(", ")}): write it with "publish", "cite" or "quote" and plain connectives, nothing that could withhold`;
   if (!words.some((w) => GRANT_WORDS.has(w))) return "the permission does not say it may be published, cited or quoted";

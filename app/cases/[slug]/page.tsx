@@ -14,8 +14,10 @@ import { ConjectureCard } from "@/src/components/ConjectureCard";
 import { AccountsList } from "@/src/components/AccountsList";
 import { LatestStrip } from "@/src/components/LatestStrip";
 import { StandingPanel } from "@/src/components/StandingPanel";
+import { RecordPanel } from "@/src/components/RecordPanel";
+import { caseRecord } from "@/src/domain/record";
 import { caseActivity } from "@/src/domain/activity";
-import { caseCover, loadAllCases } from "@/src/domain/load";
+import { caseCover, liveClaims, loadAllCases } from "@/src/domain/load";
 import { crossModelSummary, latestCheckPerModel } from "@/src/domain/standing";
 import { historyNewestFirst, lastContentUpdate } from "@/src/domain/history";
 import { caseAccounts, caseQuestion, currentEdition, questionRestatedBy } from "@/src/domain/editions";
@@ -57,6 +59,7 @@ const sections = [
   ["evidence", "Evidence"],
   ["conventional", "Conventional"],
   ["research", "Research"],
+  ["record", "Record"],
   ["history", "History"],
 ] as const;
 
@@ -243,6 +246,13 @@ export default async function CasePage({
             ))}
           </div>
         </section>
+
+        <RecordPanel
+          sittings={caseRecord(loaded)}
+          slug={loaded.record.slug}
+          caseDir={loaded.dir}
+          linkable={new Set([...liveClaims(loaded).map((c) => c.id), ...loaded.sources.map((s) => s.id), ...loaded.evidence.map((e) => e.id)])}
+        />
 
         <section id="history" className="pt-14 pb-6 scroll-mt-28">
           <h2 className="font-serif text-3xl tracking-tight mb-2">

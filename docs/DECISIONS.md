@@ -1923,3 +1923,25 @@ the per-run cap. The prepared copies never left the operator's scratch
 space. The grant he gave covers "the pages" should he change his mind; the
 door is the same.
 
+**Verify v5: the reader's finding is applied, not annotated (2026-09-09,
+on the founder's word after the first Deep Memory sitting).** The first
+assessing edition of Deep Memory came out of the loop unattended, and the
+Arbiter's GPT seat passed it with a review note (#248): five evidence
+records carried the second reader's dispute of their direction or their
+claim links in `limitations`, written there by verify protocol v2's rule,
+while the structured `direction` and `claimIds` stood as the drafter wrote
+them. Five by-hand corrections answered the note (PR #250); the founder
+asked for the structural fix. Under protocol v5 the reader's JSON carries
+two more fields: `direction`, the direction it finds right when it disputes
+the stated one, and `bearsOn`, the claims among those the record names that
+the passage actually bears on. Verify writes both on the admitted record —
+the direction changed, the links narrowed, each with the reader's reason
+and stamp in `limitations` — and refuses a record whose passage bears on
+none of its claims. A dispute without a named direction is still written as
+a dissent, as before. The remembered judgments of earlier protocols are not
+reused: the protocol is part of the question. The same session taught two
+smaller things, now in the entries and the notes: a history entry names its
+PR number and the session id, never a branch name or a private URL (the
+Arbiter's mechanical check reads a session page as a locator and gets 403),
+and every by-hand actor line names the model.
+

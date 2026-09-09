@@ -449,8 +449,8 @@ describe("the report verb", () => {
   });
 });
 
-describe("verify v2: the reader's dissent on direction is recorded, not fatal", () => {
-  it("admits a record whose only fault is the direction label, with the dissent in its limitations", async () => {
+describe("verify v5: the reader's finding on direction and bearing is applied; a dissent without a direction is recorded, not fatal", () => {
+  it("admits a record whose only fault is the direction label, with the dissent in its limitations when the reader names no direction", async () => {
     const { judgeProposal } = await import("../pipeline/verify.ts");
     const c = geo();
     const src = c.sources.find((s) => s.url)!;
@@ -498,6 +498,70 @@ describe("verify v2: the reader's dissent on direction is recorded, not fatal", 
     const bad = await judgeProposal(proposal, c, texts, new Map(), async () => ({ ...dissent, relevant: false }), { runId: "r", verb: "verify", case: c.record.slug });
     expect(bad.accepted.evidence).toHaveLength(0);
     expect(bad.rejected[0].reason).toMatch(/relevant/);
+    // v5: a direction the reader names is written on the record, stamped as the reader's act (review note #248).
+    const named = await judgeProposal(proposal, c, texts, new Map(), async () => ({ ...dissent, direction: "supports" }), { runId: "r", verb: "verify", case: c.record.slug }, { model: "reader-x", date: "2026-09-09" });
+    expect(named.accepted.evidence[0].direction).toBe("supports");
+    expect(named.accepted.evidence[0].limitations.at(-1)).toBe('Direction set to "supports" (from "qualifies") by the second reader (reader-x, 2026-09-09) at intake: it plainly supports the claim');
+    expect(named.notes).toContain("GEO-E900: direction set to supports by the second reader");
+    // A named direction equal to the record's is no change and no note.
+    const same = await judgeProposal(proposal, c, texts, new Map(), async () => ({ ...dissent, direction: "qualifies" }), { runId: "r", verb: "verify", case: c.record.slug }, { model: "reader-x", date: "2026-09-09" });
+    expect(same.accepted.evidence[0].direction).toBe("qualifies");
+    expect(same.accepted.evidence[0].limitations.at(-1)).toMatch(/^Second reader .* disputes the stated direction/);
+  });
+
+  it("keeps only the claims the reader finds the passage bears on, and refuses a record that bears on none", async () => {
+    const { judgeProposal } = await import("../pipeline/verify.ts");
+    const c = geo();
+    const src = c.sources.find((s) => s.url)!;
+    const [a, b] = [c.claims[0].id, c.claims[1].id];
+    const proposal = {
+      runId: "2026-09-09-draft-megalithic-casting-000002",
+      case: c.record.slug,
+      report: null,
+      date: "2026-09-09",
+      model: "m",
+      promptVersion: "draft-v6",
+      basis: { ledgerHash: c.ledgerHash },
+      rationale: "test",
+      adds: {
+        sources: [],
+        evidence: [
+          {
+            id: "GEO-E901",
+            title: "A record naming two claims",
+            sourceId: src.id,
+            claimIds: [a, b],
+            direction: "supports",
+            strength: "weak",
+            sourceStatement: 'The page says "twelve words that certainly do occur in this text" here.',
+            exactLocator: "p. 1",
+            limitations: [],
+            reviewState: "ai_extracted",
+            origin: { ref: "test", extractedBy: "m", runId: "r", date: "2026-09-09" },
+          },
+        ],
+        claims: [],
+        research: [],
+        images: [],
+      },
+      corrections: [],
+      dispositions: [],
+      edition: null,
+    } as never;
+    const texts = new Map([[src.url!, { url: src.url!, ok: true, status: 200, contentType: "text/html", text: "… twelve words that certainly do occur in this text …" }]]);
+    const fine = { quoteInContext: true, statementSupported: true, locatorSupported: true, directionRight: true, independenceNoted: true, relevant: true, atomic: true, reason: "bears on the second claim only" };
+    const narrowed = await judgeProposal(proposal, c, texts, new Map(), async () => ({ ...fine, bearsOn: [b] }), { runId: "r", verb: "verify", case: c.record.slug }, { model: "reader-x", date: "2026-09-09" });
+    expect(narrowed.accepted.evidence).toHaveLength(1);
+    expect(narrowed.accepted.evidence[0].claimIds).toEqual([b]);
+    expect(narrowed.accepted.evidence[0].limitations.at(-1)).toBe(`Second reader (reader-x, 2026-09-09) found the passage bears on ${b} and not on ${a}; the link dropped at intake: bears on the second claim only`);
+    expect(narrowed.notes).toContain(`GEO-E901: link to ${a} dropped by the second reader`);
+    // Null keeps every link; an unknown id in the list keeps only the known ones.
+    const all = await judgeProposal(proposal, c, texts, new Map(), async () => ({ ...fine, bearsOn: null }), { runId: "r", verb: "verify", case: c.record.slug });
+    expect(all.accepted.evidence[0].claimIds).toEqual([a, b]);
+    // An empty list refuses the record with the reader's reason.
+    const none = await judgeProposal(proposal, c, texts, new Map(), async () => ({ ...fine, bearsOn: [] }), { runId: "r", verb: "verify", case: c.record.slug });
+    expect(none.accepted.evidence).toHaveLength(0);
+    expect(none.rejected[0].reason).toMatch(/bears on none of the claims the record names: bears on the second claim only/);
   });
 });
 

@@ -1341,3 +1341,25 @@ house seat can chase the named works with search. `process-inbox.mjs` and
 `extract-claims.mjs` are the first candidates for step 5's subtraction once
 this path has carried the founder's batch. A URL-parsing defect surfaced on
 the way (a DOI with parentheses was cut short) and is fixed with a test.
+
+**A supplied document that is a ledger source may anchor claims (founder
+direction, 2026-09-09: "there are many new claims in the pdf … please make
+those changes").** The founder's essay is the case's founding narrative
+(VASO-IN002) and a ledger source (SRC-JHONG-2026), yet the first intake
+labelled it "the supplier's words, never a source", the drafter marked its
+new ideas irrelevant because no claim concerned them, and the edition
+drafter — shown founding inputs only when they are text — had never read
+the PDF. Three changes: the intake identifies a supplied document that is
+a ledger source by title and says so in the report; draft protocol v4 lets
+the drafter mine such a document broadly for its propositions as claims
+anchored to that source (verbatim quote, `[p. N]` locator, ungraded,
+unfeatured until an edition weighs them) and as evidence records honest to
+what the source is; the verifier reads the supplied text for that source,
+so a claim anchored to the essay is checked against the very text the
+drafter saw. A PDF founding input is inlined from a text extraction
+committed beside it (`…pdf.txt`), so the edition drafter has the essay in
+hand for framing and voice; the constitution's rule stands — nothing is
+cited from an input that is not independently in the ledger. The
+scheduler's half-done rule is now per run: a report or intake no proposal
+names is drafted, however many later drafts exist. The scheduler-order
+change of the same day had missed #203's merge and rides along here.

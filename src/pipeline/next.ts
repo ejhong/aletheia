@@ -7,7 +7,7 @@ import { runCheck } from "./check.ts";
 import { runDraft } from "./draft.ts";
 import { editionDue, runEdition } from "./edition.ts";
 import { runReport, type ResearchSeat } from "./report.ts";
-import { readRuns, type RunOutcome } from "./store.ts";
+import { readProposal, readRuns, type RunOutcome } from "./store.ts";
 import { runVerify } from "./verify.ts";
 
 /**
@@ -55,15 +55,26 @@ const ageDays = (date: string, today: string) => (Date.parse(today) - Date.parse
 const when = (r: Pick<RunRecord, "runId" | "date">) => `${r.date}T${r.runId.slice(-6)}`;
 const after = (a: Pick<RunRecord, "runId" | "date">, b: Pick<RunRecord, "runId" | "date">) => when(a) > when(b);
 
-/** Pure: the choice, from the cases, the run records, and the date. */
-export function nextAction(cases: LoadedCase[], runs: RunRecord[], today: string): NextChoice {
+/** The run ids of reports and intakes some proposal was drafted from (the proposal names its report). */
+export function draftedFrom(runs: RunRecord[], root = process.cwd()): Set<string> {
+  const out = new Set<string>();
+  for (const r of runs) {
+    if (r.verb !== "draft" || r.outcome !== "completed") continue;
+    const id = readProposal(r.runId, root)?.report?.match(/^proposals\/([^/]+)\//)?.[1];
+    if (id) out.add(id);
+  }
+  return out;
+}
+
+/** Pure given `drafted`: the choice, from the cases, the run records, the reports already drafted, and the date. */
+export function nextAction(cases: LoadedCase[], runs: RunRecord[], today: string, drafted: Set<string> = new Set()): NextChoice {
   const byCase = (slug: string) => runs.filter((r) => r.case === slug).sort((a, b) => when(a).localeCompare(when(b)));
-  // 1. Half-done chains, oldest first.
+  // 1. Half-done chains, oldest first: every completed report or intake no proposal was drafted from.
   for (const c of cases) {
     const rs = byCase(c.record.slug);
-    const lastReport = rs.filter((r) => (r.verb === "report" || r.verb === "inbox") && r.outcome === "completed").at(-1);
-    if (lastReport && !rs.some((r) => r.verb === "draft" && after(r, lastReport))) {
-      return { case: c.record.slug, verb: "draft", from: lastReport.runId, reason: `${lastReport.verb} ${lastReport.runId} has no draft after it` };
+    const undrafted = rs.find((r) => (r.verb === "report" || r.verb === "inbox") && r.outcome === "completed" && !drafted.has(r.runId));
+    if (undrafted) {
+      return { case: c.record.slug, verb: "draft", from: undrafted.runId, reason: `${undrafted.verb} ${undrafted.runId} has not been drafted` };
     }
     const lastDraft = rs.filter((r) => r.verb === "draft" && r.outcome === "completed").at(-1);
     if (lastDraft && !rs.some((r) => r.verb === "verify" && r.outcome === "completed" && after(r, lastDraft))) {
@@ -133,7 +144,8 @@ export async function runNext(opts: { run?: boolean; steps?: number; today?: str
 async function runOnce(opts: { run?: boolean; today?: string; root?: string }): Promise<NextOutcome> {
   const root = opts.root ?? process.cwd();
   const cases = loadAllCases();
-  const choice = nextAction(cases, readRuns(root), opts.today ?? new Date().toISOString().slice(0, 10));
+  const runs = readRuns(root);
+  const choice = nextAction(cases, runs, opts.today ?? new Date().toISOString().slice(0, 10), draftedFrom(runs, root));
   const ran: NextOutcome["ran"] = [];
   if (!opts.run || choice.verb === "rest" || !choice.case) return { choice, ran };
   const step = async (verb: string, f: () => Promise<RunOutcome>) => {

@@ -2,6 +2,7 @@ import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
+import { titleContainment, TITLE_NEAR } from "../domain/keys.ts";
 import { findCase } from "../domain/load.ts";
 import type { LoadedCase } from "../domain/schema.ts";
 import { MODELS } from "../../scripts/lib/models.mjs";
@@ -38,6 +39,8 @@ export interface InboxItem {
   text: string;
   pages?: number;
   supplier: string;
+  /** The ledger source this document is, when its title matches one: its propositions may anchor claims. */
+  ledgerSource?: string;
 }
 
 export function parseFrontMatter(text: string): { meta: Record<string, unknown>; body: string } {
@@ -146,15 +149,30 @@ export async function readInbox(caseDir: string, root = process.cwd()): Promise<
   return { items, left };
 }
 
+/** The ledger source a document is, by its title (the first heading or the sidecar's title) — or null. */
+export function ledgerSourceOf(item: Pick<InboxItem, "text" | "meta">, sources: { id: string; title: string }[]): string | null {
+  const title = typeof item.meta.title === "string" ? item.meta.title : item.text.replace(/^\[p\. 1\]\s*/, "").split("\n").find((l) => l.trim().length > 8)?.trim() ?? "";
+  if (title.length < 8) return null;
+  let best: { id: string; score: number } | null = null;
+  for (const s of sources) {
+    const score = titleContainment(title, s.title);
+    if (score >= TITLE_NEAR && (!best || score > best.score)) best = { id: s.id, score };
+  }
+  return best?.id ?? null;
+}
+
 /** The report the drafter reads: supplied text verbatim, then every named work with its resolved locator. */
 export function composeReport(slug: string, runId: string, date: string, items: InboxItem[], resolved: Map<string, Resolved[]>): string {
   const head =
     `<!-- Inbox intake — material supplied through the founder's door; working material, never citable as such (docs/AUTOMATION.md).\n` +
     `     runId ${runId} · case ${slug} · ${date} · ${items.length} item(s)\n` +
-    `     The supplied text below is its supplier's words, on the footing stated. It is not a source. Propose records only from the published works it names or links, each retrieved and verified. -->\n\n`;
+    `     The supplied text below is its supplier's words, on the footing stated. Unless an item says it is itself a ledger source, it is not one: propose records only from the published works it names or links, each retrieved and verified. -->\n\n`;
   const parts = [`# Intake — ${slug} (${date})`, ``];
   for (const it of items) {
     parts.push(`## ${it.kind}: ${it.name}`, ``, `Supplied by ${it.supplier}${it.pages ? `; PDF, ${it.pages} pages` : ""}${typeof it.meta.provenance === "string" ? `; provenance: ${it.meta.provenance}` : ""}.`, ``);
+    if (it.ledgerSource) {
+      parts.push(`THIS DOCUMENT IS THE LEDGER'S SOURCE ${it.ledgerSource}. Its propositions may be proposed as claims anchored to ${it.ledgerSource} — one proposition each, a verbatim quote from the text below, and the \`[p. N]\` page as the locator — and what it states may enter as evidence records on ${it.ledgerSource}, direction and strength honest to what kind of source it is. The verifier reads this same text for ${it.ledgerSource}.`, ``);
+    }
     if (it.kind === "commentary") parts.push(`The supplier's words, verbatim — the authoritative editorial statement:`, ``);
     parts.push(it.text.trim(), ``);
     const refs = resolved.get(it.name) ?? [];
@@ -187,6 +205,11 @@ export async function runInbox(caseKey: string, opts: InboxOptions = {}): Promis
   const now = opts.deps?.now ?? (() => new Date());
   const loaded = findCase(caseKey, opts.deps?.cases?.());
   const { items, left } = await readInbox(loaded.dir, root);
+  for (const it of items) {
+    if (it.kind !== "document") continue;
+    const id = ledgerSourceOf(it, loaded.sources);
+    if (id) it.ledgerSource = id;
+  }
   const run = openRun("inbox", loaded.record.slug, { model: MODELS.reader.model, promptVersion: "references-v1" }, { now: now(), root });
   const { runId, date } = run;
   if (items.length === 0) return { ...closeRun(run, "rested", { reason: left.length ? `nothing ready: ${left.map((l) => `${l.name} — ${l.reason}`).join("; ")}` : "the inbox holds nothing for this case" }), items: 0, left };
@@ -215,6 +238,8 @@ export async function runInbox(caseKey: string, opts: InboxOptions = {}): Promis
     bytes: fs.statSync(it.file).size,
     sha256: crypto.createHash("sha256").update(fs.readFileSync(it.file)).digest("hex"),
     sidecar: it.sidecar ? path.relative(path.join(root, "inbox"), it.sidecar) : null,
+    ledgerSource: it.ledgerSource ?? null,
+    document: it.kind === "document" ? `documents/${path.basename(it.file).replace(/\.[^.]+$/, "")}.txt` : null,
     references: (resolved.get(it.name) ?? []).length,
     resolved: (resolved.get(it.name) ?? []).filter((r) => r.url).length,
   }));

@@ -1,3 +1,6 @@
+import fs from "node:fs";
+import path from "node:path";
+import { parse as parseYaml } from "yaml";
 import type { Disposition, Proposal } from "../domain/intake.ts";
 import { sourceKeys, textKey } from "../domain/keys.ts";
 import { claimAnchorErrors, findCase, sourceAdmissionErrors } from "../domain/load.ts";
@@ -93,8 +96,32 @@ function identifiersOf(s: Source): { kind: string; id: string }[] {
 }
 
 const doiOf = (s: Source): string | null => identifiersOf(s).find((i) => i.kind === "doi")?.id ?? null;
-/** The key a source's retrieved text is filed under: its URL, or its DOI link when it has none. */
-export const textKeyOf = (s: Source): string | undefined => s.url ?? (doiOf(s) ? `https://doi.org/${doiOf(s)}` : undefined);
+/** The key a source's retrieved text is filed under: its URL, its DOI link, or — for a source with neither — its own id. */
+export const textKeyOf = (s: Source): string => s.url ?? (doiOf(s) ? `https://doi.org/${doiOf(s)}` : `source:${s.id}`);
+
+/**
+ * Texts the intake supplied for sources it identified (an inbox run's
+ * manifest names, per document, the ledger source it is): read from the
+ * run's documents/, so a claim anchored to the founder's own essay is
+ * checked against the very text the drafter was shown.
+ */
+export function suppliedTexts(proposal: Proposal, sources: Source[], root = process.cwd()): Map<string, FetchedSource> {
+  const out = new Map<string, FetchedSource>();
+  const runDirOf = proposal.report?.match(/^proposals\/([^/]+)\//)?.[1];
+  if (!runDirOf) return out;
+  const manifestFile = path.join(root, "proposals", runDirOf, "manifest.yaml");
+  if (!fs.existsSync(manifestFile)) return out;
+  const manifest = parseYaml(fs.readFileSync(manifestFile, "utf8")) as { items?: { ledgerSource?: string | null; document?: string | null; name?: string; sha256?: string }[] };
+  for (const it of manifest.items ?? []) {
+    if (!it.ledgerSource || !it.document) continue;
+    const src = sources.find((s) => s.id === it.ledgerSource);
+    const file = path.join(root, "proposals", runDirOf, it.document);
+    if (!src || !fs.existsSync(file)) continue;
+    const text = fs.readFileSync(file, "utf8");
+    out.set(textKeyOf(src), { url: textKeyOf(src), ok: true, status: null, contentType: "text/plain", text, via: `supplied document ${it.name} (sha256 ${(it.sha256 ?? "").slice(0, 12)}), identified at intake as ${src.id}` });
+  }
+  return out;
+}
 
 /** Why a correction cannot apply as the ledger stands (null when it can): unknown record, no such file, or the field has moved since. */
 export function correctionBlocker(loaded: LoadedCase, c: Correction): string | null {
@@ -310,10 +337,10 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
       if (src) wanted.set(src.id, src);
     }
     const fetcher = opts.deps?.fetch ?? retrieve;
-    const texts = new Map<string, FetchedSource>();
+    const texts = suppliedTexts(proposal, [...loaded.sources, ...proposal.adds.sources], root);
     for (const s of wanted.values()) {
       const key = textKeyOf(s);
-      if (key && !texts.has(key)) texts.set(key, await fetcher({ url: s.url, doi: doiOf(s) }, {}));
+      if (!texts.has(key)) texts.set(key, s.url || doiOf(s) ? await fetcher({ url: s.url, doi: doiOf(s) }, {}) : { url: key, ok: false, status: null, contentType: null, text: null, reason: "the source record has no URL or DOI and no supplied text stands in for it" });
     }
 
     const verdicts = await judgeProposal(proposal, loaded, texts, resolved, opts.deps?.judge ?? defaultJudge, meter, { model: READER.model, date });

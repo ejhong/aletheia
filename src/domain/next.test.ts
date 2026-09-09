@@ -18,8 +18,13 @@ describe("aletheia next", () => {
     const runs = [run({ runId: `2026-09-01-report-${slug}-000000`, case: slug })];
     const n = nextAction(cases, runs, "2026-09-20");
     expect(n).toMatchObject({ case: slug, verb: "draft", from: runs[0].runId });
+    // A draft after the report does not count until a proposal names that report; then the proposal waits for verification.
     const withDraft = [...runs, run({ runId: `2026-09-01-draft-${slug}-010000`, verb: "draft", case: slug })];
-    expect(nextAction(cases, withDraft, "2026-09-20")).toMatchObject({ case: slug, verb: "verify", from: withDraft[1].runId });
+    expect(nextAction(cases, withDraft, "2026-09-20")).toMatchObject({ verb: "draft", from: runs[0].runId });
+    expect(nextAction(cases, withDraft, "2026-09-20", new Set([runs[0].runId]))).toMatchObject({ case: slug, verb: "verify", from: withDraft[1].runId });
+    // Two reports, one drafted: the undrafted one is next even though it is older than the draft.
+    const two = [run({ runId: `2026-09-02-inbox-${slug}-000000`, verb: "inbox", case: slug, date: "2026-09-02" }), ...withDraft, run({ runId: `2026-09-01-verify-${slug}-020000`, verb: "verify", case: slug })];
+    expect(nextAction(cases, two, "2026-09-20", new Set([runs[0].runId]))).toMatchObject({ verb: "draft", from: `2026-09-02-inbox-${slug}-000000` });
   });
 
   it("then a due edition, then the least recently reported case with the house seat, skipping the cadence window", async () => {
@@ -34,7 +39,7 @@ describe("aletheia next", () => {
         run({ runId: `2026-09-19-draft-${slug}-010000`, verb: "draft", case: slug, date: "2026-09-19" }),
         run({ runId: `2026-09-19-verify-${slug}-020000`, verb: "verify", case: slug, date: "2026-09-19" }),
       ];
-      expect(nextAction([contested], reported, "2026-09-20")).toMatchObject({ case: slug, verb: "edition" });
+      expect(nextAction([contested], reported, "2026-09-20", new Set([reported[0].runId]))).toMatchObject({ case: slug, verb: "edition" });
     }
     // Among cases whose editions are current, with no runs at all, the first never-reported case is chosen for a report.
     const { checksStale } = await import("./load.ts");
@@ -55,11 +60,12 @@ describe("aletheia next", () => {
       run({ runId: `2026-08-30-draft-${b}-010000`, verb: "draft", case: b, date: "2026-08-30" }),
       run({ runId: `2026-08-30-verify-${b}-020000`, verb: "verify", case: b, date: "2026-08-30" }),
     ];
-    const n2 = nextAction(two, runs, "2026-09-20");
+    const drafted = new Set([`2026-09-19-report-${a}-000000`, `2026-08-30-report-${b}-000000`]);
+    const n2 = nextAction(two, runs, "2026-09-20", drafted);
     expect(n2.case).toBe(b);
     expect(n2.verb).toBe("report");
     expect(n2.seat).toBe("openai"); // its last pass landed nothing (no `in` rows name that run)
-    expect(nextAction(two.filter((c) => c.record.slug === a), runs, "2026-09-20").verb).toBe("rest");
+    expect(nextAction(two.filter((c) => c.record.slug === a), runs, "2026-09-20", drafted).verb).toBe("rest");
   });
 
   it("a reconsideration the fresh panel still contests rests until the ledger moves", async () => {

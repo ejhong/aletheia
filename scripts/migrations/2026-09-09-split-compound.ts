@@ -56,6 +56,7 @@ for (const c of targets) {
     added.push({ id, from: c.id, statement: part });
   }
   setField(path.join("content", "cases", loaded.dir, "claims.yaml"), c.id, "reviewState", c.reviewState, "rejected");
+  setField(path.join("content", "cases", loaded.dir, "claims.yaml"), c.id, "rejectionReason", null, `Not atomic (AGENTS.md §3.2): ${v.reason} Split into ${kept.length ? kept.join(", ") : "no part the reader accepted on the same anchor"}; this record stands as the tombstone.`);
   rejected.push({ id: c.id, reason: v.reason, parts: kept });
   console.error(`${c.id}: not atomic — ${kept.length} part(s): ${kept.join(", ")}`);
 }

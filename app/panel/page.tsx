@@ -4,7 +4,6 @@ import { ArbiterVerdictCard } from "@/src/components/ArbiterVerdictCard";
 import { AssessmentBadge } from "@/src/components/AssessmentBadge";
 import { VerdictDot } from "@/src/components/VerdictDot";
 import { loadArbiterRecords, loadPromotionsLedger } from "@/src/domain/governance";
-import { loadProposalRuns } from "@/src/domain/agendaProposals";
 import { loadAllCases } from "@/src/domain/load";
 import { assessmentLabels } from "@/src/domain/schema";
 import {
@@ -43,17 +42,9 @@ export default function PanelPage() {
   // Metabolism vitals, derived from the same ledgers the loops write —
   // no stored counters, nothing to drift. KISS by founder direction:
   // one row of numbers, each backed by an inspectable file.
-  const allProposals = loadProposalRuns().flatMap((r) =>
-    r.files.flatMap((f) => f.proposals),
-  );
   const promotions = loadPromotionsLedger();
   const studies = loadAllCases().flatMap((c) => c.studies);
   const metabolism: Array<[string, number]> = [
-    ["proposals scored", allProposals.filter((p) => p.score).length],
-    [
-      "advanced by the panel",
-      allProposals.filter((p) => p.score?.advances || p.draftedAs).length,
-    ],
     ["studies pre-registered", studies.filter((s) => s.rows.length === 0).length],
     ["studies collected", studies.filter((s) => s.rows.length > 0).length],
     [
@@ -280,13 +271,8 @@ export default function PanelPage() {
         <h2 className="font-serif text-3xl tracking-tight">Metabolism</h2>
         <p className="mt-2 text-[14px] text-ink-soft max-w-2xl">
           What the automated loops have produced, in totals derived from
-          the repository&apos;s own ledgers — the{" "}
-          <Link href="/proposals/" className="underline underline-offset-2 hover:text-copper">
-            proposal shelf
-          </Link>{" "}
-          for the Bench, and the promotions dispositions ledger for the
-          import pipe. Every artifact behind these numbers rode the same
-          gates as any human change.
+          the repository&apos;s own ledgers. Every artifact behind these
+          numbers rode the same gates as any human change.
         </p>
         <div className="mt-6 border border-line bg-paper px-5 py-4 flex flex-wrap gap-x-8 gap-y-2">
           {metabolism.map(([name, n]) => (

@@ -56,6 +56,11 @@ jobs:
             exit 78
           fi
           [ "$state" != "live" ] && echo "::notice::running while paused, on the founder's dispatch (even_if_paused=true)" || true
+      - name: Harvest the Arbiter's verdicts for the panel page
+        # Settled PRs' verdicts, copied from their sticky comments into governance/arbiter/ (the Maintain workflow's job until 2026-09-09).
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/harvest-governance.mjs || echo "::warning::governance harvest failed; the sitting continues"
       - name: Choose and run one case through the chain
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}

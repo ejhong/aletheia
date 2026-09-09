@@ -286,8 +286,12 @@ test evidence.
 | `panel` | the arbiter prompt | a `violates` must name the rule or degrades to `unsure`; notes are separate from verdicts |
 | `references` | the inbox's link and document handling | list the works a supplied text names, exactly as written, nothing invented; OpenAlex resolves them by title, or by author and year with a shared topic stem, and the drafter is shown each as a candidate with its similarity, never as a confirmed match |
 
-`docs/CHAT_BRIEFS.md` and `research/missing-evidence-audit-prompts.md`
-retire into these files when they land. Genesis — founding inputs to a
+`docs/CHAT_BRIEFS.md` (the genesis procedure) and
+`research/missing-evidence-audit-prompts.md` retire into these files when
+they land; `docs/EXTRACTION_PIPELINE.md` retired on 2026-09-09 into one
+sentence: the extraction pipeline of August — one proposition per claim,
+one rung, a theme, a verbatim quote from the shown text — is what `draft`
+inherits. Genesis — founding inputs to a
 question, a first anchored claim, a first edition — stays an agent-run
 procedure with the chat-briefs checklist until the Deep Memory test shows
 `draft` and `edition` can do it unattended.
@@ -402,6 +406,37 @@ reader sees can be derived from those, with hand-written entries kept only
 for corrections nothing else records. Staleness no longer depends on the
 changelog (it is a hash), so `history.yaml` would stop being load-bearing
 and could stop being a file every PR must remember to append to.
+
+### Subtraction record
+
+Each retirement names what replaced it; the run that made it safe is the
+chain's own sittings.
+
+- **2026-09-09 — the Maintain era.** Retired: the `Maintain`, `Content
+  response`, `Inbox response` and `Operator` workflows and the two
+  on-demand tools (`Extract claims`, `Generate case art`); the scripts
+  `process-inbox` (→ `inbox`), `extract-claims` (→ `draft`),
+  `promote-imports` (→ `draft` + `verify`), `watch-literature` and
+  `triage-watch` (→ `report`, on the cadence), `reassess-changed`
+  (→ `edition`, owed when the ledger moves), `reconcile-contested`
+  (→ `edition`'s reconsideration), `propose-agenda`, `score-agenda`,
+  `draft-endorsements` and `draft-freeze` (the Bench and the study freeze —
+  no verb yet; a `freeze` verb would replace them if studies are made
+  again), `stamp-study` (with them), `yield-report` (→ the spend ledger and
+  the dispositions), `stale-checks` (→ `checksStale` in the loader),
+  `preflight-citations` (→ `verify`'s citation check), `generate-case-art`
+  and `add-commons-image` (no replacement; the plates keep their register,
+  docs/IMAGE_STYLE.md); their nine library modules and ten test files; the
+  `/proposals` page and its `agendaProposals` domain module (the Bench's
+  shelf); `docs/EXTRACTION_PIPELINE.md`. Kept: `harvest-governance` (now a
+  step of the sitting, so `/panel` stays current), `classify-pr-risk`,
+  `audit-links`, and the library modules the pipeline and the Arbiter
+  still share (`models`, `overlay-ids`, `vendors`, `llm`, `citation-check`,
+  `seat-key`, `harvest-parse`, `arbiter-core`) — the next subtraction moves
+  those into `src/`. Added in the same change: the scheduler's first
+  choice is an inbox with items, which the retired Inbox response workflow
+  used to trigger on push. Earlier artifacts under `proposals/` (watch
+  runs, agenda scores, the promotions ledger) stay as history.
 
 ## Presentation, last
 

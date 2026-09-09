@@ -1,7 +1,7 @@
 /**
  * Shared LLM client for the maintenance scripts that predate the verb chain.
  *
- * Environment (see docs/EXTRACTION_PIPELINE.md and docs/MAINTENANCE.md):
+ * Environment (see docs/MAINTENANCE.md):
  *   ANTHROPIC_API_KEY  Anthropic Messages API key (preferred provider)
  *   OPENAI_API_KEY     OpenAI Chat Completions API key (fallback)
  * Models are chosen in config/models.yaml (house; legacy.openaiChat) — the
@@ -156,7 +156,7 @@ export function noKeyMessage() {
     "  OPENAI_API_KEY      OpenAI Chat Completions API",
     "",
     "Models are chosen in config/models.yaml.",
-    "See docs/EXTRACTION_PIPELINE.md and docs/MAINTENANCE.md.",
+    "See docs/MAINTENANCE.md.",
     "",
   ].join("\n");
 }

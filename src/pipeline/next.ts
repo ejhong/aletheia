@@ -4,6 +4,7 @@ import { checksStale, loadAllCases } from "../domain/load.ts";
 import type { LoadedCase } from "../domain/schema.ts";
 import { MODELS } from "../../scripts/lib/models.mjs";
 import { runCheck } from "./check.ts";
+import { runInbox } from "./inbox.ts";
 import { runDraft } from "./draft.ts";
 import { editionDue, runEdition } from "./edition.ts";
 import { runReport, type ResearchSeat } from "./report.ts";
@@ -43,7 +44,7 @@ import { runVerify } from "./verify.ts";
 
 export interface NextChoice {
   case: string | null;
-  verb: "report" | "draft" | "verify" | "edition" | "check" | "rest";
+  verb: "inbox" | "report" | "draft" | "verify" | "edition" | "check" | "rest";
   seat?: ResearchSeat;
   /** The run id a draft or verify continues from. */
   from?: string;
@@ -101,8 +102,34 @@ export function draftedFrom(runs: RunRecord[], root = process.cwd()): Set<string
 }
 
 /** Pure given `drafted`: the choice, from the cases, the run records, the reports already drafted, and the date. */
-export function nextAction(cases: LoadedCase[], runs: RunRecord[], today: string, drafted: Set<string> = new Set()): NextChoice {
+/** Cases with files waiting in `inbox/<case>/` (not README, not dotfiles, not `processed/`), by slug: the founder's door, counted without reading the files. */
+export function inboxPending(cases: LoadedCase[], root = process.cwd()): Map<string, number> {
+  const out = new Map<string, number>();
+  for (const c of cases) {
+    const dir = path.join(root, "inbox", c.dir);
+    if (!fs.existsSync(dir)) continue;
+    let n = 0;
+    const walk = (d: string) => {
+      for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+        if (e.name.startsWith(".")) continue;
+        if (e.isDirectory()) {
+          if (e.name !== "processed") walk(path.join(d, e.name));
+        } else if (e.name !== "README.md") n++;
+      }
+    };
+    walk(dir);
+    if (n > 0) out.set(c.record.slug, n);
+  }
+  return out;
+}
+
+export function nextAction(cases: LoadedCase[], runs: RunRecord[], today: string, drafted: Set<string> = new Set(), pendingInbox: Map<string, number> = new Map()): NextChoice {
   const byCase = (slug: string) => runs.filter((r) => r.case === slug).sort((a, b) => when(a).localeCompare(when(b)));
+  // 0. The founder's door: an inbox with items is taken in before anything else (the inbox-response workflow, retired 2026-09-09, did this on push).
+  for (const c of cases) {
+    const n = pendingInbox.get(c.record.slug);
+    if (n) return { case: c.record.slug, verb: "inbox", reason: `${n} item(s) waiting in inbox/${c.dir}` };
+  }
   // 1. Half-done chains, oldest first: every completed report or intake no proposal was drafted from.
   for (const c of cases) {
     const rs = byCase(c.record.slug);
@@ -180,7 +207,7 @@ async function runOnce(opts: { run?: boolean; today?: string; root?: string }): 
   const root = opts.root ?? process.cwd();
   const cases = loadAllCases();
   const runs = readRuns(root);
-  const choice = nextAction(cases, runs, opts.today ?? new Date().toISOString().slice(0, 10), draftedFrom(runs, root));
+  const choice = nextAction(cases, runs, opts.today ?? new Date().toISOString().slice(0, 10), draftedFrom(runs, root), inboxPending(cases, root));
   const ran: NextOutcome["ran"] = [];
   if (!opts.run || choice.verb === "rest" || !choice.case) return { choice, ran };
   const step = async (verb: string, f: () => Promise<RunOutcome>) => {
@@ -188,7 +215,13 @@ async function runOnce(opts: { run?: boolean; today?: string; root?: string }): 
     ran.push({ verb, outcome });
     return outcome.outcome === "completed";
   };
-  if (choice.verb === "report") {
+  if (choice.verb === "inbox") {
+    if (!(await step("inbox", () => runInbox(choice.case!, { root })))) return { choice, ran };
+    const intakeId = ran[0].outcome.runId;
+    if (!(await step("draft", () => runDraft(intakeId, { root })))) return { choice, ran };
+    if (!(await step("verify", () => runVerify(ran[1].outcome.runId, { root })))) return { choice, ran };
+    await step("edition", () => runEdition(choice.case!, { root }));
+  } else if (choice.verb === "report") {
     if (!(await step("report", () => runReport(choice.case!, { seat: choice.seat!, root })))) return { choice, ran };
     const reportId = ran[0].outcome.runId;
     if (!(await step("draft", () => runDraft(reportId, { root })))) return { choice, ran };

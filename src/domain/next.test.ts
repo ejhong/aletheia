@@ -1,7 +1,10 @@
+import path from "node:path";
+import os from "node:os";
+import fs from "node:fs";
 import { describe, expect, it } from "vitest";
 import { loadOperation } from "./governance.ts";
 import { getCaseBySlug, loadAllCases } from "./load.ts";
-import { cadenceDays, nextAction } from "../pipeline/next.ts";
+import { cadenceDays, nextAction, inboxPending } from "../pipeline/next.ts";
 import type { RunRecord } from "./intake.ts";
 
 const run = (over: Partial<RunRecord>): RunRecord => ({
@@ -12,6 +15,19 @@ const run = (over: Partial<RunRecord>): RunRecord => ({
 describe("aletheia next", () => {
   const cases = loadAllCases();
   const other = cases.find((c) => c.record.slug !== "megalithic-casting" && !c.dispositions.length)!;
+
+  it("an inbox with items is the first choice, counted without reading the files", () => {
+    const [a, b] = cases;
+    expect(nextAction(cases, [], "2026-09-20", new Set(), new Map([[b.record.slug, 2]]))).toMatchObject({ case: b.record.slug, verb: "inbox", reason: `2 item(s) waiting in inbox/${b.dir}` });
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "aletheia-inbox-pending-"));
+    fs.mkdirSync(path.join(root, "inbox", a.dir, "processed", "old"), { recursive: true });
+    fs.writeFileSync(path.join(root, "inbox", a.dir, "README.md"), "not an item");
+    fs.writeFileSync(path.join(root, "inbox", a.dir, ".DS_Store"), "");
+    fs.writeFileSync(path.join(root, "inbox", a.dir, "processed", "old", "done.md"), "taken in already");
+    fs.writeFileSync(path.join(root, "inbox", a.dir, "note.md"), "---\ncase: x\n---\nwaiting");
+    fs.writeFileSync(path.join(root, "inbox", a.dir, "paper.pdf"), "%PDF");
+    expect([...inboxPending(cases, root)]).toEqual([[a.record.slug, 2]]);
+  });
 
   it("finishes a half-done chain before anything else", () => {
     const slug = other.record.slug;

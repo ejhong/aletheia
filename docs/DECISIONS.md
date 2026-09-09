@@ -1685,3 +1685,20 @@ and must not be built over two; then the case page in the reader's order
 with a record layer beneath it and one `/operations` page at site level;
 the loop keeps running meanwhile.
 
+**Subtraction, first set: the Maintain era retired (founder direction,
+2026-09-09, in session: "begin").** Six disabled workflows, fifteen
+scripts, nine library modules, ten test files, the `/proposals` page and
+its domain module, and one document are gone. The subtraction record
+(docs/AUTOMATION.md) names, for each, the verb that replaced it or says
+that nothing did: the Bench, the study freeze and the art generator were
+retired without replacement — a `freeze` verb would stand in for the
+first two if studies are made again, and the plates keep their register. Two things moved rather than
+went: the Arbiter-verdict harvest is now a step of the sitting, so `/panel`
+stays current; and an inbox with items is the scheduler's first choice,
+which the retired Inbox response workflow used to trigger on push.
+`docs/CHAT_BRIEFS.md` stays: it is the genesis procedure until Deep Memory
+shows the drafter can open a case unattended. The runbook now describes
+three workflows and two builders, nothing else. Next in the set: the
+library modules the pipeline still imports from `scripts/lib` move into
+`src/`, superseded protocols go to `protocols/archive/`, the loader splits,
+and the Arbiter calls vendors through the pipeline's transport.

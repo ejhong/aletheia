@@ -1,8 +1,9 @@
 # The inbox
 
 Drop anything here — from your phone (github.dev or the GitHub app) or by
-pushing files. The maintenance pipeline picks items up on the weekly run, or
-whenever you trigger the **Maintain** workflow by hand.
+pushing files. The chain takes items in at its next sitting — an inbox with
+items is its first choice — or when you dispatch the **Chain** workflow by
+hand from the Actions tab.
 
 **How it is processed now (2026-09-09).** `node scripts/aletheia.ts inbox <case>`
 takes everything dropped for a case — notes in your words, link lists,
@@ -102,9 +103,9 @@ https://example.org/dataset
 Each link is fetched and verified reachable, and a source-record proposal
 is drafted with an honest verification label.
 
-**3. Documents** (`.txt`, `.md`, or `.pdf` full texts): routed through the
-extraction pipeline (`docs/EXTRACTION_PIPELINE.md`) into proposed
-proposed claims (anchored, unfeatured until an edition features them). PDFs
+**3. Documents** (`.txt`, `.md`, or `.pdf` full texts): mined by the `draft`
+verb (one proposition per claim, a verbatim quote, the page as locator)
+into proposed claims (anchored, unfeatured until an edition features them). PDFs
 are read page by page by the pipeline itself (the same extractor the verb
 chain uses; no external tool), with `[p. N]` markers so claims can cite the
 page. A scanned PDF with no text layer is left in place with a note in the

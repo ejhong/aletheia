@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml } from "yaml";
 import type { Disposition, Proposal } from "../domain/intake.ts";
-import { sourceKeys, textKey } from "../domain/keys.ts";
+import { sourceKeys, textKey, titleContainment, TITLE_NEAR } from "../domain/keys.ts";
 import { claimAnchorErrors, findCase, sourceAdmissionErrors } from "../domain/load.ts";
 import type { Claim, Evidence, LoadedCase, ResearchOpportunity, Source } from "../domain/schema.ts";
 import { verifyCitations } from "../../scripts/lib/citation-check.mjs";
@@ -37,7 +37,7 @@ export const READER = MODELS.reader;
 export const VERIFY_SCHEMA: Record<string, unknown> = {
   type: "object",
   additionalProperties: false,
-  required: ["quoteInContext", "statementSupported", "locatorSupported", "directionRight", "independenceNoted", "relevant", "reason"],
+  required: ["quoteInContext", "statementSupported", "locatorSupported", "directionRight", "independenceNoted", "relevant", "atomic", "reason"],
   properties: {
     quoteInContext: { type: "boolean" },
     statementSupported: { type: "boolean" },
@@ -45,6 +45,7 @@ export const VERIFY_SCHEMA: Record<string, unknown> = {
     directionRight: { type: "boolean" },
     independenceNoted: { type: "boolean" },
     relevant: { type: "boolean" },
+    atomic: { type: "boolean" },
     reason: { type: "string" },
   },
 };
@@ -56,7 +57,36 @@ export interface VerifyReply {
   directionRight: boolean;
   independenceNoted: boolean;
   relevant: boolean;
+  /** One proposition with one truth condition (§3.2); a compound claim is split, not admitted. Absent means true. */
+  atomic?: boolean;
   reason: string;
+}
+
+export const SPLIT_SCHEMA: Record<string, unknown> = {
+  type: "object",
+  additionalProperties: false,
+  required: ["parts"],
+  properties: { parts: { type: "array", items: { type: "string" } } },
+};
+
+/** Split a compound claim into the propositions its anchor states (protocol split-v1). */
+export type Splitter = (statement: string, anchorText: string, meter: Meter) => Promise<string[]>;
+
+export const defaultSplitter: Splitter = async (statement, anchorText, meter) => {
+  const protocol = loadProtocol("split");
+  const r = await anthropicJson<{ parts: string[] }>(
+    { ...MODELS.house, system: renderProtocol(protocol, {}), user: JSON.stringify({ statement, anchorText }, null, 1), schema: SPLIT_SCHEMA, maxTokens: 4000, effort: "low" },
+    meter,
+  );
+  return r.data.parts.map((p) => p.trim()).filter((p) => p.length > 10);
+};
+
+/** The next free claim id in the case's scheme, given the ledger and everything proposed so far. */
+export function nextClaimId(loaded: LoadedCase, taken: Iterable<string>): string {
+  const ids = [...loaded.claims.map((c) => c.id), ...taken];
+  const prefix = ids.find((id) => /-C\d+$/.test(id))?.replace(/\d+$/, "") ?? `${loaded.record.id.split("-")[0]}-C`;
+  const max = Math.max(0, ...ids.filter((id) => id.startsWith(prefix)).map((id) => Number(id.slice(prefix.length)) || 0));
+  return `${prefix}${String(max + 1).padStart(3, "0")}`;
 }
 
 export type Judge = (record: unknown, sourceText: string, context: string, meter: Meter) => Promise<VerifyReply>;
@@ -111,14 +141,15 @@ export function suppliedTexts(proposal: Proposal, sources: Source[], root = proc
   if (!runDirOf) return out;
   const manifestFile = path.join(root, "proposals", runDirOf, "manifest.yaml");
   if (!fs.existsSync(manifestFile)) return out;
-  const manifest = parseYaml(fs.readFileSync(manifestFile, "utf8")) as { items?: { ledgerSource?: string | null; document?: string | null; name?: string; sha256?: string }[] };
+  const manifest = parseYaml(fs.readFileSync(manifestFile, "utf8")) as { items?: { ledgerSource?: string | null; document?: string | null; name?: string; sha256?: string; title?: string }[] };
   for (const it of manifest.items ?? []) {
-    if (!it.ledgerSource || !it.document) continue;
-    const src = sources.find((s) => s.id === it.ledgerSource);
+    if (!it.document) continue;
+    // The source the intake identified, else a source (the ledger's or this proposal's) whose title is the document's.
+    const src = sources.find((s) => it.ledgerSource && s.id === it.ledgerSource) ?? (it.title ? sources.find((s) => titleContainment(it.title!, s.title) >= TITLE_NEAR) : undefined);
     const file = path.join(root, "proposals", runDirOf, it.document);
     if (!src || !fs.existsSync(file)) continue;
     const text = fs.readFileSync(file, "utf8");
-    out.set(textKeyOf(src), { url: textKeyOf(src), ok: true, status: null, contentType: "text/plain", text, via: `supplied document ${it.name} (sha256 ${(it.sha256 ?? "").slice(0, 12)}), identified at intake as ${src.id}` });
+    out.set(textKeyOf(src), { url: textKeyOf(src), ok: true, status: null, contentType: "text/plain", text, via: `supplied document ${it.name} (sha256 ${(it.sha256 ?? "").slice(0, 12)}), ${it.ledgerSource ? `identified at intake as ${src.id}` : `matched by title to ${src.id}`}` });
   }
   return out;
 }
@@ -148,9 +179,12 @@ export async function judgeProposal(
   judge: Judge,
   meter: Meter,
   reader: { model: string; date: string } = { model: READER.model, date: isoDate() },
+  split: Splitter = defaultSplitter,
 ): Promise<Verdicts> {
   const rejected: Verdicts["rejected"] = [];
   const notes: string[] = [];
+  /** Compound claims replaced by their parts, for evidence that cited them. */
+  const splitInto = new Map<string, string[]>();
   const reject = (id: string, kind: Disposition["kind"], observed: string, reason: string, blocked = false, route?: string) =>
     rejected.push({ id, kind, observed, disposition: blocked ? "blocked" : "failed", reason, ...(route ? { route } : {}) });
 
@@ -229,10 +263,33 @@ export async function judgeProposal(
         reject(c.id, "claim", c.statement, `anchor quote not found verbatim in ${sid}`);
         continue;
       } else {
-        const verdict = await judge({ statement: c.statement, anchor: c.sourceAnchor }, fetched.text, `Case question: ${loaded.record.subtitle}. Does the anchored passage support the proposition as stated?`, meter);
-        const flags = Object.entries(verdict).filter(([k, v]) => k !== "reason" && v === false && k !== "independenceNoted" && k !== "directionRight").map(([k]) => k);
+        const anchorContext = `Case question: ${loaded.record.subtitle}. Does the anchored passage support the proposition as stated?`;
+        const verdict = await judge({ statement: c.statement, anchor: c.sourceAnchor }, fetched.text, anchorContext, meter);
+        const flags = Object.entries(verdict).filter(([k, v]) => k !== "reason" && v === false && k !== "independenceNoted" && k !== "directionRight" && k !== "atomic").map(([k]) => k);
         if (flags.length) {
           reject(c.id, "claim", c.statement, `second reader rejected the anchor (${flags.join(", ")}): ${verdict.reason}`);
+          continue;
+        }
+        if (verdict.atomic === false) {
+          // One split round (§3.2): the drafter divides the statement; each part is judged on the same anchor.
+          const parts = await split(c.statement, fetched.text, meter);
+          const admitted: Claim[] = [];
+          for (const part of parts) {
+            const id = nextClaimId(loaded, [...proposal.adds.claims.map((k) => k.id), ...okClaims.map((k) => k.id), ...admitted.map((k) => k.id)]);
+            const candidate: Claim = { ...c, id, statement: part };
+            const v2 = await judge({ statement: part, anchor: c.sourceAnchor }, fetched.text, anchorContext, meter);
+            const bad = Object.entries(v2).filter(([k, v]) => k !== "reason" && v === false && k !== "independenceNoted" && k !== "directionRight").map(([k]) => k);
+            if (bad.length) {
+              notes.push(`${c.id} part "${part.slice(0, 60)}" refused (${bad.join(", ")}): ${v2.reason}`);
+              continue;
+            }
+            admitted.push(candidate);
+          }
+          reject(c.id, "claim", c.statement, `not atomic (${verdict.reason}); split into ${admitted.length ? admitted.map((k) => k.id).join(", ") : "nothing that survived"}`);
+          if (admitted.length) {
+            splitInto.set(c.id, admitted.map((k) => k.id));
+            okClaims.push(...admitted);
+          }
           continue;
         }
       }
@@ -243,13 +300,24 @@ export async function judgeProposal(
     okClaims.push(c);
   }
 
+  // Evidence that cited a compound claim now cites its parts.
+  for (const [i, e] of okEvidence.entries()) {
+    if (e.claimIds.some((id) => splitInto.has(id))) okEvidence[i] = { ...e, claimIds: [...new Set(e.claimIds.flatMap((id) => splitInto.get(id) ?? [id]))] };
+  }
   // Claims whose parents or dependencies were rejected (or never existed) keep the claim and lose the link, said aloud.
   const liveClaimIds = new Set([...loaded.claims.filter((c) => c.reviewState !== "rejected").map((c) => c.id), ...okClaims.map((c) => c.id)]);
   for (const [i, c] of okClaims.entries()) {
-    const dangling = [...c.parentClaimIds, ...c.dependsOnClaimIds].filter((id) => !liveClaimIds.has(id));
+    const dangling = [...c.parentClaimIds, ...c.dependsOnClaimIds, ...(c.alternativeToClaimIds ?? []), ...(c.contradictsClaimIds ?? [])].filter((id) => !liveClaimIds.has(id));
     if (dangling.length) {
-      notes.push(`${c.id}: names ${dangling.join(", ")} as parent or dependency, not a live claim — those links are dropped`);
-      okClaims[i] = { ...c, parentClaimIds: c.parentClaimIds.filter((id) => liveClaimIds.has(id)), dependsOnClaimIds: c.dependsOnClaimIds.filter((id) => liveClaimIds.has(id)) };
+      notes.push(`${c.id}: names ${dangling.join(", ")} as parent, dependency, alternative, or contradiction, not a live claim — those links are dropped`);
+      const live = (ids: string[]) => ids.filter((id) => liveClaimIds.has(id));
+      okClaims[i] = {
+        ...c,
+        parentClaimIds: live(c.parentClaimIds),
+        dependsOnClaimIds: live(c.dependsOnClaimIds),
+        ...(c.alternativeToClaimIds ? { alternativeToClaimIds: live(c.alternativeToClaimIds) } : {}),
+        ...(c.contradictsClaimIds ? { contradictsClaimIds: live(c.contradictsClaimIds) } : {}),
+      };
     }
   }
   // Evidence whose claims were all rejected falls with them.
@@ -304,6 +372,7 @@ export interface VerifyOptions {
   deps?: {
     fetch?: typeof retrieve;
     judge?: Judge;
+    split?: Splitter;
     resolve?: Resolver;
     /** Wayback lookup and save for admitted sources; injectable so tests never reach the archive. */
     archive?: (url: string) => Promise<Archived>;
@@ -351,7 +420,7 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
       if (!texts.has(key)) texts.set(key, s.url || doiOf(s) ? await fetcher({ url: s.url, doi: doiOf(s) }, {}) : { url: key, ok: false, status: null, contentType: null, text: null, reason: "the source record has no URL or DOI and no supplied text stands in for it" });
     }
 
-    const verdicts = await judgeProposal(proposal, loaded, texts, resolved, opts.deps?.judge ?? defaultJudge, meter, { model: READER.model, date });
+    const verdicts = await judgeProposal(proposal, loaded, texts, resolved, opts.deps?.judge ?? defaultJudge, meter, { model: READER.model, date }, opts.deps?.split ?? defaultSplitter);
     // Durable locators: every admitted source with a URL gets its Wayback snapshot on the record.
     const archive = opts.deps?.archive ?? archiveUrl;
     for (const [i, s] of verdicts.accepted.sources.entries()) {

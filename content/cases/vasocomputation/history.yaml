@@ -180,3 +180,10 @@
   actor: "aletheia correction writer, applied by hand: the verifier admitted two claims whose parents it had rejected (fixed in verify the same hour)"
   aiAssisted: true
   kind: content
+
+- date: 2026-09-09
+  change: "Atomicity pass (§3.2) over the 34 claims admitted from the founding essay on 2026-09-09: 12 compound claim(s) split into 21 atomic claim(s) and marked rejected (VASO-C038 → VASO-C075+VASO-C076; VASO-C042 → VASO-C077; VASO-C049 → VASO-C078; VASO-C053 → VASO-C079+VASO-C080; VASO-C057 → VASO-C081+VASO-C082; VASO-C059 → VASO-C083+VASO-C084+VASO-C085+VASO-C086; VASO-C060 → VASO-C087+VASO-C088+VASO-C089; VASO-C061 → VASO-C090; VASO-C064 → VASO-C091+VASO-C092; VASO-C066 → VASO-C093+VASO-C094; VASO-C067 → VASO-C095; VASO-C074 → ); 0 evidence record(s) re-pointed at the parts."
+  reason: The Arbiter parked the intake for compound claims; the second reader judged each claim's atomicity on its own anchor and the drafter split the compound ones (protocol split-v1). Verify v3 does this at intake from now on.
+  actor: scripts/migrations/2026-09-09-split-compound.ts (reader claude-sonnet-5, splitter claude-fable-5-1; run 2026-09-09-verify-vasocomputation-052024)
+  aiAssisted: true
+  kind: content

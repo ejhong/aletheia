@@ -169,6 +169,8 @@ const draftReply = (over: Partial<DraftReply> = {}): DraftReply => ({
       sourceAnchor: { sourceRef: "S1", locator: "Results", quote: "completely disintegrated the granite" },
       parentClaimRefs: [],
       dependsOnClaimRefs: [],
+      alternativeToRefs: [],
+      contradictsRefs: [],
     },
     {
       provisionalId: "C2",
@@ -179,6 +181,8 @@ const draftReply = (over: Partial<DraftReply> = {}): DraftReply => ({
       sourceAnchor: null,
       parentClaimRefs: [],
       dependsOnClaimRefs: [],
+      alternativeToRefs: [],
+      contradictsRefs: [],
     },
   ],
   research: [
@@ -548,5 +552,34 @@ describe("verify: links to rejected claims", () => {
     expect(v.accepted.claims.map((k) => k.id)).toEqual(["GEO-C991"]);
     expect(v.accepted.claims[0].parentClaimIds).toEqual([]);
     expect(v.notes.some((x) => /GEO-C991: names GEO-C990 .* dropped/.test(x))).toBe(true);
+  });
+});
+
+describe("verify v3: atomicity", () => {
+  it("a compound claim is split by the drafter, each part judged on the same anchor, and evidence re-pointed", async () => {
+    const { judgeProposal } = await import("../pipeline/verify.ts");
+    const c = geo();
+    const src = c.sources.find((s) => s.url)!;
+    const compound = {
+      id: "GEO-C990", statement: "Salt is halite and it re-forms within two years of cleaning.", theme: Object.keys(c.record.themes)[0], rung: "observation", claimType: null,
+      sourceAnchor: { sourceId: src.id, locator: "p. 1", quote: "twelve words that certainly do occur in this text" },
+      parentClaimIds: [], dependsOnClaimIds: [], alternativeToClaimIds: [], contradictsClaimIds: [], reviewState: "ai_extracted", origin: { ref: "test", extractedBy: "m", runId: "r", date: "2026-09-09" },
+    };
+    const evidence = {
+      id: "GEO-E990", title: "cites the compound claim", sourceId: src.id, claimIds: ["GEO-C990"], direction: "supports", strength: "weak",
+      sourceStatement: 'The page says "twelve words that certainly do occur in this text" here.', exactLocator: "p. 1", limitations: [], reviewState: "ai_extracted", origin: { ref: "test", extractedBy: "m", runId: "r", date: "2026-09-09" },
+    };
+    const proposal = { runId: "2026-09-09-draft-megalithic-casting-000003", case: c.record.slug, report: null, date: "2026-09-09", model: "m", promptVersion: "draft-v5", basis: { ledgerHash: c.ledgerHash }, rationale: "test",
+      adds: { sources: [], evidence: [evidence], claims: [compound], research: [], images: [] }, corrections: [], dispositions: [], edition: null } as never;
+    const texts = new Map([[src.url!, { url: src.url!, ok: true, status: 200, contentType: "text/html", text: "… twelve words that certainly do occur in this text …" }]]);
+    const yes = { quoteInContext: true, statementSupported: true, locatorSupported: true, directionRight: true, independenceNoted: true, relevant: true, atomic: true, reason: "fine" };
+    const judge = async (record: unknown) => ((record as { statement?: string }).statement?.includes(" and ") ? { ...yes, atomic: false, reason: "two propositions" } : yes);
+    const split = async (statement: string) => statement.split(" and ").map((s) => s.replace(/\.$/, "") + ".");
+    const v = await judgeProposal(proposal, c, texts, new Map(), judge, { runId: "r", verb: "verify", case: c.record.slug }, { model: "reader", date: "2026-09-09" }, split);
+    expect(v.rejected.map((r) => r.id)).toEqual(["GEO-C990"]);
+    expect(v.rejected[0].reason).toMatch(/not atomic .* split into GEO-C\d+, GEO-C\d+/);
+    expect(v.accepted.claims.map((k) => k.statement)).toEqual(["Salt is halite.", "it re-forms within two years of cleaning."]);
+    expect(v.accepted.claims.every((k) => k.sourceAnchor?.quote === compound.sourceAnchor.quote)).toBe(true);
+    expect(v.accepted.evidence[0].claimIds).toEqual(v.accepted.claims.map((k) => k.id)); // re-pointed from the compound to its parts
   });
 });

@@ -7,6 +7,7 @@ import { findCase } from "../domain/load.ts";
 import type { LoadedCase } from "../domain/schema.ts";
 import { MODELS } from "../../scripts/lib/models.mjs";
 import { pdfText } from "./fetch.ts";
+import { appendYamlItems } from "./ledger-write.ts";
 import { defaultLister, openAlexSearch, resolveReferences, type Reference, type ReferenceLister, type Resolved, type Searcher } from "./references.ts";
 import { closeRun, openRun, writeWorkingFile, type RunOutcome } from "./store.ts";
 
@@ -39,8 +40,18 @@ export interface InboxItem {
   text: string;
   pages?: number;
   supplier: string;
+  /** The document's own title: the sidecar's `title`, else its first heading. */
+  title: string;
   /** The ledger source this document is, when its title matches one: its propositions may anchor claims. */
   ledgerSource?: string;
+  /** The narrative input this document was registered as (sidecar `role: founding_narrative | founding_research`). */
+  registeredAs?: string;
+}
+
+/** The document's title: the sidecar's `title`, else the first substantial line after the page marker. */
+export function titleOf(meta: Record<string, unknown>, text: string): string {
+  if (typeof meta.title === "string" && meta.title.trim()) return meta.title.trim();
+  return text.replace(/^\[p\. 1\]\s*/, "").split("\n").find((l) => l.trim().length > 8)?.trim().slice(0, 200) ?? "";
 }
 
 export function parseFrontMatter(text: string): { meta: Record<string, unknown>; body: string } {
@@ -144,14 +155,14 @@ export async function readInbox(caseDir: string, root = process.cwd()): Promise<
       left.push({ name, reason: "no statement of provenance: add front matter (or a sidecar note of the same name) with `editor:` for your own work, `published:` with the URL where it is public, or `from:` and `permission:` for supplied material" });
       continue;
     }
-    items.push({ file, sidecar, name, kind, meta, text: body.length > DOC_CAP ? body.slice(0, DOC_CAP) + `\n\n[truncated at ${DOC_CAP} characters of ${body.length}]` : body, pages, supplier: supplier ?? "the founder (note in the inbox)" });
+    items.push({ file, sidecar, name, kind, meta, text: body.length > DOC_CAP ? body.slice(0, DOC_CAP) + `\n\n[truncated at ${DOC_CAP} characters of ${body.length}]` : body, pages, supplier: supplier ?? "the founder (note in the inbox)", title: titleOf(meta, body) });
   }
   return { items, left };
 }
 
 /** The ledger source a document is, by its title (the first heading or the sidecar's title) — or null. */
 export function ledgerSourceOf(item: Pick<InboxItem, "text" | "meta">, sources: { id: string; title: string }[]): string | null {
-  const title = typeof item.meta.title === "string" ? item.meta.title : item.text.replace(/^\[p\. 1\]\s*/, "").split("\n").find((l) => l.trim().length > 8)?.trim() ?? "";
+  const title = titleOf(item.meta, item.text);
   if (title.length < 8) return null;
   let best: { id: string; score: number } | null = null;
   for (const s of sources) {
@@ -172,6 +183,8 @@ export function composeReport(slug: string, runId: string, date: string, items: 
     parts.push(`## ${it.kind}: ${it.name}`, ``, `Supplied by ${it.supplier}${it.pages ? `; PDF, ${it.pages} pages` : ""}${typeof it.meta.provenance === "string" ? `; provenance: ${it.meta.provenance}` : ""}.`, ``);
     if (it.ledgerSource) {
       parts.push(`THIS DOCUMENT IS THE LEDGER'S SOURCE ${it.ledgerSource}. Its propositions may be proposed as claims anchored to ${it.ledgerSource} — one proposition each, a verbatim quote from the text below, and the \`[p. N]\` page as the locator — and what it states may enter as evidence records on ${it.ledgerSource}, direction and strength honest to what kind of source it is. The verifier reads this same text for ${it.ledgerSource}.`, ``);
+    } else if (it.kind === "document" && typeof it.meta.editor === "string") {
+      parts.push(`THIS DOCUMENT IS NEW TO THE LEDGER AND SUPPLIED BY ITS AUTHOR (${it.meta.editor}). Propose it as a Source record (title "${it.title}", author, date, sourceType, an identifier naming where it is published and how it was written), and propose its propositions as claims anchored to that provisional source — one proposition each, a verbatim quote from the text below, the \`[p. N]\` page as the locator. The verifier reads this same text for that source.${it.registeredAs ? ` It is also registered as founding input ${it.registeredAs}: the edition drafter reads it for framing and voice.` : ""}`, ``);
     }
     if (it.kind === "commentary") parts.push(`The supplier's words, verbatim — the authoritative editorial statement:`, ``);
     parts.push(it.text.trim(), ``);
@@ -205,13 +218,41 @@ export async function runInbox(caseKey: string, opts: InboxOptions = {}): Promis
   const now = opts.deps?.now ?? (() => new Date());
   const loaded = findCase(caseKey, opts.deps?.cases?.());
   const { items, left } = await readInbox(loaded.dir, root);
+  const notesOut: string[] = [];
+  const run = openRun("inbox", loaded.record.slug, { model: MODELS.reader.model, promptVersion: "references-v1" }, { now: now(), root });
+  const { runId, date } = run;
   for (const it of items) {
     if (it.kind !== "document") continue;
     const id = ledgerSourceOf(it, loaded.sources);
     if (id) it.ledgerSource = id;
   }
-  const run = openRun("inbox", loaded.record.slug, { model: MODELS.reader.model, promptVersion: "references-v1" }, { now: now(), root });
-  const { runId, date } = run;
+  // A document the sidecar declares a founding input is registered as one: committed beside the case's
+  // other originals with its text extraction, and added to the inputs manifest — unless already there.
+  const registered: string[] = [];
+  for (const it of items) {
+    const role = it.meta.role;
+    if (it.kind !== "document" || (role !== "founding_narrative" && role !== "founding_research")) continue;
+    const already = loaded.narrativeInputs.find((n) => path.basename(n.file) === path.basename(it.file) || (it.title && n.title.toLowerCase() === it.title.toLowerCase()));
+    if (already) {
+      it.registeredAs = already.id;
+      continue;
+    }
+    if (opts.dryRun) continue;
+    const rel = path.join("research", loaded.dir, path.basename(it.file));
+    const dest = path.join(root, rel);
+    fs.mkdirSync(path.dirname(dest), { recursive: true });
+    if (!fs.existsSync(dest)) fs.copyFileSync(it.file, dest);
+    fs.writeFileSync(`${dest}.txt`, `[Text extraction of the PDF by the pipeline (pdfjs), ${date}; ${it.pages ?? "?"} pages; page markers [p. N]. The PDF beside this file is the original.]\n\n${it.text}`);
+    const n = Math.max(0, ...loaded.narrativeInputs.map((x) => Number(x.id.match(/-IN(\d+)$/)?.[1] ?? 0)), ...registered.map((x) => Number(x.match(/-IN(\d+)$/)?.[1] ?? 0)));
+    const id = `${loaded.record.id.split("-")[0]}-IN${String(n + 1).padStart(3, "0")}`;
+    const license = typeof it.meta.license === "string" && it.meta.license.trim() ? it.meta.license : `${it.supplier}; committed as a founding input by the supplier's direction at intake (${date}, run ${runId})`;
+    appendYamlItems(path.join(root, "content", "cases", loaded.dir, "inputs", "manifest.yaml"), [
+      { id, title: it.title, role, file: rel, origin: `Supplied through the inbox on ${date} (run ${runId}) by ${it.supplier}${typeof it.meta.provenance === "string" ? `; ${it.meta.provenance}` : ""}. Read by the pipeline from the text extraction committed beside the file.`, license },
+    ]);
+    registered.push(id);
+    it.registeredAs = id;
+    notesOut.push(`${it.name}: registered as founding input ${id} (${rel})`);
+  }
   if (items.length === 0) return { ...closeRun(run, "rested", { reason: left.length ? `nothing ready: ${left.map((l) => `${l.name} — ${l.reason}`).join("; ")}` : "the inbox holds nothing for this case" }), items: 0, left };
 
   const resolved = new Map<string, Resolved[]>();
@@ -233,7 +274,9 @@ export async function runInbox(caseKey: string, opts: InboxOptions = {}): Promis
   const manifest = items.map((it) => ({
     name: it.name,
     kind: it.kind,
+    title: it.title,
     supplier: it.supplier,
+    registeredAs: it.registeredAs ?? null,
     pages: it.pages ?? null,
     bytes: fs.statSync(it.file).size,
     sha256: crypto.createHash("sha256").update(fs.readFileSync(it.file)).digest("hex"),
@@ -258,7 +301,7 @@ export async function runInbox(caseKey: string, opts: InboxOptions = {}): Promis
   }
   const refsTotal = [...resolved.values()].flat();
   return {
-    ...closeRun(run, "completed", { reason: `${items.length} item(s) taken in; ${refsTotal.length} work(s) named, ${refsTotal.filter((r) => r.url).length} resolved to locators${left.length ? `; left in the inbox: ${left.map((l) => l.name).join(", ")}` : ""}` }),
+    ...closeRun(run, "completed", { reason: `${items.length} item(s) taken in; ${refsTotal.length} work(s) named, ${refsTotal.filter((r) => r.url).length} resolved to locators${notesOut.length ? `; ${notesOut.join("; ")}` : ""}${left.length ? `; left in the inbox: ${left.map((l) => l.name).join(", ")}` : ""}` }),
     items: items.length,
     left,
     reportFile,

@@ -95,7 +95,7 @@ export const DRAFT_SCHEMA: Record<string, unknown> = {
       items: {
         type: "object",
         additionalProperties: false,
-        required: ["provisionalId", "statement", "theme", "rung", "claimType", "sourceAnchor", "parentClaimRefs", "dependsOnClaimRefs"],
+        required: ["provisionalId", "statement", "theme", "rung", "claimType", "sourceAnchor", "parentClaimRefs", "dependsOnClaimRefs", "alternativeToRefs", "contradictsRefs"],
         properties: {
           provisionalId: { type: "string" },
           statement: { type: "string" },
@@ -116,6 +116,8 @@ export const DRAFT_SCHEMA: Record<string, unknown> = {
           },
           parentClaimRefs: { type: "array", items: { type: "string" } },
           dependsOnClaimRefs: { type: "array", items: { type: "string" } },
+          alternativeToRefs: { type: "array", items: { type: "string" } },
+          contradictsRefs: { type: "array", items: { type: "string" } },
         },
       },
     },
@@ -217,6 +219,8 @@ export interface DraftReply {
     sourceAnchor: { sourceRef: string; locator: string; quote: string } | null;
     parentClaimRefs: string[];
     dependsOnClaimRefs: string[];
+    alternativeToRefs: string[];
+    contradictsRefs: string[];
   }[];
   research: {
     provisionalId: string;
@@ -457,6 +461,11 @@ export function assembleProposal(reply: DraftReply, ctx: AssembleContext): Assem
         : undefined,
       parentClaimIds: c.parentClaimRefs.map(resolve).filter((x): x is string => Boolean(x)),
       dependsOnClaimIds: c.dependsOnClaimRefs.map(resolve).filter((x): x is string => Boolean(x)),
+      ...(() => {
+        const alt = (c.alternativeToRefs ?? []).map(resolve).filter((x): x is string => Boolean(x));
+        const con = (c.contradictsRefs ?? []).map(resolve).filter((x): x is string => Boolean(x));
+        return { ...(alt.length ? { alternativeToClaimIds: alt } : {}), ...(con.length ? { contradictsClaimIds: con } : {}) };
+      })(),
       reviewState: "ai_extracted",
       origin,
     };

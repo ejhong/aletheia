@@ -203,6 +203,14 @@ export const ClaimSchema = z
     parentClaimIds: z.array(z.string()).default([]),
     dependsOnClaimIds: z.array(z.string()).default([]),
     /**
+     * Competition made explicit (AGENTS.md §6, §3.3): claims this one is an
+     * alternative account to, and claims it contradicts. Loader-checked like
+     * parents. An edition features competing claims together and says what
+     * would decide between them.
+     */
+    alternativeToClaimIds: z.array(z.string()).optional(),
+    contradictsClaimIds: z.array(z.string()).optional(),
+    /**
      * Near-duplicate / dependent-extraction grouping: claims sharing a
      * group must not be counted as independent evidence.
      */

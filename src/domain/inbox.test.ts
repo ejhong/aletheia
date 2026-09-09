@@ -58,6 +58,32 @@ describe("inbox items", () => {
   });
 });
 
+describe("a founding-role document", () => {
+  it("is registered as a narrative input at intake, with its extraction beside the original, and told to the drafter as a new source", async () => {
+    const root = tmpRoot();
+    const cases = loadAllCases();
+    const vaso = cases.find((c) => c.record.slug === "vasocomputation")!;
+    // A case directory copy for the inputs manifest the intake appends to.
+    fs.mkdirSync(path.join(root, "content", "cases", vaso.dir, "inputs"), { recursive: true });
+    fs.copyFileSync(path.join(process.cwd(), "content", "cases", vaso.dir, "inputs", "manifest.yaml"), path.join(root, "content", "cases", vaso.dir, "inputs", "manifest.yaml"));
+    fs.writeFileSync(path.join(root, "inbox", "vasocomputation", "new-essay.pdf"), miniPdf("Knots of Existence Hypotheses. Perforator trees carry the knots."));
+    fs.writeFileSync(path.join(root, "inbox", "vasocomputation", "new-essay.md"), "---\ncase: vasocomputation\neditor: Eugene\nrole: founding_narrative\nlicense: founder's own essay, committed by direction\n---\n");
+    const r = await runInbox("vasocomputation", { root, deps: { cases: () => cases, list: async () => [], search: async () => [] } });
+    expect(r.outcome).toBe("completed");
+    expect(r.reason).toMatch(/registered as founding input VASO-IN\d+/);
+    expect(fs.existsSync(path.join(root, "research", vaso.dir, "new-essay.pdf"))).toBe(true);
+    expect(fs.readFileSync(path.join(root, "research", vaso.dir, "new-essay.pdf.txt"), "utf8")).toMatch(/Perforator trees/);
+    const manifest = parseYaml(fs.readFileSync(path.join(root, "content", "cases", vaso.dir, "inputs", "manifest.yaml"), "utf8"));
+    const added = manifest.at(-1);
+    expect(added.role).toBe("founding_narrative");
+    expect(added.file).toBe(path.join("research", vaso.dir, "new-essay.pdf"));
+    expect(added.title).toMatch(/Knots of Existence Hypotheses/);
+    const report = fs.readFileSync(r.reportFile!, "utf8");
+    expect(report).toMatch(/NEW TO THE LEDGER AND SUPPLIED BY ITS AUTHOR \(Eugene\)/);
+    expect(report).toMatch(/registered as founding input/);
+  });
+});
+
 describe("references", () => {
   it("matches by title within the year window, and keeps a locator the text already gave", async () => {
     const ref = { title: "Myofascial trigger points then and now: a historical and scientific perspective", authors: ["Shah"], year: 2015, venue: null, url: null };

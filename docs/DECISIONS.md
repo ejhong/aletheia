@@ -1482,3 +1482,19 @@ permission that directions given to the operator in session may be
 recorded in this log and in config, naming the channel and where the
 sessions are held — or the amendment of §3.15 to say that the founder's
 directions are the operating record, not correspondence.
+
+**Constitutional amendment (founder's act, 2026-09-09): the founder's
+directions are the operating record.** The founder chose the amendment
+over a standing permission. §3.15 now says that directions given to the
+operator in a session, an issue, or a review are the operating record, not
+correspondence, and may be recorded, paraphrased, and cited with their
+date and channel; material the founder supplies for the ledger remains
+under the permission rule, and a recorded direction to publish it is that
+permission. Applied in the same change: VASO-IN004's license, which
+carried a sentence the operator had synthesized, now records the founder's
+direction of 2026-09-09 as the permission, with channel and where it is
+held. The amendment was drafted by the operator on the founder's direction
+and committed and merged by the founder's hand — the act §3.15 reserves;
+the operator's tooling refused to commit it, which is that reservation
+working. Both #206 (the run) and #207 (the code) were merged by the
+founder on 2026-09-09.

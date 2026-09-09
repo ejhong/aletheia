@@ -1671,6 +1671,20 @@ veto (the founder's amendment of the same day) is what lets a chain PR
 merge over one seat's objection; without it a lone objection parks the PR
 until the founder's hand.
 
+**Reassessment of 2026-09-09, evening: subtract, then the UI pass
+(founder direction, in session).** With the loop on, the founder asked
+for the big picture against truth, beauty, simplicity and modular code,
+and judged that a UI pass is owed to surface the research and the
+automation. The assessment and the ordered plan are in docs/AUTOMATION.md
+("Where we are", "The plan, in order"): the pipeline is sound and the
+accumulation around it is not — six disabled workflows, the Maintain-era
+scripts, a second vendor transport, a 1,300-line loader, two eras of
+docs, and a case page that shows the pre-edition view beside the
+edition's. Order: subtraction first, because views are built over state
+and must not be built over two; then the case page in the reader's order
+with a record layer beneath it and one `/operations` page at site level;
+the loop keeps running meanwhile.
+
 **Subtraction, first set: the Maintain era retired (2026-09-09, on the
 founder's "begin").** Six disabled workflows, fifteen scripts, nine library
 modules, ten test files, the `/proposals` page and its domain module, and
@@ -1685,4 +1699,3 @@ three workflows and two builders, nothing else. Next in the set: the
 library modules the pipeline still imports from `scripts/lib` move into
 `src/`, superseded protocols go to `protocols/archive/`, the loader splits,
 and the Arbiter calls vendors through the pipeline's transport.
-

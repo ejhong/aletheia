@@ -392,9 +392,14 @@ export interface InboxOutcome extends RunOutcome {
  * statement of footing (front matter or sidecar), which the intake moves to
  * inbox/processed/<runId>/ and commits — that file is the correspondence.
  */
+/** Where an original goes at the end of the run: one flat folder per run, each file named by its inbox-relative path with the separators joined by `__` — the name the permission record cites as where the statement is held (the GPT seat on #236: a locator must name the file as filed). */
+export function processedName(relativeToInbox: string): string {
+  return relativeToInbox.split(path.sep).join("__");
+}
+
 export function permissionRecord(it: InboxItem, date: string, runId: string): string {
   const statement = path.basename(it.sidecar ?? it.file);
-  const held = `held at inbox/processed/${runId}/${statement}`;
+  const held = `held at inbox/processed/${runId}/${processedName(path.join(path.dirname(it.name), statement))}`;
   const drop = it.meta.founderDrop as FounderDrop | undefined;
   if (drop?.sha && !(typeof it.meta.permission === "string" && it.meta.permission.trim())) return `Permission: the founder's standing direction in the founder's words — "${drop.direction.words}" — given ${drop.direction.given} by ${drop.direction.channel}, held in config/founder.yaml; this file committed under it by ${drop.author} <${drop.email}> on ${drop.date} in commit ${drop.sha} (${drop.verified}; channel: git; held: that commit) — a recorded direction to publish, which AGENTS.md §3.15 (amendment of 2026-09-09) makes the permission; recorded at intake on ${date}, ${held}${typeof it.meta.license === "string" && it.meta.license.trim() ? `; license terms in the founder's words: "${it.meta.license.trim()}"` : ""}.`;
   const permission = typeof it.meta.permission === "string" ? it.meta.permission.trim() : "";
@@ -502,7 +507,7 @@ export async function runInbox(caseKey: string, opts: InboxOptions = {}): Promis
   fs.mkdirSync(processed, { recursive: true });
   for (const it of items) {
     for (const f of [it.file, it.sidecar].filter((x): x is string => Boolean(x))) {
-      fs.renameSync(f, path.join(processed, path.relative(path.join(root, "inbox"), f).split(path.sep).join("__")));
+      fs.renameSync(f, path.join(processed, processedName(path.relative(path.join(root, "inbox"), f))));
     }
   }
   const refsTotal = [...resolved.values()].flat();

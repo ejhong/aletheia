@@ -6,7 +6,7 @@ import {
   parseArticle,
   parseInlines,
 } from "./article.ts";
-import { adoptedAssessment, currentEdition, latestAssessment } from "./editions.ts";
+import { adoptedAssessment, caseQuestion, currentEdition, latestAssessment } from "./editions.ts";
 import { checksStale, crossModelSummary, RATIFICATION_MIN_PANEL, ratification, runStaleness, survivingObjections, latestCheckPerModel, displayAssessment, withinOneStep } from "./standing.ts";
 import { claimAnchorErrors, editionErrors, getCaseBySlug, liveClaims, loadAllCases, loadSiteImages, sourceAdmissionErrors } from "./load.ts";
 import { historyNewestFirst, lastContentUpdate, recentChanges } from "./history.ts";
@@ -81,8 +81,33 @@ describe("real content", () => {
     expect(text).not.toMatch(/harmonic research/i);
   });
 
+  /** A question-only opening (Deep Memory, 2026-09-09): the current edition adopts no assessment. */
+  const isOpening = (loaded: LoadedCase) => currentEdition(loaded).assessment === null;
+
+  it("a question-only opening features nothing, adopts nothing, derives no standing, and is its case's own first edition", () => {
+    const openings = loadAllCases().filter(isOpening);
+    expect(openings.map((c) => c.record.slug)).toEqual(["deep-memory"]);
+    for (const loaded of openings) {
+      const ed = currentEdition(loaded);
+      expect(loaded.editions).toHaveLength(1);
+      expect(ed.previous).toBeNull();
+      expect(ed.featuredClaimIds).toEqual([]);
+      expect(ed.article.length).toBeGreaterThan(40);
+      expect(loaded.claims).toEqual([]);
+      expect(loaded.assessmentRuns).toEqual([]);
+      const view = caseView(loaded);
+      expect(view.featured).toEqual([]);
+      expect(view.assessment).toBeNull();
+      expect(view.standing).toBeNull();
+      expect(displayAssessment(loaded)).toBeNull();
+      expect(adoptedAssessment(loaded)).toBeNull();
+      // The founding question stands until an edition restates it.
+      expect(caseQuestion(loaded)).toBe(loaded.record.subtitle);
+    }
+  });
+
   it("every featured claim carries a full treatment and a verdict from the adopted assessment", () => {
-    for (const loaded of loadAllCases()) {
+    for (const loaded of loadAllCases().filter((c) => !isOpening(c))) {
       const view = caseView(loaded);
       expect(view.featured.length).toBeGreaterThan(0);
       expect(view.featured.map((c) => c.claim.id)).toEqual(
@@ -108,7 +133,7 @@ describe("real content", () => {
   });
 
   it("every case's first edition is the migration, adopting a transfer that asserts nothing new", () => {
-    for (const loaded of loadAllCases()) {
+    for (const loaded of loadAllCases().filter((c) => !isOpening(c))) {
       const ed = loaded.editions[0];
       expect(ed.previous).toBeNull();
       const run = loaded.assessmentRuns.find((r) => r.runId === ed.assessment?.runId)!;
@@ -979,6 +1004,10 @@ describe("ratification governance (stage 3)", () => {
     // panel is a pipeline defect: checks are produced as a full sweep.
     for (const c of loadAllCases()) {
       const shown = displayAssessment(c);
+      if (currentEdition(c).assessment === null) {
+        expect(shown).toBeNull(); // a question-only opening has no standing to derive
+        continue;
+      }
       expect(shown).not.toBeNull();
       expect(["ratified", "contested", "unratified"]).toContain(
         shown!.ratification.status,
@@ -998,7 +1027,7 @@ describe("ratification governance (stage 3)", () => {
   });
 
   it("every case's adopted assessment carries a research priority and the dossier header", () => {
-    for (const c of loadAllCases()) {
+    for (const c of loadAllCases().filter((c) => currentEdition(c).assessment !== null)) {
       const ca = adoptedAssessment(c)!.caseAssessment;
       expect(["high", "medium", "low"]).toContain(ca.researchPriority?.level);
       expect(ca.whatIsClaimed).toBeTruthy();

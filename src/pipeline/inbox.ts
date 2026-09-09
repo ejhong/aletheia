@@ -160,8 +160,8 @@ export async function readInbox(caseDir: string, root = process.cwd()): Promise<
     // §3.15: a document that is not already public is quoted or cited only on a recorded permission — the
     // supplier's own words, which the intake keeps as the correspondence. Own work included: the footing
     // says whose it is, the permission says what may be done with it.
-    if (kind === "document" && typeof meta.published !== "string" && !(typeof meta.permission === "string" && meta.permission.trim())) {
-      left.push({ name, reason: "no permission to publish or cite: add `permission:` in your own words (what may be done with it — quoted, cited, committed as a founding input); the intake records who granted it, when, by what channel, and where the statement is held (AGENTS.md §3.15)" });
+    if (kind === "document" && typeof meta.published !== "string" && !(typeof meta.permission === "string" && meta.permission.trim() && typeof meta.granted === "string" && /^\d{4}-\d\d-\d\d$/.test(meta.granted.trim()))) {
+      left.push({ name, reason: "no dated permission to publish or cite: add `permission:` in your own words (what may be done with it — quoted, cited, committed as a founding input) and `granted:` with the date you grant it (YYYY-MM-DD); the intake records who granted it, on what date, by what channel, and where the statement is held (AGENTS.md §3.15)" });
       continue;
     }
     items.push({ file, sidecar, name, kind, meta, text: body.length > DOC_CAP ? body.slice(0, DOC_CAP) + `\n\n[truncated at ${DOC_CAP} characters of ${body.length}]` : body, pages, supplier: supplier ?? "the founder (note in the inbox)", title: titleOf(meta, body) });
@@ -251,10 +251,10 @@ export function permissionRecord(it: InboxItem, date: string, runId: string): st
   const held = `held at inbox/processed/${runId}/${statement}`;
   const permission = typeof it.meta.permission === "string" ? it.meta.permission.trim() : "";
   const grantor = typeof it.meta.editor === "string" && it.meta.editor ? `${it.meta.editor} (own work)` : typeof it.meta.from === "string" ? it.meta.from : "";
-  // The grant's own date is the statement's `granted:` (or `date:`) line; none given is said, not invented.
-  const granted = typeof it.meta.granted === "string" ? it.meta.granted : typeof it.meta.date === "string" ? it.meta.date : "";
+  // The grant's own date is the statement's `granted:` line — required at intake for anything not already public.
+  const granted = typeof it.meta.granted === "string" ? it.meta.granted.trim() : "";
   const terms = typeof it.meta.license === "string" && it.meta.license.trim() ? `; license terms in the supplier's words: "${it.meta.license.trim()}"` : "";
-  if (grantor && permission) return `Permission in the supplier's words: "${permission}" — granted by ${grantor} in the inbox statement \`${statement}\`${granted ? ` dated ${granted}` : " (the statement carries no date)"}, recorded at intake on ${date}, ${held}${terms}.`;
+  if (grantor && permission && granted) return `Permission in the supplier's words: "${permission}" — granted by ${grantor} on ${granted} in the inbox statement \`${statement}\`, recorded at intake on ${date}, ${held}${terms}.`;
   if (typeof it.meta.published === "string") return `Public at ${it.meta.published}; supplied${typeof it.meta.from === "string" ? ` by ${it.meta.from}` : ""} in the inbox statement \`${statement}\`, recorded at intake on ${date}, ${held}${terms}.`;
   throw new Error(`${it.name}: no recorded permission on which to publish it as a founding input`);
 }

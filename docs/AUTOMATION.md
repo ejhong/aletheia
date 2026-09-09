@@ -12,8 +12,9 @@ got here, including the earlier five-loop version it replaces, is in
 
 ## Where we are (reassessed 2026-09-08, evening; second case run 2026-09-09)
 
-**2026-09-09, the second case.** State, Not Scar ran the whole chain from a
-founder-supplied essay: `inbox` (the essay identified by title as the
+**2026-09-09, the second case.** (Its records are on PR #206, parked by
+the Arbiter for size; not on `main` until it merges.) State, Not Scar ran
+the whole chain from a founder-supplied essay: `inbox` (the essay identified by title as the
 ledger's own source and registered as a founding input) → `draft` (95
 proposed records) → `verify` (50 claims, 6 evidence, 5 research admitted
 against the essay's own text; 36 refused with reasons; 12 compounds split

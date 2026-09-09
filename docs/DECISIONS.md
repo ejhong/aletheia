@@ -1068,7 +1068,7 @@ measured runs average about $10 with a $30 tail. Second reader:
 is the panel's job, not the reader's. The founder's first instinct had
 been the OpenAI seat as default; on reflection the default is the house
 model, the OpenAI seat the comparison. **All of these choices live in one
-file, `config/models.yaml`** (founder direction, 2026-09-08: "all models
+file, `config/models.yaml`** (founder direction, 2026-09-08, paraphrased: all models
 chosen should be specified in one place"): house model and fallback,
 reader, research seats and default, the five panel seats with pinned
 effort, and the legacy OpenAI chat model. The verb chain, the panel table
@@ -1303,7 +1303,7 @@ one housekeeping history entry per case); Cast, Not Carved's reconsidered
 assessment and edition, written before the Engelbach URL was added, were
 re-stamped by hand with their own entry. Standing there is contested on
 five current seats; no edition is due. The scheduler's order is
-settled the same day (founder: "reports ahead in case new stuff is found"):
+settled the same day (founder direction, paraphrased: reports go ahead of reconsiderations in case new material is found):
 half-done chain → edition the ledger owes → stale panel → research pass on
 the least recently reported case → reconsideration of an unanswered
 contested standing → rest.
@@ -1396,7 +1396,10 @@ commits are gated on the loader from here. The third founding input, the
 critical research report, is extracted and read for the first time.
 
 **The second essay through the whole chain; the edition stands contested
-(2026-09-09).** Verify 061156 read *Knots of Existence Hypotheses* as the
+(2026-09-09).** (The records this entry describes are on PR #206, which
+the Arbiter's panel cannot read whole and has parked; nothing below is on
+`main` until it merges, and the standing it reports is the standing the
+loader derives from those records, not a published one.) Verify 061156 read *Knots of Existence Hypotheses* as the
 supplied text of its own source record and admitted 50 claims, 6 evidence
 records and 5 research items; 36 records were refused with reasons written
 in the dispositions. Edition 071905 (edition-v4) features the perforator
@@ -1455,4 +1458,11 @@ the run that wrote it, and a judgment under an earlier protocol is not an
 answer to the current one) and the permission record asserting a grant
 date it had not read (now: the statement's own date or "carries no date",
 with the intake date as the recording date; a `license:` line rides
-inside the record as the supplier's terms rather than replacing it).
+inside the record as the supplier's terms rather than replacing it). A
+fifth round: the founder's words from the session were quoted in a budget
+exemption and the log (now paraphrased — a session is correspondence, and
+§3.15 publishes none without a recorded permission; the older quoted
+records on `main` predate this reading and stand as they are); an undated
+permission was accepted (now: the statement must carry `granted:` with
+the date of the grant, or the document is left behind); and the log spoke
+of the run's records as landed while they sit on #206 (now said).

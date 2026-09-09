@@ -116,9 +116,8 @@ export function writeRun(run: RunRecord, root = process.cwd()): string {
 }
 
 export function writeWorkingFile(runId: string, name: string, text: string, root = process.cwd()): string {
-  const dir = runDir(runId, root);
-  fs.mkdirSync(dir, { recursive: true });
-  const file = path.join(dir, name);
+  const file = path.join(runDir(runId, root), name);
+  fs.mkdirSync(path.dirname(file), { recursive: true }); // `name` may carry a subdirectory (documents/…)
   fs.writeFileSync(file, text);
   return file;
 }

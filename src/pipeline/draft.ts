@@ -649,8 +649,8 @@ export async function runDraft(reportRunId: string, opts: DraftOptions = {}): Pr
   const root = opts.root ?? process.cwd();
   const now = opts.deps?.now ?? (() => new Date());
   const reportRun = readRuns(root).find((r) => r.runId === reportRunId);
-  if (!reportRun || reportRun.verb !== "report" || reportRun.outcome !== "completed") {
-    throw new Error(`${reportRunId} is not a completed report run`);
+  if (!reportRun || !(reportRun.verb === "report" || reportRun.verb === "inbox") || reportRun.outcome !== "completed") {
+    throw new Error(`${reportRunId} is not a completed report or inbox run`);
   }
   const reportFile = path.join(runDir(reportRunId, root), "report.md");
   const report = fs.readFileSync(reportFile, "utf8");

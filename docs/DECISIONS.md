@@ -1729,3 +1729,19 @@ importers re-pointed to the module that owns each name. No behaviour
 changed; the tests are the evidence. Next: the Arbiter calls vendors
 through the pipeline's metered transport and reports its own cost, the
 last seam of step 1; then step 2, the UI pass.
+
+**Subtraction, fourth set: one vendor transport (founder direction,
+2026-09-09, in session: "next").** The Arbiter called the five seats
+through its own unmetered path beside the pipeline's transport, so its
+cost — about a dollar or two a judgment, eight judgments on one PR today —
+was in no ledger. Its seats now go through `callSeat`, the same metered
+path a verb takes, with the spend rows written to a scratch root (the
+Arbiter judges a PR and commits nothing) and the panel's cost carried in
+the verdict blob, which the sitting's harvest copies into
+`governance/arbiter/pr-<n>.yaml`; the record schema admits it. Tokens are
+summed always, dollars only when every metered seat was priced. The
+unmetered `callVendor` had one caller and is gone. This closes step 1's
+last seam: the pipeline imports nothing from beneath itself, the loader is
+four modules, and one transport serves every model call. Step 2, the UI
+pass, is next.
+

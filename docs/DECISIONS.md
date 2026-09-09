@@ -1749,3 +1749,24 @@ last seam: the pipeline imports nothing from beneath itself, the loader is
 four modules, and one transport serves every model call. Step 2, the UI
 pass, is next.
 
+**The UI pass, first PR: the judgment and the panel stay on top, in one
+block, under one rule; a strip above says what happened lately (founder
+direction, 2026-09-09, in session).** The operator had proposed moving the
+assessment below the article; the founder said the AI's judgment and the
+panel's verdicts are the most interesting things on the page and should
+remain on top, and asked for a blurb on the latest update so the real
+current state is easy to see. Built: `LatestStrip` — the current
+edition's own rationale (first sentences, the whole under a fold), then
+the last sittings' run records in a reader's words ("admitted 50 claims,
+6 evidence, 1 sources, 5 research; 36 refused", with each run's cost),
+then the last content update; `StandingPanel` — the assessment panel and
+the cross-model panel merged: verdict, synthesis, steelman, load-bearing
+and weakest-link chips, then each seat's own verdict with its relation to
+the judgment (concurs within one step, or disputes), the split claims,
+the standing and its reason. The cross-model summary's claim-level counts
+had kept exact-label semantics after the concurrence amendment, so a
+page could show "split" beside "ratified"; `claimConcurrence` now applies
+the standing's own rule (exact, adjacent within one step, split when
+fewer than a majority are within a step). `AccountsList` shows the
+edition's accounts side by side. Run records are read by the domain
+(`src/domain/runs.ts`), the pipeline's store importing them from there.

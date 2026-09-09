@@ -3,7 +3,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArgumentLadder } from "@/src/components/ArgumentLadder";
 import { ArticleBody } from "@/src/components/ArticleBody";
-import { AssessmentPanel } from "@/src/components/AssessmentPanel";
 import { ChangeTimeline } from "@/src/components/ChangeTimeline";
 import { DossierHeader } from "@/src/components/DossierHeader";
 import { EvidenceCard } from "@/src/components/EvidenceCard";
@@ -12,11 +11,14 @@ import { SectionNav } from "@/src/components/SectionNav";
 import { LinkedRecordText } from "@/src/components/LinkedRecordText";
 import { site } from "@/src/config/site";
 import { ConjectureCard } from "@/src/components/ConjectureCard";
-import { CrossModelPanel } from "@/src/components/CrossModelPanel";
+import { AccountsList } from "@/src/components/AccountsList";
+import { LatestStrip } from "@/src/components/LatestStrip";
+import { StandingPanel } from "@/src/components/StandingPanel";
+import { caseActivity } from "@/src/domain/activity";
 import { caseCover, loadAllCases } from "@/src/domain/load";
-import { crossModelSummary, latestCheckPerModel, survivingObjections } from "@/src/domain/standing";
+import { crossModelSummary, latestCheckPerModel } from "@/src/domain/standing";
 import { historyNewestFirst, lastContentUpdate } from "@/src/domain/history";
-import { caseQuestion, questionRestatedBy } from "@/src/domain/editions";
+import { caseAccounts, caseQuestion, currentEdition, questionRestatedBy } from "@/src/domain/editions";
 import { caseView } from "@/src/domain/view";
 import { paramsOrPlaceholder } from "@/src/domain/staticExport";
 
@@ -106,51 +108,23 @@ export default async function CasePage({
       />
 
       <div className="mx-auto max-w-6xl px-5">
+        <div className="pt-8">
+          <LatestStrip activity={caseActivity(loaded)} />
+        </div>
+
         {shown ? (
-          <section id="assessment" className="pt-10 scroll-mt-28">
-            <AssessmentPanel
+          <section id="assessment" className="pt-6 scroll-mt-28">
+            <StandingPanel
               run={shown.run}
               standing={shown.ratification}
+              checks={latestCheckPerModel(loaded)}
+              summary={checks}
               claims={view.claims.map((c) => c.claim)}
             />
-            {shown.ratification.status !== "ratified" ? (
-              <p className="mt-3 border border-ochre/40 bg-ochre/8 px-4 py-2.5 font-mono text-[11px] tracking-[0.06em] text-ochre">
-                {shown.ratification.status === "contested"
-                  ? `Contested: ${shown.ratification.reason}. The disagreement is shown below, not resolved by hiding it.`
-                  : `Not yet ratified: ${shown.ratification.reason}.`}
-              </p>
-            ) : (
-              /* Ratification tolerates one dissenter — but a conclusion
-                 ships with its surviving objections attached, not
-                 sanitized away. */
-              survivingObjections(loaded, shown.run).map((o) => (
-                <p
-                  key={o.seat}
-                  className="mt-3 border border-line bg-paper px-4 py-2.5 text-[12.5px] leading-relaxed text-ink-soft"
-                >
-                  <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-ochre">
-                    surviving objection
-                  </span>{" "}
-                  — {o.seat} grades this case{" "}
-                  <span className="font-mono">{o.verdictLabel}</span>:{" "}
-                  {o.firstSentence}{" "}
-                  <Link
-                    href="/panel"
-                    className="font-mono text-[11px] text-copper underline underline-offset-2"
-                  >
-                    full reasoning →
-                  </Link>
-                </p>
-              ))
-            )}
-            {checks ? (
-              <CrossModelPanel
-                summary={checks}
-                runs={latestCheckPerModel(loaded)}
-              />
-            ) : null}
           </section>
         ) : null}
+
+        <AccountsList accounts={caseAccounts(loaded)} editionDate={currentEdition(loaded).date} />
 
         {loaded.conjectures.length > 0 ? (
           <section id="conjectures" className="pt-10 scroll-mt-28 space-y-4">

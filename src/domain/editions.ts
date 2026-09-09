@@ -1,6 +1,5 @@
 /** Editions: their order, the current one, the question and accounts as they stand, and the assessment the current edition adopts. */
 import { type AssessmentRun, type Edition, type LoadedCase } from "./schema.ts";
-import { editionErrors } from "./load.ts";
 
 /**
  * Editions in succession order: the chain through `previous`, from the

@@ -1,5 +1,5 @@
 /** History: the case changelog, what counts as housekeeping, the last content update, and the site-wide feed. */
-import { type ChangeLogEntry, type LoadedCase } from "./schema.ts";
+import { type ChangeLogEntry } from "./schema.ts";
 
 /**
  * Display-layer classification of history entries. History files are

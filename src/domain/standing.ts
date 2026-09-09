@@ -40,7 +40,7 @@ export interface Ratification {
   status: RatificationStatus;
   /** Independent models whose current judgment was counted. */
   panel: number;
-  /** How many of them agree with the draft's case verdict exactly. */
+  /** How many of them place the case verdict within one step of the draft's (AGENTS.md §3.15). */
   agreeing: number;
   /** Load-bearing claims where the panel disagrees with the draft. */
   contestedLoadBearing: string[];
@@ -332,11 +332,25 @@ export interface CrossModelSummary {
    * after these judges read it. Null when the checks are current.
    */
   staleSince: string | null;
+  /** Claims on which every seat's verdict is the displayed one. */
   exact: number;
-  /** Within one step on the graded scale (open verdicts never count as adjacent). */
+  /** Claims on which every seat is within one step of the displayed verdict, not all exactly on it. */
   adjacent: number;
+  /** Claims on which fewer than a majority of seats are within one step — the same rule that contests a load-bearing claim. */
   split: number;
   splitClaimIds: string[];
+}
+
+/** One seat's relation to the displayed verdict, by the one-step rule. */
+export function seatRelation(seat: AssessmentState, displayed: AssessmentState): "concurs" | "disputes" {
+  return withinOneStep(seat, displayed) ? "concurs" : "disputes";
+}
+
+/** How a claim's verdicts across the panel relate to the displayed one: the rule the standing uses, so a page never shows two answers. */
+export function claimConcurrence(displayed: AssessmentState, seats: AssessmentState[]): "exact" | "adjacent" | "split" {
+  if (seats.every((v) => v === displayed)) return "exact";
+  const near = seats.filter((v) => withinOneStep(v, displayed)).length;
+  return near * 2 > seats.length ? "adjacent" : "split";
 }
 
 const gradedScale: Partial<Record<AssessmentState, number>> = {
@@ -388,20 +402,10 @@ export function crossModelSummary(
       .map((ca) => ca.verdict);
     if (verdicts.length === 0) continue;
     compared++;
-    const all = [base, ...verdicts];
-    if (all.every((v) => v === base)) {
-      exact++;
-      continue;
-    }
-    const nums = all.map((v) => gradedScale[v]);
-    if (
-      nums.every((n) => n !== undefined) &&
-      Math.max(...(nums as number[])) - Math.min(...(nums as number[])) <= 1
-    ) {
-      adjacent++;
-    } else {
-      splitIds.add(claimId);
-    }
+    const relation = claimConcurrence(base, verdicts);
+    if (relation === "exact") exact++;
+    else if (relation === "adjacent") adjacent++;
+    else splitIds.add(claimId);
   }
 
   const caseVerdicts: Record<string, number> = {};

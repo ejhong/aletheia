@@ -67,15 +67,20 @@ and modular code, with the loop on. The facts first, then the plan.
    note), the article, the map of the controversy (the edition's accounts
    side by side, each with its linked claims and what would decide it),
    the ladder with credibility and diagnosticity explained in place,
-   evidence symmetric, what would change our mind, the research agenda.
-   The record layer sits beneath, one component per concept: the runs on
-   this case (verb, date, cost, outcome), what was proposed and what was
-   refused and why, the panel's five words, the review notes, the history.
+   evidence symmetric, what would change our mind, the research agenda —
+   except that the judgment and the panel stay on top, merged into one
+   block computed by one rule, because what the AI thinks and what the
+   panel thinks is the most interesting thing on the page (founder
+   direction, 2026-09-09, in session), with a strip above them saying
+   what the case has been through lately.
+   The record layer sits beneath, one component per concept: what was
+   proposed and what was refused and why, the review notes, the history.
    At site level, one `/operations` page replaces `/panel` and
    `/proposals`: the operation state, spend against the caps, the
    schedule and the next choice, recent sittings, Arbiter verdicts, open
-   review notes. The assessment panel above the article, the cross-model
-   panel and the conjecture cards go. AGENTS.md §7 is the brief: no
+   review notes. The assessment panel and the cross-model panel go as
+   separate things — their content lives in the one block — and the
+   conjecture cards go. AGENTS.md §7 is the brief: no
    clutter, no unlabelled scores, terms explained where they appear,
    mobile first.
 3. **The loop keeps running meanwhile** and does the crunch on its own:

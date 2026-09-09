@@ -123,18 +123,7 @@ export function writeWorkingFile(runId: string, name: string, text: string, root
 }
 
 /** Every run record under proposals/, oldest first. Directories without run.yaml are ignored. */
-export function readRuns(root = process.cwd()): RunRecord[] {
-  const dir = proposalsDir(root);
-  if (!fs.existsSync(dir)) return [];
-  const runs: RunRecord[] = [];
-  for (const name of fs.readdirSync(dir)) {
-    const f = path.join(dir, name, "run.yaml");
-    if (!fs.existsSync(f)) continue;
-    const parsed = RunRecordSchema.safeParse(parseYaml(fs.readFileSync(f, "utf8")));
-    if (parsed.success) runs.push(parsed.data);
-  }
-  return runs.sort((a, b) => a.date.localeCompare(b.date) || a.runId.localeCompare(b.runId));
-}
+export { readRuns } from "../domain/runs.ts";
 
 export function readProposal(runId: string, root = process.cwd()): Proposal | null {
   const f = path.join(runDir(runId, root), "proposal.yaml");

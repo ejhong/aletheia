@@ -17,6 +17,7 @@ import { getCaseBySlug } from "../../src/domain/load.ts";
 import { appendHistory, appendRecords, setField } from "../../src/pipeline/ledger-write.ts";
 import { defaultJudge, defaultSplitter, nextClaimId, suppliedTexts } from "../../src/pipeline/verify.ts";
 import { newRunId } from "../../src/pipeline/store.ts";
+import { MODELS } from "../lib/models.mjs";
 
 const slug = process.argv[2] ?? "";
 const date = process.argv[3] ?? "";
@@ -53,7 +54,8 @@ for (const c of targets) {
     if (bad.length) { console.error(`${c.id} part refused (${bad.join(",")}): ${part.slice(0, 80)}`); continue; }
     const id = nextClaimId(loaded, taken);
     taken.add(id);
-    appendRecords(loaded.dir, "claims.yaml", [{ ...c, id, statement: part, origin: { ...c.origin, ref: `${c.origin.ref}; split from ${c.id} (${runId})` } }]);
+    // The part's wording is the splitter's, in this run: its origin says so and points back at the compound.
+    appendRecords(loaded.dir, "claims.yaml", [{ ...c, id, statement: part, origin: { ref: `split of ${c.id} (${c.origin.ref})`, extractedBy: MODELS.house.model, runId, date } }]);
     kept.push(id);
     added.push({ id, from: c.id, statement: part });
   }
@@ -85,10 +87,28 @@ const evFile = path.join("content", "cases", loaded.dir, "evidence.yaml");
 const evidence = parseYaml(fs.readFileSync(evFile, "utf8")) as { id: string; claimIds: string[] }[];
 const byCompound = new Map(rejected.map((r) => [r.id, r.parts]));
 let repointed = 0;
+// Evidence that cited a compound is judged against each part and cites only the parts it bears on
+// (§3.2: evidence for one proposition must not silently count for the others).
 for (const e of evidence) {
   if (!e.claimIds.some((id) => byCompound.has(id))) continue;
-  const next = [...new Set(e.claimIds.flatMap((id) => byCompound.get(id) ?? [id]))];
-  setField(evFile, e.id, "claimIds", e.claimIds, next);
+  const kept: string[] = [];
+  for (const id of e.claimIds) {
+    const parts = byCompound.get(id);
+    if (!parts) {
+      kept.push(id);
+      continue;
+    }
+    const compound = loaded.claims.find((c) => c.id === id);
+    const text = compound?.sourceAnchor?.sourceId ? texts.get(compound.sourceAnchor.sourceId)?.text : undefined;
+    for (const pid of parts) {
+      const part = added.find((a) => a.id === pid);
+      if (!part || !text) continue;
+      const v = await defaultJudge({ ...e, claimIds: [pid] }, text, `Case question: ${loaded.record.subtitle}. The compound claim ${id} this record cited was split; judge whether the record bears on this one part — ${pid}: ${part.statement}`, meter);
+      if (v.relevant === false) continue;
+      kept.push(pid);
+    }
+  }
+  setField(evFile, e.id, "claimIds", e.claimIds, [...new Set(kept)]);
   repointed++;
 }
 if (rejected.length) {

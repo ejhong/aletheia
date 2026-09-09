@@ -1650,3 +1650,23 @@ addressed: yes — it is an open issue until it is, and the queue is
 founder's direction; the AGENTS.md sentence committed by the founder's
 hand.
 
+**The automation is on (founder direction, 2026-09-09, in session).** The
+chain's first run in CI (#214) did what the design says: chose the
+edition State, Not Scar was owed, ran it for $4.23 under edition protocol
+v5 (judgment unchanged; the three accounts named for the verifier),
+committed, opened the PR, was judged 5 of 5 by the panel — parked only by
+the weekly content-merge throttle, which the day's fourteen hand-merged
+landings had spent — and was merged by the founder. The founder chose to
+turn the loop on rather than rehearse for a week: the cron is uncommented
+(weekly, Monday 06:17 UTC, three budgeted choices a sitting),
+`governance/operation.yaml` says live, and the throttle's epoch is moved
+past the construction day so the autonomous lane starts with a clear
+window. What bounds the spend is `config/budget.yaml`: $60 a day and $400
+a month through 2026-10-31, $30 and $150 after; a sitting is about $30 and
+a weekly cadence about $130 a month during the crunch, falling as quiet
+cases back off to 14, 28, 56 and 90 days. What has not yet run in CI: a
+check, a report, a draft, a verify — each has run from a terminal, and a
+step that fails ends the sitting with its reason on the PR. The narrow
+veto (the founder's amendment of the same day) is what lets a chain PR
+merge over one seat's objection; without it a lone objection parks the PR
+until the founder's hand.

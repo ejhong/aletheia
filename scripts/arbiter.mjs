@@ -183,7 +183,15 @@ const touchesContent = git(
 // messages are immutable, so this bump clears the miscount one last time.
 // Founder-directed, 2026-09-03 session ("any fixes you need to do —
 // please let's do them"), with the structural fix already in place.
-const GATE_EPOCH = Date.parse("2026-09-03T13:00:00Z");
+//
+// Epoch 4 (2026-09-09T15:00Z): the construction day of 2026-09-09 — fourteen
+// content landings, every one a chain the operator ran by hand and the
+// founder merged by hand (the supplied-source intake, the second essay,
+// two repairs, the first CI run), none carrying the trailer — had spent
+// the window to 14/10 and parked the chain's own first CI run (#214, 5/5
+// complies). Founder-directed in session on 2026-09-09, on turning the
+// automation on: the autonomous lane starts with a clear window.
+const GATE_EPOCH = Date.parse("2026-09-09T15:00:00Z");
 const since = new Date(
   Math.max(Date.now() - 7 * 86400000, GATE_EPOCH),
 ).toISOString();

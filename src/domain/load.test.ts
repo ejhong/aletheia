@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { seatKey } from "../../scripts/lib/seat-key.mjs";
+import { seatKey } from "../lib/seat-key.mjs";
 import {
   extractClaimRefs,
   extractPlateRefs,

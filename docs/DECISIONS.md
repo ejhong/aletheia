@@ -1702,3 +1702,18 @@ three workflows and two builders, nothing else. Next in the set: the
 library modules the pipeline still imports from `scripts/lib` move into
 `src/`, superseded protocols go to `protocols/archive/`, the loader splits,
 and the Arbiter calls vendors through the pipeline's transport.
+
+**Subtraction, second set (founder direction, 2026-09-09, in session:
+"next").** The eight library modules the pipeline and the Arbiter still
+shared moved from `scripts/lib/` into `src/lib/`, so the pipeline no
+longer imports from beneath itself and `scripts/` holds entry points only;
+sixteen superseded protocol versions moved to `protocols/archive/`, where
+a run's `promptVersion` still finds its text; the review-note label is
+applied as its own step after creation and its absence reported, because
+the first two notes (#217, #220) were opened without it and the runbook's
+queue command found nothing. The first set (#219) merged on the Arbiter's
+pass by auto-merge — the loop's merge step, seen working for the first
+time on the operator's own change. Next: the loader splits; the Arbiter
+calls vendors through the pipeline's metered transport and reports its
+own cost.
+

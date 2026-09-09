@@ -11,7 +11,7 @@ import {
   type RunRecord,
   type Verb,
 } from "../domain/intake.ts";
-import { hhmmssUTC, isoDate } from "../../scripts/lib/overlay-ids.mjs";
+import { hhmmssUTC, isoDate } from "../lib/overlay-ids.mjs";
 import { loadBudget } from "./budget.ts";
 import { configFile } from "./config.ts";
 import { appendYamlItems } from "./ledger-write.ts";
@@ -23,7 +23,7 @@ import { spendFor, sumCost, type Meter } from "./spend.ts";
  * record, and any working material (report.md, novelty.md); and the
  * per-case append-only dispositions.yaml. Nothing else remembers anything.
  *
- * Run ids are minted the way overlay ids are (scripts/lib/overlay-ids.mjs):
+ * Run ids are minted the way overlay ids are (src/lib/overlay-ids.mjs):
  * date, verb, case, and a UTC time — unique without a filesystem probe and
  * monotonic within a day.
  */

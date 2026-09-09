@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { hhmmssUTC, overlayRunId } from "../../scripts/lib/overlay-ids.mjs";
+import { hhmmssUTC, overlayRunId } from "../lib/overlay-ids.mjs";
 
 /**
  * These are the invariants PR #156 broke, so the tests are written as the

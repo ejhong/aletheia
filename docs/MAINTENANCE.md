@@ -74,8 +74,9 @@ constitution edit), the objection becomes an issue labeled `review-note`,
 opened by the Arbiter workflow. Nothing closes it by itself. The answer is
 a fix whose PR description says `Closes #N` — GitHub closes it on merge —
 or, when the objection is declined, a reply saying why and a manual close.
-`gh issue list --label review-note` is the queue; hand it to the operator
-("work the review notes").
+`gh issue list --label review-note` is the queue (or
+`gh issue list --search "Review note on"` — every title begins so); hand
+it to the operator ("work the review notes").
 
 **Running the chain in CI, supervised.** The workflow refuses to run while
 `governance/operation.yaml` says paused unless the dispatch says
@@ -237,7 +238,7 @@ input.
 | --- | --- |
 | Every `needs-approval` PR is parked, report says seats "cast no usable vote" | **Vendor billing.** Quorum is 4 of 5 `complies`; two dead seats park everything, by design. OpenAI: credits. xAI: the *monthly spending limit* on the team, not just credits. Restore the seat, re-run `Arbiter` on the PR. |
 | A PR is parked with a named objection | Two seats objected, or one for fabrication, confidence material, or a constitution edit. Read the reasoning in the sticky comment; revise, or the founder decides. A lone objection of the ordinary kind does not park: it is a review-note issue. |
-| A PR parked "on the rate limit" | `CONTENT_MERGES_PER_WEEK` (10, `scripts/lib/arbiter-core.mjs`) counts autonomous canon merges in the trailing week. Founder-directed work is excluded only if its **commit message** (not the PR body — squash messages are built from title + branch commits) carries `Supervised-by: <who>`. The park clears as the week rolls. |
+| A PR parked "on the rate limit" | `CONTENT_MERGES_PER_WEEK` (10, `src/lib/arbiter-core.mjs`) counts autonomous canon merges in the trailing week. Founder-directed work is excluded only if its **commit message** (not the PR body — squash messages are built from title + branch commits) carries `Supervised-by: <who>`. The park clears as the week rolls. |
 | A low-risk PR sits open and green | It should have been armed by `PR risk check` on open/push/ready. If not: is it a draft, a fork, or labeled `needs-approval`? Otherwise rebase on `main` to re-trigger. |
 | A case shows `unratified — awaiting a fresh blind check` | Expected after any canon change or reconsideration. The next sitting's check re-panels it. |
 | A case shows `contested` | Working as designed. The next sitting on that case writes the reconsideration edition and then a fresh check; a case still contested afterwards is a standoff and stays displayed until its ledger moves. |

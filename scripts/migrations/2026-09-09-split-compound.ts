@@ -17,7 +17,7 @@ import { getCaseBySlug } from "../../src/domain/load.ts";
 import { appendHistory, appendRecords, setField } from "../../src/pipeline/ledger-write.ts";
 import { asSplit, defaultJudge, defaultSplitter, nextClaimId, suppliedTexts } from "../../src/pipeline/verify.ts";
 import { newRunId } from "../../src/pipeline/store.ts";
-import { MODELS } from "../lib/models.mjs";
+import { MODELS } from "../../src/lib/models.mjs";
 
 const slug = process.argv[2] ?? "";
 const date = process.argv[3] ?? "";

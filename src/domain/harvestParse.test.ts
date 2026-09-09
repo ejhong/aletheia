@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parseLegacyArbiterComment } from "../../scripts/lib/harvest-parse.mjs";
+import { parseLegacyArbiterComment } from "../lib/harvest-parse.mjs";
 
 /** Trimmed from the real pre-blob report format the first arbiter posted. */
 const LEGACY = `<!-- aletheia-arbiter -->

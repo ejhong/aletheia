@@ -275,6 +275,10 @@ rules the constitution does not make obvious, and cites §3 for the method
 rather than paraphrasing it. A protocol changes only by a PR that attaches
 test evidence.
 
+Superseded versions live under `protocols/archive/`; the loader reads the
+top level only, and a run's `promptVersion` names the file it used, so the
+text behind any recorded run is still in the tree.
+
 | Protocol | Inherits | Non-obvious rules it carries |
 | --- | --- | --- |
 | `report` | the missing-evidence audit prompts (`research/`); the lab's `case-research-report-v1` | state actual coverage, never claim saturation; distinguish opened from snippet from inaccessible; prior failed retrievals are not findings of absence; look beyond the incumbent's framing |
@@ -437,6 +441,14 @@ chain's own sittings.
   choice is an inbox with items, which the retired Inbox response workflow
   used to trigger on push. Earlier artifacts under `proposals/` (watch
   runs, agenda scores, the promotions ledger) stay as history.
+- **2026-09-09 — the second set.** The eight library modules the pipeline
+  and the Arbiter still shared moved from `scripts/lib/` to `src/lib/`
+  (the roster reader, the id stamper, the vendor table, the legacy chat
+  helper, the citation checker, the seat key, the harvest parser, the
+  Arbiter's core): the pipeline no longer imports from beneath itself, and
+  `scripts/` holds only entry points. Sixteen superseded protocol versions
+  moved to `protocols/archive/`. The review-note label is applied as its
+  own step, after the first two notes were opened without it.
 
 ## Presentation, last
 

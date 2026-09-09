@@ -11,7 +11,9 @@
  *   node scripts/review-notes.mjs --report arbiter-report.md --pr <number> [--dry-run]
  *
  * Idempotent: an issue whose title names the same PR and seat is not
- * opened twice. Needs `gh` with a token that may write issues.
+ * opened twice. Needs `gh` with a token that may write issues. The label
+ * is applied after creation and its absence reported; the title always
+ * begins "Review note on #<pr>", so the queue can be found without it.
  */
 import { execFileSync } from "node:child_process";
 import fs from "node:fs";
@@ -88,7 +90,17 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       console.log(`would open: ${title}`);
       continue;
     }
-    const url = gh("issue", "create", "--title", title, "--label", "review-note", "--body", issueBody(pr, note, promptVersion));
+    const url = gh("issue", "create", "--title", title, "--body", issueBody(pr, note, promptVersion));
     console.log(`opened ${url}: ${title}`);
+    // The label is the queue (`gh issue list --label review-note`); the first two notes were created without it, so it is
+    // applied as its own step and its absence is said aloud rather than assumed.
+    const number = url.match(/\/issues\/(\d+)/)?.[1];
+    try {
+      if (!number) throw new Error("no issue number in the URL");
+      gh("issue", "edit", number, "--add-label", "review-note");
+      console.log(`labeled #${number} review-note`);
+    } catch (e) {
+      console.log(`::warning::could not label #${number ?? "?"} review-note (${String(e).split("\n")[0]}); find it by title: "Review note on #${pr}"`);
+    }
   }
 }

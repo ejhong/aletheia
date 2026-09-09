@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { snapshotFrom } from "../pipeline/archive.ts";
 import { retrievalTargets } from "../pipeline/draft.ts";
 import { doiFromUrl, doisInText, looksLikeWall, oaCandidates, pdfText, retrieve } from "../pipeline/fetch.ts";
-import { noticeNote } from "../../scripts/lib/citation-check.mjs";
+import { noticeNote } from "../lib/citation-check.mjs";
 
 /** A one-page PDF built by hand, so the extractor is tested without a fixture file. */
 function miniPdf(text: string): Uint8Array {

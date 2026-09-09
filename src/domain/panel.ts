@@ -8,7 +8,7 @@ import {
   type Ratification,
 } from "./load.ts";
 import { loadArbiterRecords } from "./governance.ts";
-import { seatKey } from "../../scripts/lib/seat-key.mjs";
+import { seatKey } from "../lib/seat-key.mjs";
 import { site } from "../config/site";
 import type { AssessmentRun, AssessmentState } from "./schema.ts";
 

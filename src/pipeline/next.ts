@@ -2,7 +2,7 @@ import { saturation } from "../domain/intake.ts";
 import type { RunRecord } from "../domain/intake.ts";
 import { checksStale, loadAllCases } from "../domain/load.ts";
 import type { LoadedCase } from "../domain/schema.ts";
-import { MODELS } from "../../scripts/lib/models.mjs";
+import { MODELS } from "../lib/models.mjs";
 import { runCheck } from "./check.ts";
 import { runInbox } from "./inbox.ts";
 import { runDraft } from "./draft.ts";

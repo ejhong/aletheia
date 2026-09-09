@@ -5,7 +5,7 @@ import { parse as parseYaml } from "yaml";
 import { describe, expect, it } from "vitest";
 import { loadAllCases } from "./load.ts";
 import { execFileSync } from "node:child_process";
-import { composeReport, detectType, founderDrop, parseFrontMatter, permissionRecord, readInbox, runInbox, supplierOf, type CommitVerifier } from "../pipeline/inbox.ts";
+import { composeReport, detectType, founderDrop, htmlText, parseFrontMatter, permissionRecord, readInbox, runInbox, supplierOf, type CommitVerifier } from "../pipeline/inbox.ts";
 import { bestMatch, resolveReferences } from "../pipeline/references.ts";
 import { readRuns } from "../pipeline/store.ts";
 
@@ -198,5 +198,44 @@ describe("the inbox verb", () => {
     expect(fs.existsSync(path.join(root, "inbox", "vasocomputation", "orphan.pdf"))).toBe(true); // left, with its reason
     expect(fs.readdirSync(path.join(root, "inbox", "processed", real.runId)).sort()).toEqual(["vasocomputation__essay.md", "vasocomputation__essay.pdf", "vasocomputation__note.md"]);
     expect(readRuns(root).find((r) => r.runId === real.runId)?.verb).toBe("inbox");
+  });
+});
+
+describe("an HTML page in the inbox", () => {
+  it("is a document read with its headings kept as section markers, its statement in a sidecar note, and told to the drafter with the section as its locator", async () => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "aletheia-inbox-html-"));
+    fs.mkdirSync(path.join(root, "inbox", "deep-memory"), { recursive: true });
+    fs.writeFileSync(
+      path.join(root, "inbox", "deep-memory", "page.html"),
+      `<!doctype html><html><head><title>Deep Memory</title><style>h2{color:red}</style></head><body><script>var x = 1;</script><h1 class="t">Bird-men, <em>handbags</em> and the navel</h1><p>Distant places. Familiar forms.</p><h2 id="a">The handbags</h2><p>The comparison joins the three arched forms on Pillar 43.</p></body></html>`,
+    );
+    fs.writeFileSync(path.join(root, "inbox", "deep-memory", "page.md"), "---\ncase: deep-memory\neditor: Eugene Jhong\npublished: https://example.test/page.html\nrole: founding_narrative\ntitle: Bird-men, handbags and the navel of the world\n---\n");
+    fs.writeFileSync(path.join(root, "inbox", "deep-memory", "bare.html"), "<html><body><h2>Nobody said whose</h2><p>A page without a statement.</p></body></html>");
+    fs.writeFileSync(path.join(root, "inbox", "deep-memory", "blank.html"), "<html><body><h2>Only a heading</h2></body></html>");
+    fs.writeFileSync(path.join(root, "inbox", "deep-memory", "blank.md"), "---\ncase: deep-memory\neditor: Eugene Jhong\npublished: https://example.test/blank.html\n---\n");
+    const { items, left } = await readInbox("deep-memory", root);
+    expect(items.map((i) => i.name)).toEqual(["deep-memory/page.html"]);
+    const page = items[0];
+    expect(page.kind).toBe("document");
+    expect(page.sidecar).toMatch(/page\.md$/);
+    expect(page.pages).toBeUndefined();
+    expect(page.title).toBe("Bird-men, handbags and the navel of the world");
+    expect(page.supplier).toBe("Eugene Jhong (own work)");
+    expect(page.text).toContain("[§ Bird-men, handbags and the navel]\n\nDistant places. Familiar forms.");
+    expect(page.text).toContain("[§ The handbags]\n\nThe comparison joins the three arched forms on Pillar 43.");
+    expect(page.text).not.toMatch(/<[a-z]|var x|color:red/);
+    expect(left).toEqual([
+      { name: "deep-memory/bare.html", reason: expect.stringMatching(/no statement of provenance/) },
+      { name: "deep-memory/blank.html", reason: "HTML page has no text" },
+    ]);
+    const report = composeReport("deep-memory", "r", "2026-09-09", [page], new Map());
+    expect(report).toMatch(/SUPPLIED BY ITS AUTHOR \(Eugene Jhong\).*the `\[§ …\]` section heading as the locator/);
+    expect(report).not.toMatch(/\[p\. N\]/);
+    // A plain text carries no markers, and is not told to cite one (the GPT seat on #235).
+    const note = { ...page, file: path.join(root, "inbox", "deep-memory", "register.txt"), name: "deep-memory/register.txt", sidecar: undefined, text: "[{\"id\": \"myths\"}]", title: "Register" };
+    const textReport = composeReport("deep-memory", "r", "2026-09-09", [note], new Map());
+    expect(textReport).toMatch(/the heading or entry the text itself carries at that point as the locator \(the text has no page or section markers\)/);
+    expect(textReport).not.toMatch(/\[§ …\]|\[p\. N\]/);
+    expect(htmlText("<h3>A &amp; B</h3><p>x &lt; y</p>")).toBe("[§ A & B]\n\nx < y");
   });
 });

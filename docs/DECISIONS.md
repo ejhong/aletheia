@@ -1437,4 +1437,14 @@ line in the supplier's own words — own work included — and the record
 quotes it with who granted it, on what date, by what channel, and where
 the statement is held: the sidecar or front matter the intake commits
 under `inbox/processed/`). VASO-IN004's license predates that rule and
-carries the synthesized sentence; the founder's words replace it.
+carries the synthesized sentence; the founder's words replace it. A third
+round found two more: a supplied document was identified as a ledger source
+on a near title alone (now: an exact title identifies; a near title only
+with the year and, where the record names authors, an author — the basis is
+written on the manifest and told to the drafter, and the verifier's
+fallback by title is exact); and a split part inherited the compound's
+dependencies, alternatives and contradictions (now: a part keeps its
+parents — its place in the ladder — and its anchor, and the compound's
+relations are dropped and named, each part's own to propose; the
+migration's fan-out of such links on the ledger was dropped the same way by
+`2026-09-09-links-by-part.ts`, its history entry naming each one).

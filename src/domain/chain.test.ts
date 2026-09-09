@@ -563,7 +563,7 @@ describe("verify v3: atomicity", () => {
     const compound = {
       id: "GEO-C990", statement: "Salt is halite and it re-forms within two years of cleaning.", theme: Object.keys(c.record.themes)[0], rung: "observation", claimType: null,
       sourceAnchor: { sourceId: src.id, locator: "p. 1", quote: "twelve words that certainly do occur in this text" },
-      parentClaimIds: [], dependsOnClaimIds: [], alternativeToClaimIds: [], contradictsClaimIds: [], reviewState: "ai_extracted", origin: { ref: "test", extractedBy: "m", runId: "r", date: "2026-09-09" },
+      parentClaimIds: [], dependsOnClaimIds: [c.claims[0].id], alternativeToClaimIds: [], contradictsClaimIds: [], reviewState: "ai_extracted", origin: { ref: "test", extractedBy: "m", runId: "r", date: "2026-09-09" },
     };
     const evidence = {
       id: "GEO-E990", title: "cites the compound claim", sourceId: src.id, claimIds: ["GEO-C990"], direction: "supports", strength: "weak",
@@ -587,6 +587,9 @@ describe("verify v3: atomicity", () => {
     expect(v.accepted.claims.every((k) => k.sourceAnchor?.quote === compound.sourceAnchor.quote)).toBe(true);
     // Each part's wording is the splitter's: its origin names the splitter and the verify run, and points back at the compound.
     expect(v.accepted.claims.map((k) => k.origin)).toEqual(v.accepted.claims.map(() => ({ ref: "split of GEO-C990 (test)", extractedBy: "splitter", runId: "verify-run", date: "2026-09-09" })));
+    // The compound's dependency is the compound's: the parts start without it, and the dropping is said aloud.
+    expect(v.accepted.claims.every((k) => k.dependsOnClaimIds.length === 0)).toBe(true);
+    expect(v.notes.join("\n")).toMatch(new RegExp(`GEO-C990: its relations \\(dependsOn ${c.claims[0].id}\\) were not carried to its parts`));
     // The evidence cites only the part it bears on; the part it does not is said aloud.
     expect(v.accepted.evidence[0].claimIds).toEqual([v.accepted.claims[0].id]);
     expect(v.notes.join("\n")).toMatch(/GEO-E990 does not bear on GEO-C\d+ \(part of GEO-C990\): about halite/);

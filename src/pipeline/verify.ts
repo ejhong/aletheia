@@ -3,7 +3,7 @@ import path from "node:path";
 import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
 import type { Disposition, Proposal } from "../domain/intake.ts";
 import { canonicalJson, sha256Hex } from "../domain/hash.ts";
-import { sourceKeys, textKey, titleContainment, TITLE_NEAR } from "../domain/keys.ts";
+import { sameTitle, sourceKeys, textKey } from "../domain/keys.ts";
 import { claimAnchorErrors, findCase, sourceAdmissionErrors } from "../domain/load.ts";
 import type { Claim, Evidence, LoadedCase, ResearchOpportunity, Source } from "../domain/schema.ts";
 import { verifyCitations } from "../../scripts/lib/citation-check.mjs";
@@ -181,7 +181,7 @@ export function suppliedTexts(proposal: Proposal, sources: Source[], root = proc
   for (const it of manifest.items ?? []) {
     if (!it.document) continue;
     // The source the intake identified, else a source (the ledger's or this proposal's) whose title is the document's.
-    const src = sources.find((s) => it.ledgerSource && s.id === it.ledgerSource) ?? (it.title ? sources.find((s) => titleContainment(it.title!, s.title) >= TITLE_NEAR) : undefined);
+    const src = sources.find((s) => it.ledgerSource && s.id === it.ledgerSource) ?? (it.title ? sources.find((s) => sameTitle(it.title!, s.title)) : undefined);
     const file = path.join(root, "proposals", runDirOf, it.document);
     if (!src || !fs.existsSync(file)) continue;
     const text = fs.readFileSync(file, "utf8");
@@ -315,7 +315,10 @@ export async function judgeProposal(
           for (const part of parts) {
             const id = nextClaimId(loaded, [...proposal.adds.claims.map((k) => k.id), ...okClaims.map((k) => k.id), ...admitted.map((k) => k.id)]);
             // The part's wording is the splitter's, not the drafter's: its origin says so.
-            const candidate: Claim = { ...c, id, statement: part, origin: { ref: `split of ${c.id} (${c.origin.ref})`, extractedBy: splitter.model, runId: splitter.runId, date: reader.date } };
+            // A part keeps the compound's place in the ladder (its parents) and its anchor; the compound's
+            // dependencies, alternatives and contradictions are the compound's, not each part's, and are
+            // not carried over (§3.2) — said aloud below so a later pass can propose them per part.
+            const candidate: Claim = { ...c, id, statement: part, dependsOnClaimIds: [], alternativeToClaimIds: [], contradictsClaimIds: [], origin: { ref: `split of ${c.id} (${c.origin.ref})`, extractedBy: splitter.model, runId: splitter.runId, date: reader.date } };
             const v2 = await judge({ statement: part, anchor: c.sourceAnchor }, fetched.text, anchorContext, meter);
             const bad = Object.entries(v2).filter(([k, v]) => k !== "reason" && v === false && k !== "independenceNoted" && k !== "directionRight").map(([k]) => k);
             if (bad.length) {
@@ -324,6 +327,8 @@ export async function judgeProposal(
             }
             admitted.push(candidate);
           }
+          const relations = [["dependsOn", c.dependsOnClaimIds], ["alternativeTo", c.alternativeToClaimIds], ["contradicts", c.contradictsClaimIds]].filter(([, v]) => (v as string[] | undefined)?.length).map(([k, v]) => `${k} ${(v as string[]).join(", ")}`);
+          if (relations.length && admitted.length) notes.push(`${c.id}: its relations (${relations.join("; ")}) were not carried to its parts ${admitted.map((k) => k.id).join(", ")} — each part's relations are its own to propose`);
           reject(c.id, "claim", c.statement, `not atomic (${verdict.reason}); split into ${admitted.length ? admitted.map((k) => k.id).join(", ") : "nothing that survived"}`);
           if (admitted.length) {
             splitInto.set(c.id, admitted.map((k) => k.id));

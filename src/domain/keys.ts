@@ -120,6 +120,12 @@ export function textJaccard(a: string, b: string): number {
 
 /** Above this, two titles are probably the same work in two venues (watch's threshold). */
 export const TITLE_NEAR = 0.7;
+/** Two titles are the same title: equal once case, punctuation and spacing are set aside. Identification, not similarity. */
+export function sameTitle(a: string, b: string): boolean {
+  const norm = (t: string) => t.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+  const [x, y] = [norm(a), norm(b)];
+  return x.length >= 8 && x === y;
+}
 /** Above this, two propositions are probably one claim twice (extraction's threshold). */
 export const TEXT_NEAR = 0.55;
 

@@ -2,7 +2,7 @@ import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
-import { titleContainment, TITLE_NEAR } from "../domain/keys.ts";
+import { sameTitle, titleContainment, TITLE_NEAR } from "../domain/keys.ts";
 import { findCase } from "../domain/load.ts";
 import type { LoadedCase } from "../domain/schema.ts";
 import { MODELS } from "../../scripts/lib/models.mjs";
@@ -44,6 +44,8 @@ export interface InboxItem {
   title: string;
   /** The ledger source this document is, when its title matches one: its propositions may anchor claims. */
   ledgerSource?: string;
+  /** What identified it: exact title, or a near title with the year (and author) — written on the manifest and told to the drafter. */
+  ledgerSourceBasis?: string;
   /** The narrative input this document was registered as (sidecar `role: founding_narrative | founding_research`). */
   registeredAs?: string;
 }
@@ -168,15 +170,27 @@ export async function readInbox(caseDir: string, root = process.cwd()): Promise<
 }
 
 /** The ledger source a document is, by its title (the first heading or the sidecar's title) — or null. */
-export function ledgerSourceOf(item: Pick<InboxItem, "text" | "meta">, sources: { id: string; title: string }[]): string | null {
+export function ledgerSourceOf(item: Pick<InboxItem, "text" | "meta">, sources: { id: string; title: string; year?: string; authors?: string[] }[]): { id: string; basis: string } | null {
   const title = titleOf(item.meta, item.text);
   if (title.length < 8) return null;
-  let best: { id: string; score: number } | null = null;
+  // The document's own year and author, from its statement or its first page.
+  const head = [item.meta.date, item.meta.year, item.meta.provenance, item.meta.author, item.meta.editor, item.text.slice(0, 600)].filter((x) => typeof x === "string").join(" ");
+  const years = new Set(head.match(/\b(19|20)\d\d\b/g) ?? []);
+  const surnames = (s: { authors?: string[] }) => (s.authors ?? []).map((a) => a.split(/[\s,]+/).filter(Boolean).at(-1)?.toLowerCase() ?? "").filter((x) => x.length > 2);
+  let best: { id: string; basis: string; rank: number } | null = null;
   for (const s of sources) {
-    const score = titleContainment(title, s.title);
-    if (score >= TITLE_NEAR && (!best || score > best.score)) best = { id: s.id, score };
+    const exact = sameTitle(title, s.title);
+    const near = titleContainment(title, s.title) >= TITLE_NEAR;
+    if (!exact && !near) continue;
+    const yearAgrees = Boolean(s.year) && years.has(s.year!);
+    const authorAgrees = surnames(s).some((n) => head.toLowerCase().includes(n));
+    // Exact title alone identifies; a near title only with the year and, when the record names authors, an author.
+    const basis = exact ? `exact title${yearAgrees ? `, year ${s.year}` : ""}${authorAgrees ? ", author" : ""}` : yearAgrees && (authorAgrees || surnames(s).length === 0) ? `near title, year ${s.year}${authorAgrees ? ", author" : ""}` : null;
+    if (!basis) continue;
+    const rank = (exact ? 2 : 1) + (yearAgrees ? 0.5 : 0) + (authorAgrees ? 0.25 : 0);
+    if (!best || rank > best.rank) best = { id: s.id, basis, rank };
   }
-  return best?.id ?? null;
+  return best ? { id: best.id, basis: best.basis } : null;
 }
 
 /** The report the drafter reads: supplied text verbatim, then every named work with its resolved locator. */
@@ -194,7 +208,7 @@ export function composeReport(slug: string, runId: string, date: string, items: 
   for (const it of items) {
     parts.push(`## ${it.kind}: ${it.name}`, ``, `Supplied by ${it.supplier}${it.pages ? `; PDF, ${it.pages} pages` : ""}${typeof it.meta.provenance === "string" ? `; provenance: ${it.meta.provenance}` : ""}.`, ``);
     if (it.ledgerSource) {
-      parts.push(`THIS DOCUMENT IS THE LEDGER'S SOURCE ${it.ledgerSource}. Its propositions may be proposed as claims anchored to ${it.ledgerSource} — one proposition each, a verbatim quote from the text below, and the \`[p. N]\` page as the locator — and what it states may enter as evidence records on ${it.ledgerSource}, direction and strength honest to what kind of source it is. The verifier reads this same text for ${it.ledgerSource}.${registeredNote(it)}`, ``);
+      parts.push(`THIS DOCUMENT IS THE LEDGER'S SOURCE ${it.ledgerSource} (identified by ${it.ledgerSourceBasis ?? "the intake"}). Its propositions may be proposed as claims anchored to ${it.ledgerSource} — one proposition each, a verbatim quote from the text below, and the \`[p. N]\` page as the locator — and what it states may enter as evidence records on ${it.ledgerSource}, direction and strength honest to what kind of source it is. The verifier reads this same text for ${it.ledgerSource}.${registeredNote(it)}`, ``);
     } else if (it.kind === "document" && typeof it.meta.editor === "string") {
       parts.push(`THIS DOCUMENT IS NEW TO THE LEDGER AND SUPPLIED BY ITS AUTHOR (${it.meta.editor}). Propose it as a Source record (title "${it.title}", author, date, sourceType, an identifier naming where it is published and how it was written), and propose its propositions as claims anchored to that provisional source — one proposition each, a verbatim quote from the text below, the \`[p. N]\` page as the locator. The verifier reads this same text for that source.${registeredNote(it)}`, ``);
     }
@@ -252,8 +266,11 @@ export async function runInbox(caseKey: string, opts: InboxOptions = {}): Promis
   const { runId, date } = run;
   for (const it of items) {
     if (it.kind !== "document") continue;
-    const id = ledgerSourceOf(it, loaded.sources);
-    if (id) it.ledgerSource = id;
+    const match = ledgerSourceOf(it, loaded.sources);
+    if (match) {
+      it.ledgerSource = match.id;
+      it.ledgerSourceBasis = match.basis;
+    }
   }
   // A document the sidecar declares a founding input is registered as one: committed beside the case's
   // other originals with its text extraction, and added to the inputs manifest — unless already there.
@@ -311,6 +328,7 @@ export async function runInbox(caseKey: string, opts: InboxOptions = {}): Promis
     sha256: crypto.createHash("sha256").update(fs.readFileSync(it.file)).digest("hex"),
     sidecar: it.sidecar ? path.relative(path.join(root, "inbox"), it.sidecar) : null,
     ledgerSource: it.ledgerSource ?? null,
+    ledgerSourceBasis: it.ledgerSourceBasis ?? null,
     document: it.kind === "document" ? `documents/${path.basename(it.file).replace(/\.[^.]+$/, "")}.txt` : null,
     references: (resolved.get(it.name) ?? []).length,
     resolved: (resolved.get(it.name) ?? []).filter((r) => r.url).length,

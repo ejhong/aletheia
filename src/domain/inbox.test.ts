@@ -59,6 +59,8 @@ describe("inbox items", () => {
     expect(essay.sidecar).toMatch(/essay\.md$/);
     expect(essay.pages).toBe(1);
     expect(essay.text).toMatch(/^\[p\. 1\]/);
+    // The record says where the statement is held by the name the run files it under (one flat folder per run, path joined by `__`).
+    expect(permissionRecord(essay, "2026-09-09", "run")).toMatch(/held at inbox\/processed\/run\/vasocomputation__essay\.md\b/);
     expect(left).toEqual([
       { name: "vasocomputation/orphan.pdf", reason: expect.stringMatching(/no statement of provenance/) },
       { name: "vasocomputation/silent.pdf", reason: expect.stringMatching(/^no permission to publish or cite/) }, // own work, but nothing said about what may be done with it (§3.15)
@@ -132,7 +134,7 @@ describe("a founding-role document", () => {
     expect(added.title).toMatch(/Knots of Existence Hypotheses/);
     // The permission to publish is recorded as provenance (§3.15): who granted it, when, by what channel, where it is held.
     expect(added.license).toMatch(/^Permission in the supplier's words: "publish it as the case's founding input and cite it" — granted by Eugene \(own work\) on 2026-09-09 in the inbox statement `new-essay\.md`, recorded at intake on 2026-\d\d-\d\d/);
-    expect(added.license).toMatch(/held at inbox\/processed\/2026-\d\d-\d\d-inbox-vasocomputation-\d{6}\/new-essay\.md/);
+    expect(added.license).toMatch(/held at inbox\/processed\/2026-\d\d-\d\d-inbox-vasocomputation-\d{6}\/vasocomputation__new-essay\.md/); // the file as the run files it
     const report = fs.readFileSync(r.reportFile!, "utf8");
     expect(report).toMatch(/NEW TO THE LEDGER AND SUPPLIED BY ITS AUTHOR \(Eugene\)/);
     expect(report).toMatch(/registered as founding input/);

@@ -1834,3 +1834,54 @@ findings he predicted, what he said would prove him wrong, and for the
 casting case his rationale — is banked verbatim in each case's append-only
 changelog under this date, where AGENTS.md §7 (amendment of 2026-09-01)
 puts banked material: in the record, not a registry.
+
+**Deep Memory opens question-only; the inbox reads HTML (founder
+direction, 2026-09-09, in session: "and then deep memory").** The genesis
+test in docs/AUTOMATION.md ("The tests") begins. The case
+(`content/cases/deep-memory/`, DEEP-001, "Deep Memory") opens with its
+identity, the founding question in the founder's site's own words (how much
+of the resemblance between distant cultures' bird-men, handled objects,
+navel names, feathered serpents, civilising teachers and flood stories
+belongs to a shared past, and how much to the ways people make images, tell
+stories and look for connections), a summary that frames and does not
+judge, twelve themes named for the narrative's sections and the five
+investigations, an opening edition that adopts no assessment and features
+nothing (the schema's question-only opening, used for the first time, its
+basis the hashes of the empty ledger and of no inputs), and an empty ledger.
+No evidence, priority or review is invented.
+
+The founder's pages — public at ejhong.github.io/birdmen, the repository's
+own files at commit e9666a73: the home page (narrative and the five
+investigations' summaries), the revision log, the register of
+investigations, the image register, and the five study pages — are the
+founding inputs, and they enter through the inbox **by the founder's own
+drop**, not by the operator's hand. The operator first took four of them
+in on a `published:` footing (public pages, byte-identical copies with
+their md5s stated) and ran the intake three times locally (runs
+`…185436`, `…185910`, `…191337`; $0.05, $0.02, $0.05, whose spend rows
+stay in the ledger, since the bill is the bill) while the panel's GPT seat
+found, in turn, the locator instruction for plain texts (#235), the "held
+at" locator naming a statement's file by its inbox name rather than the
+name the run files it under (#236; `processedName` now names it for both
+the move and the record), a decisions entry carrying one run's counts for
+another, and then — parking alone, as a confidence-kind objection does —
+that "public at a URL" is not a recorded grant to republish the supplied
+copies, since §3.15 lets founder-supplied material enter only under the
+permission rule or a recorded direction to publish it. The copies and the
+run outputs left the change. The door that satisfies the rule already
+exists: a file the founder commits to `inbox/deep-memory/` from his GitHub
+account is taken as his drop under his standing direction
+(config/founder.yaml, PR #209), and the intake registers it as a founding
+input when a sidecar of the same name says `role: founding_narrative`
+(the home page) or `founding_research` (the rest). For this the inbox
+learned to read `.html`: tags stripped by the retrieval layer's own reducer,
+headings kept as `[§ …]` section markers the way a PDF's pages are kept as
+`[p. N]`, the statement in a sidecar as a PDF's is, the drafter told which
+marker is the locator by what the file is. Once the drop lands, the
+scheduler's choices are the intake, the draft, verify, the first assessing
+edition and the blind check — the loop's, unattended, under the caps. The
+five study pages are the second drop, for once the first edition stands, so
+the first pass is one run within the per-run cap and the second tests
+whether memory keeps the loop from re-finding what it holds. What decides
+the test: whether anchored claims and a ratifiable edition emerge from the
+verbs alone, at what source-check pass rate and cost.

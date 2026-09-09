@@ -80,18 +80,21 @@ export function CaseCard({
         </div>
         <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1.5">
           {priority ? <PriorityBadge level={priority} /> : null}
-          <Link
-            href={`/operations#${record.slug}`}
-            className="font-mono text-[10px] uppercase tracking-[0.14em] text-faint hover:text-copper"
-          >
-            {verdict
-              ? standing === "ratified"
+          {verdict ? (
+            <Link
+              href={`/operations#${record.slug}`}
+              className="font-mono text-[10px] uppercase tracking-[0.14em] text-faint hover:text-copper"
+            >
+              {standing === "ratified"
                 ? "assessment · ratified"
                 : standing === "contested"
                   ? "assessment · contested"
-                  : "AI draft · unratified"
-              : "no assessment yet"}
-          </Link>
+                  : "AI draft · unratified"}
+            </Link>
+          ) : (
+            // A question-only opening has no standing to point at on the operations page.
+            <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-faint">no assessment yet</span>
+          )}
           <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-faint">
             human review {reviewCoverage.reviewed}/{reviewCoverage.total} claims
           </span>

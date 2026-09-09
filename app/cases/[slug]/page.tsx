@@ -93,7 +93,11 @@ export default async function CasePage({
   return (
     <div>
       <SectionNav
-        sections={sections}
+        sections={sections.filter(
+          ([id]) =>
+            (id !== "assessment" || shown !== null) &&
+            (id !== "conventional" || Boolean(view.header.bestConventionalExplanation)),
+        )}
         slug={slug}
         hasStudies={loaded.studies.length > 0}
       />

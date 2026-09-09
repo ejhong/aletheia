@@ -1,12 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
-import {
-  crossModelSummary,
-  displayAssessment,
-  latestCheckPerModel,
-  loadAllCases,
-  type Ratification,
-} from "./load.ts";
+import { crossModelSummary, displayAssessment, latestCheckPerModel, type Ratification } from "./standing.ts";
+import { loadAllCases } from "./load.ts";
 import { loadArbiterRecords } from "./governance.ts";
 import { seatKey } from "../lib/seat-key.mjs";
 import { site } from "../config/site";

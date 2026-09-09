@@ -1,5 +1,6 @@
 import { saturation } from "../domain/intake.ts";
-import { currentEdition, loadAllCases } from "../domain/load.ts";
+import { currentEdition } from "../domain/editions.ts";
+import { loadAllCases } from "../domain/load.ts";
 import type { LoadedCase } from "../domain/schema.ts";
 import { caseView } from "../domain/view.ts";
 import { spendByCase } from "./spend.ts";

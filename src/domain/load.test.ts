@@ -6,30 +6,10 @@ import {
   parseArticle,
   parseInlines,
 } from "./article.ts";
-import {
-  adoptedAssessment,
-  checksStale,
-  claimAnchorErrors,
-  currentEdition,
-  editionErrors,
-  getCaseBySlug,
-  historyNewestFirst,
-  lastContentUpdate,
-  crossModelSummary,
-  RATIFICATION_MIN_PANEL,
-  ratification,
-  runStaleness,
-  survivingObjections,
-  latestCheckPerModel,
-  displayAssessment,
-  latestAssessment,
-  liveClaims,
-  loadAllCases,
-  loadSiteImages,
-  recentChanges,
-  sourceAdmissionErrors,
-  withinOneStep,
-} from "./load.ts";
+import { adoptedAssessment, currentEdition, latestAssessment } from "./editions.ts";
+import { checksStale, crossModelSummary, RATIFICATION_MIN_PANEL, ratification, runStaleness, survivingObjections, latestCheckPerModel, displayAssessment, withinOneStep } from "./standing.ts";
+import { claimAnchorErrors, editionErrors, getCaseBySlug, liveClaims, loadAllCases, loadSiteImages, sourceAdmissionErrors } from "./load.ts";
+import { historyNewestFirst, lastContentUpdate, recentChanges } from "./history.ts";
 import { assessmentHash, canonicalJson, ledgerHash, sha256Hex } from "./hash.ts";
 import { caseView, findClaimView, reviewCoverage } from "./view.ts";
 import {
@@ -1213,7 +1193,7 @@ describe("surviving objections", () => {
 
 describe("edition succession", () => {
   it("orders editions by the previous chain, not by date or filename", async () => {
-    const { orderEditions } = await import("./load.ts");
+    const { orderEditions } = await import("./editions.ts");
     const base = { date: "2026-09-08", model: "m", promptVersion: "edition-v2", rationale: "r", basis: { ledgerHash: "a".repeat(64), inputsHash: "b".repeat(64) }, assessment: null, featuredClaimIds: [], cruxOrder: [], article: "" };
     const migration = { ...base, runId: "edition-2026-09-08-migration", previous: null };
     const successor = { ...base, runId: "edition-2026-09-08-142638", previous: "edition-2026-09-08-migration" };
@@ -1237,7 +1217,7 @@ describe("edition succession", () => {
 
 describe("stale checks are set aside, not counted", () => {
   it("a hashed check for another ledger and a legacy check older than content drop out; the rest stand", async () => {
-    const { currentChecks } = await import("./load.ts");
+    const { currentChecks } = await import("./standing.ts");
     const hash = "a".repeat(64);
     const loaded = { ledgerHash: hash, history: [{ date: "2026-09-01", kind: "content" }, { date: "2026-09-02", kind: "housekeeping" }] } as never;
     const mk = (runId: string, date: string, basis?: string) => ({ runId, date, role: "check", ...(basis ? { basis: { ledgerHash: basis } } : {}) }) as never;

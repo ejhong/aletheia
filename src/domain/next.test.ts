@@ -58,7 +58,7 @@ describe("aletheia next", () => {
       expect(nextAction([contested], reported, "2026-09-20", new Set([reported[0].runId]))).toMatchObject({ case: slug, verb: "edition" });
     }
     // Among cases whose editions are current, with no runs at all, the first never-reported case is chosen for a report.
-    const { checksStale } = await import("./load.ts");
+    const { checksStale } = await import("./standing.ts");
     const settled = cases.filter((c) => c.record.slug !== "megalithic-casting" && !editionDue(c) && !checksStale(c));
     expect(settled.length).toBeGreaterThan(1);
     const n = nextAction(settled, [], "2026-09-20");
@@ -107,7 +107,7 @@ describe("aletheia next", () => {
   });
 
   it("a stale panel is re-checked after any due edition and before any report", async () => {
-    const { checksStale } = await import("./load.ts");
+    const { checksStale } = await import("./standing.ts");
     const { editionDue } = await import("../pipeline/edition.ts");
     const stale = cases.find((c) => checksStale(c) && !editionDue(c));
     if (stale) expect(nextAction([stale], [], "2026-09-20")).toMatchObject({ case: stale.record.slug, verb: "check" });

@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
 import { CaseCard } from "@/src/components/CaseCard";
-import {
-  caseCover,
-  crossModelSummary,
-  loadAllCases,
-  caseQuestion,
-} from "@/src/domain/load";
+import { caseCover, loadAllCases } from "@/src/domain/load";
+import { crossModelSummary } from "@/src/domain/standing";
+import { caseQuestion } from "@/src/domain/editions";
 import { caseView, reviewCoverage } from "@/src/domain/view";
 
 export const metadata: Metadata = { title: "Cases" };

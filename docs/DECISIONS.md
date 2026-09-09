@@ -1717,3 +1717,15 @@ time on the operator's own change. Next: the loader splits; the Arbiter
 calls vendors through the pipeline's metered transport and reports its
 own cost.
 
+**Subtraction, third set: the loader split (founder direction, 2026-09-09,
+in session: "next").** `src/domain/load.ts` carried five concerns in 1,330
+lines. It is now four modules cut at the seams the file already had —
+`load.ts` for parsing, validation and assembly; `editions.ts` for order,
+the current edition, the standing question and accounts, and the adopted
+assessment; `standing.ts` for ratification, staleness, surviving
+objections and the cross-model summary; `history.ts` for the changelog
+and the feed — each importing only what its section uses, with sixteen
+importers re-pointed to the module that owns each name. No behaviour
+changed; the tests are the evidence. Next: the Arbiter calls vendors
+through the pipeline's metered transport and reports its own cost, the
+last seam of step 1; then step 2, the UI pass.

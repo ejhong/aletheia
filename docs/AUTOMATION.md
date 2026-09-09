@@ -449,6 +449,14 @@ chain's own sittings.
   `scripts/` holds only entry points. Sixteen superseded protocol versions
   moved to `protocols/archive/`. The review-note label is applied as its
   own step, after the first two notes were opened without it.
+- **2026-09-09 — the third set.** `src/domain/load.ts` (1,330 lines, five
+  concerns) split at its own seams into `load.ts` (parsing, validation,
+  assembly — 707 lines), `editions.ts` (order, the current edition, the
+  question and accounts as they stand, the adopted assessment),
+  `standing.ts` (ratification, staleness, surviving objections, the
+  cross-model summary) and `history.ts` (the changelog, housekeeping, the
+  feed); sixteen importers re-pointed to the module that owns each name;
+  no behaviour changed and the 272 tests say so.
 
 ## Presentation, last
 

@@ -59,10 +59,25 @@ describe("tallyVerdict — the asymmetric rule", () => {
     expect(tallyVerdict(seats(["complies", "complies", "complies", "complies", "unsure"])).outcome).toBe("pass");
   });
 
-  it("a single substantiated violation parks, even against four complies", () => {
-    const t = tallyVerdict(seats(["complies", "complies", "complies", "complies", "violates"]));
-    expect(t.outcome).toBe("park");
-    expect(t.reason).toMatch(/§3.8/);
+  it("a lone objection of an ordinary kind is a review note, not a park; a vetoing kind parks alone; two objections park", () => {
+    const lone = tallyVerdict(seats(["complies", "complies", "complies", "complies", "violates"]));
+    expect(lone.outcome).toBe("pass");
+    expect(lone.notes.map((n: { seat: string }) => n.seat)).toEqual(["Seat4"]);
+    expect(lone.reason).toMatch(/one seat's objection is a review note .* Seat4 \(§3.8; other\)/);
+    for (const kind of ["fabrication", "confidence", "constitution"]) {
+      const veto = [...seats(["complies", "complies", "complies", "complies"]), validateVote("Seat4", { ...ok("violates", ["§3.15"]), paradigm: kind })];
+      const t = tallyVerdict(veto);
+      expect(t.outcome).toBe("park");
+      expect(t.reason).toMatch(new RegExp(`parks on its own: Seat4 \\(§3.15; ${kind}\\)`));
+      expect(t.notes).toEqual([]);
+    }
+    const two = tallyVerdict(seats(["complies", "complies", "complies", "violates", "violates"]));
+    expect(two.outcome).toBe("park");
+    expect(two.reason).toMatch(/2 seats find a violation/);
+    const kindOf = (v: unknown) => (v as { paradigm?: string }).paradigm;
+    expect(kindOf(validateVote("S", { ...ok("violates", ["§3.14"]), paradigm: "provenance" }))).toBe("provenance");
+    expect(kindOf(validateVote("S", { ...ok("violates", ["§3.14"]), paradigm: "nonsense" }))).toBe("other"); // an unnamed kind never vetoes by omission
+    expect(kindOf(validateVote("S", ok("complies", [])))).toBeUndefined();
   });
 
   it("two unsures park — below the compliance threshold", () => {
@@ -289,6 +304,21 @@ describe("runAccount — the run's own record, for a panel that cannot read the 
     const { text } = runAccount(Object.keys(long), (p: string) => long[p] ?? null, diffOf);
     expect(text).toMatch(/\[… article: 500\d more characters not shown\]/);
     expect(text.length).toBeLessThanOrEqual(ACCOUNT_CAP + 100);
+  });
+});
+
+describe("review notes — the wide voice", () => {
+  it("reads the notes from the arbiter's report and names each issue by PR and seat", async () => {
+    const { notesFromReport, issueTitle, issueBody } = await import("../../scripts/review-notes.mjs");
+    const note = { seat: "GPT-5.6 Sol (OpenAI)", vote: "violates", rules: ["§3.14"], paradigm: "provenance", reasoning: "The stamp names the wrong run.\nFix the origin." };
+    const report = `## Constitutional arbiter — ✅ PASS\n\n<!-- aletheia-arbiter-data ${JSON.stringify({ verdict: "pass", promptVersion: "panel-v3", seats: [note], notes: [note] })} -->`;
+    expect(notesFromReport(report)).toEqual([note]);
+    expect(notesFromReport("no data here")).toEqual([]);
+    expect(issueTitle(214, note)).toBe("Review note on #214 — GPT-5.6 Sol (OpenAI): §3.14 (provenance)");
+    const body = issueBody(214, note, "panel-v3");
+    expect(body).toMatch(/answers on the record/);
+    expect(body).toMatch(/> The stamp names the wrong run\.\n> Fix the origin\./);
+    expect(body).toMatch(/Pull request: #214/);
   });
 });
 

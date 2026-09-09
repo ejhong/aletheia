@@ -9,6 +9,16 @@ import { parse as parseYaml } from "yaml";
 
 export const VOTE_VALUES = ["complies", "violates", "unsure"];
 
+/**
+ * What kind of violation a seat found. The first three park a change on a
+ * single seat's word (AGENTS.md §3.15, founder amendment of 2026-09-09: a
+ * lone objection parks only for fabrication, exposure of confidence
+ * material, or an edit to the constitution); the rest park only when two
+ * seats object, and a lone one becomes a review note the operator answers.
+ */
+export const PARADIGMS = ["fabrication", "confidence", "constitution", "check-weakening", "provenance", "other"];
+export const VETO_PARADIGMS = new Set(["fabrication", "confidence", "constitution"]);
+
 /** Panel threshold: a change passes only with this many `complies` votes. */
 export const ARBITER_MIN_COMPLIES = 4;
 
@@ -38,33 +48,45 @@ export function validateVote(seat, reply) {
     : [];
   if (reply.vote === "violates" && rules.length === 0)
     return bad("violates without naming any rule");
-  return {
+  const vote = {
     seat,
     vote: reply.vote,
     rules,
     reasoning: reply.reasoning.trim(),
   };
+  // A violation names its kind; one that does not is "other" — recorded, answered, never a veto by omission.
+  if (reply.vote === "violates") vote.paradigm = PARADIGMS.includes(reply.paradigm) ? reply.paradigm : "other";
+  return vote;
 }
 
 /**
- * Tally the panel. The rule is asymmetric on purpose:
+ * Tally the panel: a narrow veto and a wide voice (AGENTS.md §3.15, founder
+ * amendment of 2026-09-09).
  *
- *   pass — at least ARBITER_MIN_COMPLIES seats say `complies` AND no seat
- *          says `violates`. One unsure (or one failed seat) is tolerated;
- *          a single substantiated objection is not.
- *   park — everything else, including a panel too small to reach the
- *          threshold. Parking is the safe direction: a parked change waits
- *          in public, a wrongly merged one publishes.
+ *   pass — at least ARBITER_MIN_COMPLIES seats say `complies`, no seat
+ *          finds a violation of a vetoing kind (fabrication, confidence,
+ *          constitution), and fewer than two seats find a violation of any
+ *          kind. A lone objection of another kind does not park: it is
+ *          returned in `notes`, recorded on the change as a review note the
+ *          operator answers on the record (an issue), and the change may
+ *          merge. One unsure (or one failed seat) is tolerated.
+ *   park — a vetoing violation from any seat; two or more violations of
+ *          any kind; or a panel too small to reach the threshold. Parking
+ *          is the safe direction: a parked change waits in public, a
+ *          wrongly merged one publishes.
+ *
+ * Before the amendment a single substantiated objection parked; one seat
+ * parked twelve pushes in a day against four complies each time, half of
+ * them on readings stricter than the site needs. No consequential change
+ * publishes on one model's judgment, and none is blocked on one either,
+ * except where the harm is the kind one seat may stop alone.
  *
  * Failed seats (API error, refusal, empty reply) are recorded as unsure
  * with the failure as reasoning — visible in the report, never silently
- * dropped from the denominator.
- *
- * A seat that never voted is counted like a seat that voted unsure, but it
- * is not described like one. "Only 3 of 5 affirm compliance" reads as a
- * divided panel; when two of those seats were unfunded API accounts, the
- * remedy is billing, not revision, and a report that does not say so
- * presents an operational fault as a judgment on the change.
+ * dropped from the denominator. A seat that never voted is counted like a
+ * seat that voted unsure, but it is not described like one: when the seats
+ * that did not vote were unfunded API accounts, the remedy is billing, not
+ * revision, and the report says so.
  */
 export function tallyVerdict(votes) {
   const counts = { complies: 0, violates: 0, unsure: 0, failed: 0 };
@@ -72,19 +94,18 @@ export function tallyVerdict(votes) {
     counts[v.vote]++;
     if (v.failed) counts.failed++;
   }
-  const outcome =
-    counts.complies >= ARBITER_MIN_COMPLIES && counts.violates === 0
-      ? "pass"
-      : "park";
+  const violating = votes.filter((v) => v.vote === "violates");
+  const vetoes = violating.filter((v) => VETO_PARADIGMS.has(v.paradigm));
+  const enough = counts.complies >= ARBITER_MIN_COMPLIES;
+  const outcome = enough && vetoes.length === 0 && violating.length < 2 ? "pass" : "park";
+  const notes = outcome === "pass" ? violating : [];
+  const name = (v) => `${v.seat} (${v.rules.join(", ")}${v.paradigm ? `; ${v.paradigm}` : ""})`;
   const reasons = [];
-  if (counts.violates > 0)
-    reasons.push(
-      `${counts.violates} seat(s) find a violation: ${votes
-        .filter((v) => v.vote === "violates")
-        .map((v) => `${v.seat} (${v.rules.join(", ")})`)
-        .join("; ")}`,
-    );
-  if (counts.complies < ARBITER_MIN_COMPLIES)
+  if (vetoes.length > 0)
+    reasons.push(`${vetoes.length} seat(s) find a violation that parks on its own: ${vetoes.map(name).join("; ")}`);
+  if (vetoes.length === 0 && violating.length >= 2)
+    reasons.push(`${violating.length} seats find a violation: ${violating.map(name).join("; ")}`);
+  if (!enough)
     reasons.push(
       `only ${counts.complies} of ${votes.length} seats affirm compliance (${ARBITER_MIN_COMPLIES} required)`,
     );
@@ -103,9 +124,12 @@ export function tallyVerdict(votes) {
   return {
     outcome,
     counts,
+    notes,
     reason:
       outcome === "pass"
-        ? `${counts.complies} of ${votes.length} seats affirm compliance; no seat finds a violation`
+        ? notes.length
+          ? `${counts.complies} of ${votes.length} seats affirm compliance; one seat's objection is a review note the operator answers on the record: ${notes.map(name).join("; ")}`
+          : `${counts.complies} of ${votes.length} seats affirm compliance; no seat finds a violation`
         : reasons.join("; "),
   };
 }

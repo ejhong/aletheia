@@ -69,6 +69,16 @@ node scripts/aletheia.ts next [--run] [--steps N]                 # what the led
 node scripts/aletheia.ts inbox <case> [--dry-run]                 # the founder's door as a producer: dropped items → one report for draft/verify
 ```
 
+**Review notes — the operator's queue.** When the panel passes a change
+over one seat's objection (AGENTS.md §3.15, amendment of 2026-09-09: a
+lone objection parks only for fabrication, confidence material, or a
+constitution edit), the objection becomes an issue labeled `review-note`,
+opened by the Arbiter workflow. Nothing closes it by itself. The answer is
+a fix whose PR description says `Closes #N` — GitHub closes it on merge —
+or, when the objection is declined, a reply saying why and a manual close.
+`gh issue list --label review-note` is the queue; hand it to the operator
+("work the review notes").
+
 **Running the chain in CI, supervised.** The workflow refuses to run while
 `governance/operation.yaml` says paused unless the dispatch says
 `even_if_paused`. To run one step by hand and watch it:

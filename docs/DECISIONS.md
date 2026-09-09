@@ -1363,3 +1363,34 @@ cited from an input that is not independently in the ledger. The
 scheduler's half-done rule is now per run: a report or intake no proposal
 names is drafted, however many later drafts exist. The scheduler-order
 change of the same day had missed #203's merge and rides along here.
+
+**Two essays, two doors, and how claims are chosen (founder direction,
+2026-09-09).** The PDF supplied as "the new essay" proved byte-identical to
+the case's founding essay of August 13 (VASO-IN002), with no perforator idea
+in it; the founder then placed the actual new essay, *Knots of Existence
+Hypotheses* (2026-09-08, 41 pages), under `research/vasocomputation/`. The
+founder wants both essays to serve as founding inputs and the article to
+weigh both; asked whether claims versus conjectures is necessary — it is
+not: the original essay's ideas became claims with no evidence behind them,
+graded honestly, and the new essay's should too, as competing claims — and
+asked that a claim be featured by how much its being right or wrong would
+move the case, parents over their many subclaims. Built accordingly: (1) a
+sidecar's `role: founding_narrative` registers a supplied document as a
+narrative input at intake and takes it in as a source for its propositions
+in the same drop (VASO-IN004, 39 works named, none with a title to resolve);
+the two doors are distinct on purpose — inputs shape the telling, the
+producer path puts propositions on the record; (2) the claim schema gains
+`alternativeToClaimIds` and `contradictsClaimIds` (AGENTS §6), loader-checked
+and proposed by the drafter (protocol v5: competition is linked, never
+merged); (3) edition protocol v4 features by stakes and sets competing
+accounts side by side, thin evidence graded low rather than left out — the
+answer to an edition that told none of twenty-eight new propositions; (4)
+the Arbiter's park on #206 (§3.2: compound claims) is answered by verify v3,
+which judges atomicity and splits a compound claim by the drafter (protocol
+`split`) part by part; the 34 claims admitted that day were judged, 12 were
+compound, 21 atomic parts entered, the compounds stand as tombstones with
+their reasons and every link to them was re-pointed at the parts — two of
+those repairs were forced by the loader after commits had already been
+made, which is the loader doing its job and the operator not gating on it;
+commits are gated on the loader from here. The third founding input, the
+critical research report, is extracted and read for the first time.

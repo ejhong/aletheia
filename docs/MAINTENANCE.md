@@ -69,6 +69,17 @@ node scripts/aletheia.ts next [--run] [--steps N]                 # what the led
 node scripts/aletheia.ts inbox <case> [--dry-run]                 # the founder's door as a producer: dropped items → one report for draft/verify
 ```
 
+**Two doors for a founder essay.** A document dropped with `role:
+founding_narrative` (or `founding_research`) in its sidecar is registered as
+a narrative input at intake — original and text extraction under
+`research/<case>/`, a manifest entry — and taken in as a producer at the same
+time. The two doors do different work: the founding input shapes the
+telling (the edition drafter reads it for framing, voice, and which
+alternatives to set side by side), the producer path puts its propositions
+on the record as claims anchored to the essay, verified quote by quote and
+split until atomic. Nothing reaches the article from an input that is not
+independently in the ledger.
+
 The loop, closed (docs/AUTOMATION.md, step 4b): `next` finishes a half-done
 chain first, then a due edition, then reports the case least recently
 reported (house seat; the second seat when the last pass landed nothing).

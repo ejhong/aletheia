@@ -1394,3 +1394,30 @@ those repairs were forced by the loader after commits had already been
 made, which is the loader doing its job and the operator not gating on it;
 commits are gated on the loader from here. The third founding input, the
 critical research report, is extracted and read for the first time.
+
+**The second essay through the whole chain; the edition stands contested
+(2026-09-09).** Verify 061156 read *Knots of Existence Hypotheses* as the
+supplied text of its own source record and admitted 50 claims, 6 evidence
+records and 5 research items; 36 records were refused with reasons written
+in the dispositions. Edition 071905 (edition-v4) features the perforator
+composite hold (VASO-C174), the densification alternative (C077), the
+perforator reading of McNulty (C143), the blood-first ordering (C073) and
+the two-key necessity (C039), and the article sets three accounts of a knot
+side by side. Five seats then judged it: two agree on *unresolved*, three
+dispute, the panel splits on load-bearing VASO-C020, and the case displays
+contested — as the constitution requires of disagreement. Three lessons,
+each with its owner: the verifier's `atomic` gate refuses evidence it
+cannot split (six records that bundled two findings; the next code step is
+a split round for evidence, or the drafter's one-observation rule enforced
+before the verifier sees it); the parent claim VASO-C096 — the
+perforator-versus-arteriole contrast the founder asked for — fell on an
+anchor at p.4 where the contrast is stated at p.7, and its children stand
+without the link (a later draft on the case re-proposes it from the
+declined row); and the reader judges relevance against the case subtitle as
+written, so the essay's fascial "sheet" family (delamination, hollowing,
+gas and fluid in a separated plane) was refused as outside a question
+phrased around latched smooth muscle — widening that framing is the
+founder's call, not the pipeline's. Split protocol v2 forbids parts that
+describe the text ("the passage states that…") after the first round
+admitted six such claims (VASO-C146–148, C154–156), which stand on the
+ledger for the next pass to correct.

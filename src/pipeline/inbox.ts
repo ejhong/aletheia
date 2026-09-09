@@ -173,6 +173,11 @@ export function ledgerSourceOf(item: Pick<InboxItem, "text" | "meta">, sources: 
 }
 
 /** The report the drafter reads: supplied text verbatim, then every named work with its resolved locator. */
+/** A founding-role document is told to the drafter as such whichever footing it enters on: new to the ledger, or the ledger's own source. */
+function registeredNote(it: InboxItem): string {
+  return it.registeredAs ? ` It is also registered as founding input ${it.registeredAs}: the edition drafter reads it for framing and voice.` : "";
+}
+
 export function composeReport(slug: string, runId: string, date: string, items: InboxItem[], resolved: Map<string, Resolved[]>): string {
   const head =
     `<!-- Inbox intake — material supplied through the founder's door; working material, never citable as such (docs/AUTOMATION.md).\n` +
@@ -182,9 +187,9 @@ export function composeReport(slug: string, runId: string, date: string, items: 
   for (const it of items) {
     parts.push(`## ${it.kind}: ${it.name}`, ``, `Supplied by ${it.supplier}${it.pages ? `; PDF, ${it.pages} pages` : ""}${typeof it.meta.provenance === "string" ? `; provenance: ${it.meta.provenance}` : ""}.`, ``);
     if (it.ledgerSource) {
-      parts.push(`THIS DOCUMENT IS THE LEDGER'S SOURCE ${it.ledgerSource}. Its propositions may be proposed as claims anchored to ${it.ledgerSource} — one proposition each, a verbatim quote from the text below, and the \`[p. N]\` page as the locator — and what it states may enter as evidence records on ${it.ledgerSource}, direction and strength honest to what kind of source it is. The verifier reads this same text for ${it.ledgerSource}.`, ``);
+      parts.push(`THIS DOCUMENT IS THE LEDGER'S SOURCE ${it.ledgerSource}. Its propositions may be proposed as claims anchored to ${it.ledgerSource} — one proposition each, a verbatim quote from the text below, and the \`[p. N]\` page as the locator — and what it states may enter as evidence records on ${it.ledgerSource}, direction and strength honest to what kind of source it is. The verifier reads this same text for ${it.ledgerSource}.${registeredNote(it)}`, ``);
     } else if (it.kind === "document" && typeof it.meta.editor === "string") {
-      parts.push(`THIS DOCUMENT IS NEW TO THE LEDGER AND SUPPLIED BY ITS AUTHOR (${it.meta.editor}). Propose it as a Source record (title "${it.title}", author, date, sourceType, an identifier naming where it is published and how it was written), and propose its propositions as claims anchored to that provisional source — one proposition each, a verbatim quote from the text below, the \`[p. N]\` page as the locator. The verifier reads this same text for that source.${it.registeredAs ? ` It is also registered as founding input ${it.registeredAs}: the edition drafter reads it for framing and voice.` : ""}`, ``);
+      parts.push(`THIS DOCUMENT IS NEW TO THE LEDGER AND SUPPLIED BY ITS AUTHOR (${it.meta.editor}). Propose it as a Source record (title "${it.title}", author, date, sourceType, an identifier naming where it is published and how it was written), and propose its propositions as claims anchored to that provisional source — one proposition each, a verbatim quote from the text below, the \`[p. N]\` page as the locator. The verifier reads this same text for that source.${registeredNote(it)}`, ``);
     }
     if (it.kind === "commentary") parts.push(`The supplier's words, verbatim — the authoritative editorial statement:`, ``);
     parts.push(it.text.trim(), ``);

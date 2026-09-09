@@ -1420,4 +1420,16 @@ phrased around latched smooth muscle — widening that framing is the
 founder's call, not the pipeline's. Split protocol v2 forbids parts that
 describe the text ("the passage states that…") after the first round
 admitted six such claims (VASO-C146–148, C154–156), which stand on the
-ledger for the next pass to correct.
+ledger for the next pass to correct. The Arbiter's panel could not see
+#206 (its diff is many times the panel's budget), so the code moved to its
+own PR (#207); there the GPT seat found three things the visible code got
+wrong, each fixed: a split part carried the drafter's `origin` though the
+splitter wrote it (now: the splitter's model, the verify run, and a `ref`
+back to the compound); evidence that cited a compound was re-pointed to
+every part without judgment (now: judged against each part, cites only the
+parts it bears on, the rest said aloud — the twelve migration re-points of
+2026-09-09 were blanket and stand as a debt); and a founding input's
+license was a synthesized sentence (now: a permission record — who
+granted, on what date, by what channel, held where — with the supplier's
+own footing statement committed under `inbox/processed/` as the
+correspondence).

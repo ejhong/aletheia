@@ -67,7 +67,7 @@ describe("a founding-role document", () => {
     fs.mkdirSync(path.join(root, "content", "cases", vaso.dir, "inputs"), { recursive: true });
     fs.copyFileSync(path.join(process.cwd(), "content", "cases", vaso.dir, "inputs", "manifest.yaml"), path.join(root, "content", "cases", vaso.dir, "inputs", "manifest.yaml"));
     fs.writeFileSync(path.join(root, "inbox", "vasocomputation", "new-essay.pdf"), miniPdf("Knots of Existence Hypotheses. Perforator trees carry the knots."));
-    fs.writeFileSync(path.join(root, "inbox", "vasocomputation", "new-essay.md"), "---\ncase: vasocomputation\neditor: Eugene\nrole: founding_narrative\nlicense: founder's own essay, committed by direction\n---\n");
+    fs.writeFileSync(path.join(root, "inbox", "vasocomputation", "new-essay.md"), "---\ncase: vasocomputation\neditor: Eugene\nrole: founding_narrative\n---\n");
     const r = await runInbox("vasocomputation", { root, deps: { cases: () => cases, list: async () => [], search: async () => [] } });
     expect(r.outcome).toBe("completed");
     expect(r.reason).toMatch(/registered as founding input VASO-IN\d+/);
@@ -78,6 +78,9 @@ describe("a founding-role document", () => {
     expect(added.role).toBe("founding_narrative");
     expect(added.file).toBe(path.join("research", vaso.dir, "new-essay.pdf"));
     expect(added.title).toMatch(/Knots of Existence Hypotheses/);
+    // The permission to publish is recorded as provenance (§3.15): who granted it, when, by what channel, where it is held.
+    expect(added.license).toMatch(/granted by Eugene on 2026-\d\d-\d\d through the inbox statement `new-essay\.md`/);
+    expect(added.license).toMatch(/held at inbox\/processed\/2026-\d\d-\d\d-inbox-vasocomputation-\d{6}\/new-essay\.md/);
     const report = fs.readFileSync(r.reportFile!, "utf8");
     expect(report).toMatch(/NEW TO THE LEDGER AND SUPPLIED BY ITS AUTHOR \(Eugene\)/);
     expect(report).toMatch(/registered as founding input/);

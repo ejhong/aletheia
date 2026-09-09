@@ -76,7 +76,7 @@ export type Splitter = (statement: string, anchorText: string, meter: Meter) => 
 export const defaultSplitter: Splitter = async (statement, anchorText, meter) => {
   const protocol = loadProtocol("split");
   const r = await anthropicJson<{ parts: string[] }>(
-    { ...MODELS.house, system: renderProtocol(protocol, {}), user: JSON.stringify({ statement, anchorText }, null, 1), schema: SPLIT_SCHEMA, maxTokens: 4000, effort: "low" },
+    { ...MODELS.house, system: renderProtocol(protocol, {}), user: JSON.stringify({ statement, anchorText }, null, 1), schema: SPLIT_SCHEMA, maxTokens: 4000, effort: "low", timeoutMs: 240_000 },
     meter,
   );
   return r.data.parts.map((p) => p.trim()).filter((p) => p.length > 10);
@@ -136,6 +136,7 @@ export const defaultJudge: Judge = async (record, sourceText, context, meter) =>
       schema: VERIFY_SCHEMA,
       maxTokens: 4000,
       effort: "medium",
+      timeoutMs: 240_000, // a four-thousand-token reply; a stall past four minutes is a stall
     },
     meter,
   );

@@ -39,7 +39,7 @@ const taken = new Set(loaded.claims.map((c) => c.id));
 const added: { id: string; from: string; statement: string }[] = [];
 const rejected: { id: string; reason: string; parts: string[] }[] = [];
 for (const c of targets) {
-  const src = c.sourceAnchor!.sourceId;
+  const src = c.sourceAnchor!.sourceId ?? "";
   const text = texts.get(src)?.text;
   if (!text) { console.error(`${c.id}: no supplied text for ${src}; skipped`); continue; }
   const ctx = `Case question: ${loaded.record.subtitle}. Does the anchored passage support the proposition as stated?`;

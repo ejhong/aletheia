@@ -49,7 +49,7 @@ export type ReferenceLister = (text: string, meter: Meter) => Promise<Reference[
 export const defaultLister: ReferenceLister = async (text, meter) => {
   const protocol = loadProtocol("references");
   const r = await anthropicJson<{ references: Reference[] }>(
-    { ...MODELS.reader, system: renderProtocol(protocol, {}), user: text, schema: REFERENCES_SCHEMA, maxTokens: 16000, effort: "low" },
+    { ...MODELS.reader, system: renderProtocol(protocol, {}), user: text, schema: REFERENCES_SCHEMA, maxTokens: 16000, effort: "low", timeoutMs: 600_000 },
     meter,
   );
   return r.data.references;

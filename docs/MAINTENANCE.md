@@ -63,8 +63,23 @@ node scripts/aletheia.ts report <case> --seat openai              # …or the Op
 node scripts/aletheia.ts draft <reportRunId>                      # report + fetched sources → proposals/<runId>/proposal.yaml
 node scripts/aletheia.ts verify <proposalRunId> --dry-run         # mechanical checks + second reader; writes verification.md only
 node scripts/aletheia.ts verify <proposalRunId>                   # …and appends accepted records, dispositions, history to the working tree
-node scripts/aletheia.ts edition <case>                           # a new edition when the ledger moved (rests otherwise; --force)
+node scripts/aletheia.ts edition <case>                           # a new edition when the ledger moved or the panel contests the assessment unanswered (rests otherwise; --force)
+node scripts/aletheia.ts check <case> [--seats a,b] [--dry-run]   # the blind panel through the metered transport; raw replies under proposals/<runId>/
+node scripts/aletheia.ts next [--run]                             # what the ledger wants next; with --run, do it and continue the chain
 ```
+
+The loop, closed (docs/AUTOMATION.md, step 4b): `next` finishes a half-done
+chain first, then a due edition, then reports the case least recently
+reported (house seat; the second seat when the last pass landed nothing).
+`.github/workflows/chain.yml` runs `next --run` and opens the PR the Arbiter
+judges; its schedule is a commented cron line — uncommenting it is the
+founder's act that lets the loop run itself — and it refuses to run while
+`governance/operation.yaml` says the automation is paused. That file is
+what the pages display in the footer: live, or paused since when, by whom,
+and why. A contested standing is a task: the edition packet carries every
+seat's dissents, the drafter answers each (adopt, naming the deciding
+record, or hold), the answering assessment is stamped as reconciling those
+checks, and standing resets until a fresh blind check judges it.
 
 Keys: `ANTHROPIC_API_KEY` for the default seat, the drafter, the verifier,
 and the editor; `OPENAI_API_KEY` for the openai seat. Every model, and the

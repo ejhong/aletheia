@@ -1,9 +1,25 @@
 import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml } from "yaml";
+import { z } from "zod";
 import { ArbiterRecordSchema, type ArbiterRecord } from "./schema.ts";
 
 const GOVERNANCE_DIR = path.join(process.cwd(), "governance", "arbiter");
+
+/** governance/operation.yaml — whether the automation is live or paused under the kill switch, and why. */
+export const OperationSchema = z.object({
+  state: z.enum(["live", "paused"]),
+  since: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  by: z.string().min(1),
+  reason: z.string().min(3),
+});
+export type Operation = z.infer<typeof OperationSchema>;
+
+export function loadOperation(root = process.cwd()): Operation {
+  const file = path.join(root, "governance", "operation.yaml");
+  if (!fs.existsSync(file)) throw new Error("governance/operation.yaml is missing — the pages cannot say whether the automation is live");
+  return OperationSchema.parse(parseYaml(fs.readFileSync(file, "utf8")));
+}
 
 /**
  * All harvested arbiter verdicts, newest outcome first. Absent directory =

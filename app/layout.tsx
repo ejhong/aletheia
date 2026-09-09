@@ -1,3 +1,4 @@
+import { loadOperation } from "@/src/domain/governance";
 import type { Metadata } from "next";
 import { IBM_Plex_Mono, Newsreader } from "next/font/google";
 import Link from "next/link";
@@ -42,6 +43,7 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const operation = loadOperation();
   return (
     <html lang="en" className={`${newsreader.variable} ${plexMono.variable}`}>
       <body className="min-h-screen flex flex-col">
@@ -82,6 +84,12 @@ export default function RootLayout({
                 AI-operated
               </Link>{" "}
               · content versioned in git · provenance on every record
+              {operation.state === "paused" ? (
+                <>
+                  {" "}
+                  · <span title={operation.reason}>automation paused by the {operation.by} since {operation.since}</span>
+                </>
+              ) : null}
             </p>
           </div>
         </footer>

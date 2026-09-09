@@ -11,6 +11,7 @@
  *   node scripts/aletheia.ts verify <proposalRunId> [--dry-run]
  *   node scripts/aletheia.ts edition <case> [--dry-run] [--force]
  *   node scripts/aletheia.ts check <case> [--seats a,b] [--dry-run]   the blind panel, every roster seat with a key
+ *   node scripts/aletheia.ts next [--run]                      what the ledger wants done next (and, with --run, do it through the chain)
  *   node scripts/aletheia.ts panel <pr>                        → scripts/arbiter.mjs
  *
  * Every verb is one module under src/pipeline/ sharing four services — the
@@ -29,6 +30,7 @@ import { runDraft } from "../src/pipeline/draft.ts";
 import { runVerify } from "../src/pipeline/verify.ts";
 import { runEdition } from "../src/pipeline/edition.ts";
 import { runCheck } from "../src/pipeline/check.ts";
+import { runNext } from "../src/pipeline/next.ts";
 
 const [verb, ...rest] = process.argv.slice(2);
 const flagNames = new Set(["--seat", "--seats", "--reconsider"]);
@@ -79,6 +81,12 @@ switch (verb) {
   case "migrate-memory": {
     const report = migrateMemory({ dryRun: flags.has("--dry-run") });
     console.log(report.join("\n"));
+    break;
+  }
+  case "next": {
+    const r = await runNext({ run: flags.has("--run") });
+    console.log(JSON.stringify(r, null, 2));
+    if (r.ran.some((s) => s.outcome.outcome === "failed")) process.exit(1);
     break;
   }
   case "check": {

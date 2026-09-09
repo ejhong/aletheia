@@ -220,7 +220,26 @@ function withFallback<T extends { model: string }>(body: T, fallback: string | u
   return fallback ? { ...body, fallbacks: [{ model: fallback }] } : body;
 }
 
+/**
+ * A stream that died before `message_stop` (2026-09-08: a fifteen-minute
+ * edition reply, torn mid-way). The reply is gone and was probably billed;
+ * one more attempt is made and said so on stderr, because an unattended
+ * loop that stops on a dropped socket is worse than one that sometimes
+ * pays twice. A second tear fails the run.
+ */
+const TORN_STREAM = /ended before message_stop/;
+
 async function anthropicPost(body: { model: string; fallbacks?: unknown }, fetchImpl: FetchLike, timeoutMs: number): Promise<AnthropicMessage> {
+  try {
+    return await anthropicPostOnce(body, fetchImpl, timeoutMs);
+  } catch (e) {
+    if (!TORN_STREAM.test((e as Error).message)) throw e;
+    console.error(`anthropic: ${(e as Error).message}; sending the request once more`);
+    return anthropicPostOnce(body, fetchImpl, timeoutMs);
+  }
+}
+
+async function anthropicPostOnce(body: { model: string; fallbacks?: unknown }, fetchImpl: FetchLike, timeoutMs: number): Promise<AnthropicMessage> {
   const res = await fetchWithRetry("anthropic", "https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: {

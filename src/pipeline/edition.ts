@@ -284,6 +284,18 @@ export interface EditionOutcome extends RunOutcome {
   assessmentFile?: string;
 }
 
+/** Why an edition is due (null when it is not): the ledger moved, or the panel contests an assessment no reconsideration has answered. */
+export function editionDue(loaded: LoadedCase): { reason: string; reconciles: string[] } | null {
+  const incumbent = currentEdition(loaded);
+  const standing = ratification(loaded);
+  const contestedBy = standing?.status === "contested" ? currentChecks(loaded, latestCheckPerModel(loaded)).map((c) => c.runId) : [];
+  const adopted = adoptedAssessment(loaded);
+  const unanswered = contestedBy.filter((id) => !(adopted?.reconciles ?? []).includes(id));
+  if (unanswered.length) return { reason: `the panel contests the adopted assessment (${standing!.reason}) and no reconsideration has answered it`, reconciles: contestedBy };
+  if (incumbent.basis.ledgerHash !== loaded.ledgerHash) return { reason: `the ledger moved since ${incumbent.runId}`, reconciles: [] };
+  return null;
+}
+
 export async function runEdition(caseKey: string, opts: EditionOptions = {}): Promise<EditionOutcome> {
   const root = opts.root ?? process.cwd();
   const now = opts.deps?.now ?? (() => new Date());
@@ -293,13 +305,8 @@ export async function runEdition(caseKey: string, opts: EditionOptions = {}): Pr
   const run = openRun("edition", loaded.record.slug, { model: EDITOR.model, promptVersion: protocol.version }, { now: now(), root });
   const { runId, date } = run;
 
-  // Due when the ledger moved, or when the panel contests the adopted
-  // assessment and no reconsideration has yet answered those checks.
-  const standing = ratification(loaded);
-  const contestedBy = standing?.status === "contested" ? currentChecks(loaded, latestCheckPerModel(loaded)).map((c) => c.runId) : [];
-  const adopted = adoptedAssessment(loaded);
-  const unanswered = contestedBy.filter((id) => !(adopted?.reconciles ?? []).includes(id));
-  if (incumbent.basis.ledgerHash === loaded.ledgerHash && unanswered.length === 0 && !opts.force) {
+  const due = editionDue(loaded);
+  if (!due && !opts.force) {
     return closeRun(run, "rested", { reason: `the ledger has not moved since ${incumbent.runId} (hash ${loaded.ledgerHash.slice(0, 12)}) and the panel's judgment is answered; nothing material to re-tell — pass --force to draft anyway` });
   }
   const packet = buildPacket(loaded, { detail: true });
@@ -313,7 +320,7 @@ export async function runEdition(caseKey: string, opts: EditionOptions = {}): Pr
     const edit = opts.deps?.edit ?? defaultEditor;
     let reply = await edit(system, user, run.meter);
     writeWorkingFile(runId, "reply.json", JSON.stringify(reply.data, null, 1), root);
-    const reconciles = unanswered.length ? contestedBy : undefined;
+    const reconciles = due?.reconciles.length ? due.reconciles : undefined;
     if (reconciles && !reply.data.assessment) {
       const reason = "the panel contests the adopted assessment and the candidate returned none: a reconsideration must answer the dissents with a complete assessment (edition protocol v3)";
       writeWorkingFile(runId, "errors.md", `- ${reason}`, root);

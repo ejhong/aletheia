@@ -301,6 +301,15 @@ function registeredNote(it: InboxItem): string {
   return it.registeredAs ? ` It is also registered as founding input ${it.registeredAs}: the edition drafter reads it for framing and voice.` : "";
 }
 
+/** The permission on which a supplied document is published, as the report states it for the drafter to copy; a document without one is not the drafter's to propose. */
+export function permissionLine(it: InboxItem, date: string, runId: string): string {
+  try {
+    return `Permission on which it is published: ${permissionRecord(it, date, runId)}`;
+  } catch {
+    return "Permission on which it is published: NONE RECORDED — do not propose this document as a Source and do not quote it.";
+  }
+}
+
 export function composeReport(slug: string, runId: string, date: string, items: InboxItem[], resolved: Map<string, Resolved[]>): string {
   const head =
     `<!-- Inbox intake — material supplied through the founder's door; working material, never citable as such (docs/AUTOMATION.md).\n` +
@@ -309,6 +318,7 @@ export function composeReport(slug: string, runId: string, date: string, items: 
   const parts = [`# Intake — ${slug} (${date})`, ``];
   for (const it of items) {
     parts.push(`## ${it.kind}: ${it.name}`, ``, `Supplied by ${it.supplier}${it.pages ? `; PDF, ${it.pages} pages` : ""}${typeof it.meta.provenance === "string" ? `; provenance: ${it.meta.provenance}` : ""}.`, ``);
+    if (it.kind === "document") parts.push(permissionLine(it, date, runId), `A Source proposed from this document carries that permission line, verbatim, in its \`reliabilityNotes\`; the verifier refuses a supplied document's Source without it (AGENTS.md §3.15).`, ``);
     if (it.ledgerSource) {
       parts.push(`THIS DOCUMENT IS THE LEDGER'S SOURCE ${it.ledgerSource} (identified by ${it.ledgerSourceBasis ?? "the intake"}). Its propositions may be proposed as claims anchored to ${it.ledgerSource} — one proposition each, a verbatim quote from the text below, and the \`[p. N]\` page as the locator — and what it states may enter as evidence records on ${it.ledgerSource}, direction and strength honest to what kind of source it is. The verifier reads this same text for ${it.ledgerSource}.${registeredNote(it)}`, ``);
     } else if (it.kind === "document" && typeof it.meta.editor !== "string" && it.meta.founderDrop) {

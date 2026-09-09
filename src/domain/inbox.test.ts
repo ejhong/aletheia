@@ -105,6 +105,7 @@ describe("a file the founder commits to the inbox", () => {
     // The drafter is told the drop says nothing about authorship; the license names the commit as the grant.
     const report = composeReport("vasocomputation", "r", "2026-09-09", [dropped], new Map());
     expect(report).toMatch(/DROPPED BY THE FOUNDER \(commit [0-9a-f]{10}, \d{4}-\d\d-\d\d; GitHub attributes it to ejhong.*under the founder's standing direction of 2026-09-09: "Files I commit.*read the author, date and venue from the document itself/);
+    expect(report).toMatch(/Permission on which it is published: Permission: the founder's standing direction/);
     expect(permissionRecord(dropped, "2026-09-09", "run")).toMatch(/^Permission: the founder's standing direction in the founder's words — "Files I commit to inbox\/ .* — given 2026-09-09 by this file, .*; this file committed under it by ejhong <ejhong@gmail.com> on \d{4}-\d\d-\d\d in commit [0-9a-f]{40} \(GitHub attributes it to ejhong and reports the signature verified \(valid\); channel: git; held: that commit\)/);
   });
 });
@@ -135,6 +136,8 @@ describe("a founding-role document", () => {
     const report = fs.readFileSync(r.reportFile!, "utf8");
     expect(report).toMatch(/NEW TO THE LEDGER AND SUPPLIED BY ITS AUTHOR \(Eugene\)/);
     expect(report).toMatch(/registered as founding input/);
+    expect(report).toMatch(/Permission on which it is published: Permission in the supplier's words: "publish it as the case's founding input and cite it"/);
+    expect(report).toMatch(/carries that permission line, verbatim, in its `reliabilityNotes`/);
   });
 });
 

@@ -1610,6 +1610,11 @@ evidence record the reader judges compound is split by the drafter into
 one observation each, every part keeping a verbatim quote (split protocol
 v3, `kind: evidence`), and each part is checked and judged on its own —
 six of twelve records from the essay had been refused with no remedy.
-Not yet done: the essay's declined rows are re-proposed only by a later
-draft on the case, after an edition under v5 has restated the question;
-that is the chain's next two steps on State, Not Scar, not a hand edit.
+(5) On the Arbiter's word (GPT seat, #213): the permission the intake
+records at the door now travels with the record — every document in an
+intake report carries a `Permission on which it is published:` line, the
+drafter copies it verbatim into the proposed Source's `reliabilityNotes`,
+and the verifier refuses a supplied document's Source without it. Not yet
+done: the essay's declined rows are re-proposed only by a later draft on
+the case, after an edition under v5 has restated the question; that is
+the chain's next two steps on State, Not Scar, not a hand edit.

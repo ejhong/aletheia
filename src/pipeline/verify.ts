@@ -295,6 +295,16 @@ export async function judgeProposal(
     const key = src ? textKeyOf(src) : undefined;
     return key ? texts.get(key) : undefined;
   };
+  // A Source whose text is a supplied document is published only on the permission the intake recorded,
+  // and the Source must carry that line (§3.15): the gate at the door travels with the record.
+  for (const s of [...okSources.values()]) {
+    const via = textFor(s.id)?.via ?? "";
+    if (!/^supplied document/.test(via)) continue;
+    if (s.reliabilityNotes.some((n) => /^Permission on which it is published: (Permission|Public at)/.test(n) || /^(Permission|Public at) /.test(n))) continue;
+    okSources.delete(s.id);
+    sourceById.delete(s.id);
+    reject(s.id, "source", s.title, "a supplied document's Source must carry the permission on which it is published — the intake's permission line, copied verbatim into reliabilityNotes (AGENTS.md §3.15); none is on this record");
+  }
 
   // Evidence: source ok, text retrievable, quotes verbatim, second reader agrees.
   const okEvidence: Evidence[] = [];

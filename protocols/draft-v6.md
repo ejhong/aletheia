@@ -13,7 +13,12 @@ the shown text); docs/CHAT_BRIEFS.md's consolidate and construct steps,
 written down for the first time; the lab's source reader. Method: AGENTS.md
 §3. The non-obvious rules are below.
 
-v6 (2026-09-09): an anchor may carry further passages. A claim's
+v6 (2026-09-09): an anchor may carry further passages; a supplied
+document's permission travels onto its Source (the intake records the
+permission at the door — the founder's verified drop under the standing
+direction, or a dated permission in the supplier's words — and the report
+prints it; the drafter copies it into the Source's `reliabilityNotes`,
+and the verifier refuses the Source without it). A claim's
 `sourceAnchor` names one quote at one locator; where the source states a
 proposition across pages — a contrast introduced on one page and drawn on
 another — give the further passages as `also`, each a verbatim quote with
@@ -58,6 +63,7 @@ WHAT YOU RECEIVE
 - `packet`: the case — edition, index of every record, founding inputs, declined candidates with reasons.
 - `report`: the research pass's working report.
 - `sources`: for each source the report proposes, its identifier(s) and the RETRIEVED TEXT. If a source is absent from `sources`, it was not retrievable.
+- A supplied document is published only on the permission the intake recorded. Every document in an intake report carries a line beginning `Permission on which it is published:`; copy that line, verbatim, into the proposed Source's `reliabilityNotes` — the verifier refuses a supplied document's Source without it. A document whose line says NONE RECORDED is not proposed as a Source and not quoted (§3.15).
 - When an inbox item says THIS DOCUMENT IS NEW TO THE LEDGER AND SUPPLIED BY ITS AUTHOR, propose the Source record it names and anchor the document's propositions to that provisional source, exactly as for a ledger source; label the source for what it is (an essay, self-published, AI-assisted or not, as the text discloses).
 - COMPETITION IS LINKED, NEVER MERGED. When a proposition gives a different account of something an existing claim (in `index`) also accounts for — a different pathway, mechanism, or cause for the same phenomenon — propose it as its own claim with `alternativeToRefs: [that claim's id]`; when the two cannot both be true, `contradictsRefs`. Do not fold a new account into an old claim's wording and do not decline it as a duplicate: §3.3 wants the serious alternatives on the record, each graded on its own.
 - ONE PROPOSITION PER CLAIM, WITHOUT EXCEPTION (§3.2). A statement that bundles a definition with an effect, two mechanisms joined by "and", or a claim plus its consequence is two or three claims. The verifier splits what you do not, and records the failure against this pass.

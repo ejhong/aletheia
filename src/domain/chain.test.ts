@@ -664,6 +664,31 @@ describe("verify remembers its judgments", () => {
     expect(v.notes.join("\n")).toMatch(/part "A part with no quote at all\." refused: no verbatim quote/);
   });
 
+  it("a supplied document's Source is admitted only with the intake's permission line on it", async () => {
+    const { judgeProposal } = await import("../pipeline/verify.ts");
+    const c = geo();
+    const base = c.sources.find((s) => s.url)!;
+    const bare = { ...base, id: "GEO-S990", title: "A supplied essay, permission not carried", url: "https://example.org/supplied-bare", reliabilityNotes: [] };
+    const carried = { ...base, id: "GEO-S991", title: "A supplied essay, permission carried", url: "https://example.org/supplied-carried", reliabilityNotes: ["Permission on which it is published: Permission in the supplier's words: \"publish and cite it\" — granted by Someone (own work) on 2026-09-09 in the inbox statement `essay.md`, recorded at intake on 2026-09-09, held at inbox/processed/run/essay.md."] };
+    const claim = c.claims[0];
+    const cites = (id: string, sourceId: string) => ({
+      id, title: `cites ${sourceId}`, sourceId, claimIds: [claim.id], direction: "supports", strength: "weak",
+      sourceStatement: 'The essay says "twelve words that certainly do occur in this text" plainly.', exactLocator: "p. 1", limitations: [], reviewState: "ai_extracted", origin: { ref: "test", extractedBy: "m", runId: "r", date: "2026-09-09" },
+    });
+    const proposal = { runId: "2026-09-09-draft-megalithic-casting-000006", case: c.record.slug, report: null, date: "2026-09-09", model: "m", promptVersion: "draft-v6", basis: { ledgerHash: c.ledgerHash }, rationale: "test",
+      adds: { sources: [bare, carried], evidence: [cites("GEO-E990", bare.id), cites("GEO-E991", carried.id)], claims: [], research: [], images: [] }, corrections: [], dispositions: [], edition: null } as never;
+    const supplied = (name: string) => ({ ok: true as const, status: null, contentType: "text/plain", text: "… twelve words that certainly do occur in this text …", via: `supplied document ${name} (sha256 abc), identified at intake` });
+    const texts = new Map([[bare.url, { url: bare.url, ...supplied("bare.pdf") }], [carried.url, { url: carried.url, ...supplied("carried.pdf") }]]);
+    const yes = { quoteInContext: true, statementSupported: true, locatorSupported: true, directionRight: true, independenceNoted: true, relevant: true, atomic: true, reason: "fine" };
+    const v = await judgeProposal(proposal, c, texts, new Map(), async () => yes, { runId: "r", verb: "verify", case: c.record.slug });
+    expect(v.accepted.sources.map((s) => s.id)).toEqual(["GEO-S991"]);
+    expect(v.accepted.evidence.map((e) => e.id)).toEqual(["GEO-E991"]);
+    expect(v.rejected.map((r) => [r.id, r.reason.slice(0, 32)])).toEqual([
+      ["GEO-S990", "a supplied document's Source mus"],
+      ["GEO-E990", "its source GEO-S990 was rejected"],
+    ]);
+  });
+
   it("a claim anchor may carry further passages, each verbatim, judged together; a passage the source lacks rejects the anchor", async () => {
     const { judgeProposal } = await import("../pipeline/verify.ts");
     const c = geo();

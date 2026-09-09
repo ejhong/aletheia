@@ -1,0 +1,128 @@
+runId: "2026-09-09-check-glm"
+model: "GLM 5.3 Flash (Z.ai, via Venice), independent check run"
+date: "2026-09-09"
+promptVersion: "check-v1"
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: mixed
+  loadBearing: [GEO-C020, GEO-C012, GEO-C030]
+  weakestLinks: [GEO-C003, GEO-C506, GEO-C502, GEO-C013]
+  synthesis: >-
+    The ledger supports a genuinely two-sided case, not a strawman. The strongest pro-casting evidence is real laboratory observation, not advocacy alone: Barsoum 2006 (GEO-E012) reports microconstituents in some pyramid samples absent from six nearby quarries, and MacKenzie 2011 (GEO-E017) independently reaches a casting reading for a Bent Pyramid casing stone by NMR, with no published rebuttal located. Pumapunku has peer-reviewed (though proponent-authored) SEM evidence (GEO-C004, GEO-C021), and the methodology critique GEO-C030 is chemically sound for what it scopes: XRF and ICP-MS genuinely cannot see hydrogen, carbon, or oxygen, so a quarry match from those methods alone cannot exclude cast-from-same-aggregate stone. Feasibility is also not the bottleneck: natron sources (GEO-C011) are mainstream-established, and C–S–H binder formation from lime and diatomaceous earth at room temperature is demonstrated (GEO-E022). Against this, the anti-casting record is deeper and partly independent: Folk & Campbell report macro-scale sedimentary and tectonic features across many blocks that casting struggles to explain; Jana's study is the only one with a genuine positive control and found none of the geopolymer binder signature in casing stones; Freestone & Middleton, independent of all camps, found natural limestone. Crucially, this round of ledger work dismantled the two historical anchors: the Al-Ma'mun salt report survives only as an uncited statement on a proponent webpage, absent from the principal Arabic compilation (GEO-C003), and the comparative salt claim fails because halite effloresces at undisputedly carved Egyptian limestone sites and is reported native to Giza strata (GEO-C506, GEO-C906). The geopolymer recipe for Giza is, in its original form, contradicted; what survives is a revised C–S–H binder claim that no study in the ledger tests, plus an unrefuted Pumapunku line resting on one team. The case is mixed because both directions hold real, unreplicated-on-secure-samples evidence, and the single study that could settle it (blinded, provenance-secure, binder-aware) is precisely the one the agenda identifies as absent. My confidence in "mixed" rather than "weakly_supported" rests on MacKenzie 2011 surviving untouched; my confidence that the case is not stronger rests on Jana's positive control and the collapse of the salt line.
+  steelman: >-
+    MacKenzie et al. 2011 measured a Bent Pyramid casing stone by solid-state
+    ²⁹Si/²⁷Al/⁴³Ca MAS NMR — a technique Fóti's methods critique is not
+    needed for, since NMR sees silicon chemistry directly — and concluded the
+    stone consists of Tura limestone grains cemented by an amorphous
+    calcium-silicate gel "formed by human intervention." No published comment,
+    reply, or replication challenges this result as of the ledger's 2026-08-22
+    check; Jana's positive control tested only the alkali-aluminosilicate
+    geopolymer and is expressly outside its scope; and Folk & Campbell's 1992
+    petrography predates both NMR studies and examined different samples.
+    A proponent can therefore say: the one direct, technique-appropriate,
+    unrefuted analysis of a pyramid casing stone says cast, and every
+    contrary study either targets a different binder chemistry, rests on
+    disputed sample identity (Lauer), or predates the anomalous
+    microconstituent observations entirely.
+claimAssessments:
+  - claimId: GEO-C022
+    verdict: mixed
+    confidence: moderate
+    reasoning: >-
+      The umbrella claim inherits the Giza and Pumapunku lines. Real supporting observations exist (GEO-E012, GEO-E017, GEO-E006/E007), but the only positive-control study (GEO-E020) found no casting signature in Giza casing stones, and the salt/historical anchors have collapsed this round. "At least one major monument contains cast stone" remains possible via the untested C–S–H variant or Pumapunku, but nothing in the ledger establishes it, and the strongest independent petrography cuts against the best-documented instances.
+  - claimId: GEO-C020
+    verdict: mixed
+    confidence: moderate
+    reasoning: >-
+      The original geopolymer recipe is effectively refuted for the tested samples by Jana's positive control (GEO-E020), and three further independent studies (GEO-E018, GEO-E019, GEO-E021) found natural limestone. Yet MacKenzie 2011 (GEO-E017) reaches a human-intervention conclusion for a Bent Pyramid casing stone by a different technique with no rebuttal, and Barsoum 2006's microconstituent observations stand despite contested provenance. The strongest opposing consideration — Jana's positive control — does not test the revised C–S–H binder, so neither direction closes.
+  - claimId: GEO-C021
+    verdict: weakly_supported
+    confidence: low
+    reasoning: >-
+      The only direct support is the Davidovits team's own SEM/petrographic papers (GEO-E006, GEO-E007, restated in GEO-E036), with no independent replication and questioned sample provenance. Ponce 1971's quarry attribution (GEO-E008) is the orthodox counter, and while GEO-C030 limits what trace-element provenance can prove, that critique is an untested methodological claim as applied here. Support exists but rests on one non-independent line.
+  - claimId: GEO-C004
+    verdict: established
+    confidence: moderate
+    reasoning: >-
+      The claim is about what published analyses report, and the peer-reviewed Materials Letters and Ceramics International papers (GEO-E006, GEO-E007) do report organic matter and microstructures the authors argue are inconsistent with natural volcanic stone. The strongest opposing consideration is that both papers share one team and sample set and the interpretation is disputed — but that bears on GEO-C021's truth, not on whether these analyses say this. Moderately confident because the records are ai_extracted from ai_verified citations.
+  - claimId: GEO-C903
+    verdict: established
+    confidence: moderate
+    reasoning: >-
+      GEO-E035 is a direct read of the primary statement of the model, with verbatim abstract quotes matching the claim, including the piedras-cansas exclusion and the Iwawe Stratum V attribution. Confidence is capped because only the abstract was retrieved (the PDF returned 403) and the venue is the proponents' own journal. As a theory-description claim it is fully carried by its source.
+  - claimId: GEO-C030
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      The core chemistry is uncontroversial: XRF and ICP-MS cannot detect hydrogen, carbon, or oxygen, so stone cast from aggregate of the same quarry with minor additive shifts would return essentially the same metallic fingerprint — which is exactly why both sides now place Pumapunku andesite at Khapia (GEO-E035). The strongest opposing consideration is Jana 2007 (GEO-E020), which shows binder-aware petrography can detect casting when present; but the claim, as stated, scopes itself to trace-element quarry-matching methods, and Fóti himself concedes petrography is a different tool. Not verified against instrument practice beyond the ledger, hence not "established."
+  - claimId: GEO-C012
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: >-
+      Feasibility is genuinely demonstrated in fragments: Sierra 2010 (GEO-E022) shows lime + diatomaceous earth forms a C–S–H binder at room temperature, and the Geopolymer Institute reports multi-ton demonstration blocks (GEO-E013) — but the blocks are self-reported and never independently analyzed, and scale-up to "large, hard, visually similar" blocks by ancient crews is untested. Feasibility is not occurrence; the claim is plausible and partly demonstrated but not established.
+  - claimId: GEO-C010
+    verdict: provisionally_supported
+    confidence: low
+    reasoning: >-
+      The only ledger evidence is Fóti's Badari glassmaking precedent (GEO-E016), explicitly flagged as needing independent verification of both date and temperature basis, and crucible-scale heat is not industrial-scale processing. My verdict leans partly on general background — Old Kingdom Egypt demonstrably achieved comparable temperatures in metallurgy and vitreous industries — and I flag that this rests on priors, not on the evidence records.
+  - claimId: GEO-C011
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Shortland et al. 2006 (GEO-E010) is mainstream, peer-reviewed, ai_verified, and directly states the sources and the 7th–9th century decline; Sayre & Smith (GEO-E011) supplies the analytical typology behind natron timelines. The only caveat — the paper concerns glass, not stone — bears on what the fact implies, not on the claim as stated.
+  - claimId: GEO-C013
+    verdict: weakly_supported
+    confidence: low
+    reasoning: >-
+      The entire basis is one unattributed anecdote in Fóti (GEO-E015), flagged as under-sourced by the project's own skeptical review, with no controlled replication. The chemistry (ash carbonation) is broadly plausible as background, but on ledger evidence alone this is the weakest mechanistic claim in the case; the agenda's replication test (GEO-R007) is the right next step.
+  - claimId: GEO-C001
+    verdict: established
+    confidence: moderate
+    reasoning: >-
+      The measurement was made and published in a peer-reviewed venue and the figure was confirmed in the verification batch (GEO-E001). The claim states the measurement, not its interpretation; the strongest opposing consideration is that a single team, granite, and tool configuration limits generalization, and skilled ancient crews may outperform the protocol — which qualifies any inference from it, not the reported number.
+  - claimId: GEO-C002
+    verdict: weakly_supported
+    confidence: low
+    reasoning: >-
+      The only carrier is Fóti's anecdotal report (GEO-E003) with unquantified attempt rates, no wear survey, and proponent sourcing. A true null result of decades of cumulative attempts would be meaningful; the ledger simply cannot verify the observation's existence or scope. Low confidence is generous given the provenance.
+  - claimId: GEO-C006
+    verdict: weakly_supported
+    confidence: low
+    reasoning: >-
+      Rests entirely on Fóti's description (GEO-E005) with shaft dimensions not independently surveyed and the biomechanical claim untested. Notably, Kelany et al. 2009 (via GEO-C911/GEO-E045) supplies a conventional functional context for features at the site without addressing these shafts specifically, and GEO-R013 shows both readings (prospecting pits vs. settling vessels) are currently unmeasured conjecture. An interesting anomaly, not an established one.
+  - claimId: GEO-C502
+    verdict: weakly_supported
+    confidence: low
+    reasoning: >-
+      The claim's specific details (one-hour trial, ~5 mm depth, 8 mm/h assumption, one-man-per-double-foot inference) come from Fóti's characterization of Engelbach 1922, which the ledger itself flags as unverified against the monograph (GEO-E002). The source record exists and is ai_verified, but the methodological characterization is exactly the kind of second-hand rendering the project's reliability notes warn about (Fóti mischaracterized Marčiš, Sayre-Smith, and Nash elsewhere). Until the 1922 text is checked, this stays weak.
+  - claimId: GEO-C003
+    verdict: contradicted
+    confidence: moderate
+    reasoning: >-
+      This round of work hit the claim hard: the only carrier is an uncited proponent webpage dated to the wrong year (GEO-E028, GEO-E029), and the principal medieval Arabic compilation of the breach — al-Suyūṭī via Nemoy — describes the breach and its finds in detail without any mention of salt (GEO-E027). This is negative evidence within one compilation, not proof no Arabic source says it (GEO-R001 remains open), but the burden has flipped: an asserted historical report now has no traceable anchor. Contradicted is warranted for the claim as an attested account.
+  - claimId: GEO-C506
+    verdict: contradicted
+    confidence: moderate
+    reasoning: >-
+      The presence half is confirmed with modern instrumentation — halite is the main Queen's Chamber efflorescence phase (GEO-E030). But the claim's distinctive comparative premise fails: halite efflorescence is documented at the Sphinx, the White Monastery, Lisht and Saqqara (GEO-E031), including bedrock carved by no casting account, and Klemm & Klemm report halite as native to Giza nummulitic limestone (GEO-E032, GEO-C906). No concentration comparison exists, but the assertion that comparable monuments do not show this is contradicted by the ledger's own records.
+  - claimId: GEO-C907
+    verdict: established
+    confidence: high
+    reasoning: >-
+      GEO-E030 quotes the XRD and SEM-EDX findings verbatim from the open-access Sessa et al. 2026 paper: only halite, calcite, and quartz, no nitrates, no widespread gypsum, with the caveat that XRD misses phases below ~5 wt%. This is a clean descriptive claim fully carried by a peer-reviewed source read directly.
+  - claimId: GEO-C906
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: >-
+      GEO-E032 records Sessa et al. stating Klemm & Klemm's reading with the quoted mechanism verbatim, and the second reader confirmed the quotes. But the attribution is second-hand — Klemm & Klemm 2010 was not read — and the underlying inference comes from detached fragments, not cored stone. The claim is probably right and matters greatly for GEO-C506, but the ledger should read the primary source before promotion to established.
+  - claimId: GEO-C594
+    verdict: weakly_supported
+    confidence: low
+    reasoning: >-
+      GEO-E034 provides one concrete, well-documented instance: undocumented 1995–97 cleaning and filling inside the Khufu pyramid, with a sulfur-rich modern fill and salt re-forming within two years — which directly contaminates the surface-salt evidential line. But the claim is general ("almost no megalithic site"), and the ledger contains no survey of restoration documentation across sites; one instance plus plausibility supports, not establishes, the generalization. GEO-R005 is the right test.
+  - claimId: GEO-C005
+    verdict: weakly_supported
+    confidence: low
+    reasoning: >-
+      The claim is carefully hedged as an interpretive argument, and that is all the evidence supports: Fóti's reinterpretation (GEO-E014) is a proponent argument the conventional Egyptological reading has never engaged. No independent Egyptological assessment of the mural's scale and apparatus exists in the ledger, so the reinterpretation remains live but unsupported.

@@ -10,87 +10,79 @@ in the design is built until its own PR lands. The history of how the design
 got here, including the earlier five-loop version it replaces, is in
 `docs/DECISIONS.md`.
 
-## Where we are (reassessed 2026-09-08, evening; second case run 2026-09-09)
+## Where we are (reassessed 2026-09-09, evening)
 
-**2026-09-09, the second case.** (Its records are on PR #206, parked by
-the Arbiter for size; not on `main` until it merges.) State, Not Scar ran
-the whole chain from a founder-supplied essay: `inbox` (the essay identified by title as the
-ledger's own source and registered as a founding input) → `draft` (95
-proposed records) → `verify` (50 claims, 6 evidence, 5 research admitted
-against the essay's own text; 36 refused with reasons; 12 compounds split
-in the one split round) → `edition` (three accounts of a knot set side by
-side; the featured set grew from twenty to twenty-five by the stakes rule)
-→ five-seat `check` (two agree on unresolved, three dispute; contested on
-load-bearing VASO-C020). The pass cost about $58 ($15 verify, $6 edition,
-the rest the draft and a verify the month's cap stopped, whose judgments
-were remembered and reused). Three things it taught: the verifier's
-`atomic` gate has no remedy for evidence (six records bundling two findings
-were refused, not split); a parent claim that falls on its anchor drops its
-children's links (VASO-C096, the perforator-versus-arteriole contrast,
-anchored at p.4 where the contrast is stated at p.7); and the reader judges
-relevance against the case subtitle as written, so the essay's fascial
-"sheet" family was refused as outside a question phrased around latched
-smooth muscle. The first is the next code step; the second waits for the
-next draft on the case; the third is the founder's framing to widen.
+Reassessed on the founder's request against truth, beauty, simplicity,
+and modular code, with the loop on. The facts first, then the plan.
 
+- **The loop runs itself.** Since 2026-09-09: a weekly sitting of three
+  budgeted choices (`chain.yml`), the Arbiter on every PR with a narrow
+  veto and review notes, standing derived from the panel within one step,
+  budgets that crunch until 2026-10-31 and then settle, the founder's kill
+  switch in `governance/operation.yaml`. One sitting has run in CI (#214,
+  an edition, $4.23); check, report, draft and verify have run only from
+  a terminal. Two of ten cases have been through the chain; eight carry
+  only the migration edition, and the weekly cadence will reach them one
+  at a time.
+- **Truth holds where it is tested, and is untested where a reader looks
+  most.** Provenance is stamped, refusals are reasoned, nothing is
+  fabricated, standing is derived. But the case page still shows the
+  pre-edition view beside the edition's: an assessment panel and a
+  cross-model panel above the article, conjectures, studies and resources
+  from the earlier design — two presentations of one standing, and the
+  reader is not told which is the record. What was refused, and why, is
+  data (dispositions) with no page. The new vocabulary — contested,
+  unratified, a restated question, accounts side by side, review notes —
+  is on the record and not yet explained in place.
+- **Beauty: the pipeline is the beautiful part; the rest is accumulation.**
+  Verbs with protocols as versioned files, one roster, one budget, one run
+  frame, one retrieval layer. Around it: six disabled workflows and about
+  a dozen Maintain-era scripts still in the tree, a second vendor
+  transport under the Arbiter beside the pipeline's, `load.ts` at 1,300
+  lines carrying five concerns (parsing, validation, editions, standing,
+  page views), protocols with six versions each in the working directory,
+  and docs that describe two eras at once (MAINTENANCE, DATA_MODEL,
+  EXTRACTION_PIPELINE, CHAT_BRIEFS).
+- **Modular code: the three zones hold; two seams are wrong.** Content →
+  domain → UI is one-way. But the pipeline imports the legacy
+  `scripts/lib` (the roster reader, the id stamper), and the Arbiter calls
+  vendors through its own transport rather than the metered one.
 
-Reassessed against three questions the founder set: is it **true** (does
-every displayed thing rest on the record, and does the record say what
-happened), is it **beautiful** (one abstraction per idea, nothing twice),
-and does it **run itself**. The design holds on all three; the order of the
-remaining work changes. What follows is the state and the plan; the design
-after it is unchanged.
+### The plan, in order
 
-- **The chain has run end to end on two cases, by hand.** Cast, Not Carved:
-  report (house seat with web search and fetch; the OpenAI seat as the
-  comparison) → draft → verify → edition → five-seat check. Two primary
-  papers the first pass could not read (Nemoy 1939, Sessa et al. 2026)
-  entered on the second with ten evidence records; the edition retold the
-  salt line from them; four panel seats then disputed the house verdict and
-  the case displays **contested** — derived, not declared. The house report
-  costs about $3.70 cached ($37.86 the one time it ran uncached), the whole
-  pass about $12, a panel check about $3. State, Not Scar followed on
-  2026-09-09 from a founder-supplied essay (about $58 for the pass). Every
-  run so far was launched from a terminal; the Chain workflow's one
-  dispatch stopped at the pause guard, so nothing has yet run in CI.
-- **What the runs taught, and what was fixed.** Retrieval decides what the
-  ledger can know: without PDFs and open-access fallback the pipeline
-  admitted proponent web pages and blocked the primaries that answered
-  them. The second reader is a judge, not a function: its dissent on a
-  label is now recorded on the record, not fatal. The budget guard is an
-  estimate and cannot stop a server-side turn; a run over its cap is kept
-  and flagged. A stale check is set aside, not counted. Every one of these
-  is a test now.
-- **Truth: the three debts of 2026-09-08 are paid, and two new ones are
-  named.** Corrections apply in place (`setField`) with their history
-  entry; the panel's seats are priced from their vendors' pages, so the
-  ledger is the whole bill; the Arbiter is on. New: the verifier judges
-  relevance against the case subtitle as written and an anchor against one
-  page, which refused a founder essay's headline claim and a whole family
-  of its propositions (DECISIONS, 2026-09-09); and any change to a case
-  file, a mechanical repair included, sets its panel aside — right for
-  records, costly for repairs.
-- **Beauty: what remains twice.** One roster, one retrieval layer, one run
-  frame, one config reader, one appender, one case lookup — done. Still
-  twice: the panel is called from its own script on its own HTTP path
-  beside the metered transport; `check` and `panel` live outside the CLI;
-  reconsideration (answering the panel's dissents) is an old script beside
-  `edition`; the maintenance scripts run on a second model client. Each of
-  these folds into the chain as the loop below closes, and the folding is
-  the subtraction step 5 promised — now with named candidates.
-- **Automation: on since 2026-09-09** (weekly cron; the first CI run,
-  #214, ran the owed edition, was judged 5 of 5 and merged). The bullet
-  below is the state before that run, kept as the record.
-- **Automation, before the first run: the loop exists and has not run itself.** `next` chooses
-  the case and the verb and has run three steps unattended in one sitting;
-  `chain.yml` runs it and opens the PR; the Arbiter is on and judges every
-  PR; a merge re-checks through the panel, and a contested standing
-  schedules its reconsideration. What has not happened: a Chain run in CI
-  (the one dispatch stopped at the pause guard), a content run the Arbiter
-  could read (it is now handed the run's own account), and the cron, still
-  commented while `governance/operation.yaml` says paused. The first
-  supervised CI run is the next step (docs/MAINTENANCE.md, "Running the
-  chain in CI").
+1. **Subtraction first (one set of PRs).** Delete the six disabled
+   workflows and the Maintain-era scripts, each retirement citing the verb
+   that replaced it; retire EXTRACTION_PIPELINE and CHAT_BRIEFS into three
+   sentences here; move superseded protocol versions to
+   `protocols/archive/`; split `load.ts` into loading, editions, standing
+   and views; fold the Arbiter's vendor calls into the pipeline's
+   transport; fold or drop the legacy content structures (conjectures into
+   claims or out; resources into sources; watch out; studies stay — they
+   are frozen-criteria evidence maps the articles cite). Subtract before
+   building, because the UI pass builds views over state and must not
+   build them over two states.
+2. **The UI pass, two layers.** The reading layer is the case page in the
+   order a reader needs: the question as it stands (with the restatement
+   note), the article, the map of the controversy (the edition's accounts
+   side by side, each with its linked claims and what would decide it),
+   the ladder with credibility and diagnosticity explained in place,
+   evidence symmetric, what would change our mind, the research agenda.
+   The record layer sits beneath, one component per concept: the runs on
+   this case (verb, date, cost, outcome), what was proposed and what was
+   refused and why, the panel's five words, the review notes, the history.
+   At site level, one `/operations` page replaces `/panel` and
+   `/proposals`: the operation state, spend against the caps, the
+   schedule and the next choice, recent sittings, Arbiter verdicts, open
+   review notes. The assessment panel above the article, the cross-model
+   panel and the conjecture cards go. AGENTS.md §7 is the brief: no
+   clutter, no unlabelled scores, terms explained where they appear,
+   mobile first.
+3. **The loop keeps running meanwhile** and does the crunch on its own:
+   the eight unreported cases, one a week, within the caps; the founder
+   drops essays when ready, Deep Memory among them.
+4. **After the UI pass:** verifier quality, driven by the refusals data
+   and the review notes; then Deep Memory from scratch as the test of a
+   case built from inputs alone.
 
 ### Build sequence — status
 
@@ -102,9 +94,9 @@ after it is unchanged.
 | 3b | The chain: `report` (two seats), `draft`, `verify`, `edition`; the budget guard; tariffs from price pages; one roster (`config/models.yaml`) | **Merged**. Protocols `draft-v2`, `verify-v2`, `edition-v2` after the first runs. |
 | 4a | First runs on Cast, Not Carved, both seats | **Done** (2026-09-08; #199, #200, #201). Evidence above and in DECISIONS. |
 | 4b | **Close the loop on one case.** (i) A correction writer: change one field of one record in place, bytes elsewhere untouched, with the history entry — so proposals' corrections apply. (ii) `check` behind the CLI on the metered transport with the roster's panel; each seat's raw reply kept beside its verdict; the Gemini seat's omitted claims fixed (contract or output room). (iii) `edition` carries the panel's dissents when standing is contested: the drafter answers them or holds, and a fresh blind check follows — reconsideration folded in, the old script retired. (iv) `aletheia next`: choose the case by staleness, saturation, and time since its last run; a weekly `chain` workflow runs report → draft → verify → edition for that case under budget and opens the PR; the Arbiter judges it; a passing edition is re-checked after merge. (v) The operation state — live or paused under the kill switch, and why — is a governance file the pages display. | **In progress** (2026-09-08/09): (i) correction writer built, the al-Ma'mun date applied; (ii) `check` behind the CLI on the metered transport, raw replies kept, one repair round, five seats installed on the corrected ledger; (iii) dissents carried into `edition`, reconsideration folded in, one `editionDue` rule — the first reconsideration ran on Cast, Not Carved and held `unresolved` while regrading the Egyptian instance; (iv) `aletheia next` and `chain.yml`, dispatch-only until the founder uncomments the schedule; (v) `governance/operation.yaml` displayed in the footer. Remaining: the Arbiter toggle. |
-| 4c | Breadth: a second existing case with PDF-heavy sources (YDIH or CCC) through the closed loop; then Deep Memory from the Birdmen inputs, from scratch | After 4b. |
-| 5 | Subtraction by evidence: the maintenance scripts (extract, inbox, watch, agenda, freeze, endorsements) fold into the chain or retire, each retirement citing the run that made it safe; ten workflows become a few; the changelog becomes a view | After 4c, with 4b's foldings as the first instances. |
-| 6 | Presentation: reading experience (current layout kept), then AI operation at case and global level — what ran, what it proposed, what was adopted or declined and why, what it cost, how standing derives; spend visibility and budgeting for the founder | Last. Views over state that exists. |
+| 4c | Breadth: the loop reaches the eight unreported cases on its own cadence; Deep Memory from the Birdmen inputs, from scratch | Running (weekly sittings since 2026-09-09); Deep Memory after the UI pass. |
+| 5 | Subtraction by evidence: six disabled workflows and the Maintain-era scripts retired, each citing the verb that replaced it; legacy docs folded; superseded protocols archived; `load.ts` split; one vendor transport; legacy content structures folded or dropped | **Next** (reassessment of 2026-09-09): before the UI pass. |
+| 6 | Presentation: the reading layer (question, article, map of the controversy, ladder, evidence, what would change our mind, agenda) and the record layer (runs, refusals, panel words, review notes, history) on the case page; `/operations` at site level | After 5; the brief is in "The plan, in order". |
 
 ### Two rules settled by the runs
 

@@ -40,22 +40,24 @@ models:
     cachedInputPerMTok: 0.4
     source: https://developers.openai.com/api/docs/pricing
     checked: "2026-09-08"
-  # --- the other panel seats: not yet read from a price page ---------------
+  # --- the other panel seats, read from their price pages on 2026-09-09 ------
   gemini-3.8-flash:
-    inputPerMTok: null
-    outputPerMTok: null
-    source: null
-    checked: null
+    inputPerMTok: 0.75            # paid tier through 2026-12-31; the page lists 1.50 from 2027-01-01 — re-read then
+    outputPerMTok: 3.75           # 7.50 from 2027-01-01
+    cachedInputPerMTok: 0.075     # 0.15 from 2027-01-01
+    source: https://ai.google.dev/gemini-api/docs/pricing
+    checked: "2026-09-09"
   grok-4.5:
-    inputPerMTok: null
-    outputPerMTok: null
-    source: null
-    checked: null
+    inputPerMTok: 2               # the under-200k-token context rate; a panel packet is ~60k tokens (the ≥200k rate is 4/12/0.60)
+    outputPerMTok: 6
+    cachedInputPerMTok: 0.3
+    source: https://docs.x.ai/docs/models
+    checked: "2026-09-09"
   z-ai-glm-5-3-flash:
-    inputPerMTok: null
-    outputPerMTok: null
-    source: null
-    checked: null
+    inputPerMTok: 0.15
+    outputPerMTok: 0.5
+    source: https://docs.venice.ai/overview/pricing
+    checked: "2026-09-09"
   # --- the legacy OpenAI chat model (scripts/lib/llm.mjs, only when no Anthropic key) --
   gpt-4o:
     inputPerMTok: null

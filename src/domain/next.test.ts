@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { loadOperation } from "./governance.ts";
 import { getCaseBySlug, loadAllCases } from "./load.ts";
-import { nextAction } from "../pipeline/next.ts";
+import { cadenceDays, nextAction } from "../pipeline/next.ts";
 import type { RunRecord } from "./intake.ts";
 
 const run = (over: Partial<RunRecord>): RunRecord => ({
@@ -66,6 +66,21 @@ describe("aletheia next", () => {
     expect(n2.verb).toBe("report");
     expect(n2.seat).toBe("openai"); // its last pass landed nothing (no `in` rows name that run)
     expect(nextAction(two.filter((c) => c.record.slug === a), runs, "2026-09-20", drafted).verb).toBe("rest");
+    // Two empty cycles: the cadence is 28 days, so 21 days is rest; at 30 days the house seat is back.
+    const quiet = [
+      ...runs.filter((r) => r.case === b),
+      run({ runId: `2026-08-15-report-${b}-000000`, case: b, date: "2026-08-15" }),
+      run({ runId: `2026-08-15-draft-${b}-010000`, verb: "draft", case: b, date: "2026-08-15" }),
+    ];
+    const quietDrafted = new Set([...drafted, `2026-08-15-report-${b}-000000`]);
+    const onlyB = two.filter((c) => c.record.slug === b);
+    expect(nextAction(onlyB, quiet, "2026-09-20", quietDrafted).verb).toBe("rest");
+    const later = nextAction(onlyB, quiet, "2026-09-29", quietDrafted);
+    expect(later).toMatchObject({ case: b, verb: "report", seat: "anthropic" });
+    expect(later.reason).toMatch(/2 pass\(es\) landed nothing, so the cadence is 28 days and the house seat looks/);
+    expect(cadenceDays(0)).toBe(7);
+    expect(cadenceDays(2)).toBe(14);
+    expect(cadenceDays(8)).toBe(90); // the ceiling
   });
 
   it("a reconsideration the fresh panel still contests rests until the ledger moves", async () => {

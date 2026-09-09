@@ -3,7 +3,7 @@ import os from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { getCaseBySlug, loadAllCases } from "./load.ts";
-import { assertWithinBudget, BudgetExceeded, estimateUsd, tokensFromChars } from "../pipeline/budget.ts";
+import { capsFor, loadBudget, assertWithinBudget, BudgetExceeded, estimateUsd, tokensFromChars } from "../pipeline/budget.ts";
 import { assembleProposal, urlsInReport, type DraftReply } from "../pipeline/draft.ts";
 import { assembleEdition, type EditionReply } from "../pipeline/edition.ts";
 import { stripHtml } from "../pipeline/fetch.ts";
@@ -14,10 +14,12 @@ import { readRuns } from "../pipeline/store.ts";
 import { judgeProposal, type VerifyReply } from "../pipeline/verify.ts";
 import type { FetchedSource } from "../pipeline/fetch.ts";
 
-const tmpRoot = () => {
+// The guard's tests carry their own ceiling: the committed one has a crunch and exemptions that move.
+const FIXTURE_BUDGET = `usd:\n  perRun: 20\n  perDay: 50\n  perMonth: 150\nexemptions:\n  - date: "2026-09-08"\n    perDay: 100\n    reason: "fixture: the first-runs day"\n    by: "test"\n`;
+const tmpRoot = (budget = FIXTURE_BUDGET) => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), "aletheia-chain-"));
   fs.mkdirSync(path.join(root, "config"));
-  fs.copyFileSync(path.join(process.cwd(), "config", "budget.yaml"), path.join(root, "config", "budget.yaml"));
+  fs.writeFileSync(path.join(root, "config", "budget.yaml"), budget);
   fs.copyFileSync(path.join(process.cwd(), "config", "tariffs.yaml"), path.join(root, "config", "tariffs.yaml"));
   return root;
 };
@@ -62,6 +64,20 @@ describe("the budget guard", () => {
       recordSpend({ date: `2026-09-1${i}`, runId: `m${i}`, verb: "report", case: "x", model: "m", calls: 1, inputTokens: 1, outputTokens: 1, usd: 19 }, root);
     }
     expect(() => assertWithinBudget(5, { runId: "r9", verb: "report", root, today: "2026-09-20" })).toThrow(/per-month cap/);
+  });
+
+  it("the crunch lifts the caps until its date, the standing caps return after, and a refusal names the phase", () => {
+    const root = tmpRoot(FIXTURE_BUDGET.replace("exemptions:", 'crunch:\n  until: "2026-09-30"\n  perDay: 80\n  perMonth: 400\n  reason: "fixture bootstrap"\n  by: "test"\nexemptions:'));
+    for (let i = 0; i < 6; i++) recordSpend({ date: "2026-09-21", runId: `c${i}`, verb: "report", case: "x", model: "m", calls: 1, inputTokens: 1, outputTokens: 1, usd: 10 }, root);
+    expect(assertWithinBudget(15, { runId: "r", verb: "report", root, today: "2026-09-21" })).toBe(15); // $60 + $15 under the crunch's $80
+    recordSpend({ date: "2026-09-21", runId: "c6", verb: "report", case: "x", model: "m", calls: 1, inputTokens: 1, outputTokens: 1, usd: 10 }, root);
+    expect(() => assertWithinBudget(15, { runId: "r", verb: "report", root, today: "2026-09-21" })).toThrow(/per-day cap.*crunch caps/); // $70 + $15 over it
+    for (let i = 0; i < 6; i++) recordSpend({ date: "2026-10-02", runId: `d${i}`, verb: "report", case: "x", model: "m", calls: 1, inputTokens: 1, outputTokens: 1, usd: 8 }, root);
+    expect(() => assertWithinBudget(5, { runId: "r", verb: "report", root, today: "2026-10-02" })).toThrow(/per-day cap.*standing caps/); // $48 + $5 over the standing $50
+    const budget = loadBudget(root);
+    expect(capsFor(budget, "2026-09-30").phase).toBe("crunch");
+    expect(capsFor(budget, "2026-10-01").phase).toBe("standing");
+    expect(capsFor(budget, "2026-09-08")).toMatchObject({ phase: "exemption", perDay: 100, perMonth: 400 }); // a day's grant inside the crunch keeps the crunch's month
   });
 });
 

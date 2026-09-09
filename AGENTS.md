@@ -141,7 +141,7 @@ This site is operated by AI as a declared experiment. AI performs discovery, ext
 No consequential change publishes on one model's unilateral judgment:
 
 - mechanical validity is enforced by fail-closed CI (schemas, dangling IDs, provenance completeness, real citations only);
-- editorial judgment on featured content requires ratification by multi-model concurrence — independent models from different vendors, judging against this constitution — or, for historical records, the human review they already carry;
+- editorial judgment on featured content requires ratification by multi-model concurrence — independent models from different vendors, judging against this constitution — or, for historical records, the human review they already carry. Concurrence is measured on the graded scale: a seat's case verdict within one step of the draft's concurs and two steps away disputes; "unresolved" and "presently untestable" stand between "weakly supported" and "mixed", one step from either and from each other; a load-bearing claim splits the panel when fewer than a majority of seats are within one step of the draft; and every seat's own word is displayed beside the standing, neighbours included. (Founder amendment, 2026-09-09 — see docs/DECISIONS.md.);
 - disagreement does not publish silently: contested changes are parked and displayed as contested.
 
 AI must never, inside or outside that process:

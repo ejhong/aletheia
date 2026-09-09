@@ -6,8 +6,18 @@
 # Deep Memory); revisit when the first unattended cadence is chosen.
 usd:
   perRun: 20      # one report or one edition; the first house-seat report cost $37.86 uncached, ~$13 is the cached estimate
-  perDay: 50
+  perDay: 30      # standing caps: the steady state — a settled case is searched on a cadence that doubles after each pass that lands nothing (7 → 90 days) and re-judged only when its ledger moves; these bound the system, they are not its plan
   perMonth: 150
+# The crunch: caps that hold until a date, then fall to the standing caps —
+# the bootstrap sweep (every case through the closed loop at least once,
+# founding essays taken in, panels re-judged) is the expensive part, and it
+# ends. Founder-granted, dated, reasoned; the founder moves the date.
+crunch:
+  until: "2026-10-31"
+  perDay: 60
+  perMonth: 400
+  reason: "Founder direction (2026-09-09, in session): the system may crunch at the start and must settle to almost no cost in steady state. The crunch is the bootstrap sweep; the standing caps above are the steady state."
+  by: "founder (direction in session, 2026-09-09)"
 # Dated exceptions to the daily cap, granted by the founder, on the record
 # and self-expiring. The guard uses the exemption's perDay on that date only.
 exemptions:

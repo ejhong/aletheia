@@ -26,6 +26,19 @@ const BudgetSchema = z.object({
    * way to spend past it: on the record, for one day, with a reason and a
    * name, self-expiring. Never an environment variable.
    */
+  /**
+   * The crunch: caps that hold until a date and then fall to the standing
+   * caps — the bootstrap is the expensive part, and it ends on the record.
+   */
+  crunch: z
+    .object({
+      until: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+      perDay: z.number().positive(),
+      perMonth: z.number().positive(),
+      reason: z.string().min(3),
+      by: z.string().min(1),
+    })
+    .optional(),
   exemptions: z
     .array(
       z.object({
@@ -40,6 +53,15 @@ const BudgetSchema = z.object({
     .default([]),
 });
 export type Budget = z.infer<typeof BudgetSchema>;
+
+/** The caps in force on a date: a dated exemption first, then the crunch while it lasts, then the standing caps. */
+export function capsFor(budget: Budget, today: string): { perRun: number; perDay: number; perMonth: number; phase: "exemption" | "crunch" | "standing" } {
+  const exemption = budget.exemptions.find((e) => e.date === today);
+  if (exemption) return { perRun: budget.usd.perRun, perDay: exemption.perDay, perMonth: exemption.perMonth ?? budget.crunch?.perMonth ?? budget.usd.perMonth, phase: "exemption" };
+  const crunch = budget.crunch && today <= budget.crunch.until ? budget.crunch : null;
+  if (crunch) return { perRun: budget.usd.perRun, perDay: crunch.perDay, perMonth: crunch.perMonth, phase: "crunch" };
+  return { perRun: budget.usd.perRun, perDay: budget.usd.perDay, perMonth: budget.usd.perMonth, phase: "standing" };
+}
 
 export function loadBudget(root = process.cwd()): Budget {
   return loadConfig("budget", BudgetSchema, { root, whyRequired: "no paid call runs without a ceiling" });
@@ -123,9 +145,7 @@ export function assertWithinBudget(estimate: number | null, ctx: BudgetContext):
   const budget = loadBudget(root);
   const today = ctx.today ?? isoDate();
   const month = today.slice(0, 7);
-  const exemption = budget.exemptions.find((e) => e.date === today);
-  const perDay = exemption ? exemption.perDay : budget.usd.perDay;
-  const perMonth = exemption?.perMonth ?? budget.usd.perMonth;
+  const { perDay, perMonth, phase } = capsFor(budget, today);
   const rows = readSpend(root);
   const sum = (pred: (r: (typeof rows)[number]) => boolean) =>
     rows.filter(pred).reduce((n, r) => n + (r.usd ?? 0), 0);
@@ -134,7 +154,7 @@ export function assertWithinBudget(estimate: number | null, ctx: BudgetContext):
   const mon = sum((r) => r.date.startsWith(month));
   const fail = (scope: string, spent: number, cap: number) =>
     new BudgetExceeded(
-      `${scope} cap: $${spent.toFixed(2)} spent + $${estimate.toFixed(2)} estimated > $${cap.toFixed(2)} (config/budget.yaml); nothing was sent`,
+      `${scope} cap: $${spent.toFixed(2)} spent + $${estimate.toFixed(2)} estimated > $${cap.toFixed(2)} (config/budget.yaml, ${phase} caps); nothing was sent`,
     );
   if (run + estimate > budget.usd.perRun) throw fail("per-run", run, budget.usd.perRun);
   if (day + estimate > perDay) throw fail("per-day", day, perDay);

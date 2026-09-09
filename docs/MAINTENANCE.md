@@ -69,6 +69,23 @@ node scripts/aletheia.ts next [--run] [--steps N]                 # what the led
 node scripts/aletheia.ts inbox <case> [--dry-run]                 # the founder's door as a producer: dropped items → one report for draft/verify
 ```
 
+**Running the chain in CI, supervised.** The workflow refuses to run while
+`governance/operation.yaml` says paused unless the dispatch says
+`even_if_paused`. To run one step by hand and watch it:
+
+```sh
+gh workflow run Chain -f steps=1 -f even_if_paused=true   # or Actions → Chain → Run workflow
+gh run watch                                              # ten to twenty minutes for an edition
+gh run view --log-failed                                  # if it fails, this is the reason
+```
+
+A completed run opens a PR named `Chain: <date>` (through MAINTENANCE_PAT,
+so the Arbiter and CI run on it); its run directory and spend rows are in
+the PR, and the Arbiter's report is on the PR. Merge it by hand while the
+operation is paused. When a step runs clean, run `steps=2`; when a week of
+that runs clean, set `state: live` and uncomment the cron — the founder's
+two toggles.
+
 **Two doors for a founder essay.** A document dropped with `role:
 founding_narrative` (or `founding_research`) in its sidecar is registered as
 a narrative input at intake — original and text extraction under
@@ -82,7 +99,8 @@ independently in the ledger.
 
 The loop, closed (docs/AUTOMATION.md, step 4b): `next` finishes a half-done
 chain first, then a due edition, then reports the case least recently
-reported (house seat; the second seat when the last pass landed nothing).
+reported (house seat; on a case whose passes land nothing the cadence
+doubles, 7 → 90 days, and the seats alternate).
 `.github/workflows/chain.yml` runs `next --run --steps N` and opens the PR
 the Arbiter judges; its schedule is a commented cron line — uncommenting it
 is the founder's act that lets the loop run itself — and it refuses to run
@@ -116,9 +134,13 @@ it:
   minutes. Run them detached (`nohup … &`, or a terminal that will not be
   closed) and read `run.yaml` afterwards; a tool or shell timeout that kills
   the process leaves the vendor's work running and unrecorded.
-- **The daily cap can be lifted for a day, on the record.** `config/budget.yaml`
-  takes dated `exemptions` (date, perDay, reason, by), granted by the founder;
-  the guard uses the exemption's cap on that date and the normal cap after.
+- **Budgets crunch, then settle.** `config/budget.yaml` has standing caps
+  (the steady state) and a dated `crunch` block whose higher caps hold until
+  its `until` date, then fall away — the bootstrap sweep is the expensive
+  part and it ends on the record; the founder moves the date. A single day
+  can still be lifted with a dated `exemptions` entry (date, perDay, reason,
+  by); the guard uses the exemption on that date, the crunch while it lasts,
+  and the standing caps after, and its refusal names which.
   There is no environment override — a grant that is not in the file did not
   happen.
 - **The guard is an estimate.** It cannot stop a single server turn once

@@ -1,8 +1,10 @@
 import { describe, expect, it } from "vitest";
 import {
   ARBITER_MIN_COMPLIES,
+  ACCOUNT_CAP,
   capDiff,
   CONTENT_MERGES_PER_WEEK,
+  runAccount,
   rateLimitGate,
   splitMergeLanes,
   tallyVerdict,
@@ -254,3 +256,39 @@ describe("splitMergeLanes", () => {
     expect(autonomous).toEqual(["a1"]);
   });
 });
+
+describe("runAccount — the run's own record, for a panel that cannot read the whole diff", () => {
+  const files: Record<string, string> = {
+    "proposals/r1/run.yaml": "runId: r1\nverb: verify\noutcome: completed\ncost:\n  usd: 14.9\n",
+    "proposals/r1/verification.md": "# Verification\n## Accepted\n- claim X-C1\n## Rejected\n- claim X-C2 (failed) — anchor page wrong\n",
+    "proposals/r1/reply.json": "{\"huge\": \"working material\"}",
+    "content/cases/x/editions/e2.yaml": "runId: e2\ndate: 2026-09-09\nmodel: m\npromptVersion: edition-v4\nprevious: e1\nrationale: the map changed\nfeaturedClaimIds:\n  - X-C1\ncruxOrder:\n  - X-R1\narticle: |\n  Three accounts side by side.\n",
+    "content/cases/x/history.yaml": "- date: 2026-09-09\n  change: intake\n",
+    "content/cases/x/assessments/2026-09-09-check-a.yaml": "model: Seat A\nrole: check\ncaseAssessment:\n  verdict: mixed\n  reasoning: The evidence cuts both ways here.\n",
+  };
+  const read = (p: string) => files[p] ?? null;
+  const diffOf = (p: string) => (p === "content/cases/x/history.yaml" ? "--- a\n+++ b\n-  change: old\n+- date: 2026-09-09\n+  change: intake\n" : "");
+  it("draws on the run records, the edition, the added history lines and the seats — never the working files", () => {
+    const { text, files: used } = runAccount(Object.keys(files), read, diffOf);
+    expect(used).toContain("proposals/r1/run.yaml");
+    expect(used).toContain("proposals/r1/verification.md");
+    expect(used).not.toContain("proposals/r1/reply.json");
+    expect(text).toMatch(/No model wrote this section/);
+    expect(text).toMatch(/usd: 14\.9/);
+    expect(text).toMatch(/anchor page wrong/);
+    expect(text).toMatch(/rationale: the map changed/);
+    expect(text).toMatch(/Three accounts side by side/);
+    expect(text).toMatch(/\+?- date: 2026-09-09\n  change: intake/);
+    expect(text).not.toMatch(/change: old/);
+    expect(text).toMatch(/case verdict: mixed/);
+    expect(text).not.toMatch(/working material/);
+  });
+  it("is empty for a change without runs, and clips a long article loudly", () => {
+    expect(runAccount(["src/x.ts", "docs/y.md"], read, diffOf)).toEqual({ text: "", files: [] });
+    const long: Record<string, string> = { ...files, "content/cases/x/editions/e2.yaml": files["content/cases/x/editions/e2.yaml"].replace("Three accounts side by side.", "x".repeat(50_000)) };
+    const { text } = runAccount(Object.keys(long), (p: string) => long[p] ?? null, diffOf);
+    expect(text).toMatch(/\[… article: 500\d more characters not shown\]/);
+    expect(text.length).toBeLessThanOrEqual(ACCOUNT_CAP + 100);
+  });
+});
+

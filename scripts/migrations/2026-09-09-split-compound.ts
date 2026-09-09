@@ -15,7 +15,7 @@ import path from "node:path";
 import { parse as parseYaml } from "yaml";
 import { getCaseBySlug } from "../../src/domain/load.ts";
 import { appendHistory, appendRecords, setField } from "../../src/pipeline/ledger-write.ts";
-import { defaultJudge, defaultSplitter, nextClaimId, suppliedTexts } from "../../src/pipeline/verify.ts";
+import { asSplit, defaultJudge, defaultSplitter, nextClaimId, suppliedTexts } from "../../src/pipeline/verify.ts";
 import { newRunId } from "../../src/pipeline/store.ts";
 import { MODELS } from "../lib/models.mjs";
 
@@ -46,7 +46,8 @@ for (const c of targets) {
   const ctx = `Case question: ${loaded.record.subtitle}. Does the anchored passage support the proposition as stated?`;
   const v = await defaultJudge({ statement: c.statement, anchor: c.sourceAnchor }, text, ctx, meter);
   if (v.atomic !== false) continue;
-  const parts = await defaultSplitter(c.statement, text, meter);
+  const sp = asSplit(await defaultSplitter(c.statement, text, meter));
+  const parts = sp.parts;
   const kept: string[] = [];
   for (const part of parts) {
     const v2 = await defaultJudge({ statement: part, anchor: c.sourceAnchor }, text, ctx, meter);
@@ -55,7 +56,7 @@ for (const c of targets) {
     const id = nextClaimId(loaded, taken);
     taken.add(id);
     // The part's wording is the splitter's, in this run: its origin says so and points back at the compound.
-    appendRecords(loaded.dir, "claims.yaml", [{ ...c, id, statement: part, origin: { ref: `split of ${c.id} (${c.origin.ref})`, extractedBy: MODELS.house.model, runId, date } }]);
+    appendRecords(loaded.dir, "claims.yaml", [{ ...c, id, statement: part, origin: { ref: `split of ${c.id} (${c.origin.ref})`, extractedBy: sp.model ?? MODELS.house.model, runId: sp.runId ?? runId, date } }]);
     kept.push(id);
     added.push({ id, from: c.id, statement: part });
   }

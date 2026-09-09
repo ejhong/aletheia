@@ -608,7 +608,7 @@ describe("verify remembers its judgments", () => {
     const b = await j1({ id: "E1" }, "text", "ctx", meter);
     await j1({ id: "E2" }, "text", "ctx", meter);
     expect(asked).toBe(2);
-    expect(a).toEqual(b);
+    expect(b).toEqual({ ...a, remembered: { runId: "r", date: expect.stringMatching(/^\d{4}-\d\d-\d\d$/) } }); // the reuse says which run answered
     // A fresh verifier over the same proposal directory does not ask again.
     const j2 = rememberedJudge(base, path.join(dir, "judgments.yaml"), "reader");
     expect((await j2({ id: "E1" }, "text", "ctx", meter)).reason).toBe("answer 1");
@@ -618,8 +618,15 @@ describe("verify remembers its judgments", () => {
     expect(asked).toBe(3);
     let splits = 0;
     const s1 = rememberedSplitter(async (st) => (splits++, st.split(" and ")), path.join(dir, "splits.yaml"), "m");
-    expect(await s1("a and b", "t", meter)).toEqual(["a", "b"]);
-    expect(await s1("a and b", "t", meter)).toEqual(["a", "b"]);
+    expect((await s1("a and b", "t", meter) as { parts: string[] }).parts).toEqual(["a", "b"]);
+    // Reused, the parts carry the run that wrote them, not the run that reused them.
+    const again = await s1("a and b", "t", { ...meter, runId: "later" }) as { parts: string[]; runId?: string };
+    expect(again.parts).toEqual(["a", "b"]);
+    expect(again.runId).toBe("r");
     expect(splits).toBe(1);
+    // A remembered judgment says which run answered; a different protocol is a different question.
+    expect((await j2({ id: "E1" }, "text", "ctx", { ...meter, runId: "later" })).remembered).toEqual({ runId: "r", date: expect.stringMatching(/^\d{4}-\d\d-\d\d$/) });
+    await rememberedJudge(base, path.join(dir, "judgments.yaml"), "reader", "verify-v0")({ id: "E1" }, "text", "ctx", meter);
+    expect(asked).toBe(4);
   });
 });

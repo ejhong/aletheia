@@ -1447,4 +1447,12 @@ dependencies, alternatives and contradictions (now: a part keeps its
 parents — its place in the ladder — and its anchor, and the compound's
 relations are dropped and named, each part's own to propose; the
 migration's fan-out of such links on the ledger was dropped the same way by
-`2026-09-09-links-by-part.ts`, its history entry naming each one).
+`2026-09-09-links-by-part.ts`, its history entry naming each one). A
+fourth round found the remembered-judgment cache stamping a reused answer
+with the reusing run (now: an entry keeps the model, protocol, run and date
+that answered; a reuse says so on the record, a split part's origin names
+the run that wrote it, and a judgment under an earlier protocol is not an
+answer to the current one) and the permission record asserting a grant
+date it had not read (now: the statement's own date or "carries no date",
+with the intake date as the recording date; a `license:` line rides
+inside the record as the supplier's terms rather than replacing it).

@@ -60,6 +60,8 @@ export interface VerifyReply {
   relevant: boolean;
   /** One proposition with one truth condition (§3.2); a compound claim is split, not admitted. Absent means true. */
   atomic?: boolean;
+  /** Set when the answer was remembered from an earlier run rather than asked now. */
+  remembered?: { runId: string; date: string };
   reason: string;
 }
 
@@ -71,7 +73,16 @@ export const SPLIT_SCHEMA: Record<string, unknown> = {
 };
 
 /** Split a compound claim into the propositions its anchor states (protocol split-v1). */
-export type Splitter = (statement: string, anchorText: string, meter: Meter) => Promise<string[]>;
+/** The parts of a split claim, with who wrote them and in which run — an injected splitter may return the bare parts. */
+export interface SplitResult {
+  parts: string[];
+  model?: string;
+  protocol?: string;
+  runId?: string;
+  date?: string;
+}
+export type Splitter = (statement: string, anchorText: string, meter: Meter) => Promise<string[] | SplitResult>;
+export const asSplit = (r: string[] | SplitResult): SplitResult => (Array.isArray(r) ? { parts: r } : r);
 
 export const defaultSplitter: Splitter = async (statement, anchorText, meter) => {
   const protocol = loadProtocol("split");
@@ -79,7 +90,7 @@ export const defaultSplitter: Splitter = async (statement, anchorText, meter) =>
     { ...MODELS.house, system: renderProtocol(protocol, {}), user: JSON.stringify({ statement, anchorText }, null, 1), schema: SPLIT_SCHEMA, maxTokens: 4000, effort: "low", timeoutMs: 240_000 },
     meter,
   );
-  return r.data.parts.map((p) => p.trim()).filter((p) => p.length > 10);
+  return { parts: r.data.parts.map((p) => p.trim()).filter((p) => p.length > 10), model: r.model ?? MODELS.house.model, protocol: protocol.version, runId: meter.runId, date: isoDate() };
 };
 
 /**
@@ -90,29 +101,50 @@ export const defaultSplitter: Splitter = async (statement, anchorText, meter) =>
  * when the month's cap stopped a run mid-way). What was judged is also part
  * of the record.
  */
-export function rememberedJudge(judge: Judge, file: string, readerModel: string): Judge {
-  const memory: Record<string, VerifyReply> = fs.existsSync(file) ? ((parseYaml(fs.readFileSync(file, "utf8")) as Record<string, VerifyReply>) ?? {}) : {};
+/** A remembered answer keeps the provenance of the run that made it; a reused one says so (§3.14, §3.15). */
+interface Remembered<T> {
+  model: string;
+  protocol: string;
+  runId: string;
+  date: string;
+  answer: T;
+}
+function readMemory<T>(file: string): Record<string, Remembered<T>> {
+  if (!fs.existsSync(file)) return {};
+  const raw = (parseYaml(fs.readFileSync(file, "utf8")) as Record<string, Remembered<T> | unknown>) ?? {};
+  // An entry without provenance (the first cache format) is not reused: the question is asked again.
+  return Object.fromEntries(Object.entries(raw).filter(([, v]) => v && typeof v === "object" && "answer" in (v as object) && "runId" in (v as object))) as Record<string, Remembered<T>>;
+}
+function writeMemory<T>(file: string, memory: Record<string, Remembered<T>>): void {
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  fs.writeFileSync(file, stringifyYaml(memory, { lineWidth: 0 }));
+}
+
+export function rememberedJudge(judge: Judge, file: string, readerModel: string, protocol = loadProtocol("verify").version): Judge {
+  const memory = readMemory<VerifyReply>(file);
   return async (record, sourceText, context, meter) => {
-    const key = sha256Hex(canonicalJson({ record, context, sourceText, readerModel }));
-    if (memory[key]) return memory[key];
+    // The protocol is part of the question: a judgment under an earlier protocol does not answer the current one.
+    const key = sha256Hex(canonicalJson({ record, context, sourceText, readerModel, protocol }));
+    const had = memory[key];
+    if (had) return { ...had.answer, remembered: { runId: had.runId, date: had.date } };
     const reply = await judge(record, sourceText, context, meter);
-    memory[key] = reply;
-    fs.mkdirSync(path.dirname(file), { recursive: true });
-    fs.writeFileSync(file, stringifyYaml(memory, { lineWidth: 0 }));
+    memory[key] = { model: readerModel, protocol, runId: meter.runId, date: isoDate(), answer: reply };
+    writeMemory(file, memory);
     return reply;
   };
 }
 
-export function rememberedSplitter(split: Splitter, file: string, model: string): Splitter {
-  const memory: Record<string, string[]> = fs.existsSync(file) ? ((parseYaml(fs.readFileSync(file, "utf8")) as Record<string, string[]>) ?? {}) : {};
+export function rememberedSplitter(split: Splitter, file: string, model: string, protocol = loadProtocol("split").version): Splitter {
+  const memory = readMemory<string[]>(file);
   return async (statement, anchorText, meter) => {
-    const key = sha256Hex(canonicalJson({ statement, anchorText, model }));
-    if (memory[key]) return memory[key];
-    const parts = await split(statement, anchorText, meter);
-    memory[key] = parts;
-    fs.mkdirSync(path.dirname(file), { recursive: true });
-    fs.writeFileSync(file, stringifyYaml(memory, { lineWidth: 0 }));
-    return parts;
+    const key = sha256Hex(canonicalJson({ statement, anchorText, model, protocol }));
+    const had = memory[key];
+    if (had) return { parts: had.answer, model: had.model, protocol: had.protocol, runId: had.runId, date: had.date };
+    const r = asSplit(await split(statement, anchorText, meter));
+    const entry = { model: r.model ?? model, protocol: r.protocol ?? protocol, runId: r.runId ?? meter.runId, date: r.date ?? isoDate(), answer: r.parts };
+    memory[key] = entry;
+    writeMemory(file, memory);
+    return { parts: entry.answer, model: entry.model, protocol: entry.protocol, runId: entry.runId, date: entry.date };
   };
 }
 
@@ -221,6 +253,8 @@ export async function judgeProposal(
 ): Promise<Verdicts> {
   const rejected: Verdicts["rejected"] = [];
   const notes: string[] = [];
+  /** Who judged and when — the run that answered, when the answer was remembered. */
+  const readerStamp = (v: VerifyReply) => (v.remembered ? `${reader.model}, ${v.remembered.date}, run ${v.remembered.runId}` : `${reader.model}, ${reader.date}`);
   /** Compound claims replaced by their parts, for evidence that cited them. */
   const splitInto = new Map<string, string[]>();
   const reject = (id: string, kind: Disposition["kind"], observed: string, reason: string, blocked = false, route?: string) =>
@@ -279,7 +313,7 @@ export async function judgeProposal(
     }
     if (flags.includes("directionRight")) {
       notes.push(`${e.id}: admitted with the second reader's dissent on direction`);
-      okEvidence.push({ ...e, limitations: [...e.limitations, `Second reader (${reader.model}, ${reader.date}) disputes the stated direction: ${verdict.reason}`] });
+      okEvidence.push({ ...e, limitations: [...e.limitations, `Second reader (${readerStamp(verdict)}) disputes the stated direction: ${verdict.reason}`] });
       continue;
     }
     okEvidence.push(e);
@@ -310,15 +344,15 @@ export async function judgeProposal(
         }
         if (verdict.atomic === false) {
           // One split round (§3.2): the drafter divides the statement; each part is judged on the same anchor.
-          const parts = await split(c.statement, fetched.text, meter);
+          const sp = asSplit(await split(c.statement, fetched.text, meter));
           const admitted: Claim[] = [];
-          for (const part of parts) {
+          for (const part of sp.parts) {
             const id = nextClaimId(loaded, [...proposal.adds.claims.map((k) => k.id), ...okClaims.map((k) => k.id), ...admitted.map((k) => k.id)]);
             // The part's wording is the splitter's, not the drafter's: its origin says so.
             // A part keeps the compound's place in the ladder (its parents) and its anchor; the compound's
             // dependencies, alternatives and contradictions are the compound's, not each part's, and are
             // not carried over (§3.2) — said aloud below so a later pass can propose them per part.
-            const candidate: Claim = { ...c, id, statement: part, dependsOnClaimIds: [], alternativeToClaimIds: [], contradictsClaimIds: [], origin: { ref: `split of ${c.id} (${c.origin.ref})`, extractedBy: splitter.model, runId: splitter.runId, date: reader.date } };
+            const candidate: Claim = { ...c, id, statement: part, dependsOnClaimIds: [], alternativeToClaimIds: [], contradictsClaimIds: [], origin: { ref: `split of ${c.id} (${c.origin.ref})`, extractedBy: sp.model ?? splitter.model, runId: sp.runId ?? splitter.runId, date: sp.date ?? reader.date } };
             const v2 = await judge({ statement: part, anchor: c.sourceAnchor }, fetched.text, anchorContext, meter);
             const bad = Object.entries(v2).filter(([k, v]) => k !== "reason" && v === false && k !== "independenceNoted" && k !== "directionRight").map(([k]) => k);
             if (bad.length) {
@@ -367,7 +401,7 @@ export async function judgeProposal(
           notes.push(`${e.id} does not bear on ${pid} (part of ${id}): ${v.reason}`);
           continue;
         }
-        if (v.directionRight === false) dissents.push(`Second reader (${reader.model}, ${reader.date}) disputes the stated direction toward ${pid}: ${v.reason}`);
+        if (v.directionRight === false) dissents.push(`Second reader (${readerStamp(v)}) disputes the stated direction toward ${pid}: ${v.reason}`);
         kept.push(pid);
       }
     }

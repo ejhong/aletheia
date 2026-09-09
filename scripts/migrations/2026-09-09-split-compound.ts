@@ -60,6 +60,24 @@ for (const c of targets) {
   rejected.push({ id: c.id, reason: v.reason, parts: kept });
   console.error(`${c.id}: not atomic — ${kept.length} part(s): ${kept.join(", ")}`);
 }
+// Claims that linked to a compound claim (parent, dependency, alternative, contradiction) now link to its parts (tombstones must not be linked).
+const claimsFile = path.join("content", "cases", loaded.dir, "claims.yaml");
+const allClaims = parseYaml(fs.readFileSync(claimsFile, "utf8")) as ({ id: string; reviewState: string } & Record<string, unknown>)[];
+const partsOf = new Map(rejected.map((r) => [r.id, r.parts]));
+for (const c of allClaims) {
+  // tombstones included: a tombstone may not link to a tombstone either
+  for (const f of ["parentClaimIds", "dependsOnClaimIds", "alternativeToClaimIds", "contradictsClaimIds"]) {
+    const cur = c[f];
+    if (!Array.isArray(cur) || !cur.some((id) => partsOf.has(id as string))) continue;
+    setField(claimsFile, c.id, f, cur, [...new Set((cur as string[]).flatMap((id) => partsOf.get(id) ?? [id]))]);
+  }
+}
+// Research items that would move a compound claim now name its parts.
+const researchFile = path.join("content", "cases", loaded.dir, "research.yaml");
+for (const r of parseYaml(fs.readFileSync(researchFile, "utf8")) as { id: string; claimIds: string[] }[]) {
+  if (!r.claimIds.some((id) => partsOf.has(id))) continue;
+  setField(researchFile, r.id, "claimIds", r.claimIds, [...new Set(r.claimIds.flatMap((id) => partsOf.get(id) ?? [id]))]);
+}
 // Evidence that cited a compound claim now cites its parts.
 const evFile = path.join("content", "cases", loaded.dir, "evidence.yaml");
 const evidence = parseYaml(fs.readFileSync(evFile, "utf8")) as { id: string; claimIds: string[] }[];

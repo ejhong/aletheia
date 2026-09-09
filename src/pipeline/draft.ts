@@ -95,7 +95,7 @@ export const DRAFT_SCHEMA: Record<string, unknown> = {
       items: {
         type: "object",
         additionalProperties: false,
-        required: ["provisionalId", "statement", "theme", "rung", "claimType", "sourceAnchor", "parentClaimRefs", "dependsOnClaimRefs"],
+        required: ["provisionalId", "statement", "theme", "rung", "claimType", "sourceAnchor", "parentClaimRefs", "dependsOnClaimRefs", "alternativeToRefs", "contradictsRefs"],
         properties: {
           provisionalId: { type: "string" },
           statement: { type: "string" },
@@ -116,6 +116,8 @@ export const DRAFT_SCHEMA: Record<string, unknown> = {
           },
           parentClaimRefs: { type: "array", items: { type: "string" } },
           dependsOnClaimRefs: { type: "array", items: { type: "string" } },
+          alternativeToRefs: { type: "array", items: { type: "string" } },
+          contradictsRefs: { type: "array", items: { type: "string" } },
         },
       },
     },
@@ -145,7 +147,7 @@ export const DRAFT_SCHEMA: Record<string, unknown> = {
         properties: {
           record: { type: "string" },
           field: { type: "string" },
-          from: { type: "string" },
+          from: { type: ["string", "null"] },
           to: { type: "string" },
           reason: { type: "string" },
         },
@@ -217,6 +219,8 @@ export interface DraftReply {
     sourceAnchor: { sourceRef: string; locator: string; quote: string } | null;
     parentClaimRefs: string[];
     dependsOnClaimRefs: string[];
+    alternativeToRefs: string[];
+    contradictsRefs: string[];
   }[];
   research: {
     provisionalId: string;
@@ -227,7 +231,7 @@ export interface DraftReply {
     effortTier: string;
     informationGain: string;
   }[];
-  corrections: { record: string; field: string; from: string; to: string; reason: string }[];
+  corrections: { record: string; field: string; from: string | null; to: string; reason: string }[];
   dispositions: {
     kind: Disposition["kind"];
     disposition: Exclude<Disposition["disposition"], "in">;
@@ -457,6 +461,11 @@ export function assembleProposal(reply: DraftReply, ctx: AssembleContext): Assem
         : undefined,
       parentClaimIds: c.parentClaimRefs.map(resolve).filter((x): x is string => Boolean(x)),
       dependsOnClaimIds: c.dependsOnClaimRefs.map(resolve).filter((x): x is string => Boolean(x)),
+      ...(() => {
+        const alt = (c.alternativeToRefs ?? []).map(resolve).filter((x): x is string => Boolean(x));
+        const con = (c.contradictsRefs ?? []).map(resolve).filter((x): x is string => Boolean(x));
+        return { ...(alt.length ? { alternativeToClaimIds: alt } : {}), ...(con.length ? { contradictsClaimIds: con } : {}) };
+      })(),
       reviewState: "ai_extracted",
       origin,
     };
@@ -632,8 +641,10 @@ export function assembleProposal(reply: DraftReply, ctx: AssembleContext): Assem
 export type Drafter = (system: string, user: string, meter: Meter) => Promise<{ data: DraftReply; model: string; strict?: boolean }>;
 
 export const defaultDrafter: Drafter = async (system, user, meter) => {
-  // A pass with several retrieved papers proposes more than 32k tokens carry (2026-09-08: truncated at 32k).
-  const r = await anthropicJson<DraftReply>({ ...DRAFTER, system, user, schema: DRAFT_SCHEMA, maxTokens: 64000 }, meter);
+  // Extraction, not deliberation: medium effort leaves the allowance to the records. A pass with several
+  // retrieved papers proposes more than 32k tokens carry (2026-09-08), and more than 64k with adaptive
+  // thinking sharing the allowance (2026-09-09, the OpenAI report plus full PDF texts): 128k.
+  const r = await anthropicJson<DraftReply>({ ...DRAFTER, system, user, schema: DRAFT_SCHEMA, maxTokens: 128000, effort: "medium" }, meter);
   return { data: r.data, model: r.model, strict: r.strict };
 };
 

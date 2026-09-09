@@ -155,6 +155,12 @@ function checkIntegrity(caseDir: string, loaded: LoadedCase): void {
     for (const did of claim.dependsOnClaimIds) {
       requireLiveClaim(did, `claim ${claim.id} dependsOn`);
     }
+    for (const aid of claim.alternativeToClaimIds ?? []) {
+      requireLiveClaim(aid, `claim ${claim.id} dependsOn`);
+    }
+    for (const cid of claim.contradictsClaimIds ?? []) {
+      requireLiveClaim(cid, `claim ${claim.id} dependsOn`);
+    }
     const anchorSourceId = claim.sourceAnchor?.sourceId;
     if (anchorSourceId && !sourceIds.has(anchorSourceId)) {
       throw new ContentError(

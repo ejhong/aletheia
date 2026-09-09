@@ -31,6 +31,8 @@ const BudgetSchema = z.object({
       z.object({
         date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
         perDay: z.number().positive(),
+        /** The month's cap as it stands on that date, when the grant lifts it too. */
+        perMonth: z.number().positive().optional(),
         reason: z.string().min(3),
         by: z.string().min(1),
       }),
@@ -123,6 +125,7 @@ export function assertWithinBudget(estimate: number | null, ctx: BudgetContext):
   const month = today.slice(0, 7);
   const exemption = budget.exemptions.find((e) => e.date === today);
   const perDay = exemption ? exemption.perDay : budget.usd.perDay;
+  const perMonth = exemption?.perMonth ?? budget.usd.perMonth;
   const rows = readSpend(root);
   const sum = (pred: (r: (typeof rows)[number]) => boolean) =>
     rows.filter(pred).reduce((n, r) => n + (r.usd ?? 0), 0);
@@ -135,6 +138,6 @@ export function assertWithinBudget(estimate: number | null, ctx: BudgetContext):
     );
   if (run + estimate > budget.usd.perRun) throw fail("per-run", run, budget.usd.perRun);
   if (day + estimate > perDay) throw fail("per-day", day, perDay);
-  if (mon + estimate > budget.usd.perMonth) throw fail("per-month", mon, budget.usd.perMonth);
+  if (mon + estimate > perMonth) throw fail("per-month", mon, perMonth);
   return estimate;
 }

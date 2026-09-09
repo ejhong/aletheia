@@ -169,6 +169,8 @@ const draftReply = (over: Partial<DraftReply> = {}): DraftReply => ({
       sourceAnchor: { sourceRef: "S1", locator: "Results", quote: "completely disintegrated the granite" },
       parentClaimRefs: [],
       dependsOnClaimRefs: [],
+      alternativeToRefs: [],
+      contradictsRefs: [],
     },
     {
       provisionalId: "C2",
@@ -179,6 +181,8 @@ const draftReply = (over: Partial<DraftReply> = {}): DraftReply => ({
       sourceAnchor: null,
       parentClaimRefs: [],
       dependsOnClaimRefs: [],
+      alternativeToRefs: [],
+      contradictsRefs: [],
     },
   ],
   research: [
@@ -323,7 +327,8 @@ describe("assembling an edition", () => {
     expect(edition.basis.ledgerHash).toBe(c.ledgerHash);
   });
 
-  it("dropping a plate, featuring an unknown claim, or unfeaturing a load-bearing claim is refused", () => {
+  // Three edition assemblies read every founding input, the essay extraction included; CI runners are slow.
+  it("dropping a plate, featuring an unknown claim, or unfeaturing a load-bearing claim is refused", { timeout: 60_000 }, () => {
     const c = geo();
     const incumbent = c.editions.at(-1)!;
     const noPlates = assembleEdition(c, editionReply({ article: incumbent.article.replace(/^\{plate:[^}]+\}$/gm, "") }), ctx);
@@ -520,5 +525,89 @@ describe("urls in a report", () => {
   it("keeps balanced parentheses inside a DOI and drops sentence punctuation", () => {
     const urls = urlsInReport("see (https://doi.org/10.1016/s0305-7372(96)90023-7) and https://x.test/a). Also https://y.test/b, then https://doi.org/10.1000/plain.");
     expect(urls).toEqual(["https://doi.org/10.1016/s0305-7372(96)90023-7", "https://x.test/a", "https://y.test/b", "https://doi.org/10.1000/plain"]);
+  });
+});
+
+describe("verify: links to rejected claims", () => {
+  it("an admitted claim loses a parent the reader rejected, and says so", async () => {
+    const { judgeProposal } = await import("../pipeline/verify.ts");
+    const c = geo();
+    const src = c.sources.find((s) => s.url)!;
+    const claim = (id: string, statement: string, parents: string[]) => ({
+      id, statement, theme: Object.keys(c.record.themes)[0], rung: "observation", claimType: null, sourceAnchor: { sourceId: src.id, locator: "p. 1", quote: "twelve words that certainly do occur in this text" },
+      parentClaimIds: parents, dependsOnClaimIds: [], reviewState: "ai_extracted", origin: { ref: "test", extractedBy: "m", runId: "r", date: "2026-09-08" },
+    });
+    const proposal = {
+      runId: "2026-09-09-draft-megalithic-casting-000002", case: c.record.slug, report: null, date: "2026-09-09", model: "m", promptVersion: "draft-v4",
+      basis: { ledgerHash: c.ledgerHash }, rationale: "test",
+      adds: { sources: [], evidence: [], claims: [claim("GEO-C990", "A parent the reader will reject.", []), claim("GEO-C991", "A child whose parent falls.", ["GEO-C990"])], research: [], images: [] },
+      corrections: [], dispositions: [], edition: null,
+    } as never;
+    const texts = new Map([[src.url!, { url: src.url!, ok: true, status: 200, contentType: "text/html", text: "… twelve words that certainly do occur in this text …" }]]);
+    const yes = { quoteInContext: true, statementSupported: true, locatorSupported: true, directionRight: true, independenceNoted: true, relevant: true, reason: "fine" };
+    let n = 0;
+    const judge = async () => (n++ === 0 ? { ...yes, relevant: false, reason: "not this case" } : yes); // the first anchor judged (GEO-C990) is refused
+    const v = await judgeProposal(proposal, c, texts, new Map(), judge, { runId: "r", verb: "verify", case: c.record.slug });
+    expect(v.rejected.map((r) => r.id)).toEqual(["GEO-C990"]);
+    expect(v.accepted.claims.map((k) => k.id)).toEqual(["GEO-C991"]);
+    expect(v.accepted.claims[0].parentClaimIds).toEqual([]);
+    expect(v.notes.some((x) => /GEO-C991: names GEO-C990 .* dropped/.test(x))).toBe(true);
+  });
+});
+
+describe("verify v3: atomicity", () => {
+  it("a compound claim is split by the drafter, each part judged on the same anchor, and evidence re-pointed", async () => {
+    const { judgeProposal } = await import("../pipeline/verify.ts");
+    const c = geo();
+    const src = c.sources.find((s) => s.url)!;
+    const compound = {
+      id: "GEO-C990", statement: "Salt is halite and it re-forms within two years of cleaning.", theme: Object.keys(c.record.themes)[0], rung: "observation", claimType: null,
+      sourceAnchor: { sourceId: src.id, locator: "p. 1", quote: "twelve words that certainly do occur in this text" },
+      parentClaimIds: [], dependsOnClaimIds: [], alternativeToClaimIds: [], contradictsClaimIds: [], reviewState: "ai_extracted", origin: { ref: "test", extractedBy: "m", runId: "r", date: "2026-09-09" },
+    };
+    const evidence = {
+      id: "GEO-E990", title: "cites the compound claim", sourceId: src.id, claimIds: ["GEO-C990"], direction: "supports", strength: "weak",
+      sourceStatement: 'The page says "twelve words that certainly do occur in this text" here.', exactLocator: "p. 1", limitations: [], reviewState: "ai_extracted", origin: { ref: "test", extractedBy: "m", runId: "r", date: "2026-09-09" },
+    };
+    const proposal = { runId: "2026-09-09-draft-megalithic-casting-000003", case: c.record.slug, report: null, date: "2026-09-09", model: "m", promptVersion: "draft-v5", basis: { ledgerHash: c.ledgerHash }, rationale: "test",
+      adds: { sources: [], evidence: [evidence], claims: [compound], research: [], images: [] }, corrections: [], dispositions: [], edition: null } as never;
+    const texts = new Map([[src.url!, { url: src.url!, ok: true, status: 200, contentType: "text/html", text: "… twelve words that certainly do occur in this text …" }]]);
+    const yes = { quoteInContext: true, statementSupported: true, locatorSupported: true, directionRight: true, independenceNoted: true, relevant: true, atomic: true, reason: "fine" };
+    const judge = async (record: unknown) => ((record as { statement?: string }).statement?.includes(" and ") ? { ...yes, atomic: false, reason: "two propositions" } : yes);
+    const split = async (statement: string) => statement.split(" and ").map((s) => s.replace(/\.$/, "") + ".");
+    const v = await judgeProposal(proposal, c, texts, new Map(), judge, { runId: "r", verb: "verify", case: c.record.slug }, { model: "reader", date: "2026-09-09" }, split);
+    expect(v.rejected.map((r) => r.id)).toEqual(["GEO-C990"]);
+    expect(v.rejected[0].reason).toMatch(/not atomic .* split into GEO-C\d+, GEO-C\d+/);
+    expect(v.accepted.claims.map((k) => k.statement)).toEqual(["Salt is halite.", "it re-forms within two years of cleaning."]);
+    expect(v.accepted.claims.every((k) => k.sourceAnchor?.quote === compound.sourceAnchor.quote)).toBe(true);
+    expect(v.accepted.evidence[0].claimIds).toEqual(v.accepted.claims.map((k) => k.id)); // re-pointed from the compound to its parts
+  });
+});
+
+describe("verify remembers its judgments", () => {
+  it("asks the reader once per question and reuses the answer on a re-run", async () => {
+    const { rememberedJudge, rememberedSplitter } = await import("../pipeline/verify.ts");
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "aletheia-judg-"));
+    let asked = 0;
+    const base = async () => (asked++, { quoteInContext: true, statementSupported: true, locatorSupported: true, directionRight: true, independenceNoted: true, relevant: true, atomic: true, reason: `answer ${asked}` });
+    const meter = { runId: "r", verb: "verify" as const, case: "x" };
+    const j1 = rememberedJudge(base, path.join(dir, "judgments.yaml"), "reader");
+    const a = await j1({ id: "E1" }, "text", "ctx", meter);
+    const b = await j1({ id: "E1" }, "text", "ctx", meter);
+    await j1({ id: "E2" }, "text", "ctx", meter);
+    expect(asked).toBe(2);
+    expect(a).toEqual(b);
+    // A fresh verifier over the same proposal directory does not ask again.
+    const j2 = rememberedJudge(base, path.join(dir, "judgments.yaml"), "reader");
+    expect((await j2({ id: "E1" }, "text", "ctx", meter)).reason).toBe("answer 1");
+    expect(asked).toBe(2);
+    // A different reader is a different question.
+    await rememberedJudge(base, path.join(dir, "judgments.yaml"), "other")({ id: "E1" }, "text", "ctx", meter);
+    expect(asked).toBe(3);
+    let splits = 0;
+    const s1 = rememberedSplitter(async (st) => (splits++, st.split(" and ")), path.join(dir, "splits.yaml"), "m");
+    expect(await s1("a and b", "t", meter)).toEqual(["a", "b"]);
+    expect(await s1("a and b", "t", meter)).toEqual(["a", "b"]);
+    expect(splits).toBe(1);
   });
 });

@@ -7,7 +7,10 @@ import { runCheck } from "./check.ts";
 import { runDraft } from "./draft.ts";
 import { editionDue, runEdition } from "./edition.ts";
 import { runReport, type ResearchSeat } from "./report.ts";
-import { readRuns, type RunOutcome } from "./store.ts";
+import fs from "node:fs";
+import path from "node:path";
+import { parse as parseYaml } from "yaml";
+import { readProposal, readRuns, runDir, type RunOutcome } from "./store.ts";
 import { runVerify } from "./verify.ts";
 
 /**
@@ -16,18 +19,19 @@ import { runVerify } from "./verify.ts";
  *
  *  1. Finish what is half done: a completed report with no draft after it,
  *     a completed draft with no verification after it.
- *  2. An edition that is due — the ledger moved under the incumbent, or the
- *     panel contests an assessment nothing has answered.
+ *  2. An edition the ledger owes — the ledger moved under the incumbent.
  *  3. A blind check where the panel is stale — no seat has judged the case
- *     as it stands (the ledger moved, or the adopted assessment is a
- *     reconsideration no fresh check has judged). After the edition, so the
- *     panel judges what will be displayed.
- *  4. Otherwise a report for the case least recently reported, skipping a
- *     case reported within the cadence and, unless nothing else is left, a
+ *     as it stands. After the edition, so the panel judges what will be
+ *     displayed.
+ *  4. A report for the case least recently reported, skipping a case
+ *     reported within the cadence and, unless nothing else is left, a
  *     saturated one (three passes that landed nothing). The house seat by
  *     default; the second seat when the last pass landed nothing — a
  *     different pair of eyes when the first stops finding.
- *  5. Nothing: everything rests.
+ *  5. A reconsideration where the panel contests an assessment nothing has
+ *     answered — after the search, so new evidence gets its chance to move
+ *     the case before the old disagreement is re-argued (founder, 2026-09-09).
+ *  6. Nothing: everything rests.
  *
  * `--run` performs the choice and, for a report, continues the chain —
  * draft, verify, edition — stopping at the first step that does not
@@ -54,25 +58,57 @@ const ageDays = (date: string, today: string) => (Date.parse(today) - Date.parse
 const when = (r: Pick<RunRecord, "runId" | "date">) => `${r.date}T${r.runId.slice(-6)}`;
 const after = (a: Pick<RunRecord, "runId" | "date">, b: Pick<RunRecord, "runId" | "date">) => when(a) > when(b);
 
-/** Pure: the choice, from the cases, the run records, and the date. */
-export function nextAction(cases: LoadedCase[], runs: RunRecord[], today: string): NextChoice {
+/**
+ * The run ids of reports and intakes that need no draft: those some proposal
+ * was drafted from (the proposal names its report), and intakes superseded
+ * by a later intake of the same case that took in every document they did
+ * (by sha256) — a re-run intake replaces its predecessor rather than
+ * queueing beside it (2026-09-09: two stale intakes of one essay were
+ * drafted before the current one).
+ */
+export function draftedFrom(runs: RunRecord[], root = process.cwd()): Set<string> {
+  const out = new Set<string>();
+  for (const r of runs) {
+    if (r.verb !== "draft" || r.outcome !== "completed") continue;
+    const id = readProposal(r.runId, root)?.report?.match(/^proposals\/([^/]+)\//)?.[1];
+    if (id) out.add(id);
+  }
+  const intakes = runs.filter((r) => r.verb === "inbox" && r.outcome === "completed");
+  const shas = new Map<string, Set<string>>();
+  for (const r of intakes) {
+    const f = path.join(runDir(r.runId, root), "manifest.yaml");
+    if (!fs.existsSync(f)) continue;
+    const m = parseYaml(fs.readFileSync(f, "utf8")) as { items?: { sha256?: string }[] };
+    shas.set(r.runId, new Set((m.items ?? []).map((i) => i.sha256).filter((x): x is string => Boolean(x))));
+  }
+  for (const a of intakes) {
+    const mine = shas.get(a.runId);
+    if (!mine || mine.size === 0) continue;
+    const superseded = intakes.some((b) => b.case === a.case && b.runId !== a.runId && b.date + b.runId.slice(-6) > a.date + a.runId.slice(-6) && [...mine].every((s) => shas.get(b.runId)?.has(s)));
+    if (superseded) out.add(a.runId);
+  }
+  return out;
+}
+
+/** Pure given `drafted`: the choice, from the cases, the run records, the reports already drafted, and the date. */
+export function nextAction(cases: LoadedCase[], runs: RunRecord[], today: string, drafted: Set<string> = new Set()): NextChoice {
   const byCase = (slug: string) => runs.filter((r) => r.case === slug).sort((a, b) => when(a).localeCompare(when(b)));
-  // 1. Half-done chains, oldest first.
+  // 1. Half-done chains, oldest first: every completed report or intake no proposal was drafted from.
   for (const c of cases) {
     const rs = byCase(c.record.slug);
-    const lastReport = rs.filter((r) => (r.verb === "report" || r.verb === "inbox") && r.outcome === "completed").at(-1);
-    if (lastReport && !rs.some((r) => r.verb === "draft" && after(r, lastReport))) {
-      return { case: c.record.slug, verb: "draft", from: lastReport.runId, reason: `${lastReport.verb} ${lastReport.runId} has no draft after it` };
+    const undrafted = rs.find((r) => (r.verb === "report" || r.verb === "inbox") && r.outcome === "completed" && !drafted.has(r.runId));
+    if (undrafted) {
+      return { case: c.record.slug, verb: "draft", from: undrafted.runId, reason: `${undrafted.verb} ${undrafted.runId} has not been drafted` };
     }
     const lastDraft = rs.filter((r) => r.verb === "draft" && r.outcome === "completed").at(-1);
     if (lastDraft && !rs.some((r) => r.verb === "verify" && r.outcome === "completed" && after(r, lastDraft))) {
       return { case: c.record.slug, verb: "verify", from: lastDraft.runId, reason: `proposal ${lastDraft.runId} has not been verified` };
     }
   }
-  // 2. Editions due.
+  // 2. Editions the ledger owes.
   for (const c of cases) {
     const due = editionDue(c);
-    if (due) return { case: c.record.slug, verb: "edition", reason: due.reason };
+    if (due?.kind === "moved") return { case: c.record.slug, verb: "edition", reason: due.reason };
   }
   // 3. A stale panel.
   for (const c of cases) {
@@ -87,7 +123,14 @@ export function nextAction(cases: LoadedCase[], runs: RunRecord[], today: string
       return { c, last, sat };
     })
     .filter(({ last }) => !last || ageDays(last.date, today) >= CADENCE_DAYS);
-  if (candidates.length === 0) return { case: null, verb: "rest", reason: `every case was reported within the last ${CADENCE_DAYS} days` };
+  const reconsideration = () => {
+    for (const c of cases) {
+      const due = editionDue(c);
+      if (due?.kind === "contested") return { case: c.record.slug, verb: "edition" as const, reason: due.reason };
+    }
+    return null;
+  };
+  if (candidates.length === 0) return reconsideration() ?? { case: null, verb: "rest", reason: `every case was reported within the last ${CADENCE_DAYS} days and no panel dissent is unanswered` };
   const fresh = candidates.filter(({ sat }) => sat.consecutiveEmpty < SATURATED_AFTER);
   const pool = fresh.length ? fresh : candidates;
   pool.sort((a, b) => (a.last?.date ?? "").localeCompare(b.last?.date ?? ""));
@@ -125,7 +168,8 @@ export async function runNext(opts: { run?: boolean; steps?: number; today?: str
 async function runOnce(opts: { run?: boolean; today?: string; root?: string }): Promise<NextOutcome> {
   const root = opts.root ?? process.cwd();
   const cases = loadAllCases();
-  const choice = nextAction(cases, readRuns(root), opts.today ?? new Date().toISOString().slice(0, 10));
+  const runs = readRuns(root);
+  const choice = nextAction(cases, runs, opts.today ?? new Date().toISOString().slice(0, 10), draftedFrom(runs, root));
   const ran: NextOutcome["ran"] = [];
   if (!opts.run || choice.verb === "rest" || !choice.case) return { choice, ran };
   const step = async (verb: string, f: () => Promise<RunOutcome>) => {

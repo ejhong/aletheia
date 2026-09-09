@@ -1302,7 +1302,11 @@ mechanically under the new one (`scripts/migrations/2026-09-09-hash-locators.ts`
 one housekeeping history entry per case); Cast, Not Carved's reconsidered
 assessment and edition, written before the Engelbach URL was added, were
 re-stamped by hand with their own entry. Standing there is contested on
-five current seats; no edition is due.
+five current seats; no edition is due. The scheduler's order is
+settled the same day (founder: "reports ahead in case new stuff is found"):
+half-done chain → edition the ledger owes → stale panel → research pass on
+the least recently reported case → reconsideration of an unanswered
+contested standing → rest.
 (AI implementation record; founder-directed session.)
 
 **The scheduler's order (founder, 2026-09-09: "reports ahead in case new
@@ -1337,3 +1341,83 @@ house seat can chase the named works with search. `process-inbox.mjs` and
 `extract-claims.mjs` are the first candidates for step 5's subtraction once
 this path has carried the founder's batch. A URL-parsing defect surfaced on
 the way (a DOI with parentheses was cut short) and is fixed with a test.
+
+**A supplied document that is a ledger source may anchor claims (founder
+direction, 2026-09-09: "there are many new claims in the pdf … please make
+those changes").** The founder's essay is the case's founding narrative
+(VASO-IN002) and a ledger source (SRC-JHONG-2026), yet the first intake
+labelled it "the supplier's words, never a source", the drafter marked its
+new ideas irrelevant because no claim concerned them, and the edition
+drafter — shown founding inputs only when they are text — had never read
+the PDF. Three changes: the intake identifies a supplied document that is
+a ledger source by title and says so in the report; draft protocol v4 lets
+the drafter mine such a document broadly for its propositions as claims
+anchored to that source (verbatim quote, `[p. N]` locator, ungraded,
+unfeatured until an edition weighs them) and as evidence records honest to
+what the source is; the verifier reads the supplied text for that source,
+so a claim anchored to the essay is checked against the very text the
+drafter saw. A PDF founding input is inlined from a text extraction
+committed beside it (`…pdf.txt`), so the edition drafter has the essay in
+hand for framing and voice; the constitution's rule stands — nothing is
+cited from an input that is not independently in the ledger. The
+scheduler's half-done rule is now per run: a report or intake no proposal
+names is drafted, however many later drafts exist. The scheduler-order
+change of the same day had missed #203's merge and rides along here.
+
+**Two essays, two doors, and how claims are chosen (founder direction,
+2026-09-09).** The PDF supplied as "the new essay" proved byte-identical to
+the case's founding essay of August 13 (VASO-IN002), with no perforator idea
+in it; the founder then placed the actual new essay, *Knots of Existence
+Hypotheses* (2026-09-08, 41 pages), under `research/vasocomputation/`. The
+founder wants both essays to serve as founding inputs and the article to
+weigh both; asked whether claims versus conjectures is necessary — it is
+not: the original essay's ideas became claims with no evidence behind them,
+graded honestly, and the new essay's should too, as competing claims — and
+asked that a claim be featured by how much its being right or wrong would
+move the case, parents over their many subclaims. Built accordingly: (1) a
+sidecar's `role: founding_narrative` registers a supplied document as a
+narrative input at intake and takes it in as a source for its propositions
+in the same drop (VASO-IN004, 39 works named, none with a title to resolve);
+the two doors are distinct on purpose — inputs shape the telling, the
+producer path puts propositions on the record; (2) the claim schema gains
+`alternativeToClaimIds` and `contradictsClaimIds` (AGENTS §6), loader-checked
+and proposed by the drafter (protocol v5: competition is linked, never
+merged); (3) edition protocol v4 features by stakes and sets competing
+accounts side by side, thin evidence graded low rather than left out — the
+answer to an edition that told none of twenty-eight new propositions; (4)
+the Arbiter's park on #206 (§3.2: compound claims) is answered by verify v3,
+which judges atomicity and splits a compound claim by the drafter (protocol
+`split`) part by part; the 34 claims admitted that day were judged, 12 were
+compound, 21 atomic parts entered, the compounds stand as tombstones with
+their reasons and every link to them was re-pointed at the parts — two of
+those repairs were forced by the loader after commits had already been
+made, which is the loader doing its job and the operator not gating on it;
+commits are gated on the loader from here. The third founding input, the
+critical research report, is extracted and read for the first time.
+
+**The second essay through the whole chain; the edition stands contested
+(2026-09-09).** Verify 061156 read *Knots of Existence Hypotheses* as the
+supplied text of its own source record and admitted 50 claims, 6 evidence
+records and 5 research items; 36 records were refused with reasons written
+in the dispositions. Edition 071905 (edition-v4) features the perforator
+composite hold (VASO-C174), the densification alternative (C077), the
+perforator reading of McNulty (C143), the blood-first ordering (C073) and
+the two-key necessity (C039), and the article sets three accounts of a knot
+side by side. Five seats then judged it: two agree on *unresolved*, three
+dispute, the panel splits on load-bearing VASO-C020, and the case displays
+contested — as the constitution requires of disagreement. Three lessons,
+each with its owner: the verifier's `atomic` gate refuses evidence it
+cannot split (six records that bundled two findings; the next code step is
+a split round for evidence, or the drafter's one-observation rule enforced
+before the verifier sees it); the parent claim VASO-C096 — the
+perforator-versus-arteriole contrast the founder asked for — fell on an
+anchor at p.4 where the contrast is stated at p.7, and its children stand
+without the link (a later draft on the case re-proposes it from the
+declined row); and the reader judges relevance against the case subtitle as
+written, so the essay's fascial "sheet" family (delamination, hollowing,
+gas and fluid in a separated plane) was refused as outside a question
+phrased around latched smooth muscle — widening that framing is the
+founder's call, not the pipeline's. Split protocol v2 forbids parts that
+describe the text ("the passage states that…") after the first round
+admitted six such claims (VASO-C146–148, C154–156), which stand on the
+ledger for the next pass to correct.

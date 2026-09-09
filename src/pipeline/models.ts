@@ -227,7 +227,7 @@ function withFallback<T extends { model: string }>(body: T, fallback: string | u
  * loop that stops on a dropped socket is worse than one that sometimes
  * pays twice. A second tear fails the run.
  */
-const TORN_STREAM = /ended before message_stop/;
+const TORN_STREAM = /ended before message_stop|operation was aborted|TimeoutError/i;
 
 async function anthropicPost(body: { model: string; fallbacks?: unknown }, fetchImpl: FetchLike, timeoutMs: number): Promise<AnthropicMessage> {
   try {

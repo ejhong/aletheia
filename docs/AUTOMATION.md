@@ -10,7 +10,28 @@ in the design is built until its own PR lands. The history of how the design
 got here, including the earlier five-loop version it replaces, is in
 `docs/DECISIONS.md`.
 
-## Where we are (reassessed 2026-09-08, evening)
+## Where we are (reassessed 2026-09-08, evening; second case run 2026-09-09)
+
+**2026-09-09, the second case.** State, Not Scar ran the whole chain from a
+founder-supplied essay: `inbox` (the essay identified by title as the
+ledger's own source and registered as a founding input) → `draft` (95
+proposed records) → `verify` (50 claims, 6 evidence, 5 research admitted
+against the essay's own text; 36 refused with reasons; 12 compounds split
+in the one split round) → `edition` (three accounts of a knot set side by
+side; the featured set grew from twenty to twenty-five by the stakes rule)
+→ five-seat `check` (two agree on unresolved, three dispute; contested on
+load-bearing VASO-C020). The pass cost about $58 ($15 verify, $6 edition,
+the rest the draft and a verify the month's cap stopped, whose judgments
+were remembered and reused). Three things it taught: the verifier's
+`atomic` gate has no remedy for evidence (six records bundling two findings
+were refused, not split); a parent claim that falls on its anchor drops its
+children's links (VASO-C096, the perforator-versus-arteriole contrast,
+anchored at p.4 where the contrast is stated at p.7); and the reader judges
+relevance against the case subtitle as written, so the essay's fascial
+"sheet" family was refused as outside a question phrased around latched
+smooth muscle. The first is the next code step; the second waits for the
+next draft on the case; the third is the founder's framing to widen.
+
 
 Reassessed against three questions the founder set: is it **true** (does
 every displayed thing rest on the record, and does the record say what
@@ -239,9 +260,10 @@ test evidence.
 | Protocol | Inherits | Non-obvious rules it carries |
 | --- | --- | --- |
 | `report` | the missing-evidence audit prompts (`research/`); the lab's `case-research-report-v1` | state actual coverage, never claim saturation; distinguish opened from snippet from inaccessible; prior failed retrievals are not findings of absence; look beyond the incumbent's framing |
-| `draft` | extract-v1 (atomic claim, one rung, theme, verbatim quote from the shown text); the chat-briefs consolidate and construct steps, written down for the first time; the lab's source reader | a quote comes only from retrieved text the drafter was shown; the default is in; blocked stays out; split a load-bearing compound claim; label source statement versus inference; every item raised gets a disposition; v2: direction labels defined (a record from the anchoring passage supports its claim), PDF page locators, `via` for open-access copies |
-| `verify` | extract's anchor check and verify-v1; the verification-ledger rule; the lab's `source-reading-v6` checker | a quote the source never said is rejected, never repaired; model agreement is not verification; a blocked primary stays out; v2: mechanical and factual failures gate, a direction dispute is recorded on the admitted record, anchors are judged on quote, locator, and bearing only |
-| `edition` | the assessment drafting prompt; the narrative-inputs rule (§7) | grade credibility and diagnosticity separately per claim; the featured set is a decision with a reason; re-adopt the incumbent's assessment when the judgment did not change; consider the founding inputs for voice, follow them where they serve the reader; the article never narrates its own revisions |
+| `draft` | extract-v1 (atomic claim, one rung, theme, verbatim quote from the shown text); the chat-briefs consolidate and construct steps, written down for the first time; the lab's source reader | a quote comes only from retrieved text the drafter was shown; the default is in; blocked stays out; split a load-bearing compound claim; label source statement versus inference; every item raised gets a disposition; v2: direction labels defined (a record from the anchoring passage supports its claim), PDF page locators, `via` for open-access copies; v3: propose a URL for a held source read without one, resolved works are candidates; v4: a supplied document that is a ledger source anchors claims and is mined broadly for its propositions; v5: competition is linked (`alternativeToRefs`, `contradictsRefs`), never merged; one proposition per claim; a new author-supplied document is a Source to propose |
+| `verify` | extract's anchor check and verify-v1; the verification-ledger rule; the lab's `source-reading-v6` checker | a quote the source never said is rejected, never repaired; model agreement is not verification; a blocked primary stays out; v2: mechanical and factual failures gate, a direction dispute is recorded on the admitted record, anchors are judged on quote, locator, and bearing only; v3: the reader judges atomicity and a compound claim is split (protocol `split`) and judged part by part; `split-v2`: parts are propositions about the world, never about the text |
+| `edition` | the assessment drafting prompt; the narrative-inputs rule (§7) | grade credibility and diagnosticity separately per claim; the featured set is a decision with a reason; re-adopt the incumbent's assessment when the judgment did not change; consider the founding inputs for voice, follow them where they serve the reader; the article never narrates its own revisions; v3: answer the panel's dissents; v4: feature by stakes — the claims whose truth or falsity would most move the case, the competing accounts and their rungs, parents over their subclaims — thin evidence graded low, never left out; competing accounts set side by side |
+| `split` | §3.2 | inside `verify`: a compound claim becomes the distinct propositions its anchor states, each judged on the same anchor |
 | `check` | the blind-check prompt | blind: no incumbent, no grades, no article; the steelman is required; record the ledger hash judged |
 | `panel` | the arbiter prompt | a `violates` must name the rule or degrades to `unsure`; notes are separate from verdicts |
 | `references` | the inbox's link and document handling | list the works a supplied text names, exactly as written, nothing invented; OpenAlex resolves them by title, or by author and year with a shared topic stem, and the drafter is shown each as a candidate with its similarity, never as a confirmed match |

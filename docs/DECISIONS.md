@@ -1614,7 +1614,9 @@ six of twelve records from the essay had been refused with no remedy.
 records at the door now travels with the record — every document in an
 intake report carries a `Permission on which it is published:` line, the
 drafter copies it verbatim into the proposed Source's `reliabilityNotes`,
-and the verifier refuses a supplied document's Source without it. Not yet
+and the verifier refuses a supplied document's Source without it — the
+line is read from the intake's own manifest and must match exactly, so a
+drafter's own assertion of permission admits nothing. Not yet
 done: the essay's declined rows are re-proposed only by a later draft on
 the case, after an edition under v5 has restated the question; that is
 the chain's next two steps on State, Not Scar, not a hand edit.

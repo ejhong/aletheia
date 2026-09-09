@@ -27,6 +27,8 @@ export interface FetchedSource {
   via?: string;
   /** Page count, for PDFs. */
   pages?: number;
+  /** For a supplied document: the permission line the intake recorded, which a Source proposed from it must carry verbatim (§3.15). */
+  permission?: string;
 }
 
 const UA = "Mozilla/5.0 (compatible; Aletheia/1.0; +https://github.com/ejhong/aletheia)";

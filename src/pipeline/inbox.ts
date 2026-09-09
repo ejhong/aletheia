@@ -450,6 +450,8 @@ export async function runInbox(caseKey: string, opts: InboxOptions = {}): Promis
     ledgerSource: it.ledgerSource ?? null,
     ledgerSourceBasis: it.ledgerSourceBasis ?? null,
     document: it.kind === "document" ? `documents/${path.basename(it.file).replace(/\.[^.]+$/, "")}.txt` : null,
+    // The permission on which a document is published, as the report printed it: the verifier requires this exact line on the Source.
+    permission: it.kind === "document" ? permissionLine(it, date, runId) : null,
     references: (resolved.get(it.name) ?? []).length,
     resolved: (resolved.get(it.name) ?? []).filter((r) => r.url).length,
   }));

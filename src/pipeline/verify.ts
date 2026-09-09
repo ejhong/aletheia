@@ -219,7 +219,7 @@ export function suppliedTexts(proposal: Proposal, sources: Source[], root = proc
   if (!runDirOf) return out;
   const manifestFile = path.join(root, "proposals", runDirOf, "manifest.yaml");
   if (!fs.existsSync(manifestFile)) return out;
-  const manifest = parseYaml(fs.readFileSync(manifestFile, "utf8")) as { items?: { ledgerSource?: string | null; document?: string | null; name?: string; sha256?: string; title?: string }[] };
+  const manifest = parseYaml(fs.readFileSync(manifestFile, "utf8")) as { items?: { ledgerSource?: string | null; document?: string | null; name?: string; sha256?: string; title?: string; permission?: string | null }[] };
   for (const it of manifest.items ?? []) {
     if (!it.document) continue;
     // The source the intake identified, else a source (the ledger's or this proposal's) whose title is the document's.
@@ -227,7 +227,7 @@ export function suppliedTexts(proposal: Proposal, sources: Source[], root = proc
     const file = path.join(root, "proposals", runDirOf, it.document);
     if (!src || !fs.existsSync(file)) continue;
     const text = fs.readFileSync(file, "utf8");
-    out.set(textKeyOf(src), { url: textKeyOf(src), ok: true, status: null, contentType: "text/plain", text, via: `supplied document ${it.name} (sha256 ${(it.sha256 ?? "").slice(0, 12)}), ${it.ledgerSource ? `identified at intake as ${src.id}` : `matched by title to ${src.id}`}` });
+    out.set(textKeyOf(src), { url: textKeyOf(src), ok: true, status: null, contentType: "text/plain", text, via: `supplied document ${it.name} (sha256 ${(it.sha256 ?? "").slice(0, 12)}), ${it.ledgerSource ? `identified at intake as ${src.id}` : `matched by title to ${src.id}`}`, ...(it.permission ? { permission: it.permission } : {}) });
   }
   return out;
 }
@@ -298,12 +298,19 @@ export async function judgeProposal(
   // A Source whose text is a supplied document is published only on the permission the intake recorded,
   // and the Source must carry that line (§3.15): the gate at the door travels with the record.
   for (const s of [...okSources.values()]) {
-    const via = textFor(s.id)?.via ?? "";
-    if (!/^supplied document/.test(via)) continue;
-    if (s.reliabilityNotes.some((n) => /^Permission on which it is published: (Permission|Public at)/.test(n) || /^(Permission|Public at) /.test(n))) continue;
+    const fetched = textFor(s.id);
+    if (!/^supplied document/.test(fetched?.via ?? "")) continue;
+    // The line is the intake's own record, read from its manifest — not the drafter's words. It must be on the Source exactly.
+    const expected = fetched?.permission;
+    const why = !expected
+      ? "the intake recorded no permission on which this document may be published, so no Source may be proposed from it"
+      : !s.reliabilityNotes.includes(expected)
+        ? `a supplied document's Source must carry, verbatim in reliabilityNotes, the permission line the intake recorded — "${expected.slice(0, 80)}…" — and this record ${s.reliabilityNotes.some((n) => /^Permission on which it is published:/.test(n)) ? "carries a different line" : "carries none"}`
+        : null;
+    if (!why) continue;
     okSources.delete(s.id);
     sourceById.delete(s.id);
-    reject(s.id, "source", s.title, "a supplied document's Source must carry the permission on which it is published — the intake's permission line, copied verbatim into reliabilityNotes (AGENTS.md §3.15); none is on this record");
+    reject(s.id, "source", s.title, `${why} (AGENTS.md §3.15)`);
   }
 
   // Evidence: source ok, text retrievable, quotes verbatim, second reader agrees.

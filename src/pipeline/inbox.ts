@@ -90,11 +90,16 @@ const TEXT_EXT = new Set([".md", ".txt"]);
 const DOC_CAP = 300_000;
 
 /** What is missing for a non-public document to be published or cited: nothing, or the reason it stays in the inbox. Fail-closed: the permission must grant, in words that grant, and be dated. */
+/** The words a permission may be written in. Anything else — "prohibited", "only", "private" — is a word the gate does not grant on, and the document stays. */
+const GRANT_WORDS = new Set(["publish", "publishing", "published", "cite", "citing", "cited", "quote", "quoting", "quoted"]);
+const PLAIN_WORDS = new Set(["and", "or", "it", "this", "the", "a", "an", "as", "in", "full", "freely", "may", "be", "document", "essay", "paper", "text", "file", "founding", "input", "source", "on", "aletheia", "site", "case", "ledger", "record", "for", "of", "with", "attribution", "under", "name", "my", "our", "their", "from"]);
 export function permissionGap(meta: Record<string, unknown>): string | null {
   const permission = typeof meta.permission === "string" ? meta.permission.trim() : "";
   if (!permission) return "no permission to publish or cite";
-  if (!/\b(publish|publishes|published|publication|cite|cites|cited|citation|quote|quotes|quoted)\b/i.test(permission)) return "the permission does not say it may be published, cited or quoted";
-  if (/\b(not|no|never|only|private|privately|confidential|confidence|internal|internally|without|unpublished|withhold|withheld|embargo|embargoed)\b/i.test(permission)) return "the permission withholds something (it says not, only, private, confidential, internal or the like), so nothing is published";
+  const words = permission.toLowerCase().replace(/['’]s\b/g, "").replace(/[^a-z\s]/g, " ").split(/\s+/).filter(Boolean);
+  const unknown = words.filter((w) => !GRANT_WORDS.has(w) && !PLAIN_WORDS.has(w));
+  if (unknown.length) return `the permission uses words the gate does not grant on (${unknown.join(", ")}): write it with "publish", "cite" or "quote" and plain connectives, nothing that could withhold`;
+  if (!words.some((w) => GRANT_WORDS.has(w))) return "the permission does not say it may be published, cited or quoted";
   if (!(typeof meta.granted === "string" && /^\d{4}-\d\d-\d\d$/.test(meta.granted.trim()))) return "the permission carries no `granted:` date";
   return null;
 }
@@ -173,7 +178,7 @@ export async function readInbox(caseDir: string, root = process.cwd()): Promise<
     if (kind === "document" && typeof meta.published !== "string") {
       const why = permissionGap(meta);
       if (why) {
-        left.push({ name, reason: `${why}: add \`permission:\` in your own words granting what may be done with it (it must say "publish", "cite" or "quote", and must not withhold — "not", "only", "private", "confidential", "internal" leave it here) and \`granted:\` with the date you grant it (YYYY-MM-DD); the intake records who granted it, on what date, by what channel, and where the statement is held (AGENTS.md §3.15)` });
+        left.push({ name, reason: `${why}: add \`permission:\` granting what may be done with it in the gate's words ("publish", "cite", "quote" and plain connectives — any other word leaves it here, so nothing withheld can slip through) and \`granted:\` with the date you grant it (YYYY-MM-DD); the intake records who granted it, on what date, by what channel, and where the statement is held (AGENTS.md §3.15)` });
         continue;
       }
     }

@@ -1470,4 +1470,15 @@ sixth round: two quotations of the session remained, in the log and in
 the draft protocols' headers (paraphrased); and the permission gate took
 any words plus a date, so a permission that withheld ("private review
 only") would have passed (now: the words must grant — publish, cite or
-quote — and must not withhold, or the document stays in the inbox).
+quote — and must not withhold, or the document stays in the inbox). A
+seventh round: a list of withholding words can be evaded ("publication
+prohibited"), so the gate now grants only on a known vocabulary — any
+other word refuses; and the seat reads §3.15's "quoted, paraphrased, or
+cited" to cover the founder's directions given in session, paraphrased or
+not. That reading makes every "founder direction" record in this log,
+back to August, unpublishable without a recorded permission, and the
+operator cannot grant it. **Open for the founder:** a standing, dated
+permission that directions given to the operator in session may be
+recorded in this log and in config, naming the channel and where the
+sessions are held — or the amendment of §3.15 to say that the founder's
+directions are the operating record, not correspondence.

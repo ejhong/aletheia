@@ -61,11 +61,12 @@ describe("inbox items", () => {
     expect(left).toEqual([
       { name: "vasocomputation/orphan.pdf", reason: expect.stringMatching(/no statement of provenance/) },
       { name: "vasocomputation/silent.pdf", reason: expect.stringMatching(/^no permission to publish or cite/) }, // own work, but nothing said about what may be done with it (§3.15)
-      { name: "vasocomputation/withheld.pdf", reason: expect.stringMatching(/^the permission withholds something/) }, // a permission that says "only" and "not" grants nothing here
+      { name: "vasocomputation/withheld.pdf", reason: expect.stringMatching(/^the permission uses words the gate does not grant on \(private, review, only, do, not\)/) }, // a permission that says "only" and "not" grants nothing here
     ]);
     const { permissionGap } = await import("../pipeline/inbox.ts");
     expect(permissionGap({ permission: "publish and cite", granted: "2026-09-09" })).toBeNull();
-    expect(permissionGap({ permission: "for your eyes", granted: "2026-09-09" })).toMatch(/does not say it may be published/);
+    expect(permissionGap({ permission: "publication prohibited", granted: "2026-09-09" })).toMatch(/does not grant on \(publication, prohibited\)/); // no list of forbidden words to evade: only known words pass
+    expect(permissionGap({ permission: "for the site", granted: "2026-09-09" })).toMatch(/does not say it may be published/);
     expect(permissionGap({ permission: "publish", granted: "soon" })).toMatch(/no `granted:` date/);
   });
 });

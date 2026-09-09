@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { VENDORS, buildRequest } from "../../scripts/lib/vendors.mjs";
-import { seatKey } from "../../scripts/lib/seat-key.mjs";
+import { VENDORS, buildRequest } from "../lib/vendors.mjs";
+import { seatKey } from "../lib/seat-key.mjs";
 
 /**
  * The panel is five seats, one per API vendor, each pinned to a model AND

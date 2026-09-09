@@ -4,7 +4,7 @@ import { parse as parseYaml } from "yaml";
 import type { z } from "zod";
 
 /**
- * The committed configuration under config/: models (scripts/lib/models.mjs),
+ * The committed configuration under config/: models (src/lib/models.mjs),
  * tariffs (spend.ts), budget (budget.ts). One reader: the file must satisfy
  * its schema, and unless the caller supplies what a missing file means, it
  * must exist — configuration is never defaulted into existence silently.

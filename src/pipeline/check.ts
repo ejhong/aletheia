@@ -3,7 +3,7 @@ import path from "node:path";
 import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
 import { currentEdition, findCase } from "../domain/load.ts";
 import { AssessmentRunSchema, type AssessmentRun, type LoadedCase } from "../domain/schema.ts";
-import { overlayRunId } from "../../scripts/lib/overlay-ids.mjs";
+import { overlayRunId } from "../lib/overlay-ids.mjs";
 import { loadProtocol, renderProtocol } from "./protocols.ts";
 import { closeRun, openRun, writeWorkingFile, type RunOutcome } from "./store.ts";
 import { callSeat, seatAvailable, VENDORS, type Reply } from "./transport.ts";

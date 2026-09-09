@@ -6,12 +6,12 @@ import { canonicalJson, sha256Hex } from "../domain/hash.ts";
 import { sameTitle, sourceKeys, textKey } from "../domain/keys.ts";
 import { caseAccounts, caseQuestion, claimAnchorErrors, findCase, sourceAdmissionErrors } from "../domain/load.ts";
 import type { Claim, Evidence, LoadedCase, ResearchOpportunity, Source } from "../domain/schema.ts";
-import { verifyCitations } from "../../scripts/lib/citation-check.mjs";
+import { verifyCitations } from "../lib/citation-check.mjs";
 import { archiveUrl, type Archived } from "./archive.ts";
 import { retrieve, type FetchedSource } from "./fetch.ts";
-import { isoDate } from "../../scripts/lib/overlay-ids.mjs";
+import { isoDate } from "../lib/overlay-ids.mjs";
 import { appendHistory, appendRecords, applyCorrections, ledgerFileFor, type Correction } from "./ledger-write.ts";
-import { MODELS } from "../../scripts/lib/models.mjs";
+import { MODELS } from "../lib/models.mjs";
 import { anthropicJson, type Meter } from "./models.ts";
 import { loadProtocol, renderProtocol } from "./protocols.ts";
 import { quotedSpans, unverifiedQuotes } from "./quotes.ts";
@@ -246,7 +246,7 @@ export function correctionBlocker(loaded: LoadedCase, c: Correction): string | n
   return null;
 }
 
-/** A resolver note that carries a Retraction Watch finding (scripts/lib/citation-check.mjs). */
+/** A resolver note that carries a Retraction Watch finding (src/lib/citation-check.mjs). */
 const NOTICE = /^(RETRACTED|CORRECTED|WITHDRAWN)\b/;
 
 /**

@@ -10,9 +10,9 @@ import {
   type Edition,
   type LoadedCase,
 } from "../domain/schema.ts";
-import { hhmmssUTC, isoDate } from "../../scripts/lib/overlay-ids.mjs";
+import { hhmmssUTC, isoDate } from "../lib/overlay-ids.mjs";
 import { writeYamlFile } from "./ledger-write.ts";
-import { MODELS } from "../../scripts/lib/models.mjs";
+import { MODELS } from "../lib/models.mjs";
 import { anthropicJson, type Meter } from "./models.ts";
 import { buildPacket, renderPacket } from "./packet.ts";
 import { loadProtocol, renderProtocol } from "./protocols.ts";

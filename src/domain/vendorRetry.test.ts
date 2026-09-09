@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { fetchWithRetry } from "../../scripts/lib/vendors.mjs";
+import { fetchWithRetry } from "../lib/vendors.mjs";
 
 /**
  * fetchWithRetry guards every vendor seat call: two consecutive panel runs

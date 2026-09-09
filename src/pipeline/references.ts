@@ -1,5 +1,5 @@
 import { titleContainment, TITLE_NEAR } from "../domain/keys.ts";
-import { MODELS } from "../../scripts/lib/models.mjs";
+import { MODELS } from "../lib/models.mjs";
 import { anthropicJson } from "./models.ts";
 import { loadProtocol, renderProtocol } from "./protocols.ts";
 import type { Meter } from "./spend.ts";

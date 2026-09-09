@@ -6,7 +6,7 @@ import { currentEdition, getCaseBySlug, loadAllCases } from "./load.ts";
 import { buildPacket, PACKET_MAX_CHARS, renderPacket } from "../pipeline/packet.ts";
 import { loadProtocol, renderProtocol } from "../pipeline/protocols.ts";
 import { loadTariffs, priceOf, readSpend, recordSpend, sumCost } from "../pipeline/spend.ts";
-import { loadModels, modelIds, MODELS } from "../../scripts/lib/models.mjs";
+import { loadModels, modelIds, MODELS } from "../lib/models.mjs";
 import { DEFAULT_SEAT, RESEARCH_SEATS } from "../pipeline/report.ts";
 import { DRAFTER } from "../pipeline/draft.ts";
 import { READER } from "../pipeline/verify.ts";

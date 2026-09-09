@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { MODELS } from "../../scripts/lib/models.mjs";
+import { MODELS } from "../lib/models.mjs";
 
 const HOUSE = MODELS.house.model;
 const FALLBACK = MODELS.house.fallback!;
@@ -38,7 +38,7 @@ describe("refusal handling and provenance-true fallback", () => {
       }),
     );
     const { pickProvider, callWithRefusalFallback } = await import(
-      "../../scripts/lib/llm.mjs"
+      "../lib/llm.mjs"
     );
     const provider = pickProvider("anthropic");
     const reply = await callWithRefusalFallback(provider!, "system", "user");
@@ -55,7 +55,7 @@ describe("refusal handling and provenance-true fallback", () => {
       "fetch",
       vi.fn(async () => anthropicReply({ stop_reason: "refusal", content: [] })),
     );
-    const { pickProvider, RefusalError } = await import("../../scripts/lib/llm.mjs");
+    const { pickProvider, RefusalError } = await import("../lib/llm.mjs");
     const provider = pickProvider("anthropic");
     await expect(provider!.call("system", "user")).rejects.toBeInstanceOf(RefusalError);
   });
@@ -72,7 +72,7 @@ describe("refusal handling and provenance-true fallback", () => {
       }),
     );
     const { pickProvider, callWithRefusalFallback, RefusalError } = await import(
-      "../../scripts/lib/llm.mjs"
+      "../lib/llm.mjs"
     );
     // A provider already running on the fallback model has nowhere to fall to.
     const provider = { ...pickProvider("anthropic")!, model: FALLBACK };

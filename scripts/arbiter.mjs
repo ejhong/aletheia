@@ -23,14 +23,14 @@
  *     it is trying to change. Amending AGENTS.md is reserved to the
  *     founder and the prompt says so.
  *   - Seats that error, refuse, or reply malformed become explicit
- *     `unsure` votes (fail-closed in scripts/lib/arbiter-core.mjs) —
+ *     `unsure` votes (fail-closed in src/lib/arbiter-core.mjs) —
  *     visible in the report, never dropped from the denominator.
  */
 import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
-import { parseJsonReply } from "./lib/llm.mjs";
-import { callVendor, VENDORS } from "./lib/vendors.mjs";
+import { parseJsonReply } from "../src/lib/llm.mjs";
+import { callVendor, VENDORS } from "../src/lib/vendors.mjs";
 import { loadProtocol, renderProtocol } from "../src/pipeline/protocols.ts";
 import {
   capDiff,
@@ -40,13 +40,13 @@ import {
   splitMergeLanes,
   tallyVerdict,
   validateVote,
-} from "./lib/arbiter-core.mjs";
+} from "../src/lib/arbiter-core.mjs";
 import {
   extractCitations,
   formatVerificationSection,
   verificationSummary,
   verifyCitations,
-} from "./lib/citation-check.mjs";
+} from "../src/lib/citation-check.mjs";
 
 const PROMPT_VERSION = loadProtocol("panel").version; // the protocol file is the prompt (protocols/panel-v*.md)
 const args = process.argv.slice(2);
@@ -114,7 +114,7 @@ const packet = [
   diff,
 ].join("\n\n");
 
-// PANEL SEAT — the refusal fallback (scripts/lib/llm.mjs) is BANNED here.
+// PANEL SEAT — the refusal fallback (src/lib/llm.mjs) is BANNED here.
 // Each seat's identity as a specific vendor/model is constitutionally
 // load-bearing (§3.15 vendor-independence of the panel): a refusing seat
 // counts as a FAILED seat ("unsure" below), never a silently swapped one.

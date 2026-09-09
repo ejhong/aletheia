@@ -4,7 +4,7 @@ import {
   formatVerificationSection,
   verificationSummary,
   verifyCitations,
-} from "../../scripts/lib/citation-check.mjs";
+} from "../lib/citation-check.mjs";
 
 /**
  * Mechanical citation verification is an input to the arbiter seats;

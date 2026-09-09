@@ -9,7 +9,7 @@ import {
   splitMergeLanes,
   tallyVerdict,
   validateVote,
-} from "../../scripts/lib/arbiter-core.mjs";
+} from "../lib/arbiter-core.mjs";
 
 /**
  * This logic will eventually replace the founder's merge tap, so the tests

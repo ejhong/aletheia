@@ -25,7 +25,7 @@ import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import { stringify as stringifyYaml } from "yaml";
-import { parseLegacyArbiterComment } from "./lib/harvest-parse.mjs";
+import { parseLegacyArbiterComment } from "../src/lib/harvest-parse.mjs";
 
 const dryRun = process.argv.includes("--dry-run");
 const wantDigest = process.argv.includes("--digest");

@@ -6,7 +6,7 @@ import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
 import { sameTitle, titleContainment, TITLE_NEAR } from "../domain/keys.ts";
 import { findCase } from "../domain/load.ts";
 import type { LoadedCase } from "../domain/schema.ts";
-import { MODELS } from "../../scripts/lib/models.mjs";
+import { MODELS } from "../lib/models.mjs";
 import { pdfText } from "./fetch.ts";
 import { appendYamlItems } from "./ledger-write.ts";
 import { defaultLister, openAlexSearch, resolveReferences, type Reference, type ReferenceLister, type Resolved, type Searcher } from "./references.ts";

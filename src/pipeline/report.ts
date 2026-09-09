@@ -3,7 +3,7 @@ import path from "node:path";
 import { sha256Hex } from "../domain/hash.ts";
 import { findCase } from "../domain/load.ts";
 import type { LoadedCase } from "../domain/schema.ts";
-import { MODELS } from "../../scripts/lib/models.mjs";
+import { MODELS } from "../lib/models.mjs";
 import { anthropicResearch, compactRaw, openaiResearch, type Meter, type ResearchResult } from "./models.ts";
 import { buildPacket, renderPacket } from "./packet.ts";
 import { loadProtocol, renderProtocol } from "./protocols.ts";

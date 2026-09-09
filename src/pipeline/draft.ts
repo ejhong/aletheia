@@ -18,7 +18,7 @@ import {
   type LoadedCase,
 } from "../domain/schema.ts";
 import { doiFromUrl, doisInText, retrieve, type FetchedSource, type RetrievalTarget } from "./fetch.ts";
-import { MODELS } from "../../scripts/lib/models.mjs";
+import { MODELS } from "../lib/models.mjs";
 import { anthropicJson, type Meter } from "./models.ts";
 import { buildPacket } from "./packet.ts";
 import { loadProtocol, renderProtocol } from "./protocols.ts";

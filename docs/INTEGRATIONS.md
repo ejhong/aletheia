@@ -13,7 +13,7 @@
 Before adding anything, the baseline — so a candidate is judged on what it
 adds:
 
-- **Citation resolution in the arbiter.** `scripts/lib/citation-check.mjs`
+- **Citation resolution in the arbiter.** `src/lib/citation-check.mjs`
   resolves every DOI (Crossref, then doi.org), arXiv id (arXiv API), and
   URL (HTTP) on lines a PR adds under `content/`, and feeds the results to
   the panel seats. `verify` calls the same module for proposed sources.

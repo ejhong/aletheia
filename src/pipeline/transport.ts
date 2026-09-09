@@ -1,5 +1,5 @@
-import { isoDate } from "../../scripts/lib/overlay-ids.mjs";
-import { callVendorDetailed, VENDORS as SEAT_TABLE } from "../../scripts/lib/vendors.mjs";
+import { isoDate } from "../lib/overlay-ids.mjs";
+import { callVendorDetailed, VENDORS as SEAT_TABLE } from "../lib/vendors.mjs";
 import { loadTariffs, priceOf, recordSpend, type Meter } from "./spend.ts";
 
 export type { Meter } from "./spend.ts";
@@ -11,7 +11,7 @@ export type { Meter } from "./spend.ts";
  * spend row is written before the caller sees the text. No verb calls a
  * vendor directly.
  *
- * Seats are the panel's own table (scripts/lib/vendors.mjs), so "the
+ * Seats are the panel's own table (src/lib/vendors.mjs), so "the
  * model" a stamp names is the same identity everywhere on the site.
  */
 

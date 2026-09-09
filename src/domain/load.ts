@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml } from "yaml";
-import { seatKey } from "../../scripts/lib/seat-key.mjs";
+import { seatKey } from "../lib/seat-key.mjs";
 import { extractClaimRefs, extractPlateRefs } from "./article.ts";
 import { assessmentHash, ledgerHash } from "./hash.ts";
 import { DispositionSchema, type Disposition } from "./intake.ts";
@@ -1104,7 +1104,7 @@ export function displayAssessment(
  * report the *current* judgment of each model, not count a vendor twice
  * because it judged the case in two different weeks. Runs are keyed by
  * SEAT — the API vendor in the label ("GPT-5.1 (OpenAI)…" → `openai`;
- * see scripts/lib/seat-key.mjs) — which is stable across label wordings
+ * see src/lib/seat-key.mjs) — which is stable across label wordings
  * and across model upgrades within a seat.
  */
 export function latestCheckPerModel(loaded: LoadedCase): AssessmentRun[] {

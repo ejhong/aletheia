@@ -1,6 +1,6 @@
-import { isoDate } from "../../scripts/lib/overlay-ids.mjs";
-import { parseJsonReply } from "../../scripts/lib/llm.mjs";
-import { fetchWithRetry } from "../../scripts/lib/vendors.mjs";
+import { isoDate } from "../lib/overlay-ids.mjs";
+import { parseJsonReply } from "../lib/llm.mjs";
+import { fetchWithRetry } from "../lib/vendors.mjs";
 import { assertWithinBudget, estimateUsd } from "./budget.ts";
 import { loadTariffs, priceOf, recordSpend, type Meter, type TokenUsage } from "./spend.ts";
 
@@ -40,7 +40,7 @@ export interface ResearchResult {
 export type FetchLike = typeof fetch;
 
 /**
- * No model is named here: every choice is config/models.yaml (scripts/lib/
+ * No model is named here: every choice is config/models.yaml (src/lib/
  * models.mjs). A call may carry a `fallback` — Anthropic's server-side
  * fallback (docs/DECISIONS.md 2026-08-27, "Fable-first, loud Opus fallback,
  * truthful stamps"): a safety-classifier decline is re-run on the fallback

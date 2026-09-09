@@ -1,6 +1,6 @@
 import { z } from "zod";
 import type { Verb } from "../domain/intake.ts";
-import { isoDate } from "../../scripts/lib/overlay-ids.mjs";
+import { isoDate } from "../lib/overlay-ids.mjs";
 import { loadConfig } from "./config.ts";
 import { inputRates, loadTariffs, readSpend, type Tariffs } from "./spend.ts";
 

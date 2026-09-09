@@ -1088,11 +1088,21 @@ export interface LoadedCase {
  * closure so the site can display governance, not just assessments).
  * Verbatim record of a public comment; append-only like all run records.
  */
+/** What one seat's reply cost, from the vendor's own usage and the reviewed tariff (usd null when unpriced). */
+export const ArbiterSeatCostSchema = z.object({
+  model: z.string().optional(),
+  inputTokens: z.number().int().nonnegative(),
+  outputTokens: z.number().int().nonnegative(),
+  usd: z.number().nullable(),
+});
 export const ArbiterSeatSchema = z.object({
   seat: z.string(),
   vote: z.enum(["complies", "violates", "unsure"]),
   rules: z.array(z.string()).default([]),
   reasoning: z.string(),
+  /** The kind of violation a seat found (panel protocol v3); absent on complies and unsure. */
+  paradigm: z.string().optional(),
+  cost: ArbiterSeatCostSchema.optional(),
 });
 export const ArbiterRecordSchema = z.object({
   pr: z.number().int(),
@@ -1108,6 +1118,10 @@ export const ArbiterRecordSchema = z.object({
   judgedAgainst: z.string(),
   promptVersion: z.string(),
   seats: z.array(ArbiterSeatSchema).min(1),
+  /** The panel's cost for this verdict (since 2026-09-09, when the seats moved onto the metered transport). */
+  cost: z
+    .object({ seats: z.number().int().nonnegative(), inputTokens: z.number().int().nonnegative(), outputTokens: z.number().int().nonnegative(), usd: z.number().nullable() })
+    .optional(),
   harvestedAt: z.string(),
 });
 export type ArbiterRecord = z.infer<typeof ArbiterRecordSchema>;

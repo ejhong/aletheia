@@ -87,6 +87,7 @@ for (const pr of prs) {
     judgedAgainst: data.judgedAgainst,
     promptVersion: data.promptVersion,
     seats: data.seats,
+    ...(data.cost ? { cost: data.cost } : {}),
     harvestedAt: today,
   };
   if (dryRun) {

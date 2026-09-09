@@ -147,10 +147,6 @@ export function buildRequest(name, { system, user, maxTokens = 16000 }) {
  * load-bearing (§3.15 vendor-independence of the panel): a refusing seat
  * must count as a FAILED seat, never be silently swapped to another model.
  */
-export async function callVendor(name, opts) {
-  return (await callVendorDetailed(name, opts)).text;
-}
-
 /**
  * The same call, returning the reply text with the vendor's reported token
  * usage — what the spend ledger (src/pipeline/spend.ts) records. Usage is

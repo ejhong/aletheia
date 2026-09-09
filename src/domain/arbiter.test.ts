@@ -4,6 +4,7 @@ import {
   ACCOUNT_CAP,
   capDiff,
   CONTENT_MERGES_PER_WEEK,
+  costOf,
   runAccount,
   rateLimitGate,
   splitMergeLanes,
@@ -319,6 +320,17 @@ describe("review notes — the wide voice", () => {
     expect(body).toMatch(/answers on the record/);
     expect(body).toMatch(/> The stamp names the wrong run\.\n> Fix the origin\./);
     expect(body).toMatch(/Pull request: #214/);
+  });
+});
+
+describe("costOf — the panel's own bill", () => {
+  it("sums tokens across metered seats and dollars only when every metered seat was priced", () => {
+    const priced = { cost: { model: "a", inputTokens: 1000, outputTokens: 100, usd: 0.5 } };
+    const unpriced = { cost: { model: "b", inputTokens: 2000, outputTokens: 200, usd: null } };
+    const failed = { failed: true };
+    expect(costOf([priced, priced])).toEqual({ seats: 2, inputTokens: 2000, outputTokens: 200, usd: 1 });
+    expect(costOf([priced, unpriced, failed])).toEqual({ seats: 2, inputTokens: 3000, outputTokens: 300, usd: null });
+    expect(costOf([failed])).toEqual({ seats: 0, inputTokens: 0, outputTokens: 0, usd: null });
   });
 });
 

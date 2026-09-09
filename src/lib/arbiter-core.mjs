@@ -218,6 +218,23 @@ export function capDiff(diff, maxChars = 400_000) {
   };
 }
 
+/**
+ * The panel's cost, summed from the seats' metered replies: tokens always,
+ * dollars only when every metered seat was priced — a null anywhere makes
+ * the total null, never an underestimate. Seats that failed carry no cost
+ * and are not counted as metered.
+ */
+export function costOf(votes) {
+  const metered = votes.filter((v) => v.cost);
+  const usd = metered.length && metered.every((v) => typeof v.cost.usd === "number") ? Number(metered.reduce((n, v) => n + v.cost.usd, 0).toFixed(4)) : null;
+  return {
+    seats: metered.length,
+    inputTokens: metered.reduce((n, v) => n + (v.cost.inputTokens ?? 0), 0),
+    outputTokens: metered.reduce((n, v) => n + (v.cost.outputTokens ?? 0), 0),
+    usd,
+  };
+}
+
 /** How much of the packet a run account may take; the diff keeps the rest. */
 export const ACCOUNT_CAP = 150_000;
 

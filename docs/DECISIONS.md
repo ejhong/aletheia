@@ -1912,3 +1912,14 @@ no replacement; they return, adapted to the present layout, and the
 subtraction record is amended. The loop still makes neither; an edition
 seats the plates that exist and never loses one.
 
+**No second drop: the study pages stay out (founder direction, 2026-09-09,
+in session).** The plan had the five study pages, the revision log and the
+registers following the home page as a second drop once the first edition
+stood. The founder does not want them taken in — the studies were
+experimental and he is not happy with them — so the home page, which carries
+each investigation's question, finding and limitations in summary, is the
+whole founding input, and the loop's first pass from it is one run within
+the per-run cap. The prepared copies never left the operator's scratch
+space. The grant he gave covers "the pages" should he change his mind; the
+door is the same.
+

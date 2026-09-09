@@ -1427,9 +1427,14 @@ wrong, each fixed: a split part carried the drafter's `origin` though the
 splitter wrote it (now: the splitter's model, the verify run, and a `ref`
 back to the compound); evidence that cited a compound was re-pointed to
 every part without judgment (now: judged against each part, cites only the
-parts it bears on, the rest said aloud — the twelve migration re-points of
-2026-09-09 were blanket and stand as a debt); and a founding input's
-license was a synthesized sentence (now: a permission record — who
-granted, on what date, by what channel, held where — with the supplier's
-own footing statement committed under `inbox/processed/` as the
-correspondence).
+parts it bears on, the rest said aloud — and the migration's blanket
+re-point was audited by a repair pass, `2026-09-09-evidence-by-part.ts`,
+which found no evidence record citing more than one part of any compound:
+the wholesale rule had, in fact, made no record count twice, so nothing was
+changed and the script stands as the proof); and a founding input's license was a synthesized sentence (now:
+a document that is not already public is taken in only with a `permission:`
+line in the supplier's own words — own work included — and the record
+quotes it with who granted it, on what date, by what channel, and where
+the statement is held: the sidecar or front matter the intake commits
+under `inbox/processed/`). VASO-IN004's license predates that rule and
+carries the synthesized sentence; the founder's words replace it.

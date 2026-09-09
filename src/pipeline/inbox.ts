@@ -155,6 +155,13 @@ export async function readInbox(caseDir: string, root = process.cwd()): Promise<
       left.push({ name, reason: "no statement of provenance: add front matter (or a sidecar note of the same name) with `editor:` for your own work, `published:` with the URL where it is public, or `from:` and `permission:` for supplied material" });
       continue;
     }
+    // §3.15: a document that is not already public is quoted or cited only on a recorded permission — the
+    // supplier's own words, which the intake keeps as the correspondence. Own work included: the footing
+    // says whose it is, the permission says what may be done with it.
+    if (kind === "document" && typeof meta.published !== "string" && !(typeof meta.permission === "string" && meta.permission.trim())) {
+      left.push({ name, reason: "no permission to publish or cite: add `permission:` in your own words (what may be done with it — quoted, cited, committed as a founding input); the intake records who granted it, when, by what channel, and where the statement is held (AGENTS.md §3.15)" });
+      continue;
+    }
     items.push({ file, sidecar, name, kind, meta, text: body.length > DOC_CAP ? body.slice(0, DOC_CAP) + `\n\n[truncated at ${DOC_CAP} characters of ${body.length}]` : body, pages, supplier: supplier ?? "the founder (note in the inbox)", title: titleOf(meta, body) });
   }
   return { items, left };
@@ -228,10 +235,11 @@ export interface InboxOutcome extends RunOutcome {
 export function permissionRecord(it: InboxItem, date: string, runId: string): string {
   const statement = path.basename(it.sidecar ?? it.file);
   const held = `held at inbox/processed/${runId}/${statement}`;
-  if (typeof it.meta.editor === "string" && it.meta.editor) return `Own work of ${it.meta.editor}, who supplied it for publication as a founding input: granted by ${it.meta.editor} on ${date} through the inbox statement \`${statement}\` (editor: ${it.meta.editor}), ${held}.`;
-  if (typeof it.meta.from === "string" && typeof it.meta.permission === "string") return `Supplied by ${it.meta.from} with permission to publish and cite — ${it.meta.permission} — recorded on ${date} through the inbox statement \`${statement}\`, ${held}.`;
+  const permission = typeof it.meta.permission === "string" ? it.meta.permission.trim() : "";
+  const grantor = typeof it.meta.editor === "string" && it.meta.editor ? `${it.meta.editor} (own work)` : typeof it.meta.from === "string" ? it.meta.from : "";
+  if (grantor && permission) return `Permission in the supplier's words: "${permission}" — granted by ${grantor} on ${date} through the inbox statement \`${statement}\`, ${held}.`;
   if (typeof it.meta.published === "string") return `Public at ${it.meta.published}; supplied${typeof it.meta.from === "string" ? ` by ${it.meta.from}` : ""} on ${date} through the inbox statement \`${statement}\`, ${held}.`;
-  throw new Error(`${it.name}: no footing on which to publish it as a founding input`);
+  throw new Error(`${it.name}: no recorded permission on which to publish it as a founding input`);
 }
 
 export async function runInbox(caseKey: string, opts: InboxOptions = {}): Promise<InboxOutcome> {

@@ -305,15 +305,8 @@ export interface EditionOutcome extends RunOutcome {
  * public — until the ledger moves. Otherwise the loop would argue with
  * itself indefinitely at a few dollars a round.
  */
-export function editionDue(loaded: LoadedCase): { reason: string; reconciles: string[]; kind: "moved" | "contested" } | null {
-  const incumbent = currentEdition(loaded);
-  const standing = ratification(loaded);
-  const adopted = adoptedAssessment(loaded);
-  const contestedBy = standing?.status === "contested" && !adopted?.reconciles ? currentChecks(loaded, latestCheckPerModel(loaded)).map((c) => c.runId) : [];
-  if (incumbent.basis.ledgerHash !== loaded.ledgerHash) return { reason: `the ledger moved since ${incumbent.runId}`, reconciles: contestedBy, kind: "moved" };
-  if (contestedBy.length) return { reason: `the panel contests the adopted assessment (${standing!.reason}) and no reconsideration has answered it`, reconciles: contestedBy, kind: "contested" };
-  return null;
-}
+export { editionDue } from "../domain/schedule.ts";
+import { editionDue } from "../domain/schedule.ts";
 
 export async function runEdition(caseKey: string, opts: EditionOptions = {}): Promise<EditionOutcome> {
   const root = opts.root ?? process.cwd();

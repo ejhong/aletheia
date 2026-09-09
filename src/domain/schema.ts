@@ -1125,3 +1125,30 @@ export const ArbiterRecordSchema = z.object({
   harvestedAt: z.string(),
 });
 export type ArbiterRecord = z.infer<typeof ArbiterRecordSchema>;
+
+/**
+ * A review note, harvested from its GitHub issue (governance/review-notes/):
+ * a lone panel objection the change merged over, which the operator answers
+ * on the record — a fix or a reply. Mirrors the issue's state at harvest
+ * with the last comment as the answer's receipt; a note closed without one
+ * is shown as closed without an answer (AGENTS.md §3.15, amendment of
+ * 2026-09-09).
+ */
+export const ReviewNoteRecordSchema = z.object({
+  number: z.number().int(),
+  title: z.string(),
+  url: z.string().url(),
+  state: z.enum(["open", "closed"]),
+  pr: z.number().int().nullable(),
+  seat: z.string().nullable(),
+  rules: z.array(z.string()).default([]),
+  paradigm: z.string().nullable(),
+  /** The PR commit the objection was raised on; the PR's final verdict may differ after a fix. Absent on the first notes. */
+  commit: z.string().nullable().optional(),
+  createdAt: z.string(),
+  closedAt: z.string().nullable(),
+  /** The last comment on the issue — the receipt of the answer on the record; null means none was written. */
+  answer: z.object({ by: z.string(), at: z.string(), excerpt: z.string(), url: z.string().url() }).nullable().optional(),
+  harvestedAt: z.string(),
+});
+export type ReviewNoteRecord = z.infer<typeof ReviewNoteRecordSchema>;

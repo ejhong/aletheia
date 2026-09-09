@@ -1,0 +1,113 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 209
+title: A founder's drop falls under a recorded standing direction, verified by GitHub
+url: https://github.com/ejhong/aletheia/pull/209
+verdict: pass
+reason: 4 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-09
+judgedAgainst: 7cad643d92
+promptVersion: panel-v1
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches only config, docs, pipeline code and tests —
+      AGENTS.md is untouched, and no citations are added (verification tool
+      found none). The mechanism it adds is squarely the shape §3.15's
+      2026-09-09 amendment contemplates: a recorded founder direction to publish
+      is the permission, and here the direction is recorded with the four
+      required elements — words, date ('given: 2026-09-09'), channel ('this
+      file, drafted on the founder's direction in session and merged by the
+      founder's hand'), and where held (config/founder.yaml) — with the per-file
+      act additionally stamped by commit SHA, author, date and GitHub's
+      attribution/signature verification in permissionRecord(). Rather than
+      weakening a check, the revision tightens it relative to the parked first
+      draft: an author line alone is rejected, every commit touching the file
+      must be a founder identity, and an unverified or stranger commit falls
+      back to the existing
+      `editor:`/`published:`/`from:`+`permission:`+`granted:` gate with the
+      reason recorded. The composeReport branch is honest about the limits of
+      what the drop establishes ('the drop says nothing about who wrote it: read
+      the author, date and venue from the document itself'), so no provenance or
+      authorship is invented (§3.8). The channel field openly discloses that the
+      operator drafted the wording on the founder's direction and that the
+      founder merges it, so it is not an AI record presented as a human one. My
+      residual worry — that a blanket prospective direction lets the founder
+      deposit a third party's unpublished document past the supplier-permission
+      gate (the test's 'by Someone Else, 2019' PDF) — is a risk the founder's
+      own reserved power absorbs, not a rule the code itself breaks."
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: unsure
+    rules:
+      - §3.15
+      - §3.8
+    reasoning: The exemption is constitutionally valid only if the standing
+      direction in `config/founder.yaml` was actually given or adopted by the
+      founder and recorded with exact provenance. The packet supplies only
+      self-referential assertions that the words were directed in session and
+      will be or were “merged by the founder’s hand”; it provides no trusted
+      merge metadata, session locator, or founder review establishing that
+      authorization. Without that fact, the new code would treat confidential
+      founder-attributed drops as publishable based on an unratified
+      declaration; with it, the implementation is largely fail-closed and
+      records the direction, commit, date, GitHub attribution, and verification.
+      Because the decisive authorization cannot be verified from the shown
+      material, compliance cannot be determined.
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.15
+    reasoning: The change implements intake handling for founder-dropped files in
+      strict compliance with AGENTS.md §3.15 (which allows a recorded founder
+      direction to serve as publication permission for supplied material). It
+      records exact provenance (§3.8) including who granted permission, date,
+      channel, git commit SHA, and verification status via GitHub API signature
+      verification. Unverified commits or commits from other authors fail closed
+      and require explicit sidecar permission statements. No constitution edits
+      or citation fabrications are present.
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff implements the 2026-09-09 §3.15 amendment exactly:
+      founder-supplied ledger material is not itself a direction; a recorded
+      direction to publish is the permission. config/founder.yaml holds the
+      standing direction with words, given date, and channel; founderDrop treats
+      the verified commit only as the covered act, requiring founder identity on
+      every touching commit plus GitHub login attribution and signature
+      verification—not a bare author line. permissionRecord and composeReport
+      name direction, commit, author, date, GitHub’s word, and where each is
+      held, and still leave non-founder/unverified/uncommitted files on the
+      ordinary permission: path. No AGENTS.md edit, no citation fabrication, no
+      silent check-weakening, and the DECISIONS/MAINTENANCE/inbox docs match the
+      code."
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+    reasoning: "The change does not edit AGENTS.md; it implements the 2026-09-09
+      amendment already present in the base constitution, which explicitly
+      provides that a founder direction to publish, so recorded, is the
+      permission. The standing direction in config/founder.yaml is recorded with
+      words, date (2026-09-09), and channel (a session direction, merged by the
+      founder's hand in PR #209), and the decisions log documents it as a
+      founder direction — exactly the operating-record mechanism §3.15
+      prescribes. The mechanism is not check-weakening: the intake requires
+      every commit touching a file to carry a founder identity and requires
+      GitHub itself to attribute the latest commit to the founder's login with a
+      verified signature, so a forged author line, an unsigned laptop commit, a
+      stranger's commit, or any file the AI drops itself all fail closed (the
+      test exercises the stranger and unsigned cases). Provenance is honest: the
+      record names the direction, the commit, GitHub's attestation, and where
+      each is held, and the drafter is explicitly told the drop says nothing
+      about authorship, avoiding any AI-record-as-human-record laundering. The
+      residual point I cannot verify from the packet is whether the founder
+      actually gave the session direction and merged PR #209, but nothing in the
+      material contradicts it, prior DECISIONS.md entries corroborate the
+      founder-merge pattern, and the constitution treats the recorded operating
+      record as authoritative; a blanket recorded direction covering only the
+      founder's own authenticated commits fits the amendment's letter rather
+      than dodging it."
+harvestedAt: 2026-09-09

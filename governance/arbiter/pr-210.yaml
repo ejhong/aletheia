@@ -1,0 +1,77 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 210
+title: The chain hands the panel its five keys, and the intake its GitHub token
+url: https://github.com/ejhong/aletheia/pull/210
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-09
+judgedAgainst: 1f1b3d0113
+promptVersion: panel-v1
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: The diff is six added lines in a CI workflow that pass three
+      additional vendor API keys plus a GITHUB_TOKEN into an existing step's env
+      block. No content/ files, no citations, no assessments, no provenance
+      touched; the citation verification found no identifiers. AGENTS.md is
+      untouched. Far from weakening the multi-model concurrence check (§3.15),
+      it strengthens it by ensuring all five panel seats (per
+      config/models.yaml) can actually run in CI rather than only the Anthropic
+      and OpenAI seats. GITHUB_TOKEN is the standard scoped workflow token, not
+      a new server or auth system, so §4 is not implicated. The PR body's
+      framing is consistent with what the diff actually does.
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.15
+      - §8
+    reasoning: The workflow change supplies the three previously omitted
+      model-provider credentials, supporting rather than weakening the required
+      multi-model concurrence process. Passing the repository-scoped GitHub
+      token to the intake command is consistent with the stated need to inspect
+      commit provenance, and the diff does not expose secret values or alter
+      workflow permissions. It adds no content, citations, assessments, or
+      provenance records and does not modify AGENTS.md or bypass any
+      constitutional check.
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.15
+    reasoning: The change simply exposes existing secrets (GEMINI_API_KEY,
+      XAI_API_KEY, VENICE_API_KEY, and GITHUB_TOKEN) to the chain workflow in
+      `.github/workflows/chain.yml`. This directly supports the constitutional
+      requirement in §3.15 for multi-model ratification across independent
+      vendor seats rather than weakening any checks. No content, claims, or
+      epistemic records are modified.
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff only adds the three missing panel API keys (Gemini, xAI,
+      Venice) plus GITHUB_TOKEN to the existing env block of
+      .github/workflows/chain.yml so the five-seat check and intake can actually
+      run. This advances rather than weakens §3.15 multi-model concurrence and
+      does not touch AGENTS.md, content/, citations, assessments, or any
+      epistemic record. No fabrication, provenance, or check-dodging issue is
+      present; the change is ordinary CI wiring prerequisite to a supervised
+      Chain run.
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "This is a pure CI configuration change: six inserted lines adding
+      environment variables to a workflow step, sourced from GitHub secrets
+      (GEMINI_API_KEY, XAI_API_KEY, VENICE_API_KEY, GH_TOKEN). It does not touch
+      content/, citations, provenance, or AGENTS.md, so §3's epistemic rules are
+      not engaged. Far from weakening the checks (§3.15), it strengthens them:
+      the check verb previously ran with only two of the five panel seats' keys,
+      and the change supplies the remaining three, so multi-model concurrence
+      can actually operate as the constitution requires. The GH_TOKEN comment
+      describes querying GitHub for who committed a dropped file — a
+      provenance-gathering capability, not a check bypass — and the diff
+      contains no logic change that could reclassify or dodge a gate. No secrets
+      are exposed (only secret references, standard practice), and the diff is
+      complete with no omitted files, so there is nothing hidden that could hide
+      a violation."
+harvestedAt: 2026-09-09

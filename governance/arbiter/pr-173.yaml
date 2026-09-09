@@ -1,0 +1,108 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 173
+title: Unify source identity and retain intake decisions in context
+url: https://github.com/ejhong/aletheia/pull/173
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-06
+judgedAgainst: 476554ccb2
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff is pipeline/tooling only: a shared source-identity module,
+      a read-only interface over existing watch/promotion/archive decision
+      files, a model-free `intake-report.mjs` inspector, tests, and doc updates.
+      No content/ records, citations, or assessments are added or altered (the
+      verification section found no identifiers), and AGENTS.md is untouched.
+      The checks are tightened rather than weakened: `alreadyCarried` still
+      defers on title-similarity near-duplicates (§3.10), promotion still
+      records duplicates/failures to the ledger, the case-input hash is
+      re-checked before writing so decisions on stale inputs are discarded, and
+      the existing per-run promotion budget and admission gates are preserved.
+      Provenance is treated conservatively — missing historical
+      model/inputHash/promptVersion stay `null`, ambiguous legacy promotions
+      stay unscoped rather than being attributed to an invented case, and
+      malformed memory throws instead of silently reading as empty (§3.8, §8 'no
+      silent data repair'). The triage prompt explicitly labels prior decisions
+      as untrusted context and warns that knowing a source does not establish
+      that an observation was assessed, which supports §3.2/§3.6 rather than
+      undermining them. Making previously-suppressed proposals reconsiderable
+      (retryable operational failures, revised rationale, changed case inputs)
+      widens review rather than dodging it, and the docs/DECISIONS.md entry
+      honestly scopes what is not yet implemented."
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.10
+      - §3.14
+      - §3.15
+    reasoning: "The change adds no research content or citation identifiers under
+      content/, and the mechanical citation report found nothing requiring
+      existence verification. Source identity is kept separate from assessment:
+      title similarity is advisory, decisions are scoped by case and input
+      hashes, and known sources are explicitly not treated as proof that every
+      observation was considered. Historical decisions remain in their original
+      files with exact file references, missing metadata stays null, and
+      inferred legacy case ownership is visibly labeled rather than presented as
+      recorded provenance. The visible diff appends decision context, adds
+      fail-closed parsing and concurrent-input checks, and does not remove the
+      existing admission or multi-model publication gates."
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.10
+      - §3.14
+      - §3.15
+    reasoning: The change establishes a shared source-identity and read-only intake
+      memory interface without altering or weakening existing admission or
+      multi-model review gates (§3.15). Exact provenance and historical receipts
+      are preserved honestly, keeping missing legacy review hashes null rather
+      than inventing metadata (§3.8, §3.14). Deduplication logic distinguishes
+      exact identifiers from advisory title similarity and scopes promotion
+      receipts per case, protecting independence (§3.10) while preventing
+      cross-case suppression. AGENTS.md is untouched, and no content under
+      content/ is added or modified.
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff touches only automation docs, intake scripts, and tests; it
+      does not edit AGENTS.md, research content under content/, or public UI.
+      Shared source-identity and the read-only intake-memory layer keep original
+      decision files authoritative, leave missing historical model/input
+      receipts null rather than inventing them, and treat prior decisions as
+      context rather than terminal verdicts or an “already considered” gate.
+      Promotion resting is narrowed to same case + candidate hash + case input
+      hash with retryable operational failures preserved, which strengthens
+      rather than weakens the §3.15 checks. Citation tooling reported no new
+      content/ identifiers; synthetic test DOIs/arXiv strings are labeled as
+      syntax fixtures, not research citations.
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.10
+      - §3.14
+      - §4
+    reasoning: "The change is tooling and documentation only: it adds a shared
+      source-identity module, a read-only intake-memory interface over existing
+      decision files, and per-case promotion receipts, explicitly leaving the
+      existing admission and publication gates in place and rewriting no
+      historical records (missing model/input receipts are left null rather than
+      invented, honoring §3.15's no-fabrication rule). The triage prompt
+      correctly labels prior intake decisions as untrusted records rather than
+      verdicts, and new archive entries gain model/promptVersion/inputHash
+      stamps, strengthening rather than weakening the audit trail (§3.14). Test
+      identifiers (10.1234/..., arXiv 2605.01190) are synthetic and labeled as
+      such, no citations were added under content/, AGENTS.md is untouched, and
+      no dependencies or build checks were weakened. Scoping promotion
+      rest/retry to case+candidate+inputs (rather than a global handled-URL set)
+      does not undermine §3.10, since near-duplicate sources still route through
+      the existing identity-review gate and the code explicitly refuses to treat
+      a known source as evidence that an observation was assessed."
+harvestedAt: 2026-09-09

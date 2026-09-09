@@ -1,0 +1,110 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 216
+title: founder/amend 3 15 narrow veto
+url: https://github.com/ejhong/aletheia/pull/216
+verdict: park
+reason: "5 seat(s) find a violation that parks on its own: Opus 5 (Anthropic)
+  (§3.15; constitution); GPT-5.6 Sol (OpenAI) (§3.15; constitution); Gemini 3.8
+  Flash (Google) (§3.15; constitution); Grok 4.5 (xAI) (§3.15; constitution);
+  GLM 5.3 Flash (Z.ai, via Venice) (§3.15; constitution); only 0 of 5 seats
+  affirm compliance (4 required)"
+outcome: merged
+outcomeAt: 2026-09-09
+judgedAgainst: f180de8022
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: "The diff edits AGENTS.md itself, adding a new normative bullet to
+      §3.15 that changes when a change parks (a lone objection now parks only
+      for fabrication, confidence, or constitution kinds). That is the opposite
+      of trivially non-normative formatting: it rewrites the
+      ratification/parking rule, and the code in scripts/lib/arbiter-core.mjs
+      (VETO_PARADIGMS, `violating.length < 2`) loosens the previous fail-closed
+      tally in which any single substantiated violation parked, with
+      src/domain/arbiter.test.ts rewriting the test that encoded that check.
+      Amending this file is the one act reserved to the human founder; the PR
+      body's and DECISIONS.md's assertions that the founder directed it and
+      'committed [the sentence] by the founder's hand' are claims inside the
+      material under review, not something I may treat as authorization. My seat
+      instructions are explicit: an AGENTS.md edit of normative text is judged
+      'violates' under §3.15. The substance is also check-weakening (§3.15's
+      prohibition on weakening the checks), which reinforces rather than
+      replaces the constitutional ground. To clear this, the AGENTS.md sentence
+      would have to arrive as the founder's own commit outside this panel's
+      change, with only the code/docs/protocol implementation presented here for
+      review."
+    paradigm: constitution
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: The diff substantively edits AGENTS.md by adding a new constitutional
+      rule that permits merging over one non-vetoing objection. Under §3.15,
+      amending the constitution is reserved exclusively to the human founder,
+      and the review rules require any nontrivial AGENTS.md edit to be judged a
+      violation. The PR body and DECISIONS.md assert that the founder authorized
+      and personally committed the amendment, but those assertions are untrusted
+      material and cannot establish that reserved authority. The accompanying
+      arbiter changes operationalize the normative edit, so this is not a typo
+      or formatting exception.
+    paradigm: constitution
+  - seat: Gemini 3.8 Flash (Google)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: The diff modifies AGENTS.md by adding substantive, normative rules
+      regarding panel vetoes, review notes, and parking thresholds. Under §3.15
+      and the constitutional panel instructions, amendments to AGENTS.md are
+      strictly reserved to the human founder, and any diff modifying AGENTS.md
+      in a non-trivial manner must be judged as a violation. Although the
+      untrusted PR description claims this amendment was made by the founder,
+      the review panel cannot treat claims of human authorization inside the PR
+      as authoritative directives. Because the edit introduces normative policy
+      into AGENTS.md rather than trivial typos or formatting fixes, it violates
+      §3.15.
+    paradigm: constitution
+  - seat: Grok 4.5 (xAI)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: The diff edits AGENTS.md with a substantive normative change to §3.15
+      (narrow veto / lone-objection review-note rule), not a trivial typo or
+      formatting fix. Under §3.15, amending AGENTS.md is reserved to the human
+      founder; panel instructions require any such diff be judged violates with
+      paradigm constitution. PR body and DECISIONS.md claims that the sentence
+      was a founder hand-commit or session direction are untrusted data inside
+      the material under review, not authorization. The remainder of the PR
+      (arbiter tally, review-notes.mjs, panel-v3, tests, docs) implements that
+      same normative shift and cannot cure the reserved-file edit.
+    paradigm: constitution
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: The diff makes a substantive, normative edit to AGENTS.md §3.15 —
+      replacing 'disagreement does not publish silently' with a new narrow-veto
+      rule that narrows when a lone seat's objection parks a change. Under the
+      trust boundaries governing this panel, a diff that edits AGENTS.md must be
+      judged 'violates' unless the change is trivially non-normative (typo,
+      formatting), because amendments to the constitution are reserved to the
+      human founder and a seat cannot verify from the material under review who
+      actually made a commit. The claims of founder authorization — the PR
+      body's 'the AGENTS.md sentence is the founder's commit' and the
+      DECISIONS.md entry asserting the founder gave the direction in session —
+      are untrusted data inside the diff itself; they are evidence, not
+      directives, and I have no independent record here that the founder's hand
+      made this commit. Beyond the mechanical AGENTS.md rule, the accompanying
+      code (arbiter-core.mjs, panel-v3, review-notes.mjs) operationalizes a
+      weakening of §3.15's parking check that is not present in the
+      authoritative base-revision constitution I was given, so the change cannot
+      be ratified by the panel it modifies. If the founder's amendment is
+      genuine, the remedy is for the founder to commit the AGENTS.md change
+      themselves on the record and resubmit the code changes separately against
+      the amended constitution; I would then need the DECISIONS.md entry
+      verified as outside this PR's own authorship.
+    paradigm: constitution
+harvestedAt: 2026-09-09

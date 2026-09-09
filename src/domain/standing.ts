@@ -250,7 +250,7 @@ export function checksStale(loaded: LoadedCase): boolean {
  * surviving objections attached, not sanitized away." For each current
  * check whose case verdict differs from the displayed draft's, return the
  * seat, its verdict, and the first sentence of its synthesis as the
- * objection's one-line form (the full reasoning lives on /panel).
+ * objection's one-line form (the full reasoning lives on the case page and /operations).
  */
 /** Every seat whose word differs from the displayed verdict, a neighbouring word included: the standing tolerates one step, the page still shows it. */
 export function survivingObjections(

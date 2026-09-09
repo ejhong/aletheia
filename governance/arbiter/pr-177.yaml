@@ -1,0 +1,101 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 177
+title: Preserve historical source decisions before the intake cutover
+url: https://github.com/ejhong/aletheia/pull/177
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-06
+judgedAgainst: ab69854620
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff adds only a staging YAML under proposals/intake/ plus a
+      short descriptive note in docs/AUTOMATION.md; AGENTS.md is untouched and
+      no gate, budget, or review rule is altered, so §3.15 check-weakening is
+      not implicated. Each of the 39 migrated decisions carries exact provenance
+      — a legacy commit hash (ab698546...), a file+index ref (e.g.
+      proposals/watch/archive-ledger.yaml#items[18]), the original record
+      verbatim, and duplicate triage copies where they exist — satisfying §3.8
+      rather than removing locators. Unknown metadata is left explicitly null
+      (model, promptVersion, inputHash) instead of being invented, and the
+      failed orch-or triage case is preserved honestly as decision: failed with
+      the original parse-error message and retryable: true, which is the
+      §3.11-style negative-record behavior one wants, not a fabricated record.
+      The decision count in the diff is exactly 39, matching the PR body's
+      claim, so no visible internal inconsistency. No content/ files or
+      published assessments change and no citation identifiers were added under
+      content/ (verification section empty), so no citation-existence or
+      unratified-draft-as-ratified issue arises. The PR body's assertions about
+      the other batches and CI are unverifiable here but are claims about work
+      outside this diff, not violations within it."
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: The added packet preserves exact legacy provenance through a specific
+      commit, file-and-row references, run IDs, dates, and verbatim legacy
+      records, while retaining null fields rather than inventing missing
+      metadata. It explicitly records the failed triage outcome as failed and
+      retryable, and identifies duplicate promotion records without treating
+      them as independent evidence. The change is confined to documentation and
+      a staged proposal file; it neither alters published assessments nor
+      presents this packet as ratified or authoritative over the original files.
+      No AGENTS.md amendment, confidential material, or weakening of validation
+      and ratification checks appears in the diff, and there is no visible
+      positive evidence that any source or locator was fabricated.
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules: []
+    reasoning: The diff stages 39 historical intake and triage decisions into an
+      intake ledger under proposals/intake/ along with descriptive documentation
+      in docs/AUTOMATION.md. It does not alter AGENTS.md, modify content under
+      content/, or weaken any verification gates or publication checks.
+      Provenance to original legacy commit hashes and archive files is
+      preserved, and no unratified drafts are presented as published
+      assessments.
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff only appends a documentation note to docs/AUTOMATION.md and
+      adds one staging YAML under proposals/intake/ that re-records 39
+      already-committed watch/triage/promotion decisions (including one explicit
+      failed triage) with their original titles, URLs/identifiers, reasons,
+      runIds, and legacy commit locators at ab698546. It does not edit
+      AGENTS.md, content/, assessments, or any runtime reader; the PR and doc
+      text state the originals remain authoritative and no public judgment or
+      gate is changed. Citation-verification tooling reported no new content/
+      identifiers to check, and nothing in the visible packet shows fabricated
+      locators, silent judgment edits, confidence-material exposure, or
+      check-weakening. This is an append-only historical staging packet
+      consistent with §3.14–§3.15 and phase-1 proposal handling.
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.15
+    reasoning: "The diff is an additive staging packet under proposals/intake/ plus
+      an honest documentation note; it edits no AGENTS.md, no CI gate, no
+      validator, and no published assessment, so no check is weakened and
+      nothing unratified is presented as ratified — it is explicitly labeled a
+      review-packet staging copy with the cutover deferred until batches pass
+      review. Provenance discipline is strong: each row carries a legacy commit
+      locator (ab69854...), original file refs, embedded legacy records, unknown
+      metadata left null rather than invented (§3.8), and the previously skipped
+      failed triage case is preserved as an operational failure rather than
+      papered over (§3.11 spirit). The citation-verification section reports no
+      identifiers checked because the tool scopes to content/ and these sit
+      under proposals/; the DOIs/arXiv IDs are internally consistent (titles
+      plausibly match identifier subjects) and postdate my training, so per
+      temporal humility their being unfamiliar is not evidence of fabrication,
+      and these are records of archived/rejected watch items, not new
+      evidentiary claims. The claim that rows exactly match the original ledgers
+      cannot be confirmed from the diff alone, but the originals remain present
+      and authoritative, making any mismatch detectable and non-destructive;
+      nothing visible breaks a specific rule."
+harvestedAt: 2026-09-09

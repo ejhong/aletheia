@@ -1,9 +1,13 @@
 import fs from "node:fs";
 import path from "node:path";
-import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
+import { stringify as stringifyYaml } from "yaml";
 import { z } from "zod";
-import { SpendRowSchema, type Cost, type SpendRow, type SpendRowInput, type Verb } from "../domain/intake.ts";
-import { loadConfig } from "./config.ts";
+import { SpendRowSchema, type SpendRowInput, type Verb } from "../domain/intake.ts";
+import { loadConfig } from "../domain/config.ts";
+import { readSpend, spendFile } from "../domain/spend.ts";
+
+// The read side of the ledger lives in the domain (src/domain/spend.ts); the pipeline writes through it.
+export { readSpend, spendByCase, spendFile, spendFor, sumCost } from "../domain/spend.ts";
 
 /**
  * The spend ledger (docs/AUTOMATION.md, "The code"): one place, inside the
@@ -13,7 +17,6 @@ import { loadConfig } from "./config.ts";
  * ledger never estimates a price it was not given.
  */
 
-export const spendFile = (root = process.cwd()) => path.join(root, "governance", "spend.yaml");
 
 /** What a paid call is charged to: the run, its verb and case, and the repository root. */
 export interface Meter {
@@ -97,39 +100,6 @@ export function recordSpend(row: SpendRowInput, root = process.cwd()): void {
       "# Tokens are the vendor's report; usd is null unless config/tariffs.yaml carries a reviewed tariff.\n" +
       stringifyYaml(rows, { lineWidth: 0 }),
   );
-}
-
-export function readSpend(root = process.cwd()): SpendRow[] {
-  const file = spendFile(root);
-  if (!fs.existsSync(file)) return [];
-  const raw = parseYaml(fs.readFileSync(file, "utf8"));
-  return Array.isArray(raw) ? raw.map((r) => SpendRowSchema.parse(r)) : [];
-}
-
-/** Sum a set of spend rows into a run's cost. */
-export function sumCost(rows: SpendRow[]): Cost {
-  const usd = rows.every((r) => r.usd !== null) && rows.length > 0
-    ? Number(rows.reduce((n, r) => n + (r.usd ?? 0), 0).toFixed(6))
-    : rows.length === 0
-      ? 0
-      : null;
-  return {
-    calls: rows.length,
-    // Every input token the model processed, cached or not.
-    inputTokens: rows.reduce((n, r) => n + r.inputTokens + r.cacheReadTokens + r.cacheWriteTokens, 0),
-    outputTokens: rows.reduce((n, r) => n + r.outputTokens, 0),
-    usd,
-  };
-}
-
-export function spendFor(runId: string, root = process.cwd()): SpendRow[] {
-  return readSpend(root).filter((r) => r.runId === runId);
-}
-
-export function spendByCase(root = process.cwd()): Record<string, Cost> {
-  const out: Record<string, SpendRow[]> = {};
-  for (const r of readSpend(root)) (out[r.case ?? "(site)"] ??= []).push(r);
-  return Object.fromEntries(Object.entries(out).map(([k, v]) => [k, sumCost(v)]));
 }
 
 export type { Verb };

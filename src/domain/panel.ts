@@ -8,7 +8,7 @@ import { site } from "../config/site";
 import type { AssessmentRun, AssessmentState } from "./schema.ts";
 
 /**
- * Derivations for the /panel page — the site's governance made visible.
+ * Derivations for the /operations page — the site's governance made visible.
  * Everything here is computed at build time from records that already
  * exist (assessment runs, ratification standings, harvested arbiter
  * verdicts, history); nothing is authored, so the page cannot drift from
@@ -191,7 +191,7 @@ export function opsFeed(limit = 40): OpsEvent[] {
       detail: r.reason,
       // Full seat-by-seat reasoning renders on this page (The gate);
       // the PR itself stays one hop away as the source record.
-      href: `/panel/#arbiter-pr-${r.pr}`,
+      href: `/operations/#arbiter-pr-${r.pr}`,
       sourceHref: r.url,
       sourceLabel: `PR #${r.pr}`,
     });

@@ -1,0 +1,123 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 174
+title: Retain intake decisions and reconsider research proposals in context
+url: https://github.com/ejhong/aletheia/pull/174
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-06
+judgedAgainst: cd8fed49df
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "This is an infrastructure/plumbing change: it consolidates
+      watch-triage, promotion, and agenda proposal/score decisions into a
+      validated, hash-addressed, append-only store under proposals/intake/ and
+      retires the legacy stores. No content/ records, claims, evidence, sources,
+      or ratified assessments are touched, and the citation tooling found no
+      added identifiers. Provenance is preserved rather than removed: legacy
+      entries carry their original committed commit hash, ref, and verbatim
+      record; migrate-intake.mjs verifies field-by-field replay and refuses to
+      delete any legacy file that changed after the recorded basis (tested in
+      intakeStore.test.ts), and the deleted YAMLs remain in git history. The
+      checks are strengthened, not weakened: classify-pr-risk.mjs now forces
+      needs-approval on any modification/deletion under proposals/intake/,
+      incomplete (<4 seats) or stale panels are marked retryable and cannot
+      yield an actionable score, and the four-highs/zero-concerns rule plus the
+      separate publication gate are explicitly retained; the removed
+      refusal-fallback ban comment is preserved in substance (seat identity
+      kept, failures recorded as failed seats). Dropping the 'previously
+      proposed title is permanently retired' heuristic is an editorial-workflow
+      choice, not a constitutional check, and the replacement rests identical
+      substance on identical case inputs while carrying prior reasons forward.
+      Docs and the proposal page relabel 'retired' as 'not advanced' and surface
+      seat reasoning honestly, noting that missing historical reasons stay
+      unknown rather than being reconstructed. AGENTS.md is untouched; the
+      DECISIONS.md addition is an AI implementation record in the established
+      form."
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: The change replaces legacy intake stores with hash-validated,
+      immutable batches while preserving each migrated row, its commit and
+      locator, and leaving unavailable historical metadata null rather than
+      reconstructing it. The migration verifies field-for-field replay before
+      deleting old files and refuses deletion when a legacy file differs from
+      the committed basis, satisfying provenance and history-preservation
+      requirements. New panel records retain seat-level scores, reasoning, and
+      concerns; score totals are validated against those seats, while stale or
+      insufficient panels are marked retryable and excluded from actionable
+      agenda tallies. Existing intake batches are explicitly removed from the
+      low-risk lane when modified or deleted, and proposal-derived content still
+      passes the independent publication gate rather than publishing on the
+      generator's unilateral judgment.
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+      - §8
+    reasoning: The PR migrates scattered and ephemeral intake/agenda records into
+      durable, schema-validated, and immutable batches under `proposals/intake/`
+      while retiring legacy stores verified via replay. No content under
+      `content/cases` is touched, no citations are added or fabricated, and the
+      publication gates and 4-of-5 panel advancement requirements remain
+      strictly enforced. Risk classification in `scripts/classify-pr-risk.mjs`
+      is tightened rather than weakened by ensuring that any deletion or
+      modification of existing intake history requires human approval. All
+      domain tests pass and the changes preserve full inspectability and
+      provenance across worker runs.
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff does not edit AGENTS.md, add content/ claims or assessments,
+      or introduce citations; citation tooling found none. It adds an
+      append-only, hash-validated intake store under proposals/intake/, migrates
+      legacy watch/promotion/agenda decisions with committed locators and
+      unknown historical metadata left null, and only then retires the old
+      ledgers—preserving provenance rather than fabricating or silently
+      rewriting judgments (§3.8, §3.14, §3.15). classify-pr-risk now forces
+      consequential review for any modify/delete of existing intake batches,
+      incomplete or stale panels stay non-actionable, seat totals must match
+      recorded seats, and the four-highs/zero-concerns rule plus the independent
+      publication gate are unchanged. UI/copy shifts (“retired” → “not
+      advanced,” optional review disclosure) and allowing same-title
+      reconsideration only when substance or case inputs change do not weaken
+      constitutional checks or present unratified drafts as ratified. No
+      confidence material is published; Deep Memory remains explicitly
+      unimported.
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.9
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: "This is a workflow-infrastructure change with no new citations,
+      claims, or assessments: the citation verification found no added
+      identifiers, and the diff touches no content/ research records. The legacy
+      decision stores are deleted only after a verified replay that preserves
+      original rows with committed locators
+      (legacy.commit/legacy.ref/legacy.record), keeps missing historical
+      reviewer reasons as null rather than fabricating them, and refuses to
+      retire any legacy file changed after its basis — consistent with §3.8/§3.9
+      and tested explicitly. The four-highs/zero-concerns advancement rule, the
+      independent publication gate, and the consequential-change classification
+      are retained or strengthened (modifications/deletions of existing intake
+      batches now trigger needs-approval, per classify-pr-risk.mjs and tests),
+      so no check is weakened or dodged; the 'not advanced' relabel is a more
+      honest status than 'retired by silence', and reconsideration is gated on
+      changed substance or inputs, not on renaming. No AGENTS.md edit appears in
+      the diff. Residual uncertainties (whether the 195-record migration batches
+      actually match the committed snapshot, PRs #175–#177 review claims) are
+      migration-execution facts I cannot verify from the diff, but the
+      replay-verification and idempotency logic shown is exactly the fail-closed
+      pattern the constitution requires, and no visible record is fabricated or
+      silently altered."
+harvestedAt: 2026-09-09

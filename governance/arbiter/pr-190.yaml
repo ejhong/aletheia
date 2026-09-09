@@ -1,0 +1,120 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 190
+title: Add bounded source discovery to the research loop
+url: https://github.com/ejhong/aletheia/pull/190
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-07
+judgedAgainst: 0755c74af6
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "This is a tooling/automation change with no content/ records, no
+      citations added (verification section confirms none), and no edits to
+      AGENTS.md (the only AGENTS.md write is a synthetic fixture inside a temp
+      dir in discovery.test.ts). The new discovery adapter explicitly does not
+      create Source/Claim/Evidence records: it queues leads into the existing
+      source-reading queue, and docs and the PR body state repeatedly that
+      search summaries are unverified leads and that ledger additions still pass
+      the ordinary independent publication gate — so §3.15's gating is
+      preserved, not weakened. Anti-fabrication is actively strengthened:
+      searchSources admits only URLs from a completed web_search_call receipt or
+      annotations, rejecting URLs appearing solely in model prose, and
+      DiscoveryRunSchema refuses selections whose indexes do not name a distinct
+      returned source; invalid selections are nulled rather than queued.
+      Provenance and accounting are recorded (runId, model, promptVersion
+      bounded-discovery-v1, basisHash, immutable append to the intake store;
+      costs reserved with case/run/phase terms and an explicit, dated web-search
+      tariff). Prompts forbid inferring absence from a search miss and require a
+      counterevidence query, consistent with §3.11 and §3.13; the docs likewise
+      remove the old self-graded 'saturation counter'. The docs/DECISIONS.md
+      entry and PR body honestly disclose that live validation follows merge and
+      that promptVersion is 'none' for the interactive session, which is candid
+      rather than misleading. Phase-1's ban on live AI calls/autonomous web
+      research applies to the site itself, not the maintenance scripts, and the
+      static export is untouched."
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.7
+      - §3.8
+      - §3.11
+      - §3.12
+      - §3.15
+      - §4
+    reasoning: The change adds a bounded discovery adapter rather than publishing
+      claims or evidence, and explicitly routes all selected leads through the
+      existing source-reading checks and independent publication gate. It
+      freezes a narrow question, inclusion criteria, and disconfirmers before
+      searching, requires counterevidence when searches are planned, and states
+      that empty or failed searches are not negative evidence. URLs can be
+      selected only from completed search-tool receipts, while prose-only URLs,
+      invalid indexes, stale inputs, and failed calls are rejected or retained
+      as labeled failures. Discovery records preserve model, response ID,
+      hashes, run ID, protocol version, date, search actions, and selection
+      rationale, providing appropriate provenance without representing leads as
+      verified sources. The diff does not amend AGENTS.md, alter published
+      assessments, expose identified confidential material, or weaken the
+      ratification and validation gates.
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.11
+      - §3.12
+      - §3.15
+      - §4
+    reasoning: The proposed change adds a bounded source discovery script and
+      pipeline for the research intake workflow without altering any content
+      files or published ledgers directly. In accordance with §3.12, the
+      discovery process freezes the scope, question, inclusion criteria, and
+      disconfirmers prior to executing any search queries, and mandates a
+      counterevidence search in line with §3.11. Discovered search results are
+      strictly treated as unverified leads rather than evidence, requiring URLs
+      to originate in verified tool receipts and feeding into the existing
+      intake queue rather than bypassing the reading and publication gates
+      (§3.6, §3.15). No live AI calls or autonomous research are added to the
+      static website runtime itself, respecting the Phase-1 boundary (§4).
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff adds bounded discovery automation (scripts, config,
+      workflow, docs, tests) that freezes one question with inclusion criteria
+      and disconfirmers before at most two single-call searches, admits only
+      URLs from completed search receipts (not model prose), and queues leads
+      for the existing reader and independent publication gate. No content/,
+      assessments, evidence, or AGENTS.md changes appear; search outputs are
+      explicitly non-evidence with immutable intake receipts and no
+      self-triggering. Hosted-search tariffs and shared-budget metering
+      strengthen rather than weaken §3.15 checks, and citation tooling found no
+      fabricated content identifiers.
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.8
+      - §4
+    reasoning: "The change adds a bounded discovery adapter, not a content change:
+      no files under content/ are touched, no ledger additions occur in this PR,
+      and every discovered URL must come from a completed web_search_call
+      receipt (searchSources rejects prose-only URLs, uncompleted actions, and
+      replayed outputs), so nothing is fabricated and §3.8's 'never invent a
+      locator' is enforced in code. Search summaries are explicitly recorded as
+      unverified leads that only the existing source reader and independent
+      publication gate can convert into Source/Claim/Evidence records,
+      preserving the gated multi-model process and append-only intake receipts
+      (§3.14, §3.15); counterevidence queries are schema-required, and 'failed
+      search ≠ absence' is encoded rather than asserted. The webSearch tariff is
+      an added, metered cost term with fail-closed reservation/settlement and
+      case/run/phase attribution — it strengthens rather than weakens the
+      checks, and AGENTS.md is not edited, so §3.15's amendment reservation is
+      not implicated. The only unverifiable items are two OpenAI documentation
+      URLs in config/README.md, which fall outside the content/
+      citation-verification scope and are auxiliary tariff-source notes, not
+      evidence citations; unfamiliarity with them is not positive evidence of
+      fabrication, so they do not overturn an otherwise compliant, well-bounded
+      change."
+harvestedAt: 2026-09-09

@@ -1782,3 +1782,28 @@ stored for it; the file itself is one click away. Review notes are not
 per case — they are about pull requests — and go on the operations page
 in the third PR.
 
+**The UI pass, third PR: one operations page (2026-09-09).** `/panel`
+becomes `/operations`, and gains, at the top, what a founder or a reader
+needs to know first: the operation state with its reason (the kill
+switch, visible), the schedule read from the workflow file and said in
+words, what the ledger wants next (the scheduler's own choice at build
+time), spend today, this month and all time against the caps in force
+with their phase, the panel's own bill, the recent sittings across cases
+in a reader's words, and the review notes — harvested from their issues
+into `governance/review-notes/` by the sitting, open first, so the queue
+is public. The standings, the dissent gallery, the seats' records, the
+Arbiter's verdicts and the operations log stay; the metabolism counts of
+the earlier design go. On the way, the readers the page needed moved into
+the domain — configuration, the spend ledger's read side, the budget's
+caps — with the pipeline importing them from there, so the UI reads no
+pipeline module but the scheduler's pure choice. On the GPT seat's review note (#229): a note's record now carries the
+last comment on its issue as the receipt of the answer, and a note closed
+without one is shown as closed without an answer — closure alone is not
+the answer; and a note names the commit it was raised on, since the PR's
+final verdict, given after the fix, reads differently from the objection
+that produced the note. On the seat's second note (#230): the answer is positively identified —
+the last comment by the founder's login or the maintenance bot, never a
+passer-by's remark — and the harvest paginates, so no note or comment
+falls off the end; and the scheduler's pure choice (with `editionDue`)
+now lives in the domain (`src/domain/schedule.ts`), the pipeline's `next`
+importing it from there, so the operations page reads no pipeline module.

@@ -1,0 +1,118 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 227
+title: "The UI pass, second PR: the record layer — every sitting on the case,
+  what it admitted, what it refused and why"
+url: https://github.com/ejhong/aletheia/pull/227
+verdict: pass
+reason: 4 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-09
+judgedAgainst: 386cf5c5d4
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "This is a presentation-layer change only: a new derived domain
+      module (`src/domain/record.ts`), a component, a test, a case-page wiring,
+      and a DECISIONS.md log entry. No content/ files change and the
+      verification tool found no citation identifiers added, so no fabrication
+      or provenance-label question arises. AGENTS.md is untouched, and nothing
+      in §3.15's checks is loosened — if anything the change strengthens
+      inspectability by surfacing each sitting's refusals with the verifier's
+      own reason and a link to the underlying dispositions file. Provenance
+      honesty is handled carefully: rows whose run left no record are displayed
+      as exactly that, with verb, outcome and cost left null and a visible 'no
+      run record' marker rather than an inferred stamp, and the test asserts
+      this. Links are only emitted for ids present in the `linkable` set,
+      avoiding dangling references (§8). The DECISIONS.md addition merely
+      records the change, which is ordinary documentation, not an amendment to
+      the constitution."
+    cost:
+      model: claude-opus-5
+      inputTokens: 13834
+      outputTokens: 471
+      usd: 0.080945
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: "The change derives its case record from existing run records and
+      disposition rows, exposing run IDs, dates, outcomes, costs, reasons,
+      reopening conditions, and admitted-record IDs rather than creating new
+      epistemic records. It handles missing run provenance honestly: orphaned
+      disposition groups are explicitly marked “no run record,” and verb,
+      outcome, and cost remain null rather than being inferred. No citations,
+      confidential material, constitution edits, unratified assessments, or
+      weakened checks are introduced, and the added test checks complete
+      grouping and the required reason/admission fields."
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 9038
+      outputTokens: 1123
+      usd: 0.058612
+  - seat: Gemini 3.8 Flash (Google)
+    vote: unsure
+    rules: []
+    reasoning: "seat failed: SyntaxError: Unexpected token '§', ...\" [\"§3.8\",
+      §3.9\", \"§3\"... is not valid JSON"
+    failed: true
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 9868
+      outputTokens: 443
+      usd: 0.009062
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff adds a derived Record panel (domain + UI + tests) that
+      groups existing dispositions under run records, surfaces verifier refusal
+      reasons and reopen conditions, and honestly labels sittings with no run
+      record rather than inventing verb/outcome/cost. No content/ ledger
+      records, citations, or AGENTS.md edits; DECISIONS.md only logs the UI
+      decision. Nothing fabricates provenance, weakens §3.15 checks, or
+      publishes confidence material—inspectability of sittings is strengthened,
+      not diluted.
+    cost:
+      model: grok-4.5
+      inputTokens: 9840
+      outputTokens: 124
+      usd: 0.020424
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+      - §3.9
+      - §4
+    reasoning: "This is a presentation-layer change that derives 'The record' panel
+      from existing run records and the dispositions file, storing nothing new —
+      no citations, sources, locators, or provenance details are added, so
+      nothing can be fabricated (citation verification confirms no identifiers
+      in added lines). Notably, the code is careful about provenance honesty:
+      runs whose records are absent are displayed as exactly that ('no run
+      record exists for it, so its verb, outcome and cost are not known'), with
+      nothing inferred — consistent with §3.9's
+      source-statement-versus-inference distinction and §3.14's visible-history
+      requirement. The tests enforce the constitution-relevant invariants (every
+      row under exactly one run, every refusal carrying a reason, every
+      admission naming its record), which strengthens rather than weakens the
+      §3.15 checks. The docs/DECISIONS.md edit is a dated entry in the decisions
+      log, which AI may write; the constitution itself (AGENTS.md) is untouched.
+      No confidence material, no misattributed stamps, no unratified-draft
+      presentation is visible in the complete diff."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 9906
+      outputTokens: 544
+      usd: 0.001758
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 52486
+  outputTokens: 2705
+  usd: 0.1708
+harvestedAt: 2026-09-09

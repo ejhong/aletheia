@@ -1,0 +1,94 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 175
+title: Preserve historical agenda proposals before the intake cutover
+url: https://github.com/ejhong/aletheia/pull/175
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-06
+judgedAgainst: ab69854620
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff adds one new intake YAML under proposals/ and an
+      append-only entry in docs/DECISIONS.md; it touches no content/ records, no
+      published assessments, and not AGENTS.md. The 78 decision rows I counted
+      in the file match the count stated in the PR body, and each row preserves
+      exact provenance: the source commit
+      ab698546200770ac95612af49f5056d30fd6f21b, the original markdown ref with
+      anchor (e.g.
+      proposals/agenda/2026-08-31-agenda-33432478115/megalithic-casting.md#prop\
+      osal-1), plus runId, model, promptVersion, and date, with the verbatim
+      original record nested under `legacy.record`. Unavailable metadata
+      (inputHash, candidateHash, generatedAt, caseBasis, recordId) is left
+      explicitly null rather than invented, satisfying §3.8's prohibition on
+      fabricated locators. No citation identifiers were added, so the
+      verification section is empty and there is nothing to check for
+      fabrication; the copied proposals are labeled `stage: agenda-proposal`,
+      `decision: proposed`, with the generating model named, so nothing is
+      presented as ratified or human (§3.15). Nothing here removes provenance,
+      weakens CI or the ratification gates, or exposes confidential geo-project
+      material. The one mild oddity — the body's reference to '195 decision
+      identities across the three smaller batches' when only one batch is
+      present — is a claim about sibling PRs, not a defect in what is being
+      added here."
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: "The change adds an append-only staging copy of 78 agenda proposals
+      without removing or altering the authoritative historical files. Each
+      record is explicitly marked `stage: agenda-proposal` and `decision:
+      proposed`, and carries a date, runId, model, promptVersion, commit-pinned
+      legacy reference, and original path anchor, so it is not presented as a
+      ratified or human judgment. Missing receipts and hashes remain explicitly
+      null rather than being invented, while the documentation accurately
+      describes them as unknown. No AGENTS.md edit, confidence material,
+      assessment rewrite, check weakening, or added content citation requiring
+      mechanical verification appears in the diff."
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules: []
+    reasoning: The pull request stages a batch of 78 historical agenda proposals
+      into an immutable intake record under proposals/intake/ and logs the
+      architectural rationale in docs/DECISIONS.md. It does not modify
+      AGENTS.md, touch content/ records, or publish any unratified editorial
+      claims as ratified conclusions. All entries preserve original run, model,
+      prompt, and git provenance references without fabrication or weakening of
+      existing constitutional gates.
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff adds only an append-only DECISIONS.md note describing a
+      staged historical migration for review, plus one intake YAML that copies
+      78 prior agenda proposals. Each decision is labeled stage agenda-proposal
+      / decision proposed, retains runId/model/promptVersion, points at the
+      original Markdown ref, and nests a legacy block with the stated commit
+      locator ab698546…; missing receipts stay null/unknown. No content/
+      research claims, assessments, sources, or citations are added (citation
+      verification empty), AGENTS.md is untouched, and the PR text states
+      existing stores remain authoritative with no reader/writer or UI cutover.
+      This is staging of historical copies under honest provenance, not a new
+      unilateral judgment or check-weakening change.
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "The change is purely additive: it stages 78 historical
+      agenda-proposal records in an immutable intake YAML plus an append-only
+      DECISIONS.md note, with no edits to AGENTS.md, no UI/research/assessment
+      changes, and no gate or CI modification visible in the diff. Provenance is
+      handled honestly — each record preserves its committed legacy locator and
+      run/model/prompt metadata, and unknown items (inputHash, input receipts,
+      generatedAt) are left explicitly null rather than invented, consistent
+      with §3.8. The records are labeled as staged copies with stage
+      'agenda-proposal' and decision 'proposed', so nothing is presented as a
+      ratified judgment (§3.15), and the citation-verification tooling found no
+      new citation identifiers to fabricate. The PR body's claims of validation
+      and unchanged gates are not contradicted by anything in the diff; on what
+      is visible, this is ordinary, well-labeled staging work."
+harvestedAt: 2026-09-09

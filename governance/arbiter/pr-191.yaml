@@ -1,0 +1,113 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 191
+title: Read bounded PDF sources with page and relevance checks
+url: https://github.com/ejhong/aletheia/pull/191
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-07
+judgedAgainst: 2158d58d27
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "No AGENTS.md edit; no content/ records change and no citations are
+      added (verification tool found none). The diff adds a bounded PDF reading
+      path that tightens rather than weakens the checks: Poppler-based container
+      inspection before any paid call, hard 10 MB / 60-page limits with no
+      silent truncation, a new requestAddressed relevance boolean, and — for
+      PDFs — a mandatory independent checker confirmation of the quote against a
+      separately rendered page image, enforced in code (`passes` requires
+      quoteSupported/locatorSupported/pageImageHash) and in the Zod schema
+      (`ResearchProposalSchema` rejects v6+ PDF passages lacking a rendered-page
+      receipt). Provenance handling is honest: textHash is set to null for scans
+      rather than fabricating a mechanical text-layer match, the locator
+      explicitly says 'file page count, not printed pagination; AI page
+      reading', and the source verificationNote states this is not human
+      verification (§3.8, §3.9, §4). The failed pilot is preserved rather than
+      buried: the v5 proposal with the wrong PDF page 31 remains in intake but
+      carries two appended `research-adoption: invalid` decisions naming the
+      scope failure and the page error, so nothing unratified is presented as a
+      finding (§3.14, §3.15). Discovery/no_change receipts explicitly state that
+      a reader's absence claim is not verified negative evidence (§3.11), and
+      all new intake records are stamped with runId, model, promptVersion and
+      date."
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.9
+      - §3.10
+      - §3.14
+      - §3.15
+    reasoning: The change strengthens provenance checks by bounding PDFs, hashing
+      the retrieved file and rendered page, requiring an explicit physical-page
+      check, and labeling PDF verification as AI reading rather than mechanical
+      text matching or human verification. The known v5 wrong-page result is
+      preserved as a proposed draft, then explicitly invalidated by two
+      append-only research-adoption records, including the corrected page
+      description and page-image hash; it is not installed as canonical evidence
+      or presented as ratified. The v6 no-change result remains a model
+      explanation rather than negative evidence, and the documentation expressly
+      says the comparison remains unresolved. The reader also checks request
+      relevance, separates source statement from inference, records dependency
+      notes and independence groups, and leaves the ordinary cross-vendor
+      publication gate intact.
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.9
+      - §3.14
+      - §3.15
+    reasoning: The pull request adds bounded PDF source reading capabilities
+      alongside mechanical Poppler page rendering and strict relevance and
+      physical-page checks. No files under `content/` are modified, and no
+      canonical claims, evidence records, or assessments are published. The
+      durable intake records accurately preserve the full audit trail of pilot
+      runs, including schema validation failures and explicit adoption
+      invalidations due to out-of-scope observations and page mismatches, fully
+      complying with provenance and append-only versioning rules.
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff adds bounded PDF intake (10 MB / 60 pages, Poppler
+      inspection, inline file + independent rendered-page image, null textHash,
+      explicit AI page-check receipts) and a request-relevance gate without
+      touching AGENTS.md or any canonical claims, assessments, or articles.
+      Failed pilot runs are preserved as failed/invalid/no_change intake (schema
+      miss, out-of-scope observation, wrong page 31 confirmed by later
+      page-image review); the v5 proposal is not adopted and is labeled
+      AI-extracted/ai_verified with honest non-human caveats. Source checks stay
+      separate from the cross-vendor publication arbiter, strengthening rather
+      than weakening §3.15 gates. No fabricated locators are installed as
+      ratified evidence; documentation and DECISIONS.md accurately record the
+      pilot costs, rejections, and founder steering.
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "This PR adds infrastructure (bounded PDF input, page-image
+      verification, relevance checking) and intake receipts, not published
+      content — no canonical claims, assessments, or articles change, so the
+      publication-ratification rules (§3.15) are not implicated; the one v5
+      proposal that advanced was explicitly rejected as invalid and preserved as
+      a failed pilot, never presented as a ratified or human finding. The v5
+      failure (both models confirming a wrong page locator) is transparently
+      recorded in append-only intake decisions with provenance (model, runId,
+      promptVersion), and the no_change outcome is explicitly labeled an
+      unverified reader explanation rather than negative evidence, consistent
+      with §3.11/§3.13. The verification labels are honest: PDF passages get
+      textHash null, 'ai_verified'/'AI page reading' labels, explicit 'not human
+      verification' limitations, and the new schema (§3.8) forbids inventing
+      text-layer hashes while requiring quoteSupported/locatorSupported
+      confirmation plus a rendered-page receipt for v6+ readings. The apparent
+      pageImageHash exemption for the v5 receipt preserves an append-only
+      historical record rather than weakening checks — the v6 superRefine rule
+      still enforces the rendered-page receipt for all new PDF readings, and the
+      diff strengthens rather than weakens the mechanical checks (strict
+      schemas, fail-closed PDF bounds, hash binding without byte exposure). No
+      citations are added, so there is nothing to fabricate; the Met URL and
+      search-lead URLs are labeled discovery aids, not verified evidence."
+harvestedAt: 2026-09-09

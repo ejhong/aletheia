@@ -226,8 +226,10 @@ input.
 - **The Chain's PRs** are the record of each sitting: what ran, what it
   cost, what it proposed and what it refused and why; the Arbiter's report
   is on each.
-- **`/panel`** on the site: standings per case, every split claim with each
-  seat's reasoning, per-seat records, the operations log.
+- **`/operations`** on the site: the state and the schedule, what the ledger
+  wants next, spend against the caps, recent sittings, the review notes,
+  standings per case, every split claim with each seat's reasoning, the
+  seats' records, the Arbiter's verdicts with their cost, the operations log.
 - **Review-note issues** (`gh issue list --label review-note`): the
   objections a lone seat raised, each answered on the record.
 - **PR bodies** are plain-language digests of what that run did.

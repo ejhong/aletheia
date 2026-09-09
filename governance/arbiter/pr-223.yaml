@@ -1,0 +1,133 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 223
+title: "Subtraction, fourth set: the Arbiter's seats through the metered
+  transport; the panel's cost in the ledger"
+url: https://github.com/ejhong/aletheia/pull/223
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-09
+judgedAgainst: 3aaf726fa5
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "This is infrastructure-only: the Arbiter's five seats move from the
+      unmetered `callVendor` to the pipeline's metered `callSeat`, a `costOf`
+      aggregator is added with tests, the arbiter record schema gains optional
+      `cost` and `paradigm` fields, and harvest copies the cost through. No
+      content/ files, no citations (verification tool found none), no AGENTS.md
+      edit. The checks in §3.15 are untouched: five distinct vendor seats
+      remain, a failing seat still counts as a FAILED 'unsure' rather than being
+      silently swapped, and the vendor-independence comment is preserved and
+      extended. The cost reporting is honestly conservative — tokens summed as a
+      floor, dollars withheld and the bill marked INCOMPLETE when any seat
+      returned no accounting — which is the opposite of false precision (§3.13,
+      §3.8). The workflow's switch from MAINTENANCE_PAT to GITHUB_TOKEN with
+      `issues: write` is scoped to opening/labeling review-note issues and does
+      not loosen who parks or merges a change. The one thing I cannot verify is
+      the DECISIONS.md figure '$0.16: 46,000 tokens in and 3,200 out across five
+      seats' from a prior metered run; it is plausible as a trial-run report and
+      is stamped as an operator observation, so I would flag it only as
+      something the operator should be able to point to a run record for, not as
+      a violation."
+    cost:
+      model: claude-opus-5
+      inputTokens: 13743
+      outputTokens: 1181
+      usd: 0.09824
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.13
+      - §3.15
+      - §4
+    reasoning: The change strengthens rather than weakens §3.15 accountability by
+      routing every Arbiter seat through the existing metered transport and
+      carrying the resulting cost into the harvested governance record. `costOf`
+      withholds a dollar total whenever any seat lacks accounting or any
+      returned usage is unpriced, while explicitly marking incomplete token
+      totals as a floor, which is honest and calibrated. It also retains the
+      cost of a returned but unparsable response, avoiding silent deletion of
+      incurred usage, and the added tests cover all of these cases. No AGENTS.md
+      edit, fabricated citation, confidence material, unratified content
+      judgment, or bypass of multi-model review is present.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 8677
+      outputTokens: 1495
+      usd: 0.064608
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: The change routes Arbiter seat calls through the pipeline's metered
+      transport (`callSeat`) and records token usage and monetary cost into
+      governance records and schema. It accurately tracks provenance and cost
+      without weakening the multi-model arbitration checks in §3.15 or modifying
+      AGENTS.md. Proper fail-safes are maintained if a seat call or JSON parsing
+      fails, ensuring failed seats remain marked as failed while retaining
+      actual incurred usage.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 9607
+      outputTokens: 801
+      usd: 0.010209
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff meters Arbiter seats through the existing callSeat path,
+      drops the sole unmetered callVendor caller, and records panel cost (tokens
+      always; dollars only when every seat is priced, incomplete otherwise) in
+      the verdict blob and harvest schema—honest accounting, not fabrication or
+      check-weakening. Schema, harvest, tests, and docs match that behavior;
+      AGENTS.md is untouched. The workflow token swap only fixes review-note
+      labeling. No content citations, confidence material, or provenance
+      misstamps appear.
+    cost:
+      model: grok-4.5
+      inputTokens: 9422
+      outputTokens: 126
+      usd: 0.0196
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.8
+    reasoning: "This is a plumbing change that routes the Arbiter's five seats
+      through the same metered transport as pipeline verbs, removing the
+      unmetered `callVendor`, and records the panel's cost in the verdict blob
+      and harvested governance record — it makes the check-and-ledger machinery
+      more transparent, not weaker. Nothing under content/ is added, no
+      citations are introduced (the verification section is empty), and
+      AGENTS.md is untouched, so §3.15's amendment rule is not implicated. The
+      cost accounting follows §3.8's spirit honestly: tokens are always summed,
+      dollars are withheld (usd: null, 'not fully priced', 'INCOMPLETE')
+      whenever any seat returned no accounting, and the tests in arbiter.test.ts
+      exercise exactly the incomplete, unpriced, and unparsable-seat cases. The
+      failed-seat path still marks the seat failed rather than silently swapping
+      vendors, preserving §3.15's vendor-independence requirement. The switch
+      from MAINTENANCE_PAT to the workflow's own GITHUB_TOKEN for review-note
+      issues comes with a concrete stated reason (the fine-grained PAT could not
+      add labels) and does not loosen any §3.15 check — the lone-objection →
+      issue flow is preserved and actually gains the labeling it was missing.
+      The DECISIONS.md entry records the founder direction with date and channel
+      as the constitution permits; I have no positive evidence of misattribution
+      in the material shown."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 9626
+      outputTokens: 1024
+      usd: 0.001956
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 51075
+  outputTokens: 4627
+  usd: 0.1946
+harvestedAt: 2026-09-09

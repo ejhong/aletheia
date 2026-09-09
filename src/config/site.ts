@@ -6,7 +6,7 @@ export const site = {
   nav: [
     { label: "Cases", href: "/cases" },
     { label: "Method", href: "/method" },
-    { label: "Panel", href: "/panel" },
+    { label: "Operations", href: "/operations" },
   ],
   /**
    * Canonical public origin (no trailing slash), used as Next's

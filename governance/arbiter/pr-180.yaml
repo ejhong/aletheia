@@ -1,0 +1,128 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 180
+title: Open Deep Memory with an illustrated question and its first sourced observation
+url: https://github.com/ejhong/aletheia/pull/180
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-06
+judgedAgainst: 5dd8e043ac
+promptVersion: aletheia-arbiter-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The single added citation (the DAI Tepe Telegrams post on Pillar 43)
+      mechanically RESOLVES, and the record's title/author/year match the
+      resolved page; the quoted phrase (\"headless human with an erect penis\")
+      is consistent with a post titled \"Of animals and a headless man. Göbekli
+      Tepe, Pillar 43\". Provenance is handled honestly: verification is labeled
+      ai_verified with an explicit note naming the reading model and the
+      separate check, and the locator is a character-offset in the retrieved
+      HTML text explicitly flagged as \"not a printed-page locator\" (§3.8
+      satisfied rather than an invented page number). The source is flagged as a
+      blog summary rather than a primary excavation report in limitations (§3.7
+      acknowledged), the shared-object dependency is recorded as an independence
+      note (§3.10), and limitations state a single carving cannot support
+      transmission claims (§3.2/§3.4). The overview keeps
+      observation/interpretation/resemblance/transmission distinct and states no
+      overall assessment has been made, so no unratified draft is presented as
+      ratified (§3.15). The two test relaxations are narrowly scoped to
+      incubating cases with zero assessment runs and preserve the active-case
+      requirements, so they read as a contract adjustment rather than weakening
+      the publication gate; the claim page still displays reviewState, extractor
+      model, runId, date, and origin ref (now inside a labeled disclosure), so
+      provenance remains inspectable. No AGENTS.md edit; changes to
+      DECISIONS.md/AUTOMATION.md are documentation of this change."
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.5
+      - §3.7
+      - §3.8
+      - §3.9
+      - §3.10
+      - §3.13
+      - §3.14
+      - §3.15
+    reasoning: The added DAI URL mechanically resolves, and the source record uses
+      an honest `ai_verified` label while identifying the models that read and
+      checked it. The claim is a bounded object-level observation, and the
+      evidence explicitly separates the source statement from editorial
+      inference, classifies it as contextual, records limitations, and warns
+      that other Pillar 43 reports are not independent. Its retrieved-text
+      character range is described precisely as such rather than misrepresented
+      as a printed-page locator, and the extraction retains model, run, date,
+      source, and changelog provenance. The public narrative repeatedly says the
+      case is incubating and unassessed, offers multiple alternatives, and does
+      not present the observation as evidence of prehistoric transmission.
+      Allowing an incubating opening to lack an assessment or research priority
+      does not itself weaken the active-case or publication gates shown here.
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.1
+      - §3.2
+      - §3.5
+      - §3.8
+      - §3.9
+      - §3.13
+      - §3.15
+      - §4
+    reasoning: The change promotes the incubating 'deep-memory' case from proposals
+      to content with an initial atomic catalog claim (MEM-C001) and contextual
+      evidence record (MEM-E001). The source citation mechanically resolves to
+      Oliver Dietrich's excavation blog post on Göbekli Tepe Pillar 43 and
+      carries honest provenance and verification metadata (`ai_verified`, exact
+      text offsets noted). The evidence record scrupulously separates source
+      statement from inference (§3.9), distinguishes observation from broad
+      transmission theories (§3.1), marks direction honestly as `context`
+      (§3.5), and details extensive limitations (§3.13). UI and test updates
+      properly support incubating cases with non-directional evidence without
+      diluting ratification checks or modifying the constitution (§3.15).
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff promotes incubating Deep Memory with one atomic catalog
+      observation (MEM-C001), a context-only evidence record that separates
+      sourceStatement from editorInference, and a Source whose URL mechanically
+      RESOLVES with an honest ai_verified label and character-range locator
+      explicitly marked as retrieved text, not a printed page. Limitations,
+      independence on Pillar 43, no case verdict/priority/featured grading, and
+      retained ai_extracted provenance satisfy §§3.2, 3.5–3.9, 3.13–3.15 and
+      phase-1 labeling. UI/test edits only surface context observations when no
+      directional evidence exists and allow null assessment/priority solely for
+      incubating status without relaxing active-case gates; AGENTS.md is
+      untouched. Overview keeps observation distinct from transmission and names
+      alternatives without fabricating citations or confidential material.
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.5
+      - §3.8
+      - §3.13
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: "The single added citation (Tepe Telegrams post on Pillar 43)
+      resolves mechanically, its title/slug match the source record, and the
+      quote about the headless ithyphallic figure is consistent with the
+      resolved post's subject; the character-range locator is explicitly labeled
+      'retrieved text; not a printed-page locator,' which is honest
+      unverified-locator handling under §3.8 rather than invention. Provenance
+      is complete and honest: ai_extracted review states, runId/model/date
+      stamps, a non-directional 'context' evidence classification with
+      limitations and an explicit independence group, and an ai_verified source
+      label — no assessment is presented as ratified or human. The changelog is
+      append-only in spirit (the original history entry is preserved and the
+      adoption is recorded with reason and actor), and the case remains
+      incubating with no verdict, priority, or diagnosticity claim, so §3.13's
+      calibrated-uncertainty and §3.15's ratification gate are not implicated.
+      The test changes scope relaxations to incubating-status cases only (a case
+      with no assessment must be 'incubating' with no assessment runs),
+      preserving the ratification-status and active-case checks, so this is not
+      check-weakening under §3.15. The Met URL was pre-existing context, not
+      added by this diff, so its absence from verification is expected."
+harvestedAt: 2026-09-09

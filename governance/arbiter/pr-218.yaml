@@ -1,0 +1,91 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 218
+title: "Reassessment of 2026-09-09, evening: subtract, then the UI pass"
+url: https://github.com/ejhong/aletheia/pull/218
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-09
+judgedAgainst: 6d1edf9b3d
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches only docs/AUTOMATION.md and docs/DECISIONS.md — no
+      AGENTS.md edit, so §3.15's reservation is untouched, and no content/
+      records, citations, locators, or assessment overlays are added (the
+      tooling found no identifiers to resolve). The rewritten \"Where we are\"
+      section and the build-table rows 4c/5/6 are internal status and planning
+      prose; they state the plan's order and name concrete debts (two vendor
+      transports, a 1,300-line loader, duplicated case-page presentation)
+      without asserting any evidential claim that would need provenance. The
+      decisions entry records the founder's direction with its date and channel
+      (\"2026-09-09, evening ... founder direction, in session\"), which §3.15's
+      operating-record clause expressly permits, and it does not paraphrase any
+      founder-supplied ledger material. Nothing here loosens a §3.15 check: the
+      Arbiter's narrow veto, panel concurrence, and kill switch are described as
+      they stand, not weakened. The plan to remove the \"assessment panel above
+      the article, the cross-model panel and the conjecture cards\" is a
+      presentation consolidation whose stated aim keeps every seat's word
+      displayed in the record layer, so it does not on its face hide
+      disagreement — but it is only a plan, and the actual UI PR will need to be
+      judged against §7 and §3.15's display requirement. Cost and run details
+      (#214, $4.23) are self-reported operational bookkeeping I cannot check,
+      but nothing in the text is internally inconsistent."
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+      - §7
+    reasoning: The change edits planning and decisions documentation only; it
+      neither modifies AGENTS.md nor loosens CI, panel concurrence, or the
+      Arbiter’s constitutional veto categories. The new decisions entry stamps
+      the reported founder direction with a date and channel (“2026-09-09,
+      evening” and “in session”), consistent with the allowed operating-record
+      provenance. The proposed UI replacement retains public panel words, review
+      notes, refusals, history, costs, and derived standing rather than
+      concealing disagreement or AI involvement. No content citation,
+      confidential material, assessment record, or unratified judgment is added,
+      and the mechanical verifier found no new citation identifiers requiring
+      resolution.
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules: []
+    reasoning: The pull request modifies only internal documentation
+      (`docs/AUTOMATION.md` and `docs/DECISIONS.md`), recording a strategic
+      reassessment and updated execution plan. Per §3.15, founder directions
+      given in session are part of the operating record and may be recorded and
+      paraphrased in the decisions log. No content records, citations, or
+      constitutional rules in `AGENTS.md` are altered or weakened.
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "Docs-only change: AUTOMATION.md status/plan reassessment and a
+      DECISIONS.md entry recording a founder direction given in session on
+      2026-09-09. No AGENTS.md edit, no content/ ledger records, no citations,
+      no run overlays, and no alteration of §3.15 checks. The decisions stamp
+      (date, channel, direction paraphrased) matches the operating-record rule
+      in §3.15. Nothing in the diff fabricates provenance or presents unratified
+      material as ratified."
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "This is a docs-only change (docs/AUTOMATION.md and
+      docs/DECISIONS.md): it adds no content files, no citations, no claims, and
+      no run records, so the epistemic rules of §3 on citations, locators, and
+      assessments are not engaged. It does not touch AGENTS.md, so §3.15's
+      amendment restriction is not triggered, and nothing in the diff weakens
+      the checks — the proposed 'subtraction' retires disabled workflows and
+      legacy scripts while explicitly keeping the chain, panel, Arbiter, and
+      governance kill switch, and §3.15 checks are untouched. The DECISIONS.md
+      entry records a founder direction with its date and channel ('in
+      session'), which the constitution expressly permits as operating record.
+      The narrative references to runs (#206, #214), costs, and events are
+      status prose I cannot independently check, but per temporal humility
+      unfamiliarity is not evidence of fabrication, and none of it is internally
+      inconsistent; the description of the 2026-09-09 founder amendments matches
+      the constitution text itself."
+harvestedAt: 2026-09-09

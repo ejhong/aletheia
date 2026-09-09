@@ -63,3 +63,10 @@
   actor: "aletheia correction writer, applied by hand on review note #248 (the GPT seat on #245): the verifier had recorded the second reader's direction disputes on the admitted records instead of applying them; PR: evidence-directions"
   aiAssisted: true
   kind: content
+
+- date: 2026-09-09
+  change: "Correction to the entry of 2026-09-09 that answered review note #244: its reason said the PR and commit were named in its actor line, and the actor line named only a branch (caption-record). The references are PR #246, merged as commit b46b3798bd5f9a1318350648d766b94dcc8ccf71; the session in which the operator worked, https://claude.ai/code/session_01AiXD4y5Y91KC7iM3uBhWmu, which every commit of that work carries as its Claude-Session trailer; the model, claude-fable-5-1; the date, 2026-09-09. No run id and no prompt version exist for it because no protocol ran: the pipeline's runs carry those stamps in proposals/<runId>/run.yaml, and operator work carries the PR, the commit, the session, the model and the date."
+  reason: "Review note #247 (the GPT seat on #246, §3.14, §3.15): an entry must name the references it claims to name, and a branch name is not a stable one. From this entry on, by-hand entries name the PR number and the session, and the number is written in before the change merges."
+  actor: "claude-fable-5-1 (operator), answering review note #247 on the record, in session https://claude.ai/code/session_01AiXD4y5Y91KC7iM3uBhWmu; the PR number is written in below before merge"
+  aiAssisted: true
+  kind: housekeeping

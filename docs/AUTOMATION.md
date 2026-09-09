@@ -111,7 +111,7 @@ after it is unchanged.
   days; the seats alternate on such a case — the OpenAI seat after the
   first empty cycle, the house seat after the second — never both on one
   pass. This is what lets the system settle to almost no cost: ten quiet
-  cases cost a few dollars a month (founder direction, 2026-09-09). Until
+  cases cost a few dollars a month (founder direction, 2026-09-09, in session). Until
   that day the saturation rule never saw a landing — it looked for the
   producer's run id where the verify run's was written — and every case
   with runs read as saturated.

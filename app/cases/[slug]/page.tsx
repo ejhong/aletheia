@@ -13,7 +13,7 @@ import { LinkedRecordText } from "@/src/components/LinkedRecordText";
 import { site } from "@/src/config/site";
 import { ConjectureCard } from "@/src/components/ConjectureCard";
 import { CrossModelPanel } from "@/src/components/CrossModelPanel";
-import { caseCover, crossModelSummary, historyNewestFirst, lastContentUpdate, latestCheckPerModel, loadAllCases, survivingObjections, caseQuestion, currentEdition } from "@/src/domain/load";
+import { caseCover, crossModelSummary, historyNewestFirst, lastContentUpdate, latestCheckPerModel, loadAllCases, survivingObjections, caseQuestion, questionRestatedBy } from "@/src/domain/load";
 import { caseView } from "@/src/domain/view";
 import { paramsOrPlaceholder } from "@/src/domain/staticExport";
 
@@ -94,7 +94,7 @@ export default async function CasePage({
       <DossierHeader
         record={loaded.record}
         question={caseQuestion(loaded)}
-        questionNote={caseQuestion(loaded) !== loaded.record.subtitle ? `as restated by the edition of ${currentEdition(loaded).date}; the founding question: ${loaded.record.subtitle}` : undefined}
+        questionNote={questionRestatedBy(loaded) ? `as restated by the edition of ${questionRestatedBy(loaded)!.date} (${questionRestatedBy(loaded)!.runId}); the founding question: ${loaded.record.subtitle}` : undefined}
         header={view.header}
         lastUpdated={lastContentUpdate(loaded)}
         verdict={shown?.run.caseAssessment.verdict ?? null}

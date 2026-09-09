@@ -2,7 +2,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { getCaseBySlug, loadAllCases, caseAccounts, caseQuestion } from "./load.ts";
+import { getCaseBySlug, loadAllCases, caseAccounts, caseQuestion, questionRestatedBy } from "./load.ts";
 import { capsFor, loadBudget, assertWithinBudget, BudgetExceeded, estimateUsd, tokensFromChars } from "../pipeline/budget.ts";
 import { assembleProposal, urlsInReport, type DraftReply } from "../pipeline/draft.ts";
 import { assembleEdition, type EditionReply } from "../pipeline/edition.ts";
@@ -349,6 +349,10 @@ describe("assembling an edition", () => {
     expect(caseQuestion(later)).toBe(restated.edition.question);
     expect(caseQuestion(c)).toBe(c.record.subtitle);
     expect(caseAccounts(c)).toEqual([]);
+    // The page credits the edition that restated the question, not the one that inherited it (§3.14).
+    const kept2 = { ...later, editions: [...later.editions, kept.edition] } as typeof c;
+    expect(questionRestatedBy(kept2)?.runId).toBe(restated.edition.runId);
+    expect(questionRestatedBy(c)).toBeNull();
   });
 
   it("a candidate that changes only prose re-adopts the incumbent's assessment and passes the loader's rules", () => {

@@ -728,7 +728,7 @@ export const EditionSchema = z
      * the inputs move it, the edition restates it and the panel judges the
      * restatement with the rest. Absent, the case file's subtitle — the
      * founding question — stands. The title is the case's name and is the
-     * founder's (founder direction, 2026-09-09).
+     * founder's (founder direction, 2026-09-09, in session).
      */
     question: z.string().min(10).optional(),
     /** The serious accounts this edition sets side by side, one line each; the verifier reads relevance against them. */

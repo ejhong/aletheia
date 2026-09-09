@@ -1365,7 +1365,7 @@ names is drafted, however many later drafts exist. The scheduler-order
 change of the same day had missed #203's merge and rides along here.
 
 **Two essays, two doors, and how claims are chosen (founder direction,
-2026-09-09).** The PDF supplied as "the new essay" proved byte-identical to
+2026-09-09, in session).** The PDF supplied as "the new essay" proved byte-identical to
 the case's founding essay of August 13 (VASO-IN002), with no perforator idea
 in it; the founder then placed the actual new essay, *Knots of Existence
 Hypotheses* (2026-09-08, 41 pages), under `research/vasocomputation/`. The
@@ -1588,8 +1588,8 @@ evidence enters and none is claimed. Drafted by the operator on the
 founder's direction; committed and merged by the founder's hand.
 
 **The edition owns the case's question; anchors may span pages; evidence
-splits too (founder direction, 2026-09-09).** Built as item 4 of the
-assessment, on the founder's word. (1) The subtitle a reader sees is the
+splits too (founder direction, 2026-09-09, in session).** Built as item 4 of the
+assessment, on the founder's word given in session on 2026-09-09. (1) The subtitle a reader sees is the
 question as the current edition states it: the edition schema gains
 `question` and `accounts` (the serious accounts it sets side by side, one
 line each), edition protocol v5 restates the question only when the inputs

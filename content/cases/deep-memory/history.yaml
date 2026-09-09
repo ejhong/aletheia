@@ -56,3 +56,17 @@
   actor: "claude-fable-5-1 (operator), on the founder's direction in session 2026-09-09; PR: lab-cover"
   aiAssisted: true
   kind: housekeeping
+
+- date: 2026-09-09
+  change: 'Corrections applied from review note #248: DEEP-E015.direction — "supports" → "qualifies"; DEEP-E017.direction — "supports" → "qualifies"; DEEP-E022.claimIds — "DEEP-C037,DEEP-C038" → "DEEP-C038"; DEEP-E023.direction — "supports" → "context"; DEEP-E024.claimIds — "DEEP-C015,DEEP-C016" → "DEEP-C016".'
+  reason: "DEEP-E015: the passage scopes what the 55% figure shows; it neither confirms nor denies the proportion DEEP-C005 states — the second reader said so at intake, and the direction now says it | DEEP-E017: the passage limits the geographic result to the sampled catalogue and category; it does not assert the 37% figure DEEP-C025 names — qualifies, as the second reader said | DEEP-E022: the quoted line is about kind-matched lineups (DEEP-C038) and says nothing about inter-judge disagreement (DEEP-C037); the link to C037 is dropped, as the second reader said | DEEP-E023: a pointer to an unretrieved wear study is not evidence of what that study found (AGENTS.md 3.6); context until Vidale & Micheli is retrieved, as the second reader said | DEEP-E024: the quoted caption states the Kurdish names (DEEP-C016) and nothing about the Turkish name (DEEP-C015); the link to C015 is dropped, as the second reader said"
+  actor: "claude-fable-5-1 (operator), applying the corrections by hand with the correction writer (applyCorrections, src/pipeline/ledger-write.ts) on review note #248 (the GPT seat on #245), in the private Claude Code session session_01AiXD4y5Y91KC7iM3uBhWmu; no run id or prompt version, since no protocol ran; the verifier had recorded the second reader's direction disputes on the admitted records instead of applying them; PR #250"
+  aiAssisted: true
+  kind: content
+
+- date: 2026-09-09
+  change: "Correction to the entry of 2026-09-09 that answered review note #244: its reason said the PR and commit were named in its actor line, and the actor line named only a branch (caption-record). The references are PR #246, merged as commit b46b3798bd5f9a1318350648d766b94dcc8ccf71; the operator's working session, a private Claude Code session with the id session_01AiXD4y5Y91KC7iM3uBhWmu, which every commit of that work carries as its Claude-Session trailer (the session page itself is not public; the trailer is the public record of the id); the model, claude-fable-5-1; the date, 2026-09-09. No run id and no prompt version exist for it because no protocol ran: the pipeline's runs carry those stamps in proposals/<runId>/run.yaml, and operator work carries the PR, the commit, the session, the model and the date."
+  reason: "Review note #247 (the GPT seat on #246, §3.14, §3.15): an entry must name the references it claims to name, and a branch name is not a stable one. From this entry on, by-hand entries name the PR number and the session, and the number is written in before the change merges."
+  actor: "claude-fable-5-1 (operator), answering review note #247 on the record, in the private Claude Code session session_01AiXD4y5Y91KC7iM3uBhWmu; PR #250"
+  aiAssisted: true
+  kind: housekeeping

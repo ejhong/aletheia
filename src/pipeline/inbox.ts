@@ -89,6 +89,16 @@ export function supplierOf(meta: Record<string, unknown>): string | null {
 const TEXT_EXT = new Set([".md", ".txt"]);
 const DOC_CAP = 300_000;
 
+/** What is missing for a non-public document to be published or cited: nothing, or the reason it stays in the inbox. Fail-closed: the permission must grant, in words that grant, and be dated. */
+export function permissionGap(meta: Record<string, unknown>): string | null {
+  const permission = typeof meta.permission === "string" ? meta.permission.trim() : "";
+  if (!permission) return "no permission to publish or cite";
+  if (!/\b(publish|publishes|published|publication|cite|cites|cited|citation|quote|quotes|quoted)\b/i.test(permission)) return "the permission does not say it may be published, cited or quoted";
+  if (/\b(not|no|never|only|private|privately|confidential|confidence|internal|internally|without|unpublished|withhold|withheld|embargo|embargoed)\b/i.test(permission)) return "the permission withholds something (it says not, only, private, confidential, internal or the like), so nothing is published";
+  if (!(typeof meta.granted === "string" && /^\d{4}-\d\d-\d\d$/.test(meta.granted.trim()))) return "the permission carries no `granted:` date";
+  return null;
+}
+
 /** The items dropped for one case (its folder, or a `case:` front matter), each with its statement of provenance — and those left behind, with why. */
 export async function readInbox(caseDir: string, root = process.cwd()): Promise<{ items: InboxItem[]; left: { name: string; reason: string }[] }> {
   const inbox = path.join(root, "inbox");
@@ -160,9 +170,12 @@ export async function readInbox(caseDir: string, root = process.cwd()): Promise<
     // §3.15: a document that is not already public is quoted or cited only on a recorded permission — the
     // supplier's own words, which the intake keeps as the correspondence. Own work included: the footing
     // says whose it is, the permission says what may be done with it.
-    if (kind === "document" && typeof meta.published !== "string" && !(typeof meta.permission === "string" && meta.permission.trim() && typeof meta.granted === "string" && /^\d{4}-\d\d-\d\d$/.test(meta.granted.trim()))) {
-      left.push({ name, reason: "no dated permission to publish or cite: add `permission:` in your own words (what may be done with it — quoted, cited, committed as a founding input) and `granted:` with the date you grant it (YYYY-MM-DD); the intake records who granted it, on what date, by what channel, and where the statement is held (AGENTS.md §3.15)" });
-      continue;
+    if (kind === "document" && typeof meta.published !== "string") {
+      const why = permissionGap(meta);
+      if (why) {
+        left.push({ name, reason: `${why}: add \`permission:\` in your own words granting what may be done with it (it must say "publish", "cite" or "quote", and must not withhold — "not", "only", "private", "confidential", "internal" leave it here) and \`granted:\` with the date you grant it (YYYY-MM-DD); the intake records who granted it, on what date, by what channel, and where the statement is held (AGENTS.md §3.15)` });
+        continue;
+      }
     }
     items.push({ file, sidecar, name, kind, meta, text: body.length > DOC_CAP ? body.slice(0, DOC_CAP) + `\n\n[truncated at ${DOC_CAP} characters of ${body.length}]` : body, pages, supplier: supplier ?? "the founder (note in the inbox)", title: titleOf(meta, body) });
   }

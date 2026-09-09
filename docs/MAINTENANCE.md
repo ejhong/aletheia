@@ -66,6 +66,7 @@ node scripts/aletheia.ts verify <proposalRunId>                   # …and appen
 node scripts/aletheia.ts edition <case>                           # a new edition when the ledger moved or the panel contests the assessment unanswered (rests otherwise; --force)
 node scripts/aletheia.ts check <case> [--seats a,b] [--dry-run]   # the blind panel through the metered transport; raw replies under proposals/<runId>/
 node scripts/aletheia.ts next [--run]                             # what the ledger wants next; with --run, do it and continue the chain
+node scripts/aletheia.ts inbox <case> [--dry-run]                 # the founder's door as a producer: dropped items → one report for draft/verify
 ```
 
 The loop, closed (docs/AUTOMATION.md, step 4b): `next` finishes a half-done

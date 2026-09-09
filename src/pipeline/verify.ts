@@ -222,6 +222,10 @@ export function suppliedTexts(proposal: Proposal, sources: Source[], root = proc
   const manifest = parseYaml(fs.readFileSync(manifestFile, "utf8")) as { items?: { ledgerSource?: string | null; document?: string | null; name?: string; sha256?: string; title?: string; permission?: string | null }[] };
   for (const it of manifest.items ?? []) {
     if (!it.document) continue;
+    // A document the intake recorded no permission for supplies no text at all: nothing anchors to it, nothing
+    // quotes it, whether the Source is proposed here or already in the ledger (§3.15). Manifests written before
+    // 2026-09-09 carry no `permission` field; the intake's own footing rules admitted those documents then.
+    if ("permission" in it && !it.permission) continue;
     // The source the intake identified, else a source (the ledger's or this proposal's) whose title is the document's.
     const src = sources.find((s) => it.ledgerSource && s.id === it.ledgerSource) ?? (it.title ? sources.find((s) => sameTitle(it.title!, s.title)) : undefined);
     const file = path.join(root, "proposals", runDirOf, it.document);

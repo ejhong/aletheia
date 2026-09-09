@@ -301,13 +301,18 @@ function registeredNote(it: InboxItem): string {
   return it.registeredAs ? ` It is also registered as founding input ${it.registeredAs}: the edition drafter reads it for framing and voice.` : "";
 }
 
-/** The permission on which a supplied document is published, as the report states it for the drafter to copy; a document without one is not the drafter's to propose. */
-export function permissionLine(it: InboxItem, date: string, runId: string): string {
+/** The permission on which a supplied document is published, as one line for the manifest and the Source — or null when the intake recorded none, which no marker string may stand in for (§3.15). */
+export function permissionOf(it: InboxItem, date: string, runId: string): string | null {
   try {
     return `Permission on which it is published: ${permissionRecord(it, date, runId)}`;
   } catch {
-    return "Permission on which it is published: NONE RECORDED — do not propose this document as a Source and do not quote it.";
+    return null;
   }
+}
+
+/** The same, as the report states it for the drafter to copy; a document without one is not the drafter's to propose or quote. */
+export function permissionLine(it: InboxItem, date: string, runId: string): string {
+  return permissionOf(it, date, runId) ?? "Permission on which it is published: NONE RECORDED — do not propose this document as a Source and do not quote it.";
 }
 
 export function composeReport(slug: string, runId: string, date: string, items: InboxItem[], resolved: Map<string, Resolved[]>): string {
@@ -451,7 +456,7 @@ export async function runInbox(caseKey: string, opts: InboxOptions = {}): Promis
     ledgerSourceBasis: it.ledgerSourceBasis ?? null,
     document: it.kind === "document" ? `documents/${path.basename(it.file).replace(/\.[^.]+$/, "")}.txt` : null,
     // The permission on which a document is published, as the report printed it: the verifier requires this exact line on the Source.
-    permission: it.kind === "document" ? permissionLine(it, date, runId) : null,
+    permission: it.kind === "document" ? permissionOf(it, date, runId) : null,
     references: (resolved.get(it.name) ?? []).length,
     resolved: (resolved.get(it.name) ?? []).filter((r) => r.url).length,
   }));

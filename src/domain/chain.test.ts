@@ -698,6 +698,29 @@ describe("verify remembers its judgments", () => {
     expect(why["GEO-E990"]).toMatch(/its source GEO-S990 was rejected/);
   });
 
+  it("a document the intake recorded no permission for supplies no text, whether its Source is proposed or already on the ledger", async () => {
+    const { suppliedTexts } = await import("../pipeline/verify.ts");
+    const c = geo();
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "aletheia-supplied-"));
+    const dir = path.join(root, "proposals", "2026-09-09-inbox-x-000000");
+    fs.mkdirSync(path.join(dir, "documents"), { recursive: true });
+    fs.writeFileSync(path.join(dir, "documents", "a.txt"), "text of a");
+    fs.writeFileSync(path.join(dir, "documents", "b.txt"), "text of b");
+    const a = c.sources[0];
+    const b = c.sources[1];
+    fs.writeFileSync(path.join(dir, "manifest.yaml"), [
+      "items:",
+      `  - name: x/a.pdf`, `    kind: document`, `    ledgerSource: ${a.id}`, `    document: documents/a.txt`, `    permission: "Permission on which it is published: Permission: the founder's standing direction …"`,
+      `  - name: x/b.pdf`, `    kind: document`, `    ledgerSource: ${b.id}`, `    document: documents/b.txt`, `    permission: null`,
+      "",
+    ].join("\n"));
+    const proposal = { report: "proposals/2026-09-09-inbox-x-000000/report.md" } as never;
+    const texts = suppliedTexts(proposal, c.sources, root);
+    const got = [...texts.values()];
+    expect(got.map((t) => t.text)).toEqual(["text of a"]);
+    expect(got[0].permission).toMatch(/^Permission on which it is published: Permission: the founder/);
+  });
+
   it("a claim anchor may carry further passages, each verbatim, judged together; a passage the source lacks rejects the anchor", async () => {
     const { judgeProposal } = await import("../pipeline/verify.ts");
     const c = geo();

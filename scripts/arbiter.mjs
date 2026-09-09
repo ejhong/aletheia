@@ -29,12 +29,14 @@
 import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
+import os from "node:os";
 import { parseJsonReply } from "../src/lib/llm.mjs";
-import { callVendor, VENDORS } from "../src/lib/vendors.mjs";
+import { callSeat, VENDORS } from "../src/pipeline/transport.ts";
 import { loadProtocol, renderProtocol } from "../src/pipeline/protocols.ts";
 import {
   capDiff,
   CONTENT_MERGES_PER_WEEK,
+  costOf,
   rateLimitGate,
   runAccount,
   splitMergeLanes,
@@ -118,10 +120,28 @@ const packet = [
 // Each seat's identity as a specific vendor/model is constitutionally
 // load-bearing (§3.15 vendor-independence of the panel): a refusing seat
 // counts as a FAILED seat ("unsure" below), never a silently swapped one.
+// The seats are called through the pipeline's metered transport (src/pipeline/transport.ts):
+// the same path a verb takes, the same tariffs, the vendor's own usage on every reply. The
+// spend rows go to a scratch root — this process judges a PR and commits nothing — and the
+// panel's cost travels in the machine blob instead, which the sitting's harvest copies into
+// governance/arbiter/pr-<n>.yaml. The ledger is the whole bill: the panel included.
+const scratch = fs.mkdtempSync(path.join(os.tmpdir(), "aletheia-arbiter-"));
+fs.mkdirSync(path.join(scratch, "config"), { recursive: true });
+fs.copyFileSync(path.join(ROOT, "config", "tariffs.yaml"), path.join(scratch, "config", "tariffs.yaml"));
+const meter = { runId: `${new Date().toISOString().slice(0, 10)}-panel-${head.slice(0, 10)}`, verb: "panel", case: null, root: scratch };
+
 async function seatVote(name) {
+  // A billable reply is billed whatever becomes of it: the cost is taken before the reply is read,
+  // and a seat whose reply will not parse fails with its cost attached, not discarded.
+  let reply;
   try {
-    const reply = await callVendor(name, { system: SYSTEM, user: packet });
-    return validateVote(VENDORS[name].label, parseJsonReply(reply));
+    reply = await callSeat(name, { system: SYSTEM, user: packet }, meter);
+  } catch (err) {
+    return { seat: VENDORS[name].label, vote: "unsure", rules: [], reasoning: `seat failed: ${String(err).slice(0, 200)}`, failed: true };
+  }
+  const cost = { model: reply.model, inputTokens: reply.usage.inputTokens, outputTokens: reply.usage.outputTokens, usd: reply.usd };
+  try {
+    return { ...validateVote(VENDORS[name].label, parseJsonReply(reply.text)), cost };
   } catch (err) {
     return {
       seat: VENDORS[name].label,
@@ -129,11 +149,13 @@ async function seatVote(name) {
       rules: [],
       reasoning: `seat failed: ${String(err).slice(0, 200)}`,
       failed: true,
+      cost,
     };
   }
 }
 
 const votes = await Promise.all(Object.keys(VENDORS).map(seatVote));
+const cost = costOf(votes);
 
 // Weekly content throttle: count distinct commits on the base branch in the
 // last 7 days that touch published case content. Applies only when this
@@ -249,6 +271,7 @@ const report = [
     ? `> ⚠️ ${omitted.length} file(s) exceeded the diff budget and were not shown to the panel: ${omitted.join(", ")}`
     : "",
   verification.length > 0 ? `> 🔗 ${verificationSummary(verification)}.` : "",
+  `> 💰 Panel cost: ${cost.usd === null ? "not fully priced" : `$${cost.usd.toFixed(2)}`} (${cost.inputTokens.toLocaleString("en-US")} tokens in, ${cost.outputTokens.toLocaleString("en-US")} out, ${cost.seats} of ${votes.length} seat(s) metered${cost.complete ? "" : " — INCOMPLETE: a seat returned no accounting, so the tokens are a floor and the dollars are withheld"}; priced from config/tariffs.yaml, kept in governance/arbiter/ at harvest).`,
   // Reported on every content verdict, not only when it bites: the
   // supervised exclusion is the throttle's one discretionary input, so a
   // drift toward blanket exemption has to be visible continuously rather
@@ -276,6 +299,7 @@ const report = [
     promptVersion: PROMPT_VERSION,
     seats: votes,
     notes: verdict.notes ?? [],
+    cost,
   })} -->`,
 ].join("\n");
 

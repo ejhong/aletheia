@@ -2,10 +2,12 @@ import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
+import { sameTitle, titleContainment, TITLE_NEAR } from "../domain/keys.ts";
 import { findCase } from "../domain/load.ts";
 import type { LoadedCase } from "../domain/schema.ts";
 import { MODELS } from "../../scripts/lib/models.mjs";
 import { pdfText } from "./fetch.ts";
+import { appendYamlItems } from "./ledger-write.ts";
 import { defaultLister, openAlexSearch, resolveReferences, type Reference, type ReferenceLister, type Resolved, type Searcher } from "./references.ts";
 import { closeRun, openRun, writeWorkingFile, type RunOutcome } from "./store.ts";
 
@@ -38,6 +40,20 @@ export interface InboxItem {
   text: string;
   pages?: number;
   supplier: string;
+  /** The document's own title: the sidecar's `title`, else its first heading. */
+  title: string;
+  /** The ledger source this document is, when its title matches one: its propositions may anchor claims. */
+  ledgerSource?: string;
+  /** What identified it: exact title, or a near title with the year (and author) — written on the manifest and told to the drafter. */
+  ledgerSourceBasis?: string;
+  /** The narrative input this document was registered as (sidecar `role: founding_narrative | founding_research`). */
+  registeredAs?: string;
+}
+
+/** The document's title: the sidecar's `title`, else the first substantial line after the page marker. */
+export function titleOf(meta: Record<string, unknown>, text: string): string {
+  if (typeof meta.title === "string" && meta.title.trim()) return meta.title.trim();
+  return text.replace(/^\[p\. 1\]\s*/, "").split("\n").find((l) => l.trim().length > 8)?.trim().slice(0, 200) ?? "";
 }
 
 export function parseFrontMatter(text: string): { meta: Record<string, unknown>; body: string } {
@@ -72,6 +88,21 @@ export function supplierOf(meta: Record<string, unknown>): string | null {
 
 const TEXT_EXT = new Set([".md", ".txt"]);
 const DOC_CAP = 300_000;
+
+/** What is missing for a non-public document to be published or cited: nothing, or the reason it stays in the inbox. Fail-closed: the permission must grant, in words that grant, and be dated. */
+/** The words a permission may be written in. Anything else — "prohibited", "only", "private" — is a word the gate does not grant on, and the document stays. */
+const GRANT_WORDS = new Set(["publish", "publishing", "published", "cite", "citing", "cited", "quote", "quoting", "quoted"]);
+const PLAIN_WORDS = new Set(["and", "or", "it", "this", "the", "a", "an", "as", "in", "full", "freely", "may", "be", "document", "essay", "paper", "text", "file", "founding", "input", "source", "on", "aletheia", "site", "case", "ledger", "record", "for", "of", "with", "attribution", "under", "name", "my", "our", "their", "from"]);
+export function permissionGap(meta: Record<string, unknown>): string | null {
+  const permission = typeof meta.permission === "string" ? meta.permission.trim() : "";
+  if (!permission) return "no permission to publish or cite";
+  const words = permission.toLowerCase().replace(/['’]s\b/g, "").replace(/[^a-z\s]/g, " ").split(/\s+/).filter(Boolean);
+  const unknown = words.filter((w) => !GRANT_WORDS.has(w) && !PLAIN_WORDS.has(w));
+  if (unknown.length) return `the permission uses words the gate does not grant on (${unknown.join(", ")}): write it with "publish", "cite" or "quote" and plain connectives, nothing that could withhold`;
+  if (!words.some((w) => GRANT_WORDS.has(w))) return "the permission does not say it may be published, cited or quoted";
+  if (!(typeof meta.granted === "string" && /^\d{4}-\d\d-\d\d$/.test(meta.granted.trim()))) return "the permission carries no `granted:` date";
+  return null;
+}
 
 /** The items dropped for one case (its folder, or a `case:` front matter), each with its statement of provenance — and those left behind, with why. */
 export async function readInbox(caseDir: string, root = process.cwd()): Promise<{ items: InboxItem[]; left: { name: string; reason: string }[] }> {
@@ -141,20 +172,64 @@ export async function readInbox(caseDir: string, root = process.cwd()): Promise<
       left.push({ name, reason: "no statement of provenance: add front matter (or a sidecar note of the same name) with `editor:` for your own work, `published:` with the URL where it is public, or `from:` and `permission:` for supplied material" });
       continue;
     }
-    items.push({ file, sidecar, name, kind, meta, text: body.length > DOC_CAP ? body.slice(0, DOC_CAP) + `\n\n[truncated at ${DOC_CAP} characters of ${body.length}]` : body, pages, supplier: supplier ?? "the founder (note in the inbox)" });
+    // §3.15: a document that is not already public is quoted or cited only on a recorded permission — the
+    // supplier's own words, which the intake keeps as the correspondence. Own work included: the footing
+    // says whose it is, the permission says what may be done with it.
+    if (kind === "document" && typeof meta.published !== "string") {
+      const why = permissionGap(meta);
+      if (why) {
+        left.push({ name, reason: `${why}: add \`permission:\` granting what may be done with it in the gate's words ("publish", "cite", "quote" and plain connectives — any other word leaves it here, so nothing withheld can slip through) and \`granted:\` with the date you grant it (YYYY-MM-DD); the intake records who granted it, on what date, by what channel, and where the statement is held (AGENTS.md §3.15)` });
+        continue;
+      }
+    }
+    items.push({ file, sidecar, name, kind, meta, text: body.length > DOC_CAP ? body.slice(0, DOC_CAP) + `\n\n[truncated at ${DOC_CAP} characters of ${body.length}]` : body, pages, supplier: supplier ?? "the founder (note in the inbox)", title: titleOf(meta, body) });
   }
   return { items, left };
 }
 
+/** The ledger source a document is, by its title (the first heading or the sidecar's title) — or null. */
+export function ledgerSourceOf(item: Pick<InboxItem, "text" | "meta">, sources: { id: string; title: string; year?: string; authors?: string[] }[]): { id: string; basis: string } | null {
+  const title = titleOf(item.meta, item.text);
+  if (title.length < 8) return null;
+  // The document's own year and author, from its statement or its first page.
+  const head = [item.meta.date, item.meta.year, item.meta.provenance, item.meta.author, item.meta.editor, item.text.slice(0, 600)].filter((x) => typeof x === "string").join(" ");
+  const years = new Set(head.match(/\b(19|20)\d\d\b/g) ?? []);
+  const surnames = (s: { authors?: string[] }) => (s.authors ?? []).map((a) => a.split(/[\s,]+/).filter(Boolean).at(-1)?.toLowerCase() ?? "").filter((x) => x.length > 2);
+  let best: { id: string; basis: string; rank: number } | null = null;
+  for (const s of sources) {
+    const exact = sameTitle(title, s.title);
+    const near = titleContainment(title, s.title) >= TITLE_NEAR;
+    if (!exact && !near) continue;
+    const yearAgrees = Boolean(s.year) && years.has(s.year!);
+    const authorAgrees = surnames(s).some((n) => head.toLowerCase().includes(n));
+    // Exact title alone identifies; a near title only with the year and, when the record names authors, an author.
+    const basis = exact ? `exact title${yearAgrees ? `, year ${s.year}` : ""}${authorAgrees ? ", author" : ""}` : yearAgrees && (authorAgrees || surnames(s).length === 0) ? `near title, year ${s.year}${authorAgrees ? ", author" : ""}` : null;
+    if (!basis) continue;
+    const rank = (exact ? 2 : 1) + (yearAgrees ? 0.5 : 0) + (authorAgrees ? 0.25 : 0);
+    if (!best || rank > best.rank) best = { id: s.id, basis, rank };
+  }
+  return best ? { id: best.id, basis: best.basis } : null;
+}
+
 /** The report the drafter reads: supplied text verbatim, then every named work with its resolved locator. */
+/** A founding-role document is told to the drafter as such whichever footing it enters on: new to the ledger, or the ledger's own source. */
+function registeredNote(it: InboxItem): string {
+  return it.registeredAs ? ` It is also registered as founding input ${it.registeredAs}: the edition drafter reads it for framing and voice.` : "";
+}
+
 export function composeReport(slug: string, runId: string, date: string, items: InboxItem[], resolved: Map<string, Resolved[]>): string {
   const head =
     `<!-- Inbox intake — material supplied through the founder's door; working material, never citable as such (docs/AUTOMATION.md).\n` +
     `     runId ${runId} · case ${slug} · ${date} · ${items.length} item(s)\n` +
-    `     The supplied text below is its supplier's words, on the footing stated. It is not a source. Propose records only from the published works it names or links, each retrieved and verified. -->\n\n`;
+    `     The supplied text below is its supplier's words, on the footing stated. Unless an item says it is itself a ledger source, it is not one: propose records only from the published works it names or links, each retrieved and verified. -->\n\n`;
   const parts = [`# Intake — ${slug} (${date})`, ``];
   for (const it of items) {
     parts.push(`## ${it.kind}: ${it.name}`, ``, `Supplied by ${it.supplier}${it.pages ? `; PDF, ${it.pages} pages` : ""}${typeof it.meta.provenance === "string" ? `; provenance: ${it.meta.provenance}` : ""}.`, ``);
+    if (it.ledgerSource) {
+      parts.push(`THIS DOCUMENT IS THE LEDGER'S SOURCE ${it.ledgerSource} (identified by ${it.ledgerSourceBasis ?? "the intake"}). Its propositions may be proposed as claims anchored to ${it.ledgerSource} — one proposition each, a verbatim quote from the text below, and the \`[p. N]\` page as the locator — and what it states may enter as evidence records on ${it.ledgerSource}, direction and strength honest to what kind of source it is. The verifier reads this same text for ${it.ledgerSource}.${registeredNote(it)}`, ``);
+    } else if (it.kind === "document" && typeof it.meta.editor === "string") {
+      parts.push(`THIS DOCUMENT IS NEW TO THE LEDGER AND SUPPLIED BY ITS AUTHOR (${it.meta.editor}). Propose it as a Source record (title "${it.title}", author, date, sourceType, an identifier naming where it is published and how it was written), and propose its propositions as claims anchored to that provisional source — one proposition each, a verbatim quote from the text below, the \`[p. N]\` page as the locator. The verifier reads this same text for that source.${registeredNote(it)}`, ``);
+    }
     if (it.kind === "commentary") parts.push(`The supplier's words, verbatim — the authoritative editorial statement:`, ``);
     parts.push(it.text.trim(), ``);
     const refs = resolved.get(it.name) ?? [];
@@ -182,13 +257,69 @@ export interface InboxOutcome extends RunOutcome {
   reportFile?: string;
 }
 
+/**
+ * The permission to publish a supplied document, recorded with the rigor
+ * §3.15 asks of provenance: who granted it, on what date, by what channel,
+ * and where the statement is held. The grant is the supplier's own
+ * statement of footing (front matter or sidecar), which the intake moves to
+ * inbox/processed/<runId>/ and commits — that file is the correspondence.
+ */
+export function permissionRecord(it: InboxItem, date: string, runId: string): string {
+  const statement = path.basename(it.sidecar ?? it.file);
+  const held = `held at inbox/processed/${runId}/${statement}`;
+  const permission = typeof it.meta.permission === "string" ? it.meta.permission.trim() : "";
+  const grantor = typeof it.meta.editor === "string" && it.meta.editor ? `${it.meta.editor} (own work)` : typeof it.meta.from === "string" ? it.meta.from : "";
+  // The grant's own date is the statement's `granted:` line — required at intake for anything not already public.
+  const granted = typeof it.meta.granted === "string" ? it.meta.granted.trim() : "";
+  const terms = typeof it.meta.license === "string" && it.meta.license.trim() ? `; license terms in the supplier's words: "${it.meta.license.trim()}"` : "";
+  if (grantor && permission && granted) return `Permission in the supplier's words: "${permission}" — granted by ${grantor} on ${granted} in the inbox statement \`${statement}\`, recorded at intake on ${date}, ${held}${terms}.`;
+  if (typeof it.meta.published === "string") return `Public at ${it.meta.published}; supplied${typeof it.meta.from === "string" ? ` by ${it.meta.from}` : ""} in the inbox statement \`${statement}\`, recorded at intake on ${date}, ${held}${terms}.`;
+  throw new Error(`${it.name}: no recorded permission on which to publish it as a founding input`);
+}
+
 export async function runInbox(caseKey: string, opts: InboxOptions = {}): Promise<InboxOutcome> {
   const root = opts.root ?? process.cwd();
   const now = opts.deps?.now ?? (() => new Date());
   const loaded = findCase(caseKey, opts.deps?.cases?.());
   const { items, left } = await readInbox(loaded.dir, root);
+  const notesOut: string[] = [];
   const run = openRun("inbox", loaded.record.slug, { model: MODELS.reader.model, promptVersion: "references-v1" }, { now: now(), root });
   const { runId, date } = run;
+  for (const it of items) {
+    if (it.kind !== "document") continue;
+    const match = ledgerSourceOf(it, loaded.sources);
+    if (match) {
+      it.ledgerSource = match.id;
+      it.ledgerSourceBasis = match.basis;
+    }
+  }
+  // A document the sidecar declares a founding input is registered as one: committed beside the case's
+  // other originals with its text extraction, and added to the inputs manifest — unless already there.
+  const registered: string[] = [];
+  for (const it of items) {
+    const role = it.meta.role;
+    if (it.kind !== "document" || (role !== "founding_narrative" && role !== "founding_research")) continue;
+    const already = loaded.narrativeInputs.find((n) => path.basename(n.file) === path.basename(it.file) || (it.title && n.title.toLowerCase() === it.title.toLowerCase()));
+    if (already) {
+      it.registeredAs = already.id;
+      continue;
+    }
+    if (opts.dryRun) continue;
+    const rel = path.join("research", loaded.dir, path.basename(it.file));
+    const dest = path.join(root, rel);
+    fs.mkdirSync(path.dirname(dest), { recursive: true });
+    if (!fs.existsSync(dest)) fs.copyFileSync(it.file, dest);
+    fs.writeFileSync(`${dest}.txt`, `[Text extraction of the PDF by the pipeline (pdfjs), ${date}; ${it.pages ?? "?"} pages; page markers [p. N]. The PDF beside this file is the original.]\n\n${it.text}`);
+    const n = Math.max(0, ...loaded.narrativeInputs.map((x) => Number(x.id.match(/-IN(\d+)$/)?.[1] ?? 0)), ...registered.map((x) => Number(x.match(/-IN(\d+)$/)?.[1] ?? 0)));
+    const id = `${loaded.record.id.split("-")[0]}-IN${String(n + 1).padStart(3, "0")}`;
+    const license = permissionRecord(it, date, runId);
+    appendYamlItems(path.join(root, "content", "cases", loaded.dir, "inputs", "manifest.yaml"), [
+      { id, title: it.title, role, file: rel, origin: `Supplied through the inbox on ${date} (run ${runId}) by ${it.supplier}${typeof it.meta.provenance === "string" ? `; ${it.meta.provenance}` : ""}. Read by the pipeline from the text extraction committed beside the file.`, license },
+    ]);
+    registered.push(id);
+    it.registeredAs = id;
+    notesOut.push(`${it.name}: registered as founding input ${id} (${rel})`);
+  }
   if (items.length === 0) return { ...closeRun(run, "rested", { reason: left.length ? `nothing ready: ${left.map((l) => `${l.name} — ${l.reason}`).join("; ")}` : "the inbox holds nothing for this case" }), items: 0, left };
 
   const resolved = new Map<string, Resolved[]>();
@@ -210,11 +341,16 @@ export async function runInbox(caseKey: string, opts: InboxOptions = {}): Promis
   const manifest = items.map((it) => ({
     name: it.name,
     kind: it.kind,
+    title: it.title,
     supplier: it.supplier,
+    registeredAs: it.registeredAs ?? null,
     pages: it.pages ?? null,
     bytes: fs.statSync(it.file).size,
     sha256: crypto.createHash("sha256").update(fs.readFileSync(it.file)).digest("hex"),
     sidecar: it.sidecar ? path.relative(path.join(root, "inbox"), it.sidecar) : null,
+    ledgerSource: it.ledgerSource ?? null,
+    ledgerSourceBasis: it.ledgerSourceBasis ?? null,
+    document: it.kind === "document" ? `documents/${path.basename(it.file).replace(/\.[^.]+$/, "")}.txt` : null,
     references: (resolved.get(it.name) ?? []).length,
     resolved: (resolved.get(it.name) ?? []).filter((r) => r.url).length,
   }));
@@ -233,7 +369,7 @@ export async function runInbox(caseKey: string, opts: InboxOptions = {}): Promis
   }
   const refsTotal = [...resolved.values()].flat();
   return {
-    ...closeRun(run, "completed", { reason: `${items.length} item(s) taken in; ${refsTotal.length} work(s) named, ${refsTotal.filter((r) => r.url).length} resolved to locators${left.length ? `; left in the inbox: ${left.map((l) => l.name).join(", ")}` : ""}` }),
+    ...closeRun(run, "completed", { reason: `${items.length} item(s) taken in; ${refsTotal.length} work(s) named, ${refsTotal.filter((r) => r.url).length} resolved to locators${notesOut.length ? `; ${notesOut.join("; ")}` : ""}${left.length ? `; left in the inbox: ${left.map((l) => l.name).join(", ")}` : ""}` }),
     items: items.length,
     left,
     reportFile,

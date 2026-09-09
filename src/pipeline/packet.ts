@@ -47,7 +47,11 @@ export interface Packet {
     studies: { id: string; title: string; collected: boolean }[];
     images: { id: string; role: string; depicts: string | null }[];
   };
-  /** Founding texts inlined when they are text; binary inputs (PDFs) are named, never inlined. */
+  /**
+   * Founding texts inlined: text files as they are; a PDF from the text
+   * extraction committed beside it as `<file>.txt` (the pipeline's own
+   * page-marked extraction), else named with `text: null`.
+   */
   inputs?: { id: string; title: string; role: string; file: string; text: string | null; bytes: number }[];
   declined?: Pick<Disposition, "key" | "kind" | "disposition" | "reason" | "reopenIf" | "date" | "observed">[];
   previousReport?: string;
@@ -160,12 +164,13 @@ export function buildPacket(
       ? path.join(process.cwd(), "content", "cases", loaded.dir, i.file)
       : path.join(process.cwd(), i.file);
     const isText = /\.(md|txt|markdown)$/i.test(file);
+    const extraction = `${file}.txt`;
     return {
       id: i.id,
       title: i.title,
       role: i.role,
       file: i.file,
-      text: isText ? fs.readFileSync(file, "utf8") : null,
+      text: isText ? fs.readFileSync(file, "utf8") : fs.existsSync(extraction) ? fs.readFileSync(extraction, "utf8") : null,
       bytes: fs.statSync(file).size,
     };
   });

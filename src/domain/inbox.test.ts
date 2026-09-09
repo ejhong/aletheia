@@ -26,9 +26,13 @@ function tmpRoot(): string {
   for (const f of ["budget.yaml", "tariffs.yaml", "models.yaml"]) fs.copyFileSync(path.join(process.cwd(), "config", f), path.join(root, "config", f));
   fs.writeFileSync(path.join(root, "inbox", "vasocomputation", "note.md"), "---\ncase: vasocomputation\neditor: Eugene\n---\nThe Shah 2015 review is the one to read on trigger points.\n");
   fs.writeFileSync(path.join(root, "inbox", "vasocomputation", "essay.pdf"), miniPdf("Knots of Existence, a long essay naming Shah and Thaker 2015."));
-  fs.writeFileSync(path.join(root, "inbox", "vasocomputation", "essay.md"), "---\ncase: vasocomputation\neditor: Eugene\nprovenance: written 2026-08-13, AI-generated text\n---\n");
+  fs.writeFileSync(path.join(root, "inbox", "vasocomputation", "essay.md"), "---\ncase: vasocomputation\neditor: Eugene\npermission: quote and cite it\ngranted: 2026-09-09\nprovenance: written 2026-08-13, AI-generated text\n---\n");
   fs.writeFileSync(path.join(root, "inbox", "vasocomputation", "orphan.pdf"), miniPdf("A paper somebody sent without saying so."));
   fs.writeFileSync(path.join(root, "inbox", "other-case.md"), "---\ncase: ydih\neditor: Eugene\n---\nNot ours.\n");
+  fs.writeFileSync(path.join(root, "inbox", "vasocomputation", "silent.pdf"), miniPdf("Own work sent without saying what may be done with it."));
+  fs.writeFileSync(path.join(root, "inbox", "vasocomputation", "silent.md"), "---\ncase: vasocomputation\neditor: Eugene\n---\n");
+  fs.writeFileSync(path.join(root, "inbox", "vasocomputation", "withheld.pdf"), miniPdf("Sent with a permission that withholds."));
+  fs.writeFileSync(path.join(root, "inbox", "vasocomputation", "withheld.md"), "---\ncase: vasocomputation\nfrom: a colleague\npermission: private review only, do not publish\ngranted: 2026-09-09\n---\n");
   return root;
 }
 
@@ -54,7 +58,45 @@ describe("inbox items", () => {
     expect(essay.sidecar).toMatch(/essay\.md$/);
     expect(essay.pages).toBe(1);
     expect(essay.text).toMatch(/^\[p\. 1\]/);
-    expect(left).toEqual([{ name: "vasocomputation/orphan.pdf", reason: expect.stringMatching(/no statement of provenance/) }]);
+    expect(left).toEqual([
+      { name: "vasocomputation/orphan.pdf", reason: expect.stringMatching(/no statement of provenance/) },
+      { name: "vasocomputation/silent.pdf", reason: expect.stringMatching(/^no permission to publish or cite/) }, // own work, but nothing said about what may be done with it (§3.15)
+      { name: "vasocomputation/withheld.pdf", reason: expect.stringMatching(/^the permission uses words the gate does not grant on \(private, review, only, do, not\)/) }, // a permission that says "only" and "not" grants nothing here
+    ]);
+    const { permissionGap } = await import("../pipeline/inbox.ts");
+    expect(permissionGap({ permission: "publish and cite", granted: "2026-09-09" })).toBeNull();
+    expect(permissionGap({ permission: "publication prohibited", granted: "2026-09-09" })).toMatch(/does not grant on \(publication, prohibited\)/); // no list of forbidden words to evade: only known words pass
+    expect(permissionGap({ permission: "for the site", granted: "2026-09-09" })).toMatch(/does not say it may be published/);
+    expect(permissionGap({ permission: "publish", granted: "soon" })).toMatch(/no `granted:` date/);
+  });
+});
+
+describe("a founding-role document", () => {
+  it("is registered as a narrative input at intake, with its extraction beside the original, and told to the drafter as a new source", async () => {
+    const root = tmpRoot();
+    const cases = loadAllCases();
+    const vaso = cases.find((c) => c.record.slug === "vasocomputation")!;
+    // A case directory copy for the inputs manifest the intake appends to.
+    fs.mkdirSync(path.join(root, "content", "cases", vaso.dir, "inputs"), { recursive: true });
+    fs.copyFileSync(path.join(process.cwd(), "content", "cases", vaso.dir, "inputs", "manifest.yaml"), path.join(root, "content", "cases", vaso.dir, "inputs", "manifest.yaml"));
+    fs.writeFileSync(path.join(root, "inbox", "vasocomputation", "new-essay.pdf"), miniPdf("Knots of Existence Hypotheses. Perforator trees carry the knots."));
+    fs.writeFileSync(path.join(root, "inbox", "vasocomputation", "new-essay.md"), "---\ncase: vasocomputation\neditor: Eugene\nrole: founding_narrative\npermission: publish it as the case's founding input and cite it\ngranted: 2026-09-09\n---\n");
+    const r = await runInbox("vasocomputation", { root, deps: { cases: () => cases, list: async () => [], search: async () => [] } });
+    expect(r.outcome).toBe("completed");
+    expect(r.reason).toMatch(/registered as founding input VASO-IN\d+/);
+    expect(fs.existsSync(path.join(root, "research", vaso.dir, "new-essay.pdf"))).toBe(true);
+    expect(fs.readFileSync(path.join(root, "research", vaso.dir, "new-essay.pdf.txt"), "utf8")).toMatch(/Perforator trees/);
+    const manifest = parseYaml(fs.readFileSync(path.join(root, "content", "cases", vaso.dir, "inputs", "manifest.yaml"), "utf8"));
+    const added = manifest.at(-1);
+    expect(added.role).toBe("founding_narrative");
+    expect(added.file).toBe(path.join("research", vaso.dir, "new-essay.pdf"));
+    expect(added.title).toMatch(/Knots of Existence Hypotheses/);
+    // The permission to publish is recorded as provenance (§3.15): who granted it, when, by what channel, where it is held.
+    expect(added.license).toMatch(/^Permission in the supplier's words: "publish it as the case's founding input and cite it" — granted by Eugene \(own work\) on 2026-09-09 in the inbox statement `new-essay\.md`, recorded at intake on 2026-\d\d-\d\d/);
+    expect(added.license).toMatch(/held at inbox\/processed\/2026-\d\d-\d\d-inbox-vasocomputation-\d{6}\/new-essay\.md/);
+    const report = fs.readFileSync(r.reportFile!, "utf8");
+    expect(report).toMatch(/NEW TO THE LEDGER AND SUPPLIED BY ITS AUTHOR \(Eugene\)/);
+    expect(report).toMatch(/registered as founding input/);
   });
 });
 

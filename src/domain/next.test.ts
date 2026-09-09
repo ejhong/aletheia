@@ -18,15 +18,29 @@ describe("aletheia next", () => {
     const runs = [run({ runId: `2026-09-01-report-${slug}-000000`, case: slug })];
     const n = nextAction(cases, runs, "2026-09-20");
     expect(n).toMatchObject({ case: slug, verb: "draft", from: runs[0].runId });
+    // A draft after the report does not count until a proposal names that report; then the proposal waits for verification.
     const withDraft = [...runs, run({ runId: `2026-09-01-draft-${slug}-010000`, verb: "draft", case: slug })];
-    expect(nextAction(cases, withDraft, "2026-09-20")).toMatchObject({ case: slug, verb: "verify", from: withDraft[1].runId });
+    expect(nextAction(cases, withDraft, "2026-09-20")).toMatchObject({ verb: "draft", from: runs[0].runId });
+    expect(nextAction(cases, withDraft, "2026-09-20", new Set([runs[0].runId]))).toMatchObject({ case: slug, verb: "verify", from: withDraft[1].runId });
+    // Two reports, one drafted: the undrafted one is next even though it is older than the draft.
+    const two = [run({ runId: `2026-09-02-inbox-${slug}-000000`, verb: "inbox", case: slug, date: "2026-09-02" }), ...withDraft, run({ runId: `2026-09-01-verify-${slug}-020000`, verb: "verify", case: slug })];
+    expect(nextAction(cases, two, "2026-09-20", new Set([runs[0].runId]))).toMatchObject({ verb: "draft", from: `2026-09-02-inbox-${slug}-000000` });
   });
 
   it("then a due edition, then the least recently reported case with the house seat, skipping the cadence window", async () => {
     const { editionDue } = await import("../pipeline/edition.ts");
-    // Cases the panel contests and nothing has answered are due an edition before any report.
-    const contested = cases.find((c) => editionDue(c)?.reason.includes("contests"));
-    if (contested) expect(nextAction([contested], [], "2026-09-20")).toMatchObject({ case: contested.record.slug, verb: "edition" });
+    // A case the panel contests and nothing has answered is searched first; the reconsideration waits until the report is within cadence.
+    const contested = cases.find((c) => editionDue(c)?.kind === "contested");
+    if (contested) {
+      expect(nextAction([contested], [], "2026-09-20")).toMatchObject({ case: contested.record.slug, verb: "report" });
+      const slug = contested.record.slug;
+      const reported = [
+        run({ runId: `2026-09-19-report-${slug}-000000`, case: slug, date: "2026-09-19" }),
+        run({ runId: `2026-09-19-draft-${slug}-010000`, verb: "draft", case: slug, date: "2026-09-19" }),
+        run({ runId: `2026-09-19-verify-${slug}-020000`, verb: "verify", case: slug, date: "2026-09-19" }),
+      ];
+      expect(nextAction([contested], reported, "2026-09-20", new Set([reported[0].runId]))).toMatchObject({ case: slug, verb: "edition" });
+    }
     // Among cases whose editions are current, with no runs at all, the first never-reported case is chosen for a report.
     const { checksStale } = await import("./load.ts");
     const settled = cases.filter((c) => c.record.slug !== "megalithic-casting" && !editionDue(c) && !checksStale(c));
@@ -46,11 +60,12 @@ describe("aletheia next", () => {
       run({ runId: `2026-08-30-draft-${b}-010000`, verb: "draft", case: b, date: "2026-08-30" }),
       run({ runId: `2026-08-30-verify-${b}-020000`, verb: "verify", case: b, date: "2026-08-30" }),
     ];
-    const n2 = nextAction(two, runs, "2026-09-20");
+    const drafted = new Set([`2026-09-19-report-${a}-000000`, `2026-08-30-report-${b}-000000`]);
+    const n2 = nextAction(two, runs, "2026-09-20", drafted);
     expect(n2.case).toBe(b);
     expect(n2.verb).toBe("report");
     expect(n2.seat).toBe("openai"); // its last pass landed nothing (no `in` rows name that run)
-    expect(nextAction(two.filter((c) => c.record.slug === a), runs, "2026-09-20").verb).toBe("rest");
+    expect(nextAction(two.filter((c) => c.record.slug === a), runs, "2026-09-20", drafted).verb).toBe("rest");
   });
 
   it("a reconsideration the fresh panel still contests rests until the ledger moves", async () => {
@@ -65,7 +80,7 @@ describe("aletheia next", () => {
     const { editionDue } = await import("../pipeline/edition.ts");
     const stale = cases.find((c) => checksStale(c) && !editionDue(c));
     if (stale) expect(nextAction([stale], [], "2026-09-20")).toMatchObject({ case: stale.record.slug, verb: "check" });
-    const due = cases.find((c) => checksStale(c) && editionDue(c));
+    const due = cases.find((c) => checksStale(c) && editionDue(c)?.kind === "moved");
     if (due) expect(nextAction([due], [], "2026-09-20").verb).toBe("edition");
   });
 
@@ -76,5 +91,27 @@ describe("aletheia next", () => {
     expect(["live", "paused"]).toContain(op.state);
     expect(op.reason.length).toBeGreaterThan(10);
     expect(getCaseBySlug("megalithic-casting").record.slug).toBe("megalithic-casting");
+  });
+});
+
+describe("superseded intakes", () => {
+  it("an earlier intake whose documents a later intake of the same case took in again needs no draft", async () => {
+    const fs = await import("node:fs");
+    const os = await import("node:os");
+    const path = await import("node:path");
+    const { draftedFrom } = await import("../pipeline/next.ts");
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "aletheia-supersede-"));
+    const mk = (id: string, shas: string[]) => {
+      fs.mkdirSync(path.join(root, "proposals", id), { recursive: true });
+      fs.writeFileSync(path.join(root, "proposals", id, "manifest.yaml"), `items:\n${shas.map((s) => `  - sha256: ${s}\n`).join("")}`);
+    };
+    mk("2026-09-09-inbox-v-010000", ["aaa"]);
+    mk("2026-09-09-inbox-v-020000", ["aaa"]);
+    mk("2026-09-09-inbox-v-030000", ["bbb"]);
+    const runs = ["010000", "020000", "030000"].map((t) => run({ runId: `2026-09-09-inbox-v-${t}`, verb: "inbox", case: "v", date: "2026-09-09" }));
+    const drafted = draftedFrom(runs, root);
+    expect(drafted.has("2026-09-09-inbox-v-010000")).toBe(true); // superseded by 020000
+    expect(drafted.has("2026-09-09-inbox-v-020000")).toBe(false); // the latest intake of that document
+    expect(drafted.has("2026-09-09-inbox-v-030000")).toBe(false); // a different document
   });
 });

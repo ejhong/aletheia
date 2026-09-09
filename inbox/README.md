@@ -15,9 +15,18 @@ words preserved verbatim. The scheduler (`aletheia next`) picks an intake up
 as a half-done chain. A **document enters only with a statement of
 provenance**: front matter, or a sidecar note of the same name for a PDF,
 carrying `editor:` (your own work), `published:` (the URL where it is
-public), or `from:` and `permission:` (who granted it, when, by what
-channel). Without one it stays here, with the reason in the run record
-(AGENTS.md §3.15: nothing supplied in confidence is published).
+public), or `from:` (who supplied it). A document that is not already
+public also needs the permission in the supplier's words — `permission:`
+(what may be done with it, in the gate's own words — "publish", "cite",
+"quote", joined by plain connectives such as "publish and cite it"; any
+other word, "only" or "prohibited" or "private" alike, is a word the gate
+does not grant on, and the file stays here) and `granted:` (the
+date of the grant, YYYY-MM-DD) — own work included:
+the footing says whose it is, the permission says what may be done. The
+intake records who granted it, on what date, by what channel (this
+statement), and where it is held (`inbox/processed/<runId>/`). Without
+them it stays here, with the reason in the run record (AGENTS.md §3.15:
+nothing supplied in confidence is published).
 
 **Two doors, one rule.** This folder is the capture bucket; a chat agent
 session is the full-service processor. Anything dropped here gets the

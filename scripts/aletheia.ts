@@ -12,7 +12,7 @@
  *   node scripts/aletheia.ts edition <case> [--dry-run] [--force]
  *   node scripts/aletheia.ts check <case> [--seats a,b] [--dry-run]   the blind panel, every roster seat with a key
  *   node scripts/aletheia.ts inbox <case> [--dry-run]         the founder's door as a producer: dropped items → one report the draft verb consumes
- *   node scripts/aletheia.ts next [--run]                      what the ledger wants done next (and, with --run, do it through the chain)
+ *   node scripts/aletheia.ts next [--run] [--steps N]          what the ledger wants done next (and, with --run, do it through the chain; --steps N choices in one sitting)
  *   node scripts/aletheia.ts panel <pr>                        → scripts/arbiter.mjs
  *
  * Every verb is one module under src/pipeline/ sharing four services — the
@@ -35,7 +35,7 @@ import { runNext } from "../src/pipeline/next.ts";
 import { runInbox } from "../src/pipeline/inbox.ts";
 
 const [verb, ...rest] = process.argv.slice(2);
-const flagNames = new Set(["--seat", "--seats", "--reconsider"]);
+const flagNames = new Set(["--seat", "--seats", "--reconsider", "--steps"]);
 const flags = new Set<string>();
 const args: string[] = [];
 const values: Record<string, string> = {};
@@ -97,9 +97,10 @@ switch (verb) {
     break;
   }
   case "next": {
-    const r = await runNext({ run: flags.has("--run") });
+    const steps = Number(flagValue("--steps") ?? 1);
+    const r = await runNext({ run: flags.has("--run"), steps: Number.isFinite(steps) && steps > 0 ? steps : 1 });
     console.log(JSON.stringify(r, null, 2));
-    if (r.ran.some((s) => s.outcome.outcome === "failed")) process.exit(1);
+    if ([r, ...(r.more ?? [])].some((o) => o.ran.some((s) => s.outcome.outcome === "failed"))) process.exit(1);
     break;
   }
   case "check": {

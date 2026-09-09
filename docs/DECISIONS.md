@@ -1498,3 +1498,25 @@ and committed and merged by the founder's hand — the act §3.15 reserves;
 the operator's tooling refused to commit it, which is that reservation
 working. Both #206 (the run) and #207 (the code) were merged by the
 founder on 2026-09-09.
+
+**A founder's drop falls under a recorded standing direction (founder
+direction, 2026-09-09).** After the §3.15 amendment, the founder asked that
+dropping a file from the founder's own GitHub account be enough. The first
+draft made the commit itself the permission; the Arbiter parked it on two
+points, both right: the amendment says supplying material is not a
+direction, so a commit that deposits a file cannot be the direction to
+publish it; and a git author line can be written by anyone. Now the
+permission is the founder's **standing direction** in `config/founder.yaml`
+— the founder's words, dated, given by merging the change — and the commit
+is the act it covers: the intake (`founderDrop`) takes a file as the
+founder's only when every commit that touched it is authored by a founder
+identity and GitHub attributes the latest to the founder's login and
+reports its signature verified (app and web commits are; an unsigned
+laptop commit is not, and the file waits with the reason). The record
+names the direction, its date and channel, the commit, its author and
+date, GitHub's word, and where each is held. No sidecar is needed; one is
+still the place for `role:`, `title:` and `case:`. The drop says nothing
+about authorship, and the drafter is told so. Anyone else's commit, an
+unverified one, or an uncommitted file still needs the statement of
+provenance and the dated permission.
+

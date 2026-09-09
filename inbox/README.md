@@ -12,8 +12,26 @@ it can be, and the `draft` and `verify` verbs then treat it exactly as they
 treat a research report: quotes only from retrieved text, a second reader
 on every record, a disposition with a reason for everything raised, your
 words preserved verbatim. The scheduler (`aletheia next`) picks an intake up
-as a half-done chain. A **document enters only with a statement of
-provenance**: front matter, or a sidecar note of the same name for a PDF,
+as a half-done chain.
+
+**If you are the founder, just drop it — from the GitHub app or website.**
+A file committed to `inbox/<case>/` from the founder's own GitHub account
+needs no sidecar and no statement. What makes that lawful is not the
+commit but the founder's **standing direction** recorded in
+`config/founder.yaml` (the founder's words, dated, merged by the founder's
+hand): AGENTS.md §3.15 (amendment of 2026-09-09) makes a recorded
+direction to publish the permission, and the commit is the act it covers.
+The intake takes a file as the founder's drop only when every commit that
+touched it is the founder's and GitHub itself attributes the latest to the
+founder's login and reports its signature verified — commits from the
+GitHub app or website are; an unsigned commit from a laptop is not, and
+the file waits with the reason (sign your commits, or add a statement).
+The record names the direction, the commit, the author, the date, and
+where each is held. The drop says nothing about who wrote the document;
+the drafter reads the byline from the document itself. A sidecar is still the place for `role: founding_narrative`
+(to register an essay as a founding input), a `title:`, or `case:` when the
+file is not in the case's folder. Anyone else's document enters only with a
+statement of provenance: front matter, or a sidecar note of the same name for a PDF,
 carrying `editor:` (your own work), `published:` (the URL where it is
 public), or `from:` (who supplied it). A document that is not already
 public also needs the permission in the supplier's words — `permission:`

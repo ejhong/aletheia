@@ -28,7 +28,8 @@ import { spendFor, sumCost, type Meter } from "./spend.ts";
  * monotonic within a day.
  */
 
-export const proposalsDir = (root = process.cwd()) => path.join(root, "proposals");
+export { proposalsDir, readProposal, readRuns, runDir } from "../domain/runs.ts";
+import { proposalsDir, runDir } from "../domain/runs.ts";
 
 export function newRunId(verb: Verb, caseSlug: string, now = new Date()): string {
   return `${isoDate(now)}-${verb}-${caseSlug}-${hhmmssUTC(now)}`;
@@ -94,10 +95,6 @@ export function closeRun(run: Run, outcome: RunRecord["outcome"], extra: { reaso
   return { outcome, runId: run.runId, ...(reason ? { reason } : {}), cost };
 }
 
-export function runDir(runId: string, root = process.cwd()): string {
-  return path.join(proposalsDir(root), runId);
-}
-
 export function writeProposal(proposal: Proposal, root = process.cwd()): string {
   const parsed = ProposalSchema.parse(proposal);
   const dir = runDir(parsed.runId, root);
@@ -123,13 +120,7 @@ export function writeWorkingFile(runId: string, name: string, text: string, root
 }
 
 /** Every run record under proposals/, oldest first. Directories without run.yaml are ignored. */
-export { readRuns } from "../domain/runs.ts";
 
-export function readProposal(runId: string, root = process.cwd()): Proposal | null {
-  const f = path.join(runDir(runId, root), "proposal.yaml");
-  if (!fs.existsSync(f)) return null;
-  return ProposalSchema.parse(parseYaml(fs.readFileSync(f, "utf8")));
-}
 
 const DISPOSITIONS_HEADER = `# Dispositions — every candidate ever considered for this case, and what
 # became of it (docs/AUTOMATION.md, "Memory records decisions in context").

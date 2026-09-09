@@ -1790,5 +1790,10 @@ last comment on its issue as the receipt of the answer, and a note closed
 without one is shown as closed without an answer — closure alone is not
 the answer; and a note names the commit it was raised on, since the PR's
 final verdict, given after the fix, reads differently from the objection
-that produced the note.
+that produced the note. On the seat's second note (#230): the answer is positively identified —
+the last comment by the founder's login or the maintenance bot, never a
+passer-by's remark — and the harvest paginates, so no note or comment
+falls off the end; and the scheduler's pure choice (with `editionDue`)
+now lives in the domain (`src/domain/schedule.ts`), the pipeline's `next`
+importing it from there, so the operations page reads no pipeline module.
 

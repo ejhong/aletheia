@@ -6,9 +6,19 @@
 import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml } from "yaml";
-import { RunRecordSchema, type RunRecord } from "./intake.ts";
+import { ProposalSchema, RunRecordSchema, type Proposal, type RunRecord } from "./intake.ts";
 
 export const proposalsDir = (root = process.cwd()) => path.join(root, "proposals");
+export function runDir(runId: string, root = process.cwd()): string {
+  return path.join(proposalsDir(root), runId);
+}
+
+/** A run's proposal envelope, when it wrote one. */
+export function readProposal(runId: string, root = process.cwd()): Proposal | null {
+  const f = path.join(runDir(runId, root), "proposal.yaml");
+  if (!fs.existsSync(f)) return null;
+  return ProposalSchema.parse(parseYaml(fs.readFileSync(f, "utf8")));
+}
 
 /** Every run record, oldest first (date, then runId). Unparsable records are skipped, never repaired. */
 export function readRuns(root = process.cwd()): RunRecord[] {

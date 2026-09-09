@@ -7,7 +7,7 @@ import { loadArbiterRecords } from "@/src/domain/governance";
 import { loadAllCases } from "@/src/domain/load";
 import { operationsView } from "@/src/domain/operations";
 import { readRuns } from "@/src/domain/runs";
-import { draftedFrom, inboxPending, nextAction } from "@/src/pipeline/next";
+import { draftedFrom, inboxPending, nextAction } from "@/src/domain/schedule";
 import { assessmentLabels } from "@/src/domain/schema";
 import {
   caseStandings,

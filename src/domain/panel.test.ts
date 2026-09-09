@@ -67,7 +67,7 @@ describe("panel derivations (live data)", () => {
     for (const e of opsFeed(100).filter((x) => x.kind === "arbiter")) {
       // Full seat reasoning renders in The gate section; the anchor id
       // must match ArbiterVerdictCard's `arbiter-pr-<n>`.
-      expect(e.href).toMatch(/^\/panel\/#arbiter-pr-\d+$/);
+      expect(e.href).toMatch(/^\/operations\/#arbiter-pr-\d+$/);
       expect(e.sourceHref).toMatch(/^https:\/\/github\.com\/.+\/pull\/\d+$/);
     }
   });

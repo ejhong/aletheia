@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { chainCron, cronHuman, operationsView } from "./operations.ts";
-import { parseReviewNoteTitle } from "../lib/harvest-parse.mjs";
+import { answerFrom, joinPages, parseReviewNoteTitle } from "../lib/harvest-parse.mjs";
 
 describe("the operations page", () => {
   it("reads the chain's schedule from the workflow and says it in words", () => {
@@ -32,5 +32,20 @@ describe("the operations page", () => {
     expect(parseReviewNoteTitle("Review note on #223 — GPT-5.6 Sol (OpenAI): §3.15, §3.8 (provenance)")).toEqual({ pr: 223, seat: "GPT-5.6 Sol (OpenAI)", rules: ["§3.15", "§3.8"], paradigm: "provenance" });
     expect(parseReviewNoteTitle("Review note on #215 — GPT-5.6 Sol (OpenAI): §3.15 (check-weakening)")).toEqual({ pr: 215, seat: "GPT-5.6 Sol (OpenAI)", rules: ["§3.15"], paradigm: "check-weakening" });
     expect(parseReviewNoteTitle("Something else entirely")).toBeNull();
+  });
+});
+
+describe("the answer on the record", () => {
+  it("is the last comment by a recognized answerer, never a passer-by's, never closure", () => {
+    const c = (login: string, body: string, at: string) => ({ user: { login }, body, created_at: at, html_url: `https://example.org/${login}/${at}` });
+    const comments = [c("someone", "drive-by", "2026-09-09T01:00:00Z"), c("ejhong", "Answered on the record.", "2026-09-09T02:00:00Z"), c("someone", "later remark", "2026-09-09T03:00:00Z")];
+    expect(answerFrom(comments, ["ejhong", "aletheia-maintenance-bot"])).toEqual({ by: "ejhong", at: "2026-09-09", excerpt: "Answered on the record.", url: "https://example.org/ejhong/2026-09-09T02:00:00Z" });
+    expect(answerFrom([c("someone", "only a remark", "2026-09-09T01:00:00Z")], ["ejhong"])).toBeNull();
+    expect(answerFrom([], ["ejhong"])).toBeNull();
+  });
+  it("joins the pages gh prints into one list", () => {
+    expect(joinPages('[{"a":1},{"a":2}]\n[{"a":3}]')).toEqual([{ a: 1 }, { a: 2 }, { a: 3 }]);
+    expect(joinPages("[]")).toEqual([]);
+    expect(joinPages("")).toEqual([]);
   });
 });

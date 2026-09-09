@@ -25,7 +25,8 @@ import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import { stringify as stringifyYaml } from "yaml";
-import { parseLegacyArbiterComment, parseReviewNoteTitle } from "../src/lib/harvest-parse.mjs";
+import { answerFrom, joinPages, parseLegacyArbiterComment, parseReviewNoteTitle } from "../src/lib/harvest-parse.mjs";
+import { parse as parseYamlText } from "yaml";
 
 const dryRun = process.argv.includes("--dry-run");
 const wantDigest = process.argv.includes("--digest");
@@ -110,9 +111,18 @@ console.error(`harvested ${harvested.length} verdict(s)`);
 // amendment of 2026-09-09). Mirrored into governance/review-notes/<n>.yaml at their current state — an open note is
 // the queue, a closed one the answer — so the operations page can show them without asking GitHub at build time.
 const NOTES_DIR = path.join(ROOT, "governance", "review-notes");
+// Who may answer a note on the record: the founder's GitHub login (config/founder.yaml) and the maintenance bot.
+const founderLogin = (() => {
+  try {
+    return parseYamlText(fs.readFileSync(path.join(ROOT, "config", "founder.yaml"), "utf8"))?.githubLogin ?? null;
+  } catch {
+    return null;
+  }
+})();
+const ANSWERERS = [founderLogin, "aletheia-maintenance-bot"].filter(Boolean);
 let notes = [];
 try {
-  notes = JSON.parse(gh("api", `repos/${repo}/issues?labels=review-note&state=all&per_page=100`)).filter((i) => !i.pull_request);
+  notes = joinPages(gh("api", "--paginate", `repos/${repo}/issues?labels=review-note&state=all&per_page=100`)).filter((i) => !i.pull_request);
 } catch (err) {
   console.error(`review notes not harvested: ${String(err).split("\n")[0]}`);
 }
@@ -123,9 +133,8 @@ for (const issue of notes) {
   // note closed without one shows as closed without an answer, never as answered by closure (GPT seat, #229).
   let answer = null;
   try {
-    const comments = JSON.parse(gh("api", `repos/${repo}/issues/${issue.number}/comments?per_page=100`));
-    const last = comments.at(-1);
-    if (last) answer = { by: last.user?.login ?? "unknown", at: (last.created_at ?? "").slice(0, 10), excerpt: String(last.body ?? "").replace(/\s+/g, " ").trim().slice(0, 300), url: last.html_url };
+    const comments = joinPages(gh("api", "--paginate", `repos/${repo}/issues/${issue.number}/comments?per_page=100`));
+    answer = answerFrom(comments, ANSWERERS);
   } catch (err) {
     console.error(`#${issue.number}: comments not read (${String(err).split("\n")[0]})`);
   }

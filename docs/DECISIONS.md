@@ -1885,3 +1885,30 @@ the first pass is one run within the per-run cap and the second tests
 whether memory keeps the loop from re-finding what it holds. What decides
 the test: whether anchored claims and a ratifiable edition emerge from the
 verbs alone, at what source-check pass rate and cost.
+
+**The founder's grant, and the Deep Memory drop made on it (2026-09-09, in
+session).** Asked for his own upload or a grant, the founder gave the grant
+in the session: "grant permission to publish cite and quote the pages", and
+"Please make the drop." Under AGENTS.md §3.15 a direction to publish
+supplied material, so recorded, is the permission; it is recorded here with
+its date and channel and on the drop's sidecar in his words, with the
+`granted:` date, so the intake's permission record names who, when, by what
+channel and where the statement is held. The drop is the home page of his
+Deep Memory site (docs/index.html at commit e9666a73, byte-identical to the
+served page, md5 stated), taken in by run `2026-09-09-inbox-deep-memory-200334` as founding input
+DEEP-IN001 (the founding narrative). The five study pages, the revision log
+and the registers follow as the second drop once the first assessing
+edition stands. Nothing on the ledger changes until the loop drafts and
+verifies from it.
+
+**Cover art and plates come back (founder direction, 2026-09-09, in
+session).** The founder wants the cover-art process back as it was and
+covers and plates made for Deep Memory. `generate-case-art` (cover
+candidates in the house style through the OpenAI Images API, offered in a
+PR) and `add-commons-image` (a Commons file by title: licence verified,
+1600 px rendition downloaded, manifest entry with credit and provenance
+from the Commons API) were retired in the subtraction of 2026-09-09 with
+no replacement; they return, adapted to the present layout, and the
+subtraction record is amended. The loop still makes neither; an edition
+seats the plates that exist and never loses one.
+

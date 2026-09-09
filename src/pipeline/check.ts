@@ -1,7 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
-import { currentEdition, findCase } from "../domain/load.ts";
+import { currentEdition } from "../domain/editions.ts";
+import { findCase } from "../domain/load.ts";
 import { AssessmentRunSchema, type AssessmentRun, type LoadedCase } from "../domain/schema.ts";
 import { overlayRunId } from "../lib/overlay-ids.mjs";
 import { loadProtocol, renderProtocol } from "./protocols.ts";

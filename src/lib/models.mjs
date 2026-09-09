@@ -6,8 +6,8 @@ import { z } from "zod";
 /**
  * The one place a model is chosen: config/models.yaml, parsed and validated
  * here and read by the verb chain (src/pipeline), the panel table
- * (scripts/lib/vendors.mjs), and the maintenance scripts' drafting helper
- * (scripts/lib/llm.mjs). Nothing else names a model id. The panel test pins
+ * (src/lib/vendors.mjs), and the maintenance scripts' drafting helper
+ * (src/lib/llm.mjs). Nothing else names a model id. The panel test pins
  * five seats with distinct vendors; the pipeline test pins that every model
  * named here has a tariff row.
  */

@@ -3,7 +3,8 @@ import os from "node:os";
 import path from "node:path";
 import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
 import { describe, expect, it } from "vitest";
-import { getCaseBySlug, loadAllCases, currentEdition } from "./load.ts";
+import { getCaseBySlug, loadAllCases } from "./load.ts";
+import { currentEdition } from "./editions.ts";
 import { parseYamlReply, runCheck, validateCheckReply } from "../pipeline/check.ts";
 import { readRuns } from "../pipeline/store.ts";
 

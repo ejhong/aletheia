@@ -1,7 +1,9 @@
 import fs from "node:fs";
 import path from "node:path";
 import { assessmentHash, inputsHash } from "../domain/hash.ts";
-import { adoptedAssessment, currentChecks, currentEdition, editionErrors, findCase, latestCheckPerModel, ratification } from "../domain/load.ts";
+import { adoptedAssessment, currentEdition } from "../domain/editions.ts";
+import { currentChecks, latestCheckPerModel, ratification } from "../domain/standing.ts";
+import { editionErrors, findCase } from "../domain/load.ts";
 import {
   AssessmentRunSchema,
   EditionSchema,

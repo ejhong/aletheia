@@ -1,10 +1,6 @@
-import {
-  adoptedAssessment,
-  currentEdition,
-  liveClaims,
-  ratification,
-  type Ratification,
-} from "./load.ts";
+import { adoptedAssessment, currentEdition } from "./editions.ts";
+import { liveClaims } from "./load.ts";
+import { ratification, type Ratification } from "./standing.ts";
 import type {
   AssessmentRun,
   AssessmentState,

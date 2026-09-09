@@ -13,7 +13,10 @@ import { LinkedRecordText } from "@/src/components/LinkedRecordText";
 import { site } from "@/src/config/site";
 import { ConjectureCard } from "@/src/components/ConjectureCard";
 import { CrossModelPanel } from "@/src/components/CrossModelPanel";
-import { caseCover, crossModelSummary, historyNewestFirst, lastContentUpdate, latestCheckPerModel, loadAllCases, survivingObjections, caseQuestion, questionRestatedBy } from "@/src/domain/load";
+import { caseCover, loadAllCases } from "@/src/domain/load";
+import { crossModelSummary, latestCheckPerModel, survivingObjections } from "@/src/domain/standing";
+import { historyNewestFirst, lastContentUpdate } from "@/src/domain/history";
+import { caseQuestion, questionRestatedBy } from "@/src/domain/editions";
 import { caseView } from "@/src/domain/view";
 import { paramsOrPlaceholder } from "@/src/domain/staticExport";
 

@@ -5,7 +5,7 @@ import {
   type AssessmentRun,
   type AssessmentState,
 } from "@/src/domain/schema";
-import type { CrossModelSummary } from "@/src/domain/load";
+import type { CrossModelSummary } from "@/src/domain/standing";
 
 /** "GPT-5.1 (OpenAI), independent judge run" → "GPT-5.1 (OpenAI)". */
 function shortModel(label: string): string {

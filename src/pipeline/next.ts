@@ -1,6 +1,7 @@
 import { saturation } from "../domain/intake.ts";
 import type { RunRecord } from "../domain/intake.ts";
-import { checksStale, loadAllCases } from "../domain/load.ts";
+import { checksStale } from "../domain/standing.ts";
+import { loadAllCases } from "../domain/load.ts";
 import type { LoadedCase } from "../domain/schema.ts";
 import { MODELS } from "../lib/models.mjs";
 import { runCheck } from "./check.ts";

@@ -23,7 +23,7 @@ const KEY_ENV = {
 /** The seats, from config/models.yaml (model, label, tag, pinned effort), each with its key reader. */
 export const VENDORS = Object.fromEntries(
   Object.entries(MODELS.panel).map(([name, seat]) => {
-    if (!KEY_ENV[name]) throw new Error(`config/models.yaml names a panel seat "${name}" with no API-key variable in scripts/lib/vendors.mjs`);
+    if (!KEY_ENV[name]) throw new Error(`config/models.yaml names a panel seat "${name}" with no API-key variable in src/lib/vendors.mjs`);
     return [name, { ...seat, key: () => process.env[KEY_ENV[name]] }];
   }),
 );
@@ -142,7 +142,7 @@ export function buildRequest(name, { system, user, maxTokens = 16000 }) {
  * thinking budget, and callers must treat it as a failed seat, never as an
  * empty opinion).
  *
- * PANEL SEAT — the refusal fallback (scripts/lib/llm.mjs) is BANNED here.
+ * PANEL SEAT — the refusal fallback (src/lib/llm.mjs) is BANNED here.
  * A seat's identity as a specific vendor/model is constitutionally
  * load-bearing (§3.15 vendor-independence of the panel): a refusing seat
  * must count as a FAILED seat, never be silently swapped to another model.

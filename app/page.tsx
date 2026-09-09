@@ -3,15 +3,10 @@ import { CaseCard } from "@/src/components/CaseCard";
 import { ChangeTimeline } from "@/src/components/ChangeTimeline";
 import { assetPath } from "@/src/config/assets";
 import { site } from "@/src/config/site";
-import {
-  caseCover,
-  crossModelSummary,
-  isHousekeepingEntry,
-  loadAllCases,
-  recentChanges,
-  siteImage,
-  caseQuestion,
-} from "@/src/domain/load";
+import { caseCover, loadAllCases, siteImage } from "@/src/domain/load";
+import { crossModelSummary } from "@/src/domain/standing";
+import { isHousekeepingEntry, recentChanges } from "@/src/domain/history";
+import { caseQuestion } from "@/src/domain/editions";
 import { caseView, reviewCoverage } from "@/src/domain/view";
 
 export default function HomePage() {

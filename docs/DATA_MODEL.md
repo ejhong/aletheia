@@ -164,7 +164,7 @@ The current edition is the latest by date (runId breaks ties). An edition
 that changes only the article re-adopts the same assessment and inherits
 its standing; only a new judgment needs new blind checks. Standing itself
 is derived at build time from the check runs of the adopted assessment
-(`ratification` in `src/domain/load.ts`) — never stored.
+(`ratification` in `src/domain/standing.ts`) — never stored.
 
 ## Proposal and Disposition (the intake)
 

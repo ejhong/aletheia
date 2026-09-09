@@ -59,12 +59,21 @@ export interface LedgerSlice {
   images: ImageRecord[];
 }
 
+/**
+ * The ledger hash covers what the records say, not where they are read:
+ * `url` and `archivedUrl` on a source are locators, and changing one moves no
+ * evidence (founder decision 2026-09-09, after a by-hand URL addition set a
+ * fresh five-seat panel aside and made an edition due that could only
+ * re-adopt). Everything else on every record counts.
+ */
+const LOCATOR_FIELDS = new Set(["url", "archivedUrl"]);
+
 export function ledgerHash(ledger: LedgerSlice): string {
   return sha256Hex(
     canonicalJson({
       claims: ledger.claims,
       evidence: ledger.evidence,
-      sources: ledger.sources,
+      sources: ledger.sources.map((s) => Object.fromEntries(Object.entries(s).filter(([k]) => !LOCATOR_FIELDS.has(k)))),
       research: ledger.research,
       studies: ledger.studies,
       images: ledger.images,

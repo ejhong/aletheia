@@ -72,3 +72,10 @@
     (founder-directed session, not a pipeline prompt)
   aiAssisted: true
   kind: housekeeping
+
+- date: 2026-09-09
+  change: "Ledger hash redefined to exclude source locators (url, archivedUrl); 1 edition/assessment basis stamp(s) recomputed mechanically, content unchanged: edition-2026-09-08-migration.yaml."
+  reason: "Founder decision 2026-09-09: a locator says where a record is read, not what it says; a by-hand URL addition had set a fresh panel aside and made an edition due that could only re-adopt."
+  actor: scripts/migrations/2026-09-09-hash-locators.ts (mechanical re-stamp)
+  aiAssisted: true
+  kind: housekeeping

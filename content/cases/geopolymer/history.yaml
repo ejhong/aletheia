@@ -171,3 +171,17 @@
   actor: aletheia correction writer, applied by hand on the founder-directed run of 2026-09-09; draft protocol v3 now asks the drafter to propose such URLs itself
   aiAssisted: true
   kind: content
+
+- date: 2026-09-09
+  change: "Ledger hash redefined to exclude source locators (url, archivedUrl); 5 edition/assessment basis stamp(s) recomputed mechanically, content unchanged: 2026-09-09-check-gemini-011431.yaml, 2026-09-09-check-glm-011431.yaml, 2026-09-09-check-gpt-011431.yaml, 2026-09-09-check-grok-011431.yaml, 2026-09-09-check-opus-011431.yaml."
+  reason: "Founder decision 2026-09-09: a locator says where a record is read, not what it says; a by-hand URL addition had set a fresh panel aside and made an edition due that could only re-adopt."
+  actor: scripts/migrations/2026-09-09-hash-locators.ts (mechanical re-stamp)
+  aiAssisted: true
+  kind: housekeeping
+
+- date: 2026-09-09
+  change: "Basis stamps of edition-2026-09-09-010115 and assessment 2026-09-09-edition-003234 recomputed under the redefined ledger hash: the only ledger change between their writing and now was the url added to SRC-ENGELBACH-1922, which the hash no longer covers."
+  reason: Same founder decision as the mechanical re-stamp above; these two carried the pre-URL hash, so the general migration did not reach them.
+  actor: hand re-stamp on the founder-directed run of 2026-09-09
+  aiAssisted: true
+  kind: housekeeping

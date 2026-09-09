@@ -1293,4 +1293,14 @@ outside the ledger hash, since they change where a record is read, not
 what it says. (b) The scheduler now also chooses a re-check when the panel
 is stale, after any due edition and before any report, so the loop derives
 standing without a second workflow.
+
+**Source locators leave the ledger hash (founder decision, 2026-09-09:
+"yes outside").** `url` and `archivedUrl` say where a record is read, not
+what it says; the hash now excludes them. Every edition and check whose
+basis equalled the case's hash under the old definition was re-stamped
+mechanically under the new one (`scripts/migrations/2026-09-09-hash-locators.ts`,
+one housekeeping history entry per case); Cast, Not Carved's reconsidered
+assessment and edition, written before the Engelbach URL was added, were
+re-stamped by hand with their own entry. Standing there is contested on
+five current seats; no edition is due.
 (AI implementation record; founder-directed session.)

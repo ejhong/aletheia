@@ -16,18 +16,19 @@ import { runVerify } from "./verify.ts";
  *
  *  1. Finish what is half done: a completed report with no draft after it,
  *     a completed draft with no verification after it.
- *  2. An edition that is due — the ledger moved under the incumbent, or the
- *     panel contests an assessment nothing has answered.
+ *  2. An edition the ledger owes — the ledger moved under the incumbent.
  *  3. A blind check where the panel is stale — no seat has judged the case
- *     as it stands (the ledger moved, or the adopted assessment is a
- *     reconsideration no fresh check has judged). After the edition, so the
- *     panel judges what will be displayed.
- *  4. Otherwise a report for the case least recently reported, skipping a
- *     case reported within the cadence and, unless nothing else is left, a
+ *     as it stands. After the edition, so the panel judges what will be
+ *     displayed.
+ *  4. A report for the case least recently reported, skipping a case
+ *     reported within the cadence and, unless nothing else is left, a
  *     saturated one (three passes that landed nothing). The house seat by
  *     default; the second seat when the last pass landed nothing — a
  *     different pair of eyes when the first stops finding.
- *  5. Nothing: everything rests.
+ *  5. A reconsideration where the panel contests an assessment nothing has
+ *     answered — after the search, so new evidence gets its chance to move
+ *     the case before the old disagreement is re-argued (founder, 2026-09-09).
+ *  6. Nothing: everything rests.
  *
  * `--run` performs the choice and, for a report, continues the chain —
  * draft, verify, edition — stopping at the first step that does not
@@ -69,10 +70,10 @@ export function nextAction(cases: LoadedCase[], runs: RunRecord[], today: string
       return { case: c.record.slug, verb: "verify", from: lastDraft.runId, reason: `proposal ${lastDraft.runId} has not been verified` };
     }
   }
-  // 2. Editions due.
+  // 2. Editions the ledger owes.
   for (const c of cases) {
     const due = editionDue(c);
-    if (due) return { case: c.record.slug, verb: "edition", reason: due.reason };
+    if (due?.kind === "moved") return { case: c.record.slug, verb: "edition", reason: due.reason };
   }
   // 3. A stale panel.
   for (const c of cases) {
@@ -87,7 +88,14 @@ export function nextAction(cases: LoadedCase[], runs: RunRecord[], today: string
       return { c, last, sat };
     })
     .filter(({ last }) => !last || ageDays(last.date, today) >= CADENCE_DAYS);
-  if (candidates.length === 0) return { case: null, verb: "rest", reason: `every case was reported within the last ${CADENCE_DAYS} days` };
+  const reconsideration = () => {
+    for (const c of cases) {
+      const due = editionDue(c);
+      if (due?.kind === "contested") return { case: c.record.slug, verb: "edition" as const, reason: due.reason };
+    }
+    return null;
+  };
+  if (candidates.length === 0) return reconsideration() ?? { case: null, verb: "rest", reason: `every case was reported within the last ${CADENCE_DAYS} days and no panel dissent is unanswered` };
   const fresh = candidates.filter(({ sat }) => sat.consecutiveEmpty < SATURATED_AFTER);
   const pool = fresh.length ? fresh : candidates;
   pool.sort((a, b) => (a.last?.date ?? "").localeCompare(b.last?.date ?? ""));

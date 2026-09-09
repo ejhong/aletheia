@@ -131,10 +131,17 @@ fs.copyFileSync(path.join(ROOT, "config", "tariffs.yaml"), path.join(scratch, "c
 const meter = { runId: `${new Date().toISOString().slice(0, 10)}-panel-${head.slice(0, 10)}`, verb: "panel", case: null, root: scratch };
 
 async function seatVote(name) {
+  // A billable reply is billed whatever becomes of it: the cost is taken before the reply is read,
+  // and a seat whose reply will not parse fails with its cost attached, not discarded.
+  let reply;
   try {
-    const reply = await callSeat(name, { system: SYSTEM, user: packet }, meter);
-    const vote = validateVote(VENDORS[name].label, parseJsonReply(reply.text));
-    return { ...vote, cost: { model: reply.model, inputTokens: reply.usage.inputTokens, outputTokens: reply.usage.outputTokens, usd: reply.usd } };
+    reply = await callSeat(name, { system: SYSTEM, user: packet }, meter);
+  } catch (err) {
+    return { seat: VENDORS[name].label, vote: "unsure", rules: [], reasoning: `seat failed: ${String(err).slice(0, 200)}`, failed: true };
+  }
+  const cost = { model: reply.model, inputTokens: reply.usage.inputTokens, outputTokens: reply.usage.outputTokens, usd: reply.usd };
+  try {
+    return { ...validateVote(VENDORS[name].label, parseJsonReply(reply.text)), cost };
   } catch (err) {
     return {
       seat: VENDORS[name].label,
@@ -142,6 +149,7 @@ async function seatVote(name) {
       rules: [],
       reasoning: `seat failed: ${String(err).slice(0, 200)}`,
       failed: true,
+      cost,
     };
   }
 }
@@ -263,7 +271,7 @@ const report = [
     ? `> ⚠️ ${omitted.length} file(s) exceeded the diff budget and were not shown to the panel: ${omitted.join(", ")}`
     : "",
   verification.length > 0 ? `> 🔗 ${verificationSummary(verification)}.` : "",
-  `> 💰 Panel cost: ${cost.usd === null ? "not fully priced" : `$${cost.usd.toFixed(2)}`} (${cost.inputTokens.toLocaleString("en-US")} tokens in, ${cost.outputTokens.toLocaleString("en-US")} out, ${cost.seats} seat(s) metered; priced from config/tariffs.yaml, kept in governance/arbiter/ at harvest).`,
+  `> 💰 Panel cost: ${cost.usd === null ? "not fully priced" : `$${cost.usd.toFixed(2)}`} (${cost.inputTokens.toLocaleString("en-US")} tokens in, ${cost.outputTokens.toLocaleString("en-US")} out, ${cost.seats} of ${votes.length} seat(s) metered${cost.complete ? "" : " — INCOMPLETE: a seat returned no accounting, so the tokens are a floor and the dollars are withheld"}; priced from config/tariffs.yaml, kept in governance/arbiter/ at harvest).`,
   // Reported on every content verdict, not only when it bites: the
   // supervised exclusion is the throttle's one discretionary input, so a
   // drift toward blanket exemption has to be visible continuously rather

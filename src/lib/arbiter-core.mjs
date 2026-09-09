@@ -220,15 +220,20 @@ export function capDiff(diff, maxChars = 400_000) {
 
 /**
  * The panel's cost, summed from the seats' metered replies: tokens always,
- * dollars only when every metered seat was priced — a null anywhere makes
- * the total null, never an underestimate. Seats that failed carry no cost
- * and are not counted as metered.
+ * dollars only when every seat was metered and priced — a seat without
+ * accounting (a call that never returned) makes the total incomplete and
+ * the dollars null, never an underestimate. A seat whose reply would not
+ * parse still carries the cost of the reply it returned.
  */
 export function costOf(votes) {
   const metered = votes.filter((v) => v.cost);
-  const usd = metered.length && metered.every((v) => typeof v.cost.usd === "number") ? Number(metered.reduce((n, v) => n + v.cost.usd, 0).toFixed(4)) : null;
+  // Complete only when every seat that was asked returned accounting; otherwise the tokens are a floor
+  // and no dollar total is claimed (§3.8: a bill with a hole is not a bill).
+  const complete = metered.length === votes.length;
+  const usd = complete && metered.length && metered.every((v) => typeof v.cost.usd === "number") ? Number(metered.reduce((n, v) => n + v.cost.usd, 0).toFixed(4)) : null;
   return {
     seats: metered.length,
+    complete,
     inputTokens: metered.reduce((n, v) => n + (v.cost.inputTokens ?? 0), 0),
     outputTokens: metered.reduce((n, v) => n + (v.cost.outputTokens ?? 0), 0),
     usd,

@@ -1733,13 +1733,17 @@ last seam of step 1; then step 2, the UI pass.
 **Subtraction, fourth set: one vendor transport (founder direction,
 2026-09-09, in session: "next").** The Arbiter called the five seats
 through its own unmetered path beside the pipeline's transport, so its
-cost — about a dollar or two a judgment, eight judgments on one PR today —
-was in no ledger. Its seats now go through `callSeat`, the same metered
+cost was in no ledger (the first metered judgment, on this change, came to
+$0.16: 46,000 tokens in and 3,200 out across five seats — far less than the
+dollar or two the operator had guessed). Its seats now go through `callSeat`, the same metered
 path a verb takes, with the spend rows written to a scratch root (the
 Arbiter judges a PR and commits nothing) and the panel's cost carried in
 the verdict blob, which the sitting's harvest copies into
 `governance/arbiter/pr-<n>.yaml`; the record schema admits it. Tokens are
-summed always, dollars only when every metered seat was priced. The
+summed always; the bill is marked incomplete and the dollars withheld when
+any seat returned no accounting, and a seat whose reply would not parse
+still carries the cost of the reply it returned (the GPT seat's review note
+on the change). The
 unmetered `callVendor` had one caller and is gone. This closes step 1's
 last seam: the pipeline imports nothing from beneath itself, the loader is
 four modules, and one transport serves every model call. Step 2, the UI

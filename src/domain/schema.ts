@@ -1120,7 +1120,7 @@ export const ArbiterRecordSchema = z.object({
   seats: z.array(ArbiterSeatSchema).min(1),
   /** The panel's cost for this verdict (since 2026-09-09, when the seats moved onto the metered transport). */
   cost: z
-    .object({ seats: z.number().int().nonnegative(), inputTokens: z.number().int().nonnegative(), outputTokens: z.number().int().nonnegative(), usd: z.number().nullable() })
+    .object({ seats: z.number().int().nonnegative(), complete: z.boolean().optional(), inputTokens: z.number().int().nonnegative(), outputTokens: z.number().int().nonnegative(), usd: z.number().nullable() })
     .optional(),
   harvestedAt: z.string(),
 });

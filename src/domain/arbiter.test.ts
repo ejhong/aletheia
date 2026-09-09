@@ -328,9 +328,14 @@ describe("costOf — the panel's own bill", () => {
     const priced = { cost: { model: "a", inputTokens: 1000, outputTokens: 100, usd: 0.5 } };
     const unpriced = { cost: { model: "b", inputTokens: 2000, outputTokens: 200, usd: null } };
     const failed = { failed: true };
-    expect(costOf([priced, priced])).toEqual({ seats: 2, inputTokens: 2000, outputTokens: 200, usd: 1 });
-    expect(costOf([priced, unpriced, failed])).toEqual({ seats: 2, inputTokens: 3000, outputTokens: 300, usd: null });
-    expect(costOf([failed])).toEqual({ seats: 0, inputTokens: 0, outputTokens: 0, usd: null });
+    expect(costOf([priced, priced])).toEqual({ seats: 2, complete: true, inputTokens: 2000, outputTokens: 200, usd: 1 });
+    expect(costOf([priced, unpriced])).toEqual({ seats: 2, complete: true, inputTokens: 3000, outputTokens: 300, usd: null });
+    // A seat that never returned accounting makes the bill incomplete: the tokens are a floor, the dollars are withheld.
+    expect(costOf([priced, priced, failed])).toEqual({ seats: 2, complete: false, inputTokens: 2000, outputTokens: 200, usd: null });
+    // A seat whose reply would not parse still carries the cost of the reply it returned.
+    const unparsable = { failed: true, cost: { model: "c", inputTokens: 500, outputTokens: 50, usd: 0.25 } };
+    expect(costOf([priced, unparsable])).toEqual({ seats: 2, complete: true, inputTokens: 1500, outputTokens: 150, usd: 0.75 });
+    expect(costOf([failed])).toEqual({ seats: 0, complete: false, inputTokens: 0, outputTokens: 0, usd: null });
   });
 });
 

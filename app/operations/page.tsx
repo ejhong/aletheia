@@ -103,7 +103,7 @@ export default function OperationsPage() {
       <section id="spend" className="mt-14 scroll-mt-24">
         <h2 className="font-serif text-3xl tracking-tight">Spend</h2>
         <p className="mt-2 text-[14px] text-ink-soft max-w-2xl">
-          Every paid model call is a row in the spend ledger, priced only from a reviewed tariff. The caps are the founder&apos;s, on the record; a call that would pass one is refused, never trimmed.
+          Every paid model call of the pipeline since 2026-09-08 is a row in the spend ledger, priced only from a reviewed tariff; the panel&apos;s calls are metered since 2026-09-09 and were unmetered before, so the all-time figures are a floor for the site&apos;s true bill. The caps are the founder&apos;s, on the record; a call that would pass one is refused, never trimmed.
         </p>
         <div className="mt-4 grid gap-3 sm:grid-cols-4">
           {[
@@ -148,7 +148,7 @@ export default function OperationsPage() {
       <section id="review-notes" className="mt-14 scroll-mt-24">
         <h2 className="font-serif text-3xl tracking-tight">Review notes</h2>
         <p className="mt-2 text-[14px] text-ink-soft max-w-2xl">
-          When four seats pass a change over one seat&apos;s objection, the objection is not lost: it becomes an issue the operator answers on the record — by a fix, or by a reply saying why not. The last comment on the issue is the receipt; a note closed without one is shown as closed without an answer. A note names the commit it was raised on, so the PR&apos;s final verdict, given after the fix, may read differently. Open notes are the queue.
+          When four seats pass a change over one seat&apos;s objection, the objection is not lost: it becomes an issue the operator answers on the record — by a fix, or by a reply saying why not. A reply by the operator that opens &ldquo;Answered on the record&rdquo; is the receipt — the last such reply, not any comment; a note closed without one is shown as closed without an answer. A note names the commit it was raised on, so the PR&apos;s final verdict, given after the fix, may read differently. Open notes are the queue.
         </p>
         {ops.reviewNotes.length === 0 ? (
           <p className="mt-3 text-[13.5px] text-faint">None harvested yet; the sitting copies them in.</p>

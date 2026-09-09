@@ -38,9 +38,11 @@ describe("the operations page", () => {
 describe("the answer on the record", () => {
   it("is the last comment by a recognized answerer, never a passer-by's, never closure", () => {
     const c = (login: string, body: string, at: string) => ({ user: { login }, body, created_at: at, html_url: `https://example.org/${login}/${at}` });
-    const comments = [c("someone", "drive-by", "2026-09-09T01:00:00Z"), c("ejhong", "Answered on the record.", "2026-09-09T02:00:00Z"), c("someone", "later remark", "2026-09-09T03:00:00Z")];
+    const comments = [c("someone", "drive-by", "2026-09-09T01:00:00Z"), c("ejhong", "Answered on the record.", "2026-09-09T02:00:00Z"), c("someone", "later remark", "2026-09-09T03:00:00Z"), c("ejhong", "thanks, noted", "2026-09-09T04:00:00Z")];
+    // the last qualifying reply: the answerer's, opening with the marker — the later aside by the same account is not it
     expect(answerFrom(comments, ["ejhong", "aletheia-maintenance-bot"])).toEqual({ by: "ejhong", at: "2026-09-09", excerpt: "Answered on the record.", url: "https://example.org/ejhong/2026-09-09T02:00:00Z" });
-    expect(answerFrom([c("someone", "only a remark", "2026-09-09T01:00:00Z")], ["ejhong"])).toBeNull();
+    expect(answerFrom([c("someone", "Answered on the record: no.", "2026-09-09T01:00:00Z")], ["ejhong"])).toBeNull(); // the marker alone, from a stranger, is not an answer
+    expect(answerFrom([c("ejhong", "only a remark", "2026-09-09T01:00:00Z")], ["ejhong"])).toBeNull(); // the account alone, without the marker, is not an answer
     expect(answerFrom([], ["ejhong"])).toBeNull();
   });
   it("joins the pages gh prints into one list", () => {

@@ -1,0 +1,151 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 241
+title: The image tooling returns and Deep Memory gets its cover and twelve plates
+url: https://github.com/ejhong/aletheia/pull/241
+verdict: pass
+reason: "4 of 5 seats affirm compliance; one seat's objection is a review note
+  the operator answers on the record: GPT-5.6 Sol (OpenAI) (§3.1, §3.7, §3.8,
+  §3.9; other)"
+outcome: merged
+outcomeAt: 2026-09-09
+judgedAgainst: 2639b91839
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The change adds cover art plus twelve Commons plates and restores
+      two image scripts; it touches no assessment, claim, or ratification
+      machinery, so none of the §3.15 checks are loosened (the restored tooling
+      is generation/fetch helpers, and the docs record both the retirement and
+      the same-day return with the founder's date and channel). The cover is
+      labeled `source: generated`, `license: Project artwork (AI-generated)`,
+      with styleVersion/model/runId and the full prompt recorded, and its
+      alt/prompt explicitly disclaim depicting any real object — no confusion of
+      artwork with evidence (§3.6, §3.9). Every plate carries an exact locator:
+      Commons file page URL, original file title, photographer, date, licence
+      and licence URL; the tooling's mechanical check shows all seventeen added
+      URLs (file pages and licence deeds) RESOLVE, and each file path matches
+      the slugified original title the script would produce, so provenance is
+      internally consistent (§3.8). Captions honestly flag limits — small source
+      files for Jiroft and Lascaux, a head-and-shoulders crop for Urfa Man,
+      cropping of Ahu Tongariki — and hedge interpretive readings ('often
+      called', 'usually read as', 'the identification as Viracocha is modern'),
+      keeping observation separate from inference (§3.1, §3.9). `claimIds: []`
+      is honest given the ledger holds no claims yet, and history.yaml records
+      what changed, why, and who, stamped and marked aiAssisted (§3.14).
+      AGENTS.md is untouched and nothing here is supplied in confidence — the
+      plates are freely licensed Commons files, not founder-supplied material.
+      Minor interpretive flourishes in a couple of `depicts` fields (e.g. the
+      Oannes remark) are ordinary editorial imperfection, not a rule breach."
+    cost:
+      model: claude-opus-5
+      inputTokens: 31057
+      outputTokens: 1446
+      usd: 0.191435
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: violates
+    rules:
+      - §3.1
+      - §3.7
+      - §3.8
+      - §3.9
+    reasoning: "The Commons URLs resolve, so this is not an existence or fabrication
+      objection. However, several `depicts` captions mix visible description
+      with externally derived archaeological or textual claims without citations
+      or inference labels: plate 2 says the bucket and cone are “both named in
+      ritual texts,” plate 9 invokes cuneiform texts and Berossus’s Oannes, and
+      plate 1 refers to what excavators describe below the frame. Other captions
+      add chronologies, object histories, mythological meanings, and
+      superlatives that cannot be observed in the photographs, despite the file
+      header saying captions describe what each photograph shows. This violates
+      observation-before-interpretation and the required distinction between
+      source statements and editorial inference, while the invoked texts and
+      excavator claims lack primary citations and exact locators. Fix by
+      separating photographic observations from interpretation and adding real
+      primary-source citations with exact locators—or explicitly labeling
+      unsupported contextual readings as editorial inference."
+    paradigm: other
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 19504
+      outputTokens: 1779
+      usd: 0.113596
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.1
+      - §3.8
+      - §3.15
+      - §4
+    reasoning: The change restores the image-generation and Wikimedia Commons import
+      tooling and adds cover art alongside twelve plates for the deep-memory
+      case. All added external URLs (Wikimedia Commons files and Creative
+      Commons licenses) mechanically resolve (HTTP 200) with complete, verified
+      provenance details. The cover art is transparently designated as
+      AI-generated editorial artwork depicting an idea rather than evidence,
+      while the photographic plates have exact provenance, licensing metadata,
+      and observational captions in accordance with §3.1 and §3.8. No changes
+      were made to AGENTS.md, nor were any epistemic checks weakened.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 22183
+      outputTokens: 732
+      usd: 0.019382
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff restores the prior cover/plate tooling and adds Deep Memory
+      imagery only: no AGENTS.md edit, no assessment presented as ratified, and
+      no confidence material. Every Commons file page and license URL the plates
+      add resolves in CITATION VERIFICATION; each plate carries photographer,
+      date, sourceUrl, originalTitle, license, and credit, with claimIds empty
+      and small/cropped files noted in depicts. The cover is stamped source
+      generated, style-v2, gpt-image-1, runId, and full prompt, and is described
+      as allegorical rather than evidence. History is append-only with actor,
+      founder direction, and housekeeping kind; docs only record the same-day
+      return of the tooling."
+    cost:
+      model: grok-4.5
+      inputTokens: 21213
+      outputTokens: 165
+      usd: 0.043416
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.9
+      - §3.14
+      - §3.15
+    reasoning: The diff edits no AGENTS.md, so the constitution-edit rule is not
+      triggered, and it restores tooling rather than weakening any §3.15 check —
+      the Commons script retains its fail-closed licence refusal, the cover
+      workflow opens a PR for a human pick rather than publishing directly, and
+      the build still fails until licence/credit fields exist. All twelve
+      Commons file URLs and licence URLs the diff adds were mechanically
+      resolved successfully, and the records preserve exact provenance
+      (photographer, capture timestamp, source URL, original title, licence)
+      with captions kept to observation, honestly flagging small files (Jiroft,
+      Lascaux) and cropped framing (Urfa Man, Ahu Tongariki, Pillar 43's
+      headless figure below frame). The cover is labeled AI-generated with
+      model, runId, and full prompt recorded, and explicitly framed as allegory,
+      not evidence. claimIds are left empty with the reason stated, the history
+      entry is stamped with actor/date/kind/aiAssisted, and the founder's
+      in-session direction is recorded per the 2026-09-09 amendment; the plates
+      themselves are openly licensed public material, not confidence-supplied
+      content. I noted only ordinary imperfections (shell interpolation in the
+      workflow inputs, the permissive OK_LICENSES regex) that are
+      style/robustness matters, not constitutional violations.
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 20608
+      outputTokens: 1308
+      usd: 0.003745
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 114565
+  outputTokens: 5430
+  usd: 0.3716
+harvestedAt: 2026-09-09

@@ -1,0 +1,133 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 235
+title: "The inbox reads HTML pages: tags stripped, headings kept as section
+  markers, the statement in a sidecar as a PDF's is"
+url: https://github.com/ejhong/aletheia/pull/235
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-09
+judgedAgainst: 7664de9d98
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The change is pipeline/docs only: it extends inbox document intake
+      to `.html` files, reading them with the existing `stripHtml` reducer and
+      keeping headings as `[§ …]` markers. No content/ records or citations are
+      added (verification tool found no identifiers), so no fabrication surface.
+      The permission and provenance gates are untouched: HTML files still
+      require a same-stem sidecar statement (the test's `bare.html` is left in
+      the inbox with 'no statement of provenance'), and the `permissionLine` /
+      `permissionRecord` path is unchanged — nothing loosened under §3.15.
+      Locator honesty is improved rather than weakened: `locatorOf` tells the
+      drafter `[p. N]` only for PDFs, `[§ …]` for pages, and explicitly says a
+      plain text 'has no page or section markers', which serves §3.8 by not
+      inviting an invented page number. The stored extraction sidecar stamps how
+      the text was read ('tags stripped, headings kept as [§ …] section
+      markers', with date) and states the original file sits beside it, so
+      provenance attribution stays accurate (§3.14, §4). AGENTS.md is not
+      edited. The MAINTENANCE.md wording ('sidecar or front matter') is a
+      documentation nuance, not a normative loosening."
+    cost:
+      model: claude-opus-5
+      inputTokens: 15434
+      outputTokens: 651
+      usd: 0.093445
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.15
+      - §4
+    reasoning: "The change extends the existing fail-closed document intake to HTML
+      without altering the permission gate: pages lacking a provenance statement
+      remain in the inbox, as the new test demonstrates for `bare.html`. It
+      preserves provenance by retaining the original HTML beside a dated
+      extraction and marking headings taken from that file as `[§ …]` locators
+      rather than inventing page numbers. Empty HTML is refused, and the drafter
+      is explicitly told which locator form applies to HTML, PDF, and plain
+      text. No content citations, assessments, run records, or constitutional
+      text are added, and the diff does not visibly weaken ratification or
+      citation checks."
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 9757
+      outputTokens: 1006
+      usd: 0.059148
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.15
+    reasoning: The pull request enables the intake pipeline to process `.html`
+      documents alongside existing `.pdf` and text files. HTML headings are
+      converted into explicit section locators (`[§ …]`), supporting exact
+      provenance under §3.8 without inventing locators. Provenance and
+      permission checks required under §3.15 remain fail-closed via sidecars,
+      rejecting files lacking valid provenance statements or text content. No
+      checks are weakened and AGENTS.md is untouched.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 10615
+      outputTokens: 769
+      usd: 0.010845
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff extends inbox document intake to .html/.htm on the same
+      footing as PDFs: provenance still travels only via same-name sidecar
+      (editor/published/from/permission unchanged), bare HTML without a
+      statement is left with reason, and textless pages are left as scans are.
+      Extraction is stamped honestly (tags stripped, [§ …] heading markers;
+      original file kept beside the .txt), and composeReport/locatorOf tell the
+      drafter the correct locator kind per file type rather than inventing page
+      locators. No AGENTS.md edit, no citations fabricated, no confidence
+      material published, and the §3.15 permission and verification gates are
+      not loosened."
+    cost:
+      model: grok-4.5
+      inputTokens: 10498
+      outputTokens: 157
+      usd: 0.021938
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.15
+      - §4
+    reasoning: "The change extends the inbox's document handling to HTML pages and
+      touches no constitution file, adds no citations, and carries no run
+      records. The provenance machinery is preserved, not loosened: HTML
+      documents must still carry a same-stem sidecar statement with the same
+      footings, a page without a statement or without text is refused with a
+      reason (the test's bare.html and blank.html cases), and the existing
+      fail-closed permission gate (GRANT_WORDS, permissionLine/permissionRecord,
+      the verifier's refusal without the permission line) applies unchanged on
+      the new path. The [§ …] section markers are not invented locators — they
+      are derived mechanically from headings actually present in the committed
+      file, and the extraction note honestly records how the text was produced
+      with the original file kept beside it, satisfying §3.8's exact-provenance
+      and unverified-labeling discipline. The drafter wording change is a
+      locator-honesty improvement, not a check-weakening: PDFs keep [p. N], HTML
+      pages get their real section, and plain text is explicitly told it has no
+      markers rather than being invited to fabricate one. I note two
+      review-grade items for the operator, neither a violation: the h1–h4
+      regex's lazy match assumes headings are not nested and does not capture
+      attributes across the closing tag, and stripHtml's behavior is imported
+      but not shown — the tests cover the risk adequately for this change to
+      stand."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 10654
+      outputTokens: 1116
+      usd: 0.002156
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 56958
+  outputTokens: 3699
+  usd: 0.1875
+harvestedAt: 2026-09-09

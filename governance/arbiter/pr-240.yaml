@@ -1,0 +1,150 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 240
+title: "The Deep Memory drop, on the founder's grant in his words: the home page
+  taken in as the founding narrative"
+url: https://github.com/ejhong/aletheia/pull/240
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-09
+judgedAgainst: aa29f03dc2
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The change is an intake only: nothing enters the claim/evidence
+      ledger, and the added `content/cases/deep-memory/inputs/manifest.yaml`
+      entry registers the supplied page as a founding input, explicitly not as
+      evidence. The permission requirement of §3.15 is met with the rigor the
+      rule demands: the supplier's own words are quoted, with grantor (Eugene
+      Jhong, own work), date (2026-09-09), channel (working-session direction /
+      inbox statement), and where the statement is held
+      (inbox/processed/<run>/deep-memory__deep-memory-home.md), repeated
+      identically on the sidecar, the run manifest, the report, DECISIONS.md and
+      history.yaml. Provenance is anchored (repo, commit e9666a73, served URL,
+      md5, sha256, byte count) and the text extraction is labeled as a pipeline
+      extraction beside the unmodified original, satisfying §3.8/§3.9; I cannot
+      verify the hashes or the commit, but nothing in the material is internally
+      inconsistent and unfamiliarity is not evidence of fabrication.
+      Verification labeling is honest: the report lists all 25 works the page
+      names as \"no OpenAlex result\" (0 of 25 resolved) and instructs the
+      drafter to retrieve and verify each before any Source is proposed, rather
+      than laundering the page's bibliography into citations. Spend and run
+      records agree (8240 input tokens = 2 + 8238 cache-write; $0.036789 in
+      both), so provenance stamps match. AGENTS.md is untouched and no check is
+      loosened. My one review note, not an objection: the second DECISIONS.md
+      entry restoring `generate-case-art`/`add-commons-image` is unrelated to
+      this drop and would be cleaner as its own change with the founder
+      direction quoted as the others are."
+    cost:
+      model: claude-opus-5
+      inputTokens: 71334
+      outputTokens: 1101
+      usd: 0.384195
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.7
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: The supplied page is registered as a founding narrative rather than
+      admitted as ledger evidence, and the history explicitly says claims,
+      evidence, and sources remain unchanged pending later retrieval and
+      verification. The permission record identifies Eugene Jhong, the date, the
+      Claude Code working-session channel, the permitted acts in his quoted
+      words, and the repository path holding the record, satisfying §3.15’s
+      recorded-permission requirement. The intake honestly reports that all 25
+      named works remain unresolved to locators and instructs the later drafter
+      to retrieve and verify them before use, rather than presenting them as
+      verified citations. Provenance is consistently connected to run
+      2026-09-09-inbox-deep-memory-200334, the source commit, archived copies,
+      hashes, model, prompt version, date, and append-only case history.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 46262
+      outputTokens: 1759
+      usd: 0.220228
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: The change takes in the founder's Deep Memory home page into the
+      inbox and registers it as founding input DEEP-IN001 without modifying
+      AGENTS.md or altering the claim ledger. The intake satisfies the explicit
+      permission rules of §3.15 for supplied material, recording the supplier
+      (Eugene Jhong), date (2026-09-09), channel (working session / inbox
+      statement), exact quotation of the grant, and the location where the
+      record is held. Provenance, file hashes, run spend, decisions log, and
+      case history are documented with exactness.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 49219
+      outputTokens: 1289
+      usd: 0.041748
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.8
+      - §4
+    reasoning: "The diff only registers the founder's Deep Memory home page as
+      founding input DEEP-IN001 (role founding_narrative) with HTML and text
+      extraction under research/, plus inbox/proposal run records; no claims,
+      evidence, sources, or assessments are added to the ledger. Permission is
+      recorded to §3.15 standard: the supplier's words on the sidecar (granted
+      2026-09-09), channel and holding path named in the intake manifest/report,
+      and the same grant and direction stamped in docs/DECISIONS.md and the case
+      history. AGENTS.md is untouched. Named works are listed unresolved for
+      later retrieval, not fabricated as ledger citations; citation tooling
+      found no new content/ identifiers. Ordinary intake bookkeeping and
+      spend/history stamps look honest."
+    cost:
+      model: grok-4.5
+      inputTokens: 48199
+      outputTokens: 192
+      usd: 0.09755
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.14
+      - §3.6
+    reasoning: "The change is an inbox intake of the founder's own page as a
+      founding narrative, and the §3.15 permission rule is satisfied on the
+      record's face: the grant is quoted in the supplier's words, stamped with
+      who (Eugene Jhong, own work), when (2026-09-09), channel (working session
+      / Claude Code), and where held (the sidecar at
+      inbox/processed/2026-09-09-inbox-deep-memory-200334/deep-memory__deep-mem\
+      ory-home.md), and mirrored in docs/DECISIONS.md and the manifest —
+      matching the amendment that a recorded direction to publish supplied
+      material is that permission. No AGENTS.md edit occurs; the ledger stays
+      empty (claims, evidence, sources unchanged), the material is labeled
+      founding input / hypothesis material 'never evidence' and the intake
+      report marks it as working material, never citable as such, so nothing is
+      presented as ratified or counted as evidence. The intake is honest about
+      verification limits (25 works named, 0 resolved to locators, each marked
+      'no OpenAlex result'), and provenance is stamped with runId, model, date,
+      and byte-hash/md5 for the copied file. I cannot independently verify that
+      the founder's session grant occurred, but the constitution's test is the
+      recorded rigor of the permission, which is met; no fabricated locator or
+      citation is added under content/, and citation verification found none.
+      The second DECISIONS.md entry merely records a founder direction about
+      reinstating art tooling — a decision-log record, permitted by §3.15, with
+      no check weakened in this diff."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 47650
+      outputTokens: 1476
+      usd: 0.007886
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 262664
+  outputTokens: 5817
+  usd: 0.7516
+harvestedAt: 2026-09-09

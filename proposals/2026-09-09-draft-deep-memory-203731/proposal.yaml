@@ -1,0 +1,1236 @@
+# Proposal — a change to domain records, in one envelope (docs/AUTOMATION.md).
+# Never citable; nothing here is a record until adopted through the gate.
+runId: 2026-09-09-draft-deep-memory-203731
+date: 2026-09-09
+case: deep-memory
+producer: draft
+model: claude-fable-5-1
+promptVersion: draft-v6
+basis:
+  ledgerHash: 5f1ad5efabe54ffcc7588d881e179c0220af6410fece04e4a1064e8defc98974
+rationale: "Inbox intake of the founder's Deep Memory home page, flagged by the intake as NEW TO THE LEDGER AND SUPPLIED BY ITS AUTHOR. I propose it as one Source record (a self-published, AI-assisted web essay by the founder, carrying the recorded permission line verbatim) and catalogue its distinct testable propositions as claims anchored to that source by [§ …] section and verbatim quote — unfeatured, ungraded, for the editions to weigh. Because the source is the founder's own essay, evidence records on it are weak `supports`, `qualifies` or `context`, with limitations saying so. Every one of the 25 works the page names came back with no OpenAlex result and no retrieved text is in `sources`, so each is dispositioned `blocked` with the route to its primary; nothing is quoted from any of them. No corrections (the ledger holds no records to correct). No edition candidate: the record deepens without the telling changing, though the article's line that no founding page has yet entered will need refreshing once this source is admitted."
+adds:
+  sources:
+    - id: SRC-JHONG-2026
+      title: "Bird-men, handbags and the navel of the world — Deep Memory, the home page: five investigations and the illustrated narrative"
+      authors:
+        - Eugene Jhong
+      year: "2026"
+      sourceType: webpage
+      identifier: docs/index.html of github.com/ejhong/birdmen at commit e9666a73 (2026-09-05); served page byte-identical on 2026-09-09, md5 4bf84e592926f6244bf5f76a3e34cb53; self-published web essay, AI-assisted by its own statement
+      url: https://github.com/ejhong/birdmen
+      verification: unverified
+      verificationNote: not retrievable when drafted (no URL); nothing may lean on it until it is read
+      reliabilityNotes:
+        - "Permission on which it is published: Permission in the supplier's words: \"grant permission to publish cite and quote the pages\" — granted by Eugene Jhong (own work) on 2026-09-09 in the inbox statement `deep-memory-home.md`, recorded at intake on 2026-09-09, held at inbox/processed/2026-09-09-inbox-deep-memory-200334/deep-memory__deep-memory-home.md."
+        - A self-published web essay by the case's founder, not peer-reviewed; the page states 'AI assists the research; its output is not a substitute for the evidence.'
+        - "Founder-supplied hypothesis material: its propositions enter the catalog as claims to be tested; its statements about objects, dates and statistics are secondary reports (many sourced by the page to Wikipedia/Commons and to the site's own unaudited experiments) and count as context or weak support at most."
+        - "Text read: the pipeline's tag-stripped extraction of the HTML, with [§ …] headings kept as section markers; the HTML beside it is the original."
+      derivedFrom: []
+      background: false
+  evidence:
+    - id: DEEP-E001
+      title: "Deep Memory home page: the visual grammar people notice across distant objects"
+      claimIds:
+        - DEEP-C001
+      sourceId: SRC-JHONG-2026
+      direction: context
+      strength: weak
+      sourceStatement: "The page's opening narrative states that, set side by side, a bird-headed figure, a handled shape and hands on a stone body from distant places look alike: \"distant objects can share a surprisingly familiar visual grammar\". It then states that a resemblance is only a starting observation whose meaning depends on dates, contexts, differences and connections."
+      editorInference: "Editor: this is the founder's framing of the phenomenon, not an independent observation of the objects; it establishes what the case is about and carries no diagnostic weight for or against any explanation."
+      exactLocator: "[§ The pattern people see]"
+      limitations:
+        - Self-published, AI-assisted essay by the founder.
+        - States the impression, not a measured comparison.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-E002
+      title: Deep Memory reports its catalogue experiment's bird-person frequency
+      claimIds:
+        - DEEP-C005
+      sourceId: SRC-JHONG-2026
+      direction: supports
+      strength: weak
+      sourceStatement: The page reports that its catalogue experiment "finds its broad bird-person class in 55% of the 926 sampled traditions", adding that this gives a baseline for the category but does not tell how often a particular pose, object and arrangement occur together.
+      editorInference: "Editor: a self-report of the site's own unaudited experiment; the figure supports the claim only as the page's statement of its result. The underlying catalogue (Berezkin & Duvakin) and the site's method page are not in hand."
+      exactLocator: "[§ Bird-men]"
+      limitations:
+        - Self-report of the author's own experiment; method and data not retrieved.
+        - The page itself notes the 2016 catalogue has uneven coverage.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-E003
+      title: Deep Memory reports its catalogue experiment's cosmic-serpent frequency
+      claimIds:
+        - DEEP-C025
+      sourceId: SRC-JHONG-2026
+      direction: supports
+      strength: weak
+      sourceStatement: The page states that the catalogue analysis "reports a broad cosmic-serpent class in 37% of its sampled traditions" and that this result describes the selected category and dataset only.
+      editorInference: "Editor: same footing as EV-DEEP-002 — the site's own result, reported by its author."
+      exactLocator: "[§ Serpents, and the feathered serpent]"
+      limitations:
+        - Self-report of the author's own experiment; method and data not retrieved.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-E004
+      title: Deep Memory's stated caution on catalogue coverage
+      claimIds:
+        - DEEP-C005
+        - DEEP-C025
+        - DEEP-C039
+      sourceId: SRC-JHONG-2026
+      direction: qualifies
+      strength: weak
+      sourceStatement: 'In the limitations of study 02 the page states: "The 2016 catalogue has uneven coverage, particularly for the ancient Near East" and Rapa Nui, and that broad narrative categories are not the specific images or place names in the claim.'
+      editorInference: "Editor: the author's own qualification of the frequency figures; it narrows how far the 55% and 37% baselines reach without denying them."
+      exactLocator: "[§ Birds, serpents & sacred centres]"
+      limitations:
+        - Author's own limitation statement; the catalogue's coverage has not been independently checked.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-E005
+      title: Deep Memory reports the V1 civiliser lineup result
+      claimIds:
+        - DEEP-C027
+      sourceId: SRC-JHONG-2026
+      direction: supports
+      strength: weak
+      sourceStatement: The page states that in the V1 experiment "claimed partners ranked first in 62.5% of completed lineups", versus 9% for random pairs, and that the V2 source audit inspected 29 passages without rerunning the similarity test.
+      editorInference: "Editor: self-report of the site's AI lineup experiment; the number is the page's statement of its own result."
+      exactLocator: "[§ The civilisers]"
+      limitations:
+        - Self-report; run data not retrieved.
+        - "'Completed lineups' implies incomplete runs the page does not enumerate here."
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-E006
+      title: Deep Memory's stated limits on the V1 lineups
+      claimIds:
+        - DEEP-C027
+      sourceId: SRC-JHONG-2026
+      direction: qualifies
+      strength: weak
+      sourceStatement: "The page's limitations for study 04 state: \"The lineups were recognisable and used compressed modern accounts.\" It adds that neither V1 nor the V2 audit establishes a worldwide rarity rate or a shared origin."
+      editorInference: "Editor: the author's own qualification — recognisable lineups and compressed modern retellings mean the 62.5% figure may measure familiarity with a composite biography rather than similarity between original accounts."
+      exactLocator: "[§ The civilisers]"
+      limitations:
+        - Author's own limitation statement.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-E007
+      title: Deep Memory reports the flood text-coding pilot's pattern
+      claimIds:
+        - DEEP-C031
+        - DEEP-C032
+      sourceId: SRC-JHONG-2026
+      direction: supports
+      strength: weak
+      sourceStatement: The page states that the "coded summaries show regional clustering and an uneven distribution" of details associated with Genesis, alongside widespread generic flood motifs, and that the experiment maps details in 263 summaries.
+      editorInference: "Editor: self-report of an AI coding of a compiler's summaries (the page's own limitation); supports the claims only as the page's statement of its result."
+      exactLocator: "[§ The raven & the dove]"
+      limitations:
+        - Self-report; the page notes one AI coded a compiler's summaries, not original accounts.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-E008
+      title: Deep Memory reports what the image pilots exposed
+      claimIds:
+        - DEEP-C037
+        - DEEP-C038
+      sourceId: SRC-JHONG-2026
+      direction: supports
+      strength: weak
+      sourceStatement: The page states the three image pilots exposed "altered illustrations, unreliable feature coding and strong disagreement between judges" and that "Matching the kinds of objects changed the lineup result."
+      editorInference: "Editor: self-report of the site's pilots; these are negative or cautionary findings about method rather than about the objects."
+      exactLocator: "[§ The pillar & the moai]"
+      limitations:
+        - Self-report; pilot data not retrieved.
+        - The page notes incomplete runs and cropping constrain the conclusions.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-E009
+      title: Deep Memory's caption on the Jiroft handbag's wear
+      claimIds:
+        - DEEP-C009
+      sourceId: SRC-JHONG-2026
+      direction: supports
+      strength: weak
+      sourceStatement: The caption for the Jiroft chlorite 'handbag' states it is "Worn on the handle as if hung on a cord." The page points to the Halil Rud wear study (Vidale & Micheli) for this.
+      editorInference: "Editor: a secondary paraphrase of a study not in hand; the primary (Vidale & Micheli) is blocked and should replace this record when retrieved."
+      exactLocator: "[§ The handbags]"
+      limitations:
+        - Secondary paraphrase of an unretrieved paper.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-E010
+      title: Deep Memory's caption on the site names of Göbekli Tepe
+      claimIds:
+        - DEEP-C015
+        - DEEP-C016
+      sourceId: SRC-JHONG-2026
+      direction: supports
+      strength: weak
+      sourceStatement: "The caption 'Navel hill' states: \"The Turkish name describes the mound's shape; the Kurdish names\" mean 'wish hill.'"
+      editorInference: "Editor: an unsourced secondary statement; the toponymy needs a primary (excavation reports or a Kurdish/Turkish toponymic source) before it weighs on the navel theme."
+      exactLocator: "[§ The navel of the world]"
+      limitations:
+        - No source given on the page for the etymologies.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+  claims:
+    - id: DEEP-C001
+      statement: Bird-headed figures, handled shapes and hands-resting-on-the-body poses recur on objects from cultures separated by great distance and time (Göbekli Tepe, Nimrud, La Venta, Rapa Nui). True if securely identified objects from each of these places show the named features.
+      theme: pattern
+      rung: observation
+      claimType: observation
+      sourceAnchor:
+        locator: "[§ The pattern people see]"
+        quote: distant objects can share a surprisingly familiar visual grammar
+        sourceId: SRC-JHONG-2026
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-C002
+      statement: The historical meaning of a visual resemblance between objects depends on their dates, contexts, differences and possible connections, not on the resemblance alone. True if no resemblance can be assigned a historical explanation without those data.
+      theme: method
+      rung: mechanism
+      claimType: methodological
+      sourceAnchor:
+        locator: "[§ The pattern people see]"
+        quote: Its historical meaning depends on the objects' dates, contexts, differences and possible connections.
+        sourceId: SRC-JHONG-2026
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-C003
+      statement: Olmec Monument 19 from La Venta is the earliest known depiction of a feathered serpent. True if no securely dated feathered-serpent image predates it.
+      theme: serpents
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: "[§ The pattern people see]"
+        quote: Olmec Monument 19, the earliest known feathered serpent.
+        sourceId: SRC-JHONG-2026
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-C004
+      statement: The description 'bird-man' groups at least three distinct ideas — a deity with a bird's head, a person wearing feathers, and a person transforming into a bird. True if the compared images fall into different ones of these categories.
+      theme: bird-men
+      rung: mechanism
+      claimType: interpretive
+      sourceAnchor:
+        locator: "[§ Bird-men]"
+        quote: a deity with a bird's head, a person wearing feathers and a person transforming into a bird need not be the same idea
+        sourceId: SRC-JHONG-2026
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-C005
+      statement: In the Deep Memory catalogue experiment, a broad bird-person motif class occurs in 55% of 926 sampled traditions. True if the experiment's coded data reproduce that proportion.
+      theme: bird-men
+      rung: observation
+      claimType: statistical
+      sourceAnchor:
+        locator: "[§ Bird-men]"
+        quote: finds its broad bird-person class in 55% of the 926 sampled traditions
+        sourceId: SRC-JHONG-2026
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-C006
+      statement: A relational comparison of a profile head, a bent or extended limb, and a rounded form nearby is more specific than noting a bird in both pictures. True if the co-occurrence of those three features is rarer across a control set than the presence of a bird.
+      theme: bird-men
+      rung: mechanism
+      claimType: methodological
+      sourceAnchor:
+        locator: "[§ The bird, the bent limb and the circle]"
+        quote: a profile head, a bent or extended limb, and a rounded form nearby
+        sourceId: SRC-JHONG-2026
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-C007
+      statement: The top register of Pillar 43 at Göbekli Tepe carries three arched handled forms with small animals. True if the excavators' record of the pillar shows them.
+      theme: handled-objects
+      rung: observation
+      claimType: observation
+      sourceAnchor:
+        locator: "[§ The handbags]"
+        quote: Three arched objects with small animals; function unknown.
+        sourceId: SRC-JHONG-2026
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-C008
+      statement: The Assyrian banduddû is a bucket named in ritual texts, carried with a cone used to sprinkle from it. True if cuneiform ritual texts name the bucket and describe sprinkling with the cone.
+      theme: handled-objects
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: "[§ The handbags]"
+        quote: A bucket, named in ritual texts, with the cone used to sprinkle from it.
+        sourceId: SRC-JHONG-2026
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-C009
+      statement: The Jiroft chlorite 'handbag' in the National Museum of Iran shows wear on its handle consistent with having hung on a cord. True if the published wear-trace study reports handle wear of that kind.
+      theme: handled-objects
+      rung: observation
+      claimType: observation
+      sourceAnchor:
+        locator: "[§ The handbags]"
+        quote: Worn on the handle as if hung on a cord.
+        sourceId: SRC-JHONG-2026
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-C010
+      statement: The small handled object held by the seated figure on La Venta Monument 19 is usually read by specialists as an incense bag. True if the standard Olmec literature gives that reading.
+      theme: handled-objects
+      rung: observation
+      claimType: interpretive
+      sourceAnchor:
+        locator: "[§ The handbags]"
+        quote: The seated figure's pouch, usually read as an incense bag.
+        sourceId: SRC-JHONG-2026
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-C011
+      statement: A handle is a practical solution that can recur independently in unconnected cultures. True if handled containers appear in cultures with no demonstrable contact.
+      theme: handled-objects
+      rung: mechanism
+      claimType: mechanistic
+      sourceAnchor:
+        locator: "[§ The handbags]"
+        quote: A handle is also a practical solution that can recur independently.
+        sourceId: SRC-JHONG-2026
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-C012
+      statement: The function of the three handled forms on Pillar 43 is uncertain. True if the excavation team has published no secure functional identification.
+      theme: handled-objects
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: "[§ The handbags]"
+        quote: the function of the Göbekli forms remains uncertain
+        sourceId: SRC-JHONG-2026
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-C013
+      statement: The Göbekli Tepe excavation team's discussion of Enclosure C distinguishes boar sculptures from snarling predators and considers their arrangement at the entrance together. True if the team's publication makes that distinction.
+      theme: stone-animals
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: "[§ Reptile-like forms—and the animal in its setting]"
+        quote: distinguishes boars from snarling predators and considers their arrangement together
+        sourceId: SRC-JHONG-2026
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-C014
+      statement: Shared animal anatomy and carving choices can each contribute to the visual resemblance between pig or boar sculptures from distant cultures. True if a control set of securely identified pig sculptures shares the low body, raised back and projecting snout regardless of culture.
+      theme: stone-animals
+      rung: mechanism
+      claimType: mechanistic
+      sourceAnchor:
+        locator: "[§ Pigs, boars and a compact stone silhouette]"
+        quote: Both anatomy and carving choices could contribute
+        sourceId: SRC-JHONG-2026
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-C015
+      statement: The modern Turkish name Göbekli Tepe ('navel hill') describes the shape of the mound. True if the toponym is documented as descriptive of the mound's form rather than as a sacred designation.
+      theme: navel
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: "[§ The navel of the world]"
+        quote: The Turkish name describes the mound's shape
+        sourceId: SRC-JHONG-2026
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-C016
+      statement: The Kurdish names for the Göbekli Tepe site mean 'wish hill'. True if a Kurdish toponymic or ethnographic source records that meaning.
+      theme: navel
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: "[§ The navel of the world]"
+        quote: the Kurdish names mean "wish hill."
+        sourceId: SRC-JHONG-2026
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-C017
+      statement: The netted omphalos stone at Delphi marked the sanctuary as the meeting point of Zeus's eagles. True if ancient Greek sources describe the Delphic omphalos in those terms.
+      theme: navel
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: "[§ The navel of the world]"
+        quote: Netted stone marking the meeting point of Zeus's eagles.
+        sourceId: SRC-JHONG-2026
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-C018
+      statement: The Greek omphalos, Garcilaso's gloss of Cusco, the Rapanui Te Pito o te Henua and the modern Turkish name Göbekli Tepe are different kinds of evidence, differing in language, date of first record and whether the ancient builders used the name. True if their source histories differ on those three points.
+      theme: navel
+      rung: mechanism
+      claimType: methodological
+      sourceAnchor:
+        locator: "[§ The navel of the world]"
+        quote: are not interchangeable kinds of evidence
+        sourceId: SRC-JHONG-2026
+        also:
+          - locator: "[§ The navel of the world]"
+            quote: what does the expression mean in its language, when is that meaning first recorded, and was it a name the ancient builders used?
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-C019
+      statement: The Rapanui name Te Pito Kura means 'navel of light'. True if Rapanui lexical sources give that gloss.
+      theme: navel
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: "[§ The navel of the world]"
+        quote: Te Pito Kura, "navel of light" Rapa Nui.
+        sourceId: SRC-JHONG-2026
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-C020
+      statement: Carving limbs against a stone body protects them from breakage, so material constraint is a plausible contributor to the hands-on-body pose of stone figures. True if free-standing carved limbs break more often than limbs carved against the body in comparable stone sculpture.
+      theme: hands
+      rung: mechanism
+      claimType: mechanistic
+      sourceAnchor:
+        locator: "[§ Hands on the belly]"
+        quote: Carving limbs against a stone body can protect them from breakage
+        sourceId: SRC-JHONG-2026
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-C021
+      statement: The Urfa Man statue (Şanlıurfa, c. 9000 BCE) holds its hands over the genitals. True if the statue as published shows that gesture.
+      theme: hands
+      rung: observation
+      claimType: observation
+      sourceAnchor:
+        locator: "[§ Hands on the belly]"
+        quote: An early life-size human statue, hands over the genitals.
+        sourceId: SRC-JHONG-2026
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-C022
+      statement: The hands of the Ahu Tongariki moai meet on the abdomen above the belt, following the Polynesian tiki convention. True if the statues show that placement and the convention is attested elsewhere in Polynesian tiki.
+      theme: hands
+      rung: observation
+      claimType: observation
+      sourceAnchor:
+        locator: "[§ Hands on the belly]"
+        quote: Hands meet on the abdomen above the belt; the Polynesian tiki convention.
+        sourceId: SRC-JHONG-2026
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-C023
+      statement: Arms and hands are carved on the central T-pillars of Enclosure D at Göbekli Tepe. True if the excavation record shows arms and hands on those pillars.
+      theme: hands
+      rung: observation
+      claimType: observation
+      sourceAnchor:
+        locator: "[§ Hands on the belly]"
+        quote: Arms and hands are carved on the central pillars of Enclosure D.
+        sourceId: SRC-JHONG-2026
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-C024
+      statement: The Ponce monolith at Tiwanaku holds its hands to the chest, holding a beaker and a snuff tablet. True if the monolith and its published descriptions show those objects.
+      theme: hands
+      rung: observation
+      claimType: observation
+      sourceAnchor:
+        locator: "[§ Hands on the belly]"
+        quote: Hands to the chest holding a beaker and a snuff tablet.
+        sourceId: SRC-JHONG-2026
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-C025
+      statement: In the Deep Memory catalogue analysis, a broad cosmic-serpent motif class occurs in 37% of sampled traditions. True if the experiment's coded data reproduce that proportion.
+      theme: serpents
+      rung: observation
+      claimType: statistical
+      sourceAnchor:
+        locator: "[§ Serpents, and the feathered serpent]"
+        quote: a broad cosmic-serpent class in 37% of its sampled traditions
+        sourceId: SRC-JHONG-2026
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-C026
+      statement: A catalogue's geographical distribution of a broad motif class cannot by itself distinguish independent invention from very old transmission. True if the same distribution is compatible with both histories under stated models.
+      theme: method
+      rung: mechanism
+      claimType: methodological
+      sourceAnchor:
+        locator: "[§ Serpents, and the feathered serpent]"
+        quote: It cannot, by itself, distinguish independent invention from very old transmission
+        sourceId: SRC-JHONG-2026
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-C027
+      statement: In the Deep Memory V1 civiliser lineup experiment, the claimed partner figure ranked first in 62.5% of completed lineups, against 9% for random pairs. True if the experiment's run data reproduce those rates.
+      theme: civilisers
+      rung: observation
+      claimType: statistical
+      sourceAnchor:
+        locator: "[§ The civilisers]"
+        quote: claimed partners ranked first in 62.5% of completed lineups, versus 9% for random pairs
+        sourceId: SRC-JHONG-2026
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-C028
+      statement: The identification of the central staff-bearing figure on the Gate of the Sun at Tiwanaku as Viracocha is a modern one. True if no pre-modern source names that figure Viracocha.
+      theme: civilisers
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: "[§ The people who brought the arts]"
+        quote: The central staff-bearer, often called Viracocha; the identification is modern.
+        sourceId: SRC-JHONG-2026
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-C029
+      statement: The fish-cloaked apkallu is the sage type named in Assyrian cuneiform texts, and Berossus's Oannes recalls it. True if the texts name fish-cloaked sages as apkallu and Berossus's description of Oannes matches that type.
+      theme: civilisers
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: "[§ The people who brought the arts]"
+        quote: The apkallu type that the texts actually name; Oannes in Berossus.
+        sourceId: SRC-JHONG-2026
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-C030
+      statement: A colonial recording date for a civiliser story is a reason to examine chronicler mediation, not proof that every detail was invented by the chronicler. True if some details in colonially recorded accounts are independently attested earlier or in indigenous media.
+      theme: civilisers
+      rung: mechanism
+      claimType: methodological
+      sourceAnchor:
+        locator: "[§ The people who brought the arts]"
+        quote: A colonial recording date is a reason to examine mediation, not proof that every detail was invented by a chronicler.
+        sourceId: SRC-JHONG-2026
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-C031
+      statement: In the Deep Memory flood text-coding pilot, the coded details of 263 flood-story summaries cluster by region. True if the pilot's coded data show regional clustering under its stated measure.
+      theme: floods
+      rung: observation
+      claimType: statistical
+      sourceAnchor:
+        locator: "[§ The raven & the dove]"
+        quote: The coded summaries show regional clustering
+        sourceId: SRC-JHONG-2026
+        also:
+          - locator: "[§ What survives the water?]"
+            quote: The flood experiment maps details in 263 summaries.
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-C032
+      statement: In the same pilot, details associated with Genesis are unevenly distributed across the coded flood summaries while generic flood motifs are widespread. True if the coded data show that contrast.
+      theme: floods
+      rung: observation
+      claimType: statistical
+      sourceAnchor:
+        locator: "[§ The raven & the dove]"
+        quote: an uneven distribution of details associated with Genesis, alongside widespread generic flood motifs
+        sourceId: SRC-JHONG-2026
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-C033
+      statement: A proposed connection between distant motifs is more informative when there are dated intermediates, a plausible route, or distinctive details that occur together and predict further evidence. True if cases with those features have historically been confirmed more often than cases without them.
+      theme: explanations
+      rung: mechanism
+      claimType: methodological
+      sourceAnchor:
+        locator: "[§ Transmission and inheritance]"
+        quote: dated intermediates, a plausible route, or distinctive details that occur together and predict further evidence
+        sourceId: SRC-JHONG-2026
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-C034
+      statement: Stories can become more alike than their originals through translation, borrowing and comparative writing. True if documented retellings show convergence of detail relative to earlier attested versions.
+      theme: explanations
+      rung: mechanism
+      claimType: mechanistic
+      sourceAnchor:
+        locator: "[§ Convergence and retelling]"
+        quote: Stories can also become more alike through translation, borrowing and comparative writing.
+        sourceId: SRC-JHONG-2026
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-C035
+      statement: Similarity between motifs alone cannot establish a lost-civilisation account's claims about the source's identity, date and capabilities. True if those claims require evidence beyond resemblance.
+      theme: explanations
+      rung: mechanism
+      claimType: methodological
+      sourceAnchor:
+        locator: "[§ Transmission and inheritance]"
+        quote: Similarity alone cannot establish those additions.
+        sourceId: SRC-JHONG-2026
+        also:
+          - locator: "[§ Transmission and inheritance]"
+            quote: A lost-civilisation account adds stronger claims about the source, its date and its capabilities.
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-C036
+      statement: A visual resemblance between signs of two undeciphered scripts does not establish shared sound, meaning or descent. True if sign-shape similarity can arise between scripts known to be unrelated.
+      theme: scripts
+      rung: mechanism
+      claimType: methodological
+      sourceAnchor:
+        locator: "[§ Indus & rongorongo]"
+        quote: A visual resemblance does not establish shared sound, meaning or descent.
+        sourceId: SRC-JHONG-2026
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-C037
+      statement: In the Deep Memory image pilots, AI judges disagreed strongly with one another about the resemblance between the same objects. True if the pilots' inter-judge agreement statistics are low.
+      theme: method
+      rung: observation
+      claimType: methodological
+      sourceAnchor:
+        locator: "[§ The pillar & the moai]"
+        quote: unreliable feature coding and strong disagreement between judges
+        sourceId: SRC-JHONG-2026
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-C038
+      statement: In the Deep Memory image pilots, matching the kinds of objects in a lineup changed the lineup result. True if the pilot data show a different ranking under kind-matched controls.
+      theme: method
+      rung: observation
+      claimType: methodological
+      sourceAnchor:
+        locator: "[§ The pillar & the moai]"
+        quote: Matching the kinds of objects changed the lineup result.
+        sourceId: SRC-JHONG-2026
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-C039
+      statement: In the Deep Memory catalogue experiment, the three broad motif classes (birds, serpents, sacred centres) are each widespread and their co-occurrence does not stand out against documentation-preserving comparisons. True if the bundle's frequency does not exceed that of the comparison bundles.
+      theme: pattern
+      rung: observation
+      claimType: statistical
+      sourceAnchor:
+        locator: "[§ Birds, serpents & sacred centres]"
+        quote: the three broad motif classes are widespread. Their bundle does not stand out
+        sourceId: SRC-JHONG-2026
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-C040
+      statement: The Hoa Hakananai'a statue dates to c. 1000–1200 CE and its back carvings were added later. True if the published study of the statue dates the carving of the birdman reliefs after the statue's manufacture.
+      theme: bird-men
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: "[§ The pattern people see]"
+        quote: statue c. 1000–1200 CE, carvings later
+        sourceId: SRC-JHONG-2026
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-C041
+      statement: The back of Hoa Hakananai'a carries two facing birdmen with a sooty tern between their beaks, komari, paddles, a ring and a girdle. True if the statue's published record shows those motifs.
+      theme: bird-men
+      rung: observation
+      claimType: observation
+      sourceAnchor:
+        locator: "[§ Bird-men across the gallery]"
+        quote: Two facing birdmen, a sooty tern between their beaks, komari, paddles, the ring and girdle.
+        sourceId: SRC-JHONG-2026
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-C042
+      statement: "Shape and function of the handled objects are separate questions: Assyrian ritual context supports a bucket-and-purifier reading of the banduddû while the Göbekli forms have no known function. True if the Assyrian reading rests on texts and the Göbekli reading on none."
+      theme: handled-objects
+      rung: mechanism
+      claimType: methodological
+      sourceAnchor:
+        locator: "[§ The handbags]"
+        quote: Assyrian ritual context supports a bucket-and-purifier interpretation
+        sourceId: SRC-JHONG-2026
+        also:
+          - locator: "[§ The handbags]"
+            quote: Shape and function are separate questions.
+      parentClaimIds: []
+      dependsOnClaimIds:
+        - DEEP-C008
+        - DEEP-C012
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+  research:
+    - id: DEEP-R001
+      title: Retrieve the primary literature the page leans on for the handled objects
+      summary: Obtain the Vidale & Micheli wear-trace study (Iranian Journal of Archaeological Studies), the Tepe Telegrams posts on Pillar 43 (Notroff et al. 2016, 2017) and Sweatman & Tsikritsis 2017, and read them against CLM-DEEP-007, -009, -012 and -042. Record what each states about the handled forms' shape, wear and function, so that the page's secondary captions can be replaced by primary observations.
+      claimIds:
+        - DEEP-C007
+        - DEEP-C009
+        - DEEP-C012
+        - DEEP-C042
+      track: publication_prize
+      effortTier: desk
+      informationGain: Moves the handled-object claims from a founder's captions to the excavators' and wear analysts' own statements; settles whether the 'hung on a cord' wear reading and 'function unknown' are what the primaries say.
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-R002
+      title: Source history of the four 'navel' names
+      summary: For omphalos (Delphi), Garcilaso's gloss of Cusco, Te Pito o te Henua / Te Pito Kura and Göbekli Tepe, find the earliest attestation of the 'navel' meaning, the language it is recorded in, and whether the builders' own usage is documented — from primary texts (Pausanias/Pindar for Delphi; Garcilaso de la Vega 1609; early Rapanui lexicons; Turkish/Kurdish toponymic records).
+      claimIds:
+        - DEEP-C015
+        - DEEP-C016
+        - DEEP-C017
+        - DEEP-C018
+        - DEEP-C019
+      track: either
+      effortTier: desk
+      informationGain: "Tests CLM-DEEP-018 directly: if the four names differ in date and origin as the page proposes, the navel parallel drops to a shared bodily metaphor; if any shares an early, builder-used meaning, that is unexpected and worth reporting."
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+    - id: DEEP-R003
+      title: Blind human lineup test of the civiliser accounts from original passages
+      summary: Rerun the V1 lineup design with human raters and unrecognisable, source-level passages (Berossus via Polyhistor/Eusebius for Oannes; Sarmiento/Betanzos for Viracocha; Sahagún for Quetzalcoatl; Simón for Bochica), with controls from random hero narratives. Compare the first-rank rate to the 62.5% / 9% figures.
+      claimIds:
+        - DEEP-C027
+        - DEEP-C030
+        - DEEP-C034
+      track: small_grant
+      effortTier: desk
+      informationGain: Distinguishes similarity of the original accounts from similarity manufactured by compressed modern retellings — the page's own stated limitation of V1.
+      origin:
+        ref: report 2026-09-09-inbox-deep-memory-200334
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-deep-memory-203731
+        date: 2026-09-09
+  images: []
+corrections: []
+dispositions:
+  - key: text:no text in sources
+    kind: source
+    disposition: blocked
+    reason: "Pitts, Miles, Pagi & Earl 2014, Antiquaries Journal 94: named by the page, no OpenAlex result and no retrieved text; nothing quoted."
+    reopenIf: Full text retrieved from Cambridge Core (Antiquaries Journal 94, 2014) or an author repository copy.
+    observed: No text in `sources`.
+    by: 2026-09-09-draft-deep-memory-203731
+    date: 2026-09-09
+    route: "Cambridge Core, Antiquaries Journal vol. 94 (2014); search title 'Hoa Hakananai'a: a new study'."
+  - key: text:no text in sources
+    kind: source
+    disposition: blocked
+    reason: "Notroff et al. 2016, 'Of animals and a headless man: Göbekli Tepe, Pillar 43' (Tepe Telegrams blog): no retrieved text."
+    reopenIf: Blog post retrieved from tepetelegrams.wordpress.com or the Wayback Machine.
+    observed: No text in `sources`.
+    by: 2026-09-09-draft-deep-memory-203731
+    date: 2026-09-09
+    route: tepetelegrams.wordpress.com, 2016 archive; DAI Göbekli Tepe project blog.
+  - key: text:no text in sources
+    kind: source
+    disposition: blocked
+    reason: "Notroff et al. 2017, 'More than a vulture: a response to Sweatman and Tsikritsis': no retrieved text."
+    reopenIf: Text retrieved (Tepe Telegrams post or the Mediterranean Archaeology and Archaeometry 17(2) response).
+    observed: No text in `sources`.
+    by: 2026-09-09-draft-deep-memory-203731
+    date: 2026-09-09
+    route: Mediterranean Archaeology and Archaeometry 17(2), 2017; tepetelegrams.wordpress.com.
+  - key: text:no text in sources
+    kind: source
+    disposition: blocked
+    reason: "Sweatman & Tsikritsis 2017, 'Decoding Göbekli Tepe with archaeoastronomy', Mediterranean Archaeology and Archaeometry 17(1): no retrieved text."
+    reopenIf: Open-access PDF retrieved from the journal site (maajournal.com).
+    observed: No text in `sources`.
+    by: 2026-09-09-draft-deep-memory-203731
+    date: 2026-09-09
+    route: maajournal.com, vol. 17 no. 1 (2017).
+  - key: text:no text in sources
+    kind: source
+    disposition: blocked
+    reason: "Vidale & Micheli, chlorite hand-bag wear-trace study, Iranian Journal of Archaeological Studies: no retrieved text."
+    reopenIf: PDF retrieved from the journal (University of Sistan and Baluchestan) or the authors' repository.
+    observed: No text in `sources`.
+    by: 2026-09-09-draft-deep-memory-203731
+    date: 2026-09-09
+    route: Iranian Journal of Archaeological Studies website; search authors Vidale, Micheli.
+  - key: text:no text in sources
+    kind: source
+    disposition: blocked
+    reason: "Lee 1992, The Rock Art of Easter Island (UCLA): book, no retrieved text."
+    reopenIf: Relevant chapter on Orongo birdman petroglyphs retrieved (library scan or escholarship).
+    observed: No text in `sources`.
+    by: 2026-09-09-draft-deep-memory-203731
+    date: 2026-09-09
+    route: UCLA Institute of Archaeology Monumenta Archaeologica 17; library copy.
+  - key: text:no text in sources
+    kind: source
+    disposition: blocked
+    reason: "'Ahu Te Pito Kura' (Imagina Rapa Nui tourism page): webpage not retrieved; a tourism site is at best tertiary for the name's meaning."
+    reopenIf: Page retrieved; even then prefer a Rapanui lexicon for the gloss.
+    observed: No text in `sources`.
+    by: 2026-09-09-draft-deep-memory-203731
+    date: 2026-09-09
+    route: "imaginarapanui.com; better: Englert's Rapanui dictionary or Métraux 1940 for 'te pito'."
+  - key: text:no text in sources
+    kind: source
+    disposition: blocked
+    reason: "Berossus, Babyloniaca, Oannes passage (via Alexander Polyhistor and Eusebius): no retrieved text."
+    reopenIf: Text retrieved from a critical edition/translation (Verbrugghe & Wickersham 1996, or Eusebius Chronicon / Syncellus).
+    observed: No text in `sources`.
+    by: 2026-09-09-draft-deep-memory-203731
+    date: 2026-09-09
+    route: Verbrugghe & Wickersham, Berossos and Manetho (1996), Berossos Book 1 fragments; Syncellus, Ecloga Chronographica.
+  - key: text:no text in sources
+    kind: source
+    disposition: blocked
+    reason: "Townsend 2003, 'Burying the White Gods', American Historical Review 108(3): no retrieved text."
+    reopenIf: Article retrieved via Oxford Academic / JSTOR.
+    observed: No text in `sources`.
+    by: 2026-09-09-draft-deep-memory-203731
+    date: 2026-09-09
+    route: American Historical Review 108(3), June 2003, pp. 659–687.
+  - key: text:no text in sources
+    kind: source
+    disposition: blocked
+    reason: "Restall 2003, Seven Myths of the Spanish Conquest: book, no retrieved text."
+    reopenIf: Relevant chapter (the 'white gods'/apotheosis myth) retrieved.
+    observed: No text in `sources`.
+    by: 2026-09-09-draft-deep-memory-203731
+    date: 2026-09-09
+    route: Oxford University Press 2003; library copy or Google Books preview of the apotheosis chapter.
+  - key: text:no text in sources page gives author and year only
+    kind: source
+    disposition: blocked
+    reason: "Cobo Betancourt 2024 on Bochica and colonial reinterpretation: citation on the page is incomplete (no title, venue); no OpenAlex result."
+    reopenIf: The work is identified (title, venue) and its text retrieved.
+    observed: No text in `sources`; page gives author and year only.
+    by: 2026-09-09-draft-deep-memory-203731
+    date: 2026-09-09
+    route: Search Juan Fernando Cobo Betancourt's 2024 publications on Muisca religion and Bochica.
+  - key: text:no text in sources
+    kind: source
+    disposition: blocked
+    reason: "Berezkin & Duvakin, Thematic classification and areal distribution of folklore-mythological motifs (ruthenia.ru): catalogue not retrieved."
+    reopenIf: Catalogue pages for the bird-person, cosmic-serpent and world-axis motifs retrieved from ruthenia.ru/folklore/berezkin.
+    observed: No text in `sources`.
+    by: 2026-09-09-draft-deep-memory-203731
+    date: 2026-09-09
+    route: ruthenia.ru/folklore/berezkin (Russian); the 2016 snapshot the page's study used.
+  - key: text:no text in sources
+    kind: source
+    disposition: blocked
+    reason: "d'Huy 2016, Scientific American, 'Scientists trace society's myths to primordial origins': popular article not retrieved; secondary to d'Huy's phylogenetic papers."
+    reopenIf: Article retrieved; prefer the underlying peer-reviewed papers.
+    observed: No text in `sources`.
+    by: 2026-09-09-draft-deep-memory-203731
+    date: 2026-09-09
+    route: Scientific American, December 2016; d'Huy's papers in Journal of Ethnology and Folkloristics / Journal of Anthropological Archaeology.
+  - key: text:no text in sources
+    kind: source
+    disposition: blocked
+    reason: "Witzel 2012, The Origins of the World's Mythologies: book, no retrieved text."
+    reopenIf: Relevant chapters (Laurasian mythology, flood, bird motifs) retrieved.
+    observed: No text in `sources`.
+    by: 2026-09-09-draft-deep-memory-203731
+    date: 2026-09-09
+    route: Oxford University Press 2012; library copy.
+  - key: text:no text in sources
+    kind: source
+    disposition: blocked
+    reason: "Eliade 1959, The Sacred and the Profane: book, no retrieved text."
+    reopenIf: Chapter on sacred space / axis mundi retrieved.
+    observed: No text in `sources`.
+    by: 2026-09-09-draft-deep-memory-203731
+    date: 2026-09-09
+    route: Harcourt 1959 (trans. Trask); library copy.
+  - key: text:no text in sources
+    kind: source
+    disposition: blocked
+    reason: "Hancock 2015, Magicians of the Gods: book, no retrieved text; the page cites it for the handbag-as-badge-of-office, Göbekli–Easter Island and navel-site claims."
+    reopenIf: Relevant pages retrieved so the lost-source account can be stated in its author's words.
+    observed: No text in `sources`.
+    by: 2026-09-09-draft-deep-memory-203731
+    date: 2026-09-09
+    route: Coronet 2015; library copy or Google Books preview of the Göbekli Tepe and Easter Island chapters.
+  - key: text:no text in sources
+    kind: source
+    disposition: blocked
+    reason: "Newman, 'Megalithic origins: ancient connections between Göbekli Tepe and Peru' (grahamhancock.com): webpage not retrieved."
+    reopenIf: Page retrieved from grahamhancock.com or the Wayback Machine.
+    observed: No text in `sources`.
+    by: 2026-09-09-draft-deep-memory-203731
+    date: 2026-09-09
+    route: grahamhancock.com articles section; Wayback Machine.
+  - key: text:no text in sources
+    kind: source
+    disposition: blocked
+    reason: "Heyerdahl 1952, American Indians in the Pacific: book, no retrieved text."
+    reopenIf: Relevant chapters retrieved (archive.org lending copy).
+    observed: No text in `sources`.
+    by: 2026-09-09-draft-deep-memory-203731
+    date: 2026-09-09
+    route: archive.org; Allen & Unwin 1952.
+  - key: text:no text in sources
+    kind: source
+    disposition: blocked
+    reason: "Sitchin 1976, The 12th Planet: book, no retrieved text."
+    reopenIf: Relevant pages retrieved so the account can be quoted rather than paraphrased.
+    observed: No text in `sources`.
+    by: 2026-09-09-draft-deep-memory-203731
+    date: 2026-09-09
+    route: Stein and Day 1976; archive.org.
+  - key: text:no text in sources
+    kind: source
+    disposition: blocked
+    reason: "Elliot Smith 1923, The Ancient Egyptians and the Origin of Civilization: public-domain book, no retrieved text."
+    reopenIf: Scan retrieved from archive.org.
+    observed: No text in `sources`.
+    by: 2026-09-09-draft-deep-memory-203731
+    date: 2026-09-09
+    route: archive.org (Harper 1923 edition).
+  - key: text:no text in sources
+    kind: source
+    disposition: blocked
+    reason: "Dibble & Hancock, Joe Rogan Experience #2136 (April 2024): podcast, no transcript retrieved; the Archaeology Southwest summaries the page mentions are also unretrieved."
+    reopenIf: A transcript or the Archaeology Southwest summary page is retrieved.
+    observed: No text in `sources`.
+    by: 2026-09-09-draft-deep-memory-203731
+    date: 2026-09-09
+    route: archaeologysouthwest.org (Dibble–Hancock debate summaries); podcast transcript services.
+  - key: text:no text in sources
+    kind: source
+    disposition: blocked
+    reason: "Ioannidis et al. 2020, Nature 583, Native American gene flow into Polynesia: no retrieved text."
+    reopenIf: Paper or PMC author manuscript retrieved.
+    observed: No text in `sources`.
+    by: 2026-09-09-draft-deep-memory-203731
+    date: 2026-09-09
+    route: Nature 583, 572–577 (2020), doi:10.1038/s41586-020-2487-2; PMC copy.
+  - key: text:no text in sources
+    kind: source
+    disposition: blocked
+    reason: "Fehren-Schmitz et al. 2017, Current Biology 27, Rapanui genetic ancestry: no retrieved text."
+    reopenIf: Open-access paper retrieved from Cell Press.
+    observed: No text in `sources`.
+    by: 2026-09-09-draft-deep-memory-203731
+    date: 2026-09-09
+    route: Current Biology 27(20), 2017, doi:10.1016/j.cub.2017.09.029.
+  - key: text:no text in sources
+    kind: source
+    disposition: blocked
+    reason: "Holliday et al. 2023, Earth-Science Reviews 247, refutation of the Younger Dryas impact hypothesis: no retrieved text."
+    reopenIf: Paper retrieved (open access at Elsevier).
+    observed: No text in `sources`.
+    by: 2026-09-09-draft-deep-memory-203731
+    date: 2026-09-09
+    route: Earth-Science Reviews 247 (2023), doi:10.1016/j.earscirev.2023.104502.
+  - key: text:no text in sources
+    kind: source
+    disposition: blocked
+    reason: "Timeline Auctions, 'The handbag that wasn't': commercial blog, not retrieved; tertiary at best."
+    reopenIf: Page retrieved; weigh as a secondary commentary only.
+    observed: No text in `sources`.
+    by: 2026-09-09-draft-deep-memory-203731
+    date: 2026-09-09
+    route: timelineauctions.com blog; Wayback Machine.
+  - key: text:not in the resolved list not retrieved
+    kind: source
+    disposition: irrelevant
+    reason: The page's 'Wikipedia and Wikimedia Commons entries' (Göbekli Tepe, Hoa Hakananai'a, Apkallu, La Venta, Cacaxtla, Etowah plates, Omphalos, Tangata manu, Axis mundi, Hyperdiffusionism, White gods) are tertiary encyclopaedic summaries; the ledger wants the primaries they cite, not the entries.
+    reopenIf: A specific entry's cited primary is needed and cannot otherwise be located.
+    observed: Not in the resolved list; not retrieved.
+    by: 2026-09-09-draft-deep-memory-203731
+    date: 2026-09-09
+    route: Follow each entry's references to the primary (excavation reports, museum records, editions of the texts).
+report: proposals/2026-09-09-inbox-deep-memory-200334/report.md

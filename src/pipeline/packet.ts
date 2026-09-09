@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { declined, type Disposition } from "../domain/intake.ts";
-import { adoptedAssessment, currentChecks, currentEdition, latestCheckPerModel, ratification } from "../domain/load.ts";
+import { adoptedAssessment, caseAccounts, caseQuestion, currentChecks, currentEdition, latestCheckPerModel, ratification } from "../domain/load.ts";
 import { sourceKeys } from "../domain/keys.ts";
 import type { LoadedCase } from "../domain/schema.ts";
 import { caseView } from "../domain/view.ts";
@@ -19,10 +19,13 @@ import { caseView } from "../domain/view.ts";
  */
 
 export interface Packet {
-  case: { id: string; slug: string; title: string; subtitle: string; summary: string; domain: string; themes: Record<string, string> };
+  /** `subtitle` is the case's question as it stands (the current edition's restatement, else the founding one); `foundingQuestion` is the case file's; `accounts` are the edition's side-by-side accounts. */
+  case: { id: string; slug: string; title: string; subtitle: string; foundingQuestion: string; accounts: string[]; summary: string; domain: string; themes: Record<string, string> };
   edition?: {
     runId: string;
     date: string;
+    question: string | null;
+    accounts: string[];
     featured: string[];
     cruxOrder: string[];
     article: string;
@@ -97,7 +100,9 @@ export function buildPacket(
       id: loaded.record.id,
       slug: loaded.record.slug,
       title: loaded.record.title,
-      subtitle: loaded.record.subtitle,
+      subtitle: caseQuestion(loaded),
+      foundingQuestion: loaded.record.subtitle,
+      accounts: caseAccounts(loaded),
       summary: loaded.record.summary,
       domain: loaded.record.domain,
       themes: loaded.record.themes,
@@ -141,6 +146,8 @@ export function buildPacket(
   packet.edition = {
     runId: ed.runId,
     date: ed.date,
+    question: ed.question ?? null,
+    accounts: ed.accounts ?? [],
     featured: ed.featuredClaimIds,
     cruxOrder: ed.cruxOrder,
     article: ed.article,

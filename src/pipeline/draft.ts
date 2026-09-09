@@ -111,8 +111,13 @@ export const DRAFT_SCHEMA: Record<string, unknown> = {
           sourceAnchor: {
             type: ["object", "null"],
             additionalProperties: false,
-            required: ["sourceRef", "locator", "quote"],
-            properties: { sourceRef: { type: "string" }, locator: { type: "string" }, quote: { type: "string" } },
+            required: ["sourceRef", "locator", "quote", "also"],
+            properties: {
+              sourceRef: { type: "string" },
+              locator: { type: "string" },
+              quote: { type: "string" },
+              also: { type: "array", items: { type: "object", additionalProperties: false, required: ["locator", "quote"], properties: { locator: { type: "string" }, quote: { type: "string" } } } },
+            },
           },
           parentClaimRefs: { type: "array", items: { type: "string" } },
           dependsOnClaimRefs: { type: "array", items: { type: "string" } },
@@ -216,7 +221,7 @@ export interface DraftReply {
     theme: string;
     rung: string;
     claimType: string | null;
-    sourceAnchor: { sourceRef: string; locator: string; quote: string } | null;
+    sourceAnchor: { sourceRef: string; locator: string; quote: string; also?: { locator: string; quote: string }[] } | null;
     parentClaimRefs: string[];
     dependsOnClaimRefs: string[];
     alternativeToRefs: string[];
@@ -457,7 +462,7 @@ export function assembleProposal(reply: DraftReply, ctx: AssembleContext): Assem
       rung: c.rung,
       claimType: c.claimType ?? undefined,
       sourceAnchor: c.sourceAnchor
-        ? { locator: c.sourceAnchor.locator, quote: c.sourceAnchor.quote, ...(anchorSource ? { sourceId: anchorSource } : {}) }
+        ? { locator: c.sourceAnchor.locator, quote: c.sourceAnchor.quote, ...(anchorSource ? { sourceId: anchorSource } : {}), ...(c.sourceAnchor.also?.length ? { also: c.sourceAnchor.also } : {}) }
         : undefined,
       parentClaimIds: c.parentClaimRefs.map(resolve).filter((x): x is string => Boolean(x)),
       dependsOnClaimIds: c.dependsOnClaimRefs.map(resolve).filter((x): x is string => Boolean(x)),

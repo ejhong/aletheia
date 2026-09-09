@@ -770,6 +770,16 @@ export function currentEdition(loaded: LoadedCase): Edition {
   return ed;
 }
 
+/** The case's question as it stands: the current edition's restatement, else the case file's subtitle — the founding question. */
+export function caseQuestion(loaded: LoadedCase): string {
+  return loaded.editions.at(-1)?.question ?? loaded.record.subtitle;
+}
+
+/** The accounts the current edition sets side by side, when it names them. */
+export function caseAccounts(loaded: LoadedCase): string[] {
+  return loaded.editions.at(-1)?.accounts ?? [];
+}
+
 /**
  * The assessment the current edition adopts — the only run that narrates.
  * Null for a question-only opening. Check runs never narrate; newer draft

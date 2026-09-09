@@ -149,6 +149,8 @@ export const SourceAnchorSchema = z.object({
   quote: z.string().optional(),
   /** Optional link to a Source record in sources.yaml. */
   sourceId: z.string().optional(),
+  /** Further passages of the same source that state the proposition with the first (a contrast drawn pages apart): each a verbatim quote with its locator, checked and judged together (2026-09-09). */
+  also: z.array(z.object({ locator: z.string().min(3), quote: z.string().min(6) })).optional(),
 });
 export type SourceAnchor = z.infer<typeof SourceAnchorSchema>;
 
@@ -720,6 +722,17 @@ export const EditionSchema = z
       ),
     /** Research item ids, in the order the edition presents them. */
     cruxOrder: z.array(z.string()).default([]),
+    /**
+     * The case's question as this edition states it (the subtitle a reader
+     * sees). The question belongs to the edition, which owns the map: when
+     * the inputs move it, the edition restates it and the panel judges the
+     * restatement with the rest. Absent, the case file's subtitle — the
+     * founding question — stands. The title is the case's name and is the
+     * founder's (founder direction, 2026-09-09).
+     */
+    question: z.string().min(10).optional(),
+    /** The serious accounts this edition sets side by side, one line each; the verifier reads relevance against them. */
+    accounts: z.array(z.string().min(10)).max(6).optional(),
     /** The article: constrained markdown with [text]{claim=…} and {plate:…} markers. */
     article: z.string().min(40),
   })

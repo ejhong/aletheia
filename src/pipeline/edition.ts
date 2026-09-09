@@ -43,9 +43,11 @@ const VERDICTS = [
 export const EDITION_SCHEMA: Record<string, unknown> = {
   type: "object",
   additionalProperties: false,
-  required: ["rationale", "featuredClaimIds", "cruxOrder", "article", "assessment"],
+  required: ["rationale", "question", "accounts", "featuredClaimIds", "cruxOrder", "article", "assessment"],
   properties: {
     rationale: { type: "string" },
+    question: { type: ["string", "null"] },
+    accounts: { type: "array", items: { type: "string" } },
     featuredClaimIds: { type: "array", items: { type: "string" } },
     cruxOrder: { type: "array", items: { type: "string" } },
     article: { type: "string" },
@@ -115,6 +117,10 @@ export const EDITION_SCHEMA: Record<string, unknown> = {
 
 export interface EditionReply {
   rationale: string;
+  /** The case's question restated, or null to keep the incumbent's (or the founding one). */
+  question: string | null;
+  /** The accounts set side by side, one line each; empty keeps the incumbent's. */
+  accounts: string[];
   featuredClaimIds: string[];
   cruxOrder: string[];
   article: string;
@@ -236,6 +242,9 @@ export function assembleEdition(
     assessment: adoptedRef ?? null,
     featuredClaimIds: reply.featuredClaimIds,
     cruxOrder: reply.cruxOrder,
+    // The question and the accounts are the edition's; a candidate that says nothing keeps the incumbent's.
+    ...((reply.question?.trim() || incumbent.question) ? { question: reply.question?.trim() || incumbent.question } : {}),
+    ...((reply.accounts?.length ? reply.accounts : incumbent.accounts)?.length ? { accounts: reply.accounts?.length ? reply.accounts.map((a) => a.trim()) : incumbent.accounts } : {}),
     article: reply.article,
   });
   if (!parsedEdition.success) {

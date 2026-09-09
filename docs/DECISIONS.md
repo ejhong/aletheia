@@ -1567,3 +1567,30 @@ the rest, and the verifier reads relevance against the current edition's
 question and competing accounts; the title is the case's name and stays
 the founder's. Not built until the founder says so.
 
+**The edition owns the case's question; anchors may span pages; evidence
+splits too (founder direction, 2026-09-09).** Built as item 4 of the
+assessment, on the founder's word. (1) The subtitle a reader sees is the
+question as the current edition states it: the edition schema gains
+`question` and `accounts` (the serious accounts it sets side by side, one
+line each), edition protocol v5 restates the question only when the inputs
+have moved it and says why, a candidate that says nothing inherits both,
+and the pages show the standing question with a note naming the edition
+that restated it and the founding question beneath; the title is the
+case's name and stays the founder's — the edition never proposes one. The
+packet's `case.subtitle` is now the standing question for every verb, with
+`foundingQuestion` and `accounts` beside it. (2) The verifier (protocol v4)
+judges relevance against that question and those accounts — the founding
+subtitle had refused the second essay's fascial family as outside a
+question phrased around latched smooth muscle. (3) A claim's anchor may
+carry `also`: further passages of the same source, each a verbatim quote
+with its locator, checked mechanically and judged together (draft protocol
+v6) — the essay's headline claim, perforator against arteriole, fell on a
+single-page anchor where the contrast is drawn three pages on. (4) An
+evidence record the reader judges compound is split by the drafter into
+one observation each, every part keeping a verbatim quote (split protocol
+v3, `kind: evidence`), and each part is checked and judged on its own —
+six of twelve records from the essay had been refused with no remedy.
+Not yet done: the essay's declined rows are re-proposed only by a later
+draft on the case, after an edition under v5 has restated the question;
+that is the chain's next two steps on State, Not Scar, not a hand edit.
+

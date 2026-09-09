@@ -20,6 +20,7 @@ concurrency:
 permissions:
   contents: read
   pull-requests: write
+  issues: write   # review-note issues and their label (the maintenance PAT cannot add labels)
 
 jobs:
   arbiter:
@@ -84,7 +85,9 @@ jobs:
       - name: Open review-note issues for a lone objection
         if: steps.classify.outputs.class == 'needs-approval' && steps.vote.outputs.verdict == '0'
         env:
-          GH_TOKEN: ${{ secrets.MAINTENANCE_PAT }}
+          # The workflow's own token: it may create issues and add labels here, which the fine-grained
+          # maintenance PAT could not (the first three notes were opened unlabeled).
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/review-notes.mjs --report arbiter-report.md --pr "${{ github.event.pull_request.number }}"
       - name: Auto-merge on a passing verdict
         if: steps.classify.outputs.class == 'needs-approval' && steps.vote.outputs.verdict == '0'

@@ -44,9 +44,10 @@ and modular code, with the loop on. The facts first, then the plan.
   and docs that describe two eras at once (MAINTENANCE, DATA_MODEL,
   EXTRACTION_PIPELINE, CHAT_BRIEFS).
 - **Modular code: the three zones hold; two seams are wrong.** Content →
-  domain → UI is one-way. But the pipeline imports the legacy
-  `scripts/lib` (the roster reader, the id stamper), and the Arbiter calls
-  vendors through its own transport rather than the metered one.
+  domain → UI is one-way. Two seams were wrong and are mended (the
+  subtraction record): the pipeline imported the legacy `scripts/lib`, now
+  `src/lib`; the Arbiter called vendors through its own transport, now
+  the metered one.
 
 ### The plan, in order
 
@@ -457,6 +458,13 @@ chain's own sittings.
   cross-model summary) and `history.ts` (the changelog, housekeeping, the
   feed); sixteen importers re-pointed to the module that owns each name;
   no behaviour changed and the 272 tests say so.
+- **2026-09-09 — the fourth set.** The Arbiter's seats are called through
+  the pipeline's metered transport — the same path a verb takes, the same
+  tariffs, the vendor's own usage on every reply — and the panel's cost
+  (tokens always, dollars when every seat was priced) rides in the verdict
+  blob into `governance/arbiter/pr-<n>.yaml` at harvest. The unmetered
+  `callVendor` is gone; one vendor transport remains. The ledger is the
+  whole bill, the panel included.
 
 ## Presentation, last
 

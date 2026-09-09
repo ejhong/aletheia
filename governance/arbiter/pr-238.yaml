@@ -1,0 +1,133 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 238
+title: "The opening says the founder's pages are to enter by his drop, not that
+  they have: a second question-only edition answers review note #237"
+url: https://github.com/ejhong/aletheia/pull/238
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-09
+judgedAgainst: 519d49c550
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The change is a correction toward greater accuracy: the prior
+      opening article asserted the founder's pages had been \"taken in through
+      the inbox\", and the new question-only edition says instead that they are
+      to enter by the founder's own drop and none has yet — a
+      §3.8/§3.9-consistent fix answering review note #237. It respects
+      append-only editions (new file `edition-2026-09-09-opening-2` with
+      `previous: edition-2026-09-09-opening`, unchanged basis hashes,
+      `assessment: null`, no featured claims), so no unratified draft is
+      presented as ratified and no assessment is retconned. The history entry
+      records what changed, why, the actor (claude-fable-5-1, operator),
+      aiAssisted and kind, satisfying §3.14; the `model` field honestly says no
+      model was called rather than misattributing a model run. No citations,
+      DOIs or locators are added, and verification found no identifiers, so
+      there is nothing fabricated to check. The test edit loosens a narrow shape
+      assertion (exactly one edition) but replaces it with
+      equivalent-or-stronger substance — first edition has no predecessor, every
+      edition's assessment is null, featured claims empty, claims empty — so it
+      is not a §3.15 check-weakening but an accommodation of a legitimate
+      append-only chain. AGENTS.md is untouched."
+    cost:
+      model: claude-opus-5
+      inputTokens: 10017
+      outputTokens: 672
+      usd: 0.066885
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: The change corrects the provenance statement by saying the founder’s
+      pages have not yet entered the inbox, rather than claiming they already
+      did. It preserves the prior edition and adds a dated, linked successor
+      plus a history entry identifying what changed, why, and which AI operator
+      made the change, satisfying the append-only requirement. The new edition
+      explicitly has no assessment or featured claims and does not present
+      itself as a ratified judgment or as evidence. Updating the test to permit
+      multiple question-only editions accommodates that append-only correction
+      while retaining checks that the first edition has no predecessor and every
+      such edition has no assessment; it does not visibly weaken or evade the
+      constitutional checks.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 6531
+      outputTokens: 1187
+      usd: 0.049864
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: "The change directly addresses review note #237 by correcting an
+      inaccurate statement regarding the entry of founding inputs. In accordance
+      with §3.14, editions are treated as append-only: rather than mutating the
+      initial opening edition, a second question-only edition is appended with
+      explicit chaining (`previous: edition-2026-09-09-opening`) and identical
+      basis hashes. The provenance and rationale are documented cleanly in
+      history.yaml and the test suite adjustment preserves verification of
+      question-only editions without weakening any constitutional constraints."
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 7146
+      outputTokens: 545
+      usd: 0.007403
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff adds an append-only second question-only edition that
+      corrects one misstatement about founding-input provenance (pages ‘are to’
+      enter by the founder’s drop; none has yet), with assessment null, empty
+      featured/crux lists, honest model stamp (no model call), previous pointer,
+      and unchanged basis hashes. history.yaml records date, change, reason
+      (review note #237 / §3.8–§3.14), and actor; the test only relaxes the
+      single-edition assumption to allow a question-only chain. No citations,
+      AGENTS.md edits, confidence material, or check-weakening appear."
+    cost:
+      model: grok-4.5
+      inputTokens: 7136
+      outputTokens: 151
+      usd: 0.015178
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: "The change corrects a provenance misstatement (the opening edition
+      said the founder's pages had been 'taken in through the inbox' when the
+      inputs manifest is empty) and does so in the constitutionally correct way:
+      since editions are append-only, it adds a new question-only edition whose
+      article states honestly that the pages 'are to' enter by the founder's
+      drop and that none has yet, rather than editing the old edition. A history
+      entry records what changed, why, and who (§3.14), with the actor correctly
+      identified as the operator and aiAssisted: true, and the edition's model
+      field honestly says 'none — no model call', so no AI record is passed off
+      as human or vice versa (§3.15). Nothing is featured, no assessment is
+      adopted, and no citations or locators are added, so no fabrication surface
+      exists; the citation verification confirms no identifiers were added. The
+      test change in load.test.ts is a legitimate adaptation to a chained
+      question-only edition — it still asserts each edition carries a null
+      assessment and no featured claims — and does not weaken any §3.15 check.
+      The material under review contains no directives that were followed and no
+      edits to AGENTS.md."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 7478
+      outputTokens: 660
+      usd: 0.001452
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 38308
+  outputTokens: 3215
+  usd: 0.1408
+harvestedAt: 2026-09-09

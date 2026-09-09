@@ -1,0 +1,145 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 232
+title: A reply is the answer only when it says so; the spend copy is date-bounded
+url: https://github.com/ejhong/aletheia/pull/232
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-09
+judgedAgainst: d1c398d611
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "No AGENTS.md edit, no content/ records or citations added
+      (verification found no identifiers), no run records. The change tightens
+      rather than loosens a §3.15 mechanism: `answerFrom` now requires both a
+      recognized answerer AND the structured \"Answered on the record\" marker,
+      with tests demonstrating that a stranger using the marker and an
+      authorized account's later aside both fail to count — this directly
+      answers review note #231's objection instead of dodging it. Descriptions
+      of the receipt are updated consistently everywhere the old wording
+      appeared (page copy, schema doc comment, harvester header string, and all
+      six harvested note headers), so the label no longer misdescribes what the
+      code does (§3.8/§3.9). The spend copy is now date-bounded (pipeline since
+      2026-09-08, panel since 2026-09-09, unmetered before, all-time a floor)
+      and `spentOn` reports priced sum plus a separate `unpriced` count, so a
+      total is never silently presented as complete (§3.13). Notes 229/230 flip
+      to closed with answers whose excerpts and comment URLs are internally
+      consistent and dated at harvest; the `by: ejhong` attribution with an
+      excerpt saying the operator wrote it on the founder's direction remains a
+      mild display wrinkle previously raised, but it is disclosed in the record
+      itself and not a misstamp created here. Remaining unverifiable item is
+      whether the re-harvested GitHub comment texts match the live issues, which
+      is external to this packet and internally consistent as shown."
+    cost:
+      model: claude-opus-5
+      inputTokens: 19412
+      outputTokens: 954
+      usd: 0.12091
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.13
+      - §3.14
+      - §3.15
+    reasoning: "The change strengthens the review-note receipt rule: `answerFrom`
+      now requires both a recognized account and an opening “Answered on the
+      record” marker, with tests rejecting passer-by markers and
+      authorized-account asides. The schema comments, generated YAML headers,
+      and operations-page explanation consistently describe the receipt as the
+      last qualifying reply rather than the issue’s last comment. Spend
+      reporting is now explicitly date-bounded, identifies pre-metering coverage
+      as incomplete, and reports unpriced rows separately from the priced sum,
+      avoiding false precision. The harvested PR-228 arbiter record preserves
+      all five seats, the dissent, costs, prompt version, judged commit, and
+      merged outcome rather than hiding disagreement. AGENTS.md is untouched, no
+      content citations are added, and no visible check is weakened."
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 12991
+      outputTokens: 1750
+      usd: 0.086964
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.9
+      - §3.13
+      - §3.15
+    reasoning: "The change directly addresses feedback recorded in review note #231
+      without altering the constitution or any content records under content/.
+      It strengthens the epistemic integrity of the review-note governance
+      system by requiring an explicit structured marker ('Answered on the
+      record') from an authorized answerer, preventing incidental remarks from
+      being misattributed as formal answers. Furthermore, the operational spend
+      reporting is clarified with date boundaries and explicit reporting of
+      unpriced calls rather than presenting figures as all-inclusive all-time
+      totals. All tests pass and no verification checks or constitutional
+      procedures are weakened."
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 14449
+      outputTokens: 565
+      usd: 0.012956
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The change answers review note #231 by requiring the structured
+      marker “Answered on the record” (recognized answerer only) for a harvest
+      receipt, and by date-bounding spend copy so unmetered pre-2026-09-08/09
+      calls are disclosed as a floor rather than full coverage. Schema, page
+      copy, file headers, harvest script, and tests all describe the same
+      receipt rule; spentOn now reports priced sum plus unpriced count instead
+      of silently nulling. No AGENTS.md edit, no content/ citations, no
+      confidence material, and the answer marker tightens §3.15 inspectability
+      rather than weakening it. Harvested arbiter/note YAML are append-only
+      machine records of public issues; OMITTED FILES is empty."
+    cost:
+      model: grok-4.5
+      inputTokens: 13718
+      outputTokens: 176
+      usd: 0.028492
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.13
+      - §3.15
+      - §3.14
+      - §8
+    reasoning: "This change tightens §3.15's inspectability rather than weakening
+      it: the answer receipt now requires both a recognized answerer and an
+      explicit 'Answered on the record' marker, with tests demonstrating that an
+      aside by an authorized account, a marker from a stranger, and closure
+      alone all fail — a direct implementation of the GPT seat's review note
+      #231, and the spend copy is made more honest by date-bounding coverage and
+      counting unpriced rows separately instead of silently nulling or flooring
+      totals (§3.13, §3.8). No AGENTS.md edit, no content/ additions, no
+      citation identifiers (verification empty), and no confidence material are
+      involved, so the solo-park rules are not engaged. The new
+      governance/arbiter/pr-228.yaml is an append-only, labeled harvest with
+      internally consistent cost sums (seat tokens/USD total exactly) and
+      per-seat votes displayed including the dissent, and note #231 correctly
+      records that a lone provenance objection merges as a review note rather
+      than parking, matching §3.15's amendment. Updating the review-note YAML
+      headers and states is a re-harvest mirroring the recorded issue state, not
+      silent repair, and is documented in DECISIONS.md; the only unverifiable
+      element — that GitHub actually holds these comments and issue states — is
+      external data postdating my knowledge, and the records are internally
+      coherent with URLs, dates, and the truncated-at-300-chars excerpt ending
+      mid-word exactly as the documented slice(0,300) produces."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 13981
+      outputTokens: 3040
+      usd: 0.003617
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 74551
+  outputTokens: 6485
+  usd: 0.2529
+harvestedAt: 2026-09-09

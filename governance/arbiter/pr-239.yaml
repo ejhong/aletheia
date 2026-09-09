@@ -1,0 +1,108 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 239
+title: "Tests get twenty seconds, not five: the CI runner took 5.9 s to assemble
+  an edition over every case and failed a green change"
+url: https://github.com/ejhong/aletheia/pull/239
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-09
+judgedAgainst: aa29f03dc2
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff adds only a `testTimeout: 20_000` setting plus an
+      explanatory comment to `vitest.config.ts`; no content files, citations,
+      assessments, or AGENTS.md text are touched, and the citation tooling found
+      no identifiers to check. Raising a per-test time limit does not disable,
+      skip, or reclassify any check — every test still runs and must still pass,
+      so this is not check-weakening under §3.15; it makes the fail-closed CI
+      less flaky rather than more permissive. The comment records the concrete
+      cause (a 5.9 s edition-assembly test on the CI runner, referenced to #238
+      and dated), which is honest documentation of a material decision per §9.
+      No provenance stamp, verification label, or ratification claim is
+      asserted, so §3.8/§3.14 are not engaged. The only mild caution is that a
+      generous timeout can mask genuine performance regressions, but the comment
+      explicitly flags that and this is ordinary engineering judgment, not a
+      constitutional breach."
+    cost:
+      model: claude-opus-5
+      inputTokens: 7172
+      outputTokens: 390
+      usd: 0.04561
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.15
+      - §8
+    reasoning: The diff only raises Vitest’s per-test timeout from five to twenty
+      seconds and does not remove, skip, or relax any test assertion. Allowing a
+      known full-content test more runtime preserves fail-closed CI rather than
+      weakening the checks required by §3.15. No content, citations,
+      assessments, provenance records, or constitutional text are changed, and
+      no files are omitted.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 4563
+      outputTokens: 265
+      usd: 0.023552
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §8
+      - §3.15
+    reasoning: The change increases the vitest test timeout from 5 seconds to 20
+      seconds in vitest.config.ts to prevent spurious timeouts during CI test
+      execution when assembling cases. It modifies only test configuration,
+      touches no content or constitution files, and does not weaken, bypass, or
+      loosen any epistemic or mechanical verification checks.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 4868
+      outputTokens: 287
+      usd: 0.004727
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff only raises vitest's testTimeout from the 5 s default to 20
+      s in vitest.config.ts, with a comment documenting a real CI timeout on
+      #238. No content/, citations, assessments, provenance stamps, AGENTS.md,
+      or §3.15 checks are touched. The change is ordinary test-harness
+      maintenance that keeps the suite green as cases grow; it does not
+      fabricate, weaken gates, or misattribute anything."
+    cost:
+      model: grok-4.5
+      inputTokens: 5080
+      outputTokens: 113
+      usd: 0.010838
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules: []
+    reasoning: This is a six-line CI configuration change raising vitest's per-test
+      timeout from the 5 s default to 20 s, with the full rationale recorded in
+      a comment and a concrete incident (#238, dated 2026-09-09) cited for why a
+      green change was stranded. It does not touch AGENTS.md, content/,
+      citations, provenance, or any validation logic — 285 tests still pass and
+      Zod/schema/CI fail-closed checks are untouched, so nothing in §3.15's
+      checks is loosened or dodged (a runner timeout for legitimately slow
+      content-assembly tests is not an epistemic check, and the comment
+      explicitly frames 20 s as headroom rather than cover for slower code,
+      keeping the change transparent). No citations are added, no run records
+      are carried, and the omitted-files list is empty, so there is nothing
+      hidden to flag. The change is within ordinary engineering maintenance and
+      complies.
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 5480
+      outputTokens: 347
+      usd: 0.000996
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 27163
+  outputTokens: 1402
+  usd: 0.0857
+harvestedAt: 2026-09-09

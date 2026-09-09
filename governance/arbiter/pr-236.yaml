@@ -1,0 +1,152 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 236
+title: "Deep Memory opens question-only, and the founder's pages come in through
+  the inbox: the genesis test begins"
+url: https://github.com/ejhong/aletheia/pull/236
+verdict: pass
+reason: "4 of 5 seats affirm compliance; one seat's objection is a review note
+  the operator answers on the record: GPT-5.6 Sol (OpenAI) (§3.8, §3.14, §3.15;
+  provenance)"
+outcome: merged
+outcomeAt: 2026-09-09
+judgedAgainst: a4a6484a49
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The committed content is a question-only opening:
+      claims/evidence/sources/research/dispositions/inputs manifest are all
+      empty arrays, the edition sets `assessment: null`, `previous: null`,
+      `featuredClaimIds: []`, and its `model` field honestly says no model was
+      called and that the operator (claude-fable-5-1) wrote it — no assessment
+      is presented as ratified, and no evidence, locator or priority is
+      invented. The only external citation added under content/ is
+      https://ejhong.github.io/birdmen/, which the tooling resolves (HTTP 200),
+      and it is labeled as the founder's research site, not as evidence. No copy
+      of the founder's pages is committed: the DECISIONS entry records that the
+      GPT seat's confidence objection parked the earlier `published:`-footing
+      copies and that they left the change, with the founder-drop door left as
+      the compliant route — so §3.15's permission rule is honored rather than
+      dodged. AGENTS.md is untouched; the test changes only exempt the
+      assessment-bearing invariants for a case whose edition adopts nothing,
+      while adding a new test asserting an opening derives no standing — this
+      narrows nothing for assessing editions. The spend rows for the two
+      discarded rehearsal runs are retained (\"the bill is the bill\"), which is
+      honest bookkeeping. One review-note-level discrepancy: the PR body asserts
+      the pages \"came in through the inbox\" and were registered as
+      DEEP-IN001–IN004 with extractions under research/deep-memory/, none of
+      which appears in the diff; the DECISIONS and history entries correct this
+      (inputs \"to come\", none committed), so I read the body as stale prose
+      rather than a false record, but I would want the body reconciled with the
+      committed state."
+    cost:
+      model: claude-opus-5
+      inputTokens: 23055
+      outputTokens: 1127
+      usd: 0.14345
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: violates
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: The opening article says the founder’s pages are founding inputs
+      “taken in through the inbox,” while `inputs/manifest.yaml` is empty, the
+      edition records an inputs hash for no inputs, and `docs/DECISIONS.md` says
+      “Once the drop lands.” The PR body likewise says the pages came in and
+      were registered by run `…191337`, whereas the complete diff contains no
+      registered inputs or processed drop and explains that those outputs left
+      the change. This publicly misstates when and how the inputs entered,
+      contrary to exact, reconstructable provenance and accurate change history
+      under §§3.8, 3.14, and 3.15. The text and PR record should instead
+      describe the drop and intake as future, while identifying the current
+      summary as derived from the resolved public URL, or include the actual
+      founder-drop records, manifest entries, and matching input hash before
+      claiming intake occurred.
+    paradigm: provenance
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 15237
+      outputTokens: 3521
+      usd: 0.131368
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: The change initializes the 'deep-memory' case question-only with an
+      empty ledger and a null assessment opening edition, inventing no claims,
+      evidence, or reviews. The external research URL resolves mechanically with
+      HTTP 200, and no founder-supplied text is committed without provenance or
+      proper drop procedures, respecting §3.15. The supporting UI and pipeline
+      adjustments cleanly handle question-only editions without weakening
+      existing validation or ratification checks.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 16967
+      outputTokens: 652
+      usd: 0.01517
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff opens DEEP-001 as a true question-only case: empty
+      claims/evidence/sources/research/dispositions/inputs, assessment null,
+      featuredClaimIds empty, previous null, and an operator-written opening
+      that grades nothing. No AGENTS.md edit; no citations or locators are
+      invented (the sole added URL resolves); founder page copies are not
+      committed after the prior confidence objection, with intake left for the
+      founder-drop door. History/edition stamps honestly attribute the operator
+      and the empty-ledger basis hashes. UI/test/inbox changes only teach the
+      opening shape and fix the processedName locator; they do not weaken §3.15
+      checks."
+    cost:
+      model: grok-4.5
+      inputTokens: 16127
+      outputTokens: 158
+      usd: 0.033202
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.15
+      - §3.13
+      - §3.3
+    reasoning: "The committed diff contains no founder-supplied copies: the inputs
+      manifest, claims, evidence, sources, research, and dispositions are all
+      empty, and the DECISIONS.md entry in the diff records that the operator's
+      byte-identical copies were removed after the GPT seat's confidence
+      objection, with the pages now entering only by the founder's own drop
+      under the standing direction — which is exactly what §3.15's permission
+      rule requires, so the confidence hazard the body describes was resolved
+      rather than merged. The URL ejhong.github.io/birdmen resolves, and the
+      only committed citation is an external-research link to that public site,
+      honestly labeled. The opening edition is stamped 'model: none — written by
+      the operator', adopts assessment: null, features nothing, and its article
+      says plainly that nothing is graded and nothing on the page is evidence —
+      honest labeling and calibrated uncertainty. The test skips are narrowly
+      scoped (isOpening) to checks that are inapplicable when no assessment
+      exists, with a new test covering the opening's invariants, so this is
+      extension, not check-weakening; the processedName fix actually tightens
+      locator accuracy under §3.8. One note for the record: the PR body still
+      describes the intake as having 'registered them as DEEP-IN001–IN004' and
+      the pages as already come in, which the diff contradicts (research.yaml is
+      empty, DECISIONS says the copies and run outputs left the change) — the
+      committed history and DECISIONS entries are accurate, but the body text
+      should be corrected to match what actually merges. The rehearsal spend
+      rows are retained rather than hidden, which is honest accounting."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 16246
+      outputTokens: 2272
+      usd: 0.003573
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 87632
+  outputTokens: 7730
+  usd: 0.3268
+harvestedAt: 2026-09-09

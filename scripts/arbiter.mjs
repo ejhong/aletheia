@@ -223,11 +223,17 @@ const report = [
   "",
   `Panel (${PROMPT_VERSION}, judged against \`AGENTS.md\` at \`${mergeBase.slice(0, 10)}\`):`,
   "",
-  "| Seat | Vote | Rules cited |",
-  "|---|---|---|",
+  "| Seat | Vote | Rules cited | Kind |",
+  "|---|---|---|---|",
   ...votes.map(
-    (v) => `| ${v.seat} | ${v.vote} | ${v.rules.join(", ") || "—"} |`,
+    (v) => `| ${v.seat} | ${v.vote} | ${v.rules.join(", ") || "—"} | ${v.paradigm ?? "—"} |`,
   ),
+  "",
+  ...(verdict.notes?.length
+    ? [
+        `> 📝 Review note: ${verdict.notes.map((v) => `**${v.seat}** objects (${v.rules.join(", ")}; ${v.paradigm})`).join("; ")} without the panel. The change may merge; the objection is recorded as an issue labeled \`review-note\` that the operator answers on the record — by fixing, or by saying why not (AGENTS.md §3.15, amendment of 2026-09-09).`,
+      ]
+    : []),
   "",
   ...votes.map((v) => `<details><summary><b>${v.seat}</b> — ${v.vote}</summary>\n\n${v.reasoning}\n\n</details>`),
   "",
@@ -261,6 +267,7 @@ const report = [
     judgedAgainst: mergeBase.slice(0, 10),
     promptVersion: PROMPT_VERSION,
     seats: votes,
+    notes: verdict.notes ?? [],
   })} -->`,
 ].join("\n");
 

@@ -115,6 +115,13 @@ after it is unchanged.
   that day the saturation rule never saw a landing — it looked for the
   producer's run id where the verify run's was written — and every case
   with runs read as saturated.
+- **A narrow veto and a wide voice.** One seat parks a change alone only
+  for fabrication, exposure of confidence material, or an edit to the
+  constitution; two seats park for anything; a lone objection of another
+  kind is a review note — an issue the operator answers on the record —
+  and the change merges (AGENTS.md §3.15, founder amendment of
+  2026-09-09, after one seat parked twelve pushes in a day against four
+  complies each time).
 - **A contested standing is a task, not a label.** It triggers the
   reconsideration edition and a fresh check on the schedule's next turn for
   that case; the standing stays displayed as contested until the panel

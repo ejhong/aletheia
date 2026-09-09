@@ -1625,3 +1625,28 @@ quoted again. Not yet
 done: the essay's declined rows are re-proposed only by a later draft on
 the case, after an edition under v5 has restated the question; that is
 the chain's next two steps on State, Not Scar, not a hand edit.
+
+**Constitutional amendment (founder's act, 2026-09-09): a narrow veto and
+a wide voice.** The Arbiter's tally let one seat park a change against
+four that complied. On 2026-09-09 one seat did so twelve times: about
+half its findings were real defects the operator had introduced and
+fixed; the other half were readings stricter than the site needs, two of
+which took amendments to resolve. The founder's direction, given in
+session: the panel is for the quality of the judgment, not for enforcement
+for its own sake. The amendment: a single seat's objection parks a change
+only for fabrication, exposure of confidence material, or an edit to the
+constitution; otherwise parking takes two seats, and a lone objection is
+recorded as a review note — an issue labeled `review-note` the operator
+answers on the record, by a fix that closes it or a reply that says why
+not — while the change may merge. Built: a seat names the kind of
+violation it finds (panel protocol v3: fabrication, confidence,
+constitution, check-weakening, provenance, other; an unnamed kind is
+"other", never a veto by omission); the tally applies the rule and returns
+the notes; the Arbiter workflow opens the issues (`scripts/review-notes.mjs`,
+idempotent by PR and seat); nothing closes an issue but an answer. The
+founder asked whether a real defect a lone seat catches is still
+addressed: yes — it is an open issue until it is, and the queue is
+`gh issue list --label review-note`. Drafted by the operator on the
+founder's direction; the AGENTS.md sentence committed by the founder's
+hand.
+

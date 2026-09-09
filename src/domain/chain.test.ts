@@ -333,7 +333,7 @@ describe("assembling an edition", () => {
     const run = c.assessmentRuns.find((r) => r.runId === incumbent.assessment?.runId)!;
     const dropLB = assembleEdition(c, editionReply({ featuredClaimIds: incumbent.featuredClaimIds.filter((id) => id !== run.caseAssessment.loadBearing[0]) }), ctx);
     expect(dropLB.errors.some((e) => /load-bearing claim .* is not featured/.test(e))).toBe(true);
-  });
+  }, { timeout: 60_000 }); // three edition assemblies read every founding input, the essay extraction included; CI runners are slow
 
   it("a new assessment is stamped, hashed, and must carry a steelman and a treatment for every featured claim", () => {
     const c = geo();

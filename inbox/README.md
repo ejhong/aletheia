@@ -17,9 +17,10 @@ provenance**: front matter, or a sidecar note of the same name for a PDF,
 carrying `editor:` (your own work), `published:` (the URL where it is
 public), or `from:` (who supplied it). A document that is not already
 public also needs the permission in the supplier's words — `permission:`
-(what may be done with it, in words that grant: "publish", "cite",
-"quote"; a line that withholds — "not", "only", "private", "confidential",
-"internal" — grants nothing and the file stays here) and `granted:` (the
+(what may be done with it, in the gate's own words — "publish", "cite",
+"quote", joined by plain connectives such as "publish and cite it"; any
+other word, "only" or "prohibited" or "private" alike, is a word the gate
+does not grant on, and the file stays here) and `granted:` (the
 date of the grant, YYYY-MM-DD) — own work included:
 the footing says whose it is, the permission says what may be done. The
 intake records who granted it, on what date, by what channel (this

@@ -81,10 +81,11 @@ gh run view --log-failed                                  # if it fails, this is
 
 A completed run opens a PR named `Chain: <date>` (through MAINTENANCE_PAT,
 so the Arbiter and CI run on it); its run directory and spend rows are in
-the PR, and the Arbiter's report is on the PR. Merge it by hand while the
-operation is paused. When a step runs clean, run `steps=2`; when a week of
-that runs clean, set `state: live` and uncomment the cron — the founder's
-two toggles.
+the PR, and the Arbiter's report is on the PR. A passing verdict enables
+auto-merge; a park waits for the founder. The loop has run itself since
+2026-09-09 (weekly cron, `state: live`); to stop it, set `state: paused`
+in `governance/operation.yaml` or comment the cron out — either is the
+kill switch, and the pages say so.
 
 **Two doors for a founder essay.** A document dropped with `role:
 founding_narrative` (or `founding_research`) in its sidecar is registered as

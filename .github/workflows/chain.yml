@@ -22,8 +22,13 @@ on:
         description: "Run although governance/operation.yaml says paused (the founder launching a run by hand)"
         type: boolean
         default: false
-  # schedule:
-  #   - cron: "17 6 * * 1"   # weekly, Monday 06:17 UTC
+  # Turned on by the founder on 2026-09-09 (direction in session), after the
+  # first supervised run in CI (#214). Weekly: one sitting of three budgeted
+  # choices a week, about $30, within config/budget.yaml's caps; the founder
+  # dispatches by hand for more. Comment these two lines out to turn it off
+  # again, or set governance/operation.yaml to paused — either stops it.
+  schedule:
+    - cron: "17 6 * * 1"   # weekly, Monday 06:17 UTC
 concurrency:
   group: chain
   cancel-in-progress: false

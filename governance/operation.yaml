@@ -2,11 +2,14 @@
 # every page that it is AI-operated; when the founder's kill switch has
 # paused the automation, the pages must say that too). Changed only by the
 # founder or on the founder's direction; each change is a dated entry.
-state: paused          # live | paused
-since: "2026-09-05"
+state: live            # live | paused
+since: "2026-09-09"
 by: founder
 reason: >-
-  Kill switch after the 2026-09-05 overhaul and restore (PR #193): the
-  scheduled AI workflows are disabled and re-enable one at a time as the
-  tests need them. Changes since are AI runs the founder launches by hand
-  and merges by hand; the blind panel has judged them, the Arbiter has not.
+  Turned on by the founder (direction in session, 2026-09-09) after the
+  chain's first run in CI (#214: the edition State, Not Scar was owed, run,
+  committed, judged 5 of 5 by the panel, merged). The chain runs weekly on
+  its own (.github/workflows/chain.yml), three budgeted choices a sitting,
+  bounded by config/budget.yaml; the Arbiter judges every PR; a lone
+  objection becomes a review-note issue; the founder's kill switch is this
+  file. Paused 2026-09-05 to 2026-09-09 for the overhaul and its tests.

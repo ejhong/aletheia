@@ -78,7 +78,10 @@ after it is unchanged.
   `edition`; the maintenance scripts run on a second model client. Each of
   these folds into the chain as the loop below closes, and the folding is
   the subtraction step 5 promised — now with named candidates.
-- **Automation: the loop exists and has not run itself.** `next` chooses
+- **Automation: on since 2026-09-09** (weekly cron; the first CI run,
+  #214, ran the owed edition, was judged 5 of 5 and merged). The bullet
+  below is the state before that run, kept as the record.
+- **Automation, before the first run: the loop exists and has not run itself.** `next` chooses
   the case and the verb and has run three steps unattended in one sitting;
   `chain.yml` runs it and opens the PR; the Arbiter is on and judges every
   PR; a merge re-checks through the panel, and a contested standing

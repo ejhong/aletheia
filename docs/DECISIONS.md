@@ -1246,4 +1246,34 @@ on the Arbiter as the only hand required. Two rules the runs settled are
 recorded there too: the second research seat runs when the first stops
 finding, and a contested standing is a task that triggers reconsideration
 and a fresh check, not a label that sits.
+
+**Step 4b, built and run once (2026-09-08 evening to 2026-09-09 UTC).**
+(i) A correction writer changes one field of one record in place with a
+history entry, refusing unless the field still reads what the proposal
+saw; verify applies proposals' corrections; the al-Ma'mun date (c. 820 →
+c. 832, Nemoy 1939 n. 7) is applied. (ii) `aletheia check` runs the blind
+panel through the metered transport with every seat's raw reply kept and
+one repair round; the old script is gone; the corrected ledger was checked
+by all five seats. (iii) The edition packet carries the panel's dissents; a
+contested standing makes an edition due; the answering assessment is
+stamped `reconciles`. The first reconsideration on Cast, Not Carved held
+`unresolved` against four dissenting seats, answering each — regrading the
+Egyptian instance `contradicted` while holding that the Andean instance has
+never been examined outside the proponent team — and the fresh blind check
+then disputed 3 of 5 instead of 4 of 5, splitting on GEO-C022 and GEO-C021.
+The case displays **contested** with both sides' reasoning public, and rests
+there until the ledger moves: a reconsideration the fresh panel still
+contests is not re-argued, or the loop would pay to argue with itself.
+(iv) `aletheia next` chooses what the ledger wants — a half-done chain,
+then a due edition, then the least recently reported case, house seat by
+default and the second seat when the last pass landed nothing — and with
+`--run` performs it through the chain; `.github/workflows/chain.yml` runs
+it and opens the PR the Arbiter judges, refusing while paused, its cron
+line commented out as the founder's toggle. (v) `governance/operation.yaml`
+records that the automation is paused since 2026-09-05 and why; the footer
+says so. Two transport lessons: a stream torn before its final event is
+sent once more (a fifteen-minute edition reply was lost to one), and spend
+is recorded before a refusal or truncation is thrown. Remaining for the
+loop to run itself: the Arbiter toggle and the schedule line — both the
+founder's.
 (AI implementation record; founder-directed session.)

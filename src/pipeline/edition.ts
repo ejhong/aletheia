@@ -285,14 +285,21 @@ export interface EditionOutcome extends RunOutcome {
   assessmentFile?: string;
 }
 
-/** Why an edition is due (null when it is not): the ledger moved, or the panel contests an assessment no reconsideration has answered. */
+/**
+ * Why an edition is due (null when it is not): the ledger moved, or the panel
+ * contests an assessment no reconsideration has answered. One answer per
+ * state of the evidence: when the adopted assessment is itself a
+ * reconsideration and the fresh panel still contests it, the disagreement
+ * stands on the record — displayed as contested, both sides' reasoning
+ * public — until the ledger moves. Otherwise the loop would argue with
+ * itself indefinitely at a few dollars a round.
+ */
 export function editionDue(loaded: LoadedCase): { reason: string; reconciles: string[] } | null {
   const incumbent = currentEdition(loaded);
   const standing = ratification(loaded);
-  const contestedBy = standing?.status === "contested" ? currentChecks(loaded, latestCheckPerModel(loaded)).map((c) => c.runId) : [];
   const adopted = adoptedAssessment(loaded);
-  const unanswered = contestedBy.filter((id) => !(adopted?.reconciles ?? []).includes(id));
-  if (unanswered.length) return { reason: `the panel contests the adopted assessment (${standing!.reason}) and no reconsideration has answered it`, reconciles: contestedBy };
+  const contestedBy = standing?.status === "contested" && !adopted?.reconciles ? currentChecks(loaded, latestCheckPerModel(loaded)).map((c) => c.runId) : [];
+  if (contestedBy.length) return { reason: `the panel contests the adopted assessment (${standing!.reason}) and no reconsideration has answered it`, reconciles: contestedBy };
   if (incumbent.basis.ledgerHash !== loaded.ledgerHash) return { reason: `the ledger moved since ${incumbent.runId}`, reconciles: [] };
   return null;
 }

@@ -52,6 +52,13 @@ describe("aletheia next", () => {
     expect(nextAction(two.filter((c) => c.record.slug === a), runs, "2026-09-20").verb).toBe("rest");
   });
 
+  it("a reconsideration the fresh panel still contests rests until the ledger moves", async () => {
+    const { editionDue } = await import("../pipeline/edition.ts");
+    const geo = getCaseBySlug("megalithic-casting");
+    const adopted = geo.assessmentRuns.find((r) => r.runId === geo.editions.at(-1)!.assessment!.runId)!;
+    if (adopted.reconciles && geo.editions.at(-1)!.basis.ledgerHash === geo.ledgerHash) expect(editionDue(geo)).toBeNull();
+  });
+
   it("the live ledger has a choice, and the operation state is on the record", () => {
     const n = nextAction(cases, [], "2026-09-20");
     expect(["report", "edition", "draft", "verify"]).toContain(n.verb);

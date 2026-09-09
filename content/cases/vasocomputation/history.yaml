@@ -194,3 +194,10 @@
   actor: aletheia verify (claude-sonnet-5 second reader; drafter claude-fable-5-1)
   aiAssisted: true
   kind: content
+
+- date: 2026-09-09
+  change: "Links the atomicity pass had fanned out from a compound claim to all of its parts were dropped (§3.2): VASO-C065.parentClaimIds → VASO-C091, VASO-C092 (parts of VASO-C064); VASO-C087.parentClaimIds → VASO-C083, VASO-C084, VASO-C085, VASO-C086 (parts of VASO-C059); VASO-C088.parentClaimIds → VASO-C083, VASO-C084, VASO-C085, VASO-C086 (parts of VASO-C059); VASO-C089.parentClaimIds → VASO-C083, VASO-C084, VASO-C085, VASO-C086 (parts of VASO-C059); VASO-C093.parentClaimIds → VASO-C091, VASO-C092 (parts of VASO-C064); VASO-C093.dependsOnClaimIds → VASO-C091, VASO-C092 (parts of VASO-C064); VASO-C094.parentClaimIds → VASO-C091, VASO-C092 (parts of VASO-C064); VASO-C094.dependsOnClaimIds → VASO-C091, VASO-C092 (parts of VASO-C064)."
+  reason: "A link to a compound claim is not a link to each of its parts; the 2026-09-09 split-compound pass carried them wholesale. Each part's relations are its own to propose in a later pass. Research links stay: a study designed to move the compound bears on what it said, which is its parts."
+  actor: scripts/migrations/2026-09-09-links-by-part.ts
+  aiAssisted: true
+  kind: content

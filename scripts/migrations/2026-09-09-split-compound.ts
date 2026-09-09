@@ -68,15 +68,20 @@ for (const c of targets) {
 const claimsFile = path.join("content", "cases", loaded.dir, "claims.yaml");
 const allClaims = parseYaml(fs.readFileSync(claimsFile, "utf8")) as ({ id: string; reviewState: string } & Record<string, unknown>)[];
 const partsOf = new Map(rejected.map((r) => [r.id, r.parts]));
+const droppedLinks: string[] = [];
 for (const c of allClaims) {
-  // tombstones included: a tombstone may not link to a tombstone either
+  // tombstones included: a tombstone may not link to a tombstone either. A link to a compound is not a
+  // link to each of its parts (§3.2): it is dropped and named, for a later pass to propose per part.
   for (const f of ["parentClaimIds", "dependsOnClaimIds", "alternativeToClaimIds", "contradictsClaimIds"]) {
     const cur = c[f];
     if (!Array.isArray(cur) || !cur.some((id) => partsOf.has(id as string))) continue;
-    setField(claimsFile, c.id, f, cur, [...new Set((cur as string[]).flatMap((id) => partsOf.get(id) ?? [id]))]);
+    droppedLinks.push(`${c.id}.${f} → ${(cur as string[]).filter((id) => partsOf.has(id)).join(", ")}`);
+    setField(claimsFile, c.id, f, cur, (cur as string[]).filter((id) => !partsOf.has(id)));
   }
 }
-// Research items that would move a compound claim now name its parts.
+// Research items that would move a compound claim now name its parts: a study designed to move the
+// compound bears on what the compound said, which is exactly its parts — a research link is a question
+// asked of a claim, not evidence counted for it.
 const researchFile = path.join("content", "cases", loaded.dir, "research.yaml");
 for (const r of parseYaml(fs.readFileSync(researchFile, "utf8")) as { id: string; claimIds: string[] }[]) {
   if (!r.claimIds.some((id) => partsOf.has(id))) continue;
@@ -114,7 +119,7 @@ for (const e of evidence) {
 if (rejected.length) {
   appendHistory(loaded.dir, {
     date,
-    change: `Atomicity pass (§3.2) over the ${targets.length} claims admitted from the founding essay on ${date}: ${rejected.length} compound claim(s) split into ${added.length} atomic claim(s) and marked rejected (${rejected.map((r) => `${r.id} → ${r.parts.join("+")}`).join("; ")}); ${repointed} evidence record(s) re-pointed at the parts.`,
+    change: `${droppedLinks.length ? `Links to the compounds dropped, not carried to parts: ${droppedLinks.join("; ")}. ` : ""}Atomicity pass (§3.2) over the ${targets.length} claims admitted from the founding essay on ${date}: ${rejected.length} compound claim(s) split into ${added.length} atomic claim(s) and marked rejected (${rejected.map((r) => `${r.id} → ${r.parts.join("+")}`).join("; ")}); ${repointed} evidence record(s) re-pointed at the parts.`,
     reason: "The Arbiter parked the intake for compound claims; the second reader judged each claim's atomicity on its own anchor and the drafter split the compound ones (protocol split-v1). Verify v3 does this at intake from now on.",
     actor: `scripts/migrations/2026-09-09-split-compound.ts (reader claude-sonnet-5, splitter claude-fable-5-1; run ${runId})`,
     aiAssisted: true,

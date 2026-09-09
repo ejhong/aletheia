@@ -8,16 +8,17 @@ function clip(s: string, n: number): string {
   return s.length > n ? s.slice(0, n - 1).trimEnd() + "…" : s;
 }
 
-/** Where an admitted record lives on the site, by its id's shape. */
-function recordHref(id: string, slug: string): string | null {
+/** Where an admitted record lives on the site, by its id's shape — only for records that still have a page (a tombstoned claim has none). */
+function recordHref(id: string, slug: string, linkable: Set<string>): string | null {
+  if (!linkable.has(id)) return null;
   if (/-C\d+$/.test(id)) return `/claims/${id}/`;
   if (/^SRC-/.test(id)) return `/sources/${id}/`;
-  if (/-E\d+$/.test(id)) return `/cases/${slug}/evidence/#${id}`;
+  if (/-E\d+$/.test(id)) return `/cases/${slug}/evidence/#evidence-${id}`;
   return null;
 }
 
-function Row({ r, slug }: { r: SittingRow; slug: string }) {
-  const href = r.as ? recordHref(r.as, slug) : null;
+function Row({ r, slug, linkable }: { r: SittingRow; slug: string; linkable: Set<string> }) {
+  const href = r.as ? recordHref(r.as, slug, linkable) : null;
   return (
     <li className="py-2 border-b border-line/60 last:border-b-0 text-[13px] leading-relaxed text-ink-soft">
       <div className="flex flex-wrap items-baseline gap-x-2">
@@ -44,7 +45,7 @@ function Row({ r, slug }: { r: SittingRow; slug: string }) {
  * dispositions; the reasons are the verifier's own; the file behind them
  * is one click away.
  */
-export function RecordPanel({ sittings, slug, caseDir }: { sittings: Sitting[]; slug: string; caseDir: string }) {
+export function RecordPanel({ sittings, slug, caseDir, linkable }: { sittings: Sitting[]; slug: string; caseDir: string; linkable: Set<string> }) {
   const fileUrl = `${site.repoUrl}/blob/main/content/cases/${caseDir}/dispositions.yaml`;
   return (
     <section id="record" className="pt-14 scroll-mt-28">
@@ -80,7 +81,7 @@ export function RecordPanel({ sittings, slug, caseDir }: { sittings: Sitting[]; 
                     <h4 className="mt-2 font-mono text-[10px] uppercase tracking-[0.16em] text-ochre">refused, with the reason</h4>
                     <ul className="mt-1">
                       {s.refused.slice(0, ROWS_SHOWN).map((r) => (
-                        <Row key={`${r.key}-${r.disposition}`} r={r} slug={slug} />
+                        <Row key={`${r.key}-${r.disposition}`} r={r} slug={slug} linkable={linkable} />
                       ))}
                     </ul>
                     {s.refused.length > ROWS_SHOWN ? (
@@ -95,7 +96,7 @@ export function RecordPanel({ sittings, slug, caseDir }: { sittings: Sitting[]; 
                     <h4 className="mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-copper">admitted</h4>
                     <ul className="mt-1">
                       {s.admitted.slice(0, ROWS_SHOWN).map((r) => (
-                        <Row key={`${r.key}-${r.as}`} r={r} slug={slug} />
+                        <Row key={`${r.key}-${r.as}`} r={r} slug={slug} linkable={linkable} />
                       ))}
                     </ul>
                     {s.admitted.length > ROWS_SHOWN ? <p className="mt-1 text-[12px] text-faint">and {s.admitted.length - ROWS_SHOWN} more in the file</p> : null}

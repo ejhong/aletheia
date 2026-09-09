@@ -41,7 +41,7 @@ and does it **run itself**. The design holds on all three; the order of the
 remaining work changes. What follows is the state and the plan; the design
 after it is unchanged.
 
-- **The chain has run end to end, twice, on one case.** Cast, Not Carved:
+- **The chain has run end to end on two cases, by hand.** Cast, Not Carved:
   report (house seat with web search and fetch; the OpenAI seat as the
   comparison) → draft → verify → edition → five-seat check. Two primary
   papers the first pass could not read (Nemoy 1939, Sessa et al. 2026)
@@ -49,7 +49,10 @@ after it is unchanged.
   salt line from them; four panel seats then disputed the house verdict and
   the case displays **contested** — derived, not declared. The house report
   costs about $3.70 cached ($37.86 the one time it ran uncached), the whole
-  pass about $12, a panel check about $3.
+  pass about $12, a panel check about $3. State, Not Scar followed on
+  2026-09-09 from a founder-supplied essay (about $58 for the pass). Every
+  run so far was launched from a terminal; the Chain workflow's one
+  dispatch stopped at the pause guard, so nothing has yet run in CI.
 - **What the runs taught, and what was fixed.** Retrieval decides what the
   ledger can know: without PDFs and open-access fallback the pipeline
   admitted proponent web pages and blocked the primaries that answered
@@ -58,13 +61,15 @@ after it is unchanged.
   estimate and cannot stop a server-side turn; a run over its cap is kept
   and flagged. A stale check is set aside, not counted. Every one of these
   is a test now.
-- **Truth: three debts.** (1) A proposal's *correction* to an existing
-  record is proposed and said aloud but not applied — the ledger can hold
-  evidence that contradicts a claim's own wording (GEO-C003 says c. 820;
-  GEO-E028 dates it to 832). (2) The panel's spend is not metered; the
-  ledger is not yet the whole bill. (3) The Arbiter is off, so the merge
-  step of "AI-operated" is, for now, the founder's hand, and the pages do
-  not say so.
+- **Truth: the three debts of 2026-09-08 are paid, and two new ones are
+  named.** Corrections apply in place (`setField`) with their history
+  entry; the panel's seats are priced from their vendors' pages, so the
+  ledger is the whole bill; the Arbiter is on. New: the verifier judges
+  relevance against the case subtitle as written and an anchor against one
+  page, which refused a founder essay's headline claim and a whole family
+  of its propositions (DECISIONS, 2026-09-09); and any change to a case
+  file, a mechanical repair included, sets its panel aside — right for
+  records, costly for repairs.
 - **Beauty: what remains twice.** One roster, one retrieval layer, one run
   frame, one config reader, one appender, one case lookup — done. Still
   twice: the panel is called from its own script on its own HTTP path
@@ -73,12 +78,16 @@ after it is unchanged.
   `edition`; the maintenance scripts run on a second model client. Each of
   these folds into the chain as the loop below closes, and the folding is
   the subtraction step 5 promised — now with named candidates.
-- **Automation: nothing yet runs unattended.** Every piece of the loop
-  exists as a verb or a script; no scheduler chooses a case, no workflow
-  runs the chain, the Arbiter is disabled, and nothing re-checks after a
-  merge or answers a contested standing. Closing this loop on the one case
-  that has run is the next step, before any second case: a second case
-  through a loop that is not closed teaches nothing the first did not.
+- **Automation: the loop exists and has not run itself.** `next` chooses
+  the case and the verb and has run three steps unattended in one sitting;
+  `chain.yml` runs it and opens the PR; the Arbiter is on and judges every
+  PR; a merge re-checks through the panel, and a contested standing
+  schedules its reconsideration. What has not happened: a Chain run in CI
+  (the one dispatch stopped at the pause guard), a content run the Arbiter
+  could read (it is now handed the run's own account), and the cron, still
+  commented while `governance/operation.yaml` says paused. The first
+  supervised CI run is the next step (docs/MAINTENANCE.md, "Running the
+  chain in CI").
 
 ### Build sequence — status
 
@@ -96,10 +105,16 @@ after it is unchanged.
 
 ### Two rules settled by the runs
 
-- **The second research seat runs when the first stops finding.** The
-  house seat runs on schedule; the OpenAI seat runs on a case whose last
-  house-seat pass landed nothing (saturation), as a different pair of eyes,
-  not as a second bill on every pass.
+- **A quiet case is searched rarely, and by alternating eyes.** The cadence
+  is seven days for a case whose last pass landed something and doubles
+  after each cycle (a report and its draft) that lands nothing, to ninety
+  days; the seats alternate on such a case — the OpenAI seat after the
+  first empty cycle, the house seat after the second — never both on one
+  pass. This is what lets the system settle to almost no cost: ten quiet
+  cases cost a few dollars a month (founder direction, 2026-09-09). Until
+  that day the saturation rule never saw a landing — it looked for the
+  producer's run id where the verify run's was written — and every case
+  with runs read as saturated.
 - **A contested standing is a task, not a label.** It triggers the
   reconsideration edition and a fresh check on the schedule's next turn for
   that case; the standing stays displayed as contested until the panel

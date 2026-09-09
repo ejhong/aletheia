@@ -216,13 +216,18 @@ export function saturation(
   rows: Disposition[],
   caseSlug: string,
 ): { consecutiveEmpty: number; lastIn: string | null; producerRuns: number } {
-  const landed = new Set(rows.filter((r) => r.disposition === "in").map((r) => r.by));
+  // An `in` row is written by the verify run and names its proposal (the draft run): the draft landed
+  // it, and the report that fed the draft landed it. Until 2026-09-09 this looked for the producer's
+  // own runId in `by` and never found it, so every case with runs read as saturated.
+  const ins = rows.filter((r) => r.disposition === "in");
+  const landed = new Set([...ins.map((r) => r.by), ...ins.map((r) => (r.proposal ?? "").replace(/^proposals\//, "")).filter(Boolean)]);
   const producers = runs
     .filter((r) => r.case === caseSlug && (r.verb === "report" || r.verb === "draft") && r.outcome === "completed")
     .sort((a, b) => a.date.localeCompare(b.date) || a.runId.localeCompare(b.runId));
+  const landedProducer = (i: number) => landed.has(producers[i].runId) || (producers[i].verb === "report" && producers[i + 1]?.verb === "draft" && landed.has(producers[i + 1].runId));
   let empty = 0;
   for (let i = producers.length - 1; i >= 0; i--) {
-    if (landed.has(producers[i].runId)) break;
+    if (landedProducer(i)) break;
     empty++;
   }
   const lastIn = rows

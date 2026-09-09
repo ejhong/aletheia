@@ -52,6 +52,16 @@ export interface NextChoice {
 
 export const CADENCE_DAYS = 7;
 export const SATURATED_AFTER = 3;
+/**
+ * The cadence doubles after each producer cycle (a report and its draft)
+ * that lands nothing, up to this ceiling, and resets when a pass lands: a
+ * live case is searched weekly, a quiet one every three months. This is
+ * what lets the system settle to almost no cost (founder direction,
+ * 2026-09-09).
+ */
+export const MAX_CADENCE_DAYS = 90;
+export const emptyCycles = (consecutiveEmpty: number) => Math.floor(consecutiveEmpty / 2);
+export const cadenceDays = (consecutiveEmpty: number) => Math.min(CADENCE_DAYS * 2 ** emptyCycles(consecutiveEmpty), MAX_CADENCE_DAYS);
 
 const ageDays = (date: string, today: string) => (Date.parse(today) - Date.parse(date)) / 86_400_000;
 /** Chronological key for a run: its date and the HHMMSS its id ends with (ids of different verbs do not sort by time on their own). */
@@ -122,7 +132,7 @@ export function nextAction(cases: LoadedCase[], runs: RunRecord[], today: string
       const sat = saturation(rs, c.dispositions, c.record.slug);
       return { c, last, sat };
     })
-    .filter(({ last }) => !last || ageDays(last.date, today) >= CADENCE_DAYS);
+    .filter(({ last, sat }) => !last || ageDays(last.date, today) >= cadenceDays(sat.consecutiveEmpty));
   const reconsideration = () => {
     for (const c of cases) {
       const due = editionDue(c);
@@ -130,15 +140,16 @@ export function nextAction(cases: LoadedCase[], runs: RunRecord[], today: string
     }
     return null;
   };
-  if (candidates.length === 0) return reconsideration() ?? { case: null, verb: "rest", reason: `every case was reported within the last ${CADENCE_DAYS} days and no panel dissent is unanswered` };
+  if (candidates.length === 0) return reconsideration() ?? { case: null, verb: "rest", reason: `every case is within its cadence (${CADENCE_DAYS} days, doubling after each pass that lands nothing, up to ${MAX_CADENCE_DAYS}) and no panel dissent is unanswered` };
   const fresh = candidates.filter(({ sat }) => sat.consecutiveEmpty < SATURATED_AFTER);
   const pool = fresh.length ? fresh : candidates;
   pool.sort((a, b) => (a.last?.date ?? "").localeCompare(b.last?.date ?? ""));
   const pick = pool[0];
-  const seat: ResearchSeat = pick.sat.consecutiveEmpty > 0 && MODELS.research.seats.openai ? "openai" : MODELS.research.default;
+  // The seats alternate on a quiet case — a different pair of eyes after a pass that lands nothing, the house seat again after that — never both on one pass.
+  const seat: ResearchSeat = emptyCycles(pick.sat.consecutiveEmpty) % 2 === 1 && MODELS.research.seats.openai ? "openai" : MODELS.research.default;
   const why = !pick.last
     ? "never reported"
-    : `last reported ${pick.last.date}${pick.sat.consecutiveEmpty ? `; the last ${pick.sat.consecutiveEmpty} pass(es) landed nothing, so the second seat looks` : ""}${fresh.length === 0 ? " (every case is saturated; the least recent goes anyway)" : ""}`;
+    : `last reported ${pick.last.date}${pick.sat.consecutiveEmpty ? `; the last ${emptyCycles(pick.sat.consecutiveEmpty)} pass(es) landed nothing, so the cadence is ${cadenceDays(pick.sat.consecutiveEmpty)} days and the ${seat === "openai" ? "second" : "house"} seat looks` : ""}${fresh.length === 0 ? " (every case is saturated; the least recent goes anyway)" : ""}`;
   return { case: pick.c.record.slug, verb: "report", seat, reason: why };
 }
 

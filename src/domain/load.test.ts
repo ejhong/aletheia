@@ -85,8 +85,8 @@ describe("real content", () => {
   const isOpening = (loaded: LoadedCase) => currentEdition(loaded).assessment === null;
 
   it("a question-only opening features nothing, adopts nothing, derives no standing, and is its case's own first edition", () => {
+    // Deep Memory opened this way on 2026-09-09; a case grows out of its opening when the loop's first assessing edition lands, so the set may be empty.
     const openings = loadAllCases().filter(isOpening);
-    expect(openings.map((c) => c.record.slug)).toEqual(["deep-memory"]);
     for (const loaded of openings) {
       const ed = currentEdition(loaded);
       // Every edition so far is question-only (a correction is a new edition, editions being append-only), chained from a first with no predecessor.
@@ -133,10 +133,15 @@ describe("real content", () => {
     }
   });
 
-  it("every case's first edition is the migration, adopting a transfer that asserts nothing new", () => {
-    for (const loaded of loadAllCases().filter((c) => !isOpening(c))) {
+  it("every case's first edition is the migration, adopting a transfer that asserts nothing new — or a question-only opening", () => {
+    for (const loaded of loadAllCases()) {
       const ed = loaded.editions[0];
       expect(ed.previous).toBeNull();
+      if (ed.assessment === null) {
+        // A case that opened question-only (Deep Memory, 2026-09-09): its first edition features nothing and adopts nothing.
+        expect(ed.featuredClaimIds).toEqual([]);
+        continue;
+      }
       const run = loaded.assessmentRuns.find((r) => r.runId === ed.assessment?.runId)!;
       expect(run.migratedFrom).toBeTruthy();
       expect(run.role).toBe("draft");

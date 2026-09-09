@@ -61,6 +61,12 @@ export function StandingPanel({
           </div>
           <p className={`font-mono text-[10px] uppercase tracking-[0.14em] ${standing.status === "ratified" ? "text-copper" : "text-ochre"}`}>{standingLine}</p>
         </div>
+        {/* AGENTS.md §4 and §7: an AI assessment is labeled as one, and never implied to be a reviewed human conclusion —
+            separately from the ratification, which is independent models concurring, not a human review. */}
+        <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.14em] text-faint">
+          an AI-generated assessment · not reviewed by a human ·{" "}
+          {standing.status === "ratified" ? "ratified by independent models, which is not human review" : "not yet independently ratified"}
+        </p>
         <p className="mt-4 text-[15px] leading-[1.75] text-ink-soft whitespace-pre-line">
           <LinkedRecordText text={run.caseAssessment.synthesis} />
         </p>
@@ -124,7 +130,7 @@ export function StandingPanel({
                       <div className="mt-1 flex flex-wrap gap-1.5">{c.caseAssessment.weakestLinks.map(chip)}</div>
                     </div>
                   </div>
-                  <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.12em] text-faint">run {c.runId} · {c.date} · {assessmentLabels[c.caseAssessment.verdict]} · per-claim verdicts on each claim page</p>
+                  <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.12em] text-faint">run {c.runId} · {c.date} · {assessmentLabels[c.caseAssessment.verdict]} · an AI seat, blind to the judgment · not human reviewed · per-claim verdicts on each claim page</p>
                 </div>
               </details>
             );

@@ -1,0 +1,165 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 245
+title: "Chain: 2026-09-09"
+url: https://github.com/ejhong/aletheia/pull/245
+verdict: pass
+reason: "4 of 5 seats affirm compliance; one seat's objection is a review note
+  the operator answers on the record: GPT-5.6 Sol (OpenAI) (§3.5, §3.6, §3.9;
+  other)"
+outcome: merged
+outcomeAt: 2026-09-09
+judgedAgainst: b46b3798bd
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The founder-supplied home page (SRC-JHONG-2026) is admitted with a
+      permission recorded to the §3.15 standard — grantor (Eugene Jhong, own
+      work), date (2026-09-09), channel (inbox statement), and where the
+      correspondence is held (inbox/processed/…) — so no confidence-material
+      problem arises, and the only added URL (github.com/ejhong/birdmen)
+      RESOLVES per the tooling. All 25 works the page names but that were not
+      retrieved are dispositioned `blocked` with a route and nothing is quoted
+      from them, which is exactly the honest handling §3.7/§3.8 asks for.
+      Verification labels are conservative (`unverified` on the source, every
+      evidence record `weak`), disputed second-reader judgments are preserved in
+      each record's `limitations` rather than suppressed (E015, E017, E022,
+      E023, E024), and the verify run's refusals and splits are reasoned and
+      anchored in verification.md. The edition's article and assessment
+      repeatedly say the ledger rests on one self-published, unaudited source,
+      grade most featured claims `unresolved`, and mark prior-driven grades as
+      such — the article does not assert more than the ledger holds. The panel
+      ran with 5 of 5 seats and their verdicts (four `unresolved`, one
+      `weakly_supported`) are all within one step of the draft, each displayed
+      in its own words. Two minor imperfections worth a note but not violations:
+      the source's verificationNote (\"not retrievable when drafted (no URL)\")
+      is stale and sits oddly beside an identifier naming a commit and md5 for a
+      page the run did retrieve as a supplied document; and DEEP-E022/E024 keep
+      a `supports` direction toward claims their own second reader says they do
+      not bear on, which is at least visible on the record."
+    cost:
+      model: claude-opus-5
+      inputTokens: 158429
+      outputTokens: 1720
+      usd: 0.835145
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: violates
+    rules:
+      - §3.5
+      - §3.6
+      - §3.9
+    reasoning: Several admitted Evidence records retain inaccurate directions or
+      claim links even though their own second-reader notes identify the
+      mismatch. DEEP-E015 and DEEP-E017 are marked `supports` although their
+      statements only qualify the scope of the numerical claims; DEEP-E022 is
+      linked as support for DEEP-C037 even though it addresses only DEEP-C038;
+      and DEEP-E024 supports DEEP-C015 despite stating only the Kurdish-name
+      claim in DEEP-C016. Most clearly, DEEP-E023 treats a pointer to an
+      unretrieved wear study as support for that study's alleged finding,
+      contrary to the rule that a source or citation is not itself evidence.
+      These records should be reclassified as `qualifies` or `context only`, or
+      have the unsupported claim links removed; recording the dispute in
+      `limitations` does not cure the structured evidence-direction error.
+    paradigm: other
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 105648
+      outputTokens: 1863
+      usd: 0.459852
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.1
+      - §3.2
+      - §3.5
+      - §3.7
+      - §3.8
+      - §3.13
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: The intake of the Deep Memory homepage strictly adheres to epistemic
+      standards and phase-1 rules. The source (SRC-JHONG-2026) is marked with an
+      honest verification label (`unverified`), explicit provenance, and a
+      verbatim record of supplier permission satisfying the §3.15
+      confidentiality rule. The verification pass thoroughly enforced atomic
+      propositions and explicit directionality, rejecting compound statements
+      and noting second-reader disputes directly on evidence records. The new
+      edition for Deep Memory is calibrated, transparent about the ledger's
+      evidentiary limits, and evaluated by an independent 5-seat panel whose
+      concurrence and disagreements are faithfully preserved without
+      check-weakening.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 119746
+      outputTokens: 1456
+      usd: 0.095269
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The deep-memory intake admits one founder-supplied source
+      (SRC-JHONG-2026) with a recorded permission stamp
+      (who/when/channel/held-at), honest `unverified` label, and weak
+      self-report framing; the GitHub URL resolves. Verify rejected 31
+      non-atomic or overreaching candidates with reasons, split survivors, and
+      attached second-reader direction disputes on several evidence
+      records—consistent with §3.2, §3.5, §3.8–3.9. The edition and five check
+      assessments are append-only, stamped, labeled `humanReviewed: false` /
+      role draft|check, verdict unresolved (4 of 5 seats) with thin-ledger
+      honesty, competing accounts, and explicit cruxes. Vasocomputation adds
+      only panel checks. No AGENTS.md edit, no confidence leak, no fabricated
+      locator visible in the material or citation-verification output."
+    cost:
+      model: grok-4.5
+      inputTokens: 108513
+      outputTokens: 209
+      usd: 0.21828
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.5
+      - §3.7
+      - §3.8
+      - §3.13
+      - §3.14
+      - §3.15
+    reasoning: "The diff does not touch AGENTS.md, adds no unresolvable identifiers
+      (the one added URL github.com/ejhong/birdmen and the three DOIs named in
+      the blocked-source dispositions all RESOLVE in the verification section),
+      and the intake pipeline's behavior is exactly what the constitution
+      demands: 31 of 42 proposed records rejected with specific reasons
+      (non-atomicity, anchor overreach, locator mismatch), compound claims and
+      evidence split into atomic parts, second-reader disputes over direction
+      recorded verbatim in the limitations of E015/E017/E022/E023/E024 rather
+      than hidden. The founder-supplied page enters only with a recorded
+      permission line (who, date, channel, holding location), is labeled
+      `verification: unverified` and self-published, is graded weak self-report
+      throughout, and nothing is quoted from the 25 unretrieved works, which are
+      dispositioned `blocked` with retrieval routes. The article says only what
+      the ledger holds — it repeatedly grades claims 'unresolved' or
+      'provisionally supported on priors' and flags that the decisive bundle
+      null has no supporting record — and the edition and check files are
+      stamped runId/model/promptVersion with `humanReviewed: false` and role
+      labels, with five-seat panel verdicts and disagreement (Gemini's
+      weakly_supported vs four unresolved seats) displayed rather than buried.
+      The budget-capped report run refused with nothing sent, which is
+      fail-closed behavior, not a dodge. Minor imperfections (a stale
+      verificationNote saying 'not retrievable when drafted' that the same
+      record supersedes, an edition rationale saying 48 claims where the ledger
+      holds 47, a garbled mechanical disposition key for E021) are routine
+      record-keeping noise, not violations of any named rule."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 108871
+      outputTokens: 3523
+      usd: 0.018092
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 601207
+  outputTokens: 8771
+  usd: 1.6266
+harvestedAt: 2026-09-10

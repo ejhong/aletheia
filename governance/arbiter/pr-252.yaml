@@ -1,0 +1,138 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 252
+title: "Verify v5: the second reader names the direction it finds and the claims
+  the passage bears on, and verify writes them"
+url: https://github.com/ejhong/aletheia/pull/252
+verdict: pass
+reason: "4 of 5 seats affirm compliance; one seat's objection is a review note
+  the operator answers on the record: GPT-5.6 Sol (OpenAI) (§3.8, §3.14, §3.15;
+  provenance)"
+outcome: merged
+outcomeAt: 2026-09-09
+judgedAgainst: 6f37578af3
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches only protocol text, pipeline code, tests, and two
+      docs; AGENTS.md is untouched, so §3.15's reservation is not engaged. The
+      substantive change tightens rather than loosens the checks: under v2 a
+      second reader's dispute of an evidence record's direction was written in
+      prose while the wrong structured `direction` and `claimIds` stood; under
+      v5 the reader's named direction is written to the record, non-borne claim
+      links are dropped, and a record bearing on none of its named claims is now
+      refused outright — that is stronger enforcement of §3.5 and §3.2, not
+      check-weakening. Provenance is preserved rather than laundered: every
+      applied change appends a stamped limitation naming the second reader's
+      model and date (\"Direction set to ... by the second reader (reader-x,
+      2026-09-09)\"), plus a run note, so who changed what and when remains
+      inspectable (§3.14, §3.8). `applyReader` intersects `bearsOn` with the
+      record's existing `claimIds`, so no dangling or invented claim ids can be
+      introduced (§8). The protocol text also codifies §3.6 explicitly (a
+      pointer to an unretrieved study is `context`). No citations, identifiers,
+      or confidential material are added; the DECISIONS.md entry records the
+      founder's direction with date and channel as the operating record
+      permits."
+    cost:
+      model: claude-opus-5
+      inputTokens: 18222
+      outputTokens: 817
+      usd: 0.111535
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: violates
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: "`applyReader` materially changes an admitted evidence record’s
+      `direction` and `claimIds`, but records only a free-form reader stamp
+      containing model and date. The tests explicitly expect stamps such as
+      `(reader-x, 2026-09-09)`, while neither the verification runId nor prompt
+      version is attached to the change; the record’s existing `origin`
+      continues to identify the drafter instead. This falls short of §3.15’s
+      requirement that every change be stamped with model, runId, prompt
+      version, and date, and of the versioning and exact-provenance requirements
+      in §§3.14 and 3.8. The fix should preserve structured provenance for each
+      reader-applied mutation, including the verify runId and `verify-v5` prompt
+      version, rather than only model/date text in `limitations`."
+    paradigm: provenance
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 11992
+      outputTokens: 2779
+      usd: 0.103548
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.5
+      - §3.8
+      - §3.15
+    reasoning: "The pull request implements protocol verify-v5, addressing review
+      note #248 by allowing the adversarial second reader to correct structured
+      evidence direction and narrow claim links rather than merely appending
+      prose dissents in limitations. The changes strengthen epistemic rigor
+      under §3.5 by ensuring evidence direction accurately reflects
+      verification, and preserve exact provenance under §3.8 and §3.15 by
+      stamping any reader overrides in the limitations list. No constitutional
+      rules or pipeline checks are weakened, and AGENTS.md is untouched."
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 12918
+      outputTokens: 867
+      usd: 0.01294
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff upgrades verify from v4 to v5 so a second reader's disputed
+      direction and bearsOn findings are written onto the admitted evidence
+      record (or refuse it when bearsOn is empty), stamped in limitations as the
+      reader's act, instead of leaving the drafter's structured fields standing
+      with only a prose dissent. That strengthens §3.5 and the adversarial check
+      rather than weakening §3.15; AGENTS.md is untouched; no citations,
+      confidence material, or run-ledger content are added. Protocol text,
+      schema, applyReader helper, split-part path, tests, AUTOMATION.md, and the
+      dated DECISIONS.md entry are consistent with the founder's recorded
+      direction and with honest provenance stamping.
+    cost:
+      model: grok-4.5
+      inputTokens: 12667
+      outputTokens: 164
+      usd: 0.026318
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.5
+      - §3.6
+      - §3.14
+      - §3.15
+    reasoning: "This is a pipeline/protocol change, not a content change: no
+      citations are added (verification section is empty), AGENTS.md is
+      untouched, and no run records or confidence material are involved. The
+      change strengthens rather than weakens the §3.15 checks — under v2 a
+      disputed direction was admitted with the drafter's possibly-wrong label
+      standing plus a prose dissent; under v5 the second reader's correction is
+      applied with the reader's model, date, the old value, and the reason
+      written into `limitations`, which is more honest provenance (§3.5, §3.14),
+      and records bearing on no named claim are now refused outright. The
+      refusal on an empty `bearsOn` list and the retained v2 dissent path are
+      both tested in chain.test.ts, and the applied changes stay within intake
+      (records remain `ai_extracted` drafts); featured-content publication still
+      requires multi-model ratification, so no single model's judgment is being
+      elevated to a ratified one. The DECISIONS.md entry records the founder's
+      direction with date and channel, consistent with the §3.15
+      operating-record amendment, and archiving verify-v4 alongside the new
+      protocol is ordinary housekeeping. I see no rule broken."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 12914
+      outputTokens: 1144
+      usd: 0.002509
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 68713
+  outputTokens: 5771
+  usd: 0.2568
+harvestedAt: 2026-09-10

@@ -1,0 +1,133 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 255
+title: "Prompt caching by rule: nothing automatic on one-shot calls, a marked
+  prefix wherever calls share one"
+url: https://github.com/ejhong/aletheia/pull/255
+verdict: pass
+reason: "4 of 5 seats affirm compliance; one seat's objection is a review note
+  the operator answers on the record: GPT-5.6 Sol (OpenAI) (§3.15; provenance)"
+outcome: merged
+outcomeAt: 2026-09-10
+judgedAgainst: 2982d650cc
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "This is a pipeline/infrastructure change about prompt caching; it
+      touches no content/ records, adds no citations (verification found none),
+      and does not edit AGENTS.md. The checks in §3.15 are untouched: the
+      Arbiter still sends the full constitution to every seat — it is merely
+      relocated from the packet body to a `cachedPrefix` block placed first in
+      the same user turn (scripts/arbiter.mjs, src/lib/vendors.mjs), so no seat
+      loses information and no ratification path is loosened. Verify likewise
+      still passes the full retrieved source text and the split step its
+      anchoring text; only their position in the request changes, and both
+      builders are now pure functions with tests. The usage accounting change
+      (subtracting cached tokens from inputTokens and reporting
+      cacheRead/cacheWrite separately) makes the spend ledger more, not less,
+      faithful to what the vendor reported. The DECISIONS.md entry records the
+      founder direction of 2026-09-10 with its date and quoted wording, which
+      §3.15 expressly permits; the trailing literal `\\n` and missing final
+      newline are cosmetic. Nothing here presents a draft as ratified,
+      fabricates provenance, or publishes confidential material."
+    cost:
+      model: claude-opus-5
+      inputTokens: 10584
+      outputTokens: 742
+      usd: 0.111389
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: The added `docs/DECISIONS.md` entry attributes the caching policy and
+      the quotation “use this strategy with all api calls” to a founder
+      direction dated 2026-09-10, but it does not record the channel through
+      which that direction was given. Section 3.15 expressly requires founder
+      directions recorded in the decisions log, configuration, or protocols to
+      be stamped with both date and channel. The PR-body session link does not
+      cure the provenance omission in the public decision record itself. Add the
+      channel—such as the identified working session, issue, or PR review—and,
+      where appropriate, its stable record location; the caching implementation
+      otherwise visibly preserves the constitution in the Arbiter prompt and
+      does not weaken the adjudication checks.
+    paradigm: provenance
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 10797
+      outputTokens: 944
+      usd: 0.062068
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.15
+    reasoning: The change introduces deliberate prompt caching controls across API
+      calls, switching from automatic caching on one-shot calls to explicit
+      cached prefixes where large contexts are reused (such as the constitution
+      in Arbiter seat calls, and source text in verification and splitting).
+      AGENTS.md is not modified, and the integrity of the constitutional
+      verification checks in scripts/arbiter.mjs and src/pipeline/ is preserved
+      without altering prompt semantics or weakening validation gates. Decisions
+      are properly logged in docs/DECISIONS.md and accompanied by unit tests.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 11939
+      outputTokens: 856
+      usd: 0.012164
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff is infrastructure only: it turns off automatic Anthropic
+      cache_control on one-shot structured calls, adds an optional cachedPrefix
+      breakpoint for shared text (verify source, split anchor, panel
+      constitution), and surfaces cache read/write tokens in vendor usage and
+      the seat meter. AGENTS.md is untouched; docs/DECISIONS.md only records the
+      founder’s 2026-09-10 spend finding and the same rule. Seat packets still
+      receive the full constitution plus the untrusted change—only the transport
+      shape changes—so §3.15 concurrence and the other epistemic checks are not
+      weakened. No content/, citations, assessments, or confidence material are
+      added. Tests cover the pure request builders."
+    cost:
+      model: grok-4.5
+      inputTokens: 11246
+      outputTokens: 163
+      usd: 0.023585
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §4
+      - §8
+    reasoning: "This is an infrastructure/cost change, not a content or epistemic
+      change: no citations, locators, or assessments are added, and the
+      citation-verification section confirms none appear. The constitution still
+      reaches every seat in full — arbiter.mjs merely moves the identical
+      constitution text into a cachedPrefix block ahead of the same packet, so
+      no check in §3.15 is weakened, dodged, or reclassified; verify's reader
+      and the split step likewise still receive the full source and anchoring
+      text, now with an explicit 'data under review' label, which if anything
+      improves §3.9-style labeling. Removing automatic caching from one-shot
+      calls does not alter what any model judges, only what it costs; the
+      honest-usage reporting (splitting cache reads/writes from input) is more
+      transparent than before. The DECISIONS.md entry records the founder
+      direction with a date and quotes it, which §3.15 permits for
+      operating-record directions; I cannot independently verify the session,
+      but there is no positive evidence of misattribution, and no AGENTS.md edit
+      occurs. Minor non-violations worth a review note: a stray literal '\\n'
+      line left at the end of DECISIONS.md, and the PR body claims priceOf now
+      prices cache reads/writes, but no priceOf change appears in this diff — I
+      would want confirmation that ledger pricing actually consumes the new
+      fields."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 11701
+      outputTokens: 2150
+      usd: 0.00283
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 56267
+  outputTokens: 4855
+  usd: 0.212
+harvestedAt: 2026-09-10

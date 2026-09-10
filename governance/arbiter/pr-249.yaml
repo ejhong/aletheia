@@ -1,0 +1,127 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 249
+title: The Deep Memory cover is the founder's lab-site picture, brought over
+  unchanged with its record
+url: https://github.com/ejhong/aletheia/pull/249
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-09
+judgedAgainst: ee355ceed4
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "This is a housekeeping cover-image swap with no citations
+      (verification tooling found none) and no edit to AGENTS.md. The image
+      record is honestly labeled: source `generated`, license and credit state
+      it is AI-generated editorial artwork made for the founder's lab site and
+      brought here unchanged, and the model field says plainly 'OpenAI built-in
+      Imagegen (model identifier not exposed)' rather than inventing a model
+      name — the opposite of fabricated provenance (§3.8). The history entry
+      records what changed, why, who acted, the channel and date of the
+      founder's direction, the upstream repo, commit 5dd8e043 and an md5,
+      satisfying §3.14 and the runId/model/date stamping in §3.15/§4.
+      Founder-supplied material enters under the permission rule; the direction
+      to use it, recorded with date and channel, is that permission, and the
+      image is published as editorial art depicting an idea, not as evidence.
+      The style-table row and script tone set are updated to match the picture
+      actually used, so the documentation does not misdescribe the asset. The
+      alt text and prompt are mutually consistent (bird above a shore, layered
+      earth), so I see no internal contradiction that would indicate invention."
+    cost:
+      model: claude-opus-5
+      inputTokens: 10971
+      outputTokens: 860
+      usd: 0.076355
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: "The replacement is recorded with specific provenance: repository,
+      commit, content hash, generation date, model disclosure, run ID, full
+      prompt, operator, and dated founder direction. The founder’s recorded
+      request to bring the image here supplies permission under §3.15, while the
+      metadata clearly labels it as AI-generated editorial artwork rather than
+      evidence or a human-produced assessment. The history preserves the retired
+      cover’s run ID and explains the change instead of silently rewriting the
+      record, satisfying the relevant version-history requirement. No citation
+      failure, confidential-source exposure, constitution edit, or weakening of
+      publication checks appears in the diff."
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 6963
+      outputTokens: 1196
+      usd: 0.051772
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules: []
+    reasoning: The pull request replaces the Deep Memory editorial cover image with
+      an AI-generated artwork previously created for the founder's lab site,
+      following documented founder direction. The image metadata in images.yaml
+      is properly updated to reflect its AI-generated status, model origin, run
+      date, and prompt, fully complying with image styling guidelines and
+      provenance requirements (§3.8, §4). An append-only history entry is added
+      to history.yaml documenting the swap, its reason, and the retirement of
+      the prior cover record. No core claims, evidence, or citations are
+      modified, nor are any constitutional checks weakened.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 7622
+      outputTokens: 675
+      usd: 0.008248
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff only swaps the Deep Memory cover binary, its images.yaml
+      register entry, matching tone rows in IMAGE_STYLE.md and
+      generate-case-art.mjs, and an append-only history line. Provenance is
+      stamped honestly (lab origin and commit, md5, style-v2, runId, full
+      prompt, model labeled as identifier-not-exposed rather than invented,
+      credit that it is AI editorial artwork brought over at founder request).
+      Founder direction is recorded with date and channel per §3.15; AGENTS.md
+      is untouched; no citations, confidence material, or check-weakening
+      appear. Generated cover remains non-evidential editorial art as
+      IMAGE_STYLE requires.
+    cost:
+      model: grok-4.5
+      inputTokens: 7623
+      outputTokens: 162
+      usd: 0.016218
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: The change swaps a cover image under a founder direction that is
+      recorded with date and channel ('in session 2026-09-09') in the history
+      entry, which under §3.15 is exactly how founder-supplied material becomes
+      publishable — the direction to use his own lab-site image, so recorded, is
+      the permission. Provenance is preserved exactly (source repo, commit
+      5dd8e043, md5, original run id, model label, full prompt), satisfying §3.8
+      and §3.14; the image stays labeled as AI-generated editorial artwork
+      depicting an idea, not evidence, so §4's honesty rules hold. The edit to
+      docs/IMAGE_STYLE.md is not an edit to AGENTS.md, so §3.15's constitution
+      rule is not triggered, and no check is weakened. Nothing in the diff is
+      internally inconsistent; the unverifiable session and commit hash are
+      carried-over locators for post-training-cutoff facts, not positive
+      evidence of fabrication.
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 7925
+      outputTokens: 954
+      usd: 0.001666
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 41104
+  outputTokens: 3847
+  usd: 0.1543
+harvestedAt: 2026-09-10

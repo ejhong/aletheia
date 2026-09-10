@@ -1,0 +1,122 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 254
+title: "The reader's acts are structured provenance: each change it makes at
+  intake is stamped on the record with model, run id, prompt version and date"
+url: https://github.com/ejhong/aletheia/pull/254
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-09
+judgedAgainst: 51c4d3f9f6
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "This is a pipeline/schema change that strengthens provenance rather
+      than weakening it: `readerActs` records each intake change the second
+      reader makes to an evidence record with field, from, to, model, runId,
+      promptVersion, date and reason, and the prose limitation note now names
+      the run and the protocol — directly serving §3.14 and §3.15's stamping
+      requirement. `origin` is explicitly left as the drafter's, so no actor is
+      misattributed, and a dissent that changes nothing writes no act, avoiding
+      an invented change record. AGENTS.md is untouched; no §3.15 check is
+      loosened or dodged. No content/ citations are added, and the verification
+      section reports no identifiers, so there is no fabrication surface. Tests
+      assert both the new stamp text and the act arrays, and the docs and
+      decisions log record the change with date and the review note it answers.
+      The PR body's claim that this closes review note #253 is a claim about the
+      record, not a directive, and nothing in the diff presents an unratified
+      draft as ratified."
+    cost:
+      model: claude-opus-5
+      inputTokens: 13227
+      outputTokens: 583
+      usd: 0.08071
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.5
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: The change strengthens exact and versioned provenance by recording
+      each reader-applied direction or claim-link change with the field, before
+      and after values, model, run ID, prompt version, date, and reason. It
+      preserves prior acts append-only, keeps the drafter’s origin distinct from
+      the reader’s intervention, and also stamps non-mutating direction dissents
+      in the limitations text. Remembered judgments use the remembered run ID
+      and date, while tests cover both substantive changes and no-change
+      dissents. No constitution file, publication gate, citation, confidence
+      material, or epistemic check is weakened.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 8469
+      outputTokens: 1421
+      usd: 0.062296
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: "The PR addresses review note #253 by capturing changes made by the
+      second reader at intake (modifications to direction or claim IDs) in a
+      structured `readerActs` array on `EvidenceSchema`. Each act explicitly
+      records `field`, `from`, `to`, `model`, `runId`, `promptVersion`, `date`,
+      and `reason`, strengthening exact provenance and versioning under §3.8,
+      §3.14, and §3.15. No constitution files are modified, no checks are
+      weakened, and no citations or unverified records are introduced."
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 9283
+      outputTokens: 635
+      usd: 0.009343
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff adds optional structured readerActs on Evidence
+      (field/from/to plus model, runId, promptVersion, date, reason), wires
+      applyReader to stamp each actual direction or claimIds change that way,
+      and enriches the existing limitations prose with run id and protocol
+      version. That tightens §3.14/§3.15 provenance rather than weakening
+      checks; origin remains the drafter's. Docs and tests match the behavior.
+      No AGENTS.md edit, no citations, no confidence material, no fabricated
+      records.
+    cost:
+      model: grok-4.5
+      inputTokens: 9200
+      outputTokens: 128
+      usd: 0.019168
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+      - §3.8
+    reasoning: "The change strengthens provenance rather than weakening anything:
+      reader-applied changes to `direction` or `claimIds` — previously stamped
+      only as prose with model and date — now carry the full §3.14/§3.15 stamp
+      set (model, runId, promptVersion, date, reason) both in structured
+      `readerActs` entries on the record and in the limitations prose, which
+      directly answers review note #253's complaint that run id and prompt
+      version were missing. The schema change is additive and optional, `origin`
+      correctly remains the drafter's, dissent-without-change produces no act
+      (so the record does not misattribute an action that did not happen), and
+      the remembered-run logic stamps the run that actually answered rather than
+      inventing one. No citations or locators are added, AGENTS.md is untouched,
+      no confidence material appears, and the diff is complete with no omitted
+      files, so there is nothing hidden that could change the verdict."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 9404
+      outputTokens: 394
+      usd: 0.001608
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 49583
+  outputTokens: 3161
+  usd: 0.1731
+harvestedAt: 2026-09-10

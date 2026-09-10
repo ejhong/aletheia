@@ -169,3 +169,17 @@ describe("a sitting knows its deadline and writes its progress", () => {
     expect(f.stopped).toBeUndefined();
   });
 });
+
+describe("the CLI reads every value flag it documents", () => {
+  it("takes --deadline-minutes and --out as values, not bare flags", async () => {
+    const { splitArgs, VALUE_FLAGS } = await import("../lib/args.ts");
+    const r = splitArgs(["--run", "--steps", "6", "--deadline-minutes", "240", "--out", "next.json"], VALUE_FLAGS);
+    expect(r.values).toEqual({ "--steps": "6", "--deadline-minutes": "240", "--out": "next.json" });
+    expect([...r.flags]).toEqual(["--run"]);
+    expect(r.args).toEqual([]);
+    // A flag not on the list is bare, and its would-be value a positional: the 2026-09-10 fault, kept as the contrast.
+    const bad = splitArgs(["--out", "next.json"], ["--steps"]);
+    expect(bad.values).toEqual({});
+    expect(bad.args).toEqual(["next.json"]);
+  });
+});

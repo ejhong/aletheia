@@ -33,19 +33,11 @@ import { runEdition } from "../src/pipeline/edition.ts";
 import { runCheck } from "../src/pipeline/check.ts";
 import { runNext } from "../src/pipeline/next.ts";
 import { runInbox } from "../src/pipeline/inbox.ts";
+import { splitArgs, VALUE_FLAGS } from "../src/lib/args.ts";
 
 const [verb, ...rest] = process.argv.slice(2);
-const flagNames = new Set(["--seat", "--seats", "--reconsider", "--steps"]);
-const flags = new Set<string>();
-const args: string[] = [];
-const values: Record<string, string> = {};
-for (let i = 0; i < rest.length; i++) {
-  const a = rest[i];
-  if (flagNames.has(a)) values[a] = rest[++i] ?? "";
-  else if (a.startsWith("--")) flags.add(a);
-  else args.push(a);
-}
-const flagValue = (name: string) => values[name];
+const { args, flags, values } = splitArgs(rest, VALUE_FLAGS);
+const flagValue = (name: (typeof VALUE_FLAGS)[number]) => values[name];
 
 
 await (async () => {

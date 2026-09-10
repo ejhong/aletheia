@@ -56,6 +56,8 @@ export interface RunOutcome {
   runId: string;
   reason?: string;
   cost?: Cost;
+  /** The content files the run wrote, as the run record lists them. */
+  wrote?: string[];
 }
 
 export function openRun(
@@ -84,15 +86,16 @@ export function openRun(
  * but the record says so, loudly, because the estimate that admitted it was
  * wrong and must be looked at.
  */
-export function closeRun(run: Run, outcome: RunRecord["outcome"], extra: { reason?: string; model?: string } = {}): RunOutcome {
+export function closeRun(run: Run, outcome: RunRecord["outcome"], extra: { reason?: string; model?: string; wrote?: string[] } = {}): RunOutcome {
   const cost = sumCost(spendFor(run.runId, run.root));
   const cap = fs.existsSync(configFile("budget", run.root)) ? loadBudget(run.root).usd.perRun : null;
   const over = cap !== null && cost.usd !== null && cost.usd > cap ? `OVER THE PER-RUN CEILING: $${cost.usd} spent against $${cap}; the estimate under-read this call` : null;
   const reason = [extra.reason, over].filter(Boolean).join(" — ") || undefined;
   if (over) console.error(`${run.runId}: ${over}`);
   const stamp = extra.model === undefined ? run.stamp : { ...run.stamp, model: extra.model };
-  writeRun({ ...stamp, outcome, cost, ...(reason ? { notes: reason } : {}) }, run.root);
-  return { outcome, runId: run.runId, ...(reason ? { reason } : {}), cost };
+  const wrote = extra.wrote?.length ? extra.wrote : undefined;
+  writeRun({ ...stamp, outcome, cost, ...(reason ? { notes: reason } : {}), ...(wrote ? { wrote } : {}) }, run.root);
+  return { outcome, runId: run.runId, ...(reason ? { reason } : {}), cost, ...(wrote ? { wrote } : {}) };
 }
 
 export function writeProposal(proposal: Proposal, root = process.cwd()): string {

@@ -116,7 +116,9 @@ material; the label fails in both directions.
 One file per run, append-only, never a mutation of canon:
 
 - `runId`, `model`, `date`, `promptVersion`, `humanReviewed`, `role`
-  (`draft` written by the drafter; `check` written blind by another vendor).
+  (`draft` written by the drafter; `check` written blind by another vendor);
+  `producedBy` — the pipeline run that wrote the record (its own `runId` is
+  the record's id, a different thing).
 - `basis.ledgerHash` — the hash of the ledger this run judged. Staleness is
   a hash, not a date: a check is current while the ledger still hashes the
   same. Optional for runs that predate the field (date fallback).
@@ -145,7 +147,10 @@ The reader's unit: one immutable file binds what a reader experiences as
 one telling.
 
 - `runId`, `date`, `model`, `promptVersion`, `rationale` (why this edition
-  replaced its predecessor).
+  replaced its predecessor); `producedBy` — the pipeline run
+  (`proposals/<runId>/run.yaml`) that wrote it, absent on editions written by
+  hand. The run record lists what it wrote (`wrote`), so the link runs both
+  ways.
 - `assessment` — `{runId, hash}` of the adopted draft run; the loader
   recomputes the hash and fails the build on a mismatch, so an edited
   overlay can never silently change the verdict beneath an essay. Null only

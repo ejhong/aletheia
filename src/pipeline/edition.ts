@@ -178,7 +178,7 @@ function inputsHashOf(loaded: LoadedCase, root: string): string {
 export function assembleEdition(
   loaded: LoadedCase,
   reply: EditionReply,
-  ctx: { model: string; promptVersion: string; now: Date; root: string; reconciles?: string[] },
+  ctx: { model: string; promptVersion: string; now: Date; root: string; reconciles?: string[]; runId?: string },
 ): AssembledEdition {
   const date = isoDate(ctx.now);
   const stamp = hhmmssUTC(ctx.now);
@@ -190,6 +190,7 @@ export function assembleEdition(
     const a = reply.assessment;
     const parsed = AssessmentRunSchema.safeParse({
       runId: `${date}-edition-${stamp}`,
+      ...(ctx.runId ? { producedBy: ctx.runId } : {}),
       model: ctx.model,
       date,
       promptVersion: ctx.promptVersion,
@@ -235,6 +236,7 @@ export function assembleEdition(
 
   const parsedEdition = EditionSchema.safeParse({
     runId: `edition-${date}-${stamp}`,
+    ...(ctx.runId ? { producedBy: ctx.runId } : {}),
     date,
     model: ctx.model,
     promptVersion: ctx.promptVersion,
@@ -338,7 +340,7 @@ export async function runEdition(caseKey: string, opts: EditionOptions = {}): Pr
       writeWorkingFile(runId, "errors.md", `- ${reason}`, root);
       return closeRun(run, "failed", { reason, model: reply.model });
     }
-    let assembled = assembleEdition(loaded, reply.data, { model: reply.model, promptVersion: protocol.version, now: now(), root, reconciles });
+    let assembled = assembleEdition(loaded, reply.data, { model: reply.model, promptVersion: protocol.version, now: now(), root, reconciles, runId });
     if (assembled.errors.length) {
       // One repair round: the loader's findings go back with the reply. The
       // checks are mechanical (caps, ids, coverage), so the second answer is
@@ -350,7 +352,7 @@ export async function runEdition(caseKey: string, opts: EditionOptions = {}): Pr
         `\n\nReturn the complete corrected JSON — the whole candidate, not a patch — keeping everything that was not at fault.\n\n${JSON.stringify(reply.data)}`;
       reply = await edit(system, repair, run.meter);
       writeWorkingFile(runId, "reply-repaired.json", JSON.stringify(reply.data, null, 1), root);
-      assembled = assembleEdition(loaded, reply.data, { model: reply.model, promptVersion: protocol.version, now: now(), root, reconciles });
+      assembled = assembleEdition(loaded, reply.data, { model: reply.model, promptVersion: protocol.version, now: now(), root, reconciles, runId });
     }
     const { edition, assessment, errors } = assembled;
     if (errors.length) {
@@ -364,17 +366,18 @@ export async function runEdition(caseKey: string, opts: EditionOptions = {}): Pr
       assessmentFile = path.join(caseDir, "assessments", `${assessment.runId}.yaml`);
       writeYamlFile(
         assessmentFile,
-        `# Draft assessment written by the edition verb (${reply.model}, ${protocol.version}) on ${date} for\n# edition ${edition.runId}. Append-only; NOT human reviewed; standing derives from blind checks.`,
+        `# Draft assessment written by the edition verb (${reply.model}, ${protocol.version}) on ${date} for\n# edition ${edition.runId}, by run ${runId} (proposals/${runId}/run.yaml). Append-only; NOT human reviewed; standing derives from blind checks.`,
         assessment,
       );
     }
     const editionFile = path.join(caseDir, "editions", `${edition.runId}.yaml`);
     writeYamlFile(
       editionFile,
-      `# Edition candidate written by the edition verb (${reply.model}, ${protocol.version}) on ${date}.\n# Replaces ${incumbent.runId} only if the panel prefers it; the incumbent is always the second option.`,
+      `# Edition candidate written by the edition verb (${reply.model}, ${protocol.version}) on ${date}, by run ${runId} (proposals/${runId}/run.yaml).\n# Replaces ${incumbent.runId} only if the panel prefers it; the incumbent is always the second option.`,
       edition,
     );
-    return { ...closeRun(run, "completed", { model: reply.model, reason: assessment ? "new assessment" : "re-adopts the incumbent's assessment" }), editionFile, assessmentFile };
+    const wrote = [editionFile, assessmentFile].filter((f): f is string => Boolean(f)).map((f) => path.relative(root, f));
+    return { ...closeRun(run, "completed", { model: reply.model, reason: assessment ? "new assessment" : "re-adopts the incumbent's assessment", wrote }), editionFile, assessmentFile };
   } catch (e) {
     return closeRun(run, "failed", { reason: (e as Error).message });
   }

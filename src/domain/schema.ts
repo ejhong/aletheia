@@ -591,6 +591,8 @@ export type CaseComponent = z.infer<typeof CaseComponentSchema>;
 /** One AI assessment run — an append-only overlay, never a mutation of canon. */
 export const AssessmentRunSchema = z.object({
   runId: z.string(),
+  /** The pipeline run (proposals/<runId>/run.yaml) that wrote this record; `runId` above is the record's own id (2026-09-10). */
+  producedBy: z.string().optional(),
   model: z.string(),
   date: z.string(),
   promptVersion: z.string(),
@@ -724,6 +726,8 @@ const Sha256Hex = z.string().regex(/^[a-f0-9]{64}$/, "sha256 hex digest");
 export const EditionSchema = z
   .object({
     runId: z.string().regex(/^[a-z0-9][a-z0-9._-]{1,119}$/),
+    /** The pipeline run (proposals/<runId>/run.yaml) that wrote this edition; absent on editions written by hand (2026-09-10). */
+    producedBy: z.string().optional(),
     date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
     model: z.string().min(1),
     promptVersion: z.string().min(1),

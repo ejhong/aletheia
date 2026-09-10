@@ -64,7 +64,7 @@ export interface Validated {
 /** Fail-closed: the site's own schema first, then the packet contract. Pure. */
 export function validateCheckReply(
   text: string,
-  ctx: { loaded: LoadedCase; seat: string; featuredIds: string[]; date: string; promptVersion: string; runId: string },
+  ctx: { loaded: LoadedCase; seat: string; featuredIds: string[]; date: string; promptVersion: string; runId: string; producedBy?: string },
 ): Validated {
   let raw: Record<string, unknown>;
   try {
@@ -76,6 +76,7 @@ export function validateCheckReply(
   const stamped = {
     ...raw,
     runId: ctx.runId,
+    ...(ctx.producedBy ? { producedBy: ctx.producedBy } : {}),
     date: ctx.date,
     promptVersion: ctx.promptVersion,
     humanReviewed: false,
@@ -150,7 +151,7 @@ export async function runCheck(caseKey: string, opts: CheckOptions = {}): Promis
     active.map(async (seat) => {
       const user = `RUN HEADER:\n  TAG: ${VENDORS[seat].tag}\n  MODEL_LABEL: ${VENDORS[seat].label}, independent check run\n\nCASE FILE FOLLOWS:\n\n${packet}`;
       const overlayId = overlayRunId([date, "check", VENDORS[seat].tag], { now: now(), exists: (id) => fs.existsSync(path.join(assessmentsDir, `${id}.yaml`)) });
-      const ctx = { loaded, seat, featuredIds, date, promptVersion: protocol.version, runId: overlayId };
+      const ctx = { loaded, seat, featuredIds, date, promptVersion: protocol.version, runId: overlayId, producedBy: runId };
       let reply = await call(seat, { system: instructions, user, maxTokens: 64000, timeoutMs: 1_800_000 }, run.meter);
       writeWorkingFile(runId, `seat-${seat}.yaml`, reply.text, root);
       let v = validateCheckReply(reply.text, ctx);
@@ -183,5 +184,5 @@ export async function runCheck(caseKey: string, opts: CheckOptions = {}): Promis
     installed.push(path.relative(root, file));
   }
   const reason = `${installed.length} of ${active.length} seat(s) installed${skipped.length ? `; no key: ${skipped.join(", ")}` : ""}${failed.length ? `; failed: ${failed.join(" | ")}` : ""}`;
-  return { ...closeRun(run, installed.length ? "completed" : "failed", { reason }), installed, failed };
+  return { ...closeRun(run, installed.length ? "completed" : "failed", { reason, wrote: installed }), installed, failed };
 }

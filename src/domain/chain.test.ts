@@ -850,3 +850,18 @@ describe("verify remembers its judgments", () => {
     expect(asked).toBe(4);
   });
 });
+
+describe("run provenance (2026-09-10): the records name the run that wrote them", () => {
+  it("stamps producedBy on the edition and its assessment when the verb passes its run id", () => {
+    const c = getCaseBySlug("megalithic-casting");
+    const ed = c.editions.at(-1)!;
+    const reply: EditionReply = { rationale: "a test edition that re-adopts the incumbent's judgment", question: null, accounts: [], featuredClaimIds: ed.featuredClaimIds, cruxOrder: ed.cruxOrder, article: ed.article + "\n\nA closing paragraph.", assessment: null };
+    const runId = "2026-09-10-edition-megalithic-casting-120000";
+    const r = assembleEdition(c, reply, { model: "claude-opus-5", promptVersion: "edition-v5", now: new Date("2026-09-10T12:00:00Z"), root: process.cwd(), runId });
+    expect(r.errors).toEqual([]);
+    expect(r.edition.producedBy).toBe(runId);
+    // Without a run id (an edition written by hand), the field is absent rather than invented.
+    const byHand = assembleEdition(c, reply, { model: "none", promptVersion: "opening", now: new Date("2026-09-10T12:00:00Z"), root: process.cwd() });
+    expect(byHand.edition.producedBy).toBeUndefined();
+  });
+});

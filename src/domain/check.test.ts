@@ -36,6 +36,10 @@ describe("the check verb", () => {
     expect(v.problems).toEqual([]);
     expect(v.run?.role).toBe("check");
     expect(v.run?.basis?.ledgerHash).toBe(c.ledgerHash);
+    expect(v.run?.producedBy).toBeUndefined();
+    // The verb names the run that wrote the seat's record (2026-09-10).
+    const stamped = validateCheckReply(text, { loaded: c, seat: "anthropic", featuredIds, date: "2026-09-08", promptVersion: "check-v1", runId: "2026-09-08-check-opus-000000", producedBy: "2026-09-08-check-megalithic-casting-000000" });
+    expect(stamped.run?.producedBy).toBe("2026-09-08-check-megalithic-casting-000000");
     // A seat that skipped a featured claim, or named one that is not featured, fails the contract.
     const short = validateCheckReply(text, { loaded: c, seat: "anthropic", featuredIds: [...featuredIds, "GEO-C999"], date: "2026-09-08", promptVersion: "check-v1", runId: "x" });
     expect(short.problems.join()).toMatch(/missing claims: GEO-C999/);

@@ -87,7 +87,7 @@ jobs:
           CHAIN_STEP_OUTCOME: ${{ steps.chain.outcome }}
         run: |
           rm -f next.json.tmp
-          if [ -z "$(git status --porcelain -- content proposals governance)" ]; then
+          if [ -z "$(git status --porcelain -- content proposals governance inbox)" ]; then
             echo "nothing changed — the chain rested"
             exit 0
           fi
@@ -105,7 +105,8 @@ jobs:
           git config user.name "aletheia-maintenance-bot"
           git config user.email "maintenance-bot@users.noreply.github.com"
           git checkout -b "$branch"
-          git add -A -- content proposals governance
+          # inbox: an intake moves the item it took in to inbox/processed/<runId>/; left out, the item would be taken in again at the next sitting (2026-09-10).
+          git add -A -- content proposals governance inbox
           if [ "$account" = "none" ]; then
             summary="interrupted — chain step ${CHAIN_STEP_OUTCOME}, no complete account of the sitting; the run log is the record"
           else

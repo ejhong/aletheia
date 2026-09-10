@@ -214,7 +214,21 @@ const touchesContent = git(
 // the window to 14/10 and parked the chain's own first CI run (#214, 5/5
 // complies). Founder-directed in session on 2026-09-09, on turning the
 // automation on: the autonomous lane starts with a clear window.
-const GATE_EPOCH = Date.parse("2026-09-09T15:00:00Z");
+//
+// Epoch 5 (2026-09-10T12:50:00Z): the construction of 2026-09-09/10 after
+// epoch 4 — the conjecture retirement (#233), the Deep Memory opening and
+// its correction (#236, #238), the founder's drop (#240), the art and its
+// captions (#241, #243), the record and evidence corrections (#246, #250),
+// the cover (#249) — nine founder-directed landings run by the operator in
+// session, none carrying the trailer, because the operator had not yet
+// adopted it; with the loop's own single merge (#245) they spent the window
+// to 10/10 and parked the loop's second edition of Deep Memory (#257, four
+// seats complying, the fifth's objection a review note). The autonomous
+// lane's true usage was 1/10. Founder-directed in session on 2026-09-10
+// ("whatever is less work for me", choosing the bump over merging by hand
+// or waiting for the window). From this day the operator's construction
+// commits carry `Supervised-by:`, so the count no longer needs this remedy.
+const GATE_EPOCH = Date.parse("2026-09-10T12:50:00Z");
 const since = new Date(
   Math.max(Date.now() - 7 * 86400000, GATE_EPOCH),
 ).toISOString();

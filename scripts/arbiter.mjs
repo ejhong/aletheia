@@ -215,20 +215,43 @@ const touchesContent = git(
 // complies). Founder-directed in session on 2026-09-09, on turning the
 // automation on: the autonomous lane starts with a clear window.
 //
-// Epoch 5 (2026-09-10T12:50:00Z): the construction of 2026-09-09/10 after
-// epoch 4 — the conjecture retirement (#233), the Deep Memory opening and
-// its correction (#236, #238), the founder's drop (#240), the art and its
-// captions (#241, #243), the record and evidence corrections (#246, #250),
-// the cover (#249) — nine founder-directed landings run by the operator in
-// session, none carrying the trailer, because the operator had not yet
-// adopted it; with the loop's own single merge (#245) they spent the window
-// to 10/10 and parked the loop's second edition of Deep Memory (#257, four
-// seats complying, the fifth's objection a review note). The autonomous
-// lane's true usage was 1/10. Founder-directed in session on 2026-09-10
-// ("whatever is less work for me", choosing the bump over merging by hand
-// or waiting for the window). From this day the operator's construction
-// commits carry `Supervised-by:`, so the count no longer needs this remedy.
-const GATE_EPOCH = Date.parse("2026-09-10T12:50:00Z");
+// Epoch 5 (2026-09-10T12:50:00Z) was set for a morning and withdrawn the
+// same day. The construction of 2026-09-09/10 after epoch 4 — the conjecture
+// retirement (#233), the Deep Memory opening and its correction (#236,
+// #238), the founder's drop (#240), the art and its captions (#241, #243),
+// the record and evidence corrections (#246, #250), the cover (#249) — nine
+// founder-directed landings run by the operator in session, none carrying
+// the trailer because the operator had not yet adopted it, spent the window
+// to 10/10 with the loop's own merge (#245) and parked the loop's second
+// edition of Deep Memory (#257, four seats complying). The founder chose the
+// least work for him ("whatever is less work for me"); the operator bumped
+// the epoch (#260). The GPT seat's review note on that bump (#261) was
+// right: moving the epoch also erased the loop's own merge from the count,
+// and the remedy the design prefers is per-merge and auditable. So the
+// epoch stays at epoch 4 and the nine landings are declared supervised by
+// hash below — the same declaration a `Supervised-by:` trailer makes, made
+// here because merged messages are immutable. The loop's merges (#245,
+// #257) count. From this day the operator's construction commits carry the
+// trailer, so this list should not grow.
+const GATE_EPOCH = Date.parse("2026-09-09T15:00:00Z");
+
+/**
+ * Merges declared supervised by hash — founder-directed construction landed
+ * without the trailer. Each line names the squash commit, the PR, and the
+ * direction it answered (docs/DECISIONS.md, 2026-09-09 and 2026-09-10).
+ * Declared on the founder's word in session, 2026-09-10; panel-reviewed here.
+ */
+const SUPERVISED_DECLARED = new Set([
+  "2e1686b87afa5d250b98e1ab5f4aa177fdd0fed3", // #233 conjecture cards retired — founder: "please proceed", 2026-09-09
+  "519d49c55036baba430f0d75327904b6c6b55df0", // #236 Deep Memory opens — founder: "and then deep memory", 2026-09-09
+  "aa29f03dc2529c83bf34710f8f3dcd1f8b9d310e", // #238 second question-only edition — review note #237, in session
+  "2639b9183935426ac50aa643f5ebfc569763d431", // #240 the drop on the founder's grant — founder: "Please make the drop", 2026-09-09
+  "010aee324c1e1e22aff7fffcc1da09ab517eff48", // #241 image tooling and art — founder: "make the art and the plates", 2026-09-09
+  "f07cf0ed0ab1b8c9fa6a49550bc7a758595476f8", // #243 plate captions — review note #242, in session
+  "b46b3798bd5f9a1318350648d766b94dcc8ccf71", // #246 caption record, no second drop, opening tests — founder, in session
+  "6f37578af34e2d372fd2681dc04b6c1c988cfe9a", // #249 the lab-site cover — founder: "switch it to that one", 2026-09-09
+  "c28f3f064c8b809b01f14bdd2356e07982a25e05", // #250 five evidence corrections — founder: "do the pr to fix things", 2026-09-09
+]);
 const since = new Date(
   Math.max(Date.now() - 7 * 86400000, GATE_EPOCH),
 ).toISOString();
@@ -251,7 +274,7 @@ const mergeLog = git(
     return { hash: (hash ?? "").trim(), message: message ?? "" };
   })
   .filter((c) => c.hash);
-const lanes = splitMergeLanes(mergeLog);
+const lanes = splitMergeLanes(mergeLog, SUPERVISED_DECLARED);
 const mergesThisWeek = lanes.autonomous.length;
 const supervisedExcluded = lanes.supervised.length;
 const verdict = rateLimitGate(tallyVerdict(votes), {

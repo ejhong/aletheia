@@ -100,3 +100,32 @@ describe("provenance side-checks", () => {
     expect(noticeNote([], "10.1/x")).toBeNull();
   });
 });
+
+describe("arXiv: the abstract page is the key, the PDF is the text", () => {
+  it("reads the PDF for an abstract URL, keeps the abstract as the key, and says where the text came from", async () => {
+    const { arxivIdOf } = await import("../pipeline/fetch.ts");
+    expect(arxivIdOf("https://arxiv.org/abs/2609.05105")).toBe("2609.05105");
+    expect(arxivIdOf("https://arxiv.org/pdf/2609.09461v2")).toBe("2609.09461v2");
+    expect(arxivIdOf("https://arxiv.org/abs/hep-th/9901001")).toBe("hep-th/9901001");
+    expect(arxivIdOf("https://www.nature.com/articles/x")).toBeNull();
+    const calls: string[] = [];
+    const fetchImpl = (async (input: string | URL | Request) => {
+      const url = String(input);
+      calls.push(url);
+      if (url === "https://arxiv.org/pdf/2609.05105") return new Response(Buffer.from(miniPdf("The deficit increases in the full sample")), { headers: { "content-type": "application/pdf" } });
+      return new Response("<html><body><h1>Abstract</h1><p>Only the abstract here.</p></body></html>", { headers: { "content-type": "text/html" } });
+    }) as typeof fetch;
+    const r = await retrieve({ url: "https://arxiv.org/abs/2609.05105" }, { fetchImpl });
+    expect(r.ok).toBe(true);
+    expect(r.url).toBe("https://arxiv.org/abs/2609.05105");
+    expect(r.text).toContain("The deficit increases in the full sample");
+    expect(r.via).toContain("https://arxiv.org/pdf/2609.05105");
+    expect(calls[0]).toBe("https://arxiv.org/pdf/2609.05105");
+    // A PDF URL is read as itself; when the PDF will not serve, the abstract page still answers.
+    const abstractOnly = (async (input: string | URL | Request) => (String(input).includes("/pdf/") ? new Response("gone", { status: 404 }) : new Response("<html><body><p>Only the abstract here.</p></body></html>", { headers: { "content-type": "text/html" } }))) as typeof fetch;
+    const fallback = await retrieve({ url: "https://arxiv.org/abs/2609.05105" }, { fetchImpl: abstractOnly });
+    expect(fallback.ok).toBe(true);
+    expect(fallback.via).toBeUndefined();
+    expect(fallback.text).toContain("Only the abstract here.");
+  });
+});

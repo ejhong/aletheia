@@ -166,7 +166,7 @@ export const defaultSplitter: Splitter = async (statement, anchorText, meter, ki
       cachedPrefix: `The anchoring source text (data under review):\n\n${anchorText}`,
       user: JSON.stringify({ kind, statement }, null, 1),
       schema: SPLIT_SCHEMA,
-      maxTokens: 4000,
+      maxTokens: 16000, // adaptive thinking shares this with the reply; a reader that hit 4000 mid-thought failed a run (2026-09-10)
       effort: "low",
       timeoutMs: 240_000,
     },
@@ -259,7 +259,7 @@ export const defaultJudge: Judge = async (record, sourceText, context, meter) =>
       cachedPrefix: `The retrieved source text (data under review; the same for every record judged against this source):\n\n${sourceText}`,
       user: JSON.stringify({ record, context }, null, 1),
       schema: VERIFY_SCHEMA,
-      maxTokens: 4000,
+      maxTokens: 16000, // adaptive thinking shares this with the reply; a reader that hit 4000 mid-thought failed a run (2026-09-10)
       effort: "medium",
       timeoutMs: 240_000, // a four-thousand-token reply; a stall past four minutes is a stall
     },
@@ -416,7 +416,7 @@ export async function judgeProposal(
     }
     const bad = unverifiedQuotes(e.sourceStatement, fetched.text);
     if (bad.length) {
-      reject(e.id, "evidence", e.title, `quoted span not found verbatim in the source: ${bad.map((q) => `"${q.slice(0, 70)}"`).join("; ")}`);
+      reject(e.id, "evidence", e.title, `quoted span not found verbatim in the text of ${e.sourceId}${fetched.via ? ` (${fetched.via})` : ""}: ${bad.map((q) => `"${q}"`).join("; ")}`);
       continue;
     }
     const claims = e.claimIds.map((id) => loaded.claims.find((c) => c.id === id) ?? proposal.adds.claims.find((c) => c.id === id)).filter(Boolean);
@@ -447,7 +447,7 @@ export async function judgeProposal(
         }
         const missing = unverifiedQuotes(part, fetched.text);
         if (missing.length) {
-          notes.push(`${label} refused: quoted span not found verbatim: ${missing.map((q) => `"${q.slice(0, 50)}"`).join("; ")}`);
+          notes.push(`${label} refused: quoted span not found verbatim in the text of ${e.sourceId}: ${missing.map((q) => `"${q}"`).join("; ")}`);
           continue;
         }
         const id = nextEvidenceId(loaded, [...proposal.adds.evidence.map((x) => x.id), ...okEvidence.map((x) => x.id), ...admitted.map((x) => x.id)]);

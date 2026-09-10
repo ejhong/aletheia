@@ -1,0 +1,131 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 260
+title: "Gate epoch 5: the construction of 2026-09-09/10 is declared supervised,
+  and the autonomous lane's window starts clear"
+url: https://github.com/ejhong/aletheia/pull/260
+verdict: pass
+reason: "4 of 5 seats affirm compliance; one seat's objection is a review note
+  the operator answers on the record: GPT-5.6 Sol (OpenAI) (§3.15;
+  check-weakening)"
+outcome: merged
+outcomeAt: 2026-09-10
+judgedAgainst: f8f1901039
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The change touches only `scripts/arbiter.mjs`'s GATE_EPOCH constant
+      and appends a dated entry to docs/DECISIONS.md; AGENTS.md is untouched,
+      and no content/ records, citations, or provenance stamps are added
+      (verification found no identifiers). The checks enumerated in §3.15 —
+      fail-closed CI, multi-model ratification on the graded scale, parking of
+      contested changes, and the single-seat parking categories — are all left
+      intact; the weekly ten-merge throttle is a pacing device, not one of those
+      checks, and its limit, window length and per-merge `Supervised-by:`
+      exclusion are unchanged, only the window's start. The rationale is a
+      measurement claim (nine of the ten counted merges were founder-directed
+      hand landings without the trailer, so autonomous usage was 1/10) plus a
+      forward fix (the trailer now applied), both recorded in the file and in
+      DECISIONS.md with date and channel, which §3.15 expressly permits for
+      founder directions given in session. The account of #257 — four seats
+      concurring, the fifth's objection recorded as a review note — is
+      consistent with the amended concurrence rule rather than a dodge of it. I
+      note two reservations for the record: this is the fifth epoch bump, so the
+      pattern deserves the operator's attention if it recurs despite the
+      trailer, and the DECISIONS.md entry ends with a literal `\\n` and no
+      trailing newline, which should be cleaned up. Neither rises above ordinary
+      imperfection under the rules I am asked to apply."
+    cost:
+      model: claude-opus-5
+      inputTokens: 2203
+      outputTokens: 1100
+      usd: 0.041709
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: "The diff advances `GATE_EPOCH` from 2026-09-09T15:00Z to
+      2026-09-10T12:50Z, thereby clearing the active weekly count rather than
+      correcting individual merge classifications. It retroactively treats nine
+      commits lacking the required `Supervised-by:` evidence as excluded, while
+      also moving the epoch past the acknowledged autonomous merge #245, so even
+      the stated true usage of 1/10 is erased from enforcement. That weakens the
+      throttle and amounts to reclassification to dodge a check, contrary to
+      §3.15, regardless of the recorded founder preference for the least-work
+      option. The fix should preserve #245 in the weekly count and use auditable
+      per-merge supervised classifications for the nine operator landings rather
+      than resetting the entire window."
+    paradigm: check-weakening
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 4243
+      outputTokens: 710
+      usd: 0.031684
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: The change updates `GATE_EPOCH` in `scripts/arbiter.mjs` and logs the
+      corresponding rationale in `docs/DECISIONS.md`. This operational throttle
+      reset adjusts for founder-supervised commits that lacked the supervision
+      trailer, following founder direction given in session on 2026-09-10 as
+      authorized and recorded under §3.15. No constitutional rules in AGENTS.md
+      are modified, no epistemic checks are weakened, and all changes are fully
+      visible in the diff.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 5971
+      outputTokens: 495
+      usd: 0.006334
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff only advances GATE_EPOCH in scripts/arbiter.mjs and records
+      the founder-directed reason in docs/DECISIONS.md. It does not edit
+      AGENTS.md, add citations or content ledger records, or alter the weekly
+      limit, window length, or Supervised-by exclusion—only the epoch start
+      moves to clear a documented miscount of hand-run supervised landings. That
+      matches §3.15’s allowance to record session directions and is the same
+      remedy pattern already used for earlier epochs, not a dodge or loosening
+      of the check.
+    cost:
+      model: grok-4.5
+      inputTokens: 5657
+      outputTokens: 135
+      usd: 0.012239
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+    reasoning: "This change touches only `scripts/arbiter.mjs` and
+      `docs/DECISIONS.md` — AGENTS.md itself is unedited, so §3.15's amendment
+      reservation is not implicated. The §3.15 check at issue (the weekly
+      ten-merge throttle on the autonomous lane) is not loosened: the limit, the
+      seven-day window, and the per-merge `Supervised-by:` exclusion are all
+      unchanged; only the window's start moves, as a documented remedy for a
+      measured miscount in which nine supervised, founder-directed landings
+      without the trailer were charged against the autonomous lane, leaving its
+      true usage at 1/10. The remedy is the same one the file records for epoch
+      3, the founder direction is recorded with date and channel per §3.15's
+      operating-record rule, and the parked PR #257 still must clear the normal
+      multi-model ratification (four seats had already passed it) — so nothing
+      dodges the gated process. The self-interest risk is mitigated by the
+      founder's recorded choice and the forward commitment that operator commits
+      now carry the trailer; going forward the check binds exactly as before. I
+      would flag as a review note only the trailing literal `\\n` artifact at
+      the end of DECISIONS.md, which is cosmetic, not normative."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 4150
+      outputTokens: 1285
+      usd: 0.001611
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 22224
+  outputTokens: 3725
+  usd: 0.0936
+harvestedAt: 2026-09-10

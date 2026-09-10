@@ -1,0 +1,299 @@
+# Draft assessment written by the edition verb (claude-fable-5-1, edition-v5) on 2026-09-10 for
+# edition edition-2026-09-10-132111, by run 2026-09-10-edition-transients-131156 (proposals/2026-09-10-edition-transients-131156/run.yaml). Append-only; NOT human reviewed; standing derives from blind checks.
+
+runId: 2026-09-10-edition-132111
+producedBy: 2026-09-10-edition-transients-131156
+model: claude-fable-5-1
+date: 2026-09-10
+promptVersion: edition-v5
+humanReviewed: false
+role: draft
+basis:
+  ledgerHash: ae5d26c6657262d41686120f25fa5e78da74ce1c4e7b61ab2e86144313528777
+caseAssessment:
+  verdict: unresolved
+  whatIsClaimed: At least some single-exposure, star-like detections on pre-Sputnik photographic plates — including nine on one April 1950 exposure and three on one July 1952 exposure — are genuine optical flashes recorded through the telescope; on the strong version of the hypothesis, they are sunlight reflections from artificial objects near Earth before October 1957.
+  whereDisagreementLives: "Not over whether the marks exist — critics physically confirmed the canonical nine on surviving glass, and the proponents report them on the original negative — but one rung up: whether any mark was made by light entering the telescope during the original exposure rather than being a flaw born in the emulsion, a question per-source microscopy has now been shown unable to answer. Above that, whether any ensemble signal (Earth-shadow deficit, nuclear-test timing, geomagnetic dependence, linear alignments) survives independent catalog construction rather than merely independent re-analysis of the same contested rows; and, if any near-Earth signal survives, whether the objects are manufactured or natural."
+  whatWouldSettleIt: Blind-validate a physical incident-light discriminant — the coma-aberration signature, or a calibrated flash-profile curve on period emulsion — and apply it to the canonical Palomar marks; that would establish or exclude real flashes. Then reproduce the Earth-shadow deficit in candidate catalogs built independently from the scans under a preregistered, spatially heterogeneous null; that would begin to establish a sunlit near-Earth population. Artificiality would still require a behavioural or physical signature the ledger does not yet contain, and extraterrestrial origin would require more than that.
+  bestConventionalExplanation: "Photographic archives manufacture star-like marks without any sky event: emulsion holes, bubbles and development spots, handling and copying damage, and — critically for POSS-I — defects on the shared intermediate positive from which both major digitizations descend, so that one copying flaw appears 'independently' in two modern datasets. The critics' own inspection found such blemishes on both copy plates and 'transients' on the comparison plate too; the catalog pipeline removed thousands of artifacts and still describes its working sample as heavily contaminated; the microscopist who examined the original 1950 negative found the marks un-star-like and in a defect-prone plate corner, and judged emulsion defects a reasonable attribution. On this account the ensemble correlations are properties of an unvalidated working catalog and the Palomar observing schedule, the candidate population's spatial statistics (edge and corner concentration, geometric clusters and voids) are the signature of plate and scan artifacts, and the sharpness of the nine is the sharpness of defects. Its unpaid debts are quantitative and specific: the star-like defect rate per copying stage has never been measured; it has no ready explanation for the machine-learning gradient in the shadow deficit; and the Hamburg candidates with reported coma signatures sit outside its simplest form."
+  components:
+    - label: Existence of the canonical marks on surviving plate material
+      state: well_supported
+      note: Critic-side physical confirmation (TRN-E002), independent pipeline recovery (TRN-E008), deep follow-up for the 1952 triple (TRN-E007). Common ground between the accounts, and predicted by both.
+    - label: Presence of the 1950 nine on the original telescope negative
+      state: provisionally_supported
+      note: One unreviewed, unblinded registration by the proponent group (TRN-E022). If it holds, the copy-chain route is closed for the flagship events (TRN-E023); the flash-versus-flaw question remains.
+    - label: "Origin: light through the optics versus emulsion flaw"
+      state: unresolved
+      note: The crux. Sharpness is direction-ambiguous and uncalibrated; microscopy cannot decide it and its one examiner leaned defect (TRN-E024); the only physical discriminant (coma, TRN-E014) is unvalidated and applied elsewhere.
+    - label: "Ensemble statistics: shadow deficit, nuclear windows, geomagnetic dependence, alignments"
+      state: mixed
+      note: Reproduce on the author-supplied catalog (TRN-E010, TRN-E015, TRN-E019); fail under a corrected null and independent extraction (TRN-E011, TRN-E009). The catalog, not the sky, is the object under test.
+    - label: Independent-archive replication and the coma discriminant
+      state: provisionally_supported
+      note: Hamburg candidates escape the Palomar copy genealogy (TRN-E013) and reportedly carry coma (TRN-E014), but with no matched-control rate and no blind validation.
+    - label: "Attribution: near-Earth, artificial, extraterrestrial"
+      state: unresolved
+      note: Near-Earth rests on the contested shadow geometry; a natural near-Earth account (TRN-E020) would leave it standing while removing the artificial rung; extraterrestrial origin is presently untestable.
+  researchPriority:
+    level: high
+    reason: "Several tractable, preregisterable tests exist at desk or lab scale with decisive information gain: a blind confusion-matrix test of the coma discriminant, a flash-profile calibration on period emulsion, and a from-scratch catalog reconstruction feeding a preregistered shadow analysis. Each would move the crux or retire an ensemble claim outright, and the coma test in particular would yield a tool usable across every historical plate archive regardless of how this case resolves."
+  loadBearing:
+    - TRN-C020
+    - TRN-C001
+    - TRN-C024
+    - TRN-C011
+    - TRN-C005
+    - TRN-C101
+  weakestLinks:
+    - TRN-C023
+    - TRN-C022
+    - TRN-C021
+    - TRN-C006
+    - TRN-C103
+  synthesis: "The case is bottom-heavy: the observation rung is as secure as photographic evidence permits, and everything above it is argued rather than measured. The nine 1950 marks are physical emulsion features confirmed by the critics on the Edinburgh copy (TRN-E002), recovered by an independent pipeline (TRN-E008), and reported present on the original Caltech glass (TRN-E022). That last record removes the copy-chain defect route (TRN-C007, TRN-E005) as an explanation for the two flagship events (TRN-E023) if its registration survives review, but it does not settle the crux: TRN-C020 narrows from 'original or copy?' to 'flash or flaw in the original emulsion?', and the manuscript's authors concede microscopy cannot decide that, with their own microscopist leaning defect (TRN-E024). The conventional mechanism (TRN-C101) is well supported as a pathway by records linked to neighbouring claims but has no measured base rate. Sharpness (TRN-C002) is credible and weakly diagnostic: both camps read the same measurement (TRN-E003, TRN-E004, TRN-E006) their own way, no controlled flash calibration exists, and the 1952 triple's star-like profile (TRN-E007) spoils a uniform story for either side. The ensemble claims split cleanly by replication type — they survive reanalysis of the author-supplied rows (TRN-E010, TRN-E015, TRN-E019) and fail independent extraction and a corrected null (TRN-E009, TRN-E011) — a pattern that indicts the catalog rather than the sky. The only physical discriminant on the table is the Hamburg coma signature (TRN-E014), unvalidated. The attribution rung inherits all of this; TRN-E020's natural icy-aggregate route means even a vindicated near-Earth geometry would not select the artificial branch, and nothing bears on extraterrestrial origin. Sensitivity: no single record's removal changes the case verdict, which is robustly unresolved; the record whose removal most changes the shape of the case is TRN-E022 — without it TRN-C024 collapses to untested and the copy-chain hypothesis regains full reach over the canonical events — with TRN-E011 second, since without it the two ensemble claims would rise from mixed to provisionally supported."
+  steelman: "The strongest argument for the thesis that this assessment does not answer is the direction of the machine-learning stratification (TRN-E015): among the 107,875 candidates, the Earth-shadow deficit is largest in the subset scored most likely to be real, and the highest-probability candidates are the ones most concentrated in nuclear windows. A pure-defect population has no reason to know where Earth's shadow falls, and no reason for its likelier-real members to know it better than its likelier-fake members; the artifact account predicts the opposite gradient or none. Add that the phenomenon recurs, with the same narrow profiles, on Hamburg plates that share no ancestor with Palomar's (TRN-E013), that a subset there carries the off-axis coma pattern only light through the optics should produce (TRN-E014), and that both canonical multiplets are on original or original-digitization material (TRN-E022) rather than born in copying — and the proponents can say that every test yet applied that could have gone against them has gone their way, while the negative results (TRN-E009, TRN-E011) concern catalogs the critics themselves did not validate. The assessment's reply — that the ML labels are expert judgments on the same disputed imagery and that the whole analysis stays inside the contested catalog — is a provenance objection, not an explanation of the gradient. That gradient stands unexplained."
+claimAssessments:
+  - claimId: TRN-C022
+    verdict: unresolved
+    reasoning: "The claim depends on TRN-C020 and TRN-C021, both unresolved. The only records bearing on it directly are TRN-E018 (weak, qualifying: alignments among ML-scored candidates on the same contested catalog) and TRN-E020 (weak, qualifying: a natural near-Earth mechanism that would explain the same geometry without hardware). Nothing in the ledger distinguishes manufactured reflectors from natural aggregates; the claim is an inference from the lower rungs plus the absence of known human launches, and the lower rungs do not yet hold."
+    confidence: moderate
+    treatment:
+      plainLanguage: Human-made or otherwise artificial objects were orbiting near Earth before the first satellite, and they are what the plates photographed.
+      importance: headline
+      diagnosticity: high
+      diagnosticitySummary: This is the thesis. If established it decides the case; but it cannot be established by any observation currently in the ledger, because the geometry that would support a near-Earth population is shared with a natural account.
+      strongestObjection: Even if every lower rung held, the ledger contains no observation that distinguishes hardware from ice and dust, and the natural-aggregate account (TRN-E020) explains a sunlit near-Earth population without invoking anything no one launched.
+      whatWouldChangeOurMind:
+        - TRN-C020 established by a blind-validated physical discriminant applied to Palomar marks
+        - The Earth-shadow deficit reproduced in an independently constructed catalog under a preregistered null (TRN-R005)
+        - A physical or behavioural signature — size, reflectance, motion — inconsistent with natural aggregates and consistent with manufactured reflectors
+        - Conversely, a measured copy-stage defect base rate that accounts for the catalog population (TRN-R007)
+  - claimId: TRN-C023
+    verdict: presently_untestable
+    reasoning: No evidence record in the ledger bears on this claim, and no research item on the agenda could. It depends entirely on TRN-C022, itself unresolved, and adds an origin inference that no observation of a plate mark can supply. The verdict is about testability, not falsity.
+    confidence: high
+    treatment:
+      plainLanguage: The objects, if they existed, were built by someone other than humans.
+      importance: major
+      diagnosticity: indeterminate
+      diagnosticitySummary: Nothing on the table bears on it in either direction; it neither supports nor is supported by any featured evidence.
+      strongestObjection: It is an argument from the absence of human launches, not from any observed property of the sources; a proven pre-Sputnik object would still need a separate origin argument.
+      whatWouldChangeOurMind:
+        - A pre-Sputnik object physically recovered or tracked with a manufactured signature incompatible with any terrestrial program of the period
+        - Documentary evidence of a terrestrial program that placed reflective objects at altitude before 1957, which would resolve the claim negatively
+  - claimId: TRN-C021
+    verdict: unresolved
+    reasoning: Rests on TRN-C020 (unresolved) and on the Earth-shadow deficit TRN-C005 (mixed). TRN-E020 qualifies weakly by supplying a natural near-Earth population; TRN-E021 is context. The parallax test that would settle distance is infeasible for the canonical events (TRN-E024). No record establishes that any flash originated near Earth rather than at astronomical distance or on the plate.
+    confidence: moderate
+    treatment:
+      plainLanguage: Whatever flashed was close to Earth — at roughly satellite altitude — and was reflecting sunlight, rather than being a distant star or explosion.
+      importance: headline
+      diagnosticity: high
+      diagnosticitySummary: Decides between near-Earth, astronomical, and artifact readings; but its evidential base is a geometric statistic that currently fails under a corrected null and independent extraction.
+      strongestObjection: The only geometric evidence for proximity — the shadow deficit — disappears when the spatially heterogeneous background is modeled properly (TRN-E011) and is not tested at all in the one independently built catalog (TRN-E009 addresses only the nuclear windows).
+      whatWouldChangeOurMind:
+        - A preregistered Earth-shadow deficit reproduced across independently constructed candidate catalogs (TRN-R005)
+        - Multi-station parallax on any future analogous event (TRN-R009)
+        - A validated coma or profile discriminant showing the marks are light while the shadow deficit fails, which would push toward astronomical rather than near-Earth origin
+  - claimId: TRN-C020
+    verdict: unresolved
+    reasoning: "The crux. Undermining: TRN-E004 (classifier files the nine with artifacts, though its spurious class is defined circularly) and TRN-E011 (no feature in the ensemble datasets shown to be an optical transient). Qualifying: TRN-E006 (flashes should be sharp — an uncalibrated physics argument) and TRN-E024 (microscopy of the original negative cannot separate flash from flaw, and the microscopist leaned defect). Supporting: TRN-E014 (coma on Hamburg candidates, unvalidated, not Palomar). TRN-E021 is context. No validated discriminant has been applied to any Palomar mark; the claim is neither established nor excluded."
+    confidence: moderate
+    treatment:
+      plainLanguage: At least one of these marks was made by real light coming through the telescope that night, not by a flaw in the emulsion, the copying, or the scanning.
+      importance: headline
+      diagnosticity: high
+      diagnosticitySummary: Everything above this rung is conditional on it; it is the exact dividing line between the chemistry account and both light accounts.
+      strongestObjection: The only person to examine the original 1950 glass under a microscope found the marks un-star-like and judged emulsion defects a reasonable attribution, in a plate corner where defects congregate (TRN-E024); and the strongest published reanalysis found no feature in the ensemble datasets demonstrated to be a transient (TRN-E011).
+      whatWouldChangeOurMind:
+        - Blind validation of the coma discriminant and its application to Palomar-like material (TRN-R003)
+        - A flash-profile calibration on period emulsion showing the nine match flashes and not defects, or the reverse (TRN-R002)
+        - A copy-stage and emulsion defect census giving a measured base rate for sharp clustered marks (TRN-R007)
+  - claimId: TRN-C101
+    verdict: well_supported
+    reasoning: No evidence record is linked to this claim; the grade rests on the content of records linked to neighbouring claims and is stated as such. TRN-E002 reports emulsion holes, bubbles and scratch-like marks on both copy plates and 'transient'-like detections on the comparison plate absent from the 1950 plate; TRN-E016 records 3,592 artifacts removed from the vetted catalog; TRN-E008 shows a reasonable independent extraction yielding 2.85 million raw candidates against 5,399 vetted; TRN-E011 finds feature counts rising toward plate corners and edges and 91% of ensemble features earlier removed as star-adjacent; TRN-E024 has the microscopist attributing the nine to defects common in that plate corner. The proponents' own artifact classifier (TRN-E015) presupposes the claim. Not established because the base rate per copying stage has never been measured (TRN-R007).
+    confidence: high
+    treatment:
+      plainLanguage: Old photographic plates routinely carry dots that look like stars but are chemistry or damage, often enough to swamp a search for one-night-only objects.
+      importance: major
+      diagnosticity: moderate
+      diagnosticitySummary: Opens the mundane pathway and sets the prior; it does not by itself close any specific mark or account for clustered multiplets on the original negative.
+      strongestObjection: "A pathway is not an occurrence: no one has measured how often each generation produces sharp, star-like, clustered marks, and the Hamburg coma results (TRN-E014), if validated, would show that at least some candidates are not defects."
+      whatWouldChangeOurMind:
+        - A per-generation defect census yielding a measured rate for star-like marks (TRN-R007)
+        - Blind coma validation showing most single-exposure candidates carry optical signatures (TRN-R003)
+  - claimId: TRN-C007
+    verdict: well_supported
+    reasoning: "TRN-E005 (strong) documents the contact-printing chain: DSS and SuperCOSMOS are independent scans of independent copy negatives printed from the same intermediate positive. TRN-E023 (moderate, qualifying) does not dispute the genealogy but reports that both canonical events appear on original or original-digitization material, so the mechanism's reach over those two events is removed if the registration survives review. The claim as a mechanism stands; its diagnostic use against the flagship events is what has narrowed."
+    confidence: high
+    treatment:
+      plainLanguage: "The two modern digital versions of the survey are not independent witnesses: both were copied from the same intermediate glass, so a flaw on that glass shows up in both."
+      importance: major
+      diagnosticity: moderate
+      diagnosticitySummary: High against the roughly 100,000 uninspected catalog candidates; now low against the two canonical events, which are reported present above the shared stage.
+      strongestObjection: It establishes a pathway without a rate, and the two events where it mattered most are reported on the original negative and original digitization (TRN-E022, TRN-E023).
+      whatWouldChangeOurMind:
+        - A copy-stage defect census measuring how often star-like marks are born at the intermediate positive (TRN-R007)
+        - Independent verification — or failure — of the Caltech registration (TRN-R001)
+  - claimId: TRN-C001
+    verdict: well_supported
+    reasoning: "TRN-E001 (discovery), TRN-E002 (strong: critic-side physical inspection of the Edinburgh copy confirms all nine at the reported positions and their absence six days later), TRN-E008 (strong: independent pipeline recovers eight of nine), TRN-E022 (present on the original glass). Held short of established because one of the nine is not recovered by the independent pipeline and the discovery paper's own deep GTC imaging shows possible faint counterparts it cannot exclude as chance projections."
+    confidence: high
+    treatment:
+      plainLanguage: There really are nine star-like marks on that one 1950 plate, at the positions claimed, and nothing is there on other plates or in modern surveys.
+      importance: major
+      diagnosticity: low
+      diagnosticitySummary: "Common ground: both the chemistry and the light accounts predict marks that exist on the glass and are absent elsewhere. Their existence anchors the case but decides nothing between the accounts."
+      strongestObjection: The same inspection that confirmed the nine found similar detections on the six-day-later plate absent from the 1950 plate, and a visible blemish population on both (TRN-E002) — existence of such marks is exactly what chemistry predicts.
+      whatWouldChangeOurMind:
+        - An independent registration that fails to find one or more of the marks on the copy or original material
+        - A confirmed modern counterpart at any of the nine positions
+  - claimId: TRN-C024
+    verdict: provisionally_supported
+    reasoning: "A single record, TRN-E022 (moderate): microscopy of the original April 1950 negative at Caltech, registered against the digitization with field stars as fiducials, finds all nine present. The manuscript is an unreviewed preprint, the examination was performed by the proponent group and was not blinded, and no outside party has repeated the registration. TRN-E024, from the same source, concedes that presence on the original does not decide the marks' nature."
+    confidence: moderate
+    treatment:
+      plainLanguage: The nine marks are on the actual glass that was in the telescope in 1950, not just on later copies.
+      importance: major
+      diagnosticity: moderate
+      diagnosticitySummary: Removes the copy-chain defect route for the flagship event but leaves the flash-versus-emulsion-flaw question exactly where it was.
+      strongestObjection: One unblinded registration by the hypothesis's proponents, unchecked by anyone else; a registration offset could map copy-defect positions onto ordinary features of the original emulsion.
+      whatWouldChangeOurMind:
+        - A blinded outside repeat of the Caltech registration with published images (TRN-R001)
+        - Peer-reviewed publication with the registration analysis exposed
+        - Failure of any independent attempt to locate the marks on the original
+  - claimId: TRN-C002
+    verdict: well_supported
+    reasoning: "TRN-E003 (strong) carries the measurement: all nine profile statistics fall on the sharp side, with a joint probability of order 0.1 to the ninth if drawn from stars. TRN-E022 reports the marks marginally sharper than stars on the original glass. TRN-E004 and TRN-E006 are rival readings of the same measurement, not disputes of it. The measurement is common ground; its meaning is not."
+    confidence: high
+    treatment:
+      plainLanguage: The nine marks are noticeably crisper and more compact than real stars of the same brightness on the same plate.
+      importance: major
+      diagnosticity: indeterminate
+      diagnosticitySummary: Sharpness is what emulsion defects look like and, by the physics argument, what sub-second flashes should look like; with no controlled calibration the direction it points is unknown, and the 1952 triple's star-like profile (TRN-E007) complicates any uniform reading.
+      strongestObjection: Both accounts predict it; a measurement both sides can claim discriminates nothing until a calibration curve exists.
+      whatWouldChangeOurMind:
+        - A flash-profile calibration on period Schmidt emulsion (TRN-R002)
+        - Profile statistics measured directly on the original negative rather than the copy lineage
+  - claimId: TRN-C102
+    verdict: provisionally_supported
+    reasoning: "The record bearing on this claim, TRN-E006, is linked to TRN-C002 and TRN-C020 and is a physics argument, not a measurement; the grade leans on priors — the optical reasoning that a sub-second event does not integrate seeing and guiding blur is straightforward — and is stated as such. TRN-E022 reports the original-glass marks marginally sharper than stars, consistent with it. Against uniform application: TRN-E007 reports the most isolated 1952 source with a profile nearly identical to comparison stars. No calibration exists."
+    confidence: moderate
+    treatment:
+      plainLanguage: A flash lasting less than a second should look sharper than a star that sat on the plate for fifty minutes being smeared by the air and the telescope's tracking.
+      importance: major
+      diagnosticity: indeterminate
+      diagnosticitySummary: If calibrated, this converts TRN-C002 into a discriminant; uncalibrated, it merely makes the sharpness observation ambiguous rather than favourable to either side.
+      strongestObjection: The size of the effect relative to defect profiles is unknown, so flash and defect distributions may overlap entirely; and the 1952 triple is not sharper than its stars.
+      whatWouldChangeOurMind:
+        - Controlled sub-second flashes on comparable emulsion producing profiles that match — or fail to match — the nine (TRN-R002)
+  - claimId: TRN-C003
+    verdict: well_supported
+    reasoning: TRN-E007 (moderate, peer reviewed) with 2023 GTC follow-up to magnitude 25.5; TRN-E008 (strong) recovers all three independently; TRN-E022 reports the triple on a Harvard copy plate and in the original survey digitization; TRN-E018 (weak) qualifies by extending the alignments line. The original 1952 negative has not been physically inspected.
+    confidence: high
+    treatment:
+      plainLanguage: Three bright points appeared together on one 1952 plate and were gone from the next exposure less than an hour later, and nothing has been seen there since.
+      importance: major
+      diagnosticity: low
+      diagnosticitySummary: Existence is common ground; the event's constraints — more than ten magnitudes of dimming within an hour, star-like profile, three sources within ten arcseconds — are what any account must accommodate, but they do not choose between chemistry and light.
+      strongestObjection: Three marks within ten arcseconds on one exposure is also what a local cluster of emulsion flaws produces, and no one has examined the original 1952 negative.
+      whatWouldChangeOurMind:
+        - Physical inspection of the original 1952 negative and its copy generations (TRN-R001)
+        - A validated profile or coma analysis of the three sources
+        - A confirmed counterpart at the position
+  - claimId: TRN-C004
+    verdict: well_supported
+    reasoning: "TRN-E008 (strong): a from-scratch pipeline with no reference to VASCO software recovers eight of nine 1950 sources and three of three 1952 sources, and matches 63.9% of the 5,399 published candidates at a median 0.94 arcsec; TRN-E016 supplies the catalog-construction context. Independence is of extraction, not of material: the pipeline reads the same DSS scans."
+    confidence: high
+    treatment:
+      plainLanguage: An outsider's software, written without looking at the team's, finds the same marks and most of the same catalog.
+      importance: supporting
+      diagnosticity: low
+      diagnosticitySummary: Confirms the marks exist on the scans and are not products of one team's software — which neither account disputes — while showing that the candidate population is extremely sensitive to extraction choices.
+      strongestObjection: Same digitized descendants of the same copies; recoverability of a physical mark is expected whether it is a flash or a flaw.
+      whatWouldChangeOurMind:
+        - A full open reconstruction of the working catalog that fails to reproduce most of it (TRN-R004)
+        - A calibrated reprocessing that sharply changes the match fraction
+  - claimId: TRN-C005
+    verdict: mixed
+    reasoning: "Supporting: TRN-E010 (moderate; 0.46% in the umbral cone against about 1.4% expected, on the author-supplied rows), TRN-E015 (moderate; deficit persists and is largest among highest-probability candidates), TRN-E017 (moderate, indirect; plate sensitivity does not vary with geomagnetic activity). Undermining: TRN-E011 (strong; the uniform-background assumption is false, feature counts rise toward corners and edges, and with a proper null there is no significant deficit). TRN-E012 (weak) contests the critique's dataset size. The effect reproduces on the working catalog and has not been tested in an independently built one; the split is by replication type."
+    confidence: moderate
+    treatment:
+      plainLanguage: Fewer of the candidate flashes fall in the part of the sky where a satellite-altitude object would be in Earth's shadow and could not reflect sunlight.
+      importance: major
+      diagnosticity: high
+      diagnosticitySummary: Of all the ensemble claims this is the one with a geometry only a sunlit near-Earth population predicts — fallout on plates cannot mimic it — so if it survived a preregistered test on an independent catalog it would be the best evidence the near-Earth account could have. Its current standing is conditional on an unvalidated catalog.
+      strongestObjection: The deficit vanishes when the spatially heterogeneous background is modeled (TRN-E011), and at least 91% of the features used had earlier been removed as lying within five arcseconds of catalog stars.
+      whatWouldChangeOurMind:
+        - A preregistered shadow analysis across at least three independently constructed catalogs with the heterogeneous-background null built in (TRN-R005)
+        - An open reconstruction of the working catalog (TRN-R004)
+        - The deficit appearing, or failing to appear, in the independently extracted Hayes-type catalog
+  - claimId: TRN-C006
+    verdict: mixed
+    reasoning: "Supporting on the author-supplied rows: TRN-E010 (relative risk 1.45, permutation p = .006, weather controls), TRN-E015 (persists after ML artifact scoring), TRN-E017 (one confounder closed), TRN-E019 (weak; survives a temporal-autocorrelation model, attenuated). Undermining: TRN-E009 (strong; independent extraction with nightly coverage as exposure gives a null), TRN-E011 (strong; insignificant after normalizing by observation days, largely determined by the observing schedule). TRN-E012 (weak) rebuts on power. Direction-ambiguous even if real: fallout deposition on plates predicts it as well as glinting objects do."
+    confidence: moderate
+    treatment:
+      plainLanguage: More candidate flashes were recorded on the nights just before and after atmospheric nuclear tests.
+      importance: major
+      diagnosticity: low
+      diagnosticitySummary: "Even a surviving correlation would not separate the accounts: radioactive contamination of plates and a near-Earth reflector population both predict it, and a handful of anomalous plates could produce it."
+      strongestObjection: The one fully independent catalog shows no significant effect once sky coverage is modeled (TRN-E009), and the timing tracks the Palomar schedule (TRN-E011).
+      whatWouldChangeOurMind:
+        - A preregistered exposure denominator from raw plate logs (TRN-R008)
+        - A leave-one-night-out test showing the association is a rate effect rather than the signature of one or two nights (TRN-R010)
+        - The effect surviving in an independently constructed catalog
+  - claimId: TRN-C103
+    verdict: unresolved
+    reasoning: "The ledger holds no evidence record for this claim: the source that reports it (SRC-CANN-2026) is indexed but no record was extracted, and sources are not evidence by themselves. TRN-E017 and TRN-E020, by the same author, presuppose it rather than test it. With nothing to weigh, the grade cannot rise above unresolved, and this reflects the state of the ledger rather than a judgment on the correlation."
+    confidence: low
+    treatment:
+      plainLanguage: Fewer candidate flashes were recorded on nights of strong geomagnetic activity, and allowing for that makes the nuclear-test pattern look stronger.
+      importance: supporting
+      diagnosticity: moderate
+      diagnosticitySummary: If real, a dependence on space weather is awkward for chemistry — plate sensitivity does not vary with it (TRN-E017) — but it does not separate artificial from natural near-Earth bodies, and it is computed on the same unvalidated catalog.
+      strongestObjection: Single author, unreviewed, same 107,875 rows; the strongest independent reanalysis attributes the catalog's temporal structure to the observing schedule (TRN-E011).
+      whatWouldChangeOurMind:
+        - Extraction of the source's results into an evidence record and independent replication on a rebuilt catalog
+        - Survival or failure under a preregistered exposure denominator (TRN-R008) and leave-one-night-out testing (TRN-R010)
+  - claimId: TRN-C104
+    verdict: weakly_supported
+    reasoning: TRN-E018 (weak, qualifying; linked to TRN-C003 and TRN-C022) reports seven plates carrying alignments of five to eight ML-scored sources exceeding Monte Carlo expectation at p < 0.03, with a post-hoc alignment criterion and no preregistered trials accounting. TRN-E011 reports that a third of the earlier linear-cluster features were not confidently distinguished from catalog stars. The alignments paper (SRC-VILLARROEL-2025-PASP) was not read in full and has no evidence record.
+    confidence: low
+    treatment:
+      plainLanguage: Some of the one-night flashes on a single plate line up in straight rows, as if one moving object had flashed several times along its path.
+      importance: supporting
+      diagnosticity: moderate
+      diagnosticitySummary: Genuine alignments among verified non-stellar point sources on one exposure would favour a moving body over scattered defects; but linear scratches and dust trails also make lines, and star contamination inflates any alignment count.
+      strongestObjection: Look-elsewhere inflation from searching many plates with a criterion chosen afterwards, plus unremoved catalog stars among the aligned members.
+      whatWouldChangeOurMind:
+        - A preregistered alignment test on an independently constructed catalog
+        - Alignment members verified as non-stellar on original material
+        - Consistent angular rates along an alignment matching a single moving source
+  - claimId: TRN-C010
+    verdict: provisionally_supported
+    reasoning: "TRN-E013 (moderate): rapid same-night pairs from the Hamburg 1.2-m Schmidt, digitized by APPLAUSE, show appear-once candidates with systematically narrow profiles; 41 plates from 1954–1957; the author labels it preliminary. No false-positive calibration, no injection-recovery test, and no matched-control rate. The result escapes the Palomar copy genealogy but does not yet separate a shared phenomenon from a shared susceptibility to defects."
+    confidence: moderate
+    treatment:
+      plainLanguage: The same kind of one-night star-like marks turn up on old plates from a completely different telescope and archive in Germany.
+      importance: major
+      diagnosticity: moderate
+      diagnosticitySummary: Places the phenomenon outside the Palomar copy chain, where TRN-C007 cannot reach; but without a control rate, old emulsion failing the same way everywhere explains it equally well.
+      strongestObjection: Emulsion defects are universal; finding star-like one-night marks on another archive is what chemistry predicts too.
+      whatWouldChangeOurMind:
+        - A measured candidate rate against matched control plates with injection-recovery completeness (TRN-R006)
+        - The same search on further archives with published defect rates
+  - claimId: TRN-C011
+    verdict: provisionally_supported
+    reasoning: "TRN-E014 (moderate): on 532 plate pairs from the Hamburg 0.6-m reflector, chosen for strong off-axis coma, candidate images reportedly show the coma pattern of off-axis point sources imaged through the optics. Single author, unreviewed; the classifier is not blind-validated; defect classes with directional asymmetry have not been excluded; the paper itself says the data do not establish the origin of the light; it applies to Hamburg candidates only."
+    confidence: low
+    treatment:
+      plainLanguage: Some of the German-plate candidates show the little comet-shaped smear the telescope's mirror gives to real light arriving off-center — a shape a scratch or chemical spot has no reason to have.
+      importance: major
+      diagnosticity: high
+      diagnosticitySummary: "If validated, this is a physical incident-light detector: it decides flash versus flaw per candidate without needing original negatives or parallax. Unvalidated, it is a promising report."
+      strongestObjection: No confusion matrix exists; asymmetric defects (directional scratches, development streaks) could mimic coma, and the classifier was not frozen before labels were known.
+      whatWouldChangeOurMind:
+        - A blind validation against known stars, deliberately produced flashes and the full defect bestiary, with the confusion matrix published (TRN-R003)
+        - Application of a validated discriminant to Palomar-analogue material
+        - Failure of the discriminant on known defects

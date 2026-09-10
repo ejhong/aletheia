@@ -46,3 +46,17 @@
   actor: scripts/migrations/2026-09-09-hash-locators.ts (mechanical re-stamp)
   aiAssisted: true
   kind: housekeeping
+
+- date: 2026-09-10
+  change: 'Correction applied from proposals/2026-09-10-draft-pre-columbian-amazon-133114: SRC-CARVAJAL-1542.url — "null" → "https://archive.org/details/descubrimientod00carvgoog".'
+  reason: "SRC-CARVAJAL-1542: The report reached the text of the Carvajal Relación at this URL in José Toribio Medina's 1894 edition (Descubrimiento del río de las Amazonas, Seville: Rasco; Harvard copy digitized by Google, 538 pages, catalog status NOT_IN_COPYRIGHT). The catalog page was retrieved and confirms title, author (Carvajal), editor (Medina), date and publisher. The record currently has no key; the verifier can only read what a record points at. Note: this points to the Medina edition of the T'Serclaes manuscript, not to the 1542 manuscript itself or to Oviedo's version."
+  actor: aletheia verify (claude-sonnet-5 second reader; drafter claude-fable-5-1; proposal 2026-09-10-draft-pre-columbian-amazon-133114, verification 2026-09-10-verify-pre-columbian-amazon-133640)
+  aiAssisted: true
+  kind: content
+
+- date: 2026-09-10
+  change: "Intake from report proposals/2026-09-10-report-pre-columbian-amazon-132424/report.md: 3 source(s), 6 evidence record(s), 8 claim(s), 2 research item(s) verified and added (proposal 2026-09-10-draft-pre-columbian-amazon-133114, verification 2026-09-10-verify-pre-columbian-amazon-133640); 25 candidate(s) rejected with reasons in dispositions.yaml."
+  reason: "Bounded pass. Of the report's candidates, three primaries were actually shown to me: Heckenberger et al. 2008 (full text via the Socioambiental mirror), Prümers et al. 2022 (full text via PMC), and the Bush et al. 2021 supplementary materials (CentAUR) — plus two institutional releases (Bonn 2022, Reading/phys.org 2021). The archive.org fetch for Medina 1894 returned only the catalog page, so every Introducción observation in F1 is blocked (the report's quotations are not in front of me); I add the URL to SRC-CARVAJAL-1542 as a correction because the report reached the edition there. Iriarte 2020 (bot page), Rostain 2024 (403), and the Neves chapter (bot page) are blocked. The Bush 2021 main-text finding is entered only as the Reading release reports it, as a linked alternative to AMZ-C015, never merged; the primary stays blocked with a route. Casarabe's AD 500–1400 span enters from the primary, with the 4,500 vs 16,000 km² discrepancy between paper and release recorded, not resolved. The Xingu '1770' correction fails: the shown source neither states nor contradicts it. No edition proposed: the load-bearing competitor (pre-European reforestation) is verified only at secondary level."
+  actor: aletheia verify (claude-sonnet-5 second reader; drafter claude-fable-5-1)
+  aiAssisted: true
+  kind: content

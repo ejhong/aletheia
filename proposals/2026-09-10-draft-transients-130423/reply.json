@@ -1,0 +1,1094 @@
+{
+ "rationale": "Inbox intake of a public X post by Beatriz Villarroel naming three works. The post itself is the supplier's words and is not proposed as a source. The 'machine-learning paper... in press' resolves, by the citations in both retrieved preprints (Bruehl, Doherty, Streblyanska & Villarroel, Sci Rep 2026, doi 10.1038/s41598-026-66148-2 / arXiv 2604.18799), to the already-tracked SRC-BRUEHL-2026-ML; it is dispositioned duplicate and nothing new leans on it. The two arXiv preprints were retrieved and confirmed from their title pages as the works the post meant; both are proposed as new preprint sources (proponent-team, ai_verified). Both rest entirely on the contested 107,875-object VASCO catalog and on the Bruehl ML probability scores, so every record from them is conditional on that catalog and is labelled as such; the modelling paper states in its own words that it proceeds from the assumption that the transients are real sources in Earth orbit, so its outputs cannot support TRN-C021 and are entered as new dependent claims (altitude, facet size, rotation, flash duration) rather than as evidence for it. The two most diagnostic observations are qualifiers the proponents print against their own interest: (1) among p ≥ 0.90 candidates within ±1 day of a nuclear test, 203 of 231 fall on a single night before one test (Castle Yankee, 4 May 1954), and 24 of the remaining 28 on one Nevada test — the high-confidence nuclear association reduces to two nights, which is what plate- or night-level clustering would produce; (2) the 'random' control samples in the hotspot cluster analysis themselves reach silhouette 0.50–0.60, meeting the paper's own criterion for non-random clustering, so the 0.70 on the transient sample is a difference of degree. A cross-paper inconsistency in the restated altitude (26,371 km is a geocentric radius, not an altitude) is recorded. A secondary reference to a further independent raw-detection reproduction (Ahlberg 2026, GitHub) bears on TRN-C004 and is blocked pending retrieval. No correction to an existing scalar field is warranted; no permission line applies because no supplied document is proposed as a source. The edition is left unchanged: the record deepens on the ensemble rung but the telling (correlations survive on the working catalog and dissolve on rebuild) is confirmed rather than overturned.",
+ "sources": [
+  {
+   "provisionalId": "SRC-VILLARROEL-2026-MODEL",
+   "url": "https://arxiv.org/abs/2609.05105",
+   "title": "Modelling Palomar Transients: Constraints from Reflection Geometry and Orbital Altitude",
+   "authors": [
+    "Beatriz Villarroel",
+    "Alina Streblyanska",
+    "Hichem Guergouri",
+    "Brian Doherty",
+    "Matthew Shultz",
+    "Stephen Bruehl"
+   ],
+   "year": "2026",
+   "sourceType": "preprint",
+   "identifier": "arxiv:2609.05105",
+   "verification": "ai_verified",
+   "reliabilityNotes": [
+    "arXiv preprint (v1, 4 Sep 2026, astro-ph.EP), not peer reviewed; authored by the VASCO proponent team (Villarroel, Bruehl, Doherty, Streblyanska).",
+    "States on p. 5 that it 'proceeds from the assumption that the transients originate from real sources in Earth orbit'; all inferred altitudes, sizes, rotation rates and flash durations are conditional on that assumption and on the contested 107,875-object catalog and Bruehl et al. ML scores.",
+    "The authors describe the altitude range as reflecting variation between samples and estimators 'rather than a formal statistical confidence interval' (p. 11).",
+    "Table 1 deficit values cannot be reconciled by the editor from the printed observed/control counts and the stated sample sizes; the computation is not fully specified in the text.",
+    "Cites declassified NASA astronaut transcripts hosted at war.gov/ufo and a VASCO Network blog post as supporting material; codes and calculations credited to N. Colosimo (acknowledgments)."
+   ]
+  },
+  {
+   "provisionalId": "SRC-BRUEHL-2026-HOTSPOTS",
+   "url": "https://arxiv.org/abs/2609.09461",
+   "title": "Earth-Projected Clustering of Historical Optical Transients in the Palomar Observatory Sky Survey-I (POSS-I)",
+   "authors": [
+    "Stephen Bruehl",
+    "Beatriz Villarroel",
+    "Hichem Guergouri",
+    "Brian Doherty",
+    "Alina Streblyanska"
+   ],
+   "year": "2026",
+   "sourceType": "preprint",
+   "identifier": "arxiv:2609.09461",
+   "verification": "ai_verified",
+   "reliabilityNotes": [
+    "arXiv preprint retrieved at arxiv.org/pdf/2609.09461; the retrieved manuscript text carries no arXiv stamp, so the identifier is taken from the URL the post supplied. Not peer reviewed; VASCO proponent team.",
+    "All Earth-projected positions depend on an assumed fixed altitude of 35,786 km taken from the companion modelling preprint; the paper states 'all projected locations depended on the assumed fixed altitude' (p. 19).",
+    "Uses the same 107,875-object catalog and the same Bruehl et al. ML probability scores as every other ensemble result in this case; not an independent dataset.",
+    "Methods disclose that ChatGPT was used to assist with sample preparation and to check data-transformation code (p. 20, p. 23).",
+    "Interpretive discussion draws on UAP-lore sources (news articles, a Netflix episode, a congressional statement) and the authors concede their 'possible intelligence' interpretation 'is unfortunately not falsifiable' (p. 17).",
+    "Data available only on request to the corresponding author."
+   ]
+  }
+ ],
+ "evidence": [
+  {
+   "provisionalId": "TRN-E201",
+   "title": "Modelling preprint: shadow deficit recomputed at assumed altitudes 20,000–60,000 km on the full catalog",
+   "claimRefs": [
+    "TRN-C005",
+    "TRN-C202"
+   ],
+   "sourceRef": "SRC-VILLARROEL-2026-MODEL",
+   "direction": "supports",
+   "strength": "weak",
+   "sourceStatement": "The source states that recomputing the global Earth-shadow deficit for the 107,875-object catalog against a 635-plate, 100-points-per-plate control sample gives a deficit that is \"highly statistically significant at all tested altitudes, with the largest\" and formally most significant deficit at an assumed altitude of 25,000 km; Table 1 lists deficits of 0.435–0.573 across 20,000–60,000 km for the complete sample.",
+   "editorInference": "Same catalog, same control construction, same team as TRN-E010/E015: this is a re-analysis of the contested rows, not an independent extraction, so it adds credibility only to the internal consistency of the VASCO result and nothing to its independence. I could not reconcile the Table 1 deficit values (e.g. 0.517 at GSO from observed 172 vs control 153) with the stated sample sizes using the paper's own D = 1 − f_obs/f_control; the denominators used are not stated. Watters' objection (TRN-E011) that the control assumes a uniform background is not addressed.",
+   "exactLocator": "[p. 8] Section 2.3 and Table 1",
+   "limitations": [
+    "Not independent of the VASCO catalog or team.",
+    "Deficit computation not fully specified; editor cannot reproduce Table 1 values from printed counts.",
+    "Does not engage the Watters et al. non-uniform-background critique."
+   ]
+  },
+  {
+   "provisionalId": "TRN-E202",
+   "title": "Modelling preprint: ML quality filter increases the shadow deficit at every altitude",
+   "claimRefs": [
+    "TRN-C005",
+    "TRN-C203"
+   ],
+   "sourceRef": "SRC-VILLARROEL-2026-MODEL",
+   "direction": "supports",
+   "strength": "weak",
+   "sourceStatement": "The source states that after restricting to Bruehl et al. ML scores p > 0.7, Dec > 3° and 100° < RA < 250° (11,418 candidates, 23,814 controls), the Earth-shadow \"deficit becomes stronger at all tested altitudes after\" filtering; at GSO \"the deficit increases from 0 . 517 ± 0 . 054 in the full sample\" to 0.768 ± 0.059, and at 35,000 km it reaches \"0 . 805 ± 0 . 049 ( 16 . 4 σ )\".",
+   "editorInference": "The strengthening-with-cleaning pattern repeats TRN-E015 on the same ML scores, which were trained on the team's own visual classifications; a classifier that learned any correlate of sky geometry would produce the same pattern. The declination and RA cuts also change the sky footprint, which independently changes the shadow fraction; the paper does not separate that from the ML cut.",
+   "exactLocator": "[p. 8] Section 2.3 and Table 1 (Q-filtered rows)",
+   "limitations": [
+    "ML scores are the team's own (Bruehl et al. 2026), not an independent quality measure.",
+    "Spatial cuts and ML cut applied jointly; their effects are not separated."
+   ]
+  },
+  {
+   "provisionalId": "TRN-E203",
+   "title": "Modelling preprint: angular shadow profile fit favours 20,000–25,000 km; combined estimators 20,000–35,000 km",
+   "claimRefs": [
+    "TRN-C201",
+    "TRN-C202"
+   ],
+   "sourceRef": "SRC-VILLARROEL-2026-MODEL",
+   "direction": "supports",
+   "strength": "weak",
+   "sourceStatement": "The source states that a χ² comparison of the empirical deficit-versus-antisolar-angle profile against Monte Carlo spherical-shell models, restricted to the initial drop region (0–18°, 0–20°, 0–25°), shows \"the complete sample consistently yields a minimum χ 2 at\" 20,000 km, with the quality-filtered sample shifting between 20,000 and 25,000 km, and that taken together the estimators favour an altitude \"in the range 20 000 – 35 000 km above the Earth’s surface\", a range that reflects variation between methods \"rather than a formal statistical confidence interval\".",
+   "editorInference": "This is a model fit conditional on TRN-C021 being true and on TRN-C005 being a real geometric signal; it cannot bear on either. The two estimators disagree (profile fit → 20,000 km; global-deficit magnitude → 25,000–35,000 km) and the reduced χ² values in Table 2 (3.5–5.4 for the complete sample) indicate a poor fit even at the minimum, which the authors attribute to omitted physics.",
+   "exactLocator": "[p. 11] Section 3.1 and Table 2 [p. 12]",
+   "limitations": [
+    "Conditional on the transients being real near-Earth reflectors (assumed, p. 5).",
+    "Best-fit reduced χ² well above 1 for the complete sample.",
+    "Range is not a statistical confidence interval (authors' own statement)."
+   ]
+  },
+  {
+   "provisionalId": "TRN-E204",
+   "title": "Modelling preprint assumes, rather than tests, the near-Earth reflector hypothesis",
+   "claimRefs": [
+    "TRN-C021"
+   ],
+   "sourceRef": "SRC-VILLARROEL-2026-MODEL",
+   "direction": "context",
+   "strength": "weak",
+   "sourceStatement": "The source states that the paper \"proceeds from the assumption that the transients originate from\" real sources in Earth orbit and applies toy models to infer altitudes, geometries, motions and sizes, restricting itself to explanations not ruled out by the team's prior papers.",
+   "editorInference": "Because TRN-C021 is the premise of this paper, none of its results can be counted for or against it; the record is entered so the dependency of TRN-C201–C207 on TRN-C021 is explicit. Zero diagnosticity toward TRN-C021 by construction.",
+   "exactLocator": "[p. 5] Section 1, final paragraphs",
+   "limitations": [
+    "Premise, not result."
+   ]
+  },
+  {
+   "provisionalId": "TRN-E205",
+   "title": "Modelling preprint: high-probability transients over-represented at declinations ~5–20°",
+   "claimRefs": [
+    "TRN-C204"
+   ],
+   "sourceRef": "SRC-VILLARROEL-2026-MODEL",
+   "direction": "supports",
+   "strength": "weak",
+   "sourceStatement": "The source states that among p > 0.7 transients (Dec > 3°, 100° < RA < 250°; N = 11,418) \"A significant excess is observed at low declinations ( ∼ 5 – 20 ◦ )\" relative to the control sample, by factors \"of approximately 30 – 75% . At intermediate declinations, the excess decreases\" and becomes a deficit at the highest declinations; \"A second peak is observed near ∼ 65 ◦ , but the meaning of\" that peak is unclear. The caption notes the first bin is edge-sensitive and its excess approaches zero without the Dec > 3° cut.",
+   "editorInference": "A declination dependence of candidate density is also what plate-edge, emulsion-batch or scan-cadence effects that vary with the survey's declination zones would produce; the paper offers no artifact null for this. The unexplained 65° peak and the edge-sensitivity of the first bin show the distribution is not simply equatorial.",
+   "exactLocator": "[p. 9] Section 2.4; Figure 2 caption [p. 10]",
+   "limitations": [
+    "Same catalog and ML scores; no artifact-based null model for declination structure.",
+    "Result sensitive to the Dec > 3° cut in its lowest bin."
+   ]
+  },
+  {
+   "provisionalId": "TRN-E206",
+   "title": "Modelling preprint offers the equatorial excess as consistent with a geosynchronous-like population",
+   "claimRefs": [
+    "TRN-C021"
+   ],
+   "sourceRef": "SRC-VILLARROEL-2026-MODEL",
+   "direction": "supports",
+   "strength": "weak",
+   "sourceStatement": "The source states that the strongest excess at low declinations corresponds to regions near the celestial equator where modern glints from geosynchronous objects are preferentially observed, and that the result \"is consistent with a population of objects concentrated near the equatorial plane\".",
+   "editorInference": "Consistency, not discrimination: the source does not show that plate artifacts or survey geometry cannot produce a declination gradient. This is the only result in the paper that is not conditional on TRN-C021 by construction, and it is weak.",
+   "exactLocator": "[p. 9] Section 2.4",
+   "limitations": [
+    "No competing artifact hypothesis tested.",
+    "Depends on ML scores and spatial cuts."
+   ]
+  },
+  {
+   "provisionalId": "TRN-E207",
+   "title": "Modelling preprint: reflecting-facet sizes back-calculated from transient magnitudes",
+   "claimRefs": [
+    "TRN-C205"
+   ],
+   "sourceRef": "SRC-VILLARROEL-2026-MODEL",
+   "direction": "supports",
+   "strength": "weak",
+   "sourceStatement": "The source states that, assuming specular reflection of sunlight at 20,000–35,786 km, flash durations of 0.1–1 s diluted over a 50-min exposure, and reflectivity r = 0.1–1, the modelling suggests \"reflecting facets with equivalent linear sizes ranging from centimetre scales\" up to approximately 3 m; for a R ~ 12.7 example at r = 0.1 this is \"an equivalent linear size of approximately 0.37–2.1 m\", and representative R ~ 16 events imply ~5–26 cm facets.",
+   "editorInference": "A photometric inversion whose every input (altitude, duration, reflectivity, planar geometry) is assumed; the output range spans two orders of magnitude. It has no bearing on whether the marks are flashes.",
+   "exactLocator": "[p. 13] Section 3.2; [p. 15] Figure 4 caption; [p. 21] Section 4.1; [p. 27] Section 6",
+   "limitations": [
+    "All inputs assumed; not a measurement.",
+    "Excludes brighter events removed by the catalog's R ≤ 12.4 cut (p. 27)."
+   ]
+  },
+  {
+   "provisionalId": "TRN-E208",
+   "title": "Modelling preprint: Monte Carlo rotation rates and flash durations for faceted bodies",
+   "claimRefs": [
+    "TRN-C206",
+    "TRN-C207"
+   ],
+   "sourceRef": "SRC-VILLARROEL-2026-MODEL",
+   "direction": "supports",
+   "strength": "weak",
+   "sourceStatement": "The source states that Monte Carlo simulations of cube, icosahedron and saucer-like geometries tuned to give ~1 flash per plate imply \"the transient objects are likely rotating very slowly (0.01 – 0.43 R.P.M.)\", and that the combined flash-duration distribution \"yields a characteristic flash duration of ∼ 320 ms\" (Tables 3–5).",
+   "editorInference": "The rotation constraint is a tautology of the tuning target (one flash per plate); the flash duration is a model output, not a measurement of any plate image. Neither bears on the artifact question.",
+   "exactLocator": "[p. 16] Section 3.3; [p. 17] Table 5",
+   "limitations": [
+    "Model outputs conditional on assumed reality, altitude and geometry.",
+    "Tuned to reproduce one flash per plate."
+   ]
+  },
+  {
+   "provisionalId": "TRN-E209",
+   "title": "Modelling preprint: minimum velocities for aligned events are sub-orbital",
+   "claimRefs": [
+    "TRN-C222"
+   ],
+   "sourceRef": "SRC-VILLARROEL-2026-MODEL",
+   "direction": "supports",
+   "strength": "weak",
+   "sourceStatement": "The source states that treating a straight-line chain of flashes as one body crossing the field within the exposure gives a minimum tangential speed, and that \"the inferred minimum velocities are sub-orbital\" for the 3.6–9.9 arcmin alignments of Villarroel et al. 2025a, while a full 6° traversal in 50 min matches circular orbital speed at ~66,580 km altitude; upper limits are unconstrained.",
+   "editorInference": "Order-of-magnitude arithmetic; it constrains nothing that discriminates flash from defect.",
+   "exactLocator": "[p. 19] Section 3.4 and [p. 20]",
+   "limitations": [
+    "Back-of-the-envelope by the authors' own description.",
+    "Assumes single-object origin of alignments."
+   ]
+  },
+  {
+   "provisionalId": "TRN-E210",
+   "title": "Modelling preprint: transverse double flashes and a manoeuvring interpretation",
+   "claimRefs": [
+    "TRN-C208",
+    "TRN-C209"
+   ],
+   "sourceRef": "SRC-VILLARROEL-2026-MODEL",
+   "direction": "supports",
+   "strength": "weak",
+   "sourceStatement": "The source states that multiple point-like flashes often occur along collinear paths \"with a tendency for enhanced flash activity at the beginning\" and end of the track, that closely spaced double flashes are separated \"perpendicular to the apparent direction of motion, rather than along the track\" with ~5 arcsec separations (~1 km projected at GSO), and offers attitude change as an explanation, adding \"While not constituting proof of a manoeuvring object, this interpretation\" is a physically consistent framework.",
+   "editorInference": "The morphological statements are asserted without counts, a sample definition, or a comparison against chance; they cannot be checked from this text. The manoeuvring reading is an interpretation layered on TRN-C104, which is itself ungraded.",
+   "exactLocator": "[p. 20] Section 3.5 and [p. 21]",
+   "limitations": [
+    "No quantitative sample or statistics given for the double-flash pattern.",
+    "Interpretation explicitly not proof (authors)."
+   ]
+  },
+  {
+   "provisionalId": "TRN-E211",
+   "title": "Modelling preprint: no robust association with annual meteor showers",
+   "claimRefs": [
+    "TRN-C210"
+   ],
+   "sourceRef": "SRC-VILLARROEL-2026-MODEL",
+   "direction": "supports",
+   "strength": "weak",
+   "sourceStatement": "The source states that it searched for correlations between transient \"detections and annual meteor showers from the IAU Meteor Data Centre using\" a permutation test accounting for seasonal observing bias, and that \"No statistically robust association was found, and the apparent effect\" depended on the adopted meteor-shower catalogue.",
+   "editorInference": "A negative result reported without the test statistics, catalogue versions, or the sample used; recorded because negative evidence belongs on the ledger, but its weight is minimal until the numbers are shown.",
+   "exactLocator": "[p. 23] Section 4.2.1",
+   "limitations": [
+    "No statistics, catalogues or sample stated.",
+    "Same working catalog."
+   ]
+  },
+  {
+   "provisionalId": "TRN-E212",
+   "title": "Modelling preprint: inferred sizes inconsistent with dusty-plasma particle scales",
+   "claimRefs": [
+    "TRN-C211"
+   ],
+   "sourceRef": "SRC-VILLARROEL-2026-MODEL",
+   "direction": "supports",
+   "strength": "weak",
+   "sourceStatement": "The source states that the millimetre-scale particle sizes of the dusty-plasma scenario (Cann 2026a,b) \"do not align well with the inferred object sizes derived in\" this work, and that unless the size estimates are revised \"this discrepancy essentially rules out dusty-plasma interpretations of\" the transient population.",
+   "editorInference": "One conditional model output (facet sizes, TRN-C205) being used to exclude another conditional model (the Cann mechanism behind TRN-E020); both assume the marks are real. Relevant to the case only as a proponents' internal disagreement about the natural near-Earth route.",
+   "exactLocator": "[p. 24] Section 4.2.2",
+   "limitations": [
+    "Depends on facet-size inference that itself rests on assumed inputs."
+   ]
+  },
+  {
+   "provisionalId": "TRN-E213",
+   "title": "Modelling preprint: NHI scenario presented as the only toy model fitting all five features",
+   "claimRefs": [
+    "TRN-C213",
+    "TRN-C023"
+   ],
+   "sourceRef": "SRC-VILLARROEL-2026-MODEL",
+   "direction": "supports",
+   "strength": "weak",
+   "sourceStatement": "The source states that among the toy models considered, \"an NHI scenario is the only one that, in principle, simultaneously\" accommodates five features (slightly smaller PSF FWHM, groupings, the shadow deficit, the nuclear/UFO temporal correlation, and the Kp anticorrelation), while adding \"That being said, nature can always surprise us with new physical phenomena beyond\" current imagination, and citing Breakthrough Starshot as an example of small artificial probes.",
+   "editorInference": "Inference to best explanation over a feature list of which three (TRN-C005, TRN-C006, TRN-C103) are contested at the catalog level and one (TRN-C002) is read the opposite way by Hambly & Blair. It offers no test of TRN-C023 and adds no diagnosticity to it; entered so the proponents' current attribution argument is on record.",
+   "exactLocator": "[p. 24] Section 4.2.3 and [p. 25]",
+   "limitations": [
+    "Argument from elimination over toy models, not a test.",
+    "Several premises are themselves unresolved or contested claims in this case."
+   ]
+  },
+  {
+   "provisionalId": "TRN-E214",
+   "title": "Modelling preprint: the catalog's bright-source cut excludes R ≤ 12.4 mag",
+   "claimRefs": [
+    "TRN-C212"
+   ],
+   "sourceRef": "SRC-VILLARROEL-2026-MODEL",
+   "direction": "supports",
+   "strength": "moderate",
+   "sourceStatement": "The source states that an important limitation is its reliance on the Solano et al. 2022 selection \"in which bright objects were excluded\", that sources with R ≤ 12.4 mag were removed, and that streaks and elongated objects were also excluded, so larger and fast-moving objects would be missed.",
+   "editorInference": "A methodological fact about the catalog every ensemble claim in this case rests on, stated by the catalog's own team; it is credible and bears on selection but not on the flash-versus-defect question.",
+   "exactLocator": "[p. 27] Section 6",
+   "limitations": [
+    "Author-stated limitation; the cut is documented in Solano et al. 2022 (SRC-SOLANO-2022), not re-derived here."
+   ]
+  },
+  {
+   "provisionalId": "TRN-E215",
+   "title": "Modelling preprint reports a further independent raw-detection reproduction (Ahlberg 2026)",
+   "claimRefs": [
+    "TRN-C004"
+   ],
+   "sourceRef": "SRC-VILLARROEL-2026-MODEL",
+   "direction": "supports",
+   "strength": "weak",
+   "sourceStatement": "The source states that the raw-detection stage of the VASCO pipeline has been independently reproduced by J. Ahlberg, \"recovering approximately 94 – 98% of the catalogue sources\", and cites a GitHub RESULTS.md accessed 20 August 2026.",
+   "editorInference": "Secondary: the Ahlberg repository was not retrieved, so this is the proponents' characterisation of it. The stage reproduced (raw detection) is upstream of the 5,399-candidate catalog that TRN-C004 addresses, so even if confirmed it extends TRN-C004 to a different stage rather than replicating the two-thirds figure.",
+   "exactLocator": "[p. 3] Section 1, with footnote 1",
+   "limitations": [
+    "Secondary report; primary not retrieved (see disposition, blocked).",
+    "Different pipeline stage from TRN-C004's stated recovery fraction."
+   ]
+  },
+  {
+   "provisionalId": "TRN-E216",
+   "title": "Proponents concede a significant fraction of point sources on plates are defects",
+   "claimRefs": [
+    "TRN-C101"
+   ],
+   "sourceRef": "SRC-VILLARROEL-2026-MODEL",
+   "direction": "supports",
+   "strength": "weak",
+   "sourceStatement": "The source states that there is no doubt a significant fraction of point \"sources detected on historical photographic plates are attributable to defects,\" particularly those clustering toward the plate edges, and that the main sample \"contains a substantial fraction of false positives\"; it estimates \"Approximately one-third of the sample is estimated to arise from solar\" reflections, inferred from the shadow deficit.",
+   "editorInference": "A concession from the hypothesis's own authors that the working catalog is roughly two-thirds contamination by their own estimate; that number is derived from the contested deficit itself, so it is circular, but the qualitative admission stands.",
+   "exactLocator": "[p. 2] Section 1; [p. 5] Section 2.1.1",
+   "limitations": [
+    "One-third figure is derived from the shadow deficit, not from plate inspection."
+   ]
+  },
+  {
+   "provisionalId": "TRN-E217",
+   "title": "Modelling preprint: shadow profile departs from single-mechanism geometry at larger angles",
+   "claimRefs": [
+    "TRN-C005",
+    "TRN-C201"
+   ],
+   "sourceRef": "SRC-VILLARROEL-2026-MODEL",
+   "direction": "qualifies",
+   "strength": "weak",
+   "sourceStatement": "The source states that at larger angular distances from the antisolar point additional effects begin to influence the observed profile, \"suggesting that the signal does not arise from a\" single physical mechanism alone, that a full forward model would require unknown orbital, geometric and reflectivity distributions, and that the Monte Carlo framework is not expected to reproduce higher-order structure such as an excess near ~47.5°.",
+   "editorInference": "The deficit profile does not follow pure shadow geometry beyond the drop region; the authors defer this to future work. Any non-geometric structure in a supposedly geometric signal is also room for a non-sky origin.",
+   "exactLocator": "[p. 6] Section 2.2; [p. 11] Section 3.1",
+   "limitations": [
+    "Authors' own qualification; the departing structure is not analysed."
+   ]
+  },
+  {
+   "provisionalId": "TRN-E218",
+   "title": "Hotspot preprint: 16 of 137 Earth-projected 5°×5° cells show a Bonferroni-significant excess",
+   "claimRefs": [
+    "TRN-C214"
+   ],
+   "sourceRef": "SRC-BRUEHL-2026-HOTSPOTS",
+   "direction": "supports",
+   "strength": "weak",
+   "sourceStatement": "The source states that after projecting p ≥ 0.70 transients (Dec > 3°, RA 100–250°) onto a 35,786 km shell and binning against plate-aware random controls, \"Of 137 control cells (5° × 5° each) within which\" at least 5 transients were expected, \"16 cells (11.7%) exhibited a significant excess of transients relative to random control\" expectations under Bonferroni-corrected conditional binomial tests; grouped by adjacency \"the 16 significant hotspot cells form five spatially distinct regions\" (eastern Pacific, southern Gulf of Mexico, SW US, and two isolated Pacific cells). It notes the \"control sample itself is biased towards these Pacific regions\" and that the cells \"should therefore not be interpreted as 16 independent or\" uniform hotspots.",
+   "editorInference": "An Earth-fixed projection of sky positions at a fixed altitude is a deterministic re-parameterisation of (RA, Dec, time); any excess of candidates on particular plates or plate regions maps to Earth-projected 'hotspots' automatically. Table 1's largest O/E ratios (17.9, 16.6) sit in cells fed by 1–3 plates (Supplemental Table 1). The diagnostic content is therefore the same as the sky-plane clustering question and the result adds no independence.",
+   "exactLocator": "[p. 5] Results; [p. 7]; [p. 6]; [p. 18]; Table 1 [p. 31]",
+   "limitations": [
+    "Entirely conditional on the assumed 35,786 km altitude (a different altitude re-maps every position).",
+    "Same catalog and ML scores; no rebuilt candidate list.",
+    "Fixed grid; authors call for shifted grids and other cell sizes."
+   ]
+  },
+  {
+   "provisionalId": "TRN-E219",
+   "title": "Hotspot preprint: plate decomposition — most cells multi-plate, two single-plate (XE435)",
+   "claimRefs": [
+    "TRN-C215"
+   ],
+   "sourceRef": "SRC-BRUEHL-2026-HOTSPOTS",
+   "direction": "supports",
+   "strength": "weak",
+   "sourceStatement": "The source states that fourteen of the 16 significant cells \"showed a transient excess beyond expectations on at least two\" plates and 12 on at least three, that the two adjacent cells at 92.5° W (Hotspots 5 and 8) \"were associated exclusively with a single plate, XE435\", and that requiring plate-level significance leaves 13 cells with ≥2 plates. It concedes that a single plate with many \"star-like plate defects (despite ML filtering) could produce an\" apparent hotspot in both analyses.",
+   "editorInference": "Multi-plate support rules out a single bad plate for most cells but not a shared property of several plates (same emulsion batch, same observing run, same copy generation); the paper does not test plate-run or date clustering. Hotspots 4, 5, 7, 8 — the highest O/E ratios — rest on 1–3 plates each.",
+   "exactLocator": "[p. 6] Results; [p. 17] Discussion; Supplemental Table 1 [p. 34]",
+   "limitations": [
+    "Plate-level excess counts share the same control construction.",
+    "Does not test for clustering by observing night or emulsion batch."
+   ]
+  },
+  {
+   "provisionalId": "TRN-E220",
+   "title": "Hotspot preprint: two-step cluster analysis of 897 p ≥ 0.90 transients",
+   "claimRefs": [
+    "TRN-C216"
+   ],
+   "sourceRef": "SRC-BRUEHL-2026-HOTSPOTS",
+   "direction": "supports",
+   "strength": "weak",
+   "sourceStatement": "The source states that \"Cluster analysis in the transient sample produced 6 very distinct clusters\" with an average silhouette of 0.70, i.e. \"cluster analysis identified 6 highly-distinct hotspots (silhouette value = 0.70)\", using SPSS two-step clustering on Cartesian coordinates with BIC selection (Table 2).",
+   "editorInference": "Silhouette measures separation of whatever structure exists in the projected positions; see TRN-E221 for why 0.70 versus 0.50–0.60 on controls is a difference of degree, not of kind.",
+   "exactLocator": "[p. 8] Results; [p. 2] Abstract; Table 2 [p. 32]",
+   "limitations": [
+    "Depends on assumed altitude and ML scores.",
+    "Silhouette alone does not test against a survey-footprint null."
+   ]
+  },
+  {
+   "provisionalId": "TRN-E221",
+   "title": "Hotspot preprint: random control samples also meet the paper's non-random-clustering criterion",
+   "claimRefs": [
+    "TRN-C217"
+   ],
+   "sourceRef": "SRC-BRUEHL-2026-HOTSPOTS",
+   "direction": "supports",
+   "strength": "moderate",
+   "sourceStatement": "The source states that three random control samples of n = 897 drawn from the plate-aware control set yielded, respectively, three clusters with a \"silhouette value of 0.50, just meeting the minimal criterion for non-random clustering.\", and two clusters each with silhouette 0.60, \"indicating stronger clustering than in the first random dataset but clustering weaker\" than the transient sample's 0.70; control clusters near Baja California and British Columbia resembled transient Clusters 1 and 4.",
+   "editorInference": "By the paper's own threshold (≥ 0.50 = non-random), the survey footprint alone produces 'non-random' clustering. The transient sample's 0.70 therefore exceeds the footprint baseline by 0.10–0.20 with no stated uncertainty on silhouette, and the paper does not report how many random draws exceed 0.70.",
+   "exactLocator": "[p. 9] Random Control Samples; [p. 10]",
+   "limitations": [
+    "Only three control draws; no distribution of silhouette values under the footprint null."
+   ]
+  },
+  {
+   "provisionalId": "TRN-E222",
+   "title": "Control-sample clustering qualifies the six-cluster result",
+   "claimRefs": [
+    "TRN-C216"
+   ],
+   "sourceRef": "SRC-BRUEHL-2026-HOTSPOTS",
+   "direction": "qualifies",
+   "strength": "moderate",
+   "sourceStatement": "The source states that two of the six transient clusters (near Jasper, BC and southwest of Baja California) have counterparts in the random control clusters, and that such matches \"were interpreted as potentially related to the effects of spatial clustering due to the POSS-I survey footprint\"; the authors retain the Baja hotspot because the excess analysis also flags it, and call the Jasper hotspot questionable.",
+   "editorInference": "The clustering statistic does not by itself separate sky-coverage structure from a transient population; only the excess analysis attempts that, and it inherits the catalog's problems.",
+   "exactLocator": "[p. 9]–[p. 10] Random Control Samples; [p. 12] Discussion",
+   "limitations": [
+    "Authors' own qualification."
+   ]
+  },
+  {
+   "provisionalId": "TRN-E223",
+   "title": "Hotspot preprint: 203 of 231 nuclear-associated high-confidence transients fall on one night before one test",
+   "claimRefs": [
+    "TRN-C218",
+    "TRN-C219"
+   ],
+   "sourceRef": "SRC-BRUEHL-2026-HOTSPOTS",
+   "direction": "supports",
+   "strength": "moderate",
+   "sourceStatement": "The source states that 231 p ≥ 0.90 transients were observed within ±1 day of a nuclear test; \"203 transients (87.9%) were associated with a single nuclear test\", Castle Yankee (4 May 1954, 13.5 Mt), and these \"were all observed the night immediately before this test\" and were located \"exclusively over Pacific hotspot regions west of Mexico and Central America\". \"Of the 28 transients associated with these tests, 24 were linked\" to a single Nevada test on 12 March 1955 (one the night of the test, 23 the night after).",
+   "editorInference": "Statement of what the paper reports; the counts are the source's. Credibility of the counts is that of the ML scores; their diagnostic implication for TRN-C006 is recorded separately in TRN-E224.",
+   "exactLocator": "[p. 11] Is There Location Specificity…",
+   "limitations": [
+    "Counts depend on ML score threshold ≥ 0.90 and on the Solano/Villarroel catalog."
+   ]
+  },
+  {
+   "provisionalId": "TRN-E224",
+   "title": "The high-confidence nuclear association reduces to two observing nights",
+   "claimRefs": [
+    "TRN-C006"
+   ],
+   "sourceRef": "SRC-BRUEHL-2026-HOTSPOTS",
+   "direction": "qualifies",
+   "strength": "moderate",
+   "sourceStatement": "The source states that of 231 high-probability transients within ±1 day of a test, 203 (87.9%) were all observed on the single night of 3 May 1954 preceding Castle Yankee, and that of the 28 tied to Nevada tests, 24 were tied to the single test of 12 March 1955; because of this, \"location specificity was not tested statistically\" for the Pacific case and \"We did not statistically test location specificity for the Nevada tests\".",
+   "editorInference": "Roughly 98% of the nuclear-window signal among the team's most trusted candidates comes from plates exposed on two nights. A rate elevation carried by one or two nights is exactly what a bad emulsion batch, a particular observing run, or a copy-generation defect on a handful of plates would produce, and it is what an independent Poisson-per-night model (TRN-E009) would absorb. This is the strongest single qualifier on TRN-C006 the proponents have themselves published; the leave-one-night-out test it invites is proposed as TRN-R201.",
+   "exactLocator": "[p. 11]–[p. 12] Is There Location Specificity…",
+   "limitations": [
+    "The paper does not report how many p ≥ 0.90 transients fall on other nights, nor a per-night distribution, so the editor's 'two nights' reading applies only to the ±1-day subset."
+   ]
+  },
+  {
+   "provisionalId": "TRN-E225",
+   "title": "Hotspot preprint's own reading: location specificity supports the nuclear association",
+   "claimRefs": [
+    "TRN-C220",
+    "TRN-C006"
+   ],
+   "sourceRef": "SRC-BRUEHL-2026-HOTSPOTS",
+   "direction": "supports",
+   "strength": "weak",
+   "sourceStatement": "The source states that transients temporally tied to Pacific testing were over Pacific hotspots and those tied to Nevada testing were mostly over the southwestern US, that results were \"consistent with this association displaying location specificity\", and that these findings \"further support the validity of the nuclear-transient association\".",
+   "editorInference": "The specificity was not statistically tested (authors' words), rests on essentially one test per region, and the Pacific 'hotspots' are ~5,000 km east of Bikini/Enewetak. As support for TRN-C006 this is close to weightless; it is entered so the proponents' inference is on record next to the qualifier it rests on (TRN-E224).",
+   "exactLocator": "[p. 16]–[p. 18] Discussion",
+   "limitations": [
+    "No statistical test performed (authors' statement).",
+    "One dominant test per region."
+   ]
+  },
+  {
+   "provisionalId": "TRN-E226",
+   "title": "Hotspot preprint: every projected position depends on a fixed assumed altitude",
+   "claimRefs": [
+    "TRN-C214",
+    "TRN-C216"
+   ],
+   "sourceRef": "SRC-BRUEHL-2026-HOTSPOTS",
+   "direction": "qualifies",
+   "strength": "moderate",
+   "sourceStatement": "The source states that transients were projected by line-of-sight geometry from Palomar onto a spherical shell at 35,786 km, that the resulting positions are geocentric and \"all projected locations depended on the assumed fixed altitude\", and that plate overlap in projected coordinates arises after projection and \"does not imply that the original photographic plates overlap in the sky\".",
+   "editorInference": "The companion modelling paper's own profile fit prefers 20,000 km, not 35,786 km (TRN-E203); at 20,000 km every projected longitude and latitude shifts and the geographic labels (Sedona, White Sands, Tampico) would move. No sensitivity analysis across altitude is reported.",
+   "exactLocator": "[p. 19] Methods, Transient Dataset; [p. 22]",
+   "limitations": [
+    "No altitude-sensitivity analysis in the paper."
+   ]
+  },
+  {
+   "provisionalId": "TRN-E227",
+   "title": "Hotspot preprint restates the altitude result inconsistently with the modelling preprint",
+   "claimRefs": [
+    "TRN-C202"
+   ],
+   "sourceRef": "SRC-BRUEHL-2026-HOTSPOTS",
+   "direction": "qualifies",
+   "strength": "weak",
+   "sourceStatement": "The source states that two approaches in the modelling paper \"suggested that transients were between 26,371 - 35,786 km above\" Earth, and that after filtering for high-probability transients results were most consistent with the higher (geosynchronous) estimate.",
+   "editorInference": "In the modelling preprint 26,371 km is the geocentric shell radius corresponding to 20,000 km above the surface (its Table 1), and the filtered sample's profile fit there prefers 20,000–25,000 km while only the global-deficit magnitude peaks at 35,000 km. The secondary restatement mixes a radius with an altitude and reports the filtered result as favouring GSO; the two papers, by the same authors within days of each other, do not agree on what was found.",
+   "exactLocator": "[p. 4] Introduction",
+   "limitations": [
+    "Secondary restatement of arXiv 2609.05105."
+   ]
+  },
+  {
+   "provisionalId": "TRN-E228",
+   "title": "Hotspot preprint: 'possible intelligence' interpretation offered and declared unfalsifiable",
+   "claimRefs": [
+    "TRN-C023"
+   ],
+   "sourceRef": "SRC-BRUEHL-2026-HOTSPOTS",
+   "direction": "context",
+   "strength": "weak",
+   "sourceStatement": "The source states that one tentative interpretation is that transients display characteristics \"suggesting possible intelligence, that is, a preference for specific locations\" matching UAP lore and awareness of imminent tests, and adds: \"While this hypothesis may fit available data, it is unfortunately not falsifiable\"; it recommends replication with Lick Observatory plates.",
+   "editorInference": "The authors' own statement confirms the case's verdict of presently_untestable on TRN-C023; entered as context only.",
+   "exactLocator": "[p. 17] Discussion",
+   "limitations": [
+    "Interpretive; authors concede unfalsifiability."
+   ]
+  }
+ ],
+ "claims": [
+  {
+   "provisionalId": "TRN-C201",
+   "statement": "Under a spherical-shell model, the angular profile of the Earth-shadow deficit near the antisolar point in the 107,875-object VASCO catalog is best fit by a characteristic altitude of approximately 20,000–25,000 km above Earth's surface.",
+   "theme": "attribution",
+   "rung": "attribution",
+   "claimType": "statistical",
+   "sourceAnchor": {
+    "sourceRef": "SRC-VILLARROEL-2026-MODEL",
+    "locator": "[p. 11]",
+    "quote": "the complete sample consistently yields a minimum χ 2 at",
+    "also": [
+     {
+      "locator": "[p. 1]",
+      "quote": "characteristic flash durations of ∼ 320 ms and slow rotation rates"
+     }
+    ]
+   },
+   "parentClaimRefs": [
+    "TRN-C021"
+   ],
+   "dependsOnClaimRefs": [
+    "TRN-C005",
+    "TRN-C021"
+   ],
+   "alternativeToRefs": [],
+   "contradictsRefs": []
+  },
+  {
+   "provisionalId": "TRN-C202",
+   "statement": "The magnitude of the global Earth-shadow deficit in the VASCO catalog, recomputed for assumed altitudes from 20,000 to 60,000 km, is largest at 25,000 km for the complete sample and at 35,000 km for the ML-quality-filtered sample, favouring a characteristic altitude of 25,000–35,000 km.",
+   "theme": "attribution",
+   "rung": "attribution",
+   "claimType": "statistical",
+   "sourceAnchor": {
+    "sourceRef": "SRC-VILLARROEL-2026-MODEL",
+    "locator": "[p. 9]",
+    "quote": "the exercise favours a characteristic orbital altitude of",
+    "also": [
+     {
+      "locator": "[p. 8]",
+      "quote": "highly statistically significant at all tested altitudes, with the largest"
+     }
+    ]
+   },
+   "parentClaimRefs": [
+    "TRN-C021"
+   ],
+   "dependsOnClaimRefs": [
+    "TRN-C005",
+    "TRN-C021"
+   ],
+   "alternativeToRefs": [],
+   "contradictsRefs": []
+  },
+  {
+   "provisionalId": "TRN-C203",
+   "statement": "Restricting the VASCO catalog to ML probability p > 0.7 with Dec > 3° and 100° < RA < 250° increases the computed Earth-shadow deficit at every tested altitude (e.g. from 0.517 ± 0.054 to 0.768 ± 0.059 at geosynchronous altitude).",
+   "theme": "population-statistics",
+   "rung": "observation",
+   "claimType": "statistical",
+   "sourceAnchor": {
+    "sourceRef": "SRC-VILLARROEL-2026-MODEL",
+    "locator": "[p. 8]",
+    "quote": "deficit becomes stronger at all tested altitudes after",
+    "also": [
+     {
+      "locator": "[p. 8]",
+      "quote": "the deficit increases from 0 . 517 ± 0 . 054 in the full sample"
+     }
+    ]
+   },
+   "parentClaimRefs": [
+    "TRN-C005"
+   ],
+   "dependsOnClaimRefs": [
+    "TRN-C005"
+   ],
+   "alternativeToRefs": [],
+   "contradictsRefs": []
+  },
+  {
+   "provisionalId": "TRN-C204",
+   "statement": "Among VASCO transients with ML probability p > 0.7 (Dec > 3°, 100° < RA < 250°), candidate counts exceed plate-aware control expectations by roughly 30–75% at declinations of about 5–20° and fall below expectation at the highest declinations.",
+   "theme": "population-statistics",
+   "rung": "observation",
+   "claimType": "statistical",
+   "sourceAnchor": {
+    "sourceRef": "SRC-VILLARROEL-2026-MODEL",
+    "locator": "[p. 9]",
+    "quote": "A significant excess is observed at low declinations ( ∼ 5 – 20 ◦ )",
+    "also": [
+     {
+      "locator": "[p. 9]",
+      "quote": "of approximately 30 – 75% . At intermediate declinations, the excess decreases"
+     }
+    ]
+   },
+   "parentClaimRefs": [],
+   "dependsOnClaimRefs": [],
+   "alternativeToRefs": [],
+   "contradictsRefs": []
+  },
+  {
+   "provisionalId": "TRN-C205",
+   "statement": "If the transients are sub-second specular sunlight reflections from planar facets at 20,000–35,786 km altitude, the observed plate magnitudes (R ~ 12–18) require facets of equivalent linear size from centimetres up to about 3 m depending on flash duration and reflectivity.",
+   "theme": "attribution",
+   "rung": "attribution",
+   "claimType": "mechanistic",
+   "sourceAnchor": {
+    "sourceRef": "SRC-VILLARROEL-2026-MODEL",
+    "locator": "[p. 27]",
+    "quote": "reflecting facets with equivalent linear sizes ranging from centimetre scales",
+    "also": [
+     {
+      "locator": "[p. 13]",
+      "quote": "corresponding to an equivalent linear size of approximately 0.37–2.1 m"
+     }
+    ]
+   },
+   "parentClaimRefs": [
+    "TRN-C021"
+   ],
+   "dependsOnClaimRefs": [
+    "TRN-C021",
+    "TRN-C201",
+    "TRN-C202"
+   ],
+   "alternativeToRefs": [],
+   "contradictsRefs": []
+  },
+  {
+   "provisionalId": "TRN-C206",
+   "statement": "Faceted reflecting bodies (cube, icosahedron, saucer-like) that produce on average about one detectable flash per 50-minute POSS-I exposure must rotate slowly, at roughly 0.01–0.43 revolutions per minute.",
+   "theme": "attribution",
+   "rung": "attribution",
+   "claimType": "mechanistic",
+   "sourceAnchor": {
+    "sourceRef": "SRC-VILLARROEL-2026-MODEL",
+    "locator": "[p. 16]",
+    "quote": "the transient objects are likely rotating very slowly (0.01 – 0.43 R.P.M.)",
+    "also": []
+   },
+   "parentClaimRefs": [
+    "TRN-C021"
+   ],
+   "dependsOnClaimRefs": [
+    "TRN-C021",
+    "TRN-C205"
+   ],
+   "alternativeToRefs": [],
+   "contradictsRefs": []
+  },
+  {
+   "provisionalId": "TRN-C207",
+   "statement": "Monte Carlo simulation of slowly rotating faceted reflectors tuned to one flash per plate yields a characteristic specular flash duration of about 320 ms, with most durations between 60 and 600 ms.",
+   "theme": "attribution",
+   "rung": "attribution",
+   "claimType": "mechanistic",
+   "sourceAnchor": {
+    "sourceRef": "SRC-VILLARROEL-2026-MODEL",
+    "locator": "[p. 17]",
+    "quote": "yields a characteristic flash duration of ∼ 320 ms",
+    "also": []
+   },
+   "parentClaimRefs": [
+    "TRN-C102"
+   ],
+   "dependsOnClaimRefs": [
+    "TRN-C206"
+   ],
+   "alternativeToRefs": [],
+   "contradictsRefs": []
+  },
+  {
+   "provisionalId": "TRN-C208",
+   "statement": "In POSS-I multiple-transient events, closely spaced double flashes at the start or end of a collinear track are separated perpendicular to the apparent direction of motion, at angular separations of about 5 arcseconds.",
+   "theme": "population-statistics",
+   "rung": "observation",
+   "claimType": "observation",
+   "sourceAnchor": {
+    "sourceRef": "SRC-VILLARROEL-2026-MODEL",
+    "locator": "[p. 20]",
+    "quote": "perpendicular to the apparent direction of motion, rather than along the track",
+    "also": []
+   },
+   "parentClaimRefs": [
+    "TRN-C104"
+   ],
+   "dependsOnClaimRefs": [
+    "TRN-C104"
+   ],
+   "alternativeToRefs": [],
+   "contradictsRefs": []
+  },
+  {
+   "provisionalId": "TRN-C209",
+   "statement": "Enhanced flash activity at the beginning and end of aligned multiple-transient tracks is produced by changes in the attitude (orientation) of a single reflecting object, i.e. manoeuvring.",
+   "theme": "attribution",
+   "rung": "attribution",
+   "claimType": "interpretive",
+   "sourceAnchor": {
+    "sourceRef": "SRC-VILLARROEL-2026-MODEL",
+    "locator": "[p. 20]",
+    "quote": "with a tendency for enhanced flash activity at the beginning",
+    "also": [
+     {
+      "locator": "[p. 21]",
+      "quote": "While not constituting proof of a manoeuvring object, this interpretation"
+     }
+    ]
+   },
+   "parentClaimRefs": [
+    "TRN-C022"
+   ],
+   "dependsOnClaimRefs": [
+    "TRN-C104",
+    "TRN-C208",
+    "TRN-C021"
+   ],
+   "alternativeToRefs": [],
+   "contradictsRefs": []
+  },
+  {
+   "provisionalId": "TRN-C210",
+   "statement": "VASCO transient detection dates show no statistically robust association with annual meteor showers listed by the IAU Meteor Data Centre when tested by a permutation method controlling for seasonal observing bias.",
+   "theme": "population-statistics",
+   "rung": "observation",
+   "claimType": "statistical",
+   "sourceAnchor": {
+    "sourceRef": "SRC-VILLARROEL-2026-MODEL",
+    "locator": "[p. 23]",
+    "quote": "No statistically robust association was found, and the apparent effect",
+    "also": [
+     {
+      "locator": "[p. 23]",
+      "quote": "detections and annual meteor showers from the IAU Meteor Data Centre using"
+     }
+    ]
+   },
+   "parentClaimRefs": [],
+   "dependsOnClaimRefs": [],
+   "alternativeToRefs": [],
+   "contradictsRefs": []
+  },
+  {
+   "provisionalId": "TRN-C211",
+   "statement": "Millimetre-scale charged particles of the dusty-plasma model cannot supply the centimetre-to-metre reflecting areas inferred for POSS-I transient magnitudes.",
+   "theme": "attribution",
+   "rung": "mechanism",
+   "claimType": "mechanistic",
+   "sourceAnchor": {
+    "sourceRef": "SRC-VILLARROEL-2026-MODEL",
+    "locator": "[p. 24]",
+    "quote": "do not align well with the inferred object sizes derived in",
+    "also": [
+     {
+      "locator": "[p. 24]",
+      "quote": "this discrepancy essentially rules out dusty-plasma interpretations of"
+     }
+    ]
+   },
+   "parentClaimRefs": [],
+   "dependsOnClaimRefs": [
+    "TRN-C205"
+   ],
+   "alternativeToRefs": [],
+   "contradictsRefs": []
+  },
+  {
+   "provisionalId": "TRN-C212",
+   "statement": "The Solano et al. 2022 selection underlying the VASCO catalog excluded sources brighter than R = 12.4 mag and excluded streaks and elongated images, so the catalog is biased against bright and fast-moving candidates.",
+   "theme": "population-statistics",
+   "rung": "observation",
+   "claimType": "methodological",
+   "sourceAnchor": {
+    "sourceRef": "SRC-VILLARROEL-2026-MODEL",
+    "locator": "[p. 27]",
+    "quote": "in which bright objects were excluded",
+    "also": []
+   },
+   "parentClaimRefs": [],
+   "dependsOnClaimRefs": [],
+   "alternativeToRefs": [],
+   "contradictsRefs": []
+  },
+  {
+   "provisionalId": "TRN-C213",
+   "statement": "Among the toy models the VASCO team considers, only a non-human-intelligence scenario simultaneously accommodates the slightly sharper PSFs, the groupings, the Earth-shadow deficit, the nuclear-test temporal correlation, and the Kp anticorrelation.",
+   "theme": "attribution",
+   "rung": "attribution",
+   "claimType": "interpretive",
+   "sourceAnchor": {
+    "sourceRef": "SRC-VILLARROEL-2026-MODEL",
+    "locator": "[p. 24]",
+    "quote": "an NHI scenario is the only one that, in principle, simultaneously",
+    "also": []
+   },
+   "parentClaimRefs": [
+    "TRN-C023"
+   ],
+   "dependsOnClaimRefs": [
+    "TRN-C002",
+    "TRN-C005",
+    "TRN-C006",
+    "TRN-C103",
+    "TRN-C104"
+   ],
+   "alternativeToRefs": [],
+   "contradictsRefs": []
+  },
+  {
+   "provisionalId": "TRN-C214",
+   "statement": "When VASCO transients with ML probability ≥ 0.70 are projected onto a 35,786 km shell above Earth, 16 of 137 tested 5°×5° Earth-fixed cells show an excess over plate-aware random controls that is significant after Bonferroni correction.",
+   "theme": "population-statistics",
+   "rung": "observation",
+   "claimType": "statistical",
+   "sourceAnchor": {
+    "sourceRef": "SRC-BRUEHL-2026-HOTSPOTS",
+    "locator": "[p. 5]",
+    "quote": "16 cells (11.7%) exhibited a significant excess of transients relative to random control",
+    "also": [
+     {
+      "locator": "[p. 5]",
+      "quote": "Of 137 control cells (5° × 5° each) within which"
+     }
+    ]
+   },
+   "parentClaimRefs": [],
+   "dependsOnClaimRefs": [
+    "TRN-C202"
+   ],
+   "alternativeToRefs": [],
+   "contradictsRefs": []
+  },
+  {
+   "provisionalId": "TRN-C215",
+   "statement": "Fourteen of the 16 Earth-projected hotspot cells receive their transient excess from at least two different POSS-I plates, while the two cells centred at 92.5° W derive entirely from plate XE435.",
+   "theme": "population-statistics",
+   "rung": "observation",
+   "claimType": "statistical",
+   "sourceAnchor": {
+    "sourceRef": "SRC-BRUEHL-2026-HOTSPOTS",
+    "locator": "[p. 6]",
+    "quote": "showed a transient excess beyond expectations on at least two",
+    "also": [
+     {
+      "locator": "[p. 6]",
+      "quote": "were associated exclusively with a single plate, XE435"
+     }
+    ]
+   },
+   "parentClaimRefs": [
+    "TRN-C214"
+   ],
+   "dependsOnClaimRefs": [
+    "TRN-C214"
+   ],
+   "alternativeToRefs": [],
+   "contradictsRefs": []
+  },
+  {
+   "provisionalId": "TRN-C216",
+   "statement": "Two-step cluster analysis of the Earth-projected positions of 897 VASCO transients with ML probability ≥ 0.90 yields six clusters with an average silhouette value of 0.70.",
+   "theme": "population-statistics",
+   "rung": "observation",
+   "claimType": "statistical",
+   "sourceAnchor": {
+    "sourceRef": "SRC-BRUEHL-2026-HOTSPOTS",
+    "locator": "[p. 8]",
+    "quote": "Cluster analysis in the transient sample produced 6 very distinct clusters",
+    "also": [
+     {
+      "locator": "[p. 2]",
+      "quote": "cluster analysis identified 6 highly-distinct hotspots (silhouette value = 0.70)"
+     }
+    ]
+   },
+   "parentClaimRefs": [],
+   "dependsOnClaimRefs": [
+    "TRN-C202"
+   ],
+   "alternativeToRefs": [],
+   "contradictsRefs": []
+  },
+  {
+   "provisionalId": "TRN-C217",
+   "statement": "Random plate-aware control samples of 897 Earth-projected positions yield cluster analyses with average silhouette values of 0.50–0.60, meeting the ≥ 0.50 criterion the hotspot study uses to indicate non-random clustering.",
+   "theme": "population-statistics",
+   "rung": "observation",
+   "claimType": "statistical",
+   "sourceAnchor": {
+    "sourceRef": "SRC-BRUEHL-2026-HOTSPOTS",
+    "locator": "[p. 9]",
+    "quote": "silhouette value of 0.50, just meeting the minimal criterion for non-random clustering.",
+    "also": [
+     {
+      "locator": "[p. 10]",
+      "quote": "indicating stronger clustering than in the first random dataset but clustering weaker"
+     }
+    ]
+   },
+   "parentClaimRefs": [
+    "TRN-C216"
+   ],
+   "dependsOnClaimRefs": [],
+   "alternativeToRefs": [],
+   "contradictsRefs": []
+  },
+  {
+   "provisionalId": "TRN-C218",
+   "statement": "Of the 231 VASCO transients with ML probability ≥ 0.90 observed within ±1 day of an atmospheric nuclear test, 203 (87.9%) were exposed on the single night preceding the Castle Yankee test of 4 May 1954.",
+   "theme": "population-statistics",
+   "rung": "observation",
+   "claimType": "statistical",
+   "sourceAnchor": {
+    "sourceRef": "SRC-BRUEHL-2026-HOTSPOTS",
+    "locator": "[p. 11]",
+    "quote": "203 transients (87.9%) were associated with a single nuclear test",
+    "also": [
+     {
+      "locator": "[p. 11]",
+      "quote": "were all observed the night immediately before this test"
+     }
+    ]
+   },
+   "parentClaimRefs": [
+    "TRN-C006"
+   ],
+   "dependsOnClaimRefs": [
+    "TRN-C006"
+   ],
+   "alternativeToRefs": [],
+   "contradictsRefs": []
+  },
+  {
+   "provisionalId": "TRN-C219",
+   "statement": "Of the 28 VASCO transients with ML probability ≥ 0.90 observed within ±1 day of a Nevada nuclear test, 24 are associated with the single test of 12 March 1955.",
+   "theme": "population-statistics",
+   "rung": "observation",
+   "claimType": "statistical",
+   "sourceAnchor": {
+    "sourceRef": "SRC-BRUEHL-2026-HOTSPOTS",
+    "locator": "[p. 11]",
+    "quote": "Of the 28 transients associated with these tests, 24 were linked",
+    "also": []
+   },
+   "parentClaimRefs": [
+    "TRN-C006"
+   ],
+   "dependsOnClaimRefs": [
+    "TRN-C006"
+   ],
+   "alternativeToRefs": [],
+   "contradictsRefs": []
+  },
+  {
+   "provisionalId": "TRN-C220",
+   "statement": "Transients temporally associated with nuclear tests project, at 35,786 km altitude, onto Earth regions nearer the test site — eastern Pacific hotspots for the Pacific test and southwestern-US hotspots for Nevada tests.",
+   "theme": "population-statistics",
+   "rung": "observation",
+   "claimType": "statistical",
+   "sourceAnchor": {
+    "sourceRef": "SRC-BRUEHL-2026-HOTSPOTS",
+    "locator": "[p. 11]",
+    "quote": "exclusively over Pacific hotspot regions west of Mexico and Central America",
+    "also": [
+     {
+      "locator": "[p. 16]",
+      "quote": "consistent with this association displaying location specificity"
+     }
+    ]
+   },
+   "parentClaimRefs": [
+    "TRN-C006"
+   ],
+   "dependsOnClaimRefs": [
+    "TRN-C218",
+    "TRN-C219",
+    "TRN-C202"
+   ],
+   "alternativeToRefs": [],
+   "contradictsRefs": []
+  },
+  {
+   "provisionalId": "TRN-C222",
+   "statement": "The minimum tangential velocity required for a single moving body to produce the arcminute-scale aligned multiple-transient events within one 50-minute exposure is below circular orbital velocity at the assumed altitudes.",
+   "theme": "population-statistics",
+   "rung": "mechanism",
+   "claimType": "mathematical",
+   "sourceAnchor": {
+    "sourceRef": "SRC-VILLARROEL-2026-MODEL",
+    "locator": "[p. 19]",
+    "quote": "the inferred minimum velocities are sub-orbital",
+    "also": []
+   },
+   "parentClaimRefs": [
+    "TRN-C104"
+   ],
+   "dependsOnClaimRefs": [
+    "TRN-C104"
+   ],
+   "alternativeToRefs": [],
+   "contradictsRefs": []
+  }
+ ],
+ "research": [
+  {
+   "provisionalId": "TRN-R201",
+   "title": "Leave-one-night-out test of the nuclear-window association among high-probability transients",
+   "summary": "Using the Bruehl et al. ML-scored catalog (and, in parallel, Hayes's independently extracted catalog), recompute the ±1-day nuclear-test relative risk after removing the plates exposed on 3 May 1954 (night before Castle Yankee) and 12–13 March 1955, and separately after removing each observing night in turn. Report the per-night distribution of p ≥ 0.90 candidates and test whether the top two nights are outliers in candidate density relative to all POSS-I nights, independent of the nuclear calendar. The hotspot preprint shows 227 of 231 nuclear-associated high-confidence transients come from two tests; if the association vanishes without those nights, TRN-C006 is a two-night plate effect, not a rate effect.",
+   "claimRefs": [
+    "TRN-C006",
+    "TRN-C218",
+    "TRN-C219",
+    "TRN-C220",
+    "TRN-C103"
+   ],
+   "track": "either",
+   "effortTier": "desk",
+   "informationGain": "Decides whether the nuclear-window correlation is a population-rate signal or the signature of a handful of anomalous plates; also tests whether those plates are anomalous on non-nuclear grounds (emulsion batch, copy generation, position on plate)."
+  },
+  {
+   "provisionalId": "TRN-R202",
+   "title": "Robustness of Earth-projected hotspots to altitude, grid, and catalog",
+   "summary": "Re-run the Earth-projection excess and cluster analyses (a) at the modelling preprint's own preferred altitude of 20,000 km and at 25,000 km, (b) with shifted grid origins and 2.5°/10° cells, (c) with ≥ 100 random control draws to obtain a silhouette null distribution instead of three draws, and (d) on Hayes's independently extracted candidate list rather than the ML-scored VASCO rows. Report which geographic labels survive each perturbation.",
+   "claimRefs": [
+    "TRN-C214",
+    "TRN-C216",
+    "TRN-C217",
+    "TRN-C201",
+    "TRN-C202"
+   ],
+   "track": "either",
+   "effortTier": "desk",
+   "informationGain": "If hotspots move with the assumed altitude or dissolve under grid shifts or on a rebuilt catalog, the geographic clustering is a projection artifact of sky-plane clustering on particular plates; if stable, the clustering rung gains a genuinely new constraint."
+  }
+ ],
+ "corrections": [],
+ "dispositions": [
+  {
+   "kind": "source",
+   "disposition": "duplicate",
+   "as": "SRC-BRUEHL-2026-ML",
+   "reason": "The 'machine-learning paper... accepted... in press' the post announces is cited in both retrieved preprints as Bruehl, Doherty, Streblyanska & Villarroel, Scientific Reports 2026, doi 10.1038/s41598-026-66148-2 (arXiv 2604.18799), which matches the index record SRC-BRUEHL-2026-ML and the already-declined duplicate arxiv:2604.18799. The intake's note that it is 'not yet public' conflicts with the index holding it ai_verified under that DOI; flagged for the founder but nothing new is leaned on it here.",
+   "reopenIf": "The published version differs materially from the tracked record (e.g. changed relative-risk or deficit figures), in which case a correction to SRC-BRUEHL-2026-ML rather than a new source.",
+   "observed": "Machine-learning paper on plate defects and contaminant removal (in press)",
+   "url": "https://doi.org/10.1038/s41598-026-66148-2",
+   "route": null
+  },
+  {
+   "kind": "source",
+   "disposition": "blocked",
+   "as": null,
+   "reason": "Named in arXiv 2609.05105 (p. 3, footnote 1) as an independent reproduction of the VASCO raw-detection stage recovering ~94–98% of catalogue sources; bears on TRN-C004 but the repository text was not retrieved, so only the proponents' secondary characterisation (TRN-E215) enters.",
+   "reopenIf": "The RESULTS.md is retrieved and its stated method, sample, and recovery fraction can be read directly.",
+   "observed": "Ahlberg, J. Results from an independent, reproducible search for vanishing sources in POSS-I plates (GitHub, 2026)",
+   "url": "https://github.com/jannefi/poss1-plate-slice/blob/main/RESULTS.md",
+   "route": "Fetch the GitHub RESULTS.md and repository README; confirm authorship, date, input plate scans used (full-plate vs cutouts), and the definition of 'catalogue sources' recovered."
+  }
+ ],
+ "edition": null
+}

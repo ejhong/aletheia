@@ -1,0 +1,1098 @@
+{
+ "rationale": "Seven of the report's nine retrievals were confirmed against shown text; the guessed MNRAS DOI for Bielewicz et al. resolved to an unrelated weak-lensing paper and is dispositioned failed (the arXiv text is used instead). Four sources enter new (Bielewicz–Wandelt–Banday 2013, Allen 2020, Creswell et al. 2017 abstract only, Nielsen et al. 2019); three ledger sources (DeAbreu 2015, Jow & Scott 2020, Gurzadyan & Penrose 2010b) gain evidence records for passages the ledger did not hold. The report's proposed 'amendments' to existing evidence records are lists (claimIds) and cannot be corrections, so each observation enters as its own record; two scalar corrections add URLs to ledger sources held without one. New claims are split one proposition each: Bielewicz's low-ℓ account of the quiet direction and of centre clustering enters as a linked alternative to CCC-C009/CCC-C010 rather than folded into them; the twist-test and radius-cutoff findings qualify CCC-C503 without contradicting it; Allen's stochastic-background bound undermines the detectability clause of CCC-C007 and qualifies (not undermines) CCC-C505, which is a historical claim about a proposal. Directions toward existing claims are kept honest: Nielsen et al. remove the premise of Penrose's LIGO conjecture but do not make the claim that he proposed it false. An edition is proposed because the current article states two things the retrieved texts show to be too strong — that no independent group has examined the sky-twist test and that no one has ever taken the erebon–LIGO idea literally — and omits the fourth 2013 reanalysis's mechanism. The assessment's 'four independent reanalyses' wording is not a scalar field on an indexed record and is left to the assessor.",
+ "sources": [
+  {
+   "provisionalId": "SRC-BIELEWICZ-2013",
+   "url": "https://arxiv.org/pdf/1207.6905",
+   "title": "A search for concentric rings with unusual variance in the 7-year WMAP temperature maps using a fast convolution approach",
+   "authors": [
+    "P. Bielewicz",
+    "B. D. Wandelt",
+    "A. J. Banday"
+   ],
+   "year": "2013",
+   "sourceType": "paper",
+   "identifier": "arxiv:1207.6905",
+   "verification": "ai_verified",
+   "reliabilityNotes": [
+    "Peer-reviewed; cited by Jow & Scott 2020 (their ref. [22]) as MNRAS 429, 1376–1385 (2013). The journal DOI was not verified: the report's guess doi:10.1093/mnras/sts371 resolves to an unrelated paper (Massey et al., weak lensing systematics), so only the arXiv identifier is recorded.",
+    "Text shown is arXiv v3 (14 Feb 2018), 12 pages; MNRAS pagination differs.",
+    "Independent of the Gurzadyan–Penrose group and of the Vancouver/Oslo/Toronto groups; Bielewicz and Banday are authors of prior large-angle-anomaly papers, which is the mechanism they invoke."
+   ]
+  },
+  {
+   "provisionalId": "SRC-ALLEN-2020",
+   "url": "https://arxiv.org/pdf/1910.08213",
+   "title": "Gravitational wave stochastic background from cosmological particle decay",
+   "authors": [
+    "Bruce Allen"
+   ],
+   "year": "2020",
+   "sourceType": "paper",
+   "identifier": "doi:10.1103/PhysRevResearch.2.012034",
+   "verification": "ai_verified",
+   "reliabilityNotes": [
+    "Phys. Rev. Research 2, 012034(R) (2020), Rapid Communication; published open access (CC BY 4.0) — DOI printed in the shown text.",
+    "Author is a gravitational-wave data-analysis expert (AEI Hannover); explicitly motivated by Penrose arXiv:1707.04169 (its ref. [2]).",
+    "Models the decaying particle as a neutral scalar decaying to two massless particles; the author flags that this axisymmetric model differs from Penrose's spherically symmetric impulsive-Vaidya picture."
+   ]
+  },
+  {
+   "provisionalId": "SRC-CRESWELL-2017",
+   "url": "https://arxiv.org/abs/1706.04191",
+   "title": "On the time lags of the LIGO signals",
+   "authors": [
+    "James Creswell",
+    "Sebastian von Hausegger",
+    "Andrew D. Jackson",
+    "Hao Liu",
+    "Pavel Naselsky"
+   ],
+   "year": "2017",
+   "sourceType": "paper",
+   "identifier": "arxiv:1706.04191",
+   "verification": "ai_verified",
+   "reliabilityNotes": [
+    "Only the arXiv abstract page was retrieved, not the paper body; the listing states the manuscript was accepted by JCAP and gives related DOI 10.1088/1475-7516/2017/08/013.",
+    "This is the correlated-noise report that Penrose 2017 (SRC-PENROSE-2017-ARXIV) built the erebon–LIGO conjecture on; its claims were subsequently disputed (see SRC-NIELSEN-2019)."
+   ]
+  },
+  {
+   "provisionalId": "SRC-NIELSEN-2019",
+   "url": "https://arxiv.org/pdf/1811.04071",
+   "title": "Investigating the noise residuals around the gravitational wave event GW150914",
+   "authors": [
+    "Alex B. Nielsen",
+    "Alexander H. Nitz",
+    "Collin D. Capano",
+    "Duncan A. Brown"
+   ],
+   "year": "2019",
+   "sourceType": "paper",
+   "identifier": "arxiv:1811.04071",
+   "verification": "ai_verified",
+   "reliabilityNotes": [
+    "Text shown is arXiv v3 (12 Feb 2019), 'Prepared for submission to JCAP'; the report cites JCAP 02(2019)019 but the journal reference was not verified from shown text.",
+    "Authors are LIGO Scientific Collaboration members (AEI Hannover, Syracuse), so not independent of the collaboration whose detection Creswell et al. questioned; residuals and waveform are publicly released (github.com/gwastro/gw150914_investigation)."
+   ]
+  }
+ ],
+ "evidence": [
+  {
+   "provisionalId": "CCC-E024",
+   "title": "Bielewicz et al. 2013: no significant extreme-variance rings around the two Gurzadyan–Penrose directions out to 90°",
+   "claimRefs": [
+    "CCC-C002"
+   ],
+   "sourceRef": "SRC-BIELEWICZ-2013",
+   "direction": "undermines",
+   "strength": "strong",
+   "sourceStatement": "The source states that, comparing the observed variance profiles for rings centred at (l,b)=(105°,37°) and (252°,−31°) against ΛCDM simulations over radii 0–90°, \"we do not identify any significant number of unusually extreme values\" of the variance, in agreement with Hajian, Moss–Scott–Zibin and Wehus–Eriksen, and that the fast-convolution method \"significantly extends previous studies that were limited\" to radii below 20°.",
+   "editorInference": "A fourth early independent reanalysis, on a wider radius range and finer grid than the three the ledger already holds; it adds independent-group weight against CCC-C002 rather than a new kind of test.",
+   "exactLocator": "[p. 5], §5 first paragraph; [p. 2], §1 final paragraphs",
+   "limitations": [
+    "Uses 7-year WMAP V- and W-band maps and 1000 ΛCDM simulations; same null-ensemble choice the proponents dispute (CCC-C003).",
+    "Ring width fixed at 0.5°; searches single rings and per-centre extreme counts, not the GP13 concentric-triple criterion."
+   ]
+  },
+  {
+   "provisionalId": "CCC-E025",
+   "title": "Bielewicz et al. 2013: the WMAP ring variances are explained by the standard sky once its low multipoles are included",
+   "claimRefs": [
+    "CCC-C010"
+   ],
+   "sourceRef": "SRC-BIELEWICZ-2013",
+   "direction": "supports",
+   "strength": "moderate",
+   "sourceStatement": "The source states that the anomalous ring variances \"can be traced to the presence of anomalous low-order multipoles\" of the WMAP map, that all the anomalies disappear after removing the best-fitting ℓ≤7 multipoles, and that \"our results are not consistent with the conformal cyclic cosmology scenario\".",
+   "editorInference": "This supplies a mechanism within the standard sky (large-angle power anomalies) distinct from the few-pixel mechanism in CCC-E012; the two act at different ring scales. It supports the attribution in CCC-C010 while pointing out that CCC-C010's own list of mechanisms omits this one.",
+   "exactLocator": "[p. 10], §6 Conclusions; [p. 1], Abstract",
+   "limitations": [
+    "The low-order multipoles are themselves a known CMB anomaly; explaining rings by them relocates rather than removes an anomaly.",
+    "Physical origin of the low-ℓ anomalies is stated to be beyond the paper's scope."
+   ]
+  },
+  {
+   "provisionalId": "CCC-E026",
+   "title": "Bielewicz et al. 2013: the systematically quiet large rings at (105°,37°) and their disappearance under ℓ≤7 replacement",
+   "claimRefs": [
+    "CCC-C506",
+    "CCC-C507"
+   ],
+   "sourceRef": "SRC-BIELEWICZ-2013",
+   "direction": "supports",
+   "strength": "strong",
+   "sourceStatement": "The source states that for (l,b)=(105°,37°) rings with radii larger than 10° show \"systematically lower variance in comparison to the concordance ΛCDM model predictions\", and that \"simulations with replaced best-fitting multipoles are more consistent with the data\", replacing only ℓ≤3 being insufficient.",
+   "editorInference": "The record extracted from the passage that anchors both claims. The test is a direct manipulation of the null (fixing observed low-ℓ modes), so it is diagnostic between 'low-ℓ anomaly' and 'something else at this direction', though not between CCC and ΛCDM as frameworks.",
+   "exactLocator": "[p. 5], §5 paragraphs 2–4; [p. 6], Fig. 2 caption",
+   "limitations": [
+    "Fixing low multipoles narrows the simulation confidence regions (cosmic variance is removed), as the Fig. 2 caption itself notes.",
+    "Single direction; the other GP direction (252°,−31°) shows no such deficit."
+   ]
+  },
+  {
+   "provisionalId": "CCC-E027",
+   "title": "Bielewicz et al. 2013: clustering of low-variance ring centres in large regions, read as a low-ℓ effect inconsistent with CCC",
+   "claimRefs": [
+    "CCC-C508",
+    "CCC-C509"
+   ],
+   "sourceRef": "SRC-BIELEWICZ-2013",
+   "direction": "supports",
+   "strength": "moderate",
+   "sourceStatement": "The source states that (105°,37°) lies in a region near the north ecliptic pole where any point shows many extremely low-variance rings, that \"Such a clustering of rings with low variance is not consistent\" with CCC because black-hole positions should be random, and that clustering in large regions \"rather indicates effects related to large angular scale features\"; the conclusions add that CCC predicts randomly distributed sets within which few rings are low-variance, whereas systematically low variance at large radii is observed.",
+   "editorInference": "This is the only critical paper that gives a positive account of why ring centres cluster; it is an argument from the morphology of the signal, and its force depends on how CCC's ring morphology is specified — which the theory has not done quantitatively (CCC-C011).",
+   "exactLocator": "[p. 7], §5.2 paragraph 3; [p. 10], §6 Conclusions",
+   "limitations": [
+    "Concerns single low-variance rings around WMAP points, not the 2020 triple-centre catalogue behind CCC-C504.",
+    "The 'randomly distributed' premise is the authors' reading of CCC, not a proponent-stated prediction."
+   ]
+  },
+  {
+   "provisionalId": "CCC-E028",
+   "title": "DeAbreu et al. 2015: twisting the sky changes the expected variance profile, so the GP13 ellipse comparison is not fair",
+   "claimRefs": [
+    "CCC-C510"
+   ],
+   "sourceRef": "SRC-DEABREU-2015",
+   "direction": "supports",
+   "strength": "moderate",
+   "sourceStatement": "The source states that GP13's procedure of rotating the sky to make approximate ellipses \"will entirely change the temperature correlations on the sky\", that the authors tested this and found \"the variance profile does indeed depend on the amount of\" twist applied, and that \"this is not a fair comparison, particularly when using the threshold\" defined by GP13.",
+   "editorInference": "The claim is anchored in this passage. It examines the validity of the twist comparison; it does not perform the ellipse search itself, which the source says \"would be much more computationally intensive\".",
+   "exactLocator": "[p. 7], §3 final paragraph, continuing [p. 8]",
+   "limitations": [
+    "No numbers for how much the profile shifts with twist are given in the text.",
+    "Applies to Planck Commander at the GP13 threshold; whether an adaptive threshold would rescue the twist test is not tested."
+   ]
+  },
+  {
+   "provisionalId": "CCC-E029",
+   "title": "DeAbreu et al. 2015 on the sky-twist result and the 15–20° radius cut-off: both are artefacts of the GP13 threshold",
+   "claimRefs": [
+    "CCC-C503"
+   ],
+   "sourceRef": "SRC-DEABREU-2015",
+   "direction": "qualifies",
+   "strength": "strong",
+   "sourceStatement": "The source states that the lack of low-variance annuli at large radii, which GP13 called crucial, \"appears simply to be due to their particular definition of the threshold\" because annular variance rises monotonically with radius, and concludes the drop \"is merely a result of the particular search criterion used\"; it separately states the twist comparison \"is not a fair comparison, particularly when using the threshold\".",
+   "editorInference": "CCC-C503 reports what GP13 found; this record does not deny that they found it but shows that both halves of the finding are properties of the threshold rather than of the sky. I mark qualifies, not undermines, because the reported observation stands while its diagnosticity collapses.",
+   "exactLocator": "[p. 6], §3 paragraph 4 and Fig. 4 caption; [p. 8], §4 Conclusions; [p. 7], §3 final paragraph",
+   "limitations": [
+    "Alternative thresholds are the authors' choices, stated as not necessarily optimal.",
+    "The ellipse search itself was not repeated."
+   ]
+  },
+  {
+   "provisionalId": "CCC-E030",
+   "title": "DeAbreu et al. 2015: the WMAP ring-centre asymmetry is weaker in Planck and matched by ~25% of simulations",
+   "claimRefs": [
+    "CCC-C512"
+   ],
+   "sourceRef": "SRC-DEABREU-2015",
+   "direction": "supports",
+   "strength": "moderate",
+   "sourceStatement": "The source states that the visually striking asymmetry of low-variance directions in WMAP is not present to the same degree in Planck Commander, that \"we find that about 25 % of simulations produce a distribution\" of low-variance directions with a higher dipole asymmetry than the data, \"We conclude that the asymmetry is not statistically significant\", and the WMAP–Planck difference is \"most likely due to the inhomogeneous noise that is non-negligible at these scales\".",
+   "editorInference": "Anchors the claim; a dipole-asymmetry statistic on GP13-criterion directions (228 in WMAP, 166 in Planck).",
+   "exactLocator": "[p. 3], §2 paragraph 1 and Fig. 1 caption",
+   "limitations": [
+    "Dipole asymmetry is one summary of anisotropy; the 2020 proponents' statistic (fraction of triple centres in three small regions) is different."
+   ]
+  },
+  {
+   "provisionalId": "CCC-E031",
+   "title": "DeAbreu et al. 2015 bears on the 2013-era centre anisotropy, not on the 2020 triple-centre statistic",
+   "claimRefs": [
+    "CCC-C504"
+   ],
+   "sourceRef": "SRC-DEABREU-2015",
+   "direction": "qualifies",
+   "strength": "weak",
+   "sourceStatement": "The source states that the WMAP asymmetry in the distribution of low-variance directions is not statistically significant, with about 25% of simulations showing a higher dipole asymmetry, and attributes the WMAP–Planck difference to inhomogeneous WMAP noise.",
+   "editorInference": "CCC-C504 concerns the 2020 report that 83% of 1134 triple centres lie in ~3% of sky. This record shows that an earlier, coarser anisotropy of centres dissolved under a fair null and that WMAP noise inhomogeneity can manufacture centre asymmetry; it does not test the 2020 statistic, which remains independently unexamined. Weight toward CCC-C504 is low and stated as such.",
+   "exactLocator": "[p. 3], §2 paragraph 1",
+   "limitations": [
+    "Different statistic and different catalogue from CCC-C504.",
+    "No test of the 2020 result is performed."
+   ]
+  },
+  {
+   "provisionalId": "CCC-E032",
+   "title": "DeAbreu et al. 2015: half of all ΛCDM observers would see more concentric quiet rings than we do",
+   "claimRefs": [
+    "CCC-C513",
+    "CCC-C010"
+   ],
+   "sourceRef": "SRC-DEABREU-2015",
+   "direction": "supports",
+   "strength": "strong",
+   "sourceStatement": "The source states that with the adaptive threshold, \"about half of the observers in separate Hubble patches\" in a perfectly standard ΛCDM universe would see a greater abundance of concentric low-variance rings than we see, and that the number of directions with three or more concentric low-variance rings matches simulations regardless of search criteria.",
+   "editorInference": "The cleanest statement of the null result in the ledger: the data sit at the median of the ΛCDM distribution under the proponents' own concentric-triple criterion.",
+   "exactLocator": "[p. 8], §4 Conclusions and Fig. 5 caption",
+   "limitations": [
+    "Planck Commander map downgraded to Nside=512 and smoothed to 20 arcmin; 1000 simulations."
+   ]
+  },
+  {
+   "provisionalId": "CCC-E033",
+   "title": "DeAbreu et al. 2015: ΛCDM simulations contain concentric low-variance triples at the observed abundance",
+   "claimRefs": [
+    "CCC-C524"
+   ],
+   "sourceRef": "SRC-DEABREU-2015",
+   "direction": "undermines",
+   "strength": "strong",
+   "sourceStatement": "The source states that applying the GP13 criterion (three or more low-variance annuli around a direction) to simulations from the Planck best-fit ΛCDM spectrum, \"we see just as many directions in simulations as in the real sky\", so the presence of the concentric annuli is not significant.",
+   "editorInference": "This answers Gurzadyan and Penrose's 2010 objection (CCC-E036) that critics' simulations showed no concentric families: the 2015 test looked specifically for concentric sets and found them at the same abundance.",
+   "exactLocator": "[p. 4], §2 final paragraph and Fig. 2",
+   "limitations": [
+    "The 2010 objection referred to Moss et al.'s simulations, which used a different (single-ring) statistic; the 2015 test is the first to apply the concentric criterion to simulations."
+   ]
+  },
+  {
+   "provisionalId": "CCC-E034",
+   "title": "Jow & Scott 2020: nearest-neighbour separations of the strongest Hawking-point candidates are typical of a Gaussian sky",
+   "claimRefs": [
+    "CCC-C514"
+   ],
+   "sourceRef": "SRC-JOW-SCOTT-2020",
+   "direction": "supports",
+   "strength": "moderate",
+   "sourceStatement": "The source states that for the 30 most significant candidates at each of two scales the mean nearest-neighbour separation is 0.20 and 0.19 rad, that 100 Gaussian simulations give a roughly Gaussian distribution with mean 0.20 and σ=0.03, and that \"we do not find any evidence that HPs exhibit any anomalous clustering\" on the sky.",
+   "editorInference": "An independent negative on the proponents' clustering argument for Hawking points specifically (An et al. suggested clustering would be further evidence). It does not address ring-triple centres (CCC-C504).",
+   "exactLocator": "[p. 7]–[p. 8], §3.1",
+   "limitations": [
+    "Only 100 simulations and the top 30 candidates; a single summary statistic."
+   ]
+  },
+  {
+   "provisionalId": "CCC-E035",
+   "title": "Jow & Scott 2020: E-mode polarization stacks at 709/730 Hawking-point candidates show no structure",
+   "claimRefs": [
+    "CCC-C515"
+   ],
+   "sourceRef": "SRC-JOW-SCOTT-2020",
+   "direction": "supports",
+   "strength": "moderate",
+   "sourceStatement": "The source states that stacking Planck 2018 SMICA temperature and E-mode maps on all candidates with |â|>2 (709 and 730 at the two scales), the temperature stacks show the selected ring structure but \"there does not appear to be any corresponding structure in the\" E-mode stacks, and that \"we also find no evidence for a corresponding signal in polarization\".",
+   "editorInference": "A previously unrecorded negative channel. Its diagnosticity is limited because, as the source says, CCC gives no polarization prediction; a null against an unspecified target cannot be fatal.",
+   "exactLocator": "[p. 8], §3.2 and Fig. 4 caption [p. 9]",
+   "limitations": [
+    "No CCC polarization profile exists to compare against.",
+    "Candidates selected in temperature at 2σ include many chance features, which would dilute any real polarization signal."
+   ]
+  },
+  {
+   "provisionalId": "CCC-E036",
+   "title": "Jow & Scott 2020: two further nulls (no anomalous clustering, no polarization counterpart) against the Hawking-point detection",
+   "claimRefs": [
+    "CCC-C004"
+   ],
+   "sourceRef": "SRC-JOW-SCOTT-2020",
+   "direction": "undermines",
+   "strength": "weak",
+   "sourceStatement": "The source states that the most significant candidates show no anomalous clustering relative to Gaussian simulations and that stacked E-mode polarization at candidate positions shows no persistent features, in addition to the size-marginalization result already recorded (CCC-E010).",
+   "editorInference": "Weak toward CCC-C004 because neither test targets a stated CCC prediction; they close off two ways the signal might have been corroborated rather than refuting the temperature excess itself.",
+   "exactLocator": "[p. 8], §3.1–3.2; [p. 9], §4",
+   "limitations": [
+    "Same as CCC-E034 and CCC-E035."
+   ]
+  },
+  {
+   "provisionalId": "CCC-E037",
+   "title": "Jow & Scott 2020: adding Planck half-difference noise maps leaves the Hawking-point statistic distribution unchanged",
+   "claimRefs": [
+    "CCC-C516"
+   ],
+   "sourceRef": "SRC-JOW-SCOTT-2020",
+   "direction": "supports",
+   "strength": "moderate",
+   "sourceStatement": "The source states that adding the Planck half-difference maps as a noise estimate to the simulations \"did not alter the estimated probability distributions\" of the gradient statistic, so instrumental noise does not contribute significantly to the Hawking-point signal at the scales considered.",
+   "editorInference": "Bears indirectly on the cross-map (Planck–WMAP) coincidence the article credits to proponents: if noise is negligible at these scales, co-location across instruments is what one expects for any feature of the sky, CCC-sourced or not.",
+   "exactLocator": "[p. 4], §2 paragraph 2",
+   "limitations": [
+    "Half-difference maps estimate noise but not all systematics."
+   ]
+  },
+  {
+   "provisionalId": "CCC-E038",
+   "title": "Jow & Scott 2020's history of the CCC signature: three successive definitions",
+   "claimRefs": [
+    "CCC-C525",
+    "CCC-C011"
+   ],
+   "sourceRef": "SRC-JOW-SCOTT-2020",
+   "direction": "supports",
+   "strength": "moderate",
+   "sourceStatement": "The source states that the first CCC prediction was rings of low variance, refuted by three analyses; that the claim then changed to concentric sets, also not confirmed; and that there is now \"yet another revision of the stated CCC prediction, to high-gradient rings\"; and that the conclusion could only have been avoided if CCC's predictions had been \"much more precise before looking at the data\".",
+   "editorInference": "A critic's account, but one whose sequence is checkable against the ledger's own sources (CCC-E001, CCC-E006, CCC-E009). It is primary support for the pattern the study table (CCC-E023) formalizes.",
+   "exactLocator": "[p. 8]–[p. 9], §4",
+   "limitations": [
+    "Written by critics; proponents describe the sequence as refinement rather than revision (see CCC-E013)."
+   ]
+  },
+  {
+   "provisionalId": "CCC-E039",
+   "title": "Allen 2020: the memory-effect gravitational-wave background from Planck-mass erebon decay is 35 orders below LIGO",
+   "claimRefs": [
+    "CCC-C517"
+   ],
+   "sourceRef": "SRC-ALLEN-2020",
+   "direction": "supports",
+   "strength": "strong",
+   "sourceStatement": "The source states that for a Planck-mass erebon the GW-memory contribution is 60 orders of magnitude larger than the direct contribution but that Ω_GW(25 Hz) < 6.7×10⁻⁴³ \"misses detectability by 35 orders of magnitude\" against the LIGO O1+O2 limit.",
+   "editorInference": "A derivation under stated assumptions (scalar decaying to two massless particles, lifetime longer than the Hubble time), not a data search; it is the only quantitative treatment of the erebon GW signal on record.",
+   "exactLocator": "[p. 4], §IV.A",
+   "limitations": [
+    "Assumes a stochastic background; does not treat individual decay events as detector transients.",
+    "Model choice (axisymmetric two-body decay) is contested against Penrose's spherically symmetric picture, as the source itself notes."
+   ]
+  },
+  {
+   "provisionalId": "CCC-E040",
+   "title": "Allen 2020 against the detectability clause of the erebon prediction",
+   "claimRefs": [
+    "CCC-C007"
+   ],
+   "sourceRef": "SRC-ALLEN-2020",
+   "direction": "undermines",
+   "strength": "moderate",
+   "sourceStatement": "The source states that it was originally motivated by Penrose's conformal cyclic cosmology, that Penrose conjectured erebon decays might produce a detectable background in LIGO, and that the calculated background is \"far too weak to observe with LIGO or other instruments\".",
+   "editorInference": "CCC-C007 bundles the dark-matter proposal with a detectability clause; this record bears only on the latter and only for a stochastic background. The theory description in CCC-C007 is untouched.",
+   "exactLocator": "[p. 1], §I",
+   "limitations": [
+    "Undermines detectability of a stochastic background, not the existence of erebons or the possibility of a differently modelled individual-decay signal."
+   ]
+  },
+  {
+   "provisionalId": "CCC-E041",
+   "title": "Allen 2020 qualifies the LIGO-noise conjecture: the computed background could not be what the detectors saw",
+   "claimRefs": [
+    "CCC-C505"
+   ],
+   "sourceRef": "SRC-ALLEN-2020",
+   "direction": "qualifies",
+   "strength": "moderate",
+   "sourceStatement": "The source states that Penrose conjectured erebon decays might produce a detectable background in LIGO and that the calculated spectrum shows this is far too weak to observe with LIGO or other instruments.",
+   "editorInference": "CCC-C505 is a claim that Penrose made a proposal; that remains true. This record limits the proposal's viability: on Allen's model no stochastic erebon signal reaches LIGO, so any correlated noise would need another origin.",
+   "exactLocator": "[p. 1], §I; [p. 4], §IV.A",
+   "limitations": [
+    "Does not address whether individual impulsive events (rather than a background) could be detected."
+   ]
+  },
+  {
+   "provisionalId": "CCC-E042",
+   "title": "Allen 2020: the direct graviton spectrum from erebon decay is 95 orders below LIGO",
+   "claimRefs": [
+    "CCC-C518"
+   ],
+   "sourceRef": "SRC-ALLEN-2020",
+   "direction": "supports",
+   "strength": "strong",
+   "sourceStatement": "The source states that for the erebon, with lifetime longer than the Hubble time, Ω_GW(25 Hz) < 2×10⁻¹⁰³ for the direct graviton contribution, \"below detectability in LIGO by about 95 orders of magnitude\".",
+   "editorInference": "Anchors the claim.",
+   "exactLocator": "[p. 2], §III",
+   "limitations": [
+    "Assumes decay into two gravitons of energy mc²/2 with a narrow Lorentzian line."
+   ]
+  },
+  {
+   "provisionalId": "CCC-E043",
+   "title": "Allen 2020: a spherically symmetric decay produces no 1/r strain",
+   "claimRefs": [
+    "CCC-C519"
+   ],
+   "sourceRef": "SRC-ALLEN-2020",
+   "direction": "supports",
+   "strength": "moderate",
+   "sourceStatement": "The source states that Penrose's impulsive-Vaidya model is spherically symmetric, that Eq. (2.43c) of Blanchet & Damour \"shows that for an isotropic source there is no\" O(1/r) GW term in the strain, the leading effect being O(1/r²) and not a gravitational wave, and that the memory effect arises because \"The spacetime has axial rather than spherical symmetry\".",
+   "editorInference": "A theoretical disagreement with the proponents' modelling, stated by one side; no proponent reply is on record. It matters for CCC-R002 because it determines whether any individual-decay transient exists to search for.",
+   "exactLocator": "[p. 4], §IV.A final paragraph",
+   "limitations": [
+    "Relies on a cited result (Blanchet & Damour 1992) not shown; no proponent response retrieved."
+   ]
+  },
+  {
+   "provisionalId": "CCC-E044",
+   "title": "Nielsen et al. 2019: no significant Hanford–Livingston residual correlations after maximum-likelihood subtraction",
+   "claimRefs": [
+    "CCC-C520"
+   ],
+   "sourceRef": "SRC-NIELSEN-2019",
+   "direction": "supports",
+   "strength": "strong",
+   "sourceStatement": "The source states that using the Pearson statistic of Creswell et al., after subtracting a maximum-likelihood GR waveform there are \"no statistically significant correlations between the residuals of the two detectors\" at the time of GW150914, with a p-value of about 0.4 against colored Gaussian noise and off-source LIGO data (versus ~0.001 for the PRL figure residuals).",
+   "editorInference": "Anchors the claim. The reduction is attributed to using a better-fit waveform than the illustrative numerical-relativity template of the discovery paper.",
+   "exactLocator": "[p. 1], Abstract; [p. 6], §2; [p. 11], §5",
+   "limitations": [
+    "Authors are LIGO collaboration members.",
+    "Addresses GW150914 residuals only; Creswell et al. also reported correlations in calibration lines near 35 Hz and for two other events, not treated here."
+   ]
+  },
+  {
+   "provisionalId": "CCC-E045",
+   "title": "The premise of Penrose's LIGO-noise conjecture did not survive independent reanalysis",
+   "claimRefs": [
+    "CCC-C505"
+   ],
+   "sourceRef": "SRC-NIELSEN-2019",
+   "direction": "qualifies",
+   "strength": "moderate",
+   "sourceStatement": "The source states that it reproduces the Creswell et al. correlation for data containing the signal but finds \"no statistically significant correlations after subtracting the maximum-likelihood waveform\" from the data, consistent with the collaboration's own residual test.",
+   "editorInference": "Penrose's 2017 proposal took the correlated residual noise as its datum; this record shows the datum is not statistically significant under a better waveform subtraction. The proposal was made (CCC-C505 stands as history); its empirical premise is removed.",
+   "exactLocator": "[p. 11], §5",
+   "limitations": [
+    "Different data calibration (C02) and different subtracted waveform from Creswell et al.; small changes in correlation parameters are shown to move the residual peak."
+   ]
+  },
+  {
+   "provisionalId": "CCC-E046",
+   "title": "Creswell et al. 2017 (abstract): the correlated-noise report behind the erebon–LIGO conjecture",
+   "claimRefs": [
+    "CCC-C521",
+    "CCC-C505"
+   ],
+   "sourceRef": "SRC-CRESWELL-2017",
+   "direction": "context",
+   "strength": "weak",
+   "sourceStatement": "The abstract states that, with special focus on GW150914, the authors report correlations in the detector noise which \"happen to be maximized for the same time lag as that found\" for the event itself, in the calibration lines near 35 Hz and in the residual noise after template subtraction, with similar behaviour for GW151226 and GW170104.",
+   "editorInference": "Supplies the observational premise Penrose cited; context for CCC-C505 and the anchor for CCC-C521. Only the abstract was retrieved; weight is accordingly weak.",
+   "exactLocator": "arXiv abstract page (arXiv:1706.04191v2)",
+   "limitations": [
+    "Abstract only; paper body and appendix not retrieved.",
+    "The finding was contested by SRC-NIELSEN-2019 and others cited there."
+   ]
+  },
+  {
+   "provisionalId": "CCC-E047",
+   "title": "Gurzadyan & Penrose 2010b: the null-ensemble choice stated by both sides",
+   "claimRefs": [
+    "CCC-C003",
+    "CCC-C522"
+   ],
+   "sourceRef": "SRC-GURZADYAN-PENROSE-2010B",
+   "direction": "supports",
+   "strength": "strong",
+   "sourceStatement": "The source states that \"Both groups simulate maps using the CMB power spectrum for LCDM\" while the authors simulate a pure Gaussian sky plus WMAP noise, and justifies this by their earlier Kolmogorov analysis under which \"the random component is a minor one in the CMB signal\", about 0.2.",
+   "editorInference": "Confirms CCC-C003 in the proponents' own words and adds the rationale the ledger lacked: the pure-Gaussian null rests on a prior, contested empirical claim about the CMB's randomness, not on a bare methodological preference.",
+   "exactLocator": "[p. 1], abstract and paragraph 3; [p. 2], paragraph 2",
+   "limitations": [
+    "The Kolmogorov result (their ref. [5], arXiv:1011.3711) was not retrieved; its critical literature was not reached."
+   ]
+  },
+  {
+   "provisionalId": "CCC-E048",
+   "title": "Gurzadyan & Penrose 2010b: σ≈2.2–2.5 μK in their Gaussian simulations versus ~5 μK for the critics'",
+   "claimRefs": [
+    "CCC-C523"
+   ],
+   "sourceRef": "SRC-GURZADYAN-PENROSE-2010B",
+   "direction": "supports",
+   "strength": "moderate",
+   "sourceStatement": "The source's table gives standard deviations of 2.5, 2.2 and 2.4 μK for simulated Gaussian W-band, foreground-reduced, and foreground-reduced-plus-noise maps, and states that \"the sigma in the simulated data is only half the one\" claimed by Moss et al. for ΛCDM, hence the higher significance they find.",
+   "editorInference": "This quantifies the null dispute: the significance ratio between camps is essentially the ratio of these two σ values.",
+   "exactLocator": "[p. 2], table and following paragraph",
+   "limitations": [
+    "Two-page unrefereed reply; the σ values' derivation is not shown."
+   ]
+  },
+  {
+   "provisionalId": "CCC-E049",
+   "title": "Gurzadyan & Penrose 2010b: critics' simulations show no concentric families",
+   "claimRefs": [
+    "CCC-C524"
+   ],
+   "sourceRef": "SRC-GURZADYAN-PENROSE-2010B",
+   "direction": "supports",
+   "strength": "weak",
+   "sourceStatement": "The source states that what the authors find are families of concentric low-variance circles, whose probability under Gaussian fluctuations is immensely smaller than for unrelated circles, and that the simulations of Moss et al. \"show no indication of the low-variance instances occurring in concentric families\".",
+   "editorInference": "Weak because the observation is about another group's figures, and because the concentric criterion was later applied to ΛCDM simulations directly (CCC-E033) with the opposite result.",
+   "exactLocator": "[p. 2], penultimate paragraph",
+   "limitations": [
+    "Asserted, not tested; answered by DeAbreu et al. 2015."
+   ]
+  }
+ ],
+ "claims": [
+  {
+   "provisionalId": "CCC-C506",
+   "statement": "In the 7-year WMAP maps, rings of radius greater than about 10° centred on Galactic (l,b)=(105°,37°) have systematically lower variance than the mean of ΛCDM simulations.",
+   "theme": "circles",
+   "rung": "observation",
+   "claimType": "measurement",
+   "sourceAnchor": {
+    "sourceRef": "SRC-BIELEWICZ-2013",
+    "locator": "[p. 1], Abstract",
+    "quote": "systematically lower variance in comparison to the concordance ΛCDM model predictions",
+    "also": [
+     {
+      "locator": "[p. 5], §5 paragraph 2",
+      "quote": "there is evidence of systematically smaller variances for concentric rings"
+     }
+    ]
+   },
+   "parentClaimRefs": [
+    "CCC-C001"
+   ],
+   "dependsOnClaimRefs": [],
+   "alternativeToRefs": [],
+   "contradictsRefs": []
+  },
+  {
+   "provisionalId": "CCC-C507",
+   "statement": "The systematic variance deficit of large rings around (105°,37°) disappears when the ℓ≤7 multipoles in the simulations are replaced by the observed best-fitting values, but not when only ℓ≤3 are replaced.",
+   "theme": "circles",
+   "rung": "observation",
+   "claimType": "measurement",
+   "sourceAnchor": {
+    "sourceRef": "SRC-BIELEWICZ-2013",
+    "locator": "[p. 5], §5 paragraph 4",
+    "quote": "simulations with replaced best-fitting multipoles are more consistent with the data",
+    "also": [
+     {
+      "locator": "[p. 9], §6 Conclusions",
+      "quote": "the agreement between simulations and the observed variances is very good"
+     }
+    ]
+   },
+   "parentClaimRefs": [
+    "CCC-C506"
+   ],
+   "dependsOnClaimRefs": [
+    "CCC-C506"
+   ],
+   "alternativeToRefs": [],
+   "contradictsRefs": []
+  },
+  {
+   "provisionalId": "CCC-C508",
+   "statement": "The clustering of low-variance ring centres in a few large regions of the WMAP sky is produced by the anomalous distribution of the map's low-order (ℓ≤7) multipoles, not by gravitational-wave imprints of black-hole collisions in a previous aeon.",
+   "theme": "conventional",
+   "rung": "mechanism",
+   "claimType": "causal",
+   "sourceAnchor": {
+    "sourceRef": "SRC-BIELEWICZ-2013",
+    "locator": "[p. 7], §5.2 paragraph 3",
+    "quote": "rather indicates effects related to large angular scale features",
+    "also": [
+     {
+      "locator": "[p. 10], §6 Conclusions",
+      "quote": "can be traced to the presence of anomalous low-order multipoles"
+     }
+    ]
+   },
+   "parentClaimRefs": [],
+   "dependsOnClaimRefs": [
+    "CCC-C507"
+   ],
+   "alternativeToRefs": [
+    "CCC-C009",
+    "CCC-C010"
+   ],
+   "contradictsRefs": []
+  },
+  {
+   "provisionalId": "CCC-C509",
+   "statement": "Under CCC, the sets of concentric rings should be randomly distributed on the sky with only a few rings in each set showing low variance, so sets with systematically low variance at large radii clustered in a few large regions are inconsistent with the scenario.",
+   "theme": "circles",
+   "rung": "mechanism",
+   "claimType": "interpretive",
+   "sourceAnchor": {
+    "sourceRef": "SRC-BIELEWICZ-2013",
+    "locator": "[p. 7], §5.2 paragraph 3",
+    "quote": "Such a clustering of rings with low variance is not consistent",
+    "also": [
+     {
+      "locator": "[p. 10], §6 Conclusions",
+      "quote": "this model predicts randomly distributed sets of concentric rings"
+     }
+    ]
+   },
+   "parentClaimRefs": [],
+   "dependsOnClaimRefs": [],
+   "alternativeToRefs": [],
+   "contradictsRefs": []
+  },
+  {
+   "provisionalId": "CCC-C510",
+   "statement": "The GP13 sky-twist procedure changes the expected annular variance profile as a function of radius by an amount that depends on the twist applied, so comparing twisted-sky results against the untwisted GP13 threshold is not a fair test of circularity.",
+   "theme": "statistics",
+   "rung": "observation",
+   "claimType": "methodological",
+   "sourceAnchor": {
+    "sourceRef": "SRC-DEABREU-2015",
+    "locator": "[p. 7], §3 final paragraph",
+    "quote": "the variance profile does indeed depend on the amount of",
+    "also": [
+     {
+      "locator": "[p. 7], §3 final paragraph",
+      "quote": "this is not a fair comparison, particularly when using the threshold"
+     }
+    ]
+   },
+   "parentClaimRefs": [],
+   "dependsOnClaimRefs": [],
+   "alternativeToRefs": [],
+   "contradictsRefs": []
+  },
+  {
+   "provisionalId": "CCC-C511",
+   "statement": "The drop in the number of low-variance annuli at large radius reported by GP13 is a consequence of defining 'low variance' against a single per-direction average, because annular variance rises monotonically with radius; thresholds that track radius show no such drop.",
+   "theme": "statistics",
+   "rung": "observation",
+   "claimType": "methodological",
+   "sourceAnchor": {
+    "sourceRef": "SRC-DEABREU-2015",
+    "locator": "[p. 6], §3 paragraph 4",
+    "quote": "appears simply to be due to their particular definition of the threshold",
+    "also": [
+     {
+      "locator": "[p. 8], §4 Conclusions",
+      "quote": "is merely a result of the particular search criterion used"
+     }
+    ]
+   },
+   "parentClaimRefs": [],
+   "dependsOnClaimRefs": [],
+   "alternativeToRefs": [],
+   "contradictsRefs": []
+  },
+  {
+   "provisionalId": "CCC-C512",
+   "statement": "The hemispheric asymmetry of GP13-criterion low-variance directions in WMAP is weaker in the Planck Commander map, and about 25% of ΛCDM simulations show a larger dipole asymmetry than the data.",
+   "theme": "circles",
+   "rung": "observation",
+   "claimType": "statistical",
+   "sourceAnchor": {
+    "sourceRef": "SRC-DEABREU-2015",
+    "locator": "[p. 3], §2 paragraph 1",
+    "quote": "we find that about 25 % of simulations produce a distribution",
+    "also": [
+     {
+      "locator": "[p. 3], §2 paragraph 1",
+      "quote": "We conclude that the asymmetry is not statistically significant"
+     }
+    ]
+   },
+   "parentClaimRefs": [],
+   "dependsOnClaimRefs": [],
+   "alternativeToRefs": [],
+   "contradictsRefs": []
+  },
+  {
+   "provisionalId": "CCC-C513",
+   "statement": "In a standard ΛCDM universe, about half of observers in separate Hubble patches would see a greater abundance of directions with three or more concentric low-variance rings than is seen in the Planck sky.",
+   "theme": "conventional",
+   "rung": "observation",
+   "claimType": "statistical",
+   "sourceAnchor": {
+    "sourceRef": "SRC-DEABREU-2015",
+    "locator": "[p. 8], §4 Conclusions",
+    "quote": "about half of the observers in separate Hubble patches",
+    "also": []
+   },
+   "parentClaimRefs": [],
+   "dependsOnClaimRefs": [],
+   "alternativeToRefs": [],
+   "contradictsRefs": [
+    "CCC-C002"
+   ]
+  },
+  {
+   "provisionalId": "CCC-C514",
+   "statement": "The mean nearest-neighbour separation of the 30 most significant Hawking-point candidates in Planck 2018 SMICA (0.19–0.20 rad) lies within 1σ of the value for Gaussian ΛCDM skies (0.20 ± 0.03 rad).",
+   "theme": "hawking",
+   "rung": "observation",
+   "claimType": "measurement",
+   "sourceAnchor": {
+    "sourceRef": "SRC-JOW-SCOTT-2020",
+    "locator": "[p. 8], §3.1",
+    "quote": "we do not find any evidence that HPs exhibit any anomalous clustering",
+    "also": []
+   },
+   "parentClaimRefs": [],
+   "dependsOnClaimRefs": [],
+   "alternativeToRefs": [],
+   "contradictsRefs": []
+  },
+  {
+   "provisionalId": "CCC-C515",
+   "statement": "Stacks of Planck 2018 SMICA E-mode polarization centred on the 709 and 730 temperature-selected Hawking-point candidates with |â|>2 show no persistent structure.",
+   "theme": "hawking",
+   "rung": "observation",
+   "claimType": "measurement",
+   "sourceAnchor": {
+    "sourceRef": "SRC-JOW-SCOTT-2020",
+    "locator": "[p. 8], §3.2",
+    "quote": "there does not appear to be any corresponding structure in the",
+    "also": [
+     {
+      "locator": "[p. 8], §3.2",
+      "quote": "we also find no evidence for a corresponding signal in polarization"
+     }
+    ]
+   },
+   "parentClaimRefs": [],
+   "dependsOnClaimRefs": [],
+   "alternativeToRefs": [],
+   "contradictsRefs": []
+  },
+  {
+   "provisionalId": "CCC-C516",
+   "statement": "Adding Planck half-difference noise maps to the simulations does not alter the estimated probability distribution of the Hawking-point ring-gradient statistic at the scales searched.",
+   "theme": "hawking",
+   "rung": "observation",
+   "claimType": "measurement",
+   "sourceAnchor": {
+    "sourceRef": "SRC-JOW-SCOTT-2020",
+    "locator": "[p. 4], §2 paragraph 2",
+    "quote": "did not alter the estimated probability distributions",
+    "also": []
+   },
+   "parentClaimRefs": [],
+   "dependsOnClaimRefs": [],
+   "alternativeToRefs": [],
+   "contradictsRefs": []
+  },
+  {
+   "provisionalId": "CCC-C517",
+   "statement": "If dark matter is Planck-mass particles decaying to two massless particles with lifetime longer than the Hubble time, the gravitational-wave memory-effect stochastic background satisfies Ω_GW(25 Hz) < 6.7×10⁻⁴³, about 35 orders of magnitude below the LIGO O1+O2 limit.",
+   "theme": "erebons",
+   "rung": "mechanism",
+   "claimType": "mathematical",
+   "sourceAnchor": {
+    "sourceRef": "SRC-ALLEN-2020",
+    "locator": "[p. 4], §IV.A",
+    "quote": "misses detectability by 35 orders of magnitude",
+    "also": []
+   },
+   "parentClaimRefs": [],
+   "dependsOnClaimRefs": [],
+   "alternativeToRefs": [],
+   "contradictsRefs": []
+  },
+  {
+   "provisionalId": "CCC-C518",
+   "statement": "The direct graviton spectrum from Planck-mass erebon decay gives Ω_GW(25 Hz) < 2×10⁻¹⁰³, about 95 orders of magnitude below LIGO's sensitivity.",
+   "theme": "erebons",
+   "rung": "mechanism",
+   "claimType": "mathematical",
+   "sourceAnchor": {
+    "sourceRef": "SRC-ALLEN-2020",
+    "locator": "[p. 2], §III",
+    "quote": "below detectability in LIGO by about 95 orders of magnitude",
+    "also": []
+   },
+   "parentClaimRefs": [],
+   "dependsOnClaimRefs": [],
+   "alternativeToRefs": [],
+   "contradictsRefs": []
+  },
+  {
+   "provisionalId": "CCC-C519",
+   "statement": "A spherically symmetric particle decay of the kind modelled by Penrose's impulsive Vaidya metric produces no O(1/r) gravitational-wave strain; a memory signal arises only when the decay products define a preferred axis.",
+   "theme": "erebons",
+   "rung": "mechanism",
+   "claimType": "mechanistic",
+   "sourceAnchor": {
+    "sourceRef": "SRC-ALLEN-2020",
+    "locator": "[p. 4], §IV.A final paragraph",
+    "quote": "shows that for an isotropic source there is no",
+    "also": [
+     {
+      "locator": "[p. 4], §IV.A final paragraph",
+      "quote": "The spacetime has axial rather than spherical symmetry"
+     }
+    ]
+   },
+   "parentClaimRefs": [],
+   "dependsOnClaimRefs": [],
+   "alternativeToRefs": [],
+   "contradictsRefs": []
+  },
+  {
+   "provisionalId": "CCC-C520",
+   "statement": "After subtracting a maximum-likelihood general-relativity waveform from the GW150914 data, the Pearson cross-correlation between Hanford and Livingston residuals near the 7 ms lag is not statistically significant (p ≈ 0.4) against colored Gaussian noise and off-source LIGO data.",
+   "theme": "erebons",
+   "rung": "observation",
+   "claimType": "measurement",
+   "sourceAnchor": {
+    "sourceRef": "SRC-NIELSEN-2019",
+    "locator": "[p. 1], Abstract",
+    "quote": "no statistically significant correlations between the residuals of the two detectors",
+    "also": [
+     {
+      "locator": "[p. 11], §5",
+      "quote": "no statistically significant correlations after subtracting the maximum-likelihood waveform"
+     }
+    ]
+   },
+   "parentClaimRefs": [],
+   "dependsOnClaimRefs": [],
+   "alternativeToRefs": [],
+   "contradictsRefs": []
+  },
+  {
+   "provisionalId": "CCC-C521",
+   "statement": "Creswell et al. (2017) reported that residual noise correlations between the LIGO Hanford and Livingston detectors at the time of GW150914 were maximized at the same time lag as the gravitational-wave event.",
+   "theme": "erebons",
+   "rung": "observation",
+   "claimType": "historical",
+   "sourceAnchor": {
+    "sourceRef": "SRC-CRESWELL-2017",
+    "locator": "arXiv abstract page (arXiv:1706.04191v2)",
+    "quote": "happen to be maximized for the same time lag as that found",
+    "also": []
+   },
+   "parentClaimRefs": [
+    "CCC-C505"
+   ],
+   "dependsOnClaimRefs": [],
+   "alternativeToRefs": [],
+   "contradictsRefs": []
+  },
+  {
+   "provisionalId": "CCC-C522",
+   "statement": "Gurzadyan and Penrose justified simulating a pure Gaussian sky plus WMAP noise as the null ensemble by their Kolmogorov-stochasticity result that the random component is only about 20% of the CMB signal.",
+   "theme": "statistics",
+   "rung": "observation",
+   "claimType": "historical",
+   "sourceAnchor": {
+    "sourceRef": "SRC-GURZADYAN-PENROSE-2010B",
+    "locator": "[p. 2], paragraph 2",
+    "quote": "the random component is a relatively minor one, of around 20%",
+    "also": [
+     {
+      "locator": "[p. 1], abstract",
+      "quote": "the random component is a minor one in the CMB signal"
+     }
+    ]
+   },
+   "parentClaimRefs": [
+    "CCC-C003"
+   ],
+   "dependsOnClaimRefs": [],
+   "alternativeToRefs": [],
+   "contradictsRefs": []
+  },
+  {
+   "provisionalId": "CCC-C523",
+   "statement": "Gurzadyan and Penrose's simulated Gaussian W-band maps have standard deviation 2.2–2.5 μK, about half the ~5 μK of the ΛCDM-spectrum simulations used by Moss, Scott and Zibin.",
+   "theme": "statistics",
+   "rung": "observation",
+   "claimType": "measurement",
+   "sourceAnchor": {
+    "sourceRef": "SRC-GURZADYAN-PENROSE-2010B",
+    "locator": "[p. 2], table and following paragraph",
+    "quote": "the sigma in the simulated data is only half the one",
+    "also": []
+   },
+   "parentClaimRefs": [
+    "CCC-C003"
+   ],
+   "dependsOnClaimRefs": [],
+   "alternativeToRefs": [],
+   "contradictsRefs": []
+  },
+  {
+   "provisionalId": "CCC-C524",
+   "statement": "Simulated skies drawn from the ΛCDM power spectrum show no low-variance circles occurring in concentric families.",
+   "theme": "circles",
+   "rung": "observation",
+   "claimType": "statistical",
+   "sourceAnchor": {
+    "sourceRef": "SRC-GURZADYAN-PENROSE-2010B",
+    "locator": "[p. 2], penultimate paragraph",
+    "quote": "show no indication of the low-variance instances occurring in concentric families",
+    "also": []
+   },
+   "parentClaimRefs": [
+    "CCC-C003"
+   ],
+   "dependsOnClaimRefs": [],
+   "alternativeToRefs": [],
+   "contradictsRefs": [
+    "CCC-C513"
+   ]
+  },
+  {
+   "provisionalId": "CCC-C525",
+   "statement": "The stated CMB signature of CCC has been revised through three successive definitions — low-variance rings (2010), concentric sets of low-variance rings (2013), and high-gradient rings or 'Hawking points' (2018) — each after the previous had been tested.",
+   "theme": "statistics",
+   "rung": "observation",
+   "claimType": "historical",
+   "sourceAnchor": {
+    "sourceRef": "SRC-JOW-SCOTT-2020",
+    "locator": "[p. 8], §4",
+    "quote": "yet another revision of the stated CCC prediction, to high-gradient rings",
+    "also": []
+   },
+   "parentClaimRefs": [
+    "CCC-C011"
+   ],
+   "dependsOnClaimRefs": [],
+   "alternativeToRefs": [],
+   "contradictsRefs": []
+  }
+ ],
+ "research": [
+  {
+   "provisionalId": "CCC-R006",
+   "title": "Rerun the 2020 triple-centre anisotropy with low multipoles replaced and few-pixel spots masked",
+   "summary": "An, Meissner, Nurowski and Penrose (2020) report 83% of 1134 concentric-triple centres in three regions covering ~3% of the searched sky (CCC-C504). Two candidate ΛCDM explanations for centre clustering now exist — anomalous ℓ≤7 multipoles (Bielewicz et al. 2013, CCC-C508) and few-pixel variance spikes (Bodnia et al. 2024, CCC-E012) — but neither has been applied to this catalogue. Desk work on public Planck data: reproduce the triple catalogue under the 2020 criteria; then (a) replace or rotate the ℓ≤7 multipoles as in Bielewicz et al. and (b) mask few-pixel outliers as in Bodnia et al.; measure the fraction of centres remaining in the three regions and compare to simulations treated identically.",
+   "claimRefs": [
+    "CCC-C504",
+    "CCC-C508",
+    "CCC-C009",
+    "CCC-C010"
+   ],
+   "track": "either",
+   "effortTier": "desk",
+   "informationGain": "If the clustering survives both manipulations at the reported level, the strongest surviving proponent argument gains its first independent confirmation and both ΛCDM mechanisms are shown insufficient; if it dissolves, CCC-C504 joins CCC-C002 as an artefact of null construction and CCC-C508 is confirmed on the proponents' own statistic."
+  },
+  {
+   "provisionalId": "CCC-R007",
+   "title": "A fair ellipse search: compute the null over the ellipse parameter space and rerun the GP13 twist comparison",
+   "summary": "DeAbreu et al. (2015) showed that GP13's sky-twist procedure changes the expected variance profile (CCC-C510) and named the remedy — computing the expected variance as a function of the full ellipse parameter space from simulations and searching over it — but judged it too computationally intensive to do. With a fast-convolution or harmonic-space approach this is now tractable. Run the concentric-family search for ellipses of graded eccentricity on Planck and on ΛCDM simulations with a threshold that tracks eccentricity, radius and masking; report whether the real sky prefers circular over elliptical families more than simulations do.",
+   "claimRefs": [
+    "CCC-C503",
+    "CCC-C510",
+    "CCC-C002"
+   ],
+   "track": "either",
+   "effortTier": "desk",
+   "informationGain": "Closes the one proponent test no independent group has run. A genuine circularity preference beyond simulations would be the first surviving CCC circle signature under a fair null; its absence would retire the sky-twist argument."
+  }
+ ],
+ "corrections": [
+  {
+   "record": "SRC-DEABREU-2015",
+   "field": "url",
+   "from": null,
+   "to": "https://arxiv.org/pdf/1508.05158",
+   "reason": "The report reached the source's text at this URL (arXiv v3, 20 Nov 2015); the ledger holds the record with DOI and arXiv keys but no URL, and the verifier can only read what a record points at."
+  },
+  {
+   "record": "SRC-JOW-SCOTT-2020",
+   "field": "url",
+   "from": null,
+   "to": "https://arxiv.org/pdf/1909.09672",
+   "reason": "The report reached the source's text at this URL (arXiv v2, 21 Jan 2020); the ledger record carries no URL."
+  }
+ ],
+ "dispositions": [
+  {
+   "kind": "source",
+   "disposition": "failed",
+   "as": null,
+   "reason": "The DOI the report guessed for Bielewicz, Wandelt & Banday 2013 resolves (via OpenAlex open-access copy arXiv:1210.7690) to Massey et al., 'Origins of weak lensing systematics, and requirements on future instrumentation' — an unrelated paper. The Bielewicz source enters on its arXiv identifier only; the correct MNRAS DOI remains unverified.",
+   "reopenIf": "The MNRAS landing page for 429, 1376 (2013) is retrieved and its DOI confirmed.",
+   "observed": "doi:10.1093/mnras/sts371 → Massey et al. 2013 (weak lensing), not Bielewicz et al.",
+   "url": "https://doi.org/10.1093/mnras/sts371",
+   "route": "Look up MNRAS volume 429 issue 2 pp. 1376–1385 on academic.oup.com or via ADS bibcode 2013MNRAS.429.1376B and read the DOI from the article page."
+  },
+  {
+   "kind": "source",
+   "disposition": "blocked",
+   "as": null,
+   "reason": "Search snippet only; not opened. Possibly bears on the correlated-noise premise of CCC-C505 but nothing verifiable was shown.",
+   "reopenIf": "Full text retrieved.",
+   "observed": "arXiv:2607.10816 (2026, correlated noise in the LIGO–Virgo network) — title from search results only",
+   "url": "https://arxiv.org/abs/2607.10816",
+   "route": "Fetch https://arxiv.org/pdf/2607.10816 and check whether it addresses Hanford–Livingston residual correlations at GW event time lags."
+  },
+  {
+   "kind": "source",
+   "disposition": "blocked",
+   "as": null,
+   "reason": "Not opened; no evident bearing on tracked claims from the title alone. Cannot be dispositioned irrelevant without text.",
+   "reopenIf": "Text shows a testable CCC proposition or a signature prediction.",
+   "observed": "Gurzadyan & Penrose 2016, 'CCC and the Fermi paradox', arXiv:1512.00554 — title only",
+   "url": "https://arxiv.org/abs/1512.00554",
+   "route": "Fetch arXiv:1512.00554 and read for any quantitative prediction bearing on circles, Hawking points or erebons."
+  },
+  {
+   "kind": "source",
+   "disposition": "blocked",
+   "as": null,
+   "reason": "Full text not reached; the report could not verify whether it mentions ring or Hawking-point searches. Cited by Jow & Scott 2020 as their ref. [3].",
+   "reopenIf": "Text retrieved and found to discuss CCC-related ring statistics.",
+   "observed": "Planck 2018 results. VII. Isotropy and statistics (A&A 641, A7) — cited in SRC-JOW-SCOTT-2020 reference list",
+   "url": null,
+   "route": "Retrieve doi:10.1051/0004-6361/201935201 or arXiv:1906.02552 and search for 'ring', 'Penrose', 'conformal cyclic'."
+  },
+  {
+   "kind": "source",
+   "disposition": "blocked",
+   "as": null,
+   "reason": "The Kolmogorov-stochasticity paper that Gurzadyan & Penrose 2010b cite as their ref. [5] to justify the pure-Gaussian null (CCC-C522) was not retrieved; only the citation in the retrieved text is shown.",
+   "reopenIf": "Text retrieved.",
+   "observed": "Gurzadyan et al., A&A 525, L7 (2011), arXiv:1011.3711 — cited at [p. 2] of SRC-GURZADYAN-PENROSE-2010B",
+   "url": "https://arxiv.org/abs/1011.3711",
+   "route": "Fetch arXiv:1011.3711 and record the stated random fraction and method; then retrieve its critique (Frommert et al. 2012, 'Application of the Kolmogorov-Smirnov test to CMB data: Is the universe really weakly random?')."
+  },
+  {
+   "kind": "source",
+   "disposition": "blocked",
+   "as": null,
+   "reason": "Appeared only as a search-result title in the report; not opened.",
+   "reopenIf": "Text retrieved.",
+   "observed": "Frommert et al. 2012, 'Application of the Kolmogorov-Smirnov test to CMB data: Is the universe really weakly random?' — title from search results",
+   "url": null,
+   "route": "Search arXiv for the title (2012, astro-ph.CO) and fetch the PDF; it bears on CCC-C522 and CCC-C003."
+  },
+  {
+   "kind": "source",
+   "disposition": "irrelevant",
+   "as": null,
+   "reason": "Report re-examined the previously declined bimetric varying-constants CCC model and found nothing changing its disposition; no text was retrieved this pass.",
+   "reopenIf": "Its text is shown to supply a concrete mass fade-out mechanism bearing on CCC-C005.",
+   "observed": "arXiv:2608.27014, 'Conformal Cyclic Cosmology from Varying Fundamental Constants' (declined 2026-08-31)",
+   "url": "https://arxiv.org/abs/2608.27014",
+   "route": null
+  },
+  {
+   "kind": "image",
+   "disposition": "blocked",
+   "as": null,
+   "reason": "The report suggests a Planck 2018 SMICA all-sky plate and figures from Bielewicz et al. (Figs. 8–11) and DeAbreu et al. (Fig. 3), but no public record URL, license or credit line was shown for any of them.",
+   "reopenIf": "An ESA/Planck image record with license and credit, or arXiv figure files with an explicit license, is retrieved.",
+   "observed": "Candidate plates named in report §4: Planck 2018 SMICA map; Bielewicz Figs. 8–11; DeAbreu Fig. 3",
+   "url": null,
+   "route": "For the Planck map, locate the ESA Science & Technology image record for the 2018 SMICA CMB map and copy its credit/licence line; for paper figures, check the arXiv licence of each version (Bielewicz v3, DeAbreu v3) and request permission if not CC."
+  },
+  {
+   "kind": "evidence",
+   "disposition": "excluded",
+   "as": null,
+   "reason": "The report proposes amending existing records CCC-E005, CCC-E008, CCC-E010 and CCC-E019 to add claims and findings. These are list fields (claimIds) and cannot be corrections; the same observations enter instead as new evidence records CCC-E028–E038, E045 and E047–E049 on the same sources.",
+   "reopenIf": "A founder decides the existing records' titles or statements should be rewritten as scalar corrections.",
+   "observed": "Report §3 items 2, 3, 5, 6: 'amend CCC-E008', 'amend CCC-E010', 'amend CCC-E019', 'amend CCC-E005'",
+   "url": null,
+   "route": null
+  }
+ ],
+ "edition": {
+  "rationale": "The retrieved texts show two statements in the current telling to be too strong and one load-bearing finding to be missing. 'No independent group has ever run the sky-twist test' is true only of the ellipse search itself: DeAbreu et al. 2015 examined the twist comparison and showed the distortion changes the null, so the article's 'no simulations to argue over' framing is wrong. 'No one has ever run the search' for erebon decays and 'waits for anyone to take it literally' are contradicted by Allen 2020, which took the conjecture literally and computed the background at 35 orders below LIGO, and by Nielsen et al. 2019, which removed the correlated-noise premise. And a fourth 2013 reanalysis (Bielewicz et al.) that traces the best-known quiet direction to the CMB's known large-angle anomalies is absent. Featured claims and crux order are unchanged; the judgment is unchanged (no new assessment); the article is revised in the circles, Hawking-point and closing sections only.",
+  "featuredClaimIds": [
+   "CCC-C001",
+   "CCC-C002",
+   "CCC-C003",
+   "CCC-C004",
+   "CCC-C005",
+   "CCC-C006",
+   "CCC-C007",
+   "CCC-C008",
+   "CCC-C009",
+   "CCC-C010",
+   "CCC-C011"
+  ],
+  "cruxOrder": [
+   "CCC-R001",
+   "CCC-R002",
+   "CCC-R003",
+   "CCC-R004",
+   "CCC-R005"
+  ],
+  "article": "In November 2010, Roger Penrose — the mathematical physicist whose singularity theorems had helped make the Big Bang respectable science — announced that it was visible from the far side. With the Armenian mathematical physicist Vahe Gurzadyan, he reported that the microwave sky — the 13.8-billion-year-old radiation that is cosmology's primary document — contains [families of concentric circles over which the temperature varies anomalously little, at significance running as high as six sigma]{claim=CCC-C002}. On the theory the circles were meant to confirm, each family is a scar: the gravitational shockwaves of supermassive black holes colliding, over and over, in a universe that existed before ours.\n\nThe theory is Conformal Cyclic Cosmology, and Penrose had published it four years before anyone went looking for circles. Its starting point is the strangest fact about our universe's beginning: the Big Bang was, gravitationally, in a state of near-perfect order — absurdly low entropy — which is why the Second Law of thermodynamics has had somewhere to go ever since. Penrose's proposal replaces \"beginning\" with \"crossover.\" In the unimaginably remote future, after the last black holes have evaporated, the universe contains almost nothing but massless radiation. To a photon, which experiences no time, an eternity of empty expansion and an initial singularity are — conformally, which is to say up to a change of scale — the same kind of place. CCC takes the identification literally: [the infinite future of one aeon is the Big Bang of the next]{claim=CCC-C009}, geometry permitting, forever.\n\nThe construction has real costs, which its own author itemizes. For the far future to forget its scale, every particle with rest mass must eventually shed it — [a \"mass fade-out\" that Penrose calls an admittedly unconventional hypothesis]{claim=CCC-C005}, with the electron, whose decay charge conservation forbids, as the sharpest case. The entropy bookkeeping is stranger still: [each aeon can start clean only if black holes genuinely destroy information]{claim=CCC-C006}, a position most of quantum gravity rejects, and a 2023 analysis argues the destruction would raise the cosmic ledger rather than reset it. And because CCC deletes inflation, [the burden of explaining the CMB's almost-even texture falls on the previous aeon's dark matter]{claim=CCC-C008} — which the theory says consists of [Planck-mass particles Penrose named erebons, born at the crossover and decaying, detectably, ever since]{claim=CCC-C007}.\n\nWhat sets CCC apart from every other story about \"before the Big Bang\" is that it walked onto the record and made claims about data everyone already has. Those claims are this case.\n\n## The circles, examined\n\n{plate:IMG-CCC-P01}\n\nTake the observation first, interpretation second. [Quiet rings in the microwave sky exist — every group that has searched for them finds them]{claim=CCC-C001}, and that includes the theory's fiercest critics, who reproduced the Gurzadyan–Penrose procedure down to its outputs and said so in print. The dispute begins one step later, at a question that sounds too simple to fight over: compared to what?\n\nSignificance means: unlikely under the null hypothesis. Gurzadyan and Penrose computed theirs against simulated skies of pure Gaussian randomness plus instrument noise, and they said why: by their own earlier analysis, only about a fifth of the microwave signal is random at all, so a sky simulated with the standard model's full power spectrum would, in their view, smuggle the very structure in question into the definition of chance. Within weeks of the announcement, three independent groups — in Oslo, Vancouver, and Toronto — ran the same search against skies simulated from the standard cosmological model, whose fluctuations are correlated across the sky in precisely measured ways. In those richer simulated skies, whose scatter is roughly twice that of the proponents' Gaussian ones, the circles appeared in the same abundance as in the real one. The Vancouver group's verdict became the episode's epitaph: Gurzadyan and Penrose had \"not found evidence for pre-Big Bang phenomena, but have simply re-discovered that the CMB contains structure.\" [The entire six-sigma anomaly lived in the choice of null ensemble]{claim=CCC-C003} — and, remarkably, the proponents agreed about the fact while contesting the moral.\n\nA fourth reanalysis, from Toulouse and Paris in 2013, went further than the first three in two ways. It pushed the search out to rings of ninety degrees, and it asked what the one direction that did look quiet was made of. The answer was the CMB's already-famous large-angle anomalies — the same handful of low multipoles behind the so-called axis of evil. Fix those modes to their observed values in the simulations and the quiet direction becomes ordinary; the team added that quiet rings clustering in a few large patches of sky is what large-scale power structure produces, not what randomly scattered black-hole collisions would. One CCC anomaly had been turned into another already on the books.\n\nThe proponents did not stop there, and fairness requires saying so. Their strongest reply is the \"sky-twist\" test: if the concentric families are real relics of expanding spherical wavefronts, they should be circular, and [Gurzadyan and Penrose report that the signal collapses when you search for even slightly elliptical rings instead]{claim=CCC-C503}. They also note that [the circle centers clump extravagantly — 83 percent of them in three patches covering 3 percent of the searched sky]{claim=CCC-C504} — which they read as superclusters in the previous aeon. Neither argument has had a clean independent test, but neither has gone unexamined. In 2015 the Vancouver group froze the proponents' own concentric-triple criterion, applied it to Planck and to simulations, and found that about half of all observers in a standard universe would see more concentric quiet rings than we do. The same paper showed that twisting the sky to make ellipses changes what \"quiet\" should mean — the expected variance profile shifts with the twist — so the twist test is not the simulation-free self-comparison it appears to be, and a fair ellipse search would have to recompute the null across the whole space of ellipses, which no one has yet done. It also found that the striking north–south imbalance of ring centers in the WMAP data is weaker in Planck and matched by a quarter of simulations, most likely an artifact of WMAP's uneven noise. The 2020 clumping statistic itself remains untested by anyone outside the program. That is a real gap, and this case logs it — narrowly.\n\nBut the deepest cut came in 2024, from a Santa Barbara–Leiden team that went looking with the finest resolution yet and found the trapdoor under the whole method: [a handful of freak few-pixel spots in the maps inflate the local variance baseline, and the search criterion then certifies rings around them as \"anomalously quiet\"]{claim=CCC-C010}. Screen out the freak pixels and, at full resolution, no statistically significant circles remain. The critical side now has two mechanisms, at two scales — low-multipole anomalies for the large rings, few-pixel spikes for the small — and between them they plausibly account for both the concentric families and the clustering of their centers, though that last link has not been tested on the proponents' catalogue.\n\n## The Hawking points\n\nBy then the proponents had moved to a second signature. A supermassive black hole from the previous aeon does not only collide; eventually it evaporates, and CCC says its entire Hawking-radiation output funnels through the crossover into a compact hot spot. In 2020, Daniel An, Krzysztof Meissner, Paweł Nurowski and Penrose reported exactly that: [a family of raised-temperature spots of a characteristic size, present in the Planck data at 99.98 percent confidence]{claim=CCC-C004}, with the five strongest spots sitting at the same sky locations in the WMAP data — two instruments, different noise, one signal.\n\nThe published rebuttal is a small masterpiece of statistical hygiene. Dylan Jow and Douglas Scott observed that the 99.98 percent was quoted for the ring size that worked best — after the size had been chosen by looking. Correct for the family of sizes actually searched, and the significance falls to 87 percent: one sigma, weather. They checked two more things. The strongest candidates do not cluster on the sky any more than a Gaussian sky's would — so the proponents' expectation of clumped supermassive black holes finds nothing to grip — and stacking Planck's polarization maps on more than seven hundred candidate positions shows no accompanying structure at all. Two further independent searches — one with a purpose-built detector that demonstrably recovers synthetic CCC spots, one with a machine-learning pipeline and the freak-pixel screening — found nothing significant, and the second could rule out Hawking points of the claimed character outright across a stated amplitude range. What survives on the proponent side is the cross-map coincidence of the strongest spots, which no critic has specifically dismantled — though Jow and Scott's finding that instrument noise barely touches the statistic at these scales suggests why: any real feature of the sky, of whatever origin, would appear in both maps. The coincidence proves the spots are in the sky rather than in the instruments, without proving they are from anywhere but this universe.\n\n## Where the case actually lives\n\nStep back and the pattern is unusually clean. There is no dispute about the sky: every feature the proponents report, the critics reproduce. There is no dispute about the mathematics of the theory: the crossover equations are worked out and their open problems are catalogued by sympathetic hands. The entire evidentiary contest has collapsed into statistical methodology — [which ensemble defines \"expected,\" how to price the act of searching, and what a-posteriori pattern-finding is worth]{claim=CCC-C011}. Fourteen years in, not one analysis on either side has been preregistered. The proponents chose their statistics after exploring the maps, and the signature itself has been redefined three times — quiet rings, then concentric sets of quiet rings, then hot spots — each time after the previous version was tested; the critics chose their statistics after reading the proponents. This is not a symmetric sin — a null result found under the claimant's own frozen criteria carries a weight a post-hoc positive does not, and the strictest critical study did exactly that. But it explains why the same sky keeps signing affidavits for both parties.\n\nIt also points at the exit. The searches are desk work on public data with open-source tooling; what has never existed is a protocol both camps endorsed before unblinding — statistic, ensemble, mask, artifact screen, look-elsewhere correction, all frozen. And beneath that, the deficit the 2024 team named politely: CCC's predictions are qualitative. Some rings, some spots, somewhere, at some strength. Until the theory says how many, how bright, and how shaped, positive claims cannot be credited and null results cannot be fatal — the definition of a dispute that can run forever. A first step has now been taken: a 2025 Meissner–Penrose preprint proposes a relation tying each hot spot's temperature to the mass of its source cluster in the previous aeon, and reports agreement with the largest clusters we observe. It is unreviewed, its calculation checked by no one outside the program — and the how-many and how-shaped questions remain open.\n\n## What would change things\n\nThree developments would move this case decisively, and none is hypothetical technology. A preregistered adversarial reanalysis of the final Planck maps — including a fair ellipse search and a rerun of the 2020 center-clustering statistic with the known low-multipole anomalies and freak pixels controlled — would settle the existing claims. The coming generation of B-mode polarization experiments bears on the framework itself: [a confirmed detection of primordial gravitational waves would evidence an inflationary era that CCC, which abolished inflation, cannot supply]{claim=CCC-C008} — the rare place where the theory is exposed to data it has not already survived. And the erebon hypothesis has, in one respect, already been taken literally. [Penrose suggested in 2017 that the decays might be lurking in gravitational-wave detector noise]{claim=CCC-C505}, seizing on a report that the two LIGO detectors' residual noise was correlated at the same delay as the first detected signal. That report did not survive reanalysis: subtract a better-fit waveform and the correlation is gone. And in 2020 a gravitational-wave physicist computed the background that decaying Planck-mass particles would leave and found it some 35 orders of magnitude below LIGO's reach — while questioning whether the spherically symmetric decay Penrose envisages radiates a wave at all. What remains genuinely open is whether an individual erebon decay could leave any detectable transient; no one has derived one, and until someone does, there is no search to run.\n\nThe universe before this one is not a foolish idea. It is a serious idea whose observational case has, so far, failed review — brought by a great physicist, examined by competent critics, and stuck at an impasse that is methodological rather than cosmic. The sky is not going anywhere. What the case is waiting for is a protocol.\n"
+ }
+}

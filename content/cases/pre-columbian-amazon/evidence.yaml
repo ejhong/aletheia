@@ -536,3 +536,127 @@
     extractedBy: "claude-fable-5 (cursor session)"
     runId: "amz-expansion-2026-08-28"
     date: "2026-08-28"
+
+- id: AMZ-E035
+  title: "Heckenberger 2008: regional population estimated at ≥50,000 from ethnographic conversion, stated as conservative — part 2"
+  claimIds:
+    - AMZ-C037
+    - AMZ-C038
+  sourceId: SRC-HECKENBERGER-2008
+  direction: supports
+  strength: strong
+  sourceStatement: '"We estimate a regional population of" ≥50,000 (>2.5 persons/km²).'
+  editorInference: Supports the existence of the estimate as the authors' figure. The estimate depends on cluster count, contemporaneity, and ethnographic persons-per-settlement conversions — the same assumption family flagged for AMZ-C005, AMZ-C006, AMZ-C012.
+  exactLocator: "[p. 3] (journal p. 1216) and [p. 4] note 25 (journal p. 1217), PDF mirror"
+  limitations:
+    - Only two clusters were surveyed; the ≥15-cluster regional figure is extrapolated from spacing of known centres and indigenous knowledge (notes 25, 48).
+    - "Second reader (claude-sonnet-5, 2026-09-10, run 2026-09-10-verify-pre-columbian-amazon-133640, verify-v5) disputes the stated direction toward AMZ-C038: The sourceStatement only quotes the population figure (\"we estimate a regional population of \\u2265050,000\") from p.3/1216, but the claim it is meant to support (AMZ-C038) is specifically about the authors calling this estimate 'conservative' because of unsurveyed areas \\u2014 language that appears only in note 25 on p.4/1217 and is never quoted or paraphrased in the sourceStatement. Because the locator cites both pages as if jointly supporting the same quoted text, but the quote is drawn from only one of them, the locator does not actually support the full statement as given. Since the record's own text never states the 'conservative' reasoning, it does not bear on AMZ-C038 as written, only on the raw population estimate, so it should be refused for this claim link."
+  reviewState: ai_extracted
+  origin:
+    ref: split of AMZ-E024 (report 2026-09-10-report-pre-columbian-amazon-132424)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-pre-columbian-amazon-133640
+    date: 2026-09-10
+- id: AMZ-E036
+  title: "Heckenberger 2008: regional population estimated at ≥50,000 from ethnographic conversion, stated as conservative — part 3"
+  claimIds:
+    - AMZ-C037
+    - AMZ-C038
+  sourceId: SRC-HECKENBERGER-2008
+  direction: supports
+  strength: strong
+  sourceStatement: 'Note 25 qualifies these figures: "We consider these conservative estimates", with more clusters expected in the vast areas currently uninvestigated, including far northern and southern sites.'
+  editorInference: Supports the existence of the estimate as the authors' figure. The estimate depends on cluster count, contemporaneity, and ethnographic persons-per-settlement conversions — the same assumption family flagged for AMZ-C005, AMZ-C006, AMZ-C012.
+  exactLocator: "[p. 3] (journal p. 1216) and [p. 4] note 25 (journal p. 1217), PDF mirror"
+  limitations:
+    - Only two clusters were surveyed; the ≥15-cluster regional figure is extrapolated from spacing of known centres and indigenous knowledge (notes 25, 48).
+    - "Second reader (claude-sonnet-5, 2026-09-10, run 2026-09-10-verify-pre-columbian-amazon-133640, verify-v5) disputes the stated direction toward AMZ-C037: The note states the estimates are conservative and separately notes more clusters are expected in unsurveyed areas; this qualifies/limits the confidence of the ≥50,000 figure rather than affirmatively supporting it, so direction should be 'qualifies'. The sourceStatement bundles two distinct propositions (the 'conservative' characterization and the expectation of more clusters) that could be independently true or false, failing atomicity. Quote, locator, and relevance are otherwise sound."
+  reviewState: ai_extracted
+  origin:
+    ref: split of AMZ-E024 (report 2026-09-10-report-pre-columbian-amazon-132424)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-pre-columbian-amazon-133640
+    date: 2026-09-10
+- id: AMZ-E037
+  title: "Prümers 2022: the Casarabe culture is dated ca. AD 500–1400 — part 1"
+  claimIds:
+    - AMZ-C027
+  sourceId: SRC-PRMERS-2022
+  direction: supports
+  strength: strong
+  sourceStatement: The Casarabe culture is dated to around AD 500 to AD 1400, described as the "Casarabe culture (around ad 500 to ad 1400)" in the Llanos de Mojos.
+  editorInference: Casarabe's end therefore predates Orellana by roughly 140 years; this bears on how AMZ-C007 can be used in the founding question (see AMZ-E027).
+  exactLocator: Abstract and Main; Methods, 'Radiocarbon dating' — via open-access PMC copy (PMC9177426)
+  limitations:
+    - Stratigraphic control from only four sites; 22 dates from Chocolatelito could not be integrated; two dates ca. AD 0–220 are flagged by the authors as unusually early.
+  reviewState: ai_extracted
+  origin:
+    ref: split of AMZ-E026 (report 2026-09-10-report-pre-columbian-amazon-132424)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-pre-columbian-amazon-133640
+    date: 2026-09-10
+- id: AMZ-E038
+  title: "Prümers 2022: the Casarabe culture is dated ca. AD 500–1400 — part 3"
+  claimIds:
+    - AMZ-C027
+  sourceId: SRC-PRMERS-2022
+  direction: context
+  strength: strong
+  sourceStatement: Of the radiocarbon dates, 94 come from the two PABAM sites, "46 from Mendoza and 48 from Salvatierra".
+  editorInference: Casarabe's end therefore predates Orellana by roughly 140 years; this bears on how AMZ-C007 can be used in the founding question (see AMZ-E027).
+  exactLocator: Abstract and Main; Methods, 'Radiocarbon dating' — via open-access PMC copy (PMC9177426)
+  limitations:
+    - Stratigraphic control from only four sites; 22 dates from Chocolatelito could not be integrated; two dates ca. AD 0–220 are flagged by the authors as unusually early.
+    - "Direction set to \"context\" (from \"supports\") by the second reader (claude-sonnet-5, 2026-09-10, run 2026-09-10-verify-pre-columbian-amazon-133640, verify-v5) at intake: The quote accurately reports the count and site-split of radiocarbon dates (46 Mendoza, 48 Salvatierra) from the Methods section, and the locator is correct. However, this detail about how many dates exist and where they came from does not itself establish or support the AD 500-1400 chronological range claimed in AMZ-C027; it is background about the dating dataset's composition rather than evidence supporting the specific date range, so it should be marked as context rather than supports."
+  reviewState: ai_extracted
+  origin:
+    ref: split of AMZ-E026 (report 2026-09-10-report-pre-columbian-amazon-132424)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-pre-columbian-amazon-133640
+    date: 2026-09-10
+  readerActs:
+    - field: direction
+      from: supports
+      to: context
+      model: claude-sonnet-5
+      promptVersion: verify-v5
+      runId: 2026-09-10-verify-pre-columbian-amazon-133640
+      date: 2026-09-10
+      reason: The quote accurately reports the count and site-split of radiocarbon dates (46 Mendoza, 48 Salvatierra) from the Methods section, and the locator is correct. However, this detail about how many dates exist and where they came from does not itself establish or support the AD 500-1400 chronological range claimed in AMZ-C027; it is background about the dating dataset's composition rather than evidence supporting the specific date range, so it should be marked as context rather than supports.
+- id: AMZ-E030
+  title: "Prümers 2022: authors declare western-Amazonia sparse-population arguments 'put to rest'"
+  claimIds:
+    - AMZ-C014
+  sourceId: SRC-PRMERS-2022
+  direction: qualifies
+  strength: weak
+  sourceStatement: "The source's Conclusions state: \"Our results put to rest arguments that western Amazonia was sparsely populated\" in pre-Hispanic times, citing McMichael et al. 2012."
+  editorInference: "Rhetorical rather than evidential against AMZ-C014: the Llanos de Mojos is a seasonally flooded savannah with Andean-derived soils, not the terra-firme forest the phytolith synthesis samples. Low diagnosticity; recorded because it is a direct published rejoinder from a primary source."
+  exactLocator: Conclusions — via open-access PMC copy
+  limitations:
+    - The 'western Amazonia' targeted is McMichael 2012's; the Casarabe area is at the southwestern savannah fringe, environmentally distinct from most sampled terra-firme sites.
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-10-report-pre-columbian-amazon-132424
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-draft-pre-columbian-amazon-133114
+    date: 2026-09-10
+- id: AMZ-E042
+  title: "Bush 2021 SI: 39 lake-sediment pollen and charcoal records, Cecropia as abandonment indicator, Great Dying window 1550–1750 — part 3"
+  claimIds:
+    - AMZ-C040
+  sourceId: SRC-BUSH-2021
+  direction: supports
+  strength: moderate
+  sourceStatement: Cecropia pollen percentages are shown separately because this tree is "an indicator of site abandonment and early successional forest regrowth".
+  editorInference: Supports only the dataset/method description. The headline result (timing of regrowth) is not in the shown text.
+  exactLocator: "[p. 4]–[p. 5] (SI pp. 2–3), accepted-version supplementary PDF via CentAUR (centaur.reading.ac.uk/97776)"
+  limitations:
+    - Supplementary materials only; main text unread.
+    - Charcoal not collected under a standardized protocol; standardized post hoc.
+  reviewState: ai_extracted
+  origin:
+    ref: split of AMZ-E031 (report 2026-09-10-report-pre-columbian-amazon-132424)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-pre-columbian-amazon-133640
+    date: 2026-09-10

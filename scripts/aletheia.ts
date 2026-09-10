@@ -98,7 +98,12 @@ switch (verb) {
   }
   case "next": {
     const steps = Number(flagValue("--steps") ?? 1);
-    const r = await runNext({ run: flags.has("--run"), steps: Number.isFinite(steps) && steps > 0 ? steps : 1 });
+    const deadline = Number(flagValue("--deadline-minutes") ?? NaN);
+    const out = flagValue("--out");
+    // With --out, the sitting so far is rewritten after every choice, so a sitting cut short still leaves a readable account.
+    const onProgress = out ? (soFar: unknown) => fs.writeFileSync(path.resolve(out), JSON.stringify(soFar, null, 2)) : undefined;
+    const r = await runNext({ run: flags.has("--run"), steps: Number.isFinite(steps) && steps > 0 ? steps : 1, ...(Number.isFinite(deadline) && deadline > 0 ? { deadlineMinutes: deadline } : {}), onProgress });
+    if (out) fs.writeFileSync(path.resolve(out), JSON.stringify(r, null, 2));
     console.log(JSON.stringify(r, null, 2));
     if ([r, ...(r.more ?? [])].some((o) => o.ran.some((s) => s.outcome.outcome === "failed"))) process.exit(1);
     break;

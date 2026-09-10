@@ -1,0 +1,535 @@
+# Proposal — a change to domain records, in one envelope (docs/AUTOMATION.md).
+# Never citable; nothing here is a record until adopted through the gate.
+runId: 2026-09-10-draft-pre-columbian-amazon-184613
+date: 2026-09-10
+case: pre-columbian-amazon
+producer: draft
+model: claude-fable-5-1
+promptVersion: draft-v7
+basis:
+  ledgerHash: 5300534c0b6d47d3714cd0dfe9364e193103f0e35a00ff7e5ad39f675337c0e8
+rationale: "The report's centre of gravity — direct reading of the Medina 1894 edition of Carvajal and of Oviedo's redaction — cannot enter this pass: the only retrieved texts for those works are archive.org item pages (bibliographic metadata, copyright status, download options), not the OCR. Every quotation the report attributes to Medina pp. 8–54 or Oviedo pp. 552–558 is therefore unshown here and is dispositioned blocked with the download route, not written into the ledger. What the item pages do allow: a url correction on SRC-CARVAJAL-1542 (the ledger holds it key-less; the page confirms the work, editor, publisher, and year) and a provisional, unverified Source record for Oviedo t. IV so the witness has a home when its text is read. The report's declared failure — Peripato et al. 2023 could not be opened — is reversed by the packet: the accepted manuscript was retrieved via an open-access repository and is read here in full. It supplies six new observation claims (LiDAR discovery count, basin-wide undiscovered-earthwork prediction, the low-probability share of the basin, the Acre concentration, the domesticated-species association, and the deforestation/road sampling bias), a comparator to AMZ-C004's regional prediction, independent corroboration of AMZ-C020/C016 on proportion, and a second, independent statement that Acre earthworks date to AD 120–400 (qualifying AMZ-C017). Independence is flagged: Peripato shares authors with three ledger sources. No edition change: the text-critical rewrite the report wants depends on quotations not yet in hand, and Peripato deepens the record without altering the telling."
+adds:
+  sources:
+    - id: SRC-PERIPATO-2023
+      title: More than 10,000 pre-Columbian earthworks are still hidden throughout Amazonia
+      authors:
+        - Vinicius Peripato
+        - Carolina Levis
+        - Guido A. Moreira
+        - Dani Gamerman
+        - Hans ter Steege
+        - Nigel C. A. Pitman
+        - Jonas G. de Souza
+        - José Iriarte
+        - Mark Robinson
+        - André Braga Junqueira
+        - Umberto Lombardo
+        - Luiz E. O. C. Aragão
+        - et al.
+      year: "2023"
+      sourceType: paper
+      identifier: doi:10.1126/science.ade2541
+      url: https://doi.org/10.1126/science.ade2541
+      verification: ai_verified
+      verificationNote: text retrieved and shown to the drafter on 2026-09-10 (run 2026-09-10-draft-pre-columbian-amazon-184613); passages checked by the verify verb
+      reliabilityNotes:
+        - Peer-reviewed research article, Science 382(6666):103–109 (2023).
+        - Text read from the accepted manuscript (author version) deposited at White Rose Research Online (https://eprints.whiterose.ac.uk/207653/1/Vinicius_et_al_2023_Science_AAM.pdf), reached via OpenAlex; page locators cite that PDF, not the journal pagination. The manuscript title reads 'Over 10,000…'; the deposit record gives the published title used here.
+        - "Internal inconsistency to note: the abstract gives the predicted range as 10,272–23,640 undiscovered sites; the main text (p. 7) gives 10,272–23,648."
+        - "Not independent of several ledger sources: shares authors with SRC-LEVIS-2017 (Levis), SRC-DESOUZA-2018 (de Souza, Iriarte), SRC-LOMBARDO-2025 (Lombardo, Iriarte), and draws its 'domesticated species' list from Levis et al. 2017. Treat as the same research network as those records for independence grouping."
+        - Presence-only archaeological data with acknowledged sampling bias toward deforested, road-accessible areas; the model corrects for this with observability covariates, but the correction is itself modelled.
+        - Authors declare no competing interests; funding from Brazilian public agencies (CAPES, FAPESP, CNPq) and ERC (PAST project).
+      derivedFrom: []
+      background: false
+    - id: SRC-VALDS-1855
+      title: Historia general y natural de las Indias, islas y tierra-firme del Mar Océano — Tercera Parte, Tomo IV (Real Academia de la Historia edition)
+      authors:
+        - Gonzalo Fernández de Oviedo y Valdés
+        - José Amador de los Ríos (ed.)
+      year: "1855"
+      sourceType: book
+      identifier: ark:/13960/t1gj1k550
+      url: https://archive.org/details/historiageneral04fernguat
+      verification: ai_verified
+      verificationNote: text retrieved and shown to the drafter on 2026-09-10 (run 2026-09-10-draft-pre-columbian-amazon-184613); passages checked by the verify verb
+      reliabilityNotes:
+        - "Only the archive.org item page (catalogue metadata) was retrieved for this pass: publisher Imprenta de la Real Academia de la Historia, 1855, volume 4, 'viii; 619 p.', 'cotejada con el códice original', scan contributed by Biblioteca Ludwig von Mises, Universidad Francisco Marroquín; copyright status NOT IN COPYRIGHT. The text itself has not been read here; the report's page markers (552–558) and its quotations are unverified."
+        - "Oviedo's version of the Orellana descent is a sixteenth-century compiler's redaction of Carvajal's account, not an independent eyewitness: it is a distinct manuscript witness to the same source (relevant to AMZ-C002), and Oviedo also vouches personally for Carvajal (credibility evidence, not diagnosticity — per the report, unverified)."
+        - Nineteenth-century edition of a sixteenth-century manuscript; editorial normalisation of spelling possible ('mill', 'ginco' in OCR per the report).
+      derivedFrom: []
+      background: false
+  evidence:
+    - id: AMZ-E023
+      title: Basin-wide LiDAR (5,315 km², 0.08% of Amazonia) revealed 24 previously unreported earthworks
+      claimIds:
+        - AMZ-C027
+      sourceId: SRC-PERIPATO-2023
+      direction: supports
+      strength: strong
+      sourceStatement: The paper states that inspection of 5,315 km² of airborne LiDAR transects, originally flown for biomass estimation, "revealed 24 unreported earthworks in southern, southwestern, central, and northern" Amazonia, including a plaza town in the Upper Xingu, geoglyphs in Acre, features in Amapá, and two floodplain earthworks in central Amazonia. The supplement adds that nine already-catalogued earthworks were also seen, that the 33 records fell on 12 of 861 flight lines, and that the resulting density was 0.0062 earthworks/km².
+      editorInference: A direct count from a dataset not designed for archaeology, which is what makes it usable as a quasi-unbiased sample; but 0.08% coverage and clustering on 12 of 861 lines mean the raw density is unstable, as the authors themselves say when they reject naive extrapolation.
+      exactLocator: "[p. 5] via open-access accepted manuscript (White Rose eprints); supplement [p. 39]"
+      limitations:
+        - Coverage is 0.08% of the basin; the 200 m transect width truncates features.
+        - Roughly half of the features flagged by the viewer were confirmed by archaeological experts (supplement p. 35); confirmation was by expert judgement, not excavation.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-10-report-pre-columbian-amazon-183738
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-10-draft-pre-columbian-amazon-184613
+        date: 2026-09-10
+    - id: AMZ-E024
+      title: Inhomogeneous Poisson model predicts 10,272–23,648 undiscovered earthworks basin-wide
+      claimIds:
+        - AMZ-C028
+      sourceId: SRC-PERIPATO-2023
+      direction: supports
+      strength: strong
+      sourceStatement: The paper states that its model "predicts the number of yet undiscovered pre-Columbian structures as 10,272" to 23,648 with 95% probability (mean 16,187), so that documented earthworks account for 4–9% of the total "and that 91 – 96% of Amazonian earthworks remain undiscovered." The model used 937 known earthworks plus the 24 new ones, nine environmental covariates, and observability covariates (road distance, tree cover) to weight sampling bias. The paper first notes that naive extrapolation of the observed density would give over 41,000 earthworks, and rejects that figure as not accounting for uneven distribution.
+      editorInference: The paper's own move from 41,000 (naive) to 10–24k (modelled) illustrates how strongly earthwork totals depend on the estimator — the same lesson AMZ-C005 and AMZ-C012 draw for population. The abstract's upper bound (23,640) and the main text's (23,648) differ by a typographical margin.
+      exactLocator: "[p. 6]–[p. 7] via open-access accepted manuscript (White Rose eprints)"
+      limitations:
+        - Prediction from presence-only data; the bias correction is modelled, not measured.
+        - "'Earthworks' here means ring ditches, geoglyphs, ponds, and wells — not mounds, dark earths, or raised fields — so the count is not commensurable with all 'site' totals in the record."
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-10-report-pre-columbian-amazon-183738
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-10-draft-pre-columbian-amazon-184613
+        date: 2026-09-10
+    - id: AMZ-E025
+      title: "Comparator: a basin-wide 10–24k undiscovered-earthwork prediction beside the Aquiry 24–30k regional prediction"
+      claimIds:
+        - AMZ-C004
+      sourceId: SRC-PERIPATO-2023
+      direction: context
+      strength: moderate
+      sourceStatement: The paper states that its model "predicts the number of yet undiscovered pre-Columbian structures as 10,272" to 23,648 for the whole 6.7 million km² basin, and that nearly all highest-probability cells fall in a 94,713 km² "rectangle that overlays a significant portion of the Brazilian state of Acre."
+      editorInference: "Editor's comparison: SRC-PARSSINEN-2026 predicts roughly 24,000–30,000 earthworks within a ~183,000 km² Aquiry area alone — more than Peripato's upper bound for the entire basin, over an area about twice Peripato's high-probability rectangle. The two are not strictly commensurable (different earthwork definitions, data, and estimators; Peripato's 2023 model predates the 2026 LiDAR), so this does not undermine what AMZ-C004 states the 2026 study predicts. It does show that earthwork totals differ several-fold between published models, which AMZ-R004-style dependency work should address. Zero diagnosticity for the truth of C004 as worded; logged as the comparator the report sought."
+      exactLocator: "[p. 7] via open-access accepted manuscript (White Rose eprints)"
+      limitations:
+        - Different operational definitions of 'earthwork' and different survey data between the two studies.
+        - Peripato's model predates and does not incorporate the 2026 LiDAR campaign.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-10-report-pre-columbian-amazon-183738
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-10-draft-pre-columbian-amazon-184613
+        date: 2026-09-10
+    - id: AMZ-E026
+      title: Almost 80% of the basin at 0–1% earthwork probability; dark earths widespread where earthworks are not
+      claimIds:
+        - AMZ-C029
+        - AMZ-C020
+        - AMZ-C016
+      sourceId: SRC-PERIPATO-2023
+      direction: supports
+      strength: moderate
+      sourceStatement: The paper states that "Almost 80% of the basin has a 0 to 1% of predicted probability" of earthwork presence per 1 km² cell, that these low-probability areas lie mostly in northwestern, northern, and central Amazonia, that higher-probability areas (≥25%) cover 1.41% of the basin and sit in the southwest, and that "Earth-building societies were very common in some parts of the basin, but they may not have occupied all of Amazonia." It adds that "Other types of domesticated landscapes, such as Amazonian Dark Earths, are widespread" in regions (e.g., central Amazonia) where the earthwork types it models are uncommon.
+      editorInference: "Independent-in-method corroboration of AMZ-C020's 'limited, albeit impressive' earthwork extent and of the heterogeneous-Amazon attribution (AMZ-C016): the same research network that documents hotspots also models most of the basin as low-probability for this class of monument. Independence from SRC-WALKER-2023 is partial — different modelling teams, but overlapping site databases."
+      exactLocator: "[p. 7] via open-access accepted manuscript (White Rose eprints)"
+      limitations:
+        - "Low predicted earthwork probability is not absence of occupation: the paper itself notes dark earths are widespread where earthworks are not."
+        - Model trained on biased presence-only records; the 80% figure is a model output.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-10-report-pre-columbian-amazon-183738
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-10-draft-pre-columbian-amazon-184613
+        date: 2026-09-10
+    - id: AMZ-E027
+      title: Nearly all ≥25%-probability cells fall in a 94,713 km² rectangle over Acre
+      claimIds:
+        - AMZ-C030
+      sourceId: SRC-PERIPATO-2023
+      direction: supports
+      strength: moderate
+      sourceStatement: The paper states that nearly all the highest-probability cells (≥25% predicted probability) occur in a 94,713 km² "rectangle that overlays a significant portion of the Brazilian state of Acre," and that southwestern Amazonia contains the earliest plant cultivation, the oldest anthropogenic soils, low-density urbanism, and now the highest concentration of earthworks. Table S2 gives 86% of the ≥25% area and 96% of the ≥50% area in southwestern Amazonia.
+      editorInference: This is the region the 2026 Aquiry survey (AMZ-C004) later flew; the two studies agree on where earthworks concentrate, while differing on how many (see AMZ-E025).
+      exactLocator: "[p. 7] via open-access accepted manuscript (White Rose eprints); table S2 [p. 62]"
+      limitations:
+        - Model-derived concentration partly reflects where Acre deforestation has exposed earthworks; the observability covariates aim to correct this but cannot fully remove it.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-10-report-pre-columbian-amazon-183738
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-10-draft-pre-columbian-amazon-184613
+        date: 2026-09-10
+    - id: AMZ-E028
+      title: 53 of 79 domesticated tree species significantly associated with modelled earthwork probability
+      claimIds:
+        - AMZ-C031
+        - AMZ-C008
+      sourceId: SRC-PERIPATO-2023
+      direction: supports
+      strength: moderate
+      sourceStatement: Using 1,676 forest plots and generalized linear models, the paper states that "53 of the 79 domesticated species showed significant association" with the predicted probability of earthwork presence — 35 increasing (e.g., Bertholletia excelsa, Theobroma cacao, Attalea phalerata) and 18 decreasing (e.g., Erisma japura, Oenocarpus bataua) — and in the abstract that it "identified 53 domesticated tree species significantly associated with earthwork occurrence probability, likely suggesting past management practices."
+      editorInference: Corroborates AMZ-C008's tree-domestication leg with a different response variable (modelled earthwork probability rather than distance to known sites), but the species list is Levis et al. 2017's own and the authors overlap, so this is not independent of SRC-LEVIS-2017; the McMichael 2017 post-Columbian-management objection (AMZ-E013) applies equally here.
+      exactLocator: "[p. 9] via open-access accepted manuscript (White Rose eprints); abstract [p. 3]"
+      limitations:
+        - Association with a modelled probability surface, not with dated archaeological sites.
+        - Same species list and overlapping authorship as SRC-LEVIS-2017; not an independent group.
+        - Cannot separate pre- from post-Columbian management (see AMZ-E013).
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-10-report-pre-columbian-amazon-183738
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-10-draft-pre-columbian-amazon-184613
+        date: 2026-09-10
+    - id: AMZ-E029
+      title: Known earthworks have mostly been found in deforested, road-accessible areas
+      claimIds:
+        - AMZ-C032
+      sourceId: SRC-PERIPATO-2023
+      direction: supports
+      strength: strong
+      sourceStatement: "The paper states: \"Until now, pre-Columbian earthworks have mostly been discovered in deforested areas.\" and that observability covariates show \"previously reported earthworks are mostly found near roads, which facilitate field research\"; the supplement adds that only 9% of the 937 known earthworks lie inside indigenous lands and protected areas and that the highest known density is in the 'Arc of Deforestation'."
+      editorInference: A source-stated sampling bias, of the same kind AMZ-C021 records for palaeoecological cores — here on the positive side of the ledger.
+      exactLocator: "[p. 38] via open-access accepted manuscript (White Rose eprints); also [p. 8], [p. 10]"
+      limitations:
+        - Descriptive statement about the record's history, quantified only via the road-distance and tree-cover histograms (fig. S18).
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-10-report-pre-columbian-amazon-183738
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-10-draft-pre-columbian-amazon-184613
+        date: 2026-09-10
+    - id: AMZ-E030
+      title: Sampling bias in the recorded-site base that river-distance and site-type models are built on
+      claimIds:
+        - AMZ-C013
+        - AMZ-C020
+      sourceId: SRC-PERIPATO-2023
+      direction: qualifies
+      strength: weak
+      sourceStatement: "The paper states that \"Until now, pre-Columbian earthworks have mostly been discovered in deforested areas,\" that recorded earthworks are mostly near roads, and that sampling of all Amazonian archaeological sites 'follows a similar pattern: a greater number of records in areas with greater accessibility and more intensive research histories'."
+      editorInference: "Editor's inference: models over recorded sites (AMZ-C013 from 7,363 sites; AMZ-C020 from Walker's ML) inherit this accessibility bias unless corrected; Peripato's own correction is an observability sub-model. This narrows, without denying, what a river-distance gradient in recorded sites can establish about the unrecorded matrix."
+      exactLocator: "[p. 38], [p. 40] via open-access accepted manuscript (White Rose eprints)"
+      limitations:
+        - The source does not analyse SRC-MCMICHAEL-2025 or SRC-WALKER-2023; the transfer of its bias statement to those records is the editor's.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-10-report-pre-columbian-amazon-183738
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-10-draft-pre-columbian-amazon-184613
+        date: 2026-09-10
+    - id: AMZ-E031
+      title: "Independent restatement: Acre earthworks built AD 120–400; Mato Grosso earthworks AD 1250–1500"
+      claimIds:
+        - AMZ-C017
+      sourceId: SRC-PERIPATO-2023
+      direction: qualifies
+      strength: weak
+      sourceStatement: The supplement states that radiocarbon dating of earthworks located in Acre "indicates their construction between 120 and 400 A.D." and that, by contrast, Mato Grosso earthworks are more recent, dating from 1250 to 1500 AD.
+      editorInference: "Seconds AMZ-E003: the southwestern monument florescence is a millennium before Orellana and cannot be spent as contact-era corroboration of Carvajal; the later southern-rim dates (AMZ-C006) are the ones that overlap him. Secondary restatement citing others' dates, hence weak."
+      exactLocator: "[p. 38] via open-access accepted manuscript (White Rose eprints)"
+      limitations:
+        - A literature summary (citing refs 14, 15), not new dating.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-10-report-pre-columbian-amazon-183738
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-10-draft-pre-columbian-amazon-184613
+        date: 2026-09-10
+  claims:
+    - id: AMZ-C027
+      statement: Inspection of 5,315 km² of Amazon-wide airborne LiDAR transects (about 0.08% of the basin), flown between 2008 and 2017 for biomass estimation, revealed 24 previously unreported pre-Columbian earthworks beneath forest canopy in southern, southwestern, central, and Guiana Shield Amazonia.
+      theme: earthworks
+      rung: observation
+      claimType: observation
+      sourceAnchor:
+        locator: "[p. 3] via open-access accepted manuscript (White Rose eprints)"
+        quote: we report the discovery of 24 previously undetected pre-Columbian earthworks
+        sourceId: SRC-PERIPATO-2023
+        also:
+          - locator: "[p. 5]"
+            quote: Scanning 5,315 km 2 of LiDAR data originally obtained for estimating aboveground biomass
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-10-report-pre-columbian-amazon-183738
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-10-draft-pre-columbian-amazon-184613
+        date: 2026-09-10
+    - id: AMZ-C028
+      statement: An inhomogeneous Poisson process model fitted to 961 known earthworks (ring ditches, geoglyphs, ponds, wells) with environmental and observability covariates predicts 10,272–23,648 undiscovered earthworks across Amazonia at 95% probability, implying that earthworks documented to 2023 are about 4–9% of the total.
+      theme: earthworks
+      rung: observation
+      claimType: statistical
+      sourceAnchor:
+        locator: "[p. 7] via open-access accepted manuscript (White Rose eprints)"
+        quote: predicts the number of yet undiscovered pre-Columbian structures as 10,272
+        sourceId: SRC-PERIPATO-2023
+        also:
+          - locator: "[p. 7]"
+            quote: and that 91 – 96% of Amazonian earthworks remain undiscovered
+      parentClaimIds: []
+      dependsOnClaimIds:
+        - AMZ-C027
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-10-report-pre-columbian-amazon-183738
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-10-draft-pre-columbian-amazon-184613
+        date: 2026-09-10
+    - id: AMZ-C029
+      statement: In the same basin-wide model, almost 80% of Amazonia has a predicted probability of 0–1% for earthwork presence per 1 km² cell, with these low-probability areas concentrated in northwestern, northern, and central Amazonia.
+      theme: limits
+      rung: observation
+      claimType: statistical
+      sourceAnchor:
+        locator: "[p. 7] via open-access accepted manuscript (White Rose eprints)"
+        quote: Almost 80% of the basin has a 0 to 1% of predicted probability
+        sourceId: SRC-PERIPATO-2023
+        also:
+          - locator: "[p. 7]"
+            quote: Earth-building societies were very common in some parts of the basin, but they may not have occupied all of Amazonia
+      parentClaimIds: []
+      dependsOnClaimIds:
+        - AMZ-C028
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-10-report-pre-columbian-amazon-183738
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-10-draft-pre-columbian-amazon-184613
+        date: 2026-09-10
+    - id: AMZ-C030
+      statement: Nearly all cells with ≥25% predicted earthwork probability in the 2023 basin-wide model fall within a 94,713 km² rectangle overlying much of the Brazilian state of Acre, with southwestern Amazonia holding 86% of the ≥25% area and 96% of the ≥50% area.
+      theme: earthworks
+      rung: observation
+      claimType: statistical
+      sourceAnchor:
+        locator: "[p. 7] via open-access accepted manuscript (White Rose eprints)"
+        quote: rectangle that overlays a significant portion of the Brazilian state of Acre
+        sourceId: SRC-PERIPATO-2023
+      parentClaimIds: []
+      dependsOnClaimIds:
+        - AMZ-C028
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-10-report-pre-columbian-amazon-183738
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-10-draft-pre-columbian-amazon-184613
+        date: 2026-09-10
+    - id: AMZ-C031
+      statement: Across 1,676 forest plots, the occurrence and/or abundance of 53 of 79 domesticated tree species is significantly associated with the modelled probability of earthwork presence (35 positively, 18 negatively).
+      theme: landscapes
+      rung: observation
+      claimType: statistical
+      sourceAnchor:
+        locator: "[p. 9] via open-access accepted manuscript (White Rose eprints)"
+        quote: 53 of the 79 domesticated species showed significant association
+        sourceId: SRC-PERIPATO-2023
+        also:
+          - locator: "[p. 3]"
+            quote: identified 53 domesticated tree species significantly associated with earthwork occurrence probability
+      parentClaimIds:
+        - AMZ-C008
+      dependsOnClaimIds:
+        - AMZ-C028
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-10-report-pre-columbian-amazon-183738
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-10-draft-pre-columbian-amazon-184613
+        date: 2026-09-10
+    - id: AMZ-C032
+      statement: "The recorded distribution of Amazonian earthworks is biased toward deforested and road-accessible areas: most known earthworks were discovered after deforestation and lie near roads, and only 9% of the 937 catalogued earthworks fall inside indigenous lands and protected areas."
+      theme: limits
+      rung: observation
+      claimType: methodological
+      sourceAnchor:
+        locator: "[p. 38] via open-access accepted manuscript (White Rose eprints)"
+        quote: Until now, pre-Columbian earthworks have mostly been discovered in deforested areas.
+        sourceId: SRC-PERIPATO-2023
+        also:
+          - locator: "[p. 8]"
+            quote: previously reported earthworks are mostly found near roads, which facilitate field research
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-10-report-pre-columbian-amazon-183738
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-10-draft-pre-columbian-amazon-184613
+        date: 2026-09-10
+  research:
+    - id: AMZ-R006
+      title: Blind, probability-stratified LiDAR test of the competing earthwork-density predictions
+      summary: Select LiDAR survey blocks at random within strata defined by the 2023 basin-wide probability surface (0–1%, 1–10%, 10–25%, ≥25%) and, inside the Aquiry area, by the 2026 study's regional model — choosing blocks before any archaeological knowledge of them is consulted and registering the selection. Fly and inspect each block with a fixed detection protocol and independent expert confirmation, then record earthworks per km² per stratum. Compare the observed densities with the densities each model implies for those strata. Observed densities in the 0–1% stratum at or near zero and rising monotonically with predicted probability would support AMZ-C028–C030 as calibrated; systematic under-prediction inside the Aquiry area would favour the 2026 regional total in AMZ-C004 over the basin-wide one, and the reverse would favour the lower. Either result narrows the several-fold spread between published earthwork totals that AMZ-E025 records.
+      claimIds:
+        - AMZ-C028
+        - AMZ-C029
+        - AMZ-C030
+        - AMZ-C004
+      track: small_grant
+      effortTier: field
+      informationGain: Directly calibrates two predictive models whose totals differ several-fold, using sampling chosen blind to promise — the earthwork counterpart of AMZ-R003, and the only way to tell whether the 24–30k regional figure and the 10–24k basin figure can both be right.
+      origin:
+        ref: report 2026-09-10-report-pre-columbian-amazon-183738
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-10-draft-pre-columbian-amazon-184613
+        date: 2026-09-10
+  images: []
+corrections:
+  - record: SRC-CARVAJAL-1542
+    field: url
+    from: null
+    to: https://archive.org/details/descubrimientod00carvgoog
+    reason: "The ledger holds the primary source with no url or key. The report reached the text at this archive.org item; the retrieved item page confirms it as 'Descubrimiento del rio de las Amazonas' by Gaspar de Carvajal, ed. José Toribio Medina, Sevilla: Impr. de E. Rasco, 1894 (Harvard copy digitised by Google; copyright status NOT_IN_COPYRIGHT; FULL TEXT download available). This is the standard scholarly edition of the 1542 account; the verifier can only read what a record points at."
+dispositions:
+  - key: url:archive.org/details/descubrimientod00carvgoog
+    kind: evidence
+    disposition: blocked
+    reason: "Report F2/F3: Medina's main (T'Serclaes) text carries 50,000 warriors (pp. 30–31), the eighty-league populated stretch and five-league village (pp. 40–41), the 'thousand men for a year' store (pp. 33–34), and 5,000 warriors (pp. 53–54), while the 8,000-warrior/130-canoe figure appears only as a footnoted Muñoz-copy variant (pp. 39–40). Only the archive.org item page was retrieved here, not the OCR, so none of these quotations can be written into the ledger."
+    reopenIf: The FULL TEXT or PDF of the Medina edition is retrieved and the passages read at page level.
+    observed: "archive.org item page for descubrimientod00carvgoog: catalogue metadata, 538 pages, FULL TEXT and PDF download options listed; no page text shown."
+    by: 2026-09-10-draft-pre-columbian-amazon-184613
+    date: 2026-09-10
+    route: Download the FULL TEXT or PDF WITH TEXT from https://archive.org/download/descubrimientod00carvgoog and read pp. 30–54 including footnotes; cross-check against Denevan 1996's page references.
+  - key: url:archive.org/details/descubrimientod00carvgoog
+    kind: evidence
+    disposition: blocked
+    reason: "Report F4: Carvajal states the interior was not observed and that populousness inland was inferred from the land's appearance and Aparia's people's reports (Medina p. 41; Oviedo redaction 'La tierra adentro no se pudo ver'). Text not shown in this pass."
+    reopenIf: Medina p. 41 and the corresponding Oviedo passage are retrieved.
+    observed: Item pages only for both editions.
+    by: 2026-09-10-draft-pre-columbian-amazon-184613
+    date: 2026-09-10
+    route: Same download route as above; for Oviedo, FULL TEXT of https://archive.org/details/historiageneral04fernguat, lib. L cap. XXIV.
+  - key: url:archive.org/details/descubrimientod00carvgoog
+    kind: evidence
+    disposition: blocked
+    reason: "Report F6: both witnesses record multi-day unpopulated reaches ('tres días sin poblado ninguno', Medina p. 8; Oviedo 'tres días sin poblado'), which would anchor the 'interspersed with stretches he reports as empty' half of AMZ-C001 to the primary. Text not shown."
+    reopenIf: The passages are retrieved.
+    observed: Item pages only.
+    by: 2026-09-10-draft-pre-columbian-amazon-184613
+    date: 2026-09-10
+    route: Same download route; read Medina pp. 8 and the 'monte á monte' passage the report cites without page.
+  - key: url:archive.org/details/historiageneral04fernguat
+    kind: evidence
+    disposition: blocked
+    reason: "Report F5: Oviedo's redaction gives no warrior count at Machiparo, 'más de mill tortugas', 'más de cient canoas', 'más de sessenta leguas de poblado', and states 'No se pudieron contar todos los pueblos desta provincia de Machiparo'. This is the primary locator behind AMZ-E005, but the Oviedo text was not retrieved — only the item page — so it cannot be quoted."
+    reopenIf: Oviedo t. IV lib. L cap. XXIV (page markers 552–558 per the report) is retrieved.
+    observed: "archive.org item page for historiageneral04fernguat: RAH 1855, t. IV, 619 pp., NOT IN COPYRIGHT, FULL TEXT available."
+    by: 2026-09-10-draft-pre-columbian-amazon-184613
+    date: 2026-09-10
+    route: Download FULL TEXT from https://archive.org/download/historiageneral04fernguat and read pp. 552–558; anchor to the provisional SRC-OVIEDO-1855-T4.
+  - key: text:current amz c002 wording attributes 50 000 10 000 and 8 000 jointly to the medina mu oz manuscript branch the report s reading unverified here is that 8 000 is a mu oz copy variant only and 10 000 was not found
+    kind: claim
+    disposition: blocked
+    reason: Report item 6 proposes re-wording AMZ-C002 to place each figure with its witness (T'Serclaes main text / Muñoz variant / Oviedo) and to flag '10,000' and '~5,000 in Oviedo' as unlocated. The amendment is well-motivated but rests entirely on passages not shown in this pass; a statement correction with an unverified basis would be a claim written ahead of its evidence.
+    reopenIf: The Medina and Oviedo passages are retrieved and the distribution of figures across witnesses confirmed at page level.
+    observed: Current AMZ-C002 wording attributes 50,000, 10,000, and 8,000 jointly to 'the Medina/Muñoz manuscript branch'; the report's reading (unverified here) is that 8,000 is a Muñoz-copy variant only and 10,000 was not found.
+    by: 2026-09-10-draft-pre-columbian-amazon-184613
+    date: 2026-09-10
+    route: Complete the page-level check described in AMZ-R002; then propose the correction to AMZ-C002's statement with quotations.
+  - key: url:archive.org/details/descubrimientod00carvgoog
+    kind: evidence
+    disposition: blocked
+    reason: "Report negative result: no 'diez mil' (10,000 warriors) figure located in the OCR of the Medina edition. A regex miss on OCR of a nineteenth-century print is weak negative evidence, as the report itself labels it, and the text was not shown here; it cannot enter as a finding."
+    reopenIf: A page-level reading of Medina (main text and footnotes) and of Oviedo either locates or fails to locate the figure; also check whether SRC-DENEVAN-1996 attributes it to a specific passage.
+    observed: Report states its search was regex-based over OCR with known errors ('ginco', 'mill').
+    by: 2026-09-10-draft-pre-columbian-amazon-184613
+    date: 2026-09-10
+    route: Read the full Relación in Medina 1894 by page; then Oviedo; then Denevan 1996 p. refs.
+  - key: url:archive.org/details/historiageneral04fernguat
+    kind: evidence
+    disposition: blocked
+    reason: "Report: could not independently confirm Denevan's statement that Oviedo retains a ~5,000 figure (regex for 'cinco/ginco mill' found no hits; OCR caveat). Neither the text nor a confirmed absence was shown here."
+    reopenIf: Oviedo's chapter is read rather than searched.
+    observed: Item page only.
+    by: 2026-09-10-draft-pre-columbian-amazon-184613
+    date: 2026-09-10
+    route: Read Oviedo lib. L cap. XXIV in full from the downloaded text.
+  - key: url:archive.org/details/descubrimientod00carvgoog
+    kind: evidence
+    disposition: blocked
+    reason: "Report items 5/6: Medina's statement of editorial method (pp. x–xi: two manuscripts, the complete T'Serclaes and the incomplete Muñoz copy; variants judged 'obra de una misma mano', arising from dictation or authorial revision) and Oviedo's character reference for Carvajal (Medina p. xiii, 'debe ser creído'). Both are credibility/transmission evidence worth filing separately from diagnosticity, but the introduction text was not shown."
+    reopenIf: Medina's introduction pp. x–xiii is retrieved.
+    observed: Item page only.
+    by: 2026-09-10-draft-pre-columbian-amazon-184613
+    date: 2026-09-10
+    route: Download and read the introduction; file as credibility evidence on SRC-CARVAJAL-1542 and as material for AMZ-R002.
+  - key: url:archive.org/details/discoveryofamazo0000carv
+    kind: source
+    disposition: blocked
+    reason: Heaton's 1934 English translation (AGS Special Publication 17) as reprinted by Dover 1988. The retrieved item page shows it is access-restricted (controlled lending), 'No suitable files to display', so its text cannot be read or quoted; the report's proposal to add it as an identifier on SRC-CARVAJAL-1542 is a list-field edit outside this pass's scope.
+    reopenIf: A readable copy of the 1934 or 1988 edition is obtained.
+    observed: "archive.org item discoveryofamazo0000carv: Dover 1988 reprint of AGS 1934, ISBN 0486255891, Access-restricted-item true."
+    by: 2026-09-10-draft-pre-columbian-amazon-184613
+    date: 2026-09-10
+    route: Borrow via archive.org controlled digital lending or a library copy; alternatively locate the 1934 AGS original in HathiTrust.
+  - key: url:archive.org/details/expeditionsintov00markrich
+    kind: source
+    disposition: blocked
+    reason: Cristóbal de Acuña, Nuevo descubrimiento del gran río de las Amazonas (Madrid, 1641) — the 1639 corridor witness the report identifies as the missing middle of AMZ-R005. Only the archive.org item page for Markham's 1859 Hakluyt volume (which contains the English translation) was retrieved; the primary text was not read.
+    reopenIf: Markham 1859 full text or a Spanish edition (1891; Arellano/Díez Borque/Santonja 2009) is retrieved and the Machiparo–Omagua reach passages read.
+    observed: "Item page for expeditionsintov00markrich: Hakluyt Society 1859, includes 'New discovery of the great river of the Amazons, by Father Christoval de Acuña, A.D. 1639, tr. from the Spanish edition of 1641'; NOT_IN_COPYRIGHT; FULL TEXT available."
+    by: 2026-09-10-draft-pre-columbian-amazon-184613
+    date: 2026-09-10
+    route: Download FULL TEXT from https://archive.org/download/expeditionsintov00markrich; read Acuña's paragraphs on population and settlement between the Napo confluence and the Omagua; note Markham's own translation choices.
+  - key: url:dialnet.unirioja.es/descarga/articulo/7487240.pdf
+    kind: source
+    disposition: irrelevant
+    reason: "Fátima Salvatierra's book review of the 2009 Arellano/Díez Borque/Santonja edition of Acuña (Dialnet). Retrieved in full, but it is a tertiary notice: it confirms Acuña left Quito in 1639 with Tejeira's expedition, that the account was published in Madrid in 1641, and that the editors flag a 'perspectiva de lo maravilloso' and note Acuña did not himself see the Amazons or giants he reports — useful as a finding aid and as a caution for reading Acuña, but it bears on no ledger claim directly and should not stand in for the primary."
+    reopenIf: Acuña enters the ledger and a credibility note on his hearsay reports is wanted; the review's pp. 3 remarks could then be cited as an editors' assessment.
+    observed: Four-page review, Notas bibliográficas pp. 301–304; states publication 'en Madrid, en 1641' and quotes the editors on Acuña's marvellous reports being from 'las noticias que dan los naturales'.
+    by: 2026-09-10-draft-pre-columbian-amazon-184613
+    date: 2026-09-10
+  - key: text:report cites a hathitrust location no text or item page shown here
+    kind: source
+    disposition: blocked
+    reason: Samuel Fritz's journal (Hakluyt Society 1922), the 1686–1723 corridor witness for AMZ-R005. Not opened; located only by search.
+    reopenIf: The Hakluyt 1922 text is retrieved.
+    observed: Report cites a HathiTrust location; no text or item page shown here.
+    by: 2026-09-10-draft-pre-columbian-amazon-184613
+    date: 2026-09-10
+    route: Locate the 1922 Hakluyt volume in HathiTrust (public domain in the US) and read the entries on the Omagua reach and slaving.
+  - key: doi:10.1038/s41586-022-04780-4
+    kind: source
+    disposition: blocked
+    reason: Prümers et al. 2022, 'Lidar reveals pre-Hispanic low-density urbanism in the Bolivian Amazon' (Nature 606:325–328) — relevant to AMZ-C007 and AMZ-C019 as the Casarabe settlement survey. The report hit a CAPTCHA at PMC; the paper is cited (ref. 19) in the retrieved Peripato text but its own text was not shown.
+    reopenIf: The open-access text is retrieved.
+    observed: Cited in SRC-PERIPATO-2023 as ref. 19 with doi:10.1038/s41586-022-04780-4; not read.
+    by: 2026-09-10-draft-pre-columbian-amazon-184613
+    date: 2026-09-10
+    route: Fetch via the Nature open-access page or Europe PMC (PMC9177426).
+  - key: text:not retrieved no snippet relied upon
+    kind: source
+    disposition: blocked
+    reason: Rostain et al. 2024 (Science, Upano Valley urbanism) and its published reply — relevant to AMZ-C022 and AMZ-C004. Access error; not read.
+    reopenIf: Text retrieved via institutional or repository route.
+    observed: Not retrieved; no snippet relied upon.
+    by: 2026-09-10-draft-pre-columbian-amazon-184613
+    date: 2026-09-10
+    route: Search OpenAlex/HAL for an author-deposited version; retrieve the reply from the Science eLetters or its DOI.
+  - key: url:archive.org/details/descubrimientod00carvgoog
+    kind: image
+    disposition: blocked
+    reason: "Proposed plates: the Medina 1894 page carrying the 'Variante… ocho mil indios' footnote (pp. 39–40) or the Oviedo 1855 page with 'No se pudieron contar todos los pueblos'. Both scans are public domain (item pages show NOT_IN_COPYRIGHT), but no page-image URL, page number confirmation, or credit line was shown, and the passages themselves are unverified."
+    reopenIf: The passages are located at page level and a stable page-image URL (archive.org page viewer) with credit to the holding library is recorded.
+    observed: Item pages show public-domain status and scan provenance (Harvard/Google; Universidad Francisco Marroquín).
+    by: 2026-09-10-draft-pre-columbian-amazon-184613
+    date: 2026-09-10
+    route: After the text check, capture the page image URL from the archive.org BookReader for the confirmed page; credit Internet Archive and the holding library.
+  - key: text:amz r002 exists with claimids amz c002
+    kind: research
+    disposition: duplicate
+    as: AMZ-R002
+    reason: Report item 7 asks to give AMZ-R002 a three-witness spine (T'Serclaes / Muñoz / Oviedo) with Medina's authorial-variant hypothesis and the note that the Muñoz copy is incomplete. This belongs to the existing synoptic-table item, not a new one; the amendment is a text edit to R002 whose current summary is not in the packet, so it is left for the verb.
+    reopenIf: R002's summary is exposed for a scalar correction.
+    observed: AMZ-R002 exists with claimIds [AMZ-C002].
+    by: 2026-09-10-draft-pre-columbian-amazon-184613
+    date: 2026-09-10
+  - key: text:amz r005 exists with claimids amz c010 amz c017
+    kind: research
+    disposition: duplicate
+    as: AMZ-R005
+    reason: Report item 8 asks to add Acuña 1641 and Fritz's journal as the 1639 and 1686–1723 corridor witnesses to AMZ-R005. This is the existing item's content; the sources are logged blocked above with routes.
+    reopenIf: R005's summary is exposed for a scalar correction.
+    observed: AMZ-R005 exists with claimIds [AMZ-C010, AMZ-C017].
+    by: 2026-09-10-draft-pre-columbian-amazon-184613
+    date: 2026-09-10
+report: proposals/2026-09-10-report-pre-columbian-amazon-183738/report.md

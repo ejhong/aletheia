@@ -1,0 +1,1839 @@
+d4b17d592637e7641adce2f30df6db0970e820c65e130a8a26c1cb8ce8089f54:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: false
+    statementSupported: false
+    locatorSupported: false
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: null
+    bearsOn: null
+    reason: The retrieved source text is only the IOPscience abstract/landing page for the DeAbreu et al. 2015 paper, containing no §3 body text, no page 7 content, and none of the quoted phrases about 'twist,' variance profile dependence, or 'not a fair comparison.' Since the actual passage cannot be located or verified in the provided source, the quote-in-context, statement support, and locator checks all fail. The sourceStatement also bundles multiple distinct claims (the twist procedure, the explicit test finding, the fairness conclusion, and the computational cost of a proper ellipse study), so it is not atomic.
+9f6f8e5be88c9c9faa7347d7ad1a7e6ed2edae5e721cbdffd6afa57507d5c799:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: false
+    statementSupported: false
+    locatorSupported: false
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: null
+    bearsOn: null
+    reason: The retrieved source text is only the IOPscience abstract/metadata page for the DeAbreu et al. 2015 paper; none of the quoted phrases about threshold definitions, adaptive thresholds, or the conclusion's wording appear anywhere in this text, so the quotes cannot be verified in context. The claimed locators (p.6 §3, Fig. 4 caption p.7, conclusion p.8 §4) cannot be confirmed since no body text is present. The sourceStatement also bundles multiple distinct claims (GP13's stated importance, the threshold explanation, the monotonic variance behavior, adaptive threshold results, and the conclusion's statistical-significance judgment) into one compound statement, failing atomicity.
+ff3e64c7c8ff86d8c9c31bb90d6464b849a78c030d3238b0df166155587e485b:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: false
+    statementSupported: false
+    locatorSupported: false
+    directionRight: false
+    independenceNoted: true
+    relevant: false
+    atomic: false
+    direction: context
+    bearsOn: []
+    reason: The retrieved source text is only the abstract and webpage metadata for DeAbreu et al. 2015; none of the quoted §2 passages, page 3 content, or specific statistical claims (25% simulations, dipole asymmetry conclusion) appear anywhere in the retrieved text, so the quote cannot be verified in context. The locator 'p.3 §2' is likewise unverifiable against this retrieved content. Even taking the record's claims at face value, this 2015 paper's dipole-asymmetry analysis of WMAP vs Planck predates and uses a different statistic than the 2020 three-region concentration claim in CCC-C504, so it does not clearly bear on that specific claim. The sourceStatement also bundles multiple distinct findings (visual asymmetry not present in Planck; 25% simulation rate; non-significance conclusion; noise attribution) into one statement, failing atomicity.
+e9247cff3d440d896c383bd3b9ee20aee32aadc745d60b8011b194a07ab331db:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: false
+    statementSupported: false
+    locatorSupported: false
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: supports
+    bearsOn:
+      - CCC-C010
+      - CCC-C507
+    reason: The retrieved source text is only the journal landing page and abstract; it contains no §4 Conclusions text, no Fig. 5, and no page 8 content, so the specific quoted phrases about 'consistent with Gaussian random skies' and 'about half of the observers' cannot be verified as occurring in the source or in the stated context. The locator (p.8, §4, Fig.5) is likewise unverifiable since that page's content is absent from what was retrieved. The sourceStatement also bundles two distinct findings (the general Gaussian-consistency conclusion and the specific 'half of observers' Fig.5 result), which is a compound claim needing splitting.
+4e43eaefdfae1019001c70ef9b360511e983b81227b338c500816c4ceae59383:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: context
+    bearsOn:
+      - CCC-C004
+    reason: The quoted passage only rules out instrumental noise as a confound in estimating the probability distribution of gradient values; it does not bear on whether the 99.98% confidence detection of Hawking points holds up, which is what CCC-C004 asserts. It neither supports nor limits the specific confidence-level claim, so it functions as background methodological context rather than a qualification of the claim's content.
+ebd8b582f2b653487f8f28c94c485437a8c00d0152b76b1821425d3bed0bc5d3:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: supports
+    bearsOn:
+      - CCC-C509
+    reason: The sourceStatement bundles several distinct propositions—An et al.'s claim about clustering, the two measured nearest-neighbour distances, the simulated Gaussian distribution parameters, and the final null-clustering conclusion—each of which could be independently true or false. It should be split into separate atomic evidence records even though each quoted piece is accurate and correctly located, correctly attributed, and clearly supports CCC-C509 for the case question about CMB anomalies.
+8441c63f889992dc9d725dba30ab9eee6055d173a24bf83b74c30fc3bb7a1a70:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: context
+    bearsOn:
+      - CCC-C509
+    reason: The quoted passage merely restates An et al.'s motivating claim that clustering would support CCC; it is background framing for the section, not Jow & Scott's actual clustering finding (no anomalous clustering) that CCC-C509 asserts. As such it does not itself support or undermine CCC-C509's specific quantitative finding, but simply provides context for why the analysis was performed.
+bad105fb0a359129a28f0f442b45c80e8ac32942b2b7a4a11aa03deedd294917:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: context
+    bearsOn:
+      - CCC-C509
+    reason: The passage only describes the clustering test's methodology (statistic used, sample size, selection threshold) and does not itself state the no-anomalous-clustering result that CCC-C509 asserts, so it merely provides context rather than supporting the claim. The sourceStatement also bundles several distinct methodological details (choice of statistic, sample size of 30, and the approximate 3σ threshold) into one statement, so it is not atomic and should be split for separate judgment.
+75a4e8fc6e96fac843e8ceff59fe428fe24273d1ee4f0820a365ecae70e6e6ae:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: supports
+    bearsOn:
+      - CCC-C509
+    reason: The quoted values (0.20 rad and 0.19 rad for the two scales) appear on p.7-8 in context as the measured nearest-neighbour distances used to test clustering, supporting the no-anomalous-clustering claim. However, the sourceStatement bundles two distinct measurements (one for each of two separate scales) into a single statement joined by 'and,' so it is not atomic and should be split into two separate records, one per scale.
+559b672a20086356dd3104fcdb408002e755196fd855b05882d069e2bffd2019:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: supports
+    bearsOn:
+      - CCC-C509
+    reason: The quoted mean/σ figures for the simulated nearest-neighbour distribution appear verbatim on p.8 and are used correctly as the Gaussian-sky baseline against which the observed 0.20/0.19 rad values are compared, supporting the no-anomalous-clustering claim. The locator correctly spans the section where the simulation setup and result appear. The statement is a single, non-compound description of the simulated distribution's parameters, and no other cited record shares this same 100-simulation dataset without acknowledgment.
+3b741c04b0a3f3be4ceb4ce1495a3a7a7161d0dd98351e62aebeb895777083fb:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: supports
+    bearsOn: null
+    reason: The quote and paraphrase accurately reflect the paper's §3.1 conclusion that the nearest-neighbour clustering statistic for the top 30 HPs at both scales falls within 1σ of the Gaussian expectation, matching the claim's numbers (0.20, 0.19 vs 0.20±0.03). The locator correctly points to the relevant section spanning pages 7-8, and the finding directly supports the specific claim about no anomalous clustering. The statement is a single coherent proposition about the clustering result.
+4d0af86303edfdbfaa06ad7392c1e91620b950fdee0367e14188fb2f286aa6a7:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: supports
+    bearsOn: null
+    reason: The quoted material accurately reflects §3.2 and Fig. 4 on the cited pages, is correctly located, and supports the claim it is used for since this is the primary source stating the null polarization finding. However, the sourceStatement bundles two distinct propositions—that temperature stacks show the expected ring structure (a check on selection) and that E-mode stacks show no corresponding structure (the actual finding relevant to the claim)—which are separable truth claims and should be split, with only the polarization-null portion retained for CCC-C510.
+a13b6e3831f48c7ba35e878ae4175f1b75a878cc87431341a8a7f0f4db8257a6:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: context
+    bearsOn:
+      - CCC-C510
+    reason: The quoted passage only describes the stacking methodology (selection threshold, scales, procedure) and does not itself state the outcome that no persistent polarization structure was found; that finding appears elsewhere in the text (the following sentences about Figure 4). As written, this record's statement is procedural background rather than evidence supporting the no-signal claim, so it should be marked as context rather than supports.
+88424c225179286d1cb5f7186c8197e2f95b25b91059f7c0ed1434c583657d62:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: context
+    bearsOn:
+      - CCC-C510
+    reason: The quoted counts (709 and 730 HPs above threshold) are accurately drawn from the Fig. 4 caption and are correctly located, but they merely report sample sizes used in the stacking procedure, not the actual null-result finding about polarization structure stated elsewhere in §3.2; thus they are context for CCC-C510 rather than direct support for it. The sourceStatement also bundles two separate counts (for two different annulus scales) joined by 'and', making it non-atomic — these should be split into two single-count statements.
+6c9e1d287e2dffd9ca52e5cb7c66c29f9224cc794b27eda3c473a7e63f5ee2a0:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: false
+    atomic: true
+    direction: context
+    bearsOn: []
+    reason: The quoted sentence describes the temperature stacks showing the expected ring structure (a trivial confirmation of the selection method), not the polarization result; it says nothing about whether the E-mode stacks show or lack structure, which is what claim CCC-C510 asserts. As such this passage does not bear on the polarization null-result claim and should be dropped or replaced with the actual E-mode finding elsewhere in the same section.
+2a3ea44fffd20bee63eb38e524d757fbedeb93a7b37ea9ba575a1804a941a707:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: supports
+    bearsOn:
+      - CCC-C510
+    reason: The quote appears verbatim in §3.2 on p.8 describing the E-mode stack results, consistent with its context as a direct empirical finding, not a speculation or third-party claim. The sourceStatement accurately and narrowly reports this finding, matching the locator given. The claim CCC-C510 states exactly this finding, so the source directly supports it rather than merely providing context.
+135185d51623dbeaa8f43bd65f7ebbca5d8d7129ad578ea58b31ff43656fd842:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: supports
+    bearsOn:
+      - CCC-C510
+    reason: The quoted phrase appears in §3.2 as stated, accurately reflecting the paper's finding that stacking E-mode polarization on temperature-identified Hawking points showed no persistent structure, matching the claim it is cited for. The locator, direction, and atomicity are all correct, and the record only names the one claim this passage directly supports.
+24154fddb277ae67e6403d911a3c747a47b34376ba4cb421b544946b9590e93f:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: undermines
+    bearsOn: null
+    reason: The quoted passage is accurate and located correctly on p.6, and it fairly reports what the source states, but it bundles two separate quantitative findings (the one-point-omission result and the two-point-omission result with PTE>10%), each a distinct proposition that could be true or false independently, so it is not atomic. On direction, the passage actually shows that the significance underlying claim CCC-C004's 99.98% confidence figure evaporates when a handful of outlier points are excluded, which more directly undermines the robustness of the claimed detection than merely qualifying it. The passage bears on CCC-C004 since it directly addresses the statistical robustness of the claimed Hawking-point excess at the scales in question.
+f41146213327c27f5f84ebbd7a0f5f0fa643702da099d3c52eb33bba9b59a68b:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: qualifies
+    bearsOn:
+      - CCC-C004
+    reason: The quoted passage appears verbatim at p.6 and accurately reports that omitting the single most significant point reduces A⁻ substantially, matching the record's statement in scope and locator. This bears on CCC-C004 by qualifying the robustness of the claimed 99.98% detection, showing it is driven disproportionately by one or two points rather than a broad population, so 'qualifies' is the correct direction. The statement is a single coherent proposition (fragility of the signal to outlier removal) even though it cites two scale computations as evidence, and no independent-source issue arises since this is the primary reanalysis itself.
+5e79ed7a0e36f4fc6f2717ca81ca7af172d5a33f2cd71caeb5405b97cf50df2f:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: qualifies
+    bearsOn:
+      - CCC-C004
+    reason: The quote and numbers appear verbatim in context on p.6 and are accurately summarized; the passage does show that most of the excess dissipates when the two most significant points are removed, which qualifies (or arguably undermines) the strength of the 99.98% detection claim in CCC-C004. However, the sourceStatement bundles two separate scale-specific results (the (0.01,0.02) and (0.01,0.03) A- values and their respective PTEs) into a single compound statement, so it is not atomic and should be split into per-scale claims.
+b930e2ac02440564522864e5feec29f5fe9992dd8bb22cd4cf75abe33c7178c3:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: context
+    bearsOn:
+      - CCC-C011
+    reason: The passage documents the successive revisions of the CCC prediction and speculates that only a more precise a-priori prediction or dramatic effect size could have survived marginalization; it does not itself describe the search methodologies (masks, statistics, null ensembles) as having been chosen post-hoc, so it bears on the topic of unprincipled, data-driven CCC claims only as background context rather than direct support for the specific preregistration/blind-analysis claim. The sourceStatement also bundles two distinct propositions—the history of prediction revisions and the counterfactual about what would have avoided the null result—so it is not atomic and should be split for separate judgment.
+e5fb48b64e5c81ae89d519260182a0ec148e1bea569eea5b48afc6a775d3b58a:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: false
+    atomic: false
+    direction: context
+    bearsOn: []
+    reason: The quoted passage recounts the history of earlier (low-variance-ring) CCC claims and their refutation by three independent groups; it says nothing about whether any CCC-signature search used preregistered or blind protocols, so it does not bear on CCC-C011's specific claim about post-hoc choice of statistics/masks/parameters. It is at best background context on the CCC saga, not support for that claim, so bearsOn is empty and the record is refused as linked. The sourceStatement also bundles two separable propositions (what the original claim was, and that it was refuted) into one statement, failing atomicity.
+4cc37c31187653af5eac34afc844a7f5aa39e5c010e0748d9d597c5e535fc380:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: context
+    bearsOn:
+      - CCC-C011
+    reason: The quoted passage accurately reports the paper's history of the CCC prediction shifting to low-variance rings and being untested/unconfirmed, and is correctly located in §4. However, this passage concerns the evolving physical prediction of CCC, not the specific methodological claim in CCC-C011 about lack of preregistered/blind protocols for search parameters (statistic, null ensemble, mask, etc.); at most it provides background context on the shifting-target problem rather than direct support for the protocol claim, so 'context' is the more accurate direction. The sourceStatement also bundles two separate propositions (the claim changing to low-variance rings, and that claim being tested and found insignificant), so it is not atomic and should be split.
+91c4d1f6f113379fa792768e7651763417192148300a0f3e7e7a27a036d46ca5:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: false
+    atomic: true
+    direction: context
+    bearsOn: []
+    reason: The passage documents the repeated revision of the CCC prediction (low-variance rings → concentric rings → high-gradient rings), which speaks to the shifting nature of the theoretical prediction itself, not to whether any search used preregistered/blind protocols or made post-hoc choices of statistic, null ensemble, mask, or search parameters as CCC-C011 asserts. It is at most background context on CCC's history, not evidence bearing on the methodological claim about analysis-choice freedom, so it does not support CCC-C011 and should not be linked to it.
+af49c349c96c3664f95f7bc94f738dbc5f13c3d184c87aae400be2c21c124a27:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: false
+    atomic: true
+    direction: context
+    bearsOn: []
+    reason: The quoted passage is accurate and correctly located, and it does report that only a far more dramatic HP signal (not a stronger a priori prediction) could have avoided the marginalization-driven null result. But CCC-C011 is about the absence of preregistered or blind analysis protocols across all HP/circle searches; this passage is about the statistical strength needed to survive a look-elsewhere correction, not about whether searches were preregistered or blind. The paper's adjacent clause about needing a precise prediction 'before looking at the data' would bear more directly on preregistration, but that clause is not what the record quotes or paraphrases. As extracted, the statement does not bear on CCC-C011, so the claim link should be dropped and the record refused as linked.
+f7f028c9ef61c56699d7b214e2e2531475e0335aba6d032cedd4f93cc2a145d6:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: supports
+    bearsOn:
+      - CCC-C011
+    reason: The quoted passage accurately reflects the paper's conclusion that only a much more precise a priori CCC prediction could have avoided the null result after marginalization, which is properly located in the discussion section and bears directly on the claim that no CCC search (including this one) used a preregistered or blind protocol, since it implicitly acknowledges the prediction was not precise before the data were examined. The statement is a single proposition, is not a repeated or derivative source, and is relevant to the claim about lack of preregistration.
+8fd3a97757d019081cf9fe6f903eec1757b85c7e80eb4baff7d064654b71ec39:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: context
+    bearsOn:
+      - CCC-C003
+    reason: The quotes are accurately drawn and locators check out, and the paper does find that the (105°,37°) low-variance excess for radii>10° is removed once low-ℓ multipoles are fixed to observed values in ΛCDM-based simulations. But the paper never discusses Gurzadyan/Penrose's original null construction (Gaussian+noise) versus later ΛCDM-based reanalyses as the source of disagreement; it only offers a mechanism (low-order multipole anomalies) for why one ΛCDM-based reanalysis sees residual excess. That bears on the topic but does not establish or qualify the specific claim about null-ensemble construction as the locus of disagreement, so 'context' rather than 'qualifies' is the right label. Also, the sourceStatement bundles two distinct findings (the ℓ≤7 explanation of the radii>10° deficit, and the separate observation that ℓ≤3 alone is insufficient), which are two separable propositions and should be split.
+936481e26b929d8d88ece24916aa9a5f0ab3ce67f19b03a3fd7f513d8b97ff76:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: false
+    atomic: true
+    direction: context
+    bearsOn: []
+    reason: The quoted passage accurately reports the paper's finding that variance at (105°,37°) for radii >10° is systematically low relative to ΛCDM simulations, and is correctly located across the abstract, §5, and §6. But CCC-C003 is a specific claim about the mechanism of a scientific disagreement — that Gurzadyan/Penrose used a Gaussian-plus-noise null while independent reanalyses used a full ΛCDM-power-spectrum null. This excerpt merely reports a result obtained using ΛCDM simulations; it neither describes nor contrasts the two null-construction methodologies, so it does not bear on the specific tracing claim in C003. It could serve as context for a claim about the anomaly's origin in low-order multipoles, but not for the null-ensemble-construction dispute as stated.
+e0a8b8fde5f54e39efe078b8d3aa2ceb2bfe2c259b870d42deb79375a393bace:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: context
+    bearsOn:
+      - CCC-C003
+    reason: The quote is genuine and used in context (the paper does attribute the low-variance deviation to multipoles up to l=7), and the locators match the abstract, results, and conclusion sections. But CCC-C003 is specifically about the null-ensemble construction (Gaussian+noise vs full LCDM spectrum) as the source of the significance disagreement; this paper's mechanistic finding about low-l multipoles driving the deviation doesn't directly address or bear on that null-construction dispute, so it functions as background context for the broader CCC debate rather than qualifying C003's specific claim. The sourceStatement also bundles the paper's raw finding (deviation caused by l<=7 multipoles) with an added interpretive framing ('not primary evidence for CCC'), which are two separable claims.
+0df23f33a78a51113f0abc80eb7ea9ad0d9f8cbf0e0ec4521fd345c7260e97d0:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: false
+    atomic: true
+    direction: context
+    bearsOn: []
+    reason: The quoted claim about post-adjustment agreement is accurately quoted and located, but it explains the (105°,37°) anomaly as an artifact of the observed low-order (ℓ≤7) multipole distribution, not as a consequence of differing null-ensemble constructions (Gaussian+noise vs. full ΛCDM spectrum) as CCC-C003 asserts. Like other reanalyses, this paper already uses ΛCDM-based simulations throughout, so it does not speak to the Gurzadyan/Penrose-vs-reanalysis null-construction distinction the claim is about. The passage is therefore only tangential background on the mechanism of the anomaly, not evidence bearing on the specific claim about null-ensemble methodology, so it should be dropped from CCC-C003 and the record refused as it names no claim it bears on.
+073078afbb638d25a9567a43ed7363c32b6dd745be6001e5790c12f8d7911e20:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: false
+    atomic: true
+    direction: null
+    bearsOn: []
+    reason: The quoted material is accurately drawn from p.5 and concerns whether removing low-order multipoles (up to ℓ=3 vs ℓ=7) reconciles the anomalous ring variance, which is a finding about the physical source of the anomaly, not about how the null ensemble was constructed. CCC-C003 is specifically about the methodological difference between Gurzadyan/Penrose's pure Gaussian+noise null and the ΛCDM-based nulls used by independent reanalyses; this multipole-substitution test does not speak to that construction dispute. I cannot identify a sound direction toward CCC-C003 because the passage simply does not bear on the claim as stated, so I dissent from the assigned 'qualifies' direction and find the claim link unsupported.
+f30673eb25b8c2555d68dbb2657339350787b1c36d53812934c419e2058bacfe:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: supports
+    bearsOn:
+      - CCC-C514
+    reason: The quotes are accurate and in context, and correctly attributed to the authors' own findings at the cited pages. However, the sourceStatement strings together four distinct quoted findings (general anomaly attribution, a specific χ² significance figure, multipole-removal result, and the summary conclusion) into one compound statement, so it is not atomic and should be split. It bears squarely on CCC-C514, which it directly supports, but CCC-C010 is a much broader claim about ΛCDM plus a-posteriori statistics accounting for 'every reported CCC signature'; this single ring-focused study cannot support that sweeping generalization, so the claim link should be narrowed to CCC-C514 only.
+d0bc6a9cd270cfc96d856f79423cb9d9766c68eb72f31045e8691fb4e22ce26c:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: supports
+    bearsOn:
+      - CCC-C010
+      - CCC-C514
+    reason: The quoted phrase appears verbatim in the abstract and is echoed in the conclusions, both cited locators containing the relevant claim that the ring variance deficit is another instance of the known large-angular-scale multipole anomalies rather than something novel. This directly supports CCC-C514's specific claim and also supports the broader CCC-C010 thesis that standard cosmology plus statistical artifacts account for the reported CMB signature, even though the paper's proposed mechanism (low-ℓ multipole anomaly) is not framed in terms of look-elsewhere effects. The statement is a single, non-compound proposition and is not derivative of another cited source in this record set.
+a2955c1afcc081ab5e70e304a7e1186310d29218a96fabf93dcd3d04f4fad19e:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: false
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: supports
+    bearsOn:
+      - CCC-C010
+      - CCC-C514
+    reason: The quoted phrase about the χ² map taking smaller values at ~95% significance for the two larger-radius intervals is verbatim from p.10 §6 Conclusions and is used in context (tied to the known low-ℓ multipole anomaly), and it fairly supports both the general look-elsewhere/ΛCDM-explanation claim and the specific low-ℓ-multipole claim. However the exactLocator also cites '[p.1] Abstract' as a location for this same quoted passage, and no such wording about the χ² map's 95% deviation appears in the abstract, so the locator is not fully supported.
+8ca2ccdb35102a24eff9a3154569ce79fa74ca96eae9dbddd2270ab36a728ffb:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: false
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: supports
+    bearsOn:
+      - CCC-C514
+    reason: The quoted phrase appears verbatim only in the §6 Conclusions paragraph on p.10; the abstract on p.1 does not contain this quote, so citing it as a locator is unsupported. The statement itself is a fair, narrow account of the paper's finding that removing ℓ≤7 multipoles eliminates the ring-variance anomalies, and it directly supports C514's claim that the effect traces to known low-order multipole anomalies. It does not directly bear on C010's broader claim about a-posteriori statistics and look-elsewhere effects, since the paper attributes the anomaly to an unexplained multipole feature rather than to statistical artifacts of the search method, so that claim link should be dropped.
+ab784ed9dde9e5bb959329df1349822934ab2baabcc696e9a1f31f408da70a52:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: supports
+    bearsOn:
+      - CCC-C514
+    reason: The quoted conclusion matches the paper's own conclusion section verbatim in substance and is correctly located; it directly supports CCC-C514's claim that the ring-variance anomalies trace to known low-ℓ multipole anomalies rather than pre-Big-Bang structure. However, the paper's finding concerns anomalous low-order multipoles as a physical/statistical feature of the sky, not the broader 'a-posteriori statistics/look-elsewhere effects' mechanism named in CCC-C010, so it does not bear on that claim and is dropped from the link list.
+7f0a39d6d2c389185660ef04f06c46cca0f6ae056522a2bac931f3d6ade82ae4:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: undermines
+    bearsOn:
+      - CCC-C009
+    reason: "The sourceStatement bundles two distinct propositions taken from different parts of the paper: (1) the specific reasoning that clustering of low-variance rings around one point contradicts the random-distribution prediction of CCC, and (2) the paper's broader summary conclusion that its results overall are not consistent with CCC. These are separable claims (one could be true without the other, e.g. if the clustering argument were wrong but other evidence still undermined CCC), so the record should be split. Aside from this atomicity issue, the quotes are accurate and in context, correctly located, and the record correctly undermines CCC-C009."
+b814ec0582a29f3bcc7a6b7a834e64f9484c596655355551fc549624b7d15da1:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: undermines
+    bearsOn:
+      - CCC-C009
+    reason: The quoted phrase appears verbatim on p.7 in §5.2, in context showing that low-variance ring clustering is common at points unrelated to any black-hole collision hypothesis, which is a fair, non-exaggerated account of the source's finding. This directly undermines CCC-C009's claim that the rings are genuine imprints of black-hole encounters, since the authors argue the clustering instead reflects anomalous low-order multipoles rather than a physically meaningful signal. The record is atomic, single-proposition, relevant to the named claim, and no independence concerns arise since no other cited record shares this dataset.
+fdf9a9412f3232e3527970ef52cab46d261b7bb4d28b5370d6782e3ee1de6a28:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: undermines
+    bearsOn:
+      - CCC-C009
+    reason: The quote about clustering of low-variance rings being inconsistent with CCC appears verbatim in §5.2/p.7 and matches the paper's own interpretive claim there, restated in the abstract and conclusions. The locator correctly points to the paragraph containing this exact language. This is a single, atomic proposition (the sourceStatement contains just the one quoted claim, with the additional finding relegated to limitations, not the statement itself). Given CCC-C009's assertion that the rings are real imprints of black-hole encounters, a finding that the rings' spatial clustering contradicts CCC's predicted random distribution correctly undermines that claim, and no other independent source or dataset overlap needs flagging here.
+37c6a965c1fc783a330bb5991f3f6f3710bca1faddfa154482cb723d2f1bc9b4:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: false
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: undermines
+    bearsOn:
+      - CCC-C009
+    reason: The quoted clause about random black-hole positions implying random ring centres does appear on p.7 and is used in context correctly, and it does undermine CCC-C009. However, the exactLocator improperly bundles the p.1 Abstract and p.10 Conclusions as additional loci for this specific quote, when those pages do not contain this passage; the quote is only found at p.7, so the locator is not accurately supported.
+bef9c485a3161a6724c88fc436ef3b3e0683157cce28875b9e348e42ef965384:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: undermines
+    bearsOn:
+      - CCC-C009
+    reason: The quoted sentence appears verbatim in the abstract and is echoed in the conclusions, accurately summarizing the paper's overall verdict that its findings do not support CCC. The locator correctly points to the abstract and conclusion sections where this statement and its basis appear. This is a single, atomic proposition about overall consistency with CCC, and it directly bears on and undermines CCC-C009, which asserts the rings are real imprints predicted by CCC.
+fc99d0e6acf71842886dab906820bf54d068c3240b18f8fb4cf339b3b0216196:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: context
+    bearsOn: null
+    reason: The quotes are accurately drawn from Bielewicz et al. (2013) and correctly located in §5.2 and the conclusions, but that paper analyzes single-point-centered ring variance in 2013 WMAP data, not the specific 2020 An/Meissner/Nurowski/Penrose finding about triple-ring center anisotropy (1134 centers, 83% in three regions); it cannot qualify or support the truth of that specific reported result, only offer analogous background on how large-scale multipole power can mimic clustering, so it is context rather than a qualifier. The sourceStatement also bundles four distinct findings (clustering explanation, hemisphere probability, multipole-removal effect, rotation-test effect) into one statement, failing atomicity. It is otherwise a fair, correctly located account and clearly bears on the broader topic of the case question.
+8914db15120bb399206bbcc7a7ea06a1202a8097dd976b713e31aa14561e50b8:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: context
+    bearsOn:
+      - CCC-C504
+    reason: The quote is accurate and matches its context on p.7, and the locator range spanning the rotation test and later figures is reasonable given the extended discussion. However, CCC-C504 is a narrow factual claim about An et al. (2020)'s specific 1134-center, 83%-in-3%-of-sky finding, an entirely different dataset and statistic (concentric-triple centers) from Bielewicz et al.'s own two-point clustering discussion; the record's own limitations note this difference. Because Bielewicz et al. cannot condition or qualify the accuracy of a later, methodologically distinct study's reported numbers, the passage is better read as background context on how ring clustering can arise from large-scale CMB features rather than a direct qualification of An et al.'s finding.
+fe6f0f48928c15dfce98cf3a5dbb03430fb192f730004652d6d1ca96fee93cba:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: false
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: context
+    bearsOn:
+      - CCC-C504
+    reason: The quoted sentence about anomalously low-variance ring clustering actually appears in the Conclusions section on p.10, not at the cited locator of p.7 §5.2/p.8/Figs.8,10,11, so the locator is wrong. The source statement itself is accurate to the paper's own (different, earlier, single-ring) analysis, but this 2013 study is a separate methodology from An et al. 2020's triple-ring anisotropy statistics and does not directly qualify that specific quantitative finding — it merely provides background context on similar large-angle clustering effects, so 'context' rather than 'qualifies' is the right direction.
+7b9b6fc8bf0ae35187da88bb27b687521789584abc15755dfc41ef8963ba6f6b:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: false
+    atomic: true
+    direction: context
+    bearsOn: []
+    reason: The quoted passage is accurately drawn from Bielewicz et al. (2013) and correctly describes their own finding that low-variance ring regions shrink after removing low-order multipoles, but this 2013 paper predates and does not address An, Meissner, Nurowski & Penrose (2020) or its specific statistic on concentric ring-triple center clustering (83% within 3% of sky). A source cannot serve as evidence about a different, later study's specific reported results, so it does not bear on CCC-C504's claim; it is at best general context for the broader debate about CMB anomalies versus large-scale multipole artifacts, not a qualifier of the specific An et al. finding.
+7e9efd20d5096b43370c393eedd477a4a37af931afbb487c23e483843ea97925:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: false
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: context
+    bearsOn:
+      - CCC-C504
+    reason: The quoted sentence about the rotation test reducing low-variance regions for the [30°,60°) and [60°,90°) intervals is accurately quoted and reflects the source's actual finding, but it actually appears in the final paragraph of §5.2 on page 10 (following Fig. 11), not at the pages/figures cited in the locator (p.7, p.8, Figs 8/9-10), so the locator is imprecise. Because this 2013 WMAP ring-variance study predates and uses a different statistic than An et al. (2020)'s concentric-ring-triple-center clustering analysis, it cannot directly qualify or test the specific quantitative claim in CCC-C504; it only offers general background evidence that low-order multipoles can produce clustered low-variance regions, so it is context rather than a qualification of that claim.
+07b7021620af8a56079f1ddbe7da3dc1ba6d1a8451bd7112b701dba9536de0a4:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: undermines
+    bearsOn:
+      - CCC-C002
+    reason: The quoted passage occurs at the cited location and reports that no significant excess of extreme variance values was found for the two special CCC points across the full radius range, which directly weighs against the claim that these ring families are anomalous at high significance; this is a single finding (absence of extreme variance) extended in scope, not two separate propositions, and it does not rely on any other record's data or sample.
+026dfcbdb55c534864bcf942e22c536ee17792760716c119b0693e4559454219:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: supports
+    bearsOn:
+      - CCC-C515
+    reason: The passage directly reports Creswell et al.'s own finding, so for CCC-C515 the correct direction is 'supports' rather than 'context'; for CCC-C505, which concerns Penrose's separate erebon-decay proposal, this source says nothing about Penrose or that hypothesis, so it does not bear on that claim. The sourceStatement bundles several distinct findings (calibration-line correlations, residual-noise correlations, and generalization to two other events) into one statement, so it is not atomic and should be split. The quote and locator are accurate and the observation is relevant to the case question via C515.
+3befcd87ffe29828c6ba466225dfeaf8db345e40d35620dcbfbf666407818d7f:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: supports
+    bearsOn:
+      - CCC-C505
+      - CCC-C515
+    reason: "The quoted phrase and cited locators (abstract, §3.2, Fig. 7) accurately reflect Creswell et al.'s own finding that noise correlations peak at the same time lag as the GW150914 event, and this is a fair, non-inflated summary. However, for CCC-C515 the passage is not merely 'context': it is the primary source directly asserting the very finding the claim describes, so the correct direction toward C515 is 'supports.' Toward CCC-C505 (Penrose's proposal), 'context' is reasonable since this paper does not discuss Penrose or erebons but merely supplies the empirical premise he later used. Both claims are still borne on by the passage, and the statement is a single, atomic proposition with no independence concerns since this is the original data-analysis paper, not a derivative report."
+b2d2bfce078f7f66739b3ccb72c551ebf7e289e4b3d8ef173b10a0e7d87e49bf:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: false
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: context
+    bearsOn:
+      - CCC-C505
+      - CCC-C515
+    reason: The quoted phrase about calibration-line correlations near 35 Hz is accurately drawn from the abstract, and the statement fairly reflects that quote. However, the cited locator also points to the Residual Noise section (§3.2) and Fig. 7 on pp.9-12, which describe a different analysis (post-template residual noise correlations, not calibration-line correlations); that passage does not state the calibration-line claim, so the locator does not support the statement as given. The description is background/methodological context rather than an assertion that directly supports or undermines either claim's specific content.
+8315cd9d5b7b5234490416f97df99a4f5878e1579a9601dba3d22143fad144dd:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: supports
+    bearsOn:
+      - CCC-C515
+    reason: The passage is Creswell et al.'s own reported finding that residual noise cross-correlates near the same time lag as GW150914, so it directly supports CCC-C515 rather than merely providing context; it does not mention Penrose or erebon decay, so it bears on C515 only. Quote, statement, and locators are accurate and consistent with the source's abstract and §3.2/Fig.7 discussion.
+6a9f2f272f620b80e5c070d526aee64ec17aeed88d094ce1c36bb92e417bb159:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: false
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: context
+    bearsOn: null
+    reason: The abstract line quoted is accurate, but the exactLocator wrongly points to §3.2/Fig. 7 (pp.9-10, 12), which are specifically about GW150914's residual noise; the actual discussion and figure for GW151226 and GW170104 appear in §4 (pp.11-13) and Fig. 9 (p.14). Because the locator does not correspond to where the cited claim about the other two events is actually substantiated, locatorSupported fails. The 'context' direction is otherwise appropriate for both claims, since this passage extends the finding to other events rather than directly proving Penrose's erebon-decay hypothesis (C505) or the specific GW150914 residual correlation (C515).
+d434092611d7c4b697c41f54e86d2b0aafe8aa49fdcd0bde77a6d0fef60c53b0:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: supports
+    bearsOn:
+      - CCC-C505
+      - CCC-C517
+    reason: The sourceStatement bundles two distinct propositions—the specified Andromeda-direction test procedure and the separate claim that our own galaxy's dark matter would be a major contributor to the signal—joined by 'adding that,' which are logically independent and could be true or false separately; this is a compound statement and should be split. Each quoted span does appear in context and is not overstated, and the locator is correctly given as p.4, §2. Both named claims are genuinely borne on by the passage (the test-specification claim by the first part, the general erebon-decay proposal claim by both parts), and the direction 'supports' is correct since this is Penrose's own assertion of his proposal and test, not a report of someone else's work.
+761f91458a173367a739cacd5e97795487c5bac06d8a58ec7e2f9f4e269b5392:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: supports
+    bearsOn:
+      - CCC-C505
+    reason: The quote is accurately reproduced and used in context to show that the black-hole merger event is incidental to the erebon-decay noise hypothesis, supporting CCC-C505's account of the conjecture. However, it does not itself specify the Andromeda-galaxy test described in CCC-C517—the sentence merely sets up that specification, which appears afterward—so the record's link to CCC-C517 is dropped and it is admitted as bearing only on CCC-C505. The locator is close enough (same paragraph spanning p.3–4) to be acceptable.
+fccf67b4ee3112ca7447267dfcaae434f88e3287a79abe55325016e4fa821683:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: supports
+    bearsOn:
+      - CCC-C517
+    reason: The quoted passage on p.4 accurately restates Penrose's suggestion to test the erebon-noise hypothesis using a prominent galaxy like Andromeda without needing a black-hole merger, matching C517 exactly and supporting it. However, this passage is specifically about the proposed test methodology, not the original erebon-decay-as-noise proposal itself (C505), so it does not independently bear on C505 beyond restating context already covered elsewhere; it should be linked only to C517.
+e1b8d87760a030e22643204e5e14ef659d35d9c15cd53a354559fc8259e35df2:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: supports
+    bearsOn:
+      - CCC-C517
+    reason: The quote is accurately drawn from p.4 §2 and faithfully reflects Penrose's point that a black-hole merger is not needed to run the Andromeda-direction correlation test, directly supporting CCC-C517's description of the specified test. It does not bear on CCC-C505, which concerns the erebon-decay explanation of the noise itself rather than the design of a test independent of black-hole events, so that claim link is dropped.
+ac91fc85b63a51313a5fede182bb504c0fe1a5f5b00947a593454d9ec5bfa186:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: false
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: supports
+    bearsOn:
+      - CCC-C505
+    reason: "The quote accurately reflects the source's claim that our galaxy's dark matter would be a major contributor to the erebon-decay signals, supporting the general erebon-decay mechanism (C505); it does not itself describe or support the Andromeda-specific test protocol (C517), which appears in a different paragraph. The locator's 'second paragraph' designation is incorrect: the quoted material appears in a later paragraph of Section 2 (the one discussing the Andromeda test), not the second paragraph (which is the numbered list of considerations)."
+ccf7fa6caedaafcaed3c96176fed6793e3e6fa604841a9d98ba57406fab2bdf0:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: supports
+    bearsOn: null
+    reason: The quote appears verbatim in the paragraph beginning 'Moreover our current picture' spanning p.4-5, and is correctly attributed to Penrose's own framing as an admittedly unconventional hypothesis; it directly supports CCC-C005's characterization. However the quoted sourceStatement bundles several distinct assertions—that a mechanism is required, that it is unconventional, that it is not contradicted by observation, and that it is not implausible given a positive Λ—each of which could be true or false independently, so it is not atomic and should be split for separate judgment.
+86f78b2853688cf452b6d4a42448f239b74d99134a886628a0228e20d1c2af46:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: supports
+    bearsOn:
+      - CCC-C005
+    reason: "The quoted phrases appear as given, in context describing CCC's need for a mass fade-out mechanism, framed by Penrose himself as unconventional but not contradicted by observation, matching the claim's characterization. However, the statement bundles two separable propositions: the assumption of a mass-fade mechanism, and the separate claim about a residue of massive particles surviving black hole evaporation, joined via a 'because' clause; these should be split and judged separately."
+23d72e17eebfd045f6374b9baf62f17e30a214dcdc209c6ebc1d604e8127f78a:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: false
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: supports
+    bearsOn:
+      - CCC-C005
+    reason: The quoted phrase does appear on p.5 and matches the claim's characterization, but it occurs in the paragraph beginning 'There will, however, be a residue...' rather than the paragraph beginning 'Moreover our current picture', so the locator description misidentifies which paragraph contains the quote.
+89a7dab25650f6883c69fd17ffc7ac6aa6d4975f6184c7fe9cbfc18d59876805:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: false
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: supports
+    bearsOn:
+      - CCC-C005
+    reason: The quoted phrase does appear in the source and is used as claimed, but it actually occurs in the paragraph beginning 'There will, however, be a residue of a relatively small number of massive particles...' on pp.4-5, not in the paragraph beginning 'Moreover our current picture' as the locator states, so the locator is inaccurate. The statement itself is a fair, single-proposition account of that passage, and the passage does support the claim that Penrose frames mass fade-out as an unconventional but not implausible hypothesis, bearing only on CCC-C005.
+682b0a58ccd8a2d1f421059aef6ec3b1464615e9b7a6aaa68fa6f87e21d056f8:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: undermines
+    bearsOn: null
+    reason: The quoted abstract and p.6 passages are accurately represented and located, and the paper's finding that ML-waveform residuals show no significant correlation genuinely undermines both Penrose's interpretation of correlated noise as erebon-decay events and Creswell et al.'s report of correlated residuals at ~7ms. However, the sourceStatement bundles three separable factual claims (the no-significant-correlation finding, the specific correlation-value drop from 0.799 to 0.369, and the p-value of ~0.4), each of which could be independently verified or challenged, so it is not atomic and should be split into separate records.
+3b2aba5def8ec2208316e59f9451526db7a65d30746348594ec5cae84641b475:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: undermines
+    bearsOn:
+      - CCC-C505
+      - CCC-C515
+    reason: The quoted phrase appears in the abstract and is corroborated by the p-value analysis in §2 and Fig. 3, correctly reporting that after ML waveform subtraction the Hanford-Livingston residual correlation is not statistically significant. This directly undermines Creswell et al.'s claim (CCC-C515) of a significant correlated residual at ~7ms lag, since the paper shows that claim depended on an imperfect (non-ML) waveform subtraction, and by extension undermines Penrose's proposal (CCC-C505) that relies on that correlation being a real astrophysical signal rather than a subtraction artifact. The statement is a single, non-compound proposition and is a fair, non-overreaching account of the source's finding at the cited locators.
+3208ee0fafef3e1244b4a02a64f7460ec353ecd472120927cc75df46deb79ca2:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: undermines
+    bearsOn:
+      - CCC-C515
+    reason: The quoted figures (0.799 reduced to 0.369) appear verbatim in the source's discussion of Fig. 2/§2, correctly reporting that using an accurate maximum-likelihood waveform sharply reduces the anti-correlation near the 6.9ms lag, which undermines the significance of the Creswell et al. correlation claim (C515). The record bears only on C515, since the paper never discusses Penrose's erebon-decay proposal (C505) and is unrelated to that claim. The statement is a single, atomic numerical comparison, correctly located on p.6, and the record acknowledges its lineage as a split of a prior record from the same source.
+b8d1bef1b268697db0799ec1328ed83b1c229090021fec548fe40e9590f87e17:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: undermines
+    bearsOn:
+      - CCC-C505
+      - CCC-C515
+    reason: The quoted p-values (∼0.001 non-ML vs ∼0.4 ML-subtracted) appear in context on p.6 and are accurately reported at the cited locators, and the finding undermines Creswell's claim of a significant 7 ms correlation and weakens the empirical basis needed for Penrose's erebon-decay speculation. However, the sourceStatement bundles two distinct numeric findings (the ML p-value and the non-ML p-value) into one sentence, so it is not a single atomic proposition and should be split into two records, one per p-value claim.
+96ec2a03bbb1cbef9895c3e1ce6bd77153eb0dac373915e4e9c530e0ea217eda:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: context
+    bearsOn:
+      - CCC-C515
+    reason: The quote is accurate and in context, describing only the methodological construction of the significance background (Gaussian noise trials and real-data segment trials), not the actual finding of no significant correlation; as a pure methodology description it provides context rather than itself supporting or undermining C515's reported correlation, and it does not bear on Penrose's erebon-decay proposal (C505) since it says nothing about cosmological origin claims. The statement also bundles two distinct sampling procedures (simulated Gaussian noise trials and real-data segment trials) into one sentence, making it non-atomic.
+15a375492dfb5c5e81976df17a9ef9d640a8c09fe44170518612a5eee4f7b779:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: supports
+    bearsOn:
+      - CCC-C519
+    reason: The quoted passage matches the source exactly and is correctly located in §III on p.2, and it fairly restates the direct-spectrum result of Eq.(5) without overreach. However, this passage concerns only the 'direct' graviton spectrum, a distinct and much smaller contribution than the 'memory effect' (indirect) mechanism discussed in §IV that actually bears on Penrose's claim about correlated impulsive LIGO noise (CCC-C505); the record's link to C505 is unsupported by this locator, so only C519 is retained. For C519 the passage does not 'undermine' anything—it is the direct source of the very figures the claim states—so the correct direction is 'supports' rather than 'undermines'.
+23e846f694db714f81b875b7d4af1df98e700013278916b3426850af2b49dc84:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: supports
+    bearsOn:
+      - CCC-C505
+      - CCC-C520
+    reason: The quotes accurately reflect the source's §IV.A and §V text at the stated locators, and independence is not an issue since no other record shares this source. However, the sourceStatement bundles several separate propositions (the 60-orders-of-magnitude comparison, the 35-orders detectability gap, and the general conclusion about current technology) into one record, so it is not atomic and should be split. On direction, the passage's numeric result directly restates and thus supports CCC-C520 (which is essentially this same finding paraphrased), while it does undermine CCC-C505's suggestion that erebon decay could explain detectable correlated LIGO noise; labeling the whole record 'undermines' misdescribes its relation to C520.
+73a61fb4d0c05547c167c306a49bea4c8dfa4426585b60da11abb500d3c75754:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: supports
+    bearsOn:
+      - CCC-C505
+      - CCC-C520
+    reason: The quoted figure and phrase appear exactly at p.4 in the paragraph on the Planck-mass erebon memory-effect spectrum, and the statement is a faithful, non-exaggerated restatement of Allen's result. However, labeling this 'undermines' is only correct for CCC-C505 (it shows Penrose's erebon-decay GW conjecture is far below detectability); for CCC-C520, which simply asserts this same Ω_GW value and 35-orders-of-magnitude gap, the source directly supports rather than undermines the claim, since it is the origin of that exact number.
+47f0031fb37a4734a483f10813e98b35ccbecf2cd8418a19aa8ce889d51bda89:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: undermines
+    bearsOn:
+      - CCC-C505
+    reason: The quoted sentence appears in §V of Allen (2020) and is used faithfully to say current technology cannot detect these backgrounds, which bears on and undermines the idea that LIGO noise correlations could be attributed to detectable erebon decay (C505). It does not, however, contain or support the specific numeric 35-orders-of-magnitude figure that defines CCC-C520 — that figure comes from a separate paragraph in §IV.A, not from the quoted text — so the record should not be linked to C520. The statement itself bundles two separable propositions (no current detectability vs. possible future detectability), so it fails atomicity and should be split.
+78ba702e23401d7fcbead276bfbaa0da841afd3ff3a79d8c9e34a622e0aa3c93:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: qualifies
+    bearsOn:
+      - CCC-C007
+    reason: The quoted phrases all appear on p.1 in the stated senses (generality of the model, erebon properties, and undetectability with LIGO), and the record fairly qualifies CCC-C007 by showing the predicted GW signal from erebon decay is far too weak to be observed, even though other erebon properties (gravitational-only interaction, long lifetime) are confirmed. However, the sourceStatement bundles four separate propositions (applicability of the model, interaction property, lifetime property, and undetectability) into one record, so it is not atomic and should be split into separate statements for individual evaluation.
+93005a0f6acf980b4fcaaea07238d6a3b9c01a82bc1badc62caa73f58a1d04ab:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: context
+    bearsOn:
+      - CCC-C007
+    reason: The quote is accurately drawn from the introduction and reports Allen's generalization that his memory-effect calculation applies to any neutral scalar dark matter particle, not just erebons. This does not qualify or condition the truth of CCC-C007 (which asserts erebons decay and could register as GW signals); it merely notes that the physical mechanism is not unique to erebons, bearing on the topic without confirming, limiting, or denying the erebon-specific prediction. That makes it context rather than a qualifier.
+6fabee08454b15de5acc568ba7b8dfc0aced305f2c6f47f4f232e2513c5d3a34:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: context
+    bearsOn:
+      - CCC-C007
+    reason: The passage simply restates Penrose's own model assumptions (Planck mass, purely gravitational interaction) that the paper adopts as its premise for calculation; it is not the paper's own finding testing or limiting the claim, so it functions as background context rather than a qualification. The sourceStatement also bundles two separate propositions (Planck mass and gravitational-only interaction) that could be independently true or false, so it is not atomic and should be split. Quote, support, and locator are otherwise accurate, and the passage does bear on CCC-C007's description of erebons.
+182e25008801c2f40dc95bf8bbe36667ce44bf2506d944b93776be9b1e75aa16:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: context
+    bearsOn:
+      - CCC-C007
+    reason: The passage merely restates Penrose's model assumption (erebon lifetime exceeds Hubble time) as background for Allen's own calculation; it neither affirms nor limits the truth of CCC-C007, so it functions as context rather than a qualification. The quote is accurate and the locator correct, and it does bear on CCC-C007 as background description of the erebon model.
+5d1b7a6b457faf83e024cb90ee7d71bbe13ae61fdc3918d89823bfef4482ac17:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: qualifies
+    bearsOn:
+      - CCC-C007
+    reason: The quoted phrase appears in the introduction exactly as stated, describing the paper's finding that the predicted GW background from erebon decay is undetectable with current instruments like LIGO. This qualifies rather than undermines or supports the erebon claim, since it doesn't dispute that decays occur or emit GW signals, but limits the practical detectability of those signals with present technology. The statement is a single, well-scoped proposition matching the source's own wording and context.
+b152145bdb592490e6d7b74c986ab97268f0ba17a4a16df4ff38bd63a00e496c:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: supports
+    bearsOn:
+      - CCC-C518
+    reason: "The passage confirms rather than undermines the claim's description of Penrose's model: Allen explicitly states that Penrose's reference argues for a spherically symmetric impulsive Vaidya-metric decay model, matching what CCC-C518 asserts about Penrose's description. Allen's subsequent physics critique targets whether that model radiates GWs, not whether Penrose actually described it that way, so the direction should be 'supports' rather than 'undermines'. The sourceStatement also bundles three separable propositions (what Penrose's model is, how it differs from Allen's axisymmetric model, and the Blanchet-Damour result about O(1/r) terms), so it is not atomic and should be split for separate judgment. Quote, locator, and general fidelity to the source are otherwise accurate."
+086591b58ad903cdafca2884448a972750df5943425b3a8cd11d0f76761e0abb:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: supports
+    bearsOn: null
+    reason: The quoted passage is Allen's accurate restatement of what Penrose's paper argues (the impulsive Vaidya metric, Schwarzschild-to-Minkowski conversion), and it is correctly located in §IV.A. But this passage merely confirms the claim's description of Penrose's model rather than undermining it; the undermining content (Allen's critique via Blanchet & Damour) is not part of this quoted span, so 'undermines' is the wrong direction here — this part simply supports/confirms the claim's characterization of Penrose's argument.
+fb0779823b0589564e78b9c5c97019b0a567d05b496d3b7814fe7a8010a8ee2d:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: context
+    bearsOn: null
+    reason: The quoted line only notes that Allen's axisymmetric memory-effect model differs physically from Penrose's spherically-symmetric impulsive Vaidya picture; it does not dispute that Penrose described the erebon decay geometry that way, so it doesn't undermine claim CCC-C518, which is a descriptive claim about what Penrose proposed. Rather than undermining the description, this passage provides context for evaluating the physical validity of Penrose's model, so 'context' is the more accurate direction. Locator, quote-in-context, statement support, atomicity, and relevance are all fine.
+056eecda103a83b1f2fd11ec8e6ea5e3c614ee2f3dd69133daeca80941ab1307:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: context
+    bearsOn:
+      - CCC-C518
+    reason: The quoted line about Eq. (2.43c) of Ref. [14] is verbatim and correctly locates Allen's rebuttal argument on p.4 in the paragraph beginning 'Reference [2] argues'. However, claim CCC-C518 is a purely descriptive claim about what Penrose's model states (an impulsive Vaidya, spherically symmetric shell); Allen's passage actually agrees with that description before disputing whether such a model radiates GW at O(1/r). That disputes the physics, not the description, so it does not 'undermine' C518 as stated — it merely provides further context on the model Penrose describes and Allen's competing axisymmetric treatment.
+0c78beed828785ed9fec44f175938a9f3da1393d5b30dc122a5620c7665ebcc5:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: undermines
+    bearsOn:
+      - CCC-C518
+    reason: The quoted passage appears verbatim on p.4 in the paragraph beginning 'Reference [2] argues', correctly attributed to Allen's own analysis (via Blanchet & Damour) rather than to Penrose. It fairly and narrowly restates Allen's point that an isotropic (spherically symmetric) source yields no leading-order O(1/r) GW strain, directly challenging the physical adequacy of the spherically-symmetric Vaidya-metric model Penrose invokes for erebon decay, which is what the claim describes. This is properly an undermining of the substance behind the claim's described mechanism, is independent (no shared dataset/derivative issue), and bears on the case question via the broader erebon/GW-signature debate. The statement, while phrased as cause-and-consequence, expresses a single physical conclusion and is reasonably atomic.
+acec8ede2ec422143d6a8cafb3d4c8bc1f2fe70537d1ced1a29d3b11b3cf432a:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: context
+    bearsOn:
+      - CCC-C505
+    reason: The sourceStatement bundles three distinct findings—the 26/27 noise-indistinguishability result, the whitening-driven disappearance of the GW190412 exception, and the authors' stochastic-background interpretation—each of which could be true or false independently, so it is not atomic. The quotes are accurately drawn and located, and the paper's re-examination of the same LIGO correlated-noise phenomenon that underlies Penrose's erebon-decay proposal makes it relevant context, though it never addresses erebon decay itself, so 'context' rather than support/undermine is the right direction. Because the paper does not address the specific erebon-decay mechanism, the claim it bears on is limited to CCC-C505 as background context, not a direct evaluation of the claim's truth.
+fdd9056de2d5a3d90c1feb560c6df4637fc85d88bad918b1013c2de64e224161:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: context
+    bearsOn: null
+    reason: The quoted 26/27 statistic accurately reflects the abstract and is properly located there and in Table I/\u00a7IV.B; the record makes no stronger claim than the source states. The source describes and extends Creswell et al.'s empirical finding of persistent inter-detector correlated noise with GW-like time delays but never mentions Penrose or an 'erebon decay' mechanism, so it can only supply background on the underlying noise phenomenon rather than confirm or refute the specific causal attribution in CCC-C505; 'context' is the appropriate direction. The statement is a single atomic proposition and there is no undisclosed reliance on another record's dataset here.
+db61c7c74932323d3f3eb6781d82319f4c0251fab5e353042b13bf016e0099fe:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: false
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: context
+    bearsOn:
+      - CCC-C505
+    reason: The quoted material about Virgo-pair p-values below 0.20 and the abstract phrase about the independent Virgo detector both appear as claimed, and the abstract citation to p.1 is fine, but the substantive 'no Virgo pair <0.20' finding actually appears in Section III (Results) on p.3-4, not in Section IV.B (the whitening discussion) as the locator states, so the locator misdirects the reader to the wrong section. The statement is a fair, non-broadened account of the finding, and it plausibly serves as context for CCC-C505 since it describes the same correlated-noise phenomenon Penrose's erebon-decay proposal addresses without directly confirming or refuting that specific mechanism.
+6944f1ec059a638f49f8f6f801495647215013100a13e68c8770475cdd00acdc:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: undermines
+    bearsOn:
+      - CCC-C505
+    reason: "The quote is accurate and the numbers match Table I and the §III/§IV GW190412 discussion on pp.4-5, though the locator's section label (IV.B) is imprecise since the quoted sentence actually appears in §III.c and §IV.D; still the page range is correct so I treat it as supported. The statement is not atomic: it bundles the specific correlation statistics (amplitude, lag, p-value) with the separate empirical finding that the excess is absent in the Virgo pairs, two distinct propositions. Labeling the direction 'context' undersells the bearing: because the one anomalous correlation is confined to the shared-infrastructure H1xL1 pair and vanishes in the independent Virgo baselines, it is more parsimoniously read as an instrumental artifact than as a genuine physical (e.g., erebon-decay) event, which weakens rather than merely contextualizes Penrose's proposed physical origin for such correlated noise; I would mark this 'undermines'."
+e396b3830ec4d8880bb77fe7c474ef2452bf893d27ecc5cd83c904e0d9670de3:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: false
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: context
+    bearsOn:
+      - CCC-C505
+    reason: The quoted claim about the GW190412 excess vanishing after whitening is accurately drawn from §IV.B, but the cited locator improperly includes the Abstract (p.1) and Table I, neither of which states or even mentions the whitening result; the finding is confined to §IV.B on pp.4-5. Because the locator points to material that does not contain the passage, locatorSupported fails even though the quote itself is faithful and the topic (robustness of inter-detector correlated-noise claims) is relevant background to Penrose's erebon-decay hypothesis about correlated LIGO noise, warranting a 'context' rather than supports/undermines direction.
+88da90d6751bcdc7e3a0853050172983471ae05334f107991791c6f2477eb355:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: false
+    atomic: true
+    direction: context
+    bearsOn: []
+    reason: The source paper never mentions Penrose's 2017 erebon-decay proposal or impulsive gravitational events; it argues instead for a stochastic gravitational-wave background as an alternative explanation for persistent LIGO-Virgo cross-correlation structure. This has no bearing on CCC-C505's specific claim about Penrose's erebon-decay hypothesis, nor does it bear on the CMB pre-Big-Bang case question, since it concerns LIGO strain-data noise rather than CMB circles or hot spots. The record should be refused for lack of connection to the named claim.
+eccf81d409f385751631a827d5df6733adc6d1ddfd06e8a30d788d49b51ce839:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: null
+    bearsOn: null
+    reason: The quote appears in section 2 on p.4 and the paraphrase accurately reflects the finding that adding half-difference noise maps did not change the simulated distributions, supporting the claim that instrumental noise is negligible for the HP statistic at the scales considered. This bears on the case question by supporting the 'random sky' explanation, since it rules out noise as an alternative driver of the apparent signal, and is a single, well-scoped proposition.
+67bb36eb10538e32c7238cb57bb7b69dfd546afa14321fa4ea8b29376bcd42e1:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: null
+    bearsOn: null
+    reason: The quote and figures (0.20 and 0.19 rad vs Gaussian expectation 0.20±0.03 rad) match §3.1 on p.8 exactly, and the locator is correct. The statement is a fair, non-overreaching summary of the clustering non-detection, treated as one composite finding across the two scales the source itself groups together. It bears on the case question by addressing whether the claimed CMB features (and their clustering) look like genuine signal or expected statistical noise.
+d787a62292c31794333125590580bbb3228b804917b7696bdfcd4606a27ceb1b:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: null
+    bearsOn: null
+    reason: The quoted phrase appears at the end of §3.2 on p.8 exactly as stated, following the description of stacking Planck 2018 SMICA temperature and E-mode maps around HPs selected at |â|>2 for the two scales, and the statement accurately restates that no persistent polarization structure was found without overreaching. This bears on the case question of whether CMB features indicate genuine pre-Big-Bang signatures versus statistical noise, since absence of a polarization counterpart weakens the physical reality of the claimed Hawking points. The statement is a single, well-defined proposition.
+56c5986307d37e9111cf6732a0a79a157daaf262d1eefbf9c0066998aea6905d:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: null
+    bearsOn: null
+    reason: The passage on p.6 states that omitting the two most significant points reduces A- values such that PTEs for these scales become greater than 10%, matching the anchored claim exactly and at the correct locator. This finding bears on the case question by showing the apparent Hawking-point signal is driven by a handful of outlier points and becomes statistically insignificant when they are removed, supporting the 'random sky' interpretation. The statement is a single, atomic proposition.
+89126b94ecc4cae11f33b68ac856f65364c657004a649f18a0597052d32ee19c:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: null
+    bearsOn: null
+    reason: "Both quoted passages appear as stated: the abstract confirms the low-variance deviation for radii >10° at (105°,37°) is attributable to multipoles up to ℓ=7, and the conclusions passage confirms that replacing those best-fit multipoles brings simulated and observed variances into good agreement. Together they jointly support the anchored proposition without overstating it, the locators match the sections quoted, and the finding bears directly on the case question of whether the CCC-linked ring anomaly is genuine cosmological signal or an artifact of known large-scale anomalies. The statement is a single coherent proposition about the multipole-driven resolution of the anomaly."
+46f057bfe6921f53d56b9d89b3a16b45fccf160d900a6432f43d31898082b6bc:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: false
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: supports
+    bearsOn: null
+    reason: The abstract quote only says low-variance rings can be easily found elsewhere, not that they can be found in numbers 'as many as' the specific exemplar point; that stronger quantitative claim is only made later in the paper (p.9-10), not at the anchored Abstract locator, so the statement overreaches what the cited passage itself states.
+32552bbde05426f35bd551f40e419e02e4cdfb5875fc05b92e2aa2a27350f508:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: null
+    bearsOn: null
+    reason: The two quotes are used in context and the joint claim is broadly consistent with what the paper concludes about anomalous low multipoles and inconsistency with conformal cyclic cosmology. However, the statement actually bundles at least two separable empirical claims (that the variance deficit is attributable to low-order multipoles, and that the clustering of low-variance centers is attributable to the same cause) plus an implicit third claim about non-support for pre-Big-Bang structure; these could be true or false independently and should be split and judged separately.
+d3e987c65db0760e77ce9fbfdcf57fd6c91f99481ae94a8d2c2491c83b9cd899:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: null
+    bearsOn: null
+    reason: The abstract quote and the p.7 clustering discussion together support the proposition that the low-variance ring deficit traces to anomalous low-order multipoles (up to ℓ=7) rather than to genuine CCC-predicted rings; both locators match their quoted text, and the claim bears directly on whether the rings are pre-Big-Bang signatures or statistical artifacts of a hard search.
+275d1c4c567271373e9e7b03dd42489ca4ec35e3e314448f3f612fdc33cb8f91:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: null
+    bearsOn: null
+    reason: "Both quoted passages appear where cited and are used in their original sense: the abstract passage attributes the radius-dependent power deficit to the known large-scale CMB anomaly, and the p.7 passage explicitly states that clustering of low-variance ring centres in large regions indicates large-angular-scale features rather than the randomly distributed black-hole collisions predicted by CCC. Together they support the stated proposition without overreach, the locators match, the claim is a single coherent interpretive proposition, and it plainly bears on the case's question about whether the CMB patterns reflect a prior universe or ordinary large-scale anomalies."
+86140481d3866deecc4593eee1cf3091e38dfdcee02646ef8fa593974079c9a0:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: false
+    statementSupported: false
+    locatorSupported: false
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: null
+    bearsOn: null
+    reason: The statement about ℓ≤7 multipoles being needed beyond quadrupole/octopole removal is actually stated on p.11 ('removal of the quadrupole and octopole is insufficient... related to higher order multipoles, up to ℓ=7'), but the anchor instead quotes the abstract's unrelated 'anomalous CMB distribution' phrase and a p.7 fragment about ring clustering, neither of which states this specific claim. The cited locators do not contain the passage that actually supports the statement, so the anchor is misplaced and does not substantiate the proposition as worded.
+c2d0b3c199d55c1dbd2137829ea2cb0c713427a81dbcd82f703ea7a356610183:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: null
+    bearsOn: null
+    reason: The abstract quote and the p.7 clustering quote jointly support the stated proposition that the ring variance results are inconsistent with CCC and cannot support it, matching the paper's conclusion; both quotes occur at their cited locations and are used in context (not negated or attributed to another party). The proposition bears on the case question about whether CMB ring patterns reflect a prior universe or ordinary anomalous statistics, and it expresses a single coherent claim.
+15747418b5eb36d35fac4d4b2f187fb69d2e0e6252be37611bfcebf566e48db7:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: false
+    atomic: true
+    direction: null
+    bearsOn: null
+    reason: The anchored passage accurately reflects the abstract's claim about residual noise correlations at the same time lag as GW150914, and the locator is correct. However, this paper concerns LIGO gravitational wave detector noise and time-lag correlations, entirely unrelated to the case question about CMB circles, hot spots, and pre-Big Bang signatures; nothing in the passage bears on that question or any account of it.
+c52de3179938533f61904e2d94cac8a17eaf592a6ac5a0984478d4060f50bdcb:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: false
+    atomic: true
+    direction: null
+    bearsOn: null
+    reason: The quotes are accurately drawn from the abstract and Section 2 and the anchored statement fairly reflects the paper's finding about GW150914 residual correlations at the correct locators. However, this source concerns gravitational-wave detector noise correlations in LIGO data, entirely unrelated to the case question about cosmic microwave background circles/hot spots and claims of a pre-Big Bang universe; it does not bear on that question or any account being compared.
+6cd40fe5873f6f6671ea5cf2aaa970243527f43b8e885be6765e746b5f056b34:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: false
+    atomic: true
+    direction: null
+    bearsOn: null
+    reason: The quote and statement accurately reflect the passage on p.4 §2, describing Penrose's proposed test using LIGO noise correlated with a galaxy's direction rather than waiting for a black-hole merger. However, this proposition concerns a gravitational-wave/erebon test unrelated to the case question, which specifically concerns whether CMB circles and hot spots are evidence of a pre-Big-Bang universe or statistical artifacts; the LIGO noise test does not bear on that CMB-specific question.
+f18070fadc829aef9c76371c470939de64d5298f6d22a2b37a32f85b4a4fec1b:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: false
+    atomic: true
+    direction: null
+    bearsOn: null
+    reason: The quoted passage on p.2 accurately describes the impulsive Vaidya metric geometry Penrose attributes to erebon decay signals, and the statement is a fair, correctly located account of it. However, this passage concerns the gravitational-wave signature of dark-matter (erebon) decay proposed to explain LIGO noise correlations, not the CMB concentric-circle claims that bear on the case question of pre-Big Bang signatures in the CMB; it does not bear on that question or its parent claims.
+30890ec48fb1db9364bd0087efd426dc876f3a1140c96b66b9e256471e0dbc5d:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: null
+    bearsOn: null
+    reason: The quoted passage occurs exactly where cited and the numeric result (Ω_GW(25 Hz) < 2×10⁻¹⁰³, ~95 orders below the LIGO limit) matches the paper's stated finding for the Planck-mass erebon direct-graviton channel, with correct conditions (lifetime > Hubble time, decay to two gravitons). As a claim anchor it needs no direction/claimIds, and it bears on the case question because it quantitatively tests Penrose's CCC 'erebon' account of pre-Big-Bang signatures cited in the case. The statement is a single testable proposition (one numeric bound), so it is atomic.
+e47a3bd84d72dee5804d89bfef9f8d7c6e0cb8ca4ecd36755f8841a05919a31b:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: false
+    atomic: true
+    direction: null
+    bearsOn: null
+    reason: The quoted passage and its numerical value are accurately drawn from p.4 §IV.A of Allen (2020), correctly reporting the memory-effect GW spectrum's shortfall from LIGO sensitivity. However, this finding concerns gravitational-wave stochastic background detectability from erebon decay, not the CMB concentric circles or hot spots described in the case question; it bears on a separate observational consequence of Penrose's CCC model rather than on the CMB anomaly evidence at issue, so it does not bear on the case question as stated.
+079c3acb73f80934c12041e580d47838dfe0214d787b01f2af89abcc39cc3a84:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: false
+    atomic: true
+    direction: null
+    bearsOn: null
+    reason: The quote and its context are accurately represented, correctly attributed to Blanchet & Damour via Allen's citation, and the locator matches. However, this technical point about GW strain scaling from an isotropic decay source is part of a rebuttal to Penrose's CCC-based GW spectrum calculation, not a claim about CMB concentric circles or hot spots; it does not bear on whether such CMB features indicate a pre-Big-Bang universe.
+5cdf8d344a326dbcee34b7f2669544fcb73f3f0e0fbb96d077f3a59f4bd1d67f:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: supports
+    bearsOn:
+      - CCC-C523
+    reason: The quoted phrase appears verbatim in the abstract and is reiterated in substance in the conclusions section, both correctly located; it directly states that the ring variance deficit is attributable to the known large-angular-scale multipole anomalies, matching CCC-C523's claim about low-order multipoles up to ℓ=7. This is a single proposition, plainly bears on the case question about mundane explanations for the ring pattern, and no other source's data is being reused here.
+48a48cec6f8f9af70312b20448cb6708bb82e4dacd9437e312e0df8190487bc0:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: false
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: supports
+    bearsOn:
+      - CCC-C524
+    reason: The quoted phrase about the radius deficit being 'yet another manifestation' of known anomalies appears verbatim only in the abstract (p.1); the paragraph cited on p.10 beginning 'A strong dependence' discusses different statistics (χ² maps, p-value maps) and does not contain or paraphrase this exact quoted language, so the second locator is not where the passage is. The statement itself is a fair, in-context reading of the source's claim and does bear on C524's broader point that the anomalies reflect large-angular-scale features rather than random ring generation, but the locator mismatch is a hard failure.
+2b41c2222987de938d8f4b10fa66531aa55ab5c10690588404c67e8b7057da95:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: false
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: supports
+    bearsOn:
+      - CCC-C525
+    reason: The quoted phrase 'yet another manifestation of the well-known anomalous CMB distribution' appears verbatim only in the abstract (p.1); the cited p.10 conclusion paragraph paraphrases the same idea but does not contain this exact quoted text, so the compound locator overstates where the quote is found. The statement itself is accurately reported and is directly relevant to CCC-C525, since showing the ring anomalies are explained by known large-scale multipole anomalies supports the conclusion that the observations are not evidence for conformal cyclic cosmology. The claim is atomic and there is only one source involved so independence is not an issue.
+b9665d82b7909d1ee32e1898c52e5a06d184b64540b27621ab6a98a9baa0e6b7:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: supports
+    bearsOn:
+      - CCC-C523
+    reason: The quoted conclusion ('anomalous variances in rings can be traced to the presence of anomalous low-order multipoles') is verbatim from the paper's conclusion section, correctly located at p.10, and directly matches CCC-C523's claim that the deficit for large-radii rings is caused by anomalous low-ℓ (≤7) multipoles, which the body text (p.5) explicitly establishes. The statement is a single, atomic proposition and bears directly on this specific sub-claim, supporting it without overreach.
+b4ac5341c0bbda5eb8cab118ab8a962d77cfb00c03b8f582711e174c32296498:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: supports
+    bearsOn: null
+    reason: The quoted conclusion ('anomalous variances in rings can be traced to the presence of anomalous low-order multipoles') appears verbatim in the paper's conclusions on p.10 exactly where cited, and it is a fair, non-broadened restatement of the authors' own finding. This general conclusion directly encompasses and supports the more specific claim that clustering of low-variance ring centres reflects large-angular-scale features rather than random distribution, since the paper elsewhere explicitly attributes such clustering to the same low-order multipole anomalies. The statement is a single proposition, and nothing suggests it duplicates another record's source.
+6868fcc457b8c3459106fa44fe04d1bd4d62ae449b90ec39b4e2d83e7e5a6643:
+  model: claude-sonnet-5
+  protocol: verify-v5
+  runId: 2026-09-10-verify-ccc-192550
+  date: 2026-09-10
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: supports
+    bearsOn:
+      - CCC-C525
+    reason: The quoted phrase 'can be traced to the presence of anomalous low-order multipoles' appears verbatim in the paper's conclusions (p.10) and accurately reflects the authors' finding that the ring-variance anomalies are explained by known large-angular-scale multipole anomalies rather than by conformal cyclic cosmology; the abstract locator is supplementary context and does not misstate the source. This mundane explanation is the basis on which the authors state the results 'are not consistent with predictions of the conformal cyclic cosmology scenario and... can not be used to support it,' so the passage does bear on and supports CCC-C525, not merely a tangential topic. The statement is a single, non-compound proposition, and there is no unacknowledged reuse of another source's data.

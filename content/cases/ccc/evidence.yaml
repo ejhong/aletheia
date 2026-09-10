@@ -761,3 +761,589 @@
     extractedBy: "Claude Fable 5 (Cursor cloud agent)"
     runId: "2026-08-26-study-ccc-s001-collect"
     date: "2026-08-26"
+
+- id: CCC-E028
+  title: "Jow & Scott 2020 §2: instrumental noise does not contribute significantly to the Hawking-point signal"
+  claimIds:
+    - CCC-C004
+  sourceId: SRC-JOW-SCOTT-2020
+  direction: context
+  strength: weak
+  sourceStatement: The source states that 'adding the Planck half-difference maps as an estimate of the noise to the simulations did not alter the estimated probability distributions', so the authors 'conclude that instrumental noise does not contribute significantly to the HP signal at the scales we are considering'.
+  editorInference: "Bears on the cross-map (WMAP/Planck) co-location argument that the article leaves standing: if noise is negligible at Hawking-point scales, any strong feature of the CMB signal must appear in both instruments under every hypothesis, ΛCDM included, so co-location establishes the spots are on the sky and nothing further. I rate this weak toward CCC-C004 because it does not touch the significance number itself."
+  exactLocator: "[p. 4], §2, paragraph beginning 'directions on the sky'"
+  limitations:
+    - Jow & Scott do not themselves discuss the WMAP co-location; the inference about it is mine.
+    - "Direction set to \"context\" (from \"qualifies\") by the second reader (claude-sonnet-5, 2026-09-10, run 2026-09-10-verify-ccc-192550, verify-v5) at intake: The quoted passage only rules out instrumental noise as a confound in estimating the probability distribution of gradient values; it does not bear on whether the 99.98% confidence detection of Hawking points holds up, which is what CCC-C004 asserts. It neither supports nor limits the specific confidence-level claim, so it functions as background methodological context rather than a qualification of the claim's content."
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-10-report-ccc-191230
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-draft-ccc-191834
+    date: 2026-09-10
+  readerActs:
+    - field: direction
+      from: qualifies
+      to: context
+      model: claude-sonnet-5
+      promptVersion: verify-v5
+      runId: 2026-09-10-verify-ccc-192550
+      date: 2026-09-10
+      reason: The quoted passage only rules out instrumental noise as a confound in estimating the probability distribution of gradient values; it does not bear on whether the 99.98% confidence detection of Hawking points holds up, which is what CCC-C004 asserts. It neither supports nor limits the specific confidence-level claim, so it functions as background methodological context rather than a qualification of the claim's content.
+- id: CCC-E048
+  title: "Jow & Scott 2020 §3.1: no anomalous clustering of the most significant Hawking points — part 1"
+  claimIds:
+    - CCC-C509
+  sourceId: SRC-JOW-SCOTT-2020
+  direction: context
+  strength: moderate
+  sourceStatement: 'An et al. claim that clustering of Hawking points on the sky could be further evidence for CCC, since one might expect the distribution of supermassive black holes in the previous aeon to be highly clustered: "clustering of these features could be further evidence of CCC".'
+  editorInference: This is the Hawking-point analogue of the ring-centre anisotropy argument (CCC-C504) and is the only independent test of a proponent clustering claim on the record; I keep it on its own claim rather than folding it into CCC-C504, which concerns a different feature population.
+  exactLocator: "[p. 7]–[p. 8], §3.1"
+  limitations:
+    - Only 100 simulations for the clustering statistic; only the top 30 points at two scales.
+    - "Direction set to \"context\" (from \"supports\") by the second reader (claude-sonnet-5, 2026-09-10, run 2026-09-10-verify-ccc-192550, verify-v5) at intake: The quoted passage merely restates An et al.'s motivating claim that clustering would support CCC; it is background framing for the section, not Jow & Scott's actual clustering finding (no anomalous clustering) that CCC-C509 asserts. As such it does not itself support or undermine CCC-C509's specific quantitative finding, but simply provides context for why the analysis was performed."
+  reviewState: ai_extracted
+  origin:
+    ref: split of CCC-E029 (report 2026-09-10-report-ccc-191230)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-ccc-192550
+    date: 2026-09-10
+  readerActs:
+    - field: direction
+      from: supports
+      to: context
+      model: claude-sonnet-5
+      promptVersion: verify-v5
+      runId: 2026-09-10-verify-ccc-192550
+      date: 2026-09-10
+      reason: The quoted passage merely restates An et al.'s motivating claim that clustering would support CCC; it is background framing for the section, not Jow & Scott's actual clustering finding (no anomalous clustering) that CCC-C509 asserts. As such it does not itself support or undermine CCC-C509's specific quantitative finding, but simply provides context for why the analysis was performed.
+- id: CCC-E049
+  title: "Jow & Scott 2020 §3.1: no anomalous clustering of the most significant Hawking points — part 4"
+  claimIds:
+    - CCC-C509
+  sourceId: SRC-JOW-SCOTT-2020
+  direction: supports
+  strength: moderate
+  sourceStatement: From 100 Gaussian simulations drawn from the Planck best-fit power spectrum, the distribution of the mean nearest-neighbour distance at both scales is roughly Gaussian "with mean 0 . 20 and σ = 0 . 03".
+  editorInference: This is the Hawking-point analogue of the ring-centre anisotropy argument (CCC-C504) and is the only independent test of a proponent clustering claim on the record; I keep it on its own claim rather than folding it into CCC-C504, which concerns a different feature population.
+  exactLocator: "[p. 7]–[p. 8], §3.1"
+  limitations: &a1
+    - Only 100 simulations for the clustering statistic; only the top 30 points at two scales.
+  reviewState: ai_extracted
+  origin:
+    ref: split of CCC-E029 (report 2026-09-10-report-ccc-191230)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-ccc-192550
+    date: 2026-09-10
+- id: CCC-E050
+  title: "Jow & Scott 2020 §3.1: no anomalous clustering of the most significant Hawking points — part 5"
+  claimIds:
+    - CCC-C509
+  sourceId: SRC-JOW-SCOTT-2020
+  direction: supports
+  strength: moderate
+  sourceStatement: 'For both scales the data value lies within 1σ of the Gaussian expectation, so there is no evidence that HPs exhibit anomalous clustering: "we do not find any evidence that HPs exhibit" clustering beyond that of a Gaussian sky.'
+  editorInference: This is the Hawking-point analogue of the ring-centre anisotropy argument (CCC-C504) and is the only independent test of a proponent clustering claim on the record; I keep it on its own claim rather than folding it into CCC-C504, which concerns a different feature population.
+  exactLocator: "[p. 7]–[p. 8], §3.1"
+  limitations: *a1
+  reviewState: ai_extracted
+  origin:
+    ref: split of CCC-E029 (report 2026-09-10-report-ccc-191230)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-ccc-192550
+    date: 2026-09-10
+- id: CCC-E051
+  title: "Jow & Scott 2020 §3.2: no persistent E-mode polarization structure at Hawking-point locations — part 1"
+  claimIds:
+    - CCC-C510
+  sourceId: SRC-JOW-SCOTT-2020
+  direction: context
+  strength: weak
+  sourceStatement: Stacking the Planck 2018 SMICA temperature and E-mode maps was performed around all HPs in the temperature map with |â| > 2, i.e., "a 2 σ significance threshold, for the scales" (r1, Δ) = (0.01, 0.02) and (0.01, 0.03).
+  editorInference: "Negative evidence of low diagnosticity, recorded under the negative-evidence policy: the source itself notes that 'Without a precise prediction for the polarization profiles of HPs, it is not possible to search for specific features', so CCC is not tested by this null. Its value is that any future CCC polarization prediction now has a stated null to meet."
+  exactLocator: "[p. 8], §3.2, and Fig. 4 on [p. 9]"
+  limitations:
+    - CCC makes no polarization prediction; the null constrains nothing in the theory as currently stated.
+    - Visual assessment of stacks; no quantitative limit given.
+    - "Direction set to \"context\" (from \"supports\") by the second reader (claude-sonnet-5, 2026-09-10, run 2026-09-10-verify-ccc-192550, verify-v5) at intake: The quoted passage only describes the stacking methodology (selection threshold, scales, procedure) and does not itself state the outcome that no persistent polarization structure was found; that finding appears elsewhere in the text (the following sentences about Figure 4). As written, this record's statement is procedural background rather than evidence supporting the no-signal claim, so it should be marked as context rather than supports."
+  reviewState: ai_extracted
+  origin:
+    ref: split of CCC-E030 (report 2026-09-10-report-ccc-191230)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-ccc-192550
+    date: 2026-09-10
+  readerActs:
+    - field: direction
+      from: supports
+      to: context
+      model: claude-sonnet-5
+      promptVersion: verify-v5
+      runId: 2026-09-10-verify-ccc-192550
+      date: 2026-09-10
+      reason: The quoted passage only describes the stacking methodology (selection threshold, scales, procedure) and does not itself state the outcome that no persistent polarization structure was found; that finding appears elsewhere in the text (the following sentences about Figure 4). As written, this record's statement is procedural background rather than evidence supporting the no-signal claim, so it should be marked as context rather than supports.
+- id: CCC-E052
+  title: "Jow & Scott 2020 §3.2: no persistent E-mode polarization structure at Hawking-point locations — part 4"
+  claimIds:
+    - CCC-C510
+  sourceId: SRC-JOW-SCOTT-2020
+  direction: supports
+  strength: weak
+  sourceStatement: In the E-mode stacks, "there does not appear to be any corresponding structure" at the HP locations.
+  editorInference: "Negative evidence of low diagnosticity, recorded under the negative-evidence policy: the source itself notes that 'Without a precise prediction for the polarization profiles of HPs, it is not possible to search for specific features', so CCC is not tested by this null. Its value is that any future CCC polarization prediction now has a stated null to meet."
+  exactLocator: "[p. 8], §3.2, and Fig. 4 on [p. 9]"
+  limitations: &a2
+    - CCC makes no polarization prediction; the null constrains nothing in the theory as currently stated.
+    - Visual assessment of stacks; no quantitative limit given.
+  reviewState: ai_extracted
+  origin:
+    ref: split of CCC-E030 (report 2026-09-10-report-ccc-191230)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-ccc-192550
+    date: 2026-09-10
+- id: CCC-E053
+  title: "Jow & Scott 2020 §3.2: no persistent E-mode polarization structure at Hawking-point locations — part 5"
+  claimIds:
+    - CCC-C510
+  sourceId: SRC-JOW-SCOTT-2020
+  direction: supports
+  strength: weak
+  sourceStatement: In addition to no statistically significant HP signal in the CMB temperature, there is "no evidence for a corresponding signal in polarization".
+  editorInference: "Negative evidence of low diagnosticity, recorded under the negative-evidence policy: the source itself notes that 'Without a precise prediction for the polarization profiles of HPs, it is not possible to search for specific features', so CCC is not tested by this null. Its value is that any future CCC polarization prediction now has a stated null to meet."
+  exactLocator: "[p. 8], §3.2, and Fig. 4 on [p. 9]"
+  limitations: *a2
+  reviewState: ai_extracted
+  origin:
+    ref: split of CCC-E030 (report 2026-09-10-report-ccc-191230)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-ccc-192550
+    date: 2026-09-10
+- id: CCC-E054
+  title: "Jow & Scott 2020 §3: a third of the Hawking-point excess at the claimed scales comes from the single most significant point — part 1"
+  claimIds:
+    - CCC-C004
+  sourceId: SRC-JOW-SCOTT-2020
+  direction: qualifies
+  strength: moderate
+  sourceStatement: Recomputing A⁻ at the scales (0.01, 0.02) and (0.01, 0.03) while omitting the single point with the highest |â| gives A⁻(0.01,0.02) = 5.50 and A⁻(0.01,0.03) = 4.13, so "about a third of the signal at these scales comes from the single most significant points".
+  editorInference: Independently of the look-elsewhere correction, the reported excess is dominated by two individual features; this is a distinct fragility from the 99.98%→87% marginalization already recorded in CCC-E010 and is consistent with the few-feature dependence Bodnia et al. later diagnosed (CCC-E012).
+  exactLocator: "[p. 6], §3, paragraph beginning 'We note that if we recompute'"
+  limitations:
+    - Computed on Planck 2018 SMICA, whereas An et al. used 2015 data; Jow & Scott note minor location/rank differences between the analyses.
+  reviewState: ai_extracted
+  origin:
+    ref: split of CCC-E031 (report 2026-09-10-report-ccc-191230)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-ccc-192550
+    date: 2026-09-10
+- id: CCC-E055
+  title: "Jow & Scott 2020 §4: the CCC prediction has been revised three times; only an a-priori precise prediction could have escaped the marginalization — part 5"
+  claimIds:
+    - CCC-C011
+  sourceId: SRC-JOW-SCOTT-2020
+  direction: supports
+  strength: moderate
+  sourceStatement: Alternatively, the conclusion could only have been avoided if "the predictions of CCC could have been made much more precise" before looking at the data.
+  editorInference: A critic's account of the shifting signal model, consistent with the study table (CCC-E023); it is the proponents' opponents describing them, so it is credible on the sequence of published claims and not independent on the moral.
+  exactLocator: "[p. 8]–[p. 9], §4 Discussion and conclusions"
+  limitations:
+    - Adversarial source on the interpretive point.
+  reviewState: ai_extracted
+  origin:
+    ref: split of CCC-E032 (report 2026-09-10-report-ccc-191230)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-ccc-192550
+    date: 2026-09-10
+- id: CCC-E056
+  title: "Bielewicz et al. 2013: anomalous ring variances trace to the known low-order-multipole anomalies — part 1"
+  claimIds:
+    - CCC-C010
+    - CCC-C523
+    - CCC-C524
+    - CCC-C525
+  sourceId: SRC-BIELEWICZ-2013
+  direction: supports
+  strength: moderate
+  sourceStatement: The deficit of power for concentric rings with larger radii "is yet another manifestation of the well-known anomalous CMB distribution" on large angular scales.
+  editorInference: "Supports the conventional attribution (CCC-C010) with a positive mechanism for the large-radius and clustering features rather than a bare null. It is a mixed support: it accepts a ~95%-level large-scale oddity and attributes it to anomalies that predate and do not require CCC."
+  exactLocator: "[p. 1] Abstract; [p. 10] §6 Conclusions, paragraph beginning 'A strong dependence'"
+  limitations:
+    - The low-ℓ anomalies are themselves unexplained; this relocates rather than resolves the oddity.
+  reviewState: ai_extracted
+  origin:
+    ref: split of CCC-E034 (report 2026-09-10-report-ccc-191230)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-ccc-192550
+    date: 2026-09-10
+- id: CCC-E057
+  title: "Bielewicz et al. 2013: anomalous ring variances trace to the known low-order-multipole anomalies — part 4"
+  claimIds:
+    - CCC-C523
+    - CCC-C524
+    - CCC-C525
+  sourceId: SRC-BIELEWICZ-2013
+  direction: supports
+  strength: moderate
+  sourceStatement: The anomalous variances in rings "can be traced to the presence of anomalous low-order multipoles" of the WMAP maps.
+  editorInference: "Supports the conventional attribution (CCC-C010) with a positive mechanism for the large-radius and clustering features rather than a bare null. It is a mixed support: it accepts a ~95%-level large-scale oddity and attributes it to anomalies that predate and do not require CCC."
+  exactLocator: "[p. 1] Abstract; [p. 10] §6 Conclusions, paragraph beginning 'A strong dependence'"
+  limitations:
+    - The low-ℓ anomalies are themselves unexplained; this relocates rather than resolves the oddity.
+    - "Second reader (claude-sonnet-5, 2026-09-10, run 2026-09-10-verify-ccc-192550, verify-v5) found the passage bears on CCC-C514 and not on CCC-C010; the link dropped at intake: The quoted conclusion matches the paper's own conclusion section verbatim in substance and is correctly located; it directly supports CCC-C514's claim that the ring-variance anomalies trace to known low-ℓ multipole anomalies rather than pre-Big-Bang structure. However, the paper's finding concerns anomalous low-order multipoles as a physical/statistical feature of the sky, not the broader 'a-posteriori statistics/look-elsewhere effects' mechanism named in CCC-C010, so it does not bear on that claim and is dropped from the link list."
+  reviewState: ai_extracted
+  origin:
+    ref: split of CCC-E034 (report 2026-09-10-report-ccc-191230)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-ccc-192550
+    date: 2026-09-10
+  readerActs:
+    - field: claimIds
+      from:
+        - CCC-C010
+        - CCC-C514
+      to:
+        - CCC-C514
+      model: claude-sonnet-5
+      promptVersion: verify-v5
+      runId: 2026-09-10-verify-ccc-192550
+      date: 2026-09-10
+      reason: The quoted conclusion matches the paper's own conclusion section verbatim in substance and is correctly located; it directly supports CCC-C514's claim that the ring-variance anomalies trace to known low-ℓ multipole anomalies rather than pre-Big-Bang structure. However, the paper's finding concerns anomalous low-order multipoles as a physical/statistical feature of the sky, not the broader 'a-posteriori statistics/look-elsewhere effects' mechanism named in CCC-C010, so it does not bear on that claim and is dropped from the link list.
+- id: CCC-E058
+  title: "Bielewicz et al. 2013: rings with low variance cluster in a few large regions, which the authors judge inconsistent with CCC — part 1"
+  claimIds:
+    - CCC-C009
+  sourceId: SRC-BIELEWICZ-2013
+  direction: undermines
+  strength: moderate
+  sourceStatement: Any other point in the region near the north Ecliptic pole containing (l, b) = (105°, 37°) "shows a similar number of unusually low variance rings".
+  editorInference: The argument depends on the authors' reading that CCC predicts randomly distributed ring centres; proponents later read the clustering as previous-aeon superclusters (CCC-C504). The two readings are incompatible predictions from the same theory, which is itself evidence for CCC-C011's point that the signal model is under-specified.
+  exactLocator: "[p. 7], §5.2, paragraph beginning 'One should notice that the point'; [p. 1] Abstract; [p. 10] §6"
+  limitations: &a3
+    - Relies on an interpretation of CCC's prediction (random centres) that proponents dispute.
+    - Also states that the observed 'few rings with variance bigger than the mean for radii larger than 10°' is inconsistent with a collision series producing only some low rings ([p. 5]).
+  reviewState: ai_extracted
+  origin:
+    ref: split of CCC-E035 (report 2026-09-10-report-ccc-191230)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-ccc-192550
+    date: 2026-09-10
+- id: CCC-E059
+  title: "Bielewicz et al. 2013: rings with low variance cluster in a few large regions, which the authors judge inconsistent with CCC — part 2"
+  claimIds:
+    - CCC-C009
+  sourceId: SRC-BIELEWICZ-2013
+  direction: undermines
+  strength: moderate
+  sourceStatement: Such a clustering of rings with low variance "is not consistent with the conformal cyclic cosmology scenario".
+  editorInference: The argument depends on the authors' reading that CCC predicts randomly distributed ring centres; proponents later read the clustering as previous-aeon superclusters (CCC-C504). The two readings are incompatible predictions from the same theory, which is itself evidence for CCC-C011's point that the signal model is under-specified.
+  exactLocator: "[p. 7], §5.2, paragraph beginning 'One should notice that the point'; [p. 1] Abstract; [p. 10] §6"
+  limitations: *a3
+  reviewState: ai_extracted
+  origin:
+    ref: split of CCC-E035 (report 2026-09-10-report-ccc-191230)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-ccc-192550
+    date: 2026-09-10
+- id: CCC-E060
+  title: "Bielewicz et al. 2013: rings with low variance cluster in a few large regions, which the authors judge inconsistent with CCC — part 4"
+  claimIds:
+    - CCC-C009
+  sourceId: SRC-BIELEWICZ-2013
+  direction: undermines
+  strength: moderate
+  sourceStatement: Taken together, "our results are not consistent with the conformal cyclic cosmology scenario".
+  editorInference: The argument depends on the authors' reading that CCC predicts randomly distributed ring centres; proponents later read the clustering as previous-aeon superclusters (CCC-C504). The two readings are incompatible predictions from the same theory, which is itself evidence for CCC-C011's point that the signal model is under-specified.
+  exactLocator: "[p. 7], §5.2, paragraph beginning 'One should notice that the point'; [p. 1] Abstract; [p. 10] §6"
+  limitations: *a3
+  reviewState: ai_extracted
+  origin:
+    ref: split of CCC-E035 (report 2026-09-10-report-ccc-191230)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-ccc-192550
+    date: 2026-09-10
+- id: CCC-E061
+  title: "Bielewicz et al. 2013: regional clustering of low-variance rings is attributable to large-angular-scale features — part 1"
+  claimIds:
+    - CCC-C504
+  sourceId: SRC-BIELEWICZ-2013
+  direction: context
+  strength: moderate
+  sourceStatement: 'Clustering of low variance rings in relatively large regions of the sky points to large-scale features rather than randomly placed ring centres: "Clustering of the rings in relatively large regions rather indicates effects related to large angular scale features in the CMB maps".'
+  editorInference: Offers a conventional mechanism for exactly the kind of centre concentration An et al. 2020 later quantified as 83% in 3% of sky; it does not test that figure (predates it and uses a different statistic), so it qualifies rather than undermines CCC-C504. A direct test is proposed in research CCC-R007.
+  exactLocator: "[p. 7] §5.2; [p. 8] final paragraph of §5.2 (rotation test); Figs. 8, 10, 11 on [p. 9]–[p. 10]"
+  limitations:
+    - Predates An et al. 2020; different statistic (number of extreme-variance rings per centre, not concentric-triple centres).
+    - "Direction set to \"context\" (from \"qualifies\") by the second reader (claude-sonnet-5, 2026-09-10, run 2026-09-10-verify-ccc-192550, verify-v5) at intake: The quote is accurate and matches its context on p.7, and the locator range spanning the rotation test and later figures is reasonable given the extended discussion. However, CCC-C504 is a narrow factual claim about An et al. (2020)'s specific 1134-center, 83%-in-3%-of-sky finding, an entirely different dataset and statistic (concentric-triple centers) from Bielewicz et al.'s own two-point clustering discussion; the record's own limitations note this difference. Because Bielewicz et al. cannot condition or qualify the accuracy of a later, methodologically distinct study's reported numbers, the passage is better read as background context on how ring clustering can arise from large-scale CMB features rather than a direct qualification of An et al.'s finding."
+  reviewState: ai_extracted
+  origin:
+    ref: split of CCC-E036 (report 2026-09-10-report-ccc-191230)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-ccc-192550
+    date: 2026-09-10
+  readerActs:
+    - field: direction
+      from: qualifies
+      to: context
+      model: claude-sonnet-5
+      promptVersion: verify-v5
+      runId: 2026-09-10-verify-ccc-192550
+      date: 2026-09-10
+      reason: The quote is accurate and matches its context on p.7, and the locator range spanning the rotation test and later figures is reasonable given the extended discussion. However, CCC-C504 is a narrow factual claim about An et al. (2020)'s specific 1134-center, 83%-in-3%-of-sky finding, an entirely different dataset and statistic (concentric-triple centers) from Bielewicz et al.'s own two-point clustering discussion; the record's own limitations note this difference. Because Bielewicz et al. cannot condition or qualify the accuracy of a later, methodologically distinct study's reported numbers, the passage is better read as background context on how ring clustering can arise from large-scale CMB features rather than a direct qualification of An et al.'s finding.
+- id: CCC-E037
+  title: "Bielewicz et al. 2013: no significant number of unusually extreme variances at the two special points over 0–90°"
+  claimIds:
+    - CCC-C002
+  sourceId: SRC-BIELEWICZ-2013
+  direction: undermines
+  strength: moderate
+  sourceStatement: The source states that for the rings centred at (l,b) = (105°,37°) and (252°,−31°) over radii 0–90°, 'Comparing the observed profiles with simulations based on the standard ΛCDM model we do not identify any significant number of unusually extreme values of the variance in good agreement with the conclusions in Hajian (2011); Moss, Scott, & Zibin (2011); Wehus & Eriksen (2011)', extending that conclusion 'to the full range of ring radii from 0 to 90 degrees'.
+  editorInference: A fifth independent reanalysis placing the two Gurzadyan–Penrose exemplar directions within the ΛCDM range; the assessment's count of 'four independent reanalyses' should be raised accordingly when the record is next assessed.
+  exactLocator: "[p. 5], §5, first paragraph; Fig. 2 on [p. 6]"
+  limitations:
+    - Ring width fixed at 0.5°; the source notes CCC gives no established prediction for ring width.
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-10-report-ccc-191230
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-draft-ccc-191834
+    date: 2026-09-10
+- id: CCC-E062
+  title: "Creswell et al. 2017: the premise Penrose adopted — LIGO noise correlations maximized at the event's own time lag — part 1"
+  claimIds:
+    - CCC-C505
+  sourceId: SRC-CRESWELL-2017
+  direction: context
+  strength: weak
+  sourceStatement: For GW150914, correlations in the detector noise at the time of the event "happen to be maximized for the same time lag" as that found for the event itself.
+  editorInference: This is the empirical premise of CCC-C505, recorded so the chain is on the ledger; it says nothing about CCC or erebons, and its residual-correlation result was not reproduced by Nielsen et al. 2019 (CCC-E041). Zero diagnosticity for CCC on its own.
+  exactLocator: "[p. 1] Abstract; [p. 9]–[p. 10] §3.2 Residual noise and Fig. 7 caption on [p. 12]"
+  limitations:
+    - Uses the illustrative numerical-relativity template from the LIGO discovery paper rather than a maximum-likelihood waveform (per Nielsen et al.).
+    - "Direction set to \"supports\" (from \"context\") by the second reader (claude-sonnet-5, 2026-09-10, run 2026-09-10-verify-ccc-192550, verify-v5) at intake: The quoted phrase and cited locators (abstract, §3.2, Fig. 7) accurately reflect Creswell et al.'s own finding that noise correlations peak at the same time lag as the GW150914 event, and this is a fair, non-inflated summary. However, for CCC-C515 the passage is not merely 'context': it is the primary source directly asserting the very finding the claim describes, so the correct direction toward C515 is 'supports.' Toward CCC-C505 (Penrose's proposal), 'context' is reasonable since this paper does not discuss Penrose or erebons but merely supplies the empirical premise he later used. Both claims are still borne on by the passage, and the statement is a single, atomic proposition with no independence concerns since this is the original data-analysis paper, not a derivative report."
+  reviewState: ai_extracted
+  origin:
+    ref: split of CCC-E038 (report 2026-09-10-report-ccc-191230)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-ccc-192550
+    date: 2026-09-10
+  readerActs:
+    - field: direction
+      from: context
+      to: supports
+      model: claude-sonnet-5
+      promptVersion: verify-v5
+      runId: 2026-09-10-verify-ccc-192550
+      date: 2026-09-10
+      reason: "The quoted phrase and cited locators (abstract, §3.2, Fig. 7) accurately reflect Creswell et al.'s own finding that noise correlations peak at the same time lag as the GW150914 event, and this is a fair, non-inflated summary. However, for CCC-C515 the passage is not merely 'context': it is the primary source directly asserting the very finding the claim describes, so the correct direction toward C515 is 'supports.' Toward CCC-C505 (Penrose's proposal), 'context' is reasonable since this paper does not discuss Penrose or erebons but merely supplies the empirical premise he later used. Both claims are still borne on by the passage, and the statement is a single, atomic proposition with no independence concerns since this is the original data-analysis paper, not a derivative report."
+- id: CCC-E064
+  title: "Penrose 2017: a specified, never-executed test — correlated noise at the Andromeda time delay — part 1"
+  claimIds:
+    - CCC-C505
+  sourceId: SRC-PENROSE-2017-ARXIV
+  direction: supports
+  strength: moderate
+  sourceStatement: In this description the black-hole encounter is almost irrelevant, "serving merely to locate an individual galaxy in the sky".
+  editorInference: CCC-C505 currently records a conjecture; the source also specifies a concrete search protocol. That protocol is the item CCC-R002 could freeze — though Allen 2020 (CCC-E042–E045) now argues its expected yield is negligible under the emission mechanism Penrose describes.
+  exactLocator: "[p. 4], §2, second paragraph"
+  limitations:
+    - No amplitude, rate, or statistic is specified; the source calls the erebon lifetime 'The main uncertainty in the scheme'.
+    - "Second reader (claude-sonnet-5, 2026-09-10, run 2026-09-10-verify-ccc-192550, verify-v5) found the passage bears on CCC-C505 and not on CCC-C517; the link dropped at intake: The quote is accurately reproduced and used in context to show that the black-hole merger event is incidental to the erebon-decay noise hypothesis, supporting CCC-C505's account of the conjecture. However, it does not itself specify the Andromeda-galaxy test described in CCC-C517—the sentence merely sets up that specification, which appears afterward—so the record's link to CCC-C517 is dropped and it is admitted as bearing only on CCC-C505. The locator is close enough (same paragraph spanning p.3–4) to be acceptable."
+  reviewState: ai_extracted
+  origin:
+    ref: split of CCC-E039 (report 2026-09-10-report-ccc-191230)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-ccc-192550
+    date: 2026-09-10
+  readerActs:
+    - field: claimIds
+      from:
+        - CCC-C505
+        - CCC-C517
+      to:
+        - CCC-C505
+      model: claude-sonnet-5
+      promptVersion: verify-v5
+      runId: 2026-09-10-verify-ccc-192550
+      date: 2026-09-10
+      reason: The quote is accurately reproduced and used in context to show that the black-hole merger event is incidental to the erebon-decay noise hypothesis, supporting CCC-C505's account of the conjecture. However, it does not itself specify the Andromeda-galaxy test described in CCC-C517—the sentence merely sets up that specification, which appears afterward—so the record's link to CCC-C517 is dropped and it is admitted as bearing only on CCC-C505. The locator is close enough (same paragraph spanning p.3–4) to be acceptable.
+- id: CCC-E067
+  title: "Nielsen et al. 2019: after subtracting the maximum-likelihood waveform, no significant Hanford–Livingston residual correlation at GW150914 — part 1"
+  claimIds:
+    - CCC-C505
+  sourceId: SRC-NIELSEN-2019
+  direction: undermines
+  strength: moderate
+  sourceStatement: Using the Pearson cross-correlation statistic of Liu and Jackson and Creswell et al., after subtracting the maximum likelihood waveform "there are no statistically significant correlations between the residuals" of the Hanford and Livingston detectors at the time of GW150914.
+  editorInference: "Removes the empirical premise of CCC-C505 on this analysis: the correlation Penrose sought to explain is attributed to an imperfect template, not to the noise. It says nothing about erebons directly; diagnosticity toward CCC runs only through the premise."
+  exactLocator: "[p. 1] Abstract; [p. 6] §2, paragraphs on the ML residual and p-values; Fig. 3 on [p. 7]"
+  limitations:
+    - Authors are LIGO-affiliated; the test relies on a GR waveform to construct residuals, which Ulhoa et al. 2026 (CCC-E046) argue is circular for this purpose.
+    - Single event (GW150914) and 512 s of data.
+  reviewState: ai_extracted
+  origin:
+    ref: split of CCC-E041 (report 2026-09-10-report-ccc-191230)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-ccc-192550
+    date: 2026-09-10
+- id: CCC-E042
+  title: "Allen 2020 §III: the direct graviton background from Planck-mass erebon decay is ~95 orders of magnitude below LIGO's limit"
+  claimIds:
+    - CCC-C519
+  sourceId: SRC-ALLEN-2020
+  direction: supports
+  strength: moderate
+  sourceStatement: The source states that, for erebons decaying to two gravitons, 'since the lifetime τ must be greater than the Hubble time, we find Ω_GW(25 Hz) < 2 × 10⁻¹⁰³. Comparing with the current observational limit in Sec. II shows that this is below detectability in LIGO by about 95 orders of magnitude', the limit being the O1+O2 bound Ω₀ < 4 × 10⁻⁸.
+  editorInference: Directly addresses the mechanism Penrose invoked (decay into gravitational radiation) under a homogeneous cosmological population; the result concerns a stochastic background, not the impulsive individual events Penrose describes, so it is undermining rather than decisive.
+  exactLocator: "[p. 2], §III, Eq. (5) and following paragraph"
+  limitations:
+    - Stochastic-background calculation; does not model an individual nearby impulsive event.
+    - Assumes homogeneous cosmological dark matter; Penrose stresses galactic concentrations ~100× denser.
+    - "Second reader (claude-sonnet-5, 2026-09-10, run 2026-09-10-verify-ccc-192550, verify-v5) found the passage bears on CCC-C519 and not on CCC-C505; the link dropped at intake: The quoted passage matches the source exactly and is correctly located in §III on p.2, and it fairly restates the direct-spectrum result of Eq.(5) without overreach. However, this passage concerns only the 'direct' graviton spectrum, a distinct and much smaller contribution than the 'memory effect' (indirect) mechanism discussed in §IV that actually bears on Penrose's claim about correlated impulsive LIGO noise (CCC-C505); the record's link to C505 is unsupported by this locator, so only C519 is retained. For C519 the passage does not 'undermine' anything—it is the direct source of the very figures the claim states—so the correct direction is 'supports' rather than 'undermines'."
+    - "Direction set to \"supports\" (from \"undermines\") by the second reader (claude-sonnet-5, 2026-09-10, run 2026-09-10-verify-ccc-192550, verify-v5) at intake: The quoted passage matches the source exactly and is correctly located in §III on p.2, and it fairly restates the direct-spectrum result of Eq.(5) without overreach. However, this passage concerns only the 'direct' graviton spectrum, a distinct and much smaller contribution than the 'memory effect' (indirect) mechanism discussed in §IV that actually bears on Penrose's claim about correlated impulsive LIGO noise (CCC-C505); the record's link to C505 is unsupported by this locator, so only C519 is retained. For C519 the passage does not 'undermine' anything—it is the direct source of the very figures the claim states—so the correct direction is 'supports' rather than 'undermines'."
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-10-report-ccc-191230
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-draft-ccc-191834
+    date: 2026-09-10
+  readerActs:
+    - field: claimIds
+      from:
+        - CCC-C505
+        - CCC-C519
+      to:
+        - CCC-C519
+      model: claude-sonnet-5
+      promptVersion: verify-v5
+      runId: 2026-09-10-verify-ccc-192550
+      date: 2026-09-10
+      reason: The quoted passage matches the source exactly and is correctly located in §III on p.2, and it fairly restates the direct-spectrum result of Eq.(5) without overreach. However, this passage concerns only the 'direct' graviton spectrum, a distinct and much smaller contribution than the 'memory effect' (indirect) mechanism discussed in §IV that actually bears on Penrose's claim about correlated impulsive LIGO noise (CCC-C505); the record's link to C505 is unsupported by this locator, so only C519 is retained. For C519 the passage does not 'undermine' anything—it is the direct source of the very figures the claim states—so the correct direction is 'supports' rather than 'undermines'.
+    - field: direction
+      from: undermines
+      to: supports
+      model: claude-sonnet-5
+      promptVersion: verify-v5
+      runId: 2026-09-10-verify-ccc-192550
+      date: 2026-09-10
+      reason: The quoted passage matches the source exactly and is correctly located in §III on p.2, and it fairly restates the direct-spectrum result of Eq.(5) without overreach. However, this passage concerns only the 'direct' graviton spectrum, a distinct and much smaller contribution than the 'memory effect' (indirect) mechanism discussed in §IV that actually bears on Penrose's claim about correlated impulsive LIGO noise (CCC-C505); the record's link to C505 is unsupported by this locator, so only C519 is retained. For C519 the passage does not 'undermine' anything—it is the direct source of the very figures the claim states—so the correct direction is 'supports' rather than 'undermines'.
+- id: CCC-E069
+  title: "Allen 2020 §IV: even the larger 'memory-effect' background misses LIGO detectability by 35 orders of magnitude — part 2"
+  claimIds:
+    - CCC-C505
+  sourceId: SRC-ALLEN-2020
+  direction: undermines
+  strength: moderate
+  sourceStatement: 'Despite dominating the direct part, the indirect contribution is still very small: in comparison with current LIGO limits, Ω_GW(25 Hz) < 6.7 × 10⁻⁴³ "misses detectability by 35 orders of magnitude".'
+  editorInference: Together with CCC-E042 this converts CCC-R002 from 'nobody has looked' to 'the one quantitative calculation says a search would find nothing unless a different emission mechanism is specified'.
+  exactLocator: "[p. 4], §IV.A, paragraph beginning 'For a Planck-mass erebon'; [p. 4] §V"
+  limitations:
+    - Same model limitations as CCC-E042.
+    - "Direction set to \"supports\" (from \"undermines\") by the second reader (claude-sonnet-5, 2026-09-10, run 2026-09-10-verify-ccc-192550, verify-v5) at intake: The quoted figure and phrase appear exactly at p.4 in the paragraph on the Planck-mass erebon memory-effect spectrum, and the statement is a faithful, non-exaggerated restatement of Allen's result. However, labeling this 'undermines' is only correct for CCC-C505 (it shows Penrose's erebon-decay GW conjecture is far below detectability); for CCC-C520, which simply asserts this same Ω_GW value and 35-orders-of-magnitude gap, the source directly supports rather than undermines the claim, since it is the origin of that exact number."
+  reviewState: ai_extracted
+  origin:
+    ref: split of CCC-E043 (report 2026-09-10-report-ccc-191230)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-ccc-192550
+    date: 2026-09-10
+  readerActs:
+    - field: direction
+      from: undermines
+      to: supports
+      model: claude-sonnet-5
+      promptVersion: verify-v5
+      runId: 2026-09-10-verify-ccc-192550
+      date: 2026-09-10
+      reason: The quoted figure and phrase appear exactly at p.4 in the paragraph on the Planck-mass erebon memory-effect spectrum, and the statement is a faithful, non-exaggerated restatement of Allen's result. However, labeling this 'undermines' is only correct for CCC-C505 (it shows Penrose's erebon-decay GW conjecture is far below detectability); for CCC-C520, which simply asserts this same Ω_GW value and 35-orders-of-magnitude gap, the source directly supports rather than undermines the claim, since it is the origin of that exact number.
+- id: CCC-E070
+  title: "Allen 2020: the calculation constrains erebon GW detectability, not erebons as dark matter — part 1"
+  claimIds:
+    - CCC-C007
+  sourceId: SRC-ALLEN-2020
+  direction: context
+  strength: weak
+  sourceStatement: The results apply to "any neutral scalar dark matter particle which decays into two massless particles".
+  editorInference: CCC-C007 bundles the dark-matter identification with the detector-signal prediction; Allen's result bears only on the latter and leaves the former untouched. Recorded as qualifying so the negative result is not silently read as a verdict on the whole erebon hypothesis.
+  exactLocator: "[p. 1], §I Introduction"
+  limitations:
+    - Narrow-model result by construction.
+    - "Direction set to \"context\" (from \"qualifies\") by the second reader (claude-sonnet-5, 2026-09-10, run 2026-09-10-verify-ccc-192550, verify-v5) at intake: The quote is accurately drawn from the introduction and reports Allen's generalization that his memory-effect calculation applies to any neutral scalar dark matter particle, not just erebons. This does not qualify or condition the truth of CCC-C007 (which asserts erebons decay and could register as GW signals); it merely notes that the physical mechanism is not unique to erebons, bearing on the topic without confirming, limiting, or denying the erebon-specific prediction. That makes it context rather than a qualifier."
+  reviewState: ai_extracted
+  origin:
+    ref: split of CCC-E044 (report 2026-09-10-report-ccc-191230)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-ccc-192550
+    date: 2026-09-10
+  readerActs:
+    - field: direction
+      from: qualifies
+      to: context
+      model: claude-sonnet-5
+      promptVersion: verify-v5
+      runId: 2026-09-10-verify-ccc-192550
+      date: 2026-09-10
+      reason: The quote is accurately drawn from the introduction and reports Allen's generalization that his memory-effect calculation applies to any neutral scalar dark matter particle, not just erebons. This does not qualify or condition the truth of CCC-C007 (which asserts erebons decay and could register as GW signals); it merely notes that the physical mechanism is not unique to erebons, bearing on the topic without confirming, limiting, or denying the erebon-specific prediction. That makes it context rather than a qualifier.
+- id: CCC-E071
+  title: "Allen 2020: the calculation constrains erebon GW detectability, not erebons as dark matter — part 3"
+  claimIds:
+    - CCC-C007
+  sourceId: SRC-ALLEN-2020
+  direction: context
+  strength: weak
+  sourceStatement: Erebons "are not stable, but have a lifetime" τ which is longer than the Hubble time.
+  editorInference: CCC-C007 bundles the dark-matter identification with the detector-signal prediction; Allen's result bears only on the latter and leaves the former untouched. Recorded as qualifying so the negative result is not silently read as a verdict on the whole erebon hypothesis.
+  exactLocator: "[p. 1], §I Introduction"
+  limitations:
+    - Narrow-model result by construction.
+    - "Direction set to \"context\" (from \"qualifies\") by the second reader (claude-sonnet-5, 2026-09-10, run 2026-09-10-verify-ccc-192550, verify-v5) at intake: The passage merely restates Penrose's model assumption (erebon lifetime exceeds Hubble time) as background for Allen's own calculation; it neither affirms nor limits the truth of CCC-C007, so it functions as context rather than a qualification. The quote is accurate and the locator correct, and it does bear on CCC-C007 as background description of the erebon model."
+  reviewState: ai_extracted
+  origin:
+    ref: split of CCC-E044 (report 2026-09-10-report-ccc-191230)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-ccc-192550
+    date: 2026-09-10
+  readerActs:
+    - field: direction
+      from: qualifies
+      to: context
+      model: claude-sonnet-5
+      promptVersion: verify-v5
+      runId: 2026-09-10-verify-ccc-192550
+      date: 2026-09-10
+      reason: The passage merely restates Penrose's model assumption (erebon lifetime exceeds Hubble time) as background for Allen's own calculation; it neither affirms nor limits the truth of CCC-C007, so it functions as context rather than a qualification. The quote is accurate and the locator correct, and it does bear on CCC-C007 as background description of the erebon model.
+- id: CCC-E072
+  title: "Allen 2020: the calculation constrains erebon GW detectability, not erebons as dark matter — part 4"
+  claimIds:
+    - CCC-C007
+  sourceId: SRC-ALLEN-2020
+  direction: qualifies
+  strength: weak
+  sourceStatement: The calculated GW background from erebon decay is "far too weak to observe with LIGO or other instruments".
+  editorInference: CCC-C007 bundles the dark-matter identification with the detector-signal prediction; Allen's result bears only on the latter and leaves the former untouched. Recorded as qualifying so the negative result is not silently read as a verdict on the whole erebon hypothesis.
+  exactLocator: "[p. 1], §I Introduction"
+  limitations:
+    - Narrow-model result by construction.
+  reviewState: ai_extracted
+  origin:
+    ref: split of CCC-E044 (report 2026-09-10-report-ccc-191230)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-ccc-192550
+    date: 2026-09-10
+- id: CCC-E077
+  title: "Ulhoa et al. 2026: LIGO–Virgo event-window cross-correlation peaks indistinguishable from off-source noise in 26 of 27 pair-measurements — part 1"
+  claimIds:
+    - CCC-C505
+  sourceId: SRC-ULHOA-2026
+  direction: context
+  strength: weak
+  sourceStatement: In an analysis extending Creswell et al. to nine O2/O3 candidate events and all three detector pairs with a band-pass-only pipeline, "In 26 of 27 pair-measurements, the event peak is statistically indistinguishable" from the corresponding noise ensemble of N = 200 off-source windows.
+  editorInference: "Recorded as context only: the paper never mentions CCC or erebons, and its background interpretation is the authors' own. It bears on CCC-C505 solely in keeping the question of correlated inter-detector structure open across instruments Penrose's conjecture did not consider; on its own it moves nothing."
+  exactLocator: "[p. 1] Abstract; [p. 4]–[p. 5] §IV.B and Table I"
+  limitations:
+    - Unrefereed preprint.
+    - The statistic is shown by the source itself to be non-robust under whitening; the authors' interpretation departs from the LIGO–Virgo consensus.
+  reviewState: ai_extracted
+  origin:
+    ref: split of CCC-E046 (report 2026-09-10-report-ccc-191230)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-ccc-192550
+    date: 2026-09-10

@@ -1,0 +1,138 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 250
+title: "Five evidence records say what the second reader said, and the record
+  names its references: review notes #248 and #247 answered"
+url: https://github.com/ejhong/aletheia/pull/250
+verdict: pass
+reason: "4 of 5 seats affirm compliance; one seat's objection is a review note
+  the operator answers on the record: GPT-5.6 Sol (OpenAI) (§3.14, §3.15;
+  provenance)"
+outcome: merged
+outcomeAt: 2026-09-09
+judgedAgainst: 6f37578af3
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff does two things: it relabels three evidence directions
+      (DEEP-E015, DEEP-E017 supports→qualifies; DEEP-E023 supports→context) and
+      drops two over-broad claim links (DEEP-E022 loses DEEP-C037; DEEP-E024
+      loses DEEP-C015), and it appends two history entries. Each direction
+      change is consistent with the record's own quoted sourceStatement visible
+      in the diff — E015's and E017's passages explicitly scope the figures
+      rather than assert them (§3.5, §3.2), and E023's sourceStatement is a
+      pointer to an unretrieved Vidale & Micheli wear study, so 'context' rather
+      than 'supports' is the honest label (§3.6, §3.7). Dropping C037 and C015
+      tightens claim-evidence links to what the quoted lines actually state
+      (§3.9). No source, locator, or quote is added or altered, and the citation
+      tooling found no identifiers to check. The history entries are
+      append-only, stamped with model, date, channel/session, PR number, the
+      specific fields changed, and an explicit, reasoned statement that no runId
+      or promptVersion exists because no protocol ran — which is honest
+      provenance rather than a misattribution (§3.14, §3.15). The second entry
+      corrects an earlier entry's false claim to have named PR and commit by
+      naming PR #246 and its merge commit, i.e. it strengthens rather than
+      weakens the checks; AGENTS.md is untouched."
+    cost:
+      model: claude-opus-5
+      inputTokens: 11097
+      outputTokens: 594
+      usd: 0.070335
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: violates
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: The evidence-direction and claim-link corrections themselves improve
+      compliance with §§3.5, 3.6, and 3.9, and the append-only history
+      accurately describes those edits. However, both new entries explicitly
+      state that no run ID or prompt version exists because no protocol ran,
+      while §3.15 requires every change to be stamped with model, runId, prompt
+      version, and date. Explaining the missing stamps honestly does not create
+      an exemption from that requirement, particularly for AI-applied content
+      corrections. The correction should be made through a recorded protocol
+      carrying those stamps, or otherwise supplied with an equally exact run and
+      prompt-version record before publication.
+    paradigm: provenance
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 7274
+      outputTokens: 1413
+      usd: 0.057356
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.5
+      - §3.6
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: "The change directly addresses prior review notes #247 and #248 by
+      adjusting evidence classifications and claim associations in
+      content/cases/deep-memory/evidence.yaml to accurately reflect the source
+      statements and reader assessments (§3.5, §3.6). DEEP-E015 and DEEP-E017
+      are updated to 'qualifies', DEEP-E023 to 'context', and unaligned claim
+      references are cleanly removed from DEEP-E022 and DEEP-E024. Clear,
+      comprehensive provenance and audit trails are recorded in history.yaml
+      detailing the exact changes, reasons, PR/session references, and actor
+      attribution (§3.14, §3.15). No citations are fabricated, no checks are
+      weakened, and AGENTS.md is untouched."
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 8058
+      outputTokens: 688
+      usd: 0.008623
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff only corrects five evidence records in place (directions
+      supports→qualifies/context; dropping claim links the passages do not bear
+      on) and appends two history entries that name the review notes, PR #250,
+      session, model, and date. No AGENTS.md edit, no new citations or locators,
+      no confidence material, and no check-weakening. The changes implement
+      §3.5/§3.6/§3.9 honesty the second reader flagged and fix the prior entry’s
+      incomplete provenance under §3.14/§3.15; the loader is reported to still
+      validate. Omitted files are none and citation tooling found nothing added
+      to verify."
+    cost:
+      model: grok-4.5
+      inputTokens: 7906
+      outputTokens: 160
+      usd: 0.016772
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.5
+      - §3.6
+      - §3.14
+      - §3.15
+    reasoning: "The diff only corrects evidence-direction classifications and drops
+      over-broad claimId links (supports→qualifies, supports→context, and
+      removing links the quoted passages do not bear on), which is exactly the
+      honesty the constitution demands under §3.5 and §3.6 — the E023 change
+      even downgrades a pointer to an unretrieved study rather than letting it
+      stand as evidence. Both history entries are appended, not edited in place,
+      preserving the append-only ledger, and each is stamped with actor, model,
+      date, session id, and PR, with the aiAssisted flag set and no AI record
+      passed off as a human one. The second entry is itself a provenance repair
+      answering review note #247: it corrects on the record that a prior entry
+      named only a branch, and names the PR, merge commit, session, model, and
+      why no runId/promptVersion exists (no protocol ran) — this strengthens
+      rather than weakens the §3.15 checks. No AGENTS.md edit, no new citation
+      identifiers to verify, no confidence material, and no fabricated locator
+      appears anywhere in the visible diff, which is complete (no omitted
+      files)."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 8308
+      outputTokens: 889
+      usd: 0.001691
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 42643
+  outputTokens: 3744
+  usd: 0.1548
+harvestedAt: 2026-09-10

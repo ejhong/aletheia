@@ -339,3 +339,17 @@ describe("costOf — the panel's own bill", () => {
   });
 });
 
+describe("splitMergeLanes with the gate's own declarations", () => {
+  it("excludes a merge the gate declares supervised by hash, and still counts every other unmarked merge", () => {
+    const commits = [
+      { hash: "aaa", message: "Chain 2026-09-10: the loop's own landing" },
+      { hash: "bbb", message: "A founder-directed landing without the trailer" },
+      { hash: "ccc", message: "Another\n\nSupervised-by: founder (direction in session)" },
+    ];
+    const lanes = splitMergeLanes(commits, new Set(["bbb"]));
+    expect(lanes.autonomous).toEqual(["aaa"]);
+    expect(lanes.supervised).toEqual(["bbb", "ccc"]);
+    // Without a declaration the default counts, as before.
+    expect(splitMergeLanes(commits).autonomous).toEqual(["aaa", "bbb"]);
+  });
+});

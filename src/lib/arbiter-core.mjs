@@ -376,12 +376,15 @@ export const SUPERVISED_TRAILER = /^[ \t]*Supervised-by:[ \t]*\S/im;
  * supervised lane it does not. `commits` are `{ hash, message }`; a commit
  * whose message cannot be read counts, per the default-counts rule.
  */
-export function splitMergeLanes(commits) {
+export function splitMergeLanes(commits, declared = new Set()) {
   const autonomous = [];
   const supervised = [];
   for (const c of commits ?? []) {
     if (!c?.hash) continue;
-    (SUPERVISED_TRAILER.test(c.message ?? "") ? supervised : autonomous).push(c.hash);
+    // A merge is supervised when its message declares it, or when the gate's own
+    // declaration list names its hash — the per-merge remedy for landings whose
+    // messages, being immutable, cannot take the trailer after the fact.
+    (SUPERVISED_TRAILER.test(c.message ?? "") || declared.has(c.hash) ? supervised : autonomous).push(c.hash);
   }
   return {
     autonomous: [...new Set(autonomous)],

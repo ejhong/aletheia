@@ -2016,3 +2016,15 @@ measurement: the autonomous lane's true usage was one of ten. From this
 day the operator's construction commits carry the trailer, and the chain's
 never do.
 \n
+
+**Epoch 5 withdrawn the same day; the nine landings are declared supervised
+by hash (2026-09-10, review note #261).** The GPT seat's note on the epoch
+bump was right on two counts: moving the window's start also erased the
+loop's own merge (#245) from the count, and the design's preferred remedy
+is per-merge and auditable, not a reset. The epoch returns to epoch 4, and
+the gate carries a declaration list — nine squash commits, each with its PR
+and the founder direction it answered — that `splitMergeLanes` treats as a
+`Supervised-by:` trailer would, since merged messages cannot take the
+trailer after the fact. The loop's merges count; the list should not grow,
+because the operator's construction commits now carry the trailer.
+

@@ -46,3 +46,17 @@
   actor: scripts/migrations/2026-09-09-hash-locators.ts (mechanical re-stamp)
   aiAssisted: true
   kind: housekeeping
+
+- date: 2026-09-10
+  change: 'Correction applied from proposals/2026-09-10-draft-pre-columbian-amazon-184613: SRC-CARVAJAL-1542.url — "null" → "https://archive.org/details/descubrimientod00carvgoog".'
+  reason: "SRC-CARVAJAL-1542: The ledger holds the primary source with no url or key. The report reached the text at this archive.org item; the retrieved item page confirms it as 'Descubrimiento del rio de las Amazonas' by Gaspar de Carvajal, ed. José Toribio Medina, Sevilla: Impr. de E. Rasco, 1894 (Harvard copy digitised by Google; copyright status NOT_IN_COPYRIGHT; FULL TEXT download available). This is the standard scholarly edition of the 1542 account; the verifier can only read what a record points at."
+  actor: aletheia verify (claude-sonnet-5 second reader; drafter claude-fable-5-1; proposal 2026-09-10-draft-pre-columbian-amazon-184613, verification 2026-09-10-verify-pre-columbian-amazon-185127)
+  aiAssisted: true
+  kind: content
+
+- date: 2026-09-10
+  change: "Intake from report proposals/2026-09-10-report-pre-columbian-amazon-183738/report.md: 1 source(s), 4 evidence record(s), 2 claim(s), 1 research item(s) verified and added (proposal 2026-09-10-draft-pre-columbian-amazon-184613, verification 2026-09-10-verify-pre-columbian-amazon-185127); 22 candidate(s) rejected with reasons in dispositions.yaml."
+  reason: "The report's centre of gravity — direct reading of the Medina 1894 edition of Carvajal and of Oviedo's redaction — cannot enter this pass: the only retrieved texts for those works are archive.org item pages (bibliographic metadata, copyright status, download options), not the OCR. Every quotation the report attributes to Medina pp. 8–54 or Oviedo pp. 552–558 is therefore unshown here and is dispositioned blocked with the download route, not written into the ledger. What the item pages do allow: a url correction on SRC-CARVAJAL-1542 (the ledger holds it key-less; the page confirms the work, editor, publisher, and year) and a provisional, unverified Source record for Oviedo t. IV so the witness has a home when its text is read. The report's declared failure — Peripato et al. 2023 could not be opened — is reversed by the packet: the accepted manuscript was retrieved via an open-access repository and is read here in full. It supplies six new observation claims (LiDAR discovery count, basin-wide undiscovered-earthwork prediction, the low-probability share of the basin, the Acre concentration, the domesticated-species association, and the deforestation/road sampling bias), a comparator to AMZ-C004's regional prediction, independent corroboration of AMZ-C020/C016 on proportion, and a second, independent statement that Acre earthworks date to AD 120–400 (qualifying AMZ-C017). Independence is flagged: Peripato shares authors with three ledger sources. No edition change: the text-critical rewrite the report wants depends on quotations not yet in hand, and Peripato deepens the record without altering the telling."
+  actor: aletheia verify (claude-sonnet-5 second reader; drafter claude-fable-5-1)
+  aiAssisted: true
+  kind: content

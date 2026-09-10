@@ -1,0 +1,140 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 267
+title: "What the first third-party drop exposed: the verifier reads the arXiv
+  paper the drafter read, reasons show the whole span, the reader has room to
+  think, a research item states no unsourced finding"
+url: https://github.com/ejhong/aletheia/pull/267
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-10
+judgedAgainst: 3d7bb5178a
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches only tooling, protocols, and docs: an arXiv
+      PDF-first retrieval path in src/pipeline/fetch.ts, larger token ceilings
+      for the splitter/judge, fuller rejection reasons in verify.ts, a new draft
+      protocol v7 (with v6 archived), and DECISIONS/AUTOMATION entries.
+      AGENTS.md is untouched, and the verification tool found no citation
+      identifiers in added content lines (nothing under content/ changed). None
+      of the changes loosen a §3.15 check: raising maxTokens from 4000 to 16000
+      fixes a mid-thought truncation failure rather than relaxing a gate;
+      printing the whole failing span plus the source it was checked against
+      strengthens the honesty of rejection reasons (§3.8, §3.14); draft-v7's
+      rule that a research item may state no result or figure from a source the
+      ledger does not hold tightens provenance discipline (§3.7, §3.8). The
+      retrieval change keeps the abstract page as the record's key while reading
+      the PDF text and discloses the substitution in `via`, which is honest
+      provenance rather than a misattribution. The narrative claims in
+      DECISIONS.md (run #266, seat findings, $3.42, the Amazon primaries) are
+      internally consistent with the code changes and tests, and I see no
+      positive evidence of fabricated locators or quotes; my unfamiliarity with
+      the arXiv ids used only in test fixtures is not evidence of fabrication,
+      and they are synthetic test inputs in any case."
+    cost:
+      model: claude-opus-5
+      inputTokens: 11604
+      outputTokens: 735
+      usd: 0.116314
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.8
+      - §3.9
+      - §3.15
+    reasoning: The retrieval change preserves the arXiv abstract URL as the source
+      key while explicitly recording the PDF in `via`, improving rather than
+      obscuring exact provenance and ensuring drafter and verifier inspect the
+      same text. The verifier now reports complete rejected spans and identifies
+      the checked source text, without loosening verbatim-quote admission. Draft
+      protocol v7 strengthens the ledger boundary by prohibiting research items
+      from carrying findings or figures outside sourced evidence records, while
+      retaining atomicity and source-versus-inference requirements. The diff
+      neither edits AGENTS.md nor adds public content citations, assessments, or
+      run records represented as ratified.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 10541
+      outputTokens: 2503
+      usd: 0.092736
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.6
+      - §3.7
+      - §3.8
+      - §3.15
+    reasoning: The proposed changes strengthen pipeline verification and provenance
+      without altering AGENTS.md or weakening any checks. Upgrading arXiv
+      retrieval to fetch the full PDF text aligns the verifier with what the
+      drafter inspected, preventing false quote-matching rejections on
+      abstract-only pages. Draft protocol v7 explicitly prevents research agenda
+      items from introducing unsourced findings or figures outside of evidence
+      records (§3.6). Un-truncating verification rejection strings improves
+      inspectability and error diagnosis (§3.8, §3.15).
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 12688
+      outputTokens: 868
+      usd: 0.012771
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff only hardens pipeline and protocol behavior: arXiv abstract
+      URLs now fetch the PDF under the abstract key with an explicit via stamp
+      so drafter and verifier share text; rejection reasons print the full
+      quoted span and name the source text; reader/splitter budgets rise;
+      draft-v7 forbids research items from stating results or figures absent
+      from the ledger. draft-v6 is archived, not silently rewritten. No
+      AGENTS.md edit, no content/ citations, no run records presented as
+      ratified, no confidence material. DECISIONS.md and AUTOMATION.md record
+      the sitting faults and fixes without fabricating provenance."
+    cost:
+      model: grok-4.5
+      inputTokens: 12013
+      outputTokens: 146
+      usd: 0.025017
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.15
+      - §3.2
+      - §3.7
+    reasoning: "The PR does not touch AGENTS.md (only docs, protocols, and src), so
+      §3.15's amendment reservation is not implicated. Its four changes all
+      tighten rather than loosen the epistemic checks: the arXiv retrieval fix
+      makes drafter and verifier read the same text so verbatim-quote checks
+      (§3.8, §3.9) are exercised against the actual paper rather than failing
+      spuriously; the rejection-reason change prints the full quoted span and
+      names the source text, which increases transparency of the verify gate
+      rather than weakening it; the token-limit raise is a resource fix, not a
+      check change; and draft-v7's rule that research items state no finding
+      from a source the ledger does not hold strengthens the ledger against
+      unsourced figures entering the public agenda. No citations are added under
+      content/ (the verification section is empty), the arXiv identifiers in the
+      new test are fixtures against a mocked fetchImpl and are not real-citation
+      claims, and no confidence material, provenance misattribution, or
+      unratified-draft-as-ratified presentation appears in the diff. The
+      DECISIONS.md entry honestly records the sitting's failures as the loop's
+      own, which is consistent with §3.14/§3.15's accountability requirements.
+      Nothing here weakens a §3.15 check or dodges ratification — the sitting
+      itself is being re-run under the fixed rules rather than hand-repaired,
+      which is the constitutionally cleaner path."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 12770
+      outputTokens: 949
+      usd: 0.00239
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 59616
+  outputTokens: 5201
+  usd: 0.2492
+harvestedAt: 2026-09-10

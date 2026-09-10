@@ -1,0 +1,352 @@
+# Cross-model check run — an independent judge (GPT-5.6 Sol (OpenAI)), blind to all
+# prior assessments and to the editions (aletheia check, check-v1; run 2026-09-10-check-transients-183351).
+# role: check — never displayed as the case narrative; feeds the concurrence panel.
+# basis.ledgerHash is the ledger it judged. Append-only; NOT human reviewed.
+runId: 2026-09-10-check-gpt-183351
+producedBy: 2026-09-10-check-transients-183351
+model: GPT-5.6 Sol (OpenAI) — independent check run via gpt-5.6-sol
+date: 2026-09-10
+promptVersion: check-v1
+humanReviewed: false
+role: check
+basis:
+  ledgerHash: bcdfbde1dfc092c788cab0562e580e4ada98472be15b6c48a32954239fb36acc
+caseAssessment:
+  verdict: weakly_supported
+  components: []
+  loadBearing:
+    - TRN-C020
+    - TRN-C021
+    - TRN-C024
+    - TRN-C005
+    - TRN-C011
+  weakestLinks:
+    - TRN-C020
+    - TRN-C021
+    - TRN-C108
+  synthesis: >-
+    The evidence establishes the lowest observational rung much more firmly than
+    the attribution ladder. The April 1950 marks exist on surviving copies,
+    independent extraction recovers eight of nine, and TRN-E022 reports all nine
+    at the published positions on the original telescope negative. The July 1952
+    triple is also reproducibly present in the digitized material and on
+    examined copy material. Thus scanner software and a defect introduced only
+    during later copying cannot explain the April event. This does not establish
+    that the marks were made by incident light: TRN-E024 explicitly reports that
+    microscopy cannot distinguish a short flash from an intrinsic
+    original-emulsion defect, and the inspecting microscopist considered defects
+    reasonable, particularly given the plate-corner location. Sharpness is
+    likewise non-diagnostic at present. The nine April marks are demonstrably
+    sharper than comparable stars, but they resemble artifact-class profiles
+    while physical reasoning also predicts that short flashes should be sharper
+    than long-exposure stellar images. No controlled calibration resolves those
+    readings.
+
+    The strongest positive evidence for real light through telescope optics is
+    the independent Hamburg work. Analogous candidates occur in a separate
+    observatory and material lineage, and TRN-E014 reports the off-axis coma
+    expected from optical images. If valid, that signature is difficult for a
+    surface defect to reproduce naturally. Its classifier has not, however, been
+    blindly tested against known defects and deliberately generated flashes, and
+    it validates no specific Palomar mark. Consequently the incident-light rung
+    is mixed rather than established.
+
+    For a near-Earth origin, the strongest steelman is geometric. Independent
+    code reproduces the Earth-shadow deficit on the supplied 107,875-row
+    catalog, and the deficit strengthens after the group's quality filtering.
+    Altitude-dependent modelling places the inferred population broadly at
+    20,000–35,000 km. Against this, TRN-E011 finds that spatial heterogeneity
+    invalidates a uniform-background null and removes the significant deficit in
+    closely related datasets. The altitude range is not a confidence interval,
+    the best spherical-shell fits are poor, and no independently extracted
+    catalog has reproduced the shadow result. Nuclear-window, geomagnetic,
+    alignment, and hotspot patterns add anomaly structure but do not repair the
+    provenance problem: several persist under reanalysis of the same rows, while
+    nuclear timing becomes null under independent extraction and exposure
+    modelling.
+
+    The skeptical steelman is therefore that ordinary original-emulsion defects
+    plus an extraction-dependent catalog explain the Palomar evidence without
+    requiring nearby objects. The proponent steelman is that original- negative
+    confirmation, independent-observatory analogues, a possible
+    optical-aberration signature, and a repeated shadow deficit are mutually
+    suggestive and not all reached by one copy-stage mechanism. Overall this is
+    genuine but weak support for real near-Earth flashes, not support for
+    artificial or extraterrestrial artifacts. The single evidence record whose
+    removal would most change this verdict is TRN-E014, because it is the only
+    provided independent-observatory result offering a physical incident-light
+    discriminant. Without TRN-E014 I would downgrade the case to unresolved; the
+    weakly_supported verdict therefore does not survive its removal and hangs
+    substantially on the still-unvalidated coma result.
+  steelman: The exact 107,875-row catalog repeatedly shows an Earth-shadow
+    deficit, and that deficit strengthens among candidates scored least
+    defect-like; the strongest skeptical reanalysis used related rather than
+    identical rows. No provided record reports a preregistered, plate-aware
+    shadow test on an independently extracted catalog, so the specific
+    prediction that genuine reflectors should disappear in Earth's shadow
+    remains unanswered.
+claimAssessments:
+  - claimId: TRN-C022
+    verdict: unresolved
+    reasoning: No evidence record demonstrates that artificial objects capable of
+      the detections were present near Earth before Sputnik. TRN-E018 reports
+      alignments characterized as inconsistent with known satellites, but the
+      marks' provenance is disputed and inconsistency with known satellites does
+      not establish an unknown artificial population. The strongest opposing
+      consideration is the reported alignment structure, while TRN-E020 supplies
+      a natural near-Earth alternative; the verdict reflects evidential
+      insufficiency rather than a prior assertion that such objects were
+      historically impossible.
+    confidence: low
+  - claimId: TRN-C023
+    verdict: presently_untestable
+    reasoning: None of the provided records identifies a material artifact, signal,
+      or prediction specific to extraterrestrial technology. TRN-E083 records
+      the proponents' own statement that the intelligence interpretation is not
+      falsifiable with the available analysis, and TRN-E084 merely proposes
+      searching other archives. The strongest opposing consideration is the
+      residual-fit argument summarized in TRN-E072, but fitting a hand-selected
+      set of toy models cannot distinguish extraterrestrial artifacts from
+      omitted natural or instrumental mechanisms.
+    confidence: moderate
+  - claimId: TRN-C021
+    verdict: weakly_supported
+    reasoning: The reproducible Earth-shadow statistic and TRN-E074's corresponding
+      reflection inference provide some evidence for a sunlit near-Earth
+      population, while the Hamburg coma result supports the broader premise
+      that at least some analogous marks may be optical images. The altitude
+      modelling is conditional on those disputed catalog rows and is not a
+      direct distance measurement. The strongest opposing consideration is
+      TRN-E011, which obtains no significant shadow deficit under a non-uniform
+      spatial null, compounded by the unresolved flash-versus- emulsion question
+      at the preceding rung.
+    confidence: moderate
+  - claimId: TRN-C020
+    verdict: mixed
+    reasoning: TRN-E022 removes scanning and downstream copying as explanations for
+      the April marks, and TRN-E014 reports an optical-coma signature in an
+      independent Hamburg archive. Conversely, TRN-E024 states that original-
+      plate microscopy cannot distinguish flashes from intrinsic emulsion
+      defects and records the microscopist's defect-leaning assessment. TRN-E004
+      and TRN-E011 further support artifact contamination, although neither
+      classifies every individual mark. The strongest positive consideration is
+      therefore the Hamburg coma pattern, while the strongest negative
+      consideration is the unresolved original-emulsion alternative.
+    confidence: moderate
+  - claimId: TRN-C007
+    verdict: established
+    reasoning: TRN-E005 directly reconstructs the contact-printing genealogy and
+      shows that DSS and SuperCOSMOS scans descend from separate copy negatives
+      with a shared intermediate positive. This establishes a real propagation
+      pathway even though it does not measure the pathway's defect rate. The
+      strongest opposing consideration is TRN-E023, but that record limits the
+      mechanism's applicability to inspected canonical events rather than
+      disputing the genealogy itself.
+    confidence: high
+  - claimId: TRN-C001
+    verdict: established
+    reasoning: TRN-E001 reports the nine positions and later non-detections,
+      TRN-E002 independently confirms all nine on physical Edinburgh copy
+      material, and TRN-E008 recovers eight with an independent pipeline.
+      TRN-E022 additionally reports all nine at the corresponding positions on
+      the original negative. The strongest opposing consideration is the
+      presence of similar detections and blemishes on neighboring plates, but
+      that affects attribution rather than the stated presence and subsequent
+      absence of these nine marks.
+    confidence: high
+  - claimId: TRN-C024
+    verdict: provisionally_supported
+    reasoning: TRN-E022 directly reports microscopy and field-star registration
+      finding all nine features on the original April 1950 negative at their
+      published positions. This is the exact discriminating observation required
+      by the claim and excludes defects introduced solely during copying or
+      scanning. The strongest opposing consideration is that the registration
+      was unblinded, performed by the reporting group, and has not yet been
+      independently repeated, making the result dependent on one moderate-
+      strength record.
+    confidence: moderate
+  - claimId: TRN-C002
+    verdict: established
+    reasoning: TRN-E003 directly reports that all nine profile statistics occupy the
+      sharp side of the stellar distribution and that microscopy finds them more
+      concentrated and circular than comparable stars. The measurement is
+      accepted by both interpretive camps. The strongest opposing consideration
+      is TRN-E004's artifact classification, but it challenges what sharpness
+      means rather than whether the sharpness difference was measured.
+    confidence: high
+  - claimId: TRN-C003
+    verdict: well_supported
+    reasoning: TRN-E007 reports the three closely spaced sources, their
+      disappearance within the hour, and deep subsequent non-detections, while
+      TRN-E008 independently recovers all three. TRN-E022 further reports
+      corresponding features on examined copy material. The strongest opposing
+      consideration is that the original 1952 telescope negative was not
+      physically examined, so the observation remains somewhat more dependent on
+      the photographic lineage than the April event.
+    confidence: high
+  - claimId: TRN-C004
+    verdict: provisionally_supported
+    reasoning: TRN-E008 reports a from-scratch pipeline recovering eight of nine
+      April sources, all three July sources, and 3,450 of 5,399 catalog
+      candidates, or 63.9 percent. This directly supports the numerical core of
+      the claim and shows that the detections do not depend on the original
+      software. The strongest opposing consideration is that only one clearly
+      independent extraction pipeline is documented and its loose full-sky run
+      produced 2.85 million candidates, exposing strong pipeline dependence in
+      the broader population.
+    confidence: moderate
+  - claimId: TRN-C101
+    verdict: well_supported
+    reasoning: TRN-E002 documents blemishes and similar unmatched point-like
+      detections on physical plate material, while TRN-E016 reports thousands of
+      candidates classified as artifacts during catalog construction. TRN-E008's
+      loose extraction yielding 2.85 million candidates demonstrates
+      contamination at rates far exceeding the vetted transient catalog.
+      TRN-E004 also finds artifact-like morphology among the canonical marks.
+      The strongest opposing consideration is that no record provides a
+      generation-by-generation census specifically quantifying approximately
+      stellar copy-stage defects.
+    confidence: high
+  - claimId: TRN-C102
+    verdict: provisionally_supported
+    reasoning: "TRN-E006 gives a physically coherent mechanism: a sub-second flash
+      avoids much of the seeing and guiding blur accumulated by a continuously
+      exposed star. This makes sharper, more circular images plausible but
+      remains an argument rather than a calibration measurement. The strongest
+      opposing consideration is the absence of controlled tests on comparable
+      emulsions and optics, together with TRN-E065's indication that some
+      sub-second durations may instead produce detectable motion elongation."
+    confidence: moderate
+  - claimId: TRN-C010
+    verdict: provisionally_supported
+    reasoning: TRN-E013 reports analogous narrow, single-epoch candidates on Hamburg
+      Schmidt plates from an independent telescope, archive, emulsion, and
+      digitization lineage. That independence excludes the particular Palomar
+      copy genealogy as a universal explanation. The strongest opposing
+      consideration is the preliminary search's lack of false-positive
+      calibration, matched-control rates, and injection-recovery testing, so
+      similar emulsion failures remain a viable explanation.
+    confidence: moderate
+  - claimId: TRN-C011
+    verdict: provisionally_supported
+    reasoning: TRN-E014 directly reports that Hamburg candidates show the off-axis
+      coma expected from the telescope's parabolic optics, a potentially
+      diagnostic signature of incident light. The source appropriately stops
+      short of establishing the light's physical origin. The strongest opposing
+      consideration is that the coma classifier has not been blindly validated
+      against directional defects or deliberately generated flashes, leaving its
+      false-positive rate unknown.
+    confidence: moderate
+  - claimId: TRN-C005
+    verdict: well_supported
+    reasoning: TRN-E010 independently reproduces the stated 0.46 percent shadow
+      fraction against an approximately 1.4 percent geometric expectation on the
+      supplied working catalog. TRN-E015 and the later quality-filtered analyses
+      report persistence or strengthening within that same lineage. The
+      strongest opposing consideration is TRN-E011's finding that the uniform
+      spatial background is false and that a more appropriate null removes
+      statistical significance. Thus the catalog-level numerical deficit is well
+      supported, but its interpretation as a physical Earth-shadow effect is
+      not.
+    confidence: moderate
+  - claimId: TRN-C129
+    verdict: provisionally_supported
+    reasoning: TRN-E052 and TRN-E053 directly report that the quality-filtered
+      sample has a stronger deficit at every tested altitude, including its
+      maximum at 35,000 km. This is consistent with the earlier ML-stratified
+      result in TRN-E015. The strongest opposing consideration is that both the
+      filter and catalog come from the same lineage, labels lack physical ground
+      truth, and only 17 filtered objects occupy the shadow at higher altitudes.
+    confidence: moderate
+  - claimId: TRN-C108
+    verdict: weakly_supported
+    reasoning: The reported deficit maximums and chi-square minima fall within or
+      near the stated 20,000–35,000 km range, so the claim reflects the outputs
+      of the supplied modelling. Those outputs assume a real reflective
+      population, use the contested working catalog, and are explicitly not a
+      formal confidence interval. The strongest opposing consideration is that
+      TRN-E011 removes the underlying shadow signal under another null, while
+      TRN-E054 notes poor absolute fits and omitted orbital and brightness
+      dynamics. No direct parallax or independently replicated altitude
+      measurement is provided.
+    confidence: low
+  - claimId: TRN-C006
+    verdict: mixed
+    reasoning: TRN-E010 reproduces an approximately 1.45 relative risk on the
+      original catalog, and TRN-E015 and TRN-E019 report persistence under
+      artifact scoring or temporal modelling. In contrast, TRN-E009 finds no
+      significant effect in an independently extracted catalog once searchable
+      coverage is modelled, and TRN-E011 attributes the result largely to the
+      observing schedule. The strongest positive consideration is repeated
+      recovery from the supplied rows; the strongest opposing consideration is
+      failure under independent extraction and exposure normalization. The
+      evidence therefore supports a catalog-level association but not a robust
+      transient-rate effect.
+    confidence: moderate
+  - claimId: TRN-C103
+    verdict: unresolved
+    reasoning: No evidence record directly reports both the claimed monotonic Kp
+      dose-response and the asserted strengthening of the nuclear association
+      after Kp control. The strongest affirmative consideration is TRN-E020's
+      indirect reference to an earlier dose-response result, while TRN-E017
+      excludes one broad plate-sensitivity confound. The strongest opposing
+      consideration is that all such analyses retain the contested working
+      catalog and the independent extraction result in TRN-E009 shows strong
+      schedule sensitivity for the related nuclear effect.
+    confidence: low
+  - claimId: TRN-C104
+    verdict: mixed
+    reasoning: TRN-E018 reports seven plates with alignments of five to eight
+      high-scoring candidates beyond the paper's Monte Carlo expectations.
+      However, the criteria were not preregistered, the reported probabilities
+      are modest in a many-plate alignment search, and the candidate marks
+      inherit the disputed catalog provenance. The strongest opposing
+      consideration is TRN-E011's finding that a substantial fraction of
+      linear-cluster features were not confidently distinguishable from catalog
+      stars, so the physical alignment interpretation remains unsettled.
+    confidence: moderate
+  - claimId: TRN-C119
+    verdict: provisionally_supported
+    reasoning: TRN-E041 directly reports the stated 16 of 137 Bonferroni-significant
+      cells using the specified probability cut, projection altitude, grid, and
+      plate-aware controls. This supports the local computational result, not
+      the conclusion that the cells locate real orbiting objects. The strongest
+      opposing consideration is that the analysis uses the same contested
+      catalog and a single assumed altitude, with several large excesses
+      supplied by very few plates and projected locations changing when altitude
+      changes.
+    confidence: moderate
+  - claimId: TRN-C122
+    verdict: provisionally_supported
+    reasoning: TRN-E079 directly confirms that a random control sample of 897
+      positions produced three clusters with an average silhouette of 0.50,
+      meeting the authors' stated threshold. This validates at least one
+      instance of the claim and shows that the threshold alone does not
+      discriminate transient structure from the survey footprint. The strongest
+      opposing consideration is that only three control draws were performed and
+      no null distribution was generated, so the full asserted 0.50–0.60 range
+      and its generality are only sparsely supported.
+    confidence: moderate
+  - claimId: TRN-C117
+    verdict: weakly_supported
+    reasoning: TRN-E038 directly states the proposed
+      millimetre-versus-centimetre-to- metre size discrepancy, but the larger
+      sizes are outputs of assumed altitudes, reflectivities, flash durations,
+      and specular geometry rather than measurements. The strongest opposing
+      consideration is TRN-E020's mechanism in which millimetre grains aggregate
+      into metre-scale reflective structures, meaning particle size and
+      aggregate optical size need not be the same quantity. Because that
+      mechanism was not directly modelled, exclusion of dusty plasma is
+      premature.
+    confidence: low
+  - claimId: TRN-C118
+    verdict: weakly_supported
+    reasoning: TRN-E072 confirms that the authors' selected toy-model comparison
+      assigns all five listed features simultaneously only to their NHI
+      scenario. This is a residual-fit argument over a hand-selected model set,
+      not a discriminating test, and several inputs are themselves mixed or
+      unresolved. The strongest opposing consideration is TRN-E073's
+      acknowledgment of omitted natural phenomena, reinforced by TRN-E020's
+      concrete natural near-Earth alternative and the artifact explanations for
+      the catalog-level features.
+    confidence: low

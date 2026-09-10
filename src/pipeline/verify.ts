@@ -120,8 +120,20 @@ export function applyReader(e: Evidence, verdict: VerifyReply, stamp: ReaderStam
   // v6: a bearing per claim. Claims the passage does not bear on leave; the rest are grouped by the
   // direction the reader finds, and each group is a record of its own — the first keeps the id.
   if (Array.isArray(verdict.bearing) && verdict.bearing.length) {
-    const found = new Map(verdict.bearing.filter((b) => e.claimIds.includes(b.claimId)).map((b) => [b.claimId, b.direction]));
-    const keep = e.claimIds.filter((id) => found.has(id) ? found.get(id) !== null : true);
+    // Fail closed: the bearing must name every claim the record names, once each, and nothing else; a
+    // bearing that misses a claim, repeats one, or names a foreign one is not applied — the record is
+    // admitted with the reader's dissent written on it, and the fault said aloud (review note #277).
+    const ids = verdict.bearing.map((b) => b.claimId);
+    const foreign = ids.filter((id) => !e.claimIds.includes(id));
+    const missing = e.claimIds.filter((id) => !ids.includes(id));
+    const repeated = ids.filter((id, i) => ids.indexOf(id) !== i);
+    if (foreign.length || missing.length || repeated.length) {
+      const fault = [foreign.length ? `names ${foreign.join(", ")}, which the record does not` : "", missing.length ? `omits ${missing.join(", ")}` : "", repeated.length ? `repeats ${[...new Set(repeated)].join(", ")}` : ""].filter(Boolean).join("; ");
+      notes.push(`${e.id}: the second reader's bearing ${fault} — not applied; the record is admitted with the dissent written on it`);
+      return { records: [{ ...record, limitations: [...record.limitations, `Second reader (${stampText(stamp)}) disputes the stated direction (its bearing ${fault}, so it was not applied): ${verdict.reason}`] }], notes };
+    }
+    const found = new Map(verdict.bearing.map((b) => [b.claimId, b.direction]));
+    const keep = e.claimIds.filter((id) => found.get(id) !== null);
     if (keep.length === 0) return null;
     const dropped = e.claimIds.filter((id) => !keep.includes(id));
     const groups = new Map<EvidenceDirection, string[]>();
@@ -838,7 +850,9 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
       {
         date,
         change: `Intake from report ${proposal.report ?? proposal.runId}: ${counts.sources} source(s), ${counts.evidence} evidence record(s), ${counts.claims} claim(s), ${counts.research} research item(s) verified and added (proposal ${proposalRunId}, verification ${runId}); ${rejected.length} candidate(s) rejected with reasons in dispositions.yaml.${corrected.skipped.length ? ` ${corrected.skipped.length} correction(s) NOT applied — see proposals/${runId}/verification.md.` : ""}`,
-        reason: proposal.rationale,
+        // The rationale is the drafter's, written before verification: it argues the proposal, not what
+        // entered. Labelled as such, with the admitted set beside it (review note #275).
+        reason: `Admitted after verification: ${[...accepted.sources.map((s) => s.id), ...accepted.evidence.map((e) => e.id), ...accepted.claims.map((c) => c.id), ...accepted.research.map((r) => r.id)].join(", ") || "nothing"}; everything else proposed was refused or blocked with a reason in dispositions.yaml. The drafter's rationale for the proposal, written before verification and describing what it proposed: ${proposal.rationale}`,
         actor: `aletheia verify (${READER.model} second reader; drafter ${proposal.model ?? "unknown"})`,
         aiAssisted: true,
         kind: "content",

@@ -872,7 +872,9 @@ describe("verify v6: a bearing per claim, and a record split by direction", () =
     const text = "… may not have occupied all of Amazonia ( 6 , 15 , 29 , 36 ). Later, the state of Acre, where …";
     expect(occurs("may not have occupied all of Amazonia.", text)).toBe(true);
     expect(occurs("the state of Acre,", text)).toBe(true);
-    expect(occurs("may not have occupied all of Amazonia!", text)).toBe(true);
+    // A question or exclamation mark the source does not have is a misquote of tone, and stays one (review note #277).
+    expect(occurs("may not have occupied all of Amazonia!", text)).toBe(false);
+    expect(occurs("may not have occupied all of Amazonia?", text)).toBe(false);
     expect(occurs("may not have occupied most of Amazonia.", text)).toBe(false);
   });
 
@@ -936,6 +938,16 @@ describe("verify v6: a bearing per claim, and a record split by direction", () =
     const none = await judgeProposal(proposal, c, texts, new Map(), async () => ({ ...fine, bearing: bearing.map((x) => ({ ...x, direction: null })) }), { runId: "r", verb: "verify", case: c.record.slug });
     expect(none.accepted.evidence).toHaveLength(0);
     expect(none.rejected[0].reason).toMatch(/bears on none of the claims the record names/);
+    // A bearing that omits a named claim, or names a foreign one, is not applied: the record keeps the drafter's direction with the dissent written on it (review note #277).
+    const short = await judgeProposal(proposal, c, texts, new Map(), async () => ({ ...fine, bearing: [{ claimId: a, direction: "undermines" as const }] }), { runId: "r", verb: "verify", case: c.record.slug }, { model: "reader-x", date: "2026-09-10" });
+    expect(short.accepted.evidence).toHaveLength(1);
+    expect(short.accepted.evidence[0]).toMatchObject({ id: "GEO-E902", direction: "undermines", claimIds: [a, b, d] });
+    expect(short.accepted.evidence[0].readerActs).toBeUndefined();
+    expect(short.accepted.evidence[0].limitations.at(-1)).toMatch(/^Second reader .* disputes the stated direction \(its bearing omits/);
+    expect(short.notes.some((n) => n.includes(`omits ${b}, ${d}`) && n.includes("not applied"))).toBe(true);
+    const foreign = await judgeProposal(proposal, c, texts, new Map(), async () => ({ ...fine, bearing: [...bearing, { claimId: "GEO-C999", direction: "supports" as const }] }), { runId: "r", verb: "verify", case: c.record.slug });
+    expect(foreign.accepted.evidence[0].readerActs).toBeUndefined();
+    expect(foreign.notes.some((n) => n.includes("names GEO-C999, which the record does not"))).toBe(true);
     // A null bearing with a right direction: nothing changes.
     const same = await judgeProposal(proposal, c, texts, new Map(), async () => ({ ...fine, directionRight: true, bearing: null }), { runId: "r", verb: "verify", case: c.record.slug });
     expect(same.accepted.evidence[0]).toMatchObject({ id: "GEO-E902", direction: "undermines", claimIds: [a, b, d] });

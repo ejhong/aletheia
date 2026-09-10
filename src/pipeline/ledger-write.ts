@@ -139,6 +139,13 @@ export function ledgerFileFor(id: string): LedgerFile | null {
  * them. A correction whose `from` no longer matches is not applied and is
  * reported — the ledger moved under it, and someone must look.
  */
+/** A value as the history line shows it: a string whole and quoted, anything else as JSON, an absent field as null — a reader reconstructs the change from the line (review note #276: an object had printed as "[object Object]", a long string cut at eighty characters). */
+export function shown(value: unknown): string {
+  if (value === undefined || value === null) return "null";
+  if (typeof value === "string") return JSON.stringify(value);
+  return JSON.stringify(value);
+}
+
 export function applyCorrections(
   caseDir: string,
   corrections: Correction[],
@@ -165,7 +172,7 @@ export function applyCorrections(
       caseDir,
       {
         date: ctx.date,
-        change: `Correction${applied.length === 1 ? "" : "s"} applied from ${ctx.proposalRef}: ${applied.map((c) => `${c.record}.${c.field} — "${String(c.from).slice(0, 80)}" → "${String(c.to).slice(0, 80)}"`).join("; ")}.`,
+        change: `Correction${applied.length === 1 ? "" : "s"} applied from ${ctx.proposalRef}: ${applied.map((c) => `${c.record}.${c.field} — ${shown(c.from)} → ${shown(c.to)}`).join("; ")}.`,
         reason: applied.map((c) => `${c.record}: ${c.reason}`).join(" | "),
         actor: ctx.actor,
         aiAssisted: true,

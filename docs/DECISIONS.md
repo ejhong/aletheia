@@ -2112,3 +2112,25 @@ by hand from the run log, saying so. The third sitting's records are split
 by case into PRs the panel can read, with the two record faults corrected
 on the record.
 
+**Three review notes on the sitting's PRs, answered (2026-09-10).** The GPT
+seat's notes on the per-case PRs and the verifier fixes (#275, #276, #277)
+each named a real thing. (1) The edge-punctuation rule had dropped a
+question or exclamation mark at the end of a quoted span; those carry
+meaning, and only the neutral stops a citation bracket displaces — period,
+comma, semicolon, colon — are now dropped. (2) A reader's per-claim bearing
+was applied without checking that it named every claim the record names,
+once each and nothing else; it now fails closed — a bearing that omits,
+repeats or invents a claim is not applied, the record keeps the drafter's
+direction with the dissent written on it, and the fault is said aloud.
+(3) The correction writer's history line had printed an object as
+"[object Object]" and cut long strings at eighty characters; it now
+carries the whole value, an object as JSON, so the change can be
+reconstructed from the line — and the two lossy entries on the cosmology
+case are restated in full, history being append-only. (4) An intake entry's
+reason was the drafter's rationale for the proposal, which reads as what
+entered when it is what was proposed; the verify verb now labels it as the
+drafter's and states the admitted set beside it, and the one entry already
+written on The Emptied Amazon is clarified by a following entry. The
+report's "NOT applied" against corrections the run had applied was the
+same day's null-against-absent fault, fixed in the verifier PR.
+

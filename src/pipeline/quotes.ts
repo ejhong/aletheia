@@ -31,7 +31,10 @@ export function quotedSpans(text: string): string[] {
  * Inside the span, every word stays exact.
  */
 function bareQuote(quote: string): string {
-  return quote.trim().replace(/^[“"‘'\s.,;:!?…]+|[”"’'\s.,;:!?…]+$/g, "");
+  // Only the neutral stops — period, comma, semicolon, colon — are dropped at the edges: a source that
+  // follows a sentence with a citation bracket has still said it. A question mark or an exclamation
+  // mark carries meaning and stays part of the span (review note #277).
+  return quote.trim().replace(/^[“"‘'\s.,;:]+|[”"’'\s.,;:]+$/g, "");
 }
 
 export function quoteOccurs(quote: string, sourceText: string): boolean {

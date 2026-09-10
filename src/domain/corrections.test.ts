@@ -101,3 +101,14 @@ describe("the verification report agrees with the writer on an absent field", ()
     expect(correctionBlocker(c, { record: bare.id, field: "url", from: "https://y.test/other", to: "https://x.test/paper", reason: "test" })).toMatch(/no longer reads/);
   });
 });
+
+describe("the correction writer's history line carries the whole value", () => {
+  it("shows a string whole and quoted, an object as JSON, and an absent field as null", async () => {
+    const { shown } = await import("../pipeline/ledger-write.ts");
+    expect(shown("a".repeat(120))).toBe(JSON.stringify("a".repeat(120)));
+    expect(shown({ locator: "[p. 1]", quote: "x", sourceId: "S" })).toBe('{"locator":"[p. 1]","quote":"x","sourceId":"S"}');
+    expect(shown(null)).toBe("null");
+    expect(shown(undefined)).toBe("null");
+    expect(shown(["A", "B"])).toBe('["A","B"]');
+  });
+});

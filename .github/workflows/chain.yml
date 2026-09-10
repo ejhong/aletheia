@@ -76,7 +76,7 @@ jobs:
           VENICE_API_KEY: ${{ secrets.VENICE_API_KEY }}
           # The intake asks GitHub who committed a dropped file (config/founder.yaml).
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: node scripts/aletheia.ts next --run --steps "${{ github.event.inputs.steps || '3' }}" --deadline-minutes 240 --out next.json
+        run: node scripts/aletheia.ts next --run --steps "${{ github.event.inputs.steps || '3' }}" --deadline-minutes 240 --max-cases 2 --out next.json
       # Runs whatever became of the chain step — a failed step, a deadline, a cancelled or
       # timed-out job: what the sitting wrote is committed and judged, and the spend rows
       # reach the ledger. Money spent is recorded, whatever became of the run.
@@ -109,7 +109,7 @@ jobs:
           if [ "$account" = "none" ]; then
             summary="interrupted — chain step ${CHAIN_STEP_OUTCOME}, no complete account of the sitting; the run log is the record"
           else
-            summary="$(node -e 'const j=JSON.parse(require("fs").readFileSync("next.json","utf8"));const all=[j,...(j.more||[])];const cut=j.stopped?" (stopped at its deadline after "+j.stopped.afterMinutes+" min)":(process.env.CHAIN_STEP_OUTCOME!=="success"?" (interrupted during a later step: chain step "+process.env.CHAIN_STEP_OUTCOME+"; the account is what completed)":"");console.log(all.map(o=>o.choice.case+" — "+o.ran.map(s=>s.verb+":"+s.outcome.outcome).join(", ")).join("; ")+cut)')"
+            summary="$(node -e 'const j=JSON.parse(require("fs").readFileSync("next.json","utf8"));const all=[j,...(j.more||[])];const cut=j.stopped?(j.stopped.reason==="cases"?" (stopped at its case limit after "+j.stopped.stepsMade+" choices)":" (stopped at its deadline after "+j.stopped.afterMinutes+" min)"):(process.env.CHAIN_STEP_OUTCOME!=="success"?" (interrupted during a later step: chain step "+process.env.CHAIN_STEP_OUTCOME+"; the account is what completed)":"");console.log(all.map(o=>o.choice.case+" — "+o.ran.map(s=>s.verb+":"+s.outcome.outcome).join(", ")).join("; ")+cut)')"
           fi
           git commit -m "Chain ${date}: ${summary}"
           git push -u origin "$branch"

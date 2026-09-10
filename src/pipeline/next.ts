@@ -61,7 +61,7 @@ export interface NextOutcome {
    * eight-step sitting after the seventh, and every record and spend row it
    * had written was lost with the runner).
    */
-  stopped?: { reason: "deadline"; afterMinutes: number; stepsMade: number };
+  stopped?: { reason: "deadline" | "cases"; afterMinutes: number; stepsMade: number; cases?: string[] };
 }
 
 export interface SittingOptions {
@@ -71,22 +71,32 @@ export interface SittingOptions {
   root?: string;
   /** No new choice is made once this many minutes have passed since the sitting began; the step under way finishes. */
   deadlineMinutes?: number;
+  /**
+   * A sitting works on at most this many cases: a choice that would open another case ends it. The
+   * sitting's PR is what the panel reads, and three cases' records in one PR ran past what a seat can
+   * see (2026-09-10: two seats could not vote on a six-step sitting because the transients ledger
+   * was omitted from their view). Absent: no limit.
+   */
+  maxCases?: number;
   /** Called after every choice with the sitting so far, so a caller can write progress to disk as it goes. */
   onProgress?: (soFar: NextOutcome) => void;
-  /** Test seams: the clock, and one choice-and-run. */
-  deps?: { now?: () => number; once?: (opts: SittingOptions) => Promise<NextOutcome> };
+  /** Test seams: the clock, one choice-and-run, or the choice and the run apart. */
+  deps?: { now?: () => number; once?: (opts: SittingOptions) => Promise<NextOutcome>; choose?: (opts: SittingOptions) => NextChoice; perform?: (choice: NextChoice, opts: SittingOptions) => Promise<NextOutcome> };
 }
 
 /** Choose, and with `run`, do it — continuing a report through the chain until a step does not complete; with `steps`, choose again up to that many times, within the deadline. */
 export async function runNext(opts: SittingOptions = {}): Promise<NextOutcome> {
   const now = opts.deps?.now ?? Date.now;
-  const once = opts.deps?.once ?? runOnce;
+  const choose = opts.deps?.choose ?? chooseNext;
+  const perform = opts.deps?.perform ?? performChoice;
+  const once = opts.deps?.once ?? (async (o: SittingOptions) => perform(choose(o), o));
   const began = now();
   const minutesGone = () => (now() - began) / 60_000;
   const first = await once(opts);
   const steps = Math.max(1, opts.steps ?? 1);
   const progress = (): NextOutcome => ({ ...first, ...(more.length ? { more } : {}) });
   const more: NextOutcome[] = [];
+  const cases = new Set<string>(first.choice.case ? [first.choice.case] : []);
   opts.onProgress?.(progress());
   if (!opts.run || steps === 1) return first;
   let last = first;
@@ -97,7 +107,18 @@ export async function runNext(opts: SittingOptions = {}): Promise<NextOutcome> {
       opts.onProgress?.(progress());
       break;
     }
-    last = await once(opts);
+    if (opts.deps?.once) {
+      last = await once(opts);
+    } else {
+      const choice = choose(opts);
+      if (opts.maxCases !== undefined && choice.case && !cases.has(choice.case) && cases.size >= opts.maxCases) {
+        first.stopped = { reason: "cases", afterMinutes: Math.round(minutesGone()), stepsMade: i, cases: [...cases] };
+        opts.onProgress?.(progress());
+        break;
+      }
+      if (choice.case) cases.add(choice.case);
+      last = await perform(choice, opts);
+    }
     more.push(last);
     opts.onProgress?.(progress());
     if (last.choice.verb === "rest") break;
@@ -105,11 +126,17 @@ export async function runNext(opts: SittingOptions = {}): Promise<NextOutcome> {
   return { ...first, more };
 }
 
-async function runOnce(opts: SittingOptions): Promise<NextOutcome> {
+/** The ledger's choice, from the files as they stand. */
+export function chooseNext(opts: SittingOptions): NextChoice {
   const root = opts.root ?? process.cwd();
   const cases = loadAllCases();
   const runs = readRuns(root);
-  const choice = nextAction(cases, runs, opts.today ?? new Date().toISOString().slice(0, 10), draftedFrom(runs, root), inboxPending(cases, root));
+  return nextAction(cases, runs, opts.today ?? new Date().toISOString().slice(0, 10), draftedFrom(runs, root), inboxPending(cases, root));
+}
+
+/** Do the choice: a chain continued until a step does not complete. */
+async function performChoice(choice: NextChoice, opts: SittingOptions): Promise<NextOutcome> {
+  const root = opts.root ?? process.cwd();
   const ran: NextOutcome["ran"] = [];
   if (!opts.run || choice.verb === "rest" || !choice.case) return { choice, ran };
   const step = async (verb: string, f: () => Promise<RunOutcome>) => {

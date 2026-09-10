@@ -70,7 +70,7 @@ node scripts/aletheia.ts verify <proposalRunId> --dry-run         # mechanical c
 node scripts/aletheia.ts verify <proposalRunId>                   # …and appends accepted records, dispositions, history to the working tree
 node scripts/aletheia.ts edition <case>                           # a new edition when the ledger moved or the panel contests the assessment unanswered (rests otherwise; --force)
 node scripts/aletheia.ts check <case> [--seats a,b] [--dry-run]   # the blind panel through the metered transport; raw replies under proposals/<runId>/
-node scripts/aletheia.ts next [--run] [--steps N] [--deadline-minutes M] [--out next.json]   # what the ledger wants next; with --run, do it and continue the chain; --steps N choices in one sitting; no new choice after M minutes; the sitting so far rewritten to --out after every choice
+node scripts/aletheia.ts next [--run] [--steps N] [--deadline-minutes M] [--max-cases K] [--out next.json]   # what the ledger wants next; with --run, do it and continue the chain; --steps N choices in one sitting; no new choice after M minutes; at most K cases per sitting (the workflow passes 2, so the panel can read the PR); the sitting so far rewritten to --out after every choice
 node scripts/aletheia.ts inbox <case> [--dry-run]                 # the founder's door as a producer: dropped items → one report for draft/verify
 ```
 

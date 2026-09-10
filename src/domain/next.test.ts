@@ -183,3 +183,21 @@ describe("the CLI reads every value flag it documents", () => {
     expect(bad.args).toEqual(["next.json"]);
   });
 });
+
+describe("a sitting works on at most its case limit", () => {
+  it("ends when the next choice would open another case, keeping the choices made and naming the cases", async () => {
+    const { runNext } = await import("../pipeline/next.ts");
+    const plan = ["a", "a", "b", "c", "c"];
+    let i = 0;
+    const choose = () => ({ case: plan[i++], verb: "check" as const, reason: "test" });
+    const perform = async (choice: { case: string | null }) => ({ choice: { case: choice.case, verb: "check" as const, reason: "test" }, ran: [{ verb: "check", outcome: { outcome: "completed" as const, runId: `r${i}` } }] });
+    const r = await runNext({ run: true, steps: 5, maxCases: 2, deps: { now: () => 0, choose, perform } });
+    expect([r.choice.case, ...(r.more ?? []).map((m) => m.choice.case)]).toEqual(["a", "a", "b"]);
+    expect(r.stopped).toEqual({ reason: "cases", afterMinutes: 0, stepsMade: 3, cases: ["a", "b"] });
+    // Without a limit all five run.
+    i = 0;
+    const all = await runNext({ run: true, steps: 5, deps: { now: () => 0, choose, perform } });
+    expect(1 + (all.more?.length ?? 0)).toBe(5);
+    expect(all.stopped).toBeUndefined();
+  });
+});

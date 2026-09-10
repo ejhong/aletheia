@@ -39,7 +39,7 @@ export const READER = MODELS.reader;
 export const VERIFY_SCHEMA: Record<string, unknown> = {
   type: "object",
   additionalProperties: false,
-  required: ["quoteInContext", "statementSupported", "locatorSupported", "directionRight", "independenceNoted", "relevant", "atomic", "direction", "bearsOn", "reason"],
+  required: ["quoteInContext", "statementSupported", "locatorSupported", "directionRight", "independenceNoted", "relevant", "atomic", "direction", "bearsOn", "bearing", "reason"],
   properties: {
     quoteInContext: { type: "boolean" },
     statementSupported: { type: "boolean" },
@@ -52,6 +52,13 @@ export const VERIFY_SCHEMA: Record<string, unknown> = {
     direction: { anyOf: [{ type: "string", enum: ["supports", "undermines", "qualifies", "context"] }, { type: "null" }] },
     /** v5: the claims, among those the record names, the passage bears on — when it does not bear on all of them; null otherwise. */
     bearsOn: { anyOf: [{ type: "array", items: { type: "string" } }, { type: "null" }] },
+    /** v6: per named claim, the direction the passage bears with toward it (null: does not bear on it); null when the record's stated direction is right for every claim it names. */
+    bearing: {
+      anyOf: [
+        { type: "array", items: { type: "object", additionalProperties: false, required: ["claimId", "direction"], properties: { claimId: { type: "string" }, direction: { anyOf: [{ type: "string", enum: ["supports", "undermines", "qualifies", "context"] }, { type: "null" }] } } } },
+        { type: "null" },
+      ],
+    },
     reason: { type: "string" },
   },
 };
@@ -75,6 +82,13 @@ export interface VerifyReply {
    * those links and drops the rest. An empty list refuses the record. Absent or null: every link stands.
    */
   bearsOn?: string[] | null;
+  /**
+   * v6: per named claim, the direction the passage bears with toward it, or null where it does not bear on
+   * that claim. A record whose claims bear in different directions is split by direction at intake — one
+   * record per direction, the same quote — since a record carries one direction (2026-09-10: a reader
+   * that could name only one direction for two claims set the wrong one on the claim that survived).
+   */
+  bearing?: { claimId: string; direction: EvidenceDirection | null }[] | null;
   /** Set when the answer was remembered from an earlier run rather than asked now. */
   remembered?: { runId: string; date: string };
   reason: string;
@@ -99,10 +113,42 @@ export interface ReaderStamp {
 
 const stampText = (s: ReaderStamp) => `${s.model}, ${s.date}, run ${s.runId}, ${s.promptVersion}`;
 
-export function applyReader(e: Evidence, verdict: VerifyReply, stamp: ReaderStamp): { record: Evidence; notes: string[] } | null {
+export function applyReader(e: Evidence, verdict: VerifyReply, stamp: ReaderStamp, nextId: () => string = () => e.id): { records: Evidence[]; notes: string[] } | null {
   let record = e;
   const notes: string[] = [];
   const act = (field: ReaderAct["field"], from: ReaderAct["from"], to: ReaderAct["to"]): ReaderAct => ({ field, from, to, ...stamp, reason: verdict.reason });
+  // v6: a bearing per claim. Claims the passage does not bear on leave; the rest are grouped by the
+  // direction the reader finds, and each group is a record of its own — the first keeps the id.
+  if (Array.isArray(verdict.bearing) && verdict.bearing.length) {
+    const found = new Map(verdict.bearing.filter((b) => e.claimIds.includes(b.claimId)).map((b) => [b.claimId, b.direction]));
+    const keep = e.claimIds.filter((id) => found.has(id) ? found.get(id) !== null : true);
+    if (keep.length === 0) return null;
+    const dropped = e.claimIds.filter((id) => !keep.includes(id));
+    const groups = new Map<EvidenceDirection, string[]>();
+    for (const id of keep) {
+      const d = (found.get(id) ?? e.direction) as EvidenceDirection;
+      if (!DIRECTIONS.has(d)) continue;
+      groups.set(d, [...(groups.get(d) ?? []), id]);
+    }
+    const records: Evidence[] = [];
+    let first = true;
+    for (const [d, ids] of groups) {
+      const acts: ReaderAct[] = [];
+      if (ids.length < e.claimIds.length) acts.push(act("claimIds", e.claimIds, ids));
+      if (d !== e.direction) acts.push(act("direction", e.direction, d));
+      const lim = [...e.limitations];
+      if (dropped.length && first) lim.push(`Second reader (${stampText(stamp)}) found the passage bears on ${keep.join(", ")} and not on ${dropped.join(", ")}; the link${dropped.length > 1 ? "s" : ""} dropped at intake: ${verdict.reason}`);
+      if (groups.size > 1) lim.push(`Second reader (${stampText(stamp)}) found the passage bears in different directions on the claims the record named; this record carries "${d}" toward ${ids.join(", ")}, the rest went to ${groups.size - 1 === 1 ? "a record" : "records"} of ${groups.size === 2 ? "its" : "their"} own at intake: ${verdict.reason}`);
+      if (d !== e.direction && groups.size === 1) lim.push(`Direction set to "${d}" (from "${e.direction}") by the second reader (${stampText(stamp)}) at intake: ${verdict.reason}`);
+      records.push({ ...e, id: first ? e.id : nextId(), ...(first ? {} : { title: `${e.title} — toward ${ids.join(", ")}` }), claimIds: ids, direction: d, limitations: lim, ...(acts.length ? { readerActs: [...(e.readerActs ?? []), ...acts] } : {}) });
+      first = false;
+    }
+    if (records.length === 0) return null;
+    if (dropped.length) notes.push(`${e.id}: link${dropped.length > 1 ? "s" : ""} to ${dropped.join(", ")} dropped by the second reader`);
+    if (groups.size > 1) notes.push(`${e.id}: split by direction by the second reader into ${records.map((r) => `${r.id} (${r.direction} → ${r.claimIds.join(", ")})`).join("; ")}`);
+    else if (records[0].direction !== e.direction) notes.push(`${e.id}: direction set to ${records[0].direction} by the second reader`);
+    return { records, notes };
+  }
   if (Array.isArray(verdict.bearsOn)) {
     const keep = e.claimIds.filter((id) => verdict.bearsOn!.includes(id));
     if (keep.length === 0) return null;
@@ -132,7 +178,7 @@ export function applyReader(e: Evidence, verdict: VerifyReply, stamp: ReaderStam
       notes.push(`${e.id}: admitted with the second reader's dissent on direction`);
     }
   }
-  return { record, notes };
+  return { records: [record], notes };
 }
 
 export const SPLIT_SCHEMA: Record<string, unknown> = {
@@ -325,7 +371,9 @@ export function correctionBlocker(loaded: LoadedCase, c: Correction): string | n
   if (!ledgerFileFor(c.record)) return `no ledger file for record id ${c.record}`;
   const rec = [...loaded.sources, ...loaded.claims, ...loaded.evidence, ...loaded.research].find((r) => r.id === c.record) as Record<string, unknown> | undefined;
   if (!rec) return `record ${c.record} is not in the ledger`;
-  if (JSON.stringify(rec[c.field]) !== JSON.stringify(c.from)) return `the field no longer reads what the proposal saw`;
+  // An absent field and a null `from` are the same reading, as the writer itself takes them (setField):
+  // the report of 2026-09-10-verify-ccc-192550 called three URL additions "NOT applied" that the same run applied.
+  if (JSON.stringify(rec[c.field] ?? null) !== JSON.stringify(c.from ?? null)) return `the field no longer reads what the proposal saw`;
   return null;
 }
 
@@ -458,26 +506,26 @@ export async function judgeProposal(
           notes.push(`${label} refused (${bad.join(", ")}): ${v2.reason}`);
           continue;
         }
-        const applied = applyReader(candidate, v2, readerStamp(v2));
+        const applied = applyReader(candidate, v2, readerStamp(v2), () => nextEvidenceId(loaded, [...proposal.adds.evidence.map((x) => x.id), ...okEvidence.map((x) => x.id), ...admitted.map((x) => x.id)]));
         if (!applied) {
           notes.push(`${label} refused: the second reader finds it bears on none of the claims it names: ${v2.reason}`);
           continue;
         }
         notes.push(...applied.notes);
-        admitted.push(applied.record);
+        admitted.push(...applied.records);
       }
       reject(e.id, "evidence", e.title, `not one observation (${verdict.reason}); split into ${admitted.length ? admitted.map((x) => x.id).join(", ") : "nothing that survived"}`);
       okEvidence.push(...admitted);
       continue;
     }
     // v5: the reader's finding on direction and on which claims the passage bears on is applied, not annotated.
-    const applied = applyReader(e, verdict, readerStamp(verdict));
+    const applied = applyReader(e, verdict, readerStamp(verdict), () => nextEvidenceId(loaded, [...proposal.adds.evidence.map((x) => x.id), ...okEvidence.map((x) => x.id)]));
     if (!applied) {
       reject(e.id, "evidence", e.title, `second reader: the passage bears on none of the claims the record names: ${verdict.reason}`);
       continue;
     }
     notes.push(...applied.notes);
-    okEvidence.push(applied.record);
+    okEvidence.push(...applied.records);
   }
 
   // Claims: an anchor's quote must be verbatim and read right; otherwise an accepted evidence record must cite the claim.
@@ -611,8 +659,18 @@ export async function judgeProposal(
   const cited = new Set([...evidence.map((e) => e.sourceId), ...okClaims.map((c) => c.sourceAnchor?.sourceId).filter(Boolean)]);
   const sources: Source[] = [];
   for (const s of okSources.values()) {
-    if (cited.has(s.id) || s.background) sources.push(s);
-    else reject(s.id, "source", s.title, "nothing accepted cites it (§3.6: sources are not evidence by themselves)");
+    if (!(cited.has(s.id) || s.background)) {
+      reject(s.id, "source", s.title, "nothing accepted cites it (§3.6: sources are not evidence by themselves)");
+      continue;
+    }
+    // The drafter labels a source it could not reach `unverified`; when the verifier reached the text and
+    // checked passages in it, the label says so (a seat on #269: a source marked "nothing may lean on it
+    // until it is read" with admitted evidence leaning on its retrieved text).
+    const fetched = textFor(s.id);
+    if (s.verification === "unverified" && fetched?.ok && fetched.text) {
+      sources.push({ ...s, verification: "ai_verified", verificationNote: `text retrieved and its quoted passages checked by the verify verb on ${reader.date} (run ${meter.runId})${fetched.via ? `; ${fetched.via}` : ""}. The drafter's note: ${s.verificationNote ?? "none"}` });
+      notes.push(`${s.id}: read by the verifier; verification set to ai_verified`);
+    } else sources.push(s);
   }
 
   // Prospective ledger: the same rules the build enforces.

@@ -2080,3 +2080,35 @@ failed step, the deadline, a cancelled or timed-out job — with the cut
 named in the PR title. The money spent in the cancelled run is unrecorded;
 this is the last time that can happen, short of the runner itself dying.
 
+**The third sitting, and what the panel found in it (2026-09-10).** The
+sitting dispatched under the retrieval fix did the work: Villarroel's post
+taken in and its two preprints read into the Before Sputnik ledger (2
+sources, 18 claims, 32 evidence records, 3 research items; 44 proposals
+refused, most of them compound records split into the parts that were
+admitted), an edition that read the preprints against the featured claims
+and expanded the map from 14 to 24, the first research pass on The Emptied
+Amazon (Peripato 2023 in, the verdict unmoved, the treatment layer built),
+and a pass on the cosmology case (a fifth reanalysis with a conventional
+mechanism; five seats say contradicted) — $38 for three passes, the verify
+reader at a 93% cache hit rate. The panel parked the PR (#269) on three
+things, two of them the loop's faults. (1) A record that named two claims
+bearing in opposite directions: the reader could return one direction, verify
+applied it to the whole record, and when the second claim was refused the
+first was left with the wrong direction — verify protocol v6 asks a bearing
+per claim and splits such a record by direction at intake. (2) Three
+records refused for a period or a comma inside the closing quote where the
+paper has a citation bracket; a seat then read a contradiction between the
+refused span and the same words admitted without the stop — edge
+punctuation is no longer part of a quoted span. Also, a source the drafter
+could not reach stays `unverified` in its record while the verifier's admitted
+evidence leans on its text — the verifier now marks such a source
+`ai_verified` and says when it read it. (3) Two seats could not vote: three
+cases' records in one PR ran past what a seat is shown, and the whole
+transients ledger was omitted from their view. A sitting now works on at
+most two cases (`--max-cases 2`; the weekly cron's three steps stay within
+it), and the sitting's PR is what a panel can read. The PR that opened
+titled "interrupted" was a CLI fault (#270) and its cover note was corrected
+by hand from the run log, saying so. The third sitting's records are split
+by case into PRs the panel can read, with the two record faults corrected
+on the record.
+

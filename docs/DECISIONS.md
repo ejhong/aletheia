@@ -1955,3 +1955,30 @@ version, date, reason — and the prose note names the run and the protocol
 too; `origin` stays the drafter's, since the record is theirs and the change
 is the reader's. A dissent that changes nothing is a note and no act.
 
+
+
+**Prompt caching: off for one-shot calls, a marked prefix for verify
+(2026-09-10).** The vendor's console warned the founder that the org's
+direct-API cache hit rate was low. The spend ledger said why: automatic
+caching was on for every call, and a call that is never re-sent writes its
+whole prompt to the cache at 1.25× the base rate and reads nothing back —
+edition 1.74M tokens written and 0 read, draft 1.38M and 0, the verify
+reader 11.5M written and 77k read (a 1% hit rate, $34), only the research
+loop (62% hits) benefiting, which is what the automatic mode was added for.
+Now one-shot structured calls are uncached, and verify marks the retrieved
+source text — the same for every record judged against that source — as
+the one cache breakpoint, placed before the record, so a big intake's
+hundreds of reader calls write the source once and read it at a tenth of
+the rate; the request builder is a pure function with a test. The same rule
+runs through the seat path (founder direction, 2026-09-10: "use this
+strategy with all api calls"): the Arbiter's seats receive the constitution
+as the cached prefix every judgment shares, the split step caches its
+anchoring text, and the vendor module reports each vendor's cache reads and
+writes so the ledger prices them and shows the hit rate; the blind check,
+draft and edition stay uncached, being one call each with nothing shared
+inside the cache window (a retry that re-sends a packet is rarer than the
+quarter a write costs). Expected:
+about a quarter off draft and edition input, and the verify reader's input
+cost falling by most of its bill; the ledger's cache columns will show it
+at the next sitting.
+\n

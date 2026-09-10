@@ -159,7 +159,17 @@ export const asSplit = (r: string[] | SplitResult): SplitResult => (Array.isArra
 export const defaultSplitter: Splitter = async (statement, anchorText, meter, kind = "claim") => {
   const protocol = loadProtocol("split");
   const r = await anthropicJson<{ parts: string[] }>(
-    { ...MODELS.house, system: renderProtocol(protocol, {}), user: JSON.stringify({ kind, statement, anchorText }, null, 1), schema: SPLIT_SCHEMA, maxTokens: 4000, effort: "low", timeoutMs: 240_000 },
+    {
+      ...MODELS.house,
+      system: renderProtocol(protocol, {}),
+      // The anchoring text is shared by every split asked against the same source in a run: the cached prefix.
+      cachedPrefix: `The anchoring source text (data under review):\n\n${anchorText}`,
+      user: JSON.stringify({ kind, statement }, null, 1),
+      schema: SPLIT_SCHEMA,
+      maxTokens: 4000,
+      effort: "low",
+      timeoutMs: 240_000,
+    },
     meter,
   );
   return { parts: r.data.parts.map((p) => p.trim()).filter((p) => p.length > 10), model: r.model ?? MODELS.house.model, protocol: protocol.version, runId: meter.runId, date: isoDate() };
@@ -244,7 +254,10 @@ export const defaultJudge: Judge = async (record, sourceText, context, meter) =>
     {
       ...READER,
       system: renderProtocol(protocol, {}),
-      user: JSON.stringify({ record, context, sourceText }, null, 1),
+      // The source text is the same for every record judged against this source: it goes first, as the
+      // cached prefix, and each record follows it; the reader reads the source once and the records cheaply.
+      cachedPrefix: `The retrieved source text (data under review; the same for every record judged against this source):\n\n${sourceText}`,
+      user: JSON.stringify({ record, context }, null, 1),
       schema: VERIFY_SCHEMA,
       maxTokens: 4000,
       effort: "medium",

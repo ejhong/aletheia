@@ -27,7 +27,7 @@ export const VENDORS = SEAT_TABLE as Record<string, Seat>;
 export interface Reply {
   text: string;
   model: string;
-  usage: { inputTokens: number; outputTokens: number };
+  usage: { inputTokens: number; outputTokens: number; cacheReadTokens?: number; cacheWriteTokens?: number };
   usd: number | null;
 }
 
@@ -37,7 +37,8 @@ export function seatAvailable(name: string): boolean {
 
 export async function callSeat(
   name: string,
-  prompt: { system: string; user: string; maxTokens?: number; timeoutMs?: number },
+  /** `cachedPrefix`: text this call shares with its neighbours (the constitution a panel judges against), placed first and marked as the cache breakpoint on Anthropic (src/lib/vendors.mjs). */
+  prompt: { system: string; user: string; maxTokens?: number; timeoutMs?: number; cachedPrefix?: string },
   meter: Meter,
 ): Promise<Reply> {
   if (!VENDORS[name]) throw new Error(`unknown seat ${name}`);
@@ -53,6 +54,8 @@ export async function callSeat(
       calls: 1,
       inputTokens: usage.inputTokens,
       outputTokens: usage.outputTokens,
+      cacheReadTokens: usage.cacheReadTokens ?? 0,
+      cacheWriteTokens: usage.cacheWriteTokens ?? 0,
       usd,
     },
     meter.root,

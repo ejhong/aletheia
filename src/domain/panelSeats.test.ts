@@ -97,3 +97,20 @@ describe("seatKey", () => {
     expect(seatKey("gpt-5.1 house draft")).toBe("gpt-5.1");
   });
 });
+
+describe("prompt caching on the seats", () => {
+  const prompt = { system: "judge", user: "the change" };
+  it("marks a shared prefix as the one breakpoint on Anthropic, places it first elsewhere, and caches nothing without one", () => {
+    process.env.ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY || "test-key";
+    process.env.OPENAI_API_KEY = process.env.OPENAI_API_KEY || "test-key";
+    process.env.GEMINI_API_KEY = process.env.GEMINI_API_KEY || "test-key";
+    const a = buildRequest("anthropic", { ...prompt, cachedPrefix: "the constitution" });
+    expect(a.body.messages).toEqual([{ role: "user", content: [{ type: "text", text: "the constitution", cache_control: { type: "ephemeral" } }, { type: "text", text: "the change" }] }]);
+    expect(a.body).not.toHaveProperty("cache_control");
+    expect(buildRequest("anthropic", prompt).body.messages).toEqual([{ role: "user", content: "the change" }]);
+    const o = buildRequest("openai", { ...prompt, cachedPrefix: "the constitution" }).body as { messages?: unknown[] };
+    expect(o.messages?.[1]).toEqual({ role: "user", content: "the constitution\n\nthe change" });
+    const g = buildRequest("gemini", { ...prompt, cachedPrefix: "the constitution" }).body as { contents?: { parts: unknown[] }[] };
+    expect(g.contents?.[0].parts).toEqual([{ text: "the constitution" }, { text: "the change" }]);
+  });
+});

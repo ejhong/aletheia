@@ -1,0 +1,113 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 259
+title: "The caching decision names the channel of the founder's direction: the
+  working session, by its id"
+url: https://github.com/ejhong/aletheia/pull/259
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-10
+judgedAgainst: f8f1901039
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches only docs/DECISIONS.md (not AGENTS.md), adding the
+      channel to an already-recorded founder direction: the date stays
+      2026-09-10, the quoted words (\"use this strategy with all api calls\")
+      are unchanged, and the new text names the working session and its Claude
+      Code session id as the locator, noting the commits carry it as a
+      Claude-Session trailer. That is exactly what §3.15's operating-record
+      clause asks for — a founder direction stamped with date and channel — and
+      it strengthens rather than weakens a check. No citations are added
+      (verification found none), no evidence or assessment records change, and
+      no unratified draft is presented as ratified. The session id is
+      unverifiable from here, but there is no internal inconsistency (the PR
+      body explains why an id rather than a URL is the record, the session being
+      private), so unfamiliarity is not grounds for a fabrication finding. Minor
+      style point only: the edited line now runs long, which is cosmetic."
+    cost:
+      model: claude-opus-5
+      inputTokens: 1117
+      outputTokens: 452
+      usd: 0.056804
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.15
+    reasoning: The change adds the previously missing channel and a specific session
+      identifier to an existing founder-direction record, improving exact
+      provenance under §3.8 and the operating-record requirements of §3.15. It
+      does not edit AGENTS.md, weaken any check, publish confidential supplied
+      material, or alter a ratified assessment. Nothing shown positively
+      contradicts the added provenance, and no new citation identifier requires
+      verification.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 3521
+      outputTokens: 294
+      usd: 0.020476
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.15
+    reasoning: The diff updates docs/DECISIONS.md to explicitly state the channel
+      (working session id) alongside the date for a founder direction, as
+      required by §3.15. The change edits documentation only, touches no content
+      files or AGENTS.md, and weakens no epistemic checks.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 5109
+      outputTokens: 459
+      usd: 0.005553
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff only amends docs/DECISIONS.md to stamp an existing
+      founder-direction entry with its channel (working session, cited by
+      session id and Claude-Session trailer), which is exactly what §3.15
+      requires for recording founder directions. AGENTS.md is untouched, no
+      citations or ledger content are fabricated, no confidence material is
+      published, and no check is weakened. The change answers a prior review
+      note on provenance completeness and is otherwise documentary.
+    cost:
+      model: grok-4.5
+      inputTokens: 4919
+      outputTokens: 113
+      usd: 0.010631
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.8
+      - §3.14
+    reasoning: "This is a docs-only change to docs/DECISIONS.md (not AGENTS.md), so
+      the human-only amendment rule is not triggered; it strengthens provenance
+      rather than weakening any check. The change answers a recorded review note
+      by adding exactly what §3.15 requires for founder directions — the channel
+      (a working session) stamped alongside the date — and it gives a concrete,
+      checkable locator: the session id, which it says the commits themselves
+      carry as a Claude-Session trailer, so any reader can verify it in git
+      rather than trusting the prose. The quoted founder words ('use this
+      strategy with all api calls') were already on the record; nothing new is
+      quoted, no citation identifier is added (the verification section confirms
+      none), and no confidence material or unratified draft is introduced. The
+      one thing I cannot independently check is whether the session id matches
+      the commits, but the diff supplies the mechanism for the operator and
+      readers to do so, and per the temporal-humility rules I may not treat my
+      inability to browse git as positive evidence of fabrication."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 3413
+      outputTokens: 1054
+      usd: 0.001385
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 18079
+  outputTokens: 2372
+  usd: 0.0948
+harvestedAt: 2026-09-10

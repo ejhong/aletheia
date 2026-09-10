@@ -1,0 +1,138 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 264
+title: "The gate declares the nine supervised landings by hash and keeps the
+  loop's merges in the count: epoch 5 withdrawn"
+url: https://github.com/ejhong/aletheia/pull/264
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-10
+judgedAgainst: 19d8165f95
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches only the arbiter gate script, its shared core, a
+      test, and the decisions log — AGENTS.md is untouched, and no content/
+      citations are added (verification found none). The effect on the §3.15
+      checks is a tightening, not a loosening: the wholesale epoch-5 reset is
+      withdrawn (GATE_EPOCH returns to 2026-09-09T15:00Z, an earlier window
+      start, so more merges fall inside the count), the loop's own merges (#245,
+      #257) are put back into the autonomous tally, and the exclusion is
+      narrowed to nine specifically enumerated founder-directed squash commits,
+      each stamped with hash, PR number, and the direction and date it answered.
+      `splitMergeLanes` gains an explicit, defaulted `declared` parameter that
+      is exactly equivalent in force to the pre-existing `Supervised-by:`
+      trailer, and the added test pins both the declared and the default-counts
+      behaviour, including that unmarked merges still count when no declaration
+      is passed. Recording founder directions given in session, with date and
+      channel, is expressly permitted by the §3.15 operating-record clause. I
+      cannot independently confirm the nine commit hashes or PR numbers, but
+      unfamiliarity is not evidence of fabrication and nothing in the material
+      is internally inconsistent — the list is closed, auditable, and stated not
+      to grow because new construction commits carry the trailer. The change
+      also answers an outstanding review note (#261) on the record, as the
+      lone-objection rule requires."
+    cost:
+      model: claude-opus-5
+      inputTokens: 4246
+      outputTokens: 942
+      usd: 0.084699
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: "The change replaces a wholesale epoch reset with an auditable,
+      per-merge classification: nine exceptions are identified by full commit
+      hash, PR number, dated founder direction, and session or review-note
+      context. Restoring epoch 4 causes the loop’s own merges (#245 and #257) to
+      remain counted, so the rate-limit check is not evaded in the manner
+      identified by review note #261. The core function still defaults unmarked
+      and undeclared commits to the autonomous lane, and the added test covers
+      declared, trailed, and unmarked cases. The withdrawal and rationale are
+      appended to docs/DECISIONS.md, and neither AGENTS.md nor the
+      constitutional checks are weakened."
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 5620
+      outputTokens: 1091
+      usd: 0.044812
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: "The change withdraws the wholesale epoch reset (epoch 5) and
+      replaces it with an auditable, per-commit hash declaration of nine
+      founder-directed landings that lacked the `Supervised-by:` trailer. This
+      restores the loop's autonomous merges (#245, #257) to the rate-limit
+      accounting rather than wiping them out, accurately reflecting true lane
+      usage. The update adheres to §3.14 and §3.15 by documenting the decision
+      in DECISIONS.md and adding regression testing without weakening
+      arbitration checks."
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 7681
+      outputTokens: 660
+      usd: 0.008236
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff restores GATE_EPOCH to epoch 4, adds an explicit
+      SUPERVISED_DECLARED hash set for nine named squash commits, and threads
+      that set into splitMergeLanes so trailer-less founder-directed landings
+      are classified per-merge rather than by wiping the window. That answers
+      review note #261 without editing AGENTS.md, without touching content
+      citations, and without loosening the autonomous rate-limit itself:
+      unmarked merges still count, trailed merges still exclude, and the
+      declared list is documented as closed because future operator commits
+      carry the trailer. docs/DECISIONS.md records the withdrawal, the
+      review-note trigger, and the founder-direction rationale with date; the
+      unit test covers declared, trailed, and unmarked cases. No fabrication,
+      confidence exposure, or check-dodge is visible in the complete diff."
+    cost:
+      model: grok-4.5
+      inputTokens: 7100
+      outputTokens: 187
+      usd: 0.015437
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+    reasoning: "This is an operational repair to the merge-lane gate, not a content
+      change, and it strengthens rather than weakens the checks: where the
+      withdrawn epoch-5 bump (#260) cleared the weekly count wholesale — erasing
+      even the loop's own merge #245 — this change restores epoch 4, counts the
+      loop's merges (#245, #257) toward the ten, and replaces the wholesale
+      reset with a per-merge, auditable declaration list naming each commit by
+      full hash with its PR and the founder direction it answered, exactly what
+      review note #261 requested. The nine PRs and their founder-directed
+      character are corroborated by the prior, already-present comment block in
+      scripts/arbiter.mjs (visible in the diff's removed lines), which lists the
+      same nine PRs with matching descriptions, so I see no positive evidence
+      the hashes or directions are invented, though I cannot independently
+      verify git hashes from the packet — if a hash were wrong, that would be a
+      provenance defect the operator should fix on the record. The declaration
+      semantics match the existing `Supervised-by:` trailer mechanism (merged
+      messages are immutable and cannot take a trailer retroactively), the
+      founder directions are stamped with date and channel per the §3.15
+      operating-record rule, DECISIONS.md records the withdrawal and rationale,
+      and AGENTS.md itself is untouched. The test covers declared, trailed, and
+      unmarked cases, and the stated intent that the list not grow (operator
+      commits now carry the trailer) is the right guard against future evasion."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 7888
+      outputTokens: 1711
+      usd: 0.002039
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 32535
+  outputTokens: 4591
+  usd: 0.1552
+harvestedAt: 2026-09-10

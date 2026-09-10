@@ -1,0 +1,120 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 268
+title: A sitting knows its deadline and writes its progress, and its PR opens
+  whatever became of it
+url: https://github.com/ejhong/aletheia/pull/268
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-10
+judgedAgainst: 9ae9721260
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "This is infrastructure-only: a workflow timeout raise, a
+      `--deadline-minutes`/`--out` option on `aletheia next`, a test, and two
+      doc entries. No content/ records, no citations (verification found none),
+      and AGENTS.md is untouched, so §3.15's reserved-amendment rule is not
+      engaged. Far from weakening a check, it strengthens accountability: the
+      commit-and-PR step now runs `if: always()` so records and spend rows
+      written before a cut still reach the ledger and the panel, and the
+      interrupted cases are labeled explicitly ('interrupted — no account of the
+      sitting', 'partial account', 'stopped at its deadline after N min') rather
+      than presented as complete sittings — the 'none' branch says plainly that
+      nothing is inferred about what the sitting chose and lists only run.yaml
+      records actually present. The DECISIONS.md entry describes the lost spend
+      as an estimate ('some twenty to thirty dollars') and states outright that
+      it is unrecorded, which is honest rather than fabricated provenance. The
+      test's expectations are internally consistent with the code (three choices
+      at 50 min each, deadline check at 150 min, `stepsMade: i` = 3), and
+      `progress()`'s reference to `more` is a closure evaluated only after
+      declaration. Nothing here touches ratification thresholds, verification
+      labels, or panel display."
+    cost:
+      model: claude-opus-5
+      inputTokens: 8590
+      outputTokens: 983
+      usd: 0.070719
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+      - §8
+    reasoning: The change does not add content citations, assessments, confidential
+      material, or edits to AGENTS.md. It improves provenance by persisting the
+      last completed sitting account and explicitly labeling missing or partial
+      accounts rather than inferring choices that were not recorded. The
+      workflow still opens a PR for judgment and runs risk classification, so
+      committing recoverable working-tree records after a failed chain step does
+      not bypass or weaken ratification and mechanical checks. The deadline and
+      progress behavior is represented in the domain type, documented in the
+      append-only decisions log, and covered by a focused test.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 9551
+      outputTokens: 1869
+      usd: 0.075584
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: The change adds deadline and progress tracking to the chain workflow
+      and CLI to preserve ledger run records and spend accounting in the event
+      of timeouts or interrupted runs. It does not touch AGENTS.md, does not
+      weaken verification or concurrence checks (§3.15), and maintains accurate
+      provenance and revision accounting (§3.14). Unit tests and documentation
+      in DECISIONS.md and MAINTENANCE.md properly cover the new behavior.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 10363
+      outputTokens: 286
+      usd: 0.008845
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff is pipeline/ops only: deadline and progress writing for
+      `aletheia next`, workflow timeout/PR-always so interrupted sittings still
+      commit and open a PR, plus tests and DECISIONS/MAINTENANCE notes.
+      AGENTS.md is untouched. No content/ citations, confidence material, run
+      records, or fabricated provenance. Opening the PR on partial/deadline
+      outcomes with explicit interrupted labeling strengthens spend/ledger
+      accountability rather than weakening §3.15 checks; the panel still judges
+      before merge."
+    cost:
+      model: grok-4.5
+      inputTokens: 9894
+      outputTokens: 124
+      usd: 0.020647
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "This is an operational-infrastructure change — a deadline flag,
+      incremental progress writes, and an `if: always()` PR step — with no
+      content records, citations, or AGENTS.md edits in the diff. It does not
+      weaken the §3.15 checks: the PR still goes to the Arbiter with standing
+      deriving on merge, and the change actually strengthens honest labeling by
+      naming interrupted/partial accounts in the title and body ('nothing is
+      inferred here', 'the account below is what had completed') rather than
+      silently presenting a truncated sitting as complete. No fabrication risk
+      arises (citation verification found no identifiers; run-account absence is
+      appropriate since no content run is carried), and spend rows reaching the
+      ledger improves rather than dodges provenance. Docs are updated and tests
+      cover the new deadline and progress behavior, consistent with §8–§9."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 10430
+      outputTokens: 642
+      usd: 0.001886
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 48828
+  outputTokens: 3904
+  usd: 0.1777
+harvestedAt: 2026-09-10

@@ -1,0 +1,127 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 258
+title: Records name the run that wrote them, and runs list what they wrote
+url: https://github.com/ejhong/aletheia/pull/258
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-10
+judgedAgainst: 346a719543
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches only docs, schemas, tests, and pipeline code —
+      AGENTS.md is untouched, and the CITATION VERIFICATION section reports no
+      citation identifiers added under content/, so there is no fabrication or
+      confidence surface here. The change strengthens rather than weakens
+      §3.15's inspectability requirement: it adds an optional `producedBy` field
+      so an edition, its draft assessment, and each check seat's record name the
+      pipeline run that wrote them, and a `wrote` list on the run record so the
+      link runs both ways. Crucially, the stamp is only applied when a real run
+      id is passed (`...(ctx.runId ? { producedBy: ctx.runId } : {})`), and the
+      added test asserts that a by-hand edition leaves the field undefined
+      rather than inventing a run — the opposite of a fabricated provenance
+      detail. The file-header comments now name the run and its path
+      (`proposals/<runId>/run.yaml`), which is honest attribution, and the
+      assessment header still says 'NOT human reviewed', preserving §4's rule
+      against implying human review. Schema additions are `.optional()`, so
+      existing records still validate and no check is loosened; `closeRun` only
+      writes `wrote` when non-empty. The DECISIONS.md entry is recorded as a
+      seat objection on #257 with date and channel, consistent with the
+      operating-record provision, and is not presented as a founder amendment."
+    cost:
+      model: claude-opus-5
+      inputTokens: 7809
+      outputTokens: 576
+      usd: 0.093364
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: The change improves exact provenance by distinguishing each content
+      record’s own `runId` from the pipeline run identified by `producedBy`,
+      while recording reciprocal repository-relative paths in the run’s `wrote`
+      field. The edition and check pipelines populate these fields from the
+      actual open run rather than model-supplied data, and handwritten editions
+      omit `producedBy` instead of inventing provenance. Assessment and edition
+      headers also identify the producing run and retain the existing
+      append-only and non-human-reviewed labels. No constitution file, citation,
+      confidential material, ratification status, or fail-closed check is
+      weakened by the diff.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 8979
+      outputTokens: 1050
+      usd: 0.056916
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: The change adds bidirectional provenance linking between pipeline run
+      records and the editions/assessments they write via optional `producedBy`
+      and `wrote` fields. This strengthens auditability and exact provenance
+      (§3.8, §3.14, §3.15) by making it straightforward to trace from an edition
+      or assessment record back to its originating pipeline proposal run and
+      vice versa. AGENTS.md is untouched, no checks are weakened, and backwards
+      compatibility with existing records is preserved.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 10043
+      outputTokens: 495
+      usd: 0.009388
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff adds optional producedBy on
+      AssessmentRunSchema/EditionSchema and optional wrote on RunRecordSchema,
+      wires them through assembleEdition, validateCheckReply, closeRun, and the
+      check/edition pipelines, and documents the bidirectionality in
+      DATA_MODEL.md and DECISIONS.md. Optional fields leave existing records
+      valid; hand editions omit producedBy rather than inventing one; tests
+      cover both stamped and by-hand paths. No AGENTS.md edit, no citations, no
+      confidence material, no check-weakening — the change strengthens §3.15
+      inspectability (record ↔ run) without fabricating provenance.
+    cost:
+      model: grok-4.5
+      inputTokens: 9361
+      outputTokens: 145
+      usd: 0.019707
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: "This is a pure provenance-strengthening change: it adds optional
+      `producedBy` and `wrote` fields so a reader can trace an edition, its
+      assessment, and each check seat's record back to the pipeline run that
+      wrote it, and a run record forward to the files it wrote — exactly the
+      inspectability §3.14/§3.15 demand ('which model did what, when, and how it
+      was checked'). The fields are optional so every existing record still
+      validates (no silent data repair), and the hand-written case explicitly
+      leaves `producedBy` absent rather than inventing one, which honors §3.8's
+      'never invent a locator' spirit. No citations, no confidence material, no
+      AGENTS.md edit, and no check is weakened — the pre-existing `runId` fields
+      and hashes are untouched. Tests cover both the stamped and by-hand paths,
+      and docs are updated. The diff is complete (no omitted files) and contains
+      nothing addressed to me that I would need to act on; the PR body's origin
+      note is ordinary workflow metadata, not a directive."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 7619
+      outputTokens: 394
+      usd: 0.001685
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 43811
+  outputTokens: 2660
+  usd: 0.1811
+harvestedAt: 2026-09-10

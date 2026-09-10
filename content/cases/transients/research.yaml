@@ -177,3 +177,52 @@
     their nature per event rather than per population; if they no longer
     occur, a well-run null is itself informative about the pre-Sputnik
     population's origin.
+
+- id: TRN-R010
+  title: Plate-level audit of the Castle Yankee night (3–4 May 1954) and the 12–13 March 1955 nights
+  summary: Identify from the STScI XE plate list every POSS-I red plate exposed on the night before Castle Yankee and on the nights around the 12 March 1955 Nevada test; for each plate, count the high-probability (p ≥ 0.90) transients per plate and per plate quadrant, measure the edge concentration and profile statistics of those detections against matched stars, and compare per-plate detection rates with the distribution of per-plate rates across all 635 plates. Then examine the copy material for those plates under magnification, as Hambly and Blair did for E0070. If the 203 Castle Yankee-night candidates are concentrated on one or two plates with anomalous defect morphology or edge clustering, TRN-C220 stands but TRN-C006 and TRN-C224 lose their high-probability support to a plate explanation; if they are spread across many plates with star-like, coma-consistent images at rates far above the per-plate norm, TRN-C006 gains a plate-level foundation it currently lacks.
+  claimIds:
+    - TRN-C125
+    - TRN-C006
+    - TRN-C101
+  track: either
+  effortTier: desk
+  informationGain: Converts the nuclear-window question from a row-count correlation over 107,875 candidates into an inspectable property of a handful of physical plates; either outcome is decisive for the high-probability subset's contribution to TRN-C006.
+  origin:
+    ref: report 2026-09-10-inbox-transients-173613
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-draft-transients-173620
+    date: 2026-09-10
+- id: TRN-R011
+  title: Altitude- and grid-robust hotspot test on an independently extracted catalog
+  summary: Repeat the Earth-projection excess analysis using Hayes's independently extracted candidate list (SRC-HAYES-2026) rather than the VASCO working catalog, at assumed altitudes of 20,000, 25,000 and 35,786 km, with 5°, 2.5° and 10° cells and shifted grid origins, and with a preregistered control built from the same plates; for the clustering method, derive a null distribution of silhouette values from at least 1,000 random control draws rather than three. The hotspot claims move if the same Earth regions recur across altitudes, grids and the independent catalog with silhouette values outside the control distribution; they fail if the regions migrate with altitude or vanish on the independent catalog.
+  claimIds:
+    - TRN-C119
+    - TRN-C121
+    - TRN-C122
+    - TRN-C108
+  track: publication_prize
+  effortTier: desk
+  informationGain: Separates sky structure from projection geometry, working-catalog composition and survey footprint — the three confounds the current analysis shares across both of its 'independent' methods.
+  origin:
+    ref: report 2026-09-10-inbox-transients-173613
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-draft-transients-173620
+    date: 2026-09-10
+- id: TRN-R012
+  title: Preregistered shell-altitude fit with orbital dynamics and independent shadow code
+  summary: Reimplement the antisolar-angle deficit profile with an independent shadow calculation (not the earthshadow library), include orbital motion and phase-angle brightness in the forward model, and fit the shell altitude on (a) the VASCO working catalog, (b) the p > 0.7 subset, and (c) Hayes's independent catalog, reporting a formal confidence interval and goodness of fit. The altitude claim moves if all three catalogs return overlapping intervals inside 20,000–36,000 km with acceptable reduced χ²; it fails if the independent catalog shows no altitude-dependent structure or if the preferred altitude tracks the spatial cuts rather than the data.
+  claimIds:
+    - TRN-C105
+    - TRN-C107
+    - TRN-C108
+    - TRN-C005
+    - TRN-C021
+  track: publication_prize
+  effortTier: desk
+  informationGain: Replaces a range described by its authors as not a confidence interval with a preregistered estimate on a catalog nobody's thumb has touched; a null on the independent catalog would remove the altitude inference and with it the projection on which the hotspot results depend.
+  origin:
+    ref: report 2026-09-10-inbox-transients-173613
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-draft-transients-173620
+    date: 2026-09-10

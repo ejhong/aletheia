@@ -1,0 +1,155 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 257
+title: "Chain: 2026-09-10"
+url: https://github.com/ejhong/aletheia/pull/257
+verdict: pass
+reason: "4 of 5 seats affirm compliance; one seat's objection is a review note
+  the operator answers on the record: GPT-5.6 Sol (OpenAI) (§3.8, §3.14, §3.15;
+  provenance)"
+outcome: merged
+outcomeAt: 2026-09-10
+judgedAgainst: d721d1ef06
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff adds a new edition, its draft assessment, five blind
+      check-seat assessments, harvested arbiter records, run records and spend
+      lines; AGENTS.md is untouched and the citation tooling found no
+      identifiers added under content/, so there is no fabrication surface to
+      test. Every assessment file carries runId, model, date, promptVersion,
+      humanReviewed: false, role (draft|check) and the ledgerHash it judged, and
+      the edition header labels itself a candidate that replaces the incumbent
+      only if the panel prefers it — no unratified draft is dressed as ratified
+      (§3.15, §4). The substantive editorial act is a downgrade: DEEP-C009 moves
+      from weakly supported to unresolved because its only record (DEEP-E023) is
+      a context pointer to an unretrieved Vidale & Micheli study, and the
+      article's Jiroft paragraph is rewritten to match — that strengthens
+      §3.6/§3.7 rather than dodging any check. The article repeatedly states
+      that all twelve records come from one unverified self-published source,
+      grades most featured claims 'unresolved', flags prior-driven grades as
+      such, and displays four competing accounts with named decisive tests,
+      which satisfies §3.3, §3.5, §3.11 and §3.13. Seat disagreement is
+      displayed rather than suppressed: four seats say unresolved, one
+      weakly_supported, one mixed — all within one step of the draft — and each
+      seat's own words are preserved. The one omitted file is a working model
+      reply, deliberately excluded per the run-account convention, and nothing
+      in the account I can see suggests it hides a violation."
+    cost:
+      model: claude-opus-5
+      inputTokens: 125551
+      outputTokens: 827
+      usd: 0.651624
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: violates
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: The visible records carry mutually inconsistent run provenance. The
+      actual edition execution is recorded as
+      `2026-09-10-edition-deep-memory-120824`, while the published assessment
+      claims runId `2026-09-10-edition-121547` and the edition uses
+      `edition-2026-09-10-121547`; no corresponding execution record for the
+      claimed assessment runId is shown. Likewise, the check execution is
+      `2026-09-10-check-deep-memory-121549`, while raw seat files and installed
+      assessments assert differing shortened or vendor-specific runIds without
+      documenting them as sub-runs. This prevents readers from reconstructing
+      exactly which run produced each assessment, contrary to the required
+      model/runId/date/promptVersion stamps; the fix is to use the actual
+      execution identifiers or explicitly separate artifact IDs from documented
+      sub-call IDs. The omitted `reply.json` is not needed to establish the
+      mismatch among the public records shown.
+    paradigm: provenance
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 3
+      outputTokens: 1773
+      usd: 0.07016
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.5
+      - §3.6
+      - §3.8
+      - §3.13
+      - §3.14
+      - §3.15
+    reasoning: The pull request accurately updates the Deep Memory edition and adds
+      the corresponding draft and five-seat check assessments, maintaining full
+      alignment with §3.15 multi-model concurrence. The edition corrects
+      DEEP-C009 from weakly supported to unresolved in strict adherence to §3.6
+      (recognizing that a citation pointer to an unretrieved paper constitutes
+      context rather than direct evidence of wear traces), and updates the
+      article text and rationale accordingly. All five check seats (Gemini, GLM,
+      GPT, Grok, Opus) are recorded with their explicit reasoning and case
+      verdicts, all falling within one step of the draft's unresolved standing.
+      Provenance stamps, run records, spend logs, and harvested arbiter files
+      are properly recorded and append-only, and no citations or constitution
+      files are modified.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 95459
+      outputTokens: 2372
+      usd: 0.080489
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The visible change is an append-only deep-memory edition plus five
+      stamped check assessments, run records, spend lines, and harvested arbiter
+      logs. No AGENTS.md edit, no new citation identifiers (verification empty),
+      and no confidence material. The draft honestly grades the thin self-report
+      ledger unresolved, corrects DEEP-C009 to unresolved because DEEP-E023 is
+      context-only (pointer ≠ support), keeps competing accounts and cruxes, and
+      labels role/draft stamps with humanReviewed: false. The five-seat panel is
+      complete; case verdicts (three unresolved, one weakly_supported, one
+      mixed) all sit within one step of the draft on the §3.15 scale and are
+      displayed in full. The failed report run is recorded with its credit
+      error; the sole omitted file is the edition working reply, which the
+      run-account rules exclude by design."
+    cost:
+      model: grok-4.5
+      inputTokens: 110
+      outputTokens: 201
+      usd: 0.02796
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.13
+      - §3.14
+      - §3.15
+    reasoning: "The diff adds no citations (the tooling confirms no identifiers were
+      added under content/), edits no AGENTS.md, and every new assessment and
+      edition file is append-only, stamped with runId/model/promptVersion/date,
+      and labeled humanReviewed: false with role labels — nothing AI-generated
+      is presented as a human or ratified judgment. The edition's content is
+      exactly what the constitution asks for under a thin ledger: it grades the
+      case unresolved, repeatedly tells the reader that all twelve evidence
+      records are weak self-reports from one unverified source, downgrades
+      DEEP-C009 to unresolved on the rule that a pointer to an unretrieved study
+      is not support (a tightening, not a loosening, of §3.6/§3.7), and displays
+      disagreement rather than hiding it — the five check seats
+      (weakly_supported, three unresolved, mixed) all fall within one step of
+      the draft's unresolved verdict under the §3.15 graded scale, with each
+      seat's own words displayed beside the standing. The failed report run for
+      pre-columbian-amazon is fail-closed (zero calls, zero cost, nothing
+      produced) and recorded honestly, and the spend.yaml entries reconcile with
+      the run records (the five check-seat costs sum to the reported 0.68699).
+      Minor imperfections — abbreviated runId strings in the proposals/ seat
+      files versus the full runId in run.yaml — are record-keeping noise, not
+      misattribution of who did what or how it was checked."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 4351
+      outputTokens: 1659
+      usd: 0.014269
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 225474
+  outputTokens: 6832
+  usd: 0.8445
+harvestedAt: 2026-09-10

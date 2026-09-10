@@ -803,3 +803,791 @@
     extractedBy: "Fable (AI agent)"
     runId: "trn-microscopy-2026-08-24"
     date: "2026-08-24"
+
+- id: TRN-E025
+  title: "Modelling preprint: global shadow deficit recomputed across assumed altitudes, largest at 25,000 km"
+  claimIds:
+    - TRN-C105
+  sourceId: SRC-VILLARROEL-2026
+  direction: supports
+  strength: moderate
+  sourceStatement: The source recomputes the Earth-shadow deficit D = 1 − f_obs/f_control on the full 107,875-row catalog for assumed altitudes from 20,000 to 60,000 km (Table 1) and reports it significant at all altitudes, with the "largest and formally most significant deficit occurring at an assumed altitude" of 25,000 km (complete sample D = 0.573 ± 0.031; GSO D = 0.517 ± 0.054).
+  editorInference: Same catalog, same group, same earthshadow code as TRN-E010/E011's subject matter; this is a re-analysis of the contested rows, not an independent extraction. The deficit values here (~0.5) are defined differently from the '~30%' the same source quotes in its introduction (p. 3) and from the 0.46% vs 1.4% figures in TRN-C005; the magnitude of the deficit is therefore definition-dependent and should not be compared across papers without the formula. Watters' non-uniform-background objection (TRN-E011) is not addressed by this table.
+  exactLocator: "[p. 8], Table 1 and surrounding text"
+  limitations:
+    - Working catalog only; not an independently extracted candidate list
+    - Deficit definition and control sample (100 random points per plate on 635 plates) are the group's own
+    - The source does not engage the background non-uniformity critique of TRN-E011
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-10-inbox-transients-173613
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-draft-transients-173620
+    date: 2026-09-10
+- id: TRN-E051
+  title: "Modelling preprint: shadow-deficit magnitude depends on assumed altitude and on the sample definition — part 3"
+  claimIds:
+    - TRN-C005
+  sourceId: SRC-VILLARROEL-2026
+  direction: qualifies
+  strength: moderate
+  sourceStatement: The empty stripes in the spatial distribution and edge effects near survey boundaries "may influence the results, as may edge effects near the boundaries" of the transient surveys.
+  editorInference: TRN-C005 states a single deficit at geosynchronous altitude; this source makes the reported deficit a function of assumed altitude and of a spatial cut applied after the fact. The need to exclude regions with empty stripes concedes part of the Watters point (TRN-E011) that the background is not uniform. This does not deny the deficit; it makes its stated magnitude conditional.
+  exactLocator: "[p. 8]"
+  limitations:
+    - Same catalog and same control construction as the original claim
+    - Spatial restriction chosen by the authors, not preregistered
+  reviewState: ai_extracted
+  origin:
+    ref: split of TRN-E026 (report 2026-09-10-inbox-transients-173613)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-transients-174405
+    date: 2026-09-10
+- id: TRN-E052
+  title: "Modelling preprint: quality-filtered (p>0.7) sample shows a larger deficit than the full sample at every altitude — part 2"
+  claimIds:
+    - TRN-C129
+  sourceId: SRC-VILLARROEL-2026
+  direction: supports
+  strength: moderate
+  sourceStatement: After quality filtering, the "Earth-shadow deficit becomes stronger at all tested altitudes".
+  editorInference: The filter is the same group's ML classifier (TRN-E015); a classifier trained on visually classified data that removes defect-like rows would increase any signal that defects dilute, whether or not the residual is astrophysical. Strengthening under the group's own filter is consistent with TRN-E015 but is not independent of it.
+  exactLocator: "[p. 8], Table 1 (Q-filtered rows)"
+  limitations: &a1
+    - Filter and catalog both originate with the same group
+    - Only 17 quality-filtered transients fall in shadow at altitudes ≥35,000 km; small-number regime
+  reviewState: ai_extracted
+  origin:
+    ref: split of TRN-E027 (report 2026-09-10-inbox-transients-173613)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-transients-174405
+    date: 2026-09-10
+- id: TRN-E053
+  title: "Modelling preprint: quality-filtered (p>0.7) sample shows a larger deficit than the full sample at every altitude — part 4"
+  claimIds:
+    - TRN-C129
+  sourceId: SRC-VILLARROEL-2026
+  direction: supports
+  strength: moderate
+  sourceStatement: In the quality-filtered sample, "the largest deficit is found at an assumed altitude of 35,000 km", where it reaches 0.805 ± 0.049 (16.4σ).
+  editorInference: The filter is the same group's ML classifier (TRN-E015); a classifier trained on visually classified data that removes defect-like rows would increase any signal that defects dilute, whether or not the residual is astrophysical. Strengthening under the group's own filter is consistent with TRN-E015 but is not independent of it.
+  exactLocator: "[p. 8], Table 1 (Q-filtered rows)"
+  limitations: *a1
+  reviewState: ai_extracted
+  origin:
+    ref: split of TRN-E027 (report 2026-09-10-inbox-transients-173613)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-transients-174405
+    date: 2026-09-10
+- id: TRN-E054
+  title: "Modelling preprint: χ² fit of the angular deficit profile to spherical-shell models — part 2"
+  claimIds:
+    - TRN-C107
+  sourceId: SRC-VILLARROEL-2026
+  direction: context
+  strength: weak
+  sourceStatement: 'The analysis is run on both the complete catalogue and the quality-filtered sample and "repeated for three fitting intervals": 0°–18°, 0°–20°, and 0°–25°.'
+  editorInference: Reduced χ² at the best fit is 3.5–5.4 for the complete sample, i.e. the model does not fit well in absolute terms; the authors acknowledge the model lacks orbital dynamics and phase-dependent brightness. The preferred altitude from this estimator (20,000 km) sits below GSO, while the projection used in the companion hotspot paper assumes 35,786 km.
+  exactLocator: "[p. 11] and Table 2 [p. 12]"
+  limitations:
+    - Simplified Monte Carlo without orbital dynamics
+    - No formal confidence interval; range is a spread across choices
+    - Fit restricted to the 'drop' region by the authors
+    - "Direction set to \"context\" (from \"supports\") by the second reader (claude-sonnet-5, 2026-09-10, run 2026-09-10-verify-transients-174405, verify-v5) at intake: The quoted sentence only reports that three fitting intervals were used for both samples; it does not state the specific finding in TRN-C107 that the complete-sample minimum falls at 20,000 km for each interval. As such it establishes methodology rather than confirming the claim's substantive result, so it should be classified as context rather than supports, though it still bears on TRN-C107 since it describes the procedure underlying that finding."
+  reviewState: ai_extracted
+  origin:
+    ref: split of TRN-E028 (report 2026-09-10-inbox-transients-173613)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-transients-174405
+    date: 2026-09-10
+  readerActs:
+    - field: direction
+      from: supports
+      to: context
+      model: claude-sonnet-5
+      promptVersion: verify-v5
+      runId: 2026-09-10-verify-transients-174405
+      date: 2026-09-10
+      reason: The quoted sentence only reports that three fitting intervals were used for both samples; it does not state the specific finding in TRN-C107 that the complete-sample minimum falls at 20,000 km for each interval. As such it establishes methodology rather than confirming the claim's substantive result, so it should be classified as context rather than supports, though it still bears on TRN-C107 since it describes the procedure underlying that finding.
+- id: TRN-E055
+  title: "Modelling preprint: χ² fit of the angular deficit profile to spherical-shell models — part 3"
+  claimIds:
+    - TRN-C107
+  sourceId: SRC-VILLARROEL-2026
+  direction: supports
+  strength: weak
+  sourceStatement: For the complete transient catalogue, "the complete sample consistently yields a minimum" χ² at 20,000 km above the Earth's surface across all three fitting intervals (Table 2).
+  editorInference: Reduced χ² at the best fit is 3.5–5.4 for the complete sample, i.e. the model does not fit well in absolute terms; the authors acknowledge the model lacks orbital dynamics and phase-dependent brightness. The preferred altitude from this estimator (20,000 km) sits below GSO, while the projection used in the companion hotspot paper assumes 35,786 km.
+  exactLocator: "[p. 11] and Table 2 [p. 12]"
+  limitations:
+    - Simplified Monte Carlo without orbital dynamics
+    - No formal confidence interval; range is a spread across choices
+    - Fit restricted to the 'drop' region by the authors
+  reviewState: ai_extracted
+  origin:
+    ref: split of TRN-E028 (report 2026-09-10-inbox-transients-173613)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-transients-174405
+    date: 2026-09-10
+- id: TRN-E056
+  title: "Modelling preprint: χ² fit of the angular deficit profile to spherical-shell models — part 4"
+  claimIds:
+    - TRN-C107
+  sourceId: SRC-VILLARROEL-2026
+  direction: context
+  strength: weak
+  sourceStatement: For the quality-filtered sample, the best-fitting altitude "shifts slightly from 20 000 km for the" 0°–18° interval to 25,000 km for the 0°–20° and 0°–25° intervals (Table 2).
+  editorInference: Reduced χ² at the best fit is 3.5–5.4 for the complete sample, i.e. the model does not fit well in absolute terms; the authors acknowledge the model lacks orbital dynamics and phase-dependent brightness. The preferred altitude from this estimator (20,000 km) sits below GSO, while the projection used in the companion hotspot paper assumes 35,786 km.
+  exactLocator: "[p. 11] and Table 2 [p. 12]"
+  limitations:
+    - Simplified Monte Carlo without orbital dynamics
+    - No formal confidence interval; range is a spread across choices
+    - Fit restricted to the 'drop' region by the authors
+    - "Direction set to \"context\" (from \"supports\") by the second reader (claude-sonnet-5, 2026-09-10, run 2026-09-10-verify-transients-174405, verify-v5) at intake: The quote accurately reflects the paper's statement about the quality-filtered sample's best-fit altitude shifting from 20,000 km (0-18° interval) to 25,000 km (0-20° and 0-25° intervals), and the locator (p.11, Table 2) is correct. However, claim TRN-C107 specifically asserts that the *complete* VASCO catalog's χ² minimum is invariant at 20,000 km across all three intervals — a distinct sentence in the same paragraph referring to a different sample. The quoted passage about the quality-filtered sample actually shows variation rather than invariance, so it neither supports nor undermines the complete-sample claim; at best it is background context about the same modelling exercise."
+  reviewState: ai_extracted
+  origin:
+    ref: split of TRN-E028 (report 2026-09-10-inbox-transients-173613)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-transients-174405
+    date: 2026-09-10
+  readerActs:
+    - field: direction
+      from: supports
+      to: context
+      model: claude-sonnet-5
+      promptVersion: verify-v5
+      runId: 2026-09-10-verify-transients-174405
+      date: 2026-09-10
+      reason: The quote accurately reflects the paper's statement about the quality-filtered sample's best-fit altitude shifting from 20,000 km (0-18° interval) to 25,000 km (0-20° and 0-25° intervals), and the locator (p.11, Table 2) is correct. However, claim TRN-C107 specifically asserts that the *complete* VASCO catalog's χ² minimum is invariant at 20,000 km across all three intervals — a distinct sentence in the same paragraph referring to a different sample. The quoted passage about the quality-filtered sample actually shows variation rather than invariance, so it neither supports nor undermines the complete-sample claim; at best it is background context about the same modelling exercise.
+- id: TRN-E057
+  title: "Modelling preprint: χ² fit of the angular deficit profile to spherical-shell models — part 7"
+  claimIds:
+    - TRN-C107
+  sourceId: SRC-VILLARROEL-2026
+  direction: context
+  strength: weak
+  sourceStatement: The combined 20,000–35,000 km altitude range reflects variation between samples, fitting intervals, and estimators "rather than a formal statistical confidence interval".
+  editorInference: Reduced χ² at the best fit is 3.5–5.4 for the complete sample, i.e. the model does not fit well in absolute terms; the authors acknowledge the model lacks orbital dynamics and phase-dependent brightness. The preferred altitude from this estimator (20,000 km) sits below GSO, while the projection used in the companion hotspot paper assumes 35,786 km.
+  exactLocator: "[p. 11] and Table 2 [p. 12]"
+  limitations:
+    - Simplified Monte Carlo without orbital dynamics
+    - No formal confidence interval; range is a spread across choices
+    - Fit restricted to the 'drop' region by the authors
+    - "Direction set to \"context\" (from \"supports\") by the second reader (claude-sonnet-5, 2026-09-10, run 2026-09-10-verify-transients-174405, verify-v5) at intake: The quoted sentence is accurately quoted and appears at p.11, and it fairly reports the authors' caveat about the 20,000-35,000 km combined range not being a formal confidence interval. However, TRN-C107 is a specific claim about the χ² minimum landing at 20,000 km for each of the three fitting intervals using the complete catalog, a result stated in the preceding paragraph, not in the quoted sentence, which instead caveats the broader multi-method altitude range. The quoted passage therefore provides background/interpretive context on the overall altitude estimate rather than confirming or weakening the specific per-interval χ² minimum claim, so it should be marked as 'context' rather than 'supports'."
+  reviewState: ai_extracted
+  origin:
+    ref: split of TRN-E028 (report 2026-09-10-inbox-transients-173613)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-transients-174405
+    date: 2026-09-10
+  readerActs:
+    - field: direction
+      from: supports
+      to: context
+      model: claude-sonnet-5
+      promptVersion: verify-v5
+      runId: 2026-09-10-verify-transients-174405
+      date: 2026-09-10
+      reason: The quoted sentence is accurately quoted and appears at p.11, and it fairly reports the authors' caveat about the 20,000-35,000 km combined range not being a formal confidence interval. However, TRN-C107 is a specific claim about the χ² minimum landing at 20,000 km for each of the three fitting intervals using the complete catalog, a result stated in the preceding paragraph, not in the quoted sentence, which instead caveats the broader multi-method altitude range. The quoted passage therefore provides background/interpretive context on the overall altitude estimate rather than confirming or weakening the specific per-interval χ² minimum claim, so it should be marked as 'context' rather than 'supports'.
+- id: TRN-E058
+  title: "Modelling preprint: declination excess of high-probability transients at 5–20° — part 1"
+  claimIds:
+    - TRN-C130
+  sourceId: SRC-VILLARROEL-2026
+  direction: supports
+  strength: moderate
+  sourceStatement: For transients with p > 0.7, 100° < R.A. < 250°, and Dec. > 3° (11,418 objects), "A significant excess is observed at low declinations" (~5–20°).
+  editorInference: The comparison is against the group's per-plate random control; the authors note the first bin is edge-sensitive and that without the Dec > 3° cut the excess there approaches zero. A declination excess near the celestial equator is what a GSO-belt population would give, but also what a declination-dependent defect or vetting rate would give; the source does not test the latter.
+  exactLocator: "[p. 9], Figure 2 [p. 10]"
+  limitations: &a2
+    - Control sample is the group's own construction
+    - Secondary peak at ~65° unexplained
+    - Sensitive to the declination cut at the low end
+  reviewState: ai_extracted
+  origin:
+    ref: split of TRN-E029 (report 2026-09-10-inbox-transients-173613)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-transients-174405
+    date: 2026-09-10
+- id: TRN-E059
+  title: "Modelling preprint: declination excess of high-probability transients at 5–20° — part 2"
+  claimIds:
+    - TRN-C130
+  sourceId: SRC-VILLARROEL-2026
+  direction: supports
+  strength: moderate
+  sourceStatement: At low declinations (~5–20°), the transient counts exceed control-sample expectations "by factors of approximately 30 – 75%".
+  editorInference: The comparison is against the group's per-plate random control; the authors note the first bin is edge-sensitive and that without the Dec > 3° cut the excess there approaches zero. A declination excess near the celestial equator is what a GSO-belt population would give, but also what a declination-dependent defect or vetting rate would give; the source does not test the latter.
+  exactLocator: "[p. 9], Figure 2 [p. 10]"
+  limitations: *a2
+  reviewState: ai_extracted
+  origin:
+    ref: split of TRN-E029 (report 2026-09-10-inbox-transients-173613)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-transients-174405
+    date: 2026-09-10
+- id: TRN-E030
+  title: "Modelling preprint: transients reported depleted near the ecliptic (citing Doherty 2026a)"
+  claimIds:
+    - TRN-C110
+  sourceId: SRC-VILLARROEL-2026
+  direction: supports
+  strength: weak
+  sourceStatement: The source states that while natural Solar-System populations concentrate near the ecliptic, the Palomar "transients instead exhibit a depletion near the ecliptic", attributing the spatial-distribution constraint to Doherty [2026a].
+  editorInference: This is a secondary statement; the primary analysis is attributed to SRC-DOHERTY-2026, whose text was not shown in this pass. Recorded weak; the primary record should be extracted from Doherty when read.
+  exactLocator: "[p. 21]"
+  limitations:
+    - Secondary citation within the source; primary not shown here
+    - No numbers given in this passage
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-10-inbox-transients-173613
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-draft-transients-173620
+    date: 2026-09-10
+- id: TRN-E060
+  title: "Modelling preprint: inferred reflecting-facet sizes from centimetres to ~3 m — part 2"
+  claimIds:
+    - TRN-C111
+  sourceId: SRC-VILLARROEL-2026
+  direction: context
+  strength: weak
+  sourceStatement: The size calculation adopts altitudes of 20,000 km to 35,786 km, specular reflection, flash durations of 0.1–1 s, reflectivity r = 0.1–1, and dilution over the plate exposure, since "these flashes are diluted over the exposure time" of approximately 50 minutes for POSS-I red plates.
+  editorInference: Every input is assumed (altitude, specularity, duration, reflectivity); the output is a derivation, not a measurement. It bears on TRN-C021/C022 only conditionally and adds no evidential weight to whether the marks are flashes at all.
+  exactLocator: "[p. 27]; method [p. 13]; Figures 3–4 [pp. 14–15]"
+  limitations:
+    - Entirely model-dependent on unmeasured inputs
+    - Planar perfect-reflector idealisation
+    - Sample excludes R ≤ 12.4 mag sources, biasing toward small facets
+    - "Direction set to \"context\" (from \"supports\") by the second reader (claude-sonnet-5, 2026-09-10, run 2026-09-10-verify-transients-174405, verify-v5) at intake: The passage at p.13 (and Figures 3–4) accurately describes the method's input assumptions (altitude range, specular reflection, flash duration, reflectivity, exposure dilution) and the quoted phrase is correctly attributed and located. However, the record only restates the modelling premises rather than the derived outcome (the cm-to-3m facet sizes) that the conditional claim TRN-C111 actually asserts, so it functions as background/method context for the inference rather than as direct support for the claim's stated size conclusion; I judge the appropriate direction to be 'context' rather than 'supports'."
+  reviewState: ai_extracted
+  origin:
+    ref: split of TRN-E031 (report 2026-09-10-inbox-transients-173613)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-transients-174405
+    date: 2026-09-10
+  readerActs:
+    - field: direction
+      from: supports
+      to: context
+      model: claude-sonnet-5
+      promptVersion: verify-v5
+      runId: 2026-09-10-verify-transients-174405
+      date: 2026-09-10
+      reason: The passage at p.13 (and Figures 3–4) accurately describes the method's input assumptions (altitude range, specular reflection, flash duration, reflectivity, exposure dilution) and the quoted phrase is correctly attributed and located. However, the record only restates the modelling premises rather than the derived outcome (the cm-to-3m facet sizes) that the conditional claim TRN-C111 actually asserts, so it functions as background/method context for the inference rather than as direct support for the claim's stated size conclusion; I judge the appropriate direction to be 'context' rather than 'supports'.
+- id: TRN-E061
+  title: "Modelling preprint: inferred reflecting-facet sizes from centimetres to ~3 m — part 3"
+  claimIds:
+    - TRN-C111
+  sourceId: SRC-VILLARROEL-2026
+  direction: supports
+  strength: weak
+  sourceStatement: Across the adopted parameter range, the modelling yields reflecting facets with "equivalent linear sizes ranging from centimetre scales" up to approximately 3 m, depending on observed magnitude, flash duration, and specular reflectivity.
+  editorInference: Every input is assumed (altitude, specularity, duration, reflectivity); the output is a derivation, not a measurement. It bears on TRN-C021/C022 only conditionally and adds no evidential weight to whether the marks are flashes at all.
+  exactLocator: "[p. 27]; method [p. 13]; Figures 3–4 [pp. 14–15]"
+  limitations:
+    - Entirely model-dependent on unmeasured inputs
+    - Planar perfect-reflector idealisation
+    - Sample excludes R ≤ 12.4 mag sources, biasing toward small facets
+  reviewState: ai_extracted
+  origin:
+    ref: split of TRN-E031 (report 2026-09-10-inbox-transients-173613)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-transients-174405
+    date: 2026-09-10
+- id: TRN-E062
+  title: "Modelling preprint: bright-source exclusion in the catalog biases inferred sizes downward — part 1"
+  claimIds:
+    - TRN-C111
+  sourceId: SRC-VILLARROEL-2026
+  direction: qualifies
+  strength: moderate
+  sourceStatement: An important limitation of the study is that it relies on the sample selection of Solano et al. 2022, "in which bright objects were excluded".
+  editorInference: "The authors' own caveat: the size range is a floor set by selection, not a property of any population."
+  exactLocator: "[p. 27]"
+  limitations: &a3
+    - Authors' self-stated limitation; magnitude of the bias not quantified
+  reviewState: ai_extracted
+  origin:
+    ref: split of TRN-E032 (report 2026-09-10-inbox-transients-173613)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-transients-174405
+    date: 2026-09-10
+- id: TRN-E063
+  title: "Modelling preprint: bright-source exclusion in the catalog biases inferred sizes downward — part 2"
+  claimIds:
+    - TRN-C111
+  sourceId: SRC-VILLARROEL-2026
+  direction: qualifies
+  strength: moderate
+  sourceStatement: As a result of the bright-object exclusion, "larger objects in geosynchronous orbits were filtered out", biasing the sample toward smaller objects and potentially affecting the conclusions.
+  editorInference: "The authors' own caveat: the size range is a floor set by selection, not a property of any population."
+  exactLocator: "[p. 27]"
+  limitations: *a3
+  reviewState: ai_extracted
+  origin:
+    ref: split of TRN-E032 (report 2026-09-10-inbox-transients-173613)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-transients-174405
+    date: 2026-09-10
+- id: TRN-E064
+  title: "Modelling preprint: characteristic modelled flash duration ~320 ms — part 2"
+  claimIds:
+    - TRN-C131
+  sourceId: SRC-VILLARROEL-2026
+  direction: supports
+  strength: weak
+  sourceStatement: The combined simulated distribution "yields a characteristic flash duration of ∼ 320 ms".
+  editorInference: "The paper's own elongation threshold offers a test: if the characteristic 320 ms flash at 20,000 km should already elongate, the point-like profiles constrain the model. Recorded as the source's derivation; no plate measurement of duration exists."
+  exactLocator: "[p. 17], Figure 5 [p. 18]"
+  limitations:
+    - Simulation output, not measured
+    - Self-noted tension with point-like PSFs at the longer durations
+  reviewState: ai_extracted
+  origin:
+    ref: split of TRN-E034 (report 2026-09-10-inbox-transients-173613)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-transients-174405
+    date: 2026-09-10
+- id: TRN-E065
+  title: "Modelling preprint: characteristic modelled flash duration ~320 ms — part 3"
+  claimIds:
+    - TRN-C131
+  sourceId: SRC-VILLARROEL-2026
+  direction: qualifies
+  strength: weak
+  sourceStatement: Because of the objects' apparent motion across the sky, flashes longer than approximately 0.2–0.3 s at 20,000 km and about 0.5 s at GSO "may produce detectable image elongation rather than point-like PSFs".
+  editorInference: "The paper's own elongation threshold offers a test: if the characteristic 320 ms flash at 20,000 km should already elongate, the point-like profiles constrain the model. Recorded as the source's derivation; no plate measurement of duration exists."
+  exactLocator: "[p. 17], Figure 5 [p. 18]"
+  limitations:
+    - Simulation output, not measured
+    - Self-noted tension with point-like PSFs at the longer durations
+    - "Direction set to \"qualifies\" (from \"supports\") by the second reader (claude-sonnet-5, 2026-09-10, run 2026-09-10-verify-transients-174405, verify-v5) at intake: The quoted sentence is accurately drawn from p.17 and correctly represents a caveat about image elongation for longer flashes, not a direct assertion of the ~320 ms/60–600 ms duration values themselves. It functions as a constraint on the plausibility of longer durations rather than as direct support for the specific characteristic duration claim, so 'qualifies' better captures its role than 'supports.' The locator is reasonably placed (text on p.17, Figure 5 on p.18 discusses the same duration distribution), and the statement is a single, atomic proposition."
+  reviewState: ai_extracted
+  origin:
+    ref: split of TRN-E034 (report 2026-09-10-inbox-transients-173613)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-transients-174405
+    date: 2026-09-10
+  readerActs:
+    - field: direction
+      from: supports
+      to: qualifies
+      model: claude-sonnet-5
+      promptVersion: verify-v5
+      runId: 2026-09-10-verify-transients-174405
+      date: 2026-09-10
+      reason: The quoted sentence is accurately drawn from p.17 and correctly represents a caveat about image elongation for longer flashes, not a direct assertion of the ~320 ms/60–600 ms duration values themselves. It functions as a constraint on the plausibility of longer durations rather than as direct support for the specific characteristic duration claim, so 'qualifies' better captures its role than 'supports.' The locator is reasonably placed (text on p.17, Figure 5 on p.18 discusses the same duration distribution), and the statement is a single, atomic proposition.
+- id: TRN-E069
+  title: "Modelling preprint: no robust association between transient dates and IAU meteor showers (negative result) — part 1"
+  claimIds:
+    - TRN-C116
+  sourceId: SRC-VILLARROEL-2026
+  direction: supports
+  strength: weak
+  sourceStatement: A search for correlations between transient detections and annual meteor showers from the IAU Meteor Data Centre used "a permutation test that accounts for seasonal observing biases", testing whether the transients result from Earth passing through clouds of natural objects.
+  editorInference: A negative result against one natural pathway (cometary debris), recorded as such. Test details (which catalogues, how many permutations, effect size) are not given in the passage, so strength is weak.
+  exactLocator: "[p. 23]"
+  limitations: &a4
+    - No statistical details reported
+    - Applies only to shower-associated debris, not to a persistent natural population
+  reviewState: ai_extracted
+  origin:
+    ref: split of TRN-E037 (report 2026-09-10-inbox-transients-173613)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-transients-174405
+    date: 2026-09-10
+- id: TRN-E070
+  title: "Modelling preprint: no robust association between transient dates and IAU meteor showers (negative result) — part 2"
+  claimIds:
+    - TRN-C116
+  sourceId: SRC-VILLARROEL-2026
+  direction: supports
+  strength: weak
+  sourceStatement: Between transient detections and annual meteor showers, "No statistically robust association was found".
+  editorInference: A negative result against one natural pathway (cometary debris), recorded as such. Test details (which catalogues, how many permutations, effect size) are not given in the passage, so strength is weak.
+  exactLocator: "[p. 23]"
+  limitations: *a4
+  reviewState: ai_extracted
+  origin:
+    ref: split of TRN-E037 (report 2026-09-10-inbox-transients-173613)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-transients-174405
+    date: 2026-09-10
+- id: TRN-E071
+  title: "Modelling preprint: no robust association between transient dates and IAU meteor showers (negative result) — part 3"
+  claimIds:
+    - TRN-C116
+  sourceId: SRC-VILLARROEL-2026
+  direction: supports
+  strength: weak
+  sourceStatement: The apparent transient–meteor-shower effect "depended on the adopted meteor-shower catalogue".
+  editorInference: A negative result against one natural pathway (cometary debris), recorded as such. Test details (which catalogues, how many permutations, effect size) are not given in the passage, so strength is weak.
+  exactLocator: "[p. 23]"
+  limitations: *a4
+  reviewState: ai_extracted
+  origin:
+    ref: split of TRN-E037 (report 2026-09-10-inbox-transients-173613)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-transients-174405
+    date: 2026-09-10
+- id: TRN-E038
+  title: "Modelling preprint: dusty-plasma sizes do not match inferred object sizes"
+  claimIds:
+    - TRN-C117
+  sourceId: SRC-VILLARROEL-2026
+  direction: supports
+  strength: weak
+  sourceStatement: Discussing the dusty-plasma mechanism proposed by Cann (2026a,b), the source states that millimetre-scale plasma particles do not align with the object sizes inferred in this work and that, unless the size estimates are substantially revised, "this discrepancy essentially rules out dusty-plasma interpretations" of the population.
+  editorInference: This narrows the natural near-Earth route that TRN-E020 (SRC-CANN-2026C) put on the table for TRN-C021, but only via the source's own model-dependent size inference (TRN-C207/E207), which is itself selection-biased (TRN-E208). One toy model excluding another does not move the observation rung.
+  exactLocator: "[p. 24]"
+  limitations:
+    - Rests on the paper's own size inference
+    - Cann's mechanism is not modelled directly
+    - "Second reader (claude-sonnet-5, 2026-09-10, run 2026-09-10-verify-transients-174405, verify-v5) found the passage bears on TRN-C117 and not on TRN-C021; the link dropped at intake: The passage on p.24 states almost verbatim what TRN-C117 asserts (millimetre-scale plasma particles mismatch inferred facet sizes, essentially ruling out dusty-plasma origin absent revision), so it directly supports C117 rather than merely qualifying it. It does not bear on TRN-C021, since ruling out one specific near-Earth mechanism (dusty plasma) says nothing about whether the transients generally are near-Earth reflections versus distant sources; both competing hypotheses discussed here (plasma vs. metallic facets) are near-Earth origin explanations, so this passage does not test the near-vs-far claim in C021."
+    - 'Direction set to "supports" (from "qualifies") by the second reader (claude-sonnet-5, 2026-09-10, run 2026-09-10-verify-transients-174405, verify-v5) at intake: The passage on p.24 states almost verbatim what TRN-C117 asserts (millimetre-scale plasma particles mismatch inferred facet sizes, essentially ruling out dusty-plasma origin absent revision), so it directly supports C117 rather than merely qualifying it. It does not bear on TRN-C021, since ruling out one specific near-Earth mechanism (dusty plasma) says nothing about whether the transients generally are near-Earth reflections versus distant sources; both competing hypotheses discussed here (plasma vs. metallic facets) are near-Earth origin explanations, so this passage does not test the near-vs-far claim in C021.'
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-10-inbox-transients-173613
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-draft-transients-173620
+    date: 2026-09-10
+  readerActs:
+    - field: claimIds
+      from:
+        - TRN-C117
+        - TRN-C021
+      to:
+        - TRN-C117
+      model: claude-sonnet-5
+      promptVersion: verify-v5
+      runId: 2026-09-10-verify-transients-174405
+      date: 2026-09-10
+      reason: The passage on p.24 states almost verbatim what TRN-C117 asserts (millimetre-scale plasma particles mismatch inferred facet sizes, essentially ruling out dusty-plasma origin absent revision), so it directly supports C117 rather than merely qualifying it. It does not bear on TRN-C021, since ruling out one specific near-Earth mechanism (dusty plasma) says nothing about whether the transients generally are near-Earth reflections versus distant sources; both competing hypotheses discussed here (plasma vs. metallic facets) are near-Earth origin explanations, so this passage does not test the near-vs-far claim in C021.
+    - field: direction
+      from: qualifies
+      to: supports
+      model: claude-sonnet-5
+      promptVersion: verify-v5
+      runId: 2026-09-10-verify-transients-174405
+      date: 2026-09-10
+      reason: The passage on p.24 states almost verbatim what TRN-C117 asserts (millimetre-scale plasma particles mismatch inferred facet sizes, essentially ruling out dusty-plasma origin absent revision), so it directly supports C117 rather than merely qualifying it. It does not bear on TRN-C021, since ruling out one specific near-Earth mechanism (dusty plasma) says nothing about whether the transients generally are near-Earth reflections versus distant sources; both competing hypotheses discussed here (plasma vs. metallic facets) are near-Earth origin explanations, so this passage does not test the near-vs-far claim in C021.
+- id: TRN-E072
+  title: "Modelling preprint: NHI toy model claimed to be the only one fitting all five features — part 1"
+  claimIds:
+    - TRN-C118
+  sourceId: SRC-VILLARROEL-2026
+  direction: supports
+  strength: weak
+  sourceStatement: 'Among the toy models considered in this paper, "an NHI scenario is the only one that" in principle simultaneously accommodates all five observational features: slightly narrower PSFs than real stars, observed groupings, the Earth-shadow deficit, the temporal correlation with nuclear testing (and UFOs), and the anticorrelation with the geomagnetic storm index Kp.'
+  editorInference: An argument from residual explanatory fit among a hand-chosen set of toy models. Three of the five 'features' are contested at the catalog level (TRN-C005, C006, C103) and one (PSF narrowness) is read both ways (TRN-E003/E004/E006). Its bearing on TRN-C023 is nominal; TRN-C023 remains without any test that could refute it, as the companion hotspot preprint concedes (TRN-E225).
+  exactLocator: "[p. 24]"
+  limitations:
+    - Inference over toy models chosen by the authors
+    - Premised on features whose reality is unresolved elsewhere in the ledger
+    - Not a test
+    - "Second reader (claude-sonnet-5, 2026-09-10, run 2026-09-10-verify-transients-174405, verify-v5) found the passage bears on TRN-C118 and not on TRN-C023; the link dropped at intake: The quote is accurately drawn from p.24 and fairly restates the authors' own hedged claim that, among the toy models they considered, only the NHI scenario accommodates all five listed features, so it directly supports TRN-C118. It does not bear on TRN-C023, which asserts as fact that the objects are extraterrestrial artifacts; the source explicitly frames this as a tentative toy-model comparison ('in principle,' 'nature can always surprise us'), not an evidentiary finding that the objects are ET artifacts, so that stronger claim is not supported by this passage."
+  reviewState: ai_extracted
+  origin:
+    ref: split of TRN-E039 (report 2026-09-10-inbox-transients-173613)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-transients-174405
+    date: 2026-09-10
+  readerActs:
+    - field: claimIds
+      from: &a5
+        - TRN-C118
+        - TRN-C023
+      to:
+        - TRN-C118
+      model: claude-sonnet-5
+      promptVersion: verify-v5
+      runId: 2026-09-10-verify-transients-174405
+      date: 2026-09-10
+      reason: The quote is accurately drawn from p.24 and fairly restates the authors' own hedged claim that, among the toy models they considered, only the NHI scenario accommodates all five listed features, so it directly supports TRN-C118. It does not bear on TRN-C023, which asserts as fact that the objects are extraterrestrial artifacts; the source explicitly frames this as a tentative toy-model comparison ('in principle,' 'nature can always surprise us'), not an evidentiary finding that the objects are ET artifacts, so that stronger claim is not supported by this passage.
+- id: TRN-E073
+  title: "Modelling preprint: NHI toy model claimed to be the only one fitting all five features — part 2"
+  claimIds:
+    - TRN-C118
+  sourceId: SRC-VILLARROEL-2026
+  direction: qualifies
+  strength: weak
+  sourceStatement: This claim is qualified by the caveat that "nature can always surprise us with new physical phenomena" beyond our current imagination.
+  editorInference: An argument from residual explanatory fit among a hand-chosen set of toy models. Three of the five 'features' are contested at the catalog level (TRN-C005, C006, C103) and one (PSF narrowness) is read both ways (TRN-E003/E004/E006). Its bearing on TRN-C023 is nominal; TRN-C023 remains without any test that could refute it, as the companion hotspot preprint concedes (TRN-E225).
+  exactLocator: "[p. 24]"
+  limitations:
+    - Inference over toy models chosen by the authors
+    - Premised on features whose reality is unresolved elsewhere in the ledger
+    - Not a test
+    - "Second reader (claude-sonnet-5, 2026-09-10, run 2026-09-10-verify-transients-174405, verify-v5) found the passage bears on TRN-C118 and not on TRN-C023; the link dropped at intake: The quoted caveat is a hedge acknowledging uncertainty about the NHI toy-model conclusion, not an assertion supporting it, so it should be marked as qualifying rather than supporting TRN-C118. It has no bearing on TRN-C023 (whether the objects actually were ET artifacts), since it is merely a rhetorical caveat about the reasoning process, not a factual claim about the objects' origin. The quote, statement, and locator otherwise check out."
+    - "Direction set to \"qualifies\" (from \"supports\") by the second reader (claude-sonnet-5, 2026-09-10, run 2026-09-10-verify-transients-174405, verify-v5) at intake: The quoted caveat is a hedge acknowledging uncertainty about the NHI toy-model conclusion, not an assertion supporting it, so it should be marked as qualifying rather than supporting TRN-C118. It has no bearing on TRN-C023 (whether the objects actually were ET artifacts), since it is merely a rhetorical caveat about the reasoning process, not a factual claim about the objects' origin. The quote, statement, and locator otherwise check out."
+  reviewState: ai_extracted
+  origin:
+    ref: split of TRN-E039 (report 2026-09-10-inbox-transients-173613)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-transients-174405
+    date: 2026-09-10
+  readerActs:
+    - field: claimIds
+      from: *a5
+      to:
+        - TRN-C118
+      model: claude-sonnet-5
+      promptVersion: verify-v5
+      runId: 2026-09-10-verify-transients-174405
+      date: 2026-09-10
+      reason: The quoted caveat is a hedge acknowledging uncertainty about the NHI toy-model conclusion, not an assertion supporting it, so it should be marked as qualifying rather than supporting TRN-C118. It has no bearing on TRN-C023 (whether the objects actually were ET artifacts), since it is merely a rhetorical caveat about the reasoning process, not a factual claim about the objects' origin. The quote, statement, and locator otherwise check out.
+    - field: direction
+      from: supports
+      to: qualifies
+      model: claude-sonnet-5
+      promptVersion: verify-v5
+      runId: 2026-09-10-verify-transients-174405
+      date: 2026-09-10
+      reason: The quoted caveat is a hedge acknowledging uncertainty about the NHI toy-model conclusion, not an assertion supporting it, so it should be marked as qualifying rather than supporting TRN-C118. It has no bearing on TRN-C023 (whether the objects actually were ET artifacts), since it is merely a rhetorical caveat about the reasoning process, not a factual claim about the objects' origin. The quote, statement, and locator otherwise check out.
+- id: TRN-E074
+  title: "Modelling preprint: explicitly assumes real Earth-orbit sources; offers no test of the flash-vs-defect crux — part 2"
+  claimIds:
+    - TRN-C021
+  sourceId: SRC-VILLARROEL-2026
+  direction: supports
+  strength: weak
+  sourceStatement: "\"Approximately one-third of the sample is estimated to arise from solar\" reflections, as inferred from the deficit of transients within the Earth's shadow."
+  editorInference: "Zero diagnosticity for TRN-C020: nothing in the paper distinguishes flash from defect. Its bearing on TRN-C021 is as a hypothesis-elaboration, conditional on TRN-C005 surviving TRN-E011's critique. Recorded so the dependency is explicit."
+  exactLocator: "[p. 5]"
+  limitations:
+    - Assumption, not evidence
+    - "Second reader (claude-sonnet-5, 2026-09-10, run 2026-09-10-verify-transients-174405, verify-v5) found the passage bears on TRN-C021 and not on TRN-C020; the link dropped at intake: The quoted line reports an inference (from the Earth-shadow deficit) that roughly a third of transients are solar reflections, which is affirmative evidence bearing on TRN-C021's claim of near-Earth reflective origin, not mere background context; it says nothing about the telescope-optics-versus-emulsion question in TRN-C020, so that link is dropped. The quote and locator are accurate and the statement is not overstated."
+    - "Direction set to \"supports\" (from \"context\") by the second reader (claude-sonnet-5, 2026-09-10, run 2026-09-10-verify-transients-174405, verify-v5) at intake: The quoted line reports an inference (from the Earth-shadow deficit) that roughly a third of transients are solar reflections, which is affirmative evidence bearing on TRN-C021's claim of near-Earth reflective origin, not mere background context; it says nothing about the telescope-optics-versus-emulsion question in TRN-C020, so that link is dropped. The quote and locator are accurate and the statement is not overstated."
+  reviewState: ai_extracted
+  origin:
+    ref: split of TRN-E040 (report 2026-09-10-inbox-transients-173613)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-transients-174405
+    date: 2026-09-10
+  readerActs:
+    - field: claimIds
+      from:
+        - TRN-C020
+        - TRN-C021
+      to:
+        - TRN-C021
+      model: claude-sonnet-5
+      promptVersion: verify-v5
+      runId: 2026-09-10-verify-transients-174405
+      date: 2026-09-10
+      reason: The quoted line reports an inference (from the Earth-shadow deficit) that roughly a third of transients are solar reflections, which is affirmative evidence bearing on TRN-C021's claim of near-Earth reflective origin, not mere background context; it says nothing about the telescope-optics-versus-emulsion question in TRN-C020, so that link is dropped. The quote and locator are accurate and the statement is not overstated.
+    - field: direction
+      from: context
+      to: supports
+      model: claude-sonnet-5
+      promptVersion: verify-v5
+      runId: 2026-09-10-verify-transients-174405
+      date: 2026-09-10
+      reason: The quoted line reports an inference (from the Earth-shadow deficit) that roughly a third of transients are solar reflections, which is affirmative evidence bearing on TRN-C021's claim of near-Earth reflective origin, not mere background context; it says nothing about the telescope-optics-versus-emulsion question in TRN-C020, so that link is dropped. The quote and locator are accurate and the statement is not overstated.
+- id: TRN-E041
+  title: "Hotspot preprint: 16 of 137 Earth-projected 5°×5° cells show Bonferroni-significant transient excess"
+  claimIds:
+    - TRN-C119
+  sourceId: SRC-BRUEHL-2026
+  direction: supports
+  strength: moderate
+  sourceStatement: Projecting p ≥ 0.70 transients (11,418) and plate-aware controls (23,814) onto a 35,786 km shell and binning in 5°×5° Earth-fixed cells, the source reports that of 137 cells with ≥5 expected transients, 16 cells "exhibited a significant excess of transients relative to random control" expectations under Bonferroni-corrected conditional binomial tests (Table 1), concentrated in the eastern Pacific west of southern Mexico/Central America, the southern Gulf of Mexico, and one cell in the southwestern US.
+  editorInference: The excess is relative to the group's own per-plate random control, and the absolute O/E ratios are largest (up to 17.9) in cells fed by one to three plates (Supplemental Table 1). ChatGPT is stated to have assisted sample preparation and the tests. A plate whose defect rate is high would project its excess to whatever Earth cell the fixed-altitude geometry assigns it, so hotspot significance is not a test of the sky.
+  exactLocator: "[p. 5], Table 1 [p. 31]"
+  limitations:
+    - Fixed 35,786 km projection; locations shift with altitude
+    - Same working catalog and ML filter as all group results
+    - Control is the group's own construction
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-10-inbox-transients-173613
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-draft-transients-173620
+    date: 2026-09-10
+- id: TRN-E075
+  title: "Hotspot preprint: most hotspot cells are fed by more than one plate; two by a single plate (XE435) — part 1"
+  claimIds:
+    - TRN-C132
+  sourceId: SRC-BRUEHL-2026
+  direction: supports
+  strength: moderate
+  sourceStatement: Decomposing each significant 5° × 5° cell by photographic plate, fourteen of the 16 cells "showed a transient excess beyond expectations on at least two" different plates.
+  editorInference: Useful against the single-bad-plate explanation for most cells, though the two highest-O/E cells after the Pacific ones (5 and 8, O/E 16.6 and 9.9) are single-plate. The paper also concedes (p. 17) that because both methods use the same transient sample, "their agreement alone does not rule out this possibility" of defect-driven hotspots.
+  exactLocator: "[p. 6]; Supplemental Table 1 [p. 34]"
+  limitations:
+    - Plate overlap is defined in projected coordinates, not on the sky
+    - Per-plate significance tested at unadjusted p<0.05
+  reviewState: ai_extracted
+  origin:
+    ref: split of TRN-E042 (report 2026-09-10-inbox-transients-173613)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-transients-174405
+    date: 2026-09-10
+- id: TRN-E076
+  title: "Hotspot preprint: most hotspot cells are fed by more than one plate; two by a single plate (XE435) — part 2"
+  claimIds:
+    - TRN-C132
+  sourceId: SRC-BRUEHL-2026
+  direction: context
+  strength: moderate
+  sourceStatement: Of the 16 significant cells, 12 showed a transient excess "on at least three plates" when decomposed by contributing photographic plate.
+  editorInference: Useful against the single-bad-plate explanation for most cells, though the two highest-O/E cells after the Pacific ones (5 and 8, O/E 16.6 and 9.9) are single-plate. The paper also concedes (p. 17) that because both methods use the same transient sample, "their agreement alone does not rule out this possibility" of defect-driven hotspots.
+  exactLocator: "[p. 6]; Supplemental Table 1 [p. 34]"
+  limitations:
+    - Plate overlap is defined in projected coordinates, not on the sky
+    - Per-plate significance tested at unadjusted p<0.05
+    - "Direction set to \"context\" (from \"supports\") by the second reader (claude-sonnet-5, 2026-09-10, run 2026-09-10-verify-transients-174405, verify-v5) at intake: The quoted figure (12 of 16 cells showing excess on at least three plates) is accurately taken from the unadjusted plate-decomposition analysis on p.6, but it is a different statistic than the one the claim actually asserts (14 cells at ≥2 plates and the 2 cells at 92.5°W tied exclusively to plate XE435). It corroborates the general theme that hotspots are not single-plate artifacts but does not itself confirm or deny the specific 14/2-cell breakdown stated in TRN-C120, so it functions as contextual corroboration rather than direct support of that claim's specific content."
+  reviewState: ai_extracted
+  origin:
+    ref: split of TRN-E042 (report 2026-09-10-inbox-transients-173613)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-transients-174405
+    date: 2026-09-10
+  readerActs:
+    - field: direction
+      from: supports
+      to: context
+      model: claude-sonnet-5
+      promptVersion: verify-v5
+      runId: 2026-09-10-verify-transients-174405
+      date: 2026-09-10
+      reason: The quoted figure (12 of 16 cells showing excess on at least three plates) is accurately taken from the unadjusted plate-decomposition analysis on p.6, but it is a different statistic than the one the claim actually asserts (14 cells at ≥2 plates and the 2 cells at 92.5°W tied exclusively to plate XE435). It corroborates the general theme that hotspots are not single-plate artifacts but does not itself confirm or deny the specific 14/2-cell breakdown stated in TRN-C120, so it functions as contextual corroboration rather than direct support of that claim's specific content.
+- id: TRN-E077
+  title: "Hotspot preprint: most hotspot cells are fed by more than one plate; two by a single plate (XE435) — part 3"
+  claimIds:
+    - TRN-C132
+    - TRN-C133
+  sourceId: SRC-BRUEHL-2026
+  direction: supports
+  strength: moderate
+  sourceStatement: The two adjacent cells centered at 92.5° W (Hotspots 5 and 8) "were associated exclusively with a single plate, XE435" (Supplemental Table 1).
+  editorInference: Useful against the single-bad-plate explanation for most cells, though the two highest-O/E cells after the Pacific ones (5 and 8, O/E 16.6 and 9.9) are single-plate. The paper also concedes (p. 17) that because both methods use the same transient sample, "their agreement alone does not rule out this possibility" of defect-driven hotspots.
+  exactLocator: "[p. 6]; Supplemental Table 1 [p. 34]"
+  limitations:
+    - Plate overlap is defined in projected coordinates, not on the sky
+    - Per-plate significance tested at unadjusted p<0.05
+    - "Second reader (claude-sonnet-5, 2026-09-10, run 2026-09-10-verify-transients-174405, verify-v5) disputes the stated direction toward TRN-C132: The quote accurately reports that Hotspots 5 and 8 were the two exceptions tied to a single plate (XE435), consistent with Supplemental Table 1 showing one contributing plate for each. However, this passage does not itself assert or establish that the other 14 hotspots showed excess on at least two plates (TRN-C132); it merely identifies the complementary exception cells, so it bears on the topic without directly supporting the claim's specific numerical finding, making 'context' the more accurate direction than 'supports'."
+  reviewState: ai_extracted
+  origin:
+    ref: split of TRN-E042 (report 2026-09-10-inbox-transients-173613)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-transients-174405
+    date: 2026-09-10
+- id: TRN-E078
+  title: "Hotspot preprint: fixed-altitude dependence of projected locations, and a misquoted altitude range — part 1"
+  claimIds:
+    - TRN-C119
+  sourceId: SRC-BRUEHL-2026
+  direction: context
+  strength: moderate
+  sourceStatement: 'Transients were projected onto a spherical shell at geosynchronous altitude using line-of-sight geometry from the Palomar Observatory coordinates: "we used line-of-sight projection geometry to project all transients".'
+  editorInference: The companion modelling preprint (SRC-VILLARROEL-2026-MODELLING) gives 20,000–35,000 km above the surface, with its χ² estimator preferring 20,000 km; 26,371 km is that paper's geocentric shell radius for a 20,000 km altitude, so the hotspot paper has conflated radius with altitude. More consequentially, every hotspot location is computed at the top of the companion's range; at 20,000 km the same transients project to different Earth cells and the geographic identifications (Sedona, White Sands, Tampico) would move.
+  exactLocator: "[p. 19]; misquote at [p. 4]"
+  limitations:
+    - Single assumed altitude; no sensitivity analysis across altitudes shown
+    - "Direction set to \"context\" (from \"qualifies\") by the second reader (claude-sonnet-5, 2026-09-10, run 2026-09-10-verify-transients-174405, verify-v5) at intake: The quote at p.19 accurately describes the line-of-sight projection methodology used to place transients at geosynchronous altitude, and the sourceStatement fairly restates this without overreach; the locator is correct despite the odd 'misquote at p.4' annotation, which does not correspond to any actual conflicting text there. However, this passage is purely methodological (how projections were computed) and does not itself assert, limit, or condition the truth of the specific hotspot-significance claims (C119) or non-random concentration claims (C123); it merely provides background context for both, so 'context' is the correct direction rather than 'qualifies'."
+  reviewState: ai_extracted
+  origin:
+    ref: split of TRN-E043 (report 2026-09-10-inbox-transients-173613)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-transients-174405
+    date: 2026-09-10
+  readerActs:
+    - field: direction
+      from: qualifies
+      to: context
+      model: claude-sonnet-5
+      promptVersion: verify-v5
+      runId: 2026-09-10-verify-transients-174405
+      date: 2026-09-10
+      reason: The quote at p.19 accurately describes the line-of-sight projection methodology used to place transients at geosynchronous altitude, and the sourceStatement fairly restates this without overreach; the locator is correct despite the odd 'misquote at p.4' annotation, which does not correspond to any actual conflicting text there. However, this passage is purely methodological (how projections were computed) and does not itself assert, limit, or condition the truth of the specific hotspot-significance claims (C119) or non-random concentration claims (C123); it merely provides background context for both, so 'context' is the correct direction rather than 'qualifies'.
+- id: TRN-E079
+  title: "Hotspot preprint: random control samples also meet the paper's non-random clustering criterion — part 1"
+  claimIds:
+    - TRN-C122
+  sourceId: SRC-BRUEHL-2026
+  direction: supports
+  strength: moderate
+  sourceStatement: Cluster analysis of the first random control sample of n = 897 locations identified three clusters with an average silhouette value of 0.50, "just meeting the minimal criterion for non-random clustering".
+  editorInference: "Negative-control result recorded on the authors' own terms: the 0.50 criterion they state as indicating non-random clustering is met or exceeded by random points, so silhouette alone does not separate sky structure from survey footprint. Only three control draws were run; no null distribution of silhouette values is given."
+  exactLocator: "[p. 9]–[p. 10]; discussion [p. 12]"
+  limitations:
+    - Only three control samples
+    - No formal comparison of 0.70 against the control distribution
+    - "Second reader (claude-sonnet-5, 2026-09-10, run 2026-09-10-verify-transients-174405, verify-v5) found the passage bears on TRN-C122, TRN-C123 and not on TRN-C121; the link dropped at intake: The quoted silhouette-0.50 finding for the first random control sample is accurately reported and located at p.9-10, and it bears on the case question. However, calling this 'qualifies' undersells that it directly instantiates and confirms TRN-C122's claim that random samples meet/exceed the 0.50 threshold (that is a support relation for C122), while it only indirectly bears on C123 by raising the possibility that some hotspots are survey artifacts (a genuine qualification there). It does not bear at all on TRN-C121, which concerns the real-transient cluster silhouette of 0.70, not the control sample's result, so that claim link should be dropped."
+    - "Direction set to \"supports\" (from \"qualifies\") by the second reader (claude-sonnet-5, 2026-09-10, run 2026-09-10-verify-transients-174405, verify-v5) at intake: The quoted silhouette-0.50 finding for the first random control sample is accurately reported and located at p.9-10, and it bears on the case question. However, calling this 'qualifies' undersells that it directly instantiates and confirms TRN-C122's claim that random samples meet/exceed the 0.50 threshold (that is a support relation for C122), while it only indirectly bears on C123 by raising the possibility that some hotspots are survey artifacts (a genuine qualification there). It does not bear at all on TRN-C121, which concerns the real-transient cluster silhouette of 0.70, not the control sample's result, so that claim link should be dropped."
+  reviewState: ai_extracted
+  origin:
+    ref: split of TRN-E045 (report 2026-09-10-inbox-transients-173613)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-transients-174405
+    date: 2026-09-10
+  readerActs:
+    - field: claimIds
+      from:
+        - TRN-C121
+        - TRN-C122
+        - TRN-C123
+      to:
+        - TRN-C122
+        - TRN-C123
+      model: claude-sonnet-5
+      promptVersion: verify-v5
+      runId: 2026-09-10-verify-transients-174405
+      date: 2026-09-10
+      reason: The quoted silhouette-0.50 finding for the first random control sample is accurately reported and located at p.9-10, and it bears on the case question. However, calling this 'qualifies' undersells that it directly instantiates and confirms TRN-C122's claim that random samples meet/exceed the 0.50 threshold (that is a support relation for C122), while it only indirectly bears on C123 by raising the possibility that some hotspots are survey artifacts (a genuine qualification there). It does not bear at all on TRN-C121, which concerns the real-transient cluster silhouette of 0.70, not the control sample's result, so that claim link should be dropped.
+    - field: direction
+      from: qualifies
+      to: supports
+      model: claude-sonnet-5
+      promptVersion: verify-v5
+      runId: 2026-09-10-verify-transients-174405
+      date: 2026-09-10
+      reason: The quoted silhouette-0.50 finding for the first random control sample is accurately reported and located at p.9-10, and it bears on the case question. However, calling this 'qualifies' undersells that it directly instantiates and confirms TRN-C122's claim that random samples meet/exceed the 0.50 threshold (that is a support relation for C122), while it only indirectly bears on C123 by raising the possibility that some hotspots are survey artifacts (a genuine qualification there). It does not bear at all on TRN-C121, which concerns the real-transient cluster silhouette of 0.70, not the control sample's result, so that claim link should be dropped.
+- id: TRN-E083
+  title: "Hotspot preprint: authors state the intelligence interpretation is not falsifiable — part 2"
+  claimIds:
+    - TRN-C023
+  sourceId: SRC-BRUEHL-2026
+  direction: qualifies
+  strength: weak
+  sourceStatement: Of the intelligence hypothesis, "it is unfortunately not falsifiable", even though it may fit the available data.
+  editorInference: Consistent with the ledger's verdict that TRN-C023 is presently untestable; the proponents say so of their own strongest interpretation. Bears on the claim's testability, not its truth.
+  exactLocator: "[p. 17]"
+  limitations:
+    - Authors' self-assessment
+    - "Direction set to \"qualifies\" (from \"context\") by the second reader (claude-sonnet-5, 2026-09-10, run 2026-09-10-verify-transients-174405, verify-v5) at intake: The quote is accurately drawn from p.17 where the authors caution that the 'intelligence' interpretation, while fitting the data, is unfalsifiable. This is not merely background context but a direct qualification of confidence in the very hypothesis that underlies TRN-C023 (extraterrestrial artifact origin), so it should be marked 'qualifies' rather than 'context.' The statement is atomic, correctly located, and bears specifically on TRN-C023 since it addresses the evidentiary status of the intelligence/artifact hypothesis."
+  reviewState: ai_extracted
+  origin:
+    ref: split of TRN-E049 (report 2026-09-10-inbox-transients-173613)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-transients-174405
+    date: 2026-09-10
+  readerActs:
+    - field: direction
+      from: context
+      to: qualifies
+      model: claude-sonnet-5
+      promptVersion: verify-v5
+      runId: 2026-09-10-verify-transients-174405
+      date: 2026-09-10
+      reason: The quote is accurately drawn from p.17 where the authors caution that the 'intelligence' interpretation, while fitting the data, is unfalsifiable. This is not merely background context but a direct qualification of confidence in the very hypothesis that underlies TRN-C023 (extraterrestrial artifact origin), so it should be marked 'qualifies' rather than 'context.' The statement is atomic, correctly located, and bears specifically on TRN-C023 since it addresses the evidentiary status of the intelligence/artifact hypothesis.
+- id: TRN-E084
+  title: "Hotspot preprint: authors state the intelligence interpretation is not falsifiable — part 3"
+  claimIds:
+    - TRN-C023
+  sourceId: SRC-BRUEHL-2026
+  direction: context
+  strength: weak
+  sourceStatement: Replication in contemporaneous data from other observatories, such as "Lick Observatory which like Mount Palomar is in California", may clarify the most appropriate interpretation of transient characteristics.
+  editorInference: Consistent with the ledger's verdict that TRN-C023 is presently untestable; the proponents say so of their own strongest interpretation. Bears on the claim's testability, not its truth.
+  exactLocator: "[p. 17]"
+  limitations:
+    - Authors' self-assessment
+  reviewState: ai_extracted
+  origin:
+    ref: split of TRN-E049 (report 2026-09-10-inbox-transients-173613)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-transients-174405
+    date: 2026-09-10

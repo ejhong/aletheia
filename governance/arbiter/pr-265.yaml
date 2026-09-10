@@ -1,0 +1,130 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 265
+title: "Run links completed on the sitting's records: the edition and the five
+  check records name the run that wrote them, and the run records list what they
+  wrote"
+url: https://github.com/ejhong/aletheia/pull/265
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-10
+judgedAgainst: 19d8165f95
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The change is a narrow provenance-completion: it adds `producedBy`
+      to one edition and five check assessments, and `wrote` lists to the two
+      corresponding run records, plus an append-only history entry. The links
+      are internally consistent with the RUN ACCOUNT: the check run
+      2026-09-10-check-deep-memory-121549 lists exactly the five seat files
+      whose headers now point back to it, and the edition run
+      2026-09-10-edition-deep-memory-120824 lists the edition
+      edition-2026-09-10-121547 (whose runId timestamp postdates the run's
+      start, as expected) and its assessment. Nothing is deleted or rewritten;
+      the adopted assessment file is deliberately left untouched so its content
+      hash still matches what the edition adopts, and the history entry says so
+      plainly. The history entry is stamped with actor, model, date, session, PR
+      number and aiAssisted: true, and states the review note it answers (§3.14,
+      §3.15 accountability satisfied rather than weakened). No AGENTS.md edit,
+      no check loosened, no citations added (verification found none), no
+      confidential material. The PR body's requests and assertions were treated
+      as data, not directives; the diff itself supports the claims made about
+      it."
+    cost:
+      model: claude-opus-5
+      inputTokens: 16682
+      outputTokens: 635
+      usd: 0.102479
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: The added `producedBy` values correspond exactly to the run IDs whose
+      `wrote` lists name those edition and check-record paths, improving
+      reconstructable provenance rather than inventing it. The history entry
+      records what changed, why, when, and by which model-operated session and
+      PR. Although existing assessment files receive metadata, no verdict,
+      reasoning, evidence interpretation, or adopted content hash is altered,
+      and the correction is visibly recorded in append-only history. No
+      citation, confidential material, constitution edit, false ratification, or
+      weakening of a required check is introduced.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 14136
+      outputTokens: 1186
+      usd: 0.080776
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: "The change adds reciprocal provenance links between run records and
+      the generated edition/assessment records for the 2026-09-10 Deep Memory
+      sitting, answering review note #263. Each record now explicitly lists
+      `producedBy` and the corresponding proposal run records list `wrote`. The
+      update is transparently documented in the case history without altering
+      substantive assessments or claims, satisfying §3.8, §3.14, and §3.15."
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 17370
+      outputTokens: 483
+      usd: 0.014839
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: The diff only adds producedBy on the edition and five check records,
+      wrote lists on the two run.yaml files, and an append-only history entry.
+      RUN ACCOUNT confirms those runIds actually wrote exactly those paths, so
+      the links are factual provenance completion, not invention. The adopted
+      assessment body is intentionally untouched to preserve its content hash;
+      its run remains named on the edition and in its own header. No AGENTS.md
+      edit, no citations, no confidence material, and no check is loosened—the
+      change answers the prior review note by tightening run linkage.
+    cost:
+      model: grok-4.5
+      inputTokens: 15839
+      outputTokens: 150
+      usd: 0.032693
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: "This is a housekeeping PR that completes provenance links flagged by
+      review note #263, and every link it adds is confirmed by the run account
+      generated from the repo's own tooling: the run record
+      2026-09-10-check-deep-memory-121549 (verb: check, 5 panel seats)
+      pre-exists and its new `wrote:` list matches exactly the five check
+      assessment files the diff stamps with `producedBy`, and the edition run
+      2026-09-10-edition-deep-memory-120824 likewise matches the edition file's
+      new `producedBy`. No AGENTS.md edit, no check weakened, no CI or
+      validation logic touched, and no citation or locator is fabricated — the
+      citation verification found no identifiers in the added lines. Leaving the
+      adopted assessment 2026-09-10-edition-121547 unedited is correctly
+      reasoned under the append-only overlay rule (its content hash is what the
+      edition adopts), with the run named on the edition and in that file's own
+      header instead. The change is documented in history.yaml with date, actor,
+      reason, and aiAssisted stamped, satisfying §3.14; the added `producedBy`
+      lines strengthen rather than dodge §3.8 and §3.15."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 12050
+      outputTokens: 3164
+      usd: 0.004081
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 76077
+  outputTokens: 5618
+  usd: 0.2349
+harvestedAt: 2026-09-10

@@ -304,3 +304,361 @@
     extractedBy: "Fable (AI agent)"
     runId: "transients-import-2026-08-22"
     date: "2026-08-22"
+
+- id: TRN-C105
+  statement: When the Earth-shadow deficit D = 1 − f_obs/f_control is recomputed on the complete 107,875-row VASCO working catalog for assumed shell altitudes of 20,000–60,000 km, the deficit is largest at an assumed altitude of 25,000 km (D ≈ 0.57) rather than at geosynchronous altitude.
+  theme: population-statistics
+  rung: observation
+  claimType: statistical
+  sourceAnchor:
+    locator: "[p. 8]"
+    quote: largest and formally most significant deficit occurring at an assumed altitude
+    sourceId: SRC-VILLARROEL-2026
+  parentClaimIds: []
+  dependsOnClaimIds:
+    - TRN-C005
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-10-inbox-transients-173613
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-draft-transients-173620
+    date: 2026-09-10
+- id: TRN-C129
+  statement: The Earth-shadow deficit becomes stronger at all tested altitudes after applying the quality filtering.
+  theme: population-statistics
+  rung: observation
+  claimType: statistical
+  sourceAnchor:
+    locator: "[p. 8]"
+    quote: Earth-shadow deficit becomes stronger at all tested altitudes
+    sourceId: SRC-VILLARROEL-2026
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: split of TRN-C106 (report 2026-09-10-inbox-transients-173613)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-transients-174405
+    date: 2026-09-10
+  alternativeToClaimIds: []
+  contradictsClaimIds: []
+- id: TRN-C107
+  statement: A χ² comparison of the observed deficit-versus-antisolar-angle profile of the complete VASCO working catalog against spherical-shell shadow models yields its minimum at an assumed altitude of 20,000 km above Earth's surface for each of the fitting intervals 0–18°, 0–20° and 0–25°.
+  theme: population-statistics
+  rung: observation
+  claimType: statistical
+  sourceAnchor:
+    locator: "[p. 11]"
+    quote: the complete sample consistently yields a minimum
+    sourceId: SRC-VILLARROEL-2026
+    also:
+      - locator: "[p. 11]"
+        quote: rather than a formal statistical confidence interval
+  parentClaimIds: []
+  dependsOnClaimIds:
+    - TRN-C005
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-10-inbox-transients-173613
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-draft-transients-173620
+    date: 2026-09-10
+- id: TRN-C108
+  statement: The near-Earth reflective population responsible for the Earth-shadow deficit in the VASCO working catalog lies at characteristic altitudes of approximately 20,000–35,000 km above Earth's surface.
+  theme: attribution
+  rung: attribution
+  claimType: interpretive
+  sourceAnchor:
+    locator: "[p. 11]"
+    quote: rather than a formal statistical confidence interval
+    sourceId: SRC-VILLARROEL-2026
+    also:
+      - locator: "[p. 8]"
+        quote: largest and formally most significant deficit occurring at an assumed altitude
+  parentClaimIds:
+    - TRN-C021
+  dependsOnClaimIds:
+    - TRN-C005
+    - TRN-C021
+    - TRN-C105
+    - TRN-C107
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-10-inbox-transients-173613
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-draft-transients-173620
+    date: 2026-09-10
+- id: TRN-C130
+  statement: Among high-probability transients (p > 0.7, 100° < R.A. < 250°, Dec. > 3°), a significant excess is observed at low declinations (∼5–20°), where the transient counts exceed the expectations from the control sample by factors of approximately 30–75%.
+  theme: population-statistics
+  rung: observation
+  claimType: statistical
+  sourceAnchor:
+    locator: "[p. 9]"
+    quote: A significant excess is observed at low declinations
+    sourceId: SRC-VILLARROEL-2026
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: split of TRN-C109 (report 2026-09-10-inbox-transients-173613)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-transients-174405
+    date: 2026-09-10
+  alternativeToClaimIds: []
+  contradictsClaimIds: []
+- id: TRN-C110
+  statement: High-probability VASCO transients are depleted, relative to control expectation, in the region of the sky near the ecliptic plane.
+  theme: population-statistics
+  rung: observation
+  claimType: statistical
+  sourceAnchor:
+    locator: "[p. 21]"
+    quote: transients instead exhibit a depletion near the ecliptic
+    sourceId: SRC-VILLARROEL-2026
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-10-inbox-transients-173613
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-draft-transients-173620
+    date: 2026-09-10
+- id: TRN-C111
+  statement: If the VASCO transients are specular sunlight reflections from planar facets at 20,000–35,786 km altitude with flash durations of 0.1–1 s and reflectivity 0.1–1, the reflecting facets have equivalent linear sizes from centimetre scales up to approximately 3 m.
+  theme: attribution
+  rung: attribution
+  claimType: mathematical
+  sourceAnchor:
+    locator: "[p. 27]"
+    quote: equivalent linear sizes ranging from centimetre scales
+    sourceId: SRC-VILLARROEL-2026
+  parentClaimIds:
+    - TRN-C021
+  dependsOnClaimIds:
+    - TRN-C108
+    - TRN-C021
+    - TRN-C102
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-10-inbox-transients-173613
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-draft-transients-173620
+    date: 2026-09-10
+- id: TRN-C131
+  statement: The combined flash-duration distribution from the simulations yields a characteristic flash duration of ∼320 ms.
+  theme: image-morphology
+  rung: mechanism
+  claimType: mathematical
+  sourceAnchor:
+    locator: "[p. 17]"
+    quote: yields a characteristic flash duration of
+    sourceId: SRC-VILLARROEL-2026
+  parentClaimIds:
+    - TRN-C102
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: split of TRN-C113 (report 2026-09-10-inbox-transients-173613)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-transients-174405
+    date: 2026-09-10
+  alternativeToClaimIds: []
+  contradictsClaimIds: []
+- id: TRN-C114
+  statement: In POSS-I multiple-transient events with approximately collinear flashes, closely spaced double flashes at the start or end of the track are separated perpendicular to the apparent direction of motion rather than along it.
+  theme: image-morphology
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: "[p. 20]"
+    quote: perpendicular to the apparent direction of motion, rather than along
+    sourceId: SRC-VILLARROEL-2026
+  parentClaimIds:
+    - TRN-C104
+  dependsOnClaimIds:
+    - TRN-C104
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-10-inbox-transients-173613
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-draft-transients-173620
+    date: 2026-09-10
+- id: TRN-C116
+  statement: Transient detection dates in the VASCO working catalog show no statistically robust temporal association with annual meteor showers listed by the IAU Meteor Data Centre when tested by permutation with seasonal observing biases accounted for.
+  theme: population-statistics
+  rung: observation
+  claimType: statistical
+  sourceAnchor:
+    locator: "[p. 23]"
+    quote: No statistically robust association was found
+    sourceId: SRC-VILLARROEL-2026
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-10-inbox-transients-173613
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-draft-transients-173620
+    date: 2026-09-10
+- id: TRN-C117
+  statement: The millimetre-scale particle sizes of the dusty-plasma mechanism proposed for the POSS-I transients are inconsistent with the centimetre-to-metre facet sizes inferred from transient magnitudes under the specular-reflection model, so a dusty-plasma origin is excluded unless the size inference is substantially revised.
+  theme: attribution
+  rung: attribution
+  claimType: interpretive
+  sourceAnchor:
+    locator: "[p. 24]"
+    quote: this discrepancy essentially rules out dusty-plasma interpretations
+    sourceId: SRC-VILLARROEL-2026
+  parentClaimIds:
+    - TRN-C021
+  dependsOnClaimIds:
+    - TRN-C111
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-10-inbox-transients-173613
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-draft-transients-173620
+    date: 2026-09-10
+- id: TRN-C118
+  statement: "Among the toy models considered by the VASCO group (natural reflective bodies, dusty plasma, non-human intelligence), only a non-human-intelligence scenario simultaneously accommodates all five reported features: narrower-than-stellar PSFs, groupings, the Earth-shadow deficit, the nuclear-test temporal correlation, and the geomagnetic-index anticorrelation."
+  theme: attribution
+  rung: attribution
+  claimType: interpretive
+  sourceAnchor:
+    locator: "[p. 24]"
+    quote: an NHI scenario is the only one that
+    sourceId: SRC-VILLARROEL-2026
+    also:
+      - locator: "[p. 24]"
+        quote: nature can always surprise us with new physical phenomena
+  parentClaimIds:
+    - TRN-C023
+  dependsOnClaimIds:
+    - TRN-C002
+    - TRN-C104
+    - TRN-C005
+    - TRN-C006
+    - TRN-C103
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-10-inbox-transients-173613
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-draft-transients-173620
+    date: 2026-09-10
+- id: TRN-C119
+  statement: When p ≥ 0.70 VASCO transients and plate-aware random controls are projected onto a shell at 35,786 km altitude and binned in 5°×5° Earth-fixed cells, 16 of the 137 cells with at least 5 expected transients show an excess over control expectation that is significant after Bonferroni correction.
+  theme: population-statistics
+  rung: observation
+  claimType: statistical
+  sourceAnchor:
+    locator: "[p. 5]"
+    quote: exhibited a significant excess of transients relative to random control
+    sourceId: SRC-BRUEHL-2026
+    also:
+      - locator: "[p. 19]"
+        quote: all projected locations depended on the assumed fixed altitude
+  parentClaimIds: []
+  dependsOnClaimIds:
+    - TRN-C108
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-10-inbox-transients-173613
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-draft-transients-173620
+    date: 2026-09-10
+- id: TRN-C132
+  statement: Fourteen of the 16 significant 5° × 5° hotspot cells showed a transient excess beyond expectations on at least two different POSS-I photographic plates.
+  theme: plate-forensics
+  rung: observation
+  claimType: observation
+  sourceAnchor: &a1
+    locator: "[p. 6]"
+    quote: showed a transient excess beyond expectations on at least two
+    sourceId: SRC-BRUEHL-2026
+    also:
+      - locator: "[p. 6]"
+        quote: were associated exclusively with a single plate, XE435
+  parentClaimIds: &a2
+    - TRN-C119
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: split of TRN-C120 (report 2026-09-10-inbox-transients-173613)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-transients-174405
+    date: 2026-09-10
+  alternativeToClaimIds: []
+  contradictsClaimIds: []
+- id: TRN-C133
+  statement: The two adjacent hotspot cells centered at 92.5° W (Hotspots 5 and 8) were associated exclusively with a single plate, XE435.
+  theme: plate-forensics
+  rung: observation
+  claimType: observation
+  sourceAnchor: *a1
+  parentClaimIds: *a2
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: split of TRN-C120 (report 2026-09-10-inbox-transients-173613)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-transients-174405
+    date: 2026-09-10
+  alternativeToClaimIds: []
+  contradictsClaimIds: []
+- id: TRN-C121
+  statement: Two-step cluster analysis of the Earth-projected positions (35,786 km shell) of the 897 VASCO transients with ML probability ≥ 0.90 (Dec > 3°, 100° < RA < 250°) yields six clusters with an average silhouette value of 0.70.
+  theme: population-statistics
+  rung: observation
+  claimType: statistical
+  sourceAnchor:
+    locator: "[p. 8]"
+    quote: Cluster analysis in the transient sample produced 6 very distinct clusters
+    sourceId: SRC-BRUEHL-2026
+  parentClaimIds: []
+  dependsOnClaimIds:
+    - TRN-C108
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-10-inbox-transients-173613
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-draft-transients-173620
+    date: 2026-09-10
+- id: TRN-C122
+  statement: Random control samples of 897 plate-aware positions, projected and clustered by the same two-step procedure, produce two or three clusters with average silhouette values of 0.50–0.60, meeting or exceeding the 0.50 threshold the authors adopt as indicating non-random clustering.
+  theme: population-statistics
+  rung: observation
+  claimType: statistical
+  sourceAnchor:
+    locator: "[p. 10]"
+    quote: indicating stronger clustering than in the first random dataset
+    sourceId: SRC-BRUEHL-2026
+    also:
+      - locator: "[p. 12]"
+        quote: might be artifacts of POSS-I observing parameters
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-10-inbox-transients-173613
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-draft-transients-173620
+    date: 2026-09-10
+- id: TRN-C125
+  statement: All 203 high-probability transients recorded the night before Castle Yankee project (at 35,786 km altitude) onto the Pacific hotspot regions west of Mexico and Central America, with none over the southwestern United States or the Gulf of Mexico.
+  theme: population-statistics
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: "[p. 11]"
+    quote: exclusively over Pacific hotspot regions west of Mexico and Central America
+    sourceId: SRC-BRUEHL-2026
+  parentClaimIds: []
+  dependsOnClaimIds:
+    - TRN-C108
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-10-inbox-transients-173613
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-draft-transients-173620
+    date: 2026-09-10

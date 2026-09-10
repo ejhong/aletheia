@@ -1,0 +1,172 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 266
+title: "Chain: 2026-09-10"
+url: https://github.com/ejhong/aletheia/pull/266
+verdict: park
+reason: "1 seat(s) find a violation that parks on its own: GPT-5.6 Sol (OpenAI)
+  (§3.8, §3.15, §3.5; fabrication); only 3 of 5 seats affirm compliance (4
+  required)"
+outcome: closed
+outcomeAt: 2026-09-10
+judgedAgainst: 19d8165f95
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: violates
+    rules:
+      - §3.6
+      - §3.8
+    reasoning: "Most of this change is exemplary: refusals are reasoned and
+      anchored, the two editions grade honestly against thin ledgers, seat
+      disagreement is displayed with each seat's own words, provenance stamps
+      (runId/model/promptVersion/date, humanReviewed: false, role) are present,
+      AGENTS.md is untouched, and every added identifier RESOLVES. Two
+      provenance defects are visible and should be answered on the record. (1)
+      The transients run rejected every record from the two 2026 preprints for
+      'quoted span not found verbatim' (the failed spans show mangled spacing
+      like '0 . 517 ± 0 . 054', suggesting a PDF-extraction fault), and
+      SRC-VILLARROEL-2026 / SRC-BRUEHL-2026 were both dropped because nothing
+      accepted cites them — yet the one accepted item, TRN-R010, publishes a
+      specific quantitative finding from that same rejected material ('The
+      hotspot preprint shows 227 of 231 nuclear-associated high-confidence
+      transients come from two tests') with no source record in the ledger
+      behind it. Either re-retrieve and verify the preprint text and admit it as
+      a source, or rewrite TRN-R010's summary to drop the unverified figure. (2)
+      Claim AMZ-C030 was accepted with sourceAnchor quote 'The Casarabe culture
+      area, as far as known today, spans approximately' against SRC-PRMERS-2022,
+      while the same run rejected evidence AMZ-E029 on the ground that this
+      exact span was 'not found verbatim in the source' — the two findings
+      cannot both stand, and the anchor should be re-checked or relabelled. I do
+      not call this fabrication: the identifiers resolve, the underlying
+      passages are plausibly genuine, and the run account itself flags the
+      TRN-R010 figure as coming from a failed import, so the defects look like
+      extraction/bookkeeping faults rather than invention."
+    paradigm: other
+    cost:
+      model: claude-opus-5
+      inputTokens: 157780
+      outputTokens: 3910
+      usd: 0.926569
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: violates
+    rules:
+      - §3.8
+      - §3.15
+      - §3.5
+    reasoning: The diff publishes AMZ-C030 with the exact source-anchor quote “The
+      Casarabe culture area, as far as known today, spans approximately,” even
+      though the run’s own verification explicitly rejected AMZ-E029 because
+      that quoted span was not found verbatim in the source. A resolving DOI
+      establishes that the paper exists, but does not cure a quote that the
+      verifier found absent; the anchor must be replaced with verified text or
+      removed and honestly labeled. The transients research record similarly
+      states that the hotspot preprint “shows 227 of 231” despite the verifier
+      rejecting the underlying hotspot claims for missing anchor quotes, and the
+      edition rationale itself admits TRN-R010 carries a figure from a failed
+      import. The omitted files are not needed to decide these visible failures
+      because unsupported source quotations and figures are already entering
+      public content.
+    paradigm: fabrication
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 109386
+      outputTokens: 1185
+      usd: 0.461244
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.1
+      - §3.2
+      - §3.6
+      - §3.7
+      - §3.8
+      - §3.13
+      - §3.14
+      - §3.15
+    reasoning: "The pull request executes standard pipeline runs across transients,
+      pre-columbian-amazon, and ccc in full compliance with constitutional
+      rules. Mechanical verification confirms that all newly added DOIs, URLs,
+      and citations resolve without fabrication. Verification strictly enforced
+      epistemic constraints: 52 candidates in transients and 25 in
+      pre-columbian-amazon were rejected for non-atomic formulations, locator
+      mismatches, or verbatim quote failures, and unused sources were refused
+      per §3.6. Multi-model check panels with 5 distinct vendor seats were
+      successfully executed and recorded for both updated cases, with
+      transparent recording of reasoning and no presentation of unratified
+      drafts as ratified. The failed verify run for ccc appropriately failed
+      closed without modifying ledger content, and AGENTS.md was untouched."
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 126478
+      outputTokens: 2310
+      usd: 0.103521
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "Visible content for pre-columbian-amazon and transients adds only
+      mechanically resolving citations (DOIs/URLs all RESOLVE and titles match
+      claimed supports), with ai_verified labels, append-only
+      history/dispositions, and honest verify outcomes (25 and 52 rejects for
+      non-atomic statements, bad locators, or verbatim-quote misses). Editions
+      state competing accounts, grade model-dependent figures provisionally,
+      flag secondary weight (e.g. Xingu 1770), and label themselves candidates
+      pending panel preference; check assessments are role: check,
+      humanReviewed: false, stamped with
+      runId/model/date/promptVersion/ledgerHash. No AGENTS.md edit, no
+      unratified-as-ratified presentation, and founder inbox material carries a
+      recorded standing-direction permission. CCC stopped at a failed verify
+      with nothing under content/. Omitted assessment/proposal working files do
+      not overturn the compliant pattern already visible in the run account and
+      installed ledger diffs."
+    cost:
+      model: grok-4.5
+      inputTokens: 111646
+      outputTokens: 222
+      usd: 0.224739
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.7
+      - §3.8
+      - §3.13
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: "No AGENTS.md file is touched, and every identifier the diff adds
+      under content/ resolves in the mechanical verification (Heckenberger 2008,
+      Prümers 2022, Bush 2021, the arXiv preprints, the archive.org Medina URL),
+      so there is no fabrication surface in the citations themselves. The verify
+      runs behave fail-closed in exactly the way §3.15 intends: 77 candidates
+      were refused with concrete, source-checked reasons (off-by-one locators,
+      non-atomic statements, hedges stripped, quotes not found verbatim),
+      unverifiable material was blocked with reopen routes rather than entered,
+      and the Bush 2021 main text was kept out because only the SI was shown.
+      Both editions are stamped candidates ('replaces ... only if the panel
+      prefers it'), append-only, stamped with runId/model/promptVersion/date and
+      humanReviewed: false, so no unratified draft is dressed as ratified; the
+      founder-funding conflict is disclosed prominently in the article, and the
+      intake of the founder-supplied Villarroel post publishes nothing from it
+      without a recorded basis. Two imperfections are visible but are ordinary
+      imperfection, not violation: AMZ-C030's anchor survived claim-level
+      checking even though its sibling evidence record E029 failed, and
+      TRN-R010's accepted summary carries a figure from a failed import — which
+      the edition rationale itself flags and the article deliberately omits. The
+      omitted files (transients seat assessments, this PR's arbiter records,
+      spend.yaml) are panel/governance records whose installation the tooling
+      account attests at 5 of 5 seats, and I saw nothing in the visible run
+      account suggesting they hide a violation; what I would want on the record
+      is simply those seat verdicts and arbiter entries once harvested, which
+      the pipeline already treats as the next gate."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 112392
+      outputTokens: 7864
+      usd: 0.020791
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 617682
+  outputTokens: 15491
+  usd: 1.7369
+harvestedAt: 2026-09-10

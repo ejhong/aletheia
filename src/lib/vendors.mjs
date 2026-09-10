@@ -72,7 +72,18 @@ export async function fetchWithRetry(name, url, init, attempts = 3) {
  * Pure (no I/O), so tests can assert what each seat is actually asked to
  * do. The API key is read here; a missing key throws before any request.
  */
-export function buildRequest(name, { system, user, maxTokens = 16000 }) {
+/**
+ * Prompt caching, the same rule for every seat: nothing automatic; a
+ * `cachedPrefix` — text many calls share, such as the constitution the panel
+ * judges against — goes first in the user turn. On Anthropic it is its own
+ * block marked as the one cache breakpoint (the system prompt and the prefix
+ * are then read back at a tenth of the rate by the next call within the
+ * window); OpenAI, xAI, Venice and Gemini cache stable prefixes on their
+ * own, so there it is simply placed first (docs/DECISIONS.md, 2026-09-10).
+ * @param {string} name
+ * @param {{ system: string, user: string, maxTokens?: number, cachedPrefix?: string }} prompt
+ */
+export function buildRequest(name, { system, user, maxTokens = 16000, cachedPrefix = undefined }) {
   const cfg = VENDORS[name];
   if (!cfg) throw new Error(`unknown vendor ${name}`);
   const key = cfg.key();
@@ -84,7 +95,7 @@ export function buildRequest(name, { system, user, maxTokens = 16000 }) {
       headers: { "Content-Type": "application/json" },
       body: {
         system_instruction: { parts: [{ text: system }] },
-        contents: [{ role: "user", parts: [{ text: user }] }],
+        contents: [{ role: "user", parts: cachedPrefix ? [{ text: cachedPrefix }, { text: user }] : [{ text: user }] }],
         generationConfig: {
           maxOutputTokens: maxTokens,
           thinkingConfig: { thinkingLevel: cfg.effort },
@@ -107,7 +118,17 @@ export function buildRequest(name, { system, user, maxTokens = 16000 }) {
         max_tokens: Math.max(maxTokens, 32000),
         output_config: { effort: cfg.effort },
         system,
-        messages: [{ role: "user", content: user }],
+        messages: [
+          {
+            role: "user",
+            content: cachedPrefix
+              ? [
+                  { type: "text", text: cachedPrefix, cache_control: { type: "ephemeral" } },
+                  { type: "text", text: user },
+                ]
+              : user,
+          },
+        ],
       },
     };
   }
@@ -128,7 +149,7 @@ export function buildRequest(name, { system, user, maxTokens = 16000 }) {
       model: cfg.model,
       messages: [
         { role: "system", content: system },
-        { role: "user", content: user },
+        { role: "user", content: cachedPrefix ? `${cachedPrefix}\n\n${user}` : user },
       ],
       max_completion_tokens: maxTokens,
       reasoning_effort: cfg.effort,
@@ -153,11 +174,15 @@ export function buildRequest(name, { system, user, maxTokens = 16000 }) {
  * whatever the vendor reports; when a vendor omits it, the counts are 0 and
  * the caller records that honestly rather than estimating.
  */
+/**
+ * @param {string} name
+ * @param {{ system: string, user: string, maxTokens?: number, timeoutMs?: number, cachedPrefix?: string }} prompt
+ */
 export async function callVendorDetailed(
   name,
-  { system, user, maxTokens = 16000, timeoutMs = 900_000 },
+  { system, user, maxTokens = 16000, timeoutMs = 900_000, cachedPrefix = undefined },
 ) {
-  const { url, headers, body } = buildRequest(name, { system, user, maxTokens });
+  const { url, headers, body } = buildRequest(name, { system, user, maxTokens, cachedPrefix });
 
   const res = await fetchWithRetry(name, url, {
     method: "POST",
@@ -183,22 +208,30 @@ export async function callVendorDetailed(
   }
   if (!text || text.trim().length === 0)
     throw new Error(`${name}: empty reply (stop: ${data.stop_reason ?? data.candidates?.[0]?.finishReason ?? "?"})`);
+  // The vendor's split of the input — uncached, read from the cache, written to it — so the
+  // ledger prices each at its rate and the cache columns say whether a prefix was shared.
   const usage =
     name === "gemini"
       ? {
-          inputTokens: data.usageMetadata?.promptTokenCount ?? 0,
+          inputTokens: (data.usageMetadata?.promptTokenCount ?? 0) - (data.usageMetadata?.cachedContentTokenCount ?? 0),
           outputTokens:
             (data.usageMetadata?.candidatesTokenCount ?? 0) +
             (data.usageMetadata?.thoughtsTokenCount ?? 0),
+          cacheReadTokens: data.usageMetadata?.cachedContentTokenCount ?? 0,
+          cacheWriteTokens: 0,
         }
       : name === "anthropic"
         ? {
             inputTokens: data.usage?.input_tokens ?? 0,
             outputTokens: data.usage?.output_tokens ?? 0,
+            cacheReadTokens: data.usage?.cache_read_input_tokens ?? 0,
+            cacheWriteTokens: data.usage?.cache_creation_input_tokens ?? 0,
           }
         : {
-            inputTokens: data.usage?.prompt_tokens ?? 0,
+            inputTokens: (data.usage?.prompt_tokens ?? 0) - (data.usage?.prompt_tokens_details?.cached_tokens ?? 0),
             outputTokens: data.usage?.completion_tokens ?? 0,
+            cacheReadTokens: data.usage?.prompt_tokens_details?.cached_tokens ?? 0,
+            cacheWriteTokens: 0,
           };
   return { text, usage, model: VENDORS[name].model };
 }

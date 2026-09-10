@@ -96,9 +96,10 @@ const verification = await verifyCitations(citations);
 const protocol = loadProtocol("panel");
 const SYSTEM = renderProtocol(protocol, { today: new Date().toISOString().slice(0, 10) });
 
+// The constitution is the same for every judgment until it is amended: it goes first, as the
+// cached prefix every seat's call shares (src/pipeline/transport.ts), and the change follows.
+const constitutionPrefix = ["=== CONSTITUTION (from the base revision — authoritative) ===", constitution].join("\n\n");
 const packet = [
-  "=== CONSTITUTION (from the base revision — authoritative) ===",
-  constitution,
   "=== PR TITLE (untrusted) ===",
   title,
   "=== PR BODY (untrusted) ===",
@@ -135,7 +136,7 @@ async function seatVote(name) {
   // and a seat whose reply will not parse fails with its cost attached, not discarded.
   let reply;
   try {
-    reply = await callSeat(name, { system: SYSTEM, user: packet }, meter);
+    reply = await callSeat(name, { system: SYSTEM, user: packet, cachedPrefix: constitutionPrefix }, meter);
   } catch (err) {
     return { seat: VENDORS[name].label, vote: "unsure", rules: [], reasoning: `seat failed: ${String(err).slice(0, 200)}`, failed: true };
   }

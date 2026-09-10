@@ -273,11 +273,19 @@ function usageOf(m: AnthropicMessage): Usage {
 }
 
 /**
- * Automatic prompt caching on every call (the vendor moves the breakpoint
- * forward as the turn grows). In a server-tool loop the model re-reads the
- * whole context after each result; cached, those re-reads cost a fortieth
- * of the base rate on the house model. The first paid run went without it
- * and paid the base rate 39 times over.
+ * Automatic prompt caching for the research loop only (the vendor moves the
+ * breakpoint forward as the turn grows). In a server-tool loop the model
+ * re-reads the whole context after each result; cached, those re-reads cost
+ * a fortieth of the base rate on the house model. The first paid run went
+ * without it and paid the base rate 39 times over.
+ *
+ * Not for one-shot calls. The spend ledger of 2026-09-08/09 showed what
+ * automatic caching does to a call that is never re-sent: every prompt is
+ * written to the cache at 1.25× the base rate and read by nobody — edition
+ * 1.74M tokens written, 0 read; draft 1.38M written, 0 read; verify 11.5M
+ * written, 77k read (a 1% hit rate) — a quarter more than uncached input for
+ * nothing. One-shot calls go uncached; a call that shares a long prefix with
+ * its neighbours (verify's source text) marks that prefix itself.
  */
 const AUTO_CACHE = { cache_control: { type: "ephemeral" } } as const;
 
@@ -413,6 +421,14 @@ export interface AnthropicJsonOptions {
   fallback?: string;
   system: string;
   user: string;
+  /**
+   * Text shared by many calls in a row (verify: the retrieved source, the
+   * same for every record judged against it), placed before `user` as its
+   * own block and marked as the cache breakpoint, so the system prompt and
+   * this text are written once and read at a tenth of the rate afterwards.
+   * Absent, the call is uncached (see AUTO_CACHE).
+   */
+  cachedPrefix?: string;
   /** JSON Schema (structured outputs: additionalProperties false everywhere, no length or numeric constraints). */
   schema: Record<string, unknown>;
   maxTokens?: number;
@@ -433,6 +449,34 @@ const GRAMMAR_TOO_LARGE = /compiled grammar is too large/i;
  * (every proposal and edition is Zod-checked before it is written), so the
  * loss is only the guarantee, and the result says which mode answered.
  */
+/**
+ * The body of one structured-output call, pure so the shape is testable: no
+ * automatic cache; a `cachedPrefix`, when given, is the first user block and
+ * carries the one cache breakpoint (everything before it — the system prompt
+ * and the prefix — is what later calls read back); the schema is the output
+ * format in strict mode and part of the instructions otherwise.
+ */
+export function anthropicJsonRequest(opts: AnthropicJsonOptions, strict: boolean) {
+  const content = opts.cachedPrefix
+    ? [
+        { type: "text", text: opts.cachedPrefix, cache_control: { type: "ephemeral" } },
+        { type: "text", text: opts.user },
+      ]
+    : opts.user;
+  return withFallback({
+    model: opts.model,
+    max_tokens: opts.maxTokens ?? 32000,
+    thinking: { type: "adaptive" },
+    output_config: strict
+      ? { effort: opts.effort ?? "high", format: { type: "json_schema", schema: opts.schema } }
+      : { effort: opts.effort ?? "high" },
+    system: strict
+      ? opts.system
+      : `${opts.system}\n\nReply with one JSON object and nothing else — no prose, no code fence. It must satisfy this JSON Schema exactly:\n${JSON.stringify(opts.schema)}`,
+    messages: [{ role: "user", content }],
+  }, opts.fallback);
+}
+
 export async function anthropicJson<T = unknown>(
   opts: AnthropicJsonOptions,
   meter: Meter,
@@ -440,23 +484,10 @@ export async function anthropicJson<T = unknown>(
   const model = opts.model;
   const maxTokens = opts.maxTokens ?? 32000;
   assertWithinBudget(
-    estimateUsd({ model, inputChars: opts.system.length + opts.user.length, maxOutputTokens: maxTokens }, loadTariffs(meter.root)),
+    estimateUsd({ model, inputChars: opts.system.length + (opts.cachedPrefix?.length ?? 0) + opts.user.length, maxOutputTokens: maxTokens }, loadTariffs(meter.root)),
     { runId: meter.runId, verb: meter.verb, root: meter.root },
   );
-  const request = (strict: boolean) =>
-    withFallback({
-      model,
-      max_tokens: maxTokens,
-      ...AUTO_CACHE,
-      thinking: { type: "adaptive" },
-      output_config: strict
-        ? { effort: opts.effort ?? "high", format: { type: "json_schema", schema: opts.schema } }
-        : { effort: opts.effort ?? "high" },
-      system: strict
-        ? opts.system
-        : `${opts.system}\n\nReply with one JSON object and nothing else — no prose, no code fence. It must satisfy this JSON Schema exactly:\n${JSON.stringify(opts.schema)}`,
-      messages: [{ role: "user", content: opts.user }],
-    }, opts.fallback);
+  const request = (strict: boolean) => anthropicJsonRequest(opts, strict);
 
   let strict = true;
   let m: AnthropicMessage;

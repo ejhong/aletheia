@@ -2028,3 +2028,39 @@ and the founder direction it answered — that `splitMergeLanes` treats as a
 trailer after the fact. The loop's merges count; the list should not grow,
 because the operator's construction commits now carry the trailer.
 
+**The first third-party drop, and what it exposed (2026-09-10).** The
+founder placed Beatriz Villarroel's public post for the VASCO team in the
+inbox for Before Sputnik — an accepted machine-learning paper in press and
+two new preprints — and dispatched a sitting to watch the loop handle it,
+followed by the first research pass on The Emptied Amazon. The loop's
+provenance rules held everywhere: the drafter read both preprints from the
+links the post supplied, identified the in-press paper by the DOI the
+preprints cite and marked it a duplicate of the ledger's record, and
+proposed fifty-three records with verbatim quotes; the verifier refused
+fifty-two of them at no cost. That refusal was the loop's own fault, in
+three places, and the Arbiter's seats found a fourth. (1) Retrieval: the
+drafter read the preprints as PDFs, recorded the sources by their arXiv
+abstract pages, and the verifier fetched the abstract pages — a different
+text — so every quote failed; the retrieval layer now reads the PDF for an
+arXiv abstract page under the abstract's key, so drafter and verifier read
+the same text. (2) The one research item that survived carried a figure
+from the refused preprint into the public agenda with no source behind it
+(the Opus and GPT seats on #266); draft protocol v7 says a research item
+proposes a test and states no finding from a source the ledger does not
+hold. (3) The verifier's rejection reasons truncated a failing span at
+seventy characters, which made an Amazon claim's verified anchor look
+identical to a longer, mixed-source quote the same run had refused, and two
+seats read a contradiction into it; reasons now show the whole span and
+name the text it was checked against. (4) On the ccc pass the second reader
+hit its 4,000-token ceiling mid-thought (adaptive thinking shares the
+budget) and the run failed after $3.42 of drafting; the reader and the
+splitter now have 16,000. The sitting's PR (#266) is closed unmerged, its
+work kept on its branch, and the sitting is dispatched again under the
+fixes: the inbox item is still on main, so the loop takes it in afresh, and
+the result the panel judges is the loop's, not a hand repair. The Amazon
+pass itself did the right thing — three primaries read (Heckenberger 2008,
+Prümers 2022, Bush 2021), a chronological finding the incumbent lacked
+(the Casarabe culture ends about 140 years before Orellana), the verdict
+kept at well supported and five seats within one step — and is redone only
+because it shares the PR.
+

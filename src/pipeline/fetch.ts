@@ -204,6 +204,12 @@ export interface RetrievalTarget {
   doi?: string | null;
 }
 
+/** The arXiv identifier a URL names (an abstract or PDF page), version suffix kept; null otherwise. */
+export function arxivIdOf(url: string | null | undefined): string | null {
+  const m = String(url ?? "").match(/arxiv\.org\/(?:abs|pdf)\/((?:\d{4}\.\d{4,5}|[a-z-]+(?:\.[A-Z]{2})?\/\d{7})(?:v\d+)?)/i);
+  return m ? m[1] : null;
+}
+
 /**
  * The text of a work: its URL first; failing that, any open-access copy
  * OpenAlex knows for its DOI. The result keeps the original `url` as its
@@ -215,6 +221,16 @@ export async function retrieve(
 ): Promise<FetchedSource> {
   const doi = target.doi ?? (target.url ? doiFromUrl(target.url) : null);
   const key = target.url ?? (doi ? `https://doi.org/${doi}` : "");
+  // An arXiv abstract page is the record's public locator, but the paper's text is the PDF: read that
+  // first, under the abstract's key, and say so. (2026-09-10: a drafter read two preprints as PDFs from the
+  // links a post supplied and recorded the sources by their abstract pages; the verifier fetched the
+  // abstract pages, found none of the quotes, and refused fifty-two records at no cost.)
+  const arxiv = arxivIdOf(target.url);
+  if (arxiv && !/\/pdf\//i.test(target.url ?? "")) {
+    const pdfUrl = `https://arxiv.org/pdf/${arxiv}`;
+    const full = await fetchSource(pdfUrl, opts);
+    if (full.ok) return { ...full, url: key, via: `arXiv full text (PDF) at ${pdfUrl}, read for the abstract page` };
+  }
   const first = target.url ? await fetchSource(target.url, opts) : null;
   if (first?.ok) return first;
   if (doi) {

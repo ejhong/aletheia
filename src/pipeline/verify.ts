@@ -371,7 +371,9 @@ export function correctionBlocker(loaded: LoadedCase, c: Correction): string | n
   if (!ledgerFileFor(c.record)) return `no ledger file for record id ${c.record}`;
   const rec = [...loaded.sources, ...loaded.claims, ...loaded.evidence, ...loaded.research].find((r) => r.id === c.record) as Record<string, unknown> | undefined;
   if (!rec) return `record ${c.record} is not in the ledger`;
-  if (JSON.stringify(rec[c.field]) !== JSON.stringify(c.from)) return `the field no longer reads what the proposal saw`;
+  // An absent field and a null `from` are the same reading, as the writer itself takes them (setField):
+  // the report of 2026-09-10-verify-ccc-192550 called three URL additions "NOT applied" that the same run applied.
+  if (JSON.stringify(rec[c.field] ?? null) !== JSON.stringify(c.from ?? null)) return `the field no longer reads what the proposal saw`;
   return null;
 }
 

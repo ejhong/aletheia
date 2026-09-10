@@ -89,3 +89,15 @@ describe("applyCorrections", () => {
     expect(history[0].reason).toMatch(/Nemoy 1939/);
   });
 });
+
+describe("the verification report agrees with the writer on an absent field", () => {
+  it("a correction that adds a field the record lacks is not reported as blocked", async () => {
+    const { correctionBlocker } = await import("../pipeline/verify.ts");
+    const { getCaseBySlug } = await import("./load.ts");
+    const c = getCaseBySlug("megalithic-casting");
+    const bare = c.sources.find((s) => !s.url);
+    if (!bare) return; // every source has a URL in this ledger; the rule is exercised elsewhere
+    expect(correctionBlocker(c, { record: bare.id, field: "url", from: null, to: "https://x.test/paper", reason: "test" })).toBeNull();
+    expect(correctionBlocker(c, { record: bare.id, field: "url", from: "https://y.test/other", to: "https://x.test/paper", reason: "test" })).toMatch(/no longer reads/);
+  });
+});

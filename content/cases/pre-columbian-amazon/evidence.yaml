@@ -536,3 +536,79 @@
     extractedBy: "claude-fable-5 (cursor session)"
     runId: "amz-expansion-2026-08-28"
     date: "2026-08-28"
+
+- id: AMZ-E038
+  title: "Comparator: a basin-wide 10–24k undiscovered-earthwork prediction beside the Aquiry 24–30k regional prediction — part 1"
+  claimIds:
+    - AMZ-C004
+  sourceId: SRC-PERIPATO-2023
+  direction: context
+  strength: moderate
+  sourceStatement: The predictive model "predicts the number of yet undiscovered pre-Columbian structures as 10,272" to 23,648, with 95% probability, for Amazonia's 6.7 million km² extent.
+  editorInference: "Editor's comparison: SRC-PARSSINEN-2026 predicts roughly 24,000–30,000 earthworks within a ~183,000 km² Aquiry area alone — more than Peripato's upper bound for the entire basin, over an area about twice Peripato's high-probability rectangle. The two are not strictly commensurable (different earthwork definitions, data, and estimators; Peripato's 2023 model predates the 2026 LiDAR), so this does not undermine what AMZ-C004 states the 2026 study predicts. It does show that earthwork totals differ several-fold between published models, which AMZ-R004-style dependency work should address. Zero diagnosticity for the truth of C004 as worded; logged as the comparator the report sought."
+  exactLocator: "[p. 7] via open-access accepted manuscript (White Rose eprints)"
+  limitations: &a1
+    - Different operational definitions of 'earthwork' and different survey data between the two studies.
+    - Peripato's model predates and does not incorporate the 2026 LiDAR campaign.
+  reviewState: ai_extracted
+  origin:
+    ref: split of AMZ-E025 (report 2026-09-10-report-pre-columbian-amazon-183738)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-pre-columbian-amazon-185127
+    date: 2026-09-10
+- id: AMZ-E039
+  title: "Comparator: a basin-wide 10–24k undiscovered-earthwork prediction beside the Aquiry 24–30k regional prediction — part 2"
+  claimIds:
+    - AMZ-C004
+  sourceId: SRC-PERIPATO-2023
+  direction: context
+  strength: moderate
+  sourceStatement: Nearly all the highest-probability cells (≥ 25% predicted probability) occur in a 94,713-km² "rectangle that overlays a significant portion of the Brazilian state of Acre."
+  editorInference: "Editor's comparison: SRC-PARSSINEN-2026 predicts roughly 24,000–30,000 earthworks within a ~183,000 km² Aquiry area alone — more than Peripato's upper bound for the entire basin, over an area about twice Peripato's high-probability rectangle. The two are not strictly commensurable (different earthwork definitions, data, and estimators; Peripato's 2023 model predates the 2026 LiDAR), so this does not undermine what AMZ-C004 states the 2026 study predicts. It does show that earthwork totals differ several-fold between published models, which AMZ-R004-style dependency work should address. Zero diagnosticity for the truth of C004 as worded; logged as the comparator the report sought."
+  exactLocator: "[p. 7] via open-access accepted manuscript (White Rose eprints)"
+  limitations: *a1
+  reviewState: ai_extracted
+  origin:
+    ref: split of AMZ-E025 (report 2026-09-10-report-pre-columbian-amazon-183738)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-pre-columbian-amazon-185127
+    date: 2026-09-10
+- id: AMZ-E040
+  title: 53 of 79 domesticated tree species significantly associated with modelled earthwork probability — part 2
+  claimIds:
+    - AMZ-C033
+    - AMZ-C008
+  sourceId: SRC-PERIPATO-2023
+  direction: supports
+  strength: moderate
+  sourceStatement: The occurrence and/or abundance of "53 of the 79 domesticated species showed significant association" with the predictive model of earthwork distribution.
+  editorInference: Corroborates AMZ-C008's tree-domestication leg with a different response variable (modelled earthwork probability rather than distance to known sites), but the species list is Levis et al. 2017's own and the authors overlap, so this is not independent of SRC-LEVIS-2017; the McMichael 2017 post-Columbian-management objection (AMZ-E013) applies equally here.
+  exactLocator: "[p. 9] via open-access accepted manuscript (White Rose eprints); abstract [p. 3]"
+  limitations: &a2
+    - Association with a modelled probability surface, not with dated archaeological sites.
+    - Same species list and overlapping authorship as SRC-LEVIS-2017; not an independent group.
+    - Cannot separate pre- from post-Columbian management (see AMZ-E013).
+  reviewState: ai_extracted
+  origin:
+    ref: split of AMZ-E028 (report 2026-09-10-report-pre-columbian-amazon-183738)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-pre-columbian-amazon-185127
+    date: 2026-09-10
+- id: AMZ-E041
+  title: 53 of 79 domesticated tree species significantly associated with modelled earthwork probability — part 5
+  claimIds:
+    - AMZ-C033
+    - AMZ-C008
+  sourceId: SRC-PERIPATO-2023
+  direction: supports
+  strength: moderate
+  sourceStatement: The 53 domesticated tree species significantly associated with earthwork occurrence probability are "likely suggesting past management practices" by pre-Columbian societies.
+  editorInference: Corroborates AMZ-C008's tree-domestication leg with a different response variable (modelled earthwork probability rather than distance to known sites), but the species list is Levis et al. 2017's own and the authors overlap, so this is not independent of SRC-LEVIS-2017; the McMichael 2017 post-Columbian-management objection (AMZ-E013) applies equally here.
+  exactLocator: "[p. 9] via open-access accepted manuscript (White Rose eprints); abstract [p. 3]"
+  limitations: *a2
+  reviewState: ai_extracted
+  origin:
+    ref: split of AMZ-E028 (report 2026-09-10-report-pre-columbian-amazon-183738)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-pre-columbian-amazon-185127
+    date: 2026-09-10

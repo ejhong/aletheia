@@ -146,3 +146,26 @@ describe("superseded intakes", () => {
     expect(drafted.has("2026-09-09-inbox-v-030000")).toBe(false); // a different document
   });
 });
+
+describe("a sitting knows its deadline and writes its progress", () => {
+  it("makes no new choice once the deadline has passed, says so, and reports progress after every choice", async () => {
+    const { runNext } = await import("../pipeline/next.ts");
+    let clock = 0;
+    const seen: number[] = [];
+    const once = async () => {
+      clock += 50 * 60_000; // each choice takes fifty minutes
+      return { choice: { case: "x", verb: "check" as const, reason: "test" }, ran: [{ verb: "check", outcome: { outcome: "completed" as const, runId: `r${clock}` } }] };
+    };
+    const r = await runNext({ run: true, steps: 8, deadlineMinutes: 120, onProgress: (so) => seen.push(1 + (so.more?.length ?? 0)), deps: { now: () => clock, once } });
+    // 50, 100 → a third choice would begin at 150 min, past the deadline: three outcomes in all, stopped after the second extra.
+    expect(1 + (r.more?.length ?? 0)).toBe(3);
+    expect(r.stopped).toEqual({ reason: "deadline", afterMinutes: 150, stepsMade: 3 });
+    expect(seen).toEqual([1, 2, 3, 3]); // after each choice, and once more when it stopped
+    // Without a deadline the sitting runs its steps; a failed step still ends it.
+    let n = 0;
+    const failing = async () => ({ choice: { case: "x", verb: "check" as const, reason: "test" }, ran: [{ verb: "check", outcome: { outcome: (++n === 2 ? "failed" : "completed") as "failed" | "completed", runId: `r${n}` } }] });
+    const f = await runNext({ run: true, steps: 5, deps: { now: () => 0, once: failing } });
+    expect(1 + (f.more?.length ?? 0)).toBe(2);
+    expect(f.stopped).toBeUndefined();
+  });
+});

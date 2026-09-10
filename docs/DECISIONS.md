@@ -2064,3 +2064,19 @@ Prümers 2022, Bush 2021), a chronological finding the incumbent lacked
 kept at well supported and five seats within one step — and is redone only
 because it shares the PR.
 
+**A sitting knows its deadline, and its PR opens whatever became of it
+(2026-09-10).** The sitting dispatched after the retrieval fix ran the
+VASCO intake with a working verifier, the Amazon pass, and most of a ccc
+pass, and at two hours the workflow's job limit cancelled it: no PR step
+ran, and every record it had written — and every spend row, some twenty to
+thirty dollars of calls — went with the runner. Two changes. The sitting
+now takes `--deadline-minutes` and makes no new choice once it has passed
+(the step under way finishes), recording that it stopped and why; and it
+rewrites `--out next.json` after every choice, so a sitting killed
+mid-step leaves the last complete account. The workflow gives the job 330
+minutes and the sitting a 240-minute deadline, and the step that commits
+the work and opens the PR runs whatever became of the chain step — a
+failed step, the deadline, a cancelled or timed-out job — with the cut
+named in the PR title. The money spent in the cancelled run is unrecorded;
+this is the last time that can happen, short of the runner itself dying.
+

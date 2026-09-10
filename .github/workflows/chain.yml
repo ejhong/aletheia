@@ -38,7 +38,11 @@ permissions:
 jobs:
   chain:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    # A sitting of eight steps with a verified intake runs past two hours (2026-09-10: the
+    # two-hour limit cancelled one after its seventh step and the runner took every record
+    # and spend row with it). The sitting knows its own deadline — no new choice after
+    # --deadline-minutes — and the step under way finishes inside this margin.
+    timeout-minutes: 330
     steps:
       - uses: actions/checkout@v4
         with:
@@ -62,6 +66,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/harvest-governance.mjs || echo "::warning::governance harvest failed; the sitting continues"
       - name: Choose and run one case through the chain
+        id: chain
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -71,15 +76,29 @@ jobs:
           VENICE_API_KEY: ${{ secrets.VENICE_API_KEY }}
           # The intake asks GitHub who committed a dropped file (config/founder.yaml).
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: node scripts/aletheia.ts next --run --steps "${{ github.event.inputs.steps || '3' }}" | tee next.json
+        run: node scripts/aletheia.ts next --run --steps "${{ github.event.inputs.steps || '3' }}" --deadline-minutes 240 --out next.json
+      # Runs whatever became of the chain step — a failed step, a deadline, a cancelled or
+      # timed-out job: what the sitting wrote is committed and judged, and the spend rows
+      # reach the ledger. Money spent is recorded, whatever became of the run.
       - name: Open the PR the panel judges
+        if: always()
         env:
           GH_TOKEN: ${{ secrets.MAINTENANCE_PAT }}
+          CHAIN_STEP_OUTCOME: ${{ steps.chain.outcome }}
         run: |
           rm -f next.json.tmp
           if [ -z "$(git status --porcelain -- content proposals governance)" ]; then
             echo "nothing changed — the chain rested"
             exit 0
+          fi
+          # next.json is rewritten after every choice; a sitting killed mid-step leaves the last complete
+          # account, or none. Without one, nothing is invented about what the sitting chose: the PR says
+          # the account is interrupted and lists the run records the working tree holds, as they are.
+          account=complete
+          if ! node -e 'JSON.parse(require("fs").readFileSync("next.json","utf8"))' 2>/dev/null; then
+            account=none
+          elif [ "$CHAIN_STEP_OUTCOME" != "success" ]; then
+            account=partial
           fi
           date=$(date +%Y-%m-%d)
           branch="chain/${date}-${GITHUB_RUN_ID}"
@@ -87,8 +106,20 @@ jobs:
           git config user.email "maintenance-bot@users.noreply.github.com"
           git checkout -b "$branch"
           git add -A -- content proposals governance
-          git commit -m "Chain ${date}: $(node -e 'const j=JSON.parse(require("fs").readFileSync("next.json","utf8"));const all=[j,...(j.more||[])];console.log(all.map(o=>o.choice.case+" — "+o.ran.map(s=>s.verb+":"+s.outcome.outcome).join(", ")).join("; "))')"
+          if [ "$account" = "none" ]; then
+            summary="interrupted — chain step ${CHAIN_STEP_OUTCOME}, no complete account of the sitting; the run log is the record"
+          else
+            summary="$(node -e 'const j=JSON.parse(require("fs").readFileSync("next.json","utf8"));const all=[j,...(j.more||[])];const cut=j.stopped?" (stopped at its deadline after "+j.stopped.afterMinutes+" min)":(process.env.CHAIN_STEP_OUTCOME!=="success"?" (interrupted during a later step: chain step "+process.env.CHAIN_STEP_OUTCOME+"; the account is what completed)":"");console.log(all.map(o=>o.choice.case+" — "+o.ran.map(s=>s.verb+":"+s.outcome.outcome).join(", ")).join("; ")+cut)')"
+          fi
+          git commit -m "Chain ${date}: ${summary}"
           git push -u origin "$branch"
           risk=$(node scripts/classify-pr-risk.mjs "origin/${GITHUB_REF_NAME}" | tail -1)
-          body=$(node -e 'const j=JSON.parse(require("fs").readFileSync("next.json","utf8"));const all=[j,...(j.more||[])];console.log(all.map(o=>"`aletheia next --run` chose **"+o.choice.case+"** ("+o.choice.verb+(o.choice.seat?" via "+o.choice.seat:"")+"): "+o.choice.reason+"\n\n"+o.ran.map(s=>"- "+s.verb+" → "+s.outcome.outcome+(s.outcome.cost&&s.outcome.cost.usd!=null?" ($"+s.outcome.cost.usd.toFixed(2)+")":"")+(s.outcome.reason?" — "+s.outcome.reason:"")).join("\n")).join("\n\n")+"\n\nRun records and working material under proposals/<runId>/. The Arbiter judges this PR; standing derives on merge.")')
-          gh pr create --title "Chain: ${date}" --body "$body" --label "$( [ "$risk" = "low-risk" ] && echo auto:low-risk || echo needs-approval )"
+          if [ "$account" = "none" ]; then
+            body="$(printf '**Interrupted sitting.** The chain step ended as \`%s\` before its first choice completed, so there is no account of what \`aletheia next --run\` chose; nothing is inferred here. The run records the working tree holds, as they are:\n\n%s\n\nThe run log of this workflow is the record of the sitting. The Arbiter judges this PR; standing derives on merge.' "$CHAIN_STEP_OUTCOME" "$(node -e 'const fs=require("fs"),y=require("yaml");const out=[];for(const l of require("child_process").execSync("git diff --cached --name-only -- proposals").toString().split("\n")){if(!l.endsWith("/run.yaml"))continue;try{const r=y.parse(fs.readFileSync(l,"utf8"));out.push("- "+r.runId+" — "+r.verb+" on "+r.case+": "+r.outcome+(r.cost&&r.cost.usd!=null?" ($"+Number(r.cost.usd).toFixed(2)+")":"")+(r.notes?" — "+String(r.notes).slice(0,200):""))}catch(e){out.push("- "+l+" (unreadable: "+e.message+")")}}console.log(out.length?out.join("\n"):"(no run record was written)")')")"
+          else
+          body=$(node -e 'const j=JSON.parse(require("fs").readFileSync("next.json","utf8"));const all=[j,...(j.more||[])];const note=process.env.CHAIN_STEP_OUTCOME!=="success"?"**The sitting was interrupted during a later step (chain step "+process.env.CHAIN_STEP_OUTCOME+"); the account below is what had completed when its progress file was last written. The run log is the record of the rest.**\n\n":"";console.log(note+all.map(o=>"`aletheia next --run` chose **"+o.choice.case+"** ("+o.choice.verb+(o.choice.seat?" via "+o.choice.seat:"")+"): "+o.choice.reason+"\n\n"+o.ran.map(s=>"- "+s.verb+" → "+s.outcome.outcome+(s.outcome.cost&&s.outcome.cost.usd!=null?" ($"+s.outcome.cost.usd.toFixed(2)+")":"")+(s.outcome.reason?" — "+s.outcome.reason:"")).join("\n")).join("\n\n")+"\n\nRun records and working material under proposals/<runId>/. The Arbiter judges this PR; standing derives on merge.")')
+          fi
+          title="Chain: ${date}"
+          [ "$account" = "none" ] && title="Chain: ${date} (interrupted — no account of the sitting)"
+          [ "$account" = "partial" ] && title="Chain: ${date} (interrupted during a later step — partial account)"
+          gh pr create --title "$title" --body "$body" --label "$( [ "$risk" = "low-risk" ] && echo auto:low-risk || echo needs-approval )"

@@ -54,25 +54,58 @@ export interface NextOutcome {
   ran: { verb: string; outcome: RunOutcome }[];
   /** Later choices made in the same sitting (`--steps`), each with what it ran. */
   more?: NextOutcome[];
+  /**
+   * Why the sitting made fewer choices than asked: its deadline passed. Set
+   * on the first outcome. A sitting that runs out of time still opens its
+   * PR with what it did (2026-09-10: a two-hour workflow limit cancelled an
+   * eight-step sitting after the seventh, and every record and spend row it
+   * had written was lost with the runner).
+   */
+  stopped?: { reason: "deadline"; afterMinutes: number; stepsMade: number };
 }
 
-/** Choose, and with `run`, do it — continuing a report through the chain until a step does not complete; with `steps`, choose again up to that many times. */
-export async function runNext(opts: { run?: boolean; steps?: number; today?: string; root?: string } = {}): Promise<NextOutcome> {
-  const first = await runOnce(opts);
+export interface SittingOptions {
+  run?: boolean;
+  steps?: number;
+  today?: string;
+  root?: string;
+  /** No new choice is made once this many minutes have passed since the sitting began; the step under way finishes. */
+  deadlineMinutes?: number;
+  /** Called after every choice with the sitting so far, so a caller can write progress to disk as it goes. */
+  onProgress?: (soFar: NextOutcome) => void;
+  /** Test seams: the clock, and one choice-and-run. */
+  deps?: { now?: () => number; once?: (opts: SittingOptions) => Promise<NextOutcome> };
+}
+
+/** Choose, and with `run`, do it — continuing a report through the chain until a step does not complete; with `steps`, choose again up to that many times, within the deadline. */
+export async function runNext(opts: SittingOptions = {}): Promise<NextOutcome> {
+  const now = opts.deps?.now ?? Date.now;
+  const once = opts.deps?.once ?? runOnce;
+  const began = now();
+  const minutesGone = () => (now() - began) / 60_000;
+  const first = await once(opts);
   const steps = Math.max(1, opts.steps ?? 1);
-  if (!opts.run || steps === 1) return first;
+  const progress = (): NextOutcome => ({ ...first, ...(more.length ? { more } : {}) });
   const more: NextOutcome[] = [];
+  opts.onProgress?.(progress());
+  if (!opts.run || steps === 1) return first;
   let last = first;
   for (let i = 1; i < steps; i++) {
     if (last.choice.verb === "rest" || last.ran.some((s) => s.outcome.outcome === "failed")) break;
-    last = await runOnce(opts);
+    if (opts.deadlineMinutes !== undefined && minutesGone() >= opts.deadlineMinutes) {
+      first.stopped = { reason: "deadline", afterMinutes: Math.round(minutesGone()), stepsMade: i };
+      opts.onProgress?.(progress());
+      break;
+    }
+    last = await once(opts);
     more.push(last);
+    opts.onProgress?.(progress());
     if (last.choice.verb === "rest") break;
   }
   return { ...first, more };
 }
 
-async function runOnce(opts: { run?: boolean; today?: string; root?: string }): Promise<NextOutcome> {
+async function runOnce(opts: SittingOptions): Promise<NextOutcome> {
   const root = opts.root ?? process.cwd();
   const cases = loadAllCases();
   const runs = readRuns(root);

@@ -1996,3 +1996,23 @@ wrote (`wrote`); the file headers name the run. The record ids themselves
 are unchanged — they are the records', not the runs' — and editions written
 by hand carry no `producedBy` rather than an invented one.
 
+
+
+**Gate epoch 5: the construction of 2026-09-09/10 declared supervised
+(founder direction, 2026-09-10, in the working session).** The weekly limit
+of ten autonomous content merges — the throttle that bounds the machine's
+unattended pace for readers — was spent to 10/10 by nine founder-directed
+landings the operator ran by hand over two days (the conjecture retirement,
+the Deep Memory opening and its correction, the drop, the art and its
+captions, the record and evidence corrections, the cover) plus the loop's
+one merge, and it parked the loop's second edition of Deep Memory (#257)
+after four seats had passed it. The design's per-merge exclusion is a
+`Supervised-by:` trailer on the squash commit; the operator's commits did
+not carry it. Asked to choose between merging by hand, bumping the epoch
+and waiting for the window, the founder chose whatever was least work for
+him; the epoch is bumped to 2026-09-10T12:50Z (`GATE_EPOCH` in
+scripts/arbiter.mjs), the fifth such bump and, like the third, on a
+measurement: the autonomous lane's true usage was one of ten. From this
+day the operator's construction commits carry the trailer, and the chain's
+never do.
+\n

@@ -1982,3 +1982,15 @@ about a quarter off draft and edition input, and the verify reader's input
 cost falling by most of its bill; the ledger's cache columns will show it
 at the next sitting.
 \n
+
+**Records name the run that wrote them, and runs list what they wrote
+(2026-09-10, the GPT seat on #257).** A sitting's edition carried three ids
+that did not meet: the run record `…-edition-deep-memory-120824`, the
+assessment `…-edition-121547` and the edition `edition-…-121547`, so a reader
+could not go from the consequential record to the recorded run or back.
+Now an edition and its assessment carry `producedBy`, the run record's id,
+and a check seat's record does too; a run record lists the content files it
+wrote (`wrote`); the file headers name the run. The record ids themselves
+are unchanged — they are the records', not the runs' — and editions written
+by hand carry no `producedBy` rather than an invented one.
+

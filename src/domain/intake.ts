@@ -135,6 +135,8 @@ export const RunRecordSchema = z.object({
   outcome: z.enum(["completed", "failed", "dry-run", "rested"]),
   cost: CostSchema,
   notes: z.string().optional(),
+  /** The files under content/ this run wrote, relative to the repository root — so a reader goes from the run to its records as well as back (§3.15). */
+  wrote: z.array(z.string()).optional(),
 });
 export type RunRecord = z.infer<typeof RunRecordSchema>;
 

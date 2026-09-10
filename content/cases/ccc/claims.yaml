@@ -316,3 +316,163 @@
     quote: >-
       What seems to be spuriously generated noise may in fact be gravitational events caused by the decay of dark-matter particles (erebons) of mass around 10^-5g.
     sourceId: SRC-PENROSE-2017-ARXIV
+
+- id: CCC-C508
+  statement: "Instrumental noise does not contribute significantly to the Hawking-point gradient statistic at the scales searched: adding Planck half-difference maps to the simulations does not alter the estimated probability distributions (Jow & Scott 2020)."
+  theme: hawking
+  rung: observation
+  claimType: measurement
+  sourceAnchor:
+    locator: "[p. 4], §2"
+    quote: instrumental noise does not contribute significantly to the HP signal
+    sourceId: SRC-JOW-SCOTT-2020
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-10-report-ccc-191230
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-draft-ccc-191834
+    date: 2026-09-10
+- id: CCC-C509
+  statement: "The 30 most significant Hawking points in the Planck 2018 SMICA map show no anomalous clustering: their mean nearest-neighbour separation (0.20 and 0.19 rad at the two claimed scales) is within 1σ of the Gaussian-sky expectation of 0.20 ± 0.03 rad (Jow & Scott 2020)."
+  theme: hawking
+  rung: observation
+  claimType: measurement
+  sourceAnchor:
+    locator: "[p. 8], §3.1"
+    quote: we do not find any evidence that HPs exhibit any anomalous clustering
+    sourceId: SRC-JOW-SCOTT-2020
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-10-report-ccc-191230
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-draft-ccc-191834
+    date: 2026-09-10
+- id: CCC-C510
+  statement: Stacking Planck 2018 SMICA E-mode maps on the temperature-selected Hawking points (|â| > 2) shows no persistent polarization structure at their locations (Jow & Scott 2020).
+  theme: hawking
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: "[p. 8], §3.2"
+    quote: we also find no evidence for a corresponding signal in polarization
+    sourceId: SRC-JOW-SCOTT-2020
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-10-report-ccc-191230
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-draft-ccc-191834
+    date: 2026-09-10
+- id: CCC-C511
+  statement: Omitting the two most significant points from the Hawking-point statistic at the claimed scales raises the probability-to-exceed above 10% (Jow & Scott 2020, Planck 2018 SMICA).
+  theme: hawking
+  rung: observation
+  claimType: measurement
+  sourceAnchor:
+    locator: "[p. 6], §3"
+    quote: If we omit the two most significant points then
+    sourceId: SRC-JOW-SCOTT-2020
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-10-report-ccc-191230
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-draft-ccc-191834
+    date: 2026-09-10
+- id: CCC-C512
+  statement: Bielewicz, Wandelt and Banday (2013) report that the systematically low variance of rings with radii >10° centred on (l,b) = (105°,37°) in WMAP7 is removed when the ℓ ≤ 7 multipoles of the ΛCDM simulations are replaced by the best-fitting values from the data.
+  theme: statistics
+  rung: observation
+  claimType: measurement
+  sourceAnchor:
+    locator: "[p. 1], Abstract"
+    quote: this deviation is caused by the multipoles up to order
+    sourceId: SRC-BIELEWICZ-2013
+    also:
+      - locator: "[p. 9], §6 Conclusions"
+        quote: the agreement between simulations and the observed variances is very good
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-10-report-ccc-191230
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-draft-ccc-191834
+    date: 2026-09-10
+- id: CCC-C523
+  statement: The deficit of variance in rings with large radii is caused by the anomalous distribution of the low-order multipoles up to ℓ = 7 of the WMAP CMB maps.
+  theme: conventional
+  rung: mechanism
+  claimType: causal
+  sourceAnchor: &a1
+    locator: "[p. 1], Abstract"
+    quote: yet another manifestation of the well-known anomalous CMB distribution
+    sourceId: SRC-BIELEWICZ-2013
+    also:
+      - locator: "[p. 7], §5.2"
+        quote: Clustering of the rings in relatively large regions rather indicates
+  parentClaimIds: &a2 []
+  dependsOnClaimIds: []
+  alternativeToClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: split of CCC-C514 (report 2026-09-10-report-ccc-191230)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-ccc-192550
+    date: 2026-09-10
+  contradictsClaimIds: []
+- id: CCC-C524
+  statement: The clustering of low-variance ring centres in a few relatively large regions of the sky indicates effects related to large angular scale features in the CMB maps rather than randomly distributed sources.
+  theme: conventional
+  rung: mechanism
+  claimType: causal
+  sourceAnchor: *a1
+  parentClaimIds: *a2
+  dependsOnClaimIds: []
+  alternativeToClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: split of CCC-C514 (report 2026-09-10-report-ccc-191230)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-ccc-192550
+    date: 2026-09-10
+  contradictsClaimIds: []
+- id: CCC-C525
+  statement: The observed ring variance properties are not consistent with the predictions of the conformal cyclic cosmology scenario and cannot be used to support it.
+  theme: conventional
+  rung: mechanism
+  claimType: causal
+  sourceAnchor: *a1
+  parentClaimIds: *a2
+  dependsOnClaimIds: []
+  alternativeToClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: split of CCC-C514 (report 2026-09-10-report-ccc-191230)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-verify-ccc-192550
+    date: 2026-09-10
+  contradictsClaimIds: []
+- id: CCC-C519
+  statement: For Planck-mass dark-matter particles with lifetime exceeding the Hubble time decaying to two gravitons, the direct gravitational-wave background at 25 Hz is Ω_GW < 2 × 10⁻¹⁰³, about 95 orders of magnitude below the LIGO O1+O2 limit (Allen 2020).
+  theme: erebons
+  rung: mechanism
+  claimType: mathematical
+  sourceAnchor:
+    locator: "[p. 2], §III, after Eq. (5)"
+    quote: below detectability in LIGO by about 95 orders of magnitude
+    sourceId: SRC-ALLEN-2020
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-10-report-ccc-191230
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-10-draft-ccc-191834
+    date: 2026-09-10

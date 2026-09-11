@@ -11,6 +11,9 @@ describe("prose references", () => {
     expect(ledgerIdRefs("see ORCH-C001, GEO-C002 and ORCH-R010", "ORCH")).toEqual(["ORCH-C001", "ORCH-R010"]);
     expect(ledgerIdRefs(undefined, "ORCH")).toEqual([]);
   });
+  it("reads same-case shorthand as the case's own ids, but not digits inside words or numbers", () => {
+    expect(ledgerIdRefs("toward C515, and C128–C130; not Cs-137, not 1E100, not ORCH-C001's C", "ORCH")).toEqual(["ORCH-C001", "ORCH-C515", "ORCH-C128", "ORCH-C130"]);
+  });
   it("lists every prose id that names no record of the case", () => {
     expect(danglingProseRefs(c)).toEqual([
       { record: "ORCH-E049", field: "editorInference", id: "ORCH-C031" },
@@ -30,6 +33,7 @@ describe("prose references", () => {
     const un = new Map([["ORCH-C514", { kind: "claim", observed: "The deficit of variance in large-radius rings and the clustering of low-variance ring centres into a few regions" }]]);
     expect(scrubUnadmitted("bears on ORCH-C514 and not on ORCH-C010", un)).toBe("bears on a proposed claim not admitted at intake ('The deficit of variance in large-radius rings and the clustering of…') and not on ORCH-C010");
     expect(scrubUnadmitted("nothing to scrub: ORCH-C010", un)).toBe("nothing to scrub: ORCH-C010");
+    expect(scrubUnadmitted("the correct direction toward C514, unlike C010", un)).toBe("the correct direction toward a proposed claim not admitted at intake ('The deficit of variance in large-radius rings and the clustering of…'), unlike C010");
   });
 });
 

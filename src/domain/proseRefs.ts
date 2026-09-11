@@ -21,6 +21,13 @@
 
 /** A ledger id with the case's prefix: PREFIX-C001, PREFIX-E012, PREFIX-R003. */
 export const LEDGER_ID = /\b([A-Z]{2,6})-([CER])(\d{3})\b/g;
+/**
+ * The same-case shorthand prose uses — "C515", "E207", "C128–C130" — a
+ * letter and three digits standing alone (not inside a word, a number, or a
+ * prefixed id). Read as the case's own record (review note on #286: the
+ * shorthand escaped the prefixed check and CI passed over dangling prose).
+ */
+export const SHORTHAND_ID = /(?<![A-Za-z0-9-])([CER])(\d{3})(?![A-Za-z0-9])/g;
 
 
 /** The ids written in a text that carry the given case prefix. */
@@ -28,6 +35,7 @@ export function ledgerIdRefs(text: string | undefined | null, prefix: string): s
   if (!text) return [];
   const out: string[] = [];
   for (const m of text.matchAll(LEDGER_ID)) if (m[1] === prefix) out.push(m[0]);
+  for (const m of text.matchAll(SHORTHAND_ID)) out.push(`${prefix}-${m[1]}${m[2]}`);
   return out;
 }
 
@@ -111,12 +119,17 @@ export function pageOfQuote(text: string, quote: string | undefined): number | n
  * claim is later rejected, the note would name a record that does not exist.
  */
 export function scrubUnadmitted(text: string, unadmitted: Map<string, { kind: string; observed: string }>): string {
-  return text.replace(LEDGER_ID, (id) => {
-    const u = unadmitted.get(id);
-    if (!u) return id;
+  const phrase = (u: { kind: string; observed: string }) => {
     const what = u.observed.replace(/\s+/g, " ").trim();
     return `a proposed ${u.kind} not admitted at intake ('${what.length > 70 ? what.slice(0, 67) + "…" : what}')`;
-  });
+  };
+  const prefix = [...unadmitted.keys()][0]?.split("-")[0];
+  return text
+    .replace(LEDGER_ID, (id) => (unadmitted.has(id) ? phrase(unadmitted.get(id)!) : id))
+    .replace(SHORTHAND_ID, (m, letter: string, digits: string) => {
+      const id = `${prefix}-${letter}${digits}`;
+      return unadmitted.has(id) ? phrase(unadmitted.get(id)!) : m;
+    });
 }
 
 /**

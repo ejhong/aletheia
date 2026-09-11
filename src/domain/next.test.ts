@@ -14,7 +14,9 @@ const run = (over: Partial<RunRecord>): RunRecord => ({
 
 describe("aletheia next", () => {
   const cases = loadAllCases();
-  const other = cases.find((c) => c.record.slug !== "megalithic-casting" && !c.dispositions.length)!;
+  // Any case but the fixture one: the chooser reads the runs it is handed, not the case's own dispositions,
+  // and every real case eventually carries some (Orch OR, the last without, took its first sitting on 2026-09-11).
+  const other = cases.find((c) => c.record.slug !== "megalithic-casting")!;
 
   it("an inbox with items is the first choice, counted without reading the files", () => {
     const [a, b] = cases;

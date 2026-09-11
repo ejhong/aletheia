@@ -377,7 +377,8 @@ export async function runEdition(caseKey: string, opts: EditionOptions = {}): Pr
       edition,
     );
     const wrote = [editionFile, assessmentFile].filter((f): f is string => Boolean(f)).map((f) => path.relative(root, f));
-    const notes = [assessment ? "new assessment" : "re-adopts the incumbent's assessment", reply.fallback ? `served by the fallback: ${reply.fallback}` : undefined].filter(Boolean).join("; ");
+    const words = (t: string) => t.split(/\s+/).filter(Boolean).length;
+    const notes = [assessment ? "new assessment" : "re-adopts the incumbent's assessment", `article ${words(incumbent.article)} → ${words(edition.article)} words`, reply.fallback ? `served by the fallback: ${reply.fallback}` : undefined].filter(Boolean).join("; ");
     return { ...closeRun(run, "completed", { model: reply.model, reason: notes, wrote }), editionFile, assessmentFile };
   } catch (e) {
     return closeRun(run, "failed", { reason: (e as Error).message });

@@ -1000,3 +1000,34 @@ describe("verify v6: a bearing per claim, and a record split by direction", () =
     expect(r.notes).toContain("SRC-NEW-2026: read by the verifier; verification set to ai_verified");
   });
 });
+
+describe("the draft verb's prose discipline (v8, 2026-09-11)", () => {
+  const base = () => ({
+    loaded: geo(),
+    reportRunId: "2026-09-11-report-megalithic-casting-100000",
+    runId: "2026-09-11-draft-megalithic-casting-110000",
+    model: "claude-opus-5",
+    promptVersion: "draft-v8",
+    date: "2026-09-11",
+    fetched: [{ url: "https://doi.org/10.1038/s40494-026-02315-y", ok: true, status: 200, contentType: "text/html", text: "…" }] as FetchedSource[],
+  });
+  it("declines a claim that bundles a falsification condition with its proposition", () => {
+    const reply = draftReply();
+    reply.claims[0].statement = "Molten sodium carbonate at 900 °C disintegrates granite within fifteen minutes; it would be false if specimens survived an hour.";
+    const { proposal } = assembleProposal(reply, base());
+    expect(proposal.adds.claims.map((c) => c.statement)).not.toContain(reply.claims[0].statement);
+    const d = proposal.dispositions.find((x) => x.kind === "claim" && x.observed === reply.claims[0].statement);
+    expect(d?.disposition).toBe("failed");
+    expect(d?.reason).toMatch(/§3\.2.*falsification condition/);
+  });
+  it("declines a proposed record whose prose names an id the ledger does not hold", () => {
+    const reply = draftReply();
+    reply.research[0].summary = "Repeat the protocol; a positive result would support GEO-C101 and the mechanism at GEO-C001.";
+    const { proposal } = assembleProposal(reply, base());
+    expect(proposal.adds.research).toEqual([]);
+    const d = proposal.dispositions.find((x) => x.kind === "research");
+    expect(d?.disposition).toBe("failed");
+    expect(d?.reason).toContain("GEO-C101");
+    expect(d?.reason).not.toContain("GEO-C001");
+  });
+});

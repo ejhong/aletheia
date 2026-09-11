@@ -203,3 +203,16 @@ describe("a sitting works on at most its case limit", () => {
     expect(all.stopped).toBeUndefined();
   });
 });
+
+describe("cases with an open sitting", () => {
+  const cases = loadAllCases();
+  it("are not chosen while their work is on an unmerged branch", () => {
+    const [a, b] = cases;
+    const busy = new Map([[a.record.slug, "chain/2026-09-11-1"]]);
+    // a would be first for its inbox; busy, it yields to b.
+    const inbox = new Map([[a.record.slug, 1], [b.record.slug, 1]]);
+    expect(nextAction(cases, [], "2026-09-20", new Set(), inbox, busy)).toMatchObject({ case: b.record.slug, verb: "inbox" });
+    const all = new Map(cases.map((c) => [c.record.slug, "chain/x"]));
+    expect(nextAction(cases, [], "2026-09-20", new Set(), inbox, all)).toMatchObject({ case: null, verb: "rest" });
+  });
+});

@@ -2156,3 +2156,51 @@ had been priced entirely at Fable's rate: $3.72 for tokens where $3.13 was
 owed). The stamps and spend rows of that run were corrected by hand in the
 same sitting and say so in their notes. (Operator record, written in the founder's
 session of 2026-09-11.)
+
+## 2026-09-11 — What the first Orch OR sitting taught: five fixes, shifted left
+
+The first research pass on Orch OR (PR #281) ran to a finished edition
+unattended in form — four verbs, one PR — and then needed three panel
+rounds and two operator hours to land. The panel was right twice and
+wrong once, and every finding was mechanical. So the checks move upstream,
+fail-closed, before a model judges:
+
+1. **Prose cites only records that exist.** The drafter had numbered its
+   own proposals (ORCH-C101…) and cited them in research summaries; the
+   verb keys claims from the next free id and verify drops rejections, so
+   five summaries named records that never existed, and the loader could
+   not see it. Now `danglingProseRefs` (src/domain/proseRefs.ts) fails the
+   build for any record dated from 2026-09-12 whose prose names an id the
+   case does not hold, and the draft verb declines a proposed record whose
+   prose names an id the ledger does not already hold (draft-v8: proposed
+   records are referred to by title). Earlier content carries a backlog of
+   39 such references (megalithic-casting, transients, vasocomputation —
+   ids from retired numbering schemes), listed by the scan that found them
+   and left for a correction pass; the cutoff is what keeps the rule honest
+   rather than retroactive.
+2. **A claim is one proposition.** The draft verb declines a statement that
+   bundles a falsification clause ("; it would be false if …"), the §3.2
+   shape the verifier had rejected in some candidates and passed in others.
+   Two such statements landed in Orch OR before the rule (ORCH-C057,
+   ORCH-C063) and are corrected in their own content PR.
+3. **A split part keeps its own page.** When verify splits an evidence
+   record, each part's locator is narrowed to the page its quote is on (the
+   paged source text the reader read), recorded as a reader act with the
+   field `exactLocator`. A part quoting p. 1 alone had carried "p. 1 and p.
+   4".
+4. **An open sitting is not paid for twice.** `scripts/busy-cases.mjs` reads
+   the unmerged `chain/*` branches for the cases their run records name
+   (squash-merge aware: a run record already on main means the sitting
+   landed), and the chain passes them to `aletheia next --busy`, which does
+   not choose them. Before this, a parked sitting's case looked
+   never-reported to the scheduler.
+5. **The reader's cost is measured.** The edition verb notes the article's
+   word count before and after; edition-v6 asks a rationale for growth over
+   a quarter. Orch OR went from 2,692 to 4,561 words in one edition.
+
+Still open, by choice: an `answer` verb that would do what the operator did
+by hand on #281 — read a park, run the mechanical checks, correct through
+the correction writer, reply on the record — is the automation gap that
+remains; and whether the house model should be chosen per case now that
+Fable's filter routes Orch OR to Opus. (Operator record, founder direction
+in session, 2026-09-11: "use all these learnings to add fixes necessary".)

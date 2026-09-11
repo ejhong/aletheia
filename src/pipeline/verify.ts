@@ -16,6 +16,7 @@ import { MODELS } from "../lib/models.mjs";
 import { anthropicJson, type Meter } from "./models.ts";
 import { loadProtocol, renderProtocol } from "./protocols.ts";
 import { quotedSpans, unverifiedQuotes } from "./quotes.ts";
+import { narrowLocator, pageOfQuote } from "../domain/proseRefs.ts";
 import { appendDispositions, closeRun, openRun, readProposal, writeWorkingFile, type RunOutcome } from "./store.ts";
 
 /**
@@ -512,6 +513,16 @@ export async function judgeProposal(
         }
         const id = nextEvidenceId(loaded, [...proposal.adds.evidence.map((x) => x.id), ...okEvidence.map((x) => x.id), ...admitted.map((x) => x.id)]);
         const candidate: Evidence = { ...e, id, title: `${e.title} — part ${n + 1}`, sourceStatement: part, origin: { ref: `split of ${e.id} (${e.origin.ref})`, extractedBy: sp.model ?? splitter.model, runId: sp.runId ?? splitter.runId, date: sp.date ?? reader.date } };
+        // A part keeps the page its own quote is on, not the parent's whole locator (2026-09-11: a part quoting
+        // p. 1 alone carried "p. 1 and p. 4", and the panel parked the sitting for it).
+        const page = pageOfQuote(fetched.text, quotedSpans(part)[0]);
+        if (page !== null && e.exactLocator && /\[p\. \d+\]/.test(e.exactLocator)) {
+          const narrowed = narrowLocator(e.exactLocator, page);
+          if (narrowed !== e.exactLocator) {
+            candidate.exactLocator = narrowed;
+            candidate.readerActs = [...(candidate.readerActs ?? []), { field: "exactLocator", from: e.exactLocator, to: narrowed, model: "verify (mechanical: the page marker before the part's quote)", runId: meter.runId, promptVersion, date: reader.date, reason: `the part quotes p. ${page} only` }];
+          }
+        }
         const v2 = await judge({ ...candidate, editorInference: undefined }, fetched.text, context, meter);
         const bad = Object.entries(v2).filter(([k, v]) => k !== "reason" && v === false && k !== "directionRight").map(([k]) => k);
         if (bad.length) {

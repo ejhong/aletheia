@@ -76,7 +76,11 @@ jobs:
           VENICE_API_KEY: ${{ secrets.VENICE_API_KEY }}
           # The intake asks GitHub who committed a dropped file (config/founder.yaml).
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: node scripts/aletheia.ts next --run --steps "${{ github.event.inputs.steps || '3' }}" --deadline-minutes 240 --max-cases 2 --out next.json
+        run: |
+          # Cases with a sitting still open on an unmerged chain/* branch are not chosen again (scripts/busy-cases.mjs).
+          busy=$(node scripts/busy-cases.mjs || true)
+          [ -n "$busy" ] && echo "::notice::not choosing: $busy"
+          node scripts/aletheia.ts next --run --steps "${{ github.event.inputs.steps || '3' }}" --deadline-minutes 240 --max-cases 2 --out next.json --busy "$busy"
       # Runs whatever became of the chain step — a failed step, a deadline, a cancelled or
       # timed-out job: what the sitting wrote is committed and judged, and the spend rows
       # reach the ledger. Money spent is recorded, whatever became of the run.

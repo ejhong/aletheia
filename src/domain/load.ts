@@ -7,6 +7,7 @@ import { assessmentHash, ledgerHash } from "./hash.ts";
 import { DispositionSchema, type Disposition } from "./intake.ts";
 import { AssessmentRunSchema, CaseSchema, ChangeLogEntrySchema, CLAIM_ANCHOR_REQUIRED_FROM, ClaimSchema, CuratedResourceSchema, EditionSchema, EvidenceSchema, ImageSchema, ResearchOpportunitySchema, SourceSchema, steelmanRequirementError, StudySchema, NarrativeInputSchema, WatchConfigSchema, type AssessmentRun, type Claim, type CuratedResource, type Edition, type Evidence, type ImageRecord, type LoadedCase, type Source, type Study, type NarrativeInput, type WatchConfig } from "./schema.ts";
 import { studyIntegrityErrors } from "./studies.ts";
+import { PROSE_REFS_REQUIRED_FROM, danglingProseRefs } from "./proseRefs.ts";
 import { orderEditions } from "./editions.ts";
 
 const CONTENT_DIR = path.join(process.cwd(), "content", "cases");
@@ -96,6 +97,16 @@ function checkImages(
 
 function checkIntegrity(caseDir: string, loaded: LoadedCase): void {
   const claimById = new Map(loaded.claims.map((c) => [c.id, c]));
+  // An id written in prose must name a record that exists (2026-09-11: five
+  // research summaries cited the drafter's provisional ids). Records from
+  // PROSE_REFS_REQUIRED_FROM on; earlier content carries a listed backlog.
+  const dangling = danglingProseRefs(loaded, PROSE_REFS_REQUIRED_FROM);
+  if (dangling.length) {
+    throw new ContentError(
+      caseDir,
+      `prose names records that do not exist: ${dangling.map((d) => `${d.record}.${d.field} → ${d.id}`).join("; ")}`,
+    );
+  }
   const sourceIds = new Set(loaded.sources.map((s) => s.id));
 
   const requireLiveClaim = (id: string, where: string) => {

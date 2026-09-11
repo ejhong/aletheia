@@ -20,4 +20,4 @@ export function splitArgs(rest: string[], valueFlags: Iterable<string>): { args:
 }
 
 /** Every flag the CLI reads a value for; a new one is added here, not at a call site. */
-export const VALUE_FLAGS = ["--seat", "--seats", "--reconsider", "--steps", "--deadline-minutes", "--out", "--max-cases"] as const;
+export const VALUE_FLAGS = ["--seat", "--seats", "--reconsider", "--steps", "--deadline-minutes", "--out", "--max-cases", "--busy"] as const;

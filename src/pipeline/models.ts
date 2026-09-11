@@ -35,6 +35,8 @@ export interface ResearchResult {
   citations: { url: string; title?: string }[];
   /** Vendor payloads, kept beside the report as working material. */
   raw: unknown[];
+  /** Set when the vendor's server-side fallback answered: "asked → served (trigger; n iterations)". */
+  fallback?: string;
 }
 
 export type FetchLike = typeof fetch;
@@ -118,8 +120,42 @@ export type AnthropicMessage = {
     cache_creation_input_tokens?: number;
     cache_read_input_tokens?: number;
     server_tool_use?: { web_search_requests?: number; web_fetch_requests?: number };
+    /** Per-iteration models of a multi-turn server call; a `fallback_message` entry was answered by the fallback. */
+    iterations?: {
+      model?: string;
+      type?: string;
+      input_tokens?: number;
+      output_tokens?: number;
+      cache_read_input_tokens?: number;
+      cache_creation_input_tokens?: number;
+    }[];
   };
 };
+
+/**
+ * The model that actually answered. With a server-side fallback the outer
+ * `model` field still names the model that was asked, while the message
+ * carries a `fallback` block (from → to, with its trigger) and per-iteration
+ * usage whose later entries are `fallback_message`s from the fallback model.
+ * Observed 2026-09-11 on the Orch OR research pass: one Fable turn, a
+ * refusal (category bio), then twenty-nine Opus iterations — and a run
+ * record stamped "claude-fable-5-1". The stamp reads the fallback now.
+ */
+export function servedBy(
+  m: { model?: string; content?: AnthropicBlock[]; usage?: { iterations?: { model?: string; type?: string }[] } },
+  asked: string,
+): { model: string; fallback?: string } {
+  const block = m.content?.find((b) => b.type === "fallback") as
+    | { from?: { model?: string }; to?: { model?: string }; trigger?: { type?: string; category?: string } }
+    | undefined;
+  const fell = (m.usage?.iterations ?? []).filter((i) => i.type === "fallback_message" && i.model);
+  const to = block?.to?.model ?? fell.at(-1)?.model;
+  if (!to) return { model: m.model || asked };
+  const from = block?.from?.model ?? m.model ?? asked;
+  const trigger = block?.trigger ? [block.trigger.type, block.trigger.category].filter(Boolean).join(", ") : "server-side fallback";
+  const n = fell.length || 1;
+  return { model: to, fallback: `${from} → ${to} (${trigger}; ${n} fallback iteration${n === 1 ? "" : "s"})` };
+}
 
 /**
  * Rebuild the message a streamed response describes. Every call streams:
@@ -273,6 +309,38 @@ function usageOf(m: AnthropicMessage): Usage {
 }
 
 /**
+ * Tokens by the model that consumed them. A server call that fell back is
+ * billed at two tariffs — the asked model's for the turn it declined, the
+ * fallback's for the rest — and the per-iteration usage says which was
+ * which; without iterations the whole message is the served model's.
+ */
+export function usageByModel(m: Pick<AnthropicMessage, "usage">, served: string): Map<string, Usage> {
+  const by = new Map<string, Usage>();
+  const add = (model: string, u: Usage) => {
+    const t = by.get(model) ?? { inputTokens: 0, outputTokens: 0, cacheReadTokens: 0, cacheWriteTokens: 0 };
+    t.inputTokens += u.inputTokens;
+    t.outputTokens += u.outputTokens;
+    t.cacheReadTokens! += u.cacheReadTokens ?? 0;
+    t.cacheWriteTokens! += u.cacheWriteTokens ?? 0;
+    by.set(model, t);
+  };
+  const iterations = (m.usage?.iterations ?? []).filter((i) => i.input_tokens !== undefined || i.output_tokens !== undefined);
+  if (iterations.length === 0) {
+    add(served, usageOf(m as AnthropicMessage));
+    return by;
+  }
+  for (const i of iterations) {
+    add(i.model || served, {
+      inputTokens: i.input_tokens ?? 0,
+      outputTokens: i.output_tokens ?? 0,
+      cacheReadTokens: i.cache_read_input_tokens ?? 0,
+      cacheWriteTokens: i.cache_creation_input_tokens ?? 0,
+    });
+  }
+  return by;
+}
+
+/**
  * Automatic prompt caching for the research loop only (the vendor moves the
  * breakpoint forward as the turn grows). In a server-tool loop the model
  * re-reads the whole context after each result; cached, those re-reads cost
@@ -351,6 +419,8 @@ export async function anthropicResearch(opts: AnthropicResearchOptions, meter: M
 
   const raw: unknown[] = [];
   let served = model;
+  let fallbackNote: string | undefined;
+  const billed = new Map<string, Usage>();
   const texts: string[] = [];
   const citations: { url: string; title?: string }[] = [];
   const usage: Usage = { inputTokens: 0, outputTokens: 0, cacheReadTokens: 0, cacheWriteTokens: 0 };
@@ -360,7 +430,17 @@ export async function anthropicResearch(opts: AnthropicResearchOptions, meter: M
   for (let i = 0; i <= limit; i++) {
     const m = await anthropicPost(body, opts.fetchImpl ?? fetch, opts.timeoutMs ?? 1_800_000);
     raw.push(m);
-    served = m.model || served; // the model that actually answered (the fallback, if it ran)
+    const who = servedBy(m, served); // the model that actually answered (the fallback, if it ran)
+    served = who.model;
+    if (who.fallback && !fallbackNote) fallbackNote = who.fallback;
+    for (const [bm, bu] of usageByModel(m, served)) {
+      const t = billed.get(bm) ?? { inputTokens: 0, outputTokens: 0, cacheReadTokens: 0, cacheWriteTokens: 0 };
+      t.inputTokens += bu.inputTokens;
+      t.outputTokens += bu.outputTokens;
+      t.cacheReadTokens! += bu.cacheReadTokens ?? 0;
+      t.cacheWriteTokens! += bu.cacheWriteTokens ?? 0;
+      billed.set(bm, t);
+    }
     const u = usageOf(m);
     usage.inputTokens += u.inputTokens;
     usage.outputTokens += u.outputTokens;
@@ -378,15 +458,15 @@ export async function anthropicResearch(opts: AnthropicResearchOptions, meter: M
     }
     break;
   }
-  // The ledger first: a refused or truncated turn was billed all the same.
-  recordTokens(meter, served, usage);
+  // The ledger first: a refused or truncated turn was billed all the same — each model at its own tariff.
+  for (const [bm, bu] of billed) recordTokens(meter, bm, bu);
   recordSearches(meter, "anthropic:web_search", searches);
   const last = raw.at(-1) as AnthropicMessage;
   if (last.stop_reason === "refusal") throw new Error(`${model} refused the research request`);
   if (last.stop_reason === "max_tokens") throw new Error(`${served} hit max_tokens (${maxTokens}) before finishing the report`);
   const text = texts.join("\n").trim();
   if (!text) throw new Error(`${served}: empty report`);
-  return { text, model: served, usage, searches, fetches, citations: dedupeCitations(citations), raw };
+  return { text, model: served, usage, searches, fetches, citations: dedupeCitations(citations), raw, ...(fallbackNote ? { fallback: fallbackNote } : {}) };
 }
 
 /**
@@ -480,7 +560,7 @@ export function anthropicJsonRequest(opts: AnthropicJsonOptions, strict: boolean
 export async function anthropicJson<T = unknown>(
   opts: AnthropicJsonOptions,
   meter: Meter,
-): Promise<{ data: T; model: string; usage: Usage; usd: number | null; strict: boolean }> {
+): Promise<{ data: T; model: string; usage: Usage; usd: number | null; strict: boolean; fallback?: string }> {
   const model = opts.model;
   const maxTokens = opts.maxTokens ?? 32000;
   assertWithinBudget(
@@ -499,10 +579,16 @@ export async function anthropicJson<T = unknown>(
     strict = false;
     m = await anthropicPost(request(false), opts.fetchImpl ?? fetch, opts.timeoutMs ?? 1_800_000);
   }
-  const served = m.model || model;
+  const who = servedBy(m, model);
+  const served = who.model;
   // The ledger first: a refused or truncated reply was billed all the same.
   const usage = usageOf(m);
-  const usd = recordTokens(meter, served, usage);
+  let usd: number | null = 0;
+  for (const [bm, bu] of usageByModel(m, served)) {
+    const part = recordTokens(meter, bm, bu);
+    usd = usd === null || part === null ? null : usd + part;
+  }
+  if (usd !== null) usd = Number(usd.toFixed(6));
   if (m.stop_reason === "refusal") throw new Error(`${model} (and its fallback) refused`);
   if (m.stop_reason === "max_tokens") throw new Error(`${served} hit max_tokens (${maxTokens}) before finishing`);
   const text = m.content.filter((b) => b.type === "text").map((b) => b.text ?? "").join("");
@@ -512,7 +598,7 @@ export async function anthropicJson<T = unknown>(
   } catch (e) {
     throw new Error(`${served}: reply was not the JSON the schema demanded (${(e as Error).message})`);
   }
-  return { data, model: served, usage, usd, strict };
+  return { data, model: served, usage, usd, strict, ...(who.fallback ? { fallback: who.fallback } : {}) };
 }
 
 // --------------------------------------------------------------------- OpenAI

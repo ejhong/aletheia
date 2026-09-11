@@ -105,14 +105,14 @@ export async function runReport(caseKey: string, opts: ReportOptions): Promise<R
     const result = await (opts.deps?.research ?? defaultResearcher)(opts.seat, instructions, input, run.meter);
     const header =
       `<!-- Unverified AI research report — working material, never citable (docs/AUTOMATION.md).\n` +
-      `     runId ${runId} · seat ${opts.seat} · model ${result.model} · protocol ${protocol.version} · ${date}\n` +
+      `     runId ${runId} · seat ${opts.seat} · model ${result.model}${result.fallback ? ` (fallback: ${result.fallback})` : ""} · protocol ${protocol.version} · ${date}\n` +
       `     searches ${result.searches} · fetches ${result.fetches} · tokens in ${result.usage.inputTokens} out ${result.usage.outputTokens}` +
       (opts.reconsider ? `\n     reconsidered because: ${opts.reconsider}` : "") +
       ` -->\n\n`;
     const reportFile = writeWorkingFile(runId, "report.md", header + result.text.trim() + "\n", root);
     writeWorkingFile(runId, "citations.json", JSON.stringify(result.citations, null, 2), root);
     writeWorkingFile(runId, "raw.json", JSON.stringify(compactRaw(result.raw), null, 1), root);
-    return { ...closeRun(run, "completed", { model: result.model }), reportFile };
+    return { ...closeRun(run, "completed", { model: result.model, reason: result.fallback ? `served by the fallback: ${result.fallback}` : undefined }), reportFile };
   } catch (e) {
     return closeRun(run, "failed", { reason: (e as Error).message });
   }

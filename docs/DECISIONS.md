@@ -2134,3 +2134,25 @@ written on The Emptied Amazon is clarified by a following entry. The
 report's "NOT applied" against corrections the run had applied was the
 same day's null-against-absent fault, fixed in the verifier PR.
 
+
+## 2026-09-11 — The stamp reads the fallback: a served model is the one that answered
+
+The first research pass on the Orch OR case (run 2026-09-11-report-orch-or-114458)
+was answered by claude-opus-5 after claude-fable-5-1 declined the first turn
+(the vendor's fallback block: trigger `refusal`, category `bio`); one Fable
+iteration, twenty-nine Opus fallback iterations — and the run record said
+`model: claude-fable-5-1`, because the vendor's outer `model` field still
+names the model asked and that is what the stamp read. That breaks the
+2026-08-27 rule ("truthful stamps": every run records the model that actually
+served), silently, on exactly the case the fallback was built for.
+
+Fixed in the engine: `servedBy` (src/pipeline/models.ts) reads the `fallback`
+block and the per-iteration usage, names the model that answered, and returns
+a note ("asked → served (trigger; n fallback iterations)") that the report,
+draft, and edition verbs write into the run record's `notes` and the report
+header. The spend ledger follows the same truth: `usageByModel` bills each
+iteration to the model that consumed it, at that model's tariff (the same run
+had been priced entirely at Fable's rate: $3.72 for tokens where $3.13 was
+owed). The stamps and spend rows of that run were corrected by hand in the
+same sitting and say so in their notes. (Operator record, written in the founder's
+session of 2026-09-11.)

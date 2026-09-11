@@ -277,12 +277,12 @@ export function assembleEdition(
   return { edition, assessment, errors };
 }
 
-export type Editor = (system: string, user: string, meter: Meter) => Promise<{ data: EditionReply; model: string; strict?: boolean }>;
+export type Editor = (system: string, user: string, meter: Meter) => Promise<{ data: EditionReply; model: string; strict?: boolean; fallback?: string }>;
 
 export const defaultEditor: Editor = async (system, user, meter) => {
   // A reconsideration answers every seat's dissents on top of twenty treatments and the article: 48k was not enough (2026-09-09).
   const r = await anthropicJson<EditionReply>({ ...EDITOR, system, user, schema: EDITION_SCHEMA, maxTokens: 96000, effort: "high" }, meter);
-  return { data: r.data, model: r.model, strict: r.strict };
+  return { data: r.data, model: r.model, strict: r.strict, fallback: r.fallback };
 };
 
 export interface EditionOptions {
@@ -377,7 +377,8 @@ export async function runEdition(caseKey: string, opts: EditionOptions = {}): Pr
       edition,
     );
     const wrote = [editionFile, assessmentFile].filter((f): f is string => Boolean(f)).map((f) => path.relative(root, f));
-    return { ...closeRun(run, "completed", { model: reply.model, reason: assessment ? "new assessment" : "re-adopts the incumbent's assessment", wrote }), editionFile, assessmentFile };
+    const notes = [assessment ? "new assessment" : "re-adopts the incumbent's assessment", reply.fallback ? `served by the fallback: ${reply.fallback}` : undefined].filter(Boolean).join("; ");
+    return { ...closeRun(run, "completed", { model: reply.model, reason: notes, wrote }), editionFile, assessmentFile };
   } catch (e) {
     return closeRun(run, "failed", { reason: (e as Error).message });
   }

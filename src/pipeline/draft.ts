@@ -643,14 +643,14 @@ export function assembleProposal(reply: DraftReply, ctx: AssembleContext): Assem
   return { proposal, novelty };
 }
 
-export type Drafter = (system: string, user: string, meter: Meter) => Promise<{ data: DraftReply; model: string; strict?: boolean }>;
+export type Drafter = (system: string, user: string, meter: Meter) => Promise<{ data: DraftReply; model: string; strict?: boolean; fallback?: string }>;
 
 export const defaultDrafter: Drafter = async (system, user, meter) => {
   // Extraction, not deliberation: medium effort leaves the allowance to the records. A pass with several
   // retrieved papers proposes more than 32k tokens carry (2026-09-08), and more than 64k with adaptive
   // thinking sharing the allowance (2026-09-09, the OpenAI report plus full PDF texts): 128k.
   const r = await anthropicJson<DraftReply>({ ...DRAFTER, system, user, schema: DRAFT_SCHEMA, maxTokens: 128000, effort: "medium" }, meter);
-  return { data: r.data, model: r.model, strict: r.strict };
+  return { data: r.data, model: r.model, strict: r.strict, fallback: r.fallback };
 };
 
 export interface DraftOptions {
@@ -711,7 +711,8 @@ export async function runDraft(reportRunId: string, opts: DraftOptions = {}): Pr
     const dir = writeProposal(proposal, root);
     writeWorkingFile(runId, "novelty.md", novelty, root);
     writeWorkingFile(runId, "reply.json", JSON.stringify(reply.data, null, 1), root);
-    return { ...closeRun(run, "completed", { model: reply.model, reason: reply.strict === false ? "schema sent as instructions (too large for strict output)" : undefined }), proposalDir: dir };
+    const notes = [reply.strict === false ? "schema sent as instructions (too large for strict output)" : undefined, reply.fallback ? `served by the fallback: ${reply.fallback}` : undefined].filter(Boolean).join("; ") || undefined;
+    return { ...closeRun(run, "completed", { model: reply.model, reason: notes }), proposalDir: dir };
   } catch (e) {
     return closeRun(run, "failed", { reason: (e as Error).message });
   }

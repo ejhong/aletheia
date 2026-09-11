@@ -271,7 +271,7 @@ export const directionLabels: Record<EvidenceDirection, string> = {
 
 /** One change the second reader made to an admitted evidence record at intake, stamped (verify protocol v5). */
 export const ReaderActSchema = z.object({
-  field: z.enum(["direction", "claimIds"]),
+  field: z.enum(["direction", "claimIds", "exactLocator"]),
   from: z.union([z.string(), z.array(z.string())]),
   to: z.union([z.string(), z.array(z.string())]),
   model: z.string().min(1),

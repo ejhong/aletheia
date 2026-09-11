@@ -78,6 +78,8 @@ export interface SittingOptions {
    * was omitted from their view). Absent: no limit.
    */
   maxCases?: number;
+  /** Cases not to choose, each with why — an open sitting on an unmerged branch (scripts/busy-cases.mjs). */
+  busy?: Map<string, string>;
   /** Called after every choice with the sitting so far, so a caller can write progress to disk as it goes. */
   onProgress?: (soFar: NextOutcome) => void;
   /** Test seams: the clock, one choice-and-run, or the choice and the run apart. */
@@ -131,7 +133,7 @@ export function chooseNext(opts: SittingOptions): NextChoice {
   const root = opts.root ?? process.cwd();
   const cases = loadAllCases();
   const runs = readRuns(root);
-  return nextAction(cases, runs, opts.today ?? new Date().toISOString().slice(0, 10), draftedFrom(runs, root), inboxPending(cases, root));
+  return nextAction(cases, runs, opts.today ?? new Date().toISOString().slice(0, 10), draftedFrom(runs, root), inboxPending(cases, root), opts.busy ?? new Map());
 }
 
 /** Do the choice: a chain continued until a step does not complete. */

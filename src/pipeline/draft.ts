@@ -9,6 +9,7 @@ import {
 } from "../domain/intake.ts";
 import { sha256Hex } from "../domain/hash.ts";
 import { canonicalUrl, sourceKeys, textKey } from "../domain/keys.ts";
+import { compoundClause, ledgerIdRefs } from "../domain/proseRefs.ts";
 import { findCase } from "../domain/load.ts";
 import {
   ClaimSchema,
@@ -343,6 +344,10 @@ export function assembleProposal(reply: DraftReply, ctx: AssembleContext): Assem
     ...loaded.research.map((r) => r.id),
   ]);
   const resolve = (ref: string) => idOf.get(ref) ?? (knownIds.has(ref) ? ref : null);
+  // Prose may name only records the ledger already holds: a proposed record is referred to by title, never by an
+  // id (the drafter's own numbering never enters the ledger — 2026-09-11, five research summaries cited it).
+  const ledgerIds = new Set(knownIds);
+  const strangeIds = (texts: (string | null | undefined)[]) => [...new Set(texts.flatMap((t) => ledgerIdRefs(t, nums.prefix)))].filter((id) => !ledgerIds.has(id));
   const fetchedByUrl = new Map(ctx.fetched.map((f) => [canonicalUrl(f.url), f]));
   const fetchedByDoi = new Map(ctx.fetched.flatMap((f) => (doiFromUrl(f.url) ? [[doiFromUrl(f.url)!.toLowerCase(), f] as const] : [])));
   /** The retrieved text for a proposed source: by its URL, or by the DOI its URL or identifier carries. */
@@ -479,6 +484,16 @@ export function assembleProposal(reply: DraftReply, ctx: AssembleContext): Assem
       decline("claim", c.statement, `schema: ${parsed.error.issues.map((i) => `${i.path.join(".")} ${i.message}`).join("; ")}`, textKey(c.statement));
       continue;
     }
+    const clause = compoundClause(c.statement);
+    if (clause) {
+      decline("claim", c.statement, `§3.2: the statement bundles a falsification condition ("${clause.slice(0, 80)}") with the proposition; state the proposition alone`, textKey(c.statement));
+      continue;
+    }
+    const strangeC = strangeIds([c.statement]);
+    if (strangeC.length) {
+      decline("claim", c.statement, `the statement names record ids that are not in the ledger (${strangeC.join(", ")}); proposed records are referred to by title`, textKey(c.statement));
+      continue;
+    }
     if (!(c.theme in loaded.record.themes)) {
       decline("claim", c.statement, `unknown theme "${c.theme}" — the case's themes are ${Object.keys(loaded.record.themes).join(", ")}`, textKey(c.statement));
       continue;
@@ -495,6 +510,11 @@ export function assembleProposal(reply: DraftReply, ctx: AssembleContext): Assem
     const sourceId = resolve(e.sourceRef);
     const claimIds = e.claimRefs.map(resolve).filter((x): x is string => Boolean(x));
     const key = textKey(`${e.title} ${e.sourceStatement}`);
+    const strangeE = strangeIds([e.title, e.sourceStatement, e.editorInference, ...(e.limitations ?? [])]);
+    if (strangeE.length) {
+      decline("evidence", e.title, `its prose names record ids that are not in the ledger (${strangeE.join(", ")}); proposed records are referred to by title`, key);
+      continue;
+    }
     if (!sourceId) {
       decline("evidence", e.title, `its source "${e.sourceRef}" was not added (see its disposition) and is not in the ledger`, key);
       continue;
@@ -546,6 +566,11 @@ export function assembleProposal(reply: DraftReply, ctx: AssembleContext): Assem
       continue;
     }
     const claimIds = r.claimRefs.map(resolve).filter((x): x is string => Boolean(x));
+    const strangeR = strangeIds([r.title, r.summary, r.informationGain]);
+    if (strangeR.length) {
+      decline("research", r.title, `its summary names record ids that are not in the ledger (${strangeR.join(", ")}); proposed records are referred to by title`, textKey(r.title));
+      continue;
+    }
     const record = {
       id: `${nums.prefix}-R${pad3(nums.research++)}`,
       title: r.title,

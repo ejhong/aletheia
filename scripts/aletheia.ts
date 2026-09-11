@@ -93,9 +93,11 @@ switch (verb) {
     const deadline = Number(flagValue("--deadline-minutes") ?? NaN);
     const maxCases = Number(flagValue("--max-cases") ?? NaN);
     const out = flagValue("--out");
+    // `--busy slug=why,slug=why`: cases with a sitting open on an unmerged branch (scripts/busy-cases.mjs), not chosen again.
+    const busy = new Map((flagValue("--busy") ?? "").split(",").map((s) => s.trim()).filter(Boolean).map((s) => { const [slug, ...why] = s.split("="); return [slug, why.join("=") || "open sitting"] as const; }));
     // With --out, the sitting so far is rewritten after every choice, so a sitting cut short still leaves a readable account.
     const onProgress = out ? (soFar: unknown) => fs.writeFileSync(path.resolve(out), JSON.stringify(soFar, null, 2)) : undefined;
-    const r = await runNext({ run: flags.has("--run"), steps: Number.isFinite(steps) && steps > 0 ? steps : 1, ...(Number.isFinite(deadline) && deadline > 0 ? { deadlineMinutes: deadline } : {}), ...(Number.isFinite(maxCases) && maxCases > 0 ? { maxCases } : {}), onProgress });
+    const r = await runNext({ run: flags.has("--run"), busy, steps: Number.isFinite(steps) && steps > 0 ? steps : 1, ...(Number.isFinite(deadline) && deadline > 0 ? { deadlineMinutes: deadline } : {}), ...(Number.isFinite(maxCases) && maxCases > 0 ? { maxCases } : {}), onProgress });
     if (out) fs.writeFileSync(path.resolve(out), JSON.stringify(r, null, 2));
     console.log(JSON.stringify(r, null, 2));
     if ([r, ...(r.more ?? [])].some((o) => o.ran.some((s) => s.outcome.outcome === "failed"))) process.exit(1);

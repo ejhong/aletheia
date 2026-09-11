@@ -123,7 +123,11 @@ export function inboxPending(cases: LoadedCase[], root = process.cwd()): Map<str
   return out;
 }
 
-export function nextAction(cases: LoadedCase[], runs: RunRecord[], today: string, drafted: Set<string> = new Set(), pendingInbox: Map<string, number> = new Map()): NextChoice {
+export function nextAction(allCases: LoadedCase[], runs: RunRecord[], today: string, drafted: Set<string> = new Set(), pendingInbox: Map<string, number> = new Map(), busy: Map<string, string> = new Map()): NextChoice {
+  // A case with a sitting still open on an unmerged branch is not chosen again: its work is not on main, so the
+  // ledger cannot see it, and a second sitting would pay for the same pass (2026-09-11, the Orch OR park).
+  const cases = allCases.filter((c) => !busy.has(c.record.slug));
+  if (cases.length === 0 && allCases.length) return { case: null, verb: "rest", reason: `every case has an open sitting: ${[...busy].map(([k, v]) => `${k} (${v})`).join(", ")}` };
   const byCase = (slug: string) => runs.filter((r) => r.case === slug).sort((a, b) => when(a).localeCompare(when(b)));
   // 0. The founder's door: an inbox with items is taken in before anything else (the inbox-response workflow, retired 2026-09-09, did this on push).
   for (const c of cases) {

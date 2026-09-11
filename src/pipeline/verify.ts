@@ -16,7 +16,7 @@ import { MODELS } from "../lib/models.mjs";
 import { anthropicJson, type Meter } from "./models.ts";
 import { loadProtocol, renderProtocol } from "./protocols.ts";
 import { quotedSpans, unverifiedQuotes } from "./quotes.ts";
-import { narrowLocator, pageOfQuote } from "../domain/proseRefs.ts";
+import { narrowLocator, pageOfQuote, scrubUnadmitted } from "../domain/proseRefs.ts";
 import { appendDispositions, closeRun, openRun, readProposal, writeWorkingFile, type RunOutcome } from "./store.ts";
 
 /**
@@ -827,6 +827,26 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
       root,
     });
     for (const s of corrected.skipped) notes.push(`correction to ${s.correction.record}.${s.correction.field} not applied: ${s.reason}`);
+    // A record that entered may not name, in prose, a proposal record that did not (the reader's own notes name
+    // the proposal claims a passage bears on; a claim rejected later would leave a dangling id — 2026-09-11).
+    {
+      const admittedIds = new Set([...accepted.sources, ...accepted.claims, ...accepted.evidence, ...accepted.research].map((r) => r.id));
+      const unadmitted = new Map<string, { kind: string; observed: string }>();
+      for (const c of proposal.adds.claims) if (!admittedIds.has(c.id) && !loaded.claims.some((k) => k.id === c.id)) unadmitted.set(c.id, { kind: "claim", observed: c.statement });
+      for (const e of proposal.adds.evidence) if (!admittedIds.has(e.id) && !loaded.evidence.some((k) => k.id === e.id)) unadmitted.set(e.id, { kind: "evidence record", observed: e.title });
+      for (const r of proposal.adds.research) if (!admittedIds.has(r.id) && !loaded.research.some((k) => k.id === r.id)) unadmitted.set(r.id, { kind: "research item", observed: r.title });
+      if (unadmitted.size) {
+        const scrub = (id: string, field: string, text: string | undefined) => {
+          if (!text) return text;
+          const out = scrubUnadmitted(text, unadmitted);
+          if (out !== text) notes.push(`${id}.${field}: named a proposal record that did not enter; rewritten to say so`);
+          return out;
+        };
+        accepted.claims = accepted.claims.map((c) => ({ ...c, statement: scrub(c.id, "statement", c.statement)! }));
+        accepted.evidence = accepted.evidence.map((e) => ({ ...e, title: scrub(e.id, "title", e.title)!, sourceStatement: scrub(e.id, "sourceStatement", e.sourceStatement)!, ...(e.editorInference !== undefined ? { editorInference: scrub(e.id, "editorInference", e.editorInference) } : {}), limitations: e.limitations.map((l, i) => scrub(e.id, `limitations[${i}]`, l)!) }));
+        accepted.research = accepted.research.map((r) => ({ ...r, title: scrub(r.id, "title", r.title)!, summary: scrub(r.id, "summary", r.summary)!, ...(r.informationGain !== undefined ? { informationGain: scrub(r.id, "informationGain", r.informationGain) } : {}) }));
+      }
+    }
     appendRecords(loaded.dir, "sources.yaml", accepted.sources, root);
     appendRecords(loaded.dir, "claims.yaml", accepted.claims, root);
     appendRecords(loaded.dir, "evidence.yaml", accepted.evidence, root);

@@ -8,8 +8,9 @@
  *     free id and verify dropped the rejected ones, so five summaries named
  *     records that never existed. The loader could not see it: it checks
  *     structured fields, not prose. Now it does, for records from
- *     PROSE_REFS_REQUIRED_FROM on (earlier content carries a known backlog,
- *     listed in docs/DECISIONS.md).
+ *     every record: the 29 older references the rule found were re-pointed
+ *     or rewritten the same day (review note #285), so it holds without a
+ *     cutoff a date could dodge.
  *  2. A claim statement is one proposition; a falsification clause ("; it
  *     would be false if …") is a second, independently truth-evaluable one
  *     (§3.2). The verifier rejected some and waved others through; the
@@ -20,15 +21,21 @@
 
 /** A ledger id with the case's prefix: PREFIX-C001, PREFIX-E012, PREFIX-R003. */
 export const LEDGER_ID = /\b([A-Z]{2,6})-([CER])(\d{3})\b/g;
+/**
+ * The same-case shorthand prose uses — "C515", "E207", "C128–C130" — a
+ * letter and three digits standing alone (not inside a word, a number, or a
+ * prefixed id). Read as the case's own record (review note on #286: the
+ * shorthand escaped the prefixed check and CI passed over dangling prose).
+ */
+export const SHORTHAND_ID = /(?<![A-Za-z0-9-])([CER])(\d{3})(?![A-Za-z0-9])/g;
 
-/** Records dated on or after this day may not cite, in prose, an id that does not exist. */
-export const PROSE_REFS_REQUIRED_FROM = "2026-09-12";
 
 /** The ids written in a text that carry the given case prefix. */
 export function ledgerIdRefs(text: string | undefined | null, prefix: string): string[] {
   if (!text) return [];
   const out: string[] = [];
   for (const m of text.matchAll(LEDGER_ID)) if (m[1] === prefix) out.push(m[0]);
+  for (const m of text.matchAll(SHORTHAND_ID)) out.push(`${prefix}-${m[1]}${m[2]}`);
   return out;
 }
 
@@ -102,6 +109,27 @@ export function pageOfQuote(text: string, quote: string | undefined): number | n
   const before = text.slice(0, at);
   const m = [...before.matchAll(/\[p\. (\d+)\]/g)].at(-1);
   return m ? Number(m[1]) : null;
+}
+
+/**
+ * Prose scrubbed of ids that never entered: each id in `unadmitted` becomes
+ * a phrase naming what it was ("a proposed claim not admitted at intake
+ * ('…')"). Verify writes its second reader's notes into a record's
+ * limitations naming the proposal ids the passage bears on; when such a
+ * claim is later rejected, the note would name a record that does not exist.
+ */
+export function scrubUnadmitted(text: string, unadmitted: Map<string, { kind: string; observed: string }>): string {
+  const phrase = (u: { kind: string; observed: string }) => {
+    const what = u.observed.replace(/\s+/g, " ").trim();
+    return `a proposed ${u.kind} not admitted at intake ('${what.length > 70 ? what.slice(0, 67) + "…" : what}')`;
+  };
+  const prefix = [...unadmitted.keys()][0]?.split("-")[0];
+  return text
+    .replace(LEDGER_ID, (id) => (unadmitted.has(id) ? phrase(unadmitted.get(id)!) : id))
+    .replace(SHORTHAND_ID, (m, letter: string, digits: string) => {
+      const id = `${prefix}-${letter}${digits}`;
+      return unadmitted.has(id) ? phrase(unadmitted.get(id)!) : m;
+    });
 }
 
 /**

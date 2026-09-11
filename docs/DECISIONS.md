@@ -2204,3 +2204,28 @@ the correction writer, reply on the record — is the automation gap that
 remains; and whether the house model should be chosen per case now that
 Fable's filter routes Orch OR to Opus. (Operator record, founder direction
 in session, 2026-09-11: "use all these learnings to add fixes necessary".)
+
+## 2026-09-11 — No dangling ids, everywhere: the cutoff comes out
+
+The GPT-5.6 Sol seat's review note on #283 (#285) objected that the new
+prose-reference gate exempted records dated before 2026-09-12 and that a
+date a record carries is a dodge path. It is right on both counts, and the
+constitution says "No dangling IDs" without a date. So the 39 references
+the rule had found (35 once the same-day sittings landed) were repaired
+through the correction writer, one history entry per case: re-pointed
+where the ledger holds the record the prose meant (GEO-E706 → GEO-E002,
+Engelbach 1922; GEO-E803 and GEO-E610 → GEO-E035, the proponents' 2020
+model; GEO-E814 → GEO-E062; AMZ-E025 → AMZ-E038; CCC-E041 → CCC-E067;
+CCC-E046 → CCC-E077), and rewritten as prose that names what the id was
+where the record never entered — a candidate from the case's construction
+(the GEO E6xx/C9xx and TRN C2xx/E2xx series), or a proposal claim the
+verifier rejected after its own note had named it (the CCC, TRN, VASO,
+AMZ and DEEP cases). The loader now runs the check over every record.
+
+The last of those causes was the pipeline's own: verify writes the second
+reader's notes into a record's limitations naming the proposal claims a
+passage bears on, and when such a claim is rejected later in the same run
+the note names a record that never entered. Verify now scrubs the accepted
+records' prose of every proposal id that did not enter, writing what it was
+instead ("a proposed claim not admitted at intake ('…')"), and says so in
+its run notes. (Operator record, in the founder's session of 2026-09-11.)

@@ -1494,3 +1494,693 @@
     extractedBy: "Aletheia editorial AI (Claude Opus 5, Cursor cloud agent)"
     runId: "2026-09-01-study-orch-s002-collection"
     date: "2026-09-01"
+
+- id: ORCH-E042
+  title: The four published per-isotope xenon potencies, independently restated
+  claimIds:
+    - ORCH-C025
+  sourceId: SRC-SMITH-2021
+  direction: context
+  strength: weak
+  sourceStatement: The authors quote the loss-of-righting-reflex ED50 values reported by Li et al. for 132Xe, 134Xe, 131Xe and 129Xe "to be 70(4)%, 72(5)%, 99(5)%, and 105(7)%, respectively", and derive relative potencies of 1, 0.71(8) and 0.67(8) for spin-0, spin-3/2 and spin-1/2 xenon.
+  editorInference: This is a second party's extraction of the same four numbers the case's own workpaper (ORCH-E040) flags as calculated rather than measured; it cross-checks the extraction but adds no independent measurement, so its diagnosticity for the underlying observation is near zero.
+  exactLocator: "[p. 2], Table 1 and 'Quantifying experimental anesthetic potency', open-access copy at arxiv.org/pdf/2009.01661"
+  limitations:
+    - Purely a restatement of SRC-LI-2018; not a replication.
+    - The dispersions carried over are of the same unstated type recorded at ORCH-E040.
+    - "Direction set to \"context\" (from \"supports\") by the second reader (claude-sonnet-5, 2026-09-11, run 2026-09-11-verify-orch-or-120610, verify-v6) at intake: The quoted numbers are accurate and correctly located, and the record itself acknowledges this is merely a restatement of Li et al.'s data rather than an independent finding of Smith et al. Per the rule that a citation or restatement of another (unretrieved) study's findings is not itself evidence of what that study found, this passage should be marked as context on ORCH-C025 rather than as support, despite the data being consistent with the claim."
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-11-report-orch-or-114458
+    extractedBy: claude-fable-5-1 asked; served model unrecorded for this run — the vendor's fallback (claude-opus-5) may have answered; see proposals/2026-09-11-draft-orch-or-115454/run.yaml
+    runId: 2026-09-11-draft-orch-or-115454
+    date: 2026-09-11
+  readerActs:
+    - field: direction
+      from: supports
+      to: context
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-11-verify-orch-or-120610
+      date: 2026-09-11
+      reason: The quoted numbers are accurate and correctly located, and the record itself acknowledges this is merely a restatement of Li et al.'s data rather than an independent finding of Smith et al. Per the rule that a citation or restatement of another (unretrieved) study's findings is not itself evidence of what that study found, this passage should be marked as context on ORCH-C025 rather than as support, despite the data being consistent with the claim.
+- id: ORCH-E044
+  title: Radical-pair spin dynamics modelled as a modulator of microtubule polymerization
+  claimIds:
+    - ORCH-C044
+  sourceId: SRC-ZADEHHAGHIGHI-2022
+  direction: supports
+  strength: moderate
+  sourceStatement: The authors insert magnetic-field and hyperfine effects into a two-rate kinetic model of tubulin polymerization, stating that "this rate is influenced by a RP reaction", and report that "Our model reproduces the experimental findings of Ref. 40 fairly well" — the reported disorder of tubulin assembly under a hypomagnetic field.
+  editorInference: "My inference: this supplies a mechanistic rival to the 'general cellular disruption' reading of the same-direction stabilizer/destabilizer anomaly, and unlike that reading it carries field- and isotope-dependent predictions that can be tested."
+  exactLocator: Results, 'Quantum effects on microtubule density', and Discussion (PMC full text, PMC9005667; no pagination)
+  limitations:
+    - Free parameters (recombination and relaxation rates) are chosen to reproduce the target ratio; the experiment being fitted reported no uncertainty, as the authors note.
+    - Same authors as SRC-SMITH-2021; not independent.
+    - No anesthesia endpoint is measured or modelled here.
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-11-report-orch-or-114458
+    extractedBy: claude-fable-5-1 asked; served model unrecorded for this run — the vendor's fallback (claude-opus-5) may have answered; see proposals/2026-09-11-draft-orch-or-115454/run.yaml
+    runId: 2026-09-11-draft-orch-or-115454
+    date: 2026-09-11
+- id: ORCH-E046
+  title: LISA Pathfinder bounds the Diósi–Penrose cutoff above any nuclear size — through a channel radiation arguments do not reach
+  claimIds:
+    - ORCH-C030
+  sourceId: SRC-HELOU-2017
+  direction: qualifies
+  strength: moderate
+  sourceStatement: Attributing LISA Pathfinder's measured relative acceleration noise between two free-falling test masses to collapse-induced force noise, the authors bound the Diósi–Penrose regularization scale to at least 40.1 ± 0.5 fm, "which is larger than the size of any nucleus", and conclude "we rule out the DP model if the cut-off" is the size of a fundamental particle.
+  editorInference: "My inference: this constrains mechanical momentum diffusion, not photon emission, so the escape recorded at ORCH-E019 — that Penrose's criterion makes no radiation prediction — does not reach it. Escaping the bounds now requires denying that the collapse injects any energy or momentum into matter at all."
+  exactLocator: "[p. 1] (abstract) and [p. 2] (Eq. 11), arXiv PDF 1606.03637v3"
+  limitations:
+    - Bound is derived by attributing all residual acceleration noise to collapse; Brownian thermal noise dominates and its value is not precisely known, so the bound is conservative rather than a measurement of collapse.
+    - Applies to the regularized DP model with a point-mass cutoff, which Penrose's own formulation handles differently (see SRC-DIOSI-2022).
+    - "Direction set to \"qualifies\" (from \"undermines\") by the second reader (claude-sonnet-5, 2026-09-11, run 2026-09-11-verify-orch-or-120610, verify-v6) at intake: The source's DP bound only rules out the model conditionally, if the regularization cutoff is taken to be nucleon-sized; ORCH-C030 states the general collapse formula τ≈ℏ/E_G without committing to that specific cutoff choice, so the finding constrains/qualifies the parameter space of DP-type models rather than straightforwardly undermining the claim as stated. The quotes are accurate and in context, the locators are correct, and the finding is relevant to the DP-flavored collapse claim."
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-11-report-orch-or-114458
+    extractedBy: claude-fable-5-1 asked; served model unrecorded for this run — the vendor's fallback (claude-opus-5) may have answered; see proposals/2026-09-11-draft-orch-or-115454/run.yaml
+    runId: 2026-09-11-draft-orch-or-115454
+    date: 2026-09-11
+  readerActs:
+    - field: direction
+      from: undermines
+      to: qualifies
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-11-verify-orch-or-120610
+      date: 2026-09-11
+      reason: The source's DP bound only rules out the model conditionally, if the regularization cutoff is taken to be nucleon-sized; ORCH-C030 states the general collapse formula τ≈ℏ/E_G without committing to that specific cutoff choice, so the finding constrains/qualifies the parameter space of DP-type models rather than straightforwardly undermining the claim as stated. The quotes are accurate and in context, the locators are correct, and the finding is relevant to the DP-flavored collapse claim.
+- id: ORCH-E047
+  title: "Majorana Demonstrator: no spontaneous collapse radiation in 37.5 kg-y of enriched germanium"
+  claimIds:
+    - ORCH-C047
+  sourceId: SRC-ARNQUIST-2023
+  direction: supports
+  strength: strong
+  sourceStatement: The collaboration reports that, although white-noise collapse models predict a 1/E X-ray signature, they find "no evidence of such radiation in the 19-100 keV range" in a 37.5 kg-y enriched-germanium exposure collected between 2015 and 2019, with a best-fit signal of 6.3 ± 398.8 counts.
+  editorInference: An independent underground collaboration reproduces the null in the same channel Gran Sasso searched, so ORCH-C031 no longer rests on a single experiment.
+  exactLocator: "[p. 1] (abstract) and [p. 4] (fit result), arXiv PDF 2202.01343v5"
+  limitations:
+    - Constrains only the white-noise formulation; the authors state coloured-noise extensions with a cutoff near 10^11–10^12 Hz evade X-ray bounds.
+    - The DP interpretation is a secondary re-expression of a CSL-oriented search.
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-11-report-orch-or-114458
+    extractedBy: claude-fable-5-1 asked; served model unrecorded for this run — the vendor's fallback (claude-opus-5) may have answered; see proposals/2026-09-11-draft-orch-or-115454/run.yaml
+    runId: 2026-09-11-draft-orch-or-115454
+    date: 2026-09-11
+- id: ORCH-E049
+  title: A second underground null adds weight to the exclusion of the parameter-free DP model
+  claimIds:
+    - ORCH-C031
+  sourceId: SRC-ARNQUIST-2023
+  direction: supports
+  strength: strong
+  sourceStatement: The collaboration closes by stating that it improved the lower limit on the Diósi–Penrose collapse model by almost an order of magnitude, "adding significance to the exclusion of the parameter-free version of the model".
+  editorInference: "Direction here is toward the physics conjunct and toward the Gran Sasso finding's generalization: an independent group reaches the same verdict about the parameter-free version, so the squeeze on ORCH-C030 is no longer single-experiment."
+  exactLocator: "[p. 5] (conclusions), arXiv PDF 2202.01343v5"
+  limitations:
+    - Same radiation channel as SRC-DONADI-2021, so not an independent test of the mechanism, only of the measurement.
+    - Does not address Penrose's characteristic-lifetime formulation, which predicts no radiation.
+    - "Second reader (claude-sonnet-5, 2026-09-11, run 2026-09-11-verify-orch-or-120610, verify-v6) found the passage bears in different directions on the claims the record named; this record carries \"supports\" toward ORCH-C031, the rest went to a record of its own at intake: The quoted conclusion is accurate and correctly located, and the record properly flags the shared radiation channel with the 2021 underground test as a non-independence issue. But labeling this as 'undermines' is backwards: a second, independent (mostly) underground null result tightening the DP bound and reinforcing exclusion of the parameter-free model actually supports ORCH-C031, which states exactly that outcome. For ORCH-C030, which concerns the general characteristic-lifetime collapse formulation rather than the parameter-free DP model specifically, the passage is only background context, not a direct bearing on that claim's truth."
+  reviewState: ai_extracted
+  origin: &a1
+    ref: report 2026-09-11-report-orch-or-114458
+    extractedBy: claude-fable-5-1 asked; served model unrecorded for this run — the vendor's fallback (claude-opus-5) may have answered; see proposals/2026-09-11-draft-orch-or-115454/run.yaml
+    runId: 2026-09-11-draft-orch-or-115454
+    date: 2026-09-11
+  readerActs:
+    - field: claimIds
+      from: &a2
+        - ORCH-C031
+        - ORCH-C030
+      to:
+        - ORCH-C031
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-11-verify-orch-or-120610
+      date: 2026-09-11
+      reason: "The quoted conclusion is accurate and correctly located, and the record properly flags the shared radiation channel with the 2021 underground test as a non-independence issue. But labeling this as 'undermines' is backwards: a second, independent (mostly) underground null result tightening the DP bound and reinforcing exclusion of the parameter-free model actually supports ORCH-C031, which states exactly that outcome. For ORCH-C030, which concerns the general characteristic-lifetime collapse formulation rather than the parameter-free DP model specifically, the passage is only background context, not a direct bearing on that claim's truth."
+    - field: direction
+      from: undermines
+      to: supports
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-11-verify-orch-or-120610
+      date: 2026-09-11
+      reason: "The quoted conclusion is accurate and correctly located, and the record properly flags the shared radiation channel with the 2021 underground test as a non-independence issue. But labeling this as 'undermines' is backwards: a second, independent (mostly) underground null result tightening the DP bound and reinforcing exclusion of the parameter-free model actually supports ORCH-C031, which states exactly that outcome. For ORCH-C030, which concerns the general characteristic-lifetime collapse formulation rather than the parameter-free DP model specifically, the passage is only background context, not a direct bearing on that claim's truth."
+- id: ORCH-E070
+  title: A second underground null adds weight to the exclusion of the parameter-free DP model — toward ORCH-C030
+  claimIds:
+    - ORCH-C030
+  sourceId: SRC-ARNQUIST-2023
+  direction: context
+  strength: strong
+  sourceStatement: The collaboration closes by stating that it improved the lower limit on the Diósi–Penrose collapse model by almost an order of magnitude, "adding significance to the exclusion of the parameter-free version of the model".
+  editorInference: "Direction here is toward the physics conjunct and toward the Gran Sasso finding's generalization: an independent group reaches the same verdict about the parameter-free version, so the squeeze on ORCH-C030 is no longer single-experiment."
+  exactLocator: "[p. 5] (conclusions), arXiv PDF 2202.01343v5"
+  limitations:
+    - Same radiation channel as SRC-DONADI-2021, so not an independent test of the mechanism, only of the measurement.
+    - Does not address Penrose's characteristic-lifetime formulation, which predicts no radiation.
+    - "Second reader (claude-sonnet-5, 2026-09-11, run 2026-09-11-verify-orch-or-120610, verify-v6) found the passage bears in different directions on the claims the record named; this record carries \"context\" toward ORCH-C030, the rest went to a record of its own at intake: The quoted conclusion is accurate and correctly located, and the record properly flags the shared radiation channel with the 2021 underground test as a non-independence issue. But labeling this as 'undermines' is backwards: a second, independent (mostly) underground null result tightening the DP bound and reinforcing exclusion of the parameter-free model actually supports ORCH-C031, which states exactly that outcome. For ORCH-C030, which concerns the general characteristic-lifetime collapse formulation rather than the parameter-free DP model specifically, the passage is only background context, not a direct bearing on that claim's truth."
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-11-report-orch-or-114458
+    extractedBy: claude-fable-5-1 asked; served model unrecorded for this run — the vendor's fallback (claude-opus-5) may have answered; see proposals/2026-09-11-draft-orch-or-115454/run.yaml
+    runId: 2026-09-11-draft-orch-or-115454
+    date: 2026-09-11
+  readerActs:
+    - field: claimIds
+      from: *a2
+      to:
+        - ORCH-C030
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-11-verify-orch-or-120610
+      date: 2026-09-11
+      reason: "The quoted conclusion is accurate and correctly located, and the record properly flags the shared radiation channel with the 2021 underground test as a non-independence issue. But labeling this as 'undermines' is backwards: a second, independent (mostly) underground null result tightening the DP bound and reinforcing exclusion of the parameter-free model actually supports ORCH-C031, which states exactly that outcome. For ORCH-C030, which concerns the general characteristic-lifetime collapse formulation rather than the parameter-free DP model specifically, the passage is only background context, not a direct bearing on that claim's truth."
+    - field: direction
+      from: undermines
+      to: context
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-11-verify-orch-or-120610
+      date: 2026-09-11
+      reason: "The quoted conclusion is accurate and correctly located, and the record properly flags the shared radiation channel with the 2021 underground test as a non-independence issue. But labeling this as 'undermines' is backwards: a second, independent (mostly) underground null result tightening the DP bound and reinforcing exclusion of the parameter-free model actually supports ORCH-C031, which states exactly that outcome. For ORCH-C030, which concerns the general characteristic-lifetime collapse formulation rather than the parameter-free DP model specifically, the passage is only background context, not a direct bearing on that claim's truth."
+- id: ORCH-E071
+  title: "The co-originator: the rate carries an unspecified constant and may not be parameter-free — part 1"
+  claimIds:
+    - ORCH-C030
+  sourceId: SRC-DISI-2022
+  direction: qualifies
+  strength: moderate
+  sourceStatement: The spatial superposition |x1〉 + |x2〉 collapses at rate 1/τ = E_Δ/ħ, where τ is the mean lifetime and E_Δ is the difference between gravitational self-energies before and after the collapse, "respectively, times an unspecified numeric constant".
+  editorInference: "My inference: the edition's 'untested vague theory' framing can be made precise and less rhetorical. The missing object is not a number but a dynamics; and the regularization scale that the LISA Pathfinder and underground bounds constrain may be unavoidable rather than an artefact of the tested surrogate."
+  exactLocator: "[p. 1] (Sec. I), arXiv PDF 2111.04604v2"
+  limitations:
+    - Reflective article by one of two originators; his reading of Penrose's route around the divergence is his own.
+    - No new calculation or experiment.
+  reviewState: ai_extracted
+  origin:
+    ref: split of ORCH-E050 (report 2026-09-11-report-orch-or-114458)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-11-verify-orch-or-120610
+    date: 2026-09-11
+- id: ORCH-E051
+  title: A semiclassical construction reproduces Penrose's rate exactly and fixes the constant at 1/2
+  claimIds:
+    - ORCH-C066
+    - ORCH-C067
+    - ORCH-C068
+  sourceId: SRC-DISI-2022
+  direction: supports
+  strength: moderate
+  sourceStatement: Diósi reports that the least-decoherence semiclassical construction he developed with Tilloy — continuous hidden measurement of the mass distribution, fed back as a classical Newton potential — "confirms the heuristic proposal and makes the constant unique", with the superposition decaying at exactly the conjectured rate "with the unique prefactor const. = 1 / 2".
+  editorInference: "My inference: this narrows the sharpest form of the escape at ORCH-E019. At least one dynamical realization lands on Penrose's own rate, so 'the tested model was never Penrose's' becomes a claim about which dynamics, not about whether any dynamics reproduces the relation. Whether that particular dynamics is itself already excluded by the bounded channels is the open question."
+  exactLocator: "[p. 3] (Sec. IV.A, 'Exact derivation'), arXiv PDF 2111.04604v2"
+  limitations:
+    - Secondary description of Tilloy & Diósi, Phys. Rev. D 96, 104045, which was not retrieved in this pass.
+    - Whether this construction predicts radiation or momentum diffusion at levels the Gran Sasso, Majorana and LISA Pathfinder bounds reach is not stated.
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-11-report-orch-or-114458
+    extractedBy: claude-fable-5-1 asked; served model unrecorded for this run — the vendor's fallback (claude-opus-5) may have answered; see proposals/2026-09-11-draft-orch-or-115454/run.yaml
+    runId: 2026-09-11-draft-orch-or-115454
+    date: 2026-09-11
+- id: ORCH-E052
+  title: Penrose and Diósi agree on the lifetime and disagree on the dynamics
+  claimIds:
+    - ORCH-C069
+  sourceId: SRC-DISI-2022
+  direction: supports
+  strength: moderate
+  sourceStatement: Closing the article, Diósi writes that both agree the cat should collapse after a time of order ħ/E_Δ, but "We disagree on how this happens, smoothly, suddenly, or some other way", and names gravity-related collapse dynamics conserving energy and momentum as the hard remaining task.
+  editorInference: The rate conjecture and its dynamics are separable, and only the latter has been experimentally bounded so far — which is exactly why the physics rung is unresolved rather than refuted, and why 'less specified than the model that was tested' understates what is actually missing.
+  exactLocator: "[p. 4] (Sec. V, closing remarks), arXiv PDF 2111.04604v2"
+  limitations:
+    - A statement of position, not a proof that no such dynamics exists.
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-11-report-orch-or-114458
+    extractedBy: claude-fable-5-1 asked; served model unrecorded for this run — the vendor's fallback (claude-opus-5) may have answered; see proposals/2026-09-11-draft-orch-or-115454/run.yaml
+    runId: 2026-09-11-draft-orch-or-115454
+    date: 2026-09-11
+- id: ORCH-E072
+  title: 2026 modelling reports entanglement measures but its lifetimes are radiative, not dephasing, times — part 3
+  claimIds:
+    - ORCH-C010
+  sourceId: SRC-GASSAB-2026
+  direction: qualifies
+  strength: moderate
+  sourceStatement: 'The radiative lifetimes are stated to be defined within the Markovian model: "the lifetimes reported here are defined within the Markovian radiative-loss model" used throughout the paper.'
+  editorInference: "My inference: the field has moved to entanglement-flavoured observables without moving to a physiological environment — no solvent, ionic or vibrational bath and no 310 K dephasing estimate. So the class of work that most resembles the witness ORCH-R001 asks for still does not supply the number, and the absence recorded at ORCH-C010 is untouched."
+  exactLocator: "[p. 14] ('Lifetimes of Subradiant and Superradiant States'), arXiv PDF 2602.02868v1"
+  limitations: &a3
+    - Preprint; computational only.
+    - Single-excitation manifold, radiative loss only; no non-radiative or thermal channels.
+  reviewState: ai_extracted
+  origin:
+    ref: split of ORCH-E053 (report 2026-09-11-report-orch-or-114458)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-11-verify-orch-or-120610
+    date: 2026-09-11
+- id: ORCH-E073
+  title: 2026 modelling reports entanglement measures but its lifetimes are radiative, not dephasing, times — part 4
+  claimIds:
+    - ORCH-C010
+  sourceId: SRC-GASSAB-2026
+  direction: qualifies
+  strength: moderate
+  sourceStatement: The physical decay rates come from the imaginary part of the effective generator's eigenvalues, which "corresponds to a memoryless (time-independent) coupling to the electromagnetic bath" and yields exponential decay envelopes for each collective mode.
+  editorInference: "My inference: the field has moved to entanglement-flavoured observables without moving to a physiological environment — no solvent, ionic or vibrational bath and no 310 K dephasing estimate. So the class of work that most resembles the witness ORCH-R001 asks for still does not supply the number, and the absence recorded at ORCH-C010 is untouched."
+  exactLocator: "[p. 14] ('Lifetimes of Subradiant and Superradiant States'), arXiv PDF 2602.02868v1"
+  limitations: *a3
+  reviewState: ai_extracted
+  origin:
+    ref: split of ORCH-E053 (report 2026-09-11-report-orch-or-114458)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-11-verify-orch-or-120610
+    date: 2026-09-11
+- id: ORCH-E055
+  title: "The modellers' own disclaimer: nothing here implies microtubules must use quantum correlations"
+  claimIds:
+    - ORCH-C001
+  sourceId: SRC-GASSAB-2026
+  direction: context
+  strength: weak
+  sourceStatement: In the discussion the authors write that their initial-state comparison "does not imply that microtubules must use quantum correlations for neural processing"; rather, it shows that a structured tryptophan network routes dynamics differently depending on how an excitation is prepared.
+  editorInference: This is the cleanest proponent-adjacent statement in the record that the 2026 photophysics results do not bear on the consciousness attribution. It carries no weight for or against the truth of ORCH-C001; it is recorded because the absence of such a disclaimer is often what the public argument relies on.
+  exactLocator: "[p. 17] (Discussion and Conclusions), arXiv PDF 2602.02868v1"
+  limitations:
+    - A statement of scope by authors, not evidence about microtubules.
+    - Zero diagnosticity for the headline thesis.
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-11-report-orch-or-114458
+    extractedBy: claude-fable-5-1 asked; served model unrecorded for this run — the vendor's fallback (claude-opus-5) may have answered; see proposals/2026-09-11-draft-orch-or-115454/run.yaml
+    runId: 2026-09-11-draft-orch-or-115454
+    date: 2026-09-11
+- id: ORCH-E056
+  title: "Cross-lab: polymerization raises tubulin quantum yield at 280 nm in porcine tubulin"
+  claimIds:
+    - ORCH-C021
+  sourceId: SRC-GASSAB-2026A
+  direction: supports
+  strength: moderate
+  sourceStatement: Measuring porcine tubulin dimers against taxol-stabilized microtubules in UV-transparent microplates, the authors report that "polymerization enhances microtubule quantum yield at 280 nm" and that "the polymerization percent change is positive for both bounds" of the absorbance treatment, with the difference statistically significant on both branches.
+  editorInference: The direction of the quantum-yield trend now has partial cross-lab support in a different preparation, which firms up the collective-optics observation rung — as condensed-matter physics of an ordered aromatic lattice, which is what the adopted assessment already says.
+  exactLocator: Abstract and Results, 'Polymerization increases yield at 280 nm' (arXiv HTML 2604.18604v1; no pagination)
+  limitations:
+    - Preprint; steady-state microplate geometry.
+    - Shares the Craddock modelling lineage with the superradiance literature it tests, so independence is partial.
+    - 280 nm excitation is not tryptophan-selective.
+    - "Second reader (claude-sonnet-5, 2026-09-11, run 2026-09-11-verify-orch-or-120610, verify-v6) found the passage bears in different directions on the claims the record named; this record carries \"supports\" toward ORCH-C021, the rest went to a record of its own at intake: The quotes are accurate and correctly located, and the paper does report a robust 280 nm polymerization-induced QY increase consistent with the superradiance model's small predicted enhancement, so it supports ORCH-C021. However, the paper explicitly cautions (in 'Local photophysics versus cooperative emission') that such steady-state polymerization increases can arise from conventional, non-collective photophysical mechanisms, so this single observation does not itself establish nontrivial collective electrodynamics distinct from a passive-scaffold account; it is at best contextual for ORCH-C013, not supporting evidence. The record's blanket 'supports' direction for both claims therefore overstates what the passage establishes for C013."
+  reviewState: ai_extracted
+  origin: &a4
+    ref: report 2026-09-11-report-orch-or-114458
+    extractedBy: claude-fable-5-1 asked; served model unrecorded for this run — the vendor's fallback (claude-opus-5) may have answered; see proposals/2026-09-11-draft-orch-or-115454/run.yaml
+    runId: 2026-09-11-draft-orch-or-115454
+    date: 2026-09-11
+  readerActs:
+    - field: claimIds
+      from: &a5
+        - ORCH-C021
+        - ORCH-C013
+      to:
+        - ORCH-C021
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-11-verify-orch-or-120610
+      date: 2026-09-11
+      reason: The quotes are accurate and correctly located, and the paper does report a robust 280 nm polymerization-induced QY increase consistent with the superradiance model's small predicted enhancement, so it supports ORCH-C021. However, the paper explicitly cautions (in 'Local photophysics versus cooperative emission') that such steady-state polymerization increases can arise from conventional, non-collective photophysical mechanisms, so this single observation does not itself establish nontrivial collective electrodynamics distinct from a passive-scaffold account; it is at best contextual for ORCH-C013, not supporting evidence. The record's blanket 'supports' direction for both claims therefore overstates what the passage establishes for C013.
+- id: ORCH-E074
+  title: "Cross-lab: polymerization raises tubulin quantum yield at 280 nm in porcine tubulin — toward ORCH-C013"
+  claimIds:
+    - ORCH-C013
+  sourceId: SRC-GASSAB-2026A
+  direction: context
+  strength: moderate
+  sourceStatement: Measuring porcine tubulin dimers against taxol-stabilized microtubules in UV-transparent microplates, the authors report that "polymerization enhances microtubule quantum yield at 280 nm" and that "the polymerization percent change is positive for both bounds" of the absorbance treatment, with the difference statistically significant on both branches.
+  editorInference: The direction of the quantum-yield trend now has partial cross-lab support in a different preparation, which firms up the collective-optics observation rung — as condensed-matter physics of an ordered aromatic lattice, which is what the adopted assessment already says.
+  exactLocator: Abstract and Results, 'Polymerization increases yield at 280 nm' (arXiv HTML 2604.18604v1; no pagination)
+  limitations:
+    - Preprint; steady-state microplate geometry.
+    - Shares the Craddock modelling lineage with the superradiance literature it tests, so independence is partial.
+    - 280 nm excitation is not tryptophan-selective.
+    - "Second reader (claude-sonnet-5, 2026-09-11, run 2026-09-11-verify-orch-or-120610, verify-v6) found the passage bears in different directions on the claims the record named; this record carries \"context\" toward ORCH-C013, the rest went to a record of its own at intake: The quotes are accurate and correctly located, and the paper does report a robust 280 nm polymerization-induced QY increase consistent with the superradiance model's small predicted enhancement, so it supports ORCH-C021. However, the paper explicitly cautions (in 'Local photophysics versus cooperative emission') that such steady-state polymerization increases can arise from conventional, non-collective photophysical mechanisms, so this single observation does not itself establish nontrivial collective electrodynamics distinct from a passive-scaffold account; it is at best contextual for ORCH-C013, not supporting evidence. The record's blanket 'supports' direction for both claims therefore overstates what the passage establishes for C013."
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-11-report-orch-or-114458
+    extractedBy: claude-fable-5-1 asked; served model unrecorded for this run — the vendor's fallback (claude-opus-5) may have answered; see proposals/2026-09-11-draft-orch-or-115454/run.yaml
+    runId: 2026-09-11-draft-orch-or-115454
+    date: 2026-09-11
+  readerActs:
+    - field: claimIds
+      from: *a5
+      to:
+        - ORCH-C013
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-11-verify-orch-or-120610
+      date: 2026-09-11
+      reason: The quotes are accurate and correctly located, and the paper does report a robust 280 nm polymerization-induced QY increase consistent with the superradiance model's small predicted enhancement, so it supports ORCH-C021. However, the paper explicitly cautions (in 'Local photophysics versus cooperative emission') that such steady-state polymerization increases can arise from conventional, non-collective photophysical mechanisms, so this single observation does not itself establish nontrivial collective electrodynamics distinct from a passive-scaffold account; it is at best contextual for ORCH-C013, not supporting evidence. The record's blanket 'supports' direction for both claims therefore overstates what the passage establishes for C013.
+    - field: direction
+      from: supports
+      to: context
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-11-verify-orch-or-120610
+      date: 2026-09-11
+      reason: The quotes are accurate and correctly located, and the paper does report a robust 280 nm polymerization-induced QY increase consistent with the superradiance model's small predicted enhancement, so it supports ORCH-C021. However, the paper explicitly cautions (in 'Local photophysics versus cooperative emission') that such steady-state polymerization increases can arise from conventional, non-collective photophysical mechanisms, so this single observation does not itself establish nontrivial collective electrodynamics distinct from a passive-scaffold account; it is at best contextual for ORCH-C013, not supporting evidence. The record's blanket 'supports' direction for both claims therefore overstates what the passage establishes for C013.
+- id: ORCH-E075
+  title: The magnitude of the polymerization effect spans nearly an order of magnitude on the scattering correction — part 1
+  claimIds:
+    - ORCH-C021
+  sourceId: SRC-GASSAB-2026A
+  direction: qualifies
+  strength: moderate
+  sourceStatement: At 280 nm excitation in the no-Trp condition, the polymerization percent change is positive for both bounds, "ranging from approximately + 6.1 % +6.1\% using Q ​ Y raw" to approximately +46.8% using the scattering-corrected branch (QY_bgA).
+  editorInference: "My inference: the observable is not yet metrologically stable. Running an anesthetic potency series against it (ORCH-R002, ORCH-R009) before the scattering correction is closed risks measuring the correction rather than the physics."
+  exactLocator: Results, 'Polymerization increases yield at 280 nm', and Materials and Methods, 'Absorbance processing and scattering bounds' (arXiv HTML 2604.18604v1)
+  limitations:
+    - The bounds arise from an analysis choice, not from replicate scatter.
+    - Preprint.
+  reviewState: ai_extracted
+  origin:
+    ref: split of ORCH-E057 (report 2026-09-11-report-orch-or-114458)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-11-verify-orch-or-120610
+    date: 2026-09-11
+- id: ORCH-E076
+  title: At tryptophan-selective excitation the polymerization effect reverses sign between treatments — part 1
+  claimIds:
+    - ORCH-C021
+  sourceId: SRC-GASSAB-2026A
+  direction: qualifies
+  strength: moderate
+  sourceStatement: 'At 295 nm excitation in the no-Trp condition, the two polymerization percent-change bounds differ substantially and reverse sign: "the two bounds differ substantially and reverse sign".'
+  editorInference: "My inference: 295 nm is where excitation is most selective for tryptophan and therefore where comparison with a tryptophan-only excitonic model is most meaningful — and it is exactly there that the measurement cannot yet fix a sign. This is a metrological, not a biological, obstacle, and it is fixable."
+  exactLocator: Results, 'Polymerization at 295 nm remains bounded' (arXiv HTML 2604.18604v1)
+  limitations: &a6
+    - A single dataset in one geometry.
+    - Preprint.
+  reviewState: ai_extracted
+  origin:
+    ref: split of ORCH-E058 (report 2026-09-11-report-orch-or-114458)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-11-verify-orch-or-120610
+    date: 2026-09-11
+- id: ORCH-E077
+  title: At tryptophan-selective excitation the polymerization effect reverses sign between treatments — part 2
+  claimIds:
+    - ORCH-C021
+  sourceId: SRC-GASSAB-2026A
+  direction: qualifies
+  strength: moderate
+  sourceStatement: The uncorrected absorbance branch gives an apparent polymerization decrease at 295 nm, "an apparent decrease of about" −58.6% using QY_raw.
+  editorInference: "My inference: 295 nm is where excitation is most selective for tryptophan and therefore where comparison with a tryptophan-only excitonic model is most meaningful — and it is exactly there that the measurement cannot yet fix a sign. This is a metrological, not a biological, obstacle, and it is fixable."
+  exactLocator: Results, 'Polymerization at 295 nm remains bounded' (arXiv HTML 2604.18604v1)
+  limitations: *a6
+  reviewState: ai_extracted
+  origin:
+    ref: split of ORCH-E058 (report 2026-09-11-report-orch-or-114458)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-11-verify-orch-or-120610
+    date: 2026-09-11
+- id: ORCH-E078
+  title: At tryptophan-selective excitation the polymerization effect reverses sign between treatments — part 3
+  claimIds:
+    - ORCH-C021
+  sourceId: SRC-GASSAB-2026A
+  direction: qualifies
+  strength: moderate
+  sourceStatement: The background-corrected absorbance branch gives an apparent polymerization increase at 295 nm, "an apparent increase of about" +12.7% using QY_bgA.
+  editorInference: "My inference: 295 nm is where excitation is most selective for tryptophan and therefore where comparison with a tryptophan-only excitonic model is most meaningful — and it is exactly there that the measurement cannot yet fix a sign. This is a metrological, not a biological, obstacle, and it is fixable."
+  exactLocator: Results, 'Polymerization at 295 nm remains bounded' (arXiv HTML 2604.18604v1)
+  limitations: *a6
+  reviewState: ai_extracted
+  origin:
+    ref: split of ORCH-E058 (report 2026-09-11-report-orch-or-114458)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-11-verify-orch-or-120610
+    date: 2026-09-11
+- id: ORCH-E079
+  title: At tryptophan-selective excitation the polymerization effect reverses sign between treatments — part 4
+  claimIds:
+    - ORCH-C021
+  sourceId: SRC-GASSAB-2026A
+  direction: qualifies
+  strength: moderate
+  sourceStatement: Because the sign reverses across plausible absorbance treatments, no single effect size is assigned at 295 nm; "the polymerization comparison remains bounded in this dataset".
+  editorInference: "My inference: 295 nm is where excitation is most selective for tryptophan and therefore where comparison with a tryptophan-only excitonic model is most meaningful — and it is exactly there that the measurement cannot yet fix a sign. This is a metrological, not a biological, obstacle, and it is fixable."
+  exactLocator: Results, 'Polymerization at 295 nm remains bounded' (arXiv HTML 2604.18604v1)
+  limitations: *a6
+  reviewState: ai_extracted
+  origin:
+    ref: split of ORCH-E058 (report 2026-09-11-report-orch-or-114458)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-11-verify-orch-or-120610
+    date: 2026-09-11
+- id: ORCH-E080
+  title: Structural variability suppresses the superradiant enhancement the collective reading relies on — part 2
+  claimIds:
+    - ORCH-C063
+  sourceId: SRC-GASSAB-2026A
+  direction: context
+  strength: moderate
+  sourceStatement: Despite the reduced maximal enhancement, the molecular-dynamics-derived ensembles "maintained quantum yields above 0.14 over the lengths examined".
+  editorInference: "Two things come apart here: a modest quantum-yield trend that survives disorder, and the large cooperative radiative-rate gain that does not. Only the latter is what the scale-bridging argument needs."
+  exactLocator: Results, 'Structural variability suppresses superradiance' (arXiv HTML 2604.18604v1)
+  limitations:
+    - Computational; disorder is MD-sampled, not measured in vivo.
+    - Preprint.
+    - "Direction set to \"context\" (from \"supports\") by the second reader (claude-sonnet-5, 2026-09-11, run 2026-09-11-verify-orch-or-120610, verify-v6) at intake: The quote is accurately taken from the 'Structural variability suppresses superradiance' section and is atomic, but it reports that quantum yield stayed above 0.14 despite the enhancement drop, not the magnitude or nature of the enhancement reduction itself (that claim is made in the preceding sentence). Since ORCH-C063 concerns the degree of superradiant enhancement suppression relative to the ordered 1JFF lattice, this QY-stability statement only presupposes that reduction rather than evidencing it, so it functions as context rather than direct support."
+  reviewState: ai_extracted
+  origin:
+    ref: split of ORCH-E060 (report 2026-09-11-report-orch-or-114458)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-11-verify-orch-or-120610
+    date: 2026-09-11
+  readerActs:
+    - field: direction
+      from: supports
+      to: context
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-11-verify-orch-or-120610
+      date: 2026-09-11
+      reason: The quote is accurately taken from the 'Structural variability suppresses superradiance' section and is atomic, but it reports that quantum yield stayed above 0.14 despite the enhancement drop, not the magnitude or nature of the enhancement reduction itself (that claim is made in the preceding sentence). Since ORCH-C063 concerns the degree of superradiant enhancement suppression relative to the ordered 1JFF lattice, this QY-stability statement only presupposes that reduction rather than evidencing it, so it functions as context rather than direct support.
+- id: ORCH-E081
+  title: A quantum-yield measurement becomes 'definitive biophysical evidence' in one step — part 1
+  claimIds:
+    - ORCH-C010
+  sourceId: SRC-WIEST-2025A
+  direction: context
+  strength: weak
+  sourceStatement: 'Since the 1990s, decoherence has been the primary objection to the hypothesis: "the vulnerability of macroscopic quantum states to decoherence at body temperature" was the main reason it was considered implausible.'
+  editorInference: "My inference: this is the absorb-not-score pattern ORCH-E035 describes, visible in a single step. A fluorescence quantum-yield measurement plus a non-Hermitian radiative model is presented as settling room-temperature quantum optical effects, with the dephasing question — the one that makes ORCH-C010 unresolved — not raised. It is an assertion, not evidence, and carries no weight for the truth of ORCH-C010."
+  exactLocator: Body text, paragraph on decoherence (PMC full text, PMC12413878)
+  limitations: &a7
+    - Opinion piece; secondary characterization of SRC-BABCOCK-2024.
+    - Zero diagnosticity as evidence.
+  reviewState: ai_extracted
+  origin:
+    ref: split of ORCH-E062 (report 2026-09-11-report-orch-or-114458)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-11-verify-orch-or-120610
+    date: 2026-09-11
+- id: ORCH-E082
+  title: A quantum-yield measurement becomes 'definitive biophysical evidence' in one step — part 2
+  claimIds:
+    - ORCH-C010
+  sourceId: SRC-WIEST-2025A
+  direction: context
+  strength: weak
+  sourceStatement: There is now "definitive biophysical evidence that MTs support quantum optical effects" at room temperature, citing the 2024 ultraviolet superradiance paper by Babcock et al.
+  editorInference: "My inference: this is the absorb-not-score pattern ORCH-E035 describes, visible in a single step. A fluorescence quantum-yield measurement plus a non-Hermitian radiative model is presented as settling room-temperature quantum optical effects, with the dephasing question — the one that makes ORCH-C010 unresolved — not raised. It is an assertion, not evidence, and carries no weight for the truth of ORCH-C010."
+  exactLocator: Body text, paragraph on decoherence (PMC full text, PMC12413878)
+  limitations: *a7
+  reviewState: ai_extracted
+  origin:
+    ref: split of ORCH-E062 (report 2026-09-11-report-orch-or-114458)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-11-verify-orch-or-120610
+    date: 2026-09-11
+- id: ORCH-E083
+  title: A quantum-yield measurement becomes 'definitive biophysical evidence' in one step — part 3
+  claimIds:
+    - ORCH-C010
+  sourceId: SRC-WIEST-2025A
+  direction: context
+  strength: weak
+  sourceStatement: Those quantum effects "get stronger as the MTs are joined into larger structures" rather than weaker.
+  editorInference: "My inference: this is the absorb-not-score pattern ORCH-E035 describes, visible in a single step. A fluorescence quantum-yield measurement plus a non-Hermitian radiative model is presented as settling room-temperature quantum optical effects, with the dephasing question — the one that makes ORCH-C010 unresolved — not raised. It is an assertion, not evidence, and carries no weight for the truth of ORCH-C010."
+  exactLocator: Body text, paragraph on decoherence (PMC full text, PMC12413878)
+  limitations: *a7
+  reviewState: ai_extracted
+  origin:
+    ref: split of ORCH-E062 (report 2026-09-11-report-orch-or-114458)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-11-verify-orch-or-120610
+    date: 2026-09-11
+- id: ORCH-E084
+  title: "The proponents' strongest unanswered point: Meyer–Overton from tubulin quantum chemistry — part 1"
+  claimIds:
+    - ORCH-C011
+  sourceId: SRC-WIEST-2025A
+  direction: context
+  strength: weak
+  sourceStatement: A detailed quantum chemical modeling study found that "the potencies of several volatile anesthetics were predicted by their binding affinity" to delocalized electron sites within the tubulin subunits that make up microtubules.
+  editorInference: This is the argument with real force in the proponent case and the direct motivation for ORCH-R009; it is recorded as an assertion in a commentary, whose underlying computation is already at ORCH-E010 with weak strength.
+  exactLocator: Body text, paragraph on quantum chemical modelling (PMC full text, PMC12413878)
+  limitations:
+    - Secondary; the primary (SRC-CRADDOCK-2017) is computational and already in the ledger at weak strength.
+    - The uniqueness claim ('no other candidate target') is asserted, not demonstrated, and no survey is cited.
+    - "Direction set to \"context\" (from \"supports\") by the second reader (claude-sonnet-5, 2026-09-11, run 2026-09-11-verify-orch-or-120610, verify-v6) at intake: The quote is accurate and correctly attributed to Wiest's summary of the Craddock et al. 2017 study, and the locator is right, but Wiest's article is merely citing/reporting another paper's finding rather than presenting it as the reviewing author's own retrieved result; per the rule that a citation to an unretrieved study is context rather than direct support, the direction should be 'context' not 'supports.' The record itself acknowledges this secondary status in its limitations, so independence is properly noted."
+  reviewState: ai_extracted
+  origin:
+    ref: split of ORCH-E063 (report 2026-09-11-report-orch-or-114458)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-11-verify-orch-or-120610
+    date: 2026-09-11
+  readerActs:
+    - field: direction
+      from: supports
+      to: context
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-11-verify-orch-or-120610
+      date: 2026-09-11
+      reason: The quote is accurate and correctly attributed to Wiest's summary of the Craddock et al. 2017 study, and the locator is right, but Wiest's article is merely citing/reporting another paper's finding rather than presenting it as the reviewing author's own retrieved result; per the rule that a citation to an unretrieved study is context rather than direct support, the direction should be 'context' not 'supports.' The record itself acknowledges this secondary status in its limitations, so independence is properly noted.
+- id: ORCH-E085
+  title: "The proponents' strongest unanswered point: Meyer–Overton from tubulin quantum chemistry — part 2"
+  claimIds:
+    - ORCH-C011
+  sourceId: SRC-WIEST-2025A
+  direction: context
+  strength: weak
+  sourceStatement: These theoretical results "essentially reproduce the Meyer-Overton correlation" by assuming that inhalational anesthesia is primarily mediated by microtubules.
+  editorInference: This is the argument with real force in the proponent case and the direct motivation for ORCH-R009; it is recorded as an assertion in a commentary, whose underlying computation is already at ORCH-E010 with weak strength.
+  exactLocator: Body text, paragraph on quantum chemical modelling (PMC full text, PMC12413878)
+  limitations:
+    - Secondary; the primary (SRC-CRADDOCK-2017) is computational and already in the ledger at weak strength.
+    - The uniqueness claim ('no other candidate target') is asserted, not demonstrated, and no survey is cited.
+    - "Direction set to \"context\" (from \"supports\") by the second reader (claude-sonnet-5, 2026-09-11, run 2026-09-11-verify-orch-or-120610, verify-v6) at intake: The quoted passage is Wiest's own characterization of a separate study (Craddock et al. 2017) rather than a primary finding of his; per the rule that a citation of another work is not itself evidence of what that work found, this secondary retelling should be treated as context toward ORCH-C011 rather than as direct support, even though the record's limitations already flag the secondary/independence issue appropriately."
+  reviewState: ai_extracted
+  origin:
+    ref: split of ORCH-E063 (report 2026-09-11-report-orch-or-114458)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-11-verify-orch-or-120610
+    date: 2026-09-11
+  readerActs:
+    - field: direction
+      from: supports
+      to: context
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-11-verify-orch-or-120610
+      date: 2026-09-11
+      reason: The quoted passage is Wiest's own characterization of a separate study (Craddock et al. 2017) rather than a primary finding of his; per the rule that a citation of another work is not itself evidence of what that work found, this secondary retelling should be treated as context toward ORCH-C011 rather than as direct support, even though the record's limitations already flag the secondary/independence issue appropriately.
+- id: ORCH-E086
+  title: "The proponents' strongest unanswered point: Meyer–Overton from tubulin quantum chemistry — part 3"
+  claimIds:
+    - ORCH-C011
+  sourceId: SRC-WIEST-2025A
+  direction: context
+  strength: weak
+  sourceStatement: Reproducing the Meyer-Overton correlation from an assumed primary target "cannot be said for any other candidate molecular target."
+  editorInference: This is the argument with real force in the proponent case and the direct motivation for ORCH-R009; it is recorded as an assertion in a commentary, whose underlying computation is already at ORCH-E010 with weak strength.
+  exactLocator: Body text, paragraph on quantum chemical modelling (PMC full text, PMC12413878)
+  limitations:
+    - Secondary; the primary (SRC-CRADDOCK-2017) is computational and already in the ledger at weak strength.
+    - The uniqueness claim ('no other candidate target') is asserted, not demonstrated, and no survey is cited.
+    - "Direction set to \"context\" (from \"supports\") by the second reader (claude-sonnet-5, 2026-09-11, run 2026-09-11-verify-orch-or-120610, verify-v6) at intake: The quoted line is a comparative uniqueness claim about which target best reproduces Meyer-Overton via modeling, not a direct assertion that anesthetic binding alters tubulin's electronic/optical behavior; it bears on the broader MT-primacy argument rather than directly on ORCH-C011's specific mechanistic claim, so it functions as context rather than direct support. The quote is accurately drawn from the body text and the secondary/derivative relationship to the Craddock modeling study is properly disclosed."
+  reviewState: ai_extracted
+  origin:
+    ref: split of ORCH-E063 (report 2026-09-11-report-orch-or-114458)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-11-verify-orch-or-120610
+    date: 2026-09-11
+  readerActs:
+    - field: direction
+      from: supports
+      to: context
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-11-verify-orch-or-120610
+      date: 2026-09-11
+      reason: The quoted line is a comparative uniqueness claim about which target best reproduces Meyer-Overton via modeling, not a direct assertion that anesthetic binding alters tubulin's electronic/optical behavior; it bears on the broader MT-primacy argument rather than directly on ORCH-C011's specific mechanistic claim, so it functions as context rather than direct support. The quote is accurately drawn from the body text and the secondary/derivative relationship to the Craddock modeling study is properly disclosed.
+- id: ORCH-E087
+  title: "The zero-quantum-coherence authors' quantitative reply: classical iZQC cannot produce signals of the observed size — part 2"
+  claimIds:
+    - ORCH-C026
+  sourceId: SRC-KERSKENS-2023
+  direction: supports
+  strength: moderate
+  sourceStatement: For the authors' own sequence parameters at TE = 5 ms, "the maximum signal could reach 0.4% of the initial magnetization".
+  editorInference: This completes the ORCH-C026 exchange, which the ledger held as comment-without-reply. It is the authors' own defence and a recalculation rather than a new measurement, so it does not resolve whether an unrecognized classical mechanism in living tissue could produce the signal — which the authors themselves name as the interesting open question.
+  exactLocator: Reply body, paragraphs on sequence parameters and the gedankenexperiment (IOP HTML, J. Phys. Commun. 7, 038002; no pagination)
+  limitations: &a8
+    - Authors' own reply; not independent adjudication.
+    - The classical bound relies on models derived for chemical solutions, as the authors acknowledge.
+    - Does not establish entanglement, only that the signals exceed the modelled classical bound.
+  reviewState: ai_extracted
+  origin:
+    ref: split of ORCH-E064 (report 2026-09-11-report-orch-or-114458)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-11-verify-orch-or-120610
+    date: 2026-09-11
+- id: ORCH-E088
+  title: "The zero-quantum-coherence authors' quantitative reply: classical iZQC cannot produce signals of the observed size — part 3"
+  claimIds:
+    - ORCH-C026
+  sourceId: SRC-KERSKENS-2023
+  direction: supports
+  strength: moderate
+  sourceStatement: 'If relaxation is included, the classical bound falls further: "the reduction will be down to 0.13%, which is the best-case scenario without any saturation".'
+  editorInference: This completes the ORCH-C026 exchange, which the ledger held as comment-without-reply. It is the authors' own defence and a recalculation rather than a new measurement, so it does not resolve whether an unrecognized classical mechanism in living tissue could produce the signal — which the authors themselves name as the interesting open question.
+  exactLocator: Reply body, paragraphs on sequence parameters and the gedankenexperiment (IOP HTML, J. Phys. Commun. 7, 038002; no pagination)
+  limitations: *a8
+  reviewState: ai_extracted
+  origin:
+    ref: split of ORCH-E064 (report 2026-09-11-report-orch-or-114458)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-11-verify-orch-or-120610
+    date: 2026-09-11
+- id: ORCH-E089
+  title: "The zero-quantum-coherence authors' quantitative reply: classical iZQC cannot produce signals of the observed size — part 5"
+  claimIds:
+    - ORCH-C026
+  sourceId: SRC-KERSKENS-2023
+  direction: supports
+  strength: moderate
+  sourceStatement: 'From these recomputed bounds the authors conclude: "It is now clear that we have not measured iZQC".'
+  editorInference: This completes the ORCH-C026 exchange, which the ledger held as comment-without-reply. It is the authors' own defence and a recalculation rather than a new measurement, so it does not resolve whether an unrecognized classical mechanism in living tissue could produce the signal — which the authors themselves name as the interesting open question.
+  exactLocator: Reply body, paragraphs on sequence parameters and the gedankenexperiment (IOP HTML, J. Phys. Commun. 7, 038002; no pagination)
+  limitations: *a8
+  reviewState: ai_extracted
+  origin:
+    ref: split of ORCH-E064 (report 2026-09-11-report-orch-or-114458)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-11-verify-orch-or-120610
+    date: 2026-09-11
+- id: ORCH-E090
+  title: "The zero-quantum-coherence authors' quantitative reply: classical iZQC cannot produce signals of the observed size — part 7"
+  claimIds:
+    - ORCH-C026
+  sourceId: SRC-KERSKENS-2023
+  direction: supports
+  strength: moderate
+  sourceStatement: The correlation distance predicted for ZQC "played no role" when the gradient moments were varied "from 32.5 ms mT m −1 to around 80 ms mT m −1".
+  editorInference: This completes the ORCH-C026 exchange, which the ledger held as comment-without-reply. It is the authors' own defence and a recalculation rather than a new measurement, so it does not resolve whether an unrecognized classical mechanism in living tissue could produce the signal — which the authors themselves name as the interesting open question.
+  exactLocator: Reply body, paragraphs on sequence parameters and the gedankenexperiment (IOP HTML, J. Phys. Commun. 7, 038002; no pagination)
+  limitations: *a8
+  reviewState: ai_extracted
+  origin:
+    ref: split of ORCH-E064 (report 2026-09-11-report-orch-or-114458)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-11-verify-orch-or-120610
+    date: 2026-09-11

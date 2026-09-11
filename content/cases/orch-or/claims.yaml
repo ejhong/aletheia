@@ -357,3 +357,187 @@
     date: "2026-08-22"
   parentClaimIds: [ ORCH-C040 ]
   dependsOnClaimIds: []
+
+- id: ORCH-C044
+  statement: Spin dynamics of a naturally occurring tryptophan-cation/superoxide radical pair modulate the microtubule polymerization rate, so that microtubule density depends on ambient magnetic field strength; it would be false if microtubule assembly showed no dependence on field strength or on radical-pair-relevant redox conditions.
+  theme: microtubule-physics
+  rung: mechanism
+  claimType: mechanistic
+  sourceAnchor:
+    locator: Results, 'Quantum effects on microtubule density' (PMC full text, PMC9005667)
+    quote: this rate is influenced by a RP reaction
+    sourceId: SRC-ZADEHHAGHIGHI-2022
+    also:
+      - locator: Discussion, first paragraph (PMC full text, PMC9005667)
+        quote: Our model reproduces the experimental findings of Ref. 40 fairly well
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-11-report-orch-or-114458
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-11-draft-orch-or-115454
+    date: 2026-09-11
+- id: ORCH-C046
+  statement: LISA Pathfinder's measured relative acceleration noise between two free-falling test masses bounds the Diósi–Penrose regularization length to at least 40.1 ± 0.5 fm, a value larger than the size of any nucleus; it would be false if the residual acceleration noise were shown to be larger than reported or if the mapping from collapse force noise to acceleration noise were invalid.
+  theme: collapse-physics
+  rung: observation
+  claimType: measurement
+  sourceAnchor:
+    locator: "[p. 1] (abstract), arXiv PDF 1606.03637v3"
+    quote: which is larger than the size of any nucleus
+    sourceId: SRC-HELOU-2017
+    also:
+      - locator: "[p. 1] (abstract), arXiv PDF 1606.03637v3"
+        quote: we rule out the DP model if the cut-off
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-11-report-orch-or-114458
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-11-draft-orch-or-115454
+    date: 2026-09-11
+- id: ORCH-C047
+  statement: An independent underground ultra-low-background germanium search, the Majorana Demonstrator, found no evidence of the 1/E spontaneous-collapse radiation signature in the 19–100 keV range over a 37.5 kg-y enriched exposure; it would be false if a signal excess consistent with the predicted spectral shape were present in that dataset.
+  theme: collapse-physics
+  rung: observation
+  claimType: measurement
+  sourceAnchor:
+    locator: "[p. 1] (abstract), arXiv PDF 2202.01343v5"
+    quote: no evidence of such radiation in the 19-100 keV range
+    sourceId: SRC-ARNQUIST-2023
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-11-report-orch-or-114458
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-11-draft-orch-or-115454
+    date: 2026-09-11
+- id: ORCH-C065
+  statement: E_Δ in the collapse rate is the difference between gravitational self-energies before and after the collapse times an unspecified numeric constant.
+  theme: collapse-physics
+  rung: mechanism
+  claimType: theory_description
+  sourceAnchor:
+    locator: "[p. 1] (Sec. I, The collapse rate), arXiv PDF 2111.04604v2"
+    quote: respectively, times an unspecified numeric constant
+    sourceId: SRC-DISI-2022
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: split of ORCH-C049 (report 2026-09-11-report-orch-or-114458)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-11-verify-orch-or-120610
+    date: 2026-09-11
+  alternativeToClaimIds: []
+  contradictsClaimIds: []
+- id: ORCH-C066
+  statement: A semiclassical concept and its mathematical realization by Tilloy and Diósi confirms the heuristic gravity-related collapse rate proposal.
+  theme: collapse-physics
+  rung: mechanism
+  claimType: mathematical
+  sourceAnchor: &a1
+    locator: "[p. 3] (Sec. IV.A, Exact derivation), arXiv PDF 2111.04604v2"
+    quote: confirms the heuristic proposal and makes the constant unique
+    sourceId: SRC-DISI-2022
+    also:
+      - locator: "[p. 3] (Sec. IV.A), arXiv PDF 2111.04604v2"
+        quote: with the unique prefactor const. = 1 / 2
+  parentClaimIds: &a2 []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: split of ORCH-C050 (report 2026-09-11-report-orch-or-114458)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-11-verify-orch-or-120610
+    date: 2026-09-11
+  alternativeToClaimIds: []
+  contradictsClaimIds: []
+- id: ORCH-C067
+  statement: Under the Tilloy–Diósi construction, at optimum measurement precision the superposition decays exactly at the rate E_Δ/ħ.
+  theme: collapse-physics
+  rung: mechanism
+  claimType: mathematical
+  sourceAnchor: *a1
+  parentClaimIds: *a2
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: split of ORCH-C050 (report 2026-09-11-report-orch-or-114458)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-11-verify-orch-or-120610
+    date: 2026-09-11
+  alternativeToClaimIds: []
+  contradictsClaimIds: []
+- id: ORCH-C068
+  statement: The Tilloy–Diósi construction makes the numeric constant in E_Δ unique, with the prefactor const. = 1/2.
+  theme: collapse-physics
+  rung: mechanism
+  claimType: mathematical
+  sourceAnchor: *a1
+  parentClaimIds: *a2
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: split of ORCH-C050 (report 2026-09-11-report-orch-or-114458)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-11-verify-orch-or-120610
+    date: 2026-09-11
+  alternativeToClaimIds: []
+  contradictsClaimIds: []
+- id: ORCH-C069
+  statement: Penrose and Diósi disagree on how the collapse happens — smoothly, suddenly, or some other way.
+  theme: collapse-physics
+  rung: mechanism
+  claimType: historical
+  sourceAnchor:
+    locator: "[p. 4] (Sec. V, Closing remarks), arXiv PDF 2111.04604v2"
+    quote: We disagree on how this happens, smoothly, suddenly, or some other way
+    sourceId: SRC-DISI-2022
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: split of ORCH-C052 (report 2026-09-11-report-orch-or-114458)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-11-verify-orch-or-120610
+    date: 2026-09-11
+  alternativeToClaimIds: []
+  contradictsClaimIds: []
+- id: ORCH-C057
+  statement: No candidate molecular target for inhalational anesthesia other than tubulin has a published model that reproduces the Meyer–Overton correlation; it would be false if such a model existed for any receptor, channel or membrane target.
+  theme: anesthesia
+  rung: mechanism
+  claimType: existence
+  sourceAnchor:
+    locator: Body text, paragraph on quantum chemical modelling (PMC full text, PMC12413878)
+    quote: This cannot be said for any other candidate molecular target.
+    sourceId: SRC-WIEST-2025A
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-11-report-orch-or-114458
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-11-draft-orch-or-115454
+    date: 2026-09-11
+- id: ORCH-C063
+  statement: Including molecular-dynamics-derived structural variability substantially reduces the maximal superradiant enhancement of modelled microtubule tryptophan networks relative to an ordered 1JFF reference lattice; it would be false if the disordered ensembles retained the ordered lattice's peak radiative-rate enhancement.
+  theme: microtubule-physics
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: Results, 'Structural variability suppresses superradiance' (arXiv HTML 2604.18604v1)
+    quote: the maximal superradiant enhancement dropped substantially relative to the ordered reference
+    sourceId: SRC-GASSAB-2026A
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-11-report-orch-or-114458
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-11-draft-orch-or-115454
+    date: 2026-09-11

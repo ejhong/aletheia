@@ -1,0 +1,14 @@
+runId: 2026-09-11-draft-orch-or-115454
+verb: draft
+case: orch-or
+date: 2026-09-11
+model: claude-fable-5-1
+promptVersion: draft-v7
+inputHash: eec933bfdfd1908d7f3f919a2ea38f4ab41c38a2ae1a54f9b5c3a14b1dbd2682
+outcome: completed
+cost:
+  calls: 1
+  inputTokens: 219570
+  outputTokens: 49044
+  usd: 4.6479
+notes: "schema sent as instructions (too large for strict output). Model stamp caveat, added by hand 2026-09-11: this run began before the served-model fix (servedBy, src/pipeline/models.ts) was in place and the draft verb keeps no raw response, so whether the vendor's fallback (claude-opus-5) answered instead of claude-fable-5-1 is unknown; the stamp records the model asked. The research run before it fell back on its first turn."

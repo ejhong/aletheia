@@ -1,0 +1,1207 @@
+# Proposal — a change to domain records, in one envelope (docs/AUTOMATION.md).
+# Never citable; nothing here is a record until adopted through the gate.
+runId: 2026-09-11-draft-orch-or-115454
+date: 2026-09-11
+case: orch-or
+producer: draft
+model: claude-fable-5-1
+promptVersion: draft-v7
+basis:
+  ledgerHash: 7da89796098ecc35e1b72ac7c67f91c45d8b86df05e1f719a6da05a5f3cf3877
+rationale: "This pass adds four independent lines the ledger did not hold. (1) A published radical-pair account of the xenon isotope anomaly — quantum, but with no microtubule, no coherent tubulin lattice and no collapse — enters as its own competing mechanism claim linked as an alternative to ORCH-C002 and ORCH-C004 rather than folded into either, together with its field-strength condition, which is the cheapest decisive test in the case. (2) The same group's radical-pair route to magnetic-field effects on microtubule density enters as a mechanistic rival to the 'general cellular disruption' reading of the same-direction stabilizer/destabilizer anomaly, with a zinc-isotope prediction. (3) The collapse-physics rung gains two further non-interferometric constraints (LISA Pathfinder's mechanical-noise channel, which the radiation-specific escape of ORCH-E019 does not reach, and an independent underground germanium search) plus the co-originator's own primary statement of what the rate conjecture is and is not. (4) The 2026 microtubule photophysics literature is recorded honestly: entanglement-flavoured observables computed in a Markovian radiative-loss model with no thermal bath, disorder suppressing long-range coherence, and a cross-lab quantum-yield experiment whose polymerization magnitude spans nearly an order of magnitude on the scattering correction, with free L-tryptophan quenching the same observable — a second instance of the ORCH-E003 specificity problem. The Kerskens–Pérez reply, which the report could not reach but whose text was supplied here, is added so that ORCH-C026 is no longer comment-without-reply. Candidates whose text was not shown (Turin 2014, the Bandyopadhyay-group Symmetry paper, arXiv:2512.15393, the radical-pair review PDF) stay out with routes. No edition candidate: nothing here removes the absence on which the verdict rests, and the new rival account is on the record for a later telling to weigh."
+adds:
+  sources:
+    - id: SRC-SMITH-2021
+      title: Radical pairs may play a role in xenon-induced general anesthesia
+      authors:
+        - Jordan Smith
+        - Hadi Zadeh-Haghighi
+        - Dennis Salahub
+        - Christoph Simon
+      year: "2021"
+      sourceType: paper
+      identifier: doi:10.1038/s41598-021-85673-w
+      url: https://www.nature.com/articles/s41598-021-85673-w
+      verification: ai_verified
+      verificationNote: text retrieved and shown to the drafter on 2026-09-11 (run 2026-09-11-draft-orch-or-115454); passages checked by the verify verb
+      reliabilityNotes:
+        - Peer-reviewed, Scientific Reports 11:6287.
+        - Text read via the open-access author copy at arxiv.org/pdf/2009.01661 (arXiv:2009.01661v2); page locators refer to that PDF.
+        - "Modelling paper: reproduces the published Li et al. 2018 per-isotope potencies within a radical-pair framework; it does not report new in vivo measurements."
+      derivedFrom: []
+      background: false
+    - id: SRC-ZADEHHAGHIGHI-2022
+      title: Radical pairs may play a role in microtubule reorganization
+      authors:
+        - Hadi Zadeh-Haghighi
+        - Christoph Simon
+      year: "2022"
+      sourceType: paper
+      identifier: doi:10.1038/s41598-022-10068-4
+      url: https://www.nature.com/articles/s41598-022-10068-4
+      verification: ai_verified
+      verificationNote: text retrieved and shown to the drafter on 2026-09-11 (run 2026-09-11-draft-orch-or-115454); passages checked by the verify verb
+      reliabilityNotes:
+        - Peer-reviewed, Scientific Reports 12:6109.
+        - Text read via the open-access copy at PMC (PMC9005667); the PMC rendering carries no page numbers, so locators name sections.
+        - Same group as SRC-SMITH-2021 — not an independent line for spin-chemistry claims.
+        - Modelling paper built on a simple two-rate kinetic model of microtubule polymerization; no new experiments.
+      derivedFrom: []
+      background: false
+    - id: SRC-HELOU-2017
+      title: LISA pathfinder appreciably constrains collapse models
+      authors:
+        - Bassam Helou
+        - B. J. J. Slagmolen
+        - David E. McClelland
+        - Yanbei Chen
+      year: "2017"
+      sourceType: paper
+      identifier: arxiv:1606.03637
+      url: https://arxiv.org/abs/1606.03637
+      verification: ai_verified
+      verificationNote: text retrieved and shown to the drafter on 2026-09-11 (run 2026-09-11-draft-orch-or-115454); passages checked by the verify verb
+      reliabilityNotes:
+        - Published as Phys. Rev. D 95, 084054; text read from the arXiv PDF (v3, 24 Jan 2017).
+        - Bounds are re-derivations from LISA Pathfinder's published acceleration-noise figure, attributing all residual noise to collapse — the authors describe this as a conservative, 'simple and uncontroversial' analysis.
+        - Constrains the mechanical-noise channel, not spontaneous radiation.
+      derivedFrom: []
+      background: false
+    - id: SRC-ARNQUIST-2023
+      title: A Search for Spontaneous Radiation from Wavefunction Collapse in the Majorana Demonstrator
+      authors:
+        - I. J. Arnquist
+        - Majorana Collaboration
+      year: "2023"
+      sourceType: paper
+      identifier: arxiv:2202.01343
+      url: https://arxiv.org/abs/2202.01343
+      verification: ai_verified
+      verificationNote: text retrieved and shown to the drafter on 2026-09-11 (run 2026-09-11-draft-orch-or-115454); passages checked by the verify verb
+      reliabilityNotes:
+        - Published as Phys. Rev. Lett. 129, 080401; text read from the arXiv PDF (v5, 12 Jun 2023).
+        - Underground ultra-low-background germanium experiment; independent of the Gran Sasso team of SRC-DONADI-2021 but tests the same radiation channel.
+        - Limits apply to the white-noise (frequency-independent) collapse models; the authors note coloured-noise extensions evade them.
+      derivedFrom: []
+      background: false
+    - id: SRC-DISI-2022
+      title: On the conjectured gravity-related collapse rate E_Δ/ħ of massive quantum superpositions
+      authors:
+        - Lajos Diósi
+      year: "2022"
+      sourceType: preprint
+      identifier: arxiv:2111.04604
+      url: https://arxiv.org/abs/2111.04604
+      verification: ai_verified
+      verificationNote: text retrieved and shown to the drafter on 2026-09-11 (run 2026-09-11-draft-orch-or-115454); passages checked by the verify verb
+      reliabilityNotes:
+        - Primary statement by a co-originator of the model tested at Gran Sasso; text read from the arXiv PDF (v2, 16 Feb 2022).
+        - Reflective/review article, not a new derivation or experiment; the author's characterisation of Penrose's reasoning is his own reading.
+      derivedFrom: []
+      background: false
+    - id: SRC-GASSAB-2026
+      title: Quantum Information Flow in Microtubule Tryptophan Networks
+      authors:
+        - Lea Gassab
+        - Onur Pusuluk
+        - Travis J. A. Craddock
+      year: "2026"
+      sourceType: preprint
+      identifier: arxiv:2602.02868
+      url: https://arxiv.org/abs/2602.02868
+      verification: ai_verified
+      verificationNote: text retrieved and shown to the drafter on 2026-09-11 (run 2026-09-11-draft-orch-or-115454); passages checked by the verify verb
+      reliabilityNotes:
+        - Preprint (arXiv:2602.02868v1, 2 Feb 2026); the report notes a corresponding Entropy listing, unverified here.
+        - "Purely computational: Lindblad dynamics with radiative loss only, on 1JFF-derived geometry; no solvent, ionic or vibrational bath, and no experiment."
+        - Authors disclose use of an AI-assisted language tool for text clarity.
+      derivedFrom: []
+      background: false
+    - id: SRC-GASSAB-2026A
+      title: Engineering quantum optical responses of microtubules through tryptophan-network simulations and ultraviolet spectroscopy
+      authors:
+        - Lea Gassab
+        - Travis J. A. Craddock
+      year: "2026"
+      sourceType: preprint
+      identifier: arxiv:2604.18604
+      url: https://arxiv.org/html/2604.18604
+      verification: ai_verified
+      verificationNote: text retrieved and shown to the drafter on 2026-09-11 (run 2026-09-11-draft-orch-or-115454); passages checked by the verify verb
+      reliabilityNotes:
+        - Preprint (arXiv:2604.18604v1, 9 Apr 2026); read as arXiv HTML, which carries no page numbers, so locators name sections.
+        - Steady-state microplate absorbance and fluorescence; microtubule absorbance contains a large wavelength-dependent scattering term, so microtubule quantum yields are reported by the authors as bounds rather than single values.
+        - Partly independent of the Babcock/Kurian line but shares the Craddock modelling lineage.
+      derivedFrom: []
+      background: false
+    - id: SRC-WIEST-2025A
+      title: "Old theory, new evidence: inhalational anesthetics disrupt a collective quantum state of intraneuronal microtubules to cause unconsciousness"
+      authors:
+        - Michael C. Wiest
+      year: "2025"
+      sourceType: paper
+      identifier: doi:10.4103/mgr.MEDGASRES-D-25-00111
+      url: https://pmc.ncbi.nlm.nih.gov/articles/PMC12413878/
+      verification: ai_verified
+      verificationNote: text retrieved and shown to the drafter on 2026-09-11 (run 2026-09-11-draft-orch-or-115454); passages checked by the verify verb
+      reliabilityNotes:
+        - Short opinion/commentary piece in Medical Gas Research 16(2):182–183, not a systematic review; read via PMC full text (PMC12413878).
+        - Proponent statement by the author of the epothilone-B rat study; secondary throughout, characterising other groups' primaries.
+        - Its reference list contains no mention of the contradictory Li et al. 2025 mouse study, epothilone D or vinblastine.
+      derivedFrom: []
+      background: false
+    - id: SRC-KERSKENS-2023
+      title: "Reply to Comment on: 'Experimental indications of non-classical brain function' (2022 Journal of Physics Communications 6 105001)"
+      authors:
+        - Christian Kerskens
+        - David López Pérez
+      year: "2023"
+      sourceType: paper
+      identifier: doi:10.1088/2399-6528/acc636
+      url: https://doi.org/10.1088/2399-6528/acc636
+      verification: ai_verified
+      verificationNote: text retrieved and shown to the drafter on 2026-09-11 (run 2026-09-11-draft-orch-or-115454); passages checked by the verify verb
+      reliabilityNotes:
+        - Open-access reply in Journal of Physics Communications 7, 038002; publisher HTML read in full (no page numbers).
+        - Authors' own defence of their protocol; the quantitative bound they cite is a recalculation from the standard iZQC expression, not a new measurement.
+        - Completes the ORCH-C026 exchange alongside SRC-KERSKENS-2022 and SRC-WARREN-2023.
+      derivedFrom: []
+      background: false
+  evidence:
+    - id: ORCH-E041
+      title: A radical-pair model with hyperfine coupling to the xenon nucleus reproduces the published isotope potencies
+      claimIds:
+        - ORCH-C042
+      sourceId: SRC-SMITH-2021
+      direction: supports
+      strength: moderate
+      sourceStatement: The authors propose that a naturally occurring radical pair — specifically [O2·− TrpH·+] formed by oxidation of a tryptophan residue by a reactive oxygen species — has one of its unpaired electron spins hyperfine-coupled to the xenon nucleus, so that "this nuclear spin couples with (at least one of) the electron spins" of the pair and alters its singlet/triplet product yields. They report that "reasonable parameter values can reproduce the observed anesthetic potencies" of the xenon isotopes, with the hyperfine constant range they need agreeing with their own DFT calculation for xenon near superoxide.
+      editorInference: This is a quantum explanation of the xenon anomaly that requires no microtubule, no long-lived coherent tubulin lattice and no objective reduction. Its carrier is a tryptophan radical cation — the same chromophore the Orch OR photophysics literature uses, under incompatible physics.
+      exactLocator: "[p. 2] (Introduction) and [p. 5] (Discussion), open-access copy at arxiv.org/pdf/2009.01661"
+      limitations:
+        - Modelling only; no new measurement of anesthetic potency or of spin dynamics in vivo.
+        - Requires a superoxide spin-relaxation rate about an order of magnitude slower than expected for free O2·− in solution (two orders if the Trp β-hydrogen dominates), which the authors acknowledge.
+        - The specific receptor site (NMDA glycine site) is chosen for concreteness; the authors state other targets could serve.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-E042
+      title: The four published per-isotope xenon potencies, independently restated
+      claimIds:
+        - ORCH-C025
+      sourceId: SRC-SMITH-2021
+      direction: supports
+      strength: weak
+      sourceStatement: The authors quote the loss-of-righting-reflex ED50 values reported by Li et al. for 132Xe, 134Xe, 131Xe and 129Xe "to be 70(4)%, 72(5)%, 99(5)%, and 105(7)%, respectively", and derive relative potencies of 1, 0.71(8) and 0.67(8) for spin-0, spin-3/2 and spin-1/2 xenon.
+      editorInference: This is a second party's extraction of the same four numbers the case's own workpaper (ORCH-E040) flags as calculated rather than measured; it cross-checks the extraction but adds no independent measurement, so its diagnosticity for the underlying observation is near zero.
+      exactLocator: "[p. 2], Table 1 and 'Quantifying experimental anesthetic potency', open-access copy at arxiv.org/pdf/2009.01661"
+      limitations:
+        - Purely a restatement of SRC-LI-2018; not a replication.
+        - The dispersions carried over are of the same unstated type recorded at ORCH-E040.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-E043
+      title: A quantum but non-microtubule explanation now competes for the anesthesia arm's best anomaly
+      claimIds:
+        - ORCH-C002
+      sourceId: SRC-SMITH-2021
+      direction: undermines
+      strength: moderate
+      sourceStatement: The authors state that the anesthetic radical pair they model is located at a receptor binding site rather than in the cytoskeleton, noting only in passing that "other targets have also been proposed for many anesthetics, e.g. tubulin", and conclude that "reasonable parameter values can reproduce the observed anesthetic potencies" within their spin-chemistry framework.
+      editorInference: "My inference: the xenon isotope result discriminates 'quantum degrees of freedom matter somewhere in anesthetic action' from 'nowhere', not 'microtubule quantum state' from 'classical pharmacology'. With an explicit rival mechanism, its residual support for the microtubule attribution falls further."
+      exactLocator: "[p. 2] and [p. 5], open-access copy at arxiv.org/pdf/2009.01661"
+      limitations:
+        - The rival model is itself unconfirmed; it fits existing data rather than predicting new measurements that have been made.
+        - Does not address any of the microtubule-specific observations (ORCH-C020, ORCH-C023).
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-E044
+      title: Radical-pair spin dynamics modelled as a modulator of microtubule polymerization
+      claimIds:
+        - ORCH-C044
+      sourceId: SRC-ZADEHHAGHIGHI-2022
+      direction: supports
+      strength: moderate
+      sourceStatement: The authors insert magnetic-field and hyperfine effects into a two-rate kinetic model of tubulin polymerization, stating that "this rate is influenced by a RP reaction", and report that "Our model reproduces the experimental findings of Ref. 40 fairly well" — the reported disorder of tubulin assembly under a hypomagnetic field.
+      editorInference: "My inference: this supplies a mechanistic rival to the 'general cellular disruption' reading of the same-direction stabilizer/destabilizer anomaly, and unlike that reading it carries field- and isotope-dependent predictions that can be tested."
+      exactLocator: Results, 'Quantum effects on microtubule density', and Discussion (PMC full text, PMC9005667; no pagination)
+      limitations:
+        - Free parameters (recombination and relaxation rates) are chosen to reproduce the target ratio; the experiment being fitted reported no uncertainty, as the authors note.
+        - Same authors as SRC-SMITH-2021; not independent.
+        - No anesthesia endpoint is measured or modelled here.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-E045
+      title: A spin-chemistry route by which chemically opposite microtubule drugs could move sensitivity the same way
+      claimIds:
+        - ORCH-C012
+        - ORCH-C024
+      sourceId: SRC-ZADEHHAGHIGHI-2022
+      direction: context
+      strength: weak
+      sourceStatement: The authors place reactive oxygen species at the centre of microtubule regulation, stating that "this rate is influenced by a RP reaction" and that redox balance and oxidative stress regulate cytoskeletal dynamics, and they propose testing "whether modulating ROS levels pharmacologically can influence the HMF effects on tubulin polymerization".
+      editorInference: "My inference: if the operative variable is redox/ROS handling rather than polymer stability, a stabilizer and a destabilizer can move anesthetic sensitivity in the same direction without contradiction — a testable alternative to the case's current 'general cellular disruption' reading of ORCH-C024. The source itself says nothing about anesthetic sensitivity, so this bears on interpretation, not on the truth of either claim."
+      exactLocator: Discussion (PMC full text, PMC9005667; no pagination)
+      limitations:
+        - No anesthesia data in the source; the connection to ORCH-C024 is entirely my inference.
+        - Modelling paper with fitted rate constants.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-E046
+      title: LISA Pathfinder bounds the Diósi–Penrose cutoff above any nuclear size — through a channel radiation arguments do not reach
+      claimIds:
+        - ORCH-C030
+      sourceId: SRC-HELOU-2017
+      direction: undermines
+      strength: moderate
+      sourceStatement: Attributing LISA Pathfinder's measured relative acceleration noise between two free-falling test masses to collapse-induced force noise, the authors bound the Diósi–Penrose regularization scale to at least 40.1 ± 0.5 fm, "which is larger than the size of any nucleus", and conclude "we rule out the DP model if the cut-off" is the size of a fundamental particle.
+      editorInference: "My inference: this constrains mechanical momentum diffusion, not photon emission, so the escape recorded at ORCH-E019 — that Penrose's criterion makes no radiation prediction — does not reach it. Escaping the bounds now requires denying that the collapse injects any energy or momentum into matter at all."
+      exactLocator: "[p. 1] (abstract) and [p. 2] (Eq. 11), arXiv PDF 1606.03637v3"
+      limitations:
+        - Bound is derived by attributing all residual acceleration noise to collapse; Brownian thermal noise dominates and its value is not precisely known, so the bound is conservative rather than a measurement of collapse.
+        - Applies to the regularized DP model with a point-mass cutoff, which Penrose's own formulation handles differently (see SRC-DIOSI-2022).
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-E047
+      title: "Majorana Demonstrator: no spontaneous collapse radiation in 37.5 kg-y of enriched germanium"
+      claimIds:
+        - ORCH-C047
+      sourceId: SRC-ARNQUIST-2023
+      direction: supports
+      strength: strong
+      sourceStatement: The collaboration reports that, although white-noise collapse models predict a 1/E X-ray signature, they find "no evidence of such radiation in the 19-100 keV range" in a 37.5 kg-y enriched-germanium exposure collected between 2015 and 2019, with a best-fit signal of 6.3 ± 398.8 counts.
+      editorInference: An independent underground collaboration reproduces the null in the same channel Gran Sasso searched, so ORCH-C031 no longer rests on a single experiment.
+      exactLocator: "[p. 1] (abstract) and [p. 4] (fit result), arXiv PDF 2202.01343v5"
+      limitations:
+        - Constrains only the white-noise formulation; the authors state coloured-noise extensions with a cutoff near 10^11–10^12 Hz evade X-ray bounds.
+        - The DP interpretation is a secondary re-expression of a CSL-oriented search.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-E048
+      title: The Majorana bound tightens the Diósi–Penrose cutoff by almost an order of magnitude
+      claimIds:
+        - ORCH-C048
+      sourceId: SRC-ARNQUIST-2023
+      direction: supports
+      strength: strong
+      sourceStatement: Interpreting the same null in Diósi–Penrose terms, the authors obtain "a 95% CL lower bound on the cut-off length" of R_DP > (2.54 ± 0.03) × 10⁻¹⁰ m, which they describe as "almost an order of magnitude improvement over the previous best limit" and more than an order of magnitude above the value Penrose suggested for germanium crystals.
+      editorInference: The verified figure now sits in the record; the report's caveat that it had checked only the abstract is resolved, the value appearing in the body at p. 5.
+      exactLocator: "[p. 5] (DP interpretation) and [p. 1] (abstract), arXiv PDF 2202.01343v5"
+      limitations:
+        - Derived within the same white-noise assumption as the CSL limits.
+        - Depends on the assumed amplification factor for coherent nuclear emission.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-E049
+      title: A second underground null adds weight to the exclusion of the parameter-free DP model
+      claimIds:
+        - ORCH-C031
+        - ORCH-C030
+      sourceId: SRC-ARNQUIST-2023
+      direction: undermines
+      strength: strong
+      sourceStatement: The collaboration closes by stating that it improved the lower limit on the Diósi–Penrose collapse model by almost an order of magnitude, "adding significance to the exclusion of the parameter-free version of the model".
+      editorInference: "Direction here is toward the physics conjunct and toward the Gran Sasso finding's generalization: an independent group reaches the same verdict about the parameter-free version, so the squeeze on ORCH-C030 is no longer single-experiment."
+      exactLocator: "[p. 5] (conclusions), arXiv PDF 2202.01343v5"
+      limitations:
+        - Same radiation channel as SRC-DONADI-2021, so not an independent test of the mechanism, only of the measurement.
+        - Does not address Penrose's characteristic-lifetime formulation, which predicts no radiation.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-E050
+      title: "The co-originator: the rate carries an unspecified constant and may not be parameter-free"
+      claimIds:
+        - ORCH-C030
+      sourceId: SRC-DISI-2022
+      direction: qualifies
+      strength: moderate
+      sourceStatement: Diósi states the shared claim as collapse at rate 1/τ = E_Δ/ħ, with E_Δ the gravitational self-energy difference "respectively, times an unspecified numeric constant", and cautions that the apparent parameter-independence of the gravity-related rate "may be illusory since the rate diverges" for point-like mass distributions, adding that a phenomenological short-length regulator might be needed while Penrose avoids the problem differently.
+      editorInference: "My inference: the edition's 'untested vague theory' framing can be made precise and less rhetorical. The missing object is not a number but a dynamics; and the regularization scale that the LISA Pathfinder and underground bounds constrain may be unavoidable rather than an artefact of the tested surrogate."
+      exactLocator: "[p. 1] (Sec. I) and [p. 4] (Sec. V), arXiv PDF 2111.04604v2"
+      limitations:
+        - Reflective article by one of two originators; his reading of Penrose's route around the divergence is his own.
+        - No new calculation or experiment.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-E051
+      title: A semiclassical construction reproduces Penrose's rate exactly and fixes the constant at 1/2
+      claimIds:
+        - ORCH-C050
+      sourceId: SRC-DISI-2022
+      direction: supports
+      strength: moderate
+      sourceStatement: Diósi reports that the least-decoherence semiclassical construction he developed with Tilloy — continuous hidden measurement of the mass distribution, fed back as a classical Newton potential — "confirms the heuristic proposal and makes the constant unique", with the superposition decaying at exactly the conjectured rate "with the unique prefactor const. = 1 / 2".
+      editorInference: "My inference: this narrows the sharpest form of the escape at ORCH-E019. At least one dynamical realization lands on Penrose's own rate, so 'the tested model was never Penrose's' becomes a claim about which dynamics, not about whether any dynamics reproduces the relation. Whether that particular dynamics is itself already excluded by the bounded channels is the open question."
+      exactLocator: "[p. 3] (Sec. IV.A, 'Exact derivation'), arXiv PDF 2111.04604v2"
+      limitations:
+        - Secondary description of Tilloy & Diósi, Phys. Rev. D 96, 104045, which was not retrieved in this pass.
+        - Whether this construction predicts radiation or momentum diffusion at levels the Gran Sasso, Majorana and LISA Pathfinder bounds reach is not stated.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-E052
+      title: Penrose and Diósi agree on the lifetime and disagree on the dynamics
+      claimIds:
+        - ORCH-C052
+      sourceId: SRC-DISI-2022
+      direction: supports
+      strength: moderate
+      sourceStatement: Closing the article, Diósi writes that both agree the cat should collapse after a time of order ħ/E_Δ, but "We disagree on how this happens, smoothly, suddenly, or some other way", and names gravity-related collapse dynamics conserving energy and momentum as the hard remaining task.
+      editorInference: The rate conjecture and its dynamics are separable, and only the latter has been experimentally bounded so far — which is exactly why the physics rung is unresolved rather than refuted, and why 'less specified than the model that was tested' understates what is actually missing.
+      exactLocator: "[p. 4] (Sec. V, closing remarks), arXiv PDF 2111.04604v2"
+      limitations:
+        - A statement of position, not a proof that no such dynamics exists.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-E053
+      title: 2026 modelling reports entanglement measures but its lifetimes are radiative, not dephasing, times
+      claimIds:
+        - ORCH-C010
+      sourceId: SRC-GASSAB-2026
+      direction: qualifies
+      strength: moderate
+      sourceStatement: Building a Lindblad master equation from a non-Hermitian radiative generator on explicit 1JFF-derived geometry, the authors evaluate L1 coherence, correlated coherence and logarithmic negativity, and state plainly that "lifetimes reported here are defined within the Markovian radiative-loss model" used throughout, corresponding to memoryless coupling to the electromagnetic bath.
+      editorInference: "My inference: the field has moved to entanglement-flavoured observables without moving to a physiological environment — no solvent, ionic or vibrational bath and no 310 K dephasing estimate. So the class of work that most resembles the witness ORCH-R001 asks for still does not supply the number, and the absence recorded at ORCH-C010 is untouched."
+      exactLocator: "[p. 14] ('Lifetimes of Subradiant and Superradiant States'), arXiv PDF 2602.02868v1"
+      limitations:
+        - Preprint; computational only.
+        - Single-excitation manifold, radiative loss only; no non-radiative or thermal channels.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-E054
+      title: Disorder localizes the superradiant component and suppresses long-range coherence
+      claimIds:
+        - ORCH-C021
+        - ORCH-C013
+      sourceId: SRC-GASSAB-2026
+      direction: qualifies
+      strength: moderate
+      sourceStatement: The authors report that ordered lattices sustain long-range correlated coherence, whereas "static energetic and structural disorder suppresses long-range transport" and reduces overall correlation transfer, and their disorder figures state this "indicating that both spatial and static disorder disrupt long-range coherence" with the superradiant component becoming localized and fragmented.
+      editorInference: "My inference: this runs against the proponent scaling argument that collective quantum effects strengthen as microtubules join into larger structures. It narrows rather than denies the collective-optics observations — the effect survives, but the long-range delocalization that the scale-bridging story needs does not, once realistic disorder is included."
+      exactLocator: "[p. 1] (abstract) and [p. 15] (Fig. 11 caption), arXiv PDF 2602.02868v1"
+      limitations:
+        - Modelled disorder (MD-sampled geometry; uniform diagonal noise), not measured disorder in a living microtubule.
+        - Preprint.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-E055
+      title: "The modellers' own disclaimer: nothing here implies microtubules must use quantum correlations"
+      claimIds:
+        - ORCH-C001
+      sourceId: SRC-GASSAB-2026
+      direction: context
+      strength: weak
+      sourceStatement: In the discussion the authors write that their initial-state comparison "does not imply that microtubules must use quantum correlations for neural processing"; rather, it shows that a structured tryptophan network routes dynamics differently depending on how an excitation is prepared.
+      editorInference: This is the cleanest proponent-adjacent statement in the record that the 2026 photophysics results do not bear on the consciousness attribution. It carries no weight for or against the truth of ORCH-C001; it is recorded because the absence of such a disclaimer is often what the public argument relies on.
+      exactLocator: "[p. 17] (Discussion and Conclusions), arXiv PDF 2602.02868v1"
+      limitations:
+        - A statement of scope by authors, not evidence about microtubules.
+        - Zero diagnosticity for the headline thesis.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-E056
+      title: "Cross-lab: polymerization raises tubulin quantum yield at 280 nm in porcine tubulin"
+      claimIds:
+        - ORCH-C021
+        - ORCH-C013
+      sourceId: SRC-GASSAB-2026A
+      direction: supports
+      strength: moderate
+      sourceStatement: Measuring porcine tubulin dimers against taxol-stabilized microtubules in UV-transparent microplates, the authors report that "polymerization enhances microtubule quantum yield at 280 nm" and that "the polymerization percent change is positive for both bounds" of the absorbance treatment, with the difference statistically significant on both branches.
+      editorInference: The direction of the quantum-yield trend now has partial cross-lab support in a different preparation, which firms up the collective-optics observation rung — as condensed-matter physics of an ordered aromatic lattice, which is what the adopted assessment already says.
+      exactLocator: Abstract and Results, 'Polymerization increases yield at 280 nm' (arXiv HTML 2604.18604v1; no pagination)
+      limitations:
+        - Preprint; steady-state microplate geometry.
+        - Shares the Craddock modelling lineage with the superradiance literature it tests, so independence is partial.
+        - 280 nm excitation is not tryptophan-selective.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-E057
+      title: The magnitude of the polymerization effect spans nearly an order of magnitude on the scattering correction
+      claimIds:
+        - ORCH-C021
+      sourceId: SRC-GASSAB-2026A
+      direction: qualifies
+      strength: moderate
+      sourceStatement: The authors report the 280 nm no-tryptophan polymerization change ranging from approximately +6.1% using the uncorrected blank-subtracted absorbance to approximately +46.8% using the scattering-corrected branch, and state that microtubule quantum yields must be treated as bounded estimates rather than single values because microtubule extinction contains a substantial wavelength-dependent scattering term.
+      editorInference: "My inference: the observable is not yet metrologically stable. Running an anesthetic potency series against it (ORCH-R002, ORCH-R009) before the scattering correction is closed risks measuring the correction rather than the physics."
+      exactLocator: Results, 'Polymerization increases yield at 280 nm', and Materials and Methods, 'Absorbance processing and scattering bounds' (arXiv HTML 2604.18604v1)
+      limitations:
+        - The bounds arise from an analysis choice, not from replicate scatter.
+        - Preprint.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-E058
+      title: At tryptophan-selective excitation the polymerization effect reverses sign between treatments
+      claimIds:
+        - ORCH-C021
+      sourceId: SRC-GASSAB-2026A
+      direction: qualifies
+      strength: moderate
+      sourceStatement: At 295 nm excitation the authors report that "the two bounds differ substantially and reverse sign", corresponding to an apparent decrease of about 58.6% on the uncorrected branch and an apparent increase of about 12.7% on the corrected branch, and conclude that the polymerization comparison remains bounded rather than assigning an effect size.
+      editorInference: "My inference: 295 nm is where excitation is most selective for tryptophan and therefore where comparison with a tryptophan-only excitonic model is most meaningful — and it is exactly there that the measurement cannot yet fix a sign. This is a metrological, not a biological, obstacle, and it is fixable."
+      exactLocator: Results, 'Polymerization at 295 nm remains bounded' (arXiv HTML 2604.18604v1)
+      limitations:
+        - A single dataset in one geometry.
+        - Preprint.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-E059
+      title: Free L-tryptophan — no anesthetic — quenches the same microtubule optical observable
+      claimIds:
+        - ORCH-C002
+      sourceId: SRC-GASSAB-2026A
+      direction: undermines
+      strength: moderate
+      sourceStatement: The authors report that "added L-tryptophan reproducibly quenches microtubules at both wavelengths", with a concentration-dependent microtubule quantum-yield decrease of about 7.3% and 11.2% at 280 nm and about 8.2% and 16.5% at 295 nm for the two doping ratios, while the dimer response was weaker and less systematic.
+      editorInference: "My inference: this generalizes the ORCH-E003 specificity problem beyond picrotoxin. An ordinary amino acid, pharmacologically unrelated to anesthesia, moves the microtubule optical observable in the same direction anesthetics do — evidence that the assay reports perturbability of microtubule photophysics rather than anything specific to anesthetic action."
+      exactLocator: Abstract and Results, 'Added tryptophan quenches microtubules' (arXiv HTML 2604.18604v1)
+      limitations:
+        - Free tryptophan's binding mode and occupancy are unknown; the authors state this explicitly.
+        - Steady-state measurement cannot separate radiative from non-radiative changes.
+        - Preprint.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-E060
+      title: Structural variability suppresses the superradiant enhancement the collective reading relies on
+      claimIds:
+        - ORCH-C063
+      sourceId: SRC-GASSAB-2026A
+      direction: supports
+      strength: moderate
+      sourceStatement: Under the heading 'Structural variability suppresses superradiance' the authors report that when molecular-dynamics-derived conformational variability is included, "the maximal superradiant enhancement dropped substantially relative to the ordered reference", while thermal quantum yields stayed above 0.14 across the lengths examined.
+      editorInference: "Two things come apart here: a modest quantum-yield trend that survives disorder, and the large cooperative radiative-rate gain that does not. Only the latter is what the scale-bridging argument needs."
+      exactLocator: Results, 'Structural variability suppresses superradiance' (arXiv HTML 2604.18604v1)
+      limitations:
+        - Computational; disorder is MD-sampled, not measured in vivo.
+        - Preprint.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-E061
+      title: The newest proponent commentary omits the contradictory animal study
+      claimIds:
+        - ORCH-C002
+      sourceId: SRC-WIEST-2025A
+      direction: context
+      strength: weak
+      sourceStatement: The commentary presents the epothilone-B rat result as evidence that "the molecular target may be MTs" and reports the 69-second latency difference and effect size, and concludes that microtubules are the primary target of inhalational anesthetics. Its text and twelve-item reference list contain no mention of epothilone D, vinblastine, or the independent mouse study that found increased isoflurane sensitivity.
+      editorInference: "My inference: a dated, specific instance of asymmetric presentation, in a venue addressed to an anesthesiology-adjacent readership. I insist on the caveat that this is a short opinion piece rather than a review, where omission is weaker evidence of selective citation; and the same author group did cite the contradictory study in its own mouse paper's abstract, as ORCH-E012 records."
+      exactLocator: Body text and reference list (PMC full text, PMC12413878; journal pagination 16(2):182–183)
+      limitations:
+        - Negative observation about a short commentary, not a systematic citation audit.
+        - Bears on presentation, not on the truth of ORCH-C002.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-E062
+      title: A quantum-yield measurement becomes 'definitive biophysical evidence' in one step
+      claimIds:
+        - ORCH-C010
+      sourceId: SRC-WIEST-2025A
+      direction: context
+      strength: weak
+      sourceStatement: The commentary states that decoherence at body temperature was long the primary reason the hypothesis was thought implausible, but that "definitive biophysical evidence that MTs support quantum optical effects" at room temperature now exists, citing the 2024 ultraviolet superradiance paper.
+      editorInference: "My inference: this is the absorb-not-score pattern ORCH-E035 describes, visible in a single step. A fluorescence quantum-yield measurement plus a non-Hermitian radiative model is presented as settling room-temperature quantum optical effects, with the dephasing question — the one that makes ORCH-C010 unresolved — not raised. It is an assertion, not evidence, and carries no weight for the truth of ORCH-C010."
+      exactLocator: Body text, paragraph on decoherence (PMC full text, PMC12413878)
+      limitations:
+        - Opinion piece; secondary characterization of SRC-BABCOCK-2024.
+        - Zero diagnosticity as evidence.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-E063
+      title: "The proponents' strongest unanswered point: Meyer–Overton from tubulin quantum chemistry"
+      claimIds:
+        - ORCH-C011
+      sourceId: SRC-WIEST-2025A
+      direction: supports
+      strength: weak
+      sourceStatement: 'The commentary reports that a detailed quantum-chemical modelling study found "the potencies of several volatile anesthetics were predicted by their binding affinity" to delocalized electron sites within tubulin, essentially reproducing the Meyer–Overton correlation on the assumption that inhalational anesthesia is mediated by microtubules, and asserts: "This cannot be said for any other candidate molecular target."'
+      editorInference: This is the argument with real force in the proponent case and the direct motivation for ORCH-R009; it is recorded as an assertion in a commentary, whose underlying computation is already at ORCH-E010 with weak strength.
+      exactLocator: Body text, paragraph on quantum chemical modelling (PMC full text, PMC12413878)
+      limitations:
+        - Secondary; the primary (SRC-CRADDOCK-2017) is computational and already in the ledger at weak strength.
+        - The uniqueness claim ('no other candidate target') is asserted, not demonstrated, and no survey is cited.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-E064
+      title: "The zero-quantum-coherence authors' quantitative reply: classical iZQC cannot produce signals of the observed size"
+      claimIds:
+        - ORCH-C026
+      sourceId: SRC-KERSKENS-2023
+      direction: supports
+      strength: moderate
+      sourceStatement: "Responding to Warren's comment, the authors state \"we have never claimed to have measured an iMQC effect\" and recompute the classical bound for their own parameters: at TE = 5 ms \"the maximum signal could reach 0.4% of the initial magnetization\", falling to about 0.13% with relaxation and below 0.01% under the saturation of an ultra-fast sequence, so that \"It is now clear that we have not measured iZQC\", while they did reproduce the predicted dependence on flip angle, gradient direction and T2 and found the ZQC correlation distance played no role."
+      editorInference: This completes the ORCH-C026 exchange, which the ledger held as comment-without-reply. It is the authors' own defence and a recalculation rather than a new measurement, so it does not resolve whether an unrecognized classical mechanism in living tissue could produce the signal — which the authors themselves name as the interesting open question.
+      exactLocator: Reply body, paragraphs on sequence parameters and the gedankenexperiment (IOP HTML, J. Phys. Commun. 7, 038002; no pagination)
+      limitations:
+        - Authors' own reply; not independent adjudication.
+        - The classical bound relies on models derived for chemical solutions, as the authors acknowledge.
+        - Does not establish entanglement, only that the signals exceed the modelled classical bound.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+  claims:
+    - id: ORCH-C042
+      statement: The nuclear-spin dependence of xenon anesthetic potency arises from hyperfine coupling between the xenon nucleus and an unpaired electron spin of a naturally occurring radical pair, whose singlet/triplet product yields are thereby altered; it would be false if xenon isotope potency differences persisted unchanged under conditions that suppress radical-pair spin coherence or that eliminate the radical-pair partner (e.g. absence of molecular oxygen).
+      theme: anesthesia
+      rung: mechanism
+      claimType: mechanistic
+      sourceAnchor:
+        locator: "[p. 2], open-access copy at arxiv.org/pdf/2009.01661"
+        quote: this nuclear spin couples with (at least one of) the electron spins
+        sourceId: SRC-SMITH-2021
+        also:
+          - locator: "[p. 5], open-access copy at arxiv.org/pdf/2009.01661"
+            quote: reasonable parameter values can reproduce the observed anesthetic potencies
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      alternativeToClaimIds:
+        - ORCH-C002
+        - ORCH-C004
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-C043
+      statement: In the published radical-pair model of xenon anesthesia, agreement between the predicted singlet-yield ratios and the measured per-isotope potencies holds only for external magnetic field strengths between 0 and 2525 µT, so the model predicts altered isotope potency at fields roughly two orders of magnitude above geomagnetic; it would be false if the model's fit were shown to hold across arbitrary field strengths.
+      theme: anesthesia
+      rung: observation
+      claimType: theory_description
+      sourceAnchor:
+        locator: "[p. 5] (Discussion), open-access copy at arxiv.org/pdf/2009.01661"
+        quote: the range of B values that produce agreement between SR and Pot
+        sourceId: SRC-SMITH-2021
+        also:
+          - locator: "[p. 5] (Discussion), open-access copy at arxiv.org/pdf/2009.01661"
+            quote: the potency of 131 Xe may be greater than experimentally observed
+      parentClaimIds:
+        - ORCH-C042
+      dependsOnClaimIds:
+        - ORCH-C042
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-C044
+      statement: Spin dynamics of a naturally occurring tryptophan-cation/superoxide radical pair modulate the microtubule polymerization rate, so that microtubule density depends on ambient magnetic field strength; it would be false if microtubule assembly showed no dependence on field strength or on radical-pair-relevant redox conditions.
+      theme: microtubule-physics
+      rung: mechanism
+      claimType: mechanistic
+      sourceAnchor:
+        locator: Results, 'Quantum effects on microtubule density' (PMC full text, PMC9005667)
+        quote: this rate is influenced by a RP reaction
+        sourceId: SRC-ZADEHHAGHIGHI-2022
+        also:
+          - locator: Discussion, first paragraph (PMC full text, PMC9005667)
+            quote: Our model reproduces the experimental findings of Ref. 40 fairly well
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-C045
+      statement: Administering the nuclear-spin-bearing zinc isotope 67Zn increases microtubule density relative to zinc isotopes of zero nuclear spin; it would be false if a blinded isotope comparison at matched chemical concentration found no difference in microtubule density.
+      theme: microtubule-physics
+      rung: mechanism
+      claimType: mechanistic
+      sourceAnchor:
+        locator: Results, 'Zinc isotope effect on microtubule density' (PMC full text, PMC9005667)
+        quote: increases the MT density compared to Zn without nuclear spin
+        sourceId: SRC-ZADEHHAGHIGHI-2022
+      parentClaimIds:
+        - ORCH-C044
+      dependsOnClaimIds:
+        - ORCH-C044
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-C046
+      statement: LISA Pathfinder's measured relative acceleration noise between two free-falling test masses bounds the Diósi–Penrose regularization length to at least 40.1 ± 0.5 fm, a value larger than the size of any nucleus; it would be false if the residual acceleration noise were shown to be larger than reported or if the mapping from collapse force noise to acceleration noise were invalid.
+      theme: collapse-physics
+      rung: observation
+      claimType: measurement
+      sourceAnchor:
+        locator: "[p. 1] (abstract), arXiv PDF 1606.03637v3"
+        quote: which is larger than the size of any nucleus
+        sourceId: SRC-HELOU-2017
+        also:
+          - locator: "[p. 1] (abstract), arXiv PDF 1606.03637v3"
+            quote: we rule out the DP model if the cut-off
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-C047
+      statement: An independent underground ultra-low-background germanium search, the Majorana Demonstrator, found no evidence of the 1/E spontaneous-collapse radiation signature in the 19–100 keV range over a 37.5 kg-y enriched exposure; it would be false if a signal excess consistent with the predicted spectral shape were present in that dataset.
+      theme: collapse-physics
+      rung: observation
+      claimType: measurement
+      sourceAnchor:
+        locator: "[p. 1] (abstract), arXiv PDF 2202.01343v5"
+        quote: no evidence of such radiation in the 19-100 keV range
+        sourceId: SRC-ARNQUIST-2023
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-C048
+      statement: Interpreted in Diósi–Penrose terms, the Majorana Demonstrator null result sets a 95% CL lower bound on the model's cut-off length of 2.54 × 10⁻¹⁰ m, almost an order of magnitude above the previous best limit; it would be false if the amplification-factor assumptions used for coherent nuclear emission were shown to be wrong by that factor.
+      theme: collapse-physics
+      rung: observation
+      claimType: measurement
+      sourceAnchor:
+        locator: "[p. 5] (DP interpretation), arXiv PDF 2202.01343v5"
+        quote: a 95% CL lower bound on the cut-off length
+        sourceId: SRC-ARNQUIST-2023
+        also:
+          - locator: "[p. 1] (abstract), arXiv PDF 2202.01343v5"
+            quote: almost an order of magnitude improvement over the previous best limit
+      parentClaimIds:
+        - ORCH-C047
+      dependsOnClaimIds:
+        - ORCH-C047
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-C049
+      statement: The gravity-related collapse rate 1/τ = E_Δ/ħ shared by Penrose and Diósi is specified only up to an unspecified numeric constant; it would be false if either originator's published formulation fixed the prefactor from first principles.
+      theme: collapse-physics
+      rung: mechanism
+      claimType: theory_description
+      sourceAnchor:
+        locator: "[p. 1] (Sec. I, The collapse rate), arXiv PDF 2111.04604v2"
+        quote: respectively, times an unspecified numeric constant
+        sourceId: SRC-DISI-2022
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-C050
+      statement: The Tilloy–Diósi semiclassical least-decoherence construction reproduces the ħ/E_Δ collapse rate exactly and fixes its numeric constant at 1/2; it would be false if that construction were shown to yield a different rate law or to leave the prefactor free.
+      theme: collapse-physics
+      rung: mechanism
+      claimType: mathematical
+      sourceAnchor:
+        locator: "[p. 3] (Sec. IV.A, Exact derivation), arXiv PDF 2111.04604v2"
+        quote: confirms the heuristic proposal and makes the constant unique
+        sourceId: SRC-DISI-2022
+        also:
+          - locator: "[p. 3] (Sec. IV.A), arXiv PDF 2111.04604v2"
+            quote: with the unique prefactor const. = 1 / 2
+      parentClaimIds: []
+      dependsOnClaimIds:
+        - ORCH-C049
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-C051
+      statement: The apparent parameter-independence of the gravity-related collapse rate may be illusory, because the rate diverges for point-like mass distributions and so requires a short-length regulator of the kind experiments bound; it would be false if a formulation were exhibited that is finite for point masses without introducing any length scale.
+      theme: collapse-physics
+      rung: mechanism
+      claimType: mathematical
+      sourceAnchor:
+        locator: "[p. 4] (Sec. V, Closing remarks), arXiv PDF 2111.04604v2"
+        quote: may be illusory since the rate diverges
+        sourceId: SRC-DISI-2022
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-C052
+      statement: Penrose and Diósi agree that a massive superposition should collapse after a time of order ħ/E_Δ but disagree about the dynamics by which the collapse happens; it would be false if a single dynamical formulation were endorsed by both as the mechanism of the shared rate.
+      theme: collapse-physics
+      rung: mechanism
+      claimType: historical
+      sourceAnchor:
+        locator: "[p. 4] (Sec. V, Closing remarks), arXiv PDF 2111.04604v2"
+        quote: We disagree on how this happens, smoothly, suddenly, or some other way
+        sourceId: SRC-DISI-2022
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-C053
+      statement: The superradiant and subradiant lifetimes reported for modelled microtubule tryptophan networks are defined within a Markovian radiative-loss model and are therefore radiative lifetimes rather than measured or computed environmental dephasing times; it would be false if the same published lifetimes were derived from a model including solvent, ionic or vibrational dephasing at physiological temperature.
+      theme: microtubule-physics
+      rung: observation
+      claimType: methodological
+      sourceAnchor:
+        locator: "[p. 14] ('Lifetimes of Subradiant and Superradiant States'), arXiv PDF 2602.02868v1"
+        quote: lifetimes reported here are defined within the Markovian radiative-loss model
+        sourceId: SRC-GASSAB-2026
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-C054
+      statement: In modelled microtubule tryptophan networks, static energetic and structural disorder localizes the superradiant component and suppresses long-range coherence; it would be false if the same model with realistic disorder retained delocalized correlated coherence across the assembly.
+      theme: microtubule-physics
+      rung: observation
+      claimType: observation
+      sourceAnchor:
+        locator: "[p. 15] (Fig. 11 caption), arXiv PDF 2602.02868v1"
+        quote: indicating that both spatial and static disorder disrupt long-range coherence
+        sourceId: SRC-GASSAB-2026
+        also:
+          - locator: "[p. 1] (abstract), arXiv PDF 2602.02868v1"
+            quote: static energetic and structural disorder suppresses long-range transport
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-C055
+      statement: Collective quantum optical effects in microtubules become stronger, not weaker, as microtubules are joined into larger structures; it would be false if modelling or measurement with realistic disorder showed collective effects weakening or localizing with increasing assembly size.
+      theme: microtubule-physics
+      rung: mechanism
+      claimType: causal
+      sourceAnchor:
+        locator: Body text, paragraph on decoherence (PMC full text, PMC12413878)
+        quote: quantum effects get stronger as the MTs are joined into larger structures
+        sourceId: SRC-WIEST-2025A
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      contradictsClaimIds:
+        - ORCH-C054
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-C056
+      statement: Quantum-chemical modelling predicts the clinical potencies of several volatile anesthetics from their binding affinity to delocalized electron sites within tubulin; it would be false if the modelled affinities failed to track measured potencies across an extended agent series including nonimmobilizers.
+      theme: anesthesia
+      rung: mechanism
+      claimType: mechanistic
+      sourceAnchor:
+        locator: Body text, paragraph on quantum chemical modelling (PMC full text, PMC12413878)
+        quote: the potencies of several volatile anesthetics were predicted by their binding affinity
+        sourceId: SRC-WIEST-2025A
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-C057
+      statement: No candidate molecular target for inhalational anesthesia other than tubulin has a published model that reproduces the Meyer–Overton correlation; it would be false if such a model existed for any receptor, channel or membrane target.
+      theme: anesthesia
+      rung: mechanism
+      claimType: existence
+      sourceAnchor:
+        locator: Body text, paragraph on quantum chemical modelling (PMC full text, PMC12413878)
+        quote: This cannot be said for any other candidate molecular target.
+        sourceId: SRC-WIEST-2025A
+      parentClaimIds: []
+      dependsOnClaimIds:
+        - ORCH-C056
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-C058
+      statement: Isoflurane's effect on synaptic transmission is mediated by mitochondria and the synaptic protein syntaxin 1A rather than by microtubules; it would be false if blocking microtubule involvement abolished isoflurane's synaptic effect while mitochondrial and syntaxin-1A manipulations did not.
+      theme: conventional
+      rung: mechanism
+      claimType: causal
+      sourceAnchor:
+        locator: Body text, paragraph on classical models of consciousness (PMC full text, PMC12413878)
+        quote: mediated by mitochondria and synaptic protein syntaxin 1A rather than MTs
+        sourceId: SRC-WIEST-2025A
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-C059
+      statement: Polymerization of porcine tubulin dimers into taxol-stabilized microtubules increases fluorescence quantum yield at 280 nm excitation; it would be false if a scattering-controlled measurement found no increase or a decrease at that excitation wavelength.
+      theme: microtubule-physics
+      rung: observation
+      claimType: measurement
+      sourceAnchor:
+        locator: Abstract (arXiv HTML 2604.18604v1)
+        quote: polymerization enhances microtubule quantum yield at 280 nm
+        sourceId: SRC-GASSAB-2026A
+        also:
+          - locator: Results, 'Polymerization increases yield at 280 nm' (arXiv HTML 2604.18604v1)
+            quote: the polymerization percent change is positive for both bounds
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-C060
+      statement: The magnitude of that 280 nm polymerization-induced quantum-yield increase is bounded between about +6% and +47% depending on how the scattering contribution to microtubule absorbance is treated, and is not fixed to a single value by the reported measurement; it would be false if a geometry that removes the scattering ambiguity yielded a single value with uncertainty narrower than that span.
+      theme: microtubule-physics
+      rung: observation
+      claimType: measurement
+      sourceAnchor:
+        locator: Results, 'Polymerization increases yield at 280 nm' (arXiv HTML 2604.18604v1)
+        quote: the polymerization percent change is positive for both bounds
+        sourceId: SRC-GASSAB-2026A
+        also:
+          - locator: Materials and Methods, 'Absorbance processing and scattering bounds for microtubules' (arXiv HTML 2604.18604v1)
+            quote: These two branches define lower and upper bounds on MT quantum yield.
+      parentClaimIds:
+        - ORCH-C059
+      dependsOnClaimIds:
+        - ORCH-C059
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-C061
+      statement: At 295 nm excitation, where tryptophan is more selectively excited, the polymerization-induced change in microtubule quantum yield reverses sign between the two absorbance treatments, so its direction is not determined by that dataset; it would be false if a scattering-controlled measurement at 295 nm fixed the sign.
+      theme: microtubule-physics
+      rung: observation
+      claimType: measurement
+      sourceAnchor:
+        locator: Results, 'Polymerization at 295 nm remains bounded' (arXiv HTML 2604.18604v1)
+        quote: the two bounds differ substantially and reverse sign
+        sourceId: SRC-GASSAB-2026A
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-C062
+      statement: Adding free L-tryptophan, which is not an anesthetic, reproducibly reduces microtubule fluorescence quantum yield at both 280 and 295 nm excitation in a concentration-dependent manner; it would be false if matched-concentration tryptophan spiking left microtubule quantum yield unchanged.
+      theme: microtubule-physics
+      rung: observation
+      claimType: measurement
+      sourceAnchor:
+        locator: Abstract (arXiv HTML 2604.18604v1)
+        quote: added L-tryptophan reproducibly quenches microtubules at both wavelengths
+        sourceId: SRC-GASSAB-2026A
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-C063
+      statement: Including molecular-dynamics-derived structural variability substantially reduces the maximal superradiant enhancement of modelled microtubule tryptophan networks relative to an ordered 1JFF reference lattice; it would be false if the disordered ensembles retained the ordered lattice's peak radiative-rate enhancement.
+      theme: microtubule-physics
+      rung: observation
+      claimType: observation
+      sourceAnchor:
+        locator: Results, 'Structural variability suppresses superradiance' (arXiv HTML 2604.18604v1)
+        quote: the maximal superradiant enhancement dropped substantially relative to the ordered reference
+        sourceId: SRC-GASSAB-2026A
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-C064
+      statement: Under the sequence parameters of the zero-quantum-coherence brain experiment (TE = 5 ms), the classical intermolecular zero-quantum-coherence signal could reach at most about 0.4% of the initial magnetization, and below 0.01% once ultra-fast-sequence saturation is included — orders of magnitude below the reported signals; it would be false if the classical expression, applied to those parameters, permitted signals of the observed size.
+      theme: nonclassical-brain
+      rung: observation
+      claimType: mathematical
+      sourceAnchor:
+        locator: Reply body, paragraph on sequence parameters (IOP HTML, J. Phys. Commun. 7, 038002)
+        quote: the maximum signal could reach 0.4% of the initial magnetization
+        sourceId: SRC-KERSKENS-2023
+        also:
+          - locator: Reply body, same paragraph (IOP HTML, J. Phys. Commun. 7, 038002)
+            quote: It is now clear that we have not measured iZQC
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+  research:
+    - id: ORCH-R011
+      title: Xenon isotope anesthetic potency measured under a controlled external magnetic field
+      summary: "Randomized, blinded loss-of-righting-reflex dose–response in mice for spin-0 and spin-bearing xenon isotopes, run inside a controllable-field enclosure with arms at geomagnetic field, at a field an order of magnitude higher, and at a field about two orders above geomagnetic (i.e. above the upper limit of the field range recorded at ORCH-C102), with field strength logged and the predicted isotope ordering preregistered for each arm. Cheapest decisive discriminator in the case: a field dependence of the isotope effect would support the radical-pair mechanism at ORCH-C101 and is orthogonal to Orch OR, since no microtubule coherence is required; no field dependence at fields well above the model's stated agreement range would falsify the published fit and return the xenon anomaly to unexplained, further reducing what ORCH-C025 can do for ORCH-C002. My searches did not locate such an in vivo experiment; that is an unresolved retrieval question rather than a finding of absence."
+      claimIds:
+        - ORCH-C042
+        - ORCH-C043
+        - ORCH-C025
+        - ORCH-C002
+        - ORCH-C004
+      track: small_grant
+      effortTier: lab
+      informationGain: Separates spin-chemistry quantum biology from both classical pharmacology and the microtubule attribution on the one datum that currently embarrasses the classical account.
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-R012
+      title: Zinc-isotope and ROS-modulation test of the radical-pair route to microtubule density
+      summary: Blinded in vitro and cell-culture comparison of microtubule density and polymerization kinetics under matched chemical concentrations of nuclear-spin-bearing 67Zn versus zero-spin zinc isotopes, crossed with pharmacological modulation of reactive-oxygen-species removal and with field-shielded versus geomagnetic conditions. An isotope difference at matched chemistry, and a field dependence that tracks it, would support the mechanism at ORCH-C103 and ORCH-C104 and give the 'same-direction stabilizer and destabilizer' result at ORCH-C024 a redox-mediated reading with its own predictions; a null on both would leave general cellular disruption as the better account of ORCH-C024 and would remove this rival from the anesthesia arm.
+      claimIds:
+        - ORCH-C044
+        - ORCH-C045
+        - ORCH-C024
+        - ORCH-C012
+      track: small_grant
+      effortTier: lab
+      informationGain: Tests whether the operative variable behind microtubule-drug effects on anesthetic sensitivity is polymer stability, generic disruption, or spin-dependent redox chemistry.
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-R013
+      title: "Desk audit: is the dynamics that reproduces ħ/E_Δ already excluded by the bounded channels?"
+      summary: From the published literature alone, compute whether the least-decoherence semiclassical construction recorded at ORCH-C109 — which reproduces the conjectured rate with the prefactor fixed — predicts spontaneous radiation and momentum diffusion at levels reached by the Gran Sasso search (ORCH-C031), the independent germanium search (ORCH-C106, ORCH-C107), and the LISA Pathfinder acceleration-noise bound (ORCH-C105); and whether its regularization scale can be pushed above the bounded values without altering the rate. If it is already excluded, the physics conjunct is refuted in every dynamics so far proposed for it and the escape at ORCH-E019 buys nothing; if it survives, the surviving parameter window should be stated numerically, which is what a decisive mesoscopic test (ORCH-R007) would then have to reach.
+      claimIds:
+        - ORCH-C030
+        - ORCH-C031
+        - ORCH-C046
+        - ORCH-C047
+        - ORCH-C048
+        - ORCH-C050
+        - ORCH-C051
+      track: publication_prize
+      effortTier: desk
+      informationGain: "Prices the under-specification escape precisely: either every proposed dynamics for the Penrose rate is bounded, or a stated surviving window becomes the target for the next experiment."
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-R014
+      title: Publish, in advance, a 310 K thermal-bath dephasing prediction for the same 1JFF tryptophan geometry
+      summary: "Ask the group that already has the machinery to extend its radiative-loss Lindblad treatment (ORCH-C112) to include solvent, ionic and vibrational baths at 310 K, and to publish, before any spectroscopy is run, the predicted dephasing time, coherence length and participating degrees of freedom, together with the value of a named density-matrix witness that would count as pass and the value that would count as fail. This is the pass/fail threshold the case's own audit found missing from the corpus (ORCH-E035, ORCH-E036), and it is the prior question to the expensive experiment at ORCH-R001: without it, any measured number can be absorbed either way."
+      claimIds:
+        - ORCH-C010
+        - ORCH-C053
+        - ORCH-C001
+        - ORCH-C054
+      track: publication_prize
+      effortTier: desk
+      informationGain: Converts the case's central absence from an unmeasured quantity into a scorable one, by fixing the acceptance criterion in advance rather than after the measurement.
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+    - id: ORCH-R015
+      title: Close the scattering ambiguity in the microtubule quantum-yield observable before any potency series
+      summary: Re-measure the tubulin-dimer versus taxol-stabilized-microtubule quantum yield in cuvette and integrating-sphere geometries, with independent turbidity measurement, inner-filter controls, matched buffers and a measured polymer fraction, at both 280 and 295 nm excitation. The target is to replace the bounded estimate at ORCH-C119 with a single value and to fix the sign at 295 nm (ORCH-C120), and to repeat the non-anesthetic additive control of ORCH-C121 alongside a convulsant and a hydrophobic nonimmobilizer. Until this is closed, an anesthetic potency series against this observable (ORCH-R002, ORCH-R009) risks measuring the scattering correction rather than the physics.
+      claimIds:
+        - ORCH-C059
+        - ORCH-C060
+        - ORCH-C061
+        - ORCH-C062
+        - ORCH-C021
+        - ORCH-C011
+      track: either
+      effortTier: lab
+      informationGain: Makes the collective-optics observable metrologically stable enough that a preregistered anesthetic potency correlation against it could count as pass or fail.
+      origin:
+        ref: report 2026-09-11-report-orch-or-114458
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-11-draft-orch-or-115454
+        date: 2026-09-11
+  images: []
+corrections: []
+dispositions:
+  - key: doi:10.1073/pnas.1404387111
+    kind: source
+    disposition: blocked
+    reason: Turin, Skoulakis & Horsfield, 'Electron spin changes during general anesthesia in Drosophila', PNAS 111:E3524 (2014) — potentially the most diagnostic item in the spin family, being an in vivo spin measurement under anesthesia rather than a model fit. It was seen only as a reference inside SRC-SMITH-2021 and as a search listing; the PubMed route returned a CAPTCHA and the publisher text was not retrieved, so nothing is quoted from it.
+    reopenIf: The full text is retrieved and the reported ESR signals, their oxygen dependence, and the conditions of measurement can be quoted with locators.
+    observed: Cited in SRC-SMITH-2021 [p. 1] as showing that specific electron spin resonance signals are observed when xenon acts anesthetically on Drosophila; and at [p. 5] that no spin changes were observed when xenon was administered without oxygen present.
+    by: 2026-09-11-draft-orch-or-115454
+    date: 2026-09-11
+    route: Fetch the PNAS article directly (doi:10.1073/pnas.1404387111) or via PMC; also retrieve Turin & Skoulakis, Methods in Enzymology 603:115–128 (2018), for the EPR protocol.
+  - key: doi:10.3390/sym13050821
+    kind: source
+    disposition: blocked
+    reason: Singh et al., 'Cytoskeletal filaments deep inside a neuron are not silent', Symmetry 13:821 (2021) — cited by SRC-WIEST-2025A as evidence that microtubule resonances regulate spike timing and span multiple neurons, which bears on ORCH-C022 and on the scale-bridging argument. Not retrieved; a citation inside a commentary is not grounds to anchor evidence.
+    reopenIf: The MDPI open-access text is retrieved, so the reported resonance-to-spike relationship and its controls can be quoted.
+    observed: SRC-WIEST-MGR-2025 states that work from Bandyopadhyay and colleagues 'has demonstrated MT resonances that control membrane spiking activity in living neurons, and that these resonances span multiple neurons'.
+    by: 2026-09-11-draft-orch-or-115454
+    date: 2026-09-11
+    route: "Fetch MDPI Symmetry 13(5):821 (open access). Note for grading: same group as SRC-SAXENA-2020, so it cannot satisfy the independence requirement of ORCH-R005."
+  - key: arxiv:2512.15393
+    kind: source
+    disposition: blocked
+    reason: arXiv:2512.15393, 'Spontaneous wave function collapse from non-local gravitational self-energy' — possibly a live repair attempt on the bounded Diósi–Penrose regularization, which would bear directly on ORCH-C030 and ORCH-C051. The fetch failed (unsupported content type) and no text was seen.
+    reopenIf: The arXiv abstract and PDF are retrieved and the paper's predictions for spontaneous radiation or momentum diffusion can be quoted.
+    observed: Surfaced in search listing only; no content read.
+    by: 2026-09-11-draft-orch-or-115454
+    date: 2026-09-11
+    route: Fetch arxiv.org/abs/2512.15393 and the PDF; compare its radiation and momentum-diffusion predictions against ORCH-C031, ORCH-C105 and ORCH-C106 within ORCH-R103.
+  - key: text:search listing only no content read
+    kind: source
+    disposition: blocked
+    reason: A radical-pair-mechanism review PDF surfaced in the search returned as base64 and was not parsed; it could not be read and is not cited. Its likely value is background rather than a new observation, since the two primaries it would summarize are now in the record.
+    reopenIf: The review is retrieved in readable form and contains a primary observation or a bound not already held at ORCH-C101 through ORCH-C104.
+    observed: Search listing only; no content read.
+    by: 2026-09-11-draft-orch-or-115454
+    date: 2026-09-11
+    route: Re-fetch with a PDF-capable route, or identify the review by DOI from the reference lists of SRC-SMITH-2021 and SRC-ZADEH-HAGHIGHI-2022.
+  - key: text:search listings and abstracts only no primary observation identified
+    kind: source
+    disposition: irrelevant
+    reason: Several 2026 secondary reviews and self-published syntheses of quantum-consciousness theories (Frontiers reviews, Zenodo and SSRN items) surfaced in search. They are summaries of primaries the ledger already holds and advance no observation, bound or measurement the record lacks; under §3.7 the primaries are preferred.
+    reopenIf: One of them reports an original measurement, a re-analysis of primary data, or a quantitative acceptance criterion for a coherence test that the Orch OR corpus does not contain.
+    observed: Search listings and abstracts only; no primary observation identified.
+    by: 2026-09-11-draft-orch-or-115454
+    date: 2026-09-11
+    route: If a specific review is wanted for historiography, cite it only for its own framing, never for the findings it restates.
+report: proposals/2026-09-11-report-orch-or-114458/report.md

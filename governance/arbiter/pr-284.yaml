@@ -1,0 +1,120 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 284
+title: "Orch OR: two claim statements made atomic under the rule that landed
+  after them"
+url: https://github.com/ejhong/aletheia/pull/284
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-11
+judgedAgainst: 3bbb99b04f
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: The diff makes two claim statements atomic by stripping an appended
+      falsification clause, exactly the §3.2 shape the panel previously flagged;
+      the retained propositions are unchanged in substance and no truth
+      condition is lost from the ledger (falsifiers belong in evidence and the
+      edition's treatment). The history.yaml entry is append-only, stamped with
+      date, actor, aiAssisted, and kind, and quotes both from → to strings
+      verbatim as they appear in the diff — provenance is internally consistent.
+      No citations, identifiers, or locators are added or altered (verification
+      tooling found none), so there is no fabrication surface. AGENTS.md is
+      untouched and no check in §3.15 is loosened; no assessment, verdict, or
+      standing is rewritten. The PR body's claim that the loader and build pass
+      is unverified from here but is routine and not load-bearing for a
+      constitutional judgment.
+    cost:
+      model: claude-opus-5
+      inputTokens: 2964
+      outputTokens: 316
+      usd: 0.025913
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.14
+      - §3.15
+    reasoning: The edits make ORCH-C057 and ORCH-C063 more atomic by removing
+      separate falsification clauses while preserving each substantive
+      proposition. The append-only history entry records the exact
+      before-and-after wording, the reason, date, operator, AI assistance, and
+      the founder-direction channel, satisfying visible revision provenance. No
+      citations, verification labels, evidence directions, assessments, or
+      constitutional checks are altered, and no files are omitted.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 4651
+      outputTokens: 405
+      usd: 0.027216
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.14
+    reasoning: The change removes bundled falsification clauses from claim
+      statements ORCH-C057 and ORCH-C063, bringing them cleanly into alignment
+      with §3.2's atomic claims requirement. The modifications are properly
+      recorded in content/cases/orch-or/history.yaml with explicit before/after
+      text, rationale, and provenance in accordance with §3.14. No citations or
+      constitutional texts are modified, and all changes are visible and
+      accounted for.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 6388
+      outputTokens: 299
+      usd: 0.005912
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff edits only the statements of ORCH-C057 and ORCH-C063 to drop
+      the trailing falsification clauses, leaving single propositions; that is
+      exactly the atomic-claim shape required by §3.2 and matches the same
+      correction already applied to ORCH-C044/C046/C047. A single append-only
+      history entry records the from→to wording, the §3.2 reason, the actor, the
+      founder direction, and the date, satisfying §3.14 provenance. No
+      citations, assessments, verdicts, editions, or AGENTS.md are touched, and
+      the citation-verification block is empty, so no fabrication or
+      check-weakening issue arises. The change is therefore a routine,
+      documented content correction under the constitution.
+    cost:
+      model: grok-4.5
+      inputTokens: 6478
+      outputTokens: 176
+      usd: 0.014012
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.14
+      - §3.15
+    reasoning: "The change makes two compound claim statements atomic by removing
+      trailing falsification clauses, which is squarely what §3.2 requires
+      ('Split compound propositions'), and it follows the same pattern the panel
+      already endorsed for ORCH-C044/C046/C047 on #281. The propositions
+      retained each have a clear truth condition, and the removed conditions are
+      documented rather than silently discarded, with the history entry
+      recording what changed, why, who, and when per §3.14. Provenance in the
+      history entry is stamped with model, date, aiAssisted flag, and the
+      founder-direction channel in the form §3.15 contemplates, and nothing in
+      the material is internally inconsistent. No AGENTS.md edit, no citations
+      added, no confidence material, no weakening of checks — the diff is
+      exactly the two statement edits plus the append-only history line. The
+      only unverifiable element is the claimed founder direction in the
+      2026-09-11 session, but nothing in the packet contradicts it and the actor
+      attribution is honest about being AI-assisted."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 4594
+      outputTokens: 394
+      usd: 0.001232
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 25075
+  outputTokens: 1590
+  usd: 0.0743
+harvestedAt: 2026-09-14

@@ -1,0 +1,168 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 281
+title: "Chain 2026-09-11, Orch OR: the first research pass, nine papers read in,
+  a new edition — dispatched by hand"
+url: https://github.com/ejhong/aletheia/pull/281
+verdict: pass
+reason: "4 of 5 seats affirm compliance; one seat's objection is a review note
+  the operator answers on the record: GPT-5.6 Sol (OpenAI) (§3.14, §3.15;
+  provenance)"
+outcome: merged
+outcomeAt: 2026-09-11
+judgedAgainst: 681bb6950f
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "Every identifier the diff adds resolves and the resolved titles
+      match what the records claim they support (Smith 2021 radical pairs/xenon,
+      Zadeh-Haghighi 2022 microtubule reorganization, Helou 2017 LISA
+      Pathfinder, Majorana Demonstrator 2202.01343, Diósi 2111.04604, Gassab
+      2602.02868 and 2604.18604, Wiest MGR commentary, Kerskens reply DOI
+      10.1088/2399-6528/acc636). The verification account shows a genuinely
+      adversarial second reader: 38 candidates refused with reasoned,
+      locator-specific grounds (wrong page for the 'RP reaction' quote,
+      non-verbatim spans, relevance failures), directions flipped from
+      'supports' to 'context' for secondary retellings, and E049/E056 split by
+      direction — the checks worked rather than being dodged, and every
+      rejection is recorded append-only in dispositions.yaml. Provenance is
+      handled unusually honestly: the report run's stamp and spend were
+      corrected to the served model with the fallback noted, and the draft run's
+      unknown served model is carried into each record's origin as 'asked;
+      served model unrecorded', which is the opposite of misattribution. The
+      edition file and its header state plainly that it replaces the incumbent
+      only if the panel prefers it, so no unratified draft is presented as
+      ratified. Residual imperfections I would want tightened but do not treat
+      as breaches: ORCH-C057 and ORCH-C063 still carry 'it would be false if…'
+      clauses that were stripped from C044/C046/C047 for §3.2, and the split
+      records (C065–C069, E071ff.) stamp extractedBy: claude-fable-5-1 under the
+      verify runId without the served-model caveat applied elsewhere. The
+      omitted assessment overlay is the one gap I cannot inspect, but the
+      edition rationale in the tool-generated run account states the two verdict
+      moves and the two holds with their anchoring evidence, and nothing visible
+      contradicts it."
+    cost:
+      model: claude-opus-5
+      inputTokens: 152978
+      outputTokens: 3716
+      usd: 0.897709
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: violates
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: "The first added 2026-09-11 history entry identifies the drafter as
+      “claude-fable-5-1,” while the draft run explicitly says that this was only
+      the requested model and that the served model is unknown because a
+      fallback may have answered. Several split-derived records, including
+      ORCH-C065 through ORCH-C069 and ORCH-E071 through ORCH-E073, likewise
+      stamp `extractedBy: claude-fable-5-1` while citing the Sonnet verification
+      run as their runId, leaving unclear who produced those final records. This
+      violates the requirement that readers be able to reconstruct exactly which
+      model did what and that revision history identify actors honestly. The
+      history actor should carry the requested-model/unknown-served-model
+      caveat, and every verify-generated split should identify Sonnet or the
+      actual mechanical splitter rather than attributing it to Fable without
+      support."
+    paradigm: provenance
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 105178
+      outputTokens: 2148
+      usd: 0.463672
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.1
+      - §3.2
+      - §3.6
+      - §3.7
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: The research intake for Orch OR meticulously adheres to the
+      constitution's epistemic rules. All 9 added sources mechanically resolve,
+      and the multi-step verification pipeline rigorously filtered proposals,
+      rejecting 38 candidate items that were non-atomic, conflated distinct
+      claims, or had inaccurate locators. Second-reader adjustments split
+      compound evidence and calibrated evidence direction honestly (e.g.,
+      splitting ORCH-E049 into ORCH-E049 and ORCH-E070 to reflect contrasting
+      bearing on different claims). Provenance caveats regarding the model
+      fallback during the draft run are recorded candidly across the ledger
+      origin fields and history entries. The edition article faithfully reflects
+      only ledgered evidence and clearly distinguishes competing hypotheses.
+      While several working and governance files are omitted from the diff, the
+      extensive RUN ACCOUNT provides complete visibility into the intake and
+      adjudication, deciding compliance.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 118917
+      outputTokens: 2435
+      usd: 0.098319
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: All nine newly added content sources resolve in mechanical citation
+      verification with titles matching their ledger use; the verify run
+      rejected 38 over-reaching or non-atomic candidates with concrete reasons
+      and admitted only second-reader-checked records. Provenance stamps for the
+      draft run honestly record that the served model is unknown, report/edition
+      stamps name the fallback that answered, and history appends the hand
+      corrections rather than silently rewriting. The edition stays a stamped AI
+      candidate (case verdict unresolved; two claim moves reasoned from new
+      ledger rows), AGENTS.md is untouched, and no confidence/unpublished
+      material is published—the Kerskens reply is a public journal article later
+      retrieved. Residual imperfections (ORCH-C057/C063 still carry bundled
+      falsifiability clauses; assessment.yaml omitted from the packet) are
+      ordinary and do not show fabrication, check-weakening, or misratification
+      in what is visible.
+    cost:
+      model: grok-4.5
+      inputTokens: 105980
+      outputTokens: 202
+      usd: 0.213287
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.5
+      - §3.7
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: "Every citation the diff adds under content/ resolves in the
+      mechanical verification, and the verify run's record shows disciplined
+      epistemics rather than rubber-stamping: 38 candidates were rejected with
+      specific, sourced reasons (wrong pages, over-reaching falsifiability
+      clauses, non-atomic statements), and the second reader's direction
+      corrections (supports→context, undermines→supports/qualifies) are
+      displayed in readerActs rather than hidden. The provenance handling is the
+      opposite of fabrication: the served-model stamp bug was fixed by hand, the
+      mis-stamped runs were corrected to say the model asked versus served is
+      unknown, and every correction is stamped in history.yaml with actor, date,
+      and reason. The edition file explicitly labels itself as a candidate that
+      replaces the incumbent only if the panel prefers it, so no unratified
+      draft is presented as ratified — ratification is exactly the panel
+      judgment now underway. Unretrieved sources (Turin 2014, the Symmetry
+      paper, arXiv:2512.15393) are honestly blocked with reopen conditions
+      rather than cited, and sources lacking Wayback snapshots are recorded as
+      such. I note for the record that the blocked-disposition prose still
+      references the drafter's stale provisional ids (ORCH-C101–C121, ORCH-R103)
+      even after the R011–R015 correction pass fixed the accepted records — a
+      cleanup item, not a constitutional breach — and that the unseen assessment
+      overlay and spend.yaml are covered in substance by the account's edition
+      header and the run.yaml pricing notes."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 106203
+      outputTokens: 3923
+      usd: 0.018238
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 589256
+  outputTokens: 12424
+  usd: 1.6912
+harvestedAt: 2026-09-14

@@ -1,0 +1,115 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 270
+title: 'The CLI reads --deadline-minutes and --out: a completed sitting had
+  opened its PR as "interrupted" because its account was never written'
+url: https://github.com/ejhong/aletheia/pull/270
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-10
+judgedAgainst: 078dcea870
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "This is a pure tooling fix: the argument splitter moves to
+      `src/lib/args.ts` with an explicit VALUE_FLAGS list that now includes
+      `--deadline-minutes` and `--out`, plus a test asserting both are read as
+      value flags and preserving the old fault as contrast. No content/ records,
+      citations, locators, or assessments are touched, and the citation tooling
+      found no identifiers to check. AGENTS.md is untouched, so §3.15's
+      reservation is not engaged. The chain.yml edit only changes how the
+      interrupted-sitting body enumerates run records (from `git diff --cached`
+      to `git show HEAD`) — it does not loosen any §3.15 gate, ratification
+      rule, or provenance stamp; the interrupted body still declares its own
+      absence of an account rather than inventing one. The PR body's admission
+      that #269's cover note over-read the missing account and will be corrected
+      by hand from the run log is an honest disclosure, not a fabricated record.
+      No run account was required since no pipeline runs are carried."
+    cost:
+      model: claude-opus-5
+      inputTokens: 3821
+      outputTokens: 468
+      usd: 0.033999
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+      - §8
+    reasoning: The change fixes argument parsing so `--deadline-minutes` and `--out`
+      retain their values, with a focused regression test covering both the
+      corrected behavior and the prior failure mode. Changing the workflow from
+      an empty post-commit cached diff to `git show ... HEAD` makes the
+      interruption notice enumerate run records actually committed by the
+      sitting, improving rather than weakening provenance and inspectability. It
+      does not edit AGENTS.md, alter content or citations, publish confidential
+      material, or loosen any ratification or fail-closed check.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 6478
+      outputTokens: 753
+      usd: 0.040972
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §8
+      - §3.15
+    reasoning: The proposed change is a clean infrastructure bug fix that factors
+      CLI argument parsing into a pure, tested function (`src/lib/args.ts`)
+      recognizing `--deadline-minutes` and `--out`. It also fixes a git command
+      in `.github/workflows/chain.yml` to accurately inspect committed proposals
+      on interrupted runs. No constitutional rules, content files, or epistemic
+      checks are weakened or violated.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 7052
+      outputTokens: 394
+      usd: 0.006766
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff is a pure tooling fix: CLI value-flag parsing is extracted
+      to a tested pure function, and the two flags that were silently dropped
+      (--deadline-minutes, --out) are added to VALUE_FLAGS so a completed
+      sitting can write its account. The chain.yml tweak only adjusts how
+      interrupted-sitting PR bodies list run.yaml paths (git show HEAD vs git
+      diff --cached). No content/, citations, assessments, AGENTS.md, or
+      check-weakening; no run account to audit. Ordinary code repair under
+      §8/§9."
+    cost:
+      model: grok-4.5
+      inputTokens: 6759
+      outputTokens: 133
+      usd: 0.014431
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "This is a pure tooling fix: the CLI's argument splitter now reads
+      --deadline-minutes and --out as value flags, extracted into a testable
+      pure function with a regression test that deliberately preserves the old
+      fault as a contrast case. No content files under content/ are touched, no
+      citations or locators are added, no AGENTS.md edit appears, and no run
+      records are carried, so the epistemic rules of §3 are not engaged. The
+      workflow change in chain.yml swaps `git diff --cached` for `git show HEAD`
+      when listing run.yaml records for an interrupted-sitting PR body — this
+      surfaces the same or more provenance information (the committed sitting's
+      records) rather than hiding any, so it does not weaken a §3.15 check.
+      Nothing in the diff fabricates provenance or misattributes who did what;
+      the PR body honestly describes the bug, including the operator's manual
+      correction of #269's cover note from the run log, which is a recorded
+      direction rather than a fabricated record."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 5070
+      outputTokens: 522
+      usd: 0.001367
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 29180
+  outputTokens: 2270
+  usd: 0.0975
+harvestedAt: 2026-09-14

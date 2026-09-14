@@ -1,0 +1,148 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 278
+title: "Three review notes answered: a question mark is part of a quote, a
+  bearing fails closed, a correction line carries the whole value, an intake
+  entry labels the drafter's rationale"
+url: https://github.com/ejhong/aletheia/pull/278
+verdict: pass
+reason: 4 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-10
+judgedAgainst: 63f77f4e0e
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The code changes all tighten rather than loosen checks: the
+      quote-edge rule now refuses to strip '?' and '!' so a misquote of tone
+      fails (§3.8 fidelity), the per-claim bearing fails closed unless it names
+      exactly the record's claims and otherwise records the reader's dissent
+      aloud instead of silently rewriting direction (§3.5, §3.15), the
+      correction writer's history line now serialises whole values so an entry
+      can be reconstructed (§3.14), and the intake entry's reason now states the
+      admitted set and labels the drafter's rationale as pre-verification
+      argument rather than as what entered (§3.9, §3.14). Both history additions
+      are appended, not edited, and each is stamped with actor, model, session,
+      PR and date (§3.14, §3.15). AGENTS.md is untouched; docs/DECISIONS.md
+      records the four answers. On citations: arXiv 1510.06537 resolves with
+      exactly the title the history entry attributes to it ('Ring Type
+      Structures in the Planck map of the CMB'), and arXiv 1207.6905 resolves to
+      a concentric-rings CMB variance paper consistent with the CCC anchor's
+      subject. The one FAILS — 'doi 10.1093/mnras/stx2299\\' — carries a
+      trailing backslash captured from the YAML escaping, and it is quoted as
+      the *prior* value of an existing record rather than newly asserted
+      provenance, so I read it as an extraction artifact, not fabrication; if
+      the operator wants the record clean, I would want a re-resolution of
+      10.1093/mnras/stx2299 without the stray character confirmed on the
+      record."
+    cost:
+      model: claude-opus-5
+      inputTokens: 9803
+      outputTokens: 1526
+      usd: 0.090358
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: unsure
+    rules:
+      - §3.8
+      - §4
+    reasoning: The added CCC history line repeats DOI 10.1093/mnras/stx2299, but
+      citation verification reports `10.1093/mnras/stx2299\` as FAILS. The
+      trailing backslash appears to come from the YAML escape before an embedded
+      quotation mark, so this result does not establish whether the clean DOI
+      resolves and is not conclusive evidence that the clean identifier was
+      fabricated. Both added arXiv identifiers resolve, and the code changes
+      strengthen quote matching, bearing validation, and append-only provenance
+      rather than weakening checks. A resolver result for the clean DOI, without
+      the YAML escape character, is needed to determine compliance with the
+      real-citations and exact-provenance rules.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 9339
+      outputTokens: 1726
+      usd: 0.072388
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: The diff directly addresses review notes from prior panel sittings by
+      strengthening verification and provenance safeguards. In
+      `src/pipeline/quotes.ts`, edge-punctuation trimming now preserves terminal
+      '?' and '!' to prevent tone distortion in verified quotes. In
+      `src/pipeline/verify.ts`, second-reader claim bearings fail closed if
+      claim IDs are missing, repeated, or foreign, admitting the record with
+      dissent recorded rather than silently misapplying partial bearings. In
+      `src/pipeline/ledger-write.ts`, `shown()` serializes field transitions
+      completely in JSON rather than truncating strings or printing '[object
+      Object]', and the affected history files (`ccc` and
+      `pre-columbian-amazon`) append clarifying entries to maintain full,
+      auditable provenance without rewriting past entries. No citations are
+      fabricated, and AGENTS.md is untouched.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 11751
+      outputTokens: 1268
+      usd: 0.013568
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff answers three review notes by strengthening checks and
+      fixing provenance display: quote edge-stripping keeps ?/! (honest
+      quotation), reader bearings fail closed unless they name exactly the
+      record’s claims, history lines serialize full values via shown(), and
+      intake reasons label the drafter’s pre-verification rationale beside the
+      admitted set. Append-only housekeeping entries restate the two lossy CCC
+      corrections and clarify the Amazon intake entry without rewriting prior
+      lines; actor stamps and kinds are explicit. AGENTS.md is untouched;
+      DECISIONS.md only records the operator answers. Citation tooling shows
+      arXiv 1207.6905 and 1510.06537 resolve to titles matching the restated
+      anchors; the DOI FAILS line looks like a locator artifact (trailing
+      backslash) on an identifier already on the ledger, not a new fabrication.
+      No confidence material, no check-weakening, no unratified draft presented
+      as ratified."
+    cost:
+      model: grok-4.5
+      inputTokens: 10929
+      outputTokens: 208
+      usd: 0.023221
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+      - §3.9
+    reasoning: "This is a repair-and-transparency change: it tightens quote
+      verification (a '?' or '!' the source lacks now counts as a mismatch),
+      makes the second-reader bearing fail closed so a defective dissent is
+      displayed on the record rather than silently applied, and fixes lossy
+      history serialization — all strengthening, not weakening, the §3.15
+      checks. AGENTS.md is untouched; the append-only history is corrected by
+      following restatement entries, exactly as §3.14 requires, and both entries
+      carry date/actor/aiAssisted/kind stamps with honest disclosure of the
+      prior report fault. On citations, the two arXiv identifiers the change
+      relies on resolve and their titles match what the records claim ('Ring
+      Type Structures in the Planck map of the CMB' for 1510.06537; a CMB
+      ring-search paper for 1207.6905). The one FAILS result — DOI
+      10.1093/mnras/stx2299 — appears only as the quoted historical 'from' value
+      in a restatement of a pre-existing ledger entry, not as a new citation
+      introduced to carry an assessment, and the change's action there is to
+      append the resolving arXiv identifier; I do not treat a pre-existing
+      locator quoted as past record as fabrication by this PR, though the
+      operator should confirm on the record whether that DOI's 404 is transient
+      or the locator needs relabeling unverified in a follow-up correction."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 9331
+      outputTokens: 3695
+      usd: 0.003593
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 51153
+  outputTokens: 8423
+  usd: 0.2031
+harvestedAt: 2026-09-14

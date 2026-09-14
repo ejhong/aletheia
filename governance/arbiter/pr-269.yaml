@@ -1,0 +1,138 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 269
+title: "Chain: 2026-09-10 — transients (inbox: draft, verify, edition; check),
+  pre-columbian-amazon (report chain; check), ccc (report chain; check)"
+url: https://github.com/ejhong/aletheia/pull/269
+verdict: park
+reason: "1 seat(s) find a violation that parks on its own: GPT-5.6 Sol (OpenAI)
+  (§3.8, §3.5, §3.15; fabrication); only 1 of 5 seats affirm compliance (4
+  required); 1 seat(s) cast no usable vote: GLM 5.3 Flash (Z.ai, via Venice)"
+outcome: closed
+outcomeAt: 2026-09-10
+judgedAgainst: 078dcea870
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "Every DOI/arXiv/URL added under content/ resolves in the mechanical
+      check, and the titles match what the records claim they support (Bielewicz
+      1207.6905, Creswell 1706.04191, Nielsen 1811.04071, Allen
+      10.1103/PhysRevResearch.2.012034 / 1910.08213, Ulhoa 2607.10816, Peripato
+      10.1126/science.ade2541, Villarroel 2609.05105, Bruehl 2609.09461). The
+      run's own discipline is visible rather than asserted: the wrong-resolving
+      DOI 10.1093/mnras/sts418 was caught and dispositioned 'failed' with a
+      reopen route rather than attached; dozens of candidate evidence and claims
+      were refused for non-verbatim quotes, wrong page locators, non-atomicity
+      (§3.2) or irrelevance, with reasons recorded in dispositions.yaml;
+      direction changes and dropped claim links are stamped as readerActs with
+      model, runId, promptVersion and date (§3.5, §3.14); the three URL
+      corrections are logged as 'NOT applied' because the field had moved.
+      Provenance labels are conservative rather than inflated — Creswell,
+      Nielsen and Ulhoa stay 'unverified' and the CCC article says so in text —
+      and the founder-funding tie to SRC-PARSSINEN-2026 is disclosed in the
+      Amazon article. The inbox manifest records the founder-supplied commentary
+      with permission: null and registeredAs: null, and nothing in the verified
+      transients set cites it; only the public preprints it named entered the
+      ledger, so §3.15's confidence rule is respected. My reservations are
+      review-note grade, not violations: the verificationNote 'not retrievable
+      when drafted' now sits on sources whose full text the verify pass
+      demonstrably retrieved (29, 14 and 10 pages) and quoted at page locators —
+      a stale note I would want refreshed — and the transients content files and
+      all seat verdicts are omitted, so I judge those on the near-complete
+      verification.md, which shows reasoned refusals (e.g. TRN-C127 rejected
+      precisely because the source hedges its UAP coincidence)."
+    cost:
+      model: claude-opus-5
+      inputTokens: 159629
+      outputTokens: 3935
+      usd: 0.936439
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: violates
+    rules:
+      - §3.8
+      - §3.5
+      - §3.15
+    reasoning: AMZ-C029 publishes a sourceAnchor quote, “Earth-building societies
+      were very common in some parts of the basin, but they may not have
+      occupied all of Amazonia,” even though the generated verification record
+      explicitly says that span was not found verbatim in SRC-PERIPATO-2023.
+      AMZ-E039 similarly publishes “rectangle that overlays a significant
+      portion of the Brazilian state of Acre” as quoted source text after the
+      verifier recorded that exact span as not found verbatim. This is positive
+      evidence of unverified or misattributed quotations being presented as
+      exact, violating §3.8 and §3.15’s fabrication prohibition. Separately,
+      CCC-E069 is linked only to CCC-C505 and marked `supports`, although its
+      own reader act says the result undermines C505 and would support only the
+      rejected C520, violating §3.5; the omitted files do not prevent these
+      visible defects from deciding the vote.
+    paradigm: fabrication
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 110974
+      outputTokens: 1646
+      usd: 0.476816
+  - seat: Gemini 3.8 Flash (Google)
+    vote: unsure
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: The OMITTED FILES list is extensive, omitting critical content files
+      including the entirety of content/cases/transients/ (claims.yaml,
+      evidence.yaml, sources.yaml, research.yaml, dispositions.yaml,
+      history.yaml, and editions/edition-2026-09-10-183348.yaml totaling over
+      2,500 lines). Additionally, the RUN ACCOUNT is truncated, with over
+      179,000 characters not shown, omitting the panel seat verdicts,
+      assessments, and edition contents for the transients and
+      pre-columbian-amazon cases. Because these core domain records are hidden,
+      it is impossible to verify whether the added claims, evidence, and sources
+      comply with epistemic requirements such as atomic claims (§3.2), primary
+      sources (§3.7), exact provenance (§3.8), and multi-model concurrence
+      (§3.15). To reach a definitive determination, the complete diff for
+      content/cases/transients/ and the untruncated panel review records from
+      the run account must be inspected.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 126975
+      outputTokens: 3426
+      usd: 0.108079
+  - seat: Grok 4.5 (xAI)
+    vote: unsure
+    rules:
+      - §3.5
+      - §3.8
+      - §4
+    reasoning: "The OMITTED FILES list is very large and includes the entire
+      transients ledger (claims, evidence, sources, editions, dispositions,
+      history), all three cases’ check-seat and edition assessment YAMLs, and
+      the panel seat verdict files. Under the omission rule I cannot certify
+      compliance for those unseen records. What is visible (ccc and
+      pre-columbian-amazon intake, verification.md accounts, citation RESOLVES,
+      founder-inbox permission stamp) shows a careful verify pass with atomic
+      splits, failed dispositions, and real identifiers—not fabrication,
+      confidence breach, or an AGENTS.md edit. I would still need the omitted
+      transients content and the assessment overlays in full, and a fix check on
+      two visible nits: CCC-E069 remains direction: supports while claimIds is
+      only CCC-C505 (the 35-orders gap undermines that claim after C520 was
+      dropped), and SRC-CRESWELL/NIELSEN/ULHOA still say verification:
+      unverified / “nothing may lean on it until it is read” while accepted
+      evidence already leans on retrieved text."
+    cost:
+      model: grok-4.5
+      inputTokens: 112796
+      outputTokens: 260
+      usd: 0.227267
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: unsure
+    rules: []
+    reasoning: "seat failed: Error: venice: empty reply (stop: ?)"
+    failed: true
+cost:
+  seats: 4
+  complete: false
+  inputTokens: 510374
+  outputTokens: 9267
+  usd: null
+harvestedAt: 2026-09-14

@@ -1,0 +1,133 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 279
+title: "The stamp reads the fallback: a run records the model that answered, and
+  pays each model its own tariff"
+url: https://github.com/ejhong/aletheia/pull/279
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-11
+judgedAgainst: 0cb679f470
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "This is a pipeline/engine change with no content/ records, no
+      citations (verification found none), and no edit to AGENTS.md. The
+      substance strengthens rather than weakens the §3.15 checks: `servedBy`
+      reads the vendor's fallback block and per-iteration usage so a run record
+      stamps the model that actually answered rather than the model that was
+      asked, and the note ('asked → served (trigger; n fallback iterations)') is
+      propagated into the run record's notes and the report header by report.ts,
+      draft.ts and edition.ts. `usageByModel` bills each iteration to its own
+      model's tariff, correcting a spend ledger that had been misattributed —
+      again a provenance fidelity improvement. Unit tests are added for both
+      helpers, consistent with §8/§10. The DECISIONS.md entry is a dated
+      operator record of the fault and fix, stamped with date and channel, which
+      §3.15 expressly permits for founder-session directions and operator
+      records; it discloses rather than conceals the earlier false stamp. The PR
+      body's claim that the affected run's own stamps and spend rows were
+      hand-corrected elsewhere is not verifiable from this diff, but that is a
+      follow-on PR's burden, not a violation here."
+    cost:
+      model: claude-opus-5
+      inputTokens: 9889
+      outputTokens: 509
+      usd: 0.102089
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: The change strengthens truthful provenance by deriving the served
+      model from the vendor fallback block and per-iteration metadata rather
+      than retaining the originally requested model. It propagates the fallback
+      path into report headers and run reasons and allocates token usage to each
+      identified model, with focused tests covering fallback, missing-block,
+      ordinary, and per-model billing paths. The DECISIONS entry records the
+      discovered historical stamping error and the implementation response
+      without presenting a content assessment or unratified judgment as
+      ratified. No citations or publishable case content are added, AGENTS.md is
+      untouched, and no constitutional check is weakened or bypassed.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 10468
+      outputTokens: 1948
+      usd: 0.080832
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.15
+    reasoning: The change improves provenance accuracy in compliance with §3.8 and
+      §3.15 by ensuring that when an upstream API executes a server-side
+      fallback, the run records and billing reflect the model that actually
+      generated the output rather than the model originally queried. The diff
+      adds helper functions `servedBy` and `usageByModel` along with unit tests,
+      integrates fallback attribution across pipeline verbs, and records the
+      operational decision in DECISIONS.md without touching AGENTS.md or
+      modifying any content files.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 11628
+      outputTokens: 441
+      usd: 0.010375
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules:
+      - §3.15
+    reasoning: "The diff fixes false model provenance when a vendor server-side
+      fallback answers: servedBy reads the fallback block and per-iteration
+      usage so run stamps name the model that actually wrote, with an explicit
+      asked→served note, and usageByModel bills each iteration at that model’s
+      tariff. That upholds §3.15’s requirement that every change be stamped with
+      the model that served, rather than weakening checks. No AGENTS.md edit, no
+      content/ citations, no confidence material, and no fabricated records;
+      DECISIONS.md only appends an operator decision entry. Tests and pipeline
+      call sites (report/draft/edition/models) consistently carry the corrected
+      model and fallback note into closeRun."
+    cost:
+      model: grok-4.5
+      inputTokens: 10914
+      outputTokens: 168
+      usd: 0.022951
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.14
+    reasoning: "This change strengthens §3.15's truthful-stamps requirement rather
+      than weakening it: the run record previously named the model that was
+      asked (claude-fable-5-1) while the fallback model (claude-opus-5) actually
+      answered, and the fix makes servedBy read the fallback block and
+      per-iteration usage so the stamp, notes, and report header name the model
+      that actually served, with the fallback trigger and iteration count
+      displayed. The billing fix (usageByModel charging each iteration to the
+      model that consumed it at its own tariff) corrects a spend-ledger
+      misattribution, which is also a provenance-accuracy improvement. Nothing
+      in the diff touches AGENTS.md (the DECISIONS.md append is a documentation
+      record, not a constitution edit), no citations are added, and no run
+      records are altered in this change — the hand-corrected stamps of run
+      2026-09-11-report-orch-or-114458 are explicitly deferred to a following
+      content PR and are described as carrying notes saying they were corrected
+      by hand, so no misattribution is introduced here. I cannot verify the
+      narrative claims about the run itself (29 iterations, $3.72 vs $3.13) from
+      what was shown — no RUN ACCOUNT was included — but those are descriptions
+      of a past event, not records this PR publishes, and the test fixtures (2
+      iterations) are plainly synthetic rather than claimed observations. If the
+      follow-up content PR ships the hand-corrected run records, those
+      corrections should be judged on their own packet."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 11424
+      outputTokens: 987
+      usd: 0.002207
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 54323
+  outputTokens: 4053
+  usd: 0.2185
+harvestedAt: 2026-09-14

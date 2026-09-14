@@ -1,0 +1,167 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 271
+title: "Verify v6: a bearing per claim and a split by direction; edge
+  punctuation is not part of a quote; a read source is ai_verified; a sitting
+  works on at most two cases"
+url: https://github.com/ejhong/aletheia/pull/271
+verdict: pass
+reason: "4 of 5 seats affirm compliance; one seat's objection is a review note
+  the operator answers on the record: GPT-5.6 Sol (OpenAI) (§3.5, §3.7, §3.8,
+  §3.15; check-weakening)"
+outcome: merged
+outcomeAt: 2026-09-10
+judgedAgainst: 176047b1f2
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches only pipeline code, protocols, docs and tests — no
+      content/ records, no citations (the verification section finds none), and
+      AGENTS.md is untouched. The substantive change (verify v6: a per-claim
+      `bearing`, splitting a record whose claims bear in different directions
+      into one record per direction, each stamped with
+      model/runId/promptVersion/date/reason in `readerActs`, the drafter's
+      `origin` preserved) tightens §3.5 direction honesty and §3.14 provenance
+      rather than loosening it, and the refusal path (all-null bearing ⇒ record
+      refused with the reader's reason) is preserved. Upgrading a fetched source
+      from `unverified` to `ai_verified` with a note naming the date and run,
+      keeping the drafter's original note verbatim, is an honest label under
+      §4/§3.8 — it stops evidence leaning on text labelled as unread. Two things
+      I would want answered on the record, neither rising to a violation: (a)
+      `bareQuote` now strips `.,;:!?…` at both edges, so the test asserts a span
+      quoted with `!` matches source text ending in `.` — the words inside stay
+      exact, but terminal punctuation is no longer faithful, and I would prefer
+      the strip be symmetric-tolerant rather than punctuation-agnostic, or at
+      least documented as a known relaxation of the verbatim check (§3.8,
+      §3.15); (b) the new source-label note asserts \"its quoted passages
+      checked\" for any successfully fetched `unverified` source, including a
+      `background` source that nothing quotes — the wording should be
+      conditioned on passages actually having been checked, or it misstates what
+      was verified. Neither the case limit (`--max-cases`) nor the
+      `correctionBlocker` null/absent-field equivalence dodges a §3.15 check;
+      both are recorded in DECISIONS.md with dates and reasons."
+    cost:
+      model: claude-opus-5
+      inputTokens: 26606
+      outputTokens: 1721
+      usd: 0.179249
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: violates
+    rules:
+      - §3.5
+      - §3.7
+      - §3.8
+      - §3.15
+    reasoning: "The revised `bareQuote` deliberately strips all leading and trailing
+      punctuation, and the new test positively requires `quoteOccurs(\"may not
+      have occupied all of Amazonia!\", source-without-that-exclamation)` to
+      return true. An invented exclamation mark can alter tone or meaning, so
+      this goes beyond accommodating citation-bracket placement and weakens the
+      exact-quotation check required by §§3.7, 3.8, and 3.15. The bearing
+      safeguard is also not fail-closed: although v6 requires one entry per
+      named claim, neither `VERIFY_SCHEMA` nor `applyReader` rejects missing,
+      duplicate, or foreign claim IDs, and omitted claims silently retain the
+      drafter's direction. Fix the quote matcher so it cannot accept substituted
+      punctuation, and validate that a non-null bearing contains exactly one
+      entry for every named claim before applying it."
+    paradigm: check-weakening
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 21974
+      outputTokens: 2012
+      usd: 0.128136
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.5
+      - §3.8
+      - §3.14
+      - §4
+    reasoning: The changes implement verify protocol v6, refining evidence direction
+      and claim splitting without compromising epistemic rigor. Handling
+      bearings per claim directly serves §3.5 by splitting multi-claim records
+      that bear in different directions rather than applying contradictory
+      directions across linked claims. Upgrading source verification status to
+      ai_verified when the verifier successfully fetches and checks the text
+      maintains honest verification labels under §4. Normalizing edge
+      punctuation on quoted spans preserves verbatim word matching while
+      preventing false negative mismatches from citation brackets. Detailed
+      provenance stamps (readerActs) record who changed what, when, and why,
+      strictly adhering to §3.8 and §3.14.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 23964
+      outputTokens: 1241
+      usd: 0.022627
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules:
+      - §3.5
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: The diff is pipeline/protocol only (no content/ ledger records, no
+      AGENTS.md edit, no run account). Verify v6 requires a per-claim bearing
+      and splits multi-direction records into one record per direction with the
+      same quote, keeping the drafter origin and stamping each change in
+      readerActs (model, runId, promptVersion, date, reason), which tightens
+      §3.5 rather than weakening it. Edge-punctuation stripping in bareQuote is
+      limited to span edges with words still exact (tests reject altered
+      wording), fixing false quote failures without inventing text. Marking a
+      source the verifier actually retrieved as ai_verified, while retaining the
+      drafter’s note, is honest verification labeling under §3.15/phase-1. The
+      --max-cases 2 sitting cap and inbox commit path are operational so the
+      panel can see the PR; they do not loosen epistemic gates. Docs and the
+      archived v5 protocol record the panel findings and the change.
+    cost:
+      model: grok-4.5
+      inputTokens: 22649
+      outputTokens: 243
+      usd: 0.046871
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.9
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: "No AGENTS.md edit, no content added, no citations introduced, and no
+      run records to audit — the change is pipeline/protocol work, so
+      fabrication and confidence risks are minimal. The three substantive fixes
+      each preserve or strengthen epistemic checks rather than dodge them: the
+      per-claim bearing split stamps every direction change, dropped link, and
+      split as the reader's act with model/runId/promptVersion/date/reason
+      (§3.9, §3.14 provenance preserved); upgrading an unreachable source to
+      `ai_verified` only when the verifier itself retrieved and checked its text
+      makes the §4 label more honest, not less, and keeps the drafter's note;
+      and `--max-cases 2` exists precisely so panel seats can actually read the
+      PR, reinforcing §3.15 ratification rather than weakening it. The
+      `bareQuote` edge-punctuation change is the closest call under 'no
+      weakening of the checks': it loosens the verbatim matcher at span edges,
+      and because both '.' and '!' (and '?' and '…') are stripped, a quoted
+      question could in principle pass as a statement — but every word inside
+      the span must still occur exactly in the source, the adversarial reader's
+      `quoteInContext` check independently tests negation and attribution, and
+      the change is tested against the real text, so this is a fix for false
+      rejections (a quote closed with its period against a citation bracket)
+      rather than a dodge of a gate. The `correctionBlocker` change aligns the
+      blocker with the writer's own semantics for absent fields and does not
+      open a path past a genuine mismatch. I would flag as a review note that
+      leading/trailing '?!…' substitution in `bareQuote` is broader than the
+      stated motivation, but it does not break a specific constitutional rule."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 20550
+      outputTokens: 2620
+      usd: 0.004738
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 115743
+  outputTokens: 7837
+  usd: 0.3816
+harvestedAt: 2026-09-14

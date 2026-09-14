@@ -1,0 +1,147 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 286
+title: "No dangling ids, everywhere: 32 legacy prose references repaired, the
+  cutoff removed, verify scrubs its own notes"
+url: https://github.com/ejhong/aletheia/pull/286
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-11
+judgedAgainst: 21ebff6e13
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The change repairs prose that named record ids the ledger does not
+      hold, and removes the date cutoff from `danglingProseRefs` so the
+      no-dangling-id rule (§8) applies to every record — this tightens rather
+      than weakens a check (§3.15), and the remaining optional `since` parameter
+      is test-only tooling. No AGENTS.md edit; no new citations except the
+      pre-existing Janusek DOI, which the tooling resolves to 'Building
+      Taypikala' as cited. Every content edit is mirrored by an append-only
+      history entry giving the exact old → new text, a per-record reason, the
+      actor (claude-fable-5-1, operator) and aiAssisted:true, satisfying §3.14;
+      nothing is presented as a ratified or human judgment. The verify-pipeline
+      fix (scrubUnadmitted) addresses the generating cause and writes a run note
+      when it rewrites, which is honest provenance. My one reservation, recorded
+      as a note rather than an objection: the edits rewrite text attributed
+      in-line to a named second reader ('claude-sonnet-5, 2026-09-10, run …'),
+      so those quoted notes no longer read exactly as that reader wrote them
+      (e.g. CCC-E057, TRN-E079); the substitutions are semantically faithful and
+      the originals are preserved verbatim in history, but I would prefer the
+      altered passages carry an in-place marker (e.g. bracketed editorial
+      substitution) so a reader sees the reader's words were edited without
+      consulting the changelog. That is a refinement, not a rule break."
+    cost:
+      model: claude-opus-5
+      inputTokens: 74717
+      outputTokens: 1444
+      usd: 0.449604
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+      - §8
+    reasoning: The change removes the publication loader’s date cutoff and makes
+      dangling prose references fail across all records, strengthening rather
+      than weakening the fail-closed integrity check. Existing invalid
+      references are either redirected to identified ledger records or replaced
+      with prose explicitly saying that the referenced proposal was not
+      admitted, so rejected draft records are not presented as standing records.
+      The content corrections are accompanied by append-only history entries
+      recording before-and-after text, reasons, date, model/operator
+      attribution, and preserved reader disagreement. The only mechanically
+      checked citation resolves to the matching “Building Taypikala” chapter,
+      and the diff adds no AGENTS.md edit, confidence material, fabricated
+      identifier, or silent ratification.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 52537
+      outputTokens: 4463
+      usd: 0.299408
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §8
+    reasoning: "The change directly addresses review note #285 by removing the
+      artificial date cutoff on dangling prose ID checks, enforcing §8's 'no
+      dangling IDs' universally across all cases. It meticulously repairs legacy
+      dangling references in evidence and research prose across six cases (ccc,
+      deep-memory, geopolymer, pre-columbian-amazon, transients,
+      vasocomputation), re-pointing to existing records where appropriate or
+      describing unadmitted proposal IDs accurately. Each edit is properly
+      recorded in the respective case's history.yaml, shorthand ID references
+      are now caught by the validator, and verify.ts is enhanced with an
+      automated scrub to prevent future intake notes from referencing unadmitted
+      proposal IDs."
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 59334
+      outputTokens: 656
+      usd: 0.046961
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The change answers review note #285 by removing the prose-ref date
+      cutoff so danglingProseRefs runs on every record, adding same-case
+      shorthand detection, and repairing the named legacy prose refs with
+      append-only history entries that stamp actor, date, and from→to reasons.
+      That strengthens §8 / §3.15 mechanical checks rather than weakening them;
+      AGENTS.md is untouched. Re-points go to ledger ids the PR asserts exist;
+      unadmitted proposal ids are rewritten as explicit non-admitted prose, and
+      verify gains scrubUnadmitted so the pipeline cannot re-seed dangling
+      proposal ids in second-reader notes. The sole added/touched DOI resolves;
+      no confidence material or fabricated citations appear in the diff.
+      Ordinary awkward residual wording is not a constitutional break."
+    cost:
+      model: grok-4.5
+      inputTokens: 54038
+      outputTokens: 180
+      usd: 0.109271
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §8
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: "The change strengthens, not weakens, the §8 'No dangling IDs' rule:
+      it removes a date cutoff that was a dodge path, extends the loader's
+      prose-reference check to every record, and adds a fail-closed CI pass
+      (build reports zero dangling references, and the loader check is
+      throw-on-dangling). The 35 legacy references were repaired through the
+      correction writer with append-only history entries recording each from →
+      to, the reason, actor, date, and aiAssisted stamp, satisfying §3.14's
+      versioning requirement; re-pointings (e.g. GEO-E706 → GEO-E002, CCC-E041 →
+      CCC-E067) are justified in the history text by what the ledger record
+      holds, and rewrites replace ids of records that never entered with honest
+      descriptive phrases ('a proposed claim not admitted at intake') rather
+      than inventing records or locators. The verify.ts scrub is mechanical,
+      grounded in the run's own proposal files (the quoted 'observed' text comes
+      from the actual proposal records), and logged in run notes, so it does not
+      misattribute the second reader's findings — it makes them nameable without
+      dangling ids. AGENTS.md is untouched; docs/DECISIONS.md is the decisions
+      log, which the constitution expressly uses. The one DOI appearing in
+      changed prose (Janusek et al. 2013) mechanically resolves and matches its
+      described content. Minor residual items — e.g. DEEP-E023's origin.ref
+      still naming the provisional parent DEEP-E009 — are historical lineage
+      records of a run, not prose claims that a ledger record exists, and at
+      most warrant a review note, not a violation."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 54740
+      outputTokens: 4308
+      usd: 0.010365
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 295366
+  outputTokens: 11051
+  usd: 0.9156
+harvestedAt: 2026-09-14

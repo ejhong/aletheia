@@ -1,0 +1,168 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 273
+title: "Chain 2026-09-10, The Emptied Amazon: the first research pass, Peripato
+  2023 read in, a new edition, a blind check"
+url: https://github.com/ejhong/aletheia/pull/273
+verdict: pass
+reason: "4 of 5 seats affirm compliance; one seat's objection is a review note
+  the operator answers on the record: GPT-5.6 Sol (OpenAI) (§3.2, §3.8, §3.14,
+  §3.15; provenance)"
+outcome: merged
+outcomeAt: 2026-09-10
+judgedAgainst: bcd1bb68c9
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The one citation added under content/ (SRC-PERIPATO-2023,
+      doi:10.1126/science.ade2541 plus the White Rose accepted-manuscript URL)
+      resolves and its title matches what the records claim it supports; page
+      locators are stated as manuscript pagination, not journal pagination,
+      which is honest rather than invented (§3.8). Evidence direction is
+      explicit on every new record (AMZ-E038/E039 'context', AMZ-E040/E041
+      'supports'), and both the evidence limitations and the edition rationale
+      flag that Peripato shares authors and species list with Levis 2017, so the
+      corroboration is counted once (§3.10). Refusals are reasoned and anchored:
+      22 candidates are dispositioned with quote-not-found, non-atomic, or
+      locator-mismatch reasons, and the claim whose intended evidence failed
+      quote verification (AMZ-C029) is graded 'unresolved' with low confidence
+      and flagged in the article as unverified rather than asserted (§3.11,
+      §3.13). Assessments are new append-only files stamped with runId, model,
+      date, promptVersion, humanReviewed: false and role labels, and the five
+      blind seats' own words are installed beside the draft with their spread
+      (two well_supported, three provisionally_supported) displayed (§3.14,
+      §3.15). No AGENTS.md edit, no confidential material — the Carvajal/Oviedo
+      items are public-domain scans logged as 'blocked' precisely because their
+      text was not read. Two small review-note items I would want answered on
+      the record, not parking: AMZ-R006's summary prose cites AMZ-C028–C030 and
+      AMZ-E025, all of which were refused in this same pass, and the history
+      entry says the SRC-CARVAJAL-1542 url correction was 'applied' while
+      verification.md marks that correction 'NOT applied' — the end state in
+      sources.yaml matches the history line, but the two records should be
+      reconciled."
+    cost:
+      model: claude-opus-5
+      inputTokens: 150780
+      outputTokens: 2816
+      usd: 0.827493
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: violates
+    rules:
+      - §3.2
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: The public history says the SRC-CARVAJAL-1542 URL correction was
+      “applied” by the verify run, but that run’s own verification record says
+      it was “NOT applied” because the field no longer matched the proposal;
+      this prevents reconstruction of who actually made the change. The intake
+      history also claims six observation claims, a provisional Oviedo source,
+      deforestation/road-bias evidence, and independent dating corroboration
+      entered, while the run account records only two accepted claims and four
+      evidence records, with those other candidates rejected or blocked. Those
+      are substantive false history/provenance statements, not stylistic
+      imperfections, and must be corrected to describe exactly what this run
+      admitted and who applied the URL edit. Separately, AMZ-C029 combines the
+      basin-wide percentage and the geographic concentration into separable
+      propositions despite §3.2’s atomicity requirement. The mechanically
+      resolved citations establish existence, but they do not cure these visible
+      provenance contradictions.
+    paradigm: provenance
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 100628
+      outputTokens: 1271
+      usd: 0.428444
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.1
+      - §3.2
+      - §3.7
+      - §3.8
+      - §3.13
+      - §3.14
+      - §3.15
+    reasoning: The pull request carries a complete and transparent research pass on
+      'pre-columbian-amazon', admitting Peripato et al. 2023 along with 4
+      evidence records, 2 claims, and 1 research item, while documenting 22
+      candidate refusals in dispositions.yaml with clear epistemic rationales.
+      All added citations and URLs mechanically resolve. The edition and draft
+      assessment display calibrated uncertainty, explicitly noting where
+      evidence failed verification (such as AMZ-C029 being graded unresolved due
+      to a rejected evidence quote) and flagging potential non-independence
+      between Peripato 2023 and Levis 2017. All five independent concurrence
+      check seats returned verdicts within one step of the draft (two
+      well_supported, three provisionally_supported), satisfying the multi-model
+      concurrence gating requirements of §3.15 without modifying AGENTS.md or
+      violating confidence rules.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 115692
+      outputTokens: 1526
+      usd: 0.092492
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The verify run admitted only Peripato 2023 (DOI and OA PDF both
+      RESOLVE) plus four atomic evidence records, two claims, and AMZ-R006, with
+      honest ai_verified labels, exact AAM locators, independence notes vs Levis
+      2017, and explicit context/supports directions; 22 candidates were refused
+      for non-atomicity, quote/locator mismatch, or irrelevance and logged in
+      append-only dispositions. AMZ-C029 is featured yet graded unresolved in
+      the edition because its intended evidence quote failed, matching
+      §3.8/§3.13, while the article and treatments stay within the ledger and
+      display disagreement. The five-seat check is stamped, within one step of
+      the draft well_supported verdict, and no AGENTS.md edit, confidence
+      material, or fabricated citation appears in the visible diff.
+    cost:
+      model: grok-4.5
+      inputTokens: 104456
+      outputTokens: 197
+      usd: 0.210209
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.7
+      - §3.8
+      - §3.13
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: "Every identifier the diff adds resolves — the Peripato 2023 DOI, the
+      White Rose accepted-manuscript URL, and the archive.org items all check
+      out, and the source record honestly discloses that page locators cite the
+      AAM PDF rather than journal pagination, plus the 23,640/23,648 internal
+      inconsistency (§3.8, §4). The verify run's hygiene is exactly what §3
+      demands: 22 candidates refused with reasoned, quotable grounds in an
+      append-only dispositions file, unseen Medina/Oviedo texts blocked with
+      reopen routes rather than quoted, the three edge-punctuation quote
+      failures left on the record as refused, and non-independence of
+      Peripato/Levis explicitly flagged in the evidence records. The edition
+      grades AMZ-C029 as unresolved with the article stating plainly that the
+      figure was not verified against the paper's text, and the blind check
+      panel's disagreement (two well_supported, three provisionally_supported,
+      some seats marking C019/C020/C029 unresolved) is displayed rather than
+      hidden (§3.13, §3.15). Assessments are append-only, stamped with
+      runId/model/date/promptVersion, and labeled NOT human reviewed; the
+      history entries record who did what and why. Two minor notes for the
+      operator, neither a violation: the intake history line describes 'a
+      provisional, unverified Source record for Oviedo t. IV' that the
+      dispositions show as refused (ambiguous phrasing at worst), and AMZ-R006's
+      prose references AMZ-C028–C030 and AMZ-E025, which this run refused —
+      stale editorial references, not structured dangling IDs, and worth a
+      follow-up edit."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 105289
+      outputTokens: 6201
+      usd: 0.018894
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 576845
+  outputTokens: 12011
+  usd: 1.5775
+harvestedAt: 2026-09-14

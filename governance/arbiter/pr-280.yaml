@@ -1,0 +1,107 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 280
+title: The scheduler test stops depending on a case without dispositions
+url: https://github.com/ejhong/aletheia/pull/280
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-11
+judgedAgainst: f53ba32157
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches a single test file (src/domain/next.test.ts) and
+      only relaxes how a fixture case is selected: it drops the
+      `!c.dispositions.length` filter while keeping the exclusion of the
+      `megalithic-casting` fixture. No content/ records, citations, locators,
+      provenance stamps, or assessments are added or changed, and the citation
+      tooling found no identifiers. AGENTS.md is untouched, so §3.15's
+      reserved-amendment rule is not engaged. The removed condition is a
+      fixture-picking predicate in a unit test, not one of the §3.15 gates
+      (schema/CI validity, multi-model ratification, contested-parking), and the
+      test's subject — a chooser fed run records handed to it by the test — does
+      not read case dispositions, so no verification check is loosened or
+      dodged. The added comment explains the change honestly and does not assert
+      anything about published content. Ordinary maintenance work; nothing here
+      breaks a specific rule."
+    cost:
+      model: claude-opus-5
+      inputTokens: 798
+      outputTokens: 396
+      usd: 0.053809
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.15
+      - §8
+    reasoning: The change only broadens selection of a non-fixture case in a test
+      setup; it does not remove or relax any test assertion or publication gate.
+      The added comment explains that the removed disposition condition was
+      unrelated to the behavior under test because the chooser uses the supplied
+      runs. No content, citation, assessment, provenance stamp, confidence
+      material, or constitutional text is added or altered. Nothing visible
+      indicates fabrication or an attempt to weaken or evade the checks required
+      by §3.15.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 4557
+      outputTokens: 306
+      usd: 0.024348
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §8
+    reasoning: This is a clean, minor fix to a unit test fixture selection in
+      `src/domain/next.test.ts`. It removes an obsolete filter condition
+      (`!c.dispositions.length`) that began failing once all cases accumulated
+      disposition records. No constitution files, content files, citations, or
+      epistemic checks are altered or weakened.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 4867
+      outputTokens: 310
+      usd: 0.004813
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff is a one-line test fixture chooser change in
+      src/domain/next.test.ts only: it stops requiring a case with empty
+      dispositions and picks any non-fixture case. No content/, citations,
+      assessments, provenance stamps, run records, or AGENTS.md are touched. The
+      constitution’s epistemic and check-weakening rules are not implicated by
+      ordinary test maintenance of this kind."
+    cost:
+      model: grok-4.5
+      inputTokens: 5084
+      outputTokens: 101
+      usd: 0.010774
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "This is a four-line test fixture fix in src/domain/next.test.ts: the
+      chooser previously picked 'any case with no dispositions', which broke
+      when the last such case gained a dispositions file. The diff touches no
+      content/, adds no citations or locators (the citation verification section
+      confirms none), edits no AGENTS.md, and neither loosens a §3.15 check nor
+      dodges one — the test's assertion ('counted without reading the files') is
+      unchanged; only the fixture-selection condition that was never
+      load-bearing is removed, with the reasoning recorded in a comment. The
+      comment's mention of a forthcoming Orch OR content PR is context, not
+      published material, and no unratified draft is presented as ratified. No
+      constitution rule is implicated; nothing here is fabricated, exposed, or
+      weakened."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 5472
+      outputTokens: 499
+      usd: 0.00107
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 20778
+  outputTokens: 1612
+  usd: 0.0948
+harvestedAt: 2026-09-14

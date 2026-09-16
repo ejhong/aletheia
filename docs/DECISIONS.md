@@ -2229,3 +2229,18 @@ the note names a record that never entered. Verify now scrubs the accepted
 records' prose of every proposal id that did not enter, writing what it was
 instead ("a proposed claim not admitted at intake ('…')"), and says so in
 its run notes. (Operator record, in the founder's session of 2026-09-11.)
+
+## 2026-09-15 — The founder's door on a sitting: a forced first choice
+
+The scheduler's queue on 2026-09-15 had five editions due before any
+research pass (deep-memory, megalithic-casting, orch-or, transients,
+vasocomputation), and four cases never reported (mpi, immortality-key,
+ydih, zero-worlds) behind them. At two cases a sitting, the hard path —
+report → draft → verify → edition, the one every park came from — would
+not run unattended for three Mondays. The chain workflow gains `case` and
+`verb` inputs (CLI `--case <slug> --verb report|edition|check`): the first
+choice is the founder's, recorded as dispatched by hand with the ledger's
+own reasoning skipped for that step; every later choice in the sitting is
+the ledger's. The choice is still run and judged like any other; only the
+selection is forced, and the record says so. (Operator record, founder
+direction in session, 2026-09-15: "let's do 1".)

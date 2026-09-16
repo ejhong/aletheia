@@ -12,7 +12,7 @@
  *   node scripts/aletheia.ts edition <case> [--dry-run] [--force]
  *   node scripts/aletheia.ts check <case> [--seats a,b] [--dry-run]   the blind panel, every roster seat with a key
  *   node scripts/aletheia.ts inbox <case> [--dry-run]         the founder's door as a producer: dropped items → one report the draft verb consumes
- *   node scripts/aletheia.ts next [--run] [--steps N]          what the ledger wants done next (and, with --run, do it through the chain; --steps N choices in one sitting)
+ *   node scripts/aletheia.ts next [--run] [--steps N] [--case <slug> --verb report|edition|check]   what the ledger wants done next (and, with --run, do it through the chain; --steps N choices in one sitting)
  *   node scripts/aletheia.ts panel <pr>                        → scripts/arbiter.mjs
  *
  * Every verb is one module under src/pipeline/ sharing four services — the
@@ -97,7 +97,12 @@ switch (verb) {
     const busy = new Map((flagValue("--busy") ?? "").split(",").map((s) => s.trim()).filter(Boolean).map((s) => { const [slug, ...why] = s.split("="); return [slug, why.join("=") || "open sitting"] as const; }));
     // With --out, the sitting so far is rewritten after every choice, so a sitting cut short still leaves a readable account.
     const onProgress = out ? (soFar: unknown) => fs.writeFileSync(path.resolve(out), JSON.stringify(soFar, null, 2)) : undefined;
-    const r = await runNext({ run: flags.has("--run"), busy, steps: Number.isFinite(steps) && steps > 0 ? steps : 1, ...(Number.isFinite(deadline) && deadline > 0 ? { deadlineMinutes: deadline } : {}), ...(Number.isFinite(maxCases) && maxCases > 0 ? { maxCases } : {}), onProgress });
+    // `--case <slug> --verb report|edition|check`: the first choice is the founder's; the rest of the sitting is the ledger's.
+    const forcedCase = flagValue("--case");
+    const forcedVerb = (flagValue("--verb") ?? "report") as "report" | "edition" | "check";
+    if (forcedCase && !["report", "edition", "check"].includes(forcedVerb)) { console.error(`--verb must be report, edition or check (got ${forcedVerb})`); process.exit(2); }
+    const force = forcedCase ? { case: forcedCase, verb: forcedVerb } : undefined;
+    const r = await runNext({ run: flags.has("--run"), busy, force, steps: Number.isFinite(steps) && steps > 0 ? steps : 1, ...(Number.isFinite(deadline) && deadline > 0 ? { deadlineMinutes: deadline } : {}), ...(Number.isFinite(maxCases) && maxCases > 0 ? { maxCases } : {}), onProgress });
     if (out) fs.writeFileSync(path.resolve(out), JSON.stringify(r, null, 2));
     console.log(JSON.stringify(r, null, 2));
     if ([r, ...(r.more ?? [])].some((o) => o.ran.some((s) => s.outcome.outcome === "failed"))) process.exit(1);

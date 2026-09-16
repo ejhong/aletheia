@@ -342,7 +342,7 @@ describe("assembling an edition", () => {
     expect(restated.edition.accounts).toHaveLength(2);
     // A later candidate that says nothing keeps them.
     const later = { ...c, editions: [...c.editions, restated.edition] } as typeof c;
-    const kept = assembleEdition(later, editionReply({ article: restated.edition.article + "\n\nA closing paragraph." }), ctx);
+    const kept = assembleEdition(later, editionReply({ article: restated.edition.article + "\n\nA closing paragraph." }), { ...ctx, now: new Date("2099-01-02T12:00:00Z") });
     expect(kept.errors).toEqual([]);
     expect(kept.edition.question).toBe(restated.edition.question);
     expect(kept.edition.accounts).toEqual(restated.edition.accounts);
@@ -856,12 +856,12 @@ describe("run provenance (2026-09-10): the records name the run that wrote them"
     const c = getCaseBySlug("megalithic-casting");
     const ed = c.editions.at(-1)!;
     const reply: EditionReply = { rationale: "a test edition that re-adopts the incumbent's judgment", question: null, accounts: [], featuredClaimIds: ed.featuredClaimIds, cruxOrder: ed.cruxOrder, article: ed.article + "\n\nA closing paragraph.", assessment: null };
-    const runId = "2026-09-10-edition-megalithic-casting-120000";
-    const r = assembleEdition(c, reply, { model: "claude-opus-5", promptVersion: "edition-v5", now: new Date("2026-09-10T12:00:00Z"), root: process.cwd(), runId });
+    const runId = "2099-01-02-edition-megalithic-casting-120000";
+    const r = assembleEdition(c, reply, { model: "claude-opus-5", promptVersion: "edition-v5", now: new Date("2099-01-02T12:00:00Z"), root: process.cwd(), runId });
     expect(r.errors).toEqual([]);
     expect(r.edition.producedBy).toBe(runId);
     // Without a run id (an edition written by hand), the field is absent rather than invented.
-    const byHand = assembleEdition(c, reply, { model: "none", promptVersion: "opening", now: new Date("2026-09-10T12:00:00Z"), root: process.cwd() });
+    const byHand = assembleEdition(c, reply, { model: "none", promptVersion: "opening", now: new Date("2099-01-02T12:00:00Z"), root: process.cwd() });
     expect(byHand.edition.producedBy).toBeUndefined();
   });
 });

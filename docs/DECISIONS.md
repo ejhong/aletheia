@@ -2244,3 +2244,19 @@ own reasoning skipped for that step; every later choice in the sitting is
 the ledger's. The choice is still run and judged like any other; only the
 selection is forced, and the record says so. (Operator record, founder
 direction in session, 2026-09-15: "let's do 1".)
+
+## 2026-09-16 — Counts are measured, not estimated: the edition verb appends its own figures
+
+Review note #294 on the sitting of 2026-09-16 (#291): both candidate
+rationales stated word counts and an account count the run records
+contradicted — "roughly a sixth (about 3,700 to about 3,150)" against a
+measured 4,054 → 3,859; "at or slightly below" against 5,150 → 5,209;
+"five accounts" against prose that grouped them as four. A model estimating
+a number it could have measured is the same failure as a stamp naming the
+model asked rather than the one that answered: a record that cannot
+reconstruct the change. The verb now appends "Measured by the verb:
+article N → M words; accounts K (incumbent J)" to every rationale, and
+edition-v7 tells the model to state no counts and to say when its prose
+groups the accounts differently from the field. The two candidates on
+#291 were annotated by hand before publication, with history entries.
+(Operator record, founder's session of 2026-09-16.)

@@ -35,6 +35,9 @@ import { closeRun, openRun, writeWorkingFile, type RunOutcome } from "./store.ts
  */
 
 /** The editor is the house model (config/models.yaml); the run records the model that served. */
+/** Words in a text, as the run record and the rationale count them. */
+export const countWords = (t: string): number => t.split(/\s+/).filter(Boolean).length;
+
 export const EDITOR = MODELS.house;
 
 const VERDICTS = [
@@ -240,7 +243,9 @@ export function assembleEdition(
     date,
     model: ctx.model,
     promptVersion: ctx.promptVersion,
-    rationale: reply.rationale,
+    // The rationale ends with what the verb can measure and the model can only guess (2026-09-16, review note #294:
+    // two rationales stated word and account counts that the run records contradicted). Labelled as the verb's.
+    rationale: `${reply.rationale.trim()}\n\nMeasured by the verb: article ${countWords(incumbent.article)} → ${countWords(reply.article)} words; accounts ${(reply.accounts?.length ? reply.accounts : incumbent.accounts ?? []).length} (incumbent ${(incumbent.accounts ?? []).length}).`,
     basis: { ledgerHash: loaded.ledgerHash, inputsHash: inputsHashOf(loaded, ctx.root) },
     previous: incumbent.runId,
     assessment: adoptedRef ?? null,
@@ -377,8 +382,7 @@ export async function runEdition(caseKey: string, opts: EditionOptions = {}): Pr
       edition,
     );
     const wrote = [editionFile, assessmentFile].filter((f): f is string => Boolean(f)).map((f) => path.relative(root, f));
-    const words = (t: string) => t.split(/\s+/).filter(Boolean).length;
-    const notes = [assessment ? "new assessment" : "re-adopts the incumbent's assessment", `article ${words(incumbent.article)} → ${words(edition.article)} words`, reply.fallback ? `served by the fallback: ${reply.fallback}` : undefined].filter(Boolean).join("; ");
+    const notes = [assessment ? "new assessment" : "re-adopts the incumbent's assessment", `article ${countWords(incumbent.article)} → ${countWords(edition.article)} words`, reply.fallback ? `served by the fallback: ${reply.fallback}` : undefined].filter(Boolean).join("; ");
     return { ...closeRun(run, "completed", { model: reply.model, reason: notes, wrote }), editionFile, assessmentFile };
   } catch (e) {
     return closeRun(run, "failed", { reason: (e as Error).message });

@@ -25,6 +25,12 @@ export interface FetchedSource {
   reason?: string;
   /** Where the text came from when not from `url` itself (an open-access copy). */
   via?: string;
+  /**
+   * True when the text is a stand-in for the cited document — an open-access copy, an arXiv PDF read for an
+   * abstract page — set only where the fetch layer chose that stand-in. Verify treats a quote missed in a
+   * stand-in as unverified (blocked, with a route to the cited text), never as false (review notes #315, #318).
+   */
+  substitute?: boolean;
   /** Page count, for PDFs. */
   pages?: number;
   /** For a supplied document: the permission line the intake recorded, which a Source proposed from it must carry verbatim (§3.15). */
@@ -229,7 +235,7 @@ export async function retrieve(
   if (arxiv && !/\/pdf\//i.test(target.url ?? "")) {
     const pdfUrl = `https://arxiv.org/pdf/${arxiv}`;
     const full = await fetchSource(pdfUrl, opts);
-    if (full.ok) return { ...full, url: key, via: `arXiv full text (PDF) at ${pdfUrl}, read for the abstract page` };
+    if (full.ok) return { ...full, url: key, via: `arXiv full text (PDF) at ${pdfUrl}, read for the abstract page`, substitute: true };
   }
   const first = target.url ? await fetchSource(target.url, opts) : null;
   if (first?.ok) return first;
@@ -237,7 +243,7 @@ export async function retrieve(
     for (const candidate of await openAccessUrls(doi, opts.fetchImpl)) {
       if (candidate === target.url) continue;
       const r = await fetchSource(candidate, opts);
-      if (r.ok) return { ...r, url: key, via: `open-access copy via OpenAlex: ${candidate}` };
+      if (r.ok) return { ...r, url: key, via: `open-access copy via OpenAlex: ${candidate}`, substitute: true };
     }
   }
   return (

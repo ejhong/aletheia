@@ -389,14 +389,17 @@ export function correctionLines(corrections: Correction[], status: (c: Correctio
 }
 
 /**
- * Whether a retrieved text is a substitute for the cited document — an open-access copy, an arXiv PDF read for
- * an abstract page — rather than the document itself. A quote that is not found in a substitute is unverified,
- * not false: the wording may differ between copies, so the record is blocked with a route to the cited text,
- * not failed (2026-09-16: four claims and an evidence record of the Immortality Key draft were failed against
- * an OpenAlex copy of Łucejko 2018). A supplied document is the text itself, so a miss there is a miss.
+ * Whether a retrieved text is a stand-in for the cited document — an open-access copy, an arXiv PDF read for
+ * an abstract page — rather than the document itself. The fetch layer says so with a typed flag at the two
+ * places it chooses a stand-in; the `via` description is for readers and decides nothing here (review notes
+ * #315, #318: a predicate on the description would have let a direct document with any note escape failure).
+ * A quote not found in a stand-in is unverified, not false — the wording may differ between copies — so the
+ * record is blocked with a route to the cited text, not failed (2026-09-16: four claims and an evidence record
+ * of the Immortality Key draft were failed against an OpenAlex copy of Łucejko 2018). A miss in the document
+ * itself, or in a supplied document, is a miss.
  */
-export function substituteCopy(via?: string | null): boolean {
-  return !!via && !/^supplied document/.test(via);
+export function substituteCopy(fetched: Pick<FetchedSource, "substitute" | "via"> | undefined): boolean {
+  return fetched?.substitute === true;
 }
 
 /** Why a correction cannot apply as the ledger stands (null when it can): unknown record, no such file, or the field has moved since. */
@@ -500,7 +503,7 @@ export async function judgeProposal(
     const bad = unverifiedQuotes(e.sourceStatement, fetched.text);
     if (bad.length) {
       const quotes = bad.map((q) => `"${q}"`).join("; ");
-      if (substituteCopy(fetched.via)) {
+      if (substituteCopy(fetched)) {
         reject(e.id, "evidence", e.title, `quoted span not found verbatim in the substitute copy read for ${e.sourceId} (${fetched.via}): ${quotes}`, true, `obtain the text of ${e.sourceId} as cited (${sourceById.get(e.sourceId)?.url ?? "no URL on the source record"}) and re-run verify; the quotes were checked only against ${fetched.via}`);
       } else {
         reject(e.id, "evidence", e.title, `quoted span not found verbatim in the text of ${e.sourceId}: ${quotes}`);
@@ -599,7 +602,7 @@ export async function judgeProposal(
           continue;
         }
       } else if ([c.sourceAnchor.quote, ...(c.sourceAnchor.also ?? []).map((a) => a.quote)].some((q) => unverifiedQuotes(`"${q}"`, fetched.text ?? "").length)) {
-        if (substituteCopy(fetched.via)) {
+        if (substituteCopy(fetched)) {
           reject(c.id, "claim", c.statement, `anchor quote not found verbatim in the substitute copy read for ${sid} (${fetched.via})`, true, `obtain the text of ${sid} as cited (${sourceById.get(sid!)?.url ?? "no URL on the source record"}) and re-run verify; the anchor was checked only against ${fetched.via}`);
         } else {
           reject(c.id, "claim", c.statement, `anchor quote not found verbatim in ${sid}`);

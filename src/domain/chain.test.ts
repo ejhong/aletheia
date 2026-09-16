@@ -3,7 +3,7 @@ import os from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { getCaseBySlug, loadAllCases } from "./load.ts";
-import { caseAccounts, caseQuestion, questionRestatedBy } from "./editions.ts";
+import { caseAccounts, caseQuestion, currentEdition, questionRestatedBy } from "./editions.ts";
 import { capsFor, loadBudget, assertWithinBudget, BudgetExceeded, estimateUsd, tokensFromChars } from "../pipeline/budget.ts";
 import { assembleProposal, urlsInReport, type DraftReply } from "../pipeline/draft.ts";
 import { assembleEdition, type EditionReply } from "../pipeline/edition.ts";
@@ -349,7 +349,8 @@ describe("assembling an edition", () => {
     // The question as it stands: the edition's, else the case file's founding subtitle.
     expect(caseQuestion(later)).toBe(restated.edition.question);
     expect(caseQuestion(c)).toBe(c.record.subtitle);
-    expect(caseAccounts(c)).toEqual([]);
+    // The real case's accounts are whatever its incumbent states (a sitting may have set them); the fixture above is what is tested.
+    expect(caseAccounts(c)).toEqual(currentEdition(c).accounts ?? []);
     // The page credits the edition that restated the question, not the one that inherited it (§3.14).
     const kept2 = { ...later, editions: [...later.editions, kept.edition] } as typeof c;
     expect(questionRestatedBy(kept2)?.runId).toBe(restated.edition.runId);

@@ -19,9 +19,9 @@ narrative-inputs rule (AGENTS.md §7). Method: §3.
 
 v8 (2026-09-16): anchored is not evidenced. The packet's claim index
 carries `evidence`, the count of admitted evidence records per claim; a
-claim with none is told as held on its anchor, graded at most
-provisionally supported, and the steelman writes inferences from texts as
-the proponents' reading. (The Immortality Key sitting's panel objected
+claim with none is told as held on its anchor, graded unresolved unless a
+disclosed basis other than the anchor carries it, and the steelman writes
+inferences from texts as the proponents' reading. (The Immortality Key sitting's panel objected
 three times on this point — a residual-alkaloid claim told as fact with no
 evidence record, and a ritual formula's timing asserted in the steelman
 with no admitted source — and only a new assessment could cure it.)
@@ -129,9 +129,16 @@ admitted the observation behind it — and a source is not evidence
   paper reports…", "held here on its anchor, with no evidence record yet"
   — never in the page's own voice as a finding. The `{claim=…}` span still
   opens the claim.
-- In the assessment, its verdict is at most `provisionally_supported`, its
-  confidence `low`, and its reasoning says the grading rests on the anchor
-  alone. Never grade an anchor-only claim `supported`.
+- In the assessment, an anchor alone contributes no evidentiary support
+  (§3.6: a source is not evidence, and this protocol weighs only admitted
+  evidence records). An anchor-only claim's verdict is `unresolved`, its
+  confidence `low`, and its reasoning says the claim is held on its anchor
+  with no admitted evidence record — unless the reasoning names a
+  separately disclosed basis (a prior stated as a prior; admitted evidence
+  on a parent or sibling claim that bears on it), in which case that basis,
+  not the anchor, carries whatever provisional support is given. Never
+  grade an anchor-only claim `supported`. (Review note #319: an earlier
+  wording of this rule let the anchor itself carry a provisional grade.)
 - In the steelman, and everywhere else in the assessment, a premise that is
   an inference from a text — a ritual formula read as a timing, a quoted
   line read as a mechanism — is written as the proponents' reading

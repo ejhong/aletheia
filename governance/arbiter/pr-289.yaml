@@ -1,0 +1,132 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 289
+title: "The founder's door on a sitting: a forced first choice (case and verb),
+  then the ledger's own"
+url: https://github.com/ejhong/aletheia/pull/289
+verdict: pass
+reason: "4 of 5 seats affirm compliance; one seat's objection is a review note
+  the operator answers on the record: GPT-5.6 Sol (OpenAI) (§3.15, §3.8;
+  check-weakening)"
+outcome: merged
+outcomeAt: 2026-09-16
+judgedAgainst: bcac8bf2b9
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "This is a pipeline/scheduling change only: it adds `case`/`verb`
+      inputs to chain.yml and `--case/--verb` to `aletheia next`, forcing the
+      first choice of a sitting while clearing `force` for all later steps
+      (restOpts in runNext). No content/ records, no citations (verification
+      section finds none), no AGENTS.md edit. The forced choice is still run,
+      budgeted, recorded and panel-judged like any other; nothing in the diff
+      loosens the §3.15 gates (multi-model concurrence, fail-closed CI, parking
+      on dispute) or reclassifies a change to dodge them — only the selection
+      heuristic is bypassed, and the choice record carries the explicit reason
+      'dispatched by hand for this case (the founder's door)', so provenance is
+      honest rather than disguised as the ledger's own reasoning (tests assert
+      both the stamp on step one and its absence on step two). The DECISIONS.md
+      entry is stamped as an operator record of a founder direction in session
+      with date 2026-09-15, which §3.15 expressly permits for directions given
+      in a working session. An unknown slug throws before anything runs, so no
+      dangling case can be fabricated. Minor non-constitutional nit worth
+      flagging to the operator: the workflow interpolates `${{
+      github.event.inputs.case }}` directly into a shell command, which is a
+      shell-injection hazard and should be passed via env."
+    cost:
+      model: claude-opus-5
+      inputTokens: 8508
+      outputTokens: 768
+      usd: 0.101659
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: violates
+    rules:
+      - §3.15
+      - §3.8
+    reasoning: The workflow interpolates the free-form `case` input directly into
+      shell source and later expands `$force` unquoted, permitting shell or
+      additional-argument injection in a publication-capable job. That creates a
+      route to alter the run or execute commands outside the recorded
+      `case`/`verb` choice, weakening the integrity of the gated process
+      required by §3.15. The workflow and CLI also do not verify that the
+      dispatcher is the founder or record the dispatching actor, although the
+      documentation calls each forced choice “the founder's”; the generic
+      “dispatched by hand” reason is insufficient exact provenance. Pass inputs
+      through environment variables and a quoted shell array, validate the slug
+      and verb, and record or enforce the actual authorized dispatcher.
+    paradigm: check-weakening
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 9663
+      outputTokens: 3049
+      usd: 0.099632
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: The change adds a mechanism (`--case` and `--verb`) to manually
+      dispatch the first choice of a pipeline sitting to a specific case and
+      verb before returning to the ledger's queue. The forced action undergoes
+      the same execution, budgeting, review, and consensus checks as any
+      automated choice, without bypassing or weakening any §3.15 safeguards. The
+      provenance of the dispatch is transparently recorded in the choice reason,
+      documented in DECISIONS.md and AUTOMATION.md per founder direction, and
+      covered by unit tests.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 10470
+      outputTokens: 761
+      usd: 0.010706
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff adds a founder-only first-choice override (workflow
+      case/verb inputs, CLI --case/--verb, force on chooseNext/runNext) that
+      still runs, budgets, records, and judges the forced step like any other
+      choice, stamps the reason as hand-dispatched, and clears force so later
+      steps return to the ledger. AGENTS.md is untouched; no content/,
+      citations, assessments, or confidence material are added; checks in §3.15
+      are not loosened. The change and DECISIONS/AUTOMATION notes match a
+      recorded founder direction for operator control of dispatch, which the
+      constitution treats as the operating record.
+    cost:
+      model: grok-4.5
+      inputTokens: 10317
+      outputTokens: 152
+      usd: 0.021546
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+    reasoning: "This change touches only the scheduler's case selection, not any
+      epistemic gate: the forced choice is still run, budgeted, recorded, and
+      judged through the same report/draft/verify/edition pipeline with
+      multi-model ratification intact, so no check in §3.15 is weakened or
+      dodged — only which case enters the loop is forced, and the record
+      honestly stamps that step as 'dispatched by hand' rather than attributing
+      it to the ledger's own judgment. AGENTS.md is not edited, so §3.15's
+      constitution rule is not triggered. The founder's scheduling direction is
+      properly recorded in DECISIONS.md with date, channel, and the direction
+      text ('let's do 1'), consistent with the founder-directions proviso in
+      §3.15. No citations, locators, or provenance details are added, and the
+      unknown-slug failure plus the test coverage of hand-back to the ledger on
+      step two are appropriate. One non-epistemic note for the operator: the
+      workflow interpolates ${{ github.event.inputs.case }} unquoted into a
+      shell command, which is an injection-robustness concern worth fixing, but
+      it is an ordinary code-quality issue outside §3 and does not constitute a
+      violation."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 10568
+      outputTokens: 1125
+      usd: 0.002148
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 49526
+  outputTokens: 5855
+  usd: 0.2357
+harvestedAt: 2026-09-16

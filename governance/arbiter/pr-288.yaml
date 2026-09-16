@@ -1,0 +1,125 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 288
+title: "Orch OR: the intake entry's drafter line annotated — the model asked,
+  the served model unrecorded"
+url: https://github.com/ejhong/aletheia/pull/288
+verdict: pass
+reason: 4 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-14
+judgedAgainst: 4abba5d3ca
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The change is a single append-only history entry that corrects the
+      provenance record rather than rewriting it, which is exactly what §3.14
+      and the append-only assessment rule require. It improves provenance
+      honesty by flagging that the served model for draft run
+      2026-09-11-draft-orch-or-115454 is unrecorded and that the named drafter
+      is only the model requested — a strengthening, not a weakening, of the
+      §3.15 stamping discipline. No citations, DOIs, or locators are added
+      (verification tool found none), so no fabrication surface exists. The
+      actor line honestly identifies claude-fable-5-1 as an AI operator with
+      aiAssisted: true, and attributes the founder's session as the channel,
+      consistent with the operating-record clause. AGENTS.md is untouched and no
+      check is loosened. The PR body's argument about point 2 being answered on
+      the issue is a review-note response, not a content change, and nothing in
+      the diff presents an unratified draft as ratified."
+    cost:
+      model: claude-opus-5
+      inputTokens: 2047
+      outputTokens: 347
+      usd: 0.058829
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.13
+      - §3.14
+      - §3.15
+    reasoning: "The added history entry corrects provenance without claiming
+      knowledge the record does not contain: it distinguishes the requested
+      drafter model from the unrecorded served model and labels the possible
+      fallback only as a possibility. It preserves the earlier entry and appends
+      a dated qualification with an actor and reason, consistent with the
+      append-only revision requirement in §3.14 and calibrated uncertainty in
+      §3.13. No citation is added, no files are omitted, and the change neither
+      edits AGENTS.md nor weakens or evades a constitutional check."
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 5490
+      outputTokens: 610
+      usd: 0.03416
+  - seat: Gemini 3.8 Flash (Google)
+    vote: unsure
+    rules: []
+    reasoning: "seat failed: SyntaxError: Unexpected token '§', ...\" [\"§3.8\",
+      §3.14, \"§3\"... is not valid JSON"
+    failed: true
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 5931
+      outputTokens: 629
+      usd: 0.006807
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: "The diff adds a single append-only history entry that qualifies an
+      earlier 2026-09-11 intake actor line without editing it, explicitly
+      preserving the prior text and stating the requested-model versus
+      unrecorded-served-model distinction for draft run
+      2026-09-11-draft-orch-or-115454. That matches §3.14's versioning and
+      change-history requirements and §3.15's ban on fabricating or misstating
+      provenance: the new entry records the uncertainty, points to existing
+      origin-stamp caveats on the 21 extracted records, and stamps the operator,
+      date, and review-note channel. No AGENTS.md edit, no citations, no
+      confidential material, and no check-weakening appear. The RUN ACCOUNT
+      confirms the added lines are exactly the history annotation shown."
+    cost:
+      model: grok-4.5
+      inputTokens: 5640
+      outputTokens: 199
+      usd: 0.012589
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+      - §3.8
+    reasoning: "The change is a single append-only entry to history.yaml that
+      qualifies, rather than edits, the earlier 2026-09-11 intake line — exactly
+      how §3.14 says corrections to a versioned changelog should be recorded. It
+      improves provenance honesty: it discloses that the drafter named in the
+      earlier entry is the model asked, that the served model for run
+      2026-09-11-draft-orch-or-115454 is unrecorded, and that a fallback model
+      may have answered, which is the opposite of fabricating or polishing a
+      provenance stamp (§3.8, §3.15). The entry is correctly stamped with actor,
+      date, aiAssisted: true, and kind, and it does not present an AI record as
+      a human one — the actor line names the AI operator answering a panel
+      seat's review note, not a founder ratification. No citations are added, so
+      the real-citations rule is not engaged; no confidence material or
+      AGENTS.md edit is present; nothing weakens the §3.15 checks. The assertion
+      that the 21 extracted records already carry the caveat in their origin
+      stamps concerns file contents outside the diff, but nothing shown
+      contradicts it, and the RUN ACCOUNT confirms the added history lines match
+      the diff verbatim. At most, the phrase 'in the founder's session of
+      2026-09-14' is slightly loose wording about where the answer was composed,
+      but it does not attribute a human approval the record lacks, so it does
+      not rise to a provenance violation."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 6415
+      outputTokens: 1252
+      usd: 0.001588
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 25523
+  outputTokens: 3037
+  usd: 0.114
+harvestedAt: 2026-09-16

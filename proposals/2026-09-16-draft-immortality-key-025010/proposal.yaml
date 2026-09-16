@@ -1,0 +1,950 @@
+# Proposal — a change to domain records, in one envelope (docs/AUTOMATION.md).
+# Never citable; nothing here is a record until adopted through the gate.
+runId: 2026-09-16-draft-immortality-key-025010
+date: 2026-09-16
+case: immortality-key
+producer: draft
+model: claude-fable-5-1
+promptVersion: draft-v8
+basis:
+  ledgerHash: b7c6e77f5e75ae0be481c3a0740474a1e50b683d10ef82a0bbfbb32823a858c1
+rationale: "A bounded pass on the Greek half. Three of the report's eight sources were retrievable and read: Lucejko et al. 2018 (via the PMC open-access copy), Gainsford's 2021 Kiwi Hellenist post, and the Research Square preprint of the 2026 kykeon hydrolysis paper. From these I propose three sources, twenty-two single-proposition claims anchored to shown text, ten evidence records, five research items, and two scalar corrections (page locators for the unverified Pontós chapters, taken from the preprint's reference list; a softened Telesterion caption that no longer asserts the kykeon's timing as fact). Everything the report drew from Samorini, Bremmer 2014, Bennett 2021 and the unopened primary reports (Juan-Tresserras 2000, Adroher 1993, Portorusso, Czernikowice, Grauballe, Ciaraldi 2000, Calvari d'Amposta) is dispositioned blocked or irrelevant with the route to the primary; in particular the mill-flour negative at Pontós — the report's most consequential lead — enters only as the test a research item describes, not as a finding. Directions are honest to genre: Gainsford is a classicist's blog (weak), Lucejko is peer-reviewed chemistry that never mentions Eleusis (its bearing on TIK-C004 is a base-rate qualification), and the preprint's declarations are the authors' own statements about themselves (context). No edition change: the record deepens, the telling stands."
+adds:
+  sources:
+    - id: SRC-LUCEJKO-2018
+      title: Long-lasting ergot lipids as new biomarkers for assessing the presence of cereals and cereal products in archaeological vessels
+      authors:
+        - Jeannette J. Lucejko
+        - Jacopo La Nasa
+        - Francesca Porta
+        - Alessandro Vanzetti
+        - Giuseppa Tanda
+        - Claudio Filippo Mangiaracina
+        - Alessandro Corretti
+        - Maria Perla Colombini
+        - Erika Ribechini
+      year: "2018"
+      sourceType: paper
+      identifier: doi:10.1038/s41598-018-22140-z
+      url: https://www.nature.com/articles/s41598-018-22140-z
+      verification: ai_verified
+      verificationNote: text retrieved and shown to the drafter on 2026-09-16 (run 2026-09-16-draft-immortality-key-025010); passages checked by the verify verb
+      reliabilityNotes:
+        - Peer-reviewed, Scientific Reports 8:3935, CC BY 4.0; text read via the open-access PMC copy (PMC5834523).
+        - Analytical-chemistry paper on ergot lipids as a cereal biomarker; it does not discuss Eleusis, psychoactivity, or the Mas Castellar de Pontós find. Its bearing on this case is a base rate for ergot in cereal vessels, an inference of this editor.
+        - Authors declare no competing interests; the archaeological sites analysed are Italian (Sardinia, Calabria, Sicily), not Iberian or Attic.
+      derivedFrom: []
+      background: false
+    - id: SRC-GAINSFORD-2021
+      title: Drugs and the Mysteries of Eleusis (Kiwi Hellenist blog post)
+      authors:
+        - Peter Gainsford
+      year: "2021"
+      sourceType: webpage
+      url: https://kiwihellenist.blogspot.com/2021/03/eleusis.html
+      verification: ai_verified
+      verificationNote: text retrieved and shown to the drafter on 2026-09-16 (run 2026-09-16-draft-immortality-key-025010); passages checked by the verify verb
+      reliabilityNotes:
+        - Self-published blog post (26 March 2021) by a classicist (author of Early Greek Hexameter Poetry, Cambridge 2015); not peer reviewed; polemical in tone ('Gish gallop').
+        - Gives exact ancient locators (Plato Phaedrus 250b–c; Plutarch fr. 178 Sandbach; Clement Protrepticus 2.21; Hipponax fr. 39 West; schol. B on Il. 11.624) and cites Cosmopoulos 2015, Clinton 2003/2004, Delatte 1955, Kerényi 1967; the ancient texts themselves were not opened in this pass.
+        - Its chemistry objection concerns synthesizing LSD (diethylamine, hydrazine) and does not address the alkaline-hydrolysis-to-LSA pathway tested in 2026 — an editor's observation.
+        - The author corrected a photo caption (Propylaia, not Telesterion) in the comments; the correction shows attention to error but also that the post was not edited before publication.
+      derivedFrom: []
+      background: false
+    - id: SRC-ANTONOPOULOS-2025
+      title: Investigating the psychedelic hypothesis of kykeon, the sacred elixir of the Eleusinian Mysteries (Research Square preprint, version 1)
+      authors:
+        - Romanos K. Antonopoulos
+        - Evangelos Dadiotis
+        - Kostas Ioannidis
+        - and 11 more (as listed by Research Square)
+      year: "2025"
+      sourceType: preprint
+      identifier: doi:10.21203/rs.3.rs-8000194/v1
+      url: https://www.researchsquare.com/article/rs-8000194/v1
+      verification: ai_verified
+      verificationNote: text retrieved and shown to the drafter on 2026-09-16 (run 2026-09-16-draft-immortality-key-025010); passages checked by the verify verb
+      reliabilityNotes:
+        - "Preprint version of the paper published in Scientific Reports on 13 February 2026 (the ledger's SRC-ANTONOPOULOS-2026); not peer reviewed in this form; CC BY 4.0. Submission history on the page: first submitted 31 Oct 2025, revision requested 20 Nov 2025."
+        - "Same author team as the published paper, including C. A. P. Ruck, co-author of The Road to Eleusis (1978): the hypothesis's originating network. The Declarations state no external funding and no competing interests, and assign the bench work to R.K.A. — the authors' statements about themselves, recorded here as context."
+        - Used in this pass chiefly for the Declarations, the Results on reaction conditions, and the Discussion paragraphs on dose, potability, and the proposed pennyroyal synergy; the retrieved text carries HTML entities in places and the equation section is truncated.
+      derivedFrom: []
+      background: false
+  evidence:
+    - id: TIK-E028
+      title: Ergot lipids in archaeological vessels are read by residue chemists as a cereal marker — including in a ritual context
+      claimIds:
+        - TIK-C004
+        - TIK-C015
+        - TIK-C016
+        - TIK-C017
+      sourceId: SRC-LUCEJKO-2018
+      direction: qualifies
+      strength: moderate
+      sourceStatement: The source presents lipids produced by Claviceps fungi, which it calls "common cereal pests", as a biomarker for the former presence of cereals in vessels; "Out of the 32 vessels analysed by GC/MS, ten vessels" (five Sardinian, four Calabrian, one Sicilian) showed ricinoleic acid, and HPLC/MS matched more than fifty ergot lipid species in them. For the Late Neolithic Sardinian tomb vessels from a ritual-offering context, the authors write that the ergot biomarkers "strongly suggest the use of such pottery for ritual offerings containing cereals". The paper concludes that ergot lipids provide "a unique and relatively recalcitrant chemical signature for cereals".
+      editorInference: "Toward TIK-C004 this qualifies rather than undermines: the Pontós report (still unread at the primary) identified ergot fragments, not lipids, and in dental calculus as well as a vessel; but the Lucejko result shows that ergot traces in a cereal vessel — even in a ritual context — are ordinary enough that chemists treat them as a proxy for grain. The diagnostic weight of Pontós therefore rests on whatever distinguishes it from background contamination (concentration, processing, contrast with site-wide grain), none of which the ledger has verified. It also says what a lipid-based assay on Eleusinian ceramics would show: cereal/ergot presence, expected in any barley vessel, not alkaloid processing."
+      exactLocator: Abstract; Introduction, para. 2; Results and Discussion, paras. beginning 'Out of the 32 vessels analysed' and 'The information obtained with our analytical approach'; Conclusion — via the PMC open-access copy (PMC5834523)
+      limitations:
+        - The paper never mentions Pontós, Eleusis, or psychoactive use; the bearing on TIK-C004 is entirely this editor's inference.
+        - Different analyte (lipids) and different sites (Italy) from the Pontós identification; a base rate for lipid signatures is not a base rate for sclerotium fragments in calculus.
+        - Ten of 32 is a small, non-random sample chosen for cereal-related vessel forms (pithoi, testelli); it is not a survey of ritual vessels.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-16-report-immortality-key-024154
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-16-draft-immortality-key-025010
+        date: 2026-09-16
+    - id: TIK-E029
+      title: "Gainsford: the 'beatific vision' premise traced to Kerényi's reading of Plato"
+      claimIds:
+        - TIK-C008
+      sourceId: SRC-GAINSFORD-2021
+      direction: undermines
+      strength: weak
+      sourceStatement: The source states that the hallucinogen theory "boils down to one key premise" — that initiates had a life-changing beatific vision — and that "The beatific vision isn’t in any ancient source. Kerényi invented it." It argues Kerényi conflated the phasmata and 'blessed sight' of Plato, Phaedrus 250b–c (read by Cosmopoulos, Yunis and Waterfield as the deiknumena, the objects shown) with the medieval visio beatifica, a post-mortem doctrine, and concludes "Kerényi’s Eleusinian raptures are entirely fictional."
+      editorInference: "This targets the antecedent of TIK-C008 — that initiates had transformative experiences needing a generator — rather than the pharmacology; if the source is right, the dispute over 'drug versus ritual' is a dispute over a modern construction. Weight is limited by genre: a blog post, with locators but without engagement with the Pindar and Sophocles fragments beyond assigning them to afterlife hopes."
+      exactLocator: "Sections 'Darkness and light' and '‘Beatific vision’: ancient Eleusis and 14th century Christianity'"
+      limitations:
+        - Self-published blog by a classicist; not peer reviewed.
+        - The Plato, Plutarch and Kerényi passages were not opened in this pass; the reading is the source's.
+        - Polemical register; the author's own photo caption error was corrected only in comments.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-16-report-immortality-key-024154
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-16-draft-immortality-key-025010
+        date: 2026-09-16
+    - id: TIK-E030
+      title: "Gainsford confirms the Hymn's kykeon: barley, pennyroyal, expressly no wine"
+      claimIds:
+        - TIK-C003
+      sourceId: SRC-GAINSFORD-2021
+      direction: supports
+      strength: weak
+      sourceStatement: The source states that the defining ingredient of a kykeon was barley meal, that two Homeric recipes (Iliad 11.624–641, Odyssey 10.234–236) add honey, wine and goat cheese, and that the Eleusinian version "contained pennyroyal and expressly did not contain wine" (Hymn to Demeter 206–209).
+      editorInference: Secondary confirmation of what TIK-E006 already carries from the Hymn itself; adds nothing diagnostic, but records that the skeptical reading and the ledger agree on the text.
+      exactLocator: Section 'The kykeon', para. 2
+      limitations:
+        - Secondary; the Hymn is already anchored directly (TIK-E006).
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-16-report-immortality-key-024154
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-16-draft-immortality-key-025010
+        date: 2026-09-16
+    - id: TIK-E031
+      title: Gainsford's chemistry objection is aimed at LSD synthesis, not alkaline hydrolysis to LSA
+      claimIds:
+        - TIK-C005
+      sourceId: SRC-GAINSFORD-2021
+      direction: context
+      strength: weak
+      sourceStatement: The source states that ergot is toxic and that "Using ergot to make LSD is extremely difficult" and requires processes and chemicals "that ancient Greeks definitely did not have access to, including diethylamine and pure hydrazine".
+      editorInference: The objection concerns synthesizing LSD. TIK-C005 concerns converting ergopeptides to LSA/iso-LSA by lye hydrolysis, which requires none of the named reagents; the source, written in 2021, does not engage the pathway the 2026 experiment tested. Recorded so that the skeptical literature's strongest chemistry point is seen for what it does and does not address; it carries no weight toward TIK-C005.
+      exactLocator: Introductory list of corrections, item 6
+      limitations:
+        - Written before the 2026 experiment; addresses a different reaction.
+        - Blog post, no chemical references given.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-16-report-immortality-key-024154
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-16-draft-immortality-key-025010
+        date: 2026-09-16
+    - id: TIK-E032
+      title: "Gainsford: no evidence of psychedelics at Eleusis; the kykeon a commonplace porridge after fasting"
+      claimIds:
+        - TIK-C007
+      sourceId: SRC-GAINSFORD-2021
+      direction: undermines
+      strength: weak
+      sourceStatement: The source states "There’s no evidence of psychedelic drugs at Eleusis", that the ritual drink "was a fairly commonplace porridge" whose role is almost certainly that it "came at the end of a day of fasting", and that the most common attested function of kykeons "is medical, as a curative and refreshing draught" (citing Delatte 1955 and schol. B on Il. 11.624).
+      editorInference: An assertion of absence by a specialist, with textual locators for the restorative reading; it does not add a new datum against ergot at Eleusis but records the mainstream drug-free reading of the drink's function. Weak because it is a blog and because 'no evidence' is the very empty cell TIK-E009 already carries.
+      exactLocator: Introductory list of corrections, items 2–5; section 'The kykeon', paras. 4–5
+      limitations:
+        - Self-published; not peer reviewed.
+        - Asserts absence; the sanctuary's ceramics remain untested, so absence here is untested absence, not a negative result.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-16-report-immortality-key-024154
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-16-draft-immortality-key-025010
+        date: 2026-09-16
+    - id: TIK-E033
+      title: "The 2026 preprint's fine print: full detoxification only at pH 12.5, 5% w/v, 120 min; ergometrine still present"
+      claimIds:
+        - TIK-C005
+        - TIK-C028
+        - TIK-C029
+        - TIK-C030
+      sourceId: SRC-ANTONOPOULOS-2025
+      direction: qualifies
+      strength: moderate
+      sourceStatement: The source states that LSA and iso-LSA can be generated with complete degradation of toxic ergopeptides "at 5% w/v ergot sclerotia in an initial pH 12.5 lye solution for at least 120 min"; that at initial pH 10.5 or 11.5, across all times and concentrations, "residual toxic ergopeptides were consistently detected"; that in the fully hydrolyzed samples the six predominant ergopeptides and their epimers were absent "while the signals corresponding to ergometrine (Em) and ergometrinine (Emn) were observed"; and that in the ANOVA "Lye pH was the sole significant predictor".
+      editorInference: TIK-C005 states the conversion 'can' occur; this record fixes how narrowly. Only the strongest lye, the lowest ergot loading, and the longest reflux gave complete ergopeptide hydrolysis. The persistence of ergometrine (a non-peptide ergot alkaloid, not one of the 'toxic ergopeptides' the claim names) is stated by the source without comment; that ergometrine is pharmacologically active in its own right is this editor's note, not the source's, and belongs to the pharmacological profiling TIK-R003 already calls for.
+      exactLocator: Abstract; Results, 'Qualitative analysis of EAs hydrolysis' para. 3 and 'Quantitation' para. 1; 'Modeling and evaluation' para. 1; Discussion, para. 1
+      limitations:
+        - Preprint text; the published version may differ in wording.
+        - Same performance of the experiment as TIK-E008 — not an independent replication.
+        - The source does not evaluate the pharmacological significance of residual ergometrine.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-16-report-immortality-key-024154
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-16-draft-immortality-key-025010
+        date: 2026-09-16
+    - id: TIK-E034
+      title: "The 2026 preprint's dose extrapolation: about a gram of ergot per initiate"
+      claimIds:
+        - TIK-C006
+        - TIK-C033
+      sourceId: SRC-ANTONOPOULOS-2025
+      direction: supports
+      strength: weak
+      sourceStatement: The source states that, taking "the minimum effective dose of pure LSA is approximately 0.5 mg" (citing Schultes) and its yields of 0.54 and 0.48 mg per gram of ergot under optimal conditions, "about 1 g of ergot would suffice for each initiate", and that the required amount "might have been even less" given nine days of fasting and ritual setting; it further states that set and setting predominantly shape the experience.
+      editorInference: "Supports the dose-achievability half of TIK-C006 by arithmetic, not by bioassay: no human or animal was given the preparation, and 'minimum effective dose' is not 'reliably profound and positive'. The reliance on set and setting to amplify the effect is an appeal, not a measurement. Weak toward the claim as written."
+      exactLocator: Discussion, para. beginning 'Regarding the quantities of ergot required'
+      limitations:
+        - Extrapolation from a literature threshold dose; no pharmacological test of the extract was performed.
+        - The threshold dose cited is for pure LSA; the preparation is an LSA/iso-LSA mixture with residual ergometrine and matrix.
+        - Interested-network authorship (see source notes).
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-16-report-immortality-key-024154
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-16-draft-immortality-key-025010
+        date: 2026-09-16
+    - id: TIK-E035
+      title: "The 2026 preprint's declarations: no external funding, no competing interests, bench work by Antonopoulos"
+      claimIds:
+        - TIK-C005
+        - TIK-C025
+        - TIK-C026
+        - TIK-C027
+      sourceId: SRC-ANTONOPOULOS-2025
+      direction: context
+      strength: weak
+      sourceStatement: The source declares "No external funding was received for this work" and "The authors declare no competing interests"; the contribution statement says R.K.A. "isolated the fungal strain, conducted the experiments, and performed the NMR and LC-MS analyses", while M.A.H. and C.A.P.R. "contributed to conceptual discussions and manuscript revision". Sclerotia came from the Aristotle University of Thessaloniki herbarium, the Czech Academy's Clavicipitaceae collection, field collection, and an Alberta grain-elevator waste fraction.
+      editorInference: "This adjusts, without removing, the article's 'sympathetic hands' flag: the assays were run by pharmacognosy chemists in Athens, with Ruck — co-author of the 1978 hypothesis — in a conceptual and revising role. Hypothesis origin and interpretation remain interested; the bench work is not shown to be. Independence is still one performance, and the flag is lifted only by replication elsewhere (TIK-R002)."
+      exactLocator: "Declarations: Author contributions statement; Competing interests; Funding. Methods: 'Source, micromorphological and molecular identification of ergot', para. 1"
+      limitations:
+        - Self-declaration; not independently audited.
+        - Affiliations of the fourteen authors are not in the retrieved text; the report's 'entheogen-research center' characterization could not be verified here.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-16-report-immortality-key-024154
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-16-draft-immortality-key-025010
+        date: 2026-09-16
+    - id: TIK-E036
+      title: The preprint's proposed pennyroyal 'entourage effect', flagged by the authors as untested
+      claimIds:
+        - TIK-C032
+        - TIK-C006
+      sourceId: SRC-ANTONOPOULOS-2025
+      direction: context
+      strength: weak
+      sourceStatement: "The source proposes that pennyroyal's pulegone and rosmarinic acid may act synergistically with LSA and iso-LSA, \"possibly reducing anxiety and prolonging the entheogenic effects\", and adds: \"This hypothesis remains to be validated through targeted co-administration studies.\""
+      editorInference: A speculation the authors themselves mark as unvalidated; it enters as a claim for the record, ungraded, and as context toward TIK-C006 with zero present weight. It should not migrate into the article as a mechanism.
+      exactLocator: Discussion, final para. before Conclusion
+      limitations:
+        - Explicitly untested by the source.
+        - Rests on pharmacology of isolated constituents in other models (cited refs 57–59), not on the kykeon matrix.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-16-report-immortality-key-024154
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-16-draft-immortality-key-025010
+        date: 2026-09-16
+    - id: TIK-E037
+      title: The preprint asserts the Mysteries' psychedelic core from 'numerous accounts of the experience'
+      claimIds:
+        - TIK-C008
+      sourceId: SRC-ANTONOPOULOS-2025
+      direction: supports
+      strength: weak
+      sourceStatement: The source states "We can be reasonably certain of their psychedelic core through numerous accounts of the experience, namely ego dissolution and the "resurrection" of the soul into a higher state of being", and that Pindar and Cicero "both link initiation with knowledge of death and afterlife" (citing Mylonas).
+      editorInference: "The premise of TIK-C008 asserted by proponents in the same year Gainsford's post denies it a source; the 'numerous accounts' are not cited beyond Pindar and Cicero via Mylonas. Placed opposite E-GAINSFORD-PREMISE so the disagreement over the antecedent is visible. Weak: an assertion in a chemistry paper's introduction."
+      exactLocator: Introduction, para. 5
+      limitations:
+        - The ancient accounts are not quoted or located in the source.
+        - Chemistry paper's historical framing, by interested-network authors.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-16-report-immortality-key-024154
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-16-draft-immortality-key-025010
+        date: 2026-09-16
+  claims:
+    - id: TIK-C014
+      statement: Lipids biosynthesized by Claviceps (ergot) fungi — ricinoleic-acid triglycerides and estolides — survive in archaeological vessels as a recognizable chemical signature.
+      theme: chemistry
+      rung: observation
+      claimType: observation
+      sourceAnchor:
+        locator: Results and Discussion, para. beginning 'Figure 4 shows the chromatograms' — via PMC open-access copy
+        quote: ergot lipids survive quite well in different archaeological vessels
+        sourceId: SRC-LUCEJKO-2018
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-16-report-immortality-key-024154
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-16-draft-immortality-key-025010
+        date: 2026-09-16
+    - id: TIK-C015
+      statement: Ergot-derived lipids in an archaeological vessel indicate that the vessel once held cereals or cereal products.
+      theme: chemistry
+      rung: observation
+      claimType: methodological
+      sourceAnchor:
+        locator: Conclusion (final para. of Results and Discussion) — via PMC open-access copy
+        quote: a unique and relatively recalcitrant chemical signature for cereals
+        sourceId: SRC-LUCEJKO-2018
+        also:
+          - locator: Abstract
+            quote: produced by ergot fungi (genus Claviceps ), which are common cereal pests
+      parentClaimIds: []
+      dependsOnClaimIds:
+        - TIK-C014
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-16-report-immortality-key-024154
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-16-draft-immortality-key-025010
+        date: 2026-09-16
+    - id: TIK-C016
+      statement: Ten of 32 archaeological vessels from Sardinia, Calabria and Sicily analysed by Lucejko et al. (2018) carried ergot-derived lipids.
+      theme: chemistry
+      rung: observation
+      claimType: measurement
+      sourceAnchor:
+        locator: Results and Discussion, para. beginning 'Out of the 32 vessels analysed' — via PMC open-access copy
+        quote: Out of the 32 vessels analysed by GC/MS, ten vessels
+        sourceId: SRC-LUCEJKO-2018
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-16-report-immortality-key-024154
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-16-draft-immortality-key-025010
+        date: 2026-09-16
+    - id: TIK-C017
+      statement: Ergot lipid biomarkers in Late Neolithic vessels from the ritual-offering context of Domus de Janas IV (Molia, Illorai, Sardinia) were interpreted by their analysts as evidence of ritual offerings containing cereals.
+      theme: chemistry
+      rung: observation
+      claimType: interpretive
+      sourceAnchor:
+        locator: Results and Discussion, para. beginning 'The information obtained with our analytical approach' — via PMC open-access copy
+        quote: strongly suggest the use of such pottery for ritual offerings containing cereals
+        sourceId: SRC-LUCEJKO-2018
+        also:
+          - locator: Results and Discussion, para. 2
+            quote: probably used as the place for ritual offerings
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-16-report-immortality-key-024154
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-16-draft-immortality-key-025010
+        date: 2026-09-16
+    - id: TIK-C018
+      statement: The claim that Eleusinian initiates experienced a life-changing 'beatific vision' originates with Carl Kerényi's reading (1960/1967) of Plato, Phaedrus 250b–c.
+      theme: eleusis
+      rung: attribution
+      claimType: historical
+      sourceAnchor:
+        locator: Section 'Darkness and light', closing paras.
+        quote: The beatific vision isn’t in any ancient source. Kerényi invented it.
+        sourceId: SRC-GAINSFORD-2021
+        also:
+          - locator: "Section '‘Beatific vision’: ancient Eleusis and 14th century Christianity', para. 1"
+            quote: the basis for his idea of ecstatic visions
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-16-report-immortality-key-024154
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-16-draft-immortality-key-025010
+        date: 2026-09-16
+    - id: TIK-C019
+      statement: The phasmata and 'blessed sight and spectacle' of Plato, Phaedrus 250b–c refer to the deiknumena, the sacred objects displayed to Eleusinian initiates.
+      theme: eleusis
+      rung: observation
+      claimType: interpretive
+      sourceAnchor:
+        locator: "Section '‘Beatific vision’: ancient Eleusis and 14th century Christianity', paras. 2–4"
+        quote: yet another reference to the sacred deiknumena
+        sourceId: SRC-GAINSFORD-2021
+        also:
+          - locator: same section, para. 2
+            quote: The literal meaning of phasmata is ‘things shown’
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-16-report-immortality-key-024154
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-16-draft-immortality-key-025010
+        date: 2026-09-16
+    - id: TIK-C020
+      statement: No ancient source attests that Eleusinian initiation produced life-changing rapturous ecstasies.
+      theme: eleusis
+      rung: attribution
+      claimType: historical
+      sourceAnchor:
+        locator: Introductory list of corrections, item 1; section '‘Beatific vision’', final para.
+        quote: There’s no evidence of life-changing rapturous ecstasies at Eleusis.
+        sourceId: SRC-GAINSFORD-2021
+        also:
+          - locator: Section '‘Beatific vision’', final para.
+            quote: Kerényi’s Eleusinian raptures are entirely fictional.
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      contradictsClaimIds:
+        - TIK-C008
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-16-report-immortality-key-024154
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-16-draft-immortality-key-025010
+        date: 2026-09-16
+    - id: TIK-C021
+      statement: Within the Eleusinian initiation, the kykeon was drunk at the end of the day of fasting on the sixth day.
+      theme: eleusis
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: Section 'The kykeon', para. 1
+        quote: at the end of the day of fasting on the sixth day
+        sourceId: SRC-GAINSFORD-2021
+        also:
+          - locator: same para.
+            quote: ‘I fasted, I drank the kykeon’ (Clement of Alexandria, Protrepicus 2.21 )
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-16-report-immortality-key-024154
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-16-draft-immortality-key-025010
+        date: 2026-09-16
+    - id: TIK-C022
+      statement: At Eleusis the sacred objects (deiknumena) were shown to initiands after a period in total darkness ended by a sudden illumination of the hall at the hierophant's signal.
+      theme: eleusis
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: Section 'Darkness and light', para. beginning 'On the sixth night of the initiation'
+        quote: the presiding hierophant rang a gong, and the hall
+        sourceId: SRC-GAINSFORD-2021
+        also:
+          - locator: same para.
+            quote: guided into the gathering hall in total darkness
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-16-report-immortality-key-024154
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-16-draft-immortality-key-025010
+        date: 2026-09-16
+    - id: TIK-C023
+      statement: The most common function attested for kykeon preparations in Greek sources is medical, as a curative and refreshing draught.
+      theme: eleusis
+      rung: observation
+      claimType: interpretive
+      sourceAnchor:
+        locator: "Section 'The kykeon', para. 5 (citing Delatte 1955: 28–29 and schol. B on Il. 11.624)"
+        quote: is medical, as a curative and refreshing draught
+        sourceId: SRC-GAINSFORD-2021
+        also:
+          - locator: same section, quoted scholion
+            quote: The drink isn't given for medical treatment, but for refreshment.
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-16-report-immortality-key-024154
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-16-draft-immortality-key-025010
+        date: 2026-09-16
+    - id: TIK-C024
+      statement: A dose of pennyroyal large enough to affect the mind is likely also lethal.
+      theme: chemistry
+      rung: mechanism
+      claimType: mechanistic
+      sourceAnchor:
+        locator: Introductory list of corrections, item 7
+        quote: on the mind is also likely to cause death
+        sourceId: SRC-GAINSFORD-2021
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-16-report-immortality-key-024154
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-16-draft-immortality-key-025010
+        date: 2026-09-16
+    - id: TIK-C025
+      statement: The authors of the 2026 kykeon ergot-hydrolysis study declare that no external funding was received for the work.
+      theme: chemistry
+      rung: observation
+      claimType: observation
+      sourceAnchor:
+        locator: "Declarations: Funding"
+        quote: No external funding was received for this work
+        sourceId: SRC-ANTONOPOULOS-2025
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-16-report-immortality-key-024154
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-16-draft-immortality-key-025010
+        date: 2026-09-16
+    - id: TIK-C026
+      statement: In the 2026 kykeon ergot-hydrolysis study, the fungal isolation, hydrolysis experiments, and NMR and LC-MS analyses were performed by R. K. Antonopoulos.
+      theme: chemistry
+      rung: observation
+      claimType: observation
+      sourceAnchor:
+        locator: "Declarations: Author contributions statement"
+        quote: conducted the experiments, and performed the NMR and LC-MS analyses
+        sourceId: SRC-ANTONOPOULOS-2025
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-16-report-immortality-key-024154
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-16-draft-immortality-key-025010
+        date: 2026-09-16
+    - id: TIK-C027
+      statement: In the 2026 kykeon ergot-hydrolysis study, C. A. P. Ruck's stated contribution was to conceptual discussions and manuscript revision.
+      theme: chemistry
+      rung: observation
+      claimType: observation
+      sourceAnchor:
+        locator: "Declarations: Author contributions statement"
+        quote: contributed to conceptual discussions and manuscript revision
+        sourceId: SRC-ANTONOPOULOS-2025
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-16-report-immortality-key-024154
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-16-draft-immortality-key-025010
+        date: 2026-09-16
+    - id: TIK-C028
+      statement: In the 2026 factorial experiments, complete hydrolysis of the toxic ergopeptides was achieved only with 5% w/v ergot in initial pH 12.5 lye refluxed for at least 120 minutes.
+      theme: chemistry
+      rung: observation
+      claimType: measurement
+      sourceAnchor:
+        locator: Discussion, para. 1; Results, 'Quantitation of LSA and iso-LSA' para. 1
+        quote: at 5% w/v ergot sclerotia in an initial pH 12.5 lye solution for at least 120 min
+        sourceId: SRC-ANTONOPOULOS-2025
+        also:
+          - locator: Results, 'Quantitation of LSA and iso-LSA' para. 1
+            quote: residual toxic ergopeptides were consistently detected
+      parentClaimIds:
+        - TIK-C005
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-16-report-immortality-key-024154
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-16-draft-immortality-key-025010
+        date: 2026-09-16
+    - id: TIK-C029
+      statement: Ergometrine and ergometrinine remained detectable in the 2026 kykeon preparation (5% w/v ergot, pH 12.5 lye, 120 min) in which the predominant peptide ergot alkaloids were no longer detected.
+      theme: chemistry
+      rung: observation
+      claimType: measurement
+      sourceAnchor:
+        locator: Results, 'Qualitative analysis of EAs hydrolysis in putative kykeon preparations', para. 3
+        quote: while the signals corresponding to ergometrine (Em) and ergometrinine (Emn) were observed
+        sourceId: SRC-ANTONOPOULOS-2025
+      parentClaimIds:
+        - TIK-C005
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-16-report-immortality-key-024154
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-16-draft-immortality-key-025010
+        date: 2026-09-16
+    - id: TIK-C030
+      statement: In the 2026 factorial experiments, lye pH was the only statistically significant predictor of LSA and iso-LSA yield.
+      theme: chemistry
+      rung: observation
+      claimType: statistical
+      sourceAnchor:
+        locator: Results, 'Modeling and evaluation of LSA and iso-LSA yield responses', para. 1
+        quote: Lye pH was the sole significant predictor
+        sourceId: SRC-ANTONOPOULOS-2025
+        also:
+          - locator: same para.
+            quote: No interactions among independent variables were detected
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-16-report-immortality-key-024154
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-16-draft-immortality-key-025010
+        date: 2026-09-16
+    - id: TIK-C031
+      statement: The caustic initial pH of a wood-ash lye ergot preparation can be brought to a drinkable level by exposure to atmospheric CO2, addition of sclerotia, and mixing into the slightly acidic barley-mint kykeon.
+      theme: chemistry
+      rung: mechanism
+      claimType: mechanistic
+      sourceAnchor:
+        locator: Discussion, para. beginning 'One concern regarding the lye hypothesis'
+        quote: would further neutralize the pH, rendering kykeon safe to drink
+        sourceId: SRC-ANTONOPOULOS-2025
+        also:
+          - locator: Results, 'Effect of atmospheric neutralization and ergot sclerotia on lye solution pH'
+            quote: Adding ergot sclerotia powder further lowered the pH by approximately 2 units
+      parentClaimIds:
+        - TIK-C005
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-16-report-immortality-key-024154
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-16-draft-immortality-key-025010
+        date: 2026-09-16
+    - id: TIK-C032
+      statement: Pennyroyal constituents (pulegone and rosmarinic acid) act synergistically with LSA and iso-LSA to reduce anxiety and prolong the entheogenic effects of an ergot kykeon.
+      theme: chemistry
+      rung: mechanism
+      claimType: mechanistic
+      sourceAnchor:
+        locator: Discussion, final para. before Conclusion
+        quote: possibly reducing anxiety and prolonging the entheogenic effects
+        sourceId: SRC-ANTONOPOULOS-2025
+        also:
+          - locator: same para.
+            quote: This hypothesis remains to be validated through targeted co-administration studies.
+      parentClaimIds:
+        - TIK-C006
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-16-report-immortality-key-024154
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-16-draft-immortality-key-025010
+        date: 2026-09-16
+    - id: TIK-C033
+      statement: About one gram of ergot per initiate, processed under the 2026 study's optimal lye conditions, would supply the literature minimum effective dose of LSA (about 0.5 mg).
+      theme: chemistry
+      rung: mechanism
+      claimType: statistical
+      sourceAnchor:
+        locator: Discussion, para. beginning 'Regarding the quantities of ergot required'
+        quote: about 1 g of ergot would suffice for each initiate
+        sourceId: SRC-ANTONOPOULOS-2025
+        also:
+          - locator: same para.
+            quote: the minimum effective dose of pure LSA is approximately 0.5 mg
+      parentClaimIds:
+        - TIK-C006
+      dependsOnClaimIds:
+        - TIK-C028
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-16-report-immortality-key-024154
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-16-draft-immortality-key-025010
+        date: 2026-09-16
+    - id: TIK-C034
+      statement: The host plants of Claviceps paspali became naturalized in Europe only in the 19th century.
+      theme: chemistry
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: Discussion, para. beginning 'With regard to origin' (final sentence, citing ref. 52)
+        quote: only became naturalized in the 19th century
+        sourceId: SRC-ANTONOPOULOS-2025
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-16-report-immortality-key-024154
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-16-draft-immortality-key-025010
+        date: 2026-09-16
+    - id: TIK-C035
+      statement: The field-collected ergot used in the 2026 kykeon experiments was identified by rDNA-ITS sequencing as Claviceps purpurea (strain ATHUM 10382).
+      theme: chemistry
+      rung: observation
+      claimType: observation
+      sourceAnchor:
+        locator: Results, 'Micromorphological and molecular identification of ergot'
+        quote: identified it as belonging to Claviceps purpurea (Fr.) Tul.
+        sourceId: SRC-ANTONOPOULOS-2025
+        also:
+          - locator: Methods, 'Source, micromorphological and molecular identification of ergot', para. 1
+            quote: (strain ATHUM 10382) are safeguarded at the Fungal Culture Collection
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-16-report-immortality-key-024154
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-16-draft-immortality-key-025010
+        date: 2026-09-16
+  research:
+    - id: TIK-R009
+      title: Specify lysergamide-targeted analytes, not ergot lipids, for any Eleusinian residue programme
+      summary: "Residue chemists already use ergot lipids (ricinoleic-acid triglycerides and estolides) as a marker for cereals in vessels. A lipid-based assay on Eleusinian or Pontós ceramics would therefore report 'barley was here', an expected result for any kykeon vessel, and could not distinguish contaminated grain from a processed preparation. This item asks that TIK-R001 and TIK-R004 be run with targets that could discriminate: LSA, iso-LSA, lysergic acid and their degradation products by UHPLC/Q-TOF-HRMS on interior sherd extracts, with soil and exterior-surface controls, paired with the lipid assay as a cereal control. A lysergamide signal above background, in a vessel whose lipid profile also shows cereal, would move the claim of deliberately prepared ergot in the Eleusinian kykeon (TIK-C007); a cereal-positive, lysergamide-negative result across a curated series would be the first genuine negative at the sanctuary rather than the present untested absence."
+      claimIds:
+        - TIK-C007
+        - TIK-C004
+        - TIK-C015
+      track: either
+      effortTier: lab
+      informationGain: "Converts the empty cell at Eleusis into a discriminating test: it prevents a predictable 'ergot present' from being read as a hit and makes a null result informative."
+      origin:
+        ref: report 2026-09-16-report-immortality-key-024154
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-16-draft-immortality-key-025010
+        date: 2026-09-16
+    - id: TIK-R010
+      title: Read Juan-Tresserras 2002 (pp. 548–556, 477–481) for what was identified at Pontós and against what background
+      summary: "Open the two chapters in Pons i Brun (ed.), Mas Castellar de Pontós (2002), and Juan-Tresserras 2000 (Complutum 11), and record: (i) the identification method for the reported ergot (microscopy of sclerotium fragments, phytoliths, any alkaloid chemistry); (ii) whether the report compares the vessel and dental-calculus finds with grain or flour samples from elsewhere on the site (mills, storage pits) — the contrast that would lift the find above the cereal-marker base rate; (iii) the vessel's form, context and associated residues; and (iv) the excavators' basis (Adroher, Pons & Ruiz de Arbulo 1993, AEspA 66) for the Demeter/Persephone attribution of the sanctuary. A documented site-wide contrast would raise the diagnosticity of TIK-C004 toward TIK-C007; its absence would leave Pontós a barley-vessel with the fungus barley carries."
+      claimIds:
+        - TIK-C004
+        - TIK-C007
+      track: publication_prize
+      effortTier: desk
+      informationGain: Replaces a citation chain with the primary text and decides whether the case's one hard physical datum is diagnostic or background.
+      origin:
+        ref: report 2026-09-16-report-immortality-key-024154
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-16-draft-immortality-key-025010
+        date: 2026-09-16
+    - id: TIK-R011
+      title: Audit Kerényi's reading of Phaedrus 250b–c against the text and modern commentaries
+      summary: Set Kerényi 1967 (Eleusis, p. 99) beside Plato, Phaedrus 250b–c in Greek and the commentaries of Yunis (2011), Waterfield (2002) and Cosmopoulos (2015), and separately check whether Plutarch fr. 178 Sandbach, Pindar fr. 137 and Sophocles fr. 837 describe an experience during initiation or the afterlife expectations of initiates. Determine whether any ancient text independent of Kerényi's construction attests a transformative experience at initiation. If none does, the antecedent of TIK-C008 is a modern construction and the claim that the 'beatific vision' originates with Kerényi stands; if one does, the phasmata argument is narrowed to Plato alone.
+      claimIds:
+        - TIK-C008
+        - TIK-C018
+        - TIK-C019
+        - TIK-C020
+      track: publication_prize
+      effortTier: desk
+      informationGain: Decides whether the drug-versus-ritual dispute has a phenomenon to explain, which governs the weight of every mechanism claim above it.
+      origin:
+        ref: report 2026-09-16-report-immortality-key-024154
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-16-draft-immortality-key-025010
+        date: 2026-09-16
+    - id: TIK-R012
+      title: Open the other reported ergot-in-vessel and ergot-in-body finds
+      summary: "The report names, from a secondary survey that could not be retrieved, further claimed ergot finds: pyxides from the Middle Bronze Age cult area at Portorusso (Otranto) (Aprile & Tiberi 2016), a small vessel from a La Tène burial at Czernikowice, Poland (Łaciak et al. 2023), and the gut contents of Grauballe Man (Stolarczyk et al. 2020), plus the two other archaeological cards the book relies on, a Calvari d'Amposta beer and a Pompeian villa drug-wine (Ciaraldi 2000). Open each primary report and record the analyte (lipids, sclerotia, alkaloids), the context, and whether the analysts distinguished deliberate from incidental presence — in particular any quantitative dose estimate of the Grauballe kind. Together these fix the base rate TIK-R008 needs and test whether Pontós is unique in combining ingestion with a Demeter-linked context."
+      claimIds:
+        - TIK-C001
+        - TIK-C004
+        - TIK-C002
+      track: publication_prize
+      effortTier: desk
+      informationGain: Widens or narrows the 'ritual ergot' pattern and supplies models for testing deliberate against incidental presence.
+      origin:
+        ref: report 2026-09-16-report-immortality-key-024154
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-16-draft-immortality-key-025010
+        date: 2026-09-16
+    - id: TIK-R013
+      title: Co-administration test of pennyroyal constituents with LSA/iso-LSA
+      summary: The 2026 authors propose, and mark as untested, that pulegone and rosmarinic acid from pennyroyal potentiate or prolong the effects of LSA/iso-LSA. The test is a controlled co-administration study — in vitro receptor and MAO-A assays first, then an animal behavioral model — comparing the LSA/iso-LSA mixture alone with the mixture plus pennyroyal extract at ratios matching the reconstructed kykeon. Measured potentiation or prolongation would support the pennyroyal 'entourage effect' claim and bear on whether the full preparation could deliver what TIK-C006 requires; no difference would retire the proposal.
+      claimIds:
+        - TIK-C032
+        - TIK-C006
+      track: small_grant
+      effortTier: lab
+      informationGain: Tests the one mechanism the proponents have added since 2020 before it migrates into the narrative as fact.
+      origin:
+        ref: report 2026-09-16-report-immortality-key-024154
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-16-draft-immortality-key-025010
+        date: 2026-09-16
+  images: []
+corrections:
+  - record: SRC-JUAN-TRESSERRAS-2002
+    field: title
+    from: "Estudis dels residus orgànics per a la identificació de possibles ritus i ofrenes; Els productes vegetals per a ús domèstic (chapters in Mas Castellar de Pontós (Alt Empordà): Un complex arqueològic d'època ibèrica (Excavacions 1990–1998), ed. E. Pons i Brun)"
+    to: "Estudis dels residus orgànics per a la identificació de possibles ritus i ofrenes (pp. 548–556); Els productes vegetals per a ús domèstic a partir de la caracterització de microrrestes vegetals i compostos orgànics (pp. 477–481) (chapters in Mas Castellar de Pontós (Alt Empordà): Un complex arqueològic d'època ibèrica (Excavacions 1990–1998), ed. E. Pons i Brun; Museu d'Arqueologia de Catalunya–Girona)"
+    reason: "The retrieved Research Square preprint of the 2026 paper (refs. 23–24) gives the page ranges 548–556 and 477–481 and the publisher for the two chapters; adding them gives TIK-R004 and the desk read of the primary an exact target. Verification stays unverified: the chapters themselves were not opened."
+  - record: IMG-TIK-P05
+    field: depicts
+    from: The floor of the Telesterion at Eleusis — the initiation hall where, for nearly two millennia, initiates drank the kykeon at the climax of the Mysteries. The sanctuary is excavated and its ceramics curated; the residue question the photograph cannot answer is carried by TIK-C007.
+    to: "The floor of the Telesterion at Eleusis — the initiation hall in which, for nearly two millennia, the Mysteries reached their climax. The kykeon's place in the programme is a point of scholarly dispute: the initiates' formula 'I fasted, I drank the kykeon' ties it to the end of the sixth day's fast, and no source states that it was drunk in this hall. The sanctuary is excavated and its ceramics curated; the residue question the photograph cannot answer is carried by TIK-C007."
+    reason: The caption states as fact that the kykeon was drunk 'at the climax' in the Telesterion. The retrieved Gainsford post places it at the end of the sixth day's fast and says initiation 'didn't consist of one ritual drink'; the report also carries (from Bremmer 2014, not retrievable this pass) a reading that puts it outside the Greater Mysteries altogether. A plate caption should not settle a timing the specialists dispute; the revised text keeps the hall and the climax and leaves the drink's placement open.
+dispositions:
+  - key: url:samorini.it/archeologia/varie/archeologia-ergot
+    kind: source
+    disposition: blocked
+    reason: Samorini, 'Archeologia dell'ergot' — returned HTTP 403; the reported vessel contents (beer residue, yeast), the 25-year-old mandible, and the mill-flour negative at Pontós could not be read and enter only as the test described in the research item on reading Juan-Tresserras 2002.
+    reopenIf: The page is retrieved, or — preferably — the primary chapters it summarizes are read.
+    observed: samorini.it/archeologia/varie/archeologia-ergot/ (report F2, F3; proposals 4–5)
+    by: 2026-09-16-draft-immortality-key-025010
+    date: 2026-09-16
+    route: "Skip the survey: open Juan-Tresserras 2002 in Pons i Brun (ed.), Mas Castellar de Pontós, pp. 548–556 and 477–481 (Museu d'Arqueologia de Catalunya–Girona), and Juan-Tresserras 2000, Complutum 11: 261–274."
+  - key: url:samorini.it/archeologia/europa/misteri-eleusini/inebrianti-eleusini
+    kind: source
+    disposition: blocked
+    reason: Samorini, 'Ipotesi sugli inebrianti eleusini' — HTTP 403; not read.
+    reopenIf: Retrieved via a working mirror or archive copy.
+    observed: samorini.it/archeologia/europa/misteri-eleusini/inebrianti-eleusini/ (report F2)
+    by: 2026-09-16-draft-immortality-key-025010
+    date: 2026-09-16
+    route: Archive.org capture of the page, or the primary texts it cites.
+  - key: url:scispace.com/pdf/initiation-into-the-mysteries-of-the-ancient-world-59lo0nkd1g.pdf
+    kind: source
+    disposition: blocked
+    reason: Bremmer 2014, Initiation into the Mysteries of the Ancient World — the scispace mirror PDF failed text extraction ('Invalid PDF structure'); none of the passages the report cites (Ch. I §1 p. 3; §3 pp. 13–14; §4; Ch. VII p. 165) could be verified. The ledger's Bremmer material remains as carried by SRC-REASON-2025 (TIK-E018).
+    reopenIf: The De Gruyter open-access text is retrieved with readable pages.
+    observed: Report F4 and proposals 6–7 (kykeon outside the Greater Mysteries programme; Plutarch fr. 178 as stagecraft; no immortality language at Eleusis; Christianity not esoteric)
+    by: 2026-09-16-draft-immortality-key-025010
+    date: 2026-09-16
+    route: Obtain the canonical De Gruyter open-access edition (Berlin/Boston 2014) from the publisher's site and quote with page numbers.
+  - key: text:report proposal 7
+    kind: evidence
+    disposition: blocked
+    reason: Proposed Bremmer evidence toward TIK-C003, TIK-C007, TIK-C008 and TIK-C012 (kykeon timing; staged terror; absence of immortality language) depends on the Bremmer source, which was not retrievable this pass.
+    reopenIf: The Bremmer text is read.
+    observed: Report proposal 7
+    by: 2026-09-16-draft-immortality-key-025010
+    date: 2026-09-16
+    route: "As for the Bremmer source: canonical De Gruyter open-access PDF."
+  - key: url:nature.com/articles/s41598-026-39568-3
+    kind: source
+    disposition: duplicate
+    as: SRC-ANTONOPOULOS-2026
+    reason: The Nature HTML of the published 2026 paper is the source the ledger already holds as SRC-ANTONOPOULOS-2026; the fetch here served a bot-challenge page. The Discussion passages the report cites from it (pennyroyal 'entourage' proposal) were read instead in the Research Square preprint, proposed as its own source.
+    reopenIf: Never as a new source; wording differences between preprint and published version would be corrections on SRC-ANTONOPOULOS-2026.
+    observed: nature.com/articles/s41598-026-39568-3 (report F6)
+    by: 2026-09-16-draft-immortality-key-025010
+    date: 2026-09-16
+  - key: url:cannabisculture.com/content/2021/03/14/the-immortality-key-lost-on-the-road-to-eleusis
+    kind: source
+    disposition: irrelevant
+    reason: Bennett 2021 (Cannabis Culture) — returned HTTP 403 and, as the report itself concluded, is a partisan secondary venue whose useful points are the primary finds it names (Calvari d'Amposta; Ciaraldi 2000 on the Pompeian villa), which should be opened directly. Not needed as a source.
+    reopenIf: A specific observation in it proves unavailable from any primary.
+    observed: Report F7 and item 13
+    by: 2026-09-16-draft-immortality-key-025010
+    date: 2026-09-16
+    route: "Open the primaries: the Calvari d'Amposta beer report and Ciaraldi 2000 on the Pompeian villa."
+  - key: text:report f7 ruck self experiment anecdote
+    kind: evidence
+    disposition: irrelevant
+    reason: The anecdote relayed by Bennett that Ruck reported little effect from a Hofmann-prepared sample is unverifiable hearsay from an unretrieved secondary source; it is not an observation and does not enter.
+    reopenIf: A first-person, dated account by a named participant is published.
+    observed: Report F7, Ruck self-experiment anecdote
+    by: 2026-09-16-draft-immortality-key-025010
+    date: 2026-09-16
+  - key: text:report f2 proposal 3
+    kind: source
+    disposition: blocked
+    reason: "Juan-Tresserras 2000, Complutum 11: 261–274 — not retrieved; the PDF URL the report relays (memoriadigitalvasca.es) is itself unverified and was not allowed by the fetcher."
+    reopenIf: The article is retrieved from Complutum's own archive or a library copy.
+    observed: Report F2, proposal 3
+    by: 2026-09-16-draft-immortality-key-025010
+    date: 2026-09-16
+    route: Complutum (Universidad Complutense de Madrid) journal archive, vol. 11 (2000), pp. 261–274; or interlibrary loan.
+  - key: doi:10.3989/aespa.1993.v66.459
+    kind: source
+    disposition: blocked
+    reason: "Adroher, Pons & Ruiz de Arbulo 1993, Archivo Español de Arqueología 66: 31–70 — the excavators' basis for the Demeter/Persephone attribution of the Pontós sanctuary; not opened (URL not allowed). The 'sanctuary linked to the two Eleusinian goddesses' clause of TIK-C004 therefore still rests on the 2026 paper's citation."
+    reopenIf: The article is retrieved.
+    observed: Report F2, proposal 10; DOI as given in the retrieved preprint's ref. 22
+    by: 2026-09-16-draft-immortality-key-025010
+    date: 2026-09-16
+    route: AEspA is open access at the CSIC journals site; resolve the DOI there.
+  - key: text:report proposal 10
+    kind: claim
+    disposition: blocked
+    reason: Report proposal 10 — splitting the 'sanctuary linked to the two Eleusinian goddesses' clause out of TIK-C004 and marking it as carried by citation only — cannot be executed without the excavators' text (Adroher et al. 1993); TIK-C004's statement is not shown to be wrong, only unverified at its source.
+    reopenIf: Adroher et al. 1993 is read; then either the attribution is anchored or the statement is corrected.
+    observed: Report proposal 10
+    by: 2026-09-16-draft-immortality-key-025010
+    date: 2026-09-16
+    route: "Read AEspA 66 (1993): 31–70."
+  - key: text:report f3 proposal 5
+    kind: source
+    disposition: blocked
+    reason: Aprile & Tiberi 2016 (Studi di Antichità 14) on the Portorusso pyxides — named only via the unretrieved Samorini survey; not opened; identifier not verified.
+    reopenIf: The report is retrieved and its analyte and context read.
+    observed: Report F3, proposal 5
+    by: 2026-09-16-draft-immortality-key-025010
+    date: 2026-09-16
+    route: Locate Studi di Antichità 14 (Università del Salento) and read the ergosterol/ricinoleic-acid interpretation.
+  - key: text:report f3 proposal 5
+    kind: source
+    disposition: blocked
+    reason: Łaciak et al. 2023 (Praehistorische Zeitschrift 98(2)) on the Czernikowice vessel — named only via the unretrieved Samorini survey; not opened.
+    reopenIf: Retrieved and read.
+    observed: Report F3, proposal 5
+    by: 2026-09-16-draft-immortality-key-025010
+    date: 2026-09-16
+    route: De Gruyter, Praehistorische Zeitschrift 98(2), 2023.
+  - key: text:report f3 next questions
+    kind: source
+    disposition: blocked
+    reason: Stolarczyk et al. 2020 on Grauballe Man's gut ergot and the dose estimate rejecting deliberate use — named only via the unretrieved Samorini survey; not opened.
+    reopenIf: Retrieved and read; the dose-estimate method is a model for TIK-R004.
+    observed: Report F3, next questions
+    by: 2026-09-16-draft-immortality-key-025010
+    date: 2026-09-16
+    route: Locate the 2020 Grauballe Man ergot reassessment by author and year in a bibliographic database.
+  - key: text:report proposal 12
+    kind: edition
+    disposition: blocked
+    reason: Report proposal 12 — softening the summary's 'the one ergot-in-cult-context find' — rests on the other ergot finds known only through the unretrieved Samorini survey; the summary is not shown to be wrong from any text read this pass.
+    reopenIf: The Portorusso, Czernikowice or Grauballe primaries are read and show a cult-context ergot find.
+    observed: Report proposal 12
+    by: 2026-09-16-draft-immortality-key-025010
+    date: 2026-09-16
+    route: See the research item on opening the other reported ergot finds.
+  - key: text:report 4 narrative suggestion
+    kind: image
+    disposition: blocked
+    reason: A photograph or catalogue entry of the Pontós vessel and mandible (Museu d'Arqueologia de Catalunya–Girona) was suggested; no public record URL, license or credit was shown.
+    reopenIf: A museum catalogue record with a public URL and license is found.
+    observed: Report §4, narrative suggestion
+    by: 2026-09-16-draft-immortality-key-025010
+    date: 2026-09-16
+    route: Search the Museu d'Arqueologia de Catalunya online collection for Mas Castellar de Pontós objects.
+  - key: text:report item 13
+    kind: source
+    disposition: irrelevant
+    reason: phys.org / To Vima press coverage of the 2026 paper — secondary reportage of a source the ledger already holds; not opened, and the report itself declined it.
+    reopenIf: Coverage carries a quotation from a critic or author not otherwise on record.
+    observed: Report item 13
+    by: 2026-09-16-draft-immortality-key-025010
+    date: 2026-09-16
+  - key: text:report 6 coverage
+    kind: source
+    disposition: failed
+    reason: The 'Sanz (UGR) Neolithic paper' the report downloaded but did not read — no title, identifier, or observation supplied; nothing to propose.
+    reopenIf: A later pass reads it and states what it says.
+    observed: Report §6 Coverage
+    by: 2026-09-16-draft-immortality-key-025010
+    date: 2026-09-16
+  - key: text:report proposal 5
+    kind: research
+    disposition: duplicate
+    as: TIK-R008
+    reason: Report proposal 5 asks to 'extend TIK-R008' with leads; list fields of existing records are not corrected here. The leads are carried instead by the proposed research item on opening the other reported ergot finds, which names the same reports as desk work without importing their unread results.
+    observed: Report proposal 5
+    by: 2026-09-16-draft-immortality-key-025010
+    date: 2026-09-16
+report: proposals/2026-09-16-report-immortality-key-024154/report.md

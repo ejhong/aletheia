@@ -149,7 +149,8 @@ export function chooseNext(opts: SittingOptions): NextChoice {
       case: c.record.slug,
       verb: opts.force.verb,
       ...(opts.force.verb === "report" ? { seat: MODELS.research.default as ResearchSeat } : {}),
-      reason: `dispatched by hand${opts.force.by ? ` by ${opts.force.by}, the founder's GitHub login (config/founder.yaml), through workflow_dispatch` : " at the operator's terminal"} for this case (the founder's door); the ledger's own choice resumes with the next step`,
+      // Only a given dispatcher is a fact about who opened the door; an absent one is recorded as absent, not as a terminal (review note #308).
+      reason: `dispatched by hand${opts.force.by ? ` by ${opts.force.by}, the founder's GitHub login (config/founder.yaml), through workflow_dispatch` : "; dispatcher not recorded (no --dispatcher was given)"} for this case (the founder's door); the ledger's own choice resumes with the next step`,
     };
   }
   const runs = readRuns(root);

@@ -103,6 +103,9 @@ switch (verb) {
     if (forcedCase && !["report", "edition", "check"].includes(forcedVerb)) { console.error(`--verb must be report, edition or check (got ${forcedVerb})`); process.exit(2); }
     // The door is the founder's: a dispatch that names who opened it must name the founder's GitHub login.
     const dispatcher = flagValue("--dispatcher");
+    // In CI the door cannot be opened anonymously: the workflow always names github.actor, so a forced choice
+    // without --dispatcher there is a caller going around the check (review note #308).
+    if (forcedCase && !dispatcher && process.env.GITHUB_ACTIONS === "true") { console.error("--case in CI needs --dispatcher <github login>; nothing runs"); process.exit(2); }
     if (forcedCase && dispatcher) {
       const login = founderLogin();
       if (!login || dispatcher !== login) { console.error(`--case is the founder's door: dispatched by ${dispatcher}, and config/founder.yaml names ${login ?? "no GitHub login"}; nothing runs`); process.exit(2); }

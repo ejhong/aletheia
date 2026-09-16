@@ -4,10 +4,10 @@ import { stringify as stringifyYaml } from "yaml";
 import { z } from "zod";
 import { SpendRowSchema, type SpendRowInput, type Verb } from "../domain/intake.ts";
 import { loadConfig } from "../domain/config.ts";
-import { readSpend, spendFile } from "../domain/spend.ts";
+import { readSpendFile, spendRunFile } from "../domain/spend.ts";
 
 // The read side of the ledger lives in the domain (src/domain/spend.ts); the pipeline writes through it.
-export { readSpend, spendByCase, spendFile, spendFor, sumCost } from "../domain/spend.ts";
+export { readSpend, readSpendFile, spendByCase, spendDir, spendFile, spendFor, spendRunFile, sumCost } from "../domain/spend.ts";
 
 /**
  * The spend ledger (docs/AUTOMATION.md, "The code"): one place, inside the
@@ -90,13 +90,14 @@ export function priceOf(model: string, usage: TokenUsage, tariffs = loadTariffs(
 
 export function recordSpend(row: SpendRowInput, root = process.cwd()): void {
   const parsed = SpendRowSchema.parse(row);
-  const rows = readSpend(root);
+  // One file per run (src/domain/spend.ts): concurrent sittings never write the same file.
+  const file = spendRunFile(parsed.runId, root);
+  const rows = readSpendFile(file);
   rows.push(parsed);
-  const file = spendFile(root);
   fs.mkdirSync(path.dirname(file), { recursive: true });
   fs.writeFileSync(
     file,
-    "# Spend ledger — every paid model call, appended by the transport (src/pipeline/spend.ts).\n" +
+    `# Spend ledger, run ${parsed.runId} — every paid model call of this run, appended by the transport (src/pipeline/spend.ts).\n` +
       "# Tokens are the vendor's report; usd is null unless config/tariffs.yaml carries a reviewed tariff.\n" +
       stringifyYaml(rows, { lineWidth: 0 }),
   );

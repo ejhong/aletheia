@@ -57,7 +57,7 @@ demotes the case until re-checked. That is why new overlays may auto-merge.
 One CLI, four verbs, one direction (docs/AUTOMATION.md, "The verbs"). Every
 run writes `proposals/<runId>/run.yaml` with its cost; every paid call is
 checked against `config/budget.yaml` first and recorded in
-`governance/spend.yaml`. Dollars appear only for models with a reviewed
+`governance/spend.yaml` (rows through 2026-09-16) and `governance/spend/<runId>.yaml` (one file per run since). Dollars appear only for models with a reviewed
 tariff in `config/tariffs.yaml`.
 
 ```bash

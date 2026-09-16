@@ -24,7 +24,7 @@ adds:
   the vendor payload (`proposals/<runId>/raw.json`, without fetched page
   bodies), a run record, and spend rows stamped with the model that served.
 - **A budget guard and a spend ledger** (`config/budget.yaml`,
-  `governance/spend.yaml`).
+  `governance/spend.yaml` (rows through 2026-09-16) and `governance/spend/<runId>.yaml` (one file per run since)).
 
 ## Candidates, by stage
 

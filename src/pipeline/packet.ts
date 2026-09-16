@@ -45,7 +45,8 @@ export interface Packet {
   };
   index: {
     sources: { id: string; title: string; year: string | null; keys: string[]; verification: string; background: boolean }[];
-    claims: { id: string; statement: string; rung: string; theme: string; featured: boolean; verdict: string | null; anchors: number }[];
+    /** `evidence` is the number of admitted evidence records citing the claim; `anchors` counts its own source anchor with them. 0 evidence = held on its anchor alone. */
+    claims: { id: string; statement: string; rung: string; theme: string; featured: boolean; verdict: string | null; anchors: number; evidence: number }[];
     evidence: { id: string; title: string; claimIds: string[]; sourceId: string; direction: string; strength: string }[];
     research: { id: string; title: string; claimIds: string[] }[];
     studies: { id: string; title: string; collected: boolean }[];
@@ -125,6 +126,7 @@ export function buildPacket(
         featured: c.featured,
         verdict: opts.blind ? null : c.verdict,
         anchors: (c.claim.sourceAnchor ? 1 : 0) + (evidenceCount.get(c.claim.id) ?? 0),
+        evidence: evidenceCount.get(c.claim.id) ?? 0,
       })),
       evidence: loaded.evidence.map((e) => ({
         id: e.id,

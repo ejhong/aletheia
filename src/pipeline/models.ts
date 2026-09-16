@@ -596,7 +596,28 @@ export async function anthropicJson<T = unknown>(
   try {
     data = (strict ? JSON.parse(text) : parseJsonReply(text)) as T;
   } catch (e) {
-    throw new Error(`${served}: reply was not the JSON the schema demanded (${(e as Error).message})`);
+    // A structured-output reply that is not JSON happens (2026-09-16: the fallback model answered a split with a
+    // truncated array and one bad reply ended a sitting). Ask once more with the schema as instructions; only a
+    // second failure is the caller's problem, and it says what came back.
+    if (strict) {
+      console.error(`${meter.runId}: ${served} returned a reply that was not JSON in strict mode; asking once more with the schema as instructions`);
+      const m2 = await anthropicPost(request(false), opts.fetchImpl ?? fetch, opts.timeoutMs ?? 1_800_000);
+      const who2 = servedBy(m2, model);
+      const usage2 = usageOf(m2);
+      let usd2: number | null = 0;
+      for (const [bm, bu] of usageByModel(m2, who2.model)) {
+        const part = recordTokens(meter, bm, bu);
+        usd2 = usd2 === null || part === null ? null : usd2 + part;
+      }
+      const text2 = m2.content.filter((b) => b.type === "text").map((b) => b.text ?? "").join("");
+      try {
+        const data2 = parseJsonReply(text2) as T;
+        return { data: data2, model: who2.model, usage: usage2, usd: usd2, strict: false, ...(who2.fallback ? { fallback: who2.fallback } : {}) };
+      } catch (e2) {
+        throw new Error(`${who2.model}: reply was not the JSON the schema demanded, twice (${(e2 as Error).message}); the reply began: ${JSON.stringify(text2.slice(0, 160))}`);
+      }
+    }
+    throw new Error(`${served}: reply was not the JSON the schema demanded (${(e as Error).message}); the reply began: ${JSON.stringify(text.slice(0, 160))}`);
   }
   return { data, model: served, usage, usd, strict, ...(who.fallback ? { fallback: who.fallback } : {}) };
 }

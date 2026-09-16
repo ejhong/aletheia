@@ -223,7 +223,7 @@ describe("a forced first choice (the founder's door)", () => {
     const slug = cases[cases.length - 1].record.slug;
     const forced = chooseNext({ force: { case: slug, verb: "edition" } });
     expect(forced).toMatchObject({ case: slug, verb: "edition" });
-    expect(forced.reason).toMatch(/dispatched by hand at the operator's terminal/);
+    expect(forced.reason).toMatch(/dispatched by hand; dispatcher not recorded/);
     expect(chooseNext({ force: { case: slug, verb: "edition", by: "ejhong" } }).reason).toMatch(/dispatched by hand by ejhong, the founder's GitHub login/);
     expect(chooseNext({ force: { case: slug, verb: "report" } })).toMatchObject({ case: slug, verb: "report", seat: expect.any(String) });
     expect(() => chooseNext({ force: { case: "no-such-case", verb: "report" } })).toThrow(/no such case/);

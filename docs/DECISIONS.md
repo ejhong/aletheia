@@ -2286,3 +2286,7 @@ The chain workflow spliced the `case` and `verb` dispatch inputs into shell sour
 ## 2026-09-16 — The verification report says what the writer did (review note #304)
 
 The verify run of the Immortality Key sitting (#303) reported an image-caption correction as "NOT applied: record IMG-TIK-P05 is not in the ledger" while the same run applied it: the report's lookup covered four ledger files, and the writer knows five. The report now looks in every file the writer knows, and once the writer has run, its Corrections section is rewritten from the writer's own outcome, so a forecast can no longer stand as the record of a run (the second time this class of disagreement was found; the first, 2026-09-10, was an absent field). The seat's other two points on #303 — a caption resting on a source the run could not retrieve, and an article premise whose evidence was rejected — are content, answered in the ledger separately. Supervised-by: founder (direction in session, 2026-09-16).
+
+## 2026-09-16 — A dispatcher not given is recorded as not given (review note #308)
+
+#307 had the forced choice say "at the operator's terminal" whenever no `--dispatcher` was passed, which the absence of a flag does not establish, and it left the founder-login check avoidable by omitting the flag. The reason now reads "dispatcher not recorded (no --dispatcher was given)" in that case, and in CI (`GITHUB_ACTIONS`), where the workflow always names `github.actor`, a forced choice without `--dispatcher` refuses to run. Supervised-by: founder (direction in session, 2026-09-16).

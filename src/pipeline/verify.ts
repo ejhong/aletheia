@@ -498,7 +498,15 @@ export async function judgeProposal(
     if (verdict.atomic === false) {
       // One split round (§3.5: mixed effects are split): the drafter divides the statement into one
       // observation each, every part keeping a verbatim quote; each part is checked and judged on its own.
-      const sp = asSplit(await split(e.sourceStatement, fetched.text, meter, "evidence"));
+      let sp: SplitResult;
+      try {
+        sp = asSplit(await split(e.sourceStatement, fetched.text, meter, "evidence"));
+      } catch (err) {
+        // One malformed reply is this record's problem, not the sitting's (2026-09-16: a split reply that was not
+        // JSON ended a verify run after 34 good calls, and the sitting with it).
+        reject(e.id, "evidence", e.title, `not one observation (${verdict.reason}); the split failed: ${(err as Error).message}`);
+        continue;
+      }
       const admitted: Evidence[] = [];
       for (const [n, part] of sp.parts.entries()) {
         const label = `${e.id} part "${part.slice(0, 60)}"`;
@@ -576,7 +584,13 @@ export async function judgeProposal(
         }
         if (verdict.atomic === false) {
           // One split round (§3.2): the drafter divides the statement; each part is judged on the same anchor.
-          const sp = asSplit(await split(c.statement, fetched.text, meter));
+          let sp: SplitResult;
+          try {
+            sp = asSplit(await split(c.statement, fetched.text, meter));
+          } catch (err) {
+            reject(c.id, "claim", c.statement, `not atomic (${verdict.reason}); the split failed: ${(err as Error).message}`);
+            continue;
+          }
           const admitted: Claim[] = [];
           for (const part of sp.parts) {
             const id = nextClaimId(loaded, [...proposal.adds.claims.map((k) => k.id), ...okClaims.map((k) => k.id), ...admitted.map((k) => k.id)]);

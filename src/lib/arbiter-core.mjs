@@ -411,3 +411,31 @@ export function rateLimitGate(
     rateLimited: true,
   };
 }
+
+// ---------------------------------------------------------------- budget-parked PRs
+
+/** The data block the arbiter appends to its sticky comment, parsed; null when absent or unreadable. */
+export function arbiterData(body) {
+  const marker = "<!-- aletheia-arbiter-data ";
+  const i = (body ?? "").indexOf(marker);
+  if (i < 0) return null;
+  const rest = body.slice(i + marker.length);
+  const end = rest.lastIndexOf("-->");
+  if (end < 0) return null;
+  try {
+    return JSON.parse(rest.slice(0, end).trim());
+  } catch {
+    return null;
+  }
+}
+
+/** A PR parked on the weekly budget alone: the verdict is park and the reason names the spent budget. */
+export function parkedOnBudget(body) {
+  const d = arbiterData(body);
+  return !!d && d.verdict === "park" && /content-merge budget is spent/.test(d.reason ?? "");
+}
+
+/** Oldest first (lowest PR number), as many as there is room for. */
+export function pickForRejudge(parked, room) {
+  return [...(parked ?? [])].sort((a, b) => a.number - b.number).slice(0, Math.max(0, room));
+}

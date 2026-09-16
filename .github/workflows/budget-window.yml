@@ -1,0 +1,34 @@
+name: Budget window
+
+# The arbiter judges a PR only when it is pushed or reopened. A PR parked on the weekly
+# content-merge budget alone — panel content, checks green — would otherwise wait for a hand
+# (2026-09-16: #303 and #305 sat like that until the founder merged them). Every three hours:
+# if the window has room, re-run the last arbiter run of the oldest such PRs, one per free slot
+# (scripts/rejudge-parked.mjs). Honors the kill switch in governance/operation.yaml.
+
+on:
+  schedule:
+    - cron: "23 */3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: write
+  pull-requests: read
+
+jobs:
+  rejudge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Re-judge what the window now has room for
+        env:
+          GH_TOKEN: ${{ secrets.MAINTENANCE_PAT || secrets.GITHUB_TOKEN }}
+        run: node scripts/rejudge-parked.mjs origin/main

@@ -8,13 +8,28 @@ import { SpendRowSchema, type Cost, type SpendRow } from "./intake.ts";
  * call, appended by the pipeline's transport, priced only from a reviewed
  * tariff and null otherwise. The pages and the budget guard read it here.
  */
+/** The original single ledger: every row through 2026-09-16. Read, never written to, since then. */
 export const spendFile = (root = process.cwd()) => path.join(root, "governance", "spend.yaml");
+/**
+ * Since 2026-09-16 the transport writes one file per run under governance/spend/, so two sittings that
+ * overlap never touch the same file: the single ledger made every pair of concurrent chain PRs conflict,
+ * and the second sat unmergeable with every check green until a hand resolved it.
+ */
+export const spendDir = (root = process.cwd()) => path.join(root, "governance", "spend");
+export const spendRunFile = (runId: string, root = process.cwd()) => path.join(spendDir(root), `${runId.replace(/[^A-Za-z0-9._-]/g, "_")}.yaml`);
 
-export function readSpend(root = process.cwd()): SpendRow[] {
-  const file = spendFile(root);
+/** The rows of one ledger file; none when the file is absent. */
+export function readSpendFile(file: string): SpendRow[] {
   if (!fs.existsSync(file)) return [];
   const raw = parseYaml(fs.readFileSync(file, "utf8"));
   return Array.isArray(raw) ? raw.map((r) => SpendRowSchema.parse(r)) : [];
+}
+
+/** The whole ledger: the single file's rows first, then each run's file in name order (run ids begin with their date). */
+export function readSpend(root = process.cwd()): SpendRow[] {
+  const dir = spendDir(root);
+  const perRun = fs.existsSync(dir) ? fs.readdirSync(dir).filter((f) => f.endsWith(".yaml")).sort() : [];
+  return [...readSpendFile(spendFile(root)), ...perRun.flatMap((f) => readSpendFile(path.join(dir, f)))];
 }
 
 /** Sum a set of spend rows into a cost; dollars only when every row was priced. */

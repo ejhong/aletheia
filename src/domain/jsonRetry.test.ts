@@ -2,8 +2,8 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { parse } from "yaml";
 import { anthropicJson } from "../pipeline/models.ts";
+import { readSpend } from "../pipeline/spend.ts";
 
 /** A strict structured-output reply that is not JSON (2026-09-16: the fallback
  *  model answered a verify split with a truncated array, and that one reply
@@ -99,10 +99,7 @@ describe("anthropicJson when the strict reply is not JSON", () => {
       (bodies[1].output_config as { format?: unknown }).format,
     ).toBeUndefined();
     expect(String(bodies[1].system)).toContain("JSON Schema");
-    const rows = parse(
-      fs.readFileSync(path.join(root, "governance", "spend.yaml"), "utf8"),
-    ) as { runId: string }[];
-    expect(rows.map((x) => x.runId)).toEqual(["test-run", "test-run"]);
+    expect(readSpend(root).map((x) => x.runId)).toEqual(["test-run", "test-run"]);
   });
 
   it("fails on a second bad reply and quotes what came back", async () => {

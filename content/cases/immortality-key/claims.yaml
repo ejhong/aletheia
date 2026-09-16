@@ -230,3 +230,102 @@
     date: "2026-08-25"
   parentClaimIds: [ TIK-C012 ]
   dependsOnClaimIds: []
+
+- id: TIK-C028
+  statement: In the factorial experiments reported in the 2026 paper, complete hydrolysis of the toxic ergopeptides was achieved only with 5% w/v ergot in initial pH 12.5 lye refluxed for at least 120 minutes.
+  theme: chemistry
+  rung: observation
+  claimType: measurement
+  sourceAnchor:
+    locator: Discussion, para. 1; Results, 'Quantitation of LSA and iso-LSA' para. 1
+    quote: at 5% w/v ergot sclerotia in an initial pH 12.5 lye solution for at least 120 min
+    sourceId: SRC-ANTONOPOULOS-2025
+    also:
+      - locator: Results, 'Quantitation of LSA and iso-LSA' para. 1
+        quote: residual toxic ergopeptides were consistently detected
+  parentClaimIds:
+    - TIK-C005
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-16-report-immortality-key-024154
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-16-draft-immortality-key-025010
+    date: 2026-09-16
+- id: TIK-C029
+  statement: Ergometrine and ergometrinine remained detectable in the kykeon preparation reported in the 2026 paper (5% w/v ergot, pH 12.5 lye, 120 min) in which the predominant peptide ergot alkaloids were no longer detected.
+  theme: chemistry
+  rung: observation
+  claimType: measurement
+  sourceAnchor:
+    locator: Results, 'Qualitative analysis of EAs hydrolysis in putative kykeon preparations', para. 3
+    quote: while the signals corresponding to ergometrine (Em) and ergometrinine (Emn) were observed
+    sourceId: SRC-ANTONOPOULOS-2025
+  parentClaimIds:
+    - TIK-C005
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-16-report-immortality-key-024154
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-16-draft-immortality-key-025010
+    date: 2026-09-16
+- id: TIK-C033
+  statement: About one gram of ergot per initiate, processed under the optimal lye conditions of the study published in 2026, would supply the literature minimum effective dose of LSA (about 0.5 mg).
+  theme: chemistry
+  rung: mechanism
+  claimType: statistical
+  sourceAnchor:
+    locator: Discussion, para. beginning 'Regarding the quantities of ergot required'
+    quote: about 1 g of ergot would suffice for each initiate
+    sourceId: SRC-ANTONOPOULOS-2025
+    also:
+      - locator: same para.
+        quote: the minimum effective dose of pure LSA is approximately 0.5 mg
+  parentClaimIds:
+    - TIK-C006
+  dependsOnClaimIds:
+    - TIK-C028
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-16-report-immortality-key-024154
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-16-draft-immortality-key-025010
+    date: 2026-09-16
+- id: TIK-C034
+  statement: The host plants of Claviceps paspali became naturalized in Europe only in the 19th century.
+  theme: chemistry
+  rung: observation
+  claimType: historical
+  sourceAnchor:
+    locator: Discussion, para. beginning 'With regard to origin' (final sentence, citing ref. 52)
+    quote: only became naturalized in the 19th century
+    sourceId: SRC-ANTONOPOULOS-2025
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-16-report-immortality-key-024154
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-16-draft-immortality-key-025010
+    date: 2026-09-16
+- id: TIK-C035
+  statement: The field-collected ergot used in the kykeon experiments reported in the 2026 paper was identified by rDNA-ITS sequencing as Claviceps purpurea (strain ATHUM 10382).
+  theme: chemistry
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: Results, 'Micromorphological and molecular identification of ergot'
+    quote: identified it as belonging to Claviceps purpurea (Fr.) Tul.
+    sourceId: SRC-ANTONOPOULOS-2025
+    also:
+      - locator: Methods, 'Source, micromorphological and molecular identification of ergot', para. 1
+        quote: (strain ATHUM 10382) are safeguarded at the Fungal Culture Collection
+  parentClaimIds: []
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-16-report-immortality-key-024154
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-16-draft-immortality-key-025010
+    date: 2026-09-16

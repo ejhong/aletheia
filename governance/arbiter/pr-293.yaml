@@ -1,0 +1,109 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 293
+title: Edition fixtures post-date any real incumbent
+url: https://github.com/ejhong/aletheia/pull/293
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-16
+judgedAgainst: eb2217f005
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches only `src/domain/chain.test.ts`, a test fixture:
+      the synthetic edition context's `now` moves from 2026-09-09 to 2099-01-01,
+      with two expected runId strings updated to match the derived date. No
+      content/ records, citations, locators, or provenance stamps are added or
+      altered, and the CITATION VERIFICATION section confirms no identifiers
+      appear. The ordering check itself (an edition must post-date its
+      predecessor) is left intact in the production code — only the fixture is
+      moved out of the way of the real case's growing incumbent, so this is not
+      check-weakening or reclassification to dodge a check. AGENTS.md is
+      untouched and no run records are involved. The inline comment honestly
+      explains why the date was changed, which aids inspectability rather than
+      obscuring it."
+    cost:
+      model: claude-opus-5
+      inputTokens: 1321
+      outputTokens: 326
+      usd: 0.017948
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.15
+    reasoning: The change only updates a clearly identified test fixture timestamp
+      and its derived run-ID expectations; it does not alter published content,
+      run records, or provenance. The far-future date prevents the fixture from
+      predating the evolving real-case incumbent while preserving the production
+      check that rejects editions dated before their predecessors. No citation,
+      confidential material, constitutional edit, or weakening of a §3.15 gate
+      is present.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 3609
+      outputTokens: 261
+      usd: 0.020168
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §8
+      - §10
+    reasoning: This is a routine test fixture maintenance change in
+      src/domain/chain.test.ts. It updates the mock timestamp context to the far
+      future (2099-01-01) so unit tests assembling candidate editions against
+      real domain data do not fail ordering checks when real incumbents are
+      updated. The change modifies no content, affects no constitutional checks
+      or rules, and adheres to code maintenance requirements.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 5284
+      outputTokens: 275
+      usd: 0.004994
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff only retimes a test fixture in chain.test.ts from 2026-09-09
+      to 2099-01-01 and updates the two expected runId strings that derive from
+      that clock. No content/, citations, assessments, provenance stamps, or
+      AGENTS.md are touched; the RUN ACCOUNT is empty and nothing is omitted.
+      The change keeps the assembly-rule checks from colliding with a real case
+      incumbent dated 2026-09-16 and does not weaken any §3 check or present
+      unratified material as ratified.
+    cost:
+      model: grok-4.5
+      inputTokens: 5045
+      outputTokens: 131
+      usd: 0.010991
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "This is a test-only fixture change in `src/domain/chain.test.ts`: a
+      candidate edition's date moves from 2026-09-09 to 2099 so the fixture
+      always post-dates the real incumbent case after sitting #291, and the two
+      expected runId strings are updated to match. No content files, citations,
+      locators, or provenance records are touched — the citation-verification
+      section confirms no identifiers were added, and the run account is empty
+      because no pipeline run is claimed. Nothing here edits AGENTS.md,
+      publishes anything, or loosens a §3.15 check: the 'dated before its
+      predecessor' validation still runs and still fails a stale fixture, which
+      is exactly what caught the brittleness; the test now exercises the
+      assembly rules against a stable calendar rather than dodging validation.
+      The diff's explanation is coherent and matches the code change, and
+      ordinary test maintenance is not violation. No confidence material,
+      fabricated records, or provenance misattribution is visible."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 3499
+      outputTokens: 344
+      usd: 0.001042
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 18758
+  outputTokens: 1337
+  usd: 0.0551
+harvestedAt: 2026-09-16

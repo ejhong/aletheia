@@ -1,0 +1,164 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 296
+title: "Chain: 2026-09-16 (interrupted during a later step — partial account)"
+url: https://github.com/ejhong/aletheia/pull/296
+verdict: pass
+reason: 4 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-16
+judgedAgainst: eb2217f005
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches nothing under content/: it adds three harvested
+      governance/arbiter records, spend rows, and a proposals/ working bundle
+      (report, draft proposal, partial verify judgments/splits, run records).
+      AGENTS.md is untouched and the proposal.yaml carries the explicit header
+      'Never citable; nothing here is a record until adopted through the gate',
+      so no unratified draft is presented as ratified. Accounting is internally
+      consistent: the report run's 3.274411 USD equals the 3.144411 + 0.13 spend
+      rows, cache/input token totals reconcile to the run.yaml's 2,489,975, and
+      the draft and verify rows match their run records and the PR body's
+      figures. The interrupted verify step is recorded as outcome: failed with
+      the exact JSON parse error and the model that produced it — a refusal
+      reported honestly rather than papered over, and its partial judgments
+      (which themselves flag non-atomic sourceStatements and mislocated quotes)
+      are kept visible rather than discarded. Provenance is stamped throughout
+      (runId/model/date/promptVersion/inputHash), sources carry ai_verified
+      labels with retrieval notes and genre caveats, evidence directions are
+      explicit, independence is flagged (preprint = same performance as
+      TIK-E008, not a replication), and unretrievable sources are dispositioned
+      'blocked'/'irrelevant' with routes to the primary rather than being cited
+      unread. The one probable-duplicate risk (preprint vs. published
+      Antonopoulos) is disclosed in novelty.md and handled by an explicit
+      duplicate disposition. The only omitted file is the report's raw.json
+      working material, which cannot decide compliance given the whole report.md
+      and proposal are visible."
+    cost:
+      model: claude-opus-5
+      inputTokens: 91013
+      outputTokens: 1427
+      usd: 0.493934
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: unsure
+    rules:
+      - §3.8
+      - §3.9
+      - §3.13
+      - §3.15
+    reasoning: The omitted raw.json is a newly public run record, and without it I
+      cannot determine whether its source material, retrieval provenance, or
+      contents violate the fabrication or confidence-material rules. It is
+      particularly needed to reconcile report.md saying the report model “opened
+      and used” Samorini, Bremmer, and Bennett with novelty.md and the proposal
+      recording those URLs as not retrievable; these may describe different
+      retrieval stages, but the visible packet cannot establish that. The
+      visible proposal is clearly labeled never citable and unadopted, while
+      run.yaml honestly marks verification as failed, so the verifier’s partial
+      findings of inaccurate locators, compound evidence statements, and wrong
+      directions do not by themselves publish those defects into the ledger. I
+      would need raw.json to confirm the report’s provenance and that no
+      confidential or fabricated source material is being committed.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 65812
+      outputTokens: 1124
+      usd: 0.28624
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: The pull request commits only governance and proposal artifacts from
+      an interrupted pipeline run; no files under content/ or AGENTS.md are
+      modified. Three harvested arbiter verdicts (PRs 287, 288, 289) are added
+      verbatim as append-only records, and governance/spend.yaml accurately
+      accounts for all API calls across the report, draft, and failed verify
+      stages. The proposed additions under proposals/ are explicitly flagged as
+      non-citable working proposals, and the verify failure (a JSON syntax error
+      on verify-v6) is documented transparently in
+      proposals/2026-09-16-verify-immortality-key-025720/run.yaml. The single
+      omitted file (raw.json) is raw retrieval data from the report stage; its
+      contents cannot alter the fact that nothing is published or adopted into
+      the ledger. No unratified draft is presented as ratified, no checks are
+      loosened, and all provenance and spend entries are fully consistent.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 75829
+      outputTokens: 2481
+      usd: 0.066175
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.9
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: "The diff touches only proposals/, governance/arbiter harvests, and
+      spend — no content/ ledger records and no AGENTS.md edit. Proposal
+      envelopes are explicitly never-citable until the gate; the draft sets
+      edition: null, stamps runId/model/date/promptVersion, and the PR/run
+      records honestly mark verify as failed and the chain as interrupted. The
+      draft admits only three retrieved sources as ai_verified,
+      disposition-blocks the HTTP-403/PDF-fail/bot-challenge set with reopen
+      routes, separates sourceStatement from editorInference, keeps strengths
+      weak/moderate, and leaves Juan-Tresserras page locators unverified while
+      sourced to the preprint’s refs. Harvested pr-287/288/289 YAMLs are
+      append-only machine records of prior public seats; spend rows match the
+      run accounts. Report-vs-novelty tension over Samorini/Bremmer/Bennett is
+      real but confined to never-citable working material that the draft already
+      filtered out of adds, so it is ordinary pipeline imperfection rather than
+      published fabrication or check-weakening."
+    cost:
+      model: grok-4.5
+      inputTokens: 68381
+      outputTokens: 272
+      usd: 0.138509
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: "The change adds only operational records (harvested arbiter
+      verdicts, spend rows, run records) and non-citable working material under
+      proposals/, explicitly stamped 'Never citable; nothing here is a record
+      until adopted through the gate'; nothing under content/ is added, no
+      citation identifiers are introduced, and AGENTS.md is untouched. The
+      interrupted chain is disclosed honestly: the verify run's failure
+      (outcome: failed, JSON error) is recorded in its run.yaml rather than
+      papered over, so no unratified draft is presented as ratified and the gate
+      itself was not dodged — it tripped and was recorded as tripping. The
+      proposal's epistemic hygiene is strong: it refuses to import report claims
+      from the five sources it could not retrieve (Samorini, Bremmer, Bennett
+      are dispositioned 'blocked' with routes to the primaries), keeps the
+      Juan-Tresserras correction marked unverified, and the verify judgments
+      honestly record locator failures and direction mislabels
+      (locatorSupported: false, directionRight: false) rather than hiding them.
+      Spend arithmetic checks out exactly (report 3.144411+0.13=3.274411; the 35
+      verify calls sum to 1.544664), and the harvested arbiter files — including
+      PR 289's lone check-weakening dissent recorded as a review note and PR
+      288's failed seat — are internally consistent with the constitution's
+      procedures. My one reservation is that the report.md claims to have opened
+      pages the drafter later found unretrievable, but transient
+      403/bot-challenge failures are plausible, the drafter explicitly refused
+      to enter any of that unverifiable material, and the omitted raw.json is a
+      working file whose compliance-relevant content (what entered the ledger)
+      is decided by the visible proposal, which entered none of it."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 67052
+      outputTokens: 5458
+      usd: 0.013132
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 368087
+  outputTokens: 10762
+  usd: 0.998
+harvestedAt: 2026-09-16

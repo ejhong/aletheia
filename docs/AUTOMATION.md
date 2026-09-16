@@ -128,6 +128,37 @@ and modular code, with the loop on. The facts first, then the plan.
   that case; the standing stays displayed as contested until the panel
   re-judges.
 
+## The goal
+
+The founder's direction of 2026-09-16, given in session and recorded in
+the decisions log: make this site present, assess and cover its
+controversies really well, so that it keeps improving as more AI dollars
+are thrown at it — a recursive self-improvement of a narrow kind, running
+in a long loop over time, trying to make the site the best it can be.
+Three things follow for every part of this design.
+
+- **Money is the input; improvement per dollar is the measure.** A sitting
+  is judged by what it left better against what it cost: coverage (a
+  case's ledger holds more of what is known, verified, and refused with
+  reasons), assessment (the standing is better calibrated and the panel
+  concurs with fewer notes), or presentation (a reader finds the state of
+  the question sooner and can drop to its record). A sitting that spends
+  and leaves nothing better is a defect to be found and fixed, not a cost
+  of doing business.
+- **The loop improves itself, not only the content.** What a run teaches
+  — a seat's objection, a stalled merge, a record rejected that should have
+  been blocked — becomes a gate, a protocol version, or a fix, recorded in
+  the decisions log, so that later dollars buy more than earlier ones. The
+  operator's standing task is to turn review notes into mechanism.
+- **Better is not longer.** Editions are measured in what a reader learns
+  per screen, ledgers in what a researcher can verify, standings in how
+  well they survive the next pass. Growth in words, records or runs is not
+  the goal and does not count as improvement.
+
+The human levers stay exactly two: the kill switch and the constitution.
+Everything else — what to work on, when, how much to spend within the
+caps, what to fix — is the loop's, under this document and AGENTS.md.
+
 ## Purpose
 
 The site is a compression under constraint: the best honest summary AI can

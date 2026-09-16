@@ -2290,3 +2290,9 @@ The verify run of the Immortality Key sitting (#303) reported an image-caption c
 ## 2026-09-16 — A dispatcher not given is recorded as not given (review note #308)
 
 #307 had the forced choice say "at the operator's terminal" whenever no `--dispatcher` was passed, which the absence of a flag does not establish, and it left the founder-login check avoidable by omitting the flag. The reason now reads "dispatcher not recorded (no --dispatcher was given)" in that case, and in CI (`GITHUB_ACTIONS`), where the workflow always names `github.actor`, a forced choice without `--dispatcher` refuses to run. Supervised-by: founder (direction in session, 2026-09-16).
+
+## 2026-09-16 — The founder's direction: the loop's goal; two hand merges declared supervised
+
+The founder, in session: "remember your goal is to make this site present and assess and cover these controversies really well — so that it keeps improving as I throw more AI dollars at it. Kind of a RSI sort of thing. It runs in a long loop over time trying to make it the best it can be." Written into docs/AUTOMATION.md as "The goal": money is the input and improvement per dollar the measure; the loop improves its own machinery from what runs teach; better is not longer. AGENTS.md is the founder's to amend; a sentence for §1 is proposed in the PR that carried this entry.
+
+The same day the founder merged #305 and #303 by hand while the autonomous lane stood at its cap ("i merged them both by hand (forgot to add comment)"), without the `Supervised-by:` trailer. Both had passed the panel and were parked on the budget alone. Their squash commits (d914626, 8fc3e2e) are declared supervised in the arbiter's per-merge list, so the loop's own window is not spent by the founder's hand. Supervised-by: founder (direction in session, 2026-09-16).

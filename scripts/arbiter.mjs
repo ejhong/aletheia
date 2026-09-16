@@ -251,6 +251,11 @@ const SUPERVISED_DECLARED = new Set([
   "b46b3798bd5f9a1318350648d766b94dcc8ccf71", // #246 caption record, no second drop, opening tests — founder, in session
   "6f37578af34e2d372fd2681dc04b6c1c988cfe9a", // #249 the lab-site cover — founder: "switch it to that one", 2026-09-09
   "c28f3f064c8b809b01f14bdd2356e07982a25e05", // #250 five evidence corrections — founder: "do the pr to fix things", 2026-09-09
+  // Two merges the founder made by hand on 2026-09-16 while the autonomous lane was at its cap, without the
+  // trailer — founder, in session: "i merged them both by hand (forgot to add comment)". Both had passed the
+  // panel (#305 5/5; #303 4/5 with a review note answered on the record) and were parked on the budget alone.
+  "d91462670f5ff3916277fc68894aa56895a74851", // #305 provenance stamps stay only where they hold — founder hand merge, 2026-09-16
+  "8fc3e2e3f41f62098160d5b0efadc32fca480b1f", // #303 chain sitting: immortality-key verify + edition, orch-or edition — founder hand merge, 2026-09-16
 ]);
 const since = new Date(
   Math.max(Date.now() - 7 * 86400000, GATE_EPOCH),

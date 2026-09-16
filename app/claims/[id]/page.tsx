@@ -153,9 +153,9 @@ function UnfeaturedClaimView({ view, cv }: { view: ClaimView; cv: CaseView }) {
           </section>
         ) : null}
 
-        {evidence.length > 0 ? (
-          <section>
-            <h2 className="font-serif text-2xl tracking-tight">Evidence</h2>
+        <section>
+          <h2 className="font-serif text-2xl tracking-tight">Evidence</h2>
+          {evidence.length > 0 ? (
             <div className="mt-4 grid lg:grid-cols-2 gap-4">
               {evidence.map((e) => (
                 <EvidenceCard
@@ -165,8 +165,15 @@ function UnfeaturedClaimView({ view, cv }: { view: ClaimView; cv: CaseView }) {
                 />
               ))}
             </div>
-          </section>
-        ) : null}
+          ) : (
+            <p className="mt-3 text-[14px] text-faint italic font-serif">
+              No evidence records attached yet — this claim is held on its
+              source anchor alone: the ledger knows where the proposition is
+              stated and has admitted no observation behind it. A source is
+              not evidence.
+            </p>
+          )}
+        </section>
 
         <section className="border border-line bg-paper-deep/50 p-5">
           <h2 className="font-mono text-[11px] uppercase tracking-[0.18em] text-copper">

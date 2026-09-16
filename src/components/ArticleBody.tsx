@@ -62,6 +62,14 @@ function MarginNote({ claim: view }: { claim: ClaimView }) {
       <p className="mt-1 text-[12px] leading-snug text-ink-soft line-clamp-4">
         {claim.statement}
       </p>
+      {view.evidenceCount === 0 ? (
+        <p
+          className="mt-1 text-[10px] uppercase tracking-[0.12em] text-ink-soft/70"
+          title="The ledger knows where this proposition is stated and has admitted no observation behind it yet: a source is not evidence."
+        >
+          anchored, not yet evidenced
+        </p>
+      ) : null}
       {verdict ? (
         <div className="mt-1.5">
           <AssessmentBadge state={verdict} />

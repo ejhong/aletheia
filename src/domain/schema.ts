@@ -541,6 +541,9 @@ export const ChangeLogEntrySchema = z.object({
   reason: z.string(),
   actor: z.string(),
   aiAssisted: z.boolean(),
+  /** The run (or operator session) and prompt version behind the entry, when the actor line alone would not let a reader reconstruct it (§3.15). */
+  runId: z.string().min(1).optional(),
+  promptVersion: z.string().min(1).optional(),
   /**
    * `content` (default): evidence, claims, assessments, corrections —
    * what the homepage feed leads with. `housekeeping`: artwork, watch
@@ -759,6 +762,24 @@ export const EditionSchema = z
     accounts: z.array(z.string().min(10)).max(6).optional(),
     /** The article: constrained markdown with [text]{claim=…} and {plate:…} markers. */
     article: z.string().min(40),
+    /**
+     * By-hand changes to a candidate before publication (an operator answering a review note), each with
+     * the same stamp every change carries — who, when, under which run and prompt version, why, and which
+     * fields — so `producedBy` names the run that wrote the candidate and this names what changed after
+     * (2026-09-16, review notes on #291: the amendments had actor and date but no run id or prompt version).
+     */
+    amendments: z
+      .array(
+        z.object({
+          date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+          by: z.string().min(1),
+          runId: z.string().min(1),
+          promptVersion: z.string().min(1),
+          reason: z.string().min(10),
+          fields: z.array(z.string().min(1)).min(1),
+        }),
+      )
+      .optional(),
   })
   .strict();
 export type Edition = z.infer<typeof EditionSchema>;

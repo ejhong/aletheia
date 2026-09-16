@@ -2272,3 +2272,7 @@ the failure names the head of what came back; and in verify a split that
 fails rejects that one record ("the split failed: …") and the run goes on.
 The half-done chain rule then resumes the case at verify next sitting.
 (Operator record, founder's session of 2026-09-16.)
+
+## 2026-09-16 — By-hand amendments carry the full stamp (review notes on #291)
+
+An operator answering a review note on a candidate edition changed the article and the rationale by hand. The history entries named the actor and the date, but nothing carried a run id or a prompt version, and the edition's only full stamp (`producedBy`) pointed at the verb's run, whose reply is the pre-amendment text. Two seats asked for structured provenance. The edition schema gains an optional `amendments` list (date, by, runId, promptVersion, reason, fields); changelog entries gain optional `runId` and `promptVersion`. By-hand work uses the operator session id as its run id and `operator-by-hand-v1` as its prompt version, so §3.15's "which model did what, when, and how it was checked" holds for hand edits too. The accounts-inheritance test now reads the real case's incumbent rather than assuming it has no accounts (a sitting had set five). Supervised-by: founder (direction in session, 2026-09-16).

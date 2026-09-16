@@ -332,7 +332,7 @@ describe("assembling an edition", () => {
     const ed = c.editions.at(-1)!;
     return { rationale: "a test edition that re-adopts the incumbent's judgment", question: null, accounts: [], featuredClaimIds: ed.featuredClaimIds, cruxOrder: ed.cruxOrder, article: ed.article, assessment: null, ...over };
   };
-  const ctx = { model: "claude-opus-5", promptVersion: "edition-v1", now: new Date("2026-09-09T12:00:00Z"), root: process.cwd() };
+  const ctx = { model: "claude-opus-5", promptVersion: "edition-v1", /* far future: a fixture edition must post-date whatever incumbent the real case has grown (2026-09-16: a sitting's new megalithic-casting edition made a 2026-09-09 fixture "dated before its predecessor") */ now: new Date("2099-01-01T12:00:00Z"), root: process.cwd() };
 
   it("the question and the accounts are the edition's: restated when given, inherited when not", () => {
     const c = geo();
@@ -408,9 +408,9 @@ describe("assembling an edition", () => {
     });
     const ok = assembleEdition(c, reply, ctx);
     expect(ok.errors).toEqual([]);
-    expect(ok.assessment?.runId).toBe("2026-09-09-edition-120000");
+    expect(ok.assessment?.runId).toBe("2099-01-01-edition-120000");
     expect(ok.assessment?.basis?.ledgerHash).toBe(c.ledgerHash);
-    expect(ok.edition.assessment?.runId).toBe("2026-09-09-edition-120000");
+    expect(ok.edition.assessment?.runId).toBe("2099-01-01-edition-120000");
     const thin = assembleEdition(c, { ...reply, assessment: { ...reply.assessment!, steelman: "people disagree" } }, ctx);
     expect(thin.errors.some((e) => /steelman/.test(e))).toBe(true);
     const missing = assembleEdition(c, { ...reply, assessment: { ...reply.assessment!, claimAssessments: treatments.slice(1) } }, ctx);

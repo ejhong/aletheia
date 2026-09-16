@@ -4,7 +4,7 @@ import fs from "node:fs";
 import { describe, expect, it } from "vitest";
 import { loadOperation } from "./governance.ts";
 import { getCaseBySlug, loadAllCases } from "./load.ts";
-import { cadenceDays, nextAction, inboxPending } from "../pipeline/next.ts";
+import { cadenceDays, nextAction, inboxPending, chooseNext, runNext } from "../pipeline/next.ts";
 import type { RunRecord } from "./intake.ts";
 
 const run = (over: Partial<RunRecord>): RunRecord => ({
@@ -214,5 +214,23 @@ describe("cases with an open sitting", () => {
     expect(nextAction(cases, [], "2026-09-20", new Set(), inbox, busy)).toMatchObject({ case: b.record.slug, verb: "inbox" });
     const all = new Map(cases.map((c) => [c.record.slug, "chain/x"]));
     expect(nextAction(cases, [], "2026-09-20", new Set(), inbox, all)).toMatchObject({ case: null, verb: "rest" });
+  });
+});
+
+describe("a forced first choice (the founder's door)", () => {
+  const cases = loadAllCases();
+  it("takes the case and verb given, then hands the sitting back to the ledger", async () => {
+    const slug = cases[cases.length - 1].record.slug;
+    const forced = chooseNext({ force: { case: slug, verb: "edition" } });
+    expect(forced).toMatchObject({ case: slug, verb: "edition" });
+    expect(forced.reason).toMatch(/dispatched by hand/);
+    expect(chooseNext({ force: { case: slug, verb: "report" } })).toMatchObject({ case: slug, verb: "report", seat: expect.any(String) });
+    expect(() => chooseNext({ force: { case: "no-such-case", verb: "report" } })).toThrow(/no such case/);
+    // Two steps: the first is forced, the second is the ledger's own choice, whatever it is.
+    const seen: string[] = [];
+    const r = await runNext({ run: true, steps: 2, force: { case: slug, verb: "edition" }, deps: { perform: async (choice) => { seen.push(choice.reason); return { choice, ran: [] }; } } });
+    expect(r.choice).toMatchObject({ case: slug, verb: "edition" });
+    expect(seen[0]).toMatch(/dispatched by hand/);
+    expect(seen[1]).not.toMatch(/dispatched by hand/);
   });
 });

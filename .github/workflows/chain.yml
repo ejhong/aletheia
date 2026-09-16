@@ -22,6 +22,15 @@ on:
         description: "Run although governance/operation.yaml says paused (the founder launching a run by hand)"
         type: boolean
         default: false
+      case:
+        description: "Force the first choice onto this case slug (the founder's door); empty lets the ledger choose"
+        default: ""
+        required: false
+      verb:
+        description: "With case: the verb of the forced first choice"
+        type: choice
+        options: [report, edition, check]
+        default: report
   # Turned on by the founder on 2026-09-09 (direction in session), after the
   # first supervised run in CI (#214). Weekly: one sitting of three budgeted
   # choices a week, about $30, within config/budget.yaml's caps; the founder
@@ -80,7 +89,9 @@ jobs:
           # Cases with a sitting still open on an unmerged chain/* branch are not chosen again (scripts/busy-cases.mjs).
           busy=$(node scripts/busy-cases.mjs || true)
           [ -n "$busy" ] && echo "::notice::not choosing: $busy"
-          node scripts/aletheia.ts next --run --steps "${{ github.event.inputs.steps || '3' }}" --deadline-minutes 240 --max-cases 2 --out next.json --busy "$busy"
+          force=""
+          if [ -n "${{ github.event.inputs.case }}" ]; then force="--case ${{ github.event.inputs.case }} --verb ${{ github.event.inputs.verb || 'report' }}"; echo "::notice::first choice forced: $force"; fi
+          node scripts/aletheia.ts next --run --steps "${{ github.event.inputs.steps || '3' }}" --deadline-minutes 240 --max-cases 2 --out next.json --busy "$busy" $force
       # Runs whatever became of the chain step — a failed step, a deadline, a cancelled or
       # timed-out job: what the sitting wrote is committed and judged, and the spend rows
       # reach the ledger. Money spent is recorded, whatever became of the run.

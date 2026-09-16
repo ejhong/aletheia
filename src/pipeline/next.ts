@@ -7,6 +7,8 @@ import { runEdition } from "./edition.ts";
 import { runReport } from "./report.ts";
 import { readRuns, type RunOutcome } from "./store.ts";
 import { runVerify } from "./verify.ts";
+import { MODELS } from "../lib/models.mjs";
+import type { ResearchSeat } from "../domain/schedule.ts";
 
 /**
  * `aletheia next` — what the ledger wants done, and for which case (docs/
@@ -80,6 +82,12 @@ export interface SittingOptions {
   maxCases?: number;
   /** Cases not to choose, each with why — an open sitting on an unmerged branch (scripts/busy-cases.mjs). */
   busy?: Map<string, string>;
+  /**
+   * The founder's door for a sitting: the first choice is this case and verb, recorded as dispatched by hand; every
+   * later choice in the sitting is the ledger's own (2026-09-15: five editions were due before any research pass,
+   * and the hard path had to be reachable without waiting three Mondays).
+   */
+  force?: { case: string; verb: "report" | "edition" | "check" };
   /** Called after every choice with the sitting so far, so a caller can write progress to disk as it goes. */
   onProgress?: (soFar: NextOutcome) => void;
   /** Test seams: the clock, one choice-and-run, or the choice and the run apart. */
@@ -95,6 +103,8 @@ export async function runNext(opts: SittingOptions = {}): Promise<NextOutcome> {
   const began = now();
   const minutesGone = () => (now() - began) / 60_000;
   const first = await once(opts);
+  // A forced first choice does not repeat: the rest of the sitting is the ledger's.
+  const restOpts: SittingOptions = { ...opts, force: undefined };
   const steps = Math.max(1, opts.steps ?? 1);
   const progress = (): NextOutcome => ({ ...first, ...(more.length ? { more } : {}) });
   const more: NextOutcome[] = [];
@@ -110,16 +120,16 @@ export async function runNext(opts: SittingOptions = {}): Promise<NextOutcome> {
       break;
     }
     if (opts.deps?.once) {
-      last = await once(opts);
+      last = await once(restOpts);
     } else {
-      const choice = choose(opts);
+      const choice = choose(restOpts);
       if (opts.maxCases !== undefined && choice.case && !cases.has(choice.case) && cases.size >= opts.maxCases) {
         first.stopped = { reason: "cases", afterMinutes: Math.round(minutesGone()), stepsMade: i, cases: [...cases] };
         opts.onProgress?.(progress());
         break;
       }
       if (choice.case) cases.add(choice.case);
-      last = await perform(choice, opts);
+      last = await perform(choice, restOpts);
     }
     more.push(last);
     opts.onProgress?.(progress());
@@ -132,6 +142,16 @@ export async function runNext(opts: SittingOptions = {}): Promise<NextOutcome> {
 export function chooseNext(opts: SittingOptions): NextChoice {
   const root = opts.root ?? process.cwd();
   const cases = loadAllCases();
+  if (opts.force) {
+    const c = cases.find((x) => x.record.slug === opts.force!.case);
+    if (!c) throw new Error(`--case ${opts.force.case}: no such case (${cases.map((x) => x.record.slug).join(", ")})`);
+    return {
+      case: c.record.slug,
+      verb: opts.force.verb,
+      ...(opts.force.verb === "report" ? { seat: MODELS.research.default as ResearchSeat } : {}),
+      reason: `dispatched by hand for this case (the founder's door); the ledger's own choice resumes with the next step`,
+    };
+  }
   const runs = readRuns(root);
   return nextAction(cases, runs, opts.today ?? new Date().toISOString().slice(0, 10), draftedFrom(runs, root), inboxPending(cases, root), opts.busy ?? new Map());
 }

@@ -32,7 +32,7 @@ import { runVerify } from "../src/pipeline/verify.ts";
 import { runEdition } from "../src/pipeline/edition.ts";
 import { runCheck } from "../src/pipeline/check.ts";
 import { runNext } from "../src/pipeline/next.ts";
-import { runInbox } from "../src/pipeline/inbox.ts";
+import { founderLogin, runInbox } from "../src/pipeline/inbox.ts";
 import { splitArgs, VALUE_FLAGS } from "../src/lib/args.ts";
 
 const [verb, ...rest] = process.argv.slice(2);
@@ -101,7 +101,13 @@ switch (verb) {
     const forcedCase = flagValue("--case");
     const forcedVerb = (flagValue("--verb") ?? "report") as "report" | "edition" | "check";
     if (forcedCase && !["report", "edition", "check"].includes(forcedVerb)) { console.error(`--verb must be report, edition or check (got ${forcedVerb})`); process.exit(2); }
-    const force = forcedCase ? { case: forcedCase, verb: forcedVerb } : undefined;
+    // The door is the founder's: a dispatch that names who opened it must name the founder's GitHub login.
+    const dispatcher = flagValue("--dispatcher");
+    if (forcedCase && dispatcher) {
+      const login = founderLogin();
+      if (!login || dispatcher !== login) { console.error(`--case is the founder's door: dispatched by ${dispatcher}, and config/founder.yaml names ${login ?? "no GitHub login"}; nothing runs`); process.exit(2); }
+    }
+    const force = forcedCase ? { case: forcedCase, verb: forcedVerb, ...(dispatcher ? { by: dispatcher } : {}) } : undefined;
     const r = await runNext({ run: flags.has("--run"), busy, force, steps: Number.isFinite(steps) && steps > 0 ? steps : 1, ...(Number.isFinite(deadline) && deadline > 0 ? { deadlineMinutes: deadline } : {}), ...(Number.isFinite(maxCases) && maxCases > 0 ? { maxCases } : {}), onProgress });
     if (out) fs.writeFileSync(path.resolve(out), JSON.stringify(r, null, 2));
     console.log(JSON.stringify(r, null, 2));

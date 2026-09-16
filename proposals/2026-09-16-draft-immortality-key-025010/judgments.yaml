@@ -540,3 +540,487 @@ acc6b066e5d3fd5b6324442954c522fcc715aec6098304eff30e26e3fbff9f0c:
       - claimId: TIK-C030
         direction: supports
     reason: The sourceStatement bundles four separable propositions (optimal hydrolysis conditions, residual ergopeptides at lower pH, ergometrine persistence, and pH as sole significant predictor), so it is not atomic and should be split. The 'qualifies' label fits only TIK-C005, whose general capability claim is narrowed by the specific conditions reported; for TIK-C028, TIK-C029, and TIK-C030, which are themselves statements of those specific findings, the source directly asserts them, so the correct direction is 'supports' rather than 'qualifies'. The quote, locator, and independence note are otherwise accurate and the record is relevant to the case.
+32c871b55d802ed5f8cce42d5e2bbe0be6a5f0e3972e1a023e84ec7ec69f0951:
+  model: claude-sonnet-5
+  protocol: verify-v6
+  runId: 2026-09-16-verify-immortality-key-033510
+  date: 2026-09-16
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: null
+    bearsOn: null
+    bearing:
+      - claimId: TIK-C005
+        direction: supports
+      - claimId: TIK-C028
+        direction: supports
+      - claimId: TIK-C029
+        direction: null
+      - claimId: TIK-C030
+        direction: null
+    reason: The quoted statement (complete hydrolysis only at pH 12.5, 5% w/v, ≥120 min) directly supports the general feasibility claim C005 and matches C028's specific parameter claim, so 'qualifies' undersells the fit for those two. It says nothing about ergometrine/ergometrinine persistence (C029) or about lye pH being the sole significant ANOVA predictor (C030), which come from separate passages not contained in this quote, so the passage does not bear on those two claims here.
+19cef0a70142c19cc73c73c8e6d422d02d4acc5a7ea76e16015b6b7b9abac4e8:
+  model: claude-sonnet-5
+  protocol: verify-v6
+  runId: 2026-09-16-verify-immortality-key-033510
+  date: 2026-09-16
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: false
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: null
+    bearsOn: null
+    bearing:
+      - claimId: TIK-C005
+        direction: qualifies
+      - claimId: TIK-C028
+        direction: supports
+      - claimId: TIK-C029
+        direction: null
+      - claimId: TIK-C030
+        direction: null
+    reason: "The quoted sentence about residual ergopeptides at pH 10.5/11.5 appears only once in the Quantitation section, yet the locator claims it also spans the abstract, the qualitative-analysis paragraph, the modeling section, and the discussion, which is not accurate. The statement itself is faithfully quoted and atomic, and the record correctly notes shared experimental provenance with TIK-E008. However, the single 'qualifies' direction does not fit all four claims: it directly supports C028 (which is exactly about the pH/concentration/time needed for complete hydrolysis), genuinely qualifies the general feasibility claim C005, but the quote (about pH 10.5/11.5 runs) says nothing about the pH-12.5/120-min sample's ergometrine content (C029) or about the statistical significance of pH as sole predictor (C030), so it bears on neither of those."
+cd4eea7a2da1a1d162a09a1ccf146d5ebe427c446b489e7ff1f1c4b21d89caf8:
+  model: claude-sonnet-5
+  protocol: verify-v6
+  runId: 2026-09-16-verify-immortality-key-033510
+  date: 2026-09-16
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: false
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: null
+    bearsOn: null
+    bearing:
+      - claimId: TIK-C005
+        direction: qualifies
+      - claimId: TIK-C028
+        direction: qualifies
+      - claimId: TIK-C029
+        direction: supports
+      - claimId: TIK-C030
+        direction: null
+    reason: The quote is verbatim and correctly attributed, but the sourceStatement bundles two separate findings (complete disappearance of predominant ergopeptides and persistence of ergometrine/ergometrinine signals), so it is not atomic. The cited locator sprawls across several sections (abstract, three Results paragraphs, Discussion) though the actual quoted sentence only appears in one paragraph of the Qualitative analysis section, so the locator as given is not fully supported. For TIK-C029 the statement is a direct restatement of the claim (supports, not merely qualifies); for TIK-C005 and TIK-C028 it functions as a qualification (showing conversion is incomplete for one minor alkaloid even under optimal conditions); the passage says nothing about ANOVA/pH being the sole significant predictor, so it does not bear on TIK-C030 at all.
+1587743c572a7f1069edb37f5e1ba8345c3da291b98aadd500d66895bc396852:
+  model: claude-sonnet-5
+  protocol: verify-v6
+  runId: 2026-09-16-verify-immortality-key-033510
+  date: 2026-09-16
+  answer:
+    quoteInContext: true
+    statementSupported: false
+    locatorSupported: false
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: null
+    bearsOn: null
+    bearing:
+      - claimId: TIK-C006
+        direction: qualifies
+      - claimId: TIK-C033
+        direction: supports
+    reason: The quoted material about 'set and setting predominantly shape the experience' actually comes from an earlier paragraph discussing LSA/iso-LSA pharmacology, not from the 'Regarding the quantities of ergot required' paragraph cited as the exact locator, so the locator does not cover the full sourceStatement. The record also bundles at least three separable propositions (the 1g/0.5mg dose calculation, the fasting-based 'even less' speculation, and the set/setting caveat) into a single non-atomic statement. For TIK-C033 the dose-calculation portion is accurately supported, but for TIK-C006 the source's own emphasis that set and setting 'predominantly shape the experience' actually qualifies rather than supports the claim that dose alone would 'reliably produce' the visionary experience.
+2532b28313f1ff9503690060c3bc45bdda8a08bd7bffbac79f6727ffdc2d84d1:
+  model: claude-sonnet-5
+  protocol: verify-v6
+  runId: 2026-09-16-verify-immortality-key-033510
+  date: 2026-09-16
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: null
+    bearsOn: null
+    bearing:
+      - claimId: TIK-C005
+        direction: context
+      - claimId: TIK-C025
+        direction: supports
+      - claimId: TIK-C026
+        direction: supports
+      - claimId: TIK-C027
+        direction: supports
+    reason: The quoted funding, competing-interests, and author-contribution language, plus the sclerotia sourcing details, are accurately quoted and correctly located, but the record bundles four distinct propositions (funding, competing interests, Antonopoulos's specific tasks, Ruck's specific tasks, and sclerotia provenance) into one sourceStatement, so it is not atomic and should be split. Once split, the funding/competing-interest and provenance material is merely context for the chemistry claim TIK-C005, but the contribution-statement quotes directly assert what TIK-C025, TIK-C026, and TIK-C027 state, so those should be marked 'supports' rather than the blanket 'context' given.
+20ef104a89d2d89199d3aee99ef1e9b54c5e2d7bf0b0cdc3127c66fa896426d2:
+  model: claude-sonnet-5
+  protocol: verify-v6
+  runId: 2026-09-16-verify-immortality-key-033510
+  date: 2026-09-16
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: null
+    bearsOn: null
+    bearing:
+      - claimId: TIK-C005
+        direction: null
+      - claimId: TIK-C025
+        direction: null
+      - claimId: TIK-C026
+        direction: supports
+      - claimId: TIK-C027
+        direction: null
+    reason: The quote is accurately drawn from the Author contributions statement and correctly located, and it directly and specifically supports TIK-C026 (R.K.A.'s role in isolation, experiments, and analyses), so labeling it merely 'context' undersells its bearing there. It does not bear on funding (C025), Ruck's contribution (C027), or the chemistry claim (C005), so those should be null rather than lumped under a blanket 'context' label. The sourceStatement also bundles three distinct activities (isolation, experiments, NMR/LC-MS analysis) into one quoted claim, so it is not atomic and should be split before being judged claim by claim.
+f70460ef94f666fd9f4271bdf6c54c2a32e615e61036e904e9e5707f9c95438c:
+  model: claude-sonnet-5
+  protocol: verify-v6
+  runId: 2026-09-16-verify-immortality-key-033510
+  date: 2026-09-16
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: null
+    bearsOn: null
+    bearing:
+      - claimId: TIK-C005
+        direction: null
+      - claimId: TIK-C025
+        direction: null
+      - claimId: TIK-C026
+        direction: null
+      - claimId: TIK-C027
+        direction: supports
+    reason: The quoted text is an accurate, in-context declaration attributing conceptual-discussion and manuscript-revision roles to M.A.H. and C.A.P.R., correctly located in the Declarations section. It directly supports C027 (Ruck's stated contribution) but has no bearing on C005 (chemistry of lye hydrolysis), C025 (funding declaration), or C026 (Antonopoulos's bench-work role), so labeling it merely 'context' for all four claims understates its clear support for C027 while wrongly implying relevance to the others.
+f716c8cf1a58c6ac4440a2de8e0e540dd16157f0912938a3c021c23d5f7f470a:
+  model: claude-sonnet-5
+  protocol: verify-v6
+  runId: 2026-09-16-verify-immortality-key-033510
+  date: 2026-09-16
+  answer:
+    quoteInContext: true
+    statementSupported: false
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: false
+    atomic: true
+    direction: null
+    bearsOn: null
+    bearing:
+      - claimId: TIK-C005
+        direction: context
+      - claimId: TIK-C025
+        direction: null
+      - claimId: TIK-C026
+        direction: null
+      - claimId: TIK-C027
+        direction: null
+    reason: The quoted sentence only describes where the ergot sclerotia were physically sourced (herbarium and Prague culture collection); it says nothing about funding, about who performed the experiments, or about Ruck's role, so it cannot fairly support TIK-C025, TIK-C026, or TIK-C027, whose content is drawn from entirely different sentences in the Declarations section not quoted here. It offers at best background context for the lye-hydrolysis claim TIK-C005 (identifying the material used), but does not speak to hydrolysis efficacy itself. Because the sourceStatement misrepresents what supports three of the four linked claims, it is broader than what the passage actually states.
+d452ace77ef17f6dc026c1f1615def3cc1d4f1a071f4ae40937ca3a23e515f6c:
+  model: claude-sonnet-5
+  protocol: verify-v6
+  runId: 2026-09-16-verify-immortality-key-033510
+  date: 2026-09-16
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: false
+    directionRight: false
+    independenceNoted: true
+    relevant: false
+    atomic: true
+    direction: null
+    bearsOn: null
+    bearing:
+      - claimId: TIK-C005
+        direction: null
+      - claimId: TIK-C025
+        direction: null
+      - claimId: TIK-C026
+        direction: null
+      - claimId: TIK-C027
+        direction: null
+    reason: The quoted passage only describes how larger quantities of sclerotia were physically sourced (field collection vs. an Alberta grain-elevator waste fraction); it says nothing about funding declarations, who performed the experiments, Ruck's stated contribution, or the efficacy of lye hydrolysis in converting ergopeptides to lysergamides. It therefore does not bear on any of the four claims it is attached to. The locator also misleadingly bundles the Declarations sections (funding, competing interests, author contributions) with the Methods paragraph, even though the quoted sentence appears only in the Methods text, not in the Declarations.
+bff462f5af56de9af124451b81a76a7239153e967c76eb58fba42d450e62b8ca:
+  model: claude-sonnet-5
+  protocol: verify-v6
+  runId: 2026-09-16-verify-immortality-key-033510
+  date: 2026-09-16
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: null
+    bearsOn: null
+    bearing:
+      - claimId: TIK-C032
+        direction: context
+      - claimId: TIK-C006
+        direction: null
+    reason: The quote and locator are accurate, and the record fairly notes the authors' own caveat that the synergy hypothesis is untested, so 'context' is correct for TIK-C032 (it's a proposed idea, not a validated finding). However, this passage about pennyroyal's anxiolytic/prolonging effects does not bear on TIK-C006, which concerns whether a ~1g ergot dose of LSA/iso-LSA alone reliably produces a profound visionary experience; the record should not link the passage to that claim at all.
+0074691a78bb899889c93ba0907fe8cf7fe670ff0d01218fba71e92fcd7aa3b9:
+  model: claude-sonnet-5
+  protocol: verify-v6
+  runId: 2026-09-16-verify-immortality-key-033510
+  date: 2026-09-16
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: null
+    bearsOn: null
+    bearing:
+      - claimId: TIK-C008
+        direction: context
+    reason: The quoted passage merely asserts the authors' confidence that the Mysteries had a 'psychedelic core' based on unspecified ancient accounts of ego dissolution and rebirth; it does not address whether ritual, fasting, secrecy, or collective emotion alone could produce such experiences, so it does not establish the pharmacological necessity the claim requires—at most it is background context. The record also improperly bundles two separate quoted propositions (the 'psychedelic core' assertion and the separate Pindar/Cicero afterlife-knowledge claim) into one sourceStatement, violating atomicity. The quote and locator are otherwise accurate.
+8263ef7fb088c042e07e8dd7b20c444219861758a9e6d8ef3234784f14f60b95:
+  model: claude-sonnet-5
+  protocol: verify-v6
+  runId: 2026-09-16-verify-immortality-key-033510
+  date: 2026-09-16
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: null
+    bearsOn: null
+    bearing: null
+    reason: The quoted material appears in the fifth paragraph of the Introduction and is fairly characterized as an assertion that the Mysteries' psychedelic core is 'reasonably certain' from ancient accounts of ego dissolution and rebirth; this is not stretched beyond what the source states. It bears weakly but appropriately on the claim that a pharmacological agent was needed, since asserting a psychedelic core implicitly favors an entheogenic explanation, though it does not directly address ritual/set-and-setting sufficiency. The statement remains a single proposition and the record is marked weak, consistent with this limited bearing.
+a50d083465f741de403a3049caaa0614619f3fd305fc8c3b2677ec6fa59cdb7d:
+  model: claude-sonnet-5
+  protocol: verify-v6
+  runId: 2026-09-16-verify-immortality-key-033510
+  date: 2026-09-16
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: null
+    bearsOn: null
+    bearing:
+      - claimId: TIK-C008
+        direction: context
+    reason: The Pindar/Cicero quote merely reports that ancient authors linked initiation with knowledge of death, afterlife, and happiness — a description of the experiential/religious meaning attributed to initiation. It says nothing about whether such transformative experiences could or could not be produced without a pharmacological agent, so it does not support (or undermine) the specific claim that a drug was necessary; it is at most background context on the nature of the reported experience.
+766b5e151ff128b4d209cb02ce51805ef0d8e270885a22883f1da9707560ee5d:
+  model: claude-sonnet-5
+  protocol: verify-v6
+  runId: 2026-09-16-verify-immortality-key-033510
+  date: 2026-09-16
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: false
+    atomic: true
+    direction: null
+    bearsOn: null
+    bearing: null
+    reason: The quote is accurately located in the Funding declaration and correctly states the authors received no external funding, but this administrative disclosure has no bearing on whether kykeon was psychedelic or on any inheritance by early Christians of a psychedelic Eucharist; it does not support, undermine, qualify, or even contextualize the case question.
+1fee90dc436b6987611d7ebb065249adf9a85bc88ec4a4dcba6eb2be2964c7ef:
+  model: claude-sonnet-5
+  protocol: verify-v6
+  runId: 2026-09-16-verify-immortality-key-033510
+  date: 2026-09-16
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: false
+    atomic: false
+    direction: null
+    bearsOn: null
+    bearing: null
+    reason: The passage is accurately quoted and correctly locates who performed which lab tasks, but this is merely an authorship-contribution detail with no bearing on whether kykeon was psychedelic or whether early Christians inherited such a sacrament as the Eucharist. It is also non-atomic, bundling three separate claims (fungal isolation, running experiments, and performing NMR/LC-MS analyses) into one statement.
+cc997c64de835ce4cf85d16b896ffa10b75d3bd04f1cc0137bc3de995c822b9b:
+  model: claude-sonnet-5
+  protocol: verify-v6
+  runId: 2026-09-16-verify-immortality-key-033510
+  date: 2026-09-16
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: false
+    atomic: true
+    direction: null
+    bearsOn: null
+    bearing: null
+    reason: The quote accurately reflects the author contribution statement crediting C.A.P.R. (Ruck) with conceptual discussions and manuscript revision, correctly located. However, this is a purely administrative/authorship fact and does not bear on the substantive case question of whether a psychedelic sacrament powered the Eleusinian Mysteries or was inherited by early Christianity as the Eucharist.
+b1eae8881a9e9c537b3682262f54749042fa026612586da693de0dd7d573d0e8:
+  model: claude-sonnet-5
+  protocol: verify-v6
+  runId: 2026-09-16-verify-immortality-key-033510
+  date: 2026-09-16
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: null
+    bearsOn: null
+    bearing: null
+    reason: "Both quoted passages occur essentially verbatim at the cited locations, and jointly they support the claim: the Discussion/Results state complete hydrolysis was demonstrated only at 5% w/v ergot, pH 12.5, 120 min, while the same results paragraph notes that all other tested conditions (other concentrations, times, or pH 10.5/11.5) left residual toxic ergopeptides, i.e., only partial hydrolysis. The proposition is a single, well-defined claim and bears on the case question by supporting the technical feasibility premise underlying the psychedelic-Eleusis hypothesis."
+05a90b0e99ffd092141b949faca1d410d84eaa28b87a14ca239296de5ae26471:
+  model: claude-sonnet-5
+  protocol: verify-v6
+  runId: 2026-09-16-verify-immortality-key-033510
+  date: 2026-09-16
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: null
+    bearsOn: null
+    bearing: null
+    reason: The quote appears in the specified results paragraph and accurately reflects that ergometrine/ergometrinine persisted while predominant ergopeptides vanished under the stated conditions. The statement is a single, precise proposition matching the source exactly, at the correct locator, and bears on the case question by detailing chemical specifics of the ergot hydrolysis hypothesis central to the psychedelic-kykeon debate.
+86cec5cac722ffaf56278cd62dac92cdb345c3f748e92e169ad86017c4cf99f6:
+  model: claude-sonnet-5
+  protocol: verify-v6
+  runId: 2026-09-16-verify-immortality-key-033510
+  date: 2026-09-16
+  answer:
+    quoteInContext: true
+    statementSupported: false
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: false
+    atomic: true
+    direction: null
+    bearsOn: null
+    bearing: null
+    reason: The quote is accurate and in context regarding pH being the sole significant predictor with no interaction effects, but the record mislabels the experiments as '2026,' when the methods section places the actual experimental work in 2024-2025 (the 2026 date only applies to eventual journal publication), so the statement overreaches on timing. More importantly, this narrow statistical/modeling detail about which factor was significant in the hydrolysis optimization does not bear on the substantive case question of whether a psychedelic sacrament powered the Eleusinian Mysteries or was inherited by early Christians as the Eucharist; it is a methodological footnote about reaction optimization, not evidence toward or against the entheogen hypothesis itself.
+7ddfaa2bf08ccb913980faabd2e243400e6afd60764e406472e33477f85a39f0:
+  model: claude-sonnet-5
+  protocol: verify-v6
+  runId: 2026-09-16-verify-immortality-key-033510
+  date: 2026-09-16
+  answer:
+    quoteInContext: true
+    statementSupported: false
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: null
+    bearsOn: null
+    bearing: null
+    reason: The source demonstrates only that CO2 exposure and sclerotia addition measurably lower the lye's pH; the further claim that mixing the resulting solution into the barley-mint kykeon renders it 'safe to drink' is phrased in the source as a speculative projection ('would further neutralize... rendering kykeon safe to drink'), not a tested or measured result, so the record overstates this as an established outcome. The statement also bundles three distinct mechanisms (atmospheric neutralization, sclerotia addition, and dilution into barley-mint mixture) into a single claim, making it non-atomic.
+32c0f719b83cb9a830403a64a7aeb19d86f3eeff0335bec58035526d748c4827:
+  model: claude-sonnet-5
+  protocol: verify-v6
+  runId: 2026-09-16-verify-immortality-key-033510
+  date: 2026-09-16
+  answer:
+    quoteInContext: false
+    statementSupported: false
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: null
+    bearsOn: null
+    bearing: null
+    reason: The source explicitly labels this synergy claim as an untested hypothesis ('remains to be validated through targeted co-administration studies'), but the anchored statement asserts the synergy as an established effect, mismatching speculation with finding. The statement also bundles multiple distinct propositions (two constituents, two separate effects) into one, failing atomicity. The locator is correct and the topic bears on the case question, but the mischaracterization of speculative language as fact means the statement is not properly supported by the passage.
+651f090147668117cddcdb20b465906a73d760bcfb9c177ea48a868be3793fcd:
+  model: claude-sonnet-5
+  protocol: verify-v6
+  runId: 2026-09-16-verify-immortality-key-033510
+  date: 2026-09-16
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: null
+    bearsOn: null
+    bearing: null
+    reason: The two quoted passages, read together at the same discussion paragraph, jointly support the calculation that roughly 1 g of ergot processed under the study's optimal lye conditions (yielding ~0.54 mg LSA/g) would meet the cited minimum effective LSA dose of ~0.5 mg; both quotes appear where claimed and are used in the sense the authors intended. The proposition bears on the feasibility question central to the psychedelic-Eleusis hypothesis, and though it combines two figures they form a single computed relationship rather than two independent propositions, so it counts as atomic.
+9fddd7a5bcd26704e46d655a2c36ae79e61aed1da812b19631ffc7d2361f1f63:
+  model: claude-sonnet-5
+  protocol: verify-v6
+  runId: 2026-09-16-verify-immortality-key-033510
+  date: 2026-09-16
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: null
+    bearsOn: null
+    bearing: null
+    reason: The quoted phrase appears verbatim in the Discussion section's paragraph on ergot origin, used to dismiss the Claviceps paspali alternative by noting its host plants' 19th-century naturalization in Europe. The statement accurately restates this claim without overreach, the locator matches, and the point bears on the case question by supporting the paper's broader case for ergot (rather than paspali) as the Eleusinian entheogen. It is a single, atomic proposition.
+298cc6d5e511eb67b5bd98ac3a2838451c247cafc908d540af0139cced403cd6:
+  model: claude-sonnet-5
+  protocol: verify-v6
+  runId: 2026-09-16-verify-immortality-key-033510
+  date: 2026-09-16
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    direction: null
+    bearsOn: null
+    bearing: null
+    reason: "Both quoted passages appear where cited and jointly support the statement: the Results section reports ITS-based molecular identification of the field-collected strain as Claviceps purpurea, and the Methods section confirms the strain designation ATHUM 10382. The claim is a single, well-defined proposition about species identification and strain labeling, and it bears on the case question as it underlies the credibility of the experimental ergot material used to test the psychedelic Eleusis hypothesis."

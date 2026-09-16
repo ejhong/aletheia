@@ -1,0 +1,126 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 299
+title: One bad reply costs one record, not the sitting
+url: https://github.com/ejhong/aletheia/pull/299
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-16
+judgedAgainst: 338269e93e
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The change adds a single dated entry to docs/DECISIONS.md recording
+      an operator-side robustness fix: one non-JSON strict-mode reply is retried
+      with the schema as instructions before failing (with the head of the bad
+      reply quoted in the error), and a failed split rejects that one record
+      with a stated reason instead of killing the run. Nothing under content/ is
+      touched, no citations, locators, or quotes are added (verification found
+      no identifiers), and AGENTS.md is untouched, so §3.15's reserved-amendment
+      rule is not engaged. The described behaviour does not loosen any §3.15
+      check: ratification, fail-closed CI, and the parking rules are unaffected,
+      and refusing a record with an explicit reason is the honest-refusal
+      behaviour the constitution favours rather than a dodge. Two things I would
+      want answered on the record but do not treat as violations: (1) the PR
+      body describes code changes to `anthropicJson` and `verify`, yet the
+      complete diff contains only the docs entry — the log should not describe
+      code as landed if it landed elsewhere, so the operator should say where
+      that code is; (2) the insertion is placed above the pre-existing trailing
+      line `(Operator record, founder's session of 2026-09-16.)`, so a stamp
+      that previously closed the #291/edition-v7 entry now reads as the new
+      entry's stamp — the earlier entry should keep its own stamp and the new
+      one should carry its own explicitly."
+    cost:
+      model: claude-opus-5
+      inputTokens: 1180
+      outputTokens: 1951
+      usd: 0.094594
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: "The added decision entry records the incident and resulting
+      operational policy with a date, actor, and channel: “Operator record,
+      founder's session of 2026-09-16.” Retrying malformed JSON once does not
+      accept invalid output, and rejecting only the affected record while
+      continuing the run remains fail-closed at the record level rather than
+      weakening citation, provenance, or ratification checks. The diff neither
+      edits AGENTS.md nor adds content citations, assessments, confidential
+      material, or claims of ratification."
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 3557
+      outputTokens: 1033
+      usd: 0.0354
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.15
+    reasoning: The change adds an operator record to docs/DECISIONS.md documenting
+      pipeline error handling changes from the founder's session on 2026-09-16.
+      This conforms directly to §3.15, which permits founder directions given in
+      a working session to be recorded and paraphrased in the decisions log
+      stamped with date and channel. AGENTS.md is not modified, no content or
+      citation records are altered, and no checks are weakened.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 5137
+      outputTokens: 363
+      usd: 0.005214
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff only appends a dated operator/founder-session entry to
+      docs/DECISIONS.md, which §3.15 expressly permits for recording operating
+      directions with date and channel. AGENTS.md is untouched, no content/
+      ledger or citations are added, and nothing in the entry fabricates
+      sources, exposes confidence material, or loosens the §3.15
+      ratification/checks. The described runtime retry and per-record verify
+      isolation are operational robustness notes, not epistemic check-weakening;
+      with a complete diff and no omitted files, the change complies.
+    cost:
+      model: grok-4.5
+      inputTokens: 4965
+      outputTokens: 134
+      usd: 0.010849
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.8
+      - §8
+    reasoning: "The diff touches only docs/DECISIONS.md — no AGENTS.md edit, so the
+      founder-amendment reservation (§3.15) is not implicated — and it records a
+      founder-session direction stamped with date and channel ('Operator record,
+      founder's session of 2026-09-16'), exactly the form §3.15 permits for the
+      decisions log. Substantively, neither described mechanism weakens the
+      §3.15 checks: the JSON retry is a bounded re-ask on the model-call path (a
+      recovery route already used for schema-refusal), and the verify change
+      keeps fail-closed behavior per record — a failed split rejects that record
+      with a stated reason rather than silently repairing or passing it, so no
+      atomicity check is dodged and no silent data repair occurs. No citations,
+      locators, or provenance details are added, so fabrication rules are not
+      engaged. One mismatch worth an operator note: the PR body describes code
+      changes to anthropicJson and verify, yet the change stat shows only the
+      12-line DECISIONS.md insertion — presumably the code landed in a companion
+      PR (#296 chain), but if those code changes have in fact not been made
+      anywhere, the record would describe work that does not exist and should be
+      corrected. On what the diff itself contains, this complies; the
+      typecheck/lint/test claims are unverifiable from the packet but ordinary
+      and not load-bearing here."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 3444
+      outputTokens: 1644
+      usd: 0.001684
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 18283
+  outputTokens: 5125
+  usd: 0.1477
+harvestedAt: 2026-09-16

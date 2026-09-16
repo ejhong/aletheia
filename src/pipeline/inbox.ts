@@ -98,6 +98,11 @@ interface FounderConfig {
   standingDirection?: { words: string; given: string; channel: string };
 }
 
+/** The founder's GitHub login (config/founder.yaml), for the doors only the founder may open. */
+export function founderLogin(root = process.cwd()): string | null {
+  return founderIdentity(root)?.githubLogin ?? null;
+}
+
 function founderIdentity(root: string): FounderConfig | null {
   const file = path.join(root, "config", "founder.yaml");
   if (!fs.existsSync(file)) return null;

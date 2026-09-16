@@ -85,13 +85,25 @@ jobs:
           VENICE_API_KEY: ${{ secrets.VENICE_API_KEY }}
           # The intake asks GitHub who committed a dropped file (config/founder.yaml).
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # The founder's door (workflow_dispatch inputs) comes in through the environment, never spliced into
+          # shell source; the case is checked as a slug and the verb as one of three, and the GitHub login that
+          # opened the door is passed on, for the CLI to check against config/founder.yaml and to record (review note #290).
+          STEPS: ${{ github.event.inputs.steps }}
+          FORCE_CASE: ${{ github.event.inputs.case }}
+          FORCE_VERB: ${{ github.event.inputs.verb }}
+          DISPATCHER: ${{ github.actor }}
         run: |
           # Cases with a sitting still open on an unmerged chain/* branch are not chosen again (scripts/busy-cases.mjs).
           busy=$(node scripts/busy-cases.mjs || true)
           [ -n "$busy" ] && echo "::notice::not choosing: $busy"
-          force=""
-          if [ -n "${{ github.event.inputs.case }}" ]; then force="--case ${{ github.event.inputs.case }} --verb ${{ github.event.inputs.verb || 'report' }}"; echo "::notice::first choice forced: $force"; fi
-          node scripts/aletheia.ts next --run --steps "${{ github.event.inputs.steps || '3' }}" --deadline-minutes 240 --max-cases 2 --out next.json --busy "$busy" $force
+          args=(next --run --steps "${STEPS:-3}" --deadline-minutes 240 --max-cases 2 --out next.json --busy "$busy")
+          if [ -n "$FORCE_CASE" ]; then
+            [[ "$FORCE_CASE" =~ ^[a-z0-9][a-z0-9-]{0,79}$ ]] || { echo "::error::case must be a case slug (lowercase letters, digits, hyphens); nothing runs"; exit 2; }
+            case "${FORCE_VERB:-report}" in report|edition|check) ;; *) echo "::error::verb must be report, edition or check; nothing runs"; exit 2 ;; esac
+            args+=(--case "$FORCE_CASE" --verb "${FORCE_VERB:-report}" --dispatcher "$DISPATCHER")
+            echo "::notice::first choice forced by $DISPATCHER: $FORCE_CASE, $FORCE_VERB"
+          fi
+          node scripts/aletheia.ts "${args[@]}"
       # Runs whatever became of the chain step — a failed step, a deadline, a cancelled or
       # timed-out job: what the sitting wrote is committed and judged, and the spend rows
       # reach the ledger. Money spent is recorded, whatever became of the run.

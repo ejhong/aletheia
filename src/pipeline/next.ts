@@ -87,7 +87,7 @@ export interface SittingOptions {
    * later choice in the sitting is the ledger's own (2026-09-15: five editions were due before any research pass,
    * and the hard path had to be reachable without waiting three Mondays).
    */
-  force?: { case: string; verb: "report" | "edition" | "check" };
+  force?: { case: string; verb: "report" | "edition" | "check"; /** The GitHub login that opened the door, when it was opened through the workflow. */ by?: string };
   /** Called after every choice with the sitting so far, so a caller can write progress to disk as it goes. */
   onProgress?: (soFar: NextOutcome) => void;
   /** Test seams: the clock, one choice-and-run, or the choice and the run apart. */
@@ -149,7 +149,7 @@ export function chooseNext(opts: SittingOptions): NextChoice {
       case: c.record.slug,
       verb: opts.force.verb,
       ...(opts.force.verb === "report" ? { seat: MODELS.research.default as ResearchSeat } : {}),
-      reason: `dispatched by hand for this case (the founder's door); the ledger's own choice resumes with the next step`,
+      reason: `dispatched by hand${opts.force.by ? ` by ${opts.force.by}, the founder's GitHub login (config/founder.yaml), through workflow_dispatch` : " at the operator's terminal"} for this case (the founder's door); the ledger's own choice resumes with the next step`,
     };
   }
   const runs = readRuns(root);

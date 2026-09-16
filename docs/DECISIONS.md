@@ -2279,3 +2279,7 @@ An operator answering a review note on a candidate edition changed the article a
 ## 2026-09-16 — Correction: the "one bad reply" entry landed before its code
 
 The entry "One bad reply costs one record, not the sitting" merged as #299 with the decisions entry alone: the models.ts and verify.ts changes it describes were left uncommitted in the operator's working tree, and the panel's 5/5 judged a docs-only diff. The code, a test for the retry, and this correction are #301. The sitting dispatched on #299's merge (run 35052322230, verify of the Immortality Key) ran without the fix. Operator rule from this: after every commit, `git show --stat HEAD` must list each file the message describes; a dirty tree after a branch switch is a red flag, not noise. Supervised-by: founder (direction in session, 2026-09-16).
+
+## 2026-09-16 — The founder's door is the founder's (review note #290)
+
+The chain workflow spliced the `case` and `verb` dispatch inputs into shell source and expanded them unquoted in a job that publishes, and recorded a forced first choice only as "dispatched by hand". The inputs now come in through the environment; the case is checked as a slug and the verb as one of three; the arguments are passed as a quoted array; and the GitHub login that opened the door travels with the choice — the CLI refuses a dispatcher who is not the login in config/founder.yaml, and the run's reason names the login. A forced choice from the operator's terminal says so instead of claiming a dispatcher. Supervised-by: founder (direction in session, 2026-09-16).

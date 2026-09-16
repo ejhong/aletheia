@@ -2259,4 +2259,16 @@ article N → M words; accounts K (incumbent J)" to every rationale, and
 edition-v7 tells the model to state no counts and to say when its prose
 groups the accounts differently from the field. The two candidates on
 #291 were annotated by hand before publication, with history entries.
+
+## 2026-09-16 — One bad reply costs one record, not the sitting
+
+The first forced research pass (Immortality Key, #296) ran report and draft
+unattended and then died in verify: a split request answered by the
+fallback model came back as a truncated JSON array, `anthropicJson` threw,
+and the run — 34 good calls in — failed with it; the sitting opened its PR
+as a partial account. Two changes: a strict-mode reply that is not JSON is
+asked once more with the schema as instructions before the call fails, and
+the failure names the head of what came back; and in verify a split that
+fails rejects that one record ("the split failed: …") and the run goes on.
+The half-done chain rule then resumes the case at verify next sitting.
 (Operator record, founder's session of 2026-09-16.)

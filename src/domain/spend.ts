@@ -16,7 +16,12 @@ export const spendFile = (root = process.cwd()) => path.join(root, "governance",
  * and the second sat unmergeable with every check green until a hand resolved it.
  */
 export const spendDir = (root = process.cwd()) => path.join(root, "governance", "spend");
-export const spendRunFile = (runId: string, root = process.cwd()) => path.join(spendDir(root), `${runId.replace(/[^A-Za-z0-9._-]/g, "_")}.yaml`);
+/** A run id is already a file name — letters, digits, dot, underscore, hyphen, starting with a letter or digit (every run id the verbs mint is). Anything else is refused, never mapped, so two run ids can never share a file (review note #316). */
+export const RUN_ID_FILE = /^[A-Za-z0-9][A-Za-z0-9._-]{0,199}$/;
+export const spendRunFile = (runId: string, root = process.cwd()) => {
+  if (!RUN_ID_FILE.test(runId)) throw new Error(`run id "${runId}" is not a file name (letters, digits, dot, underscore, hyphen); no spend row can be written for it`);
+  return path.join(spendDir(root), `${runId}.yaml`);
+};
 
 /** The rows of one ledger file; none when the file is absent. */
 export function readSpendFile(file: string): SpendRow[] {

@@ -39,10 +39,10 @@ import {
   costOf,
   rateLimitGate,
   runAccount,
-  splitMergeLanes,
   tallyVerdict,
   validateVote,
 } from "../src/lib/arbiter-core.mjs";
+import { CANON, mergeLanesOnBase } from "./gate-window.mjs";
 import {
   extractCitations,
   formatVerificationSection,
@@ -165,7 +165,6 @@ const cost = costOf(votes);
 // every time a panel convenes — counting them would spend the budget on
 // the machinery's own heartbeat (the first live run parked a 5/5-complies
 // PR at "41/10" for exactly that reason).
-const CANON = ["content/cases/", ":(exclude)content/cases/*/assessments/**"];
 const touchesContent = git(
   "diff",
   "--name-only",
@@ -233,53 +232,9 @@ const touchesContent = git(
 // here because merged messages are immutable. The loop's merges (#245,
 // #257) count. From this day the operator's construction commits carry the
 // trailer, so this list should not grow.
-const GATE_EPOCH = Date.parse("2026-09-09T15:00:00Z");
-
-/**
- * Merges declared supervised by hash — founder-directed construction landed
- * without the trailer. Each line names the squash commit, the PR, and the
- * direction it answered (docs/DECISIONS.md, 2026-09-09 and 2026-09-10).
- * Declared on the founder's word in session, 2026-09-10; panel-reviewed here.
- */
-const SUPERVISED_DECLARED = new Set([
-  "2e1686b87afa5d250b98e1ab5f4aa177fdd0fed3", // #233 conjecture cards retired — founder: "please proceed", 2026-09-09
-  "519d49c55036baba430f0d75327904b6c6b55df0", // #236 Deep Memory opens — founder: "and then deep memory", 2026-09-09
-  "aa29f03dc2529c83bf34710f8f3dcd1f8b9d310e", // #238 second question-only edition — review note #237, in session
-  "2639b9183935426ac50aa643f5ebfc569763d431", // #240 the drop on the founder's grant — founder: "Please make the drop", 2026-09-09
-  "010aee324c1e1e22aff7fffcc1da09ab517eff48", // #241 image tooling and art — founder: "make the art and the plates", 2026-09-09
-  "f07cf0ed0ab1b8c9fa6a49550bc7a758595476f8", // #243 plate captions — review note #242, in session
-  "b46b3798bd5f9a1318350648d766b94dcc8ccf71", // #246 caption record, no second drop, opening tests — founder, in session
-  "6f37578af34e2d372fd2681dc04b6c1c988cfe9a", // #249 the lab-site cover — founder: "switch it to that one", 2026-09-09
-  "c28f3f064c8b809b01f14bdd2356e07982a25e05", // #250 five evidence corrections — founder: "do the pr to fix things", 2026-09-09
-  // Two merges the founder made by hand on 2026-09-16 while the autonomous lane was at its cap, without the
-  // trailer — founder, in session: "i merged them both by hand (forgot to add comment)". Both had passed the
-  // panel (#305 5/5; #303 4/5 with a review note answered on the record) and were parked on the budget alone.
-  "d91462670f5ff3916277fc68894aa56895a74851", // #305 provenance stamps stay only where they hold — founder hand merge, 2026-09-16
-  "8fc3e2e3f41f62098160d5b0efadc32fca480b1f", // #303 chain sitting: immortality-key verify + edition, orch-or edition — founder hand merge, 2026-09-16
-]);
-const since = new Date(
-  Math.max(Date.now() - 7 * 86400000, GATE_EPOCH),
-).toISOString();
-// Hash + full message per commit, so the trailer is readable. Unit
-// separator between fields, record separator between commits: commit
-// messages contain newlines and blank lines, so line-splitting cannot
-// delimit them.
-const mergeLog = git(
-  "log",
-  "--first-parent",
-  `--since=${since}`,
-  "--format=%H%x1f%B%x1e",
-  base,
-  "--",
-  ...CANON,
-)
-  .split("\x1e")
-  .map((rec) => {
-    const [hash, message] = rec.replace(/^\s+/, "").split("\x1f");
-    return { hash: (hash ?? "").trim(), message: message ?? "" };
-  })
-  .filter((c) => c.hash);
-const lanes = splitMergeLanes(mergeLog, SUPERVISED_DECLARED);
+// The epoch, the declared list, the window and the git log live in scripts/gate-window.mjs, shared with
+// scripts/rejudge-parked.mjs so the schedule that re-judges budget-parked PRs counts exactly as this gate does.
+const lanes = mergeLanesOnBase(base, { cwd: ROOT });
 const mergesThisWeek = lanes.autonomous.length;
 const supervisedExcluded = lanes.supervised.length;
 const verdict = rateLimitGate(tallyVerdict(votes), {

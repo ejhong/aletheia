@@ -379,10 +379,21 @@ export function suppliedTexts(proposal: Proposal, sources: Source[], root = proc
   return out;
 }
 
+/**
+ * The report's Corrections section: one line per correction, ending in what `status` says of it — a forecast from the
+ * ledger before the writer runs, the writer's own outcome after. Pure, so the two renderings can be compared.
+ */
+export function correctionLines(corrections: Correction[], status: (c: Correction) => string): string[] {
+  if (!corrections.length) return [];
+  return [`## Corrections`, ...corrections.map((c) => `- ${c.record}.${c.field}: "${String(c.from).slice(0, 120)}" → "${String(c.to).slice(0, 120)}" — ${c.reason}${status(c)}`), ``];
+}
+
 /** Why a correction cannot apply as the ledger stands (null when it can): unknown record, no such file, or the field has moved since. */
 export function correctionBlocker(loaded: LoadedCase, c: Correction): string | null {
   if (!ledgerFileFor(c.record)) return `no ledger file for record id ${c.record}`;
-  const rec = [...loaded.sources, ...loaded.claims, ...loaded.evidence, ...loaded.research].find((r) => r.id === c.record) as Record<string, unknown> | undefined;
+  // Every file the writer knows (ledgerFileFor): the report of 2026-09-16-verify-immortality-key-033510 called an image
+  // correction "NOT applied: not in the ledger" that the same run applied, because this list stopped at four files.
+  const rec = [...loaded.sources, ...loaded.claims, ...loaded.evidence, ...loaded.research, ...loaded.images].find((r) => r.id === c.record) as Record<string, unknown> | undefined;
   if (!rec) return `record ${c.record} is not in the ledger`;
   // An absent field and a null `from` are the same reading, as the writer itself takes them (setField):
   // the report of 2026-09-10-verify-ccc-192550 called three URL additions "NOT applied" that the same run applied.
@@ -793,6 +804,13 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
     }
     const { accepted, rejected, notes } = verdicts;
 
+    // What the writer is expected to do with each correction, read from the ledger as it stands; once the writer has
+    // run, the section is rewritten from what it did (review note #304: a forecast that differs from the outcome
+    // leaves two records of one run disagreeing).
+    const forecast = correctionLines(proposal.corrections, (c) => {
+      const why = correctionBlocker(loaded, c);
+      return why ? ` — NOT applied: ${why}` : opts.dryRun ? " — would apply" : " — applied";
+    }).join("\n");
     const report = [
       `# Verification — ${runId}`,
       ``,
@@ -807,16 +825,7 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
       `## Rejected`,
       ...rejected.map((r) => `- ${r.kind} ${r.id} (${r.disposition}) — ${r.reason}${r.route ? ` — route: ${r.route}` : ""}`),
       ``,
-      ...(proposal.corrections.length
-        ? [
-            `## Corrections`,
-            ...proposal.corrections.map((c) => {
-              const why = correctionBlocker(loaded, c);
-              return `- ${c.record}.${c.field}: "${String(c.from).slice(0, 120)}" → "${String(c.to).slice(0, 120)}" — ${c.reason}${why ? ` — NOT applied: ${why}` : opts.dryRun ? " — would apply" : " — applied"}`;
-            }),
-            ``,
-          ]
-        : []),
+      ...(forecast ? [forecast] : []),
       `## Retrieval`,
       ...[...texts.entries()].map(([key, f]) => `- ${key} — ${f.ok ? `retrieved${f.pages ? `, ${f.pages} pages` : ""}${f.via ? ` (${f.via})` : ""}` : `not retrieved: ${f.reason}`}`),
       ``,
@@ -841,6 +850,13 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
       root,
     });
     for (const s of corrected.skipped) notes.push(`correction to ${s.correction.record}.${s.correction.field} not applied: ${s.reason}`);
+    const outcome = correctionLines(proposal.corrections, (c) =>
+      corrected.applied.includes(c) ? " — applied" : ` — NOT applied: ${corrected.skipped.find((s) => s.correction === c)?.reason ?? "the writer did not apply it"}`,
+    ).join("\n");
+    if (outcome !== forecast) {
+      console.error(`${runId}: the report's Corrections forecast differed from what the writer did; the report now says what the writer did`);
+      writeWorkingFile(runId, "verification.md", report.replace(forecast, outcome), root);
+    }
     // A record that entered may not name, in prose, a proposal record that did not (the reader's own notes name
     // the proposal claims a passage bears on; a claim rejected later would leave a dangling id — 2026-09-11).
     {

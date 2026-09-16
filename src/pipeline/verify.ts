@@ -388,6 +388,17 @@ export function correctionLines(corrections: Correction[], status: (c: Correctio
   return [`## Corrections`, ...corrections.map((c) => `- ${c.record}.${c.field}: "${String(c.from).slice(0, 120)}" → "${String(c.to).slice(0, 120)}" — ${c.reason}${status(c)}`), ``];
 }
 
+/**
+ * Whether a retrieved text is a substitute for the cited document — an open-access copy, an arXiv PDF read for
+ * an abstract page — rather than the document itself. A quote that is not found in a substitute is unverified,
+ * not false: the wording may differ between copies, so the record is blocked with a route to the cited text,
+ * not failed (2026-09-16: four claims and an evidence record of the Immortality Key draft were failed against
+ * an OpenAlex copy of Łucejko 2018). A supplied document is the text itself, so a miss there is a miss.
+ */
+export function substituteCopy(via?: string | null): boolean {
+  return !!via && !/^supplied document/.test(via);
+}
+
 /** Why a correction cannot apply as the ledger stands (null when it can): unknown record, no such file, or the field has moved since. */
 export function correctionBlocker(loaded: LoadedCase, c: Correction): string | null {
   if (!ledgerFileFor(c.record)) return `no ledger file for record id ${c.record}`;
@@ -488,7 +499,12 @@ export async function judgeProposal(
     }
     const bad = unverifiedQuotes(e.sourceStatement, fetched.text);
     if (bad.length) {
-      reject(e.id, "evidence", e.title, `quoted span not found verbatim in the text of ${e.sourceId}${fetched.via ? ` (${fetched.via})` : ""}: ${bad.map((q) => `"${q}"`).join("; ")}`);
+      const quotes = bad.map((q) => `"${q}"`).join("; ");
+      if (substituteCopy(fetched.via)) {
+        reject(e.id, "evidence", e.title, `quoted span not found verbatim in the substitute copy read for ${e.sourceId} (${fetched.via}): ${quotes}`, true, `obtain the text of ${e.sourceId} as cited (${sourceById.get(e.sourceId)?.url ?? "no URL on the source record"}) and re-run verify; the quotes were checked only against ${fetched.via}`);
+      } else {
+        reject(e.id, "evidence", e.title, `quoted span not found verbatim in the text of ${e.sourceId}: ${quotes}`);
+      }
       continue;
     }
     const claims = e.claimIds.map((id) => loaded.claims.find((c) => c.id === id) ?? proposal.adds.claims.find((c) => c.id === id)).filter(Boolean);
@@ -583,7 +599,11 @@ export async function judgeProposal(
           continue;
         }
       } else if ([c.sourceAnchor.quote, ...(c.sourceAnchor.also ?? []).map((a) => a.quote)].some((q) => unverifiedQuotes(`"${q}"`, fetched.text ?? "").length)) {
-        reject(c.id, "claim", c.statement, `anchor quote not found verbatim in ${sid}`);
+        if (substituteCopy(fetched.via)) {
+          reject(c.id, "claim", c.statement, `anchor quote not found verbatim in the substitute copy read for ${sid} (${fetched.via})`, true, `obtain the text of ${sid} as cited (${sourceById.get(sid!)?.url ?? "no URL on the source record"}) and re-run verify; the anchor was checked only against ${fetched.via}`);
+        } else {
+          reject(c.id, "claim", c.statement, `anchor quote not found verbatim in ${sid}`);
+        }
         continue;
       } else {
         const anchorContext = `${questionContext} Does the anchored passage${c.sourceAnchor.also?.length ? "s, taken together," : ""} support the proposition as stated?`;

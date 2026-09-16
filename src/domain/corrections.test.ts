@@ -112,3 +112,27 @@ describe("the correction writer's history line carries the whole value", () => {
     expect(shown(["A", "B"])).toBe('["A","B"]');
   });
 });
+
+describe("the verification report agrees with the writer on where records live and on what it did", () => {
+  it("an image record is in the ledger for the report, as it is for the writer", async () => {
+    const { correctionBlocker } = await import("../pipeline/verify.ts");
+    const { getCaseBySlug } = await import("./load.ts");
+    const c = getCaseBySlug("immortality-key");
+    const img = c.images[0];
+    expect(img).toBeDefined();
+    expect(correctionBlocker(c, { record: img.id, field: "depicts", from: img.depicts, to: "another caption", reason: "test" })).toBeNull();
+  });
+  it("the Corrections lines end in whatever the status function says, so the outcome can replace the forecast", async () => {
+    const { correctionLines } = await import("../pipeline/verify.ts");
+    const cs = [
+      { record: "IMG-X-P01", field: "depicts", from: "a", to: "b", reason: "why" },
+      { record: "SRC-Y", field: "url", from: null, to: "https://x.test", reason: "why two" },
+    ];
+    const lines = correctionLines(cs, (c) => (c.record === "SRC-Y" ? " — NOT applied: the field moved" : " — applied"));
+    expect(lines[0]).toBe("## Corrections");
+    expect(lines[1]).toMatch(/^- IMG-X-P01\.depicts: "a" → "b" — why — applied$/);
+    expect(lines[2]).toMatch(/NOT applied: the field moved$/);
+    expect(lines[3]).toBe("");
+    expect(correctionLines([], () => " — applied")).toEqual([]);
+  });
+});

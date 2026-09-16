@@ -25,7 +25,13 @@ describe("the spend ledger is one file per run", () => {
     expect(fs.readFileSync(spendFile(root), "utf8")).toBe(legacy);
     fs.rmSync(root, { recursive: true, force: true });
   });
-  it("a run id becomes a safe file name", () => {
-    expect(path.basename(spendRunFile("odd/run id", "/r"))).toBe("odd_run_id.yaml");
+  it("a run id must already be a file name; anything else is refused before a row is written, so two ids never share a file", () => {
+    expect(path.basename(spendRunFile("2026-09-16-verify-immortality-key-033510", "/r"))).toBe("2026-09-16-verify-immortality-key-033510.yaml");
+    expect(() => spendRunFile("odd/run id", "/r")).toThrow(/not a file name/);
+    expect(() => spendRunFile("../escape", "/r")).toThrow(/not a file name/);
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "aletheia-spend-"));
+    expect(() => recordSpend(row("odd/run id", 1), root)).toThrow(/not a file name/);
+    expect(fs.existsSync(path.join(root, "governance", "spend"))).toBe(false);
+    fs.rmSync(root, { recursive: true, force: true });
   });
 });

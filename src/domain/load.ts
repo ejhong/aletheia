@@ -113,8 +113,12 @@ function checkIntegrity(caseDir: string, loaded: LoadedCase): void {
   // A provisional record carries its block, and only a provisional record does; a provisional source is unverified
   // by definition — nothing in it has been read (2026-09-17).
   for (const r of [...loaded.claims, ...loaded.evidence]) {
-    if ((r.reviewState === "provisional") !== Boolean(r.provisional)) {
-      throw new ContentError(caseDir, `${r.id}: reviewState "provisional" and the provisional block must appear together`);
+    if (r.reviewState === "provisional" && !r.provisional) {
+      throw new ContentError(caseDir, `${r.id}: reviewState "provisional" needs the provisional block`);
+    }
+    // A refused record keeps the block as the record of how it entered; nothing else may carry one.
+    if (r.provisional && r.reviewState !== "provisional" && r.reviewState !== "rejected") {
+      throw new ContentError(caseDir, `${r.id}: carries a provisional block but is "${r.reviewState}" — only a provisional or a refused record may`);
     }
   }
   for (const s of loaded.sources) {
@@ -702,6 +706,11 @@ export function getCaseBySlug(slug: string): LoadedCase {
 /** Live (non-rejected) claims only — what reader views should show. */
 export function liveClaims(loaded: LoadedCase): Claim[] {
   return loaded.claims.filter((c) => c.reviewState !== "rejected");
+}
+
+/** Evidence records that stand: a record refused at re-verification stays in its file as a tombstone and is shown nowhere. */
+export function liveEvidence(loaded: LoadedCase): Evidence[] {
+  return loaded.evidence.filter((e) => e.reviewState !== "rejected");
 }
 
 /** The current edition — the latest by date, runId breaking ties. */

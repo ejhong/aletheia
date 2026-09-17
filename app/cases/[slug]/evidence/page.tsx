@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { DirectionTag } from "@/src/components/DirectionTag";
 import { EvidenceCard } from "@/src/components/EvidenceCard";
 import { groupEvidenceByDirection } from "@/src/domain/evidence";
-import { loadAllCases } from "@/src/domain/load";
+import { liveEvidence, loadAllCases } from "@/src/domain/load";
 import { paramsOrPlaceholder } from "@/src/domain/staticExport";
 import { directionLabels } from "@/src/domain/schema";
 
@@ -49,7 +49,7 @@ export default async function EvidenceLedgerPage({
   const found = loadAllCases().find((c) => c.record.slug === slug);
   if (!found) notFound();
   const loaded = found;
-  const groups = groupEvidenceByDirection(loaded.evidence);
+  const groups = groupEvidenceByDirection(liveEvidence(loaded));
   const sourceById = new Map(loaded.sources.map((s) => [s.id, s]));
 
   return (
@@ -62,7 +62,7 @@ export default async function EvidenceLedgerPage({
       </p>
       <h1 className="font-serif text-4xl tracking-tight mt-3">Evidence</h1>
       <p className="mt-3 text-ink-soft max-w-2xl">
-        All {loaded.evidence.length} evidence records in this case&apos;s
+        All {liveEvidence(loaded).length} evidence records in this case&apos;s
         ledger. Every record carries an explicit direction, keeps what the
         source states separate from what we infer, and links its source and
         the claims it bears on. Supporting and undermining evidence get the

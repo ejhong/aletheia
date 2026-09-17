@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import { liveEvidence } from "../domain/load.ts";
 import path from "node:path";
 import { declined, type Disposition } from "../domain/intake.ts";
 import { adoptedAssessment, caseAccounts, caseQuestion, currentEdition } from "../domain/editions.ts";
@@ -100,7 +101,7 @@ export function buildPacket(
   const view = caseView(loaded);
   const evidenceCount = new Map<string, number>();
   const provisionalCount = new Map<string, number>();
-  for (const e of loaded.evidence) {
+  for (const e of liveEvidence(loaded)) {
     const m = e.reviewState === "provisional" ? provisionalCount : evidenceCount;
     for (const id of e.claimIds) m.set(id, (m.get(id) ?? 0) + 1);
   }
@@ -139,7 +140,7 @@ export function buildPacket(
         ...(provisionalCount.get(c.claim.id) ? { provisionalEvidence: provisionalCount.get(c.claim.id) } : {}),
         ...(c.claim.reviewState === "provisional" ? { provisional: true as const } : {}),
       })),
-      evidence: loaded.evidence.map((e) => ({
+      evidence: liveEvidence(loaded).map((e) => ({
         id: e.id,
         title: e.title,
         claimIds: e.claimIds,
@@ -231,7 +232,7 @@ export function buildPacket(
     const featured = new Set(ed.featuredClaimIds);
     packet.detail = {
       claims: loaded.claims.filter((c) => featured.has(c.id)),
-      evidence: loaded.evidence,
+      evidence: liveEvidence(loaded),
       sources: loaded.sources,
       research: loaded.research,
       images: loaded.images,

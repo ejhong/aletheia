@@ -16,7 +16,7 @@ import { StandingPanel } from "@/src/components/StandingPanel";
 import { RecordPanel } from "@/src/components/RecordPanel";
 import { caseRecord } from "@/src/domain/record";
 import { caseActivity } from "@/src/domain/activity";
-import { caseCover, liveClaims, loadAllCases } from "@/src/domain/load";
+import { liveEvidence, caseCover, liveClaims, loadAllCases } from "@/src/domain/load";
 import { crossModelSummary, latestCheckPerModel } from "@/src/domain/standing";
 import { historyNewestFirst, lastContentUpdate } from "@/src/domain/history";
 import { caseAccounts, caseQuestion, currentEdition, questionRestatedBy } from "@/src/domain/editions";
@@ -81,7 +81,7 @@ export default async function CasePage({
   const sourceById = new Map(loaded.sources.map((s) => [s.id, s]));
 
   const strongest = (direction: "supports" | "undermines") =>
-    loaded.evidence
+    liveEvidence(loaded)
       .filter((e) => e.direction === direction)
       .sort(
         (a, b) =>
@@ -158,7 +158,7 @@ export default async function CasePage({
               href={`/cases/${slug}/evidence/`}
               className="underline decoration-copper/50 underline-offset-2 hover:decoration-copper text-copper"
             >
-              Browse the full ledger ({loaded.evidence.length} records) →
+              Browse the full ledger ({liveEvidence(loaded).length} records) →
             </Link>
           </p>
           <div className="grid lg:grid-cols-2 gap-4 mt-6">
@@ -246,7 +246,7 @@ export default async function CasePage({
           sittings={caseRecord(loaded)}
           slug={loaded.record.slug}
           caseDir={loaded.dir}
-          linkable={new Set([...liveClaims(loaded).map((c) => c.id), ...loaded.sources.map((s) => s.id), ...loaded.evidence.map((e) => e.id)])}
+          linkable={new Set([...liveClaims(loaded).map((c) => c.id), ...loaded.sources.map((s) => s.id), ...liveEvidence(loaded).map((e) => e.id)])}
         />
 
         <section id="history" className="pt-14 pb-6 scroll-mt-28">

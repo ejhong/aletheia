@@ -39,7 +39,7 @@ export interface FetchedSource {
   permission?: string;
 }
 
-const UA = "Mozilla/5.0 (compatible; Aletheia/1.0; +https://github.com/ejhong/aletheia)";
+export const UA = "Mozilla/5.0 (compatible; Aletheia/1.0; +https://github.com/ejhong/aletheia)";
 const ACCEPT = "text/html,application/xhtml+xml,application/pdf,text/plain;q=0.9,*/*;q=0.5";
 export const MAX_CHARS = 120_000;
 

@@ -954,8 +954,11 @@ export interface VerifyOutcome extends RunOutcome {
   rejected?: number;
 }
 
-/** Who drafted a proposal's records: the proposal's model — or, for a re-submission written by code, the origin of each record (review note #349). */
-const drafterOf = (p: Proposal) => (p.producer === "reverify" ? `on each record's origin (re-submission ${p.runId}, ${p.promptVersion ?? "resubmit"})` : (p.model ?? "unknown"));
+/** Who drafted a proposal's records: the proposal's model — or, for a re-submission written by code, the original proposal's model, run and date as the proposal names them, with where each record carries them (review notes #349, #351). */
+const drafterOf = (p: Proposal) =>
+  p.resubmission
+    ? `${p.resubmission.model ?? "unknown"} in ${p.resubmission.from.replace(/^proposals\//, "")} on ${p.resubmission.date}, re-submitted by ${p.runId} under ${p.promptVersion ?? "resubmit"} (the lineage on each claim's and evidence record's origin and in each source's verification note)`
+    : (p.model ?? "unknown");
 
 export async function runVerify(proposalRunId: string, opts: VerifyOptions = {}): Promise<VerifyOutcome> {
   const root = opts.root ?? process.cwd();

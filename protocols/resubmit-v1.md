@@ -23,10 +23,13 @@ The rules of the transformation, so a reader can reconstruct it:
    ledger id stays, and to a record that was refused or skipped is dropped.
    Evidence left citing no claim, or whose source never entered, is not
    re-submitted and is refused under its own key with the reason.
-3. Every record keeps the drafter's `origin` (who extracted it, in which run,
-   on which date) with the lineage appended: the proposal it came from, its
-   old id, the date and reason it was blocked. The new proposal's `model` is
-   null and its `promptVersion` is this protocol; its `report` names the old
-   proposal's report and this re-submission.
+3. A claim or an evidence record keeps the drafter's `origin` (who extracted
+   it, in which run, on which date) with the lineage appended: the proposal
+   it came from, its old id, the date and reason it was blocked. A source,
+   which carries no origin, takes the same lineage and the drafter's model,
+   run and date at the head of its verification note. The new proposal's
+   `model` is null and its `promptVersion` is this protocol; its
+   `resubmission` names the old proposal, its model, prompt version and
+   date; its `report` names the old proposal's report and this re-submission.
 4. Verify writes the rows under the records' keys; a legacy row under
    another key form is then settled with a mirror row by the reverify run.

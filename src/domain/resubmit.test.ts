@@ -34,7 +34,7 @@ const oldProposal = (c: LoadedCase): Proposal => ({
   runId: DRAFT, date: "2099-01-01", case: c.record.slug, producer: "draft", model: "drafter-model", promptVersion: "draft-v9", basis: { ledgerHash: c.ledgerHash },
   rationale: "The first pass read the book and proposed these.", report: `proposals/2099-01-01-report-megalithic-casting-000000/report.md`,
   adds: {
-    sources: [src("SRC-BOOK-2099")],
+    sources: [src("SRC-BOOK-2099"), src("SRC-OTHER-2099")],
     claims: [cl("GEO-C900"), cl("GEO-C901"), cl("GEO-C902")],
     evidence: [ev("GEO-E900"), ev("GEO-E901", { claimIds: ["GEO-C901", "GEO-C902"] }), ev("GEO-E902", { claimIds: ["GEO-C902"] }), ev("GEO-E903", { sourceId: "SRC-NEVER" })],
     research: [], images: [],
@@ -45,6 +45,7 @@ const oldProposal = (c: LoadedCase): Proposal => ({
 /** The rows verify wrote on the first pass: the source entered, C901 entered as its own id, C902 was refused, the rest blocked — E900 under the legacy title-only key. */
 const firstPassRows = (): Disposition[] => [
   row({ key: "url:example.org/SRC-BOOK-2099", kind: "source", disposition: "in", as: "SRC-BOOK-2099", observed: "Source SRC-BOOK-2099", reason: undefined }),
+  row({ key: "url:example.org/SRC-OTHER-2099", kind: "source", observed: "Source SRC-OTHER-2099" }),
   row({ key: textKey("Claim GEO-C901 states one specific proposition.")!, kind: "claim", disposition: "in", as: "GEO-C801", observed: "Claim GEO-C901 states one specific proposition.", reason: undefined }),
   row({ key: textKey("Claim GEO-C902 states one specific proposition.")!, kind: "claim", disposition: "failed", reason: "second reader rejected the anchor", observed: "Claim GEO-C902 states one specific proposition." }),
   row({ key: textKey("Claim GEO-C900 states one specific proposition.")!, kind: "claim", observed: "Claim GEO-C900 states one specific proposition." }),
@@ -72,7 +73,7 @@ describe("planResubmission", () => {
     const plan = planResubmission({ dispositions: rows }, (ref) => (ref === REF ? oldProposal(c) : null));
     expect(plan.notes).toEqual(["proposals/2099-01-01-draft-gone-000000: blocked rows name it but it is not on disk; nothing to re-submit"]);
     const items = plan.batches.get(REF)!;
-    expect(items.map((i) => `${i.kind}:${i.record.id}`)).toEqual(["claim:GEO-C900", "evidence:GEO-E900", "evidence:GEO-E901", "evidence:GEO-E902", "evidence:GEO-E903"]);
+    expect(items.map((i) => `${i.kind}:${i.record.id}`)).toEqual(["source:SRC-OTHER-2099", "claim:GEO-C900", "evidence:GEO-E900", "evidence:GEO-E901", "evidence:GEO-E902", "evidence:GEO-E903"]);
     expect(items.find((i) => i.record.id === "GEO-E900")!.row.key).toBe(textKey("Evidence GEO-E900"));
   });
   it("a record admitted since under its canonical key is settled even when its legacy row still says blocked", () => {
@@ -95,7 +96,11 @@ describe("buildResubmission", () => {
     expect(p.promptVersion).toBe("resubmit-v1");
     expect(p.basis.ledgerHash).toBe(loaded.ledgerHash);
     expect(p.report).toMatch(/re-submission 2099-01-02-reverify-megalithic-casting-000000 of records blocked at verification/);
-    expect(p.adds.sources).toEqual([]);
+    // A source has no origin: its lineage and the drafter's identity head its verification note; the proposal names the old proposal, model and date.
+    expect(p.adds.sources.map((s) => s.id)).toEqual(["SRC-OTHER-2099"]);
+    expect(p.adds.sources[0].verificationNote).toBe(`Re-submitted from ${REF} (was SRC-OTHER-2099; blocked 2099-01-01: the Internet Archive did not serve the OCR text); drafted by drafter-model in ${DRAFT} on 2099-01-01.`);
+    expect(p.resubmission).toEqual({ from: REF, model: "drafter-model", promptVersion: "draft-v9", date: "2099-01-01" });
+    expect(p.rationale).toMatch(/drafted by drafter-model in 2099-01-01-draft-megalithic-casting-000000 on 2099-01-01/);
     // The claim gets the ledger's next free id; nothing in the ledger or the batch collides.
     const [claim] = p.adds.claims;
     expect(claim.id).toMatch(/^GEO-C\d{3}$/);
@@ -129,11 +134,12 @@ describe("resubmitBlocked and the reverify verb", () => {
     const p = readProposal(runId, opts.root)!;
     seen.push(runId);
     const rows: Disposition[] = [
+      ...p.adds.sources.map((s) => ({ key: `url:example.org/${s.id}`, kind: "source" as const, disposition: "in" as const, as: s.id, observed: s.title, by: "2099-01-02-verify-megalithic-casting-000200", date: "2099-01-02", proposal: `proposals/${runId}` })),
       ...p.adds.claims.map((k) => ({ key: textKey(k.statement)!, kind: "claim" as const, disposition: "in" as const, as: k.id, observed: k.statement, by: "2099-01-02-verify-megalithic-casting-000200", date: "2099-01-02", proposal: `proposals/${runId}` })),
       ...p.adds.evidence.map((e) => ({ key: textKey(`${e.title} ${e.sourceStatement}`)!, kind: "evidence" as const, disposition: "in" as const, as: e.id, observed: e.title, by: "2099-01-02-verify-megalithic-casting-000200", date: "2099-01-02", proposal: `proposals/${runId}` })),
     ];
     appendDispositions(c.dir, rows, opts.root);
-    return { outcome: "completed", runId: "2099-01-02-verify-megalithic-casting-000200", reason: "wrote everything", accepted: { sources: 0, evidence: p.adds.evidence.length, claims: p.adds.claims.length, research: 0 }, rejected: 0 };
+    return { outcome: "completed", runId: "2099-01-02-verify-megalithic-casting-000200", reason: "wrote everything", accepted: { sources: p.adds.sources.length, evidence: p.adds.evidence.length, claims: p.adds.claims.length, research: 0 }, rejected: 0 };
   };
   it("writes the re-submission proposal under its own run, hands it to verify, settles the legacy rows and refuses what could not be re-submitted", async () => {
     const out = await resubmitBlocked(c.record.slug, { root, now: () => new Date("2099-01-02T00:00:00Z"), deps: { cases: () => [loaded], verify } });
@@ -141,11 +147,13 @@ describe("resubmitBlocked and the reverify verb", () => {
     expect(out.runs).toHaveLength(1);
     const [r] = out.runs;
     expect(seen).toEqual([r.runId]);
-    expect(r).toMatchObject({ from: REF, verifyRunId: "2099-01-02-verify-megalithic-casting-000200", records: 3, skipped: 2, admitted: 3, rejected: 0, outcome: "completed" });
-    expect(r.reason).toMatch(/re-submitted 3 record\(s\) from proposals\/2099-01-01-draft-megalithic-casting-000000 as verify 2099-01-02-verify-megalithic-casting-000200: admitted 3, rejected 0; 1 legacy row\(s\) settled/);
-    expect(out.admitted).toBe(3);
+    expect(r).toMatchObject({ from: REF, verifyRunId: "2099-01-02-verify-megalithic-casting-000200", records: 4, skipped: 2, admitted: 4, rejected: 0, outcome: "completed" });
+    expect(r.reason).toMatch(/re-submitted 4 record\(s\) from proposals\/2099-01-01-draft-megalithic-casting-000000 as verify 2099-01-02-verify-megalithic-casting-000200: admitted 4, rejected 0; 1 legacy row\(s\) settled/);
+    expect(out.admitted).toBe(4);
     const written = readProposal(r.runId, root)!;
     expect(written.producer).toBe("reverify");
+    expect(written.adds.sources).toHaveLength(1);
+    expect(written.resubmission?.from).toBe(REF);
     expect(written.adds.claims).toHaveLength(1);
     expect(written.adds.evidence).toHaveLength(2);
     expect(fs.existsSync(path.join(root, "proposals", r.runId, "resubmission.md"))).toBe(true);
@@ -157,7 +165,7 @@ describe("resubmitBlocked and the reverify verb", () => {
     expect(legacy).toMatchObject({ disposition: "in", kind: "evidence", proposal: REF, date: "2099-01-02" });
     expect(legacy.as).toMatch(/^GEO-E\d{3}$/);
     expect(legacy.reason).toMatch(/^settled with the row under text:/);
-    expect(rows.filter((x) => x.by === r.runId && x.disposition === "in")).toHaveLength(1);
+    expect(rows.filter((x) => x.by === r.runId && x.disposition === "in")).toHaveLength(1); // the source and E901 were already canonically keyed
     // What could not be re-submitted is refused under its own key, so it is not planned again every pass.
     const refused = rows.filter((x) => x.by === r.runId && x.disposition === "failed").map((x) => `${x.key}|${x.reason}`);
     expect(refused).toEqual([
@@ -174,8 +182,8 @@ describe("resubmitBlocked and the reverify verb", () => {
     expect(out.outcome).toBe("dry-run");
     expect(out.promoted).toBe(0);
     expect(out.resubmitted).toHaveLength(1);
-    expect(out.resubmitted![0]).toMatchObject({ outcome: "dry-run", records: 3, skipped: 2, admitted: 0 });
-    expect(out.reason).toMatch(/no provisional records; would re-submit 3 record\(s\) from proposals\/2099-01-01-draft-megalithic-casting-000000 \(2 skipped\); nothing written/);
+    expect(out.resubmitted![0]).toMatchObject({ outcome: "dry-run", records: 4, skipped: 2, admitted: 0 });
+    expect(out.reason).toMatch(/no provisional records; would re-submit 4 record\(s\) from proposals\/2099-01-01-draft-megalithic-casting-000000 \(2 skipped\); nothing written/);
     // Only run records were added: no proposal.yaml for the re-submission, no ledger rows.
     const dirs = fs.readdirSync(path.join(root2, "proposals"));
     expect(dirs.length).toBe(before + 2);
@@ -189,11 +197,11 @@ describe("the scheduler counts records blocked at verification", () => {
   const c = getCaseBySlug("megalithic-casting");
   it("asks for a re-verify when a case holds them, names the count, and treats a pass that admitted something as not empty", () => {
     const loaded = withRows(c, firstPassRows());
-    expect(blockedAtVerification(loaded)).toBe(5);
+    expect(blockedAtVerification(loaded)).toBe(6);
     expect(blockedAtVerification({ dispositions: [row({ by: DRAFT })] })).toBe(0);
     // Rule 3b: after the editions owed and the panels due, before a new report — so a case with a stale panel is checked first.
     const pick = nextAction([loaded], [], "2099-01-02");
-    if (pick.verb === "reverify") expect(pick.reason).toMatch(/5 record\(s\) blocked at verification await re-submission/);
+    if (pick.verb === "reverify") expect(pick.reason).toMatch(/6 record\(s\) blocked at verification await re-submission/);
     else expect(["edition", "check"]).toContain(pick.verb);
     expect(nextAction([{ ...loaded, dispositions: [] }], [], "2099-01-02").verb).not.toBe("reverify");
     const run = (notes: string, date = "2099-01-02") => ({ runId: `${date}-reverify-megalithic-casting-000000`, verb: "reverify" as const, case: c.record.slug, date, model: "m", promptVersion: "verify-v6", inputHash: null, outcome: "completed" as const, cost: { calls: 0, inputTokens: 0, outputTokens: 0, usd: 0 }, notes });

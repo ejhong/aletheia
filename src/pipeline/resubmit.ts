@@ -114,7 +114,9 @@ export function buildResubmission(loaded: LoadedCase, ref: string, from: Proposa
   for (const it of items.filter((i) => i.kind === "source")) {
     const s = it.record as Source;
     if (ledgerIds.has(s.id) || entered.has(s.id)) { skip("source", s, `the ledger already holds it as ${entered.get(s.id) ?? s.id}`); continue; }
-    sources.push(s);
+    // A source carries no origin: the lineage and the drafter's model, run and date go at the head of its verification
+    // note, which verify keeps as "the drafter's note" when it admits the source (review note #351).
+    sources.push({ ...s, verificationNote: [`Re-submitted from ${ref} (was ${s.id}; blocked ${it.row.date}: ${(it.row.reason ?? "").replace(/\s+/g, " ").slice(0, 160)}); drafted by ${from.model ?? "unknown"} in ${from.runId} on ${from.date}.`, s.verificationNote].filter(Boolean).join(" ") });
   }
   const sourceKnown = (id: string) => ledgerIds.has(id) || sources.some((s) => s.id === id) || entered.has(id);
   const sourceIdFor = (id: string) => entered.get(id) ?? id;
@@ -168,12 +170,15 @@ export function buildResubmission(loaded: LoadedCase, ref: string, from: Proposa
     date: stamp.date,
     case: loaded.record.slug,
     producer: "reverify",
-    // Written by code, under its own protocol: no model drafted this proposal. The drafter of each record — model, run,
-    // date — is on that record's origin, with the lineage appended (review note #349).
+    // Written by code, under its own protocol: no model drafted this proposal. The drafter of each claim and evidence
+    // record — model, run, date — is on that record's origin with the lineage appended (review note #349); a source,
+    // which has no origin, carries both in its verification note, and the proposal names the old proposal, its model
+    // and its date here (review note #351).
     model: null,
     promptVersion: RESUBMIT_PROTOCOL,
+    resubmission: { from: ref, model: from.model, promptVersion: from.promptVersion, date: from.date },
     basis: { ledgerHash: loaded.ledgerHash },
-    rationale: `Re-submission of ${n} record(s) that verification blocked in ${ref} — ${reasons.join(" | ") || "no reason recorded"} — proposed again under fresh ids against the ledger as it stands by the reverify run ${stamp.runId}, a deterministic transformation (${RESUBMIT_PROTOCOL}) and not a model's work; the drafter of each record, with its run and date, is on the record's origin, the lineage appended. The texts are fetched again and the records read as newly proposed.`,
+    rationale: `Re-submission of ${n} record(s) that verification blocked in ${ref} — ${reasons.join(" | ") || "no reason recorded"} — proposed again under fresh ids against the ledger as it stands by the reverify run ${stamp.runId}, a deterministic transformation (${RESUBMIT_PROTOCOL}) and not a model's work. The records were drafted by ${from.model ?? "unknown"} in ${runIdOf(ref)} on ${from.date}: on each claim's and evidence record's origin, and at the head of each source's verification note, with the lineage appended. The texts are fetched again and the records read as newly proposed.`,
     adds: { sources, evidence, claims, research: [], images: [] },
     corrections: [],
     dispositions: [],

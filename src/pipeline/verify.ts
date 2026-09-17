@@ -327,6 +327,61 @@ export const defaultJudge: Judge = async (record, sourceText, context, meter) =>
   return r.data;
 };
 
+// ------------------------------------------------------------------ the plan reader
+/** The reader's verdict on a proposed research item (protocols/plan-v1.md): a plan names a measurement, an object and a decision rule. */
+export interface PlanReply {
+  isPlan: boolean;
+  measurement: boolean;
+  object: boolean;
+  decisionRule: boolean;
+  novel: boolean;
+  reason: string;
+}
+export const PLAN_SCHEMA: Record<string, unknown> = {
+  type: "object",
+  additionalProperties: false,
+  required: ["isPlan", "measurement", "object", "decisionRule", "novel", "reason"],
+  properties: {
+    isPlan: { type: "boolean" },
+    measurement: { type: "boolean" },
+    object: { type: "boolean" },
+    decisionRule: { type: "boolean" },
+    novel: { type: "boolean" },
+    reason: { type: "string" },
+  },
+};
+export type PlanJudge = (item: ResearchOpportunity, context: string, meter: Meter) => Promise<PlanReply>;
+
+export const defaultPlanJudge: PlanJudge = async (item, context, meter) => {
+  const protocol = loadProtocol("plan");
+  const r = await anthropicJson<PlanReply>(
+    {
+      ...READER,
+      system: renderProtocol(protocol, {}),
+      user: JSON.stringify({ item: { title: item.title, summary: item.summary, informationGain: item.informationGain, effortTier: item.effortTier, track: item.track }, context }, null, 1),
+      schema: PLAN_SCHEMA,
+      maxTokens: 4000,
+      effort: "low",
+      timeoutMs: 120_000,
+    },
+    meter,
+  );
+  return r.data;
+};
+
+export function rememberedPlanJudge(judge: PlanJudge, file: string, readerModel: string, protocol = loadProtocol("plan").version): PlanJudge {
+  const memory = readMemory<PlanReply>(file);
+  return async (item, context, meter) => {
+    const key = sha256Hex(canonicalJson({ item: { title: item.title, summary: item.summary, informationGain: item.informationGain }, context, readerModel, protocol }));
+    const had = memory[key];
+    if (had) return had.answer;
+    const reply = await judge(item, context, meter);
+    memory[key] = { model: readerModel, protocol, runId: meter.runId, date: isoDate(), answer: reply };
+    writeMemory(file, memory);
+    return reply;
+  };
+}
+
 export type Resolver = (citations: { kind: string; id: string }[]) => Promise<{ kind: string; id: string; status: string; note: string }[]>;
 
 export interface Verdicts {
@@ -482,6 +537,8 @@ export async function judgeProposal(
   split: Splitter = defaultSplitter,
   /** Who wrote the parts of a split claim, and in which run — their `origin` (§3.14, §3.15). */
   splitter: { model: string; runId: string } = { model: MODELS.house.model, runId: "unrecorded" },
+  /** Gates beyond the mechanical ones: the plan reader for research items (absent in tests that do not exercise it). */
+  gates: { judgePlan?: PlanJudge } = {},
 ): Promise<Verdicts> {
   const rejected: Verdicts["rejected"] = [];
   const provisional: Verdicts["provisional"] = { sources: [], evidence: [], claims: [] };
@@ -795,13 +852,29 @@ export async function judgeProposal(
     return true;
   });
 
-  // Research: structurally sound and pointing at live claims.
+  // Research: structurally sound, pointing at live claims — and, when the gate is on, a plan: a measurement, an
+  // object and a decision rule, judged by the reader (protocols/plan-v1.md; 2026-09-17, when a quarter of the agenda
+  // carried a decision rule).
   const research: ResearchOpportunity[] = [];
   for (const r of proposal.adds.research) {
     const kept = r.claimIds.filter((id) => liveClaimIds.has(id));
     if (kept.length === 0) {
       reject(r.id, "research", r.title, "none of the claims it would move survived");
       continue;
+    }
+    if (gates.judgePlan) {
+      const named = kept.map((id) => {
+        const c = loaded.claims.find((k) => k.id === id) ?? okClaims.find((k) => k.id === id) ?? provisional.claims.find((k) => k.id === id);
+        return c ? `${c.id}: ${c.statement}` : id;
+      });
+      const context = `${questionContext} Claims the item would move: ${named.join(" | ")}. Research items the ledger already holds: ${loaded.research.map((x) => `${x.id} — ${x.title}`).join(" | ") || "none"}.`;
+      const v = await gates.judgePlan(r, context, meter);
+      if (!v.isPlan) {
+        const missing = [!v.measurement && "no measurement", !v.object && "no object", !v.decisionRule && "no decision rule"].filter(Boolean).join(", ");
+        reject(r.id, "research", r.title, `not a plan (${missing || "the reader's reasons below"}): ${v.reason}`);
+        continue;
+      }
+      if (!v.novel) notes.push(`${r.id}: the reader finds it the same test as an item the ledger already holds — ${v.reason}`);
     }
     research.push({ ...r, claimIds: kept });
   }
@@ -870,8 +943,7 @@ export interface VerifyOptions {
     /** Wayback lookup and save for admitted sources; injectable so tests never reach the archive. */
     archive?: (url: string) => Promise<Archived>;
     now?: () => Date;
-    cases?: () => LoadedCase[];
-  };
+    cases?: () => LoadedCase[]; judgePlan?: PlanJudge; };
 }
 
 export interface VerifyOutcome extends RunOutcome {
@@ -916,7 +988,8 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
     const proposalDir = path.join(root, "proposals", proposalRunId);
     const judge = rememberedJudge(opts.deps?.judge ?? defaultJudge, path.join(proposalDir, "judgments.yaml"), READER.model);
     const split = rememberedSplitter(opts.deps?.split ?? defaultSplitter, path.join(proposalDir, "splits.yaml"), MODELS.house.model);
-    const verdicts = await judgeProposal(proposal, loaded, texts, resolved, judge, meter, { model: READER.model, date }, split, { model: MODELS.house.model, runId });
+    const judgePlan = rememberedPlanJudge(opts.deps?.judgePlan ?? defaultPlanJudge, path.join(proposalDir, "plans.yaml"), READER.model);
+    const verdicts = await judgeProposal(proposal, loaded, texts, resolved, judge, meter, { model: READER.model, date }, split, { model: MODELS.house.model, runId }, { judgePlan });
     // Durable locators: every admitted source with a URL gets its Wayback snapshot on the record.
     const archive = opts.deps?.archive ?? archiveUrl;
     for (const [i, s] of verdicts.accepted.sources.entries()) {
@@ -975,9 +1048,10 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
       const reason = `the prospective ledger fails the build's own rules; see proposals/${runId}/verification.md — nothing written`;
       return { ...closeRun(run, "failed", { reason }), rejected: rejected.length };
     }
+    const notPlan = rejected.filter((r) => r.kind === "research" && /^not a plan/.test(r.reason)).length;
     const counts = { sources: accepted.sources.length, evidence: accepted.evidence.length, claims: accepted.claims.length, research: accepted.research.length, provisional: provisional.sources.length + provisional.evidence.length + provisional.claims.length };
     if (opts.dryRun) {
-      return { ...closeRun(run, "dry-run", { reason: `would write ${JSON.stringify(counts)}; ${rejected.length} rejected` }), accepted: counts, rejected: rejected.length };
+      return { ...closeRun(run, "dry-run", { reason: `would write ${JSON.stringify(counts)}; ${rejected.length} rejected${notPlan ? ` (${notPlan} research item(s) not a plan)` : ""}` }), accepted: counts, rejected: rejected.length };
     }
 
     // Materialize.
@@ -1067,7 +1141,7 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
       root,
     );
     return {
-      ...closeRun(run, "completed", { reason: `wrote ${JSON.stringify(counts)}; ${rejected.length} rejected${corrected.applied.length ? `; ${corrected.applied.length} correction(s) applied` : ""}${corrected.skipped.length ? `; ${corrected.skipped.length} correction(s) not applied (see verification.md)` : ""}` }),
+      ...closeRun(run, "completed", { reason: `wrote ${JSON.stringify(counts)}; ${rejected.length} rejected${notPlan ? ` (${notPlan} research item(s) not a plan)` : ""}${corrected.applied.length ? `; ${corrected.applied.length} correction(s) applied` : ""}${corrected.skipped.length ? `; ${corrected.skipped.length} correction(s) not applied (see verification.md)` : ""}` }),
       accepted: counts,
       rejected: rejected.length,
     };

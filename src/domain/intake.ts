@@ -159,6 +159,8 @@ export const EditionCandidateSchema = z.object({
   article: z.string().min(40),
   /** A new judgment, when it changed; absent when the candidate re-adopts the incumbent's assessment. */
   assessment: AssessmentRunSchema.optional(),
+  /** Research items the ledger has settled, replaced or retired since the incumbent, each with what did it (2026-09-17). */
+  researchStatus: z.array(z.object({ id: z.string().min(1), status: z.enum(["open", "answered", "superseded", "retired"]), note: z.string().min(3) })).default([]),
 });
 
 export const ProposalSchema = z.object({

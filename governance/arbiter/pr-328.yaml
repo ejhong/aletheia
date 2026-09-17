@@ -1,0 +1,149 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 328
+title: The research agenda gets a lifecycle, a plan gate, and revision by default
+url: https://github.com/ejhong/aletheia/pull/328
+verdict: pass
+reason: "4 of 5 seats affirm compliance; one seat's objection is a review note
+  the operator answers on the record: GPT-5.6 Sol (OpenAI) (§3.15, §3.14, §4;
+  check-weakening)"
+outcome: merged
+outcomeAt: 2026-09-17
+judgedAgainst: 714b96d638
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "This is pipeline/protocol infrastructure: an optional
+      `status`/`statusNote`/`statusBy`/`statusDate` lifecycle on research items,
+      a new plan gate in verify, and draft-v9 (v8 archived). AGENTS.md is
+      untouched, so §3.15's reservation is not engaged. The changes tighten
+      rather than loosen checks: verify now refuses research items that name no
+      measurement, object, or decision rule (previously any item whose claim
+      survived was admitted), the loader adds an integrity check requiring a
+      statusNote off `open`, and the run reason reports the count of refusals —
+      no check-weakening. Provenance is honest: each status write is stamped
+      with the run id, date, and model, plus one append-only history entry
+      attributing the change to `aletheia edition (<model>)` with `aiAssisted:
+      true` (§3.14, §3.15), and errors (unknown ids, duplicates, missing notes)
+      are reported rather than silently repaired (§8). The settled items are
+      kept and displayed apart rather than deleted, and edition-v9 explicitly
+      forbids settling an item to shorten the agenda, which preserves the
+      negative/open record (§3.11). No content/ files or citations are added —
+      the verification section found no identifiers; the DOI and quotes in
+      researchLifecycle.test.ts are test fixtures inside a test file, not ledger
+      provenance, so they raise no fabrication issue. The DECISIONS.md entry
+      records the founder's in-session direction with date and channel, which
+      §3.15 expressly permits."
+    cost:
+      model: claude-opus-5
+      inputTokens: 20670
+      outputTokens: 820
+      usd: 0.127044
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: violates
+    rules:
+      - §3.15
+      - §3.14
+      - §4
+    reasoning: "`runEdition` immediately materializes a single edition model’s
+      `researchStatus` judgments into canonical `research.yaml`, while
+      `ResearchCard` publicly presents those items as answered, superseded, or
+      retired without a draft or ratification label. This bypasses §3.15’s
+      prohibition on publishing consequential changes on one model’s unilateral
+      judgment and can present an unratified judgment as settled. These status
+      judgments also function as assessments, yet they are mutable item fields
+      rather than append-only, fully stamped AI-assessment overlays; the schema
+      permits a non-open status without `statusBy` or `statusDate`, so
+      provenance completeness is not fail-closed. In addition, unknown IDs,
+      duplicates, and missing notes found by `researchStatusChanges` are only
+      printed to stderr while the run can still complete, leaving no durable
+      disposition for those refusals. Status changes should remain stamped draft
+      data until ratification/adoption, require complete model/run/date/prompt
+      provenance, and make invalid status entries fail or persist their refusal
+      reasons in the run record."
+    paradigm: check-weakening
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 16433
+      outputTokens: 2317
+      usd: 0.112584
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: The pull request adds lifecycle states (`open`, `answered`,
+      `superseded`, `retired`) and a plan gate for research items, ensuring
+      tests proposed in the ledger specify an object, a measurement, and a
+      decision rule. All changes preserve exact provenance (§3.8) and versioning
+      (§3.14) by attaching `statusBy`, `statusDate`, and `statusNote` to
+      modified research records and logging changes to the case changelog via
+      `appendHistory`. The plan verification reader in `src/pipeline/verify.ts`
+      strengthens rather than weakens intake checks, preventing unsubstantiated
+      or non-actionable agenda items. AGENTS.md is untouched, no confidential
+      material or unverified citations are introduced, and domain integrity
+      rules enforce notes for settled items.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 19344
+      outputTokens: 980
+      usd: 0.018183
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff is infrastructure and protocol only: research-item status
+      fields, a plan gate in verify, draft-v9 revision-by-default, edition-v9
+      researchStatus, UI grouping, loader note check, and tests. AGENTS.md is
+      untouched; DECISIONS.md records a founder-directed change with date and
+      channel. No content/ citations or ledger fabrications are introduced
+      (citation tooling found none). Status writes are stamped with runId/date
+      and append-only history; production verify always enables the plan gate
+      while tests may omit it. This tightens rather than weakens §3 checks and
+      preserves optional status so older records keep canonical form."
+    cost:
+      model: grok-4.5
+      inputTokens: 18257
+      outputTokens: 155
+      usd: 0.037559
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.3
+      - §3.14
+      - §3.15
+    reasoning: "No AGENTS.md edit occurs (docs/DECISIONS.md is the sanctioned
+      decisions log, and the founder's session direction is recorded there with
+      date and channel as §3.15's amendment allows); no citations are added
+      under content/, so the verification section is empty by design. The change
+      strengthens rather than weakens the checks: the plan gate
+      (protocols/plan-v1.md) adds a refusal criterion to verify — the opposite
+      of dodging §3.15 — and the optional-not-defaulted status field preserves
+      canonical record forms rather than silently rewriting every ledger hash.
+      Provenance is handled rigorously: each status change is written with
+      statusBy/statusDate, a history entry naming the run and model, and the
+      loader fail-closes (ContentError) on a settled item lacking a statusNote,
+      with a data-driven reason for keeping the field optional. The lifecycle
+      itself serves §3.3 and §3.11 (settled items are kept and displayed, never
+      deleted, with the protocol explicitly forbidding settling an item merely
+      to shorten the agenda). The fixture DOI in researchLifecycle.test.ts is
+      test scaffolding, not published content, and judgeProposal's gate remains
+      on in production paths (runVerify wires defaultPlanJudge) with the ungated
+      path confined to tests — the one residual question, whether
+      research-status writes ride on properly ratified edition candidates, is a
+      pipeline behavior outside this diff that I have no evidence contradicts."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 18837
+      outputTokens: 1239
+      usd: 0.003445
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 93541
+  outputTokens: 5511
+  usd: 0.2988
+harvestedAt: 2026-09-17

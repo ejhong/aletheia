@@ -1,0 +1,133 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 301
+title: "One bad reply costs one record: the code #299 described, with its test"
+url: https://github.com/ejhong/aletheia/pull/301
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-16
+judgedAgainst: c583d93c3c
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches only pipeline code (`models.ts`, `verify.ts`), a
+      new unit test, and an append-only correction entry in docs/DECISIONS.md;
+      AGENTS.md is untouched and no content/ records or citations are added
+      (verification tooling found no identifiers). The behavioural changes
+      strengthen rather than weaken §3.15's checks: a non-JSON strict reply is
+      retried once with the schema as instructions and the retried result is
+      explicitly demoted to `strict: false` (honest labeling of how the reply
+      was obtained), both calls are billed to the spend ledger, and a failed
+      split now rejects the single affected record with a reason that names the
+      failure (`the split failed: …`) instead of aborting the sitting —
+      exclusion, not silent admission, so no record enters the ledger unchecked.
+      The decisions entry is a candid self-correction stating that #299 merged
+      with its code uncommitted and that the panel's 5/5 judged a docs-only
+      diff, with the affected run id named; that is the opposite of
+      misrepresenting provenance. The 'Supervised-by: founder (direction in
+      session, 2026-09-16)' stamp falls under the constitution's clause that
+      founder directions are the operating record and may be cited in the
+      decisions log with date and channel. Nothing here presents an unratified
+      draft as ratified, publishes confidential material, or loosens a §3.15
+      gate."
+    cost:
+      model: claude-opus-5
+      inputTokens: 5154
+      outputTokens: 668
+      usd: 0.045664
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.14
+      - §3.15
+    reasoning: "The change preserves the atomicity gate: split output still passes
+      through `asSplit`, and a failed split causes the non-atomic claim or
+      evidence record to be rejected rather than admitted. The retry is limited
+      to one attempt, records both calls in the spend ledger, marks a successful
+      fallback as non-strict, and exposes the second malformed reply in the
+      resulting error rather than silently repairing it. The decisions-log
+      correction is append-only and identifies the prior omission, affected run,
+      PRs, date, and supervision channel. No content citations, confidential
+      material, constitution edit, fabricated locator, or weakening of a
+      publication check is visible in the diff."
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 7425
+      outputTokens: 1549
+      usd: 0.06068
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.5
+      - §3.15
+    reasoning: The pull request implements resilient handling for malformed model
+      replies during proposition splitting, adding a non-strict retry in
+      `anthropicJson` and catching split failures in `judgeProposal` so a failed
+      split rejects only the non-atomic candidate record rather than crashing
+      the entire sitting. Token usage and spend continue to be metered and
+      recorded accurately across retries. The provenance and rejection reasons
+      remain transparent and explicit, recording why splitting failed in the
+      rejection log. No constitutional checks in §3.15 are weakened, `AGENTS.md`
+      is untouched, and unit test coverage is supplied.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 8187
+      outputTokens: 551
+      usd: 0.008207
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff is pipeline robustness only: anthropicJson retries once on
+      a non-JSON strict reply and marks the retry non-strict; verify catches a
+      failed split and rejects that single record instead of aborting the
+      sitting; a unit test covers both paths; DECISIONS.md adds a
+      founder-supervised correction that the prior #299 entry shipped without
+      its code. No AGENTS.md edit, no content/ citations or assessments, no
+      confidence material, and no loosening of §3.15 checks—failure is narrowed,
+      not hidden. Omitted-files list is empty and citation verification found
+      nothing to resolve."
+    cost:
+      model: grok-4.5
+      inputTokens: 7762
+      outputTokens: 143
+      usd: 0.016497
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.14
+      - §3.13
+    reasoning: "This is pipeline code, a test, and a decisions-log correction — no
+      content records, citations, or assessments are added, and no AGENTS.md
+      edit occurs (docs/DECISIONS.md is the decisions log, not the constitution,
+      and operator corrections there are established practice). The retry
+      behavior does not weaken §3.15's checks: a strict reply that is not JSON
+      gets exactly one re-ask with the schema as instructions, the result is
+      honestly labeled strict: false (matching the pre-existing too-large-schema
+      path), a second failure throws with the reply head quoted, and the test
+      asserts both calls land in the spend ledger — so cost and provenance stay
+      recorded. The verify.ts change makes a failed split reject that single
+      record with an explicit stated reason ('the split failed: …') rather than
+      ending the sitting, which is a reasoned refusal, not a silent admission.
+      The DECISIONS.md correction transparently discloses that #299 merged as a
+      docs-only diff judged 5/5 while its code sat uncommitted — an honest
+      record of a process failure, with the operator rule it induces stamped and
+      attributed; I see no fabrication, confidence exposure, constitution edit,
+      or check-weakening in the material shown."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 6052
+      outputTokens: 959
+      usd: 0.001733
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 34580
+  outputTokens: 3870
+  usd: 0.1328
+harvestedAt: 2026-09-17

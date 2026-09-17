@@ -1,0 +1,125 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 335
+title: Retrieval follows Internet Archive items to their OCR text
+url: https://github.com/ejhong/aletheia/pull/335
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-17
+judgedAgainst: 579c543f7f
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The change is pipeline/tooling only: a new `archiveItemOf()` helper,
+      a branch in `retrieve()` that tries the Internet Archive's `_djvu.txt` OCR
+      layer before the item page, a unit test with a fake fetch, and an
+      append-only DECISIONS.md entry. No content/ records are added, so there
+      are no citations, locators, or assessments to fabricate — the verification
+      section found no identifiers, consistent with the diff. AGENTS.md is
+      untouched and no §3.15 check is loosened; on the contrary, the OCR text is
+      returned under the item page's key with `substitute: true` and an explicit
+      `via` string naming the exact URL read, which preserves honest provenance
+      rather than passing OCR off as the page image, and the fallback path
+      leaves `via` undefined when only the page is read. The DECISIONS entry is
+      appended, dated, and stamps the founder direction with channel and quote,
+      as §3.15 permits for operating-record directions. The only wrinkle is a
+      numeric mismatch of flavor text — the code comment says \"eight blocked
+      routes\" while the PR body and log entry cite 176/139/37 pool counts —
+      which is a documentation imprecision about internal ledger tallies, not an
+      invented citation or provenance stamp, and I would want it reconciled in a
+      later pass but it does not rise to a violation."
+    cost:
+      model: claude-opus-5
+      inputTokens: 3908
+      outputTokens: 651
+      usd: 0.03906
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.9
+      - §3.15
+      - §8
+    reasoning: The retrieval preserves the Internet Archive item page as the source
+      key while recording the exact OCR URL in `via` and marking the OCR as a
+      `substitute`, which honestly distinguishes the source from the text
+      representation used. Failure to obtain the OCR falls back to the item page
+      rather than silently treating missing OCR as contradictory evidence. The
+      tests cover details, download, and stream URL recognition, successful OCR
+      substitution, and the fallback path. The change neither edits AGENTS.md
+      nor weakens ratification, citation, verification, or provenance checks,
+      and it adds no content citations requiring mechanical verification.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 6661
+      outputTokens: 673
+      usd: 0.040104
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.8
+      - §4
+    reasoning: "The change enhances retrieval of Internet Archive scans by fetching
+      their plain-text OCR layer when available, correctly marking the result
+      with `substitute: true` and recording explicit provenance in `via`. It
+      modifies no content files or AGENTS.md, adheres to pipeline transparency
+      and exact provenance requirements, and includes unit tests verifying
+      fallback behavior. The append-only record in docs/DECISIONS.md properly
+      documents the rationale and founder supervision."
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 7214
+      outputTokens: 600
+      usd: 0.00766
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff only extends retrieval to prefer Internet Archive _djvu.txt
+      OCR under the item-page key with substitute:true (and falls back to the
+      page), plus tests and an append-only DECISIONS.md entry. AGENTS.md is
+      untouched; no content/ citations, confidence material, or run records are
+      introduced. Marking OCR as a stand-in matches exact-provenance honesty
+      rather than weakening checks. No positive evidence of fabrication or
+      misattribution.
+    cost:
+      model: grok-4.5
+      inputTokens: 6857
+      outputTokens: 114
+      usd: 0.014513
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.9
+      - §3.15
+    reasoning: "This is a retrieval-infrastructure change with no citations added,
+      no AGENTS.md edit, and no run records, so the fabrication and constitution
+      rules are not in play. The OCR-text route is handled honestly: the fetched
+      text is keyed to the item page's URL, flagged `substitute: true`, and the
+      `via` field discloses exactly that the Internet Archive OCR text was read
+      in place of the item page — so a quote the OCR cannot support will be
+      blocked rather than passed off as verified, consistent with §3.8's
+      unverified-locator labeling and §3.9's source-statement-versus-inference
+      distinction. The `_djvu.txt` URL pattern is the Archive's real convention,
+      not an invented locator. The DECISIONS.md entry records a founder session
+      direction in the form the constitution permits for operating-record
+      directions, and contains no internally inconsistent provenance I can see;
+      I cannot independently confirm the session quote, but temporal humility
+      says unfamiliarity is not evidence of fabrication. The tests cover both
+      the OCR path and the fallback with a fake fetch, and nothing here loosens
+      a §3.15 check."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 5446
+      outputTokens: 855
+      usd: 0.00159
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 30086
+  outputTokens: 2893
+  usd: 0.1029
+harvestedAt: 2026-09-17

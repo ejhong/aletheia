@@ -1,0 +1,143 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 331
+title: "Provisional admission and the research lifecycle, tightened on two more
+  notes (#329, #330)"
+url: https://github.com/ejhong/aletheia/pull/331
+verdict: pass
+reason: "4 of 5 seats affirm compliance; one seat's objection is a review note
+  the operator answers on the record: GPT-5.6 Sol (OpenAI) (§3.14, §3.15;
+  provenance)"
+outcome: merged
+outcomeAt: 2026-09-17
+judgedAgainst: 8dc87397ee
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches only source, tests, and an append-only entry in
+      docs/DECISIONS.md; AGENTS.md is untouched, so §3.15's reserved-amendment
+      rule is not engaged. Every substantive change tightens rather than loosens
+      a check: `load.ts` now fail-closes a settled research status unless
+      statusNote, statusBy and statusDate are all present; `sourceExists` now
+      refuses to admit a source on a page-title match when it carries an
+      identifier that is unchecked or unmatched (identifier-first admission,
+      consistent with §3.7/§3.8); and TEXT_UNAVAILABLE stops instructing the
+      reader to encode unassessed textual checks as `true` and instead requires
+      `false` plus a stated reason — a direct honesty improvement under
+      §3.8/§3.9. Refused status entries move from stderr-only to a written
+      working file and the run notes, improving inspectability (§3.14/§3.15).
+      The added ResearchCard tooltip attributes a status to the AI edition run
+      that set it and to the panel-judged PR, which is accurate attribution, not
+      a claim of human review (§4). No citations or identifiers are added under
+      content/, and the verification section confirms none to check. The one
+      wrinkle is that the new decisions entry says an AGENTS.md §4 sentence 'is
+      proposed to the founder' while the preceding (base) entry records the
+      founder as already having amended §4; this is stale narration within an
+      append-only log rather than a misattribution of who did what, and does not
+      rise to a violation."
+    cost:
+      model: claude-opus-5
+      inputTokens: 6663
+      outputTokens: 876
+      usd: 0.095778
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: violates
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: The added decisions-log entry says that the provisional-tier sentence
+      “is proposed to the founder,” but the immediately preceding authoritative
+      entry says that the founder already amended §4 and merged it by hand, and
+      the quoted base constitution already contains that sentence. This creates
+      an internally contradictory history of the amendment’s status, contrary to
+      the requirement that important changes and approvals have accurate,
+      reconstructable provenance. The implementation changes otherwise tighten
+      checks rather than weaken them. Fix the new entry to state that the
+      sentence was proposed and subsequently ratified and merged by the founder,
+      or otherwise give an accurate chronology consistent with the preceding
+      record.
+    paradigm: provenance
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 8388
+      outputTokens: 1708
+      usd: 0.067712
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: The change responds to prior review notes by tightening verification
+      and provenance requirements. It prevents sources with unresolved
+      identifiers from falling back to page title matching in `sourceExists`,
+      corrects `TEXT_UNAVAILABLE` so unread textual checks report as false
+      rather than true, and enforces fail-closed validation for settled research
+      agenda items (`statusNote`, `statusBy`, and `statusDate`). No constitution
+      files are edited, no citations or records are fabricated, and checks are
+      strengthened rather than weakened.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 9171
+      outputTokens: 698
+      usd: 0.009496
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff tightens provisional admission and research-status
+      provenance without editing AGENTS.md: TEXT_UNAVAILABLE now reports
+      unassessed textual checks as false rather than true; sources that carry
+      identifiers may enter only via a resolving match, not a bare page title;
+      settled statuses require statusNote, statusBy, and statusDate fail-closed;
+      refused status rows are written to the run working file and counted in
+      notes; the card surfaces statusBy. DECISIONS.md only records the founder’s
+      already-present §4 provisional tier and these review-note fixes. No
+      citations, confidence material, or check-weakening appear; tests match the
+      stricter gates."
+    cost:
+      model: grok-4.5
+      inputTokens: 8683
+      outputTokens: 153
+      usd: 0.018399
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.13
+      - §3.15
+      - §4
+    reasoning: "This change tightens rather than weakens the epistemic checks. The
+      verify.ts change (review note #329) closes a real provenance gap: a source
+      carrying an identifier can no longer be admitted on a page title while
+      that identifier is unchecked or unmatched — stricter compliance with
+      §3.8/§4's 'real citations only', with tests covering both branches. The
+      TEXT_UNAVAILABLE rewrite fixes an honesty bug where unassessed textual
+      checks were encoded as `true`: they are now reported `false` with the
+      reason stating they were not assessed, which is exactly the calibrated,
+      honest-labeling behavior §3.13/§4 require. The load.ts change makes a
+      settled research status fail-closed on statusNote, statusBy and
+      statusDate, and refused status entries are now written to the run's
+      working file and counted — disagreement and refusals displayed rather than
+      hidden (§3.15). ResearchCard now names the run that set a status and
+      discloses on hover that it published through the panel-judged PR,
+      improving AI-involvement transparency. Although DECISIONS.md mentions a
+      proposed sentence for AGENTS.md §4, no AGENTS.md edit appears in the diff
+      — the tier it references is already the founder's ratified amendment of
+      2026-09-17, present in the constitution as quoted. No citations are added,
+      no run records are carried, and the OMITTED FILES list is empty, so
+      nothing unseen could hide a violation."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 9495
+      outputTokens: 557
+      usd: 0.001703
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 42400
+  outputTokens: 3992
+  usd: 0.1931
+harvestedAt: 2026-09-17

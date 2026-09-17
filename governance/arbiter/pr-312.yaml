@@ -1,0 +1,127 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 312
+title: "Verify: a quote missed in a substitute copy is blocked, not failed"
+url: https://github.com/ejhong/aletheia/pull/312
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-16
+judgedAgainst: 030e8f6e78
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: 'The change is confined to pipeline logic, one test, and a dated
+      DECISIONS entry; it edits no content records and adds no citations
+      (verification found none). Functionally it distinguishes a quote miss
+      against a stand-in text (open-access copy or arXiv PDF chosen by the fetch
+      layer) from a miss in the cited document itself: the former is now
+      rejected as *blocked* with an explicit route ("obtain the text of SRC-X as
+      cited (URL) and re-run verify; the quotes were checked only against …"),
+      the latter still fails. Either way the record does not enter the ledger,
+      so no unverified quote is admitted and no §3.15 check is loosened or
+      dodged — the honest labeling of what was actually checked is strengthened
+      rather than weakened (§3.8, §3.9). The predicate `substituteCopy` keys on
+      a typed flag set only at the two fetch sites that substitute a copy,
+      explicitly refusing to infer stand-in status from the free-text `via`
+      description, and the test pins that a supplied document and a Wayback
+      snapshot of the cited page are not substitutes — so a direct document
+      cannot escape failure. AGENTS.md is untouched; the DECISIONS line is
+      stamped with date and channel for the founder direction, which §3.15
+      permits as operating record. No fabricated provenance is visible: the
+      Łucejko 2018 / OpenAlex handle and arXiv path appear only as test fixtures
+      and rationale, not as ledger citations.'
+    cost:
+      model: claude-opus-5
+      inputTokens: 4534
+      outputTokens: 853
+      usd: 0.083914
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.15
+    reasoning: "The change does not admit a quotation that failed verification: it
+      keeps the record blocked and gives a concrete route to obtain the cited
+      text and rerun verification. The substitute status is set by typed
+      provenance at the two fetch paths that deliberately retrieve a stand-in,
+      while descriptive `via` text alone cannot downgrade a direct-document
+      mismatch. Direct and supplied-document quote misses still fail, so the
+      real-citation and exact-provenance checks are not weakened or dodged."
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 5695
+      outputTokens: 739
+      usd: 0.038072
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.15
+    reasoning: The change refines quote verification when checking against a
+      substitute copy (such as an OpenAlex open-access repository or an arXiv
+      full-text PDF read in place of an abstract page). Instead of marking the
+      quote as flatly failed when not found in the stand-in text, it marks the
+      record as blocked with an explicit route to inspect the cited primary
+      document. Nothing is admitted or published without verification,
+      preserving fail-closed admission and provenance rules while accurately
+      distinguishing unverified substitute texts from fabricated quotes.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 7592
+      outputTokens: 893
+      usd: 0.009043
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff only adjusts verify/fetch so a quote miss against a
+      fetch-flagged substitute copy (OpenAlex OA or arXiv PDF stand-in) is
+      blocked with an explicit route to obtain the cited text, while a miss in
+      the document itself or a supplied document still fails. That is more
+      honest verification labeling (§3.8/§3.15), not a loosened check: records
+      still cannot pass on an unchecked substitute. The typed `substitute` flag
+      (not the via string) drives the branch; tests cover both sides;
+      DECISIONS.md records the founder direction; AGENTS.md and content/ are
+      untouched."
+    cost:
+      model: grok-4.5
+      inputTokens: 7161
+      outputTokens: 148
+      usd: 0.015325
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.8
+      - §3.13
+    reasoning: This change does not weaken the quote-verification check — it makes
+      its epistemics more accurate. Before and after, a quote that cannot be
+      found verbatim in the cited document's own text still fails and cannot
+      publish; what changes is only that a miss against a stand-in copy (an
+      OpenAlex open-access copy or an arXiv PDF read for an abstract page) is
+      classified as blocked-with-a-route rather than failed, and the record
+      still cannot enter the ledger until the quotes are verified against the
+      text as cited. That distinction — 'not found in a substitute copy' being
+      unverified rather than false — is exactly the calibrated, honest-labeling
+      behavior §3.8 and §3.13 demand, and no fabricated quote gains a new path
+      to publication since acceptance still requires a verbatim match in the
+      cited document itself. The substitute flag is set by typed fetch-layer
+      logic rather than by parsing the free-text `via` description, with tests
+      covering both directions, and the reasoning is documented in
+      docs/DECISIONS.md. AGENTS.md is untouched, no citations are added, and the
+      diff is complete with no omitted files, so there is nothing hidden that
+      could hide a violation.
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 8064
+      outputTokens: 961
+      usd: 0.00169
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 33046
+  outputTokens: 3594
+  usd: 0.148
+harvestedAt: 2026-09-17

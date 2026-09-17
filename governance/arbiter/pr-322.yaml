@@ -1,0 +1,158 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 322
+title: "Provisional admission: records whose source exists but whose text could
+  not be read enter unread, labelled, and weightless"
+url: https://github.com/ejhong/aletheia/pull/322
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-17
+judgedAgainst: 12f4ae9ea8
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "This is an infrastructure change (schema, pipeline, protocols, UI)
+      that adds a 'provisional' review state; it adds no content records and the
+      tooling found no citation identifiers in added content lines, so there is
+      no fabrication surface here. The new tier does not loosen §3.15's checks:
+      `sourceExists()` admits a record only when a resolver-confirmed identifier
+      or an answering URL carries metadata matching the record's title, a
+      failing identifier blocks outright (\"a failing identifier is a failing
+      citation\"), and 403/404/429/connection failures still block as before;
+      the second reader is still asked to judge everything judgeable without the
+      text (atomicity, relevance, independence), and what it refuses is refused.
+      Honesty of labelling is preserved and arguably improved: a provisional
+      source is forced to `verification: unverified` by the loader,
+      `reviewState: provisional` must carry a block naming what showed
+      existence, why the text is unread, the route and the run, and the loader
+      rejects a block on any non-provisional/non-rejected record. Weightlessness
+      is enforced structurally, not just in prose — `verifiedEvidence` excludes
+      provisional records from the strongest-for/against selection, packet claim
+      counts split `evidence` from `provisionalEvidence`, and
+      edition-v9/check-v2 instruct grading them as absent, with UI badges on the
+      evidence card, claim margin and source page. The remaining risk I note (a
+      review-note-level concern, not a violation) is that an evidence record's
+      verbatim quote enters unchecked; that is disclosed as provisional and
+      marked unverified per §3.8, and re-verify promotes or refuses it.
+      AGENTS.md is untouched and the DECISIONS entries are recorded founder
+      directions, which §3.15 expressly permits."
+    cost:
+      model: claude-opus-5
+      inputTokens: 70435
+      outputTokens: 1830
+      usd: 0.401118
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.6
+      - §3.8
+      - §3.13
+      - §3.14
+      - §3.15
+    reasoning: The new tier is explicitly labelled `provisional`, forces its source
+      to remain `unverified`, records the existence basis, retrieval failure,
+      route, date, and admitting run, and does not represent unread material as
+      verified. Provisional evidence is excluded from evidence counts,
+      strongest-evidence selection, editions, and blind checks, while its public
+      cards state that it carries no weight; this preserves the source/evidence
+      distinction and calibrated uncertainty. Admission requires resolving
+      metadata or a responding document title to match the source title, and a
+      failed identifier blocks admission, so the real-citation check is not
+      bypassed. Re-verification uses the existing second-reader path, records
+      promotion or refusal in dispositions and append-only history, and leaves
+      still-unread records provisional rather than silently upgrading them; no
+      content citations, confidential material, or AGENTS.md amendment are added
+      here.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 48418
+      outputTokens: 3999
+      usd: 0.274164
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: The change introduces a provisional intake tier and re-verification
+      workflow for records whose sources demonstrably exist (via title-matching
+      resolvers or verified HTTP 200 responses) but whose text cannot yet be
+      extracted. All provisional sources are strictly enforced as 'unverified',
+      provisional evidence and claims carry explicit provenance blocks and
+      'provisional' reviewState, and all assessment protocols (check-v2,
+      edition-v9) and UI views explicitly exclude provisional records from
+      evidentiary weight. No citations are fabricated, citation resolution
+      checks remain fail-closed against failing identifiers, and the changes to
+      AGENTS.md are zero. The research agenda lifecycle additions and plan gate
+      further tighten rather than weaken epistemic standards.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 55264
+      outputTokens: 950
+      usd: 0.045011
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The change implements founder-directed provisional admission
+      (DECISIONS 2026-09-17) without editing AGENTS.md. Identifiers must still
+      resolve with title-matching metadata (sourceExists; failing IDs block),
+      the second reader still judges atomicity/relevance/independence without
+      text, and provisional records are labelled, excluded from evidence counts,
+      graded as absent in edition-v9/check-v2, and barred from
+      strongest-evidence selection via verifiedEvidence—so fabrication and
+      weight checks are not loosened. Re-verify promotes or refuses from
+      materialised outcomes with stamped history; the research lifecycle and
+      plan-v1 gate tighten agenda quality rather than weaken §3. No content
+      citations were added, no confidence material is published, and provenance
+      stamps (provisional block, statusBy/runId) remain honest.
+    cost:
+      model: grok-4.5
+      inputTokens: 51704
+      outputTokens: 188
+      usd: 0.104651
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.15
+      - §3.13
+      - §4
+    reasoning: "The change does not edit AGENTS.md and does not weaken the
+      fabrication check — it preserves and actually tightens it: a record enters
+      provisionally only when an identifier resolves with metadata matching the
+      record's title or a URL answers with a matching document title
+      (sourceExists), a failing identifier blocks regardless of page title, a
+      403/404/429 or connection failure keeps the record blocked, and the second
+      reader still judges everything judgeable without the text (atomicity,
+      relevance, independence), refusing on those grounds. The weightlessness
+      guard is enforced structurally, not just by convention: the loader throws
+      if a provisional record lacks its block or a provisional source is not
+      `unverified`; the packet excludes provisional records from evidence
+      counts; check-v2 and edition-v9 grade them as absent; the case page
+      selects strongest evidence from verifiedEvidence only; and every surface
+      (badges, source page, margin notes) displays them as provisional and
+      awaiting the text. This is consistent with §3.8's demand that unverified
+      locators be labeled rather than silently treated as read, and with §3.13's
+      calibrated-uncertainty ethos. The reverify verb promotes or refuses such
+      records through the same second-reader checks, and the new plan gate and
+      research lifecycle add checks rather than remove any. The founder
+      direction of 2026-09-17 is recorded in DECISIONS.md with the session
+      channel, satisfying the operating-record requirements of §3.15, and the
+      diff's own review-note history (#322, #325-#327) shows prior objections
+      were answered in code."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 48667
+      outputTokens: 1680
+      usd: 0.008486
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 274488
+  outputTokens: 8647
+  usd: 0.8334
+harvestedAt: 2026-09-17

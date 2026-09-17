@@ -612,3 +612,170 @@
     extractedBy: claude-fable-5-1
     runId: 2026-09-10-verify-pre-columbian-amazon-185127
     date: 2026-09-10
+
+- id: AMZ-E073
+  title: "Rostain 2024: Upano platform and road construction dated ca. 500 BCE to 300/600 CE — part 1"
+  claimIds:
+    - AMZ-C061
+  sourceId: SRC-ROSTAIN-2024
+  direction: supports
+  strength: strong
+  sourceStatement: Archaeological excavations date the Upano Valley "occupation from around 500 BCE to between 300 and 600 CE".
+  editorInference: Primary dating by the excavating team (almost 70 radiocarbon dates per the supplement); the end-date is a range, not a point.
+  exactLocator: "[p. 1] and [p. 4], via open-access author manuscript (archimer.ifremer.fr/doc/00872/98412/118237.pdf)"
+  limitations:
+    - Author-accepted manuscript; the revised sequence is promised in 'a subsequent paper'.
+  reviewState: ai_extracted
+  origin:
+    ref: split of AMZ-E067 (report 2026-09-17-report-pre-columbian-amazon-134558)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-17-verify-pre-columbian-amazon-140447
+    date: 2026-09-17
+- id: AMZ-E074
+  title: Huapula reoccupation of Upano mounds, 800–1200 CE — part 1
+  claimIds:
+    - AMZ-C062
+  sourceId: SRC-ROSTAIN-2024
+  direction: supports
+  strength: strong
+  sourceStatement: Some mounds were "reoccupied after a hiatus by groups of the Huapula culture" between 800 and 1200 CE.
+  editorInference: Continuity of some occupation into the second millennium at Upano, at lower density; relevant to how long the valley's surfaces were forested before Colonial times.
+  exactLocator: "[p. 4], supplement S2 via open-access author manuscript"
+  limitations:
+    - Reoccupation extent ('some mounds') not quantified.
+  reviewState: ai_extracted
+  origin:
+    ref: split of AMZ-E069 (report 2026-09-17-report-pre-columbian-amazon-134558)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-17-verify-pre-columbian-amazon-140447
+    date: 2026-09-17
+  readerActs:
+    - field: exactLocator
+      from: "[p. 4] and supplement S2 [p. 24], via open-access author manuscript"
+      to: "[p. 4], supplement S2 via open-access author manuscript"
+      model: "verify (mechanical: the page marker before the part's quote)"
+      runId: 2026-09-17-verify-pre-columbian-amazon-140447
+      promptVersion: verify-v6
+      date: 2026-09-17
+      reason: the part quotes p. 4 only
+- id: AMZ-E075
+  title: Huapula reoccupation of Upano mounds, 800–1200 CE — part 2
+  claimIds:
+    - AMZ-C062
+  sourceId: SRC-ROSTAIN-2024
+  direction: context
+  strength: strong
+  sourceStatement: Huapula ceramic is "characterized by decorations based on the corrugated modality using wavy patterns".
+  editorInference: Continuity of some occupation into the second millennium at Upano, at lower density; relevant to how long the valley's surfaces were forested before Colonial times.
+  exactLocator: "[p. 4] and supplement S2 [p. 24], via open-access author manuscript"
+  limitations:
+    - Reoccupation extent ('some mounds') not quantified.
+    - 'Direction set to "context" (from "supports") by the second reader (claude-sonnet-5, 2026-09-17, run 2026-09-17-verify-pre-columbian-amazon-140447, verify-v6) at intake: The quoted sentence only describes the corrugated, wavy-pattern decoration typical of Huapula pottery; it does not itself assert that mounds were reoccupied by Huapula groups between 800 and 1200 CE, which is stated elsewhere in the supplement. As such the passage identifies/dates the Huapula culture but does not directly support the reoccupation claim, so it functions as context rather than support.'
+  reviewState: ai_extracted
+  origin:
+    ref: split of AMZ-E069 (report 2026-09-17-report-pre-columbian-amazon-134558)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-17-verify-pre-columbian-amazon-140447
+    date: 2026-09-17
+  readerActs:
+    - field: direction
+      from: supports
+      to: context
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-17-verify-pre-columbian-amazon-140447
+      date: 2026-09-17
+      reason: The quoted sentence only describes the corrugated, wavy-pattern decoration typical of Huapula pottery; it does not itself assert that mounds were reoccupied by Huapula groups between 800 and 1200 CE, which is stated elsewhere in the supplement. As such the passage identifies/dates the Huapula culture but does not directly support the reoccupation claim, so it functions as context rather than support.
+- id: AMZ-E076
+  title: "Authors' assessment: Upano is the earliest and largest low-density agrarian urbanism documented in Amazonia so far — part 1"
+  claimIds:
+    - AMZ-C064
+  sourceId: SRC-ROSTAIN-2024
+  direction: supports
+  strength: moderate
+  sourceStatement: Other monumental sites of Amazonia are all more recent than the Upano sites and "significantly less dense in terms of features", and, until proven otherwise, not embedded within such a vast and dense communication network.
+  editorInference: A comparative claim by the discoverers, explicitly time-bounded ('so far'); the Aquiry peak (AD 100–300, AMZ-C004/E003) overlaps its later phase, so 'earliest' depends on definitions of urbanism.
+  exactLocator: "[p. 11], via open-access author manuscript"
+  limitations:
+    - Authors' interpretive superlative; comparison set is the supplement's four sites.
+  reviewState: ai_extracted
+  origin:
+    ref: split of AMZ-E071 (report 2026-09-17-report-pre-columbian-amazon-134558)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-17-verify-pre-columbian-amazon-140447
+    date: 2026-09-17
+  readerActs:
+    - field: exactLocator
+      from: "[p. 6] and [p. 11], via open-access author manuscript"
+      to: "[p. 11], via open-access author manuscript"
+      model: "verify (mechanical: the page marker before the part's quote)"
+      runId: 2026-09-17-verify-pre-columbian-amazon-140447
+      promptVersion: verify-v6
+      date: 2026-09-17
+      reason: the part quotes p. 11 only
+- id: AMZ-E072
+  title: Achmatowicz 2018 assesses Carvajal's manuscript as a trustworthy source on geographic grounds
+  claimIds:
+    - AMZ-C065
+  sourceId: SRC-ACHMATOWICZ-2018
+  direction: supports
+  strength: weak
+  sourceStatement: The abstract says the article is devoted to the verisimilitude of the principal source for Orellana's exploration, Carvajal's eyewitness account, verifying it through a careful study of the geographic reference points in the narration and showing that the manuscript "se puede considerar como una fuente digna de confianza".
+  editorInference: A published scholarly assessment converging with AMZ-C017's credibility leg, reached by a different route (geography and league distances rather than manuscript branches). Abstract-only; the argument and its route conclusions were not read, so weight is minimal.
+  exactLocator: Journal landing page, abstract (journals.akademicka.pl/si/article/view/583)
+  limitations:
+    - Abstract only; body not read.
+    - Assesses geographic plausibility, not the population figures.
+    - "Second reader (claude-sonnet-5, 2026-09-17, run 2026-09-17-verify-pre-columbian-amazon-140447, verify-v6) found the passage bears in different directions on the claims the record named; this record carries \"supports\" toward AMZ-C065, the rest went to a record of its own at intake: The abstract directly supports AMZ-C065's claim that Achmatowicz assesses Carvajal as trustworthy via geographic verification. But it says nothing about the specific qualitative-versus-numerical distinction in AMZ-C017 (i.e., that Carvajal is credible on social geography while his numbers are textually unstable); it only asserts general trustworthiness based on geography, so it bears on that claim only as context, not direct support."
+  reviewState: ai_extracted
+  origin: &a1
+    ref: report 2026-09-17-report-pre-columbian-amazon-134558
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-17-draft-pre-columbian-amazon-135349
+    date: 2026-09-17
+  readerActs:
+    - field: claimIds
+      from: &a2
+        - AMZ-C065
+        - AMZ-C017
+      to:
+        - AMZ-C065
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-17-verify-pre-columbian-amazon-140447
+      date: 2026-09-17
+      reason: The abstract directly supports AMZ-C065's claim that Achmatowicz assesses Carvajal as trustworthy via geographic verification. But it says nothing about the specific qualitative-versus-numerical distinction in AMZ-C017 (i.e., that Carvajal is credible on social geography while his numbers are textually unstable); it only asserts general trustworthiness based on geography, so it bears on that claim only as context, not direct support.
+- id: AMZ-E077
+  title: Achmatowicz 2018 assesses Carvajal's manuscript as a trustworthy source on geographic grounds — toward AMZ-C017
+  claimIds:
+    - AMZ-C017
+  sourceId: SRC-ACHMATOWICZ-2018
+  direction: context
+  strength: weak
+  sourceStatement: The abstract says the article is devoted to the verisimilitude of the principal source for Orellana's exploration, Carvajal's eyewitness account, verifying it through a careful study of the geographic reference points in the narration and showing that the manuscript "se puede considerar como una fuente digna de confianza".
+  editorInference: A published scholarly assessment converging with AMZ-C017's credibility leg, reached by a different route (geography and league distances rather than manuscript branches). Abstract-only; the argument and its route conclusions were not read, so weight is minimal.
+  exactLocator: Journal landing page, abstract (journals.akademicka.pl/si/article/view/583)
+  limitations:
+    - Abstract only; body not read.
+    - Assesses geographic plausibility, not the population figures.
+    - "Second reader (claude-sonnet-5, 2026-09-17, run 2026-09-17-verify-pre-columbian-amazon-140447, verify-v6) found the passage bears in different directions on the claims the record named; this record carries \"context\" toward AMZ-C017, the rest went to a record of its own at intake: The abstract directly supports AMZ-C065's claim that Achmatowicz assesses Carvajal as trustworthy via geographic verification. But it says nothing about the specific qualitative-versus-numerical distinction in AMZ-C017 (i.e., that Carvajal is credible on social geography while his numbers are textually unstable); it only asserts general trustworthiness based on geography, so it bears on that claim only as context, not direct support."
+  reviewState: ai_extracted
+  origin: *a1
+  readerActs:
+    - field: claimIds
+      from: *a2
+      to:
+        - AMZ-C017
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-17-verify-pre-columbian-amazon-140447
+      date: 2026-09-17
+      reason: The abstract directly supports AMZ-C065's claim that Achmatowicz assesses Carvajal as trustworthy via geographic verification. But it says nothing about the specific qualitative-versus-numerical distinction in AMZ-C017 (i.e., that Carvajal is credible on social geography while his numbers are textually unstable); it only asserts general trustworthiness based on geography, so it bears on that claim only as context, not direct support.
+    - field: direction
+      from: supports
+      to: context
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-17-verify-pre-columbian-amazon-140447
+      date: 2026-09-17
+      reason: The abstract directly supports AMZ-C065's claim that Achmatowicz assesses Carvajal as trustworthy via geographic verification. But it says nothing about the specific qualitative-versus-numerical distinction in AMZ-C017 (i.e., that Carvajal is credible on social geography while his numbers are textually unstable); it only asserts general trustworthiness based on geography, so it bears on that claim only as context, not direct support.

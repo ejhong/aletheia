@@ -55,8 +55,8 @@ export function buildRecordLinkRegistry(
       });
     }
     // The case page renders only a handful of evidence highlights; the full
-    // ledger page renders every record, so it is the only route where an
-    // #evidence-{id} anchor is guaranteed to exist.
+    // ledger page renders every record — refused ones as tombstones — so it
+    // is the only route where an #evidence-{id} anchor is guaranteed to exist.
     for (const evidence of loaded.evidence) {
       registry.set(evidence.id, {
         kind: "evidence",

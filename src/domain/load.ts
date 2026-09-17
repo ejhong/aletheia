@@ -717,6 +717,16 @@ export function liveEvidence(loaded: LoadedCase): Evidence[] {
   return loaded.evidence.filter((e) => e.reviewState !== "rejected");
 }
 
+/**
+ * Evidence refused after it entered — a tombstone: the record stays, marked rejected with its reason in its
+ * limitations, counted nowhere and weighed nowhere, shown on the ledger page so that the history naming it still
+ * resolves and a reader can see what was refused and why (2026-09-17: the first tombstones, on the Amazon
+ * re-verification, left the case page linking to anchors the ledger page did not render).
+ */
+export function evidenceTombstones(loaded: LoadedCase): Evidence[] {
+  return loaded.evidence.filter((e) => e.reviewState === "rejected");
+}
+
 /** Evidence records whose text was read: what may be chosen as the strongest for or against (a provisional record is shown, labelled, never chosen — review note #327). */
 export function verifiedEvidence(loaded: LoadedCase): Evidence[] {
   return liveEvidence(loaded).filter((e) => e.reviewState !== "provisional");

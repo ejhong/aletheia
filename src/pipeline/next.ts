@@ -192,7 +192,7 @@ async function performChoice(choice: NextChoice, opts: SittingOptions): Promise<
     // Read the texts behind the case's provisional records; if any were promoted the ledger moved, and an edition follows.
     const r = await runReverify(choice.case!, { root });
     ran.push({ verb: "reverify", outcome: r });
-    if (r.outcome === "completed" && r.promoted > 0) await step("edition", () => runEdition(choice.case!, { root }));
+    if (r.outcome === "completed" && (r.promoted > 0 || (r.admitted ?? 0) > 0)) await step("edition", () => runEdition(choice.case!, { root }));
   } else if (choice.verb === "edition") {
     await step("edition", () => runEdition(choice.case!, { root }));
   } else if (choice.verb === "check") {

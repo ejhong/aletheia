@@ -23,7 +23,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml } from "yaml";
-import { saturation, type RunRecord } from "./intake.ts";
+import { saturation, type RunRecord, latestByKey } from "./intake.ts";
 import { adoptedAssessment, currentEdition } from "./editions.ts";
 import { checksStale, currentChecks, latestCheckPerModel, ratification } from "./standing.ts";
 import type { LoadedCase } from "./schema.ts";
@@ -68,6 +68,9 @@ const ageDays = (date: string, today: string) => (Date.parse(today) - Date.parse
 /** Records a case holds unread: provisional sources, evidence and claims. */
 export const provisionalCount = (c: LoadedCase) =>
   c.sources.filter((s) => s.provisional).length + c.evidence.filter((e) => e.reviewState === "provisional").length + c.claims.filter((k) => k.reviewState === "provisional").length;
+/** Records blocked at verification — never entered, their proposal named on the row — awaiting re-submission (src/pipeline/resubmit.ts). */
+export const blockedAtVerification = (c: Pick<LoadedCase, "dispositions">) =>
+  [...latestByKey(c.dispositions).values()].filter((r) => r.disposition === "blocked" && Boolean(r.proposal) && /-(re)?verify-/.test(r.by) && (r.kind === "source" || r.kind === "evidence" || r.kind === "claim")).length;
 /** Chronological key for a run: its date and the HHMMSS its id ends with (ids of different verbs do not sort by time on their own). */
 const when = (r: Pick<RunRecord, "runId" | "date">) => `${r.date}T${r.runId.slice(-6)}`;
 const after = (a: Pick<RunRecord, "runId" | "date">, b: Pick<RunRecord, "runId" | "date">) => when(a) > when(b);
@@ -152,21 +155,26 @@ export function nextAction(allCases: LoadedCase[], runs: RunRecord[], today: str
   // 1b. Records admitted unread whose texts may be readable now (provisional admission, 2026-09-17): re-verify, on a
   // cadence that doubles after each pass that promotes nothing — a source does not become readable by being asked
   // every week.
-  for (const c of cases) {
-    const n = provisionalCount(c);
-    if (!n) continue;
+  const reverifyDue = (c: LoadedCase): string | null => {
     const passes = byCase(c.record.slug).filter((r) => r.verb === "reverify" && r.outcome === "completed");
     const last = passes.at(-1);
     let empties = 0;
     for (const r of [...passes].reverse()) {
-      if (/\bpromoted 0\b/.test(r.notes ?? "")) empties++;
+      // A pass that promoted nothing and admitted nothing — its notes say "promoted 0" or "admitted 0" and never a
+      // count above zero — is empty; re-submission runs say "admitted N".
+      const notes = r.notes ?? "";
+      if (/\b(promoted|admitted) 0\b/.test(notes) && !/\b(promoted|admitted) [1-9]/.test(notes)) empties++;
       else break;
     }
     const due = Math.min(CADENCE_DAYS * 2 ** empties, MAX_CADENCE_DAYS);
-    if (!last || ageDays(last.date, today) >= due) {
-      const why = last ? `; last re-verified ${last.date}${empties ? `, ${empties} pass(es) promoted nothing, so the cadence is ${due} days` : ""}` : "";
-      return { case: c.record.slug, verb: "reverify", reason: `${n} provisional record(s) await their texts${why}` };
-    }
+    if (last && ageDays(last.date, today) < due) return null;
+    return last ? `; last re-verified ${last.date}${empties ? `, ${empties} pass(es) promoted nothing, so the cadence is ${due} days` : ""}` : "";
+  };
+  for (const c of cases) {
+    const n = provisionalCount(c);
+    if (!n) continue;
+    const why = reverifyDue(c);
+    if (why !== null) return { case: c.record.slug, verb: "reverify", reason: `${n} provisional record(s) await their texts${why}` };
   }
   // 2. Editions the ledger owes.
   for (const c of cases) {
@@ -176,6 +184,15 @@ export function nextAction(allCases: LoadedCase[], runs: RunRecord[], today: str
   // 3. A stale panel.
   for (const c of cases) {
     if (checksStale(c)) return { case: c.record.slug, verb: "check", reason: "no seat has judged the case as it stands" };
+  }
+  // 3b. Records blocked at verification — never entered, their proposal still holding them — are proposed again
+  // (src/pipeline/resubmit.ts) before any new search: what a pass already found and could not read comes first,
+  // on the same doubling cadence, after the editions owed and the panels due.
+  for (const c of cases) {
+    const b = blockedAtVerification(c);
+    if (!b) continue;
+    const why = reverifyDue(c);
+    if (why !== null) return { case: c.record.slug, verb: "reverify", reason: `${b} record(s) blocked at verification await re-submission${why}` };
   }
   // 4. The least recently reported case.
   const candidates = cases

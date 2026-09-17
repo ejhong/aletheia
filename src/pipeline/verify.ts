@@ -954,6 +954,12 @@ export interface VerifyOutcome extends RunOutcome {
   rejected?: number;
 }
 
+/** Who drafted a proposal's records: the proposal's model — or, for a re-submission written by code, the original proposal's model, run and date as the proposal names them, with where each record carries them (review notes #349, #351). */
+const drafterOf = (p: Proposal) =>
+  p.resubmission
+    ? `${p.resubmission.model ?? "unknown"} in ${p.resubmission.from.replace(/^proposals\//, "")} on ${p.resubmission.date}, re-submitted by ${p.runId} under ${p.promptVersion ?? "resubmit"} (the lineage on each claim's and evidence record's origin and in each source's verification note)`
+    : (p.model ?? "unknown");
+
 export async function runVerify(proposalRunId: string, opts: VerifyOptions = {}): Promise<VerifyOutcome> {
   const root = opts.root ?? process.cwd();
   const now = opts.deps?.now ?? (() => new Date());
@@ -1060,7 +1066,7 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
     // Materialize.
     const corrected = applyCorrections(loaded.dir, proposal.corrections, {
       date,
-      actor: `aletheia verify (${READER.model} second reader; drafter ${proposal.model ?? "unknown"}; proposal ${proposalRunId}, verification ${runId})`,
+      actor: `aletheia verify (${READER.model} second reader; drafter ${drafterOf(proposal)}; proposal ${proposalRunId}, verification ${runId})`,
       proposalRef: `proposals/${proposalRunId}`,
       root,
     });
@@ -1113,7 +1119,15 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
     for (const c of provisional.claims) provisionalRow("claim", textKey(c.statement), c.id, c.statement, c.provisional!);
     for (const e of provisional.evidence) provisionalRow("evidence", textKey(`${e.title} ${e.sourceStatement}`), e.id, e.title, e.provisional!);
     for (const r of rejected) {
-      const key = r.kind === "source" ? sourceKeys({ title: r.observed })[0] ?? textKey(r.observed) : textKey(r.observed);
+      // Keyed as the drafter and the admission key it — title and statement for evidence, the identifier for a
+      // source — so a refusal and a later admission of the same record sit under one key (before 2026-09-17 a refused
+      // evidence row took the title alone, and its re-submission would have entered under another key).
+      const held = r.kind === "evidence" ? proposal.adds.evidence.find((e) => e.id === r.id) : r.kind === "source" ? proposal.adds.sources.find((s) => s.id === r.id) : undefined;
+      const key =
+        held && r.kind === "evidence" ? textKey(`${(held as Evidence).title} ${(held as Evidence).sourceStatement}`)
+        : held && r.kind === "source" ? (sourceKeys(held as Source)[0] ?? textKey(r.observed))
+        : r.kind === "source" ? (sourceKeys({ title: r.observed })[0] ?? textKey(r.observed))
+        : textKey(r.observed);
       if (key) rows.push({ key, kind: r.kind, disposition: r.disposition, reason: r.reason, observed: r.observed, by: runId, date, proposal: `proposals/${proposalRunId}`, ...(r.route ? { route: r.route } : {}) });
     }
     const known = new Set<string>([
@@ -1137,7 +1151,7 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
         // The rationale is the drafter's, written before verification: it argues the proposal, not what
         // entered. Labelled as such, with the admitted set beside it (review note #275).
         reason: `Admitted after verification: ${[...accepted.sources.map((s) => s.id), ...accepted.evidence.map((e) => e.id), ...accepted.claims.map((c) => c.id), ...accepted.research.map((r) => r.id)].join(", ") || "nothing"}${[...provisional.sources, ...provisional.evidence, ...provisional.claims].length ? `; admitted provisionally, unread, awaiting their texts: ${[...provisional.sources, ...provisional.evidence, ...provisional.claims].map((r) => r.id).join(", ")}` : ""}; everything else proposed was refused or blocked with a reason in dispositions.yaml. The drafter's rationale for the proposal, written before verification and describing what it proposed: ${proposal.rationale}`,
-        actor: `aletheia verify (${READER.model} second reader; drafter ${proposal.model ?? "unknown"})`,
+        actor: `aletheia verify (${READER.model} second reader; drafter ${drafterOf(proposal)})`,
         aiAssisted: true,
         kind: "content",
       },

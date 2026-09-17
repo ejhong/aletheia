@@ -191,6 +191,8 @@ export const ProposalSchema = z.object({
   dispositions: z.array(DispositionSchema).default([]),
   /** Working material beside the envelope (report.md), never a record. */
   report: z.string().optional(),
+  /** A re-submission (protocols/resubmit-v1.md): the proposal the records came from, its drafter's model and prompt version, and its date — named here because a source carries no origin of its own (review note #351). */
+  resubmission: z.object({ from: z.string().min(1), model: z.string().nullable(), promptVersion: z.string().nullable(), date: z.string().regex(DATE) }).optional(),
 });
 export type Proposal = z.infer<typeof ProposalSchema>;
 

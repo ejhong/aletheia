@@ -84,6 +84,6 @@ describe("the scheduler re-verifies provisional records on a doubling cadence", 
     const empty = run({ date: "2026-09-09", notes: "re-verify: promoted 0, appended 0, refused 0, still unread 1" });
     expect(nextAction([provisionalCase], [empty], "2026-09-17").verb).not.toBe("reverify"); // 8 days, cadence now 14
     expect(nextAction([provisionalCase], [empty], "2026-09-24").verb).toBe("reverify");
-    expect(nextAction([c], [], "2026-09-17").verb).not.toBe("reverify");
+    expect(nextAction([{ ...c, dispositions: c.dispositions.filter((r) => r.disposition !== "blocked") }], [], "2026-09-17").verb).not.toBe("reverify");
   });
 });

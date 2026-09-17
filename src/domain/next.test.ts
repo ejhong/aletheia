@@ -119,7 +119,7 @@ describe("aletheia next", () => {
 
   it("the live ledger has a choice, and the operation state is on the record", () => {
     const n = nextAction(cases, [], "2026-09-20");
-    expect(["report", "edition", "draft", "verify", "check"]).toContain(n.verb);
+    expect(["report", "edition", "draft", "verify", "check", "reverify"]).toContain(n.verb);
     const op = loadOperation();
     expect(["live", "paused"]).toContain(op.state);
     expect(op.reason.length).toBeGreaterThan(10);

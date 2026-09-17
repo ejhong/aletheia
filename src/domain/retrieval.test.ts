@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { snapshotFrom } from "../pipeline/archive.ts";
 import { retrievalTargets } from "../pipeline/draft.ts";
-import { doiFromUrl, doisInText, looksLikeWall, oaCandidates, pdfText, retrieve } from "../pipeline/fetch.ts";
+import { archiveItemOf, doiFromUrl, doisInText, looksLikeWall, oaCandidates, pdfText, retrieve } from "../pipeline/fetch.ts";
 import { noticeNote } from "../lib/citation-check.mjs";
 
 /** A one-page PDF built by hand, so the extractor is tested without a fixture file. */
@@ -127,5 +127,33 @@ describe("arXiv: the abstract page is the key, the PDF is the text", () => {
     expect(fallback.ok).toBe(true);
     expect(fallback.via).toBeUndefined();
     expect(fallback.text).toContain("Only the abstract here.");
+  });
+});
+
+describe("Internet Archive items", () => {
+  it("reads the OCR text the Archive serves beside a scan, under the item page's key, as a stand-in; the item page still answers when the text will not", async () => {
+    expect(archiveItemOf("https://archive.org/details/descubrimientod00carvgoog")).toBe("descubrimientod00carvgoog");
+    expect(archiveItemOf("https://archive.org/download/historiageneral04fernguat/historiageneral04fernguat.pdf")).toBe("historiageneral04fernguat");
+    expect(archiveItemOf("https://archive.org/stream/expeditionsintov00markrich/x_djvu.txt")).toBe("expeditionsintov00markrich");
+    expect(archiveItemOf("https://www.nature.com/articles/x")).toBeNull();
+    const calls: string[] = [];
+    const fetchImpl = (async (input: string | URL | Request) => {
+      const url = String(input);
+      calls.push(url);
+      if (url === "https://archive.org/download/descubrimientod00carvgoog/descubrimientod00carvgoog_djvu.txt") return new Response("Relacion del nuevo descubrimiento del famoso rio grande. Vimos muchos pueblos en la ribera.", { headers: { "content-type": "text/plain; charset=utf-8" } });
+      return new Response("<html><head><title>Descubrimiento del rio de las Amazonas</title></head><body><p>Item page.</p></body></html>", { headers: { "content-type": "text/html" } });
+    }) as typeof fetch;
+    const r = await retrieve({ url: "https://archive.org/details/descubrimientod00carvgoog" }, { fetchImpl });
+    expect(r.ok).toBe(true);
+    expect(r.url).toBe("https://archive.org/details/descubrimientod00carvgoog");
+    expect(r.text).toContain("Vimos muchos pueblos en la ribera");
+    expect(r.via).toContain("_djvu.txt");
+    expect(r.substitute).toBe(true);
+    expect(calls[0]).toContain("_djvu.txt");
+    const noText = (async (input: string | URL | Request) => (String(input).includes("_djvu.txt") ? new Response("gone", { status: 404 }) : new Response("<html><head><title>Item</title></head><body><p>Item page only.</p></body></html>", { headers: { "content-type": "text/html" } }))) as typeof fetch;
+    const fallback = await retrieve({ url: "https://archive.org/details/descubrimientod00carvgoog" }, { fetchImpl: noText });
+    expect(fallback.ok).toBe(true);
+    expect(fallback.via).toBeUndefined();
+    expect(fallback.text).toContain("Item page only.");
   });
 });

@@ -58,7 +58,17 @@ describe("resolveLead", () => {
     expect(r?.identifier).toBe("doi:10.1007/s11916-013-0352-9");
     expect(r?.url).toBe("https://example.org/stecco2013.pdf");
     expect(r?.via).toMatch(/Semantic Scholar/);
+    expect(r?.via).toMatch(/agreed on title, year, author$/);
     expect(r?.similarity).toBe(1);
+    expect(r?.agreed).toEqual(["title", "year", "author"]);
+    // A lead that gave an author or a year is resolved only when they agree: the same title under another name, or without a year, does not settle it.
+    expect(await resolveLead(parseLead('- Lehner, 2013, "Fascial Components of the Myofascial Pain Syndrome" — x'), fetchImpl)).toBeNull();
+    const noYear = (async (input: string | URL | Request) => (String(input).startsWith("https://api.openalex.org/") ? json({ results: [{ title: "Fascial components of the myofascial pain syndrome", publication_year: null, doi: "https://doi.org/10.1007/s11916-013-0352-9", authorships: [{ author: { display_name: "Antonio Stecco" } }] }] }) : json({}))) as typeof fetch;
+    expect(await resolveLead(parseLead('- Stecco et al., 2013, "Fascial Components of the Myofascial Pain Syndrome" — x'), noYear)).toBeNull();
+    // A bare lead — no author, no year given — may resolve on the title alone, and the provenance says only that.
+    const bare = await resolveLead({ text: "Fascial Components of the Myofascial Pain Syndrome" }, fetchImpl);
+    expect(bare?.agreed).toEqual(["title"]);
+    expect(bare?.via).toMatch(/agreed on title$/);
     expect(await resolveLead(parseLead('- Nobody, 1999, "A Title No Index Holds" — x'), fetchImpl)).toBeNull();
     expect(await resolveLead({ text: "short" }, fetchImpl)).toBeNull();
     const archiveOnly = (async (input: string | URL | Request) => (String(input).startsWith("https://archive.org/advancedsearch.php") ? json({ response: { docs: [{ identifier: "pyramidstemplesof00petr", title: "The pyramids and temples of Gizeh", year: "1883", creator: "Petrie, W. M. Flinders (William Matthew Flinders), Sir, 1853-1942" }] } }) : json({}))) as typeof fetch;

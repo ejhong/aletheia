@@ -1,6 +1,6 @@
-import { titleContainment } from "../domain/keys.ts";
+import { titleContainment, TITLE_NEAR } from "../domain/keys.ts";
 import { UA } from "./fetch.ts";
-import { bestMatch, type OpenAlexResult, type Reference } from "./match.ts";
+import { authorMatch, bestMatch, type OpenAlexResult, type Reference } from "./match.ts";
 
 /**
  * Leads into documents (2026-09-17). The research seat names works it did not open; the drafter may write no
@@ -34,6 +34,8 @@ export interface Resolved {
   via: string;
   /** Title containment of the match (0–1), for the drafter to weigh. */
   similarity: number;
+  /** What agreed between the lead and the document: the title, the year, an author — the provenance says exactly this and no more (review note #339). */
+  agreed: ("title" | "year" | "author")[];
 }
 
 /** An index result in OpenAlex's shape, carrying where it came from and what to read. */
@@ -149,6 +151,15 @@ export async function resolveLead(lead: Lead, fetchImpl: typeof fetch = fetch): 
   const hit = bestMatch(reference, ordered);
   if (!hit) return null;
   const title = hit.title ?? hit.display_name ?? "";
+  // The provenance names what agreed and no more. A lead that gave a year or an author is resolved only when that
+  // agrees too — a title alone does not settle which edition, or whose paper, when the lead said (review note #339).
+  const similarity = Number(titleContainment(reference.title, title).toFixed(2));
+  const agreed: Resolved["agreed"] = [];
+  if (similarity >= TITLE_NEAR) agreed.push("title");
+  if (reference.year && hit.publication_year && Math.abs(reference.year - hit.publication_year) <= 1) agreed.push("year");
+  if (reference.authors.length && authorMatch(reference, hit)) agreed.push("author");
+  if (reference.year && !agreed.includes("year")) return null;
+  if (reference.authors.length && !agreed.includes("author")) return null;
   return {
     title,
     ...(hit.publication_year ? { year: String(hit.publication_year) } : {}),
@@ -156,7 +167,8 @@ export async function resolveLead(lead: Lead, fetchImpl: typeof fetch = fetch): 
     ...(hit.doi ? { doi: hit.doi } : {}),
     url: hit.url,
     identifier: hit.identifier,
-    via: hit.via,
-    similarity: Number(titleContainment(reference.title, title).toFixed(2)),
+    via: `${hit.via} — agreed on ${agreed.join(", ") || "nothing but the search"}`,
+    similarity,
+    agreed,
   };
 }

@@ -34,7 +34,9 @@ export const surname = (a: string) => a.split(",")[0].trim().split(/\s+/).at(-1)
 export function authorMatch(ref: Reference, r: OpenAlexResult): boolean {
   const mine = ref.authors.map(surname).filter((s) => s.length > 2);
   if (!mine.length) return false;
-  const theirs = (r.authorships ?? []).map((a) => (a.author?.display_name ?? "").toLowerCase());
+  // A library catalogue writes "Petrie, W. M. Flinders (William Matthew Flinders), Sir, 1853-1942": compare on the
+  // name's words with punctuation set aside, so a surname is found however the index writes the name.
+  const theirs = (r.authorships ?? []).map((a) => (a.author?.display_name ?? "").toLowerCase().replace(/[^a-zÀ-ɏ\s-]/g, " "));
   return mine.some((m) => theirs.some((t) => t.split(/\s+/).includes(m) || t.endsWith(` ${m}`)));
 }
 

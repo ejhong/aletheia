@@ -47,6 +47,8 @@ export const DispositionKind = z.enum([
   "blocked",
   "failed",
   "excluded",
+  /** Entered before its text could be read; `as` names the record, `route` how to read it (2026-09-17). */
+  "provisional",
 ]);
 export type DispositionKind = z.infer<typeof DispositionKind>;
 
@@ -54,6 +56,8 @@ export const Verb = z.enum([
   "report",
   "draft",
   "verify",
+  /** Re-read the texts behind a case's provisional records; promote what holds, refuse what fails (2026-09-17). */
+  "reverify",
   "edition",
   "check",
   "panel",
@@ -90,7 +94,7 @@ export const DispositionSchema = z
     proposal: z.string().optional(),
   })
   .superRefine((d, ctx) => {
-    if ((d.disposition === "in" || d.disposition === "duplicate") && !d.as) {
+    if ((d.disposition === "in" || d.disposition === "duplicate" || d.disposition === "provisional") && !d.as) {
       ctx.addIssue({ code: "custom", message: `${d.disposition} needs \`as\`: the ledger record` });
     }
     if (d.disposition !== "in" && !d.reason) {
@@ -155,6 +159,8 @@ export const EditionCandidateSchema = z.object({
   article: z.string().min(40),
   /** A new judgment, when it changed; absent when the candidate re-adopts the incumbent's assessment. */
   assessment: AssessmentRunSchema.optional(),
+  /** Research items the ledger has settled, replaced or retired since the incumbent, each with what did it (2026-09-17). */
+  researchStatus: z.array(z.object({ id: z.string().min(1), status: z.enum(["open", "answered", "superseded", "retired"]), note: z.string().min(3) })).default([]),
 });
 
 export const ProposalSchema = z.object({

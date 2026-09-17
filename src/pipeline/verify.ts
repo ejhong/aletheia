@@ -327,10 +327,67 @@ export const defaultJudge: Judge = async (record, sourceText, context, meter) =>
   return r.data;
 };
 
+// ------------------------------------------------------------------ the plan reader
+/** The reader's verdict on a proposed research item (protocols/plan-v1.md): a plan names a measurement, an object and a decision rule. */
+export interface PlanReply {
+  isPlan: boolean;
+  measurement: boolean;
+  object: boolean;
+  decisionRule: boolean;
+  novel: boolean;
+  reason: string;
+}
+export const PLAN_SCHEMA: Record<string, unknown> = {
+  type: "object",
+  additionalProperties: false,
+  required: ["isPlan", "measurement", "object", "decisionRule", "novel", "reason"],
+  properties: {
+    isPlan: { type: "boolean" },
+    measurement: { type: "boolean" },
+    object: { type: "boolean" },
+    decisionRule: { type: "boolean" },
+    novel: { type: "boolean" },
+    reason: { type: "string" },
+  },
+};
+export type PlanJudge = (item: ResearchOpportunity, context: string, meter: Meter) => Promise<PlanReply>;
+
+export const defaultPlanJudge: PlanJudge = async (item, context, meter) => {
+  const protocol = loadProtocol("plan");
+  const r = await anthropicJson<PlanReply>(
+    {
+      ...READER,
+      system: renderProtocol(protocol, {}),
+      user: JSON.stringify({ item: { title: item.title, summary: item.summary, informationGain: item.informationGain, effortTier: item.effortTier, track: item.track }, context }, null, 1),
+      schema: PLAN_SCHEMA,
+      maxTokens: 4000,
+      effort: "low",
+      timeoutMs: 120_000,
+    },
+    meter,
+  );
+  return r.data;
+};
+
+export function rememberedPlanJudge(judge: PlanJudge, file: string, readerModel: string, protocol = loadProtocol("plan").version): PlanJudge {
+  const memory = readMemory<PlanReply>(file);
+  return async (item, context, meter) => {
+    const key = sha256Hex(canonicalJson({ item: { title: item.title, summary: item.summary, informationGain: item.informationGain }, context, readerModel, protocol }));
+    const had = memory[key];
+    if (had) return had.answer;
+    const reply = await judge(item, context, meter);
+    memory[key] = { model: readerModel, protocol, runId: meter.runId, date: isoDate(), answer: reply };
+    writeMemory(file, memory);
+    return reply;
+  };
+}
+
 export type Resolver = (citations: { kind: string; id: string }[]) => Promise<{ kind: string; id: string; status: string; note: string }[]>;
 
 export interface Verdicts {
   accepted: { sources: Source[]; evidence: Evidence[]; claims: Claim[]; research: ResearchOpportunity[] };
+  /** Records admitted before their text could be read (ProvisionalSchema): the source exists, the text does not, yet. */
+  provisional: { sources: Source[]; evidence: Evidence[]; claims: Claim[] };
   rejected: { id: string; kind: Disposition["kind"]; observed: string; disposition: "failed" | "blocked"; reason: string; route?: string }[];
   notes: string[];
 }
@@ -402,6 +459,49 @@ export function substituteCopy(fetched: Pick<FetchedSource, "substitute" | "via"
   return fetched?.substitute === true;
 }
 
+/**
+ * What shows a source exists when its text could not be read — the ground on which a record may enter
+ * provisionally (founder direction, 2026-09-17): an identifier the resolver confirmed, or a URL that answered
+ * (a scanned PDF with no text layer, a paywall served with 200, an unsupported content type). Null when nothing
+ * did: a fetch that never connected, a 403, a 404, a 429 prove nothing about the document, and the record stays
+ * blocked as before. The fabrication check — identifiers must resolve — is untouched by this.
+ */
+export function sourceExists(
+  source: Source | undefined,
+  fetched: Pick<FetchedSource, "status" | "reason" | "pageTitle"> | undefined,
+  resolved: Map<string, { status: string; note: string }>,
+): string | null {
+  // Identity, not reachability (review note on #322): the resolver's metadata or the document's own title must name
+  // the record's title. A registered DOI with no metadata, or a URL that merely answered, proves nothing about which
+  // document it is.
+  const title = source?.title ?? "";
+  if (source) {
+    const ids = identifiersOf(source).map((i) => ({ ...i, r: resolved.get(`${i.kind}:${i.id}`) }));
+    // A failing identifier is a failing citation: nothing enters on it, whatever the URL says (review note #325).
+    if (ids.some((i) => i.r?.status === "fails")) return null;
+    for (const i of ids) {
+      if (i.r?.status === "resolves" && metadataMatches(title, i.r.note)) return `${i.kind} ${i.id} resolves to a record with this title (${i.r.note})`;
+    }
+  }
+  const status = fetched?.status ?? null;
+  if (status !== null && status >= 200 && status < 400 && fetched?.pageTitle && metadataMatches(title, fetched.pageTitle)) {
+    return `its URL answered HTTP ${status} with a document titled "${fetched.pageTitle.slice(0, 100)}" (${fetched?.reason ?? "text unreadable"})`;
+  }
+  return null;
+}
+
+/** Whether a title is named in a piece of metadata: the normalised title occurs whole, or at least four of every five of its words do. */
+export function metadataMatches(title: string, text: string): boolean {
+  const norm = (t: string) => t.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+  const [a, b] = [norm(title), norm(text)];
+  if (a.length < 8 || !b) return false;
+  if (b.includes(a)) return true;
+  const words = a.split(" ").filter((w) => w.length > 2);
+  if (words.length < 4) return false;
+  const present = words.filter((w) => b.includes(w)).length;
+  return present / words.length >= 0.8;
+}
+
 /** Why a correction cannot apply as the ledger stands (null when it can): unknown record, no such file, or the field has moved since. */
 export function correctionBlocker(loaded: LoadedCase, c: Correction): string | null {
   if (!ledgerFileFor(c.record)) return `no ledger file for record id ${c.record}`;
@@ -414,6 +514,9 @@ export function correctionBlocker(loaded: LoadedCase, c: Correction): string | n
   if (JSON.stringify(rec[c.field] ?? null) !== JSON.stringify(c.from ?? null)) return `the field no longer reads what the proposal saw`;
   return null;
 }
+
+/** What the reader is told when it judges a record whose source text could not be retrieved. */
+export const TEXT_UNAVAILABLE = "The source text could not be retrieved: judge only what needs no text — whether the record is one observation, whether it bears on the case, whether independence is noted, whether the source statement reads as a statement and not an inference — and set quoteInContext, statementSupported and locatorSupported to true, meaning not assessed.";
 
 /** A resolver note that carries a Retraction Watch finding (src/lib/citation-check.mjs). */
 const NOTICE = /^(RETRACTED|CORRECTED|WITHDRAWN)\b/;
@@ -434,8 +537,11 @@ export async function judgeProposal(
   split: Splitter = defaultSplitter,
   /** Who wrote the parts of a split claim, and in which run — their `origin` (§3.14, §3.15). */
   splitter: { model: string; runId: string } = { model: MODELS.house.model, runId: "unrecorded" },
+  /** Gates beyond the mechanical ones: the plan reader for research items (absent in tests that do not exercise it). */
+  gates: { judgePlan?: PlanJudge } = {},
 ): Promise<Verdicts> {
   const rejected: Verdicts["rejected"] = [];
+  const provisional: Verdicts["provisional"] = { sources: [], evidence: [], claims: [] };
   const notes: string[] = [];
   /** Who judged, under which protocol, in which run and when — the run that answered, when the answer was remembered. */
   const promptVersion = reader.promptVersion ?? loadProtocol("verify").version;
@@ -497,7 +603,25 @@ export async function judgeProposal(
     }
     const fetched = textFor(e.sourceId);
     if (!fetched?.ok || !fetched.text) {
-      reject(e.id, "evidence", e.title, `source text not retrievable: ${fetched?.reason ?? "no URL on the source record"}`, true, `obtain the text of ${e.sourceId} (${sourceById.get(e.sourceId)?.url ?? "no url"}) and re-run verify`);
+      const why = fetched?.reason ?? "no URL on the source record";
+      const route = `obtain the text of ${e.sourceId} (${sourceById.get(e.sourceId)?.url ?? "no url"}) and re-run verify`;
+      const exists = sourceExists(sourceById.get(e.sourceId), fetched, resolved);
+      if (exists) {
+        // The source exists and the text does not, yet. The reader still judges what needs no text — one observation,
+        // bearing on the case, a statement and not an inference (review notes #325, #327); only textual support and the
+        // locator wait. What passes enters provisionally, unread, carrying no weight.
+        const claims = e.claimIds.map((id) => loaded.claims.find((c) => c.id === id) ?? proposal.adds.claims.find((c) => c.id === id)).filter(Boolean);
+        const blind = await judge({ ...e, editorInference: undefined }, "", `${questionContext} Claims this record bears on: ${claims.map((c) => `${c!.id}: ${c!.statement}`).join(" | ")}. ${TEXT_UNAVAILABLE}`, meter);
+        const blindFlags = [blind.atomic === false && "not one observation", blind.relevant === false && "bears on none of the case's accounts", blind.independenceNoted === false && "independence not noted"].filter(Boolean);
+        if (blindFlags.length) {
+          reject(e.id, "evidence", e.title, `read without its text, the reader refused it (${blindFlags.join("; ")}): ${blind.reason}`);
+          continue;
+        }
+        provisional.evidence.push({ ...e, reviewState: "provisional", provisional: { since: reader.date, exists, reason: why, route, by: meter.runId } });
+        notes.push(`${e.id}: admitted provisionally — the source exists (${exists}) but its text could not be read (${why}); the reader judged it without the text: ${blind.reason}`);
+      } else {
+        reject(e.id, "evidence", e.title, `source text not retrievable: ${why}`, true, route);
+      }
       continue;
     }
     const bad = unverifiedQuotes(e.sourceStatement, fetched.text);
@@ -598,7 +722,20 @@ export async function judgeProposal(
       const fetched = sid ? textFor(sid) : undefined;
       if (!fetched?.ok || !fetched.text) {
         if (!citedBy.has(c.id)) {
-          reject(c.id, "claim", c.statement, `anchor source not retrievable (${fetched?.reason ?? "no source id on the anchor"}) and no accepted evidence cites the claim`, true, `obtain the anchor's text and re-run verify`);
+          const why = fetched?.reason ?? "no source id on the anchor";
+          const exists = sid ? sourceExists(sourceById.get(sid), fetched, resolved) : null;
+          if (exists) {
+            const blind = await judge({ statement: c.statement, anchor: c.sourceAnchor }, "", `${questionContext} ${TEXT_UNAVAILABLE} Is the statement one proposition with a truth condition, and does it bear on the case?`, meter);
+            const blindFlags = [blind.atomic === false && "not one proposition", blind.relevant === false && "bears on none of the case's accounts"].filter(Boolean);
+            if (blindFlags.length) {
+              reject(c.id, "claim", c.statement, `read without its anchor's text, the reader refused it (${blindFlags.join("; ")}): ${blind.reason}`);
+              continue;
+            }
+            provisional.claims.push({ ...c, reviewState: "provisional", provisional: { since: reader.date, exists, reason: why, route: `obtain the text of ${sid} (${sourceById.get(sid!)?.url ?? "no url"}) and re-run verify`, by: meter.runId } });
+            notes.push(`${c.id}: admitted provisionally — its anchor's source exists (${exists}) but the text could not be read (${why}); the reader judged it without the text: ${blind.reason}`);
+          } else {
+            reject(c.id, "claim", c.statement, `anchor source not retrievable (${why}) and no accepted evidence cites the claim`, true, `obtain the anchor's text and re-run verify`);
+          }
           continue;
         }
       } else if ([c.sourceAnchor.quote, ...(c.sourceAnchor.also ?? []).map((a) => a.quote)].some((q) => unverifiedQuotes(`"${q}"`, fetched.text ?? "").length)) {
@@ -688,7 +825,7 @@ export async function judgeProposal(
     okEvidence[i] = { ...e, claimIds: [...new Set(kept)], limitations: dissents.length ? [...e.limitations, ...dissents] : e.limitations };
   }
   // Claims whose parents or dependencies were rejected (or never existed) keep the claim and lose the link, said aloud.
-  const liveClaimIds = new Set([...loaded.claims.filter((c) => c.reviewState !== "rejected").map((c) => c.id), ...okClaims.map((c) => c.id)]);
+  const liveClaimIds = new Set([...loaded.claims.filter((c) => c.reviewState !== "rejected").map((c) => c.id), ...okClaims.map((c) => c.id), ...provisional.claims.map((c) => c.id)]);
   for (const [i, c] of okClaims.entries()) {
     const dangling = [...c.parentClaimIds, ...c.dependsOnClaimIds, ...(c.alternativeToClaimIds ?? []), ...(c.contradictsClaimIds ?? [])].filter((id) => !liveClaimIds.has(id));
     if (dangling.length) {
@@ -715,7 +852,9 @@ export async function judgeProposal(
     return true;
   });
 
-  // Research: structurally sound and pointing at live claims.
+  // Research: structurally sound, pointing at live claims — and, when the gate is on, a plan: a measurement, an
+  // object and a decision rule, judged by the reader (protocols/plan-v1.md; 2026-09-17, when a quarter of the agenda
+  // carried a decision rule).
   const research: ResearchOpportunity[] = [];
   for (const r of proposal.adds.research) {
     const kept = r.claimIds.filter((id) => liveClaimIds.has(id));
@@ -723,14 +862,48 @@ export async function judgeProposal(
       reject(r.id, "research", r.title, "none of the claims it would move survived");
       continue;
     }
+    if (gates.judgePlan) {
+      const named = kept.map((id) => {
+        const c = loaded.claims.find((k) => k.id === id) ?? okClaims.find((k) => k.id === id) ?? provisional.claims.find((k) => k.id === id);
+        return c ? `${c.id}: ${c.statement}` : id;
+      });
+      const context = `${questionContext} Claims the item would move: ${named.join(" | ")}. Research items the ledger already holds: ${loaded.research.map((x) => `${x.id} — ${x.title}`).join(" | ") || "none"}.`;
+      const v = await gates.judgePlan(r, context, meter);
+      if (!v.isPlan) {
+        const missing = [!v.measurement && "no measurement", !v.object && "no object", !v.decisionRule && "no decision rule"].filter(Boolean).join(", ");
+        reject(r.id, "research", r.title, `not a plan (${missing || "the reader's reasons below"}): ${v.reason}`);
+        continue;
+      }
+      if (!v.novel) notes.push(`${r.id}: the reader finds it the same test as an item the ledger already holds — ${v.reason}`);
+    }
     research.push({ ...r, claimIds: kept });
   }
 
-  // Sources: admitted only if something accepted cites them.
+  // A provisional evidence record keeps only claim links that stand — live, accepted, or provisional — and needs one.
+  provisional.evidence = provisional.evidence.filter((e) => {
+    const kept = e.claimIds.filter((id) => liveClaimIds.has(id));
+    if (!kept.length) {
+      reject(e.id, "evidence", e.title, "admitted provisionally, then set aside: none of the claims it cites entered", true, e.provisional!.route);
+      return false;
+    }
+    if (kept.length !== e.claimIds.length) notes.push(`${e.id}: provisional; its links to claims that did not enter are dropped`);
+    e.claimIds = kept;
+    return true;
+  });
+
+  // Sources: admitted only if something accepted cites them — or, cited only by provisional records, admitted the
+  // same way: unread, labelled, awaiting the text.
   const cited = new Set([...evidence.map((e) => e.sourceId), ...okClaims.map((c) => c.sourceAnchor?.sourceId).filter(Boolean)]);
+  const citedProvisionally = new Set([...provisional.evidence.map((e) => e.sourceId), ...provisional.claims.map((c) => c.sourceAnchor?.sourceId).filter(Boolean)]);
   const sources: Source[] = [];
   for (const s of okSources.values()) {
     if (!(cited.has(s.id) || s.background)) {
+      if (citedProvisionally.has(s.id)) {
+        const fetched = textFor(s.id);
+        const exists = sourceExists(s, fetched, resolved) ?? "cited by a record admitted provisionally";
+        provisional.sources.push({ ...s, verification: "unverified", provisional: { since: reader.date, exists, reason: fetched?.reason ?? "no URL on the source record", route: `obtain the text of ${s.id} (${s.url ?? "no url"}) and re-run verify`, by: meter.runId } });
+        continue;
+      }
       reject(s.id, "source", s.title, "nothing accepted cites it (§3.6: sources are not evidence by themselves)");
       continue;
     }
@@ -756,7 +929,7 @@ export async function judgeProposal(
   ];
   for (const err of errors) notes.push(`prospective ledger: ${err}`);
 
-  return { accepted: { sources, evidence, claims: okClaims, research }, rejected, notes };
+  return { accepted: { sources, evidence, claims: okClaims, research }, provisional, rejected, notes };
 }
 
 export interface VerifyOptions {
@@ -770,12 +943,11 @@ export interface VerifyOptions {
     /** Wayback lookup and save for admitted sources; injectable so tests never reach the archive. */
     archive?: (url: string) => Promise<Archived>;
     now?: () => Date;
-    cases?: () => LoadedCase[];
-  };
+    cases?: () => LoadedCase[]; judgePlan?: PlanJudge; };
 }
 
 export interface VerifyOutcome extends RunOutcome {
-  accepted?: { sources: number; evidence: number; claims: number; research: number };
+  accepted?: { sources: number; evidence: number; claims: number; research: number; provisional?: number };
   rejected?: number;
 }
 
@@ -816,7 +988,8 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
     const proposalDir = path.join(root, "proposals", proposalRunId);
     const judge = rememberedJudge(opts.deps?.judge ?? defaultJudge, path.join(proposalDir, "judgments.yaml"), READER.model);
     const split = rememberedSplitter(opts.deps?.split ?? defaultSplitter, path.join(proposalDir, "splits.yaml"), MODELS.house.model);
-    const verdicts = await judgeProposal(proposal, loaded, texts, resolved, judge, meter, { model: READER.model, date }, split, { model: MODELS.house.model, runId });
+    const judgePlan = rememberedPlanJudge(opts.deps?.judgePlan ?? defaultPlanJudge, path.join(proposalDir, "plans.yaml"), READER.model);
+    const verdicts = await judgeProposal(proposal, loaded, texts, resolved, judge, meter, { model: READER.model, date }, split, { model: MODELS.house.model, runId }, { judgePlan });
     // Durable locators: every admitted source with a URL gets its Wayback snapshot on the record.
     const archive = opts.deps?.archive ?? archiveUrl;
     for (const [i, s] of verdicts.accepted.sources.entries()) {
@@ -825,7 +998,13 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
       verdicts.notes.push(`${s.id}: ${a.note}`);
       if (a.archivedUrl) verdicts.accepted.sources[i] = { ...s, archivedUrl: a.archivedUrl };
     }
-    const { accepted, rejected, notes } = verdicts;
+    for (const [i, s] of verdicts.provisional.sources.entries()) {
+      if (!s.url) continue;
+      const a = await archive(s.url);
+      verdicts.notes.push(`${s.id}: ${a.note}`);
+      if (a.archivedUrl) verdicts.provisional.sources[i] = { ...s, archivedUrl: a.archivedUrl };
+    }
+    const { accepted, provisional, rejected, notes } = verdicts;
 
     // What the writer is expected to do with each correction, read from the ledger as it stands; once the writer has
     // run, the section is rewritten from what it did (review note #304: a forecast that differs from the outcome
@@ -845,6 +1024,15 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
       ...accepted.claims.map((c) => `- claim ${c.id} — ${c.statement}`),
       ...accepted.research.map((r) => `- research ${r.id} — ${r.title}`),
       ``,
+      ...(provisional.sources.length + provisional.evidence.length + provisional.claims.length
+        ? [
+            `## Provisional — admitted unread, awaiting the text (no weight until a verify pass reads it)`,
+            ...provisional.sources.map((s) => `- source ${s.id} — ${s.title} — exists: ${s.provisional!.exists}; unread: ${s.provisional!.reason} — route: ${s.provisional!.route}`),
+            ...provisional.evidence.map((e) => `- evidence ${e.id} — ${e.title} → ${e.claimIds.join(", ")} — unread: ${e.provisional!.reason} — route: ${e.provisional!.route}`),
+            ...provisional.claims.map((c) => `- claim ${c.id} — ${c.statement} — unread: ${c.provisional!.reason} — route: ${c.provisional!.route}`),
+            ``,
+          ]
+        : []),
       `## Rejected`,
       ...rejected.map((r) => `- ${r.kind} ${r.id} (${r.disposition}) — ${r.reason}${r.route ? ` — route: ${r.route}` : ""}`),
       ``,
@@ -860,9 +1048,10 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
       const reason = `the prospective ledger fails the build's own rules; see proposals/${runId}/verification.md — nothing written`;
       return { ...closeRun(run, "failed", { reason }), rejected: rejected.length };
     }
-    const counts = { sources: accepted.sources.length, evidence: accepted.evidence.length, claims: accepted.claims.length, research: accepted.research.length };
+    const notPlan = rejected.filter((r) => r.kind === "research" && /^not a plan/.test(r.reason)).length;
+    const counts = { sources: accepted.sources.length, evidence: accepted.evidence.length, claims: accepted.claims.length, research: accepted.research.length, provisional: provisional.sources.length + provisional.evidence.length + provisional.claims.length };
     if (opts.dryRun) {
-      return { ...closeRun(run, "dry-run", { reason: `would write ${JSON.stringify(counts)}; ${rejected.length} rejected` }), accepted: counts, rejected: rejected.length };
+      return { ...closeRun(run, "dry-run", { reason: `would write ${JSON.stringify(counts)}; ${rejected.length} rejected${notPlan ? ` (${notPlan} research item(s) not a plan)` : ""}` }), accepted: counts, rejected: rejected.length };
     }
 
     // Materialize.
@@ -883,7 +1072,7 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
     // A record that entered may not name, in prose, a proposal record that did not (the reader's own notes name
     // the proposal claims a passage bears on; a claim rejected later would leave a dangling id — 2026-09-11).
     {
-      const admittedIds = new Set([...accepted.sources, ...accepted.claims, ...accepted.evidence, ...accepted.research].map((r) => r.id));
+      const admittedIds = new Set([...accepted.sources, ...accepted.claims, ...accepted.evidence, ...accepted.research, ...provisional.sources, ...provisional.claims, ...provisional.evidence].map((r) => r.id));
       const unadmitted = new Map<string, { kind: string; observed: string }>();
       for (const c of proposal.adds.claims) if (!admittedIds.has(c.id) && !loaded.claims.some((k) => k.id === c.id)) unadmitted.set(c.id, { kind: "claim", observed: c.statement });
       for (const e of proposal.adds.evidence) if (!admittedIds.has(e.id) && !loaded.evidence.some((k) => k.id === e.id)) unadmitted.set(e.id, { kind: "evidence record", observed: e.title });
@@ -898,11 +1087,13 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
         accepted.claims = accepted.claims.map((c) => ({ ...c, statement: scrub(c.id, "statement", c.statement)! }));
         accepted.evidence = accepted.evidence.map((e) => ({ ...e, title: scrub(e.id, "title", e.title)!, sourceStatement: scrub(e.id, "sourceStatement", e.sourceStatement)!, ...(e.editorInference !== undefined ? { editorInference: scrub(e.id, "editorInference", e.editorInference) } : {}), limitations: e.limitations.map((l, i) => scrub(e.id, `limitations[${i}]`, l)!) }));
         accepted.research = accepted.research.map((r) => ({ ...r, title: scrub(r.id, "title", r.title)!, summary: scrub(r.id, "summary", r.summary)!, ...(r.informationGain !== undefined ? { informationGain: scrub(r.id, "informationGain", r.informationGain) } : {}) }));
+        provisional.claims = provisional.claims.map((c) => ({ ...c, statement: scrub(c.id, "statement", c.statement)! }));
+        provisional.evidence = provisional.evidence.map((e) => ({ ...e, title: scrub(e.id, "title", e.title)!, sourceStatement: scrub(e.id, "sourceStatement", e.sourceStatement)! }));
       }
     }
-    appendRecords(loaded.dir, "sources.yaml", accepted.sources, root);
-    appendRecords(loaded.dir, "claims.yaml", accepted.claims, root);
-    appendRecords(loaded.dir, "evidence.yaml", accepted.evidence, root);
+    appendRecords(loaded.dir, "sources.yaml", [...accepted.sources, ...provisional.sources], root);
+    appendRecords(loaded.dir, "claims.yaml", [...accepted.claims, ...provisional.claims], root);
+    appendRecords(loaded.dir, "evidence.yaml", [...accepted.evidence, ...provisional.evidence], root);
     appendRecords(loaded.dir, "research.yaml", accepted.research, root);
     const rows: Disposition[] = [];
     const inRow = (kind: Disposition["kind"], key: string | null, id: string, observed: string) => {
@@ -912,6 +1103,12 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
     for (const c of accepted.claims) inRow("claim", textKey(c.statement), c.id, c.statement);
     for (const e of accepted.evidence) inRow("evidence", textKey(`${e.title} ${e.sourceStatement}`), e.id, e.title);
     for (const r of accepted.research) inRow("research", textKey(r.title), r.id, r.title);
+    const provisionalRow = (kind: Disposition["kind"], key: string | null, id: string, observed: string, p: NonNullable<Source["provisional"]>) => {
+      if (key) rows.push({ key, kind, disposition: "provisional", as: id, reason: `admitted unread — the source exists (${p.exists}) but its text could not be read (${p.reason})`, route: p.route, observed, by: runId, date, proposal: `proposals/${proposalRunId}` });
+    };
+    for (const s of provisional.sources) provisionalRow("source", sourceKeys(s)[0] ?? null, s.id, s.title, s.provisional!);
+    for (const c of provisional.claims) provisionalRow("claim", textKey(c.statement), c.id, c.statement, c.provisional!);
+    for (const e of provisional.evidence) provisionalRow("evidence", textKey(`${e.title} ${e.sourceStatement}`), e.id, e.title, e.provisional!);
     for (const r of rejected) {
       const key = r.kind === "source" ? sourceKeys({ title: r.observed })[0] ?? textKey(r.observed) : textKey(r.observed);
       if (key) rows.push({ key, kind: r.kind, disposition: r.disposition, reason: r.reason, observed: r.observed, by: runId, date, proposal: `proposals/${proposalRunId}`, ...(r.route ? { route: r.route } : {}) });
@@ -933,10 +1130,10 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
       loaded.dir,
       {
         date,
-        change: `Intake from report ${proposal.report ?? proposal.runId}: ${counts.sources} source(s), ${counts.evidence} evidence record(s), ${counts.claims} claim(s), ${counts.research} research item(s) verified and added (proposal ${proposalRunId}, verification ${runId}); ${rejected.length} candidate(s) rejected with reasons in dispositions.yaml.${corrected.skipped.length ? ` ${corrected.skipped.length} correction(s) NOT applied — see proposals/${runId}/verification.md.` : ""}`,
+        change: `Intake from report ${proposal.report ?? proposal.runId}: ${counts.sources} source(s), ${counts.evidence} evidence record(s), ${counts.claims} claim(s), ${counts.research} research item(s) verified and added${counts.provisional ? `; ${counts.provisional} record(s) admitted provisionally, unread, awaiting their texts` : ""} (proposal ${proposalRunId}, verification ${runId}); ${rejected.length} candidate(s) rejected with reasons in dispositions.yaml.${corrected.skipped.length ? ` ${corrected.skipped.length} correction(s) NOT applied — see proposals/${runId}/verification.md.` : ""}`,
         // The rationale is the drafter's, written before verification: it argues the proposal, not what
         // entered. Labelled as such, with the admitted set beside it (review note #275).
-        reason: `Admitted after verification: ${[...accepted.sources.map((s) => s.id), ...accepted.evidence.map((e) => e.id), ...accepted.claims.map((c) => c.id), ...accepted.research.map((r) => r.id)].join(", ") || "nothing"}; everything else proposed was refused or blocked with a reason in dispositions.yaml. The drafter's rationale for the proposal, written before verification and describing what it proposed: ${proposal.rationale}`,
+        reason: `Admitted after verification: ${[...accepted.sources.map((s) => s.id), ...accepted.evidence.map((e) => e.id), ...accepted.claims.map((c) => c.id), ...accepted.research.map((r) => r.id)].join(", ") || "nothing"}${[...provisional.sources, ...provisional.evidence, ...provisional.claims].length ? `; admitted provisionally, unread, awaiting their texts: ${[...provisional.sources, ...provisional.evidence, ...provisional.claims].map((r) => r.id).join(", ")}` : ""}; everything else proposed was refused or blocked with a reason in dispositions.yaml. The drafter's rationale for the proposal, written before verification and describing what it proposed: ${proposal.rationale}`,
         actor: `aletheia verify (${READER.model} second reader; drafter ${proposal.model ?? "unknown"})`,
         aiAssisted: true,
         kind: "content",
@@ -944,7 +1141,7 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
       root,
     );
     return {
-      ...closeRun(run, "completed", { reason: `wrote ${JSON.stringify(counts)}; ${rejected.length} rejected${corrected.applied.length ? `; ${corrected.applied.length} correction(s) applied` : ""}${corrected.skipped.length ? `; ${corrected.skipped.length} correction(s) not applied (see verification.md)` : ""}` }),
+      ...closeRun(run, "completed", { reason: `wrote ${JSON.stringify(counts)}; ${rejected.length} rejected${notPlan ? ` (${notPlan} research item(s) not a plan)` : ""}${corrected.applied.length ? `; ${corrected.applied.length} correction(s) applied` : ""}${corrected.skipped.length ? `; ${corrected.skipped.length} correction(s) not applied (see verification.md)` : ""}` }),
       accepted: counts,
       rejected: rejected.length,
     };

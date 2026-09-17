@@ -82,6 +82,8 @@ export const ReviewState = z.enum([
   "human_reviewed",
   "disputed",
   "rejected",
+  /** Admitted before its text could be read; carries no weight until a verify pass reads it (see ProvisionalSchema). */
+  "provisional",
 ]);
 export type ReviewState = z.infer<typeof ReviewState>;
 
@@ -90,7 +92,28 @@ export const reviewStateLabels: Record<ReviewState, string> = {
   human_reviewed: "Human-reviewed",
   disputed: "Disputed",
   rejected: "Rejected",
+  provisional: "Provisional — awaiting the text",
 };
+
+/**
+ * A record admitted before its text could be read (founder direction, 2026-09-17): the source exists — an
+ * identifier resolves, or its URL answers — but verify could not read the document, so nothing in the record
+ * is checked. It carries no weight in any assessment or standing, is shown as provisional wherever it appears,
+ * and is promoted or refused when a later verify pass reads the text along `route`. Only records whose failure
+ * was retrieval enter this way; a record the second reader judged, or whose identifier fails, never does.
+ */
+export const ProvisionalSchema = z.object({
+  since: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  /** What showed the source exists: the resolving identifier, or the URL's answer. */
+  exists: z.string().min(3),
+  /** Why the text could not be read. */
+  reason: z.string().min(3),
+  /** How to obtain the text — the route a re-verify pass follows. */
+  route: z.string().min(3),
+  /** The verify run that admitted it. */
+  by: z.string().min(1),
+});
+export type Provisional = z.infer<typeof ProvisionalSchema>;
 
 export const Rung = z.enum(["observation", "mechanism", "attribution"]);
 export type Rung = z.infer<typeof Rung>;
@@ -219,6 +242,8 @@ export const ClaimSchema = z
     independenceGroup: z.string().optional(),
     reviewState: ReviewState,
     rejectionReason: z.string().optional(),
+    /** Present exactly when reviewState is "provisional" (loader-checked). */
+    provisional: ProvisionalSchema.optional(),
     origin: OriginSchema,
     /** Optional: earliest known public appearance of the proposition itself. */
     genealogy: ClaimGenealogySchema.optional(),
@@ -296,6 +321,8 @@ export const EvidenceSchema = z.object({
   exactLocator: z.string().optional(),
   limitations: z.array(z.string()).default([]),
   reviewState: ReviewState,
+  /** Present exactly when reviewState is "provisional" (loader-checked). */
+  provisional: ProvisionalSchema.optional(),
   origin: OriginSchema,
   /**
    * Changes the second reader made to this record at intake (verify protocol v5): the direction it
@@ -355,6 +382,8 @@ export const SourceSchema = z.object({
   studyId: z.string().optional(),
   verification: SourceVerification,
   verificationNote: z.string().optional(),
+  /** Admitted before its text could be read; such a source is `unverified` by definition (loader-checked). */
+  provisional: ProvisionalSchema.optional(),
   reliabilityNotes: z.array(z.string()).default([]),
   /**
    * §3.10 made structural at the source grain: IDs of sources this one
@@ -532,8 +561,26 @@ export const ResearchOpportunitySchema = z.object({
    * hand-written items predate it and need no synthetic provenance.
    */
   origin: OriginSchema.optional(),
+  /**
+   * Where the plan stands (2026-09-17): `open` until something settles it. The edition verb sets it when the ledger
+   * moves — `answered` when a study, evidence or a claim's resolution settled the question; `superseded` when a
+   * sharper item replaced it; `retired` when the claim it would move is gone. Shown on the page; the loader requires a
+   * note off `open`. Absent in files written before this, which reads as open — optional rather than defaulted, so
+   * that older records keep their canonical form and the ledger hash every edition adopted (a default would have made
+   * every edition read as stale).
+   */
+  status: z.enum(["open", "answered", "superseded", "retired"]).optional(),
+  /** What settled, replaced or retired it — study, evidence, claim or research ids and a sentence. */
+  statusNote: z.string().optional(),
+  /** The run that set the status. */
+  statusBy: z.string().optional(),
+  statusDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
 });
 export type ResearchOpportunity = z.infer<typeof ResearchOpportunitySchema>;
+export const RESEARCH_STATUSES = ["open", "answered", "superseded", "retired"] as const;
+export type ResearchStatus = (typeof RESEARCH_STATUSES)[number];
+/** A research item's status, open when the file says nothing. */
+export const researchStatus = (r: Pick<ResearchOpportunity, "status">): ResearchStatus => r.status ?? "open";
 
 export const ChangeLogEntrySchema = z.object({
   date: z.string(),

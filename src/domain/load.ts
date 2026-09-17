@@ -110,6 +110,26 @@ function checkIntegrity(caseDir: string, loaded: LoadedCase): void {
   }
   const sourceIds = new Set(loaded.sources.map((s) => s.id));
 
+  // A provisional record carries its block, and only a provisional record does; a provisional source is unverified
+  // by definition — nothing in it has been read (2026-09-17).
+  for (const r of [...loaded.claims, ...loaded.evidence]) {
+    if (r.reviewState === "provisional" && !r.provisional) {
+      throw new ContentError(caseDir, `${r.id}: reviewState "provisional" needs the provisional block`);
+    }
+    // A refused record keeps the block as the record of how it entered; nothing else may carry one.
+    if (r.provisional && r.reviewState !== "provisional" && r.reviewState !== "rejected") {
+      throw new ContentError(caseDir, `${r.id}: carries a provisional block but is "${r.reviewState}" — only a provisional or a refused record may`);
+    }
+  }
+  for (const r of loaded.research) {
+    if ((r.status ?? "open") !== "open" && !r.statusNote) throw new ContentError(caseDir, `${r.id}: status "${r.status}" needs a statusNote saying what settled, replaced or retired it`);
+  }
+  for (const s of loaded.sources) {
+    if (s.provisional && s.verification !== "unverified") {
+      throw new ContentError(caseDir, `${s.id}: a provisional source is unverified by definition (verification is "${s.verification}")`);
+    }
+  }
+
   const requireLiveClaim = (id: string, where: string) => {
     const claim = claimById.get(id);
     if (!claim) {
@@ -689,6 +709,16 @@ export function getCaseBySlug(slug: string): LoadedCase {
 /** Live (non-rejected) claims only — what reader views should show. */
 export function liveClaims(loaded: LoadedCase): Claim[] {
   return loaded.claims.filter((c) => c.reviewState !== "rejected");
+}
+
+/** Evidence records that stand: a record refused at re-verification stays in its file as a tombstone and is shown nowhere. */
+export function liveEvidence(loaded: LoadedCase): Evidence[] {
+  return loaded.evidence.filter((e) => e.reviewState !== "rejected");
+}
+
+/** Evidence records whose text was read: what may be chosen as the strongest for or against (a provisional record is shown, labelled, never chosen — review note #327). */
+export function verifiedEvidence(loaded: LoadedCase): Evidence[] {
+  return liveEvidence(loaded).filter((e) => e.reviewState !== "provisional");
 }
 
 /** The current edition — the latest by date, runId breaking ties. */

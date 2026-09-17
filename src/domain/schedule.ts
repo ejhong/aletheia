@@ -44,7 +44,7 @@ export function editionDue(loaded: LoadedCase): { reason: string; reconciles: st
 
 export interface NextChoice {
   case: string | null;
-  verb: "inbox" | "report" | "draft" | "verify" | "edition" | "check" | "rest";
+  verb: "inbox" | "report" | "draft" | "verify" | "reverify" | "edition" | "check" | "rest";
   seat?: ResearchSeat;
   /** The run id a draft or verify continues from. */
   from?: string;
@@ -65,6 +65,9 @@ export const emptyCycles = (consecutiveEmpty: number) => Math.floor(consecutiveE
 export const cadenceDays = (consecutiveEmpty: number) => Math.min(CADENCE_DAYS * 2 ** emptyCycles(consecutiveEmpty), MAX_CADENCE_DAYS);
 
 const ageDays = (date: string, today: string) => (Date.parse(today) - Date.parse(date)) / 86_400_000;
+/** Records a case holds unread: provisional sources, evidence and claims. */
+export const provisionalCount = (c: LoadedCase) =>
+  c.sources.filter((s) => s.provisional).length + c.evidence.filter((e) => e.reviewState === "provisional").length + c.claims.filter((k) => k.reviewState === "provisional").length;
 /** Chronological key for a run: its date and the HHMMSS its id ends with (ids of different verbs do not sort by time on their own). */
 const when = (r: Pick<RunRecord, "runId" | "date">) => `${r.date}T${r.runId.slice(-6)}`;
 const after = (a: Pick<RunRecord, "runId" | "date">, b: Pick<RunRecord, "runId" | "date">) => when(a) > when(b);
@@ -144,6 +147,25 @@ export function nextAction(allCases: LoadedCase[], runs: RunRecord[], today: str
     const lastDraft = rs.filter((r) => r.verb === "draft" && r.outcome === "completed").at(-1);
     if (lastDraft && !rs.some((r) => r.verb === "verify" && r.outcome === "completed" && after(r, lastDraft))) {
       return { case: c.record.slug, verb: "verify", from: lastDraft.runId, reason: `proposal ${lastDraft.runId} has not been verified` };
+    }
+  }
+  // 1b. Records admitted unread whose texts may be readable now (provisional admission, 2026-09-17): re-verify, on a
+  // cadence that doubles after each pass that promotes nothing — a source does not become readable by being asked
+  // every week.
+  for (const c of cases) {
+    const n = provisionalCount(c);
+    if (!n) continue;
+    const passes = byCase(c.record.slug).filter((r) => r.verb === "reverify" && r.outcome === "completed");
+    const last = passes.at(-1);
+    let empties = 0;
+    for (const r of [...passes].reverse()) {
+      if (/\bpromoted 0\b/.test(r.notes ?? "")) empties++;
+      else break;
+    }
+    const due = Math.min(CADENCE_DAYS * 2 ** empties, MAX_CADENCE_DAYS);
+    if (!last || ageDays(last.date, today) >= due) {
+      const why = last ? `; last re-verified ${last.date}${empties ? `, ${empties} pass(es) promoted nothing, so the cadence is ${due} days` : ""}` : "";
+      return { case: c.record.slug, verb: "reverify", reason: `${n} provisional record(s) await their texts${why}` };
     }
   }
   // 2. Editions the ledger owes.

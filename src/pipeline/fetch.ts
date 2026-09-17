@@ -31,6 +31,8 @@ export interface FetchedSource {
    * stand-in as unverified (blocked, with a route to the cited text), never as false (review notes #315, #318).
    */
   substitute?: boolean;
+  /** The document's own title where one was read — the HTML <title> or citation_title, the PDF metadata title — kept even when the text could not be, so an unreadable document can still be matched to the record that cites it. */
+  pageTitle?: string;
   /** Page count, for PDFs. */
   pages?: number;
   /** For a supplied document: the permission line the intake recorded, which a Source proposed from it must carry verbatim (§3.15). */
@@ -63,8 +65,16 @@ export function stripHtml(html: string): string {
 }
 
 /** The text of a PDF, page by page, each page headed `[p. N]` so a quote can carry its page. */
-export async function pdfText(bytes: Uint8Array, maxPages = 150): Promise<{ text: string; pages: number }> {
+export async function pdfText(bytes: Uint8Array, maxPages = 150): Promise<{ text: string; pages: number; title?: string }> {
   const doc = await pdfjs.getDocument({ data: bytes, useSystemFonts: true, disableFontFace: true, verbosity: 0 }).promise;
+  let title: string | undefined;
+  try {
+    const meta = (await doc.getMetadata()) as { info?: { Title?: unknown } };
+    const t = meta?.info?.Title;
+    if (typeof t === "string" && t.trim().length >= 3) title = t.trim();
+  } catch {
+    title = undefined;
+  }
   try {
     const n = Math.min(doc.numPages, maxPages);
     const parts: string[] = [];
@@ -111,6 +121,15 @@ export function looksLikeWall(text: string): string | null {
 const cap = (text: string, max: number) =>
   text.length > max ? text.slice(0, max) + `\n\n[truncated at ${max} characters of ${text.length}]` : text;
 
+/** The title a page gives itself: citation_title (scholarly pages) first, else <title>; entities decoded, whitespace folded. */
+export function htmlTitle(body: string): string | undefined {
+  const head = body.slice(0, 200_000);
+  const meta = /<meta[^>]+(?:name|property)=["'](?:citation_title|og:title|dc\.title)["'][^>]*content=["']([^"']{3,300})["']/i.exec(head)?.[1] ?? /<meta[^>]+content=["']([^"']{3,300})["'][^>]*(?:name|property)=["'](?:citation_title|og:title|dc\.title)["']/i.exec(head)?.[1];
+  const tag = /<title[^>]*>([^<]{3,300})<\/title>/i.exec(head)?.[1];
+  const raw = (meta ?? tag)?.replace(/&amp;/g, "&").replace(/&#39;|&apos;/g, "'").replace(/&quot;/g, '"').replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/\s+/g, " ").trim();
+  return raw && raw.length >= 3 ? raw : undefined;
+}
+
 export async function fetchSource(
   url: string,
   opts: { timeoutMs?: number; maxChars?: number; fetchImpl?: typeof fetch } = {},
@@ -135,11 +154,11 @@ export async function fetchSource(
   const max = opts.maxChars ?? MAX_CHARS;
   if (isPdf(type, url, bytes)) {
     try {
-      const { text, pages } = await pdfText(bytes);
+      const { text, pages, title } = await pdfText(bytes);
       if (!text.replace(/\[p\. \d+\]/g, "").trim()) {
-        return { url, ok: false, status: res.status, contentType, text: null, pages, reason: `PDF has no extractable text (${pages} pages; scanned images need OCR)` };
+        return { url, ok: false, status: res.status, contentType, text: null, pages, reason: `PDF has no extractable text (${pages} pages; scanned images need OCR)`, ...(title ? { pageTitle: title } : {}) };
       }
-      return { url, ok: true, status: res.status, contentType, text: cap(text, max), pages };
+      return { url, ok: true, status: res.status, contentType, text: cap(text, max), pages, ...(title ? { pageTitle: title } : {}) };
     } catch (e) {
       return { url, ok: false, status: res.status, contentType, text: null, reason: `PDF text extraction failed: ${(e as Error).message}` };
     }
@@ -148,10 +167,12 @@ export async function fetchSource(
     return { url, ok: false, status: res.status, contentType, text: null, reason: `unsupported content type ${contentType}` };
   }
   const body = new TextDecoder().decode(bytes);
-  const text = type.includes("html") || /<html/i.test(body.slice(0, 2000)) ? stripHtml(body) : body.trim();
+  const html = type.includes("html") || /<html/i.test(body.slice(0, 2000));
+  const pageTitle = html ? htmlTitle(body) : undefined;
+  const text = html ? stripHtml(body) : body.trim();
   const wall = looksLikeWall(text);
-  if (wall) return { url, ok: false, status: res.status, contentType, text: null, reason: `${wall} served with HTTP ${res.status}` };
-  return { url, ok: true, status: res.status, contentType, text: cap(text, max) };
+  if (wall) return { url, ok: false, status: res.status, contentType, text: null, reason: `${wall} served with HTTP ${res.status}`, ...(pageTitle ? { pageTitle } : {}) };
+  return { url, ok: true, status: res.status, contentType, text: cap(text, max), ...(pageTitle ? { pageTitle } : {}) };
 }
 
 // ------------------------------------------------------------ open access

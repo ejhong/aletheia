@@ -16,7 +16,7 @@ import { StandingPanel } from "@/src/components/StandingPanel";
 import { RecordPanel } from "@/src/components/RecordPanel";
 import { caseRecord } from "@/src/domain/record";
 import { caseActivity } from "@/src/domain/activity";
-import { caseCover, liveClaims, loadAllCases } from "@/src/domain/load";
+import { verifiedEvidence, liveEvidence, caseCover, liveClaims, loadAllCases } from "@/src/domain/load";
 import { crossModelSummary, latestCheckPerModel } from "@/src/domain/standing";
 import { historyNewestFirst, lastContentUpdate } from "@/src/domain/history";
 import { caseAccounts, caseQuestion, currentEdition, questionRestatedBy } from "@/src/domain/editions";
@@ -81,7 +81,7 @@ export default async function CasePage({
   const sourceById = new Map(loaded.sources.map((s) => [s.id, s]));
 
   const strongest = (direction: "supports" | "undermines") =>
-    loaded.evidence
+    verifiedEvidence(loaded)
       .filter((e) => e.direction === direction)
       .sort(
         (a, b) =>
@@ -158,7 +158,7 @@ export default async function CasePage({
               href={`/cases/${slug}/evidence/`}
               className="underline decoration-copper/50 underline-offset-2 hover:decoration-copper text-copper"
             >
-              Browse the full ledger ({loaded.evidence.length} records) →
+              Browse the full ledger ({liveEvidence(loaded).length} records) →
             </Link>
           </p>
           <div className="grid lg:grid-cols-2 gap-4 mt-6">
@@ -231,22 +231,43 @@ export default async function CasePage({
             )
           ) : null}
           <div className="grid sm:grid-cols-2 gap-4 mt-6">
-            {orderedResearch(view.edition.cruxOrder, loaded.research).map((r) => (
-              <ResearchCard
-                key={r.id}
-                item={r}
-                study={loaded.studies.find((s) => s.researchIds.includes(r.id))}
-                caseSlug={loaded.record.slug}
-              />
-            ))}
+            {orderedResearch(view.edition.cruxOrder, loaded.research)
+              .filter((r) => (r.status ?? "open") === "open")
+              .map((r) => (
+                <ResearchCard
+                  key={r.id}
+                  item={r}
+                  study={loaded.studies.find((s) => s.researchIds.includes(r.id))}
+                  caseSlug={loaded.record.slug}
+                />
+              ))}
           </div>
+          {loaded.research.some((r) => (r.status ?? "open") !== "open") ? (
+            <div className="mt-10">
+              <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-faint">
+                settled — answered, superseded or retired; kept as the record of what was asked
+              </h3>
+              <div className="grid sm:grid-cols-2 gap-4 mt-4">
+                {orderedResearch(view.edition.cruxOrder, loaded.research)
+                  .filter((r) => (r.status ?? "open") !== "open")
+                  .map((r) => (
+                    <ResearchCard
+                      key={r.id}
+                      item={r}
+                      study={loaded.studies.find((s) => s.researchIds.includes(r.id))}
+                      caseSlug={loaded.record.slug}
+                    />
+                  ))}
+              </div>
+            </div>
+          ) : null}
         </section>
 
         <RecordPanel
           sittings={caseRecord(loaded)}
           slug={loaded.record.slug}
           caseDir={loaded.dir}
-          linkable={new Set([...liveClaims(loaded).map((c) => c.id), ...loaded.sources.map((s) => s.id), ...loaded.evidence.map((e) => e.id)])}
+          linkable={new Set([...liveClaims(loaded).map((c) => c.id), ...loaded.sources.map((s) => s.id), ...liveEvidence(loaded).map((e) => e.id)])}
         />
 
         <section id="history" className="pt-14 pb-6 scroll-mt-28">

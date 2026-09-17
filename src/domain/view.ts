@@ -1,5 +1,5 @@
 import { adoptedAssessment, currentEdition } from "./editions.ts";
-import { liveClaims } from "./load.ts";
+import { liveEvidence, liveClaims } from "./load.ts";
 import { ratification, type Ratification } from "./standing.ts";
 import type {
   AssessmentRun,
@@ -38,6 +38,8 @@ export interface ClaimView {
    * shown as such wherever the claim appears, so the thinness is on the page and not only in the prose.
    */
   evidenceCount: number;
+  /** Evidence records citing the claim that entered unread (provisional); they carry no weight. */
+  provisionalEvidenceCount: number;
 }
 
 /** The dossier header and the other case-level judgments the edition adopts. */
@@ -74,7 +76,11 @@ export function caseView(loaded: LoadedCase): CaseView {
   );
   const rank = new Map(edition.featuredClaimIds.map((id, i) => [id, i]));
   const evidenceCount = new Map<string, number>();
-  for (const e of loaded.evidence) for (const id of e.claimIds) evidenceCount.set(id, (evidenceCount.get(id) ?? 0) + 1);
+  const provisionalEvidenceCount = new Map<string, number>();
+  for (const e of liveEvidence(loaded)) {
+    const m = e.reviewState === "provisional" ? provisionalEvidenceCount : evidenceCount;
+    for (const id of e.claimIds) m.set(id, (m.get(id) ?? 0) + 1);
+  }
 
   const claims: ClaimView[] = liveClaims(loaded).map((claim) => {
     const ca = byClaim.get(claim.id);
@@ -88,6 +94,7 @@ export function caseView(loaded: LoadedCase): CaseView {
       confidence: ca?.confidence ?? null,
       treatment: ca?.treatment ?? null,
       evidenceCount: evidenceCount.get(claim.id) ?? 0,
+      provisionalEvidenceCount: provisionalEvidenceCount.get(claim.id) ?? 0,
     };
   });
   const featured = claims

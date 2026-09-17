@@ -34,7 +34,18 @@ export function ResearchCard({
           {trackLabels[item.track]} · {effortLabels[item.effortTier]}
         </span>
       </div>
+      {item.status && item.status !== "open" ? (
+        <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.14em] text-ochre">
+          {item.status}
+          {item.statusDate ? ` · ${item.statusDate}` : ""}
+        </p>
+      ) : null}
       <h4 className="font-serif text-lg mt-2 leading-snug">{item.title}</h4>
+      {item.status && item.status !== "open" && item.statusNote ? (
+        <p className="mt-1 text-[12.5px] leading-relaxed text-ink-soft">
+          <LinkedRecordText text={item.statusNote} />
+        </p>
+      ) : null}
       <p className="mt-2 text-[13.5px] leading-relaxed text-ink-soft">
         <LinkedRecordText text={item.summary} />
       </p>

@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { EvidenceCard } from "@/src/components/EvidenceCard";
 import { LinkedRecordText } from "@/src/components/LinkedRecordText";
 import { VerificationBadge } from "@/src/components/VerificationBadge";
-import { loadAllCases } from "@/src/domain/load";
+import { liveEvidence, loadAllCases } from "@/src/domain/load";
 import { paramsOrPlaceholder } from "@/src/domain/staticExport";
 import type { LoadedCase, Source } from "@/src/domain/schema";
 
@@ -38,7 +38,7 @@ export default async function SourcePage({
   const entry = allSources().find(({ source }) => source.id === id);
   if (!entry) notFound();
   const { source, loaded } = entry;
-  const connected = loaded.evidence.filter((e) => e.sourceId === id);
+  const connected = liveEvidence(loaded).filter((e) => e.sourceId === id);
 
   return (
     <div className="mx-auto max-w-5xl px-5 py-12">
@@ -61,6 +61,11 @@ export default async function SourcePage({
 
       <div className="mt-4 flex flex-wrap items-center gap-2">
         <VerificationBadge state={source.verification} />
+        {source.provisional ? (
+          <p className="mt-2 text-[13px] leading-relaxed text-ink-soft max-w-3xl">
+            Admitted provisionally on {source.provisional.since}: the source exists ({source.provisional.exists}) but its text could not be read ({source.provisional.reason}). Nothing that cites it carries weight until a verify pass reads it. Route: {source.provisional.route}
+          </p>
+        ) : null}
         <span className="font-mono text-[10px] tracking-[0.14em] text-faint">
           {source.id}
         </span>

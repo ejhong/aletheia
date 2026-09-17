@@ -2,6 +2,7 @@ import Link from "next/link";
 import { DirectionTag } from "./DirectionTag";
 import { LinkedRecordText } from "./LinkedRecordText";
 import type { Evidence, Source } from "@/src/domain/schema";
+import { ProvenanceBadge } from "./ProvenanceBadge";
 import { VerificationBadge } from "./VerificationBadge";
 
 export function EvidenceCard({
@@ -70,6 +71,12 @@ export function EvidenceCard({
           {source.year ? ` (${source.year})` : ""}
         </Link>
         <VerificationBadge state={source.verification} />
+        {evidence.reviewState === "provisional" ? (
+          <ProvenanceBadge
+            state="provisional"
+            detail={`Admitted ${evidence.provisional?.since ?? ""} before its text could be read (${evidence.provisional?.reason ?? ""}); it carries no weight until a verify pass reads it. Route: ${evidence.provisional?.route ?? ""}`}
+          />
+        ) : null}
         {showClaims
           ? evidence.claimIds.map((id) => (
               <Link

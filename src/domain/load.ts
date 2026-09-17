@@ -713,4 +713,9 @@ export function liveEvidence(loaded: LoadedCase): Evidence[] {
   return loaded.evidence.filter((e) => e.reviewState !== "rejected");
 }
 
+/** Evidence records whose text was read: what may be chosen as the strongest for or against (a provisional record is shown, labelled, never chosen — review note #327). */
+export function verifiedEvidence(loaded: LoadedCase): Evidence[] {
+  return liveEvidence(loaded).filter((e) => e.reviewState !== "provisional");
+}
+
 /** The current edition — the latest by date, runId breaking ties. */

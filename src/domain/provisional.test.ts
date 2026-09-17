@@ -31,8 +31,9 @@ const ctx = () => {
   const { proposal } = assembleProposal(reply(), { loaded: c, reportRunId: "rep", runId: "2026-09-17-draft-megalithic-casting-100000", model: "m", promptVersion: "draft-v8", date: "2026-09-17", fetched: [] });
   const meter = { runId: "2026-09-17-verify-megalithic-casting-100100", verb: "verify" as const, case: c.record.slug };
   let judged = 0;
-  const judge = async (): Promise<VerifyReply> => (judged++, { quoteInContext: true, statementSupported: true, locatorSupported: true, directionRight: true, independenceNoted: true, relevant: true, reason: "holds" });
-  return { c, proposal, meter, judge, judged: () => judged };
+  const texts: string[] = [];
+  const judge = async (_r: unknown, sourceText: string): Promise<VerifyReply> => (judged++, texts.push(sourceText), { quoteInContext: true, statementSupported: true, locatorSupported: true, directionRight: true, independenceNoted: true, relevant: true, atomic: true, reason: "one observation that bears on the case" });
+  return { c, proposal, meter, judge, judged: () => judged, texts };
 };
 const TITLE = "Sodium carbonate treatment of granite: an experimental study";
 const unread = (status: number | null, reason: string, pageTitle?: string): FetchedSource => ({ url: URL, ok: false, status, contentType: status ? "application/pdf" : null, text: null, reason, ...(pageTitle ? { pageTitle } : {}) });
@@ -52,6 +53,8 @@ describe("sourceExists", () => {
     expect(sourceExists(src, { status: 403, reason: "HTTP 403", pageTitle: TITLE }, new Map())).toBeNull();
     expect(sourceExists(src, { status: null, reason: "fetch failed: ECONNRESET" }, new Map())).toBeNull();
     expect(sourceExists(src, { status: 403, reason: "HTTP 403" }, new Map([[`doi:${DOI}`, { status: "fails", note: "doi.org HTTP 404" }]]))).toBeNull();
+    // A failing identifier is a failing citation: a matching page title does not rescue it.
+    expect(sourceExists(src, { status: 200, reason: "PDF has no extractable text", pageTitle: TITLE }, new Map([[`doi:${DOI}`, { status: "fails", note: "doi.org HTTP 404" }]]))).toBeNull();
     expect(sourceExists(undefined, { status: 200, reason: "x", pageTitle: TITLE }, new Map())).toBeNull();
   });
   it("metadataMatches: the whole normalised title, or four of every five of its words", () => {
@@ -63,8 +66,8 @@ describe("sourceExists", () => {
 });
 
 describe("provisional admission", () => {
-  it("a scanned PDF with no text: the source, its evidence and its claim enter provisionally, unread, and the reader is never asked", async () => {
-    const { c, proposal, meter, judge, judged } = ctx();
+  it("a scanned PDF with no text: the source, its evidence and its claim enter provisionally, unread, after the reader judged them without the text", async () => {
+    const { c, proposal, meter, judge, judged, texts: seenTexts } = ctx();
     const texts = new Map<string, FetchedSource>([[URL, unread(200, "PDF has no extractable text (12 pages; scanned images need OCR)", TITLE)]]);
     const v = await judgeProposal(proposal, c, texts, new Map(), judge, meter);
     const [e] = proposal.adds.evidence;
@@ -81,7 +84,19 @@ describe("provisional admission", () => {
     expect(v.accepted.claims).toEqual([]);
     expect(v.accepted.sources).toEqual([]);
     expect(v.rejected.map((r) => r.id)).not.toContain(e.id);
-    expect(judged()).toBe(0);
+    // The reader was asked, without a text, for what needs none: one observation, bearing on the case.
+    expect(judged()).toBe(2);
+    expect(seenTexts.every((t) => t === "")).toBe(true);
+  });
+  it("what the reader can refuse without the text is refused, not admitted provisionally", async () => {
+    const { c, proposal, meter } = ctx();
+    const compound = async (): Promise<VerifyReply> => ({ quoteInContext: true, statementSupported: true, locatorSupported: true, directionRight: true, independenceNoted: true, relevant: true, atomic: false, reason: "two findings in one sentence" });
+    const v = await judgeProposal(proposal, c, new Map<string, FetchedSource>([[URL, unread(200, "PDF has no extractable text (12 pages)", TITLE)]]), new Map(), compound, meter);
+    expect(v.provisional.evidence).toEqual([]);
+    expect(v.provisional.claims).toEqual([]);
+    const e = v.rejected.find((r) => r.kind === "evidence");
+    expect(e?.disposition).toBe("failed");
+    expect(e?.reason).toMatch(/read without its text, the reader refused it \(not one observation\)/);
   });
   it("a 429 with a resolving DOI enters on the identifier; a 403 with nothing resolving stays blocked as before", async () => {
     const { c, proposal, meter, judge } = ctx();

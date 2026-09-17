@@ -187,7 +187,8 @@ export async function runReverify(caseSlug: string, opts: ReverifyOptions = {}):
     const summary = `re-verify: promoted ${counts.promoted}, appended ${counts.appended}, refused ${counts.refused}, still unread ${counts.unread}`;
     if (opts.dryRun) return { ...closeRun(run, "dry-run", { reason: `would ${summary}; nothing written` }), ...counts };
 
-    // Materialize. Links to a refused claim are dropped everywhere before anything is written.
+    // Materialize. Every row, count and history line below is derived from what was actually written (review note
+    // #326): a record that could not be promoted or appended after all is settled as unread, once, and only once.
     const caseDir = loaded.dir;
     const file = (f: LedgerFile) => path.join(root, "content", "cases", caseDir, f);
     const dropRefused = <T extends AnyRecord>(r: T): T => {
@@ -198,19 +199,22 @@ export async function runReverify(caseSlug: string, opts: ReverifyOptions = {}):
       }
       return r;
     };
+    const done = { promoted: [] as ReverifyPlan["promote"], appended: [] as ReverifyPlan["appended"], refused: [] as ReverifyPlan["refuse"], unread: [...plan.unread] };
     const wrote = new Set<string>();
     const byFile = new Map<LedgerFile, AnyRecord[]>();
     for (const a of plan.appended) {
       const rec = dropRefused(a.record);
-      if ("claimIds" in rec && !rec.claimIds.length) { plan.unread.push({ kind: a.kind, id: a.id, reason: "a split part whose claims were all refused; not appended" }); continue; }
+      if ("claimIds" in rec && !rec.claimIds.length) { done.unread.push({ kind: a.kind, id: a.id, reason: "a split part whose claims were all refused; not appended" }); continue; }
       byFile.set(a.file, [...(byFile.get(a.file) ?? []), rec]);
+      done.appended.push({ ...a, record: rec });
     }
     for (const [f, recs] of byFile) { appendRecords(caseDir, f, recs, root); wrote.add(`content/cases/${caseDir}/${f}`); }
     for (const p of plan.promote) {
       const rec = dropRefused(p.record);
-      if ("claimIds" in rec && !rec.claimIds.length) { plan.unread.push({ kind: p.kind, id: p.id, reason: "its claims were all refused this pass; left provisional" }); continue; }
+      if ("claimIds" in rec && !rec.claimIds.length) { done.unread.push({ kind: p.kind, id: p.id, reason: "its claims were all refused this pass; left provisional" }); continue; }
       replaceRecord(file(p.file), p.id, rec as unknown as Record<string, unknown>);
       wrote.add(`content/cases/${caseDir}/${p.file}`);
+      done.promoted.push({ ...p, record: rec });
     }
     for (const r of plan.refuse) {
       const f = file(fileOf(r.id));
@@ -222,15 +226,17 @@ export async function runReverify(caseSlug: string, opts: ReverifyOptions = {}):
         setField(f, r.id, "reviewState", "provisional", "rejected");
         setField(f, r.id, "limitations", e.limitations, [...e.limitations, `Refused at re-verification ${date} (${runId}): ${r.reason}`]);
       } else {
-        // A source whose text read and whose only citing records failed: it stays, provisional, said so above.
-        plan.unread.push({ kind: r.kind, id: r.id, reason: r.reason });
+        // A source is not refused here: it stays provisional until the records that cite it are settled.
+        done.unread.push({ kind: r.kind, id: r.id, reason: r.reason });
+        continue;
       }
       wrote.add(`content/cases/${caseDir}/${fileOf(r.id)}`);
+      done.refused.push(r);
     }
     if (refusedClaims.size) {
-      const promotedIds = new Set([...plan.promote, ...plan.appended].map((p) => p.id));
+      const touched = new Set([...done.promoted, ...done.appended].map((p) => p.id));
       for (const e of loaded.evidence) {
-        if (promotedIds.has(e.id) || e.reviewState === "rejected" || !e.claimIds.some((id) => refusedClaims.has(id))) continue;
+        if (touched.has(e.id) || e.reviewState === "rejected" || !e.claimIds.some((id) => refusedClaims.has(id))) continue;
         const kept = e.claimIds.filter((id) => !refusedClaims.has(id));
         const f = file("evidence.yaml");
         if (kept.length) setField(f, e.id, "claimIds", e.claimIds, kept);
@@ -242,7 +248,7 @@ export async function runReverify(caseSlug: string, opts: ReverifyOptions = {}):
         wrote.add(`content/cases/${caseDir}/evidence.yaml`);
       }
       for (const c of loaded.claims) {
-        if (promotedIds.has(c.id) || refusedClaims.has(c.id)) continue;
+        if (touched.has(c.id) || refusedClaims.has(c.id)) continue;
         const f = file("claims.yaml");
         for (const field of ["parentClaimIds", "dependsOnClaimIds", "alternativeToClaimIds", "contradictsClaimIds"] as const) {
           const ids = c[field];
@@ -253,21 +259,26 @@ export async function runReverify(caseSlug: string, opts: ReverifyOptions = {}):
         }
       }
     }
+    // One disposition per original, from what happened to it.
     const rows: Disposition[] = [];
     const observedOf = (r: AnyRecord) => ("statement" in r ? r.statement : r.title);
     const keyOf = (kind: Kind, r: AnyRecord) => (kind === "source" ? (sourceKeys(r as Source)[0] ?? textKey((r as Source).title)) : kind === "claim" ? textKey((r as Claim).statement) : textKey(`${(r as Evidence).title} ${(r as Evidence).sourceStatement}`));
     const originalOf = (id: string): AnyRecord | undefined => [...originals.sources, ...originals.evidence, ...originals.claims].find((r) => r.id === id);
-    for (const p of [...plan.promote, ...plan.appended]) { const key = keyOf(p.kind, p.record); if (key) rows.push({ key, kind: p.kind, disposition: "in", as: p.id, observed: observedOf(p.record), by: runId, date, proposal: `proposals/${runId}` }); }
-    for (const r of plan.refuse) { const o = originalOf(r.id); if (!o) continue; const key = keyOf(r.kind, o); if (key) rows.push({ key, kind: r.kind, disposition: "failed", reason: `refused at re-verification: ${r.reason}`, observed: observedOf(o), by: runId, date, proposal: `proposals/${runId}` }); }
-    for (const u of plan.unread) { const o = originalOf(u.id); if (!o) continue; const key = keyOf(u.kind, o); const route = (o as { provisional?: { route: string } }).provisional?.route; if (key) rows.push({ key, kind: u.kind, disposition: "provisional", as: u.id, reason: `still unread on ${date}: ${u.reason}`, observed: observedOf(o), by: runId, date, proposal: `proposals/${runId}`, ...(route ? { route } : {}) }); }
+    for (const p of [...done.promoted, ...done.appended]) { const key = keyOf(p.kind, p.record); if (key) rows.push({ key, kind: p.kind, disposition: "in", as: p.id, observed: observedOf(p.record), by: runId, date, proposal: `proposals/${runId}` }); }
+    for (const r of done.refused) { const o = originalOf(r.id); if (!o) continue; const key = keyOf(r.kind, o); if (key) rows.push({ key, kind: r.kind, disposition: "failed", reason: `refused at re-verification: ${r.reason}`, observed: observedOf(o), by: runId, date, proposal: `proposals/${runId}` }); }
+    const seenUnread = new Set<string>();
+    for (const u of done.unread) { if (seenUnread.has(u.id)) continue; seenUnread.add(u.id); const o = originalOf(u.id); if (!o) continue; const key = keyOf(u.kind, o); const route = (o as { provisional?: { route: string } }).provisional?.route; if (key) rows.push({ key, kind: u.kind, disposition: "provisional", as: u.id, reason: `still unread on ${date}: ${u.reason}`, observed: observedOf(o), by: runId, date, proposal: `proposals/${runId}`, ...(route ? { route } : {}) }); }
     if (rows.length) appendDispositions(caseDir, rows, root);
-    const finalCounts = { promoted: plan.promote.length, appended: plan.appended.length, refused: plan.refuse.length, unread: plan.unread.length };
+    const finalCounts = { promoted: done.promoted.length, appended: done.appended.length, refused: done.refused.length, unread: seenUnread.size };
     const finalSummary = `re-verify: promoted ${finalCounts.promoted}, appended ${finalCounts.appended}, refused ${finalCounts.refused}, still unread ${finalCounts.unread}`;
+    if (finalSummary !== summary) {
+      writeWorkingFile(runId, "verification.md", report + `\n## What was written\n- ${finalSummary} (the plan above forecast: ${summary})\n`, root);
+    }
     appendHistory(
       caseDir,
       {
         date,
-        change: `Re-verification of ${total} provisional record(s) (${runId}): ${finalSummary}.${plan.promote.length ? ` Promoted: ${plan.promote.map((p) => p.id).join(", ")}.` : ""}${plan.refuse.length ? ` Refused: ${plan.refuse.map((r) => `${r.id} (${r.reason})`).join("; ")}.` : ""}`,
+        change: `Re-verification of ${total} provisional record(s) (${runId}): ${finalSummary}.${done.promoted.length ? ` Promoted: ${done.promoted.map((p) => p.id).join(", ")}.` : ""}${done.appended.length ? ` Appended: ${done.appended.map((p) => p.id).join(", ")}.` : ""}${done.refused.length ? ` Refused: ${done.refused.map((r) => `${r.id} (${r.reason})`).join("; ")}.` : ""}`,
         reason: "The texts behind records admitted unread were read again by the second reader under the verify protocol; what held was promoted with the reader's stamps, what failed was refused with its reason, what still could not be read stays provisional with the attempt on the record.",
         actor: `aletheia reverify (${READER.model} second reader)`,
         aiAssisted: true,

@@ -421,9 +421,11 @@ export function sourceExists(
   // document it is.
   const title = source?.title ?? "";
   if (source) {
-    for (const i of identifiersOf(source)) {
-      const r = resolved.get(`${i.kind}:${i.id}`);
-      if (r?.status === "resolves" && metadataMatches(title, r.note)) return `${i.kind} ${i.id} resolves to a record with this title (${r.note})`;
+    const ids = identifiersOf(source).map((i) => ({ ...i, r: resolved.get(`${i.kind}:${i.id}`) }));
+    // A failing identifier is a failing citation: nothing enters on it, whatever the URL says (review note #325).
+    if (ids.some((i) => i.r?.status === "fails")) return null;
+    for (const i of ids) {
+      if (i.r?.status === "resolves" && metadataMatches(title, i.r.note)) return `${i.kind} ${i.id} resolves to a record with this title (${i.r.note})`;
     }
   }
   const status = fetched?.status ?? null;
@@ -457,6 +459,9 @@ export function correctionBlocker(loaded: LoadedCase, c: Correction): string | n
   if (JSON.stringify(rec[c.field] ?? null) !== JSON.stringify(c.from ?? null)) return `the field no longer reads what the proposal saw`;
   return null;
 }
+
+/** What the reader is told when it judges a record whose source text could not be retrieved. */
+export const TEXT_UNAVAILABLE = "The source text could not be retrieved: judge only what needs no text — whether the record is one observation, whether it bears on the case, whether independence is noted, whether the source statement reads as a statement and not an inference — and set quoteInContext, statementSupported and locatorSupported to true, meaning not assessed.";
 
 /** A resolver note that carries a Retraction Watch finding (src/lib/citation-check.mjs). */
 const NOTICE = /^(RETRACTED|CORRECTED|WITHDRAWN)\b/;
@@ -545,9 +550,18 @@ export async function judgeProposal(
       const route = `obtain the text of ${e.sourceId} (${sourceById.get(e.sourceId)?.url ?? "no url"}) and re-run verify`;
       const exists = sourceExists(sourceById.get(e.sourceId), fetched, resolved);
       if (exists) {
-        // The source exists and the text does not, yet: the record enters provisionally, unread, carrying no weight.
+        // The source exists and the text does not, yet. The reader still judges what needs no text — one observation,
+        // bearing on the case, a statement and not an inference (review notes #325, #327); only textual support and the
+        // locator wait. What passes enters provisionally, unread, carrying no weight.
+        const claims = e.claimIds.map((id) => loaded.claims.find((c) => c.id === id) ?? proposal.adds.claims.find((c) => c.id === id)).filter(Boolean);
+        const blind = await judge({ ...e, editorInference: undefined }, "", `${questionContext} Claims this record bears on: ${claims.map((c) => `${c!.id}: ${c!.statement}`).join(" | ")}. ${TEXT_UNAVAILABLE}`, meter);
+        const blindFlags = [blind.atomic === false && "not one observation", blind.relevant === false && "bears on none of the case's accounts", blind.independenceNoted === false && "independence not noted"].filter(Boolean);
+        if (blindFlags.length) {
+          reject(e.id, "evidence", e.title, `read without its text, the reader refused it (${blindFlags.join("; ")}): ${blind.reason}`);
+          continue;
+        }
         provisional.evidence.push({ ...e, reviewState: "provisional", provisional: { since: reader.date, exists, reason: why, route, by: meter.runId } });
-        notes.push(`${e.id}: admitted provisionally — the source exists (${exists}) but its text could not be read (${why})`);
+        notes.push(`${e.id}: admitted provisionally — the source exists (${exists}) but its text could not be read (${why}); the reader judged it without the text: ${blind.reason}`);
       } else {
         reject(e.id, "evidence", e.title, `source text not retrievable: ${why}`, true, route);
       }
@@ -654,8 +668,14 @@ export async function judgeProposal(
           const why = fetched?.reason ?? "no source id on the anchor";
           const exists = sid ? sourceExists(sourceById.get(sid), fetched, resolved) : null;
           if (exists) {
+            const blind = await judge({ statement: c.statement, anchor: c.sourceAnchor }, "", `${questionContext} ${TEXT_UNAVAILABLE} Is the statement one proposition with a truth condition, and does it bear on the case?`, meter);
+            const blindFlags = [blind.atomic === false && "not one proposition", blind.relevant === false && "bears on none of the case's accounts"].filter(Boolean);
+            if (blindFlags.length) {
+              reject(c.id, "claim", c.statement, `read without its anchor's text, the reader refused it (${blindFlags.join("; ")}): ${blind.reason}`);
+              continue;
+            }
             provisional.claims.push({ ...c, reviewState: "provisional", provisional: { since: reader.date, exists, reason: why, route: `obtain the text of ${sid} (${sourceById.get(sid!)?.url ?? "no url"}) and re-run verify`, by: meter.runId } });
-            notes.push(`${c.id}: admitted provisionally — its anchor's source exists (${exists}) but the text could not be read (${why})`);
+            notes.push(`${c.id}: admitted provisionally — its anchor's source exists (${exists}) but the text could not be read (${why}); the reader judged it without the text: ${blind.reason}`);
           } else {
             reject(c.id, "claim", c.statement, `anchor source not retrievable (${why}) and no accepted evidence cites the claim`, true, `obtain the anchor's text and re-run verify`);
           }

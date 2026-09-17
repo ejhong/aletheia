@@ -16,7 +16,7 @@ import { StandingPanel } from "@/src/components/StandingPanel";
 import { RecordPanel } from "@/src/components/RecordPanel";
 import { caseRecord } from "@/src/domain/record";
 import { caseActivity } from "@/src/domain/activity";
-import { liveEvidence, caseCover, liveClaims, loadAllCases } from "@/src/domain/load";
+import { verifiedEvidence, liveEvidence, caseCover, liveClaims, loadAllCases } from "@/src/domain/load";
 import { crossModelSummary, latestCheckPerModel } from "@/src/domain/standing";
 import { historyNewestFirst, lastContentUpdate } from "@/src/domain/history";
 import { caseAccounts, caseQuestion, currentEdition, questionRestatedBy } from "@/src/domain/editions";
@@ -81,7 +81,7 @@ export default async function CasePage({
   const sourceById = new Map(loaded.sources.map((s) => [s.id, s]));
 
   const strongest = (direction: "supports" | "undermines") =>
-    liveEvidence(loaded)
+    verifiedEvidence(loaded)
       .filter((e) => e.direction === direction)
       .sort(
         (a, b) =>

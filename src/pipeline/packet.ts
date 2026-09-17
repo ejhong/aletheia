@@ -45,9 +45,13 @@ export interface Packet {
   };
   index: {
     sources: { id: string; title: string; year: string | null; keys: string[]; verification: string; background: boolean }[];
-    /** `evidence` is the number of admitted evidence records citing the claim; `anchors` counts its own source anchor with them. 0 evidence = held on its anchor alone. */
-    claims: { id: string; statement: string; rung: string; theme: string; featured: boolean; verdict: string | null; anchors: number; evidence: number }[];
-    evidence: { id: string; title: string; claimIds: string[]; sourceId: string; direction: string; strength: string }[];
+    /**
+     * `evidence` is the number of verified evidence records citing the claim; `anchors` counts its own source anchor with
+     * them. 0 evidence = held on its anchor alone. `provisionalEvidence` counts records admitted unread (no weight);
+     * `provisional` marks a claim that itself entered unread.
+     */
+    claims: { id: string; statement: string; rung: string; theme: string; featured: boolean; verdict: string | null; anchors: number; evidence: number; provisionalEvidence?: number; provisional?: true }[];
+    evidence: { id: string; title: string; claimIds: string[]; sourceId: string; direction: string; strength: string; provisional?: true }[];
     research: { id: string; title: string; claimIds: string[] }[];
     studies: { id: string; title: string; collected: boolean }[];
     images: { id: string; role: string; depicts: string | null }[];
@@ -95,7 +99,11 @@ export function buildPacket(
 ): Packet {
   const view = caseView(loaded);
   const evidenceCount = new Map<string, number>();
-  for (const e of loaded.evidence) for (const id of e.claimIds) evidenceCount.set(id, (evidenceCount.get(id) ?? 0) + 1);
+  const provisionalCount = new Map<string, number>();
+  for (const e of loaded.evidence) {
+    const m = e.reviewState === "provisional" ? provisionalCount : evidenceCount;
+    for (const id of e.claimIds) m.set(id, (m.get(id) ?? 0) + 1);
+  }
 
   const packet: Packet = {
     case: {
@@ -117,6 +125,7 @@ export function buildPacket(
         keys: sourceKeys(s).filter((k) => !k.startsWith("title:")),
         verification: s.verification,
         background: s.background,
+        ...(s.provisional ? { provisional: true as const } : {}),
       })),
       claims: view.claims.map((c) => ({
         id: c.claim.id,
@@ -127,6 +136,8 @@ export function buildPacket(
         verdict: opts.blind ? null : c.verdict,
         anchors: (c.claim.sourceAnchor ? 1 : 0) + (evidenceCount.get(c.claim.id) ?? 0),
         evidence: evidenceCount.get(c.claim.id) ?? 0,
+        ...(provisionalCount.get(c.claim.id) ? { provisionalEvidence: provisionalCount.get(c.claim.id) } : {}),
+        ...(c.claim.reviewState === "provisional" ? { provisional: true as const } : {}),
       })),
       evidence: loaded.evidence.map((e) => ({
         id: e.id,
@@ -135,6 +146,7 @@ export function buildPacket(
         sourceId: e.sourceId,
         direction: e.direction,
         strength: e.strength,
+        ...(e.reviewState === "provisional" ? { provisional: true as const } : {}),
       })),
       research: loaded.research.map((r) => ({ id: r.id, title: r.title, claimIds: r.claimIds })),
       studies: loaded.studies.map((s) => ({ id: s.id, title: s.title, collected: s.rows.length > 0 })),

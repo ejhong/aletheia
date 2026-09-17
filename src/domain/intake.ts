@@ -47,6 +47,8 @@ export const DispositionKind = z.enum([
   "blocked",
   "failed",
   "excluded",
+  /** Entered before its text could be read; `as` names the record, `route` how to read it (2026-09-17). */
+  "provisional",
 ]);
 export type DispositionKind = z.infer<typeof DispositionKind>;
 
@@ -90,7 +92,7 @@ export const DispositionSchema = z
     proposal: z.string().optional(),
   })
   .superRefine((d, ctx) => {
-    if ((d.disposition === "in" || d.disposition === "duplicate") && !d.as) {
+    if ((d.disposition === "in" || d.disposition === "duplicate" || d.disposition === "provisional") && !d.as) {
       ctx.addIssue({ code: "custom", message: `${d.disposition} needs \`as\`: the ledger record` });
     }
     if (d.disposition !== "in" && !d.reason) {

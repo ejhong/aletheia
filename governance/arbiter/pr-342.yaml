@@ -1,0 +1,130 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 342
+title: An Internet Archive item page is a viewer, not the text
+url: https://github.com/ejhong/aletheia/pull/342
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-17
+judgedAgainst: 0da274e0cf
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "This is a pipeline/retrieval fix plus a dated DECISIONS.md log
+      entry; it does not touch AGENTS.md or any content/ record, and the
+      verification section finds no added citation identifiers. Substantively it
+      tightens rather than loosens a check: where retrieval previously returned
+      an Internet Archive item page as if it were the OCR text (letting verify
+      fail records against text nobody had read), it now tries download/ then
+      stream/, retries once on 429/5xx, and on failure returns ok:false with an
+      explicit reason and only the page title — so records are blocked or
+      admitted provisionally rather than silently judged against the wrong text.
+      That is consistent with §3.7/§3.8 (real text, honest labels) and §4's
+      provisional rule, and with §3.15's prohibition on dodging checks. Tests
+      are updated in kind, including the new failure-path assertions on reason
+      and pageTitle. The DECISIONS.md entry is stamped with date and channel
+      (\"founder (direction in session, 2026-09-17)\"), which the constitution
+      explicitly permits for founder directions. One small note, not a
+      violation: the guard changed from `item && !/_djvu\\.txt$/` to `item`, so
+      a target URL that is already a _djvu.txt path now goes through the route
+      loop; worth confirming that does not double-fetch or mis-key, but it is
+      benign and does not affect provenance honesty."
+    cost:
+      model: claude-opus-5
+      inputTokens: 4514
+      outputTokens: 678
+      usd: 0.042765
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.9
+      - §3.15
+      - §4
+    reasoning: "The change strengthens honest verification by refusing to treat an
+      Internet Archive viewer page as the source text, returning `ok: false`,
+      `text: null`, and a concrete reason when OCR routes fail. It retains only
+      the page title for identity matching and records the exact OCR routes
+      attempted, supporting exact provenance and provisional handling rather
+      than a false quotation mismatch. Tests cover both retry/stream recovery
+      and fail-closed behavior, and the dated decision entry records the stated
+      supervision channel without editing AGENTS.md or weakening any
+      constitutional check."
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 5837
+      outputTokens: 1026
+      usd: 0.04438
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.7
+      - §3.8
+      - §3.15
+    reasoning: The change improves retrieval fidelity for Internet Archive sources
+      by attempting multiple OCR endpoints, handling rate-limiting retries, and
+      refusing to substitute an item viewer page for actual document text. This
+      prevents erroneous quote-check failures when full text cannot be retrieved
+      and records the failure honestly with provenance and page title retained.
+      The implementation is tested, well-bounded, recorded in DECISIONS.md under
+      founder direction, and fully complies with the constitution.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 7679
+      outputTokens: 431
+      usd: 0.007376
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff fixes Internet Archive retrieval so an item viewer page is
+      never treated as book text: it tries download/ then stream/ OCR routes,
+      retries once on 429/5xx, and on total failure returns ok:false with an
+      explicit reason while retaining only pageTitle for identity matching. That
+      strengthens exact provenance and honest verification labels rather than
+      weakening them, and matches the 2026-09-17 provisional-admission rule for
+      sources that exist but cannot yet be read. No AGENTS.md edit, no citations
+      added, no confidence material, no run-account issues; DECISIONS.md only
+      records the founder-supervised fix. Tests cover the throttle-rescue and
+      hard-fail paths."
+    cost:
+      model: grok-4.5
+      inputTokens: 7325
+      outputTokens: 161
+      usd: 0.015731
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.15
+      - §4
+    reasoning: "This is a pipeline fix, not a content change: no citations,
+      locators, or provenance details are added, and citation verification
+      confirms none appear in the diff. The change strengthens rather than
+      weakens the epistemic checks — previously a throttled Archive returned the
+      item page HTML as if it were the book text, causing 44 false 'quoted span
+      not found' refusals; now retrieval tries both OCR routes with one polite
+      retry, and when no text is served it fails outright (ok: false, text:
+      null) with an honest reason, keeping only the page title so a
+      shown-to-exist work can enter as 'provisional' — exactly what §4's
+      2026-09-17 founder amendment permits for records whose text could not yet
+      be read. The hand correction of the 44 rows from failed to blocked, with
+      the route recorded, improves provenance accuracy rather than
+      misattributing it. docs/DECISIONS.md is the sanctioned decisions log (not
+      AGENTS.md), the entry is stamped with date and supervision channel per
+      §3.15, and tests cover both the rescue and the fail-closed path. No rule
+      in §3 is broken by what is visible."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 8205
+      outputTokens: 649
+      usd: 0.001555
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 33560
+  outputTokens: 2945
+  usd: 0.1118
+harvestedAt: 2026-09-17

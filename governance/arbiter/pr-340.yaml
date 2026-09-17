@@ -1,0 +1,174 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 340
+title: "Chain: 2026-09-17"
+url: https://github.com/ejhong/aletheia/pull/340
+verdict: pass
+reason: "4 of 5 seats affirm compliance; one seat's objection is a review note
+  the operator answers on the record: GPT-5.6 Sol (OpenAI) (§3.2, §3.6, §3.9;
+  other)"
+outcome: merged
+outcomeAt: 2026-09-17
+judgedAgainst: dad6adf273
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "Both added sources resolve mechanically (Rostain
+      10.1126/science.adi6317; Achmatowicz 10.12797/SI.17.2018.17.03, plus its
+      landing page and Wayback snapshot), and their titles match what the
+      records claim they support. The verify account is the kind of honest
+      ledger §3 wants: 58 of 73 candidates refused or blocked with concrete,
+      per-part reasons (non-atomic sourceStatements split into E073–E077,
+      locators narrowed where the quote sits on p.4 or p.11 rather than the
+      compound page range, directions reset to 'context' by the second reader
+      with reader acts stamped), and SRC-CRUZ-1651 refused outright because
+      nothing accepted cited it (§3.6). The Carvajal label is handled correctly
+      rather than hidden: history carries the original raise to ai_verified,
+      then the operator's append-only reversal to 'unverified' with a note
+      scoped to exactly the pages read (introduction pp. i–lxxviii) and the
+      statement that the verifier read the item page, not the OCR, answering the
+      prior panel's park and note #341; the 44 'failed' rows are
+      re-dispositioned 'blocked' with retrieval routes, which is the truthful
+      label since those quotes were checked against nothing. The one FAILS in
+      verification is the descubrimientod00carvgoog djvu.txt URL, which appears
+      only as a future retrieval route inside blocked dispositions, not as a
+      citation carrying weight, and its sibling archive.org text URL resolves —
+      that is a transient reachability fact, not fabricated provenance. The
+      editions grade six anchor-only featured claims to 'unresolved' at low
+      confidence and say so in the prose ('the ledger holds that only on the
+      paper's anchor'), which tightens rather than loosens the checks (§3.8,
+      §3.13), and the founder-funding disclosure is printed in the article. One
+      review-note-level defect I would want fixed: SRC-ACHMATOWICZ-2018's
+      verificationNote says 'text retrieved and shown to the drafter' while its
+      own reliabilityNotes say only the landing page/abstract was shown — the
+      note should be scoped to the abstract, as the Carvajal note now is."
+    cost:
+      model: claude-opus-5
+      inputTokens: 155698
+      outputTokens: 2395
+      usd: 0.878927
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: violates
+    rules:
+      - §3.2
+      - §3.6
+      - §3.9
+    reasoning: "The verifier rejected AMZ-E067 because occupation dating and
+      attribution of platform/road construction are distinct propositions that
+      could be true or false independently, yet AMZ-C061 still combines them: it
+      dates “the Kilamope/Upano occupation that built the earthen platforms and
+      roads.” Its admitted evidence, AMZ-E073, states only the occupation date
+      range, so support for that measurement is silently extended to the
+      separate builder attribution. This compound claim is then used in the
+      assessment and article as if the whole proposition were evidenced. Split
+      AMZ-C061 into dating and construction-attribution claims, admit evidence
+      for each, and revise the linked assessment/article language; the omitted
+      working files do not prevent this determination because the conflict is
+      explicit in the diff and run account."
+    paradigm: other
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 106849
+      outputTokens: 1990
+      usd: 0.467708
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.6
+      - §3.8
+      - §3.13
+      - §3.14
+      - §3.15
+    reasoning: The change fully complies with the constitution and demonstrates
+      sound epistemic discipline across both cases. For pre-columbian-amazon,
+      new sources (Rostain 2024 and Achmatowicz 2018) mechanically resolve and
+      are accompanied by carefully split, atomic claims and evidence records,
+      while unread or non-verifiable candidates from Carvajal and Laureano de la
+      Cruz were appropriately rejected or marked blocked. Furthermore, the
+      operator's corrections directly address prior panel feedback (#341) by
+      restoring SRC-CARVAJAL-1542's verification label to 'unverified' and
+      cleaning AMZ-E074's locator. In transients, the new edition candidate
+      correctly applies the anchored-is-not-evidenced principle (§3.6, §3.13) by
+      regrading anchor-only claims to unresolved at low confidence. AGENTS.md is
+      untouched, no checks are loosened, and the run account and visible diff
+      sufficiently decide compliance despite routine omitted proposal working
+      files.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 123289
+      outputTokens: 3585
+      usd: 0.105911
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The admitted content is tightly gated: verification accepted only
+      Rostain 2024 and Achmatowicz 2018 (both DOIs resolve to the claimed
+      titles), six atomic evidence splits with second-reader direction/locator
+      acts, five claims, and two research items, while 58 candidates were
+      refused or blocked with concrete reasons (quotes not found, non-atomic
+      statements, unretricable anchors, §3.6 bare sources). SRC-CARVAJAL-1542 is
+      correctly left unverified after the operator undid the premature
+      ai_verified stamp and rewrote the note to the pages the drafter actually
+      read; failed Carvajal/Cruz quote-checks are corrected to blocked with
+      re-fetch routes rather than treated as positive non-matches. Editions and
+      draft assessments regrade anchor-only featured claims to unresolved,
+      disclose abstract-only and unread-body limits, and are stamped role: draft
+      / humanReviewed: false. No AGENTS.md edit, no confidence material, no
+      fabricated locator or citation in what was admitted, and prior panel notes
+      (#341) are answered on the append-only history. Omitted working files are
+      non-decisive given the full content diff and run account."
+    cost:
+      model: grok-4.5
+      inputTokens: 110467
+      outputTokens: 263
+      usd: 0.222627
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.7
+      - §3.8
+      - §3.9
+      - §3.13
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: "The chain's content runs behave the way the constitution demands:
+      the verify account admits only 2 sources, 6 evidence records, 5 claims and
+      2 research items while refusing 58 candidates with concrete reasons
+      (verbatim-quote failures, non-atomic statements, §3.6
+      source-without-evidence refusals), and every admitted identifier resolves
+      in the citation verification (Rostain 2024 and Achmatowicz 2018 DOIs both
+      RESOLVE; the failing djvu.txt URL appears only as a re-verification route,
+      not a citation). The most scrutiny-worthy material — the operator's
+      by-hand corrections — is exactly the opposite of check-dodging: 44
+      mislabeled 'failed' dispositions are corrected to 'blocked' because the
+      OCR text was never actually served, and the premature
+      'unverified'→'ai_verified' raise on SRC-CARVAJAL-1542 is reversed on the
+      record after the panel park, with the final sources.yaml state honestly
+      'unverified' and a note scoping what was and was not read. Both edition
+      candidates are stamped draft overlays (humanReviewed: false), the articles
+      repeatedly tell anchor-only propositions as 'what the ledger holds' rather
+      than findings, and the regrades of anchor-only claims to unresolved
+      tighten rather than weaken the assessments. The founder funding
+      disclosure, the recorded reader acts, and the append-only history entries
+      answering review note #341 all preserve reconstructability. Residual notes
+      I would log rather than park: the Achmatowicz record's year '2018' differs
+      from Crossref's 2019 (plausibly issue-vs-online metadata, worth a
+      confirmation), and the research item AMZ-R007 leans on a tertiary '≤5,000'
+      snippet the ledger itself declined verbatim — but the item frames it as
+      unconfirmed hypothesis, not evidence. AGENTS.md is untouched; no
+      confidence material appears; no check is loosened."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 109608
+      outputTokens: 3615
+      usd: 0.018594
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 605911
+  outputTokens: 11848
+  usd: 1.6938
+harvestedAt: 2026-09-17

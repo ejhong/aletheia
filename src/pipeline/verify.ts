@@ -297,6 +297,32 @@ export function nextClaimId(loaded: LoadedCase, taken: Iterable<string>): string
 export function nextEvidenceId(loaded: LoadedCase, taken: Iterable<string>): string {
   return nextId("E", loaded.evidence.map((e) => e.id), loaded, taken);
 }
+/**
+ * An issuer of fresh evidence ids for one record's reading: every id it hands out is taken by the next call, and
+ * `taken` is read afresh each time so the record's own id and every record admitted so far are counted. Before
+ * 2026-09-17 the split-part path handed the reader a callback that read no list holding the part itself, so a part
+ * split by direction got the part's own id — AMZ-E110 twice on #353 — and a three-way split would have collided twice.
+ */
+export function freshEvidenceIds(loaded: LoadedCase, taken: () => Iterable<string>): () => string {
+  const handed: string[] = [];
+  return () => {
+    const id = nextEvidenceId(loaded, [...taken(), ...handed]);
+    handed.push(id);
+    return id;
+  };
+}
+/** Ids that occur more than once across a prospective ledger: the build refuses such a ledger, so verify must not write one (§8, no ambiguous ids). */
+export function duplicateIdErrors(p: { sources: { id: string }[]; evidence: { id: string }[]; claims: { id: string }[] }): string[] {
+  const errors: string[] = [];
+  for (const [kind, rows] of [["source", p.sources], ["evidence", p.evidence], ["claim", p.claims]] as const) {
+    const seen = new Set<string>();
+    for (const r of rows) {
+      if (seen.has(r.id)) errors.push(`duplicate ${kind} id ${r.id}`);
+      seen.add(r.id);
+    }
+  }
+  return errors;
+}
 function nextId(letter: "C" | "E", existing: string[], loaded: LoadedCase, taken: Iterable<string>): string {
   const ids = [...existing, ...taken];
   const re = new RegExp(`-${letter}\\d+$`);
@@ -694,7 +720,7 @@ export async function judgeProposal(
           notes.push(`${label} refused (${bad.join(", ")}): ${v2.reason}`);
           continue;
         }
-        const applied = applyReader(candidate, v2, readerStamp(v2), () => nextEvidenceId(loaded, [...proposal.adds.evidence.map((x) => x.id), ...okEvidence.map((x) => x.id), ...admitted.map((x) => x.id)]));
+        const applied = applyReader(candidate, v2, readerStamp(v2), freshEvidenceIds(loaded, () => [...proposal.adds.evidence.map((x) => x.id), ...okEvidence.map((x) => x.id), ...admitted.map((x) => x.id), candidate.id]));
         if (!applied) {
           notes.push(`${label} refused: the second reader finds it bears on none of the claims it names: ${v2.reason}`);
           continue;
@@ -707,7 +733,7 @@ export async function judgeProposal(
       continue;
     }
     // v5: the reader's finding on direction and on which claims the passage bears on is applied, not annotated.
-    const applied = applyReader(e, verdict, readerStamp(verdict), () => nextEvidenceId(loaded, [...proposal.adds.evidence.map((x) => x.id), ...okEvidence.map((x) => x.id)]));
+    const applied = applyReader(e, verdict, readerStamp(verdict), freshEvidenceIds(loaded, () => [...proposal.adds.evidence.map((x) => x.id), ...okEvidence.map((x) => x.id)]));
     if (!applied) {
       reject(e.id, "evidence", e.title, `second reader: the passage bears on none of the claims the record names: ${verdict.reason}`);
       continue;
@@ -929,6 +955,8 @@ export async function judgeProposal(
   const errors = [
     ...sourceAdmissionErrors(prospective.sources, prospective.evidence, prospective.claims),
     ...claimAnchorErrors(prospective.claims, prospective.evidence),
+    // Provisional records are appended too: an id may collide with theirs as well.
+    ...duplicateIdErrors({ sources: [...prospective.sources, ...provisional.sources], evidence: [...prospective.evidence, ...provisional.evidence], claims: [...prospective.claims, ...provisional.claims] }),
   ];
   for (const err of errors) notes.push(`prospective ledger: ${err}`);
 

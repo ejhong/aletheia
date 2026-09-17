@@ -9,7 +9,8 @@ import type { LoadedCase } from "../domain/schema.ts";
 import { MODELS } from "../lib/models.mjs";
 import { pdfText, stripHtml } from "./fetch.ts";
 import { appendYamlItems } from "./ledger-write.ts";
-import { defaultLister, openAlexSearch, resolveReferences, type Reference, type ReferenceLister, type Resolved, type Searcher } from "./references.ts";
+import { defaultLister, resolveReferences, type Reference, type ReferenceLister, type Resolved, type Searcher } from "./references.ts";
+import { multiIndexSearch } from "./resolve.ts";
 import { closeRun, openRun, writeWorkingFile, type RunOutcome } from "./store.ts";
 
 /**
@@ -471,7 +472,7 @@ export async function runInbox(caseKey: string, opts: InboxOptions = {}): Promis
   const resolved = new Map<string, Resolved[]>();
   if (!opts.dryRun) {
     const list = opts.deps?.list ?? defaultLister;
-    const search = opts.deps?.search ?? openAlexSearch;
+    const search = opts.deps?.search ?? multiIndexSearch;
     for (const it of items) {
       let refs: Reference[] = [];
       try {

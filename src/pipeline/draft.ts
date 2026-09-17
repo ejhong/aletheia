@@ -19,6 +19,7 @@ import {
   type LoadedCase,
 } from "../domain/schema.ts";
 import { doiFromUrl, doisInText, retrieve, type FetchedSource, type RetrievalTarget } from "./fetch.ts";
+import { leadsNamedInReport, resolveLead, type Lead, type Resolved } from "./resolve.ts";
 import { MODELS } from "../lib/models.mjs";
 import { anthropicJson, type Meter } from "./models.ts";
 import { buildPacket } from "./packet.ts";
@@ -681,7 +682,7 @@ export const defaultDrafter: Drafter = async (system, user, meter) => {
 export interface DraftOptions {
   dryRun?: boolean;
   root?: string;
-  deps?: { draft?: Drafter; fetch?: typeof retrieve; now?: () => Date; cases?: () => LoadedCase[] };
+  deps?: { draft?: Drafter; fetch?: typeof retrieve; now?: () => Date; cases?: () => LoadedCase[]; resolveLead?: (lead: Lead) => Promise<Resolved | null>; };
 }
 
 export interface DraftOutcome extends RunOutcome {
@@ -706,12 +707,26 @@ export async function runDraft(reportRunId: string, opts: DraftOptions = {}): Pr
   const fetcher = opts.deps?.fetch ?? retrieve;
   const fetched: FetchedSource[] = [];
   for (const target of retrievalTargets(report)) fetched.push(await fetcher(target, {}));
+  // Works the report names without having opened them (its "Named, not opened" list) are pinned to documents
+  // through the open indexes (src/pipeline/resolve.ts) and read like the rest, each saying how it was found; the
+  // drafter is shown the search's outcome for every lead, matched or not, so its dispositions can say what was tried.
+  const already = new Set(fetched.map((f) => canonicalUrl(f.url)));
+  const leads: { lead: string; resolved: { title: string; identifier: string; url: string; via: string } | null }[] = [];
+  for (const lead of leadsNamedInReport(report).slice(0, 12)) {
+    const resolved = await (opts.deps?.resolveLead ?? resolveLead)(lead);
+    leads.push({ lead: lead.text, resolved: resolved ? { title: resolved.title, identifier: resolved.identifier, url: resolved.url, via: resolved.via } : null });
+    if (!resolved || already.has(canonicalUrl(resolved.url))) continue;
+    already.add(canonicalUrl(resolved.url));
+    const f = await fetcher({ url: resolved.url, doi: resolved.doi ?? null }, {});
+    fetched.push({ ...f, via: `${f.via ? `${f.via}; ` : ""}resolved from the report's lead "${lead.text.slice(0, 100)}" — ${resolved.via}` });
+  }
   const packet = buildPacket(loaded);
   const user = JSON.stringify(
     {
       packet,
       report,
       sources: fetched.map((f) => ({ url: f.url, retrieved: f.ok, reason: f.reason ?? null, via: f.via ?? null, pages: f.pages ?? null, text: f.text })),
+      ...(leads.length ? { leads } : {}),
     },
     null,
     1,

@@ -61,5 +61,11 @@ describe("split parts keep their own page", () => {
     expect(narrowLocator("[p. 1] (Sec. I) and [p. 4] (Sec. V), arXiv PDF 2111.04604v2", 1)).toBe("[p. 1], arXiv PDF 2111.04604v2");
     expect(narrowLocator("[p. 14] ('Lifetimes of Subradiant and Superradiant States'), arXiv PDF 2602.02868v1", 14)).toBe("[p. 14], arXiv PDF 2602.02868v1");
     expect(narrowLocator("[p. 3]", 3)).toBe("[p. 3]");
+    // A dropped place goes whole, words with marker; the kept place keeps its words (review note #341).
+    expect(narrowLocator("[p. 4] and supplement S2 [p. 24], via open-access author manuscript", 4)).toBe("[p. 4], via open-access author manuscript");
+    expect(narrowLocator("[p. 4] and supplement S2 [p. 24], via open-access author manuscript", 24)).toBe("supplement S2 [p. 24], via open-access author manuscript");
+    expect(narrowLocator("[p. 2] & [p. 9], Table 3", 9)).toBe("[p. 9], Table 3");
+    // A page the parent never named still gets a locator of its own.
+    expect(narrowLocator("[p. 4] and supplement S2 [p. 24], via open-access author manuscript", 5)).toBe("[p. 5], via open-access author manuscript");
   });
 });

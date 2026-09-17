@@ -139,10 +139,18 @@ export function scrubUnadmitted(text: string, unadmitted: Map<string, { kind: st
  * [p. 4] (Sec. V), arXiv PDF 2111.04604v2" → "[p. 1], arXiv PDF 2111.04604v2".
  */
 export function narrowLocator(parent: string, page: number): string {
-  const rest = parent
-    .replace(/\[p\. \d+\](\s*\([^)]*\))?/g, "")
-    .replace(/\b(and|&)\b/g, "")
-    .replace(/[,;\s]+/g, " ")
-    .trim();
-  return rest ? `[p. ${page}], ${rest}` : `[p. ${page}]`;
+  // The parent's locator is read as places — a page marker with the words that belong to it ("supplement S2
+  // [p. 24]") — and the rest (the copy read, a table). The part keeps its own place and the rest; every other place
+  // goes whole, words with marker. Before 2026-09-17 only the markers went, and "[p. 4] and supplement S2 [p. 24],
+  // via open-access author manuscript" narrowed to "[p. 4], supplement S2 via …" — a component the part does not
+  // quote (review note #341). A marker's own parenthetical ("(Sec. I)") goes with it, as before.
+  const marker = `[p. ${page}]`;
+  const chunks = parent
+    .replace(/(\[p\. \d+\])\s*\([^)]*\)/g, "$1")
+    .split(/\s*(?:[,;&]|\band\b)\s*/)
+    .map((c) => c.trim())
+    .filter(Boolean);
+  const place = chunks.find((c) => c.includes(marker)) ?? marker;
+  const rest = chunks.filter((c) => !/\[p\. \d+\]/.test(c));
+  return [place, ...rest].join(", ");
 }

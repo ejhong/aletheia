@@ -61,6 +61,11 @@ export default async function SourcePage({
 
       <div className="mt-4 flex flex-wrap items-center gap-2">
         <VerificationBadge state={source.verification} />
+        {source.provisional ? (
+          <p className="mt-2 text-[13px] leading-relaxed text-ink-soft max-w-3xl">
+            Admitted provisionally on {source.provisional.since}: the source exists ({source.provisional.exists}) but its text could not be read ({source.provisional.reason}). Nothing that cites it carries weight until a verify pass reads it. Route: {source.provisional.route}
+          </p>
+        ) : null}
         <span className="font-mono text-[10px] tracking-[0.14em] text-faint">
           {source.id}
         </span>

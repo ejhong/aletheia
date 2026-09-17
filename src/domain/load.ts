@@ -110,6 +110,19 @@ function checkIntegrity(caseDir: string, loaded: LoadedCase): void {
   }
   const sourceIds = new Set(loaded.sources.map((s) => s.id));
 
+  // A provisional record carries its block, and only a provisional record does; a provisional source is unverified
+  // by definition — nothing in it has been read (2026-09-17).
+  for (const r of [...loaded.claims, ...loaded.evidence]) {
+    if ((r.reviewState === "provisional") !== Boolean(r.provisional)) {
+      throw new ContentError(caseDir, `${r.id}: reviewState "provisional" and the provisional block must appear together`);
+    }
+  }
+  for (const s of loaded.sources) {
+    if (s.provisional && s.verification !== "unverified") {
+      throw new ContentError(caseDir, `${s.id}: a provisional source is unverified by definition (verification is "${s.verification}")`);
+    }
+  }
+
   const requireLiveClaim = (id: string, where: string) => {
     const claim = claimById.get(id);
     if (!claim) {

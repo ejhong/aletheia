@@ -65,9 +65,13 @@ function MarginNote({ claim: view }: { claim: ClaimView }) {
       {view.evidenceCount === 0 ? (
         <p
           className="mt-1 text-[10px] uppercase tracking-[0.12em] text-ink-soft/70"
-          title="The ledger knows where this proposition is stated and has admitted no observation behind it yet: a source is not evidence."
+          title={
+            view.provisionalEvidenceCount > 0
+              ? "Its evidence records entered before their texts could be read; they carry no weight until a verify pass reads them."
+              : "The ledger knows where this proposition is stated and has admitted no observation behind it yet: a source is not evidence."
+          }
         >
-          anchored, not yet evidenced
+          {view.provisionalEvidenceCount > 0 ? "evidence provisional, awaiting the text" : "anchored, not yet evidenced"}
         </p>
       ) : null}
       {verdict ? (

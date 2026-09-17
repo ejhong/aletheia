@@ -5,6 +5,7 @@ const classes: Record<ReviewState, string> = {
   human_reviewed: "text-verdigris border-verdigris/40",
   disputed: "text-ochre border-ochre/40",
   rejected: "text-faint border-line line-through",
+  provisional: "text-ochre border-ochre/40 border-dashed",
 };
 
 /** Honest provenance: who has actually checked this record. */

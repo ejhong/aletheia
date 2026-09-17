@@ -9,7 +9,8 @@ import { retrieve, type FetchedSource } from "./fetch.ts";
 import { appendHistory, appendRecords, ledgerFileFor, replaceRecord, setField, type LedgerFile } from "./ledger-write.ts";
 import { loadProtocol } from "./protocols.ts";
 import { appendDispositions, closeRun, openRun, runDir, writeWorkingFile, type RunOutcome } from "./store.ts";
-import { READER, defaultJudge, defaultSplitter, judgeProposal, rememberedJudge, rememberedSplitter, textKeyOf, type Judge, type Resolver, type Splitter, type Verdicts } from "./verify.ts";
+import { READER, defaultJudge, defaultSplitter, judgeProposal, rememberedJudge, rememberedSplitter, textKeyOf, type Judge, type Resolver, type Splitter, type Verdicts, type VerifyOptions } from "./verify.ts";
+import { resubmitBlocked, type ResubmitRun } from "./resubmit.ts";
 
 /**
  * `aletheia reverify <case>` — read the texts behind a case's provisional records (ProvisionalSchema: admitted
@@ -98,6 +99,10 @@ export interface ReverifyOutcome extends RunOutcome {
   appended: number;
   refused: number;
   unread: number;
+  /** Records blocked at verification, proposed again and read by verify (src/pipeline/resubmit.ts): one run per proposal they came from. */
+  resubmitted?: ResubmitRun[];
+  /** How many of those verify admitted this pass. */
+  admitted?: number;
 }
 
 const stripProvisional = <T extends { provisional?: unknown }>(r: T): Omit<T, "provisional"> => {
@@ -106,7 +111,7 @@ const stripProvisional = <T extends { provisional?: unknown }>(r: T): Omit<T, "p
   return rest;
 };
 
-export async function runReverify(caseSlug: string, opts: ReverifyOptions = {}): Promise<ReverifyOutcome> {
+async function reverifyProvisional(caseSlug: string, opts: ReverifyOptions = {}): Promise<ReverifyOutcome> {
   const root = opts.root ?? process.cwd();
   const now = opts.now ?? (() => new Date());
   const loaded = findCase(caseSlug, opts.deps?.cases?.());
@@ -292,3 +297,21 @@ export async function runReverify(caseSlug: string, opts: ReverifyOptions = {}):
   }
 }
 
+
+/**
+ * The verb: the provisional records are read again (above), then the records verification blocked — never entered,
+ * their proposal still holding them — are proposed again under fresh ids and read by the ordinary verify verb, one
+ * run per proposal (2026-09-17, the 51 Amazon rows blocked when the archive did not serve). The outcome carries
+ * both: `promoted` from the first, `admitted` from the second; either moving the ledger is what the scheduler and
+ * the sitting act on.
+ */
+export async function runReverify(caseSlug: string, opts: ReverifyOptions = {}): Promise<ReverifyOutcome> {
+  const first = await reverifyProvisional(caseSlug, opts);
+  if (first.outcome === "failed") return first;
+  const sub = await resubmitBlocked(caseSlug, { root: opts.root, dryRun: opts.dryRun, now: opts.now, deps: opts.deps as VerifyOptions["deps"] });
+  if (!sub.runs.length && !sub.notes.length) return first;
+  const moved = sub.runs.some((r) => r.outcome === "completed");
+  const outcome = first.outcome === "rested" && moved ? "completed" : first.outcome === "rested" && sub.runs.some((r) => r.outcome === "dry-run") ? "dry-run" : first.outcome;
+  const reason = [first.reason, ...sub.runs.map((r) => r.reason), ...sub.notes].filter(Boolean).join("; ");
+  return { ...first, outcome, reason, resubmitted: sub.runs, admitted: sub.admitted };
+}

@@ -1113,7 +1113,15 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
     for (const c of provisional.claims) provisionalRow("claim", textKey(c.statement), c.id, c.statement, c.provisional!);
     for (const e of provisional.evidence) provisionalRow("evidence", textKey(`${e.title} ${e.sourceStatement}`), e.id, e.title, e.provisional!);
     for (const r of rejected) {
-      const key = r.kind === "source" ? sourceKeys({ title: r.observed })[0] ?? textKey(r.observed) : textKey(r.observed);
+      // Keyed as the drafter and the admission key it — title and statement for evidence, the identifier for a
+      // source — so a refusal and a later admission of the same record sit under one key (before 2026-09-17 a refused
+      // evidence row took the title alone, and its re-submission would have entered under another key).
+      const held = r.kind === "evidence" ? proposal.adds.evidence.find((e) => e.id === r.id) : r.kind === "source" ? proposal.adds.sources.find((s) => s.id === r.id) : undefined;
+      const key =
+        held && r.kind === "evidence" ? textKey(`${(held as Evidence).title} ${(held as Evidence).sourceStatement}`)
+        : held && r.kind === "source" ? (sourceKeys(held as Source)[0] ?? textKey(r.observed))
+        : r.kind === "source" ? (sourceKeys({ title: r.observed })[0] ?? textKey(r.observed))
+        : textKey(r.observed);
       if (key) rows.push({ key, kind: r.kind, disposition: r.disposition, reason: r.reason, observed: r.observed, by: runId, date, proposal: `proposals/${proposalRunId}`, ...(r.route ? { route: r.route } : {}) });
     }
     const known = new Set<string>([

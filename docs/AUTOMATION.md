@@ -89,6 +89,16 @@ and modular code, with the loop on. The facts first, then the plan.
 4. **After the UI pass:** verifier quality, driven by the refusals data
    and the review notes; then Deep Memory from scratch as the test of a
    case built from inputs alone.
+5. **Sharper search per dollar** (founder, 2026-09-16, in session: "add
+   them as todos"). Three bounded changes to the research pass, in order:
+   (i) a date-aware novelty task in the report protocol — the seat is told
+   the date of the previous report and asked, as one named task among its
+   directions, for what has appeared since; (ii) a citation feed on the
+   ledger's key sources — new works citing a case's admitted papers
+   (OpenAlex or Crossref cited-by), gathered mechanically before the pass
+   and handed to the seat as leads, never as findings; (iii) retraction
+   and correction re-checks of admitted sources on a cadence, since only
+   new sources are checked at verify time today.
 
 ### Build sequence — status
 
@@ -103,6 +113,7 @@ and modular code, with the loop on. The facts first, then the plan.
 | 4c | Breadth: the loop reaches the eight unreported cases on its own cadence; Deep Memory from the Birdmen inputs, from scratch | Running (weekly sittings since 2026-09-09). **Deep Memory opened 2026-09-09**: a question-only case (`content/cases/deep-memory/`, an opening edition with no assessment, an empty ledger, no inputs yet). The founder's pages enter by his own drop from GitHub (the founder-drop door; the panel's GPT seat on #236 read §3.15 as requiring the founder's own grant for republished copies, so the operator commits none); the intake then registers them as founding inputs, and the scheduler's next choices are the draft from that intake, verify, the first assessing edition, and the blind check — the loop's, unattended. The drop landed the same day on the founder's grant (#240: the home page as DEEP-IN001), and the first chain was dispatched. No second drop: the founder judges the five study pages experimental and does not want them taken in; the home page carries each investigation's question, finding and limitations in summary, which is their weight (founder direction, 2026-09-09, in session). |
 | 5 | Subtraction by evidence: six disabled workflows and the Maintain-era scripts retired, each citing the verb that replaced it; legacy docs folded; superseded protocols archived; `load.ts` split; one vendor transport; legacy content structures folded or dropped | **Next** (reassessment of 2026-09-09): before the UI pass. |
 | 6 | Presentation: the reading layer (question, article, map of the controversy, ladder, evidence, what would change our mind, agenda) and the record layer (runs, refusals, panel words, review notes, history) on the case page; `/operations` at site level | After 5; the brief is in "The plan, in order". |
+| 7 | Sharper search per dollar: (i) date-aware novelty task in `report`; (ii) a cited-by feed on the ledger's key sources seeding each pass; (iii) retraction re-checks of admitted sources on a cadence | **Todo** (founder direction, 2026-09-16, in session). |
 
 ### Two rules settled by the runs
 

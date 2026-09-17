@@ -231,6 +231,12 @@ export interface RetrievalTarget {
   doi?: string | null;
 }
 
+/** The Internet Archive item a URL names — a details, stream or download page; null otherwise. */
+export function archiveItemOf(url: string | null | undefined): string | null {
+  const m = String(url ?? "").match(/archive\.org\/(?:details|stream|download)\/([^/?#]+)/i);
+  return m ? m[1] : null;
+}
+
 /** The arXiv identifier a URL names (an abstract or PDF page), version suffix kept; null otherwise. */
 export function arxivIdOf(url: string | null | undefined): string | null {
   const m = String(url ?? "").match(/arxiv\.org\/(?:abs|pdf)\/((?:\d{4}\.\d{4,5}|[a-z-]+(?:\.[A-Z]{2})?\/\d{7})(?:v\d+)?)/i);
@@ -257,6 +263,16 @@ export async function retrieve(
     const pdfUrl = `https://arxiv.org/pdf/${arxiv}`;
     const full = await fetchSource(pdfUrl, opts);
     if (full.ok) return { ...full, url: key, via: `arXiv full text (PDF) at ${pdfUrl}, read for the abstract page`, substitute: true };
+  }
+  // An Internet Archive item page shows a scan; its text is the OCR layer the Archive serves beside it. Read that
+  // first, under the item's key, and say so — the OCR stands in for the page image, so a quote it misses is
+  // unverified, not false (2026-09-17: the ledger held eight blocked routes reading "download the FULL TEXT from
+  // archive.org", and nothing could follow them).
+  const item = archiveItemOf(target.url);
+  if (item && !/_djvu\.txt$/i.test(target.url ?? "")) {
+    const txt = `https://archive.org/download/${item}/${item}_djvu.txt`;
+    const full = await fetchSource(txt, opts);
+    if (full.ok) return { ...full, url: key, via: `Internet Archive OCR text at ${txt}, read for the item page`, substitute: true };
   }
   const first = target.url ? await fetchSource(target.url, opts) : null;
   if (first?.ok) return first;

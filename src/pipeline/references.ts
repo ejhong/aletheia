@@ -1,4 +1,9 @@
 import { titleContainment, TITLE_NEAR } from "../domain/keys.ts";
+import { bestMatch, surname, type OpenAlexResult, type Reference } from "./match.ts";
+import { multiIndexSearch } from "./resolve.ts";
+
+// The matcher lives in match.ts, shared with the draft's lead resolution; re-exported so nothing that imported it here moves.
+export { authorMatch, bestMatch, surname, TITLE_WITH_AUTHOR, topicOverlap, type OpenAlexResult, type Reference } from "./match.ts";
 import { MODELS } from "../lib/models.mjs";
 import { anthropicJson } from "./models.ts";
 import { loadProtocol, renderProtocol } from "./protocols.ts";
@@ -12,14 +17,6 @@ import type { Meter } from "./spend.ts";
  * matches each by title, and only a match the title-similarity rule accepts
  * counts — an unmatched reference is reported as such, never guessed.
  */
-
-export interface Reference {
-  title: string;
-  authors: string[];
-  year: number | null;
-  venue: string | null;
-  url: string | null;
-}
 
 export const REFERENCES_SCHEMA: Record<string, unknown> = {
   type: "object",
@@ -55,36 +52,6 @@ export const defaultLister: ReferenceLister = async (text, meter) => {
   return r.data.references;
 };
 
-type OpenAlexResult = {
-  title?: string | null;
-  display_name?: string | null;
-  doi?: string | null;
-  publication_year?: number | null;
-  open_access?: { oa_url?: string | null } | null;
-  authorships?: { author?: { display_name?: string | null } | null }[];
-};
-
-/** A surname as an essay writes it, lower-cased, without initials or particles' punctuation. */
-const surname = (a: string) => a.split(",")[0].trim().split(/\s+/).at(-1)?.toLowerCase().replace(/[^a-z\u00C0-\u024F-]/g, "") ?? "";
-
-/** Whether one of the reference's authors is among the result's. */
-export function authorMatch(ref: Reference, r: OpenAlexResult): boolean {
-  const mine = ref.authors.map(surname).filter((s) => s.length > 2);
-  if (!mine.length) return false;
-  const theirs = (r.authorships ?? []).map((a) => (a.author?.display_name ?? "").toLowerCase());
-  return mine.some((m) => theirs.some((t) => t.split(/\s+/).includes(m) || t.endsWith(` ${m}`)));
-}
-
-/** A descriptive reference ("Shah's microdialysis study") matches on author and year with a looser title bar. */
-export const TITLE_WITH_AUTHOR = 0.35;
-
-/** Whether two titles share a topical stem — a content word of five letters or more, compared on its first six. */
-export function topicOverlap(a: string, b: string): boolean {
-  const stems = (t: string) => new Set(t.toLowerCase().match(/[a-z\u00C0-\u024F]{5,}/g)?.map((w) => w.slice(0, 6)) ?? []);
-  const sa = stems(a);
-  return [...stems(b)].some((s) => sa.has(s));
-}
-
 export interface Resolved {
   reference: Reference;
   doi: string | null;
@@ -95,28 +62,6 @@ export interface Resolved {
   note: string;
 }
 
-/**
- * Pure: the OpenAlex result that is the reference. By title when the text
- * gave one (the title rule, and the year when both have one); when the text
- * described the work rather than naming it, by a named author AND the year,
- * with a looser title bar — never by year or a vague phrase alone.
- */
-export function bestMatch(ref: Reference, results: OpenAlexResult[]): OpenAlexResult | null {
-  let best: { r: OpenAlexResult; score: number } | null = null;
-  for (const r of results) {
-    const title = r.title ?? r.display_name ?? "";
-    if (!title) continue;
-    const yearOk = !ref.year || !r.publication_year || Math.abs(ref.year - r.publication_year) <= 1;
-    if (!yearOk) continue;
-    const score = titleContainment(ref.title, title);
-    const byTitle = score >= TITLE_NEAR;
-    const byAuthor = Boolean(ref.year) && Boolean(r.publication_year) && authorMatch(ref, r) && (score >= TITLE_WITH_AUTHOR || topicOverlap(ref.title, title));
-    if (!byTitle && !byAuthor) continue;
-    const ranked = score + (byTitle ? 1 : 0) + (authorMatch(ref, r) ? 0.5 : 0);
-    if (!best || ranked > best.score) best = { r, score: ranked };
-  }
-  return best?.r ?? null;
-}
 
 export type Searcher = (query: string) => Promise<OpenAlexResult[]>;
 
@@ -130,7 +75,7 @@ export const openAlexSearch: Searcher = async (query) => {
 };
 
 /** A reference with a URL or DOI already written keeps it; the rest are matched by title. */
-export async function resolveReferences(refs: Reference[], search: Searcher = openAlexSearch): Promise<Resolved[]> {
+export async function resolveReferences(refs: Reference[], search: Searcher = multiIndexSearch): Promise<Resolved[]> {
   const out: Resolved[] = [];
   for (const reference of refs) {
     if (reference.url) {
@@ -148,12 +93,12 @@ export async function resolveReferences(refs: Reference[], search: Searcher = op
       const query = [reference.title, reference.authors[0] ? surname(reference.authors[0]) : ""].filter(Boolean).join(" ");
       results = await search(query);
     } catch (e) {
-      out.push({ reference, doi: null, url: null, matched: null, similarity: null, note: `OpenAlex lookup failed: ${(e as Error).message}` });
+      out.push({ reference, doi: null, url: null, matched: null, similarity: null, note: `index lookup failed: ${(e as Error).message}` });
       continue;
     }
     const hit = bestMatch(reference, results);
     if (!hit) {
-      out.push({ reference, doi: null, url: null, matched: null, similarity: null, note: results.length ? "no OpenAlex result close enough" : "no OpenAlex result" });
+      out.push({ reference, doi: null, url: null, matched: null, similarity: null, note: results.length ? "no index result close enough" : "no index result" });
       continue;
     }
     const doi = hit.doi?.replace(/^https?:\/\/doi\.org\//, "") ?? null;

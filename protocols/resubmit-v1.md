@@ -12,11 +12,12 @@ that read it is the verify run the reverify run's account names.
 ---
 The rules of the transformation, so a reader can reconstruct it:
 
-1. A record is re-submitted when every key it can be filed under (title and
-   statement, or the title alone, for evidence; identifier or title for a
-   source; statement for a claim) is at latest `blocked` and one of those
-   rows names this proposal. A record any of whose keys is settled — `in`,
-   `duplicate`, `irrelevant`, `failed`, `provisional` — is not.
+1. A record is re-submitted when, of the keys it can be filed under (title
+   and statement, or the title alone, for evidence; identifier or title for
+   a source; statement for a claim), at least one has a row, none has a
+   settled latest row — `in`, `duplicate`, `irrelevant`, `failed`,
+   `provisional` — and a `blocked` latest row names this proposal. A key
+   that has never been written is not a bar; a key that is settled is.
 2. Claims take the ledger's next free ids, then evidence; a reference to a
    re-submitted record takes its fresh id, to a record of the old proposal
    that entered since takes its ledger id, to a record the drafter cited by

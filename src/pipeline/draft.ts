@@ -711,10 +711,10 @@ export async function runDraft(reportRunId: string, opts: DraftOptions = {}): Pr
   // through the open indexes (src/pipeline/resolve.ts) and read like the rest, each saying how it was found; the
   // drafter is shown the search's outcome for every lead, matched or not, so its dispositions can say what was tried.
   const already = new Set(fetched.map((f) => canonicalUrl(f.url)));
-  const leads: { lead: string; resolved: { title: string; identifier: string; url: string; via: string } | null }[] = [];
+  const leads: { lead: string; resolved: { title: string; identifier: string; url: string; via: string; checks: string[] } | null }[] = [];
   for (const lead of leadsNamedInReport(report).slice(0, 12)) {
     const resolved = await (opts.deps?.resolveLead ?? resolveLead)(lead);
-    leads.push({ lead: lead.text, resolved: resolved ? { title: resolved.title, identifier: resolved.identifier, url: resolved.url, via: resolved.via } : null });
+    leads.push({ lead: lead.text, resolved: resolved ? { title: resolved.title, identifier: resolved.identifier, url: resolved.url, via: resolved.via, checks: resolved.checks } : null });
     if (!resolved || already.has(canonicalUrl(resolved.url))) continue;
     already.add(canonicalUrl(resolved.url));
     const f = await fetcher({ url: resolved.url, doi: resolved.doi ?? null }, {});

@@ -1,6 +1,6 @@
-import { titleContainment } from "../domain/keys.ts";
+import { titleContainment, TITLE_NEAR } from "../domain/keys.ts";
 import { UA } from "./fetch.ts";
-import { bestMatch, type OpenAlexResult, type Reference } from "./match.ts";
+import { authorAgreement, bestMatch, type OpenAlexResult, type Reference } from "./match.ts";
 
 /**
  * Leads into documents (2026-09-17). The research seat names works it did not open; the drafter may write no
@@ -34,6 +34,10 @@ export interface Resolved {
   via: string;
   /** Title containment of the match (0–1), for the drafter to weigh. */
   similarity: number;
+  /** What agreed between the lead and the document: the title, the year, an author — the provenance says exactly this and no more (review note #339). */
+  agreed: ("title" | "year" | "author")[];
+  /** The checks as they were made — the containment score against its threshold, the year gap, the surname found and the name it was found in — one line each (review note #344). */
+  checks: string[];
 }
 
 /** An index result in OpenAlex's shape, carrying where it came from and what to read. */
@@ -149,6 +153,30 @@ export async function resolveLead(lead: Lead, fetchImpl: typeof fetch = fetch): 
   const hit = bestMatch(reference, ordered);
   if (!hit) return null;
   const title = hit.title ?? hit.display_name ?? "";
+  // The provenance names what agreed and no more. A lead that gave a year or an author is resolved only when that
+  // agrees too — a title alone does not settle which edition, or whose paper, when the lead said (review note #339).
+  const similarity = Number(titleContainment(reference.title, title).toFixed(2));
+  // The provenance names each check as it was made — the score against its threshold, the year gap, the surname
+  // found and where — not a category the check did not earn: "author agreed" would claim more than a surname test
+  // (review note #344).
+  const agreed: Resolved["agreed"] = [];
+  const checks: string[] = [];
+  if (similarity >= TITLE_NEAR) agreed.push("title");
+  checks.push(`title containment ${similarity} (${similarity >= TITLE_NEAR ? `at or above the ${TITLE_NEAR} threshold` : `below the ${TITLE_NEAR} threshold; taken on the author match`})`);
+  if (reference.year && hit.publication_year) {
+    const gap = Math.abs(reference.year - hit.publication_year);
+    if (gap <= 1) {
+      agreed.push("year");
+      checks.push(gap === 0 ? `year ${hit.publication_year} exact` : `year within one (the lead said ${reference.year}, the index ${hit.publication_year})`);
+    }
+  }
+  const author = reference.authors.length ? authorAgreement(reference, hit) : null;
+  if (author) {
+    agreed.push("author");
+    checks.push(`author surname "${author.surname}" found in the index's "${author.name}"`);
+  }
+  if (reference.year && !agreed.includes("year")) return null;
+  if (reference.authors.length && !agreed.includes("author")) return null;
   return {
     title,
     ...(hit.publication_year ? { year: String(hit.publication_year) } : {}),
@@ -156,7 +184,9 @@ export async function resolveLead(lead: Lead, fetchImpl: typeof fetch = fetch): 
     ...(hit.doi ? { doi: hit.doi } : {}),
     url: hit.url,
     identifier: hit.identifier,
-    via: hit.via,
-    similarity: Number(titleContainment(reference.title, title).toFixed(2)),
+    via: `${hit.via} — matched on ${checks.join("; ")}`,
+    similarity,
+    agreed,
+    checks,
   };
 }

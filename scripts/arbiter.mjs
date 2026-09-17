@@ -140,18 +140,30 @@ async function seatVote(name) {
   } catch (err) {
     return { seat: VENDORS[name].label, vote: "unsure", rules: [], reasoning: `seat failed: ${String(err).slice(0, 200)}`, failed: true };
   }
-  const cost = { model: reply.model, inputTokens: reply.usage.inputTokens, outputTokens: reply.usage.outputTokens, usd: reply.usd };
+  const billed = (r) => ({ model: r.model, inputTokens: r.usage.inputTokens, outputTokens: r.usage.outputTokens, usd: r.usd });
+  let cost = billed(reply);
   try {
     return { ...validateVote(VENDORS[name].label, parseJsonReply(reply.text)), cost };
   } catch (err) {
-    return {
-      seat: VENDORS[name].label,
-      vote: "unsure",
-      rules: [],
-      reasoning: `seat failed: ${String(err).slice(0, 200)}`,
-      failed: true,
-      cost,
-    };
+    // One reply that will not read as JSON is a transport accident, not a verdict (2026-09-17: the GLM seat on #347
+    // answered with a syntax error at character 1609 and sat out a 4-of-5 vote). The seat is asked once more — the
+    // same packet, told what came back — and both replies are billed; a second unreadable reply fails the seat with
+    // the cost of both attached. Nothing else changes: the seat's identity, the packet, the rule that a refusal fails.
+    const label = VENDORS[name].label;
+    const first = String(err).slice(0, 120);
+    let again;
+    try {
+      again = await callSeat(name, { system: SYSTEM, user: `${packet}\n\n=== A SECOND ASKING ===\nYour previous reply could not be read as JSON (${first}). Reply with the JSON object alone — no prose before or after it, no code fence.`, cachedPrefix: constitutionPrefix }, meter);
+    } catch (err2) {
+      return { seat: label, vote: "unsure", rules: [], reasoning: `seat failed: ${first}; asked again, the call failed: ${String(err2).slice(0, 80)}`, failed: true, cost };
+    }
+    const second = billed(again);
+    cost = { model: cost.model, inputTokens: cost.inputTokens + second.inputTokens, outputTokens: cost.outputTokens + second.outputTokens, usd: typeof cost.usd === "number" && typeof second.usd === "number" ? Number((cost.usd + second.usd).toFixed(6)) : null };
+    try {
+      return { ...validateVote(label, parseJsonReply(again.text)), cost, askedAgain: `the first reply could not be read as JSON (${first}); this verdict is the second asking, both replies billed` };
+    } catch (err2) {
+      return { seat: label, vote: "unsure", rules: [], reasoning: `seat failed twice: ${first}; asked again: ${String(err2).slice(0, 100)}`, failed: true, cost };
+    }
   }
 }
 
@@ -263,7 +275,7 @@ const report = [
       ]
     : []),
   "",
-  ...votes.map((v) => `<details><summary><b>${v.seat}</b> — ${v.vote}</summary>\n\n${v.reasoning}\n\n</details>`),
+  ...votes.map((v) => `<details><summary><b>${v.seat}</b> — ${v.vote} ${v.askedAgain ? "(a second asking — the first reply could not be read as JSON)" : ""}</summary>\n\n${v.reasoning}\n\n</details>`),
   "",
   omitted.length > 0
     ? `> ⚠️ ${omitted.length} file(s) exceeded the diff budget and were not shown to the panel: ${omitted.join(", ")}`

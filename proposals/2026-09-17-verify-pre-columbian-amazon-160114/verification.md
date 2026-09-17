@@ -82,3 +82,6 @@ Proposal 2026-09-17-reverify-pre-columbian-amazon-160112 for pre-columbian-amazo
 - AMZ-E109: direction set to context by the second reader
 - AMZ-E110: split by direction by the second reader into AMZ-E110 (context → AMZ-C017); AMZ-E110 (supports → AMZ-C076)
 - AMZ-E111: link to AMZ-C076 dropped by the second reader
+
+## Operator correction (2026-09-17, session_01AiXD4y5Y91KC7iM3uBhWmu)
+- The two records listed above as AMZ-E110 were written under one id; the second (part 2 — toward AMZ-C076, supports → AMZ-C076) is AMZ-E112 in the ledger, corrected by hand with a history entry and a disposition row. The list above stands as the run wrote it.

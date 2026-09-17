@@ -1,0 +1,1454 @@
+# Proposal — a change to domain records, in one envelope (docs/AUTOMATION.md).
+# Never citable; nothing here is a record until adopted through the gate.
+runId: 2026-09-17-draft-pre-columbian-amazon-135349
+date: 2026-09-17
+case: pre-columbian-amazon
+producer: draft
+model: claude-fable-5-1
+promptVersion: draft-v9
+basis:
+  ledgerHash: ddacbbad00c11ca1fa49df935efcbc3f226f55da3676baa1690af22ebb8ad4bd
+rationale: "This pass reads five texts. (1) Medina's 1894 introduction to the Carvajal Relación (the ledger's SRC-CARVAJAL-1542, now shown): it documents Orellana's own lost 1543 relación and the origin of the 'mentirosa' charge, Medina's judgement that the T'Serclaes and Oviedo texts are one author's, the incomplete Muñoz copy, the second-hand basis of Oviedo's endorsement, Oviedo's oral debt to Orellana, Carvajal's truth-oath and Medina's two caveats, and Herrera's near-verbatim dependence on Carvajal. (2) Markham 1859 (front matter and introduction): its Orellana text is Herrera's, not Carvajal's; it fixes the Ursúa expedition at Machiparo at New Year 1561, glosses Machiparo as near the Putumayo, records the Omagua/El Dorado rumour that preceded 1560, and summarizes Jesuit reports of smallpox at Borja (1660) and Portuguese slave raids on the Omagua after 1640 — all secondary and weighted as such. (3) Laureano de la Cruz's 1651/53 account, listed by the report as an unopened lead but retrieved here in full: a Franciscan resident among the Omagua for three years to October 1650 describes a province of 34 small villages, a smallpox epidemic that by his count killed a third at one village, the absence of chiefs, and Portuguese parties on the river — the first seventeenth-century witness on Carvajal's own corridor to enter this ledger; the headcount figure is garbled in the OCR and is flagged, not asserted. (4) Rostain et al. 2024 (full author manuscript): Upano occupation dated ca. 500 BCE to 300/600 CE with Huapula reoccupation 800–1200 CE, which bounds how far AMZ-C022's time-graded-erasure point can be spent against contact-era negatives. (5) Achmatowicz 2018 (abstract only): a scholarly assessment of Carvajal as a trustworthy source. Claims are split one proposition each; secondary sources enter with weak or moderate strength and explicit limitations. No edition change: the disappearance section should, after verification, acknowledge Laureano as the Omagua-reach witness, but the current telling is not shown wrong. Blocked routes (Oviedo lib. L, Acuña, Fritz, Harris 2017, Prümers 2022, Gómara) are logged with the pages Medina supplies."
+adds:
+  sources:
+    - id: SRC-ROSTAIN-2024
+      title: Two thousand years of garden urbanism in the Upper Amazon
+      authors:
+        - Stéphen Rostain
+        - Antoine Dorison
+        - Geoffroy de Saulieu
+        - Heiko Prümers
+        - Jean-Luc Le Pennec
+        - Fernando Mejía Mejía
+        - Ana Maritza Freire
+        - Jaime R. Pagán-Jiménez
+        - Philippe Descola
+      year: "2024"
+      sourceType: paper
+      identifier: doi:10.1126/science.adi6317
+      url: https://doi.org/10.1126/science.adi6317
+      verification: ai_verified
+      verificationNote: text retrieved and shown to the drafter on 2026-09-17 (run 2026-09-17-draft-pre-columbian-amazon-135349); passages checked by the verify verb
+      reliabilityNotes:
+        - Peer-reviewed research article, Science 383(6679):183–189, January 2024.
+        - Text read from the author-accepted manuscript deposited at archimer.ifremer.fr (open-access copy via OpenAlex); page numbers below refer to that PDF, not the journal pagination.
+        - Primary archaeological study (LiDAR analysis plus two decades of excavation) by the investigating team; interpretive comparisons to Maya, Teotihuacan and Giza are the authors' framing, not measurements.
+        - "Funding stated: CNRS, UMR8096, French MAEE, IRD, German KAAK, Ecuadorian INPC, Banco Central del Ecuador, SENESCyT; authors declare no competing interests."
+      derivedFrom: []
+      background: false
+    - id: SRC-CRUZ-1651
+      title: Nuevo descubrimiento del río de Marañón llamado de las Amazonas, hecho por la religión de San Francisco, año de 1651
+      authors:
+        - Fr. Laureano de la Cruz
+      year: "1651"
+      sourceType: book
+      url: https://archive.org/details/nuevodescubrimi00cruzgoog
+      verification: ai_verified
+      verificationNote: text retrieved and shown to the drafter on 2026-09-17 (run 2026-09-17-draft-pre-columbian-amazon-135349); passages checked by the verify verb
+      reliabilityNotes:
+        - Account written by the Franciscan missionary Laureano de la Cruz at the order of his superiors in Madrid in 1653 (the 1900 editor's prologue; the title page OCR reads 1663), from a 62-folio manuscript in the Biblioteca Nacional, Madrid; published Madrid 1900 as a volume of the 'Biblioteca de La Irradiación'. Page numbers cited are those of the 1900 edition.
+        - Read via the Internet Archive OCR text (nuevodescubrimi00cruzgoog_djvu.txt); the OCR is imperfect and at least one numeral (the Omagua headcount on p. 94) is uncertain — flagged in the evidence.
+        - Eyewitness for the Omagua reach 1647–1650 (three years' residence) and for the Encabellados 1637; earlier Franciscan entries (1633–1636) are reported from companions. Author explicitly writes for his superiors, not for a general readership, and states his hostility to exaggeration.
+        - "Missionary genre: counts of 'indios de lanzas' and souls are his own estimates; his negative judgement of the Omagua islands as uninhabitable for Spaniards colours the narrative."
+      derivedFrom: []
+      background: false
+    - id: SRC-ACHMATOWICZ-2018
+      title: "La expedición de Francisco de Orellana y la exploración del río de Amazonas hasta su desembocadura en el Atlántico: Sobre el valor como fuente histórica del relato de Fray Gaspar de Carvajal"
+      authors:
+        - Jerzy Achmatowicz
+      year: "2018"
+      sourceType: paper
+      identifier: doi:10.12797/SI.17.2018.17.03
+      url: https://journals.akademicka.pl/si/article/view/583
+      verification: ai_verified
+      verificationNote: text retrieved and shown to the drafter on 2026-09-17 (run 2026-09-17-draft-pre-columbian-amazon-135349); passages checked by the verify verb
+      reliabilityNotes:
+        - "Studia Iberystyczne 17 (2018): 37–58, Uniwersytet Wrocławski; CC BY-NC-ND 4.0."
+        - Only the journal landing page (abstract, keywords, reference list) was shown; the article body was not read. Any claim beyond the abstract's assessment is not supported here.
+        - Secondary scholarly assessment of Carvajal's reliability from internal geographic reference points and league distances; its route conclusions (the report's 'Putumayo' reading) are not in the abstract and remain unverified.
+      derivedFrom: []
+      background: false
+  evidence:
+    - id: AMZ-E042
+      title: Medina quotes Sámano's 1543 letters attesting a very large relación of the voyage sent to court
+      claimIds:
+        - AMZ-C034
+      sourceId: SRC-CARVAJAL-1542
+      direction: supports
+      strength: moderate
+      sourceStatement: Medina prints two letters of the secretary Juan de Sámano to Francisco de los Cobos (Simancas, Estado, leg. 61, fols. 208 and 213). The first, dated 31 May 1543, reports one arrived from Peru who came down a river "por mil ochocientas leguas y salió al Cabo" de Sant Agustín; the second (June 1543) says the memorial and relación of the voyage was not enclosed "porque se traslada y es muy grande". Medina concludes from these that Orellana presented a long relación of his voyage to the Consejo de Indias.
+      editorInference: Medina reproduces the letters rather than the relación itself; the archival citations are his and were not checked here. The existence of a separate, self-interested captain's narrative circulating at court in 1543 is a candidate channel for number inflation independent of Carvajal's text — a possibility, not a demonstrated fact.
+      exactLocator: Medina 1894, Introducción, pp. xxxiii–xxxiv (archive.org djvu full text of descubrimientod00carvgoog)
+      limitations:
+        - Secondary transcription of archival letters not seen directly.
+        - Medina's inference that the relación reached the Consejo de Indias is his; the letters speak of a memorial being copied for Cobos.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-E043
+      title: "Medina: Orellana's own relación does not appear in the archives"
+      claimIds:
+        - AMZ-C035
+      sourceId: SRC-CARVAJAL-1542
+      direction: supports
+      strength: moderate
+      sourceStatement: "Medina states that Orellana presented a long relación of his voyage, \"relación que hoy no parece en los Archivos\", and that while it was probably based on Carvajal's notes, he believes it was distinct from the two Carvajal texts: \"fuera distinta de las dos que conocemos del religioso dominico\"."
+      editorInference: "Negative evidence of 1894: Medina's searches of Indias and Simancas did not find it. A later discovery would overturn this; none is recorded in this ledger."
+      exactLocator: Medina 1894, Introducción, p. xxxiv (archive.org djvu full text)
+      limitations:
+        - Absence in 1894 archival searches; not a systematic modern survey.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-E044
+      title: "Medina: Gómara called Orellana's relación 'mentirosa' — the invention charge began with the captain's narrative"
+      claimIds:
+        - AMZ-C036
+      sourceId: SRC-CARVAJAL-1542
+      direction: supports
+      strength: moderate
+      sourceStatement: Medina writes that López de Gómara and Herrera knew Orellana's relación, and that Gómara "la cita dándole el calificativo de «mentirosa»", though, as Pinelo-Barcia observed, without stating his grounds.
+      editorInference: The object of Gómara's charge is Orellana's relación, not the Carvajal text the ledger reads; the sixteenth-century 'invention' charge therefore does not directly impeach Carvajal. Medina's reading of Gómara is second-hand here; Gómara's own passage (Ribadeneyra ed. p. 210, per Medina) is not in the ledger.
+      exactLocator: Medina 1894, Introducción, p. xxxv (archive.org djvu full text)
+      limitations:
+        - Gómara's text is quoted by Medina, not read directly.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-E045
+      title: "Genealogy of the 'invention' account: the earliest lie-charge targeted Orellana and the Amazons episode"
+      claimIds:
+        - AMZ-C017
+      sourceId: SRC-CARVAJAL-1542
+      direction: context
+      strength: weak
+      sourceStatement: "Medina reports Gómara's charge against Orellana's relación as 'mentirosa' and quotes Gómara's objection: among the nonsense he spoke \"fué afirmar que había en este río amazonas\" with whom he and his companions fought; Medina adds that Carvajal merely recorded an Indian's answers about these women without saying whether he believed them."
+      editorInference: "Background for the case's 'invention' account: the sixteenth-century doubt was about the Amazons, not about populous settlements. Zero diagnosticity for the truth of Carvajal's social geography; it locates where the doubt began."
+      exactLocator: Medina 1894, Introducción, pp. xxxv–xxxvi (archive.org djvu full text)
+      limitations:
+        - Medina's paraphrase and selection of Gómara; interpretive.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-E046
+      title: Medina attributes the 'mentirosa' charge to the Amazons claim
+      claimIds:
+        - AMZ-C037
+      sourceId: SRC-CARVAJAL-1542
+      direction: supports
+      strength: moderate
+      sourceStatement: "Medina says the ground for Gómara's charge is 'not difficult to discover': Carvajal in his notes and Orellana at court had spoken of Amazons, and he quotes Gómara — \"fué afirmar que había en este río amazonas\" — as the disparate that drew the accusation."
+      editorInference: This is Medina's inference from Gómara's text, which Medina himself notes does not state its grounds.
+      exactLocator: Medina 1894, Introducción, p. xxxv (archive.org djvu full text)
+      limitations:
+        - Inference by the 1894 editor, not a statement by Gómara of his reasons.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-E047
+      title: "Medina: the T'Serclaes manuscript and Oviedo's text are one author's work, with variants from copying or revision"
+      claimIds:
+        - AMZ-C038
+      sourceId: SRC-CARVAJAL-1542
+      direction: supports
+      strength: moderate
+      sourceStatement: Having compared both texts, Medina concludes "ambas son obra de una misma mano" and that the variants come partly from copies perhaps made by dictation to unskilled copyists, or from the author suppressing in one or adding in the other words and phrases he thought more expressive or truer.
+      editorInference: Medina offers two mechanisms for the variants (scribal and authorial) without deciding; which mechanism produced the figure differences in AMZ-C002 is exactly what the synoptic witness table (AMZ-R002) would settle.
+      exactLocator: Medina 1894, Introducción, p. xi (archive.org djvu full text)
+      limitations:
+        - Nineteenth-century philological judgement without a printed apparatus of variants beyond Medina's footnotes.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-E048
+      title: Branch variants are one author's, not two witnesses' — context for the figure differences
+      claimIds:
+        - AMZ-C002
+      sourceId: SRC-CARVAJAL-1542
+      direction: context
+      strength: weak
+      sourceStatement: Medina holds that the two texts "ambas son obra de una misma mano", the variants arising from dictation to copyists or from the author's own additions and suppressions; he also notes Oviedo inserted the friar's account into his Historia (tomo IV pp. 541–574) with some rearrangements.
+      editorInference: If the extreme figures are authorial additions in one redaction rather than scribal corruption, they are still Carvajal's — which bears on how AMZ-C002's 'textually unstable' is read. Medina does not settle this.
+      exactLocator: Medina 1894, Introducción, pp. ix–xi (archive.org djvu full text)
+      limitations:
+        - Does not locate the specific figures across witnesses.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-E049
+      title: Medina confirms the Muñoz copy is incomplete
+      claimIds:
+        - AMZ-C039
+      sourceId: SRC-CARVAJAL-1542
+      direction: supports
+      strength: strong
+      sourceStatement: Of the Relación that remained in manuscript, Medina writes, there exists "una copia incompleta en la colección de" documentos reunida por Muñoz, preserved at the Real Academia de la Historia; he adds that the copy carries no indication of where it was taken from.
+      editorInference: Confirms the predecessor pass's reading at the same locator (now two readers). Any figure attributed to 'the Muñoz copy' in AMZ-C002 must allow that the copy is incomplete.
+      exactLocator: Medina 1894, Introducción, pp. x–xi and n. 3 (archive.org djvu full text)
+      limitations:
+        - Medina does not say which portions are missing.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-E050
+      title: Oviedo's endorsement of Carvajal rests on the friar's wounds and others' testimony to his character
+      claimIds:
+        - AMZ-C040
+      sourceId: SRC-CARVAJAL-1542
+      direction: supports
+      strength: moderate
+      sourceStatement: 'Medina quotes Oviedo (Historia general, t. IV, p. 574): the friar "debe ser creído en virtud de aquellos dos flechazos", one of which took his eye, and on the strength of what his authority and person deserve, "ques mucho segund afírman los que le han tractado".'
+      editorInference: "Credibility evidence at second hand: Oviedo vouches for the man on the basis of injuries and reputation reported by others, not personal acquaintance or independent knowledge of the river. It should stay separate from diagnosticity for AMZ-C017."
+      exactLocator: Medina 1894, Introducción, p. xiii and n. 6 (archive.org djvu full text)
+      limitations:
+        - Oviedo quoted via Medina; the Oviedo volume is blocked in this ledger.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-E051
+      title: Contemporary character endorsement of Carvajal (credibility, not diagnosticity)
+      claimIds:
+        - AMZ-C017
+      sourceId: SRC-CARVAJAL-1542
+      direction: supports
+      strength: weak
+      sourceStatement: Medina reports Oviedo's judgement that Carvajal "debe ser creído en virtud de aquellos dos flechazos" and his good repute among those who dealt with him, and Medina's own verdict that, limited to the events of the voyage, the Relación deserves complete faith.
+      editorInference: This bears on the credibility of the witness, not on whether any particular observation is true; it adds essentially no diagnostic weight to AMZ-C017 and is entered so that the record shows what the contemporary endorsement actually rests on.
+      exactLocator: Medina 1894, Introducción, pp. xii–xiii (archive.org djvu full text)
+      limitations:
+        - Reputation evidence; no independent check on content.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-E052
+      title: Medina infers Carvajal never passed through Santo Domingo, so Oviedo never met him
+      claimIds:
+        - AMZ-C041
+      sourceId: SRC-CARVAJAL-1542
+      direction: supports
+      strength: moderate
+      sourceStatement: Medina (n. 16) deduces from Oviedo's remark that he 'would have been glad to see and know him' — Oviedo then residing in Santo Domingo — that "luego Carvajal no estuvo en aquella ciudad"; Carvajal sailed for Nombre de Dios and returned to Lima.
+      editorInference: "Consequence for AMZ-C002: Oviedo's redaction reached him as text and through Orellana's men, not through the friar; its status as an independent witness is a matter of transmission."
+      exactLocator: Medina 1894, Introducción, p. xxi and n. 16 (archive.org djvu full text)
+      limitations:
+        - An inference from a single remark of Oviedo's.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-E053
+      title: Oviedo supplemented the friar's text with what Orellana and his companions told him in Santo Domingo
+      claimIds:
+        - AMZ-C042
+      sourceId: SRC-CARVAJAL-1542
+      direction: supports
+      strength: strong
+      sourceStatement: 'Medina quotes Oviedo: beyond what a devout Dominican friar wrote as eyewitness, he learned particulars afterwards in Santo Domingo "del mesmo capitán Francisco de Orellana é de otros caballeros" and hidalgos who came with him, which the friar had not written, and would tell them as he understood them from the captain and his consorts.'
+      editorInference: Oviedo's version is therefore not independent of Orellana; where Oviedo differs from the T'Serclaes text, the difference may reflect Orellana's oral account. This is the transmission question AMZ-R002 must sort.
+      exactLocator: Medina 1894, Introducción, p. xl (archive.org djvu full text)
+      limitations:
+        - Oviedo quoted via Medina.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-E054
+      title: Oviedo's witness draws on Orellana orally — bearing on the independence of the two branches
+      claimIds:
+        - AMZ-C002
+      sourceId: SRC-CARVAJAL-1542
+      direction: qualifies
+      strength: moderate
+      sourceStatement: Oviedo, per Medina, states he learned particulars of the voyage "del mesmo capitán Francisco de Orellana é de otros caballeros" in Santo Domingo and added them to what the friar wrote.
+      editorInference: AMZ-C002 treats Oviedo's version as a branch lacking the extreme figures. That Oviedo also drew on Orellana's oral account and inserted the friar's text 'with some rearrangements' means the absence of a figure in Oviedo could be Oviedo's editing rather than a purer archetype — a limit on how the branch comparison is read, not a denial of it.
+      exactLocator: Medina 1894, Introducción, pp. ix and xl (archive.org djvu full text)
+      limitations:
+        - Does not identify any specific passage Oviedo altered.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-E055
+      title: Carvajal's closing protestation of truth
+      claimIds:
+        - AMZ-C043
+      sourceId: SRC-CARVAJAL-1542
+      direction: supports
+      strength: strong
+      sourceStatement: 'Medina quotes the end of the Relación: the friar wrote it to tell and make known the truth in all of it, to forestall those who might tell the pilgrimage otherwise, "y es verdad en todo lo que yo he escrito y contado".'
+      editorInference: A truth-oath is a genre convention of conquest narratives and adds no diagnostic weight; it is recorded because it is the author's own stated purpose.
+      exactLocator: Medina 1894, Introducción, pp. xii–xiii (archive.org djvu full text)
+      limitations:
+        - Self-attestation; conventional.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-E056
+      title: "Medina's two caveats on the Relación: supernatural attributions and partisanship for Orellana"
+      claimIds:
+        - AMZ-C017
+        - AMZ-C044
+      sourceId: SRC-CARVAJAL-1542
+      direction: qualifies
+      strength: weak
+      sourceStatement: Medina finds no reason to deny the Relación complete faith, 'por más que en ocasiones el autor' "atribuya ciertos hechos á causas sobrenaturales", and in others shows himself an enthusiastic admirer of his chief and countryman.
+      editorInference: The two caveats limit the scope of the friar's reliability (causation and partisanship) without touching the descriptive social geography AMZ-C017 rests on.
+      exactLocator: Medina 1894, Introducción, p. xii (archive.org djvu full text)
+      limitations:
+        - Editor's general judgement; no specific passages cited.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-E057
+      title: Herrera followed Carvajal's Relación almost to the letter (Medina)
+      claimIds:
+        - AMZ-C045
+      sourceId: SRC-CARVAJAL-1542
+      direction: supports
+      strength: moderate
+      sourceStatement: "Medina: Antonio de Herrera had the Relación before him \"y la sigue muy de cerca, casi al pie de la letra\", in keeping with his method of extracting documents; Medina cites three 'Afirma el P. Carvajal' passages from Década V, lib. VIII."
+      editorInference: Any narrative derived from Herrera (e.g. Markham 1859's Orellana text) is not an independent witness to the voyage but a redaction of Carvajal.
+      exactLocator: Medina 1894, Introducción, p. x and n. 2 (archive.org djvu full text)
+      limitations:
+        - Medina's characterization; the collation is not printed.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-E058
+      title: Laureano de la Cruz's three-year residence among the Omagua, ending 15 October 1650
+      claimIds:
+        - AMZ-C053
+      sourceId: SRC-CRUZ-1651
+      direction: supports
+      strength: strong
+      sourceStatement: The author states he and his companions lived among the Omagua "ellos que fueron tres años cabales", arriving on 19 October ("llegamos á la provincia de los Omaguas y á la isla" of San Pedro de Alcántara), being visited by Captain Diego Díaz de Paz "al cabo de 17 meses de nuestra" llegada on 14 March 1649, and leaving secretly on the night of St Teresa, "que es á 15 de Octubre de 1650, dejando la" house as it stood.
+      editorInference: "The arrival year follows arithmetically from 14 March 1649 minus seventeen months: October 1647. This is a resident eyewitness of the Omagua reach 105 years after Carvajal — the corridor witness the ledger lacked between the 1560 chroniclers and the mission-era counts."
+      exactLocator: Laureano de la Cruz, 1900 Madrid ed., pp. 80, 91, 98, 103, via Internet Archive OCR text (nuevodescubrimi00cruzgoog_djvu.txt)
+      limitations:
+        - Arrival year inferred, not stated on the page.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-E059
+      title: "Laureano: the Omagua province, 200 leagues long, held 34 small villages"
+      claimIds:
+        - AMZ-C054
+      sourceId: SRC-CRUZ-1651
+      direction: supports
+      strength: moderate
+      sourceStatement: 'After descending 100 leagues from San Pedro de Alcántara to the Putumayo mouth and taking information on the rest, the author concludes they had been deceived: "Pues en 200 leguas que tienen de largo" "los Omaguas con 34 pueblos pequeños no hallamos 10 indios cabales", apart from their women and boys, who were not many.'
+      editorInference: The headcount numeral is unreliable in the OCR ('10' is implausible against his own village counts of 80, 40 and 30 lance-bearing men; the report's tertiary snippet gives ≤5,000, which likely reflects an early-modern 'V U' or similar reading). The village count (34) and length (200 leagues) are clear. The figure should be read on the BNE manuscript or a page image before any number is entered as a claim.
+      exactLocator: Laureano de la Cruz, 1900 Madrid ed., p. 94, via Internet Archive OCR text
+      limitations:
+        - OCR-uncertain headcount; he did not personally pass below the Putumayo mouth ('no pasamos') and relies on informants for the lower villages.
+        - Missionary judging the province 'not worth it' — a motive to minimize.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-E060
+      title: A resident witness of 1647–50 finds Carvajal's Omagua reach thinly peopled — a datum the accounts read differently
+      claimIds:
+        - AMZ-C017
+      sourceId: SRC-CRUZ-1651
+      direction: qualifies
+      strength: moderate
+      sourceStatement: Laureano reports 34 small villages in 200 leagues of the Omagua province, islands liable to flooding and 'inhabitable... at least for Spaniards', concluding 'que nos habíamos engañado' about the reports of a populous nation.
+      editorInference: "For AMZ-C017 this is double-edged and is entered as a qualifier: on the murdered-world reading, 1650 records what a century of contact, the 1648 epidemic he describes, Portuguese raids and internecine slaving left; on the modest-skeptic reading, it records a reality never much larger than this. It does not decide between them; it does show that by 1650 the corridor Carvajal described as most populous no longer looked so to a resident observer."
+      exactLocator: Laureano de la Cruz, 1900 Madrid ed., pp. 94–95, via Internet Archive OCR text
+      limitations:
+        - Single witness; his informants for the lower province were Omagua who wished him not to proceed.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-E061
+      title: "The first Omagua island village: 28 houses, about 80 lance-bearing men, about 250 women and children"
+      claimIds:
+        - AMZ-C055
+      sourceId: SRC-CRUZ-1651
+      direction: supports
+      strength: strong
+      sourceStatement: Of San Pedro de Alcántara (island Piramota) the author writes "Tenían sus casas, que eran 28, en la orilla" del río, in a row like galleys; two, three or four vecinos called 'indios de lanzas' lived in each, "y serían por todos 80, y de" mujeres y muchachos había como 250. Subsequent villages downstream had 14 houses (~30 men), 8, 16 (~40 men, ~120 souls), 22 (~50 men) and 9 houses.
+      editorInference: Village magnitudes of tens of houses and low hundreds of people, an order of magnitude below Carvajal's most extreme figures but of the same kind as his description of riverbank settlements; not a census of the province.
+      exactLocator: Laureano de la Cruz, 1900 Madrid ed., pp. 82, 84–85, 87, via Internet Archive OCR text
+      limitations:
+        - His estimates, made in a village that was just then being depopulated by smallpox downstream.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-E062
+      title: A smallpox epidemic swept the Omagua province during Laureano's residence
+      claimIds:
+        - AMZ-C056
+        - AMZ-C023
+      sourceId: SRC-CRUZ-1651
+      direction: supports
+      strength: moderate
+      sourceStatement: At a village downstream he found survivors afflicted because the rest had died "gran peste de viruelas que les había dado" á todos; they told him the whole province from there down 'estaba apestada' — "para abajo estaba apestada y que se había muerto mucha gente". The plague then reached Caraute during the flood season and within little more than a month every person, great and small, had fallen ill, except the author himself.
+      editorInference: A dated epidemic on Carvajal's corridor about 1648, described by a resident who nursed the sick. Supports the AMZ-C023 mechanism (episodic epidemics) with an eyewitness on the Solimões; it does not give province-wide mortality.
+      exactLocator: Laureano de la Cruz, 1900 Madrid ed., pp. 87–89, via Internet Archive OCR text
+      limitations:
+        - Year inferred from his chronology (flood season of the second year, i.e. 1648).
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-E063
+      title: "Laureano: about a third of Caraute's people died in the epidemic"
+      claimIds:
+        - AMZ-C057
+      sourceId: SRC-CRUZ-1651
+      direction: supports
+      strength: moderate
+      sourceStatement: After five months at Caraute — three of flood, nearly as many of plague, and four days of the cold spell — the author left "habiendo muerto la tercera parte de aquella desventurada gente" and the rest convalescing; the dead were dragged with a rope and thrown into the river.
+      editorInference: A single-village case-fatality observation of roughly one-third, by a resident counting from a village of about 120 souls; the only quantified epidemic mortality on the Omagua reach in this ledger.
+      exactLocator: Laureano de la Cruz, 1900 Madrid ed., p. 91, via Internet Archive OCR text
+      limitations:
+        - One village; his 'third' is an estimate.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-E064
+      title: "Laureano: the Omagua had no principal chiefs, government or obedience to anyone"
+      claimIds:
+        - AMZ-C058
+      sourceId: SRC-CRUZ-1651
+      direction: supports
+      strength: moderate
+      sourceStatement: Summing up the province, he describes its people as few and far apart, "sin policía, razón, ni gobierno, sin principales caciques, ni obediencia" á nadie, whose dealings with neighbours were to kill and enslave one another; he also reports infanticide of newborns and habitual drunken feasts at which killings were decided.
+      editorInference: Carvajal's Omagua had a 'gran señor Aparia' (cf. SRC-CABRERO-2025 in the ledger). Whether the chiefless 1650 Omagua reflects political collapse after contact or a modest baseline is exactly the murdered-world/modest-skeptic crux; the observation itself is what the source states, and the missionary's disdain colours the summary.
+      exactLocator: Laureano de la Cruz, 1900 Madrid ed., pp. 95, 97–98, 102, via Internet Archive OCR text
+      limitations:
+        - Value-laden missionary characterization; 'no chiefs' may reflect his categories.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-E065
+      title: Portuguese parties on the Solimões in 1650, prospecting for gold and consuming the Aysuaris' provisions
+      claimIds:
+        - AMZ-C059
+        - AMZ-C023
+      sourceId: SRC-CRUZ-1651
+      direction: context
+      strength: weak
+      sourceStatement: At the last Omagua villages he was told "los portugueses andaban cerca de allí en nuestro río buscando oro"; among the Aysuaris further down he found little food because the Portuguese "y su gente les habían acabado los que tenían" and were already returning downriver.
+      editorInference: Documents Portuguese penetration above the Rio Negro by 1650 but not slaving in this passage; entered as context for the raiding mechanism of AMZ-C023 rather than as support.
+      exactLocator: Laureano de la Cruz, 1900 Madrid ed., pp. 106–108, via Internet Archive OCR text
+      limitations:
+        - Hearsay from Omagua informants for the gold-seeking; direct observation only of depleted provisions.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-E066
+      title: "The 1637 Brieva–Toledo descent: 200 leagues without seeing people, who lived away from the river (Laureano)"
+      claimIds:
+        - AMZ-C060
+        - AMZ-C001
+      sourceId: SRC-CRUZ-1651
+      direction: context
+      strength: weak
+      sourceStatement: Of the two lay brothers who descended in October 1637, he writes they had travelled "200 leguas sin ver gente ninguna (por estar" poblados los gentiles que por allí hay, apartados del río) when they reached the Omagua province, where they were supplied with food.
+      editorInference: The stretch below the Encabellados/Aguarico to the Omagua in 1637 is reported empty on the banks with people inland — consonant with Carvajal's alternation of populated and empty reaches (AMZ-C001) and with the bluff-model qualifier; reported by Laureano from his companions, not seen.
+      exactLocator: Laureano de la Cruz, 1900 Madrid ed., p. 53, via Internet Archive OCR text
+      limitations:
+        - Second-hand within the source; 'apartados del río' is the author's explanation.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-E067
+      title: "Rostain 2024: Upano platform and road construction dated ca. 500 BCE to 300/600 CE"
+      claimIds:
+        - AMZ-C061
+      sourceId: SRC-ROSTAIN-2024
+      direction: supports
+      strength: strong
+      sourceStatement: The abstract states that excavations date the "occupation from around 500 BCE to between 300 and 600 CE"; the main text says the original building of earthen platforms and roads took place between ca. 500 BCE and 300/600 CE by the Kilamope and later Upano cultures, and that the hypothesis of an abrupt end after a massive Sangay eruption ca. 400–600 CE has been questioned by the disparity of recent radiocarbon dates.
+      editorInference: Primary dating by the excavating team (almost 70 radiocarbon dates per the supplement); the end-date is a range, not a point.
+      exactLocator: "[p. 1] and [p. 4], via open-access author manuscript (archimer.ifremer.fr/doc/00872/98412/118237.pdf)"
+      limitations:
+        - Author-accepted manuscript; the revised sequence is promised in 'a subsequent paper'.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-E068
+      title: The Upano occupation whose palaeoecological signal was 'erased' ended by 300–600 CE (or, counting Huapula reoccupation, by 1200 CE)
+      claimIds:
+        - AMZ-C022
+      sourceId: SRC-ROSTAIN-2024
+      direction: qualifies
+      strength: moderate
+      sourceStatement: Rostain et al. date the Kilamope/Upano "occupation from around 500 BCE to between 300 and 600 CE", and add that some mounds were "reoccupied after a hiatus by groups of the Huapula culture" between 800 and 1200 CE, followed by Shuar groups.
+      editorInference: AMZ-C022 says forest recovery largely eradicated the pre-Columbian influence at Upano while the Colonial signal persisted. The erased occupation ended 900–1300 years before the Colonial period (or ~400–500 years, if the lighter Huapula reoccupation is what the profiles register). The claim therefore supports time-graded erasure but cannot be spent, without further evidence, to discount contact-era palaeoecological negatives in reaches depopulated only ~350–400 years before modern coring — the scope the article's phrasing implies. Which occupation the Upano profiles actually register is a question for SRC-BUSH-2025-UPANO's text.
+      exactLocator: "[p. 1] and [p. 4], via open-access author manuscript (archimer.ifremer.fr)"
+      limitations:
+        - Rostain et al. do not address the palaeoecological record; the linkage to AMZ-C022 is this editor's.
+        - Huapula intensity relative to Upano is not quantified here.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-E069
+      title: Huapula reoccupation of Upano mounds, 800–1200 CE
+      claimIds:
+        - AMZ-C062
+      sourceId: SRC-ROSTAIN-2024
+      direction: supports
+      strength: strong
+      sourceStatement: Some mounds were "reoccupied after a hiatus by groups of the Huapula culture" between 800 and 1200 CE; the supplement describes Huapula pottery as corrugated ware marking the appearance of Jivaroan-speaking populations, followed by Shuar groups to the present.
+      editorInference: Continuity of some occupation into the second millennium at Upano, at lower density; relevant to how long the valley's surfaces were forested before Colonial times.
+      exactLocator: "[p. 4] and supplement S2 [p. 24], via open-access author manuscript"
+      limitations:
+        - Reoccupation extent ('some mounds') not quantified.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-E070
+      title: LiDAR detected over 6,000 earthen platforms in 300 km² of the Upano Valley
+      claimIds:
+        - AMZ-C063
+      sourceId: SRC-ROSTAIN-2024
+      direction: supports
+      strength: strong
+      sourceStatement: Going beyond field identification, 'the LiDAR data' "enabled the detection of over 6,000 platforms within the" 300-km² area, typically rectangular, about 20 × 10 m and 2–3 m high, grouped in complexes around plazas; average density is 16.6 platforms/km² with some areas above 100/km².
+      editorInference: A primary survey count under a 1-m DEM; the authors distinguish pre-Hispanic from modern features by orientation and spatial coherence, and note heterogeneous coverage.
+      exactLocator: "[p. 6] and supplement S3 [pp. 24–27], via open-access author manuscript"
+      limitations:
+        - Single LiDAR campaign of admitted uneven quality (supplement S3); platform count is a detection count, not an excavated verification.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-E071
+      title: "Authors' assessment: Upano is the earliest and largest low-density agrarian urbanism documented in Amazonia so far"
+      claimIds:
+        - AMZ-C064
+      sourceId: SRC-ROSTAIN-2024
+      direction: supports
+      strength: moderate
+      sourceStatement: The authors state the Upano sites differ from other Amazonian monumental sites, "which are all more recent, significantly less dense in terms of features", and that this society 'constitutes' "the earliest and largest low-density agrarian urbanism ever documented" in the Amazon so far; they also note defensive elements such as "peripheral ditches blocking access to some settlements".
+      editorInference: A comparative claim by the discoverers, explicitly time-bounded ('so far'); the Aquiry peak (AD 100–300, AMZ-C004/E003) overlaps its later phase, so 'earliest' depends on definitions of urbanism.
+      exactLocator: "[p. 6] and [p. 11], via open-access author manuscript"
+      limitations:
+        - Authors' interpretive superlative; comparison set is the supplement's four sites.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-E072
+      title: Achmatowicz 2018 assesses Carvajal's manuscript as a trustworthy source on geographic grounds
+      claimIds:
+        - AMZ-C065
+        - AMZ-C017
+      sourceId: SRC-ACHMATOWICZ-2018
+      direction: supports
+      strength: weak
+      sourceStatement: The abstract says the article is devoted to the verisimilitude of the principal source for Orellana's exploration, Carvajal's eyewitness account, verifying it through a careful study of the geographic reference points in the narration and showing that the manuscript "se puede considerar como una fuente digna de confianza".
+      editorInference: A published scholarly assessment converging with AMZ-C017's credibility leg, reached by a different route (geography and league distances rather than manuscript branches). Abstract-only; the argument and its route conclusions were not read, so weight is minimal.
+      exactLocator: Journal landing page, abstract (journals.akademicka.pl/si/article/view/583)
+      limitations:
+        - Abstract only; body not read.
+        - Assesses geographic plausibility, not the population figures.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+  claims:
+    - id: AMZ-C034
+      statement: According to Medina (1894), letters of secretary Juan de Sámano of 31 May and June 1543 attest that Orellana brought to court a very large 'memorial y relación' of the 1541–42 voyage, distinct from Carvajal's Relación.
+      theme: carvajal
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: Medina 1894, Introducción, p. xxxiv (archive.org djvu full text)
+        quote: porque se traslada y es muy grande
+        sourceId: SRC-CARVAJAL-1542
+        also:
+          - locator: Medina 1894, Introducción, p. xxxiii
+            quote: por mil ochocientas leguas y salió al Cabo
+          - locator: Medina 1894, Introducción, p. xxxiv
+            quote: fuera distinta de las dos que conocemos del religioso dominico
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-C035
+      statement: Medina (1894) reports that Orellana's own relación of the voyage is not found in the archives.
+      theme: carvajal
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: Medina 1894, Introducción, p. xxxiv (archive.org djvu full text)
+        quote: relación que hoy no parece en los Archivos
+        sourceId: SRC-CARVAJAL-1542
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-C036
+      statement: Medina (1894) records that López de Gómara cited Orellana's relación of the voyage and called it 'mentirosa'.
+      theme: carvajal
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: Medina 1894, Introducción, p. xxxv (archive.org djvu full text)
+        quote: la cita dándole el calificativo de «mentirosa»
+        sourceId: SRC-CARVAJAL-1542
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-C037
+      statement: Medina (1894) attributes Gómara's 'mentirosa' charge to the report of Amazons on the river, quoting Gómara's objection to Orellana's affirmation that Amazons lived there.
+      theme: carvajal
+      rung: mechanism
+      claimType: interpretive
+      sourceAnchor:
+        locator: Medina 1894, Introducción, p. xxxv (archive.org djvu full text)
+        quote: fué afirmar que había en este río amazonas
+        sourceId: SRC-CARVAJAL-1542
+      parentClaimIds:
+        - AMZ-C036
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-C038
+      statement: Medina (1894) concludes from comparison that the T'Serclaes manuscript of Carvajal's Relación and the version inserted by Oviedo are the work of the same hand.
+      theme: carvajal
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: Medina 1894, Introducción, p. xi (archive.org djvu full text)
+        quote: ambas son obra de una misma mano
+        sourceId: SRC-CARVAJAL-1542
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-C039
+      statement: The copy of Carvajal's Relación in the Muñoz collection at the Real Academia de la Historia is incomplete, according to Medina (1894).
+      theme: carvajal
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: Medina 1894, Introducción, p. x (archive.org djvu full text)
+        quote: una copia incompleta en la colección de
+        sourceId: SRC-CARVAJAL-1542
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-C040
+      statement: Oviedo's endorsement of Carvajal's credibility, as quoted by Medina, rests on the friar's two arrow wounds and on what those who had dealt with him affirmed of his character.
+      theme: carvajal
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: Medina 1894, Introducción, p. xiii (archive.org djvu full text)
+        quote: debe ser creído en virtud de aquellos dos flechazos
+        sourceId: SRC-CARVAJAL-1542
+        also:
+          - locator: Medina 1894, Introducción, p. xiii
+            quote: ques mucho segund afírman los que le han tractado
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-C041
+      statement: Medina (1894) infers from Oviedo's remark that he would have been glad to see and know the friar that Carvajal never passed through Santo Domingo, so Oviedo never met him.
+      theme: carvajal
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: Medina 1894, Introducción, p. xxi, n. 16 (archive.org djvu full text)
+        quote: luego Carvajal no estuvo en aquella ciudad
+        sourceId: SRC-CARVAJAL-1542
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-C042
+      statement: Oviedo states that he supplemented the friar's written account with particulars learned orally in Santo Domingo from Captain Orellana and the gentlemen who came with him.
+      theme: carvajal
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: Medina 1894, Introducción, p. xl (archive.org djvu full text)
+        quote: del mesmo capitán Francisco de Orellana é de otros caballeros
+        sourceId: SRC-CARVAJAL-1542
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-C043
+      statement: Carvajal's Relación closes with an explicit protestation that everything he has written and told is true.
+      theme: carvajal
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: Medina 1894, Introducción, p. xiii (archive.org djvu full text)
+        quote: y es verdad en todo lo que yo he escrito y contado
+        sourceId: SRC-CARVAJAL-1542
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-C044
+      statement: Medina (1894) notes that Carvajal at times attributes certain events to supernatural causes.
+      theme: carvajal
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: Medina 1894, Introducción, p. xii (archive.org djvu full text)
+        quote: atribuya ciertos hechos á causas sobrenaturales
+        sourceId: SRC-CARVAJAL-1542
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-C045
+      statement: Antonio de Herrera's account of the Orellana voyage follows Carvajal's Relación very closely, almost to the letter, according to Medina (1894).
+      theme: carvajal
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: Medina 1894, Introducción, p. x (archive.org djvu full text)
+        quote: y la sigue muy de cerca, casi al pie de la letra
+        sourceId: SRC-CARVAJAL-1542
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-C046
+      statement: The Orellana narrative in Markham's 1859 Hakluyt volume is translated from Herrera's sixth decade, not from Carvajal's Relación.
+      theme: carvajal
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: Markham 1859, Contents (unnumbered page preceding the Introduction), archive.org djvu full text
+        quote: translated from the sixth decade of Antonio de Herrera's
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-C047
+      statement: According to Markham (1859), Ursúa's expedition, which set out in September 1560, had arrived off a village called Machiparo when Ursúa was murdered on New Year's Day 1561.
+      theme: carvajal
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: Markham 1859, Introduction pp. viii–ix (archive.org djvu full text)
+        quote: new year's day, 1561, when the conspirators entered
+        also:
+          - locator: Markham 1859, Introduction p. viii
+            quote: followed himself with the main body, in September 1560
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-C048
+      statement: Markham (1859) locates the village of Machiparo near the mouth of the Putumayo.
+      theme: carvajal
+      rung: observation
+      claimType: interpretive
+      sourceAnchor:
+        locator: Markham 1859, Introduction p. ix, footnote (archive.org djvu full text)
+        quote: Near the mouth of the river Putumayu
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-C049
+      statement: Before the 1560 Ursúa expedition, rumours circulating in Peru placed El Dorado in the provinces of the Omaguas, according to Markham (1859) citing Pedro Simón.
+      theme: carvajal
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: Markham 1859, Introduction p. vii (archive.org djvu full text)
+        quote: the provinces of the Omaguas, in which El Dorado was said to reside
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-C050
+      statement: Markham (1859), summarizing Jesuit sources, reports that smallpox first appeared at Borja in 1660 and that forty-four thousand Indians died.
+      theme: collapse
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: Markham 1859, Introduction p. xxxv (archive.org djvu full text)
+        quote: first appeared at Borja in 1660, and forty-four thousand Indians died
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-C051
+      statement: According to Markham (1859), after Portugal's independence in 1640 the Portuguese attacked the Omaguas and other Indians of the river, burning villages and carrying off women and children to be sold as slaves.
+      theme: collapse
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: Markham 1859, Introduction pp. xlvi–xlvii (archive.org djvu full text)
+        quote: attacking the Omaguas, and other peaceful Indians, burning their villages
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-C052
+      statement: Samuel Fritz, working on the Marañón from 1687, established forty villages among the Omaguas, according to Markham (1859).
+      theme: collapse
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: Markham 1859, Introduction p. xxxiii (archive.org djvu full text)
+        quote: established forty villages amongst them, and also preached
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-C053
+      statement: The Franciscan Laureano de la Cruz lived among the Omagua of the Solimões for three full years, leaving on the night of 15 October 1650.
+      theme: collapse
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: Laureano de la Cruz, 1900 Madrid ed., p. 103, via Internet Archive OCR text (nuevodescubrimi00cruzgoog_djvu.txt)
+        quote: que es á 15 de Octubre de 1650, dejando la
+        sourceId: SRC-CRUZ-1651
+        also:
+          - locator: 1900 Madrid ed., p. 98
+            quote: ellos que fueron tres años cabales
+          - locator: 1900 Madrid ed., p. 80
+            quote: llegamos á la provincia de los Omaguas y á la isla
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-C054
+      statement: Laureano de la Cruz, writing of 1649–1650, counted 34 small villages in an Omagua province he reckoned 200 leagues long.
+      theme: collapse
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: Laureano de la Cruz, 1900 Madrid ed., p. 94, via Internet Archive OCR text
+        quote: los Omaguas con 34 pueblos pequeños no hallamos 10 indios cabales
+        sourceId: SRC-CRUZ-1651
+        also:
+          - locator: 1900 Madrid ed., p. 94
+            quote: Pues en 200 leguas que tienen de largo
+      parentClaimIds: []
+      dependsOnClaimIds:
+        - AMZ-C053
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-C055
+      statement: The first Omagua island village Laureano de la Cruz settled in (San Pedro de Alcántara, 1647) had 28 houses and about 80 lance-bearing men by his count.
+      theme: collapse
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: Laureano de la Cruz, 1900 Madrid ed., p. 82, via Internet Archive OCR text
+        quote: Tenían sus casas, que eran 28, en la orilla
+        sourceId: SRC-CRUZ-1651
+        also:
+          - locator: 1900 Madrid ed., p. 82
+            quote: y serían por todos 80, y de
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-C056
+      statement: During Laureano de la Cruz's residence (1647–1650) a smallpox epidemic spread through the Omagua province of the Solimões.
+      theme: collapse
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: Laureano de la Cruz, 1900 Madrid ed., p. 87, via Internet Archive OCR text
+        quote: gran peste de viruelas que les había dado
+        sourceId: SRC-CRUZ-1651
+        also:
+          - locator: 1900 Madrid ed., p. 88
+            quote: para abajo estaba apestada y que se había muerto mucha gente
+      parentClaimIds: []
+      dependsOnClaimIds:
+        - AMZ-C053
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-C057
+      statement: Laureano de la Cruz reports that about a third of the people of the Omagua village of Caraute died in the smallpox epidemic he witnessed there.
+      theme: collapse
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: Laureano de la Cruz, 1900 Madrid ed., p. 91, via Internet Archive OCR text
+        quote: habiendo muerto la tercera parte de aquella desventurada gente
+        sourceId: SRC-CRUZ-1651
+      parentClaimIds:
+        - AMZ-C056
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-C058
+      statement: Laureano de la Cruz describes the Omagua of 1647–1650 as having no principal chiefs, government, or obedience to anyone.
+      theme: collapse
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: Laureano de la Cruz, 1900 Madrid ed., p. 95, via Internet Archive OCR text
+        quote: sin policía, razón, ni gobierno, sin principales caciques, ni obediencia
+        sourceId: SRC-CRUZ-1651
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-C059
+      statement: By 1650 Portuguese parties were operating on the Solimões above the Rio Negro, according to Laureano de la Cruz, who was told they were seeking gold and found the Aysuaris' provisions consumed by them.
+      theme: collapse
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: Laureano de la Cruz, 1900 Madrid ed., p. 106, via Internet Archive OCR text
+        quote: los portugueses andaban cerca de allí en nuestro río buscando oro
+        sourceId: SRC-CRUZ-1651
+        also:
+          - locator: 1900 Madrid ed., p. 108
+            quote: y su gente les habían acabado los que tenían
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-C060
+      statement: According to Laureano de la Cruz, the two Franciscan lay brothers who descended the river in October 1637 travelled 200 leagues below the Encabellados without seeing people before reaching the Omagua province.
+      theme: limits
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: Laureano de la Cruz, 1900 Madrid ed., p. 53, via Internet Archive OCR text
+        quote: 200 leguas sin ver gente ninguna (por estar
+        sourceId: SRC-CRUZ-1651
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-C061
+      statement: Excavations in the Upano Valley (Ecuador) date the Kilamope/Upano occupation that built the earthen platforms and roads from around 500 BCE to between 300 and 600 CE.
+      theme: earthworks
+      rung: observation
+      claimType: measurement
+      sourceAnchor:
+        locator: "[p. 1] via open-access author manuscript (archimer.ifremer.fr/doc/00872/98412/118237.pdf)"
+        quote: occupation from around 500 BCE to between 300 and 600 CE
+        sourceId: SRC-ROSTAIN-2024
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-C062
+      statement: Some Upano Valley mounds were reoccupied after a hiatus by groups of the Huapula culture between 800 and 1200 CE.
+      theme: earthworks
+      rung: observation
+      claimType: measurement
+      sourceAnchor:
+        locator: "[p. 4] via open-access author manuscript"
+        quote: reoccupied after a hiatus by groups of the Huapula culture
+        sourceId: SRC-ROSTAIN-2024
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-C063
+      statement: LiDAR analysis detected over 6,000 earthen platforms within a 300 km² area of the Upano Valley.
+      theme: earthworks
+      rung: observation
+      claimType: measurement
+      sourceAnchor:
+        locator: "[p. 6] via open-access author manuscript"
+        quote: enabled the detection of over 6,000 platforms within the
+        sourceId: SRC-ROSTAIN-2024
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-C064
+      statement: Rostain et al. (2024) assess the Upano Valley society as the earliest and largest low-density agrarian urbanism documented in Amazonia so far.
+      theme: earthworks
+      rung: observation
+      claimType: interpretive
+      sourceAnchor:
+        locator: "[p. 11] via open-access author manuscript"
+        quote: the earliest and largest low-density agrarian urbanism ever documented
+        sourceId: SRC-ROSTAIN-2024
+      parentClaimIds: []
+      dependsOnClaimIds:
+        - AMZ-C061
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-C065
+      statement: Achmatowicz (2018) assesses Carvajal's manuscript as a trustworthy historical source on the basis of a study of its geographic reference points.
+      theme: carvajal
+      rung: observation
+      claimType: interpretive
+      sourceAnchor:
+        locator: Journal landing page, abstract (journals.akademicka.pl/si/article/view/583)
+        quote: se puede considerar como una fuente digna de confianza
+        sourceId: SRC-ACHMATOWICZ-2018
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+  research:
+    - id: AMZ-R007
+      title: Read the Biblioteca Nacional manuscript of Laureano de la Cruz to fix the Omagua headcount garbled in the 1900 edition
+      summary: "Object: the 62-folio manuscript of Laureano de la Cruz's 'Nuevo descubrimiento del río de Marañón' in the Biblioteca Nacional de España (the 1900 Madrid editor's source), and a page image of p. 94 of the 1900 edition. Measurement: the exact numeral the author gives for the men found in the Omagua province ('no hallamos ... indios cabales'), which the Internet Archive OCR renders as '10', together with any marginal or textual variants; secondarily, confirm the 34-village count and the 200-league extent. Decision rule: if the manuscript reads a figure in the low thousands (as a tertiary snippet gives, ≤5,000), the province held roughly 1,000–2,500 households in 1650 and the proposed claim on Laureano's 34 villages can carry a number; if it reads tens or hundreds, the Omagua corridor was near-empty a century after Carvajal and the murdered-world reading of AMZ-C017 gains a dated resident witness; either way the result moves AMZ-C010's geographic reach (Solimões vs upper-Amazon provinces) and supplies the 1650 point in the province timeline. Also record whether Laureano gives any village count for the reaches below the Putumayo mouth he did not visit."
+      claimIds:
+        - AMZ-C017
+        - AMZ-C010
+      track: small_grant
+      effortTier: desk
+      informationGain: Converts an OCR-uncertain figure into the only seventeenth-century resident headcount for Carvajal's Omagua reach; distinguishes 'a province of a few thousand' from 'a province of a few hundred' in 1650, which is the magnitude the modest-skeptic and murdered-world accounts disagree about.
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+    - id: AMZ-R008
+      title: Calibrate palaeoecological erasure against time since abandonment using sites with dated occupation ends
+      summary: "Object: sediment or soil profiles adjacent to Amazonian occupation sites whose end dates are archaeologically fixed — Upano (occupation ending 300–600 CE, with Huapula reoccupation to ~1200 CE), Casarabe (~1400 CE), Belterra Plateau near Santarém (to the seventeenth century), Marajó Cacoal (to ~1650) and Upper Xingu (to ~1770). Measurement: in each profile, the presence and magnitude of anthropogenic indicators (crop phytoliths, charcoal influx, soil-nutrient and pottery-fragment signals, disturbance-taxon pollen) in the occupation-age horizons versus the post-abandonment and Colonial horizons, scored by a common protocol, then plotted against years since abandonment. Decision rule: if sites abandoned 350–400 years before present retain clear occupation signals while Upano's ~1,000-year-old signal is lost, then the erasure documented at Upano (AMZ-C022) is time-dependent and cannot be used to discount contact-era palaeoecological negatives in reaches depopulated in the 1600s, strengthening AMZ-C014's negatives for those reaches; if signals are also largely erased at the ~400-year sites, AMZ-C022 applies generally and AMZ-C014's negatives in terra-firme settings are weakened as evidence of absence; an intermediate result yields a decay curve that grades the negatives by age."
+      claimIds:
+        - AMZ-C022
+        - AMZ-C014
+      track: either
+      effortTier: lab
+      informationGain: Turns the 'time-graded erasure' argument from an analogy into a measured decay function, deciding how much weight contact-era palaeoecological absence can bear.
+      origin:
+        ref: report 2026-09-17-report-pre-columbian-amazon-134558
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-17-draft-pre-columbian-amazon-135349
+        date: 2026-09-17
+  images: []
+corrections:
+  - record: SRC-CARVAJAL-1542
+    field: verification
+    from: unverified
+    to: ai_verified
+    reason: The full text of the Medina 1894 edition at the record's URL (archive.org/details/descubrimientod00carvgoog, djvu full text) was retrieved and read in this pass (introduction, pp. i–lxxviii); the Relación body beyond the introduction was truncated but the item's text is now shown and quoted, with page-level locators.
+dispositions:
+  - key: url:archive.org/details/expeditionsintov00markrich
+    kind: source
+    disposition: blocked
+    reason: "previously blocked on 2026-09-10: Cristóbal de Acuña, Nuevo descubrimiento del gran río de las Amazonas (Madrid, 1641) — the 1639 corridor witness the report identifies as the missing middle of AMZ-R005. Only the archive.org item page for Markham's 1859 Hakluyt volume (which contains the English translation) was retrieved; the primary text was not read."
+    observed: Expeditions into the Valley of the Amazons, 1539, 1540, 1639
+    by: 2026-09-17-draft-pre-columbian-amazon-135349
+    date: 2026-09-17
+  - key: text:markham s orellana narrative is herrera s not carvajal s the contents lists the voyage of francisco de orellana down the river of the amazons a d 1540 1 translated from the sixth decade of antonio de herrera s general history of the western indies the introduction adds that herrera s account is the best that has come to my knowledge
+    kind: evidence
+    disposition: failed
+    reason: its source "P-SRC-MARKHAM-1859" was not added (see its disposition) and is not in the ledger
+    observed: Markham's Orellana narrative is Herrera's, not Carvajal's
+    by: 2026-09-17-draft-pre-columbian-amazon-135349
+    date: 2026-09-17
+  - key: text:markham fixes the urs a expedition at machiparo at the turn of 1560 61 markham writes that urs a followed himself with the main body in september 1560 descended the huallaga into the mara n and that the day after the omen at urs a s tent the expedition arrived off a village called machiparo new year s day 1561 when the conspirators entered urs a s tent and murdered him
+    kind: evidence
+    disposition: failed
+    reason: its source "P-SRC-MARKHAM-1859" was not added (see its disposition) and is not in the ledger
+    observed: Markham fixes the Ursúa expedition at Machiparo at the turn of 1560–61
+    by: 2026-09-17-draft-pre-columbian-amazon-135349
+    date: 2026-09-17
+  - key: text:independent secondary dating of the urs a witnesses at machiparo 1560 61 markham has urs a depart in september 1560 and reach a village called machiparo where he was killed on new year s day 1561
+    kind: evidence
+    disposition: failed
+    reason: its source "P-SRC-MARKHAM-1859" was not added (see its disposition) and is not in the ledger
+    observed: Independent secondary dating of the Ursúa witnesses at Machiparo, 1560–61
+    by: 2026-09-17-draft-pre-columbian-amazon-135349
+    date: 2026-09-17
+  - key: text:markham glosses machiparo as near the mouth of the putumayo a footnote to the machiparo passage reads near the mouth of the river putumayu with a cross reference to pages 27 and 29 of the volume
+    kind: evidence
+    disposition: failed
+    reason: its source "P-SRC-MARKHAM-1859" was not added (see its disposition) and is not in the ledger
+    observed: Markham glosses Machiparo as near the mouth of the Putumayo
+    by: 2026-09-17-draft-pre-columbian-amazon-135349
+    date: 2026-09-17
+  - key: text:before 1560 el dorado was rumoured in peru to reside among the omaguas markham quoting pedro sim n says brazilian indians who reached the motilones brought news of the provinces of the omaguas in which el dorado was said to reside exciting restless spirits in peru so that the viceroy organized urs a s expedition to find omagua
+    kind: evidence
+    disposition: failed
+    reason: its source "P-SRC-MARKHAM-1859" was not added (see its disposition) and is not in the ledger
+    observed: Before 1560, El Dorado was rumoured in Peru to reside among the Omaguas
+    by: 2026-09-17-draft-pre-columbian-amazon-135349
+    date: 2026-09-17
+  - key: text:expectation bias among the 1560 witnesses markham records that the urs a expedition was organized to search for the nation of omaguas of whose fabulous wealth most exciting rumours had reached peru
+    kind: evidence
+    disposition: failed
+    reason: its source "P-SRC-MARKHAM-1859" was not added (see its disposition) and is not in the ledger
+    observed: Expectation bias among the 1560 witnesses
+    by: 2026-09-17-draft-pre-columbian-amazon-135349
+    date: 2026-09-17
+  - key: text:markham from jesuit sources smallpox at borja in 1660 killed forty four thousand the small pox first appeared at borja in 1660 and forty four thousand indians died in 1669 upwards of twenty thousand more were swept away and in 1680 1749 1756 and 1762 the disease drove surviving indians to desert the mission villages for the woods
+    kind: evidence
+    disposition: failed
+    reason: its source "P-SRC-MARKHAM-1859" was not added (see its disposition) and is not in the ledger
+    observed: "Markham (from Jesuit sources): smallpox at Borja in 1660 killed forty-four thousand"
+    by: 2026-09-17-draft-pre-columbian-amazon-135349
+    date: 2026-09-17
+  - key: text:repeated smallpox waves in maynas 1660 1669 1680 1749 1756 1762 with flight from missions markham lists smallpox outbreaks at borja in 1660 and 1669 with large mortality and later epidemics after which the surviving indians deserted the mission villages and fled into the woods
+    kind: evidence
+    disposition: failed
+    reason: its source "P-SRC-MARKHAM-1859" was not added (see its disposition) and is not in the ledger
+    observed: Repeated smallpox waves in Maynas (1660, 1669, 1680, 1749, 1756, 1762) with flight from missions
+    by: 2026-09-17-draft-pre-columbian-amazon-135349
+    date: 2026-09-17
+  - key: text:markham after 1640 the portuguese attacked the omaguas burning villages and enslaving women and children when portugal became independent in 1640 it claimed the river to the mouth of the napo and commenced hostilities by attacking the omaguas and other peaceful indians burning their villages carrying women and children away to sell as slaves thousands of unfortunate people were thus treated and for a century the portuguese continued to perpetrate similar atrocities
+    kind: evidence
+    disposition: failed
+    reason: its source "P-SRC-MARKHAM-1859" was not added (see its disposition) and is not in the ledger
+    observed: "Markham: after 1640 the Portuguese attacked the Omaguas, burning villages and enslaving women and children"
+    by: 2026-09-17-draft-pre-columbian-amazon-135349
+    date: 2026-09-17
+  - key: text:fritz established forty villages among the omaguas markham samuel fritz began his labours on the mara n in 1687 and is generally known as the apostle of the omaguas as he established forty villages amongst them and also preached to the yurimaguas and ticunas
+    kind: evidence
+    disposition: failed
+    reason: its source "P-SRC-MARKHAM-1859" was not added (see its disposition) and is not in the ledger
+    observed: Fritz established forty villages among the Omaguas (Markham)
+    by: 2026-09-17-draft-pre-columbian-amazon-135349
+    date: 2026-09-17
+  - key: url:scienceopen.com/document?vid=71f8aa2d-382a-4380-a35f-dabcc1dd0335
+    kind: source
+    disposition: failed
+    reason: "Drafter named the proposed Source 'Two thousand years of garden urbanism in the Upper Amazon' (Rostain et al. 2024) as the record, which the ledger does not hold. Its reason as written: The report's ScienceOpen abstract record for Rostain et al. 2024 returned HTTP 403, but the full author-accepted manuscript was retrieved via the DOI (open-access copy at archimer.ifremer.fr) and is proposed as the source; the abstract record is the same work."
+    observed: scienceopen.com/document?vid=71f8aa2d-382a-4380-a35f-dabcc1dd0335 not retrieved (HTTP 403); doi.org/10.1126/science.adi6317 retrieved, 31 pages.
+    by: 2026-09-17-draft-pre-columbian-amazon-135349
+    date: 2026-09-17
+  - key: url:revistadeindias.revistas.csic.es/index.php/revistadeindias/article/view/1023
+    kind: source
+    disposition: blocked
+    reason: "'La despoblación en el Alto Amazonas en tiempos coloniales', Revista de Indias (2016), article 1023 — cited by the report as bearing on Laureano and Livi-Bacci; fetch failed, no text shown."
+    reopenIf: The CSIC OJS PDF or the article DOI is retrieved and its treatment of the Omagua/Alto Amazonas depopulation read.
+    observed: Fetch failed at revistadeindias.revistas.csic.es/index.php/revistadeindias/article/view/1023; nothing read.
+    by: 2026-09-17-draft-pre-columbian-amazon-135349
+    date: 2026-09-17
+    route: Retry the OJS 'PDF' galley for article 1023, or locate the DOI via the journal's 2016 issue table of contents (same journal as SRC-DENEVAN-2003 and SRC-NEWSON-2003).
+  - key: url:scielo.br/j/tem/a/hvhyBxFfB9mHBgYBfCfGXFp?lang=en
+    kind: source
+    disposition: blocked
+    reason: Harris 2017, 'Revisiting first contacts on the Amazon 1500–1562', Tempo 23(3) — directly relevant to AMZ-E007 (Nunes with Mercadillo's party in 1538, slave-taking at Machiparo); HTTP 403 at SciELO, no text shown.
+    reopenIf: The SciELO PDF or another open copy is retrieved and the Nunes-letter discussion read against SRC-LOPES-2024.
+    observed: HTTP 403 at scielo.br/j/tem/a/hvhyBxFfB9mHBgYBfCfGXFp/?lang=en.
+    by: 2026-09-17-draft-pre-columbian-amazon-135349
+    date: 2026-09-17
+    route: SciELO 'PDF' link for the same article id, or the Tempo journal site (UFF); search DOAJ for the title.
+  - key: doi:10.1038/s41586-022-04780-4
+    kind: source
+    disposition: blocked
+    reason: Prümers et al. 2022, 'Lidar reveals pre-Hispanic low-density urbanism in the Bolivian Amazon' (Nature 606) — the report's snippet gives a Casarabe area of ~4,500 km² and AD 500–1400, but the paper was not opened; the existing block stands and the snippet figures are not entered.
+    reopenIf: The open-access text (nature.com or Europe PMC) is retrieved.
+    observed: Cited in the retrieved Rostain 2024 text as ref. 14 and in SRC-PERIPATO-2023 as ref. 19; not read.
+    by: 2026-09-17-draft-pre-columbian-amazon-135349
+    date: 2026-09-17
+    route: nature.com/articles/s41586-022-04780-4 (open access) or Europe PMC full text.
+  - key: text:report cites a hathitrust location no text shown
+    kind: source
+    disposition: blocked
+    reason: Samuel Fritz's journal (Hakluyt Society 1922), the 1686–1723 Omagua witness for AMZ-R005; not opened this pass. Markham 1859 (retrieved) gives only a tertiary summary of Fritz's forty villages.
+    reopenIf: The Hakluyt 1922 text is retrieved.
+    observed: Report cites a HathiTrust location; no text shown.
+    by: 2026-09-17-draft-pre-columbian-amazon-135349
+    date: 2026-09-17
+    route: HathiTrust full view or archive.org for 'Journal of the travels and labours of Father Samuel Fritz' (Hakluyt Society 2nd ser. 51, 1922).
+  - key: url:archive.org/details/historiageneral04fernguat
+    kind: claim
+    disposition: blocked
+    reason: "The two AMZ-C002 sub-points (where '10,000' sits; whether Oviedo retains '~5,000') remain unresolved: Oviedo lib. L cap. XXIV and the body of the Relación in Medina were beyond the truncated texts. Medina's note supplies the exact route: the Carvajal text occupies pp. 541–574 of tomo IV of the RAH edition."
+    reopenIf: Oviedo t. IV pp. 541–574 (RAH 1855) and Medina's Relación body (pp. 1–62 with variant footnotes) are read at page level and the figures placed by witness.
+    observed: "Medina 1894, Introducción, p. ix n. 1: the Relación 'ocupa las páginas 541-574 del tomo IV' of Oviedo."
+    by: 2026-09-17-draft-pre-columbian-amazon-135349
+    date: 2026-09-17
+    route: archive.org page viewer for historiageneral04fernguat, pages 541–574 (lib. L cap. XXIV) read rather than searched; Medina 1894 Relación pp. 1–62 via the same djvu text beyond the 120,000-character truncation.
+  - key: text:quoted at second hand in medina 1894 introducci n pp xxxv xxxvi
+    kind: source
+    disposition: blocked
+    reason: López de Gómara, Historia general de las Indias (1552) — to see exactly what he called 'mentirosa' (the whole relación or the Amazons episode); only Medina's quotation (Ribadeneyra ed. p. 210 per Medina) was shown.
+    reopenIf: Gómara's text is retrieved and the passage read in context.
+    observed: Quoted at second hand in Medina 1894, Introducción, pp. xxxv–xxxvi.
+    by: 2026-09-17-draft-pre-columbian-amazon-135349
+    date: 2026-09-17
+    route: Biblioteca de Autores Españoles (Ribadeneyra) vol. 22, p. 210, via archive.org or Biblioteca Virtual Miguel de Cervantes.
+  - key: text:amz c022 statement as in index rostain 2024 p 1 dates occupation 500 bce 300 600 ce and p 4 huapula reoccupation 800 1200 ce
+    kind: claim
+    disposition: failed
+    reason: "Drafter named the proposed Evidence record 'The Upano occupation whose palaeoecological signal was erased ended by 300–600 CE (or, counting Huapula reoccupation, by 1200 CE)' as the record, which the ledger does not hold. Its reason as written: The report proposes re-wording AMZ-C022 to carry the Upano occupation end-date. AMZ-C022 is anchored to SRC-BUSH-2025-UPANO, whose text was not shown; importing dates from Rostain 2024 into that claim's statement would outrun its anchor. The same point is entered instead as a qualifying evidence record on AMZ-C022 from the Rostain text."
+    reopenIf: SRC-BUSH-2025-UPANO's text is shown and itself states the occupation end-date, permitting a statement correction with a matching anchor.
+    observed: AMZ-C022 statement as in index; Rostain 2024 [p. 1] dates occupation 500 BCE–300/600 CE and [p. 4] Huapula reoccupation 800–1200 CE.
+    by: 2026-09-17-draft-pre-columbian-amazon-135349
+    date: 2026-09-17
+  - key: url:archive.org/details/descubrimientod00carvgoog
+    kind: image
+    disposition: blocked
+    reason: Report proposes the Medina 1894 title page or dedication to the Duque de T'Serclaes (public domain, Harvard/Google scan) as a plate for the manuscript-witness section. No page-image URL, page-scan confirmation or credit line was shown; only the OCR text.
+    reopenIf: A stable archive.org page-image URL for the title page and a credit line to the holding library are recorded.
+    observed: "Title page text present in the djvu OCR: 'Descubrimiento del Río de las Amazonas ... Sevilla, Imprenta de E. Rasco ... MDCCCXCIV'."
+    by: 2026-09-17-draft-pre-columbian-amazon-135349
+    date: 2026-09-17
+    route: archive.org page viewer for descubrimientod00carvgoog, title-page leaf, with Harvard College Library/Google Books credit.
+  - key: url:archive.org/details/nuevodescubrimi00cruzgoog
+    kind: evidence
+    disposition: failed
+    reason: "The tertiary snippet attributing to Laureano de la Cruz a count of '34 villages and ≤5,000 people' is only half confirmed: the retrieved OCR of the 1900 edition (p. 94) reads 'con 34 pueblos pequeños no hallamos 10 indios cabales'; no figure of 5,000 appears verbatim, and the numeral is an OCR uncertainty. The village count enters as a claim; the headcount does not."
+    reopenIf: The BNE manuscript or a page image of p. 94 resolves the numeral (see the proposed research item on the Laureano manuscript).
+    observed: "OCR: 'los Omaguas con 34 pueblos pequeños no hallamos 10 indios cabales, fuera de sus mujeres y muchachos'."
+    by: 2026-09-17-draft-pre-columbian-amazon-135349
+    date: 2026-09-17
+    route: BNE manuscript; or archive.org page viewer image of p. 94.
+  - key: text:not opened mentioned in the report as considered and not proposed
+    kind: source
+    disposition: irrelevant
+    reason: The 'amazonzach' blog on a Putumayo route for Orellana — a blog; the citable form is Achmatowicz 2018, which is proposed as a source (abstract only). The Putumayo-route argument itself is not in the Achmatowicz abstract and remains unverified.
+    observed: Not opened; mentioned in the report as considered and not proposed.
+    by: 2026-09-17-draft-pre-columbian-amazon-135349
+    date: 2026-09-17
+  - key: text:amz r005 exists with claimids amz c010 amz c017 its summary text is not shown
+    kind: research
+    disposition: duplicate
+    as: AMZ-R005
+    reason: Report item 6 asks to add Laureano de la Cruz (1651/53), the Revista de Indias 2016 article and Fritz (1922) as leads to AMZ-R005. Laureano is now read and enters as a source with claims; the amendment to R005's summary cannot be written as a scalar correction because R005's current summary is not in the packet.
+    reopenIf: R005's summary is exposed for a scalar correction naming the 1560 (Ursúa), 1639 (Acuña), 1647–50 (Laureano) and 1686–1723 (Fritz) Omagua witnesses.
+    observed: AMZ-R005 exists with claimIds [AMZ-C010, AMZ-C017]; its summary text is not shown.
+    by: 2026-09-17-draft-pre-columbian-amazon-135349
+    date: 2026-09-17
+  - key: text:amz r001 exists with claimids amz c001 amz c017 markham 1859 contents lists a list of the principal tribes mentioned in the voyages of orellana and acu a not read
+    kind: research
+    disposition: duplicate
+    as: AMZ-R001
+    reason: Report item 6 asks to link Achmatowicz 2018 (route argument) and Markham 1859's tribe concordance list to AMZ-R001's route-uncertainty model; these are inputs to the existing corridor test, not a new test. R001's summary is not in the packet for a scalar correction.
+    reopenIf: R001's summary is exposed; Achmatowicz's body is read to confirm the Putumayo-route argument; Markham's tribe list is read.
+    observed: AMZ-R001 exists with claimIds [AMZ-C001, AMZ-C017]; Markham 1859 Contents lists a 'List of the Principal Tribes... mentioned in the voyages of Orellana and Acuña' (not read).
+    by: 2026-09-17-draft-pre-columbian-amazon-135349
+    date: 2026-09-17
+  - key: text:amz r002 exists with claimids amz c002
+    kind: research
+    disposition: duplicate
+    as: AMZ-R002
+    reason: The report's F1(b) three-witness framing (T'Serclaes / Muñoz copy / Oviedo), Medina's same-hand judgement and the note that the Muñoz copy is incomplete belong to the existing synoptic witness table item; they enter as claims and evidence rather than a new item, and R002's summary is not exposed for correction.
+    reopenIf: R002's summary is exposed for a scalar correction.
+    observed: AMZ-R002 exists with claimIds [AMZ-C002].
+    by: 2026-09-17-draft-pre-columbian-amazon-135349
+    date: 2026-09-17
+  - key: text:amz e007 exists on src lopes 2024
+    kind: evidence
+    disposition: duplicate
+    as: AMZ-E007
+    reason: Report item 6 asks to add Harris 2017 to AMZ-E007's reading; claimIds/source lists are not correctable here and Harris was not retrieved (blocked above).
+    reopenIf: Harris 2017 is retrieved; then a new evidence record on AMZ-C003 from that source.
+    observed: AMZ-E007 exists on SRC-LOPES-2024.
+    by: 2026-09-17-draft-pre-columbian-amazon-135349
+    date: 2026-09-17
+report: proposals/2026-09-17-report-pre-columbian-amazon-134558/report.md

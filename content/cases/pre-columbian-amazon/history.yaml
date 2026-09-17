@@ -74,3 +74,43 @@
   actor: "claude-fable-5-1 (operator), answering review note #285 in the founder's session of 2026-09-11"
   aiAssisted: true
   kind: content
+
+- date: 2026-09-17
+  change: 'Correction applied from proposals/2026-09-17-draft-pre-columbian-amazon-135349: SRC-CARVAJAL-1542.verification — "unverified" → "ai_verified".'
+  reason: "SRC-CARVAJAL-1542: The full text of the Medina 1894 edition at the record's URL (archive.org/details/descubrimientod00carvgoog, djvu full text) was retrieved and read in this pass (introduction, pp. i–lxxviii); the Relación body beyond the introduction was truncated but the item's text is now shown and quoted, with page-level locators."
+  actor: aletheia verify (claude-sonnet-5 second reader; drafter claude-fable-5-1; proposal 2026-09-17-draft-pre-columbian-amazon-135349, verification 2026-09-17-verify-pre-columbian-amazon-140447)
+  aiAssisted: true
+  kind: content
+
+- date: 2026-09-17
+  change: "Intake from report proposals/2026-09-17-report-pre-columbian-amazon-134558/report.md: 2 source(s), 6 evidence record(s), 5 claim(s), 2 research item(s) verified and added (proposal 2026-09-17-draft-pre-columbian-amazon-135349, verification 2026-09-17-verify-pre-columbian-amazon-140447); 58 candidate(s) rejected with reasons in dispositions.yaml."
+  reason: "Admitted after verification: SRC-ROSTAIN-2024, SRC-ACHMATOWICZ-2018, AMZ-E073, AMZ-E074, AMZ-E075, AMZ-E076, AMZ-E072, AMZ-E077, AMZ-C061, AMZ-C062, AMZ-C063, AMZ-C064, AMZ-C065, AMZ-R007, AMZ-R008; everything else proposed was refused or blocked with a reason in dispositions.yaml. The drafter's rationale for the proposal, written before verification and describing what it proposed: This pass reads five texts. (1) Medina's 1894 introduction to the Carvajal Relación (the ledger's SRC-CARVAJAL-1542, now shown): it documents Orellana's own lost 1543 relación and the origin of the 'mentirosa' charge, Medina's judgement that the T'Serclaes and Oviedo texts are one author's, the incomplete Muñoz copy, the second-hand basis of Oviedo's endorsement, Oviedo's oral debt to Orellana, Carvajal's truth-oath and Medina's two caveats, and Herrera's near-verbatim dependence on Carvajal. (2) Markham 1859 (front matter and introduction): its Orellana text is Herrera's, not Carvajal's; it fixes the Ursúa expedition at Machiparo at New Year 1561, glosses Machiparo as near the Putumayo, records the Omagua/El Dorado rumour that preceded 1560, and summarizes Jesuit reports of smallpox at Borja (1660) and Portuguese slave raids on the Omagua after 1640 — all secondary and weighted as such. (3) Laureano de la Cruz's 1651/53 account, listed by the report as an unopened lead but retrieved here in full: a Franciscan resident among the Omagua for three years to October 1650 describes a province of 34 small villages, a smallpox epidemic that by his count killed a third at one village, the absence of chiefs, and Portuguese parties on the river — the first seventeenth-century witness on Carvajal's own corridor to enter this ledger; the headcount figure is garbled in the OCR and is flagged, not asserted. (4) Rostain et al. 2024 (full author manuscript): Upano occupation dated ca. 500 BCE to 300/600 CE with Huapula reoccupation 800–1200 CE, which bounds how far AMZ-C022's time-graded-erasure point can be spent against contact-era negatives. (5) Achmatowicz 2018 (abstract only): a scholarly assessment of Carvajal as a trustworthy source. Claims are split one proposition each; secondary sources enter with weak or moderate strength and explicit limitations. No edition change: the disappearance section should, after verification, acknowledge Laureano as the Omagua-reach witness, but the current telling is not shown wrong. Blocked routes (Oviedo lib. L, Acuña, Fritz, Harris 2017, Prümers 2022, Gómara) are logged with the pages Medina supplies."
+  actor: aletheia verify (claude-sonnet-5 second reader; drafter claude-fable-5-1)
+  aiAssisted: true
+  kind: content
+
+- date: 2026-09-17
+  change: "Correction by the operator: 44 disposition rows written by verification 2026-09-17-verify-pre-columbian-amazon-140447 as \"failed\" (quoted span or anchor quote not found verbatim in SRC-CARVAJAL-1542 or SRC-CRUZ-1651) are set to \"blocked\" with a route. The Internet Archive did not serve either book's OCR text during that run and retrieval read the item pages instead, which are viewers, not the texts; the quotes were checked against nothing."
+  reason: A failed row says the source did not say it; these sources were not read. The retrieval fault is fixed in code (the item page is no longer passed off as the text); the rows keep their proposal reference so a re-verification can re-submit the records.
+  actor: claude-fable-5-1 (operator), correcting the sitting's own record in the founder's session of 2026-09-17
+  runId: session_01AiXD4y5Y91KC7iM3uBhWmu
+  promptVersion: operator-by-hand-v1
+  aiAssisted: true
+  kind: content
+
+- date: 2026-09-17
+  change: "Correction by the operator: SRC-CARVAJAL-1542.verification — \"ai_verified\" → \"unverified\"; SRC-CARVAJAL-1542.verificationNote rewritten to say what was read, by whom, and what was not. The drafter (proposal 2026-09-17-draft-pre-columbian-amazon-135349) read the Medina 1894 OCR text's introduction, pp. i–lxxviii; the Relación body lay past the draft's 120,000-character read window; the verifier (2026-09-17-verify-pre-columbian-amazon-140447) could not retrieve the text and checked no quotation from it."
+  reason: "The entry of 2026-09-17 above raised the label to ai_verified on the drafter's reading while the retained note still said the primary text had never been fetched, and the same commit's correction records that the verifier read the item page, not the text: the stamp, the note and the run's account contradicted one another. The constitutional panel parked the sitting for exactly this (Opus 5, GPT-5.6 Sol and Grok 4.5 seats; §3.8, §3.14, §3.15, §4) and the GPT-5.6 Sol seat's review note #341 asked that the label and note be scoped to the pages actually inspected. Under this ledger's convention ai_verified is the verify verb's word after it has read the text and checked the quotes; that has not happened, so the label returns to unverified and the note carries the drafter's reading exactly. It will be raised by the verify verb when the blocked Carvajal rows are re-submitted against the served OCR text."
+  actor: "claude-fable-5-1 (operator), answering review note #341 and the panel's park in the founder's session of 2026-09-17"
+  runId: session_01AiXD4y5Y91KC7iM3uBhWmu
+  promptVersion: operator-by-hand-v1
+  aiAssisted: true
+  kind: content
+- date: 2026-09-17
+  change: 'Correction by the operator: AMZ-E074.exactLocator — "[p. 4], supplement S2 via open-access author manuscript" → "[p. 4], via open-access author manuscript"; a reader act on the record carries the same.'
+  reason: "Review note #341: the verify verb's mechanical narrowing removed the supplement's page marker (\"[p. 24]\") but left the words \"supplement S2\" standing, so the locator kept a component the part does not quote while its own reader act said \"the part quotes p. 4 only\". The narrowing code is corrected separately so the words go with the marker."
+  actor: "claude-fable-5-1 (operator), answering review note #341 in the founder's session of 2026-09-17"
+  runId: session_01AiXD4y5Y91KC7iM3uBhWmu
+  promptVersion: operator-by-hand-v1
+  aiAssisted: true
+  kind: content

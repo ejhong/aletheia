@@ -88,3 +88,12 @@
   actor: aletheia verify (claude-sonnet-5 second reader; drafter claude-fable-5-1)
   aiAssisted: true
   kind: content
+
+- date: 2026-09-17
+  change: "Correction by the operator: 44 disposition rows written by verification 2026-09-17-verify-pre-columbian-amazon-140447 as \"failed\" (quoted span or anchor quote not found verbatim in SRC-CARVAJAL-1542 or SRC-CRUZ-1651) are set to \"blocked\" with a route. The Internet Archive did not serve either book's OCR text during that run and retrieval read the item pages instead, which are viewers, not the texts; the quotes were checked against nothing."
+  reason: A failed row says the source did not say it; these sources were not read. The retrieval fault is fixed in code (the item page is no longer passed off as the text); the rows keep their proposal reference so a re-verification can re-submit the records.
+  actor: claude-fable-5-1 (operator), correcting the sitting's own record in the founder's session of 2026-09-17
+  runId: session_01AiXD4y5Y91KC7iM3uBhWmu
+  promptVersion: operator-by-hand-v1
+  aiAssisted: true
+  kind: content

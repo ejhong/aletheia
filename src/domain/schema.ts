@@ -1167,6 +1167,8 @@ export const ArbiterSeatSchema = z.object({
   /** The kind of violation a seat found (panel protocol v3); absent on complies and unsure. */
   paradigm: z.string().optional(),
   cost: ArbiterSeatCostSchema.optional(),
+  /** Present when the verdict is the seat's second reply, the first having not read as JSON (2026-09-17); both replies are in the cost. */
+  askedAgain: z.string().optional(),
 });
 export const ArbiterRecordSchema = z.object({
   pr: z.number().int(),

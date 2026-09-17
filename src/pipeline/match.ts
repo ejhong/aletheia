@@ -31,13 +31,28 @@ export type OpenAlexResult = {
 export const surname = (a: string) => a.split(",")[0].trim().split(/\s+/).at(-1)?.toLowerCase().replace(/[^a-zÀ-ɏ-]/g, "") ?? "";
 
 /** Whether one of the reference's authors is among the result's. */
-export function authorMatch(ref: Reference, r: OpenAlexResult): boolean {
+/**
+ * The author check, said as it was made: the surname the lead gave that was found among the document's author
+ * names, and the name it was found in — or null. It is a surname test and no more, so the provenance built from it
+ * says "surname found", not "author agreed" (review note #344).
+ */
+export function authorAgreement(ref: Reference, r: OpenAlexResult): { surname: string; name: string } | null {
   const mine = ref.authors.map(surname).filter((s) => s.length > 2);
-  if (!mine.length) return false;
-  // A library catalogue writes "Petrie, W. M. Flinders (William Matthew Flinders), Sir, 1853-1942": compare on the
-  // name's words with punctuation set aside, so a surname is found however the index writes the name.
-  const theirs = (r.authorships ?? []).map((a) => (a.author?.display_name ?? "").toLowerCase().replace(/[^a-zÀ-ɏ\s-]/g, " "));
-  return mine.some((m) => theirs.some((t) => t.split(/\s+/).includes(m) || t.endsWith(` ${m}`)));
+  if (!mine.length) return null;
+  for (const a of r.authorships ?? []) {
+    const name = a.author?.display_name ?? "";
+    // A library catalogue writes "Petrie, W. M. Flinders (William Matthew Flinders), Sir, 1853-1942": compare on the
+    // name's words with punctuation set aside, so a surname is found however the index writes the name.
+    const t = name.toLowerCase().replace(/[^a-zÀ-ɏ\s-]/g, " ");
+    const words = t.split(/\s+/);
+    const found = mine.find((m) => words.includes(m) || t.endsWith(` ${m}`));
+    if (found) return { surname: found, name };
+  }
+  return null;
+}
+
+export function authorMatch(ref: Reference, r: OpenAlexResult): boolean {
+  return authorAgreement(ref, r) !== null;
 }
 
 /** A descriptive reference ("Shah's microdialysis study") matches on author and year with a looser title bar. */

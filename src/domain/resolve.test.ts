@@ -58,9 +58,10 @@ describe("resolveLead", () => {
     expect(r?.identifier).toBe("doi:10.1007/s11916-013-0352-9");
     expect(r?.url).toBe("https://example.org/stecco2013.pdf");
     expect(r?.via).toMatch(/Semantic Scholar/);
-    expect(r?.via).toMatch(/agreed on title, year, author$/);
+    expect(r?.via).toMatch(/matched on title containment 1 \(at or above the 0\.7 threshold\); year 2013 exact; author surname "stecco" found in the index's "A\. Stecco"$/);
     expect(r?.similarity).toBe(1);
     expect(r?.agreed).toEqual(["title", "year", "author"]);
+    expect(r?.checks).toHaveLength(3);
     // A lead that gave an author or a year is resolved only when they agree: the same title under another name, or without a year, does not settle it.
     expect(await resolveLead(parseLead('- Lehner, 2013, "Fascial Components of the Myofascial Pain Syndrome" — x'), fetchImpl)).toBeNull();
     const noYear = (async (input: string | URL | Request) => (String(input).startsWith("https://api.openalex.org/") ? json({ results: [{ title: "Fascial components of the myofascial pain syndrome", publication_year: null, doi: "https://doi.org/10.1007/s11916-013-0352-9", authorships: [{ author: { display_name: "Antonio Stecco" } }] }] }) : json({}))) as typeof fetch;
@@ -68,11 +69,18 @@ describe("resolveLead", () => {
     // A bare lead — no author, no year given — may resolve on the title alone, and the provenance says only that.
     const bare = await resolveLead({ text: "Fascial Components of the Myofascial Pain Syndrome" }, fetchImpl);
     expect(bare?.agreed).toEqual(["title"]);
-    expect(bare?.via).toMatch(/agreed on title$/);
+    expect(bare?.via).toMatch(/matched on title containment 1 \(at or above the 0\.7 threshold\)$/);
+    expect(bare?.checks).toEqual(["title containment 1 (at or above the 0.7 threshold)"]);
     expect(await resolveLead(parseLead('- Nobody, 1999, "A Title No Index Holds" — x'), fetchImpl)).toBeNull();
     expect(await resolveLead({ text: "short" }, fetchImpl)).toBeNull();
     const archiveOnly = (async (input: string | URL | Request) => (String(input).startsWith("https://archive.org/advancedsearch.php") ? json({ response: { docs: [{ identifier: "pyramidstemplesof00petr", title: "The pyramids and temples of Gizeh", year: "1883", creator: "Petrie, W. M. Flinders (William Matthew Flinders), Sir, 1853-1942" }] } }) : json({}))) as typeof fetch;
     const book = await resolveLead(parseLead('- Petrie, 1883, "The Pyramids and Temples of Gizeh" — casing stones'), archiveOnly);
     expect(book).toMatchObject({ identifier: "archive:pyramidstemplesof00petr", url: "https://archive.org/details/pyramidstemplesof00petr", year: "1883" });
+    expect(book?.via).toMatch(/year 1883 exact; author surname "petrie" found in the index's "Petrie, W\. M\. Flinders \(William Matthew Flinders\), Sir, 1853-1942"$/);
+    // A year within one is accepted, and the provenance says that is what happened rather than "the year agreed".
+    const offByOne = (async (input: string | URL | Request) => (String(input).startsWith("https://archive.org/advancedsearch.php") ? json({ response: { docs: [{ identifier: "pyramidstemplesof00petr", title: "The pyramids and temples of Gizeh", year: "1884", creator: "Petrie, W. M. Flinders (William Matthew Flinders), Sir, 1853-1942" }] } }) : json({}))) as typeof fetch;
+    const near = await resolveLead(parseLead('- Petrie, 1883, "The Pyramids and Temples of Gizeh" — casing stones'), offByOne);
+    expect(near?.agreed).toEqual(["title", "year", "author"]);
+    expect(near?.via).toMatch(/year within one \(the lead said 1883, the index 1884\); author surname "petrie"/);
   });
 });

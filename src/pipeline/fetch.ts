@@ -250,7 +250,7 @@ export function arxivIdOf(url: string | null | undefined): string | null {
  */
 export async function retrieve(
   target: RetrievalTarget,
-  opts: { timeoutMs?: number; maxChars?: number; fetchImpl?: typeof fetch } = {},
+  opts: { timeoutMs?: number; maxChars?: number; fetchImpl?: typeof fetch; retryDelayMs?: number } = {},
 ): Promise<FetchedSource> {
   const doi = target.doi ?? (target.url ? doiFromUrl(target.url) : null);
   const key = target.url ?? (doi ? `https://doi.org/${doi}` : "");
@@ -269,10 +269,24 @@ export async function retrieve(
   // unverified, not false (2026-09-17: the ledger held eight blocked routes reading "download the FULL TEXT from
   // archive.org", and nothing could follow them).
   const item = archiveItemOf(target.url);
-  if (item && !/_djvu\.txt$/i.test(target.url ?? "")) {
-    const txt = `https://archive.org/download/${item}/${item}_djvu.txt`;
-    const full = await fetchSource(txt, opts);
-    if (full.ok) return { ...full, url: key, via: `Internet Archive OCR text at ${txt}, read for the item page`, substitute: true };
+  if (item) {
+    // The OCR text under download/, then the same text as the stream page serves it; a 429 or 5xx is asked once
+    // more after a pause, because the Archive throttles a runner that has just read a book from it (2026-09-17: a
+    // verify pass ten minutes after the draft's read got the item page instead and failed forty-four records).
+    const routes = [`https://archive.org/download/${item}/${item}_djvu.txt`, `https://archive.org/stream/${item}/${item}_djvu.txt`];
+    const tried: string[] = [];
+    for (const txt of routes) {
+      let full = await fetchSource(txt, opts);
+      if (!full.ok && full.status !== null && (full.status === 429 || full.status >= 500)) {
+        await new Promise((r) => setTimeout(r, opts.retryDelayMs ?? 5_000));
+        full = await fetchSource(txt, opts);
+      }
+      if (full.ok) return { ...full, url: key, via: `Internet Archive OCR text at ${txt}, read for the item page`, substitute: true };
+      tried.push(`${txt} — ${full.reason ?? "not readable"}`);
+    }
+    // The item page is a viewer, not the text: it answers only with its title, so the record can still be matched.
+    const page = target.url ? await fetchSource(target.url, opts) : null;
+    return { url: key, ok: false, status: page?.status ?? null, contentType: page?.contentType ?? null, text: null, reason: `Internet Archive OCR text not served (${tried.join("; ")}); the item page is a viewer, not the text`, ...(page?.pageTitle ? { pageTitle: page.pageTitle } : {}) };
   }
   const first = target.url ? await fetchSource(target.url, opts) : null;
   if (first?.ok) return first;

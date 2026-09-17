@@ -122,7 +122,8 @@ function checkIntegrity(caseDir: string, loaded: LoadedCase): void {
     }
   }
   for (const r of loaded.research) {
-    if ((r.status ?? "open") !== "open" && !r.statusNote) throw new ContentError(caseDir, `${r.id}: status "${r.status}" needs a statusNote saying what settled, replaced or retired it`);
+    // A settled status is an assessment: it carries what settled it, which run set it, and when — all three, fail-closed (review note #330).
+    if ((r.status ?? "open") !== "open" && !(r.statusNote && r.statusBy && r.statusDate)) throw new ContentError(caseDir, `${r.id}: status "${r.status}" needs statusNote, statusBy and statusDate — what settled it, which run set it, and when`);
   }
   for (const s of loaded.sources) {
     if (s.provisional && s.verification !== "unverified") {

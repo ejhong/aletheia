@@ -99,7 +99,7 @@ ARTICLE RULES
 - Set competing accounts side by side, in the founding inputs' own terms where they have them: what each proposes, what each would predict, what the ledger holds for each, and what observation would decide between them. A reader should leave knowing the live alternatives, not only the incumbent.
 - Length is what the evidence earns; concrete observations beat repeated caution.
 
-RETURN JSON only, matching the supplied schema: `rationale` (what changed and why this telling is better — or why selection and prose changed while the judgment did not), `question` (or null), `accounts` (or empty), `featuredClaimIds`, `cruxOrder`, `article`, and `assessment` only if the judgment changed.
+RETURN JSON only, matching the supplied schema: `rationale` (what changed and why this telling is better — or why selection and prose changed while the judgment did not), `question` (or null), `accounts` (or empty), `featuredClaimIds`, `cruxOrder`, `article`, and `assessment` only if the judgment changed. Also `researchStatus`: the research items the ledger has settled, replaced or retired since the incumbent, each `{ id, status, note }` — an empty list when nothing has.
 
 ## The reader's cost (v6, 2026-09-11)
 
@@ -163,3 +163,21 @@ The article may mention them only as what they are — "a source this
 ledger has not yet read reports…" — never as a finding. When the text is
 read, the record is promoted or refused, and the next edition sees the
 difference.
+
+## The research agenda has a lifecycle (v9, 2026-09-17)
+
+A research item is a plan with a status: `open` until something settles
+it. When you compose an edition, read the agenda against the ledger and
+return `researchStatus` for any item whose standing changed:
+- `answered` — a study collected its rows, or evidence records now decide
+  the claims it would move; the note names them (ids) and says what they
+  showed.
+- `superseded` — a sharper item now proposes the same test with better
+  targets or a decision rule; the note names it.
+- `retired` — the claim it would move was refused or the question
+  dissolved; the note says why.
+- `open` — to reopen an item settled earlier, with the reason.
+Order only the open items in `cruxOrder`; settled items keep their
+records and are shown apart. Never settle an item to shorten the agenda:
+an open test nobody has run is the agenda's point. The verb writes the
+status onto the item with this run's stamp and a history entry.

@@ -1,5 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
+import { researchStatus } from "../domain/schema.ts";
+import type { ResearchStatus, ResearchOpportunity } from "../domain/schema.ts";
+import { parse as parseYaml } from "yaml";
 import { assessmentHash, inputsHash } from "../domain/hash.ts";
 import { adoptedAssessment, currentEdition } from "../domain/editions.ts";
 import { currentChecks, latestCheckPerModel, ratification } from "../domain/standing.ts";
@@ -13,7 +16,7 @@ import {
   type LoadedCase,
 } from "../domain/schema.ts";
 import { hhmmssUTC, isoDate } from "../lib/overlay-ids.mjs";
-import { writeYamlFile } from "./ledger-write.ts";
+import { appendHistory, setField, writeYamlFile } from "./ledger-write.ts";
 import { MODELS } from "../lib/models.mjs";
 import { anthropicJson, type Meter } from "./models.ts";
 import { buildPacket, renderPacket } from "./packet.ts";
@@ -48,7 +51,7 @@ const VERDICTS = [
 export const EDITION_SCHEMA: Record<string, unknown> = {
   type: "object",
   additionalProperties: false,
-  required: ["rationale", "question", "accounts", "featuredClaimIds", "cruxOrder", "article", "assessment"],
+  required: ["rationale", "question", "accounts", "featuredClaimIds", "cruxOrder", "article", "researchStatus", "assessment"],
   properties: {
     rationale: { type: "string" },
     question: { type: ["string", "null"] },
@@ -56,6 +59,15 @@ export const EDITION_SCHEMA: Record<string, unknown> = {
     featuredClaimIds: { type: "array", items: { type: "string" } },
     cruxOrder: { type: "array", items: { type: "string" } },
     article: { type: "string" },
+    researchStatus: {
+      type: "array",
+      items: {
+        type: "object",
+        additionalProperties: false,
+        required: ["id", "status", "note"],
+        properties: { id: { type: "string" }, status: { type: "string", enum: ["open", "answered", "superseded", "retired"] }, note: { type: "string" } },
+      },
+    },
     assessment: {
       type: ["object", "null"],
       additionalProperties: false,
@@ -129,6 +141,8 @@ export interface EditionReply {
   featuredClaimIds: string[];
   cruxOrder: string[];
   article: string;
+  /** Research items the ledger has settled, replaced or retired since the incumbent (protocols/edition-v9.md). */
+  researchStatus?: { id: string; status: "open" | "answered" | "superseded" | "retired"; note: string }[];
   assessment: {
     verdict: string;
     loadBearing: string[];
@@ -382,9 +396,62 @@ export async function runEdition(caseKey: string, opts: EditionOptions = {}): Pr
       edition,
     );
     const wrote = [editionFile, assessmentFile].filter((f): f is string => Boolean(f)).map((f) => path.relative(root, f));
-    const notes = [assessment ? "new assessment" : "re-adopts the incumbent's assessment", `article ${countWords(incumbent.article)} → ${countWords(edition.article)} words`, reply.fallback ? `served by the fallback: ${reply.fallback}` : undefined].filter(Boolean).join("; ");
+    // The agenda's lifecycle: the candidate may settle, replace or retire research items; each change is written onto
+    // the item with this run's stamp and one history entry (protocols/edition-v9.md, "The research agenda has a lifecycle").
+    const statusPlan = researchStatusChanges(loaded, reply.data.researchStatus ?? []);
+    for (const err of statusPlan.errors) console.error(`${runId}: ${err}`);
+    if (statusPlan.changes.length) {
+      const researchFile = path.join(caseDir, "research.yaml");
+      const raw = parseYaml(fs.readFileSync(researchFile, "utf8")) as Record<string, unknown>[];
+      for (const ch of statusPlan.changes) {
+        const before = raw.find((r) => r.id === ch.id) ?? {};
+        setField(researchFile, ch.id, "status", before.status ?? null, ch.to);
+        setField(researchFile, ch.id, "statusNote", before.statusNote ?? null, ch.note);
+        setField(researchFile, ch.id, "statusBy", before.statusBy ?? null, runId);
+        setField(researchFile, ch.id, "statusDate", before.statusDate ?? null, date);
+      }
+      appendHistory(
+        loaded.dir,
+        {
+          date,
+          change: `Research agenda: ${statusPlan.changes.map((c) => `${c.id} ${c.from} → ${c.to} (${c.note})`).join("; ")}.`,
+          reason: `Set by the edition verb (${reply.model}, ${protocol.version}) in run ${runId}, reading the agenda against the ledger as it stands; the edition ${edition.runId} carries the reasoning.`,
+          actor: `aletheia edition (${reply.model})`,
+          aiAssisted: true,
+          kind: "content",
+        },
+        root,
+      );
+      wrote.push(path.relative(root, researchFile));
+    }
+    const agenda = { open: 0, answered: 0, superseded: 0, retired: 0 };
+    for (const r of loaded.research) agenda[researchStatus(r)]++;
+    for (const ch of statusPlan.changes) { agenda[ch.from]--; agenda[ch.to]++; }
+    const notes = [assessment ? "new assessment" : "re-adopts the incumbent's assessment", `article ${countWords(incumbent.article)} → ${countWords(edition.article)} words`, `research agenda: ${agenda.open} open, ${agenda.answered} answered, ${agenda.superseded} superseded, ${agenda.retired} retired${statusPlan.changes.length ? ` (${statusPlan.changes.length} change(s) this run)` : ""}`, reply.fallback ? `served by the fallback: ${reply.fallback}` : undefined].filter(Boolean).join("; ");
     return { ...closeRun(run, "completed", { model: reply.model, reason: notes, wrote }), editionFile, assessmentFile };
   } catch (e) {
     return closeRun(run, "failed", { reason: (e as Error).message });
   }
+}
+
+/** A candidate's research-status entries checked against the ledger: what would change, and what cannot (2026-09-17). */
+export function researchStatusChanges(
+  loaded: LoadedCase,
+  entries: { id: string; status: ResearchStatus; note: string }[],
+): { changes: { id: string; from: ResearchStatus; to: ResearchStatus; note: string }[]; errors: string[] } {
+  const changes: { id: string; from: ResearchStatus; to: ResearchStatus; note: string }[] = [];
+  const errors: string[] = [];
+  const seen = new Set<string>();
+  for (const e of entries ?? []) {
+    const item = loaded.research.find((r) => r.id === e.id);
+    if (!item) { errors.push(`researchStatus names ${e.id}, which is not a research item of this case`); continue; }
+    if (seen.has(e.id)) { errors.push(`researchStatus names ${e.id} twice`); continue; }
+    seen.add(e.id);
+    const from = researchStatus(item);
+    // An open item named open again is no change and needs no note; anything else needs one.
+    if (from === e.status && (e.status === "open" || (item.statusNote ?? "") === (e.note ?? "").trim())) continue;
+    if (!e.note || e.note.trim().length < 3) { errors.push(`researchStatus ${e.id}: a note saying what settled, replaced or retired it is required`); continue; }
+    changes.push({ id: e.id, from, to: e.status, note: e.note.trim() });
+  }
+  return { changes, errors };
 }

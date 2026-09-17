@@ -561,8 +561,26 @@ export const ResearchOpportunitySchema = z.object({
    * hand-written items predate it and need no synthetic provenance.
    */
   origin: OriginSchema.optional(),
+  /**
+   * Where the plan stands (2026-09-17): `open` until something settles it. The edition verb sets it when the ledger
+   * moves — `answered` when a study, evidence or a claim's resolution settled the question; `superseded` when a
+   * sharper item replaced it; `retired` when the claim it would move is gone. Shown on the page; the loader requires a
+   * note off `open`. Absent in files written before this, which reads as open — optional rather than defaulted, so
+   * that older records keep their canonical form and the ledger hash every edition adopted (a default would have made
+   * every edition read as stale).
+   */
+  status: z.enum(["open", "answered", "superseded", "retired"]).optional(),
+  /** What settled, replaced or retired it — study, evidence, claim or research ids and a sentence. */
+  statusNote: z.string().optional(),
+  /** The run that set the status. */
+  statusBy: z.string().optional(),
+  statusDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
 });
 export type ResearchOpportunity = z.infer<typeof ResearchOpportunitySchema>;
+export const RESEARCH_STATUSES = ["open", "answered", "superseded", "retired"] as const;
+export type ResearchStatus = (typeof RESEARCH_STATUSES)[number];
+/** A research item's status, open when the file says nothing. */
+export const researchStatus = (r: Pick<ResearchOpportunity, "status">): ResearchStatus => r.status ?? "open";
 
 export const ChangeLogEntrySchema = z.object({
   date: z.string(),

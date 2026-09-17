@@ -121,6 +121,9 @@ function checkIntegrity(caseDir: string, loaded: LoadedCase): void {
       throw new ContentError(caseDir, `${r.id}: carries a provisional block but is "${r.reviewState}" — only a provisional or a refused record may`);
     }
   }
+  for (const r of loaded.research) {
+    if ((r.status ?? "open") !== "open" && !r.statusNote) throw new ContentError(caseDir, `${r.id}: status "${r.status}" needs a statusNote saying what settled, replaced or retired it`);
+  }
   for (const s of loaded.sources) {
     if (s.provisional && s.verification !== "unverified") {
       throw new ContentError(caseDir, `${s.id}: a provisional source is unverified by definition (verification is "${s.verification}")`);

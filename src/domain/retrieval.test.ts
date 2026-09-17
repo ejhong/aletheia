@@ -131,7 +131,7 @@ describe("arXiv: the abstract page is the key, the PDF is the text", () => {
 });
 
 describe("Internet Archive items", () => {
-  it("reads the OCR text the Archive serves beside a scan, under the item page's key, as a stand-in; the item page still answers when the text will not", async () => {
+  it("reads the OCR text the Archive serves beside a scan, under the item page's key, as a stand-in; the item page is never passed off as the text", async () => {
     expect(archiveItemOf("https://archive.org/details/descubrimientod00carvgoog")).toBe("descubrimientod00carvgoog");
     expect(archiveItemOf("https://archive.org/download/historiageneral04fernguat/historiageneral04fernguat.pdf")).toBe("historiageneral04fernguat");
     expect(archiveItemOf("https://archive.org/stream/expeditionsintov00markrich/x_djvu.txt")).toBe("expeditionsintov00markrich");
@@ -150,10 +150,24 @@ describe("Internet Archive items", () => {
     expect(r.via).toContain("_djvu.txt");
     expect(r.substitute).toBe(true);
     expect(calls[0]).toContain("_djvu.txt");
-    const noText = (async (input: string | URL | Request) => (String(input).includes("_djvu.txt") ? new Response("gone", { status: 404 }) : new Response("<html><head><title>Item</title></head><body><p>Item page only.</p></body></html>", { headers: { "content-type": "text/html" } }))) as typeof fetch;
-    const fallback = await retrieve({ url: "https://archive.org/details/descubrimientod00carvgoog" }, { fetchImpl: noText });
-    expect(fallback.ok).toBe(true);
-    expect(fallback.via).toBeUndefined();
-    expect(fallback.text).toContain("Item page only.");
+    // The stream page serves the same text when download/ will not; a throttled first answer is asked once more.
+    let hits = 0;
+    const throttled = (async (input: string | URL | Request) => {
+      const url = String(input);
+      if (url.includes("/download/")) return new Response("slow down", { status: 429 });
+      if (url.includes("/stream/")) return ++hits === 1 ? new Response("busy", { status: 503 }) : new Response("<html><body><pre>Vimos muchos pueblos en la ribera.</pre></body></html>", { headers: { "content-type": "text/html" } });
+      return new Response("<html><head><title>Descubrimiento</title></head><body><p>Item page.</p></body></html>", { headers: { "content-type": "text/html" } });
+    }) as typeof fetch;
+    const viaStream = await retrieve({ url: "https://archive.org/details/descubrimientod00carvgoog" }, { fetchImpl: throttled, retryDelayMs: 1 });
+    expect(viaStream.ok).toBe(true);
+    expect(viaStream.via).toContain("/stream/");
+    expect(viaStream.text).toContain("Vimos muchos pueblos");
+    // When no route serves the text, the item page is not passed off as it: the fetch fails, saying why, and keeps the page's title so the record can still be matched.
+    const noText = (async (input: string | URL | Request) => (String(input).includes("_djvu.txt") ? new Response("gone", { status: 404 }) : new Response("<html><head><title>Descubrimiento del rio de las Amazonas</title></head><body><p>Item page only.</p></body></html>", { headers: { "content-type": "text/html" } }))) as typeof fetch;
+    const failed = await retrieve({ url: "https://archive.org/details/descubrimientod00carvgoog" }, { fetchImpl: noText, retryDelayMs: 1 });
+    expect(failed.ok).toBe(false);
+    expect(failed.text).toBeNull();
+    expect(failed.reason).toMatch(/OCR text not served .*the item page is a viewer, not the text/);
+    expect(failed.pageTitle).toBe("Descubrimiento del rio de las Amazonas");
   });
 });

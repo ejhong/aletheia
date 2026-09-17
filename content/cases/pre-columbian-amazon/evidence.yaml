@@ -640,7 +640,7 @@
   strength: strong
   sourceStatement: Some mounds were "reoccupied after a hiatus by groups of the Huapula culture" between 800 and 1200 CE.
   editorInference: Continuity of some occupation into the second millennium at Upano, at lower density; relevant to how long the valley's surfaces were forested before Colonial times.
-  exactLocator: "[p. 4], supplement S2 via open-access author manuscript"
+  exactLocator: "[p. 4], via open-access author manuscript"
   limitations:
     - Reoccupation extent ('some mounds') not quantified.
   reviewState: ai_extracted
@@ -658,6 +658,14 @@
       promptVersion: verify-v6
       date: 2026-09-17
       reason: the part quotes p. 4 only
+    - field: exactLocator
+      from: "[p. 4], supplement S2 via open-access author manuscript"
+      to: "[p. 4], via open-access author manuscript"
+      model: claude-fable-5-1 (operator, by hand)
+      runId: session_01AiXD4y5Y91KC7iM3uBhWmu
+      promptVersion: operator-by-hand-v1
+      date: 2026-09-17
+      reason: the mechanical narrowing removed the supplement's page marker but left its name; the part quotes p. 4 only
 - id: AMZ-E075
   title: Huapula reoccupation of Upano mounds, 800–1200 CE — part 2
   claimIds:

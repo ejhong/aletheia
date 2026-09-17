@@ -97,3 +97,20 @@
   promptVersion: operator-by-hand-v1
   aiAssisted: true
   kind: content
+
+- date: 2026-09-17
+  change: "Correction by the operator: SRC-CARVAJAL-1542.verification — \"ai_verified\" → \"unverified\"; SRC-CARVAJAL-1542.verificationNote rewritten to say what was read, by whom, and what was not. The drafter (proposal 2026-09-17-draft-pre-columbian-amazon-135349) read the Medina 1894 OCR text's introduction, pp. i–lxxviii; the Relación body lay past the draft's 120,000-character read window; the verifier (2026-09-17-verify-pre-columbian-amazon-140447) could not retrieve the text and checked no quotation from it."
+  reason: "The entry of 2026-09-17 above raised the label to ai_verified on the drafter's reading while the retained note still said the primary text had never been fetched, and the same commit's correction records that the verifier read the item page, not the text: the stamp, the note and the run's account contradicted one another. The constitutional panel parked the sitting for exactly this (Opus 5, GPT-5.6 Sol and Grok 4.5 seats; §3.8, §3.14, §3.15, §4) and the GPT-5.6 Sol seat's review note #341 asked that the label and note be scoped to the pages actually inspected. Under this ledger's convention ai_verified is the verify verb's word after it has read the text and checked the quotes; that has not happened, so the label returns to unverified and the note carries the drafter's reading exactly. It will be raised by the verify verb when the blocked Carvajal rows are re-submitted against the served OCR text."
+  actor: "claude-fable-5-1 (operator), answering review note #341 and the panel's park in the founder's session of 2026-09-17"
+  runId: session_01AiXD4y5Y91KC7iM3uBhWmu
+  promptVersion: operator-by-hand-v1
+  aiAssisted: true
+  kind: content
+- date: 2026-09-17
+  change: 'Correction by the operator: AMZ-E074.exactLocator — "[p. 4], supplement S2 via open-access author manuscript" → "[p. 4], via open-access author manuscript"; a reader act on the record carries the same.'
+  reason: "Review note #341: the verify verb's mechanical narrowing removed the supplement's page marker (\"[p. 24]\") but left the words \"supplement S2\" standing, so the locator kept a component the part does not quote while its own reader act said \"the part quotes p. 4 only\". The narrowing code is corrected separately so the words go with the marker."
+  actor: "claude-fable-5-1 (operator), answering review note #341 in the founder's session of 2026-09-17"
+  runId: session_01AiXD4y5Y91KC7iM3uBhWmu
+  promptVersion: operator-by-hand-v1
+  aiAssisted: true
+  kind: content

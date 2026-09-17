@@ -482,6 +482,9 @@ export function sourceExists(
     for (const i of ids) {
       if (i.r?.status === "resolves" && metadataMatches(title, i.r.note)) return `${i.kind} ${i.id} resolves to a record with this title (${i.r.note})`;
     }
+    // Identifiers must resolve: a record that carries one enters only through it — never through a page title while
+    // its identifier is unchecked or unmatched (review note #329). Only a source with no identifier may enter on its page.
+    if (ids.length) return null;
   }
   const status = fetched?.status ?? null;
   if (status !== null && status >= 200 && status < 400 && fetched?.pageTitle && metadataMatches(title, fetched.pageTitle)) {
@@ -516,7 +519,7 @@ export function correctionBlocker(loaded: LoadedCase, c: Correction): string | n
 }
 
 /** What the reader is told when it judges a record whose source text could not be retrieved. */
-export const TEXT_UNAVAILABLE = "The source text could not be retrieved: judge only what needs no text — whether the record is one observation, whether it bears on the case, whether independence is noted, whether the source statement reads as a statement and not an inference — and set quoteInContext, statementSupported and locatorSupported to true, meaning not assessed.";
+export const TEXT_UNAVAILABLE = "The source text could not be retrieved: judge only what needs no text — whether the record is one observation, whether it bears on the case, whether independence is noted, whether the source statement reads as a statement and not an inference. Report quoteInContext, statementSupported and locatorSupported as false: without the text they are not assessed, and say so in the reason. The verb reads only atomic, relevant and independenceNoted from this reply.";
 
 /** A resolver note that carries a Retraction Watch finding (src/lib/citation-check.mjs). */
 const NOTICE = /^(RETRACTED|CORRECTED|WITHDRAWN)\b/;

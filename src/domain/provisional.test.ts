@@ -47,7 +47,11 @@ describe("sourceExists", () => {
     expect(sourceExists(src, { status: 429, reason: "HTTP 429" }, bare)).toBeNull();
     const other = new Map([[`doi:${DOI}`, { status: "resolves", note: `Crossref: "A completely different paper about glass", 2019` }]]);
     expect(sourceExists(src, { status: 429, reason: "HTTP 429" }, other)).toBeNull();
-    expect(sourceExists(src, { status: 200, reason: "PDF has no extractable text (12 pages)", pageTitle: TITLE }, new Map())).toMatch(/URL answered HTTP 200 with a document titled/);
+    // A record that carries an identifier enters only through it: unchecked, it does not enter on its page title (review note #329).
+    expect(sourceExists(src, { status: 200, reason: "PDF has no extractable text (12 pages)", pageTitle: TITLE }, new Map())).toBeNull();
+    expect(sourceExists(src, { status: 200, reason: "PDF has no extractable text (12 pages)", pageTitle: TITLE }, new Map([[`doi:${DOI}`, { status: "unchecked", note: "lookup failed" }]]))).toBeNull();
+    const noId = { ...(src as object), identifier: undefined } as never;
+    expect(sourceExists(noId, { status: 200, reason: "PDF has no extractable text (12 pages)", pageTitle: TITLE }, new Map())).toMatch(/URL answered HTTP 200 with a document titled/);
     expect(sourceExists(src, { status: 200, reason: "PDF has no extractable text (12 pages)" }, new Map())).toBeNull();
     expect(sourceExists(src, { status: 200, reason: "paywall served with HTTP 200", pageTitle: "Log in | Publisher" }, new Map())).toBeNull();
     expect(sourceExists(src, { status: 403, reason: "HTTP 403", pageTitle: TITLE }, new Map())).toBeNull();
@@ -69,7 +73,8 @@ describe("provisional admission", () => {
   it("a scanned PDF with no text: the source, its evidence and its claim enter provisionally, unread, after the reader judged them without the text", async () => {
     const { c, proposal, meter, judge, judged, texts: seenTexts } = ctx();
     const texts = new Map<string, FetchedSource>([[URL, unread(200, "PDF has no extractable text (12 pages; scanned images need OCR)", TITLE)]]);
-    const v = await judgeProposal(proposal, c, texts, new Map(), judge, meter);
+    const named = new Map([[`doi:${DOI}`, { status: "resolves", note: `Crossref: "${TITLE}", 2026` }]]);
+    const v = await judgeProposal(proposal, c, texts, named, judge, meter);
     const [e] = proposal.adds.evidence;
     const [k] = proposal.adds.claims;
     expect(v.provisional.evidence.map((x) => x.id)).toEqual([e.id]);
@@ -77,7 +82,7 @@ describe("provisional admission", () => {
     expect(v.provisional.sources.map((x) => x.id)).toEqual(["SRC-YI-2026"]);
     const pe = v.provisional.evidence[0];
     expect(pe.reviewState).toBe("provisional");
-    expect(pe.provisional).toMatchObject({ since: expect.any(String), exists: expect.stringMatching(/URL answered HTTP 200 with a document titled/), reason: expect.stringMatching(/no extractable text/), route: expect.stringMatching(/re-run verify/), by: meter.runId });
+    expect(pe.provisional).toMatchObject({ since: expect.any(String), exists: expect.stringMatching(/resolves to a record with this title/), reason: expect.stringMatching(/no extractable text/), route: expect.stringMatching(/re-run verify/), by: meter.runId });
     expect(v.provisional.claims[0].reviewState).toBe("provisional");
     expect(v.provisional.sources[0].verification).toBe("unverified");
     expect(v.accepted.evidence).toEqual([]);
@@ -91,7 +96,7 @@ describe("provisional admission", () => {
   it("what the reader can refuse without the text is refused, not admitted provisionally", async () => {
     const { c, proposal, meter } = ctx();
     const compound = async (): Promise<VerifyReply> => ({ quoteInContext: true, statementSupported: true, locatorSupported: true, directionRight: true, independenceNoted: true, relevant: true, atomic: false, reason: "two findings in one sentence" });
-    const v = await judgeProposal(proposal, c, new Map<string, FetchedSource>([[URL, unread(200, "PDF has no extractable text (12 pages)", TITLE)]]), new Map(), compound, meter);
+    const v = await judgeProposal(proposal, c, new Map<string, FetchedSource>([[URL, unread(200, "PDF has no extractable text (12 pages)", TITLE)]]), new Map([[`doi:${DOI}`, { status: "resolves", note: `Crossref: "${TITLE}", 2026` }]]), compound, meter);
     expect(v.provisional.evidence).toEqual([]);
     expect(v.provisional.claims).toEqual([]);
     const e = v.rejected.find((r) => r.kind === "evidence");

@@ -399,7 +399,16 @@ export async function runEdition(caseKey: string, opts: EditionOptions = {}): Pr
     // The agenda's lifecycle: the candidate may settle, replace or retire research items; each change is written onto
     // the item with this run's stamp and one history entry (protocols/edition-v9.md, "The research agenda has a lifecycle").
     const statusPlan = researchStatusChanges(loaded, reply.data.researchStatus ?? []);
+    // A refused status entry is on the record, not only on stderr: in the run's working file and in its notes (review note #330).
     for (const err of statusPlan.errors) console.error(`${runId}: ${err}`);
+    if (statusPlan.changes.length || statusPlan.errors.length) {
+      writeWorkingFile(
+        runId,
+        "research-status.md",
+        [`# Research agenda — status changes proposed by the edition (${runId})`, ``, `## Applied`, ...statusPlan.changes.map((c) => `- ${c.id}: ${c.from} → ${c.to} — ${c.note}`), ``, `## Refused`, ...statusPlan.errors.map((e) => `- ${e}`), ``].join("\n"),
+        root,
+      );
+    }
     if (statusPlan.changes.length) {
       const researchFile = path.join(caseDir, "research.yaml");
       const raw = parseYaml(fs.readFileSync(researchFile, "utf8")) as Record<string, unknown>[];
@@ -427,7 +436,7 @@ export async function runEdition(caseKey: string, opts: EditionOptions = {}): Pr
     const agenda = { open: 0, answered: 0, superseded: 0, retired: 0 };
     for (const r of loaded.research) agenda[researchStatus(r)]++;
     for (const ch of statusPlan.changes) { agenda[ch.from]--; agenda[ch.to]++; }
-    const notes = [assessment ? "new assessment" : "re-adopts the incumbent's assessment", `article ${countWords(incumbent.article)} → ${countWords(edition.article)} words`, `research agenda: ${agenda.open} open, ${agenda.answered} answered, ${agenda.superseded} superseded, ${agenda.retired} retired${statusPlan.changes.length ? ` (${statusPlan.changes.length} change(s) this run)` : ""}`, reply.fallback ? `served by the fallback: ${reply.fallback}` : undefined].filter(Boolean).join("; ");
+    const notes = [assessment ? "new assessment" : "re-adopts the incumbent's assessment", `article ${countWords(incumbent.article)} → ${countWords(edition.article)} words`, `research agenda: ${agenda.open} open, ${agenda.answered} answered, ${agenda.superseded} superseded, ${agenda.retired} retired${statusPlan.changes.length ? ` (${statusPlan.changes.length} change(s) this run)` : ""}${statusPlan.errors.length ? `; ${statusPlan.errors.length} status entr${statusPlan.errors.length === 1 ? "y" : "ies"} refused (proposals/${runId}/research-status.md)` : ""}`, reply.fallback ? `served by the fallback: ${reply.fallback}` : undefined].filter(Boolean).join("; ");
     return { ...closeRun(run, "completed", { model: reply.model, reason: notes, wrote }), editionFile, assessmentFile };
   } catch (e) {
     return closeRun(run, "failed", { reason: (e as Error).message });

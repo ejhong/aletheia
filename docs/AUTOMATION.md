@@ -142,32 +142,40 @@ and modular code, with the loop on. The facts first, then the plan.
 ## The goal
 
 The founder's direction of 2026-09-16, given in session and recorded in
-the decisions log: make this site present, assess and cover its
-controversies really well, so that it keeps improving as more AI dollars
-are thrown at it — a recursive self-improvement of a narrow kind, running
-in a long loop over time, trying to make the site the best it can be.
-Three things follow for every part of this design.
+the decisions log, reworded on the founder's word the next day: make this
+site present, assess and cover its controversies really well, so that it
+keeps improving as more AI is applied to it — a recursive self-improvement
+of a narrow kind, running in a long loop over time, trying to make the
+site the best it can be. The goal is not cost-effectiveness. It is that
+more AI reliably means a better site, and that a site left with less AI
+does not quietly get worse. Money is not to be wasted, but it is the
+fuel, not the measure. Three things follow for every part of this design.
 
-- **Money is the input; improvement per dollar is the measure.** A sitting
-  is judged by what it left better against what it cost: coverage (a
-  case's ledger holds more of what is known, verified, and refused with
-  reasons), assessment (the standing is better calibrated and the panel
-  concurs with fewer notes), or presentation (a reader finds the state of
-  the question sooner and can drop to its record). A sitting that spends
-  and leaves nothing better is a defect to be found and fixed, not a cost
-  of doing business.
+- **More AI must mean a better site, and never a worse one.** A sitting
+  is judged by what it left better: coverage (a case's ledger holds more
+  of what is known, verified, and refused with reasons), assessment (the
+  standing is better calibrated and the panel concurs with fewer notes),
+  or presentation (a reader finds the state of the question sooner and can
+  drop to its record). The floor matters as much as the ceiling: no pass
+  may leave a case worse than it found it — a fabricated locator, a claim
+  told as fact on no evidence, an article that grew and taught less — and
+  a pass that spends and leaves nothing better is a defect to find and
+  fix, because it breaks the relation between AI applied and quality
+  gained. Cost is a guard against waste, read beside the yield, not the
+  yield itself.
 - **The loop improves itself, not only the content.** What a run teaches
   — a seat's objection, a stalled merge, a record rejected that should have
   been blocked — becomes a gate, a protocol version, or a fix, recorded in
-  the decisions log, so that later dollars buy more than earlier ones. The
-  operator's standing task is to turn review notes into mechanism.
+  the decisions log, so that each round of AI applied buys more than the
+  last. The operator's standing task is to turn review notes into
+  mechanism.
 - **Better is not longer.** Editions are measured in what a reader learns
   per screen, ledgers in what a researcher can verify, standings in how
   well they survive the next pass. Growth in words, records or runs is not
   the goal and does not count as improvement.
 
 The human levers stay exactly two: the kill switch and the constitution.
-Everything else — what to work on, when, how much to spend within the
+Everything else — what to work on, when, how much AI to apply within the
 caps, what to fix — is the loop's, under this document and AGENTS.md.
 
 ## Purpose

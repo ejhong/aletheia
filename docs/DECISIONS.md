@@ -2312,3 +2312,7 @@ The Immortality Key sitting's panel objected three times on one point: the artic
 ## 2026-09-16 — Three search improvements added to the plan
 
 The founder asked whether the search for updates is intelligent and whether it replaced the old mechanism. It is the `report` verb — a browsing seat searching from the case's whole state on a cadence the ledger sets — and the Maintain-era mechanism was retired in #219. Three gaps were named and, on the founder's direction ("add them as todos"), entered in docs/AUTOMATION.md as plan item 5 and status row 7: a date-aware novelty task in the report protocol; a cited-by feed on the ledger's key sources, gathered before the pass as leads; retraction re-checks of admitted sources on a cadence. Supervised-by: founder (direction in session, 2026-09-16).
+
+## 2026-09-17 — The goal, reworded: more AI means a better site, never a worse one
+
+The founder, in session: "i want to slightly reword the main goal from cost effectiveness to being not really cost focused but rather to ensure that we are doing some kind of RSI type thing where more AI = 'better' site, rather than AI not being utilized so site let's say actually gets worse. … I'm not trying to pinch pennies, but of course I don't want to waste money unnecessarily." docs/AUTOMATION.md "The goal" now says so: the measure is that more AI applied reliably means a better site and that a pass never leaves a case worse; money is fuel, not the measure, and cost is read beside the yield as a guard against waste. Supervised-by: founder (direction in session, 2026-09-17).

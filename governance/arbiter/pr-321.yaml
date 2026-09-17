@@ -1,0 +1,117 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 321
+title: "Plan: three search improvements entered as todos"
+url: https://github.com/ejhong/aletheia/pull/321
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-17
+judgedAgainst: b0e79f5ba8
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches only docs/AUTOMATION.md (a new plan item and a
+      status-table row) and docs/DECISIONS.md (a dated entry recording the
+      founder's direction) — no content/ records, no citations, no assessments,
+      no AGENTS.md edit. Citation verification found no identifiers in the added
+      lines, consistent with the docs-only scope. The recorded founder direction
+      is stamped with date (2026-09-16) and channel (in session) and is quoted
+      only as a direction to the operator, which §3.15 explicitly permits in the
+      decisions log. Nothing here loosens a §3.15 check: the proposed cited-by
+      feed is expressly described as supplying 'leads, never as findings', and
+      retraction re-checks strengthen rather than weaken verification. The only
+      blemish is a small labeling wrinkle — the new item is called 'plan item 5'
+      while the status table already has a row 5 and the new row is 7 — which is
+      ordinary editorial imprecision, not a provenance misattribution."
+    cost:
+      model: claude-opus-5
+      inputTokens: 2479
+      outputTokens: 460
+      usd: 0.063814
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.7
+      - §3.8
+      - §3.15
+    reasoning: The change only records three future search improvements and does not
+      add evidence, assessments, or content citations. It explicitly treats
+      mechanically gathered cited-by results as leads rather than findings,
+      preserving the distinction between discovery and admitted evidence. The
+      founder direction is stamped with date and channel in both planning and
+      decision records, as §3.15 permits for operating directions, and the diff
+      neither edits AGENTS.md nor weakens publication checks.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 5681
+      outputTokens: 291
+      usd: 0.028544
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.15
+    reasoning: The pull request adds three search improvements as planned todo items
+      to docs/AUTOMATION.md and logs the decision in docs/DECISIONS.md pursuant
+      to founder directions given in session on 2026-09-16. In accordance with
+      §3.15, founder directions given in working sessions form part of the
+      operating record and may be recorded and cited in the decisions log and
+      protocols with date and channel stamps. No content, claims, citations, or
+      reserved files (AGENTS.md) are modified, and no constitutional checks are
+      loosened.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 6066
+      outputTokens: 392
+      usd: 0.006019
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff only appends founder-directed plan items and a matching
+      decisions-log entry to docs/AUTOMATION.md and docs/DECISIONS.md; it
+      touches no content/, no AGENTS.md, and adds no citations or locators. The
+      entries stamp the direction with date and channel exactly as §3.15 permits
+      for founder operating-record material, without presenting any unratified
+      draft as ratified or altering checks. No run records or confidence
+      material are involved, and the three items are prospective todos rather
+      than implemented epistemic claims. Ordinary documentation of the plan is
+      not a violation.
+    cost:
+      model: grok-4.5
+      inputTokens: 5819
+      outputTokens: 140
+      usd: 0.012593
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.14
+    reasoning: "This is a docs-only change: a plan item and status row in
+      docs/AUTOMATION.md plus a decisions-log entry in docs/DECISIONS.md. It
+      does not edit AGENTS.md, adds no citations or locators (the verification
+      section confirms none are present), publishes no run records, and touches
+      no confidence material. Recording the founder's in-session direction ('add
+      them as todos') with date and channel is exactly what §3.15 permits for
+      operating-record directions. The three planned improvements do not weaken
+      §3.15 checks — the cited-by feed is explicitly framed as 'leads, never
+      findings' handed to the seat, and retraction/correction re-checks of
+      admitted sources strengthen verification rather than loosen it; the items
+      are todos, not published content, so no epistemic record is asserted. The
+      status row's account of prior events (#219, #240, the GPT seat's reading
+      of §3.15) is pre-existing historical record being extended consistently,
+      and nothing in the added lines is internally inconsistent or fabricated on
+      its face."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 6770
+      outputTokens: 336
+      usd: 0.001184
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 26815
+  outputTokens: 1619
+  usd: 0.1122
+harvestedAt: 2026-09-17

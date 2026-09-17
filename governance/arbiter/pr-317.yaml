@@ -1,0 +1,123 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 317
+title: A claim held on its anchor alone says so on the page
+url: https://github.com/ejhong/aletheia/pull/317
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-16
+judgedAgainst: 5c9e702e0c
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: 'The diff touches only UI and domain code (app/claims/[id]/page.tsx,
+      ArticleBody.tsx, view.ts, plus a new test); it adds no content records,
+      citations, locators, or assessment stamps, and the citation tooling found
+      no identifiers to check. AGENTS.md is untouched and no §3.15 check is
+      loosened — if anything the change strengthens the display of evidential
+      thinness by surfacing a zero-evidence claim as "anchored, not yet
+      evidenced" and by replacing a silently hidden Evidence section with an
+      explicit empty state grounded in §3.6 (a source is not evidence). The
+      computation is honest and mechanical: evidenceCount counts admitted
+      evidence records whose claimIds include the claim, and the new test
+      asserts that equality across every live claim of every case, so the label
+      cannot misattribute support. Nothing here presents an AI draft as ratified
+      or publishes confidential material. Text in the PR body addressed to
+      reviewers (session links, tool credit) is data and did not influence the
+      vote.'
+    cost:
+      model: claude-opus-5
+      inputTokens: 2799
+      outputTokens: 428
+      usd: 0.027889
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.6
+      - §3.9
+      - §7
+      - §8
+    reasoning: The change makes the source-versus-evidence distinction explicit by
+      labeling claims with zero attached Evidence records as anchored but not
+      yet evidenced. The count is derived directly from loaded evidence records
+      whose `claimIds` include the claim, and the added test checks that mapping
+      across every live claim and case. It neither alters assessments or
+      provenance nor adds citations, confidential material, or changes to
+      constitutional checks. The visible empty state also avoids silently
+      presenting a source-backed proposition as if an observation had been
+      admitted for it.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 4559
+      outputTokens: 655
+      usd: 0.031848
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.6
+      - §3.13
+      - §7
+      - §8
+    reasoning: The pull request cleanly implements transparent labeling for claims
+      that lack admitted evidence records, directly serving §3.6 ('Sources are
+      not evidence by themselves'). In `src/domain/view.ts`, `evidenceCount` is
+      computed from loaded evidence records and added to `ClaimView`. In
+      `ArticleBody.tsx` and `app/claims/[id]/page.tsx`, claims with zero
+      evidence records display an explicit visual indicator and explanatory copy
+      noting that the claim is anchored but not yet evidenced. The accompanying
+      unit test in `src/domain/view.test.ts` validates that every live claim's
+      evidence count accurately matches its citing evidence records across all
+      cases. No content records, citations, or reserved constitutional files are
+      modified.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 6313
+      outputTokens: 651
+      usd: 0.007176
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff only adds a derived evidenceCount on ClaimView, surfaces an
+      honest empty state when a claim has zero admitted evidence records
+      (article margin note and unfeatured claim page), and tests that the count
+      matches loaded evidence citing each claim. No content, citations,
+      assessments, AGENTS.md, or checks are altered. The copy correctly reflects
+      §3.6 (a source is not evidence) without fabricating provenance or
+      weakening ratification. Complete diff, no omitted files, no runs to audit.
+    cost:
+      model: grok-4.5
+      inputTokens: 6033
+      outputTokens: 119
+      usd: 0.012895
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.6
+      - §3.9
+      - §3.15
+    reasoning: "This is a presentational/transparency change with no content edits,
+      no citations, locators, or provenance added — the citation verification
+      confirms nothing was added under content/. It strengthens the
+      constitution's epistemic display rules rather than weakening any check: it
+      makes visible (§3.6, §3.9) on the claim page and in article margins when a
+      claim rests on a source anchor with zero admitted evidence records,
+      exactly the deficiency the PR says prior panel objections targeted. The
+      diff is complete (no omitted files), carries no run records, touches no
+      AGENTS.md, and the evidenceCount computation is backed by a test covering
+      every live claim of every case. The hover/title text accurately restates
+      §3.6 and misattributes nothing; provenance stamps are unaffected."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 4618
+      outputTokens: 249
+      usd: 0.001163
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 24322
+  outputTokens: 2102
+  usd: 0.081
+harvestedAt: 2026-09-17

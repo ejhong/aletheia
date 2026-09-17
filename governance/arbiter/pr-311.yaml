@@ -1,0 +1,128 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 311
+title: "One spend file per run: overlapping sittings no longer conflict on the ledger"
+url: https://github.com/ejhong/aletheia/pull/311
+verdict: pass
+reason: "4 of 5 seats affirm compliance; one seat's objection is a review note
+  the operator answers on the record: GPT-5.6 Sol (OpenAI) (§3.8, §3.15;
+  provenance)"
+outcome: merged
+outcomeAt: 2026-09-16
+judgedAgainst: f2bb88e507
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "This is a plumbing change to the spend ledger transport:
+      `recordSpend` now writes `governance/spend/<runId>.yaml` while `readSpend`
+      concatenates the legacy `governance/spend.yaml` rows followed by each
+      per-run file in name order, so the budget guard, pages, and run-cost
+      readers still see the full ledger. No check in §3.15 is loosened — the
+      budget guard's input is unchanged in content, rows are still Zod-parsed
+      via `SpendRowSchema`, and the old single file is read but never rewritten
+      (the new test asserts it is byte-identical after two runs). AGENTS.md is
+      untouched; no content/ records, citations, locators, or assessments are
+      added, and the citation tooling found no identifiers. The DECISIONS.md
+      entry accurately describes the mechanism and stamps a founder direction
+      given in session, which §3.15's founder-direction clause expressly permits
+      to be recorded and quoted. A new test covers ordering, per-run isolation,
+      and run-id filename sanitization, and docs (MAINTENANCE.md,
+      INTEGRATIONS.md) are updated to state the cutover date, so provenance of
+      which file holds which rows stays honest. The PR body's claims about PRs
+      #291/#303 are context, not directives, and nothing in the diff asks me to
+      change my judgment."
+    cost:
+      model: claude-opus-5
+      inputTokens: 5473
+      outputTokens: 639
+      usd: 0.046533
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: violates
+    rules:
+      - §3.8
+      - §3.15
+    reasoning: "`spendRunFile` uses a lossy replacement rather than an injective
+      encoding, so distinct run IDs such as `odd/run id` and `odd_run_id` map to
+      the same `odd_run_id.yaml`; the new test expressly establishes that
+      transformed naming behavior. Sequential writes would then produce a file
+      whose header names only the latest run while its rows can belong to
+      multiple runs, and concurrent writes can overwrite rows—the same
+      provenance/accounting failure this change claims to eliminate. This
+      conflicts with exact, reconstructable run provenance under §3.8 and §3.15.
+      Require either validation that accepted run IDs already match a
+      collision-free filename grammar, or a collision-free encoding/hash plus
+      tests covering distinct-ID collisions."
+    paradigm: provenance
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 6290
+      outputTokens: 1732
+      usd: 0.060312
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+      - §8
+    reasoning: This change splits the spend ledger into per-run files
+      (`governance/spend/<runId>.yaml`) to prevent merge conflicts between
+      overlapping automated pipeline sittings, while preserving backward
+      compatibility by reading the legacy `governance/spend.yaml` first.
+      AGENTS.md is untouched, no checks or safeguards are weakened, and no
+      citations or claims are altered. The change is accompanied by clear tests
+      and documentation updates in `DECISIONS.md`, `INTEGRATIONS.md`, and
+      `MAINTENANCE.md`.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 8326
+      outputTokens: 418
+      usd: 0.007812
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff only restructures the spend ledger transport: recordSpend
+      writes governance/spend/<runId>.yaml per run, readSpend unions the legacy
+      spend.yaml with per-run files in name order, and callers (budget guard,
+      pages, costs) are unchanged. No AGENTS.md edit, no content/ records,
+      citations, assessments, or provenance stamps are added or altered. Docs
+      and tests match the code; the DECISIONS entry is an ordinary dated note
+      with a founder supervised-by stamp. Nothing weakens §3.15 checks or
+      fabricates ledger material."
+    cost:
+      model: grok-4.5
+      inputTokens: 7839
+      outputTokens: 137
+      usd: 0.016615
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.14
+    reasoning: "This is a mechanical transport change to how the spend ledger is
+      stored: one file per run plus a read path that unions the legacy
+      `governance/spend.yaml` (frozen, never written after 2026-09-16) with the
+      per-run files, so every paid call is still recorded, stamped, and visible
+      to the budget guard, pages, and run costs — no §3.15 check is loosened or
+      dodged, and spend accountability is preserved (the test even asserts the
+      legacy file is not rewritten). No AGENTS.md edit is present, no citations
+      are added, and no content/records are fabricated; the DECISIONS.md entry
+      honestly describes the incident and the change with its supervision
+      trailer. Minor robustness nitpicks (run-id sanitization could collide two
+      distinct run ids into one filename; concurrent writes to the same run's
+      file are not the failure mode this fixes) are ordinary engineering
+      concerns, not constitution violations, and would be reasonable review
+      notes at most."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 6362
+      outputTokens: 508
+      usd: 0.001554
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 34290
+  outputTokens: 3434
+  usd: 0.1328
+harvestedAt: 2026-09-17

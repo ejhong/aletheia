@@ -1,0 +1,133 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 300
+title: By-hand amendments carry the full stamp (edition amendments, changelog
+  runId/promptVersion)
+url: https://github.com/ejhong/aletheia/pull/300
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-16
+judgedAgainst: "4517841259"
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches only docs/DECISIONS.md, one test, and schema.ts;
+      AGENTS.md is untouched, and no content/ records or citations are added
+      (verification found no identifiers). The schema changes are additive and
+      optional (`Edition.amendments` with required
+      date/by/runId/promptVersion/reason/fields, and optional
+      `runId`/`promptVersion` on changelog entries), which tightens rather than
+      loosens provenance under §3.14/§3.15 — by-hand amendments would now carry
+      who, when, under what run and prompt version, and which fields changed,
+      instead of only actor and date. Nothing here reclassifies a change to
+      dodge a check or presents a draft as ratified. The DECISIONS.md entry is
+      an operator record of a founder direction in session, which §3.15
+      expressly permits to be recorded and cited with date and channel. My one
+      reservation is the test edit:
+      `expect(caseAccounts(c)).toEqual(currentEdition(c).accounts ?? [])` is
+      close to tautological against the likely implementation of `caseAccounts`,
+      so it no longer constrains behavior on the real case; that is a coverage
+      loss in an ordinary unit test, not one of the §3.15 gates, and the
+      fixture-based assertions remain. If the operator wants to answer it, I
+      would like the real-case assertion restated against an explicit expected
+      value (e.g. the five accounts the incumbent states) rather than a
+      self-referential comparison."
+    cost:
+      model: claude-opus-5
+      inputTokens: 2802
+      outputTokens: 827
+      usd: 0.074604
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: The new amendment object requires date, actor, runId, promptVersion,
+      reason, and affected fields, preserving the full provenance of declared
+      by-hand edition changes while leaving `producedBy` attached to the
+      original generating run. Making the amendment list optional is coherent
+      because editions without hand amendments need no such record; no unstamped
+      amendment is added by this diff. Optional changelog fields preserve
+      compatibility with existing records while enabling the later entries
+      described in the decision log to carry their operator-session provenance.
+      The test change removes a mutable-content assumption without altering the
+      fixture assertions, and the diff neither edits AGENTS.md nor adds
+      citations, confidential material, or falsely ratified assessments.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 4571
+      outputTokens: 2189
+      usd: 0.062576
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: The proposed change enhances provenance tracking in accordance with
+      §3.14 and §3.15 by adding structured metadata fields (`runId`,
+      `promptVersion`, and `amendments`) to `EditionSchema` and
+      `ChangeLogEntrySchema`. This ensures by-hand amendments to candidates
+      record who changed what, when, under which session/prompt version, and
+      why. AGENTS.md is untouched, no checks are weakened, and the accompanying
+      test adjustment and decisions log entry accurately reflect the schema
+      enhancement.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 6344
+      outputTokens: 551
+      usd: 0.006824
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff only extends EditionSchema with an optional amendments stamp
+      (date, by, runId, promptVersion, reason, fields) and ChangeLogEntrySchema
+      with optional runId/promptVersion, plus a DECISIONS.md record and a test
+      fix that reads the incumbent's accounts instead of hard-coding []. That
+      strengthens §3.14/§3.15 provenance for operator by-hand edits rather than
+      weakening checks; AGENTS.md is untouched; no content, citations, or
+      confidence material is added.
+    cost:
+      model: grok-4.5
+      inputTokens: 6074
+      outputTokens: 124
+      usd: 0.013007
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: "This change strengthens provenance rather than weakening it: it adds
+      an optional `amendments` stamp (date, by, runId, promptVersion, reason,
+      fields) to EditionSchema and optional runId/promptVersion to
+      ChangeLogEntrySchema, directly closing the gap two seats identified where
+      by-hand edits carried only actor and date — the opposite of dodging
+      §3.15's 'which model did what, when, and how it was checked'. The
+      convention that hand edits record the operator session id as runId and
+      `operator-by-hand-v1` as promptVersion is an honest labeling practice, and
+      the fields are additive optional so no existing record is invalidated.
+      AGENTS.md is not edited; the DECISIONS.md entry is exactly the documented,
+      founder-stamped decision log the constitution directs material decisions
+      into. The test change makes the assertion read the real case's incumbent
+      edition (which a sitting had set to five accounts) instead of assuming an
+      empty list; it slightly reduces the test's bite on that one assertion, but
+      it is not a §3.15 check being loosened — schemas, CI, and ratification
+      gates are untouched — and the fixture assertions are stated as unchanged.
+      I would flag as a review note (not a blocker) that
+      `caseAccounts(c)).toEqual(currentEdition(c).accounts ?? [])` is close to
+      tautological, and a follow-up asserting the incumbent's five accounts
+      explicitly would preserve the original intent."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 4474
+      outputTokens: 578
+      usd: 0.001306
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 24265
+  outputTokens: 4269
+  usd: 0.1583
+harvestedAt: 2026-09-17

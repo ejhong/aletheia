@@ -1,0 +1,124 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 334
+title: "Decisions log: the chronology of the §4 amendment, set straight (review
+  note #333)"
+url: https://github.com/ejhong/aletheia/pull/334
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-17
+judgedAgainst: 23e90495fc
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: The change appends a single dated entry to docs/DECISIONS.md and
+      edits nothing else; AGENTS.md is untouched, so §3.15's reservation is not
+      engaged. It is explicitly append-only — it corrects an apparent
+      contradiction between two earlier entries by recording the chronology
+      rather than rewriting either, which is exactly what §3.14 and the
+      append-only discipline call for. The quoted founder direction ("open pr
+      for me to merge by hand") is an operating-record direction, citable under
+      the 2026-09-09 amendment, and it is stamped with date and channel
+      ("direction in session, 2026-09-17") plus a Supervised-by line, so
+      provenance is attributed honestly and not dressed up as anything else. No
+      citations, identifiers or locators are added, so the verification
+      section's emptiness is expected and no fabrication question arises. The
+      only softness is the approximate timestamp "10:2xZ", but it is
+      transparently approximate rather than false precision — consistent with
+      §3.13, not a violation. No run records accompany the change and none are
+      needed for a docs-only chronology note.
+    cost:
+      model: claude-opus-5
+      inputTokens: 1363
+      outputTokens: 528
+      usd: 0.060577
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: The change appends a corrective chronology rather than rewriting
+      earlier decision-log entries, preserving the visible history required by
+      §3.14. It identifies the relevant pull requests, sequence, merge times,
+      date, and direction channel, and the constitution itself confirms that the
+      2026-09-17 §4 amendment was a founder amendment given in session. It does
+      not edit AGENTS.md, weaken any check, add unverifiable citation
+      identifiers, or present an unratified draft as ratified; no internal
+      contradiction or positive evidence of fabricated provenance is visible.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 5039
+      outputTokens: 606
+      usd: 0.032276
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: "The diff only appends an entry to docs/DECISIONS.md to clarify the
+      chronology of recent entries without modifying prior entries, adhering to
+      the append-only principle. It does not touch AGENTS.md, introduces no
+      citations or content claims, and faithfully records operational provenance
+      in response to review note #333."
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 5394
+      outputTokens: 214
+      usd: 0.004848
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff only appends one clarifying entry to docs/DECISIONS.md; it
+      does not edit AGENTS.md, content records, citations, assessments, or any
+      §3.15 check. The new entry explains a rebase-induced appearance of
+      contradiction without rewriting earlier append-only log lines, which
+      matches the stated purpose and the constitution’s preference for
+      inspectable history. No citations, confidence material, or provenance
+      stamps are introduced, and the RUN ACCOUNT / citation verification
+      sections are empty as expected for a docs-only fix. Ordinary documentation
+      of founder-directed chronology is within bounds.
+    cost:
+      model: grok-4.5
+      inputTokens: 5163
+      outputTokens: 138
+      usd: 0.011269
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: "This is a four-line, docs-only append to docs/DECISIONS.md that
+      resolves an internal chronological contradiction flagged by review note
+      #333, and it does so in the constitutionally correct way: it appends a new
+      entry rather than editing either earlier entry, honoring the append-only
+      log rule (§3.14 and the §7 amendment's 'append-only changelog' principle).
+      The narrative it records is internally consistent with the authoritative
+      base revision I was shown — the §4 provisional-admission amendment text
+      does exist in AGENTS.md as a founder amendment dated 2026-09-17, and the
+      immediately preceding log entry in the diff context does say the §4
+      sentence 'is proposed to the founder,' exactly the contradiction the new
+      entry explains via a rebase. The timestamps (10:2xZ, 10:47Z, 11:02Z) and
+      the direction-in-session stamp ('Supervised-by: founder (direction in
+      session, 2026-09-17)') follow the founder-direction recording format of
+      §3.15 with date and channel; the deliberately vague '10:2xZ' reads as
+      honest calibration rather than false precision. I cannot independently
+      verify the git merge times or who merged #332, but temporal humility
+      applies: nothing in the material contradicts itself, the amendment's
+      existence in the base revision corroborates the claimed chronology, and no
+      citation, locator, or provenance detail is invented. No AGENTS.md edit, no
+      confidence material, no weakened checks, and no run records are involved."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 6135
+      outputTokens: 1221
+      usd: 0.001531
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 23094
+  outputTokens: 2707
+  usd: 0.1105
+harvestedAt: 2026-09-17

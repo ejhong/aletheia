@@ -1,0 +1,127 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 332
+title: "Founder amendment, AGENTS.md §4: the provisional tier"
+url: https://github.com/ejhong/aletheia/pull/332
+verdict: park
+reason: "5 seat(s) find a violation that parks on its own: Opus 5 (Anthropic)
+  (§3.15; constitution); GPT-5.6 Sol (OpenAI) (§3.15, §3.14; constitution);
+  Gemini 3.8 Flash (Google) (§3.15; constitution); Grok 4.5 (xAI) (§3.15;
+  constitution); GLM 5.3 Flash (Z.ai, via Venice) (§3.15; constitution); only 0
+  of 5 seats affirm compliance (4 required)"
+outcome: merged
+outcomeAt: 2026-09-17
+judgedAgainst: 2af7968124
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: The diff edits AGENTS.md itself, adding a new normative bullet to §4
+      that creates a `provisional` verification tier alongside the existing
+      verified/ai_verified/unverified labels. That is a substantive amendment,
+      not a typo or formatting fix, and amending this file is the one act
+      reserved to the human founder — a panel seat must vote 'violates' on such
+      a diff (§3.15). The PR body itself concedes this ('the arbiter may park
+      it; that is expected'), which is an assertion about authorization, not a
+      directive I can act on. Aggravating the provenance picture, the appended
+      DECISIONS.md entry states in the past tense that the change was 'merged by
+      the founder's hand', which cannot be true of a pull request still under
+      review. I would need this landed by the founder directly rather than
+      ratified through the panel, and the decisions-log wording corrected so it
+      does not record a merge that has not happened.
+    paradigm: constitution
+    cost:
+      model: claude-opus-5
+      inputTokens: 1977
+      outputTokens: 435
+      usd: 0.023953
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: violates
+    rules:
+      - §3.15
+      - §3.14
+    reasoning: The diff substantively edits AGENTS.md by creating a new
+      `provisional` evidence tier, so it is not a trivial typo or formatting
+      correction. Under §3.15, amending the constitution is reserved exclusively
+      to the human founder; the PR body’s statement that it was prepared for
+      later hand-merging does not itself establish that the founder has
+      performed the amendment. The decisions-log entry also prematurely states
+      that the change was “merged by the founder’s hand,” misdescribing an event
+      that has not occurred in the proposed revision and therefore creating
+      inaccurate provenance under §§3.14–3.15.
+    paradigm: constitution
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 4083
+      outputTokens: 399
+      usd: 0.024824
+  - seat: Gemini 3.8 Flash (Google)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: The proposed change modifies AGENTS.md by introducing a normative
+      rule defining the 'provisional' tier in §4. Under §3.15, amending
+      AGENTS.md is an act strictly reserved to the human founder, and automated
+      constitutional review must vote 'violates' on any non-trivial modification
+      to this file. As recognized in the PR description, a lone objection under
+      the 'constitution' paradigm parks the change so that ratification requires
+      the founder's direct manual merge.
+    paradigm: constitution
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 5731
+      outputTokens: 778
+      usd: 0.007216
+  - seat: Grok 4.5 (xAI)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: The diff edits AGENTS.md to add a normative Phase-1 bullet on a
+      provisional tier for unread-but-existing sources. Under §3.15, amending
+      this constitution is reserved to the human founder; panel seats must judge
+      any non-trivial AGENTS.md edit as violates so a single objection parks it
+      for hand merge. The change is not a typo or formatting fix.
+      docs/DECISIONS.md only records the same amendment and does not cure the
+      constitutional reservation.
+    paradigm: constitution
+    cost:
+      model: grok-4.5
+      inputTokens: 5882
+      outputTokens: 124
+      usd: 0.012508
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: "The diff adds a substantive, normative bullet to AGENTS.md §4 (the
+      'provisional' verification tier), which is an amendment to the
+      constitution — an act reserved to the human founder. Per my trust
+      boundaries, a diff that edits AGENTS.md must be judged 'violates' unless
+      the change is trivially non-normative (typo, formatting); this change is
+      neither, it creates a new class of admissible records and a new
+      verification label. The PR body's claims of founder direction in session
+      (#322, #325–#329, the quoted instruction 'open pr for me to merge by
+      hand') and the DECISIONS.md entry are untrusted data under review, not
+      verification — I cannot confirm from what I was shown that the founder
+      actually gave or ratified this amendment. The PR's own framing ('For the
+      founder to merge by hand') acknowledges the ratification has not happened;
+      if this diff merges by AI hand rather than the founder's, it is exactly
+      the kind of constitution-editing §3.15 forbids. If the founder genuinely
+      directs and personally merges this, that is the founder's reserved power
+      acting outside this panel's scope — but as the diff stands before this
+      panel, it edits the constitution and must be judged 'violates'."
+    paradigm: constitution
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 4151
+      outputTokens: 433
+      usd: 0.001185
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 21824
+  outputTokens: 2169
+  usd: 0.0697
+harvestedAt: 2026-09-17

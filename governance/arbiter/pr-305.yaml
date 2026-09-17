@@ -1,0 +1,137 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 305
+title: "Provenance stamps stay only where they hold (review note #302)"
+url: https://github.com/ejhong/aletheia/pull/305
+verdict: park
+reason: 5 of 5 seats affirm compliance; no seat finds a violation — but the
+  weekly autonomous content-merge budget is spent (10/10, 12 supervised
+  excluded); parked until the window rolls
+outcome: merged
+outcomeAt: 2026-09-16
+judgedAgainst: ea2975c912
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff does exactly what its title and body claim: it deletes
+      `runId: session_01AiXD4y5Y91KC7iM3uBhWmu` / `promptVersion:
+      operator-by-hand-v1` from six deep-memory entries dated 2026-09-09 to
+      2026-09-11 and two geopolymer entries dated 2026-09-11, and nothing else
+      in those entries changes. Two of the stripped entries state in their own
+      text that 'No run id and no prompt version exist for it because no
+      protocol ran', so the stamps they carried actively misattributed how the
+      work was checked; removing them corrects a §3.8/§3.14 provenance defect
+      rather than creating one. The change is recorded rather than silent: one
+      appended entry per file names what was removed, why (review note #302),
+      the actor, date, and the stamps of the session under which the correction
+      itself was made — the convention of #300 that applies from 2026-09-16
+      forward. Line counts match the stat (12 lines in deep-memory, 4 in
+      geopolymer) and the per-file 'four entries of 2026-09-16' plus 'two
+      entries of 2026-09-16' reconciles with the body's six. No AGENTS.md edit,
+      no citation identifiers added (verification found none), no confidence
+      material, and no check in §3.15 is loosened — the effect is to make the
+      record reconstructable instead of contradictory. Append-only concerns are
+      satisfied because the retraction of a false stamp is itself logged in the
+      append-only changelog with actor and reason."
+    cost:
+      model: claude-opus-5
+      inputTokens: 11987
+      outputTokens: 863
+      usd: 0.121429
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: The change removes retrospective `runId` and `promptVersion` fields
+      from eight entries whose dates predate the stated convention, including
+      entries that explicitly say no run or prompt version existed. Leaving
+      those fields would create contradictory provenance, whereas the original
+      actor, date, AI-assistance, and change descriptions remain intact. Each
+      correction is recorded by a new append-only history entry that identifies
+      what was removed, why, and the operator responsible, with stamps
+      appropriate to the 2026-09-16 correction itself. The diff neither edits
+      AGENTS.md nor weakens a mechanical check; it corrects inaccurate
+      historical stamps while preserving an inspectable git history.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 12083
+      outputTokens: 684
+      usd: 0.062012
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: "The change removes anachronistic and contradictory `runId` and
+      `promptVersion` stamps from pre-convention operator history entries in
+      `deep-memory/history.yaml` and `geopolymer/history.yaml` that had been
+      retroactively stamped by PR #291. It accurately reflects that those
+      historical entries predated the by-hand session stamping convention
+      established in #300. The change adheres to §3.8, §3.14, and §3.15 by
+      maintaining truthful provenance records and appends explicit housekeeping
+      history entries documenting the correction."
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 13375
+      outputTokens: 512
+      usd: 0.011951
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: "The diff solely removes runId and promptVersion fields that PR #291
+      had retroactively applied to eight pre-2026-09-16 operator history entries
+      (six in deep-memory, two in geopolymer), whose own prose in two cases
+      already states that no such stamps exist; the structured fields therefore
+      contradicted the entries and blocked reconstructability. The six/two
+      2026-09-16 entries that the stamps actually describe keep them, and a new
+      append-only housekeeping entry is added to each file that records exactly
+      what was removed, why (citing review note #302 and the #300 convention’s
+      forward scope), with honest actor/runId/promptVersion stamps for the
+      present session. No citations, assessments, claims, or AGENTS.md are
+      touched; the change restores exact provenance rather than weakening any
+      check."
+    cost:
+      model: grok-4.5
+      inputTokens: 12427
+      outputTokens: 205
+      usd: 0.026199
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: "The change removes runId/promptVersion stamps that PR #291
+      misapplied to eight pre-convention history entries — including two whose
+      own text states no run id or prompt version exists for them — which is a
+      provenance misattribution under §3.15, not a weakening of any check.
+      Removing a stamp that contradicts the entry it sits on serves §3.8 and
+      §3.14: provenance must let a reader reconstruct what happened, and a false
+      stamp cannot. The removal is documented the append-only way, by new
+      history entries in each file that say what was removed, why, and under
+      which review note, and those new entries are themselves stamped under the
+      convention they invoke. The line counts in the diff (12 removed in
+      deep-memory, 4 in geopolymer) match the stated scope, no content entries
+      are altered beyond the two stamp lines each, no AGENTS.md edit is present,
+      and no citations are added, so fabrication and constitution concerns do
+      not arise."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 10940
+      outputTokens: 655
+      usd: 0.002314
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 60812
+  outputTokens: 2919
+  usd: 0.2239
+harvestedAt: 2026-09-17

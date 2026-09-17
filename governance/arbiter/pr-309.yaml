@@ -1,0 +1,112 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 309
+title: "A dispatcher not given is recorded as not given (review note #308)"
+url: https://github.com/ejhong/aletheia/pull/309
+verdict: pass
+reason: 4 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-16
+judgedAgainst: 936c8c47b8
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches only pipeline code, a CLI guard, a test, and a
+      DECISIONS.md entry — no content/ records, no citations (verification found
+      none), and AGENTS.md is untouched. The substantive change replaces an
+      unfounded provenance assertion (\"at the operator's terminal\", inferred
+      merely from an absent flag) with an honest absence record (\"dispatcher
+      not recorded (no --dispatcher was given)\"), which strengthens §3.8/§3.9
+      rather than weakening anything. The scripts/aletheia.ts addition tightens
+      rather than loosens the founder-door check: under GITHUB_ACTIONS a forced
+      --case without --dispatcher now refuses to run, closing a bypass — the
+      opposite of §3.15 check-weakening. The test update matches the new reason
+      string. The DECISIONS.md entry is stamped with date and channel and
+      records a founder direction in session, which §3.15 explicitly permits as
+      operating record rather than confidential correspondence. Nothing here
+      presents a draft as ratified or fabricates provenance."
+    cost:
+      model: claude-opus-5
+      inputTokens: 2692
+      outputTokens: 481
+      usd: 0.028678
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: The change improves provenance accuracy by replacing the unsupported
+      inference that an omitted `--dispatcher` means execution occurred “at the
+      operator's terminal” with an explicit statement that no dispatcher was
+      recorded. It also strengthens the founder-dispatch gate in GitHub Actions
+      by refusing a forced case when the workflow omits the dispatcher, rather
+      than weakening or bypassing the check. The decision log records the
+      rationale, date, review-note context, and supervision channel, and no
+      citations, confidential content, assessments, or constitutional text are
+      added or altered.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 4484
+      outputTokens: 660
+      usd: 0.031648
+  - seat: Gemini 3.8 Flash (Google)
+    vote: unsure
+    rules: []
+    reasoning: "seat failed: SyntaxError: Unexpected token '§', ...\" [\"§3.8\",
+      §3.14, §3.\"... is not valid JSON"
+    failed: true
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 6216
+      outputTokens: 548
+      usd: 0.006717
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff only corrects forced-choice provenance text so an absent
+      --dispatcher is recorded as absent rather than asserted as a terminal
+      session, tightens CI so omitting the flag cannot bypass the founder-login
+      door, updates the matching test, and appends a DECISIONS.md note. No
+      AGENTS.md edit, no citations, no confidence material, and no weakening of
+      §3.15 checks—the change strengthens an authorization gate and makes the
+      stamped reason honest. Omitted-files list is empty and there is no content
+      run to audit.
+    cost:
+      model: grok-4.5
+      inputTokens: 5934
+      outputTokens: 130
+      usd: 0.012763
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.14
+      - §3.8
+    reasoning: "This is a pipeline-code fix that improves provenance honesty rather
+      than touching content, citations, or AGENTS.md: the old reason string
+      asserted 'dispatched by hand at the operator's terminal' whenever
+      --dispatcher was absent, which was an unverified attribution, and the new
+      string records exactly what is known ('dispatcher not recorded (no
+      --dispatcher was given)'), in line with §3.8/§3.9 (record what is
+      observed, label what is not verified). The scripts/aletheia.ts change only
+      adds a refusal in CI — it removes no check and loosens none; the
+      terminal-path optionality of the flag is pre-existing behavior, now
+      labeled honestly, so this is check-tightening, not check-weakening. The
+      DECISIONS.md entry follows the established append-only format and does not
+      edit the constitution. Nothing fabricated, no confidence material, and the
+      diff is complete, so no ground for violation or uncertainty is visible."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 4529
+      outputTokens: 661
+      usd: 0.001355
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 23855
+  outputTokens: 2480
+  usd: 0.0812
+harvestedAt: 2026-09-17

@@ -1,0 +1,107 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 320
+title: "A spend file is named by the run id as it is; an id that is not a file
+  name is refused (review note #316)"
+url: https://github.com/ejhong/aletheia/pull/320
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-16
+judgedAgainst: 5c9e702e0c
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "This is a small code-hardening change in src/domain/spend.ts: the
+      lossy sanitizing of run ids into file names is replaced by a fail-closed
+      validation regex, so two distinct run ids can no longer collide into one
+      spend file. No content/ records, citations, assessments, or provenance
+      labels are touched, and no citation identifiers appear. AGENTS.md is
+      untouched, so §3.15's reservation is not engaged. Rather than weakening a
+      check, the change strengthens accounting integrity and path-traversal
+      safety (rejecting '../escape'), consistent with §8's 'no silent data
+      repair'. Tests are added covering the verbatim-name case, rejection of a
+      slash and a path escape, and that recordSpend throws without creating
+      directories, satisfying §8/§10. Nothing in the PR body asks me to do
+      anything beyond reviewing; the session link and attribution are ordinary
+      provenance noise."
+    cost:
+      model: claude-opus-5
+      inputTokens: 1739
+      outputTokens: 322
+      usd: 0.019939
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.15
+      - §8
+    reasoning: The change strengthens fail-closed spend accounting by rejecting run
+      IDs that are not already safe file names instead of lossily mapping
+      distinct IDs to the same path. The tests cover verbatim naming, slash and
+      traversal rejection, and refusal before any spend directory or row is
+      created. It neither edits AGENTS.md nor changes content, citations,
+      assessments, or publication provenance, and it does not weaken or evade
+      the constitutional checks.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 3896
+      outputTokens: 216
+      usd: 0.020416
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules: []
+    reasoning: "The change replaces a lossy sanitization regex in spendRunFile with
+      strict, fail-closed regex validation
+      (/^[A-Za-z0-9][A-Za-z0-9._-]{0,199}$/), preventing collisions or path
+      traversal in spend ledger filenames as requested in review note #316. The
+      implementation adheres to code rules (§8) and fail-closed operational
+      principles (§3.15) without altering content or AGENTS.md."
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 5594
+      outputTokens: 309
+      usd: 0.005354
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff only tightens spend ledger file naming: run ids must
+      already match a safe file-name regex or are refused before any row is
+      written, replacing the prior lossy underscore mapping that could collide
+      distinct ids. No AGENTS.md edit, no content/citations, no confidence
+      material, and no weakening of §3.15 checks—the change strengthens
+      fail-closed accounting. Tests cover a real id, slash/path-escape refusal,
+      and that recordSpend creates nothing on a bad id. Complete diff with no
+      runs or omitted files; ordinary code hygiene under §8."
+    cost:
+      model: grok-4.5
+      inputTokens: 5368
+      outputTokens: 138
+      usd: 0.011679
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+    reasoning: "This is a small, fail-closed hardening of the spend-ledger check:
+      instead of lossily sanitizing unsafe run ids into file names (which let
+      two distinct ids collide on one ledger file), it now refuses any id that
+      is not already a file name, and no AGENTS.md or §3.15 check is touched. If
+      anything it strengthens a check rather than weakening one — path escapes
+      like '../escape' and ids with slashes now throw before any row is written,
+      and the tests cover refusal, verbatim naming, and that recordSpend creates
+      nothing on refusal. The change is confined to src/domain/spend.ts and its
+      test file, with no citations, content, or provenance claims involved, so
+      the epistemic rules are not engaged."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 3952
+      outputTokens: 375
+      usd: 0.001126
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 20549
+  outputTokens: 1360
+  usd: 0.0585
+harvestedAt: 2026-09-17

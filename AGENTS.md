@@ -163,6 +163,7 @@ Until explicitly moved into a later phase:
 
 - content lives in versioned files under `content/` (folder-of-files per case), loaded and Zod-validated at build time — a malformed record or dangling ID fails the build;
 - **real citations only, with honest verification labels** (`verified` / `ai_verified` / `unverified`) — never fabricate a citation, identifier, or locator; see `docs/CONTENT_POLICY.md`;
+- a record whose source is shown to exist but whose text could not yet be read may enter labelled `provisional`, carrying no weight in any assessment, standing or selection, until a later pass reads the text and promotes or refuses it (founder amendment, 2026-09-17, given in session — see docs/DECISIONS.md);
 - claim provenance is displayed, not hidden: `ai_extracted` claims are labeled as such; AI assessments are append-only overlay files stamped with runId/model/date/promptVersion and labeled as AI-generated drafts;
 - do not imply that AI-generated assessments are reviewed human conclusions;
 - do not build authentication, databases, or servers — the site is a Next.js static export served from git via GitHub Pages;

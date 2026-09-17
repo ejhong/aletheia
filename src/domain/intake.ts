@@ -56,6 +56,8 @@ export const Verb = z.enum([
   "report",
   "draft",
   "verify",
+  /** Re-read the texts behind a case's provisional records; promote what holds, refuse what fails (2026-09-17). */
+  "reverify",
   "edition",
   "check",
   "panel",

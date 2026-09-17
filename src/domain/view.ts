@@ -1,5 +1,5 @@
 import { adoptedAssessment, currentEdition } from "./editions.ts";
-import { liveClaims } from "./load.ts";
+import { liveEvidence, liveClaims } from "./load.ts";
 import { ratification, type Ratification } from "./standing.ts";
 import type {
   AssessmentRun,
@@ -77,7 +77,7 @@ export function caseView(loaded: LoadedCase): CaseView {
   const rank = new Map(edition.featuredClaimIds.map((id, i) => [id, i]));
   const evidenceCount = new Map<string, number>();
   const provisionalEvidenceCount = new Map<string, number>();
-  for (const e of loaded.evidence) {
+  for (const e of liveEvidence(loaded)) {
     const m = e.reviewState === "provisional" ? provisionalEvidenceCount : evidenceCount;
     for (const id of e.claimIds) m.set(id, (m.get(id) ?? 0) + 1);
   }

@@ -29,6 +29,7 @@ import { allStatus, renderStatusTable } from "../src/pipeline/status.ts";
 import { DEFAULT_SEAT, runReport } from "../src/pipeline/report.ts";
 import { runDraft } from "../src/pipeline/draft.ts";
 import { runVerify } from "../src/pipeline/verify.ts";
+import { runReverify } from "../src/pipeline/reverify.ts";
 import { runEdition } from "../src/pipeline/edition.ts";
 import { runCheck } from "../src/pipeline/check.ts";
 import { runNext } from "../src/pipeline/next.ts";
@@ -99,8 +100,8 @@ switch (verb) {
     const onProgress = out ? (soFar: unknown) => fs.writeFileSync(path.resolve(out), JSON.stringify(soFar, null, 2)) : undefined;
     // `--case <slug> --verb report|edition|check`: the first choice is the founder's; the rest of the sitting is the ledger's.
     const forcedCase = flagValue("--case");
-    const forcedVerb = (flagValue("--verb") ?? "report") as "report" | "edition" | "check";
-    if (forcedCase && !["report", "edition", "check"].includes(forcedVerb)) { console.error(`--verb must be report, edition or check (got ${forcedVerb})`); process.exit(2); }
+    const forcedVerb = (flagValue("--verb") ?? "report") as "report" | "edition" | "check" | "reverify";
+    if (forcedCase && !["report", "edition", "check", "reverify"].includes(forcedVerb)) { console.error(`--verb must be report, edition, check or reverify (got ${forcedVerb})`); process.exit(2); }
     // The door is the founder's: a dispatch that names who opened it must name the founder's GitHub login.
     const dispatcher = flagValue("--dispatcher");
     // In CI the door cannot be opened anonymously: the workflow always names github.actor, so a forced choice
@@ -152,6 +153,17 @@ switch (verb) {
       process.exit(1);
     }
     const r = await runDraft(reportRunId, { dryRun: flags.has("--dry-run") });
+    console.log(JSON.stringify(r, null, 2));
+    if (r.outcome === "failed") process.exit(1);
+    break;
+  }
+  case "reverify": {
+    const [slug] = args;
+    if (!slug) {
+      console.error("usage: aletheia reverify <case> [--dry-run]");
+      process.exit(1);
+    }
+    const r = await runReverify(slug, { dryRun: flags.has("--dry-run") });
     console.log(JSON.stringify(r, null, 2));
     if (r.outcome === "failed") process.exit(1);
     break;

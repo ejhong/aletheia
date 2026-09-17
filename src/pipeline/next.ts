@@ -7,6 +7,7 @@ import { runEdition } from "./edition.ts";
 import { runReport } from "./report.ts";
 import { readRuns, type RunOutcome } from "./store.ts";
 import { runVerify } from "./verify.ts";
+import { runReverify } from "./reverify.ts";
 import { MODELS } from "../lib/models.mjs";
 import type { ResearchSeat } from "../domain/schedule.ts";
 
@@ -87,7 +88,7 @@ export interface SittingOptions {
    * later choice in the sitting is the ledger's own (2026-09-15: five editions were due before any research pass,
    * and the hard path had to be reachable without waiting three Mondays).
    */
-  force?: { case: string; verb: "report" | "edition" | "check"; /** The GitHub login that opened the door, when it was opened through the workflow. */ by?: string };
+  force?: { case: string; verb: "report" | "edition" | "check" | "reverify"; /** The GitHub login that opened the door, when it was opened through the workflow. */ by?: string };
   /** Called after every choice with the sitting so far, so a caller can write progress to disk as it goes. */
   onProgress?: (soFar: NextOutcome) => void;
   /** Test seams: the clock, one choice-and-run, or the choice and the run apart. */
@@ -187,6 +188,11 @@ async function performChoice(choice: NextChoice, opts: SittingOptions): Promise<
   } else if (choice.verb === "verify") {
     if (!(await step("verify", () => runVerify(choice.from!, { root })))) return { choice, ran };
     await step("edition", () => runEdition(choice.case!, { root }));
+  } else if (choice.verb === "reverify") {
+    // Read the texts behind the case's provisional records; if any were promoted the ledger moved, and an edition follows.
+    const r = await runReverify(choice.case!, { root });
+    ran.push({ verb: "reverify", outcome: r });
+    if (r.outcome === "completed" && r.promoted > 0) await step("edition", () => runEdition(choice.case!, { root }));
   } else if (choice.verb === "edition") {
     await step("edition", () => runEdition(choice.case!, { root }));
   } else if (choice.verb === "check") {

@@ -116,6 +116,34 @@ export function setField(file: string, id: string, field: string, from: unknown,
   fs.writeFileSync(file, edited);
 }
 
+/**
+ * Replace one record in place, byte for byte elsewhere: the promotion of a provisional record at re-verification
+ * (2026-09-17) writes the record the reader accepted over the one that entered unread. Refuses when the file
+ * would change beyond that record.
+ */
+export function replaceRecord(file: string, id: string, record: Record<string, unknown>): void {
+  const text = fs.readFileSync(file, "utf8");
+  const before = parseYaml(text) as Record<string, unknown>[];
+  if (!Array.isArray(before)) throw new Error(`${file} is not a YAML list`);
+  const idx = before.findIndex((r) => r && r.id === id);
+  if (idx === -1) throw new Error(`${path.basename(file)} has no record ${id}`);
+  if (record.id !== id) throw new Error(`replaceRecord: the record's id (${String(record.id)}) is not ${id}`);
+  const lines = text.split("\n");
+  const startLine = lines.findIndex((l) => new RegExp(`^- id: ${id.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*$`).test(l));
+  if (startLine === -1) throw new Error(`${path.basename(file)}: record ${id} does not start with a plain "- id:" line and cannot be replaced in place`);
+  let endLine = startLine + 1;
+  while (endLine < lines.length && !/^- /.test(lines[endLine])) endLine++;
+  while (endLine > startLine + 1 && lines[endLine - 1].trim() === "") endLine--;
+  const replacement = stringifyYaml([record], { lineWidth: 0 }).replace(/\n$/, "").split("\n");
+  const edited = [...lines.slice(0, startLine), ...replacement, ...lines.slice(endLine)].join("\n");
+  const after = parseYaml(edited) as Record<string, unknown>[];
+  const expected = before.map((r, i) => (i === idx ? JSON.parse(JSON.stringify(record)) : r));
+  if (JSON.stringify(after) !== JSON.stringify(expected)) {
+    throw new Error(`${path.basename(file)}: replacing ${id} in place would change more than that record; nothing written`);
+  }
+  fs.writeFileSync(file, edited);
+}
+
 export interface Correction {
   record: string;
   field: string;

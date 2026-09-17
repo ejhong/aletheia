@@ -6,7 +6,7 @@ import { EvidenceCard } from "@/src/components/EvidenceCard";
 import { LinkedRecordText } from "@/src/components/LinkedRecordText";
 import { Plate } from "@/src/components/Plate";
 import { ProvenanceBadge } from "@/src/components/ProvenanceBadge";
-import { liveClaims, loadAllCases } from "@/src/domain/load";
+import { liveEvidence, liveClaims, loadAllCases } from "@/src/domain/load";
 import { paramsOrPlaceholder } from "@/src/domain/staticExport";
 import {
   assessmentStateCaptions,
@@ -121,7 +121,7 @@ function UnfeaturedClaimView({ view, cv }: { view: ClaimView; cv: CaseView }) {
     "strongest objection",
     "what would change our mind",
   ];
-  const evidence = cv.loaded.evidence.filter((e) => e.claimIds.includes(claim.id));
+  const evidence = liveEvidence(cv.loaded).filter((e) => e.claimIds.includes(claim.id));
   return (
     <div>
       <DossierStrip view={view} cv={cv}>
@@ -214,7 +214,7 @@ export default async function ClaimPage({
   const claimById = new Map(claims.map((c) => [c.id, c]));
   const sourceById = new Map(loaded.sources.map((s) => [s.id, s]));
 
-  const evidence = loaded.evidence.filter((e) => e.claimIds.includes(id));
+  const evidence = liveEvidence(loaded).filter((e) => e.claimIds.includes(id));
   const byDirection = (d: EvidenceDirection) =>
     evidence.filter((e) => e.direction === d);
   const children = claims.filter((c) => c.parentClaimIds.includes(id));

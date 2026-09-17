@@ -29,7 +29,7 @@ on:
       verb:
         description: "With case: the verb of the forced first choice"
         type: choice
-        options: [report, edition, check]
+        options: [report, edition, check, reverify]
         default: report
   # Turned on by the founder on 2026-09-09 (direction in session), after the
   # first supervised run in CI (#214). Weekly: one sitting of three budgeted
@@ -99,7 +99,7 @@ jobs:
           args=(next --run --steps "${STEPS:-3}" --deadline-minutes 240 --max-cases 2 --out next.json --busy "$busy")
           if [ -n "$FORCE_CASE" ]; then
             [[ "$FORCE_CASE" =~ ^[a-z0-9][a-z0-9-]{0,79}$ ]] || { echo "::error::case must be a case slug (lowercase letters, digits, hyphens); nothing runs"; exit 2; }
-            case "${FORCE_VERB:-report}" in report|edition|check) ;; *) echo "::error::verb must be report, edition or check; nothing runs"; exit 2 ;; esac
+            case "${FORCE_VERB:-report}" in report|edition|check|reverify) ;; *) echo "::error::verb must be report, edition, check or reverify; nothing runs"; exit 2 ;; esac
             args+=(--case "$FORCE_CASE" --verb "${FORCE_VERB:-report}" --dispatcher "$DISPATCHER")
             echo "::notice::first choice forced by $DISPATCHER: $FORCE_CASE, $FORCE_VERB"
           fi

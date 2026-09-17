@@ -413,18 +413,36 @@ export function substituteCopy(fetched: Pick<FetchedSource, "substitute" | "via"
  */
 export function sourceExists(
   source: Source | undefined,
-  fetched: Pick<FetchedSource, "status" | "reason"> | undefined,
+  fetched: Pick<FetchedSource, "status" | "reason" | "pageTitle"> | undefined,
   resolved: Map<string, { status: string; note: string }>,
 ): string | null {
+  // Identity, not reachability (review note on #322): the resolver's metadata or the document's own title must name
+  // the record's title. A registered DOI with no metadata, or a URL that merely answered, proves nothing about which
+  // document it is.
+  const title = source?.title ?? "";
   if (source) {
     for (const i of identifiersOf(source)) {
       const r = resolved.get(`${i.kind}:${i.id}`);
-      if (r?.status === "resolves") return `${i.kind} ${i.id} resolves (${r.note})`;
+      if (r?.status === "resolves" && metadataMatches(title, r.note)) return `${i.kind} ${i.id} resolves to a record with this title (${r.note})`;
     }
   }
   const status = fetched?.status ?? null;
-  if (status !== null && status >= 200 && status < 400) return `its URL answered HTTP ${status} (${fetched?.reason ?? "text unreadable"})`;
+  if (status !== null && status >= 200 && status < 400 && fetched?.pageTitle && metadataMatches(title, fetched.pageTitle)) {
+    return `its URL answered HTTP ${status} with a document titled "${fetched.pageTitle.slice(0, 100)}" (${fetched?.reason ?? "text unreadable"})`;
+  }
   return null;
+}
+
+/** Whether a title is named in a piece of metadata: the normalised title occurs whole, or at least four of every five of its words do. */
+export function metadataMatches(title: string, text: string): boolean {
+  const norm = (t: string) => t.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+  const [a, b] = [norm(title), norm(text)];
+  if (a.length < 8 || !b) return false;
+  if (b.includes(a)) return true;
+  const words = a.split(" ").filter((w) => w.length > 2);
+  if (words.length < 4) return false;
+  const present = words.filter((w) => b.includes(w)).length;
+  return present / words.length >= 0.8;
 }
 
 /** Why a correction cannot apply as the ledger stands (null when it can): unknown record, no such file, or the field has moved since. */
@@ -1021,7 +1039,7 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
         change: `Intake from report ${proposal.report ?? proposal.runId}: ${counts.sources} source(s), ${counts.evidence} evidence record(s), ${counts.claims} claim(s), ${counts.research} research item(s) verified and added${counts.provisional ? `; ${counts.provisional} record(s) admitted provisionally, unread, awaiting their texts` : ""} (proposal ${proposalRunId}, verification ${runId}); ${rejected.length} candidate(s) rejected with reasons in dispositions.yaml.${corrected.skipped.length ? ` ${corrected.skipped.length} correction(s) NOT applied — see proposals/${runId}/verification.md.` : ""}`,
         // The rationale is the drafter's, written before verification: it argues the proposal, not what
         // entered. Labelled as such, with the admitted set beside it (review note #275).
-        reason: `Admitted after verification: ${[...accepted.sources.map((s) => s.id), ...accepted.evidence.map((e) => e.id), ...accepted.claims.map((c) => c.id), ...accepted.research.map((r) => r.id)].join(", ") || "nothing"}; everything else proposed was refused or blocked with a reason in dispositions.yaml. The drafter's rationale for the proposal, written before verification and describing what it proposed: ${proposal.rationale}`,
+        reason: `Admitted after verification: ${[...accepted.sources.map((s) => s.id), ...accepted.evidence.map((e) => e.id), ...accepted.claims.map((c) => c.id), ...accepted.research.map((r) => r.id)].join(", ") || "nothing"}${[...provisional.sources, ...provisional.evidence, ...provisional.claims].length ? `; admitted provisionally, unread, awaiting their texts: ${[...provisional.sources, ...provisional.evidence, ...provisional.claims].map((r) => r.id).join(", ")}` : ""}; everything else proposed was refused or blocked with a reason in dispositions.yaml. The drafter's rationale for the proposal, written before verification and describing what it proposed: ${proposal.rationale}`,
         actor: `aletheia verify (${READER.model} second reader; drafter ${proposal.model ?? "unknown"})`,
         aiAssisted: true,
         kind: "content",

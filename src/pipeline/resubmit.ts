@@ -20,6 +20,9 @@ import { nextClaimId, nextEvidenceId, runVerify, type VerifyOptions } from "./ve
  * hands it to verify, and then settles the legacy rows so one key carries a record's whole story.
  */
 
+/** The transformation's own version (protocols/resubmit-v1.md): a proposal so stamped was written by code, not a model. */
+export const RESUBMIT_PROTOCOL = loadProtocol("resubmit").version;
+
 export type Kind = "source" | "evidence" | "claim";
 type AnyRecord = Source | Evidence | Claim;
 const SETTLED = new Set(["in", "duplicate", "irrelevant", "failed", "provisional"]);
@@ -165,10 +168,12 @@ export function buildResubmission(loaded: LoadedCase, ref: string, from: Proposa
     date: stamp.date,
     case: loaded.record.slug,
     producer: "reverify",
-    model: from.model,
-    promptVersion: from.promptVersion,
+    // Written by code, under its own protocol: no model drafted this proposal. The drafter of each record — model, run,
+    // date — is on that record's origin, with the lineage appended (review note #349).
+    model: null,
+    promptVersion: RESUBMIT_PROTOCOL,
     basis: { ledgerHash: loaded.ledgerHash },
-    rationale: `Re-submission of ${n} record(s) that verification blocked in ${ref} — ${reasons.join(" | ") || "no reason recorded"} — proposed again under fresh ids against the ledger as it stands, the drafter's stamps kept and the lineage on each origin; the texts are fetched again and the records read as newly proposed. Nothing here is new work by a drafter.`,
+    rationale: `Re-submission of ${n} record(s) that verification blocked in ${ref} — ${reasons.join(" | ") || "no reason recorded"} — proposed again under fresh ids against the ledger as it stands by the reverify run ${stamp.runId}, a deterministic transformation (${RESUBMIT_PROTOCOL}) and not a model's work; the drafter of each record, with its run and date, is on the record's origin, the lineage appended. The texts are fetched again and the records read as newly proposed.`,
     adds: { sources, evidence, claims, research: [], images: [] },
     corrections: [],
     dispositions: [],
@@ -216,7 +221,7 @@ export async function resubmitBlocked(caseSlug: string, opts: ResubmitOptions = 
     // A run id names a second; the provisional pass may have opened one this very second, so the clock moves on until the id is free.
     let at = now();
     while (fs.existsSync(runDir(newRunId("reverify", loaded.record.slug, at), root))) at = new Date(at.getTime() + 1000);
-    const run = openRun("reverify", loaded.record.slug, { model: from.model, promptVersion: loadProtocol("verify").version }, { now: at, root });
+    const run = openRun("reverify", loaded.record.slug, { model: null, promptVersion: RESUBMIT_PROTOCOL }, { now: at, root });
     const built = buildResubmission(loaded, ref, from, items, { runId: run.runId, date: run.date });
     const n = built.proposal.adds.sources.length + built.proposal.adds.claims.length + built.proposal.adds.evidence.length;
     const account = [

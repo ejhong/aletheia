@@ -90,7 +90,9 @@ describe("buildResubmission", () => {
     const built = buildResubmission(loaded, REF, oldProposal(c), items, { runId: "2099-01-02-reverify-megalithic-casting-000000", date: "2099-01-02" });
     const p = built.proposal;
     expect(p.producer).toBe("reverify");
-    expect(p.model).toBe("drafter-model");
+    // Written by code, under its own protocol; the drafter stays on each record's origin.
+    expect(p.model).toBeNull();
+    expect(p.promptVersion).toBe("resubmit-v1");
     expect(p.basis.ledgerHash).toBe(loaded.ledgerHash);
     expect(p.report).toMatch(/re-submission 2099-01-02-reverify-megalithic-casting-000000 of records blocked at verification/);
     expect(p.adds.sources).toEqual([]);
@@ -147,7 +149,8 @@ describe("resubmitBlocked and the reverify verb", () => {
     expect(written.adds.claims).toHaveLength(1);
     expect(written.adds.evidence).toHaveLength(2);
     expect(fs.existsSync(path.join(root, "proposals", r.runId, "resubmission.md"))).toBe(true);
-    expect(fs.existsSync(path.join(root, "proposals", r.runId, "run.yaml"))).toBe(true);
+    const runRecord = parseYaml(fs.readFileSync(path.join(root, "proposals", r.runId, "run.yaml"), "utf8")) as { model: string | null; promptVersion: string };
+    expect(runRecord).toMatchObject({ model: null, promptVersion: "resubmit-v1" });
     const rows = parseYaml(fs.readFileSync(path.join(caseDir, "dispositions.yaml"), "utf8")) as Disposition[];
     // E900's legacy title-only row is settled with a mirror of verify's admission; E901 was already canonically keyed.
     const legacy = rows.find((x) => x.key === textKey("Evidence GEO-E900") && x.by === r.runId)!;

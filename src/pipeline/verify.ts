@@ -954,6 +954,9 @@ export interface VerifyOutcome extends RunOutcome {
   rejected?: number;
 }
 
+/** Who drafted a proposal's records: the proposal's model — or, for a re-submission written by code, the origin of each record (review note #349). */
+const drafterOf = (p: Proposal) => (p.producer === "reverify" ? `on each record's origin (re-submission ${p.runId}, ${p.promptVersion ?? "resubmit"})` : (p.model ?? "unknown"));
+
 export async function runVerify(proposalRunId: string, opts: VerifyOptions = {}): Promise<VerifyOutcome> {
   const root = opts.root ?? process.cwd();
   const now = opts.deps?.now ?? (() => new Date());
@@ -1060,7 +1063,7 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
     // Materialize.
     const corrected = applyCorrections(loaded.dir, proposal.corrections, {
       date,
-      actor: `aletheia verify (${READER.model} second reader; drafter ${proposal.model ?? "unknown"}; proposal ${proposalRunId}, verification ${runId})`,
+      actor: `aletheia verify (${READER.model} second reader; drafter ${drafterOf(proposal)}; proposal ${proposalRunId}, verification ${runId})`,
       proposalRef: `proposals/${proposalRunId}`,
       root,
     });
@@ -1145,7 +1148,7 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
         // The rationale is the drafter's, written before verification: it argues the proposal, not what
         // entered. Labelled as such, with the admitted set beside it (review note #275).
         reason: `Admitted after verification: ${[...accepted.sources.map((s) => s.id), ...accepted.evidence.map((e) => e.id), ...accepted.claims.map((c) => c.id), ...accepted.research.map((r) => r.id)].join(", ") || "nothing"}${[...provisional.sources, ...provisional.evidence, ...provisional.claims].length ? `; admitted provisionally, unread, awaiting their texts: ${[...provisional.sources, ...provisional.evidence, ...provisional.claims].map((r) => r.id).join(", ")}` : ""}; everything else proposed was refused or blocked with a reason in dispositions.yaml. The drafter's rationale for the proposal, written before verification and describing what it proposed: ${proposal.rationale}`,
-        actor: `aletheia verify (${READER.model} second reader; drafter ${proposal.model ?? "unknown"})`,
+        actor: `aletheia verify (${READER.model} second reader; drafter ${drafterOf(proposal)})`,
         aiAssisted: true,
         kind: "content",
       },

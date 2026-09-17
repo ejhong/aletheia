@@ -1,0 +1,132 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 314
+title: "Edition protocol v8: anchored is not evidenced"
+url: https://github.com/ejhong/aletheia/pull/314
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-16
+judgedAgainst: d43674740b
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff adds a new edition protocol (v8), archives v7, adds a
+      DECISIONS.md entry, and extends the packet's claim index with an
+      `evidence` count. AGENTS.md is untouched. No citations, locators, or
+      quotes are added, and the citation tooling found no identifiers, so there
+      is no fabrication surface. Substantively the change strengthens rather
+      than weakens the §3 checks: it enforces §3.6 (a source anchor is not
+      evidence), §3.9 (source statement vs inference, including in the
+      steelman), and §3.13 (anchor-only claims graded `unresolved` at `low`
+      confidence with the basis stated), while preserving §3.3/§3.11 selection
+      duties (thin-evidence competing claims are still featured but graded
+      honestly). The DECISIONS entry is stamped with date and channel ('founder
+      direction in session, 2026-09-16'), consistent with the operating-record
+      provision in §3.15. One small inconsistency: the PR body says anchor-only
+      claims are graded 'at most provisionally_supported at low confidence'
+      whereas the committed protocol and DECISIONS say `unresolved` at `low`
+      confidence, never `supported` — the body appears stale relative to the
+      stricter final text, which is the one that governs; I would ask that the
+      PR description be corrected, but this is a description-hygiene issue, not
+      a rule breach."
+    cost:
+      model: claude-opus-5
+      inputTokens: 6990
+      outputTokens: 619
+      usd: 0.090344
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.6
+      - §3.9
+      - §3.13
+      - §3.15
+    reasoning: The packet now exposes a separate count of admitted Evidence records,
+      preventing a source anchor from being treated as evidence contrary to
+      §3.6. Protocol v8 requires anchor-only claims to be attributed to their
+      source, graded unresolved at low confidence absent another disclosed
+      basis, and textual inferences to be identified as proponents’ readings,
+      which strengthens §§3.9 and 3.13. The change adds no citations,
+      confidential material, ratification claims, or edit to AGENTS.md, and the
+      dated decision entry records its stated supervision and channel rather
+      than weakening the publication checks.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 8669
+      outputTokens: 1710
+      usd: 0.068876
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.6
+      - §3.9
+      - §3.15
+    reasoning: The change updates the edition protocol to version 8 and exposes the
+      count of admitted evidence records per claim in the packet builder. This
+      directly enforces §3.6 ('Sources are not evidence by themselves') and §3.9
+      ('Source statement versus inference') by preventing claims with only
+      source anchors from being graded as supported or asserted as established
+      facts in narrative drafts. The operational record in docs/DECISIONS.md
+      complies with §3.15's governance for documenting founder directions, and
+      AGENTS.md is untouched.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 9181
+      outputTokens: 658
+      usd: 0.009353
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff only archives edition-v7, adds edition-v8, extends the
+      packet claim index with an admitted-evidence count beside anchors, and
+      logs a DECISIONS entry stamped with founder direction. It does not touch
+      AGENTS.md, add citations or content records, or loosen any §3.15 check; v8
+      instead hardens §3.6/§3.9 by requiring anchor-only claims to be voiced as
+      held on the anchor, graded unresolved/low unless a non-anchor basis is
+      disclosed, and by writing textual inferences in the steelman as
+      proponents' readings. No run account or omitted files; nothing in the
+      visible change fabricates provenance or publishes confidence material.
+    cost:
+      model: grok-4.5
+      inputTokens: 8825
+      outputTokens: 162
+      usd: 0.018737
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.6
+      - §3.9
+      - §3.13
+      - §3.15
+    reasoning: "The change tightens rather than weakens the epistemic checks:
+      edition-v8 requires anchor-only claims to be told as held on their anchor
+      (never in the page's own voice), graded `unresolved` at `low` confidence
+      with a narrow disclosed-basis exception, and bars grading them `supported`
+      — a direct application of §3.6 (a source is not evidence) — and it extends
+      §3.9 to the steelman by requiring textual inferences to be written as the
+      proponents' reading. The packet change merely exposes the
+      admitted-evidence count beside the anchor count so the drafter can see the
+      distinction, and the DECISIONS.md entry records the founder's session
+      direction in the format §3.15's amendment permits, matching the adjacent
+      prior entry's pattern. No AGENTS.md edit occurs (only protocol, packet,
+      and decisions files), no citations are added, no runs are carried, and the
+      diff is complete with nothing omitted. The only wrinkle — the PR body says
+      'at most `provisionally_supported`' while the protocol file actually
+      mandates `unresolved` — is a body/diff discrepancy in the stricter
+      direction, so the diff governs and the discrepancy costs nothing
+      epistemically."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 9744
+      outputTokens: 1183
+      usd: 0.002053
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 43409
+  outputTokens: 4332
+  usd: 0.1894
+harvestedAt: 2026-09-17

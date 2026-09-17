@@ -1,0 +1,130 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 310
+title: The loop's goal written down; two founder hand merges declared supervised
+url: https://github.com/ejhong/aletheia/pull/310
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-16
+judgedAgainst: 8fc3e2e3f4
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: The diff touches only docs/AUTOMATION.md, docs/DECISIONS.md, and
+      scripts/arbiter.mjs; AGENTS.md is untouched — the proposed §1 sentence is
+      explicitly offered to the founder in the PR body rather than applied,
+      which is the correct handling under §3.15. No content/ records, citations,
+      locators, or assessments are added, so §3.7/§3.8 and the
+      verification-label rules are not engaged (the tooling found no
+      identifiers). The AUTOMATION.md 'goal' section is aspirational operating
+      guidance that explicitly reaffirms the two human levers and does not
+      loosen any §3.15 check. The two commit hashes added to SUPERVISED_DECLARED
+      use the pre-existing per-merge remedy for landings whose messages could
+      not carry the trailer, and each is stamped with who, what channel, and
+      date, with the same direction recorded verbatim in DECISIONS.md — that is
+      provenance recorded, not a check dodged, since the budget window governs
+      the autonomous lane, not panel ratification. I cannot independently
+      confirm the founder actually said the quoted words or that d914626/8fc3e2e
+      are the founder's hand merges, but nothing in the material is internally
+      inconsistent, and unfamiliarity is not evidence of fabrication. If
+      anything needed tightening it would be a note in the arbiter list of where
+      the session correspondence is held, but the decisions-log entry already
+      discharges the operating-record rule.
+    cost:
+      model: claude-opus-5
+      inputTokens: 3015
+      outputTokens: 666
+      usd: 0.071644
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: "The change does not edit AGENTS.md or alter the constitutional
+      ratification rules. The decisions entry gives the founder direction a date
+      and channel, quotes it directly, and identifies the two affected merges by
+      PR number and full commit hash. The arbiter change does not waive panel
+      review: it records that both changes had already passed the panel and
+      adjusts only their classification in the autonomous merge window because
+      the founder performed the merges manually. Nothing shown fabricates a
+      citation, publishes confidential material, hides disagreement, or weakens
+      a fail-closed epistemic check."
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 6107
+      outputTokens: 1437
+      usd: 0.053168
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.15
+    reasoning: The PR records founder session directions from 2026-09-16 in
+      `docs/DECISIONS.md`, updates `docs/AUTOMATION.md` to reflect the clarified
+      operational goal, and adds two squash commit hashes to
+      `SUPERVISED_DECLARED` in `scripts/arbiter.mjs`. It does not modify
+      `AGENTS.md`, properly leaving constitutional amendments to the founder as
+      noted in the PR body. Provenance of the founder directions is clearly
+      stamped with date and channel in accordance with §3.15.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 6606
+      outputTokens: 652
+      usd: 0.007399
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff only extends docs/AUTOMATION.md with a goal section drawn
+      from a founder session direction, appends that direction (and the
+      hand-merge direction) to docs/DECISIONS.md, and adds two squash-commit
+      hashes to the existing SUPERVISED_DECLARED set in scripts/arbiter.mjs.
+      AGENTS.md is untouched; the PR body correctly leaves any §1 sentence to
+      the founder. Recording founder directions in the decisions log and
+      configuration is expressly allowed by §3.15, and the supervised-hash
+      remedy is the gate’s established path for trailer-less hand merges rather
+      than a dodge of the checks. No citations, content records, confidence
+      material, or run ledgers are introduced.
+    cost:
+      model: grok-4.5
+      inputTokens: 6247
+      outputTokens: 167
+      usd: 0.013611
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.14
+    reasoning: The diff does not touch AGENTS.md — the proposed §1 sentence appears
+      only in the PR body as an offer to the founder, and amending the
+      constitution is reserved to the founder, so no §3.15 constitution
+      violation occurs. The arbiter change uses the existing SUPERVISED_DECLARED
+      per-merge remedy to attribute two specific hash-pinned commits as founder
+      hand-merges, backed by a founder direction recorded verbatim in
+      docs/DECISIONS.md with date and channel, exactly as §3.15 prescribes for
+      founder operating-record directions; it does not loosen the trailer
+      requirement generally, and both merges had already passed the panel, so no
+      ratification check was dodged. The new AUTOMATION.md section affirms
+      rather than weakens the checks ('the human levers stay exactly two',
+      review notes become gates), and recording the goal and the merge
+      attributions in the decisions log with stamps honors §3.14's versioning
+      and provenance rules. I cannot independently verify the session quotes or
+      that commits d914626/8fc3e2e were founder-made, but under temporal
+      humility that unfamiliarity is not positive evidence of fabrication, and
+      the recording follows the constitution's own channel-and-date rigor; if
+      the hashes or quotes were shown to be misattributed, that would be a
+      provenance violation, but nothing in the packet shows it.
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 7220
+      outputTokens: 2035
+      usd: 0.0021
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 29195
+  outputTokens: 4957
+  usd: 0.1479
+harvestedAt: 2026-09-17

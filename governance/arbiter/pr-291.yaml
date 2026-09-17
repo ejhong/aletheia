@@ -1,0 +1,159 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 291
+title: "Chain: 2026-09-16"
+url: https://github.com/ejhong/aletheia/pull/291
+verdict: pass
+reason: "4 of 5 seats affirm compliance; one seat's objection is a review note
+  the operator answers on the record: GPT-5.6 Sol (OpenAI) (§3.8, §3.14, §3.15;
+  provenance)"
+outcome: merged
+outcomeAt: 2026-09-16
+judgedAgainst: "4517841259"
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The two new edition candidates re-adopt the incumbent assessments,
+      carry basis hashes, producedBy run ids, model/promptVersion/date stamps,
+      and matching run.yaml and spend.yaml entries; no assessment is presented
+      as new or as human-reviewed. The operator's pre-publication amendments are
+      the strongest signal of compliance rather than against it: each departure
+      from the verb's reply.json (removal of the V1-confound sentences whose
+      evidence record was declined at intake, the calibrated conclusion
+      sentences) is recorded in the file header, in an `amendments` block naming
+      the reviewer note, and in an append-only history entry, so a reader can
+      reconstruct verb text versus operator text. The word-count discrepancies
+      are handled honestly: the verb's estimate is left standing and labelled a
+      guess, the measured figures (4,054 → 3,849 candidate, 3,859 as amended;
+      5,150 → 5,209) are appended and attributed to the operator, and the
+      earlier single-figure annotation that contradicted the run record was
+      itself corrected on the record. The geopolymer rationale also openly
+      reconciles five recorded accounts against four as grouped in prose. The
+      citation tooling found no identifiers in added content, and nothing in the
+      articles shows a self-contradicting locator or quote; the articles
+      repeatedly mark unread primary sources, second-hand citations and
+      unrecorded claims rather than overstating them (§3.8, §3.9, §3.13
+      respected). One point I would flag as a review note, not a violation: the
+      diff retro-stamps several pre-existing by-hand history entries with
+      `runId: session_...` and `promptVersion: operator-by-hand-v1`, including
+      an entry whose own text still asserts that no run id or prompt version
+      exists for it — a new history entry explaining that stamping convention
+      would remove the apparent self-contradiction."
+    cost:
+      model: claude-opus-5
+      inputTokens: 84755
+      outputTokens: 1963
+      usd: 0.476044
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: violates
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: "The change introduces internally contradictory provenance stamps. In
+      deep-memory/history.yaml it retroactively adds `runId:
+      session_01AiXD4y5Y91KC7iM3uBhWmu` and `promptVersion: operator-by-hand-v1`
+      to older entries whose existing text explicitly says “there is no protocol
+      and no run” and “No run id and no prompt version exist for it because no
+      protocol ran.” Relabeling a private operator-session identifier as a run
+      ID, while asserting a prompt version where the history says none existed,
+      prevents readers from reconstructing how those changes were actually made
+      and checked. The same synthetic stamps are added across older deep-memory
+      and geopolymer history entries; they should be removed or represented in
+      semantically accurate session/operator fields, with any correction
+      recorded truthfully rather than rewriting the old provenance."
+    paradigm: provenance
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 58613
+      outputTokens: 2279
+      usd: 0.280544
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.1
+      - §3.8
+      - §3.9
+      - §3.13
+      - §3.14
+      - §3.15
+    reasoning: "The pull request adds two edition candidates (`deep-memory` and
+      `geopolymer`) which both re-adopt their incumbent assessments on unchanged
+      ledgers while refining prose and explicitly recording accounts. The
+      operator pre-publication amendments address previous panel review notes
+      (#292, #294, #297), calibrating uncertainty in the conclusions, scoping
+      statements to the ledger, and precisely documenting word count
+      differences. All operator modifications and schema-completing history
+      attributes are fully stamped with date, actor, session runId, and
+      promptVersion in compliance with §3.8, §3.14, and §3.15."
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 64329
+      outputTokens: 4835
+      usd: 0.066378
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff adds two stamped edition candidates that re-adopt prior
+      assessments by explicit hash/runId with no new assessment overlay, plus
+      append-only history entries and spend lines; operator amendments for
+      review notes #292/#294/#297 are recorded in the edition headers,
+      amendments blocks, and history with session/runId/promptVersion stamps.
+      Deep-memory prose no longer re-introduces declined non-atomic confounds as
+      ledger-held evidence and the conclusion now states only indirect support;
+      geopolymer conclusions are calibrated to “consistent with, not
+      established” matching the article’s own second-hand and untested
+      qualifications. No new citation identifiers appear (verification empty),
+      AGENTS.md is untouched, and no confidence material or check-weakening is
+      present. The run accounts match the written files and label the
+      re-adoptions honestly."
+    cost:
+      model: grok-4.5
+      inputTokens: 61525
+      outputTokens: 189
+      usd: 0.124184
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.6
+      - §3.8
+      - §3.13
+      - §3.14
+      - §3.15
+    reasoning: "Both editions are honest re-adoptions of incumbent assessments with
+      no new assessment, and the panels' dissents (review notes #292, #294,
+      #297) are answered on the record rather than hidden, which is what §3.15
+      requires of contested changes. Where the verbs' rationales misstated facts
+      (the deep-memory word-count estimate 'roughly a sixth' and the geopolymer
+      'at or slightly below' claim), the operator did not silently edit them but
+      appended clearly labelled measured corrections (4,054→3,849/3,859;
+      5,150→5,209), keeping the record reconstructable under §3.14's append-only
+      discipline. The rejected V1-confound material was correctly kept out of
+      the edition prose — the amended article says only what the ledger holds
+      (DEEP-C027) and what the retelling account predicts, exactly as review
+      note #292 required, rather than re-admitting a declined record's
+      propositions as prose. No citation identifiers were added, no AGENTS.md
+      change appears, no confidence material is published, and the editions are
+      presented as candidates for panel ratification, not as ratified judgments.
+      The backfilled session-id and 'operator-by-hand-v1' stamps on earlier
+      history entries are additive, match the session id the repository itself
+      established on the record (note #247), and improve rather than obscure
+      reconstructability; they do not misattribute who did what. The residual
+      inaccuracies that remain inside the preserved verb rationales are exactly
+      the kind of ordinary imperfection the append-only annotation mechanism
+      exists to correct, not a fabrication or provenance violation."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 59888
+      outputTokens: 2617
+      usd: 0.010637
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 329110
+  outputTokens: 11883
+  usd: 0.9578
+harvestedAt: 2026-09-17

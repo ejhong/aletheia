@@ -1,0 +1,114 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 324
+title: "The goal, reworded: more AI means a better site, never a worse one"
+url: https://github.com/ejhong/aletheia/pull/324
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-17
+judgedAgainst: 92a35ad028
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "Docs-only change to docs/AUTOMATION.md's \"The goal\" section plus
+      an append-only decisions-log entry; AGENTS.md is untouched, so §3.15's
+      reservation is not engaged. No citations, identifiers, or content/ records
+      are added, so no fabrication or provenance-label risk arises (verification
+      tooling found no identifiers). The reworded text does not loosen any §3.15
+      check: it keeps the two human levers (kill switch, constitution) explicit
+      and adds a floor — no pass may leave a case worse, naming fabricated
+      locators and unevidenced claims as defects — which if anything reinforces
+      the epistemic rules. The founder direction is recorded as an operating
+      record with date and channel (\"in session, 2026-09-17\"), which §3.15
+      expressly permits, and the log entry is appended at the end of
+      DECISIONS.md rather than rewriting history. The PR body's quoted founder
+      words are consistent with the diff's content and do not instruct the
+      panel. Ordinary docs rewording, compliant."
+    cost:
+      model: claude-opus-5
+      inputTokens: 2526
+      outputTokens: 425
+      usd: 0.026448
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: The change edits only automation guidance and the append-only
+      decisions log; it does not amend AGENTS.md or weaken any constitutional
+      gate. The founder’s direction is recorded with its date, session channel,
+      quotation, and supervision attribution, consistent with §3.15’s treatment
+      of founder operating directions. The new quality floor expressly rejects
+      fabricated locators and unsupported factual claims, reinforcing rather
+      than evading the epistemic checks.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 4493
+      outputTokens: 253
+      usd: 0.023544
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules: []
+    reasoning: The change updates `docs/AUTOMATION.md` and `docs/DECISIONS.md` to
+      reflect the founder's session direction regarding project goals (measuring
+      quality improvement rather than cost-effectiveness alone). AGENTS.md is
+      not modified, no epistemic checks are weakened, and the founder's
+      direction is properly stamped with date and channel as permitted under
+      §3.15. There are no content, schema, or citation modifications.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 6132
+      outputTokens: 404
+      usd: 0.006114
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff is documentation-only: it rewords the automation goal in
+      docs/AUTOMATION.md and appends a matching stamped entry in
+      docs/DECISIONS.md that quotes the founder’s 2026-09-17 session direction.
+      No AGENTS.md edit occurs, so §3.15’s reservation of the constitution is
+      untouched. No content records, citations, assessments, provenance stamps,
+      or confidence material are added or altered, and the change does not
+      loosen any epistemic check. The recorded direction and the resulting prose
+      are consistent with each other and with the founder-direction rules
+      already in §3.15."
+    cost:
+      model: grok-4.5
+      inputTokens: 5907
+      outputTokens: 147
+      usd: 0.012811
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: "This is a docs-only change that rewords the goal statement in
+      docs/AUTOMATION.md and records the founder's direction in the decisions
+      log with date and channel stamped as the constitution requires. It does
+      not edit AGENTS.md, so §3.15's amendment rule is not triggered. It does
+      not weaken any §3.15 check: the checks (fail-closed CI, multi-model
+      ratification, fabrication/exposure bans) are untouched; the diff only
+      reframes the operational objective from cost-effectiveness toward 'more AI
+      means a better site, never a worse one', and it explicitly keeps the floor
+      that no pass may leave a case worse — including naming fabricated locators
+      as floor violations, which strengthens rather than loosens the epistemic
+      floor. The founder quotation is presented as a working-session direction
+      (the operating record, per §3.15's amendment on founder directions),
+      properly attributed, and no citations or confidence material are involved.
+      No run records, no omitted files, and no citation identifiers were added,
+      leaving nothing unresolved."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 4565
+      outputTokens: 379
+      usd: 0.00122
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 23623
+  outputTokens: 1608
+  usd: 0.0701
+harvestedAt: 2026-09-17

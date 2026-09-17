@@ -1,0 +1,145 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 323
+title: "Re-verification: provisional records are settled when their texts can be read"
+url: https://github.com/ejhong/aletheia/pull/323
+verdict: pass
+reason: "4 of 5 seats affirm compliance; one seat's objection is a review note
+  the operator answers on the record: GPT-5.6 Sol (OpenAI) (§3.14, §3.15;
+  provenance)"
+outcome: merged
+outcomeAt: 2026-09-17
+judgedAgainst: 81581a08a4
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The change is pipeline/loader machinery: a new `reverify` verb that
+      re-submits provisional (admitted-unread) records to the same second reader
+      under the same verify protocol, plus a `liveEvidence()` filter, scheduler
+      rule 1b, and a DECISIONS.md entry. No content/ records or citations are
+      added — the verification tool found no identifiers — so no fabrication
+      surface. Provenance is preserved and strengthened rather than dodged:
+      every pass opens a run with model and promptVersion, writes a
+      verification.md, appends disposition rows (in / failed / provisional with
+      reasons and routes), and appends a history entry stamped with actor
+      `aletheia reverify (... second reader)` and `aiAssisted: true`; refusals
+      carry their reason into `rejectionReason`/`limitations` rather than
+      deleting the record. The one loosened invariant in `load.ts` (a refused
+      record may retain its provisional block) is not a §3.15 check being
+      weakened — it widens the audit trail by keeping the record of how a record
+      entered, while still forbidding blocks on any other state and still
+      requiring the block on provisional records. Hiding refused evidence from
+      public pages and the panel packet mirrors the existing `liveClaims`
+      treatment of rejected claims and does not suppress negative evidence in
+      the §3.11 sense (these are records that failed the reader's check, not
+      unfavourable findings). `replaceRecord` is deliberately conservative — it
+      refuses to write if anything beyond the named record would change, and
+      that is unit-tested. AGENTS.md is untouched; the DECISIONS entry records
+      the founder direction with date and channel as the constitution permits."
+    cost:
+      model: claude-opus-5
+      inputTokens: 23482
+      outputTokens: 1252
+      usd: 0.151903
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: violates
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: The materialization logic can publish a false change history. When a
+      promoted or appended evidence record loses all claim links, the code
+      leaves it provisional or does not append it, but never removes it from
+      `plan.promote` or `plan.appended`; it then records that record as `in`,
+      includes it in promoted/appended counts, and names it in the history as
+      promoted. Similarly, a refused source is left provisional and added to
+      `plan.unread` while remaining counted and reported as refused, producing
+      contradictory dispositions for one record. This violates version-history
+      and inspectability requirements because the run account, dispositions, and
+      append-only history would not accurately record what changed; final counts
+      and rows must be derived from the records actually materialized, with one
+      honest disposition per record.
+    paradigm: provenance
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 19116
+      outputTokens: 2032
+      usd: 0.117104
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: The pull request adds the `reverify` pipeline verb and scheduler
+      integration to resolve provisionally admitted records once their source
+      text can be retrieved and evaluated. It enforces rigorous verification
+      through the standard second reader and citation resolver protocols,
+      refusing records that fail and promoting qualifying records in place via
+      `replaceRecord`. Provenance is preserved with append-only ledger history
+      entries and disposition logs, and UI/loader updates safely filter rejected
+      records using `liveEvidence` without altering constitutional verification
+      standards.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 5097
+      outputTokens: 1327
+      usd: 0.010026
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff adds a reverify pipeline and scheduler rule that re-submits
+      provisional records through the existing second reader and verify
+      protocol, then promotes, appends, refuses, or leaves them provisional with
+      stamped history, dispositions, and run notes. liveEvidence() hides
+      rejected evidence from pages, packets, and views while keeping tombstones
+      on disk, and the loader still requires a provisional block for provisional
+      state and only allows that block on provisional or rejected records. No
+      AGENTS.md edit, no citations or content records are invented in this
+      change, and DECISIONS.md records the founder direction with date and
+      channel. Refusals drop links and refuse orphaned evidence rather than
+      silently counting failed material, which preserves provenance and evidence
+      direction rather than weakening §3.15 checks.
+    cost:
+      model: grok-4.5
+      inputTokens: 9
+      outputTokens: 175
+      usd: 0.007212
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.14
+      - §3.8
+    reasoning: "This is the promotion path the provisional-admission decision
+      required: unread records are settled by going back through the same second
+      reader, same checks, same verify protocol — the fabrication check is
+      explicitly untouched, so nothing in §3.15 is weakened or dodged; if
+      anything the change strengthens the checks by ending permanent provisional
+      limbo. No citations are added (the mechanical verification found none), no
+      AGENTS.md edit occurs (only DECISIONS.md, which is the correct
+      record-keeping file), and no confidence material is exposed. Provenance is
+      handled honestly: promotions carry the reader's stamps, refusals become
+      tombstones with dated, run-stamped rejection reasons recorded in history
+      and dispositions, and still-unread attempts get disposition rows — nothing
+      is silently erased, and hiding refused records from the rendered pages
+      mirrors the existing liveClaims rejection filter while the tombstone stays
+      inspectable in the file. The load.ts integrity loosening is narrow and
+      principled (only 'provisional' or 'rejected' may carry a provisional
+      block) and serves record-keeping, not evasion. The founder-direction
+      claims in DECISIONS.md are untrusted records rather than directives; I see
+      no positive evidence against them, and this PR writes no content, so no
+      run records were owed."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 4130
+      outputTokens: 1363
+      usd: 0.00372
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 51834
+  outputTokens: 6149
+  usd: 0.29
+harvestedAt: 2026-09-17

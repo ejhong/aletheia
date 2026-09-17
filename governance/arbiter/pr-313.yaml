@@ -1,0 +1,139 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 313
+title: Budget-parked PRs are re-judged when the window has room
+url: https://github.com/ejhong/aletheia/pull/313
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-16
+judgedAgainst: 5c9e702e0c
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "This is infrastructure only: no content/ files, no citations
+      (verification found none), and AGENTS.md is untouched. The change extracts
+      the existing weekly-window arithmetic (epoch, canon paths,
+      declared-supervised set, first-parent git log, lane split) into
+      scripts/gate-window.mjs and imports it from both scripts/arbiter.mjs and
+      the new schedule, so the two cannot count differently — the cap itself is
+      unchanged (CONTENT_MERGES_PER_WEEK still bounds `room`, and `room <= 0`
+      exits), so no §3.15 check is loosened. The scheduled job only re-runs the
+      PR's own arbiter workflow run against today's window; the panel judgment
+      is re-executed rather than reused or upgraded by hand, and parks for seat
+      objections are untouched (parkedOnBudget matches only verdict=park with a
+      spent-budget reason, and the tests assert violation-parks and passes are
+      excluded). The kill switch in governance/operation.yaml is honored before
+      anything is re-run. The two newly-carried declared-supervised hashes are
+      moved verbatim from arbiter.mjs, not newly asserted, and each is stamped
+      with PR, date and channel; the DECISIONS.md entry is likewise stamped with
+      date and the founder's in-session direction, which §3.15 expressly permits
+      recording. Remaining risk is only that a re-run could merge a change whose
+      budget park was the sole brake, but the budget is a self-imposed rate
+      limit that this code still enforces, so I see no rule broken."
+    cost:
+      model: claude-opus-5
+      inputTokens: 8799
+      outputTokens: 986
+      usd: 0.071838
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+      - §8
+      - §9
+    reasoning: The change does not edit AGENTS.md, publish content, add citations,
+      or alter any assessment record. It preserves the existing budget gate by
+      moving its epoch, canon paths, supervised declarations, and first-parent
+      counting into a shared helper used by both the arbiter and scheduler. The
+      scheduler only reruns the full arbiter workflow for PRs whose arbiter data
+      says they were parked on the content-merge budget, and it exits unless the
+      recorded operational state is `live`, so it does not bypass panel judgment
+      or the kill switch. The founder-direction entry in DECISIONS.md records a
+      date, session channel, and quotation in the form expressly permitted by
+      §3.15, while the tests cover parsing and oldest-first slot selection.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 8731
+      outputTokens: 2716
+      usd: 0.089756
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.15
+    reasoning: This pull request automates the re-triggering of the constitutional
+      arbiter workflow for pull requests that were parked solely due to reaching
+      the weekly autonomous content-merge budget once window capacity opens up.
+      It extracts the existing gate window logic from `scripts/arbiter.mjs` into
+      `scripts/gate-window.mjs` so both the gate and the recheck schedule
+      evaluate the budget identically, without loosening any verification or
+      rate-limiting constraints. The recheck script explicitly respects the kill
+      switch in `governance/operation.yaml` and re-runs the existing arbiter
+      workflow rather than bypassing it. No constitutional rules in `AGENTS.md`
+      are edited or weakened.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 11287
+      outputTokens: 757
+      usd: 0.011304
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff is pure gate/ops plumbing: it extracts the existing weekly
+      content-merge window arithmetic into scripts/gate-window.mjs (epoch, CANON
+      paths, SUPERVISED_DECLARED, first-parent log, lane split) shared by
+      arbiter and the new schedule, and adds a kill-switch-honoring cron that
+      re-runs the last arbiter workflow only for open PRs whose sticky comment
+      is a budget-only park, oldest first, one per free slot.
+      SUPERVISED_DECLARED and the arbiter’s rate-limit behaviour are moved, not
+      loosened; AGENTS.md is untouched; no content/, citations, confidence
+      material, or run overlays are added. DECISIONS.md records the founder
+      direction that authorized the fix. Tests cover the pure
+      parkedOnBudget/pickForRejudge helpers. No §3 fabrication, provenance
+      mis-stamp, confidence, or check-weakening issue is visible in the complete
+      diff."
+    cost:
+      model: grok-4.5
+      inputTokens: 10755
+      outputTokens: 215
+      usd: 0.0228
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+    reasoning: "This is an infrastructure change, not content: it adds a scheduled
+      re-judge of PRs parked solely on the weekly content-merge budget,
+      re-running the same arbiter run on the same commit once the window has
+      room. It does not weaken any §3.15 check — the budget itself still holds
+      (re-judging happens only when `room > 0`, and the total re-judged PRs
+      cannot exceed the free slots), the panel verdict and checks must still
+      pass, the kill switch in governance/operation.yaml is honored in the new
+      script, and the arbiter's own gate logic is unchanged (the window
+      arithmetic was moved verbatim into `gate-window.mjs` and shared by both
+      callers precisely so the two cannot count differently, which is
+      check-strengthening, not weakening). No AGENTS.md edit, no citations
+      added, no content changes, no fabricated provenance; the DECISIONS.md
+      entry accurately describes the change and carries a recorded founder
+      direction. The declared-supervised list is relocated verbatim with no
+      entries added or removed. The `parkedOnBudget` matcher is narrow (park
+      verdict plus a spent-budget reason string) and its edge cases are
+      unit-tested, so it will not silently re-judge PRs parked for substantive
+      panel objections. I see no rule broken; at most one could ask for a
+      merge-time budget re-check against races between the 3-hour schedule and
+      concurrent merges, but that is an operational hardening note, not a
+      constitutional violation."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 8843
+      outputTokens: 1177
+      usd: 0.002261
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 48415
+  outputTokens: 5851
+  usd: 0.198
+harvestedAt: 2026-09-17

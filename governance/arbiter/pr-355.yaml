@@ -1,0 +1,139 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 355
+title: Refused evidence is a tombstone on the ledger page
+url: https://github.com/ejhong/aletheia/pull/355
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-17
+judgedAgainst: 016a32ae59
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "This is a presentation/domain-layer change: `evidenceTombstones` is
+      the strict complement of `liveEvidence` (rejected records only), and the
+      ledger page now renders refused records in a collapsed section so that
+      `#evidence-<id>` anchors referenced by the case page and history resolve.
+      No content records, citations, or locators are added — the verification
+      section confirms no identifiers in added content lines, and the only
+      fixture id (GEO-E902, dated 2099) lives in a unit test, clearly synthetic
+      and not on the ledger. Nothing about weight or counts changes:
+      `liveEvidence` is untouched and the section label states plainly that
+      tombstones carry no weight and are counted nowhere, so no check in §3.15
+      is loosened. The tombstone shows the struck title, the source statement,
+      and the refusal text as the record carries it, which supports §3.11
+      (keeping unfavorable/refused material visible) and §3.14 (history that
+      names an id still resolves). AGENTS.md is not edited; the DECISIONS.md
+      entry is a dated, channel-stamped founder-supervised note consistent with
+      §3.15. Only minor nit: the `refusal()` fallback to the last limitation
+      could surface a non-refusal line as if it were the reason, but limitations
+      are the record's own text and are not misattributed, so this is ordinary
+      imperfection rather than a provenance violation."
+    cost:
+      model: claude-opus-5
+      inputTokens: 4260
+      outputTokens: 571
+      usd: 0.076137
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.5
+      - §3.8
+      - §3.9
+      - §3.14
+      - §3.15
+    reasoning: The change preserves rejected evidence as clearly marked tombstones
+      rather than restoring it to the live evidence set, and explicitly states
+      that such records carry no weight and are counted nowhere. It retains the
+      record ID, prior direction, claim links, source statement, and recorded
+      refusal limitation, supporting inspectable provenance and revision history
+      without presenting the record as admitted evidence. The partition test
+      confirms that rejected records remain excluded from `liveEvidence`, while
+      the added anchors repair the link audit rather than weakening or bypassing
+      it. No citations or confidential material are added, and no constitution
+      or epistemic check is modified.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 6862
+      outputTokens: 1718
+      usd: 0.061808
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: The PR addresses broken `#evidence-<id>` anchor links by rendering
+      rejected evidence as tombstones in a dedicated section on the ledger page
+      without altering live evidence weighting or counts. This preserves
+      historical provenance and linkability for records referenced in revision
+      histories while explicitly displaying their refused status and rationale
+      (§3.8, §3.14). The change includes unit tests verifying the strict
+      partition between live evidence and tombstones in `src/domain/load.ts`.
+      The founder's direction given in session is duly documented in
+      `docs/DECISIONS.md` in accordance with §3.15. No constitution files are
+      modified and no citations are fabricated.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 7475
+      outputTokens: 766
+      usd: 0.008479
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff only adds UI and a domain helper so refused (reviewState
+      rejected) evidence keeps its #evidence-<id> anchors on the ledger page as
+      closed tombstones—id, former direction/claims, struck title/statement, and
+      the refusal from limitations—without changing liveEvidence weight or
+      counts. No AGENTS.md edit, no citations or content records fabricated, no
+      confidence material, and DECISIONS.md records the founder-directed fix.
+      Matches existing claim-tombstone practice and §3.11/§3.14 transparency."
+    cost:
+      model: grok-4.5
+      inputTokens: 7112
+      outputTokens: 130
+      usd: 0.015119
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.5
+      - §3.8
+      - §3.11
+      - §3.14
+      - §3.15
+    reasoning: "This is a presentation-layer fix that increases transparency rather
+      than weakening any check: refused evidence records keep their anchors on
+      the ledger page, rendered struck-through in a closed section with the
+      refusal reason the record itself carries, and
+      `liveEvidence`/`verifiedEvidence` are untouched so refused records gain no
+      weight, count nowhere, and cannot be selected as strongest evidence —
+      consistent with §3.11 (refusals recorded), §3.14 (append-only history
+      visible), and the tombstone pattern already used for rejected claims. No
+      citation identifiers are added, so §3.7/§3.8 fabrication concerns do not
+      arise; the test's '2099-01-02' is plainly a synthetic fixture, not a
+      fabricated locator. The diff does not touch AGENTS.md, and the change does
+      not reclassify or dodge any gate — it makes the post-build link audit pass
+      by rendering the anchors the audit correctly demanded. The DECISIONS.md
+      entry attributes the direction to a founder session of 2026-09-17; I
+      cannot verify that session from what I was shown, but I have no positive
+      evidence of misattribution, and such supervision stamps are the repo's
+      established record pattern. Note for the operator (non-blocking): the
+      tombstone UI displays a refused record's sourceStatement even though the
+      record was refused — worth confirming that refused-after-entry records
+      never carried confidence-restricted material, though nothing here suggests
+      they did."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 7948
+      outputTokens: 680
+      usd: 0.001532
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 33657
+  outputTokens: 3865
+  usd: 0.1631
+harvestedAt: 2026-09-19

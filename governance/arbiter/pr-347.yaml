@@ -1,0 +1,156 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 347
+title: "Pre-Columbian Amazon: the dating and the builders are two claims (review
+  note #345)"
+url: https://github.com/ejhong/aletheia/pull/347
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-19
+judgedAgainst: 54dc2f65a8
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The change does exactly what §3.2 requires: it splits a bundled
+      claim (AMZ-C061, which fused the Upano occupation's dating with the
+      builder attribution) into a dating claim supported by the already-admitted
+      AMZ-E073, and a separate attribution claim AMZ-C086 carrying its own
+      evidence record AMZ-E115. Provenance is exact and internally consistent
+      (§3.8): the quoted span \"was carried out by groups from the Kilamope and
+      later Upano cultures\" appears identically in the claim's sourceAnchor,
+      the evidence sourceStatement, and the disposition rows, all located at p.
+      4 of the author manuscript of an existing source (SRC-ROSTAIN-2024, not
+      newly cited; the verification tool found no new identifiers). §3.9 is
+      honoured: sourceStatement holds only what the text says, while the
+      stratigraphic reasoning and supplementary S2 material are kept in
+      editorInference, with a limitation noting the dating sequence is to be
+      revised. Labels are honest — reviewState ai_extracted, extractedBy
+      \"operator, by hand\", and the history openly states that the Wayback copy
+      of the unreachable archimer URL was read and that no second model has read
+      these records, leaving the panel as the check rather than claiming
+      ratification (§3.15). The AMZ-C066→AMZ-C086 / AMZ-E078→AMZ-E115
+      renumbering is disclosed in an append-only 2026-09-19 history entry that
+      preserves the 2026-09-17 entries verbatim, and the edition's article
+      change is recorded in its amendments with runId, promptVersion, and
+      fields, so the published sentence now cites each claim for its own
+      proposition (§3.14). AGENTS.md is untouched and no check is loosened."
+    cost:
+      model: claude-opus-5
+      inputTokens: 19843
+      outputTokens: 1065
+      usd: 0.166403
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.5
+      - §3.8
+      - §3.9
+      - §3.14
+      - §3.15
+    reasoning: The change corrects the atomicity problem by limiting AMZ-C061 to
+      chronology and placing the distinct builder attribution in AMZ-C086 with
+      its own supporting evidence, AMZ-E115. The evidence explicitly records its
+      direction, separates the quoted source statement from editorial inference,
+      supplies a page locator and manuscript URL, and labels the record
+      `ai_extracted`; the history further records that the operator checked a
+      Wayback copy when the original host was unavailable. The article now cites
+      each claim only for the proposition it contains, avoiding the former
+      silent extension of dating evidence to cultural attribution. The
+      renumbering from C066/E078 to C086/E115 is transparently preserved through
+      append-only amendment and history entries rather than silently rewritten.
+      No added identifier failed verification, no AGENTS.md or checks are
+      altered, and the change is being submitted to the constitutional panel
+      rather than represented as unilateral ratification.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 16122
+      outputTokens: 2302
+      usd: 0.11104
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.8
+      - §3.9
+      - §3.14
+    reasoning: This pull request directly enforces §3.2 (Atomic claims) by
+      decoupling the chronological dating of the Upano occupation (AMZ-C061)
+      from the cultural attribution of who built the platforms and roads
+      (AMZ-C086). The new evidence record (AMZ-E115) carries exact page-level
+      locator and verbatim quote provenance under §3.8 and separates source
+      statement from editor inference per §3.9. All adjustments to dispositions,
+      edition citations, amendments, and changelog history are meticulously
+      documented and traceable per §3.14 and §3.15.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 19532
+      outputTokens: 901
+      usd: 0.018028
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff cleanly splits the bundled AMZ-C061 into dating-only (C061)
+      and builder-attribution (C086) with its own evidence AMZ-E115, fixing the
+      §3.2/§3.6/§3.9 review note. Source-statement vs editor-inference are
+      separated, the p. 4 quote and locator are carried, direction is explicit,
+      and history/dispositions/edition amendments are append-only with honest
+      renumbering (C066/E078→C086/E115) left visible rather than rewritten. No
+      new citation identifiers are introduced (verification empty), AGENTS.md is
+      untouched, and the panel is correctly treated as the second-model check
+      for the operator-hand records. Ordinary claimType/rung labeling is not a
+      constitutional breach.
+    cost:
+      model: grok-4.5
+      inputTokens: 17939
+      outputTokens: 188
+      usd: 0.037121
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.6
+      - §3.8
+      - §3.9
+      - §3.14
+      - §3.15
+    reasoning: "The change does exactly what review note #345 asked: it splits the
+      bundled claim so AMZ-C061 states only the dating (matching what its
+      admitted evidence AMZ-E073 actually supports) and gives the builder
+      attribution its own claim (AMZ-C086) with its own evidence record
+      (AMZ-E115) citing only AMZ-C086 — directly curing the §3.2/§3.6 defect.
+      The new evidence record distinguishes sourceStatement from editorInference
+      (§3.9), carries an exact locator with the verbatim p. 4 quote, and the
+      history entries document the operator's re-reading of the author
+      manuscript via the Wayback copy, so no locator or provenance detail is
+      invented (§3.8); the tooling found no new citation identifiers to check,
+      and the source SRC-ROSTAIN-2024 already exists in the ledger. The
+      renumbering from C066/E078 to C086/E115 is not a provenance violation: the
+      append-only 2026-09-17 history entries stand as written, the 2026-09-19
+      entry records who renumbered what, when, and why, and the disposition rows
+      disclose the rename in their reasons — one id names one thing, and no
+      dangling IDs are created (§3.14, §8). The edition's article is corrected
+      through a recorded `amendments` block with runId/promptVersion and the
+      append-only assessment line is explicitly left to the next edition, and
+      the PR does not present any unratified material as ratified — it states
+      plainly that no second model has read the records and submits them to this
+      panel as its check (§3.15). I see no check-weakening: the verify verb's
+      refusal is honored, not dodged, by re-submission as an atomic record. The
+      only blemish is that the PR body still speaks of the pre-renumbering ids
+      (C066/E078), but the diff, dispositions, and history are internally
+      consistent and self-disclosing, which is what the constitution governs."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 16561
+      outputTokens: 1772
+      usd: 0.003716
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 89997
+  outputTokens: 6228
+  usd: 0.3363
+harvestedAt: 2026-09-19

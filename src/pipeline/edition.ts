@@ -191,6 +191,35 @@ function inputsHashOf(loaded: LoadedCase, root: string): string {
   );
 }
 
+/**
+ * Every evidence id the assessment names — in any string of it, at any depth — must be a record the case holds,
+ * live and read (protocols/edition-v10.md — review note #358: an assessment spent the builder-attribution record on
+ * the chronology and counted an anchor-only claim among what the case shows; review note #360: a check that scans
+ * chosen fields, or one prefix, is dodgeable). Any token shaped like an evidence id counts, whatever its prefix: an
+ * id from another case, or from nowhere, is one this case does not hold. Which claim a citation is for is the
+ * protocol's rule and the panel's reading: a claim's reasoning may lean on evidence attached to a parent or sibling
+ * claim when it says so (v8), so attachment is not refused mechanically.
+ */
+export function assessmentEvidenceErrors(a: AssessmentRun, loaded: Pick<LoadedCase, "evidence">): string[] {
+  const re = /\b[A-Z][A-Z0-9]*-E\d{3}\b/g;
+  const byId = new Map(loaded.evidence.map((e) => [e.id, e]));
+  const errors: string[] = [];
+  const walk = (value: unknown, where: string) => {
+    if (typeof value === "string") {
+      for (const id of new Set(value.match(re) ?? [])) {
+        const e = byId.get(id);
+        if (!e) errors.push(`assessment ${where} names ${id}, which this case does not hold`);
+        else if (e.reviewState === "rejected") errors.push(`assessment ${where} names ${id}, a refused record that carries nothing`);
+        else if (e.reviewState === "provisional") errors.push(`assessment ${where} names ${id}, a provisional record that carries no weight (edition protocol v9)`);
+      }
+    } else if (Array.isArray(value)) value.forEach((v, i) => walk(v, `${where}[${i}]`));
+    else if (value && typeof value === "object") for (const [k, v] of Object.entries(value)) walk(v, where ? `${where}.${k}` : k);
+  };
+  walk(a.caseAssessment, "caseAssessment");
+  for (const ca of a.claimAssessments) walk(ca, `claimAssessments[${ca.claimId}]`);
+  return errors;
+}
+
 /** Pure: reply + context → a validated edition (and assessment), or the errors that stop it. */
 export function assembleEdition(
   loaded: LoadedCase,
@@ -244,6 +273,7 @@ export function assembleEdition(
       assessment = parsed.data;
       const steel = steelmanRequirementError(assessment);
       if (steel) errors.push(steel);
+      errors.push(...assessmentEvidenceErrors(assessment, loaded));
     }
   }
   const adoptedRef = assessment

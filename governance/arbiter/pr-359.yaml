@@ -1,0 +1,139 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 359
+title: Evidence is cited for the claim it is attached to (edition protocol v10)
+url: https://github.com/ejhong/aletheia/pull/359
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-19
+judgedAgainst: 10568e0dcb
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff adds a new edition protocol (v10) that tightens, not
+      loosens, the epistemic checks: an evidence record may be cited only for a
+      proposition it is attached to (§3.2, §3.6, §3.8), and case-level fields
+      such as `whatIsClaimed` may not present anchor-only claims as things the
+      case shows. The v10 file carries forward the v8 anchored-is-not-evidenced
+      and v9 provisional-carries-no-weight rules verbatim in its own sections,
+      and v9 is merely moved to protocols/archive/ with a 100%-similarity
+      rename, so no prior constraint is dropped. The new
+      `assessmentEvidenceErrors` helper walks every string at any depth and
+      pushes errors into the existing fail-closed path in `assembleEdition`,
+      with tests covering pass, disclosed-basis, unknown/refused/provisional ids
+      and foreign prefixes — this is check-strengthening under §3.15, not
+      dodging. AGENTS.md is untouched; the only doc change is an append to
+      docs/DECISIONS.md, stamped with date and channel (\"founder direction in
+      session, 2026-09-19\"), which §3.15 expressly permits for founder
+      directions. No citations are added (verification tooling found none), no
+      confidence material appears, and nothing is presented as ratified. The PR
+      body's forward-looking note about rebasing #357 is a plan, not a claim of
+      ratification, and does not bear on this diff."
+    cost:
+      model: claude-opus-5
+      inputTokens: 11332
+      outputTokens: 634
+      usd: 0.075755
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.6
+      - §3.8
+      - §3.15
+    reasoning: "The change strengthens rather than weakens epistemic checks:
+      `assessmentEvidenceErrors` rejects assessment references to nonexistent,
+      refused, or provisional evidence records across nested assessment strings.
+      Protocol v10 explicitly prevents a record attached to one proposition from
+      being spent on another in synthesis or component notes, and requires
+      anchor-only propositions to remain identified as such. Its disclosed
+      parent-or-sibling basis exception is transparent rather than silent and
+      preserves the distinction between the record’s attachment and the
+      inference drawn from it. The tests cover live, unknown, refused,
+      provisional, cross-case, and deeply nested references, and neither
+      AGENTS.md nor published content is altered."
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 11568
+      outputTokens: 1167
+      usd: 0.069612
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.6
+      - §3.8
+      - §3.15
+    reasoning: The change promotes protocol edition-v9 to v10 and adds mechanical
+      validation in `src/pipeline/edition.ts` via `assessmentEvidenceErrors`.
+      This ensures that every evidence ID cited within an assessment candidate
+      exists in the case and is neither rejected nor provisional, directly
+      upholding §3.6, §3.8, and §3.15. The accompanying tests in
+      `src/domain/assessmentEvidence.test.ts` thoroughly exercise these error
+      conditions across arbitrary fields and prefixes. The decision is
+      documented in `docs/DECISIONS.md` under recorded founder direction without
+      modifying `AGENTS.md` or weakening existing validation gates.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 12464
+      outputTokens: 621
+      usd: 0.011677
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff strengthens edition protocol and the edition verb without
+      touching AGENTS.md: v9 is archived, v10 requires citing an evidence record
+      only for a claim it is attached to and keeping case-level fields honest
+      about anchor-only claims (§3.2, §3.6, §3.8), and assessmentEvidenceErrors
+      walks every string at any depth so named ids must exist in the case and
+      not be refused or provisional. Attachment across parent/sibling claims is
+      left to protocol and the panel (disclosed basis from v8), so the
+      mechanical check does not over-refuse or dodge. DECISIONS.md records the
+      founder-supervised rule; tests cover pass, disclosed-basis,
+      unknown/refused/provisional, deep fields, and foreign prefixes. No content
+      citations, runs, or omitted files."
+    cost:
+      model: grok-4.5
+      inputTokens: 11855
+      outputTokens: 186
+      usd: 0.024941
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.6
+      - §3.8
+      - §3.15
+    reasoning: "The change strengthens rather than weakens the checks: it adds a
+      mechanical, any-depth scan of assessments for evidence-id tokens, refusing
+      ids that do not exist in the case, are refused, or are provisional (§3.6,
+      §3.8, v9's provisional rule), with tests covering pass, disclosed-basis,
+      and failure cases. Deliberately leaving attachment (which claim a citation
+      serves) to the protocol and panel reading is documented and defensible —
+      the live ledger's claim reasonings legitimately lean on parent/sibling
+      records under the already-adopted v8 disclosed-basis rule, and the
+      protocol now explicitly confines cross-claim citation to that disclosed
+      case while barring component notes and the synthesis from spending one
+      claim's record on another (§3.2). AGENTS.md is untouched; the DECISIONS.md
+      entry is an append-only log record stamped with date and channel, which
+      the constitution permits for founder directions. No citations are added
+      (verification section empty), so no fabrication question arises. Minor
+      gaps — the regex only matches three-digit evidence ids and uppercase
+      prefixes — are ordinary imperfections in a new check, not a loosening of
+      an existing one, and the error paths fail closed (repair once, then
+      refuse)."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 10408
+      outputTokens: 1277
+      usd: 0.002545
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 57627
+  outputTokens: 3885
+  usd: 0.1845
+harvestedAt: 2026-09-19

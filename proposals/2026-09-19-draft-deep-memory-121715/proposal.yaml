@@ -1,0 +1,1573 @@
+# Proposal — a change to domain records, in one envelope (docs/AUTOMATION.md).
+# Never citable; nothing here is a record until adopted through the gate.
+runId: 2026-09-19-draft-deep-memory-121715
+date: 2026-09-19
+case: deep-memory
+producer: draft
+model: claude-fable-5-1
+promptVersion: draft-v9
+basis:
+  ledgerHash: 9d8d9a1b41c85199a65897846feb662c2a2dd39a75ad75141f07eabffb598a15
+rationale: "The report's bounded pass reached seven texts the ledger had never held: the excavators' own note on Pillar 43 (Schmidt 2006), three Tepe Telegrams posts by the excavation team (Pillar 43 with its comments, the enclosure animal emblems, Urfa Man), the abstract and reference list of the Jiroft wear-trace study, the abstract of the Hoa Hakananai'a study, and Berossus's fragments in the Verbrugghe–Wickersham translation; it also reached a blog transcription of Wiggermann 1992 on the banduddû. Each is proposed as a source with evidence records extracted only from the retrieved text, one observation per record, and with new observation-rung claims where the text states a proposition the catalogue lacks (the excavators' 'handle-like attachments' and their rival building reading of the three forms; the Jiroft wear read as hanging against a cloth-covered vertical surface, on one object, with a 'weights' literature behind it; the Rapa Nui sequence komari → birdmen read against ethnohistoric myth; Berossus's fish-bodied, nightly-commuting Oannes in a series of fish-men; Urfa Man's grasping hands, necklace and findspot). The Wiggermann transcription enters as weak support with its secondhand status stated, because a verified observation is not dropped silently; the primary is blocked. Pausanias was not retrievable (HTTP 522) and is blocked; the Wikipedia article is set aside as tertiary, used only to name Symmes 2010 and Kosen 2019 as the route for the toponym claims. No verdicts are proposed; grading belongs to assessments. An edition candidate is offered because the current article's load-bearing sentence — that none of the primary literature the page leans on has been read — is no longer true, and its handled-objects, Rapa Nui, civiliser and hands sections now have primary statements to stand beside the captions."
+adds:
+  sources:
+    - id: SRC-SCHMIDT-2006
+      title: Animals and a Headless Man at Göbekli Tepe (Short Note, Neo-Lithics 2/06, pp. 38–40)
+      authors:
+        - Klaus Schmidt
+      year: "2006"
+      sourceType: paper
+      identifier: "Neo-Lithics 2/06: 38–40"
+      url: http://www.exoriente.org/docs/00066.pdf
+      verification: ai_verified
+      verificationNote: text retrieved and shown to the drafter on 2026-09-19 (run 2026-09-19-draft-deep-memory-121715); passages checked by the verify verb
+      reliabilityNotes:
+        - Primary excavator's report, published in the newsletter of Southwest Asian Neolithic research (ex oriente); the PDF is the whole issue, the note occupies [p. 38]–[p. 40] of the file.
+        - The retrieved PDF text was truncated near the end of p. 40; the passages quoted here sit on [p. 39] and [p. 40] before the truncation.
+        - Figure captions date Enclosures C and D 'about 9000 BC', earlier than the founder page's 'c. 9500 BCE'; the ledger holds no claim on the absolute date.
+      derivedFrom: []
+      background: false
+    - id: SRC-DIETRICH-2016
+      title: Of animals and a headless man. Göbekli Tepe, Pillar 43 (Tepe Telegrams, 14 October 2016, updated 5 March 2017), with the author's replies in the comments
+      authors:
+        - Oliver Dietrich
+      year: "2016"
+      sourceType: webpage
+      url: https://www.dainst.blog/the-tepe-telegrams/2016/10/14/of-animals-and-a-headless-man-gobekli-tepe-pillar-43/
+      verification: ai_verified
+      verificationNote: text retrieved and shown to the drafter on 2026-09-19 (run 2026-09-19-draft-deep-memory-121715); passages checked by the verify verb
+      reliabilityNotes:
+        - Blog of the Göbekli Tepe Research Project (German Archaeological Institute); the author was a member of the excavation team. Not peer-reviewed, but the team's own published reading.
+        - The comment of 17 October 2016 quoted below is the author's reply to a reader; it is the excavator's stated position, not a formal publication.
+        - The page cites Schmidt 2012, p. 244, for the disc reading; that book was not retrieved.
+      derivedFrom: []
+      background: false
+    - id: SRC-DIETRICH-2016A
+      title: Emblematic signs? On the iconography of animals at Göbekli Tepe (Tepe Telegrams, 16 August 2016)
+      authors:
+        - Oliver Dietrich
+      year: "2016"
+      sourceType: webpage
+      url: https://www.dainst.blog/the-tepe-telegrams/2016/08/16/emblematic-signs-on-the-iconography-of-animals-at-gobekli-tepe/
+      verification: ai_verified
+      verificationNote: text retrieved and shown to the drafter on 2026-09-19 (run 2026-09-19-draft-deep-memory-121715); passages checked by the verify verb
+      reliabilityNotes:
+        - Blog of the Göbekli Tepe Research Project (German Archaeological Institute); author was a member of the excavation team. Not peer-reviewed.
+        - Cites Becker et al. 2012 and Schmidt 2010 as the underlying publications; neither was retrieved.
+      derivedFrom: []
+      background: false
+    - id: SRC-VIDALE-2012
+      title: The Function of a Chlorite Hand-Bag of the Halil Rud Civilization as Inferred from Its Wear Traces
+      authors:
+        - Massimo Vidale
+        - Roberto Micheli
+      year: "2012"
+      sourceType: paper
+      identifier: doi:10.22111/ijas.2014.1442
+      url: https://ijas.usb.ac.ir/article_1442.html
+      verification: ai_verified
+      verificationNote: text retrieved and shown to the drafter on 2026-09-19 (run 2026-09-19-draft-deep-memory-121715); passages checked by the verify verb
+      reliabilityNotes:
+        - "Peer-reviewed research article, Iranian Journal of Archaeological Studies 2(2): 1–11; the journal page gives the issue as March 2012 and the DOI carries 2014."
+        - Only the abstract, keywords and reference list were retrieved; the body (PDF 909 KB on the same page) has not been read. Statements below are the authors' abstract-level statements.
+        - Licensed CC BY-NC per the journal page.
+      derivedFrom: []
+      background: false
+    - id: SRC-PITTS-2014
+      title: "Hoa Hakananai'a: a new study of an Easter Island statue in the British Museum"
+      authors:
+        - Mike Pitts
+        - James Miles
+        - Hembo Pagi
+        - Graeme Earl
+      year: "2014"
+      sourceType: paper
+      identifier: doi:10.1017/S0003581514000201
+      url: https://www.cambridge.org/core/journals/antiquaries-journal/article/abs/hoa-hakananaia-a-new-study-of-an-easter-island-statue-in-the-british-museum/E27FFA7F4380AEFA9ECD0861613D6AC7
+      verification: ai_verified
+      verificationNote: text retrieved and shown to the drafter on 2026-09-19 (run 2026-09-19-draft-deep-memory-121715); passages checked by the verify verb
+      reliabilityNotes:
+        - "Peer-reviewed, The Antiquaries Journal 94 (2014): 291–321."
+        - Only the abstract (English, French, German) and the reference list were retrievable; the body is paywalled. Statements below are abstract-level.
+        - The abstract gives a relative sequence (base, pukau, komari, bas-reliefs) and no absolute date for the statue's manufacture.
+      derivedFrom: []
+      background: false
+    - id: SRC-VERBRUGGHE-1996
+      title: "Berossos and Manetho, Introduced and Translated: Native Traditions in Ancient Mesopotamia and Egypt"
+      authors:
+        - Gerald P. Verbrugghe
+        - John M. Wickersham
+      year: "1996"
+      sourceType: book
+      url: https://www.tertullian.org/rpearse/eusebius_chron/resources/berossos_and_manetho.pdf
+      verification: ai_verified
+      verificationNote: text retrieved and shown to the drafter on 2026-09-19 (run 2026-09-19-draft-deep-memory-121715); passages checked by the verify verb
+      reliabilityNotes:
+        - "Scholarly translation of the fragments (Ann Arbor: University of Michigan Press). Berossus survives only through Alexander Polyhistor, Abydenus and Apollodorus as excerpted by Eusebius and Syncellus; the translators' notes flag these layers."
+        - "The retrieved file is a partial scan hosted at tertullian.org whose PDF page numbers do not match the book's: F1 sits on [p. 4] of the file (book p. 44), F3 on [p. 8] (book p. 48), the table of wise monsters on [p. 21] (book p. 71). Locators below give both."
+        - The scan bundles a second, unrelated book (Grafton and Williams on Origen and Eusebius) after the Berossos–Manetho pages; nothing is drawn from it.
+      derivedFrom: []
+      background: false
+    - id: SRC-DIETRICH-2016B
+      title: The 'Urfa Man' (Tepe Telegrams, 14 October 2016)
+      authors:
+        - Oliver Dietrich
+      year: "2016"
+      sourceType: webpage
+      url: https://www.dainst.blog/the-tepe-telegrams/2016/10/14/the-urfa-man/
+      verification: ai_verified
+      verificationNote: text retrieved and shown to the drafter on 2026-09-19 (run 2026-09-19-draft-deep-memory-121715); passages checked by the verify verb
+      reliabilityNotes:
+        - Blog of the Göbekli Tepe Research Project (German Archaeological Institute); author was a member of the excavation team. Not peer-reviewed.
+        - Cites Hauptmann 2003 and Çelik 2011 as the underlying publications; neither was retrieved.
+      derivedFrom: []
+      background: false
+    - id: SRC-GUTIRREZ-2015
+      title: "On the Banduddu, or Bucket (Samizdat blog, 5 July 2015): a transcription of F.A.M. Wiggermann, Mesopotamian Protective Spirits: The Ritual Texts (Groningen 1992), p. 66"
+      authors:
+        - Estéban Trujillo de Gutiérrez
+      year: "2015"
+      sourceType: webpage
+      url: https://therealsamizdat.com/2015/07/05/on-the-banduddu-or-bucket/
+      verification: ai_verified
+      verificationNote: text retrieved and shown to the drafter on 2026-09-19 (run 2026-09-19-draft-deep-memory-121715); passages checked by the verify verb
+      reliabilityNotes:
+        - A personal blog reproducing, with the author's own interpolated captions, one page of Wiggermann's 1992 edition of the ritual texts. The transcription has not been checked against the printed page; it is secondhand and may contain transcription errors (e.g. sign transliterations are garbled).
+        - Entered as weak support only because it is the sole retrieved text bearing on the banduddû; the primary (Wiggermann 1992, p. 66) is blocked and should replace it.
+        - Nothing is drawn from the blogger's own captions, only from the passage attributed to Wiggermann.
+      derivedFrom: []
+      background: false
+  evidence:
+    - id: DEEP-E025
+      title: Schmidt 2006 describes three box-like objects with handle-like attachments on Pillar 43
+      claimIds:
+        - DEEP-C067
+      sourceId: SRC-SCHMIDT-2006
+      direction: supports
+      strength: strong
+      sourceStatement: "In his 2006 short note the excavator describes the upper part of Pillar 43's western side: above the pattern of angles between the vulture and the 'ibis' one sees \"three big, similarly carved box-like objects with handle-like attachments\", with another line of angles forming the upper limit of the relief."
+      editorInference: This is the excavation team's own first published description of the forms, and it is the record the earlier declined 'top register' claim required. Note the excavator's words are 'box-like' and 'handle-like'; he does not name a function.
+      exactLocator: "[p. 39], col. 2, Short Note 'Animals and a Headless Man at Göbekli Tepe'"
+      limitations:
+        - Preliminary field note, not a final publication.
+        - Describes shape only; says nothing about function.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-E026
+      title: "Schmidt 2006: each of the three objects is accompanied by an animal"
+      claimIds:
+        - DEEP-C068
+      sourceId: SRC-SCHMIDT-2006
+      direction: supports
+      strength: strong
+      sourceStatement: The same sentence continues that the three "objects with handle-like attachments, each accompanied by an" animal, sit immediately above the pattern of angles.
+      editorInference: The founder's caption 'three arched objects with small animals' matches the excavator's description on this point.
+      exactLocator: "[p. 39], col. 2"
+      limitations:
+        - The word 'animal' is hyphenated across a line break in the PDF ('ani-mal'); the quote stops before it.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-E027
+      title: Schmidt 2006 reports a snarling predator in situ on Pillar 27, Enclosure C
+      claimIds:
+        - DEEP-C069
+        - DEEP-C045
+      sourceId: SRC-SCHMIDT-2006
+      direction: supports
+      strength: moderate
+      sourceStatement: The note reports that in the 2006 campaign in "Enclosure C a sculpture of a snarling predator" was discovered in situ on Pillar 27, and that "The animal and pillar are made of one piece".
+      editorInference: "'Snarling predator' is the excavator's own phrase, so the ledger claim that the team distinguishes boars from snarling predators in Enclosure C has half its footing here; the boar half is in the team's 'Emblematic signs?' post (see the record on Enclosure C boars). The note itself does not draw the distinction in one place."
+      exactLocator: "[p. 38]–[p. 39], Short Note, first paragraph after the introduction and Figs. 1a–b"
+      limitations:
+        - "Toward DEEP-C045 this is partial support: the predator is named, the contrast with boars is not stated in this text."
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-E028
+      title: "Excavation team: no final decision on the meaning of the three forms is possible"
+      claimIds:
+        - DEEP-C012
+        - DEEP-C066
+      sourceId: SRC-DIETRICH-2016
+      direction: supports
+      strength: strong
+      sourceStatement: "After offering its building reading of the three rectangular objects with cupola-like arches, the team's post closes the discussion: \"A final decision on the meaning of these images\" is not possible at the moment, and it notes that the meaning of these images is hard to guess."
+      editorInference: This is the excavation team's own published statement that the forms have no secure identification, which is what both ledger claims assert. The post is dated 2016 (updated 2017); a later team publication could supersede it, and the response to Sweatman and Tsikritsis (2017) was not retrievable.
+      exactLocator: Paragraph beginning 'On the uppermost part of Pillar 43', final sentence
+      limitations:
+        - A blog post by a team member, not a monograph statement.
+        - Dated 2016/2017; later team publications not checked.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-E029
+      title: Excavation team proposes the three forms may depict the enclosures seen from the side
+      claimIds:
+        - DEEP-C070
+      sourceId: SRC-DIETRICH-2016
+      direction: supports
+      strength: moderate
+      sourceStatement: "The post says of the row of three rectangular objects with cupola-like 'arches' that \"they might represent the enclosures during their time of use\", seen from the side: \"The rectangular part would represent the perimeter walls\", while the cupolas may indicate roofs, with the emblematic animal of each group added for recognition. It adds that this would be an unusually schematic, almost technical sectional view compared with the site's naturalistic imagery."
+      editorInference: The diggers' own candidate reading is not a handled object at all. If it were right, the Göbekli leg of the 'handbag' comparison would fall; the team itself presents it as a possibility, not a conclusion.
+      exactLocator: Paragraph beginning 'On the uppermost part of Pillar 43'
+      limitations:
+        - Offered by the team as a possibility with a stated objection; not a claim of fact.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-E030
+      title: Excavator cites evidence that some Göbekli Tepe imagery survives into later seal images
+      claimIds:
+        - DEEP-C071
+      sourceId: SRC-DIETRICH-2016
+      direction: supports
+      strength: weak
+      sourceStatement: Replying on 17 October 2016 to a reader asking about Sumerian or Assyrian bird-gods in a similar posture, the author writes that there is evidence that some of the site's imagery survives into later seal images, citing Atakuman 2015 (Cambridge Archaeological Journal 25/4), and that some sculptures recall later objects in gesture and composition.
+      editorInference: The excavator names a specific intermediate class — Neolithic stamps and image-bearing objects — for possible local continuity. This is the first named candidate intermediate in the ledger; it concerns Anatolia, not a chain to Assyria.
+      exactLocator: Comments, reply by Oliver dated 17 October 2016 at 12:26
+      limitations:
+        - A comment-thread reply, not a publication.
+        - Atakuman 2015 itself has not been retrieved.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-E031
+      title: "Excavator: too many 'missing links' to be sure of survival or change of meaning"
+      claimIds:
+        - DEEP-C072
+      sourceId: SRC-DIETRICH-2016
+      direction: supports
+      strength: weak
+      sourceStatement: In the same reply the author adds that at the moment "there are far to many ‘missing links’" to be sure about the extent of any survival of Early Neolithic imagery and the "changes in meaning it may have undergone in the process".
+      editorInference: "The team's stated position on later Near Eastern parallels is agnostic: possible continuity, no established chain. This bears on the contact account's requirement of dated intermediates without settling it."
+      exactLocator: Comments, reply by Oliver dated 17 October 2016 at 12:26
+      limitations:
+        - A comment-thread reply; informal wording (the typo 'far to many' is the source's).
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-E032
+      title: "Team post: boars prevail in the iconography of Enclosure C"
+      claimIds:
+        - DEEP-C073
+        - DEEP-C045
+      sourceId: SRC-DIETRICH-2016A
+      direction: supports
+      strength: moderate
+      sourceStatement: 'The post states that the enclosures vary in the species depicted prominently: the snake prevails in Enclosure A, foxes in B, "In Enclosure C boars take over" and in D birds play an important role.'
+      editorInference: Together with Schmidt's 'snarling predator' on Pillar 27 in the same enclosure, this gives the ledger claim about boars and predators in Enclosure C its two halves from the team's own texts, though neither text draws the contrast as an arrangement.
+      exactLocator: Second paragraph, beginning 'The enclosures of Göbekli Tepe show a variation'
+      limitations:
+        - Blog post; the underlying publications (Becker et al. 2012; Schmidt 2010) were not retrieved.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-E033
+      title: Team post lists quadruped reptiles among the species depicted
+      claimIds:
+        - DEEP-C074
+      sourceId: SRC-DIETRICH-2016A
+      direction: supports
+      strength: moderate
+      sourceStatement: The post lists the animals depicted at the site as bears, boars, snakes, foxes, wildcats, "aurochs, gazelle, quadruped reptiles, birds, spiders, insects", quadrupeds, scorpions and many more.
+      editorInference: The excavators' term for what the founder's page calls 'lizards' is 'quadruped reptiles'; the page's caution that 'lizard' remain a proposed identification is consistent with the team's own wording.
+      exactLocator: First paragraph
+      limitations:
+        - A list of species, not an identification of any particular sculpture.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-E034
+      title: "Vidale & Micheli abstract: wear traces visible on the handle and along its contour"
+      claimIds:
+        - DEEP-C009
+      sourceId: SRC-VIDALE-2012
+      direction: supports
+      strength: moderate
+      sourceStatement: The abstract describes a chlorite 'hand-bag' of the 'intercultural style' on exhibit in the National Archaeological Museum, Tehran, examined for the first time for the peculiar "wear traces clearly visible on the handle and along its contour".
+      editorInference: The claim's truth condition — that the published wear-trace study reports handle wear of the kind the caption describes — is met at abstract level. The object is described as in the National Archaeological Museum, Tehran, which the founder's page calls the National Museum of Iran; the identity of the object with the one photographed in IMG-DEEP-P04 is not established from the abstract.
+      exactLocator: Abstract, first sentence
+      limitations:
+        - Abstract only; the body of the paper has not been read.
+        - Object identity with the ledger's photographed 'handbag' not confirmed.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-E035
+      title: Vidale & Micheli read the wear as long suspension on a cord
+      claimIds:
+        - DEEP-C075
+        - DEEP-C009
+      sourceId: SRC-VIDALE-2012
+      direction: supports
+      strength: moderate
+      sourceStatement: The abstract states that the strong wear suggests "the hand-bag was suspended for a long time on a cord".
+      editorInference: The founder's caption 'worn on the handle as if hung on a cord' is a faithful summary of the authors' reading.
+      exactLocator: Abstract, second sentence
+      limitations:
+        - Abstract only.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-E036
+      title: "Vidale & Micheli: polished by rubbing against a soft, probably vertical, cloth-covered surface"
+      claimIds:
+        - DEEP-C076
+      sourceId: SRC-VIDALE-2012
+      direction: supports
+      strength: moderate
+      sourceStatement: The abstract continues that in this setting the object was gradually polished while rubbing against a soft surface, "most probably a vertical one, covered with cloth".
+      editorInference: The authors' reading is of an object that hung against something, not one carried in the hand. The current article's phrase 'hung container' is not what the study says; the study says 'hand-bag' in quotation marks and infers hanging, not containing.
+      exactLocator: Abstract, second sentence
+      limitations:
+        - Abstract only; the evidence for 'vertical' and 'cloth' is in the unread body.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-E037
+      title: Vidale & Micheli state their inference rests on a single object
+      claimIds:
+        - DEEP-C077
+      sourceId: SRC-VIDALE-2012
+      direction: supports
+      strength: moderate
+      sourceStatement: The authors write that "this inference is based on a single object", and therefore is far from being granted, while proposing that wear traces can provide a useful key to the function of these objects.
+      editorInference: The authors' own caveat.
+      exactLocator: Abstract, third sentence
+      limitations:
+        - Abstract only.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-E038
+      title: The single-object caveat limits the hanging reading
+      claimIds:
+        - DEEP-C009
+        - DEEP-C075
+      sourceId: SRC-VIDALE-2012
+      direction: qualifies
+      strength: moderate
+      sourceStatement: The same sentence — "this inference is based on a single object" and is far from being granted — is the authors' limit on how far the hanging reading carries.
+      editorInference: The Jiroft wear finding applies to one specimen and, by the authors' account, is not secure; it should not be generalised to the class of handled chlorite objects.
+      exactLocator: Abstract, third sentence
+      limitations:
+        - Abstract only.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-E039
+      title: Vidale & Micheli's reference list includes 'weights' readings of the handled objects
+      claimIds:
+        - DEEP-C078
+      sourceId: SRC-VIDALE-2012
+      direction: supports
+      strength: weak
+      sourceStatement: "The reference list includes \"Muscarella, O. W. 1993 Intercultural Style\" 'Weights' (Bulletin of the Asia Institute 7: 143–153) and \"Pittman, H. 1990 Steatite or Chlorite Handles Weights\" (in Glories of the Past)."
+      editorInference: A reference-list title is evidence that a 'weights' reading exists in the specialist literature, not evidence of what those works argue; both remain to be read. Note the retrieved page renders the quotation marks around Weights as HTML entities.
+      exactLocator: References section, entries Muscarella 1993 and Pittman 1990
+      limitations:
+        - Titles only; neither work retrieved.
+        - Support for the existence of the reading, not for its correctness.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-E040
+      title: "Pitts et al. abstract: komari added, then bas-relief carvings succeeding them"
+      claimIds:
+        - DEEP-C059
+        - DEEP-C062
+        - DEEP-C079
+      sourceId: SRC-PITTS-2014
+      direction: supports
+      strength: moderate
+      sourceStatement: The abstract reports that petroglyphs consisting of "two komari (stylised female genitalia) were subsequently added" after the statue was made with a tapering base to stand in the ground, and that "Succeeding these were bas-relief carvings, here interpreted as a single composition".
+      editorInference: The published study gives the relative sequence statue → komari → bas-reliefs, which supports the claim that the birdman carvings postdate the statue's manufacture and the claim that the back carries komari. It gives no absolute date.
+      exactLocator: Abstract (English), sentences 2–4
+      limitations:
+        - Abstract only; the survey's reasoning is in the paywalled body.
+        - Relative sequence only; no dates.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-E041
+      title: Pitts et al. read the reliefs as a composition narrating the birdman myth as recorded in the 19th–20th centuries
+      claimIds:
+        - DEEP-C080
+      sourceId: SRC-PITTS-2014
+      direction: supports
+      strength: moderate
+      sourceStatement: The abstract states that the bas-relief carvings are interpreted as a single composition that "narrates the island's birdman myth as recorded in the nineteenth" and early twentieth centuries, a reading it says is supported by photographs taken in Chile in 1868.
+      editorInference: The comparison text for the Rapa Nui birdmen is ethnohistoric, recorded two to three centuries after the carving at the earliest; the study does not read the reliefs against any prehistoric text.
+      exactLocator: Abstract (English), sentence 4–5
+      limitations:
+        - Abstract only.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-E042
+      title: Pitts et al. abstract gives no manufacture date and does not itemise the tern, paddles, ring or girdle
+      claimIds:
+        - DEEP-C058
+        - DEEP-C060
+        - DEEP-C061
+        - DEEP-C063
+        - DEEP-C064
+      sourceId: SRC-PITTS-2014
+      direction: context
+      strength: weak
+      sourceStatement: "Negative record: the abstract names only the komari and 'bas-relief carvings' that \"narrates the island's birdman myth as recorded in the nineteenth\" century; it states no absolute date for the statue and does not list two birdmen, a sooty tern, paddles, a ring or a girdle."
+      editorInference: Absence from an abstract is not absence from the paper; these motifs and the date, if the study treats them, are in the unread body or in the British Museum record (Oc1869,1005.1), which was not reached. Zero diagnosticity toward the claims; recorded so that the gap is visible.
+      exactLocator: Abstract (English), whole
+      limitations:
+        - Negative evidence from an abstract only.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-E043
+      title: "Berossus F1: Oannes has the whole body of a fish with a human head beneath"
+      claimIds:
+        - DEEP-C081
+        - DEEP-C053
+      sourceId: SRC-VERBRUGGHE-1996
+      direction: supports
+      strength: moderate
+      sourceStatement: "In F1 (Syncellus, from Alexander Polyhistor) the monster Oannes appears from the Red Sea (Persian Gulf) in the first year: \"It had the whole body of a fish\", but underneath and attached to the fish's head there was another, human, head, and joined to the tail feet like those of a man, and it had a human voice."
+      editorInference: Berossus's description — a fish body over a human head and feet — is the fish-cloaked figure, which is what the ledger's Oannes–apkallu correspondence claim asserts. Toward that claim this is the textual half; the iconographic half (that the Assur basin figure is the named apkallu type) is separate.
+      exactLocator: "[p. 4] of the PDF scan (book p. 44), F1 = Syncellus 51"
+      limitations:
+        - Berossus survives only via Polyhistor and Syncellus; the translators' notes warn of this.
+        - Partial scan; page numbering differs from the printed book.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-E044
+      title: "Berossus F1: Oannes's form 'has been preserved in sculpture to this day'"
+      claimIds:
+        - DEEP-C082
+        - DEEP-C053
+      sourceId: SRC-VERBRUGGHE-1996
+      direction: supports
+      strength: moderate
+      sourceStatement: F1 adds of Oannes that "Its form has been preserved in sculpture to this day".
+      editorInference: Berossus (or his excerptor) says the figure had a sculptural type in his time; which type is not stated in the text. The correspondence with the fish-cloaked apkallu is an inference from the description, not a statement of the fragment.
+      exactLocator: "[p. 4] of the PDF scan (book p. 44), F1"
+      limitations:
+        - Whether the sentence is Berossus's or an excerptor's gloss is not settled by the translation.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-E045
+      title: "Berossus F1: Oannes returns to the sea each night"
+      claimIds:
+        - DEEP-C083
+        - DEEP-C034
+      sourceId: SRC-VERBRUGGHE-1996
+      direction: supports
+      strength: weak
+      sourceStatement: F1 states that at the end of the day "this monster Oannes went back to the sea" and spent the night there, being amphibious, able to live on land and in the sea; it spent its days with men, never eating.
+      editorInference: "Editor's inference toward the retelling claim: the composite civiliser biography ('arrives from the sea, teaches, departs') is not what the founding text of the comparison says of Oannes, who commutes nightly and does not depart once. That an original differs in shape from its modern summary is the mechanism the retelling claim describes, observed in one case; it is weak support because the ledger does not yet hold the summary side of the comparison as a record."
+      exactLocator: "[p. 4] of the PDF scan (book p. 44), F1"
+      limitations:
+        - Toward DEEP-C034 the support rests on the editor's comparison with the composite biography, which is not itself a ledger record.
+        - Excerpted text.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-E046
+      title: "Berossus F1: what Oannes taught"
+      claimIds:
+        - DEEP-C084
+      sourceId: SRC-VERBRUGGHE-1996
+      direction: supports
+      strength: moderate
+      sourceStatement: 'F1 says Oannes taught men the skills necessary for writing and for mathematics and all sorts of knowledge: "how to build cities, found temples, and make laws", how to determine borders and divide land, how to plant seeds and harvest — in short, all things conducive to a settled and civilised life, and that since then nothing further has been discovered.'
+      editorInference: The 'brings the arts' element of the civiliser template is squarely in the fragment.
+      exactLocator: "[p. 4] of the PDF scan (book p. 44), F1"
+      limitations:
+        - Excerpted text.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-E047
+      title: "Berossus F3: further man-fish beings under later antediluvian kings"
+      claimIds:
+        - DEEP-C085
+      sourceId: SRC-VERBRUGGHE-1996
+      direction: supports
+      strength: moderate
+      sourceStatement: F3 (Syncellus, drawing on Polyhistor, Abydenus and Apollodorus) places Oannes 'the Annedotos' under king Ammenon, with the sources disagreeing on the reign; under Daonos four more monsters of the same form appeared from the Persian Gulf; under Euedorankhos there appeared "another man-fish being whose name was Odakon", who explained in detail what Oannes had said in summary.
+      editorInference: Oannes is one of a series in the fragments, not a single visitor; the translators' table counts seven monsters against the seven apkallu.
+      exactLocator: "[p. 8] of the PDF scan (book p. 48), F3 = Syncellus 71–72"
+      limitations:
+        - Three excerptors disagree on the reign of the first appearance; the translators note the inconsistency.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-E048
+      title: Translators' table sets Oannes beside U-An in the apkallu list of Tablet W 20030,7
+      claimIds:
+        - DEEP-C086
+        - DEEP-C052
+      sourceId: SRC-VERBRUGGHE-1996
+      direction: supports
+      strength: weak
+      sourceStatement: Table B.2 sets Berossus's wise monsters (Oannes under Aloros, then Annedotos, four monsters, Odakon) beside Abydenus's list and a third column headed "Apkallu (Monsters) UAn U Anduga Enmeduga" and further names, from Tablet W 20030,7 as published by van Dijk (1962).
+      editorInference: This is the translators' alignment of Berossus with the Uruk apkallu list, a secondary correlation; the tablet edition itself (van Dijk 1962) has not been opened. Toward the ledger claim that the fish-cloaked sage is the type the texts name, it evidences that the texts name apkallu whose first is U-An, matched by scholars to Oannes; it does not itself describe the sage's dress.
+      exactLocator: "[p. 21] of the PDF scan (book p. 71), Table B.2a–b, note 3"
+      limitations:
+        - The table's columns are run together in the text extraction; the quoted words are the column header and first entries as extracted.
+        - Secondary correlation; tablet edition not read.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-E049
+      title: "Team post: both of Urfa Man's hands seem to grab his penis"
+      claimIds:
+        - DEEP-C087
+        - DEEP-C021
+      sourceId: SRC-DIETRICH-2016B
+      direction: supports
+      strength: moderate
+      sourceStatement: 'The post describes the statue: it has a face, eyes originally emphasised by segments of black obsidian sunk into deep holes, ears, no mouth, no legs but a conical plug, and "Both hands seem to grab his penis".'
+      editorInference: The ledger claim says 'hands over the genitals'; the excavators' word is 'grab'. Position is confirmed; the gesture is grasping rather than resting, which sharpens the founder page's own distinction between a hand at the groin and a hand on the abdomen.
+      exactLocator: Third paragraph, beginning 'The ‘Urfa man’ himself gives witness'
+      limitations:
+        - "'Seem to' is the source's hedge."
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-E050
+      title: "Team post: Urfa Man wears a V-shaped necklace"
+      claimIds:
+        - DEEP-C088
+      sourceId: SRC-DIETRICH-2016B
+      direction: supports
+      strength: moderate
+      sourceStatement: The post says the statue seems to be "naked with the exception of a V-shaped necklace".
+      editorInference: The ledger's image description of IMG-DEEP-P07 says 'V-shaped lines carved on the chest'; the excavators read them as a necklace. A correction to the description is proposed.
+      exactLocator: Third paragraph
+      limitations:
+        - "'Seems to be' is the source's hedge."
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-E051
+      title: "Team post: Urfa Man is not from Göbekli Tepe but from Urfa-Yeni Mahalle / Yeni Yol"
+      claimIds:
+        - DEEP-C089
+      sourceId: SRC-DIETRICH-2016B
+      direction: supports
+      strength: moderate
+      sourceStatement: "The post opens by answering a common question: \"no, he is not from Göbekli Tepe\"; he was found during construction work in the area of the Pre-Pottery Neolithic site at Urfa-Yeni Mahalle / Yeni Yol, broken in four nearly equal pieces, and the site's material and a small T-shaped pillar seen in photographs speak for a PPN B date."
+      editorInference: The founder's caption 'Şanlıurfa' is correct; the statue should not be attributed to Göbekli Tepe in the article.
+      exactLocator: First and second paragraphs
+      limitations:
+        - Cites Çelik 2011 and Hauptmann 2003, not retrieved.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-E052
+      title: "Team post: Urfa Man is the oldest known statue of a man, slightly larger than life-size"
+      claimIds:
+        - DEEP-C090
+      sourceId: SRC-DIETRICH-2016B
+      direction: supports
+      strength: weak
+      sourceStatement: The post states "It is the oldest known statue of a man", slightly larger than life-size.
+      editorInference: A superlative as of 2016 from the team; later finds (e.g. at Karahan Tepe) could revise it. Recorded as the team's statement.
+      exactLocator: Third paragraph
+      limitations:
+        - Superlative dated to 2016.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-E053
+      title: "Team post: no find context recorded for Urfa Man"
+      claimIds:
+        - DEEP-C091
+      sourceId: SRC-DIETRICH-2016B
+      direction: supports
+      strength: moderate
+      sourceStatement: The post says "As no find context has been recorded for the sculpture", it is hard to evaluate its original function, though fragments of similar sculptures at Göbekli Tepe suggest a role in the enclosures' imagery.
+      editorInference: Any comparison built on Urfa Man's setting rests on nothing; only its form is available.
+      exactLocator: Fourth paragraph
+      limitations: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-E054
+      title: "Wiggermann 1992 (via blog transcription): banduddû denotes the bucket held by relief figures"
+      claimIds:
+        - DEEP-C043
+      sourceId: SRC-GUTIRREZ-2015
+      direction: supports
+      strength: weak
+      sourceStatement: The passage attributed to Wiggermann 1992, p. 66, states "Banduddû unquestionably denotes the bucket held by many figures of the reliefs", attested also in the hands of clay figures (bird-apkallu, fish-apkallu, kusarikku), and that the texts prescribe the banduddû for the left hand when another object is held in the right.
+      editorInference: This is the textual identification the ledger claim needs, but seen secondhand through an unchecked blog transcription; weak until the printed page is read. It says the ritual texts name the object, which is the claim's proposition.
+      exactLocator: Transcribed passage, first two paragraphs (attributed to Wiggermann 1992, p. 66)
+      limitations:
+        - Secondhand transcription on a personal blog; transliterations visibly garbled; not checked against the printed page.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-E055
+      title: "Wiggermann 1992 (via blog transcription): the banduddû was filled with water and used to sprinkle"
+      claimIds:
+        - DEEP-C044
+      sourceId: SRC-GUTIRREZ-2015
+      direction: supports
+      strength: weak
+      sourceStatement: The same passage states that "In rituals the banduddû was filled with water", and quotes the incantation parallel (restored after KAR 91 rev. 1ff. and CT 17 26 64ff.) in which the exorcist is told to take the bucket, bring water from the mouth of the twin rivers, cast a holy spell over it and "sprinkle that water over the man, the son of his god".
+      editorInference: Ritual use of the bucket for water and sprinkling is what the ledger's bucket-and-purifier claim asserts; the cone (mullilu) is mentioned only in the blogger's own caption, which is not used here.
+      exactLocator: Transcribed passage, paragraphs beginning 'The banduddû bucket is not to be confused' and 'What follows is barely readable'
+      limitations:
+        - Secondhand transcription; the blogger notes part of the transliteration is 'barely readable'.
+        - The cone/purifier half of the ledger claim is not in the transcribed Wiggermann text.
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+  claims:
+    - id: DEEP-C067
+      statement: The excavators' first published description of Pillar 43 at Göbekli Tepe (Schmidt 2006) describes three box-like objects with handle-like attachments in the pillar's upper register. True if the note uses those descriptions of the three forms.
+      theme: handled-objects
+      rung: observation
+      claimType: observation
+      sourceAnchor:
+        locator: "[p. 39], col. 2"
+        quote: three big, similarly carved box-like objects with handle-like attachments
+        sourceId: SRC-SCHMIDT-2006
+      parentClaimIds:
+        - DEEP-C012
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-C068
+      statement: Each of the three box-like objects on Pillar 43's upper register is accompanied by an animal, in the excavator's description. True if Schmidt's note states that each object has an animal beside it.
+      theme: handled-objects
+      rung: observation
+      claimType: observation
+      sourceAnchor:
+        locator: "[p. 39], col. 2"
+        quote: objects with handle-like attachments, each accompanied by an
+        sourceId: SRC-SCHMIDT-2006
+      parentClaimIds:
+        - DEEP-C067
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-C069
+      statement: Pillar 27 in Enclosure C at Göbekli Tepe carries a high-relief sculpture of a snarling predator carved in one piece with the pillar, found in situ in 2006. True if the excavation record reports that sculpture on that pillar.
+      theme: stone-animals
+      rung: observation
+      claimType: observation
+      sourceAnchor:
+        locator: "[p. 38]–[p. 39], Short Note, Figs. 1a–b"
+        quote: The animal and pillar are made of one piece
+        sourceId: SRC-SCHMIDT-2006
+        also:
+          - locator: "[p. 38]–[p. 39], Short Note"
+            quote: Enclosure C a sculpture of a snarling predator
+      parentClaimIds:
+        - DEEP-C045
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-C070
+      statement: The Göbekli Tepe excavation team has proposed, as one possible reading, that the three arched forms on Pillar 43 represent the enclosures seen from the side, with the rectangle as perimeter wall and the cupola as roof. True if a team publication states that reading.
+      theme: handled-objects
+      rung: observation
+      claimType: interpretive
+      sourceAnchor:
+        locator: Paragraph beginning 'On the uppermost part of Pillar 43'
+        quote: they might represent the enclosures during their time of use
+        sourceId: SRC-DIETRICH-2016
+        also:
+          - locator: Paragraph beginning 'On the uppermost part of Pillar 43'
+            quote: The rectangular part would represent the perimeter walls
+      parentClaimIds:
+        - DEEP-C012
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-C071
+      statement: The Göbekli Tepe excavation team states there is evidence that some of the site's imagery survives into later Neolithic seal images, citing Atakuman 2015. True if a team member's published statement makes that claim with that citation.
+      theme: explanations
+      rung: observation
+      claimType: observation
+      sourceAnchor:
+        locator: Comments, reply by Oliver dated 17 October 2016
+        quote: changes in meaning it may have undergone in the process
+        sourceId: SRC-DIETRICH-2016
+        also:
+          - locator: Comments, reply by Oliver dated 17 October 2016
+            quote: there are far to many ‘missing links’
+      parentClaimIds:
+        - DEEP-C026
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-C072
+      statement: The Göbekli Tepe excavation team regards the extent of any survival of the site's imagery into later Near Eastern objects as unestablished because of missing intermediate links. True if a team member's published statement says so.
+      theme: explanations
+      rung: observation
+      claimType: observation
+      sourceAnchor:
+        locator: Comments, reply by Oliver dated 17 October 2016
+        quote: there are far to many ‘missing links’
+        sourceId: SRC-DIETRICH-2016
+      parentClaimIds:
+        - DEEP-C026
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-C073
+      statement: Boars are the prevalent animal species in the iconography of Enclosure C at Göbekli Tepe. True if the excavation team's account of the enclosures' emblematic species says so.
+      theme: stone-animals
+      rung: observation
+      claimType: observation
+      sourceAnchor:
+        locator: Second paragraph
+        quote: In Enclosure C boars take over
+        sourceId: SRC-DIETRICH-2016A
+      parentClaimIds:
+        - DEEP-C045
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-C074
+      statement: The Göbekli Tepe excavation team lists quadruped reptiles among the animal species depicted at the site. True if a team publication includes that category in its species list.
+      theme: stone-animals
+      rung: observation
+      claimType: observation
+      sourceAnchor:
+        locator: First paragraph
+        quote: aurochs, gazelle, quadruped reptiles, birds, spiders, insects
+        sourceId: SRC-DIETRICH-2016A
+      parentClaimIds: []
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-C075
+      statement: Vidale and Micheli read the wear on the Tehran chlorite 'hand-bag' as the result of long suspension on a cord. True if their published study states that inference.
+      theme: handled-objects
+      rung: observation
+      claimType: interpretive
+      sourceAnchor:
+        locator: Abstract, second sentence
+        quote: the hand-bag was suspended for a long time on a cord
+        sourceId: SRC-VIDALE-2012
+      parentClaimIds:
+        - DEEP-C009
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-C076
+      statement: Vidale and Micheli read the polish on the Tehran chlorite 'hand-bag' as produced by rubbing against a soft, most probably vertical, cloth-covered surface. True if their published study states that inference.
+      theme: handled-objects
+      rung: observation
+      claimType: interpretive
+      sourceAnchor:
+        locator: Abstract, second sentence
+        quote: most probably a vertical one, covered with cloth
+        sourceId: SRC-VIDALE-2012
+      parentClaimIds:
+        - DEEP-C075
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-C077
+      statement: Vidale and Micheli's inference about the function of the chlorite 'hand-bag' rests, by their own statement, on a single object. True if their study says so.
+      theme: handled-objects
+      rung: observation
+      claimType: methodological
+      sourceAnchor:
+        locator: Abstract, third sentence
+        quote: this inference is based on a single object
+        sourceId: SRC-VIDALE-2012
+      parentClaimIds:
+        - DEEP-C075
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-C078
+      statement: The specialist literature on the 'intercultural style' chlorite handled objects includes readings of them as weights (Muscarella 1993; Pittman 1990). True if those works, as cited, class the objects as weights.
+      theme: handled-objects
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: References, entries Muscarella 1993 and Pittman 1990
+        quote: Pittman, H. 1990 Steatite or Chlorite Handles Weights
+        sourceId: SRC-VIDALE-2012
+        also:
+          - locator: References, entry Muscarella 1993
+            quote: Muscarella, O. W. 1993 Intercultural Style
+      parentClaimIds:
+        - DEEP-C065
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-C079
+      statement: On Hoa Hakananai'a the two komari petroglyphs were carved before the birdman bas-reliefs. True if the published study places the komari earlier than the reliefs in its sequence.
+      theme: bird-men
+      rung: observation
+      claimType: observation
+      sourceAnchor:
+        locator: Abstract (English), sentences 3–4
+        quote: Succeeding these were bas-relief carvings, here interpreted as a single composition
+        sourceId: SRC-PITTS-2014
+        also:
+          - locator: Abstract (English), sentence 3
+            quote: two komari (stylised female genitalia) were subsequently added
+      parentClaimIds:
+        - DEEP-C059
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-C080
+      statement: Pitts and colleagues interpret the bas-reliefs on the back of Hoa Hakananai'a as a single composition narrating the Rapa Nui birdman myth as it was recorded in the nineteenth and early twentieth centuries. True if their study states that reading.
+      theme: bird-men
+      rung: observation
+      claimType: interpretive
+      sourceAnchor:
+        locator: Abstract (English), sentence 4
+        quote: narrates the island's birdman myth as recorded in the nineteenth
+        sourceId: SRC-PITTS-2014
+      parentClaimIds:
+        - DEEP-C059
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-C081
+      statement: Berossus's fragment F1, as preserved by Syncellus from Alexander Polyhistor, describes Oannes as having the whole body of a fish with a human head beneath the fish's head and human feet joined to the tail. True if the fragment's text gives that description.
+      theme: civilisers
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: "[p. 4] of the PDF scan (book p. 44), F1"
+        quote: It had the whole body of a fish
+        sourceId: SRC-VERBRUGGHE-1996
+      parentClaimIds:
+        - DEEP-C053
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-C082
+      statement: Berossus's fragment F1 states that the form of Oannes had been preserved in sculpture to the writer's day. True if the fragment's text says so.
+      theme: civilisers
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: "[p. 4] of the PDF scan (book p. 44), F1"
+        quote: Its form has been preserved in sculpture to this day
+        sourceId: SRC-VERBRUGGHE-1996
+      parentClaimIds:
+        - DEEP-C053
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-C083
+      statement: In Berossus's fragment F1, Oannes returns to the sea at the end of each day and spends the night there. True if the fragment's text describes a nightly return rather than a single departure.
+      theme: civilisers
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: "[p. 4] of the PDF scan (book p. 44), F1"
+        quote: this monster Oannes went back to the sea
+        sourceId: SRC-VERBRUGGHE-1996
+      parentClaimIds:
+        - DEEP-C034
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-C084
+      statement: Berossus's fragment F1 credits Oannes with teaching humankind the skills of settled life, including writing, mathematics, city-building, temple-founding, law, land division, planting and harvesting. True if the fragment lists those teachings.
+      theme: civilisers
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: "[p. 4] of the PDF scan (book p. 44), F1"
+        quote: how to build cities, found temples, and make laws
+        sourceId: SRC-VERBRUGGHE-1996
+      parentClaimIds:
+        - DEEP-C053
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-C085
+      statement: Berossus's fragment F3 reports a series of further man-fish beings appearing after Oannes under later antediluvian kings, including four under Daonos and one named Odakon under Euedorankhos. True if the fragment's text reports them.
+      theme: civilisers
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: "[p. 8] of the PDF scan (book p. 48), F3"
+        quote: another man-fish being whose name was Odakon
+        sourceId: SRC-VERBRUGGHE-1996
+      parentClaimIds:
+        - DEEP-C053
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-C086
+      statement: Verbrugghe and Wickersham's comparative table sets Berossus's Oannes beside U-An, the first of the apkallu, in the Uruk tablet W 20030,7. True if the table makes that alignment.
+      theme: civilisers
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: "[p. 21] of the PDF scan (book p. 71), Table B.2"
+        quote: Apkallu (Monsters) UAn U Anduga Enmeduga
+        sourceId: SRC-VERBRUGGHE-1996
+      parentClaimIds:
+        - DEEP-C052
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-C087
+      statement: The Göbekli Tepe research team describes Urfa Man's gesture as both hands grasping his penis. True if the team's published description uses that wording.
+      theme: hands
+      rung: observation
+      claimType: observation
+      sourceAnchor:
+        locator: Third paragraph
+        quote: Both hands seem to grab his penis
+        sourceId: SRC-DIETRICH-2016B
+      parentClaimIds:
+        - DEEP-C021
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-C088
+      statement: The Göbekli Tepe research team reads the V-shaped lines on Urfa Man's chest as a necklace. True if the team's published description calls them a necklace.
+      theme: hands
+      rung: observation
+      claimType: interpretive
+      sourceAnchor:
+        locator: Third paragraph
+        quote: naked with the exception of a V-shaped necklace
+        sourceId: SRC-DIETRICH-2016B
+      parentClaimIds:
+        - DEEP-C021
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-C089
+      statement: Urfa Man was found during construction work at the Pre-Pottery Neolithic site of Urfa-Yeni Mahalle / Yeni Yol, not at Göbekli Tepe. True if the excavators' account gives that findspot.
+      theme: hands
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: First and second paragraphs
+        quote: no, he is not from Göbekli Tepe
+        sourceId: SRC-DIETRICH-2016B
+      parentClaimIds:
+        - DEEP-C021
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-C090
+      statement: The Göbekli Tepe research team describes Urfa Man as the oldest known statue of a man. True if the team's published description makes that statement.
+      theme: hands
+      rung: observation
+      claimType: observation
+      sourceAnchor:
+        locator: Third paragraph
+        quote: It is the oldest known statue of a man
+        sourceId: SRC-DIETRICH-2016B
+      parentClaimIds:
+        - DEEP-C021
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-C091
+      statement: No find context was recorded for Urfa Man. True if the excavators' account states that no context was recorded.
+      theme: hands
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: Fourth paragraph
+        quote: As no find context has been recorded for the sculpture
+        sourceId: SRC-DIETRICH-2016B
+      parentClaimIds:
+        - DEEP-C021
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+  research:
+    - id: DEEP-R004
+      title: "Test the excavators' named intermediate: do Göbekli Tepe motifs demonstrably persist into Neolithic stamp seals?"
+      summary: "Retrieve Atakuman 2015 (Cambridge Archaeological Journal 25/4, 'From monuments to miniatures') and the seal corpus it publishes. For each Pillar 43 motif class relevant to this case — the H-shaped symbol, the arched box-like forms, the bird-with-disc composition — record whether a securely dated Neolithic stamp seal or image-bearing object from Upper Mesopotamia carries the same motif, with the object's site, stratum and date. Decision rule: if at least one of these specific motifs appears on dated seals continuing for a millennium or more after Göbekli Tepe, the team's 'survival into seals' statement gains a documented instance and the ledger's principle that geography alone cannot separate transmission from invention acquires its first dated intermediate for the local case; if none of the specific motifs appears and the continuity is confined to generic animal figures, the 'missing links' statement stands and the intermediate class is closed for this case. Either way the result bears only on continuity within Anatolia, not on any chain to Assyria or beyond."
+      claimIds:
+        - DEEP-C071
+        - DEEP-C072
+        - DEEP-C026
+      track: publication_prize
+      effortTier: desk
+      informationGain: Names and checks the only candidate intermediate class the diggers themselves offer; a positive result converts a general caution into a dated local continuity, a negative one removes the one named route for the handled-object and bird-figure parallels.
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+    - id: DEEP-R005
+      title: Buildings or objects? Read every team statement on the three forms of Pillar 43
+      summary: "Retrieve Schmidt 2012 (Göbekli Tepe: A Stone Age Sanctuary, p. 244 and the Pillar 43 discussion), Becker et al. 2012 (ZORA 5), and Notroff et al. 2017 ('More than a vulture', the response to Sweatman and Tsikritsis). For each, record verbatim what the authors say the three arched forms are or might be, and whether any commits to a container, a building, or neither. Decision rule: if any team publication later than 2017 commits to a handled object or container, the ledger's 'function uncertain' claims weaken and the founder's 'handbag' comparison regains its Göbekli leg; if every team text either offers the building reading or refuses a decision, the uncertainty claims are confirmed by the full run of the team's literature and the comparison of a known Assyrian bucket with these forms should be presented as a comparison of shapes only."
+      claimIds:
+        - DEEP-C070
+        - DEEP-C012
+        - DEEP-C066
+        - DEEP-C065
+      track: publication_prize
+      effortTier: desk
+      informationGain: Settles whether the 'no decision' statement is the team's standing position or a 2016 snapshot, and puts the rival building reading on the record alongside the container reading, each from the excavators' own words.
+      origin:
+        ref: report 2026-09-19-report-deep-memory-120902
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-19-draft-deep-memory-121715
+        date: 2026-09-19
+  images: []
+corrections:
+  - record: IMG-DEEP-P07
+    field: depicts
+    from: "In the photograph: the head and shoulders of a pale limestone statue against a dark background — a smooth ovoid head, deep eye sockets holding dark inlays, a broken nose, no mouth, V-shaped lines carved on the chest; the arms and hands are out of frame. The Commons file titles it Urfa Man in the Urfa museum, September 2019."
+    to: "In the photograph: the head and shoulders of a pale limestone statue against a dark background — a smooth ovoid head, deep eye sockets holding dark inlays, a broken nose, no mouth, V-shaped lines carved on the chest (read by the excavation team as a necklace); the arms and hands are out of frame. The Commons file titles it Urfa Man in the Urfa museum, September 2019; the excavation team records the statue's findspot as Urfa-Yeni Mahalle / Yeni Yol, not Göbekli Tepe."
+    reason: The team's published description ('The Urfa Man', Tepe Telegrams 2016) reads the V-shaped lines as a necklace and states the statue is not from Göbekli Tepe; the description should carry both so the plate is not read as a Göbekli Tepe object.
+edition:
+  rationale: "The current article states, as a load-bearing fact about the ledger, that none of the primary literature the page leans on has been read and that every evidence record comes from the founder's page. After this sitting that is false: the excavators' note on Pillar 43 and the team's blog, the abstracts of the Jiroft wear study and the Hoa Hakananai'a study, and Berossus's fragments in translation have been read and their statements recorded. The handled-objects, Rapa Nui, civiliser, hands and stone-animal sections are revised to set those statements beside the captions; the four-account framing, the featured claims, the crux order and the verdict are unchanged, because no verdict is regraded here and no record yet reaches the shared-past hypothesis directly. New records are named in prose, never by id."
+  featuredClaimIds:
+    - DEEP-C002
+    - DEEP-C057
+    - DEEP-C027
+    - DEEP-C034
+    - DEEP-C035
+    - DEEP-C026
+    - DEEP-C056
+    - DEEP-C005
+    - DEEP-C025
+    - DEEP-C004
+    - DEEP-C059
+    - DEEP-C065
+    - DEEP-C044
+    - DEEP-C012
+    - DEEP-C009
+    - DEEP-C018
+    - DEEP-C015
+    - DEEP-C047
+    - DEEP-C053
+    - DEEP-C028
+    - DEEP-C031
+    - DEEP-C054
+    - DEEP-C038
+    - DEEP-C037
+  cruxOrder:
+    - DEEP-R003
+    - DEEP-R002
+    - DEEP-R001
+  article: |-
+    ## The pattern people see
+
+    Set the pictures out in a row and the resemblance does its work before anyone has made an argument. An eagle-headed figure strides across a palace wall from Nimrud with a bucket in one hand and a cone in the other. A vulture spreads its wings on a Neolithic pillar at Göbekli Tepe, and along the pillar's top edge sit three arched shapes with handles. A seated man on an Olmec boulder from La Venta holds a small bag inside the coils of a crested serpent. Two bird-headed men face one another on the back of a statue taken from Rapa Nui. A netted stone at Delphi marks the navel of the world; so, in their own languages, do places in the Andes and the Pacific. A teacher comes from the sea, brings the arts, and leaves. A flood drowns everyone but a few.
+
+    {plate:IMG-DEEP-P01}
+
+    The eye reads these as kin. The question is whether history does — and how one could tell. The founder's Deep Memory pages ask it without answering it, and their working rule is the one this case adopts: [the historical meaning of a visual resemblance depends on the objects' dates, contexts, differences and possible connections, not on the resemblance alone]{claim=DEEP-C002}. What follows applies that rule to a ledger that has, for the first time, begun to hold the objects' own literature.
+
+    ### How thin the ground is — and where it has thickened
+
+    Until this sitting every evidence record in the ledger came from one source: the founder's own home page, a self-published web essay that describes itself as AI-assisted and reports five investigations its author ran. The method calls this a *self-report* — an author's statement of an unaudited result, with data and code not in hand — and admits it as weak support at most. That source is still the only footing for the five experiments. But the primary literature the page leans on has now been opened in part: the excavators' first published note on Pillar 43 and three posts by the excavation team, the abstract of the wear-trace study of the Jiroft object, the abstract of the published study of the Rapa Nui statue, and Berossus's Oannes fragments in a scholarly translation. Each says something the captions do not, recorded below. What has still not been read: the Assyrian ritual texts in their edition (seen only through a blog transcription of one page), Pausanias and Strabo on Delphi, Garcilaso on Cusco, the first record of the Rapa Nui island name, the full texts behind the two abstracts, and anything on La Venta, Tiwanaku or the flood corpus. Grades are set by the assessment, not here; the article reports what records now exist.
+
+    ## Four accounts, set side by side
+
+    The founding pages name four explanations and insist that more than one can be true in different cases. This edition treats them as the live accounts.
+
+    - **A common source.** The forms and stories descend from one ancestor and were carried outward. In its strongest version — the lost-civilisation account — that ancestor is an unknown society of great age and capability whose emissaries taught the rest. It predicts that specific composites (this pose with this object in this arrangement; this arrival, teaching and departure in this order) recur across the compared cultures more often than chance, and that the oldest examples cluster near the source.
+    - **Long-distance contact.** Particular cultures met and exchanged images or stories, with no single ancestor. It predicts dated intermediates, a plausible route, and resemblance strongest where the route runs.
+    - **Independent invention, or convergence.** Similar bodies, animals, materials and practical problems make similar forms; similar disasters make similar stories. It predicts that the broad classes are common everywhere, that a handle or a folded hand appears wherever carvers face the same problem, and that specific composites do not travel together more than comparison bundles do.
+    - **Later retelling.** Much of the resemblance is made after the fact: by translation, by borrowing after contact, by comparative writers who smooth different stories into one biography, and by selecting matching examples from a very large pool. It predicts that similarity grows between an original account and its modern summary, and that details of a famous version turn up unevenly, where that version was preached.
+
+    The themes follow in turn: what the ledger holds for each account, and what observation would decide between them.
+
+    ## Bird-men
+
+    {plate:IMG-DEEP-P10}
+
+    The gallery runs from the shaft scene at Lascaux — a stick-figure man with a bird's head falling beside a wounded bison, a bird on a staff nearby — through Egyptian gods and Assyrian genii to costumed dancers in the Americas and the birdman cult of Rapa Nui. The founding pages supply the first objection themselves: [the description “bird-man” groups at least three distinct ideas — a deity with a bird's head, a person wearing feathers, and a person transforming into a bird]{claim=DEEP-C004}. If the compared images fall into different ones of these, the parallel is not one resemblance but three weaker ones. No evidence record has yet sorted the images.
+
+    {plate:IMG-DEEP-P05}
+
+    The Rapa Nui example is where dates bite. Hoa Hakananai'a, the basalt moai taken from Orongo, carries on its back two facing birdmen, a ring and girdle, komari and paddles. The claim that matters is that [the birdman carvings were added later than the statue's manufacture]{claim=DEEP-C059}. The published study of the statue, read at abstract level this sitting, gives the sequence: a statue made to stand in the ground, then two komari petroglyphs added, then the bas-relief carvings succeeding them — and it reads those reliefs as a single composition narrating the island's birdman myth as recorded in the nineteenth and early twentieth centuries. So the Rapa Nui leg of the comparison is not only an ocean from Lascaux and Nimrud but later than the statue it decorates, and its reading rests on ethnohistoric text, not on anything prehistoric. The abstract gives no absolute date for the statue and does not itemise the tern, paddles, ring or girdle; those wait on the paywalled body or the British Museum record.
+
+    The catalogue experiment gives the other half. It reports that [a broad bird-person motif class occurs in 55% of 926 sampled traditions]{claim=DEEP-C005}. A *base rate* is how often a thing occurs in the population at large; a motif found in more than half of all sampled traditions is one you would expect to meet in any two cultures picked at random. That number, if it holds, is the strongest reason in the ledger not to be surprised by a bird-man in two places. But the page qualifies its own figure twice, and the ledger records both: the catalogue's coverage is uneven, particularly for the ancient Near East and Rapa Nui — the very regions compared — and broad narrative categories are not the specific images or place names in the claim. That composite, not the class, is what a common-source account needs, and no one has counted it.
+
+    ## The handled objects
+
+    {plate:IMG-DEEP-P02}
+
+    Four objects make the comparison: the three arched forms on Pillar 43, the bucket carried by the Assyrian genii, the carved chlorite objects from the Halil Rud valley in Iran, and the small pouch held by the seated figure on Monument 19 at La Venta. Their outlines rhyme; the founding pages say so, and this edition agrees they are worth close looking. Then the pages make the distinction the theme turns on: [shape and function are separate questions]{claim=DEEP-C065}.
+
+    The four are not on the same footing, and this sitting can say what footing each is on. For the Assyrian object, [ritual context supports a bucket-and-purifier interpretation]{claim=DEEP-C044}: the *banduddû* is [named in ritual texts]{claim=DEEP-C043}. The one text reached for this is a blog's transcription of a page of Wiggermann's 1992 edition, which says the word unquestionably denotes the bucket held by the relief figures, that it was filled with water, and that the exorcist sprinkles that water over the man; it enters as weak support, secondhand, until the printed page is read.
+
+    For the Göbekli forms, the excavators' own record has now been read. Klaus Schmidt's 2006 note describes, above the vulture, three big, similarly carved box-like objects with handle-like attachments, each accompanied by an animal. Ten years later the team's blog offered a reading that is not a handled object at all: the three forms might be the enclosures themselves seen from the side, rectangle for perimeter wall and cupola for roof, each marked with its group's emblematic animal — while admitting this would be an oddly schematic view for a site of naturalistic images, and concluding that no final decision on their meaning is possible. That is the record behind the claim that [the function remains uncertain]{claim=DEEP-C012}. The comparison thus sets a known bucket beside three shapes their diggers do not read as buckets and may read as buildings. Were the forms shown to be containers, the resemblance would gain a rung; were the building reading to prevail, the Göbekli leg would fall away.
+
+    {plate:IMG-DEEP-P04}
+
+    The Jiroft object is the one case where function has been tested physically. The page's caption says the chlorite “handbag” in the National Museum of Iran [shows wear on its handle consistent with having hung on a cord]{claim=DEEP-C009}, and points to the wear-trace study by Vidale and Micheli. The study's abstract, now read, says what the caption says and more: wear on the handle and along the contour, read as long suspension on a cord during which the object was polished by rubbing against a soft surface, most probably a vertical one covered with cloth — an object that hung against something, not a bag carried in the hand — and the authors add that the inference rests on a single object and is far from granted. Their reference list also shows that specialists have classed these objects as “weights”, a reading not in the ledger until now. The caption is faithful; the earlier edition's phrase “hung container” was not what the study says.
+
+    {plate:IMG-DEEP-P03}
+
+    At La Venta, the figure's pouch is [usually read as an incense bag]{claim=DEEP-C010}, and the serpent framing him is [often called the earliest known feathered serpent]{claim=DEEP-C003}. Neither reading has an evidence record.
+
+    What would move the theme: a handle is a practical solution that can recur wherever people carry things. What a common-source account needs, and convergence does not predict, is that the *particular* handle — its attachment, its proportion to the body, its decoration, the figures beside it — recurs across the compared objects more often than across a control set of handled containers from cultures known to be unconnected. The sharper point this sitting adds is that at least two of the four may not be containers at all, so there may be no single functional class to have converged or been transmitted.
+
+    ## Pigs, lizards and other stone animals
+
+    A low body, a raised back and a projecting snout make a boar legible across any distance; splayed limbs and open jaws make a crouching predator. The ledger's observation that the Göbekli Tepe excavation team's discussion of Enclosure C [distinguishes boars from snarling predators]{claim=DEEP-C045} now has both halves from the team's own texts: Schmidt's note reports a snarling predator found in situ on Pillar 27 of Enclosure C, animal and pillar in one piece, and the team's post on animal emblems says boars prevail in that enclosure, as snakes do in A, foxes in B and birds in D. The same post lists “quadruped reptiles” among the species depicted — the excavators' term for what the founder's page, rightly cautious, calls “lizards” only as a proposed identification. Nothing in this theme is graded; the useful next comparison remains with securely identified pig and boar sculptures rather than with whatever looks alike.
+
+    ## The navel of the world
+
+    {plate:IMG-DEEP-P06}
+
+    The linguistic parallel is the most evocative and, on inspection, the most fragile. Delphi's *omphalos* — the netted stone said to mark where Zeus's eagles met — is Greek and ancient. Cusco is glossed as the navel of the Inca world in Garcilaso's account, written after the conquest. Rapa Nui is Te Pito o te Henua, and a smooth stone near Ahu Te Pito Kura carries a name [glossed as “navel of light”]{claim=DEEP-C019}. Göbekli Tepe means “navel hill” in Turkish.
+
+    The founding pages' own claim is the crux: [these are different kinds of evidence, differing in language, date of first record and whether the ancient builders used the name]{claim=DEEP-C018}. None of the four source histories was reached this sitting: Pausanias on the omphalos could not be retrieved, and Garcilaso and the first record of the island name were not opened. The sharpest test is the Turkish name. If [the modern Turkish name Göbekli Tepe describes the shape of the mound]{claim=DEEP-C015}, it is a descriptive toponym given long after the builders were gone. The page adds that [the Kurdish names for the site mean “wish hill”]{claim=DEEP-C016}; the primaries for both glosses have been named but not read, and the second item of the research order traces all four names to their first attestation.
+
+    ## Hands on the belly
+
+    {plate:IMG-DEEP-P07}
+
+    [Arms and hands are carved on the central T-pillars of Enclosure D at Göbekli Tepe]{claim=DEEP-C023}; the shaft is a body and the T a stylised head. Urfa Man, a life-size limestone statue with dark inlaid eyes, [holds its hands over the genitals]{claim=DEEP-C021} — and the excavation team's own description, read this sitting, sharpens the caption: both hands seem to *grasp* the penis; the statue is not from Göbekli Tepe but from construction work at Urfa-Yeni Mahalle, with no find context recorded; the V-shaped lines on the chest are read as a necklace; and the team calls it the oldest known statue of a man. The moai of Ahu Tongariki, carved some ten millennia later, meet their hands low on the abdomen above the belt. The Ponce monolith at Tiwanaku [holds its hands to the chest]{claim=DEEP-C050}, one of them around [a snuff tablet]{claim=DEEP-C051}.
+
+    {plate:IMG-DEEP-P08}
+
+    The founding pages make the observation the eye skips: a hand across the abdomen and a hand at the groin are close in outline but different observations — and a hand grasping is different again from a hand resting. They offer convergence in its plainest form. [Carving limbs against a stone body can protect them from breakage]{claim=DEEP-C046}, so [material constraints are a plausible contributor to the hands-on-body pose]{claim=DEEP-C047}. Equally, [material constraint as a contributor to the pose does not settle its symbolic meaning]{claim=DEEP-C048}: a constraint explains why hands rest against the body, not why at the abdomen rather than the groin or the chest. The deciding observation is a survey of stone figures in the same media from cultures with no possible connection.
+
+    ## Serpents, and the feathered serpent
+
+    {plate:IMG-DEEP-P12}
+
+    Snakes are everywhere in the gallery: coiled around the Olmec figure at La Venta, gripped by the hero on the Jiroft object, projecting in feathered collars from the Temple of the Feathered Serpent at Teotihuacan. The catalogue experiment reports [a broad cosmic-serpent motif class in 37% of sampled traditions]{claim=DEEP-C025} — another high base rate, on the same self-reported footing as the bird-men figure. The feathered serpent of Mesoamerica is a much more specific thing than “snake”, and any comparison worth making has to preserve the feathers, the head, the body's arrangement and its relation to a human figure.
+
+    The page adds the point that governs both catalogue results: [a catalogue's geographical distribution of a broad motif class cannot by itself distinguish independent invention from very old transmission]{claim=DEEP-C026}. Telling them apart takes dated intermediates or a model with stated assumptions. This sitting recorded the first named candidate for an intermediate, from the diggers themselves: asked about Assyrian bird-gods, the Göbekli excavator replied that there is evidence some of the site's imagery survives into later Neolithic seal images, but that there are far too many “missing links” to be sure how far, or with what change of meaning. A local continuity within Anatolia is a testable proposition of a different kind from a chain to Nimrud, and a research item now proposes the test.
+
+    The catalogue experiment's headline is the most consequential thing in the case and the least tested. It reports that [the three broad motif classes — birds, serpents, sacred centres — are each widespread]{claim=DEEP-C056}, and that [their bundle does not stand out against the study's documentation-preserving comparisons]{claim=DEEP-C057}. If the second holds, finding birds, serpents and a sacred centre together in a tradition is no rarer than finding any comparable trio of common motifs — which convergence predicts and a common source does not. But the ledger contains no record supporting that finding, only the page's two qualifications of it. The bundle claim's data are what this edition would most like to see.
+
+    ## The people who brought the arts
+
+    {plate:IMG-DEEP-P09}
+
+    The narrative parallel is as arresting as the visual one. A figure arrives, often from the sea; teaches writing, agriculture, law or craft; changes human life; departs, sometimes promising to return. Oannes in Babylonia, Viracocha in the Andes, Quetzalcoatl in Mexico and Bochica among the Muisca recur in the comparison. The founding pages' caution is that the exact arrival, teaching and departure have to be read in each account, not supplied by a composite biography.
+
+    This sitting read one of them. In Berossus's first fragment, as Syncellus preserves it from Alexander Polyhistor, a monster named Oannes comes up from the Persian Gulf with the whole body of a fish, a human head beneath the fish's head and human feet joined to the tail; it spends its days with men, eating nothing, teaching writing, mathematics, how to build cities, found temples and make laws, how to divide land and plant and harvest — and at the end of each day it goes back to the sea and spends the night there, being amphibious. Its form, the fragment says, has been preserved in sculpture to this day. A later fragment adds four more such fish-men under one king and one named Odakon under another, and the translators' table sets Oannes beside U-An, first of the seven apkallu in a tablet from Uruk. That is the footing now behind the page's claims that [the fish-cloaked figure is the apkallu type the texts actually name]{claim=DEEP-C052} and that [Berossus's Oannes corresponds to it]{claim=DEEP-C053}; the tablet edition itself has not been opened. And it is the clearest instance in the ledger of the retelling mechanism working on a specific original: the Oannes of the fragments does not arrive once, teach and depart promising to return; he commutes nightly and is one of a series. The composite biography is a compression. That is the process [stories can become more alike than their originals through translation, borrowing and comparative writing]{claim=DEEP-C034} describes, seen in one case.
+
+    {plate:IMG-DEEP-P11}
+
+    At Tiwanaku, the staff-bearer with the rayed head in the centre of the Gate of the Sun is often called Viracocha. The page's claim is that [that identification is a modern one]{claim=DEEP-C028}. Unrecorded still.
+
+    The one measured result in this theme is the founder's V1 lineup experiment. AI judges were shown a civiliser account and asked to pick its partner from a lineup; [the claimed partner ranked first in 62.5% of completed lineups, against 9% for random pairs]{claim=DEEP-C027}. That is a real signal under the experiment's conditions, and the only evidence record in the ledger pointing toward a resemblance beyond base rates. The retelling account's reply is now concrete: a lineup of modern summaries measures the similarity of modern summaries, and the ledger holds one original whose shape differs from its summary. The decisive experiment leads this edition's research order: rerun the lineup with human raters on unrecognisable passages from the sources — Berossus via his excerptors, the early Andean chroniclers, Sahagún, Simón — against random hero narratives, coding the Oannes item from the fragment's actual structure, and see whether 62.5% survives.
+
+    The lost-civilisation account attaches to these figures its strongest claims. The page's answer, adopted here on priors, is that [similarity between motifs alone cannot establish a lost-civilisation account's claims about the source's identity, date and capabilities]{claim=DEEP-C035}. Nothing read this sitting supplies evidence of that other kind.
+
+    ## What survives the water
+
+    Flood stories raise several questions at once: whether people remember local disasters, whether particular stories travelled, and whether traditions preserve much older environmental knowledge. The founder's text-coding pilot had an AI code the details of 263 flood-story summaries. It reports that [the coded details cluster by region]{claim=DEEP-C031}, that [details associated with Genesis are unevenly distributed]{claim=DEEP-C054}, and that [generic flood motifs are widespread]{claim=DEEP-C055}.
+
+    Each of the four accounts can live with regional clustering. The uneven distribution of Genesis details is the more pointed finding, because it is what the retelling account predicts — and yet, as the page says, recording a story after contact does not establish that it was borrowed. None of the three claims has an evidence record, and the pilot coded one compiler's summaries rather than a representative collection of original accounts. What would move them: the coded data released and re-coded by human readers against original texts, with the Genesis-associated details dated, where possible, to before or after missionary contact.
+
+    ## Indus and rongorongo
+
+    The companion project compares the sign inventories of two undeciphered scripts and the illustrations used to connect them. Its governing claim is the one this case would apply everywhere: [a visual resemblance between signs of two undeciphered scripts does not establish shared sound, meaning or descent]{claim=DEEP-C036}. The ledger holds the principle and none of the companion's results.
+
+    ## When resemblance becomes evidence
+
+    Can the resemblance people see be measured at all? The founder's three image pilots tried to make AI judges rank objects by likeness. The page reports that [judges disagreed strongly with one another about the same objects]{claim=DEEP-C037}, and that [matching the kinds of objects in a lineup changed the lineup result]{claim=DEEP-C038}.
+
+    The second is the more important. *Diagnosticity* is how much an observation decides between rival explanations. If a lineup that pits a pillar against a moai, a relief and a boulder ranks them one way, and a lineup of pillars against pillars ranks them another, then part of the original resemblance was an artefact of comparing unlike kinds — a finding about every side-by-side gallery, including the one that opens this article.
+
+    ## Where this leaves the question
+
+    Read strictly, the ledger says this. The broad classes — bird-people, cosmic serpents, sacred centres — are reported as each widespread, on the founder's word alone; whether the specific composites are rarer than chance has not been counted. The one positive signal, the civiliser lineup, awaits the test that would separate it from what the retelling account predicts, and the ledger now holds one original — Berossus's Oannes — whose shape is not the composite's. The four navel names remain untraced. The object-level ground has thickened: the diggers call the Göbekli forms handle-like and may read them as buildings; the Jiroft wear is read as hanging against cloth, on one specimen, with a “weights” literature behind it; the Rapa Nui birdmen follow the komari, which follow the statue, and are read against a myth recorded in the nineteenth century; Urfa Man grasps rather than rests. None of this reaches the shared-past hypothesis directly; most of it lowers the specificity of the resemblances it relies on.
+
+    The verdict remains *unresolved*, chosen rather than defaulted to. It means the featured hypothesis — that the resemblances record a shared past — has neither support nor refutation in the ledger. It does not mean the evidence is balanced: such evidence as there is leans, by the founder's own report and now by the objects' own literature, toward base rates, convergence and retelling.
+
+    What would change our mind, in either direction:
+
+    - A blind human lineup of original civiliser passages that beats random pairs by a margin like V1's — or one that does not.
+    - A count of specific composites across the compared objects and a kind-matched control set.
+    - The four navel names traced to first attestation, with the builders' usage documented or shown absent.
+    - The team's later publications on Pillar 43 read for whether the building reading stands; the full texts of the Jiroft and Rapa Nui studies; Wiggermann's page in print.
+    - Atakuman's seal corpus checked for the specific Göbekli motifs — the one intermediate class anyone has named.
+
+    The best argument for the shared past that this edition does not answer: the catalogue experiment's null result, by the page's own admission, tests broad classes rather than the specific images in the claim — so the strongest evidence against a common source has not actually been aimed at it — and the lineup signal, whatever its limitations, is a measurement, where the critics have so far offered reasons and one counter-example. Both are fair. Both point to the same thing: the next steps are small, cheap and named, and this case waits on them.
+  researchStatus: []
+dispositions:
+  - key: url:theoi.com/Text/Pausanias10A.html
+    kind: source
+    disposition: blocked
+    reason: "Pausanias, Description of Greece 10.16.3 (Jones translation at Theoi): the fetch returned HTTP 522, so no text was shown; the report's statement that the Delphians call the omphalos the centre of the earth cannot be recorded."
+    reopenIf: The passage is retrieved from Theoi, Perseus or a Loeb scan and its text shown.
+    observed: URL in sources with retrieved:false, reason HTTP 522.
+    by: 2026-09-19-draft-deep-memory-121715
+    date: 2026-09-19
+    route: Perseus Digital Library (Paus. 10.16.3, Jones 1918) or Loeb Classical Library vol. 297; also open Strabo 9.3.6 for the eagles story.
+  - key: text:named in the report s named not opened list not in sources
+    kind: source
+    disposition: blocked
+    reason: "Wiggermann 1992, Mesopotamian Protective Spirits: The Ritual Texts, p. 66 — the primary for the banduddû; seen only through a blog transcription, which is entered separately as weak evidence."
+    reopenIf: The printed page (or a scan) is read and the transcription checked; the blog records should then be superseded.
+    observed: Named in the report's 'Named, not opened' list; not in sources.
+    by: 2026-09-19-draft-deep-memory-121715
+    date: 2026-09-19
+    route: STYX/Brill, Cuneiform Monographs 1 (Groningen 1992), p. 66; library or Brill e-book.
+  - key: text:cited in the dietrich comment of 17 oct 2016 not in sources
+    kind: source
+    disposition: blocked
+    reason: "Atakuman 2015, 'From monuments to miniatures', Cambridge Archaeological Journal 25/4: 759–788 — the intermediate class the excavator names; not retrieved."
+    reopenIf: Retrieved (doi via Cambridge Core) and read for the research item proposed here.
+    observed: Cited in the Dietrich comment of 17 Oct 2016; not in sources.
+    by: 2026-09-19-draft-deep-memory-121715
+    date: 2026-09-19
+    route: Cambridge Core, CAJ 25(4).
+  - key: text:cited in the pillar 43 post not in sources
+    kind: source
+    disposition: blocked
+    reason: "Schmidt 2012, Göbekli Tepe: A Stone Age Sanctuary, p. 244 — cited by the team for the disc interpretation on Pillar 43; not retrieved."
+    reopenIf: The book is obtained (ex oriente e.V., Berlin) and the page read.
+    observed: Cited in the Pillar 43 post; not in sources.
+    by: 2026-09-19-draft-deep-memory-121715
+    date: 2026-09-19
+    route: ex oriente e.V. publication; library copy.
+  - key: text:cited in the emblematic signs post not in sources
+    kind: source
+    disposition: blocked
+    reason: "Becker et al. 2012, 'Materialien zur Deutung der zentralen Pfeilerpaare des Göbekli Tepe', ZORA 5: 14–43 — the team's study of the central pillars (arms and hands); not retrieved."
+    reopenIf: Retrieved and read for DEEP-C023.
+    observed: Cited in the 'Emblematic signs?' post; not in sources.
+    by: 2026-09-19-draft-deep-memory-121715
+    date: 2026-09-19
+    route: Zeitschrift für Orient-Archäologie 5 (de Gruyter).
+  - key: text:report 6 could not reach
+    kind: source
+    disposition: blocked
+    reason: "Notroff et al. 2017, 'More than a vulture: a response to Sweatman and Tsikritsis' (Tepe Telegrams) — the fetch was refused (url_not_allowed per the report)."
+    reopenIf: The post is retrieved from the DAI blog or the Mediterranean Archaeology and Archaeometry response is read.
+    observed: "Report §6: could not reach."
+    by: 2026-09-19-draft-deep-memory-121715
+    date: 2026-09-19
+    route: dainst.blog Tepe Telegrams archive; MAA 17(2) 2017 response article.
+  - key: text:named on the founder page and in the report not in sources
+    kind: source
+    disposition: blocked
+    reason: Sweatman & Tsikritsis 2017, 'Decoding Göbekli Tepe with archaeoastronomy', MAA 17(1) — the rival reading of Pillar 43; not retrieved.
+    reopenIf: Retrieved; weigh against the team's response.
+    observed: Named on the founder page and in the report; not in sources.
+    by: 2026-09-19-draft-deep-memory-121715
+    date: 2026-09-19
+    route: Mediterranean Archaeology and Archaeometry 17(1), open access.
+  - key: text:reference list of vidale micheli not in sources
+    kind: source
+    disposition: blocked
+    reason: "Muscarella 1993, 'Intercultural Style \"Weights\"', Bulletin of the Asia Institute 7: 143–153 — the 'weights' classification of the chlorite handled objects; seen only as a reference-list title."
+    reopenIf: Retrieved and read; its argument then anchors the weights claim directly.
+    observed: Reference list of Vidale & Micheli; not in sources.
+    by: 2026-09-19-draft-deep-memory-121715
+    date: 2026-09-19
+    route: Bulletin of the Asia Institute 7 (JSTOR).
+  - key: text:reference list of vidale micheli not in sources
+    kind: source
+    disposition: blocked
+    reason: "Pittman 1990, 'Steatite or Chlorite Handles Weights', in Glories of the Past (Shelby White and Leon Levy collection): 41–43 — earlier 'weights' reading; seen only as a reference-list title."
+    reopenIf: Retrieved and read.
+    observed: Reference list of Vidale & Micheli; not in sources.
+    by: 2026-09-19-draft-deep-memory-121715
+    date: 2026-09-19
+    route: Metropolitan Museum of Art catalogue, Glories of the Past (1990).
+  - key: text:reference list of vidale micheli not in sources
+    kind: source
+    disposition: blocked
+    reason: "Perrot & Madjidzadeh 2005, 'L'iconographie des vases et objets en chlorite de Jiroft', Paléorient 31(2): 123–152 — iconography of the Jiroft objects; not retrieved."
+    reopenIf: Retrieved via Persée.
+    observed: Reference list of Vidale & Micheli; not in sources.
+    by: 2026-09-19-draft-deep-memory-121715
+    date: 2026-09-19
+    route: Persée, Paléorient 31(2).
+  - key: url:ijas.usb.ac.ir/article_1442.html
+    kind: source
+    disposition: blocked
+    reason: Vidale & Micheli 2012, full text (PDF 909 KB on the journal page) — only the abstract and references were retrieved; the body carries the wear photographs and the iron-repair discussion.
+    reopenIf: The PDF is retrieved and read; the abstract-level records can then be strengthened or corrected.
+    observed: Journal page lists 'PDF 909.41 K'; body not in sources.
+    by: 2026-09-19-draft-deep-memory-121715
+    date: 2026-09-19
+    route: Download link on the same page (CC BY-NC).
+  - key: doi:10.1017/s0003581514000201
+    kind: source
+    disposition: blocked
+    reason: Pitts et al. 2014, body text — paywalled; the abstract alone does not give the statue's date or itemise the tern, paddles, ring and girdle.
+    reopenIf: Institutional access or an author preprint; or the British Museum record Oc1869,1005.1 is retrieved.
+    observed: Cambridge Core shows 'Article purchase temporarily unavailable'.
+    by: 2026-09-19-draft-deep-memory-121715
+    date: 2026-09-19
+    route: Cambridge Core with access; Southampton ePrints for an accepted manuscript; British Museum collection online Oc1869,1005.1.
+  - key: doi:10.1017/s0003581514000201
+    kind: source
+    disposition: duplicate
+    as: SRC-PITTS-2014
+    reason: The doi.org URL resolved to the same Cambridge Core abstract page as the article URL; one source record covers both.
+    observed: Two entries in sources with identical retrieved text.
+    by: 2026-09-19-draft-deep-memory-121715
+    date: 2026-09-19
+  - key: url:en.wikipedia.org/wiki/G%C3%B6bekli_Tepe
+    kind: source
+    disposition: irrelevant
+    reason: "Wikipedia, 'Göbekli Tepe' — tertiary; the intake decision to set encyclopaedia entries aside stands. It is used only to name the primaries for the toponym claims: Symmes 2010 (Newsweek) for the 'Potbelly Hill' gloss, Kosen 2019 (Kurdistan 24) for 'Wish Hill', Zekîoğlu 2020 for the local sacred-place tradition."
+    reopenIf: Symmes 2010 or Kosen 2019 cannot be located and the entry's citation is the only route.
+    observed: Retrieved; lead paragraph and 'Research history' section read.
+    by: 2026-09-19-draft-deep-memory-121715
+    date: 2026-09-19
+    route: Symmes, Newsweek 18 Feb 2010; Kosen, Kurdistan 24, 24 Jul 2019; Zekîoğlu, Le Monde diplomatique kurdî 57 (2020).
+  - key: text:report 6 could not reach
+    kind: source
+    disposition: blocked
+    reason: Thomson 1891, 'Te Pito te Henua, or Easter Island' (Smithsonian Report) — earliest widely cited record of the island name; not retrieved (fetch budget).
+    reopenIf: Retrieved from Internet Archive and read for DEEP-R002.
+    observed: "Report §6: could not reach."
+    by: 2026-09-19-draft-deep-memory-121715
+    date: 2026-09-19
+    route: Internet Archive, Report of the U.S. National Museum for 1889 (1891).
+  - key: text:report 6 could not reach
+    kind: source
+    disposition: blocked
+    reason: Garcilaso de la Vega, Comentarios Reales de los Incas (1609), Book 1 — the Cusco 'navel' gloss; not retrieved.
+    reopenIf: The passage is retrieved (Spanish original and Livermore translation) and its wording recorded.
+    observed: "Report §6: could not reach."
+    by: 2026-09-19-draft-deep-memory-121715
+    date: 2026-09-19
+    route: Biblioteca Virtual Miguel de Cervantes; Livermore 1966 translation, Book 1 ch. 18.
+  - key: text:named in the report s named not opened list
+    kind: source
+    disposition: blocked
+    reason: Strabo, Geography 9.3.6 — the usual source for the Zeus's-eagles story about the Delphic omphalos, which the declined eagles claim needs; not opened.
+    reopenIf: Retrieved (Perseus, Jones translation) and read.
+    observed: Named in the report's 'Named, not opened' list.
+    by: 2026-09-19-draft-deep-memory-121715
+    date: 2026-09-19
+    route: Perseus Digital Library, Strabo 9.3.6.
+  - key: text:named on the founder page and in the report not in sources
+    kind: source
+    disposition: blocked
+    reason: Lee 1992, The Rock Art of Easter Island — the corpus for komari, birdmen and paddles at Orongo (DEEP-C060–C064); not retrieved.
+    reopenIf: Retrieved and the relevant plates read.
+    observed: Named on the founder page and in the report; not in sources.
+    by: 2026-09-19-draft-deep-memory-121715
+    date: 2026-09-19
+    route: UCLA Institute of Archaeology monograph; library copy.
+  - key: text:report 6 opened first paragraphs not in sources
+    kind: source
+    disposition: irrelevant
+    reason: Livius.org 'Berossus' page — secondary summary; the report says it adds nothing beyond Verbrugghe & Wickersham, and its text was not shown.
+    reopenIf: A specific statement is needed that the translation does not supply.
+    observed: "Report §6: opened, first paragraphs; not in sources."
+    by: 2026-09-19-draft-deep-memory-121715
+    date: 2026-09-19
+  - key: text:report 6 retrieved but not used not in sources
+    kind: source
+    disposition: irrelevant
+    reason: University of Hawaiʻi at Hilo student paper on Te Pito o te Henua and Wikipedia 'Staff God' — tertiary, retrieved by the report but not read in depth and not shown here.
+    reopenIf: Either names a primary for DEEP-R002 or DEEP-C028 that cannot otherwise be found.
+    observed: "Report §6: retrieved but not used; not in sources."
+    by: 2026-09-19-draft-deep-memory-121715
+    date: 2026-09-19
+report: proposals/2026-09-19-report-deep-memory-120902/report.md

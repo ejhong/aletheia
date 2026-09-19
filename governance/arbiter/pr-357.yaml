@@ -1,0 +1,153 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 357
+title: "Chain: 2026-09-19"
+url: https://github.com/ejhong/aletheia/pull/357
+verdict: pass
+reason: 4 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-19
+judgedAgainst: c1e043baf6
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The change adds two edition candidates and their paired draft
+      assessments, spend ledgers, run records, harvested prior arbiter verdicts,
+      and one append-only history entry; AGENTS.md is untouched and the citation
+      tooling found no new identifiers under content/, so there is no
+      fabrication surface I can check against. Provenance is stamped throughout:
+      each assessment carries runId, producedBy, model, date, promptVersion,
+      humanReviewed: false, role: draft, and the header comment says plainly
+      'NOT human reviewed; standing derives from blind checks' — no AI record is
+      dressed as human, no unratified draft as ratified (§3.15, §4). Epistemic
+      discipline is visibly applied rather than loosened: six anchor-only claims
+      (C019, C020, C021, C022, C023, C029) are graded unresolved and explicitly
+      said to carry no weight, evidence direction and diagnosticity are
+      separated from credibility (§3.4, §3.5), independence is treated head-on
+      (E089 showing the two manuscript branches are not independent witnesses,
+      Herrera as a redaction rather than a fresh witness, the tree-species study
+      'counts once, not twice' — §3.10), negative evidence (E010, E011) is
+      carried as spine rather than afterthought (§3.11), and the founder's
+      funding of the 2026 LiDAR paper is disclosed in the article itself. The
+      known defect in the earlier assessment (E115 cited for the Upano
+      chronology; fish weirs listed in whatIsClaimed) is not hidden: review note
+      #358 is recorded verbatim in history.yaml with the operator's reasoned
+      answer, and the second edition in the same PR corrects both under
+      edition-v10 while leaving the append-only record intact (§3.14). The one
+      omitted file is a working reply.json, whose corresponding edition and
+      assessment are shown whole in the account, so it cannot hide a violation I
+      would otherwise see."
+    cost:
+      model: claude-opus-5
+      inputTokens: 121741
+      outputTokens: 1258
+      usd: 0.680717
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: unsure
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: The visible run account and diff honestly label both assessments as
+      AI-generated drafts, preserve the flawed first assessment append-only, and
+      record its correction in the later edition. The later assessment clearly
+      distinguishes admitted evidence from anchor-only claims and corrects the
+      misuse of AMZ-E115 without erasing history. However,
+      `proposals/2026-09-19-edition-pre-columbian-amazon-045109/reply.json` is
+      an added public file omitted from both the diff and the run account, so I
+      cannot determine whether it contains inconsistent provenance, confidence
+      material, or claims not represented in the generated outputs. I would need
+      that complete file, or a mechanically authenticated account of all its
+      fields, before finding the whole change compliant.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 83614
+      outputTokens: 701
+      usd: 0.348476
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.6
+      - §3.8
+      - §3.13
+      - §3.14
+      - §3.15
+    reasoning: The pull request adds two successive edition candidates and draft
+      assessments alongside transparent run and spend records, directly
+      addressing a prior review note (#358) on the record. The succession from
+      edition-2026-09-19-042009 to edition-2026-09-19-052132 preserves
+      append-only integrity, correcting the attribution of AMZ-E115 strictly to
+      the builder claim (AMZ-C086) and explicitly marking the fish-weir
+      infrastructure (AMZ-C019) as anchor-only in the case assessment header.
+      Both candidate articles maintain strict alignment with the ledger,
+      distinguishing admitted evidence from anchor-only claims and qualifying
+      population numbers as model envelopes rather than censuses. Provenance
+      stamps, hashes, and run lineage are preserved throughout, no citations
+      failed mechanical verification, and AGENTS.md is untouched.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 93078
+      outputTokens: 1907
+      usd: 0.07696
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "Two successive edition drafts for pre-columbian-amazon: 042009
+      incorporates newly admitted Medina chronicle records (branch
+      non-independence E089, invention-charge genealogy) into treatments and the
+      article without moving the case verdict; 052132 is the append-only fix
+      answering review note #358, correcting whatIsClaimed so fish weirs are
+      marked anchor-only and citing E073/E074/E115 only beside the Upano claims
+      they attach to. Assessments are stamped role:draft, humanReviewed:false,
+      with runId/model/date/promptVersion and ledgerHash; six anchor-only limits
+      stay unresolved; competing accounts, calibrated uncertainty, and negative
+      evidence are explicit. History records the operator reply to the review
+      note; AGENTS.md is untouched; citation tooling found no new identifiers;
+      the omitted reply.json is the second run’s working file and does not hide
+      a content violation visible in the run account or assessments."
+    cost:
+      model: grok-4.5
+      inputTokens: 85469
+      outputTokens: 212
+      usd: 0.172325
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.13
+      - §3.14
+      - §3.15
+    reasoning: "The two edition runs are honestly stamped as AI drafts
+      (humanReviewed: false, 'NOT human reviewed', append-only), with
+      runId/model/date/promptVersion provenance on every record, and the
+      mechanical verification found no citation identifiers to check, so no
+      fabrication surface is visible. The one substantive defect — assessment
+      042009 spending AMZ-E115 on the Upano dating claim it is not attached to,
+      and listing fish weirs in whatIsClaimed while grading AMZ-C019 unresolved
+      on its anchor alone — is not hidden: it was raised as review note #358,
+      recorded append-only in history.yaml, and cured by a second edition run
+      (edition-v10) whose whole rationale is that correction, with the flawed
+      assessment left unedited as the append-only rule requires. Anchor-only
+      claims (C019, C020, C021, C022, C023, C029) are consistently named as
+      anchor-only and graded unresolved, the founder-funding conflict is
+      disclosed verbatim in the article's transparency block, and disagreement
+      is displayed rather than hidden. No AGENTS.md edit appears, no check is
+      loosened, and the harvested arbiter files are verbatim prior-verdict
+      records, not constitutional changes. The omitted 045109/reply.json is a
+      working file whose substance (edition, assessment) I can already see in
+      the run account, so it does not leave the question undecidable."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 87138
+      outputTokens: 1693
+      usd: 0.013917
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 471040
+  outputTokens: 5771
+  usd: 1.2924
+harvestedAt: 2026-09-19

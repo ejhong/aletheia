@@ -39,6 +39,9 @@ if (!parked.length) {
   console.log("no open PR is parked on the budget");
   process.exit(0);
 }
+// One PR's failure is not the others': every pick is tried, and the run fails at the end if any could not be
+// re-run, so the fault is visible without leaving the rest parked (2026-09-18).
+let failed = 0;
 for (const pr of pickForRejudge(parked, room)) {
   const runs = JSON.parse(gh("run", "list", "--workflow", "arbiter.yml", "--branch", pr.headRefName, "--limit", "1", "--json", "databaseId"));
   const id = runs[0]?.databaseId;
@@ -46,6 +49,12 @@ for (const pr of pickForRejudge(parked, room)) {
     console.log(`#${pr.number}: parked on the budget, but no arbiter run found to re-run`);
     continue;
   }
-  gh("run", "rerun", String(id));
-  console.log(`#${pr.number}: parked on the budget; arbiter run ${id} re-run against today's window`);
+  try {
+    gh("run", "rerun", String(id));
+    console.log(`#${pr.number}: parked on the budget; arbiter run ${id} re-run against today's window`);
+  } catch (err) {
+    failed++;
+    console.error(`#${pr.number}: arbiter run ${id} could not be re-run: ${String(err.stderr ?? err.message).trim().slice(0, 200)}`);
+  }
 }
+if (failed) process.exit(1);

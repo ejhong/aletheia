@@ -192,40 +192,31 @@ function inputsHashOf(loaded: LoadedCase, root: string): string {
 }
 
 /**
- * Every evidence id the assessment names must be a record the case holds, live and read (protocols/edition-v10.md —
- * review note #358: an assessment spent the builder-attribution record on the chronology and counted an anchor-only
- * claim among what the case shows). Which claim a citation is for is the protocol's rule and the panel's reading: a
- * claim's reasoning may lean on evidence attached to a parent or sibling claim when it says so (v8), so attachment is
- * not refused mechanically.
+ * Every evidence id the assessment names — in any string of it, at any depth — must be a record the case holds,
+ * live and read (protocols/edition-v10.md — review note #358: an assessment spent the builder-attribution record on
+ * the chronology and counted an anchor-only claim among what the case shows; review note #360: a check that scans
+ * chosen fields, or one prefix, is dodgeable). Any token shaped like an evidence id counts, whatever its prefix: an
+ * id from another case, or from nowhere, is one this case does not hold. Which claim a citation is for is the
+ * protocol's rule and the panel's reading: a claim's reasoning may lean on evidence attached to a parent or sibling
+ * claim when it says so (v8), so attachment is not refused mechanically.
  */
-export function assessmentEvidenceErrors(a: AssessmentRun, loaded: Pick<LoadedCase, "evidence" | "record">): string[] {
-  const prefix = loaded.record.id.split("-")[0];
-  const re = new RegExp(`\\b${prefix}-E\\d{3}\\b`, "g");
+export function assessmentEvidenceErrors(a: AssessmentRun, loaded: Pick<LoadedCase, "evidence">): string[] {
+  const re = /\b[A-Z][A-Z0-9]*-E\d{3}\b/g;
   const byId = new Map(loaded.evidence.map((e) => [e.id, e]));
   const errors: string[] = [];
-  const check = (where: string, text: string | undefined) => {
-    for (const id of new Set((text ?? "").match(re) ?? [])) {
-      const e = byId.get(id);
-      if (!e) errors.push(`assessment ${where} names ${id}, which this case does not hold`);
-      else if (e.reviewState === "rejected") errors.push(`assessment ${where} names ${id}, a refused record that carries nothing`);
-      else if (e.reviewState === "provisional") errors.push(`assessment ${where} names ${id}, a provisional record that carries no weight (edition protocol v9)`);
-    }
+  const walk = (value: unknown, where: string) => {
+    if (typeof value === "string") {
+      for (const id of new Set(value.match(re) ?? [])) {
+        const e = byId.get(id);
+        if (!e) errors.push(`assessment ${where} names ${id}, which this case does not hold`);
+        else if (e.reviewState === "rejected") errors.push(`assessment ${where} names ${id}, a refused record that carries nothing`);
+        else if (e.reviewState === "provisional") errors.push(`assessment ${where} names ${id}, a provisional record that carries no weight (edition protocol v9)`);
+      }
+    } else if (Array.isArray(value)) value.forEach((v, i) => walk(v, `${where}[${i}]`));
+    else if (value && typeof value === "object") for (const [k, v] of Object.entries(value)) walk(v, where ? `${where}.${k}` : k);
   };
-  const c = a.caseAssessment;
-  check("synthesis", c.synthesis);
-  check("steelman", c.steelman);
-  check("whatIsClaimed", c.whatIsClaimed);
-  check("whereDisagreementLives", c.whereDisagreementLives);
-  check("whatWouldSettleIt", c.whatWouldSettleIt);
-  check("bestConventionalExplanation", c.bestConventionalExplanation);
-  c.components.forEach((k, i) => check(`components[${i}] (${k.label})`, k.note));
-  for (const ca of a.claimAssessments) {
-    check(`claimAssessments[${ca.claimId}].reasoning`, ca.reasoning);
-    if (ca.treatment) {
-      check(`claimAssessments[${ca.claimId}].treatment.diagnosticitySummary`, ca.treatment.diagnosticitySummary);
-      check(`claimAssessments[${ca.claimId}].treatment.strongestObjection`, ca.treatment.strongestObjection);
-    }
-  }
+  walk(a.caseAssessment, "caseAssessment");
+  for (const ca of a.claimAssessments) walk(ca, `claimAssessments[${ca.claimId}]`);
   return errors;
 }
 

@@ -182,8 +182,9 @@ A claim's own reasoning may lean on a record attached to a parent or
 sibling claim when it says so (the disclosed-basis rule above); a
 component note or the synthesis may not spend one claim's record on
 another proposition. The verb checks mechanically that every evidence id
-the assessment names exists, is not refused and is not provisional; a
-candidate that fails is sent back once with the fault named, then
+the assessment names — in any of its strings, at any depth, whatever the
+id's prefix — exists in this case, is not refused and is not provisional;
+a candidate that fails is sent back once with the fault named, then
 refused. Which claim a citation is for is this rule and the panel's
 reading.
 

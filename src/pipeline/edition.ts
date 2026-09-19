@@ -191,6 +191,44 @@ function inputsHashOf(loaded: LoadedCase, root: string): string {
   );
 }
 
+/**
+ * Every evidence id the assessment names must be a record the case holds, live and read (protocols/edition-v10.md —
+ * review note #358: an assessment spent the builder-attribution record on the chronology and counted an anchor-only
+ * claim among what the case shows). Which claim a citation is for is the protocol's rule and the panel's reading: a
+ * claim's reasoning may lean on evidence attached to a parent or sibling claim when it says so (v8), so attachment is
+ * not refused mechanically.
+ */
+export function assessmentEvidenceErrors(a: AssessmentRun, loaded: Pick<LoadedCase, "evidence" | "record">): string[] {
+  const prefix = loaded.record.id.split("-")[0];
+  const re = new RegExp(`\\b${prefix}-E\\d{3}\\b`, "g");
+  const byId = new Map(loaded.evidence.map((e) => [e.id, e]));
+  const errors: string[] = [];
+  const check = (where: string, text: string | undefined) => {
+    for (const id of new Set((text ?? "").match(re) ?? [])) {
+      const e = byId.get(id);
+      if (!e) errors.push(`assessment ${where} names ${id}, which this case does not hold`);
+      else if (e.reviewState === "rejected") errors.push(`assessment ${where} names ${id}, a refused record that carries nothing`);
+      else if (e.reviewState === "provisional") errors.push(`assessment ${where} names ${id}, a provisional record that carries no weight (edition protocol v9)`);
+    }
+  };
+  const c = a.caseAssessment;
+  check("synthesis", c.synthesis);
+  check("steelman", c.steelman);
+  check("whatIsClaimed", c.whatIsClaimed);
+  check("whereDisagreementLives", c.whereDisagreementLives);
+  check("whatWouldSettleIt", c.whatWouldSettleIt);
+  check("bestConventionalExplanation", c.bestConventionalExplanation);
+  c.components.forEach((k, i) => check(`components[${i}] (${k.label})`, k.note));
+  for (const ca of a.claimAssessments) {
+    check(`claimAssessments[${ca.claimId}].reasoning`, ca.reasoning);
+    if (ca.treatment) {
+      check(`claimAssessments[${ca.claimId}].treatment.diagnosticitySummary`, ca.treatment.diagnosticitySummary);
+      check(`claimAssessments[${ca.claimId}].treatment.strongestObjection`, ca.treatment.strongestObjection);
+    }
+  }
+  return errors;
+}
+
 /** Pure: reply + context → a validated edition (and assessment), or the errors that stop it. */
 export function assembleEdition(
   loaded: LoadedCase,
@@ -244,6 +282,7 @@ export function assembleEdition(
       assessment = parsed.data;
       const steel = steelmanRequirementError(assessment);
       if (steel) errors.push(steel);
+      errors.push(...assessmentEvidenceErrors(assessment, loaded));
     }
   }
   const adoptedRef = assessment

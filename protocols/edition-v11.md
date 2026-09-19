@@ -18,11 +18,13 @@ Inherits: the assessment drafting prompt (aletheia-assess-v2-auto); the
 narrative-inputs rule (AGENTS.md §7). Method: §3.
 
 v11 (2026-09-19): the founding inputs are a seed, not a protagonist — the
-article tells the topic and never narrates the inputs as an actor; where
-a proposition's only record is the founding page's own statement, it says
-so once, plainly, as the case's thinnest ground (founder direction in
-session, 2026-09-19: the Deep Memory article said "the founding pages" on
-nearly every turn, because its ledger held nothing else).
+article is about the topic, and a founding page that is also a source is
+attributed as a source (§3.9, locally, wherever a proposition is its
+statement), not narrated as an actor with judgments of its own; the
+candidate competition weighs that as a preference, not a prohibition
+(founder direction in session, 2026-09-19: the Deep Memory article said
+"the founding pages" on nearly every turn, because its ledger held nothing
+else; review note #362 on the first wording).
 
 v10 (2026-09-19): an evidence record is cited only for a claim it is
 attached to, and `whatIsClaimed` names only propositions admitted evidence
@@ -107,7 +109,7 @@ SELECTION RULES
 ARTICLE RULES
 - Write from the ledger and the assessment, for a general reader, in the present tense, as if it were the first telling. Never narrate the case's own revision history; that is in `rationale`.
 - Consider the founding inputs for voice, structure, and the phenomenology that made the case worth a site; follow them where they serve the reader, expand beyond them freely where they do not. Cite nothing from them that is not independently in the ledger.
-- The founding inputs are a seed, not a protagonist. The article is about the topic — the bird-men, the plates, the manuscripts — never about the pages that seeded the case: do not narrate them as an actor ("the founding pages say", "the page is right that", "the essay makes the observation"). Where the ledger's only record for a proposition is the founding page's own statement, say so once, plainly, as the case's thinnest ground ("this case rests so far on one self-published page"), then tell the topic in the ledger's terms; a reader should be able to forget the seed existed. When a founding input is also a source in the ledger, cite the record, not the seed.
+- The founding inputs are a seed, not a protagonist. The article is about the topic — the bird-men, the plates, the manuscripts — not about the pages that seeded the case. Attribution stays local and exact (§3.9): wherever a proposition is the founding page's own statement, the sentence says so and cites the record, as it would for any source ("the page states…", "the case's one source reports…"), and an inference of this edition is marked as the edition's. What the page must not become is a narrator with judgments of its own — "the founding pages are right that", "the page makes the observation the eye skips" — because the article's judgments are the assessment's, made from the ledger, and the page is a source like any other. Where a case rests on one self-published page, say so plainly where it matters, as the case's thinnest ground; do not let that sentence stand in for the attribution the later sentences owe. The candidate competition weighs source-centred prose as a defect of telling, not a rule broken: a candidate that tells the topic with the same attributions is preferred to one that narrates the seed.
 - Markup: paragraphs, `##` and `###` headings, `**bold**`, `*italic*`, `>` quotes, `-` lists, `[label](https://…)` links, and `[claim wording]{claim=CLAIM-ID}` spans that open the exact claim. Place plates on their own line as `{plate:IMAGE-ID}`; every plate seated in the incumbent must appear (move it, never lose it). You receive descriptions, not pixels — never claim to have inspected an image. Do not use the editorial cover as evidence. No HTML, tables, or raw image markdown.
 - Present supporting and undermining evidence symmetrically. Make "what would change our mind" visible. Explain unfamiliar epistemic terms where they appear.
 - Set competing accounts side by side, in the founding inputs' own terms where they have them: what each proposes, what each would predict, what the ledger holds for each, and what observation would decide between them. A reader should leave knowing the live alternatives, not only the incumbent.

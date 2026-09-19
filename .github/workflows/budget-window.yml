@@ -29,6 +29,9 @@ jobs:
           cache: npm
       - run: npm ci
       - name: Re-judge what the window now has room for
+        # The workflow's own token: it carries the `actions: write` this job declares, which the
+        # maintenance PAT does not (2026-09-18: five scheduled runs failed with "Resource not
+        # accessible by personal access token" while #347 and #353 sat parked on a window with room).
         env:
-          GH_TOKEN: ${{ secrets.MAINTENANCE_PAT || secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/rejudge-parked.mjs origin/main

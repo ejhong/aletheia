@@ -1,0 +1,24 @@
+# Spend ledger, run 2026-09-19-report-deep-memory-120902 — every paid model call of this run, appended by the transport (src/pipeline/spend.ts).
+# Tokens are the vendor's report; usd is null unless config/tariffs.yaml carries a reviewed tariff.
+- date: 2026-09-19
+  runId: 2026-09-19-report-deep-memory-120902
+  verb: report
+  case: deep-memory
+  model: claude-fable-5-1
+  calls: 1
+  inputTokens: 66
+  outputTokens: 25523
+  cacheReadTokens: 2902342
+  cacheWriteTokens: 118493
+  usd: 3.483558
+- date: 2026-09-19
+  runId: 2026-09-19-report-deep-memory-120902
+  verb: report
+  case: deep-memory
+  model: anthropic:web_search
+  calls: 14
+  inputTokens: 0
+  outputTokens: 0
+  cacheReadTokens: 0
+  cacheWriteTokens: 0
+  usd: 0.14

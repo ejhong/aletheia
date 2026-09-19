@@ -1,0 +1,120 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 356
+title: The budget window re-judges with the workflow's own token
+url: https://github.com/ejhong/aletheia/pull/356
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-19
+judgedAgainst: 6c13562fc0
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The change is pure operational plumbing: the scheduled re-judging
+      workflow swaps a maintenance PAT for the workflow's own GITHUB_TOKEN
+      (which carries the `actions: write` the job already declares), and
+      `rejudge-parked.mjs` now wraps each `gh run rerun` in try/catch so one
+      failure does not strand the remaining picks — while still
+      `process.exit(1)` at the end so the fault stays visible rather than being
+      swallowed. No content under content/ is touched, no citations are added
+      (verification section confirms none), and no run records are involved.
+      Nothing here loosens a §3.15 check: the panel itself still runs, parking
+      on the budget window is unchanged, and re-running is only triggered when
+      the window has room, not to dodge a dispute. The DECISIONS entry states
+      the failure, the date, and stamps 'Supervised-by: founder (direction in
+      session, 2026-09-18)', which §3.15's founder-direction clause expressly
+      permits to be recorded in the decisions log with date and channel. It also
+      discloses honestly that the operator re-ran #353's panel by hand, rather
+      than hiding that manual action. AGENTS.md is untouched."
+    cost:
+      model: claude-opus-5
+      inputTokens: 2347
+      outputTokens: 633
+      usd: 0.030805
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+      - §9
+    reasoning: The change does not edit AGENTS.md or weaken the gated review
+      process; it repairs the scheduled mechanism that re-runs parked arbiter
+      workflows using the job token with its declared permission. The script now
+      attempts all selected PRs while preserving fail-visible behavior by
+      exiting nonzero after any rerun failure. The decision entry records the
+      operational change and its supervision with a date and channel, and no
+      citations, content assessments, confidential material, or fabricated
+      locators are introduced.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 5654
+      outputTokens: 569
+      usd: 0.033996
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.15
+    reasoning: "This pull request contains strictly operational and tooling fixes
+      for the budget-window rejudging workflow (`budget-window.yml` and
+      `rejudge-parked.mjs`), along with the corresponding log entry in
+      `docs/DECISIONS.md`. It switches the token to the workflow's
+      `GITHUB_TOKEN` (which possesses `actions: write`) and makes the rejudging
+      script iterate through all candidates before exiting with an error if any
+      fail. No constitutional rules, CI gates, or substantive content files are
+      modified or weakened."
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 6126
+      outputTokens: 415
+      usd: 0.006151
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff is an ops fix only: budget-window.yml uses the job’s
+      declared GITHUB_TOKEN (actions: write) instead of the maintenance PAT that
+      could not re-run workflows; rejudge-parked.mjs tries every picked PR
+      before exiting non-zero; DECISIONS.md records the failure mode, fix, and
+      founder supervision dated 2026-09-18. No AGENTS.md edit, no
+      content/citations, no provenance stamps, and no loosening of §3.15
+      concurrence, fabrication, or confidence checks."
+    cost:
+      model: grok-4.5
+      inputTokens: 5838
+      outputTokens: 132
+      usd: 0.012583
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.14
+    reasoning: "This is a pure infrastructure fix: the scheduled re-judging step
+      switches from the maintenance PAT to the workflow's own GITHUB_TOKEN so
+      the already-declared actions:write permission actually works, and the
+      script now tries every parked PR before failing instead of aborting on the
+      first refusal. It does not edit AGENTS.md, does not touch content,
+      citations, or assessments, and does not weaken any §3.15 check — the
+      arbiter re-run still triggers the same multi-model ratification gate; only
+      the broken token path is repaired, and the run still fails visibly if any
+      re-run cannot be issued. The DECISIONS.md entry is appended (append-only
+      in spirit), accurately describes the mechanical change, and records the
+      founder direction with date and channel as the constitution requires. The
+      operator's manual re-run of #353's panel is a disclosed remediation, not a
+      bypass: it routes through the same panel process. Nothing in the diff
+      fabricates provenance, presents AI records as human ones, or dodges a
+      gate; the discrepancy between 'five scheduled runs failed' in the workflow
+      comment and the PR body's framing is immaterial to any rule."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 6743
+      outputTokens: 481
+      usd: 0.001252
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 26708
+  outputTokens: 2230
+  usd: 0.0848
+harvestedAt: 2026-09-19

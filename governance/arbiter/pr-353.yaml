@@ -1,0 +1,169 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 353
+title: "Chain: 2026-09-17 (interrupted — no account of the sitting)"
+url: https://github.com/ejhong/aletheia/pull/353
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-19
+judgedAgainst: 6c13562fc0
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff adds only ledger records from one verify run plus by-hand
+      operator corrections, all of which are stamped and disclosed. The verify
+      account is an honest ledger: 31 of the re-submitted candidates are refused
+      or blocked with concrete, per-record reasons (non-atomic sourceStatements
+      split, the p. ix locator on AMZ-E090 rejected as unsupported,
+      Markham-anchored claims blocked because their anchor source was never
+      retrievable), and every second-reader direction change (supports→context,
+      claimId drops) is recorded as a readerAct with model, runId, promptVersion
+      and reason — which strengthens rather than dodges §3.5/§3.8. The operator
+      corrections answer prior seats' objections on the record and are
+      append-only: the duplicate AMZ-E110 id is renamed AMZ-E112 with a
+      superseding disposition row, AMZ-E107/E108 are tombstoned as a duplicate
+      and a still-compound record, AMZ-C072 is split into AMZ-C072/AMZ-C085 with
+      its own anchors, and the AMZ-C078 id collision with a blocked Markham
+      candidate is corrected in a further entry rather than by rewriting the
+      earlier ones (§3.2, §3.14). The two hand-made evidence records
+      AMZ-E113/E114 candidly state that no second model has read them and that
+      this panel is their check, so no unratified draft is presented as ratified
+      (§3.15). Citation verification found no identifiers, AGENTS.md is
+      untouched, no confidence material appears, and I see no self-contradicting
+      locator or quote in the added lines."
+    cost:
+      model: claude-opus-5
+      inputTokens: 162380
+      outputTokens: 1589
+      usd: 0.892188
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.5
+      - §3.8
+      - §3.9
+      - §3.10
+      - §3.14
+      - §3.15
+    reasoning: The verification run retrieved and read the existing Medina source,
+      admitted only records whose quotations, locators, relevance, and
+      directions passed review, and recorded 31 refusals or blocks with concrete
+      reasons. The operator then corrected the duplicate AMZ-E110 identifier
+      append-only as AMZ-E112, tombstoned duplicate or compound evidence
+      AMZ-E107/E108/E086, and split AMZ-C072 and its evidence into atomic
+      C072/C085 and E113/E114 records without erasing the run’s original output.
+      Those corrections carry model, session runId, date, prompt version, and
+      explicit supersession history, while the original collision and rejected
+      records remain inspectable. Evidence directions distinguish support,
+      qualification, and context, and the records explicitly separate source
+      statements from editor inferences and note dependence on Medina’s
+      quotations of earlier authors. No AGENTS.md edit, confidence material,
+      failed added citation identifier, unratified assessment, or weakening of
+      the verification gate appears.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 116783
+      outputTokens: 1287
+      usd: 0.492872
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.1
+      - §3.2
+      - §3.5
+      - §3.8
+      - §3.9
+      - §3.14
+      - §3.15
+    reasoning: "The change adds claims, evidence records, dispositions, and
+      proposal/governance files for the pre-columbian-amazon case following
+      verification and operator corrections. The added claims (AMZ-C068,
+      AMZ-C069, AMZ-C072, AMZ-C074–C077, AMZ-C085) are strictly atomic,
+      well-anchored to Medina's 1894 edition of Carvajal, and cleanly separated
+      by proposition. The operator's manual interventions explicitly resolve
+      prior panel objections from #353: fixing the AMZ-E110 ID collision by
+      creating AMZ-E112, rejecting duplicate/compound records (AMZ-E107,
+      AMZ-E108, AMZ-E086), splitting multi-ground propositions into atomic
+      claims and evidence (AMZ-C072/AMZ-C085, AMZ-E113/AMZ-E114), and avoiding
+      proposal ID clashes. All lineage, run IDs, session stamps, and
+      second-reader determinations are preserved in history.yaml and
+      dispositions.yaml in full compliance with §3.8, §3.14, and §3.15. No
+      citations are fabricated, AGENTS.md is untouched, and no constitutional
+      checks are loosened."
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 135763
+      outputTokens: 4474
+      usd: 0.1186
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.5
+      - §3.8
+      - §3.9
+      - §3.14
+      - §3.15
+    reasoning: "The verify run admits only records the second reader passed, refuses
+      31 candidates with concrete atomicity/relevance/locator reasons, and
+      stamps readerActs when direction or claim links change; retrieval of the
+      Medina OCR is on the record and citation tooling found no new identifiers
+      to fabricate. Operator corrections answering the prior #353 park are
+      append-only and reconstructable: the AMZ-E110 id collision becomes
+      AMZ-E112, compound AMZ-E086/AMZ-C072 are split into atomic AMZ-E113/E114
+      and AMZ-C072/C085 with distinct anchors, and duplicate/compound
+      AMZ-E107/E108 are tombstoned as rejected rather than silently rewritten.
+      Provenance is honest (ai_extracted labels, origin lineage,
+      session_01AiXD4y5Y91KC7iM3uBhWmu / operator-by-hand-v1 stamps, history
+      entries naming the seat objection fixed); AGENTS.md is untouched; no
+      confidence material appears. Harvested arbiter files are verbatim prior
+      verdicts, not constitutional edits. Residual quality note only: E113/E114
+      were hand-split without a fresh second-reader pass, but the quotes sit in
+      the same already-read passage and this panel is the stated multi-model
+      check."
+    cost:
+      model: grok-4.5
+      inputTokens: 120059
+      outputTokens: 324
+      usd: 0.242062
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.8
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: The change routes previously blocked records back through the
+      ordinary verify verb (same second reader, same checks), which refuses 31
+      of 54 candidates with concrete per-part reasons — atomicity splits,
+      locator misattributions, relevance failures, and blocks with retrieval
+      routes — so the gate is applied, not dodged. The operator's by-hand
+      corrections (AMZ-E110→AMZ-E112 collision fix, tombstones on
+      duplicate/compound E107/E108, split of C072/E086 into C085/E113/E114) are
+      each recorded as append-only history entries with reasons, and the two new
+      records' quotes are the same Spanish spans the run's own second reader
+      already verified verbatim at Medina p. xiii/n.6 (judgment hash bc192270…),
+      so I can confirm them from the material rather than taking the operator's
+      word. The history honestly discloses that no second model read the split
+      parts and that this panel is their check, which is exactly the process
+      §3.15 prescribes; the corrections tighten (duplicate-id check in verify)
+      rather than weaken the checks. No AGENTS.md edit, no citation identifiers
+      added (mechanical verification found none), no confidence material, and
+      disagreement is displayed in dispositions and history rather than hidden.
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 121462
+      outputTokens: 1409
+      usd: 0.018924
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 656447
+  outputTokens: 9083
+  usd: 1.7646
+harvestedAt: 2026-09-19

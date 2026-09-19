@@ -68,13 +68,21 @@ export interface LedgerSlice {
  */
 const LOCATOR_FIELDS = new Set(["url", "archivedUrl"]);
 
+/**
+ * The research agenda's lifecycle fields are the edition verb's own bookkeeping — it writes them from the candidate's
+ * `researchStatus` after the edition's basis is taken — so they are not ledger movement: with them in the hash, an
+ * edition that settled an item moved the ledger under itself and the scheduler owed the case another edition at
+ * once (2026-09-19, vasocomputation: VASO-R007 answered, then "the ledger moved since edition-2026-09-19-120813").
+ */
+const AGENDA_STATUS_FIELDS = new Set(["status", "statusNote", "statusBy", "statusDate"]);
+
 export function ledgerHash(ledger: LedgerSlice): string {
   return sha256Hex(
     canonicalJson({
       claims: ledger.claims,
       evidence: ledger.evidence,
       sources: ledger.sources.map((s) => Object.fromEntries(Object.entries(s).filter(([k]) => !LOCATOR_FIELDS.has(k)))),
-      research: ledger.research,
+      research: ledger.research.map((r) => Object.fromEntries(Object.entries(r).filter(([k]) => !AGENDA_STATUS_FIELDS.has(k)))),
       studies: ledger.studies,
       images: ledger.images,
     }),

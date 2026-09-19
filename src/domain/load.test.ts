@@ -654,6 +654,10 @@ describe("hashes", () => {
       claims: slice.claims.map((c, i) => (i === 0 ? { ...c, statement: c.statement + "!" } : c)),
     };
     expect(ledgerHash(edited)).not.toBe(geo.ledgerHash);
+    // The agenda's lifecycle fields are the edition verb's own bookkeeping, not ledger movement (2026-09-19: an
+    // edition that answered a research item owed the case another edition at once).
+    const settled = { ...slice, research: slice.research.map((r, i) => (i === 0 ? { ...r, status: "answered", statusNote: "settled by a later record", statusBy: "2099-01-01-edition-x", statusDate: "2099-01-01" } : r)) };
+    expect(ledgerHash(settled as typeof slice)).toBe(geo.ledgerHash);
   });
 });
 

@@ -1,0 +1,152 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 338
+title: "Leads become documents: the report names what it did not open, the draft
+  pins it through the open indexes"
+url: https://github.com/ejhong/aletheia/pull/338
+verdict: pass
+reason: "4 of 5 seats affirm compliance; one seat's objection is a review note
+  the operator answers on the record: GPT-5.6 Sol (OpenAI) (§3.8, §3.15;
+  provenance)"
+outcome: merged
+outcomeAt: 2026-09-17
+judgedAgainst: 9d114e1c3d
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "This is pipeline/protocol plumbing: no content/ records are added or
+      changed, and the citation tooling found no identifiers in added content
+      lines, so there is no citation, quote, or locator to fabricate here. The
+      new resolve.ts does not mint records — it pins a report's
+      named-but-unopened lead to a document via open indexes (OpenAlex, Semantic
+      Scholar, Europe PMC, Internet Archive), then fetches that document and
+      hands the drafter the text along with `via` (which index answered, with
+      the matched title and year) and a similarity score, so provenance of how
+      the source was found is stamped rather than invented; unmatched leads stay
+      blocked with the failed search on the record, which if anything
+      strengthens §3.8 rather than loosening it. Acceptance reuses the existing
+      inbox matcher, now moved verbatim to match.ts (title containment plus year
+      within one, or author+year with a looser title bar), so no matching
+      threshold is relaxed; the only behavioural loosening is the inbox's
+      default searcher widening from OpenAlex alone to the multi-index search,
+      which adds candidate sources without changing the acceptance bar.
+      AGENTS.md is untouched; the DECISIONS.md entry records the founder's
+      direction with date and channel (\"direction in session, 2026-09-17\"),
+      which §3.15 expressly permits as operating record rather than confidence
+      material. The report-v2 protocol keeps the prohibitions intact (\"Never
+      invent a citation, author, date, identifier, locator, quotation, or
+      result\"; \"Do not write records\"; report is intake, never citable) and
+      the v1 file is archived, not deleted, preserving history. My one residual
+      worry is that a mis-resolved lead could feed the drafter the wrong
+      document, but the match is recorded with its `via` and similarity and
+      still passes through draft and verify, so that is a routine quality risk,
+      not a rule breach."
+    cost:
+      model: claude-opus-5
+      inputTokens: 17776
+      outputTokens: 958
+      usd: 0.153392
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: violates
+    rules:
+      - §3.8
+      - §3.15
+    reasoning: The new DECISIONS.md entry says a candidate is accepted only when
+      “title, year and an author agree,” but the implementation does not enforce
+      that procedure. In `bestMatch`, `byTitle` alone is sufficient, `yearOk`
+      passes when either year is missing, and no author match is then required;
+      thus an exact-title result with a missing year or conflicting author can
+      be recorded as the resolved document. The draft subsequently labels that
+      document as “resolved from the report's lead,” making the source-to-lead
+      provenance stronger than the actual check warrants. This makes the public
+      history inaccurate about how identity was checked and risks false
+      provenance; require author agreement and a present, compatible year for
+      structured leads, or revise the recorded criterion and label title-only
+      matches as uncertain rather than resolved.
+    paradigm: provenance
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 15690
+      outputTokens: 1228
+      usd: 0.08732
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.6
+      - §3.7
+      - §3.8
+      - §3.15
+    reasoning: The change introduces protocol v2 and pipeline machinery
+      (`src/pipeline/resolve.ts`, `src/pipeline/match.ts`) to systematically
+      resolve works named in reports across open academic indexes (OpenAlex,
+      Semantic Scholar, Europe PMC, Internet Archive) before drafting. This
+      directly supports §3.7 and §3.8 by locating primary texts rather than
+      leaving leads unpinned, while strictly tracking provenance through
+      explicit `via` annotations and search outcomes. The shared matcher
+      enforces strict title and author/year constraints to prevent spurious
+      matches, and normal verification safeguards remain in place downstream. No
+      constitutional files are modified and no checks are weakened.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 17255
+      outputTokens: 1037
+      usd: 0.01683
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff is pipeline/protocol work only: report-v2 adds an explicit
+      Named-not-opened section, resolve/match pin those leads through open
+      indexes under shared acceptance rules (title near-match or author+year
+      with a looser title bar), and draft fetches what resolves with a via stamp
+      while leaving unmatched leads blocked and on the record. No content/
+      records or citation identifiers are added, AGENTS.md is untouched, and
+      DECISIONS.md records a founder session direction rather than inventing
+      permission. Matching is stricter than free invention, tests cover
+      parse/accept/reject paths including Archive, and nothing loosens §3.15
+      checks or verification labels."
+    cost:
+      model: grok-4.5
+      inputTokens: 16336
+      outputTokens: 156
+      usd: 0.033723
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.7
+      - §3.8
+    reasoning: The change adds a pipeline step that pins the report's
+      named-but-unopened works to real documents via OpenAlex, Semantic Scholar,
+      Europe PMC, and the Internet Archive, then fetches and shows the resolved
+      text to the drafter like any other source — no citation, locator, or
+      provenance detail is invented; a lead that matches nothing stays blocked
+      with the failed search on the record, and every resolution carries a `via`
+      stamp and similarity score (§3.8, §3.9). The matcher is the pre-existing
+      one moved to a shared module unchanged (title rule or named author +
+      year), the report protocol explicitly forbids inventing records and routes
+      everything through draft and verify, and AGENTS.md is not touched — so no
+      check is loosened or dodged. The resolutions are index results the tooling
+      actually received, not fabricated identifiers, and the Citation
+      Verification section confirms no citation identifiers were added to
+      content. The decisions-log entry asserts a founder direction in session
+      that I cannot independently verify, but it follows the log's established
+      stamped pattern, no content publishes on it here, and nothing in the
+      material contradicts it. Minor quality notes — a lenient year regex that
+      could pull a year out of a title, and misattribution risk in fuzzy
+      matching — are mitigated by the visible `via`/similarity labels and by
+      verify still checking whatever the drafter proposes, and are ordinary
+      imperfection, not violation.
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 16726
+      outputTokens: 1666
+      usd: 0.003342
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 83783
+  outputTokens: 5045
+  usd: 0.2946
+harvestedAt: 2026-09-17

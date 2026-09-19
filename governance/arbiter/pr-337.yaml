@@ -1,0 +1,166 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 337
+title: "Chain: 2026-09-17"
+url: https://github.com/ejhong/aletheia/pull/337
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-17
+judgedAgainst: 579c543f7f
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff adds one stamped edition candidate, one append-only draft
+      assessment overlay (role: draft, humanReviewed: false,
+      runId/model/date/promptVersion and basis ledgerHash present), the matching
+      per-run spend file, the run's reply.json, and harvested verbatim arbiter
+      records for prior PRs. AGENTS.md is untouched, and the citation tooling
+      found no identifiers in added content lines, so no fabrication surface is
+      exposed. The substantive movement is in the honest direction: TIK-C029 and
+      TIK-C034 are demoted to 'unresolved' at low confidence precisely because
+      they are held on a source anchor with no admitted evidence record (§3.6),
+      TIK-C033 is graded weakly supported with its unadmitted dose threshold
+      named, and the article prose states that thinness in place rather than
+      asserting the propositions in the page's own voice (§3.9, §3.13). The
+      steelman's previously unanchored reading of the initiates' formula is
+      rewritten as the proponents' reading, and each premise names its evidence
+      record. Negative and unfavourable material (empty cell at Eleusis, audited
+      accounts, specialist rejections, the self-disclosure that the site's
+      founder funds YAPP) is displayed rather than suppressed (§3.11), and the
+      rationale, run.yaml, reply.json and edition/assessment files reconcile
+      with one another. The harvested governance files record prior verdicts
+      verbatim, including pr-332's five-seat constitution park with a founder
+      hand merge, which is accurate provenance rather than a check dodged."
+    cost:
+      model: claude-opus-5
+      inputTokens: 114109
+      outputTokens: 1430
+      usd: 0.60954
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.6
+      - §3.8
+      - §3.9
+      - §3.10
+      - §3.13
+      - §3.14
+      - §3.15
+    reasoning: "The new assessment is explicitly stamped as an AI-generated draft
+      with model, runId, date, promptVersion, ledger hash, and `humanReviewed:
+      false`, while the edition is labelled a candidate that replaces its
+      predecessor only if the panel prefers it. Anchor-only claims TIK-C029 and
+      TIK-C034 are attributed to what the paper reports, graded unresolved at
+      low confidence, and repeatedly disclosed as lacking admitted Evidence
+      records; TIK-C033’s limited non-anchor basis and missing dose-threshold
+      evidence are likewise stated explicitly. The article and assessment
+      distinguish possibility from historical attribution, expose the
+      unreplicated and interested provenance of the chemistry, disclose the
+      founder’s funding relationship, and preserve serious competing accounts
+      and negative evidence. No AGENTS.md edit, confidential material,
+      fabricated identifier, failed citation, hidden disagreement, or weakened
+      check is visible, and the run, spend, assessment, and edition provenance
+      agree."
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 79374
+      outputTokens: 1791
+      usd: 0.353828
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.6
+      - §3.8
+      - §3.9
+      - §3.13
+      - §3.14
+      - §3.15
+    reasoning: "The pull request adds a newly generated edition and draft assessment
+      overlay for the immortality-key case, alongside harvested arbiter records
+      and a matching spend ledger entry. The edition candidate directly resolves
+      earlier panel objections (notably review note #319) by demoting
+      anchor-only claims (such as TIK-C029 and TIK-C034) to 'unresolved' at low
+      confidence, and qualifying TIK-C033 while disclosing its basis, strictly
+      adhering to §3.6 and §3.9. In the article prose and steelman, proponent
+      inferences are explicitly attributed rather than stated as ledger-admitted
+      facts. Provenance stamps (runId, model, date, promptVersion, basis hashes)
+      are fully intact and accurate, AGENTS.md is untouched, and no citations or
+      records are fabricated."
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 88063
+      outputTokens: 997
+      usd: 0.069786
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules:
+      - §3.6
+      - §3.8
+      - §3.9
+      - §3.13
+      - §3.14
+      - §3.15
+    reasoning: "The PR adds a stamped draft edition/assessment for immortality-key
+      under edition-v9, correcting prior anchor-only overgrades: TIK-C029 and
+      TIK-C034 are unresolved/low with the article voicing them as paper reports
+      held on anchors only, and TIK-C033 is weakly_supported on the disclosed
+      TIK-E008 yield while the dose threshold stays anchor-only. The steelman
+      now labels the initiates' formula as the proponents' reading rather than a
+      ledger-held fact, and the article's three local edits match those basis
+      changes without inventing citations (verification found none). The overlay
+      is append-only, humanReviewed:false, role:draft, with
+      runId/model/date/promptVersion and matching spend/run records; AGENTS.md
+      is untouched and the harvested arbiter files are historical records, not
+      constitutional edits. No confidence material or check-weakening appears;
+      research items stay open as retrieval failed."
+    cost:
+      model: grok-4.5
+      inputTokens: 82005
+      outputTokens: 253
+      usd: 0.165528
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.6
+      - §3.8
+      - §3.9
+      - §3.13
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: "The change is a single edition run that honestly recalibrates two
+      anchor-only grades the prior panel flagged (review note #319): TIK-C029
+      drops to unresolved and TIK-C033 to weakly_supported, with the article
+      explicitly telling anchor-only propositions as 'what the paper reports'
+      and disclosing that no admitted evidence record quotes the passages — a
+      direct application of §3.6 and the edition-v9 anchor-only rule. Provenance
+      is fully stamped (runId, model, promptVersion, date, humanReviewed: false,
+      role: draft, append-only header, basis hashes), the edition is presented
+      as a candidate against the incumbent rather than as ratified, and no
+      AGENTS.md edit, confidence material, or check-weakening appears anywhere
+      in the diff. No citation identifiers are added under content/ (the
+      mechanical verification found none), so no fabrication surface exists; the
+      article's quotations ride on evidence records already admitted in earlier
+      PRs and unread primary sources are marked as such rather than overstated.
+      The harvested arbiter records are internally consistent with the
+      constitution as quoted (including the 2026-09-17 §4 amendment they
+      document being merged by the founder's hand after a 5/0
+      constitution-paradigm park in pr-332, explained in pr-334), and I find no
+      self-contradicting locator, quote, or provenance stamp in the added lines.
+      The run account shows a reasoned, calibrated update with no research item
+      settled and disagreement displayed."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 81228
+      outputTokens: 1598
+      usd: 0.013329
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 444779
+  outputTokens: 6069
+  usd: 1.212
+harvestedAt: 2026-09-17

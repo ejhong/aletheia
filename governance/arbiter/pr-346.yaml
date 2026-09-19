@@ -1,0 +1,126 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 346
+title: "A dropped place goes with its marker (narrowLocator, review note #341)"
+url: https://github.com/ejhong/aletheia/pull/346
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-17
+judgedAgainst: dea8581e25
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The change is a narrow code fix to `narrowLocator` plus tests plus
+      an append-only DECISIONS.md entry; AGENTS.md is untouched and no content/
+      records or citations are added (verification found no identifiers). I
+      traced the new implementation against every assertion in the test file:
+      parenthetical stripping, place-chunk selection, and rest-joining all yield
+      the expected strings for the pre-existing cases and the four new ones,
+      including the page-24 case ('supplement S2 [p. 24], via open-access author
+      manuscript') and the never-named page 5 fallback, so the tests are not
+      misdescribing the code. The effect is to tighten §3.8 exact provenance:
+      split parts no longer inherit locator words naming a component they do not
+      quote, which removes a real misprovenance rather than loosening a check.
+      The DECISIONS.md line is appended, dated, and stamped with its channel
+      ('founder (direction in session, 2026-09-17)'), consistent with §3.15's
+      treatment of founder directions as the operating record. The only quibble
+      is the code comment saying a marker's parenthetical 'goes with it, as
+      before' when in fact the parenthetical is dropped even for the kept page —
+      a wording imprecision, not a rule breach. The referenced correction to
+      AMZ-E074 is stated to live on another branch and is not part of this diff,
+      so nothing here publishes an unverified locator."
+    cost:
+      model: claude-opus-5
+      inputTokens: 2906
+      outputTokens: 1369
+      usd: 0.089317
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+      - §8
+    reasoning: The change tightens locator handling by removing an unquoted place
+      together with its associated wording, while retaining the selected page’s
+      wording and locator-wide provenance such as the copy read or table. The
+      added tests cover both relevant Amazon pages, an alternate separator, and
+      the fallback where the caller supplies a page absent from the parent
+      locator; that fallback formats the explicit page argument rather than
+      inventing an internally chosen locator. The decision entry is append-only
+      and records the review note, rationale, date, and supervision channel. No
+      content citations are added, AGENTS.md is untouched, and the diff
+      strengthens rather than weakens the exact-provenance check.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 4844
+      outputTokens: 1204
+      usd: 0.043968
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.8
+    reasoning: "The change refines `narrowLocator` in `src/domain/proseRefs.ts` to
+      properly associate locator context (such as 'supplement S2') with its
+      specific page marker, resolving review note #341. Previously, dropping an
+      irrelevant page marker left orphan descriptors attached to unrelated
+      pages. This improves adherence to §3.8 (exact provenance) by ensuring that
+      narrowed locators for split parts accurately describe only the cited
+      section."
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 6612
+      outputTokens: 475
+      usd: 0.00674
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff only fixes narrowLocator so multi-place parent locators drop
+      whole places (marker plus belonging words) instead of stripping markers
+      and leaving orphan words, which improves exact provenance honesty for
+      split parts. Tests cover the Amazon-style locator, & separators, and an
+      unnamed page; DECISIONS.md records the review-note fix with founder
+      supervision. No AGENTS.md edit, no content citations, no confidence
+      material, no check-weakening, and no run/assessment fabrication.
+    cost:
+      model: grok-4.5
+      inputTokens: 6306
+      outputTokens: 119
+      usd: 0.013441
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.15
+      - §4
+    reasoning: "This is a provenance-accuracy fix, not a check-weakening: the old
+      narrowLocator produced a misleading locator ('[p. 4], supplement S2 via
+      …') that named a supplement the part never quotes, which is exactly the
+      kind of imprecise locator §3.8 forbids; the new place-based narrowing
+      keeps words with their markers and drops whole places, moving toward exact
+      provenance. No AGENTS.md content is edited (only docs/DECISIONS.md,
+      src/domain/proseRefs.{ts,test.ts}), no citations are added (verification
+      found none), no confidence material appears, and the run carries no
+      records needing ratification since it is a mechanical transformation with
+      tests. The new logic's test cases check out against the implementation
+      (kept place retains its words, dropped places go whole, an unnamed page
+      gets only the rest, e.g. 'Table 3', not another place's component). The
+      DECISIONS.md entry honestly attributes the review note and records the
+      founder supervision with date and channel as §3.15 permits, and the
+      AMZ-E074 correction is candidly stated as living on the sitting's branch
+      (#340), not claimed as done here."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 4922
+      outputTokens: 1597
+      usd: 0.001882
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 25590
+  outputTokens: 4764
+  usd: 0.1553
+harvestedAt: 2026-09-17

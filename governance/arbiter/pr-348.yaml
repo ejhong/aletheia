@@ -1,0 +1,148 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 348
+title: What verification blocked is proposed again, by the reverify verb
+url: https://github.com/ejhong/aletheia/pull/348
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-17
+judgedAgainst: 74a7b254db
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "This is a pipeline change with no content/ records and no citations
+      (verification found no identifiers), and AGENTS.md is untouched. The
+      mechanism preserves rather than dodges the gate: blocked records are
+      re-proposed under fresh ids but handed to the ordinary `verify` verb — the
+      same second reader, checks and rows — and `resubmitBlocked` explicitly
+      \"judges\" nothing, so §3.15's multi-model/verification check is not
+      loosened. Provenance is handled carefully and honestly: claim and evidence
+      records keep the drafter's `origin` with a lineage note naming the old
+      proposal, old id, block date and reason; a source, having no origin,
+      carries the same lineage plus the drafter's model/run/date at the head of
+      its verification note; the re-submission proposal and its run are stamped
+      `model: null` with `promptVersion: resubmit-v1` pointing at
+      protocols/resubmit-v1.md, which states plainly that a proposal so stamped
+      was written by code, not a model — this avoids attributing the
+      transformation to the old drafter (§3.8, §3.14). `drafterOf` in verify.ts
+      makes the history entry name the original drafter, its run and date, and
+      where each record carries them, so the history does not misattribute. The
+      legacy-key mirror rows and the `failed` rows for records that cannot be
+      re-submitted each record a reason, the run that wrote them and the
+      proposal, so the disposition ledger stays auditable and append-only rather
+      than silently rewritten. The scheduler's emptiness test and rule 3b are
+      ordinary prioritization, not a relaxation of any §3.15 check; the
+      DECISIONS.md entries are stamped with date and channel as the constitution
+      permits for founder directions."
+    cost:
+      model: claude-opus-5
+      inputTokens: 28539
+      outputTokens: 1064
+      usd: 0.17254
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: "The change does not admit blocked material directly: it creates a
+      fresh, mechanically stamped proposal and sends it through the existing
+      verify reader and checks. Provenance is preserved through claim/evidence
+      origins, source verification notes, the original proposal metadata, and
+      explicit `model: null` / `promptVersion: resubmit-v1` stamps for the
+      deterministic transformation. Verify remains responsible for admission or
+      refusal, while legacy and skipped dispositions are appended rather than
+      rewriting prior rows. No AGENTS.md edit, confidence material, citation
+      addition, fabricated locator, or weakening of the fail-closed verification
+      path appears in the diff."
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 22853
+      outputTokens: 2750
+      usd: 0.146412
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: "The change implements deterministic re-submission of records blocked
+      at verification when text retrieval previously failed, preserving full
+      provenance and drafter attribution. The re-submission protocol is
+      mechanical (model: null, promptVersion: resubmit-v1) and properly appends
+      lineage to record origins and source verification notes under §3.8.
+      Dispositions and history entries maintain append-only accountability under
+      §3.14 without bypassing or weakening fail-closed verification checks under
+      §3.15. No constitution amendments or fabricated citations are introduced,
+      and test coverage validates re-keying, deduplication, and scheduling
+      behavior."
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 30805
+      outputTokens: 1501
+      usd: 0.030267
+    askedAgain: "the first reply could not be read as JSON (SyntaxError: Unexpected
+      token '§', ...\" [\"§3.8\", §3.14, \"§3\"... is not valid JSON); this
+      verdict is the second asking, both replies billed"
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff is pipeline/docs only: no AGENTS.md edit, no content/
+      ledger records, no new citations, and no run account to audit.
+      Re-submission is a documented mechanical transform
+      (protocols/resubmit-v1.md) that keeps drafter origin/lineage, stamps the
+      proposal as model:null / resubmit-v1, names the prior proposal in
+      resubmission, and hands the result to the ordinary verify path rather than
+      bypassing it. Legacy key settlement and skipped-record refusals are
+      append-only disposition rows with explicit reasons; scheduler rule 3b and
+      the edition trigger on admitted>0 do not loosen §3.15 checks.
+      DECISIONS/AUTOMATION updates match the code and record founder direction
+      with date/channel."
+    cost:
+      model: grok-4.5
+      inputTokens: 23944
+      outputTokens: 181
+      usd: 0.049089
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: "This is a pipeline-infrastructure change with no added citations, no
+      fabricated locators, and no content records (citation verification found
+      no identifiers; no run account needed). Far from weakening §3.15's checks,
+      it routes previously blocked records back through the ordinary verify verb
+      — same second reader, same mechanical quote/identifier checks, same
+      disposition rows — so nothing enters on a transformation's unilateral
+      judgment; the deterministic re-submission is honestly stamped `model:
+      null`, `promptVersion: resubmit-v1` under its own written protocol,
+      directly answering review notes #349 and #351 rather than borrowing a
+      drafter's stamp. Provenance is preserved and improved: the drafter's
+      model, run, and date stay on each record's origin (or a source's
+      verification note) with the lineage appended, and verify's history names
+      the true drafter from the `resubmission` field, so an AI record is never
+      presented as another's or as a human's. The verify key change and
+      legacy-row mirror settlement make refusals and admissions share one key —
+      a consistency fix, not a dodge — and skipped records are refused under
+      their own keys with reasons rather than silently retried or dropped.
+      AGENTS.md is untouched; the DECISIONS.md entries are decision-log records,
+      not constitution edits. Nothing in the visible diff breaks an epistemic
+      rule."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 21744
+      outputTokens: 1019
+      usd: 0.004117
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 127885
+  outputTokens: 6515
+  usd: 0.4024
+harvestedAt: 2026-09-17

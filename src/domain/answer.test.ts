@@ -481,6 +481,13 @@ describe("settleRecords with verb answer, end to end on a copied case", async ()
     expect(after).toMatchObject({ statement: byEvidence.statement, reviewState: byEvidence.reviewState });
     expect(before).toContain(byEvidence.statement.slice(0, 40));
     fs.rmSync(root, { recursive: true, force: true });
+    // The same id with other words is not the claim that evidence was read against: no anchor from the ledger.
+    const root2 = setup();
+    const rewritten = { ...byEvidence, statement: `${byEvidence.statement} And a proposition the evidence never met.` };
+    const out2 = await settleRecords(c.record.slug, { ...claimSettlement, originals: { sources: [], evidence: [], claims: [rewritten] } }, { root: root2, deps: { cases: () => [c], judge, split: async () => parts, fetch: fetchClaim } });
+    expect(out2).toMatchObject({ outcome: "completed", promoted: 0, refused: 1 });
+    expect(fs.readFileSync(path.join(root2, "proposals", out2.runId, "verification.md"), "utf8")).toContain(`claim ${byEvidence.id} — no source anchor and no accepted evidence record cites it`);
+    fs.rmSync(root2, { recursive: true, force: true });
   });
   it("an agenda item whose every claim is refused retires, its claims kept as the record of what it served", async () => {
     const root = setup();
@@ -501,6 +508,18 @@ describe("settleRecords with verb answer, end to end on a copied case", async ()
     expect(after.statusBy).toBe(out.runId);
     expect(fs.readFileSync(path.join(root, "proposals", out.runId, "verification.md"), "utf8")).toContain(`${after.id}: every claim it served was refused; retired`);
     fs.rmSync(root, { recursive: true, force: true });
+    // An item already retired is a frozen record: its claims, status and provenance stand.
+    const root3 = setup();
+    const rFile3 = path.join(root3, "content", "cases", c.dir, "research.yaml");
+    const research3 = parse(fs.readFileSync(rFile3, "utf8")) as { id: string; claimIds: string[]; status?: string; statusNote?: string; statusBy?: string; statusDate?: string }[];
+    research3[0] = { ...research3[0], claimIds: [claim.id], status: "retired", statusNote: "settled long ago", statusBy: "an-earlier-run", statusDate: "2026-09-01" };
+    fs.writeFileSync(rFile3, stringify(research3, { lineWidth: 0, aliasDuplicateObjects: false }));
+    const frozenBefore = (parse(fs.readFileSync(rFile3, "utf8")) as unknown[])[0];
+    const cFrozen = { ...c, research: c.research.map((r, i) => (i === 0 ? { ...r, claimIds: [claim.id], status: "retired", statusNote: "settled long ago", statusBy: "an-earlier-run", statusDate: "2026-09-01" } : r)) } as unknown as LoadedCase;
+    const out3 = await settleRecords(c.record.slug, claimSettlement, { root: root3, deps: { cases: () => [cFrozen], judge, split: async () => parts, fetch: fetchClaim } });
+    expect(out3).toMatchObject({ outcome: "completed", refused: 1 });
+    expect((parse(fs.readFileSync(rFile3, "utf8")) as unknown[])[0]).toEqual(frozenBefore);
+    fs.rmSync(root3, { recursive: true, force: true });
   });
   it("a run that fails half-way rolls its ledger writes back and says so", async () => {
     const root = setup();

@@ -364,6 +364,18 @@ export async function settleRecords(caseSlug: string, settlement: Settlement, op
         }
         wrote.add(`content/cases/${caseDir}/evidence.yaml`);
       }
+      // Research items and images that cite a refused claim cite its parts, or nothing (§3.2 — the agenda and the
+      // plates are live records; a link to a tombstone would keep the case from loading).
+      for (const r of loaded.research) {
+        if (!r.claimIds?.some((id) => refusedClaims.has(id))) continue;
+        setField(file("research.yaml"), r.id, "claimIds", r.claimIds, relive(r.claimIds));
+        wrote.add(`content/cases/${caseDir}/research.yaml`);
+      }
+      for (const im of loaded.images) {
+        if (!im.claimIds?.some((id) => refusedClaims.has(id))) continue;
+        setField(file("images.yaml"), im.id, "claimIds", im.claimIds, relive(im.claimIds));
+        wrote.add(`content/cases/${caseDir}/images.yaml`);
+      }
       for (const c of loaded.claims) {
         if (touched.has(c.id) || refusedClaims.has(c.id)) continue;
         const f = file("claims.yaml");

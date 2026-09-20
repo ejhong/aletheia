@@ -95,7 +95,7 @@ function checkImages(
   }
 }
 
-function checkIntegrity(caseDir: string, loaded: LoadedCase): void {
+export function checkIntegrity(caseDir: string, loaded: LoadedCase): void {
   const claimById = new Map(loaded.claims.map((c) => [c.id, c]));
   // An id written in prose must name a record that exists — every record, no
   // cutoff (2026-09-11: five research summaries cited the drafter's provisional
@@ -131,6 +131,13 @@ function checkIntegrity(caseDir: string, loaded: LoadedCase): void {
     }
   }
 
+  // A frozen record — a tombstone, an assessment run, an edition told on an earlier ledger — may reference a claim
+  // rejected since: it says what was live when it was written, and a claim the case once stood on can be replaced
+  // by its parts (§3.2) without the record of it becoming unloadable (2026-09-20: a tombstone's link to a claim
+  // just split kept the whole case from loading). A live record may not.
+  const requireClaim = (id: string, where: string) => {
+    if (!claimById.get(id)) throw new ContentError(caseDir, `${where} references unknown claim ${id}`);
+  };
   const requireLiveClaim = (id: string, where: string) => {
     const claim = claimById.get(id);
     if (!claim) {
@@ -204,7 +211,7 @@ function checkIntegrity(caseDir: string, loaded: LoadedCase): void {
       );
     }
     for (const cid of ev.claimIds) {
-      requireLiveClaim(cid, `evidence ${ev.id}`);
+      (ev.reviewState === "rejected" ? requireClaim : requireLiveClaim)(cid, `evidence ${ev.id}`);
     }
   }
 
@@ -227,14 +234,16 @@ function checkIntegrity(caseDir: string, loaded: LoadedCase): void {
   }
 
   for (const run of loaded.assessmentRuns) {
+    // An assessment run is an append-only overlay stamped to a ledger state: the claims it judged must exist, and
+    // may have been rejected since.
     for (const ca of run.claimAssessments) {
-      requireLiveClaim(ca.claimId, `assessment run ${run.runId}`);
+      requireClaim(ca.claimId, `assessment run ${run.runId}`);
     }
     for (const id of [
       ...run.caseAssessment.loadBearing,
       ...run.caseAssessment.weakestLinks,
     ]) {
-      requireLiveClaim(id, `assessment run ${run.runId} roll-up`);
+      requireClaim(id, `assessment run ${run.runId} roll-up`);
     }
     // The epistemic counterweight, fail-closed: new runs must disclose the
     // strongest argument for the featured hypothesis they do not answer.
@@ -316,7 +325,7 @@ export function editionErrors(
   loaded: Pick<
     LoadedCase,
     "editions" | "claims" | "assessmentRuns" | "research" | "images"
-  >,
+  > & { ledgerHash?: string },
 ): string[] {
   const errors: string[] = [];
   if (loaded.editions.length === 0) {
@@ -325,6 +334,13 @@ export function editionErrors(
   const live = new Map(
     loaded.claims.filter((c) => c.reviewState !== "rejected").map((c) => [c.id, c]),
   );
+  const known = new Set(loaded.claims.map((c) => c.id));
+  // An edition told on an earlier ledger — a predecessor, or the current one while the ledger has moved since it
+  // was told and a re-telling is owed — may feature or mark a claim rejected since: it is a frozen record of what
+  // was live then. The current edition on the current ledger may not. Without a ledger hash to compare, the
+  // current edition is held to the strict rule.
+  const head = loaded.editions.at(-1);
+  const strict = (ed: Edition) => ed === head && (loaded.ledgerHash === undefined || ed.basis.ledgerHash === loaded.ledgerHash);
   const runs = new Map(loaded.assessmentRuns.map((r) => [r.runId, r]));
   const researchIds = new Set(loaded.research.map((r) => r.id));
   const imageById = new Map(loaded.images.map((i) => [i.id, i]));
@@ -352,7 +368,7 @@ export function editionErrors(
     );
     for (const id of ed.featuredClaimIds) {
       if (!live.has(id)) {
-        errors.push(`${where} features unknown or rejected claim ${id}`);
+        if (!known.has(id) || strict(ed)) errors.push(`${where} features unknown or rejected claim ${id}`);
         continue;
       }
       if (adopted && !treated.has(id)) {
@@ -385,7 +401,7 @@ export function editionErrors(
     }
     for (const id of extractClaimRefs(ed.article)) {
       if (!live.has(id)) {
-        errors.push(`${where} article references unknown or rejected claim ${id}`);
+        if (!known.has(id) || strict(ed)) errors.push(`${where} article references unknown or rejected claim ${id}`);
       }
     }
     for (const ref of extractPlateRefs(ed.article)) {

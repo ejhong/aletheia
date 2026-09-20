@@ -11,7 +11,13 @@ import { latestByKey, type Disposition } from "./intake.ts";
 /** A row written by a producer — the drafter, an intake, a report — rather than by verification. */
 export const PRODUCER_RUN = /-(draft|inbox|report|leads)-/;
 
-export const LEAD_KINDS = new Set<Disposition["kind"]>(["source", "evidence", "claim"]);
+/**
+ * The leads a pass opens are works — source-kind rows. A drafter's blocked evidence or claim row (a text it could not
+ * read for a record it wanted to write) is a lead to the same work, but settling it type-correctly needs an admitted
+ * record of its own kind, not the source that entered (review note #368); that is the next increment, and until then
+ * those rows are left to the drafter that wrote them.
+ */
+export const LEAD_KINDS = new Set<Disposition["kind"]>(["source"]);
 
 /** Is this latest-per-key row a lead a producer could not open? Rows blocked at verification belong to re-submission instead. */
 export function isProducerBlocked(row: Disposition): boolean {

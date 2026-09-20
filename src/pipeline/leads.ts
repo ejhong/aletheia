@@ -267,12 +267,14 @@ export function leadsOf(reportRunId: string, root = process.cwd()): LeadOutcome[
 /**
  * The rows that settle a lead: when verification admits a source that is the document a leads pass resolved or
  * offered as a candidate for that lead, the lead's own row is written `in`, naming the source — mechanically, by
- * locator, so the pool of open leads shrinks without a drafter's say-so.
+ * locator, so the pool of open leads shrinks without a drafter's say-so. Only a source-kind lead is settled by a
+ * source: a provenance container admits no claim or evidence record (§3.6; review note #368).
  */
 export function settleLeads(outcomes: LeadOutcome[], admitted: Pick<Source, "id" | "url" | "identifier">[], stamp: { runId: string; date: string; proposal: string; leadsRunId: string }): Disposition[] {
   const rows: Disposition[] = [];
   const locators = (s: Pick<Source, "url" | "identifier">) => new Set([canonicalUrl(s.url), normalizeDoi(s.identifier), normalizeDoi(s.url)].filter((x): x is string => Boolean(x)));
   for (const o of outcomes) {
+    if (o.kind !== "source") continue;
     const docs = [...(o.resolved ? [o.resolved] : []), ...o.candidates];
     for (const s of admitted) {
       const mine = locators(s);

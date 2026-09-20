@@ -20,6 +20,7 @@ import {
 } from "../domain/schema.ts";
 import { doiFromUrl, doisInText, retrieve, type FetchedSource, type RetrievalTarget } from "./fetch.ts";
 import { leadsNamedInReport, resolveLead, type Lead, type Resolved } from "./resolve.ts";
+import { leadsOf } from "./leads.ts";
 import { MODELS } from "../lib/models.mjs";
 import { anthropicJson, type Meter } from "./models.ts";
 import { buildPacket } from "./packet.ts";
@@ -294,6 +295,8 @@ export interface AssembleContext {
   date: string;
   /** Sources the drafter was shown, by URL, so failures can say what was retrievable. */
   fetched: FetchedSource[];
+  /** The repository root, to read the report run's working files (a leads report's `leads.json`); the working directory when absent. */
+  root?: string;
 }
 
 export interface Assembled {
@@ -604,9 +607,13 @@ export function assembleProposal(reply: DraftReply, ctx: AssembleContext): Assem
     ...loaded.sources.map((s) => s.id), ...loaded.claims.map((c) => c.id), ...loaded.evidence.map((e) => e.id), ...loaded.research.map((r) => r.id),
     ...sources.map((s) => s.id), ...claims.map((c) => c.id), ...evidence.map((e) => e.id), ...research.map((r) => r.id),
   ]);
+  // Keys the report gave: a leads report names each lead's row, and only those keys may be taken from the drafter — any
+  // other key it returns is ignored for the mechanical one, so a row cannot land under an unrelated row's key
+  // (review note #368).
+  const givenKeys = new Set(leadsOf(ctx.reportRunId, ctx.root ?? process.cwd()).map((o) => o.key));
   for (const d of reply.dispositions) {
-    // A key the report gave (a leads report names each lead's row) puts the row under the row it answers (2026-09-20).
-    const given = typeof d.key === "string" && /^(doi|arxiv|url|title|text):\S/.test(d.key) ? d.key : null;
+    const given = typeof d.key === "string" && givenKeys.has(d.key) ? d.key : null;
+    if (typeof d.key === "string" && !given) notes.push(`disposition for "${d.observed.slice(0, 60)}" gave key ${d.key.slice(0, 60)}, which the report did not; the mechanical key is used`);
     const key = given ?? (d.url ? sourceKeys({ url: d.url, title: d.observed })[0] : textKey(d.observed));
     if (!key) {
       notes.push(`disposition without a mechanical key skipped: ${d.kind} "${d.observed.slice(0, 80)}"`);
@@ -752,6 +759,7 @@ export async function runDraft(reportRunId: string, opts: DraftOptions = {}): Pr
       promptVersion: protocol.version,
       date,
       fetched,
+      root,
     });
     const dir = writeProposal(proposal, root);
     writeWorkingFile(runId, "novelty.md", novelty, root);

@@ -8,7 +8,7 @@ import {
 } from "./article.ts";
 import { adoptedAssessment, caseQuestion, currentEdition, latestAssessment } from "./editions.ts";
 import { checksStale, crossModelSummary, RATIFICATION_MIN_PANEL, ratification, runStaleness, survivingObjections, latestCheckPerModel, displayAssessment, withinOneStep } from "./standing.ts";
-import { claimAnchorErrors, editionErrors, getCaseBySlug, liveClaims, loadAllCases, loadSiteImages, sourceAdmissionErrors } from "./load.ts";
+import { claimAnchorErrors, editionErrors, getCaseBySlug, liveClaims, loadAllCases, loadSiteImages, sourceAdmissionErrors, checkIntegrity } from "./load.ts";
 import { historyNewestFirst, lastContentUpdate, recentChanges } from "./history.ts";
 import { assessmentHash, canonicalJson, ledgerHash, sha256Hex } from "./hash.ts";
 import { caseView, findClaimView, reviewCoverage } from "./view.ts";
@@ -683,6 +683,38 @@ describe("edition integrity", () => {
     expect(errors.some((e) => /no longer matches the recorded hash/.test(e))).toBe(true);
   });
 
+  it("a frozen edition may feature or mark a claim rejected since; the current edition on the current ledger may not", () => {
+    const c = geo();
+    const ed = currentEdition(c);
+    const id = ed.featuredClaimIds[0];
+    const claims = c.claims.map((k) => (k.id === id ? { ...k, reviewState: "rejected" as const, rejectionReason: "split into parts since" } : k));
+    // The current edition on the current ledger: strict.
+    const current = { ...c, claims, ledgerHash: ed.basis.ledgerHash };
+    expect(editionErrors(current).some((e) => new RegExp(`edition ${ed.runId} features unknown or rejected claim ${id}`).test(e))).toBe(true);
+    // The same edition once the ledger has moved — a re-telling is owed — is a frozen record: no error for the rejected claim.
+    const stale = { ...c, claims, ledgerHash: "0".repeat(64) };
+    expect(editionErrors(stale).some((e) => new RegExp(`features unknown or rejected claim ${id}`).test(e))).toBe(false);
+    // A predecessor featuring it: no error, whatever the ledger.
+    const prevIdx = c.editions.length - 2;
+    if (prevIdx >= 0) {
+      const prev = c.editions[prevIdx];
+      const withPrev = { ...c, claims, ledgerHash: ed.basis.ledgerHash, editions: c.editions.map((e, i) => (i === prevIdx ? { ...e, featuredClaimIds: [...new Set([...e.featuredClaimIds, id])] } : i === c.editions.length - 1 ? { ...e, featuredClaimIds: e.featuredClaimIds.filter((x) => x !== id), article: e.article.split(id).join("") } : e)) };
+      expect(editionErrors(withPrev).some((e) => new RegExp(`edition ${prev.runId} features unknown or rejected claim ${id}`).test(e))).toBe(false);
+    }
+    // An id no claim carries at all is an error for every edition.
+    expect(editionErrors({ ...c, editions: c.editions.map((e, i) => (i === 0 ? { ...e, featuredClaimIds: [...e.featuredClaimIds, "GEO-C000"] } : e)) }).some((e) => /features unknown or rejected claim GEO-C000/.test(e))).toBe(true);
+  });
+  it("a tombstone and an assessment run may reference a claim rejected since; a live record may not", () => {
+    const c = geo();
+    const ev = c.evidence.find((e) => e.reviewState !== "rejected" && e.claimIds.length === 1)!;
+    const id = ev.claimIds[0];
+    const claims = c.claims.map((k) => (k.id === id ? { ...k, reviewState: "rejected" as const, rejectionReason: "split into parts since" } : k));
+    const stale = "0".repeat(64);
+    const frozen = { ...c, claims, ledgerHash: stale, evidence: c.evidence.map((e) => (e.id === ev.id ? { ...e, reviewState: "rejected" as const, limitations: [...e.limitations, "refused since"] } : e.claimIds.includes(id) ? { ...e, claimIds: e.claimIds.filter((x) => x !== id).length ? e.claimIds.filter((x) => x !== id) : e.claimIds, reviewState: e.claimIds.filter((x) => x !== id).length ? e.reviewState : ("rejected" as const), limitations: e.claimIds.filter((x) => x !== id).length ? e.limitations : [...e.limitations, "refused since"] } : e)), research: c.research.map((r) => ({ ...r, claimIds: r.claimIds.filter((x) => x !== id) })), images: c.images.map((i) => ({ ...i, claimIds: i.claimIds.filter((x) => x !== id) })) };
+    expect(() => checkIntegrity(c.dir, frozen)).not.toThrow();
+    const live = { ...frozen, evidence: frozen.evidence.map((e) => (e.id === ev.id ? { ...e, reviewState: ev.reviewState } : e)) };
+    expect(() => checkIntegrity(c.dir, live)).toThrow(new RegExp(`evidence ${ev.id} references rejected claim ${id}`));
+  });
   it("a featured claim without a treatment, an unknown featured id, and a check run adopted all fail", () => {
     const c = geo();
     const ed = currentEdition(c);

@@ -103,7 +103,7 @@ export function writeProposal(proposal: Proposal, root = process.cwd()): string 
   const dir = runDir(parsed.runId, root);
   fs.mkdirSync(dir, { recursive: true });
   const header = `# Proposal — a change to domain records, in one envelope (docs/AUTOMATION.md).\n# Never citable; nothing here is a record until adopted through the gate.\n`;
-  fs.writeFileSync(path.join(dir, "proposal.yaml"), header + stringifyYaml(parsed, { lineWidth: 0 }));
+  fs.writeFileSync(path.join(dir, "proposal.yaml"), header + stringifyYaml(parsed, { lineWidth: 0, aliasDuplicateObjects: false }));
   return dir;
 }
 
@@ -111,7 +111,7 @@ export function writeRun(run: RunRecord, root = process.cwd()): string {
   const parsed = RunRecordSchema.parse(run);
   const dir = runDir(parsed.runId, root);
   fs.mkdirSync(dir, { recursive: true });
-  fs.writeFileSync(path.join(dir, "run.yaml"), stringifyYaml(parsed, { lineWidth: 0 }));
+  fs.writeFileSync(path.join(dir, "run.yaml"), stringifyYaml(parsed, { lineWidth: 0, aliasDuplicateObjects: false }));
   return dir;
 }
 

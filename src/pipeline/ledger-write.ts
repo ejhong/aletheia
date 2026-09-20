@@ -16,15 +16,72 @@ import type { ChangeLogEntry } from "../domain/schema.ts";
 
 export type LedgerFile = "claims.yaml" | "evidence.yaml" | "sources.yaml" | "research.yaml" | "images.yaml";
 
+/**
+ * The yaml library writes objects that share a reference as an anchor and aliases (`&a1` … `*a1`) — the parts of
+ * one split record share their anchor and origin — and a record that defined an anchor other records aliased could
+ * not be rewritten in place: the anchor went with it and the aliases dangled (2026-09-20: a promotion refused,
+ * "would change more than that record"). Nothing written here aliases any more; an in-place rewrite that takes an
+ * anchor away re-serializes every record that aliased it, transitively, so the file says the same without it.
+ */
+const NO_ALIAS = { lineWidth: 0, aliasDuplicateObjects: false } as const;
+
+const ANCHOR = /&([A-Za-z0-9_-]+)\b/g;
+const ALIAS = /(?::\s*|^\s*-\s+)\*([A-Za-z0-9_-]+)\s*$/;
+
+/** The line index of every record's first line — the `- ` items of the list, in the parsed order. */
+function recordStarts(lines: string[]): number[] {
+  return lines.map((l, i) => (/^- /.test(l) ? i : -1)).filter((i) => i >= 0);
+}
+
+/**
+ * Rewrite `lines` with `replacement` in place of [start, end), and — where the replaced lines defined an anchor —
+ * every record that aliased it (and, transitively, every record aliasing an anchor those records defined)
+ * re-serialized from its parsed value without aliases. The records so rewritten were the library's own output, so
+ * their bytes change only where an alias was; the caller's equality check proves the file still says the same.
+ */
+function spliceExpandingAliases(lines: string[], before: Record<string, unknown>[], start: number, end: number, replacement: string[], keepRecord: number): string[] {
+  const starts = recordStarts(lines);
+  const spanOf = (n: number): [number, number] => [starts[n], n + 1 < starts.length ? starts[n + 1] : lines.length];
+  const definedIn = (a: number, b: number) => new Set([...lines.slice(a, b).join("\n").matchAll(ANCHOR)].map((m) => m[1]));
+  const usedIn = (a: number, b: number) => new Set(lines.slice(a, b).map((l) => ALIAS.exec(l)?.[1]).filter((x): x is string => Boolean(x)));
+  const lost = definedIn(start, end);
+  const dependents = new Set<number>();
+  let grew = lost.size > 0;
+  while (grew) {
+    grew = false;
+    for (let n = 0; n < starts.length && n < before.length; n++) {
+      if (n === keepRecord || dependents.has(n)) continue;
+      const [a, b] = spanOf(n);
+      if ([...usedIn(a, b)].some((name) => lost.has(name))) {
+        dependents.add(n);
+        for (const name of definedIn(a, b)) lost.add(name);
+        grew = true;
+      }
+    }
+  }
+  const edits: { a: number; b: number; text: string[] }[] = [{ a: start, b: end, text: replacement }];
+  for (const n of dependents) {
+    const [a, b] = spanOf(n);
+    let stop = b;
+    while (stop > a + 1 && lines[stop - 1].trim() === "") stop--;
+    edits.push({ a, b: stop, text: stringifyYaml([before[n]], NO_ALIAS).replace(/\n$/, "").split("\n") });
+  }
+  edits.sort((x, y) => y.a - x.a);
+  let out = [...lines];
+  for (const e of edits) out = [...out.slice(0, e.a), ...e.text, ...out.slice(e.b)];
+  return out;
+}
+
 /** Append `items` to the YAML list in `file` (created with `header` when absent), preserving existing bytes. */
 export function appendYamlItems(file: string, items: unknown[], header?: string): number {
   if (items.length === 0) return 0;
-  const block = stringifyYaml(items, { lineWidth: 0 });
+  const block = stringifyYaml(items, NO_ALIAS);
   if (!fs.existsSync(file)) {
-    const doc = new Document(items);
+    // The anchors are decided when the document is built, not when it is printed.
+    const doc = new Document(items, NO_ALIAS);
     if (header) doc.commentBefore = header.replace(/^# ?/gm, " ").trimEnd();
     fs.mkdirSync(path.dirname(file), { recursive: true });
-    fs.writeFileSync(file, doc.toString({ lineWidth: 0 }));
+    fs.writeFileSync(file, doc.toString(NO_ALIAS));
     return items.length;
   }
   const text = fs.readFileSync(file, "utf8");
@@ -53,10 +110,10 @@ export function appendHistory(caseDir: string, entry: ChangeLogEntry, root = pro
 }
 
 export function writeYamlFile(file: string, header: string, value: unknown): void {
-  const doc = new Document(value);
+  const doc = new Document(value, NO_ALIAS);
   doc.commentBefore = header.replace(/^# ?/gm, " ").trimEnd();
   fs.mkdirSync(path.dirname(file), { recursive: true });
-  fs.writeFileSync(file, doc.toString({ lineWidth: 0 }));
+  fs.writeFileSync(file, doc.toString(NO_ALIAS));
 }
 
 /** True when `text` parses to a YAML list — the shape every ledger file must keep. */
@@ -91,7 +148,7 @@ export function setField(file: string, id: string, field: string, from: unknown,
   let endLine = startLine + 1;
   while (endLine < lines.length && !/^- /.test(lines[endLine])) endLine++;
   const fieldLine = lines.slice(startLine + 1, endLine).findIndex((l) => new RegExp(`^  ${field}:`).test(l));
-  const replacement = stringifyYaml({ [field]: to }, { lineWidth: 0 })
+  const replacement = stringifyYaml({ [field]: to }, NO_ALIAS)
     .replace(/\n$/, "")
     .split("\n")
     .map((l) => `  ${l}`);
@@ -106,7 +163,7 @@ export function setField(file: string, id: string, field: string, from: unknown,
     const fStart = startLine + 1 + fieldLine;
     let fEnd = fStart + 1;
     while (fEnd < endLine && !/^  [A-Za-z_][A-Za-z0-9_]*:/.test(lines[fEnd]) && !/^\s*#/.test(lines[fEnd])) fEnd++;
-    edited = [...lines.slice(0, fStart), ...replacement, ...lines.slice(fEnd)].join("\n");
+    edited = spliceExpandingAliases(lines, before, fStart, fEnd, replacement, idx).join("\n");
   }
   const after = parseYaml(edited) as Record<string, unknown>[];
   const expected = before.map((r, i) => (i === idx ? { ...r, [field]: to } : r));
@@ -134,8 +191,8 @@ export function replaceRecord(file: string, id: string, record: Record<string, u
   let endLine = startLine + 1;
   while (endLine < lines.length && !/^- /.test(lines[endLine])) endLine++;
   while (endLine > startLine + 1 && lines[endLine - 1].trim() === "") endLine--;
-  const replacement = stringifyYaml([record], { lineWidth: 0 }).replace(/\n$/, "").split("\n");
-  const edited = [...lines.slice(0, startLine), ...replacement, ...lines.slice(endLine)].join("\n");
+  const replacement = stringifyYaml([record], NO_ALIAS).replace(/\n$/, "").split("\n");
+  const edited = spliceExpandingAliases(lines, before, startLine, endLine, replacement, idx).join("\n");
   const after = parseYaml(edited) as Record<string, unknown>[];
   const expected = before.map((r, i) => (i === idx ? JSON.parse(JSON.stringify(record)) : r));
   if (JSON.stringify(after) !== JSON.stringify(expected)) {

@@ -2,12 +2,12 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { parse as parseYaml } from "yaml";
+import { parse as parseYaml, stringify } from "yaml";
 import { getCaseBySlug } from "./load.ts";
 import { nextAction } from "./schedule.ts";
 import type { Evidence } from "./schema.ts";
 import type { RunRecord } from "./intake.ts";
-import { replaceRecord } from "../pipeline/ledger-write.ts";
+import { appendYamlItems, replaceRecord, setField } from "../pipeline/ledger-write.ts";
 import { planReverify } from "../pipeline/reverify.ts";
 import type { Verdicts } from "../pipeline/verify.ts";
 
@@ -48,6 +48,54 @@ describe("planReverify", () => {
     const plan = planReverify(verdicts, originals);
     expect(plan.refuse).toEqual([]);
     expect(plan.unread.map((u) => u.id).sort()).toEqual(["SRC-A", "X-E001", "X-E002"]);
+  });
+});
+
+describe("the ledger writers never alias, and an in-place rewrite expands the aliases it would leave dangling", () => {
+  const shared = ["X-C1"];
+  const origin = { ref: "split of X-E000", extractedBy: "m", runId: "r", date: "2026-09-20" };
+  const records = () => [
+    { id: "X-E001", title: "one", claimIds: shared, origin, reviewState: "ai_extracted" },
+    { id: "X-E002", title: "two", claimIds: shared, origin, reviewState: "ai_extracted" },
+    { id: "X-E003", title: "three", claimIds: ["X-C2"], origin: { ...origin }, reviewState: "ai_extracted" },
+  ];
+  const tmp = () => fs.mkdtempSync(path.join(os.tmpdir(), "aletheia-alias-"));
+  it("appends records that share objects without an anchor", () => {
+    const dir = tmp();
+    const file = path.join(dir, "evidence.yaml");
+    appendYamlItems(file, records());
+    const text = fs.readFileSync(file, "utf8");
+    expect(text).not.toMatch(/&a\d|\*a\d/);
+    expect(parseYaml(text)).toEqual(JSON.parse(JSON.stringify(records())));
+    fs.rmSync(dir, { recursive: true, force: true });
+  });
+  it("replaces a record that defined an anchor, expanding the records that aliased it; every other byte stays", () => {
+    const dir = tmp();
+    const file = path.join(dir, "evidence.yaml");
+    fs.writeFileSync(file, "# a ledger written when the library still aliased\n" + stringify(records(), { lineWidth: 0 }));
+    const anchored = fs.readFileSync(file, "utf8");
+    expect(anchored).toMatch(/claimIds: &a1/);
+    expect(anchored).toMatch(/origin: \*a2/);
+    const [a, b, c] = records();
+    replaceRecord(file, "X-E001", { ...a, title: "one, read again" });
+    const text = fs.readFileSync(file, "utf8");
+    expect(text).not.toMatch(/\*a\d/);
+    expect(text.startsWith("# a ledger written when the library still aliased\n")).toBe(true);
+    expect(parseYaml(text)).toEqual(JSON.parse(JSON.stringify([{ ...a, title: "one, read again" }, b, c])));
+    // The record that shared nothing lost is untouched, byte for byte.
+    expect(text).toContain(anchored.slice(anchored.indexOf("- id: X-E003")));
+    fs.rmSync(dir, { recursive: true, force: true });
+  });
+  it("sets a field that carried an anchor, expanding the alias elsewhere", () => {
+    const dir = tmp();
+    const file = path.join(dir, "evidence.yaml");
+    fs.writeFileSync(file, stringify(records(), { lineWidth: 0 }));
+    setField(file, "X-E001", "claimIds", ["X-C1"], ["X-C1", "X-C9"]);
+    const after = parseYaml(fs.readFileSync(file, "utf8")) as { id: string; claimIds: string[] }[];
+    expect(after.map((r) => r.claimIds)).toEqual([["X-C1", "X-C9"], ["X-C1"], ["X-C2"]]);
+    // The alias to the anchor the field carried is expanded; an alias to an anchor still defined may stay.
+    expect(fs.readFileSync(file, "utf8")).not.toMatch(/\*a1\b/);
+    fs.rmSync(dir, { recursive: true, force: true });
   });
 });
 

@@ -680,7 +680,7 @@ describe("verify v3: atomicity", () => {
     const proposal = { runId: "2026-09-09-draft-megalithic-casting-000003", case: c.record.slug, report: null, date: "2026-09-09", model: "m", promptVersion: "draft-v5", basis: { ledgerHash: c.ledgerHash }, rationale: "test",
       adds: { sources: [], evidence: [evidence], claims: [compound], research: [], images: [] }, corrections: [], dispositions: [], edition: null } as never;
     const texts = new Map([[src.url!, { url: src.url!, ok: true, status: 200, contentType: "text/html", text: "… twelve words that certainly do occur in this text …" }]]);
-    const yes = { quoteInContext: true, statementSupported: true, locatorSupported: true, directionRight: true, independenceNoted: true, relevant: true, atomic: true, reason: "fine" };
+    const yes = { quoteInContext: true, statementSupported: true, locatorSupported: true, directionRight: true, independenceNoted: true, relevant: true, atomic: true, ofTheCompound: true, reason: "fine" };
     const judge = async (record: unknown, _text: string, context: string) => {
       if ((record as { statement?: string }).statement?.includes(" and ")) return { ...yes, atomic: false, reason: "two propositions" };
       // The evidence bears on the first part only; the reader says so when asked about the second.
@@ -717,7 +717,7 @@ describe("verify remembers its judgments", () => {
     const proposal = { runId: "2026-09-09-draft-megalithic-casting-000004", case: c.record.slug, report: null, date: "2026-09-09", model: "m", promptVersion: "draft-v6", basis: { ledgerHash: c.ledgerHash }, rationale: "test",
       adds: { sources: [], evidence: [compound], claims: [], research: [], images: [] }, corrections: [], dispositions: [], edition: null } as never;
     const texts = new Map([[src.url!, { url: src.url!, ok: true, status: 200, contentType: "text/html", text: "… twelve words that certainly do occur in this text … a second span that also occurs here …" }]]);
-    const yes = { quoteInContext: true, statementSupported: true, locatorSupported: true, directionRight: true, independenceNoted: true, relevant: true, atomic: true, reason: "fine" };
+    const yes = { quoteInContext: true, statementSupported: true, locatorSupported: true, directionRight: true, independenceNoted: true, relevant: true, atomic: true, ofTheCompound: true, reason: "fine" };
     const judge = async (record: unknown) => ((record as { sourceStatement?: string }).sourceStatement?.includes(" and also ") ? { ...yes, atomic: false, reason: "two findings" } : yes);
     const kinds: string[] = [];
     const split = async (statement: string, _t: string, _m: unknown, kind?: string) => {
@@ -757,7 +757,7 @@ describe("verify remembers its judgments", () => {
       [forged.url, { url: forged.url, ...supplied("forged.pdf", line) }],
       [unrecorded.url, { url: unrecorded.url, ...supplied("unrecorded.pdf") }],
     ]);
-    const yes = { quoteInContext: true, statementSupported: true, locatorSupported: true, directionRight: true, independenceNoted: true, relevant: true, atomic: true, reason: "fine" };
+    const yes = { quoteInContext: true, statementSupported: true, locatorSupported: true, directionRight: true, independenceNoted: true, relevant: true, atomic: true, ofTheCompound: true, reason: "fine" };
     const v = await judgeProposal(proposal, c, texts, new Map(), async () => yes, { runId: "r", verb: "verify", case: c.record.slug });
     expect(v.accepted.sources.map((s) => s.id)).toEqual(["GEO-S991"]);
     expect(v.accepted.evidence.map((e) => e.id)).toEqual(["GEO-E991"]);
@@ -993,7 +993,7 @@ describe("verify v6: a bearing per claim, and a record split by direction", () =
       edition: null,
     } as never;
     const texts = new Map([["https://x.test/new", { url: "https://x.test/new", ok: true, status: 200, contentType: "text/html", text: "… twelve words that certainly do occur in this text …" }]]);
-    const yes = { quoteInContext: true, statementSupported: true, locatorSupported: true, directionRight: true, independenceNoted: true, relevant: true, atomic: true, reason: "fine" };
+    const yes = { quoteInContext: true, statementSupported: true, locatorSupported: true, directionRight: true, independenceNoted: true, relevant: true, atomic: true, ofTheCompound: true, reason: "fine" };
     const r = await judgeProposal(proposal, c, texts, new Map([["url:https://x.test/new", { status: "resolves", note: "" }]]), async () => yes, { runId: "r", verb: "verify", case: c.record.slug }, { model: "reader-x", date: "2026-09-10" });
     expect(r.accepted.sources).toHaveLength(1);
     expect(r.accepted.sources[0].verification).toBe("ai_verified");

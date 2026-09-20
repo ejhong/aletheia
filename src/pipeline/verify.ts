@@ -753,7 +753,9 @@ export async function judgeProposal(
             const placed = `${identity}, ${ownAnchor.locator}${via ? ` ${via}` : ""}`;
             if (placed !== e.exactLocator) {
               candidate.exactLocator = placed;
-              candidate.readerActs = [...(candidate.readerActs ?? []), { field: "exactLocator", from: e.exactLocator, to: placed, model: sp.model ?? splitter.model, runId: meter.runId, promptVersion, date: reader.date, reason: "the splitter's locator for the part's own quote, with the compound's document identity" }];
+              // The act is the splitter's, stamped with the splitter's own model, protocol, run and date (review note
+              // #399); the second reader then judges locatorSupported on the placed part, and that judgment is its own.
+              candidate.readerActs = [...(candidate.readerActs ?? []), { field: "exactLocator", from: e.exactLocator, to: placed, model: sp.model ?? splitter.model, runId: sp.runId ?? splitter.runId, promptVersion: sp.protocol ?? loadProtocol("split").version, date: sp.date ?? reader.date, reason: "the splitter's locator for the part's own quote, composed with the compound's document identity; the second reader judged the placed locator" }];
             }
           }
           // A part keeps the page its own quote is on, not the parent's whole locator (2026-09-11: a part quoting
@@ -768,8 +770,10 @@ export async function judgeProposal(
           }
           const partContext = `${context} This record is a PART of a compound record that was split — the compound's statement: "${e.sourceStatement}". Say in ofTheCompound whether the part states one of the observations the compound bundled.`;
           const v2 = await judge({ ...candidate, editorInference: undefined }, text, partContext, meter);
-          if (v2.ofTheCompound === false) {
-            notes.push(`${label} refused: not an observation the compound bundled — ${v2.reason}`);
+          // Fail closed: a part enters only when the reader affirms it is of the compound; a null or missing answer
+          // refuses it as a false one does (review note #398).
+          if (v2.ofTheCompound !== true) {
+            notes.push(`${label} refused: ${v2.ofTheCompound === false ? "not an observation the compound bundled" : "the reader did not affirm it is an observation the compound bundled"} — ${v2.reason}`);
             continue;
           }
           const bad = Object.entries(v2).filter(([k, v]) => k !== "reason" && v === false && k !== "directionRight").map(([k]) => k);
@@ -883,8 +887,8 @@ export async function judgeProposal(
               const candidate: Claim = { ...c, id, statement: part, sourceAnchor: anchor, dependsOnClaimIds: [], alternativeToClaimIds: [], contradictsClaimIds: [], origin: { ref: `split of ${c.id} (${c.origin.ref})${anchored ? "; anchored by the splitter in the same text" : ""}${depth > 1 ? "; second round" : ""}`, extractedBy: sp.model ?? splitter.model, runId: sp.runId ?? splitter.runId, date: sp.date ?? reader.date } };
               const partContext = `${anchorContext} This is a PART of a compound claim that was split — the compound's statement: "${c.statement}". Say in ofTheCompound whether the part states one of the propositions the compound bundled.`;
               const v2 = await judge({ statement: part, anchor }, text, partContext, meter);
-              if (v2.ofTheCompound === false) {
-                notes.push(`${c.id} part "${part.slice(0, 60)}" refused: not a proposition the compound bundled — ${v2.reason}`);
+              if (v2.ofTheCompound !== true) {
+                notes.push(`${c.id} part "${part.slice(0, 60)}" refused: ${v2.ofTheCompound === false ? "not a proposition the compound bundled" : "the reader did not affirm it is a proposition the compound bundled"} — ${v2.reason}`);
                 continue;
               }
               const bad = Object.entries(v2).filter(([k, v]) => k !== "reason" && v === false && k !== "independenceNoted" && k !== "directionRight").map(([k]) => k);

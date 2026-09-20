@@ -165,8 +165,9 @@ export const DRAFT_SCHEMA: Record<string, unknown> = {
       items: {
         type: "object",
         additionalProperties: false,
-        required: ["kind", "disposition", "as", "reason", "reopenIf", "observed", "url", "route"],
+        required: ["kind", "disposition", "as", "reason", "reopenIf", "observed", "url", "route", "key"],
         properties: {
+          key: { type: ["string", "null"], description: "The candidate's own key when the report gives one (a leads report does: `key: …`), so the row lands under the row it answers; null otherwise." },
           kind: { type: "string", enum: ["source", "evidence", "claim", "research", "study", "image", "edition"] },
           disposition: { type: "string", enum: ["duplicate", "irrelevant", "blocked", "failed", "excluded"] },
           as: { type: ["string", "null"] },
@@ -248,6 +249,8 @@ export interface DraftReply {
     observed: string;
     url: string | null;
     route: string | null;
+    /** The candidate's own key when the report gives one (a leads report does), so the row lands under the row it answers. */
+    key?: string | null;
   }[];
   edition: { rationale: string; featuredClaimIds: string[]; cruxOrder: string[]; article: string } | null;
 }
@@ -602,7 +605,9 @@ export function assembleProposal(reply: DraftReply, ctx: AssembleContext): Assem
     ...sources.map((s) => s.id), ...claims.map((c) => c.id), ...evidence.map((e) => e.id), ...research.map((r) => r.id),
   ]);
   for (const d of reply.dispositions) {
-    const key = d.url ? sourceKeys({ url: d.url, title: d.observed })[0] : textKey(d.observed);
+    // A key the report gave (a leads report names each lead's row) puts the row under the row it answers (2026-09-20).
+    const given = typeof d.key === "string" && /^(doi|arxiv|url|title|text):\S/.test(d.key) ? d.key : null;
+    const key = given ?? (d.url ? sourceKeys({ url: d.url, title: d.observed })[0] : textKey(d.observed));
     if (!key) {
       notes.push(`disposition without a mechanical key skipped: ${d.kind} "${d.observed.slice(0, 80)}"`);
       continue;
@@ -693,8 +698,8 @@ export async function runDraft(reportRunId: string, opts: DraftOptions = {}): Pr
   const root = opts.root ?? process.cwd();
   const now = opts.deps?.now ?? (() => new Date());
   const reportRun = readRuns(root).find((r) => r.runId === reportRunId);
-  if (!reportRun || !(reportRun.verb === "report" || reportRun.verb === "inbox") || reportRun.outcome !== "completed") {
-    throw new Error(`${reportRunId} is not a completed report or inbox run`);
+  if (!reportRun || !(reportRun.verb === "report" || reportRun.verb === "inbox" || reportRun.verb === "leads") || reportRun.outcome !== "completed") {
+    throw new Error(`${reportRunId} is not a completed report, inbox or leads run`);
   }
   const reportFile = path.join(runDir(reportRunId, root), "report.md");
   const report = fs.readFileSync(reportFile, "utf8");

@@ -8,6 +8,7 @@ import { runReport } from "./report.ts";
 import { readRuns, type RunOutcome } from "./store.ts";
 import { runVerify } from "./verify.ts";
 import { runReverify } from "./reverify.ts";
+import { runLeads } from "./leads.ts";
 import { MODELS } from "../lib/models.mjs";
 import type { ResearchSeat } from "../domain/schedule.ts";
 
@@ -88,7 +89,7 @@ export interface SittingOptions {
    * later choice in the sitting is the ledger's own (2026-09-15: five editions were due before any research pass,
    * and the hard path had to be reachable without waiting three Mondays).
    */
-  force?: { case: string; verb: "report" | "edition" | "check" | "reverify"; /** The GitHub login that opened the door, when it was opened through the workflow. */ by?: string };
+  force?: { case: string; verb: "report" | "edition" | "check" | "reverify" | "leads"; /** The GitHub login that opened the door, when it was opened through the workflow. */ by?: string };
   /** Called after every choice with the sitting so far, so a caller can write progress to disk as it goes. */
   onProgress?: (soFar: NextOutcome) => void;
   /** Test seams: the clock, one choice-and-run, or the choice and the run apart. */
@@ -179,6 +180,15 @@ async function performChoice(choice: NextChoice, opts: SittingOptions): Promise<
     const reportId = ran[0].outcome.runId;
     if (!(await step("draft", () => runDraft(reportId, { root })))) return { choice, ran };
     const draftId = ran[1].outcome.runId;
+    if (!(await step("verify", () => runVerify(draftId, { root })))) return { choice, ran };
+    await step("edition", () => runEdition(choice.case!, { root }));
+  } else if (choice.verb === "leads") {
+    // Open leads through the indexes; when any document opened, the chain continues as after a report.
+    const l = await runLeads(choice.case!, { root });
+    ran.push({ verb: "leads", outcome: l });
+    if (l.outcome !== "completed" || l.opened === 0) return { choice, ran };
+    if (!(await step("draft", () => runDraft(l.runId, { root })))) return { choice, ran };
+    const draftId = ran[ran.length - 1].outcome.runId;
     if (!(await step("verify", () => runVerify(draftId, { root })))) return { choice, ran };
     await step("edition", () => runEdition(choice.case!, { root }));
   } else if (choice.verb === "draft") {

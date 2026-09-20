@@ -598,7 +598,7 @@ export async function judgeProposal(
   /** Who wrote the parts of a split claim, and in which run — their `origin` (§3.14, §3.15). */
   splitter: { model: string; runId: string } = { model: MODELS.house.model, runId: "unrecorded" },
   /** Gates beyond the mechanical ones: the plan reader for research items (absent in tests that do not exercise it); and, for an answer, the objection the reader is told of (src/pipeline/answer.ts). */
-  gates: { judgePlan?: PlanJudge; extraContext?: string } = {},
+  gates: { judgePlan?: PlanJudge; extraContext?: string; ledgerStatements?: Map<string, string> } = {},
 ): Promise<Verdicts> {
   const rejected: Verdicts["rejected"] = [];
   const provisional: Verdicts["provisional"] = { sources: [], evidence: [], claims: [] };
@@ -819,16 +819,23 @@ export async function judgeProposal(
 
   // Claims: an anchor's quote must be verbatim and read right; otherwise an accepted evidence record must cite the claim.
   const okClaims: Claim[] = [];
-  // A claim is anchored by a source anchor or by evidence that cites it — the evidence of this proposal, or the
-  // ledger's live evidence when a claim already in the ledger is read again at a settlement (2026-09-20: a founding
-  // claim anchored by six live records was refused as unanchored when an answer re-read it on its own).
-  const citedBy = new Set([...okEvidence.flatMap((e) => e.claimIds), ...loaded.evidence.filter((e) => e.reviewState !== "rejected").flatMap((e) => e.claimIds)]);
+  // A claim is anchored by a source anchor or by evidence that cites it: the evidence of this proposal, or — for a
+  // claim that is the ledger's own, word for word, read again at a settlement — the ledger's live evidence (2026-09-20:
+  // a founding claim anchored by six live records was refused as unanchored when an answer re-read it on its own).
+  // A proposed claim that reuses a ledger id with other words is not the claim that evidence was read against, and
+  // gets no anchor from it (review note #401).
+  const citedBy = new Set(okEvidence.flatMap((e) => e.claimIds));
+  const liveCited = new Set(loaded.evidence.filter((e) => e.reviewState !== "rejected").flatMap((e) => e.claimIds));
+  // The ledger's wording for a claim: from the ledger as loaded, or — at a settlement, which judges the ledger minus
+  // the records it re-reads — from the statements the settlement hands over for them.
+  const ledgerClaims = new Map(loaded.claims.filter((k) => k.reviewState !== "rejected").map((k) => [k.id, k.statement]));
+  const anchoredByLedger = (k: { id: string; statement: string }) => liveCited.has(k.id) && (ledgerClaims.get(k.id) ?? gates.ledgerStatements?.get(k.id)) === k.statement;
   for (const c of proposal.adds.claims) {
     if (c.sourceAnchor?.quote) {
       const sid = c.sourceAnchor.sourceId;
       const fetched = sid ? textFor(sid) : undefined;
       if (!fetched?.ok || !fetched.text) {
-        if (!citedBy.has(c.id)) {
+        if (!citedBy.has(c.id) && !anchoredByLedger(c)) {
           const why = fetched?.reason ?? "no source id on the anchor";
           const exists = sid ? sourceExists(sourceById.get(sid), fetched, resolved) : null;
           if (exists) {
@@ -925,7 +932,7 @@ export async function judgeProposal(
           continue;
         }
       }
-    } else if (!citedBy.has(c.id)) {
+    } else if (!citedBy.has(c.id) && !anchoredByLedger(c)) {
       reject(c.id, "claim", c.statement, "no source anchor and no accepted evidence record cites it — every claim must be anchored");
       continue;
     }

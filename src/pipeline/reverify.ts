@@ -229,7 +229,10 @@ export async function settleRecords(caseSlug: string, settlement: Settlement, op
     const dir = runDir(runId, root);
     const judge = rememberedJudge(opts.deps?.judge ?? defaultJudge, path.join(dir, "judgments.yaml"), READER.model);
     const split = rememberedSplitter(opts.deps?.split ?? defaultSplitter, path.join(dir, "splits.yaml"), MODELS.house.model);
-    const verdicts = await judgeProposal(proposal, loadedMinus, texts, resolved, judge, run.meter, { model: READER.model, date }, split, { model: MODELS.house.model, runId }, settlement.context ? { extraContext: settlement.context } : {});
+    // The ledger's own wording of each claim re-read, so a claim the ledger's evidence anchors is known to be the
+    // claim that evidence was read against (review note #401).
+    const ledgerStatements = new Map(originals.claims.map((c) => [c.id, loaded.claims.find((k) => k.id === c.id)?.statement ?? ""]));
+    const verdicts = await judgeProposal(proposal, loadedMinus, texts, resolved, judge, run.meter, { model: READER.model, date }, split, { model: MODELS.house.model, runId }, { ...(settlement.context ? { extraContext: settlement.context } : {}), ledgerStatements });
     const plan = planReverify(verdicts, originals);
     const tag = settlement.verb === "answer" ? "answer" : "re-verify";
     // A claim the reader split: its parts, by the origin they carry.
@@ -374,6 +377,8 @@ export async function settleRecords(caseSlug: string, settlement: Settlement, op
       // plates are live records; a link to a tombstone would keep the case from loading).
       for (const r of loaded.research) {
         if (!r.claimIds?.some((id) => refusedClaims.has(id))) continue;
+        // A retired or superseded item is a frozen record: its claims, status and provenance stand (review note #401).
+        if (r.status === "retired" || r.status === "superseded") continue;
         const kept = relive(r.claimIds);
         const f = file("research.yaml");
         if (kept.length) setField(f, r.id, "claimIds", r.claimIds, kept);

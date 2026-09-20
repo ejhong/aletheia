@@ -232,3 +232,37 @@ describe("PubMed Central: the page is the key, Europe PMC's JATS is the text", (
     expect(r.via).toBe("Europe PMC full text (JATS XML) for PMC12647689, found by DOI 10.1038/s41598-025-00001-1");
   });
 });
+
+describe("a second client for a page that challenged the first", () => {
+  const article = `<html><head><title>Objective sonographic measures</title></head><body><p>${"Active sites were larger than latent sites. ".repeat(30)}</p></body></html>`;
+  const challenged = (async () => new Response("<html><body>Just a moment...</body></html>", { headers: { "content-type": "text/html" } })) as typeof fetch;
+  it("reads the page the second client is served, saying so; with none, or one served the same, the challenge stands", async () => {
+    const { fetchSource } = await import("../pipeline/fetch.ts");
+    const calls: string[] = [];
+    const curl = async (url: string) => (calls.push(url), { status: 200, contentType: "text/html; charset=utf-8", bytes: new TextEncoder().encode(article) });
+    const r = await fetchSource("https://pmc.ncbi.nlm.nih.gov/articles/PMC3493620/", { fetchImpl: challenged, secondClient: curl });
+    expect(r.ok).toBe(true);
+    expect(r.text).toContain("Active sites were larger than latent sites.");
+    expect(r.pageTitle).toBe("Objective sonographic measures");
+    expect(r.via).toBe("read by a second client (curl) after the first was served a bot challenge page");
+    expect(r.substitute).toBeUndefined();
+    expect(calls).toEqual(["https://pmc.ncbi.nlm.nih.gov/articles/PMC3493620/"]);
+    // An injected fetch has no second client unless one is injected.
+    const none = await fetchSource("https://pmc.ncbi.nlm.nih.gov/articles/PMC3493620/", { fetchImpl: challenged });
+    expect(none.ok).toBe(false);
+    expect(none.reason).toBe("bot challenge page served with HTTP 200");
+    const same = await fetchSource("https://pmc.ncbi.nlm.nih.gov/articles/PMC3493620/", { fetchImpl: challenged, secondClient: async () => ({ status: 200, contentType: "text/html", bytes: new TextEncoder().encode("<html><body>Please enable cookies</body></html>") }) });
+    expect(same.ok).toBe(false);
+    expect(same.reason).toBe("bot challenge page served with HTTP 200; a second client (curl) was served a bot challenge page too");
+    const down = await fetchSource("https://pmc.ncbi.nlm.nih.gov/articles/PMC3493620/", { fetchImpl: challenged, secondClient: async () => null });
+    expect(down.reason).toBe("bot challenge page served with HTTP 200; a second client (curl) could not be run");
+  });
+  it("retrieve reaches the second client before Europe PMC for a PMC page", async () => {
+    const calls: string[] = [];
+    const fetchImpl = (async (input: string | URL | Request) => (calls.push(String(input)), new Response("<html><body>Just a moment...</body></html>", { headers: { "content-type": "text/html" } }))) as typeof fetch;
+    const r = await retrieve({ url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC3493620/" }, { fetchImpl, secondClient: async () => ({ status: 200, contentType: "text/html", bytes: new TextEncoder().encode(article) }) });
+    expect(r.ok).toBe(true);
+    expect(r.via).toContain("second client (curl)");
+    expect(calls.some((u) => u.includes("europepmc"))).toBe(false);
+  });
+});

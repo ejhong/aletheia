@@ -635,7 +635,9 @@
   title: "Ballyns 2011: vibration sonoelastography stiff-area measurements separate active, latent and normal sites"
   claimIds:
     - VASO-C005
-    - VASO-C033
+    - VASO-C182
+    - VASO-C183
+    - VASO-C184
   sourceId: SRC-BALLYNS-2011
   direction: supports
   strength: moderate
@@ -646,12 +648,19 @@
     - Single vibration frequency from an off-the-shelf massager; the authors note frequency-independence was not confirmed and shear elasticity was not measured.
     - Sites were selected by palpation, so the measured contrast presupposes the palpated classification.
     - Same NIH lineage as SRC-SHAH-2008; not an independent group.
-  reviewState: ai_extracted
+    - "Relinked at the answer's re-reading 2026-09-20 (2026-09-20-answer-vasocomputation-172213): VASO-C033 was split into VASO-C182, VASO-C183, VASO-C184; this record now cites the parts, and which of them it bears on is for a later reading"
+  reviewState: provisional
   origin:
     ref: report 2026-09-09-report-vasocomputation-023157
     extractedBy: claude-fable-5-1
     runId: 2026-09-09-draft-vasocomputation-040754
     date: 2026-09-09
+  provisional:
+    since: 2026-09-20
+    exists: admitted read; relinked at the split of a claim it cited
+    reason: "Relinked at the answer's re-reading 2026-09-20 (2026-09-20-answer-vasocomputation-172213): VASO-C033 was split into VASO-C182, VASO-C183, VASO-C184; this record now cites the parts, and which of them it bears on is for a later reading"
+    route: re-read the record against each part it now cites (the re-verify pass does this)
+    by: 2026-09-20-answer-vasocomputation-172213
 - id: VASO-E024
   title: "Ballyns 2011: resistivity index did not differ between active, latent and normal sites"
   claimIds:
@@ -1353,7 +1362,6 @@
 - id: VASO-E074
   title: "Landfald 2025: active/latent differences in a second muscle as context for the graded-stiffness and fresh/old claims — part 2"
   claimIds:
-    - VASO-C033
     - VASO-C075
     - VASO-C076
   sourceId: SRC-LANDFALD-2025
@@ -1365,12 +1373,27 @@
   limitations:
     - Different muscle, method and site classes from the trapezius sonoelastography study.
     - Active/latent is not the fresh/old axis; the authors' 'earlier or less fibrotic' reading is their conjecture.
+    - "Second reader (claude-sonnet-5, 2026-09-20, run 2026-09-20-answer-vasocomputation-172213, verify-v6) found the passage bears on VASO-C075, VASO-C076 and not on VASO-C033; the link dropped at intake: The quote and 86%/60% figures are accurately drawn from the Discussion/Table 2 and the locator is correct, but this passage concerns active-vs-latent resolution speed in the gastrocnemius, not trapezius sonoelastographic lesion area, so it has no bearing on VASO-C033 despite being labeled 'context' for it. For the fresh/old claims (C075/C076) it offers only a weak, self-acknowledged analogy (active/latent is not the fresh/old axis, and the 'earlier/less fibrotic' reading is the authors' own speculation), which is fairly characterized as context. The record is otherwise atomic and does not need an independence note since it directly cites the primary study rather than repeating another cited source."
   reviewState: ai_extracted
   origin:
     ref: split of VASO-E057 (report 2026-09-20-report-vasocomputation-112413)
     extractedBy: claude-fable-5-1
     runId: 2026-09-20-verify-vasocomputation-113521
     date: 2026-09-20
+  readerActs:
+    - field: claimIds
+      from:
+        - VASO-C033
+        - VASO-C075
+        - VASO-C076
+      to:
+        - VASO-C075
+        - VASO-C076
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-20-answer-vasocomputation-172213
+      date: 2026-09-20
+      reason: The quote and 86%/60% figures are accurately drawn from the Discussion/Table 2 and the locator is correct, but this passage concerns active-vs-latent resolution speed in the gastrocnemius, not trapezius sonoelastographic lesion area, so it has no bearing on VASO-C033 despite being labeled 'context' for it. For the fresh/old claims (C075/C076) it offers only a weak, self-acknowledged analogy (active/latent is not the fresh/old axis, and the 'earlier/less fibrotic' reading is the authors' own speculation), which is fairly characterized as context. The record is otherwise atomic and does not need an independence note since it directly cites the primary study rather than repeating another cited source.
 - id: VASO-E075
   title: "Landfald 2025: active/latent differences in a second muscle as context for the graded-stiffness and fresh/old claims — part 3"
   claimIds:
@@ -1418,7 +1441,8 @@
   limitations:
     - Different muscle, method and site classes from the trapezius sonoelastography study.
     - Active/latent is not the fresh/old axis; the authors' 'earlier or less fibrotic' reading is their conjecture.
-  reviewState: ai_extracted
+    - "Refused at the answer's re-reading 2026-09-20 (2026-09-20-answer-vasocomputation-172213): every claim it cites was rejected"
+  reviewState: rejected
   origin:
     ref: split of VASO-E057 (report 2026-09-20-report-vasocomputation-112413)
     extractedBy: claude-fable-5-1
@@ -1427,7 +1451,6 @@
 - id: VASO-E077
   title: "Landfald 2025: active/latent differences in a second muscle as context for the graded-stiffness and fresh/old claims — part 5"
   claimIds:
-    - VASO-C033
     - VASO-C075
     - VASO-C076
   sourceId: SRC-LANDFALD-2025
@@ -1439,12 +1462,27 @@
   limitations:
     - Different muscle, method and site classes from the trapezius sonoelastography study.
     - Active/latent is not the fresh/old axis; the authors' 'earlier or less fibrotic' reading is their conjecture.
+    - "Second reader (claude-sonnet-5, 2026-09-20, run 2026-09-20-answer-vasocomputation-172213, verify-v6) found the passage bears on VASO-C075, VASO-C076 and not on VASO-C033; the link dropped at intake: The quote and locator are accurate and the statement fairly reflects the source's own hedged language about latent points' faster response needing controlled confirmation. But this observation concerns active/latent trigger-point response speed in the gastrocnemius, not the trapezius stiffness-area comparison that VASO-C033 addresses, so it does not bear on C033 at all. For C075/C076 it is only weak context since active/latent is explicitly not the same axis as fresh/old and the 'earlier or less fibrotic' reading is the authors' own speculation, not a finding about knot age."
   reviewState: ai_extracted
   origin:
     ref: split of VASO-E057 (report 2026-09-20-report-vasocomputation-112413)
     extractedBy: claude-fable-5-1
     runId: 2026-09-20-verify-vasocomputation-113521
     date: 2026-09-20
+  readerActs:
+    - field: claimIds
+      from:
+        - VASO-C033
+        - VASO-C075
+        - VASO-C076
+      to:
+        - VASO-C075
+        - VASO-C076
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-20-answer-vasocomputation-172213
+      date: 2026-09-20
+      reason: The quote and locator are accurate and the statement fairly reflects the source's own hedged language about latent points' faster response needing controlled confirmation. But this observation concerns active/latent trigger-point response speed in the gastrocnemius, not the trapezius stiffness-area comparison that VASO-C033 addresses, so it does not bear on C033 at all. For C075/C076 it is only weak context since active/latent is explicitly not the same axis as fresh/old and the 'earlier or less fibrotic' reading is the authors' own speculation, not a finding about knot age.
 - id: VASO-E078
   title: "Landfald 2025: no gold standard for detecting trigger points; palpation variability the authors' stated reason for adding imaging — part 1"
   claimIds:
@@ -1614,7 +1652,8 @@
     - Active/latent is not the fresh/old axis; the authors' 'earlier or less fibrotic' reading is their conjecture.
     - "Second reader (claude-sonnet-5, 2026-09-20, run 2026-09-20-verify-vasocomputation-113521, verify-v6) found the passage bears on VASO-C033 and not on VASO-C075, VASO-C076; the links dropped at intake: The quoted active-vs-latent comparison (VAS, cross-sectional area, stiffness ratio) is accurately drawn from Table 2/Discussion and is genuinely a different-muscle analogue that can serve as context for the trapezius active/latent claim C033. But the quoted statement says nothing about session counts, duration, or knot age/freshness, so it does not bear at all on the fresh-knot (C075) or ancient-knot (C076) claims about time-to-release, despite the record listing 'context' for all three."
     - One clause of a three-part comparison the source reports in one sentence and one table; the sibling parts carry the other two.
-  reviewState: ai_extracted
+    - "Refused at the answer's re-reading 2026-09-20 (2026-09-20-answer-vasocomputation-172213): every claim it cites was rejected"
+  reviewState: rejected
   origin:
     ref: "split of VASO-E073 (split of VASO-E057 (report 2026-09-20-report-vasocomputation-112413)) — part 1, made its own record by the operator answering the GPT-5.6 Sol seat's objection on #372 (compound record); quotes located verbatim by the operator in the Europe PMC full text on 2026-09-20"
     extractedBy: claude-fable-5-1 (operator, by hand)
@@ -1622,11 +1661,13 @@
     date: 2026-09-20
 - id: VASO-E085
   title: "Landfald 2025: active/latent differences in a second muscle as context for the graded-stiffness and fresh/old claims — part 2"
-  claimIds: *a1
+  claimIds:
+    - VASO-C182
+    - VASO-C184
   sourceId: SRC-LANDFALD-2025
   direction: context
   strength: weak
-  sourceStatement: "Active gastrocnemius MTrPs had a \"larger cross-sectional area (28 mm² vs. 17 mm², p = 0.014)\" than latent points; Table 2 gives 28 ± 6 against 17 ± 5 mm²."
+  sourceStatement: Active gastrocnemius MTrPs had a "larger cross-sectional area (28 mm² vs. 17 mm², p = 0.014)" than latent points; Table 2 gives 28 ± 6 against 17 ± 5 mm².
   editorInference: Size by clinical class in a second muscle; the same parallel, carrying no weight for or against the fresh/old claims.
   exactLocator: PMC12647689 (read via Europe PMC full text), Results, paragraph beginning 'Among the 103 identified MTrPs'; Table 2, row 'Cross-sectional area (mm2)'
   limitations:
@@ -1654,7 +1695,8 @@
     - Active/latent is not the fresh/old axis; the authors' 'earlier or less fibrotic' reading is their conjecture.
     - "Second reader (claude-sonnet-5, 2026-09-20, run 2026-09-20-verify-vasocomputation-113521, verify-v6) found the passage bears on VASO-C033 and not on VASO-C075, VASO-C076; the links dropped at intake: The quoted active-vs-latent comparison (VAS, cross-sectional area, stiffness ratio) is accurately drawn from Table 2/Discussion and is genuinely a different-muscle analogue that can serve as context for the trapezius active/latent claim C033. But the quoted statement says nothing about session counts, duration, or knot age/freshness, so it does not bear at all on the fresh-knot (C075) or ancient-knot (C076) claims about time-to-release, despite the record listing 'context' for all three."
     - One clause of a three-part comparison the source reports in one sentence and one table; the sibling parts carry the other two.
-  reviewState: ai_extracted
+    - "Refused at the answer's re-reading 2026-09-20 (2026-09-20-answer-vasocomputation-172213): every claim it cites was rejected"
+  reviewState: rejected
   origin:
     ref: "split of VASO-E073 (split of VASO-E057 (report 2026-09-20-report-vasocomputation-112413)) — part 3, made its own record by the operator answering the GPT-5.6 Sol seat's objection on #372 (compound record); quotes located verbatim by the operator in the Europe PMC full text on 2026-09-20"
     extractedBy: claude-fable-5-1 (operator, by hand)

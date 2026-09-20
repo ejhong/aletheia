@@ -188,6 +188,8 @@ export interface AnswerOutcome {
   objections: Objection[];
   classified: { records: string[]; edition: number };
   records: ReverifyOutcome | null;
+  /** The reading of the records relinked at a split, when the re-reading relinked any. */
+  relinked?: ReverifyOutcome | null;
   edition: EditionOutcome | null;
   /** Why nothing ran, when nothing did. */
   refused?: string;

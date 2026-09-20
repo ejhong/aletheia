@@ -713,43 +713,64 @@ export async function judgeProposal(
         continue;
       }
       const admitted: Evidence[] = [];
-      for (const [n, part] of sp.parts.entries()) {
-        const label = `${e.id} part "${part.slice(0, 60)}"`;
-        if (!quotedSpans(part).length) {
-          notes.push(`${label} refused: no verbatim quote of the source`);
-          continue;
-        }
-        const missing = unverifiedQuotes(part, fetched.text);
-        if (missing.length) {
-          notes.push(`${label} refused: quoted span not found verbatim in the text of ${e.sourceId}: ${missing.map((q) => `"${q}"`).join("; ")}`);
-          continue;
-        }
-        const id = nextEvidenceId(loaded, [...proposal.adds.evidence.map((x) => x.id), ...okEvidence.map((x) => x.id), ...admitted.map((x) => x.id)]);
-        const candidate: Evidence = { ...e, id, title: `${e.title} — part ${n + 1}`, sourceStatement: part, origin: { ref: `split of ${e.id} (${e.origin.ref})`, extractedBy: sp.model ?? splitter.model, runId: sp.runId ?? splitter.runId, date: sp.date ?? reader.date } };
-        // A part keeps the page its own quote is on, not the parent's whole locator (2026-09-11: a part quoting
-        // p. 1 alone carried "p. 1 and p. 4", and the panel parked the sitting for it).
-        const page = pageOfQuote(fetched.text, quotedSpans(part)[0]);
-        if (page !== null && e.exactLocator && /\[p\. \d+\]/.test(e.exactLocator)) {
-          const narrowed = narrowLocator(e.exactLocator, page);
-          if (narrowed !== e.exactLocator) {
-            candidate.exactLocator = narrowed;
-            candidate.readerActs = [...(candidate.readerActs ?? []), { field: "exactLocator", from: e.exactLocator, to: narrowed, model: "verify (mechanical: the page marker before the part's quote)", runId: meter.runId, promptVersion, date: reader.date, reason: `the part quotes p. ${page} only` }];
+      // A part the reader refuses as compound — and for nothing else — is split once more, a second round and no
+      // third: the source states each finding on its own, and a first split often keeps two or three together
+      // (2026-09-20: the record behind the graded-area claims was refused with every one of four parts still
+      // bundling two comparisons, and the case lost it).
+      const text = fetched.text; // narrowed above; the closure would not see it
+      const judgeParts = async (parts: string[], sp: SplitResult, prefix: string, depth: number): Promise<void> => {
+        for (const [n, part] of parts.entries()) {
+          const nth = prefix ? `${prefix}.${n + 1}` : `${n + 1}`;
+          const label = `${e.id} part "${part.slice(0, 60)}"`;
+          if (!quotedSpans(part).length) {
+            notes.push(`${label} refused: no verbatim quote of the source`);
+            continue;
           }
+          const missing = unverifiedQuotes(part, text);
+          if (missing.length) {
+            notes.push(`${label} refused: quoted span not found verbatim in the text of ${e.sourceId}: ${missing.map((q) => `"${q}"`).join("; ")}`);
+            continue;
+          }
+          const id = nextEvidenceId(loaded, [...proposal.adds.evidence.map((x) => x.id), ...okEvidence.map((x) => x.id), ...admitted.map((x) => x.id)]);
+          const candidate: Evidence = { ...e, id, title: `${e.title} — part ${nth}`, sourceStatement: part, origin: { ref: `split of ${e.id} (${e.origin.ref})${depth > 1 ? "; second round" : ""}`, extractedBy: sp.model ?? splitter.model, runId: sp.runId ?? splitter.runId, date: sp.date ?? reader.date } };
+          // A part keeps the page its own quote is on, not the parent's whole locator (2026-09-11: a part quoting
+          // p. 1 alone carried "p. 1 and p. 4", and the panel parked the sitting for it).
+          const page = pageOfQuote(text, quotedSpans(part)[0]);
+          if (page !== null && e.exactLocator && /\[p\. \d+\]/.test(e.exactLocator)) {
+            const narrowed = narrowLocator(e.exactLocator, page);
+            if (narrowed !== e.exactLocator) {
+              candidate.exactLocator = narrowed;
+              candidate.readerActs = [...(candidate.readerActs ?? []), { field: "exactLocator", from: e.exactLocator, to: narrowed, model: "verify (mechanical: the page marker before the part's quote)", runId: meter.runId, promptVersion, date: reader.date, reason: `the part quotes p. ${page} only` }];
+            }
+          }
+          const v2 = await judge({ ...candidate, editorInference: undefined }, text, context, meter);
+          const bad = Object.entries(v2).filter(([k, v]) => k !== "reason" && v === false && k !== "directionRight").map(([k]) => k);
+          if (bad.length) {
+            if (bad.length === 1 && bad[0] === "atomic" && depth < 2) {
+              let again: SplitResult;
+              try {
+                again = asSplit(await split(part, text, meter, "evidence"));
+              } catch (err) {
+                notes.push(`${label} refused (atomic): ${v2.reason}; the second split failed: ${(err as Error).message}`);
+                continue;
+              }
+              notes.push(`${label} still not one observation (${v2.reason}); split again into ${again.parts.length} part(s)`);
+              await judgeParts(again.parts, again, nth, depth + 1);
+              continue;
+            }
+            notes.push(`${label} refused (${bad.join(", ")}): ${v2.reason}`);
+            continue;
+          }
+          const applied = applyReader(candidate, v2, readerStamp(v2), freshEvidenceIds(loaded, () => [...proposal.adds.evidence.map((x) => x.id), ...okEvidence.map((x) => x.id), ...admitted.map((x) => x.id), candidate.id]));
+          if (!applied) {
+            notes.push(`${label} refused: the second reader finds it bears on none of the claims it names: ${v2.reason}`);
+            continue;
+          }
+          notes.push(...applied.notes);
+          admitted.push(...applied.records);
         }
-        const v2 = await judge({ ...candidate, editorInference: undefined }, fetched.text, context, meter);
-        const bad = Object.entries(v2).filter(([k, v]) => k !== "reason" && v === false && k !== "directionRight").map(([k]) => k);
-        if (bad.length) {
-          notes.push(`${label} refused (${bad.join(", ")}): ${v2.reason}`);
-          continue;
-        }
-        const applied = applyReader(candidate, v2, readerStamp(v2), freshEvidenceIds(loaded, () => [...proposal.adds.evidence.map((x) => x.id), ...okEvidence.map((x) => x.id), ...admitted.map((x) => x.id), candidate.id]));
-        if (!applied) {
-          notes.push(`${label} refused: the second reader finds it bears on none of the claims it names: ${v2.reason}`);
-          continue;
-        }
-        notes.push(...applied.notes);
-        admitted.push(...applied.records);
-      }
+      };
+      await judgeParts(sp.parts, sp, "", 1);
       reject(e.id, "evidence", e.title, `not one observation (${verdict.reason}); split into ${admitted.length ? admitted.map((x) => x.id).join(", ") : "nothing that survived"}`);
       okEvidence.push(...admitted);
       continue;
@@ -814,28 +835,46 @@ export async function judgeProposal(
             continue;
           }
           const admitted: Claim[] = [];
-          for (const [n, part] of sp.parts.entries()) {
-            const id = nextClaimId(loaded, [...proposal.adds.claims.map((k) => k.id), ...okClaims.map((k) => k.id), ...admitted.map((k) => k.id)]);
-            // A part is judged on an anchor that fits it: the splitter's own quote for the part, when the text carries
-            // it verbatim (split-v4; 2026-09-20: parts judged on the compound's anchor failed a locator that fit the
-            // whole and not each part), else the compound's anchor, said so in the account.
-            const own = sp.anchors?.[n];
-            const anchored = own?.quote && !unverifiedQuotes(`"${own.quote}"`, fetched.text ?? "").length;
-            const anchor = anchored ? { ...c.sourceAnchor, quote: own!.quote, locator: own!.locator || c.sourceAnchor.locator, also: undefined } : c.sourceAnchor;
-            if (own?.quote && !anchored) notes.push(`${c.id} part "${part.slice(0, 60)}": the splitter's quote is not in the text verbatim ("${own.quote.slice(0, 80)}"); judged on the compound's anchor`);
-            // The part's wording is the splitter's, not the drafter's: its origin says so.
-            // A part keeps the compound's place in the ladder (its parents); the compound's dependencies,
-            // alternatives and contradictions are the compound's, not each part's, and are not carried over
-            // (§3.2) — said aloud below so a later pass can propose them per part.
-            const candidate: Claim = { ...c, id, statement: part, sourceAnchor: anchor, dependsOnClaimIds: [], alternativeToClaimIds: [], contradictsClaimIds: [], origin: { ref: `split of ${c.id} (${c.origin.ref})${anchored ? "; anchored by the splitter in the same text" : ""}`, extractedBy: sp.model ?? splitter.model, runId: sp.runId ?? splitter.runId, date: sp.date ?? reader.date } };
-            const v2 = await judge({ statement: part, anchor }, fetched.text, anchorContext, meter);
-            const bad = Object.entries(v2).filter(([k, v]) => k !== "reason" && v === false && k !== "independenceNoted" && k !== "directionRight").map(([k]) => k);
-            if (bad.length) {
-              notes.push(`${c.id} part "${part.slice(0, 60)}" refused (${bad.join(", ")}): ${v2.reason}`);
-              continue;
+          // As for evidence: a part refused as compound, and for nothing else, is split once more and no further.
+          const text = fetched.text ?? ""; // narrowed above; the closure would not see it
+          const parentAnchor = c.sourceAnchor!;
+          const judgeParts = async (parts: string[], sp: SplitResult, depth: number): Promise<void> => {
+            for (const [n, part] of parts.entries()) {
+              const id = nextClaimId(loaded, [...proposal.adds.claims.map((k) => k.id), ...okClaims.map((k) => k.id), ...admitted.map((k) => k.id)]);
+              // A part is judged on an anchor that fits it: the splitter's own quote for the part, when the text carries
+              // it verbatim (split-v4; 2026-09-20: parts judged on the compound's anchor failed a locator that fit the
+              // whole and not each part), else the compound's anchor, said so in the account.
+              const own = sp.anchors?.[n];
+              const anchored = own?.quote && !unverifiedQuotes(`"${own.quote}"`, text ?? "").length;
+              const anchor = anchored ? { ...parentAnchor, quote: own!.quote, locator: own!.locator || parentAnchor.locator, also: undefined } : parentAnchor;
+              if (own?.quote && !anchored) notes.push(`${c.id} part "${part.slice(0, 60)}": the splitter's quote is not in the text verbatim ("${own.quote.slice(0, 80)}"); judged on the compound's anchor`);
+              // The part's wording is the splitter's, not the drafter's: its origin says so.
+              // A part keeps the compound's place in the ladder (its parents); the compound's dependencies,
+              // alternatives and contradictions are the compound's, not each part's, and are not carried over
+              // (§3.2) — said aloud below so a later pass can propose them per part.
+              const candidate: Claim = { ...c, id, statement: part, sourceAnchor: anchor, dependsOnClaimIds: [], alternativeToClaimIds: [], contradictsClaimIds: [], origin: { ref: `split of ${c.id} (${c.origin.ref})${anchored ? "; anchored by the splitter in the same text" : ""}${depth > 1 ? "; second round" : ""}`, extractedBy: sp.model ?? splitter.model, runId: sp.runId ?? splitter.runId, date: sp.date ?? reader.date } };
+              const v2 = await judge({ statement: part, anchor }, text, anchorContext, meter);
+              const bad = Object.entries(v2).filter(([k, v]) => k !== "reason" && v === false && k !== "independenceNoted" && k !== "directionRight").map(([k]) => k);
+              if (bad.length) {
+                if (bad.length === 1 && bad[0] === "atomic" && depth < 2) {
+                  let again: SplitResult;
+                  try {
+                    again = asSplit(await split(part, text, meter));
+                  } catch (err) {
+                    notes.push(`${c.id} part "${part.slice(0, 60)}" refused (atomic): ${v2.reason}; the second split failed: ${(err as Error).message}`);
+                    continue;
+                  }
+                  notes.push(`${c.id} part "${part.slice(0, 60)}" still not one proposition (${v2.reason}); split again into ${again.parts.length} part(s)`);
+                  await judgeParts(again.parts, again, depth + 1);
+                  continue;
+                }
+                notes.push(`${c.id} part "${part.slice(0, 60)}" refused (${bad.join(", ")}): ${v2.reason}`);
+                continue;
+              }
+              admitted.push(candidate);
             }
-            admitted.push(candidate);
-          }
+          };
+          await judgeParts(sp.parts, sp, 1);
           const relations = [["dependsOn", c.dependsOnClaimIds], ["alternativeTo", c.alternativeToClaimIds], ["contradicts", c.contradictsClaimIds]].filter(([, v]) => (v as string[] | undefined)?.length).map(([k, v]) => `${k} ${(v as string[]).join(", ")}`);
           if (relations.length && admitted.length) notes.push(`${c.id}: its relations (${relations.join("; ")}) were not carried to its parts ${admitted.map((k) => k.id).join(", ")} — each part's relations are its own to propose`);
           reject(c.id, "claim", c.statement, `not atomic (${verdict.reason}); split into ${admitted.length ? admitted.map((k) => k.id).join(", ") : "nothing that survived"}`);

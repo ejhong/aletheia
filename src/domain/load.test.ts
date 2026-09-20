@@ -704,6 +704,21 @@ describe("edition integrity", () => {
     // An id no claim carries at all is an error for every edition.
     expect(editionErrors({ ...c, editions: c.editions.map((e, i) => (i === 0 ? { ...e, featuredClaimIds: [...e.featuredClaimIds, "GEO-C000"] } : e)) }).some((e) => /features unknown or rejected claim GEO-C000/.test(e))).toBe(true);
   });
+  it("a retired agenda item may reference a claim rejected since; an open one may not", () => {
+    const c = geo();
+    const ro = c.research.find((r) => r.claimIds.length === 1)!;
+    const id = ro.claimIds[0];
+    const claims = c.claims.map((k) => (k.id === id ? { ...k, reviewState: "rejected" as const, rejectionReason: "refused since" } : k));
+    const stale = "0".repeat(64);
+    const others = {
+      evidence: c.evidence.map((e) => (e.claimIds.includes(id) ? { ...e, claimIds: e.claimIds.filter((x) => x !== id).length ? e.claimIds.filter((x) => x !== id) : e.claimIds, reviewState: e.claimIds.filter((x) => x !== id).length ? e.reviewState : ("rejected" as const), limitations: e.claimIds.filter((x) => x !== id).length ? e.limitations : [...e.limitations, "refused since"] } : e)),
+      images: c.images.map((i) => ({ ...i, claimIds: i.claimIds.filter((x) => x !== id) })),
+    };
+    const retired = { ...c, claims, ledgerHash: stale, ...others, research: c.research.map((r) => (r.id === ro.id ? { ...r, status: "retired" as const, statusNote: "its claim was refused", statusBy: "test-run", statusDate: "2026-09-20" } : r.claimIds.includes(id) ? { ...r, claimIds: r.claimIds.filter((x) => x !== id) } : r)) };
+    expect(() => checkIntegrity(c.dir, retired)).not.toThrow();
+    const open = { ...retired, research: retired.research.map((r) => (r.id === ro.id ? { ...r, status: "open" as const } : r)) };
+    expect(() => checkIntegrity(c.dir, open)).toThrow(new RegExp(`research ${ro.id} references rejected claim ${id}`));
+  });
   it("a tombstone and an assessment run may reference a claim rejected since; a live record may not", () => {
     const c = geo();
     const ev = c.evidence.find((e) => e.reviewState !== "rejected" && e.claimIds.length === 1)!;

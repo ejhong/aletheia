@@ -819,7 +819,10 @@ export async function judgeProposal(
 
   // Claims: an anchor's quote must be verbatim and read right; otherwise an accepted evidence record must cite the claim.
   const okClaims: Claim[] = [];
-  const citedBy = new Set(okEvidence.flatMap((e) => e.claimIds));
+  // A claim is anchored by a source anchor or by evidence that cites it — the evidence of this proposal, or the
+  // ledger's live evidence when a claim already in the ledger is read again at a settlement (2026-09-20: a founding
+  // claim anchored by six live records was refused as unanchored when an answer re-read it on its own).
+  const citedBy = new Set([...okEvidence.flatMap((e) => e.claimIds), ...loaded.evidence.filter((e) => e.reviewState !== "rejected").flatMap((e) => e.claimIds)]);
   for (const c of proposal.adds.claims) {
     if (c.sourceAnchor?.quote) {
       const sid = c.sourceAnchor.sourceId;

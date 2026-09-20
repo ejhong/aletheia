@@ -275,6 +275,7 @@ export async function settleRecords(caseSlug: string, settlement: Settlement, op
       }
       return notRestored;
     };
+    const notesBefore = notes.length;
     // Materialize. Every row, count and history line below is derived from what was actually written (review note
     // #326): a record that could not be promoted or appended after all is settled as unread, once, and only once.
     const caseDir = loaded.dir;
@@ -373,7 +374,19 @@ export async function settleRecords(caseSlug: string, settlement: Settlement, op
       // plates are live records; a link to a tombstone would keep the case from loading).
       for (const r of loaded.research) {
         if (!r.claimIds?.some((id) => refusedClaims.has(id))) continue;
-        setField(file("research.yaml"), r.id, "claimIds", r.claimIds, relive(r.claimIds));
+        const kept = relive(r.claimIds);
+        const f = file("research.yaml");
+        if (kept.length) setField(f, r.id, "claimIds", r.claimIds, kept);
+        else {
+          // An agenda item whose every claim is refused retires — its claims kept as the record of what it served,
+          // which a retired item may reference — rather than standing with none (2026-09-20: an item citing one claim
+          // would have been written with an empty list, and the case would not load).
+          setField(f, r.id, "status", r.status ?? null, "retired");
+          setField(f, r.id, "statusNote", r.statusNote ?? null, `Retired at ${tag === "answer" ? "the answer's re-reading" : "re-verification"} ${date} (${runId}): every claim it served was refused (${r.claimIds.join(", ")})`);
+          setField(f, r.id, "statusBy", r.statusBy ?? null, runId);
+          setField(f, r.id, "statusDate", r.statusDate ?? null, date);
+          notes.push(`${r.id}: every claim it served was refused; retired`);
+        }
         wrote.add(`content/cases/${caseDir}/research.yaml`);
       }
       for (const im of loaded.images) {
@@ -407,8 +420,12 @@ export async function settleRecords(caseSlug: string, settlement: Settlement, op
     if (rows.length) appendDispositions(caseDir, rows, root);
     const finalCounts = { promoted: done.promoted.length, appended: done.appended.length, refused: done.refused.length, unread: seenUnread.size };
     const finalSummary = `${tag}: promoted ${finalCounts.promoted}, appended ${finalCounts.appended}, refused ${finalCounts.refused}, still unread ${finalCounts.unread}`;
-    if (finalSummary !== summary) {
-      writeWorkingFile(runId, "verification.md", report + `\n## What was written\n- ${finalSummary} (the plan above forecast: ${summary})\n`, root);
+    // The account is written before the ledger is; what the writing itself found — a record relinked, an agenda
+    // item retired, a summary that differs from the forecast — is appended to it (2026-09-20: a retirement's note
+    // was never in the account).
+    const written = notes.slice(notesBefore);
+    if (finalSummary !== summary || written.length) {
+      writeWorkingFile(runId, "verification.md", report + `\n## What was written\n- ${finalSummary}${finalSummary !== summary ? ` (the plan above forecast: ${summary})` : ""}\n${written.map((n) => `- ${n}\n`).join("")}`, root);
     }
     appendHistory(
       caseDir,

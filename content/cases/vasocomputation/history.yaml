@@ -334,3 +334,10 @@
   promptVersion: operator-by-hand-v1
   aiAssisted: true
   kind: content
+
+- date: 2026-09-20
+  change: "Records relinked to the parts of a split claim, read against them (VASO-C033 → VASO-C182, VASO-C183, VASO-C184) (2026-09-20-reverify-vasocomputation-190441): re-verify: promoted 0, appended 13, refused 1, still unread 0. Appended: VASO-E087, VASO-E088, VASO-E089, VASO-E090, VASO-E091, VASO-E092, VASO-E093, VASO-E094, VASO-E095, VASO-E096, VASO-E097, VASO-E098, VASO-E099. Refused: VASO-E023 (not one observation (The quoted figures and ROC values accurately reflect the abstract/results text at the stated locator, correctly attributed and unqualified by hedging beyond what the source states, and the record properly flags shared NIH lineage with the Shah paper. The direction (supports) is correct toward all four named claims, since the passage directly reports the area comparisons and ROC discrimination cited by VASO-C182–184 and bears on the stiffness/blood-flow portion of the broader VASO-C005. However, the sourceStatement bundles several distinct findings (three group means, a pairwise significance claim, and three separate ROC AUC values) into one statement, so it is not atomic and should be split into part-level records for re-judging.); split into VASO-E087, VASO-E088, VASO-E089, VASO-E090, VASO-E091, VASO-E092, VASO-E093, VASO-E094, VASO-E095, VASO-E096, VASO-E097, VASO-E098, VASO-E099)."
+  reason: A claim these records cited was found compound and replaced by its parts; a record's bearing on each part is read, not inherited (§3.5). What bears on a part keeps that link with the reader's stamps; what bears on none is refused; what could not be read stays provisional.
+  actor: "aletheia answer (claude-sonnet-5 second reader), on #372 — the record relinked at the split of VASO-C033 in run 2026-09-20-answer-vasocomputation-172213, read against the parts by the operator's call after #390 gave the answer step this pass"
+  aiAssisted: true
+  kind: content

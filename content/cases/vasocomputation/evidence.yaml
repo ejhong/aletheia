@@ -649,7 +649,8 @@
     - Sites were selected by palpation, so the measured contrast presupposes the palpated classification.
     - Same NIH lineage as SRC-SHAH-2008; not an independent group.
     - "Relinked at the answer's re-reading 2026-09-20 (2026-09-20-answer-vasocomputation-172213): VASO-C033 was split into VASO-C182, VASO-C183, VASO-C184; this record now cites the parts, and which of them it bears on is for a later reading"
-  reviewState: provisional
+    - "Refused at re-verification 2026-09-20 (2026-09-20-reverify-vasocomputation-190441): not one observation (The quoted figures and ROC values accurately reflect the abstract/results text at the stated locator, correctly attributed and unqualified by hedging beyond what the source states, and the record properly flags shared NIH lineage with the Shah paper. The direction (supports) is correct toward all four named claims, since the passage directly reports the area comparisons and ROC discrimination cited by VASO-C182–184 and bears on the stiffness/blood-flow portion of the broader VASO-C005. However, the sourceStatement bundles several distinct findings (three group means, a pairwise significance claim, and three separate ROC AUC values) into one statement, so it is not atomic and should be split into part-level records for re-judging.); split into VASO-E087, VASO-E088, VASO-E089, VASO-E090, VASO-E091, VASO-E092, VASO-E093, VASO-E094, VASO-E095, VASO-E096, VASO-E097, VASO-E098, VASO-E099"
+  reviewState: rejected
   origin:
     ref: report 2026-09-09-report-vasocomputation-023157
     extractedBy: claude-fable-5-1
@@ -1702,3 +1703,525 @@
     extractedBy: claude-fable-5-1 (operator, by hand)
     runId: session_01AiXD4y5Y91KC7iM3uBhWmu
     date: 2026-09-20
+
+- id: VASO-E087
+  title: "Ballyns 2011: vibration sonoelastography stiff-area measurements separate active, latent and normal sites — part 1.1"
+  claimIds:
+    - VASO-C005
+    - VASO-C182
+    - VASO-C184
+  sourceId: SRC-BALLYNS-2011
+  direction: supports
+  strength: moderate
+  sourceStatement: 'On sonoelastography, active sites (spontaneously painful with palpable myofascial trigger points) had larger trigger points, with a mean ± SD area of 0.57 ± 0.20 cm², as stated: "active sites (spontaneously painful with palpable myofascial trigger points) had larger trigger points".'
+  editorInference: Direct instrumented support for the stiffness component of VASO-C005 and for the graded active/latent/normal ordering. Sonographers were blinded to clinical status, which is stronger than the palpation-only literature. It says nothing about what the stiff tissue is (contracted fibre, guarding, fascial change, or vascular).
+  exactLocator: PMC3493620 author manuscript, Abstract (Results) and Results, paragraph beginning 'Trigger point areas assessed by vibration elastography' (via open-access PMC copy)
+  limitations:
+    - Single vibration frequency from an off-the-shelf massager; the authors note frequency-independence was not confirmed and shear elasticity was not measured.
+    - Sites were selected by palpation, so the measured contrast presupposes the palpated classification.
+    - Same NIH lineage as SRC-SHAH-2008; not an independent group.
+    - "Relinked at the answer's re-reading 2026-09-20 (2026-09-20-answer-vasocomputation-172213): VASO-C033 was split into VASO-C182, VASO-C183, VASO-C184; this record now cites the parts, and which of them it bears on is for a later reading"
+    - "Second reader (claude-sonnet-5, 2026-09-20, run 2026-09-20-reverify-vasocomputation-190441, verify-v6) found the passage bears on VASO-C005, VASO-C182, VASO-C184 and not on VASO-C183; the link dropped at intake: The quoted phrase and the 0.57\\u00b10.20 cm\\u00b2 active-site value are accurately drawn from the Results/Abstract and are at the stated locator, and the statement is a fair, non-inflated account of that value, so it supports the general difference claim (C005) and, since the active value matches exactly what is needed for the active-vs-latent comparison, also bears on C182 and C184. But it says nothing about the normal-site value (0.17\\u00b10.22) needed to support C183's active-and-latent-vs-normal comparison, so that claim is not borne on by this passage. Independence is properly flagged in the limitations, and the record is a single atomic proposition."
+  reviewState: ai_extracted
+  origin:
+    ref: split of VASO-E023 (report 2026-09-09-report-vasocomputation-023157); second round
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-20-reverify-vasocomputation-190441
+    date: 2026-09-20
+  readerActs:
+    - field: claimIds
+      from:
+        - VASO-C005
+        - VASO-C182
+        - VASO-C183
+        - VASO-C184
+      to:
+        - VASO-C005
+        - VASO-C182
+        - VASO-C184
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-20-reverify-vasocomputation-190441
+      date: 2026-09-20
+      reason: The quoted phrase and the 0.57\u00b10.20 cm\u00b2 active-site value are accurately drawn from the Results/Abstract and are at the stated locator, and the statement is a fair, non-inflated account of that value, so it supports the general difference claim (C005) and, since the active value matches exactly what is needed for the active-vs-latent comparison, also bears on C182 and C184. But it says nothing about the normal-site value (0.17\u00b10.22) needed to support C183's active-and-latent-vs-normal comparison, so that claim is not borne on by this passage. Independence is properly flagged in the limitations, and the record is a single atomic proposition.
+- id: VASO-E088
+  title: "Ballyns 2011: vibration sonoelastography stiff-area measurements separate active, latent and normal sites — part 1.2"
+  claimIds:
+    - VASO-C005
+  sourceId: SRC-BALLYNS-2011
+  direction: context
+  strength: moderate
+  sourceStatement: 'Latent sites (palpable trigger points painful on palpation) had a mean trigger point area of 0.36 ± 0.16 cm², as stated: "latent sites (palpable trigger points painful on palpation; 0.36 ± 0.16 cm²)".'
+  editorInference: Direct instrumented support for the stiffness component of VASO-C005 and for the graded active/latent/normal ordering. Sonographers were blinded to clinical status, which is stronger than the palpation-only literature. It says nothing about what the stiff tissue is (contracted fibre, guarding, fascial change, or vascular).
+  exactLocator: PMC3493620 author manuscript, Abstract (Results) and Results, paragraph beginning 'Trigger point areas assessed by vibration elastography' (via open-access PMC copy)
+  limitations:
+    - Single vibration frequency from an off-the-shelf massager; the authors note frequency-independence was not confirmed and shear elasticity was not measured.
+    - Sites were selected by palpation, so the measured contrast presupposes the palpated classification.
+    - Same NIH lineage as SRC-SHAH-2008; not an independent group.
+    - "Relinked at the answer's re-reading 2026-09-20 (2026-09-20-answer-vasocomputation-172213): VASO-C033 was split into VASO-C182, VASO-C183, VASO-C184; this record now cites the parts, and which of them it bears on is for a later reading"
+    - "Second reader (claude-sonnet-5, 2026-09-20, run 2026-09-20-reverify-vasocomputation-190441, verify-v6) found the passage bears on VASO-C005, VASO-C182 and not on VASO-C183, VASO-C184; the links dropped at intake: The quote and locator are accurate and the record fairly reports the latent-site mean area (0.36 ± 0.16 cm²). This number directly matches and supports VASO-C182 (which states both means), but the record contains no normal-site value or significance test, so it does not itself bear on VASO-C183's normal-comparison claim or on VASO-C184's active-vs-latent significance claim. It only generally bears on VASO-C005's broad claim of measurable differences, so that is context rather than direct support. Independence is properly noted given shared NIH lineage."
+    - "Second reader (claude-sonnet-5, 2026-09-20, run 2026-09-20-reverify-vasocomputation-190441, verify-v6) found the passage bears in different directions on the claims the record named; this record carries \"context\" toward VASO-C005, the rest went to a record of its own at intake: The quote and locator are accurate and the record fairly reports the latent-site mean area (0.36 ± 0.16 cm²). This number directly matches and supports VASO-C182 (which states both means), but the record contains no normal-site value or significance test, so it does not itself bear on VASO-C183's normal-comparison claim or on VASO-C184's active-vs-latent significance claim. It only generally bears on VASO-C005's broad claim of measurable differences, so that is context rather than direct support. Independence is properly noted given shared NIH lineage."
+  reviewState: ai_extracted
+  origin:
+    ref: split of VASO-E023 (report 2026-09-09-report-vasocomputation-023157); second round
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-20-reverify-vasocomputation-190441
+    date: 2026-09-20
+  readerActs:
+    - field: claimIds
+      from:
+        - VASO-C005
+        - VASO-C182
+        - VASO-C183
+        - VASO-C184
+      to:
+        - VASO-C005
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-20-reverify-vasocomputation-190441
+      date: 2026-09-20
+      reason: The quote and locator are accurate and the record fairly reports the latent-site mean area (0.36 ± 0.16 cm²). This number directly matches and supports VASO-C182 (which states both means), but the record contains no normal-site value or significance test, so it does not itself bear on VASO-C183's normal-comparison claim or on VASO-C184's active-vs-latent significance claim. It only generally bears on VASO-C005's broad claim of measurable differences, so that is context rather than direct support. Independence is properly noted given shared NIH lineage.
+    - field: direction
+      from: supports
+      to: context
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-20-reverify-vasocomputation-190441
+      date: 2026-09-20
+      reason: The quote and locator are accurate and the record fairly reports the latent-site mean area (0.36 ± 0.16 cm²). This number directly matches and supports VASO-C182 (which states both means), but the record contains no normal-site value or significance test, so it does not itself bear on VASO-C183's normal-comparison claim or on VASO-C184's active-vs-latent significance claim. It only generally bears on VASO-C005's broad claim of measurable differences, so that is context rather than direct support. Independence is properly noted given shared NIH lineage.
+- id: VASO-E089
+  title: "Ballyns 2011: vibration sonoelastography stiff-area measurements separate active, latent and normal sites — part 1.2 — toward VASO-C182"
+  claimIds:
+    - VASO-C182
+  sourceId: SRC-BALLYNS-2011
+  direction: supports
+  strength: moderate
+  sourceStatement: 'Latent sites (palpable trigger points painful on palpation) had a mean trigger point area of 0.36 ± 0.16 cm², as stated: "latent sites (palpable trigger points painful on palpation; 0.36 ± 0.16 cm²)".'
+  editorInference: Direct instrumented support for the stiffness component of VASO-C005 and for the graded active/latent/normal ordering. Sonographers were blinded to clinical status, which is stronger than the palpation-only literature. It says nothing about what the stiff tissue is (contracted fibre, guarding, fascial change, or vascular).
+  exactLocator: PMC3493620 author manuscript, Abstract (Results) and Results, paragraph beginning 'Trigger point areas assessed by vibration elastography' (via open-access PMC copy)
+  limitations:
+    - Single vibration frequency from an off-the-shelf massager; the authors note frequency-independence was not confirmed and shear elasticity was not measured.
+    - Sites were selected by palpation, so the measured contrast presupposes the palpated classification.
+    - Same NIH lineage as SRC-SHAH-2008; not an independent group.
+    - "Relinked at the answer's re-reading 2026-09-20 (2026-09-20-answer-vasocomputation-172213): VASO-C033 was split into VASO-C182, VASO-C183, VASO-C184; this record now cites the parts, and which of them it bears on is for a later reading"
+    - "Second reader (claude-sonnet-5, 2026-09-20, run 2026-09-20-reverify-vasocomputation-190441, verify-v6) found the passage bears in different directions on the claims the record named; this record carries \"supports\" toward VASO-C182, the rest went to a record of its own at intake: The quote and locator are accurate and the record fairly reports the latent-site mean area (0.36 ± 0.16 cm²). This number directly matches and supports VASO-C182 (which states both means), but the record contains no normal-site value or significance test, so it does not itself bear on VASO-C183's normal-comparison claim or on VASO-C184's active-vs-latent significance claim. It only generally bears on VASO-C005's broad claim of measurable differences, so that is context rather than direct support. Independence is properly noted given shared NIH lineage."
+  reviewState: ai_extracted
+  origin:
+    ref: split of VASO-E023 (report 2026-09-09-report-vasocomputation-023157); second round
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-20-reverify-vasocomputation-190441
+    date: 2026-09-20
+  readerActs:
+    - field: claimIds
+      from:
+        - VASO-C005
+        - VASO-C182
+        - VASO-C183
+        - VASO-C184
+      to:
+        - VASO-C182
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-20-reverify-vasocomputation-190441
+      date: 2026-09-20
+      reason: The quote and locator are accurate and the record fairly reports the latent-site mean area (0.36 ± 0.16 cm²). This number directly matches and supports VASO-C182 (which states both means), but the record contains no normal-site value or significance test, so it does not itself bear on VASO-C183's normal-comparison claim or on VASO-C184's active-vs-latent significance claim. It only generally bears on VASO-C005's broad claim of measurable differences, so that is context rather than direct support. Independence is properly noted given shared NIH lineage.
+- id: VASO-E090
+  title: "Ballyns 2011: vibration sonoelastography stiff-area measurements separate active, latent and normal sites — part 1.3"
+  claimIds:
+    - VASO-C005
+    - VASO-C183
+  sourceId: SRC-BALLYNS-2011
+  direction: supports
+  strength: moderate
+  sourceStatement: 'Palpably normal sites had a mean trigger point area of 0.17 ± 0.22 cm², with the difference across site types significant at P < .01, as stated: "palpably normal sites (0.17 ± 0.22 cm²; P < .01)".'
+  editorInference: Direct instrumented support for the stiffness component of VASO-C005 and for the graded active/latent/normal ordering. Sonographers were blinded to clinical status, which is stronger than the palpation-only literature. It says nothing about what the stiff tissue is (contracted fibre, guarding, fascial change, or vascular).
+  exactLocator: PMC3493620 author manuscript, Abstract (Results) and Results, paragraph beginning 'Trigger point areas assessed by vibration elastography' (via open-access PMC copy)
+  limitations:
+    - Single vibration frequency from an off-the-shelf massager; the authors note frequency-independence was not confirmed and shear elasticity was not measured.
+    - Sites were selected by palpation, so the measured contrast presupposes the palpated classification.
+    - Same NIH lineage as SRC-SHAH-2008; not an independent group.
+    - "Relinked at the answer's re-reading 2026-09-20 (2026-09-20-answer-vasocomputation-172213): VASO-C033 was split into VASO-C182, VASO-C183, VASO-C184; this record now cites the parts, and which of them it bears on is for a later reading"
+    - "Second reader (claude-sonnet-5, 2026-09-20, run 2026-09-20-reverify-vasocomputation-190441, verify-v6) found the passage bears on VASO-C005, VASO-C183 and not on VASO-C182, VASO-C184; the links dropped at intake: The quoted figure and P<.01 value for palpably normal sites are accurate and in context, supporting the general claim of measurable differences (C005) and specifically the claim that active/latent areas exceed normal areas (C183). But the record does not actually quote or establish the active-versus-latent numeric comparison (0.57 vs 0.36, C182) or the separate active-vs-latent significance test (C184), which are reported elsewhere in the Results as a distinct statistical comparison from the overall P<.01 cited here; so those two claims are not supported by this passage. The record is independent-lineage-flagged appropriately and is atomic and relevant to the case."
+  reviewState: ai_extracted
+  origin:
+    ref: split of VASO-E023 (report 2026-09-09-report-vasocomputation-023157); second round
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-20-reverify-vasocomputation-190441
+    date: 2026-09-20
+  readerActs:
+    - field: claimIds
+      from:
+        - VASO-C005
+        - VASO-C182
+        - VASO-C183
+        - VASO-C184
+      to:
+        - VASO-C005
+        - VASO-C183
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-20-reverify-vasocomputation-190441
+      date: 2026-09-20
+      reason: The quoted figure and P<.01 value for palpably normal sites are accurate and in context, supporting the general claim of measurable differences (C005) and specifically the claim that active/latent areas exceed normal areas (C183). But the record does not actually quote or establish the active-versus-latent numeric comparison (0.57 vs 0.36, C182) or the separate active-vs-latent significance test (C184), which are reported elsewhere in the Results as a distinct statistical comparison from the overall P<.01 cited here; so those two claims are not supported by this passage. The record is independent-lineage-flagged appropriately and is atomic and relevant to the case.
+- id: VASO-E091
+  title: "Ballyns 2011: vibration sonoelastography stiff-area measurements separate active, latent and normal sites — part 2.1"
+  claimIds:
+    - VASO-C005
+    - VASO-C183
+  sourceId: SRC-BALLYNS-2011
+  direction: supports
+  strength: moderate
+  sourceStatement: Trigger point areas assessed by vibration elastography were significantly higher at active and latent sites than at normal sites (P < .01), with "significantly higher areas compared to normal sites" as the reported finding.
+  editorInference: Direct instrumented support for the stiffness component of VASO-C005 and for the graded active/latent/normal ordering. Sonographers were blinded to clinical status, which is stronger than the palpation-only literature. It says nothing about what the stiff tissue is (contracted fibre, guarding, fascial change, or vascular).
+  exactLocator: PMC3493620 author manuscript, Abstract (Results) and Results, paragraph beginning 'Trigger point areas assessed by vibration elastography' (via open-access PMC copy)
+  limitations:
+    - Single vibration frequency from an off-the-shelf massager; the authors note frequency-independence was not confirmed and shear elasticity was not measured.
+    - Sites were selected by palpation, so the measured contrast presupposes the palpated classification.
+    - Same NIH lineage as SRC-SHAH-2008; not an independent group.
+    - "Relinked at the answer's re-reading 2026-09-20 (2026-09-20-answer-vasocomputation-172213): VASO-C033 was split into VASO-C182, VASO-C183, VASO-C184; this record now cites the parts, and which of them it bears on is for a later reading"
+    - "Second reader (claude-sonnet-5, 2026-09-20, run 2026-09-20-reverify-vasocomputation-190441, verify-v6) found the passage bears on VASO-C005, VASO-C183 and not on VASO-C182, VASO-C184; the links dropped at intake: The sourceStatement only reports that active and latent sites had significantly larger areas than normal sites, which matches VASO-C183 and generally supports VASO-C005's claim of measurable differences; it says nothing about the specific active-vs-latent mean values (VASO-C182) or the active-vs-latent significance comparison (VASO-C184), which are separate findings in the source not captured by this quote."
+  reviewState: ai_extracted
+  origin:
+    ref: split of VASO-E023 (report 2026-09-09-report-vasocomputation-023157); second round
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-20-reverify-vasocomputation-190441
+    date: 2026-09-20
+  readerActs:
+    - field: claimIds
+      from:
+        - VASO-C005
+        - VASO-C182
+        - VASO-C183
+        - VASO-C184
+      to:
+        - VASO-C005
+        - VASO-C183
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-20-reverify-vasocomputation-190441
+      date: 2026-09-20
+      reason: The sourceStatement only reports that active and latent sites had significantly larger areas than normal sites, which matches VASO-C183 and generally supports VASO-C005's claim of measurable differences; it says nothing about the specific active-vs-latent mean values (VASO-C182) or the active-vs-latent significance comparison (VASO-C184), which are separate findings in the source not captured by this quote.
+- id: VASO-E092
+  title: "Ballyns 2011: vibration sonoelastography stiff-area measurements separate active, latent and normal sites — part 2.2"
+  claimIds:
+    - VASO-C005
+    - VASO-C184
+  sourceId: SRC-BALLYNS-2011
+  direction: supports
+  strength: moderate
+  sourceStatement: By vibration elastography, "active sites were significantly larger than latent sites" (P < .01).
+  editorInference: Direct instrumented support for the stiffness component of VASO-C005 and for the graded active/latent/normal ordering. Sonographers were blinded to clinical status, which is stronger than the palpation-only literature. It says nothing about what the stiff tissue is (contracted fibre, guarding, fascial change, or vascular).
+  exactLocator: PMC3493620 author manuscript, Abstract (Results) and Results, paragraph beginning 'Trigger point areas assessed by vibration elastography' (via open-access PMC copy)
+  limitations:
+    - Single vibration frequency from an off-the-shelf massager; the authors note frequency-independence was not confirmed and shear elasticity was not measured.
+    - Sites were selected by palpation, so the measured contrast presupposes the palpated classification.
+    - Same NIH lineage as SRC-SHAH-2008; not an independent group.
+    - "Relinked at the answer's re-reading 2026-09-20 (2026-09-20-answer-vasocomputation-172213): VASO-C033 was split into VASO-C182, VASO-C183, VASO-C184; this record now cites the parts, and which of them it bears on is for a later reading"
+    - "Second reader (claude-sonnet-5, 2026-09-20, run 2026-09-20-reverify-vasocomputation-190441, verify-v6) found the passage bears on VASO-C005, VASO-C182, VASO-C184 and not on VASO-C183; the link dropped at intake: The quoted sentence accurately reports the active-versus-latent size comparison (P<.01) from the Results section, and its statement is a fair, narrow account of that specific finding. It directly supports VASO-C184 (active > latent) and generally supports VASO-C005's broader claim about stiffness differences, but it says nothing about the specific magnitude values in C182 (0.57 vs 0.36 cm²) or about the active/latent-versus-normal comparison in C183, so it only bears as context on C182 and not at all on C183."
+    - "Second reader (claude-sonnet-5, 2026-09-20, run 2026-09-20-reverify-vasocomputation-190441, verify-v6) found the passage bears in different directions on the claims the record named; this record carries \"supports\" toward VASO-C005, VASO-C184, the rest went to a record of its own at intake: The quoted sentence accurately reports the active-versus-latent size comparison (P<.01) from the Results section, and its statement is a fair, narrow account of that specific finding. It directly supports VASO-C184 (active > latent) and generally supports VASO-C005's broader claim about stiffness differences, but it says nothing about the specific magnitude values in C182 (0.57 vs 0.36 cm²) or about the active/latent-versus-normal comparison in C183, so it only bears as context on C182 and not at all on C183."
+  reviewState: ai_extracted
+  origin:
+    ref: split of VASO-E023 (report 2026-09-09-report-vasocomputation-023157); second round
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-20-reverify-vasocomputation-190441
+    date: 2026-09-20
+  readerActs:
+    - field: claimIds
+      from:
+        - VASO-C005
+        - VASO-C182
+        - VASO-C183
+        - VASO-C184
+      to:
+        - VASO-C005
+        - VASO-C184
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-20-reverify-vasocomputation-190441
+      date: 2026-09-20
+      reason: The quoted sentence accurately reports the active-versus-latent size comparison (P<.01) from the Results section, and its statement is a fair, narrow account of that specific finding. It directly supports VASO-C184 (active > latent) and generally supports VASO-C005's broader claim about stiffness differences, but it says nothing about the specific magnitude values in C182 (0.57 vs 0.36 cm²) or about the active/latent-versus-normal comparison in C183, so it only bears as context on C182 and not at all on C183.
+- id: VASO-E093
+  title: "Ballyns 2011: vibration sonoelastography stiff-area measurements separate active, latent and normal sites — part 2.2 — toward VASO-C182"
+  claimIds:
+    - VASO-C182
+  sourceId: SRC-BALLYNS-2011
+  direction: context
+  strength: moderate
+  sourceStatement: By vibration elastography, "active sites were significantly larger than latent sites" (P < .01).
+  editorInference: Direct instrumented support for the stiffness component of VASO-C005 and for the graded active/latent/normal ordering. Sonographers were blinded to clinical status, which is stronger than the palpation-only literature. It says nothing about what the stiff tissue is (contracted fibre, guarding, fascial change, or vascular).
+  exactLocator: PMC3493620 author manuscript, Abstract (Results) and Results, paragraph beginning 'Trigger point areas assessed by vibration elastography' (via open-access PMC copy)
+  limitations:
+    - Single vibration frequency from an off-the-shelf massager; the authors note frequency-independence was not confirmed and shear elasticity was not measured.
+    - Sites were selected by palpation, so the measured contrast presupposes the palpated classification.
+    - Same NIH lineage as SRC-SHAH-2008; not an independent group.
+    - "Relinked at the answer's re-reading 2026-09-20 (2026-09-20-answer-vasocomputation-172213): VASO-C033 was split into VASO-C182, VASO-C183, VASO-C184; this record now cites the parts, and which of them it bears on is for a later reading"
+    - "Second reader (claude-sonnet-5, 2026-09-20, run 2026-09-20-reverify-vasocomputation-190441, verify-v6) found the passage bears in different directions on the claims the record named; this record carries \"context\" toward VASO-C182, the rest went to a record of its own at intake: The quoted sentence accurately reports the active-versus-latent size comparison (P<.01) from the Results section, and its statement is a fair, narrow account of that specific finding. It directly supports VASO-C184 (active > latent) and generally supports VASO-C005's broader claim about stiffness differences, but it says nothing about the specific magnitude values in C182 (0.57 vs 0.36 cm²) or about the active/latent-versus-normal comparison in C183, so it only bears as context on C182 and not at all on C183."
+  reviewState: ai_extracted
+  origin:
+    ref: split of VASO-E023 (report 2026-09-09-report-vasocomputation-023157); second round
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-20-reverify-vasocomputation-190441
+    date: 2026-09-20
+  readerActs:
+    - field: claimIds
+      from:
+        - VASO-C005
+        - VASO-C182
+        - VASO-C183
+        - VASO-C184
+      to:
+        - VASO-C182
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-20-reverify-vasocomputation-190441
+      date: 2026-09-20
+      reason: The quoted sentence accurately reports the active-versus-latent size comparison (P<.01) from the Results section, and its statement is a fair, narrow account of that specific finding. It directly supports VASO-C184 (active > latent) and generally supports VASO-C005's broader claim about stiffness differences, but it says nothing about the specific magnitude values in C182 (0.57 vs 0.36 cm²) or about the active/latent-versus-normal comparison in C183, so it only bears as context on C182 and not at all on C183.
+    - field: direction
+      from: supports
+      to: context
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-20-reverify-vasocomputation-190441
+      date: 2026-09-20
+      reason: The quoted sentence accurately reports the active-versus-latent size comparison (P<.01) from the Results section, and its statement is a fair, narrow account of that specific finding. It directly supports VASO-C184 (active > latent) and generally supports VASO-C005's broader claim about stiffness differences, but it says nothing about the specific magnitude values in C182 (0.57 vs 0.36 cm²) or about the active/latent-versus-normal comparison in C183, so it only bears as context on C182 and not at all on C183.
+- id: VASO-E094
+  title: "Ballyns 2011: vibration sonoelastography stiff-area measurements separate active, latent and normal sites — part 3"
+  claimIds:
+    - VASO-C005
+  sourceId: SRC-BALLYNS-2011
+  direction: supports
+  strength: moderate
+  sourceStatement: Receiver operating characteristic analysis showed that "area measurements could robustly distinguish between active, latent, and normal sites", with areas under the curve of 0.9, 0.8, and 0.8 for the three pairwise comparisons.
+  editorInference: Direct instrumented support for the stiffness component of VASO-C005 and for the graded active/latent/normal ordering. Sonographers were blinded to clinical status, which is stronger than the palpation-only literature. It says nothing about what the stiff tissue is (contracted fibre, guarding, fascial change, or vascular).
+  exactLocator: PMC3493620 author manuscript, Abstract (Results) and Results, paragraph beginning 'Trigger point areas assessed by vibration elastography' (via open-access PMC copy)
+  limitations:
+    - Single vibration frequency from an off-the-shelf massager; the authors note frequency-independence was not confirmed and shear elasticity was not measured.
+    - Sites were selected by palpation, so the measured contrast presupposes the palpated classification.
+    - Same NIH lineage as SRC-SHAH-2008; not an independent group.
+    - "Relinked at the answer's re-reading 2026-09-20 (2026-09-20-answer-vasocomputation-172213): VASO-C033 was split into VASO-C182, VASO-C183, VASO-C184; this record now cites the parts, and which of them it bears on is for a later reading"
+    - "Second reader (claude-sonnet-5, 2026-09-20, run 2026-09-20-reverify-vasocomputation-190441, verify-v6) found the passage bears in different directions on the claims the record named; this record carries \"supports\" toward VASO-C005, the rest went to a record of its own at intake: The quoted sentence and AUC figures are accurately reported and correctly located in the Results/Abstract, and the source does not repeat another lab's independent dataset (correctly flagged as NIH-lineage overlap). However, the sourceStatement only reports the ROC/AUC classification finding, not the specific mean-area comparisons that VASO-C182, VASO-C183, and VASO-C184 assert; it therefore bears on the topic without directly establishing those specific quantitative claims, so it is better read as context for them, while it does support the broader claim (VASO-C005) that active sites differ measurably in stiffness/area from other tissue."
+  reviewState: ai_extracted
+  origin:
+    ref: split of VASO-E023 (report 2026-09-09-report-vasocomputation-023157)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-20-reverify-vasocomputation-190441
+    date: 2026-09-20
+  readerActs:
+    - field: claimIds
+      from:
+        - VASO-C005
+        - VASO-C182
+        - VASO-C183
+        - VASO-C184
+      to:
+        - VASO-C005
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-20-reverify-vasocomputation-190441
+      date: 2026-09-20
+      reason: The quoted sentence and AUC figures are accurately reported and correctly located in the Results/Abstract, and the source does not repeat another lab's independent dataset (correctly flagged as NIH-lineage overlap). However, the sourceStatement only reports the ROC/AUC classification finding, not the specific mean-area comparisons that VASO-C182, VASO-C183, and VASO-C184 assert; it therefore bears on the topic without directly establishing those specific quantitative claims, so it is better read as context for them, while it does support the broader claim (VASO-C005) that active sites differ measurably in stiffness/area from other tissue.
+- id: VASO-E095
+  title: "Ballyns 2011: vibration sonoelastography stiff-area measurements separate active, latent and normal sites — part 3 — toward VASO-C182, VASO-C183, VASO-C184"
+  claimIds:
+    - VASO-C182
+    - VASO-C183
+    - VASO-C184
+  sourceId: SRC-BALLYNS-2011
+  direction: context
+  strength: moderate
+  sourceStatement: Receiver operating characteristic analysis showed that "area measurements could robustly distinguish between active, latent, and normal sites", with areas under the curve of 0.9, 0.8, and 0.8 for the three pairwise comparisons.
+  editorInference: Direct instrumented support for the stiffness component of VASO-C005 and for the graded active/latent/normal ordering. Sonographers were blinded to clinical status, which is stronger than the palpation-only literature. It says nothing about what the stiff tissue is (contracted fibre, guarding, fascial change, or vascular).
+  exactLocator: PMC3493620 author manuscript, Abstract (Results) and Results, paragraph beginning 'Trigger point areas assessed by vibration elastography' (via open-access PMC copy)
+  limitations:
+    - Single vibration frequency from an off-the-shelf massager; the authors note frequency-independence was not confirmed and shear elasticity was not measured.
+    - Sites were selected by palpation, so the measured contrast presupposes the palpated classification.
+    - Same NIH lineage as SRC-SHAH-2008; not an independent group.
+    - "Relinked at the answer's re-reading 2026-09-20 (2026-09-20-answer-vasocomputation-172213): VASO-C033 was split into VASO-C182, VASO-C183, VASO-C184; this record now cites the parts, and which of them it bears on is for a later reading"
+    - "Second reader (claude-sonnet-5, 2026-09-20, run 2026-09-20-reverify-vasocomputation-190441, verify-v6) found the passage bears in different directions on the claims the record named; this record carries \"context\" toward VASO-C182, VASO-C183, VASO-C184, the rest went to a record of its own at intake: The quoted sentence and AUC figures are accurately reported and correctly located in the Results/Abstract, and the source does not repeat another lab's independent dataset (correctly flagged as NIH-lineage overlap). However, the sourceStatement only reports the ROC/AUC classification finding, not the specific mean-area comparisons that VASO-C182, VASO-C183, and VASO-C184 assert; it therefore bears on the topic without directly establishing those specific quantitative claims, so it is better read as context for them, while it does support the broader claim (VASO-C005) that active sites differ measurably in stiffness/area from other tissue."
+  reviewState: ai_extracted
+  origin:
+    ref: split of VASO-E023 (report 2026-09-09-report-vasocomputation-023157)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-20-reverify-vasocomputation-190441
+    date: 2026-09-20
+  readerActs:
+    - field: claimIds
+      from:
+        - VASO-C005
+        - VASO-C182
+        - VASO-C183
+        - VASO-C184
+      to:
+        - VASO-C182
+        - VASO-C183
+        - VASO-C184
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-20-reverify-vasocomputation-190441
+      date: 2026-09-20
+      reason: The quoted sentence and AUC figures are accurately reported and correctly located in the Results/Abstract, and the source does not repeat another lab's independent dataset (correctly flagged as NIH-lineage overlap). However, the sourceStatement only reports the ROC/AUC classification finding, not the specific mean-area comparisons that VASO-C182, VASO-C183, and VASO-C184 assert; it therefore bears on the topic without directly establishing those specific quantitative claims, so it is better read as context for them, while it does support the broader claim (VASO-C005) that active sites differ measurably in stiffness/area from other tissue.
+    - field: direction
+      from: supports
+      to: context
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-20-reverify-vasocomputation-190441
+      date: 2026-09-20
+      reason: The quoted sentence and AUC figures are accurately reported and correctly located in the Results/Abstract, and the source does not repeat another lab's independent dataset (correctly flagged as NIH-lineage overlap). However, the sourceStatement only reports the ROC/AUC classification finding, not the specific mean-area comparisons that VASO-C182, VASO-C183, and VASO-C184 assert; it therefore bears on the topic without directly establishing those specific quantitative claims, so it is better read as context for them, while it does support the broader claim (VASO-C005) that active sites differ measurably in stiffness/area from other tissue.
+- id: VASO-E096
+  title: "Ballyns 2011: vibration sonoelastography stiff-area measurements separate active, latent and normal sites — part 4.1"
+  claimIds:
+    - VASO-C005
+    - VASO-C183
+  sourceId: SRC-BALLYNS-2011
+  direction: supports
+  strength: moderate
+  sourceStatement: Trigger point area measurements were "excellent classifiers of active versus normal sites" (cutoff point 0.35; AUC 0.9; P < .01).
+  editorInference: Direct instrumented support for the stiffness component of VASO-C005 and for the graded active/latent/normal ordering. Sonographers were blinded to clinical status, which is stronger than the palpation-only literature. It says nothing about what the stiff tissue is (contracted fibre, guarding, fascial change, or vascular).
+  exactLocator: PMC3493620 author manuscript, Abstract (Results) and Results, paragraph beginning 'Trigger point areas assessed by vibration elastography' (via open-access PMC copy)
+  limitations:
+    - Single vibration frequency from an off-the-shelf massager; the authors note frequency-independence was not confirmed and shear elasticity was not measured.
+    - Sites were selected by palpation, so the measured contrast presupposes the palpated classification.
+    - Same NIH lineage as SRC-SHAH-2008; not an independent group.
+    - "Relinked at the answer's re-reading 2026-09-20 (2026-09-20-answer-vasocomputation-172213): VASO-C033 was split into VASO-C182, VASO-C183, VASO-C184; this record now cites the parts, and which of them it bears on is for a later reading"
+    - "Second reader (claude-sonnet-5, 2026-09-20, run 2026-09-20-reverify-vasocomputation-190441, verify-v6) found the passage bears on VASO-C005, VASO-C183 and not on VASO-C182, VASO-C184; the links dropped at intake: The quoted classifier statistic (AUC 0.9 for active vs normal, cutoff 0.35, P<.01) is accurately quoted and located, and it supports the general claim of measurable biochemical/stiffness/blood-flow differences (C005) and the specific active-vs-normal size difference claim (C183). But it says nothing about the active-vs-latent mean areas (C182) or the active-vs-latent significance test (C184), which concern a different comparison (AUC 0.8, not the AUC 0.9 quoted here); those two claims are not addressed by this particular passage."
+  reviewState: ai_extracted
+  origin:
+    ref: split of VASO-E023 (report 2026-09-09-report-vasocomputation-023157); second round
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-20-reverify-vasocomputation-190441
+    date: 2026-09-20
+  readerActs:
+    - field: claimIds
+      from:
+        - VASO-C005
+        - VASO-C182
+        - VASO-C183
+        - VASO-C184
+      to:
+        - VASO-C005
+        - VASO-C183
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-20-reverify-vasocomputation-190441
+      date: 2026-09-20
+      reason: The quoted classifier statistic (AUC 0.9 for active vs normal, cutoff 0.35, P<.01) is accurately quoted and located, and it supports the general claim of measurable biochemical/stiffness/blood-flow differences (C005) and the specific active-vs-normal size difference claim (C183). But it says nothing about the active-vs-latent mean areas (C182) or the active-vs-latent significance test (C184), which concern a different comparison (AUC 0.8, not the AUC 0.9 quoted here); those two claims are not addressed by this particular passage.
+- id: VASO-E097
+  title: "Ballyns 2011: vibration sonoelastography stiff-area measurements separate active, latent and normal sites — part 4.2"
+  claimIds:
+    - VASO-C005
+  sourceId: SRC-BALLYNS-2011
+  direction: context
+  strength: moderate
+  sourceStatement: Trigger point area measurements were "fair classifiers of latent versus normal sites" (cutoff point 0.27; AUC 0.79; P < .01).
+  editorInference: Direct instrumented support for the stiffness component of VASO-C005 and for the graded active/latent/normal ordering. Sonographers were blinded to clinical status, which is stronger than the palpation-only literature. It says nothing about what the stiff tissue is (contracted fibre, guarding, fascial change, or vascular).
+  exactLocator: PMC3493620 author manuscript, Abstract (Results) and Results, paragraph beginning 'Trigger point areas assessed by vibration elastography' (via open-access PMC copy)
+  limitations:
+    - Single vibration frequency from an off-the-shelf massager; the authors note frequency-independence was not confirmed and shear elasticity was not measured.
+    - Sites were selected by palpation, so the measured contrast presupposes the palpated classification.
+    - Same NIH lineage as SRC-SHAH-2008; not an independent group.
+    - "Relinked at the answer's re-reading 2026-09-20 (2026-09-20-answer-vasocomputation-172213): VASO-C033 was split into VASO-C182, VASO-C183, VASO-C184; this record now cites the parts, and which of them it bears on is for a later reading"
+    - "Second reader (claude-sonnet-5, 2026-09-20, run 2026-09-20-reverify-vasocomputation-190441, verify-v6) found the passage bears on VASO-C005, VASO-C183 and not on VASO-C182, VASO-C184; the links dropped at intake: The quoted classifier statistic concerns only the latent-versus-normal ROC comparison (AUC 0.79), which partially supports the latent-vs-normal portion of VASO-C183 but says nothing about the active-vs-latent mean difference in VASO-C184 or the specific active-vs-latent area values in VASO-C182; it also only tangentially bears on the broader active-site claim VASO-C005 since it addresses latent, not active, sites. The quote and locator are accurate and the record properly notes shared NIH lineage, but the blanket 'supports' direction for all four claims is too broad."
+    - "Second reader (claude-sonnet-5, 2026-09-20, run 2026-09-20-reverify-vasocomputation-190441, verify-v6) found the passage bears in different directions on the claims the record named; this record carries \"context\" toward VASO-C005, the rest went to a record of its own at intake: The quoted classifier statistic concerns only the latent-versus-normal ROC comparison (AUC 0.79), which partially supports the latent-vs-normal portion of VASO-C183 but says nothing about the active-vs-latent mean difference in VASO-C184 or the specific active-vs-latent area values in VASO-C182; it also only tangentially bears on the broader active-site claim VASO-C005 since it addresses latent, not active, sites. The quote and locator are accurate and the record properly notes shared NIH lineage, but the blanket 'supports' direction for all four claims is too broad."
+  reviewState: ai_extracted
+  origin:
+    ref: split of VASO-E023 (report 2026-09-09-report-vasocomputation-023157); second round
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-20-reverify-vasocomputation-190441
+    date: 2026-09-20
+  readerActs:
+    - field: claimIds
+      from:
+        - VASO-C005
+        - VASO-C182
+        - VASO-C183
+        - VASO-C184
+      to:
+        - VASO-C005
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-20-reverify-vasocomputation-190441
+      date: 2026-09-20
+      reason: The quoted classifier statistic concerns only the latent-versus-normal ROC comparison (AUC 0.79), which partially supports the latent-vs-normal portion of VASO-C183 but says nothing about the active-vs-latent mean difference in VASO-C184 or the specific active-vs-latent area values in VASO-C182; it also only tangentially bears on the broader active-site claim VASO-C005 since it addresses latent, not active, sites. The quote and locator are accurate and the record properly notes shared NIH lineage, but the blanket 'supports' direction for all four claims is too broad.
+    - field: direction
+      from: supports
+      to: context
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-20-reverify-vasocomputation-190441
+      date: 2026-09-20
+      reason: The quoted classifier statistic concerns only the latent-versus-normal ROC comparison (AUC 0.79), which partially supports the latent-vs-normal portion of VASO-C183 but says nothing about the active-vs-latent mean difference in VASO-C184 or the specific active-vs-latent area values in VASO-C182; it also only tangentially bears on the broader active-site claim VASO-C005 since it addresses latent, not active, sites. The quote and locator are accurate and the record properly notes shared NIH lineage, but the blanket 'supports' direction for all four claims is too broad.
+- id: VASO-E098
+  title: "Ballyns 2011: vibration sonoelastography stiff-area measurements separate active, latent and normal sites — part 4.2 — toward VASO-C183"
+  claimIds:
+    - VASO-C183
+  sourceId: SRC-BALLYNS-2011
+  direction: supports
+  strength: moderate
+  sourceStatement: Trigger point area measurements were "fair classifiers of latent versus normal sites" (cutoff point 0.27; AUC 0.79; P < .01).
+  editorInference: Direct instrumented support for the stiffness component of VASO-C005 and for the graded active/latent/normal ordering. Sonographers were blinded to clinical status, which is stronger than the palpation-only literature. It says nothing about what the stiff tissue is (contracted fibre, guarding, fascial change, or vascular).
+  exactLocator: PMC3493620 author manuscript, Abstract (Results) and Results, paragraph beginning 'Trigger point areas assessed by vibration elastography' (via open-access PMC copy)
+  limitations:
+    - Single vibration frequency from an off-the-shelf massager; the authors note frequency-independence was not confirmed and shear elasticity was not measured.
+    - Sites were selected by palpation, so the measured contrast presupposes the palpated classification.
+    - Same NIH lineage as SRC-SHAH-2008; not an independent group.
+    - "Relinked at the answer's re-reading 2026-09-20 (2026-09-20-answer-vasocomputation-172213): VASO-C033 was split into VASO-C182, VASO-C183, VASO-C184; this record now cites the parts, and which of them it bears on is for a later reading"
+    - "Second reader (claude-sonnet-5, 2026-09-20, run 2026-09-20-reverify-vasocomputation-190441, verify-v6) found the passage bears in different directions on the claims the record named; this record carries \"supports\" toward VASO-C183, the rest went to a record of its own at intake: The quoted classifier statistic concerns only the latent-versus-normal ROC comparison (AUC 0.79), which partially supports the latent-vs-normal portion of VASO-C183 but says nothing about the active-vs-latent mean difference in VASO-C184 or the specific active-vs-latent area values in VASO-C182; it also only tangentially bears on the broader active-site claim VASO-C005 since it addresses latent, not active, sites. The quote and locator are accurate and the record properly notes shared NIH lineage, but the blanket 'supports' direction for all four claims is too broad."
+  reviewState: ai_extracted
+  origin:
+    ref: split of VASO-E023 (report 2026-09-09-report-vasocomputation-023157); second round
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-20-reverify-vasocomputation-190441
+    date: 2026-09-20
+  readerActs:
+    - field: claimIds
+      from:
+        - VASO-C005
+        - VASO-C182
+        - VASO-C183
+        - VASO-C184
+      to:
+        - VASO-C183
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-20-reverify-vasocomputation-190441
+      date: 2026-09-20
+      reason: The quoted classifier statistic concerns only the latent-versus-normal ROC comparison (AUC 0.79), which partially supports the latent-vs-normal portion of VASO-C183 but says nothing about the active-vs-latent mean difference in VASO-C184 or the specific active-vs-latent area values in VASO-C182; it also only tangentially bears on the broader active-site claim VASO-C005 since it addresses latent, not active, sites. The quote and locator are accurate and the record properly notes shared NIH lineage, but the blanket 'supports' direction for all four claims is too broad.
+- id: VASO-E099
+  title: "Ballyns 2011: vibration sonoelastography stiff-area measurements separate active, latent and normal sites — part 4.3"
+  claimIds:
+    - VASO-C005
+    - VASO-C184
+  sourceId: SRC-BALLYNS-2011
+  direction: supports
+  strength: moderate
+  sourceStatement: Trigger point area measurements were "fair classifiers of active versus latent sites" (cutoff point 0.4; AUC 0.8; P < .01).
+  editorInference: Direct instrumented support for the stiffness component of VASO-C005 and for the graded active/latent/normal ordering. Sonographers were blinded to clinical status, which is stronger than the palpation-only literature. It says nothing about what the stiff tissue is (contracted fibre, guarding, fascial change, or vascular).
+  exactLocator: PMC3493620 author manuscript, Abstract (Results) and Results, paragraph beginning 'Trigger point areas assessed by vibration elastography' (via open-access PMC copy)
+  limitations:
+    - Single vibration frequency from an off-the-shelf massager; the authors note frequency-independence was not confirmed and shear elasticity was not measured.
+    - Sites were selected by palpation, so the measured contrast presupposes the palpated classification.
+    - Same NIH lineage as SRC-SHAH-2008; not an independent group.
+    - "Relinked at the answer's re-reading 2026-09-20 (2026-09-20-answer-vasocomputation-172213): VASO-C033 was split into VASO-C182, VASO-C183, VASO-C184; this record now cites the parts, and which of them it bears on is for a later reading"
+    - "Second reader (claude-sonnet-5, 2026-09-20, run 2026-09-20-reverify-vasocomputation-190441, verify-v6) found the passage bears on VASO-C005, VASO-C184 and not on VASO-C182, VASO-C183; the links dropped at intake: The quoted ROC statistic (fair classifier, cutoff 0.4, AUC 0.8, P<.01) is accurately quoted and correctly located in the Results section, and it does support the general finding of measurable differences (C005) and corroborates that active sites are distinguishable in area from latent sites (C184). However, it does not report the specific mean ± SD area values for active vs latent (C182) nor the active/latent-vs-normal comparison (C183), so the passage does not bear on those two split claims. The record correctly notes shared NIH lineage with the Shah 2008 source."
+  reviewState: ai_extracted
+  origin:
+    ref: split of VASO-E023 (report 2026-09-09-report-vasocomputation-023157); second round
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-20-reverify-vasocomputation-190441
+    date: 2026-09-20
+  readerActs:
+    - field: claimIds
+      from:
+        - VASO-C005
+        - VASO-C182
+        - VASO-C183
+        - VASO-C184
+      to:
+        - VASO-C005
+        - VASO-C184
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-20-reverify-vasocomputation-190441
+      date: 2026-09-20
+      reason: The quoted ROC statistic (fair classifier, cutoff 0.4, AUC 0.8, P<.01) is accurately quoted and correctly located in the Results section, and it does support the general finding of measurable differences (C005) and corroborates that active sites are distinguishable in area from latent sites (C184). However, it does not report the specific mean ± SD area values for active vs latent (C182) nor the active/latent-vs-normal comparison (C183), so the passage does not bear on those two split claims. The record correctly notes shared NIH lineage with the Shah 2008 source.

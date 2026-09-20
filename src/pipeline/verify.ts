@@ -41,7 +41,7 @@ export const READER = MODELS.reader;
 export const VERIFY_SCHEMA: Record<string, unknown> = {
   type: "object",
   additionalProperties: false,
-  required: ["quoteInContext", "statementSupported", "locatorSupported", "directionRight", "independenceNoted", "relevant", "atomic", "direction", "bearsOn", "bearing", "reason"],
+  required: ["quoteInContext", "statementSupported", "locatorSupported", "directionRight", "independenceNoted", "relevant", "atomic", "ofTheCompound", "direction", "bearsOn", "bearing", "reason"],
   properties: {
     quoteInContext: { type: "boolean" },
     statementSupported: { type: "boolean" },
@@ -50,6 +50,8 @@ export const VERIFY_SCHEMA: Record<string, unknown> = {
     independenceNoted: { type: "boolean" },
     relevant: { type: "boolean" },
     atomic: { type: "boolean" },
+    /** v7: for a part of a split, whether it is one of the propositions the compound bundled; null when the record is not a part. */
+    ofTheCompound: { anyOf: [{ type: "boolean" }, { type: "null" }] },
     /** v5: the direction the reader finds right when `directionRight` is false; null otherwise. */
     direction: { anyOf: [{ type: "string", enum: ["supports", "undermines", "qualifies", "context"] }, { type: "null" }] },
     /** v5: the claims, among those the record names, the passage bears on — when it does not bear on all of them; null otherwise. */
@@ -74,6 +76,13 @@ export interface VerifyReply {
   relevant: boolean;
   /** One proposition with one truth condition (§3.2); a compound claim is split, not admitted. Absent means true. */
   atomic?: boolean;
+  /**
+   * v7: for a part of a split, whether it states one of the propositions the compound bundled; a part that states
+   * something the compound did not is refused (2026-09-20: a split drifted to a neighbouring sentence and a
+   * duplicate of another claim, every other check passed, and the recorded lineage was false). Null or absent when
+   * the record is not a part.
+   */
+  ofTheCompound?: boolean | null;
   /**
    * v5: when `directionRight` is false, the direction the reader finds right; verify writes it on the
    * admitted record. Absent or null with a false `directionRight` is the v2 dissent, written as a note.
@@ -733,6 +742,20 @@ export async function judgeProposal(
           }
           const id = nextEvidenceId(loaded, [...proposal.adds.evidence.map((x) => x.id), ...okEvidence.map((x) => x.id), ...admitted.map((x) => x.id)]);
           const candidate: Evidence = { ...e, id, title: `${e.title} — part ${nth}`, sourceStatement: part, origin: { ref: `split of ${e.id} (${e.origin.ref})${depth > 1 ? "; second round" : ""}`, extractedBy: sp.model ?? splitter.model, runId: sp.runId ?? splitter.runId, date: sp.date ?? reader.date } };
+          // A part is placed where its own quote is: the splitter's locator for the part when the text carries the
+          // quote (split-v4), composed with the compound's document identity and its "(via …)" note — a compound's
+          // two-place locator must not pass to a part quoted in one of them (2026-09-20: a part quoting the abstract's
+          // figure carried "Abstract (Results) and Results", where the Results assign the figure differently).
+          const ownAnchor = sp.anchors?.[n];
+          if (ownAnchor?.locator && ownAnchor.quote && !unverifiedQuotes(`"${ownAnchor.quote}"`, text).length && e.exactLocator) {
+            const via = e.exactLocator.match(/\s*\(via [^)]*\)\s*$/)?.[0]?.trim() ?? "";
+            const identity = e.exactLocator.split(",")[0].trim();
+            const placed = `${identity}, ${ownAnchor.locator}${via ? ` ${via}` : ""}`;
+            if (placed !== e.exactLocator) {
+              candidate.exactLocator = placed;
+              candidate.readerActs = [...(candidate.readerActs ?? []), { field: "exactLocator", from: e.exactLocator, to: placed, model: sp.model ?? splitter.model, runId: meter.runId, promptVersion, date: reader.date, reason: "the splitter's locator for the part's own quote, with the compound's document identity" }];
+            }
+          }
           // A part keeps the page its own quote is on, not the parent's whole locator (2026-09-11: a part quoting
           // p. 1 alone carried "p. 1 and p. 4", and the panel parked the sitting for it).
           const page = pageOfQuote(text, quotedSpans(part)[0]);
@@ -743,7 +766,12 @@ export async function judgeProposal(
               candidate.readerActs = [...(candidate.readerActs ?? []), { field: "exactLocator", from: e.exactLocator, to: narrowed, model: "verify (mechanical: the page marker before the part's quote)", runId: meter.runId, promptVersion, date: reader.date, reason: `the part quotes p. ${page} only` }];
             }
           }
-          const v2 = await judge({ ...candidate, editorInference: undefined }, text, context, meter);
+          const partContext = `${context} This record is a PART of a compound record that was split — the compound's statement: "${e.sourceStatement}". Say in ofTheCompound whether the part states one of the observations the compound bundled.`;
+          const v2 = await judge({ ...candidate, editorInference: undefined }, text, partContext, meter);
+          if (v2.ofTheCompound === false) {
+            notes.push(`${label} refused: not an observation the compound bundled — ${v2.reason}`);
+            continue;
+          }
           const bad = Object.entries(v2).filter(([k, v]) => k !== "reason" && v === false && k !== "directionRight").map(([k]) => k);
           if (bad.length) {
             if (bad.length === 1 && bad[0] === "atomic" && depth < 2) {
@@ -853,7 +881,12 @@ export async function judgeProposal(
               // alternatives and contradictions are the compound's, not each part's, and are not carried over
               // (§3.2) — said aloud below so a later pass can propose them per part.
               const candidate: Claim = { ...c, id, statement: part, sourceAnchor: anchor, dependsOnClaimIds: [], alternativeToClaimIds: [], contradictsClaimIds: [], origin: { ref: `split of ${c.id} (${c.origin.ref})${anchored ? "; anchored by the splitter in the same text" : ""}${depth > 1 ? "; second round" : ""}`, extractedBy: sp.model ?? splitter.model, runId: sp.runId ?? splitter.runId, date: sp.date ?? reader.date } };
-              const v2 = await judge({ statement: part, anchor }, text, anchorContext, meter);
+              const partContext = `${anchorContext} This is a PART of a compound claim that was split — the compound's statement: "${c.statement}". Say in ofTheCompound whether the part states one of the propositions the compound bundled.`;
+              const v2 = await judge({ statement: part, anchor }, text, partContext, meter);
+              if (v2.ofTheCompound === false) {
+                notes.push(`${c.id} part "${part.slice(0, 60)}" refused: not a proposition the compound bundled — ${v2.reason}`);
+                continue;
+              }
               const bad = Object.entries(v2).filter(([k, v]) => k !== "reason" && v === false && k !== "independenceNoted" && k !== "directionRight").map(([k]) => k);
               if (bad.length) {
                 if (bad.length === 1 && bad[0] === "atomic" && depth < 2) {

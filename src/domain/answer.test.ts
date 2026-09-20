@@ -175,7 +175,7 @@ describe("settleRecords with verb answer, end to end on a copied case", async ()
   const citing = c.evidence.find((e) => e.reviewState !== "rejected" && e.claimIds.length === 1 && e.claimIds[0] === claim.id)!;
   const claimText = `Filler. ${claim.sourceAnchor!.quote} More filler. [p. 2]`;
   const fetchClaim = (async (x: { url: string }) => ({ url: x.url, ok: true, status: 200, contentType: "text/html", text: claimText, via: "html" })) as never;
-  const ok = { quoteInContext: true, locatorSupported: true, statementSupported: true, directionRight: true, relevant: true, atomic: true, independenceNoted: true };
+  const ok = { quoteInContext: true, locatorSupported: true, statementSupported: true, directionRight: true, relevant: true, atomic: true, independenceNoted: true, ofTheCompound: true };
   const parts = ["The first proposition on its own.", "The second proposition on its own."];
   const claimSettlement = { verb: "answer" as const, originals: { sources: [], evidence: [], claims: [claim] }, what: `Answer to the panel's objections on #99: 1 record(s) re-read`, context: "A seat objected: the claim is compound", why: "a seat objected", actor: "aletheia answer (test reader), on #99" };
   it("a live claim found compound, no part of which can be anchored and read, is refused with nothing in its place, and the record that cited it alone falls with it — no link left dangling", async () => {
@@ -385,6 +385,85 @@ describe("settleRecords with verb answer, end to end on a copied case", async ()
     expect(parts.filter((k) => /; second round$/.test(k.origin.ref)).map((k) => k.statement).sort()).toEqual([...level2].sort());
     const account = fs.readFileSync(path.join(root, "proposals", out.runId, "verification.md"), "utf8");
     expect(account).toContain(`${claim.id} part "${level1[0].slice(0, 60)}" still not one proposition (two propositions); split again into 2 part(s)`);
+    fs.rmSync(root, { recursive: true, force: true });
+  });
+  it("a part the reader finds not of the compound is refused, for evidence and for claims, and the protocols carry the flag", async () => {
+    const { loadProtocol } = await import("../pipeline/protocols.ts");
+    expect(loadProtocol("split").version).toBe("split-v5");
+    expect(loadProtocol("verify").version).toBe("verify-v7");
+    // Evidence: two parts, the second a neighbouring sentence the compound never stated.
+    const root = setup();
+    const q = quotedSpans(live.sourceStatement)[0];
+    const pOf = `A finding the compound stated, "${q}".`;
+    const pNot = `A finding from the next sentence, "${q}".`;
+    const seenContexts: string[] = [];
+    const judge = async (rec: unknown, _text: string, context: string) => {
+      const st = (rec as { sourceStatement?: string }).sourceStatement ?? "";
+      if (st === live.sourceStatement) return { ...ok, atomic: false, reason: "two findings" };
+      seenContexts.push(context);
+      return st === pNot ? { ...ok, ofTheCompound: false, reason: "the compound never stated this" } : { ...ok, ofTheCompound: true, reason: "one of the compound's findings" };
+    };
+    const out = await settleRecords(c.record.slug, settlement("compound"), { root, deps: { cases: () => [c], judge, split: async () => [pOf, pNot], fetch: fetchOk } });
+    expect(out).toMatchObject({ outcome: "completed", appended: 1, refused: 1 });
+    expect(seenContexts.every((ctx) => ctx.includes(`This record is a PART of a compound record that was split — the compound's statement: "${live.sourceStatement}"`))).toBe(true);
+    const account = fs.readFileSync(path.join(root, "proposals", out.runId, "verification.md"), "utf8");
+    expect(account).toContain(`${live.id} part "${pNot.slice(0, 60)}" refused: not an observation the compound bundled — the compound never stated this`);
+    const ev = parse(fs.readFileSync(path.join(root, "content", "cases", c.dir, "evidence.yaml"), "utf8")) as { sourceStatement: string; origin: { ref: string } }[];
+    expect(ev.filter((e) => e.origin.ref.startsWith(`split of ${live.id} `)).map((e) => e.sourceStatement)).toEqual([pOf]);
+    fs.rmSync(root, { recursive: true, force: true });
+    // Claims likewise.
+    const root2 = setup();
+    const judge2 = async (rec: unknown) => {
+      const st = (rec as { statement: string }).statement;
+      if (st === claim.statement) return { ...ok, atomic: false, reason: "two propositions" };
+      return st === parts[1] ? { ...ok, ofTheCompound: false, reason: "a neighbouring proposition" } : { ...ok, ofTheCompound: true, reason: "one of the compound's" };
+    };
+    const out2 = await settleRecords(c.record.slug, claimSettlement, { root: root2, deps: { cases: () => [c], judge: judge2, split: async () => parts, fetch: fetchClaim } });
+    expect(out2).toMatchObject({ outcome: "completed", appended: 1, refused: 1 });
+    expect(fs.readFileSync(path.join(root2, "proposals", out2.runId, "verification.md"), "utf8")).toContain(`${claim.id} part "${parts[1].slice(0, 60)}" refused: not a proposition the compound bundled — a neighbouring proposition`);
+    fs.rmSync(root2, { recursive: true, force: true });
+  });
+  it("a part the reader does not affirm as of the compound — null or no answer — is refused, fail closed", async () => {
+    const root = setup();
+    const q = quotedSpans(live.sourceStatement)[0];
+    const p1 = `A finding, "${q}".`;
+    const p2 = `Another finding, "${q}".`;
+    const { ofTheCompound: _o, ...silent } = ok;
+    void _o;
+    const judge = async (rec: unknown) => {
+      const st = (rec as { sourceStatement?: string }).sourceStatement ?? "";
+      if (st === live.sourceStatement) return { ...silent, atomic: false, reason: "two findings" };
+      return st === p1 ? { ...silent, ofTheCompound: null, reason: "did not say" } : { ...silent, reason: "did not answer" };
+    };
+    const out = await settleRecords(c.record.slug, settlement("compound"), { root, deps: { cases: () => [c], judge, split: async () => [p1, p2], fetch: fetchOk } });
+    expect(out).toMatchObject({ outcome: "completed", appended: 0, refused: 1 });
+    const account = fs.readFileSync(path.join(root, "proposals", out.runId, "verification.md"), "utf8");
+    expect(account).toContain(`${live.id} part "${p1.slice(0, 60)}" refused: the reader did not affirm it is an observation the compound bundled — did not say`);
+    expect(account).toContain(`${live.id} part "${p2.slice(0, 60)}" refused: the reader did not affirm it is an observation the compound bundled — did not answer`);
+    fs.rmSync(root, { recursive: true, force: true });
+  });
+  it("an evidence part is placed where the splitter finds its quote, with the compound's document identity", async () => {
+    const root = setup();
+    const q = quotedSpans(live.sourceStatement)[0];
+    const p1 = `The first finding, "${q}".`;
+    const p2 = `The second finding, "${q}".`;
+    const judge = async (rec: unknown) => ((rec as { sourceStatement?: string }).sourceStatement === live.sourceStatement ? { ...ok, atomic: false, reason: "two findings" } : { ...ok, reason: "one finding" });
+    const split = async () => ({ parts: [p1, p2], anchors: [{ quote: q, locator: "Abstract (Results)" }, null] });
+    const out = await settleRecords(c.record.slug, settlement("compound"), { root, deps: { cases: () => [c], judge, split, fetch: fetchOk } });
+    expect(out).toMatchObject({ outcome: "completed", appended: 2 });
+    const ev = parse(fs.readFileSync(path.join(root, "content", "cases", c.dir, "evidence.yaml"), "utf8")) as { sourceStatement: string; exactLocator?: string; readerActs?: { field: string; to: string; reason: string }[] }[];
+    const first = ev.find((e) => e.sourceStatement === p1)!;
+    const second = ev.find((e) => e.sourceStatement === p2)!;
+    const identity = (live.exactLocator ?? "").split(",")[0].trim();
+    const via = (live.exactLocator ?? "").match(/\s*\(via [^)]*\)\s*$/)?.[0]?.trim() ?? "";
+    expect(first.exactLocator).toBe(`${identity}, Abstract (Results)${via ? ` ${via}` : ""}`);
+    const act = first.readerActs?.find((a) => a.field === "exactLocator" && a.to === first.exactLocator);
+    expect(act).toBeTruthy();
+    expect(act!.reason).toMatch(/the splitter's locator for the part's own quote, composed with the compound's document identity; the second reader judged the placed locator/);
+    // The act carries the splitter's stamps, not the verifier's.
+    expect((act as { promptVersion?: string }).promptVersion).toBe("split-v5");
+    // A part the splitter did not place keeps the compound's locator.
+    expect(second.exactLocator).toBe(live.exactLocator);
     fs.rmSync(root, { recursive: true, force: true });
   });
   it("a run that fails half-way rolls its ledger writes back and says so", async () => {

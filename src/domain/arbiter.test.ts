@@ -5,6 +5,7 @@ import {
   capDiff,
   CONTENT_MERGES_PER_WEEK,
   costOf,
+  omittedNotes,
   runAccount,
   rateLimitGate,
   splitMergeLanes,
@@ -292,8 +293,10 @@ describe("runAccount — the run's own record, for a panel that cannot read the 
     expect(used).not.toContain("proposals/r1/reply.json");
     expect(text).toMatch(/No model wrote this section/);
     // The header says how the account was made and clipped — the panel's own provenance for what it read (review note #375).
-    expect(text).toMatch(/the assessment the head edition adopts — its header, case verdict, load-bearing set and weakest links, what is claimed \(to 1,200\), synthesis or reasoning \(to 1,500\), each component's state and note \(note to 240\), and every claim's verdict, confidence and reasoning \(reasoning to 300\), the assessment's section to 30,000 — and a superseded assessment by header, case verdict, load-bearing set, weakest links and the claim verdicts that differ from the head's, each beside the head's \(to 8,000\); the whole account to 200,000, kept by dropping whole sections from the least important — a superseded edition's own paragraphs; then, largest first, the run records, the added lines and a superseded assessment's differing verdicts; then the records digest — and naming each dropped section\. The head edition and the assessment it adopts are never dropped and the account is never cut: if they alone exceed the cap, the account runs over it and says so\./);
-    expect(text).toMatch(/the records the change adds to evidence, claims, sources and research \(id, state, direction, statement to 320, quote to 160, locator to 160; each file's list to 40,000\)/);
+    expect(text).toMatch(/the assessment the head edition adopts — its header, case verdict, load-bearing set and weakest links, what is claimed \(to 1,200\), synthesis or reasoning \(to 1,500\), each component's state and note \(note to 240\), and every claim's verdict, confidence and reasoning \(reasoning to 300\), the section to 30,000/);
+    expect(text).toMatch(/an assessment superseded within the change, digested as the head's is, with every claim verdict that differs from the head's marked; and an edition superseded within the change by header, rationale \(to 3,000\), featured claims, crux order and the paragraphs of its article the head edition does not carry verbatim \(to 20,000; the shared paragraphs are read in the head\)/);
+    expect(text).toMatch(/kept to 250,000 characters by dropping whole sections, least important first and within a rank largest first — a superseded edition's paragraphs, then a superseded assessment, then the run records and the added lines, then the records digest — and naming each dropped section\. The head edition and the assessment it adopts are never dropped and the account is never cut: if they alone exceed the cap, the account runs over it and says so\./);
+    expect(text).toMatch(/the records the change adds or modifies in evidence, claims, sources and research \(id, state, direction, statement to 320, quote to 160, locator to 160; a modified record's changed fields and their new values to 240; each file's list to 40,000\)/);
     expect(text).toMatch(/usd: 14\.9/);
     expect(text).toMatch(/anchor page wrong/);
     expect(text).toMatch(/rationale: the map changed/);
@@ -324,10 +327,24 @@ describe("runAccount — the run's own record, for a panel that cannot read the 
     };
     const { text, files: used } = runAccount(Object.keys(ev), (p: string) => ev[p] ?? null, (p: string) => diffs[p] ?? "");
     expect(used).toContain("content/cases/x/evidence.yaml");
-    expect(text).toMatch(/content\/cases\/x\/evidence\.yaml \(1 record\(s\) added: id, state, direction → claims, statement, quote, locator\)/);
+    expect(text).toMatch(/content\/cases\/x\/evidence\.yaml \(1 record\(s\) added, 0 modified: id, state, direction → claims, statement, quote, locator; a modified record names its changed fields and the new value of each not already shown\)/);
     expect(text).toMatch(/- X-E084 \[ai_extracted\] context → X-C1 \(weak\) \| source SRC-B\n  Active points were "larger, stiffer, and more painful" than latent ones\.\n  at: PMC1, Results, Table 2/);
     expect(text).not.toMatch(/X-E001/);
     expect(text).toMatch(/- X-C9 \[ai_extracted\] \n  A new proposition with a truth condition\. \| quote: was carried out by groups\n  at: p\. 4/);
+  });
+  it("tells a modified record from an added one when it can read the base file, and names the changed fields with their new values", () => {
+    const base = "- id: X-E001\n  title: old one\n  claimIds: [X-C1]\n  sourceId: SRC-A\n  direction: supports\n  strength: weak\n  sourceStatement: The old record.\n  reviewState: ai_extracted\n";
+    const head = base.replace("reviewState: ai_extracted\n", "reviewState: rejected\n  limitations: Refused at the answer's re-reading — the quote is not in the text.\n") + "- id: X-E002\n  title: new\n  claimIds: [X-C1]\n  sourceId: SRC-A\n  direction: undermines\n  strength: moderate\n  sourceStatement: The new record.\n  reviewState: ai_extracted\n";
+    const ev: Record<string, string> = { ...files, "content/cases/x/evidence.yaml": head };
+    const isEv = (p: string) => p.endsWith("evidence.yaml");
+    const { text } = runAccount(Object.keys(ev), (p: string) => ev[p] ?? null, (p: string) => (isEv(p) ? "+  reviewState: rejected\n+- id: X-E002\n" : diffOf(p)), (p: string) => (isEv(p) ? base : null));
+    expect(text).toMatch(/evidence\.yaml \(1 record\(s\) added, 1 modified:/);
+    expect(text).toMatch(/- X-E001 \[rejected\] supports → X-C1 \(weak\) \| source SRC-A \| modified: reviewState, limitations\n  The old record\.\n  limitations now: Refused at the answer's re-reading — the quote is not in the text\./);
+    expect(text).toMatch(/- X-E002 \[ai_extracted\] undermines → X-C1 \(moderate\) \| source SRC-A\n  The new record\./);
+    // Without the base file the digest falls back to the ids the diff adds, and cannot tell a modified record.
+    const { text: noBase } = runAccount(Object.keys(ev), (p: string) => ev[p] ?? null, (p: string) => (isEv(p) ? "+  reviewState: rejected\n+- id: X-E002\n" : diffOf(p)));
+    expect(noBase).toMatch(/evidence\.yaml \(1 record\(s\) added, 0 modified:/);
+    expect(noBase).not.toMatch(/X-E001/);
   });
   it("puts the head edition and its assessment first and whole, and shows a candidate superseded within the change by what it says that the head does not", () => {
     const two: Record<string, string> = {
@@ -345,23 +362,41 @@ describe("runAccount — the run's own record, for a panel that cannot read the 
     expect(text).toMatch(/article, paragraphs the head edition does not carry:\nA paragraph the head dropped\./);
     expect(text.split("Three accounts side by side.").length - 1).toBe(1);
     expect(text.indexOf("e3.yaml (head edition")).toBeLessThan(text.indexOf("e2.yaml (edition superseded"));
-    // The assessment e3 adopts is digested whole and comes before the superseded one, which keeps its header, verdicts, and the claim verdicts that differ from the head's.
-    expect(text).toMatch(/claim X-C1: well_supported \(high\)/);
-    expect(text).toMatch(/edition-a0\.yaml \(assessment superseded within this change: header, case verdict, load-bearing set, weakest links, and the 1 claim verdict\(s\) that differ from the assessment the head edition adopts; 1 agreeing read in the head\)\n(?:.*\n){6}case verdict: contradicted/);
-    expect(text).toMatch(/claim X-C1: contradicted \(high\) — head: well_supported \(high\)/);
-    expect(text).not.toMatch(/claim X-C2: unresolved \(low\) — head/);
-    expect(text).not.toMatch(/spent figures no record carries/);
+    // The assessment e3 adopts is digested whole and comes before the superseded one, which is digested the same way —
+    // its reasoning stays reviewable — with each claim verdict that differs from the head's marked beside the head's.
+    expect(text).toMatch(/claim X-C1: well_supported \(high\) — E1 quotes the excavators\./);
+    expect(text).toMatch(/edition-a0\.yaml \(assessment superseded within this change: header, case verdict, load-bearing set, what is claimed, components, every claim's verdict and reasoning; 1 claim verdict\(s\) differ from the assessment the head edition adopts, each marked with the head's\)\n(?:.*\n){6}case verdict: contradicted/);
+    expect(text).toMatch(/synthesis\/reasoning: The one that overreached\./);
+    expect(text).toMatch(/claim X-C1: contradicted \(high\) \[head: well_supported \(high\)\] — spent figures no record carries/);
+    expect(text).toMatch(/claim X-C2: unresolved \(low\) — agrees with the head/);
+    expect(text).not.toMatch(/claim X-C2: unresolved \(low\) \[head/);
+    // A check-role assessment is a seat's own reading, never superseded by the head's adoption of another.
+    expect(text).toMatch(/check-a\.yaml \(assessment: header, case verdict, load-bearing set, what is claimed, components, every claim's verdict\)/);
     expect(text.indexOf("edition-b.yaml (assessment:")).toBeLessThan(text.indexOf("edition-a0.yaml (assessment superseded"));
+  });
+  it("reads adoption per case: a changed assessment in a case with no head edition in the change is not superseded by another case's head", () => {
+    const multi: Record<string, string> = {
+      ...files,
+      "content/cases/x/editions/e3.yaml": "runId: e3\ndate: 2026-09-10\nmodel: m\npromptVersion: edition-v12\nprevious: e2\nassessment:\n  runId: 2026-09-09-edition-b\n  hash: h\nrationale: r\nfeaturedClaimIds: []\ncruxOrder: []\narticle: |\n  The head article.\n",
+      "content/cases/y/assessments/2026-09-10-edition-q.yaml": "runId: 2026-09-10-edition-q\nmodel: drafter\nrole: draft\ncaseAssessment:\n  verdict: mixed\n  synthesis: Y on its own.\nclaimAssessments:\n  - claimId: Y-C1\n    verdict: mixed\n    confidence: low\n    reasoning: Y's reasoning.\n",
+    };
+    const { text } = runAccount(Object.keys(multi), (p: string) => multi[p] ?? null, diffOf);
+    expect(text).toMatch(/y\/assessments\/2026-09-10-edition-q\.yaml \(assessment: header, case verdict/);
+    expect(text).not.toMatch(/edition-q\.yaml \(assessment superseded/);
+    expect(text).toMatch(/claim Y-C1: mixed \(low\) — Y's reasoning\./);
+    // Case x's head adopts b, so x's own check-a is whole and only a draft x does not adopt would be superseded.
+    expect(text).toMatch(/x\/assessments\/2026-09-09-edition-b\.yaml \(assessment: header/);
   });
   it("never drops or cuts the head: when the head sections alone exceed the cap, the account runs over and says so", () => {
     const big = (id: string) => `runId: ${id}\ndate: 2026-09-10\nmodel: m\npromptVersion: edition-v12\nprevious: null\nrationale: r\nfeaturedClaimIds: []\ncruxOrder: []\narticle: |\n  ${"x".repeat(55_000)}\n`;
-    const over: Record<string, string> = { ...files, "content/cases/x/editions/e2.yaml": big("e2"), "content/cases/y/editions/e9.yaml": big("e9"), "content/cases/z/editions/e8.yaml": big("e8"), "content/cases/w/editions/e7.yaml": big("e7") };
+    const heads = ["x/editions/e2.yaml", "y/editions/e9.yaml", "z/editions/e8.yaml", "w/editions/e7.yaml", "v/editions/e6.yaml"];
+    const over: Record<string, string> = { ...files, ...Object.fromEntries(heads.map((p, i) => [`content/cases/${p}`, big(`e${i}`)])) };
     const { text } = runAccount(Object.keys(over), (p: string) => over[p] ?? null, diffOf);
-    for (const p of ["x/editions/e2.yaml", "y/editions/e9.yaml", "z/editions/e8.yaml", "w/editions/e7.yaml"]) expect(text).toMatch(new RegExp(`content/cases/${p} \\(head edition`));
+    for (const p of heads) expect(text).toMatch(new RegExp(`content/cases/${p} \\(head edition`));
     expect(text.length).toBeGreaterThan(ACCOUNT_CAP);
     // Within a rank the largest falls first: the verification file, now its own section, is named before the run header.
-    expect(text).toMatch(/section\(s\) dropped to keep the account under 200,000 characters: proposals\/r1\/verification\.md; .*proposals\/r1\/run\.yaml/);
-    expect(text).toMatch(/\[The head edition\(s\) and the assessment\(s\) they adopt alone run to [\d,]+ characters, over the 200,000 cap; they are kept whole and nothing else is included\.\]/);
+    expect(text).toMatch(/section\(s\) dropped to keep the account under 250,000 characters: proposals\/r1\/verification\.md; .*proposals\/r1\/run\.yaml/);
+    expect(text).toMatch(/\[The head edition\(s\) and the assessment\(s\) they adopt alone run to [\d,]+ characters, over the 250,000 cap; they are kept whole and nothing else is included\.\]/);
     expect(text).not.toMatch(/run account: \d+ more characters not shown/);
     expect(text).not.toMatch(/\[… article:/);
   });
@@ -386,6 +421,15 @@ describe("review notes — the wide voice", () => {
     expect(body).toMatch(/answers on the record/);
     expect(body).toMatch(/> The stamp names the wrong run\.\n> Fix the origin\./);
     expect(body).toMatch(/Pull request: #214/);
+  });
+});
+
+describe("omittedNotes — the omitted list points at the account", () => {
+  it("marks the files the run account read, and leaves the rest bare", () => {
+    expect(omittedNotes(["content/cases/x/evidence.yaml", "proposals/r1/reply.json"], ["content/cases/x/evidence.yaml", "proposals/r1/run.yaml"])).toEqual([
+      "content/cases/x/evidence.yaml — read into the RUN ACCOUNT above; its section for this file says what is whole, digested or clipped",
+      "proposals/r1/reply.json",
+    ]);
   });
 });
 

@@ -291,6 +291,8 @@ describe("runAccount — the run's own record, for a panel that cannot read the 
     expect(used).toContain("proposals/r1/verification.md");
     expect(used).not.toContain("proposals/r1/reply.json");
     expect(text).toMatch(/No model wrote this section/);
+    // The header says how the account was made and clipped — the panel's own provenance for what it read (review note #375).
+    expect(text).toMatch(/each assessment the change adds — its header, case verdict, load-bearing set and weakest links, what is claimed \(to 1,200\), synthesis or reasoning \(to 1,500\), each component's state and note \(note to 240\), and every claim's verdict, confidence and reasoning \(reasoning to 300\), the assessment's section to 30,000; the whole account to 150,000\./);
     expect(text).toMatch(/usd: 14\.9/);
     expect(text).toMatch(/anchor page wrong/);
     expect(text).toMatch(/rationale: the map changed/);

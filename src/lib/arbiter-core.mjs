@@ -318,7 +318,6 @@ export function runAccount(changed, read, diffOf, readBase = noBase) {
   //    direction); without it, the ids on the lines the diff adds.
   const RECORD_FILES = /^content\/cases\/[^/]+\/(evidence|claims|sources|research)\.yaml$/;
   const stable = (v) => JSON.stringify(v, (_, x) => (x && typeof x === "object" && !Array.isArray(x) ? Object.fromEntries(Object.keys(x).sort().map((k) => [k, x[k]])) : x));
-  const SHOWN = new Set(["id", "reviewState", "verification", "status", "direction", "claimIds", "strength", "sourceId", "statement", "sourceStatement", "summary", "title", "exactLocator", "sourceAnchor", "identifier", "url"]);
   for (const p of changed.filter((f) => RECORD_FILES.test(f))) {
     const doc = parsed(p);
     if (!doc || !Array.isArray(doc.data)) continue;
@@ -330,23 +329,43 @@ export function runAccount(changed, read, diffOf, readBase = noBase) {
       if (!r?.id) continue;
       if (baseById) {
         const b = baseById.get(r.id);
-        if (!b) rows.push({ r, fields: null });
+        if (!b) rows.push({ r, base: null, fields: null });
         else {
           const fields = [...new Set([...Object.keys(b), ...Object.keys(r)])].filter((k) => stable(b[k]) !== stable(r[k]));
-          if (fields.length) rows.push({ r, fields });
+          if (fields.length) rows.push({ r, base: b, fields });
         }
-      } else if (addedIds.has(r.id)) rows.push({ r, fields: null });
+      } else if (addedIds.has(r.id)) rows.push({ r, base: null, fields: null });
     }
     if (!rows.length) continue;
-    const line = ({ r, fields }) => {
-      const state = r.reviewState ?? r.verification ?? r.status ?? "";
+    const line = ({ r, base, fields }) => {
+      // The line prints one state field, one text field and one locator field, each the first present of several;
+      // a modified record's other changed fields are printed after it with their new values — a changed title
+      // beside a statement, a url beside an identifier, a source anchor's sourceId — so the set of fields the line
+      // shows is read from the record, not assumed (review note #378).
+      const shown = new Set(["id"]);
+      const stateKey = ["reviewState", "verification", "status"].find((k) => r[k] != null);
+      if (stateKey) shown.add(stateKey);
+      if (r.direction) shown.add("direction").add("strength");
+      if (Array.isArray(r.claimIds)) shown.add("claimIds");
+      if (r.sourceId) shown.add("sourceId");
+      const textKey = ["statement", "sourceStatement", "summary", "title"].find((k) => r[k] != null);
+      if (textKey) shown.add(textKey);
+      const whereKey = ["exactLocator", "sourceAnchor.locator", "identifier", "url"].find((k) => (k === "sourceAnchor.locator" ? r.sourceAnchor?.locator : r[k]) != null);
+      if (whereKey && whereKey !== "sourceAnchor.locator") shown.add(whereKey);
+      // The anchor counts as shown only when every part of it that changed is one the line prints.
+      if (fields?.includes("sourceAnchor")) {
+        const printed = new Set([...(whereKey === "sourceAnchor.locator" ? ["locator"] : []), ...(r.sourceAnchor?.quote ? ["quote"] : [])]);
+        const parts = [...new Set([...Object.keys(base?.sourceAnchor ?? {}), ...Object.keys(r.sourceAnchor ?? {})])];
+        if (parts.filter((k) => stable(base?.sourceAnchor?.[k]) !== stable(r.sourceAnchor?.[k])).every((k) => printed.has(k))) shown.add("sourceAnchor");
+      }
+      const state = stateKey ? r[stateKey] : "";
       const bearing = r.direction ? `${r.direction}${Array.isArray(r.claimIds) ? ` → ${r.claimIds.join(", ")}` : ""} (${r.strength ?? ""})` : Array.isArray(r.claimIds) ? `→ ${r.claimIds.join(", ")}` : "";
-      const text = r.statement ?? r.sourceStatement ?? r.summary ?? r.title ?? "";
-      const where = r.exactLocator ?? r.sourceAnchor?.locator ?? r.identifier ?? r.url ?? "";
+      const text = textKey ? r[textKey] : "";
+      const where = whereKey === "sourceAnchor.locator" ? r.sourceAnchor.locator : whereKey ? r[whereKey] : "";
       const quote = r.sourceAnchor?.quote ? ` | quote: ${clip(String(r.sourceAnchor.quote), 160, "quote")}` : "";
       const src = r.sourceId ? ` | source ${r.sourceId}` : "";
       const modified = fields ? ` | modified: ${fields.join(", ")}` : "";
-      const now = fields ? fields.filter((k) => !SHOWN.has(k)).map((k) => `\n  ${k} now: ${clip(typeof r[k] === "string" ? r[k] : JSON.stringify(r[k] ?? null), 240, k)}`).join("") : "";
+      const now = fields ? fields.filter((k) => !shown.has(k)).map((k) => `\n  ${k} now: ${clip(typeof r[k] === "string" ? r[k] : JSON.stringify(r[k] ?? null), 240, k)}`).join("") : "";
       return `- ${r.id} [${state}] ${bearing}${src}${modified}\n  ${clip(String(text), 320, "text")}${quote}${where ? `\n  at: ${clip(String(where), 160, "locator")}` : ""}${now}`;
     };
     const added = rows.filter((x) => !x.fields).length;

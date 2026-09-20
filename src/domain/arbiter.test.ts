@@ -346,6 +346,22 @@ describe("runAccount — the run's own record, for a panel that cannot read the 
     expect(noBase).toMatch(/evidence\.yaml \(1 record\(s\) added, 0 modified:/);
     expect(noBase).not.toMatch(/X-E001/);
   });
+  it("prints the new value of every changed field the line does not itself show — a title beside a statement, a url beside an identifier, a source anchor's sourceId", () => {
+    const claimsBase = "- id: X-C1\n  statement: The proposition.\n  title: Old title\n  reviewState: ai_extracted\n  sourceAnchor:\n    sourceId: SRC-A\n    locator: p. 4\n    quote: the words\n- id: X-C2\n  statement: Second.\n  reviewState: ai_extracted\n  sourceAnchor:\n    locator: p. 5\n    quote: old words\n";
+    const claimsHead = claimsBase.replace("title: Old title", "title: New title").replace("sourceId: SRC-A", "sourceId: SRC-Z").replace("quote: old words", "quote: new words");
+    const sourcesBase = "- id: SRC-B\n  title: A paper\n  identifier: doi:10.1/x\n  url: https://old.example/x\n  verification: verified\n";
+    const sourcesHead = sourcesBase.replace("https://old.example/x", "https://new.example/x");
+    const head: Record<string, string> = { ...files, "content/cases/x/claims.yaml": claimsHead, "content/cases/x/sources.yaml": sourcesHead };
+    const base: Record<string, string> = { "content/cases/x/claims.yaml": claimsBase, "content/cases/x/sources.yaml": sourcesBase };
+    const { text } = runAccount(Object.keys(head), (p: string) => head[p] ?? null, diffOf, (p: string) => base[p] ?? null);
+    expect(text).toMatch(/claims\.yaml \(0 record\(s\) added, 2 modified:/);
+    // The statement is the text the line prints, so the changed title is printed after it; the anchor's sourceId is not printed by the line, so the whole anchor is.
+    expect(text).toMatch(/- X-C1 \[ai_extracted\] +\| modified: title, sourceAnchor\n  The proposition\. \| quote: the words\n  at: p\. 4\n  title now: New title\n  sourceAnchor now: \{"sourceId":"SRC-Z","locator":"p\. 4","quote":"the words"\}/);
+    // Only the quote changed on X-C2, and the line prints the quote: nothing more to print.
+    expect(text).toMatch(/- X-C2 \[ai_extracted\] +\| modified: sourceAnchor\n  Second\. \| quote: new words\n  at: p\. 5\n(?!  sourceAnchor now)/);
+    // The identifier is the locator the line prints, so the changed url is printed after it.
+    expect(text).toMatch(/- SRC-B \[verified\] +\| modified: url\n  A paper\n  at: doi:10\.1\/x\n  url now: https:\/\/new\.example\/x/);
+  });
   it("puts the head edition and its assessment first and whole, and shows a candidate superseded within the change by what it says that the head does not", () => {
     const two: Record<string, string> = {
       ...files,

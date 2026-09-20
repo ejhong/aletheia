@@ -117,7 +117,7 @@ describe("settleRecords with verb answer, end to end on a copied case", async ()
   const fs = await import("node:fs");
   const os = await import("node:os");
   const path = await import("node:path");
-  const { parse } = await import("yaml");
+  const { parse, stringify } = await import("yaml");
   const { settleRecords, splitNoteFor, readRelinked } = await import("../pipeline/reverify.ts");
   const { quotedSpans } = await import("../pipeline/quotes.ts");
   const c = getCaseBySlug("megalithic-casting");
@@ -464,6 +464,42 @@ describe("settleRecords with verb answer, end to end on a copied case", async ()
     expect((act as { promptVersion?: string }).promptVersion).toBe("split-v5");
     // A part the splitter did not place keeps the compound's locator.
     expect(second.exactLocator).toBe(live.exactLocator);
+    fs.rmSync(root, { recursive: true, force: true });
+  });
+  it("a live claim with no source anchor, anchored by the ledger's evidence, is not refused as unanchored when read again on its own", async () => {
+    const byEvidence = c.claims.find((k) => k.reviewState !== "rejected" && !k.sourceAnchor && c.evidence.some((e) => e.reviewState !== "rejected" && e.claimIds.includes(k.id)))!;
+    expect(byEvidence).toBeTruthy();
+    const root = setup();
+    const before = fs.readFileSync(path.join(root, "content", "cases", c.dir, "claims.yaml"), "utf8");
+    const judge = async () => {
+      throw new Error("no model call is needed for a claim anchored by evidence");
+    };
+    const out = await settleRecords(c.record.slug, { ...claimSettlement, originals: { sources: [], evidence: [], claims: [byEvidence] } }, { root, deps: { cases: () => [c], judge, split: async () => parts, fetch: fetchClaim } });
+    expect(out).toMatchObject({ outcome: "completed", promoted: 1, refused: 0 });
+    // Promoted over itself: the claim stands as it was, live, its statement and state unchanged.
+    const after = (parse(fs.readFileSync(path.join(root, "content", "cases", c.dir, "claims.yaml"), "utf8")) as { id: string; statement: string; reviewState: string }[]).find((k) => k.id === byEvidence.id)!;
+    expect(after).toMatchObject({ statement: byEvidence.statement, reviewState: byEvidence.reviewState });
+    expect(before).toContain(byEvidence.statement.slice(0, 40));
+    fs.rmSync(root, { recursive: true, force: true });
+  });
+  it("an agenda item whose every claim is refused retires, its claims kept as the record of what it served", async () => {
+    const root = setup();
+    const rFile = path.join(root, "content", "cases", c.dir, "research.yaml");
+    const research = parse(fs.readFileSync(rFile, "utf8")) as { id: string; claimIds: string[]; status?: string; statusNote?: string }[];
+    research[0] = { ...research[0], claimIds: [claim.id] };
+    delete research[0].status;
+    delete research[0].statusNote;
+    fs.writeFileSync(rFile, stringify(research, { lineWidth: 0, aliasDuplicateObjects: false }));
+    const cMod = { ...c, research: c.research.map((r, i) => (i === 0 ? { ...r, claimIds: [claim.id], status: undefined, statusNote: undefined } : r)) } as unknown as LoadedCase;
+    const judge = async (rec: unknown) => ((rec as { statement: string }).statement === claim.statement ? { ...ok, statementSupported: false, reason: "the anchor does not state it" } : { ...ok, reason: "fine" });
+    const out = await settleRecords(c.record.slug, claimSettlement, { root, deps: { cases: () => [cMod], judge, split: async () => parts, fetch: fetchClaim } });
+    expect(out).toMatchObject({ outcome: "completed", refused: 1 });
+    const after = (parse(fs.readFileSync(rFile, "utf8")) as { id: string; claimIds: string[]; status?: string; statusNote?: string; statusBy?: string }[])[0];
+    expect(after.status).toBe("retired");
+    expect(after.claimIds).toEqual([claim.id]);
+    expect(after.statusNote).toMatch(new RegExp(`^Retired at the answer's re-reading \\d{4}-\\d{2}-\\d{2} \\(${out.runId}\\): every claim it served was refused \\(${claim.id}\\)$`));
+    expect(after.statusBy).toBe(out.runId);
+    expect(fs.readFileSync(path.join(root, "proposals", out.runId, "verification.md"), "utf8")).toContain(`${after.id}: every claim it served was refused; retired`);
     fs.rmSync(root, { recursive: true, force: true });
   });
   it("a run that fails half-way rolls its ledger writes back and says so", async () => {

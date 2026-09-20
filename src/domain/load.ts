@@ -228,8 +228,10 @@ export function checkIntegrity(caseDir: string, loaded: LoadedCase): void {
   }
 
   for (const ro of loaded.research) {
+    // A retired or superseded agenda item is a frozen record of what it served; an open or answered one is live.
+    const frozen = ro.status === "retired" || ro.status === "superseded";
     for (const cid of ro.claimIds) {
-      requireLiveClaim(cid, `research ${ro.id}`);
+      (frozen ? requireClaim : requireLiveClaim)(cid, `research ${ro.id}`);
     }
   }
 

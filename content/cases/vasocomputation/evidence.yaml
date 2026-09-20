@@ -1137,25 +1137,35 @@
     date: 2026-09-09
 
 - id: VASO-E067
-  title: "Landfald 2025: pressure with no breathing instruction sufficed to make most trigger points undetectable — part 3"
+  title: "Landfald 2025: the pressure-only compression protocol carried no breathing instruction, recording or manipulation — part 3"
   claimIds:
     - VASO-C039
   sourceId: SRC-LANDFALD-2025
-  direction: undermines
+  direction: context
   strength: moderate
   sourceStatement: No breathing instruction, recording or manipulation appears anywhere in the methods or results; the method is described only as "Trigger points were eliminated with compression".
-  editorInference: "The claim's own truth condition makes it false if pressure alone suffices; here pressure without any breath manipulation sufficed for about three-quarters of points immediately and for all but two at 24 hours. This is direct contrary evidence. It does not close the claim, because breathing was neither instructed nor recorded: subjects under painful sustained pressure may have exhaled slowly on their own, so 'no breath instruction' is not 'breath held constant'. That reply is testable by the inhale-and-hold block, which is why the record is moderate and not decisive."
+  editorInference: "What the record establishes is an absence in the method: the protocol's compression was applied with no breathing instruction, recording or manipulation anywhere in the methods or results. It does not by itself establish what the protocol achieved; the immediate elimination and 24-hour non-recurrence figures proposed as records on VASO-C039 were refused at review as bundled, and the pressure-only outcomes the ledger does hold sit on the claims they are attached to (VASO-E072 on VASO-C005, VASO-E074 on VASO-C033). The bearing on VASO-C039 is context: a pressure-only protocol exists in the literature, and its subjects' breathing was neither instructed nor recorded — 'no breath instruction' is not 'breath held constant'."
   exactLocator: PMC12647689, Materials and methods, 'MTrP release'; Abstract
   limitations:
     - Breathing uncontrolled and unrecorded, so a spontaneous slow exhale under pressure cannot be excluded.
     - The endpoint is palpation and elastography, not the felt release the two-key protocol describes.
     - Different muscle (gastrocnemius) and population (symptomatic amateur runners) from the practitioner reports behind the claim.
+    - "Direction set to \"context\" (from \"undermines\") by the second reader (claude-sonnet-5, 2026-09-20, run 2026-09-20-answer-vasocomputation-124732, verify-v6) at intake: The sourceStatement accurately reports that the Methods and Abstract nowhere mention breathing instruction, recording, or manipulation, and the locator (MTrP release section / Abstract) is correct. But this bare methodological absence, by itself, does not establish that pressure alone achieved release — that would require the outcome data (elimination rates), which per the review record was split off and not admitted here. Without a paired outcome, the statement only characterizes the study's method as a naive comparison point, so it bears on VASO-C039 as context rather than as undermining it."
   reviewState: ai_extracted
   origin:
     ref: split of VASO-E054 (report 2026-09-20-report-vasocomputation-112413)
     extractedBy: claude-fable-5-1
     runId: 2026-09-20-verify-vasocomputation-113521
     date: 2026-09-20
+  readerActs:
+    - field: direction
+      from: undermines
+      to: context
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-20-answer-vasocomputation-124732
+      date: 2026-09-20
+      reason: The sourceStatement accurately reports that the Methods and Abstract nowhere mention breathing instruction, recording, or manipulation, and the locator (MTrP release section / Abstract) is correct. But this bare methodological absence, by itself, does not establish that pressure alone achieved release — that would require the outcome data (elimination rates), which per the review record was split off and not admitted here. Without a paired outcome, the statement only characterizes the study's method as a naive comparison point, so it bears on VASO-C039 as context rather than as undermining it.
 - id: VASO-E068
   title: "Landfald 2025: active trigger points larger, stiffer and more painful than latent ones; latent ones cleared more often after one round — part 1"
   claimIds:

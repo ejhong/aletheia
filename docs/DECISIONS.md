@@ -2461,3 +2461,7 @@ The record behind the three parts of the split claim on #372 — the Ballyns 201
 ## 2026-09-20 — The second client is named by itself
 
 On review note #393, the same day as the second client (#392): the client was an unnamed callback, and every note said "curl" whatever had been injected — a test double read the page and the account said curl did. The client now carries its own name, and every note — where the text came from, what a client that failed was served — gives it; curl names itself, a test double names itself. Supervised-by: founder (direction in session, 2026-09-20).
+
+## 2026-09-20 — The split recurses once for a part refused as compound
+
+The Ballyns 2011 trapezius record, read against the three parts of the split claim on #372, was found not one observation — it bundles three pairwise area comparisons and three ROC results — and the splitter's four parts each still bundled two or three of them, so every part was refused as compound and the record was tombstoned with nothing in its place: the one record carrying the graded-area claims, lost by a defect of the split rather than a finding about the source, which states each comparison on its own. The operator reverted the refusal on the record. A part the reader refuses as compound, and for nothing else, is now split once more — a second round and no third — for evidence and for claims alike, each sub-part checked and judged as a part is, and the account says which parts were split again. Supervised-by: founder (direction in session, 2026-09-20).

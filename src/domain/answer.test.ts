@@ -336,6 +336,57 @@ describe("settleRecords with verb answer, end to end on a copied case", async ()
     expect(evidenceOf(root, citing.id).reviewState).toBe("provisional");
     fs.rmSync(root, { recursive: true, force: true });
   });
+  it("a part refused as compound is split once more — a second round, no third — for evidence", async () => {
+    const root = setup();
+    const q = quotedSpans(live.sourceStatement)[0];
+    const p1 = `Two findings together, "${q}".`;
+    const p2 = `Another pair together, "${q}".`;
+    const p1a = `The first finding alone, "${q}".`;
+    const p1b = `The second finding alone, "${q}".`;
+    const p2a = `Still a pair, "${q}".`;
+    const compound = new Set([live.sourceStatement, p1, p2, p2a]);
+    const judge = async (rec: unknown) => {
+      const st = (rec as { sourceStatement: string }).sourceStatement;
+      return compound.has(st) ? { ...ok, atomic: false, reason: "more than one finding" } : { ...ok, reason: "one finding" };
+    };
+    const split = async (statement: string) => (statement === live.sourceStatement ? [p1, p2] : statement === p1 ? [p1a, p1b] : statement === p2 ? [p2a] : []);
+    const out = await settleRecords(c.record.slug, settlement("compound"), { root, deps: { cases: () => [c], judge, split, fetch: fetchOk } });
+    expect(out).toMatchObject({ outcome: "completed", promoted: 0, appended: 2, refused: 1 });
+    const ev = parse(fs.readFileSync(path.join(root, "content", "cases", c.dir, "evidence.yaml"), "utf8")) as { id: string; title: string; sourceStatement: string; origin: { ref: string }; reviewState: string; limitations: string[] }[];
+    const parts = ev.filter((e) => e.origin.ref.startsWith(`split of ${live.id} `));
+    expect(parts.map((e) => e.sourceStatement).sort()).toEqual([p1a, p1b].sort());
+    expect(parts.map((e) => e.title.replace(/^.* — part /, "")).sort()).toEqual(["1.1", "1.2"]);
+    for (const e of parts) expect(e.origin.ref).toMatch(/; second round$/);
+    const parent = ev.find((e) => e.id === live.id)!;
+    expect(parent.reviewState).toBe("rejected");
+    expect(parent.limitations.at(-1)).toMatch(new RegExp(`split into ${parts.map((e) => e.id).sort().join(", ")}$`));
+    const account = fs.readFileSync(path.join(root, "proposals", out.runId, "verification.md"), "utf8");
+    expect(account).toContain(`${live.id} part "${p1.slice(0, 60)}" still not one observation (more than one finding); split again into 2 part(s)`);
+    expect(account).toContain(`${live.id} part "${p2a.slice(0, 60)}" refused (atomic): more than one finding`);
+    fs.rmSync(root, { recursive: true, force: true });
+  });
+  it("a part refused as compound is split once more for a claim, each sub-part on its own anchor", async () => {
+    const root = setup();
+    const quote = claim.sourceAnchor!.quote!;
+    const level1 = ["Two propositions together.", "One proposition on its own."];
+    const level2 = ["The first proposition alone.", "The second proposition alone."];
+    const compound = new Set([claim.statement, level1[0]]);
+    const judge = async (rec: unknown) => {
+      const st = (rec as { statement: string }).statement;
+      return compound.has(st) ? { ...ok, atomic: false, reason: "two propositions" } : { ...ok, reason: "one proposition, at its anchor" };
+    };
+    const split = async (statement: string) => (statement === claim.statement ? { parts: level1, anchors: level1.map(() => ({ quote, locator: "Results" })) } : statement === level1[0] ? { parts: level2, anchors: level2.map(() => ({ quote, locator: "Results" })) } : { parts: [] });
+    const out = await settleRecords(c.record.slug, claimSettlement, { root, deps: { cases: () => [c], judge, split, fetch: fetchClaim } });
+    expect(out).toMatchObject({ outcome: "completed", appended: 3, refused: 1 });
+    const claims = parse(fs.readFileSync(path.join(root, "content", "cases", c.dir, "claims.yaml"), "utf8")) as { id: string; statement: string; origin: { ref: string }; sourceAnchor?: { quote?: string; locator: string } }[];
+    const parts = claims.filter((k) => k.origin.ref.startsWith(`split of ${claim.id} `));
+    expect(parts.map((k) => k.statement).sort()).toEqual([level1[1], ...level2].sort());
+    for (const k of parts) expect(k.sourceAnchor).toMatchObject({ quote, locator: "Results" });
+    expect(parts.filter((k) => /; second round$/.test(k.origin.ref)).map((k) => k.statement).sort()).toEqual([...level2].sort());
+    const account = fs.readFileSync(path.join(root, "proposals", out.runId, "verification.md"), "utf8");
+    expect(account).toContain(`${claim.id} part "${level1[0].slice(0, 60)}" still not one proposition (two propositions); split again into 2 part(s)`);
+    fs.rmSync(root, { recursive: true, force: true });
+  });
   it("a run that fails half-way rolls its ledger writes back and says so", async () => {
     const root = setup();
     const dir = path.join(root, "content", "cases", c.dir);

@@ -243,6 +243,11 @@ export async function runAnswer(pr: number, opts: AnswerOptions = {}): Promise<A
       { root, deps: opts.deps, now: opts.deps?.now },
     );
     lines.push(`## Records re-read`, `- ${recordsOut.reason ?? recordsOut.outcome}`, ``);
+    if (recordsOut.outcome === "failed") {
+      // A failed re-reading rolled its writes back; an edition told over that ledger would answer nothing (2026-09-20: the edition ran after a half-written settlement and crashed on it).
+      lines.push(`## Edition not re-told`, `- the re-reading failed and its ledger writes were rolled back; the edition was not run`, ``);
+      return { ...base, classified, records: recordsOut, edition: null, account: lines.join("\n") };
+    }
   }
   let editionOut: EditionOutcome | null = null;
   if (edition.length) {

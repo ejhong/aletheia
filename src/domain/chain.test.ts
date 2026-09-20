@@ -1032,3 +1032,11 @@ describe("the draft verb's prose discipline (v8, 2026-09-11)", () => {
     expect(d?.reason).not.toContain("GEO-C001");
   });
 });
+
+describe("quotes — whitespace never decides a match", () => {
+  it("finds a quote taken from one rendering of an article in another that spaces it differently", () => {
+    expect(unverifiedQuotes('Active MTrPs had "greater stiffness ratios (mean 8.5 vs. 6.1, p= 0.006) compared to latent points".', "… and greater stiffness ratios (mean 8.5 vs. 6.1,   p = 0.006) compared to latent points.")).toEqual([]);
+    expect(unverifiedQuotes('It says "the deficit increases in the full sample".', "the deficit\nincreases in the\tfull  sample")).toEqual([]);
+    expect(unverifiedQuotes('It says "the deficit increases in the full sample".', "the deficit decreases in the full sample")).toEqual(["the deficit increases in the full sample"]);
+  });
+});

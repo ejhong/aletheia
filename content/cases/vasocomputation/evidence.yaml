@@ -1135,3 +1135,455 @@
     extractedBy: claude-fable-5-1
     runId: 2026-09-09-draft-vasocomputation-053853
     date: 2026-09-09
+
+- id: VASO-E067
+  title: "Landfald 2025: pressure with no breathing instruction sufficed to make most trigger points undetectable — part 3"
+  claimIds:
+    - VASO-C039
+  sourceId: SRC-LANDFALD-2025
+  direction: undermines
+  strength: moderate
+  sourceStatement: No breathing instruction, recording or manipulation appears anywhere in the methods or results; the method is described only as "Trigger points were eliminated with compression".
+  editorInference: "The claim's own truth condition makes it false if pressure alone suffices; here pressure without any breath manipulation sufficed for about three-quarters of points immediately and for all but two at 24 hours. This is direct contrary evidence. It does not close the claim, because breathing was neither instructed nor recorded: subjects under painful sustained pressure may have exhaled slowly on their own, so 'no breath instruction' is not 'breath held constant'. That reply is testable by the inhale-and-hold block, which is why the record is moderate and not decisive."
+  exactLocator: PMC12647689, Materials and methods, 'MTrP release'; Abstract
+  limitations:
+    - Breathing uncontrolled and unrecorded, so a spontaneous slow exhale under pressure cannot be excluded.
+    - The endpoint is palpation and elastography, not the felt release the two-key protocol describes.
+    - Different muscle (gastrocnemius) and population (symptomatic amateur runners) from the practitioner reports behind the claim.
+  reviewState: ai_extracted
+  origin:
+    ref: split of VASO-E054 (report 2026-09-20-report-vasocomputation-112413)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-20-verify-vasocomputation-113521
+    date: 2026-09-20
+- id: VASO-E068
+  title: "Landfald 2025: active trigger points larger, stiffer and more painful than latent ones; latent ones cleared more often after one round — part 1"
+  claimIds:
+    - VASO-C005
+  sourceId: SRC-LANDFALD-2025
+  direction: context
+  strength: moderate
+  sourceStatement: Among the 103 identified MTrPs, 67 were classified as active and 36 as latent; the source states that "67 were classified as active (ATrPs), based on the presence of referred pain, and 36 as latent".
+  editorInference: A second laboratory, a second muscle (gastrocnemius) and a second elastography method (strain rather than vibration) reproduce the graded finding that palpated points are measurably stiffer than surrounding tissue and that the more symptomatic class is stiffer still. The record has no palpably normal control sites and no biochemistry or Doppler, so it supports the stiffness component of the claim only.
+  exactLocator: PMC12647689, Results, 'Comparison between active and latent MTrPs' and Table 2; Discussion
+  limitations:
+    - No palpably normal or pain-free control sites; the comparison is active versus latent within symptomatic runners.
+    - Subgroup analyses described by the authors as exploratory and underpowered.
+    - Strain elastography stiffness ratios are relative, operator-dependent measures.
+    - "Direction set to \"context\" (from \"supports\") by the second reader (claude-sonnet-5, 2026-09-20, run 2026-09-20-verify-vasocomputation-113521, verify-v6) at intake: The quoted sentence only reports the classification counts (67 active, 36 latent MTrPs) and does not itself contain the stiffness/biochemistry/blood-flow comparison to control (non-trigger-point) tissue that VASO-C005 requires; moreover the comparison in the paper is active vs latent trigger points within symptomatic runners, not trigger points vs control tissue, so it cannot be said to 'support' that claim directly. The passage is accurately quoted and located, but its bearing on VASO-C005 is at most contextual (establishing that active/latent subtypes exist and differ from each other), not supportive of a control-tissue comparison."
+  reviewState: ai_extracted
+  origin:
+    ref: split of VASO-E056 (report 2026-09-20-report-vasocomputation-112413)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-20-verify-vasocomputation-113521
+    date: 2026-09-20
+  readerActs:
+    - field: direction
+      from: supports
+      to: context
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-20-verify-vasocomputation-113521
+      date: 2026-09-20
+      reason: The quoted sentence only reports the classification counts (67 active, 36 latent MTrPs) and does not itself contain the stiffness/biochemistry/blood-flow comparison to control (non-trigger-point) tissue that VASO-C005 requires; moreover the comparison in the paper is active vs latent trigger points within symptomatic runners, not trigger points vs control tissue, so it cannot be said to 'support' that claim directly. The passage is accurately quoted and located, but its bearing on VASO-C005 is at most contextual (establishing that active/latent subtypes exist and differ from each other), not supportive of a control-tissue comparison.
+- id: VASO-E069
+  title: "Landfald 2025: active trigger points larger, stiffer and more painful than latent ones; latent ones cleared more often after one round — part 2"
+  claimIds:
+    - VASO-C005
+  sourceId: SRC-LANDFALD-2025
+  direction: context
+  strength: moderate
+  sourceStatement: Active points had significantly higher VAS scores than latent points, "mean 8.9 vs. 6.1, p < 0.001".
+  editorInference: A second laboratory, a second muscle (gastrocnemius) and a second elastography method (strain rather than vibration) reproduce the graded finding that palpated points are measurably stiffer than surrounding tissue and that the more symptomatic class is stiffer still. The record has no palpably normal control sites and no biochemistry or Doppler, so it supports the stiffness component of the claim only.
+  exactLocator: PMC12647689, Results, 'Comparison between active and latent MTrPs' and Table 2; Discussion
+  limitations:
+    - No palpably normal or pain-free control sites; the comparison is active versus latent within symptomatic runners.
+    - Subgroup analyses described by the authors as exploratory and underpowered.
+    - Strain elastography stiffness ratios are relative, operator-dependent measures.
+    - 'Direction set to "context" (from "supports") by the second reader (claude-sonnet-5, 2026-09-20, run 2026-09-20-verify-vasocomputation-113521, verify-v6) at intake: The quote is accurate and the locator is correct, but the claim concerns whether active trigger-point sites differ from control (non-trigger-point) tissue in biochemistry, stiffness, and blood flow; this record instead reports a subjective pain-score (VAS) difference between active and latent trigger points, not a comparison against control tissue and not a biochemical, stiffness, or blood-flow measure. It therefore bears on the general active-vs-latent theme but does not support the specific comparison the claim makes, so it is better read as context than as direct support.'
+  reviewState: ai_extracted
+  origin:
+    ref: split of VASO-E056 (report 2026-09-20-report-vasocomputation-112413)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-20-verify-vasocomputation-113521
+    date: 2026-09-20
+  readerActs:
+    - field: direction
+      from: supports
+      to: context
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-20-verify-vasocomputation-113521
+      date: 2026-09-20
+      reason: The quote is accurate and the locator is correct, but the claim concerns whether active trigger-point sites differ from control (non-trigger-point) tissue in biochemistry, stiffness, and blood flow; this record instead reports a subjective pain-score (VAS) difference between active and latent trigger points, not a comparison against control tissue and not a biochemical, stiffness, or blood-flow measure. It therefore bears on the general active-vs-latent theme but does not support the specific comparison the claim makes, so it is better read as context than as direct support.
+- id: VASO-E070
+  title: "Landfald 2025: active trigger points larger, stiffer and more painful than latent ones; latent ones cleared more often after one round — part 3"
+  claimIds:
+    - VASO-C005
+  sourceId: SRC-LANDFALD-2025
+  direction: qualifies
+  strength: moderate
+  sourceStatement: Active points had a significantly larger cross-sectional area than latent points, "28 mm 2 vs. 17 mm 2 , p = 0.014".
+  editorInference: A second laboratory, a second muscle (gastrocnemius) and a second elastography method (strain rather than vibration) reproduce the graded finding that palpated points are measurably stiffer than surrounding tissue and that the more symptomatic class is stiffer still. The record has no palpably normal control sites and no biochemistry or Doppler, so it supports the stiffness component of the claim only.
+  exactLocator: PMC12647689, Results, 'Comparison between active and latent MTrPs' and Table 2; Discussion
+  limitations:
+    - No palpably normal or pain-free control sites; the comparison is active versus latent within symptomatic runners.
+    - Subgroup analyses described by the authors as exploratory and underpowered.
+    - Strain elastography stiffness ratios are relative, operator-dependent measures.
+    - "Direction set to \"qualifies\" (from \"supports\") by the second reader (claude-sonnet-5, 2026-09-20, run 2026-09-20-verify-vasocomputation-113521, verify-v6) at intake: The quote and figures (28 mm2 vs 17 mm2, p=0.014) are accurately reported from Table 2/Results as an active-vs-latent MTrP comparison. However, VASO-C005 concerns differences between active trigger-point sites and control (non-trigger-point) tissue, whereas this data compares active to latent trigger points within symptomatic runners, with no palpably normal control tissue as the record's own limitations note. This makes the finding a qualification rather than direct support of the claim about trigger point vs control tissue differences."
+  reviewState: ai_extracted
+  origin:
+    ref: split of VASO-E056 (report 2026-09-20-report-vasocomputation-112413)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-20-verify-vasocomputation-113521
+    date: 2026-09-20
+  readerActs:
+    - field: direction
+      from: supports
+      to: qualifies
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-20-verify-vasocomputation-113521
+      date: 2026-09-20
+      reason: The quote and figures (28 mm2 vs 17 mm2, p=0.014) are accurately reported from Table 2/Results as an active-vs-latent MTrP comparison. However, VASO-C005 concerns differences between active trigger-point sites and control (non-trigger-point) tissue, whereas this data compares active to latent trigger points within symptomatic runners, with no palpably normal control tissue as the record's own limitations note. This makes the finding a qualification rather than direct support of the claim about trigger point vs control tissue differences.
+- id: VASO-E071
+  title: "Landfald 2025: active trigger points larger, stiffer and more painful than latent ones; latent ones cleared more often after one round — part 4"
+  claimIds:
+    - VASO-C005
+  sourceId: SRC-LANDFALD-2025
+  direction: context
+  strength: moderate
+  sourceStatement: Active points had significantly "greater stiffness ratios (mean 8.5 vs. 6.1, p = 0.006)" compared to latent points.
+  editorInference: A second laboratory, a second muscle (gastrocnemius) and a second elastography method (strain rather than vibration) reproduce the graded finding that palpated points are measurably stiffer than surrounding tissue and that the more symptomatic class is stiffer still. The record has no palpably normal control sites and no biochemistry or Doppler, so it supports the stiffness component of the claim only.
+  exactLocator: PMC12647689, Results, 'Comparison between active and latent MTrPs' and Table 2; Discussion
+  limitations:
+    - No palpably normal or pain-free control sites; the comparison is active versus latent within symptomatic runners.
+    - Subgroup analyses described by the authors as exploratory and underpowered.
+    - Strain elastography stiffness ratios are relative, operator-dependent measures.
+    - 'Direction set to "context" (from "supports") by the second reader (claude-sonnet-5, 2026-09-20, run 2026-09-20-verify-vasocomputation-113521, verify-v6) at intake: The quote is accurately reproduced from Table 2/Results and correctly located, but the comparison is between active and latent trigger points within the same symptomatic cohort, not between trigger-point tissue and normal/control tissue as VASO-C005 requires. This internal subgroup contrast (active vs latent) does not itself establish that active sites differ from control tissue, so it bears on the claim only as context rather than as direct support.'
+  reviewState: ai_extracted
+  origin:
+    ref: split of VASO-E056 (report 2026-09-20-report-vasocomputation-112413)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-20-verify-vasocomputation-113521
+    date: 2026-09-20
+  readerActs:
+    - field: direction
+      from: supports
+      to: context
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-20-verify-vasocomputation-113521
+      date: 2026-09-20
+      reason: The quote is accurately reproduced from Table 2/Results and correctly located, but the comparison is between active and latent trigger points within the same symptomatic cohort, not between trigger-point tissue and normal/control tissue as VASO-C005 requires. This internal subgroup contrast (active vs latent) does not itself establish that active sites differ from control tissue, so it bears on the claim only as context rather than as direct support.
+- id: VASO-E072
+  title: "Landfald 2025: active trigger points larger, stiffer and more painful than latent ones; latent ones cleared more often after one round — part 6"
+  claimIds:
+    - VASO-C005
+  sourceId: SRC-LANDFALD-2025
+  direction: context
+  strength: moderate
+  sourceStatement: After the first round of compression, "60% of ATrPs and 86% of LTrPs were no longer detectable sonographically" (p = 0.021).
+  editorInference: A second laboratory, a second muscle (gastrocnemius) and a second elastography method (strain rather than vibration) reproduce the graded finding that palpated points are measurably stiffer than surrounding tissue and that the more symptomatic class is stiffer still. The record has no palpably normal control sites and no biochemistry or Doppler, so it supports the stiffness component of the claim only.
+  exactLocator: PMC12647689, Results, 'Comparison between active and latent MTrPs' and Table 2; Discussion
+  limitations:
+    - No palpably normal or pain-free control sites; the comparison is active versus latent within symptomatic runners.
+    - Subgroup analyses described by the authors as exploratory and underpowered.
+    - Strain elastography stiffness ratios are relative, operator-dependent measures.
+    - "Direction set to \"context\" (from \"supports\") by the second reader (claude-sonnet-5, 2026-09-20, run 2026-09-20-verify-vasocomputation-113521, verify-v6) at intake: The quote is accurate and correctly located, reporting differential post-treatment detectability of active versus latent trigger points. However, VASO-C005 concerns whether active trigger-point sites differ from control (non-trigger-point) tissue in biochemistry, stiffness, and blood flow, whereas this passage compares active to latent trigger points' response to compression therapy, not either to control tissue baseline measures. That makes the passage background/contextual to the claim rather than direct support for it."
+  reviewState: ai_extracted
+  origin:
+    ref: split of VASO-E056 (report 2026-09-20-report-vasocomputation-112413)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-20-verify-vasocomputation-113521
+    date: 2026-09-20
+  readerActs:
+    - field: direction
+      from: supports
+      to: context
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-20-verify-vasocomputation-113521
+      date: 2026-09-20
+      reason: The quote is accurate and correctly located, reporting differential post-treatment detectability of active versus latent trigger points. However, VASO-C005 concerns whether active trigger-point sites differ from control (non-trigger-point) tissue in biochemistry, stiffness, and blood flow, whereas this passage compares active to latent trigger points' response to compression therapy, not either to control tissue baseline measures. That makes the passage background/contextual to the claim rather than direct support for it.
+- id: VASO-E073
+  title: "Landfald 2025: active/latent differences in a second muscle as context for the graded-stiffness and fresh/old claims — part 1"
+  claimIds:
+    - VASO-C033
+  sourceId: SRC-LANDFALD-2025
+  direction: context
+  strength: weak
+  sourceStatement: In the gastrocnemius, "active points were larger, stiffer, and more painful" than latent points, with active MTrPs showing higher VAS scores (mean 8.9 vs 6.1), larger cross-sectional area (28 vs 17 mm²) and greater stiffness ratios (8.5 vs 6.1).
+  editorInference: For the trapezius vibration-elastography gradient this is a parallel from another muscle and method, not a replication. For the fresh/old claims it is the nearest instrumented cousin — the more symptomatic point is harder to switch off — but active/latent is a clinical classification, not the age of the knot, so the record carries no weight for or against those claims.
+  exactLocator: PMC12647689, Results, Table 2; Discussion paragraph beginning 'Additionally, our subgroup analysis'
+  limitations:
+    - Different muscle, method and site classes from the trapezius sonoelastography study.
+    - Active/latent is not the fresh/old axis; the authors' 'earlier or less fibrotic' reading is their conjecture.
+    - "Second reader (claude-sonnet-5, 2026-09-20, run 2026-09-20-verify-vasocomputation-113521, verify-v6) found the passage bears on VASO-C033 and not on VASO-C075, VASO-C076; the links dropped at intake: The quoted active-vs-latent comparison (VAS, cross-sectional area, stiffness ratio) is accurately drawn from Table 2/Discussion and is genuinely a different-muscle analogue that can serve as context for the trapezius active/latent claim C033. But the quoted statement says nothing about session counts, duration, or knot age/freshness, so it does not bear at all on the fresh-knot (C075) or ancient-knot (C076) claims about time-to-release, despite the record listing 'context' for all three."
+  reviewState: ai_extracted
+  origin:
+    ref: split of VASO-E057 (report 2026-09-20-report-vasocomputation-112413)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-20-verify-vasocomputation-113521
+    date: 2026-09-20
+  readerActs:
+    - field: claimIds
+      from: &a1
+        - VASO-C033
+        - VASO-C075
+        - VASO-C076
+      to:
+        - VASO-C033
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-20-verify-vasocomputation-113521
+      date: 2026-09-20
+      reason: The quoted active-vs-latent comparison (VAS, cross-sectional area, stiffness ratio) is accurately drawn from Table 2/Discussion and is genuinely a different-muscle analogue that can serve as context for the trapezius active/latent claim C033. But the quoted statement says nothing about session counts, duration, or knot age/freshness, so it does not bear at all on the fresh-knot (C075) or ancient-knot (C076) claims about time-to-release, despite the record listing 'context' for all three.
+- id: VASO-E074
+  title: "Landfald 2025: active/latent differences in a second muscle as context for the graded-stiffness and fresh/old claims — part 2"
+  claimIds:
+    - VASO-C033
+    - VASO-C075
+    - VASO-C076
+  sourceId: SRC-LANDFALD-2025
+  direction: context
+  strength: weak
+  sourceStatement: Latent points responded more readily to compression and "were more often resolved after the first treatment" (86% of latent vs 60% of active MTrPs no longer detectable sonographically, p = 0.021).
+  editorInference: For the trapezius vibration-elastography gradient this is a parallel from another muscle and method, not a replication. For the fresh/old claims it is the nearest instrumented cousin — the more symptomatic point is harder to switch off — but active/latent is a clinical classification, not the age of the knot, so the record carries no weight for or against those claims.
+  exactLocator: PMC12647689, Results, Table 2; Discussion paragraph beginning 'Additionally, our subgroup analysis'
+  limitations:
+    - Different muscle, method and site classes from the trapezius sonoelastography study.
+    - Active/latent is not the fresh/old axis; the authors' 'earlier or less fibrotic' reading is their conjecture.
+  reviewState: ai_extracted
+  origin:
+    ref: split of VASO-E057 (report 2026-09-20-report-vasocomputation-112413)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-20-verify-vasocomputation-113521
+    date: 2026-09-20
+- id: VASO-E075
+  title: "Landfald 2025: active/latent differences in a second muscle as context for the graded-stiffness and fresh/old claims — part 3"
+  claimIds:
+    - VASO-C075
+    - VASO-C076
+  sourceId: SRC-LANDFALD-2025
+  direction: context
+  strength: weak
+  sourceStatement: Active points required more sessions to deactivate than latent points, with "sessions required for elimination" averaging 1.4 ± 0.5 for active versus 1.1 ± 0.3 for latent MTrPs (p = 0.038).
+  editorInference: For the trapezius vibration-elastography gradient this is a parallel from another muscle and method, not a replication. For the fresh/old claims it is the nearest instrumented cousin — the more symptomatic point is harder to switch off — but active/latent is a clinical classification, not the age of the knot, so the record carries no weight for or against those claims.
+  exactLocator: PMC12647689, Results, Table 2; Discussion paragraph beginning 'Additionally, our subgroup analysis'
+  limitations:
+    - Different muscle, method and site classes from the trapezius sonoelastography study.
+    - Active/latent is not the fresh/old axis; the authors' 'earlier or less fibrotic' reading is their conjecture.
+    - "Second reader (claude-sonnet-5, 2026-09-20, run 2026-09-20-verify-vasocomputation-113521, verify-v6) found the passage bears on VASO-C075, VASO-C076 and not on VASO-C033; the link dropped at intake: The quote and locator are accurate, and the record's own caveat about active/latent not being the fresh/old axis is fair. But this active/latent sessions-to-elimination datum from gastrocnemius compression therapy has no bearing on C033, which concerns sonoelastographic lesion area in the upper trapezius from a different study entirely; that claim link should be dropped. For C075/C076 the weak, self-flagged, speculative analogy to lesion age supports treating it only as context, which the record already does."
+  reviewState: ai_extracted
+  origin:
+    ref: split of VASO-E057 (report 2026-09-20-report-vasocomputation-112413)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-20-verify-vasocomputation-113521
+    date: 2026-09-20
+  readerActs:
+    - field: claimIds
+      from: *a1
+      to:
+        - VASO-C075
+        - VASO-C076
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-20-verify-vasocomputation-113521
+      date: 2026-09-20
+      reason: The quote and locator are accurate, and the record's own caveat about active/latent not being the fresh/old axis is fair. But this active/latent sessions-to-elimination datum from gastrocnemius compression therapy has no bearing on C033, which concerns sonoelastographic lesion area in the upper trapezius from a different study entirely; that claim link should be dropped. For C075/C076 the weak, self-flagged, speculative analogy to lesion age supports treating it only as context, which the record already does.
+- id: VASO-E076
+  title: "Landfald 2025: active/latent differences in a second muscle as context for the graded-stiffness and fresh/old claims — part 4"
+  claimIds:
+    - VASO-C033
+    - VASO-C075
+    - VASO-C076
+  sourceId: SRC-LANDFALD-2025
+  direction: context
+  strength: weak
+  sourceStatement: Latent points may represent "earlier or less fibrotic lesions", with MTrP activity level possibly reflecting different stages of myofascial dysfunction.
+  editorInference: For the trapezius vibration-elastography gradient this is a parallel from another muscle and method, not a replication. For the fresh/old claims it is the nearest instrumented cousin — the more symptomatic point is harder to switch off — but active/latent is a clinical classification, not the age of the knot, so the record carries no weight for or against those claims.
+  exactLocator: PMC12647689, Results, Table 2; Discussion paragraph beginning 'Additionally, our subgroup analysis'
+  limitations:
+    - Different muscle, method and site classes from the trapezius sonoelastography study.
+    - Active/latent is not the fresh/old axis; the authors' 'earlier or less fibrotic' reading is their conjecture.
+  reviewState: ai_extracted
+  origin:
+    ref: split of VASO-E057 (report 2026-09-20-report-vasocomputation-112413)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-20-verify-vasocomputation-113521
+    date: 2026-09-20
+- id: VASO-E077
+  title: "Landfald 2025: active/latent differences in a second muscle as context for the graded-stiffness and fresh/old claims — part 5"
+  claimIds:
+    - VASO-C033
+    - VASO-C075
+    - VASO-C076
+  sourceId: SRC-LANDFALD-2025
+  direction: context
+  strength: weak
+  sourceStatement: The faster short-term response of latent points to pressure-release therapy is a suggested pattern for which "confirmation in controlled studies is needed".
+  editorInference: For the trapezius vibration-elastography gradient this is a parallel from another muscle and method, not a replication. For the fresh/old claims it is the nearest instrumented cousin — the more symptomatic point is harder to switch off — but active/latent is a clinical classification, not the age of the knot, so the record carries no weight for or against those claims.
+  exactLocator: PMC12647689, Results, Table 2; Discussion paragraph beginning 'Additionally, our subgroup analysis'
+  limitations:
+    - Different muscle, method and site classes from the trapezius sonoelastography study.
+    - Active/latent is not the fresh/old axis; the authors' 'earlier or less fibrotic' reading is their conjecture.
+  reviewState: ai_extracted
+  origin:
+    ref: split of VASO-E057 (report 2026-09-20-report-vasocomputation-112413)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-20-verify-vasocomputation-113521
+    date: 2026-09-20
+- id: VASO-E078
+  title: "Landfald 2025: no gold standard for detecting trigger points; palpation variability the authors' stated reason for adding imaging — part 1"
+  claimIds:
+    - VASO-C030
+  sourceId: SRC-LANDFALD-2025
+  direction: supports
+  strength: weak
+  sourceStatement: 'There is no gold standard technique for detecting myofascial trigger points: "there is no gold standard technique for detecting them".'
+  editorInference: A proponent-side clinical group states the reliability problem in its own words and reports a concrete palpation–imaging discrepancy. Weak because the reliability statement is a citation of others rather than a new measurement, and because the authors did not test their own inter- or intra-observer reliability.
+  exactLocator: PMC12647689, Discussion paragraph beginning 'Although the removal of MTrPs'; Limitations
+  limitations:
+    - The inter-observer-variability statement is secondary (cites earlier work).
+    - No formal reliability testing of the sonographic assessment was performed (authors' limitation).
+  reviewState: ai_extracted
+  origin:
+    ref: split of VASO-E059 (report 2026-09-20-report-vasocomputation-112413)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-20-verify-vasocomputation-113521
+    date: 2026-09-20
+- id: VASO-E079
+  title: "Landfald 2025: no gold standard for detecting trigger points; palpation variability the authors' stated reason for adding imaging — part 2"
+  claimIds:
+    - VASO-C030
+  sourceId: SRC-LANDFALD-2025
+  direction: supports
+  strength: weak
+  sourceStatement: Manual palpation, despite its use in clinical practice, "has significant inter-observer variability that cannot be meaningfully improved after training", per cited reliability work.
+  editorInference: A proponent-side clinical group states the reliability problem in its own words and reports a concrete palpation–imaging discrepancy. Weak because the reliability statement is a citation of others rather than a new measurement, and because the authors did not test their own inter- or intra-observer reliability.
+  exactLocator: PMC12647689, Discussion paragraph beginning 'Although the removal of MTrPs'; Limitations
+  limitations:
+    - The inter-observer-variability statement is secondary (cites earlier work).
+    - No formal reliability testing of the sonographic assessment was performed (authors' limitation).
+  reviewState: ai_extracted
+  origin:
+    ref: split of VASO-E059 (report 2026-09-20-report-vasocomputation-112413)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-20-verify-vasocomputation-113521
+    date: 2026-09-20
+- id: VASO-E080
+  title: "Landfald 2025: no gold standard for detecting trigger points; palpation variability the authors' stated reason for adding imaging — part 4"
+  claimIds:
+    - VASO-C030
+  sourceId: SRC-LANDFALD-2025
+  direction: context
+  strength: weak
+  sourceStatement: Because of these limitations, the authors "combined B-mode ultrasonography and strain elastography, which provide high-contrast imaging" between tissues of differing stiffness, alongside palpation.
+  editorInference: A proponent-side clinical group states the reliability problem in its own words and reports a concrete palpation–imaging discrepancy. Weak because the reliability statement is a citation of others rather than a new measurement, and because the authors did not test their own inter- or intra-observer reliability.
+  exactLocator: PMC12647689, Discussion paragraph beginning 'Although the removal of MTrPs'; Limitations
+  limitations:
+    - The inter-observer-variability statement is secondary (cites earlier work).
+    - No formal reliability testing of the sonographic assessment was performed (authors' limitation).
+    - "Direction set to \"context\" (from \"supports\") by the second reader (claude-sonnet-5, 2026-09-20, run 2026-09-20-verify-vasocomputation-113521, verify-v6) at intake: The quoted text is accurately reproduced and correctly located in the Discussion/Limitations passage, and the sourceStatement fairly summarizes it as the authors' methodological response (combining imaging with palpation). However, this particular quote itself only describes what the authors did in response to the reliability problem, not the inter-observer-variability/no-gold-standard finding itself (which is stated in the preceding, unquoted sentence); as such it does not itself assert or support the claim that manual palpation lacks reliability, so it functions as context for VASO-C030 rather than direct support."
+  reviewState: ai_extracted
+  origin:
+    ref: split of VASO-E059 (report 2026-09-20-report-vasocomputation-112413)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-20-verify-vasocomputation-113521
+    date: 2026-09-20
+  readerActs:
+    - field: direction
+      from: supports
+      to: context
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-20-verify-vasocomputation-113521
+      date: 2026-09-20
+      reason: The quoted text is accurately reproduced and correctly located in the Discussion/Limitations passage, and the sourceStatement fairly summarizes it as the authors' methodological response (combining imaging with palpation). However, this particular quote itself only describes what the authors did in response to the reliability problem, not the inter-observer-variability/no-gold-standard finding itself (which is stated in the preceding, unquoted sentence); as such it does not itself assert or support the claim that manual palpation lacks reliability, so it functions as context for VASO-C030 rather than direct support.
+- id: VASO-E081
+  title: "Landfald 2025: no gold standard for detecting trigger points; palpation variability the authors' stated reason for adding imaging — part 5"
+  claimIds:
+    - VASO-C030
+  sourceId: SRC-LANDFALD-2025
+  direction: supports
+  strength: weak
+  sourceStatement: 'In this study elastography primarily served to verify MTrP presence: it "confirmed 71.5% of palpated hard spots as MTrPs", with the remainder corresponding to tendinous cores or musculotendinous junctions.'
+  editorInference: A proponent-side clinical group states the reliability problem in its own words and reports a concrete palpation–imaging discrepancy. Weak because the reliability statement is a citation of others rather than a new measurement, and because the authors did not test their own inter- or intra-observer reliability.
+  exactLocator: PMC12647689, Discussion paragraph beginning 'Although the removal of MTrPs'; Limitations
+  limitations:
+    - The inter-observer-variability statement is secondary (cites earlier work).
+    - No formal reliability testing of the sonographic assessment was performed (authors' limitation).
+  reviewState: ai_extracted
+  origin:
+    ref: split of VASO-E059 (report 2026-09-20-report-vasocomputation-112413)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-20-verify-vasocomputation-113521
+    date: 2026-09-20
+- id: VASO-E062
+  title: "Croft 1994: the 18-site tender-point count applied in a community general-practice sample"
+  claimIds:
+    - VASO-C083
+  sourceId: SRC-CROFT-1994
+  direction: supports
+  strength: moderate
+  sourceStatement: The source is a two-stage cross-sectional study set in "Two general practices in north west England", drawing a stratified random sample of adults from age–sex registers, in which 177 selected responders underwent tender-point examination with the outcome "Tender point count (0 to 18) grouped into four categories", the highest (11 or more) corresponding to the ACR fibromyalgia criteria.
+  editorInference: "This is the primary the founding essay gestured at: the fibromyalgia-era 18-site exam administered outside the clinic. Note that the examined subsample was chosen on reported pain complaints, so it is a community-based but pain-selected sample."
+  exactLocator: PMC2540791, Abstract (Design, Setting, Subjects, Main outcome measures)
+  limitations:
+    - Abstract only retrieved; full text not shown.
+    - Examined subsample (177 of 250 selected) was chosen on the basis of reported pain complaints.
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-20-report-vasocomputation-112413
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-20-draft-vasocomputation-113013
+    date: 2026-09-20
+- id: VASO-E082
+  title: "Croft 1994: high tender-point counts in people reporting no pain — part 1"
+  claimIds:
+    - VASO-C001
+  sourceId: SRC-CROFT-1994
+  direction: supports
+  strength: weak
+  sourceStatement: 'Two people with tender point counts of 11 or more were in the group reporting no pain: "Two people with counts of 11 or more were in the group reporting no pain."'
+  editorInference: Examiner-elicited tender points occur in people with no pain complaint at all, which is the population the case's opening observation describes. Weak because it is two individuals, the sample was pain-selected, and the 18-site protocol tests fixed anatomical sites rather than counting palpable knots.
+  exactLocator: PMC2540791, Abstract (Results)
+  limitations:
+    - Two individuals; pain-selected subsample.
+    - Fixed-site tenderness testing is not a census of palpable knots.
+  reviewState: ai_extracted
+  origin:
+    ref: split of VASO-E066 (report 2026-09-20-report-vasocomputation-112413)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-20-verify-vasocomputation-113521
+    date: 2026-09-20
+- id: VASO-E083
+  title: "Croft 1994: high tender-point counts in people reporting no pain — part 2"
+  claimIds:
+    - VASO-C001
+  sourceId: SRC-CROFT-1994
+  direction: context
+  strength: weak
+  sourceStatement: 'Most subjects with chronic widespread pain had fewer than 11 tender points, 27 of 45 (60%): "had fewer than 11 tender points (27/45; 60%)".'
+  editorInference: Examiner-elicited tender points occur in people with no pain complaint at all, which is the population the case's opening observation describes. Weak because it is two individuals, the sample was pain-selected, and the 18-site protocol tests fixed anatomical sites rather than counting palpable knots.
+  exactLocator: PMC2540791, Abstract (Results)
+  limitations:
+    - Two individuals; pain-selected subsample.
+    - Fixed-site tenderness testing is not a census of palpable knots.
+    - "Direction set to \"context\" (from \"supports\") by the second reader (claude-sonnet-5, 2026-09-20, run 2026-09-20-verify-vasocomputation-113521, verify-v6) at intake: The quote is accurate and correctly located in the abstract's results section, and it accurately describes the finding that 60% of chronic widespread pain subjects had fewer than 11 tender points. However this statistic concerns the distribution of tender-point counts relative to a diagnostic threshold, not whether discrete tender points commonly occur in the population at all, so it does not directly support VASO-C001's claim of common occurrence; it is better read as background context on tender-point count distributions."
+  reviewState: ai_extracted
+  origin:
+    ref: split of VASO-E066 (report 2026-09-20-report-vasocomputation-112413)
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-20-verify-vasocomputation-113521
+    date: 2026-09-20
+  readerActs:
+    - field: direction
+      from: supports
+      to: context
+      model: claude-sonnet-5
+      promptVersion: verify-v6
+      runId: 2026-09-20-verify-vasocomputation-113521
+      date: 2026-09-20
+      reason: The quote is accurate and correctly located in the abstract's results section, and it accurately describes the finding that 60% of chronic widespread pain subjects had fewer than 11 tender points. However this statistic concerns the distribution of tender-point counts relative to a diagnostic threshold, not whether discrete tender points commonly occur in the population at all, so it does not directly support VASO-C001's claim of common occurrence; it is better read as background context on tender-point count distributions.

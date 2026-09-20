@@ -171,3 +171,64 @@ describe("Internet Archive items", () => {
     expect(failed.pageTitle).toBe("Descubrimiento del rio de las Amazonas");
   });
 });
+
+describe("PubMed Central: the page is the key, Europe PMC's JATS is the text", () => {
+  const jats = `<article><front><article-meta><article-title>Elastography for calf trigger points</article-title><abstract><p>Runners.</p></abstract></article-meta></front><body><sec><title>Results</title><p>Active points showed larger cross-sectional area (28 mm<sup>2</sup> vs. 17 mm<sup>2</sup>, p = 0.014)<xref ref-type="bibr" rid="CR3">3</xref>.</p><table-wrap><label>Table 2</label><caption><p>Comparison</p></caption><table><tr><th>Parameter</th><th>ATrPs</th></tr><tr><td>Mean VAS score</td><td>8.9 ± 0.7</td></tr></table></table-wrap></sec></body><back><ref-list><ref><mixed-citation>Noise 2001</mixed-citation></ref></ref-list></back></article>`;
+  it("names the PMCID a URL carries and renders JATS as text — tables as rows, superscripts as the article shows them, citations and references dropped", async () => {
+    const { pmcIdOf, jatsToText } = await import("../pipeline/fetch.ts");
+    expect(pmcIdOf("https://pmc.ncbi.nlm.nih.gov/articles/PMC12647689/")).toBe("PMC12647689");
+    expect(pmcIdOf("https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1234567/")).toBe("PMC1234567");
+    expect(pmcIdOf("https://europepmc.org/article/PMC/PMC1234567")).toBe("PMC1234567");
+    expect(pmcIdOf("https://www.nature.com/articles/x")).toBeNull();
+    const text = jatsToText(jats);
+    expect(text).toContain("Elastography for calf trigger points");
+    expect(text).toContain("Active points showed larger cross-sectional area (28 mm² vs. 17 mm², p = 0.014).");
+    expect(text).toContain("Mean VAS score | 8.9 ± 0.7");
+    expect(text).toContain("Table 2");
+    expect(text).not.toContain("Noise 2001");
+    expect(text).not.toContain("CR3");
+    // The same rendering for HTML, so a quote of a unit reads alike whichever route served the article.
+    const { stripHtml } = await import("../pipeline/fetch.ts");
+    expect(stripHtml("<p>area (28 mm<sup>2</sup> vs. 17 mm<sup>2</sup>, p = 0.014)</p>")).toBe("area (28 mm² vs. 17 mm², p = 0.014)");
+  });
+  it("reads Europe PMC's full text when the PMC page serves a challenge, keeps the page as the key and says so; a page that serves is read as itself", async () => {
+    const calls: string[] = [];
+    const challenged = (async (input: string | URL | Request) => {
+      const url = String(input);
+      calls.push(url);
+      if (url === "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC12647689/fullTextXML") return new Response(jats, { headers: { "content-type": "application/xml" } });
+      return new Response("<html><body>Just a moment...</body></html>", { headers: { "content-type": "text/html" } });
+    }) as typeof fetch;
+    const r = await retrieve({ url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC12647689/" }, { fetchImpl: challenged });
+    expect(r.ok).toBe(true);
+    expect(r.url).toBe("https://pmc.ncbi.nlm.nih.gov/articles/PMC12647689/");
+    expect(r.substitute).toBe(true);
+    expect(r.via).toContain("Europe PMC full text (JATS XML) for PMC12647689");
+    expect(r.pageTitle).toBe("Elastography for calf trigger points");
+    expect(r.text).toContain("Mean VAS score | 8.9 ± 0.7");
+    expect(calls[0]).toBe("https://pmc.ncbi.nlm.nih.gov/articles/PMC12647689/");
+    const served = (async () => new Response(`<html><head><title>PMC</title></head><body><p>${"The article itself. ".repeat(40)}</p></body></html>`, { headers: { "content-type": "text/html" } })) as typeof fetch;
+    const direct = await retrieve({ url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC12647689/" }, { fetchImpl: served });
+    expect(direct.ok).toBe(true);
+    expect(direct.via).toBeUndefined();
+    const none = (async () => new Response("gone", { status: 404 })) as typeof fetch;
+    const failed = await retrieve({ url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC12647689/" }, { fetchImpl: none });
+    expect(failed.ok).toBe(false);
+    expect(failed.reason).toContain("HTTP 404");
+    expect(failed.reason).toContain("Europe PMC full text for PMC12647689: HTTP 404");
+  });
+  it("finds the PMCID by DOI when a walled page has no open copy OpenAlex knows", async () => {
+    const fetchImpl = (async (input: string | URL | Request) => {
+      const url = String(input);
+      if (url.startsWith("https://api.openalex.org/")) return new Response(JSON.stringify({ open_access: {}, locations: [] }), { headers: { "content-type": "application/json" } });
+      if (url.includes("europepmc/webservices/rest/search")) return new Response(JSON.stringify({ resultList: { result: [{ pmcid: "PMC12647689", doi: "10.1038/s41598-025-00001-1" }] } }), { headers: { "content-type": "application/json" } });
+      if (url.endsWith("/PMC12647689/fullTextXML")) return new Response("<article><body><sec><p>The full text by DOI.</p></sec></body></article>", { headers: { "content-type": "application/xml" } });
+      return new Response("<html><body>Please enable cookies</body></html>", { headers: { "content-type": "text/html" } });
+    }) as typeof fetch;
+    const r = await retrieve({ url: "https://www.nature.com/articles/s41598-025-00001-1", doi: "10.1038/s41598-025-00001-1" }, { fetchImpl });
+    expect(r.ok).toBe(true);
+    expect(r.url).toBe("https://www.nature.com/articles/s41598-025-00001-1");
+    expect(r.text).toContain("The full text by DOI.");
+    expect(r.via).toBe("Europe PMC full text (JATS XML) for PMC12647689, found by DOI 10.1038/s41598-025-00001-1");
+  });
+});

@@ -7,7 +7,9 @@ import * as pdfjs from "pdfjs-dist/legacy/build/pdf.mjs";
  * reported, never guessed at. When a URL will not serve (a login wall, a
  * bot challenge, a dead link) and the work has a DOI, OpenAlex is asked for
  * an open-access copy and that is read instead — with `via` recording where
- * the text actually came from. A source whose text cannot be retrieved is
+ * the text actually came from; a PubMed Central page that will not serve is
+ * read from Europe PMC's full-text service, and a DOI with no open copy is
+ * looked up there for its PMCID. A source whose text cannot be retrieved is
  * `blocked` with the route, not read from memory.
  *
  * The first paid day (2026-09-08) is why: six of ten sources a good report
@@ -43,8 +45,12 @@ export const UA = "Mozilla/5.0 (compatible; Aletheia/1.0; +https://github.com/ej
 const ACCEPT = "text/html,application/xhtml+xml,application/pdf,text/plain;q=0.9,*/*;q=0.5";
 export const MAX_CHARS = 120_000;
 
+const SUPERSCRIPT: Record<string, string> = { "0": "⁰", "1": "¹", "2": "²", "3": "³", "4": "⁴", "5": "⁵", "6": "⁶", "7": "⁷", "8": "⁸", "9": "⁹", "+": "⁺", "-": "⁻" };
+/** Superscript digits as the page renders them (mm², 10³), so a quote of a unit or a power reads the same from HTML, JATS and a PDF. */
+const renderSup = (markup: string) => markup.replace(/<sup>([0-9+-]+)<\/sup>/gi, (_, d: string) => [...d].map((c) => SUPERSCRIPT[c] ?? c).join(""));
+
 export function stripHtml(html: string): string {
-  return html
+  return renderSup(html)
     .replace(/<script[\s\S]*?<\/script>/gi, " ")
     .replace(/<style[\s\S]*?<\/style>/gi, " ")
     .replace(/<noscript[\s\S]*?<\/noscript>/gi, " ")
@@ -237,6 +243,86 @@ export function archiveItemOf(url: string | null | undefined): string | null {
   return m ? m[1] : null;
 }
 
+/**
+ * The PubMed Central identifier a URL names — pmc.ncbi.nlm.nih.gov/articles/PMC…, the older
+ * ncbi.nlm.nih.gov/pmc/articles/PMC…, or a Europe PMC article page; null otherwise.
+ */
+export function pmcIdOf(url: string | null | undefined): string | null {
+  const m = String(url ?? "").match(/(?:pmc\.ncbi\.nlm\.nih\.gov\/articles|ncbi\.nlm\.nih\.gov\/pmc\/articles|europepmc\.org\/(?:article\/PMC|articles|abstract\/PMC))\/(PMC\d+)/i);
+  return m ? m[1].toUpperCase() : null;
+}
+
+/**
+ * JATS XML — the form Europe PMC's full-text service serves an article in — reduced to the text a model is shown:
+ * the title, the abstract, the body's headings and paragraphs, tables as rows with cells separated by " | " and
+ * their labels and captions kept, superscript digits as the article renders them (mm², 10³); citation markers
+ * and the reference list dropped.
+ */
+export function jatsToText(xml: string): string {
+  const pick = (re: RegExp) => xml.match(re)?.[1] ?? "";
+  const title = pick(/<article-title>([\s\S]*?)<\/article-title>/i);
+  const abstract = pick(/<abstract[^>]*>([\s\S]*?)<\/abstract>/i);
+  const body = pick(/<body>([\s\S]*?)<\/body>/i) || xml;
+  const floats = pick(/<floats-group>([\s\S]*?)<\/floats-group>/i);
+  const marked = [title, abstract && `Abstract\n${abstract}`, body, floats]
+    .filter(Boolean)
+    .join("\n\n")
+    .replace(/<ref-list[\s\S]*?<\/ref-list>/gi, " ")
+    .replace(/<xref[^>]*>[\s\S]*?<\/xref>/gi, "")
+    .replace(/<xref[^>]*\/>/gi, "")
+    .replace(/<\/(td|th)>/gi, " | ")
+    .replace(/<\/(title|sec|caption|label|abstract|table-wrap|fig|tr|p)>/gi, "\n");
+  return stripHtml(marked);
+}
+
+/** Europe PMC's full text for a PMCID, as the text of the PMC page it stands in for (`key`). */
+async function europePmcFullText(
+  pmcid: string,
+  key: string,
+  opts: { timeoutMs?: number; maxChars?: number; fetchImpl?: typeof fetch },
+): Promise<FetchedSource> {
+  const url = `https://www.ebi.ac.uk/europepmc/webservices/rest/${pmcid}/fullTextXML`;
+  const fetchImpl = opts.fetchImpl ?? fetch;
+  let res: Response;
+  try {
+    res = await fetchImpl(url, { headers: { "User-Agent": UA, Accept: "application/xml,text/xml;q=0.9,*/*;q=0.5" }, signal: AbortSignal.timeout(opts.timeoutMs ?? 60_000) });
+  } catch (e) {
+    return { url: key, ok: false, status: null, contentType: null, text: null, reason: `Europe PMC full text for ${pmcid}: fetch failed: ${(e as Error).message}` };
+  }
+  const contentType = res.headers.get("content-type");
+  if (!res.ok) return { url: key, ok: false, status: res.status, contentType, text: null, reason: `Europe PMC full text for ${pmcid}: HTTP ${res.status}` };
+  const xml = await res.text();
+  if (!/<article[\s>]/i.test(xml)) return { url: key, ok: false, status: res.status, contentType, text: null, reason: `Europe PMC full text for ${pmcid}: not a JATS article` };
+  const text = jatsToText(xml);
+  if (!text.trim()) return { url: key, ok: false, status: res.status, contentType, text: null, reason: `Europe PMC full text for ${pmcid}: empty` };
+  const title = xml.match(/<article-title>([\s\S]*?)<\/article-title>/i)?.[1];
+  return {
+    url: key,
+    ok: true,
+    status: res.status,
+    contentType,
+    text: cap(text, opts.maxChars ?? MAX_CHARS),
+    via: `Europe PMC full text (JATS XML) for ${pmcid} at ${url}, read for the page`,
+    substitute: true,
+    ...(title ? { pageTitle: stripHtml(title) } : {}),
+  };
+}
+
+/** The PMCID Europe PMC's index gives a DOI, or null. */
+async function pmcIdForDoi(doi: string, fetchImpl: typeof fetch = fetch): Promise<string | null> {
+  try {
+    const res = await fetchImpl(`https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=${encodeURIComponent(`DOI:"${doi}"`)}&format=json&pageSize=3`, {
+      headers: { "User-Agent": UA, Accept: "application/json" },
+      signal: AbortSignal.timeout(20_000),
+    });
+    if (!res.ok) return null;
+    const j = (await res.json()) as { resultList?: { result?: Array<{ pmcid?: string; doi?: string }> } };
+    return j.resultList?.result?.find((r) => r.pmcid && (r.doi ?? "").toLowerCase() === doi.toLowerCase())?.pmcid ?? null;
+  } catch {
+    return null;
+  }
+}
+
 /** The arXiv identifier a URL names (an abstract or PDF page), version suffix kept; null otherwise. */
 export function arxivIdOf(url: string | null | undefined): string | null {
   const m = String(url ?? "").match(/arxiv\.org\/(?:abs|pdf)\/((?:\d{4}\.\d{4,5}|[a-z-]+(?:\.[A-Z]{2})?\/\d{7})(?:v\d+)?)/i);
@@ -288,6 +374,18 @@ export async function retrieve(
     const page = target.url ? await fetchSource(target.url, opts) : null;
     return { url: key, ok: false, status: page?.status ?? null, contentType: page?.contentType ?? null, text: null, reason: `Internet Archive OCR text not served (${tried.join("; ")}); the item page is a viewer, not the text`, ...(page?.pageTitle ? { pageTitle: page.pageTitle } : {}) };
   }
+  // PubMed Central serves a runner a bot-challenge page with HTTP 200 in place of the article (2026-09-20: the
+  // answer step's re-reading of a record on #372 was left unread for it, and the operator read the article through
+  // Europe PMC by hand). The page is tried as the record's locator; failing it, Europe PMC's full-text service
+  // serves the same article as JATS XML, read under the page's key and marked as a stand-in.
+  const pmc = pmcIdOf(target.url);
+  if (pmc && target.url) {
+    const page = await fetchSource(target.url, opts);
+    if (page.ok) return page;
+    const epmc = await europePmcFullText(pmc, key, opts);
+    if (epmc.ok) return epmc;
+    return { ...page, reason: `${page.reason ?? "not readable"}; ${epmc.reason}` };
+  }
   const first = target.url ? await fetchSource(target.url, opts) : null;
   if (first?.ok) return first;
   if (doi) {
@@ -295,6 +393,13 @@ export async function retrieve(
       if (candidate === target.url) continue;
       const r = await fetchSource(candidate, opts);
       if (r.ok) return { ...r, url: key, via: `open-access copy via OpenAlex: ${candidate}`, substitute: true };
+    }
+    // A walled page with no open copy OpenAlex knows may still be in PubMed Central: Europe PMC's index gives
+    // the PMCID for the DOI, and its full-text service the article.
+    const viaDoi = await pmcIdForDoi(doi, opts.fetchImpl);
+    if (viaDoi) {
+      const epmc = await europePmcFullText(viaDoi, key, opts);
+      if (epmc.ok) return { ...epmc, via: `Europe PMC full text (JATS XML) for ${viaDoi}, found by DOI ${doi}` };
     }
   }
   return (

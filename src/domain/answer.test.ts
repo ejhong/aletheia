@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { getCaseBySlug } from "./load.ts";
 import type { LoadedCase } from "./schema.ts";
-import { ARBITER_LOGIN, arbiterCommitOf, classifyObjections, objectionsFromArbiterComment, objectionsFromReviewNote, readPr, runAnswer, type Gh } from "../pipeline/answer.ts";
+import { ARBITER_LOGIN, arbiterCommitOf, classifyObjections, idsNamed, objectionsFromArbiterComment, objectionsFromReviewNote, readPr, runAnswer, type Gh } from "../pipeline/answer.ts";
 
 /** The answer step reads a PR's standing objections, sorts them into the records they name and the edition, and puts
  *  each back to the verb that owns it; it refuses what is not its to answer. Network and models are stubbed. */
@@ -44,6 +44,16 @@ describe("classifyObjections", () => {
     expect([...r.records.keys()].sort()).toEqual([live, ev].sort());
     expect(r.records.get(live)![0].seat).toBe("A");
     expect(r.edition.map((x) => x.seat)).toEqual(["A", "B", "C"]);
+  });
+  it("reads a seat's bare ids and ranges as the case's own, and a foreign id's tail as nothing", () => {
+    const named = idsNamed("the head cites VASO-E074, E076, and E077; the actual splits are E084–E086, and C033 is spent. AMZ-E115 is foreign; GEO-C001 to GEO-C003 too. VASO-E090 to VASO-E092 and C040-C041 are ranges.", "VASO");
+    expect(named.sort()).toEqual(
+      ["VASO-E074", "VASO-E076", "VASO-E077", "VASO-E084", "VASO-E085", "VASO-E086", "VASO-C033", "VASO-E090", "VASO-E091", "VASO-E092", "VASO-C040", "VASO-C041"].sort(),
+    );
+    // A range across kinds or running backwards names only its ends; an absurd span is not expanded.
+    expect(idsNamed("E084–C086", "VASO").sort()).toEqual(["VASO-E084", "VASO-C086"].sort());
+    expect(idsNamed("E086–E084", "VASO").sort()).toEqual(["VASO-E084", "VASO-E086"].sort());
+    expect(idsNamed("E001–E999", "VASO").sort()).toEqual(["VASO-E001", "VASO-E999"].sort());
   });
 });
 

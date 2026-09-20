@@ -89,16 +89,40 @@ export interface Classified {
 }
 
 /** Which records an objection names — live claims and evidence of the case; every objection also goes to the edition. */
+/**
+ * The claim and evidence ids a seat's text names, as the case's own: the full form (VASO-E084); the bare form a
+ * seat writes once the prefix is established (E084, C033), which a foreign id's tail (AMZ-E115) is not; and a
+ * range of one kind ("E084–E086", "VASO-E084 to VASO-E086"), every id between its ends (2026-09-20: a seat wrote
+ * "the splits are E084–E086" and the answer re-read none of them).
+ */
+export function idsNamed(text: string, prefix: string): string[] {
+  const out = new Set<string>();
+  const id = (kind: string, n: number) => `${prefix}-${kind}${String(n).padStart(3, "0")}`;
+  const own = `(?:${prefix}-|(?<![A-Z0-9-]))`;
+  // The far end needs no own-ness of its own: the near end's settles it, and a hyphen as the separator would fail the lookbehind.
+  const range = new RegExp(`\\b${own}([CE])(\\d{3})\\s*(?:[–—-]|to|through)\\s*(?:${prefix}-)?([CE])?(\\d{3})\\b`, "g");
+  for (const m of text.matchAll(range)) {
+    const kind = m[1];
+    if (m[3] && m[3] !== kind) continue;
+    const a = Number(m[2]);
+    const b = Number(m[4]);
+    if (b < a || b - a > 50) continue;
+    for (let n = a; n <= b; n++) out.add(id(kind, n));
+  }
+  const single = new RegExp(`\\b${own}([CE])(\\d{3})\\b`, "g");
+  for (const m of text.matchAll(single)) out.add(id(m[1], Number(m[2])));
+  return [...out];
+}
+
 export function classifyObjections(objections: Objection[], loaded: Pick<LoadedCase, "claims" | "evidence" | "record">): Classified {
   const prefix = loaded.record.id.split("-")[0];
   const live = new Set([
     ...loaded.claims.filter((c) => c.reviewState !== "rejected").map((c) => c.id),
     ...loaded.evidence.filter((e) => e.reviewState !== "rejected").map((e) => e.id),
   ]);
-  const re = new RegExp(`\\b${prefix}-[CE]\\d{3}\\b`, "g");
   const records = new Map<string, Objection[]>();
   for (const o of objections) {
-    const ids = [...new Set(o.text.match(re) ?? [])].filter((id) => live.has(id));
+    const ids = idsNamed(o.text, prefix).filter((id) => live.has(id));
     for (const id of ids) records.set(id, [...(records.get(id) ?? []), o]);
   }
   return { records, edition: [...objections] };

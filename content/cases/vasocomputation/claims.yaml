@@ -130,19 +130,19 @@
 # ── Observation rung ────────────────────────────────────────────────────────
 
 - id: VASO-C001
-  statement: >-
-    Discrete, exquisitely tender, palpable points occur commonly in human muscle and fascia across the general population.
+  statement: Discrete, exquisitely tender, palpable points occur commonly in human muscle and fascia across the general population.
   theme: phenomenon
   rung: observation
   claimType: observation
+  parentClaimIds:
+    - VASO-C020
+  dependsOnClaimIds: []
   reviewState: ai_extracted
   origin:
-    ref: "Knots of Existence essay — a phenomenon without a mechanism"
-    extractedBy: "Fable (AI agent)"
-    runId: "vaso-extract-2026-08"
-    date: "2026-08-22"
-  parentClaimIds: [ VASO-C020 ]
-  dependsOnClaimIds: []
+    ref: Knots of Existence essay — a phenomenon without a mechanism
+    extractedBy: Fable (AI agent)
+    runId: vaso-extract-2026-08
+    date: 2026-08-22
 
 - id: VASO-C002
   statement: Trigger points exhibit sustained spontaneous needle-EMG activity at a millimeter-scale nidus, more prevalent there than at non-tender sites within the same endplate zone and absent at taut-band sites outside the endplate zone.

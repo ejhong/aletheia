@@ -154,6 +154,9 @@ async function reverifyProvisional(caseSlug: string, opts: ReverifyOptions = {})
  * applied in place — promoted with the reader's stamps, split parts appended, refusals tombstoned, links to refused
  * claims dropped — and every row, count and history line is derived from what was written.
  */
+/** The opening words of a held claim's provisional reason, by which a later pass knows it was held and not unread. */
+export const HELD_REASON = "found compound";
+
 /** A refusal's "split into A, B" names only the parts that were appended; the rest are counted, not named. */
 export function splitNoteFor(reason: string, appended: Set<string>): string {
   return reason.replace(/split into ((?:[A-Z][A-Z0-9]*-[CE]\d{3})(?:, [A-Z][A-Z0-9]*-[CE]\d{3})*)/, (_, list: string) => {
@@ -226,24 +229,27 @@ export async function settleRecords(caseSlug: string, settlement: Settlement, op
     const split = rememberedSplitter(opts.deps?.split ?? defaultSplitter, path.join(dir, "splits.yaml"), MODELS.house.model);
     const verdicts = await judgeProposal(proposal, loadedMinus, texts, resolved, judge, run.meter, { model: READER.model, date }, split, { model: MODELS.house.model, runId }, settlement.context ? { extraContext: settlement.context } : {});
     const plan = planReverify(verdicts, originals);
+    const tag = settlement.verb === "answer" ? "answer" : "re-verify";
     // A claim the reader split: its parts, by the origin they carry.
     const partsOf = new Map<string, string[]>();
     for (const a of plan.appended) {
       const m = /^split of ([A-Z][A-Z0-9]*-[CE]\d{3})/.exec(String((a.record as { origin?: { ref?: string } }).origin?.ref ?? ""));
       if (m) partsOf.set(m[1], [...(partsOf.get(m[1]) ?? []), a.id]);
     }
-    // At an answer, a live claim the reader finds compound is rejected only when its parts enter: with none admitted
-    // it is left as it stood and the finding recorded, because a re-reading must not leave the case with a claim gone
-    // and nothing in its place (2026-09-20: the re-reading of #372 rejected a load-bearing claim whose two parts had
-    // failed their locator, and every record citing it fell with it).
+    // A claim that was admitted read and is now found compound is rejected only when its parts enter: with none
+    // admitted it is held — kept, provisional, carrying no weight until it is split with a part for each proposition
+    // — because a re-reading must not leave the case with a claim gone and nothing in its place (2026-09-20: the
+    // re-reading of #372 rejected a load-bearing claim whose two parts had failed their locator, and every record
+    // citing it fell with it), and a compound claim must not carry weight either (§3.2; review note #384). At an
+    // answer every named claim was admitted read; at a re-verify pass only a claim held before is held again.
     const held: { kind: Kind; id: string; reason: string }[] = [];
-    if (settlement.verb === "answer") {
-      plan.refuse = plan.refuse.filter((r) => {
-        if (r.kind !== "claim" || (partsOf.get(r.id) ?? []).length || !/split into nothing that survived/.test(r.reason)) return true;
-        held.push({ kind: r.kind, id: r.id, reason: `found compound, no part admitted; left as it stood: ${r.reason}` });
-        return false;
-      });
-    }
+    const wasHeld = (id: string) => (originals.claims.find((c) => c.id === id)?.provisional?.reason ?? "").startsWith(HELD_REASON);
+    plan.refuse = plan.refuse.filter((r) => {
+      if (r.kind !== "claim" || (partsOf.get(r.id) ?? []).length || !/split into nothing that survived/.test(r.reason)) return true;
+      if (settlement.verb !== "answer" && !wasHeld(r.id)) return true;
+      held.push({ kind: r.kind, id: r.id, reason: `${HELD_REASON}, no part admitted; held provisional, carrying no weight until split: ${r.reason}` });
+      return false;
+    });
     const refusedClaims = new Set(plan.refuse.filter((r) => r.kind === "claim").map((r) => r.id));
     const counts = { promoted: plan.promote.length, appended: plan.appended.length, refused: plan.refuse.length, unread: plan.unread.length };
     const notes = [...verdicts.notes, ...plan.notes];
@@ -255,13 +261,12 @@ export async function settleRecords(caseSlug: string, settlement: Settlement, op
       `## Promoted`, ...plan.promote.map((p) => `- ${p.kind} ${p.id}`), ``,
       ...(plan.appended.length ? [`## Appended (parts the reader split off)`, ...plan.appended.map((p) => `- ${p.kind} ${p.id}`), ``] : []),
       `## Refused`, ...plan.refuse.map((r) => `- ${r.kind} ${r.id} — ${r.reason}`), ``,
-      ...(held.length ? [`## Left as they stood`, ...held.map((h) => `- ${h.kind} ${h.id} — ${h.reason}`), ``] : []),
+      ...(held.length ? [`## Held provisional`, ...held.map((h) => `- ${h.kind} ${h.id} — ${h.reason}`), ``] : []),
       `## Still unread`, ...plan.unread.map((u) => `- ${u.kind} ${u.id} — ${u.reason}`), ``,
       `## Retrieval`, ...[...texts.entries()].map(([k, f]) => `- ${k} — ${f.ok ? `retrieved${f.via ? ` (${f.via})` : ""}` : `not retrieved: ${f.reason}`}`), ``,
       ...(notes.length ? [`## Notes`, ...notes.map((n) => `- ${n}`), ``] : []),
     ].join("\n");
     writeWorkingFile(runId, "verification.md", report, root);
-    const tag = settlement.verb === "answer" ? "answer" : "re-verify";
     const summary = `${tag}: promoted ${counts.promoted}, appended ${counts.appended}, refused ${counts.refused}, still unread ${counts.unread}${held.length ? `, held ${held.length}` : ""}`;
     if (opts.dryRun) return { ...closeRun(run, "dry-run", { reason: `would ${summary}; nothing written` }), ...counts };
 
@@ -286,8 +291,19 @@ export async function settleRecords(caseSlug: string, settlement: Settlement, op
     const file = (f: LedgerFile) => path.join(root, "content", "cases", caseDir, f);
     // A reference to a refused claim goes to the parts it was split into, or away when there are none.
     const relive = (ids: string[]) => [...new Set(ids.flatMap((id) => (refusedClaims.has(id) ? (partsOf.get(id) ?? []) : [id])))];
+    const relinkNote = (ids: string[]) => {
+      const toParts = ids.filter((id) => refusedClaims.has(id) && partsOf.get(id)?.length);
+      return toParts.length ? `Relinked at ${tag === "answer" ? "the answer's re-reading" : "re-verification"} ${date} (${runId}): ${toParts.map((id) => `${id} was split into ${partsOf.get(id)!.join(", ")}`).join("; ")}; this record now cites the parts, and which of them it bears on is for a later reading` : null;
+    };
+    // A record that cites the parts of a split claim carries the link unread: provisional, no weight, until a pass
+    // reads it against each part (§3.5; review note #384).
+    const relinkedProvisional = (reason: string) => ({ since: date, exists: "admitted read; relinked at the split of a claim it cited", reason, route: "re-read the record against each part it now cites (the re-verify pass does this)", by: runId });
     const dropRefused = <T extends AnyRecord>(r: T): T => {
-      if ("claimIds" in r) return { ...r, claimIds: relive(r.claimIds) };
+      if ("claimIds" in r) {
+        const note = relinkNote(r.claimIds);
+        const e = r as unknown as Evidence;
+        return note ? ({ ...r, claimIds: relive(r.claimIds), limitations: [...e.limitations, note], reviewState: "provisional", provisional: relinkedProvisional(note) } as T) : { ...r, claimIds: relive(r.claimIds) };
+      }
       if ("parentClaimIds" in r) {
         const live = (ids: string[] | undefined) => (ids ? relive(ids) : ids);
         return { ...r, parentClaimIds: live(r.parentClaimIds) ?? [], dependsOnClaimIds: live(r.dependsOnClaimIds) ?? [], ...(r.alternativeToClaimIds ? { alternativeToClaimIds: live(r.alternativeToClaimIds) } : {}), ...(r.contradictsClaimIds ? { contradictsClaimIds: live(r.contradictsClaimIds) } : {}) };
@@ -295,6 +311,7 @@ export async function settleRecords(caseSlug: string, settlement: Settlement, op
       return r;
     };
     const done = { promoted: [] as ReverifyPlan["promote"], appended: [] as ReverifyPlan["appended"], refused: [] as ReverifyPlan["refuse"], unread: [...plan.unread] };
+    const relinked: string[] = [];
     const wrote = new Set<string>();
     const byFile = new Map<LedgerFile, AnyRecord[]>();
     for (const a of plan.appended) {
@@ -343,14 +360,16 @@ export async function settleRecords(caseSlug: string, settlement: Settlement, op
         if (touched.has(e.id) || e.reviewState === "rejected" || !e.claimIds.some((id) => refusedClaims.has(id))) continue;
         const kept = relive(e.claimIds);
         const f = file("evidence.yaml");
-        const toParts = e.claimIds.filter((id) => refusedClaims.has(id) && partsOf.get(id)?.length);
         if (kept.length) {
           setField(f, e.id, "claimIds", e.claimIds, kept);
-          if (toParts.length) {
-            // The record cited a claim now split: it cites the parts, all of them, and says that which of them it
-            // bears on is not yet judged — the alternative was to lose the record with the claim.
-            const note = `Relinked at ${tag === "answer" ? "the answer's re-reading" : "re-verification"} ${date} (${runId}): ${toParts.map((id) => `${id} was split into ${partsOf.get(id)!.join(", ")}`).join("; ")}; this record now cites the parts, and which of them it bears on is for a later reading`;
+          const note = relinkNote(e.claimIds);
+          if (note) {
+            // The record cited a claim now split: it cites the parts, all of them, provisional and weightless until a
+            // pass reads which of them it bears on — the alternative was to lose the record with the claim.
             setField(f, e.id, "limitations", e.limitations, [...e.limitations, note]);
+            if (e.reviewState !== "provisional") setField(f, e.id, "reviewState", e.reviewState, "provisional");
+            setField(f, e.id, "provisional", e.provisional ?? null, relinkedProvisional(note));
+            relinked.push(e.id);
             notes.push(`${e.id}: ${note}`);
           }
         } else {
@@ -372,6 +391,14 @@ export async function settleRecords(caseSlug: string, settlement: Settlement, op
         }
       }
     }
+    // A held claim: kept, provisional, its reason and route on the record.
+    for (const h of held) {
+      const k = originals.claims.find((x) => x.id === h.id)!;
+      const f = file("claims.yaml");
+      if (k.reviewState !== "provisional") setField(f, k.id, "reviewState", k.reviewState, "provisional");
+      setField(f, k.id, "provisional", k.provisional ?? null, { since: date, exists: "admitted read; held at " + (tag === "answer" ? "the answer's re-reading" : "re-verification"), reason: h.reason, route: "split into one claim per proposition, each with an anchor of its own, and re-run verify (the operator by hand, or a later pass)", by: runId });
+      wrote.add(`content/cases/${caseDir}/claims.yaml`);
+    }
     // One disposition per original, from what happened to it.
     const rows: Disposition[] = [];
     const observedOf = (r: AnyRecord) => ("statement" in r ? r.statement : r.title);
@@ -379,6 +406,7 @@ export async function settleRecords(caseSlug: string, settlement: Settlement, op
     const originalOf = (id: string): AnyRecord | undefined => [...originals.sources, ...originals.evidence, ...originals.claims].find((r) => r.id === id);
     for (const p of [...done.promoted, ...done.appended]) { const key = keyOf(p.kind, p.record); if (key) rows.push({ key, kind: p.kind, disposition: "in", as: p.id, observed: observedOf(p.record), by: runId, date, proposal: `proposals/${runId}` }); }
     for (const r of done.refused) { const o = originalOf(r.id); if (!o) continue; const key = keyOf(r.kind, o); if (key) rows.push({ key, kind: r.kind, disposition: "failed", reason: `refused at ${tag === "answer" ? "the answer's re-reading" : "re-verification"}: ${r.reason}`, observed: observedOf(o), by: runId, date, proposal: `proposals/${runId}` }); }
+    for (const h of held) { const o = originalOf(h.id); if (!o) continue; const key = keyOf(h.kind, o); if (key) rows.push({ key, kind: h.kind, disposition: "provisional", as: h.id, reason: `held provisional at ${tag === "answer" ? "the answer's re-reading" : "re-verification"}: ${h.reason}`, observed: observedOf(o), by: runId, date }); }
     const seenUnread = new Set<string>();
     // An answer leaves a record it could not re-read as it stands: the record was admitted read, and a text that will not
     // come today is no verdict on it; the attempt is in the run's account. Only the provisional pass writes an unread row.
@@ -393,7 +421,7 @@ export async function settleRecords(caseSlug: string, settlement: Settlement, op
       caseDir,
       {
         date,
-        change: `${settlement.what} (${runId}): ${finalSummary}.${held.length ? ` Left as they stood: ${held.map((h) => h.id).join(", ")}.` : ""}${done.promoted.length ? ` Promoted: ${done.promoted.map((p) => p.id).join(", ")}.` : ""}${done.appended.length ? ` Appended: ${done.appended.map((p) => p.id).join(", ")}.` : ""}${done.refused.length ? ` Refused: ${done.refused.map((r) => `${r.id} (${r.reason})`).join("; ")}.` : ""}`,
+        change: `${settlement.what} (${runId}): ${finalSummary}.${held.length ? ` Held provisional, found compound with no part admitted: ${held.map((h) => h.id).join(", ")}.` : ""}${relinked.length ? ` Relinked to the parts of a split claim, provisional until read against them: ${relinked.join(", ")}.` : ""}${done.promoted.length ? ` Promoted: ${done.promoted.map((p) => p.id).join(", ")}.` : ""}${done.appended.length ? ` Appended: ${done.appended.map((p) => p.id).join(", ")}.` : ""}${done.refused.length ? ` Refused: ${done.refused.map((r) => `${r.id} (${r.reason})`).join("; ")}.` : ""}`,
         reason: settlement.why,
         actor: settlement.actor,
         aiAssisted: true,

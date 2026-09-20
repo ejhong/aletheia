@@ -11,9 +11,12 @@ export function normalizeForMatch(s: string): string {
     .replace(/[‘’‚‛]/g, "'")
     .replace(/[“”„‟]/g, '"')
     .replace(/[-‐-―]\s*/g, "")
-    // Whitespace never decides a match: the same article reads "p= 0.006" in its XML and "p = 0.006" in its HTML,
-    // and a quote taken from one rendering must be found in the other (2026-09-20, #372).
-    .replace(/\s+/g, "")
+    // Spacing beside punctuation never decides a match — the same article reads "p= 0.006" in its XML and "p = 0.006"
+    // in its HTML (2026-09-20, #372) — but the boundary between words does: "now here" is not "nowhere" (review
+    // note #384).
+    .replace(/\s+/g, " ")
+    .replace(/ ?([^\p{L}\p{N}\s]) ?/gu, "$1")
+    .trim()
     .toLowerCase();
 }
 

@@ -31,6 +31,7 @@ import { runDraft } from "../src/pipeline/draft.ts";
 import { runVerify } from "../src/pipeline/verify.ts";
 import { runReverify } from "../src/pipeline/reverify.ts";
 import { runLeads } from "../src/pipeline/leads.ts";
+import { runAnswer } from "../src/pipeline/answer.ts";
 import { runEdition } from "../src/pipeline/edition.ts";
 import { runCheck } from "../src/pipeline/check.ts";
 import { runNext } from "../src/pipeline/next.ts";
@@ -167,6 +168,18 @@ switch (verb) {
     const r = await runDraft(reportRunId, { dryRun: flags.has("--dry-run") });
     console.log(JSON.stringify(r, null, 2));
     if (r.outcome === "failed") process.exit(1);
+    break;
+  }
+  case "answer": {
+    const [n] = args;
+    if (!n || !/^\d+$/.test(n)) {
+      console.error("usage: aletheia answer <pr> [--dry-run]   (run on the PR's branch; pushes nothing)");
+      process.exit(1);
+    }
+    const r = await runAnswer(Number(n), { dryRun: flags.has("--dry-run") });
+    console.log(JSON.stringify({ ...r, account: undefined }, null, 2));
+    console.log(r.account);
+    if (r.refused || r.records?.outcome === "failed" || r.edition?.outcome === "failed") process.exit(1);
     break;
   }
   case "reverify": {

@@ -83,6 +83,11 @@ export interface Packet {
       dissents: { claimId: string; adopted: string; seat: string; reasoning: string }[];
     }[];
   };
+  /**
+   * For the edition verb, from the answer step: objections a constitutional-panel seat raised against the incumbent
+   * edition or its assessment, in the seat's words — data under review. The candidate answers each in its rationale.
+   */
+  objections?: { seat: string; rules: string[]; text: string; source: string }[];
   /** For the edition verb: the full records behind the index (featured claims, all evidence, sources, research, images). */
   detail?: {
     claims: LoadedCase["claims"];

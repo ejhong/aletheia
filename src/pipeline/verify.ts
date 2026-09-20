@@ -567,8 +567,8 @@ export async function judgeProposal(
   split: Splitter = defaultSplitter,
   /** Who wrote the parts of a split claim, and in which run — their `origin` (§3.14, §3.15). */
   splitter: { model: string; runId: string } = { model: MODELS.house.model, runId: "unrecorded" },
-  /** Gates beyond the mechanical ones: the plan reader for research items (absent in tests that do not exercise it). */
-  gates: { judgePlan?: PlanJudge } = {},
+  /** Gates beyond the mechanical ones: the plan reader for research items (absent in tests that do not exercise it); and, for an answer, the objection the reader is told of (src/pipeline/answer.ts). */
+  gates: { judgePlan?: PlanJudge; extraContext?: string } = {},
 ): Promise<Verdicts> {
   const rejected: Verdicts["rejected"] = [];
   const provisional: Verdicts["provisional"] = { sources: [], evidence: [], claims: [] };
@@ -580,7 +580,7 @@ export async function judgeProposal(
   // side — not the case file's founding subtitle, which refused a founder essay's whole family of propositions
   // as outside a question phrased around one mechanism (2026-09-09).
   const accounts = caseAccounts(loaded);
-  const questionContext = `Case question: ${caseQuestion(loaded)}.${accounts.length ? ` The case sets these accounts side by side, and a proposition that bears on any of them bears on the case: ${accounts.map((a, i) => `(${i + 1}) ${a}`).join(" ")}` : ""}`;
+  const questionContext = `Case question: ${caseQuestion(loaded)}.${accounts.length ? ` The case sets these accounts side by side, and a proposition that bears on any of them bears on the case: ${accounts.map((a, i) => `(${i + 1}) ${a}`).join(" ")}` : ""}${gates.extraContext ? ` ${gates.extraContext}` : ""}`;
   /** Compound claims replaced by their parts, for evidence that cited them. */
   const splitInto = new Map<string, string[]>();
   const reject = (id: string, kind: Disposition["kind"], observed: string, reason: string, blocked = false, route?: string) =>

@@ -318,3 +318,19 @@
   actor: "aletheia answer (claude-sonnet-5 second reader), on #372 — the record relinked at the split of VASO-C033 in run 2026-09-20-answer-vasocomputation-172213, read against the parts by the operator's call after #390 gave the answer step this pass"
   aiAssisted: true
   kind: content
+
+- date: 2026-09-20
+  change: "Records relinked to the parts of a split claim, read against them (VASO-C033 → VASO-C182, VASO-C183, VASO-C184) (2026-09-20-reverify-vasocomputation-182525): re-verify: promoted 0, appended 0, refused 1, still unread 0. Refused: VASO-E023 (not one observation (The quoted figures and ROC values match the source and are correctly attributed to the study's findings, and the locator points to the correct Results/Abstract passage. The record correctly supports VASO-C182–184 (exact area figures) and plausibly supports VASO-C005 as partial evidence of the stiffness component of that broader claim, with independence from the earlier Shah/Sikdar work duly noted. However, the sourceStatement bundles several distinct findings—three pairwise mean-area comparisons, a significance claim, and three separate ROC AUC classification results—into one statement, so it is not atomic and should be split into its component findings before further evaluation.); split into nothing that survived)."
+  reason: A claim these records cited was found compound and replaced by its parts; a record's bearing on each part is read, not inherited (§3.5). What bears on a part keeps that link with the reader's stamps; what bears on none is refused; what could not be read stays provisional.
+  actor: "aletheia answer (claude-sonnet-5 second reader), on #372 — the record relinked at the split of VASO-C033 in run 2026-09-20-answer-vasocomputation-172213, read against the parts by the operator's call after #390 gave the answer step this pass"
+  aiAssisted: true
+  kind: content
+
+- date: 2026-09-20
+  change: "Correction by the operator: VASO-E023.reviewState — \"rejected\" → \"provisional\", the refusal written by run 2026-09-20-reverify-vasocomputation-182525 reverted; the record stands as it did before that run, relinked to VASO-C182, VASO-C183 and VASO-C184 and provisional until read against them."
+  reason: "The run read the record against the parts and refused it as not one observation, and refused each of the splitter's four parts as not one observation either — every part still bundled two or three of the source's pairwise comparisons. A split that yields compound parts is a defect of the split, not a finding about the record: the source states each comparison on its own, and a second split round would reach them. The refusal is reverted so the read can be repeated once the split recurses; the run's record, spend and disposition row stand as written."
+  actor: "claude-fable-5-1 (operator), in the founder's session of 2026-09-20"
+  runId: session_01AiXD4y5Y91KC7iM3uBhWmu
+  promptVersion: operator-by-hand-v1
+  aiAssisted: true
+  kind: content

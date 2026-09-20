@@ -1,0 +1,93 @@
+47a98b26a94af14680bdf0667fd04c0e4f45c8a1a8ebf104c19cbafb0c0286ab:
+  model: claude-sonnet-5
+  protocol: verify-v6
+  runId: 2026-09-20-reverify-vasocomputation-182525
+  date: 2026-09-20
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: null
+    bearsOn: null
+    bearing: null
+    reason: The quoted figures and ROC values match the source and are correctly attributed to the study's findings, and the locator points to the correct Results/Abstract passage. The record correctly supports VASO-C182–184 (exact area figures) and plausibly supports VASO-C005 as partial evidence of the stiffness component of that broader claim, with independence from the earlier Shah/Sikdar work duly noted. However, the sourceStatement bundles several distinct findings—three pairwise mean-area comparisons, a significance claim, and three separate ROC AUC classification results—into one statement, so it is not atomic and should be split into its component findings before further evaluation.
+33b52648d968bec6915ff00ca439c81030f006327ee9aa4b6d5afe93209ecd1f:
+  model: claude-sonnet-5
+  protocol: verify-v6
+  runId: 2026-09-20-reverify-vasocomputation-182525
+  date: 2026-09-20
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: null
+    bearsOn: null
+    bearing: null
+    reason: The quoted figures and framing match the source's abstract and results section describing active/latent/normal trigger point areas, and the locator is correct. The record supports all four named claims correctly, including the general biochemistry/stiffness/blood-flow claim since size is one of the stiffness measures cited. However, the sourceStatement bundles three separate numeric comparisons (active vs latent, active vs normal, latent vs normal) into one statement, which is not a single atomic proposition and should be split to match the now-separated claims VASO-C182/183/184.
+c0c4a6f9ae4be4568843a35548cd7c1fb3bdb0fa1b5ca41d9aee985bddef60e6:
+  model: claude-sonnet-5
+  protocol: verify-v6
+  runId: 2026-09-20-reverify-vasocomputation-182525
+  date: 2026-09-20
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: null
+    bearsOn: null
+    bearing: null
+    reason: The quoted phrase and figures appear in the Results section as stated, and the locator is correct. The sourceStatement bundles two distinct comparisons (active/latent vs normal, and active vs latent) joined by 'and', so it is not a single proposition and should be split. Direction (supports) is correct for all four named claims, and the shared-lineage limitation with the Shah 2008 group is properly noted. The finding is relevant to the case's competing accounts of trigger-point mechanism via its bearing on tissue stiffness/area differences.
+50f861114a686b57a0d27ccff6d69fc2c7db7424df92ae11c8129caa94da3b7a:
+  model: claude-sonnet-5
+  protocol: verify-v6
+  runId: 2026-09-20-reverify-vasocomputation-182525
+  date: 2026-09-20
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: true
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: null
+    bearsOn: null
+    bearing: null
+    reason: The quoted ROC finding and AUC values (0.9, 0.8, 0.8) match the abstract and Results text exactly and are correctly located; the statement is a fair, non-overreaching account of that passage. The finding reasonably supports all four named claims (general biochemical/stiffness/flow differences and the specific area comparisons), so direction is right throughout and no bearing changes are needed. However, the sourceStatement bundles three distinct pairwise AUC results (active-vs-latent, active-vs-normal, latent-vs-normal) into one proposition, each with its own independent truth condition, so it is not atomic and should be split into separate records per comparison.
+b623252d5a508b7b55a940c759fe66909d5fc9e400ba15e5920427af5c95b5b8:
+  model: claude-sonnet-5
+  protocol: verify-v6
+  runId: 2026-09-20-reverify-vasocomputation-182525
+  date: 2026-09-20
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    direction: null
+    bearsOn: null
+    bearing:
+      - claimId: VASO-C005
+        direction: supports
+      - claimId: VASO-C182
+        direction: null
+      - claimId: VASO-C183
+        direction: supports
+      - claimId: VASO-C184
+        direction: supports
+    reason: The quoted ROC/AUC statement is accurate and correctly located in the Results section, and the record properly notes the shared NIH lineage with the Shah 2008 work. However the sourceStatement bundles three distinct classifier comparisons (active-vs-normal, latent-vs-normal, active-vs-latent) into one proposition, so it is not atomic. It also does not itself state the specific mean±SD area values claimed in VASO-C182, so it does not bear on that claim even though it does support the general differentiation claims in C005, C183, and C184.

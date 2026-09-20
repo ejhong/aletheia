@@ -281,6 +281,7 @@ describe("runAccount — the run's own record, for a panel that cannot read the 
     "content/cases/x/editions/e2.yaml": "runId: e2\ndate: 2026-09-09\nmodel: m\npromptVersion: edition-v4\nprevious: e1\nrationale: the map changed\nfeaturedClaimIds:\n  - X-C1\ncruxOrder:\n  - X-R1\narticle: |\n  Three accounts side by side.\n",
     "content/cases/x/history.yaml": "- date: 2026-09-09\n  change: intake\n",
     "content/cases/x/assessments/2026-09-09-check-a.yaml": "model: Seat A\nrole: check\ncaseAssessment:\n  verdict: mixed\n  reasoning: The evidence cuts both ways here.\n",
+    "content/cases/x/assessments/2026-09-09-edition-b.yaml": "runId: 2026-09-09-edition-b\nproducedBy: 2026-09-09-edition-x-000001\nmodel: drafter\nrole: draft\ndate: 2026-09-09\npromptVersion: edition-v12\ncaseAssessment:\n  verdict: unresolved\n  loadBearing:\n    - X-C1\n  weakestLinks:\n    - X-C2\n  whatIsClaimed: That the thing is so.\n  synthesis: The ledger's ladder is inverted.\n  components:\n    - label: dating\n      state: established\n      note: E1 on C1.\nclaimAssessments:\n  - claimId: X-C1\n    verdict: well_supported\n    confidence: high\n    reasoning: E1 quotes the excavators.\n  - claimId: X-C2\n    verdict: unresolved\n    confidence: low\n    reasoning: Held on its anchor alone.\n",
   };
   const read = (p: string) => files[p] ?? null;
   const diffOf = (p: string) => (p === "content/cases/x/history.yaml" ? "--- a\n+++ b\n-  change: old\n+- date: 2026-09-09\n+  change: intake\n" : "");
@@ -298,6 +299,14 @@ describe("runAccount — the run's own record, for a panel that cannot read the 
     expect(text).not.toMatch(/change: old/);
     expect(text).toMatch(/case verdict: mixed/);
     expect(text).not.toMatch(/working material/);
+    // A draft assessment is digested whole: the standing, the load-bearing set, what is claimed, the components and every
+    // claim's verdict — so a seat that cannot read the overlay can still confirm a regrade (2026-09-20, #372).
+    expect(text).toMatch(/2026-09-09-edition-b\.yaml \(assessment: header, case verdict, load-bearing set, what is claimed, components, every claim's verdict\)/);
+    expect(text).toMatch(/producedBy: 2026-09-09-edition-x-000001/);
+    expect(text).toMatch(/case verdict: unresolved\nloadBearing: X-C1\nweakestLinks: X-C2\nwhatIsClaimed: That the thing is so\./);
+    expect(text).toMatch(/component dating: established — E1 on C1\./);
+    expect(text).toMatch(/claim X-C1: well_supported \(high\) — E1 quotes the excavators\./);
+    expect(text).toMatch(/claim X-C2: unresolved \(low\) — Held on its anchor alone\./);
   });
   it("is empty for a change without runs, and clips a long article loudly", () => {
     expect(runAccount(["src/x.ts", "docs/y.md"], read, diffOf)).toEqual({ text: "", files: [] });

@@ -265,17 +265,19 @@ export function leadsOf(reportRunId: string, root = process.cwd()): LeadOutcome[
 }
 
 /**
- * The rows that settle a lead: when verification admits a source that is the document a leads pass resolved or
- * offered as a candidate for that lead, the lead's own row is written `in`, naming the source — mechanically, by
- * locator, so the pool of open leads shrinks without a drafter's say-so. Only a source-kind lead is settled by a
- * source: a provenance container admits no claim or evidence record (§3.6; review note #368).
+ * The rows that settle a lead: when verification admits a source that is the document a leads pass *resolved* for
+ * that lead — one that agreed with the lead on the checks named — the lead's own row is written `in`, naming the
+ * source, mechanically, by locator, so the pool of open leads shrinks without a drafter's say-so. A candidate is
+ * not a resolution: a document admitted for its own sake that merely resembled the lead leaves the lead blocked
+ * (review note #369 — writing identity into provenance on a 0.5 title match). Only a source-kind lead is settled by
+ * a source: a provenance container admits no claim or evidence record (§3.6; review note #368).
  */
 export function settleLeads(outcomes: LeadOutcome[], admitted: Pick<Source, "id" | "url" | "identifier">[], stamp: { runId: string; date: string; proposal: string; leadsRunId: string }): Disposition[] {
   const rows: Disposition[] = [];
   const locators = (s: Pick<Source, "url" | "identifier">) => new Set([canonicalUrl(s.url), normalizeDoi(s.identifier), normalizeDoi(s.url)].filter((x): x is string => Boolean(x)));
   for (const o of outcomes) {
-    if (o.kind !== "source") continue;
-    const docs = [...(o.resolved ? [o.resolved] : []), ...o.candidates];
+    if (o.kind !== "source" || !o.resolved) continue;
+    const docs = [o.resolved];
     for (const s of admitted) {
       const mine = locators(s);
       const hit = docs.find((d) => mine.has(canonicalUrl(d.url) ?? "") || (d.doi && mine.has(d.doi)));

@@ -127,7 +127,7 @@ describe("runLeads", () => {
 });
 
 describe("settleLeads", () => {
-  it("writes a lead's row `in` when an admitted source is the document resolved or offered for it, by URL or DOI, and nothing otherwise", () => {
+  it("writes a lead's row `in` only when an admitted source is the document the pass resolved for it, by URL or DOI; a candidate admitted for its own sake leaves the lead blocked", () => {
     const outcomes = [
       { key: "text:lead a", kind: "source", observed: "Report: 'A'.", title: "A", authors: [], year: null, query: "A", firstBlocked: { date: "2099-01-01", by: "d" }, resolved: { title: "A paper", authors: [], year: 2013, url: "https://example.org/a.pdf", doi: "10.1007/a-paper", identifier: "doi:10.1007/a-paper", via: "OpenAlex", similarity: 1, checks: ["title containment 1 (at or above the 0.7 threshold)"], text: { chars: 100, via: "pdf" } }, candidates: [] },
       { key: "text:lead b", kind: "source", observed: "Report: 'B'.", title: "B", authors: [], year: null, query: "B", firstBlocked: { date: "2099-01-01", by: "d" }, resolved: null, candidates: [{ title: "B maybe", authors: [], year: null, url: "https://example.org/b", doi: null, identifier: "url:example.org/b", via: "Internet Archive", similarity: 0.5, checks: ["title containment 0.5 (below the 0.7 threshold)"] }] },
@@ -139,7 +139,7 @@ describe("settleLeads", () => {
       { id: "SRC-Z", url: "https://example.org/z", identifier: "" },
     ];
     const rows = settleLeads(outcomes, admitted as never, { runId: "2099-01-02-verify-megalithic-casting-000000", date: "2099-01-02", proposal: "proposals/2099-01-02-draft-megalithic-casting-000000", leadsRunId: "2099-01-02-leads-megalithic-casting-000000" });
-    expect(rows.map((r) => `${r.key} → ${r.disposition}:${r.as}`)).toEqual(["text:lead a → in:SRC-A-2013", "text:lead b → in:SRC-B-2000"]);
+    expect(rows.map((r) => `${r.key} → ${r.disposition}:${r.as}`)).toEqual(["text:lead a → in:SRC-A-2013"]);
     // A source admits no claim or evidence record: a lead of another kind is not settled by it (§3.6).
     expect(settleLeads([{ ...outcomes[0], kind: "evidence" }], admitted as never, { runId: "r", date: "2099-01-02", proposal: "p", leadsRunId: "l" })).toEqual([]);
     expect(rows[0].reason).toMatch(/^the lead, reopened by 2099-01-02-leads-megalithic-casting-000000, resolved to this source \(OpenAlex; title containment 1/);

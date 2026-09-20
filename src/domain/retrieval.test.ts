@@ -239,30 +239,33 @@ describe("a second client for a page that challenged the first", () => {
   it("reads the page the second client is served, saying so; with none, or one served the same, the challenge stands", async () => {
     const { fetchSource } = await import("../pipeline/fetch.ts");
     const calls: string[] = [];
-    const curl = async (url: string) => (calls.push(url), { status: 200, contentType: "text/html; charset=utf-8", bytes: new TextEncoder().encode(article) });
-    const r = await fetchSource("https://pmc.ncbi.nlm.nih.gov/articles/PMC3493620/", { fetchImpl: challenged, secondClient: curl });
+    const double = { name: "test double", fetch: async (url: string) => (calls.push(url), { status: 200, contentType: "text/html; charset=utf-8", bytes: new TextEncoder().encode(article) }) };
+    const r = await fetchSource("https://pmc.ncbi.nlm.nih.gov/articles/PMC3493620/", { fetchImpl: challenged, secondClient: double });
     expect(r.ok).toBe(true);
     expect(r.text).toContain("Active sites were larger than latent sites.");
     expect(r.pageTitle).toBe("Objective sonographic measures");
-    expect(r.via).toBe("read by a second client (curl) after the first was served a bot challenge page");
+    // The note names the client that read the page — the double here, curl in production (§3.8).
+    expect(r.via).toBe("read by a second client, test double, after the first was served a bot challenge page");
+    const { curlClient } = await import("../pipeline/fetch.ts");
+    expect(curlClient.name).toBe("curl");
     expect(r.substitute).toBeUndefined();
     expect(calls).toEqual(["https://pmc.ncbi.nlm.nih.gov/articles/PMC3493620/"]);
     // An injected fetch has no second client unless one is injected.
     const none = await fetchSource("https://pmc.ncbi.nlm.nih.gov/articles/PMC3493620/", { fetchImpl: challenged });
     expect(none.ok).toBe(false);
     expect(none.reason).toBe("bot challenge page served with HTTP 200");
-    const same = await fetchSource("https://pmc.ncbi.nlm.nih.gov/articles/PMC3493620/", { fetchImpl: challenged, secondClient: async () => ({ status: 200, contentType: "text/html", bytes: new TextEncoder().encode("<html><body>Please enable cookies</body></html>") }) });
+    const same = await fetchSource("https://pmc.ncbi.nlm.nih.gov/articles/PMC3493620/", { fetchImpl: challenged, secondClient: { name: "test double", fetch: async () => ({ status: 200, contentType: "text/html", bytes: new TextEncoder().encode("<html><body>Please enable cookies</body></html>") }) } });
     expect(same.ok).toBe(false);
-    expect(same.reason).toBe("bot challenge page served with HTTP 200; a second client (curl) was served a bot challenge page too");
-    const down = await fetchSource("https://pmc.ncbi.nlm.nih.gov/articles/PMC3493620/", { fetchImpl: challenged, secondClient: async () => null });
-    expect(down.reason).toBe("bot challenge page served with HTTP 200; a second client (curl) could not be run");
+    expect(same.reason).toBe("bot challenge page served with HTTP 200; a second client, test double, was served a bot challenge page too");
+    const down = await fetchSource("https://pmc.ncbi.nlm.nih.gov/articles/PMC3493620/", { fetchImpl: challenged, secondClient: { name: "test double", fetch: async () => null } });
+    expect(down.reason).toBe("bot challenge page served with HTTP 200; a second client, test double, could not be run");
   });
   it("retrieve reaches the second client before Europe PMC for a PMC page", async () => {
     const calls: string[] = [];
     const fetchImpl = (async (input: string | URL | Request) => (calls.push(String(input)), new Response("<html><body>Just a moment...</body></html>", { headers: { "content-type": "text/html" } }))) as typeof fetch;
-    const r = await retrieve({ url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC3493620/" }, { fetchImpl, secondClient: async () => ({ status: 200, contentType: "text/html", bytes: new TextEncoder().encode(article) }) });
+    const r = await retrieve({ url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC3493620/" }, { fetchImpl, secondClient: { name: "test double", fetch: async () => ({ status: 200, contentType: "text/html", bytes: new TextEncoder().encode(article) }) } });
     expect(r.ok).toBe(true);
-    expect(r.via).toContain("second client (curl)");
+    expect(r.via).toContain("a second client, test double,");
     expect(calls.some((u) => u.includes("europepmc"))).toBe(false);
   });
 });

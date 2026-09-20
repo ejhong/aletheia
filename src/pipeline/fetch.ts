@@ -147,8 +147,14 @@ export function htmlTitle(body: string): string | undefined {
  * read against the parts for it). The second client stands in for the real first client only: when a fetch is
  * injected (a test), there is none unless one is injected too.
  */
-export type SecondClient = (url: string, timeoutMs: number) => Promise<{ status: number; contentType: string | null; bytes: Uint8Array } | null>;
-export const curlClient: SecondClient = async (url, timeoutMs) => {
+export interface SecondClient {
+  /** The client's name as the account will give it — the provenance of the text (§3.8): "curl", or a test double's own name. */
+  name: string;
+  /** The same URL, the same headers as the first client. */
+  fetch: (url: string, timeoutMs: number) => Promise<{ status: number; contentType: string | null; bytes: Uint8Array } | null>;
+}
+export const curlClient: SecondClient = { name: "curl", fetch: curlFetch };
+async function curlFetch(url: string, timeoutMs: number): Promise<{ status: number; contentType: string | null; bytes: Uint8Array } | null> {
   const tmp = path.join(os.tmpdir(), `aletheia-curl-${process.pid}-${Date.now()}`);
   try {
     const out = execFileSync(
@@ -167,7 +173,7 @@ export const curlClient: SecondClient = async (url, timeoutMs) => {
       /* never written */
     }
   }
-};
+}
 
 export interface FetchOptions {
   timeoutMs?: number;
@@ -225,14 +231,14 @@ export async function fetchSource(url: string, opts: FetchOptions = {}): Promise
   if (!wall) return first;
   // A challenge page: the same URL, the same headers, a second client.
   const second = opts.secondClient !== undefined ? opts.secondClient : opts.fetchImpl ? null : curlClient;
-  const again = second ? await second(url, opts.timeoutMs ?? 60_000) : null;
+  const again = second ? await second.fetch(url, opts.timeoutMs ?? 60_000) : null;
   if (again && again.status >= 200 && again.status < 300) {
     const { wall: wall2, ...retried } = await fromBody(url, again.status, again.contentType, again.bytes, max);
-    if (retried.ok) return { ...retried, via: `read by a second client (curl) after the first was served a ${wall}` };
-    if (wall2) return { ...first, reason: `${first.reason}; a second client (curl) was served a ${wall2} too` };
-    return { ...first, reason: `${first.reason}; a second client (curl) got ${retried.reason}` };
+    if (retried.ok) return { ...retried, via: `read by a second client, ${second!.name}, after the first was served a ${wall}` };
+    if (wall2) return { ...first, reason: `${first.reason}; a second client, ${second!.name}, was served a ${wall2} too` };
+    return { ...first, reason: `${first.reason}; a second client, ${second!.name}, got ${retried.reason}` };
   }
-  return { ...first, reason: `${first.reason}${second ? (again ? `; a second client (curl) got HTTP ${again.status}` : "; a second client (curl) could not be run") : ""}` };
+  return { ...first, reason: `${first.reason}${second ? (again ? `; a second client, ${second.name}, got HTTP ${again.status}` : `; a second client, ${second.name}, could not be run`) : ""}` };
 }
 
 // ------------------------------------------------------------ open access

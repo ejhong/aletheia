@@ -63,7 +63,13 @@ export interface Packet {
    * page-marked extraction), else named with `text: null`.
    */
   inputs?: { id: string; title: string; role: string; file: string; text: string | null; bytes: number }[];
-  declined?: Pick<Disposition, "key" | "kind" | "disposition" | "reason" | "reopenIf" | "date" | "observed">[];
+  /**
+   * Candidates considered and set aside, compact: kind, disposition, date, what was observed (to 120 characters),
+   * the reason (to 160) and what would reopen it (to 120), each clip marked. No mechanical key — no model reads
+   * one, and the dedupe that does is code (src/domain/intake.ts). 2026-09-20: the vasocomputation packet passed
+   * its bound at 259 declined rows carrying 185,000 characters of keys and full reasons.
+   */
+  declined?: (Pick<Disposition, "kind" | "disposition" | "date"> & { observed: string; reason?: string; reopenIf?: string })[];
   previousReport?: string;
   /**
    * For the edition verb: the panel's current judgment of the adopted
@@ -202,14 +208,14 @@ export function buildPacket(
       bytes: fs.statSync(file).size,
     };
   });
+  const brief = (text: string | undefined, max: number) => (text === undefined ? undefined : text.length <= max ? text : `${text.slice(0, max)} [… ${text.length - max} more]`);
   packet.declined = declined(loaded.dispositions).map((d) => ({
-    key: d.key,
     kind: d.kind,
     disposition: d.disposition,
-    reason: d.reason,
-    reopenIf: d.reopenIf,
     date: d.date,
-    observed: d.observed,
+    observed: brief(d.observed, 120) as string,
+    ...(d.reason !== undefined ? { reason: brief(d.reason, 160) } : {}),
+    ...(d.reopenIf !== undefined ? { reopenIf: brief(d.reopenIf, 120) } : {}),
   }));
   if (opts.previousReport) packet.previousReport = opts.previousReport;
   if (opts.detail) {

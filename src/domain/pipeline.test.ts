@@ -63,6 +63,18 @@ describe("the packet", () => {
     expect(blind.index.claims.some((c) => c.featured)).toBe(true);
   });
 
+  it("carries the declined candidates compact: no key, observed to 120, reason to 160, what would reopen to 120, each clip marked", () => {
+    for (const c of loadAllCases()) {
+      const p = buildPacket(c);
+      for (const d of p.declined ?? []) {
+        expect((d as { key?: string }).key).toBeUndefined();
+        expect(d.observed.length).toBeLessThanOrEqual(120 + 20);
+        if (d.reason !== undefined) expect(d.reason.length).toBeLessThanOrEqual(160 + 20);
+        if (d.reopenIf !== undefined) expect(d.reopenIf.length).toBeLessThanOrEqual(120 + 20);
+        for (const [v, cap] of [[d.observed, 120], [d.reason, 160], [d.reopenIf, 120]] as const) if (v && v.length > cap) expect(v).toMatch(/ \[… \d+ more\]$/);
+      }
+    }
+  });
   it("renders within the bound for every live case, and refuses to truncate", () => {
     for (const c of loadAllCases()) expect(renderPacket(buildPacket(c)).length).toBeLessThan(PACKET_MAX_CHARS);
     expect(() => renderPacket(buildPacket(getCaseBySlug("megalithic-casting")), 1000)).toThrow(/nothing was sent/);

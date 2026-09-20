@@ -2058,7 +2058,7 @@
     date: 2026-09-20
   alternativeToClaimIds: []
   contradictsClaimIds: []
-  rejectionReason: "Refused at the answer's re-reading 2026-09-20 (2026-09-20-answer-vasocomputation-192504): not atomic (The quoted sentence appears in Results and is used faithfully, and the normal-site value cited matches the abstract's reported figure, so the anchor is contextually and locator-accurate. However, the statement bundles two separable comparisons—active-vs-normal and latent-vs-normal—into a single claim, even though the ROC/AUC data in the source show these are independently testable relationships (e.g., different AUCs for each pairing), so it is not atomic. The proposition, once split, does bear on the case's competing mechanistic accounts of trigger point structure.); split into VASO-C185, VASO-C186, VASO-C187"
+  rejectionReason: "Refused at the answer's re-reading 2026-09-20 (2026-09-20-answer-vasocomputation-192504): not atomic (The quoted sentence appears in Results and is used faithfully, and the normal-site value cited matches the abstract's reported figure, so the anchor is contextually and locator-accurate. However, the statement bundles two separable comparisons—active-vs-normal and latent-vs-normal—into a single claim, even though the ROC/AUC data in the source show these are independently testable relationships (e.g., different AUCs for each pairing), so it is not atomic. The proposition, once split, does bear on the case's competing mechanistic accounts of trigger point structure.); split into VASO-C185, VASO-C186, VASO-C187; the split's parts were corrected by the operator on 2026-09-20 (session_01AiXD4y5Y91KC7iM3uBhWmu, operator-by-hand-v1): VASO-C185, a duplicate of VASO-C184, and VASO-C186, not a proposition of this claim, refused; the two propositions bundled here entered as VASO-C188 and VASO-C189, with VASO-C187 the normal-site value"
 - id: VASO-C184
   statement: Active trigger point sites were significantly larger than latent sites on vibration elastography (P < .01).
   theme: phenomenon
@@ -2094,12 +2094,13 @@
   dependsOnClaimIds: []
   alternativeToClaimIds: []
   contradictsClaimIds: []
-  reviewState: ai_extracted
+  reviewState: rejected
   origin:
     ref: split of VASO-C183 (split of VASO-C033 (report 2026-09-09-report-vasocomputation-023157); anchored by the splitter in the same text); anchored by the splitter in the same text; second round
     extractedBy: claude-fable-5-1
     runId: 2026-09-20-answer-vasocomputation-192504
     date: 2026-09-20
+  rejectionReason: "Refused by the operator on 2026-09-20 (session_01AiXD4y5Y91KC7iM3uBhWmu, operator-by-hand-v1): a duplicate of VASO-C184 — the same proposition on the same anchor — entered by a split of VASO-C183 that drifted to propositions the compound did not bundle (the GPT-5.6 Sol seat's objection on #372 at cded154)."
 - id: VASO-C186
   statement: Trigger point areas assessed by vibration elastography showed trends similar to those of pain pressure threshold scores.
   theme: phenomenon
@@ -2114,12 +2115,13 @@
   dependsOnClaimIds: []
   alternativeToClaimIds: []
   contradictsClaimIds: []
-  reviewState: ai_extracted
+  reviewState: rejected
   origin:
     ref: split of VASO-C183 (split of VASO-C033 (report 2026-09-09-report-vasocomputation-023157); anchored by the splitter in the same text); anchored by the splitter in the same text; second round
     extractedBy: claude-fable-5-1
     runId: 2026-09-20-answer-vasocomputation-192504
     date: 2026-09-20
+  rejectionReason: "Refused by the operator on 2026-09-20 (session_01AiXD4y5Y91KC7iM3uBhWmu, operator-by-hand-v1): not a proposition VASO-C183 bundled — the anchor's neighbouring sentence on pain-pressure thresholds — entered by a split that drifted (the GPT-5.6 Sol seat's objection on #372 at cded154). The proposition may be proposed on its own with its own anchor."
 - id: VASO-C187
   statement: Palpably normal sites had a mean trigger point area of 0.17 ± 0.22 cm² on sonoelastography.
   theme: phenomenon
@@ -2139,4 +2141,45 @@
     ref: split of VASO-C183 (split of VASO-C033 (report 2026-09-09-report-vasocomputation-023157); anchored by the splitter in the same text); anchored by the splitter in the same text
     extractedBy: claude-fable-5-1
     runId: 2026-09-20-answer-vasocomputation-192504
+    date: 2026-09-20
+
+- id: VASO-C188
+  statement: Active trigger point sites had significantly larger areas on vibration elastography than palpably normal sites (P < .01).
+  theme: phenomenon
+  rung: observation
+  claimType: measurement
+  parentClaimIds:
+    - VASO-C005
+  dependsOnClaimIds: []
+  alternativeToClaimIds: []
+  contradictsClaimIds: []
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: Results
+    quote: Active and latent sites had significantly higher areas compared to normal sites ( P < .01)
+    sourceId: SRC-BALLYNS-2011
+  origin:
+    ref: "split of VASO-C183 (split of VASO-C033 (report 2026-09-09-report-vasocomputation-023157)) by the operator, correcting a split that drifted: one of the two propositions the compound bundled, on the compound's own anchor"
+    extractedBy: claude-fable-5-1 (operator, by hand)
+    runId: session_01AiXD4y5Y91KC7iM3uBhWmu
+    date: 2026-09-20
+- id: VASO-C189
+  statement: Latent trigger point sites had significantly larger areas on vibration elastography than palpably normal sites (P < .01).
+  theme: phenomenon
+  rung: observation
+  claimType: measurement
+  parentClaimIds:
+    - VASO-C005
+  dependsOnClaimIds: []
+  alternativeToClaimIds: []
+  contradictsClaimIds: []
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: Results
+    quote: Active and latent sites had significantly higher areas compared to normal sites ( P < .01)
+    sourceId: SRC-BALLYNS-2011
+  origin:
+    ref: "split of VASO-C183 (split of VASO-C033 (report 2026-09-09-report-vasocomputation-023157)) by the operator, correcting a split that drifted: one of the two propositions the compound bundled, on the compound's own anchor"
+    extractedBy: claude-fable-5-1 (operator, by hand)
+    runId: session_01AiXD4y5Y91KC7iM3uBhWmu
     date: 2026-09-20

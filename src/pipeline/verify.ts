@@ -199,13 +199,30 @@ export const SPLIT_SCHEMA: Record<string, unknown> = {
   type: "object",
   additionalProperties: false,
   required: ["parts"],
-  properties: { parts: { type: "array", items: { type: "string" } } },
+  properties: {
+    parts: {
+      type: "array",
+      items: {
+        type: "object",
+        additionalProperties: false,
+        required: ["statement", "quote", "locator"],
+        properties: { statement: { type: "string" }, quote: { type: "string" }, locator: { type: "string" } },
+      },
+    },
+  },
 };
 
 /** Split a compound claim into the propositions its anchor states (protocol split-v1). */
 /** The parts of a split claim, with who wrote them and in which run — an injected splitter may return the bare parts. */
+/** Where a part is stated in the text, in the splitter's reading: a verbatim quote and the nearest locator (split-v4). */
+export interface PartAnchor {
+  quote: string;
+  locator?: string;
+}
 export interface SplitResult {
   parts: string[];
+  /** One per part, in order, where the splitter gave them; null where it did not. */
+  anchors?: (PartAnchor | null)[];
   model?: string;
   protocol?: string;
   runId?: string;
@@ -218,7 +235,7 @@ export const asSplit = (r: string[] | SplitResult): SplitResult => (Array.isArra
 
 export const defaultSplitter: Splitter = async (statement, anchorText, meter, kind = "claim") => {
   const protocol = loadProtocol("split");
-  const r = await anthropicJson<{ parts: string[] }>(
+  const r = await anthropicJson<{ parts: { statement: string; quote: string; locator: string }[] }>(
     {
       ...MODELS.house,
       system: renderProtocol(protocol, {}),
@@ -232,7 +249,8 @@ export const defaultSplitter: Splitter = async (statement, anchorText, meter, ki
     },
     meter,
   );
-  return { parts: r.data.parts.map((p) => p.trim()).filter((p) => p.length > 10), model: r.model ?? MODELS.house.model, protocol: protocol.version, runId: meter.runId, date: isoDate() };
+  const parts = r.data.parts.map((p) => ({ statement: p.statement.trim(), anchor: p.quote.trim().length >= 12 ? { quote: p.quote.trim(), ...(p.locator.trim() ? { locator: p.locator.trim() } : {}) } : null })).filter((p) => p.statement.length > 10);
+  return { parts: parts.map((p) => p.statement), anchors: parts.map((p) => p.anchor), model: r.model ?? MODELS.house.model, protocol: protocol.version, runId: meter.runId, date: isoDate() };
 };
 
 /**
@@ -277,16 +295,19 @@ export function rememberedJudge(judge: Judge, file: string, readerModel: string,
 }
 
 export function rememberedSplitter(split: Splitter, file: string, model: string, protocol = loadProtocol("split").version): Splitter {
-  const memory = readMemory<string[]>(file);
+  // A remembered split is the bare parts (the first format) or the parts with their anchors (split-v4).
+  type Remembered = string[] | { parts: string[]; anchors?: (PartAnchor | null)[] };
+  const memory = readMemory<Remembered>(file);
+  const unpack = (a: Remembered) => (Array.isArray(a) ? { parts: a } : { parts: a.parts, ...(a.anchors ? { anchors: a.anchors } : {}) });
   return async (statement, anchorText, meter, kind = "claim") => {
     const key = sha256Hex(canonicalJson({ statement, anchorText, model, protocol, kind }));
     const had = memory[key];
-    if (had) return { parts: had.answer, model: had.model, protocol: had.protocol, runId: had.runId, date: had.date };
+    if (had) return { ...unpack(had.answer), model: had.model, protocol: had.protocol, runId: had.runId, date: had.date };
     const r = asSplit(await split(statement, anchorText, meter, kind));
-    const entry = { model: r.model ?? model, protocol: r.protocol ?? protocol, runId: r.runId ?? meter.runId, date: r.date ?? isoDate(), answer: r.parts };
+    const entry = { model: r.model ?? model, protocol: r.protocol ?? protocol, runId: r.runId ?? meter.runId, date: r.date ?? isoDate(), answer: r.anchors ? { parts: r.parts, anchors: r.anchors } : r.parts };
     memory[key] = entry;
     writeMemory(file, memory);
-    return { parts: entry.answer, model: entry.model, protocol: entry.protocol, runId: entry.runId, date: entry.date };
+    return { ...unpack(entry.answer), model: entry.model, protocol: entry.protocol, runId: entry.runId, date: entry.date };
   };
 }
 
@@ -793,14 +814,21 @@ export async function judgeProposal(
             continue;
           }
           const admitted: Claim[] = [];
-          for (const part of sp.parts) {
+          for (const [n, part] of sp.parts.entries()) {
             const id = nextClaimId(loaded, [...proposal.adds.claims.map((k) => k.id), ...okClaims.map((k) => k.id), ...admitted.map((k) => k.id)]);
+            // A part is judged on an anchor that fits it: the splitter's own quote for the part, when the text carries
+            // it verbatim (split-v4; 2026-09-20: parts judged on the compound's anchor failed a locator that fit the
+            // whole and not each part), else the compound's anchor, said so in the account.
+            const own = sp.anchors?.[n];
+            const anchored = own?.quote && !unverifiedQuotes(`"${own.quote}"`, fetched.text ?? "").length;
+            const anchor = anchored ? { ...c.sourceAnchor, quote: own!.quote, locator: own!.locator || c.sourceAnchor.locator, also: undefined } : c.sourceAnchor;
+            if (own?.quote && !anchored) notes.push(`${c.id} part "${part.slice(0, 60)}": the splitter's quote is not in the text verbatim ("${own.quote.slice(0, 80)}"); judged on the compound's anchor`);
             // The part's wording is the splitter's, not the drafter's: its origin says so.
-            // A part keeps the compound's place in the ladder (its parents) and its anchor; the compound's
-            // dependencies, alternatives and contradictions are the compound's, not each part's, and are
-            // not carried over (§3.2) — said aloud below so a later pass can propose them per part.
-            const candidate: Claim = { ...c, id, statement: part, dependsOnClaimIds: [], alternativeToClaimIds: [], contradictsClaimIds: [], origin: { ref: `split of ${c.id} (${c.origin.ref})`, extractedBy: sp.model ?? splitter.model, runId: sp.runId ?? splitter.runId, date: sp.date ?? reader.date } };
-            const v2 = await judge({ statement: part, anchor: c.sourceAnchor }, fetched.text, anchorContext, meter);
+            // A part keeps the compound's place in the ladder (its parents); the compound's dependencies,
+            // alternatives and contradictions are the compound's, not each part's, and are not carried over
+            // (§3.2) — said aloud below so a later pass can propose them per part.
+            const candidate: Claim = { ...c, id, statement: part, sourceAnchor: anchor, dependsOnClaimIds: [], alternativeToClaimIds: [], contradictsClaimIds: [], origin: { ref: `split of ${c.id} (${c.origin.ref})${anchored ? "; anchored by the splitter in the same text" : ""}`, extractedBy: sp.model ?? splitter.model, runId: sp.runId ?? splitter.runId, date: sp.date ?? reader.date } };
+            const v2 = await judge({ statement: part, anchor }, fetched.text, anchorContext, meter);
             const bad = Object.entries(v2).filter(([k, v]) => k !== "reason" && v === false && k !== "independenceNoted" && k !== "directionRight").map(([k]) => k);
             if (bad.length) {
               notes.push(`${c.id} part "${part.slice(0, 60)}" refused (${bad.join(", ")}): ${v2.reason}`);

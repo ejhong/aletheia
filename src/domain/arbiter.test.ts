@@ -292,7 +292,8 @@ describe("runAccount — the run's own record, for a panel that cannot read the 
     expect(used).not.toContain("proposals/r1/reply.json");
     expect(text).toMatch(/No model wrote this section/);
     // The header says how the account was made and clipped — the panel's own provenance for what it read (review note #375).
-    expect(text).toMatch(/each assessment the change adds — its header, case verdict, load-bearing set and weakest links, what is claimed \(to 1,200\), synthesis or reasoning \(to 1,500\), each component's state and note \(note to 240\), and every claim's verdict, confidence and reasoning \(reasoning to 300\), the assessment's section to 30,000; the whole account to 150,000\./);
+    expect(text).toMatch(/the assessment the head edition adopts — its header, case verdict, load-bearing set and weakest links, what is claimed \(to 1,200\), synthesis or reasoning \(to 1,500\), each component's state and note \(note to 240\), and every claim's verdict, confidence and reasoning \(reasoning to 300\), the assessment's section to 30,000 — and a superseded assessment by header and case verdict; the whole account to 150,000, kept by dropping whole sections/);
+    expect(text).toMatch(/the records the change adds to evidence, claims, sources and research \(id, state, direction, statement to 320, quote to 160, locator to 160; each file's list to 40,000\)/);
     expect(text).toMatch(/usd: 14\.9/);
     expect(text).toMatch(/anchor page wrong/);
     expect(text).toMatch(/rationale: the map changed/);
@@ -309,6 +310,43 @@ describe("runAccount — the run's own record, for a panel that cannot read the 
     expect(text).toMatch(/component dating: established — E1 on C1\./);
     expect(text).toMatch(/claim X-C1: well_supported \(high\) — E1 quotes the excavators\./);
     expect(text).toMatch(/claim X-C2: unresolved \(low\) — Held on its anchor alone\./);
+  });
+  it("digests the records a change adds to the canon files from the head file, by the ids the diff adds", () => {
+    const ev: Record<string, string> = {
+      ...files,
+      "content/cases/x/evidence.yaml": "- id: X-E001\n  title: old one\n  claimIds: [X-C1]\n  sourceId: SRC-A\n  direction: supports\n  strength: weak\n  sourceStatement: The old record.\n  reviewState: ai_extracted\n- id: X-E084\n  title: new one\n  claimIds:\n    - X-C1\n  sourceId: SRC-B\n  direction: context\n  strength: weak\n  sourceStatement: 'Active points were \"larger, stiffer, and more painful\" than latent ones.'\n  exactLocator: PMC1, Results, Table 2\n  reviewState: ai_extracted\n",
+      "content/cases/x/claims.yaml": "- id: X-C9\n  statement: A new proposition with a truth condition.\n  reviewState: ai_extracted\n  sourceAnchor:\n    locator: p. 4\n    quote: was carried out by groups\n    sourceId: SRC-B\n",
+    };
+    const diffs: Record<string, string> = {
+      "content/cases/x/evidence.yaml": "+- id: X-E084\n+  title: new one\n",
+      "content/cases/x/claims.yaml": "+- id: X-C9\n+  statement: A new proposition with a truth condition.\n",
+      "content/cases/x/history.yaml": diffOf("content/cases/x/history.yaml"),
+    };
+    const { text, files: used } = runAccount(Object.keys(ev), (p: string) => ev[p] ?? null, (p: string) => diffs[p] ?? "");
+    expect(used).toContain("content/cases/x/evidence.yaml");
+    expect(text).toMatch(/content\/cases\/x\/evidence\.yaml \(1 record\(s\) added: id, state, direction → claims, statement, quote, locator\)/);
+    expect(text).toMatch(/- X-E084 \[ai_extracted\] context → X-C1 \(weak\) \| source SRC-B\n  Active points were "larger, stiffer, and more painful" than latent ones\.\n  at: PMC1, Results, Table 2/);
+    expect(text).not.toMatch(/X-E001/);
+    expect(text).toMatch(/- X-C9 \[ai_extracted\] \n  A new proposition with a truth condition\. \| quote: was carried out by groups\n  at: p\. 4/);
+  });
+  it("puts the head edition and its assessment first and whole, and reduces a candidate superseded within the change to its header", () => {
+    const two: Record<string, string> = {
+      ...files,
+      "content/cases/x/editions/e3.yaml": "runId: e3\ndate: 2026-09-10\nmodel: m\npromptVersion: edition-v12\nprevious: e2\nassessment:\n  runId: 2026-09-09-edition-b\n  hash: h\nrationale: the objection adopted\nfeaturedClaimIds:\n  - X-C1\ncruxOrder: []\narticle: |\n  The head article.\n",
+      "content/cases/x/assessments/2026-09-09-edition-a0.yaml": "runId: 2026-09-09-edition-a0\nmodel: drafter\nrole: draft\ncaseAssessment:\n  verdict: contradicted\n  synthesis: The one that overreached.\nclaimAssessments:\n  - claimId: X-C1\n    verdict: contradicted\n    confidence: high\n    reasoning: spent figures no record carries\n",
+    };
+    const { text } = runAccount(Object.keys(two), (p: string) => two[p] ?? null, diffOf);
+    // e2 is e3's previous: header and rationale only, no article; e3 carries its article and comes first.
+    expect(text).toMatch(/e3\.yaml \(head edition: header, rationale, featured claims, crux order, article\)/);
+    expect(text).toMatch(/The head article\./);
+    expect(text).toMatch(/e2\.yaml \(edition superseded within this change by the one naming it as previous: header and rationale only\)/);
+    expect(text).not.toMatch(/Three accounts side by side/);
+    expect(text.indexOf("e3.yaml (head edition")).toBeLessThan(text.indexOf("e2.yaml (edition superseded"));
+    // The assessment e3 adopts is digested whole and comes before the superseded one, which keeps only its header and verdict.
+    expect(text).toMatch(/claim X-C1: well_supported \(high\)/);
+    expect(text).toMatch(/edition-a0\.yaml \(assessment superseded within this change: header and case verdict only\)\n(?:.*\n){6}case verdict: contradicted/);
+    expect(text).not.toMatch(/spent figures no record carries/);
+    expect(text.indexOf("edition-b.yaml (assessment:")).toBeLessThan(text.indexOf("edition-a0.yaml (assessment superseded"));
   });
   it("is empty for a change without runs, and clips a long article loudly", () => {
     expect(runAccount(["src/x.ts", "docs/y.md"], read, diffOf)).toEqual({ text: "", files: [] });

@@ -271,12 +271,27 @@ function addedLines(diff) {
  */
 export function runAccount(changed, read, diffOf) {
   const files = [];
-  const sections = [];
   const take = (p) => {
     const t = read(p);
     if (t != null) files.push(p);
     return t;
   };
+  const parsed = (p) => {
+    const t = take(p);
+    if (t == null) return null;
+    try {
+      return { text: t, data: parseYaml(t) };
+    } catch {
+      return { text: t, data: null };
+    }
+  };
+  // Sections carry a rank: when the account is over its cap, whole sections are dropped from the lowest rank up and
+  // said to be dropped, so the head edition and its assessment — what a seat must see to judge a regrade — are never
+  // the part that falls off the end (2026-09-20: a sitting with three editions clipped the account at the head
+  // edition's first line, and three seats could only say unsure).
+  const sections = []; // { rank, text }
+
+  // 1. Run records.
   for (const p of changed.filter((f) => /^proposals\/[^/]+\/run\.yaml$/.test(f))) {
     const dir = p.replace(/\/run\.yaml$/, "");
     const parts = [`--- ${p}`, take(p) ?? ""];
@@ -284,55 +299,87 @@ export function runAccount(changed, read, diffOf) {
       const t = take(`${dir}/${name}`);
       if (t != null) parts.push(`--- ${dir}/${name}`, clip(t, cap, name));
     }
-    sections.push(parts.join("\n"));
+    sections.push({ rank: 2, text: parts.join("\n") });
   }
-  for (const p of changed.filter((f) => /^content\/cases\/[^/]+\/editions\/[^/]+\.ya?ml$/.test(f))) {
-    const t = take(p);
-    if (t == null) continue;
-    let e;
-    try {
-      e = parseYaml(t);
-    } catch {
-      sections.push(`--- ${p}\n[unparseable YAML]`);
+
+  // 2. Records the change adds to the canon files: id and the fields a seat checks, from the head file — the diff
+  //    of a large ledger file is the first thing the size budget drops.
+  const RECORD_FILES = /^content\/cases\/[^/]+\/(evidence|claims|sources|research)\.yaml$/;
+  for (const p of changed.filter((f) => RECORD_FILES.test(f))) {
+    const added = new Set([...addedLines(diffOf(p) ?? "").matchAll(/^- id: (\S+)/gm)].map((m) => m[1]));
+    if (!added.size) continue;
+    const doc = parsed(p);
+    if (!doc || !Array.isArray(doc.data)) continue;
+    const rows = doc.data.filter((r) => r && added.has(r.id));
+    const line = (r) => {
+      const state = r.reviewState ?? r.verification ?? r.status ?? "";
+      const bearing = r.direction ? `${r.direction}${Array.isArray(r.claimIds) ? ` → ${r.claimIds.join(", ")}` : ""} (${r.strength ?? ""})` : Array.isArray(r.claimIds) ? `→ ${r.claimIds.join(", ")}` : "";
+      const text = r.statement ?? r.sourceStatement ?? r.summary ?? r.title ?? "";
+      const where = r.exactLocator ?? r.sourceAnchor?.locator ?? r.identifier ?? r.url ?? "";
+      const quote = r.sourceAnchor?.quote ? ` | quote: ${clip(String(r.sourceAnchor.quote), 160, "quote")}` : "";
+      const src = r.sourceId ? ` | source ${r.sourceId}` : "";
+      return `- ${r.id} [${state}] ${bearing}${src}\n  ${clip(String(text), 320, "text")}${quote}${where ? `\n  at: ${clip(String(where), 160, "locator")}` : ""}`;
+    };
+    sections.push({ rank: 1, text: clip([`--- ${p} (${rows.length} record(s) added: id, state, direction → claims, statement, quote, locator)`, ...rows.map(line)].join("\n"), 40_000, p) });
+  }
+
+  // 3. Editions, the head first. A candidate another edition in the change names as `previous` is superseded and
+  //    shown by its header and rationale alone; the head carries its article.
+  const editions = changed.filter((f) => /^content\/cases\/[^/]+\/editions\/[^/]+\.ya?ml$/.test(f)).map((p) => ({ p, doc: parsed(p) })).filter((x) => x.doc);
+  const supersededRuns = new Set(editions.map((x) => x.doc.data?.previous).filter(Boolean));
+  const editionHead = (e) => ["runId", "date", "model", "promptVersion", "previous"].map((k) => `${k}: ${e?.[k] ?? ""}`).join("\n");
+  const adoptedByHead = new Set();
+  for (const { p, doc } of editions) {
+    const e = doc.data;
+    if (!e) {
+      sections.push({ rank: 3, text: `--- ${p}\n[unparseable YAML]` });
       continue;
     }
-    const head = ["runId", "date", "model", "promptVersion", "previous"].map((k) => `${k}: ${e?.[k] ?? ""}`).join("\n");
-    sections.push(
-      [
-        `--- ${p} (edition: header, rationale, featured claims, crux order, article)`,
-        head,
-        `rationale: ${e?.rationale ?? ""}`,
-        `featuredClaimIds: ${(e?.featuredClaimIds ?? []).join(", ")}`,
-        `cruxOrder: ${(e?.cruxOrder ?? []).join(", ")}`,
-        `article:\n${clip(String(e?.article ?? ""), 45_000, "article")}`,
+    const superseded = supersededRuns.has(e.runId);
+    if (!superseded && e.assessment?.runId) adoptedByHead.add(e.assessment.runId);
+    if (superseded) {
+      sections.push({ rank: 4, text: [`--- ${p} (edition superseded within this change by the one naming it as previous: header and rationale only)`, editionHead(e), `rationale: ${clip(String(e.rationale ?? ""), 3_000, "rationale")}`, `featuredClaimIds: ${(e.featuredClaimIds ?? []).join(", ")}`].join("\n") });
+      continue;
+    }
+    sections.push({
+      rank: 0,
+      text: [
+        `--- ${p} (head edition: header, rationale, featured claims, crux order, article)`,
+        editionHead(e),
+        `rationale: ${e.rationale ?? ""}`,
+        `featuredClaimIds: ${(e.featuredClaimIds ?? []).join(", ")}`,
+        `cruxOrder: ${(e.cruxOrder ?? []).join(", ")}`,
+        `article:\n${clip(String(e.article ?? ""), 45_000, "article")}`,
       ].join("\n"),
-    );
+    });
   }
+
+  // 4. History and dispositions: the lines added.
   for (const p of changed.filter((f) => /^content\/cases\/[^/]+\/(history|dispositions)\.yaml$/.test(f))) {
     const added = addedLines(diffOf(p) ?? "");
     if (!added.trim()) continue;
     files.push(p);
-    sections.push(`--- ${p} (lines added)\n${clip(added, 25_000, p)}`);
+    sections.push({ rank: 2, text: `--- ${p} (lines added)\n${clip(added, 25_000, p)}` });
   }
+
+  // 5. Assessments: the one the head edition adopts whole — header, case verdict, load-bearing set, what is claimed,
+  //    components, every claim's verdict — the rest (superseded) by header and case verdict.
   for (const p of changed.filter((f) => /^content\/cases\/[^/]+\/assessments\/[^/]+\.ya?ml$/.test(f))) {
-    const t = take(p);
-    if (t == null) continue;
-    let a;
-    try {
-      a = parseYaml(t);
-    } catch {
-      continue;
-    }
+    const doc = parsed(p);
+    if (!doc?.data) continue;
+    const a = doc.data;
     const ca = a?.caseAssessment ?? {};
     const reasoning = String(ca.reasoning ?? ca.synthesis ?? "");
-    // The whole judgment, digested: a seat that cannot read the overlay itself (it is often the file the diff
-    // budget drops) must still see every claim's verdict and the fields an objection tends to name — the
-    // standing, the load-bearing set, what is claimed, the components — or it can only say "unsure" (2026-09-20:
-    // two seats on #372 could not confirm a regrade the account did not carry).
+    const head = ["runId", "producedBy", "model", "role", "date", "promptVersion"].map((k) => `${k}: ${a?.[k] ?? ""}`).join("\n");
+    const isHead = adoptedByHead.size === 0 || adoptedByHead.has(a?.runId);
+    if (!isHead) {
+      sections.push({ rank: 4, text: `--- ${p} (assessment superseded within this change: header and case verdict only)\n${head}\ncase verdict: ${ca.verdict ?? ""}` });
+      continue;
+    }
     const claims = Array.isArray(a?.claimAssessments) ? a.claimAssessments : [];
     const lines = [
       `--- ${p} (assessment: header, case verdict, load-bearing set, what is claimed, components, every claim's verdict)`,
-      ["runId", "producedBy", "model", "role", "date", "promptVersion"].map((k) => `${k}: ${a?.[k] ?? ""}`).join("\n"),
+      head,
       `case verdict: ${ca.verdict ?? ""}`,
       `loadBearing: ${(ca.loadBearing ?? []).join(", ")}`,
       `weakestLinks: ${(ca.weakestLinks ?? []).join(", ")}`,
@@ -341,11 +388,23 @@ export function runAccount(changed, read, diffOf) {
       ...(Array.isArray(ca.components) ? ca.components.map((c) => `component ${c?.label ?? ""}: ${c?.state ?? ""}${c?.note ? ` — ${clip(String(c.note), 240, "note")}` : ""}`) : []),
       ...claims.map((c) => `claim ${c?.claimId ?? ""}: ${c?.verdict ?? ""} (${c?.confidence ?? ""})${c?.reasoning ? ` — ${clip(String(c.reasoning), 300, "reasoning")}` : ""}`),
     ].filter(Boolean);
-    sections.push(clip(lines.join("\n"), 30_000, p));
+    sections.push({ rank: 0, text: clip(lines.join("\n"), 30_000, p) });
   }
+
   if (sections.length === 0) return { text: "", files: [] };
-  const header = `Generated by src/lib/arbiter-core.mjs (runAccount) from the ${files.length} file(s) named below, read at the head revision: the run records (run.yaml whole; verification.md to 60,000 characters; novelty.md to 4,000; manifest.yaml to 8,000), each changed edition's header, rationale, featured claims, crux order and article (article to 45,000), the lines added to history and dispositions (to 25,000 each), and each assessment the change adds — its header, case verdict, load-bearing set and weakest links, what is claimed (to 1,200), synthesis or reasoning (to 1,500), each component's state and note (note to 240), and every claim's verdict, confidence and reasoning (reasoning to 300), the assessment's section to 30,000; the whole account to ${ACCOUNT_CAP.toLocaleString("en-US")}. Every clip is marked in place with the count of characters not shown; an unmarked part is whole. No model wrote this section. Working files (model replies, remembered judgments, supplied text, packets) are not included and may appear under OMITTED FILES.`;
-  return { text: clip([header, ...sections].join("\n\n"), ACCOUNT_CAP, "run account"), files };
+  const header = `Generated by src/lib/arbiter-core.mjs (runAccount) from the ${files.length} file(s) named below, read at the head revision: the run records (run.yaml whole; verification.md to 60,000 characters; novelty.md to 4,000; manifest.yaml to 8,000); the records the change adds to evidence, claims, sources and research (id, state, direction, statement to 320, quote to 160, locator to 160; each file's list to 40,000); the head edition's header, rationale, featured claims, crux order and article (article to 45,000), and an edition superseded within the change by header and rationale (to 3,000); the lines added to history and dispositions (to 25,000 each); the assessment the head edition adopts — its header, case verdict, load-bearing set and weakest links, what is claimed (to 1,200), synthesis or reasoning (to 1,500), each component's state and note (note to 240), and every claim's verdict, confidence and reasoning (reasoning to 300), the assessment's section to 30,000 — and a superseded assessment by header and case verdict; the whole account to ${ACCOUNT_CAP.toLocaleString("en-US")}, kept by dropping whole sections from the least important (superseded candidates, then run records and added lines, then the records digest) and naming each dropped section, never by cutting the head edition or its assessment mid-way. Every clip is marked in place with the count of characters not shown; an unmarked part is whole. No model wrote this section. Working files (model replies, remembered judgments, supplied text, packets) are not included and may appear under OMITTED FILES.`;
+  // Assemble in reading order — head edition and assessment, records digest, run records and added lines,
+  // superseded candidates — then drop whole sections from the lowest rank while over the cap.
+  const ordered = [...sections].sort((a, b) => a.rank - b.rank);
+  const dropped = [];
+  let body = [header, ...ordered.map((s) => s.text)].join("\n\n");
+  while (body.length > ACCOUNT_CAP && ordered.length > 1) {
+    const idx = ordered.map((s) => s.rank).lastIndexOf(Math.max(...ordered.map((s) => s.rank)));
+    const [gone] = ordered.splice(idx, 1);
+    dropped.push(gone.text.split("\n")[0].replace(/^--- /, ""));
+    body = [header, ...ordered.map((s) => s.text), `[… ${dropped.length} section(s) dropped to keep the account under ${ACCOUNT_CAP.toLocaleString("en-US")} characters: ${dropped.join("; ")}]`].join("\n\n");
+  }
+  return { text: clip(body, ACCOUNT_CAP, "run account"), files };
 }
 
 /**

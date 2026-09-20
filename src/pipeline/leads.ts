@@ -161,7 +161,8 @@ export function composeLeadsReport(slug: string, runId: string, date: string, ou
     `     "Resolved" agreed with the lead on the checks named; a document under "Candidates" may be the work — confirm from the retrieved\n` +
     `     text (title, authors, content) before anchoring anything to it, and disposition a wrong one \`failed\` ("resolved to the wrong work: …").\n` +
     `     Write one disposition row per lead with its \`key\` exactly as given: \`blocked\` again, with the route, when nothing opened. Rows for\n` +
-    `     what enters are written by the verifier, which also settles a lead's own row when a source it admits is the document resolved here. -->\n\n`;
+    `     what enters are written by the verifier, which settles a lead's own row only when a source it admits is the document RESOLVED here;\n` +
+    `     a candidate you confirm and propose enters as a source on its own, and the lead stays blocked until a pass resolves it. -->\n\n`;
   const parts = [`# Leads reopened — ${slug} (${date})`, ``];
   outcomes.forEach((o, i) => {
     parts.push(`## Lead ${i + 1}: ${o.observed}`, ``, `- key: \`${o.key}\` (${o.kind})`, `- first blocked ${o.firstBlocked.date} by ${o.firstBlocked.by}${o.firstBlocked.reopenIf ? `; reopen if: ${o.firstBlocked.reopenIf}` : ""}${o.firstBlocked.route ? `; route: ${o.firstBlocked.route}` : ""}`, `- searched: "${o.query}"`, ``);

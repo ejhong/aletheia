@@ -61,11 +61,15 @@ export function objectionsFromReviewNote(body: string, number: number): Objectio
 export interface Classified {
   /** Objections that name live records of the case, by the record id they name. */
   records: Map<string, Objection[]>;
-  /** Objections that name no record: the assessment, the article, the telling. */
+  /**
+   * Every objection, for the edition: one that names records is answered at the record level too, but an objection
+   * about how the assessment or the article uses a record is the edition's to answer, and the edition is re-drawn
+   * after records move in any case — so no objection is left to a re-reading alone (review note #371).
+   */
   edition: Objection[];
 }
 
-/** Which records an objection names — live claims and evidence of the case — and which objections are about the edition. */
+/** Which records an objection names — live claims and evidence of the case; every objection also goes to the edition. */
 export function classifyObjections(objections: Objection[], loaded: Pick<LoadedCase, "claims" | "evidence" | "record">): Classified {
   const prefix = loaded.record.id.split("-")[0];
   const live = new Set([
@@ -74,16 +78,11 @@ export function classifyObjections(objections: Objection[], loaded: Pick<LoadedC
   ]);
   const re = new RegExp(`\\b${prefix}-[CE]\\d{3}\\b`, "g");
   const records = new Map<string, Objection[]>();
-  const edition: Objection[] = [];
   for (const o of objections) {
     const ids = [...new Set(o.text.match(re) ?? [])].filter((id) => live.has(id));
-    if (!ids.length) {
-      edition.push(o);
-      continue;
-    }
     for (const id of ids) records.set(id, [...(records.get(id) ?? []), o]);
   }
-  return { records, edition };
+  return { records, edition: [...objections] };
 }
 
 export type Gh = (args: string[]) => string;
@@ -161,7 +160,7 @@ export async function runAnswer(pr: number, opts: AnswerOptions = {}): Promise<A
     ``,
     `## Read as`,
     `- records named: ${classified.records.join(", ") || "none"}`,
-    `- about the edition (assessment, article, telling): ${edition.length}`,
+    `- put to the edition (every objection; those naming records are also re-read at the record level): ${edition.length}`,
     ``,
   ];
   if (opts.dryRun) return { ...base, classified, account: [...lines, `Dry run: nothing re-read, nothing re-told.`].join("\n") };
@@ -189,7 +188,7 @@ export async function runAnswer(pr: number, opts: AnswerOptions = {}): Promise<A
   let editionOut: EditionOutcome | null = null;
   if (edition.length) {
     editionOut = await runEdition(loaded.record.slug, { root, force: true, objections: edition, deps: opts.deps?.edit || opts.deps?.now ? { ...(opts.deps?.edit ? { edit: opts.deps.edit } : {}), ...(opts.deps?.now ? { now: opts.deps.now } : {}), ...(opts.deps?.cases ? { cases: opts.deps.cases } : {}) } : undefined });
-    lines.push(`## Edition re-told with the objections in its packet`, `- ${editionOut.reason ?? editionOut.outcome}${editionOut.editionFile ? ` — ${editionOut.editionFile.replace(`${root}/`, "")}` : ""}`, ``);
+    lines.push(`## Edition re-told with every objection in its packet`, `- ${editionOut.reason ?? editionOut.outcome}${editionOut.editionFile ? ` — ${editionOut.editionFile.replace(`${root}/`, "")}` : ""}`, ``);
   }
   return { ...base, classified, records: recordsOut, edition: editionOut, account: lines.join("\n") };
 }

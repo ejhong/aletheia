@@ -182,8 +182,8 @@ export async function settleRecords(caseSlug: string, settlement: Settlement, op
       rationale: settlement.what,
       adds: {
         sources: originals.sources.map((s) => ({ ...stripProvisional(s), verification: s.provisional ? ("unverified" as const) : s.verification })),
-        evidence: originals.evidence.map((e) => ({ ...stripProvisional(e), reviewState: "ai_extracted" as const })),
-        claims: originals.claims.map((c) => ({ ...stripProvisional(c), reviewState: "ai_extracted" as const })),
+        evidence: originals.evidence.map((e) => ({ ...stripProvisional(e), reviewState: e.reviewState === "provisional" ? ("ai_extracted" as const) : e.reviewState })),
+        claims: originals.claims.map((c) => ({ ...stripProvisional(c), reviewState: c.reviewState === "provisional" ? ("ai_extracted" as const) : c.reviewState })),
         research: [],
         images: [],
       },
@@ -263,11 +263,14 @@ export async function settleRecords(caseSlug: string, settlement: Settlement, op
     for (const r of plan.refuse) {
       const f = file(fileOf(r.id));
       if (r.kind === "claim") {
-        setField(f, r.id, "reviewState", "provisional", "rejected");
+        // From the state the record is in — provisional for the re-verification pass, ai_extracted or human_reviewed for
+        // a record an answer re-read (review note #371: the literal "provisional" would have thrown on a live record).
+        const k = originals.claims.find((x) => x.id === r.id)!;
+        setField(f, r.id, "reviewState", k.reviewState, "rejected");
         setField(f, r.id, "rejectionReason", null, `Refused at ${tag === "answer" ? "the answer's re-reading" : "re-verification"} ${date} (${runId}): ${r.reason}`);
       } else if (r.kind === "evidence") {
         const e = originals.evidence.find((x) => x.id === r.id)!;
-        setField(f, r.id, "reviewState", "provisional", "rejected");
+        setField(f, r.id, "reviewState", e.reviewState, "rejected");
         setField(f, r.id, "limitations", e.limitations, [...e.limitations, `Refused at ${tag === "answer" ? "the answer's re-reading" : "re-verification"} ${date} (${runId}): ${r.reason}`]);
       } else {
         // A source is not refused here: it stays provisional until the records that cite it are settled.

@@ -28,7 +28,7 @@ describe("objections are read from where seats speak", () => {
 });
 
 describe("classifyObjections", () => {
-  it("an objection that names live records of the case goes to those records; one that names none, or only refused or foreign ids, goes to the edition", () => {
+  it("an objection that names live records of the case goes to those records; every objection goes to the edition, including one that names none or only foreign ids", () => {
     const c = getCaseBySlug("megalithic-casting");
     const live = c.claims.find((k) => k.reviewState !== "rejected")!.id;
     const ev = c.evidence.find((e) => e.reviewState !== "rejected")!.id;
@@ -40,7 +40,7 @@ describe("classifyObjections", () => {
     const r = classifyObjections(o, c);
     expect([...r.records.keys()].sort()).toEqual([live, ev].sort());
     expect(r.records.get(live)![0].seat).toBe("A");
-    expect(r.edition.map((x) => x.seat)).toEqual(["B", "C"]);
+    expect(r.edition.map((x) => x.seat)).toEqual(["A", "B", "C"]);
   });
 });
 
@@ -79,11 +79,70 @@ describe("runAnswer refuses what is not its to answer, and a dry run only sorts"
     const gh = ghFor(10, { comments: [blob([{ seat: "S", vote: "violates", rules: ["§3.2"], reasoning: `${live} is compound.` }, { seat: "T", vote: "violates", rules: ["§3.9"], reasoning: "The article narrates the seed page." }])] });
     const out = await runAnswer(10, { gh, branch: "chain/2099-01-01-10", dryRun: true, deps: { cases } });
     expect(out.refused).toBeUndefined();
-    expect(out.classified).toEqual({ records: [live], edition: 1 });
+    expect(out.classified).toEqual({ records: [live], edition: 2 });
     expect(out.records).toBeNull();
     expect(out.edition).toBeNull();
     expect(out.account).toContain(`- records named: ${live}`);
-    expect(out.account).toContain("- about the edition (assessment, article, telling): 1");
+    expect(out.account).toContain("- put to the edition (every objection; those naming records are also re-read at the record level): 2");
     expect(out.account).toContain("Dry run: nothing re-read, nothing re-told.");
+  });
+});
+
+describe("settleRecords with verb answer, end to end on a copied case", async () => {
+  const fs = await import("node:fs");
+  const os = await import("node:os");
+  const path = await import("node:path");
+  const { parse } = await import("yaml");
+  const { settleRecords } = await import("../pipeline/reverify.ts");
+  const { quotedSpans } = await import("../pipeline/quotes.ts");
+  const c = getCaseBySlug("megalithic-casting");
+  const live = c.evidence.find((e) => e.id === "GEO-E023")!;
+  const source = c.sources.find((s) => s.id === live.sourceId)!;
+  const text = `Filler before. ${quotedSpans(live.sourceStatement).join(" … ")} Filler after. [p. 1]`;
+  const fetchOk = (async (t: { url: string }) => ({ url: t.url, ok: true, status: 200, contentType: "text/html", text, via: "html" })) as never;
+  const fetchFail = (async (t: { url: string }) => ({ url: t.url, ok: false, status: 503, contentType: null, text: null, reason: "HTTP 503" })) as never;
+  const verdict = (over: object = {}) => async () => ({ quoteInContext: true, locatorSupported: true, statementSupported: true, directionRight: true, relevant: true, atomic: true, independenceNoted: true, reason: "read again with the objection in view", ...over }) as never;
+  const setup = () => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "aletheia-answer-"));
+    fs.cpSync(path.join(process.cwd(), "content", "cases", c.dir), path.join(root, "content", "cases", c.dir), { recursive: true });
+    return root;
+  };
+  const settlement = (why: string) => ({ verb: "answer" as const, originals: { sources: [], evidence: [live], claims: [] }, what: `Answer to the panel's objections on #99: 1 record(s) re-read`, context: `A seat objected: ${why}`, why: "a seat objected", actor: "aletheia answer (test reader), on #99" });
+  it("a live record the reader upholds is kept, ai_extracted, with the run and a history entry on the record", async () => {
+    const root = setup();
+    const out = await settleRecords(c.record.slug, settlement("the quote is out of context"), { root, deps: { cases: () => [c], judge: verdict(), fetch: fetchOk } });
+    expect(out.outcome).toBe("completed");
+    expect(out).toMatchObject({ promoted: 1, refused: 0, unread: 0 });
+    expect(out.reason).toBe("answer: promoted 1, appended 0, refused 0, still unread 0");
+    const after = (parse(fs.readFileSync(path.join(root, "content", "cases", c.dir, "evidence.yaml"), "utf8")) as { id: string; reviewState: string }[]).find((e) => e.id === live.id)!;
+    expect(after.reviewState).toBe("ai_extracted");
+    const history = parse(fs.readFileSync(path.join(root, "content", "cases", c.dir, "history.yaml"), "utf8")) as { change: string; actor: string }[];
+    expect(history.at(-1)!.change).toMatch(/^Answer to the panel's objections on #99: 1 record\(s\) re-read \(\d{4}-\d{2}-\d{2}-answer-megalithic-casting-\d{6}\): answer: promoted 1/);
+    expect(history.at(-1)!.actor).toBe("aletheia answer (test reader), on #99");
+    expect(fs.readFileSync(path.join(root, "proposals", out.runId, "verification.md"), "utf8")).toContain("The reader was told: A seat objected: the quote is out of context");
+    fs.rmSync(root, { recursive: true, force: true });
+  });
+  it("a live record the reader now refuses becomes a tombstone from its own state, with the answer's wording, and a failed row", async () => {
+    const root = setup();
+    const out = await settleRecords(c.record.slug, settlement("the statement says more than the passage"), { root, deps: { cases: () => [c], judge: verdict({ statementSupported: false, reason: "the passage does not state it" }), fetch: fetchOk } });
+    expect(out).toMatchObject({ outcome: "completed", promoted: 0, refused: 1 });
+    const after = (parse(fs.readFileSync(path.join(root, "content", "cases", c.dir, "evidence.yaml"), "utf8")) as { id: string; reviewState: string; limitations: string[] }[]).find((e) => e.id === live.id)!;
+    expect(after.reviewState).toBe("rejected");
+    expect(after.limitations.at(-1)).toMatch(/^Refused at the answer's re-reading \d{4}-\d{2}-\d{2} \(\d{4}-\d{2}-\d{2}-answer-megalithic-casting-\d{6}\): second reader rejected \(statementSupported\): the passage does not state it/);
+    const rows = parse(fs.readFileSync(path.join(root, "content", "cases", c.dir, "dispositions.yaml"), "utf8")) as { disposition: string; reason?: string; by: string }[];
+    const mine = rows.filter((r) => r.by === out.runId);
+    expect(mine.map((r) => r.disposition)).toEqual(["failed"]);
+    expect(mine[0].reason).toMatch(/^refused at the answer's re-reading: /);
+    fs.rmSync(root, { recursive: true, force: true });
+  });
+  it("a live record whose text cannot be re-read is left exactly as it stood, with the attempt in the run's account only", async () => {
+    const root = setup();
+    const before = fs.readFileSync(path.join(root, "content", "cases", c.dir, "evidence.yaml"), "utf8");
+    const out = await settleRecords(c.record.slug, settlement("anything"), { root, deps: { cases: () => [c], judge: verdict(), fetch: fetchFail } });
+    expect(out).toMatchObject({ outcome: "completed", promoted: 0, refused: 0 });
+    expect(fs.readFileSync(path.join(root, "content", "cases", c.dir, "evidence.yaml"), "utf8")).toBe(before);
+    const rows = parse(fs.readFileSync(path.join(root, "content", "cases", c.dir, "dispositions.yaml"), "utf8")) as { by: string }[];
+    expect(rows.filter((r) => r.by === out.runId)).toEqual([]);
+    fs.rmSync(root, { recursive: true, force: true });
   });
 });

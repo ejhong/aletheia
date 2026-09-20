@@ -118,7 +118,7 @@ describe("settleRecords with verb answer, end to end on a copied case", async ()
   const os = await import("node:os");
   const path = await import("node:path");
   const { parse } = await import("yaml");
-  const { settleRecords, splitNoteFor } = await import("../pipeline/reverify.ts");
+  const { settleRecords, splitNoteFor, readRelinked } = await import("../pipeline/reverify.ts");
   const { quotedSpans } = await import("../pipeline/quotes.ts");
   const c = getCaseBySlug("megalithic-casting");
   const live = c.evidence.find((e) => e.id === "GEO-E023")!;
@@ -244,7 +244,96 @@ describe("settleRecords with verb answer, end to end on a copied case", async ()
     expect(ev.claimIds).toEqual(partIds);
     const history = parse(fs.readFileSync(path.join(root, "content", "cases", c.dir, "history.yaml"), "utf8")) as { change: string }[];
     expect(history.at(-1)!.change).toContain(`Relinked to the parts of a split claim, provisional until read against them: ${citing.id}.`);
+    expect(out.relinked).toEqual([citing.id]);
+    expect(out.relinkedTo).toEqual({ [claim.id]: partIds });
+    // The relinked record is then read against the parts: it keeps the links the passage bears, with the reader's stamps, and is provisional no more.
+    const fresh = () => [{ ...c, claims: parse(fs.readFileSync(path.join(root, "content", "cases", c.dir, "claims.yaml"), "utf8")), evidence: parse(fs.readFileSync(path.join(root, "content", "cases", c.dir, "evidence.yaml"), "utf8")) } as unknown as LoadedCase];
+    const seen: string[] = [];
+    const judgeParts = async (_rec: unknown, _text: string, context: string) => {
+      seen.push(context);
+      return { ...ok, bearsOn: [partIds[0]], reason: "the passage bears on the first part alone" };
+    };
+    const citingText = `Filler before. ${quotedSpans(citing.sourceStatement).join(" … ")} Filler after. [p. 1]`;
+    const fetchCiting = (async (x: { url: string }) => ({ url: x.url, ok: true, status: 200, contentType: "text/html", text: citingText, via: "html" })) as never;
+    const read = await readRelinked(c.record.slug, out.relinked!, out.relinkedTo!, "aletheia answer (test reader), on #99 — the records relinked at the split", { root, deps: { cases: fresh, judge: judgeParts, fetch: fetchCiting } });
+    expect(read).toMatchObject({ outcome: "completed", promoted: 1, refused: 0 });
+    expect(seen.some((ctx) => ctx.includes(`${claim.id} → ${partIds.join(", ")}`) && ctx.includes("Judge which of the parts the passage bears on"))).toBe(true);
+    const evAfter = (parse(fs.readFileSync(path.join(root, "content", "cases", c.dir, "evidence.yaml"), "utf8")) as { id: string; claimIds: string[]; reviewState: string; provisional?: unknown }[]).find((e) => e.id === citing.id)!;
+    expect(evAfter.reviewState).toBe("ai_extracted");
+    expect(evAfter.claimIds).toEqual([partIds[0]]);
+    expect(evAfter.provisional).toBeUndefined();
+    const history2 = parse(fs.readFileSync(path.join(root, "content", "cases", c.dir, "history.yaml"), "utf8")) as { change: string; actor: string }[];
+    expect(history2.at(-1)!.change).toMatch(new RegExp(`^Records relinked to the parts of a split claim, read against them \\(${claim.id} → ${partIds.join(", ")}\\)`));
+    expect(history2.at(-1)!.actor).toBe("aletheia answer (test reader), on #99 — the records relinked at the split");
     expect(ev.limitations.at(-1)).toMatch(new RegExp(`^Relinked at the answer's re-reading \\d{4}-\\d{2}-\\d{2} \\(${out.runId}\\): ${claim.id} was split into ${partIds.join(", ")}; this record now cites the parts, and which of them it bears on is for a later reading$`));
+    fs.rmSync(root, { recursive: true, force: true });
+  });
+  // A case in the state a split leaves it: the parent refused, the parts in, the citing record relinked and provisional.
+  const relinkedRoot = async () => {
+    const root = setup();
+    const judge = async (rec: unknown) => ((rec as { statement: string }).statement === claim.statement ? { ...ok, atomic: false, reason: "two propositions in one" } : { ...ok, reason: "one proposition, at the anchor" });
+    const out = await settleRecords(c.record.slug, claimSettlement, { root, deps: { cases: () => [c], judge, split: async () => parts, fetch: fetchClaim } });
+    const fresh = () => [{ ...c, claims: parse(fs.readFileSync(path.join(root, "content", "cases", c.dir, "claims.yaml"), "utf8")), evidence: parse(fs.readFileSync(path.join(root, "content", "cases", c.dir, "evidence.yaml"), "utf8")) } as unknown as LoadedCase];
+    const citingText = `Filler before. ${quotedSpans(citing.sourceStatement).join(" … ")} Filler after. [p. 1]`;
+    const fetchCiting = (async (x: { url: string }) => ({ url: x.url, ok: true, status: 200, contentType: "text/html", text: citingText, via: "html" })) as never;
+    return { root, relinked: out.relinked!, relinkedTo: out.relinkedTo!, fresh, fetchCiting };
+  };
+  const evidenceOf = (root: string, id: string) => (parse(fs.readFileSync(path.join(root, "content", "cases", c.dir, "evidence.yaml"), "utf8")) as { id: string; claimIds: string[]; reviewState: string; provisional?: unknown; limitations: string[] }[]).find((e) => e.id === id)!;
+  it("a relinked record the passage bears on no part of is refused, with the reason on the record", async () => {
+    const { root, relinked, relinkedTo, fresh, fetchCiting } = await relinkedRoot();
+    const read = await readRelinked(c.record.slug, relinked, relinkedTo, "aletheia answer (test reader), on #99 — the records relinked at the split", { root, deps: { cases: fresh, judge: async () => ({ ...ok, bearsOn: [], reason: "the passage bears on neither part" }), fetch: fetchCiting } });
+    expect(read).toMatchObject({ outcome: "completed", promoted: 0, refused: 1 });
+    const ev = evidenceOf(root, citing.id);
+    expect(ev.reviewState).toBe("rejected");
+    expect(ev.limitations.at(-1)).toMatch(/^Refused at re-verification \d{4}-\d{2}-\d{2} \(.+\): second reader: the passage bears on none of the claims the record names: the passage bears on neither part$/);
+    fs.rmSync(root, { recursive: true, force: true });
+  });
+  it("a relinked record whose text will not come stays provisional, the attempt in the account", async () => {
+    const { root, relinked, relinkedTo, fresh } = await relinkedRoot();
+    const before = evidenceOf(root, citing.id);
+    const read = await readRelinked(c.record.slug, relinked, relinkedTo, "aletheia answer (test reader), on #99 — the records relinked at the split", { root, deps: { cases: fresh, judge: async () => ({ ...ok, reason: "not asked" }), fetch: (async (x: { url: string }) => ({ url: x.url, ok: false, status: 503, contentType: null, text: null, reason: "HTTP 503" })) as never } });
+    expect(read).toMatchObject({ outcome: "completed", promoted: 0, refused: 0, unread: 1 });
+    expect(evidenceOf(root, citing.id)).toEqual(before);
+    expect(fs.readFileSync(path.join(root, "proposals", read.runId, "verification.md"), "utf8")).toContain("## Still unread");
+    fs.rmSync(root, { recursive: true, force: true });
+  });
+  it("a read against the parts that fails half-way rolls its writes back and says so", async () => {
+    const { root, relinked, relinkedTo, fresh, fetchCiting } = await relinkedRoot();
+    const dir = path.join(root, "content", "cases", c.dir);
+    const before = Object.fromEntries(["evidence.yaml", "claims.yaml", "dispositions.yaml", "history.yaml"].map((f) => [f, fs.readFileSync(path.join(dir, f), "utf8")]));
+    fs.chmodSync(path.join(dir, "history.yaml"), 0o444);
+    const read = await readRelinked(c.record.slug, relinked, relinkedTo, "aletheia answer (test reader), on #99 — the records relinked at the split", { root, deps: { cases: fresh, judge: async () => ({ ...ok, bearsOn: [relinkedTo[claim.id][0]], reason: "the first part" }), fetch: fetchCiting } });
+    fs.chmodSync(path.join(dir, "history.yaml"), 0o644);
+    expect(read.outcome).toBe("failed");
+    expect(read.reason).toContain("; the ledger writes of this run were rolled back");
+    for (const [f, text] of Object.entries(before)) expect(fs.readFileSync(path.join(dir, f), "utf8")).toBe(text);
+    fs.rmSync(root, { recursive: true, force: true });
+  });
+  it("the answer reads what it relinked before the edition, and when that read fails the edition is still told over the settled ledger", async () => {
+    const root = setup();
+    const branch = "chain/2099-01-01-99";
+    const gh = ghFor(99, { files: [`content/cases/${c.dir}/claims.yaml`, "proposals/x/run.yaml"], head: branch, comments: [{ login: ARBITER_LOGIN, body: blob([{ seat: "GPT-5.6 Sol (OpenAI)", vote: "violates", rules: ["§3.2"], reasoning: `${claim.id} bundles two propositions.` }]) }] });
+    const fresh = () => [{ ...c, claims: parse(fs.readFileSync(path.join(root, "content", "cases", c.dir, "claims.yaml"), "utf8")), evidence: parse(fs.readFileSync(path.join(root, "content", "cases", c.dir, "evidence.yaml"), "utf8")) } as unknown as LoadedCase];
+    const judge = async (rec: unknown) => ((rec as { statement: string }).statement === claim.statement ? { ...ok, atomic: false, reason: "two propositions in one" } : { ...ok, reason: "one proposition, at the anchor" });
+    // The first source read serves the claim's anchor; the second — the relinked record's — tears.
+    let fetches = 0;
+    const fetchOnceThenTear = (async (x: { url: string }) => {
+      fetches++;
+      if (fetches > 1) throw new Error("the socket tore");
+      return { url: x.url, ok: true, status: 200, contentType: "text/html", text: claimText, via: "html" };
+    }) as never;
+    const out = await runAnswer(99, { root, gh, branch, deps: { cases: fresh, judge, split: async () => parts, fetch: fetchOnceThenTear, edit: (() => { throw new Error("the edition ran"); }) as never } });
+    expect(out.classified.records).toEqual([claim.id]);
+    expect(out.records).toMatchObject({ outcome: "completed", appended: 2, refused: 1 });
+    expect(out.records!.relinked).toEqual([citing.id]);
+    expect(out.relinked?.outcome).toBe("failed");
+    expect(out.relinked?.reason).toContain("the socket tore");
+    expect(out.edition?.outcome).toBe("failed");
+    expect(out.edition?.reason).toContain("the edition ran");
+    expect(out.account).toContain("## Relinked records read against the parts");
+    expect(out.account).toContain("## Edition re-told with every objection in its packet");
+    // The settled ledger stands: the parts are in and the relinked record is still provisional, to be read by a later pass.
+    expect(evidenceOf(root, citing.id).reviewState).toBe("provisional");
     fs.rmSync(root, { recursive: true, force: true });
   });
   it("a run that fails half-way rolls its ledger writes back and says so", async () => {

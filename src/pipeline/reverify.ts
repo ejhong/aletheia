@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { parse as parseYaml } from "yaml";
 import type { Disposition, Proposal } from "../domain/intake.ts";
 import { sourceKeys, textKey } from "../domain/keys.ts";
 import { findCase, loadCase } from "../domain/load.ts";
@@ -104,6 +105,10 @@ export interface ReverifyOutcome extends RunOutcome {
   resubmitted?: ResubmitRun[];
   /** How many of those verify admitted this pass. */
   admitted?: number;
+  /** Live records relinked to the parts of a claim split this pass, provisional until read against them. */
+  relinked?: string[];
+  /** The split claims of this pass and their parts, by which the relinked records are read. */
+  relinkedTo?: Record<string, string[]>;
 }
 
 const stripProvisional = <T extends { provisional?: unknown }>(r: T): Omit<T, "provisional"> => {
@@ -419,7 +424,7 @@ export async function settleRecords(caseSlug: string, settlement: Settlement, op
     );
     // The case must load as written; a run whose writes it will not load fails, and they are rolled back.
     if (!opts.deps?.cases && path.resolve(root) === process.cwd()) loadCase(loaded.dir);
-    return { ...closeRun(run, "completed", { reason: finalSummary, wrote: [...wrote] }), ...finalCounts };
+    return { ...closeRun(run, "completed", { reason: finalSummary, wrote: [...wrote] }), ...finalCounts, ...(relinked.length ? { relinked, relinkedTo: Object.fromEntries([...partsOf]) } : {}) };
   } catch (e) {
     const notRestored = restore ? restore() : null;
     const rolledBack = notRestored === null ? "" : notRestored.length ? `; the ledger writes of this run were rolled back except ${notRestored.join("; ")}` : "; the ledger writes of this run were rolled back";
@@ -427,6 +432,33 @@ export async function settleRecords(caseSlug: string, settlement: Settlement, op
   }
 }
 
+
+/**
+ * The records a settlement relinked to the parts of a split claim, read against those parts in the same sitting:
+ * the second reader judges which of the parts each passage bears on, and the record is promoted with those links
+ * alone, or refused, or left provisional when its text will not come (2026-09-20: the answer's re-reading of #372
+ * split a load-bearing claim and left the trapezius record behind it weightless until a re-verify pass seven days
+ * on; an answer that relinks reads what it relinked).
+ */
+export async function readRelinked(caseSlug: string, relinked: string[], relinkedTo: Record<string, string[]>, actor: string, opts: ReverifyOptions = {}): Promise<ReverifyOutcome> {
+  const root = opts.root ?? process.cwd();
+  const loaded = findCase(caseSlug, opts.deps?.cases?.());
+  // Read from the file as written this sitting, not from the case as it was loaded before the split.
+  const evidence = (parseYaml(fs.readFileSync(path.join(root, "content", "cases", loaded.dir, "evidence.yaml"), "utf8")) as Evidence[]).filter((e) => relinked.includes(e.id));
+  const splits = Object.entries(relinkedTo).map(([parent, parts]) => `${parent} → ${parts.join(", ")}`).join("; ");
+  return settleRecords(
+    caseSlug,
+    {
+      verb: "reverify",
+      originals: { sources: [], evidence, claims: [] },
+      what: `Records relinked to the parts of a split claim, read against them (${splits})`,
+      context: `This record cited a claim that was split into parts at this sitting's re-reading (${splits}); it now names the parts. Judge which of the parts the passage bears on, and keep only those.`,
+      why: "A claim these records cited was found compound and replaced by its parts; a record's bearing on each part is read, not inherited (§3.5). What bears on a part keeps that link with the reader's stamps; what bears on none is refused; what could not be read stays provisional.",
+      actor,
+    },
+    opts,
+  );
+}
 
 /**
  * The verb: the provisional records are read again (above), then the records verification blocked — never entered,

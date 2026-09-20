@@ -293,9 +293,9 @@ describe("runAccount — the run's own record, for a panel that cannot read the 
     expect(used).not.toContain("proposals/r1/reply.json");
     expect(text).toMatch(/No model wrote this section/);
     // The header says how the account was made and clipped — the panel's own provenance for what it read (review note #375).
-    expect(text).toMatch(/the assessment the head edition adopts — its header, case verdict, load-bearing set and weakest links, what is claimed \(to 1,200\), synthesis or reasoning \(to 1,500\), each component's state and note \(note to 240\), and every claim's verdict, confidence and reasoning \(reasoning to 300\), the section to 30,000/);
+    expect(text).toMatch(/the assessment the head edition adopts, read at head even when this change did not touch its file — its header, case verdict, load-bearing set and weakest links, what is claimed \(to 1,200\), synthesis or reasoning \(to 1,500\), each component's state and note \(note to 240\), and every claim's verdict and confidence, each with its reasoning to 300 — the reasoning left out of the claim lines, and said so, only when the section would pass 30,000, and the section clipped only past 60,000;/);
     expect(text).toMatch(/an assessment superseded within the change, digested as the head's is, with every claim verdict that differs from the head's marked; and an edition superseded within the change by header, rationale \(to 3,000\), featured claims, crux order and the paragraphs of its article the head edition does not carry verbatim \(to 20,000; the shared paragraphs are read in the head\)/);
-    expect(text).toMatch(/kept to 250,000 characters by dropping whole sections, least important first and within a rank largest first — a superseded edition's paragraphs, then a superseded assessment, then the run records and the added lines, then the records digest — and naming each dropped section\. The head edition and the assessment it adopts are never dropped and the account is never cut: if they alone exceed the cap, the account runs over it and says so\./);
+    expect(text).toMatch(/kept to 250,000 characters by dropping whole sections, least important first and within a rank largest first — a superseded edition's paragraphs, then a superseded assessment, then the run records and the added lines, then the records digest — and naming each dropped section\. The head edition and the assessment it adopts are never dropped and the assembled account is never cut mid-way: if they alone exceed the cap, the account runs over it and says so\. The only clipping is per field, at the lengths stated here, each marked in place/);
     expect(text).toMatch(/the records the change adds or modifies in evidence, claims, sources and research \(id, state, direction, statement to 320, quote to 160, locator to 160; a modified record's changed fields and their new values to 240; each file's list to 40,000\)/);
     expect(text).toMatch(/usd: 14\.9/);
     expect(text).toMatch(/anchor page wrong/);
@@ -402,6 +402,25 @@ describe("runAccount — the run's own record, for a panel that cannot read the 
     expect(text).toMatch(/claim Y-C1: mixed \(low\) — Y's reasoning\./);
     // Case x's head adopts b, so x's own check-a is whole and only a draft x does not adopt would be superseded.
     expect(text).toMatch(/x\/assessments\/2026-09-09-edition-b\.yaml \(assessment: header/);
+  });
+  it("reads the assessment the head edition adopts even when the change did not touch its file", () => {
+    // e3 adopts edition-b, whose file is not among the changed paths but is readable at head.
+    const kept: Record<string, string> = { ...files, "content/cases/x/editions/e3.yaml": "runId: e3\ndate: 2026-09-10\nmodel: m\npromptVersion: edition-v12\nprevious: e2\nassessment:\n  runId: 2026-09-09-edition-b\n  hash: h\nrationale: r\nfeaturedClaimIds: []\ncruxOrder: []\narticle: |\n  The head article.\n" };
+    const changedPaths = Object.keys(kept).filter((p) => !p.endsWith("2026-09-09-edition-b.yaml"));
+    const { text, files: used } = runAccount(changedPaths, (p: string) => kept[p] ?? null, diffOf);
+    expect(text).toMatch(/x\/assessments\/2026-09-09-edition-b\.yaml \(assessment adopted by the head edition, unchanged in this change: header, case verdict/);
+    expect(text).toMatch(/claim X-C1: well_supported \(high\) — E1 quotes the excavators\./);
+    expect(used).toContain("content/cases/x/assessments/2026-09-09-edition-b.yaml");
+    expect(text.indexOf("e3.yaml (head edition")).toBeLessThan(text.indexOf("edition-b.yaml (assessment adopted"));
+  });
+  it("keeps every claim's verdict when an assessment is long, giving up the reasoning and saying so", () => {
+    const many = Array.from({ length: 120 }, (_, i) => `  - claimId: X-C${i + 1}\n    verdict: mixed\n    confidence: low\n    reasoning: ${"r".repeat(280)}\n`).join("");
+    const long: Record<string, string> = { ...files, "content/cases/x/assessments/2026-09-09-edition-b.yaml": `runId: 2026-09-09-edition-b\nrole: draft\ncaseAssessment:\n  verdict: mixed\n  synthesis: Many claims.\nclaimAssessments:\n${many}` };
+    const { text } = runAccount(Object.keys(long), (p: string) => long[p] ?? null, diffOf);
+    expect(text).toMatch(/claim X-C1: mixed \(low\)\n/);
+    expect(text).toMatch(/claim X-C120: mixed \(low\)\n/);
+    expect(text).not.toMatch(/rrrrrrrrrr/);
+    expect(text).toMatch(/\[… claim reasoning not shown: with it this section would run to 3\d,\d{3} characters, over its 30,000; every claim's verdict and confidence is kept\]/);
   });
   it("never drops or cuts the head: when the head sections alone exceed the cap, the account runs over and says so", () => {
     const big = (id: string) => `runId: ${id}\ndate: 2026-09-10\nmodel: m\npromptVersion: edition-v12\nprevious: null\nrationale: r\nfeaturedClaimIds: []\ncruxOrder: []\narticle: |\n  ${"x".repeat(55_000)}\n`;

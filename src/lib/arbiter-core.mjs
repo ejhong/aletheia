@@ -436,7 +436,18 @@ export function runAccount(changed, read, diffOf, readBase = noBase) {
   //    each of its claim verdicts is marked where it differs from the head's (review note #377). A check-role
   //    assessment is a seat's own reading and never superseded; a case with no head edition in the change has
   //    nothing to supersede its assessments.
-  const assessments = changed.filter((f) => /^content\/cases\/[^/]+\/assessments\/[^/]+\.ya?ml$/.test(f)).map((p) => ({ p, doc: parsed(p) })).filter((x) => x.doc);
+  const assessments = changed.filter((f) => /^content\/cases\/[^/]+\/assessments\/[^/]+\.ya?ml$/.test(f)).map((p) => ({ p, doc: parsed(p), unchanged: false })).filter((x) => x.doc);
+  // An edition may adopt an assessment this change did not touch (a re-edition under an unchanged ledger keeps the
+  // previous one): the panel judges that edition against that assessment, so it is read at head all the same
+  // (review note #379).
+  for (const [dir, adopted] of adoptedByCase) {
+    for (const runId of adopted) {
+      if (assessments.some((x) => x.doc.data?.runId === runId && caseOf(x.p) === dir)) continue;
+      const p = [`${dir}/assessments/${runId}.yaml`, `${dir}/assessments/${runId}.yml`].find((f) => read(f) != null);
+      const doc = p ? parsed(p) : null;
+      if (doc?.data) assessments.push({ p, doc, unchanged: true });
+    }
+  }
   const claimsOf = (a) => (Array.isArray(a?.claimAssessments) ? a.claimAssessments : []);
   const isSupersededAssessment = (p, a) => {
     const adopted = adoptedByCase.get(caseOf(p));
@@ -450,41 +461,50 @@ export function runAccount(changed, read, diffOf, readBase = noBase) {
     headClaimsByCase.set(caseOf(p), m);
   }
   const differs = (c, h) => !h || h.verdict !== c?.verdict || h.confidence !== c?.confidence;
-  const digest = (p, a, headClaims) => {
+  const digest = (p, a, headClaims, unchanged) => {
     const ca = a?.caseAssessment ?? {};
     const reasoning = String(ca.reasoning ?? ca.synthesis ?? "");
     const claims = claimsOf(a);
     const title = headClaims
       ? `assessment superseded within this change: header, case verdict, load-bearing set, what is claimed, components, every claim's verdict and reasoning; ${claims.filter((c) => differs(c, headClaims.get(c?.claimId))).length} claim verdict(s) differ from the assessment the head edition adopts, each marked with the head's`
-      : "assessment: header, case verdict, load-bearing set, what is claimed, components, every claim's verdict";
-    const lines = [
-      `--- ${p} (${title})`,
-      ["runId", "producedBy", "model", "role", "date", "promptVersion"].map((k) => `${k}: ${a?.[k] ?? ""}`).join("\n"),
-      `case verdict: ${ca.verdict ?? ""}`,
-      `loadBearing: ${(ca.loadBearing ?? []).join(", ")}`,
-      `weakestLinks: ${(ca.weakestLinks ?? []).join(", ")}`,
-      ca.whatIsClaimed ? `whatIsClaimed: ${clip(String(ca.whatIsClaimed), 1_200, "whatIsClaimed")}` : "",
-      `synthesis/reasoning: ${clip(reasoning, 1_500, "reasoning")}`,
-      ...(Array.isArray(ca.components) ? ca.components.map((c) => `component ${c?.label ?? ""}: ${c?.state ?? ""}${c?.note ? ` — ${clip(String(c.note), 240, "note")}` : ""}`) : []),
-      ...claims.map((c) => {
-        const h = headClaims?.get(c?.claimId);
-        const mark = headClaims && differs(c, h) ? ` [head: ${h ? `${h.verdict ?? ""} (${h.confidence ?? ""})` : "not assessed"}]` : "";
-        return `claim ${c?.claimId ?? ""}: ${c?.verdict ?? ""} (${c?.confidence ?? ""})${mark}${c?.reasoning ? ` — ${clip(String(c.reasoning), 300, "reasoning")}` : ""}`;
-      }),
-    ].filter(Boolean);
-    return clip(lines.join("\n"), 30_000, p);
+      : `assessment${unchanged ? " adopted by the head edition, unchanged in this change" : ""}: header, case verdict, load-bearing set, what is claimed, components, every claim's verdict`;
+    const claimLine = (c, withReasoning) => {
+      const h = headClaims?.get(c?.claimId);
+      const mark = headClaims && differs(c, h) ? ` [head: ${h ? `${h.verdict ?? ""} (${h.confidence ?? ""})` : "not assessed"}]` : "";
+      return `claim ${c?.claimId ?? ""}: ${c?.verdict ?? ""} (${c?.confidence ?? ""})${mark}${withReasoning && c?.reasoning ? ` — ${clip(String(c.reasoning), 300, "reasoning")}` : ""}`;
+    };
+    const build = (withReasoning) =>
+      [
+        `--- ${p} (${title})`,
+        ["runId", "producedBy", "model", "role", "date", "promptVersion"].map((k) => `${k}: ${a?.[k] ?? ""}`).join("\n"),
+        `case verdict: ${ca.verdict ?? ""}`,
+        `loadBearing: ${(ca.loadBearing ?? []).join(", ")}`,
+        `weakestLinks: ${(ca.weakestLinks ?? []).join(", ")}`,
+        ca.whatIsClaimed ? `whatIsClaimed: ${clip(String(ca.whatIsClaimed), 1_200, "whatIsClaimed")}` : "",
+        `synthesis/reasoning: ${clip(reasoning, 1_500, "reasoning")}`,
+        ...(Array.isArray(ca.components) ? ca.components.map((c) => `component ${c?.label ?? ""}: ${c?.state ?? ""}${c?.note ? ` — ${clip(String(c.note), 240, "note")}` : ""}`) : []),
+        ...claims.map((c) => claimLine(c, withReasoning)),
+      ].filter(Boolean);
+    // Every claim's verdict and confidence is kept; the reasoning is what gives way when the section is long, and
+    // the section says so. Only past 60,000 — no case approaches it — is the section clipped, marked in place.
+    let text = build(true).join("\n");
+    if (text.length > 30_000) {
+      const full = text.length;
+      text = [...build(false), `[… claim reasoning not shown: with it this section would run to ${full.toLocaleString("en-US")} characters, over its 30,000; every claim's verdict and confidence is kept]`].join("\n");
+    }
+    return clip(text, 60_000, p);
   };
-  for (const { p, doc } of assessments) {
+  for (const { p, doc, unchanged } of assessments) {
     const a = doc.data;
     if (!a) sections.push({ rank: 3, text: `--- ${p}\n[unparseable YAML]` });
-    else if (isSupersededAssessment(p, a)) sections.push({ rank: 3, text: digest(p, a, headClaimsByCase.get(caseOf(p)) ?? new Map()) });
-    else sections.push({ rank: 0, text: digest(p, a, null) });
+    else if (isSupersededAssessment(p, a)) sections.push({ rank: 3, text: digest(p, a, headClaimsByCase.get(caseOf(p)) ?? new Map(), false) });
+    else sections.push({ rank: 0, text: digest(p, a, null, unchanged) });
   }
 
   if (sections.length === 0) return { text: "", files: [] };
   const cap = ACCOUNT_CAP.toLocaleString("en-US");
   const headerFor = (n) =>
-    `Generated by src/lib/arbiter-core.mjs (runAccount) from the ${n} file(s) named below, read at the head revision (a canon file also at the merge base, to tell a modified record from an added one): the head edition's header, rationale, featured claims, crux order and article (article to 60,000 characters); the assessment the head edition adopts — its header, case verdict, load-bearing set and weakest links, what is claimed (to 1,200), synthesis or reasoning (to 1,500), each component's state and note (note to 240), and every claim's verdict, confidence and reasoning (reasoning to 300), the section to 30,000; the records the change adds or modifies in evidence, claims, sources and research (id, state, direction, statement to 320, quote to 160, locator to 160; a modified record's changed fields and their new values to 240; each file's list to 40,000); the run records (run.yaml whole; novelty.md to 4,000; manifest.yaml to 8,000; verification.md to 60,000); the lines added to history and dispositions (to 25,000 each); an assessment superseded within the change, digested as the head's is, with every claim verdict that differs from the head's marked; and an edition superseded within the change by header, rationale (to 3,000), featured claims, crux order and the paragraphs of its article the head edition does not carry verbatim (to 20,000; the shared paragraphs are read in the head). The whole account is kept to ${cap} characters by dropping whole sections, least important first and within a rank largest first — a superseded edition's paragraphs, then a superseded assessment, then the run records and the added lines, then the records digest — and naming each dropped section. The head edition and the assessment it adopts are never dropped and the account is never cut: if they alone exceed the cap, the account runs over it and says so. Every clip is marked in place with the count of characters not shown; an unmarked part is whole. No model wrote this section. Working files (model replies, remembered judgments, supplied text, packets) are not included and may appear under OMITTED FILES.`;
+    `Generated by src/lib/arbiter-core.mjs (runAccount) from the ${n} file(s) named below, read at the head revision (a canon file also at the merge base, to tell a modified record from an added one): the head edition's header, rationale, featured claims, crux order and article (article to 60,000 characters); the assessment the head edition adopts, read at head even when this change did not touch its file — its header, case verdict, load-bearing set and weakest links, what is claimed (to 1,200), synthesis or reasoning (to 1,500), each component's state and note (note to 240), and every claim's verdict and confidence, each with its reasoning to 300 — the reasoning left out of the claim lines, and said so, only when the section would pass 30,000, and the section clipped only past 60,000; the records the change adds or modifies in evidence, claims, sources and research (id, state, direction, statement to 320, quote to 160, locator to 160; a modified record's changed fields and their new values to 240; each file's list to 40,000); the run records (run.yaml whole; novelty.md to 4,000; manifest.yaml to 8,000; verification.md to 60,000); the lines added to history and dispositions (to 25,000 each); an assessment superseded within the change, digested as the head's is, with every claim verdict that differs from the head's marked; and an edition superseded within the change by header, rationale (to 3,000), featured claims, crux order and the paragraphs of its article the head edition does not carry verbatim (to 20,000; the shared paragraphs are read in the head). The whole account is kept to ${cap} characters by dropping whole sections, least important first and within a rank largest first — a superseded edition's paragraphs, then a superseded assessment, then the run records and the added lines, then the records digest — and naming each dropped section. The head edition and the assessment it adopts are never dropped and the assembled account is never cut mid-way: if they alone exceed the cap, the account runs over it and says so. The only clipping is per field, at the lengths stated here, each marked in place with the count of characters not shown; an unmarked part is whole. No model wrote this section. Working files (model replies, remembered judgments, supplied text, packets) are not included and may appear under OMITTED FILES.`;
   // Assemble in reading order — head edition and assessment, records digest, run records and added lines,
   // superseded candidates — then drop whole sections from the lowest rank, largest first, while over the cap. Rank 0
   // is never dropped and the body is never cut: if the head alone is over the cap, the account runs over and says so

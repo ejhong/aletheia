@@ -1,3 +1,7 @@
+import { execFileSync } from "node:child_process";
+import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
 import * as pdfjs from "pdfjs-dist/legacy/build/pdf.mjs";
 
 /**
@@ -136,10 +140,70 @@ export function htmlTitle(body: string): string | undefined {
   return raw && raw.length >= 3 ? raw : undefined;
 }
 
-export async function fetchSource(
-  url: string,
-  opts: { timeoutMs?: number; maxChars?: number; fetchImpl?: typeof fetch } = {},
-): Promise<FetchedSource> {
+/**
+ * A second HTTP client for a page that answered the first with a challenge: a fetch of the same URL with the same
+ * headers by a client whose TLS and HTTP fingerprint differ from Node's. PubMed Central served Node's fetch a
+ * challenge page and curl the article, headers identical (2026-09-20: the record behind a split claim could not be
+ * read against the parts for it). The second client stands in for the real first client only: when a fetch is
+ * injected (a test), there is none unless one is injected too.
+ */
+export type SecondClient = (url: string, timeoutMs: number) => Promise<{ status: number; contentType: string | null; bytes: Uint8Array } | null>;
+export const curlClient: SecondClient = async (url, timeoutMs) => {
+  const tmp = path.join(os.tmpdir(), `aletheia-curl-${process.pid}-${Date.now()}`);
+  try {
+    const out = execFileSync(
+      "curl",
+      ["-sS", "-L", "-m", String(Math.ceil(timeoutMs / 1000)), "-A", UA, "-H", `Accept: ${ACCEPT}`, "-H", "Accept-Language: en", "-o", tmp, "-w", "%{http_code} %{content_type}", url],
+      { encoding: "utf8", timeout: timeoutMs + 5_000, stdio: ["ignore", "pipe", "ignore"] },
+    );
+    const [code, ...rest] = out.trim().split(" ");
+    return { status: Number(code), contentType: rest.join(" ") || null, bytes: new Uint8Array(fs.readFileSync(tmp)) };
+  } catch {
+    return null;
+  } finally {
+    try {
+      fs.unlinkSync(tmp);
+    } catch {
+      /* never written */
+    }
+  }
+};
+
+export interface FetchOptions {
+  timeoutMs?: number;
+  maxChars?: number;
+  fetchImpl?: typeof fetch;
+  /** The client tried when the first is served a challenge page; null for none. Absent: curl, unless a fetch is injected. */
+  secondClient?: SecondClient | null;
+}
+
+/** A fetched body as the model will be shown it; `wall` names a challenge or consent page served in place of the document. */
+async function fromBody(url: string, status: number, contentType: string | null, bytes: Uint8Array, max: number): Promise<FetchedSource & { wall?: string }> {
+  const type = (contentType ?? "").toLowerCase();
+  if (isPdf(type, url, bytes)) {
+    try {
+      const { text, pages, title } = await pdfText(bytes);
+      if (!text.replace(/\[p\. \d+\]/g, "").trim()) {
+        return { url, ok: false, status, contentType, text: null, pages, reason: `PDF has no extractable text (${pages} pages; scanned images need OCR)`, ...(title ? { pageTitle: title } : {}) };
+      }
+      return { url, ok: true, status, contentType, text: cap(text, max), pages, ...(title ? { pageTitle: title } : {}) };
+    } catch (e) {
+      return { url, ok: false, status, contentType, text: null, reason: `PDF text extraction failed: ${(e as Error).message}` };
+    }
+  }
+  if (!(type.includes("html") || type.includes("text") || type.includes("xml") || type === "")) {
+    return { url, ok: false, status, contentType, text: null, reason: `unsupported content type ${contentType}` };
+  }
+  const body = new TextDecoder().decode(bytes);
+  const html = type.includes("html") || /<html/i.test(body.slice(0, 2000));
+  const pageTitle = html ? htmlTitle(body) : undefined;
+  const text = html ? stripHtml(body) : body.trim();
+  const wall = looksLikeWall(text);
+  if (wall) return { url, ok: false, status, contentType, text: null, reason: `${wall} served with HTTP ${status}`, wall, ...(pageTitle ? { pageTitle } : {}) };
+  return { url, ok: true, status, contentType, text: cap(text, max), ...(pageTitle ? { pageTitle } : {}) };
+}
+
+export async function fetchSource(url: string, opts: FetchOptions = {}): Promise<FetchedSource> {
   const fetchImpl = opts.fetchImpl ?? fetch;
   let res: Response;
   try {
@@ -155,30 +219,20 @@ export async function fetchSource(
   if (!res.ok) {
     return { url, ok: false, status: res.status, contentType, text: null, reason: `HTTP ${res.status}` };
   }
-  const type = (contentType ?? "").toLowerCase();
   const bytes = new Uint8Array(await res.arrayBuffer());
   const max = opts.maxChars ?? MAX_CHARS;
-  if (isPdf(type, url, bytes)) {
-    try {
-      const { text, pages, title } = await pdfText(bytes);
-      if (!text.replace(/\[p\. \d+\]/g, "").trim()) {
-        return { url, ok: false, status: res.status, contentType, text: null, pages, reason: `PDF has no extractable text (${pages} pages; scanned images need OCR)`, ...(title ? { pageTitle: title } : {}) };
-      }
-      return { url, ok: true, status: res.status, contentType, text: cap(text, max), pages, ...(title ? { pageTitle: title } : {}) };
-    } catch (e) {
-      return { url, ok: false, status: res.status, contentType, text: null, reason: `PDF text extraction failed: ${(e as Error).message}` };
-    }
+  const { wall, ...first } = await fromBody(url, res.status, contentType, bytes, max);
+  if (!wall) return first;
+  // A challenge page: the same URL, the same headers, a second client.
+  const second = opts.secondClient !== undefined ? opts.secondClient : opts.fetchImpl ? null : curlClient;
+  const again = second ? await second(url, opts.timeoutMs ?? 60_000) : null;
+  if (again && again.status >= 200 && again.status < 300) {
+    const { wall: wall2, ...retried } = await fromBody(url, again.status, again.contentType, again.bytes, max);
+    if (retried.ok) return { ...retried, via: `read by a second client (curl) after the first was served a ${wall}` };
+    if (wall2) return { ...first, reason: `${first.reason}; a second client (curl) was served a ${wall2} too` };
+    return { ...first, reason: `${first.reason}; a second client (curl) got ${retried.reason}` };
   }
-  if (!(type.includes("html") || type.includes("text") || type.includes("xml") || type === "")) {
-    return { url, ok: false, status: res.status, contentType, text: null, reason: `unsupported content type ${contentType}` };
-  }
-  const body = new TextDecoder().decode(bytes);
-  const html = type.includes("html") || /<html/i.test(body.slice(0, 2000));
-  const pageTitle = html ? htmlTitle(body) : undefined;
-  const text = html ? stripHtml(body) : body.trim();
-  const wall = looksLikeWall(text);
-  if (wall) return { url, ok: false, status: res.status, contentType, text: null, reason: `${wall} served with HTTP ${res.status}`, ...(pageTitle ? { pageTitle } : {}) };
-  return { url, ok: true, status: res.status, contentType, text: cap(text, max), ...(pageTitle ? { pageTitle } : {}) };
+  return { ...first, reason: `${first.reason}${second ? (again ? `; a second client (curl) got HTTP ${again.status}` : "; a second client (curl) could not be run") : ""}` };
 }
 
 // ------------------------------------------------------------ open access
@@ -276,11 +330,7 @@ export function jatsToText(xml: string): string {
 }
 
 /** Europe PMC's full text for a PMCID, as the text of the PMC page it stands in for (`key`). */
-async function europePmcFullText(
-  pmcid: string,
-  key: string,
-  opts: { timeoutMs?: number; maxChars?: number; fetchImpl?: typeof fetch },
-): Promise<FetchedSource> {
+async function europePmcFullText(pmcid: string, key: string, opts: FetchOptions): Promise<FetchedSource> {
   const url = `https://www.ebi.ac.uk/europepmc/webservices/rest/${pmcid}/fullTextXML`;
   const fetchImpl = opts.fetchImpl ?? fetch;
   let res: Response;
@@ -334,10 +384,7 @@ export function arxivIdOf(url: string | null | undefined): string | null {
  * OpenAlex knows for its DOI. The result keeps the original `url` as its
  * key and says in `via` where the text came from.
  */
-export async function retrieve(
-  target: RetrievalTarget,
-  opts: { timeoutMs?: number; maxChars?: number; fetchImpl?: typeof fetch; retryDelayMs?: number } = {},
-): Promise<FetchedSource> {
+export async function retrieve(target: RetrievalTarget, opts: FetchOptions & { retryDelayMs?: number } = {}): Promise<FetchedSource> {
   const doi = target.doi ?? (target.url ? doiFromUrl(target.url) : null);
   const key = target.url ?? (doi ? `https://doi.org/${doi}` : "");
   // An arXiv abstract page is the record's public locator, but the paper's text is the PDF: read that

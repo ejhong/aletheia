@@ -180,7 +180,7 @@ export async function runCheck(caseKey: string, opts: CheckOptions = {}): Promis
     fs.mkdirSync(assessmentsDir, { recursive: true });
     const file = path.join(assessmentsDir, `${v.run.runId}.yaml`);
     const header = `# Cross-model check run — an independent judge (${VENDORS[seat].label}), blind to all\n# prior assessments and to the editions (aletheia check, ${protocol.version}; run ${runId}).\n# role: check — never displayed as the case narrative; feeds the concurrence panel.\n# basis.ledgerHash is the ledger it judged. Append-only; NOT human reviewed.\n`;
-    fs.writeFileSync(file, header + stringifyYaml(v.run));
+    fs.writeFileSync(file, header + stringifyYaml(v.run, { aliasDuplicateObjects: false }));
     installed.push(path.relative(root, file));
   }
   const reason = `${installed.length} of ${active.length} seat(s) installed${skipped.length ? `; no key: ${skipped.join(", ")}` : ""}${failed.length ? `; failed: ${failed.join(" | ")}` : ""}`;

@@ -99,7 +99,7 @@ export function recordSpend(row: SpendRowInput, root = process.cwd()): void {
     file,
     `# Spend ledger, run ${parsed.runId} — every paid model call of this run, appended by the transport (src/pipeline/spend.ts).\n` +
       "# Tokens are the vendor's report; usd is null unless config/tariffs.yaml carries a reviewed tariff.\n" +
-      stringifyYaml(rows, { lineWidth: 0 }),
+      stringifyYaml(rows, { lineWidth: 0, aliasDuplicateObjects: false }),
   );
 }
 

@@ -3,7 +3,7 @@ import { findCase } from "../domain/load.ts";
 import type { LoadedCase } from "../domain/schema.ts";
 import { runEdition, type EditionOutcome } from "./edition.ts";
 import { READER } from "./verify.ts";
-import { settleRecords, type ReverifyOptions, type ReverifyOutcome } from "./reverify.ts";
+import { readRelinked, settleRecords, type ReverifyOptions, type ReverifyOutcome } from "./reverify.ts";
 
 /**
  * `aletheia answer <pr>` — the answer step (2026-09-20). When the constitutional panel parks a sitting, or a seat
@@ -225,6 +225,7 @@ export async function runAnswer(pr: number, opts: AnswerOptions = {}): Promise<A
   if (opts.dryRun) return { ...base, classified, account: [...lines, `Dry run: nothing re-read, nothing re-told.`].join("\n") };
 
   let recordsOut: ReverifyOutcome | null = null;
+  let relinkedOut: ReverifyOutcome | null = null;
   if (records.size) {
     const named = [...records.keys()];
     const evidence = loaded.evidence.filter((e) => named.includes(e.id));
@@ -248,11 +249,17 @@ export async function runAnswer(pr: number, opts: AnswerOptions = {}): Promise<A
       lines.push(`## Edition not re-told`, `- the re-reading failed and its ledger writes were rolled back; the edition was not run`, ``);
       return { ...base, classified, records: recordsOut, edition: null, account: lines.join("\n") };
     }
+    // What the re-reading relinked to the parts of a split claim is read against them now, not left weightless for
+    // a later pass; the edition is told over the result either way, and a failure here rolls back only this pass.
+    if (recordsOut.relinked?.length) {
+      relinkedOut = await readRelinked(loaded.record.slug, recordsOut.relinked, recordsOut.relinkedTo ?? {}, `aletheia answer (${READER.model} second reader), on #${pr} — the records relinked at the split`, { root, deps: opts.deps, now: opts.deps?.now });
+      lines.push(`## Relinked records read against the parts`, `- ${relinkedOut.reason ?? relinkedOut.outcome}`, ``);
+    }
   }
   let editionOut: EditionOutcome | null = null;
   if (edition.length) {
     editionOut = await runEdition(loaded.record.slug, { root, force: true, objections: edition, deps: opts.deps?.edit || opts.deps?.now ? { ...(opts.deps?.edit ? { edit: opts.deps.edit } : {}), ...(opts.deps?.now ? { now: opts.deps.now } : {}), ...(opts.deps?.cases ? { cases: opts.deps.cases } : {}) } : undefined });
     lines.push(`## Edition re-told with every objection in its packet`, `- ${editionOut.reason ?? editionOut.outcome}${editionOut.editionFile ? ` — ${editionOut.editionFile.replace(`${root}/`, "")}` : ""}`, ``);
   }
-  return { ...base, classified, records: recordsOut, edition: editionOut, account: lines.join("\n") };
+  return { ...base, classified, records: recordsOut, ...(relinkedOut ? { relinked: relinkedOut } : {}), edition: editionOut, account: lines.join("\n") };
 }

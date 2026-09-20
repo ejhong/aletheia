@@ -295,7 +295,7 @@ describe("runAccount — the run's own record, for a panel that cannot read the 
     // The header says how the account was made and clipped — the panel's own provenance for what it read (review note #375).
     expect(text).toMatch(/the assessment the head edition adopts, read at head even when this change did not touch its file — its header, case verdict, load-bearing set and weakest links, what is claimed \(to 1,200\), synthesis or reasoning \(to 1,500\), each component's state and note \(note to 240\), and every claim's verdict and confidence, each with its reasoning to 300 — the reasoning left out of the claim lines, and said so, only when the section would pass 30,000, and the section clipped only past 60,000;/);
     expect(text).toMatch(/an assessment superseded within the change, digested as the head's is, with every claim verdict that differs from the head's marked; and an edition superseded within the change by header, rationale \(to 3,000\), featured claims, crux order and the paragraphs of its article the head edition does not carry verbatim \(to 20,000; the shared paragraphs are read in the head\)/);
-    expect(text).toMatch(/kept to 250,000 characters by dropping whole sections, least important first and within a rank largest first — a superseded edition's paragraphs, then a superseded assessment, then the run records and the added lines, then the records digest — and naming each dropped section\. The head edition and the assessment it adopts are never dropped and the assembled account is never cut mid-way: if they alone exceed the cap, the account runs over it and says so\. The only clipping is per field, at the lengths stated here, each marked in place/);
+    expect(text).toMatch(/kept to 250,000 characters by dropping whole sections, least important first and within a rank largest first — a superseded edition's paragraphs, then a superseded assessment, then the run records and the added lines, then the records digest — and naming each dropped section\. Protected from dropping, and titled by class, are the head edition, the assessment it adopts, and every other assessment of the change not superseded within it — a check-role seat's own reading, or a draft no edition in this change adopts; these are never dropped and the assembled account is never cut mid-way: if they alone exceed the cap, the account runs over it and says so\. The only clipping is per field, at the lengths stated here, each marked in place/);
     expect(text).toMatch(/the records the change adds or modifies in evidence, claims, sources and research \(id, state, direction, statement to 320, quote to 160, locator to 160; a modified record's changed fields and their new values to 240; each file's list to 40,000\)/);
     expect(text).toMatch(/usd: 14\.9/);
     expect(text).toMatch(/anchor page wrong/);
@@ -307,7 +307,8 @@ describe("runAccount — the run's own record, for a panel that cannot read the 
     expect(text).not.toMatch(/working material/);
     // A draft assessment is digested whole: the standing, the load-bearing set, what is claimed, the components and every
     // claim's verdict — so a seat that cannot read the overlay can still confirm a regrade (2026-09-20, #372).
-    expect(text).toMatch(/2026-09-09-edition-b\.yaml \(assessment: header, case verdict, load-bearing set, what is claimed, components, every claim's verdict\)/);
+    // e2 carries no assessment field, so edition-b is the change's own draft, protected and titled as such.
+    expect(text).toMatch(/2026-09-09-edition-b\.yaml \(assessment not adopted or superseded by an edition in this change: header, case verdict, load-bearing set, what is claimed, components, every claim's verdict\)/);
     expect(text).toMatch(/producedBy: 2026-09-09-edition-x-000001/);
     expect(text).toMatch(/case verdict: unresolved\nloadBearing: X-C1\nweakestLinks: X-C2\nwhatIsClaimed: That the thing is so\./);
     expect(text).toMatch(/component dating: established — E1 on C1\./);
@@ -387,8 +388,8 @@ describe("runAccount — the run's own record, for a panel that cannot read the 
     expect(text).toMatch(/claim X-C2: unresolved \(low\) — agrees with the head/);
     expect(text).not.toMatch(/claim X-C2: unresolved \(low\) \[head/);
     // A check-role assessment is a seat's own reading, never superseded by the head's adoption of another.
-    expect(text).toMatch(/check-a\.yaml \(assessment: header, case verdict, load-bearing set, what is claimed, components, every claim's verdict\)/);
-    expect(text.indexOf("edition-b.yaml (assessment:")).toBeLessThan(text.indexOf("edition-a0.yaml (assessment superseded"));
+    expect(text).toMatch(/check-a\.yaml \(assessment check-role, a seat's own reading, never superseded: header, case verdict, load-bearing set, what is claimed, components, every claim's verdict\)/);
+    expect(text.indexOf("edition-b.yaml (assessment adopted by the head edition:")).toBeLessThan(text.indexOf("edition-a0.yaml (assessment superseded"));
   });
   it("reads adoption per case: a changed assessment in a case with no head edition in the change is not superseded by another case's head", () => {
     const multi: Record<string, string> = {
@@ -397,11 +398,11 @@ describe("runAccount — the run's own record, for a panel that cannot read the 
       "content/cases/y/assessments/2026-09-10-edition-q.yaml": "runId: 2026-09-10-edition-q\nmodel: drafter\nrole: draft\ncaseAssessment:\n  verdict: mixed\n  synthesis: Y on its own.\nclaimAssessments:\n  - claimId: Y-C1\n    verdict: mixed\n    confidence: low\n    reasoning: Y's reasoning.\n",
     };
     const { text } = runAccount(Object.keys(multi), (p: string) => multi[p] ?? null, diffOf);
-    expect(text).toMatch(/y\/assessments\/2026-09-10-edition-q\.yaml \(assessment: header, case verdict/);
+    expect(text).toMatch(/y\/assessments\/2026-09-10-edition-q\.yaml \(assessment not adopted or superseded by an edition in this change: header, case verdict/);
     expect(text).not.toMatch(/edition-q\.yaml \(assessment superseded/);
     expect(text).toMatch(/claim Y-C1: mixed \(low\) — Y's reasoning\./);
     // Case x's head adopts b, so x's own check-a is whole and only a draft x does not adopt would be superseded.
-    expect(text).toMatch(/x\/assessments\/2026-09-09-edition-b\.yaml \(assessment: header/);
+    expect(text).toMatch(/x\/assessments\/2026-09-09-edition-b\.yaml \(assessment adopted by the head edition: header/);
   });
   it("reads the assessment the head edition adopts even when the change did not touch its file", () => {
     // e3 adopts edition-b, whose file is not among the changed paths but is readable at head.
@@ -431,7 +432,7 @@ describe("runAccount — the run's own record, for a panel that cannot read the 
     expect(text.length).toBeGreaterThan(ACCOUNT_CAP);
     // Within a rank the largest falls first: the verification file, now its own section, is named before the run header.
     expect(text).toMatch(/section\(s\) dropped to keep the account under 250,000 characters: proposals\/r1\/verification\.md; .*proposals\/r1\/run\.yaml/);
-    expect(text).toMatch(/\[The head edition\(s\) and the assessment\(s\) they adopt alone run to [\d,]+ characters, over the 250,000 cap; they are kept whole and nothing else is included\.\]/);
+    expect(text).toMatch(/\[The protected sections alone — the head edition\(s\), the assessment\(s\) they adopt, and any assessment of the change not superseded within it — run to [\d,]+ characters, over the 250,000 cap; they are kept whole and nothing else is included\.\]/);
     expect(text).not.toMatch(/run account: \d+ more characters not shown/);
     expect(text).not.toMatch(/\[… article:/);
   });

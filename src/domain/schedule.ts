@@ -24,6 +24,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml } from "yaml";
 import { saturation, type RunRecord, latestByKey } from "./intake.ts";
+import { blockedLeads, LEADS_MIN } from "./leads.ts";
 import { adoptedAssessment, currentEdition } from "./editions.ts";
 import { checksStale, currentChecks, latestCheckPerModel, ratification } from "./standing.ts";
 import type { LoadedCase } from "./schema.ts";
@@ -44,7 +45,7 @@ export function editionDue(loaded: LoadedCase): { reason: string; reconciles: st
 
 export interface NextChoice {
   case: string | null;
-  verb: "inbox" | "report" | "draft" | "verify" | "reverify" | "edition" | "check" | "rest";
+  verb: "inbox" | "report" | "leads" | "draft" | "verify" | "reverify" | "edition" | "check" | "rest";
   seat?: ResearchSeat;
   /** The run id a draft or verify continues from. */
   from?: string;
@@ -143,7 +144,7 @@ export function nextAction(allCases: LoadedCase[], runs: RunRecord[], today: str
   // 1. Half-done chains, oldest first: every completed report or intake no proposal was drafted from.
   for (const c of cases) {
     const rs = byCase(c.record.slug);
-    const undrafted = rs.find((r) => (r.verb === "report" || r.verb === "inbox") && r.outcome === "completed" && !drafted.has(r.runId));
+    const undrafted = rs.find((r) => (r.verb === "report" || r.verb === "inbox" || r.verb === "leads") && r.outcome === "completed" && !drafted.has(r.runId) && !(r.verb === "leads" && /\bopened 0\b/.test(r.notes ?? "")));
     if (undrafted) {
       return { case: c.record.slug, verb: "draft", from: undrafted.runId, reason: `${undrafted.verb} ${undrafted.runId} has not been drafted` };
     }
@@ -193,6 +194,25 @@ export function nextAction(allCases: LoadedCase[], runs: RunRecord[], today: str
     if (!b) continue;
     const why = reverifyDue(c);
     if (why !== null) return { case: c.record.slug, verb: "reverify", reason: `${b} record(s) blocked at verification await re-submission${why}` };
+  }
+  // 3c. Leads a producer named and could not open are asked of the open indexes (src/pipeline/leads.ts) before any
+  // new search — what a pass already found comes before what a new one might — on the same doubling cadence, a pass
+  // that opened nothing doubling the wait: a lead does not become findable by being asked every week.
+  for (const c of cases) {
+    const n = blockedLeads(c).length;
+    if (n < LEADS_MIN) continue;
+    const passes = byCase(c.record.slug).filter((r) => r.verb === "leads" && r.outcome === "completed");
+    const last = passes.at(-1);
+    let empties = 0;
+    for (const r of [...passes].reverse()) {
+      if (/\bopened 0\b/.test(r.notes ?? "")) empties++;
+      else break;
+    }
+    const due = Math.min(CADENCE_DAYS * 2 ** empties, MAX_CADENCE_DAYS);
+    if (!last || ageDays(last.date, today) >= due) {
+      const why = last ? `; last tried ${last.date}${empties ? `, ${empties} pass(es) opened nothing, so the cadence is ${due} days` : ""}` : "";
+      return { case: c.record.slug, verb: "leads", reason: `${n} lead(s) a producer named and could not open await the indexes${why}` };
+    }
   }
   // 4. The least recently reported case.
   const candidates = cases

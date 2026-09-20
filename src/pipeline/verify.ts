@@ -9,6 +9,7 @@ import { claimAnchorErrors, findCase, sourceAdmissionErrors } from "../domain/lo
 import type { Claim, Evidence, EvidenceDirection, LoadedCase, ReaderAct, ResearchOpportunity, Source } from "../domain/schema.ts";
 import { verifyCitations } from "../lib/citation-check.mjs";
 import { archiveUrl, type Archived } from "./archive.ts";
+import { leadsOf, settleLeads } from "./leads.ts";
 import { retrieve, type FetchedSource } from "./fetch.ts";
 import { isoDate } from "../lib/overlay-ids.mjs";
 import { appendHistory, appendRecords, applyCorrections, ledgerFileFor, type Correction } from "./ledger-write.ts";
@@ -1140,6 +1141,9 @@ export async function runVerify(proposalRunId: string, opts: VerifyOptions = {})
     for (const c of accepted.claims) inRow("claim", textKey(c.statement), c.id, c.statement);
     for (const e of accepted.evidence) inRow("evidence", textKey(`${e.title} ${e.sourceStatement}`), e.id, e.title);
     for (const r of accepted.research) inRow("research", textKey(r.title), r.id, r.title);
+    // A lead a leads pass resolved is settled by the source that entered for it, by locator (src/pipeline/leads.ts).
+    const fromRun = proposal.report?.match(/^proposals\/([^/]+)\//)?.[1];
+    if (fromRun) rows.push(...settleLeads(leadsOf(fromRun, root), accepted.sources, { runId, date, proposal: `proposals/${proposalRunId}`, leadsRunId: fromRun }));
     const provisionalRow = (kind: Disposition["kind"], key: string | null, id: string, observed: string, p: NonNullable<Source["provisional"]>) => {
       if (key) rows.push({ key, kind, disposition: "provisional", as: id, reason: `admitted unread — the source exists (${p.exists}) but its text could not be read (${p.reason})`, route: p.route, observed, by: runId, date, proposal: `proposals/${proposalRunId}` });
     };

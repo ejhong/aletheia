@@ -339,6 +339,8 @@ export interface EditionOptions {
   /** Draft even when the ledger has not moved since the incumbent. */
   force?: boolean;
   root?: string;
+  /** Objections a panel seat raised against the incumbent (src/pipeline/answer.ts); the candidate answers each in its rationale (edition protocol v12). */
+  objections?: { seat: string; rules: string[]; text: string; source: string }[];
   deps?: { edit?: Editor; now?: () => Date; cases?: () => LoadedCase[] };
 }
 
@@ -373,6 +375,7 @@ export async function runEdition(caseKey: string, opts: EditionOptions = {}): Pr
     return closeRun(run, "rested", { reason: `the ledger has not moved since ${incumbent.runId} (hash ${loaded.ledgerHash.slice(0, 12)}) and the panel's judgment is answered; nothing material to re-tell — pass --force to draft anyway` });
   }
   const packet = buildPacket(loaded, { detail: true });
+  if (opts.objections?.length) packet.objections = opts.objections;
   const user = renderPacket(packet, 900_000);
   const system = renderProtocol(protocol, {});
   if (opts.dryRun) {

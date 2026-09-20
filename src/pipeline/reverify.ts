@@ -111,41 +111,79 @@ const stripProvisional = <T extends { provisional?: unknown }>(r: T): Omit<T, "p
   return rest;
 };
 
-async function reverifyProvisional(caseSlug: string, opts: ReverifyOptions = {}): Promise<ReverifyOutcome> {
-  const root = opts.root ?? process.cwd();
-  const now = opts.now ?? (() => new Date());
-  const loaded = findCase(caseSlug, opts.deps?.cases?.());
+/**
+ * Which records go back through the reader, and why. The provisional pass selects records admitted unread; an answer
+ * (src/pipeline/answer.ts) selects the records a panel seat objected to, and tells the reader the objection.
+ */
+export interface Settlement {
+  verb: "reverify" | "answer";
+  originals: { sources: Source[]; evidence: Evidence[]; claims: Claim[] };
+  /** One line for the run's proposal and history: what is being settled. */
+  what: string;
+  /** Appended to the reader's context for every record: an objection, in the seat's words, marked as data. */
+  context?: string;
+  /** The history entry's reason. */
+  why: string;
+  actor: string;
+}
+
+const provisionalSettlement = (loaded: LoadedCase): Settlement => {
   const originals = {
     sources: loaded.sources.filter((s) => s.provisional),
     evidence: loaded.evidence.filter((e) => e.reviewState === "provisional"),
     claims: loaded.claims.filter((c) => c.reviewState === "provisional"),
   };
   const total = originals.sources.length + originals.evidence.length + originals.claims.length;
-  const run = openRun("reverify", loaded.record.slug, { model: READER.model, promptVersion: loadProtocol("verify").version }, { now: now(), root });
+  return {
+    verb: "reverify",
+    originals,
+    what: `Re-verification of ${total} provisional record(s): the texts are read again and the records settled.`,
+    why: "The texts behind records admitted unread were read again by the second reader under the verify protocol; what held was promoted with the reader's stamps, what failed was refused with its reason, what still could not be read stays provisional with the attempt on the record.",
+    actor: `aletheia reverify (${READER.model} second reader)`,
+  };
+};
+
+async function reverifyProvisional(caseSlug: string, opts: ReverifyOptions = {}): Promise<ReverifyOutcome> {
+  const loaded = findCase(caseSlug, opts.deps?.cases?.());
+  return settleRecords(caseSlug, provisionalSettlement(loaded), opts);
+}
+
+/**
+ * The originals go back through the reader as if newly proposed, against the ledger without them; the verdicts are
+ * applied in place — promoted with the reader's stamps, split parts appended, refusals tombstoned, links to refused
+ * claims dropped — and every row, count and history line is derived from what was written.
+ */
+export async function settleRecords(caseSlug: string, settlement: Settlement, opts: ReverifyOptions = {}): Promise<ReverifyOutcome> {
+  const root = opts.root ?? process.cwd();
+  const now = opts.now ?? (() => new Date());
+  const loaded = findCase(caseSlug, opts.deps?.cases?.());
+  const { originals } = settlement;
+  const total = originals.sources.length + originals.evidence.length + originals.claims.length;
+  const run = openRun(settlement.verb, loaded.record.slug, { model: READER.model, promptVersion: loadProtocol("verify").version }, { now: now(), root });
   const empty = { promoted: 0, appended: 0, refused: 0, unread: 0 };
-  if (!total) return { ...closeRun(run, "rested", { reason: "no provisional records" }), ...empty };
+  if (!total) return { ...closeRun(run, "rested", { reason: settlement.verb === "answer" ? "no records to settle" : "no provisional records" }), ...empty };
   const { runId, date } = run;
   try {
-    // The originals go back through the reader as if newly proposed, against the ledger without them.
+    const out = new Set([...originals.sources, ...originals.evidence, ...originals.claims].map((r) => r.id));
     const loadedMinus: LoadedCase = {
       ...loaded,
-      sources: loaded.sources.filter((s) => !s.provisional),
-      evidence: loaded.evidence.filter((e) => e.reviewState !== "provisional"),
-      claims: loaded.claims.filter((c) => c.reviewState !== "provisional"),
+      sources: loaded.sources.filter((s) => !out.has(s.id)),
+      evidence: loaded.evidence.filter((e) => !out.has(e.id)),
+      claims: loaded.claims.filter((c) => !out.has(c.id)),
     };
     const proposal: Proposal = {
       runId,
       date,
       case: loaded.record.slug,
-      producer: "reverify",
+      producer: settlement.verb,
       model: null,
       promptVersion: null,
       basis: { ledgerHash: loaded.ledgerHash },
-      rationale: `Re-verification of ${total} provisional record(s): the texts are read again and the records settled.`,
+      rationale: settlement.what,
       adds: {
-        sources: originals.sources.map((s) => ({ ...stripProvisional(s), verification: "unverified" as const })),
-        evidence: originals.evidence.map((e) => ({ ...stripProvisional(e), reviewState: "ai_extracted" as const })),
-        claims: originals.claims.map((c) => ({ ...stripProvisional(c), reviewState: "ai_extracted" as const })),
+        sources: originals.sources.map((s) => ({ ...stripProvisional(s), verification: s.provisional ? ("unverified" as const) : s.verification })),
+        evidence: originals.evidence.map((e) => ({ ...stripProvisional(e), reviewState: e.reviewState === "provisional" ? ("ai_extracted" as const) : e.reviewState })),
+        claims: originals.claims.map((c) => ({ ...stripProvisional(c), reviewState: c.reviewState === "provisional" ? ("ai_extracted" as const) : c.reviewState })),
         research: [],
         images: [],
       },
@@ -171,15 +209,15 @@ async function reverifyProvisional(caseSlug: string, opts: ReverifyOptions = {})
     const dir = runDir(runId, root);
     const judge = rememberedJudge(opts.deps?.judge ?? defaultJudge, path.join(dir, "judgments.yaml"), READER.model);
     const split = rememberedSplitter(opts.deps?.split ?? defaultSplitter, path.join(dir, "splits.yaml"), MODELS.house.model);
-    const verdicts = await judgeProposal(proposal, loadedMinus, texts, resolved, judge, run.meter, { model: READER.model, date }, split, { model: MODELS.house.model, runId });
+    const verdicts = await judgeProposal(proposal, loadedMinus, texts, resolved, judge, run.meter, { model: READER.model, date }, split, { model: MODELS.house.model, runId }, settlement.context ? { extraContext: settlement.context } : {});
     const plan = planReverify(verdicts, originals);
     const refusedClaims = new Set(plan.refuse.filter((r) => r.kind === "claim").map((r) => r.id));
     const counts = { promoted: plan.promote.length, appended: plan.appended.length, refused: plan.refuse.length, unread: plan.unread.length };
     const notes = [...verdicts.notes, ...plan.notes];
     const report = [
-      `# Re-verification — ${runId}`,
+      `# ${settlement.verb === "answer" ? "Answer" : "Re-verification"} — ${runId}`,
       ``,
-      `${loaded.record.slug}: ${total} provisional record(s) re-read; ledger ${loaded.ledgerHash.slice(0, 12)}.`,
+      `${loaded.record.slug}: ${total} record(s) re-read (${settlement.what}); ledger ${loaded.ledgerHash.slice(0, 12)}.${settlement.context ? `\n\nThe reader was told: ${settlement.context}` : ""}`,
       ``,
       `## Promoted`, ...plan.promote.map((p) => `- ${p.kind} ${p.id}`), ``,
       ...(plan.appended.length ? [`## Appended (parts the reader split off)`, ...plan.appended.map((p) => `- ${p.kind} ${p.id}`), ``] : []),
@@ -189,7 +227,8 @@ async function reverifyProvisional(caseSlug: string, opts: ReverifyOptions = {})
       ...(notes.length ? [`## Notes`, ...notes.map((n) => `- ${n}`), ``] : []),
     ].join("\n");
     writeWorkingFile(runId, "verification.md", report, root);
-    const summary = `re-verify: promoted ${counts.promoted}, appended ${counts.appended}, refused ${counts.refused}, still unread ${counts.unread}`;
+    const tag = settlement.verb === "answer" ? "answer" : "re-verify";
+    const summary = `${tag}: promoted ${counts.promoted}, appended ${counts.appended}, refused ${counts.refused}, still unread ${counts.unread}`;
     if (opts.dryRun) return { ...closeRun(run, "dry-run", { reason: `would ${summary}; nothing written` }), ...counts };
 
     // Materialize. Every row, count and history line below is derived from what was actually written (review note
@@ -224,12 +263,15 @@ async function reverifyProvisional(caseSlug: string, opts: ReverifyOptions = {})
     for (const r of plan.refuse) {
       const f = file(fileOf(r.id));
       if (r.kind === "claim") {
-        setField(f, r.id, "reviewState", "provisional", "rejected");
-        setField(f, r.id, "rejectionReason", null, `Refused at re-verification ${date} (${runId}): ${r.reason}`);
+        // From the state the record is in — provisional for the re-verification pass, ai_extracted or human_reviewed for
+        // a record an answer re-read (review note #371: the literal "provisional" would have thrown on a live record).
+        const k = originals.claims.find((x) => x.id === r.id)!;
+        setField(f, r.id, "reviewState", k.reviewState, "rejected");
+        setField(f, r.id, "rejectionReason", null, `Refused at ${tag === "answer" ? "the answer's re-reading" : "re-verification"} ${date} (${runId}): ${r.reason}`);
       } else if (r.kind === "evidence") {
         const e = originals.evidence.find((x) => x.id === r.id)!;
-        setField(f, r.id, "reviewState", "provisional", "rejected");
-        setField(f, r.id, "limitations", e.limitations, [...e.limitations, `Refused at re-verification ${date} (${runId}): ${r.reason}`]);
+        setField(f, r.id, "reviewState", e.reviewState, "rejected");
+        setField(f, r.id, "limitations", e.limitations, [...e.limitations, `Refused at ${tag === "answer" ? "the answer's re-reading" : "re-verification"} ${date} (${runId}): ${r.reason}`]);
       } else {
         // A source is not refused here: it stays provisional until the records that cite it are settled.
         done.unread.push({ kind: r.kind, id: r.id, reason: r.reason });
@@ -247,7 +289,7 @@ async function reverifyProvisional(caseSlug: string, opts: ReverifyOptions = {})
         if (kept.length) setField(f, e.id, "claimIds", e.claimIds, kept);
         else {
           setField(f, e.id, "reviewState", e.reviewState, "rejected");
-          setField(f, e.id, "limitations", e.limitations, [...e.limitations, `Refused at re-verification ${date} (${runId}): every claim it cited was refused`]);
+          setField(f, e.id, "limitations", e.limitations, [...e.limitations, `Refused at ${tag === "answer" ? "the answer's re-reading" : "re-verification"} ${date} (${runId}): every claim it cited was refused`]);
           notes.push(`${e.id}: every claim it cited was refused; refused with them`);
         }
         wrote.add(`content/cases/${caseDir}/evidence.yaml`);
@@ -270,12 +312,14 @@ async function reverifyProvisional(caseSlug: string, opts: ReverifyOptions = {})
     const keyOf = (kind: Kind, r: AnyRecord) => (kind === "source" ? (sourceKeys(r as Source)[0] ?? textKey((r as Source).title)) : kind === "claim" ? textKey((r as Claim).statement) : textKey(`${(r as Evidence).title} ${(r as Evidence).sourceStatement}`));
     const originalOf = (id: string): AnyRecord | undefined => [...originals.sources, ...originals.evidence, ...originals.claims].find((r) => r.id === id);
     for (const p of [...done.promoted, ...done.appended]) { const key = keyOf(p.kind, p.record); if (key) rows.push({ key, kind: p.kind, disposition: "in", as: p.id, observed: observedOf(p.record), by: runId, date, proposal: `proposals/${runId}` }); }
-    for (const r of done.refused) { const o = originalOf(r.id); if (!o) continue; const key = keyOf(r.kind, o); if (key) rows.push({ key, kind: r.kind, disposition: "failed", reason: `refused at re-verification: ${r.reason}`, observed: observedOf(o), by: runId, date, proposal: `proposals/${runId}` }); }
+    for (const r of done.refused) { const o = originalOf(r.id); if (!o) continue; const key = keyOf(r.kind, o); if (key) rows.push({ key, kind: r.kind, disposition: "failed", reason: `refused at ${tag === "answer" ? "the answer's re-reading" : "re-verification"}: ${r.reason}`, observed: observedOf(o), by: runId, date, proposal: `proposals/${runId}` }); }
     const seenUnread = new Set<string>();
-    for (const u of done.unread) { if (seenUnread.has(u.id)) continue; seenUnread.add(u.id); const o = originalOf(u.id); if (!o) continue; const key = keyOf(u.kind, o); const route = (o as { provisional?: { route: string } }).provisional?.route; if (key) rows.push({ key, kind: u.kind, disposition: "provisional", as: u.id, reason: `still unread on ${date}: ${u.reason}`, observed: observedOf(o), by: runId, date, proposal: `proposals/${runId}`, ...(route ? { route } : {}) }); }
+    // An answer leaves a record it could not re-read as it stands: the record was admitted read, and a text that will not
+    // come today is no verdict on it; the attempt is in the run's account. Only the provisional pass writes an unread row.
+    for (const u of done.unread) { if (seenUnread.has(u.id)) continue; seenUnread.add(u.id); if (settlement.verb === "answer") continue; const o = originalOf(u.id); if (!o) continue; const key = keyOf(u.kind, o); const route = (o as { provisional?: { route: string } }).provisional?.route; if (key) rows.push({ key, kind: u.kind, disposition: "provisional", as: u.id, reason: `still unread on ${date}: ${u.reason}`, observed: observedOf(o), by: runId, date, proposal: `proposals/${runId}`, ...(route ? { route } : {}) }); }
     if (rows.length) appendDispositions(caseDir, rows, root);
     const finalCounts = { promoted: done.promoted.length, appended: done.appended.length, refused: done.refused.length, unread: seenUnread.size };
-    const finalSummary = `re-verify: promoted ${finalCounts.promoted}, appended ${finalCounts.appended}, refused ${finalCounts.refused}, still unread ${finalCounts.unread}`;
+    const finalSummary = `${tag}: promoted ${finalCounts.promoted}, appended ${finalCounts.appended}, refused ${finalCounts.refused}, still unread ${finalCounts.unread}`;
     if (finalSummary !== summary) {
       writeWorkingFile(runId, "verification.md", report + `\n## What was written\n- ${finalSummary} (the plan above forecast: ${summary})\n`, root);
     }
@@ -283,9 +327,9 @@ async function reverifyProvisional(caseSlug: string, opts: ReverifyOptions = {})
       caseDir,
       {
         date,
-        change: `Re-verification of ${total} provisional record(s) (${runId}): ${finalSummary}.${done.promoted.length ? ` Promoted: ${done.promoted.map((p) => p.id).join(", ")}.` : ""}${done.appended.length ? ` Appended: ${done.appended.map((p) => p.id).join(", ")}.` : ""}${done.refused.length ? ` Refused: ${done.refused.map((r) => `${r.id} (${r.reason})`).join("; ")}.` : ""}`,
-        reason: "The texts behind records admitted unread were read again by the second reader under the verify protocol; what held was promoted with the reader's stamps, what failed was refused with its reason, what still could not be read stays provisional with the attempt on the record.",
-        actor: `aletheia reverify (${READER.model} second reader)`,
+        change: `${settlement.what} (${runId}): ${finalSummary}.${done.promoted.length ? ` Promoted: ${done.promoted.map((p) => p.id).join(", ")}.` : ""}${done.appended.length ? ` Appended: ${done.appended.map((p) => p.id).join(", ")}.` : ""}${done.refused.length ? ` Refused: ${done.refused.map((r) => `${r.id} (${r.reason})`).join("; ")}.` : ""}`,
+        reason: settlement.why,
+        actor: settlement.actor,
         aiAssisted: true,
         kind: "content",
       },

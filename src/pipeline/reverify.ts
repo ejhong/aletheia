@@ -1,7 +1,8 @@
+import fs from "node:fs";
 import path from "node:path";
 import type { Disposition, Proposal } from "../domain/intake.ts";
 import { sourceKeys, textKey } from "../domain/keys.ts";
-import { findCase } from "../domain/load.ts";
+import { findCase, loadCase } from "../domain/load.ts";
 import type { Claim, Evidence, LoadedCase, Source } from "../domain/schema.ts";
 import { verifyCitations } from "../lib/citation-check.mjs";
 import { MODELS } from "../lib/models.mjs";
@@ -153,6 +154,16 @@ async function reverifyProvisional(caseSlug: string, opts: ReverifyOptions = {})
  * applied in place — promoted with the reader's stamps, split parts appended, refusals tombstoned, links to refused
  * claims dropped — and every row, count and history line is derived from what was written.
  */
+/** A refusal's "split into A, B" names only the parts that were appended; the rest are counted, not named. */
+export function splitNoteFor(reason: string, appended: Set<string>): string {
+  return reason.replace(/split into ((?:[A-Z][A-Z0-9]*-[CE]\d{3})(?:, [A-Z][A-Z0-9]*-[CE]\d{3})*)/, (_, list: string) => {
+    const ids = list.split(", ");
+    const kept = ids.filter((id) => appended.has(id));
+    const gone = ids.length - kept.length;
+    return `split into ${kept.length ? kept.join(", ") : "nothing that survived"}${gone ? ` (${gone} further part(s) not appended: every claim cited was refused)` : ""}`;
+  });
+}
+
 export async function settleRecords(caseSlug: string, settlement: Settlement, opts: ReverifyOptions = {}): Promise<ReverifyOutcome> {
   const root = opts.root ?? process.cwd();
   const now = opts.now ?? (() => new Date());
@@ -163,6 +174,10 @@ export async function settleRecords(caseSlug: string, settlement: Settlement, op
   const empty = { promoted: 0, appended: 0, refused: 0, unread: 0 };
   if (!total) return { ...closeRun(run, "rested", { reason: settlement.verb === "answer" ? "no records to settle" : "no provisional records" }), ...empty };
   const { runId, date } = run;
+  // Every ledger file of the case as it stood before the writes: a failure restores them all, so a run that fails
+  // leaves the tree as it found it (2026-09-20: a settlement threw half-way and left a refusal note naming a part it
+  // had not appended; the case would not load).
+  let restore: (() => string[]) | null = null;
   try {
     const out = new Set([...originals.sources, ...originals.evidence, ...originals.claims].map((r) => r.id));
     const loadedMinus: LoadedCase = {
@@ -211,6 +226,24 @@ export async function settleRecords(caseSlug: string, settlement: Settlement, op
     const split = rememberedSplitter(opts.deps?.split ?? defaultSplitter, path.join(dir, "splits.yaml"), MODELS.house.model);
     const verdicts = await judgeProposal(proposal, loadedMinus, texts, resolved, judge, run.meter, { model: READER.model, date }, split, { model: MODELS.house.model, runId }, settlement.context ? { extraContext: settlement.context } : {});
     const plan = planReverify(verdicts, originals);
+    // A claim the reader split: its parts, by the origin they carry.
+    const partsOf = new Map<string, string[]>();
+    for (const a of plan.appended) {
+      const m = /^split of ([A-Z][A-Z0-9]*-[CE]\d{3})/.exec(String((a.record as { origin?: { ref?: string } }).origin?.ref ?? ""));
+      if (m) partsOf.set(m[1], [...(partsOf.get(m[1]) ?? []), a.id]);
+    }
+    // At an answer, a live claim the reader finds compound is rejected only when its parts enter: with none admitted
+    // it is left as it stood and the finding recorded, because a re-reading must not leave the case with a claim gone
+    // and nothing in its place (2026-09-20: the re-reading of #372 rejected a load-bearing claim whose two parts had
+    // failed their locator, and every record citing it fell with it).
+    const held: { kind: Kind; id: string; reason: string }[] = [];
+    if (settlement.verb === "answer") {
+      plan.refuse = plan.refuse.filter((r) => {
+        if (r.kind !== "claim" || (partsOf.get(r.id) ?? []).length || !/split into nothing that survived/.test(r.reason)) return true;
+        held.push({ kind: r.kind, id: r.id, reason: `found compound, no part admitted; left as it stood: ${r.reason}` });
+        return false;
+      });
+    }
     const refusedClaims = new Set(plan.refuse.filter((r) => r.kind === "claim").map((r) => r.id));
     const counts = { promoted: plan.promote.length, appended: plan.appended.length, refused: plan.refuse.length, unread: plan.unread.length };
     const notes = [...verdicts.notes, ...plan.notes];
@@ -222,23 +255,41 @@ export async function settleRecords(caseSlug: string, settlement: Settlement, op
       `## Promoted`, ...plan.promote.map((p) => `- ${p.kind} ${p.id}`), ``,
       ...(plan.appended.length ? [`## Appended (parts the reader split off)`, ...plan.appended.map((p) => `- ${p.kind} ${p.id}`), ``] : []),
       `## Refused`, ...plan.refuse.map((r) => `- ${r.kind} ${r.id} — ${r.reason}`), ``,
+      ...(held.length ? [`## Left as they stood`, ...held.map((h) => `- ${h.kind} ${h.id} — ${h.reason}`), ``] : []),
       `## Still unread`, ...plan.unread.map((u) => `- ${u.kind} ${u.id} — ${u.reason}`), ``,
       `## Retrieval`, ...[...texts.entries()].map(([k, f]) => `- ${k} — ${f.ok ? `retrieved${f.via ? ` (${f.via})` : ""}` : `not retrieved: ${f.reason}`}`), ``,
       ...(notes.length ? [`## Notes`, ...notes.map((n) => `- ${n}`), ``] : []),
     ].join("\n");
     writeWorkingFile(runId, "verification.md", report, root);
     const tag = settlement.verb === "answer" ? "answer" : "re-verify";
-    const summary = `${tag}: promoted ${counts.promoted}, appended ${counts.appended}, refused ${counts.refused}, still unread ${counts.unread}`;
+    const summary = `${tag}: promoted ${counts.promoted}, appended ${counts.appended}, refused ${counts.refused}, still unread ${counts.unread}${held.length ? `, held ${held.length}` : ""}`;
     if (opts.dryRun) return { ...closeRun(run, "dry-run", { reason: `would ${summary}; nothing written` }), ...counts };
 
+    const caseRoot = path.join(root, "content", "cases", loaded.dir);
+    const snapshot = new Map(fs.readdirSync(caseRoot).filter((f) => f.endsWith(".yaml")).map((f) => [f, fs.readFileSync(path.join(caseRoot, f), "utf8")] as const));
+    restore = () => {
+      // Only a file that changed is written back, and a file that will not take the write is named, not thrown on.
+      const notRestored: string[] = [];
+      for (const [f, text] of snapshot) {
+        const p = path.join(caseRoot, f);
+        try {
+          if (fs.readFileSync(p, "utf8") !== text) fs.writeFileSync(p, text);
+        } catch (err) {
+          notRestored.push(`${f}: ${(err as Error).message}`);
+        }
+      }
+      return notRestored;
+    };
     // Materialize. Every row, count and history line below is derived from what was actually written (review note
     // #326): a record that could not be promoted or appended after all is settled as unread, once, and only once.
     const caseDir = loaded.dir;
     const file = (f: LedgerFile) => path.join(root, "content", "cases", caseDir, f);
+    // A reference to a refused claim goes to the parts it was split into, or away when there are none.
+    const relive = (ids: string[]) => [...new Set(ids.flatMap((id) => (refusedClaims.has(id) ? (partsOf.get(id) ?? []) : [id])))];
     const dropRefused = <T extends AnyRecord>(r: T): T => {
-      if ("claimIds" in r) return { ...r, claimIds: r.claimIds.filter((id) => !refusedClaims.has(id)) };
+      if ("claimIds" in r) return { ...r, claimIds: relive(r.claimIds) };
       if ("parentClaimIds" in r) {
-        const live = (ids: string[] | undefined) => ids?.filter((id) => !refusedClaims.has(id));
+        const live = (ids: string[] | undefined) => (ids ? relive(ids) : ids);
         return { ...r, parentClaimIds: live(r.parentClaimIds) ?? [], dependsOnClaimIds: live(r.dependsOnClaimIds) ?? [], ...(r.alternativeToClaimIds ? { alternativeToClaimIds: live(r.alternativeToClaimIds) } : {}), ...(r.contradictsClaimIds ? { contradictsClaimIds: live(r.contradictsClaimIds) } : {}) };
       }
       return r;
@@ -260,7 +311,11 @@ export async function settleRecords(caseSlug: string, settlement: Settlement, op
       wrote.add(`content/cases/${caseDir}/${p.file}`);
       done.promoted.push({ ...p, record: rec });
     }
+    // A refusal that names the parts it split into names only the parts that were appended (2026-09-20: a part
+    // dropped for its claims left the parent's note pointing at a record that did not exist).
+    const appendedIds = new Set(done.appended.map((a) => a.id));
     for (const r of plan.refuse) {
+      r.reason = splitNoteFor(r.reason, appendedIds);
       const f = file(fileOf(r.id));
       if (r.kind === "claim") {
         // From the state the record is in — provisional for the re-verification pass, ai_extracted or human_reviewed for
@@ -281,13 +336,24 @@ export async function settleRecords(caseSlug: string, settlement: Settlement, op
       done.refused.push(r);
     }
     if (refusedClaims.size) {
-      const touched = new Set([...done.promoted, ...done.appended].map((p) => p.id));
+      // Records settled this pass — promoted, appended or refused — are not touched again (2026-09-20: a record the
+      // reader had refused was refused a second time for its claim, and the second write threw on the first's state).
+      const touched = new Set([...done.promoted, ...done.appended, ...done.refused].map((p) => p.id));
       for (const e of loaded.evidence) {
         if (touched.has(e.id) || e.reviewState === "rejected" || !e.claimIds.some((id) => refusedClaims.has(id))) continue;
-        const kept = e.claimIds.filter((id) => !refusedClaims.has(id));
+        const kept = relive(e.claimIds);
         const f = file("evidence.yaml");
-        if (kept.length) setField(f, e.id, "claimIds", e.claimIds, kept);
-        else {
+        const toParts = e.claimIds.filter((id) => refusedClaims.has(id) && partsOf.get(id)?.length);
+        if (kept.length) {
+          setField(f, e.id, "claimIds", e.claimIds, kept);
+          if (toParts.length) {
+            // The record cited a claim now split: it cites the parts, all of them, and says that which of them it
+            // bears on is not yet judged — the alternative was to lose the record with the claim.
+            const note = `Relinked at ${tag === "answer" ? "the answer's re-reading" : "re-verification"} ${date} (${runId}): ${toParts.map((id) => `${id} was split into ${partsOf.get(id)!.join(", ")}`).join("; ")}; this record now cites the parts, and which of them it bears on is for a later reading`;
+            setField(f, e.id, "limitations", e.limitations, [...e.limitations, note]);
+            notes.push(`${e.id}: ${note}`);
+          }
+        } else {
           setField(f, e.id, "reviewState", e.reviewState, "rejected");
           setField(f, e.id, "limitations", e.limitations, [...e.limitations, `Refused at ${tag === "answer" ? "the answer's re-reading" : "re-verification"} ${date} (${runId}): every claim it cited was refused`]);
           notes.push(`${e.id}: every claim it cited was refused; refused with them`);
@@ -300,7 +366,7 @@ export async function settleRecords(caseSlug: string, settlement: Settlement, op
         for (const field of ["parentClaimIds", "dependsOnClaimIds", "alternativeToClaimIds", "contradictsClaimIds"] as const) {
           const ids = c[field];
           if (ids && ids.some((id) => refusedClaims.has(id))) {
-            setField(f, c.id, field, ids, ids.filter((id) => !refusedClaims.has(id)));
+            setField(f, c.id, field, ids, relive(ids));
             wrote.add(`content/cases/${caseDir}/claims.yaml`);
           }
         }
@@ -319,7 +385,7 @@ export async function settleRecords(caseSlug: string, settlement: Settlement, op
     for (const u of done.unread) { if (seenUnread.has(u.id)) continue; seenUnread.add(u.id); if (settlement.verb === "answer") continue; const o = originalOf(u.id); if (!o) continue; const key = keyOf(u.kind, o); const route = (o as { provisional?: { route: string } }).provisional?.route; if (key) rows.push({ key, kind: u.kind, disposition: "provisional", as: u.id, reason: `still unread on ${date}: ${u.reason}`, observed: observedOf(o), by: runId, date, proposal: `proposals/${runId}`, ...(route ? { route } : {}) }); }
     if (rows.length) appendDispositions(caseDir, rows, root);
     const finalCounts = { promoted: done.promoted.length, appended: done.appended.length, refused: done.refused.length, unread: seenUnread.size };
-    const finalSummary = `${tag}: promoted ${finalCounts.promoted}, appended ${finalCounts.appended}, refused ${finalCounts.refused}, still unread ${finalCounts.unread}`;
+    const finalSummary = `${tag}: promoted ${finalCounts.promoted}, appended ${finalCounts.appended}, refused ${finalCounts.refused}, still unread ${finalCounts.unread}${held.length ? `, held ${held.length}` : ""}`;
     if (finalSummary !== summary) {
       writeWorkingFile(runId, "verification.md", report + `\n## What was written\n- ${finalSummary} (the plan above forecast: ${summary})\n`, root);
     }
@@ -327,7 +393,7 @@ export async function settleRecords(caseSlug: string, settlement: Settlement, op
       caseDir,
       {
         date,
-        change: `${settlement.what} (${runId}): ${finalSummary}.${done.promoted.length ? ` Promoted: ${done.promoted.map((p) => p.id).join(", ")}.` : ""}${done.appended.length ? ` Appended: ${done.appended.map((p) => p.id).join(", ")}.` : ""}${done.refused.length ? ` Refused: ${done.refused.map((r) => `${r.id} (${r.reason})`).join("; ")}.` : ""}`,
+        change: `${settlement.what} (${runId}): ${finalSummary}.${held.length ? ` Left as they stood: ${held.map((h) => h.id).join(", ")}.` : ""}${done.promoted.length ? ` Promoted: ${done.promoted.map((p) => p.id).join(", ")}.` : ""}${done.appended.length ? ` Appended: ${done.appended.map((p) => p.id).join(", ")}.` : ""}${done.refused.length ? ` Refused: ${done.refused.map((r) => `${r.id} (${r.reason})`).join("; ")}.` : ""}`,
         reason: settlement.why,
         actor: settlement.actor,
         aiAssisted: true,
@@ -335,9 +401,13 @@ export async function settleRecords(caseSlug: string, settlement: Settlement, op
       },
       root,
     );
+    // The case must load as written; a run whose writes it will not load fails, and they are rolled back.
+    if (!opts.deps?.cases && path.resolve(root) === process.cwd()) loadCase(loaded.dir);
     return { ...closeRun(run, "completed", { reason: finalSummary, wrote: [...wrote] }), ...finalCounts };
   } catch (e) {
-    return { ...closeRun(run, "failed", { reason: (e as Error).message }), ...empty };
+    const notRestored = restore ? restore() : null;
+    const rolledBack = notRestored === null ? "" : notRestored.length ? `; the ledger writes of this run were rolled back except ${notRestored.join("; ")}` : "; the ledger writes of this run were rolled back";
+    return { ...closeRun(run, "failed", { reason: `${(e as Error).message}${rolledBack}` }), ...empty };
   }
 }
 

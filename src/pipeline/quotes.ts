@@ -11,8 +11,9 @@ export function normalizeForMatch(s: string): string {
     .replace(/[‘’‚‛]/g, "'")
     .replace(/[“”„‟]/g, '"')
     .replace(/[-‐-―]\s*/g, "")
-    .replace(/\s+/g, " ")
-    .trim()
+    // Whitespace never decides a match: the same article reads "p= 0.006" in its XML and "p = 0.006" in its HTML,
+    // and a quote taken from one rendering must be found in the other (2026-09-20, #372).
+    .replace(/\s+/g, "")
     .toLowerCase();
 }
 

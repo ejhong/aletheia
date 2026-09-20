@@ -2457,3 +2457,7 @@ The fourth answer run on #372 replaced the compound claim VASO-C033 by three anc
 ## 2026-09-20 — A second client for a page that challenged the first
 
 The record behind the three parts of the split claim on #372 — the Ballyns 2011 trapezius study, held in PubMed Central as an author manuscript with no open-access full text at Europe PMC — could not be read against the parts: PubMed Central served the pipeline's client a challenge page, twice, while curl with the same headers was served the article. The difference is the client's fingerprint, not the request. Retrieval now tries a second client, curl, for a page that answers the first with a challenge — the same URL, the same headers — and says so in where the text came from; a page both are served the challenge on stays unread, as before. The second client stands in for the real first client only: a fetch injected for a test has none unless one is injected too. Supervised-by: founder (direction in session, 2026-09-20).
+
+## 2026-09-20 — The second client is named by itself
+
+On review note #393, the same day as the second client (#392): the client was an unnamed callback, and every note said "curl" whatever had been injected — a test double read the page and the account said curl did. The client now carries its own name, and every note — where the text came from, what a client that failed was served — gives it; curl names itself, a test double names itself. Supervised-by: founder (direction in session, 2026-09-20).

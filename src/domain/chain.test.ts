@@ -1033,8 +1033,10 @@ describe("the draft verb's prose discipline (v8, 2026-09-11)", () => {
   });
 });
 
-describe("quotes — whitespace never decides a match", () => {
-  it("finds a quote taken from one rendering of an article in another that spaces it differently", () => {
+describe("quotes — spacing beside punctuation never decides a match, the boundary between words does", () => {
+  it("finds a quote taken from one rendering of an article in another that spaces it differently, and never joins words", () => {
+    expect(unverifiedQuotes('The runners were "now here to be seen at the start".', "They were nowhere to be seen at the start.")).toEqual(["now here to be seen at the start"]);
+    expect(unverifiedQuotes('Table 2 gives "8.5 ± 1.4 against 6.1 ± 1.2".', "a relative stiffness ratio of 8.5±1.4 against 6.1 ±1.2 for latent points")).toEqual([]);
     expect(unverifiedQuotes('Active MTrPs had "greater stiffness ratios (mean 8.5 vs. 6.1, p= 0.006) compared to latent points".', "… and greater stiffness ratios (mean 8.5 vs. 6.1,   p = 0.006) compared to latent points.")).toEqual([]);
     expect(unverifiedQuotes('It says "the deficit increases in the full sample".', "the deficit\nincreases in the\tfull  sample")).toEqual([]);
     expect(unverifiedQuotes('It says "the deficit increases in the full sample".', "the deficit decreases in the full sample")).toEqual(["the deficit increases in the full sample"]);

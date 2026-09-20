@@ -178,23 +178,31 @@ describe("settleRecords with verb answer, end to end on a copied case", async ()
   const ok = { quoteInContext: true, locatorSupported: true, statementSupported: true, directionRight: true, relevant: true, atomic: true, independenceNoted: true };
   const parts = ["The first proposition on its own.", "The second proposition on its own."];
   const claimSettlement = { verb: "answer" as const, originals: { sources: [], evidence: [], claims: [claim] }, what: `Answer to the panel's objections on #99: 1 record(s) re-read`, context: "A seat objected: the claim is compound", why: "a seat objected", actor: "aletheia answer (test reader), on #99" };
-  it("at an answer, a live claim found compound whose parts are not admitted is left as it stood, the finding recorded — nothing citing it falls", async () => {
+  it("at an answer, a live claim found compound whose parts are not admitted is held provisional, weightless, the finding on the record — nothing citing it falls", async () => {
     expect(claim && citing).toBeTruthy();
     const root = setup();
-    const before = fs.readFileSync(path.join(root, "content", "cases", c.dir, "claims.yaml"), "utf8");
+    const before = parse(fs.readFileSync(path.join(root, "content", "cases", c.dir, "claims.yaml"), "utf8")) as { id: string }[];
     const evBefore = fs.readFileSync(path.join(root, "content", "cases", c.dir, "evidence.yaml"), "utf8");
     const judge = async (rec: unknown) => ((rec as { statement: string }).statement === claim.statement ? { ...ok, atomic: false, reason: "two propositions in one" } : { ...ok, statementSupported: false, reason: "not at the locator" });
     const out = await settleRecords(c.record.slug, claimSettlement, { root, deps: { cases: () => [c], judge, split: async () => parts, fetch: fetchClaim } });
     expect(out).toMatchObject({ outcome: "completed", promoted: 0, appended: 0, refused: 0 });
     expect(out.reason).toBe("answer: promoted 0, appended 0, refused 0, still unread 0, held 1");
-    expect(fs.readFileSync(path.join(root, "content", "cases", c.dir, "claims.yaml"), "utf8")).toBe(before);
+    const after = parse(fs.readFileSync(path.join(root, "content", "cases", c.dir, "claims.yaml"), "utf8")) as { id: string; reviewState: string; provisional?: { since: string; exists: string; reason: string; route: string; by: string } }[];
+    expect(after.map((k) => k.id)).toEqual(before.map((k) => k.id));
+    const heldClaim = after.find((k) => k.id === claim.id)!;
+    expect(heldClaim.reviewState).toBe("provisional");
+    expect(heldClaim.provisional).toMatchObject({ exists: "admitted read; held at the answer's re-reading", by: out.runId, route: expect.stringContaining("one claim per proposition") });
+    expect(heldClaim.provisional!.reason).toMatch(/^found compound, no part admitted; held provisional, carrying no weight until split: not atomic \(two propositions in one\); split into nothing that survived/);
     expect(fs.readFileSync(path.join(root, "content", "cases", c.dir, "evidence.yaml"), "utf8")).toBe(evBefore);
     const history = parse(fs.readFileSync(path.join(root, "content", "cases", c.dir, "history.yaml"), "utf8")) as { change: string }[];
-    expect(history.at(-1)!.change).toContain(`Left as they stood: ${claim.id}.`);
-    expect(fs.readFileSync(path.join(root, "proposals", out.runId, "verification.md"), "utf8")).toMatch(new RegExp(`## Left as they stood\\n- claim ${claim.id} — found compound, no part admitted; left as it stood: not atomic \\(two propositions in one\\); split into nothing that survived`));
+    expect(history.at(-1)!.change).toContain(`Held provisional, found compound with no part admitted: ${claim.id}.`);
+    expect(fs.readFileSync(path.join(root, "proposals", out.runId, "verification.md"), "utf8")).toMatch(new RegExp(`## Held provisional\\n- claim ${claim.id} — found compound, no part admitted; held provisional, carrying no weight until split: not atomic \\(two propositions in one\\); split into nothing that survived`));
+    const rows = (parse(fs.readFileSync(path.join(root, "content", "cases", c.dir, "dispositions.yaml"), "utf8")) as { disposition: string; as?: string; reason?: string; by: string }[]).filter((r) => r.by === out.runId);
+    expect(rows).toHaveLength(1);
+    expect(rows[0]).toMatchObject({ disposition: "provisional", as: claim.id, reason: expect.stringMatching(/^held provisional at the answer's re-reading: found compound/) });
     fs.rmSync(root, { recursive: true, force: true });
   });
-  it("a live claim split into admitted parts is rejected naming them, and a record that cited it now cites the parts, saying so, instead of falling", async () => {
+  it("a live claim split into admitted parts is rejected naming them, and a record that cited it now cites the parts — provisional until read against them — instead of falling", async () => {
     const root = setup();
     const judge = async (rec: unknown) => ((rec as { statement: string }).statement === claim.statement ? { ...ok, atomic: false, reason: "two propositions in one" } : { ...ok, reason: "one proposition, at the anchor" });
     const out = await settleRecords(c.record.slug, claimSettlement, { root, deps: { cases: () => [c], judge, split: async () => parts, fetch: fetchClaim } });
@@ -207,9 +215,13 @@ describe("settleRecords with verb answer, end to end on a copied case", async ()
     const partIds = [named![1], named![2]];
     for (const id of partIds) expect(claims.find((k) => k.id === id)).toMatchObject({ reviewState: "ai_extracted", origin: { ref: expect.stringMatching(new RegExp(`^split of ${claim.id} `)) } });
     expect(claims.filter((k) => partIds.includes(k.id)).map((k) => k.statement)).toEqual(parts);
-    const ev = (parse(fs.readFileSync(path.join(root, "content", "cases", c.dir, "evidence.yaml"), "utf8")) as { id: string; claimIds: string[]; reviewState: string; limitations: string[] }[]).find((e) => e.id === citing.id)!;
-    expect(ev.reviewState).toBe(citing.reviewState);
+    const ev = (parse(fs.readFileSync(path.join(root, "content", "cases", c.dir, "evidence.yaml"), "utf8")) as { id: string; claimIds: string[]; reviewState: string; limitations: string[]; provisional?: { exists: string; reason: string; route: string; by: string } }[]).find((e) => e.id === citing.id)!;
+    expect(ev.reviewState).toBe("provisional");
+    expect(ev.provisional).toMatchObject({ exists: "admitted read; relinked at the split of a claim it cited", by: out.runId, route: "re-read the record against each part it now cites (the re-verify pass does this)" });
+    expect(ev.provisional!.reason).toBe(ev.limitations.at(-1));
     expect(ev.claimIds).toEqual(partIds);
+    const history = parse(fs.readFileSync(path.join(root, "content", "cases", c.dir, "history.yaml"), "utf8")) as { change: string }[];
+    expect(history.at(-1)!.change).toContain(`Relinked to the parts of a split claim, provisional until read against them: ${citing.id}.`);
     expect(ev.limitations.at(-1)).toMatch(new RegExp(`^Relinked at the answer's re-reading \\d{4}-\\d{2}-\\d{2} \\(${out.runId}\\): ${claim.id} was split into ${partIds.join(", ")}; this record now cites the parts, and which of them it bears on is for a later reading$`));
     fs.rmSync(root, { recursive: true, force: true });
   });

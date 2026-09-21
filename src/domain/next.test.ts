@@ -5,7 +5,14 @@ import { describe, expect, it } from "vitest";
 import { loadOperation } from "./governance.ts";
 import { getCaseBySlug, loadAllCases } from "./load.ts";
 import { cadenceDays, nextAction, inboxPending, chooseNext, runNext } from "../pipeline/next.ts";
+import { blockedAtVerification, provisionalCount } from "./schedule.ts";
+
+// A case with provisional or blocked records is re-verified before anything is searched, edited or checked (rules 1b
+// and 3b) — the ordering tests below pick cases without them, so a panel check landing on the real content cannot flip
+// which case they find (2026-09-21: a check made ccc the first contested case, and ccc holds blocked records).
+const unencumbered = (c: LoadedCase) => !provisionalCount(c) && !blockedAtVerification(c);
 import type { RunRecord } from "./intake.ts";
+import type { LoadedCase } from "./schema.ts";
 
 const run = (over: Partial<RunRecord>): RunRecord => ({
   runId: "2026-09-01-report-x-000000", verb: "report", case: "x", date: "2026-09-01", model: "m", promptVersion: "report-v1", inputHash: null,
@@ -48,7 +55,7 @@ describe("aletheia next", () => {
   it("then a due edition, then the least recently reported case with the house seat, skipping the cadence window", async () => {
     const { editionDue } = await import("../pipeline/edition.ts");
     // A case the panel contests and nothing has answered is searched first; the reconsideration waits until the report is within cadence.
-    const contested = cases.find((c) => editionDue(c)?.kind === "contested");
+    const contested = cases.find((c) => editionDue(c)?.kind === "contested" && unencumbered(c));
     if (contested) {
       expect(nextAction([contested], [], "2026-09-20")).toMatchObject({ case: contested.record.slug, verb: "report" });
       const slug = contested.record.slug;
@@ -61,7 +68,7 @@ describe("aletheia next", () => {
     }
     // Among cases whose editions are current, with no runs at all, the first never-reported case is chosen for a report.
     const { checksStale } = await import("./standing.ts");
-    const settled = cases.filter((c) => c.record.slug !== "megalithic-casting" && !editionDue(c) && !checksStale(c));
+    const settled = cases.filter((c) => c.record.slug !== "megalithic-casting" && !editionDue(c) && !checksStale(c) && unencumbered(c));
     expect(settled.length).toBeGreaterThan(1);
     const n = nextAction(settled, [], "2026-09-20");
     expect(n.verb).toBe("report");
@@ -111,9 +118,9 @@ describe("aletheia next", () => {
   it("a stale panel is re-checked after any due edition and before any report", async () => {
     const { checksStale } = await import("./standing.ts");
     const { editionDue } = await import("../pipeline/edition.ts");
-    const stale = cases.find((c) => checksStale(c) && !editionDue(c));
+    const stale = cases.find((c) => checksStale(c) && !editionDue(c) && unencumbered(c));
     if (stale) expect(nextAction([stale], [], "2026-09-20")).toMatchObject({ case: stale.record.slug, verb: "check" });
-    const due = cases.find((c) => checksStale(c) && editionDue(c)?.kind === "moved");
+    const due = cases.find((c) => checksStale(c) && editionDue(c)?.kind === "moved" && unencumbered(c));
     if (due) expect(nextAction([due], [], "2026-09-20").verb).toBe("edition");
   });
 

@@ -491,26 +491,33 @@ describe("settleRecords with verb answer, end to end on a copied case", async ()
     // those records, which are relinked to the parts and then read against them.
     const root3 = setup();
     const citers = c.evidence.filter((e) => e.reviewState !== "rejected" && e.claimIds.includes(byEvidence.id));
-    const halves = ["The first proposition the founding claim bundled.", "The second proposition the founding claim bundled."];
+    // The first split's second half is itself compound: it is split once more, a second round and no further.
+    const halves = ["The first proposition the founding claim bundled.", "The second and third propositions the founding claim bundled."];
+    const subs = ["The second proposition the founding claim bundled.", "The third proposition the founding claim bundled."];
     const judge3 = async (rec: unknown, _text: string, context: string) => {
       const st = (rec as { statement: string }).statement;
       if (st === byEvidence.statement) return { ...ok, atomic: false, reason: "occurrence and prevalence in one" };
-      if (context.includes("This is a PART of a compound claim")) return { ...ok, ofTheCompound: true, reason: "one of the two" };
+      if (st === halves[1]) return { ...ok, ofTheCompound: true, atomic: false, reason: "still two" };
+      if (context.includes("This is a PART of a compound claim")) return { ...ok, ofTheCompound: true, reason: "one of the three" };
       return { ...ok, reason: "fine" };
     };
     const seenSplit: string[] = [];
-    const split3 = async (statement: string, anchorText: string) => (seenSplit.push(`${statement}|${anchorText}`), halves);
+    const split3 = async (statement: string, anchorText: string) => (seenSplit.push(`${statement}|${anchorText}`), statement === halves[1] ? subs : halves);
     const out3 = await settleRecords(c.record.slug, { ...claimSettlement, originals: { sources: [], evidence: [], claims: [byEvidence] } }, { root: root3, deps: { cases: () => [c], judge: judge3, split: split3, fetch: fetchClaim } });
-    expect(out3).toMatchObject({ outcome: "completed", promoted: 0, appended: 2, refused: 1 });
-    expect(seenSplit).toHaveLength(1);
-    for (const e of citers) expect(seenSplit[0]).toContain(`${e.id}: ${e.sourceStatement}`);
+    expect(out3).toMatchObject({ outcome: "completed", promoted: 0, appended: 3, refused: 1 });
+    expect(seenSplit).toHaveLength(2);
+    expect(seenSplit[1].startsWith(`${halves[1]}|`)).toBe(true);
+    for (const e of citers) for (const seen of seenSplit) expect(seen).toContain(`${e.id}: ${e.sourceStatement}`);
     const claims3 = parse(fs.readFileSync(path.join(root3, "content", "cases", c.dir, "claims.yaml"), "utf8")) as { id: string; statement: string; reviewState: string; sourceAnchor?: unknown; origin: { ref: string }; rejectionReason?: string }[];
     const parts3 = claims3.filter((k) => k.origin.ref.startsWith(`split of ${byEvidence.id} `));
-    expect(parts3.map((k) => k.statement).sort()).toEqual([...halves].sort());
+    expect(parts3.map((k) => k.statement).sort()).toEqual([halves[0], ...subs].sort());
     for (const k of parts3) {
       expect(k.sourceAnchor).toBeUndefined();
       expect(k.origin.ref).toContain("on the statements of the records that cite it, without a text; anchored as the compound was, by the records that cite it");
+      expect(k.origin.ref.endsWith("; second round")).toBe(subs.includes(k.statement));
     }
+    const account3 = fs.readdirSync(path.join(root3, "proposals"), { recursive: true }).map(String).filter((f) => f.endsWith("verification.md")).map((f) => fs.readFileSync(path.join(root3, "proposals", f), "utf8")).join("\n");
+    expect(account3).toContain("still not one proposition (still two); split again into 2 part(s)");
     expect(claims3.find((k) => k.id === byEvidence.id)!.rejectionReason).toMatch(new RegExp(`split into ${parts3.map((k) => k.id).sort().join(", ")}$`));
     expect(out3.relinked?.sort()).toEqual(citers.map((e) => e.id).sort());
     const ev3 = parse(fs.readFileSync(path.join(root3, "content", "cases", c.dir, "evidence.yaml"), "utf8")) as { id: string; claimIds: string[]; reviewState: string }[];

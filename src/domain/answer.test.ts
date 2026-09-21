@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { getCaseBySlug } from "./load.ts";
 import type { LoadedCase } from "./schema.ts";
-import { ARBITER_LOGIN, arbiterCommitOf, classifyObjections, idsNamed, objectionsFromArbiterComment, objectionsFromReviewNote, readPr, runAnswer, type Gh } from "../pipeline/answer.ts";
+import { ARBITER_LOGIN, arbiterCommitOf, classifyObjections, disputedAtomicity, idsNamed, objectionsFromArbiterComment, objectionsFromReviewNote, readPr, runAnswer, type Gh } from "../pipeline/answer.ts";
 
 /** The answer step reads a PR's standing objections, sorts them into the records they name and the edition, and puts
  *  each back to the verb that owns it; it refuses what is not its to answer. Network and models are stubbed. */
@@ -539,6 +539,30 @@ describe("settleRecords with verb answer, end to end on a copied case", async ()
       expect(parts3.every((k) => after3.claimIds.includes(k.id))).toBe(true);
     }
     fs.rmSync(root3, { recursive: true, force: true });
+    // §3.2 in doubt: the reader calls it one proposition, a seat disputed that under §3.2 — the splitter is asked
+    // anyway, and with two parts affirmed the claim is split; with fewer it stands, said so in the account.
+    for (const affirmed of [2, 1]) {
+      const rootD = setup();
+      const twoParts = ["The occurrence proposition.", "The prevalence proposition."];
+      const judgeD = async (rec: unknown, _text: string, context: string) => {
+        const st = (rec as { statement: string }).statement;
+        if (context.includes("This is a PART of a compound claim")) return { ...ok, ofTheCompound: affirmed === 2 || st === twoParts[0], reason: "part" };
+        return { ...ok, reason: "one proposition, read as commonness" };
+      };
+      const outD = await settleRecords(c.record.slug, { ...claimSettlement, originals: { sources: [], evidence: [], claims: [byEvidence] }, disputed: { atomicity: [byEvidence.id] } }, { root: rootD, deps: { cases: () => [c], judge: judgeD, split: async () => twoParts, fetch: fetchClaim } });
+      const claimsD = parse(fs.readFileSync(path.join(rootD, "content", "cases", c.dir, "claims.yaml"), "utf8")) as { id: string; statement: string; reviewState: string; rejectionReason?: string }[];
+      const accountD = fs.readdirSync(path.join(rootD, "proposals"), { recursive: true }).map(String).filter((f) => f.endsWith("verification.md")).map((f) => fs.readFileSync(path.join(rootD, "proposals", f), "utf8")).join("\n");
+      if (affirmed === 2) {
+        expect(outD).toMatchObject({ outcome: "completed", promoted: 0, appended: 2, refused: 1 });
+        expect(claimsD.find((k) => k.id === byEvidence.id)!.rejectionReason).toMatch(/one proposition to the reader \(one proposition, read as commonness\), disputed by a seat under §3\.2; split in doubt into [A-Z0-9-]+, [A-Z0-9-]+, each affirmed$/);
+        expect(claimsD.filter((k) => twoParts.includes(k.statement)).map((k) => k.reviewState)).toEqual(["ai_extracted", "ai_extracted"]);
+      } else {
+        expect(outD).toMatchObject({ outcome: "completed", promoted: 1, appended: 0, refused: 0 });
+        expect(claimsD.find((k) => k.id === byEvidence.id)!.reviewState).not.toBe("rejected");
+        expect(accountD).toContain(`${byEvidence.id}: one proposition to the reader (one proposition, read as commonness); a seat disputed that under §3.2, and the split gave 1 affirmed part(s), not two — the claim stands`);
+      }
+      fs.rmSync(rootD, { recursive: true, force: true });
+    }
     // The same id with other words is not the claim that evidence was read against: no anchor from the ledger.
     const root2 = setup();
     const rewritten = { ...byEvidence, statement: `${byEvidence.statement} And a proposition the evidence never met.` };
@@ -611,5 +635,14 @@ describe("settleRecords with verb answer, end to end on a copied case", async ()
     expect(out.edition).toBeNull();
     expect(out.account).toContain("the re-reading failed and its ledger writes were rolled back; the edition was not run");
     fs.rmSync(root, { recursive: true, force: true });
+  });
+});
+
+describe("disputedAtomicity", () => {
+  it("names the claims a §3.2 objection named, and no evidence record or claim objected to under other rules", () => {
+    const o = (rules: string[]) => [{ seat: "s", rules, text: "t", source: "panel verdict" }];
+    const records = new Map([["X-C001", o(["§3.2", "§3.13"])], ["X-C002", o(["§3.13"])], ["X-E001", o(["§3.2"])], ["X-C003", o(["§3.2"])]]);
+    expect(disputedAtomicity(records, new Set(["X-C001", "X-C002", "X-C003"]))).toEqual(["X-C001", "X-C003"]);
+    expect(disputedAtomicity(records, new Set())).toEqual([]);
   });
 });

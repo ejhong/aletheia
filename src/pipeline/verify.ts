@@ -880,7 +880,10 @@ export async function judgeProposal(
           // As for evidence: a part refused as compound, and for nothing else, is split once more and no further.
           const text = fetched.text ?? ""; // narrowed above; the closure would not see it
           const parentAnchor = c.sourceAnchor!;
-          const judgeParts = async (parts: string[], sp: SplitResult, depth: number): Promise<void> => {
+          // The reader is told, and the origin records, the immediate parent: on the second round that is the part
+          // being split, not the original compound (review note #405: a proposition from elsewhere in the compound
+          // could otherwise pass as of the part).
+          const judgeParts = async (parts: string[], sp: SplitResult, depth: number, parent: string): Promise<void> => {
             for (const [n, part] of parts.entries()) {
               const id = nextClaimId(loaded, [...proposal.adds.claims.map((k) => k.id), ...okClaims.map((k) => k.id), ...admitted.map((k) => k.id)]);
               // A part is judged on an anchor that fits it: the splitter's own quote for the part, when the text carries
@@ -894,8 +897,8 @@ export async function judgeProposal(
               // A part keeps the compound's place in the ladder (its parents); the compound's dependencies,
               // alternatives and contradictions are the compound's, not each part's, and are not carried over
               // (§3.2) — said aloud below so a later pass can propose them per part.
-              const candidate: Claim = { ...c, id, statement: part, sourceAnchor: anchor, dependsOnClaimIds: [], alternativeToClaimIds: [], contradictsClaimIds: [], origin: { ref: `split of ${c.id} (${c.origin.ref})${anchored ? "; anchored by the splitter in the same text" : ""}${depth > 1 ? "; second round" : ""}`, extractedBy: sp.model ?? splitter.model, runId: sp.runId ?? splitter.runId, date: sp.date ?? reader.date } };
-              const partContext = `${anchorContext} This is a PART of a compound claim that was split — the compound's statement: "${c.statement}". Say in ofTheCompound whether the part states one of the propositions the compound bundled.`;
+              const candidate: Claim = { ...c, id, statement: part, sourceAnchor: anchor, dependsOnClaimIds: [], alternativeToClaimIds: [], contradictsClaimIds: [], origin: { ref: `split of ${c.id} (${c.origin.ref})${anchored ? "; anchored by the splitter in the same text" : ""}${depth > 1 ? `; second round, of the part "${parent}"` : ""}`, extractedBy: sp.model ?? splitter.model, runId: sp.runId ?? splitter.runId, date: sp.date ?? reader.date } };
+              const partContext = `${anchorContext} This is a PART of a compound claim that was split — the compound's statement: "${parent}".${depth > 1 ? ` (That compound is itself a part of "${c.statement}", split once already.)` : ""} Say in ofTheCompound whether the part states one of the propositions the compound bundled.`;
               const v2 = await judge({ statement: part, anchor }, text, partContext, meter);
               if (v2.ofTheCompound !== true) {
                 notes.push(`${c.id} part "${part.slice(0, 60)}" refused: ${v2.ofTheCompound === false ? "not a proposition the compound bundled" : "the reader did not affirm it is a proposition the compound bundled"} — ${v2.reason}`);
@@ -912,7 +915,7 @@ export async function judgeProposal(
                     continue;
                   }
                   notes.push(`${c.id} part "${part.slice(0, 60)}" still not one proposition (${v2.reason}); split again into ${again.parts.length} part(s)`);
-                  await judgeParts(again.parts, again, depth + 1);
+                  await judgeParts(again.parts, again, depth + 1, part);
                   continue;
                 }
                 notes.push(`${c.id} part "${part.slice(0, 60)}" refused (${bad.join(", ")}): ${v2.reason}`);
@@ -921,7 +924,7 @@ export async function judgeProposal(
               admitted.push(candidate);
             }
           };
-          await judgeParts(sp.parts, sp, 1);
+          await judgeParts(sp.parts, sp, 1, c.statement);
           const relations = [["dependsOn", c.dependsOnClaimIds], ["alternativeTo", c.alternativeToClaimIds], ["contradicts", c.contradictsClaimIds]].filter(([, v]) => (v as string[] | undefined)?.length).map(([k, v]) => `${k} ${(v as string[]).join(", ")}`);
           if (relations.length && admitted.length) notes.push(`${c.id}: its relations (${relations.join("; ")}) were not carried to its parts ${admitted.map((k) => k.id).join(", ")} — each part's relations are its own to propose`);
           reject(c.id, "claim", c.statement, `not atomic (${verdict.reason}); split into ${admitted.length ? admitted.map((k) => k.id).join(", ") : "nothing that survived"}`);
@@ -957,23 +960,42 @@ export async function judgeProposal(
         continue;
       }
       const admitted: Claim[] = [];
-      for (const part of sp.parts) {
-        const id = nextClaimId(loaded, [...proposal.adds.claims.map((k) => k.id), ...okClaims.map((k) => k.id), ...admitted.map((k) => k.id)]);
-        const v2 = await judge({ statement: part }, "", `${questionContext} ${TEXT_UNAVAILABLE} This is a PART of a compound claim that was split — the compound's statement: "${c.statement}" — anchored by the records that cite the compound, whose statements follow. Say in ofTheCompound whether the part states one of the propositions the compound bundled, and in atomic whether it is one proposition. Records citing the compound: ${citingText}`, meter);
-        if (v2.ofTheCompound !== true) {
-          notes.push(`${c.id} part "${part.slice(0, 60)}" refused: ${v2.ofTheCompound === false ? "not a proposition the compound bundled" : "the reader did not affirm it is a proposition the compound bundled"} — ${v2.reason}`);
-          continue;
+      // As on the anchored path: a part refused as compound, and for nothing else, is split once more and no
+      // further (2026-09-21: the first split of a founding claim gave parts that were themselves compound, and
+      // with no second round nothing survived — the claim was refused and everything citing it went with it).
+      // As above, the reader is told and the origin records the immediate parent (review note #405).
+      const judgeParts = async (parts: string[], sp: SplitResult, depth: number, parent: string): Promise<void> => {
+        for (const part of parts) {
+          const id = nextClaimId(loaded, [...proposal.adds.claims.map((k) => k.id), ...okClaims.map((k) => k.id), ...admitted.map((k) => k.id)]);
+          const v2 = await judge({ statement: part }, "", `${questionContext} ${TEXT_UNAVAILABLE} This is a PART of a compound claim that was split — the compound's statement: "${parent}"${depth > 1 ? ` (itself a part of "${c.statement}", split once already)` : ""} — anchored by the records that cite the compound, whose statements follow. Say in ofTheCompound whether the part states one of the propositions the compound bundled, and in atomic whether it is one proposition. Records citing the compound: ${citingText}`, meter);
+          if (v2.ofTheCompound !== true) {
+            notes.push(`${c.id} part "${part.slice(0, 60)}" refused: ${v2.ofTheCompound === false ? "not a proposition the compound bundled" : "the reader did not affirm it is a proposition the compound bundled"} — ${v2.reason}`);
+            continue;
+          }
+          if (v2.atomic === false) {
+            if (depth < 2) {
+              let again: SplitResult;
+              try {
+                again = asSplit(await split(part, citingText, meter));
+              } catch (err) {
+                notes.push(`${c.id} part "${part.slice(0, 60)}" refused (atomic): ${v2.reason}; the second split failed: ${(err as Error).message}`);
+                continue;
+              }
+              notes.push(`${c.id} part "${part.slice(0, 60)}" still not one proposition (${v2.reason}); split again into ${again.parts.length} part(s)`);
+              await judgeParts(again.parts, again, depth + 1, part);
+              continue;
+            }
+            notes.push(`${c.id} part "${part.slice(0, 60)}" refused (atomic): ${v2.reason}`);
+            continue;
+          }
+          const { sourceAnchor: _anchor, ...rest } = c;
+          void _anchor;
+          // A part keeps the compound's place in the ladder (its parents) and no anchor, as the compound had none; the
+          // compound's dependencies, alternatives and contradictions are not carried over (§3.2).
+          admitted.push({ ...rest, id, statement: part, dependsOnClaimIds: [], alternativeToClaimIds: [], contradictsClaimIds: [], origin: { ref: `split of ${c.id} (${c.origin.ref}) on the statements of the records that cite it, without a text; anchored as the compound was, by the records that cite it${depth > 1 ? `; second round, of the part "${parent}"` : ""}`, extractedBy: sp.model ?? splitter.model, runId: sp.runId ?? splitter.runId, date: sp.date ?? reader.date } });
         }
-        if (v2.atomic === false) {
-          notes.push(`${c.id} part "${part.slice(0, 60)}" refused (atomic): ${v2.reason}`);
-          continue;
-        }
-        const { sourceAnchor: _anchor, ...rest } = c;
-        void _anchor;
-        // A part keeps the compound's place in the ladder (its parents) and no anchor, as the compound had none; the
-        // compound's dependencies, alternatives and contradictions are not carried over (§3.2).
-        admitted.push({ ...rest, id, statement: part, dependsOnClaimIds: [], alternativeToClaimIds: [], contradictsClaimIds: [], origin: { ref: `split of ${c.id} (${c.origin.ref}) on the statements of the records that cite it, without a text; anchored as the compound was, by the records that cite it`, extractedBy: sp.model ?? splitter.model, runId: sp.runId ?? splitter.runId, date: sp.date ?? reader.date } });
-      }
+      };
+      await judgeParts(sp.parts, sp, 1, c.statement);
       const relations = [["dependsOn", c.dependsOnClaimIds], ["alternativeTo", c.alternativeToClaimIds], ["contradicts", c.contradictsClaimIds]].filter(([, v]) => (v as string[] | undefined)?.length).map(([k, v]) => `${k} ${(v as string[]).join(", ")}`);
       if (relations.length && admitted.length) notes.push(`${c.id}: its relations (${relations.join("; ")}) were not carried to its parts ${admitted.map((k) => k.id).join(", ")} — each part's relations are its own to propose`);
       reject(c.id, "claim", c.statement, `not atomic (${blind.reason}); split into ${admitted.length ? admitted.map((k) => k.id).join(", ") : "nothing that survived"}`);

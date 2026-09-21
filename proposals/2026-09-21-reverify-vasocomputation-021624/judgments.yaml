@@ -1,0 +1,132 @@
+b413097228ef556c0517bec37c9478cb4fdc8dba5c5874351def0e4f875ecee4:
+  model: claude-sonnet-5
+  protocol: verify-v7
+  runId: 2026-09-21-reverify-vasocomputation-021624
+  date: 2026-09-21
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    ofTheCompound: null
+    direction: null
+    bearsOn: null
+    bearing:
+      - claimId: VASO-C190
+        direction: null
+      - claimId: VASO-C191
+        direction: context
+    reason: "The quoted passage accurately reflects the introduction's framing, and the locator is correct, but the sourceStatement bundles three distinct propositions (a cited prevalence figure attributed to Fishbain 1986, a claim about myofascial pain syndrome being a major cause of musculoskeletal pain, and the naming convention 'muscle knots'), so it is not atomic and should be split into separate parts. On direction: the 23-million prevalence figure is itself a pointer to an unretrieved 1986 study and concerns myofascial pain syndrome broadly, not specifically the prevalence of discrete tender points in the general population, so at most it is context for VASO-C191 rather than support; the passage does not itself establish that discrete tender points can be palpated (that is a methodological/clinical finding stated later in the paper), so it does not bear on VASO-C190 at all."
+2b72cad67c6c59e8b53e5d474415ef50125610e88968816c84ea805ddf2be372:
+  model: claude-sonnet-5
+  protocol: verify-v7
+  runId: 2026-09-21-reverify-vasocomputation-021624
+  date: 2026-09-21
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    ofTheCompound: true
+    direction: null
+    bearsOn: null
+    bearing:
+      - claimId: VASO-C190
+        direction: null
+      - claimId: VASO-C191
+        direction: context
+    reason: The quote is accurately reproduced and properly attributed as a cited estimate from Fishbain et al. 1986 about the prevalence of myofascial pain syndrome broadly, not about palpable tender points specifically, so it does not bear on VASO-C190 (existence of palpable tender points). As a pointer to an unretrieved cited study, per the citation rule it can at most provide context for the population-prevalence claim VASO-C191, not direct support, so the stated 'supports' direction is too strong for both. The quote is a single atomic proposition (the prevalence figure) and matches one of the propositions bundled in the original compound record, so it is properly a part of that compound.
+738ef588bcc78afda30277211927e4342125cb3dbad5fbe69f9cbb11002338df:
+  model: claude-sonnet-5
+  protocol: verify-v7
+  runId: 2026-09-21-reverify-vasocomputation-021624
+  date: 2026-09-21
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    ofTheCompound: true
+    direction: null
+    bearsOn: null
+    bearing:
+      - claimId: VASO-C190
+        direction: null
+      - claimId: VASO-C191
+        direction: context
+    reason: The quoted text matches the source's introductory sentence and is correctly attributed, but it says nothing about discrete tender points being palpable (no bearing on C190) and only vaguely gestures at breadth via 'affects every age group,' which is an unreferenced framing assertion by the same proponents rather than a measured prevalence finding, so at best it is context for C191, not support. The sourceStatement also bundles two separate assertions (being a major progenitor of pain/tenderness, and affecting every age group) joined by 'and,' so it is not atomic even though it matches one bundled item from the parent compound.
+041c6ff997f6a3003f8cfa498ca29641b6a0ef6520043eb617af88af45ad5b6a:
+  model: claude-sonnet-5
+  protocol: verify-v7
+  runId: 2026-09-21-reverify-vasocomputation-021624
+  date: 2026-09-21
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: false
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    ofTheCompound: true
+    direction: null
+    bearsOn: null
+    bearing:
+      - claimId: VASO-C190
+        direction: null
+      - claimId: VASO-C191
+        direction: context
+    reason: The exactLocator was rewritten by the splitting process to point to the article's Keywords list, but the quoted sentence ('major progenitor of nonarticular local musculoskeletal pain') actually appears in the Introduction's first paragraph, so the locator is wrong. The quote itself is accurately drawn from the authors' introductory framing and is one of the propositions the compound bundled, but as a standalone statement it speaks to myofascial pain syndrome's general clinical burden, not to whether discrete tender points are palpable (C190) or how commonly they occur in the general population (C191); at best it offers background context for the latter and bears on neither directly as 'supports'.
+1b460cab6117fac715e3d0a18c5060c06bac80ac4760a1649d59224f576bf514:
+  model: claude-sonnet-5
+  protocol: verify-v7
+  runId: 2026-09-21-reverify-vasocomputation-021624
+  date: 2026-09-21
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: false
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: false
+    ofTheCompound: false
+    direction: null
+    bearsOn: null
+    bearing:
+      - claimId: VASO-C190
+        direction: context
+      - claimId: VASO-C191
+        direction: context
+    reason: The reader's locator points to the Keywords list, which contains no such text; the actual quote sits in the Introduction's first paragraph, so the locator is wrong. The part also still bundles two of the compound's original propositions (affecting every age group, and being commonly recognized as 'muscle knots'), so it is not atomic and does not cleanly state a single piece of the compound. Even setting that aside, this introductory framing about common recognition of 'muscle knots' does not itself support that discrete tender points are palpable or that they occur commonly in the general population; at most it is background context, not evidence bearing directly on either claim's truth.
+20340bd014041dd37d20bddf1f54f73d7efcde354d8ed1c298de514b49a031ae:
+  model: claude-sonnet-5
+  protocol: verify-v7
+  runId: 2026-09-21-reverify-vasocomputation-021624
+  date: 2026-09-21
+  answer:
+    quoteInContext: true
+    statementSupported: true
+    locatorSupported: true
+    directionRight: false
+    independenceNoted: true
+    relevant: true
+    atomic: true
+    ofTheCompound: true
+    direction: null
+    bearsOn: null
+    bearing:
+      - claimId: VASO-C190
+        direction: context
+      - claimId: VASO-C191
+        direction: context
+    reason: The quoted phrase merely notes that myofascial pain syndrome is colloquially called 'muscle knots'; it is a naming/recognition remark, not an assertion that discrete tender points exist or are common in the population. It therefore bears on the topic only as background framing (context) rather than as support for either C190 or C191. The quote is faithfully reproduced and in context, the locator is broad but still correctly within the Introduction, and the part does restate one of the compound's bundled propositions.

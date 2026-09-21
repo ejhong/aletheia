@@ -130,19 +130,19 @@
 # ── Observation rung ────────────────────────────────────────────────────────
 
 - id: VASO-C001
-  statement: >-
-    Discrete, exquisitely tender, palpable points occur commonly in human muscle and fascia across the general population.
+  statement: Discrete, exquisitely tender, palpable points occur commonly in human muscle and fascia across the general population.
   theme: phenomenon
   rung: observation
   claimType: observation
+  parentClaimIds:
+    - VASO-C020
+  dependsOnClaimIds: []
   reviewState: ai_extracted
   origin:
-    ref: "Knots of Existence essay — a phenomenon without a mechanism"
-    extractedBy: "Fable (AI agent)"
-    runId: "vaso-extract-2026-08"
-    date: "2026-08-22"
-  parentClaimIds: [ VASO-C020 ]
-  dependsOnClaimIds: []
+    ref: Knots of Existence essay — a phenomenon without a mechanism
+    extractedBy: Fable (AI agent)
+    runId: vaso-extract-2026-08
+    date: 2026-08-22
 
 - id: VASO-C002
   statement: Trigger points exhibit sustained spontaneous needle-EMG activity at a millimeter-scale nidus, more prevalent there than at non-tender sites within the same endplate zone and absent at taut-band sites outside the endplate zone.
@@ -266,12 +266,13 @@
   parentClaimIds:
     - VASO-C005
   dependsOnClaimIds: []
-  reviewState: ai_extracted
+  reviewState: rejected
   origin:
     ref: report 2026-09-09-report-vasocomputation-023157
     extractedBy: claude-fable-5-1
     runId: 2026-09-09-draft-vasocomputation-040754
     date: 2026-09-09
+  rejectionReason: "Refused at the answer's re-reading 2026-09-20 (2026-09-20-answer-vasocomputation-172213): not atomic (The quoted text appears exactly in the Results paragraph on trigger point areas and is used in the same sense as the source (active > latent > normal in P<.01 comparisons), and the locator correctly points to that paragraph; the proposition also bears on the case's size/tissue-difference accounts. However, the statement bundles two distinct comparative findings (active-vs-latent and latent-vs-normal) into one sentence, so it is not a single atomic proposition and should be split into two separate claims each judged on its own comparison.); split into VASO-C182, VASO-C183, VASO-C184"
 - id: VASO-C034
   statement: Endplate noise on needle EMG occurs at some endplate-zone sites that are outside any trigger point, at lower prevalence than at trigger-point sites.
   theme: neural-signature
@@ -1997,3 +1998,188 @@
     - VASO-C021
   reviewState: ai_extracted
   origin: *a31
+
+- id: VASO-C181
+  statement: In a community general-practice sample examined with the 18-site tender-point count, some subjects reporting no pain had eleven or more tender points. (True if the survey records subjects in the no-pain group with counts at or above eleven.)
+  theme: phenomenon
+  rung: observation
+  claimType: observation
+  sourceAnchor:
+    locator: PMC2540791, Abstract (Results)
+    quote: with counts of 11 or more were in the group reporting no pain
+    sourceId: SRC-CROFT-1994
+  parentClaimIds:
+    - VASO-C001
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: report 2026-09-20-report-vasocomputation-112413
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-20-draft-vasocomputation-113013
+    date: 2026-09-20
+
+- id: VASO-C182
+  statement: On sonoelastography, active sites had larger trigger point areas (mean ± SD, 0.57 ± 0.20 cm²) than latent sites (0.36 ± 0.16 cm²).
+  theme: phenomenon
+  rung: observation
+  claimType: measurement
+  sourceAnchor:
+    locator: Abstract — Results
+    quote: active sites (spontaneously painful with palpable myofascial trigger points) had larger trigger points (mean ± SD, 0.57 ± 0.20 cm²) compared to latent sites (palpable trigger points painful on palpation; 0.36 ± 0.16 cm²)
+    sourceId: SRC-BALLYNS-2011
+  parentClaimIds:
+    - VASO-C005
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: split of VASO-C033 (report 2026-09-09-report-vasocomputation-023157); anchored by the splitter in the same text
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-20-answer-vasocomputation-172213
+    date: 2026-09-20
+  alternativeToClaimIds: []
+  contradictsClaimIds: []
+- id: VASO-C183
+  statement: Active and latent trigger point sites had significantly larger areas on vibration elastography than palpably normal sites (0.17 ± 0.22 cm²; P < .01).
+  theme: phenomenon
+  rung: observation
+  claimType: measurement
+  sourceAnchor:
+    locator: Results
+    quote: Active and latent sites had significantly higher areas compared to normal sites ( P < .01)
+    sourceId: SRC-BALLYNS-2011
+  parentClaimIds:
+    - VASO-C005
+  dependsOnClaimIds: []
+  reviewState: rejected
+  origin:
+    ref: split of VASO-C033 (report 2026-09-09-report-vasocomputation-023157); anchored by the splitter in the same text
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-20-answer-vasocomputation-172213
+    date: 2026-09-20
+  alternativeToClaimIds: []
+  contradictsClaimIds: []
+  rejectionReason: "Refused at the answer's re-reading 2026-09-20 (2026-09-20-answer-vasocomputation-192504): not atomic (The quoted sentence appears in Results and is used faithfully, and the normal-site value cited matches the abstract's reported figure, so the anchor is contextually and locator-accurate. However, the statement bundles two separable comparisons—active-vs-normal and latent-vs-normal—into a single claim, even though the ROC/AUC data in the source show these are independently testable relationships (e.g., different AUCs for each pairing), so it is not atomic. The proposition, once split, does bear on the case's competing mechanistic accounts of trigger point structure.); split into VASO-C185, VASO-C186, VASO-C187; the split's parts were corrected by the operator on 2026-09-20 (session_01AiXD4y5Y91KC7iM3uBhWmu, operator-by-hand-v1): VASO-C185, a duplicate of VASO-C184, and VASO-C186, not a proposition of this claim, refused; the two propositions bundled here entered as VASO-C188 and VASO-C189, with VASO-C187 the normal-site value"
+- id: VASO-C184
+  statement: Active trigger point sites were significantly larger than latent sites on vibration elastography (P < .01).
+  theme: phenomenon
+  rung: observation
+  claimType: measurement
+  sourceAnchor:
+    locator: Results
+    quote: active sites were significantly larger than latent sites ( P < .01)
+    sourceId: SRC-BALLYNS-2011
+  parentClaimIds:
+    - VASO-C005
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: split of VASO-C033 (report 2026-09-09-report-vasocomputation-023157); anchored by the splitter in the same text
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-20-answer-vasocomputation-172213
+    date: 2026-09-20
+  alternativeToClaimIds: []
+  contradictsClaimIds: []
+
+- id: VASO-C185
+  statement: Active sites had significantly larger trigger point areas than latent sites (P < .01).
+  theme: phenomenon
+  rung: observation
+  claimType: measurement
+  sourceAnchor:
+    locator: Results
+    quote: active sites were significantly larger than latent sites ( P < .01)
+    sourceId: SRC-BALLYNS-2011
+  parentClaimIds:
+    - VASO-C005
+  dependsOnClaimIds: []
+  alternativeToClaimIds: []
+  contradictsClaimIds: []
+  reviewState: rejected
+  origin:
+    ref: split of VASO-C183 (split of VASO-C033 (report 2026-09-09-report-vasocomputation-023157); anchored by the splitter in the same text); anchored by the splitter in the same text; second round
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-20-answer-vasocomputation-192504
+    date: 2026-09-20
+  rejectionReason: "Refused by the operator on 2026-09-20 (session_01AiXD4y5Y91KC7iM3uBhWmu, operator-by-hand-v1): a duplicate of VASO-C184 — the same proposition on the same anchor — entered by a split of VASO-C183 that drifted to propositions the compound did not bundle (the GPT-5.6 Sol seat's objection on #372 at cded154)."
+- id: VASO-C186
+  statement: Trigger point areas assessed by vibration elastography showed trends similar to those of pain pressure threshold scores.
+  theme: phenomenon
+  rung: observation
+  claimType: measurement
+  sourceAnchor:
+    locator: Results
+    quote: Trigger point areas assessed by vibration elastography showed trends similar to those of pain pressure threshold scores
+    sourceId: SRC-BALLYNS-2011
+  parentClaimIds:
+    - VASO-C005
+  dependsOnClaimIds: []
+  alternativeToClaimIds: []
+  contradictsClaimIds: []
+  reviewState: rejected
+  origin:
+    ref: split of VASO-C183 (split of VASO-C033 (report 2026-09-09-report-vasocomputation-023157); anchored by the splitter in the same text); anchored by the splitter in the same text; second round
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-20-answer-vasocomputation-192504
+    date: 2026-09-20
+  rejectionReason: "Refused by the operator on 2026-09-20 (session_01AiXD4y5Y91KC7iM3uBhWmu, operator-by-hand-v1): not a proposition VASO-C183 bundled — the anchor's neighbouring sentence on pain-pressure thresholds — entered by a split that drifted (the GPT-5.6 Sol seat's objection on #372 at cded154). The proposition may be proposed on its own with its own anchor."
+- id: VASO-C187
+  statement: Palpably normal sites had a mean trigger point area of 0.17 ± 0.22 cm² on sonoelastography.
+  theme: phenomenon
+  rung: observation
+  claimType: measurement
+  sourceAnchor:
+    locator: Abstract — Results
+    quote: palpably normal sites (0.17 ± 0.22 cm²; P < .01)
+    sourceId: SRC-BALLYNS-2011
+  parentClaimIds:
+    - VASO-C005
+  dependsOnClaimIds: []
+  alternativeToClaimIds: []
+  contradictsClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: split of VASO-C183 (split of VASO-C033 (report 2026-09-09-report-vasocomputation-023157); anchored by the splitter in the same text); anchored by the splitter in the same text
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-20-answer-vasocomputation-192504
+    date: 2026-09-20
+
+- id: VASO-C188
+  statement: Active trigger point sites had significantly larger areas on vibration elastography than palpably normal sites (P < .01).
+  theme: phenomenon
+  rung: observation
+  claimType: measurement
+  parentClaimIds:
+    - VASO-C005
+  dependsOnClaimIds: []
+  alternativeToClaimIds: []
+  contradictsClaimIds: []
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: Results
+    quote: Active and latent sites had significantly higher areas compared to normal sites ( P < .01)
+    sourceId: SRC-BALLYNS-2011
+  origin:
+    ref: "split of VASO-C183 (split of VASO-C033 (report 2026-09-09-report-vasocomputation-023157)) by the operator, correcting a split that drifted: one of the two propositions the compound bundled, on the compound's own anchor"
+    extractedBy: claude-fable-5-1 (operator, by hand)
+    runId: session_01AiXD4y5Y91KC7iM3uBhWmu
+    date: 2026-09-20
+- id: VASO-C189
+  statement: Latent trigger point sites had significantly larger areas on vibration elastography than palpably normal sites (P < .01).
+  theme: phenomenon
+  rung: observation
+  claimType: measurement
+  parentClaimIds:
+    - VASO-C005
+  dependsOnClaimIds: []
+  alternativeToClaimIds: []
+  contradictsClaimIds: []
+  reviewState: ai_extracted
+  sourceAnchor:
+    locator: Results
+    quote: Active and latent sites had significantly higher areas compared to normal sites ( P < .01)
+    sourceId: SRC-BALLYNS-2011
+  origin:
+    ref: "split of VASO-C183 (split of VASO-C033 (report 2026-09-09-report-vasocomputation-023157)) by the operator, correcting a split that drifted: one of the two propositions the compound bundled, on the compound's own anchor"
+    extractedBy: claude-fable-5-1 (operator, by hand)
+    runId: session_01AiXD4y5Y91KC7iM3uBhWmu
+    date: 2026-09-20

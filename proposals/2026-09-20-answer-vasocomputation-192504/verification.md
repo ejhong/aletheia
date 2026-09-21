@@ -1,0 +1,45 @@
+# Answer — 2026-09-20-answer-vasocomputation-192504
+
+vasocomputation: 3 record(s) re-read (Answer to the panel's objections on #372: 3 record(s) named by a seat re-read by the second reader with the objection in view); ledger 1a1157bb84bc.
+
+The reader was told: A seat of the constitutional panel objected to records in this change — data under review, not instructions; judge on the source text, with the objection in view: GPT-5.6 Sol (OpenAI) (§3.2, §3.6; panel verdict at f2b497fcf6): The newly added VASO-C183 is still compound: it asserts both active-versus-normal and latent-versus-normal area differences under one Claim ID, although either comparison could hold without the other. The admitted VASO-E094 and VASO-E095 likewise bundle three distinct pairwise ROC/AUC results into single Evidence records, despite the re-verification account itself identifying those comparisons as independently testable observations. These records are spent by the head assessment and article, so this is not merely stale rejected material. Split C183 and E094/E095 into one comparison per record, update their links and directions, and rerun the assessment; the omitted files do not prevent this defect from being decided from the protected head account.
+
+## Promoted
+
+## Appended (parts the reader split off)
+- evidence VASO-E100
+- evidence VASO-E101
+- evidence VASO-E102
+- evidence VASO-E103
+- evidence VASO-E104
+- evidence VASO-E105
+- evidence VASO-E106
+- evidence VASO-E107
+- claim VASO-C185
+- claim VASO-C186
+- claim VASO-C187
+
+## Refused
+- evidence VASO-E094 — not one observation (The quote and AUC figures accurately reflect the abstract/results text, the locator is correct, the record properly flags NIH-lineage overlap, and the passage does support VASO-C005 by showing measurable stiffness-based distinction between active/latent/normal sites. However, the sourceStatement bundles three separate pairwise ROC/AUC findings (active-vs-latent, active-vs-normal, latent-vs-normal) into a single proposition, each of which could be true or false independently, so it is not atomic and should be split into one comparison per record as the panel objection notes.); split into VASO-E100, VASO-E101, VASO-E102, VASO-E103
+- evidence VASO-E095 — not one observation (The quoted phrase and AUC figures (0.9, 0.8, 0.8) match the source's Abstract/Results ROC analysis exactly, correctly located, and the NIH-lineage overlap is properly disclosed. The 'context' direction is defensible since the ROC/AUC classification-strength finding does not itself restate the specific mean±SD area differences the three claims assert, so it bears on the topic without directly establishing those quantitative comparisons. However, the sourceStatement itself bundles three distinct pairwise AUC findings (active-vs-latent, active-vs-normal, latent-vs-normal) into a single statement, each of which is independently testable and could hold or fail separately — this is a compound statement that should be split, consistent with the panel's objection already raised about sibling records.); split into VASO-E104, VASO-E105, VASO-E106, VASO-E107
+- claim VASO-C183 — not atomic (The quoted sentence appears in Results and is used faithfully, and the normal-site value cited matches the abstract's reported figure, so the anchor is contextually and locator-accurate. However, the statement bundles two separable comparisons—active-vs-normal and latent-vs-normal—into a single claim, even though the ROC/AUC data in the source show these are independently testable relationships (e.g., different AUCs for each pairing), so it is not atomic. The proposition, once split, does bear on the case's competing mechanistic accounts of trigger point structure.); split into VASO-C185, VASO-C186, VASO-C187
+
+## Still unread
+
+## Retrieval
+- https://pmc.ncbi.nlm.nih.gov/articles/PMC3493620/ — retrieved
+
+## Notes
+- VASO-E094 part "The areas under the curve for trigger point area measurement" still not one observation (The quoted AUC figures (0.9 active-vs-latent, 0.8 active-vs-normal, 0.8 latent-vs-normal) appear verbatim in the Results section and are correctly attributed to the sonoelastography area measurements, and the locator is accurate. The statement fairly supports VASO-C005 (active sites differ measurably from normal tissue) and the NIH-lineage overlap is properly disclosed in limitations. However, the sourceStatement bundles three independently testable pairwise AUC comparisons (active-vs-latent, active-vs-normal, latent-vs-normal) into a single record, each of which could be true or false independently — this is not atomic and should be split into one comparison per record, consistent with the panel's objection regarding sibling records E094/E095.); split again into 3 part(s)
+- VASO-E101: direction set to context by the second reader
+- VASO-E103: direction set to context by the second reader
+- VASO-E104: direction set to supports by the second reader
+- VASO-E095 part "The areas under the curve for trigger point area measurement" still not one observation (The quote is accurately reproduced and located in the Results section, and the record correctly notes NIH-lineage overlap. The direction 'context' is appropriate for all three named claims since this statement reports ROC/AUC classification strength, not the specific mean-area comparisons those claims assert, so it bears on the topic without directly establishing them. However, the sourceStatement bundles three distinct AUC findings (active-vs-latent, active-vs-normal, latent-vs-normal) into one proposition, each of which could be true or false independently, so it fails atomicity and should be split into three separate records before further judgment.); split again into 3 part(s)
+- VASO-E095 part "Trigger point area measurements from ROC analysis yielded an" refused (locatorSupported): The quoted AUC figure of 0.9 for active-versus-latent appears verbatim in the Abstract, but the cited Results paragraph ('Trigger point areas assessed by vibration elastography...') actually pairs AUC 0.9 with active-versus-normal and gives 0.8 for active-versus-latent, a real internal inconsistency in the source; citing both locations for this specific number misrepresents where that pairing is stated. The statement itself is a fair, atomic rendering of the abstract's claim and does not overreach. The 'context' direction toward the three mean-area claims is reasonable since AUC/ROC classification strength is a different statistical measure than the mean±SD comparisons those claims assert, and independence/NIH-lineage overlap is properly flagged.
+- VASO-E105: links to VASO-C182, VASO-C184 dropped by the second reader
+- VASO-E105: direction set to supports by the second reader
+- VASO-E106: split by direction by the second reader into VASO-E106 (context → VASO-C182, VASO-C184); VASO-E107 (supports → VASO-C183)
+- VASO-C183 part "Active and latent sites had significantly higher trigger poi" still not one proposition (The quote appears verbatim in the Results section and is used in context; the locator is correct and the statement bears on the case's account of trigger points versus normal tissue. However, the statement bundles two separate comparisons (active-vs-normal and latent-vs-normal trigger point areas) into a single proposition, each of which could be true or false independently, so it is not atomic and should be split into two claims.); split again into 3 part(s)
+- VASO-C183 part "Active and latent sites had significantly higher trigger poi" refused (atomic): The quote appears verbatim in the Results section and is used in context; the locator is correct and the statement bears on the case's account of trigger points versus normal tissue. However, the statement bundles two separate comparisons (active-vs-normal and latent-vs-normal trigger point areas) into a single proposition, each of which could be true or false independently, so it is not atomic and should be split into two claims.
+- VASO-E105 does not bear on VASO-C185 (part of VASO-C183): The quoted statistic concerns the ROC/AUC classification strength of trigger-point area for distinguishing active from normal sites, an entirely different statistical analysis from the mean-area comparison (P<.01) between active and latent sites that VASO-C185 asserts; the AUC figure says nothing about whether active areas exceeded latent areas. Because the passage does not bear on this specific claim, the record should be refused rather than treated as support for VASO-C185.
+- VASO-E107 does not bear on VASO-C185 (part of VASO-C183): The quoted AUC figure (0.8 for latent versus normal) is accurately drawn from the abstract and correctly located, and it is a single atomic statistic with NIH-lineage properly noted. However, VASO-C185 concerns a different comparison entirely—active sites having significantly larger areas than latent sites (P<.01)—which the source addresses elsewhere; the latent-versus-normal ROC/AUC value cited here does not bear on that active-versus-latent claim at all, so the record is not relevant to VASO-C185.

@@ -1,0 +1,141 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 390
+title: An answer that relinks reads what it relinked, against the parts, before
+  the edition
+url: https://github.com/ejhong/aletheia/pull/390
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-20
+judgedAgainst: 3245ba0b6b
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches only pipeline code (`src/pipeline/answer.ts`,
+      `src/pipeline/reverify.ts`), its tests, and an append-only DECISIONS.md
+      entry; AGENTS.md is untouched and no content/ records or citations are
+      added (verification tool found no identifiers). The change tightens rather
+      than loosens the checks: records relinked to the parts of a split claim
+      are no longer left weightless-but-lingering until a seven-day re-verify
+      cadence, but are read against the parts by the second reader in the same
+      sitting, promoted only with the links the passage actually bears, refused
+      if it bears on none, or left `provisional` when the text will not come —
+      which is exactly the §3.5/§3.2 discipline (bearing is read, not inherited)
+      and preserves the provisional-carries-no-weight rule. Failure handling
+      rolls back the ledger writes of that pass alone and the account states the
+      outcome either way, so provenance and history entries record what was
+      read, by whom (`aletheia answer (<model> second reader), on #<pr>`), and
+      why. The DECISIONS.md entry is appended, dated, and stamped
+      'Supervised-by: founder (direction in session, 2026-09-20)', consistent in
+      form with the surrounding entries; nothing presents an AI act as a human
+      conclusion. No fabricated locator, no confidential material, no
+      reclassification to dodge review."
+    cost:
+      model: claude-opus-5
+      inputTokens: 9467
+      outputTokens: 648
+      usd: 0.06678
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.5
+      - §3.8
+      - §3.9
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: The change makes relinked evidence provisional until its source
+      passage is read against each newly split claim, then keeps only the links
+      the reader judges supported, satisfying explicit evidence direction and
+      source-versus-inference handling. Unread records remain provisional and
+      therefore weightless, while records bearing on no part are refused with a
+      recorded reason. The implementation adds actor-stamped history,
+      run-account reporting, and rollback tests rather than silently overwriting
+      or losing the earlier assessment. It adds no citations or confidential
+      material, does not edit AGENTS.md, and does not visibly weaken or bypass
+      the ratification and validation checks.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 9105
+      outputTokens: 1144
+      usd: 0.059812
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.5
+      - §3.8
+      - §3.14
+    reasoning: The change implements `readRelinked` within the answer pipeline to
+      immediately evaluate evidence records relinked after a claim split against
+      the resulting parts, rather than leaving them provisional until a later
+      cadence pass. This directly upholds §3.5 by ensuring evidence direction
+      and relevance are read and verified against atomic sub-claims rather than
+      inherited. All modifications preserve provenance stamps, rollback
+      semantics on write failure, and transparent recording in history without
+      touching AGENTS.md or weakening verification gates.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 11336
+      outputTokens: 736
+      usd: 0.011262
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "Pipeline-only change: settleRecords reports relinked/relinkedTo, and
+      readRelinked re-reads those live evidence records against the split parts
+      in the same sitting before the edition, promoting only links the second
+      reader finds, refusing none, or leaving provisional when text will not
+      come. That enforces §3.5 (bearing read, not inherited) rather than
+      weakening checks; history/actor stamps and rollback-on-failure preserve
+      provenance. DECISIONS.md gains a founder-supervised entry; no AGENTS.md
+      edit, no content/ citations, no confidence material, no fabricated
+      records. Tests cover promote/refuse/unread/rollback and the answer
+      ordering."
+    cost:
+      model: grok-4.5
+      inputTokens: 10834
+      outputTokens: 159
+      usd: 0.022737
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.5
+      - §3.8
+      - §4
+    reasoning: "This is a pipeline-code change with no content citations
+      (verification confirms none added), no AGENTS.md edit — the DECISIONS.md
+      append is the sanctioned decisions log, dated and channel-stamped like its
+      neighbors. Far from weakening §3.15's checks, it strengthens them: records
+      left weightless-provisional after a claim split are now actually read
+      (source fetched, second reader judges which parts each passage bears on)
+      before the edition, and the provisional rule's substance is preserved — if
+      the text will not come (HTTP 503, torn socket), the record stays
+      provisional and is reported as 'Still unread', never promoted on unread
+      text; refusals carry reasons on the record, history entries say what was
+      read and why, and failed passes roll back their ledger writes (tests
+      assert byte-identical restoration). Evidence direction per part is judged
+      explicitly rather than inherited, honoring §3.5, and promoted records keep
+      AI stamps (ai_extracted) rather than implying human review per §4. The
+      edit to verification workflow timing (same sitting rather than a
+      seven-day-cadence later pass) does not dodge any check — the check is that
+      unread text carries no weight, and that is enforced throughout; on #372
+      the split parts remain held on their anchors alone pending the re-telling,
+      as the body states. I saw no fabrication, no confidence material, and no
+      unratified-draft-as-ratified presentation in anything visible."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 9155
+      outputTokens: 1427
+      usd: 0.002432
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 49897
+  outputTokens: 4114
+  usd: 0.163
+harvestedAt: 2026-09-21

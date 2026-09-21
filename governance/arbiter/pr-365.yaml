@@ -1,0 +1,168 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 365
+title: "Chain: 2026-09-19"
+url: https://github.com/ejhong/aletheia/pull/365
+verdict: pass
+reason: 4 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-19
+judgedAgainst: ad2164a545
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "Every identifier the diff adds under content/ resolved mechanically
+      (Schmidt's Neo-Lithics PDF, the two Tepe Telegrams posts, the IJAS and
+      Antiquaries Journal DOIs, the Berossos/Manetho scan, the Samizdat
+      transcription), and each source record's verification label
+      ('ai_verified', with retrieval date and run id) matches the run account's
+      retrieval list; no locator in the diff contradicts its own content.
+      Provenance is stamped throughout: the assessment header says plainly
+      'Append-only; NOT human reviewed', carries
+      runId/producedBy/model/date/promptVersion and humanReviewed: false, and
+      the edition is labelled a candidate that replaces the incumbent only if
+      the panel prefers it — no draft is dressed as ratified (§3.15, §4). The
+      verify pass is visibly strict rather than dodged: 55 candidates were
+      refused with reasoned, anchored explanations, splits are recorded with
+      readerActs showing who changed a direction or dropped a claim link and why
+      (§3.5, §3.9, §3.14), the Wiggermann material enters only as weak support
+      with its secondhand blog-transcription status stated and the printed page
+      listed as blocked (§3.7, §3.8), and negative/absence records (DEEP-E073,
+      DEEP-E074) are carried explicitly (§3.11). The article and assessment
+      repeatedly mark anchor-only claims as such and grade them unresolved, and
+      the synthesis names DEEP-E020 as the record whose removal would most
+      change the verdict — calibrated rather than falsely precise (§3.13).
+      AGENTS.md is untouched; the only docs change is none, and the harvested
+      arbiter files are verbatim prior-verdict records. My one reservation is
+      minor and not a violation: DEEP-C092's statement ('In short, Oannes taught
+      men all those things conducive to a settled and civilized life') is
+      phrased as the assertion rather than as a source-statement claim, and its
+      sourceAnchor quote ('how to build cities, found temples, and make laws')
+      is a neighbouring clause rather than the 'in short' phrase itself — I
+      would like the anchor quote aligned to the sentence the statement
+      compresses, but the quote is genuine and at the cited page, so this is
+      ordinary imperfection."
+    cost:
+      model: claude-opus-5
+      inputTokens: 160583
+      outputTokens: 1810
+      usd: 0.888728
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: unsure
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: The visible run account labels the assessment as an AI draft,
+      preserves run/model/date provenance, records refusals, and the added
+      citations all resolve. However, twelve changed files are omitted,
+      including raw.json, report.md, proposal.yaml, judgments.yaml, and multiple
+      model reply files; these public working records could contain unshown
+      source text, inconsistent provenance, or material whose publication
+      permission cannot be assessed. The run account summarizes the admitted
+      content but expressly excludes those working files, so it does not decide
+      compliance for the complete change. I would need the omitted files
+      themselves, or a mechanically authenticated account covering their
+      complete contents and provenance/confidence status.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 115258
+      outputTokens: 2239
+      usd: 0.505812
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.1
+      - §3.2
+      - §3.5
+      - §3.7
+      - §3.8
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: The change complies with the constitution across all epistemic and
+      operational dimensions. AGENTS.md is untouched, and mechanical citation
+      verification confirms all added DOIs, URLs, and archive links resolve
+      successfully. The new sources in sources.yaml are honestly marked with
+      verification labels (`ai_verified`) accompanied by clear reliability
+      caveats regarding abstract-only or secondhand blog access. Newly admitted
+      evidence records and claims are atomic, accurately located, and strictly
+      distinguished by direction (supports, qualifies, context). The new draft
+      assessment and edition maintain calibrated uncertainty, honestly stating
+      that the central hypothesis remains unresolved while explaining why object
+      descriptions are confirmed without establishing diffusion or connection.
+      Provenance stamps, spend records, append-only history entries, and
+      comprehensive dispositions (recording both acceptances and reasoned
+      rejections) are completely documented.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 132801
+      outputTokens: 1251
+      usd: 0.104292
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The pipeline admits 7 sources, 25 evidence, 9 claims and 2 research
+      items after a second-reader verify that rejected 55 candidates for
+      atomicity, relevance or unsupported anchors, with reasons and splits
+      recorded in dispositions. Every new DOI/URL mechanically RESOLVES; sources
+      carry honest ai_verified labels, exact locators, and secondhand status
+      (Wiggermann via blog) stated as weak. The draft assessment is stamped
+      role:draft, humanReviewed:false, with runId/model/date; the article ties
+      claims to admitted records, keeps anchor-only material unresolved, and
+      leaves the case verdict unresolved with calibrated uncertainty. History
+      and image correction are append-only and provenance-stamped; AGENTS.md is
+      untouched. Omitted files are working drafts whose substance appears in the
+      run account and content diffs.
+    cost:
+      model: grok-4.5
+      inputTokens: 118581
+      outputTokens: 190
+      usd: 0.238417
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.8
+      - §3.11
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: "Every citation the diff adds under content/ resolves mechanically
+      (both DOIs and all URLs, including the Wayback snapshots), and the sources
+      are plausibly what the records claim — Schmidt's Neo-Lithics note, the
+      Tepe Telegrams posts, the Vidale & Micheli and Pitts et al. abstracts,
+      Verbrugghe & Wickersham's Berossus — so no fabrication surface is visible.
+      The verify run is visibly disciplined rather than permissive: 55 of ~82
+      proposed candidates were refused with specific reasons (non-atomic
+      statements, anchors that overstate the quote, records bearing on rejected
+      claims, a source nothing cites), splits and direction changes are recorded
+      as readerActs with model/run/date, and the Pausanias retrieval failure
+      (HTTP 522) is blocked with a reopen route rather than quoted from memory.
+      Provenance is stamped throughout — runId/model/promptVersion/date,
+      reviewState: ai_extracted, humanReviewed: false, 'NOT human reviewed'
+      headers, append-only history entries naming the runs — and secondhand or
+      abstract-only footing is disclosed as a limitation (the unchecked
+      Wiggermann transcription graded weak, the banduddû record marked as
+      transcription-only). The one content correction (IMG-DEEP-P07) is applied
+      with a reasoned history entry rather than silently. The omitted files are
+      drafter/verify working files whose substance is already visible in the run
+      account, and the harvested governance files are verbatim records of prior
+      verdicts, not edits to AGENTS.md or to the checks; anchor-only claims stay
+      unresolved at low confidence and no unratified draft is presented as
+      human-reviewed."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 119540
+      outputTokens: 1580
+      usd: 0.018721
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 646763
+  outputTokens: 7070
+  usd: 1.756
+harvestedAt: 2026-09-21

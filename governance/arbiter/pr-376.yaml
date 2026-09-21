@@ -1,0 +1,146 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 376
+title: The run account puts the head first and digests the records a change adds
+url: https://github.com/ejhong/aletheia/pull/376
+verdict: pass
+reason: "4 of 5 seats affirm compliance; one seat's objection is a review note
+  the operator answers on the record: GPT-5.6 Sol (OpenAI) (§3.15; provenance)"
+outcome: merged
+outcomeAt: 2026-09-20
+judgedAgainst: 36f7296a0b
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "This is a tooling-only change to `src/lib/arbiter-core.mjs`, the
+      arbiter script, and tests, plus an append-only DECISIONS.md entry;
+      AGENTS.md is untouched and no content/ records or citations are added
+      (verification section finds no identifiers). The effect on the §3.15
+      checks is strengthening, not weakening: the account cap rises 150k→250k,
+      the head edition and the assessment it adopts are now unconditionally
+      first, never dropped and never cut mid-way, an added/modified record
+      digest lets seats check atomicity, direction and locators for files the
+      diff budget drops, modified records name changed fields with new values,
+      and superseded assessments retain their reasoning with differing verdicts
+      marked against the head's — all mechanical extraction, with the header
+      stating every cap and every drop named. The OMITTED FILES annotation via
+      `omittedNotes` marks which omitted files were read into the account rather
+      than claiming they were shown in the diff, so it does not misrepresent
+      what a seat saw. Reducing a superseded edition to its non-shared
+      paragraphs and giving up claim reasoning past 30,000 characters are stated
+      in place, so nothing is silently hidden (§3.9, §3.14 provenance stays
+      visible). The only blemish I see is a bookkeeping inconsistency: the
+      DECISIONS.md entry describes a fourth round and review note #379 while the
+      PR body describes three rounds and notes #377/#378 — a narrative mismatch
+      about the operating record, not an invented citation or provenance stamp,
+      and the code comment for #379 (reading an adopted-but-unchanged
+      assessment) is in fact present. That is ordinary imperfection; I would ask
+      the operator to reconcile the round count, but it does not park the
+      change."
+    cost:
+      model: claude-opus-5
+      inputTokens: 24358
+      outputTokens: 849
+      usd: 0.14626
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: The generated account can misstate what was retained and how the
+      review packet was assembled. Every assessment that is not classified as
+      superseded is assigned rank 0, including check-role assessments and
+      assessments in cases with no changed head edition, so these sections can
+      never be dropped; nevertheless, the overflow notice says that only “head
+      edition(s) and the assessment(s) they adopt” remain and that “nothing else
+      is included.” The header likewise does not disclose that these unrelated
+      assessments share the protected rank, which can materially change both
+      account size and the diff budget available to the panel. Fix this by
+      either assigning non-adopted assessments an accurately documented
+      droppable rank or describing all protected section classes truthfully in
+      the header and overflow notice.
+    paradigm: provenance
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 19210
+      outputTokens: 2074
+      usd: 0.118832
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: This change improves the tooling for generating the run account
+      passed to the arbiter panel when PR diffs exceed size budgets. By
+      prioritizing the head edition and adopted assessment, digesting added or
+      modified records from evidence and claim ledgers, and annotating omitted
+      files that were read into the account, it enables panel seats to review
+      atomic claims, locators, and assessments rather than forcing 'unsure'
+      votes due to diff budget truncation. No epistemic checks in §3.15 are
+      weakened, AGENTS.md is untouched, decisions are logged in DECISIONS.md,
+      and comprehensive unit tests are provided.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 22678
+      outputTokens: 833
+      usd: 0.020132
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff changes only arbiter tooling (runAccount assembly,
+      omitted-file notes, tests) and appends a dated founder-supervised entry to
+      docs/DECISIONS.md; AGENTS.md is untouched. No content citations, sources,
+      or ledger claims are added, so fabrication and confidence rules are not in
+      play. The change strengthens §3.15 reviewability: head edition and adopted
+      assessment are rank-0 and never dropped, records are digested with
+      explicit clips and modified-field values, superseded material keeps its
+      own wording, and OMITTED FILES marks what the account already
+      carries—addressing prior unsure parks without loosening any check. Caps,
+      drop order, and provenance wording are stated in the generated header and
+      covered by tests."
+    cost:
+      model: grok-4.5
+      inputTokens: 21318
+      outputTokens: 169
+      usd: 0.043765
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.14
+      - §3.8
+    reasoning: "This change edits only the panel-packet tooling (arbiter scripts,
+      tests, and an appended DECISIONS.md entry), not AGENTS.md, and adds no
+      citations or content records, so §3.15's constitution-edit and fabrication
+      rules are not implicated. Far from weakening the §3.15 checks, it
+      strengthens them: the run account now carries the head edition and adopted
+      assessment whole, digests every added or modified canon record (surfacing,
+      per the PR body, a by-hand correction to VASO-R012 that the old diff
+      budget hid), keeps every claim verdict even when reasoning must give way,
+      names each dropped section, and never silently cuts the head — all of
+      which directly addresses the failure mode (three seats voting unsure on
+      #372) that previously parked legitimate work. The new digest's honest
+      labeling of what is whole versus clipped, the marked OMITTED FILES
+      annotations, and the stated 250,000-character cap with per-field clip
+      marks preserve the provenance-transparency requirements (§3.8, §3.14); the
+      DECISIONS.md entry is append-only and candid about four rounds of review
+      corrections. The founder-supervision stamp in DECISIONS.md is an
+      operational record I cannot independently verify, but nothing in the
+      material contradicts it, and the change itself is exactly the kind of
+      check-hardening the constitution favors. No rule broken; routine
+      imperfection is absent even in style — tests cover the digest, ordering,
+      superseded handling, and the cap invariant."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 21521
+      outputTokens: 962
+      usd: 0.003709
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 109085
+  outputTokens: 4887
+  usd: 0.3327
+harvestedAt: 2026-09-21

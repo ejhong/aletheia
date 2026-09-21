@@ -1,0 +1,143 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 367
+title: "The leads pass: what a pass named and could not open is asked of the indexes"
+url: https://github.com/ejhong/aletheia/pull/367
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-20
+judgedAgainst: e1029b3d31
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "This is pipeline/tooling work: a new mechanical `leads` verb, a
+      scheduler rule 3c, a draft protocol bump to v10, CLI/workflow wiring, and
+      tests. AGENTS.md is untouched, so §3.15's reservation is not engaged, and
+      no CI or panel check is loosened — the new verb still feeds the existing
+      draft → verify → edition chain, so nothing enters the ledger without the
+      second reader. No citations are added under content/ (verification found
+      none), and the code does not manufacture provenance: `settleLeads` writes
+      an `in` row only when verification independently admitted a source whose
+      canonical URL or normalized DOI matches the document the pass *resolved*
+      (agreement on title containment ≥ threshold, year, author), explicitly
+      refusing to settle on a sub-threshold candidate, and it stamps the row
+      with runId, date, proposal and the reason with the checks that agreed —
+      consistent with §3.8 and §3.14. Drafter-returned keys are honoured only
+      when the leads report itself gave that key, with a note otherwise, so a
+      row cannot be misfiled under an unrelated key (§3.8 provenance integrity).
+      The protocol text preserves the confidence rule (a supplied document whose
+      permission line says NONE RECORDED is not proposed or quoted) and the
+      no-unshown-quote rule (§3.15, §3.7). The DECISIONS entry and AUTOMATION
+      row honestly describe the verb as mechanical with no model call; remaining
+      limits (evidence/claim-kind leads left unsettled per §3.6) are stated
+      rather than hidden."
+    cost:
+      model: claude-opus-5
+      inputTokens: 31544
+      outputTokens: 820
+      usd: 0.181465
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.6
+      - §3.8
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: The new leads pass is explicitly mechanical, records the index checks
+      used, distinguishes resolved results from lower-confidence candidates, and
+      sends opened documents through the existing draft and independent
+      verification chain before ledger admission. Candidate matches cannot
+      settle an old lead, while resolved matches settle it only when an admitted
+      Source has the same canonical URL or DOI; the resulting disposition is
+      append-only and stamped with the leads run, verification run, date, and
+      proposal. The change also restricts settlement to source-kind rows,
+      preserving the Source-versus-Evidence distinction in §3.6. Working reports
+      are clearly marked non-citable, no content citations or confidential
+      supplied material are added, and neither AGENTS.md nor the ratification
+      and citation checks are weakened.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 23986
+      outputTokens: 2779
+      usd: 0.152036
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.6
+      - §3.7
+      - §3.8
+      - §3.15
+    reasoning: The PR introduces the mechanical `leads` pipeline verb to search open
+      indexes for producer-blocked works without calling a model. It adheres to
+      strict epistemic standards by distinguishing verified resolutions (agreed
+      on title containment, year, and author) from candidates, requiring full
+      text retrieval before drafting, and strictly preserving provenance by
+      settling disposition rows only against verified resolutions via canonical
+      locators. It does not touch AGENTS.md, respects the separation between
+      sources and evidence (§3.6), and complies with all procedural checks in
+      §3.15.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 27774
+      outputTokens: 685
+      usd: 0.023399
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff adds a mechanical leads verb, scheduler rule 3c, draft-v10
+      key plumbing, and settleLeads-by-resolved-locator only—no AGENTS.md edit,
+      no content/ ledger rows, and no run account to audit. Settlement refuses
+      candidates and non-source kinds; drafter-returned keys are accepted only
+      when the leads report supplied them; CI/workflow merely expose the verb.
+      DECISIONS.md and AUTOMATION.md record the founder direction and the
+      #368/#369 constraints without loosening §3.15 checks. Nothing fabricates
+      citations, mis-stamps provenance, or publishes confidence material."
+    cost:
+      model: grok-4.5
+      inputTokens: 26166
+      outputTokens: 149
+      usd: 0.053341
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.9
+      - §3.15
+      - §3.6
+      - §4
+    reasoning: "This adds a mechanical (no-model) verb that asks open indexes about
+      works earlier passes named but could not open, then routes the results
+      through the existing draft → verify → edition chain, so no record enters
+      the ledger outside the ratification gates. The design is careful about the
+      epistemic traps: 'resolved' is defined by explicit, printed checks (title
+      containment, year, author surname) and the report and draft protocol v10
+      both require confirming identity from retrieved text before anchoring
+      anything; 'candidates' are labeled as may-be-the-work, and settlement
+      (settleLeads) writes a lead's row `in` only by URL/DOI locator match
+      against a source the verifier actually admitted, with the reason recording
+      the leads run, via, and checks — honest provenance, not an identity
+      asserted on resemblance (review note #369 in the diff explicitly refuses
+      to settle on sub-threshold candidates). The diff itself respects §3.6 by
+      limiting settlement to source-kind rows, records the founder's 2026-09-20
+      direction in DECISIONS.md in the form §3.15 permits, edits no AGENTS.md,
+      adds no live AI calls to the site, and touches no confidence material.
+      Citation verification found no added identifiers; test fixtures are
+      clearly synthetic. Nothing here weakens a §3.15 check — the verifier's
+      mechanical citation checks and the multi-model gates still apply to
+      everything the chain proposes."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 23960
+      outputTokens: 1607
+      usd: 0.004743
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 133430
+  outputTokens: 6040
+  usd: 0.415
+harvestedAt: 2026-09-21

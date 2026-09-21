@@ -1,0 +1,134 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 403
+title: A claim anchored by evidence alone is still judged one proposition or not
+url: https://github.com/ejhong/aletheia/pull/403
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-21
+judgedAgainst: 53c7f6acbe
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The change is confined to src/pipeline/verify.ts, its test, and a
+      DECISIONS.md entry; AGENTS.md is untouched, so §3.15's reservation is not
+      implicated. Substantively it strengthens rather than loosens a check:
+      claims that previously escaped the atomicity gate because they had no
+      source anchor of their own are now put to the reader (§3.2), and compound
+      ones are split, with the compound explicitly rejected naming its parts and
+      the citing evidence relinked and set back to provisional rather than
+      silently carried. Provenance is preserved, not invented: each part's
+      origin.ref records that it is a 'split of <id> ... on the statements of
+      the records that cite it, without a text', with extractedBy/runId/date
+      stamped from the splitter/reader (§3.8, §3.14), and the compound's
+      dependsOn/alternativeTo/contradicts relations are deliberately not
+      inherited, with a note recording that they were dropped — which avoids one
+      rung's relations silently attaching to another (§3.2, §3.10). No citations
+      are added (verification tooling found none) and no confidential material
+      appears. The DECISIONS entry is a dated, channel-stamped record of a
+      founder direction, which §3.15 expressly permits; I cannot independently
+      confirm the session occurred, but nothing in the material contradicts it,
+      and unfamiliarity is not evidence of fabrication. Remaining questions
+      (whether the parts' anchorless state is correctly displayed downstream)
+      are ordinary implementation matters, not constitutional violations."
+    cost:
+      model: claude-opus-5
+      inputTokens: 5649
+      outputTokens: 912
+      usd: 0.091607
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: The change closes an atomicity gap by sending evidence-anchored
+      claims through the same one-proposition judgment and splitting claims
+      judged compound. Generated parts are checked as propositions of the
+      original compound, receive explicit split provenance, and the original is
+      refused with the resulting claim IDs recorded. Citing evidence is relinked
+      and downgraded to provisional so it cannot carry assessment weight until
+      reread against each new part. The decision log records the rationale and
+      founder supervision with date and channel, and the change neither edits
+      AGENTS.md nor weakens an existing constitutional gate.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 7785
+      outputTokens: 2226
+      usd: 0.07566
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.15
+    reasoning: The change closes a gap in the verification pipeline where claims
+      anchored solely by evidence (such as founding claims without a dedicated
+      source anchor) previously bypassed atomicity review. Under the updated
+      logic in src/pipeline/verify.ts, these claims are judged for
+      single-proposition atomicity against citing evidence statements and split
+      if compound, upholding §3.2. AGENTS.md is untouched, no content or
+      citations are fabricated, and verification checks are strengthened rather
+      than weakened.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 8443
+      outputTokens: 499
+      usd: 0.008204
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff tightens §3.2 for claims that have no source anchor and are
+      anchored only by citing evidence: atomicity is now judged on those citers’
+      statements, compounds are split with honest origin provenance, relations
+      are not silently carried, and citers are relinked provisional. That
+      strengthens rather than weakens §3.15 checks. DECISIONS.md only records a
+      founder session direction; AGENTS.md is untouched; no citations, content
+      ledger records, or confidence material are added. Tests match the stated
+      behavior."
+    cost:
+      model: grok-4.5
+      inputTokens: 8061
+      outputTokens: 128
+      usd: 0.017005
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: "This change extends the §3.2 atomicity check to claims anchored by
+      evidence alone — previously admitted at settlement without any reader
+      judgment because the atomicity check lived inside the source-anchor branch
+      — so it strengthens rather than weakens the epistemic checks. No citations
+      are added (verification found none), and the split path preserves honest
+      provenance: parts carry an origin ref stating they were judged 'without a
+      text' with recorded model/runId/date, the compound is rejected with a
+      reason naming its parts, dropped relations are disclosed in notes rather
+      than silently lost, and citing evidence records are relinked to
+      'provisional' — consistent with §4's rule that provisional records carry
+      no weight. Tests cover the blind judgment, the split, the refusal, and the
+      relinking, and the DECISIONS.md entry documents the change with the same
+      supervised-by stamp format as the preceding merged entry (2026-09-20),
+      giving me no positive evidence of a misattributed provenance stamp.
+      docs/DECISIONS.md is a decisions log, not the constitution, so §3.15's
+      AGENTS.md rule is not triggered. My one note: the founder-direction stamp
+      ('direction in session, 2026-09-21') is not independently checkable from
+      the packet, but unverifiable authorization claims in a decisions log are
+      not grounds for a violation vote absent contradicting evidence."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 8879
+      outputTokens: 1206
+      usd: 0.001935
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 38817
+  outputTokens: 4971
+  usd: 0.1944
+harvestedAt: 2026-09-21

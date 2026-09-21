@@ -1,0 +1,133 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 395
+title: The split recurses once for a part refused as compound
+url: https://github.com/ejhong/aletheia/pull/395
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-20
+judgedAgainst: b29b809ac6
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches only pipeline code (src/pipeline/verify.ts), its
+      tests, and an append to docs/DECISIONS.md — no content records, no
+      citations (verification section reports none), and no edit to AGENTS.md.
+      The change adds one recursive re-split, triggered only when the sole
+      reader failure is `atomic` (`bad.length === 1 && bad[0] === 'atomic'`) and
+      capped at `depth < 2`; sub-parts run through the identical gate — verbatim
+      quote presence, `unverifiedQuotes` against the fetched text, page-narrowed
+      locators with a stamped `readerActs` entry, the second reader's judgement,
+      and the claim-side anchor check that falls back to the compound's anchor
+      with a note. That strengthens rather than weakens the §3.2 atomicity check
+      and leaves the §3.8 locator and quote checks intact, so there is no
+      check-weakening under §3.15. Provenance is honest: second-round parts
+      carry `; second round` in `origin.ref`, take `extractedBy`/`runId`/`date`
+      from the split that actually produced them, and titles number the round
+      (`part 1.2`); the account notes say which parts were split again and which
+      were refused at the cap. Claim parts still drop the compound's
+      dependsOn/alternativeTo/contradicts and say so aloud, preserving the §3.2
+      discipline. The DECISIONS.md entry is stamped with date and channel as the
+      operating record permits. Nothing in the diff presents a draft as ratified
+      or publishes confidential material."
+    cost:
+      model: claude-opus-5
+      inputTokens: 8996
+      outputTokens: 996
+      usd: 0.073125
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: The change strengthens atomicity by recursively splitting only a
+      first-round part whose sole refusal is the atomicity check, while imposing
+      a hard second-round cap. Every resulting evidence part is again checked
+      for a verbatim quotation, verified against fetched text, independently
+      judged, and passed through the existing reader application; claim
+      sub-parts are likewise re-anchored and re-judged. The generated records
+      retain model, runId, date, source origin, second-round labeling, and
+      narrowed locators where mechanically available, while the verification
+      account records recursive splits and capped refusals. The tests cover
+      surviving atomic parts, refusal of a still-compound second-round part,
+      per-part claim anchors, tombstoning of the original, and account
+      disclosure, so the change does not weaken or bypass the §3.15 checks.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 8783
+      outputTokens: 1304
+      usd: 0.061724
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.8
+      - §3.15
+    reasoning: The change implements a single-round recursion (depth cap of 2) when
+      a split part is rejected solely for being compound, for both evidence and
+      claims. Sub-parts undergo identical verification checks as top-level
+      parts, including verbatim quote checks, anchor verification, and atomic
+      evaluation. Provenance is preserved and clearly labeled with 'second
+      round' notations in origin refs and verification accounts, directly
+      advancing the atomic claims requirement (§3.2) without weakening
+      verification rigor.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 11027
+      outputTokens: 546
+      usd: 0.010318
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff only touches the verification pipeline, its tests, and a
+      dated DECISIONS.md entry. It does not edit AGENTS.md, add content
+      citations, or publish confidence material. The change tightens §3.2
+      atomic-claim handling: a part refused solely as compound may be split once
+      more (depth < 2), with origin stamped “second round,” numbered titles, and
+      account notes of what was re-split or refused at the cap—honest
+      provenance, not check-weakening. Tests cover evidence and claim paths and
+      the no-third-round cap. No run records or omitted files hide a violation."
+    cost:
+      model: grok-4.5
+      inputTokens: 10784
+      outputTokens: 148
+      usd: 0.022456
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.8
+      - §3.15
+    reasoning: "The change adds a bounded second split round (depth capped at 2, 'no
+      third') for parts refused solely as compound, and it does not loosen any
+      §3.15 check: at the second round the atomic gate still applies, a
+      still-compound sub-part is refused on the record ('refused (atomic): more
+      than one finding'), and every other refusal ground (missing verbatim
+      quote, failed judge, no bearing) fires identically for sub-parts — quotes
+      are still checked verbatim against the fetched text and claim sub-parts
+      get their own verified anchors, so this strengthens atomicity (§3.2)
+      rather than dodging it. Provenance is honest: second-round parts are
+      stamped '; second round' in origin, numbered titles ('part 1.2') and the
+      account note which parts were re-split and which were refused at the cap,
+      and locator narrowing remains mechanical and recorded in readerActs (§3.8,
+      §3.14). No AGENTS.md edit occurs — the DECISIONS.md entry is an append to
+      the decisions log with supervision stamped, which the workflow permits. No
+      citations or content are added, so nothing to verify mechanically, and the
+      tests use mock judge/split doubles appropriately in dev-only test files."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 8848
+      outputTokens: 1204
+      usd: 0.002275
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 48438
+  outputTokens: 4198
+  usd: 0.1699
+harvestedAt: 2026-09-21

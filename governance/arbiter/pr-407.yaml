@@ -1,0 +1,134 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 407
+title: "§3.2 in doubt: a claim a seat calls compound and the reader calls one
+  proposition is split when two parts are affirmed"
+url: https://github.com/ejhong/aletheia/pull/407
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-21
+judgedAgainst: 07d96aa0e1
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches only pipeline code (verify.ts, reverify.ts,
+      answer.ts), its tests, and appends a dated DECISIONS.md entry; AGENTS.md
+      is untouched. The change tightens rather than loosens a §3.15 check: a
+      claim a seat objects to under §3.2 is now put to the splitter even when
+      the reader calls it atomic, and is split only when two or more parts are
+      independently affirmed by the reader — otherwise it stands, with the
+      account carrying an explicit note naming the reader's reason and the
+      seat's dispute. Refusal and stand reasons are written honestly ('one
+      proposition to the reader (...), disputed by a seat under §3.2; split in
+      doubt into ...') so provenance of who judged what remains visible; split
+      parts keep the splitter's origin stamp via existing machinery. The new
+      `disputedAtomicity` helper is narrowly scoped to claims named by
+      objections citing §3.2, and the test confirms it excludes evidence records
+      and objections under other rules. No citations, locators, or confidential
+      material are added, and the DECISIONS entry is a founder direction
+      recorded per §3.15's operating-record clause. Nothing here dodges
+      ratification or weakens fail-closed CI."
+    cost:
+      model: claude-opus-5
+      inputTokens: 8268
+      outputTokens: 628
+      usd: 0.097602
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.14
+      - §3.15
+    reasoning: "The change operationalizes §3.2 by sending a disputed claim through
+      the splitter while requiring at least two separately affirmed propositions
+      before replacing the original. A lone §3.2 objection does not itself
+      reject the claim: failed splitting or fewer than two affirmed parts leaves
+      it standing with the disagreement recorded, while successful parts retain
+      the existing model/run provenance path. Both anchored claim paths are
+      updated, and tests cover successful splitting, insufficient affirmed
+      parts, and restriction of the trigger to claim IDs named under §3.2. The
+      dated decisions entry records the asserted founder direction and channel
+      in the form permitted by §3.15, and the diff neither edits AGENTS.md nor
+      weakens ratification or citation checks."
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 8135
+      outputTokens: 1110
+      usd: 0.055252
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.14
+      - §3.15
+    reasoning: The change implements a principled dispute-resolution path for §3.2
+      atomic claim objections in the automated answer pipeline. When a panel
+      seat disputes atomicity under §3.2, the system tests whether the claim can
+      be split into two or more affirmed parts rather than permitting a single
+      reader pass to unilaterally dismiss the objection. Provenance, audit
+      notes, and rejection reasons are maintained transparently with full
+      attribution and honest labeling, and no constitutional rules or checks are
+      weakened.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 10353
+      outputTokens: 507
+      usd: 0.009666
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff implements a founder-directed pipeline rule (stamped in
+      DECISIONS.md) that, on an answer step only, puts a claim a seat has
+      disputed under §3.2 to the splitter even when the reader still calls it
+      one proposition, then splits only when two or more parts are each affirmed
+      as of the compound and one proposition; fewer than two affirmed parts
+      leaves the claim standing with an explicit account note. Both the anchored
+      and citing-records paths follow the same gate; plain verify is untouched.
+      No AGENTS.md edit, no citations or content records added, no provenance
+      mislabel, and the change tightens rather than weakens §3.2/§3.15 handling
+      of borderline atomicity. Tests cover the two-part split, the
+      stand-with-note path, and disputedAtomicity filtering.
+    cost:
+      model: grok-4.5
+      inputTokens: 9750
+      outputTokens: 189
+      usd: 0.020749
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.15
+      - §3.14
+      - §4
+    reasoning: "The change strengthens, not weakens, the §3.2 check: a claim the
+      reader calls atomic but which a seat disputed under §3.2 is put to the
+      splitter anyway, and is split whenever two or more parts are affirmed —
+      moving toward the constitution's stated default ('split compound
+      propositions') rather than away from it; plain verify runs are explicitly
+      unchanged. Disagreement is displayed rather than hidden: the standing
+      claim's account note names the seat's §3.2 dispute and the reader's
+      contrary reason, and split parts carry honest ai_extracted labels with a
+      rejectionReason recording the split provenance (§3.14). No citation,
+      locator, or provenance detail is fabricated; no confidence material is
+      touched; the edit is to docs/DECISIONS.md (the decisions log, where
+      founder directions are recorded with date and channel per §3.15), not to
+      AGENTS.md, so the human-amendment reservation is not triggered. The only
+      soft spot — a disputed claim standing when the split call mechanically
+      fails — still rests on the reader's affirmative atomicity judgment with
+      the failed attempt and dispute recorded, which is a reasoned outcome, not
+      a dodged check."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 10545
+      outputTokens: 1168
+      usd: 0.002166
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 47051
+  outputTokens: 3602
+  usd: 0.1854
+harvestedAt: 2026-09-21

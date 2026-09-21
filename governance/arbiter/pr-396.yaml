@@ -1,0 +1,129 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 396
+title: The packet carries declined candidates compact
+url: https://github.com/ejhong/aletheia/pull/396
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-20
+judgedAgainst: a5c17a3f3e
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "This is a pipeline-plumbing change: declined-candidate rows in the
+      model packet drop the mechanical dedupe key (used only by code in
+      src/domain/intake.ts, not read by any model) and clip
+      observed/reason/reopenIf to 120/160/120 characters, with every clip
+      explicitly marked ' [… N more]'. Nothing in §3 is loosened: the packet
+      size bound stays at 600,000 rather than being raised to accommodate the
+      overflow, the 'renders within the bound' check and the refuse-to-truncate
+      check remain, and a new test enforces the compaction and the clip markers
+      on every live case. No AGENTS.md edit, no content/ records, no citations
+      added (verification found none), no confidence material, no assessment or
+      ratification machinery touched — the change only shortens what reviewing
+      models see, and marks the shortening honestly rather than hiding it. The
+      DECISIONS entry is stamped with date and channel ('founder (direction in
+      session, 2026-09-20)'), which §3.15 permits for founder directions. One
+      nit I would want reconciled on the record: the PR body says the same
+      packet renders 'under 480,000' while the DECISIONS entry says 'about
+      498,000', and the body cites 220,000 characters of declined rows where the
+      code comment says 185,000 — harmless rounding in a rationale, not a
+      provenance stamp, so it does not rise to a violation, but the numbers
+      should be made consistent."
+    cost:
+      model: claude-opus-5
+      inputTokens: 2801
+      outputTokens: 960
+      usd: 0.04125
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: The change compacts only the packet’s derived view of declined
+      candidates; it does not alter or erase the underlying disposition records
+      or their histories. Every truncated field receives an explicit
+      omitted-character marker, so the packet does not present clipped text as
+      complete, and the added test enforces that behavior. The fail-closed
+      600,000-character packet bound remains unchanged, and no citation,
+      ratification gate, provenance-completeness check, or multi-model
+      concurrence check is weakened. The decisions entry records the operational
+      change with a date and supervision channel, and the diff adds no citations
+      or confidential material.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 4706
+      outputTokens: 1035
+      usd: 0.040036
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules: []
+    reasoning: The change compacts declined disposition candidates within ephemeral
+      LLM prompt packets to respect the 600,000-character packet bound while
+      explicitly marking clipped strings. It leaves the underlying case ledger
+      and disposition records intact. The operational direction is properly
+      recorded in docs/DECISIONS.md per §3.15, and no constitutional rules or
+      verification checks are weakened.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 6542
+      outputTokens: 556
+      usd: 0.006992
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff only compacts how declined dispositions are projected into
+      the edition packet (drop unused mechanical key; clip
+      observed/reason/reopenIf with explicit “[… N more]” markers), adds a
+      live-case test for those bounds, and records a founder-supervised
+      decisions entry. Full disposition records are untouched; no AGENTS.md
+      edit, no citations, no confidence material, and no check in §3.15 is
+      loosened—the 600k send bound and fail-closed refusal stay. Clip marking
+      and the stated rationale match honest packet accounting rather than hidden
+      truncation or provenance mislabeling.
+    cost:
+      model: grok-4.5
+      inputTokens: 6177
+      outputTokens: 142
+      usd: 0.013321
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.8
+      - §3.14
+    reasoning: "This is a packet-format change, not a content change: declined
+      intake candidates in the model-facing packet are compacted (observed to
+      120 chars, reason to 160, reopenIf to 120), the mechanical key is dropped
+      (it is read by code, not by models, per the comment and the test asserting
+      its absence), and every truncation is marked with an explicit '[… N more]'
+      clip marker, so nothing is hidden silently — the honest-labeling
+      discipline of §3.8 is applied to the packet itself. The full disposition
+      records remain in the repository's append-only files, so this does not
+      suppress disagreement or weaken any §3.15 check: the PACKET_MAX_CHARS
+      bound stands unchanged, and the existing 'refuses to truncate' test is
+      preserved alongside the new compaction test. AGENTS.md is untouched; the
+      added DECISIONS.md entry is the permitted decisions-log record with date
+      and supervision stamp (§3.14's change-history discipline), not a
+      constitution edit. The minor numeric discrepancies between the PR body
+      (220,000 chars, <480,000 rendered) and the diff comment/DECISIONS entry
+      (185,000 chars, ~498,000) are packet-size bookkeeping, not provenance,
+      citation, or assessment facts, and rise only to ordinary imperfection. No
+      citations are added, so the verification section is empty by
+      construction."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 7069
+      outputTokens: 1031
+      usd: 0.001576
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 27295
+  outputTokens: 3724
+  usd: 0.1032
+harvestedAt: 2026-09-21

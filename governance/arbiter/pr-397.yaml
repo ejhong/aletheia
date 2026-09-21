@@ -1,0 +1,143 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 397
+title: A split stays inside the compound, and a part is placed where its quote is
+url: https://github.com/ejhong/aletheia/pull/397
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-20
+judgedAgainst: 1673e88d0c
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches only protocols, pipeline code, tests, and the
+      decisions log; AGENTS.md is untouched, and no content/ records or
+      citations are added (the verification section finds no identifiers). The
+      substantive changes tighten rather than loosen the §3.15 checks: verify-v7
+      adds an `ofTheCompound` question so a split part that states something the
+      compound never bundled is refused, and the implementation fails closed —
+      `if (v2.ofTheCompound !== true)` refuses on false, null, or a missing
+      answer, for both evidence and claim parts, with the reason recorded in the
+      run account. The locator change addresses a §3.8 hazard (a compound's
+      two-place locator passing to a part quoted in only one place) by composing
+      the splitter's own verified-quote locator with the compound's document
+      identity, only when the part's quote is found verbatim in the retrieved
+      text, and leaving the compound's locator untouched when the splitter did
+      not place the part — no locator is invented. Provenance is stamped
+      honestly: the act carries the splitter's model, runId, protocol version
+      (split-v5) and date rather than the reader's, with the reason stating that
+      the second reader judged the placed locator, matching the existing pattern
+      of mechanically-attributed acts in the same array. Version bumps from
+      verify-v6 to verify-v7 in the stamp strings are reflected consistently
+      across chain.test.ts, and the old protocols are archived rather than
+      deleted, preserving history. The DECISIONS.md entry describes the
+      correction and is stamped with founder direction, date and channel as
+      §3.15 permits for operating-record directions."
+    cost:
+      model: claude-opus-5
+      inputTokens: 18627
+      outputTokens: 940
+      usd: 0.11988
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: The change strengthens atomicity and lineage checks by requiring
+      every split part to be affirmed as a proposition contained in the original
+      compound, with false, null, or missing answers refused fail-closed.
+      Evidence parts may receive a quote-specific locator, but only when the
+      quote is mechanically present, and the adversarial reader must then
+      approve that placed locator; the change also records the splitter model,
+      run, protocol, date, and reason for the locator act. Tests cover both
+      evidence and claim refusals, missing answers, locator placement, and
+      protocol-version provenance. No citations or content records are added, no
+      files are omitted, AGENTS.md is untouched, and the prior protocols are
+      preserved in the archive rather than silently rewritten.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 16849
+      outputTokens: 1256
+      usd: 0.092516
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.8
+    reasoning: The proposed change strengthens the mechanical verification and split
+      pipelines without touching AGENTS.md or loosening existing gates. It
+      directly reinforces §3.2 (atomic claims) by requiring the verifier to
+      affirm via `ofTheCompound` that split parts are strictly entailed
+      propositions of the compound rather than drifting into neighboring
+      statements, failing closed on false or missing values. It also reinforces
+      §3.8 (exact provenance) by ensuring split evidence parts are located
+      specifically where their own quotes appear rather than inheriting
+      composite multi-place locators from the compound. Full test coverage is
+      included in `src/domain/answer.test.ts` and `src/domain/chain.test.ts`,
+      and all protocol increments are documented honestly in
+      `docs/DECISIONS.md`.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 18205
+      outputTokens: 778
+      usd: 0.016571
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff strengthens split/verify against the exact failure modes
+      named in the body (parts drifting outside the compound; multi-place
+      locators inherited by single-quote parts) without touching AGENTS.md,
+      content records, or citations. split-v5 and verify-v7 keep parts entailed
+      by the compound only, fail-closed on ofTheCompound null/false/absent, and
+      stamp exactLocator placement as the splitter’s act with
+      protocol/model/run/date while the reader still judges locatorSupported.
+      Prior protocol files are archived, DECISIONS.md records a founder session
+      direction, and tests lock the new gates; no fabrication, confidence
+      exposure, or check-weakening is present.
+    cost:
+      model: grok-4.5
+      inputTokens: 17295
+      outputTokens: 161
+      usd: 0.035671
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.8
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: "This change strengthens the §3 checks rather than weakening them: it
+      closes the exact drift the GPT seat's fabrication objection exposed on
+      #372 (parts that were not propositions of the compound, and a locator
+      contradicted by its own quote) by adding a fail-closed `ofTheCompound`
+      gate in verify-v7 and a split-v5 rule that parts together must be the
+      statement and nothing more — a null or missing reader answer refuses the
+      part. Provenance is handled honestly: the locator placement is stamped as
+      the splitter's act with the splitter's model, run, and protocol version
+      (split-v5), not misattributed to the verifier, and the second reader's
+      judgment of the placed locator remains its own; the DECISIONS.md entry
+      records the correction on the record with the founder's in-session
+      supervision noted per §3.15. No AGENTS.md edit occurs, no citations are
+      added (verification section confirms none), prior protocols are archived
+      rather than deleted so history stays inspectable, and tests cover each new
+      rule including the fail-closed null/absent path. Nothing in the diff
+      fabricates a citation, locator, or provenance detail, and nothing dodges
+      or loosens the checks in §3.15."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 15599
+      outputTokens: 712
+      usd: 0.003041
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 86575
+  outputTokens: 3847
+  usd: 0.2677
+harvestedAt: 2026-09-21

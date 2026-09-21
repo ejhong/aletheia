@@ -1594,7 +1594,7 @@
   claimIds:
     - VASO-C001
   sourceId: SRC-CROFT-1994
-  direction: supports
+  direction: context
   strength: weak
   sourceStatement: 'Two people with tender point counts of 11 or more were in the group reporting no pain: "Two people with counts of 11 or more were in the group reporting no pain."'
   editorInference: Examiner-elicited tender points occur in people with no pain complaint at all, which is the population the case's opening observation describes. Weak because it is two individuals, the sample was pain-selected, and the 18-site protocol tests fixed anatomical sites rather than counting palpable knots.
@@ -1602,12 +1602,22 @@
   limitations:
     - Two individuals; pain-selected subsample.
     - Fixed-site tenderness testing is not a census of palpable knots.
+    - "Direction set to \"context\" (from \"supports\") by the second reader (claude-sonnet-5, 2026-09-21, run 2026-09-21-answer-vasocomputation-012456, verify-v7) at intake: The quote is accurate and correctly located in the abstract's Results section, and the sourceStatement fairly paraphrases it. But the observation—two pain-free individuals in a pain-selected subsample having ≥11 tender points—does not establish or support that tender points 'commonly' occur across the general population; it merely notes an anomaly within a small, non-representative subgroup, so it bears on the claim only as context, not as support. The record appears to be a legitimate part of a split evidence record, stating one discrete finding from the original compound without importing unrelated content."
   reviewState: ai_extracted
   origin:
     ref: split of VASO-E066 (report 2026-09-20-report-vasocomputation-112413)
     extractedBy: claude-fable-5-1
     runId: 2026-09-20-verify-vasocomputation-113521
     date: 2026-09-20
+  readerActs:
+    - field: direction
+      from: supports
+      to: context
+      model: claude-sonnet-5
+      promptVersion: verify-v7
+      runId: 2026-09-21-answer-vasocomputation-012456
+      date: 2026-09-21
+      reason: The quote is accurate and correctly located in the abstract's Results section, and the sourceStatement fairly paraphrases it. But the observation—two pain-free individuals in a pain-selected subsample having ≥11 tender points—does not establish or support that tender points 'commonly' occur across the general population; it merely notes an anomaly within a small, non-representative subgroup, so it bears on the claim only as context, not as support. The record appears to be a legitimate part of a split evidence record, stating one discrete finding from the original compound without importing unrelated content.
 - id: VASO-E083
   title: "Croft 1994: high tender-point counts in people reporting no pain — part 2"
   claimIds:

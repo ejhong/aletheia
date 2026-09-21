@@ -598,7 +598,7 @@ export async function judgeProposal(
   /** Who wrote the parts of a split claim, and in which run — their `origin` (§3.14, §3.15). */
   splitter: { model: string; runId: string } = { model: MODELS.house.model, runId: "unrecorded" },
   /** Gates beyond the mechanical ones: the plan reader for research items (absent in tests that do not exercise it); and, for an answer, the objection the reader is told of (src/pipeline/answer.ts). */
-  gates: { judgePlan?: PlanJudge; extraContext?: string; ledgerStatements?: Map<string, string> } = {},
+  gates: { judgePlan?: PlanJudge; extraContext?: string; ledgerStatements?: Map<string, string>; atomicityDisputed?: Set<string> } = {},
 ): Promise<Verdicts> {
   const rejected: Verdicts["rejected"] = [];
   const provisional: Verdicts["provisional"] = { sources: [], evidence: [], claims: [] };
@@ -872,12 +872,18 @@ export async function judgeProposal(
           reject(c.id, "claim", c.statement, `second reader rejected the anchor (${flags.join(", ")}): ${verdict.reason}`);
           continue;
         }
-        if (verdict.atomic === false) {
+        // §3.2 in doubt: a claim the reader calls one proposition while a seat disputes that under §3.2 is put to the
+        // splitter anyway, and is split when two or more parts are affirmed — the constitution's default is to split,
+        // and each part is still the reader's to affirm (2026-09-21: VASO-C001 stood on one reader call against the
+        // seat and the ledger's own assessment, which said it bundles two propositions).
+        const inDoubt = verdict.atomic !== false && !!gates.atomicityDisputed?.has(c.id);
+        if (verdict.atomic === false || inDoubt) {
           // One split round (§3.2): the drafter divides the statement; each part is judged on the same anchor.
           let sp: SplitResult;
           try {
             sp = asSplit(await split(c.statement, fetched.text, meter));
           } catch (err) {
+            if (inDoubt) { notes.push(`${c.id}: one proposition to the reader (${verdict.reason}); a seat disputed that under §3.2 and the split failed: ${(err as Error).message} — the claim stands`); stood(c.id, verdict.reason); okClaims.push(c); continue; }
             reject(c.id, "claim", c.statement, `not atomic (${verdict.reason}); the split failed: ${(err as Error).message}`);
             continue;
           }
@@ -932,12 +938,16 @@ export async function judgeProposal(
           await judgeParts(sp.parts, sp, 1, c.statement);
           const relations = [["dependsOn", c.dependsOnClaimIds], ["alternativeTo", c.alternativeToClaimIds], ["contradicts", c.contradictsClaimIds]].filter(([, v]) => (v as string[] | undefined)?.length).map(([k, v]) => `${k} ${(v as string[]).join(", ")}`);
           if (relations.length && admitted.length) notes.push(`${c.id}: its relations (${relations.join("; ")}) were not carried to its parts ${admitted.map((k) => k.id).join(", ")} — each part's relations are its own to propose`);
-          reject(c.id, "claim", c.statement, `not atomic (${verdict.reason}); split into ${admitted.length ? admitted.map((k) => k.id).join(", ") : "nothing that survived"}`);
-          if (admitted.length) {
-            splitInto.set(c.id, admitted.map((k) => k.id));
-            okClaims.push(...admitted);
+          if (inDoubt && admitted.length < 2) {
+            notes.push(`${c.id}: one proposition to the reader (${verdict.reason}); a seat disputed that under §3.2, and the split gave ${admitted.length} affirmed part(s), not two — the claim stands`);
+          } else {
+            reject(c.id, "claim", c.statement, inDoubt ? `one proposition to the reader (${verdict.reason}), disputed by a seat under §3.2; split in doubt into ${admitted.map((k) => k.id).join(", ")}, each affirmed` : `not atomic (${verdict.reason}); split into ${admitted.length ? admitted.map((k) => k.id).join(", ") : "nothing that survived"}`);
+            if (admitted.length) {
+              splitInto.set(c.id, admitted.map((k) => k.id));
+              okClaims.push(...admitted);
+            }
+            continue;
           }
-          continue;
         }
         stood(c.id, verdict.reason);
       }
@@ -954,7 +964,8 @@ export async function judgeProposal(
       const citing = [...okEvidence, ...loaded.evidence.filter((e) => e.reviewState !== "rejected")].filter((e) => e.claimIds.includes(c.id));
       const citingText = citing.map((e) => `${e.id}: ${e.sourceStatement}`).join("\n\n");
       const blind = await judge({ statement: c.statement }, "", `${questionContext} ${TEXT_UNAVAILABLE} This claim has no source anchor of its own; it is anchored by the records that cite it, whose statements follow. Is the statement one proposition with a truth condition? Records citing it: ${citingText}`, meter);
-      if (blind.atomic !== false) {
+      const inDoubt = blind.atomic !== false && !!gates.atomicityDisputed?.has(c.id);
+      if (blind.atomic !== false && !inDoubt) {
         stood(c.id, blind.reason);
         okClaims.push(c);
         continue;
@@ -963,6 +974,7 @@ export async function judgeProposal(
       try {
         sp = asSplit(await split(c.statement, citingText, meter));
       } catch (err) {
+        if (inDoubt) { notes.push(`${c.id}: one proposition to the reader (${blind.reason}); a seat disputed that under §3.2 and the split failed: ${(err as Error).message} — the claim stands`); stood(c.id, blind.reason); okClaims.push(c); continue; }
         reject(c.id, "claim", c.statement, `not atomic (${blind.reason}); the split failed: ${(err as Error).message}`);
         continue;
       }
@@ -1005,7 +1017,13 @@ export async function judgeProposal(
       await judgeParts(sp.parts, sp, 1, c.statement);
       const relations = [["dependsOn", c.dependsOnClaimIds], ["alternativeTo", c.alternativeToClaimIds], ["contradicts", c.contradictsClaimIds]].filter(([, v]) => (v as string[] | undefined)?.length).map(([k, v]) => `${k} ${(v as string[]).join(", ")}`);
       if (relations.length && admitted.length) notes.push(`${c.id}: its relations (${relations.join("; ")}) were not carried to its parts ${admitted.map((k) => k.id).join(", ")} — each part's relations are its own to propose`);
-      reject(c.id, "claim", c.statement, `not atomic (${blind.reason}); split into ${admitted.length ? admitted.map((k) => k.id).join(", ") : "nothing that survived"}`);
+      if (inDoubt && admitted.length < 2) {
+        notes.push(`${c.id}: one proposition to the reader (${blind.reason}); a seat disputed that under §3.2, and the split gave ${admitted.length} affirmed part(s), not two — the claim stands`);
+        stood(c.id, blind.reason);
+        okClaims.push(c);
+        continue;
+      }
+      reject(c.id, "claim", c.statement, inDoubt ? `one proposition to the reader (${blind.reason}), disputed by a seat under §3.2; split in doubt into ${admitted.map((k) => k.id).join(", ")}, each affirmed` : `not atomic (${blind.reason}); split into ${admitted.length ? admitted.map((k) => k.id).join(", ") : "nothing that survived"}`);
       if (admitted.length) {
         splitInto.set(c.id, admitted.map((k) => k.id));
         okClaims.push(...admitted);

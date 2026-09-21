@@ -131,6 +131,8 @@ export interface Settlement {
   /** The history entry's reason. */
   why: string;
   actor: string;
+  /** Claims whose atomicity a seat disputed under §3.2: one the reader still calls one proposition is split in doubt. */
+  disputed?: { atomicity: string[] };
 }
 
 const provisionalSettlement = (loaded: LoadedCase): Settlement => {
@@ -232,7 +234,7 @@ export async function settleRecords(caseSlug: string, settlement: Settlement, op
     // The ledger's own wording of each claim re-read, so a claim the ledger's evidence anchors is known to be the
     // claim that evidence was read against (review note #401).
     const ledgerStatements = new Map(originals.claims.map((c) => [c.id, loaded.claims.find((k) => k.id === c.id)?.statement ?? ""]));
-    const verdicts = await judgeProposal(proposal, loadedMinus, texts, resolved, judge, run.meter, { model: READER.model, date }, split, { model: MODELS.house.model, runId }, { ...(settlement.context ? { extraContext: settlement.context } : {}), ledgerStatements });
+    const verdicts = await judgeProposal(proposal, loadedMinus, texts, resolved, judge, run.meter, { model: READER.model, date }, split, { model: MODELS.house.model, runId }, { ...(settlement.context ? { extraContext: settlement.context } : {}), ledgerStatements, atomicityDisputed: new Set(settlement.disputed?.atomicity ?? []) });
     const plan = planReverify(verdicts, originals);
     const tag = settlement.verb === "answer" ? "answer" : "re-verify";
     // A claim the reader split: its parts, by the origin they carry.

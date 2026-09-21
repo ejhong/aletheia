@@ -471,16 +471,55 @@ describe("settleRecords with verb answer, end to end on a copied case", async ()
     expect(byEvidence).toBeTruthy();
     const root = setup();
     const before = fs.readFileSync(path.join(root, "content", "cases", c.dir, "claims.yaml"), "utf8");
-    const judge = async () => {
-      throw new Error("no model call is needed for a claim anchored by evidence");
+    // The reader judges its atomicity without a text, on the statements of the records that cite it.
+    const blind: string[] = [];
+    const judge = async (rec: unknown, text: string, context: string) => {
+      blind.push(`${text}|${context}`);
+      return { ...ok, reason: "one proposition" };
     };
     const out = await settleRecords(c.record.slug, { ...claimSettlement, originals: { sources: [], evidence: [], claims: [byEvidence] } }, { root, deps: { cases: () => [c], judge, split: async () => parts, fetch: fetchClaim } });
     expect(out).toMatchObject({ outcome: "completed", promoted: 1, refused: 0 });
+    expect(blind).toHaveLength(1);
+    expect(blind[0]).toMatch(/^\|/);
+    expect(blind[0]).toContain("This claim has no source anchor of its own; it is anchored by the records that cite it");
     // Promoted over itself: the claim stands as it was, live, its statement and state unchanged.
     const after = (parse(fs.readFileSync(path.join(root, "content", "cases", c.dir, "claims.yaml"), "utf8")) as { id: string; statement: string; reviewState: string }[]).find((k) => k.id === byEvidence.id)!;
     expect(after).toMatchObject({ statement: byEvidence.statement, reviewState: byEvidence.reviewState });
     expect(before).toContain(byEvidence.statement.slice(0, 40));
     fs.rmSync(root, { recursive: true, force: true });
+    // A compound one is split on the statements of the records that cite it: the parts enter anchored as it was, by
+    // those records, which are relinked to the parts and then read against them.
+    const root3 = setup();
+    const citers = c.evidence.filter((e) => e.reviewState !== "rejected" && e.claimIds.includes(byEvidence.id));
+    const halves = ["The first proposition the founding claim bundled.", "The second proposition the founding claim bundled."];
+    const judge3 = async (rec: unknown, _text: string, context: string) => {
+      const st = (rec as { statement: string }).statement;
+      if (st === byEvidence.statement) return { ...ok, atomic: false, reason: "occurrence and prevalence in one" };
+      if (context.includes("This is a PART of a compound claim")) return { ...ok, ofTheCompound: true, reason: "one of the two" };
+      return { ...ok, reason: "fine" };
+    };
+    const seenSplit: string[] = [];
+    const split3 = async (statement: string, anchorText: string) => (seenSplit.push(`${statement}|${anchorText}`), halves);
+    const out3 = await settleRecords(c.record.slug, { ...claimSettlement, originals: { sources: [], evidence: [], claims: [byEvidence] } }, { root: root3, deps: { cases: () => [c], judge: judge3, split: split3, fetch: fetchClaim } });
+    expect(out3).toMatchObject({ outcome: "completed", promoted: 0, appended: 2, refused: 1 });
+    expect(seenSplit).toHaveLength(1);
+    for (const e of citers) expect(seenSplit[0]).toContain(`${e.id}: ${e.sourceStatement}`);
+    const claims3 = parse(fs.readFileSync(path.join(root3, "content", "cases", c.dir, "claims.yaml"), "utf8")) as { id: string; statement: string; reviewState: string; sourceAnchor?: unknown; origin: { ref: string }; rejectionReason?: string }[];
+    const parts3 = claims3.filter((k) => k.origin.ref.startsWith(`split of ${byEvidence.id} `));
+    expect(parts3.map((k) => k.statement).sort()).toEqual([...halves].sort());
+    for (const k of parts3) {
+      expect(k.sourceAnchor).toBeUndefined();
+      expect(k.origin.ref).toContain("on the statements of the records that cite it, without a text; anchored as the compound was, by the records that cite it");
+    }
+    expect(claims3.find((k) => k.id === byEvidence.id)!.rejectionReason).toMatch(new RegExp(`split into ${parts3.map((k) => k.id).sort().join(", ")}$`));
+    expect(out3.relinked?.sort()).toEqual(citers.map((e) => e.id).sort());
+    const ev3 = parse(fs.readFileSync(path.join(root3, "content", "cases", c.dir, "evidence.yaml"), "utf8")) as { id: string; claimIds: string[]; reviewState: string }[];
+    for (const e of citers) {
+      const after3 = ev3.find((x) => x.id === e.id)!;
+      expect(after3.reviewState).toBe("provisional");
+      expect(parts3.every((k) => after3.claimIds.includes(k.id))).toBe(true);
+    }
+    fs.rmSync(root3, { recursive: true, force: true });
     // The same id with other words is not the claim that evidence was read against: no anchor from the ledger.
     const root2 = setup();
     const rewritten = { ...byEvidence, statement: `${byEvidence.statement} And a proposition the evidence never met.` };

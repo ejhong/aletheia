@@ -932,8 +932,55 @@ export async function judgeProposal(
           continue;
         }
       }
-    } else if (!citedBy.has(c.id) && !anchoredByLedger(c)) {
-      reject(c.id, "claim", c.statement, "no source anchor and no accepted evidence record cites it — every claim must be anchored");
+    } else {
+      if (!citedBy.has(c.id) && !anchoredByLedger(c)) {
+        reject(c.id, "claim", c.statement, "no source anchor and no accepted evidence record cites it — every claim must be anchored");
+        continue;
+      }
+      // A claim anchored by evidence alone is still one proposition or not (§3.2): the reader judges its atomicity
+      // without a text, on the statements of the records that cite it, and a compound one is split on those
+      // statements — its parts anchored as it was, by the records that cite them, which a settlement then reads
+      // against each part (2026-09-21: a founding claim bundling occurrence and population prevalence stood
+      // unjudged through every re-reading because it had no anchor of its own).
+      const citing = [...okEvidence, ...loaded.evidence.filter((e) => e.reviewState !== "rejected")].filter((e) => e.claimIds.includes(c.id));
+      const citingText = citing.map((e) => `${e.id}: ${e.sourceStatement}`).join("\n\n");
+      const blind = await judge({ statement: c.statement }, "", `${questionContext} ${TEXT_UNAVAILABLE} This claim has no source anchor of its own; it is anchored by the records that cite it, whose statements follow. Is the statement one proposition with a truth condition? Records citing it: ${citingText}`, meter);
+      if (blind.atomic !== false) {
+        okClaims.push(c);
+        continue;
+      }
+      let sp: SplitResult;
+      try {
+        sp = asSplit(await split(c.statement, citingText, meter));
+      } catch (err) {
+        reject(c.id, "claim", c.statement, `not atomic (${blind.reason}); the split failed: ${(err as Error).message}`);
+        continue;
+      }
+      const admitted: Claim[] = [];
+      for (const part of sp.parts) {
+        const id = nextClaimId(loaded, [...proposal.adds.claims.map((k) => k.id), ...okClaims.map((k) => k.id), ...admitted.map((k) => k.id)]);
+        const v2 = await judge({ statement: part }, "", `${questionContext} ${TEXT_UNAVAILABLE} This is a PART of a compound claim that was split — the compound's statement: "${c.statement}" — anchored by the records that cite the compound, whose statements follow. Say in ofTheCompound whether the part states one of the propositions the compound bundled, and in atomic whether it is one proposition. Records citing the compound: ${citingText}`, meter);
+        if (v2.ofTheCompound !== true) {
+          notes.push(`${c.id} part "${part.slice(0, 60)}" refused: ${v2.ofTheCompound === false ? "not a proposition the compound bundled" : "the reader did not affirm it is a proposition the compound bundled"} — ${v2.reason}`);
+          continue;
+        }
+        if (v2.atomic === false) {
+          notes.push(`${c.id} part "${part.slice(0, 60)}" refused (atomic): ${v2.reason}`);
+          continue;
+        }
+        const { sourceAnchor: _anchor, ...rest } = c;
+        void _anchor;
+        // A part keeps the compound's place in the ladder (its parents) and no anchor, as the compound had none; the
+        // compound's dependencies, alternatives and contradictions are not carried over (§3.2).
+        admitted.push({ ...rest, id, statement: part, dependsOnClaimIds: [], alternativeToClaimIds: [], contradictsClaimIds: [], origin: { ref: `split of ${c.id} (${c.origin.ref}) on the statements of the records that cite it, without a text; anchored as the compound was, by the records that cite it`, extractedBy: sp.model ?? splitter.model, runId: sp.runId ?? splitter.runId, date: sp.date ?? reader.date } });
+      }
+      const relations = [["dependsOn", c.dependsOnClaimIds], ["alternativeTo", c.alternativeToClaimIds], ["contradicts", c.contradictsClaimIds]].filter(([, v]) => (v as string[] | undefined)?.length).map(([k, v]) => `${k} ${(v as string[]).join(", ")}`);
+      if (relations.length && admitted.length) notes.push(`${c.id}: its relations (${relations.join("; ")}) were not carried to its parts ${admitted.map((k) => k.id).join(", ")} — each part's relations are its own to propose`);
+      reject(c.id, "claim", c.statement, `not atomic (${blind.reason}); split into ${admitted.length ? admitted.map((k) => k.id).join(", ") : "nothing that survived"}`);
+      if (admitted.length) {
+        splitInto.set(c.id, admitted.map((k) => k.id));
+        okClaims.push(...admitted);
+      }
       continue;
     }
     okClaims.push(c);

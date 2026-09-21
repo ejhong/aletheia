@@ -482,6 +482,8 @@ describe("settleRecords with verb answer, end to end on a copied case", async ()
     expect(blind).toHaveLength(1);
     expect(blind[0]).toMatch(/^\|/);
     expect(blind[0]).toContain("This claim has no source anchor of its own; it is anchored by the records that cite it");
+    const accountStood = fs.readdirSync(path.join(root, "proposals"), { recursive: true }).map(String).filter((f) => f.endsWith("verification.md")).map((f) => fs.readFileSync(path.join(root, "proposals", f), "utf8")).join("\n");
+    expect(accountStood).toContain(`${byEvidence.id}: stood — the reader: one proposition`);
     // Promoted over itself: the claim stands as it was, live, its statement and state unchanged.
     const after = (parse(fs.readFileSync(path.join(root, "content", "cases", c.dir, "claims.yaml"), "utf8")) as { id: string; statement: string; reviewState: string }[]).find((k) => k.id === byEvidence.id)!;
     expect(after).toMatchObject({ statement: byEvidence.statement, reviewState: byEvidence.reviewState });

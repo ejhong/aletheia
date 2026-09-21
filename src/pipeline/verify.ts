@@ -610,6 +610,10 @@ export async function judgeProposal(
   // side — not the case file's founding subtitle, which refused a founder essay's whole family of propositions
   // as outside a question phrased around one mechanism (2026-09-09).
   const accounts = caseAccounts(loaded);
+  // When the reader is told something beyond the case (a settlement's context — a seat's objection in view), a record
+  // that stands carries the reader's reason in the account, beside the objection it stood against (2026-09-21: a
+  // claim a seat called compound stood as one proposition, and the account said only "promoted").
+  const stood = (id: string, reason: string) => { if (gates.extraContext) notes.push(`${id}: stood — the reader: ${reason}`); };
   const questionContext = `Case question: ${caseQuestion(loaded)}.${accounts.length ? ` The case sets these accounts side by side, and a proposition that bears on any of them bears on the case: ${accounts.map((a, i) => `(${i + 1}) ${a}`).join(" ")}` : ""}${gates.extraContext ? ` ${gates.extraContext}` : ""}`;
   /** Compound claims replaced by their parts, for evidence that cited them. */
   const splitInto = new Map<string, string[]>();
@@ -814,6 +818,7 @@ export async function judgeProposal(
       continue;
     }
     notes.push(...applied.notes);
+    stood(e.id, verdict.reason);
     okEvidence.push(...applied.records);
   }
 
@@ -934,6 +939,7 @@ export async function judgeProposal(
           }
           continue;
         }
+        stood(c.id, verdict.reason);
       }
     } else {
       if (!citedBy.has(c.id) && !anchoredByLedger(c)) {
@@ -949,6 +955,7 @@ export async function judgeProposal(
       const citingText = citing.map((e) => `${e.id}: ${e.sourceStatement}`).join("\n\n");
       const blind = await judge({ statement: c.statement }, "", `${questionContext} ${TEXT_UNAVAILABLE} This claim has no source anchor of its own; it is anchored by the records that cite it, whose statements follow. Is the statement one proposition with a truth condition? Records citing it: ${citingText}`, meter);
       if (blind.atomic !== false) {
+        stood(c.id, blind.reason);
         okClaims.push(c);
         continue;
       }

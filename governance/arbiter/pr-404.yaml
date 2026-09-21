@@ -1,0 +1,134 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 404
+title: The anchorless split gets its second round
+url: https://github.com/ejhong/aletheia/pull/404
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-21
+judgedAgainst: 2ee02659a6
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches only pipeline logic (src/pipeline/verify.ts), its
+      test, and an append-only DECISIONS.md entry; AGENTS.md is untouched and no
+      content/ records or citations are added (verification found no
+      identifiers). The change adds a bounded second split round to the
+      anchorless branch, mirroring the existing anchored path, and every
+      second-round part is still judged for ofTheCompound and atomicity — a
+      strengthening of §3.2 enforcement, not a loosening of any §3.15 check;
+      parts refused as not of their parent are still refused and noted in the
+      account. Provenance is improved rather than degraded: the origin ref now
+      names the immediate parent ('; second round, of the part \"...\"') and the
+      reader prompt states which statement is the compound and that it is itself
+      a part of the original, which the test asserts. Relations are explicitly
+      not carried to parts, and the compound's rejection reason still lists the
+      surviving part ids, so the ledger remains reconstructible. The DECISIONS
+      entries record the discarded run honestly — spend records stand, proposal
+      and edition do not — with date and channel stamped. I see no fabricated
+      locator, no confidence material, and no reclassification to dodge a
+      check."
+    cost:
+      model: claude-opus-5
+      inputTokens: 8474
+      outputTokens: 622
+      usd: 0.061165
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: The change strengthens atomicity handling by giving an anchorless
+      compound claim the same bounded second split already used for anchored
+      claims, while refusing second-round outputs that remain compound. It also
+      corrects provenance by judging each second-round output against its
+      immediate parent and recording that parent verbatim in the claim origin.
+      The tests cover the two-round limit, rejection of a stray proposition from
+      elsewhere in the original claim, relinking, and verification-account
+      notes. No citations or confidential content are added, AGENTS.md is
+      untouched, and the added decisions entries record the date, channel, and
+      stated supervision rather than weakening publication checks.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 9677
+      outputTokens: 681
+      usd: 0.052328
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.8
+      - §3.14
+    reasoning: The change extends the two-round claim splitting logic to anchorless
+      claims that are judged against citing evidence statements, mirroring
+      existing behavior for anchored claims. It strictly upholds atomicity
+      (§3.2) by splitting non-atomic sub-parts once more (and no further) rather
+      than dropping valid propositions. Exact provenance (§3.8, §3.14) is
+      preserved and improved by tracking and stamping the immediate parent
+      wording in candidate origins and verification contexts. Automated pipeline
+      tests are thoroughly updated, and no constitutional rules or verification
+      gates are weakened.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 10525
+      outputTokens: 495
+      usd: 0.00975
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.15
+    reasoning: The diff only touches pipeline split logic, its tests, and
+      DECISIONS.md. It extends the existing second-round compound split from the
+      anchored path to the anchorless path (depth < 2, then stop), and stamps
+      second-round origins/context with the immediate parent so ofTheCompound is
+      judged against that parent—tightening §3.2 handling rather than weakening
+      §3.15 checks. AGENTS.md is untouched; no citations, confidence material,
+      run records, or fabricated provenance appear. Founder-supervised decision
+      entries match the code change and are allowed under §3.15.
+    cost:
+      model: grok-4.5
+      inputTokens: 10004
+      outputTokens: 154
+      usd: 0.021047
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: "This is a pipeline-code fix with tests and a decisions-log entry; it
+      edits no AGENTS.md, adds no citations, and carries no run records, so the
+      fabrication, confidence, and constitution tripwires are not in play.
+      Substantively the change strengthens §3.2 rather than weakening checks: it
+      extends the one-recursion split (once more and no further) to the
+      anchorless branch that previously refused everything, and it improves
+      §3.14/§3.8 provenance by recording the immediate parent in each part's
+      origin so a part from elsewhere in the original compound cannot pass
+      silently — the new test exercises exactly that refusal. The DECISIONS.md
+      entries record a founder direction with date and channel ('in session,
+      2026-09-21'), which is the form §3.15 permits for the operating record,
+      and the same supervised-by pattern already appears in the pre-existing
+      context lines, so I have no positive evidence the attribution is invented;
+      if it were, that would be a §3.15 provenance problem, but nothing in the
+      shown material contradicts it. No dangling IDs, no fabricated locators,
+      and the tests assert the account text the runs must produce, so I see no
+      rule broken."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 10780
+      outputTokens: 854
+      usd: 0.002044
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 49460
+  outputTokens: 2806
+  usd: 0.1463
+harvestedAt: 2026-09-21

@@ -1,0 +1,154 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 363
+title: "Chain: 2026-09-19"
+url: https://github.com/ejhong/aletheia/pull/363
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-19
+judgedAgainst: ad2164a545
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The change adds one edition candidate, its paired draft assessment,
+      a spend record, a run record, a research-status change, and two harvested
+      prior arbiter verdicts; AGENTS.md is untouched and the tooling found no
+      new citation identifiers under content/, so there is no fabrication
+      surface I can test. Provenance is stamped throughout (runId, producedBy,
+      model, date, promptVersion, ledgerHash) and the assessment header states
+      plainly 'Append-only; NOT human reviewed', with role: draft and
+      humanReviewed: false — no AI record is dressed as human and no draft as
+      ratified (§3.15, §4). The edition's stated purpose is to tighten
+      discipline, not loosen it: evidence ids formerly spent on neighbouring
+      claims (E032 on C002/C005, E024 on C005, E021 on C020) are now cited
+      beside the claims they attach to, with cross-claim inference disclosed as
+      inference (§3.2, §3.6, §3.8); every anchor-only featured claim (C039,
+      C073, C077, C143, C174) is named as anchor-only and graded no higher than
+      unresolved; and records resting on the unread SRC-JHONG-2026A (E044, E045,
+      E050–E052) are explicitly treated as carrying no weight, consistent with
+      the provisional/unread-source rule in §4. Competing accounts are presented
+      symmetrically with their own decisive tests (§3.3), negative results (E024
+      null resistivity, E026 absence of pain-free controls, E016) are carried as
+      spine (§3.11), credibility is separated from diagnosticity throughout
+      (§3.4), and independence caveats (same NIH lineage, proponent authorship,
+      second-hand review) are stated (§3.10). The research-status change to
+      VASO-R007 is mirrored identically in research.yaml, history.yaml
+      (append-only, actor and aiAssisted recorded), and the run's status file,
+      so nothing is misattributed (§3.14)."
+    cost:
+      model: claude-opus-5
+      inputTokens: 90670
+      outputTokens: 1567
+      usd: 0.49577
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.4
+      - §3.8
+      - §3.10
+      - §3.13
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: The assessment and edition are explicitly stamped with model, date,
+      prompt version, producing run, role:draft, and humanReviewed:false, so
+      neither is presented as a human or already-ratified judgment. Claims based
+      on SRC-JHONG-2026A are repeatedly identified as anchor-only, from an
+      unread and unverified source, assigned no evidential weight, and graded
+      unresolved; even the page anchors are accompanied by that verification
+      caveat rather than represented as checked. The synthesis distinguishes
+      credibility from diagnosticity, names contrary and null findings,
+      discloses shared research lineages and essay-derived dependence, and
+      presents three serious competing mechanisms with calibrated uncertainty.
+      The research-status transition and history entry are append-only and
+      identify the responsible model run, while AGENTS.md and the constitutional
+      checks are untouched; mechanical verification also found no newly added
+      citation identifiers requiring resolution.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 61851
+      outputTokens: 1724
+      usd: 0.282396
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.6
+      - §3.8
+      - §3.13
+      - §3.14
+      - §3.15
+    reasoning: "The change adds a new edition candidate and accompanying draft
+      assessment for the vasocomputation case under protocol edition-v10, along
+      with run, spend, and harvested arbiter records. The assessment is properly
+      stamped as an unratified AI draft (`humanReviewed: false`, `role: draft`)
+      and adheres strictly to the rule that evidence records are cited only for
+      claims they are attached to or as explicit disclosed inferences.
+      Anchor-only claims (C039, C073, C077, C143, C174) are transparently
+      labeled as held on anchors without admitted evidence, records from unread
+      source SRC-JHONG-2026A are treated as absent, and VASO-R007 is
+      legitimately recorded as answered following the execution of study
+      VASO-S001. No files are omitted, AGENTS.md is untouched, and all epistemic
+      provenance requirements are satisfied."
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 67653
+      outputTokens: 1293
+      usd: 0.055588
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff adds a stamped draft assessment (role: draft,
+      humanReviewed: false, runId/model/date/promptVersion/ledgerHash) and
+      matching edition candidate under edition-v10, plus an append-only history
+      line and research.yaml status flip for VASO-R007. The rationale and
+      synthesis explicitly correct prior cross-claim spending of evidence IDs,
+      mark every anchor-only featured claim (C039/C073/C077/C143/C174) as held
+      solely on its unread anchor with no admitted record and grade none above
+      unresolved, treat SRC-JHONG-2026A-derived records as absent, and keep the
+      case verdict unresolved with competing accounts and calibrated language.
+      No new citation identifiers appear (tooling empty), AGENTS.md is
+      untouched, checks are tightened rather than loosened, and
+      provenance/history are honest and append-only."
+    cost:
+      model: grok-4.5
+      inputTokens: 63761
+      outputTokens: 200
+      usd: 0.128837
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "The diff adds only edition/assessment candidates, run and spend
+      records, an append-only history entry, a research-lifecycle status change,
+      and harvested past arbiter verdicts; AGENTS.md is untouched and the
+      mechanical verification found no newly added citation identifiers, so no
+      new fabrication surface is presented. Provenance is stamped throughout
+      (runId, model, date, promptVersion, humanReviewed: false, 'NOT human
+      reviewed'), anchor-only claims (C039, C073, C073/C077, C143, C174) are
+      consistently graded unresolved and said to be held on their anchors with
+      no admitted evidence, and the unread-source records (SRC-JHONG-2026A:
+      E044, E045, E050–E052) are explicitly treated as absent under the
+      provisional rule rather than being spent. The edition's whole purpose is
+      to tighten compliance with edition-v10 — citing each evidence record only
+      beside the claim it is attached to, with cross-claim uses stated as
+      disclosed inferences — which strengthens, not weakens, the §3.15 checks;
+      the VASO-R007 answered status is a reasoned lifecycle update tied to
+      already-admitted study S001 and evidence E019–E021, not a new record.
+      Disagreement, negative evidence, and strongest objections are displayed
+      rather than hidden, and the harvested pr-357/pr-359 files are verbatim
+      governance records, not constitutional edits."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 65754
+      outputTokens: 1621
+      usd: 0.010674
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 349689
+  outputTokens: 6405
+  usd: 0.9733
+harvestedAt: 2026-09-21

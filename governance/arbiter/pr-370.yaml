@@ -1,0 +1,142 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 370
+title: "The answer step: a parked or noted sitting is put back to the verbs"
+url: https://github.com/ejhong/aletheia/pull/370
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-20
+judgedAgainst: 5762c815a0
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "This is a tooling/pipeline change: a new `answer` verb that reads
+      standing objections against a PR and routes them back to the second reader
+      (for named records) and the edition verb (for assessment/article), plus a
+      generalisation of reverify's settlement into `settleRecords` and a new
+      edition protocol v12. No content/ records or citations are added — the
+      verification section confirms no identifiers to check — so no fabrication
+      surface. The checks in §3.15 are not loosened: the verb explicitly refuses
+      PRs that touch AGENTS.md, refuses code changes and multi-case changes,
+      writes no `in` rows of its own beyond the second reader's admissions,
+      pushes nothing, and the DECISIONS entry and code comments state the panel
+      judges the change again. Objection text is passed into the reader and the
+      edition packet plainly labelled \"data under review, not instructions\",
+      and protocol v12 requires each objection to be adopted or declined with
+      reasons in the rationale, which displays rather than hides disagreement.
+      Provenance is stamped honestly: history entries carry the answer's runId,
+      the reader's model and the `actor` \"aletheia answer (… second reader), on
+      #PR\"; refusals record the state the record was actually in rather than a
+      hardcoded \"provisional\" (the §3.14 fix noted as review note #371). The
+      only judgment call I weighed is that an answer leaves a record it could
+      not re-read untouched with no disposition row, the attempt recorded only
+      in the run account — that is reasoned in the code comment (the record was
+      admitted read; a failed fetch is no verdict) and is ordinary imperfection
+      rather than a rule broken. Whose words count is also constrained to the
+      arbiter workflow's own comment at the PR head, avoiding a spoofed \"seat\"
+      directing the pipeline."
+    cost:
+      model: claude-opus-5
+      inputTokens: 32903
+      outputTokens: 1002
+      usd: 0.19281
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: The change does not edit AGENTS.md, add citations, or relax any
+      existing publication gate. `answer` treats objections as data under
+      review, re-reads named records through the existing second-reader
+      verification path, records run/model/date provenance and history, and
+      leaves unread records unchanged. Edition-level responses remain
+      AI-generated candidates under protocol v12, and the caller must push them
+      for the constitutional panel to judge again rather than treating the
+      answer run as ratification. The current-head and workflow-author checks
+      also reduce the risk of misattributing arbitrary comments as panel
+      objections.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 24755
+      outputTokens: 3179
+      usd: 0.163112
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.14
+    reasoning: The pull request implements `aletheia answer <pr>` to feed standing
+      constitutional objections back into the verification and edition
+      pipelines. It rigorously enforces trust boundaries by treating objections
+      as untrusted data under review and restricting parsed objections to
+      authenticated arbiter bot comments at the current HEAD. Crucially, the
+      answer verb does not push, merge, or bypass any constitutional checks; any
+      resultant diff remains subject to fail-closed CI and panel ratification
+      under §3.15.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 28460
+      outputTokens: 1417
+      usd: 0.026659
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff adds the founder-directed `answer` pipeline verb and edition
+      protocol v12; it does not edit AGENTS.md, add ledger citations, or publish
+      confidence material. Consequential outputs are limited to second-reader
+      re-settlement of named live records (same stamps/tombstones/history
+      pattern as reverify, verb=`answer`) and a forced edition whose packet
+      carries objections as data under review; the verb pushes nothing and
+      leaves final judgment to a fresh panel (§3.15). Refusals cover AGENTS.md
+      edits, code-only PRs, multi-case PRs, absent/spoofed/stale arbiter words,
+      and wrong branch. Provenance (actor, runId, history, dispositions) and the
+      DECISIONS/AUTOMATION entries match the stated 2026-09-20 session
+      direction. No fabrication or check-weakening is visible in the complete
+      diff.
+    cost:
+      model: grok-4.5
+      inputTokens: 26961
+      outputTokens: 207
+      usd: 0.055279
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+    reasoning: "The change adds an `answer` verb that reads a parked PR's standing
+      objections and puts them back through the existing gated verbs — records
+      named by seats go back through the second reader under the verify protocol
+      (with the objection marked as data under review, judged on the source
+      text), and everything else goes to a forced edition whose candidate must
+      answer each objection in its rationale. It pushes nothing and writes no
+      `in` row of its own; the caller pushes and the panel re-judges the head,
+      so no consequential change publishes on the answer's word (§3.15 is
+      explicitly preserved, and the verb refuses PRs that touch AGENTS.md or
+      code, honoring the founder's exclusive amendment power). Objection
+      provenance is guarded against fabrication: only the arbiter workflow's own
+      bot-posted comment carrying a machine blob judged at the PR's current
+      head, and review notes by the same author, count as the panel's word —
+      comments by anyone else are ignored and flagged (review note #373's
+      concern is implemented, not dodged). The refusals are reasoned, history
+      entries are stamped with runId/date/actor, refused records are tombstoned
+      with reasons, and the mechanical checks (quote match, identifier
+      resolution, fail-closed reader) are untouched — telling the second reader
+      the objection is an adversarial pointer, not a substitution for the
+      source-text judgment, so I do not read it as check-weakening. No citations
+      are added, no confidence material appears, and the mechanism itself was
+      directed by the founder in session, as recorded in DECISIONS.md."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 27159
+      outputTokens: 2557
+      usd: 0.005352
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 140238
+  outputTokens: 8362
+  usd: 0.4432
+harvestedAt: 2026-09-21

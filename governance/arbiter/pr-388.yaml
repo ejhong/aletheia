@@ -1,0 +1,139 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 388
+title: Frozen records may reference a claim rejected since; live ones may not
+url: https://github.com/ejhong/aletheia/pull/388
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-20
+judgedAgainst: a41fc5e2bd
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches only the loader's integrity checks, a pipeline
+      cascade, tests, and an append-only DECISIONS.md entry; AGENTS.md is
+      untouched and no content/ records or citations are added (the verification
+      section finds no identifiers). The relaxation is narrow and principled
+      rather than a dodge of §3.15's fail-closed checks: `requireClaim` still
+      demands that the referenced claim exist, so dangling IDs remain errors
+      everywhere, and only frozen, append-only artifacts (tombstoned evidence
+      with reviewState \"rejected\", assessment-run overlays stamped to a ledger
+      state, predecessor editions or a head edition whose basis hash no longer
+      matches the current ledger) may point at a claim rejected since. Live
+      evidence, research items, images, and the current edition on the current
+      ledger stay strict, and when no ledger hash is available the head edition
+      defaults to strict — a fail-closed default, not a loosened one. This
+      serves §3.2 (a compound claim can actually be replaced by anchored parts)
+      and §3.14 (histories and overlays keep saying what was true when written)
+      rather than weakening them; the reverify addition extends the same cascade
+      to research items and images, keeping live records clean. The DECISIONS.md
+      entry records the change with date, channel, and the triggering run id,
+      consistent with §3.15's stamping requirement; I have no positive evidence
+      any of that provenance is invented. Tests cover both the frozen and strict
+      branches, so the behavior change is exercised."
+    cost:
+      model: claude-opus-5
+      inputTokens: 6424
+      outputTokens: 1035
+      usd: 0.098558
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.14
+      - §3.15
+    reasoning: "The change makes a coherent distinction between append-only
+      historical records and live records: tombstones, prior assessment
+      overlays, and editions tied to earlier ledger states may retain references
+      to claims rejected later, while current evidence, research items, images,
+      and a current-ledger edition remain subject to the live-claim check. That
+      preserves reconstructable histories under §3.14 and permits compound
+      claims to be replaced by atomic parts under §3.2 without making earlier
+      records unloadable. Unknown claim IDs still fail in every context, and the
+      settlement cascade now removes or redirects refused-claim links in live
+      research and image records. The tests specifically cover both the
+      historical exception and the fail-closed behavior for current records, so
+      this is a narrowing of an overbroad integrity rule rather than an apparent
+      dodge of §3.15."
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 6951
+      outputTokens: 1235
+      usd: 0.053016
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.14
+      - §3.15
+    reasoning: The change distinguishes frozen historical records (append-only
+      assessment overlays, tombstones, and past editions) from live records when
+      validating claim references. This directly supports §3.14 (append-only
+      history and visible revision histories) and §3.2 (allowing compound claims
+      to be replaced by atomic parts without breaking historical runs that
+      assessed the original compound claim). Live records and the current
+      edition on the current ledger remain strictly bound to live claims, and
+      unknown IDs remain disallowed everywhere.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 9031
+      outputTokens: 568
+      usd: 0.008903
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The change correctly distinguishes frozen historical records
+      (tombstones, assessment runs stamped to a past ledger, editions whose
+      basis no longer matches the current ledger) from live ones, so a claim
+      refused under §3.2 can be replaced by atomic parts without making the case
+      unloadable. Live evidence, research, images, and the current edition on
+      the current ledger remain under the strict no-rejected-claim rule; unknown
+      IDs stay errors everywhere. The settlement cascade now relinks research
+      and images the same way evidence already was. DECISIONS.md records a
+      founder-supervised direction; AGENTS.md is untouched; no citations or
+      confidence material are involved. This enables atomic-claim replacement
+      and append-only history rather than weakening §3.15 checks.
+    cost:
+      model: grok-4.5
+      inputTokens: 8536
+      outputTokens: 172
+      usd: 0.018219
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.14
+      - §3.2
+    reasoning: "The change resolves a real internal conflict in the checks rather
+      than dodging them: assessment overlays are constitutionally append-only
+      (§3.14, §4), so a historical assessment run or tombstone cannot be
+      rewritten to drop a reference to a claim later rejected under §3.2 — under
+      the old loader rule, no assessed or featured compound claim could ever be
+      split, making §3.2 unenforceable precisely where it matters. The diff
+      preserves every fail-closed property: an id no claim carries is still an
+      error in every edition and every record, and live evidence, research
+      items, images, and the current edition on the current ledger are still
+      forbidden from referencing rejected claims; only frozen records
+      (tombstones, stamped overlays, editions on a moved ledger) are excused,
+      which matches their semantic role as records of what was live when
+      written. The tests cover both the strict and frozen branches, including
+      the case that an unknown id always fails regardless of frozenness, so this
+      is not a blanket relaxation. No citations are added (verification confirms
+      none), no confidence material is touched, AGENTS.md is not edited, and the
+      DECISIONS.md entry documents the change with founder supervision,
+      consistent with the operating-record rules."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 9359
+      outputTokens: 1623
+      usd: 0.002215
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 40301
+  outputTokens: 4633
+  usd: 0.1809
+harvestedAt: 2026-09-21

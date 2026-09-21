@@ -1,0 +1,115 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 394
+title: The second client is named by itself
+url: https://github.com/ejhong/aletheia/pull/394
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-20
+judgedAgainst: 465eb0b05c
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches only pipeline code, its tests, and an appended
+      DECISIONS.md entry; AGENTS.md is untouched and no content/ records or
+      citations are added (verification found no identifiers). The change
+      strengthens rather than weakens provenance: the second retrieval client
+      now carries its own name, so the 'where the text came from' note names the
+      client that actually read the page instead of hard-coding 'curl' even when
+      a test double did the reading — a direct fix for the §3.8 misattribution
+      flagged in review note #393. Tests are updated consistently to assert the
+      injected double's name and that curlClient.name is 'curl' in production.
+      The decisions entry is appended (append-only, dated, channel stamped) and
+      accurately describes the change, including the prior entry it corrects.
+      `curlFetch` is referenced before its declaration but function declarations
+      hoist, so this is valid TypeScript, not a defect. Nothing here loosens a
+      §3.15 check."
+    cost:
+      model: claude-opus-5
+      inputTokens: 4349
+      outputTokens: 432
+      usd: 0.073108
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.15
+    reasoning: The change replaces the hard-coded “curl” provenance with the actual
+      configured second client’s name in success, challenge, HTTP-error, and
+      execution-failure notes. Tests verify that an injected test double is
+      identified as such while the production client identifies itself as curl,
+      preventing the prior misattribution. The dated decision entry records the
+      rationale and supervision channel, and the change neither edits AGENTS.md
+      nor weakens publication checks or adds unverifiable citations.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 7016
+      outputTokens: 460
+      usd: 0.037264
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.8
+    reasoning: "The change addresses review note #393 by replacing a hardcoded
+      'curl' label in fetch provenance strings with the actual client name
+      provided via the `SecondClient` interface (`{ name, fetch }`). This
+      directly honors §3.8 (exact provenance) by ensuring recorded provenance
+      reflects the true executing client (e.g., 'test double' during testing,
+      'curl' in production). No constitutional checks are weakened, AGENTS.md is
+      untouched, and no citations or confidential materials are involved."
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 7639
+      outputTokens: 420
+      usd: 0.007304
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff only renames the second-client type so each client carries
+      its own name and every via/reason string uses that name instead of
+      hard-coding "curl". That tightens exact provenance (§3.8) for what
+      actually read the page, including test doubles. No citations, content
+      records, AGENTS.md, confidence material, or check-weakening appear; the
+      DECISIONS entry honestly records the review-note fix. Omitted-files list
+      is empty and the change is complete.
+    cost:
+      model: grok-4.5
+      inputTokens: 7260
+      outputTokens: 123
+      usd: 0.015373
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: "This change strengthens provenance honesty rather than weakening any
+      check: it fixes the exact flaw the review note identified, where a note
+      could say 'curl' read a page when an injected test double actually did.
+      The SecondClient now carries its own name and every via/reason string
+      interpolates `second.name`, so the recorded provenance names what actually
+      fetched the text — precisely the exact-provenance discipline of §3.8 — and
+      the tests assert this, including that the production curlClient names
+      itself 'curl'. No AGENTS.md edit, no citations added (verification found
+      none), and the DECISIONS.md entry records the change and its supervision
+      stamp (§3.14). The check itself is untouched: a page both clients are
+      served the challenge on still fails, and an injected fetch still gets no
+      second client unless one is supplied. The decision entry asserts founder
+      supervision in session on 2026-09-20; I cannot independently verify that
+      from the packet, but the code change itself complies regardless, and no
+      rule is broken by the entry as written."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 8085
+      outputTokens: 340
+      usd: 0.001383
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 34349
+  outputTokens: 1775
+  usd: 0.1344
+harvestedAt: 2026-09-21

@@ -1,0 +1,397 @@
+runId: "2026-09-21-check-opus"
+model: "Opus 5 (Anthropic), independent check run"
+date: "2026-09-21"
+promptVersion: "check-v2"
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: provisionally_supported
+  loadBearing: [AMZ-C016, AMZ-C017, AMZ-C003, AMZ-C010, AMZ-C013, AMZ-C011, AMZ-C006]
+  weakestLinks: [AMZ-C017, AMZ-C010, AMZ-C019, AMZ-C020, AMZ-C021, AMZ-C022]
+  synthesis: >-
+    The case as framed has two legs, and they are not equally strong. The first leg — that
+    pre-Columbian Amazonia was a strongly heterogeneous human landscape, with engineered,
+    densely settled corridors embedded in a lightly occupied matrix (AMZ-C016) — is carried by
+    convergent evidence of two opposite signs, which is what makes it robust. On the positive
+    side: LiDAR documenting 432 earthworks with only 36 previously known (AMZ-E001), an
+    1,800 km arc of fortified villages dated AD 1250–1500 by the excavators' own radiocarbon
+    (AMZ-E004), phytolith-documented year-round maize with drainage canals and farm ponds in
+    the Llanos de Mojos (AMZ-E014), 17,000 fish remains showing year-round interfluvial
+    exploitation (AMZ-E022), and dated occupation into the seventeenth and eighteenth centuries
+    at Santarém, Marajó and the Upper Xingu (AMZ-E017, AMZ-E018, AMZ-E019). On the negative
+    side, and equally load-bearing: river distance as the dominant occupation predictor across
+    7,363 sites (AMZ-E010) and a fourteen-region phytolith/charcoal synthesis finding little to
+    no intensive-use signal in most sampled terra firme (AMZ-E011). These do not conflict; they
+    jointly specify a mosaic. That leg I would call well supported on its own.
+    The second leg — that Carvajal described a real world which then died — is weaker and is
+    what caps the case verdict. Its strongest support is AMZ-E007: Diogo Nunes in 1538 and ten
+    Ursúa-expedition accounts in 1560, writing for different interests, independently report
+    dense settlement, vast maize stores, straight roads and renowned ceramics on the same middle
+    Solimões reaches. That is genuine corroboration of the qualitative picture, and AMZ-E005
+    shows the notorious numbers live in only one manuscript branch, so the account can be
+    credited qualitatively without crediting the counts. But the corroboration is textual, not
+    archaeological: the ledger contains no contact-horizon excavation programme on the specific
+    corridor Carvajal descended, and the preregistered reach-by-reach test (AMZ-R001) is
+    unperformed. The collapse mechanism is likewise borrowed: Newson's 88% and 62–64% declines
+    (AMZ-E008) are upper-Amazon mission provinces, extended to the middle and lower river by
+    extrapolation that the ledger itself flags. Chronology cuts the same way — the Aquiry peak
+    is AD 100–300 (AMZ-E003), a millennium before Orellana, and Casarabe ends ~1400 CE, so the
+    most spectacular earthwork evidence is not contact-era evidence. Several limits-side claims
+    (AMZ-C020, AMZ-C021, AMZ-C022, AMZ-C029) carry verified source anchors but no dedicated
+    evidence record, which weakens the skeptical counterweight symmetrically rather than
+    helping either side. Sensitivity: removing AMZ-E007 would change the case verdict most. The
+    heterogeneity leg survives it untouched, but the Carvajal leg would then rest almost wholly
+    on Denevan's manuscript collation plus general archaeological plausibility, and I would drop
+    AMZ-C017 to unresolved and the case to mixed. The case therefore hangs on one thread for one
+    of its two legs, and that should be said plainly.
+  steelman: >-
+    Bush et al. 2025 (AMZ-C022) found that forest recovery largely erased the pre-Columbian
+    signal at Upano while the later Colonial signal persisted — which means absence of
+    contact-era archaeological and palaeoecological confirmation along Carvajal's middle-Solimões
+    corridor is exactly what a proponent should predict even if his description were wholly
+    accurate. Those settlements were built of pole and thatch on an actively migrating
+    whitewater floodplain, over reaches later occupied by colonial missions and modern towns;
+    the material signature most likely to survive is ceramics and dark earth, and the ledger
+    contains no systematic contact-horizon survey of those specific reaches at all. My
+    assessment penalises the Carvajal leg for missing archaeology it has no positive reason to
+    expect to find, and I have no measurement that distinguishes "not there" from "not looked
+    for, and would not have survived." Denevan's bluff model (AMZ-E006) sharpens the point into
+    an untested prediction: dense reaches alternating with empty ones, precisely where channels
+    impinge on bluffs — a spatial pattern Carvajal reports and nobody has yet checked against
+    his route.
+claimAssessments:
+  - claimId: AMZ-C001
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      The claim is about what the text says, not whether it is true, and two independent
+      scholarly treatments in the ledger (Denevan 1996's manuscript comparison, Lopes et al.
+      2024's verbatim quotations) describe exactly this content, including the alternation with
+      reaches Carvajal reports as empty. AMZ-E006's bluff model independently notes that
+      sporadic-rather-than-continuous riverine settlement is the pattern at issue. The strongest
+      opposing consideration is that no evidence record quotes the Relación's own words for
+      these features — the ledger reaches the text only through intermediaries, and the primary
+      source record is explicitly labelled unverified beyond Medina's introduction.
+  - claimId: AMZ-C002
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      AMZ-E005 quotes Denevan verbatim: the 50,000, 10,000 and 8,000 warrior figures and the
+      four-or-five-league villages are absent from Oviedo, which carries one mention of 5,000.
+      This is a direct textual comparison by a specialist, checked against an OCR full text, and
+      it is the kind of claim a single competent collation can settle. The opposing consideration
+      is that the whole finding rests on one scholar's reading, verified from an OCR copy rather
+      than the manuscripts, and the synoptic collation that would make it unimpeachable
+      (AMZ-R002) has not been done.
+  - claimId: AMZ-C074
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: >-
+      AMZ-E089 quotes Medina quoting Oviedo's own statement that he supplemented the friar's text
+      with particulars learned in Santo Domingo from Orellana and his companions. The quoted
+      Spanish is specific and the inference drawn (that Oviedo's branch is not independent of
+      Orellana) follows directly. The weakening consideration is one the ledger states itself:
+      Oviedo is reached through Medina, the Oviedo volume is not in the ledger, and the Medina
+      text was read by a drafter but never confirmed by a second reader, so no quotation from
+      this source has been double-checked.
+  - claimId: AMZ-C003
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      AMZ-E007 documents Nunes's 1538 entry into Machiparo and the ten Ursúa accounts of 1560
+      describing dense habitation, "infinita" maize stores, and straight roads compared to Inca
+      roads, on the same middle Solimões reaches. Independence matters here: these witnesses
+      wrote for different crowns and different purposes, and none repeats Carvajal's extreme
+      numbers, which is the signature of genuine corroboration rather than copying. Against it:
+      Nunes survives only as a 1553/54 letter known through a modern edition, all these accounts
+      share the same conquest-narrative genre incentives to inflate the value of discovered
+      provinces, and the record explicitly corrects away fortifications and turtle-corrals that
+      an earlier draft had attributed to them.
+  - claimId: AMZ-C068
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: >-
+      AMZ-E080 reports Medina's statement that Gómara cited Orellana's relación and called it
+      "mentirosa," with the Spanish quoted. The claim is narrowly about what Medina records, and
+      the record supports exactly that. The opposing consideration is transmission depth: Gómara
+      is quoted by Medina, whose text was read once and never verified by a second reader, and
+      Medina himself notes Gómara gave no grounds — so the fact is secure only at the level of
+      "Medina says so."
+  - claimId: AMZ-C065
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: >-
+      The claim asserts only that Achmatowicz reaches a trustworthiness verdict via geographic
+      reference points, and AMZ-E072 quotes the abstract saying precisely that. Because the claim
+      is about an assessment rather than a fact of the world, abstract-level evidence is nearly
+      sufficient for its literal content. The limiting consideration is that the body was never
+      read, so neither the route reconstruction nor the strength of the argument can be weighed —
+      and a verisimilitude verdict from geography says nothing about settlement density, which is
+      what the case actually needs.
+  - claimId: AMZ-C017
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: >-
+      The numerical half is well established: AMZ-E005 shows the extreme figures are
+      branch-specific, so they cannot be treated as counts. The qualitative half rests chiefly on
+      AMZ-E007's independent 1538 and 1560 witnesses plus general archaeological plausibility;
+      the character evidence (AMZ-E105, AMZ-E106, AMZ-E113, AMZ-E114, AMZ-E091) is correctly
+      logged as context with essentially zero diagnosticity, and AMZ-E099/E100 show the
+      sixteenth-century lie-charge targeted the Amazons episode, not the settlements. What keeps
+      this from a stronger verdict is representativeness: no contact-horizon archaeology in the
+      ledger covers Carvajal's specific corridor, AMZ-E003 warns that the grandest earthwork
+      evidence predates him by a millennium, and AMZ-E111 records Medina's own caveat that the
+      friar is a partisan of his captain.
+  - claimId: AMZ-C004
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      AMZ-E001 quotes the study's own counts — 432 earthworks, 36 previously known — the
+      183,000 km² circumscription, and the 24,000–30,000 prediction, all verbatim. The claim is
+      carefully worded as what the study documents and predicts, which is exactly what the
+      evidence establishes; the 396-new figure and the fivefold improvement over satellite
+      detection are hard measurements. Two considerations pull against reading it as more:
+      AMZ-E038/E039 show a basin-wide model predicting 10,272–23,648 undiscovered earthworks for
+      all of Amazonia, fewer than this study predicts for one region, and the case's own source
+      record discloses that the paper was funded by this site's founder.
+  - claimId: AMZ-C005
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      This is a methodological claim about the paper's own arithmetic, and AMZ-E002 quotes both
+      the headline derivation (25–60% simultaneity, 300 people per earthwork) and the paper's
+      single-family alternative yielding 250,000–760,000. The roughly fivefold span is therefore
+      demonstrated from the source's own text, not imputed. The honest counterweight is that the
+      authors label the single-family reading "very unlikely," so the emphasis on the low branch
+      is editorial; what the evidence establishes is model-sensitivity, not that the low figure is
+      correct.
+  - claimId: AMZ-C006
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      AMZ-E004 quotes both halves: the dated 1,800 km arc of fortified villages at Cal AD
+      1250–1500, and the authors' explicit chain from 21,340 counted inhabitants through
+      contemporaneity assumptions and MaxEnt projection to the 500,000–1,000,000 figure. The
+      claim's value lies in stating the dependency rather than the number, and the source states
+      the dependency itself. The opposing consideration is that site contemporaneity across an
+      1,800 km arc and a 250-year window is a strong assumption the dating cannot resolve, so the
+      population figure should be read as a ceiling-shaped model output, not a measurement.
+  - claimId: AMZ-C011
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      Three independent regional programmes converge: Belterra Plateau sites dated ca. AD 1300 to
+      seventeenth-century colonization with dark earths, ponds and trodden roads (AMZ-E017);
+      Cacoal on Marajó at AD 1300–1650, explicitly contemporaneous with the first Portuguese
+      settlements (AMZ-E018); and Upper Xingu settlements to 1770 CE in layouts matching living
+      Kuikuro villages (AMZ-E019). Different regions, different teams, different site types — this
+      is the case's best demonstration that complex settlement persisted to contact. The weakness
+      is that AMZ-E019 is journalism summarising a research programme rather than a primary
+      excavation report, and none of the three regions is on the middle Solimões reaches Carvajal
+      described.
+  - claimId: AMZ-C061
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      AMZ-E073 quotes the excavating team's dating of the Upano occupation from around 500 BCE to
+      between 300 and 600 CE, backed by nearly seventy radiocarbon dates per the supplement. This
+      is primary dating by the team that dug the sites. The caveat the record itself supplies is
+      that this is an author-accepted manuscript and the sequence "was recently revised and will
+      be presented in a subsequent paper," so the end date is both a range and provisional in the
+      authors' own view.
+  - claimId: AMZ-C007
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      AMZ-E014 quotes 178 phytolith samples from 18 soil profiles recording ubiquitous maize,
+      alongside documented drainage canals and savannah farm ponds — a combination of botanical
+      and engineering evidence rather than inference from monumentality alone. The multi-method
+      convergence is what carries the verdict. The opposing consideration is that "monoculture"
+      and "year-round" are interpretations layered on the phytolith record by one team, other
+      cultigens may be under-detected by phytolith methods, and the Casarabe florescence ends
+      around 1400 CE, well before contact.
+  - claimId: AMZ-C008
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: >-
+      The landscape-engineering half — dark earths, raised fields, forest islands — is documented
+      across multiple ledger records and is not seriously contested. The tree-domestication half
+      is contested head-on: AMZ-E012 gives Levis's basin-wide association, but AMZ-E013 is a
+      Technical Comment in the same journal arguing that five post-Columbian centuries likely
+      played the larger role in the observed floristic patterns. AMZ-E040/E041 add association
+      with a modelled earthwork surface, but the ledger correctly flags that they use Levis's own
+      species list with overlapping authorship and inherit the same confound. The claim as worded
+      bundles a secure element with a genuinely disputed one.
+  - claimId: AMZ-C009
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      AMZ-E016 supplies the decisive element — radiocarbon plus OSL dating showing intermittent
+      use from AD 570–770 in a few discrete construction events — and AMZ-E015 supplies the
+      independent functional argument that fields were built only where no alternatives existed.
+      Chronometric evidence directly contradicting continuous cultivation is stronger than
+      interpretive argument alone. The limitation is explicit in the record: this is the Bermeo
+      area specifically, and other raised-field complexes in the Llanos may have different
+      histories, so the challenge to the intensive-agriculture reading is demonstrated locally
+      and generalised by inference.
+  - claimId: AMZ-C019
+    verdict: provisionally_supported
+    confidence: low
+    reasoning: >-
+      No evidence record in the packet carries SRC-BLATRIX-2018; the only basis is the claim's own
+      sourceAnchor quote and the source record's verification note stating that the zigzag weirs,
+      causeways, 382 ponds and fish-concentration function were checked on fetch. I am disclosing
+      that basis rather than treating the claim as unsupported, since the source record is marked
+      ai_verified with specific content, but this is materially weaker than a read evidence
+      record. The functional interpretation ("to concentrate fish") is also explicitly a postulate
+      in the quoted wording, and the 35-metre proximity statistic has no verified anchor in the
+      packet at all.
+  - claimId: AMZ-C026
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      AMZ-E022 quotes the assemblage size (more than 17,000 fish remains), the site's location
+      50 km from the Mamoré, its AD 500–1400 occupation, and the named dry-season taxa (lungfish,
+      tiger-fish) that persist in small water bodies. A large zooarchaeological assemblage with
+      taxon-level seasonality inference is strong evidence for the specific proposition. The
+      source record's own caveat cuts the other way: the paucity of larger-bodied river fish
+      suggests infrequent exogenous contributions, which constrains how much of the diet this
+      interfluvial system could carry.
+  - claimId: AMZ-C012
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      AMZ-E009 is as close to decisive as documentary evidence gets: Denevan in print rejecting
+      the habitat-density method behind his own 5.1–6.8 million figure, while retaining "at least
+      5 to 6 million" on other grounds. The generalisation that published estimates are shared
+      model families rather than independent measurements is further borne out by AMZ-E002 and
+      AMZ-E004, in both of which the authors themselves state the dependency chains. The opposing
+      consideration is that the broad generalisation across all published estimates is an
+      editorial inference from three exemplars; the dependency-mapping work (AMZ-R004) that would
+      substantiate it has not been done.
+  - claimId: AMZ-C015
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: >-
+      AMZ-E020 quotes the logistic-fit result and the authors' attribution of the terminal decline
+      to sampling bias compounded by post-European collapse. The claim is carefully scoped to what
+      the authors found and how they interpret it, which the record establishes. The substantive
+      weakness is inherent to the method: summed probability distributions are relative-population
+      proxies with well-known taphonomic and calibration artefacts, and the attribution of the
+      terminal downturn to bias rather than an endogenous pre-contact crash is an interpretive
+      choice that the proxy itself cannot adjudicate.
+  - claimId: AMZ-C010
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      AMZ-E008 gives Newson's tabulated figures verbatim — Napo-Aguarico 49,000–51,000 to 6,000
+      by circa 1700, Mainas 62.3–63.6% — together with the mixed causal mechanisms (epidemics,
+      enslaving raids, missionization, service demands, the 1635 revolt, flight). The claim
+      restricts itself to these regions and to uneven decline, and the evidence delivers exactly
+      that. The limitation the record states is the one that matters for the case: these are
+      upper-Amazon provinces with mission records, and the baseline pre-contact figures are
+      themselves reconstructions, so neither the magnitudes nor the mechanisms transfer
+      automatically to the middle and lower river.
+  - claimId: AMZ-C023
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: >-
+      AMZ-E008 documents the interactive mechanism substantially — raids and missionization
+      repeatedly reintroducing infection, revolt, flight from exposed riverine locations — which
+      is the core of this claim. The specific "fade outs" wording and the assertion that adult
+      mortality was heaviest where disease arrived late appear only in the claim's sourceAnchor,
+      not in any evidence record I was shown. The epidemiological logic of fade-out in small
+      dispersed host populations is well established in general background, which raises my prior,
+      and I am flagging that this verdict leans partly on that prior rather than on the ledger.
+  - claimId: AMZ-C013
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      AMZ-E010 quotes a 7,363-site analysis in which distance from river is the top predictor at
+      21.5% permutation importance, with interfluvial areas modelled as more sparsely populated.
+      The sample size and the explicit variable-importance statistic make this a measurement
+      rather than an impression. The countervailing consideration is stated in the record and is
+      serious: site databases inherit survey-effort bias toward accessible riverine areas, so some
+      unknown portion of the river signal is a discovery artefact — which is precisely what
+      AMZ-R003's promise-blind survey would resolve.
+  - claimId: AMZ-C014
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      AMZ-E011 quotes the cumulative synthesis finding little to no evidence across five specific
+      indicator classes in most sampled terra-firme settings, and the claim is worded to match
+      that scope rather than overreaching to basin-wide emptiness. As a statement about what the
+      phytolith and charcoal record shows, it holds. Two considerations limit its inferential
+      reach: AMZ-C021's sampling critique (roughly 300 cores standing in for two million km²) and
+      AMZ-C022's demonstration that long forest recovery can erase pre-Columbian signals
+      altogether — so absence of signal is not yet calibrated against absence of people.
+  - claimId: AMZ-C020
+    verdict: provisionally_supported
+    confidence: low
+    reasoning: >-
+      No evidence record in the packet cites SRC-WALKER-2023; the basis is the claim's
+      sourceAnchor quote plus the source record's verification note, which reproduces both the
+      "limited, albeit impressive" phrase and the "other sites dominate more than two thirds"
+      finding from the PMC copy. I disclose that as the basis. Beyond the thin record, the
+      substantive caution is that a machine-learning prediction trained on presence-only,
+      survey-biased site data is being used to bound the extent of the very site types most likely
+      to be under-detected.
+  - claimId: AMZ-C021
+    verdict: provisionally_supported
+    confidence: low
+    reasoning: >-
+      Again no dedicated evidence record: the support is the sourceAnchor and the source record's
+      verification note confirming the 300 cores, five clustered areas, and 1.17 m³ figures from
+      the PMC copy of Clement et al.'s reply. The claim is narrowly about what critics have
+      argued, and on that scope the anchor suffices. The opposing consideration is that this is an
+      adversarial reply characterising an opponent's sampling, and the packet contains no record
+      of the original authors' rebuttal — the sampling-adequacy question is argued here, not
+      settled.
+  - claimId: AMZ-C022
+    verdict: provisionally_supported
+    confidence: low
+    reasoning: >-
+      The quoted finding — pre-Columbian influence largely eradicated by forest recovery while
+      the Colonial signal persisted in the same profiles — rests on the sourceAnchor and the
+      source record's verification note, with no evidence record in the packet. If sound it is one
+      of the most consequential records here, because it grades all palaeoecological negatives by
+      time since abandonment. That is also its limitation: it is a single-valley result, its
+      generality is exactly what AMZ-R008 proposes to measure, and it has not been tested at sites
+      abandoned only 300–400 years ago.
+  - claimId: AMZ-C029
+    verdict: provisionally_supported
+    confidence: low
+    reasoning: >-
+      The two Peripato evidence records in the packet (AMZ-E038, AMZ-E039) quote the
+      10,272–23,648 undiscovered-structure range and the 94,713 km² high-probability rectangle,
+      but not the 80%-of-basin-at-0–1% figure this claim states; that rests on the sourceAnchor
+      alone, with a verified source record. The figure is consistent with the two quoted results,
+      which raises my confidence in its accuracy as a reading of the paper. The deeper caution is
+      that a 0–1% predicted probability from a presence-only model with modelled observability
+      corrections is a statement about the model, not a survey result — which is why AMZ-R006's
+      blind stratified test matters.
+  - claimId: AMZ-C016
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      This synthesis is supported from both directions at once, which is the strongest structure
+      available: positive records establish dense engineered settlement along rivers, floodplains
+      and savannas (AMZ-E001, AMZ-E004, AMZ-E014, AMZ-E017, AMZ-E018, AMZ-E022), while
+      independent negative records establish river distance as the dominant occupation predictor
+      and little intensive-use signal across most sampled interfluvial terra firme (AMZ-E010,
+      AMZ-E011). Neither the pristine-wilderness nor the uniform-civilization reading survives
+      both sets. The chief opposing consideration is that the matrix density is still estimated
+      from biased samples on both sides — discovery bias inflates the riverine signal, thin coring
+      and time-graded erasure (AMZ-C021, AMZ-C022) deflate the interfluve signal — so the
+      contrast's magnitude, though not its direction, remains open.
+  - claimId: AMZ-C018
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      AMZ-E021 confirms the 2024 episode's cast listing of Pärssinen and Ranzi, and the claim's
+      own anchor is Hancock's first-party statement of the seven chapters and ninety-plus pages in
+      America Before. Both halves of a purely bibliographic claim are documented. The essential
+      caveat, which the evidence record states explicitly, is that this carries zero weight for
+      any empirical proposition about the Amazon: popularisation priority is not evidence, and the
+      claim's presence in the ledger is genealogical housekeeping, not support for the featured
+      hypothesis.

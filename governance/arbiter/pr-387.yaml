@@ -1,0 +1,145 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 387
+title: The splitter anchors each part; a compound claim is replaced by anchored
+  parts or refused, never held
+url: https://github.com/ejhong/aletheia/pull/387
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-20
+judgedAgainst: 8b8b7929a5
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches protocols, pipeline code, tests and the decisions
+      log; it adds no content records and the verification tool found no
+      citation identifiers, so there is nothing to fabricate here. The
+      substantive change makes splitting stricter, not looser: each split part
+      must now carry its own verbatim quote, and verify only adopts that anchor
+      when `unverifiedQuotes` confirms the quote appears verbatim in the fetched
+      text — otherwise it falls back to the compound's anchor and writes an
+      explicit note into the run account (tested at the 'off-text quote falling
+      back with the note' case). The part's stamped origin says '; anchored by
+      the splitter in the same text' only when the quote actually matched, and
+      the extractedBy/runId/date stamps are preserved, so provenance is
+      attributed honestly (§3.8, §3.14). Removing the #385 'held provisional'
+      path is a tightening rather than a check-weakening: a compound claim is
+      now either replaced by anchored atomic parts or refused outright with
+      tombstones that name no nonexistent record, which is closer to §3.2's
+      categorical rule, and the history/summary lines are updated consistently
+      so nothing is silently dropped. AGENTS.md is untouched; the DECISIONS.md
+      entry is stamped with date and channel per the founder-direction rule and
+      follows the format of the adjacent entries. No confidence material, no
+      draft presented as ratified."
+    cost:
+      model: claude-opus-5
+      inputTokens: 14057
+      outputTokens: 1234
+      usd: 0.141698
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.8
+      - §3.9
+      - §3.14
+      - §3.15
+    reasoning: The change removes the provisional retention of compound claims and
+      instead admits only atomic parts that are separately judged, or tombstones
+      the unsupported compound while recording the refusal. Split parts receive
+      a quote and locator, the quote must be found in the retrieved text before
+      replacing the original anchor, and the reader still checks locator and
+      statement support; fallback to the compound anchor is explicitly recorded
+      rather than silently presented as part-specific provenance. Splitter
+      authorship and run metadata remain in each part's origin, while
+      dispositions and case history preserve the replacement or refusal rather
+      than erasing it. No content citations, confidential material, AGENTS.md
+      edits, unratified judgments, or weakening of the multi-model publication
+      gate are introduced.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 13410
+      outputTokens: 2517
+      usd: 0.10398
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.8
+    reasoning: "The change addresses review note #386 by updating the splitting
+      mechanism (split-v4) to extract verbatim text quotes and nearest locators
+      for each individual proposition of a compound claim. It removes the
+      provisional holding of unsplit compound claims, properly refusing claims
+      that cannot be broken down and anchored to verifiable parts in accordance
+      with §3.2. Verification rigorously checks that the part's quote exists
+      verbatim in the retrieved source text before adopting that anchor, falling
+      back transparently with full run-note provenance. Code, protocol
+      documentation, and test updates are coherent and adhere strictly to the
+      constitution."
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 14734
+      outputTokens: 624
+      usd: 0.01339
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff strengthens §3.2 rather than weakening it: compound claims
+      are no longer held as provisional graph nodes; they are replaced by parts
+      each carrying a verbatim quote and nearest locator (split-v4), or refused
+      with nothing in place when no part can be anchored and read. Verify judges
+      each part on its own anchor when the quote is present verbatim, stamps
+      origin accordingly, and falls back to the compound anchor only with an
+      explicit account note—honest provenance, no invented locators. AGENTS.md
+      is untouched; DECISIONS.md records the founder-supervised withdrawal of
+      the #385 hold; tests cover refusal, own-anchor admission, and off-text
+      fallback. No content citations, confidence material, or check-loosening
+      appear in the complete diff."
+    cost:
+      model: grok-4.5
+      inputTokens: 13916
+      outputTokens: 175
+      usd: 0.028997
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.8
+      - §3.15
+    reasoning: "This is a pipeline/protocol change (split-v4) with no content
+      citations added, no AGENTS.md edit (the DECISIONS.md entry is the
+      permitted decisions log, dated and attributed), and no confidential
+      material. It tightens §3.2 rather than weakening a check: the #385 'hold'
+      path that let a compound claim persist (even weightless) is withdrawn, and
+      a compound claim is now either replaced by anchored atomic parts or
+      refused outright — the opposite of dodging the atomicity rule. §3.8 is
+      respected in the new anchoring mechanism: a part's own quote is admitted
+      only when verified verbatim against the fetched text ('unverifiedQuotes'
+      gate), the locator is inherited from the compound when the splitter
+      supplies none, and when the quote is not found verbatim the part falls
+      back to the compound's anchor with the fallback explicitly written into
+      the run account, so no locator or quote is invented silently. The
+      provenance trail is honest — the part's origin records 'anchored by the
+      splitter in the same text' only when anchoring actually occurred, and the
+      tombstone/refusal path names only records that exist. The one residual
+      softness is that a splitter-supplied locator is not independently
+      re-verified against the text, but it rides on a verbatim-verified quote
+      and the protocol forbids composing quotes or inventing locators; that is
+      ordinary imperfection within the checks, not a loosening of them. The
+      tests cover the refusal, the anchored part, and the disclosed fallback,
+      and the change answers review note #386 on the record."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 14516
+      outputTokens: 1120
+      usd: 0.002737
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 70633
+  outputTokens: 5670
+  usd: 0.2908
+harvestedAt: 2026-09-21

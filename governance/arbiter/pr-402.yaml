@@ -1,0 +1,132 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 402
+title: The evidence-anchored shortcut holds only for a ledger claim unchanged,
+  and a frozen agenda item is left as it stands
+url: https://github.com/ejhong/aletheia/pull/402
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-20
+judgedAgainst: 55e1fde259
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff is code-only (pipeline verification logic plus tests); it
+      adds no content records, no citations, and the tooling found no
+      identifiers to resolve. Both changes tighten rather than loosen the §3.15
+      checks: the ledger-anchor shortcut in verify.ts now applies only when a
+      proposed claim's statement matches the ledger's wording verbatim
+      (`anchoredByLedger`), so a rewritten claim reusing an existing id is
+      refused as unanchored, and the reverify.ts cascade now leaves
+      retired/superseded agenda items' status, claims and provenance untouched
+      rather than rewriting them, which preserves provenance accuracy (§3.8,
+      §3.14). New tests exercise both paths, including the refusal message and
+      the byte-equality of the frozen agenda record. AGENTS.md is untouched, no
+      confidential material appears, and nothing presents a draft as ratified.
+      The only thing I would want the operator to confirm is that skipping the
+      cascade for retired items cannot leave a retired item's claimIds pointing
+      at a tombstoned claim and so break the fail-closed load; that is an
+      ordinary engineering question, not a constitutional breach."
+    cost:
+      model: claude-opus-5
+      inputTokens: 4545
+      outputTokens: 791
+      usd: 0.083062
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.6
+      - §3.14
+      - §3.15
+      - §8
+    reasoning: The change tightens the evidence-anchor shortcut by requiring a
+      claim’s statement to match the ledger wording exactly, so evidence
+      attached to one proposition cannot silently support rewritten words under
+      the same ID. The added test confirms that such a rewritten claim is
+      refused as unanchored. Leaving already retired or superseded research
+      items unchanged preserves their recorded status and provenance rather than
+      rewriting historical records during a later cascade. No constitution file,
+      content citation, verification label, or ratification check is altered,
+      and the tests cover both behavioral changes.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 5749
+      outputTokens: 1702
+      usd: 0.057548
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: The change strengthens verification safeguards by ensuring that a
+      re-read claim is only treated as anchored by existing ledger evidence if
+      its text matches the ledger's statement verbatim, preventing semantic
+      drift under reused IDs (§3.2, §3.15). It also prevents cascaded mutations
+      on already retired or superseded research agenda items, preserving
+      historical provenance and auditability (§3.14). Thorough test coverage is
+      provided and no constitutional or content files are improperly touched.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 7630
+      outputTokens: 610
+      usd: 0.00801
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: "The diff tightens claim anchoring so ledger live evidence only
+      shortcuts a claim whose statement matches the ledger wording
+      word-for-word; a rewritten claim on the same id is refused as unanchored.
+      That closes the #401 loophole and upholds exact provenance and honest
+      verification rather than weakening §3.15 checks. The cascade now skips
+      research items already retired or superseded, so frozen status and
+      provenance stamps are not rewritten. Tests cover both behaviors; no
+      AGENTS.md edit, no content citations, and no confidence material are
+      involved."
+    cost:
+      model: grok-4.5
+      inputTokens: 7285
+      outputTokens: 147
+      usd: 0.015567
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: "The change tightens rather than weakens the §3.15/§4 checks:
+      previously any claim reusing a ledger id was anchored by the ledger's live
+      evidence regardless of wording, so a rewritten claim could pass as
+      evidence-anchored; the new `anchoredByLedger` requires an exact
+      word-for-word statement match against the ledger's (or the
+      settlement-supplied) wording, and a rewritten claim is now refused as
+      unanchored — the opposite of check-weakening. The second change stops the
+      retirement cascade from rewriting the status and provenance of
+      already-retired or superseded agenda items, which serves §3.14's
+      append-only, honestly-stamped history rather than misattributing who did
+      what. Both behaviors are covered by added tests asserting refusal with a
+      stated reason and byte-identical preservation of the frozen record. No
+      citations are added, AGENTS.md is untouched, no runs are carried, and the
+      diff is complete with no omitted files, so nothing hidden remains to
+      judge."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 8132
+      outputTokens: 1010
+      usd: 0.001725
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 33341
+  outputTokens: 4260
+  usd: 0.1659
+harvestedAt: 2026-09-21

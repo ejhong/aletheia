@@ -1,0 +1,128 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 364
+title: The agenda's lifecycle fields do not move the ledger
+url: https://github.com/ejhong/aletheia/pull/364
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-19
+judgedAgainst: 768f377a85
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The change is narrow engineering: `ledgerHash` now excludes the
+      research agenda's lifecycle fields (`status`, `statusNote`, `statusBy`,
+      `statusDate`), mirroring the existing exclusion of source locator fields,
+      plus a test asserting a settled item does not move the hash, plus a
+      DECISIONS.md entry recording the rationale. No content/ records,
+      citations, locators, or assessments are touched, and the citation tooling
+      found no identifiers to check. AGENTS.md is untouched, so §3.15's
+      reservation is not implicated. The hash governs only when the scheduler
+      owes a case a new edition; it is not one of §3.15's gates (fail-closed CI
+      schema/dangling-ID/citation checks, multi-model ratification, parking of
+      contested changes), so excluding the edition verb's own bookkeeping is not
+      check-weakening — the status change remains visible in the case history
+      and agenda page, satisfying §3.14's versioning requirement. The
+      DECISIONS.md entry is stamped with date and channel and attributes the
+      direction to the founder in session, which the constitution expressly
+      permits as operating record. Minor nit only: the test's `as typeof slice`
+      cast slightly strains §8's avoid-loose-typing spirit, which is not a
+      violation."
+    cost:
+      model: claude-opus-5
+      inputTokens: 2518
+      outputTokens: 692
+      usd: 0.070453
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+      - §8
+    reasoning: The change narrowly excludes four post-edition research-lifecycle
+      fields from the scheduler’s ledger hash while leaving claims, evidence,
+      sources, substantive research fields, studies, and images hashed. Those
+      fields remain versioned in git; nothing in the diff deletes their
+      provenance, validation, or public records, so §3.14 remains satisfied.
+      This does not weaken the fail-closed checks or concurrence gates named in
+      §3.15; it prevents an edition’s own bookkeeping output from recursively
+      triggering another edition, and the added test fixes that behavior
+      explicitly. No content citation, assessment, confidential material,
+      AGENTS.md amendment, or fabricated published record is introduced; the
+      future-dated values appear only as synthetic test data.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 5730
+      outputTokens: 1454
+      usd: 0.052
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+      - §8
+    reasoning: The change updates `ledgerHash` in `src/domain/hash.ts` to exclude
+      research agenda lifecycle bookkeeping fields (`status`, `statusNote`,
+      `statusBy`, `statusDate`) so that an edition settling a research item does
+      not self-trigger an immediate re-run on unchanged evidence. The
+      modification is documented under `docs/DECISIONS.md` in accordance with
+      §3.15 operator record rules (recorded from founder direction in session)
+      and accompanied by unit tests in `src/domain/load.test.ts`. No
+      constitutional rules, citation standards, or verification mechanisms are
+      weakened or violated.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 6226
+      outputTokens: 503
+      usd: 0.006556
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff only excludes research-agenda lifecycle fields (status,
+      statusNote, statusBy, statusDate) from ledgerHash, mirrors the existing
+      exclusion of source archival locators, and adds a regression test that
+      settling an item leaves the hash unchanged. That is edition bookkeeping,
+      not claim/evidence content, so it does not fabricate citations, hide
+      assessments, edit AGENTS.md, or loosen §3.15 checks. The DECISIONS.md
+      entry records a founder session direction with date and channel, which
+      §3.15 permits. No content/ ledger records or runs are altered.
+    cost:
+      model: grok-4.5
+      inputTokens: 5918
+      outputTokens: 139
+      usd: 0.012785
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+    reasoning: "This is a targeted code fix, not a content or provenance change: the
+      ledger hash stops counting the research agenda's lifecycle fields (status,
+      statusNote, statusBy, statusDate), which the edition verb itself writes
+      after its basis is taken. That exclusion does not loosen any check named
+      in §3.15 — claims, evidence, sources, studies, and images remain fully
+      hashed, so any change to records still triggers the scheduler, and nothing
+      here bypasses CI, ratification, or parking; it only stops the edition's
+      own bookkeeping from self-triggering a redundant edition, mirroring the
+      existing exclusion of source locator fields. The settled status stays
+      visible in the case history and agenda, so §3.14's visibility requirement
+      is preserved, and a new test pins the behavior. The DECISIONS.md append is
+      the workflow's required documentation (DECISIONS.md is not AGENTS.md, so
+      §3.15's constitution-edit rule is not implicated), and the 'supervised-by'
+      stamp is a normal dated provenance entry with nothing in the packet
+      contradicting it. I see no fabrication, no confidence exposure, no
+      misattribution, and no weakening of the fail-closed checks."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 6829
+      outputTokens: 1018
+      usd: 0.001533
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 27221
+  outputTokens: 3806
+  usd: 0.1433
+harvestedAt: 2026-09-21

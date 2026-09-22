@@ -79,6 +79,11 @@ describe("the budget guard", () => {
     expect(capsFor(budget, "2026-09-30").phase).toBe("crunch");
     expect(capsFor(budget, "2026-10-01").phase).toBe("standing");
     expect(capsFor(budget, "2026-09-08")).toMatchObject({ phase: "exemption", perDay: 100, perMonth: 400 }); // a day's grant inside the crunch keeps the crunch's month
+    // A grant may span days (`until`, inclusive): it holds on every day of the span and on no day outside it.
+    const spanned = loadBudget(tmpRoot(FIXTURE_BUDGET.replace("exemptions:", 'crunch:\n  until: "2026-09-30"\n  perDay: 80\n  perMonth: 400\n  reason: "fixture bootstrap"\n  by: "test"\nexemptions:\n  - date: "2026-09-22"\n    until: "2026-09-30"\n    perDay: 60\n    perMonth: 550\n    reason: "fixture: the rest of the month"\n    by: "test"')));
+    for (const d of ["2026-09-22", "2026-09-25", "2026-09-30"]) expect(capsFor(spanned, d)).toMatchObject({ phase: "exemption", perDay: 60, perMonth: 550 });
+    expect(capsFor(spanned, "2026-09-21")).toMatchObject({ phase: "crunch", perDay: 80, perMonth: 400 });
+    expect(capsFor(spanned, "2026-10-01")).toMatchObject({ phase: "standing", perDay: 50, perMonth: 150 });
   });
 });
 

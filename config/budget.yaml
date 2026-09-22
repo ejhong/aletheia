@@ -18,8 +18,10 @@ crunch:
   perMonth: 400
   reason: "Founder direction (2026-09-09, in session): the system may crunch at the start and must settle to almost no cost in steady state. The crunch is the bootstrap sweep; the standing caps above are the steady state."
   by: "founder (direction in session, 2026-09-09)"
-# Dated exceptions to the daily cap, granted by the founder, on the record
-# and self-expiring. The guard uses the exemption's perDay on that date only.
+# Dated exceptions to the caps, granted by the founder, on the record and
+# self-expiring: for one date, or a span (`until`, inclusive) as the crunch
+# is dated. The guard uses the exemption's perDay and, when given, its
+# perMonth on those dates only.
 exemptions:
   - date: "2026-09-08"
     perDay: 100
@@ -30,3 +32,9 @@ exemptions:
     perMonth: 200
     reason: "Founder direction (2026-09-09, in session: the budget may be expanded as the operator judges necessary): the essay's propositions through the chain, plus the two undrafted reports the per-run rule surfaced, in one sitting. Raised the same day from 100 to 140, and the month from 150 to 200, when the month's cap stopped the verification of the founder's second essay mid-run (the drafted proposal carries 50 claims); the verifier now remembers its judgments so the re-run pays only for what it has not asked."
     by: "founder (chat direction, 2026-09-09)"
+  - date: "2026-09-22"
+    until: "2026-09-30"
+    perDay: 60
+    perMonth: 550
+    reason: "Founder direction (2026-09-22, in session): the loop keeps running for the rest of September. The crunch's $400 month was reached on 2026-09-21 ($400.58 recorded on main) with the vasocomputation follow-up's edition refused at $7 and the weekly chain due; the day cap stays at the crunch's $60, the month rises by $150 for the nine days left. October falls to the crunch's caps as dated."
+    by: "founder (direction in session, 2026-09-22)"

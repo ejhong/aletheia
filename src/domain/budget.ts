@@ -14,11 +14,6 @@ export const BudgetSchema = z.object({
     perMonth: z.number().positive(),
   }),
   /**
-   * Founder-granted, dated exceptions to the daily cap — the constitutional
-   * way to spend past it: on the record, for one day, with a reason and a
-   * name, self-expiring. Never an environment variable.
-   */
-  /**
    * The crunch: caps that hold until a date and then fall to the standing
    * caps — the bootstrap is the expensive part, and it ends on the record.
    */
@@ -31,10 +26,18 @@ export const BudgetSchema = z.object({
       by: z.string().min(1),
     })
     .optional(),
+  /**
+   * Founder-granted, dated exceptions to the caps — the constitutional way
+   * to spend past them: on the record, for one day or a dated span (`until`,
+   * inclusive, as the crunch is dated), with a reason and a name,
+   * self-expiring. Never an environment variable.
+   */
   exemptions: z
     .array(
       z.object({
         date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+        /** The last day the grant holds, inclusive; absent, the grant is for `date` alone. */
+        until: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
         perDay: z.number().positive(),
         /** The month's cap as it stands on that date, when the grant lifts it too. */
         perMonth: z.number().positive().optional(),
@@ -48,7 +51,7 @@ export type Budget = z.infer<typeof BudgetSchema>;
 
 /** The caps in force on a date: a dated exemption first, then the crunch while it lasts, then the standing caps. */
 export function capsFor(budget: Budget, today: string): { perRun: number; perDay: number; perMonth: number; phase: "exemption" | "crunch" | "standing" } {
-  const exemption = budget.exemptions.find((e) => e.date === today);
+  const exemption = budget.exemptions.find((e) => e.date <= today && today <= (e.until ?? e.date));
   if (exemption) return { perRun: budget.usd.perRun, perDay: exemption.perDay, perMonth: exemption.perMonth ?? budget.crunch?.perMonth ?? budget.usd.perMonth, phase: "exemption" };
   const crunch = budget.crunch && today <= budget.crunch.until ? budget.crunch : null;
   if (crunch) return { perRun: budget.usd.perRun, perDay: crunch.perDay, perMonth: crunch.perMonth, phase: "crunch" };

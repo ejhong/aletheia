@@ -2501,3 +2501,13 @@ The answer round at 2dbd4c1 on #372 left VASO-C001 standing on one reader call �
 ## 2026-09-22 — A dated exemption for the rest of September; an exemption may span days
 
 The crunch's $400 month was reached on 2026-09-21 ($400.58 recorded on main): the vasocomputation follow-up's edition was refused at an estimated $7, and the weekly chain would have refused too. The founder directed (2026-09-22, in session) that the loop keep running for the rest of the month. An exemption was a single date in the schema, so a span needed nine entries or a form the crunch already has; the exemption now takes an optional `until` (inclusive), and the guard applies the grant on every day of the span. The grant: 2026-09-22 through 2026-09-30, the day cap held at the crunch's $60, the month raised to $550 — $150 for nine days, the day cap still governing. October falls to the crunch's caps as dated. Raising a cap remains the founder's act; this entry records that direction. Supervised-by: founder (direction in session, 2026-09-22).
+
+## 2026-09-22 — The house model and the Anthropic seat move to Opus 5.5
+
+Founder direction (2026-09-22, in session), on the operator's assessment: Claude Opus 5.5 is both cheaper and better placed than the models it replaces, so the drafter, the editor, the research seat and the panel's Anthropic seat now name it.
+
+Cost was the occasion. Repricing every Anthropic call of September at the new list shows where the money is: the house model was $326 of $398, and the same tokens on Opus 5.5 come to $133. The second reader stays on Sonnet 5, which is cheaper than Opus 5.5 and does the highest-volume work; moving it up would have cost $50 more. The saving is real but the headline is optimistic, because the index score below is at max effort, where the model thinks more and the output bill rises.
+
+Quality decided the panel seat, where cost is nothing ($17.60 for the month). Seats are chosen in a band on the Artificial Analysis Intelligence Index (56–59 at the effort pinned per seat). Opus 5 had fallen to 51, below its own criterion; Opus 5.5 scores 58 at max effort and 54 at high, so the seat is pinned at max, which is what keeps it in band. The seat's tag is unchanged, so a case's checks remain one series across the change.
+
+Switching stays a one-file edit. config/models.yaml names every model, config/tariffs.yaml prices it, and the roster test already refused an unpriced model; a new test now enforces the claim the file has always made, that no source file names a model in code (comments may, since they record what past runs were stamped with). Fable 5.1 keeps its tariff row: the runs it served are stamped with it and must stay priced. Supervised-by: founder (direction in session, 2026-09-22).

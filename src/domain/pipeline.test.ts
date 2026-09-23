@@ -195,6 +195,28 @@ describe("the model roster (config/models.yaml)", () => {
     for (const id of modelIds(MODELS)) expect(t.models[id], `config/tariffs.yaml has no row for ${id}`).toBeDefined();
   });
 
+  it("is the only place a model id is written: no source file names one in code", () => {
+    // What makes a model switch a one-file edit (config/models.yaml, plus its tariff row). Comments may name a model —
+    // they record what a past run was stamped with — so only code is read here.
+    const idLike = /(claude|gpt|gemini|grok|glm|z-ai)-[0-9a-z.\-]*[0-9]/;
+    const walk = (dir: string): string[] =>
+      fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
+        const full = path.join(dir, e.name);
+        if (e.isDirectory()) return walk(full);
+        return (e.name.endsWith(".ts") || e.name.endsWith(".mjs")) && !e.name.includes(".test.") ? [full] : [];
+      });
+    const offenders = walk("src")
+      .filter((f) => f !== path.join("src", "lib", "models.mjs")) // the loader's schema and docs
+      .flatMap((f) =>
+        fs.readFileSync(f, "utf8").split("\n").flatMap((line, i) => {
+          const code = line.split("//")[0];
+          if (code.trimStart().startsWith("*") || code.trimStart().startsWith("/*")) return [];
+          return idLike.test(code) ? [`${f}:${i + 1}: ${code.trim()}`] : [];
+        }),
+      );
+    expect(offenders, "a model id belongs in config/models.yaml, not in code").toEqual([]);
+  });
+
   it("the house model and the default research seat are priced, so the budget guard can admit them", () => {
     const t = loadTariffs();
     for (const id of [MODELS.house.model, MODELS.house.fallback!, MODELS.reader.model, MODELS.research.seats[MODELS.research.default].model]) {

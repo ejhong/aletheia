@@ -137,12 +137,13 @@
   parentClaimIds:
     - VASO-C020
   dependsOnClaimIds: []
-  reviewState: ai_extracted
+  reviewState: rejected
   origin:
     ref: Knots of Existence essay — a phenomenon without a mechanism
     extractedBy: Fable (AI agent)
     runId: vaso-extract-2026-08
     date: 2026-08-22
+  rejectionReason: "Refused at the answer's re-reading 2026-09-21 (2026-09-21-answer-vasocomputation-021449): not atomic (Without retrievable source text, quoteInContext, statementSupported and locatorSupported cannot be assessed and are reported false per instruction. The statement bundles two separable propositions—that discrete tender points occur, and that they are common across the general population—the latter of which the cited records (e.g. VASO-E015) explicitly say has never been measured, so it is not atomic. The proposition bears on the case's competing accounts of what muscle knots are, so it is relevant, and as a claim anchor independenceNoted is trivially true.); split into VASO-C190, VASO-C191"
 
 - id: VASO-C002
   statement: Trigger points exhibit sustained spontaneous needle-EMG activity at a millimeter-scale nidus, more prevalent there than at non-tender sites within the same endplate zone and absent at taut-band sites outside the endplate zone.
@@ -375,7 +376,8 @@
     quote: A knot produces something different — a dull blockage
     sourceId: SRC-JHONG-2026
   parentClaimIds:
-    - VASO-C001
+    - VASO-C190
+    - VASO-C191
   dependsOnClaimIds: []
   reviewState: ai_extracted
   origin:
@@ -594,7 +596,8 @@
     quote: There is no graph of knot burden versus age.
     sourceId: SRC-JHONG-2026
   parentClaimIds:
-    - VASO-C001
+    - VASO-C190
+    - VASO-C191
   dependsOnClaimIds: []
   reviewState: rejected
   origin:
@@ -649,7 +652,8 @@
     quote: universal (medians 6 in women, 3 in men)
     sourceId: SRC-JHONG-2026
   parentClaimIds:
-    - VASO-C001
+    - VASO-C190
+    - VASO-C191
   dependsOnClaimIds: []
   reviewState: rejected
   origin:
@@ -937,7 +941,8 @@
     quote: There is no graph of knot burden versus age.
     sourceId: SRC-JHONG-2026
   parentClaimIds:
-    - VASO-C001
+    - VASO-C190
+    - VASO-C191
   dependsOnClaimIds: []
   reviewState: ai_extracted
   origin:
@@ -956,7 +961,8 @@
     quote: There is no graph of knot burden versus age.
     sourceId: SRC-JHONG-2026
   parentClaimIds:
-    - VASO-C001
+    - VASO-C190
+    - VASO-C191
   dependsOnClaimIds: []
   reviewState: ai_extracted
   origin:
@@ -1013,7 +1019,8 @@
     quote: universal (medians 6 in women, 3 in men)
     sourceId: SRC-JHONG-2026
   parentClaimIds:
-    - VASO-C001
+    - VASO-C190
+    - VASO-C191
   dependsOnClaimIds: []
   reviewState: ai_extracted
   origin:
@@ -1032,7 +1039,8 @@
     quote: universal (medians 6 in women, 3 in men)
     sourceId: SRC-JHONG-2026
   parentClaimIds:
-    - VASO-C001
+    - VASO-C190
+    - VASO-C191
   dependsOnClaimIds: []
   reviewState: ai_extracted
   origin:
@@ -1051,7 +1059,8 @@
     quote: universal (medians 6 in women, 3 in men)
     sourceId: SRC-JHONG-2026
   parentClaimIds:
-    - VASO-C001
+    - VASO-C190
+    - VASO-C191
   dependsOnClaimIds: []
   reviewState: ai_extracted
   origin:
@@ -1070,7 +1079,8 @@
     quote: universal (medians 6 in women, 3 in men)
     sourceId: SRC-JHONG-2026
   parentClaimIds:
-    - VASO-C001
+    - VASO-C190
+    - VASO-C191
   dependsOnClaimIds: []
   reviewState: ai_extracted
   origin:
@@ -2009,7 +2019,8 @@
     quote: with counts of 11 or more were in the group reporting no pain
     sourceId: SRC-CROFT-1994
   parentClaimIds:
-    - VASO-C001
+    - VASO-C190
+    - VASO-C191
   dependsOnClaimIds: []
   reviewState: ai_extracted
   origin:
@@ -2183,3 +2194,36 @@
     extractedBy: claude-fable-5-1 (operator, by hand)
     runId: session_01AiXD4y5Y91KC7iM3uBhWmu
     date: 2026-09-20
+
+- id: VASO-C190
+  statement: Discrete, exquisitely tender points can be palpated in human muscle and fascia.
+  theme: phenomenon
+  rung: observation
+  claimType: observation
+  parentClaimIds:
+    - VASO-C020
+  dependsOnClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: split of VASO-C001 (Knots of Existence essay — a phenomenon without a mechanism) on the statements of the records that cite it, without a text; anchored as the compound was, by the records that cite it
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-21-answer-vasocomputation-021449
+    date: 2026-09-21
+  alternativeToClaimIds: []
+  contradictsClaimIds: []
+- id: VASO-C191
+  statement: Such tender points occur commonly across the general population.
+  theme: phenomenon
+  rung: observation
+  claimType: observation
+  parentClaimIds:
+    - VASO-C020
+  dependsOnClaimIds: []
+  alternativeToClaimIds: []
+  contradictsClaimIds: []
+  reviewState: ai_extracted
+  origin:
+    ref: split of VASO-C001 (Knots of Existence essay — a phenomenon without a mechanism) on the statements of the records that cite it, without a text; anchored as the compound was, by the records that cite it
+    extractedBy: claude-fable-5-1
+    runId: 2026-09-21-answer-vasocomputation-021449
+    date: 2026-09-21

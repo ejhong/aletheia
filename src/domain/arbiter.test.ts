@@ -1,3 +1,5 @@
+import fs from "node:fs";
+import path from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   ARBITER_MIN_COMPLIES,
@@ -6,6 +8,8 @@ import {
   CONTENT_MERGES_PER_WEEK,
   costOf,
   omittedNotes,
+  shapeRule,
+  SHAPE_LIMITS,
   runAccount,
   rateLimitGate,
   splitMergeLanes,
@@ -494,6 +498,17 @@ describe("omittedNotes — the omitted list points at the account", () => {
     expect(broken).toContain("not parseable as JSON");
     // With no reader, the list is as it was.
     expect(omittedNotes(["proposals/r1/packet.json"], [])).toEqual(["proposals/r1/packet.json"]);
+  });
+
+  it("states what it exposes in one place, written from the limits it enforces", () => {
+    // Review note #416 on #414: the packet header, a code comment and the decisions entry each described this rule
+    // differently, and two of the three were wrong. The sentence is now generated from the limits themselves.
+    const rule = shapeRule();
+    for (const n of Object.values(SHAPE_LIMITS)) expect(rule).toContain(String(n));
+    for (const k of ["case", "runId", "ledgerHash", "model"]) expect(rule).toContain(k);
+    expect(rule).toContain("only by its type and length");
+    // The header the panel actually reads quotes it, so the two cannot drift apart.
+    expect(fs.readFileSync(path.join("scripts", "arbiter.mjs"), "utf8")).toContain("${shapeRule()}");
   });
 
   it("bounds the shape itself, so an over-budget file cannot reach the packet through it", () => {

@@ -563,13 +563,17 @@ export function omittedNotes(omitted, accountFiles, read = null) {
   });
 }
 
-/** Identifier-like scalars a working file may carry: shown whole, so a seat can match them against the account. */
+/**
+ * The fields whose values are emitted rather than measured, so a seat can match a file against the run account:
+ * verbatim up to MAX_ID_CHARS, and beyond that their length and a sha256 prefix, which matches just as well. These
+ * are the only values the shape reproduces, and an omitted file can put text of its own in them.
+ */
 const ID_KEYS = new Set(["case", "runId", "ledgerHash", "index", "verb", "model", "promptVersion", "date", "protocol"]);
 
 /**
  * A mechanical account of a file the diff could not carry: how big it is, and — for the JSON and YAML working files a
- * run writes — its top-level shape, with identifier fields whole so a seat can match them against the RUN ACCOUNT's
- * own ledger hash and runId. Values are never shown: this says what a file is, not what it says (2026-09-23: a seat
+ * run writes — its top-level shape, on exactly the terms `shapeRule()` states, so a seat can match a file against
+ * the RUN ACCOUNT's own ledger hash and runId. This says what a file is, not what it says (2026-09-23: a seat
  * could not find compliance because an omitted packet.json and two reply.json files were named but not described, so
  * it could not tell whether they carried material the constitution forbids).
  */
@@ -600,10 +604,16 @@ const SHAPE_DEPTH = 2;
  * identifier value, in field names, or in a hundred thousand fields (review note #415 on #414: the first version of
  * this shape showed identifier values whole and every key, so the size bound it claimed was not one).
  */
-const MAX_ID_CHARS = 80;
-const MAX_KEY_CHARS = 60;
-const MAX_FIELDS = 24;
-const MAX_SHAPE_CHARS = 2000;
+export const SHAPE_LIMITS = { idChars: 80, keyChars: 60, fields: 24, shapeChars: 2000 };
+const { idChars: MAX_ID_CHARS, keyChars: MAX_KEY_CHARS, fields: MAX_FIELDS, shapeChars: MAX_SHAPE_CHARS } = SHAPE_LIMITS;
+
+/**
+ * The one statement of what a shape exposes, written from the limits themselves so that it cannot drift from them:
+ * the packet header the panel reads quotes this, and so does the decisions entry (review note #416 on #414: the
+ * header, a code comment and the entry each described this rule differently, and two of the three were wrong).
+ */
+export const shapeRule = () =>
+  `designated identifier fields (${[...ID_KEYS].join(", ")}) are emitted verbatim up to ${MAX_ID_CHARS} characters and, when longer, replaced by their length and a twelve-hex sha256 prefix; every other value is represented only by its type and length. A field name is clipped at ${MAX_KEY_CHARS} characters, an object lists at most ${MAX_FIELDS} fields and counts the rest, and the whole shape is cut at ${MAX_SHAPE_CHARS} characters; every cut says so where it happens`;
 
 /** A long identifier is replaced by its length and a short digest: still matchable against the account, bounded. */
 function idValue(v) {
@@ -617,7 +627,7 @@ const clipKey = (k) => (k.length <= MAX_KEY_CHARS ? k : `${k.slice(0, MAX_KEY_CH
  * @param {unknown} v
  * @param {string | null} [key]
  * @param {number} [depth]
- * One value's shape: scalars by type and size, identifier fields by value, containers by their members.
+ * One value's shape: scalars by type and length, a designated identifier by its value (or, when long, its digest), containers by their members.
  */
 function describe(v, key = null, depth = 0) {
   if (v === null) return "null";

@@ -467,6 +467,34 @@ describe("omittedNotes — the omitted list points at the account", () => {
       "proposals/r1/reply.json",
     ]);
   });
+
+  it("gives a file the diff could not carry a mechanical shape: its size, its fields, its identifiers, never its values", () => {
+    // A seat that cannot see an omitted working file can at least tell what it is, and match its ledger hash and
+    // runId against the account's (2026-09-23: a seat withheld compliance over an omitted packet.json it could not
+    // describe).
+    const packet = JSON.stringify({
+      case: "vasocomputation",
+      ledgerHash: "750bf702d131",
+      index: "edition",
+      inputs: [{ id: "VASO-E082", sourceStatement: "a quoted passage nobody outside this file should have to trust" }],
+      detail: { article: "the whole draft article", nested: { deeper: { deepest: 1 } } },
+    });
+    const files = { "proposals/r1/packet.json": packet, "proposals/r1/notes.md": "one\ntwo\n", "proposals/r1/broken.json": "{oops" };
+    const read = (p: string) => files[p as keyof typeof files];
+    const [pkt, md, broken] = omittedNotes(["proposals/r1/packet.json", "proposals/r1/notes.md", "proposals/r1/broken.json"], [], read);
+    expect(pkt).toContain(`${packet.length} chars`);
+    expect(pkt).toContain('case: "vasocomputation"'); // identifiers whole, so the seat can match the account
+    expect(pkt).toContain('ledgerHash: "750bf702d131"');
+    expect(pkt).toContain("inputs: [1 item(s)");
+    expect(pkt).toContain("sourceStatement: string(62)"); // the shape of a value, never the value
+    expect(pkt).not.toContain("nobody outside this file");
+    expect(pkt).not.toContain("the whole draft article");
+    expect(pkt).toContain("nested: {deeper: {1 field(s)}}"); // depth is bounded
+    expect(md).toBe("proposals/r1/notes.md — 3 lines, 8 chars"); // not JSON: size only
+    expect(broken).toContain("not parseable as JSON");
+    // With no reader, the list is as it was.
+    expect(omittedNotes(["proposals/r1/packet.json"], [])).toEqual(["proposals/r1/packet.json"]);
+  });
 });
 
 describe("costOf — the panel's own bill", () => {

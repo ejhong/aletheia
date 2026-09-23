@@ -548,9 +548,71 @@ export function runAccount(changed, read, diffOf, readBase = noBase) {
  * in the diff looks for it in the account before saying unsure (2026-09-20: three seats said unsure over files the
  * account had digested, because the list said only that they had not been seen).
  */
-export function omittedNotes(omitted, accountFiles) {
+/**
+ * @param {string[]} omitted
+ * @param {string[]} accountFiles
+ * @param {((path: string) => string) | null} [read]
+ */
+export function omittedNotes(omitted, accountFiles, read = null) {
   const inAccount = new Set(accountFiles);
-  return omitted.map((f) => (inAccount.has(f) ? `${f} — read into the RUN ACCOUNT above; its section for this file says what is whole, digested or clipped` : f));
+  return omitted.map((f) => {
+    if (inAccount.has(f)) return `${f} — read into the RUN ACCOUNT above; its section for this file says what is whole, digested or clipped`;
+    const shape = read ? shapeOf(f, read) : null;
+    return shape ? `${f} — ${shape}` : f;
+  });
+}
+
+/** Identifier-like scalars a working file may carry: shown whole, so a seat can match them against the account. */
+const ID_KEYS = new Set(["case", "runId", "ledgerHash", "index", "verb", "model", "promptVersion", "date", "protocol"]);
+
+/**
+ * A mechanical account of a file the diff could not carry: how big it is, and — for the JSON and YAML working files a
+ * run writes — its top-level shape, with identifier fields whole so a seat can match them against the RUN ACCOUNT's
+ * own ledger hash and runId. Values are never shown: this says what a file is, not what it says (2026-09-23: a seat
+ * could not find compliance because an omitted packet.json and two reply.json files were named but not described, so
+ * it could not tell whether they carried material the constitution forbids).
+ */
+export function shapeOf(path, read) {
+  let text;
+  try {
+    text = read(path);
+  } catch {
+    return null;
+  }
+  if (typeof text !== "string") return null;
+  const size = `${text.split("\n").length} lines, ${text.length} chars`;
+  if (!path.endsWith(".json")) return size;
+  let data;
+  try {
+    data = JSON.parse(text);
+  } catch {
+    return `${size}; not parseable as JSON`;
+  }
+  return `${size}; JSON ${describe(data)}`;
+}
+
+/** How deep the shape is walked before a container is reported by its size alone. */
+const SHAPE_DEPTH = 2;
+
+/**
+ * @param {unknown} v
+ * @param {string | null} [key]
+ * @param {number} [depth]
+ * One value's shape: scalars by type and size, identifier fields by value, containers by their members.
+ */
+function describe(v, key = null, depth = 0) {
+  if (v === null) return "null";
+  if (Array.isArray(v)) {
+    if (!v.length) return "[0 item(s)]";
+    return `[${v.length} item(s)${depth <= SHAPE_DEPTH ? `: ${describe(v[0], null, depth + 1)}` : ""}]`;
+  }
+  if (typeof v === "object") {
+    const keys = Object.keys(/** @type {Record<string, unknown>} */ (v));
+    if (depth > SHAPE_DEPTH) return `{${keys.length} field(s)}`;
+    return `{${keys.map((k) => `${k}: ${describe(/** @type {Record<string, unknown>} */ (v)[k], k, depth + 1)}`).join(", ")}}`;
+  }
+  if (typeof v === "string") return key && ID_KEYS.has(key) ? JSON.stringify(v) : `string(${v.length})`;
+  return typeof v;
 }
 
 /**

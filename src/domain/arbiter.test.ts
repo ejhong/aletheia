@@ -1,3 +1,5 @@
+import fs from "node:fs";
+import path from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   ARBITER_MIN_COMPLIES,
@@ -6,6 +8,8 @@ import {
   CONTENT_MERGES_PER_WEEK,
   costOf,
   omittedNotes,
+  shapeRule,
+  SHAPE_LIMITS,
   runAccount,
   rateLimitGate,
   splitMergeLanes,
@@ -466,6 +470,72 @@ describe("omittedNotes — the omitted list points at the account", () => {
       "content/cases/x/evidence.yaml — read into the RUN ACCOUNT above; its section for this file says what is whole, digested or clipped",
       "proposals/r1/reply.json",
     ]);
+  });
+
+  it("gives a file the diff could not carry a mechanical shape: its size, its fields, its identifiers, never its values", () => {
+    // A seat that cannot see an omitted working file can at least tell what it is, and match its ledger hash and
+    // runId against the account's (2026-09-23: a seat withheld compliance over an omitted packet.json it could not
+    // describe).
+    const packet = JSON.stringify({
+      case: "vasocomputation",
+      ledgerHash: "750bf702d131",
+      index: "edition",
+      inputs: [{ id: "VASO-E082", sourceStatement: "a quoted passage nobody outside this file should have to trust" }],
+      detail: { article: "the whole draft article", nested: { deeper: { deepest: 1 } } },
+    });
+    const files = { "proposals/r1/packet.json": packet, "proposals/r1/notes.md": "one\ntwo\n", "proposals/r1/broken.json": "{oops" };
+    const read = (p: string) => files[p as keyof typeof files];
+    const [pkt, md, broken] = omittedNotes(["proposals/r1/packet.json", "proposals/r1/notes.md", "proposals/r1/broken.json"], [], read);
+    expect(pkt).toContain(`${packet.length} chars`);
+    expect(pkt).toContain('case: "vasocomputation"'); // identifiers whole, so the seat can match the account
+    expect(pkt).toContain('ledgerHash: "750bf702d131"');
+    expect(pkt).toContain("inputs: [1 item(s)");
+    expect(pkt).toContain("sourceStatement: string(62)"); // the shape of a value, never the value
+    expect(pkt).not.toContain("nobody outside this file");
+    expect(pkt).not.toContain("the whole draft article");
+    expect(pkt).toContain("nested: {deeper: {1 field(s)}}"); // depth is bounded
+    expect(md).toBe("proposals/r1/notes.md — 3 lines, 8 chars"); // not JSON: size only
+    expect(broken).toContain("not parseable as JSON");
+    // With no reader, the list is as it was.
+    expect(omittedNotes(["proposals/r1/packet.json"], [])).toEqual(["proposals/r1/packet.json"]);
+  });
+
+  it("states what it exposes in one place, written from the limits it enforces", () => {
+    // Review note #416 on #414: the packet header, a code comment and the decisions entry each described this rule
+    // differently, and two of the three were wrong. The sentence is now generated from the limits themselves.
+    const rule = shapeRule();
+    for (const n of Object.values(SHAPE_LIMITS)) expect(rule).toContain(String(n));
+    for (const k of ["case", "runId", "ledgerHash", "model"]) expect(rule).toContain(k);
+    expect(rule).toContain("only by its type and length");
+    // The header the panel actually reads quotes it, so the two cannot drift apart.
+    expect(fs.readFileSync(path.join("scripts", "arbiter.mjs"), "utf8")).toContain("${shapeRule()}");
+  });
+
+  it("bounds the shape itself, so an over-budget file cannot reach the packet through it", () => {
+    // Review note #415 on #414: the first version showed identifier values whole and every key, so a file omitted for
+    // size could have put its content in `model`, in field names, or in a hundred thousand fields.
+    const big = "x".repeat(50_000);
+    const file = JSON.stringify({
+      model: big, // an identifier field, shown whole before this fix
+      [`k${big}`]: 1, // a key
+      ...Object.fromEntries(Array.from({ length: 500 }, (_, i) => [`f${i}`, "v"])),
+    });
+    const [note] = omittedNotes(["proposals/r1/packet.json"], [], () => file);
+    expect(note.length).toBeLessThan(2500); // the whole note stays bounded whatever the file does
+    expect(note).not.toContain("x".repeat(200));
+    expect(note).toMatch(/model: string\(50000\), sha256 [0-9a-f]{12}/); // matchable, not reproduced
+    expect(note).toContain("…(50001)"); // the key is clipped and says how long it was
+    expect(note).toContain("more field(s)"); // the field list is capped and says how many it dropped
+    // A file that spends its budget on breadth at every level is cut at the total, and says so.
+    const wide = Object.fromEntries(
+      Array.from({ length: 30 }, (_, i) => [`group${i}`, Object.fromEntries(Array.from({ length: 30 }, (_, j) => [`field${j}`.padEnd(50, "_"), "v"]))]),
+    );
+    const [wideNote] = omittedNotes(["proposals/r1/wide.json"], [], () => JSON.stringify(wide));
+    expect(wideNote).toContain("shape truncated at 2000 chars");
+    expect(wideNote.length).toBeLessThan(2200);
+    // The same long value hashes the same way, which is what makes a truncated identifier still matchable.
+    const [again] = omittedNotes(["p.json"], [], () => JSON.stringify({ model: big }));
+    expect(again.match(/sha256 ([0-9a-f]{12})/)![1]).toBe(note.match(/sha256 ([0-9a-f]{12})/)![1]);
   });
 });
 

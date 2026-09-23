@@ -1,4 +1,5 @@
 import { parse as parseYaml } from "yaml";
+import { createHash } from "node:crypto";
 /**
  * Pure logic for the constitutional arbiter (scripts/arbiter.mjs):
  * validating one seat's vote and tallying the panel's verdict. Kept
@@ -548,9 +549,103 @@ export function runAccount(changed, read, diffOf, readBase = noBase) {
  * in the diff looks for it in the account before saying unsure (2026-09-20: three seats said unsure over files the
  * account had digested, because the list said only that they had not been seen).
  */
-export function omittedNotes(omitted, accountFiles) {
+/**
+ * @param {string[]} omitted
+ * @param {string[]} accountFiles
+ * @param {((path: string) => string) | null} [read]
+ */
+export function omittedNotes(omitted, accountFiles, read = null) {
   const inAccount = new Set(accountFiles);
-  return omitted.map((f) => (inAccount.has(f) ? `${f} — read into the RUN ACCOUNT above; its section for this file says what is whole, digested or clipped` : f));
+  return omitted.map((f) => {
+    if (inAccount.has(f)) return `${f} — read into the RUN ACCOUNT above; its section for this file says what is whole, digested or clipped`;
+    const shape = read ? shapeOf(f, read) : null;
+    return shape ? `${f} — ${shape}` : f;
+  });
+}
+
+/**
+ * The fields whose values are emitted rather than measured, so a seat can match a file against the run account:
+ * verbatim up to MAX_ID_CHARS, and beyond that their length and a sha256 prefix, which matches just as well. These
+ * are the only values the shape reproduces, and an omitted file can put text of its own in them.
+ */
+const ID_KEYS = new Set(["case", "runId", "ledgerHash", "index", "verb", "model", "promptVersion", "date", "protocol"]);
+
+/**
+ * A mechanical account of a file the diff could not carry: how big it is, and — for the JSON and YAML working files a
+ * run writes — its top-level shape, on exactly the terms `shapeRule()` states, so a seat can match a file against
+ * the RUN ACCOUNT's own ledger hash and runId. This says what a file is, not what it says (2026-09-23: a seat
+ * could not find compliance because an omitted packet.json and two reply.json files were named but not described, so
+ * it could not tell whether they carried material the constitution forbids).
+ */
+export function shapeOf(path, read) {
+  let text;
+  try {
+    text = read(path);
+  } catch {
+    return null;
+  }
+  if (typeof text !== "string") return null;
+  const size = `${text.split("\n").length} lines, ${text.length} chars`;
+  if (!path.endsWith(".json")) return size;
+  let data;
+  try {
+    data = JSON.parse(text);
+  } catch {
+    return `${size}; not parseable as JSON`;
+  }
+  const shape = describe(data);
+  return `${size}; JSON ${shape.length > MAX_SHAPE_CHARS ? `${shape.slice(0, MAX_SHAPE_CHARS)}… (shape truncated at ${MAX_SHAPE_CHARS} chars)` : shape}`;
+}
+
+/** How deep the shape is walked before a container is reported by its size alone. */
+const SHAPE_DEPTH = 2;
+/**
+ * The shape's own budget. Without these an over-budget file reaches the packet anyway, by putting its content in an
+ * identifier value, in field names, or in a hundred thousand fields (review note #415 on #414: the first version of
+ * this shape showed identifier values whole and every key, so the size bound it claimed was not one).
+ */
+export const SHAPE_LIMITS = { idChars: 80, keyChars: 60, fields: 24, shapeChars: 2000 };
+const { idChars: MAX_ID_CHARS, keyChars: MAX_KEY_CHARS, fields: MAX_FIELDS, shapeChars: MAX_SHAPE_CHARS } = SHAPE_LIMITS;
+
+/**
+ * The one statement of what a shape exposes, written from the limits themselves so that it cannot drift from them:
+ * the packet header the panel reads quotes this, and so does the decisions entry (review note #416 on #414: the
+ * header, a code comment and the entry each described this rule differently, and two of the three were wrong).
+ */
+export const shapeRule = () =>
+  `designated identifier fields (${[...ID_KEYS].join(", ")}) are emitted verbatim up to ${MAX_ID_CHARS} characters and, when longer, replaced by their length and a twelve-hex sha256 prefix; every other value is represented only by its type and length. A field name is clipped at ${MAX_KEY_CHARS} characters, an object lists at most ${MAX_FIELDS} fields and counts the rest, and the whole shape is cut at ${MAX_SHAPE_CHARS} characters; every cut says so where it happens`;
+
+/** A long identifier is replaced by its length and a short digest: still matchable against the account, bounded. */
+function idValue(v) {
+  if (v.length <= MAX_ID_CHARS) return JSON.stringify(v);
+  return `string(${v.length}), sha256 ${createHash("sha256").update(v).digest("hex").slice(0, 12)}`;
+}
+
+const clipKey = (k) => (k.length <= MAX_KEY_CHARS ? k : `${k.slice(0, MAX_KEY_CHARS)}…(${k.length})`);
+
+/**
+ * @param {unknown} v
+ * @param {string | null} [key]
+ * @param {number} [depth]
+ * One value's shape: scalars by type and length, a designated identifier by its value (or, when long, its digest), containers by their members.
+ */
+function describe(v, key = null, depth = 0) {
+  if (v === null) return "null";
+  if (Array.isArray(v)) {
+    if (!v.length) return "[0 item(s)]";
+    return `[${v.length} item(s)${depth <= SHAPE_DEPTH ? `: ${describe(v[0], null, depth + 1)}` : ""}]`;
+  }
+  if (typeof v === "object") {
+    const keys = Object.keys(/** @type {Record<string, unknown>} */ (v));
+    if (depth > SHAPE_DEPTH) return `{${keys.length} field(s)}`;
+    const shown = keys.slice(0, MAX_FIELDS);
+    const rest = keys.length - shown.length;
+    const fields = shown.map((k) => `${clipKey(k)}: ${describe(/** @type {Record<string, unknown>} */ (v)[k], k, depth + 1)}`);
+    if (rest > 0) fields.push(`+${rest} more field(s)`);
+    return `{${fields.join(", ")}}`;
+  }
+  if (typeof v === "string") return key && ID_KEYS.has(key) ? idValue(v) : `string(${v.length})`;
+  return typeof v;
 }
 
 /**

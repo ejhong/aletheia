@@ -1,4 +1,5 @@
 import { parse as parseYaml } from "yaml";
+import { createHash } from "node:crypto";
 /**
  * Pure logic for the constitutional arbiter (scripts/arbiter.mjs):
  * validating one seat's vote and tallying the panel's verdict. Kept
@@ -588,11 +589,29 @@ export function shapeOf(path, read) {
   } catch {
     return `${size}; not parseable as JSON`;
   }
-  return `${size}; JSON ${describe(data)}`;
+  const shape = describe(data);
+  return `${size}; JSON ${shape.length > MAX_SHAPE_CHARS ? `${shape.slice(0, MAX_SHAPE_CHARS)}… (shape truncated at ${MAX_SHAPE_CHARS} chars)` : shape}`;
 }
 
 /** How deep the shape is walked before a container is reported by its size alone. */
 const SHAPE_DEPTH = 2;
+/**
+ * The shape's own budget. Without these an over-budget file reaches the packet anyway, by putting its content in an
+ * identifier value, in field names, or in a hundred thousand fields (review note #415 on #414: the first version of
+ * this shape showed identifier values whole and every key, so the size bound it claimed was not one).
+ */
+const MAX_ID_CHARS = 80;
+const MAX_KEY_CHARS = 60;
+const MAX_FIELDS = 24;
+const MAX_SHAPE_CHARS = 2000;
+
+/** A long identifier is replaced by its length and a short digest: still matchable against the account, bounded. */
+function idValue(v) {
+  if (v.length <= MAX_ID_CHARS) return JSON.stringify(v);
+  return `string(${v.length}), sha256 ${createHash("sha256").update(v).digest("hex").slice(0, 12)}`;
+}
+
+const clipKey = (k) => (k.length <= MAX_KEY_CHARS ? k : `${k.slice(0, MAX_KEY_CHARS)}…(${k.length})`);
 
 /**
  * @param {unknown} v
@@ -609,9 +628,13 @@ function describe(v, key = null, depth = 0) {
   if (typeof v === "object") {
     const keys = Object.keys(/** @type {Record<string, unknown>} */ (v));
     if (depth > SHAPE_DEPTH) return `{${keys.length} field(s)}`;
-    return `{${keys.map((k) => `${k}: ${describe(/** @type {Record<string, unknown>} */ (v)[k], k, depth + 1)}`).join(", ")}}`;
+    const shown = keys.slice(0, MAX_FIELDS);
+    const rest = keys.length - shown.length;
+    const fields = shown.map((k) => `${clipKey(k)}: ${describe(/** @type {Record<string, unknown>} */ (v)[k], k, depth + 1)}`);
+    if (rest > 0) fields.push(`+${rest} more field(s)`);
+    return `{${fields.join(", ")}}`;
   }
-  if (typeof v === "string") return key && ID_KEYS.has(key) ? JSON.stringify(v) : `string(${v.length})`;
+  if (typeof v === "string") return key && ID_KEYS.has(key) ? idValue(v) : `string(${v.length})`;
   return typeof v;
 }
 

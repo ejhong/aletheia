@@ -495,6 +495,33 @@ describe("omittedNotes — the omitted list points at the account", () => {
     // With no reader, the list is as it was.
     expect(omittedNotes(["proposals/r1/packet.json"], [])).toEqual(["proposals/r1/packet.json"]);
   });
+
+  it("bounds the shape itself, so an over-budget file cannot reach the packet through it", () => {
+    // Review note #415 on #414: the first version showed identifier values whole and every key, so a file omitted for
+    // size could have put its content in `model`, in field names, or in a hundred thousand fields.
+    const big = "x".repeat(50_000);
+    const file = JSON.stringify({
+      model: big, // an identifier field, shown whole before this fix
+      [`k${big}`]: 1, // a key
+      ...Object.fromEntries(Array.from({ length: 500 }, (_, i) => [`f${i}`, "v"])),
+    });
+    const [note] = omittedNotes(["proposals/r1/packet.json"], [], () => file);
+    expect(note.length).toBeLessThan(2500); // the whole note stays bounded whatever the file does
+    expect(note).not.toContain("x".repeat(200));
+    expect(note).toMatch(/model: string\(50000\), sha256 [0-9a-f]{12}/); // matchable, not reproduced
+    expect(note).toContain("…(50001)"); // the key is clipped and says how long it was
+    expect(note).toContain("more field(s)"); // the field list is capped and says how many it dropped
+    // A file that spends its budget on breadth at every level is cut at the total, and says so.
+    const wide = Object.fromEntries(
+      Array.from({ length: 30 }, (_, i) => [`group${i}`, Object.fromEntries(Array.from({ length: 30 }, (_, j) => [`field${j}`.padEnd(50, "_"), "v"]))]),
+    );
+    const [wideNote] = omittedNotes(["proposals/r1/wide.json"], [], () => JSON.stringify(wide));
+    expect(wideNote).toContain("shape truncated at 2000 chars");
+    expect(wideNote.length).toBeLessThan(2200);
+    // The same long value hashes the same way, which is what makes a truncated identifier still matchable.
+    const [again] = omittedNotes(["p.json"], [], () => JSON.stringify({ model: big }));
+    expect(again.match(/sha256 ([0-9a-f]{12})/)![1]).toBe(note.match(/sha256 ([0-9a-f]{12})/)![1]);
+  });
 });
 
 describe("costOf — the panel's own bill", () => {

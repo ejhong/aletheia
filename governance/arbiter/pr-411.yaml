@@ -1,0 +1,128 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 411
+title: A dated exemption for the rest of September; an exemption may span days
+url: https://github.com/ejhong/aletheia/pull/411
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-22
+judgedAgainst: b14116656e
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The change is operational configuration, not content: it adds an
+      optional inclusive `until` to budget exemptions, applies the grant across
+      the span in `capsFor`, adds a dated grant (2026-09-22 → 09-30, day cap
+      held at $60, month raised to $550), and records the direction in
+      docs/DECISIONS.md stamped with date and channel ('founder (direction in
+      session, 2026-09-22)'). AGENTS.md is untouched, so §3.15's reservation is
+      not implicated. Budget caps are not among the §3.15 checks (fail-closed CI
+      validity, multi-model ratification, contested-change parking,
+      fabrication/confidence prohibitions); raising a spending cap by founder
+      direction does not loosen any of those, and the exemption self-expires so
+      October falls back to the crunch caps as coded. §3.15 expressly permits
+      founder directions to be recorded and cited in the decisions log and
+      configuration, which is exactly the provenance given here. The diff adds
+      no citations (verification found none) and touches no content/ records, so
+      no fabrication or provenance-misattribution risk arises. The added test
+      covers first/middle/last day of the span and days outside it, matching the
+      documented behavior."
+    cost:
+      model: claude-opus-5
+      inputTokens: 4192
+      outputTokens: 638
+      usd: 0.077472
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+      - §9
+      - §10
+    reasoning: The diff does not edit AGENTS.md, alter citation/content records, or
+      weaken the publication and ratification checks in §3.15. It records the
+      claimed founder direction with date and channel in both budget
+      configuration and the append-only decisions log, consistent with the
+      constitution’s treatment of founder directions as operating records. The
+      inclusive range is equivalent to listing nine dated exemptions and remains
+      explicit, reasoned, attributed, and self-expiring; tests cover its first,
+      middle, last, preceding, and following dates. No fabricated locator,
+      confidence material, or misleading ratification label is visible in the
+      change.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 6997
+      outputTokens: 921
+      usd: 0.046408
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules: []
+    reasoning: The change adds support for multi-day date spans to budget exemptions
+      and records a founder-authorized budget grant for 2026-09-22 through
+      2026-09-30 in `config/budget.yaml` and `docs/DECISIONS.md`. Per §3.15,
+      founder directions given in a working session may be recorded,
+      paraphrased, and cited in the decisions log and configuration, stamped
+      with date and channel. AGENTS.md is untouched, no epistemic checks are
+      weakened, and unit tests have been added to verify the span logic.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 7698
+      outputTokens: 560
+      usd: 0.007874
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff only extends budget exemption schema (optional inclusive
+      `until`), adds a dated founder-stamped grant in config/budget.yaml,
+      records that direction in docs/DECISIONS.md, and updates capsFor plus a
+      unit test. AGENTS.md is untouched, so §3.15’s constitution-edit
+      reservation is fine. Cost caps are operational configuration, not an
+      epistemic check being loosened; the grant is on the record with date,
+      channel, reason, and self-expiry, matching the existing exemption/crunch
+      pattern and the constitution’s rule that founder session directions may be
+      cited in config and the decisions log. No citations, content ledger
+      records, confidence material, or run assessments are involved.
+    cost:
+      model: grok-4.5
+      inputTokens: 7217
+      outputTokens: 163
+      usd: 0.015527
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.14
+    reasoning: "This is a budget-configuration change, not a content or
+      epistemic-record change, so the §3 citation/provenance machinery is not
+      engaged and no fabricated locators appear. The constitution's own
+      exemption mechanism (founder-granted, dated, on the record, self-expiring,
+      never an environment variable) is preserved and extended: the diff adds an
+      optional `until` field with tests covering first/middle/last day and days
+      outside the span, and the new grant is recorded in config with reason,
+      amount, and attribution ('founder (direction in session, 2026-09-22)')
+      plus a matching dated DECISIONS.md entry, satisfying the operating-record
+      stamping discipline. Raising a cap is expressly the founder's act, and the
+      change records that direction rather than claiming autonomous authority;
+      the grant is dated and self-expiring (October falls back to the crunch
+      caps), so it does not loosen or dodge any §3.15 check — the budget guard
+      is a cost control, not one of the epistemic checks, and the §3.15
+      safeguards (fail-closed CI, multi-model ratification, append-only
+      assessments) are untouched. I cannot independently verify the in-session
+      founder direction dated today, but it is recorded with the channel and
+      date the constitution requires, follows the established pattern of prior
+      entries, and nothing in the packet contradicts it."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 8083
+      outputTokens: 733
+      usd: 0.001579
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 34187
+  outputTokens: 3015
+  usd: 0.1489
+harvestedAt: 2026-09-28

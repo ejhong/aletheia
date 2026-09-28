@@ -1,0 +1,164 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 412
+title: "Vasocomputation: C001 split into C190 and C191, and the edition grades
+  each on its own records"
+url: https://github.com/ejhong/aletheia/pull/412
+verdict: pass
+reason: 4 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-23
+judgedAgainst: 64b0ac1198
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The change is the second answer step in a chain of panel objections:
+      VASO-C001 was found compound and refused, split into atomic VASO-C190
+      (occurrence) and VASO-C191 (commonness), with the refusal reason,
+      splitting run, model, promptVersion and date stamped in claims.yaml,
+      dispositions.yaml and history.yaml — §3.2 and §3.14 are served, not
+      dodged. Records that cited the compound were relinked and then re-read
+      against the parts: E028 was refused as non-atomic and reissued as
+      E108/E109 with reader-act trails showing the dropped C190 link and the
+      supports→context downgrade (§3.5, §3.9); E083 was refused because its
+      quote did not state the proposition its title assigned it; E012/E015/E018
+      are marked provisional with 'source text not retrievable' reasons and the
+      head assessment explicitly treats them as absent and carrying no weight
+      (§4 provisional rule). The head edition adopts the objecting seat's point
+      in full, moving C191 from weakly_supported to unresolved, deleting the
+      unsupported 'the literature uniformly treats the phenomenon as common'
+      justification, and rewriting the three article sentences so the prose says
+      only what the admitted records hold (§3.13, §3.6). Assessments are new
+      append-only files stamped runId/model/date/promptVersion with
+      humanReviewed: false and role: draft, and C190's provisional grade
+      discloses that it leans on sibling records (E087/E090/E081) rather than
+      its own context records. No citation identifiers were added; AGENTS.md is
+      untouched; no check in §3.15 is loosened. My one review note, not a
+      violation: the mechanical re-parenting of child claims (e.g. C059,
+      C084-C086, which are specifically about community-sample prevalence) to
+      BOTH C190 and C191 is a blanket relink rather than a reading of which
+      parent each bears on, and should be tidied in a later pass."
+    cost:
+      model: claude-opus-5
+      inputTokens: 144698
+      outputTokens: 1390
+      usd: 0.798802
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: unsure
+    rules:
+      - §3.8
+      - §3.15
+      - §4
+    reasoning: "The visible run account shows the substantive correction behaving
+      constitutionally: C001 is split into atomic C190/C191, contextual records
+      remain context, provisional records carry no weight, and C191 is now
+      unresolved rather than supported. However, the added packet.json and two
+      reply.json files are omitted from both the diff and run account, so their
+      published contents cannot be checked for confidential supplied text,
+      fabricated provenance, or inconsistent model/run stamps. This matters
+      because working packets can contain source text and prompts even when the
+      resulting edition is sound. I would need those three omitted files, or a
+      mechanical account establishing that they contain no confidence material
+      and that their provenance matches the recorded runs, before finding
+      compliance."
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 100775
+      outputTokens: 2244
+      usd: 0.44798
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.5
+      - §3.8
+      - §3.13
+      - §3.14
+      - §4
+    reasoning: This change properly resolves the review notes regarding compound
+      claim VASO-C001 by cleanly splitting it into atomic claims VASO-C190
+      (occurrence) and VASO-C191 (general-population prevalence) under §3.2.
+      Sibling and dependent evidence records were re-examined and relinked
+      without unearned inheritance of evidentiary bearing (§3.5), including
+      splitting compound evidence VASO-E028 into atomic context records
+      VASO-E108 and VASO-E109. Unretrieved source records remain strictly
+      provisional and unweighted in assessment calculations in full accordance
+      with §4. In response to panel feedback, VASO-C191 was calibrated to
+      'unresolved' at low confidence because only context-level records bear on
+      it, satisfying §3.13. All modifications maintain append-only histories,
+      dispositions, and complete run provenance (§3.8, §3.14).
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 111457
+      outputTokens: 1269
+      usd: 0.088351
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The change answers the prior §3.2/§3.13 and §3.5/§3.6/§4 objections:
+      VASO-C001 is refused as non-atomic and split into C190 (occurrence) and
+      C191 (commonness); linked evidence is re-read, E083/E028 refused or
+      re-split into atomic context-only E108/E109, and provisional unreadable
+      sources are labeled and excluded from weight. The head assessment grades
+      C190 provisionally_supported on disclosed sibling imaging and C191
+      unresolved/low, stating every admitted record is context and no population
+      count exists, matching the article and dropping the prior
+      weakly_supported/essay-weight and 'uniformly common' phrasing. Assessments
+      are append-only drafts with run stamps; no AGENTS.md edit, no fabricated
+      citations (none added), and no confidence material is published."
+    cost:
+      model: grok-4.5
+      inputTokens: 101816
+      outputTokens: 203
+      usd: 0.204965
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.5
+      - §3.8
+      - §3.13
+      - §3.14
+      - §4
+    reasoning: "This change is the constitution's machinery working as designed: a
+      panel seat's §3.2 objection led to VASO-C001 being refused as compound and
+      split into atomic C190/C191, with records relinked and re-read against
+      each part rather than inheriting the old link (§3.2, §3.5). The second
+      readers refused records that failed checks — including their own splitting
+      artifacts, e.g. the E028 part whose locator pointed at the Keywords list
+      when the quote sits in the Introduction, which was caught and refused
+      rather than published, and the mislabeled E083 part — exactly the
+      honest-refusal behavior §3.8 and §4 demand; no invented citation, quote,
+      or locator is visible anywhere in the additions, and the records the head
+      assessment leans on (Croft 1994/PMC2540791, Ballyns 2011/PMC3493620) were
+      retrieved and read during the runs. The flawed intermediate grade on C191
+      (weakly supported while its own reasoning admitted no admitted record and
+      a provisional record was spent on it) is corrected in the head edition,
+      which grades it unresolved at low confidence, strips the 'uniformly'
+      claim, and states in the article that the essay's report carries no
+      weight; the superseded assessment is kept append-only and labeled
+      draft/humanReviewed:false, so no unratified or superseded judgment is
+      presented as standing (§3.13, §3.14). Provisional records (E012, E015,
+      E018) are stamped, displayed, and explicitly given no weight, satisfying
+      the founder amendment on provisional records. One item I cannot verify
+      from the packet and would want the operator to answer on the record: the
+      PR body asserts the cap-blocked edition ran under a dated founder
+      exemption (#411), which the shown run records do not document — a
+      budget-cap exemption is not one of the §3.15 epistemic checks and the
+      spend ledgers are otherwise transparent, so this does not rise to
+      violation, but the exemption's record should be pointed to in
+      docs/DECISIONS.md or the change notes."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 104462
+      outputTokens: 1960
+      usd: 0.016649
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 563208
+  outputTokens: 7066
+  usd: 1.5567
+harvestedAt: 2026-09-28

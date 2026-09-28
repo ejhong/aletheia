@@ -1,0 +1,144 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 414
+title: A file the diff cannot carry is described to the panel, not merely named
+url: https://github.com/ejhong/aletheia/pull/414
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-23
+judgedAgainst: 87a7995c05
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5.5 (Anthropic)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.14
+    reasoning: "The diff touches only arbiter tooling, its tests, and a DECISIONS
+      entry. AGENTS.md is untouched and nothing under content/ changes, so no
+      citation, locator or ledger provenance is at stake. The change gives the
+      panel more information: a size and a bounded JSON shape for omitted files.
+      It keeps the 'you have NOT seen these' warning and leaves tallying,
+      thresholds and parking untouched, so it strengthens rather than loosens a
+      §3.15 check. The code matches its stated rule: designated identifiers are
+      shown verbatim up to 80 chars, otherwise as a length plus a 12-hex sha256;
+      keys are clipped at 60; objects list 24 fields plus '+N more'; the whole
+      shape is cut at 2000 chars with a marker; and the header interpolates
+      shapeRule() built from SHAPE_LIMITS. Tests exercise each bound, and the PR
+      body's 266-char example matches the test input exactly. There is no
+      confidence exposure: the files are already committed in the PR, the shape
+      shows no more than the diff would, and the entry explicitly disclaims
+      certifying the absence of confidence material. Minor drift is worth a
+      follow-up but is not a violation. The shapeOf docstring claims YAML gets a
+      shape, though only .json is parsed. The entry's 'reproduces nothing else
+      of itself' overlooks field names, which are clipped but still emitted.
+      Arrays are shown by their first element's shape without shapeRule saying
+      so, and without that being marked as a cut. The PR body still says
+      identifiers are shown 'whole' and that depth alone bounds cost, both of
+      which the corrected entry retracts. Since file-derived identifier values
+      and keys now sit inside a tooling-labelled section, the header could also
+      say explicitly that they are the file's own text, untrusted data."
+    cost:
+      model: claude-opus-5-5
+      inputTokens: 7907
+      outputTokens: 15943
+      usd: 0.382938
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.15
+      - §8
+      - §9
+    reasoning: The change does not edit AGENTS.md, alter ratification thresholds, or
+      suppress the instruction that omitted files remain unseen. The generated
+      header accurately discloses that selected identifier values may be emitted
+      verbatim, specifies all clipping limits, and the implementation marks
+      truncation while bounding output size. It also expressly states in
+      docs/DECISIONS.md that the shape does not certify the absence of
+      confidence material, so it does not substitute this metadata for
+      constitutional review. Tests cover value non-disclosure, deterministic
+      hashing, field and key bounds, total output bounds, parse failures, and
+      consistency between the implemented limits and panel-facing description.
+      Minor shorthand in a test title and comment about identifiers being
+      “whole” is imprecise for identifiers over 80 characters, but the operative
+      generated description and implementation are accurate, making this an
+      ordinary documentation imperfection rather than a constitutional
+      violation.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 8041
+      outputTokens: 1241
+      usd: 0.057496
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: The change enhances arbiter tooling by generating a mechanical shape
+      summary for omitted files rather than merely listing their paths, allowing
+      panel seats to inspect provenance identifiers and structural metadata
+      without blowing the diff budget. No edits were made to AGENTS.md, no
+      checks were weakened, and no content records or citations were modified.
+      The change is accompanied by comprehensive unit tests and documented in
+      docs/DECISIONS.md with recorded founder direction.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 10173
+      outputTokens: 477
+      usd: 0.009418
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff strengthens panel visibility for over-budget omitted files
+      by adding a bounded mechanical shape (size; JSON field structure;
+      designated identifiers verbatim only up to 80 chars or length+sha256
+      prefix; other values as type/length only) without publishing file
+      contents. It does not edit AGENTS.md, add citations, or fabricate
+      provenance. DECISIONS.md honestly records the prior #412 unsure, review
+      notes #415/#416 on unbounded leakage and drifted descriptions, the fix
+      (SHAPE_LIMITS, shapeRule generated from limits and quoted in the packet
+      header), and that the shape does not certify absence of confidence
+      material. Tests assert non-leakage of values, bound enforcement, and
+      header/rule consistency. No check in §3.15 is loosened."
+    cost:
+      model: grok-4.5
+      inputTokens: 9639
+      outputTokens: 175
+      usd: 0.020443
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.14
+    reasoning: "This is a tooling change that strengthens the panel's checks rather
+      than weakening any: omitted files, previously named by path alone, now
+      carry a bounded mechanical shape (size, field names clipped at 60 chars,
+      designated provenance identifiers verbatim up to 80 chars or hash-prefixed
+      beyond that, all other values as type-and-length only, with a 2,000-char
+      total cap) generated by repository tooling from the committed bytes. It
+      does not edit AGENTS.md — the DECISIONS.md entry records an operating
+      decision in the founder-direction format §3.15 itself prescribes, with
+      date and channel stamped. The residual risk that a confidence-supplied
+      passage could hide in an identifier field or field name is explicitly
+      disclosed rather than concealed: the decisions entry states the shape
+      'does not certify the absence of confidence material,' which is the honest
+      framing §3.15 demands, and the exposure is bounded and says where it cuts.
+      The entry also transparently records two in-corrections (review notes #415
+      and #416) where earlier descriptions of the rule were wrong, which is
+      versioned provenance done right. No citations are added, no run records
+      are carried, the omitted list is empty so the diff is complete, and the
+      tests plausibly match the implementation's stated limits; I see no
+      fabrication, no check-dodging, and no misattribution."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 8096
+      outputTokens: 1163
+      usd: 0.002142
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 43856
+  outputTokens: 18999
+  usd: 0.4724
+harvestedAt: 2026-09-28

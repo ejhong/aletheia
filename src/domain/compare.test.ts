@@ -334,7 +334,9 @@ describe("the edition verb and the comparison", () => {
     const c: LoadedCase = { ...base, assessmentRuns: [...base.assessmentRuns.filter((r) => r.role !== "check"), ...checks] };
     expect(ratification(c)).toMatchObject({ status: "ratified", engaged: [] });
     // The drafter returns a complete assessment — the same judgment, written again — as a re-telling may.
-    const reassessing: Editor = async () => {
+    const packets: string[] = [];
+    const reassessing: Editor = async (_system, user) => {
+      packets.push(user);
       const ed = currentEdition(c);
       const ca = adopted.caseAssessment;
       const data: EditionReply = {
@@ -367,9 +369,23 @@ describe("the edition verb and the comparison", () => {
     expect(out.outcome, out.reason).toBe("completed");
     const edition = EditionSchema.parse(parseYaml(fs.readFileSync(out.editionFile!, "utf8")));
     const written = AssessmentRunSchema.parse(parseYaml(fs.readFileSync(out.assessmentFile!, "utf8")));
-    // The stamp names every check the packet carried. The case was not contested, so nothing is "reconciled".
+    // The stamp names every check the packet carried. The case was not contested, so nothing is "reconciled" —
+    // and the packet told the drafter so: the dissents were not a task (protocols/edition-v15.md).
     expect(written.shownChecks).toEqual(checks.map((k) => k.runId));
     expect(written.reconciles).toBeUndefined();
+    expect(JSON.parse(packets[0]).panel).toMatchObject({ standing: "ratified", answerOwed: false });
+    // A contested standing is a task: the packet says an answer is owed, and the answer is stamped as one.
+    const far = adopted.caseAssessment.verdict === "contradicted" ? "established" : "contradicted";
+    const disputing = checks.map((k, i) => (i < 2 ? { ...k, caseAssessment: { ...k.caseAssessment, verdict: far } } : k)) as AssessmentRun[];
+    const contested: LoadedCase = { ...c, assessmentRuns: [...c.assessmentRuns.filter((r) => r.role !== "check"), ...disputing] };
+    expect(ratification(contested)?.status).toBe("contested");
+    packets.length = 0;
+    const answered = await runEdition("zero-worlds", { root: tmp(), deps: { cases: () => [contested], now, edit: reassessing, compare: comparer("incumbent", "incumbent", "incumbent", "incumbent", "incumbent") } });
+    expect(answered.outcome, answered.reason).toBe("completed"); // it goes out whatever the seats prefer: it answers the panel
+    expect(JSON.parse(packets[0]).panel).toMatchObject({ standing: "contested", answerOwed: true });
+    const answer = AssessmentRunSchema.parse(parseYaml(fs.readFileSync(answered.assessmentFile!, "utf8")));
+    expect(answer.reconciles).toEqual(checks.map((k) => k.runId));
+    expect(answer.shownChecks).toEqual(checks.map((k) => k.runId));
     // With the edition in place the standing resets: the panel's agreement was in the drafter's hands.
     const after: LoadedCase = { ...c, editions: [...c.editions, edition], assessmentRuns: [...c.assessmentRuns, written] };
     expect(currentEdition(after).runId).toBe(edition.runId);

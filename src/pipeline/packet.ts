@@ -85,6 +85,12 @@ export interface Packet {
   panel?: {
     standing: string;
     reason: string;
+    /**
+     * Whether this edition owes the panel an answer: the standing is contested and no reconsideration has answered
+     * it (src/domain/schedule.ts, editionDue). Set by the edition verb; the protocol reads it (edition-v15). A
+     * contested standing a reconsideration has already answered is a standoff, not a task.
+     */
+    answerOwed?: boolean;
     checks: {
       runId: string;
       seat: string;

@@ -448,6 +448,8 @@ export async function runEdition(caseKey: string, opts: EditionOptions = {}): Pr
     return closeRun(run, "rested", { reason: `the ledger has not moved since ${incumbent.runId} (hash ${loaded.ledgerHash.slice(0, 12)}) and the panel's judgment is answered; nothing material to re-tell — pass --force to draft anyway` });
   }
   const packet = buildPacket(loaded, { detail: true });
+  // The panel's dissents are a task only when the standing is contested and unanswered; the protocol reads this field.
+  if (packet.panel) packet.panel.answerOwed = Boolean(due?.reconciles.length);
   if (opts.objections?.length) packet.objections = opts.objections;
   const readerNotes = readerNotesFor(loaded, root);
   if (readerNotes.length) packet.readerNotes = readerNotes;

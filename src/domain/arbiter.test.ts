@@ -766,6 +766,11 @@ describe("an edition run's replies, compared with what the run installed", () =>
     // Without the research file nothing can be traced, and nothing is called carried.
     expect(d([{ id: "X-R001", status: "answered", note: "Study X-S001 collected the rows." }], null)).toEqual(["researchStatus[X-R001]: the research file could not be read, so the entry is not compared"]);
     expect(d("not a list")).toEqual(["researchStatus: not a list in the reply"]);
+    // An entry is its id, status and note and nothing else (review note #444): a field beside them is text no file holds.
+    expect(d([{ id: "X-R001", status: "answered", note: "Study X-S001 collected the rows.", aside: "unexamined text" }])).toEqual(["researchStatus[X-R001].aside: in the reply, not installed"]);
+    expect(d(["X-R001"])).toEqual(["researchStatus[0]: not a mapping in the reply"]);
+    expect(d([{ id: "X-R001", status: "answered", note: { text: "hidden" } }])).toContain("researchStatus[X-R001].note: not a string in the reply");
+    expect(d([{ id: "X-R001", status: ["answered"], note: "Study X-S001 collected the rows." }])).toContain("researchStatus[X-R001].status: not a string in the reply");
     // In the account: a reply whose entries trace is carried and says where; one whose entries do not stays in the diff.
     const files: Record<string, string> = {
       [`${dir}/run.yaml`]: `runId: ${runId}\nverb: edition\noutcome: completed\n`,
@@ -795,6 +800,51 @@ describe("an edition run's replies, compared with what the run installed", () =>
     // A field a claim's assessment or its treatment carries that the verb does not install is named with its path.
     const extra = { ...assessment, claimAssessments: [{ ...assessment.claimAssessments[0], note: "dropped on install" }, assessment.claimAssessments[1]] };
     expect(d({ ...reply, assessment: extra })).toEqual([`assessment.claimAssessments[X-C001].note: "dropped on install" in the reply, undefined installed`]);
+  });
+
+  it("has no corner it does not read: text added or changed anywhere in a reply makes it not carried", () => {
+    // Three review notes in a row (#438, #444, and the Anthropic seat's on #437) each found one more place where a
+    // reply could hold text the comparison did not look at. This test is the general form of all of them: walk the
+    // whole reply and, at every mapping, every list and every leaf, put something there that no installed file has.
+    const research = [{ id: "X-R001", question: "Does it replicate?", status: "answered", statusNote: "Study X-S001 collected the rows." }];
+    const full = { ...reply, question: "Did the thing happen?", accounts: ["It happened", "It did not"], researchStatus: [{ id: "X-R001", status: "answered", note: "Study X-S001 collected the rows." }] };
+    const carried = (r: unknown) => editionReplyDifferences(r, edition, draft, research).differences.length === 0;
+    expect(carried(full)).toBe(true);
+    type Path = (string | number)[];
+    const paths: { path: Path; kind: "map" | "list" | "leaf" }[] = [];
+    const walk = (v: unknown, path: Path) => {
+      if (Array.isArray(v)) {
+        paths.push({ path, kind: "list" });
+        v.forEach((x, i) => walk(x, [...path, i]));
+      } else if (v !== null && typeof v === "object") {
+        paths.push({ path, kind: "map" });
+        for (const [k, x] of Object.entries(v)) walk(x, [...path, k]);
+      } else paths.push({ path, kind: "leaf" });
+    };
+    walk(full, []);
+    const mutate = (path: Path, change: (v: unknown) => unknown): unknown => {
+      const copy = structuredClone(full) as unknown;
+      if (path.length === 0) return change(copy);
+      let at = copy as Record<string | number, unknown>;
+      for (const k of path.slice(0, -1)) at = at[k] as Record<string | number, unknown>;
+      const last = path.at(-1)!;
+      at[last] = change(at[last]);
+      return copy;
+    };
+    const missed: string[] = [];
+    for (const { path, kind } of paths) {
+      const where = path.join(".") || "(the reply)";
+      // A field no installed file has, in every mapping.
+      if (kind === "map" && carried(mutate(path, (v) => ({ ...(v as object), zzUnread: "text no file holds" })))) missed.push(`${where}: an added field`);
+      // An element no installed file has, in every list.
+      if (kind === "list" && carried(mutate(path, (v) => [...(v as unknown[]), "text no file holds"]))) missed.push(`${where}: an added element`);
+      // Every leaf, changed.
+      if (kind === "leaf" && carried(mutate(path, (v) => (typeof v === "string" ? `${v} and text no file holds` : "text no file holds")))) missed.push(`${where}: a changed value`);
+    }
+    expect(missed).toEqual([]);
+    // The walk reached the deepest places a reply has: a claim's treatment, a component, the research entry.
+    const reached = new Set(paths.map((p) => p.path.join(".")));
+    for (const p of ["assessment.claimAssessments.0.treatment.plainLanguage", "assessment.components.0.label", "assessment.researchPriority.reason", "researchStatus.0.note", "accounts.1"]) expect(reached.has(p), p).toBe(true);
   });
 
   it("says what a first reply holds that its repaired successor does not, whole or not at all", () => {

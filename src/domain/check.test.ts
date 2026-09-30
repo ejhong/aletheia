@@ -25,6 +25,15 @@ function tmpRoot(): string {
 }
 
 describe("the check verb", () => {
+  it("never reuses a protocol name an experiment's runs are stamped with", () => {
+    // A promptVersion stamp names the text a model was given. Three runs of the verdict-definitions experiment are
+    // stamped check-v3: its draft, copied into protocols/ for those runs and removed. The draft was not adopted, so
+    // the site's next check protocol is check-v4; a file of this name here would put another text behind that stamp.
+    const draft = path.join(process.cwd(), "proposals", "assessment-experiments", "2026-09-30-verdict-definitions", "check-v3-draft.md");
+    expect(fs.existsSync(draft)).toBe(true);
+    for (const dir of ["protocols", path.join("protocols", "archive")]) expect(fs.existsSync(path.join(process.cwd(), dir, "check-v3.md")), dir).toBe(false);
+  });
+
   it("validates an installed check run's own text against the packet contract", () => {
     const c = geo();
     const file = path.join(process.cwd(), "content", "cases", "geopolymer", "assessments", "2026-09-08-check-opus-162528.yaml");

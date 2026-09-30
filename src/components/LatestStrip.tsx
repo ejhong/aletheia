@@ -8,6 +8,11 @@ import type { Activity } from "@/src/domain/activity";
  * wrote. (Until 2026-09-29 this sat at the top of the case page, where a
  * reader's first sight of a case was the operator's note to the panel; the
  * case page now says what moved, in AtAGlance.)
+ *
+ * The date beside the link is the last change to the case's records (history.ts, `lastContentUpdate`: the newest
+ * entry that is not housekeeping), which is not always the history's last entry and is not the edition's date. For a
+ * day (2026-09-30, #453) the label called it "the change history, last entry", which was false on three cases whose
+ * newest entry is housekeeping.
  */
 export function LatestStrip({ activity }: { activity: Activity }) {
   const a = activity;
@@ -16,7 +21,7 @@ export function LatestStrip({ activity }: { activity: Activity }) {
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <h2 className="font-mono text-[11px] uppercase tracking-[0.18em] text-copper">the current edition · {a.edition.date}</h2>
         <Link href="#history" className="font-mono text-[10px] uppercase tracking-[0.12em] text-faint hover:text-copper">
-          the change history, last entry {a.lastContentUpdate} ↓
+          records last changed {a.lastContentUpdate} · the change history ↓
         </Link>
       </div>
       <p className="mt-2 text-[14.5px] leading-[1.7] text-ink-soft">

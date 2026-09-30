@@ -57,6 +57,9 @@ for (const c of loadAllCases()) {
       total.seatNoneFar += far.length;
       if (split) {
         row.withNoneSplit++;
+        // Direction is taken over the seats more than one step from the judgment: they are what makes the claim a
+        // split. A seat within one step is not counted either way (review note #454: the first wording said "every
+        // seat that differs", which a seat one step below the judgment contradicts).
         const higher = far.filter((v) => rank(v) > rank(base)).length;
         const lower = far.filter((v) => rank(v) < rank(base)).length;
         if (higher && !lower) total.onlyHigher++;
@@ -93,7 +96,7 @@ console.log("|---|---|---|---|");
 for (const r of rows) console.log(r);
 console.log(`| **All** | ${total.checks} checks | **${total.withEvidenceSplit} of ${total.withEvidence}** | **${total.withNoneSplit} of ${total.withNone}** |`);
 console.log(`\nSeat verdicts more than one step from the judgment: ${total.seatWithFar} of ${total.seatWith} on claims with an evidence record, ${total.seatNoneFar} of ${total.seatNone} on claims with none.`);
-console.log(`\nOf the ${total.withNoneSplit} splits on claims with none: on ${total.onlyHigher} every seat that differs grades the claim higher than the judgment, on ${total.onlyLower} every one grades it lower, on ${total.bothWays} seats differ both ways.`);
+console.log(`\nOf the ${total.withNoneSplit} splits on claims with none, taking the seats more than one step from the judgment: on ${total.onlyHigher} every such seat grades the claim higher than the judgment, on ${total.onlyLower} every such seat grades it lower, on ${total.bothWays} they go both ways.`);
 console.log("\n| Claim | The judgment | The seats |");
 console.log("|---|---|---|");
 for (const s of splits) console.log(s);

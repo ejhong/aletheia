@@ -21,6 +21,9 @@ in `docs/AUTOMATION.md`, "What is owed".
 - **A split**: fewer than a strict majority of the seats within one step
   of the judgment's verdict on the claim (`claimConcurrence`), which is
   the rule the standing uses for a claim the case rests on.
+- **The direction of a split**: taken over the seats more than one step
+  from the judgment, which are the ones that make the claim a split. A
+  seat within one step of the judgment is not counted either way.
 - **A citation**: an evidence record's id in a check's reasoning on a
   claim. It is "not attached" when the ledger does not attach that record
   to that claim, and "unnamed" when the reasoning names none of the claims
@@ -47,7 +50,7 @@ other figures.
 
 Seat verdicts more than one step from the judgment: 50 of 608 on claims with an evidence record, 75 of 168 on claims with none.
 
-Of the 20 splits on claims with none: on 14 every seat that differs grades the claim higher than the judgment, on 0 every one grades it lower, on 6 seats differ both ways.
+Of the 20 splits on claims with none, taking the seats more than one step from the judgment: on 14 every such seat grades the claim higher than the judgment, on 0 every such seat grades it lower, on 6 they go both ways.
 
 | Claim | The judgment | The seats |
 |---|---|---|

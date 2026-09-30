@@ -66,10 +66,10 @@ The reassessment of 2026-09-09 that stood here is in git.
 - **Where the panel parts from a judgment, the ledger mostly holds no
   evidence for the claim.** Across those seven panels, 126 featured claims
   have an admitted evidence record, and the panel splits from the judgment
-  on 2 of them. 34 have none, and it splits on 20. On 14 of the 20 every
-  seat that differs grades the claim higher than the judgment does; on the
-  other six, all in Deep Memory, seats differ in both directions; on none
-  do they only grade it lower. The edition protocol has graded a claim
+  on 2 of them. 34 have none, and it splits on 20. On 14 of the 20, every
+  seat more than one step from the judgment grades the claim higher than
+  it does; on the other six, all in Deep Memory, such seats go both ways;
+  on none are they all lower. The edition protocol has graded a claim
   with no evidence record `unresolved` unless another basis is disclosed,
   since 2026-09-16 (a source is not evidence, AGENTS.md §3.6). The check
   protocol says nothing about such a claim, and a seat grades it from the
@@ -233,9 +233,11 @@ The reassessment of 2026-09-09 that stood here is in git.
   whatever they prefer, with the preference on its record (2026-09-30).
 - **Agreement must be independent.** The checks a judgment was written
   with in hand cannot vouch for it, whether or not the case was contested:
-  the standing waits for a blind check made after the judgment. A stamp can
-  add to what the judgment is known to have seen and never take from it
-  (2026-09-30).
+  the standing waits for a blind check made after the judgment. On a
+  judgment the edition verb wrote, a stamp can add to what it is known to
+  have seen and never take from it (2026-09-30). A reconsideration from
+  before that verb which carries `reconciles` is read by that stamp alone,
+  as the decision of 2026-08-26 set.
 - **A panel is stale when it cannot speak, not when one seat is missing.**
   The scheduler asks for a check when fewer seats have judged the case as
   it stands than ratification requires (four), or when the adopted

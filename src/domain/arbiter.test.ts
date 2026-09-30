@@ -10,6 +10,7 @@ import {
   omittedNotes,
   replyDifferences,
   REPLY_STAMP_CHARS,
+  REPLY_UNCOMPARED_CHARS,
   shapeRule,
   SHAPE_LIMITS,
   runAccount,
@@ -529,7 +530,8 @@ describe("a seat's raw reply, compared with what was installed from it", () => {
   it("the run account says which installed file carries each reply, and returns only those as carried", () => {
     const { text, files: used, carried } = runAccount(Object.keys(sitting), readSitting, () => "");
     expect(carried).toEqual({ [`${run}/seat-xai.yaml`]: a1 });
-    expect(text).toContain(`- seat-xai.yaml: carried whole by ${a1}`);
+    // The fence and the sign-off around this reply are outside what is compared: counted, and within the allowance.
+    expect(text).toContain(`- seat-xai.yaml: carried whole by ${a1} (32 character(s) of the file lie outside what is compared)`);
     expect(text).toContain(`- seat-openai.yaml: NOT carried whole by any assessment this run installed; the closest is ${a2}, with 1 difference(s): caseAssessment.sensitivity: in the reply, not installed`);
     expect(text).toContain("- seat-venice.yaml: not parseable as YAML, so not compared");
     // A problems file is not a reply, and the comparison names no file the account did not read as one.
@@ -545,6 +547,29 @@ describe("a seat's raw reply, compared with what was installed from it", () => {
     // An assessment another run installed is not this run's to be compared with.
     const foreign: Record<string, string> = { ...bare, [a1]: yaml(install(reply, { producedBy: "2026-09-27-check-x-000000" })) };
     expect(runAccount(Object.keys(foreign), (p: string) => foreign[p] ?? null, () => "").carried).toEqual({});
+  });
+
+  it("text the comparison cannot see is counted, and past the allowance the reply is not carried", () => {
+    const aside = "x".repeat(REPLY_UNCOMPARED_CHARS + 1);
+    // The same fields, with a paragraph after the closing fence; with it in a YAML comment; and within the allowance.
+    const variants: Record<string, string> = {
+      after: "```yaml\n" + yaml(reply) + "\n```\n" + aside,
+      comment: `# ${aside}\n` + yaml(reply),
+      short: `# ${"x".repeat(REPLY_UNCOMPARED_CHARS - 1)}\n` + yaml(reply),
+    };
+    const accountOf = (text: string) => {
+      const files: Record<string, string> = { ...sitting, [`${run}/seat-xai.yaml`]: text };
+      return runAccount(Object.keys(files), (p: string) => files[p] ?? null, () => "");
+    };
+    const after = accountOf(variants.after);
+    expect(after.carried).toEqual({});
+    expect(after.text).toMatch(/- seat-xai\.yaml: its fields are carried by \S+, but 213 characters of the file lie outside what is compared \(213 outside its YAML, 0 in comments\), over the 200 allowed: NOT counted as carried whole/);
+    const comment = accountOf(variants.comment);
+    expect(comment.carried).toEqual({});
+    expect(comment.text).toMatch(/0 outside its YAML, 202 in comments/);
+    expect(accountOf(variants.short).carried).toEqual({ [`${run}/seat-xai.yaml`]: a1 });
+    // The account says what it does not compare.
+    expect(after.text).toMatch(/text outside its YAML — a code fence and whatever follows it, trailing lines that are not YAML — and the YAML's own comments are not compared, only counted/);
   });
 
   it("the diff keeps the records that exist once, gives up a carried reply first, and leaves the rest in its old order", () => {
@@ -585,6 +610,8 @@ describe("a seat's raw reply, compared with what was installed from it", () => {
       `${f} — a seat's raw reply: the RUN ACCOUNT's section for its run compared it with ${a1} and found that file to carry it whole, on the terms stated there`,
       "proposals/r1/reply.json",
     ]);
+    // With the file readable, the note keeps its size: a seat sees how much it is not being shown.
+    expect(omittedNotes([f], [], () => "a: 1\nb: 2\n", { [f]: a1 })[0]).toBe(`${f} — a seat's raw reply (3 lines, 10 chars): the RUN ACCOUNT's section for its run compared it with ${a1} and found that file to carry it whole, on the terms stated there`);
   });
 });
 

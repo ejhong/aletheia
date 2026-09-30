@@ -116,9 +116,12 @@ const sections: { id: string; title: string; body: ReactNode }[] = [
         page. First a budget: the article may run to {READER_BUDGET.article.ceiling.toLocaleString("en-US")} words
         and no further, and the answers at the head of the page to about a hundred words each, because the ledger
         behind the page holds every detail and the page is for reading. Then a comparison: AI models from five
-        vendors read the new edition beside the one it would replace, as a reader would, without being told which
-        is which. An edition that only re-tells the same judgment replaces the old one only if they prefer it; one
-        that carries new evidence is published with their preference recorded. How each edition was chosen, with
+        vendors read the new edition beside the one it would replace, as a reader would. They are not told which
+        is the new one, with one exception: when the evidence has changed since the older edition was written,
+        each is marked with the evidence it was written from, and that marks the new one. An edition that only
+        re-tells the same judgment replaces the old one only if they prefer it; one that carries new evidence, or
+        answers a disagreement among the models that judge the verdicts, is published whatever they prefer, with
+        their preference recorded. How each edition was chosen, with
         every model&apos;s reasons, is on its case&apos;s record page. It is a preference among AI readers, not a
         human review, and it judges the telling: the verdicts are judged separately, by models that see the
         evidence and not the article.

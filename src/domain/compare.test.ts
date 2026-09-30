@@ -104,7 +104,7 @@ describe("the comparison in a reader's words", () => {
       "5 AI models read it beside the edition before it, as a reader would: 1 preferred this one, 3 the one before, 1 neither. It replaced that edition because the evidence had changed or the panel had to be answered, not because it was preferred.",
     );
     expect(comparisonInWords({ ...record("candidate", "candidate"), failed: ["xai: no key", "venice: no key", "gemini: timeout"] })).toBe(
-      "Too few of the panel's AI models answered to compare it with the edition before it (2 did; 3 did not answer); it replaced that edition because the evidence had changed.",
+      "Too few of the panel's AI models answered to compare it with the edition before it (2 did; 3 did not answer); it replaced that edition because the evidence had changed or the panel had to be answered.",
     );
     for (const c of [record("candidate", "candidate", "candidate"), record("incumbent", "incumbent", "incumbent")]) {
       expect(comparisonInWords(c)).not.toMatch(/better|human|reviewed|ratified/i);

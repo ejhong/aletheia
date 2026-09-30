@@ -9,8 +9,10 @@ const chose: Record<EditionComparison["seats"][number]["prefers"], string> = {
 
 /**
  * How this edition was chosen: each seat of the panel read it beside the
- * edition it replaced, as a reader would, without being told which was
- * which. Shown with every seat's own reasons and what it said should still
+ * edition it replaced, as a reader would, without being told which was the
+ * new one (each was marked with the evidence it was written from, which
+ * marks the newer when the ledger had moved: protocols/compare-v1.md).
+ * Shown with every seat's own reasons and what it said should still
  * be fixed — AI readers' preferences, labelled as that; the verdicts are
  * judged separately, blind.
  */

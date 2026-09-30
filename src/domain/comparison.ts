@@ -17,7 +17,7 @@ export function comparisonInWords(c: EditionComparison | undefined): string | nu
   const answered = c.seats.length;
   const silent = c.failed?.length ? `; ${c.failed.length} did not answer` : "";
   if (c.outcome === "undecided") {
-    return `Too few of the panel's AI models answered to compare it with the edition before it (${answered} did${silent}); it replaced that edition because the evidence had changed.`;
+    return `Too few of the panel's AI models answered to compare it with the edition before it (${answered} did${silent}); it replaced that edition because the evidence had changed or the panel had to be answered.`;
   }
   const lead = `${answered} AI models read it beside the edition before it, as a reader would`;
   const tally = [

@@ -329,9 +329,11 @@ answers and the judgment's prose to ceilings the editions of 2026-09-08
 already kept — and one over a ceiling is sent back once and then refused.
 *The test*: each seat of the panel reads the candidate beside the
 incumbent as a reader would, in an order balanced across the seats and
-without being told which is which (`src/pipeline/compare.ts`,
-`protocols/compare-v1.md`); a telling is preferred with three seats for it
-and at most one against. The rule above holds as written for a candidate
+without being told which is the candidate (`src/pipeline/compare.ts`,
+`protocols/compare-v1.md`) — though each telling is marked with the
+evidence it was written from, and when the ledger has moved that marks the
+newer one; a telling is preferred with three seats for it and at most one
+against. The rule above holds as written for a candidate
 that is only a new telling — the ledger has not moved and nothing is being
 answered: it is written only when preferred, and otherwise the incumbent
 stands, the candidate stays with its run, and the seats' reasons go to the

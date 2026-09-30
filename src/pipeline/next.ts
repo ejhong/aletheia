@@ -59,13 +59,17 @@ export interface NextOutcome {
   /** Later choices made in the same sitting (`--steps`), each with what it ran. */
   more?: NextOutcome[];
   /**
-   * Why the sitting made fewer choices than asked: its deadline passed. Set
-   * on the first outcome. A sitting that runs out of time still opens its
-   * PR with what it did (2026-09-10: a two-hour workflow limit cancelled an
-   * eight-step sitting after the seventh, and every record and spend row it
-   * had written was lost with the runner).
+   * Why the sitting made fewer choices than asked: its deadline passed, its
+   * case limit was reached, or the ledger asked for the step it had just
+   * taken. Set on the first outcome. A sitting that runs out of time still
+   * opens its PR with what it did (2026-09-10: a two-hour workflow limit
+   * cancelled an eight-step sitting after the seventh, and every record and
+   * spend row it had written was lost with the runner). A step that leaves
+   * the ledger wanting the same step is not taken twice (2026-09-28: a
+   * check that one failing seat kept "stale" was run three times running,
+   * on the same four seats, and the sitting did nothing else).
    */
-  stopped?: { reason: "deadline" | "cases"; afterMinutes: number; stepsMade: number; cases?: string[] };
+  stopped?: { reason: "deadline" | "cases" | "repeat"; afterMinutes: number; stepsMade: number; cases?: string[]; repeated?: string };
 }
 
 export interface SittingOptions {
@@ -125,6 +129,11 @@ export async function runNext(opts: SittingOptions = {}): Promise<NextOutcome> {
       last = await once(restOpts);
     } else {
       const choice = choose(restOpts);
+      if (choice.verb !== "rest" && sameStep(choice, last.choice)) {
+        first.stopped = { reason: "repeat", afterMinutes: Math.round(minutesGone()), stepsMade: i, repeated: `${choice.verb} on ${choice.case}` };
+        opts.onProgress?.(progress());
+        break;
+      }
       if (opts.maxCases !== undefined && choice.case && !cases.has(choice.case) && cases.size >= opts.maxCases) {
         first.stopped = { reason: "cases", afterMinutes: Math.round(minutesGone()), stepsMade: i, cases: [...cases] };
         opts.onProgress?.(progress());
@@ -139,6 +148,9 @@ export async function runNext(opts: SittingOptions = {}): Promise<NextOutcome> {
   }
   return { ...first, more };
 }
+
+/** Two choices that name the same step: the case, the verb, and the run a draft or verification continues from. */
+const sameStep = (a: NextChoice, b: NextChoice) => a.case === b.case && a.verb === b.verb && (a.from ?? "") === (b.from ?? "");
 
 /** The ledger's choice, from the files as they stand. */
 export function chooseNext(opts: SittingOptions): NextChoice {

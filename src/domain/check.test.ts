@@ -5,8 +5,9 @@ import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
 import { describe, expect, it } from "vitest";
 import { getCaseBySlug, loadAllCases } from "./load.ts";
 import { currentEdition } from "./editions.ts";
-import { parseYamlReply, runCheck, validateCheckReply } from "../pipeline/check.ts";
+import { owedSeats, parseYamlReply, runCheck, validateCheckReply } from "../pipeline/check.ts";
 import { readRuns } from "../pipeline/store.ts";
+import { VENDORS } from "../pipeline/transport.ts";
 
 const geo = () => getCaseBySlug("megalithic-casting");
 
@@ -70,5 +71,32 @@ describe("the check verb", () => {
     expect(fs.readdirSync(path.join(root, "content", "cases", "geopolymer")).includes("assessments")).toBe(false);
     expect(readRuns(root).find((r) => r.runId === bad.runId)?.verb).toBe("check");
     expect(currentEdition(geo()).featuredClaimIds.length).toBeGreaterThan(0);
+  });
+
+  it("asks only the seats that have not judged the ledger as it stands, and rests when every seat has", async () => {
+    const root = tmpRoot();
+    const base = geo();
+    const template = base.assessmentRuns.find((r) => r.role === "check")!;
+    // A check of the ledger as it stands, held by one roster seat (dated past every real one, so it is that seat's latest).
+    const held = (seat: string) => ({ ...template, runId: `2099-01-01-check-${VENDORS[seat].tag}-000000`, date: "2099-01-01", model: `${VENDORS[seat].label} — independent check run via ${VENDORS[seat].model}`, basis: { ledgerHash: base.ledgerHash } });
+    const seats = Object.keys(VENDORS);
+    const holding = (names: string[]) => [{ ...base, assessmentRuns: [...base.assessmentRuns, ...names.map(held)] }];
+    expect(owedSeats(holding(seats.slice(0, 4))[0])).toEqual([seats[4]]);
+    expect(owedSeats(holding(seats)[0])).toEqual([]);
+
+    const asked: string[] = [];
+    const call = async (seat: string) => (asked.push(seat), { text: "caseAssessment: {}\nclaimAssessments: []\n", model: "m", usage: { inputTokens: 1, outputTokens: 1 }, usd: 0 });
+    // Four seats hold a check of this ledger; the fifth failed last time. Only the fifth is asked (and once more, its repair round).
+    const completing = await runCheck("megalithic-casting", { root, deps: { cases: () => holding(seats.slice(0, 4)), call } });
+    expect(asked).toEqual([seats[4], seats[4]]);
+    expect(completing.reason).toContain(`not asked, having judged this ledger already: ${seats.slice(0, 4).join(", ")}`);
+    // Every seat holds one: the verb rests, and no seat is paid to judge the same ledger twice.
+    asked.length = 0;
+    const rest = await runCheck("megalithic-casting", { root, deps: { cases: () => holding(seats), call } });
+    expect(rest.outcome).toBe("rested");
+    expect(asked).toEqual([]);
+    // Naming seats asks them whatever they hold.
+    await runCheck("megalithic-casting", { seats: [seats[0]], root, deps: { cases: () => holding(seats), call } });
+    expect(asked).toEqual([seats[0], seats[0]]);
   });
 });

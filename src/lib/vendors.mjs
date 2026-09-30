@@ -11,6 +11,7 @@
  * (docs/DECISIONS.md): the "budget panel".
  */
 import { MODELS } from "./models.mjs";
+import { assembleAnthropicStream, readStreamText } from "./anthropic-stream.ts";
 
 const KEY_ENV = {
   anthropic: "ANTHROPIC_API_KEY",
@@ -36,9 +37,16 @@ export const VENDORS = Object.fromEntries(
  * error on two consecutive panel runs, each discarding a paid seat) —
  * and nothing else: 4xx are real errors, and a deadline timeout is not
  * retried because a second 30-minute wait is worse than a failed seat.
+ * Nor is Node's own five-minute wait for response headers (or for the next
+ * byte of a body): the vendor had the request and was still working on it,
+ * so a retry pays for the whole request again and waits the same five
+ * minutes (2026-09-28: the Anthropic seat, sent without streaming, was
+ * asked three times per check across three checks; nine requests, no
+ * reply, no ledger row). That failure is one failed seat, said plainly.
  * Returns the first non-retryable Response; the caller still judges
  * res.ok, so genuine HTTP errors keep their existing messages.
  */
+const UNDICI_WINDOW = new Set(["UND_ERR_HEADERS_TIMEOUT", "UND_ERR_BODY_TIMEOUT"]);
 export async function fetchWithRetry(name, url, init, attempts = 3) {
   let lastErr;
   for (let attempt = 1; attempt <= attempts; attempt++) {
@@ -54,6 +62,11 @@ export async function fetchWithRetry(name, url, init, attempts = 3) {
       res = await fetch(url, init);
     } catch (err) {
       if (err.name === "TimeoutError" || err.name === "AbortError") throw err;
+      if (UNDICI_WINDOW.has(err.cause?.code)) {
+        throw new Error(
+          `${name}: no response within Node's five-minute window (${err.cause.message}); not retried — the vendor had the request and it was probably billed`,
+        );
+      }
       lastErr = String(err.cause?.message ?? err.message);
       continue;
     }
@@ -117,6 +130,11 @@ export function buildRequest(name, { system, user, maxTokens = 16000, cachedPref
         // is the depth control on this model family.
         max_tokens: Math.max(maxTokens, 32000),
         output_config: { effort: cfg.effort },
+        // Streamed, as every Anthropic call in the repository is (src/lib/
+        // anthropic-stream.ts): the headers arrive at once and pings keep the
+        // connection open while the seat thinks. What the seat is asked is
+        // unchanged; only how its reply travels.
+        stream: true,
         system,
         messages: [
           {
@@ -194,7 +212,18 @@ export async function callVendorDetailed(
     throw new Error(
       `${name} HTTP ${res.status}: ${(await res.text()).slice(0, 300)}`,
     );
-  const data = await res.json();
+  let data;
+  if (name === "anthropic") {
+    // A stream that carried message_stop is complete whatever the socket did afterwards; one that did not is a failed seat.
+    const { text: sse, ended } = await readStreamText(res.body);
+    try {
+      data = assembleAnthropicStream(sse);
+    } catch (e) {
+      throw new Error(`anthropic: ${e.message}${ended ? `; the connection ended with: ${ended.message}` : ""}`);
+    }
+  } else {
+    data = await res.json();
+  }
   let text;
   if (name === "gemini") {
     text = (data.candidates?.[0]?.content?.parts ?? [])

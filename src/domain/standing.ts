@@ -230,19 +230,43 @@ export function ratification(loaded: LoadedCase): Ratification | null {
 }
 
 /**
- * Does this case need a fresh blind panel? True when no independent model
- * has checked it, when content moved after the newest check, or when the
- * adopted assessment is a reconsideration no fresh blind check has judged.
- * The single source of the rule the content-response workflow re-panels on
- * (formerly scripts/stale-checks.ts, retired 2026-09-09; `next` reads `checksStale`) — the same derivation `ratification` uses.
+ * Does this case need a fresh blind panel? True when the seats that have
+ * judged the case as it stands are too few to speak — fewer than
+ * ratification requires, because none has checked it or the content moved
+ * after they did — or when the adopted assessment is a reconsideration no
+ * fresh blind check has judged. The single source of the rule the sitting
+ * re-panels on (`next` reads `checksStale`), and the same derivation
+ * `ratification` uses: a panel that can ratify or contest is not stale.
+ *
+ * Until 2026-09-29 one seat judging an older ledger made the whole panel
+ * stale. A seat that failed therefore held the case stale however many
+ * others had judged it, and the sitting of 2026-09-28 asked the same four
+ * seats the same question three times. A panel short of a seat is completed
+ * by `seatsOwed` instead, when the check next runs.
  */
 export function checksStale(loaded: LoadedCase): boolean {
   const draft = adoptedAssessment(loaded);
   if (!draft) return false;
-  const checks = latestCheckPerModel(loaded);
-  if (checks.length === 0) return true;
-  if (panelStaleness(loaded, checks)) return true;
-  return isReconsiderationRun(draft) && freshChecksFor(draft, checks).length === 0;
+  const current = currentChecks(loaded, latestCheckPerModel(loaded));
+  if (current.length < RATIFICATION_MIN_PANEL) return true;
+  return isReconsiderationRun(draft) && freshChecksFor(draft, current).length === 0;
+}
+
+/**
+ * The roster seats that have not judged the case as it stands: no check of
+ * theirs is current, or — under a reconsideration — the only one they hold
+ * is a check the reconsideration answered, which cannot vouch for it. The
+ * check verb asks these and no others, so a seat that has judged the case
+ * is not paid to judge the same ledger again, and a second answer from one
+ * seat cannot displace its first. `roster` is the panel's seat keys
+ * (src/lib/seat-key.mjs), in roster order.
+ */
+export function seatsOwed(loaded: LoadedCase, roster: string[]): string[] {
+  const draft = adoptedAssessment(loaded);
+  const current = currentChecks(loaded, latestCheckPerModel(loaded));
+  const vouching = draft && isReconsiderationRun(draft) ? freshChecksFor(draft, current) : current;
+  const have = new Set(vouching.map((r) => seatKey(r.model)));
+  return roster.filter((k) => !have.has(k));
 }
 
 /**

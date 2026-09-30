@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest";
 import { loadOperation } from "./governance.ts";
 import { getCaseBySlug, loadAllCases } from "./load.ts";
 import { cadenceDays, nextAction, inboxPending, chooseNext, runNext } from "../pipeline/next.ts";
-import { blockedAtVerification, provisionalCount } from "./schedule.ts";
+import { blockedAtVerification, provisionalCount, type NextChoice } from "./schedule.ts";
 
 // A case with provisional or blocked records is re-verified before anything is searched, edited or checked (rules 1b
 // and 3b) — the ordering tests below pick cases without them, so a panel check landing on the real content cannot flip
@@ -67,8 +67,12 @@ describe("aletheia next", () => {
       expect(nextAction([contested], reported, "2026-09-20", new Set([reported[0].runId]))).toMatchObject({ case: slug, verb: "edition" });
     }
     // Among cases whose editions are current, with no runs at all, the first never-reported case is chosen for a report.
-    const { checksStale } = await import("./standing.ts");
-    const settled = cases.filter((c) => c.record.slug !== "megalithic-casting" && !editionDue(c) && !checksStale(c) && unencumbered(c));
+    const { checksStale, seatsOwed } = await import("./standing.ts");
+    const { MODELS } = await import("../lib/models.mjs");
+    const { seatKey } = await import("../lib/seat-key.mjs");
+    const roster = Object.values(MODELS.panel).map((seat) => seatKey(seat.label));
+    // Settled: nothing owed at all — a panel short of a seat is completed before the ledger rests (rule 5b), so a case with one is not at rest.
+    const settled = cases.filter((c) => c.record.slug !== "megalithic-casting" && !editionDue(c) && !checksStale(c) && unencumbered(c) && seatsOwed(c, roster).length === 0);
     expect(settled.length).toBeGreaterThan(1);
     const n = nextAction(settled, [], "2026-09-20");
     expect(n.verb).toBe("report");
@@ -198,8 +202,10 @@ describe("a sitting works on at most its case limit", () => {
     const { runNext } = await import("../pipeline/next.ts");
     const plan = ["a", "a", "b", "c", "c"];
     let i = 0;
-    const choose = () => ({ case: plan[i++], verb: "check" as const, reason: "test" });
-    const perform = async (choice: { case: string | null }) => ({ choice: { case: choice.case, verb: "check" as const, reason: "test" }, ran: [{ verb: "check", outcome: { outcome: "completed" as const, runId: `r${i}` } }] });
+    // An edition and then its check on the same case: consecutive choices differ, as a sitting's do.
+    const verbOf = (n: number) => (n % 2 ? ("check" as const) : ("edition" as const));
+    const choose = () => ({ case: plan[i], verb: verbOf(i++), reason: "test" });
+    const perform = async (choice: NextChoice) => ({ choice, ran: [{ verb: choice.verb, outcome: { outcome: "completed" as const, runId: `r${i}` } }] });
     const r = await runNext({ run: true, steps: 5, maxCases: 2, deps: { now: () => 0, choose, perform } });
     expect([r.choice.case, ...(r.more ?? []).map((m) => m.choice.case)]).toEqual(["a", "a", "b"]);
     expect(r.stopped).toEqual({ reason: "cases", afterMinutes: 0, stepsMade: 3, cases: ["a", "b"] });
@@ -208,6 +214,74 @@ describe("a sitting works on at most its case limit", () => {
     const all = await runNext({ run: true, steps: 5, deps: { now: () => 0, choose, perform } });
     expect(1 + (all.more?.length ?? 0)).toBe(5);
     expect(all.stopped).toBeUndefined();
+  });
+});
+
+describe("a sitting does not take the same step twice running", () => {
+  it("ends when the ledger asks again for the step it has just taken, and says which", async () => {
+    const { runNext } = await import("../pipeline/next.ts");
+    // A check that leaves the panel "stale" (2026-09-28: one seat failing) would be chosen again at every step.
+    let chosen = 0;
+    let performed = 0;
+    const choose = () => (chosen++, { case: "deep-memory", verb: "check" as const, reason: "no seat has judged the case as it stands" });
+    const perform = async (choice: NextChoice) => (performed++, { choice, ran: [{ verb: "check", outcome: { outcome: "completed" as const, runId: `r${performed}` } }] });
+    const r = await runNext({ run: true, steps: 3, deps: { now: () => 0, choose, perform } });
+    expect(performed).toBe(1);
+    expect(r.more).toEqual([]);
+    expect(r.stopped).toEqual({ reason: "repeat", afterMinutes: 0, stepsMade: 1, repeated: "check on deep-memory" });
+    // The same verb on the same case is a different step when it continues from a different run (two undrafted reports).
+    const froms = ["report-1", "report-2"];
+    let k = 0;
+    const drafts = () => ({ case: "x", verb: "draft" as const, from: froms[k++], reason: "test" });
+    const did: string[] = [];
+    const draft = async (choice: NextChoice) => (did.push(choice.from!), { choice, ran: [{ verb: "draft", outcome: { outcome: "completed" as const, runId: `d${did.length}` } }] });
+    const two = await runNext({ run: true, steps: 2, deps: { now: () => 0, choose: drafts, perform: draft } });
+    expect(did).toEqual(["report-1", "report-2"]);
+    expect(two.stopped).toBeUndefined();
+    // And the same step later in a sitting, with another between, is taken: a check, a reconsideration, a fresh check.
+    const seq = ["check", "edition", "check"] as const;
+    let s = 0;
+    const third = await runNext({ run: true, steps: 3, deps: { now: () => 0, choose: () => ({ case: "x", verb: seq[s++], reason: "test" }), perform: async (c: NextChoice) => ({ choice: c, ran: [{ verb: c.verb, outcome: { outcome: "completed" as const, runId: `s${s}` } }] }) } });
+    expect(1 + (third.more?.length ?? 0)).toBe(3);
+    expect(third.stopped).toBeUndefined();
+  });
+});
+
+describe("a panel short of a seat", () => {
+  const cases = loadAllCases();
+  it("is completed only when nothing else is owed, and no sooner than the cadence, which doubles after a check that installed nothing", async () => {
+    const { seatsOwed, checksStale } = await import("./standing.ts");
+    const { editionDue } = await import("../pipeline/edition.ts");
+    const { MODELS } = await import("../lib/models.mjs");
+    const { seatKey } = await import("../lib/seat-key.mjs");
+    const roster = Object.values(MODELS.panel).map((seat) => seatKey(seat.label));
+    // A case whose panel can speak, and is whole: take one seat's checks away and the panel is short, not stale.
+    const whole = cases.find((c) => !editionDue(c) && !checksStale(c) && unencumbered(c) && seatsOwed(c, roster).length === 0);
+    expect(whole).toBeDefined();
+    const gone = roster[0];
+    const short = { ...whole!, assessmentRuns: whole!.assessmentRuns.filter((r) => !(r.role === "check" && seatKey(r.model) === gone)) } as LoadedCase;
+    expect(checksStale(short)).toBe(false);
+    expect(seatsOwed(short, roster)).toEqual([gone]);
+    const slug = short.record.slug;
+    // Never reported: the search comes first.
+    expect(nextAction([short], [], "2026-09-20")).toMatchObject({ case: slug, verb: "report" });
+    // Reported yesterday, with its chain finished: nothing else is owed, so the panel is completed.
+    const reported = [
+      run({ runId: `2026-09-19-report-${slug}-000000`, case: slug, date: "2026-09-19" }),
+      run({ runId: `2026-09-19-draft-${slug}-010000`, verb: "draft", case: slug, date: "2026-09-19" }),
+      run({ runId: `2026-09-19-verify-${slug}-020000`, verb: "verify", case: slug, date: "2026-09-19" }),
+    ];
+    const drafted = new Set([reported[0].runId]);
+    const n = nextAction([short], reported, "2026-09-20", drafted);
+    expect(n).toMatchObject({ case: slug, verb: "check" });
+    expect(n.reason).toMatch(new RegExp(`1 seat\\(s\\) of the panel have not judged the case as it stands \\(${gone}\\)`));
+    // A check ran two days ago: the cadence has not passed, the ledger rests.
+    const checked = [...reported, run({ runId: `2026-09-18-check-${slug}-000000`, verb: "check", case: slug, date: "2026-09-18" })];
+    expect(nextAction([short], checked, "2026-09-20", drafted).verb).toBe("rest");
+    // That check installed nothing (the seat is down): the wait doubles to fourteen days.
+    const failed = [...reported, run({ runId: `2026-09-10-check-${slug}-000000`, verb: "check", case: slug, date: "2026-09-10", outcome: "failed" })];
+    expect(nextAction([short], failed, "2026-09-20", drafted).verb).toBe("rest");
+    expect(nextAction([short], failed, "2026-09-25", new Set([reported[0].runId])).verb).not.toBe("rest");
   });
 });
 

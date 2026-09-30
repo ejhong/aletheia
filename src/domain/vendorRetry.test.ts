@@ -77,6 +77,15 @@ describe("vendor fetch retry", () => {
     expect(mock).toHaveBeenCalledTimes(1);
   });
 
+  it("does not retry Node's five-minute wait for headers: the vendor had the request", async () => {
+    const window = Object.assign(new TypeError("fetch failed"), {
+      cause: Object.assign(new Error("Headers Timeout Error"), { code: "UND_ERR_HEADERS_TIMEOUT" }),
+    });
+    const mock = vi.fn().mockRejectedValue(window);
+    await expect(run(mock)).rejects.toThrow(/venice: no response within Node's five-minute window \(Headers Timeout Error\); not retried/);
+    expect(mock).toHaveBeenCalledTimes(1);
+  });
+
   it("throws after exhausting attempts on persistent network failure", async () => {
     const mock = vi.fn().mockRejectedValue(networkError());
     await expect(run(mock)).rejects.toThrow(/after 3 attempts.*ECONNRESET/);

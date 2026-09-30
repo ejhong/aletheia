@@ -250,6 +250,8 @@ input.
 | A PR parked "on the rate limit" | `CONTENT_MERGES_PER_WEEK` (10, `src/lib/arbiter-core.mjs`) counts autonomous canon merges in the trailing week. Founder-directed work is excluded only if its **commit message** (not the PR body — squash messages are built from title + branch commits) carries `Supervised-by: <who>`. The park clears as the week rolls. |
 | A low-risk PR sits open and green | It should have been armed by `PR risk check` on open/push/ready. If not: is it a draft, a fork, or labeled `needs-approval`? Otherwise rebase on `main` to re-trigger. |
 | A case shows `unratified — awaiting a fresh blind check` | Expected after any canon change or reconsideration. The next sitting's check re-panels it. |
+| An issue titled `Loop failure: …` is open | The Chain workflow failed and said so (its last step). The issue names the step. **Token check failed:** `MAINTENANCE_PAT` is expired or revoked — nothing ran and nothing was spent; create a fine-grained token (this repository; contents and pull requests, read and write), `gh secret set MAINTENANCE_PAT`, re-run. **The pull request could not be opened:** the sitting's records are on the branch the issue names; `gh pr create --head <branch> --label needs-approval`. **A step failed:** the run log names the verb and the reason; the sitting's PR carries what it wrote before that. Close the issue when it is mended; a later failure opens a new one. |
+| A check installed fewer than five seats | A seat failed (the run record's notes name it and why). Four current seats can still ratify or contest. The scheduler completes the panel when nothing else is owed; `node scripts/aletheia.ts check <slug>` asks only the seats that have not judged the ledger as it stands. |
 | A case shows `contested` | Working as designed. The next sitting on that case writes the reconsideration edition and then a fresh check; a case still contested afterwards is a standoff and stays displayed until its ledger moves. |
 | Malformed panel replies | Recorded as `unsure` with the defect named; a failed seat is named in the report. Restore the seat (billing, key), then re-run the Arbiter on the PR. |
 | An inbox link came back `unverified` | The URL was unreachable at fetch time. Re-drop it, or drop the DOI/arXiv id instead. |
@@ -279,7 +281,12 @@ npm run check:links                                         # dead links on the 
 - Secrets: `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, `GEMINI_API_KEY`,
   `XAI_API_KEY`, `VENICE_API_KEY` (the five panel seats — a missing key is
   a dead seat), `MAINTENANCE_PAT` (fine-grained, contents + pull-requests
-  write; PRs opened with the default token do not trigger CI).
+  write; PRs opened with the default token do not trigger CI). A
+  fine-grained token expires on the date chosen when it is made — the one
+  set on 2026-08-26 had lapsed by 2026-09-28 and the sitting's PR could not
+  be opened. The Chain workflow now asks the token before it spends and
+  opens a `Loop failure:` issue when it is refused; choose the longest
+  expiry GitHub offers, and note the date.
 - Models: **one file, `config/models.yaml`**, names every model the site
   calls — the house model and its fallback (drafter, editor, the browsing
   research seat), the verifier's second

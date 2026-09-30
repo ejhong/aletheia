@@ -138,6 +138,15 @@ and modular code, with the loop on. The facts first, then the plan.
   reconsideration edition and a fresh check on the schedule's next turn for
   that case; the standing stays displayed as contested until the panel
   re-judges.
+- **A panel is stale when it cannot speak, not when one seat is missing.**
+  The scheduler asks for a check when fewer seats have judged the case as
+  it stands than ratification requires (four), or when the adopted
+  assessment is a reconsideration no fresh check has judged. A panel of
+  four that lacks its fifth seat ratifies or contests as the constitution
+  allows, and the missing seat is asked when nothing else is owed, on a
+  cadence that doubles while it keeps failing. A sitting never takes the
+  same step twice running: a step that leaves the ledger wanting the same
+  step has not helped, and repeating it only spends (2026-09-28).
 
 ## The goal
 
@@ -265,7 +274,7 @@ proposal or one judgment record. Nothing has a private memory.
 | leads | `leads <case>` | the case's open leads — works a producer named and could not open (a report's "Named, not opened", an intake's unresolved references, a drafter's blocked rows), oldest first, ten a pass — asked of the open indexes (OpenAlex, Semantic Scholar, Europe PMC, the Internet Archive) | a report in the shape the draft verb reads: each lead with its row's key, a *resolved* document (agreed on the checks named) or *candidates* to confirm from the text, or *still unresolved* with what was tried; `leads.json`; then draft → verify → edition as after a report, and the verifier settles a lead's own row when a source it admits is the document resolved | mechanical — no model is called; the scheduler runs it under rule 3c (after editions owed, panels due and re-submission, before a new report) on a cadence that doubles after each pass that opens nothing |
 | answer | `answer <pr>` (on the PR's branch) | the PR's standing objections — the parked seats' reasoning from the arbiter's verdict and its open review notes — and the one case the PR touches | records a seat names go back through the second reader with the objection in view (kept with the reader's stamps, refused, or split, as re-verification does; a record that cannot be re-read is left as it stood); every other objection goes to the edition verb, forced, in its packet, and the candidate answers each in its rationale (edition protocol v12); an account for the PR | the second reader and the drafter; run by the operator today, by a workflow on a park or a note later; never touches AGENTS.md; the only `in` rows it leaves are the second reader's admissions of records it re-read; reads only the arbiter workflow's own verdict at the PR's head and the notes it filed — the panel judges the change again |
 | assess and explain | `edition <case>` | ledger, inputs, incumbent edition | a draft assessment (when the judgment changed) and an edition candidate | the drafter |
-| — | `check <case>` | the blind packet (ledger only, no incumbent, no grades) | check runs (`role: check`), each recording the ledger hash it judged | four other vendors |
+| — | `check <case>` | the blind packet (ledger only, no incumbent, no grades) | check runs (`role: check`), each recording the ledger hash it judged | the panel's seats that have not judged the ledger as it stands — a seat that has is not asked the same question again, and the verb rests when every seat has (`--seats` names seats outright) |
 | review | `panel <pr>` | the diff and the constitution | one verdict and up to three review notes per seat, the notes entering as `edition` or ledger candidates | five vendors |
 | publish | merge policy | the labels and checks | the merge | none |
 

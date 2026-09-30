@@ -11,8 +11,16 @@
  * moved the research priority from medium to high and regraded a component
  * without a word, because the packet had never shown it the incumbent's.
  * The packet now does, and this is appended to every rationale.
+ *
+ * A component is its label. One whose label is kept is compared with
+ * itself, so two components that trade verdicts are two changes. One whose
+ * label is not kept cannot be matched to anything — a drafter re-cuts and
+ * re-words components freely — so both sides are printed and nothing is
+ * claimed about them: the sentence "no component verdict changed" is
+ * written only when every component kept its label and its verdict
+ * (review note #427).
  */
-import { assessmentLabels, type AssessmentRun, type Edition } from "./schema.ts";
+import { assessmentLabels, type AssessmentRun, type AssessmentState, type Edition } from "./schema.ts";
 
 type Run = Pick<AssessmentRun, "caseAssessment" | "claimAssessments">;
 type Sel = Pick<Edition, "featuredClaimIds">;
@@ -22,6 +30,25 @@ const delta = (before: string[], after: string[]) => {
   const removed = before.filter((x) => !after.includes(x)).map((x) => `−${x}`);
   return [...added, ...removed];
 };
+
+type Component = { label: string; state: AssessmentState };
+const listed = (ks: Component[]) => ks.map((k) => `${assessmentLabels[k.state]}: ${k.label}`).join("; ") || "none";
+
+/** The component verdicts that moved, matched by label; the components on either side that have no match, printed whole. */
+function componentChanges(was: Component[], now: Component[]): string[] {
+  const labels = (ks: Component[]) => ks.map((k) => k.label);
+  const repeated = (ks: Component[]) => new Set(labels(ks)).size !== ks.length;
+  // A label given twice on one side names nothing: print both sides unless they are the same list.
+  if (repeated(was) || repeated(now)) return listed(was) === listed(now) ? [] : [`component verdicts were [${listed(was)}] and are [${listed(now)}]`];
+  const held = new Map(was.map((k) => [k.label, k.state]));
+  const out: string[] = [];
+  const moved = now.filter((k) => held.has(k.label) && held.get(k.label) !== k.state);
+  if (moved.length) out.push(`${moved.length} component verdict(s) moved: ${moved.map((k) => `"${k.label}" ${assessmentLabels[held.get(k.label)!]} → ${assessmentLabels[k.state]}`).join(", ")}`);
+  const gone = was.filter((k) => !labels(now).includes(k.label));
+  const added = now.filter((k) => !held.has(k.label));
+  if (gone.length || added.length) out.push(`components re-cut or re-worded, which the verb cannot match one to one: no longer given [${listed(gone)}], now given [${listed(added)}]`);
+  return out;
+}
 
 /** One line per change; empty when the judgment and the selection are what they were. `after` is null when the edition re-adopts `before`. */
 export function judgmentChanges(before: Run | null, after: Run | null, was: Sel, is: Sel): string[] {
@@ -36,12 +63,7 @@ export function judgmentChanges(before: Run | null, after: Run | null, was: Sel,
     const held = new Map(before.claimAssessments.map((c) => [c.claimId, c.verdict]));
     const moved = after.claimAssessments.filter((c) => held.has(c.claimId) && held.get(c.claimId) !== c.verdict);
     if (moved.length) out.push(`${moved.length} claim verdict(s) moved: ${moved.map((c) => `${c.claimId} ${assessmentLabels[held.get(c.claimId)!]} → ${assessmentLabels[c.verdict]}`).join(", ")}`);
-    // A component may be relabelled freely; it is a change when the verdicts given, taken together, are not the ones given before.
-    const states = (r: Run) => (r.caseAssessment.components ?? []).map((k) => k.state).sort().join(",");
-    if (states(before) !== states(after)) {
-      const list = (r: Run) => (r.caseAssessment.components ?? []).map((k) => `${assessmentLabels[k.state]}: ${k.label}`).join("; ") || "none";
-      out.push(`component verdicts were [${list(before)}] and are [${list(after)}]`);
-    }
+    out.push(...componentChanges(a.components ?? [], b.components ?? []));
     const rests = delta(a.loadBearing, b.loadBearing);
     if (rests.length) out.push(`claims the case rests on: ${rests.join(", ")}`);
   }

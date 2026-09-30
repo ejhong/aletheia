@@ -26,10 +26,49 @@ const run = (over: Partial<AssessmentRun["caseAssessment"]> = {}, claims: Record
 const featured = (...ids: string[]) => ({ featuredClaimIds: ids });
 
 describe("what an edition changes in the judgment", () => {
-  it("is nothing when the judgment is restated and the selection kept — a relabelled component is not a change", () => {
-    const restated = run({ components: [{ label: "Some pyramid blocks were cast", state: "contradicted" }, { label: "Some Pumapunku blocks were cast", state: "weakly_supported" }] } as never);
+  it("is nothing when the judgment is restated and the selection kept", () => {
+    const restated = run({ synthesis: "The same judgment in other words." } as never);
     expect(judgmentChanges(run(), restated, featured("X-C001", "X-C002"), featured("X-C001", "X-C002"))).toEqual([]);
     expect(judgmentChangesSentence("edition-before", [], false)).toBe("Against edition-before: no case verdict, research priority, claim verdict, component verdict, claim the case rests on or featured claim changed.");
+    // The order components are given in is not a change.
+    const reordered = run({ components: [...run().caseAssessment.components!].reverse() } as never);
+    expect(judgmentChanges(run(), reordered, featured(), featured())).toEqual([]);
+  });
+
+  it("two components that trade verdicts are two changes (review note #427: the verdicts taken together are the same)", () => {
+    const traded = run({
+      components: [
+        { label: "Egyptian branch (X-C001)", state: "weakly_supported" },
+        { label: "Andean branch", state: "contradicted" },
+      ],
+    } as never);
+    expect(judgmentChanges(run(), traded, featured(), featured())).toEqual([
+      `2 component verdict(s) moved: "Egyptian branch (X-C001)" Contradicted → Weakly supported, "Andean branch" Weakly supported → Contradicted`,
+    ]);
+  });
+
+  it("never says no component changed when a label was not kept: both sides are printed, and nothing is claimed of them", () => {
+    // Re-worded with the same verdicts in the same order: the verb cannot know these are the same two components.
+    const reworded = run({ components: [{ label: "Some pyramid blocks were cast", state: "contradicted" }, { label: "Some Pumapunku blocks were cast", state: "weakly_supported" }] } as never);
+    const changes = judgmentChanges(run(), reworded, featured(), featured());
+    expect(changes).toEqual([
+      "components re-cut or re-worded, which the verb cannot match one to one: no longer given [Contradicted: Egyptian branch (X-C001); Weakly supported: Andean branch], now given [Contradicted: Some pyramid blocks were cast; Weakly supported: Some Pumapunku blocks were cast]",
+    ]);
+    expect(judgmentChangesSentence("edition-before", changes, false)).not.toContain("no case verdict");
+    // One label kept and regraded, one dropped, one new: the kept one is matched, the others printed.
+    const mixed = run({ components: [{ label: "Egyptian branch (X-C001)", state: "mixed" }, { label: "Slow pounding at Aswan", state: "well_supported" }] } as never);
+    expect(judgmentChanges(run(), mixed, featured(), featured())).toEqual([
+      `1 component verdict(s) moved: "Egyptian branch (X-C001)" Contradicted → Mixed`,
+      "components re-cut or re-worded, which the verb cannot match one to one: no longer given [Weakly supported: Andean branch], now given [Well supported: Slow pounding at Aswan]",
+    ]);
+    // Components given where there were none, and the reverse.
+    expect(judgmentChanges(run({ components: [] } as never), run(), featured(), featured())[0]).toContain("no longer given [none], now given [Contradicted: Egyptian branch (X-C001); Weakly supported: Andean branch]");
+    // A label given twice names nothing: both lists whole, unless they are the same list.
+    const twice = run({ components: [{ label: "Branch", state: "mixed" }, { label: "Branch", state: "contradicted" }] } as never);
+    expect(judgmentChanges(twice, twice, featured(), featured())).toEqual([]);
+    expect(judgmentChanges(twice, run({ components: [{ label: "Branch", state: "contradicted" }, { label: "Branch", state: "contradicted" }] } as never), featured(), featured())).toEqual([
+      "component verdicts were [Mixed: Branch; Contradicted: Branch] and are [Contradicted: Branch; Contradicted: Branch]",
+    ]);
   });
 
   it("names a moved priority, a regraded component and a changed load-bearing set, which a drafter can change without a word", () => {
@@ -40,7 +79,7 @@ describe("what an edition changes in the judgment", () => {
     } as never);
     expect(judgmentChanges(run(), after, featured("X-C001", "X-C002"), featured("X-C001", "X-C002"))).toEqual([
       "research priority medium → high",
-      "component verdicts were [Contradicted: Egyptian branch (X-C001); Weakly supported: Andean branch] and are [Contradicted: Some pyramid blocks were cast; Well supported: Slow pounding at Aswan]",
+      "components re-cut or re-worded, which the verb cannot match one to one: no longer given [Contradicted: Egyptian branch (X-C001); Weakly supported: Andean branch], now given [Contradicted: Some pyramid blocks were cast; Well supported: Slow pounding at Aswan]",
       "claims the case rests on: +X-C002, −X-C001",
     ]);
   });

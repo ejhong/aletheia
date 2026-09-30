@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "ALETHEIA_CONTENT_FROZEN=1 next build",
     "start": "next start",
     "check:links": "node scripts/audit-links.mjs",
     "lint": "eslint",

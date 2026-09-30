@@ -1,3 +1,4 @@
+import { readOnce } from "./frozen.ts";
 import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml } from "yaml";
@@ -29,18 +30,21 @@ export function loadOperation(root = process.cwd()): Operation {
  */
 export function loadArbiterRecords(): ArbiterRecord[] {
   if (!fs.existsSync(GOVERNANCE_DIR)) return [];
-  return fs
-    .readdirSync(GOVERNANCE_DIR)
-    .filter((f) => f.endsWith(".yaml"))
-    .map((f) => {
-      const raw = parseYaml(fs.readFileSync(path.join(GOVERNANCE_DIR, f), "utf8"));
-      const parsed = ArbiterRecordSchema.safeParse(raw);
-      if (!parsed.success)
-        throw new Error(`governance/arbiter/${f}: ${parsed.error.issues.map((i) => i.message).join("; ")}`);
-      return parsed.data;
-    })
-    // Newest outcome first; on one day, the later pull request first.
-    .sort((a, b) => b.outcomeAt.localeCompare(a.outcomeAt) || b.pr - a.pr);
+  // Read once per process in the site's build (src/domain/frozen.ts): every verdict has a page, and each asked for all of them.
+  return readOnce("arbiter", () =>
+    fs
+      .readdirSync(GOVERNANCE_DIR)
+      .filter((f) => f.endsWith(".yaml"))
+      .map((f) => {
+        const raw = parseYaml(fs.readFileSync(path.join(GOVERNANCE_DIR, f), "utf8"));
+        const parsed = ArbiterRecordSchema.safeParse(raw);
+        if (!parsed.success)
+          throw new Error(`governance/arbiter/${f}: ${parsed.error.issues.map((i) => i.message).join("; ")}`);
+        return parsed.data;
+      })
+      // Newest outcome first; on one day, the later pull request first.
+      .sort((a, b) => b.outcomeAt.localeCompare(a.outcomeAt) || b.pr - a.pr),
+  );
 }
 
 const NOTES_DIR = path.join(process.cwd(), "governance", "review-notes");

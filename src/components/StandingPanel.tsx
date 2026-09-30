@@ -168,9 +168,13 @@ export function StandingPanel({
             );
           })}
         </div>
-        {summary && stale.length === 0 ? (
+        {summary ? (
           <p className="mt-3 text-[13px] leading-relaxed text-ink-soft">
-            Claim by claim, against this judgment: {summary.exact} of {summary.claimsCompared} exact, {summary.adjacent} within one step, {summary.split} split.
+            {/* The tally takes each seat's latest verdicts. When some judged an earlier state of the case it says so,
+                rather than withholding the tally (the Anthropic seat's note on #421). */}
+            Claim by claim, against this judgment
+            {stale.length > 0 ? ` (each seat's latest verdicts, ${stale.length === checks.length ? "all" : `${stale.length} of ${checks.length}`} given on an earlier version of the case)` : ""}
+            : {summary.exact} of {summary.claimsCompared} exact, {summary.adjacent} within one step, {summary.split} split.
             {splitIds.length > 0 ? (
               <>
                 {" "}Split — where review should start:{" "}

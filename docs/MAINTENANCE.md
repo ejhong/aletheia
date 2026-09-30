@@ -34,7 +34,8 @@ Three workflows do the work, and two more build and deploy:
 | **Arbiter** | Every PR | Skips low-risk. Otherwise: five seats judge the diff — a content run by its own account — against `AGENTS.md` at the merge base, with every added DOI/arXiv/URL mechanically resolved first. A lone objection of the ordinary kind becomes a review-note issue; the change merges. | Sticky report comment; verdict as the check; review-note issues. |
 
 Plus `CI` (typecheck, lint, test, build) and `Deploy` on every push to
-`main`, and one on-demand tool: **Generate case art** (dispatch with a
+`main` — the build reads the content once per process (`npm run build` sets
+`ALETHEIA_CONTENT_FROZEN=1`; nothing else may: src/domain/frozen.ts) — and one on-demand tool: **Generate case art** (dispatch with a
 case slug and a count) writes cover candidates in the house style to
 `public/images/cases/<slug>/candidates/` and opens a PR for the pick;
 `node scripts/add-commons-image.mjs "File:…" <slug>` fetches a Wikimedia

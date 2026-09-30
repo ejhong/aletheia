@@ -266,7 +266,7 @@ export async function callVendorDetailed(
   // An empty reply is a failed seat — and a billed one: the vendor counted every token the seat
   // thought before it ran out of room or declined. The error carries the usage, so the transport
   // records what was spent before it lets the failure through (2026-09-30: a seat that thought to
-  // its ceiling cost about $1.40 and left no row in the ledger).
+  // its ceiling cost about $1.47 and left no row in the ledger).
   if (!text || text.trim().length === 0) {
     const stop = data.stop_reason ?? data.candidates?.[0]?.finishReason ?? data.choices?.[0]?.finish_reason ?? "?";
     throw Object.assign(new Error(`${name}: empty reply (stop: ${stop})`), { usage, model: VENDORS[name].model });

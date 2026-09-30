@@ -8,6 +8,8 @@ import {
   CONTENT_MERGES_PER_WEEK,
   costOf,
   omittedNotes,
+  replyDifferences,
+  REPLY_STAMP_CHARS,
   shapeRule,
   SHAPE_LIMITS,
   runAccount,
@@ -441,11 +443,148 @@ describe("runAccount — the run's own record, for a panel that cannot read the 
     expect(text).not.toMatch(/\[… article:/);
   });
   it("is empty for a change without runs, and clips a long article loudly", () => {
-    expect(runAccount(["src/x.ts", "docs/y.md"], read, diffOf)).toEqual({ text: "", files: [] });
+    expect(runAccount(["src/x.ts", "docs/y.md"], read, diffOf)).toEqual({ text: "", files: [], carried: {} });
     const long: Record<string, string> = { ...files, "content/cases/x/editions/e2.yaml": files["content/cases/x/editions/e2.yaml"].replace("Three accounts side by side.", "x".repeat(65_000)) };
     const { text } = runAccount(Object.keys(long), (p: string) => long[p] ?? null, diffOf);
     expect(text).toMatch(/\[… article: 500\d more characters not shown\]/);
     expect(text.length).toBeLessThanOrEqual(ACCOUNT_CAP + 100);
+  });
+});
+
+/**
+ * A check run writes each seat's judgment three times: the installed
+ * assessment, the run account's digest of it, and the seat's raw reply. The
+ * raw reply may give way first only when an installed file provably carries
+ * all of it — so the tests are about what must NOT count as carried.
+ */
+describe("a seat's raw reply, compared with what was installed from it", () => {
+  const reply = {
+    runId: "2026-09-28-check-grok",
+    model: "Grok 4.5 (xAI), independent check run",
+    date: "2026-09-28",
+    promptVersion: "check-v2",
+    humanReviewed: false,
+    role: "check",
+    caseAssessment: { verdict: "unresolved", loadBearing: ["X-C001"], weakestLinks: ["X-C002"], synthesis: "The ledger does not settle it.", steelman: "The strongest case for it." },
+    claimAssessments: [
+      { claimId: "X-C001", verdict: "mixed", confidence: "low", reasoning: "Two records, opposed.", treatment: { plainLanguage: "A", whatWouldChangeOurMind: ["a test"] } },
+      { claimId: "X-C002", verdict: "unresolved", confidence: "low", reasoning: "No record." },
+    ],
+  };
+  /** What the verb installs: the reply, its stamps replaced, a schema default added. */
+  const install = (r: typeof reply, over: Record<string, unknown> = {}) => ({
+    ...structuredClone(r),
+    runId: "2026-09-28-check-grok-143733",
+    producedBy: "2026-09-28-check-x-143733",
+    model: "Grok 4.5 (xAI) — independent check run via grok-4.5",
+    basis: { ledgerHash: "ad0e" },
+    caseAssessment: { ...structuredClone(r.caseAssessment), components: [] },
+    ...over,
+  });
+
+  it("an installed file that adds only the verb's stamps and empty defaults carries the reply whole", () => {
+    expect(replyDifferences(reply, install(reply))).toEqual([]);
+  });
+
+  it("names every field that was changed, dropped or added, a claim by its id", () => {
+    const changed = install(reply);
+    (changed.claimAssessments[1] as { reasoning: string }).reasoning = "No record. ";
+    expect(replyDifferences(reply, changed)).toEqual([`claimAssessments[X-C002].reasoning: "No record." in the reply, "No record. " installed`]);
+    // A field the schema does not know is dropped on install: the reply said something the installed file does not carry.
+    const extra = { ...reply, caseAssessment: { ...reply.caseAssessment, sensitivity: "Removing X-E001 would move it." } };
+    expect(replyDifferences(extra, install(reply))).toEqual(["caseAssessment.sensitivity: in the reply, not installed"]);
+    // A verdict installed that the reply did not give, and a claim assessment that is missing.
+    expect(replyDifferences(reply, install(reply, { claimAssessments: [reply.claimAssessments[0]] }))).toEqual(["claimAssessments: 2 item(s) in the reply, 1 installed"]);
+    expect(replyDifferences(reply, install(reply, { caseAssessment: { ...reply.caseAssessment, verdict: "established" } }))).toEqual([`caseAssessment.verdict: "unresolved" in the reply, "established" installed`]);
+    const added = install(reply);
+    (added.caseAssessment as Record<string, unknown>).whatIsClaimed = "Something the seat never wrote.";
+    expect(replyDifferences(reply, added)).toEqual(["caseAssessment.whatIsClaimed: installed, not in the reply"]);
+  });
+
+  it("nothing of the reply's goes uncompared: a top-level field the verb does not install, or text in a stamp", () => {
+    // A reply cannot carry text past the comparison in a field the installed file does not have…
+    expect(replyDifferences({ ...reply, notes: "a long aside to whoever reads this" }, install(reply))).toEqual(["notes: in the reply, not installed"]);
+    // …nor in one of the six stamps the verb overwrites: there its own value must be a short scalar.
+    expect(replyDifferences({ ...reply, model: "m".repeat(REPLY_STAMP_CHARS + 1) }, install(reply))).toEqual([`model: the reply's own value for a stamped field runs to ${REPLY_STAMP_CHARS + 1} characters`]);
+    expect(replyDifferences({ ...reply, role: { text: "hidden" } }, install(reply))).toEqual(["role: the reply's own value for a stamped field is not a scalar"]);
+    expect(replyDifferences("not a mapping", install(reply))).toEqual(["the reply is not a mapping"]);
+  });
+
+  const yaml = (o: unknown) => JSON.stringify(o); // JSON is YAML
+  const run = "proposals/2026-09-28-check-x-143733";
+  const a1 = "content/cases/x/assessments/2026-09-28-check-grok-143733.yaml";
+  const a2 = "content/cases/x/assessments/2026-09-28-check-gpt-143733.yaml";
+  const other = { ...reply, caseAssessment: { ...reply.caseAssessment, verdict: "contradicted" } };
+  const sitting: Record<string, string> = {
+    [`${run}/run.yaml`]: "runId: 2026-09-28-check-x-143733\nverb: check\noutcome: completed\n",
+    [`${run}/seat-xai.yaml`]: "```yaml\n" + yaml(reply) + "\n```\nSincerely, the model",
+    [`${run}/seat-openai.yaml`]: yaml({ ...other, caseAssessment: { ...other.caseAssessment, sensitivity: "dropped on install" } }),
+    [`${run}/seat-venice.yaml`]: "{ not yaml",
+    [`${run}/seat-gemini.problems.txt`]: "missing claims: X-C002",
+    [a1]: yaml(install(reply)),
+    [a2]: yaml(install(other, { runId: "2026-09-28-check-gpt-143733" })),
+  };
+  const readSitting = (p: string) => sitting[p] ?? null;
+
+  it("the run account says which installed file carries each reply, and returns only those as carried", () => {
+    const { text, files: used, carried } = runAccount(Object.keys(sitting), readSitting, () => "");
+    expect(carried).toEqual({ [`${run}/seat-xai.yaml`]: a1 });
+    expect(text).toContain(`- seat-xai.yaml: carried whole by ${a1}`);
+    expect(text).toContain(`- seat-openai.yaml: NOT carried whole by any assessment this run installed; the closest is ${a2}, with 1 difference(s): caseAssessment.sensitivity: in the reply, not installed`);
+    expect(text).toContain("- seat-venice.yaml: not parseable as YAML, so not compared");
+    // A problems file is not a reply, and the comparison names no file the account did not read as one.
+    expect(text).not.toContain("seat-gemini.problems.txt");
+    expect(used).not.toContain(`${run}/seat-xai.yaml`);
+    // The section states its own terms, so a seat knows what "carried whole" rests on.
+    expect(text).toMatch(/Every field of the reply is compared at every depth, strings exact, except runId, model, date, promptVersion, humanReviewed, role/);
+    // A run that installed nothing has nothing to compare a reply with.
+    const bare: Record<string, string> = { [`${run}/run.yaml`]: sitting[`${run}/run.yaml`], [`${run}/seat-xai.yaml`]: sitting[`${run}/seat-xai.yaml`] };
+    const none = runAccount(Object.keys(bare), (p: string) => bare[p] ?? null, () => "");
+    expect(none.carried).toEqual({});
+    expect(none.text).toContain("- seat-xai.yaml: this run installed no assessment to compare it with");
+    // An assessment another run installed is not this run's to be compared with.
+    const foreign: Record<string, string> = { ...bare, [a1]: yaml(install(reply, { producedBy: "2026-09-27-check-x-000000" })) };
+    expect(runAccount(Object.keys(foreign), (p: string) => foreign[p] ?? null, () => "").carried).toEqual({});
+  });
+
+  it("the diff keeps the records that exist once, gives up a carried reply first, and leaves the rest in its old order", () => {
+    const section = (name: string, size: number) => `diff --git a/${name} b/${name}\n` + "x".repeat(size) + "\n";
+    const parts = {
+      assessment: section(a1, 300), // an overlay the account digests
+      gate: section("governance/arbiter/pr-414.yaml", 300), // exists once
+      spend: section("governance/spend/2026-09-28-check-x-143733.yaml", 100), // exists once
+      working: section(`${run}/packet.md`, 300), // a working file
+      uncarried: section(`${run}/seat-openai.yaml`, 300), // a reply no installed file carries whole
+      carried: section(`${run}/seat-xai.yaml`, 400), // carried whole by the assessment
+    };
+    const d = parts.assessment + parts.gate + parts.spend + parts.working + parts.uncarried + parts.carried;
+    const held = { carried: [`${run}/seat-xai.yaml`] };
+    // One character short of everything: the carried reply is the file that goes.
+    expect(capDiff(d, d.length - 1, held).omitted).toEqual([`${run}/seat-xai.yaml`]);
+    // Room only for the records that exist once: the gate's verdict, the spend row and the uncarried reply are kept;
+    // the assessment (a seat still reads its digest in the account), the working file and the carried reply go.
+    const once = parts.gate.length + parts.spend.length + parts.uncarried.length;
+    const tight = capDiff(d, once, held);
+    expect(tight.text).toBe(parts.gate + parts.spend + parts.uncarried);
+    expect(tight.omitted).toEqual([a1, `${run}/packet.md`, `${run}/seat-xai.yaml`]);
+    // With a little more room the assessment comes back before the working file: the rest keeps its old order.
+    expect(capDiff(d, once + parts.assessment.length, held).omitted).toEqual([`${run}/packet.md`, `${run}/seat-xai.yaml`]);
+    // Told nothing of what is carried, a raw reply stays with the working files — but the gate's record and the
+    // spend row still come before the assessment.
+    const plain = capDiff(d, parts.gate.length + parts.spend.length);
+    expect(plain.text).toBe(parts.gate + parts.spend);
+    expect(capDiff(d, d.length - 1).omitted).toEqual([`${run}/seat-xai.yaml`]);
+    // Nothing here moves a file of the governance surface or of the canon: the record under governance/ is still cut first.
+    const canon = section("content/cases/x/sources.yaml", 300) + section("scripts/arbiter.mjs", 300) + section("governance/arbiter/pr-1.yaml", 300);
+    expect(capDiff(canon, canon.length - 1, { carried: ["content/cases/x/sources.yaml", "scripts/arbiter.mjs"] }).omitted).toEqual(["governance/arbiter/pr-1.yaml"]);
+  });
+
+  it("an omitted reply is described by the file that carries it", () => {
+    const f = `${run}/seat-xai.yaml`;
+    expect(omittedNotes([f, "proposals/r1/reply.json"], [], null, { [f]: a1 })).toEqual([
+      `${f} — a seat's raw reply: the RUN ACCOUNT's section for its run compared it with ${a1} and found that file to carry it whole, on the terms stated there`,
+      "proposals/r1/reply.json",
+    ]);
   });
 });
 

@@ -1,5 +1,6 @@
 import { parse as parseYaml } from "yaml";
 import { createHash } from "node:crypto";
+import { parseYamlReply } from "./yaml-reply.mjs";
 /**
  * Pure logic for the constitutional arbiter (scripts/arbiter.mjs):
  * validating one seat's vote and tallying the panel's verdict. Kept
@@ -146,6 +147,8 @@ export function tallyVerdict(votes) {
  *   2 — mechanically-guarded records: assessment overlays (append-only,
  *       enforced by the risk classifier), proposals, harvested governance,
  *       inbox. Dropped first, because other machinery already checks them.
+ *
+ * `capDiff` orders tier 2 further (see RECORD_TIER and CARRIED_TIER below).
  */
 export function diffTier(file) {
   if (
@@ -172,7 +175,35 @@ export function diffTier(file) {
  * to be dropped first. Reserve a tier does not spend flows to the
  * others, in scrutiny order, in the second pass.
  */
-const TIER_RESERVED_SHARE = [0.5, 0.5, 0];
+const TIER_RESERVED_SHARE = [0.5, 0.5, 0, 0, 0];
+
+/**
+ * Within tier 2, what the panel can read nowhere else comes first. A sitting
+ * that checks a case writes every seat's judgment three times — the installed
+ * assessment, the run account's digest of it, and the seat's raw reply — and
+ * those copies filled the packet while the harvested gate records and the
+ * spend rows, which appear nowhere else, were the files cut (2026-09-30: two
+ * seats could only say unsure, and the sitting parked).
+ *
+ *   2 — the records that exist once: everything under governance/ (the gate's
+ *       harvested verdicts, the spend rows, review notes, the operation
+ *       state) and inbox/; and a seat's raw reply that the run account
+ *       compared and found NOT carried whole by an installed assessment —
+ *       it says something the installed file does not.
+ *   3 — the rest of tier 2, in the diff's own order, as before: assessment
+ *       overlays, which the account digests, then a run's working files.
+ *   4 — a seat's raw reply that an installed assessment carries whole, as the
+ *       run account's comparison states (`replyDifferences`): cut first.
+ *
+ * A raw reply is sorted this way only when the caller says which replies
+ * are carried; told nothing, it stays with the working files.
+ */
+const RECORD_TIER = 2;
+const OVERLAY_TIER = 3;
+const CARRIED_TIER = 4;
+const TIERS = [0, 1, RECORD_TIER, OVERLAY_TIER, CARRIED_TIER];
+/** A seat's raw reply to a blind check, as the check verb names it (src/pipeline/check.ts). */
+export const SEAT_REPLY = /^proposals\/[^/]+\/seat-[^/]+\.ya?ml$/;
 
 /**
  * Cap an untrusted diff for the panel packet, by scrutiny priority.
@@ -186,11 +217,25 @@ const TIER_RESERVED_SHARE = [0.5, 0.5, 0];
  * because a silently truncated diff judged as complete would be the
  * arbiter passing changes it never read.
  */
-export function capDiff(diff, maxChars = 400_000) {
+/**
+ * @param {string} diff
+ * @param {number} [maxChars]
+ * @param {{ carried?: Iterable<string> }} [held] the raw seat replies the run account found carried whole by an
+ *   installed assessment (`runAccount(...).carried`). Only tier-2 files are ordered by it.
+ */
+export function capDiff(diff, maxChars = 400_000, held = {}) {
   if (diff.length <= maxChars) return { text: diff, omitted: [] };
+  const carried = held.carried === undefined ? null : new Set(held.carried);
+  const tierOf = (file) => {
+    const tier = diffTier(file);
+    if (tier !== 2) return tier;
+    if (file.startsWith("governance/") || file.startsWith("inbox/")) return RECORD_TIER;
+    if (carried && SEAT_REPLY.test(file)) return carried.has(file) ? CARRIED_TIER : RECORD_TIER;
+    return OVERLAY_TIER;
+  };
   const sections = diff.split(/^(?=diff --git )/m).map((text, i) => {
     const m = text.match(/^diff --git a\/(\S+)/);
-    return { text, i, file: m ? m[1] : null, tier: m ? diffTier(m[1]) : 0 };
+    return { text, i, file: m ? m[1] : null, tier: m ? tierOf(m[1]) : 0 };
   });
   const kept = new Set();
   let used = 0;
@@ -205,12 +250,12 @@ export function capDiff(diff, maxChars = 400_000) {
   };
   // First pass: each tier fills only within its own reserve, so an
   // oversized tier 0 cannot spend tier 1's slice.
-  for (const tier of [0, 1, 2]) {
+  for (const tier of TIERS) {
     fill(tier, used + Math.floor(maxChars * TIER_RESERVED_SHARE[tier]));
   }
   // Second pass: unspent reserve goes to whatever still fits, in
   // scrutiny order — the guarantee costs nothing when tiers are small.
-  for (const tier of [0, 1, 2]) fill(tier, maxChars);
+  for (const tier of TIERS) fill(tier, maxChars);
   return {
     text: sections.filter((s) => kept.has(s.i)).map((s) => s.text).join(""),
     omitted: sections
@@ -256,6 +301,66 @@ function addedLines(diff) {
     .join("\n");
 }
 
+/** Empty as a schema default is: a value whose absence says the same thing. */
+const isEmptyValue = (v) => v == null || v === "" || (Array.isArray(v) && v.length === 0) || (typeof v === "object" && !Array.isArray(v) && Object.keys(v).length === 0);
+
+/**
+ * The fields of an installed check the verb writes itself (src/pipeline/check.ts, validateCheckReply), whatever the
+ * seat's reply put there; `basis` and `producedBy` are the verb's alone.
+ */
+export const REPLY_STAMPS = ["runId", "model", "date", "promptVersion", "humanReviewed", "role"];
+/** A stamp the seat wrote is a short scalar the verb replaced; longer, or structured, and it is content the installed file does not carry. */
+export const REPLY_STAMP_CHARS = 120;
+
+/**
+ * Where a seat's raw reply to a blind check and an assessment installed from it differ. The installed file is the
+ * reply, parsed and stamped: it must carry everything the reply says, exactly, and may add only the verb's stamps
+ * and empty defaults. So every field of the reply is compared, at every depth, strings exact — except the six
+ * stamps (REPLY_STAMPS), where the reply's own value is replaced by the verb's and need only be a scalar of at most
+ * REPLY_STAMP_CHARS characters. A field the installed file adds is a difference unless it is empty or one of the
+ * verb's (the stamps, `producedBy`, `basis`).
+ *
+ * @param {unknown} reply the raw reply, parsed
+ * @param {unknown} installed the installed assessment, parsed
+ * @returns {string[]} one line per difference, a claim named by its id; empty when the installed file carries the reply whole
+ */
+export function replyDifferences(reply, installed) {
+  const out = [];
+  const isMap = (v) => v !== null && typeof v === "object" && !Array.isArray(v);
+  const show = (v) => clip(JSON.stringify(v) ?? "undefined", 80, "value");
+  const walk = (a, b, at) => {
+    if (Array.isArray(a)) {
+      if (!Array.isArray(b)) return void out.push(`${at}: a list in the reply, not in the installed file`);
+      if (a.length !== b.length) out.push(`${at}: ${a.length} item(s) in the reply, ${b.length} installed`);
+      for (let i = 0; i < Math.min(a.length, b.length); i++) walk(a[i], b[i], `${at}[${isMap(a[i]) && typeof a[i].claimId === "string" ? a[i].claimId : i}]`);
+      return;
+    }
+    if (isMap(a)) {
+      if (!isMap(b)) return void out.push(`${at}: a mapping in the reply, not in the installed file`);
+      for (const k of Object.keys(a)) {
+        if (k in b) walk(a[k], b[k], `${at}.${k}`);
+        else if (!isEmptyValue(a[k])) out.push(`${at}.${k}: in the reply, not installed`);
+      }
+      for (const k of Object.keys(b)) if (!(k in a) && !isEmptyValue(b[k])) out.push(`${at}.${k}: installed, not in the reply`);
+      return;
+    }
+    if (a !== b) out.push(`${at}: ${show(a)} in the reply, ${show(b)} installed`);
+  };
+  if (!isMap(reply)) return ["the reply is not a mapping"];
+  if (!isMap(installed)) return ["the installed file is not a mapping"];
+  const verbs = new Set([...REPLY_STAMPS, "producedBy", "basis"]);
+  for (const k of Object.keys(reply)) {
+    if (REPLY_STAMPS.includes(k)) {
+      const v = reply[k];
+      if (v !== null && typeof v === "object") out.push(`${k}: the reply's own value for a stamped field is not a scalar`);
+      else if (String(v ?? "").length > REPLY_STAMP_CHARS) out.push(`${k}: the reply's own value for a stamped field runs to ${String(v).length} characters`);
+    } else if (k in installed) walk(reply[k], installed[k], k);
+    else if (!isEmptyValue(reply[k])) out.push(`${k}: in the reply, not installed`);
+  }
+  for (const k of Object.keys(installed)) if (!(k in reply) && !verbs.has(k) && !isEmptyValue(installed[k])) out.push(`${k}: installed, not in the reply`);
+  return out;
+}
+
 /**
  * A content run's own account of itself, for a panel that cannot read the
  * whole diff, assembled by importance: the head edition and the assessment
@@ -270,7 +375,10 @@ function addedLines(diff) {
  * mechanical extraction from the files it names — no model writes it, and
  * the seats are told so. Working files (model replies, remembered
  * judgments, supplied text, packets) are left out and stay listed under
- * OMITTED FILES when the diff is over budget.
+ * OMITTED FILES when the diff is over budget — except that a check run's
+ * raw seat replies are compared, under its run record, with the assessments
+ * the run installed (`replyDifferences`), and the ones an installed file
+ * carries whole are returned as `carried`, for the diff to cut first.
  *
  *   changed: paths the change touches; read(path) → text at head, or null;
  *   diffOf(path) → that path's unified diff; readBase(path) → text at the
@@ -289,6 +397,46 @@ export function runAccount(changed, read, diffOf, readBase = noBase) {
       return { text: t, data: null };
     }
   };
+  // The check assessments each run installed, by the run that produced them (the verb stamps `producedBy`).
+  const installedBy = new Map();
+  for (const p of changed.filter((f) => /^content\/cases\/[^/]+\/assessments\/[^/]+\.ya?ml$/.test(f))) {
+    const data = parsed(p)?.data;
+    if (data && typeof data.producedBy === "string") installedBy.set(data.producedBy, [...(installedBy.get(data.producedBy) ?? []), { p, data }]);
+  }
+  /** One run's raw seat replies against what it installed: the lines for its section, and the replies carried whole. */
+  const seatReplies = (dir) => {
+    const replies = changed.filter((f) => f.startsWith(`${dir}/`) && SEAT_REPLY.test(f)).sort();
+    if (!replies.length) return { lines: [], carried: {} };
+    const installed = installedBy.get(dir.split("/")[1]) ?? [];
+    const carried = {};
+    const lines = replies.map((f) => {
+      const name = f.slice(dir.length + 1);
+      const text = read(f);
+      if (text == null) return `- ${name}: not readable at the head revision, so not compared`;
+      let reply;
+      try {
+        reply = parseYamlReply(text);
+      } catch {
+        return `- ${name}: not parseable as YAML, so not compared`;
+      }
+      if (!installed.length) return `- ${name}: this run installed no assessment to compare it with`;
+      const [best] = installed.map((i) => ({ ...i, differences: replyDifferences(reply, i.data) })).sort((a, b) => a.differences.length - b.differences.length);
+      if (best.differences.length === 0) {
+        carried[f] = best.p;
+        return `- ${name}: carried whole by ${best.p}`;
+      }
+      const SHOWN = 8;
+      const more = best.differences.length > SHOWN ? `; and ${best.differences.length - SHOWN} more` : "";
+      return `- ${name}: NOT carried whole by any assessment this run installed; the closest is ${best.p}, with ${best.differences.length} difference(s): ${best.differences.slice(0, SHOWN).join("; ")}${more}`;
+    });
+    return {
+      lines: [
+        `seat replies of this run — raw working files, each compared by this tooling with the check assessments the run installed (the changed assessment files whose producedBy is this run). Every field of the reply is compared at every depth, strings exact, except ${REPLY_STAMPS.join(", ")}: the verb writes those itself, and the reply's own value for one need only be a scalar of at most ${REPLY_STAMP_CHARS} characters. A field the installed file adds counts as a difference unless it is empty or the verb's (those six, producedBy, basis). "Carried whole" means no difference:`,
+        ...lines,
+      ],
+      carried,
+    };
+  };
   const caseOf = (p) => p.split("/").slice(0, 3).join("/");
   // Sections carry a rank: when the account is over its cap, whole sections are dropped from the lowest rank up
   // (largest first within a rank) and said to be dropped. Rank 0 — the head edition and the assessment it adopts,
@@ -304,11 +452,13 @@ export function runAccount(changed, read, diffOf, readBase = noBase) {
     if (run == null) continue;
     const dir = p.replace(/\/run\.yaml$/, "");
     const parts = [`--- ${p}`, run];
+    const seats = seatReplies(dir);
+    parts.push(...seats.lines);
     for (const [name, cap] of [["novelty.md", 4_000], ["manifest.yaml", 8_000]]) {
       const t = read(`${dir}/${name}`);
       if (t != null) parts.push(`--- ${dir}/${name}`, clip(t, cap, name));
     }
-    sections.push({ rank: 2, text: parts.join("\n") });
+    sections.push({ rank: 2, text: parts.join("\n"), carried: seats.carried });
     const v = read(`${dir}/verification.md`);
     if (v != null) sections.push({ rank: 2, text: `--- ${dir}/verification.md\n${clip(v, 60_000, "verification.md")}` });
   }
@@ -514,10 +664,10 @@ export function runAccount(changed, read, diffOf, readBase = noBase) {
     else sections.push({ rank: 0, text: digest(p, a, null, unchanged) });
   }
 
-  if (sections.length === 0) return { text: "", files: [] };
+  if (sections.length === 0) return { text: "", files: [], carried: {} };
   const cap = ACCOUNT_CAP.toLocaleString("en-US");
   const headerFor = (n) =>
-    `Generated by src/lib/arbiter-core.mjs (runAccount) from the ${n} file(s) named below, read at the head revision (a canon file also at the merge base, to tell a modified record from an added one): the head edition's header, rationale, featured claims, crux order and article (article to 60,000 characters); the assessment the head edition adopts, read at head even when this change did not touch its file — its header, case verdict, load-bearing set and weakest links, what is claimed (to 1,200), synthesis or reasoning (to 1,500), each component's state and note (note to 240), and every claim's verdict and confidence, each with its reasoning to 300 — the reasoning left out of the claim lines, and said so, only when the section would pass 30,000, and the section clipped only past 60,000; the records the change adds or modifies in evidence, claims, sources and research (id, state, direction, statement to 320, quote to 160, locator to 160; a modified record's changed fields and their new values to 240; each file's list to 40,000); the run records (run.yaml whole; novelty.md to 4,000; manifest.yaml to 8,000; verification.md to 60,000); the lines added to history and dispositions (to 25,000 each); an assessment superseded within the change, digested as the head's is, with every claim verdict that differs from the head's marked; and an edition superseded within the change by header, rationale (to 3,000), featured claims, crux order and the paragraphs of its article the head edition does not carry verbatim (to 20,000; the shared paragraphs are read in the head). The whole account is kept to ${cap} characters by dropping whole sections, least important first and within a rank largest first — a superseded edition's paragraphs, then a superseded assessment, then the run records and the added lines, then the records digest — and naming each dropped section. Protected from dropping, and titled by class, are the head edition, the assessment it adopts, and every other assessment of the change not superseded within it — a check-role seat's own reading, or a draft no edition in this change adopts; these are never dropped and the assembled account is never cut mid-way: if they alone exceed the cap, the account runs over it and says so. The only clipping is per field, at the lengths stated here, each marked in place with the count of characters not shown; an unmarked part is whole. No model wrote this section. Working files (model replies, remembered judgments, supplied text, packets) are not included and may appear under OMITTED FILES.`;
+    `Generated by src/lib/arbiter-core.mjs (runAccount) from the ${n} file(s) named below, read at the head revision (a canon file also at the merge base, to tell a modified record from an added one): the head edition's header, rationale, featured claims, crux order and article (article to 60,000 characters); the assessment the head edition adopts, read at head even when this change did not touch its file — its header, case verdict, load-bearing set and weakest links, what is claimed (to 1,200), synthesis or reasoning (to 1,500), each component's state and note (note to 240), and every claim's verdict and confidence, each with its reasoning to 300 — the reasoning left out of the claim lines, and said so, only when the section would pass 30,000, and the section clipped only past 60,000; the records the change adds or modifies in evidence, claims, sources and research (id, state, direction, statement to 320, quote to 160, locator to 160; a modified record's changed fields and their new values to 240; each file's list to 40,000); the run records (run.yaml whole, and under a check run's the comparison of each raw seat reply with the assessments that run installed, on the terms that section states; novelty.md to 4,000; manifest.yaml to 8,000; verification.md to 60,000); the lines added to history and dispositions (to 25,000 each); an assessment superseded within the change, digested as the head's is, with every claim verdict that differs from the head's marked; and an edition superseded within the change by header, rationale (to 3,000), featured claims, crux order and the paragraphs of its article the head edition does not carry verbatim (to 20,000; the shared paragraphs are read in the head). The whole account is kept to ${cap} characters by dropping whole sections, least important first and within a rank largest first — a superseded edition's paragraphs, then a superseded assessment, then the run records and the added lines, then the records digest — and naming each dropped section. Protected from dropping, and titled by class, are the head edition, the assessment it adopts, and every other assessment of the change not superseded within it — a check-role seat's own reading, or a draft no edition in this change adopts; these are never dropped and the assembled account is never cut mid-way: if they alone exceed the cap, the account runs over it and says so. The only clipping is per field, at the lengths stated here, each marked in place with the count of characters not shown; an unmarked part is whole. No model wrote this section. Working files (model replies, remembered judgments, supplied text, packets) are not included and may appear under OMITTED FILES; a check run's raw seat replies are compared as its run record states, not reproduced.`;
   // Assemble in reading order — the protected sections (rank 0: head edition, the assessment it adopts, any other
   // assessment not superseded within the change), records digest, run records and added lines, superseded
   // candidates — then drop whole sections from the lowest rank, largest first, while over the cap. Rank 0 is never
@@ -541,7 +691,8 @@ export function runAccount(changed, read, diffOf, readBase = noBase) {
   if (body.length > ACCOUNT_CAP) {
     body = render([...(dropped.length ? [droppedNote()] : []), `[The protected sections alone — the head edition(s), the assessment(s) they adopt, and any assessment of the change not superseded within it — run to ${body.length.toLocaleString("en-US")} characters, over the ${cap} cap; they are kept whole and nothing else is included.]`]);
   }
-  return { text: body, files: named() };
+  // A reply counts as carried only while the section that says so stands.
+  return { text: body, files: named(), carried: Object.assign({}, ...ordered.map((s) => s.carried ?? {})) };
 }
 
 /**
@@ -553,11 +704,13 @@ export function runAccount(changed, read, diffOf, readBase = noBase) {
  * @param {string[]} omitted
  * @param {string[]} accountFiles
  * @param {((path: string) => string) | null} [read]
+ * @param {Record<string, string>} [carried] a seat's raw reply → the installed assessment the account found to carry it whole
  */
-export function omittedNotes(omitted, accountFiles, read = null) {
+export function omittedNotes(omitted, accountFiles, read = null, carried = {}) {
   const inAccount = new Set(accountFiles);
   return omitted.map((f) => {
     if (inAccount.has(f)) return `${f} — read into the RUN ACCOUNT above; its section for this file says what is whole, digested or clipped`;
+    if (carried[f]) return `${f} — a seat's raw reply: the RUN ACCOUNT's section for its run compared it with ${carried[f]} and found that file to carry it whole, on the terms stated there`;
     const shape = read ? shapeOf(f, read) : null;
     return shape ? `${f} — ${shape}` : f;
   });

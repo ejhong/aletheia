@@ -16,7 +16,7 @@ export function LatestStrip({ activity }: { activity: Activity }) {
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <h2 className="font-mono text-[11px] uppercase tracking-[0.18em] text-copper">the current edition · {a.edition.date}</h2>
         <Link href="#history" className="font-mono text-[10px] uppercase tracking-[0.12em] text-faint hover:text-copper">
-          last content update {a.lastContentUpdate} · the change history ↓
+          the change history, last entry {a.lastContentUpdate} ↓
         </Link>
       </div>
       <p className="mt-2 text-[14.5px] leading-[1.7] text-ink-soft">

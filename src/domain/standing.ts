@@ -30,8 +30,11 @@ import { isHousekeepingEntry } from "./history.ts";
  *
  * A load-bearing claim is contested when fewer than a strict majority of
  * the models judging it land within one step of the draft's verdict on the
- * graded scale (open verdicts must match exactly — "unresolved" is not
- * adjacent to anything).
+ * graded scale. The two open verdicts, "unresolved" and "presently
+ * untestable", stand between "weakly supported" and "mixed": one step from
+ * either and from each other (`withinOneStep`; the founder's amendment of
+ * 2026-09-09. Until then they had to match exactly, and this note went on
+ * saying so until 2026-09-30).
  */
 export const RATIFICATION_MIN_PANEL = 4;
 
@@ -99,13 +102,14 @@ const byEditionVerb = (run: AssessmentRun): boolean => /^edition-v\d+$/.test(run
  * would let a draft clear by converging on its judges instead of on the evidence.
  *
  * The `edition` verb shows its drafter every check current on the ledger (src/pipeline/packet.ts, `panel`),
- * contested or not. What was in hand is decided by the clock first and the stamps second, so that a stamp can
- * add to the set and never take from it:
+ * contested or not. For a draft that verb wrote, what was in hand is decided by the clock first and the stamps
+ * second, so that a stamp can add to the set and never take from it:
  *
  * - a draft the edition verb wrote was shown every check then current, so every check not provably made after it
  *   is in hand, whatever its stamps say;
- * - a reconsideration from before the stamps (its promptVersion says so): every check not dated after it (a
- *   same-day check may have been in hand);
+ * - a reconsideration from before the stamps (its promptVersion says so, and it carries none): every check not
+ *   dated after it (a same-day check may have been in hand). One that carries `reconciles` is read by that stamp
+ *   alone, as the decision of 2026-08-26 set, so that a same-day check outside the stamp can vouch for it;
  * - and whatever `reconciles` (the checks a reconsideration answered) and `shownChecks` (the verb's list of what
  *   the packet carried, since 2026-09-30) name, on any draft.
  *
@@ -258,7 +262,8 @@ export function ratification(loaded: LoadedCase): Ratification | null {
         `${panel - agreeing} of ${panel} models place the case verdict more than one step away`,
       );
     if (contestedLB.length > 0)
-      parts.push(`the panel splits on load-bearing ${contestedLB.join(", ")}`);
+      // In a reader's words: "load-bearing" is the ledger's name for a claim the case rests on.
+      parts.push(`the panel splits on ${contestedLB.length === 1 ? "a claim" : "claims"} the case rests on (${contestedLB.join(", ")})`);
     return {
       ...base,
       contestedLoadBearing: contestedLB,
@@ -270,7 +275,7 @@ export function ratification(loaded: LoadedCase): Ratification | null {
   return {
     ...base,
     status: "ratified",
-    reason: `${agreeing} of ${panel} independent models concur with the case verdict within one step, and none splits on a load-bearing claim`,
+    reason: `${agreeing} of ${panel} independent models concur with the case verdict within one step, and none splits on a claim the case rests on`,
   };
 }
 

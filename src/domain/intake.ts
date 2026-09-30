@@ -136,7 +136,11 @@ export const RunRecordSchema = z.object({
   date: z.string().regex(DATE),
   model: z.string().nullable(),
   promptVersion: z.string().nullable(),
-  /** Hash of the packet sent, so unchanged inputs can rest. */
+  /**
+   * Hash of the packet sent, so unchanged inputs can rest. For a check (since 2026-09-30) it is the hash of the case
+   * file every seat is sent — the ledger's files as the verb concatenates them — and not the ledger hash the
+   * installed assessments carry under `basis`; null on every check run before that.
+   */
   inputHash: z.string().regex(/^[a-f0-9]{64}$/).nullable(),
   outcome: z.enum(["completed", "failed", "dry-run", "rested"]),
   cost: CostSchema,

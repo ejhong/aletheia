@@ -109,7 +109,7 @@ jobs:
           FORCE_VERB: ${{ github.event.inputs.verb }}
           DISPATCHER: ${{ github.actor }}
         run: |
-          # Cases with a sitting still open on an unmerged chain/* branch are not chosen again (scripts/busy-cases.mjs).
+          # Cases with a sitting still open in a pull request are not chosen again (scripts/busy-cases.mjs).
           busy=$(node scripts/busy-cases.mjs || true)
           [ -n "$busy" ] && echo "::notice::not choosing: $busy"
           args=(next --run --steps "${STEPS:-3}" --deadline-minutes 240 --max-cases 2 --out next.json --busy "$busy")

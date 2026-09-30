@@ -1,0 +1,157 @@
+runId: "2026-09-30-check-gemini"
+model: "Gemini 3.8 Flash (Google), independent check run"
+date: "2026-09-30"
+promptVersion: "check-v2"
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: contradicted
+  loadBearing:
+    - DEEP-C002
+    - DEEP-C012
+    - DEEP-C059
+    - DEEP-C072
+    - DEEP-C065
+    - DEEP-C035
+  weakestLinks:
+    - DEEP-C027
+    - DEEP-C005
+    - DEEP-C044
+    - DEEP-C053
+    - DEEP-C015
+  synthesis: >-
+    The featured hypothesis posits that striking visual and thematic resemblances across geographically and chronologically separated ancient cultures—specifically bird-headed figures, handled 'handbag' objects, 'navel of the world' toponyms, feathered serpents, civilising sages, and flood myths—are best explained by a shared prehistoric ancestral tradition or long-distance contact rather than independent convergence. When weighed strictly against the retrieved evidence ledger, this hypothesis is contradicted.
+
+    Methodologically, the foundational claims (DEEP-C002, DEEP-C035, DEEP-C065) establish that visual resemblance alone cannot identify historical contact, chronology, or cultural capabilities without independent stratigraphic and contextual validation. Where specific iconographic parallels are tested with primary empirical literature, the apparent continuity disintegrates into unrelated local phenomena. The supposed handled 'handbags' illustrate this failure: Göbekli Tepe Pillar 43 features box-like architectural or symbolic reliefs whose function remains formally undetermined by excavators (DEEP-C012, DEEP-E028); the Jiroft chlorite object is an isolated suspended item with handle wear (DEEP-C009, DEEP-E035); and the Neo-Assyrian banduddû is a well-documented ritual water bucket for apotropaic sprinkling (DEEP-C044, DEEP-E055). These objects are separated by thousands of kilometers and up to eight millennia, with the Göbekli excavation team explicitly documenting that missing intermediate links preclude establishing any historical transmission chain (DEEP-C072, DEEP-E061).
+
+    Similarly, the 'birdman' parallel collapses under physical analysis: the birdman bas-reliefs on Hoa Hakananai'a are demonstrably late additions incised long after the statue's primary manufacture, reflecting a localized historic Rapanui ritual complex rather than an ancient global archetype (DEEP-C059, DEEP-E068). Furthermore, physical constraints (DEEP-C047) provide a compelling convergent explanation for poses such as hands resting on the torso, which protect stone carvings from fracture.
+
+    In terms of sensitivity, the single evidence record whose removal would most weaken this case assessment is DEEP-E028 (the excavation team's formal declaration that the function of the Pillar 43 reliefs is uncertain). However, the verdict robustly survives without it: Schmidt's initial description (DEEP-E025), Dietrich's missing links statement (DEEP-E061), Pitts et al.'s relative stratigraphy of Hoa Hakananai'a (DEEP-E068), and the Assyrian ritual texts (DEEP-E055) independently refute the claim that these disparate motifs belong to a unified historical transmission.
+  steelman: >-
+    The striking, highly idiosyncratic compositional pairing on Göbekli Tepe Pillar 43—featuring three arched, handled box-like motifs positioned directly adjacent to a bird figure associated with a disc—reappears in visually analogous arrangements in Assyrian winged genies holding handled buckets beside discs and Mesoamerican stelae depicting seated figures with handled bags beside feathered serpents, presenting a multi-element structural configuration whose specific joint probability under purely independent functional convergence remains unquantified.
+claimAssessments:
+  - claimId: DEEP-C002
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Visual form is radically underdetermined; identical geometric or figurative forms frequently arise independently unless constrained by chronological alignment, geographic contact vectors, or material transmission chains. While no specific evidence record in the ledger was coded directly to this claim, the verdict leans on foundational methodological priors in archaeology and art history. The opposing view suggests that highly idiosyncratic or complex visual forms possess such low prior probability of spontaneous recurrence that resemblance alone constitutes prima facie evidence of historical contact.
+  - claimId: DEEP-C057
+    verdict: unresolved
+    confidence: low
+    reasoning: >-
+      The ledger contains no empirical evidence records reporting the numerical results or null-model comparisons for the co-occurrence of the three motifs; only qualifying records noting uneven catalogue coverage (DEEP-E018, DEEP-E019) are attached. Without the study's statistical output or comparison tables in hand, the claim cannot be evaluated. The opposing consideration is that the founder's summary text asserts the bundle does not stand out, but this raw finding has not been admitted into evidence.
+  - claimId: DEEP-C027
+    verdict: weakly_supported
+    confidence: low
+    reasoning: >-
+      The claim is supported solely by the author's self-reported narrative summaries in DEEP-E020 and DEEP-E021, which reproduce the exact 62.5% and 9% figures. However, the raw trial logs, prompt configurations, and data on incomplete runs have not been retrieved or independently audited. The opposing consideration is that unaudited self-reports from an unverified web source lack replication and independent verification.
+  - claimId: DEEP-C034
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: >-
+      Historiographical and folkloric priors strongly support narrative convergence via syncretism, editorial harmonization, and interpretive translation across cultures. Because the ledger lacks specific case-study evidence records documenting this textual mechanism, this assessment leans on general comparative literature priors. The opposing argument holds that oral traditions can preserve conservative core lineages with high fidelity over long spans, resisting artificial harmonization.
+  - claimId: DEEP-C035
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Formulating affirmative historical claims regarding a specific source society's chronology, technological capabilities, and location requires independent physical, textual, or stratigraphic evidence, which visual similarity cannot provide. This verdict leans on basic epistemological principles of historical inference, as no ledger evidence records directly evaluate the claim. The opposing view asserts that sufficiently dense clusters of shared complex motifs constitute composite signatures that imply a unique, sophisticated common ancestor.
+  - claimId: DEEP-C026
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Spatial distributions of broad thematic categories exhibit equifinality: widespread global presence can arise equally from universal human cognitive tendencies (convergence) or ancient dispersal from a common ancestral population. This verdict rests on methodological priors in phylogenetics and anthropology, as no empirical records are linked. Proponents of deep transmission argue that phylogeographic models and continuous spatial clines can sometimes statistically rule out independent invention.
+  - claimId: DEEP-C056
+    verdict: weakly_supported
+    confidence: low
+    reasoning: >-
+      Partial support is provided by the author's self-reports for bird-figures (55%, DEEP-E013) and cosmic serpents (37%, DEEP-E016), but sacred centres are unquantified in the evidence records, and DEEP-E018/DEEP-E019 note severe geographical sampling biases. The underlying catalogue data were not retrieved into the ledger. The opposing view is that without verified baseline data for sacred centres, the claim of ubiquity for all three motif classes remains incomplete.
+  - claimId: DEEP-C005
+    verdict: weakly_supported
+    confidence: low
+    reasoning: >-
+      The claim is textually supported by the author's self-report in DEEP-E013 and DEEP-E014, but qualified by DEEP-E015, DEEP-E018, and DEEP-E019 regarding category breadth and uneven regional coverage. The primary Berezkin and Duvakin catalogue dataset and the code executing the query were not retrieved. The opposing consideration is that the unaudited figure from an unverified web essay cannot confirm whether the coded data actually reproduce that proportion.
+  - claimId: DEEP-C025
+    verdict: weakly_supported
+    confidence: low
+    reasoning: >-
+      Supported verbatim by the author's narrative self-report in DEEP-E016, but qualified in DEEP-E017, DEEP-E018, and DEEP-E019 regarding the narrowness of the dataset and regional gaps. The raw data and analysis pipeline remain unretrieved. The strongest opposing consideration is that self-reported descriptive statistics from an unverified source do not satisfy the truth condition without an independent audit of the data.
+  - claimId: DEEP-C004
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: >-
+      Typologically, avian-human iconographic representations span distinct ontological categories, including zoomorphic deities, ritual dancers in costume, and shamanic theriomorphic transformation. This assessment leans on anthropological priors, as no evidence records in the ledger classify the specific compared images into these three categories. The opposing perspective is that disparate cultures might conceptualize these three outward forms as fluid manifestations of a single underlying mythological archetype.
+  - claimId: DEEP-C059
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Supported by the laser-scanning and photogrammetric analysis of Pitts et al. (DEEP-E068, DEEP-E069), which establishes a clear stratigraphic succession on the statue: initial quarrying and carving, followed by the incising of vulva petroglyphs (komari), and finally the bas-relief birdman composition. The opposing consideration is that only the article abstract is in hand, leaving the detailed physical arguments and absolute dating in the unread body text.
+  - claimId: DEEP-C065
+    verdict: established
+    confidence: high
+    reasoning: >-
+      In material culture analysis, morphological resemblance does not imply functional equivalence; identical geometric shapes frequently serve entirely disparate utilitarian or symbolic purposes across different cultures and periods. This verdict rests on basic archaeological and design priors, though unlinked to specific evidence records. The opposing consideration is that complex, idiosyncratic functional designs constrain morphology to the extent that form can occasionally serve as a strong proxy for function.
+  - claimId: DEEP-C044
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: >-
+      DEEP-E055 provides evidence from Wiggermann's study (via Gutierrez's transcription) showing the banduddû was filled with sacred river water and used by exorcists to sprinkle and purify patients in apotropaic rituals. However, the evidence is drawn from a personal blog transcription with garbled transliterations, and the purifier (cone/mullilu) is unmentioned in the extracted text. The opposing consideration is the secondhand, unverified nature of the blog source.
+  - claimId: DEEP-C012
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      DEEP-E028 confirms from the excavation team's publication that a definitive decision on the meaning of these arched forms is not possible, noting that interpretations range from buildings to containers. Furthermore, Schmidt's initial report (DEEP-E025) describes them purely morphologically as "box-like objects with handle-like attachments" without functional attribution. The opposing consideration is that the team source is an informal blog post rather than a final site monograph.
+  - claimId: DEEP-C009
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      DEEP-E035 confirms that Vidale and Micheli's microscopic wear-trace study concludes the object was suspended for an extended period on a cord, fulfilling the specific truth condition of the claim. However, DEEP-E038 explicitly records the authors' caveat that this inference is based on a single object and remains ungranted as a general rule. The strongest opposing consideration is that the analysis is based on an isolated specimen and retrieved only at abstract level.
+  - claimId: DEEP-C072
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Supported directly by DEEP-E061 and DEEP-E062, where excavator Oliver Dietrich explicitly states that there are "far to many 'missing links'" to confirm the survival of Early Neolithic imagery into later periods or trace shifts in symbolic meaning. The opposing consideration is that this statement was made in an informal comment reply on a research blog rather than in a peer-reviewed journal article.
+  - claimId: DEEP-C018
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: >-
+      Historiographical priors indicate profound category differences: the Greek omphalos is attested in antiquity, Garcilaso's gloss of Cusco is a post-conquest 1609 text, Te Pito o te Henua is recorded in 19th-century Polynesian ethnography, and Göbekli Tepe is a 20th-century Turkish cadastral toponym unknown to Neolithic builders. While specific primary textual records have not yet been retrieved into the ledger, the claim is provisionally supported by standard historical sources. The opposing view is that all four reflect an invariant, cross-cultural sacred-centre cosmological archetype.
+  - claimId: DEEP-C015
+    verdict: unresolved
+    confidence: low
+    reasoning: >-
+      The ledger contains no toponymic or ethnographic evidence records documenting the etymology or usage history of the modern Turkish name Göbekli Tepe. DEEP-E024 was extracted for Kurdish names and was explicitly judged irrelevant to C015 by the reader audit. The opposing consideration is that regional folklore or shrine veneration at the summit could indicate a sacred origin rather than purely physical topography, which cannot be evaluated without primary linguistic sources.
+  - claimId: DEEP-C047
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Sculptural and structural mechanics dictate that carving limbs in bas-relief against a solid stone torso minimizes tensile stress and dramatically reduces the risk of limb breakage during quarrying, carving, and transport. This verdict relies on general engineering and sculptural priors, as no specific experimental evidence records are in the ledger. The opposing argument is that the hands-on-belly gesture appears in media without structural constraints (such as pottery, painting, or shell), suggesting a symbolic rather than mechanical origin.
+  - claimId: DEEP-C053
+    verdict: unresolved
+    confidence: low
+    reasoning: >-
+      While Berossus fragment F1 (DEEP-E075) describes Oannes as a creature with a fish body covering a human head and feet, reader audits explicitly downgraded DEEP-E075 and DEEP-E076 to context because the text itself makes no mention of apkallu sages or ritual iconography. The identification of Oannes with U-An (DEEP-E079) notes an apkallu list, but contains no visual description linking him to the fish-cloaked sage imagery. The opposing view is the standard Assyriological consensus equating Oannes with the first pre-flood apkallu depicted in fish cloaks.
+  - claimId: DEEP-C028
+    verdict: unresolved
+    confidence: low
+    reasoning: >-
+      The ledger contains zero evidence records evaluating pre-modern Andean ethnohistory, Inka chronicles, or Tiwanaku iconography. Without primary Spanish colonial chronicles or archaeological historiography in the ledger, the claim cannot be tested. The opposing argument suggests that early colonial chroniclers may have recorded indigenous oral traditions associating the Tiwanaku staff deity directly with the creator Viracocha.
+  - claimId: DEEP-C031
+    verdict: unresolved
+    confidence: low
+    reasoning: >-
+      No evidence records documenting the 263 flood-story summaries, the coding matrix, or the clustering algorithm have been ingested into the ledger. The truth condition specifically demands verification of the pilot's coded data. The opposing consideration is that the founder's narrative asserts regional clustering, but unverified text cannot substitute for missing trial data.
+  - claimId: DEEP-C054
+    verdict: unresolved
+    confidence: low
+    reasoning: >-
+      The ledger contains no evidence records presenting the data, frequency distributions, or statistical tests from the flood-story coding pilot. The truth condition requires empirical replication from the pilot data. The opposing consideration is that the author's summary asserts an uneven distribution, but the supporting dataset has not been retrieved.
+  - claimId: DEEP-C038
+    verdict: weakly_supported
+    confidence: low
+    reasoning: >-
+      DEEP-E022 provides weak textual support by quoting the founder's pilot summary, which reports that matching the kinds of objects changed the lineup ranking. However, the pilot datasets, image sets, rater scores, and comparative lineup rankings were never retrieved. The opposing consideration is that self-reported pilot observations from an unverified web source do not constitute robust verification of an image-matching experiment.
+  - claimId: DEEP-C037
+    verdict: unresolved
+    confidence: low
+    reasoning: >-
+      There are no evidence records in the ledger supporting this claim; reader audits on DEEP-E022 explicitly noted that the record contained no data regarding inter-judge agreement statistics and did not support C037. In the absence of inter-rater reliability scores or rater logs, the claim is unevidenced. The opposing argument is that the founder's text mentions judge disagreement, but that text has not been admitted as verified evidence for this claim.

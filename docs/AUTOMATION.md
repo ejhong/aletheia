@@ -233,9 +233,11 @@ The reassessment of 2026-09-09 that stood here is in git.
   whatever they prefer, with the preference on its record (2026-09-30).
 - **Agreement must be independent.** The checks a judgment was written
   with in hand cannot vouch for it, whether or not the case was contested:
-  the standing waits for a blind check made after the judgment. A stamp can
-  add to what the judgment is known to have seen and never take from it
-  (2026-09-30).
+  the standing waits for a blind check made after the judgment. On a
+  judgment the edition verb wrote, a stamp can add to what it is known to
+  have seen and never take from it (2026-09-30). A reconsideration from
+  before that verb which carries `reconciles` is read by that stamp alone,
+  as the decision of 2026-08-26 set.
 - **A panel is stale when it cannot speak, not when one seat is missing.**
   The scheduler asks for a check when fewer seats have judged the case as
   it stands than ratification requires (four), or when the adopted

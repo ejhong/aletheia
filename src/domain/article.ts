@@ -176,6 +176,25 @@ export function markerErrors(markdown: string): string[] {
   return out;
 }
 
+/** A claim span complete but for its last character: [words]{claim=GEO-C001] — the bracket where the brace belongs. */
+const CLAIM_REF_MISCLOSED = /(\[[^\]]+\]\{claim=([A-Z]+-C\d{3}))\]/g;
+
+/**
+ * Close the claim spans a drafter closed with "]" for "}". The opening bracket, the words, the brace and a
+ * well-formed id are all there and only the last character is wrong, so there is one thing the span can mean; no
+ * other malformed marker is touched. Returns the ids of the spans closed, in order, so the caller can say what it
+ * did: the edition verb writes them into the rationale and the run's record (2026-09-30: six of eight runs sent a
+ * whole candidate back to the drafter for this one character and nothing else, at $0.78 to $1.15 a time).
+ */
+export function closeClaimSpans(markdown: string): { markdown: string; closed: string[] } {
+  const closed: string[] = [];
+  const out = markdown.replace(CLAIM_REF_MISCLOSED, (_m, head: string, id: string) => {
+    closed.push(id);
+    return `${head}}`;
+  });
+  return { markdown: out, closed };
+}
+
 /** The article as the page shows it to a reader, as plain text: a claim span is its words, a plate is a picture, headings stay. */
 export function plainArticle(markdown: string): string {
   return markdown

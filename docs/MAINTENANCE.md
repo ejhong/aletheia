@@ -178,7 +178,11 @@ it:
 - **`edition` repairs once.** A candidate that fails the loader's mechanical
   rules goes back to the drafter with the findings, once; the second answer
   is validated the same way. `errors.md` and `reply-repaired.json` in the
-  run directory show what happened.
+  run directory show what happened. One slip is not sent back: a claim span
+  closed with `]` where the brace belongs is closed by the verb, which
+  changes that character and nothing else and says so in the edition's
+  rationale, the run's note and `corrections.md`; the drafter's reply stays
+  in the run directory as it was sent.
 - **Retrieval reads PDFs and falls back to open access.** The drafter and
   verifier read PDFs page by page (`[p. N]` markers, so locators carry the
   page) and, when a URL will not serve — a login wall, a bot challenge

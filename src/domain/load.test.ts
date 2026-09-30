@@ -7,7 +7,7 @@ import {
   parseInlines,
 } from "./article.ts";
 import { adoptedAssessment, caseQuestion, currentEdition, latestAssessment } from "./editions.ts";
-import { checksStale, crossModelSummary, RATIFICATION_MIN_PANEL, ratification, runStaleness, survivingObjections, latestCheckPerModel, displayAssessment, withinOneStep } from "./standing.ts";
+import { checksStale, crossModelSummary, RATIFICATION_MIN_PANEL, ratification, runStaleness, seatsOwed, survivingObjections, latestCheckPerModel, displayAssessment, withinOneStep } from "./standing.ts";
 import { claimAnchorErrors, editionErrors, getCaseBySlug, liveClaims, loadAllCases, loadSiteImages, sourceAdmissionErrors, checkIntegrity } from "./load.ts";
 import { historyNewestFirst, lastContentUpdate, recentChanges } from "./history.ts";
 import { assessmentHash, canonicalJson, ledgerHash, sha256Hex } from "./hash.ts";
@@ -1051,6 +1051,35 @@ describe("ratification governance (stage 3)", () => {
     const legacy = caseWith([mkDraft("d", "2026-01-01"), ...fiveChecks("unresolved")], [{ date: "2026-03-01" }]);
     expect(runStaleness(legacy, legacy.assessmentRuns[1])).toBe("2026-03-01");
     expect(checksStale(legacy)).toBe(true);
+  });
+
+  it("a panel that can speak is not stale for want of one seat, and the seats owed are the ones that have not judged this ledger", () => {
+    const withHash = (m: string, ledger = "ledger-a") => ({ ...mkCheck(m, "2026-02-01"), basis: { ledgerHash: sha256Hex(ledger) } });
+    const roster = ["a", "b", "c", "d", "e"].map((m) => `vendor-${m}`);
+    // Four seats judged the ledger as it stands; the fifth holds only a check of an older one (2026-09-28: it failed).
+    const four = caseWith([mkDraft("d", "2026-01-01"), ...["a", "b", "c", "d"].map((m) => withHash(m)), withHash("e", "ledger-old")]);
+    expect(ratification(four)).toMatchObject({ status: "ratified", panel: 4 });
+    expect(checksStale(four)).toBe(false);
+    expect(seatsOwed(four, roster)).toEqual(["vendor-e"]);
+    // Three are too few to speak: the panel is stale, and the two that have not judged are owed.
+    const three = caseWith([mkDraft("d", "2026-01-01"), ...["a", "b", "c"].map((m) => withHash(m)), withHash("d", "ledger-old"), withHash("e", "ledger-old")]);
+    expect(ratification(three)?.status).toBe("unratified");
+    expect(checksStale(three)).toBe(true);
+    expect(seatsOwed(three, roster)).toEqual(["vendor-d", "vendor-e"]);
+    // Every seat current: nothing owed, so a second check of the same ledger asks no one.
+    const five = caseWith([mkDraft("d", "2026-01-01"), ...roster.map((_, i) => withHash("abcde"[i]))]);
+    expect(checksStale(five)).toBe(false);
+    expect(seatsOwed(five, roster)).toEqual([]);
+    // A reconsideration is owed a fresh check from every seat whose current check it answered.
+    const checks = ["a", "b", "c", "d", "e"].map((m) => withHash(m));
+    const recon = { ...mkDraft("r", "2026-02-02"), reconciles: checks.slice(0, 4).map((c) => c.runId) };
+    const answered = caseWith([recon, ...checks], [], "r");
+    expect(checksStale(answered)).toBe(false); // one check it never saw has judged the case
+    expect(seatsOwed(answered, roster)).toEqual(["vendor-a", "vendor-b", "vendor-c", "vendor-d"]);
+    const unvouched = caseWith([{ ...recon, reconciles: checks.map((c) => c.runId) }, ...checks], [], "r");
+    expect(ratification(unvouched)?.status).toBe("unratified");
+    expect(checksStale(unvouched)).toBe(true);
+    expect(seatsOwed(unvouched, roster)).toEqual(roster);
   });
 
   it("every live case derives a valid standing; checked cases have a full panel", () => {

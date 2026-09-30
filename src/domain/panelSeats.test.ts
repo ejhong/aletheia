@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { VENDORS, buildRequest } from "../lib/vendors.mjs";
+import { VENDORS, buildRequest, callVendorDetailed } from "../lib/vendors.mjs";
 import { seatKey } from "../lib/seat-key.mjs";
 
 /**
@@ -13,7 +13,10 @@ import { seatKey } from "../lib/seat-key.mjs";
 
 const SEATS = ["anthropic", "openai", "gemini", "xai", "venice"] as const;
 
-afterEach(() => vi.unstubAllEnvs());
+afterEach(() => {
+  vi.unstubAllEnvs();
+  vi.unstubAllGlobals();
+});
 
 describe("panel seat table", () => {
   it("has exactly five seats with distinct vendors, tags, and models, each with pinned effort", () => {
@@ -52,6 +55,37 @@ describe("per-seat request shape", () => {
     expect(r.body.output_config).toEqual({ effort: VENDORS.anthropic.effort });
     expect(r.body.max_tokens).toBe(32000);
     expect(buildRequest("anthropic", { ...prompt, maxTokens: 64000 }).body.max_tokens).toBe(64000);
+  });
+
+  it("Anthropic streams, and only how the reply travels changes: a seat that thinks past five minutes is still heard", async () => {
+    vi.stubEnv("ANTHROPIC_API_KEY", "k");
+    vi.stubEnv("OPENAI_API_KEY", "k");
+    expect(buildRequest("anthropic", prompt).body.stream).toBe(true);
+    expect(buildRequest("openai", prompt).body).not.toHaveProperty("stream");
+    // The streamed shape of a Messages reply: a thinking block, then the text in two deltas, usage completed at the end.
+    const ev = (type: string, body: object) => `event: ${type}\ndata: ${JSON.stringify({ type, ...body })}\n\n`;
+    const sse =
+      ev("message_start", { message: { id: "msg_1", model: VENDORS.anthropic.model, stop_reason: null, content: [], usage: { input_tokens: 900, output_tokens: 1, cache_read_input_tokens: 100, cache_creation_input_tokens: 50 } } }) +
+      ev("content_block_start", { index: 0, content_block: { type: "thinking", thinking: "" } }) +
+      ev("content_block_delta", { index: 0, delta: { type: "thinking_delta", thinking: "weighing" } }) +
+      ev("content_block_stop", { index: 0 }) +
+      ev("ping", {}) +
+      ev("content_block_start", { index: 1, content_block: { type: "text", text: "" } }) +
+      ev("content_block_delta", { index: 1, delta: { type: "text_delta", text: "vote: " } }) +
+      ev("content_block_delta", { index: 1, delta: { type: "text_delta", text: "complies" } }) +
+      ev("content_block_stop", { index: 1 }) +
+      ev("message_delta", { delta: { stop_reason: "end_turn" }, usage: { output_tokens: 420 } }) +
+      ev("message_stop", {});
+    const sent: { body?: string }[] = [];
+    vi.stubGlobal("fetch", vi.fn(async (_url: string, init: { body?: string }) => (sent.push(init), new Response(sse, { status: 200, headers: { "content-type": "text/event-stream" } }))));
+    const r = await callVendorDetailed("anthropic", prompt);
+    expect(JSON.parse(sent[0].body!).stream).toBe(true);
+    expect(r.text).toBe("vote: complies"); // the thinking is not the reply
+    expect(r.usage).toEqual({ inputTokens: 900, outputTokens: 420, cacheReadTokens: 100, cacheWriteTokens: 50 });
+    expect(r.model).toBe(VENDORS.anthropic.model);
+    // A stream cut before message_stop is a failed seat, never half an opinion.
+    vi.stubGlobal("fetch", vi.fn(async () => new Response(sse.slice(0, sse.indexOf("event: message_delta")), { status: 200 })));
+    await expect(callVendorDetailed("anthropic", prompt)).rejects.toThrow(/anthropic: anthropic stream ended before message_stop/);
   });
 
   it("Gemini: thinkingConfig.thinkingLevel inside generationConfig", () => {

@@ -44,6 +44,7 @@ concurrency:
 permissions:
   contents: write
   pull-requests: write
+  issues: write   # a sitting that fails says so in an issue (the last step); without it a stalled loop is silent
 jobs:
   chain:
     runs-on: ubuntu-latest
@@ -62,6 +63,7 @@ jobs:
           cache: npm
       - run: npm ci
       - name: Refuse to run while paused
+        id: state
         run: |
           state=$(node -e 'const y=require("yaml");console.log(y.parse(require("fs").readFileSync("governance/operation.yaml","utf8")).state)')
           if [ "$state" != "live" ] && [ "${{ github.event.inputs.even_if_paused }}" != "true" ]; then
@@ -69,6 +71,20 @@ jobs:
             exit 78
           fi
           [ "$state" != "live" ] && echo "::notice::running while paused, on the founder's dispatch (even_if_paused=true)" || true
+      - name: The token that opens the PR works
+        id: token
+        # Asked before any model is paid. A sitting whose PR cannot be opened leaves its records on a branch
+        # nobody is shown (2026-09-28: the token had expired; the sitting spent, pushed, and failed at the last
+        # step). An expired or revoked token answers 401 here and the sitting does not start.
+        env:
+          GH_TOKEN: ${{ secrets.MAINTENANCE_PAT }}
+        run: |
+          if ! gh api "repos/${GITHUB_REPOSITORY}" --jq .full_name >/dev/null 2>token-error.txt; then
+            echo "::error::MAINTENANCE_PAT cannot read this repository: $(head -c 300 token-error.txt | tr '\n' ' ') — the sitting does not start; the founder rotates the secret (docs/MAINTENANCE.md, Setup)"
+            rm -f token-error.txt
+            exit 1
+          fi
+          rm -f token-error.txt
       - name: Harvest the Arbiter's verdicts for the panel page
         # Settled PRs' verdicts, copied from their sticky comments into governance/arbiter/ (the Maintain workflow's job until 2026-09-09).
         env:
@@ -108,7 +124,9 @@ jobs:
       # timed-out job: what the sitting wrote is committed and judged, and the spend rows
       # reach the ledger. Money spent is recorded, whatever became of the run.
       - name: Open the PR the panel judges
-        if: always()
+        id: pr
+        # Not when the token check failed: nothing ran, and the PR could not be opened.
+        if: always() && steps.token.outcome == 'success'
         env:
           GH_TOKEN: ${{ secrets.MAINTENANCE_PAT }}
           CHAIN_STEP_OUTCOME: ${{ steps.chain.outcome }}
@@ -137,7 +155,7 @@ jobs:
           if [ "$account" = "none" ]; then
             summary="interrupted — chain step ${CHAIN_STEP_OUTCOME}, no complete account of the sitting; the run log is the record"
           else
-            summary="$(node -e 'const j=JSON.parse(require("fs").readFileSync("next.json","utf8"));const all=[j,...(j.more||[])];const cut=j.stopped?(j.stopped.reason==="cases"?" (stopped at its case limit after "+j.stopped.stepsMade+" choices)":" (stopped at its deadline after "+j.stopped.afterMinutes+" min)"):(process.env.CHAIN_STEP_OUTCOME!=="success"?" (interrupted during a later step: chain step "+process.env.CHAIN_STEP_OUTCOME+"; the account is what completed)":"");console.log(all.map(o=>o.choice.case+" — "+o.ran.map(s=>s.verb+":"+s.outcome.outcome).join(", ")).join("; ")+cut)')"
+            summary="$(node -e 'const j=JSON.parse(require("fs").readFileSync("next.json","utf8"));const all=[j,...(j.more||[])];const cut=j.stopped?(j.stopped.reason==="cases"?" (stopped at its case limit after "+j.stopped.stepsMade+" choices)":j.stopped.reason==="repeat"?" (stopped after "+j.stopped.stepsMade+" choice(s): the ledger asked again for "+j.stopped.repeated+")":" (stopped at its deadline after "+j.stopped.afterMinutes+" min)"):(process.env.CHAIN_STEP_OUTCOME!=="success"?" (interrupted during a later step: chain step "+process.env.CHAIN_STEP_OUTCOME+"; the account is what completed)":"");console.log(all.map(o=>o.choice.case+" — "+o.ran.map(s=>s.verb+":"+s.outcome.outcome).join(", ")).join("; ")+cut)')"
           fi
           git commit -m "Chain ${date}: ${summary}"
           git push -u origin "$branch"
@@ -151,3 +169,16 @@ jobs:
           [ "$account" = "none" ] && title="Chain: ${date} (interrupted — no account of the sitting)"
           [ "$account" = "partial" ] && title="Chain: ${date} (interrupted during a later step — partial account)"
           gh pr create --title "$title" --body "$body" --label "$( [ "$risk" = "low-risk" ] && echo auto:low-risk || echo needs-approval )"
+      # A sitting that fails is said, where the founder will see it. One open issue at a time: a failure while
+      # one is open is a comment on it, so a loop that fails every week does not bury its own notice. Opened with
+      # the workflow's own token — GitHub sends no notification for what a person's own token does.
+      - name: Say so when the sitting failed
+        # A paused loop that declines to run has not failed: the kill switch is the founder's, and he knows.
+        if: failure() && steps.state.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          TOKEN_STEP: ${{ steps.token.outcome }}
+          CHAIN_STEP: ${{ steps.chain.outcome }}
+          PR_STEP: ${{ steps.pr.outcome }}
+        run: node scripts/report-failed-sitting.mjs

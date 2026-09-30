@@ -10,14 +10,16 @@
  *  1. Finish what is half done: a completed report with no draft after it,
  *     a completed draft with no verification after it.
  *  2. An edition the ledger owes — the ledger moved under the incumbent.
- *  3. A blind check where the panel is stale — no seat has judged the case
- *     as it stands. After the edition, so the panel judges what will be
- *     displayed.
+ *  3. A blind check where the panel is stale — too few seats have judged
+ *     the case as it stands for it to ratify or contest anything. After the
+ *     edition, so the panel judges what will be displayed.
  *  4. A report for the case least recently reported, on a cadence that
  *     doubles after each cycle that lands nothing; the seats alternate on a
  *     quiet case.
  *  5. A reconsideration where the panel contests an assessment nothing has
  *     answered — after the search, so new evidence gets its chance first.
+ *  5b. A panel short of a seat — it can speak, but a seat failed or is new —
+ *     is completed when nothing else is owed.
  *  6. Nothing: everything rests.
  */
 import fs from "node:fs";
@@ -26,9 +28,10 @@ import { parse as parseYaml } from "yaml";
 import { saturation, type RunRecord, latestByKey } from "./intake.ts";
 import { blockedLeads, LEADS_MIN } from "./leads.ts";
 import { adoptedAssessment, currentEdition } from "./editions.ts";
-import { checksStale, currentChecks, latestCheckPerModel, ratification } from "./standing.ts";
+import { checksStale, currentChecks, latestCheckPerModel, ratification, seatsOwed, RATIFICATION_MIN_PANEL } from "./standing.ts";
 import type { LoadedCase } from "./schema.ts";
 import { MODELS } from "../lib/models.mjs";
+import { seatKey } from "../lib/seat-key.mjs";
 import { readProposal, runDir } from "./runs.ts";
 
 export type ResearchSeat = "openai" | "anthropic";
@@ -182,9 +185,17 @@ export function nextAction(allCases: LoadedCase[], runs: RunRecord[], today: str
     const due = editionDue(c);
     if (due?.kind === "moved") return { case: c.record.slug, verb: "edition", reason: due.reason };
   }
-  // 3. A stale panel.
+  // 3. A stale panel: too few seats have judged the case as it stands for the panel to speak.
   for (const c of cases) {
-    if (checksStale(c)) return { case: c.record.slug, verb: "check", reason: "no seat has judged the case as it stands" };
+    if (!checksStale(c)) continue;
+    const n = currentChecks(c, latestCheckPerModel(c)).length;
+    const reason =
+      n === 0
+        ? "no seat has judged the case as it stands"
+        : n < RATIFICATION_MIN_PANEL
+          ? `only ${n} seat(s) have judged the case as it stands (${RATIFICATION_MIN_PANEL} are needed for the panel to speak)`
+          : "the adopted assessment is a reconsideration no fresh blind check has judged";
+    return { case: c.record.slug, verb: "check", reason };
   }
   // 3b. Records blocked at verification — never entered, their proposal still holding them — are proposed again
   // (src/pipeline/resubmit.ts) before any new search: what a pass already found and could not read comes first,
@@ -230,7 +241,29 @@ export function nextAction(allCases: LoadedCase[], runs: RunRecord[], today: str
     }
     return null;
   };
-  if (candidates.length === 0) return reconsideration() ?? { case: null, verb: "rest", reason: `every case is within its cadence (${CADENCE_DAYS} days, doubling after each pass that lands nothing, up to ${MAX_CADENCE_DAYS}) and no panel dissent is unanswered` };
+  // 5b. A panel that can speak but is short of a seat (a seat failed, or joined the roster) is completed when nothing
+  // else is owed, and not more often than the cadence, which doubles after each check that installs nothing — a seat
+  // that is down does not come back by being asked every week.
+  const roster = Object.values(MODELS.panel).map((seat) => seatKey(seat.label));
+  const panelShort = (): NextChoice | null => {
+    for (const c of cases) {
+      if (!adoptedAssessment(c)) continue;
+      const owed = seatsOwed(c, roster);
+      if (!owed.length) continue;
+      const checks = byCase(c.record.slug).filter((r) => r.verb === "check" && (r.outcome === "completed" || r.outcome === "failed"));
+      const last = checks.at(-1);
+      let empties = 0;
+      for (const r of [...checks].reverse()) {
+        if (r.outcome === "failed") empties++;
+        else break;
+      }
+      const due = Math.min(CADENCE_DAYS * 2 ** empties, MAX_CADENCE_DAYS);
+      if (last && ageDays(last.date, today) < due) continue;
+      return { case: c.record.slug, verb: "check", reason: `${owed.length} seat(s) of the panel have not judged the case as it stands (${owed.join(", ")}); nothing else is owed, so the panel is completed` };
+    }
+    return null;
+  };
+  if (candidates.length === 0) return reconsideration() ?? panelShort() ?? { case: null, verb: "rest", reason: `every case is within its cadence (${CADENCE_DAYS} days, doubling after each pass that lands nothing, up to ${MAX_CADENCE_DAYS}) and no panel dissent is unanswered` };
   const fresh = candidates.filter(({ sat }) => sat.consecutiveEmpty < SATURATED_AFTER);
   const pool = fresh.length ? fresh : candidates;
   pool.sort((a, b) => (a.last?.date ?? "").localeCompare(b.last?.date ?? ""));

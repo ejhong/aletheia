@@ -1,12 +1,13 @@
 import fs from "node:fs";
 import path from "node:path";
-import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
+import { stringify as stringifyYaml } from "yaml";
 import { currentEdition } from "../domain/editions.ts";
 import { findCase } from "../domain/load.ts";
 import { AssessmentRunSchema, type AssessmentRun, type LoadedCase } from "../domain/schema.ts";
 import { seatsOwed } from "../domain/standing.ts";
 import { overlayRunId } from "../lib/overlay-ids.mjs";
 import { seatKey } from "../lib/seat-key.mjs";
+import { parseYamlReply } from "../lib/yaml-reply.mjs";
 import { loadProtocol, renderProtocol } from "./protocols.ts";
 import { closeRun, openRun, writeWorkingFile, type RunOutcome } from "./store.ts";
 import { callSeat, seatAvailable, VENDORS, type Reply } from "./transport.ts";
@@ -46,25 +47,8 @@ export function blindPacket(loaded: LoadedCase, root = process.cwd()): string {
   return LEDGER_FILES.map((f) => `===== FILE: ${f} =====\n${fs.readFileSync(path.join(dir, f), "utf8")}`).join("\n\n");
 }
 
-/** A reply's YAML, with a code fence and up to five trailing non-YAML lines (vendor footers) tolerated. */
-export function parseYamlReply(text: string): unknown {
-  let t = text.trim();
-  if (t.startsWith("```")) {
-    t = t.split("\n").slice(1).join("\n");
-    const fence = t.lastIndexOf("```");
-    if (fence >= 0) t = t.slice(0, fence);
-  }
-  const lines = t.trim().split("\n");
-  let lastErr: unknown;
-  for (let drop = 0; drop <= Math.min(5, lines.length - 1); drop++) {
-    try {
-      return parseYaml(lines.slice(0, lines.length - drop).join("\n"));
-    } catch (err) {
-      lastErr = err;
-    }
-  }
-  throw lastErr;
-}
+/** A reply's YAML, with a code fence and up to five trailing non-YAML lines (vendor footers) tolerated (src/lib/yaml-reply.mjs). */
+export { parseYamlReply };
 
 export interface Validated {
   run: AssessmentRun | null;

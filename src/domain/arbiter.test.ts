@@ -16,6 +16,10 @@ import {
   runAccount,
   RUN_RECORD,
   SEAT_REPLY,
+  EDITION_REPLY,
+  editionReplyDifferences,
+  firstReplyOwn,
+  FIRST_REPLY_SHOWN_CHARS,
   rateLimitGate,
   splitMergeLanes,
   tallyVerdict,
@@ -650,6 +654,168 @@ describe("a seat's raw reply, compared with what was installed from it", () => {
     ]);
     // With the file readable, the note keeps its size: a seat sees how much it is not being shown.
     expect(omittedNotes([f], [], () => "a: 1\nb: 2\n", { [f]: a1 })[0]).toBe(`${f} — a seat's raw reply (3 lines, 10 chars): the RUN ACCOUNT's section for its run compared it with ${a1} and found that file to carry it whole, on the terms stated there`);
+  });
+});
+
+describe("an edition run's replies, compared with what the run installed", () => {
+  /**
+   * The edition verb copies the drafter's reply into an edition and an assessment. The panel cannot read two
+   * fifty-thousand-character replies per run as well; so the account compares them, and the comparison must not be
+   * able to call a reply "carried" that says something the installed files do not. The tests are about that.
+   */
+  const yaml = (o: unknown) => JSON.stringify(o); // JSON is YAML
+  const runId = "2026-09-30-edition-x-093543";
+  const dir = `proposals/${runId}`;
+  const editionPath = "content/cases/x/editions/edition-2026-09-30-094541.yaml";
+  const draftPath = "content/cases/x/assessments/2026-09-30-edition-094541.yaml";
+  const article = "The opening paragraph, with [a claim]{claim=X-C001}.\n\nA second paragraph.\n\nA third, with [another]{claim=X-C002}.";
+  const assessment = {
+    verdict: "unresolved",
+    whatIsClaimed: "That the thing happened.",
+    whereDisagreementLives: "Over whether it did.",
+    whatWouldSettleIt: "A test.",
+    bestConventionalExplanation: "It did not.",
+    components: [{ label: "The thing happened", state: "unresolved", note: null }],
+    researchPriority: { level: "medium", reason: "The test is cheap." },
+    loadBearing: ["X-C001"],
+    weakestLinks: ["X-C002"],
+    synthesis: "The case is open.",
+    steelman: "The strongest argument the judgment does not answer.",
+    claimAssessments: [
+      { claimId: "X-C001", verdict: "unresolved", confidence: "low", reasoning: "No record.", treatment: { plainLanguage: "It happened.", importance: "high" } },
+      { claimId: "X-C002", verdict: "mixed", confidence: "low", reasoning: "One record each way.", treatment: { plainLanguage: "It was seen.", importance: "medium" } },
+    ],
+  };
+  const reply = { rationale: "  The judgment is restated.  ", question: null, accounts: [], featuredClaimIds: ["X-C001", "X-C002"], cruxOrder: ["X-R001"], article, researchStatus: [], assessment };
+  // What the verb installs from that reply (src/pipeline/edition.ts, assembleEdition).
+  const edition = {
+    runId: "edition-2026-09-30-094541",
+    producedBy: runId,
+    date: "2026-09-30",
+    model: "m",
+    promptVersion: "edition-v14",
+    rationale: "The judgment is restated.\n\nMeasured by the verb: article 100 → 90 words, without markup; accounts 2 (incumbent 2).",
+    previous: "edition-2026-09-19-052132",
+    assessment: { runId: "2026-09-30-edition-094541", hash: "0".repeat(64) },
+    featuredClaimIds: ["X-C001", "X-C002"],
+    cruxOrder: ["X-R001"],
+    question: "Did the thing happen?",
+    accounts: ["It happened", "It did not"],
+    article,
+  };
+  const draft = {
+    runId: "2026-09-30-edition-094541",
+    producedBy: runId,
+    model: "m",
+    date: "2026-09-30",
+    promptVersion: "edition-v14",
+    humanReviewed: false,
+    role: "draft",
+    basis: { ledgerHash: "0".repeat(64) },
+    shownChecks: [],
+    caseAssessment: { ...Object.fromEntries(Object.entries(assessment).filter(([k]) => k !== "claimAssessments")), components: [{ label: "The thing happened", state: "unresolved" }] },
+    claimAssessments: assessment.claimAssessments,
+  };
+
+  it("finds a reply carried when every field is the field it became, the verb's own additions apart", () => {
+    expect(editionReplyDifferences(reply, edition, draft)).toEqual({ differences: [], closedSpans: 0 });
+    // The one character the verb changes: a span closed with a bracket in the reply is the edition's span closed with a brace.
+    const slipped = { ...reply, article: article.replace("{claim=X-C001}", "{claim=X-C001]") };
+    expect(editionReplyDifferences(slipped, edition, draft)).toEqual({ differences: [], closedSpans: 1 });
+    // A reply that keeps the incumbent's assessment, and a run that installed none.
+    expect(editionReplyDifferences({ ...reply, assessment: null }, edition, null).differences).toEqual([]);
+    // A question and accounts the reply gives are the edition's; given as null and empty, the incumbent's stand.
+    expect(editionReplyDifferences({ ...reply, question: " Did the thing happen? ", accounts: ["It happened ", "It did not"] }, edition, draft).differences).toEqual([]);
+  });
+
+  it("names every way a reply can say something the installed files do not", () => {
+    const d = (r: unknown, e: unknown = edition, a: unknown = draft) => editionReplyDifferences(r, e, a).differences;
+    expect(d({ ...reply, article: `${article}\n\nA paragraph the edition does not have.` })).toEqual(["article: the reply's article is not the edition's"]);
+    // Any other change to a span than the closing bracket is a difference.
+    expect(d({ ...reply, article: article.replace("{claim=X-C001}", "{claim=X-C009}") })).toEqual(["article: the reply's article is not the edition's"]);
+    expect(d({ ...reply, rationale: "Another rationale." })).toEqual(["rationale: the edition's rationale is not the reply's followed by the verb's measurements"]);
+    // The verb's paragraph must follow the reply's own text directly: a rationale with words slipped in between is not the reply's.
+    expect(d(reply, { ...edition, rationale: "The judgment is restated. And more.\n\nMeasured by the verb: article 100 → 90 words." })).toHaveLength(1);
+    expect(d({ ...reply, featuredClaimIds: ["X-C001"] })[0]).toMatch(/^featuredClaimIds: /);
+    expect(d({ ...reply, question: "Another question?" })[0]).toMatch(/^question: /);
+    expect(d({ ...reply, accounts: ["Only one"] })).toEqual(["accounts: the reply's are not the edition's"]);
+    expect(d({ ...reply, notes: "an aside to whoever reads this" })).toEqual(["notes: in the reply, not installed"]);
+    expect(d({ ...reply, assessment: { ...assessment, verdict: "established" } })).toEqual([`assessment.verdict: "established" in the reply, "unresolved" installed`]);
+    expect(d({ ...reply, assessment: { ...assessment, sensitivity: "dropped on install" } })).toEqual(["assessment.sensitivity: in the reply, not installed"]);
+    const regraded = { ...assessment, claimAssessments: [{ ...assessment.claimAssessments[0], verdict: "established" }, assessment.claimAssessments[1]] };
+    expect(d({ ...reply, assessment: regraded })).toEqual([`assessment.claimAssessments[X-C001].verdict: "established" in the reply, "unresolved" installed`]);
+    expect(d({ ...reply, assessment: { ...assessment, claimAssessments: assessment.claimAssessments.slice(0, 1) } })[0]).toMatch(/^assessment\.claimAssessments\[X-C002\]/);
+    expect(d({ ...reply, assessment: null })).toEqual(["assessment: the reply carries none, and the run installed one"]);
+    expect(d(reply, edition, null)).toEqual(["assessment: the reply carries one, and the run installed none"]);
+    expect(d("not a mapping")).toEqual(["the reply is not a mapping"]);
+  });
+
+  it("says what a first reply holds that its repaired successor does not, whole or not at all", () => {
+    expect(firstReplyOwn(reply, reply)).toEqual({ lines: [], whole: true, same: true });
+    const first = { ...reply, article: article.replace("A second paragraph.", "A second paragraph, as first written."), rationale: "The judgment is restated. A sentence later withdrawn." };
+    const own = firstReplyOwn(first, reply);
+    expect(own.same).toBe(false);
+    expect(own.whole).toBe(true);
+    expect(own.lines).toEqual([
+      "article — 1 paragraph(s) the repaired reply does not carry verbatim (the other 2 it does):",
+      "  | A second paragraph, as first written.",
+      "rationale — 1 sentence(s) of the first reply's the repaired one's does not carry verbatim: A sentence later withdrawn.",
+    ]);
+    // A verdict the first reply gave and the repaired one changed is named with the first reply's value.
+    const graded = firstReplyOwn({ ...reply, assessment: { ...assessment, verdict: "established" } }, reply);
+    expect(graded.lines).toEqual([`assessment.verdict — in the first reply: established`]);
+    // More than the account will print: not called whole, so the file is left to the diff.
+    const long = firstReplyOwn({ ...reply, article: `${article}\n\n${"x".repeat(FIRST_REPLY_SHOWN_CHARS)}` }, reply);
+    expect(long.whole).toBe(false);
+  });
+
+  it("the run account compares the replies under their run, and only a reply it found carried is cut first", () => {
+    const files: Record<string, string> = {
+      [`${dir}/run.yaml`]: `runId: ${runId}\nverb: edition\noutcome: completed\n`,
+      [`${dir}/reply.json`]: JSON.stringify({ ...reply, article: article.replace("{claim=X-C001}", "{claim=X-C001]") }),
+      [`${dir}/reply-repaired.json`]: JSON.stringify(reply),
+      [editionPath]: yaml(edition),
+      [draftPath]: yaml(draft),
+    };
+    const readFiles = (p: string) => files[p] ?? null;
+    const account = runAccount(Object.keys(files), readFiles, () => "");
+    expect(account.text).toContain(`- reply-repaired.json: carried whole by ${editionPath} and ${draftPath}`);
+    expect(account.text).toContain("- reply.json: the first reply, sent back once. It is the repaired reply in every field but these, each shown whole:");
+    expect(account.text).toContain("  | The opening paragraph, with [a claim]{claim=X-C001].");
+    expect(Object.keys(account.carried).sort()).toEqual([`${dir}/reply-repaired.json`, `${dir}/reply.json`]);
+    // The account states its terms, so a seat knows what "carried whole" rests on.
+    expect(account.text).toMatch(/every field against the field it became, strings exact, except that the edition's rationale is the reply's followed by the verb's own paragraph/);
+    // A reply that says something the edition does not is not carried, and stays where a working file stays.
+    const altered: Record<string, string> = { ...files, [`${dir}/reply-repaired.json`]: JSON.stringify({ ...reply, article: `${article}\n\nUnpublished words.` }) };
+    const not = runAccount(Object.keys(altered), (p: string) => altered[p] ?? null, () => "");
+    expect(not.text).toContain(`- reply-repaired.json: NOT carried whole by ${editionPath} and ${draftPath}, with 1 difference(s): article: the reply's article is not the edition's`);
+    expect(Object.keys(not.carried)).toEqual([`${dir}/reply.json`]);
+    // A run with one reply and no repair: the reply is the last, and is compared with the edition.
+    const single: Record<string, string> = Object.fromEntries(Object.entries(files).filter(([p]) => !p.endsWith("reply-repaired.json")).map(([p, t]) => [p, p.endsWith("reply.json") ? JSON.stringify(reply) : t]));
+    const one = runAccount(Object.keys(single), (p: string) => single[p] ?? null, () => "");
+    expect(one.text).toContain(`- reply.json: carried whole by ${editionPath} and ${draftPath}`);
+    // Another verb's reply.json is not an edition's text: the account says nothing of it, and it stays a working file.
+    const verify: Record<string, string> = { ...single, [`${dir}/run.yaml`]: `runId: ${runId}\nverb: verify\noutcome: completed\n` };
+    const other = runAccount(Object.keys(verify), (p: string) => verify[p] ?? null, () => "");
+    expect(other.text).not.toContain("the drafter's replies to this run");
+    expect(other.carried).toEqual({});
+    // A reply with no edition of this run in the change has nothing to be compared with, and is not carried.
+    const orphan: Record<string, string> = { [`${dir}/run.yaml`]: files[`${dir}/run.yaml`], [`${dir}/reply.json`]: JSON.stringify(reply) };
+    const none = runAccount(Object.keys(orphan), (p: string) => orphan[p] ?? null, () => "");
+    expect(none.text).toContain("- reply.json: this change carries no edition this run produced to compare it with");
+    expect(none.carried).toEqual({});
+    // The file patterns: a reply beside a run record, wherever filed; nothing else.
+    expect(EDITION_REPLY.test(`${dir}/reply.json`)).toBe(true);
+    expect(EDITION_REPLY.test(`${dir}/reply-repaired.json`)).toBe(true);
+    expect(EDITION_REPLY.test(`${dir}/documents/reply.json.txt`)).toBe(false);
+    expect(EDITION_REPLY.test("content/cases/x/reply.json")).toBe(false);
+    // In the diff, a carried reply is cut before anything else; one not carried keeps a working file's place.
+    const section = (name: string, size: number) => `diff --git a/${name} b/${name}\n` + "x".repeat(size) + "\n";
+    const d = section(draftPath, 300) + section(`${dir}/reply.json`, 400) + section(`${dir}/comparison.yaml`, 300);
+    expect(capDiff(d, d.length - 1, { carried: [`${dir}/reply.json`] }).omitted).toEqual([`${dir}/reply.json`]);
+    expect(capDiff(d, d.length - 1, { carried: [] }).omitted).toEqual([`${dir}/comparison.yaml`]);
+    // And the omitted list says which kind of reply it was and where it was compared.
+    expect(omittedNotes([`${dir}/reply-repaired.json`], account.files, readFiles, account.carried)[0]).toMatch(/— the drafter's reply to an edition run \(\d+ lines, \d+ chars\): the RUN ACCOUNT's section for its run compared it with /);
   });
 });
 

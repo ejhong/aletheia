@@ -214,6 +214,8 @@ export const RUN_RECORD = /^proposals\/(?:[^/]+\/)+run\.yaml$/;
 const isSittingRun = (p) => /^proposals\/[^/]+\/run\.yaml$/.test(p);
 /** A seat's raw reply to a blind check, as the check verb names it (src/pipeline/check.ts), beside its run record. */
 export const SEAT_REPLY = /^proposals\/(?:[^/]+\/)+seat-[^/]+\.ya?ml$/;
+/** The drafter's reply to the edition verb, and its second reply after a repair round (src/pipeline/edition.ts), beside their run record. */
+export const EDITION_REPLY = /^proposals\/(?:[^/]+\/)+reply(?:-repaired)?\.json$/;
 
 /**
  * Cap an untrusted diff for the panel packet, by scrutiny priority.
@@ -241,6 +243,10 @@ export function capDiff(diff, maxChars = 400_000, held = {}) {
     if (tier !== 2) return tier;
     if (file.startsWith("governance/") || file.startsWith("inbox/")) return RECORD_TIER;
     if (carried && SEAT_REPLY.test(file)) return carried.has(file) ? CARRIED_TIER : RECORD_TIER;
+    // A drafter's reply the run account compared and found carried (by the edition it became, or — a first reply —
+    // by the repaired one, its own parts shown in the account) is cut with the seat replies; one it did not is a
+    // working file like any other.
+    if (carried && EDITION_REPLY.test(file) && carried.has(file)) return CARRIED_TIER;
     return OVERLAY_TIER;
   };
   const sections = diff.split(/^(?=diff --git )/m).map((text, i) => {
@@ -378,6 +384,120 @@ export function replyDifferences(reply, installed) {
   return out;
 }
 
+/** A claim span complete but for its last character, as the edition verb closes it (src/domain/article.ts, closeClaimSpans). */
+const MISCLOSED_SPAN = /(\[[^\]]+\]\{claim=[A-Z]+-C\d{3})\]/g;
+/** The fields of an edition reply (src/pipeline/edition.ts, EditionReply). Anything else in a reply is said. */
+const EDITION_REPLY_FIELDS = ["rationale", "question", "accounts", "featuredClaimIds", "cruxOrder", "article", "researchStatus", "assessment"];
+/** The most of a first reply's own text the account will print; past it the file is left to the diff. */
+export const FIRST_REPLY_SHOWN_CHARS = 12_000;
+
+/** Every leaf at which two values differ, as "path: a → b" with both whole; arrays of claim assessments are walked by claim id. */
+function leafDifferences(a, b, at, out) {
+  const isMap = (v) => v !== null && typeof v === "object" && !Array.isArray(v);
+  if (Array.isArray(a) && Array.isArray(b)) {
+    const keyed = (xs) => xs.every((x) => isMap(x) && typeof x.claimId === "string");
+    if (keyed(a) && keyed(b)) {
+      const ids = [...new Set([...a, ...b].map((x) => x.claimId))];
+      for (const id of ids) leafDifferences(a.find((x) => x.claimId === id), b.find((x) => x.claimId === id), `${at}[${id}]`, out);
+      return;
+    }
+    if (JSON.stringify(a) !== JSON.stringify(b)) out.push({ at, a, b });
+    return;
+  }
+  if (isMap(a) && isMap(b)) {
+    for (const k of new Set([...Object.keys(a), ...Object.keys(b)])) leafDifferences(a[k], b[k], at ? `${at}.${k}` : k, out);
+    return;
+  }
+  if (JSON.stringify(a ?? null) !== JSON.stringify(b ?? null)) out.push({ at, a, b });
+}
+
+/**
+ * Where the drafter's reply to the edition verb and what the verb installed from it differ. The verb copies the
+ * reply into an edition and, when the reply carries one, an assessment, and adds only what is its own: its stamps,
+ * the closing paragraph of the rationale from "Measured by the verb", and the closing brace of a claim span the
+ * drafter closed with a bracket. So every field of the reply is compared with the field it became, strings exact
+ * but for those two allowances; `researchStatus` is applied to the research file and is not compared, and is said
+ * so by the caller. A field the reply carries that is not one of the verb's is a difference.
+ *
+ * @param {any} reply the reply, parsed
+ * @param {any} edition the installed edition, parsed
+ * @param {any} assessment the draft assessment the run installed, parsed, or null
+ * @returns {{ differences: string[], closedSpans: number }}
+ */
+export function editionReplyDifferences(reply, edition, assessment) {
+  const out = [];
+  const isMap = (v) => v !== null && typeof v === "object" && !Array.isArray(v);
+  const show = (v) => clip(JSON.stringify(v) ?? "undefined", 80, "value");
+  if (!isMap(reply)) return { differences: ["the reply is not a mapping"], closedSpans: 0 };
+  if (!isMap(edition)) return { differences: ["the installed edition is not a mapping"], closedSpans: 0 };
+  for (const k of Object.keys(reply)) if (!EDITION_REPLY_FIELDS.includes(k) && !isEmptyValue(reply[k])) out.push(`${k}: in the reply, not installed`);
+  // The article: exact, after the one character the verb is allowed to change.
+  const article = String(reply.article ?? "");
+  const closedSpans = (article.match(MISCLOSED_SPAN) ?? []).length;
+  if (article.replace(MISCLOSED_SPAN, "$1}") !== edition.article) out.push("article: the reply's article is not the edition's");
+  // The rationale: the edition's, up to the paragraph the verb appends.
+  const rationale = String(reply.rationale ?? "").trim();
+  if (typeof edition.rationale !== "string" || !edition.rationale.startsWith(`${rationale}\n\nMeasured by the verb:`)) out.push("rationale: the edition's rationale is not the reply's followed by the verb's measurements");
+  for (const k of ["featuredClaimIds", "cruxOrder"]) if (JSON.stringify(reply[k] ?? []) !== JSON.stringify(edition[k] ?? [])) out.push(`${k}: ${show(reply[k])} in the reply, ${show(edition[k])} installed`);
+  // The question and the accounts are the reply's when it gives them, and the incumbent's when it does not.
+  if (typeof reply.question === "string" && reply.question.trim() && reply.question.trim() !== edition.question) out.push(`question: ${show(reply.question)} in the reply, ${show(edition.question)} installed`);
+  if (Array.isArray(reply.accounts) && reply.accounts.length && JSON.stringify(reply.accounts.map((a) => String(a).trim())) !== JSON.stringify(edition.accounts ?? [])) out.push("accounts: the reply's are not the edition's");
+  // The assessment: every field of the reply's against the draft the run installed.
+  if (reply.assessment == null) {
+    if (assessment) out.push("assessment: the reply carries none, and the run installed one");
+  } else if (!isMap(assessment)) {
+    out.push("assessment: the reply carries one, and the run installed none");
+  } else {
+    const a = reply.assessment;
+    const CASE_FIELDS = ["verdict", "whatIsClaimed", "whereDisagreementLives", "whatWouldSettleIt", "bestConventionalExplanation", "components", "researchPriority", "loadBearing", "weakestLinks", "synthesis", "steelman"];
+    for (const k of Object.keys(a)) if (!CASE_FIELDS.includes(k) && k !== "claimAssessments" && !isEmptyValue(a[k])) out.push(`assessment.${k}: in the reply, not installed`);
+    const projected = {
+      caseAssessment: Object.fromEntries(
+        CASE_FIELDS.filter((k) => k in a).map((k) => [k, k === "components" && Array.isArray(a.components) ? a.components.map((c) => ({ label: c?.label, state: c?.state, ...(c?.note ? { note: c.note } : {}) })) : a[k]]),
+      ),
+      claimAssessments: a.claimAssessments,
+    };
+    const leaves = [];
+    leafDifferences(projected.caseAssessment, Object.fromEntries(CASE_FIELDS.filter((k) => k in (assessment.caseAssessment ?? {})).map((k) => [k, assessment.caseAssessment[k]])), "assessment", leaves);
+    leafDifferences(projected.claimAssessments ?? [], assessment.claimAssessments ?? [], "assessment.claimAssessments", leaves);
+    // A field the installed file holds empty, or the reply gives as null, says the same thing.
+    for (const d of leaves) if (!(isEmptyValue(d.a) && isEmptyValue(d.b))) out.push(`${d.at}: ${show(d.a)} in the reply, ${show(d.b)} installed`);
+  }
+  return { differences: out, closedSpans };
+}
+
+/**
+ * What a first reply holds that the repaired reply does not: the paragraphs of its article the repaired one does
+ * not carry verbatim, and every other leaf at which the two differ — for a string, the sentences of the first
+ * reply's that the repaired one's does not carry verbatim; for anything else, the first reply's value.
+ * `whole` is false when that text would pass FIRST_REPLY_SHOWN_CHARS; the caller then leaves the file to the diff.
+ *
+ * @param {any} first the first reply, parsed
+ * @param {any} repaired the repaired reply, parsed
+ * @returns {{ lines: string[], whole: boolean, same: boolean }}
+ */
+export function firstReplyOwn(first, repaired) {
+  const paragraphs = (t) => String(t ?? "").split(/\n\s*\n/).map((x) => x.trim()).filter(Boolean);
+  const lines = [];
+  const kept = new Set(paragraphs(repaired?.article));
+  const own = paragraphs(first?.article).filter((p) => !kept.has(p));
+  if (own.length) lines.push(`article — ${own.length} paragraph(s) the repaired reply does not carry verbatim (the other ${paragraphs(first?.article).length - own.length} it does):`, ...own.map((p) => `  | ${p}`));
+  const leaves = [];
+  const rest = (r) => Object.fromEntries(Object.entries(r ?? {}).filter(([k]) => k !== "article"));
+  leafDifferences(rest(first), rest(repaired), "", leaves);
+  const sentences = (t) => String(t).split(/(?<=[.!?])\s+/).map((x) => x.trim()).filter(Boolean);
+  for (const d of leaves) {
+    // A string of more than one sentence is shown by the sentences that are its own; a word or a line, whole.
+    if (typeof d.a === "string" && typeof d.b === "string" && sentences(d.a).length > 1) {
+      const there = new Set(sentences(d.b));
+      const mine = sentences(d.a).filter((x) => !there.has(x));
+      lines.push(mine.length ? `${d.at} — ${mine.length} sentence(s) of the first reply's the repaired one's does not carry verbatim: ${mine.join(" ")}` : `${d.at} — every sentence of the first reply's is in the repaired one's, which adds to it or re-orders it`);
+    } else lines.push(`${d.at} — in the first reply: ${typeof d.a === "string" ? d.a : JSON.stringify(d.a ?? null)}`);
+  }
+  const size = lines.join("\n").length;
+  return { lines, whole: size <= FIRST_REPLY_SHOWN_CHARS, same: lines.length === 0 };
+}
+
 /**
  * A content run's own account of itself, for a panel that cannot read the
  * whole diff, assembled by importance: the head edition and the assessment
@@ -459,6 +579,72 @@ export function runAccount(changed, read, diffOf, readBase = noBase) {
       carried,
     };
   };
+  /**
+   * One edition run's replies against what it installed: the last reply (the repaired one when there is one) against
+   * the edition and the draft assessment whose producedBy is this run; a first reply against the repaired one, its
+   * own text shown. The lines for the run's section, and the replies the diff may cut first.
+   */
+  const editionReplies = (dir) => {
+    const first = `${dir}/reply.json`;
+    const repaired = `${dir}/reply-repaired.json`;
+    const has = (p) => changed.includes(p);
+    if (!has(first) && !has(repaired)) return { lines: [], carried: {} };
+    const runId = dir.split("/").pop();
+    const json = (p) => {
+      const t = read(p);
+      if (t == null) return null;
+      try {
+        return JSON.parse(t);
+      } catch {
+        return undefined;
+      }
+    };
+    const editionPath = changed.filter((f) => /^content\/cases\/[^/]+\/editions\/[^/]+\.ya?ml$/.test(f)).find((p) => parsed(p)?.data?.producedBy === runId);
+    const draft = (installedBy.get(runId) ?? []).find((i) => (i.data.role ?? "draft") === "draft");
+    const carried = {};
+    const lines = [];
+    const last = has(repaired) ? repaired : first;
+    const lastData = json(last);
+    const name = (p) => p.slice(dir.length + 1);
+    if (lastData == null) lines.push(`- ${name(last)}: ${lastData === null ? "not readable at the head revision" : "not parseable as JSON"}, so not compared`);
+    else if (!editionPath) lines.push(`- ${name(last)}: this change carries no edition this run produced to compare it with`);
+    else {
+      const edition = parsed(editionPath)?.data;
+      const { differences, closedSpans } = editionReplyDifferences(lastData, edition, draft?.data ?? null);
+      const status = Array.isArray(lastData.researchStatus) && lastData.researchStatus.length ? `; its ${lastData.researchStatus.length} researchStatus entr${lastData.researchStatus.length === 1 ? "y is" : "ies are"} applied to the research file and not compared here` : "";
+      if (differences.length === 0) {
+        carried[last] = draft ? `${editionPath} and ${draft.p}` : editionPath;
+        lines.push(`- ${name(last)}: carried whole by ${carried[last]}${closedSpans ? ` — but for ${closedSpans} claim span(s) the drafter closed with "]" and the verb closed with "}"` : ""}${status}`);
+      } else {
+        const SHOWN = 8;
+        lines.push(`- ${name(last)}: NOT carried whole by ${editionPath}${draft ? ` and ${draft.p}` : ""}, with ${differences.length} difference(s): ${differences.slice(0, SHOWN).join("; ")}${differences.length > SHOWN ? `; and ${differences.length - SHOWN} more` : ""}${status}`);
+      }
+    }
+    if (has(first) && has(repaired)) {
+      const a = json(first);
+      const b = json(repaired);
+      if (a == null || b == null) lines.push(`- ${name(first)}: the first reply, sent back once; ${a == null ? "it" : "the repaired reply"} could not be read as JSON, so the two are not compared`);
+      else {
+        const own = firstReplyOwn(a, b);
+        if (own.same) {
+          carried[first] = repaired;
+          lines.push(`- ${name(first)}: the first reply, sent back once; it is the repaired reply in every field`);
+        } else if (own.whole) {
+          carried[first] = `${repaired}, its own text shown in the RUN ACCOUNT`;
+          lines.push(`- ${name(first)}: the first reply, sent back once. It is the repaired reply in every field but these, each shown whole:`, ...own.lines.map((l) => `  ${l}`));
+        } else {
+          lines.push(`- ${name(first)}: the first reply, sent back once. What it holds that the repaired reply does not runs past ${FIRST_REPLY_SHOWN_CHARS.toLocaleString("en-US")} characters and is not shown here: read it in the diff`);
+        }
+      }
+    }
+    return {
+      lines: [
+        `the drafter's replies to this run — working files, each compared by this tooling. The last reply is compared with the edition and the draft assessment this run installed (the changed files whose producedBy is this run): every field against the field it became, strings exact, except that the edition's rationale is the reply's followed by the verb's own paragraph from "Measured by the verb", and a claim span closed with "]" counts as closed with "}", which is the one character the verb changes; researchStatus is applied to the research file and not compared. A first reply that was sent back is compared with the repaired one, and what it holds that the repaired reply does not is shown whole, or left to the diff when that would pass ${FIRST_REPLY_SHOWN_CHARS.toLocaleString("en-US")} characters:`,
+        ...lines,
+      ],
+      carried,
+    };
+  };
   const caseOf = (p) => p.split("/").slice(0, 3).join("/");
   // Sections carry a rank: when the account is over its cap, whole sections are dropped from the lowest rank up
   // (largest first within a rank) and said to be dropped. Rank 0 — the head edition and the assessment it adopts,
@@ -481,11 +667,14 @@ export function runAccount(changed, read, diffOf, readBase = noBase) {
     if (absent.length) parts.push(`of the ${named.length} file(s) this record says the run wrote, ${absent.length} are not in the repository at the head revision: ${absent.join(", ")}`);
     const seats = seatReplies(dir);
     parts.push(...seats.lines);
+    // Other verbs keep a reply.json too (a draft's, a verification's); only an edition run's is the text of an edition.
+    const replies = parsed(p)?.data?.verb === "edition" ? editionReplies(dir) : { lines: [], carried: {} };
+    parts.push(...replies.lines);
     for (const [name, cap] of [["novelty.md", 4_000], ["manifest.yaml", 8_000]]) {
       const t = read(`${dir}/${name}`);
       if (t != null) parts.push(`--- ${dir}/${name}`, clip(t, cap, name));
     }
-    sections.push({ rank: 2, text: parts.join("\n"), carried: seats.carried });
+    sections.push({ rank: 2, text: parts.join("\n"), carried: { ...seats.carried, ...replies.carried } });
     const v = read(`${dir}/verification.md`);
     if (v != null) sections.push({ rank: 2, text: `--- ${dir}/verification.md\n${clip(v, 60_000, "verification.md")}` });
   }
@@ -694,7 +883,7 @@ export function runAccount(changed, read, diffOf, readBase = noBase) {
   if (sections.length === 0) return { text: "", files: [], carried: {} };
   const cap = ACCOUNT_CAP.toLocaleString("en-US");
   const headerFor = (n) =>
-    `Generated by src/lib/arbiter-core.mjs (runAccount) from the ${n} file(s) named below, read at the head revision (a canon file also at the merge base, to tell a modified record from an added one): the head edition's header, rationale, featured claims, crux order and article (article to 60,000 characters); the assessment the head edition adopts, read at head even when this change did not touch its file — its header, case verdict, load-bearing set and weakest links, what is claimed (to 1,200), synthesis or reasoning (to 1,500), each component's state and note (note to 240), and every claim's verdict and confidence, each with its reasoning to 300 — the reasoning left out of the claim lines, and said so, only when the section would pass 30,000, and the section clipped only past 60,000; the records the change adds or modifies in evidence, claims, sources and research (id, state, direction, statement to 320, quote to 160, locator to 160; a modified record's changed fields and their new values to 240; each file's list to 40,000); the run records, wherever under proposals/ they are filed (run.yaml whole; a line naming any file the record says the run wrote that is not in the repository at the head revision; and under a check run's the comparison of each raw seat reply with the assessments that run installed, on the terms that section states; novelty.md to 4,000; manifest.yaml to 8,000; verification.md to 60,000); the lines added to history and dispositions (to 25,000 each); an assessment superseded within the change, digested as the head's is, with every claim verdict that differs from the head's marked; and an edition superseded within the change by header, rationale (to 3,000), featured claims, crux order and the paragraphs of its article the head edition does not carry verbatim (to 20,000; the shared paragraphs are read in the head). The whole account is kept to ${cap} characters by dropping whole sections, least important first and within a rank largest first — a superseded edition's paragraphs, then a superseded assessment, then the run records and the added lines, then the records digest — and naming each dropped section. Protected from dropping, and titled by class, are the head edition, the assessment it adopts, and every other assessment of the change not superseded within it — a check-role seat's own reading, or a draft no edition in this change adopts; these are never dropped and the assembled account is never cut mid-way: if they alone exceed the cap, the account runs over it and says so. The only clipping is per field, at the lengths stated here, each marked in place with the count of characters not shown; an unmarked part is whole. No model wrote this section. Working files (model replies, remembered judgments, supplied text, packets) are not included and may appear under OMITTED FILES; a check run's raw seat replies are compared as its run record states, not reproduced.`;
+    `Generated by src/lib/arbiter-core.mjs (runAccount) from the ${n} file(s) named below, read at the head revision (a canon file also at the merge base, to tell a modified record from an added one): the head edition's header, rationale, featured claims, crux order and article (article to 60,000 characters); the assessment the head edition adopts, read at head even when this change did not touch its file — its header, case verdict, load-bearing set and weakest links, what is claimed (to 1,200), synthesis or reasoning (to 1,500), each component's state and note (note to 240), and every claim's verdict and confidence, each with its reasoning to 300 — the reasoning left out of the claim lines, and said so, only when the section would pass 30,000, and the section clipped only past 60,000; the records the change adds or modifies in evidence, claims, sources and research (id, state, direction, statement to 320, quote to 160, locator to 160; a modified record's changed fields and their new values to 240; each file's list to 40,000); the run records, wherever under proposals/ they are filed (run.yaml whole; a line naming any file the record says the run wrote that is not in the repository at the head revision; and under a check run's the comparison of each raw seat reply with the assessments that run installed, on the terms that section states; novelty.md to 4,000; manifest.yaml to 8,000; verification.md to 60,000); the lines added to history and dispositions (to 25,000 each); an assessment superseded within the change, digested as the head's is, with every claim verdict that differs from the head's marked; and an edition superseded within the change by header, rationale (to 3,000), featured claims, crux order and the paragraphs of its article the head edition does not carry verbatim (to 20,000; the shared paragraphs are read in the head). The whole account is kept to ${cap} characters by dropping whole sections, least important first and within a rank largest first — a superseded edition's paragraphs, then a superseded assessment, then the run records and the added lines, then the records digest — and naming each dropped section. Protected from dropping, and titled by class, are the head edition, the assessment it adopts, and every other assessment of the change not superseded within it — a check-role seat's own reading, or a draft no edition in this change adopts; these are never dropped and the assembled account is never cut mid-way: if they alone exceed the cap, the account runs over it and says so. The only clipping is per field, at the lengths stated here, each marked in place with the count of characters not shown; an unmarked part is whole. No model wrote this section. Working files (model replies, remembered judgments, supplied text, packets) are not included and may appear under OMITTED FILES; a check run's raw seat replies and an edition run's drafter replies are compared as the run's section states, not reproduced, except that what a first reply holds and its repaired successor does not is printed there.`;
   // Assemble in reading order — the protected sections (rank 0: head edition, the assessment it adopts, any other
   // assessment not superseded within the change), records digest, run records and added lines, superseded
   // candidates — then drop whole sections from the lowest rank, largest first, while over the cap. Rank 0 is never
@@ -745,6 +934,7 @@ export function omittedNotes(omitted, accountFiles, read = null, carried = {}) {
       } catch {
         size = "";
       }
+      if (EDITION_REPLY.test(f)) return `${f} — the drafter's reply to an edition run${size}: the RUN ACCOUNT's section for its run compared it with ${carried[f]}, on the terms stated there`;
       return `${f} — a seat's raw reply${size}: the RUN ACCOUNT's section for its run compared it with ${carried[f]} and found that file to carry it whole, on the terms stated there`;
     }
     const shape = read ? shapeOf(f, read) : null;

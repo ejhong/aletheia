@@ -1,0 +1,3 @@
+# The decisions log is append-only, and two changes that each add an entry at its end need not conflict:
+# take both, in order. (In-place corrections of one entry by two changes at once would still need a reader.)
+docs/DECISIONS.md merge=union

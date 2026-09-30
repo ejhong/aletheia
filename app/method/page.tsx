@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { AssessmentBadge } from "@/src/components/AssessmentBadge";
 import { site } from "@/src/config/site";
+import { READER_BUDGET } from "@/src/domain/readerBudget";
 import { assessmentGlosses, type AssessmentState } from "@/src/domain/schema";
 import { standingGlosses, RATIFICATION_MIN_PANEL } from "@/src/domain/standing";
 
@@ -104,6 +105,25 @@ const sections: { id: string; title: string; body: ReactNode }[] = [
     id: "change-our-mind",
     title: "What would change our mind",
     body: "Every claim and every case states, in advance, the observations that would move its assessment — and the research agenda attaches each unresolved crux to a study that could be run. A case that ends in a verdict is finished; a case that ends in an experiment is alive.",
+  },
+  {
+    id: "editions",
+    title: "A new edition has to be better to read",
+    body: (
+      <>
+        A case&apos;s page is its current edition: the article, the claims it features and the assessment it
+        adopts. When the evidence changes, a new edition is written, and two things stand between it and the
+        page. First a budget: the article may run to {READER_BUDGET.article.ceiling.toLocaleString("en-US")} words
+        and no further, and the answers at the head of the page to about a hundred words each, because the ledger
+        behind the page holds every detail and the page is for reading. Then a comparison: AI models from five
+        vendors read the new edition beside the one it would replace, as a reader would, without being told which
+        is which. An edition that only re-tells the same judgment replaces the old one only if they prefer it; one
+        that carries new evidence is published with their preference recorded. How each edition was chosen, with
+        every model&apos;s reasons, is on its case&apos;s record page. It is a preference among AI readers, not a
+        human review, and it judges the telling: the verdicts are judged separately, by models that see the
+        evidence and not the article.
+      </>
+    ),
   },
   {
     id: "versioned",

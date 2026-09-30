@@ -3,7 +3,7 @@ import { readOnce } from "./frozen.ts";
 import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml } from "yaml";
-import { extractClaimRefs, extractPlateRefs } from "./article.ts";
+import { extractClaimRefs, extractPlateRefs, markerErrors } from "./article.ts";
 import { assessmentHash, ledgerHash } from "./hash.ts";
 import { DispositionSchema, type Disposition } from "./intake.ts";
 import { AssessmentRunSchema, CaseSchema, ChangeLogEntrySchema, CLAIM_ANCHOR_REQUIRED_FROM, ClaimSchema, CuratedResourceSchema, EditionSchema, EvidenceSchema, ImageSchema, ResearchOpportunitySchema, SourceSchema, steelmanRequirementError, StudySchema, NarrativeInputSchema, WatchConfigSchema, type AssessmentRun, type Claim, type CuratedResource, type Edition, type Evidence, type ImageRecord, type LoadedCase, type Source, type Study, type NarrativeInput, type WatchConfig } from "./schema.ts";
@@ -402,6 +402,8 @@ export function editionErrors(
         }
       }
     }
+    // A marker the parser will not read is printed on the page as text, and its claim loses its link.
+    for (const fault of markerErrors(ed.article).slice(0, 5)) errors.push(`${where} article has a ${fault}`);
     for (const id of extractClaimRefs(ed.article)) {
       if (!live.has(id)) {
         if (!known.has(id) || strict(ed)) errors.push(`${where} article references unknown or rejected claim ${id}`);

@@ -80,6 +80,21 @@ export async function fetchWithRetry(name, url, init, attempts = 3) {
 }
 
 /**
+ * The most tokens a seat's request lets it produce, thinking and reply
+ * together — the figure its request carries (`buildRequest`), and so the
+ * figure the budget's estimate must use (src/pipeline/transport.ts). On the
+ * Anthropic seat that is the roster's ceiling when it names one, whatever
+ * the caller asks; elsewhere it is the caller's.
+ * @param {string} name
+ * @param {number} [maxTokens]
+ */
+export function seatOutputCeiling(name, maxTokens = 16000) {
+  const cfg = VENDORS[name];
+  if (!cfg) throw new Error(`unknown vendor ${name}`);
+  return name === "anthropic" ? (cfg.maxOutputTokens ?? Math.max(maxTokens, 32000)) : maxTokens;
+}
+
+/**
  * The exact HTTP request one seat receives for one prompt — url, headers,
  * JSON body — with the seat's pinned effort in the vendor's own dialect.
  * Pure (no I/O), so tests can assert what each seat is actually asked to
@@ -131,7 +146,7 @@ export function buildRequest(name, { system, user, maxTokens = 16000, cachedPref
         // told where the ceiling is. A seat pinned at a deep effort is given
         // the ceiling its roster entry names (config/models.yaml), not the
         // caller's: thinking that reaches the ceiling leaves no reply at all.
-        max_tokens: cfg.maxOutputTokens ?? Math.max(maxTokens, 32000),
+        max_tokens: seatOutputCeiling(name, maxTokens),
         output_config: { effort: cfg.effort },
         // Streamed, as every Anthropic call in the repository is (src/lib/
         // anthropic-stream.ts): the headers arrive at once and pings keep the

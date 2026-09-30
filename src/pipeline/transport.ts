@@ -1,5 +1,6 @@
 import { isoDate } from "../lib/overlay-ids.mjs";
-import { callVendorDetailed, VENDORS as SEAT_TABLE } from "../lib/vendors.mjs";
+import { callVendorDetailed, seatOutputCeiling, VENDORS as SEAT_TABLE } from "../lib/vendors.mjs";
+import { assertWithinBudget, estimateUsd } from "./budget.ts";
 import { loadTariffs, priceOf, recordSpend, type Meter } from "./spend.ts";
 
 export type { Meter } from "./spend.ts";
@@ -33,6 +34,35 @@ export interface Reply {
 
 export function seatAvailable(name: string): boolean {
   return Boolean(VENDORS[name]?.key());
+}
+
+/**
+ * The budget's guard for seats (config/budget.yaml). `callSeat` records what a seat cost; this refuses, before any
+ * seat is asked, a set of calls that would carry the run, the day or the month past its cap. Each call is estimated
+ * as every estimate here is — the whole input at the seat's rate and its whole output ceiling — and the calls are
+ * summed, because a verb asks its seats at once and none of them is on the ledger when the others are sent. A seat
+ * without a reviewed tariff cannot be budgeted, so the set is refused. Throws BudgetExceeded; returns the estimate.
+ *
+ * Until 2026-09-30 only the house model's calls were guarded (src/pipeline/models.ts): a blind check asked its five
+ * seats whatever the caps said, and one seat at max effort had come to cost more than the other four together. The
+ * constitutional panel (scripts/arbiter.mjs) is not under the caps and does not call this: the gate judges every
+ * change put to it, and reports its cost in its verdict.
+ */
+export function assertSeatsWithinBudget(
+  calls: { seat: string; prompt: { system: string; user: string; maxTokens?: number; cachedPrefix?: string } }[],
+  meter: Meter,
+): number {
+  const tariffs = loadTariffs(meter.root);
+  let total: number | null = 0;
+  for (const { seat, prompt } of calls) {
+    if (!VENDORS[seat]) throw new Error(`unknown seat ${seat}`);
+    const estimate = estimateUsd(
+      { model: VENDORS[seat].model, inputChars: prompt.system.length + prompt.user.length + (prompt.cachedPrefix?.length ?? 0), maxOutputTokens: seatOutputCeiling(seat, prompt.maxTokens) },
+      tariffs,
+    );
+    total = total === null || estimate === null ? null : total + estimate;
+  }
+  return assertWithinBudget(total === null ? null : Number(total.toFixed(4)), { runId: meter.runId, verb: meter.verb, root: meter.root });
 }
 
 export async function callSeat(

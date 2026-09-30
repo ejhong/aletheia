@@ -22,6 +22,14 @@ export type Block =
   | { kind: "plate"; imageId: string };
 
 const PLATE_BLOCK = /^\{plate:(IMG-[A-Z0-9-]+)\}$/;
+/**
+ * A plate marker that opens a paragraph — "{plate:ID} The text…" — seats the plate before the paragraph. Two
+ * migrated editions of 2026-09-08 wrote their plates so; read only as a block, the marker was printed as text on the
+ * page and the plate was never shown (found 2026-09-30).
+ */
+const PLATE_LEAD = /^\{plate:(IMG-[A-Z0-9-]+)\}[ \t]+(?=\S)/;
+/** A plate marker where a plate can be seated: at the start of a line, alone or followed by a paragraph's text. */
+const PLATE_SEATED = /^\{plate:(IMG-[A-Z0-9-]+)\}(?=$|[ \t])/gm;
 
 const CLAIM_REF = /\[([^\]]+)\]\{claim=([A-Z]+-C\d{3})\}/;
 const LINK = /\[([^\]]+)\]\(([^)\s]+)\)/;
@@ -83,7 +91,12 @@ export function parseArticle(markdown: string): Block[] {
     .map((c) => c.trim())
     .filter((c) => c.length > 0);
 
-  for (const chunk of chunks) {
+  for (let chunk of chunks) {
+    const lead = PLATE_LEAD.exec(chunk);
+    if (lead) {
+      blocks.push({ kind: "plate", imageId: lead[1] });
+      chunk = chunk.slice(lead[0].length);
+    }
     const plateMatch = PLATE_BLOCK.exec(chunk);
     if (plateMatch) {
       blocks.push({ kind: "plate", imageId: plateMatch[1] });
@@ -134,10 +147,41 @@ export function extractClaimRefs(markdown: string): string[] {
 /** All plate image ids embedded in the article. */
 export function extractPlateRefs(markdown: string): string[] {
   const ids: string[] = [];
-  const re = /^\{plate:(IMG-[A-Z0-9-]+)\}$/gm;
+  const re = new RegExp(PLATE_SEATED.source, "gm");
   let m: RegExpExecArray | null;
   while ((m = re.exec(markdown)) !== null) {
     if (!ids.includes(m[1])) ids.push(m[1]);
   }
   return ids;
+}
+
+/**
+ * Markers the parser will not read as markers: a claim span with the wrong bracket or a malformed id, a plate marker
+ * in the middle of a line. The page prints such a marker as text, and the claim it pointed at loses its link — and a
+ * reader of the raw text can take everything up to the next closing brace for the marker (2026-09-30: a candidate
+ * closed three claim spans with "]" for "}"; nothing refused it, and the seats comparing it with its incumbent were
+ * shown an article with its central section swallowed). One line per fault, with the text around it.
+ */
+export function markerErrors(markdown: string): string[] {
+  const rest = markdown.replace(new RegExp(CLAIM_REF.source, "g"), "$1").replace(new RegExp(PLATE_SEATED.source, "gm"), "");
+  const out: string[] = [];
+  let last = -Infinity;
+  for (const m of rest.matchAll(/\{claim\b|\]\{|\{plate\b|\bclaim=[A-Z]+-C\d+/g)) {
+    // One broken marker trips several of these patterns a few characters apart; it is one fault.
+    if (m.index - last < 12) continue;
+    last = m.index;
+    const near = rest.slice(Math.max(0, m.index - 50), m.index + 40).replace(/\s+/g, " ").trim();
+    out.push(`malformed marker near "${near}" — a claim span is [words]{claim=CASE-C000} with a closing brace; a plate is {plate:IMG-…} at the start of a line`);
+  }
+  return out;
+}
+
+/** The article as the page shows it to a reader, as plain text: a claim span is its words, a plate is a picture, headings stay. */
+export function plainArticle(markdown: string): string {
+  return markdown
+    .replace(new RegExp(CLAIM_REF.source, "g"), "$1")
+    .replace(new RegExp(PLATE_SEATED.source, "gm"), "[a plate: a photograph or figure, with its caption]\n")
+    .replace(/[ \t]+\n/g, "\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
 }

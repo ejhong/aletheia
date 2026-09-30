@@ -31,6 +31,8 @@ export interface Packet {
     featured: string[];
     cruxOrder: string[];
     article: string;
+    /** For the edition verb: where the incumbent is over the reader's budget (src/domain/readerBudget.ts), one line each; absent when it is within it. */
+    overBudget?: string[];
     assessment: {
       runId: string;
       verdict: string;
@@ -42,6 +44,9 @@ export interface Packet {
       whereDisagreementLives: string | null;
       whatWouldSettleIt: string | null;
       bestConventionalExplanation: string | null;
+      /** The component verdicts and the research priority as the incumbent gives them: a drafter asked to restate a judgment must be shown all of it (2026-09-30). */
+      components: { label: string; state: string; note: string | null }[];
+      researchPriority: { level: string; reason: string } | null;
     } | null;
   };
   index: {
@@ -94,6 +99,12 @@ export interface Packet {
    * edition or its assessment, in the seat's words — data under review. The candidate answers each in its rationale.
    */
   objections?: { seat: string; rules: string[]; text: string; source: string }[];
+  /**
+   * For the edition verb: what the panel's seats said, reading as a reader would, about the incumbent or about a
+   * candidate they did not prefer to it (src/pipeline/compare.ts) — data, in the seats' words. The candidate fixes
+   * what they name without growing (edition protocol v13).
+   */
+  readerNotes?: ReaderNote[];
   /** For the edition verb: the full records behind the index (featured claims, all evidence, sources, research, images). */
   detail?: {
     claims: LoadedCase["claims"];
@@ -103,6 +114,17 @@ export interface Packet {
     images: LoadedCase["images"];
   };
   ledgerHash: string;
+}
+
+/** One seat's reading of a telling: which it preferred, why, and what it said should still be fixed. */
+export interface ReaderNote {
+  about: "the incumbent, when it replaced the edition before it" | "a candidate the seats did not prefer to the incumbent";
+  /** The file that holds the comparison. */
+  source: string;
+  seat: string;
+  preferred: "candidate" | "incumbent" | "neither";
+  reasons: string;
+  notes: string[];
 }
 
 export function buildPacket(
@@ -190,6 +212,8 @@ export function buildPacket(
           whereDisagreementLives: run.caseAssessment.whereDisagreementLives ?? null,
           whatWouldSettleIt: run.caseAssessment.whatWouldSettleIt ?? null,
           bestConventionalExplanation: run.caseAssessment.bestConventionalExplanation ?? null,
+          components: (run.caseAssessment.components ?? []).map((k) => ({ label: k.label, state: k.state, note: k.note ?? null })),
+          researchPriority: run.caseAssessment.researchPriority ?? null,
         }
       : null,
   };

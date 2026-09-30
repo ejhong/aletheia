@@ -793,6 +793,47 @@ export function steelmanRequirementError(run: {
  */
 const Sha256Hex = z.string().regex(/^[a-f0-9]{64}$/, "sha256 hex digest");
 
+/** One seat's choice between a candidate edition and the incumbent, read as a reader would (protocols/compare-v1.md). */
+export const SeatPreferenceSchema = z
+  .object({
+    /** The seat's label, as the panel's table gives it. */
+    seat: z.string().min(1),
+    /** The model that answered. */
+    model: z.string().min(1),
+    /** The letter the candidate carried for this seat: the order is balanced across the seats of a run, so reading first or second decides nothing. */
+    candidateShownAs: z.enum(["A", "B"]),
+    prefers: z.enum(["candidate", "incumbent", "neither"]),
+    margin: z.enum(["clear", "slight"]).nullable(),
+    reasons: z.string().min(1),
+    /** What the seat said its chosen telling should still fix — or, choosing neither, what each lacks. */
+    notes: z.array(z.string()).max(3).default([]),
+  })
+  .strict();
+export type SeatPreference = z.infer<typeof SeatPreferenceSchema>;
+
+/**
+ * The panel's seats reading a candidate edition beside the incumbent, as a
+ * reader would, and what they chose (src/pipeline/compare.ts). An AI
+ * judgment of two tellings — not a human's, and not a judgment of the
+ * verdicts, which the blind check makes.
+ */
+export const EditionComparisonSchema = z
+  .object({
+    /** The incumbent edition the candidate was read beside. */
+    against: z.string().min(1),
+    /** The protocol the seats were given (protocols/compare-v*.md). */
+    protocol: z.string().min(1),
+    outcome: z.enum(["candidate-preferred", "incumbent-preferred", "no-clear-preference", "undecided"]),
+    candidate: z.number().int().nonnegative(),
+    incumbent: z.number().int().nonnegative(),
+    neither: z.number().int().nonnegative(),
+    /** Seats that did not answer, each with why: they count for neither side. */
+    failed: z.array(z.string()).optional(),
+    seats: z.array(SeatPreferenceSchema),
+  })
+  .strict();
+export type EditionComparison = z.infer<typeof EditionComparisonSchema>;
+
 export const EditionSchema = z
   .object({
     runId: z.string().regex(/^[a-z0-9][a-z0-9._-]{1,119}$/),
@@ -829,6 +870,12 @@ export const EditionSchema = z
     accounts: z.array(z.string().min(10)).max(6).optional(),
     /** The article: constrained markdown with [text]{claim=…} and {plate:…} markers. */
     article: z.string().min(40),
+    /**
+     * How the panel's seats, reading this edition beside the one it replaced, chose between them — recorded by the
+     * verb that compared them (2026-09-30). Absent on an edition written before the comparison existed, or with no
+     * incumbent telling to be read beside.
+     */
+    comparison: EditionComparisonSchema.optional(),
     /**
      * By-hand changes to a candidate before publication (an operator answering a review note), each with
      * the same stamp every change carries — who, when, under which run and prompt version, why, and which

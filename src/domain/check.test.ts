@@ -95,8 +95,12 @@ describe("the check verb", () => {
 
   it("asks only the seats that have not judged the ledger as it stands, and rests when every seat has", async () => {
     const root = tmpRoot();
-    const base = geo();
-    const template = base.assessmentRuns.find((r) => r.role === "check")!;
+    const real = geo();
+    const template = real.assessmentRuns.find((r) => r.role === "check")!;
+    // The fixture's panel is the only panel: the real case's own checks are set aside, so that a seat the fixture
+    // leaves out is owed whatever the real panel has judged since (2026-09-30: five real seats judged this ledger,
+    // the fifth seat was no longer owed, and the test failed on a change that only added those checks).
+    const base = { ...real, assessmentRuns: real.assessmentRuns.filter((r) => r.role !== "check") };
     // A check of the ledger as it stands, held by one roster seat (dated past every real one, so it is that seat's latest).
     const held = (seat: string) => ({ ...template, runId: `2099-01-01-check-${VENDORS[seat].tag}-000000`, date: "2099-01-01", model: `${VENDORS[seat].label} — independent check run via ${VENDORS[seat].model}`, basis: { ledgerHash: base.ledgerHash } });
     const seats = Object.keys(VENDORS);

@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
-import { CaseCard } from "@/src/components/CaseCard";
-import { caseCover, loadAllCases } from "@/src/domain/load";
-import { crossModelSummary } from "@/src/domain/standing";
-import { caseQuestion } from "@/src/domain/editions";
-import { caseView, reviewCoverage } from "@/src/domain/view";
+import { pageMeta } from "@/src/config/meta";
+import { CaseGrid } from "@/src/components/CaseGrid";
+import { loadAllCases } from "@/src/domain/load";
 
-export const metadata: Metadata = { title: "Cases" };
+export const metadata: Metadata = pageMeta({
+  title: "Cases",
+  description: "Every case maps one contested hypothesis: an article to read, a claim ladder to audit, evidence with provenance, and the experiments that would settle it.",
+  path: "/cases/",
+});
 
 export default function CasesPage() {
   const cases = loadAllCases();
@@ -29,32 +31,8 @@ export default function CasesPage() {
           </p>
         </div>
       ) : null}
-      <div className="grid sm:grid-cols-2 gap-4 mt-8">
-        {cases.map((c) => {
-          const view = caseView(c);
-          const sum = crossModelSummary(c);
-          return (
-            <CaseCard
-              key={c.record.id}
-              record={c.record}
-              question={caseQuestion(c)}
-              components={view.header.components}
-              priority={view.header.researchPriority?.level ?? null}
-              verdict={view.assessment?.caseAssessment.verdict ?? null}
-              standing={view.standing?.status ?? null}
-              reviewCoverage={reviewCoverage(view)}
-              check={
-                sum
-                  ? {
-                      models: sum.models.length,
-                      concur: sum.caseUnanimousWithDisplayed,
-                    }
-                  : null
-              }
-              cover={caseCover(c)}
-            />
-          );
-        })}
+      <div className="mt-8">
+        <CaseGrid cases={cases} />
       </div>
     </div>
   );

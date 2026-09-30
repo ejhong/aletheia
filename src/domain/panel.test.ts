@@ -65,9 +65,9 @@ describe("panel derivations (live data)", () => {
 
   it("arbiter events link to their on-page verdict and to the PR as source", () => {
     for (const e of opsFeed(100).filter((x) => x.kind === "arbiter")) {
-      // Full seat reasoning renders in The gate section; the anchor id
-      // must match ArbiterVerdictCard's `arbiter-pr-<n>`.
-      expect(e.href).toMatch(/^\/operations\/#arbiter-pr-\d+$/);
+      // Full seat reasoning renders on the verdict's own page
+      // (app/operations/gate/[pr]), one per harvested record.
+      expect(e.href).toMatch(/^\/operations\/gate\/\d+\/$/);
       expect(e.sourceHref).toMatch(/^https:\/\/github\.com\/.+\/pull\/\d+$/);
     }
   });

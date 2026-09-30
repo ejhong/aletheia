@@ -1,4 +1,5 @@
 import { assetPath } from "@/src/config/assets";
+import { imageSize } from "@/src/domain/imageSize";
 import { romanNumeral, type ImageRecord } from "@/src/domain/schema";
 
 /**
@@ -17,6 +18,8 @@ export function Plate({ image }: { image: ImageRecord }) {
   if (image.role !== "plate" || !image.provenance) {
     throw new Error(`Plate component requires a plate record (${image.id})`);
   }
+  // The file's own size, so the plate holds its place before it loads and the article does not jump.
+  const size = imageSize(image.file);
   return (
     <figure className="my-6 mx-auto w-fit min-w-[min(16rem,100%)] max-w-[26rem]">
       <div className="border border-line bg-paper-deep/60 p-2.5 sm:p-3 w-fit mx-auto">
@@ -26,7 +29,9 @@ export function Plate({ image }: { image: ImageRecord }) {
             src={assetPath(image.file)}
             alt={image.alt}
             loading="lazy"
-            className="plate-img max-h-[24rem] w-auto max-w-full"
+            width={size?.width}
+            height={size?.height}
+            className="plate-img h-auto max-h-[24rem] w-auto max-w-full"
           />
         </div>
       </div>

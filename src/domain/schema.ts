@@ -76,6 +76,26 @@ export const assessmentStateCaptions: Partial<Record<AssessmentState, string>> =
       "the material this claim rests on cannot be authenticated — its support cannot be examined, which is not the same as being shown false",
   };
 
+/**
+ * What each verdict word means, in one plain sentence — shown where the word
+ * appears (as the badge's tooltip) and listed on the method page (interface
+ * rule: explain unfamiliar epistemic terms in place). The words are ordered;
+ * the standing's "within one step" (src/domain/standing.ts) reads that order.
+ * These say what a reader should take the word to mean; they grade nothing.
+ */
+export const assessmentGlosses: Record<AssessmentState, string> = {
+  established: "Treated as settled: strong evidence from independent sources, replicated, with no serious dispute left.",
+  well_supported: "Strong evidence from more than one line; what doubt remains is at the edges.",
+  provisionally_supported: "The evidence leans this way, but it is thin, from few sources, or not yet replicated.",
+  mixed: "Substantial evidence on both sides.",
+  weakly_supported: "Some evidence, but weak: small, indirect, or from interested parties.",
+  contradicted: "The evidence available goes against it.",
+  unresolved: "The claim is well posed, and the evidence does not settle it either way.",
+  presently_untestable: "No test that could decide it is available yet.",
+  misframed: "The proposition fuses separate claims or cannot be tested as written.",
+  provenance_failure: "The material it rests on cannot be authenticated, so its support cannot be examined.",
+};
+
 /** Claim provenance / review state. Displayed honestly in the UI. */
 export const ReviewState = z.enum([
   "ai_extracted",

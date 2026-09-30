@@ -189,9 +189,9 @@ export function opsFeed(limit = 40): OpsEvent[] {
       kind: "arbiter",
       title: `Arbiter ${r.verdict === "pass" ? "passed" : "parked"} PR #${r.pr}${r.verdict === "park" && r.outcome === "merged" ? " — founder merged anyway (dry period)" : ""}`,
       detail: r.reason,
-      // Full seat-by-seat reasoning renders on this page (The gate);
-      // the PR itself stays one hop away as the source record.
-      href: `/operations/#arbiter-pr-${r.pr}`,
+      // Full seat-by-seat reasoning is on the verdict's own page; the PR
+      // itself stays one hop away as the source record.
+      href: `/operations/gate/${r.pr}/`,
       sourceHref: r.url,
       sourceLabel: `PR #${r.pr}`,
     });

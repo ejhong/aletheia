@@ -1,50 +1,53 @@
+import type { Metadata } from "next";
 import Link from "next/link";
-import { CaseCard } from "@/src/components/CaseCard";
-import { ChangeTimeline } from "@/src/components/ChangeTimeline";
+import { CaseGrid } from "@/src/components/CaseGrid";
+import { VerdictMoves } from "@/src/components/VerdictMoves";
 import { assetPath } from "@/src/config/assets";
 import { site } from "@/src/config/site";
-import { caseCover, loadAllCases, siteImage } from "@/src/domain/load";
-import { crossModelSummary } from "@/src/domain/standing";
-import { isHousekeepingEntry, recentChanges } from "@/src/domain/history";
-import { caseQuestion } from "@/src/domain/editions";
-import { caseView, reviewCoverage } from "@/src/domain/view";
+import { liveClaims, liveEvidence, loadAllCases, siteImage } from "@/src/domain/load";
+import { recentMoves } from "@/src/domain/moves";
+
+/** The front page keeps the site's own title and card (app/layout.tsx) and states its address. */
+export const metadata: Metadata = { alternates: { canonical: "/" } };
+
+/** Editions shown under "Where the assessments moved"; each case's page has its whole history. */
+const MOVES_SHOWN = 6;
 
 export default function HomePage() {
   const cases = loadAllCases();
   const divider = siteImage("IMG-SITE-DIVIDER-STRATA");
   const tailpiece = siteImage("IMG-SITE-TAILPIECE");
-  // Epistemic changes lead the homepage feed; artwork/tooling entries stay
-  // on each case's own history. At least one slot per live case, so a new
-  // case's launch always shows.
-  const contentOnly = cases.map((c) => ({
-    record: c.record,
-    history: c.history.filter((h) => !isHousekeepingEntry(h)),
-  }));
-  const feed = recentChanges(contentOnly, Math.max(4, cases.length));
-  const housekeepingCount = cases.reduce(
-    (n, c) => n + c.history.filter(isHousekeepingEntry).length,
-    0,
-  );
+  const moved = recentMoves(cases, MOVES_SHOWN);
+  const totals = {
+    claims: cases.reduce((n, c) => n + liveClaims(c).length, 0),
+    evidence: cases.reduce((n, c) => n + liveEvidence(c).length, 0),
+    sources: cases.reduce((n, c) => n + c.sources.length, 0),
+  };
 
   return (
     <div>
-      <section className="mx-auto max-w-6xl px-5 pt-10 sm:pt-12 pb-8">
+      <section className="mx-auto max-w-6xl px-5 pt-10 sm:pt-14 pb-10">
         <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-copper">
           {site.subtitle}
         </p>
-        <h1 className="font-serif text-2xl sm:text-3xl tracking-tight mt-3 leading-[1.15] max-w-2xl">
+        <h1 className="font-serif text-3xl sm:text-[2.6rem] tracking-tight mt-3 leading-[1.12] max-w-3xl">
           Controversies are argued at the wrong scale. We take them apart.
         </h1>
-        <p className="mt-4 text-[15px] leading-relaxed text-ink-soft max-w-2xl">
+        <p className="mt-5 text-[16px] leading-relaxed text-ink-soft max-w-2xl">
           {site.mission}
         </p>
-        <p className="mt-4 flex flex-wrap gap-x-8 gap-y-2">
+        <p className="mt-5 flex flex-wrap items-baseline gap-x-8 gap-y-2">
           <Link
             href="/method/"
             className="font-mono text-[11px] uppercase tracking-[0.14em] text-copper underline underline-offset-4 hover:text-ink"
           >
             How the atlas works →
           </Link>
+          {cases.length > 0 ? (
+            <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-faint">
+              {cases.length} cases · {totals.claims} claims · {totals.evidence} evidence records · {totals.sources} sources
+            </span>
+          ) : null}
         </p>
       </section>
 
@@ -71,36 +74,32 @@ export default function HomePage() {
             </p>
           </div>
         ) : null}
-        <div className="grid sm:grid-cols-2 gap-4">
-          {cases.map((c) => {
-            const view = caseView(c);
-            const sum = crossModelSummary(c);
-            return (
-              <CaseCard
-                key={c.record.id}
-                record={c.record}
-                question={caseQuestion(c)}
-                components={view.header.components}
-                priority={view.header.researchPriority?.level ?? null}
-                verdict={view.assessment?.caseAssessment.verdict ?? null}
-                standing={view.standing?.status ?? null}
-                reviewCoverage={reviewCoverage(view)}
-                check={
-                  sum
-                    ? {
-                        models: sum.models.length,
-                        concur: sum.caseUnanimousWithDisplayed,
-                      }
-                    : null
-                }
-                cover={caseCover(c)}
-              />
-            );
-          })}
+        <CaseGrid cases={cases} />
+      </section>
+
+      <section className="mx-auto max-w-6xl px-5 pt-10 pb-4">
+        <div className="max-w-3xl">
+          <h2 className="font-serif text-3xl tracking-tight">Where the assessments moved</h2>
+          <p className="mt-2 text-[15px] leading-relaxed text-ink-soft">
+            A map that never changes its mind is not tracking anything. These
+            are the latest editions that changed a verdict, with the word
+            before and the word after. Each case keeps its whole history.
+          </p>
+          <div className="mt-7">
+            {moved.length === 0 ? (
+              <p className="text-[14px] text-ink-soft">
+                No verdict has moved yet. When an edition changes what a case
+                or a claim is judged to be, the move appears here with the
+                word before and the word after.
+              </p>
+            ) : (
+              <VerdictMoves editions={moved} perEdition={3} />
+            )}
+          </div>
         </div>
       </section>
 
-      <section className="bg-dossier text-dossier-text mt-10">
+      <section className="bg-dossier text-dossier-text mt-12">
         <div className="mx-auto max-w-6xl px-5 py-12">
           <h2 className="font-mono text-[11px] uppercase tracking-[0.2em] text-copper">
             how the atlas works
@@ -121,7 +120,7 @@ export default function HomePage() {
               ],
               [
                 "04 · Honest provenance",
-                "Every case shows two outputs — what the evidence supports today, and how valuable resolving it would be. Assessments are labeled AI draft until a named human endorses them, and independent models from rival vendors re-judge each case blind; where they disagree is published, not smoothed over.",
+                "The site is written, checked and maintained by AI, and says so on every page. No assessment stands on one model's word: models from rival vendors judge each case blind, and where they disagree is published, not smoothed over. Every run and every refusal is on the record.",
               ],
             ].map(([title, text]) => (
               <div key={title} className="bg-dossier-soft p-6">
@@ -142,7 +141,14 @@ export default function HomePage() {
             >
               methodology
             </Link>
-            , including exactly how AI is and is not used.
+            , including exactly how AI is and is not used, or watch it work on the{" "}
+            <Link
+              href="/operations/"
+              className="underline decoration-copper/60 underline-offset-2 hover:text-dossier-text"
+            >
+              operations page
+            </Link>
+            .
           </p>
         </div>
       </section>
@@ -158,30 +164,8 @@ export default function HomePage() {
         />
       </div>
 
-      <section className="mx-auto max-w-6xl px-5 py-12">
-        <h2 className="font-mono text-[11px] uppercase tracking-[0.2em] text-faint mb-6">
-          recent changes · evidence &amp; assessments
-        </h2>
-        {feed.length === 0 ? (
-          <p className="text-[14px] text-ink-soft max-w-2xl">
-            No published changes yet. When cases go live, every change to a
-            claim, evidence record, or assessment appears here with its date,
-            reason, and the AI&apos;s role — the change history is part of the
-            publication.
-          </p>
-        ) : (
-          <ChangeTimeline entries={feed} />
-        )}
-        {housekeepingCount > 0 ? (
-          <p className="mt-5 font-mono text-[10px] uppercase tracking-[0.14em] text-faint">
-            + {housekeepingCount} housekeeping changes (artwork, tooling) —
-            recorded in each case&apos;s full history
-          </p>
-        ) : null}
-      </section>
-
       {/* tailpiece ornament */}
-      <div aria-hidden className="mx-auto max-w-xs px-5 pb-4">
+      <div aria-hidden className="mx-auto max-w-xs px-5 pt-10 pb-4">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={assetPath(tailpiece.file)}

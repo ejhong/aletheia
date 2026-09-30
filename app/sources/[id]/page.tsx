@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/src/config/meta";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { EvidenceCard } from "@/src/components/EvidenceCard";
@@ -7,6 +8,7 @@ import { VerificationBadge } from "@/src/components/VerificationBadge";
 import { liveEvidence, loadAllCases } from "@/src/domain/load";
 import { paramsOrPlaceholder } from "@/src/domain/staticExport";
 import type { LoadedCase, Source } from "@/src/domain/schema";
+import { clip } from "@/src/domain/text";
 
 function allSources(): { source: Source; loaded: LoadedCase }[] {
   return loadAllCases().flatMap((loaded) =>
@@ -26,7 +28,17 @@ export function generateMetadata({
 }: {
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
-  return params.then(({ id }) => ({ title: `Source ${id}` }));
+  return params.then(({ id }) => {
+    const entry = allSources().find(({ source }) => source.id === id);
+    if (!entry) return { title: `Source ${id}` };
+    const { source, loaded } = entry;
+    const by = [source.authors[0] ?? source.organization, source.year].filter(Boolean).join(", ");
+    return pageMeta({
+      title: `${clip(source.title, 90)} (${id})`,
+      description: `${by ? `${by}. ` : ""}A source in the case “${loaded.record.title}”, with the evidence drawn from it.`,
+      path: `/sources/${id}/`,
+    });
+  });
 }
 
 export default async function SourcePage({

@@ -39,7 +39,8 @@ export function loadArbiterRecords(): ArbiterRecord[] {
         throw new Error(`governance/arbiter/${f}: ${parsed.error.issues.map((i) => i.message).join("; ")}`);
       return parsed.data;
     })
-    .sort((a, b) => b.outcomeAt.localeCompare(a.outcomeAt));
+    // Newest outcome first; on one day, the later pull request first.
+    .sort((a, b) => b.outcomeAt.localeCompare(a.outcomeAt) || b.pr - a.pr);
 }
 
 const NOTES_DIR = path.join(process.cwd(), "governance", "review-notes");

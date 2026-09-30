@@ -49,9 +49,9 @@ export function RecordPanel({ sittings, slug, caseDir, linkable }: { sittings: S
   const fileUrl = `${site.repoUrl}/blob/main/content/cases/${caseDir}/dispositions.yaml`;
   return (
     <section id="record" className="pt-14 scroll-mt-28">
-      <h2 className="font-serif text-3xl tracking-tight mb-2">The record</h2>
+      <h2 className="font-serif text-3xl tracking-tight mb-2">Run by run</h2>
       <p className="text-[14px] text-ink-soft max-w-2xl mb-6">
-        Every sitting on this case, newest first: what it proposed, what it admitted, and what it refused with the reason the verifier wrote. A candidate that is not on the ledger is here, with why.{" "}
+        Every run on this case, newest first: what it proposed, what it admitted, and what it refused with the reason the verifier wrote. A candidate that is not on the ledger is here, with why.{" "}
         <a href={fileUrl} className="underline underline-offset-2 hover:text-copper">The dispositions file</a> holds every row.
       </p>
       {sittings.length === 0 ? <p className="text-[13.5px] text-ink-soft">No sitting has run on this case yet.</p> : null}

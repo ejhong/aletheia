@@ -16,7 +16,7 @@ const voteChip: Record<string, string> = {
   unsure: "text-ochre border-ochre/40",
 };
 
-export function ArbiterVerdictCard({ record }: { record: ArbiterRecord }) {
+export function ArbiterVerdictCard({ record, open = false }: { record: ArbiterRecord; /** Every seat's reasoning shown open — on the verdict's own page. */ open?: boolean }) {
   const parked = record.verdict === "park";
   return (
     <article
@@ -51,7 +51,7 @@ export function ArbiterVerdictCard({ record }: { record: ArbiterRecord }) {
 
       <div className="mt-3 space-y-1.5">
         {record.seats.map((s) => (
-          <details key={s.seat} className="group border-t border-line/50 pt-1.5">
+          <details key={s.seat} open={open} className="group border-t border-line/50 pt-1.5">
             <summary className="cursor-pointer list-none [&::-webkit-details-marker]:hidden flex flex-wrap items-center gap-2 py-0.5">
               <span
                 aria-hidden

@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { AssessmentBadge } from "./AssessmentBadge";
-import { LinkedRecordText } from "./LinkedRecordText";
+import { Lede } from "./Lede";
 import { assessmentLabels, type AssessmentRun, type Claim } from "@/src/domain/schema";
-import { seatRelation, type CrossModelSummary, type Ratification } from "@/src/domain/standing";
+import { RATIFICATION_MIN_PANEL, seatRelation, standingGlosses, standingInWords, type CrossModelSummary, type Ratification } from "@/src/domain/standing";
+import { clip, longDate } from "@/src/domain/text";
 
 /** "GPT-5.1 (OpenAI), independent judge run" → "GPT-5.1 (OpenAI)". */
 function shortModel(label: string): string {
@@ -17,17 +18,26 @@ function shortModel(label: string): string {
  * disputes — with the split claims and the standing that follows. What
  * the AI thinks and what the panel thinks, first (founder direction,
  * 2026-09-09, in session).
+ *
+ * The judgment opens with its first sentences and keeps its full reasoning
+ * behind a disclosure, with what it leans on and where it is weakest; the
+ * record ids in the prose are links, set quietly. A seat that judged an
+ * earlier state of the case is shown as that — its word is on the record
+ * and does not count toward the standing until it judges the case again.
  */
 export function StandingPanel({
   run,
   standing,
   checks,
+  current,
   summary,
   claims,
 }: {
   run: AssessmentRun;
   standing: Ratification;
   checks: AssessmentRun[];
+  /** Run ids of the checks that judged the case as it stands (standing.ts, currentChecks). */
+  current: string[];
   summary: CrossModelSummary | null;
   claims: Claim[];
 }) {
@@ -42,14 +52,20 @@ export function StandingPanel({
       {id}
     </Link>
   );
+  /** A claim named by what it says, with its id as the way in. */
+  const named = (id: string) => (
+    <li key={id} className="text-[13px] leading-snug text-ink-soft">
+      <Link href={`/claims/${id}/`} className="hover:text-copper">
+        <span className="font-mono text-[10px] tracking-[0.1em] text-faint mr-2">{id}</span>
+        {clip(claimById.get(id)?.statement ?? "", 120)}
+      </Link>
+    </li>
+  );
   const displayed = run.caseAssessment.verdict;
+  const isCurrent = new Set(current);
+  const stale = checks.filter((c) => !isCurrent.has(c.runId));
   const splitIds = [...new Set([...standing.contestedLoadBearing, ...(summary?.splitClaimIds ?? [])])];
-  const standingLine =
-    standing.status === "ratified"
-      ? `ratified · ${standing.agreeing} of ${standing.panel} independent seats within one step · ${standing.checksDate}`
-      : standing.status === "contested"
-        ? `contested · ${standing.reason}`
-        : `not yet ratified · ${standing.reason}`;
+  const prose = "text-[15px] leading-[1.75] text-ink-soft";
 
   return (
     <section className="border border-line bg-paper-deep/50">
@@ -57,76 +73,92 @@ export function StandingPanel({
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <AssessmentBadge state={displayed} size="lg" />
-            <h3 className="font-serif text-xl">The judgment</h3>
+            <h2 className="font-serif text-2xl tracking-tight">The judgment</h2>
           </div>
-          <p className={`font-mono text-[10px] uppercase tracking-[0.14em] ${standing.status === "ratified" ? "text-copper" : "text-ochre"}`}>{standingLine}</p>
+          <p
+            title={standingGlosses[standing.status]}
+            className={`font-mono text-[10px] uppercase tracking-[0.14em] ${standing.status === "ratified" ? "text-copper" : "text-ochre"}`}
+          >
+            {standingInWords(standing)}
+            {standing.status === "ratified" && standing.checksDate ? ` · ${longDate(standing.checksDate)}` : ""}
+          </p>
         </div>
         {/* AGENTS.md §4 and §7: an AI assessment is labeled as one, and never implied to be a reviewed human conclusion —
             separately from the ratification, which is independent models concurring, not a human review. */}
         <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.14em] text-faint">
-          an AI-generated assessment · not reviewed by a human ·{" "}
-          {standing.status === "ratified" ? "ratified by independent models, which is not human review" : "not yet independently ratified"}
+          an AI-generated assessment · not reviewed by a human
+          {standing.status === "ratified" ? " · ratified by independent models, which is not human review" : ""}
         </p>
-        <p className="mt-4 text-[15px] leading-[1.75] text-ink-soft whitespace-pre-line">
-          <LinkedRecordText text={run.caseAssessment.synthesis} />
-        </p>
+        <div className="mt-4 max-w-4xl">
+          <Lede text={run.caseAssessment.synthesis} max={460} more="the full reasoning" quiet className={prose}>
+            <div className="mt-5 grid sm:grid-cols-2 gap-x-8 gap-y-5">
+              <div>
+                <h3 className="font-mono text-[10px] uppercase tracking-[0.16em] text-faint">the claims the case rests on</h3>
+                <ul className="mt-2 space-y-1.5">{run.caseAssessment.loadBearing.map(named)}</ul>
+              </div>
+              <div>
+                <h3 className="font-mono text-[10px] uppercase tracking-[0.16em] text-faint">its weakest links</h3>
+                <ul className="mt-2 space-y-1.5">{run.caseAssessment.weakestLinks.map(named)}</ul>
+              </div>
+            </div>
+          </Lede>
+        </div>
         {run.caseAssessment.steelman && (
-          <div className="mt-5 border-l-2 border-copper/50 pl-4">
-            <h4 className="font-mono text-[10px] uppercase tracking-[0.16em] text-faint">the steelman — the strongest argument this judgment does not answer</h4>
-            <p className="mt-1.5 text-[14px] leading-[1.7] text-ink-soft">
-              <LinkedRecordText text={run.caseAssessment.steelman} />
-            </p>
+          <div className="mt-6 max-w-4xl border-l-2 border-copper/50 pl-4">
+            <h3 className="font-mono text-[10px] uppercase tracking-[0.16em] text-faint">the steelman — the strongest argument this judgment does not answer</h3>
+            <div className="mt-1.5">
+              <Lede text={run.caseAssessment.steelman} max={340} quiet className="text-[14px] leading-[1.7] text-ink-soft" />
+            </div>
           </div>
         )}
-        <div className="mt-5 grid sm:grid-cols-2 gap-4">
-          <div>
-            <h4 className="font-mono text-[10px] uppercase tracking-[0.16em] text-faint">load-bearing claims</h4>
-            <div className="mt-1.5 flex flex-wrap gap-1.5">{run.caseAssessment.loadBearing.map(chip)}</div>
-          </div>
-          <div>
-            <h4 className="font-mono text-[10px] uppercase tracking-[0.16em] text-faint">weakest links</h4>
-            <div className="mt-1.5 flex flex-wrap gap-1.5">{run.caseAssessment.weakestLinks.map(chip)}</div>
-          </div>
-        </div>
       </div>
 
-      <div className="border-t border-line px-5 sm:px-7 py-4">
+      <div className="border-t border-line px-5 sm:px-7 py-5">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
-          <h3 className="font-serif text-lg">The panel</h3>
+          <h2 className="font-serif text-xl tracking-tight">The panel</h2>
           <Link href="/operations#standings" className="font-mono text-[10px] uppercase tracking-[0.14em] text-copper hover:underline underline-offset-4">
-            {checks.length} independent seats, blind to this judgment → all standings
+            all standings →
           </Link>
         </div>
-        {checks.length === 0 ? (
-          <p className="mt-2 text-[13.5px] text-ink-soft">No independent seat has judged the case as it stands.</p>
-        ) : null}
-        <div className="mt-2">
+        <p className="mt-1 text-[13.5px] leading-relaxed text-ink-soft max-w-3xl">
+          {checks.length === 0
+            ? "No independent model has judged this case yet."
+            : `${checks.length} AI models from different vendors each judged the evidence without seeing this judgment or one another. A model concurs when its verdict is within one step of the one above.`}
+        </p>
+        <div className="mt-3">
           {checks.map((c) => {
+            const counted = isCurrent.has(c.runId);
             const relation = seatRelation(c.caseAssessment.verdict, displayed);
             return (
               <details key={c.runId} id={`check-${c.runId}`} className="group border-b border-line/60 last:border-b-0">
-                <summary className="flex cursor-pointer flex-wrap items-center gap-2.5 py-2 list-none [&::-webkit-details-marker]:hidden">
-                  <span aria-hidden className="font-mono text-[10px] text-faint transition-transform group-open:rotate-90">▸</span>
-                  <span className="font-mono text-[11px] tracking-[0.06em] text-ink-soft w-[11rem] shrink-0">{shortModel(c.model)}</span>
-                  <AssessmentBadge state={c.caseAssessment.verdict} />
-                  <span className={`font-mono text-[10px] uppercase tracking-[0.14em] ${relation === "concurs" ? "text-copper" : "text-ochre"}`}>{relation}</span>
-                  <span className="text-[13px] text-ink-soft min-w-0 truncate max-w-full">{c.caseAssessment.synthesis.split(/(?<=[.!?])\s+/)[0]}</span>
+                <summary className="cursor-pointer py-2.5 list-none [&::-webkit-details-marker]:hidden">
+                  <span className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+                    <span aria-hidden className="font-mono text-[10px] text-faint transition-transform group-open:rotate-90">▸</span>
+                    <span className="font-mono text-[11px] tracking-[0.06em] text-ink-soft">{shortModel(c.model)}</span>
+                    <AssessmentBadge state={c.caseAssessment.verdict} />
+                    {counted ? (
+                      <span className={`font-mono text-[10px] uppercase tracking-[0.14em] ${relation === "concurs" ? "text-copper" : "text-ochre"}`}>{relation}</span>
+                    ) : (
+                      <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-faint">judged an earlier version</span>
+                    )}
+                  </span>
+                  <span className="mt-1 block truncate pl-[1.15rem] text-[13px] text-ink-soft group-open:hidden">{c.caseAssessment.synthesis.split(/(?<=[.!?])\s+/)[0]}</span>
                 </summary>
-                <div className="pb-4 pl-6">
+                <div className="pb-4 pl-6 max-w-4xl">
                   <p className="text-[14px] leading-[1.7] text-ink-soft whitespace-pre-line">{c.caseAssessment.synthesis}</p>
                   {c.caseAssessment.steelman && (
                     <div className="mt-3 border-l-2 border-copper/50 pl-3">
-                      <h4 className="font-mono text-[10px] uppercase tracking-[0.16em] text-faint">its steelman</h4>
+                      <h3 className="font-mono text-[10px] uppercase tracking-[0.16em] text-faint">its steelman</h3>
                       <p className="mt-1 text-[13.5px] leading-[1.65] text-ink-soft">{c.caseAssessment.steelman}</p>
                     </div>
                   )}
                   <div className="mt-3 grid sm:grid-cols-2 gap-3">
                     <div>
-                      <h4 className="font-mono text-[10px] uppercase tracking-[0.16em] text-faint">it saw as load-bearing</h4>
+                      <h3 className="font-mono text-[10px] uppercase tracking-[0.16em] text-faint">it saw as load-bearing</h3>
                       <div className="mt-1 flex flex-wrap gap-1.5">{c.caseAssessment.loadBearing.map(chip)}</div>
                     </div>
                     <div>
-                      <h4 className="font-mono text-[10px] uppercase tracking-[0.16em] text-faint">it saw as weakest links</h4>
+                      <h3 className="font-mono text-[10px] uppercase tracking-[0.16em] text-faint">it saw as weakest links</h3>
                       <div className="mt-1 flex flex-wrap gap-1.5">{c.caseAssessment.weakestLinks.map(chip)}</div>
                     </div>
                   </div>
@@ -136,7 +168,7 @@ export function StandingPanel({
             );
           })}
         </div>
-        {summary ? (
+        {summary && stale.length === 0 ? (
           <p className="mt-3 text-[13px] leading-relaxed text-ink-soft">
             Claim by claim, against this judgment: {summary.exact} of {summary.claimsCompared} exact, {summary.adjacent} within one step, {summary.split} split.
             {splitIds.length > 0 ? (
@@ -153,12 +185,17 @@ export function StandingPanel({
             ) : null}
           </p>
         ) : null}
-        {standing.staleSince ? (
-          <p className="mt-2 font-mono text-[11px] tracking-[0.06em] text-ochre">the case file has changed since this panel judged it ({standing.staleSince}); standing resets until a fresh check</p>
-        ) : null}
-        {standing.status !== "ratified" ? (
-          <p className="mt-2 border border-ochre/40 bg-ochre/8 px-4 py-2.5 font-mono text-[11px] tracking-[0.06em] text-ochre">
-            {standing.status === "contested" ? `Contested: ${standing.reason}. The disagreement is shown above, not resolved by hiding it.` : `Not yet ratified: ${standing.reason}.`}
+        {standing.status === "contested" ? (
+          <p className="mt-3 border border-ochre/40 bg-ochre/8 px-4 py-2.5 text-[13px] leading-relaxed text-ink-soft">
+            <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-ochre mr-2">contested</span>
+            {standing.reason}. The disagreement is shown here, not resolved by hiding it.
+          </p>
+        ) : standing.status === "unratified" ? (
+          <p className="mt-3 border border-ochre/40 bg-ochre/8 px-4 py-2.5 text-[13px] leading-relaxed text-ink-soft">
+            <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-ochre mr-2">not yet ratified</span>
+            {stale.length > 0
+              ? `${standing.staleSince === "the ledger changed" || !standing.staleSince ? "The case's evidence changed" : `The case file changed (${standing.staleSince})`} after ${stale.length === checks.length ? "these models" : `${stale.length} of these models`} judged it. Their verdicts stay on the record and do not count toward the standing until they judge the case as it now stands${standing.panel > 0 ? `; ${standing.panel} of the ${RATIFICATION_MIN_PANEL} a standing needs have` : ""}.`
+              : `${standing.reason.charAt(0).toUpperCase()}${standing.reason.slice(1)}.`}
           </p>
         ) : null}
       </div>

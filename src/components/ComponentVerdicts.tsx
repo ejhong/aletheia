@@ -1,5 +1,6 @@
 import { AssessmentBadge } from "./AssessmentBadge";
 import type { CaseComponent } from "@/src/domain/schema";
+import { withoutIdList } from "@/src/domain/text";
 
 /**
  * Component verdicts: the separable parts of a case question, each with
@@ -26,7 +27,8 @@ export function ComponentVerdicts({
           <span
             className={`text-[13px] ${dark ? "text-dossier-text/90" : "text-ink-soft"}`}
           >
-            {c.label}
+            {/* An assessment sometimes closes a label with the ids of the claims behind it; here they lead nowhere, and the ladder below names them. */}
+            {withoutIdList(c.label)}
           </span>
         </li>
       ))}

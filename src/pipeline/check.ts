@@ -9,7 +9,7 @@ import { seatsOwed } from "../domain/standing.ts";
 import { overlayRunId } from "../lib/overlay-ids.mjs";
 import { seatKey } from "../lib/seat-key.mjs";
 import { parseYamlReply } from "../lib/yaml-reply.mjs";
-import { loadProtocol, renderProtocol } from "./protocols.ts";
+import { loadProtocol, renderProtocol, type Protocol } from "./protocols.ts";
 import { closeRun, openRun, writeWorkingFile, type RunOutcome } from "./store.ts";
 import { BudgetExceeded } from "./budget.ts";
 import { assertSeatsWithinBudget, callSeat, seatAvailable, VENDORS, type Reply } from "./transport.ts";
@@ -48,6 +48,33 @@ const LEDGER_FILES = ["case.yaml", "claims.yaml", "evidence.yaml", "sources.yaml
 export function blindPacket(loaded: LoadedCase, root = process.cwd()): string {
   const dir = path.join(root, "content", "cases", loaded.dir);
   return LEDGER_FILES.map((f) => `===== FILE: ${f} =====\n${fs.readFileSync(path.join(dir, f), "utf8")}`).join("\n\n");
+}
+
+/**
+ * The featured claims that no admitted evidence record cites: held on their source alone, and a source is not
+ * evidence (AGENTS.md §3.6). Counted as the edition packet counts them (src/pipeline/packet.ts, `evidence: 0`): a
+ * rejected or provisional record is not an admitted one.
+ */
+export function unevidencedClaims(loaded: Pick<LoadedCase, "evidence">, featuredIds: string[]): string[] {
+  const cited = new Set(loaded.evidence.filter((e) => e.reviewState !== "rejected" && e.reviewState !== "provisional").flatMap((e) => e.claimIds));
+  return featuredIds.filter((id) => !cited.has(id));
+}
+
+/**
+ * A check protocol's instructions for one case on one day. Every placeholder a check protocol may use is filled
+ * here. `unevidencedIds` is filled whether or not the protocol asks for it: check-v2 does not, and the draft that an
+ * experiment designed on 2026-09-30 is to test does (proposals/assessment-experiments/).
+ */
+export function checkInstructions(protocol: Protocol, loaded: LoadedCase, featuredIds: string[], date: string): string {
+  return renderProtocol(protocol, {
+    title: loaded.record.title,
+    today: date,
+    promptVersion: protocol.version,
+    verdicts: VERDICTS.join(" | "),
+    featuredCount: featuredIds.length,
+    featuredIds: featuredIds.join(", "),
+    unevidencedIds: unevidencedClaims(loaded, featuredIds).join(", ") || "none",
+  });
 }
 
 /** A reply's YAML, with a code fence and up to five trailing non-YAML lines (vendor footers) tolerated (src/lib/yaml-reply.mjs). */
@@ -137,14 +164,7 @@ export async function runCheck(caseKey: string, opts: CheckOptions = {}): Promis
   const heldNote = held.length ? `; not asked, having judged this ledger already: ${held.join(", ")}` : "";
   const run = openRun("check", loaded.record.slug, { model: `panel: ${active.join(", ") || "no seat asked"}`, promptVersion: protocol.version }, { now: now(), root });
   const { runId, date } = run;
-  const instructions = renderProtocol(protocol, {
-    title: loaded.record.title,
-    today: date,
-    promptVersion: protocol.version,
-    verdicts: VERDICTS.join(" | "),
-    featuredCount: featuredIds.length,
-    featuredIds: featuredIds.join(", "),
-  });
+  const instructions = checkInstructions(protocol, loaded, featuredIds, date);
   const packet = blindPacket(loaded, root);
   // The run record carries the hash of the case file every seat is sent (the packet: not the seat's own header, and
   // not the instructions, which carry the date). Two runs with one hash were sent the same file, and the record says

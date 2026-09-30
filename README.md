@@ -2,9 +2,9 @@
 
 **Contested claims, mapped to evidence and experiments.**
 
-Aletheia decomposes contested hypotheses into atomic claims, maps the evidence for and against each one with honest provenance labels, and points at the test that would settle the dispute. It is operated by AI as a declared experiment: every consequential change is judged by a panel of independent models against the constitution in `AGENTS.md`, and the whole record — verdicts, dissents, reverts — is public in this repository and on the site's `/panel` page.
+Aletheia decomposes contested hypotheses into atomic claims, maps the evidence for and against each one with honest provenance labels, and points at the test that would settle the dispute. It is operated by AI as a declared experiment: every consequential change is judged by a panel of independent models against the constitution in `AGENTS.md`, and the whole record — verdicts, dissents, reverts — is public in this repository and on the site's `/operations` page.
 
-Ten cases are live (`content/cases/`): megalithic casting, vasocomputation, Orch OR, VASCO transients, the Model of Pragmatic Information, Zero Worlds, Conformal Cyclic Cosmology, the Younger Dryas impact hypothesis, the Immortality Key, and the pre-Columbian Amazon.
+Eleven cases are live (`content/cases/`): megalithic casting, vasocomputation, Orch OR, VASCO transients, the Model of Pragmatic Information, Zero Worlds, Conformal Cyclic Cosmology, the Younger Dryas impact hypothesis, the Immortality Key, the pre-Columbian Amazon, and Deep Memory.
 
 ## Three documents
 
@@ -36,7 +36,7 @@ Three zones, one-way flow:
 
 1. **Content** (`content/cases/<case>/`) — YAML + markdown per case: `case.yaml`, `editions/` (the current telling: article with `[text]{claim=GEO-C001}` refs), `claims.yaml`, `evidence.yaml`, `sources.yaml`, `research.yaml`, `history.yaml`, optional `studies/`, `inputs/`, `watch.yaml`, `resources.yaml`, and append-only AI assessment overlays in `assessments/<runId>.yaml`.
 2. **Domain** (`src/domain/`) — Zod schemas, the loader (fails the build on dangling IDs, uncited sources, or unresolved claim refs), derived standing and governance.
-3. **UI** (`src/components/`, `app/`) — pure components, one per domain concept. Routes: home, cases, case page, claim explorer, claim detail, source record, study, resources, proposals, panel, method.
+3. **UI** (`src/components/`, `app/`) — pure components, one per domain concept. Routes: home, cases, the case page (for reading the case) with its claim explorer, evidence ledger, resources, studies and record (how it was made, run by run); claim detail; source record; method; operations, with a page for each of the gate's verdicts; a sitemap and a feed of the verdicts that moved.
 
 Dependencies are deliberately minimal: Next.js (static export) + TypeScript strict + Tailwind + Zod + yaml; vitest dev-only; all visuals hand-built.
 
@@ -58,4 +58,4 @@ Two registers, never confused (full rules in `docs/IMAGE_STYLE.md`): AI-generate
 | `governance/arbiter/` | Harvested panel verdicts, one per settled PR |
 | `research/` | The founder's own essays and commissioned reports (founding inputs for cases) |
 | `briefs/` | Chat-seeded case briefs in progress (never citable) |
-| `scripts/` | The loops; shared, tested logic in `scripts/lib/` |
+| `scripts/` | Entry points only (the CLI, the arbiter, the harvest); the logic they share is in `src/` |

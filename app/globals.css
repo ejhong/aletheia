@@ -6,13 +6,47 @@
    Turbopack's subprocess deadline and fails the build. */
 @source not "../briefs";
 
+/*
+ * The text colours that have to be read, by register. Each is a variable so
+ * the dossier register can give its own: the paper register's accents are
+ * dark tones made for a light page, and on the dossier's near-black they
+ * fell to contrast ratios of about 3:1 — the verdict badge at the head of
+ * every case among them. On paper, "faint" (3.6:1) and ochre (3.9:1) were
+ * below the 4.5:1 that small text needs, and copper fell below it on the
+ * deeper paper of a panel (4.3:1); the three are deepened. Every pair here
+ * now meets it on every ground it is set on (src/domain/reading.test.ts
+ * holds the figures).
+ */
+:root,
+.bg-paper,
+.bg-paper-deep {
+  --ink-faint: #6b6353;
+  --accent-copper: #955730;
+  --accent-ochre: #7f6117;
+  --accent-verdigris: #47705f;
+  --accent-terracotta: #8e4a38;
+  --accent-slate: #5d6672;
+}
+
+/* Everything set on the dossier's dark ground reads in the dossier's tints;
+   a paper-ground box set inside it (the rule above) reads in paper's again. */
+.bg-dossier,
+.bg-dossier-soft {
+  --ink-faint: #a1977f;
+  --accent-copper: #d08a5c;
+  --accent-ochre: #cfa544;
+  --accent-verdigris: #7fb39d;
+  --accent-terracotta: #d68a73;
+  --accent-slate: #9aa5b3;
+}
+
 @theme inline {
   /* Paper register */
   --color-paper: #f6f1e8;
   --color-paper-deep: #ede6d8;
   --color-ink: #201b12;
   --color-ink-soft: #4c453a;
-  --color-faint: #877e6c;
+  --color-faint: var(--ink-faint);
   --color-line: #d9d0be;
 
   /* Dossier register */
@@ -23,11 +57,11 @@
   --color-dossier-faint: #a1977f;
 
   /* Accents (muted, non-moralizing) */
-  --color-copper: #9a5b33;
-  --color-ochre: #96731f;
-  --color-verdigris: #47705f;
-  --color-terracotta: #8e4a38;
-  --color-slate-mist: #5d6672;
+  --color-copper: var(--accent-copper);
+  --color-ochre: var(--accent-ochre);
+  --color-verdigris: var(--accent-verdigris);
+  --color-terracotta: var(--accent-terracotta);
+  --color-slate-mist: var(--accent-slate);
 
   --font-serif: var(--font-newsreader), "Iowan Old Style", Georgia, serif;
   --font-sans: system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -53,26 +87,31 @@ body {
   font-style: italic;
 }
 
-/* Plate captions sit inside article prose but must stay small metadata. */
+/* Plate captions are small metadata wherever a plate is set: inside article
+   prose, where they must not take the prose's size, and on a claim's page,
+   where they had no style at all and read larger than the text around them. */
+.plate-caption-label,
 .article-prose .plate-caption-label {
   font-family: var(--font-mono);
-  font-size: 0.5625rem;
+  font-size: 0.625rem;
   line-height: 1.4;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--color-copper);
 }
 
+.plate-caption-text,
 .article-prose .plate-caption-text {
   font-family: var(--font-sans);
-  font-size: 0.6875rem;
+  font-size: 0.8125rem;
   line-height: 1.55;
   color: var(--color-ink-soft);
 }
 
+.plate-caption-credit,
 .article-prose .plate-caption-credit {
   font-family: var(--font-mono);
-  font-size: 0.5625rem;
+  font-size: 0.625rem;
   line-height: 1.45;
   letter-spacing: 0.06em;
   color: var(--color-faint);

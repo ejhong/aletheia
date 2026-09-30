@@ -53,7 +53,7 @@ export function SectionNav({
       className="border-b border-line bg-paper sticky top-16 z-10"
     >
       <div className="mx-auto max-w-6xl px-5 overflow-x-auto">
-        <div className="flex gap-6 py-3 whitespace-nowrap">
+        <div className="flex gap-5 py-3 whitespace-nowrap">
           {sections.map(([id, label]) => (
             <a
               key={id}
@@ -68,7 +68,7 @@ export function SectionNav({
               {label}
             </a>
           ))}
-          <span className="ml-auto flex gap-5">
+          <span className="ml-auto flex gap-4 pl-4">
             {hasStudies ? (
               <Link
                 href={`/cases/${slug}/studies/`}
@@ -78,22 +78,28 @@ export function SectionNav({
               </Link>
             ) : null}
             <Link
+              href={`/cases/${slug}/claims/`}
+              className="font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-copper"
+            >
+              claims →
+            </Link>
+            <Link
+              href={`/cases/${slug}/evidence/`}
+              className="font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-copper"
+            >
+              ledger →
+            </Link>
+            <Link
               href={`/cases/${slug}/resources/`}
               className="font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-copper"
             >
               resources →
             </Link>
             <Link
-              href={`/cases/${slug}/evidence/`}
+              href={`/cases/${slug}/record/`}
               className="font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-copper"
             >
-              evidence →
-            </Link>
-            <Link
-              href={`/cases/${slug}/claims/`}
-              className="font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-copper"
-            >
-              claims →
+              record →
             </Link>
           </span>
         </div>

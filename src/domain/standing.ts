@@ -53,6 +53,25 @@ export interface Ratification {
 }
 
 /**
+ * The standing in a reader's words, for a badge line or a card. It names
+ * what the models did and nothing a human did: ratification is independent
+ * models concurring, never a human review (AGENTS.md §4, §7).
+ */
+export function standingInWords(r: Pick<Ratification, "status" | "agreeing" | "panel">, opts: { short?: boolean } = {}): string {
+  if (r.status === "ratified") return `ratified by ${r.agreeing} of ${r.panel} independent models`;
+  if (r.status === "contested") return opts.short ? "contested by the panel" : "contested: the independent models split";
+  if (opts.short) return "not yet ratified";
+  return r.panel > 0 ? `not yet ratified: only ${r.panel} independent model${r.panel === 1 ? " has" : "s have"} checked it as it stands` : "not yet ratified: awaiting an independent check of the case as it stands";
+}
+
+/** What each standing means, in one plain sentence, for tooltips and the method page. */
+export const standingGlosses: Record<RatificationStatus, string> = {
+  ratified: "At least four independent AI models from different vendors judged this case blind; all but at most one put it within one step of this verdict, and they do not split on a claim it rests on.",
+  contested: "Independent AI models judged this case blind and disagree with this assessment, on the case or on a claim it rests on. The disagreement is shown, not resolved.",
+  unratified: "No panel of independent models has judged the case as it now stands, usually because its evidence changed after the last check.",
+};
+
+/**
  * A reconsideration draft is the one deliberately non-blind draft in the
  * pipeline (the `edition` verb's reconsideration, formerly scripts/reconcile-contested.mjs): written with the panel's
  * dissents in hand. Detected by the `reconciles` stamp; the promptVersion

@@ -556,6 +556,34 @@ Two passes, both views over state that already exists.
   from `proposals/`, `dispositions.yaml`, and `governance/`. At global
   level: seats, spend, the run ledger.
 
+**The review, done (2026-09-29).** With eight cases carrying editions the
+pipeline produced, the case page had become a log with an article inside
+it: on a phone the page for State, Not Scar was 122,000 pixels long, the
+article began seventeen screens down, and the first line under the header
+was the drafter's note to the panel. The order the founder set stays — the
+question, the judgment and the panel, then the telling — and each layer now
+keeps to its own place:
+
+- **The case page is for reading the case.** The header's three answers and
+  the judgment open with their first sentences and keep the rest behind a
+  disclosure (nothing is cut); a strip under the header says what this
+  edition changed its mind about, as verdicts that moved; the article has an
+  outline and a reading time; the agenda shows the studies that would move
+  the case most and folds the rest.
+- **The record is a page of its own** (`/cases/<slug>/record/`): how the
+  current edition was made, every run with what it admitted and what it
+  refused and why, and the whole changelog. The gate's verdicts are a page
+  each (`/operations/gate/<pr>/`), with how each seat has voted beside the
+  latest of them.
+- **The change history a reader is shown is verdicts that moved**
+  (`src/domain/moves.ts`), derived from the editions and the assessments
+  they adopt: on the home page across cases, on each case in full, and as a
+  feed (`/feed.xml`). The changelog says what the loop did; a move says
+  what it changed its mind about.
+- **The words are explained where they appear.** Every verdict word and
+  every standing has one plain sentence (`assessmentGlosses`,
+  `standingGlosses`), shown on the badge and listed on the method page.
+
 ## Constraints carried forward
 
 No new services, no databases: git as state, Actions as scheduler, YAML

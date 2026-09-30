@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/src/config/meta";
 import Link from "next/link";
-import { ArbiterVerdictCard } from "@/src/components/ArbiterVerdictCard";
 import { AssessmentBadge } from "@/src/components/AssessmentBadge";
+import { GateRow } from "@/src/components/GateRow";
 import { VerdictDot } from "@/src/components/VerdictDot";
+import { seatTallies, unanimousRejections, voteSummary } from "@/src/domain/gate";
 import { loadArbiterRecords } from "@/src/domain/governance";
 import { loadAllCases } from "@/src/domain/load";
 import { operationsView } from "@/src/domain/operations";
@@ -16,7 +18,14 @@ import {
   seatRecords,
 } from "@/src/domain/panel";
 
-export const metadata: Metadata = { title: "Operations" };
+export const metadata: Metadata = pageMeta({
+  title: "Operations",
+  description: "How Aletheia runs itself and how it is going: the state of the automation, what it has spent, what the panel of independent models has judged, and where they disagree.",
+  path: "/operations/",
+});
+
+/** Verdicts shown on this page; the gate's archive has every one. */
+const VERDICTS_SHOWN = 10;
 
 const statusChip: Record<string, string> = {
   ratified: "text-verdigris border-verdigris/40",
@@ -133,7 +142,7 @@ export default function OperationsPage() {
             <li key={r.runId} className="flex flex-wrap gap-x-3 gap-y-0.5 border-b border-line/60 last:border-b-0 px-4 py-2 text-[13px] leading-relaxed text-ink-soft">
               <span className="font-mono text-[10.5px] tracking-[0.06em] text-faint w-[6.5rem] shrink-0">{r.date}</span>
               <span className="font-mono text-[10.5px] uppercase tracking-[0.12em] text-copper w-[4.5rem] shrink-0">{r.verb}</span>
-              <Link href={`/cases/${r.case}/#sitting-${r.runId}`} className="w-[12rem] shrink-0 truncate hover:text-copper">{caseTitle(r.case)}</Link>
+              <Link href={`/cases/${r.case}/record/#sitting-${r.runId}`} className="w-[12rem] shrink-0 truncate hover:text-copper">{caseTitle(r.case)}</Link>
               <span className="min-w-0">
                 {r.summary}
                 {r.outcome !== "completed" ? <span className="ml-2 font-mono text-[10px] uppercase tracking-[0.12em] text-ochre">{r.outcome}</span> : null}
@@ -358,15 +367,66 @@ export default function OperationsPage() {
           <h2 className="font-serif text-3xl tracking-tight">The gate</h2>
           <p className="mt-2 text-[14px] text-ink-soft max-w-2xl">
             Every consequential change is judged by the constitutional panel
-            before it merges. Each verdict below is shown in full — every
-            seat&apos;s vote, the rules it cited, and its complete reasoning,
-            verbatim from the harvested record.
+            before it merges: {verdicts.filter((r) => r.verdict === "pass").length} passed
+            and {verdicts.filter((r) => r.verdict === "park").length} parked so far. The latest
+            are below; each opens to every seat&apos;s vote, the rules it
+            cited, and its reasoning in full.
           </p>
-          <div className="mt-6 space-y-4">
-            {verdicts.map((r) => (
-              <ArbiterVerdictCard key={r.pr} record={r} />
+          <ul className="mt-5 border border-line bg-paper">
+            {verdicts.slice(0, VERDICTS_SHOWN).map((r) => (
+              <GateRow key={r.pr} record={r} summary={voteSummary(r)} />
             ))}
+          </ul>
+          <p className="mt-3">
+            <Link href="/operations/gate/" className="font-mono text-[11px] uppercase tracking-[0.16em] text-copper underline underline-offset-4 hover:text-ink">
+              All {verdicts.length} verdicts →
+            </Link>
+          </p>
+
+          <h3 className="font-serif text-2xl tracking-tight mt-10">How each seat has voted</h3>
+          <p className="mt-2 text-[14px] text-ink-soft max-w-2xl">
+            A panel is only as independent as its seats are different. If one
+            seat does all the objecting, the others are agreeing rather than
+            judging, and this table is where that would show.
+          </p>
+          <div className="mt-4 overflow-x-auto">
+            <table className="w-full text-[13px]">
+              <thead>
+                <tr className="border-b border-line font-mono text-[10px] uppercase tracking-[0.14em] text-faint">
+                  <th className="text-left py-2 pr-4 font-normal">Seat</th>
+                  <th className="text-right px-3 font-normal">Judged</th>
+                  <th className="text-right px-3 font-normal">Complies</th>
+                  <th className="text-right px-3 font-normal">Unsure</th>
+                  <th className="text-right px-3 font-normal">Violates</th>
+                  <th className="text-right pl-3 font-normal">Objected alone</th>
+                </tr>
+              </thead>
+              <tbody>
+                {seatTallies(verdicts).map((t) => (
+                  <tr key={t.key} className="border-b border-line/60">
+                    <td className="py-2.5 pr-4 font-mono text-[12px]" title={t.labels.length > 1 ? `This seat has been held by: ${t.labels.join("; ")}` : undefined}>
+                      {t.label}
+                      {t.labels.length > 1 ? <span className="text-faint"> and {t.labels.length - 1} before it</span> : null}
+                    </td>
+                    <td className="text-right px-3">{t.judged}</td>
+                    <td className="text-right px-3">{t.complies}</td>
+                    <td className="text-right px-3">{t.unsure}</td>
+                    <td className="text-right px-3">{t.violates}</td>
+                    <td className="text-right pl-3">{t.alone}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
+          <p className="mt-3 text-[12.5px] leading-relaxed text-faint max-w-2xl">
+            Every seat voted &ldquo;violates&rdquo; on {unanimousRejections(verdicts).length} changes;
+            the panel must reject any edit to the constitution, which is the
+            founder&apos;s alone to make, so a unanimous rejection is usually that. A
+            seat that objects alone does not stop a change unless the
+            objection is to a fabrication, to material supplied in confidence,
+            or to an edit of the constitution; otherwise it is recorded as a
+            review note, above.
+          </p>
         </section>
       )}
 

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "@/src/config/meta";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AssessmentBadge } from "@/src/components/AssessmentBadge";
@@ -6,9 +7,11 @@ import { EvidenceCard } from "@/src/components/EvidenceCard";
 import { LinkedRecordText } from "@/src/components/LinkedRecordText";
 import { Plate } from "@/src/components/Plate";
 import { ProvenanceBadge } from "@/src/components/ProvenanceBadge";
-import { liveEvidence, liveClaims, loadAllCases } from "@/src/domain/load";
+import { caseCover, liveEvidence, liveClaims, loadAllCases } from "@/src/domain/load";
 import { paramsOrPlaceholder } from "@/src/domain/staticExport";
+import { clip } from "@/src/domain/text";
 import {
+  assessmentLabels,
   assessmentStateCaptions,
   claimTypeCaptions,
   directionLabels,
@@ -59,7 +62,20 @@ export function generateMetadata({
 }: {
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
-  return params.then(({ id }) => ({ title: `Claim ${id}` }));
+  // A claim shared as a link says what it claims and how it stands, not only its id.
+  return params.then(({ id }) => {
+    const found = findClaimView(loadAllCases(), id);
+    if (!found) return { title: `Claim ${id}` };
+    const { view, caseView: cv } = found;
+    const standing = view.verdict ? `${assessmentLabels[view.verdict]}. ` : "";
+    const cover = caseCover(cv.loaded);
+    return pageMeta({
+      title: `${clip(view.claim.statement, 90)} (${id})`,
+      description: `${standing}A claim in the case “${cv.loaded.record.title}”: ${clip(view.claim.statement, 220)}`,
+      path: `/claims/${id}/`,
+      image: cover ? { url: cover.file, alt: cover.alt } : null,
+    });
+  });
 }
 
 function DossierStrip({
@@ -299,7 +315,7 @@ export default async function ClaimPage({
 
         {/* Plates linked to this claim */}
         {plates.length > 0 ? (
-          <section className="mt-10 grid sm:grid-cols-2 gap-5">
+          <section className={plates.length > 1 ? "mt-10 grid sm:grid-cols-2 gap-5" : "mt-10"}>
             {plates.map((img) => (
               <Plate key={img.id} image={img} />
             ))}

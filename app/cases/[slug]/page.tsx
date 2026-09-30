@@ -1,27 +1,28 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { AccountsList } from "@/src/components/AccountsList";
 import { ArgumentLadder } from "@/src/components/ArgumentLadder";
 import { ArticleBody } from "@/src/components/ArticleBody";
-import { ChangeTimeline } from "@/src/components/ChangeTimeline";
+import { ArticleOutline } from "@/src/components/ArticleOutline";
+import { AtAGlance } from "@/src/components/AtAGlance";
 import { DossierHeader } from "@/src/components/DossierHeader";
 import { EvidenceCard } from "@/src/components/EvidenceCard";
+import { LinkedRecordText } from "@/src/components/LinkedRecordText";
 import { ResearchCard } from "@/src/components/ResearchCard";
 import { SectionNav } from "@/src/components/SectionNav";
-import { LinkedRecordText } from "@/src/components/LinkedRecordText";
-import { site } from "@/src/config/site";
-import { AccountsList } from "@/src/components/AccountsList";
-import { LatestStrip } from "@/src/components/LatestStrip";
 import { StandingPanel } from "@/src/components/StandingPanel";
-import { RecordPanel } from "@/src/components/RecordPanel";
-import { caseRecord } from "@/src/domain/record";
-import { caseActivity } from "@/src/domain/activity";
-import { verifiedEvidence, liveEvidence, caseCover, liveClaims, loadAllCases } from "@/src/domain/load";
-import { crossModelSummary, latestCheckPerModel } from "@/src/domain/standing";
-import { historyNewestFirst, lastContentUpdate } from "@/src/domain/history";
+import { VerdictMoves } from "@/src/components/VerdictMoves";
+import { pageMeta } from "@/src/config/meta";
+import { site } from "@/src/config/site";
 import { caseAccounts, caseQuestion, currentEdition, questionRestatedBy } from "@/src/domain/editions";
-import { caseView } from "@/src/domain/view";
+import { historyNewestFirst, isHousekeepingEntry, lastContentUpdate } from "@/src/domain/history";
+import { caseCover, liveClaims, liveEvidence, loadAllCases, verifiedEvidence } from "@/src/domain/load";
+import { currentMoves, verdictMoves } from "@/src/domain/moves";
+import { crossModelSummary, currentChecks, latestCheckPerModel } from "@/src/domain/standing";
 import { paramsOrPlaceholder } from "@/src/domain/staticExport";
+import { articleWords, clip, readingMinutes } from "@/src/domain/text";
+import { caseView } from "@/src/domain/view";
 
 export function generateStaticParams() {
   return paramsOrPlaceholder(
@@ -30,6 +31,11 @@ export function generateStaticParams() {
   );
 }
 
+/**
+ * A case shared as a link is shown by its own title, its own question and its
+ * own cover — not the site's. (Every case page used to carry the site's
+ * description and card, so a shared case previewed as "Aletheia".)
+ */
 export function generateMetadata({
   params,
 }: {
@@ -37,7 +43,15 @@ export function generateMetadata({
 }): Promise<Metadata> {
   return params.then(({ slug }) => {
     const loaded = loadAllCases().find((c) => c.record.slug === slug);
-    return { title: loaded ? loaded.record.title : "Not found" };
+    if (!loaded) return { title: "Not found" };
+    const cover = caseCover(loaded);
+    return pageMeta({
+      title: loaded.record.title,
+      description: clip(caseQuestion(loaded), 300),
+      path: `/cases/${slug}/`,
+      image: cover ? { url: cover.file, alt: cover.alt } : null,
+      article: true,
+    });
   });
 }
 
@@ -49,16 +63,21 @@ function orderedResearch<T extends { id: string }>(order: string[], items: T[]):
   );
 }
 
-/* Labels stay one word each: the navigator now carries up to eleven
-   entries and must survive a phone viewport without wrapping. */
+/** Research items shown before the disclosure: the edition orders them by what would move the case most. */
+const RESEARCH_SHOWN = 4;
+/** Changelog entries shown on the case page; the record page has the whole log. */
+const CHANGES_SHOWN = 3;
+
+/* Labels stay one word each: the navigator must survive a phone viewport
+   without wrapping. The order is the order a reader needs: the question
+   and what the site makes of it, the telling, then the machinery under it. */
 const sections = [
-  ["assessment", "Assessment"],
+  ["overview", "Overview"],
+  ["judgment", "Judgment"],
   ["article", "Article"],
   ["ladder", "Ladder"],
   ["evidence", "Evidence"],
-  ["conventional", "Conventional"],
   ["research", "Research"],
-  ["record", "Record"],
   ["history", "History"],
 ] as const;
 
@@ -77,8 +96,9 @@ export default async function CasePage({
     view.assessment && view.standing
       ? { run: view.assessment, ratification: view.standing }
       : null;
-  const checks = crossModelSummary(loaded);
+  const panel = latestCheckPerModel(loaded);
   const sourceById = new Map(loaded.sources.map((s) => [s.id, s]));
+  const restated = questionRestatedBy(loaded);
 
   const strongest = (direction: "supports" | "undermines") =>
     verifiedEvidence(loaded)
@@ -90,14 +110,19 @@ export default async function CasePage({
       )
       .slice(0, 3);
 
+  const research = orderedResearch(view.edition.cruxOrder, loaded.research);
+  const open = research.filter((r) => (r.status ?? "open") === "open");
+  const settled = research.filter((r) => (r.status ?? "open") !== "open");
+  const studyFor = (id: string) => loaded.studies.find((s) => s.researchIds.includes(id));
+
+  const moved = [...verdictMoves(loaded)].reverse();
+  const changes = historyNewestFirst(loaded.history.filter((h) => !isHousekeepingEntry(h)));
+  const minutes = readingMinutes(articleWords(view.article));
+
   return (
     <div>
       <SectionNav
-        sections={sections.filter(
-          ([id]) =>
-            (id !== "assessment" || shown !== null) &&
-            (id !== "conventional" || Boolean(view.header.bestConventionalExplanation)),
-        )}
+        sections={sections.filter(([id]) => id !== "judgment" || shown !== null)}
         slug={slug}
         hasStudies={loaded.studies.length > 0}
       />
@@ -105,7 +130,7 @@ export default async function CasePage({
       <DossierHeader
         record={loaded.record}
         question={caseQuestion(loaded)}
-        questionNote={questionRestatedBy(loaded) ? `as restated by the edition of ${questionRestatedBy(loaded)!.date} (${questionRestatedBy(loaded)!.runId}); the founding question: ${loaded.record.subtitle}` : undefined}
+        questionNote={restated ? `as restated by the edition of ${restated.date} (${restated.runId}); the founding question: ${loaded.record.subtitle}` : undefined}
         header={view.header}
         lastUpdated={lastContentUpdate(loaded)}
         verdict={shown?.run.caseAssessment.verdict ?? null}
@@ -115,16 +140,24 @@ export default async function CasePage({
 
       <div className="mx-auto max-w-6xl px-5">
         <div className="pt-8">
-          <LatestStrip activity={caseActivity(loaded)} />
+          <AtAGlance
+            slug={slug}
+            editionDate={currentEdition(loaded).date}
+            isFirstEdition={loaded.editions.length < 2}
+            moves={currentMoves(loaded)}
+            counts={{ claims: liveClaims(loaded).length, evidence: liveEvidence(loaded).length, sources: loaded.sources.length }}
+            minutes={minutes}
+          />
         </div>
 
         {shown ? (
-          <section id="assessment" className="pt-6 scroll-mt-28">
+          <section id="judgment" className="pt-6 scroll-mt-28">
             <StandingPanel
               run={shown.run}
               standing={shown.ratification}
-              checks={latestCheckPerModel(loaded)}
-              summary={checks}
+              checks={panel}
+              current={currentChecks(loaded, panel).map((r) => r.runId)}
+              summary={crossModelSummary(loaded)}
               claims={view.claims.map((c) => c.claim)}
             />
           </section>
@@ -132,10 +165,16 @@ export default async function CasePage({
 
         <AccountsList accounts={caseAccounts(loaded)} editionDate={currentEdition(loaded).date} />
 
-        <section id="article" className="pt-12 scroll-mt-28">
-          <h2 className="font-mono text-[11px] uppercase tracking-[0.2em] text-faint mb-6">
-            overview · marked sentences open the exact claim
-          </h2>
+        <section id="article" className="pt-14 scroll-mt-28">
+          <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 mb-5">
+            <h2 className="font-mono text-[11px] uppercase tracking-[0.2em] text-faint">
+              the article · a marked sentence opens the exact claim behind it
+            </h2>
+            <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-faint">
+              about {minutes} minute{minutes === 1 ? "" : "s"}
+            </p>
+          </div>
+          <ArticleOutline markdown={view.article} />
           <ArticleBody
             markdown={view.article}
             claims={claims}
@@ -201,7 +240,7 @@ export default async function CasePage({
                 steelmanned — the account the featured hypothesis must beat
               </p>
               <p className="mt-4 text-[15.5px] leading-[1.75] text-ink-soft max-w-3xl">
-                <LinkedRecordText text={view.header.bestConventionalExplanation} />
+                <LinkedRecordText text={view.header.bestConventionalExplanation} quiet />
               </p>
             </div>
           </section>
@@ -209,12 +248,12 @@ export default async function CasePage({
 
         <section id="research" className="pt-14 scroll-mt-28">
           <h2 className="font-serif text-3xl tracking-tight">
-            Research agenda
+            What would change our mind
           </h2>
           <p className="mt-2 text-[14px] text-ink-soft max-w-2xl">
             The case does not end in a verdict; it ends in the studies that
-            would move it. Curated from the public request for proposals.
-            The program funds tests in either direction.
+            would move it, in the order this edition judges they would move
+            it most. A result in either direction counts.
           </p>
           {loaded.record.externalResearch ? (
             loaded.record.externalResearch.url ? (
@@ -231,54 +270,78 @@ export default async function CasePage({
             )
           ) : null}
           <div className="grid sm:grid-cols-2 gap-4 mt-6">
-            {orderedResearch(view.edition.cruxOrder, loaded.research)
-              .filter((r) => (r.status ?? "open") === "open")
-              .map((r) => (
-                <ResearchCard
-                  key={r.id}
-                  item={r}
-                  study={loaded.studies.find((s) => s.researchIds.includes(r.id))}
-                  caseSlug={loaded.record.slug}
-                />
-              ))}
+            {open.slice(0, RESEARCH_SHOWN).map((r) => (
+              <ResearchCard key={r.id} item={r} study={studyFor(r.id)} caseSlug={slug} />
+            ))}
           </div>
-          {loaded.research.some((r) => (r.status ?? "open") !== "open") ? (
-            <div className="mt-10">
-              <h3 className="font-mono text-[11px] uppercase tracking-[0.18em] text-faint">
-                settled — answered, superseded or retired; kept as the record of what was asked
-              </h3>
+          {open.length > RESEARCH_SHOWN ? (
+            <details className="group mt-4">
+              <summary className="cursor-pointer list-none font-mono text-[11px] uppercase tracking-[0.16em] text-copper [&::-webkit-details-marker]:hidden">
+                <span className="group-open:hidden">▸ {open.length - RESEARCH_SHOWN} more studies on the agenda</span>
+                <span className="hidden group-open:inline">▾ the rest of the agenda</span>
+              </summary>
               <div className="grid sm:grid-cols-2 gap-4 mt-4">
-                {orderedResearch(view.edition.cruxOrder, loaded.research)
-                  .filter((r) => (r.status ?? "open") !== "open")
-                  .map((r) => (
-                    <ResearchCard
-                      key={r.id}
-                      item={r}
-                      study={loaded.studies.find((s) => s.researchIds.includes(r.id))}
-                      caseSlug={loaded.record.slug}
-                    />
-                  ))}
+                {open.slice(RESEARCH_SHOWN).map((r) => (
+                  <ResearchCard key={r.id} item={r} study={studyFor(r.id)} caseSlug={slug} />
+                ))}
               </div>
-            </div>
+            </details>
+          ) : null}
+          {settled.length > 0 ? (
+            <details className="group mt-4">
+              <summary className="cursor-pointer list-none font-mono text-[11px] uppercase tracking-[0.16em] text-faint [&::-webkit-details-marker]:hidden">
+                <span className="group-open:hidden">▸ {settled.length} settled — answered, superseded or retired</span>
+                <span className="hidden group-open:inline">▾ settled — kept as the record of what was asked</span>
+              </summary>
+              <div className="grid sm:grid-cols-2 gap-4 mt-4">
+                {settled.map((r) => (
+                  <ResearchCard key={r.id} item={r} study={studyFor(r.id)} caseSlug={slug} />
+                ))}
+              </div>
+            </details>
           ) : null}
         </section>
 
-        <RecordPanel
-          sittings={caseRecord(loaded)}
-          slug={loaded.record.slug}
-          caseDir={loaded.dir}
-          linkable={new Set([...liveClaims(loaded).map((c) => c.id), ...loaded.sources.map((s) => s.id), ...liveEvidence(loaded).map((e) => e.id)])}
-        />
-
         <section id="history" className="pt-14 pb-6 scroll-mt-28">
           <h2 className="font-serif text-3xl tracking-tight mb-2">
-            Change history
+            How the assessment has moved
           </h2>
           <p className="text-[14px] text-ink-soft max-w-2xl mb-6">
-            Trust comes partly from showing changed minds. {site.name} records
-            what changed, why, and who — including the AI&apos;s role.
+            Trust comes partly from showing changed minds. Each entry is an
+            edition that changed a verdict, with the word before and the word
+            after — a reversal included.
           </p>
-          <ChangeTimeline entries={historyNewestFirst(loaded.history)} />
+          {moved.length > 0 ? (
+            <VerdictMoves editions={moved} perEdition={8} />
+          ) : (
+            <p className="text-[14px] text-ink-soft">
+              {loaded.editions.length < 2
+                ? "This case has had one edition; no verdict has had the chance to move."
+                : "No verdict has moved between this case's editions."}
+            </p>
+          )}
+
+          <h3 className="font-serif text-2xl tracking-tight mt-12 mb-2">The change log</h3>
+          <p className="text-[14px] text-ink-soft max-w-2xl mb-4">
+            {site.name} records every change to a case: what changed, why, and
+            who made it — including the AI&apos;s role. The latest:
+          </p>
+          <ul className="max-w-4xl border-y border-line divide-y divide-line/70">
+            {changes.slice(0, CHANGES_SHOWN).map((h, i) => (
+              <li key={i} className="flex gap-4 py-2.5 text-[13.5px] leading-relaxed text-ink-soft">
+                <time dateTime={h.date} className="shrink-0 font-mono text-[11px] tracking-[0.1em] text-copper pt-0.5">{h.date}</time>
+                <span className="min-w-0">{clip(h.change, 190)}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-5">
+            <Link
+              href={`/cases/${slug}/record/#history`}
+              className="font-mono text-[11px] uppercase tracking-[0.16em] text-copper underline underline-offset-4 hover:text-ink"
+            >
+              All {loaded.history.length} entries, and every run with what it refused and why →
+            </Link>
+          </p>
         </section>
       </div>
     </div>

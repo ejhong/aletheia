@@ -9,6 +9,13 @@ const levelClasses: Record<ResearchPriorityLevel, string> = {
   low: "text-faint border-line bg-paper",
 };
 
+/** On the dossier register the chip is drawn on the dark ground, not as a paper chip laid on it. */
+const darkLevelClasses: Record<ResearchPriorityLevel, string> = {
+  high: "text-copper border-copper/50 bg-copper/10",
+  medium: "text-dossier-text/85 border-dossier-line bg-dossier-soft",
+  low: "text-dossier-faint border-dossier-line",
+};
+
 /**
  * The case's second output: how valuable resolving the uncertainty would
  * be — independent of how well supported the thesis currently is. "Weak
@@ -17,13 +24,16 @@ const levelClasses: Record<ResearchPriorityLevel, string> = {
 export function PriorityBadge({
   level,
   size = "sm",
+  dark = false,
 }: {
   level: ResearchPriorityLevel;
   size?: "sm" | "lg";
+  /** On the dossier register. */
+  dark?: boolean;
 }) {
   return (
     <span
-      className={`inline-flex items-center gap-1.5 rounded-xs border font-mono uppercase tracking-[0.12em] ${levelClasses[level]} ${
+      className={`inline-flex items-center gap-1.5 rounded-xs border font-mono uppercase tracking-[0.12em] ${(dark ? darkLevelClasses : levelClasses)[level]} ${
         size === "lg" ? "px-2.5 py-1 text-[12px]" : "px-1.5 py-0.5 text-[10px]"
       }`}
     >

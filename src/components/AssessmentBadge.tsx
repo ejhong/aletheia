@@ -1,5 +1,6 @@
 import {
   assessmentFamily,
+  assessmentGlosses,
   assessmentLabels,
   type AssessmentState,
 } from "@/src/domain/schema";
@@ -21,6 +22,7 @@ export function AssessmentBadge({
   const family = assessmentFamily(state);
   return (
     <span
+      title={assessmentGlosses[state]}
       className={`inline-flex items-center gap-1.5 rounded-xs border font-mono uppercase tracking-[0.12em] ${familyClasses[family]} ${
         size === "lg" ? "px-2.5 py-1 text-[12px]" : "px-1.5 py-0.5 text-[10px]"
       }`}

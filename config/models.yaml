@@ -59,6 +59,11 @@ panel:
     label: Opus 5.5 (Anthropic)
     tag: opus             # the tag names the seat's files and is kept across a model change, so a case's checks stay one series
     effort: max           # adaptive thinking; effort is the depth control. 2026-09-22: Opus 5 had fallen to AA 51, below the 56–59 band this panel is chosen on; Opus 5.5 scores 58 at max, 54 at high, so max is what keeps the seat in its band
+    # The seat's ceiling on thinking and reply together (the vendor's max_tokens), whatever a caller asks for.
+    # On this model the two share one ceiling and the model is not told where it is: at max effort a blind
+    # check of a 35,000-token case spent all 64,000 tokens thinking and returned no reply (2026-09-30). The
+    # model's own maximum is 128,000, which the seat may use now that it streams.
+    maxOutputTokens: 128000
   openai:
     model: gpt-5.6-sol
     label: GPT-5.6 Sol (OpenAI)

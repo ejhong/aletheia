@@ -1,6 +1,11 @@
+import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { VENDORS, buildRequest, callVendorDetailed } from "../lib/vendors.mjs";
 import { seatKey } from "../lib/seat-key.mjs";
+import { readSpend } from "../pipeline/spend.ts";
+import { callSeat } from "../pipeline/transport.ts";
 
 /**
  * The panel is five seats, one per API vendor, each pinned to a model AND
@@ -47,14 +52,55 @@ describe("per-seat request shape", () => {
     expect(() => buildRequest("nope", prompt)).toThrow(/unknown vendor/);
   });
 
-  it("Anthropic: output_config.effort, max_tokens never below the thinking floor", () => {
+  it("Anthropic: output_config.effort, and the roster's own ceiling on thinking and reply together", () => {
     vi.stubEnv("ANTHROPIC_API_KEY", "k");
     const r = buildRequest("anthropic", prompt);
     expect(r.url).toContain("api.anthropic.com");
     expect(r.body.model).toBe(VENDORS.anthropic.model);
     expect(r.body.output_config).toEqual({ effort: VENDORS.anthropic.effort });
-    expect(r.body.max_tokens).toBe(32000);
-    expect(buildRequest("anthropic", { ...prompt, maxTokens: 64000 }).body.max_tokens).toBe(64000);
+    // The seat thinks and replies under one ceiling and is not told where it is: the roster names the ceiling
+    // (config/models.yaml), and a caller asking for less or more does not move it.
+    const ceiling = (VENDORS.anthropic as { maxOutputTokens?: number }).maxOutputTokens;
+    expect(ceiling).toBeGreaterThanOrEqual(64000);
+    expect(r.body.max_tokens).toBe(ceiling);
+    expect(buildRequest("anthropic", { ...prompt, maxTokens: 64000 }).body.max_tokens).toBe(ceiling);
+    // Seats whose vendor counts reasoning apart from the reply keep the caller's figure.
+    vi.stubEnv("OPENAI_API_KEY", "k");
+    expect(buildRequest("openai", prompt).body.max_completion_tokens).toBe(20000);
+  });
+
+  it("a seat that thought to its ceiling is a failed seat, and what it cost is on the ledger", async () => {
+    vi.stubEnv("ANTHROPIC_API_KEY", "k");
+    const ev = (type: string, body: object) => `event: ${type}\ndata: ${JSON.stringify({ type, ...body })}\n\n`;
+    // The whole budget went to thinking: the stream ends at max_tokens with no text block.
+    const sse =
+      ev("message_start", { message: { id: "msg_1", model: VENDORS.anthropic.model, stop_reason: null, content: [], usage: { input_tokens: 35000, output_tokens: 1 } } }) +
+      ev("content_block_start", { index: 0, content_block: { type: "thinking", thinking: "" } }) +
+      ev("content_block_delta", { index: 0, delta: { type: "thinking_delta", thinking: "still weighing" } }) +
+      ev("content_block_stop", { index: 0 }) +
+      ev("message_delta", { delta: { stop_reason: "max_tokens" }, usage: { output_tokens: 64000 } }) +
+      ev("message_stop", {});
+    vi.stubGlobal("fetch", vi.fn(async () => new Response(sse, { status: 200 })));
+    const failure = await callVendorDetailed("anthropic", prompt).catch((e: Error & { usage?: unknown; model?: string }) => e);
+    expect(failure).toBeInstanceOf(Error);
+    expect((failure as Error).message).toBe("anthropic: empty reply (stop: max_tokens)");
+    expect(failure).toMatchObject({ model: VENDORS.anthropic.model, usage: { inputTokens: 35000, outputTokens: 64000, cacheReadTokens: 0, cacheWriteTokens: 0 } });
+
+    // Through the metered transport the failure still reaches the caller, and the row is written first.
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "aletheia-seat-spend-"));
+    fs.mkdirSync(path.join(root, "config"));
+    fs.copyFileSync(path.join(process.cwd(), "config", "tariffs.yaml"), path.join(root, "config", "tariffs.yaml"));
+    const meter = { runId: "2099-01-01-check-x-000000", verb: "check" as const, case: "x", root };
+    await expect(callSeat("anthropic", prompt, meter)).rejects.toThrow(/empty reply \(stop: max_tokens\)/);
+    const rows = readSpend(root);
+    expect(rows).toHaveLength(1);
+    expect(rows[0]).toMatchObject({ runId: meter.runId, verb: "check", model: VENDORS.anthropic.model, calls: 1, inputTokens: 35000, outputTokens: 64000 });
+    expect(rows[0].usd).toBeGreaterThan(1); // the seat's thinking is billed whether or not it ends in a reply
+    // A failure before the vendor counted anything (a refused key) writes no row.
+    vi.stubGlobal("fetch", vi.fn(async () => new Response("no", { status: 401 })));
+    await expect(callSeat("anthropic", prompt, meter)).rejects.toThrow(/HTTP 401/);
+    expect(readSpend(root)).toHaveLength(1);
+    fs.rmSync(root, { recursive: true, force: true });
   });
 
   it("Anthropic streams, and only how the reply travels changes: a seat that thinks past five minutes is still heard", async () => {

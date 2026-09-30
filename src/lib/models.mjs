@@ -42,6 +42,8 @@ export const ModelsSchema = z.object({
       label: z.string().min(1),
       tag: z.string().min(1),
       effort: z.enum(["low", "medium", "high", "max"]),
+      /** The seat's ceiling on thinking and reply together, where the vendor counts them as one; absent, the caller's figure is used. */
+      maxOutputTokens: z.number().int().positive().optional(),
     }),
   ),
   legacy: z.object({ openaiChat: z.object({ model: z.string().min(1) }) }),

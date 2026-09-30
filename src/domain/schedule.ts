@@ -194,7 +194,7 @@ export function nextAction(allCases: LoadedCase[], runs: RunRecord[], today: str
         ? "no seat has judged the case as it stands"
         : n < RATIFICATION_MIN_PANEL
           ? `only ${n} seat(s) have judged the case as it stands (${RATIFICATION_MIN_PANEL} are needed for the panel to speak)`
-          : "the adopted assessment is a reconsideration no fresh blind check has judged";
+          : "the adopted assessment was written with the panel's checks in hand, and no fresh blind check has judged it";
     return { case: c.record.slug, verb: "check", reason };
   }
   // 3b. Records blocked at verification — never entered, their proposal still holding them — are proposed again

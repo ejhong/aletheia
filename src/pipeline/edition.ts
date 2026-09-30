@@ -241,7 +241,7 @@ export function assessmentEvidenceErrors(a: AssessmentRun, loaded: Pick<LoadedCa
 export function assembleEdition(
   loaded: LoadedCase,
   reply: EditionReply,
-  ctx: { model: string; promptVersion: string; now: Date; root: string; reconciles?: string[]; runId?: string },
+  ctx: { model: string; promptVersion: string; now: Date; root: string; reconciles?: string[]; shown?: string[]; runId?: string },
 ): AssembledEdition {
   const date = isoDate(ctx.now);
   const stamp = hhmmssUTC(ctx.now);
@@ -261,6 +261,7 @@ export function assembleEdition(
       role: "draft",
       basis: { ledgerHash: loaded.ledgerHash },
       ...(ctx.reconciles?.length ? { reconciles: ctx.reconciles } : {}),
+      ...(ctx.shown ? { shownChecks: ctx.shown } : {}),
       caseAssessment: {
         verdict: a.verdict,
         whatIsClaimed: a.whatIsClaimed,
@@ -450,13 +451,20 @@ export async function runEdition(caseKey: string, opts: EditionOptions = {}): Pr
     const edit = opts.deps?.edit ?? defaultEditor;
     let reply = await edit(system, user, run.meter);
     writeWorkingFile(runId, "reply.json", JSON.stringify(reply.data, null, 1), root);
+    // The dissents the candidate must answer: a contested standing no reconsideration has answered.
     const reconciles = due?.reconciles.length ? due.reconciles : undefined;
+    // Every check the drafter was shown: the packet's `panel` carries each check current on this ledger, with its
+    // verdicts and its reasons, whatever the standing. An assessment written with them in hand says so
+    // (`shownChecks`), because those checks cannot then vouch for it (src/domain/standing.ts). Until 2026-09-30
+    // only a contested case's draft was stamped: a re-telling of a ratified case re-graded nine claims toward its
+    // panel, said so in its rationale, and would have kept "ratified" on the very checks it had answered.
+    const shown = packet.panel?.checks.map((c) => c.runId) ?? [];
     if (reconciles && !reply.data.assessment) {
       const reason = "the panel contests the adopted assessment and the candidate returned none: a reconsideration must answer the dissents with a complete assessment (edition protocol v3)";
       writeWorkingFile(runId, "errors.md", `- ${reason}`, root);
       return closeRun(run, "failed", { reason, model: reply.model });
     }
-    let assembled = assembleEdition(loaded, reply.data, { model: reply.model, promptVersion: protocol.version, now: now(), root, reconciles, runId });
+    let assembled = assembleEdition(loaded, reply.data, { model: reply.model, promptVersion: protocol.version, now: now(), root, reconciles, shown, runId });
     if (assembled.errors.length) {
       // One repair round: the loader's findings go back with the reply. The
       // checks are mechanical (caps, ids, coverage), so the second answer is
@@ -468,7 +476,7 @@ export async function runEdition(caseKey: string, opts: EditionOptions = {}): Pr
         `\n\nReturn the complete corrected JSON — the whole candidate, not a patch — keeping everything that was not at fault.\n\n${JSON.stringify(reply.data)}`;
       reply = await edit(system, repair, run.meter);
       writeWorkingFile(runId, "reply-repaired.json", JSON.stringify(reply.data, null, 1), root);
-      assembled = assembleEdition(loaded, reply.data, { model: reply.model, promptVersion: protocol.version, now: now(), root, reconciles, runId });
+      assembled = assembleEdition(loaded, reply.data, { model: reply.model, promptVersion: protocol.version, now: now(), root, reconciles, shown, runId });
     }
     const { assessment, errors } = assembled;
     let { edition } = assembled;

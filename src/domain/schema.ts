@@ -752,6 +752,14 @@ export const AssessmentRunSchema = z.object({
    * independent agreement).
    */
   reconciles: z.array(z.string()).optional(),
+  /**
+   * Draft assessments the `edition` verb writes (since 2026-09-30): the runIds of every check its drafter was
+   * shown — the packet's `panel` carries each check current on the ledger, with its verdicts and reasons, whatever
+   * the standing. An empty list says the drafter was shown none. Those checks cannot vouch for the draft
+   * (src/domain/standing.ts, `engagedChecks`): `reconciles` says a contested standing was answered; this says
+   * what was in hand, contested or not.
+   */
+  shownChecks: z.array(z.string()).optional(),
 });
 export type AssessmentRun = z.infer<typeof AssessmentRunSchema>;
 

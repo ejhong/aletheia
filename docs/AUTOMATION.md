@@ -141,7 +141,9 @@ and modular code, with the loop on. The facts first, then the plan.
 - **A panel is stale when it cannot speak, not when one seat is missing.**
   The scheduler asks for a check when fewer seats have judged the case as
   it stands than ratification requires (four), or when the adopted
-  assessment is a reconsideration no fresh check has judged. A panel of
+  assessment was written with every current check in hand — a
+  reconsideration, or any assessment the edition verb wrote while checks
+  were current — and no fresh check has judged it. A panel of
   four that lacks its fifth seat ratifies or contests as the constitution
   allows, and the missing seat is asked when nothing else is owed, on a
   cadence that doubles while it keeps failing. A sitting never takes the

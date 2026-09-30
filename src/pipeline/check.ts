@@ -10,7 +10,8 @@ import { seatKey } from "../lib/seat-key.mjs";
 import { parseYamlReply } from "../lib/yaml-reply.mjs";
 import { loadProtocol, renderProtocol } from "./protocols.ts";
 import { closeRun, openRun, writeWorkingFile, type RunOutcome } from "./store.ts";
-import { callSeat, seatAvailable, VENDORS, type Reply } from "./transport.ts";
+import { BudgetExceeded } from "./budget.ts";
+import { assertSeatsWithinBudget, callSeat, seatAvailable, VENDORS, type Reply } from "./transport.ts";
 import type { Meter } from "./spend.ts";
 
 /**
@@ -148,13 +149,24 @@ export async function runCheck(caseKey: string, opts: CheckOptions = {}): Promis
     return { ...closeRun(run, "dry-run", { reason: `would ask ${active.join(", ")}${skipped.length ? ` (no key: ${skipped.join(", ")})` : ""}${heldNote}; packet and instructions under proposals/${runId}/; nothing sent` }), installed: [], failed: [] };
   }
 
+  const userFor = (seat: string) => `RUN HEADER:\n  TAG: ${VENDORS[seat].tag}\n  MODEL_LABEL: ${VENDORS[seat].label}, independent check run\n\nCASE FILE FOLLOWS:\n\n${packet}`;
+  // The caps hold for the panel's seats as for the house model: refused before any seat is asked, with the reason
+  // (a test's own caller is not a paid call and is not budgeted).
+  if (!opts.deps?.call) {
+    try {
+      assertSeatsWithinBudget(active.map((seat) => ({ seat, prompt: { system: instructions, user: userFor(seat), maxTokens: 64000 } })), run.meter);
+    } catch (e) {
+      if (!(e instanceof BudgetExceeded)) throw e;
+      return { ...closeRun(run, "failed", { reason: e.message }), installed: [], failed: [] };
+    }
+  }
   const call = opts.deps?.call ?? callSeat;
   const assessmentsDir = path.join(root, "content", "cases", loaded.dir, "assessments");
   const installed: string[] = [];
   const failed: string[] = [];
   const results = await Promise.allSettled(
     active.map(async (seat) => {
-      const user = `RUN HEADER:\n  TAG: ${VENDORS[seat].tag}\n  MODEL_LABEL: ${VENDORS[seat].label}, independent check run\n\nCASE FILE FOLLOWS:\n\n${packet}`;
+      const user = userFor(seat);
       const overlayId = overlayRunId([date, "check", VENDORS[seat].tag], { now: now(), exists: (id) => fs.existsSync(path.join(assessmentsDir, `${id}.yaml`)) });
       const ctx = { loaded, seat, featuredIds, date, promptVersion: protocol.version, runId: overlayId, producedBy: runId };
       let reply = await call(seat, { system: instructions, user, maxTokens: 64000, timeoutMs: 1_800_000 }, run.meter);

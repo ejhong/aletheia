@@ -331,6 +331,13 @@ describe("judging a proposal", () => {
   });
 });
 
+/**
+ * The real case these fixtures borrow was written before the reader's budget (src/domain/readerBudget.ts) and is
+ * over it until its next edition. These tests are about the loader's rules; the budget has its own
+ * (src/domain/readerBudget.test.ts), so its findings on the borrowed text are set aside here and nothing else is.
+ */
+const loaderErrors = (errors: string[]) => errors.filter((e) => !/; the ceiling is |over the reader's budget/.test(e));
+
 describe("assembling an edition", () => {
   const editionReply = (over: Partial<EditionReply> = {}): EditionReply => {
     const c = geo();
@@ -342,13 +349,13 @@ describe("assembling an edition", () => {
   it("the question and the accounts are the edition's: restated when given, inherited when not", () => {
     const c = geo();
     const restated = assembleEdition(c, editionReply({ question: "Were the hardest stones cast, carved, or both — and by whom?", accounts: ["The blocks were cast from a geopolymer", "The blocks were carved and dressed by hand"] }), ctx);
-    expect(restated.errors).toEqual([]);
+    expect(loaderErrors(restated.errors)).toEqual([]);
     expect(restated.edition.question).toBe("Were the hardest stones cast, carved, or both — and by whom?");
     expect(restated.edition.accounts).toHaveLength(2);
     // A later candidate that says nothing keeps them.
     const later = { ...c, editions: [...c.editions, restated.edition] } as typeof c;
     const kept = assembleEdition(later, editionReply({ article: restated.edition.article + "\n\nA closing paragraph." }), { ...ctx, now: new Date("2099-01-02T12:00:00Z") });
-    expect(kept.errors).toEqual([]);
+    expect(loaderErrors(kept.errors)).toEqual([]);
     expect(kept.edition.question).toBe(restated.edition.question);
     expect(kept.edition.accounts).toEqual(restated.edition.accounts);
     // The question as it stands: the edition's, else the case file's founding subtitle.
@@ -365,7 +372,7 @@ describe("assembling an edition", () => {
   it("a candidate that changes only prose re-adopts the incumbent's assessment and passes the loader's rules", () => {
     const c = geo();
     const { edition, assessment, errors } = assembleEdition(c, editionReply({ article: c.editions.at(-1)!.article + "\n\nA closing paragraph the panel can judge." }), ctx);
-    expect(errors).toEqual([]);
+    expect(loaderErrors(errors)).toEqual([]);
     expect(assessment).toBeNull();
     expect(edition.assessment?.runId).toBe(c.editions.at(-1)!.assessment?.runId);
     expect(edition.previous).toBe(c.editions.at(-1)!.runId);
@@ -413,7 +420,7 @@ describe("assembling an edition", () => {
       },
     });
     const ok = assembleEdition(c, reply, ctx);
-    expect(ok.errors).toEqual([]);
+    expect(loaderErrors(ok.errors)).toEqual([]);
     expect(ok.assessment?.runId).toBe("2099-01-01-edition-120000");
     expect(ok.assessment?.basis?.ledgerHash).toBe(c.ledgerHash);
     expect(ok.edition.assessment?.runId).toBe("2099-01-01-edition-120000");
@@ -864,7 +871,7 @@ describe("run provenance (2026-09-10): the records name the run that wrote them"
     const reply: EditionReply = { rationale: "a test edition that re-adopts the incumbent's judgment", question: null, accounts: [], featuredClaimIds: ed.featuredClaimIds, cruxOrder: ed.cruxOrder, article: ed.article + "\n\nA closing paragraph.", assessment: null };
     const runId = "2099-01-02-edition-megalithic-casting-120000";
     const r = assembleEdition(c, reply, { model: "claude-opus-5", promptVersion: "edition-v5", now: new Date("2099-01-02T12:00:00Z"), root: process.cwd(), runId });
-    expect(r.errors).toEqual([]);
+    expect(loaderErrors(r.errors)).toEqual([]);
     expect(r.edition.producedBy).toBe(runId);
     // Without a run id (an edition written by hand), the field is absent rather than invented.
     const byHand = assembleEdition(c, reply, { model: "none", promptVersion: "opening", now: new Date("2099-01-02T12:00:00Z"), root: process.cwd() });

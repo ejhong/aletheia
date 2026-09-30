@@ -2,26 +2,33 @@ import fs from "node:fs";
 import path from "node:path";
 import { researchStatus } from "../domain/schema.ts";
 import type { ResearchStatus, ResearchOpportunity } from "../domain/schema.ts";
-import { parse as parseYaml } from "yaml";
+import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
 import { assessmentHash, inputsHash } from "../domain/hash.ts";
 import { adoptedAssessment, currentEdition } from "../domain/editions.ts";
 import { currentChecks, latestCheckPerModel, ratification } from "../domain/standing.ts";
+import { judgmentChanges, judgmentChangesSentence } from "../domain/judgment.ts";
 import { editionErrors, findCase } from "../domain/load.ts";
+import { articleBudgetErrors, assessmentBudgetErrors } from "../domain/readerBudget.ts";
 import {
   AssessmentRunSchema,
+  EditionComparisonSchema,
   EditionSchema,
   steelmanRequirementError,
   type AssessmentRun,
   type Edition,
+  type EditionComparison,
   type LoadedCase,
 } from "../domain/schema.ts";
+import { articleWords } from "../domain/text.ts";
 import { hhmmssUTC, isoDate } from "../lib/overlay-ids.mjs";
 import { appendHistory, setField, writeYamlFile } from "./ledger-write.ts";
 import { MODELS } from "../lib/models.mjs";
+import { BudgetExceeded } from "./budget.ts";
+import { compareTellings, comparisonSentence, tellingOf, type Telling } from "./compare.ts";
 import { anthropicJson, type Meter } from "./models.ts";
-import { buildPacket, renderPacket } from "./packet.ts";
+import { buildPacket, renderPacket, type ReaderNote } from "./packet.ts";
 import { loadProtocol, renderProtocol } from "./protocols.ts";
-import { closeRun, openRun, writeWorkingFile, type RunOutcome } from "./store.ts";
+import { closeRun, openRun, readRuns, runDir, writeWorkingFile, type RunOutcome } from "./store.ts";
 
 /**
  * `aletheia edition <case>` — assess and explain (docs/AUTOMATION.md).
@@ -33,8 +40,18 @@ import { closeRun, openRun, writeWorkingFile, type RunOutcome } from "./store.ts
  * re-adopts the incumbent's assessment and inherits its standing. The
  * candidate is validated as the loader would (every featured claim has a
  * treatment, markers resolve, plates survive, the steelman is present) and
- * written as a new edition (and assessment) for the panel to judge against
- * the incumbent in the PR.
+ * held to the reader's budget (src/domain/readerBudget.ts).
+ *
+ * Then it is read beside the incumbent by the panel's seats, as a reader
+ * would (src/pipeline/compare.ts, protocols/compare-v1.md). When the ledger
+ * has not moved and nothing is being answered, the candidate is only a new
+ * telling: it replaces the incumbent if the seats prefer it, and otherwise
+ * the incumbent stands, the candidate stays under the run's directory, and
+ * the seats' reasons go to the next edition. When the ledger has moved, or
+ * the candidate answers the panel's dissent or a seat's objection, it goes
+ * out — a stale judgment is worse than a plainer telling — and the
+ * preference is recorded on it. The constitutional panel still judges the
+ * result in the PR.
  */
 
 /** The editor is the house model (config/models.yaml); the run records the model that served. */
@@ -274,8 +291,20 @@ export function assembleEdition(
       const steel = steelmanRequirementError(assessment);
       if (steel) errors.push(steel);
       errors.push(...assessmentEvidenceErrors(assessment, loaded));
+      errors.push(...assessmentBudgetErrors(assessment));
+    }
+  } else {
+    // A candidate that keeps the incumbent's judgment keeps its words too — so an assessment written before the
+    // budget would stay over it for as long as the judgment held. It is restated once, within the budget.
+    const kept = adoptedAssessment(loaded);
+    const overBudget = kept ? assessmentBudgetErrors(kept) : [];
+    if (overBudget.length) {
+      errors.push(
+        `the candidate re-adopts assessment ${kept!.runId}, which is over the reader's budget in ${overBudget.length} place(s) (${overBudget.slice(0, 3).join("; ")}${overBudget.length > 3 ? "; …" : ""}); return a complete \`assessment\` that says the same judgment within the budget — the same verdicts unless the ledger has moved them`,
+      );
     }
   }
+  errors.push(...articleBudgetErrors(reply.article));
   const adoptedRef = assessment
     ? { runId: assessment.runId, hash: assessmentHash(assessment) }
     : incumbent.assessment;
@@ -288,8 +317,10 @@ export function assembleEdition(
     model: ctx.model,
     promptVersion: ctx.promptVersion,
     // The rationale ends with what the verb can measure and the model can only guess (2026-09-16, review note #294:
-    // two rationales stated word and account counts that the run records contradicted). Labelled as the verb's.
-    rationale: `${reply.rationale.trim()}\n\nMeasured by the verb: article ${countWords(incumbent.article)} → ${countWords(reply.article)} words; accounts ${(reply.accounts?.length ? reply.accounts : incumbent.accounts ?? []).length} (incumbent ${(incumbent.accounts ?? []).length}).`,
+    // two rationales stated word and account counts that the run records contradicted) — and, since 2026-09-30, with
+    // what the candidate changes in the judgment and the selection against the edition it would replace
+    // (src/domain/judgment.ts). Labelled as the verb's.
+    rationale: `${reply.rationale.trim()}\n\nMeasured by the verb: article ${articleWords(incumbent.article)} → ${articleWords(reply.article)} words, without markup; accounts ${(reply.accounts?.length ? reply.accounts : incumbent.accounts ?? []).length} (incumbent ${(incumbent.accounts ?? []).length}). ${judgmentChangesSentence(incumbent.runId, judgmentChanges(adoptedAssessment(loaded), assessment, incumbent, { featuredClaimIds: reply.featuredClaimIds }), assessment === null)}`,
     basis: { ledgerHash: loaded.ledgerHash, inputsHash: inputsHashOf(loaded, ctx.root) },
     previous: incumbent.runId,
     assessment: adoptedRef ?? null,
@@ -341,7 +372,34 @@ export interface EditionOptions {
   root?: string;
   /** Objections a panel seat raised against the incumbent (src/pipeline/answer.ts); the candidate answers each in its rationale (edition protocol v12). */
   objections?: { seat: string; rules: string[]; text: string; source: string }[];
-  deps?: { edit?: Editor; now?: () => Date; cases?: () => LoadedCase[] };
+  deps?: { edit?: Editor; now?: () => Date; cases?: () => LoadedCase[]; compare?: Comparer };
+}
+
+/** The comparison as the verb calls it; a test gives its own. */
+export type Comparer = (loaded: LoadedCase, candidate: Telling, incumbent: Telling, ctx: { runId: string; against: string; meter: Meter }) => Promise<EditionComparison>;
+
+/**
+ * What the panel's seats said, as readers, that the next edition should hear: their reasons and notes on the
+ * incumbent (from the comparison recorded on it), and on the last candidate they declined since, which is kept only
+ * under its run's directory. Data for the drafter, in the seats' words.
+ */
+export function readerNotesFor(loaded: LoadedCase, root: string): ReaderNote[] {
+  const out: ReaderNote[] = [];
+  const from = (c: EditionComparison, about: ReaderNote["about"], source: string) => {
+    for (const s of c.seats) out.push({ about, source, seat: s.seat, preferred: s.prefers, reasons: s.reasons, notes: s.notes });
+  };
+  const incumbent = currentEdition(loaded);
+  if (incumbent.comparison) from(incumbent.comparison, "the incumbent, when it replaced the edition before it", `content/cases/${loaded.dir}/editions/${incumbent.runId}.yaml`);
+  // The last edition run of this case, when no edition came of it: a candidate the seats did not prefer.
+  const last = readRuns(root).filter((r) => r.verb === "edition" && r.case === loaded.record.slug && r.outcome === "completed").at(-1);
+  if (last && !loaded.editions.some((e) => e.producedBy === last.runId)) {
+    const file = path.join(runDir(last.runId, root), "comparison.yaml");
+    if (fs.existsSync(file)) {
+      const parsed = EditionComparisonSchema.safeParse(parseYaml(fs.readFileSync(file, "utf8")));
+      if (parsed.success && parsed.data.against === incumbent.runId) from(parsed.data, "a candidate the seats did not prefer to the incumbent", `proposals/${last.runId}/comparison.yaml`);
+    }
+  }
+  return out;
 }
 
 export interface EditionOutcome extends RunOutcome {
@@ -376,6 +434,12 @@ export async function runEdition(caseKey: string, opts: EditionOptions = {}): Pr
   }
   const packet = buildPacket(loaded, { detail: true });
   if (opts.objections?.length) packet.objections = opts.objections;
+  const readerNotes = readerNotesFor(loaded, root);
+  if (readerNotes.length) packet.readerNotes = readerNotes;
+  // Where the incumbent is over the reader's budget, said to the drafter before it writes rather than after.
+  const adopted = adoptedAssessment(loaded);
+  const overBudget = [...articleBudgetErrors(incumbent.article), ...(adopted ? assessmentBudgetErrors(adopted) : [])];
+  if (overBudget.length && packet.edition) packet.edition.overBudget = overBudget;
   const user = renderPacket(packet, 900_000);
   const system = renderProtocol(protocol, {});
   if (opts.dryRun) {
@@ -406,11 +470,46 @@ export async function runEdition(caseKey: string, opts: EditionOptions = {}): Pr
       writeWorkingFile(runId, "reply-repaired.json", JSON.stringify(reply.data, null, 1), root);
       assembled = assembleEdition(loaded, reply.data, { model: reply.model, promptVersion: protocol.version, now: now(), root, reconciles, runId });
     }
-    const { edition, assessment, errors } = assembled;
+    const { assessment, errors } = assembled;
+    let { edition } = assembled;
     if (errors.length) {
       const reason = `the candidate fails the loader's rules after one repair round: ${errors.join("; ")}`;
       writeWorkingFile(runId, "errors-after-repair.md", errors.map((e) => `- ${e}`).join("\n"), root);
       return closeRun(run, "failed", { reason, model: reply.model });
+    }
+    // The comparison: the candidate beside the incumbent, read as a reader would by each seat of the panel. There is
+    // nothing to be read beside when the incumbent is a question-only opening (no assessment, no telling yet).
+    let comparison: EditionComparison | null = null;
+    const incumbentRun = adoptedAssessment(loaded);
+    if (incumbent.assessment && incumbentRun) {
+      const compare = opts.deps?.compare ?? ((l, c, i, ctx) => compareTellings(l, c, i, ctx));
+      try {
+        comparison = await compare(
+          loaded,
+          tellingOf(loaded, edition, assessment ?? incumbentRun, true),
+          tellingOf(loaded, incumbent, incumbentRun, incumbent.basis.ledgerHash === loaded.ledgerHash),
+          { runId, against: incumbent.runId, meter: run.meter },
+        );
+      } catch (e) {
+        if (!(e instanceof BudgetExceeded)) throw e;
+        writeWorkingFile(runId, "candidate.yaml", stringifyYaml({ edition, assessment }, { lineWidth: 0, aliasDuplicateObjects: false }), root);
+        return closeRun(run, "failed", { reason: `the candidate was not compared with the incumbent, so nothing was written: ${e.message}`, model: reply.model });
+      }
+      writeWorkingFile(runId, "comparison.yaml", `# The panel's seats reading the candidate beside ${incumbent.runId}, as a reader would (${comparison.protocol}; src/pipeline/compare.ts).\n# AI judgments of two tellings; not a human's, and not a judgment of the verdicts.\n` + stringifyYaml(comparison, { lineWidth: 0, aliasDuplicateObjects: false }), root);
+      // A candidate that must go out: the ledger moved under the incumbent, or the candidate answers the panel's
+      // dissent or a seat's objection. Anything else is only a new telling of the same judgment of the same ledger.
+      const mustGoOut = due?.kind === "moved" || Boolean(reconciles?.length) || Boolean(opts.objections?.length);
+      if (!mustGoOut && comparison.outcome !== "candidate-preferred") {
+        writeWorkingFile(runId, "candidate.yaml", `# The candidate this run wrote and the panel's seats did not prefer to ${incumbent.runId}: kept here, not published.\n` + stringifyYaml({ edition, assessment }, { lineWidth: 0, aliasDuplicateObjects: false }), root);
+        if (comparison.outcome === "undecided") {
+          return closeRun(run, "failed", { reason: `${comparisonSentence(comparison)}; the candidate is kept under proposals/${runId}/ and nothing was written`, model: reply.model });
+        }
+        return closeRun(run, "completed", {
+          reason: `the incumbent stands: ${comparisonSentence(comparison)}. The ledger has not moved, so the candidate is only a new telling and replaces the incumbent only when preferred; it is kept under proposals/${runId}/candidate.yaml, and the seats' reasons go to the next edition as readerNotes (article ${articleWords(incumbent.article)} → ${articleWords(edition.article)} words)`,
+          model: reply.model,
+        });
+      }
+      edition = EditionSchema.parse({ ...edition, comparison });
     }
     const caseDir = path.join(root, "content", "cases", loaded.dir);
     let assessmentFile: string | undefined;
@@ -469,7 +568,7 @@ export async function runEdition(caseKey: string, opts: EditionOptions = {}): Pr
     const agenda = { open: 0, answered: 0, superseded: 0, retired: 0 };
     for (const r of loaded.research) agenda[researchStatus(r)]++;
     for (const ch of statusPlan.changes) { agenda[ch.from]--; agenda[ch.to]++; }
-    const notes = [assessment ? "new assessment" : "re-adopts the incumbent's assessment", `article ${countWords(incumbent.article)} → ${countWords(edition.article)} words`, `research agenda: ${agenda.open} open, ${agenda.answered} answered, ${agenda.superseded} superseded, ${agenda.retired} retired${statusPlan.changes.length ? ` (${statusPlan.changes.length} change(s) this run)` : ""}${statusPlan.errors.length ? `; ${statusPlan.errors.length} status entr${statusPlan.errors.length === 1 ? "y" : "ies"} refused (proposals/${runId}/research-status.md)` : ""}`, reply.fallback ? `served by the fallback: ${reply.fallback}` : undefined].filter(Boolean).join("; ");
+    const notes = [assessment ? "new assessment" : "re-adopts the incumbent's assessment", `article ${articleWords(incumbent.article)} → ${articleWords(edition.article)} words`, comparison ? comparisonSentence(comparison) : "not compared: the incumbent is a question-only opening", `research agenda: ${agenda.open} open, ${agenda.answered} answered, ${agenda.superseded} superseded, ${agenda.retired} retired${statusPlan.changes.length ? ` (${statusPlan.changes.length} change(s) this run)` : ""}${statusPlan.errors.length ? `; ${statusPlan.errors.length} status entr${statusPlan.errors.length === 1 ? "y" : "ies"} refused (proposals/${runId}/research-status.md)` : ""}`, reply.fallback ? `served by the fallback: ${reply.fallback}` : undefined].filter(Boolean).join("; ");
     return { ...closeRun(run, "completed", { model: reply.model, reason: notes, wrote }), editionFile, assessmentFile };
   } catch (e) {
     return closeRun(run, "failed", { reason: (e as Error).message });

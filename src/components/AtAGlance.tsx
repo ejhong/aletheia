@@ -22,6 +22,8 @@ export function AtAGlance({
   moves,
   counts,
   minutes,
+  words,
+  chosen,
 }: {
   slug: string;
   editionDate: string;
@@ -32,6 +34,10 @@ export function AtAGlance({
   counts: { claims: number; evidence: number; sources: number };
   /** Minutes to read the article. */
   minutes: number;
+  /** The article's length now and in the edition before, in words. */
+  words?: { now: number; before: number | null };
+  /** How the panel's seats chose between this edition and the one before it, in a sentence. */
+  chosen?: string | null;
 }) {
   const figure = "font-serif text-[22px] leading-none text-ink";
   const unit = "mt-1 font-mono text-[10px] uppercase tracking-[0.14em] text-faint group-hover:text-copper";
@@ -65,6 +71,13 @@ export function AtAGlance({
                 : "No verdict moved in this edition."}
             </p>
           )}
+          {/* A telling that was cut or grown by a fifth says so: a reader of the last edition should know the article is not the one they read. */}
+          {words && words.before !== null && Math.abs(words.now - words.before) >= words.before * 0.2 ? (
+            <p className="mt-2 text-[14px] leading-relaxed text-ink-soft">
+              The article was re-told: {words.now.toLocaleString("en-US")} words, from {words.before.toLocaleString("en-US")}.
+            </p>
+          ) : null}
+          {chosen ? <p className="mt-2 text-[13.5px] leading-relaxed text-ink-soft">{chosen}</p> : null}
           <p className="mt-3 flex flex-wrap gap-x-6 gap-y-1 font-mono text-[10px] uppercase tracking-[0.14em]">
             <a href="#history" className="text-copper hover:underline underline-offset-4">how the assessment has moved ↓</a>
             <Link href={`/cases/${slug}/record/`} className="text-copper hover:underline underline-offset-4">how this edition was made →</Link>

@@ -15,6 +15,7 @@ import { StandingPanel } from "@/src/components/StandingPanel";
 import { VerdictMoves } from "@/src/components/VerdictMoves";
 import { pageMeta } from "@/src/config/meta";
 import { site } from "@/src/config/site";
+import { articleLengths, comparisonInWords } from "@/src/domain/comparison";
 import { caseAccounts, caseQuestion, currentEdition, questionRestatedBy } from "@/src/domain/editions";
 import { historyNewestFirst, isHousekeepingEntry, lastContentUpdate } from "@/src/domain/history";
 import { caseCover, liveClaims, liveEvidence, loadAllCases, verifiedEvidence } from "@/src/domain/load";
@@ -132,7 +133,8 @@ export default async function CasePage({
         question={caseQuestion(loaded)}
         questionNote={restated ? `as restated by the edition of ${restated.date} (${restated.runId}); the founding question: ${loaded.record.subtitle}` : undefined}
         header={view.header}
-        lastUpdated={lastContentUpdate(loaded)}
+        // An edition is an update too: a case re-told today was updated today, whatever the ledger's changelog last says.
+        lastUpdated={[lastContentUpdate(loaded), currentEdition(loaded).date].sort().at(-1)!}
         verdict={shown?.run.caseAssessment.verdict ?? null}
         standing={shown?.ratification ?? null}
         cover={caseCover(loaded)}
@@ -147,6 +149,8 @@ export default async function CasePage({
             moves={currentMoves(loaded)}
             counts={{ claims: liveClaims(loaded).length, evidence: liveEvidence(loaded).length, sources: loaded.sources.length }}
             minutes={minutes}
+            words={articleLengths(loaded)}
+            chosen={comparisonInWords(currentEdition(loaded).comparison)}
           />
         </div>
 

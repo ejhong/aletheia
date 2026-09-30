@@ -3,10 +3,12 @@ import { pageMeta } from "@/src/config/meta";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChangeTimeline } from "@/src/components/ChangeTimeline";
+import { ComparisonPanel } from "@/src/components/ComparisonPanel";
 import { LatestStrip } from "@/src/components/LatestStrip";
 import { RecordPanel } from "@/src/components/RecordPanel";
 import { site } from "@/src/config/site";
 import { caseActivity } from "@/src/domain/activity";
+import { currentEdition } from "@/src/domain/editions";
 import { historyNewestFirst } from "@/src/domain/history";
 import { liveClaims, liveEvidence, loadAllCases } from "@/src/domain/load";
 import { caseRecord } from "@/src/domain/record";
@@ -80,6 +82,7 @@ export default async function CaseRecordPage({
 
       <div className="mt-10">
         <LatestStrip activity={caseActivity(loaded)} />
+        {currentEdition(loaded).comparison ? <ComparisonPanel comparison={currentEdition(loaded).comparison!} /> : null}
       </div>
 
       <RecordPanel

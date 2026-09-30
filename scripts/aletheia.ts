@@ -214,7 +214,7 @@ switch (verb) {
     const r = await runEdition(key, { dryRun: flags.has("--dry-run"), force: flags.has("--force") });
     console.log(JSON.stringify(r, null, 2));
     if (r.outcome === "failed") process.exit(1);
-    if (r.outcome === "completed") console.error("edition candidate written to the working tree — the panel judges it against the incumbent in the PR");
+    if (r.outcome === "completed") console.error(r.editionFile ? "edition written to the working tree — the constitutional panel judges it in the PR" : "no edition written: the incumbent stands — the run record says why, and the candidate is kept under its run directory");
     break;
   }
   default:

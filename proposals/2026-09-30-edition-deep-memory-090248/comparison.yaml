@@ -1,0 +1,58 @@
+# The panel's seats reading the candidate beside edition-2026-09-20-112834, as a reader would (compare-v1; src/pipeline/compare.ts).
+# AI judgments of two tellings; not a human's, and not a judgment of the verdicts.
+against: edition-2026-09-20-112834
+protocol: compare-v1
+outcome: candidate-preferred
+candidate: 5
+incumbent: 0
+neither: 0
+seats:
+  - seat: Opus 5.5 (Anthropic)
+    model: claude-opus-5-5
+    candidateShownAs: B
+    prefers: candidate
+    margin: clear
+    reasons: "Both tellings are current and carry essentially the same substance: the four accounts, the 55% and 37% base rates with their coverage caveats, the Hoa Hakananai'a carving order, the banduddû bucket, the Jiroft wear study, the Göbekli team's 'missing links' reply, the 62.5% vs 9% lineup with the retelling objection, and nearly the same deciding tests. B does it in half the words (2,386 vs 4,817). B's first section tells the reader in one paragraph what is claimed, that the primaries describe the objects and in two places make a shared past harder to hold, and what nobody has yet counted. A opens with a scenic gallery and a statement of method, keeps its bottom line for the final section, and puts its header substance in internal terms ('admitted evidence', 'held here on anchors only', 'a margin like V1's'). Throughout, A leans on the site's machinery ('on a prior', 'evidence record', 'the ledger', 'primaries', 'this edition's agenda') where B says the same things plainly ('rest on the founding page's word alone', 'the transcription is unchecked', 'this site has not traced'). A's extra length buys little: two ungraded sections (stone animals, Indus and rongorongo) and repeated per-object hedging that B compresses without losing honesty, while B's closing case for a shared past (Pillar 43 and the Assyrian bucket in one region, caution resting on missing links rather than counter-evidence, reinterpretation explaining the differing uses) is at least as specific as A's."
+    notes:
+      - "Say in plain words what each component verdict is a verdict on, because 'Well supported: Dates and intermediates' is never named in the article, so a reader cannot tell what is well supported or which account it favours."
+      - The header answers use terms the reader has not yet met ('Pillar 43' without Göbekli Tepe, 'the civiliser lineup signal', 'the bundle comparison', 'the founding page'), and a few words of gloss would help a reader who stops there.
+      - "Bring the opening and header into line with the body's more careful wording: the excavators allow that some imagery may survive into later seals rather than reporting 'no traceable chain', and one dated chain would settle that parallel, not how much of the resemblance is shared."
+  - seat: GPT-5.6 Sol (OpenAI)
+    model: gpt-5.6-sol
+    candidateShownAs: A
+    prefers: candidate
+    margin: clear
+    reasons: "A gives the reader the state of the question immediately: the opening distinguishes confirmed object descriptions from the untested historical connection, names late carving and missing intermediates, and identifies the measurements still needed. At roughly half B’s length, it preserves the consequential evidence, serious alternatives, best remaining argument for a shared past, and concrete tests without B’s tangents on stone animals and undeciphered scripts. B repeatedly uses site-internal language such as “ledger,” “held on a prior,” “anchor,” “evidence record,” “V1,” and “this edition’s research order,” making the reader learn the system rather than the case. A also treats both sides fairly by stating that existing evidence leans toward convergence and retelling while explaining why broad catalogue classes have not tested the strongest specific-composite claim."
+    notes:
+      - Shorten the very long question and the three header answers so a first-time reader can scan them more easily.
+      - Replace remaining institutional phrases such as “this site accepts” and “the founding page” with direct statements about the evidence.
+      - Clarify why the overall verdict is unresolved when the article says the available evidence leans toward convergence and retelling.
+  - seat: Gemini 3.8 Flash (Google)
+    model: gemini-3.8-flash
+    candidateShownAs: A
+    prefers: candidate
+    margin: clear
+    reasons: Telling A delivers the entire substantive core of the argument at roughly half the length of Telling B, easily fitting within the reader's ten-minute budget. Telling B bloats the word count with empty filler sections that contain no evidence ('Pigs, lizards and other stone animals' and 'Indus and rongorongo') and frequently lapses into site-insider jargon about ledgers, priors, and anchors. In contrast, Telling A translates the methodology into plain language, moves swiftly through the specific artifacts, and presents a razor-sharp breakdown of what is known and what would settle the debate.
+    notes:
+      - Clarify early on what the 'founding page' refers to, as a newcomer might be confused by references to an external AI-assisted essay without full context.
+      - Ensure that technical terms like 'base rate' remain briefly contextualized when first introduced.
+  - seat: Grok 4.5 (xAI)
+    model: grok-4.5
+    candidateShownAs: B
+    prefers: candidate
+    margin: clear
+    reasons: B delivers the same core claim, competing accounts, evidence limits, and settling tests in roughly half the words (2,386 vs 4,817), which fits a ten-minute visit while A overflows it. B’s headers and opening section state what is claimed, where the disagreement lives, and what would settle it in plain compact prose before a reader would stop; A’s equivalent material is longer, denser with ledger/anchor/edition jargon, and slower to the point. Both are fair and specific on primaries (Pillar 43, Jiroft wear, Hoa Hakananai’a sequence, Berossus, missing links, lineup caveats), but A’s extra sections and repeated qualifications add little a first-time reader needs once the ledger is one click away. B stays honest about unknowns without burying them.
+    notes:
+      - "Clarify the header label ‘Well supported: Dates and intermediates’ so a reader sees at once that object dates and the reported missing links are solid while a positive intermediate chain is still absent."
+      - Trim residual site phrasing (‘this site accepts’, ‘founding page’) a little further so the page reads as self-contained for someone who never saw Aletheia.
+      - One short sentence in the headers on the catalogue bundle’s unreleased status would match the article’s own emphasis without adding length.
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    model: z-ai-glm-5-3-flash
+    candidateShownAs: B
+    prefers: candidate
+    margin: clear
+    reasons: "Both tellings are current, state the same verdict, and cover the same evidence — the Rapa Nui reliefs as late additions, the excavators' missing-links caution, the 55% and 37% base rates, the untested bundle comparison, and the 62.5% lineup signal — but B does it in roughly half the words, which matters for a ten-minute reader. B's opening 'state of the question' section delivers claimed, evidence-state, competitors and settling tests in one paragraph, faster than A's longer preamble. B is also more concrete about its own footing, saying plainly that the founding page's figures are unaudited and unseen, without A's heavier scaffolding about priors, anchors and ledger procedure. A's extra material — the pigs-and-lizards section, the Indus/rongorongo companion, and extended quotation — is largely peripheral to the question, and B adds one thing A lacks: the regional argument that Pillar 43 and the Assyrian bucket share a broad area, which sharpens the strongest case for a shared past."
+    notes:
+      - B should give some indication of who or what the 'founding page' is earlier than the second section, so a cold reader knows why its figures carry so little weight.
+      - B could note explicitly that the statue's 1000–1200 CE date comes only from the founding page, since the study abstract gives no date, as A does.
+      - B could briefly explain why matching object kinds changes lineup results — the 'diagnosticity' point — since it is the finding that undermines every side-by-side gallery, including its own.

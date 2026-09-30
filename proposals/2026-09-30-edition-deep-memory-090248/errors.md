@@ -1,0 +1,1 @@
+- edition edition-2026-09-30-090959 article has a malformed marker near "ed in the nineteenth and early twentieth centuries]{claim=DEEP-C080] — a story written dow" — a claim span is [words]{claim=CASE-C000} with a closing brace; a plate is {plate:IMG-…} at the start of a line

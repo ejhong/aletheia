@@ -1,0 +1,2 @@
+- edition edition-2026-09-30-095429 article has a malformed marker near "jects near Earth, at roughly geosynchronous height]{claim=TRN-C021], and that artificial o" — a claim span is [words]{claim=CASE-C000} with a closing brace; a plate is {plate:IMG-…} at the start of a line
+- edition edition-2026-09-30-095429 article has a malformed marker near "ce — only the last fits all five reported features]{claim=TRN-C118]. The five are sharp pr" — a claim span is [words]{claim=CASE-C000} with a closing brace; a plate is {plate:IMG-…} at the start of a line

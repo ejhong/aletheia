@@ -2784,3 +2784,71 @@ The entry is fixed: a research-status entry is its id, status and note, each a s
 The pattern is fixed by a test of the general form. It takes a reply that is carried, walks the whole of it, and at every mapping adds a field, at every list adds an element, and at every leaf changes the value. Each of those replies must be found not carried. It reaches a claim's treatment, a component, the research priority, the accounts and the research entry, and it found nothing the comparison missed once the entry was fixed. A later change that opens an unread corner fails it.
 
 What the test does not show: that a reply of another shape has no unread corner. It covers the shape the edition verb asks for (`EditionReply`, `src/pipeline/edition.ts`); a field outside that shape is refused by name at the top of the reply, of the assessment, of a component and of a research entry, and by comparison everywhere else. Supervised-by: founder (direction in session, 2026-09-29).
+
+## 2026-09-30 — Cast, Not Carved's panel is parked twice on one ledger record, and what #445 said of it that was wrong
+
+Cast, Not Carved was judged by five seats on 2026-09-30 (run `2026-09-30-check-megalithic-casting-104713`, $3.52). None of those checks is published.
+
+- **The first park (#445).** The OpenAI seat of the constitutional panel parked the change alone, for fabrication. The Google seat's check says "Engelbach's 1922 monograph explicitly details" the trial behind GEO-C502, citing GEO-E002, and cites GEO-E010, a study of natron sources, for furnace temperatures. The panel was taken out of that change. Asked again alone (run `2026-09-30-check-megalithic-casting-114234`, $0.10), the Google seat did the same, and the operator withheld that check.
+- **The second park (#452).** The operator then put up the other four seats' checks without the Google seat's. The same seat parked it for the same reason, this time over the check written by the blind panel's OpenAI seat, which is the same model in another chair: "GEO-E002 confirms that Engelbach's monograph contained a brief personal pounding trial and heuristic workforce estimates".
+
+**The record, more than the seats.** GEO-E002's `sourceStatement` says the monograph includes Engelbach's "own brief working trial and workforce estimates". Its limitation says the account of his method is taken from a later author and has not been checked against the 1922 text. A seat that repeats the first half says more than the ledger knows. The gate has found two checks doing it; the xAI seat's "correctly characterized in the proponent literature" reads to the operator as a third. A record whose statement of its source outruns its own limitation is what §3.9 is there to prevent, and any panel asked over this ledger will meet it.
+
+**The text.** The monograph is in the public domain, and the ledger's source record gives Project Gutenberg's copy (ebook 59320). The operator opened it on 2026-09-30: the passage on an hour's hand pounding and about five millimetres removed is there, on the page the ebook marks as 13. So what the seats said of the monograph may well be true. It is still not what the ledger holds.
+
+**What #445 said that was wrong.** That the Google seat was the panel's one dissenter, and that publishing the other four without it "would show a cleaner standing than the panel gave". The first half is true of the case verdict. The second was asserted and not computed, and it is false. With all five checks the site's rule gives *ratified*: four of five within one step of the case verdict, and no split on a claim the case rests on. With the four alone it gives *contested*: on GEO-C030 two of the four are within one step of the judgment, and the Google seat was the third. The operator now computes a standing both ways before saying how leaving a check out would change it.
+
+**What is settled.**
+
+- #452 stays parked, as the constitution has a contested change stay, and is answered by the answer step when the budget allows (`aletheia answer 452`, on its branch). The two records the objection names, GEO-E002 and GEO-C502, go back to the second reader with the source in front of it; the edition is re-told over what it settles; a fresh panel judges the case. None of the five checks of 2026-09-30 will be published. The case reads "not yet ratified" meanwhile, which is true.
+- The $3.62 the two runs cost is recorded in #452 and reaches main with it. Until then main's spend ledger is short by that much.
+- While #452 is open the scheduler leaves the case alone (the next entry).
+
+## 2026-09-30 — A case with a sitting open in a pull request is left alone, whatever its branch is called
+
+`scripts/busy-cases.mjs` tells the scheduler which cases have work that is not yet on main, so that a sitting does not pay for the same pass twice (2026-09-11). It read only `chain/*` branches, which are the workflow's own. A sitting the operator runs by hand sits on a branch of another name. On 2026-09-30 one of those was parked (#452, the entry above), and as the ledger stood the scheduler's second choice at the next sitting was the same blind check over the same case file: about $3.50, with the same record waiting to trip it.
+
+The script now reads the branch of every open pull request. Without `gh` it cannot list them and reads the unmerged `chain/*` branches, as before. The rest is unchanged: a branch untouched for two weeks is abandoned, and a run record already on main means that sitting landed. Run on 2026-09-30 it names one case, `megalithic-casting=checks/megalithic-four-seats`, and with that the scheduler's next choice is a re-verification of another case.
+
+It is not covered by the test suite, and was not before: the script reads the remote and GitHub.
+
+## 2026-09-30 — Where the panel parts from a judgment, the ledger mostly holds no evidence for the claim
+
+Seven blind panels were published on 2026-09-30, 34 checks in all, and three of those cases stand contested. Counted over those panels with the site's own functions (each case's featured claims; a claim split when fewer than a majority of its seats are within one step of the judgment, as the standing counts it):
+
+| | Featured claims | The panel splits from the judgment |
+|---|---|---|
+| With an admitted evidence record | 126 | 2 |
+| With none | 34 | 20 |
+
+Verdict by verdict: 50 of 608 seat verdicts are more than one step from the judgment where the claim has an evidence record, and 75 of 168 where it has none. The table by case, every split claim with the judgment's word and each seat's, and the script that counts them are in `proposals/assessment-experiments/2026-09-30-where-the-panel-splits/`.
+
+**The direction.** On 14 of the 20 every seat that differs grades the claim higher than the judgment does. On the other six, all in Deep Memory, seats differ both ways. On none do they only grade it lower.
+
+**Why.** The two protocols grade such a claim by different rules. The edition protocol, since its v8 (2026-09-16): a claim with no admitted evidence record is held on its source alone, a source is not evidence (§3.6), and its verdict is `unresolved` unless the reasoning names another disclosed basis. `check-v2` has no such rule. It tells a seat to weigh only the evidence records and to say where a verdict leans on priors. It says nothing of a claim no record cites, and the blind packet does not mark one. A seat then grades the claim from records attached to its neighbours, or from what it knows. In the 34 checks' claim reasonings 465 evidence records are named; 115 of them are not attached to the claim being graded, and 113 of those come without the name of a claim they are attached to.
+
+**What follows.**
+
+- Two of the three contested standings are splits on such claims: Deep Memory, on four claims it rests on, and Before Sputnik, on one. On Before Sputnik's claim all five seats grade it higher than the judgment does. On Deep Memory's four, seats differ both ways, more of them higher. Deep Memory's one reconsideration held its grades, its fresh panel split on the same claims again, and the rule allows no second: it stays contested until its ledger moves or the seats are given the same rule.
+- The checks the gate refused on Cast, Not Carved are this at its worst. GEO-C502 has no evidence record, the seats graded it from a record attached to two other claims, and the two checks the gate refused gave that record's statement of its source as confirmed (the entry above on that panel).
+- Under both is a gap in the ledger. 34 featured claims in seven cases have no admitted evidence record. Where most of a panel independently reads the ledger as supporting such a claim, either a record that bears on it is attached only to a neighbour, or the claim is carried by a source nobody has read into evidence.
+
+**What is not changed, and why.** The check protocol is not changed here. A protocol changes with a run as its evidence, and the last change proposed to this one was not adopted, by the rule its own design had set (the entry on written definitions of the verdict words). The standing's rule is not changed either: a split on a claim the case rests on contests the case, whatever the cause. What is owed is first in `docs/AUTOMATION.md`, "What is owed": an experiment, designed before it is run, of a check protocol that states the edition protocol's rule and asks a seat to name the claim a cited record is attached to; then a fresh check of the cases it bears on; and, where a seat names a neighbour's record, the answer step attaching it.
+
+## 2026-09-30 — A check's repair is held to the budget
+
+The check verb asks the budget once, before any seat is called, for the panel's first calls. A seat whose reply fails the contract is asked once more, and that second call went out without the budget being asked at all (`src/pipeline/check.ts`; the house model's calls are each asked, in `src/pipeline/models.ts`). On Before Sputnik on 2026-09-30 the Anthropic seat's first reply was cut at its ceiling of 128,000 tokens, nine claims short ($2.84), and the second asking cost $2.45. The day ended $0.68 under its cap, so no cap was passed; none had been asked.
+
+The repair is now put to the same guard as the first calls, with the calls still out counted at their estimates beside what the ledger already holds, since a call's cost reaches the ledger only when it returns. A seat refused here stays failed, with the cap named, and the other seats' checks are installed as they would have been. A test holds the order: the guard is asked before the seats and again before the repair, the refused repair is never sent, and the seat that answered whole is installed.
+
+One thing was tried and dropped on the way. The operator first wrote a rule not to ask again a seat whose reply was cut at its ceiling, on the reasoning that the same ceiling would cut it again. The run above had already shown otherwise: the second asking used 106,836 tokens and was whole. The rule was deleted before it was pushed.
+
+## 2026-09-30 — The status documents say what is true
+
+The founder's direction of 2026-09-29 was given against a site whose own documents had fallen behind it.
+
+- `docs/MAINTENANCE.md` opened with "Paused (2026-09-07)", three weeks after the loop was turned on. It now says live since 2026-09-09, and its table of lanes states the gate's rule as the constitution has had it since the amendment of 2026-09-09: one seat parks alone only for fabrication, confidence material or an edit to the constitution. A row in "When something looks wrong" says what to do when the gate parks a change over a check.
+- `docs/AUTOMATION.md`, "Where we are", was the reassessment of 2026-09-09. It is rewritten as of 2026-09-30: what stands, what is owed in order, and the two things that are the founder's (the Anthropic seat's effort; where two verdict words sit on the scale). The build table marks steps 4b, 5 and 6 done and adds the three built on 2026-09-30.
+- `src/domain/standing.ts` said in its header that the two open verdicts must match exactly. The founder's amendment of 2026-09-09 put them between "weakly supported" and "mixed", and the code has followed it since; the note now does.
+- The method page says two things it did not: that a judgment written after the models judged, by a writer shown their verdicts, waits for a fresh check; and that a model asked the same question again does not always give the same word, with the experiment's figures and a link to its report.
+- In a reader's view a claim is one "the case rests on". "Load-bearing" stays the ledger's word, in the data and the code.

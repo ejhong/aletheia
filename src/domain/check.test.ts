@@ -7,6 +7,7 @@ import { getCaseBySlug, loadAllCases } from "./load.ts";
 import { currentEdition } from "./editions.ts";
 import { sha256Hex } from "./hash.ts";
 import { owedSeats, parseYamlReply, runCheck, validateCheckReply } from "../pipeline/check.ts";
+import { BudgetExceeded } from "../pipeline/budget.ts";
 import { readRuns } from "../pipeline/store.ts";
 import { VENDORS } from "../pipeline/transport.ts";
 
@@ -91,6 +92,47 @@ describe("the check verb", () => {
     expect(recorded(moved.runId)).toMatch(/^[a-f0-9]{64}$/);
     expect(recorded(moved.runId)).not.toBe(sent);
     expect(currentEdition(geo()).featuredClaimIds.length).toBeGreaterThan(0);
+  });
+
+  it("asks the budget again before a repair, counting the calls still out, and leaves a refused seat failed", async () => {
+    const root = tmpRoot();
+    const cases = loadAllCases();
+    const featured = currentEdition(geo()).featuredClaimIds;
+    const whole = stringifyYaml({
+      caseAssessment: { verdict: "unresolved", loadBearing: [featured[0]], weakestLinks: [featured[1]], synthesis: "The ledger leaves the question open. ".repeat(60), steelman: "The proponents' strongest point is one this reading does not answer." },
+      claimAssessments: featured.map((claimId) => ({ claimId, verdict: "unresolved", confidence: "low", reasoning: "No admitted record settles it either way, and the strongest opposing consideration is the absence of a test." })),
+    });
+    const usage = { inputTokens: 1, outputTokens: 1 };
+    // The second seat's first call is still out when the first seat's reply fails the contract.
+    let release!: () => void;
+    const held = new Promise<void>((resolve) => (release = resolve));
+    const asked: string[] = [];
+    const call = async (seat: string) => {
+      asked.push(seat);
+      if (seat === "anthropic") await held;
+      return seat === "anthropic" ? { text: whole, model: "m", usage, usd: 0 } : { text: "caseAssessment: {}\nclaimAssessments: []\n", model: "m", usage, usd: 0 };
+    };
+    const put: string[][] = [];
+    const budget = (calls: { seat: string }[]) => {
+      put.push(calls.map((c) => c.seat));
+      if (put.length === 1) return 0;
+      release();
+      throw new BudgetExceeded("per-day cap: $59.00 spent + $3.00 estimated > $60.00; nothing was sent");
+    };
+    const out = await runCheck("megalithic-casting", { seats: ["gemini", "anthropic"], root, deps: { cases: () => cases, call, budget } });
+    // Asked once before any seat, for both; asked again before the repair, for the repair and the call still out.
+    expect(put).toEqual([["gemini", "anthropic"], ["anthropic", "gemini"]]);
+    // The repair was refused, so it was never sent: each seat was called once.
+    expect(asked).toEqual(["gemini", "anthropic"]);
+    expect(out.failed).toHaveLength(1);
+    expect(out.failed[0]).toMatch(/^gemini: .*not asked again: per-day cap/);
+    const dir = path.join(root, "proposals", out.runId);
+    expect(fs.existsSync(path.join(dir, "seat-gemini.repaired.yaml"))).toBe(false);
+    expect(fs.readFileSync(path.join(dir, "seat-gemini.problems.txt"), "utf8")).toContain("not asked again");
+    // The seat that answered whole is installed as it would have been.
+    expect(out.outcome).toBe("completed");
+    expect(out.installed).toHaveLength(1);
+    expect(out.installed[0]).toMatch(/check-opus-/);
   });
 
   it("asks only the seats that have not judged the ledger as it stands, and rests when every seat has", async () => {

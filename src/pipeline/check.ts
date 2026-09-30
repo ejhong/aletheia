@@ -25,7 +25,8 @@ import type { Meter } from "./spend.ts";
  * seat once with the findings; a second failure is recorded, not installed.
  * Installed runs carry `role: check` and the ledger hash they judged; every
  * seat's raw reply is kept beside the run record, installed or not. Calls go
- * through the metered transport, so the panel's cost is in the ledger.
+ * through the metered transport, so the panel's cost is in the ledger, and
+ * the caps are asked before the seats are called and again before a repair.
  *
  * The verb asks the seats that have not judged the case as it stands
  * (`seatsOwed`), and rests when every seat has. A seat that answered is not
@@ -109,8 +110,11 @@ export interface CheckOptions {
   seats?: string[];
   dryRun?: boolean;
   root?: string;
-  deps?: { call?: SeatCaller; now?: () => Date; cases?: () => LoadedCase[] };
+  deps?: { call?: SeatCaller; now?: () => Date; cases?: () => LoadedCase[]; budget?: BudgetGuard };
 }
+
+/** The budget guard over a set of seat calls about to be made: throws `BudgetExceeded` when they would pass a cap (src/pipeline/transport.ts, `assertSeatsWithinBudget`). */
+export type BudgetGuard = (calls: { seat: string; prompt: { system: string; user: string; maxTokens?: number } }[], meter: Meter) => number;
 
 export interface CheckOutcome extends RunOutcome {
   installed: string[];
@@ -157,16 +161,21 @@ export async function runCheck(caseKey: string, opts: CheckOptions = {}): Promis
 
   const userFor = (seat: string) => `RUN HEADER:\n  TAG: ${VENDORS[seat].tag}\n  MODEL_LABEL: ${VENDORS[seat].label}, independent check run\n\nCASE FILE FOLLOWS:\n\n${packet}`;
   // The caps hold for the panel's seats as for the house model: refused before any seat is asked, with the reason
-  // (a test's own caller is not a paid call and is not budgeted).
-  if (!opts.deps?.call) {
+  // (a test's own caller is not a paid call and is not budgeted, unless the test brings a guard of its own).
+  const withinBudget: BudgetGuard | null = opts.deps?.budget ?? (opts.deps?.call ? null : assertSeatsWithinBudget);
+  const first = (seat: string) => ({ seat, prompt: { system: instructions, user: userFor(seat), maxTokens: 64000 } });
+  if (withinBudget) {
     try {
-      assertSeatsWithinBudget(active.map((seat) => ({ seat, prompt: { system: instructions, user: userFor(seat), maxTokens: 64000 } })), run.meter);
+      withinBudget(active.map(first), run.meter);
     } catch (e) {
       if (!(e instanceof BudgetExceeded)) throw e;
       return { ...closeRun(run, "failed", { reason: e.message }), installed: [], failed: [] };
     }
   }
   const call = opts.deps?.call ?? callSeat;
+  // The calls still out, by seat: a call's cost reaches the spend ledger when it returns, so a guard asked in the
+  // middle of a run counts these at their estimates beside what the ledger already holds.
+  const out = new Map(active.map((seat) => [seat, first(seat)]));
   const assessmentsDir = path.join(root, "content", "cases", loaded.dir, "assessments");
   const installed: string[] = [];
   const failed: string[] = [];
@@ -175,14 +184,28 @@ export async function runCheck(caseKey: string, opts: CheckOptions = {}): Promis
       const user = userFor(seat);
       const overlayId = overlayRunId([date, "check", VENDORS[seat].tag], { now: now(), exists: (id) => fs.existsSync(path.join(assessmentsDir, `${id}.yaml`)) });
       const ctx = { loaded, seat, featuredIds, date, promptVersion: protocol.version, runId: overlayId, producedBy: runId };
-      let reply = await call(seat, { system: instructions, user, maxTokens: 64000, timeoutMs: 1_800_000 }, run.meter);
+      let reply = await call(seat, { system: instructions, user, maxTokens: 64000, timeoutMs: 1_800_000 }, run.meter).finally(() => out.delete(seat));
       writeWorkingFile(runId, `seat-${seat}.yaml`, reply.text, root);
       let v = validateCheckReply(reply.text, ctx);
       if (v.problems.length) {
         // One repair round: the contract failures go back to the seat with its reply.
         writeWorkingFile(runId, `seat-${seat}.problems.txt`, v.problems.join("\n"), root);
         const repair = `${user}\n\nYOUR PREVIOUS REPLY (below) failed the packet contract:\n${v.problems.map((p) => `- ${p}`).join("\n")}\n\nReturn the complete corrected YAML — the whole run, not a patch.\n\n${reply.text}`;
-        reply = await call(seat, { system: instructions, user: repair, maxTokens: 64000, timeoutMs: 1_800_000 }, run.meter);
+        // The repair is a second paid call, and the caps hold for it as for the first. Until 2026-09-30 it was sent
+        // without the budget being asked: that day the Anthropic seat's reply on Before Sputnik was cut at its
+        // ceiling, and the second asking cost $2.45 that no cap had been consulted about. A seat refused here stays
+        // failed, with the reason; the other seats' replies are installed as they would have been.
+        const again = { seat, prompt: { system: instructions, user: repair, maxTokens: 64000 } };
+        if (withinBudget) {
+          try {
+            withinBudget([...out.values(), again], run.meter);
+          } catch (e) {
+            if (!(e instanceof BudgetExceeded)) throw e;
+            return { seat, v: { run: null, problems: [...v.problems, `not asked again: ${e.message}`] } };
+          }
+        }
+        out.set(seat, again);
+        reply = await call(seat, { system: instructions, user: repair, maxTokens: 64000, timeoutMs: 1_800_000 }, run.meter).finally(() => out.delete(seat));
         writeWorkingFile(runId, `seat-${seat}.repaired.yaml`, reply.text, root);
         v = validateCheckReply(reply.text, ctx);
       }

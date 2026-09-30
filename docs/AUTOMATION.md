@@ -10,95 +10,179 @@ in the design is built until its own PR lands. The history of how the design
 got here, including the earlier five-loop version it replaces, is in
 `docs/DECISIONS.md`.
 
-## Where we are (reassessed 2026-09-09, evening)
+## Where we are (reassessed 2026-09-30)
 
-Reassessed on the founder's request against truth, beauty, simplicity,
-and modular code, with the loop on. The facts first, then the plan.
+Reassessed on the founder's direction of 2026-09-29, given in session: fix
+what is bad and broken, against the goal below — more AI applied must mean
+a better site and never a worse one. The facts first, then what is owed.
+The reassessment of 2026-09-09 that stood here is in git.
 
-- **The loop runs itself.** Since 2026-09-09: a weekly sitting of three
-  budgeted choices (`chain.yml`), the Arbiter on every PR with a narrow
-  veto and review notes, standing derived from the panel within one step,
-  budgets that crunch until 2026-10-31 and then settle, the founder's kill
-  switch in `governance/operation.yaml`. One sitting has run in CI (#214,
-  an edition, $4.23); check, report, draft and verify have run only from
-  a terminal. Two of ten cases have been through the chain; eight carry
-  only the migration edition, and the weekly cadence will reach them one
-  at a time.
-- **Truth holds where it is tested, and is untested where a reader looks
-  most.** Provenance is stamped, refusals are reasoned, nothing is
-  fabricated, standing is derived. But the case page still shows the
-  pre-edition view beside the edition's: an assessment panel and a
-  cross-model panel above the article, conjectures, studies and resources
-  from the earlier design — two presentations of one standing, and the
-  reader is not told which is the record. What was refused, and why, is
-  data (dispositions) with no page. The new vocabulary — contested,
-  unratified, a restated question, accounts side by side, review notes —
-  is on the record and not yet explained in place.
-- **Beauty: the pipeline is the beautiful part; the rest is accumulation.**
-  Verbs with protocols as versioned files, one roster, one budget, one run
-  frame, one retrieval layer. Around it: six disabled workflows and about
-  a dozen Maintain-era scripts still in the tree, a second vendor
-  transport under the Arbiter beside the pipeline's, `load.ts` at 1,300
-  lines carrying five concerns (parsing, validation, editions, standing,
-  page views), protocols with six versions each in the working directory,
-  and docs that describe two eras at once (MAINTENANCE, DATA_MODEL,
-  EXTRACTION_PIPELINE, CHAT_BRIEFS).
-- **Modular code: the three zones hold; two seams are wrong.** Content →
-  domain → UI is one-way. Two seams were wrong and are mended (the
-  subtraction record): the pipeline imported the legacy `scripts/lib`, now
-  `src/lib`; the Arbiter called vendors through its own transport, now
-  the metered one.
+- **The loop runs itself, and for two days it had stopped.** Since
+  2026-09-09: a weekly sitting of three budgeted choices (`chain.yml`,
+  Mondays), the Arbiter on every pull request, standing derived from the
+  panel, budgets that crunch until 2026-10-31. On 2026-09-28 it stalled on
+  three faults at once. The token that opens its pull requests had
+  expired. The Anthropic seat, at its pinned effort, thought to its
+  ceiling and returned nothing. And one missing seat held a whole panel
+  stale, so the sitting asked four seats the same question three times.
+  All three are mended (#417, #419): a sitting checks its token before it
+  spends, a failed sitting opens an issue, and a panel of four can speak.
+- **Eight of eleven cases have been through the chain.** Elusive by Law,
+  Fire From the Sky and Zero Worlds carry only the migration edition of
+  2026-09-08 and have never been searched by the loop.
+- **The reading layer is built (#421).** The case page is for reading the
+  case: the question, three header answers, what this edition moved, the
+  judgment with the panel beneath it, the article, the ladder, the
+  evidence, the research agenda. The record is a page of its own: every
+  run with what it proposed, admitted and refused, the change history, and
+  how each edition was chosen. Verdict words and standings are explained
+  where they appear and on the method page.
+- **"Better" is tested, not hoped (#425).** Between 2026-09-08 and
+  2026-09-23 every case the loop touched grew its article, one from 2,178
+  words to 7,502 over twenty editions, because each edition added what it
+  had learned and none was asked to take anything out. An edition is now
+  held to a reader's budget (3,000 words for the article, about a hundred
+  for each header answer), and a new telling of an unmoved ledger is
+  written only if the panel's seats, reading it beside the incumbent as a
+  reader would, prefer it. On 2026-09-30 eight cases were re-told under
+  it. All five seats preferred every one, and the eight articles went from
+  36,750 words to 20,330.
+- **A standing is stricter about independence (#433, #436).** A judgment
+  written with the panel's verdicts in hand cannot be ratified by them,
+  contested or not: the standing waits for a fresh blind check. The rule
+  came from a run that re-graded nine claims toward its panel and kept
+  "ratified" on the checks it had answered.
+- **Seven of the eight re-told cases carry a fresh blind panel.** Three
+  are ratified by five seats of five (The Emptied Amazon, The Aeon Before
+  Ours, State, Not Scar) and one by three of four (Collapse, Not
+  Computation, where the Anthropic seat thought to its ceiling and
+  returned nothing). Three are contested: Deep Memory and Before Sputnik
+  on claims the case rests on, The Religion with No Name on the case
+  verdict. The eighth, Cast, Not Carved, was judged too, and the gate has
+  parked its panel twice: on the Google seat's check (#445) and then on
+  the OpenAI seat's (#452), each for saying of one ledger record what the
+  record itself marks as unchecked against its source. The case reads
+  "not yet ratified" until that record is mended.
+- **Where the panel parts from a judgment, the ledger mostly holds no
+  evidence for the claim.** Across those seven panels, 126 featured claims
+  have an admitted evidence record, and the panel splits from the judgment
+  on 2 of them. 34 have none, and it splits on 20. On 14 of the 20 every
+  seat that differs grades the claim higher than the judgment does; on the
+  other six, all in Deep Memory, seats differ in both directions; on none
+  do they only grade it lower. The edition protocol has graded a claim
+  with no evidence record `unresolved` unless another basis is disclosed,
+  since 2026-09-16 (a source is not evidence, AGENTS.md §3.6). The check
+  protocol says nothing about such a claim, and a seat grades it from the
+  rest of the ledger or from what it knows. Two of the three contested
+  standings are splits on such claims. So part of what the site shows as
+  contested is two protocols disagreeing, and under that a gap in the
+  ledger: claims a case features and has not evidenced.
+- **The gate reads what it is given.** The panel's packet puts first what
+  it can read nowhere else (#422), compares a seat's raw reply and a
+  drafter's reply with what was installed from them and says what it did
+  not compare (#424, #437, #440, #446), and accounts for a run record
+  wherever it is filed (#430). A check's run record carries the hash of
+  the file its seats were sent. The build reads the content once (#423):
+  its step in CI had grown to twenty-nine minutes, and the whole of CI now
+  takes four.
+- **A seat's answer has noise in it, and the site says so.** An experiment
+  designed before it was run (#426, #432) asked four seats the same
+  question three times: each gave the same word all three times on 10 to
+  16 of 25 claims, and every seat's case verdict differed at least once.
+  Written definitions of the verdict words did not cure it and are not
+  adopted. Most of the disagreement was one pair of words, weakly
+  supported and provisionally supported, which the scale sets two steps
+  apart. The method page tells a reader to take a standing as a
+  measurement.
+- **What it cost.** September's spend was $472.98 against a cap of $550.
+  $59.32 of it was spent on 2026-09-30, against that day's $60: $27.45 on
+  editions and their comparisons, $31.88 on panels and the experiment. Of
+  the $31.88, $24.69 was the Anthropic seat at its pinned effort, in ten
+  askings. ($3.62 of the day's spend is the parked panel's, and its rows
+  reach main with #452; main's ledger shows $469.36 and $55.70 until
+  then.) The gate's own judgments are outside the caps and recorded at
+  harvest: at least $34.16 for the 28 changes judged on 2026-09-30,
+  counting each change's last judgment. From 2026-10-01 the caps are the
+  crunch's: $60 a day and $400 a month until 2026-10-31, then $30 and
+  $150.
 
-### The plan, in order
+### What is owed, in order
 
-1. **Subtraction first (one set of PRs).** Delete the six disabled
-   workflows and the Maintain-era scripts, each retirement citing the verb
-   that replaced it; retire EXTRACTION_PIPELINE and CHAT_BRIEFS into three
-   sentences here; move superseded protocol versions to
-   `protocols/archive/`; split `load.ts` into loading, editions, standing
-   and views; fold the Arbiter's vendor calls into the pipeline's
-   transport; fold or drop the legacy content structures (conjectures into
-   claims or out; resources into sources; watch out; studies stay — they
-   are frozen-criteria evidence maps the articles cite). Subtract before
-   building, because the UI pass builds views over state and must not
-   build them over two states.
-2. **The UI pass, two layers.** The reading layer is the case page in the
-   order a reader needs: the question as it stands (with the restatement
-   note), the article, the map of the controversy (the edition's accounts
-   side by side, each with its linked claims and what would decide it),
-   the ladder with credibility and diagnosticity explained in place,
-   evidence symmetric, what would change our mind, the research agenda —
-   except that the judgment and the panel stay on top, merged into one
-   block computed by one rule, because what the AI thinks and what the
-   panel thinks is the most interesting thing on the page (founder
-   direction, 2026-09-09, in session), with a strip above them saying
-   what the case has been through lately.
-   The record layer sits beneath, one component per concept: what was
-   proposed and what was refused and why, the review notes, the history.
-   At site level, one `/operations` page replaces `/panel` and
-   `/proposals` (built 2026-09-09): the operation state, the schedule and
-   what the ledger wants next, spend against the caps, recent sittings,
-   the review notes, and everything `/panel` showed. The assessment panel and the cross-model panel go as
-   separate things — their content lives in the one block — and the
-   conjecture cards go. AGENTS.md §7 is the brief: no
-   clutter, no unlabelled scores, terms explained where they appear,
-   mobile first.
-3. **The loop keeps running meanwhile** and does the crunch on its own:
-   the eight unreported cases, one a week, within the caps; the founder
-   drops essays when ready, Deep Memory among them.
-4. **After the UI pass:** verifier quality, driven by the refusals data
-   and the review notes; then Deep Memory from scratch as the test of a
-   case built from inputs alone.
-5. **Sharper search per dollar** (founder, 2026-09-16, in session: "add
-   them as todos"). Three bounded changes to the research pass, in order:
-   (i) a date-aware novelty task in the report protocol — the seat is told
-   the date of the previous report and asked, as one named task among its
-   directions, for what has appeared since; (ii) a citation feed on the
-   ledger's key sources — new works citing a case's admitted papers
-   (OpenAlex or Crossref cited-by), gathered mechanically before the pass
-   and handed to the seat as leads, never as findings; (iii) retraction
-   and correction re-checks of admitted sources on a cadence, since only
-   new sources are checked at verify time today.
+1. **One rule for a claim with no evidence.** The check protocol is to
+   say what the edition protocol says: such a claim is `unresolved` unless
+   the seat names the basis that carries it, each record by its id with
+   the claim it is attached to, or a prior stated as a prior. It takes an
+   experiment designed before it is run, as the last change to that
+   protocol did, and then a fresh check of the cases it bears on. Deep
+   Memory waits on this: its one reconsideration held, its fresh panel
+   split again on four such claims, and the rule allows no second. Where a
+   seat then names records attached to a neighbouring claim, the answer
+   step can attach them, which mends the ledger and not only the standing.
+2. **The answers two review notes are owed** (#447, #448): two evidence
+   records on The Aeon Before Ours carry one direction for two claims, and
+   one claim on The Emptied Amazon is four propositions in one. Each goes
+   through the answer step: the second reader splits the records, an
+   edition answers the note, a fresh check judges the result.
+3. **The answer a parked change is owed** (#452). Cast, Not Carved's
+   record of Engelbach's 1922 monograph (GEO-E002) states what the
+   monograph contains and says of itself that it is unchecked against the
+   text; the claim about that text has no evidence record. The text is
+   public and the passage is in it (DECISIONS, 2026-09-30). Run on that
+   change's branch, `aletheia answer 452` sends both records back to the
+   second reader with the source in front of it; the edition is re-told
+   over what it settles, and a fresh panel judges the case. While the
+   change is open the scheduler leaves the case alone.
+4. **The reconsiderations two contested cases are owed**: The Religion
+   with No Name and Before Sputnik. The scheduler takes them when no
+   report is due, each followed by a fresh blind check.
+5. **The three cases the loop has never searched.** A report, a draft, a
+   verification, an edition and a check for each; the scheduler chooses
+   them as the least recently reported.
+6. **The next edition protocol**, from what the seats said of the eight
+   re-tellings (115 notes): an unchecked finding told by the report verb
+   without an aside on the site's own checking; header answers that name
+   nothing the reader has not met; a component's label that says what its
+   verdict grades, kept from edition to edition; and a drafter told
+   whether the panel's dissent is owed an answer or only shown. It is
+   drafted (`edition-v15`, on the branch `loop/edition-v15`) and has not
+   been run; a protocol is adopted with a run as its evidence.
+7. **A path for the loop when the gate vetoes a check.** The answer step
+   re-reads the records an objection names and re-tells the edition; it
+   cannot withdraw a check or ask a seat again, and a sitting whose check
+   is vetoed waits for the operator.
+8. **A polish pass.** When nothing else is owed, re-tell the case whose
+   readers left the most to fix; the comparison writes it only if it is
+   preferred. This is what makes more AI mean a better site once every
+   case is settled; today a settled case is never re-told.
+9. **Sharper search per dollar** (founder, 2026-09-16, in session: "add
+   them as todos"), unchanged and not begun. Three bounded changes to the
+   research pass, in order: (i) a date-aware novelty task in the report
+   protocol — the seat is told the date of the previous report and asked,
+   as one named task among its directions, for what has appeared since;
+   (ii) a citation feed on the ledger's key sources — new works citing a
+   case's admitted papers (OpenAlex or Crossref cited-by), gathered
+   mechanically before the pass and handed to the seat as leads, never as
+   findings; (iii) retraction and correction re-checks of admitted sources
+   on a cadence, since only new sources are checked at verify time today.
+
+### What is the founder's
+
+- **The Anthropic seat's effort.** It is pinned at `max` because that is
+  what keeps the seat inside the band the panel is chosen on (58 on the
+  index the roster cites, against 54 at `high`; the band is 56 to 59). At
+  `max` the seat used 86,000 to 128,000 tokens on each of ten askings on
+  2026-09-30, thinking and reply together, against a ceiling of 128,000
+  that the model is not told. Twice it reached the ceiling: once it
+  returned nothing and the panel went on with four seats, once its reply
+  was cut and it was asked again. An asking cost $1.90 to $2.96, and the
+  seat took $24.69 of the $31.88 that day's checks cost. Keeping `max`,
+  lowering it and leaving the band, or changing the band are the founder's
+  choices (`config/models.yaml`).
+- **Where two verdict words sit.** The constitution's scale puts "weakly
+  supported" and "provisionally supported" two steps apart, with "mixed"
+  between them; a seat asked twice moves between those two more than
+  between any other pair. Whether they belong a step apart is an amendment
+  to AGENTS.md §3.15.
 
 ### Build sequence — status
 
@@ -109,11 +193,14 @@ and modular code, with the loop on. The facts first, then the plan.
 | 3a | The intake foundation: dispositions, coverage diff, packet, store, transport with the spend ledger, six protocol files, the CLI | **Merged**. |
 | 3b | The chain: `report` (two seats), `draft`, `verify`, `edition`; the budget guard; tariffs from price pages; one roster (`config/models.yaml`) | **Merged**. Protocols `draft-v2`, `verify-v2`, `edition-v2` after the first runs. |
 | 4a | First runs on Cast, Not Carved, both seats | **Done** (2026-09-08; #199, #200, #201). Evidence above and in DECISIONS. |
-| 4b | **Close the loop on one case.** (i) A correction writer: change one field of one record in place, bytes elsewhere untouched, with the history entry — so proposals' corrections apply. (ii) `check` behind the CLI on the metered transport with the roster's panel; each seat's raw reply kept beside its verdict; the Gemini seat's omitted claims fixed (contract or output room). (iii) `edition` carries the panel's dissents when standing is contested: the drafter answers them or holds, and a fresh blind check follows — reconsideration folded in, the old script retired. (iv) `aletheia next`: choose the case by staleness, saturation, and time since its last run; a weekly `chain` workflow runs report → draft → verify → edition for that case under budget and opens the PR; the Arbiter judges it; a passing edition is re-checked after merge. (v) The operation state — live or paused under the kill switch, and why — is a governance file the pages display. | **In progress** (2026-09-08/09): (i) correction writer built, the al-Ma'mun date applied; (ii) `check` behind the CLI on the metered transport, raw replies kept, one repair round, five seats installed on the corrected ledger; (iii) dissents carried into `edition`, reconsideration folded in, one `editionDue` rule — the first reconsideration ran on Cast, Not Carved and held `unresolved` while regrading the Egyptian instance; (iv) `aletheia next` and `chain.yml`, dispatch-only until the founder uncomments the schedule; (v) `governance/operation.yaml` displayed in the footer. Remaining: the Arbiter toggle. | The chain passes `--busy` (scripts/busy-cases.mjs): a case whose sitting is still open on an unmerged `chain/*` branch is not chosen again. A dispatch may force the first choice — `case` and `verb` inputs on the workflow, `--case <slug> --verb report|edition|check` on the CLI — recorded as dispatched by hand; the rest of the sitting is the ledger's own choice.
-| 4c | Breadth: the loop reaches the eight unreported cases on its own cadence; Deep Memory from the Birdmen inputs, from scratch | Running (weekly sittings since 2026-09-09). **Deep Memory opened 2026-09-09**: a question-only case (`content/cases/deep-memory/`, an opening edition with no assessment, an empty ledger, no inputs yet). The founder's pages enter by his own drop from GitHub (the founder-drop door; the panel's GPT seat on #236 read §3.15 as requiring the founder's own grant for republished copies, so the operator commits none); the intake then registers them as founding inputs, and the scheduler's next choices are the draft from that intake, verify, the first assessing edition, and the blind check — the loop's, unattended. The drop landed the same day on the founder's grant (#240: the home page as DEEP-IN001), and the first chain was dispatched. No second drop: the founder judges the five study pages experimental and does not want them taken in; the home page carries each investigation's question, finding and limitations in summary, which is their weight (founder direction, 2026-09-09, in session). |
-| 5 | Subtraction by evidence: six disabled workflows and the Maintain-era scripts retired, each citing the verb that replaced it; legacy docs folded; superseded protocols archived; `load.ts` split; one vendor transport; legacy content structures folded or dropped | **Next** (reassessment of 2026-09-09): before the UI pass. |
-| 6 | Presentation: the reading layer (question, article, map of the controversy, ladder, evidence, what would change our mind, agenda) and the record layer (runs, refusals, panel words, review notes, history) on the case page; `/operations` at site level | After 5; the brief is in "The plan, in order". |
+| 4b | **Close the loop on one case.** (i) A correction writer: change one field of one record in place, bytes elsewhere untouched, with the history entry — so proposals' corrections apply. (ii) `check` behind the CLI on the metered transport with the roster's panel; each seat's raw reply kept beside its verdict; the Gemini seat's omitted claims fixed (contract or output room). (iii) `edition` carries the panel's dissents when standing is contested: the drafter answers them or holds, and a fresh blind check follows — reconsideration folded in, the old script retired. (iv) `aletheia next`: choose the case by staleness, saturation, and time since its last run; a weekly `chain` workflow runs report → draft → verify → edition for that case under budget and opens the PR; the Arbiter judges it; a passing edition is re-checked after merge. (v) The operation state — live or paused under the kill switch, and why — is a governance file the pages display. | **Done** (2026-09-08/09; the loop has run itself since 2026-09-09): (i) correction writer built, the al-Ma'mun date applied; (ii) `check` behind the CLI on the metered transport, raw replies kept, one repair round, five seats installed on the corrected ledger; (iii) dissents carried into `edition`, reconsideration folded in, one `editionDue` rule — the first reconsideration ran on Cast, Not Carved and held `unresolved` while regrading the Egyptian instance; (iv) `aletheia next` and `chain.yml`, dispatch-only until the founder uncomments the schedule; (v) `governance/operation.yaml` displayed in the footer. The Arbiter runs on every pull request since 2026-09-09. | The chain passes `--busy` (scripts/busy-cases.mjs): a case whose sitting is still open in a pull request is not chosen again (any open pull request since 2026-09-30; until then only the workflow's own `chain/*` branches). A dispatch may force the first choice — `case` and `verb` inputs on the workflow, `--case <slug> --verb report|edition|check` on the CLI — recorded as dispatched by hand; the rest of the sitting is the ledger's own choice.
+| 4c | Breadth: the loop reaches the eight unreported cases on its own cadence; Deep Memory from the Birdmen inputs, from scratch | **Eight of eleven** cases have been through the chain (2026-09-30); Elusive by Law, Fire From the Sky and Zero Worlds have not, and are the scheduler's next reports. Weekly sittings since 2026-09-09. **Deep Memory opened 2026-09-09**: a question-only case (`content/cases/deep-memory/`, an opening edition with no assessment, an empty ledger, no inputs yet). The founder's pages enter by his own drop from GitHub (the founder-drop door; the panel's GPT seat on #236 read §3.15 as requiring the founder's own grant for republished copies, so the operator commits none); the intake then registers them as founding inputs, and the scheduler's next choices are the draft from that intake, verify, the first assessing edition, and the blind check — the loop's, unattended. The drop landed the same day on the founder's grant (#240: the home page as DEEP-IN001), and the first chain was dispatched. No second drop: the founder judges the five study pages experimental and does not want them taken in; the home page carries each investigation's question, finding and limitations in summary, which is their weight (founder direction, 2026-09-09, in session). |
+| 5 | Subtraction by evidence: six disabled workflows and the Maintain-era scripts retired, each citing the verb that replaced it; legacy docs folded; superseded protocols archived; `load.ts` split; one vendor transport; legacy content structures folded or dropped | **Done** in four sets on 2026-09-09 (the subtraction record below), with two legacy structures left as they were: each case's resources page, and the `watch.yaml` files, which the loader still validates and nothing else reads. |
+| 6 | Presentation: the reading layer (question, article, map of the controversy, ladder, evidence, what would change our mind, agenda) and the record layer (runs, refusals, panel words, review notes, history) on the case page; `/operations` at site level | **Done.** `/operations` on 2026-09-09; the reading layer and the record page on 2026-09-30 (#421). |
 | 7 | Sharper search per dollar: (i) date-aware novelty task in `report`; (ii) a cited-by feed on the ledger's key sources seeding each pass; (iii) retraction re-checks of admitted sources on a cadence | **Todo** (founder direction, 2026-09-16, in session). |
+| 8 | The test of better: the reader's budget, and a candidate read beside its incumbent by the panel's seats | **Done** 2026-09-30 (#425, #429, #435); eight cases re-told under it the same day. |
+| 9 | Independence of the standing: a judgment written with the panel's verdicts in hand waits for a fresh blind check | **Done** 2026-09-30 (#433, #436). |
+| 10 | The gate reads what it is given: what exists once comes first, replies are compared with what was installed from them, a run record is read wherever it is filed | **Done** 2026-09-30 (#422, #424, #430, #437, #440, #446). |
 
 ### Two rules settled by the runs
 
@@ -138,6 +225,17 @@ and modular code, with the loop on. The facts first, then the plan.
   reconsideration edition and a fresh check on the schedule's next turn for
   that case; the standing stays displayed as contested until the panel
   re-judges.
+- **A new telling must be preferred.** An edition is held to the reader's
+  budget, and one that only re-tells an unmoved ledger replaces its
+  incumbent only when at least three of the panel's seats, reading both as
+  a reader would, choose it and at most one chooses the incumbent. An
+  edition that carries a moved ledger or answers the panel goes out
+  whatever they prefer, with the preference on its record (2026-09-30).
+- **Agreement must be independent.** The checks a judgment was written
+  with in hand cannot vouch for it, whether or not the case was contested:
+  the standing waits for a blind check made after the judgment. A stamp can
+  add to what the judgment is known to have seen and never take from it
+  (2026-09-30).
 - **A panel is stale when it cannot speak, not when one seat is missing.**
   The scheduler asks for a check when fewer seats have judged the case as
   it stands than ratification requires (four), or when the adopted

@@ -204,7 +204,20 @@ export default function MethodPage() {
         <p className="mt-4 text-[14px] leading-relaxed text-ink-soft">
           Ratification takes at least {RATIFICATION_MIN_PANEL} models and is never a human review; the site says so
           wherever it shows one. A standing can only be raised by a fresh check: whenever a case&apos;s evidence
-          changes, its standing falls back to not yet ratified until the models judge it again.
+          changes, its standing falls back to not yet ratified until the models judge it again. The same happens
+          when a new judgment is written after the models have judged, by a writer that was shown their verdicts:
+          agreement with verdicts it had read is not independent, so it waits for a fresh check.
+        </p>
+        <p className="mt-4 text-[14px] leading-relaxed text-ink-soft">
+          A model asked the same question again does not always give the same word. In one experiment (30 September
+          2026: one case, four models, the same question three times) a model gave the same word all three times on
+          10 to 16 of 25 claims, and each model&apos;s verdict on the case itself differed at least once. A standing
+          rests on one answer from each model. Read it as a measurement with noise in it; the models&apos; own words
+          are shown beside it so that a near miss can be told from a real split.{" "}
+          <a href={`${site.repoUrl}/blob/main/proposals/assessment-experiments/2026-09-30-verdict-definitions/REPORT.md`} className={link}>
+            The experiment&apos;s report
+          </a>{" "}
+          is in the public repository.
         </p>
         <p className="mt-4 text-[14px] leading-relaxed text-ink-soft">
           Each case also carries a second output, its research priority: how

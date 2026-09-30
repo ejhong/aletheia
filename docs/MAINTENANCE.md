@@ -9,11 +9,12 @@ The site is operated by AI (AGENTS.md §3.15). The founder holds two powers:
 the kill switch (revert any run by its `runId`, or freeze the repo) and the
 constitution (`AGENTS.md`). Everything else below runs without a human.
 
-> **Paused (2026-09-07).** Every AI workflow below is disabled by hand under
-> the kill switch after the restore (PR #193); CI, PR risk check, and Deploy
-> run. Workflows re-enable one at a time as the tests in `docs/AUTOMATION.md`
-> need them. Until then a `needs-approval` PR has no arbiter and is merged by
-> the founder.
+> **Live since 2026-09-09.** The loop runs itself: a weekly sitting, the
+> Arbiter on every pull request, a passing verdict merged without a human.
+> `governance/operation.yaml` says whether it is live or paused, and the
+> site's footer shows it. Where things stand is in `docs/AUTOMATION.md`,
+> "Where we are". (This note read "Paused (2026-09-07)" until 2026-09-30,
+> three weeks after it stopped being true.)
 
 ## 1. The machine on one page
 
@@ -23,7 +24,7 @@ merge policy**. There are two lanes.
 | Lane | What qualifies | What happens |
 | --- | --- | --- |
 | `auto:low-risk` | Reversible-by-runId material that touches no featured content: `proposals/**`, `inbox/**` moves, **new** append-only `assessments/*.yaml` overlays, new harvested `governance/arbiter/pr-*.yaml` verdicts, append-only claims, sources, and dispositions (a new claim cannot feature itself; a disposition row publishes nothing). | `PR risk check` re-derives the class from the diff, labels the PR, and arms auto-merge. Merges when CI is green. |
-| `needs-approval` | Everything else: featured claims, article text, case records, research items, studies, code, workflows, docs. | The `arbiter` check convenes five vendor seats; **pass** = ≥4 `complies` and zero `violates`. A pass auto-merges. Anything else parks the PR, publicly, until revised or a seat is restored. |
+| `needs-approval` | Everything else: editions, evidence, case records, research items, studies, history, spend rows, code, workflows, docs. | The `arbiter` check convenes five vendor seats. **Pass** = at least four `complies` and no objection that parks. One seat parks a change alone only for fabrication, confidence material or an edit to the constitution; two objecting seats park it for anything; a lone objection of another kind becomes a review note and the change merges (AGENTS.md §3.15, amendment of 2026-09-09). A pass auto-merges. A park holds the PR, publicly, until it is revised or a failed seat is restored. |
 
 Three workflows do the work, and two more build and deploy:
 
@@ -55,7 +56,7 @@ demotes the case until re-checked. That is why new overlays may auto-merge.
 
 ## 1b. The verb chain (a weekly sitting since 2026-09-09)
 
-One CLI, four verbs, one direction (docs/AUTOMATION.md, "The verbs"). Every
+One CLI, one direction (docs/AUTOMATION.md, "The verbs"). Every
 run writes `proposals/<runId>/run.yaml` with its cost; every paid call is
 checked against `config/budget.yaml` first and recorded in
 `governance/spend.yaml` (rows through 2026-09-16) and `governance/spend/<runId>.yaml` (one file per run since). Dollars appear only for models with a reviewed
@@ -64,7 +65,7 @@ tariff in `config/tariffs.yaml`.
 ```bash
 node scripts/aletheia.ts status                                   # standing, edition, counts, saturation, spend per case
 node scripts/aletheia.ts report <case> --seat openai --dry-run    # write the packet and instructions, send nothing
-node scripts/aletheia.ts report <case>                            # the research pass: the house model (Fable 5.1, fallback Opus 5) with web search and fetch
+node scripts/aletheia.ts report <case>                            # the research pass: the research seat named in config/models.yaml, with web search and fetch
 node scripts/aletheia.ts report <case> --seat openai              # …or the OpenAI seat (gpt-5.6-sol with web_search), for the comparison
 node scripts/aletheia.ts draft <reportRunId>                      # report + fetched sources → proposals/<runId>/proposal.yaml
 node scripts/aletheia.ts verify <proposalRunId> --dry-run         # mechanical checks + second reader; writes verification.md only
@@ -252,6 +253,7 @@ input.
 | --- | --- |
 | Every `needs-approval` PR is parked, report says seats "cast no usable vote" | **Vendor billing.** Quorum is 4 of 5 `complies`; two dead seats park everything, by design. OpenAI: credits. xAI: the *monthly spending limit* on the team, not just credits. Restore the seat, re-run `Arbiter` on the PR. |
 | A PR is parked with a named objection | Two seats objected, or one for fabrication, confidence material, or a constitution edit. Read the reasoning in the sticky comment; revise, or the founder decides. A lone objection of the ordinary kind does not park: it is a review-note issue. |
+| The gate parks a change over a seat's check | One seat may park alone when a check gives as a source's own what the ledger holds secondhand (fabrication, §3.15). Look at the record the check leans on before the seat: a record whose statement of its source outruns its own limitation will trip every panel asked over it (2026-09-30, Cast, Not Carved: two parks on one record). Leave the change parked and run `node scripts/aletheia.ts answer <pr>` on its branch: the second reader re-reads the records the objection names against the source, the edition is re-told, and a fresh check follows. While the pull request is open the scheduler does not choose the case (`scripts/busy-cases.mjs`). Before saying how a standing would change with a check left out, compute it both ways. |
 | A PR parked "on the rate limit" | `CONTENT_MERGES_PER_WEEK` (10, `src/lib/arbiter-core.mjs`) counts autonomous canon merges in the trailing week. Founder-directed work is excluded only if its **commit message** (not the PR body — squash messages are built from title + branch commits) carries `Supervised-by: <who>`. The park clears as the week rolls. |
 | A low-risk PR sits open and green | It should have been armed by `PR risk check` on open/push/ready. If not: is it a draft, a fork, or labeled `needs-approval`? Otherwise rebase on `main` to re-trigger. |
 | A case shows `unratified — awaiting a fresh blind check` | Expected after any canon change or reconsideration. The next sitting's check re-panels it. |
@@ -305,9 +307,10 @@ npm run check:links                                         # dead links on the 
   `config/tariffs.yaml` (a test fails without one). The house model falls
   back server-side on a safety decline and every run and spend row stamps
   the model that actually answered. Panel seats never fall back — a
-  refusing seat is a failed seat; the /panel seat records start a new row
-  for a new model. Gemini's intro price doubles 2027-01-01. The former
+  refusing seat is a failed seat; the seat records on `/operations` start a
+  new row for a new model. Gemini's intro price doubles 2027-01-01. The former
   `EXTRACT_MODEL` Actions variable is retired and ignored.
-- Branch protection on `main`: the `arbiter` check is required (see the
-  2026-08-25 "gate is live" decision); admin enforcement off, so the
-  founder's override is the kill switch. Repo auto-merge enabled.
+- Branch protection on `main`: the `arbiter`, `checks` and `classify`
+  checks are required (see the 2026-08-25 "gate is live" decision); admin
+  enforcement off, so the founder's override is the kill switch. Repo
+  auto-merge enabled.

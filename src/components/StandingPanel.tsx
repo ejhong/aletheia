@@ -167,11 +167,11 @@ export function StandingPanel({
                   )}
                   <div className="mt-3 grid sm:grid-cols-2 gap-3">
                     <div>
-                      <h3 className="font-mono text-[10px] uppercase tracking-[0.16em] text-faint">it saw as load-bearing</h3>
+                      <h3 className="font-mono text-[10px] uppercase tracking-[0.16em] text-faint">what it saw the case resting on</h3>
                       <div className="mt-1 flex flex-wrap gap-1.5">{c.caseAssessment.loadBearing.map(chip)}</div>
                     </div>
                     <div>
-                      <h3 className="font-mono text-[10px] uppercase tracking-[0.16em] text-faint">it saw as weakest links</h3>
+                      <h3 className="font-mono text-[10px] uppercase tracking-[0.16em] text-faint">what it saw as the weakest links</h3>
                       <div className="mt-1 flex flex-wrap gap-1.5">{c.caseAssessment.weakestLinks.map(chip)}</div>
                     </div>
                   </div>
@@ -209,7 +209,7 @@ export function StandingPanel({
         {standing.status === "contested" ? (
           <p className="mt-3 border border-ochre/40 bg-ochre/8 px-4 py-2.5 text-[13px] leading-relaxed text-ink-soft">
             <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-ochre mr-2">contested</span>
-            {standing.reason}. The disagreement is shown here, not resolved by hiding it.
+            {`${standing.reason.charAt(0).toUpperCase()}${standing.reason.slice(1)}.`} The disagreement is shown here, not resolved by hiding it.
           </p>
         ) : standing.status === "unratified" ? (
           <p className="mt-3 border border-ochre/40 bg-ochre/8 px-4 py-2.5 text-[13px] leading-relaxed text-ink-soft">

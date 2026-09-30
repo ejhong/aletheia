@@ -6,7 +6,7 @@ import { describe, expect, it } from "vitest";
 import { getCaseBySlug, loadAllCases } from "./load.ts";
 import { currentEdition } from "./editions.ts";
 import { sha256Hex } from "./hash.ts";
-import { owedSeats, parseYamlReply, runCheck, validateCheckReply } from "../pipeline/check.ts";
+import { checkInstructions, owedSeats, parseYamlReply, runCheck, unevidencedClaims, validateCheckReply } from "../pipeline/check.ts";
 import { BudgetExceeded } from "../pipeline/budget.ts";
 import { readRuns } from "../pipeline/store.ts";
 import { VENDORS } from "../pipeline/transport.ts";
@@ -33,6 +33,27 @@ describe("the check verb", () => {
     const draft = path.join(process.cwd(), "proposals", "assessment-experiments", "2026-09-30-verdict-definitions", "check-v3-draft.md");
     expect(fs.existsSync(draft)).toBe(true);
     for (const dir of ["protocols", path.join("protocols", "archive")]) expect(fs.existsSync(path.join(process.cwd(), dir, "check-v3.md")), dir).toBe(false);
+  });
+
+  it("names the featured claims no admitted evidence record cites, and fills them into a protocol that asks", () => {
+    // Admitted means neither rejected nor provisional, as the edition packet counts a claim's evidence.
+    const evidence = [
+      { id: "X-E001", claimIds: ["X-C001"], reviewState: "ai_verified" },
+      { id: "X-E002", claimIds: ["X-C002"], reviewState: "provisional" },
+      { id: "X-E003", claimIds: ["X-C003", "X-C001"], reviewState: "rejected" },
+    ] as unknown as Parameters<typeof unevidencedClaims>[0]["evidence"];
+    expect(unevidencedClaims({ evidence }, ["X-C001", "X-C002", "X-C003", "X-C004"])).toEqual(["X-C002", "X-C003", "X-C004"]);
+
+    // The draft an experiment is to test (designed 2026-09-30, not yet run) asks for the list; every placeholder it
+    // uses is one the verb fills, so a run under it cannot fail on an unfilled one after the seats' budget is asked.
+    const draft = fs.readFileSync(path.join(process.cwd(), "proposals", "assessment-experiments", "2026-09-30-a-rule-for-claims-with-no-evidence", "check-v4-draft.md"), "utf8");
+    const text = draft.slice(draft.indexOf("\n", draft.indexOf("\n---") + 1) + 1).trim();
+    const c = geo();
+    const featured = currentEdition(c).featuredClaimIds;
+    const none = unevidencedClaims(c, featured);
+    const told = checkInstructions({ version: "check-v4", text }, c, featured, "2099-01-01");
+    expect(told).not.toMatch(/\{\{/);
+    expect(told).toContain(`those are: ${none.join(", ") || "none"}.`);
   });
 
   it("validates an installed check run's own text against the packet contract", () => {

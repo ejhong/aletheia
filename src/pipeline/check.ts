@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { stringify as stringifyYaml } from "yaml";
 import { currentEdition } from "../domain/editions.ts";
+import { sha256Hex } from "../domain/hash.ts";
 import { findCase } from "../domain/load.ts";
 import { AssessmentRunSchema, type AssessmentRun, type LoadedCase } from "../domain/schema.ts";
 import { seatsOwed } from "../domain/standing.ts";
@@ -141,6 +142,11 @@ export async function runCheck(caseKey: string, opts: CheckOptions = {}): Promis
     featuredIds: featuredIds.join(", "),
   });
   const packet = blindPacket(loaded, root);
+  // The run record carries the hash of the case file every seat is sent (the packet: not the seat's own header, and
+  // not the instructions, which carry the date). Two runs with one hash were sent the same file, and the record says
+  // so even when nothing the run wrote is kept. Until 2026-09-30 a check's record carried no hash: only the
+  // assessments it installed did, the ledger's (review note #428).
+  run.stamp.inputHash = sha256Hex(packet);
   if (wanted.length === 0) return { ...closeRun(run, "rested", { reason: "every seat of the panel has judged the case as it stands; pass --seats to ask one again" }), installed: [], failed: [] };
   if (active.length === 0) return { ...closeRun(run, "failed", { reason: `no seat has a key (${skipped.join(", ")})` }), installed: [], failed: [] };
   if (opts.dryRun) {

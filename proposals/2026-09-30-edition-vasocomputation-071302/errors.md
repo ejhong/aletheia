@@ -1,0 +1,2 @@
+- the article is 3,029 words without markup; the ceiling is 3,000 (aim for 2,500 or fewer)
+- edition edition-2026-09-30-072017 features VASO-C006 but its adopted assessment carries no treatment for it

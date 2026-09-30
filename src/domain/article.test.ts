@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { extractClaimRefs, extractPlateRefs, markerErrors, parseArticle, plainArticle } from "./article.ts";
+import { closeClaimSpans, extractClaimRefs, extractPlateRefs, markerErrors, parseArticle, plainArticle } from "./article.ts";
 import { loadAllCases } from "./load.ts";
 
 /**
@@ -29,6 +29,22 @@ describe("an article's markers", () => {
     expect(plainArticle(slipped)).toContain("The salt is real, and explains nothing.");
     // The broken span is no longer a route to its claim, which is why it must be refused rather than shown.
     expect(extractClaimRefs(slipped)).toEqual(["X-C003"]);
+  });
+
+  it("the one-character slip can be closed, and nothing else is guessed at", () => {
+    const slipped = good.replace("{claim=X-C020}", "{claim=X-C020]").replace("{claim=X-C003}", "{claim=X-C003]");
+    const fixed = closeClaimSpans(slipped);
+    expect(fixed.markdown).toBe(good);
+    expect(fixed.closed).toEqual(["X-C020", "X-C003"]);
+    // A well-formed article is returned as it came.
+    expect(closeClaimSpans(good)).toEqual({ markdown: good, closed: [] });
+    // Anything that is not the whole span less its last character is left for the drafter: a malformed id, a span
+    // with no opening bracket, a bare marker, a bracket after a good span.
+    for (const other of ["A [claim]{claim=X-C20] here.", "A claim]{claim=X-C020] here.", "A bare {claim=X-C020] here.", "A [claim]{claim=X-C020}] here.", "A [claim]{claim=x-c020] here."]) {
+      expect(closeClaimSpans(other), other).toEqual({ markdown: other, closed: [] });
+    }
+    // Words with a bracket of their own before the span do not confuse it.
+    expect(closeClaimSpans("See [a] note, and [the salt is real]{claim=X-C003].").markdown).toBe("See [a] note, and [the salt is real]{claim=X-C003}.");
   });
 
   it("names a malformed id, a marker with no span, and a plate set inside a line", () => {

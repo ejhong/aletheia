@@ -7,6 +7,7 @@ import { assessmentHash, inputsHash } from "../domain/hash.ts";
 import { adoptedAssessment, currentEdition } from "../domain/editions.ts";
 import { currentChecks, latestCheckPerModel, ratification } from "../domain/standing.ts";
 import { judgmentChanges, judgmentChangesSentence } from "../domain/judgment.ts";
+import { closeClaimSpans } from "../domain/article.ts";
 import { editionErrors, findCase } from "../domain/load.ts";
 import { articleBudgetErrors, assessmentBudgetErrors } from "../domain/readerBudget.ts";
 import {
@@ -194,6 +195,8 @@ export interface AssembledEdition {
   /** The new assessment run, when the judgment changed. */
   assessment: AssessmentRun | null;
   errors: string[];
+  /** The claims whose spans the verb closed: the drafter had written "]" where the brace belongs (src/domain/article.ts, closeClaimSpans). */
+  closedSpans: string[];
 }
 
 function inputsHashOf(loaded: LoadedCase, root: string): string {
@@ -237,16 +240,27 @@ export function assessmentEvidenceErrors(a: AssessmentRun, loaded: Pick<LoadedCa
   return errors;
 }
 
+/** What the verb did to the drafter's markup, for the rationale and the run's note: nothing to say when it did nothing. */
+export function closedSpansSentence(ids: string[]): string {
+  if (!ids.length) return "";
+  return ` The verb closed ${ids.length} claim span${ids.length === 1 ? "" : "s"} the drafter had closed with a bracket where the brace belongs (${ids.join(", ")}); no word of the article was changed.`;
+}
+
 /** Pure: reply + context → a validated edition (and assessment), or the errors that stop it. */
 export function assembleEdition(
   loaded: LoadedCase,
-  reply: EditionReply,
+  given: EditionReply,
   ctx: { model: string; promptVersion: string; now: Date; root: string; reconciles?: string[]; shown?: string[]; runId?: string },
 ): AssembledEdition {
   const date = isoDate(ctx.now);
   const stamp = hhmmssUTC(ctx.now);
   const incumbent = currentEdition(loaded);
   const errors: string[] = [];
+  // One character, and only that: a claim span closed with "]" for "}" is closed by the verb, and the rationale says
+  // so beside the other things the verb measured. The drafter's reply is kept as it was sent, in the run's directory.
+  const spans = closeClaimSpans(given.article);
+  const reply: EditionReply = spans.closed.length ? { ...given, article: spans.markdown } : given;
+  const closedSpans = spans.closed;
 
   let assessment: AssessmentRun | null = null;
   if (reply.assessment) {
@@ -286,7 +300,7 @@ export function assembleEdition(
     if (!parsed.success) {
       // Stop here: every later check would be run against the incumbent's
       // assessment instead and report consequences, not causes.
-      return { edition: {} as Edition, assessment: null, errors: parsed.error.issues.map((i) => `assessment ${i.path.join(".")}: ${i.message}`) };
+      return { edition: {} as Edition, assessment: null, errors: parsed.error.issues.map((i) => `assessment ${i.path.join(".")}: ${i.message}`), closedSpans };
     } else {
       assessment = parsed.data;
       const steel = steelmanRequirementError(assessment);
@@ -321,7 +335,7 @@ export function assembleEdition(
     // two rationales stated word and account counts that the run records contradicted) — and, since 2026-09-30, with
     // what the candidate changes in the judgment and the selection against the edition it would replace
     // (src/domain/judgment.ts). Labelled as the verb's.
-    rationale: `${reply.rationale.trim()}\n\nMeasured by the verb: article ${articleWords(incumbent.article)} → ${articleWords(reply.article)} words, without markup; accounts ${(reply.accounts?.length ? reply.accounts : incumbent.accounts ?? []).length} (incumbent ${(incumbent.accounts ?? []).length}). ${judgmentChangesSentence(incumbent.runId, judgmentChanges(adoptedAssessment(loaded), assessment, incumbent, { featuredClaimIds: reply.featuredClaimIds }), assessment === null)}`,
+    rationale: `${reply.rationale.trim()}\n\nMeasured by the verb: article ${articleWords(incumbent.article)} → ${articleWords(reply.article)} words, without markup; accounts ${(reply.accounts?.length ? reply.accounts : incumbent.accounts ?? []).length} (incumbent ${(incumbent.accounts ?? []).length}). ${judgmentChangesSentence(incumbent.runId, judgmentChanges(adoptedAssessment(loaded), assessment, incumbent, { featuredClaimIds: reply.featuredClaimIds }), assessment === null)}${closedSpansSentence(closedSpans)}`,
     basis: { ledgerHash: loaded.ledgerHash, inputsHash: inputsHashOf(loaded, ctx.root) },
     previous: incumbent.runId,
     assessment: adoptedRef ?? null,
@@ -334,7 +348,7 @@ export function assembleEdition(
   });
   if (!parsedEdition.success) {
     errors.push(...parsedEdition.error.issues.map((i) => `edition ${i.path.join(".")}: ${i.message}`));
-    return { edition: {} as Edition, assessment, errors };
+    return { edition: {} as Edition, assessment, errors, closedSpans };
   }
   const edition = parsedEdition.data;
 
@@ -355,7 +369,7 @@ export function assembleEdition(
       if (!edition.featuredClaimIds.includes(id)) errors.push(`load-bearing claim ${id} is not featured`);
     }
   }
-  return { edition, assessment, errors };
+  return { edition, assessment, errors, closedSpans };
 }
 
 export type Editor = (system: string, user: string, meter: Meter) => Promise<{ data: EditionReply; model: string; strict?: boolean; fallback?: string }>;
@@ -478,7 +492,8 @@ export async function runEdition(caseKey: string, opts: EditionOptions = {}): Pr
       writeWorkingFile(runId, "reply-repaired.json", JSON.stringify(reply.data, null, 1), root);
       assembled = assembleEdition(loaded, reply.data, { model: reply.model, promptVersion: protocol.version, now: now(), root, reconciles, shown, runId });
     }
-    const { assessment, errors } = assembled;
+    const { assessment, errors, closedSpans } = assembled;
+    if (closedSpans.length) writeWorkingFile(runId, "corrections.md", `# What the verb changed in the drafter's markup (${runId})\n\n- ${closedSpans.length} claim span(s) were closed with "]" where the brace belongs; the verb closed each with "}" and changed nothing else: ${closedSpans.join(", ")}.\n- The reply as the drafter sent it is beside this file.\n`, root);
     let { edition } = assembled;
     if (errors.length) {
       const reason = `the candidate fails the loader's rules after one repair round: ${errors.join("; ")}`;
@@ -576,7 +591,7 @@ export async function runEdition(caseKey: string, opts: EditionOptions = {}): Pr
     const agenda = { open: 0, answered: 0, superseded: 0, retired: 0 };
     for (const r of loaded.research) agenda[researchStatus(r)]++;
     for (const ch of statusPlan.changes) { agenda[ch.from]--; agenda[ch.to]++; }
-    const notes = [assessment ? "new assessment" : "re-adopts the incumbent's assessment", `article ${articleWords(incumbent.article)} → ${articleWords(edition.article)} words`, comparison ? comparisonSentence(comparison) : "not compared: the incumbent is a question-only opening", `research agenda: ${agenda.open} open, ${agenda.answered} answered, ${agenda.superseded} superseded, ${agenda.retired} retired${statusPlan.changes.length ? ` (${statusPlan.changes.length} change(s) this run)` : ""}${statusPlan.errors.length ? `; ${statusPlan.errors.length} status entr${statusPlan.errors.length === 1 ? "y" : "ies"} refused (proposals/${runId}/research-status.md)` : ""}`, reply.fallback ? `served by the fallback: ${reply.fallback}` : undefined].filter(Boolean).join("; ");
+    const notes = [assessment ? "new assessment" : "re-adopts the incumbent's assessment", `article ${articleWords(incumbent.article)} → ${articleWords(edition.article)} words`, comparison ? comparisonSentence(comparison) : "not compared: the incumbent is a question-only opening", `research agenda: ${agenda.open} open, ${agenda.answered} answered, ${agenda.superseded} superseded, ${agenda.retired} retired${statusPlan.changes.length ? ` (${statusPlan.changes.length} change(s) this run)` : ""}${statusPlan.errors.length ? `; ${statusPlan.errors.length} status entr${statusPlan.errors.length === 1 ? "y" : "ies"} refused (proposals/${runId}/research-status.md)` : ""}`, closedSpans.length ? `the verb closed ${closedSpans.length} claim span(s) the drafter had closed with a bracket (proposals/${runId}/corrections.md)` : undefined, reply.fallback ? `served by the fallback: ${reply.fallback}` : undefined].filter(Boolean).join("; ");
     return { ...closeRun(run, "completed", { model: reply.model, reason: notes, wrote }), editionFile, assessmentFile };
   } catch (e) {
     return closeRun(run, "failed", { reason: (e as Error).message });

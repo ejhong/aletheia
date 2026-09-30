@@ -393,6 +393,37 @@ describe("the edition verb and the comparison", () => {
     expect(ratification({ ...c, editions: [...c.editions, keptEdition] })?.status).toBe("ratified");
   });
 
+  it("a claim span closed with the wrong bracket is closed by the verb, said, and costs no second call", { timeout: 60_000 }, async () => {
+    const c = fixtureCase();
+    const ed = currentEdition(c);
+    const span = ed.article.match(/\[[^\]]+\]\{claim=([A-Z]+-C\d{3})\}/)!;
+    let calls = 0;
+    const slipping: Editor = async () => {
+      calls++;
+      const article = `${ed.article.replace(span[0], `${span[0].slice(0, -1)}]`)}\n\nA closing sentence.`;
+      return { data: { rationale: "a plainer opening; the judgment is unchanged", question: null, accounts: [], featuredClaimIds: ed.featuredClaimIds, cruxOrder: ed.cruxOrder, article, researchStatus: [], assessment: null }, model: "claude-opus-5-5" };
+    };
+    const root = tmp();
+    const out = await runEdition("zero-worlds", { force: true, root, deps: { cases: () => [c], now, edit: slipping, compare: comparer("candidate", "candidate", "candidate", "candidate", "candidate") } });
+    expect(out.outcome, out.reason).toBe("completed");
+    expect(calls).toBe(1); // no repair round for one character
+    const written = EditionSchema.parse(parseYaml(fs.readFileSync(out.editionFile!, "utf8")));
+    // The edition carries the span closed, and its rationale says what the verb did and to which claim.
+    expect(written.article).toContain(span[0]);
+    expect(written.article).not.toContain(`{claim=${span[1]}]`);
+    expect(written.rationale).toContain(`The verb closed 1 claim span the drafter had closed with a bracket where the brace belongs (${span[1]}); no word of the article was changed.`);
+    // The run keeps the drafter's reply as it was sent, and a note of the correction beside it.
+    const dir = path.join(root, "proposals", out.runId);
+    expect(fs.readFileSync(path.join(dir, "reply.json"), "utf8")).toContain(`{claim=${span[1]}]`);
+    expect(fs.readFileSync(path.join(dir, "corrections.md"), "utf8")).toContain(span[1]);
+    expect(fs.existsSync(path.join(dir, "errors.md"))).toBe(false);
+    expect(out.reason).toContain("the verb closed 1 claim span(s) the drafter had closed with a bracket");
+    // A run with nothing to correct says nothing of it.
+    const clean = await runEdition("zero-worlds", { force: true, root: tmp(), deps: { cases: () => [c], now, edit: retelling(c), compare: comparer("candidate", "candidate", "candidate", "candidate", "candidate") } });
+    expect(clean.reason).not.toContain("the verb closed");
+    expect(EditionSchema.parse(parseYaml(fs.readFileSync(clean.editionFile!, "utf8"))).rationale).not.toContain("The verb closed");
+  });
+
   it("the drafter is told where an incumbent is over the budget, and may not keep an assessment that is", { timeout: 60_000 }, async () => {
     const geo = { ...loadAllCases().find((x) => x.record.slug === "megalithic-casting")!, narrativeInputs: [] };
     const version = Number(currentEdition(geo).promptVersion.match(/^edition-v(\d+)$/)?.[1] ?? 0);

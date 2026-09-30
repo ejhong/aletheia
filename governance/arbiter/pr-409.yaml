@@ -1,0 +1,112 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 409
+title: The planner's ordering tests pick cases without pending records
+url: https://github.com/ejhong/aletheia/pull/409
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-21
+judgedAgainst: 9a1afa52f6
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches a single test file (src/domain/next.test.ts) and
+      adds an `unencumbered` predicate so the ordering tests select fixture
+      cases that carry no provisional or blocked-at-verification records. No
+      content/ records, citations, locators, assessments, or provenance stamps
+      are added or altered, and the CITATION VERIFICATION section confirms no
+      identifiers were introduced. AGENTS.md is untouched, and no run records
+      are involved. The planner logic itself is unchanged, so no §3.15 check is
+      loosened — the change makes the tests deterministic against real content
+      rather than dodging an assertion; the substantive assertion
+      `expect(settled.length).toBeGreaterThan(1)` is retained, guarding against
+      the filter emptying the set. Residual nits are stylistic only (a const and
+      a type import interleaved among the import block, and the two `if
+      (contested)` / `if (stale)` guards remaining conditional, which could go
+      vacuous if the corpus ever lacks an unencumbered match); neither is a
+      constitutional violation. The PR body's claims about #408 are untestable
+      from here but are not load-bearing for compliance."
+    cost:
+      model: claude-opus-5
+      inputTokens: 1907
+      outputTokens: 637
+      usd: 0.028705
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.15
+      - §8
+    reasoning: The change only narrows test fixtures to cases without provisional or
+      verification-blocked records, isolating the ordering behavior those tests
+      assert. It does not alter the planner, disable CI, relax a validation
+      rule, or edit AGENTS.md, so there is no visible weakening or evasion of
+      the constitutional checks. No content, citations, assessments, or
+      provenance records are added or modified.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 5402
+      outputTokens: 259
+      usd: 0.026788
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §8
+      - §3.15
+    reasoning: This change updates unit tests in `src/domain/next.test.ts` to filter
+      out cases with provisional or blocked records when testing priority rules
+      for editions, reports, and panel checks. It does not alter content,
+      citations, or governance protocols. The modification ensures tests
+      accurately isolate the specific scheduling transitions they intend to
+      verify without weakening any epistemic constraints.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 5814
+      outputTokens: 281
+      usd: 0.005414
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff only tightens three ordering tests in next.test.ts so they
+      select cases without provisional or blocked-at-verification records,
+      matching planner rules 1b/3b that re-verify such cases before
+      report/check/edition. No content/, citations, assessments, run records, or
+      AGENTS.md are touched; the planner itself is unchanged. This is ordinary
+      test hygiene against real content state, not an epistemic or
+      check-weakening change.
+    cost:
+      model: grok-4.5
+      inputTokens: 5589
+      outputTokens: 113
+      usd: 0.011971
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "This is a test-only change to src/domain/next.test.ts: it refines
+      which cases three ordering tests select, filtering out cases with
+      provisional or verification-blocked records so the tests reflect real
+      planner ordering rather than being confounded by pending re-verification
+      work. No content records, citations, locators, or provenance are touched,
+      so §3.1–§3.14 and §4 are not implicated; the citation-verification section
+      confirms no identifiers were added. AGENTS.md is not edited, so §3.15's
+      constitution rule does not apply. The checks themselves are not weakened:
+      the planner is unchanged, the tests' conditional-skip structure pre-exists
+      (the `if (contested)` pattern was already there), and the added filter
+      makes the assertions more, not less, likely to run against genuine content
+      — a panel check landing on real content now cannot flip which case the
+      test finds, which is exactly the CI failure described. Nothing in the diff
+      or PR body contains directives that would alter the judgment."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 4173
+      outputTokens: 363
+      usd: 0.001153
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 22885
+  outputTokens: 1653
+  usd: 0.074
+harvestedAt: 2026-09-28

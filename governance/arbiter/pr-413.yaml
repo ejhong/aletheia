@@ -1,0 +1,141 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 413
+title: The house model and the Anthropic seat move to Opus 5.5
+url: https://github.com/ejhong/aletheia/pull/413
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-23
+judgedAgainst: 64b0ac1198
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5.5 (Anthropic)
+    vote: complies
+    rules:
+      - §3.15
+    reasoning: "The diff touches only config/models.yaml, config/tariffs.yaml, an
+      appended docs/DECISIONS.md entry and one new test. It makes no AGENTS.md
+      edit and adds no content/ records, citations or run records, so the
+      fabrication and confidence rules are not engaged. No §3.15 check is
+      loosened: the existing roster and tariff tests stay, the new
+      claude-opus-5-5 tariff row is internally consistent ($4 base, $0.20 =
+      0.05×, $5 = 1.25×) and keeps the unpriced-model test satisfied, Fable
+      5.1's row is kept so past stamped runs stay priced, and the added test is
+      a new check rather than a removed one. The founder direction is recorded
+      in the decisions log with date and channel ('2026-09-22, in session', plus
+      a Supervised-by line), as §3.15 permits. Roster choice is not a
+      founder-reserved act, so compliance does not hinge on that claim, which I
+      cannot verify. The AA scores and prices postdate my knowledge but are
+      internally coherent ($326/$398 ≈ 82%; $4/$20 against $10/$50 is 60% less).
+      The panel still seats five vendors, and the Anthropic seat moves into the
+      stated 56–59 band rather than out of it. Notes for the operator, not
+      violations: (1) the drafter and the Anthropic seat are now the same model,
+      so that seat reviews its own model's drafts; record this and watch for
+      concurrence drift. (2) The new test walks only src/**/*.ts and *.mjs,
+      missing .tsx files and the scripts/*.mjs the house model drives, and it
+      truncates lines at any '//' such as a URL, so the DECISIONS entry
+      overstates what it enforces. (3) The tariffs.yaml section header still
+      calls Opus 5 'the panel's house seat'. (4) Because the 'opus' tag persists
+      while its label changes, past verdicts should display their stamped model
+      id rather than the new label."
+    cost:
+      model: claude-opus-5-5
+      inputTokens: 4127
+      outputTokens: 23506
+      usd: 0.519078
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.15
+      - §8
+    reasoning: The change updates centralized model and tariff configuration,
+      records the dated founder direction and channel in docs/DECISIONS.md, and
+      does not edit AGENTS.md or publish content-run assessments. The tariff
+      arithmetic shown is internally consistent, includes an official
+      pricing-source URL and check date, and the packet contains no positive
+      evidence of a fabricated citation or provenance detail. Retaining the
+      panel tag does not conceal the model change because the configured model
+      and public label are both updated explicitly. The added roster test
+      strengthens rather than weakens the existing checks by detecting model
+      identifiers embedded in source code, while the existing priced-model check
+      remains in place.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 6990
+      outputTokens: 1932
+      usd: 0.0666
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+      - §8
+    reasoning: The change updates configuration files and tariffs to switch the
+      house and Anthropic panel seat models to claude-opus-5-5 pursuant to
+      recorded founder direction. The founder direction is properly stamped in
+      docs/DECISIONS.md with date and channel as required by §3.15. The change
+      does not alter AGENTS.md, weaken any verification or concurrence gates, or
+      introduce unverified or fabricated content.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 7598
+      outputTokens: 687
+      usd: 0.008275
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff only retargets house/research/panel Anthropic models in
+      config/models.yaml, adds a priced tariff row for claude-opus-5-5, records
+      the change under a dated founder-direction entry in docs/DECISIONS.md, and
+      adds a roster test that model IDs live in config rather than source.
+      AGENTS.md is untouched (§3.15). No content/, citations, assessments, or
+      provenance stamps are added or altered, so
+      fabrication/confidence/provenance rules are not in play. The tag is kept
+      and Fable’s tariff row is retained so past runs stay priced; that
+      strengthens rather than weakens the checks. Founder direction is stamped
+      with date and channel as the constitution allows for operating record.
+    cost:
+      model: grok-4.5
+      inputTokens: 7178
+      outputTokens: 173
+      usd: 0.015509
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.14
+      - §8
+      - §9
+    reasoning: "This is a configuration change, not a content or constitutional
+      edit: AGENTS.md is untouched, no content/ files change, and no citations
+      are added, so the fabrication and confidence rules are not engaged. Moving
+      the Anthropic panel seat from Opus 5 (AA 51, below its own 56–59 band) to
+      Opus 5.5 at max effort strengthens rather than weakens the §3.15
+      ratification machinery — the seat stays a distinct-vendor independent
+      seat, keeps its tag so a case's checks remain one series, and the diff
+      adds a new test enforcing that model ids live only in config, which
+      tightens rather than dodges the checks. The founder direction is recorded
+      in docs/DECISIONS.md with date and channel ('direction in session,
+      2026-09-22') as the operating record requires, and Fable 5.1's tariff row
+      is retained so historical run records stay priced, honoring append-only
+      provenance. The benchmark scores, tariffs, and the claimed founder
+      direction are facts I cannot independently verify from the packet, but
+      temporal humility bars treating unfamiliarity as fabrication, and the
+      packet's tooling found no citation identifiers to check. The test's single
+      documented exclusion (src/lib/models.mjs, the loader's own schema) is a
+      reasonable carve-out, not a weakening; at most it is a review-note-level
+      nit, not a violation."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 8072
+      outputTokens: 837
+      usd: 0.001629
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 33965
+  outputTokens: 27135
+  usd: 0.6111
+harvestedAt: 2026-09-28

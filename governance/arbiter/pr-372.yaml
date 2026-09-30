@@ -1,0 +1,176 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 372
+title: "Chain: 2026-09-20"
+url: https://github.com/ejhong/aletheia/pull/372
+verdict: pass
+reason: "4 of 5 seats affirm compliance; one seat's objection is a review note
+  the operator answers on the record: GPT-5.6 Sol (OpenAI) (§3.2, §3.9, §3.13;
+  other)"
+outcome: merged
+outcomeAt: 2026-09-21
+judgedAgainst: 15124167c1
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The two new sources (doi:10.1038/s41598-025-25902-8,
+      doi:10.1136/bmj.309.6956.696) both RESOLVE and their titles match what the
+      records use them for (a 2025 gastrocnemius trigger-point elastography
+      study; the 1994 BMJ community tender-point survey), and each added record
+      carries a quote plus a section/table locator; the operator's
+      hand-corrections even narrowed inherited two-place locators to where each
+      quote actually sits and added a limitation disclosing that the Ballyns
+      abstract and Results assign the 0.9 AUC to different pairs — the article
+      repeats that discrepancy to the reader rather than hiding it. The run
+      account shows the checks working rather than being dodged: compound
+      records and claims were repeatedly refused for non-atomicity (§3.2) with
+      reasons written into dispositions.yaml, rejected claims (VASO-C033, C183,
+      C185, C186) are tombstoned and no longer featured, and directions were
+      corrected to 'context' where a passage did not bear on the claim (§3.5).
+      The seat objections from earlier rounds are answered on the record:
+      VASO-E067 now states only that the runners' protocol omitted breathing
+      instruction, the article explicitly refuses to spend that record on
+      outcomes it does not carry, and VASO-C001 was regraded from
+      provisionally_supported to weakly_supported with the prevalence half held
+      as unmeasured (§3.9, §3.13). Operator by-hand edits (splits of E073, the
+      C188/C189 entry, the reverted E023 refusal) are each stamped with actor,
+      runId, promptVersion and a reason, and the account openly says no second
+      model read the hand-made parts and that the panel is their check — honest
+      provenance rather than misattribution (§3.14, §3.15). AGENTS.md is
+      untouched and no confidential or unpermissioned material is published.
+      Remaining imperfections (featured anchor-only claims from the unread
+      SRC-JHONG essay) are disclosed in the article as carrying no weight and
+      are pre-existing rather than introduced here."
+    cost:
+      model: claude-opus-5
+      inputTokens: 158507
+      outputTokens: 2189
+      usd: 0.887822
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: violates
+    rules:
+      - §3.2
+      - §3.9
+      - §3.13
+    reasoning: "The protected head account is sufficient to decide this despite the
+      omitted files. The head assessment expressly says VASO-C001 “bundles two
+      propositions,” while the rationale says the composition step cannot split
+      it and merely recommends a later split; §3.2 requires compound Claims to
+      be split now. The combined weakly-supported grade also masks the material
+      distinction the article itself identifies: occurrence is documented in
+      limited settings, while commonness across the general population is
+      unmeasured. Before merge, split or narrow C001, attach E082/E083 only to
+      the occurrence proposition with their limited direction, and leave the
+      general-population prevalence proposition unresolved."
+    paradigm: other
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 112538
+      outputTokens: 860
+      usd: 0.467352
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.1
+      - §3.2
+      - §3.5
+      - §3.7
+      - §3.8
+      - §3.9
+      - §3.13
+      - §3.14
+      - §3.15
+    reasoning: The PR successfully incorporates primary evidence from Landfald et
+      al. 2025 and Croft et al. 1994, both of which mechanically resolve and are
+      accurately represented. Prior panel objections regarding claim atomicity
+      (splitting compound claims VASO-C033 and VASO-C183 into atomic comparisons
+      VASO-C182, VASO-C184, VASO-C187, VASO-C188, VASO-C189) and the treatment
+      of VASO-E067 have been rigorously addressed through iterative
+      re-verification and transparent operator corrections recorded in
+      history.yaml. In response to objections regarding VASO-C001, the head
+      edition properly qualifies the opening text to attribute population
+      commonness to the founding essay rather than an established finding,
+      downgrades C001 to weakly supported at low confidence, and notes the
+      recommendation to split the claim at the next intake pass. Competing
+      hypotheses remain symmetrically evaluated, evidential directions and
+      limitations (such as the pain-selected nature of Croft 1994 and lack of
+      breath control in Landfald 2025) are clearly maintained, and no
+      constitutional provisions are breached.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 127891
+      outputTokens: 3455
+      usd: 0.108874
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The head edition/assessment (2026-09-21-013849) and ledger digest
+      show real, tooling-resolved citations (Landfald 2025; Croft 1994), honest
+      ai_verified labels, exact locators, and extensive atomic splits of
+      compound evidence/claims (C033→C182/C184/C187–C189;
+      E023/E094/E095→pairwise parts) with reasoned refusals and
+      context-vs-supports directions. Panel objections on E067 outcomes,
+      R012/R020 drift, non-atomic calf parallels, and C001 overclaim were
+      answered on the record: E067 is context-only for omitted breath
+      instruction; C039 stays unresolved; C001 is regraded weakly_supported at
+      low confidence with occurrence vs unmeasured population-frequency
+      separated in reasoning and article, and a later split recommended.
+      Assessments are append-only AI drafts stamped with runId/model/date;
+      history/dispositions stamp operator hand-fixes; no AGENTS.md edit, no
+      confidence material, no fabrication, no check-weakening. Omitted working
+      files do not hide a head-state violation visible in the protected run
+      account."
+    cost:
+      model: grok-4.5
+      inputTokens: 113280
+      outputTokens: 263
+      usd: 0.228253
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.5
+      - §3.8
+      - §3.9
+      - §3.13
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: "The diff edits no constitutional file, and every added identifier
+      (the Landfald 2025 Scientific Reports DOI, the Croft 1994 BMJ DOI, both
+      PMC URLs) resolves mechanically with titles matching what the records
+      claim, so the fabrication bar is not met. The run account shows the checks
+      working as designed, not weakened: the verify and answer passes refused
+      compound and mis-linked records with written reasons, splits were re-read
+      against their parts by a second reader, the two failed-rollbacks (E084
+      state, claimIds-too-small) are disclosed with the writes rolled back, and
+      the GPT-5.6 Sol panel objections were adopted rather than argued past —
+      including downgrading VASO-C001 to weakly_supported at low confidence with
+      the occurrence/prevalence propositions separated and the
+      unmeasured-prevalence concession stated in the article. The operator's
+      by-hand corrections (E073 split, E023 revert to provisional, R012/R020
+      fixes) are each stamped with date, session runId and promptVersion,
+      reasoned in the append-only history, and the reverted record carried no
+      weight until its parts passed second-reader verification — disclosed
+      accountability rather than dodging. Evidence directions are honestly
+      corrected (E067 to context; the two-key read marked as the edition's
+      inference, not a grade), the head edition discloses the abstract/results
+      ROC inconsistency in its own source rather than hiding it, and the one
+      remaining imperfection — VASO-C001 still bundling occurrence with
+      prevalence — is graded down, flagged in the rationale, and recorded with a
+      recommendation to split at the next intake pass, which is ordinary
+      imperfection handled within the constitution, not a violation."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 116225
+      outputTokens: 2426
+      usd: 0.018647
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 628441
+  outputTokens: 9193
+  usd: 1.7109
+harvestedAt: 2026-09-28

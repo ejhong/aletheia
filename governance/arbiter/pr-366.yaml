@@ -1,0 +1,157 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 366
+title: "Deep Memory: edition under protocol v11 (the seed page as a source, not
+  a narrator)"
+url: https://github.com/ejhong/aletheia/pull/366
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-21
+judgedAgainst: e1029b3d31
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "The diff adds one edition candidate plus its run record, model reply
+      and spend line; nothing under AGENTS.md or any check is touched, and the
+      tooling found no citation identifiers to resolve. The edition file's own
+      header states it replaces the incumbent only if the panel prefers it, so
+      no unratified draft is presented as ratified, and it carries runId,
+      producedBy, date, model and promptVersion plus ledger/inputs hashes
+      (§3.14, §3.15 stamping). Epistemically the article is unusually
+      scrupulous: the founding self-published page is named once as a source and
+      thereafter attributed locally ('the page states', 'on the page's word',
+      'the page's captions'), self-reports are defined as weak support at most,
+      claims with no evidence record are explicitly flagged ('captions without
+      records', 'unresolved, for want of a record'), and unread material is
+      marked (abstract only, transcription not checked against the printed page)
+      — consistent with §3.7, §3.8, §3.9. Negative and undermining evidence is
+      displayed prominently (the bundle null, the excavators' 'missing links',
+      the later-added Rapa Nui reliefs read against a nineteenth-century story),
+      and the verdict stays 'unresolved' with a plain statement that it does not
+      mean balance (§3.11, §3.13). The rationale also records specific
+      corrections — removing a detail drawn from a declined record and fixing
+      'two centuries after contact' to what DEEP-E071 states — which is honest
+      housekeeping rather than fabrication. Cost, tokens and spend are recorded,
+      and the run's notes match the run.yaml and the account. I see no rule
+      broken; the only residual uncertainty is whether the claim IDs and grades
+      match the ledger records, which is outside the diff but is CI's mechanical
+      job."
+    cost:
+      model: claude-opus-5
+      inputTokens: 36812
+      outputTokens: 809
+      usd: 0.244847
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.3
+      - §3.4
+      - §3.7
+      - §3.8
+      - §3.9
+      - §3.13
+      - §3.14
+      - §3.15
+    reasoning: The edition is explicitly marked as a candidate that replaces the
+      incumbent only if preferred, so it does not present an unratified draft as
+      ratified. Its run, model, date, prompt version, predecessor, assessment
+      hash, ledger hash, and producing run are recorded, while the rationale
+      explains exactly what changed and what remained unchanged. The article
+      distinguishes page self-reports, primary material, untested priors, source
+      statements, and editorial inference; it repeatedly identifies missing
+      records, unread texts, unchecked transcription, and unresolved claims
+      rather than laundering them into certainty. It presents four serious
+      competing accounts, separates descriptive credibility from historical
+      diagnosticity, and states concrete tests that could move the assessment in
+      either direction. No new citation identifiers or source records are added,
+      the citation tool reports no identifiers requiring resolution, no files
+      are omitted, and neither AGENTS.md nor the constitutional checks are
+      altered.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 28645
+      outputTokens: 1273
+      usd: 0.14004
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.9
+      - §3.13
+      - §3.14
+      - §3.15
+    reasoning: The pull request adds an edition candidate
+      (`edition-2026-09-20-112834`) for the Deep Memory case that re-adopts the
+      incumbent assessment while applying protocol v11 to treat the founding
+      seed page strictly as a cited source rather than an editorial narrator. No
+      new evidence or source identifiers were introduced, and provenance details
+      (runId, model, promptVersion, hashes) are intact and consistent across the
+      proposal files and spend ledger. Claims, priors, and anchors are clearly
+      distinguished in the prose in compliance with §3.1, §3.8, §3.9, and §3.13.
+      No constitutional rules are violated.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 30811
+      outputTokens: 871
+      usd: 0.026374
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff adds only a new edition candidate (plus its run/spend/reply
+      records) that re-adopts the incumbent assessment unchanged, keeps the
+      identical featured set and crux order, and rewrites the article under
+      edition-v11 so the seed page is introduced once as the case's founding
+      source and thereafter attributed locally ("the page reports", "on the
+      page's word", "the page's caption") rather than as a narrator with
+      independent judgments. Rationale, stamps
+      (runId/model/date/promptVersion/previous/basis hashes), and the article
+      itself disclose priors, self-report weakness, unread primaries, declined
+      details removed, and the unresolved verdict with explicit "what would
+      change our mind"; no new citations, locators, or evidence records are
+      invented, AGENTS.md is untouched, and the RUN ACCOUNT confirms honest
+      re-adoption with no ledger movement. Omitted-files list is empty and
+      citation tooling found nothing to resolve, so nothing hidden or fabricated
+      is visible.
+    cost:
+      model: grok-4.5
+      inputTokens: 29901
+      outputTokens: 225
+      usd: 0.061152
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.13
+      - §3.15
+      - §4
+    reasoning: The change is an edition candidate that re-adopts the incumbent's
+      already-assessed judgments and rewrites only the telling, which is
+      properly presented as unratified ('Replaces ... only if the panel prefers
+      it'), so no unratified draft is presented as ratified (§3.15). No new
+      external citations or locators are added — the verification section found
+      none — and all quoted figures (55%/926, 62.5% vs 9%, 37%, 263 summaries)
+      are attributed to the founding page's self-reports and consistently
+      labeled 'held on the page's word' with the weak-support footing disclosed,
+      satisfying §3.8 and §3.13's honest labeling. The article displays the
+      competing accounts, negative evidence, and the counter-argument to the
+      featured hypothesis, and it removes one detail that had come from a
+      declined record while correcting the birdman-myth dating to match
+      DEEP-E071 — the opposite of silent weakening. Provenance is stamped with
+      runId, model, promptVersion, and date, the run record and spend ledger are
+      coherent and cross-linked via producedBy, and no AGENTS.md edit or
+      confidence material appears anywhere in the diff.
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 30251
+      outputTokens: 1221
+      usd: 0.005148
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 156420
+  outputTokens: 4399
+  usd: 0.4776
+harvestedAt: 2026-09-28

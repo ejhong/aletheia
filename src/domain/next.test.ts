@@ -6,11 +6,14 @@ import { loadOperation } from "./governance.ts";
 import { getCaseBySlug, loadAllCases } from "./load.ts";
 import { cadenceDays, nextAction, inboxPending, chooseNext, runNext } from "../pipeline/next.ts";
 import { blockedAtVerification, provisionalCount, type NextChoice } from "./schedule.ts";
+import { blockedLeads, LEADS_MIN } from "./leads.ts";
 
 // A case with provisional or blocked records is re-verified before anything is searched, edited or checked (rules 1b
-// and 3b) — the ordering tests below pick cases without them, so a panel check landing on the real content cannot flip
-// which case they find (2026-09-21: a check made ccc the first contested case, and ccc holds blocked records).
-const unencumbered = (c: LoadedCase) => !provisionalCount(c) && !blockedAtVerification(c);
+// and 3b), and one with leads a producer could not open is asked of the indexes first (rule 3c) — the ordering tests
+// below pick cases without them, so a panel check landing on the real content cannot flip which case they find
+// (2026-09-21: a check made ccc the first contested case, and ccc holds blocked records; 2026-09-30: a check made
+// Deep Memory the first contested case, and Deep Memory holds leads).
+const unencumbered = (c: LoadedCase) => !provisionalCount(c) && !blockedAtVerification(c) && blockedLeads(c).length < LEADS_MIN;
 import type { RunRecord } from "./intake.ts";
 import type { LoadedCase } from "./schema.ts";
 

@@ -42,23 +42,36 @@ export async function callSeat(
   meter: Meter,
 ): Promise<Reply> {
   if (!VENDORS[name]) throw new Error(`unknown seat ${name}`);
-  const { text, usage, model } = await callVendorDetailed(name, prompt);
-  const usd = priceOf(model, usage, loadTariffs(meter.root));
-  recordSpend(
-    {
-      date: isoDate(),
-      runId: meter.runId,
-      verb: meter.verb,
-      case: meter.case,
-      model,
-      calls: 1,
-      inputTokens: usage.inputTokens,
-      outputTokens: usage.outputTokens,
-      cacheReadTokens: usage.cacheReadTokens ?? 0,
-      cacheWriteTokens: usage.cacheWriteTokens ?? 0,
-      usd,
-    },
-    meter.root,
-  );
-  return { text, model, usage, usd };
+  const record = (model: string, usage: Reply["usage"]): number | null => {
+    const usd = priceOf(model, usage, loadTariffs(meter.root));
+    recordSpend(
+      {
+        date: isoDate(),
+        runId: meter.runId,
+        verb: meter.verb,
+        case: meter.case,
+        model,
+        calls: 1,
+        inputTokens: usage.inputTokens,
+        outputTokens: usage.outputTokens,
+        cacheReadTokens: usage.cacheReadTokens ?? 0,
+        cacheWriteTokens: usage.cacheWriteTokens ?? 0,
+        usd,
+      },
+      meter.root,
+    );
+    return usd;
+  };
+  let answered: Awaited<ReturnType<typeof callVendorDetailed>>;
+  try {
+    answered = await callVendorDetailed(name, prompt);
+  } catch (e) {
+    // A call that failed after the vendor counted its tokens (an empty reply: the seat thought to its ceiling, or
+    // declined) is recorded before the failure goes on: the ledger is the whole bill, a failed seat's share included.
+    const billed = e as { usage?: Reply["usage"]; model?: string };
+    if (billed.usage && billed.model) record(billed.model, billed.usage);
+    throw e;
+  }
+  const { text, usage, model } = answered;
+  return { text, model, usage, usd: record(model, usage) };
 }

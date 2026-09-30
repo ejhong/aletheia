@@ -127,8 +127,11 @@ export function buildRequest(name, { system, user, maxTokens = 16000, cachedPref
       body: {
         model: cfg.model,
         // Adaptive thinking shares max_tokens with the visible reply; effort
-        // is the depth control on this model family.
-        max_tokens: Math.max(maxTokens, 32000),
+        // is the depth control on this model family, and the model is not
+        // told where the ceiling is. A seat pinned at a deep effort is given
+        // the ceiling its roster entry names (config/models.yaml), not the
+        // caller's: thinking that reaches the ceiling leaves no reply at all.
+        max_tokens: cfg.maxOutputTokens ?? Math.max(maxTokens, 32000),
         output_config: { effort: cfg.effort },
         // Streamed, as every Anthropic call in the repository is (src/lib/
         // anthropic-stream.ts): the headers arrive at once and pings keep the
@@ -235,8 +238,6 @@ export async function callVendorDetailed(
   } else {
     text = data.choices?.[0]?.message?.content ?? "";
   }
-  if (!text || text.trim().length === 0)
-    throw new Error(`${name}: empty reply (stop: ${data.stop_reason ?? data.candidates?.[0]?.finishReason ?? "?"})`);
   // The vendor's split of the input — uncached, read from the cache, written to it — so the
   // ledger prices each at its rate and the cache columns say whether a prefix was shared.
   const usage =
@@ -262,5 +263,13 @@ export async function callVendorDetailed(
             cacheReadTokens: data.usage?.prompt_tokens_details?.cached_tokens ?? 0,
             cacheWriteTokens: 0,
           };
+  // An empty reply is a failed seat — and a billed one: the vendor counted every token the seat
+  // thought before it ran out of room or declined. The error carries the usage, so the transport
+  // records what was spent before it lets the failure through (2026-09-30: a seat that thought to
+  // its ceiling cost about $1.40 and left no row in the ledger).
+  if (!text || text.trim().length === 0) {
+    const stop = data.stop_reason ?? data.candidates?.[0]?.finishReason ?? data.choices?.[0]?.finish_reason ?? "?";
+    throw Object.assign(new Error(`${name}: empty reply (stop: ${stop})`), { usage, model: VENDORS[name].model });
+  }
   return { text, usage, model: VENDORS[name].model };
 }

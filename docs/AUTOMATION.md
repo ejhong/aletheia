@@ -118,6 +118,9 @@ The reassessment of 2026-09-09 that stood here is in git.
    split again on four such claims, and the rule allows no second. Where a
    seat then names records attached to a neighbouring claim, the answer
    step can attach them, which mends the ledger and not only the standing.
+   The experiment is designed and not run
+   (`proposals/assessment-experiments/2026-09-30-a-rule-for-claims-with-no-evidence/`):
+   four cases, four seats, sixteen runs, about $9.
 2. **The answers two review notes are owed** (#447, #448): two evidence
    records on The Aeon Before Ours carry one direction for two claims, and
    one claim on The Emptied Amazon is four propositions in one. Each goes
@@ -165,24 +168,28 @@ The reassessment of 2026-09-09 that stood here is in git.
    findings; (iii) retraction and correction re-checks of admitted sources
    on a cadence, since only new sources are checked at verify time today.
 
-### What is the founder's
+### What was put to the founder, and what he decided (2026-09-30, in session)
 
-- **The Anthropic seat's effort.** It is pinned at `max` because that is
-  what keeps the seat inside the band the panel is chosen on (58 on the
+- **The Anthropic seat stays at `max`.** It is pinned there because that
+  is what keeps the seat inside the band the panel is chosen on (58 on the
   index the roster cites, against 54 at `high`; the band is 56 to 59). At
   `max` the seat used 86,000 to 128,000 tokens on each of ten askings on
   2026-09-30, thinking and reply together, against a ceiling of 128,000
   that the model is not told. Twice it reached the ceiling: once it
   returned nothing and the panel went on with four seats, once its reply
   was cut and it was asked again. An asking cost $1.90 to $2.96, and the
-  seat took $24.69 of the $31.88 that day's checks cost. Keeping `max`,
-  lowering it and leaving the band, or changing the band are the founder's
-  choices (`config/models.yaml`).
-- **Where two verdict words sit.** The constitution's scale puts "weakly
-  supported" and "provisionally supported" two steps apart, with "mixed"
-  between them; a seat asked twice moves between those two more than
-  between any other pair. Whether they belong a step apart is an amendment
-  to AGENTS.md §3.15.
+  seat took $24.69 of the $31.88 that day's checks cost. Shown that, the
+  founder keeps it. A panel that comes back with four seats can speak, and
+  the scheduler completes it when nothing else is owed.
+- **The two verdict words stay where they are.** The constitution's scale
+  puts "weakly supported" and "provisionally supported" two steps apart,
+  with "mixed" between them; a seat asked twice moves between those two
+  more than between any other pair. The founder left the judgment to the
+  operator. On the ten panels that can speak, putting them one step apart
+  would change no standing and no split claim, and it would loosen a check
+  in AGENTS.md §3.15 for good, so the operator left them. The next
+  experiment measures the pair on four cases, and that is what would
+  reopen it (DECISIONS, 2026-09-30).
 
 ### Build sequence — status
 

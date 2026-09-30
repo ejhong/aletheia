@@ -1,0 +1,1 @@
+- edition edition-2026-09-30-095431 article has a malformed marker near ", [ergometrine and its twin survived the treatment]{claim=TIK-C029]; ergometrine, this sit" — a claim span is [words]{claim=CASE-C000} with a closing brace; a plate is {plate:IMG-…} at the start of a line

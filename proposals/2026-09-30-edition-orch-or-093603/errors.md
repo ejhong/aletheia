@@ -1,0 +1,2 @@
+- edition edition-2026-09-30-094153 article has a malformed marker near "oped with Tilloy reproduces Penrose's rate exactly]{claim=ORCH-C066]. So 'the tested model" — a claim span is [words]{claim=CASE-C000} with a closing brace; a plate is {plate:IMG-…} at the start of a line
+- edition edition-2026-09-30-094153 article has a malformed marker near "not the execution of any knowably sound algorithm]{claim=ORCH-C040]. If that is so, somet" — a claim span is [words]{claim=CASE-C000} with a closing brace; a plate is {plate:IMG-…} at the start of a line

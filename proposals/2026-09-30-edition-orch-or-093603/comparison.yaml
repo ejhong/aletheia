@@ -1,0 +1,59 @@
+# The panel's seats reading the candidate beside edition-2026-09-16-035217, as a reader would (compare-v1; src/pipeline/compare.ts).
+# AI judgments of two tellings; not a human's, and not a judgment of the verdicts.
+against: edition-2026-09-16-035217
+protocol: compare-v1
+outcome: candidate-preferred
+candidate: 5
+incumbent: 0
+neither: 0
+seats:
+  - seat: Opus 5.5 (Anthropic)
+    model: claude-opus-5-5
+    candidateShownAs: A
+    prefers: candidate
+    margin: clear
+    reasons: "Both tellings are current and carry identical verdicts, so the choice comes down to delivery. A's first paragraph states the claim, how the evidence splits, and why the case is unresolved: not refuted because the central quantity is unmeasured, not supported because nothing measured is that quantity. Its header answers do the same in 180 words, while B's 482-word headers front-load terms the reader has not yet met, such as 'density-matrix observable', 'the β3 receptor result' and 'the Gran Sasso, Majorana and LISA Pathfinder bounds'. A covers nearly every substantive thread B does (the 6.6 nm transport and its limits, the scattering sign flip, Tegmark versus Hagan, the conflicting epothilone studies, picrotoxin, the xenon re-analysis, LISA Pathfinder, the MRI exchange, the β3 mutation and its limits) in little more than half the words, translates jargon well ('a radiation-only model, with no water, ions or molecular vibrations'), and adds specifics B omits, such as Hameroff and Penrose co-authoring the Princeton paper and the rat study using eight animals. B's extra length buys some real value, such as the structure-dependence argument against artifact and 'a collapse that injects neither energy nor momentum', but it also restates its header crux almost verbatim near the end, leans on internal vocabulary ('the ladder', 'rungs', 'the ledger now holds', 'low-diagnosticity'), and contains garbled sentences where claim titles are pasted in unmarked ('...does not predict is assessed as well supported'). A ten-minute reader can nearly finish A but will get through only about half of B."
+    notes:
+      - The 'What would settle it' header says the potency series counts 'only once its scattering ambiguity is closed' before the reader knows what that is; add a clause saying the optical signal's size and even its sign depend on how UV scattering is corrected.
+      - Give the Princeton result its strongest supporting detail, that the transport depended on polymerization state but not on protofilament architecture, which argues against an artifact, to balance the caveats set against it.
+      - Say what negative outcomes of the key tests would mean, for example that non-anesthetic controls moving the optical signal as much as anesthetics would close the anesthesia arm, so readers see how the assessment could move in either direction.
+  - seat: GPT-5.6 Sol (OpenAI)
+    model: gpt-5.6-sol
+    candidateShownAs: A
+    prefers: candidate
+    margin: clear
+    reasons: "A gives the state of the case immediately: the opening identifies the unmeasured millisecond-scale coherence, the negative collapse-model tests, the conventional receptor-and-circuit rival, and the experiments that could decide each component. It covers essentially the same decisive evidence as B—including the 6.6-nanometre optical result, scattering ambiguity, conflicting epothilone studies, xenon anomaly, receptor knock-in evidence, and collapse-physics bounds—in about 1,900 fewer words. B adds some useful methodological detail, but its 482-word headers and repeated restatements of the central gap impose too much cost on a ten-minute reader. B also relies more heavily on site-facing language such as “ladder,” “ledger,” and “case editor,” whereas A more consistently presents the dispute directly."
+    notes:
+      - Replace A’s remaining references to “this site’s survey,” “re-analysis,” and “case editor” with direct descriptions of the underlying analysis or sources.
+      - In the header, specify that the proposed tubulin knock-in must preserve normal polymerization and transport, as the article later does.
+      - The opening’s statement that the simplest collapse physics was ruled out should immediately specify that this concerns the parameter-free stochastic implementation, not Penrose’s lifetime rule itself.
+  - seat: Gemini 3.8 Flash (Google)
+    model: gemini-3.8-flash
+    candidateShownAs: A
+    prefers: candidate
+    margin: clear
+    reasons: Telling A is tailored for the intended ten-minute read, delivering the full scientific and conceptual substance of the case in 2,671 words versus Telling B's daunting 4,580 words. Telling B relies heavily on site-internal apparatus and jargon, referencing 'the ladder below this article', 'the ledger now holds', 'low-diagnosticity', and an editorial callout box ('The case editor's own view, labelled as such'). In contrast, Telling A's header answers are concise (180 words vs 482 words in B) and immediately orient the reader to the claims, the core gap, and the decisive tests without unnecessary preamble. Telling A covers every critical empirical detail present in B—from the UV scattering sign flip at 295 nm and LISA Pathfinder noise bounds to the β3 knock-in mouse and xenon isotope step—with much higher informational density per minute.
+    notes:
+      - Telling A still refers once to 'the case editor's own essay' in the Gödel section, which slips into the internal-site vocabulary it otherwise successfully avoids.
+      - In the superradiance discussion, Telling A could briefly mention the 40-femtometre spatial bound from LISA Pathfinder, which is noted in B but omitted from A's summary of that result.
+      - The header answer for 'Where the disagreement lives' could state explicitly that the required coherence state involves dephasing at 37 °C, matching the text below.
+  - seat: Grok 4.5 (xAI)
+    model: grok-4.5
+    candidateShownAs: B
+    prefers: candidate
+    margin: clear
+    reasons: B's headers (180 words) and opening deliver the claim, the unmeasured coherence gap, the competing accounts, and the decisive tests in a form a ten-minute reader can finish before stopping; A's parallel headers run to 482 words and already bury the same points in extra clauses. The articles teach essentially the same evidence and alternatives, yet B is 2,671 words against A's 4,580, so the reader learns far more per minute without loss of fairness or concreteness. Both stay in plain language and treat supporting and undermining results with equal seriousness, but A's extra length mostly elaborates calculations, disclaimers and self-references the general reader will never reach. B therefore leaves the state of the question clearer, sooner.
+    notes:
+      - B's anesthesia section could name the effect-size numbers (69 s / 29 s) already present in A so the reader sees the magnitude without opening the ledger.
+      - B could add one sentence clarifying that the xenon isotope pattern survives the re-analysis only as a shape, not as statistically separated spin, matching A's caution.
+      - B's physics paragraph should flag that the Tilloy–Diósi construction is the one dynamics known to hit τ ≈ ℏ/E_G exactly, so the desk calculation is fully specified.
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    model: z-ai-glm-5-3-flash
+    candidateShownAs: B
+    prefers: candidate
+    margin: clear
+    reasons: "Both tellings are current, share the same verdicts, the same ladder of five propositions, the same evidence in both directions, and near-identical lists of decisive experiments, so the choice turns on cost per minute — and B delivers essentially the same case in roughly 60% of the words. B is also plainer: it explains Meyer–Overton in line, says 'small oily molecules' where A says 'hydrophobic', and avoids internal references like 'the ladder below this article' and 'the ledger now holds'. A's additions — the AI-claims error history, the photosynthesis-replication comparison, the editor's-view blockquote — are genuinely interesting but are texture rather than new evidence, and the ten-minute reader pays about four extra minutes for them. B even adds one thing A lacks in sharpness, the eight-male-rat sample size in the Wellesley study, and its header answers are tighter and more readable than A's dense five-item version."
+    notes:
+      - B should briefly mention that an earlier round of AI Erdős claims collapsed under checking, since it cites current AI results as evidence pressing on the Gödel argument.
+      - B's 'what would settle it' could state that proponents must specify the coherence length and participating degrees of freedom, not just the time threshold, since A shows that vagueness is the case's core defect.
+      - B could note explicitly that the xenon re-analysis and the theory-corpus survey are the site's own work rather than independent findings, which A makes clearer in places.

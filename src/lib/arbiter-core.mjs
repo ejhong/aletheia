@@ -416,21 +416,29 @@ function leafDifferences(a, b, at, out) {
  * reply into an edition and, when the reply carries one, an assessment, and adds only what is its own: its stamps,
  * the closing paragraph of the rationale from "Measured by the verb", and the closing brace of a claim span the
  * drafter closed with a bracket. So every field of the reply is compared with the field it became, strings exact
- * but for those two allowances; `researchStatus` is applied to the research file and is not compared, and is said
- * so by the caller. A field the reply carries that is not one of the verb's is a difference.
+ * but for those two allowances. Each `researchStatus` entry is compared with the research item it names: the verb
+ * writes an accepted entry's status and note onto the item, so an entry the item does not hold as written — one
+ * the verb refused, or skipped — is a difference (review note #438: left uncompared, a reply's entries could be
+ * cut from the diff unread). A field the reply carries that is not one of the verb's is a difference, at any
+ * depth; so is a field of the wrong kind, and a claim assessed twice.
  *
  * @param {any} reply the reply, parsed
  * @param {any} edition the installed edition, parsed
  * @param {any} assessment the draft assessment the run installed, parsed, or null
+ * @param {any} [research] the case's research items at the head revision, parsed, or null when the file cannot be read
  * @returns {{ differences: string[], closedSpans: number }}
  */
-export function editionReplyDifferences(reply, edition, assessment) {
+export function editionReplyDifferences(reply, edition, assessment, research = null) {
   const out = [];
   const isMap = (v) => v !== null && typeof v === "object" && !Array.isArray(v);
   const show = (v) => clip(JSON.stringify(v) ?? "undefined", 80, "value");
   if (!isMap(reply)) return { differences: ["the reply is not a mapping"], closedSpans: 0 };
   if (!isMap(edition)) return { differences: ["the installed edition is not a mapping"], closedSpans: 0 };
   for (const k of Object.keys(reply)) if (!EDITION_REPLY_FIELDS.includes(k) && !isEmptyValue(reply[k])) out.push(`${k}: in the reply, not installed`);
+  // A field of the wrong kind is said, never coerced into something that compares.
+  for (const k of ["article", "rationale"]) if (typeof reply[k] !== "string") out.push(`${k}: not a string in the reply`);
+  if (reply.question != null && typeof reply.question !== "string") out.push("question: neither a string nor null in the reply");
+  for (const k of ["accounts", "researchStatus"]) if (reply[k] != null && !Array.isArray(reply[k])) out.push(`${k}: not a list in the reply`);
   // The article: exact, after the one character the verb is allowed to change.
   const article = String(reply.article ?? "");
   const closedSpans = (article.match(MISCLOSED_SPAN) ?? []).length;
@@ -442,6 +450,13 @@ export function editionReplyDifferences(reply, edition, assessment) {
   // The question and the accounts are the reply's when it gives them, and the incumbent's when it does not.
   if (typeof reply.question === "string" && reply.question.trim() && reply.question.trim() !== edition.question) out.push(`question: ${show(reply.question)} in the reply, ${show(edition.question)} installed`);
   if (Array.isArray(reply.accounts) && reply.accounts.length && JSON.stringify(reply.accounts.map((a) => String(a).trim())) !== JSON.stringify(edition.accounts ?? [])) out.push("accounts: the reply's are not the edition's");
+  // The research agenda: an entry is carried when the item it names holds its status and its note as written.
+  for (const e of Array.isArray(reply.researchStatus) ? reply.researchStatus : []) {
+    const item = Array.isArray(research) ? research.find((r) => r?.id === e?.id) : null;
+    const note = String(e?.note ?? "").trim();
+    if (!item) out.push(`researchStatus[${e?.id}]: ${Array.isArray(research) ? "the research file holds no such item" : "the research file could not be read"}, so the entry is not compared`);
+    else if ((item.status ?? "open") !== e.status || ((item.statusNote ?? "") !== note && !(e.status === "open" && note === ""))) out.push(`researchStatus[${e.id}]: ${show({ status: e.status, note })} in the reply; the research item holds ${show({ status: item.status ?? "open", note: item.statusNote ?? "" })}`);
+  }
   // The assessment: every field of the reply's against the draft the run installed.
   if (reply.assessment == null) {
     if (assessment) out.push("assessment: the reply carries none, and the run installed one");
@@ -451,6 +466,15 @@ export function editionReplyDifferences(reply, edition, assessment) {
     const a = reply.assessment;
     const CASE_FIELDS = ["verdict", "whatIsClaimed", "whereDisagreementLives", "whatWouldSettleIt", "bestConventionalExplanation", "components", "researchPriority", "loadBearing", "weakestLinks", "synthesis", "steelman"];
     for (const k of Object.keys(a)) if (!CASE_FIELDS.includes(k) && k !== "claimAssessments" && !isEmptyValue(a[k])) out.push(`assessment.${k}: in the reply, not installed`);
+    // A component is its label, state and note: the verb installs nothing else of it.
+    (Array.isArray(a.components) ? a.components : []).forEach((c, i) => {
+      if (!isMap(c)) out.push(`assessment.components[${i}]: not a mapping in the reply`);
+      else for (const k of Object.keys(c)) if (!["label", "state", "note"].includes(k) && !isEmptyValue(c[k])) out.push(`assessment.components[${i}].${k}: in the reply, not installed`);
+    });
+    // A claim assessed twice is compared only through its first entry; say so rather than let the second go unread.
+    const ids = (Array.isArray(a.claimAssessments) ? a.claimAssessments : []).map((c) => c?.claimId);
+    const twice = [...new Set(ids.filter((id, i) => ids.indexOf(id) !== i))];
+    if (twice.length) out.push(`assessment.claimAssessments: ${twice.join(", ")} assessed more than once in the reply`);
     const projected = {
       caseAssessment: Object.fromEntries(
         CASE_FIELDS.filter((k) => k in a).map((k) => [k, k === "components" && Array.isArray(a.components) ? a.components.map((c) => ({ label: c?.label, state: c?.state, ...(c?.note ? { note: c.note } : {}) })) : a[k]]),
@@ -579,6 +603,7 @@ export function runAccount(changed, read, diffOf, readBase = noBase) {
       carried,
     };
   };
+  const caseOf = (p) => p.split("/").slice(0, 3).join("/");
   /**
    * One edition run's replies against what it installed: the last reply (the repaired one when there is one) against
    * the edition and the draft assessment whose producedBy is this run; a first reply against the repaired one, its
@@ -610,8 +635,11 @@ export function runAccount(changed, read, diffOf, readBase = noBase) {
     else if (!editionPath) lines.push(`- ${name(last)}: this change carries no edition this run produced to compare it with`);
     else {
       const edition = parsed(editionPath)?.data;
-      const { differences, closedSpans } = editionReplyDifferences(lastData, edition, draft?.data ?? null);
-      const status = Array.isArray(lastData.researchStatus) && lastData.researchStatus.length ? `; its ${lastData.researchStatus.length} researchStatus entr${lastData.researchStatus.length === 1 ? "y is" : "ies are"} applied to the research file and not compared here` : "";
+      const researchPath = `${caseOf(editionPath)}/research.yaml`;
+      const research = parsed(researchPath)?.data ?? null;
+      const { differences, closedSpans } = editionReplyDifferences(lastData, edition, draft?.data ?? null, research);
+      const entries = Array.isArray(lastData.researchStatus) ? lastData.researchStatus.length : 0;
+      const status = entries && differences.length === 0 ? `; each of its ${entries} researchStatus entr${entries === 1 ? "y" : "ies"} is on the research item it names in ${researchPath}, status and note as written` : "";
       if (differences.length === 0) {
         carried[last] = draft ? `${editionPath} and ${draft.p}` : editionPath;
         lines.push(`- ${name(last)}: carried whole by ${carried[last]}${closedSpans ? ` — but for ${closedSpans} claim span(s) the drafter closed with "]" and the verb closed with "}"` : ""}${status}`);
@@ -639,13 +667,12 @@ export function runAccount(changed, read, diffOf, readBase = noBase) {
     }
     return {
       lines: [
-        `the drafter's replies to this run — working files, each compared by this tooling. The last reply is compared with the edition and the draft assessment this run installed (the changed files whose producedBy is this run): every field against the field it became, strings exact, except that the edition's rationale is the reply's followed by the verb's own paragraph from "Measured by the verb", and a claim span closed with "]" counts as closed with "}", which is the one character the verb changes; researchStatus is applied to the research file and not compared. A first reply that was sent back is compared with the repaired one, and what it holds that the repaired reply does not is shown whole, or left to the diff when that would pass ${FIRST_REPLY_SHOWN_CHARS.toLocaleString("en-US")} characters:`,
+        `the drafter's replies to this run — working files, each compared by this tooling. The last reply is compared with the edition and the draft assessment this run installed (the changed files whose producedBy is this run): every field against the field it became, strings exact, except that the edition's rationale is the reply's followed by the verb's own paragraph from "Measured by the verb", and a claim span closed with "]" counts as closed with "}", which is the one character the verb changes; each researchStatus entry is compared with the research item it names in the case's research file at the head revision, whose status and note must be the entry's. A first reply that was sent back is compared with the repaired one, and what it holds that the repaired reply does not is shown whole, or left to the diff when that would pass ${FIRST_REPLY_SHOWN_CHARS.toLocaleString("en-US")} characters:`,
         ...lines,
       ],
       carried,
     };
   };
-  const caseOf = (p) => p.split("/").slice(0, 3).join("/");
   // Sections carry a rank: when the account is over its cap, whole sections are dropped from the lowest rank up
   // (largest first within a rank) and said to be dropped. Rank 0 — the head edition and the assessment it adopts,
   // what a seat must see to judge a regrade — is never dropped (2026-09-20: a sitting with three editions clipped

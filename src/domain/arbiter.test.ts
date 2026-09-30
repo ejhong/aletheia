@@ -750,6 +750,53 @@ describe("an edition run's replies, compared with what the run installed", () =>
     expect(d("not a mapping")).toEqual(["the reply is not a mapping"]);
   });
 
+  it("compares every research-status entry with the research item it names, and carries none it cannot trace (review note #438)", () => {
+    const research = [
+      { id: "X-R001", question: "Does it replicate?", status: "answered", statusNote: "Study X-S001 collected the rows.", statusBy: runId, statusDate: "2026-09-30" },
+      { id: "X-R002", question: "Is there a second site?" },
+    ];
+    const d = (entries: unknown, file: unknown = research) => editionReplyDifferences({ ...reply, researchStatus: entries }, edition, draft, file).differences;
+    // An accepted entry is on its item as written; an open item named open again needed no note and changed nothing.
+    expect(d([{ id: "X-R001", status: "answered", note: " Study X-S001 collected the rows. " }, { id: "X-R002", status: "open", note: "" }])).toEqual([]);
+    // An entry the item does not hold as written — refused by the verb, or skipped — is text nothing installed.
+    expect(d([{ id: "X-R001", status: "answered", note: "Another note." }])[0]).toMatch(/^researchStatus\[X-R001\]: .* in the reply; the research item holds /);
+    expect(d([{ id: "X-R002", status: "retired", note: "The question dissolved." }])[0]).toMatch(/^researchStatus\[X-R002\]: /);
+    expect(d([{ id: "X-R002", status: "open", note: "A remark on an item that stays open." }])).toHaveLength(1);
+    expect(d([{ id: "X-R009", status: "answered", note: "No such item." }])).toEqual(["researchStatus[X-R009]: the research file holds no such item, so the entry is not compared"]);
+    // Without the research file nothing can be traced, and nothing is called carried.
+    expect(d([{ id: "X-R001", status: "answered", note: "Study X-S001 collected the rows." }], null)).toEqual(["researchStatus[X-R001]: the research file could not be read, so the entry is not compared"]);
+    expect(d("not a list")).toEqual(["researchStatus: not a list in the reply"]);
+    // In the account: a reply whose entries trace is carried and says where; one whose entries do not stays in the diff.
+    const files: Record<string, string> = {
+      [`${dir}/run.yaml`]: `runId: ${runId}\nverb: edition\noutcome: completed\n`,
+      [`${dir}/reply.json`]: JSON.stringify({ ...reply, researchStatus: [{ id: "X-R001", status: "answered", note: "Study X-S001 collected the rows." }] }),
+      [editionPath]: yaml(edition),
+      [draftPath]: yaml(draft),
+      "content/cases/x/research.yaml": yaml(research),
+    };
+    const traced = runAccount(Object.keys(files), (p: string) => files[p] ?? null, () => "");
+    expect(traced.text).toContain(`- reply.json: carried whole by ${editionPath} and ${draftPath}; each of its 1 researchStatus entry is on the research item it names in content/cases/x/research.yaml, status and note as written`);
+    expect(Object.keys(traced.carried)).toEqual([`${dir}/reply.json`]);
+    const refused: Record<string, string> = { ...files, "content/cases/x/research.yaml": yaml([{ id: "X-R001", question: "Does it replicate?" }]) };
+    const untraced = runAccount(Object.keys(refused), (p: string) => refused[p] ?? null, () => "");
+    expect(untraced.text).toMatch(/- reply\.json: NOT carried whole by .* with 1 difference\(s\): researchStatus\[X-R001\]: /);
+    expect(untraced.carried).toEqual({});
+  });
+
+  it("flags what the first comparison let through: a component's extra field, a claim assessed twice, a field of the wrong kind", () => {
+    const d = (r: unknown) => editionReplyDifferences(r, edition, draft).differences;
+    expect(d({ ...reply, assessment: { ...assessment, components: [{ label: "The thing happened", state: "unresolved", note: null, aside: "text the verb drops" }] } })).toEqual(["assessment.components[0].aside: in the reply, not installed"]);
+    const doubled = { ...assessment, claimAssessments: [...assessment.claimAssessments, { ...assessment.claimAssessments[0], reasoning: "A second reasoning nobody would read." }] };
+    expect(d({ ...reply, assessment: doubled })).toContain("assessment.claimAssessments: X-C001 assessed more than once in the reply");
+    expect(d({ ...reply, question: { text: "hidden" } })).toEqual(["question: neither a string nor null in the reply"]);
+    expect(d({ ...reply, accounts: "It happened" })).toEqual(["accounts: not a list in the reply"]);
+    expect(d({ ...reply, article: ["not", "a", "string"] })).toContain("article: not a string in the reply");
+    expect(d({ ...reply, rationale: null })).toContain("rationale: not a string in the reply");
+    // A field a claim's assessment or its treatment carries that the verb does not install is named with its path.
+    const extra = { ...assessment, claimAssessments: [{ ...assessment.claimAssessments[0], note: "dropped on install" }, assessment.claimAssessments[1]] };
+    expect(d({ ...reply, assessment: extra })).toEqual([`assessment.claimAssessments[X-C001].note: "dropped on install" in the reply, undefined installed`]);
+  });
+
   it("says what a first reply holds that its repaired successor does not, whole or not at all", () => {
     expect(firstReplyOwn(reply, reply)).toEqual({ lines: [], whole: true, same: true });
     const first = { ...reply, article: article.replace("A second paragraph.", "A second paragraph, as first written."), rationale: "The judgment is restated. A sentence later withdrawn." };

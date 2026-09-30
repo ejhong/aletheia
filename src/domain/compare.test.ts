@@ -4,9 +4,10 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { parse as parseYaml } from "yaml";
 import { articleLengths, comparisonInWords } from "./comparison.ts";
-import { currentEdition } from "./editions.ts";
+import { adoptedAssessment, currentEdition } from "./editions.ts";
 import { loadAllCases } from "./load.ts";
-import { EditionComparisonSchema, EditionSchema, type EditionComparison, type LoadedCase, type SeatPreference } from "./schema.ts";
+import { AssessmentRunSchema, EditionComparisonSchema, EditionSchema, type AssessmentRun, type EditionComparison, type LoadedCase, type SeatPreference } from "./schema.ts";
+import { ratification } from "./standing.ts";
 import {
   candidateLetters,
   compareTellings,
@@ -322,6 +323,74 @@ describe("the edition verb and the comparison", () => {
     // A candidate that fails the rules is never put to the seats.
     expect(compared).toBe(0);
     expect(editionsIn(root, c)).toEqual([]);
+  });
+
+  it("an assessment written with the panel's checks in hand says which, and those checks cannot then ratify it", { timeout: 60_000 }, async () => {
+    // A case the panel ratifies: five checks of the ledger as it stands, each giving the adopted assessment's verdicts.
+    const base = fixtureCase();
+    const adopted = adoptedAssessment(base)!;
+    const seats = Object.keys(VENDORS);
+    const checks = seats.map((seat): AssessmentRun => ({ ...adopted, runId: `2098-12-31-check-${VENDORS[seat].tag}-120000`, date: "2098-12-31", role: "check", model: `${VENDORS[seat].label} — independent check run via ${VENDORS[seat].model}`, basis: { ledgerHash: base.ledgerHash }, reconciles: undefined, shownChecks: undefined }));
+    const c: LoadedCase = { ...base, assessmentRuns: [...base.assessmentRuns.filter((r) => r.role !== "check"), ...checks] };
+    expect(ratification(c)).toMatchObject({ status: "ratified", engaged: [] });
+    // The drafter returns a complete assessment — the same judgment, written again — as a re-telling may.
+    const reassessing: Editor = async () => {
+      const ed = currentEdition(c);
+      const ca = adopted.caseAssessment;
+      const data: EditionReply = {
+        rationale: "a plainer opening; every verdict is the incumbent's, and the panel's dissents are answered by holding each",
+        question: null,
+        accounts: [],
+        featuredClaimIds: ed.featuredClaimIds,
+        cruxOrder: ed.cruxOrder,
+        article: `${ed.article}\n\nA closing sentence.`,
+        researchStatus: [],
+        assessment: {
+          verdict: ca.verdict,
+          loadBearing: ca.loadBearing,
+          weakestLinks: ca.weakestLinks,
+          synthesis: ca.synthesis,
+          steelman: ca.steelman ?? "The strongest argument this judgment does not answer is that the decisive derivation has never been attempted, so its absence is not evidence against the thesis.",
+          whatIsClaimed: ca.whatIsClaimed!,
+          whereDisagreementLives: ca.whereDisagreementLives!,
+          whatWouldSettleIt: ca.whatWouldSettleIt!,
+          bestConventionalExplanation: ca.bestConventionalExplanation!,
+          components: (ca.components ?? []).map((k) => ({ label: k.label, state: k.state, note: k.note ?? null })),
+          researchPriority: ca.researchPriority!,
+          claimAssessments: adopted.claimAssessments.filter((x) => ed.featuredClaimIds.includes(x.claimId)).map((x) => ({ claimId: x.claimId, verdict: x.verdict, confidence: x.confidence, reasoning: x.reasoning, treatment: x.treatment! })),
+        },
+      };
+      return { data, model: "claude-opus-5-5" };
+    };
+    const root = tmp();
+    const out = await runEdition("zero-worlds", { force: true, root, deps: { cases: () => [c], now, edit: reassessing, compare: comparer("candidate", "candidate", "candidate", "candidate", "candidate") } });
+    expect(out.outcome, out.reason).toBe("completed");
+    const edition = EditionSchema.parse(parseYaml(fs.readFileSync(out.editionFile!, "utf8")));
+    const written = AssessmentRunSchema.parse(parseYaml(fs.readFileSync(out.assessmentFile!, "utf8")));
+    // The stamp names every check the packet carried. The case was not contested, so nothing is "reconciled".
+    expect(written.shownChecks).toEqual(checks.map((k) => k.runId));
+    expect(written.reconciles).toBeUndefined();
+    // With the edition in place the standing resets: the panel's agreement was in the drafter's hands.
+    const after: LoadedCase = { ...c, editions: [...c.editions, edition], assessmentRuns: [...c.assessmentRuns, written] };
+    expect(currentEdition(after).runId).toBe(edition.runId);
+    const standing = ratification(after)!;
+    expect(standing.status).toBe("unratified");
+    expect(standing.engaged).toEqual(checks.map((k) => k.runId));
+    expect(standing.reason).toMatch(/written with the panel's verdicts in hand/);
+    // A fresh blind check by each seat, made after the draft, is what ratifies it.
+    const fresh = checks.map((k) => ({ ...k, runId: k.runId.replace("2098-12-31", "2099-01-02"), date: "2099-01-02" }));
+    expect(ratification({ ...after, assessmentRuns: [...after.assessmentRuns, ...fresh] })).toMatchObject({ status: "ratified", engaged: [] });
+    // With no check current, the stamp says the drafter was shown none, and a later panel vouches in the ordinary way.
+    const unjudged: LoadedCase = { ...base, assessmentRuns: base.assessmentRuns.filter((r) => r.role !== "check") };
+    const root2 = tmp();
+    const blind = await runEdition("zero-worlds", { force: true, root: root2, deps: { cases: () => [unjudged], now, edit: reassessing, compare: comparer("candidate", "candidate", "candidate", "candidate", "candidate") } });
+    expect(AssessmentRunSchema.parse(parseYaml(fs.readFileSync(blind.assessmentFile!, "utf8"))).shownChecks).toEqual([]);
+    // A re-telling that keeps the incumbent's assessment writes no assessment, and the standing is what it was.
+    const root3 = tmp();
+    const kept = await runEdition("zero-worlds", { force: true, root: root3, deps: { cases: () => [c], now, edit: retelling(c), compare: comparer("candidate", "candidate", "candidate", "candidate", "candidate") } });
+    expect(kept.assessmentFile).toBeUndefined();
+    const keptEdition = EditionSchema.parse(parseYaml(fs.readFileSync(kept.editionFile!, "utf8")));
+    expect(ratification({ ...c, editions: [...c.editions, keptEdition] })?.status).toBe("ratified");
   });
 
   it("the drafter is told where an incumbent is over the budget, and may not keep an assessment that is", { timeout: 60_000 }, async () => {

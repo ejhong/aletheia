@@ -22,10 +22,11 @@ import { isHousekeepingEntry } from "./history.ts";
  *   the case verdict or on a load-bearing claim. Displayed as such;
  *   disagreement is never resolved by hiding it.
  * - `unratified`: the panel is too small, absent, or judged an older
- *   version of the case file (staleSince) — or the displayed draft is a
- *   reconsideration (written non-blind, with the panel's dissents in
- *   hand) that no fresh blind check has judged yet: the checks a
- *   reconciliation engaged can never ratify the draft that answered them.
+ *   version of the case file (staleSince) — or the displayed draft was
+ *   written with the panel's checks in hand (a reconsideration, or any
+ *   draft the edition verb wrote while checks were current) and no fresh
+ *   blind check has judged it yet: the checks a drafter was shown can
+ *   never ratify the draft written with them (`engagedChecks`).
  *
  * A load-bearing claim is contested when fewer than a strict majority of
  * the models judging it land within one step of the draft's verdict on the
@@ -48,6 +49,11 @@ export interface Ratification {
   checksDate: string | null;
   /** Content moved after the newest check (mirrors CrossModelSummary). */
   staleSince: string | null;
+  /**
+   * Run ids of the counted checks the draft was written with in hand (`engagedChecks`). They are on the record and
+   * shown; when they are all the panel has, they cannot vouch for the draft and the standing waits for a fresh check.
+   */
+  engaged: string[];
   /** One plain sentence for the UI. */
   reason: string;
 }
@@ -57,10 +63,12 @@ export interface Ratification {
  * what the models did and nothing a human did: ratification is independent
  * models concurring, never a human review (AGENTS.md §4, §7).
  */
-export function standingInWords(r: Pick<Ratification, "status" | "agreeing" | "panel">, opts: { short?: boolean } = {}): string {
+export function standingInWords(r: Pick<Ratification, "status" | "agreeing" | "panel"> & { engaged?: string[] }, opts: { short?: boolean } = {}): string {
   if (r.status === "ratified") return `ratified by ${r.agreeing} of ${r.panel} independent models`;
   if (r.status === "contested") return opts.short ? "contested by the panel" : "contested: the independent models split";
   if (opts.short) return "not yet ratified";
+  // Every counted check was in the drafter's hands: the panel is whole, and none of it can vouch for this judgment.
+  if (r.panel > 0 && r.engaged?.length === r.panel) return "not yet ratified: written with the panel's verdicts in hand, awaiting a fresh blind check";
   return r.panel > 0 ? `not yet ratified: only ${r.panel} independent model${r.panel === 1 ? " has" : "s have"} checked it as it stands` : "not yet ratified: awaiting an independent check of the case as it stands";
 }
 
@@ -68,37 +76,51 @@ export function standingInWords(r: Pick<Ratification, "status" | "agreeing" | "p
 export const standingGlosses: Record<RatificationStatus, string> = {
   ratified: "At least four independent AI models from different vendors judged this case blind; all but at most one put it within one step of this verdict, and they do not split on a claim it rests on.",
   contested: "Independent AI models judged this case blind and disagree with this assessment, on the case or on a claim it rests on. The disagreement is shown, not resolved.",
-  unratified: "No panel of independent models has judged the case as it now stands, usually because its evidence changed after the last check.",
+  unratified: "No panel of independent models has judged the case as it now stands: its evidence changed after the last check, or this judgment was written after that check with its verdicts in hand and waits for a fresh one.",
 };
 
-/**
- * A reconsideration draft is the one deliberately non-blind draft in the
- * pipeline (the `edition` verb's reconsideration, formerly scripts/reconcile-contested.mjs): written with the panel's
- * dissents in hand. Detected by the `reconciles` stamp; the promptVersion
- * fallback covers overlays written before the stamp existed.
- */
-export function isReconsiderationRun(run: AssessmentRun): boolean {
-  return (
-    run.role !== "check" &&
-    (run.reconciles !== undefined || /reconsider/i.test(run.promptVersion))
-  );
+/** A run id's clock, when it carries one: …-HHMMSS, UTC, with a collision suffix allowed (src/lib/overlay-ids.mjs). */
+const clockOf = (runId: string): string | null => runId.match(/-(\d{6})(?:-r\d+)?$/)?.[1] ?? null;
+
+/** Whether a check was provably made after a draft was assembled: a later day, or the same day with a later clock on both ids. */
+function madeAfter(check: AssessmentRun, draft: AssessmentRun): boolean {
+  if (check.date !== draft.date) return check.date > draft.date;
+  const c = clockOf(check.runId);
+  const d = clockOf(draft.runId);
+  return c !== null && d !== null && c > d;
 }
 
+/** A draft the `edition` verb wrote: its promptVersion is an edition protocol's. */
+const byEditionVerb = (run: AssessmentRun): boolean => /^edition-v\d+$/.test(run.promptVersion);
+
 /**
- * The checks that can vouch for a reconsideration draft: only runs the
- * reconciliation never saw. Stamped drafts name the engaged runIds
- * exactly; for pre-stamp overlays, only a check dated strictly after the
- * draft is provably fresh (a same-day check may have been in hand).
+ * The checks a draft was written with in hand. They are blind to the draft; the draft was not blind to them, so
+ * agreement between the two is no longer independent and they cannot vouch for it. Deriving a standing from them
+ * would let a draft clear by converging on its judges instead of on the evidence.
+ *
+ * The `edition` verb shows its drafter every check current on the ledger (src/pipeline/packet.ts, `panel`),
+ * contested or not. A draft says what it was shown, most exactly first:
+ *
+ * - `shownChecks`: the verb's stamp of every check in the packet (since 2026-09-30) — exact, and with
+ *   `reconciles` (the checks a reconsideration answered) the whole of it;
+ * - without that stamp, a draft the edition verb wrote was shown every check then current, so any check not
+ *   provably made after it; a reconsideration from before the stamps (its promptVersion says so), any check not
+ *   dated after it (a same-day check may have been in hand); and what `reconciles` names, in either case;
+ * - any other draft (a migrated or hand-made one) was shown nothing.
+ *
+ * Until 2026-09-30 only a contested case's draft counted as written with checks in hand. A re-telling of a ratified
+ * case re-graded nine claims toward its panel, said so, and kept "ratified" on the checks it had answered.
  */
-function freshChecksFor(
-  draft: AssessmentRun,
-  checks: AssessmentRun[],
-): AssessmentRun[] {
-  return checks.filter((r) =>
-    draft.reconciles !== undefined
-      ? !draft.reconciles.includes(r.runId)
-      : r.date > draft.date,
-  );
+export function engagedChecks(draft: AssessmentRun, checks: AssessmentRun[]): AssessmentRun[] {
+  if (draft.role === "check") return [];
+  const named = new Set([...(draft.reconciles ?? []), ...(draft.shownChecks ?? [])]);
+  if (draft.shownChecks !== undefined) return checks.filter((r) => named.has(r.runId));
+  const unstamped = byEditionVerb(draft)
+    ? (r: AssessmentRun) => !madeAfter(r, draft)
+    : draft.reconciles === undefined && /reconsider/i.test(draft.promptVersion)
+      ? (r: AssessmentRun) => !(r.date > draft.date)
+      : () => false;
+  return checks.filter((r) => named.has(r.runId) || unstamped(r));
 }
 
 /**
@@ -169,11 +191,13 @@ export function ratification(loaded: LoadedCase): Ratification | null {
     withinOneStep(r.caseAssessment.verdict, draft.caseAssessment.verdict),
   ).length;
 
+  const engaged = engagedChecks(draft, checks);
   const base = {
     panel,
     agreeing,
     checksDate,
     staleSince,
+    engaged: engaged.map((r) => r.runId),
     contestedLoadBearing: [] as string[],
   };
 
@@ -194,18 +218,15 @@ export function ratification(loaded: LoadedCase): Ratification | null {
     };
   }
 
-  // A reconsideration draft was written WITH the panel's dissents in hand
-  // (the one non-blind draft in the pipeline). Deriving its standing from
-  // the checks it already answered would let a contested case clear by
-  // converging on the judges instead of the evidence — so those checks
-  // cannot ratify it. Standing stays down until at least one blind check
-  // the reconciliation never saw judges the case.
-  if (isReconsiderationRun(draft) && freshChecksFor(draft, checks).length === 0) {
+  // A draft written WITH the panel's checks in hand (`engagedChecks`) cannot be ratified by them: deriving its
+  // standing from the checks it had answered would let a case clear by converging on the judges instead of the
+  // evidence. Standing stays down until at least one blind check the drafter never saw judges the case.
+  if (engaged.length > 0 && engaged.length === checks.length) {
     return {
       ...base,
       status: "unratified",
       reason:
-        "the displayed draft is a reconsideration written with the panel's dissents in hand — standing resets until a fresh blind check judges it",
+        "this judgment was written with the panel's verdicts in hand, so they cannot vouch for it — standing resets until a fresh blind check judges it",
     };
   }
 
@@ -252,8 +273,8 @@ export function ratification(loaded: LoadedCase): Ratification | null {
  * Does this case need a fresh blind panel? True when the seats that have
  * judged the case as it stands are too few to speak — fewer than
  * ratification requires, because none has checked it or the content moved
- * after they did — or when the adopted assessment is a reconsideration no
- * fresh blind check has judged. The single source of the rule the sitting
+ * after they did — or when the adopted assessment was written with every
+ * current check in hand and no fresh blind check has judged it. The single source of the rule the sitting
  * re-panels on (`next` reads `checksStale`), and the same derivation
  * `ratification` uses: a panel that can ratify or contest is not stale.
  *
@@ -268,13 +289,13 @@ export function checksStale(loaded: LoadedCase): boolean {
   if (!draft) return false;
   const current = currentChecks(loaded, latestCheckPerModel(loaded));
   if (current.length < RATIFICATION_MIN_PANEL) return true;
-  return isReconsiderationRun(draft) && freshChecksFor(draft, current).length === 0;
+  return engagedChecks(draft, current).length === current.length;
 }
 
 /**
  * The roster seats that have not judged the case as it stands: no check of
- * theirs is current, or — under a reconsideration — the only one they hold
- * is a check the reconsideration answered, which cannot vouch for it. The
+ * theirs is current, or the only one they hold is a check the adopted
+ * assessment was written with in hand, which cannot vouch for it. The
  * check verb asks these and no others, so a seat that has judged the case
  * is not paid to judge the same ledger again, and a second answer from one
  * seat cannot displace its first. `roster` is the panel's seat keys
@@ -283,7 +304,8 @@ export function checksStale(loaded: LoadedCase): boolean {
 export function seatsOwed(loaded: LoadedCase, roster: string[]): string[] {
   const draft = adoptedAssessment(loaded);
   const current = currentChecks(loaded, latestCheckPerModel(loaded));
-  const vouching = draft && isReconsiderationRun(draft) ? freshChecksFor(draft, current) : current;
+  const engaged = new Set(draft ? engagedChecks(draft, current).map((r) => r.runId) : []);
+  const vouching = current.filter((r) => !engaged.has(r.runId));
   const have = new Set(vouching.map((r) => seatKey(r.model)));
   return roster.filter((k) => !have.has(k));
 }

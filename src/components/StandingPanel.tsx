@@ -24,6 +24,11 @@ function shortModel(label: string): string {
  * record ids in the prose are links, set quietly. A seat that judged an
  * earlier state of the case is shown as that — its word is on the record
  * and does not count toward the standing until it judges the case again.
+ * So is a seat whose verdict the judgment was written with in hand
+ * (standing.ts, `engagedChecks`): its agreement with a judgment that had
+ * read it is not independent, and when that is every seat the panel has,
+ * the page says the judgment waits for a fresh blind check instead of
+ * showing who concurs.
  */
 export function StandingPanel({
   run,
@@ -64,6 +69,9 @@ export function StandingPanel({
   const displayed = run.caseAssessment.verdict;
   const isCurrent = new Set(current);
   const stale = checks.filter((c) => !isCurrent.has(c.runId));
+  const inHand = new Set(standing.engaged);
+  /** Every counted check was in the drafter's hands: none can vouch, and "concurs" would say more than is known. */
+  const awaitingFresh = standing.panel > 0 && standing.engaged.length === standing.panel;
   const splitIds = [...new Set([...standing.contestedLoadBearing, ...(summary?.splitClaimIds ?? [])])];
   const prose = "text-[15px] leading-[1.75] text-ink-soft";
 
@@ -136,10 +144,15 @@ export function StandingPanel({
                     <span aria-hidden className="font-mono text-[10px] text-faint transition-transform group-open:rotate-90">▸</span>
                     <span className="font-mono text-[11px] tracking-[0.06em] text-ink-soft">{shortModel(c.model)}</span>
                     <AssessmentBadge state={c.caseAssessment.verdict} />
-                    {counted ? (
-                      <span className={`font-mono text-[10px] uppercase tracking-[0.14em] ${relation === "concurs" ? "text-copper" : "text-ochre"}`}>{relation}</span>
-                    ) : (
+                    {!counted ? (
                       <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-faint">judged an earlier version</span>
+                    ) : awaitingFresh ? (
+                      <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-faint">this judgment was written after seeing it</span>
+                    ) : (
+                      <>
+                        <span className={`font-mono text-[10px] uppercase tracking-[0.14em] ${relation === "concurs" ? "text-copper" : "text-ochre"}`}>{relation}</span>
+                        {inHand.has(c.runId) ? <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-faint">this judgment was written after seeing it</span> : null}
+                      </>
                     )}
                   </span>
                   <span className="mt-1 block truncate pl-[1.15rem] text-[13px] text-ink-soft group-open:hidden">{c.caseAssessment.synthesis.split(/(?<=[.!?])\s+/)[0]}</span>
@@ -173,7 +186,11 @@ export function StandingPanel({
             {/* The tally takes each seat's latest verdicts. When some judged an earlier state of the case it says so,
                 rather than withholding the tally (the Anthropic seat's note on #421). */}
             Claim by claim, against this judgment
-            {stale.length > 0 ? ` (each seat's latest verdicts, ${stale.length === checks.length ? "all" : `${stale.length} of ${checks.length}`} given on an earlier version of the case)` : ""}
+            {stale.length > 0
+              ? ` (each seat's latest verdicts, ${stale.length === checks.length ? "all" : `${stale.length} of ${checks.length}`} given on an earlier version of the case)`
+              : awaitingFresh
+                ? " (every seat's verdicts were in hand when this judgment was written)"
+                : ""}
             : {summary.exact} of {summary.claimsCompared} exact, {summary.adjacent} within one step, {summary.split} split.
             {splitIds.length > 0 ? (
               <>

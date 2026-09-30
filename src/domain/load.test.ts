@@ -7,7 +7,7 @@ import {
   parseInlines,
 } from "./article.ts";
 import { adoptedAssessment, caseQuestion, currentEdition, latestAssessment } from "./editions.ts";
-import { checksStale, crossModelSummary, RATIFICATION_MIN_PANEL, ratification, runStaleness, seatsOwed, survivingObjections, latestCheckPerModel, displayAssessment, withinOneStep } from "./standing.ts";
+import { checksStale, crossModelSummary, standingInWords, RATIFICATION_MIN_PANEL, ratification, runStaleness, seatsOwed, survivingObjections, latestCheckPerModel, displayAssessment, withinOneStep } from "./standing.ts";
 import { claimAnchorErrors, editionErrors, getCaseBySlug, liveClaims, loadAllCases, loadSiteImages, sourceAdmissionErrors, checkIntegrity } from "./load.ts";
 import { historyNewestFirst, lastContentUpdate, recentChanges } from "./history.ts";
 import { assessmentHash, canonicalJson, ledgerHash, sha256Hex } from "./hash.ts";
@@ -995,6 +995,42 @@ describe("ratification governance (stage 3)", () => {
     const draft = mkDraft("d", "2026-02-02"); // newer than the checks
     const r = ratification(caseWith([draft, ...fiveChecks("unresolved")]));
     expect(r?.status).toBe("ratified");
+    expect(r?.engaged).toEqual([]);
+  });
+
+  it("a draft the edition verb wrote cannot be ratified by checks it was shown, contested or not", () => {
+    // 2026-09-30: a ratified case was re-told; its drafter was shown the panel's five checks, re-graded nine claims
+    // toward them, said so, and the new assessment stayed "ratified" on those same checks. Nothing marked it.
+    const roster = ["alpha", "beta", "gamma", "delta", "epsilon"].map((m) => `vendor-${m}`);
+    const earlier = fiveChecks("unresolved", 0, "2026-02-01"); // agree with the draft: the case is not contested
+    const byVerb = (over: Record<string, unknown> = {}) => ({ ...mkDraft("2026-02-02-edition-094541", "2026-02-02"), promptVersion: "edition-v14", ...over });
+    // Unstamped: every check then current was in the packet, so none made before the draft can vouch for it.
+    const unstamped = caseWith([byVerb(), ...earlier]);
+    const r = ratification(unstamped);
+    expect(r?.status).toBe("unratified");
+    expect(r?.reason).toMatch(/written with the panel's verdicts in hand.*fresh blind check/);
+    expect(r?.engaged).toEqual(earlier.map((c) => c.runId));
+    expect(standingInWords(r!)).toBe("not yet ratified: written with the panel's verdicts in hand, awaiting a fresh blind check");
+    expect(checksStale(unstamped)).toBe(true);
+    expect(seatsOwed(unstamped, roster)).toEqual(roster);
+    // A check is provably later on a later day, or on the same day with a later clock on both ids. Anything else fails down.
+    const stamped = (clock: string | null, date = "2026-02-02") => fiveChecks("unresolved", 0, date).map((c) => ({ ...c, runId: clock ? `${c.runId}-${clock}` : c.runId }));
+    expect(ratification(caseWith([byVerb(), ...fiveChecks("unresolved", 0, "2026-02-03")]))?.status).toBe("ratified");
+    expect(ratification(caseWith([byVerb(), ...stamped("101500")]))?.status).toBe("ratified");
+    expect(ratification(caseWith([byVerb(), ...stamped("101500-r2")]))?.status).toBe("ratified");
+    expect(ratification(caseWith([byVerb(), ...stamped("090000")]))?.status).toBe("unratified");
+    expect(ratification(caseWith([byVerb(), ...stamped(null)]))?.status).toBe("unratified"); // same day, no clock on the check's id
+    // The verb's stamp is exact: what it names is engaged, and a check it does not name vouches whatever its date.
+    const named = byVerb({ shownChecks: earlier.map((c) => c.runId) });
+    expect(ratification(caseWith([named, ...earlier]))?.status).toBe("unratified");
+    expect(ratification(caseWith([byVerb({ shownChecks: [] }), ...earlier]))).toMatchObject({ status: "ratified", engaged: [] });
+    // One fresh check beside four that were shown restores the derivation, as for a reconsideration; the four are still named.
+    const four = byVerb({ shownChecks: earlier.slice(0, 4).map((c) => c.runId) });
+    expect(ratification(caseWith([four, ...earlier]))).toMatchObject({ status: "ratified", engaged: earlier.slice(0, 4).map((c) => c.runId) });
+    expect(seatsOwed(caseWith([four, ...earlier]), roster)).toEqual(roster.slice(0, 4));
+    // The reconsideration's stamp and the verb's are read together.
+    const both = byVerb({ reconciles: earlier.slice(0, 2).map((c) => c.runId), shownChecks: earlier.slice(2).map((c) => c.runId) });
+    expect(ratification(caseWith([both, ...earlier]))?.engaged).toEqual(earlier.map((c) => c.runId));
   });
 
   it("a load-bearing claim the panel rejects blocks ratification even with case-verdict agreement", () => {

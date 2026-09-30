@@ -14,6 +14,8 @@ import {
   shapeRule,
   SHAPE_LIMITS,
   runAccount,
+  RUN_RECORD,
+  SEAT_REPLY,
   rateLimitGate,
   splitMergeLanes,
   tallyVerdict,
@@ -547,6 +549,42 @@ describe("a seat's raw reply, compared with what was installed from it", () => {
     // An assessment another run installed is not this run's to be compared with.
     const foreign: Record<string, string> = { ...bare, [a1]: yaml(install(reply, { producedBy: "2026-09-27-check-x-000000" })) };
     expect(runAccount(Object.keys(foreign), (p: string) => foreign[p] ?? null, () => "").carried).toEqual({});
+  });
+
+  it("a run record is accounted for wherever it is filed, and a file it says it wrote that is not there is said (review note #428)", () => {
+    // An experiment's check run, kept out of the scheduler's way under its own folder: run record, raw replies, and
+    // none of the assessments it installed.
+    const filed = "proposals/assessment-experiments/2026-09-30-x/runs/2026-09-30-check-x-075451";
+    const wrote = "content/cases/x/assessments/2026-09-30-check-grok-075451.yaml";
+    const experiment: Record<string, string> = {
+      [`${filed}/run.yaml`]: `runId: 2026-09-30-check-x-075451\nverb: check\noutcome: completed\nwrote:\n  - ${wrote}\n`,
+      [`${filed}/seat-xai.yaml`]: yaml(reply),
+      "proposals/assessment-experiments/2026-09-30-x/DESIGN.md": "# The design",
+    };
+    const readExperiment = (p: string) => experiment[p] ?? null;
+    expect(RUN_RECORD.test(`${filed}/run.yaml`)).toBe(true);
+    expect(RUN_RECORD.test(`${run}/run.yaml`)).toBe(true);
+    expect(RUN_RECORD.test("proposals/run.yaml")).toBe(false);
+    expect(RUN_RECORD.test("content/cases/x/run.yaml")).toBe(false);
+    const account = runAccount(Object.keys(experiment), readExperiment, () => "");
+    // The account is not empty, so the packet does not say the change carries no run records.
+    expect(account.text).toContain(`--- ${filed}/run.yaml (a run record filed outside proposals/<runId>/: the scheduler and the site's pages do not read it, and it is accounted for here as any run is)`);
+    expect(account.files).toContain(`${filed}/run.yaml`);
+    expect(account.text).toContain(`of the 1 file(s) this record says the run wrote, 1 are not in the repository at the head revision: ${wrote}`);
+    expect(account.text).toContain("- seat-xai.yaml: this run installed no assessment to compare it with");
+    expect(account.carried).toEqual({});
+    // Were the installed assessment in the change, the reply is compared with it by the run's id, as in a sitting.
+    const withInstalled: Record<string, string> = { ...experiment, [wrote]: yaml(install(reply, { runId: "2026-09-30-check-grok-075451", producedBy: "2026-09-30-check-x-075451" })) };
+    const compared = runAccount(Object.keys(withInstalled), (p: string) => withInstalled[p] ?? null, () => "");
+    expect(compared.carried).toEqual({ [`${filed}/seat-xai.yaml`]: wrote });
+    expect(compared.text).not.toContain("are not in the repository at the head revision");
+    // A sitting's run, filed where it always was, reads as before: no note on its title, nothing said of files that are there.
+    const plain = runAccount(Object.keys(sitting), readSitting, () => "");
+    expect(plain.text).toContain(`--- ${run}/run.yaml\n`);
+    expect(plain.text).not.toContain("filed outside");
+    // The diff's ordering knows an experiment's raw reply as a raw reply: uncarried it is a record, carried it is cut first.
+    expect(SEAT_REPLY.test(`${filed}/seat-xai.yaml`)).toBe(true);
+    expect(SEAT_REPLY.test(`${filed}/seat-xai.problems.txt`)).toBe(false);
   });
 
   it("text the comparison cannot see is counted, and past the allowance the reply is not carried", () => {

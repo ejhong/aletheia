@@ -5,6 +5,7 @@ import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
 import { describe, expect, it } from "vitest";
 import { getCaseBySlug, loadAllCases } from "./load.ts";
 import { currentEdition } from "./editions.ts";
+import { sha256Hex } from "./hash.ts";
 import { owedSeats, parseYamlReply, runCheck, validateCheckReply } from "../pipeline/check.ts";
 import { readRuns } from "../pipeline/store.ts";
 import { VENDORS } from "../pipeline/transport.ts";
@@ -70,6 +71,16 @@ describe("the check verb", () => {
     expect(fs.existsSync(path.join(dir, "seat-anthropic.problems.txt"))).toBe(true);
     expect(fs.readdirSync(path.join(root, "content", "cases", "geopolymer")).includes("assessments")).toBe(false);
     expect(readRuns(root).find((r) => r.runId === bad.runId)?.verb).toBe("check");
+    // The run record says what file the seats were sent, whatever became of their replies: the packet's hash, the
+    // same for every run over one ledger (the dry run's packet.md is that file) and another when the ledger differs.
+    const sent = sha256Hex(fs.readFileSync(path.join(root, "proposals", dry.runId, "packet.md"), "utf8"));
+    const recorded = (id: string) => readRuns(root).find((r) => r.runId === id)?.inputHash;
+    expect(recorded(bad.runId)).toBe(sent);
+    expect(recorded(dry.runId)).toBe(sent);
+    fs.appendFileSync(path.join(root, "content", "cases", "geopolymer", "research.yaml"), "\n# a byte the seats would be sent\n");
+    const moved = await runCheck("megalithic-casting", { seats: ["anthropic"], dryRun: true, root, deps: { cases: () => cases } });
+    expect(recorded(moved.runId)).toMatch(/^[a-f0-9]{64}$/);
+    expect(recorded(moved.runId)).not.toBe(sent);
     expect(currentEdition(geo()).featuredClaimIds.length).toBeGreaterThan(0);
   });
 

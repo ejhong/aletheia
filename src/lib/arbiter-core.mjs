@@ -1,6 +1,6 @@
 import { parse as parseYaml } from "yaml";
 import { createHash } from "node:crypto";
-import { parseYamlReply } from "./yaml-reply.mjs";
+import { readYamlReply } from "./yaml-reply.mjs";
 /**
  * Pure logic for the constitutional arbiter (scripts/arbiter.mjs):
  * validating one seat's vote and tallying the panel's verdict. Kept
@@ -311,6 +311,13 @@ const isEmptyValue = (v) => v == null || v === "" || (Array.isArray(v) && v.leng
 export const REPLY_STAMPS = ["runId", "model", "date", "promptVersion", "humanReviewed", "role"];
 /** A stamp the seat wrote is a short scalar the verb replaced; longer, or structured, and it is content the installed file does not carry. */
 export const REPLY_STAMP_CHARS = 120;
+/**
+ * How much of a raw reply may lie outside what the comparison reads — a code fence and whatever follows it, trailing
+ * lines that are not YAML, the YAML's own comments — before the reply is not counted as carried. A fence and a
+ * sign-off fit; a paragraph does not. (The Anthropic seat's note on #422: the comparison is of parsed fields, and
+ * said nothing of text that never reaches them.)
+ */
+export const REPLY_UNCOMPARED_CHARS = 200;
 
 /**
  * Where a seat's raw reply to a blind check and an assessment installed from it differ. The installed file is the
@@ -413,17 +420,22 @@ export function runAccount(changed, read, diffOf, readBase = noBase) {
       const name = f.slice(dir.length + 1);
       const text = read(f);
       if (text == null) return `- ${name}: not readable at the head revision, so not compared`;
-      let reply;
+      let raw;
       try {
-        reply = parseYamlReply(text);
+        raw = readYamlReply(text);
       } catch {
         return `- ${name}: not parseable as YAML, so not compared`;
       }
       if (!installed.length) return `- ${name}: this run installed no assessment to compare it with`;
-      const [best] = installed.map((i) => ({ ...i, differences: replyDifferences(reply, i.data) })).sort((a, b) => a.differences.length - b.differences.length);
+      const [best] = installed.map((i) => ({ ...i, differences: replyDifferences(raw.data, i.data) })).sort((a, b) => a.differences.length - b.differences.length);
+      // What the comparison cannot see: text outside the YAML, and the YAML's comments. Counted, and bounded.
+      const uncompared = raw.outside.length + raw.comments.length;
+      if (best.differences.length === 0 && uncompared > REPLY_UNCOMPARED_CHARS) {
+        return `- ${name}: its fields are carried by ${best.p}, but ${uncompared.toLocaleString("en-US")} characters of the file lie outside what is compared (${raw.outside.length.toLocaleString("en-US")} outside its YAML, ${raw.comments.length.toLocaleString("en-US")} in comments), over the ${REPLY_UNCOMPARED_CHARS} allowed: NOT counted as carried whole`;
+      }
       if (best.differences.length === 0) {
         carried[f] = best.p;
-        return `- ${name}: carried whole by ${best.p}`;
+        return `- ${name}: carried whole by ${best.p}${uncompared ? ` (${uncompared} character(s) of the file lie outside what is compared)` : ""}`;
       }
       const SHOWN = 8;
       const more = best.differences.length > SHOWN ? `; and ${best.differences.length - SHOWN} more` : "";
@@ -431,7 +443,7 @@ export function runAccount(changed, read, diffOf, readBase = noBase) {
     });
     return {
       lines: [
-        `seat replies of this run — raw working files, each compared by this tooling with the check assessments the run installed (the changed assessment files whose producedBy is this run). Every field of the reply is compared at every depth, strings exact, except ${REPLY_STAMPS.join(", ")}: the verb writes those itself, and the reply's own value for one need only be a scalar of at most ${REPLY_STAMP_CHARS} characters. A field the installed file adds counts as a difference unless it is empty or the verb's (those six, producedBy, basis). "Carried whole" means no difference:`,
+        `seat replies of this run — raw working files, each compared by this tooling with the check assessments the run installed (the changed assessment files whose producedBy is this run). Every field of the reply is compared at every depth, strings exact, except ${REPLY_STAMPS.join(", ")}: the verb writes those itself, and the reply's own value for one need only be a scalar of at most ${REPLY_STAMP_CHARS} characters. A field the installed file adds counts as a difference unless it is empty or the verb's (those six, producedBy, basis). What is compared is the reply as parsed: text outside its YAML — a code fence and whatever follows it, trailing lines that are not YAML — and the YAML's own comments are not compared, only counted, and a reply with more than ${REPLY_UNCOMPARED_CHARS} characters of them is not counted as carried. "Carried whole" means no difference, within that allowance:`,
         ...lines,
       ],
       carried,
@@ -710,7 +722,16 @@ export function omittedNotes(omitted, accountFiles, read = null, carried = {}) {
   const inAccount = new Set(accountFiles);
   return omitted.map((f) => {
     if (inAccount.has(f)) return `${f} — read into the RUN ACCOUNT above; its section for this file says what is whole, digested or clipped`;
-    if (carried[f]) return `${f} — a seat's raw reply: the RUN ACCOUNT's section for its run compared it with ${carried[f]} and found that file to carry it whole, on the terms stated there`;
+    if (carried[f]) {
+      let size = "";
+      try {
+        const text = read ? read(f) : null;
+        if (typeof text === "string") size = ` (${text.split("\n").length} lines, ${text.length} chars)`;
+      } catch {
+        size = "";
+      }
+      return `${f} — a seat's raw reply${size}: the RUN ACCOUNT's section for its run compared it with ${carried[f]} and found that file to carry it whole, on the terms stated there`;
+    }
     const shape = read ? shapeOf(f, read) : null;
     return shape ? `${f} — ${shape}` : f;
   });

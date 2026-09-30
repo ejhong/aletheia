@@ -1,0 +1,58 @@
+# The panel's seats reading the candidate beside edition-2026-09-17-133507, as a reader would (compare-v1; src/pipeline/compare.ts).
+# AI judgments of two tellings; not a human's, and not a judgment of the verdicts.
+against: edition-2026-09-17-133507
+protocol: compare-v1
+outcome: candidate-preferred
+candidate: 5
+incumbent: 0
+neither: 0
+seats:
+  - seat: Opus 5.5 (Anthropic)
+    model: claude-opus-5-5
+    candidateShownAs: A
+    prefers: candidate
+    margin: clear
+    reasons: "The two tellings share the same verdicts, structure and evidence, so the choice turns on delivery. A's first paragraph already gives the settled floor (residue chemistry, the 2026 lye experiment), the untested Eleusis vessels, the Jewish-table record and the bottom line ('the Greek half is open and cheap to test; the strong Christian half is contradicted'). Its 213-word headers name the unmeasured questions and the tests plainly. B runs about 40% longer in the article and twice as long in the headers, and much of the extra is site plumbing a newcomer cannot use: 'held on anchors alone' in the settle-it header, 'held on the claim's own anchor, with no admitted evidence record quoting the passage,' 'this ledger has not yet admitted,' 'could not be checked against its text this pass,' 'YAPP.' A carries the same caveats in plain words ('this site has not yet checked'), and its bulleted list of tests is easier to scan than B's dense closing paragraph. B's genuine additions (the other reported ergot finds, the rung-by-rung recap, the point that a Christian positive would still not show inheritance) are worth having but not the roughly five extra minutes they cost."
+    notes:
+      - "Connect the page to its title: A never mentions Muraresku's phrase 'the religion with no name,' which B glosses in a single line."
+      - Say what a positive early-Christian vessel would and would not establish (a practice somewhere, not the original rite or an inheritance from Eleusis), which B makes explicit and A leaves implicit.
+      - "Fix two copy slips: the Hymn's 'soft mint' later reappears as 'the recipe's pennyroyal' without the reader being told they are the same herb, and the 'empty cell' sentence about the headline Greek claim is missing its closing dash."
+  - seat: GPT-5.6 Sol (OpenAI)
+    model: gpt-5.6-sol
+    candidateShownAs: A
+    prefers: candidate
+    margin: clear
+    reasons: "A gives the claim, rung-by-rung verdict, main alternatives, evidentiary gaps, and decisive tests promptly, then covers the case in about a thousand fewer words. Its opening clearly distinguishes established ancient drug use, feasible ergot processing, the untested Eleusinian claim, and the contradicted strong Christian claim. B adds some useful precision, but repeatedly exposes internal machinery such as claims being “held on anchors,” evidence not being “admitted,” and what “the ledger” contains, which burdens a general reader without materially changing the assessment. A is also fair and concrete: it presents the ritual and no-phenomenon alternatives, details both the Pontós find and its weaknesses, and specifies what positive and negative residue results would mean."
+    notes:
+      - Remove or rewrite the remaining site-process phrases such as “has not yet been checked here” so the article states the evidentiary limitation directly.
+      - Trim repeated statements that no Eleusinian or early-Christian vessel has been tested after the headers and opening have already established those gaps.
+      - Replace the bracketed plate placeholders with actual informative captions or omit them from the reader-facing article.
+  - seat: Gemini 3.8 Flash (Google)
+    model: gemini-3.8-flash
+    candidateShownAs: B
+    prefers: candidate
+    margin: clear
+    reasons: Telling B delivers the same core information with far better economy, saving the reader roughly a thousand words without sacrificing any essential evidence or counter-arguments. Crucially, Telling A repeatedly slips into internal site jargon—explicitly discussing 'ledger anchors,' 'admitted evidence records,' and classification statuses—which directly violates the plain-language standard for a new reader. Telling B translates these provenance caveats into natural phrasing ('in passages this site has not yet checked on their own'). Furthermore, Telling B's concluding bulleted list for 'What would settle it' makes the forward-looking agenda immediately legible for a ten-minute visit.
+    notes:
+      - In 'The empty cell' section, ensure punctuation is restored where a dash appears to be missing before 'with circumstantial support'.
+      - The header question and first sentence are slightly repetitive; tightening the opening query in the body would make the entry even punchier.
+  - seat: Grok 4.5 (xAI)
+    model: grok-4.5
+    candidateShownAs: B
+    prefers: candidate
+    margin: clear
+    reasons: B's headers and opening deliver the claim, the Mixed verdict by rung, the five competing accounts, the empty cells at Eleusis and in early Christianity, and the concrete tests that would settle each in under 250 words of plain prose, so a ten-minute reader grasps the state of the question immediately. A covers the same ground but at 3,580 words with repeated internal phrasing ('ledger', 'anchors', 'held on'), longer restatements of the same caveats, and slower narrative setup, so the extra length costs minutes without teaching proportionally more. Both are current and fair to supporting and undermining evidence, yet B stays specific on observations (Pontós limits, lye conditions, recipe silence, early Christian texts) while remaining shorter and freer of site jargon. The result is higher learning per minute and a cleaner path to what is known, unknown, and decisive.
+    notes:
+      - B could still open the Christian-half paragraph with one sentence naming the strong versus weak inheritance claims so the contradicted verdict is visible even sooner.
+      - A short plain-language gloss of why LSA yield plus ergometrine leaves the drink's actual effect untested would tighten the pharmacology rung without adding length.
+      - The funding disclosure is clear but could end with the single practical implication (any future YAPP result will carry the flag) rather than a second sentence on critics.
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    model: z-ai-glm-5-3-flash
+    candidateShownAs: A
+    prefers: candidate
+    margin: clear
+    reasons: Both tellings are current and cover the same ladder of claims, the same evidence (Tel Arad, Pontós, the 2026 lye experiment, the empty Eleusinian cell, the Jewish-table record), the same serious alternatives, and largely the same settling tests. A delivers all of it in about 40% fewer words with plain language, while B spends its extra length on internal ledger vocabulary — claims 'held on anchors,' 'admitted evidence records,' 'independence accounting is half of this case's method,' references to 'this pass' and unopened ledgers — that a first-time reader cannot parse and does not need. B also stacks qualifications, most visibly a paragraph-long digression on whether the ergometrine passage is 'unresolved, not provisionally true' because of how the ledger holds it, which repeats a caution the substance already carries. A conveys the same fine print (ergometrine survived, the C. paspali point, unreplicated sympathetic hands, the unverified threshold) directly and moves on. B's genuine additions — the Apulia/Poland/Denmark ergot finds, Paul's epistles beside the Didache, the funder's 'reframes' language — are nice but not worth the extra minutes and the jargon tax.
+    notes:
+      - A's section on the lye chemistry could state more crisply that its own reading of the 2026 paper's ergometrine and paspali passages is second-hand, as B does.
+      - A's disclosure section could note, as B does, that the Yale program's public 'reframes early Christian ritual' language goes beyond its scientific papers — a concrete, checkable flag.
+      - A could briefly acknowledge the other reported ergot finds (Apulia, Poland, the bog body) that B mentions, to show the Pontós find is not literally the only ergot in the record.

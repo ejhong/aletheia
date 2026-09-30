@@ -303,7 +303,9 @@ describe("cases with an open sitting", () => {
 
 describe("a forced first choice (the founder's door)", () => {
   const cases = loadAllCases();
-  it("takes the case and verb given, then hands the sitting back to the ledger", async () => {
+  // Every choice loads every case again, and the ledger grows with each check: on a CI runner this passed twenty
+  // seconds on 2026-09-30 and failed a change that had nothing to do with it. Room, as the other slow tests have.
+  it("takes the case and verb given, then hands the sitting back to the ledger", { timeout: 90_000 }, async () => {
     const slug = cases[cases.length - 1].record.slug;
     const forced = chooseNext({ force: { case: slug, verb: "edition" } });
     expect(forced).toMatchObject({ case: slug, verb: "edition" });

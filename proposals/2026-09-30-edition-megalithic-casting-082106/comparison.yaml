@@ -1,0 +1,58 @@
+# The panel's seats reading the candidate beside edition-2026-09-16-023713, as a reader would (compare-v1; src/pipeline/compare.ts).
+# AI judgments of two tellings; not a human's, and not a judgment of the verdicts.
+against: edition-2026-09-16-023713
+protocol: compare-v1
+outcome: candidate-preferred
+candidate: 5
+incumbent: 0
+neither: 0
+seats:
+  - seat: Opus 5.5 (Anthropic)
+    model: claude-opus-5-5
+    candidateShownAs: B
+    prefers: candidate
+    margin: clear
+    reasons: "B's article opens with one paragraph that gives the claim, the Egyptian result, the untested Pumapunku finding and the open verdict with cheap tests pending. For Egypt, every independent microscope study reads natural limestone, and the one with a genuine artificial-stone control found none of its signatures. A opens with the Aswan anecdote, the idea's pedigree and the four accounts, and does not say how Egypt came out until roughly the halfway point of 5,234 words, about where a ten-minute reader stops. B keeps nearly every substantive point A makes in half the words, including the al-Suyūṭī accounts with no salt, the 2026 halite study with the Sphinx comparator, the four petrographic studies and Jana's positive control, the loose-debris andesite fragment and its interior subsample, the Khapia and Iwawe tests, and the limits of the quarry-matching critique; it even adds that the guano chemistry's reported replication came without data. A's verdict list is studded with record ids (GEO-C020 and a dozen more), and its header answers pack unexplained terms (PP1, slab No. 2, Kimsachata/Kallamarka suite, C–S–H controls, remanence baseline) into dense paragraphs, while B's labels and headers are plain and name the test that would settle the open branch. What A adds is genuine but not worth doubling the reader's time: the Pumapunku bubble, tooling and guano-trade arguments with rebuttals, Jana's mapping of the disputed phosphate coating, the Giza radiocarbon offset and more salt-study detail."
+    notes:
+      - The salt section dismisses 'the claim that the pyramid carries salt that comparable natural limestone lacks' and the cathedral comparison without ever stating that claim, so add a sentence on Davidovits tasting Giza fragments and contrasting them with cathedrals before refuting it.
+      - It states flatly that almost no megalithic site has a complete published restoration history, though only Giza's gap is documented, so flag the generalisation as unchecked or confine it to Giza.
+      - The Pumapunku mould-bubble and crisp-interior-angle arguments, which readers arriving from popular accounts will likely have met, are dropped entirely, and one sentence saying the bubbles are unmeasured against natural volcanic vesicles and that Protzen's remark concerns unexplained tooling rather than casting would meet them.
+  - seat: GPT-5.6 Sol (OpenAI)
+    model: gpt-5.6-sol
+    candidateShownAs: A
+    prefers: candidate
+    margin: clear
+    reasons: "A gives the state of the case immediately: Egyptian stone tests contradict casting, Pumapunku remains weakly supported and independently untested, and specific tests could resolve both branches. At roughly half B’s length, it preserves the decisive observations, serious alternatives, sample-provenance problem, and evidence that would move the verdict. B adds useful technical detail, but repeatedly restates the same conclusions, delays its concise synthesis, and burdens a ten-minute reader with record IDs and lengthy side discussions. A also balances supporting and undermining evidence plainly, especially by distinguishing feasibility from historical occurrence and quarry matching from direct binder tests."
+    notes:
+      - Trim the Aswan and natron side branches further unless they can be tied more directly to the headline claim.
+      - Define NMR on first use or replace it with a plain-language description of what the test detects.
+      - Clarify why the proposed magnetic survey would distinguish cast-in-place blocks from quarried blocks, since that test is less self-explanatory than the laboratory comparisons.
+  - seat: Gemini 3.8 Flash (Google)
+    model: gemini-3.8-flash
+    candidateShownAs: B
+    prefers: candidate
+    margin: clear
+    reasons: Telling B conveys virtually all of the essential technical nuance, historical detail, and balanced argument of Telling A at half the word count (2,551 words versus 5,234), making it realistic for a ten-minute read. Telling A needlessly clutters its header components with internal database record IDs (like GEO-C020 and GEO-C913), whereas Telling B presents them in clean, plain English. Telling B keeps the narrative punchy and engaging without sacrificing critical specifics, such as Jana's positive geopolymer control, the shift from alkali to calcium-silicate binder, or the provenance flaws of Andean sample PP1.
+    notes:
+      - Clarify briefly in the text what 'ScanPyramids 2026' refers to, as citing a 2026 publication may confuse a reader without context.
+      - Ensure the transition between the discussion of theRekhmire mural and the salt section maintains the thematic link to evidence types.
+  - seat: Grok 4.5 (xAI)
+    model: grok-4.5
+    candidateShownAs: B
+    prefers: candidate
+    margin: clear
+    reasons: B's headers and opening paragraph immediately state the claim, the contradicted Egyptian branch versus the weakly supported Andean one, the competing accounts, and the cheap decisive tests, so a ten-minute reader grasps the state of the question before any fatigue. A buries the same material under 414 words of GEO-ids and a slow Aswan anecdote, then runs to 5,234 words that largely restate what B covers in half the length. Both are current, fair, and concrete on evidence and alternatives, but B does it in plain language without record identifiers or revision talk, teaching more per minute. A's extra texture and ladder metaphor are not worth the doubled reading cost for a general arrival reader.
+    notes:
+      - B could add one sentence naming the specific 2011 calcium-silicate claim so the residual Egyptian objection is even sharper.
+      - B's Aswan section still leans on an unchecked characterisation of Engelbach; a single clarifying clause would tighten it.
+      - A short caption or clause on why PP1's interior organic matter is the pivotal Andean observation would help skimmers.
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    model: z-ai-glm-5-3-flash
+    candidateShownAs: A
+    prefers: candidate
+    margin: clear
+    reasons: Both tellings are current and reach the same verdicts, so the choice turns on what a ten-minute reader gets per minute, and A delivers essentially the same case at half the length. A hits every load-bearing element — pyramid petrography with the Jana positive control, the salt line collapsing because both accounts predict halite, the PP1 provenance problem and interior organic matter, the methods-critique overreach, and a concrete settle-it agenda — without padding. B's extras (the C-14 offset at Giza, the guano-trade and Cieza de León material, the 'ladder' framing) are mostly elaboration a ten-minute reader does not need, and its header contaminates plain language with record ids like GEO-C021 that mean nothing to a first-time visitor. B's article prose is good but its 5,234 words spend reader minutes re-walking ground A covers in tighter form, and the criterion says a longer telling must earn the extra minutes; it does not.
+    notes:
+      - A should gloss the Jana positive-control result in plainer terms — 'a real artificial geopolymer was examined and looked nothing like the pyramid stone' — since that contrast is the decisive move for a lay reader.
+      - A could add one sentence noting the 2026 salt study is a peer-reviewed conservation publication, so the reader knows the modern salt finding is not a proponent claim.
+      - A could state the 'ladder' point B makes well — that feasible ingredients and demonstration blocks are necessary but not evidence anyone did it — in one explicit sentence early in the feasibility section.

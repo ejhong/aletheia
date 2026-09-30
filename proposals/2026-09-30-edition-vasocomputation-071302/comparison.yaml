@@ -1,0 +1,59 @@
+# The panel's seats reading the candidate beside edition-2026-09-23-015207, as a reader would (compare-v1; src/pipeline/compare.ts).
+# AI judgments of two tellings; not a human's, and not a judgment of the verdicts.
+against: edition-2026-09-23-015207
+protocol: compare-v1
+outcome: candidate-preferred
+candidate: 5
+incumbent: 0
+neither: 0
+seats:
+  - seat: Opus 5.5 (Anthropic)
+    model: claude-opus-5-5
+    candidateShownAs: B
+    prefers: candidate
+    margin: clear
+    reasons: "B's 243-word header answers and two-paragraph article opening give the claim, where the evidence stands, the rival accounts and the keystone experiment within a couple of minutes. A's headers alone run 1,086 words of dense ledger prose such as 'the one rung where the ledger holds a natural test it has not admitted as an observation on the claim.' B keeps nearly all of A's substance in under 40 percent of the words: the trapezius stiffness and Doppler figures with their caveats, the eleven-of-eleven versus four-of-eleven endplate-zone gradient, the mental-arithmetic result, the arteriole phosphorylation audit, the runners' pressure-only clearance, and the three accounts with their tests. Much of A's extra length is procedural hedging and repetition, including the runners' study returned to in at least five places and lines like 'this case does not spend a record admitted on one claim as a finding on another,' plus a record id ('study VASO-S001') and revision history ('since the observation was split in two,' 'this edition'). A does add some real value, such as the perforator account's ability to absorb pressure-only release, the laser-speckle test and longer what-would-change lists, but not enough to justify a 7,500-word article a ten-minute reader cannot finish; both are current and both state the proponents' strongest case fairly."
+    notes:
+      - Leftover site vocabulary in the header and text ('admitted evidence carries the surroundings,' 'held on their sources alone,' 'this edition') should be replaced with plain statements of what has been measured and what is only asserted.
+      - The trapezius imaging paragraph should say the stiffness gradient comes from one laboratory, at sites the examiner had already chosen by palpation, because that limitation bears directly on the reliability dispute the article raises.
+      - The perforator section should note that this account, unlike the latch account, can accommodate release by pressure alone and would be tested at the skin with a perfusion camera, so readers do not take the runners' result as weighing equally against both vascular accounts.
+  - seat: GPT-5.6 Sol (OpenAI)
+    model: gpt-5.6-sol
+    candidateShownAs: A
+    prefers: candidate
+    margin: clear
+    reasons: A gives the reader the claim, unresolved status, leading alternatives, and decisive time-locked imaging test within a compact header and two opening paragraphs. Its side-by-side accounts treat the latched arteriole, perforator, and guarding/densification explanations seriously, with concrete supporting findings, liabilities, and differing predictions. B contains much of the same useful evidence but costs more than twice as many words, repeats qualifications and research proposals, and burdens a general reader with ledger mechanics such as admitted records, anchors, atomic observations, and study identifiers. A still provides key numerical results and caveats without letting provenance bookkeeping obscure the central question of whether perfusion and stiffness change locally during a felt release.
+    notes:
+      - Replace remaining internal phrases such as “admitted evidence” and “this site has not verified” with direct statements about source quality.
+      - Separate the speculative claim about vascular participation in mind more clearly from the narrower muscle-knot hypothesis in the question and early summary.
+      - The traditional-medicine section could be shortened further because it contributes little to the ten-minute reader’s assessment.
+  - seat: Gemini 3.8 Flash (Google)
+    model: gemini-3.8-flash
+    candidateShownAs: A
+    prefers: candidate
+    margin: clear
+    reasons: Telling A is sized for a ten-minute read (under 3,000 words) while Telling B balloons to over 8,500 words, far exceeding what a reader can digest in one sitting. Telling A explains the biology and evidence cleanly in ordinary prose, whereas Telling B repeatedly clutters its text with site-internal mechanics ('admitted records', 'this ledger holds', ledger splits, and record IDs like 'study VASO-S001'). Telling A delivers the same core physiological debates, competing hypotheses, and testable settlement conditions with far greater punch and economy.
+    notes:
+      - The header answers could more explicitly note that 'scar' refers to structural fibrosis before contrasting it with a maintained state.
+      - A few stray internal phrases like 'admitted evidence' still linger in the header and should be replaced with natural language.
+      - Clarify slightly in the perforator section why the superficial perforator hypothesis struggles to account for deep intramuscular elastography findings.
+  - seat: Grok 4.5 (xAI)
+    model: grok-4.5
+    candidateShownAs: A
+    prefers: candidate
+    margin: clear
+    reasons: A's headers (243 words) and opening quickly state the claim, unresolved verdict with mixed components, the three competing accounts, the seconds-scale local-release crux, and the exact imaging/breath-randomization tests that would settle it, so a ten-minute reader grasps the map before stopping. B's headers alone run 1,086 words of dense ledger-speak ('admitted records', 'this edition reads', VASO-S001) and bury the same points under exhaustive qualifications the reader never asked for. A's 2,900-word article stays concrete and plain while covering the same evidence, alternatives, and gaps; B's 7,500 words add little decisive teaching per minute and repeatedly violate plain-language rules with internal vocabulary. Both are current and fair on supporting versus undermining data, but length and readability decide it for the stated reader.
+    notes:
+      - A could tighten the traditional-maps and vasocomputation paragraphs, which still run longer than their evidential weight justifies.
+      - A's header 'WHAT IS CLAIMED' could flag the energy-crisis motive in one clause so the reader sees why the vascular accounts remain interesting despite the arteriole mismatch.
+      - A might add one plain sentence early noting that population prevalence of the points themselves remains unmeasured, matching the care B gives that gap without B's bulk.
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    model: z-ai-glm-5-3-flash
+    candidateShownAs: B
+    prefers: candidate
+    margin: clear
+    reasons: Both tellings are current and state the same verdict, crux, alternatives, and settle-it experiments, but B delivers nearly all of A's substance in under 3,000 words versus 7,500, which matters for a ten-minute reader who will not finish A. B's headers and opening establish the claim, the state of evidence, the competitors, and the decisive experiment before the reader could stop, and its body keeps the key numbers (the 0.57/0.36/0.17 cm² gradient, pulsatility 8.3 vs 3.0, the 71.5% palpation confirmation, the 60%/86% clearance rates) and the same balanced caveats A gives. A's extra length buys mostly depth on the population-prevalence record and a longer research agenda — material the instructions say can be left to the ledger — rather than anything that changes what the reader learns. A is not deficient, just priced beyond the reader's budget for what it adds.
+    notes:
+      - B should say explicitly that the frequency of tender points in the general population has never been measured (it implies this but states it less plainly than A does).
+      - B's 'The breath question' sits oddly as a subsection under 'Three accounts side by side' though it concerns evidence, not one account; moving it up a level would help.
+      - B could note, as A does, that the trauma-relevant inference (a minutes-scale disappearance of an imaged stiff focus) is an inference of the edition rather than a graded finding, to keep the pressure-only lead clearly separated from verdicts.

@@ -2852,3 +2852,21 @@ The founder's direction of 2026-09-29 was given against a site whose own documen
 - `src/domain/standing.ts` said in its header that the two open verdicts must match exactly. The founder's amendment of 2026-09-09 put them between "weakly supported" and "mixed", and the code has followed it since; the note now does.
 - The method page says two things it did not: that a judgment written after the models judged, by a writer shown their verdicts, waits for a fresh check; and that a model asked the same question again does not always give the same word, with the experiment's figures and a link to its report.
 - In a reader's view a claim is one "the case rests on". "Load-bearing" stays the ledger's word, in the data and the code.
+
+## 2026-09-30 — The founder keeps the Anthropic seat at `max`; the two verdict words stay where they are; the next experiment is designed
+
+"Where we are" of this date put two things to the founder. He answered in session the same day: "keep it at max, fix the verdict if you think that's best".
+
+**The Anthropic seat stays at `max`.** The founder was shown what it costs: $1.90 to $2.96 an asking on 2026-09-30, $24.69 of the $31.88 that day's checks cost, and the ceiling of 128,000 tokens reached twice in ten askings, once with nothing returned and once with the reply cut and the seat asked again. He keeps it: `max` is what holds the seat inside the band the panel is chosen on. Nothing changes in `config/models.yaml` but a line saying the choice was made with the cost in view. What follows from it stays true: a panel may come back with four seats when that seat runs out of room, four can speak, and the scheduler completes the panel when nothing else is owed.
+
+**The two words stay two steps apart.** The constitution's scale sets "weakly supported" and "provisionally supported" two steps apart, and the experiment on verdict definitions found a seat moving between them more than between any other two. Moving them is an amendment, which is the founder's act; he left the judgment of whether to propose it to the operator. The operator counted before answering (`proposals/assessment-experiments/2026-09-30-two-words-on-the-scale/`):
+
+- On the ten panels that can speak, putting the two words one step apart changes no standing, and no featured claim stops being split: 23 of 199 either way.
+- The pair is 19 of the 129 seat verdicts that are more than one step from a judgment. The three kinds ahead of it come to 75, and 67 of those are on claims with no evidence record, which is the matter of the entry of this date on where the panel parts from a judgment.
+- Where the pair does count is a seat against itself. On the nine runs of the verdict-definitions experiment, a seat's three answers would fall within one step of each other on more claims in eleven of twelve seat-and-arm rows, by one to eight claims of 25, and one standing in nine would have read ratified where it read contested.
+
+So the move would loosen a check in §3.15 for good and change nothing the site shows today. The standing is built to fail down, and a rule under which a judgment of "provisionally supported" is ratified by a panel that says "weakly supported" would raise it on wording. Against that, the noise the move would remove is real and has been measured on one case. The operator leaves the words where they are and proposes no amendment.
+
+What would reopen it: the next experiment asks each seat the same question twice on four cases and reports how much of a seat's distance from itself is this pair (its measure 7). If that is most of it on more than one case, the amendment is drafted for the founder's hand, as amendments are.
+
+**The next experiment is designed and not run.** `proposals/assessment-experiments/2026-09-30-a-rule-for-claims-with-no-evidence/` holds the design, the draft protocol (`check-v2` with two paragraphs added and nothing else changed), and the analysis script with its baseline from the panels published on 2026-09-30. `src/pipeline/check.ts` fills the list a check protocol may ask for, the featured claims no admitted evidence record cites (`unevidencedClaims`); `check-v2` does not ask, and is sent what it was sent before. Sixteen runs of four seats, about $9. The design may be revised until its first run starts. No run was made on this date: the day's cap was spent.

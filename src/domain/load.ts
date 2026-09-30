@@ -96,6 +96,23 @@ function checkImages(
   }
 }
 
+/**
+ * A draft's stamps — `reconciles`, the checks a reconsideration answered, and `shownChecks`, the checks its drafter
+ * was shown — name check runs of the same case. One line per id that names no run, or a run that is not a check
+ * (review note #434: the schema took any string).
+ */
+export function stampErrors(run: AssessmentRun, runs: AssessmentRun[]): string[] {
+  const errors: string[] = [];
+  for (const [field, ids] of [["reconciles", run.reconciles], ["shownChecks", run.shownChecks]] as const) {
+    for (const id of ids ?? []) {
+      const named = runs.find((r) => r.runId === id);
+      if (!named) errors.push(`assessment run ${run.runId} names ${id} in ${field}, and the case has no such run`);
+      else if (named.role !== "check") errors.push(`assessment run ${run.runId} names ${id} in ${field}, and that run is not a check`);
+    }
+  }
+  return errors;
+}
+
 export function checkIntegrity(caseDir: string, loaded: LoadedCase): void {
   const claimById = new Map(loaded.claims.map((c) => [c.id, c]));
   // An id written in prose must name a record that exists — every record, no
@@ -248,6 +265,8 @@ export function checkIntegrity(caseDir: string, loaded: LoadedCase): void {
     ]) {
       requireClaim(id, `assessment run ${run.runId} roll-up`);
     }
+    // A draft's stamps name checks of this case: a dangling id, or one that names a draft, fails as any dangling id does.
+    for (const err of stampErrors(run, loaded.assessmentRuns)) throw new ContentError(caseDir, err);
     // The epistemic counterweight, fail-closed: new runs must disclose the
     // strongest argument for the featured hypothesis they do not answer.
     const steelmanError = steelmanRequirementError(run);

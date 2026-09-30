@@ -99,14 +99,20 @@ const byEditionVerb = (run: AssessmentRun): boolean => /^edition-v\d+$/.test(run
  * would let a draft clear by converging on its judges instead of on the evidence.
  *
  * The `edition` verb shows its drafter every check current on the ledger (src/pipeline/packet.ts, `panel`),
- * contested or not. A draft says what it was shown, most exactly first:
+ * contested or not. What was in hand is decided by the clock first and the stamps second, so that a stamp can
+ * add to the set and never take from it:
  *
- * - `shownChecks`: the verb's stamp of every check in the packet (since 2026-09-30) — exact, and with
- *   `reconciles` (the checks a reconsideration answered) the whole of it;
- * - without that stamp, a draft the edition verb wrote was shown every check then current, so any check not
- *   provably made after it; a reconsideration from before the stamps (its promptVersion says so), any check not
- *   dated after it (a same-day check may have been in hand); and what `reconciles` names, in either case;
- * - any other draft (a migrated or hand-made one) was shown nothing.
+ * - a draft the edition verb wrote was shown every check then current, so every check not provably made after it
+ *   is in hand, whatever its stamps say;
+ * - a reconsideration from before the stamps (its promptVersion says so): every check not dated after it (a
+ *   same-day check may have been in hand);
+ * - and whatever `reconciles` (the checks a reconsideration answered) and `shownChecks` (the verb's list of what
+ *   the packet carried, since 2026-09-30) name, on any draft.
+ *
+ * The stamps are the record of what the drafter was shown; they are not what clears a check. A stamp that is
+ * empty, short or wrong therefore fails down (review note #434: read as exact, an empty `shownChecks` would have
+ * let earlier checks ratify the draft). A draft that is not the edition verb's and carries no stamp — a migrated
+ * or hand-made one — was shown nothing.
  *
  * Until 2026-09-30 only a contested case's draft counted as written with checks in hand. A re-telling of a ratified
  * case re-graded nine claims toward its panel, said so, and kept "ratified" on the checks it had answered.
@@ -114,13 +120,12 @@ const byEditionVerb = (run: AssessmentRun): boolean => /^edition-v\d+$/.test(run
 export function engagedChecks(draft: AssessmentRun, checks: AssessmentRun[]): AssessmentRun[] {
   if (draft.role === "check") return [];
   const named = new Set([...(draft.reconciles ?? []), ...(draft.shownChecks ?? [])]);
-  if (draft.shownChecks !== undefined) return checks.filter((r) => named.has(r.runId));
-  const unstamped = byEditionVerb(draft)
+  const byClock = byEditionVerb(draft)
     ? (r: AssessmentRun) => !madeAfter(r, draft)
-    : draft.reconciles === undefined && /reconsider/i.test(draft.promptVersion)
+    : draft.reconciles === undefined && draft.shownChecks === undefined && /reconsider/i.test(draft.promptVersion)
       ? (r: AssessmentRun) => !(r.date > draft.date)
       : () => false;
-  return checks.filter((r) => named.has(r.runId) || unstamped(r));
+  return checks.filter((r) => named.has(r.runId) || byClock(r));
 }
 
 /**

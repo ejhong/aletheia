@@ -144,6 +144,10 @@ export default function MethodPage() {
           ))}
         </dl>
         <p className="mt-5 text-[14px] leading-relaxed text-ink-soft">
+          Unresolved and presently untestable stand on the same step of that scale, between mixed and weakly
+          supported: both say the evidence does not decide, and differ only in whether a test could.
+        </p>
+        <p className="mt-4 text-[14px] leading-relaxed text-ink-soft">
           Two more say the trouble is with the question or its material, not the evidence:
         </p>
         <dl className="mt-3 space-y-3">

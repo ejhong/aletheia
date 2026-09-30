@@ -1,4 +1,5 @@
 /** Loading and validation: the case files parsed, checked, and assembled into a LoadedCase — fail-closed. Editions, standing and history live beside this in their own modules (split 2026-09-09). */
+import { readOnce } from "./frozen.ts";
 import fs from "node:fs";
 import path from "node:path";
 import { parse as parseYaml } from "yaml";
@@ -703,15 +704,18 @@ export function caseCover(loaded: LoadedCase): ImageRecord | null {
   return loaded.images.find((i) => i.role === "cover") ?? null;
 }
 
+/** Every case, loaded and validated. A fresh read each call, except in the site's build, which reads once per process (src/domain/frozen.ts). */
 export function loadAllCases(): LoadedCase[] {
-  if (!fs.existsSync(CONTENT_DIR)) {
-    throw new Error(`content directory not found at ${CONTENT_DIR}`);
-  }
-  return fs
-    .readdirSync(CONTENT_DIR, { withFileTypes: true })
-    .filter((d) => d.isDirectory())
-    .map((d) => loadCase(d.name))
-    .sort((a, b) => a.record.id.localeCompare(b.record.id));
+  return readOnce("cases", () => {
+    if (!fs.existsSync(CONTENT_DIR)) {
+      throw new Error(`content directory not found at ${CONTENT_DIR}`);
+    }
+    return fs
+      .readdirSync(CONTENT_DIR, { withFileTypes: true })
+      .filter((d) => d.isDirectory())
+      .map((d) => loadCase(d.name))
+      .sort((a, b) => a.record.id.localeCompare(b.record.id));
+  });
 }
 
 /** A case by slug or directory name — the one lookup every script and verb uses. */

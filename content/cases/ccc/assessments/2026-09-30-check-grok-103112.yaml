@@ -1,0 +1,278 @@
+# Cross-model check run — an independent judge (Grok 4.5 (xAI)), blind to all
+# prior assessments and to the editions (aletheia check, check-v2; run 2026-09-30-check-ccc-103111).
+# role: check — never displayed as the case narrative; feeds the concurrence panel.
+# basis.ledgerHash is the ledger it judged. Append-only; NOT human reviewed.
+runId: 2026-09-30-check-grok-103112
+producedBy: 2026-09-30-check-ccc-103111
+model: Grok 4.5 (xAI) — independent check run via grok-4.5
+date: 2026-09-30
+promptVersion: check-v2
+humanReviewed: false
+role: check
+basis:
+  ledgerHash: f50080ce895637629f1f60b5c2045f8ecfd062217843a1e15a39b995aada8f1e
+caseAssessment:
+  verdict: contradicted
+  components: []
+  loadBearing:
+    - CCC-C001
+    - CCC-C003
+    - CCC-C002
+    - CCC-C004
+    - CCC-C010
+  weakestLinks:
+    - CCC-C009
+    - CCC-C503
+    - CCC-C504
+    - CCC-C505
+  synthesis: "The observational core of the case is settled by multiple
+    independent reanalyses that all parties accept on the raw maps: concentric
+    low-variance annular families and compact raised-temperature spots exist as
+    outputs of the published search procedures (CCC-C001). The anomaly claims
+    that would make those features news from a previous aeon (CCC-C002,
+    CCC-C004) do not survive once the null ensemble is constructed from the full
+    ΛCDM angular power spectrum rather than pure Gaussian-plus-noise skies, and
+    once look-elsewhere effects and few-pixel artifacts are accounted for. Wehus
+    & Eriksen, Moss/Scott/Zibin, Hajian, DeAbreu et al., Jow & Scott, López et
+    al., Bielewicz et al., and Bodnia et al. independently recover the same
+    features at abundances and significances fully consistent with a standard
+    inflationary sky; Bodnia et al. further diagnose the generating mechanism
+    (anomalous few-pixel spots inflate local baseline variance and manufacture
+    concentric sets under the original criteria). The methodological dispute
+    (CCC-C003) is therefore decisive rather than peripheral: the headline 6σ and
+    99.98% figures live in the choice of null and the post-hoc size window, not
+    in the data. Consequently the attribution claim that the features are
+    imprints of previous-aeon black-hole encounters and evaporations (CCC-C009)
+    is contradicted by the statistical record; the rival claim that standard
+    ΛCDM plus a-posteriori search effects fully accounts for every reported
+    signature (CCC-C010) is well supported. No search on either side was
+    preregistered (CCC-C011), so residual 1σ excesses and untested sky-twist or
+    anisotropy arguments cannot be promoted to evidence. On the mechanism rung,
+    CCC requires an admittedly unconventional mass fade-out with no accepted
+    particle-physics realization (CCC-C005), its entropy-reset accounting is
+    challenged by published information-theoretic critique (CCC-C006), and its
+    forward dark-matter prediction (erebons) yields a gravitational-wave
+    background tens to ninety-five orders of magnitude below LIGO sensitivity
+    under the only quantitative calculation available (CCC-C007, CCC-C519,
+    CCC-C505). Planck’s precision fit to inflationary ΛCDM supplies the positive
+    conventional baseline; the continued non- detection of primordial B-modes
+    leaves one future discriminator open but does not rehabilitate the existing
+    CMB claims. The single most load- bearing evidence thread is the suite of
+    independent null reanalyses under realistic ensembles; remove them and the
+    case collapses back to the proponents’ original significance figures. The
+    verdict is therefore that the featured hypothesis—that the observed circles
+    and Hawking points carry news from a prior aeon—is contradicted by the
+    evidence records as they stand. A preregistered joint protocol or a
+    quantitative CCC signal model could in principle reopen the question, but
+    neither exists in the ledger."
+  steelman: The sky-twist ellipticity test and the extreme anisotropy of
+    concentric-triple centres (83% of 1134 centres inside three regions covering
+    ~3% of searched sky) have never been independently re-run under
+    artifact-screened, ellipse-specific nulls conditioned on the observed low-ℓ
+    multipoles; if those structural preferences survive a fair null they would
+    remain unexplained by the Gaussian ΛCDM accounts that dissolve the abundance
+    claims.
+claimAssessments:
+  - claimId: CCC-C009
+    verdict: contradicted
+    reasoning: The claim asserts that the reported circles and Hawking points are
+      real previous-aeon imprints. Multiple independent reanalyses (Wehus &
+      Eriksen, Moss/Scott/Zibin, Hajian, DeAbreu, Jow & Scott, López, Bodnia,
+      Bielewicz) recover the features yet find them statistically typical of
+      ΛCDM skies once proper power-spectrum ensembles, look-elsewhere
+      corrections, and few-pixel screening are applied; Bodnia et al. identify
+      the artifact mechanism that manufactures false concentric sets. The
+      strongest opposing consideration is the unreplicated sky-twist and
+      centre-anisotropy arguments, which remain qualitative and post-hoc.
+    confidence: high
+  - claimId: CCC-C010
+    verdict: well_supported
+    reasoning: Independent groups using full ΛCDM simulations, realistic noise,
+      frozen proponent parameters, size marginalization, purpose-built detectors
+      validated on synthetic signals, and maximum-resolution artifact screening
+      all conclude that every reported CCC signature is expected under standard
+      inflationary skies plus a-posteriori search effects. Planck 2018 inflation
+      constraints supply the positive baseline fit. The strongest opposing
+      consideration is that low-ℓ anomalies themselves remain incompletely
+      explained, so the conventional account relocates rather than dissolves
+      every large-scale oddity.
+    confidence: high
+  - claimId: CCC-C002
+    verdict: contradicted
+    reasoning: Five independent reanalyses (Wehus & Eriksen, Moss/Scott/Zibin,
+      Hajian, DeAbreu, Bielewicz) plus Bodnia et al. demonstrate that the
+      low-variance concentric families appear at comparable abundance in
+      ΛCDM-spectrum simulations; the original 6σ figure was computed against an
+      inadequate pure-Gaussian-plus-noise null. The strongest opposing
+      consideration is the proponents’ sky-twist claim that circularity
+      preference cannot be a random effect, which has not been tested under an
+      ellipse-specific null.
+    confidence: high
+  - claimId: CCC-C004
+    verdict: contradicted
+    reasoning: Jow & Scott show that marginalizing over the post-hoc ring-size
+      window reduces the 99.98% claim to ~87% (~1σ); López et al. recover no
+      significant population with a detector validated at 95% on synthetic
+      Hawking points; Bodnia et al. rule out the amplitude/size box with
+      HawkingNet and open code. The strongest opposing consideration is the
+      Planck–WMAP co-location of the top spots, which establishes they are on
+      the sky but is expected under any shared-sky hypothesis including ΛCDM
+      fluctuations.
+    confidence: high
+  - claimId: CCC-C001
+    verdict: established
+    reasoning: Every independent group that has applied the published search
+      procedures (Wehus & Eriksen, Moss/Scott/Zibin, DeAbreu et al., and others)
+      reproduces the low-variance annular families and the compact
+      raised-temperature spots; the dispute is solely over their statistical
+      interpretation, not their existence as map features. The strongest
+      opposing consideration would be residual instrument-specific artifacts,
+      but cross-map co-location and half-difference noise tests already address
+      that.
+    confidence: high
+  - claimId: CCC-C003
+    verdict: established
+    reasoning: Gurzadyan & Penrose’s own response note states that the critics
+      simulate full ΛCDM power-spectrum skies while they simulate pure Gaussian
+      plus noise; every subsequent independent paper confirms that this ensemble
+      choice is the locus of the significance disagreement. The strongest
+      opposing consideration is the proponents’ philosophical claim that most of
+      the CMB is not random and therefore ΛCDM simulations are the wrong null,
+      but that claim is itself the hypothesis under test and cannot define the
+      null.
+    confidence: high
+  - claimId: CCC-C011
+    verdict: established
+    reasoning: The study-table synthesis and the sequence of published papers show
+      that every reported significance on both sides—proponent and critic—used
+      statistics, size windows, masks, and ensembles chosen after data
+      inspection; no blind or preregistered protocol appears in the ledger. The
+      strongest opposing consideration is that some later reanalyses froze the
+      proponents’ published parameters, which is a partial but incomplete step
+      toward prespecification.
+    confidence: high
+  - claimId: CCC-C503
+    verdict: weakly_supported
+    reasoning: Gurzadyan & Penrose 2013 report that concentric-set prevalence
+      collapses under mild ellipticity and that radii cut off near 15–20°,
+      presented as a sky-twist test that avoids simulations. No independent
+      group has repeated the test under artifact screening and an
+      ellipse-specific null; Bodnia et al. note that few-pixel spots can
+      generate concentric families, which could interact with the ellipticity
+      comparison. The strongest opposing consideration is precisely the absence
+      of an independent, properly nulled replication.
+    confidence: low
+  - claimId: CCC-C504
+    verdict: mixed
+    reasoning: An et al. 2020 report that ~83% of 1134 concentric-triple centres lie
+      inside three regions covering ~3% of searched sky—an extreme anisotropy.
+      Bielewicz et al. earlier showed that low-variance ring centres cluster
+      because of large-angular-scale (low-ℓ) features rather than randomly
+      distributed sources, offering a conventional mechanism, yet they used a
+      different statistic and predate the 83% figure. The strongest opposing
+      consideration is that a direct test against low-ℓ-conditioned simulations
+      has not been performed.
+    confidence: moderate
+  - claimId: CCC-C501
+    verdict: weakly_supported
+    reasoning: Meissner, Nurowski & Ruszczycki 2013 report ring-type structures at
+      99.7% confidence against maps of the same harmonic content. The group is
+      proponent-adjacent (later co-authors of the Hawking-points paper), the
+      statistic is post-hoc, and the comparison does not settle the full
+      ΛCDM-ensemble dispute. The strongest opposing consideration is the suite
+      of independent null results under realistic simulations that dissolve
+      similar ring claims.
+    confidence: low
+  - claimId: CCC-C509
+    verdict: well_supported
+    reasoning: Jow & Scott measure mean nearest-neighbour separations of the 30 most
+      significant Hawking points at the claimed scales and find them within 1σ
+      of the Gaussian-sky expectation (0.20 ± 0.03 rad). This directly tests and
+      rejects the clustering-as-further-evidence argument. The strongest
+      opposing consideration is the modest simulation count (100) and
+      restriction to only the top 30 points.
+    confidence: moderate
+  - claimId: CCC-C523
+    verdict: well_supported
+    reasoning: Bielewicz et al. demonstrate that the deficit of variance in
+      large-radius rings is removed when the ℓ ≤ 7 multipoles of the simulations
+      are replaced by the data’s best-fit values, tracing the anomaly to the
+      well-known low-order multipole distribution. The strongest opposing
+      consideration is that the low-ℓ anomalies themselves lack a complete
+      physical explanation, so the causal claim relocates rather than eliminates
+      the oddity.
+    confidence: moderate
+  - claimId: CCC-C524
+    verdict: well_supported
+    reasoning: Bielewicz et al. show that low-variance rings cluster in a few
+      relatively large sky regions and explicitly attribute this to
+      large-angular-scale features rather than randomly distributed sources.
+      This supplies a conventional mechanism for the kind of centre
+      concentration later quantified by An et al. The strongest opposing
+      consideration is the difference in statistic (extreme-variance ring counts
+      versus concentric-triple centres), so the link to the precise 83%-in-3%
+      figure remains indirect.
+    confidence: moderate
+  - claimId: CCC-C005
+    verdict: established
+    reasoning: Penrose 2018 states in his own words that strict CCC requires
+      asymptotic mass fade-out—“an admittedly unconventional hypothesis”—and Tod
+      2022 lists implementation of mass fade-out as an open problem. No accepted
+      particle-physics mechanism appears in the ledger. The strongest opposing
+      consideration is Penrose’s appeal to the de Sitter group (mass not a
+      Casimir operator when Λ > 0), which remains a qualitative suggestion
+      rather than a derived mechanism.
+    confidence: high
+  - claimId: CCC-C006
+    verdict: mixed
+    reasoning: Penrose’s entropy accounting via black-hole information loss plus
+      conformal rescaling is the theory’s stated solution to the low-entropy
+      initial condition. Eckstein 2023 argues that the assumed information loss
+      increases global entropy and undermines the required renormalization,
+      proposing a unitary variant instead. The strongest opposing consideration
+      is that information loss remains a live controversy in quantum gravity
+      with defenders on Penrose’s side, so the critique is not decisive.
+    confidence: moderate
+  - claimId: CCC-C007
+    verdict: provisionally_supported
+    reasoning: Penrose 2018 explicitly introduces erebons as Planck-mass,
+      gravitationally interacting particles created at crossover, decaying
+      within an aeon, and potentially visible to GW detectors; the claim is
+      therefore a correct description of the theory’s content. Allen 2020 shows
+      the resulting stochastic background is undetectable, but that constrains
+      the signal prediction, not the dark-matter identification itself. The
+      strongest opposing consideration is the complete absence of a computed
+      decay spectrum or event rate beyond order-of-magnitude guesses.
+    confidence: moderate
+  - claimId: CCC-C008
+    verdict: provisionally_supported
+    reasoning: Penrose 2018 states “there is no inflation in CCC” and attributes
+      near scale-invariance to erebon decay in the previous aeon’s exponential
+      expansion; the claim accurately records the theory. No derivation of the
+      observed perturbation spectrum from erebon decay exists in the ledger (Tod
+      lists it as open). The strongest opposing consideration is Planck’s
+      precision fit to inflationary slow-roll parameters, which CCC must
+      eventually reproduce to be viable.
+    confidence: moderate
+  - claimId: CCC-C505
+    verdict: contradicted
+    reasoning: Penrose 2017 conjectured that reported LIGO inter-detector noise
+      correlations at the GW time lag could be erebon decays. Nielsen et al.
+      2019 find no significant residual correlation after maximum-likelihood
+      waveform subtraction; Allen 2020 shows both direct and memory-effect
+      backgrounds lie 35–95 orders below detectability. The strongest opposing
+      consideration is Ulhoa et al. 2026’s claim of persistent off-source
+      structure in a band-pass-only pipeline, which the authors themselves note
+      is non-robust under whitening and does not mention erebons.
+    confidence: moderate
+  - claimId: CCC-C519
+    verdict: established
+    reasoning: Allen 2020 derives Ω_GW(25 Hz) < 2 × 10⁻¹⁰³ for Planck-mass particles
+      decaying to two gravitons with lifetime exceeding the Hubble
+      time—approximately 95 orders below the LIGO O1+O2 limit. The calculation
+      is the sole quantitative result on the topic and matches the claim’s
+      figures exactly. The strongest opposing consideration is that the result
+      assumes a homogeneous cosmological population and a two-body massless
+      decay; a highly clustered or non-spherical channel could alter the
+      single-event strain, but no such channel is calculated in the ledger.
+    confidence: high

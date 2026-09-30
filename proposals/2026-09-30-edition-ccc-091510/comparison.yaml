@@ -1,0 +1,59 @@
+# The panel's seats reading the candidate beside edition-2026-09-14-130324, as a reader would (compare-v1; src/pipeline/compare.ts).
+# AI judgments of two tellings; not a human's, and not a judgment of the verdicts.
+against: edition-2026-09-14-130324
+protocol: compare-v1
+outcome: candidate-preferred
+candidate: 5
+incumbent: 0
+neither: 0
+seats:
+  - seat: Opus 5.5 (Anthropic)
+    model: claude-opus-5-5
+    candidateShownAs: B
+    prefers: candidate
+    margin: clear
+    reasons: "B's 205-word headers and first two paragraphs give the whole state of the question: the features are real but no more common than in standard-model skies, the headline significances fall once the search is accounted for, the circle-over-ellipse preference and centre crowding are untested, and a jointly frozen protocol would settle it. A's 533-word headers carry the same content in 'ΛCDM power spectrum', 'ℓ ≤ 7 multipoles', 'theory rung' and an 'Allen's isotropy result' the article never names, and its narrative opening delays the bottom line. At 3,926 words A's article is roughly twice a ten-minute read, while B covers the same spine in 2,401 words: four accounts, five reanalyses, the few-pixel artifact, sky-twist, the look-elsewhere cut to 87%, WMAP–Planck co-location, Allen's 35-orders gap, mass fade-out, B-mode exposure and three concrete tests. What A adds (the E-mode null, HawkingNet's exclusion window, the 2026 LIGO preprint, r < 0.036, Penrose's fade-out mitigation) is real but mostly ledger-level detail not worth the extra minutes. A also leans on site vocabulary ('the ledger records', 'circles branch', 'mechanism rung') where B explains plainly ('largest ripples', a spelled-out ΛCDM), and B reads the centre-crowding source more carefully, noting the three regions may cover up to about 9% of the sky rather than 3%."
+    notes:
+      - Replace the three 'this site has not yet checked / knows only secondhand' asides with a plain statement of what is unconfirmed, since they read as internal process notes.
+      - "Fix the garbled Hawking-point sentence: it should say about a third of the excess at the claimed spot sizes comes from the single strongest point, not 'a third of what remains' from 'the single strongest points'."
+      - The theory's-bill section lists only costs; add one sentence on Penrose's reply that mass need not be invariant with a positive cosmological constant, and on Eckstein's unitary variant, so the proponents' side gets comparable weight.
+  - seat: GPT-5.6 Sol (OpenAI)
+    model: gpt-5.6-sol
+    candidateShownAs: B
+    prefers: candidate
+    margin: clear
+    reasons: B gives the claim, current evidential state, main conventional explanations, surviving proponent arguments, and decisive tests within a brief header and two opening paragraphs. Its four-account structure and separate treatments of circles, Hawking points, erebons, and theory costs preserve most of A's useful substance in roughly 1,500 fewer article words and with much shorter headers. A offers valuable extra detail about individual analyses, polarization, entropy, and detector calculations, but much of it exceeds what a ten-minute reader needs after the central methodological dispute is established. B is also generally plainer and easier to navigate while remaining fair about the untested ellipse and centre-crowding claims and explicit about what would change the assessment.
+    notes:
+      - Remove editorial phrases such as "this site has not yet checked" and "knows only secondhand," which expose internal record-keeping rather than helping the reader assess the evidence.
+      - 'Clarify the opening statement that the rings and spots are "really in the maps": the selected features exist, but evidence for an anomalous population does not.'
+      - State more carefully whether the three crowded centre regions cover about 3% each or about 3% in total, since B identifies an important ambiguity without resolving it.
+  - seat: Gemini 3.8 Flash (Google)
+    model: gemini-3.8-flash
+    candidateShownAs: B
+    prefers: candidate
+    margin: clear
+    reasons: "Telling B is calibrated for the ten-minute reader: at 2,400 words (plus 200 words of header) it fits the time budget comfortably, whereas A's 4,000-word essay requires speed-reading. Despite being 1,500 words shorter, B preserves virtually every substantive empirical point, from the null-hypothesis disputes and look-elsewhere corrections to Bodnia's few-pixel artifact, the 83% centre clumping nuance, Allen's 35/95 orders-of-magnitude calculation, and the necessary desk tests. B's header answers are concise summaries rather than mini-essays, stating the crux without delay. A is beautifully written, but its length extracts a heavy cost for very little additional conceptual yield."
+    notes:
+      - Remove meta-editorial leaks like 'this site has not yet checked that passage against the paper' and 'a figure this site knows only secondhand', which break the fourth wall.
+      - Clarify that the 87% confidence level for Hawking points comes specifically from marginalizing over spot sizes.
+      - Specify the tensor-to-scalar ratio limit (r < 0.036) in the rival section as A does, rather than just mentioning 'current limits'.
+  - seat: Grok 4.5 (xAI)
+    model: grok-4.5
+    candidateShownAs: A
+    prefers: candidate
+    margin: clear
+    reasons: A's headers (205 words) deliver the claim, the null-hypothesis dispute, the four competing accounts, and the decisive tests in under a minute; B's headers alone run 533 words and already tax a ten-minute reader. The articles cover the same evidence arcs (five null reanalyses, look-elsewhere cut on Hawking points, sky-twist and centre-crowding gaps, erebon/Allen calculation, mass-fade and entropy problems), yet A does it in 2401 words while B takes 3926, adding mainly narrative colour, extra quotations and minor side-details that do not change what the reader learns. Both stay current and largely plain-spoken, but A's tighter structure maximises learning per minute without sacrificing fairness or the concrete 'what would settle it' list.
+    notes:
+      - A still flags a couple of 'this site has not checked' asides that a first-time reader does not need.
+      - The few-pixel and low-multipole accounts could be named once in the headers so the reader sees all four live explanations even sooner.
+      - A single sentence clarifying that the 2025 mass-temperature relation is unreviewed would keep the honesty tight.
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    model: z-ai-glm-5-3-flash
+    candidateShownAs: A
+    prefers: candidate
+    margin: slight
+    reasons: "Both tellings are current, reach the same verdicts, present the same four accounts, and give concrete settlement tests, so the choice turns on cost per minute: A delivers essentially the same state of the question in about 60% of the words. B's extra material — the E-mode polarization stack (which it itself notes constrains nothing), the 2026 nine-event LIGO preprint, HawkingNet's amplitude limits, and the r < 0.036 bound — adds texture but little decision-relevant weight for a ten-minute reader, and its 533-word header block is dense enough to risk losing them before the article starts. A's prose is plainer and its 'what would settle it' section is easier to act on. B is not defective; it is simply a fuller telling of the same case than the reader's ten minutes need."
+    notes:
+      - A should note that critics (Bielewicz and colleagues) independently observed the ring-centre clustering, not just proponents, since that makes the clumping observation more solid than A's phrasing implies.
+      - A could state the current tensor-to-scalar bound (r < 0.036) when discussing primordial gravitational waves, so the reader knows how close the decisive test is.
+      - A's secondhand figures (the 99.4% Warsaw follow-up and the >10% Jow–Scott probability) could be flagged once as ledger-unverified in a single line rather than inline asides.

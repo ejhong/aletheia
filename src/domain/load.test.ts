@@ -8,7 +8,7 @@ import {
 } from "./article.ts";
 import { adoptedAssessment, caseQuestion, currentEdition, latestAssessment } from "./editions.ts";
 import { checksStale, crossModelSummary, standingInWords, RATIFICATION_MIN_PANEL, ratification, runStaleness, seatsOwed, survivingObjections, latestCheckPerModel, displayAssessment, withinOneStep } from "./standing.ts";
-import { claimAnchorErrors, editionErrors, getCaseBySlug, liveClaims, loadAllCases, loadSiteImages, sourceAdmissionErrors, checkIntegrity } from "./load.ts";
+import { claimAnchorErrors, editionErrors, getCaseBySlug, liveClaims, loadAllCases, loadSiteImages, sourceAdmissionErrors, checkIntegrity, stampErrors } from "./load.ts";
 import { historyNewestFirst, lastContentUpdate, recentChanges } from "./history.ts";
 import { assessmentHash, canonicalJson, ledgerHash, sha256Hex } from "./hash.ts";
 import { caseView, findClaimView, reviewCoverage } from "./view.ts";
@@ -25,6 +25,7 @@ import {
   SourceSchema,
   STEELMAN_REQUIRED_FROM,
   steelmanRequirementError,
+  type AssessmentRun,
   type LoadedCase,
 } from "./schema.ts";
 
@@ -1020,17 +1021,43 @@ describe("ratification governance (stage 3)", () => {
     expect(ratification(caseWith([byVerb(), ...stamped("101500-r2")]))?.status).toBe("ratified");
     expect(ratification(caseWith([byVerb(), ...stamped("090000")]))?.status).toBe("unratified");
     expect(ratification(caseWith([byVerb(), ...stamped(null)]))?.status).toBe("unratified"); // same day, no clock on the check's id
-    // The verb's stamp is exact: what it names is engaged, and a check it does not name vouches whatever its date.
+    // The verb's stamp names what the packet carried, and the standing is the same with it as without.
     const named = byVerb({ shownChecks: earlier.map((c) => c.runId) });
     expect(ratification(caseWith([named, ...earlier]))?.status).toBe("unratified");
-    expect(ratification(caseWith([byVerb({ shownChecks: [] }), ...earlier]))).toMatchObject({ status: "ratified", engaged: [] });
+    // A stamp adds to what the clock shows and never takes from it (review note #434): an empty or a short list clears
+    // nothing, because a check made before the draft was in its packet whatever the list says.
+    for (const stamp of [[], earlier.slice(0, 2).map((c) => c.runId)]) {
+      const short = ratification(caseWith([byVerb({ shownChecks: stamp }), ...earlier]));
+      expect(short).toMatchObject({ status: "unratified", engaged: earlier.map((c) => c.runId) });
+    }
+    // …and a check the stamp names is in hand even when its date says it came later.
+    const later = fiveChecks("unresolved", 0, "2026-02-03");
+    expect(ratification(caseWith([byVerb({ shownChecks: later.map((c) => c.runId) }), ...later]))).toMatchObject({ status: "unratified", engaged: later.map((c) => c.runId) });
     // One fresh check beside four that were shown restores the derivation, as for a reconsideration; the four are still named.
+    const fresh = { ...earlier[4], runId: "2026-02-03-check-epsilon", date: "2026-02-03" };
     const four = byVerb({ shownChecks: earlier.slice(0, 4).map((c) => c.runId) });
-    expect(ratification(caseWith([four, ...earlier]))).toMatchObject({ status: "ratified", engaged: earlier.slice(0, 4).map((c) => c.runId) });
-    expect(seatsOwed(caseWith([four, ...earlier]), roster)).toEqual(roster.slice(0, 4));
+    const mixed = caseWith([four, ...earlier.slice(0, 4), fresh]);
+    expect(ratification(mixed)).toMatchObject({ status: "ratified", engaged: earlier.slice(0, 4).map((c) => c.runId) });
+    expect(seatsOwed(mixed, roster)).toEqual(roster.slice(0, 4));
     // The reconsideration's stamp and the verb's are read together.
     const both = byVerb({ reconciles: earlier.slice(0, 2).map((c) => c.runId), shownChecks: earlier.slice(2).map((c) => c.runId) });
     expect(ratification(caseWith([both, ...earlier]))?.engaged).toEqual(earlier.map((c) => c.runId));
+    // A draft that is not the edition verb's is held to its stamps alone: what they name, and nothing by the clock.
+    const hand = { ...mkDraft("2026-02-02-by-hand", "2026-02-02"), shownChecks: earlier.slice(0, 1).map((c) => c.runId) };
+    expect(ratification(caseWith([hand, ...earlier]))).toMatchObject({ status: "ratified", engaged: [earlier[0].runId] });
+  });
+
+  it("a draft's stamps must name checks of the case: a dangling id, or a draft named as a check, is refused", () => {
+    const checks = fiveChecks("unresolved");
+    const draft = { ...mkDraft("2026-02-02-edition-094541", "2026-02-02"), promptVersion: "edition-v14" };
+    const runs = [draft, ...checks] as unknown as AssessmentRun[];
+    const stamped = (over: Record<string, unknown>) => ({ ...draft, ...over }) as unknown as AssessmentRun;
+    expect(stampErrors(stamped({ shownChecks: checks.map((c) => c.runId), reconciles: [checks[0].runId] }), runs)).toEqual([]);
+    expect(stampErrors(stamped({ shownChecks: [] }), runs)).toEqual([]);
+    expect(stampErrors(stamped({ shownChecks: ["2026-02-01-check-nobody"] }), runs)).toEqual(["assessment run 2026-02-02-edition-094541 names 2026-02-01-check-nobody in shownChecks, and the case has no such run"]);
+    expect(stampErrors(stamped({ reconciles: [draft.runId] }), runs)).toEqual(["assessment run 2026-02-02-edition-094541 names 2026-02-02-edition-094541 in reconciles, and that run is not a check"]);
+    // The real ledger holds: every stamp on every case names a check that is there.
+    for (const c of loadAllCases()) for (const run of c.assessmentRuns) expect(stampErrors(run, c.assessmentRuns), `${c.record.slug} ${run.runId}`).toEqual([]);
   });
 
   it("a load-bearing claim the panel rejects blocks ratification even with case-verdict agreement", () => {

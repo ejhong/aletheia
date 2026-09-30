@@ -757,7 +757,9 @@ export const AssessmentRunSchema = z.object({
    * shown — the packet's `panel` carries each check current on the ledger, with its verdicts and reasons, whatever
    * the standing. An empty list says the drafter was shown none. Those checks cannot vouch for the draft
    * (src/domain/standing.ts, `engagedChecks`): `reconciles` says a contested standing was answered; this says
-   * what was in hand, contested or not.
+   * what was in hand, contested or not. It is a record, not a release: the standing also counts as in hand every
+   * check not provably made after the draft, so an empty or short list clears nothing. Every id must name a check
+   * of the same case (the loader refuses a dangling one, as for `reconciles`).
    */
   shownChecks: z.array(z.string()).optional(),
 });

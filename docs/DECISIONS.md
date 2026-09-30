@@ -2774,3 +2774,13 @@ The Anthropic seat, voting that #437 complies, named three more places where the
 Tried again on the six unpublished edition runs of 2026-09-30: every last reply is still carried whole, the Orch OR reply's two research-status entries among them, each found on its item.
 
 Tests: an accepted entry is carried, with its note trimmed as the verb trims it; an entry with another note, another status, a remark on an item left open, no such item, or no readable research file is a difference; the account carries a reply whose entries trace and says where, and leaves one whose entries do not in the diff; a component's extra field, a claim assessed twice and a field of the wrong kind are each named. Supervised-by: founder (direction in session, 2026-09-29).
+
+## 2026-09-30 — The reply comparison is tested against every place a reply can hold text (review note #444)
+
+The OpenAI seat objected on #440 (§3.15) that a research-status entry could carry a field beside its id, status and note, and the comparison would still call the reply carried. It was right: that was the third note in a row to find one more place where a reply could hold text the comparison did not read (#438, #444, and the Anthropic seat's list on #437).
+
+The entry is fixed: a research-status entry is its id, status and note, each a string, and anything else in it is a difference, as is an entry that is not a mapping.
+
+The pattern is fixed by a test of the general form. It takes a reply that is carried, walks the whole of it, and at every mapping adds a field, at every list adds an element, and at every leaf changes the value. Each of those replies must be found not carried. It reaches a claim's treatment, a component, the research priority, the accounts and the research entry, and it found nothing the comparison missed once the entry was fixed. A later change that opens an unread corner fails it.
+
+What the test does not show: that a reply of another shape has no unread corner. It covers the shape the edition verb asks for (`EditionReply`, `src/pipeline/edition.ts`); a field outside that shape is refused by name at the top of the reply, of the assessment, of a component and of a research entry, and by comparison everywhere else. Supervised-by: founder (direction in session, 2026-09-29).

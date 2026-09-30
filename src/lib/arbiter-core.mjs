@@ -451,7 +451,16 @@ export function editionReplyDifferences(reply, edition, assessment, research = n
   if (typeof reply.question === "string" && reply.question.trim() && reply.question.trim() !== edition.question) out.push(`question: ${show(reply.question)} in the reply, ${show(edition.question)} installed`);
   if (Array.isArray(reply.accounts) && reply.accounts.length && JSON.stringify(reply.accounts.map((a) => String(a).trim())) !== JSON.stringify(edition.accounts ?? [])) out.push("accounts: the reply's are not the edition's");
   // The research agenda: an entry is carried when the item it names holds its status and its note as written.
-  for (const e of Array.isArray(reply.researchStatus) ? reply.researchStatus : []) {
+  for (const [i, e] of (Array.isArray(reply.researchStatus) ? reply.researchStatus : []).entries()) {
+    // An entry is its id, status and note: the verb installs nothing else of it, so anything else in it is text
+    // no file holds (review note #444: an entry's extra field passed, and the reply was called carried).
+    if (!isMap(e)) {
+      out.push(`researchStatus[${i}]: not a mapping in the reply`);
+      continue;
+    }
+    for (const k of Object.keys(e)) if (!["id", "status", "note"].includes(k) && !isEmptyValue(e[k])) out.push(`researchStatus[${e.id ?? i}].${k}: in the reply, not installed`);
+    for (const k of ["id", "status"]) if (typeof e[k] !== "string") out.push(`researchStatus[${e.id ?? i}].${k}: not a string in the reply`);
+    if (e.note != null && typeof e.note !== "string") out.push(`researchStatus[${e.id ?? i}].note: not a string in the reply`);
     const item = Array.isArray(research) ? research.find((r) => r?.id === e?.id) : null;
     const note = String(e?.note ?? "").trim();
     if (!item) out.push(`researchStatus[${e?.id}]: ${Array.isArray(research) ? "the research file holds no such item" : "the research file could not be read"}, so the entry is not compared`);

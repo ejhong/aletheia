@@ -1,0 +1,155 @@
+runId: "2026-09-30-check-gemini"
+model: "Gemini 3.8 Flash (Google), independent check run"
+date: "2026-09-30"
+promptVersion: "check-v3"
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: weakly_supported
+  loadBearing:
+    - DEEP-C002
+    - DEEP-C012
+    - DEEP-C044
+    - DEEP-C059
+    - DEEP-C072
+  weakestLinks:
+    - DEEP-C005
+    - DEEP-C009
+    - DEEP-C027
+    - DEEP-C057
+  synthesis: >-
+    The Deep Memory ledger tests the hypothesis that striking cross-cultural resemblances in ancient iconography and narrative—specifically bird-men, handled 'handbag' objects, 'navel-of-the-world' toponyms, feathered serpents, civilising sages, and flood narratives—are signatures of a shared prehistoric mother-culture or long-distance transoceanic transmission, rather than independent invention, psychological convergence, material affordance, or retrospective harmonisation. Across the empirical records currently assembled, the transmission hypothesis is weakly supported and substantially undermined wherever granular archaeological and philological evidence is retrieved.
+
+    Methodologically, the foundational principle of comparative iconography holds that visual resemblance alone cannot establish historical transmission without chronological alignment, contiguous cultural contexts, and demonstrable intermediate links (DEEP-C002, DEEP-C026, DEEP-C035). When the flagship parallels are subjected to this standard, their apparent continuity dissolves. The handled 'handbags' do not share a common function: in first-millennium BCE Assyria, the banduddû is an attested ritual bucket used to sprinkle purifying river water (DEEP-C044); in third-millennium BCE Jiroft, a single chlorite carving exhibits wear consistent with suspension from a cord (DEEP-C009); at tenth-millennium BCE Göbekli Tepe, Pillar 43's upper register bears box-like forms with arched attachments whose function remains officially uncertain and for which the excavators suggest building or architectural models (DEEP-C012, DEEP-E025, DEEP-E028). Crucially, the Göbekli Tepe excavators explicitly note that far too many missing links exist over the intervening millennia to claim any established transmission even into later local Near Eastern cultures (DEEP-C072).
+
+    Similarly, the apparent parallel between Eurasian bird-men and Rapa Nui bird-men collapses under stratigraphic sequencing: Pitts and colleagues demonstrate that the birdman bas-reliefs on Hoa Hakananai'a were carved centuries after the statue's manufacture, narrating a late local ethnohistoric cult rather than preserving an archaic global legacy (DEEP-C059, DEEP-E068). Material constraints provide a parsimonious alternative for shared sculptural poses, such as hands resting on the torso, which protect limbs from shear fracture in stone carving (DEEP-C047). While the author's internal computational and catalogue pilots suggest that individual motifs are globally widespread (DEEP-C005, DEEP-C025), these rely on unaudited self-reports and demonstrate high sensitivity to object-type controls (DEEP-C038).
+
+    In terms of sensitivity, removing the excavation team's direct statements regarding Pillar 43 (DEEP-E028) or the Hoa Hakananai'a sequencing study (DEEP-E068) would modestly reduce the certainty of specific local rebuttals, but the case verdict survives securely without any single record due to the cumulative weight of thousands of years of chronological separation and the absence of documented physical intermediates.
+  steelman: >-
+    The unexplained, highly specific structural juxtaposition on Göbekli Tepe Pillar 43 of three arched-handle rectangular forms positioned directly above a prominent predatory and avian register, which mirrors the specific handheld pouch-and-serpent composition seen on Olmec Monument 19 despite no shared material constraints mandating that exact spatial combination.
+claimAssessments:
+  - claimId: DEEP-C002
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Morphological resemblance is fundamentally underdetermined between shared descent, functional convergence, and coincidence. Assigning an actual historical explanation requires independent spatial, chronological, and contextual constraints to eliminate competing causal models. Strongest opposing consideration: In extremely complex, high-dimensional iconographic configurations, sheer probabilistic unlikelihood of duplicate arbitrary features could theoretically suggest contact prior to detailed contextual recovery.
+  - claimId: DEEP-C057
+    verdict: unresolved
+    confidence: moderate
+    reasoning: >-
+      The ledger contains no evidence records reporting the numerical outcome or statistical test evaluating whether the three-motif bundle stands out against documentation-preserving controls. The only attached records are general caveats noting uneven catalogue coverage and category breadth. Strongest opposing consideration: The author's essay explicitly describes running this permutation baseline, suggesting that internal project data would confirm the negative finding once audited.
+  - claimId: DEEP-C027
+    verdict: weakly_supported
+    confidence: moderate
+    reasoning: >-
+      The 62.5% versus 9% first-rank figures are supported solely by the website author's self-reported summary of an unaudited V1 experiment. The underlying run logs, prompt histories, and completion parameters have not been retrieved or independently reproduced. Strongest opposing consideration: The author transparently reports the specific percentage metrics and limitations of his own code run, with no competing records suggesting misrepresentation.
+  - claimId: DEEP-C034
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Textual convergence through translation, secondary editing, and comparative synthesis is an established mechanism in historical folklore and comparative literature, repeatedly documented in colonial and Hellenistic retellings of native myths. Strongest opposing consideration: Without specific paired before-and-after textual records in the ledger documenting a concrete historical transmission lineage, the claim relies on general literary-historical priors.
+  - claimId: DEEP-C035
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Morphological similarity between two downstream cultural artifacts cannot logically constrain the chronology, geographic coordinates, or technical capacity of an unattested ancestral culture without independent archaeological data. Strongest opposing consideration: Proponents argue that an extensive constellation of highly advanced technical motifs (e.g., precise astronomical geometries) could mathematically delimit the required capabilities of a shared source.
+  - claimId: DEEP-C026
+    verdict: established
+    confidence: high
+    reasoning: >-
+      A widespread geographic distribution of a broad motif class is formally equifinal: it is equally consistent with early human ancestral dispersal, subsequent long-distance diffusion, or recurring independent invention rooted in cognitive and environmental universals. Strongest opposing consideration: Certain spatial boundary clines or insular island distributions could probabilistically distinguish diffusion vectors from pure convergence.
+  - claimId: DEEP-C056
+    verdict: unresolved
+    confidence: moderate
+    reasoning: >-
+      While related records report frequencies for bird-persons and cosmic serpents, the ledger contains no evidence record verifying the frequency of sacred centre motifs or confirming that all three classes were collectively widespread in the sampled database. Strongest opposing consideration: DEEP-E013 and DEEP-E016 document substantial individual frequencies for two of the three motifs (55% and 37%), making the descriptive claim plausible.
+  - claimId: DEEP-C005
+    verdict: weakly_supported
+    confidence: moderate
+    reasoning: >-
+      The 55% figure is supported solely by self-reports from the site author summarizing his own experiment based on an unretrieved 2016 catalogue. The underlying data matrix and exact motif definitions have not been ingested or independently verified. Strongest opposing consideration: There is no internal inconsistency or contradictory evidence suggesting that the author's descriptive report of his sample count is inaccurate.
+  - claimId: DEEP-C025
+    verdict: weakly_supported
+    confidence: moderate
+    reasoning: >-
+      The 37% frequency for the broad cosmic-serpent class is drawn entirely from the author's self-published summary of his experimental run. Neither the underlying dataset nor independent code verifications are present in the ledger. Strongest opposing consideration: The author acknowledges the scope limitations of the dataset, providing no evidence of bias or data falsification in the reporting of the baseline.
+  - claimId: DEEP-C004
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Typological analysis confirms that the colloquial visual term 'bird-man' conflates distinct ontological and cultic concepts: an avian-headed deity, ritual feather regalia, and shamanic therianthropic transformation. Strongest opposing consideration: In certain animist or shamanic ontologies, these three categories are not mutually exclusive and represent continuous, fluid aspects of the same spiritual phenomenon.
+  - claimId: DEEP-C059
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Pitts et al. (2014) establish via surface archaeological analysis that the bas-relief birdman carvings on the back of Hoa Hakananai'a stratigraphically postdate both the original manufacture of the statue and the subsequent carving of komari petroglyphs. Strongest opposing consideration: The evidence is drawn from the paper's abstract, as the paywalled monograph body containing the full structural analysis was not retrieved.
+  - claimId: DEEP-C065
+    verdict: established
+    confidence: high
+    reasoning: >-
+      In material culture studies and archaeology, morphology and function are fundamentally distinct analytical axes; structurally identical geometric forms (such as an arch over a rectangular body) regularly serve completely unrelated practical and ritual functions across disparate cultures. Strongest opposing consideration: Functionalist design theory posits that mechanical and physical affordances heavily constrain morphology, creating an intrinsic coupling between shape and function.
+  - claimId: DEEP-C044
+    verdict: weakly_supported
+    confidence: moderate
+    reasoning: >-
+      DEEP-E055 provides evidence that ritual texts describe the banduddû as a bucket filled with river water used for purifying individuals. However, the record is drawn from a secondhand transcription on a personal blog, and the purifier cone mentioned in the claim is not present in the excerpt. Strongest opposing consideration: The transcribed passage quotes Wiggermann's authoritative 1992 scholarly edition of Mesopotamian ritual incantations, directly supporting the water-purification function.
+  - claimId: DEEP-C012
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      The German Archaeological Institute excavation team has explicitly stated that no definitive identification of the three arched, box-like forms on Pillar 43 is currently possible, leaving their function uncertain and entertaining hypotheses ranging from containers to architectural shrines. Strongest opposing consideration: Subsequent excavation publications or peer-reviewed analyses postdating 2017 may have proposed a consensus functional interpretation that has not yet been ingested into the ledger.
+  - claimId: DEEP-C009
+    verdict: provisionally_supported
+    confidence: high
+    reasoning: >-
+      Vidale and Micheli (2012) directly state in their abstract that wear traces along the handle of the examined chlorite object suggest long-term suspension from a cord, satisfying the claim's truth condition. Strongest opposing consideration: The authors explicitly note that this functional inference is derived from a single looted or unprovenanced specimen and remains tentative.
+  - claimId: DEEP-C072
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      The excavation team's position is directly confirmed by Oliver Dietrich's published statement on the official Tepe Telegrams platform, which notes that there are far too many missing links to establish the survival of Early Neolithic imagery into later Near Eastern periods. Strongest opposing consideration: The statement appears in an informal comment reply on a research blog rather than in a formal, peer-reviewed synthesis monograph.
+  - claimId: DEEP-C018
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Source criticism and historical linguistics demonstrate that the four toponyms belong to entirely different evidentiary categories: classical Greek contemporary cultic literature (omphalos), early 17th-century colonial ethnohistoric accounts (Cusco), 19th-century post-contact oral accounts (Rapa Nui), and modern 20th-century descriptive Turkish cartography (Göbekli Tepe). Strongest opposing consideration: Detailed philological dossiers on the primary attestations for each specific toponym have not yet been ingested into the ledger under research agenda item DEEP-R002.
+  - claimId: DEEP-C015
+    verdict: unresolved
+    confidence: moderate
+    reasoning: >-
+      The ledger contains no primary toponymic, linguistic, or ethnographic records establishing whether the modern Turkish name was applied purely as a descriptive term for the physical hill shape rather than reflecting local folkloric or sacred traditions. Strongest opposing consideration: In Turkish regional toponymy, 'göbek' is widely documented as a standard descriptive geographic term for rounded mounds and hillocks.
+  - claimId: DEEP-C047
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Carving limbs directly against the mass of the torso is a well-established lithic technique that prevents cantilevered stone limbs from snapping along natural bedding planes during quarrying, carving, and transport. Strongest opposing consideration: Ancient sculptors working with basalt, tuff, and limestone occasionally carved fully detached, free-standing limbs, demonstrating that material constraints do not strictly dictate posture.
+  - claimId: DEEP-C053
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: >-
+      Verbrugghe and Wickersham's scholarly apparatus explicitly equates Berossus's Oannes with U-An, the primary apkallu sage of cuneiform tradition, and Berossus's description of a fish body over a human form matches apkallu iconography. Strongest opposing consideration: The surviving Greek text of Berossus F1 does not use the Akkadian term apkallu and describes Oannes as an amphibious hybrid creature rather than a human priest clad in a ritual fish pelt.
+  - claimId: DEEP-C028
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      Tiwanaku was a pre-literate Middle Horizon civilization that flourished centuries before the Inka; the divine name Viracocha is a Quechua designation recorded only in Spanish colonial chronicles, making its application to the Gate of the Sun an early modern and modern scholarly convention. Strongest opposing consideration: Spanish chroniclers recorded persistent Andean oral traditions that specifically associated the ruins of Tiwanaku with the creator Viracocha.
+  - claimId: DEEP-C031
+    verdict: unresolved
+    confidence: high
+    reasoning: >-
+      The ledger contains no evidence records, cluster plots, or dataset audits verifying the statistical output of the author's flood text-coding pilot over the 263 summaries. Strongest opposing consideration: The research agenda confirms that the pilot was conducted on the founder's site, indicating that underlying data exist to be ingested.
+  - claimId: DEEP-C054
+    verdict: unresolved
+    confidence: high
+    reasoning: >-
+      No evidence records in the ledger report or evaluate the distribution of Genesis-specific motifs across the coded flood summaries in the author's pilot. Strongest opposing consideration: The reported result aligns closely with standard folkloric literature on the post-contact missionary dissemination of the Biblical flood narrative.
+  - claimId: DEEP-C038
+    verdict: weakly_supported
+    confidence: moderate
+    reasoning: >-
+      Supported solely by the author's self-reported pilot observation in DEEP-E022, which notes that controlling for object type altered image lineup results, while the underlying image corpus and ranking matrices remain unretrieved. Strongest opposing consideration: The statement represents a candid methodological admission against interest that highlights a confounding variable in the author's own computational setup.
+  - claimId: DEEP-C037
+    verdict: unresolved
+    confidence: high
+    reasoning: >-
+      The intake verification explicitly removed the link from DEEP-E022 to DEEP-C037 because the quoted text did not discuss judge agreement statistics, leaving the claim with zero supporting evidence records in the ledger. Strongest opposing consideration: The website narrative repeatedly emphasizes high inter-judge variance in the AI pilots, suggesting that the underlying statistical logs exist in uningested project files.

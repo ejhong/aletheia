@@ -118,9 +118,16 @@ The reassessment of 2026-09-09 that stood here is in git.
    split again on four such claims, and the rule allows no second. Where a
    seat then names records attached to a neighbouring claim, the answer
    step can attach them, which mends the ledger and not only the standing.
-   The experiment is designed and not run
-   (`proposals/assessment-experiments/2026-09-30-a-rule-for-claims-with-no-evidence/`):
-   four cases, four seats, sixteen runs, about $9.
+   Tested twice on 2026-10-03 (`proposals/assessment-experiments/`, the
+   two directories of 2026-09-30 and 2026-10-03), $14.66. The rule works:
+   every seat grades such a claim `unresolved` or names its basis, and the
+   splits on those claims halve. No draft was adopted. The guard on claims
+   that have evidence was too noisy at two runs a case to say whether the
+   rule costs anything there. And no sentence tried stops the Google seat
+   writing, in one run of two, what a source says that the ledger has not
+   checked. What would settle it is a bigger design: the rule alone, the
+   control run alongside, more runs a case, the guard over all cases. About
+   thirty runs and $15; the next check protocol's name is `check-v7`.
 2. **The answers two review notes are owed** (#447, #448): two evidence
    records on The Aeon Before Ours carry one direction for two claims, and
    one claim on The Emptied Amazon is four propositions in one. Each goes

@@ -27,12 +27,19 @@ function tmpRoot(): string {
 
 describe("the check verb", () => {
   it("never reuses a protocol name an experiment's runs are stamped with", () => {
-    // A promptVersion stamp names the text a model was given. Three runs of the verdict-definitions experiment are
-    // stamped check-v3: its draft, copied into protocols/ for those runs and removed. The draft was not adopted, so
-    // the site's next check protocol is check-v4; a file of this name here would put another text behind that stamp.
-    const draft = path.join(process.cwd(), "proposals", "assessment-experiments", "2026-09-30-verdict-definitions", "check-v3-draft.md");
-    expect(fs.existsSync(draft)).toBe(true);
-    for (const dir of ["protocols", path.join("protocols", "archive")]) expect(fs.existsSync(path.join(process.cwd(), dir, "check-v3.md")), dir).toBe(false);
+    // A promptVersion stamp names the text a model was given. An experiment stamps its draft's runs with the next
+    // protocol name, copying the draft into protocols/ for each run and removing it after: three runs of the
+    // verdict-definitions experiment are stamped check-v3, and eight runs of the experiment on claims with no
+    // evidence are stamped check-v4 (2026-10-03). Neither draft was adopted, so the site's next check protocol is
+    // check-v5; a file of a spent name here would put another text behind its stamp.
+    const spent = [
+      ["check-v3", "2026-09-30-verdict-definitions", "check-v3-draft.md"],
+      ["check-v4", "2026-09-30-a-rule-for-claims-with-no-evidence", "check-v4-draft.md"],
+    ];
+    for (const [name, dir, file] of spent) {
+      expect(fs.existsSync(path.join(process.cwd(), "proposals", "assessment-experiments", dir, file)), file).toBe(true);
+      for (const d of ["protocols", path.join("protocols", "archive")]) expect(fs.existsSync(path.join(process.cwd(), d, `${name}.md`)), `${d}/${name}.md`).toBe(false);
+    }
   });
 
   it("names the featured claims no admitted evidence record cites, and fills them into a protocol that asks", () => {

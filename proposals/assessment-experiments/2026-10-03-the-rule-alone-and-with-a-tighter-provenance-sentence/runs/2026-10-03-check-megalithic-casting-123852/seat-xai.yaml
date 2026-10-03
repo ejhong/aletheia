@@ -1,0 +1,145 @@
+runId: "2026-10-03-check-grok"
+model: "Grok 4.5 (xAI), independent check run"
+date: "2026-10-03"
+promptVersion: "check-v6"
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: mixed
+  loadBearing:
+    - GEO-C020
+    - GEO-C021
+    - GEO-C012
+    - GEO-C004
+    - GEO-C030
+  weakestLinks:
+    - GEO-C003
+    - GEO-C013
+    - GEO-C005
+    - GEO-C002
+    - GEO-C511
+  synthesis: >-
+    The featured hypothesis (existence of at least some cast megalithic stone) rests on three linked layers: mechanism feasibility, site-specific materials observations, and attribution to particular monuments. Mechanism is the strongest layer. GEO-C011 is established by mainstream glass literature documenting industrial natron at Wadi el Natrun and al-Barnuj with a medieval supply break; GEO-C012 is provisionally supported by Barsoum-group SEM/TEM anomalies, MacKenzie NMR, Sierra room-temperature C–S–H feasibility, and Geopolymer Institute demonstration blocks, showing that reconstituted limestone visually and mechanically resembling natural stone is chemically attainable with materials and temperatures within ancient reach (GEO-C010 weakly attested). GEO-C030 correctly notes that standard PXRF/ICP-MS quarry-matching is blind to the light-element chemistry of any binder, so a metallic fingerprint match cannot by itself refute casting from the same aggregate; Jana’s positive-control petrography nevertheless shows that binder-aware methods can detect alkali-aluminosilicate signatures when present. Attribution, however, fails under the same evidence. For the Great Pyramid (GEO-C020), Folk & Campbell document bedding, burrows, fragile fossils and tectonic fractures confined to single blocks across many in-situ stones; Harrell & Penrod and Freestone & Middleton find no zeolite or aggregate-cement fabric in the Lauer and British Museum specimens; Jana’s side-by-side comparison with a genuine Davidovits geopolymer recovers opal-CT lepispheres in both casing and natural Tura limestone while the real cast control alone shows Na+K+Al binder enrichment absent from the pyramid stones. Barsoum 2006 and MacKenzie 2011 remain the sole non-proponent laboratory positives, yet their samples lack secure SCA provenance, the claimed microconstituents are reported in natural limestones by the critical literature, and the binder chemistry itself shifted from alkali geopolymer to C–S–H. Salt (GEO-C003, GEO-C506) is confirmed as surface halite by Sessa et al. but is also documented at the Sphinx and other unworked Egyptian limestone monuments and is read by Klemm & Klemm (via Sessa) as primary sedimentary; it therefore supplies no discriminator. For Pumapunku (GEO-C021, GEO-C004), the only supporting SEM/organic data come from the proponent team on loose fragments collected outside the protected area (no natural andesite control, nitrogen only semi-quantitative, guano-versus-binder unresolved). Ponce 1971 quarry attribution and the absence of independent replication leave the Andean claim weakly supported at best. Tool-mark anomalies (slow Marčiš rates, unreproduced scoops, narrow shafts) raise logistical questions for pure pounding but do not positively demonstrate casting; dolerite spheres have local dyke sources and tool-quarry contexts. Restoration gaps (GEO-C594) further weaken every surface claim. Collectively the ledger shows a chemically live recipe, a methodological blind spot in provenance work, and a set of unresolved or proponent-only microstructural anomalies, yet the concrete attributions required by the existence claim are contradicted by multiple independent petrographic campaigns that employed positive controls and examined macro- as well as micro-scale features. The case is therefore mixed: mechanism open, occurrence unsupported and in the best-studied monuments contradicted.
+  steelman: >-
+    Barsoum 2006’s TEM observation of hydrated Ca-Mg-Si phases “not known to hydrate in nature” and Si:Ca:Mg ratios absent from the six local limestone sources, together with the interior C/N-bearing amorphous sheets under plagioclase in the single Pumapunku andesite fragment PP1C, remain unreplicated but also unrebutted by any study that both secured provenance and ran the identical high-resolution protocol against a broad natural suite; a proponent can still rightly say those specific microstructures have not been shown to occur in undisputed quarry stone.
+claimAssessments:
+  - claimId: GEO-C022
+    verdict: unresolved
+    confidence: moderate
+    reasoning: >-
+      No evidence record demonstrates an actual cast block at any monument; the claim inherits the contradicted status of GEO-C020 and the weakly supported status of GEO-C021. Strongest opposing consideration is the consistent natural petrography (GEO-E018–E021) across multiple independent teams.
+  - claimId: GEO-C020
+    verdict: contradicted
+    confidence: high
+    reasoning: >-
+      Folk & Campbell, Harrell & Penrod, Jana (positive control) and Freestone & Middleton all recover sedimentary bedding, fossils, tectonic fractures limited to single blocks, opal-CT lepispheres shared with natural Tura stone, and the absence of the Na+K+Al binder enrichment that defines a genuine Davidovits geopolymer. Barsoum 2006 and MacKenzie 2011 remain the only positives, but sample provenance is contested by the SCA and the features are reported in natural limestones. Strongest opposing consideration is the still-unexplained hydrated microconstituents in Barsoum’s TEM.
+  - claimId: GEO-C021
+    verdict: weakly_supported
+    confidence: low
+    reasoning: >-
+      Only the Davidovits team’s own SEM/petrography (GEO-E006, GEO-E007, GEO-E036) reports organic matter and geopolymer textures; Ponce 1971 attributes the sandstones to natural quarries, sampling is from loose exterior fragments (GEO-E057), and no geological andesite control was run (GEO-E060). Strongest opposing consideration is the complete lack of independent replication or secure architectural context.
+  - claimId: GEO-C004
+    verdict: established
+    confidence: high
+    reasoning: >-
+      GEO-E006 and GEO-E007 (and the longer 2019 PDF) are the published SEM and petrographic papers; they do report organic matter and microstructural features that the authors argue are inconsistent with natural andesite. The claim is only that the reports exist and make that argument, which is true. Strongest opposing consideration is that the same papers’ sampling and interpretation remain contested.
+  - claimId: GEO-C913
+    verdict: unresolved
+    confidence: low
+    reasoning: >-
+      No evidence record is attached to this claim. Although GEO-E057 (attached to GEO-C004 and GEO-C021) states that PP1 was selected from loose fragments outside the protected area, the ledger does not cite that record to GEO-C913 itself.
+  - claimId: GEO-C918
+    verdict: unresolved
+    confidence: low
+    reasoning: >-
+      No evidence record is attached to this claim. Although GEO-E058 (attached to GEO-C004) reports an interior subsample PP1C containing the same C/N amorphous matter, the ledger does not cite that record to GEO-C918 itself.
+  - claimId: GEO-C903
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      GEO-E035 is the 2020 abstract itself and directly states the uncrushed Khapia sand stored at Iwawe Stratum V and the non-use of piedras cansadas; the claim is a theory-description and is therefore established by the primary statement. Strongest opposing consideration is that only the abstract was read.
+  - claimId: GEO-C580
+    verdict: weakly_supported
+    confidence: low
+    reasoning: >-
+      GEO-E064 asserts laboratory replication of the acid-medium binder with modern chemicals, and GEO-E059 notes the guano elemental similarity, but no recipe, product data or plant-extract trial is supplied and the authors themselves cannot decide whether the organic is binder or unreacted residue. Strongest opposing consideration is the absence of any characterised pre-industrial product.
+  - claimId: GEO-C030
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      GEO-E024 (Fóti) and the underlying chemistry correctly note that PXRF and ICP-MS do not measure H, C or O and therefore cannot see a binder; GEO-E009’s Stonehenge match is exactly the metallic fingerprint that would be shared by cast aggregate from the same source. Jana (GEO-E020) shows the limit of the claim: binder-aware petrography can detect signatures when present. Strongest opposing consideration is that the claim is sometimes over-extended to all materials methods.
+  - claimId: GEO-C012
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: >-
+      Barsoum 2006, MacKenzie 2011, Sierra 2010 and the Geopolymer Institute multi-ton blocks (GEO-E012, E017, E022, E013) demonstrate that limestone can be reconstituted into hard, visually similar material at ambient or modest temperature with natron/lime-pozzolan chemistry. Ancient scale and long-term durability remain unproven. Strongest opposing consideration is that modern feasibility does not establish ancient use.
+  - claimId: GEO-C010
+    verdict: weakly_supported
+    confidence: low
+    reasoning: >-
+      Only GEO-E016 (Fóti’s citation of Badari glass) speaks to the temperature; crucible-scale heat is not industrial-scale continuous processing. General pyrotechnology priors make 850 °C plausible, but the ledger’s evidence is thin. Strongest opposing consideration is the absence of any direct ancient furnace evidence at the required throughput.
+  - claimId: GEO-C011
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Shortland et al. 2006 (GEO-E010) and the Sayre & Smith typology (GEO-E011) document Wadi el Natrun and al-Barnuj as the primary ancient sources and the 7th–9th-century shift to plant ash. The paper is about glass, not stone, but the supply claim itself is solid. Strongest opposing consideration is none on the narrow factual statement.
+  - claimId: GEO-C013
+    verdict: unresolved
+    confidence: low
+    reasoning: >-
+      GEO-E015 is an unattributed anecdote flagged as under-sourced even by the geo project; no controlled replication exists. Strongest opposing consideration is that accidental ash-carbonation stone is chemically plausible yet entirely untested in the ledger.
+  - claimId: GEO-C001
+    verdict: established
+    confidence: high
+    reasoning: >-
+      GEO-E001 directly reports the photogrammetric 216 cm³ h⁻¹ rate at 85 strikes min⁻¹. Single-team, single-granite limitation is acknowledged but does not erase the measurement. Strongest opposing consideration is that skilled ancient crews might exceed the experimental rate.
+  - claimId: GEO-C502
+    verdict: unresolved
+    confidence: low
+    reasoning: >-
+      No evidence record is attached to this claim. Although GEO-E002 (attached to GEO-C001 and GEO-C002) characterises Engelbach’s one-hour trial and workforce heuristics, the ledger does not cite that record to GEO-C502 itself.
+  - claimId: GEO-C002
+    verdict: weakly_supported
+    confidence: low
+    reasoning: >-
+      GEO-E003 is Fóti’s anecdotal report of tourist failure on the test block; attempt counts and cumulative energy are unquantified and no wear survey exists. Strongest opposing consideration is that the claim may simply reflect visitor disinterest or poor technique rather than impossibility.
+  - claimId: GEO-C006
+    verdict: weakly_supported
+    confidence: low
+    reasoning: >-
+      GEO-E005 is Fóti’s dimensional assertion; no independent survey or biomechanical test is supplied. Strongest opposing consideration is that the shafts may be later, unfinished, or usable with different postures or tools.
+  - claimId: GEO-C511
+    verdict: contradicted
+    confidence: moderate
+    reasoning: >-
+      Kelany et al. 2009 (GEO-E045) locate dolerite dykes inside the Aswan granitoids and identify Pharaonic tool-production trenches with pounder-sized blanks immediately adjacent to the working areas, undermining both exotic transport and a non-pounding primary function. Strongest opposing consideration is that secondary uses (tamping, grinding) remain possible.
+  - claimId: GEO-C003
+    verdict: mixed
+    confidence: moderate
+    reasoning: >-
+      The only positive carrier is the uncited Geopolymer Institute page (GEO-E004, GEO-E029); al-Suyūṭī’s compilation of the principal medieval accounts (GEO-E027) describes the breach in detail and never mentions salt. Date is also corrected to 832 by Nemoy. Strongest opposing consideration is that other unread Arabic sources might still contain the report.
+  - claimId: GEO-C506
+    verdict: contradicted
+    confidence: high
+    reasoning: >-
+      Sessa et al. confirm surface halite (GEO-E030) but also document the same efflorescence at the Sphinx, Menkaure, Saqqara and rock-cut tombs (GEO-E031) and cite Klemm & Klemm for halite as a primary sedimentary constituent of Giza nummulitic limestone (GEO-E032). The “comparable monuments do not” clause fails. Strongest opposing consideration is that bulk (not surface) chlorine remains untested.
+  - claimId: GEO-C907
+    verdict: established
+    confidence: high
+    reasoning: >-
+      GEO-E030 directly reports the XRD/SEM-EDX result: only halite, calcite and quartz, no nitrates, no widespread gypsum. Strongest opposing consideration is the >5 wt% XRD detection limit for minor phases.
+  - claimId: GEO-C906
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      GEO-E032 quotes Sessa et al. citing Klemm & Klemm 2010 for exactly this statement (halite primary, precipitated from evaporating marine/lagoonal waters). The claim is carried second-hand but matches the source. Strongest opposing consideration is that Klemm & Klemm themselves were not read.
+  - claimId: GEO-C594
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: >-
+      GEO-E034 supplies a concrete instance at the Queen’s Chamber (1995–97 cleaning and gypsum-rich fills undocumented, recurrent efflorescence). The generalisation to “almost no megalithic site” is plausible but rests on one well-documented case plus the project’s broader observation. Strongest opposing consideration is that some sites may have better archives than Giza’s interior.
+  - claimId: GEO-C005
+    verdict: weakly_supported
+    confidence: low
+    reasoning: >-
+      GEO-E014 records only Fóti’s interpretive argument; conventional Egyptology has not engaged it and the claim itself is that the details “have been argued” to fit mineral processing. Strongest opposing consideration is that the mural’s inscriptions and scale remain fully compatible with large bronze doors under the standard reading.

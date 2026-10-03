@@ -37,6 +37,8 @@ export function StandingPanel({
   current,
   summary,
   claims,
+  unpublished = [],
+  recordHref,
 }: {
   run: AssessmentRun;
   standing: Ratification;
@@ -45,6 +47,10 @@ export function StandingPanel({
   current: string[];
   summary: CrossModelSummary | null;
   claims: Claim[];
+  /** Checks of the case as it stands that were written and are not published, by run (record.ts, `unpublishedChecks`). */
+  unpublished?: { runId: string; files: string[] }[];
+  /** The case's record page, where a run's note says why a check is not published. */
+  recordHref?: string;
 }) {
   const claimById = new Map(claims.map((c) => [c.id, c]));
   const chip = (id: string) => (
@@ -74,6 +80,9 @@ export function StandingPanel({
   const awaitingFresh = standing.panel > 0 && standing.engaged.length === standing.panel;
   const splitIds = [...new Set([...standing.contestedLoadBearing, ...(summary?.splitClaimIds ?? [])])];
   const prose = "text-[15px] leading-[1.75] text-ink-soft";
+  // Checks written and not published: how many files, from how many models (a check file carries its seat's tag).
+  const notShown = unpublished.flatMap((r) => r.files);
+  const notShownSeats = new Set(notShown.map((file) => file.match(/-check-([a-z0-9]+)-/)?.[1] ?? file)).size;
 
   return (
     <section className="border border-line bg-paper-deep/50">
@@ -181,6 +190,24 @@ export function StandingPanel({
             );
           })}
         </div>
+        {notShown.length > 0 ? (
+          <p className="mt-3 text-[13px] leading-relaxed text-ink-soft">
+            Not shown here:{" "}
+            {notShownSeats > 1
+              ? `${notShown.length} checks of the case as it stands, by ${notShownSeats} models, written and not published.`
+              : notShown.length === 1
+                ? "one model's check of the case as it stands, written and not published."
+                : `one model's check of the case as it stands. ${notShown.length === 2 ? "It was asked twice, and neither answer" : `It was asked ${notShown.length} times, and none of its answers`} is published.`}{" "}
+            {recordHref ? (
+              <>
+                <Link href={`${recordHref}#sitting-${unpublished[0].runId}`} className="underline underline-offset-2 hover:text-copper">
+                  The record says why
+                </Link>
+                .
+              </>
+            ) : null}
+          </p>
+        ) : null}
         {summary ? (
           <p className="mt-3 text-[13px] leading-relaxed text-ink-soft">
             {/* The tally takes each seat's latest verdicts. When some judged an earlier state of the case it says so,

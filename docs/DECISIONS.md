@@ -2870,3 +2870,31 @@ So the move would loosen a check in §3.15 for good and change nothing the site 
 What would reopen it: the next experiment asks each seat the same question twice on four cases and reports how much of a seat's distance from itself is this pair (its measure 7). If that is most of it on more than one case, the amendment is drafted for the founder's hand, as amendments are.
 
 **The next experiment is designed and not run.** `proposals/assessment-experiments/2026-09-30-a-rule-for-claims-with-no-evidence/` holds the design, the draft protocol (`check-v2` with two paragraphs added and nothing else changed), and the analysis script with its baseline from the panels published on 2026-09-30. `src/pipeline/check.ts` fills the list a check protocol may ask for, the featured claims no admitted evidence record cites (`unevidencedClaims`); `check-v2` does not ask, and is sent what it was sent before. Sixteen runs of four seats, about $9. The design may be revised until its first run starts. No run was made on this date: the day's cap was spent.
+
+## 2026-10-03 — Cast, Not Carved: the record the panels tripped on is refused, and a fresh panel judges the case
+
+The entry of 2026-09-30 on this case's panel left #452 parked, to be answered once the budget allowed. It was answered on 2026-10-03, and the case is judged again.
+
+**The answer.** `aletheia answer 452` (run `2026-10-03-answer-megalithic-casting-114931`, $0.16) sent the two records the objection named back to the second reader, with Engelbach's monograph in front of it (Project Gutenberg's copy, the URL the ledger's source record gives). The reader refused both. GEO-E002 carries no quoted span and no locator to check, "even though the monograph does in fact contain his own hand-pounding trial (section 13) and workforce calculations (sections 21-23)". GEO-C502 then had no source anchor and no accepted evidence record. Both stay in the ledger as refused records, with the reason, and the dispositions say what was refused and why.
+
+**The edition.** It is re-told over the moved ledger with the objection in its packet (run `2026-10-03-edition-megalithic-casting-115011`, $1.30): a new assessment, verdict unresolved; GEO-C502 leaves the featured set; the article goes from 2,551 words to 2,681; all five seats preferred it.
+
+**The panel.** A fresh blind check of the corrected ledger (run `2026-10-03-check-megalithic-casting-115839`, `check-v2`, five seats, $3.13):
+
+- The OpenAI, xAI, Z.ai and Anthropic seats' checks are published.
+- The Google seat's is withheld. On GEO-C010 it cites GEO-E010, the ledger's record of a study of natron sources, as evidence of furnace temperatures. GEO-E010 says nothing about temperatures; this is the misstatement the gate refused on 2026-09-30. The other four cite only GEO-E016 for that claim.
+- Computed both ways, as the rule of 2026-09-30 requires: with the Google seat the panel stands contested on GEO-C030; without it, contested on GEO-C030 and GEO-C012. Leaving it out does not raise the standing.
+- **Standing: contested**, on two claims the case rests on.
+
+**What happened to the checks of 2026-09-30.** None of the ten is published. The five of run `2026-09-30-check-megalithic-casting-104713` judged a ledger that no longer stands, and one of them carried the sentence the gate parked on. The Google seat's two checks were withheld for misstating GEO-E002. Each run keeps its record, every seat's reply, its spend row and a note saying why.
+
+**What the site now says when a run's output is not published.** A run's record is what the verb did; what is published is what passed the gate. The record page marks a run whose record names a file that is not in the repository and prints the note left beside the run (`proposals/<runId>/*.withheld.txt`; `caseRecord`, `src/domain/record.ts`). Wherever a run is described, its summary says how many of the checks it wrote are not published (`describeRunAsPublished`, `src/domain/runs.ts`). Under the panel on the case page, one line says that a check of the case as it stands was written and is not shown, and links to the run (`unpublishedChecks`). A test holds that every run on main either publishes what its record says it wrote or carries such a note.
+
+**The rule that stands.** A check whose reasoning misstates what the ledger holds is not published, and its words are not edited. Withholding a check may lower a standing and must never raise one: the operator computes the standing with the check and without it, and publishes the rest only if the standing without it is no better.
+
+**What is owed.**
+
+- **Engelbach's trial, read in properly.** The refusals leave the ledger with nothing of the monograph's own account. The text is public, and the second reader found the passages. Reading them in with quotations and section locators is owed: an intake of the text, a draft and a verification, then an edition and a check.
+- **The Google seat on this case.** Every check it has written on this case under `check-v2` since 2026-09-30 misstates a record: three panel checks and the experiment's two runs of that protocol here. The experiment designed on 2026-09-30, run on 2026-10-03, asked how it behaves when told to carry a record's limitations and name the claim a record is attached to; its report says what it found.
+
+Spend: the runs of 2026-09-30, $3.52 and $0.10; the answer, $0.16; the edition, $1.30; the fresh panel, $3.13.

@@ -5,9 +5,12 @@
  * stored for it. A reader who wants to know why a candidate is not on
  * the ledger finds the reason here, in the row the verifier wrote.
  */
+import fs from "node:fs";
+import path from "node:path";
 import type { Disposition, RunRecord } from "./intake.ts";
 import type { LoadedCase } from "./schema.ts";
-import { describeRun, readRuns } from "./runs.ts";
+import { describeRunAsPublished, readRuns, runDir, unpublishedFiles } from "./runs.ts";
+import { currentChecks, latestCheckPerModel } from "./standing.ts";
 
 export interface SittingRow {
   key: string;
@@ -33,6 +36,13 @@ export interface Sitting {
   counts: Partial<Record<Disposition["disposition"], number>>;
   admitted: SittingRow[];
   refused: SittingRow[];
+  /**
+   * Files the run's record says it wrote that are not in the repository, by name (runs.ts, `unpublishedFiles`); the
+   * summary says how many.
+   */
+  unpublished: string[];
+  /** Why, in the words left beside the run: the text of each `*.withheld.txt` in the run's directory, in file order. */
+  withheld: string[];
 }
 
 const row = (d: Disposition): SittingRow => ({
@@ -55,7 +65,11 @@ export function caseRecord(loaded: LoadedCase, root = process.cwd()): Sitting[] 
   }
   const runs = readRuns(root).filter((r) => r.case === loaded.record.slug).reverse();
   const seen = new Set(runs.map((r) => r.runId));
-  const sittings: Sitting[] = runs.map((r) => sitting(r.runId, true, r.verb, r.date, r.outcome, describeRun(r), r.cost?.usd ?? null, byRun.get(r.runId) ?? []));
+  const sittings: Sitting[] = runs.map((r) => ({
+    ...sitting(r.runId, true, r.verb, r.date, r.outcome, describeRunAsPublished(r, root), r.cost?.usd ?? null, byRun.get(r.runId) ?? []),
+    unpublished: unpublishedFiles(r, root),
+    withheld: withheldNotes(r.runId, root),
+  }));
   // Rows whose run left no record (an earlier script, a migration) are shown as exactly that, under the run id
   // the rows name and on the date the rows carry — no verb, outcome or cost is inferred for a run nobody recorded.
   for (const [runId, rows] of byRun) {
@@ -64,6 +78,35 @@ export function caseRecord(loaded: LoadedCase, root = process.cwd()): Sitting[] 
     sittings.push(sitting(runId, false, null, dates[dates.length - 1], null, `${rows.length} row(s) written by ${runId}, which left no run record`, null, rows));
   }
   return sittings.sort((a, b) => b.date.localeCompare(a.date) || b.runId.localeCompare(a.runId));
+}
+
+/**
+ * Checks of the case as it stands that were written and are not published: the files, by the run that wrote them.
+ * A check run belongs here when its record carries the hash of the same case file as a run that produced one of the
+ * panel's current checks (`inputHash`, on check runs since 2026-09-30), so a withheld check of an older ledger is not
+ * counted against the panel a reader is looking at.
+ */
+export function unpublishedChecks(loaded: LoadedCase, root = process.cwd()): { runId: string; files: string[] }[] {
+  const producers = new Set(currentChecks(loaded, latestCheckPerModel(loaded)).map((c) => c.producedBy).filter(Boolean));
+  if (producers.size === 0) return [];
+  const runs = readRuns(root).filter((r) => r.verb === "check" && r.case === loaded.record.slug);
+  const sent = new Set(runs.filter((r) => producers.has(r.runId)).map((r) => r.inputHash).filter(Boolean));
+  return runs
+    .filter((r) => r.inputHash && sent.has(r.inputHash))
+    .map((r) => ({ runId: r.runId, files: unpublishedFiles(r, root) }))
+    .filter((r) => r.files.length > 0);
+}
+
+/** The notes left beside a run about what of its output is not published, as written: `proposals/<runId>/*.withheld.txt`. */
+function withheldNotes(runId: string, root: string): string[] {
+  const dir = runDir(runId, root);
+  if (!fs.existsSync(dir)) return [];
+  return fs
+    .readdirSync(dir)
+    .filter((name) => name.endsWith(".withheld.txt"))
+    .sort()
+    .map((name) => fs.readFileSync(path.join(dir, name), "utf8").trim())
+    .filter(Boolean);
 }
 
 function sitting(runId: string, recorded: boolean, verb: RunRecord["verb"] | null, date: string, outcome: RunRecord["outcome"] | null, summary: string, usd: number | null, rows: Disposition[]): Sitting {
@@ -80,5 +123,7 @@ function sitting(runId: string, recorded: boolean, verb: RunRecord["verb"] | nul
     counts,
     admitted: rows.filter((d) => d.disposition === "in").map(row),
     refused: rows.filter((d) => d.disposition !== "in").map(row),
+    unpublished: [],
+    withheld: [],
   };
 }

@@ -11,7 +11,7 @@ import type { Cost, SpendRow } from "./intake.ts";
 import { capsFor, loadBudget, type Budget } from "./budget.ts";
 import { loadOperation, loadReviewNotes } from "./governance.ts";
 import type { ReviewNoteRecord } from "./schema.ts";
-import { describeRun, readRuns } from "./runs.ts";
+import { describeRunAsPublished, readRuns } from "./runs.ts";
 import { readSpend, spentOn, sumCost } from "./spend.ts";
 
 export interface Operations {
@@ -74,7 +74,7 @@ export function operationsView(root = process.cwd(), today = new Date().toISOStr
     sittings: readRuns(root)
       .reverse()
       .slice(0, 24)
-      .map((r) => ({ runId: r.runId, case: r.case, verb: r.verb, date: r.date, outcome: r.outcome, summary: describeRun(r), usd: r.cost?.usd ?? null })),
+      .map((r) => ({ runId: r.runId, case: r.case, verb: r.verb, date: r.date, outcome: r.outcome, summary: describeRunAsPublished(r, root), usd: r.cost?.usd ?? null })),
     reviewNotes: loadReviewNotes(),
   };
 }

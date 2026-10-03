@@ -17,6 +17,7 @@ describe("the latest strip", () => {
     expect(describeRun(run({ notes: 'wrote {"sources":2,"evidence":11,"claims":6,"research":2}; 0 rejected; 1 correction(s) applied' }))).toBe("admitted 6 claims, 11 evidence, 2 sources, 2 research; 0 refused; 1 correction(s) applied");
     expect(describeRun(run({ verb: "inbox", notes: "1 item(s) taken in; 39 work(s) named, 0 resolved to locators" }))).toBe("1 item(s) taken in");
     expect(describeRun(run({ verb: "check", notes: "5 of 5 seat(s) installed" }))).toBe("5 of 5 seats judged the case blind");
+    expect(describeRun(run({ verb: "check", notes: "1 of 1 seat(s) installed; not asked, having judged this ledger already: openai" }))).toBe("1 of 1 seat judged the case blind; not asked, having judged this ledger already: openai");
     expect(describeRun(run({ verb: "edition", notes: "new assessment" }))).toBe("a new edition with a new assessment");
     expect(describeRun(run({ verb: "report", model: "claude-fable-5-1", notes: undefined }))).toBe("research pass (claude-fable-5-1)");
   });

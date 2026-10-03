@@ -10,7 +10,9 @@ describe("evidenceTombstones", () => {
     const base = c.evidence[0];
     const withTombstone = { ...c, evidence: [...c.evidence, { ...base, id: "GEO-E902", reviewState: "rejected", limitations: [...base.limitations, "Refused at re-verification 2099-01-02 (run x): the quote was not found"] } as Evidence] };
     const live = liveEvidence(withTombstone), gone = evidenceTombstones(withTombstone);
-    expect(gone.map((e) => e.id)).toEqual(["GEO-E902"]);
+    // The real case's own refused records stay on their side, whatever the ledger holds (2026-10-03: GEO-E002 was
+    // refused at an answer's re-reading, and the test had assumed the case had none).
+    expect(gone.map((e) => e.id)).toEqual([...evidenceTombstones(c).map((e) => e.id), "GEO-E902"]);
     expect(live.some((e) => e.id === "GEO-E902")).toBe(false);
     expect(live.length + gone.length).toBe(withTombstone.evidence.length);
     expect(new Set([...live, ...gone].map((e) => e.id)).size).toBe(withTombstone.evidence.length);

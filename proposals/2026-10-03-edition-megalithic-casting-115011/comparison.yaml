@@ -1,0 +1,58 @@
+# The panel's seats reading the candidate beside edition-2026-09-30-082934, as a reader would (compare-v1; src/pipeline/compare.ts).
+# AI judgments of two tellings; not a human's, and not a judgment of the verdicts.
+against: edition-2026-09-30-082934
+protocol: compare-v1
+outcome: candidate-preferred
+candidate: 5
+incumbent: 0
+neither: 0
+seats:
+  - seat: Opus 5.5 (Anthropic)
+    model: claude-opus-5-5
+    candidateShownAs: A
+    prefers: candidate
+    margin: clear
+    reasons: "A is written from the current evidence while B predates the last change, and A's differences consistently help a ten-minute reader rather than just adding length. In the salt section A first states Davidovits' actual argument: he licked fragments, and he claims Europe's limestone cathedrals would be crusted too if the salt were marine. A then rebuts it with the Sphinx and the plateau's native halite. B only appends 'the proponents' comparison was with European cathedrals' after the rebuttal, leaving the reader to guess what that comparison was. A explains what nuclear magnetic resonance measures and spells out why a shared magnetic direction would mean stone set in place, and it replaces B's 'positive control' with a plain description of Jana's comparison against a real geopolymer. A also adds the H-block bubbles and crisp corners that a reader arriving from popular coverage will have seen, with Protzen's actual position, and it drops B's heavily hedged Engelbach paragraph ending in 'This site has not checked…'. The roughly 130 extra words buy fairness and clarity rather than caution, so the length is worth it."
+    notes:
+      - Restore the missing 'that' in 'salt comparable natural limestone lacks', which reads as garbled at the exact point the salt verdict is delivered.
+      - Reword 'The case catalogues a broader warning… documented here only at Giza' so the restoration-history caveat is stated plainly rather than as a reference to the site's own records.
+      - In the header's 'What would settle it', spell out NMR, say in a clause why a magnetic survey would discriminate, and replace 'the open branch' with 'the Pumapunku question'.
+  - seat: GPT-5.6 Sol (OpenAI)
+    model: gpt-5.6-sol
+    candidateShownAs: B
+    prefers: candidate
+    margin: slight
+    reasons: Both tellings give the reader the claim, split verdict, main alternatives, and decisive tests immediately, but B is current while A predates the latest evidence change. B also explains technical points more plainly, especially what NMR measures, why the artificial geopolymer comparison matters, and how the proposed magnetic test would distinguish casting from moved blocks. Its added treatment of bubbles and crisp corners at Pumapunku addresses familiar visual arguments with specific evidence rather than generic caution. A is slightly shorter and otherwise nearly identical, so B's advantage is modest rather than decisive.
+    notes:
+      - Trim the salt section, particularly the licking anecdote and restoration-history aside, which add little to the conclusion that halite does not discriminate between the accounts.
+      - Qualify the claim that one independent Pumapunku test would “settle” the branch, since a single documented fragment may not establish how other blocks were made.
+  - seat: Gemini 3.8 Flash (Google)
+    model: gemini-3.8-flash
+    candidateShownAs: A
+    prefers: candidate
+    margin: clear
+    reasons: "Telling A is written from current evidence, whereas B is marked as stale. In the Aswan section, A sensibly removes B's site-referential meta-commentary about what sources the site had not yet verified. A also improves the substance: it explains why Davidovits brought up European cathedrals in the salt debate, and it explicitly addresses the ubiquitous popular arguments about Pumapunku's H-blocks, specifically their surface bubbles and crisp interior corners."
+    notes:
+      - In 'The salt', the parenthetical 'this site has not read their book directly' remains an unedited internal housekeeping note that should be deleted.
+      - The phrase 'The case catalogues a broader warning' in the salt section still lapses into self-referential site meta-language.
+      - The description of the magnetic survey test in 'What would change our mind' is slightly more concise in B.
+  - seat: Grok 4.5 (xAI)
+    model: grok-4.5
+    candidateShownAs: B
+    prefers: candidate
+    margin: clear
+    reasons: "B is written from current evidence while A is stale, a real defect that can silently mislead on any post-change detail. B's headers and opening already give the claim, the contradicted/weakly-supported split, the live Pumapunku dispute, and the decisive cheap tests in the same compact form as A, yet B then improves density: it drops A's unverified digressions on Fóti's source-checking and Engelbach, states the 2023 pounding rate cleanly, adds the licking anecdote and Protzen correction, and spells out the magnetic-survey logic so a ten-minute reader sees exactly what would discriminate. Both stay fair and plain, but B's extra ~130 words buy clearer alternatives and settlement criteria rather than cost; A therefore teaches less per minute once staleness is counted."
+    notes:
+      - B could tighten the salt and Aswan paragraphs by another 80–100 words without losing the concrete observations.
+      - The magnetic-survey bullet still assumes the reader knows paleomagnetism; one plain clause on how a setting block records field direction would help.
+      - A one-sentence reminder that the ledger holds the full sample list would reassure the reader who wonders what was left out.
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    model: z-ai-glm-5-3-flash
+    candidateShownAs: A
+    prefers: candidate
+    margin: clear
+    reasons: Both tellings are nearly identical in structure and quality, so the decision rests on small differences, and A wins on each. A is written from the evidence as it stands today while B predates the last change, exposing the reader to unseen staleness for no visible gain. A replaces B's hedged secondhand report of Engelbach ('this site has not checked... the same book misstates three other sources') with the firmer 2023 photogrammetry measurement, favouring concrete observation over layered caution. A also explains the magnetic-survey test mechanistically (stone hardening in place records one field direction across blocks), where B's compressed version asks the reader to infer why it matters, and A keeps the proponents' salt-tasting and cathedral-comparison argument, which B drops even though salt is presented as the proponents' favourite detail. B's only real addition, the Engelbach provenance caveat, is exactly the kind of internal revision history the criteria say to leave out.
+    notes:
+      - A should name or summarise the unexamined book behind the halite-is-native-to-the-plateau claim more concretely, since it concedes it has not read the source directly.
+      - A could state upfront in the opening that the Pumapunku andesite fragment was never tied to any block on the monument, which is the single fact doing the most work in the verdict.
+      - The Davidovits salt-licking anecdote in A rests on one man's uncontrolled observations and should be flagged as such rather than presented as a parallel 'modern argument' of equal standing.

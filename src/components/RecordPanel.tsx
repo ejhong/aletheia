@@ -76,6 +76,19 @@ export function RecordPanel({ sittings, slug, caseDir, linkable }: { sittings: S
                 <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-faint">
                   {s.recorded ? `run ${s.runId}` : `rows name ${s.runId}; no run record exists for it, so its verb, outcome and cost are not known — the rows themselves are the record`}
                 </p>
+                {s.unpublished.length > 0 ? (
+                  <div className="mt-2 max-w-3xl border-l-2 border-ochre/60 pl-3">
+                    <h4 className="font-mono text-[10px] uppercase tracking-[0.16em] text-ochre">written by this run and not published</h4>
+                    <p className="mt-1 text-[13px] leading-relaxed text-ink-soft">
+                      The run&apos;s record names {s.unpublished.length === 1 ? "a file" : `${s.unpublished.length} files`} that {s.unpublished.length === 1 ? "is" : "are"} not on the site or in the
+                      repository: <span className="font-mono text-[11.5px]">{s.unpublished.join(", ")}</span>. What the run was sent and what each model replied are kept with{" "}
+                      <a href={`${site.repoUrl}/tree/main/proposals/${s.runId}`} className="underline underline-offset-2 hover:text-copper">the run&apos;s files</a>.
+                    </p>
+                    {s.withheld.map((note) => (
+                      <p key={note} className="mt-2 whitespace-pre-line text-[13px] leading-relaxed text-ink-soft">{note}</p>
+                    ))}
+                  </div>
+                ) : null}
                 {s.refused.length > 0 ? (
                   <>
                     <h4 className="mt-2 font-mono text-[10px] uppercase tracking-[0.16em] text-ochre">refused, with the reason</h4>
@@ -102,7 +115,7 @@ export function RecordPanel({ sittings, slug, caseDir, linkable }: { sittings: S
                     {s.admitted.length > ROWS_SHOWN ? <p className="mt-1 text-[12px] text-faint">and {s.admitted.length - ROWS_SHOWN} more in the file</p> : null}
                   </>
                 ) : null}
-                {s.refused.length === 0 && s.admitted.length === 0 ? <p className="mt-2 text-[12.5px] text-faint">This run wrote no disposition rows.</p> : null}
+                {s.refused.length === 0 && s.admitted.length === 0 && s.unpublished.length === 0 ? <p className="mt-2 text-[12.5px] text-faint">This run wrote no disposition rows.</p> : null}
               </div>
             </details>
           );

@@ -8,7 +8,7 @@ import type { RunRecord } from "./intake.ts";
 import type { LoadedCase } from "./schema.ts";
 import { currentEdition } from "./editions.ts";
 import { lastContentUpdate } from "./history.ts";
-import { describeRun, readRuns } from "./runs.ts";
+import { describeRunAsPublished, readRuns } from "./runs.ts";
 
 export interface Activity {
   edition: { runId: string; date: string; excerpt: string; rationale: string };
@@ -37,7 +37,7 @@ export function caseActivity(loaded: LoadedCase, root = process.cwd(), limit = 5
     .slice(0, limit);
   return {
     edition: { runId: ed.runId, date: ed.date, excerpt: excerpt(ed.rationale), rationale: ed.rationale },
-    sittings: runs.map((r) => ({ runId: r.runId, verb: r.verb, date: r.date, summary: describeRun(r), usd: r.cost?.usd ?? null })),
+    sittings: runs.map((r) => ({ runId: r.runId, verb: r.verb, date: r.date, summary: describeRunAsPublished(r, root), usd: r.cost?.usd ?? null })),
     lastContentUpdate: lastContentUpdate(loaded),
   };
 }

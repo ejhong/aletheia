@@ -20,6 +20,7 @@ import { caseAccounts, caseQuestion, currentEdition, questionRestatedBy } from "
 import { historyNewestFirst, isHousekeepingEntry, lastContentUpdate } from "@/src/domain/history";
 import { caseCover, liveClaims, liveEvidence, loadAllCases, verifiedEvidence } from "@/src/domain/load";
 import { currentMoves, verdictMoves } from "@/src/domain/moves";
+import { unpublishedChecks } from "@/src/domain/record";
 import { crossModelSummary, currentChecks, latestCheckPerModel } from "@/src/domain/standing";
 import { paramsOrPlaceholder } from "@/src/domain/staticExport";
 import { articleWords, clip, readingMinutes } from "@/src/domain/text";
@@ -163,6 +164,8 @@ export default async function CasePage({
               current={currentChecks(loaded, panel).map((r) => r.runId)}
               summary={crossModelSummary(loaded)}
               claims={view.claims.map((c) => c.claim)}
+              unpublished={unpublishedChecks(loaded)}
+              recordHref={`/cases/${loaded.record.slug}/record/`}
             />
           </section>
         ) : null}

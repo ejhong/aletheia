@@ -1,0 +1,177 @@
+runId: "2026-10-03-check-gemini"
+model: "Gemini 3.8 Flash (Google), independent check run"
+date: "2026-10-03"
+promptVersion: "check-v4"
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: well_supported
+  loadBearing:
+    - AMZ-C001
+    - AMZ-C002
+    - AMZ-C003
+    - AMZ-C006
+    - AMZ-C007
+    - AMZ-C008
+    - AMZ-C010
+    - AMZ-C011
+    - AMZ-C013
+    - AMZ-C014
+    - AMZ-C016
+    - AMZ-C017
+  weakestLinks:
+    - AMZ-C005
+    - AMZ-C012
+    - AMZ-C015
+    - AMZ-C019
+    - AMZ-C020
+    - AMZ-C021
+    - AMZ-C022
+    - AMZ-C023
+    - AMZ-C029
+  synthesis: >-
+    The central question of "The Emptied Amazon" asks whether Gaspar de Carvajal's 1542 narrative describes an imagined fantasy or a genuine pre-Columbian riverine society that vanished due to post-contact demographic collapse. Grounded strictly in the admitted evidence ledger, the historical and archaeological records strongly converge toward a nuanced synthesis: pre-Columbian Amazonia was neither a pristine, uniform wilderness incapable of supporting dense human populations nor a wall-to-wall basin-wide empire. Rather, it comprised highly engineered, densely populated corridors, savannas, and river bluffs embedded within a far more sparsely inhabited interfluvial matrix.
+
+    On the historical side, Carvajal's qualitative geography—describing populous riverbank settlements, large food stores, connecting roads, and fine ceramics along specific reaches interspersed with unpopulated stretches—is corroborated by independent early chroniclers like Diogo Nunes (1538) and the 1560 Ursúa expedition accounts (AMZ-E007). Textual analysis demonstrates that his most extreme troop counts (e.g., 50,000 warriors) are confined to the Medina/Muñoz manuscript tradition and absent from the earlier Oviedo branch (AMZ-E005), confirming that while specific headcounts are textually unstable, the qualitative social geography is robust (AMZ-C017).
+
+    Archaeological and palaeoecological surveys substantiate this mosaic model. LiDAR and ground surveys demonstrate monumental earthworks, engineered landscapes, and urbanism across southwestern Amazonia (AMZ-C004, AMZ-C061, AMZ-C063), intensive maize monoculture and hydraulic engineering in the Llanos de Mojos (AMZ-C007, AMZ-E014), and ditch-fortified villages along an 1,800 km stretch of the southern rim (AMZ-C006). Crucially, major complexes like the Belterra Plateau, Marajó's Cacoal, and Upper Xingu settlements were actively occupied up to or through European contact (AMZ-C011). When Old World epidemics, slave raiding, and mission disruptions struck, recorded regional depopulations exceeded 60–88% (AMZ-C010), demonstrating how dense riverine settlements rapidly evaporated into the forest matrix.
+
+    Conversely, the evidence limits overextension. Predictive spatial modeling shows river proximity is the single dominant predictor of settlement (AMZ-C013), while extensive paleoecological soil coring across terra-firme interfluves shows negligible signs of intensive clearing, farming, or fire (AMZ-C014). Basin-wide population estimates remain brittle, model-dependent extrapolations rather than direct empirical counts (AMZ-C005, AMZ-C012). The single evidence record whose removal would most alter this assessment is AMZ-E007 (Lopes et al. 2024); without independent sixteenth-century corroboration from Nunes and the Ursúa expedition, Carvajal’s account would remain vulnerable to the charge of unique expeditionary confabulation, though the archaeological mosaic would survive.
+  steelman: >-
+    The strongest argument for the featured hypothesis not answered here is the lack of direct archaeological verification of the Machiparo riverbank settlements themselves along the middle Solimões channel.
+claimAssessments:
+  - claimId: AMZ-C001
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Carvajal's textual narrative describes populous settlements, roads, stores, and ceramics interspersed with empty reaches, as established in Denevan 1996 and Lopes et al. 2024. AMZ-E006 confirms that Denevan's bluff model identifies this alternation of dense settlement and empty stretches along channel meeting points. The opposing consideration is that Carvajal's account has been historically regarded as prone to exaggeration, but as a descriptive claim about what the chronicle states, it is fully verified.
+  - claimId: AMZ-C002
+    verdict: established
+    confidence: high
+    reasoning: >-
+      AMZ-E005 explicitly verifies from Denevan 1996 that the figures of 50,000, 10,000, and 8,000 warriors and leagues-long villages appear only in the Medina/Muñoz tradition, whereas Oviedo records only one figure of about 5,000 warriors. The strongest counter-argument is that Oviedo supplemented Carvajal with oral testimonies from Orellana (AMZ-E089), but the direct comparison between the extant textual branches is an established bibliographical fact.
+  - claimId: AMZ-C074
+    verdict: established
+    confidence: high
+    reasoning: >-
+      AMZ-E089 directly supports this claim with verbatim quotation from Medina 1894, citing Oviedo's statement that he supplemented the friar's written text with oral details obtained in Santo Domingo directly from Captain Orellana and other gentlemen. An opposing consideration is that Medina quotes Oviedo rather than the ledger directly examining the blocked Oviedo manuscript, but the textual record in Medina is explicit and unambiguous.
+  - claimId: AMZ-C003
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      AMZ-E007 provides direct support from Lopes et al. 2024, detailing Diogo Nunes's 1538 penetration of Machiparo and the ten accounts of the 1560 Ursúa expedition describing dense middle Solimões settlement, infinite maize stores, and Inca-like roads. The primary qualification noted in AMZ-E007 is that Nunes's testimony survives via a 1553/54 letter and that fortifications/warfare details do not directly mirror the Ursúa accounts.
+  - claimId: AMZ-C068
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      AMZ-E080 confirms through Medina 1894 that López de Gómara cited Orellana's relación and labeled it 'mentirosa' without stating his reasons. The limitation is that Gómara's original text is quoted second-hand via Medina rather than read directly in this ledger, though Medina's scholarly citation is clear.
+  - claimId: AMZ-C065
+    verdict: provisionally_supported
+    confidence: low
+    reasoning: >-
+      AMZ-E072 supports that Achmatowicz (2018) concludes the manuscript is a trustworthy source based on geographic reference points, quoting the abstract directly. However, the record carries low confidence because only the abstract was retrieved and read, leaving the full methodology and internal evidentiary arguments unverified.
+  - claimId: AMZ-C017
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      Carvajal's qualitative credibility is reinforced by independent accounts (AMZ-E007), geographic consistency (AMZ-E072), and late-occupied riverine sites (AMZ-E017), while his numbers are proven textually unstable across manuscript branches (AMZ-E005). The opposing consideration is that contemporary critics like Gómara branded Orellana's reports untruthful (AMZ-E080), and Medina noted Carvajal's supernatural attributions and partisan biases (AMZ-E110, AMZ-E111).
+  - claimId: AMZ-C004
+    verdict: established
+    confidence: high
+    reasoning: >-
+      AMZ-E001 provides direct, verbatim support from Pärssinen et al. 2026 documenting 432 earthworks over 4,430 km of LiDAR transects, circumscribing a 183,000 km² Aquiry area, and predicting 24,000–30,000 earthworks. AMZ-E038 and AMZ-E039 note competing basin-wide model predictions from Peripato et al. 2023, but this does not alter the fact of what the 2026 study documented and predicted.
+  - claimId: AMZ-C005
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      AMZ-E002 demonstrates that the 1.25–3 million demographic peak in Pärssinen et al. 2026 is highly sensitive to model parameters (simultaneous use and 300 persons per structure), quoting the paper's own alternative single-family estimate of 250,000–600,000 (rising to 315,000–760,000 under laser penetration correction). The authors consider the single-family model "very unlikely," but the statistical sensitivity is explicitly acknowledged in the source text.
+  - claimId: AMZ-C006
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      AMZ-E004 directly quotes de Souza et al. 2018 establishing that an 1,800 km stretch of southern Amazonia was occupied by earth-building cultures in fortified villages (~Cal AD 1250–1500) and that their 500,000–1,000,000 population projection explicitly relies on contemporaneity, ethnographic formulae, and MaxEnt extrapolation. The main opposing consideration is the inherent uncertainty of unexcavated site contemporaneity across an entire regional arc.
+  - claimId: AMZ-C011
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Multi-site occupation extending into the contact era is documented across multiple independent studies: Belterra Plateau AD 1300 to seventeenth-century colonization in AMZ-E017, Marajó's Cacoal site AD 1300–1650 in AMZ-E018, and Upper Xingu settlements AD 500–1770 in AMZ-E019. The slight limitation is that the Upper Xingu evidence is drawn from a Science news summary of Heckenberger's work rather than a primary excavation monograph.
+  - claimId: AMZ-C007
+    verdict: established
+    confidence: high
+    reasoning: >-
+      AMZ-E014 confirms verbatim from Lombardo et al. 2025 that the Casarabe culture engineered drainage canals and farm ponds for intensive year-round maize monoculture, supported by 178 phytolith samples from 18 profiles. The opposing caveat is chronological: the Casarabe culture flourished ca. AD 500–1400 and ceased before 1542, so it demonstrates landscape carrying capacity rather than direct contact-era demography.
+  - claimId: AMZ-C008
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      AMZ-E012 and AMZ-E040/E041 document that anthropogenic dark earths, landscape modifications, and 53 domesticated tree species associate significantly with archaeological sites and earthwork models. However, AMZ-E013 records McMichael et al.'s technical challenge showing that post-Columbian historical activities likely contributed heavily to observed modern floristic compositions, qualifying pre-Columbian attribution.
+  - claimId: AMZ-C009
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      AMZ-E015 and AMZ-E016 corroborate from Lombardo et al. 2011 and Rodrigues et al. 2015 that raised fields in Bermeo show intermittent construction dating back to AD 570–770, functioning primarily as flood-risk mitigation where alternatives were absent. The opposing consideration is that these findings are strictly localized to specific Bolivian savanna field systems and may not characterize all Amazonian raised-field complexes.
+  - claimId: AMZ-C019
+    verdict: unresolved
+    confidence: low
+    reasoning: >-
+      No evidence record is attached to AMZ-C019 in the ledger. While AMZ-E022 (attached to AMZ-C026) corroborates zooarchaeological fishing at Loma Salvatierra and SRC-BLATRIX-2018 is cataloged as a source, the specific empirical claims regarding 382 detected ponds and V-shaped weir geometry remain unbacked by an admitted evidence record.
+  - claimId: AMZ-C026
+    verdict: established
+    confidence: high
+    reasoning: >-
+      AMZ-E022 directly confirms from Prestes-Carneiro et al. 2019 that zooarchaeological excavations at Loma Salvatierra analyzed over 17,000 fish remains, demonstrating year-round exploitation of interfluvial aquatic resources including lungfish and tiger-fish between AD 500 and 1400. The paper notes that a paucity of large river fish indicates minimal dependence on the main Mamoré channel.
+  - claimId: AMZ-C012
+    verdict: established
+    confidence: high
+    reasoning: >-
+      AMZ-E009 decisively confirms from Denevan 2003 that Denevan explicitly rejected his earlier habitat-density method for estimating Greater Amazonia's population at 5.1–6.8 million due to excessive density variability, while continuing to maintain 5–6 million as reasonable on other grounds. There is no substantive counter-evidence to the textual fact of his self-rejection.
+  - claimId: AMZ-C015
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      AMZ-E020 verifies from Arroyo-Kalin & Riris 2021 that summed radiocarbon date distributions conform to a logistic growth model reaching carrying capacity prior to European contact, with late drops attributed to taphonomic and sampling biases compounded by contact collapse. The limitation is that summed radiocarbon probability distributions are indirect demographic proxies sensitive to regional excavation effort.
+  - claimId: AMZ-C010
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      AMZ-E008 establishes from Newson 2003 that upper Amazonian regional populations suffered catastrophic losses by circa 1700 (Napo-Aguarico falling ~88% and Mainas 62–64%) through interactive vectors including epidemics, slave raids, flight, and revolts. The primary opposing consideration is that these archival statistics are derived from mission records in upper-Amazon Ecuador/Peru and cannot be automatically generalized to the entire basin.
+  - claimId: AMZ-C023
+    verdict: unresolved
+    confidence: low
+    reasoning: >-
+      No evidence record is attached to AMZ-C023 in the ledger. Although AMZ-E008 (attached to AMZ-C010) quotes Newson 2003 regarding mixed depopulation mechanisms and flight, the specific analytical claim that epidemics routinely "faded out" in sparse lowlands and required reintroduction lacks an admitted evidence record.
+  - claimId: AMZ-C013
+    verdict: established
+    confidence: high
+    reasoning: >-
+      AMZ-E010 confirms from McMichael et al. 2025 that in an analysis of 7,363 archaeological sites across Amazonia sensu stricto, distance from a river was the single most important predictor (accounting for 21.5% of permutation importance), indicating far sparser occupation in interfluvial zones. The acknowledged limitation is that known archaeological databases inevitably reflect survey effort clustered along navigable rivers.
+  - claimId: AMZ-C014
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      AMZ-E011 establishes from Piperno et al. 2024 that across 14 sampled lowland regions, soil phytolith and charcoal records from terra-firme interfluves show diverse closed canopy with little to no evidence of crop cultivation, clearing, anthropic soils, or widespread fires. The opposing critique is that soil-core sampling represents a minute fraction of the vast interfluvial acreage, though the cumulative proxy data remain consistent.
+  - claimId: AMZ-C020
+    verdict: unresolved
+    confidence: low
+    reasoning: >-
+      No evidence record is attached to AMZ-C020 in the ledger. While the source SRC-WALKER-2023 is described in the source register, its specific machine-learning model findings regarding earthwork limits and dominant site types have not been admitted through an active evidence record.
+  - claimId: AMZ-C021
+    verdict: unresolved
+    confidence: low
+    reasoning: >-
+      No evidence record is attached to AMZ-C021 in the ledger. The source SRC-CLEMENT-REPLY is cataloged, but the specific methodological critique concerning 300 soil cores totaling 1.17 cubic meters representing western Amazonia lacks an admitted evidence record.
+  - claimId: AMZ-C022
+    verdict: unresolved
+    confidence: low
+    reasoning: >-
+      No evidence record is attached to AMZ-C022 in the ledger. Although SRC-BUSH-2025-UPANO is listed in the sources register, the specific empirical finding that forest recovery largely eradicated pre-Columbian ecological signals while preserving colonial ones is not substantiated by an admitted evidence record.
+  - claimId: AMZ-C029
+    verdict: unresolved
+    confidence: low
+    reasoning: >-
+      No evidence record is attached to AMZ-C029 in the ledger. While AMZ-E038 and AMZ-E039 (attached to AMZ-C004) reference parts of Peripato et al. 2023 regarding undiscovered structures and regional high-probability cells, the specific statistical claim that nearly 80% of Amazonia has a 0–1% predicted earthwork probability has no direct evidence record attached.
+  - claimId: AMZ-C016
+    verdict: unresolved
+    confidence: low
+    reasoning: >-
+      No evidence record is directly attached to AMZ-C016 in the ledger. As an interpretive synthesis claim dependent on underlying empirical findings (AMZ-C004, AMZ-C006, AMZ-C007, AMZ-C011, AMZ-C013, AMZ-C014), its individual components are well supported across other records, but under ledger rules, claims lacking direct evidence attachments remain formally unresolved.

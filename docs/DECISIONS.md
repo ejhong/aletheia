@@ -2898,3 +2898,29 @@ The entry of 2026-09-30 on this case's panel left #452 parked, to be answered on
 - **The Google seat on this case.** Every check it has written on this case under `check-v2` since 2026-09-30 misstates a record: three panel checks and the experiment's two runs of that protocol here. The experiment designed on 2026-09-30, run on 2026-10-03, asked how it behaves when told to carry a record's limitations and name the claim a record is attached to; its report says what it found.
 
 Spend: the runs of 2026-09-30, $3.52 and $0.10; the answer, $0.16; the edition, $1.30; the fresh panel, $3.13.
+
+## 2026-10-03 — The rule for a claim with no evidence, tested: the draft is not adopted, and the name `check-v4` is spent
+
+The experiment designed on 2026-09-30 (`proposals/assessment-experiments/2026-09-30-a-rule-for-claims-with-no-evidence/`) was run on 2026-10-03: sixteen runs, four seats, the arms alternating on each of four cases, $7.37. Its report gives every figure and quotes the sentences that decided it.
+
+- **The rule worked.** Told the edition protocol's rule for a claim no admitted evidence record cites, with those claims named, the seats graded such claims `unresolved` or named the basis they leaned on in 223 of 224 verdicts, against 97 of 224 under `check-v2`. The splits from the judgment on those claims fell from 39 of 56 to 19 of 56, and the splits on claims with evidence fell too, from 14 of 144 to 5.
+- **The provenance paragraph mostly worked and did not hold where it was aimed.** Under the draft, seats said which claim a cited record is attached to for two thirds of the records they cited off their claim, against one in twenty-five under `check-v2`. But in one of its two draft runs on Cast, Not Carved the Google seat still wrote, as an aside, what Engelbach's monograph says, which the ledger had not checked.
+- **The design's rule adopted both paragraphs or neither**, and required that seat's reasoning to be clean in both runs. It was not, so the draft is not adopted. The name `check-v4` is on eight runs of a text the site does not use, and a test now holds that no protocol file takes it, as one holds `check-v3`.
+- **On Deep Memory the splits changed direction.** Under `check-v2` most seats that differed graded such claims above the judgment. Under the draft every seat that differs grades them below it: unresolved, where the judgment says provisionally supported on a prior its reasoning states. Both protocols allow a stated prior; the judgment leans on it there and the seats did not.
+- **The two verdict words** were a minority of the distance between a seat and the judgment (34 of 178 verdicts under `check-v2`) and of a seat's distance from itself (11 of 33 claims). That does not reopen the question the entry of 2026-09-30 closed.
+
+A follow-up was designed the same day, before any of its runs: the first paragraph alone, and the first with a second that adds one sentence naming the fault outright.
+
+## 2026-10-03 — The rule alone, and with a tighter provenance sentence: neither adopted; the guard needs a bigger design
+
+The follow-up (`proposals/assessment-experiments/2026-10-03-the-rule-alone-and-with-a-tighter-provenance-sentence/`), designed and pushed before its first run, tested two drafts against the eight `check-v2` runs of the experiment before: `check-v5`, the first paragraph alone, and `check-v6`, the first paragraph and a second that names the fault outright. Sixteen runs, $7.29.
+
+- **`check-v6` fails its third condition.** In one of two runs on Cast, Not Carved the Google seat closed its reasoning with "GEO-E002 explicitly confirms Engelbach (1922) as the origin of the brief one-hour working trial", the overstatement the gate parked #452 for.
+- **`check-v5` fails its guard.** Deep Memory's splits on its twelve claims with evidence were 4 and 5 a run, against 2 and 2 under `check-v2`. The same paragraph gave 0 and 0 in the experiment before and 5 and 0 under `check-v6`, so the guard as designed, two runs a case with a tolerance of one claim, cannot tell this from noise. The rule is applied as written all the same.
+- **Neither is adopted.** The names `check-v5` and `check-v6` are spent with `check-v3` and `check-v4`, and the test holds all four.
+
+**What the two experiments show.** The rule itself works under all three drafts that carry it: every seat grades a claim with no evidence record `unresolved` or names its basis, 98 to 100% against 43%, and the splits on those claims fall by about half. It also makes seats name the claim a cited record belongs to (about a third of off-claim citations left unnamed, against 96%). What is not yet shown is that it costs nothing on claims that have evidence, because the guard was too noisy to say. No sentence tried stops the Google seat writing what a source says that the ledger has not checked, in one run of two, where a record invites it; on Cast, Not Carved that record is now refused, and the gate caught the fault both times a check carrying it was put to it.
+
+**What would settle it.** A design with the control run alongside the draft, more runs a case, and the guard taken over all cases together, for `check-v2` plus the first paragraph alone. That is about thirty runs and $15. It is not run on this date: the next step is put to the founder.
+
+**The two verdict words.** The entry of 2026-09-30 set the condition for reopening the question as "most of it on more than one case". Under `check-v2`, the protocol in use, the pair is most of a seat's distance from itself on one case of four (Before Sputnik, 5 of 6 claims; elsewhere 1 of 4, 4 of 20 and 1 of 3), so the condition is not met. Under the rule-alone draft it would be met, on Deep Memory (15 of 16) and Before Sputnik (3 of 4): if the rule is adopted, the question comes back with it.

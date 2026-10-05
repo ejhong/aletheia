@@ -1,0 +1,141 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 456
+title: The founder's two answers, the count behind leaving two verdict words
+  where they are, and the next experiment's design
+url: https://github.com/ejhong/aletheia/pull/456
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-30
+judgedAgainst: 15b16e7a25
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5.5 (Anthropic)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.12
+      - §3.13
+      - §3.14
+    reasoning: "The diff does not touch AGENTS.md or anything under content/, so it
+      adds no citation, locator or case record. The scale in §3.15 is left
+      exactly as it is, and any future amendment is to be 'drafted for the
+      founder's hand, as amendments are'. The DECISIONS entry does not override
+      the constitution either. It declines to bring the two verdict words within
+      one step because that would loosen a check. The founder's in-session
+      direction is quoted and stamped with its date and channel, both in
+      DECISIONS.md and in the config/models.yaml comment, which §3.15's
+      operating-record paragraph permits. The choice on the verdict words is
+      attributed to the operator, not the founder. AUTOMATION.md's heading 'what
+      he decided' sits over a bullet that is the operator's choice, but the body
+      says so plainly, so I do not read it as misattribution. The code change
+      adds `unevidencedClaims` and `checkInstructions` and adds one test without
+      loosening any. check-v2 does not use the new placeholder, so current seats
+      are sent the same instructions. The experiment is registered before any
+      run, with measures, an adoption rule and an explicit small-sample caveat,
+      consistent with §3.12 and §3.13. The draft sits in proposals/, its runs
+      are not installed, and the `check-v4` name is retired if the draft is not
+      adopted, which keeps the stamps honest. The published figures check out
+      internally: the splits sum to 23, the far-verdict kinds sum to 129
+      (28+25+22=75, 28+25+14=67), standings are 7 ratified and 3 contested, 11
+      of 12 seat rows gain 1 to 8 claims, and measure 1 is 17+11+18+13=59. I
+      found no sign of fabrication."
+    cost:
+      model: claude-opus-5-5
+      inputTokens: 25421
+      outputTokens: 17145
+      usd: 0.477034
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.6
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: The change does not edit AGENTS.md, alter the verdict scale, publish
+      a new assessment, or carry any run records. It clearly labels check-v4 as
+      a draft experiment that has not run, while the active check-v2 behavior
+      remains unchanged; the added placeholder plumbing only enables the
+      proposed experiment. The draft reinforces §3.6 by identifying featured
+      claims with no admitted evidence record and requiring either an unresolved
+      verdict or a disclosed alternative basis, and it reinforces provenance by
+      requiring limitations and cross-claim attachments to be stated. The
+      founder’s direction is recorded with its date and channel as permitted by
+      §3.15, and the operator’s decision not to propose an amendment is
+      accompanied by reproducible scripts and counts. No added citation fails
+      verification, no confidential material is published, and no visible check
+      is weakened or bypassed.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 21472
+      outputTokens: 2278
+      usd: 0.131448
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: The change records founder directions given in session on 2026-09-30
+      in DECISIONS.md and config/models.yaml in accordance with §3.15. No edits
+      are made to AGENTS.md, nor are existing checks weakened or reclassified;
+      the operator documented an empirical count and explicitly decided against
+      proposing an amendment to bring two verdict words closer on the scale. The
+      experiment design and tooling under proposals/ along with pipeline helper
+      functions (`unevidencedClaims`, `checkInstructions`) do not touch
+      published case content or present unratified drafts as ratified.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 23883
+      outputTokens: 828
+      usd: 0.021017
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff records the founder's 2026-09-30 session directions in
+      DECISIONS.md and AUTOMATION.md with date and channel, adds only a
+      non-normative cost comment to models.yaml, and leaves the §3.15 scale and
+      AGENTS.md untouched. It designs (but does not run) a future check-protocol
+      experiment under proposals/, with a draft that is explicitly unratified
+      and a helper that fills unevidencedClaims only when a protocol asks;
+      check-v2 behaviour and existing packets are unchanged, as the new test
+      asserts. No case content, assessments, citations, or confidential material
+      are added, and no check is weakened or reclassified.
+    cost:
+      model: grok-4.5
+      inputTokens: 22181
+      outputTokens: 159
+      usd: 0.045431
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.6
+      - §3.8
+    reasoning: AGENTS.md is untouched, and the change correctly treats moving the
+      two verdict words as a founder-reserved amendment, declining to propose it
+      after counting — the opposite of check-weakening; the only code change
+      (unevidencedClaims/checkInstructions) fills a placeholder for a
+      not-yet-run draft protocol in proposals/ and provably leaves check-v2's
+      rendered instructions unchanged, guarded by a new test. The founder's
+      answers are recorded with date and channel ('in session') in DECISIONS.md,
+      AUTOMATION.md, and a config comment, exactly as §3.15 permits for
+      operating-record directions. The check-v4-draft tightens rather than
+      loosens the blind check (it gives seats the edition protocol's
+      unresolved-unless-basis rule and requires carrying stated limitations,
+      echoing §3.6 and §3.9), and its adoption is gated on pre-registered
+      measures rather than presented as ratified. No citations are added,
+      nothing was run, and the design honestly marks itself as designed-not-run
+      with no fabricated records or locators visible.
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 22644
+      outputTokens: 1089
+      usd: 0.003941
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 115601
+  outputTokens: 21499
+  usd: 0.6789
+harvestedAt: 2026-10-05

@@ -1,0 +1,156 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 422
+title: "The panel reads first what it can read nowhere else; and one check is
+  one measurement (review note #420)"
+url: https://github.com/ejhong/aletheia/pull/422
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-30
+judgedAgainst: 504f4572f3
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5.5 (Anthropic)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.13
+      - §3.14
+    reasoning: "The diff is complete. It does not touch AGENTS.md, content/ records,
+      citations or supplied material, so the question is only whether the packet
+      change weakens the §3.15 panel check. It does not. `tierOf` returns
+      `diffTier` unchanged for tiers 0–1, and a test confirms the governance
+      surface and canon are never reordered. Every omitted file is still named,
+      the protocol is untouched, and on the stated figures unique records (gate
+      verdicts, spend rows, run records) move into view, while the newly cut
+      assessments (2→7 on #418, disclosed through the counts) stay as protected
+      digests in the run account. `replyDifferences` is conservative: it
+      compares strings exactly at every depth and only against the same run's
+      installed files (by `producedBy`). Replies that cannot be parsed or are
+      not carried whole are promoted ahead of the rest of tier 2, and the moved
+      `parseYamlReply` has the same logic, so verb and comparison read
+      identically. The DECISIONS.md correction serves §3.13/§3.14: it quotes the
+      old wording in place, restates ten measurements as ranges without
+      predicting, and its arithmetic checks ($2.33/$0.51≈4.6, $2.33/$0.33≈7.1;
+      1+3+1+2+1+1=9 judgments; 7+2+5+13+2=29 files). One residual gap, an
+      imperfection rather than a violation: \"carried whole\" compares parsed
+      fields only. YAML comments, text after a closing fence (the test's
+      \"Sincerely, the model\" counts as carried) and parser-dropped trailing
+      lines go uncompared, and the carried note drops the file's size. The
+      account's stated terms should say this and the note should keep the size,
+      so the PR body's \"a reply cannot carry text past the comparison\" is not
+      overread by future seats."
+    cost:
+      model: claude-opus-5-5
+      inputTokens: 22468
+      outputTokens: 31483
+      usd: 0.751982
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.13
+      - §3.14
+      - §3.15
+    reasoning: "The change strengthens rather than bypasses panel scrutiny: raw
+      replies are deprioritized only after a recursive comparison with an
+      assessment from the same run, while dropped fields, altered strings,
+      malformed replies, and unmatched runs prevent the reply from being marked
+      carried. The packet and omitted-file notices disclose the comparison terms
+      and identify the carrying assessment, and tests cover the principal
+      false-equivalence cases. The cost generalization is corrected with
+      calibrated language, concrete run and judgment locators, preserved prior
+      wording, and a new dated decision entry, satisfying uncertainty and
+      revision-history requirements. No AGENTS.md edit, content citation,
+      confidential material, fabricated locator, or unratified assessment is
+      introduced."
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 19344
+      outputTokens: 2728
+      usd: 0.131936
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.9
+      - §3.13
+      - §3.14
+      - §3.15
+    reasoning: "This pull request directly addresses review note #420 by calibrating
+      DECISIONS.md to report exact empirical measurements of model execution
+      costs rather than projecting broad generalizations (§3.9, §3.13). It also
+      enhances the panel's packet construction machinery in `arbiter-core.mjs`
+      and `scripts/arbiter.mjs` by mechanically comparing raw check seat replies
+      against installed assessments: raw replies that are provably carried whole
+      are deprioritized when capping diffs so unique governance and spend
+      records are preserved in the diff. The mechanical verification of 'carried
+      whole' is strict, tested extensively against schema mismatches, string
+      alterations, and stamp lengths, without weakening any constitutional check
+      or editing AGENTS.md."
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 21462
+      outputTokens: 1028
+      usd: 0.019952
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff touches only arbiter packet assembly, a shared YAML-reply
+      parser, check.ts re-export, vendors comment cost, tests, and
+      DECISIONS.md—no AGENTS.md edit, no content citations, no confidence
+      material, and no run records to mis-stamp. Part 1 strengthens §3.15
+      visibility: runAccount now field-compares each raw seat reply to
+      assessments that run installed (stamps bounded, one parser), returns
+      carried paths, and capDiff prioritizes governance/inbox and uncarried
+      replies while cutting only replies proven carried whole, with omittedNotes
+      labeling that fact. Part 2 answers #420 by correcting the over-generalized
+      cost sentence in place and restating measured check vs Arbiter figures
+      without predicting future packets (§3.9/§3.13). Tests cover non-carried
+      cases; nothing loosens mechanical or panel checks."
+    cost:
+      model: grok-4.5
+      inputTokens: 19990
+      outputTokens: 201
+      usd: 0.041301
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.14
+    reasoning: "This is tooling and record-keeping work, not content, and nothing in
+      it edits AGENTS.md, fabricates a citation, or exposes confidence material.
+      The packet-reordering change strengthens rather than weakens §3.15's
+      checks: it responds directly to the #418 parking (seats said 'unsure'
+      because gate records, spend rows and run records were cut) by putting the
+      files that exist nowhere else first, and the new 'carried whole' shortcut
+      for raw seat replies is guarded by an exact, every-field, every-depth
+      mechanical comparison whose terms are stated in the packet itself, whose
+      six stamp exceptions are capped at 120-char scalars so text cannot be
+      smuggled past the comparison, and whose tests cover precisely the cases
+      that must NOT count as carried (changed string, dropped field, added
+      field, wrong-run assessment). The capacity limitation is disclosed
+      honestly — files still cut when a sitting overflows the packet are each
+      named. The #420 correction models the right behavior under §3.14/§3.13:
+      the overgeneralized sentence ('five to seven times... on a check') is
+      corrected in place with the prior wording preserved in the note, the new
+      entry distinguishes the one completed measurement from the nine Arbiter
+      judgments and explicitly declines to predict future packets, and the
+      internal arithmetic checks out ($2.33/$0.51 ≈ 4.6, $2.33/$0.33 ≈ 7.1,
+      matching the corrected range). The protocol file the seats judge under is
+      untouched, and the effort setting is left as the founder's decision. I see
+      no rule broken; the unverified historical cost figures are internal ledger
+      records the DECISIONS entry itself says how to reconstruct, not external
+      citations."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 20458
+      outputTokens: 1950
+      usd: 0.004044
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 103722
+  outputTokens: 37390
+  usd: 0.9492
+harvestedAt: 2026-10-05

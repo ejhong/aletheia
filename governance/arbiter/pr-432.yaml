@@ -1,0 +1,149 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 432
+title: "Experiment, second arm and report: written definitions of the verdict
+  words are not adopted"
+url: https://github.com/ejhong/aletheia/pull/432
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-30
+judgedAgainst: 3ddd60b751
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5.5 (Anthropic)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.8
+      - §3.14
+      - §3.11
+      - §3.12
+      - §3.13
+    reasoning: "The diff does not touch AGENTS.md or content/, installs nothing in
+      Deep Memory, and adds no citations (the verification tool found none). I
+      recomputed arm B from the committed seat replies. OpenAI is 23/25 same
+      word and 25/25 within one step, Google 13/17, xAI 12/14 with 8
+      weakly/provisionally splits, and Venice 15/17. The panel's first-run
+      pairwise counts are 79 same and 98 within one step. All of these match the
+      report and DECISIONS entry. Each spend file sums exactly to its run.yaml's
+      tokens and USD, and the report's arm-B input-token column matches the
+      spend rows. The provenance gaps are disclosed rather than hidden:
+      `inputHash: null` is admitted with a calibrated caveat ('equal token
+      counts do not prove equal bytes'); the `wrote:` files the run account
+      flags as absent are explained as analysed-then-removed working-tree files;
+      the earlier 'hold everything' claim is corrected in place, quoting the
+      original wording; and the lost calls during machine sleep are disclosed.
+      The `check-v3` stamp is explained, and a new test keeps that name from
+      ever labelling a different text. That test only adds a check. Filing the
+      runs outside `proposals/<runId>/` does not dodge the gate, because the run
+      account reads them here. The negative result is reported by the
+      pre-committed rule, post-hoc analyses are labelled as descriptions, and
+      the scale question is put to the founder without altering §3.15. I cannot
+      check the arm S/A figures or the design commit's time and hash (`ffff11f`)
+      from this packet, but the report labels these 'a record, not a proof', and
+      nothing visible contradicts them."
+    cost:
+      model: claude-opus-5-5
+      inputTokens: 97766
+      outputTokens: 31381
+      usd: 1.051134
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.13
+      - §3.14
+      - §3.15
+    reasoning: "The change preserves the experimental runs as model-labeled raw
+      replies and spend records, while clearly stating that their generated
+      assessments were not installed in the Deep Memory case or used as its
+      standing. The report handles the missing run-time input hashes honestly:
+      it leaves `inputHash: null`, distinguishes the later-computed ledger and
+      packet hashes from run-recorded provenance, and explicitly says equal
+      token counts do not prove equal bytes. Post hoc analyses are labeled as
+      descriptions rather than preregistered tests, limitations are calibrated
+      to one case, four seats, and three runs per arm, and the adverse xAI
+      result is reported rather than hidden. The non-unique model-written reply
+      IDs and omitted verb stamps are also disclosed, while directory and
+      filename provenance identifies each reply. No citation identifiers are
+      added under `content/`, no confidence material or human-review claim is
+      introduced, AGENTS.md is untouched, and the added test strengthens rather
+      than weakens protocol-stamp accountability."
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 66499
+      outputTokens: 2300
+      usd: 0.312508
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: This pull request completes the evaluation of the verdict-definitions
+      experiment across its second arm without modifying any canonical case
+      content under content/ or adopting the experimental protocol. The report
+      documents the pre-registered decision rule and demonstrates transparently
+      why the proposed definitions were not adopted based on the results across
+      the four evaluation seats. All experiment runs, raw seat replies, spend
+      records, and analysis scripts are tracked with meticulous provenance and
+      calibrated uncertainty, and a test is added ensuring the spent protocol
+      identifier check-v3 is never reused. The changes adhere fully to epistemic
+      rules and the project constitution.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 76845
+      outputTokens: 685
+      usd: 0.060202
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The change is an experiment report and supporting artefacts only:
+      three check-v3 run records with raw seat replies under proposals/, spend
+      rows, REPORT.md, describe/standing scripts, a DECISIONS entry, a
+      runs/README correction, and a test locking the spent check-v3 name. No
+      content/ case files are touched; the assessments the runs wrote were
+      analysed and removed, so nothing is installed as Deep Memory standing and
+      no unratified draft is presented as ratified. The report honestly states
+      the precommitted adoption rule was not met (xAI within-one-step fell by
+      nine), that inputHash is null, that equal token counts do not prove equal
+      bytes, and that post-hoc pair/standing descriptions are not design tests.
+      AGENTS.md is untouched; no citations are added; OMITTED FILES is empty."
+    cost:
+      model: grok-4.5
+      inputTokens: 69466
+      outputTokens: 191
+      usd: 0.140193
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "No content files, AGENTS.md, or case assessments are changed: the
+      diff adds only experiment records, spend rows, a report, scripts, and a
+      decisions entry, and both the run account and the README confirm that the
+      assessment files the runs wrote were removed and nothing from the
+      experiment is installed in Deep Memory — so no unratified draft is
+      presented as ratified and no standing is altered. The report handles
+      provenance honestly: it corrects its own earlier false claim that raw
+      replies 'hold everything', admits the design's assertion about ledger
+      hashes was wrong when written, states plainly that equal token counts do
+      not prove equal bytes, and labels every post-hoc finding as a description
+      rather than a test. The check-v3 stamping is disclosed (draft copied in
+      and removed), and the new test guards the stamp by ensuring no site
+      protocol takes that name — a strengthening of the checks, not a weakening,
+      since the protocol stays check-v2 and the definitions are explicitly not
+      adopted. Lost calls from the second run are disclosed rather than hidden
+      in the spend ledger. Nothing here fabricates a citation, locator, or
+      record, misattributes a stamp, edits the constitution, or dodges a gate;
+      the disagreements the experiment exposed are displayed rather than
+      smoothed over."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 68235
+      outputTokens: 1078
+      usd: 0.01112
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 378811
+  outputTokens: 35635
+  usd: 1.5752
+harvestedAt: 2026-10-05

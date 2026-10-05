@@ -1,0 +1,141 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 423
+title: The build reads the content once; two notes on the reading layer
+url: https://github.com/ejhong/aletheia/pull/423
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-30
+judgedAgainst: b643b045bd
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5.5 (Anthropic)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.14
+      - §4
+    reasoning: "The diff touches nothing under content/, adds no citations, and
+      leaves AGENTS.md alone. The core change memoizes loadAllCases and
+      loadArbiterRecords only when ALETHEIA_CONTENT_FROZEN=1, which only the
+      package.json build script sets, so pipeline verbs and tests still read
+      fresh (frozen.test.ts pins both the default and the flag's single use). No
+      §3.15 check is weakened. readOnce still runs the full validating load once
+      per process, and a load that throws is never cached, because
+      deepFreeze(load()) throws before held.set, so malformed records and
+      dangling IDs still fail the build closed. Deep-freezing adds a failure
+      mode (a page that mutates a record throws) rather than removing one. The
+      StandingPanel change shows the claim-by-claim tally that was previously
+      withheld, labelled with how many seats' verdicts were given on an earlier
+      version; that is more disclosure, and the standing computation is
+      untouched. The DECISIONS.md entry records what changed and why, with the
+      house founder-direction stamp (date and channel), and nothing visible
+      shows that stamp or the #421 seat attributions misstating who did what.
+      Two non-blocking nits. First, the new method-page sentence says unresolved
+      and presently untestable 'stand on the same step', while the constitution
+      says they are 'one step from either and from each other'; adding 'one step
+      from each other' would mirror it exactly and avoid implying an
+      unresolved-versus-untestable pair counts as exact. Second, the guard test
+      scans only top-level files in .github/workflows, scripts and src/pipeline,
+      so 'every verb' is overstated if verbs sit in subdirectories."
+    cost:
+      model: claude-opus-5-5
+      inputTokens: 8185
+      outputTokens: 17784
+      usd: 0.42087
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.13
+      - §3.14
+      - §3.15
+    reasoning: "The build-only cache does not weaken fail-closed validation: cases
+      and arbiter records are still parsed and schema-validated on their first
+      read, and the cached results are deep-frozen against cross-page mutation.
+      The flag defaults off, and the added test restricts its repository use to
+      the static build, preventing pipeline verbs from judging stale ledger
+      state. The standing panel now expressly labels how many verdicts concern
+      an earlier case version, while the method text retains the distinction
+      between unresolved and presently untestable. The change edits neither
+      AGENTS.md nor content records, adds no citations or confidential material,
+      and records the implementation in the decision history."
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 9533
+      outputTokens: 2755
+      usd: 0.093232
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.13
+      - §3.14
+      - §3.15
+      - §8
+    reasoning: The change introduces an in-memory cache and deep freeze for
+      build-time content loading (`ALETHEIA_CONTENT_FROZEN=1`) without weakening
+      pipeline verification or test runs, which remain fresh reads by default.
+      The UI and documentation updates in `StandingPanel.tsx` and
+      `app/method/page.tsx` accurately reflect the constitutional rules on panel
+      alignment and the graded scale placement of 'unresolved' and 'presently
+      untestable'. No citations or content are fabricated, `AGENTS.md` is
+      untouched, and decision provenance is properly recorded in
+      `docs/DECISIONS.md`.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 10493
+      outputTokens: 603
+      usd: 0.010131
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff is a build-only content cache (ALETHEIA_CONTENT_FROZEN gated
+      to package.json build, deep-freeze, tests forbidding the flag elsewhere),
+      plus two UI notes that better match §3.15 (same-step unresolved/untestable
+      wording; claim tally shown with a stale-version count rather than hidden).
+      No content/, citations, assessments, AGENTS.md, confidence material, or
+      check-weakening appear; DECISIONS/MAINTENANCE only document the change.
+    cost:
+      model: grok-4.5
+      inputTokens: 9927
+      outputTokens: 127
+      usd: 0.020731
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.13
+      - §3.14
+    reasoning: "This is a build-performance change plus two display corrections,
+      with no content records, citations, or provenance-bearing material added,
+      and the citation verifier found no identifiers in the added lines. It does
+      not touch AGENTS.md and does not weaken any §3.15 check: validation still
+      runs fail-closed on every load (the Zod parse is inside the readOnce
+      closure), the freeze defaults off so pipeline verbs keep reading fresh
+      content (avoiding a stale ledger judged as current), and a new test pins
+      that only the build script sets the flag. The two #421 fixes move toward
+      transparency rather than away from it: the method page now correctly
+      states the constitution's §3.15 scale (unresolved and presently untestable
+      on one step), and the claim-by-claim tally is now shown with an explicit
+      label disclosing how many seat verdicts were given on an earlier version
+      of the case, instead of being silently withheld — disagreement displayed
+      rather than hidden. The DECISIONS.md entry records the decision with date
+      and channel as the constitution's operating record contemplates, matching
+      the file's established pattern; nothing in the visible diff fabricates a
+      source, locator, or attribution. The output-equivalence claim
+      (byte-identical builds) is asserted but plausible given the caching is
+      read-only and deep-frozen, and even if the performance numbers were
+      optimistic that would be ordinary imperfection, not an epistemic
+      violation."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 10613
+      outputTokens: 756
+      usd: 0.00197
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 48751
+  outputTokens: 22025
+  usd: 0.5469
+harvestedAt: 2026-10-05

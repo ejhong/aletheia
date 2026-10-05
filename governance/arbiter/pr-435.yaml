@@ -1,0 +1,140 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 435
+title: The verb closes a claim span the drafter closed with the wrong bracket,
+  and says so
+url: https://github.com/ejhong/aletheia/pull/435
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-30
+judgedAgainst: 8cbf74d58e
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5.5 (Anthropic)
+    vote: complies
+    rules:
+      - §8
+      - §3.15
+    reasoning: "`closeClaimSpans` rewrites only a span matching `[words]{claim=ID]`
+      with a well-formed id, changing that final `]` to `}`. The tests show that
+      malformed ids, spans with no opening bracket, bare markers and a stray
+      bracket after a good span are left alone. The corrected article still
+      passes through the same loader, schema and marker checks, and the loader
+      still refuses a misclosed span in CI, so no fail-closed check in §3.15 is
+      loosened or dodged. On §8's 'no silent data repair', the correction is
+      disclosed in three places: a sentence in the edition's rationale naming
+      the claim ids and attributed to the verb, in the existing 'Measured by the
+      verb' pattern; the run's reason note; and `corrections.md`.
+      `assembleEdition` builds a new reply object instead of mutating `given`,
+      so `reply.json` keeps the drafter's text as sent, and the compare test
+      asserts all of this. The edition's model stamp is therefore not a
+      misattribution: the one-character markup change is labelled and can be
+      reconstructed from the run directory. No file under content/, no citation,
+      no protocol text and no part of AGENTS.md is touched. Two minor notes. The
+      'Supervised-by: founder (direction in session, 2026-09-29)' stamp predates
+      the 2026-09-30 marker check and runs it cites; this is plausibly a session
+      spanning UTC dates, as with the prior entry, so it is not positive
+      evidence of misattribution, but the operator could confirm it. The PR
+      body's per-run costs sum to $6.08 against the stated $6.09, which is
+      consistent with cent rounding."
+    cost:
+      model: claude-opus-5-5
+      inputTokens: 9260
+      outputTokens: 10304
+      usd: 0.27557
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+      - §8
+    reasoning: "The change performs a deterministic one-character markup correction
+      only for an otherwise complete, well-formed claim span, after which the
+      normal edition validation still applies; malformed IDs and other marker
+      faults remain errors. It is not silent repair: the original drafter reply
+      is preserved, while the correction is recorded in the edition rationale,
+      run note, and `corrections.md`, including the affected claim IDs. The
+      tests cover both the narrow accepted pattern and nearby malformed patterns
+      that must remain untouched. No content citations, assessments,
+      confidential material, or AGENTS.md provisions are altered, and the
+      decision entry records the stated founder direction with date and
+      channel."
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 8765
+      outputTokens: 1716
+      usd: 0.069892
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §8
+    reasoning: The change fixes an exact syntactic bracket slip in claim span markup
+      (`]` instead of `}`) in `src/domain/article.ts` and records the mechanical
+      correction transparently. It adheres to the rule against silent data
+      repair by explicitly documenting every closed span in the edition's
+      rationale, the run note, and a dedicated `corrections.md` artifact beside
+      the untouched original reply. No content records, citations, or
+      constitutional texts are modified, and all constraints in §3 and §8 are
+      satisfied.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 11012
+      outputTokens: 544
+      usd: 0.010299
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff adds a narrowly scoped closeClaimSpans helper that rewrites
+      only the known one-character slip (']' for '}') when opening bracket,
+      words, brace, and a well-formed claim id are already present; every other
+      malformation is left for the drafter. That is not silent repair:
+      assembleEdition records closed ids in the edition rationale via
+      closedSpansSentence, the run note, and corrections.md beside the untouched
+      reply.json, matching the §8 ban on silent data repair and the
+      DECISIONS/MAINTENANCE documentation. No AGENTS.md edit, no content/ or
+      citation changes, no check loosened—the markerErrors path and repair-round
+      path still refuse real faults. Tests cover the fix, non-touch cases, and
+      the no-second-call edition path."
+    cost:
+      model: grok-4.5
+      inputTokens: 10384
+      outputTokens: 182
+      usd: 0.021975
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §8 (no silent data repair)
+      - §3.9
+      - §3.14
+    reasoning: "The change is a narrowly scoped, deterministic one-character markup
+      normalization (']' → '}' on an otherwise well-formed claim span), not a
+      weakening of any §3.15 check: malformed ids, bare markers, unopened spans,
+      and stray brackets still fail and still go back to the drafter, and the
+      corrected article is validated by the same loader rules afterward. The
+      code rule against silent data repair is explicitly satisfied — the repair
+      is disclosed in three on-the-record places (the edition rationale labeled
+      as the verb's measurement, the run note, and corrections.md), while the
+      drafter's reply is preserved unmodified so the one-character difference is
+      publicly inspectable, satisfying the provenance and versioning
+      requirements of §3.9/§3.14. The diff touches no content/, no citations,
+      and no AGENTS.md; tests cover both the fix and the refusal to fix anything
+      else. The disclosure sentences are attributed to the verb, not the
+      drafter, so nothing is misattributed. The cost rationale ($6.09 across six
+      runs) is plausible and the decision is logged in docs/DECISIONS.md with
+      the existing supervised-by convention."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 11130
+      outputTokens: 896
+      usd: 0.002118
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 50551
+  outputTokens: 13642
+  usd: 0.3799
+harvestedAt: 2026-10-05

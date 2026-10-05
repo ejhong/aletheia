@@ -1,0 +1,115 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 449
+title: "A slow test is given room: the forced-choice test loads every case
+  several times"
+url: https://github.com/ejhong/aletheia/pull/449
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-30
+judgedAgainst: ab17f0f7a0
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5.5 (Anthropic)
+    vote: complies
+    rules:
+      - §3.15
+      - §8
+      - §9
+    reasoning: "The diff touches only src/domain/next.test.ts. It gives one
+      scheduler test a 90-second timeout through vitest's options argument and
+      adds a two-line comment. The test's name, its setup, and its visible
+      assertion (toMatchObject on case and verb) are unchanged. Nothing under
+      content/ is added, so there are no citations, locators, or provenance
+      stamps to judge, which matches the verification tool finding no
+      identifiers. The test covers chooseNext's forced-choice path, which is not
+      one of the §3.15 fail-closed checks (schemas, dangling IDs, provenance
+      completeness, real citations). A longer timeout also loosens nothing: a
+      wrong result still fails, and a real hang still fails at 90 s, so this is
+      neither check-weakening nor a reclassification to dodge a check. AGENTS.md
+      is not edited. The comment's date (2026-09-30) is today and agrees with
+      the PR body, which honestly records the better fix (loading cases once) as
+      not done, as §9 asks when it says to report limitations. The change is the
+      smallest coherent fix for a flake that blocked an unrelated PR, and it
+      keeps §8's must-pass test suite reliable without hiding any failure mode
+      it asserts."
+    cost:
+      model: claude-opus-5-5
+      inputTokens: 870
+      outputTokens: 2881
+      usd: 0.062398
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.15
+      - §8
+    reasoning: The diff changes only the timeout for one existing test from the
+      default limit to 90 seconds; it does not alter, skip, or weaken the test’s
+      assertions. Allowing a known data-loading test more execution time is not
+      a dodge of the fail-closed checks in §3.15, because the same forced-choice
+      and ledger behavior remains tested. No content, citations, provenance
+      records, assessments, or constitutional text are changed. The change is
+      consistent with §8’s requirement that tests pass while retaining coverage
+      of important behavior.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 3406
+      outputTokens: 284
+      usd: 0.019816
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §8
+      - §10
+    reasoning: The change solely increases the execution timeout of an existing test
+      in `src/domain/next.test.ts` from default to 90 seconds to prevent flaky
+      test failures on slow CI runners as the case ledger grows. No test
+      assertions are modified or deleted, and the fail-closed CI checks remain
+      fully intact. The modification touches no content files, citations, or
+      constitutional governance files.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 4984
+      outputTokens: 293
+      usd: 0.004837
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff only raises one vitest timeout from the default to 90_000 ms
+      and adds a comment explaining CI slowness from repeated full-case loads;
+      nothing under content/, no citations, no AGENTS.md edit, no provenance or
+      assessment stamps, and no check-weakening. The change is ordinary test
+      hygiene that does not touch any §3 epistemic rule.
+    cost:
+      model: grok-4.5
+      inputTokens: 4813
+      outputTokens: 96
+      usd: 0.010317
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "This is a routine test-infrastructure change: it raises one test's
+      timeout from twenty seconds to ninety and adds an explanatory comment,
+      changing nothing about what the test asserts. The checks that §3.15
+      forbids weakening — fail-closed CI for schemas, dangling IDs, provenance
+      completeness, and real citations, plus the ratification gates — are
+      untouched; a timeout extension on a domain test is not one of those
+      checks, and the test still runs to completion and fails if its assertions
+      fail. The diff touches no content files, adds no citations, edits no
+      AGENTS.md, and carries no run records, so no fabrication, confidence, or
+      provenance concern arises. The PR body's candid 'Not done here' section
+      honestly notes the better fix (loading cases once) was deferred — an
+      ordinary scope limitation, not a constitutional defect."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 3459
+      outputTokens: 362
+      usd: 0.001045
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 17532
+  outputTokens: 3916
+  usd: 0.0984
+harvestedAt: 2026-10-05

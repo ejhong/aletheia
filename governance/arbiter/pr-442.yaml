@@ -1,0 +1,176 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 442
+title: The Emptied Amazon, re-told within the reader's budget and re-graded; a
+  fresh panel ratifies it
+url: https://github.com/ejhong/aletheia/pull/442
+verdict: pass
+reason: "4 of 5 seats affirm compliance; one seat's objection is a review note
+  the operator answers on the record: GPT-5.6 Sol (OpenAI) (§3.2, §3.9, §3.13;
+  other)"
+outcome: merged
+outcomeAt: 2026-09-30
+judgedAgainst: 518fd83919
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5.5 (Anthropic)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.14
+      - §3.6
+      - §3.9
+      - §4
+    reasoning: "The diff adds only new files: a candidate edition, its draft
+      assessment, five check-role assessments, run records, raw replies, a
+      comparison and spend ledgers. It touches no claim, evidence or source
+      record, no tooling, and not AGENTS.md, and it adds no citation
+      identifiers. Every assessment is a new append-only file stamped with
+      runId, producedBy, model, date and promptVersion, with humanReviewed:
+      false and role draft or check. The RUN ACCOUNT confirms each seat reply
+      and the repaired drafter reply are carried whole by the installed files,
+      and the spend ledgers reconcile exactly with both run.yaml totals (e.g.
+      $3.004615 and 252,573 input tokens including 384 cache reads). The
+      ratification claim checks out on §3.15's graded scale. On the case
+      verdict, three seats say well_supported and two provisionally_supported,
+      all within one step of the draft. All five seats are within one step on
+      every draft load-bearing claim (C003, C002, C004, C011, C013, C014, C010).
+      The six splits are exactly the claims held unresolved (C019–C023, C029);
+      none is load-bearing in the draft or in any seat's own list, so they are
+      displayed rather than parked. The fresh check (10:31) postdates the
+      edition (09:45), and the rationale openly says the drafter answered the
+      earlier panel, so standing does not rest on checks the drafter saw; the
+      missing shownChecks stamp is disclosed, not misattributed. The article
+      tells anchor-only claims as reports ('This site has not yet checked…'),
+      consistent with §3.6/§3.9, and its founder-funding note quotes a published
+      funding statement, not confidence material. Minor points only: the
+      rationale should name the 2026-09-21 check run it answers, and the draft
+      leaves C016/C017 out of loadBearing though every seat lists them —
+      immaterial here since all seats are within one step, but worth watching
+      because that designation controls splits."
+    cost:
+      model: claude-opus-5-5
+      inputTokens: 147220
+      outputTokens: 35275
+      usd: 1.295678
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: violates
+    rules:
+      - §3.2
+      - §3.9
+      - §3.13
+    reasoning: "The new assessment upgrades AMZ-C008 to well_supported while
+      expressly acknowledging that its bundled elements have materially
+      different support: attached records concern trees, pre-Columbian
+      attribution is contested, sibling records carry dark earths and raised
+      fields, and forest islands have no checked record. The article
+      nevertheless publishes all four elements together as one claim that they
+      record long human reshaping, allowing support for some conjuncts to grade
+      the unsupported conjunct and violating the atomic-claim rule. A similar,
+      smaller source-versus-inference problem appears in AMZ-C026: the article
+      says “fishing all year,” although the check record notes that dry-season
+      taxa establish year-round resource potential more directly than
+      uninterrupted year-round exploitation. Split AMZ-C008 into independently
+      assessable propositions and label AMZ-C026’s seasonality conclusion as
+      inference or narrow it to what the remains directly establish."
+    paradigm: other
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 97833
+      outputTokens: 3317
+      usd: 0.458184
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: The pull request presents a leaner edition of the
+      'pre-columbian-amazon' case along with complete governance records, spend
+      tracking, an incumbent comparison unanimously preferring the candidate,
+      and a fresh independent five-seat check panel. All five models on the
+      check panel (Gemini, GLM, GPT, Grok, Opus) returned case verdicts
+      concurring with the draft assessment ('well_supported' or
+      'provisionally_supported', within one step), and none of the load-bearing
+      claims split the panel. No primary claim, evidence, or source records were
+      modified, and the omitted raw working files are fully verified and
+      accounted for by the tooling in the run account. The change adheres
+      strictly to the constitutional requirements for edition updates and
+      multi-model concurrence.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 112974
+      outputTokens: 1899
+      usd: 0.091852
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff adds only an append-only edition, its draft assessment,
+      five blind multi-vendor check assessments, run/spend/comparison records,
+      and proposal working files; no claim, evidence, source, or AGENTS.md
+      record is touched, and citation tooling found no new identifiers. The
+      draft is stamped role: draft with runId/model/date/promptVersion; the
+      fresh check (after the edition) installs five independent seat assessments
+      the drafter never saw, all carried whole from seat replies, with case
+      verdicts within one step of the draft’s well_supported (3 well_supported,
+      2 provisionally_supported) and no split on a load-bearing claim. Verdict
+      moves name the seats and the deciding records; six featured claims are
+      held unresolved against every seat’s upgrade because none has a checked
+      evidence record, which respects §3.6 and honest labels. The article is
+      shortened within budget, drops internal ledger jargon, tells unchecked
+      material as reports, and keeps competing readings and negative evidence
+      visible; comparison is unanimous candidate-preferred. Repair of three
+      malformed claim-span closers is recorded and the repaired reply matches
+      the installed edition/assessment. Nothing fabricates provenance, presents
+      an unratified draft as ratified, exposes confidence material, or weakens
+      §3.15 checks."
+    cost:
+      model: grok-4.5
+      inputTokens: 101446
+      outputTokens: 282
+      usd: 0.204699
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.13
+      - §3.14
+      - §3.8
+      - §3.11
+    reasoning: "No AGENTS.md edit appears anywhere in the diff, and the change
+      touches no claim, evidence, or source records (the run account's records
+      digest is empty, and the citation verifier found no added citation
+      identifiers), so no fabrication or provenance surface is introduced; the
+      article's sources ride the existing verified ledger. The ratification
+      process is sound: the tooling confirms all five seat replies were carried
+      whole into the installed check assessments, the case verdict is 3×
+      well_supported / 2× provisionally_supported (all within one step of the
+      draft), and I checked each of the draft's seven load-bearing claims
+      seat-by-seat (C002, C003, C004, C010, C011, C013, C014) — none splits, so
+      'ratified, five of five' is an honest standing under §3.15's graded scale,
+      not a presented-as-ratified draft. Disagreement is displayed rather than
+      hidden: GPT's provisionally_supported dissent, the six claims held at
+      unresolved against upgrades from every seat for lack of checked evidence
+      records, and the declined upgrades are all stated in the edition's
+      rationale and the article tells unchecked claims as reports. Append-only
+      assessment files carry full provenance stamps (runId, producedBy, model,
+      date, promptVersion, humanReviewed: false, basis.ledgerHash), the
+      founder-funding of the 2026 study is disclosed in the article's own text,
+      and the repair round (malformed bracket markers) is recorded in errors.md
+      and verified by the tooling's field-by-field comparison. The missing
+      shownChecks on the edition assessment is a housekeeping gap, but the fresh
+      blind check run postdates the edition and supplies the ratification the PR
+      claims, so nothing publishes on the unverified basis the PR body itself
+      flags."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 100602
+      outputTokens: 2158
+      usd: 0.016515
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 560075
+  outputTokens: 42931
+  usd: 2.0669
+harvestedAt: 2026-10-05

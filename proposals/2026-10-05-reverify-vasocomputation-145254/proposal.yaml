@@ -1,0 +1,123 @@
+# Proposal — a change to domain records, in one envelope (docs/AUTOMATION.md).
+# Never citable; nothing here is a record until adopted through the gate.
+runId: 2026-10-05-reverify-vasocomputation-145254
+date: 2026-10-05
+case: vasocomputation
+producer: reverify
+model: null
+promptVersion: resubmit-v1
+basis:
+  ledgerHash: 2a490e3527f5eacd1ad3aad68a2deda9b870ef75134a909814d86c0d7e1274ff
+rationale: "Re-submission of 5 record(s) that verification blocked in proposals/2026-09-09-draft-vasocomputation-035914 — anchor source not retrievable (no URL on the record and no open-access copy known to OpenAlex) and no accepted evidence  | source text not retrievable: no URL on the record and no open-access copy known to OpenAlex — proposed again under fresh ids against the ledger as it stands by the reverify run 2026-10-05-reverify-vasocomputation-145254, a deterministic transformation (resubmit-v1) and not a model's work. The records were drafted by claude-fable-5-1 in 2026-09-09-draft-vasocomputation-035914 on 2026-09-09: on each claim's and evidence record's origin, and at the head of each source's verification note, with the lineage appended. The texts are fetched again and the records read as newly proposed."
+adds:
+  sources: []
+  evidence:
+    - id: VASO-E110
+      title: "Hubbard–Berkoff abstract: spontaneous EMG amplitude higher in tension-headache and fibromyalgia patients than in normals"
+      claimIds:
+        - VASO-C192
+      sourceId: SRC-HUBBARD-BERKOFF-1993
+      direction: supports
+      strength: moderate
+      sourceStatement: The source states that monopolar needle EMG was recorded from trapezius trigger points and adjacent non-tender fibers in normal subjects and in two patient groups, tension headache and fibromyalgia, and that "Mean EMG amplitude in the patient groups was significantly greater" than in normals.
+      editorInference: This is the between-group finding of the same 1993 study whose within-muscle finding anchors VASO-E001. It shows the nidus signal scales with clinical pain status, which is consistent with any account in which the nidus is a maintained, state-sensitive generator, but it does not distinguish the vascular from the skeletal-guarding reading. Abstract only; sample sizes and statistics not shown.
+      exactLocator: Abstract, Spine 18(13):1803–1807, October 1993; publisher (Ovid/LWW) landing page reached via https://doi.org/10.1097/00007632-199310000-00015; full text is 'PDF Only' and was not shown
+      limitations:
+        - Abstract only; group sizes, amplitude values, and test statistics not visible
+        - Single lineage (Hubbard/Berkoff), never replicated with modern instrumentation
+        - Patient groups are heterogeneous (tension headache, fibromyalgia); no vascular measurement was taken
+      reviewState: ai_extracted
+      origin:
+        ref: "report 2026-09-09-inbox-vasocomputation-021500; re-submitted from proposals/2026-09-09-draft-vasocomputation-035914 (was VASO-E022; blocked 2026-09-09: source text not retrievable: no URL on the record and no open-access copy known to OpenAlex)"
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-vasocomputation-035914
+        date: 2026-09-09
+    - id: VASO-E111
+      title: "Hubbard–Berkoff abstract: the authors attribute trigger points to sympathetically activated intrafusal contractions"
+      claimIds:
+        - VASO-C193
+      sourceId: SRC-HUBBARD-BERKOFF-1993
+      direction: supports
+      strength: weak
+      sourceStatement: The source states, as its authors' interpretation of their needle-EMG findings, that "TrPs are caused by sympathetically activated intrafusal contractions".
+      editorInference: This is the source's hypothesis, not a measured result; the study recorded EMG only and did not test sympathetic drive or spindle involvement directly. It supports VASO-C032 only in the sense that the observers who found the nidus proposed this generator; its diagnostic weight for the mechanism is near zero.
+      exactLocator: Abstract, final sentence, Spine 18(13):1803–1807, October 1993; reached via https://doi.org/10.1097/00007632-199310000-00015; abstract only
+      limitations:
+        - Hypothesis stated in an abstract, not a tested finding
+        - The article records that later literature favors endplate potentials as the generator; the question remains contested
+        - Abstract only; the discussion section was not shown
+      reviewState: ai_extracted
+      origin:
+        ref: "report 2026-09-09-inbox-vasocomputation-021500; re-submitted from proposals/2026-09-09-draft-vasocomputation-035914 (was VASO-E023; blocked 2026-09-09: source text not retrievable: no URL on the record and no open-access copy known to OpenAlex)"
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-vasocomputation-035914
+        date: 2026-09-09
+    - id: VASO-E112
+      title: The primary observers' generator is autonomic but skeletal (intrafusal), not vascular
+      claimIds:
+        - VASO-C020
+      sourceId: SRC-HUBBARD-BERKOFF-1993
+      direction: context
+      strength: weak
+      sourceStatement: The source's authors interpret the millimeter-scale spontaneous EMG nidus as arising because "TrPs are caused by sympathetically activated intrafusal contractions" — that is, sympathetically driven contraction of muscle-spindle fibers.
+      editorInference: "For VASO-C020 this cuts both ways and so is recorded as context: it agrees with the attribution that the nidus is autonomically maintained rather than structural, but it locates the maintained element in skeletal intrafusal fibers, not in microvascular smooth muscle. The latch-arteriole account must therefore either absorb spindle activation as the 'secondary skeletal-muscle guarding' it names or displace the observers' own explanation. Weightless on its own for the vascular question."
+      exactLocator: Abstract, final sentence, Spine 18(13):1803–1807, October 1993; reached via https://doi.org/10.1097/00007632-199310000-00015; abstract only
+      limitations:
+        - Author hypothesis, untested in the study
+        - No vascular measurement taken; cannot adjudicate vascular versus spindle generator
+        - Abstract only
+      reviewState: ai_extracted
+      origin:
+        ref: "report 2026-09-09-inbox-vasocomputation-021500; re-submitted from proposals/2026-09-09-draft-vasocomputation-035914 (was VASO-E024; blocked 2026-09-09: source text not retrievable: no URL on the record and no open-access copy known to OpenAlex)"
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-vasocomputation-035914
+        date: 2026-09-09
+  claims:
+    - id: VASO-C192
+      statement: Spontaneous needle-EMG amplitude at trapezius trigger points is higher in tension-headache and fibromyalgia patients than in healthy subjects.
+      theme: neural-signature
+      rung: observation
+      claimType: measurement
+      sourceAnchor:
+        locator: Abstract, Spine 18(13):1803–1807, October 1993; reached via https://doi.org/10.1097/00007632-199310000-00015
+        quote: Mean EMG amplitude in the patient groups was significantly greater
+        sourceId: SRC-HUBBARD-BERKOFF-1993
+      parentClaimIds:
+        - VASO-C002
+      dependsOnClaimIds:
+        - VASO-C002
+      reviewState: ai_extracted
+      origin:
+        ref: "report 2026-09-09-inbox-vasocomputation-021500; re-submitted from proposals/2026-09-09-draft-vasocomputation-035914 (was VASO-C031; blocked 2026-09-09: anchor source not retrievable (no URL on the record and no open-access copy known to OpenAlex) and no accepted evidence cites the claim)"
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-vasocomputation-035914
+        date: 2026-09-09
+    - id: VASO-C193
+      statement: The spontaneous electrical activity recorded at trigger points is generated by sympathetically activated contraction of intrafusal (muscle-spindle) fibers.
+      theme: neural-signature
+      rung: mechanism
+      claimType: mechanistic
+      sourceAnchor:
+        locator: Abstract, final sentence, Spine 18(13):1803–1807, October 1993; reached via https://doi.org/10.1097/00007632-199310000-00015
+        quote: The authors hypothesize that TrPs are caused by sympathetically activated intrafusal contractions
+        sourceId: SRC-HUBBARD-BERKOFF-1993
+      parentClaimIds:
+        - VASO-C002
+      dependsOnClaimIds:
+        - VASO-C002
+      reviewState: ai_extracted
+      origin:
+        ref: "report 2026-09-09-inbox-vasocomputation-021500; re-submitted from proposals/2026-09-09-draft-vasocomputation-035914 (was VASO-C032; blocked 2026-09-09: anchor source not retrievable (no URL on the record and no open-access copy known to OpenAlex) and no accepted evidence cites the claim)"
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-vasocomputation-035914
+        date: 2026-09-09
+  research: []
+  images: []
+corrections: []
+dispositions: []
+report: proposals/2026-09-09-inbox-vasocomputation-021500/report.md (re-submission 2026-10-05-reverify-vasocomputation-145254 of records blocked at verification)
+resubmission:
+  from: proposals/2026-09-09-draft-vasocomputation-035914
+  model: claude-fable-5-1
+  promptVersion: draft-v4
+  date: 2026-09-09

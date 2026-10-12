@@ -1,0 +1,66 @@
+# Proposal — a change to domain records, in one envelope (docs/AUTOMATION.md).
+# Never citable; nothing here is a record until adopted through the gate.
+runId: 2026-10-12-reverify-ccc-153936
+date: 2026-10-12
+case: ccc
+producer: reverify
+model: null
+promptVersion: resubmit-v1
+basis:
+  ledgerHash: f50080ce895637629f1f60b5c2045f8ecfd062217843a1e15a39b995aada8f1e
+rationale: "Re-submission of 2 record(s) that verification blocked in proposals/2026-09-10-draft-ccc-191834 — anchor source not retrievable (no URL on the record and no open-access copy known to OpenAlex) and no accepted evidence  | source text not retrievable: no URL on the record and no open-access copy known to OpenAlex — proposed again under fresh ids against the ledger as it stands by the reverify run 2026-10-12-reverify-ccc-153936, a deterministic transformation (resubmit-v1) and not a model's work. The records were drafted by claude-fable-5-1 in 2026-09-10-draft-ccc-191834 on 2026-09-10: on each claim's and evidence record's origin, and at the head of each source's verification note, with the lineage appended. The texts are fetched again and the records read as newly proposed."
+adds:
+  sources: []
+  evidence:
+    - id: CCC-E078
+      title: "An, Meissner & Nurowski (arXiv 1510.06537): ring-type excess at γ = 0.14 rad in Planck, and its decline under sky twisting"
+      claimIds:
+        - CCC-C502
+        - CCC-C526
+      sourceId: SRC-AN-MEISSNER-NUROWSKI-2017
+      direction: supports
+      strength: weak
+      sourceStatement: The source states that 'The results show that the vicinity of one radius (γ = 0.14 radians) of the rings is distinguished. Twisting the circles into deformed ellipses gives a pronounced drop of significance with the increase of twisting', that for the 70 GHz map against simulations from its binned power spectrum the A⁻ value at γ = 0.14 'reaches 99.7%' (99.9% for width 0.06), and that the twisted simulated maps 'are also twisted using the same procedure, and therefore the comparison is still being done in a fair way'.
+      editorInference: This is the arXiv v2 (2016) of the paper the ledger holds as the 2017 MNRAS article; the 99.7% here differs from the 99.4% in CCC-C502, which presumably follows the published version — no correction proposed without the journal text. The twist test here is applied to simulated maps as well, which answers the DeAbreu objection (CCC-E024) in form; whether the A-statistic's null is thereby fair is unexamined. Same program as Penrose; not independent.
+      exactLocator: "[p. 1] Abstract; [p. 4] §3 and Table 1; [p. 5] twist figure and text"
+      limitations:
+        - Preprint version; figures may differ from the refereed MNRAS 473, 3251 text.
+        - Proponent group; the ring search radii and widths were scanned after the γ = 0.14 result (Table 3), an a-posteriori refinement.
+      reviewState: ai_extracted
+      origin:
+        ref: "report 2026-09-10-report-ccc-191230; re-submitted from proposals/2026-09-10-draft-ccc-191834 (was CCC-E047; blocked 2026-09-10: source text not retrievable: no URL on the record and no open-access copy known to OpenAlex)"
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-10-draft-ccc-191834
+        date: 2026-09-10
+  claims:
+    - id: CCC-C526
+      statement: An, Meissner and Nurowski report that the significance of the γ = 0.14 rad ring-type excess in the Planck 70 GHz map declines rapidly toward a purely statistical result as the sky (and the simulated skies) are twisted into deformed ellipses.
+      theme: circles
+      rung: observation
+      claimType: observation
+      sourceAnchor:
+        locator: "[p. 1], Abstract (arXiv:1510.06537v2)"
+        quote: Twisting the circles into deformed ellipses gives a pronounced drop of
+        sourceId: SRC-AN-MEISSNER-NUROWSKI-2017
+        also:
+          - locator: "[p. 5], §3"
+            quote: consistently and rapidly approach a purely statistical result with the growth
+      parentClaimIds:
+        - CCC-C502
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: "report 2026-09-10-report-ccc-191230; re-submitted from proposals/2026-09-10-draft-ccc-191834 (was CCC-C522; blocked 2026-09-10: anchor source not retrievable (no URL on the record and no open-access copy known to OpenAlex) and no accepted evidence cites the claim)"
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-10-draft-ccc-191834
+        date: 2026-09-10
+  research: []
+  images: []
+corrections: []
+dispositions: []
+report: proposals/2026-09-10-report-ccc-191230/report.md (re-submission 2026-10-12-reverify-ccc-153936 of records blocked at verification)
+resubmission:
+  from: proposals/2026-09-10-draft-ccc-191834
+  model: claude-fable-5-1
+  promptVersion: draft-v7
+  date: 2026-09-10

@@ -1,0 +1,162 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 453
+title: "Where we are, as of 2026-09-30: the status documents, two mends to the
+  loop, a finding and a correction"
+url: https://github.com/ejhong/aletheia/pull/453
+verdict: pass
+reason: "4 of 5 seats affirm compliance; one seat's objection is a review note
+  the operator answers on the record: GPT-5.6 Sol (OpenAI) (§3.1, §3.13; other)"
+outcome: merged
+outcomeAt: 2026-09-30
+judgedAgainst: 35eb721999
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5.5 (Anthropic)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.8
+      - §3.9
+      - §3.12
+      - §3.13
+      - §7
+    reasoning: "The diff does not edit AGENTS.md, touches nothing under content/,
+      and adds no citations (the tooling found none). It publishes no confidence
+      material: the change is docs, a descriptive count under proposals/, reader
+      wording, a scheduler fix and a budget fix. The check.ts change tightens a
+      check rather than loosening it. Production still uses
+      assertSeatsWithinBudget when no deps are injected, the repair call now
+      goes through the same guard with outstanding calls counted, a refused seat
+      is recorded failed with the cap named, and a test pins that order.
+      busy-cases.mjs is a scheduling courtesy, not a §3.15 check, and the PR
+      discloses that it has no test coverage. MAINTENANCE.md now states the gate
+      rule as the amended §3.15 has it, and the arbiter code is untouched, so
+      nothing is reclassified or weakened. The DECISIONS entries are candid:
+      they correct #445's uncomputed claim with arithmetic that checks (3 of 5
+      vs 2 of 4 within one step on GEO-C030) and keep #452 parked. They also
+      record the operator's reading of the Engelbach Gutenberg text while
+      explicitly declining to treat it as what the ledger holds (§3.8/§3.9); I
+      see no internal contradiction there and do not treat unfamiliarity as
+      evidence. The split-count README is internally consistent: 126/2, 34/20
+      and 14 only-higher / 6 both-ways all recompute from its own table under
+      the §3.15 scale. It calls itself a description, has a 'what it does not
+      show' section, and changes no protocol on its strength (§3.12, §3.13). Two
+      small items deserve an answer, not a park: the standing.ts header adds an
+      unmentioned clarification (a pre-stamp reconsideration carrying
+      `reconciles` is read by that stamp alone) that should be confirmed against
+      the code and the 2026-08-26 decision, since it sits in tension with
+      AUTOMATION.md's 'a stamp … never take from it'. And LatestStrip relabels
+      'last content update' as 'the change history, last entry', which is
+      accurate only if lastContentUpdate is the last displayed history entry
+      (§7)."
+    cost:
+      model: claude-opus-5-5
+      inputTokens: 33763
+      outputTokens: 34994
+      usd: 0.867382
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: violates
+    rules:
+      - §3.1
+      - §3.13
+    reasoning: "The added finding in AUTOMATION, DECISIONS, and the experiment
+      README says that on 14 of 20 split claims “every seat that differs” grades
+      higher. The report’s own AMZ-C023 row contradicts that literal claim: the
+      judgment is `unresolved`, while one seat says `weakly_supported`, which is
+      lower under both the constitutional ordering and the script’s rank, while
+      other seats grade it higher. `count.mts` reveals that direction is
+      actually classified only among `far` verdicts—those more than one step
+      away—not among every verdict whose word differs. This mislabels a
+      quantified observation and presents a falsely exact directional finding;
+      reword every instance to “every seat more than one step away” if that is
+      intended, or recompute the count over all differing verdicts."
+    paradigm: other
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 27363
+      outputTokens: 5835
+      usd: 0.226152
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: "This pull request touches no case content under content/ and makes
+      no amendments to AGENTS.md. It updates documentation (docs/AUTOMATION.md,
+      docs/DECISIONS.md, docs/MAINTENANCE.md) to accurately record the project's
+      state as of 2026-09-30, including a formal correction regarding #445 and
+      documentation of the 2026-09-09 founder amendments. The code changes in
+      src/pipeline/check.ts strengthen budget enforcement during repair rounds
+      with full test coverage, and scripts/busy-cases.mjs appropriately extends
+      the busy-case detection to all open pull requests. User-facing strings in
+      the UI and method page clarify independence and noise without weakening
+      any constitutional check."
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 29990
+      outputTokens: 1263
+      usd: 0.027229
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff updates status docs, records operational
+      findings/corrections in DECISIONS, and mends two loop faults (budget
+      re-check before a check repair; busy-cases reading every open PR branch).
+      No AGENTS.md edit, no case ledger/content changes, no run records, and
+      citation tooling found no new DOI/arXiv/URL identifiers. The standing.ts
+      header and MAINTENANCE gate wording are aligned to the existing 2026-09-09
+      amendment rather than loosened; reader-facing “case rests on” copy leaves
+      the ledger term intact. The panel-split count is an offline description
+      over already-published checks with an explicit non-adoption of protocol
+      change. Nothing in the material positively shows fabrication, confidence
+      exposure, provenance mis-stamp, or check-weakening.
+    cost:
+      model: grok-4.5
+      inputTokens: 27929
+      outputTokens: 183
+      usd: 0.057071
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.6
+      - §3.9
+      - §3.13
+      - §7
+    reasoning: "No AGENTS.md edit appears in the diff, so the constitution rule is
+      not triggered. The MAINTENANCE.md lane rewrite does not weaken the gate —
+      it restates the pass/park rule exactly as the founder amendment of
+      2026-09-09 already words it in §3.15 (one seat parks alone only for
+      fabrication, confidence material, or a constitution edit; two seats
+      otherwise; lone other objections become review notes), and the check.ts
+      change strengthens enforcement by putting the repair call under the same
+      budget guard, with a test pinning the order. No citations are added
+      (verification found none), no case content is touched, and the decisions
+      entry is a model of §3.14-style honesty: it records that the operator's
+      earlier #445 claim was asserted without computation and was false, that
+      the panel stays parked on GEO-E002 because the record's statement of its
+      source outruns its own stated limitation (§3.9), and that the case reads
+      'not yet ratified' — presenting no unratified material as ratified. The
+      panel-splits finding is explicitly labeled a description with nothing run
+      for it, its script and its limits are shipped beside it, and no protocol
+      or standing rule is changed on its strength. Two items I cannot verify
+      from the packet but which do not rise to violation: the intake.ts comment
+      asserting inputHash is 'null on every check run before' 2026-09-30
+      describes historical records I cannot inspect, and the LatestStrip relabel
+      keeps the same value and changelog link — if the maintainer wants that
+      tightended, the label should be shown to track actual content updates
+      rather than any changelog entry, but that is a display nuance under §7,
+      not an epistemic breach."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 28580
+      outputTokens: 2400
+      usd: 0.005487
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 147625
+  outputTokens: 44675
+  usd: 1.1833
+harvestedAt: 2026-10-12

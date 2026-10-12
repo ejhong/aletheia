@@ -1,0 +1,156 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 425
+title: "The test of better: an edition is held to the reader's budget and read
+  beside the one it would replace"
+url: https://github.com/ejhong/aletheia/pull/425
+verdict: pass
+reason: "4 of 5 seats affirm compliance; one seat's objection is a review note
+  the operator answers on the record: GPT-5.6 Sol (OpenAI) (§3.14, §3.15;
+  provenance)"
+outcome: merged
+outcomeAt: 2026-09-30
+judgedAgainst: 0d5d0309bf
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5.5 (Anthropic)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.14
+      - §4
+      - §7
+    reasoning: "The diff does not touch AGENTS.md, adds nothing under content/,
+      cites nothing and carries no run records, so the question is whether it
+      loosens a §3.15 check. It tightens them instead: it adds a mechanical
+      reader's budget, puts markerErrors into the loader, and widens
+      extractPlateRefs so plates the old regex missed are now validated. It also
+      puts the check and comparison seats under the spend caps while leaving the
+      constitutional panel uncapped, and gates pure re-tellings on a comparison
+      whose order is balanced and blind. The chain.test `loaderErrors` filter
+      strips only the new budget findings, not any older loader rule. The
+      comparison is labelled 'a preference among AI readers, not a human
+      review', verdicts stay with the blind check, and every edition still faces
+      the panel in its PR, so nothing presents an AI or unratified record as
+      human or ratified; the verb's measured judgment-change line strengthens
+      §3.14. Protocol v14's plain-words rule keeps the report, unread and
+      provisional distinctions ('plain wording changes the vocabulary, never
+      what is claimed to be known'). A global length ceiling is not the per-case
+      pin §7 retired, and the comparison builds the competition of drafts §7
+      names. The DECISIONS entry's word counts, costs, tallies, run ids and
+      over-budget case count agree across the PR body, the log and v14, and the
+      founder direction carries its date and channel; I see no positive evidence
+      of invented provenance (readerBudget.ts's 2,177→7,514 versus 2,178→7,502
+      reads as two word counters). Fixes I would like, as ordinary imperfections
+      rather than breaches: comparisonInWords' 'undecided' branch says an
+      edition replaced its predecessor 'because the evidence had changed' even
+      when it went out to answer panel dissent or an objection on an unmoved
+      ledger, and should add 'or the panel had to be answered'. The method
+      page's 'without being told which is which' should also admit that the
+      WRITTEN FROM marker identifies the candidate whenever the incumbent is
+      stale, and should mention the answers-the-panel branch."
+    cost:
+      model: claude-opus-5-5
+      inputTokens: 82396
+      outputTokens: 37732
+      usd: 1.116674
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: violates
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: "`judgmentChanges` detects component changes only by comparing the
+      sorted multiset of component states, while discarding the association
+      between each component and its state. Thus swapping two components from
+      A=contradicted/B=supported to A=supported/B=contradicted would be reported
+      as no component-verdict change, and `judgmentChangesSentence` would append
+      that false assertion to the edition rationale. That makes the visible
+      assessment history incomplete or incorrect, contrary to §3.14 and §3.15's
+      requirement that readers can reconstruct what changed and how it was
+      checked. The provenance narrative is also internally inconsistent:
+      `readerBudget.ts` says the same article grew from 2,177 to 7,514 words,
+      while the added DECISIONS entry says 2,178 to 7,502; these figures should
+      be reconciled and the component comparison must preserve component
+      identity before the measured history can be trusted."
+    paradigm: provenance
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 58584
+      outputTokens: 4239
+      usd: 0.319116
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: This change introduces the reader budget floor and candidate
+      comparison step in the editorial pipeline without weakening the
+      constitutional checks or the blind panel. AGENTS.md is untouched, and
+      decisions log documentation records the founder direction from 2026-09-29.
+      The UI and schemas clearly attribute the comparison as a preference among
+      AI readers rather than human review or epistemic ratification. No content
+      under content/ is added, no citations are fabricated, and all automated
+      checks and domain tests pass.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 64002
+      outputTokens: 1031
+      usd: 0.051868
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff implements a reader budget and blind multi-seat comparison
+      for edition candidates, with no AGENTS.md edit and no content/ ledger,
+      citation, or case-record fabrication. Comparison outcomes, reasons, and
+      judgment deltas are stamped and displayed as AI preferences with honest
+      labels, preserving §3.14–§3.15 provenance and multi-model checks rather
+      than weakening them. Budget enforcement, marker refusal, and append-only
+      decisions logging strengthen mechanical validity without bypassing
+      concurrence or presenting unratified drafts as ratified. Omitted-files and
+      citation-verification sections are empty; RUN ACCOUNT carries no runs,
+      matching the PR’s claim that editions follow separately.
+    cost:
+      model: grok-4.5
+      inputTokens: 60569
+      outputTokens: 154
+      usd: 0.122177
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.14
+      - §3.13
+    reasoning: "The diff touches no AGENTS.md and adds no citations or case content,
+      so neither the reserved-amendment rule nor the fabrication rules are in
+      play; the citation verifier found no added identifiers. The change adds
+      checks rather than weakening any: the reader's budget is a new fail-closed
+      mechanical gate, the comparison adds a preference test before a re-telling
+      can replace an incumbent (and a moved-ledger candidate still goes out,
+      with the preference recorded, rather than being suppressed), and the blind
+      check and constitutional panel are left intact and explicitly named as
+      what would catch a 'shorter, plainer and wrong' candidate. AI involvement
+      is displayed honestly throughout — the method page and ComparisonPanel
+      label the preference as 'a preference among AI readers, not a human
+      review', and the code comments and tests enforce that the wording never
+      claims 'better', 'human', or 'reviewed'. Provenance is kept: run records,
+      spend rows for the two discarded runs (with the unrecorded cost of lost
+      calls admitted rather than hidden), rationale appended with verb-measured
+      judgment changes so a changed assessment records what changed (§3.14), and
+      a test holds the protocol's stated figures to the code so a promptVersion
+      always points at the text that ran. The union-merge attribute for the
+      append-only decisions log preserves both appended entries and does not
+      weaken provenance. Nothing here presents an unratified draft as ratified:
+      the two standing test editions are explicitly held unpublished pending
+      this gate."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 59652
+      outputTokens: 1354
+      usd: 0.009625
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 325203
+  outputTokens: 44510
+  usd: 1.6195
+harvestedAt: 2026-10-12

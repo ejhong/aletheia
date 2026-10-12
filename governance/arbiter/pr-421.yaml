@@ -1,0 +1,148 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 421
+title: "The reading layer: the case page is for reading the case, and the record
+  is a page of its own"
+url: https://github.com/ejhong/aletheia/pull/421
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-30
+judgedAgainst: dd96e16b98
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5.5 (Anthropic)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+      - §4
+      - §7
+    reasoning: "This change only alters presentation. It touches nothing under
+      content/ and does not edit AGENTS.md, the citation tool found no added
+      identifiers, and no schema, CI check or gate logic is loosened. The
+      governance.ts edit only adds a tie-break to the sort order, and
+      panel.test.ts now points at the moved verdict page rather than dropping
+      its assertion. The labels stay honest. StandingPanel still reads \"an
+      AI-generated assessment · not reviewed by a human\", standingInWords names
+      only what models did, and a test pins that the standing glosses never
+      mention a human. A seat that judged an earlier version is now labelled
+      \"judged an earlier version\" instead of being shown as concurring.
+      Nothing is removed from the record: the rationale, every run and the full
+      changelog move to /cases/<slug>/record/, each gate verdict gets its own
+      page with every seat's reasoning open, and the new seat-tally table adds
+      to inspectability under §3.15. The change also removes false or stale
+      statements: the retired \"until a named human endorses them\" promise, the
+      dead /panel links and the retired literature watch. The DECISIONS entry
+      records the founder's direction with its date and channel, as the
+      2026-09-09 amendment requires. Two small imperfections do not break a
+      rule: the claim-by-claim split summary is hidden whenever any seat is
+      stale, and the method page lists unresolved and presently_untestable in a
+      line although the constitution puts them on one rung. Both are worth
+      tidying later."
+    cost:
+      model: claude-opus-5-5
+      inputTokens: 81887
+      outputTokens: 27595
+      usd: 0.911898
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+      - §4
+      - §7
+    reasoning: "The change does not edit AGENTS.md, alter content records or
+      assessments, add citations, or weaken the publication gate. It relocates
+      rather than suppresses provenance: complete run records, refusals,
+      changelogs, and seat-by-seat gate reasoning remain publicly accessible on
+      dedicated pages, while stale panel checks are explicitly identified as
+      judging an earlier version. Verdict-move summaries are derived from
+      successive adopted assessments and preserve the complete edition history
+      elsewhere, including reversals, so append-only assessment history is not
+      replaced. AI authorship, ratification standing, lack of human review, and
+      disagreement remain visibly labeled, and the decisions entry stamps the
+      founder direction with its date and session channel."
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 57776
+      outputTokens: 2703
+      usd: 0.285676
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+      - §4
+      - §7
+    reasoning: The change is an editorial and presentation refactoring that splits
+      the verbose operational/run history onto dedicated subpages
+      (`/cases/[slug]/record/` and `/operations/gate/[pr]/`) while keeping
+      direct links and recent history visible on the primary case page. No
+      content files under `content/` or citations are altered, and `AGENTS.md`
+      is untouched. The new UI components and domain derivations accurately
+      preserve epistemic labels, explicitly clarifying that ratifications are
+      independent multi-model AI checks rather than human reviews in accordance
+      with §4, §7, and §3.15.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 66080
+      outputTokens: 733
+      usd: 0.052309
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff is presentation-only: UI routes, components, CSS contrast,
+      meta/sitemap/feed, and pure derivations (moves, lede, glosses, gate
+      tallies). It does not edit AGENTS.md, content ledgers, assessments,
+      editions, or protocols, and adds no citations. AI assessments stay labeled
+      as AI; standing copy and tests refuse human-review language; the
+      home/method pages drop retired human-endorsement and /panel claims rather
+      than inventing provenance. Record/run detail moves to
+      /cases/<slug>/record/ and gate pages without hiding disagreement or
+      weakening §3.15 checks. Omitted-files and citation-verification sections
+      are empty, so nothing material is hidden from review."
+    cost:
+      model: grok-4.5
+      inputTokens: 62618
+      outputTokens: 170
+      usd: 0.126371
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §4
+      - §7
+      - §3.14
+      - §3.8
+    reasoning: "This is a presentation-layer change: no content/ records,
+      assessments, editions or citations are touched (citation verification
+      found no added identifiers, and no run records are carried), and AGENTS.md
+      is unedited. The UI additions are epistemically honest — the Lede
+      component keeps the whole text in the page behind a disclosure (tested:
+      lede plus rest equals the whole text), verdict moves are derived from the
+      append-only editions/assessments rather than a new editable record, and
+      the full changelog and run history remain public on the new /record/ and
+      /operations/gate/ pages, so nothing is hidden or weakened; §3.14's visible
+      revision histories are preserved, with per-day netting on the home feed
+      balanced by the complete per-edition history one link away. The new
+      glosses and standing wording are checked by tests to never claim human
+      review, consistent with §4's labeling rules, and the method page's
+      corrections remove retired promises (human endorsement, /panel) rather
+      than adding misattributions. The seat tally and its commentary in the
+      operations page derives mechanically from harvested arbiter records with
+      tests, and the DECISIONS entry records the founder's 2026-09-29 direction
+      with date and channel as §3.15 permits. Nothing here fabricates, exposes
+      confidence material, edits the constitution, or loosens a check."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 59999
+      outputTokens: 1132
+      usd: 0.009566
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 328360
+  outputTokens: 32333
+  usd: 1.3858
+harvestedAt: 2026-10-12

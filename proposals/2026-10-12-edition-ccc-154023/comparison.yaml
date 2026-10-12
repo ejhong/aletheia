@@ -1,0 +1,58 @@
+# The panel's seats reading the candidate beside edition-2026-09-30-093242, as a reader would (compare-v1; src/pipeline/compare.ts).
+# AI judgments of two tellings; not a human's, and not a judgment of the verdicts.
+against: edition-2026-09-30-093242
+protocol: compare-v1
+outcome: candidate-preferred
+candidate: 5
+incumbent: 0
+neither: 0
+seats:
+  - seat: Opus 5.5 (Anthropic)
+    model: claude-opus-5-5
+    candidateShownAs: A
+    prefers: candidate
+    margin: clear
+    reasons: "The question, verdicts and all three header answers are word-for-word identical, so the choice turns on staleness and the article body. B is written from superseded evidence, and the article shows it: three times it describes the site's own checking ('this site has not yet checked that passage against the paper', 'a figure this site knows only secondhand', 'a figure not yet checked here'), and it also has a stray 'They did report this' and an unexplained 'not the 3% sometimes quoted'. B says a third of 'what remains' after the look-elsewhere correction comes from the strongest spots, which A corrects to a third of the uncorrected excess at the claimed sizes. B's Bielewicz paragraph also leaps to 'randomly placed centres' without saying Bielewicz had noticed the clustering, a gap A fills. A's 122 extra words are mostly fairness and specifics: the Warsaw group's own Planck paper showing the same circle-over-ellipse pattern, Penrose's reply on mass fade-out, Eckstein's information-preserving repair that keeps the sky predictions, and the concrete r < 0.036 limit. That is worth the extra half-minute, and A drops all of B's process language."
+    notes:
+      - Drop the 'not 3% in total' aside and simply say the three regions together cover at most about 9% of the searched sky, since the reader never saw the 3% figure it corrects.
+      - Rewrite the clumsy Warsaw sentence to say plainly that this is a second report of the circle-over-ellipse preference, by proponent-affiliated authors using their own test, and still unchecked against simulated skies.
+      - Translate 'six sigma' into the same plain terms as the 99.98% and 87% confidence figures so a general reader can compare the headline numbers on one scale.
+  - seat: GPT-5.6 Sol (OpenAI)
+    model: gpt-5.6-sol
+    candidateShownAs: B
+    prefers: candidate
+    margin: clear
+    reasons: "B preserves the strong, early summary of the claim, the failed significance tests, the live alternatives, and the tests that could resolve them, while being current rather than explicitly stale. Its opening is more precise than A’s: it distinguishes real features in the maps from evidence that they are unusually numerous or strong. B also replaces A’s distracting admissions that passages were unchecked or known only secondhand with concrete information about the Planck follow-up, ring-centre crowding, Hawking-point fragility, and the proposed entropy repair. Those useful additions justify the modest 122-word increase and make B both fairer to proponents and more informative about why the evidence remains inadequate."
+    notes:
+      - Explain “6σ” in plain language when it first appears, since a general reader may not know what sigma signifies.
+      - The long sequence of researcher names and quoted paper language could be trimmed slightly without losing the evidential comparison.
+      - Qualify the claim that a single agreed Planck protocol would “settle” the detection claims, since the article also says CCC has not specified precise predictions.
+  - seat: Gemini 3.8 Flash (Google)
+    model: gemini-3.8-flash
+    candidateShownAs: A
+    prefers: candidate
+    margin: clear
+    reasons: Telling A is written from current evidence and removes several distracting internal editorial disclaimers present in B, such as 'this site has not yet checked that passage' and 'a figure this site knows only secondhand.' It also provides a more complete and fair summary of theoretical responses, including Penrose's defense of mass fade-out and Eckstein's proposal for information preservation. The slight increase in length (about 120 words) is well worth the improved authority, polish, and currency.
+    notes:
+      - The second paragraph of the article still repeats the opening summary almost verbatim and could be trimmed.
+      - The phrase 'this site' or self-referential editorial perspective should continue to be guarded against across the entry.
+  - seat: Grok 4.5 (xAI)
+    model: grok-4.5
+    candidateShownAs: B
+    prefers: candidate
+    margin: clear
+    reasons: Both open with nearly identical headers that quickly state the claim, the contradicted status of the circles and Hawking points, the chance dispute, the untested circle/ellipse and crowding points, and the settling tests, so the reader learns the essentials before the article. B is written from today's evidence while A is stale, and A repeatedly flags unchecked passages and secondhand figures with internal 'this site has not yet checked' notes that B has resolved into concrete updates (Bielewicz first noting the crowding, the Warsaw Planck paper's own ellipse fade, Penrose's fade-out reply, Eckstein's repaired CCC, the tensor-to-scalar limit). B therefore gives the same core teaching plus fresher specifics at almost the same length and without site jargon, while remaining equally plain, fair to both sides, and clear on what is still untested.
+    notes:
+      - B could still trim a few hundred words from the later theory-bill and dispute sections without losing the four accounts or the settle-it tests a ten-minute reader needs.
+      - The plate/figure placeholder still lacks an actual caption that would let the reader see a quiet-ring example immediately.
+      - A one-sentence plain-language gloss of 'look-elsewhere' earlier in the Hawking-points section would help the general reader.
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    model: z-ai-glm-5-3-flash
+    candidateShownAs: A
+    prefers: candidate
+    margin: clear
+    reasons: "A is written from the evidence as it stands today, while B predates the last change, a real defect the panel is told to count, and B shows the strain: it hedges claims A states cleanly (the Bielewicz low-variance result, the Jow and Scott two-strongest-spots figure). Worse, B leaks the site's internal editorial process into the text a general reader sees — 'this site has not yet checked that passage against the paper', 'a figure this site knows only secondhand', 'a figure not yet checked here' — which is exactly the internal vocabulary and revision history criterion 3 says the page should not carry, and it undermines reader confidence without teaching anything. B also contains the stray unexplained sentence 'They did report this.' Otherwise the two tellings are near-identical in structure, coverage, fairness to both camps, and concreteness, so A's currency and cleaner prose win."
+    notes:
+      - A could trim its internal-facing tone elsewhere too, but nothing comparable remains — the phrase 'this site' never appears, which is right.
+      - A's Hawking-points section could state the 'third from the two strongest spots' figure as firmly as B's framing suggests it now can, since that appears to be part of what changed.
+      - Both tellings could still name what the 2025 Meissner–Penrose preprint's quantitative prediction would look like as a test, rather than only noting it exists.

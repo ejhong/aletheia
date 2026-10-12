@@ -1,0 +1,135 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 446
+title: "The reply comparison is tested against every place a reply can hold text
+  (review note #444)"
+url: https://github.com/ejhong/aletheia/pull/446
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-30
+judgedAgainst: ab17f0f7a0
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5.5 (Anthropic)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.14
+      - §9
+    reasoning: "The diff touches only an appended DECISIONS.md entry,
+      src/lib/arbiter-core.mjs and src/domain/arbiter.test.ts. AGENTS.md and
+      content/ are untouched, and the verification tool found no added
+      citations. The code change tightens editionReplyDifferences. A
+      researchStatus entry is now a difference if it is not a mapping, carries
+      any non-empty field besides id, status and note, or holds a non-string
+      value in one of those. Such a reply can no longer be called carried and
+      dropped from the reviewable diff, so the §3.15 checks are strengthened,
+      not weakened. The isEmptyValue exemption covers only extra fields that
+      were previously ignored entirely. The `continue` on non-mapping entries
+      replaces a path that already produced a difference. No existing assertion
+      is removed or loosened. The new test mutates every mapping, list and leaf
+      of a carried reply and requires each mutation to be caught, and it checks
+      that the walk reaches the deep paths, so it fails closed if a later change
+      opens an unread corner. The decisions entry is dated today and answers
+      lone-objection review note #444 on the record by a fix, as §3.15
+      prescribes. It also states its own limitation plainly ('What the test does
+      not show'). Its 'Supervised-by: founder (direction in session,
+      2026-09-29)' stamp carries date and channel, matches the preceding entry's
+      convention, and does not claim human authorship or approval of this
+      change; I see no positive evidence of misattribution."
+    cost:
+      model: claude-opus-5-5
+      inputTokens: 4684
+      outputTokens: 10482
+      usd: 0.229674
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: "The change strengthens the ratification audit rather than weakening
+      it: `editionReplyDifferences` now rejects non-mapping research entries,
+      non-string fields, and additional nonempty fields that were not installed.
+      The new traversal test mutates every mapping, list, and leaf in the valid
+      `EditionReply` fixture and requires each mutation to prevent the reply
+      from being called carried. The decision log records the defect,
+      correction, test scope, limitation, review-note references, and founder
+      supervision with date and channel, supporting inspectable provenance and
+      version history. It neither edits AGENTS.md nor changes content,
+      citations, assessments, or confidence material."
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 6037
+      outputTokens: 587
+      usd: 0.0364
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.15
+      - §8
+    reasoning: "The PR addresses review note #444 by strengthening reply comparison
+      in `src/lib/arbiter-core.mjs` so extra fields or malformed properties in
+      `researchStatus` entries are properly flagged rather than silently
+      ignored. A comprehensive mutation walk test is added in
+      `src/domain/arbiter.test.ts` to ensure any text additions or changes
+      throughout an edition reply prevent it from being incorrectly deemed
+      carried. The change tightens operational verification (§3.15), does not
+      modify `AGENTS.md`, and introduces no content or citation issues."
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 7961
+      outputTokens: 401
+      usd: 0.007475
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff tightens edition-reply comparison so a researchStatus entry
+      is only id/status/note strings, flags extra keys and non-mappings, and
+      adds a walk-the-whole-reply mutation test that any unread corner fails.
+      That strengthens §3.15 carry-checks rather than weakening them.
+      DECISIONS.md only records the adopted review note and founder supervision;
+      AGENTS.md and content/ are untouched, and no citations or run records are
+      introduced. Ordinary test and comparison code with honest provenance
+      stamping.
+    cost:
+      model: grok-4.5
+      inputTokens: 7586
+      outputTokens: 127
+      usd: 0.016049
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §4
+      - §3.14
+    reasoning: "This is a test-and-validation change that strengthens, not weakens,
+      the gated comparison: review note #444 found a research-status entry field
+      that the reply comparison ignored, and the diff closes that hole (extra
+      fields, non-mapping entries, and non-string id/status/note are now
+      differences) plus adds a general-form walk test that mutates every
+      mapping, list, and leaf and requires each mutated reply to be found not
+      carried — the opposite of check-weakening under §3.15. No AGENTS.md text
+      is edited; the only documentation change is an append-only entry in
+      docs/DECISIONS.md, which is the permitted operating record, and it stamps
+      the founder supervision with date and channel (session, 2026-09-29)
+      exactly as §3.15 requires. No content/ files change, no citations or
+      provenance claims are introduced (the citation tool found none), and no
+      run records are carried, so §§3.7–3.11 are not engaged. The residual
+      `isEmptyValue` allowance in the field check is ordinary engineering
+      discretion, not a loosened check; I would flag as a review note only that
+      the founder-supervision attribution rests on the PR author's word, but the
+      constitution's own amendment places such session directions in the
+      decisions log and nothing in the material contradicts it."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 6096
+      outputTokens: 582
+      usd: 0.001551
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 32364
+  outputTokens: 12179
+  usd: 0.2911
+harvestedAt: 2026-10-12

@@ -1,0 +1,123 @@
+runId: "2026-10-12-check-gemini"
+model: "Gemini 3.8 Flash (Google), independent check run"
+date: "2026-10-12"
+promptVersion: "check-v2"
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: contradicted
+  loadBearing:
+    - CCC-C002
+    - CCC-C004
+    - CCC-C009
+    - CCC-C010
+  weakestLinks:
+    - CCC-C002
+    - CCC-C004
+    - CCC-C006
+  synthesis: >-
+    Roger Penrose's Conformal Cyclic Cosmology (CCC) is an intellectually ambitious cosmological model that seeks to eliminate the Big Bang singularity and resolve the initial low-entropy puzzle by matching the conformally invariant late future of a prior aeon to the origin of our own. Unusually for pre-Big-Bang theories, CCC ventured concrete, falsifiable observational predictions in existing microwave background maps: concentric low-variance circles produced by gravitational-wave bursts from supermassive black-hole collisions, and localized temperature spikes ("Hawking points") left by evaporating black holes. Proponents reported both signatures at high statistical significance (up to 6σ for circles and 99.98% for Hawking points).
+
+    However, the provided evidence records overwhelmingly contradict the hypothesis that these CMB features represent physical relics of a prior aeon. Multiple independent research teams (Wehus & Eriksen 2011; Moss, Scott & Zibin 2011; Hajian 2011; Bielewicz et al. 2013; DeAbreu et al. 2015; Jow & Scott 2020; Bodnia et al. 2024) reproduced the search algorithms and confirmed that the geometric features exist, but demonstrated that they are completely typical of Gaussian fluctuations drawn from the standard ΛCDM power spectrum. The proponents' high significance figures resulted from an invalid null hypothesis (a pure Gaussian sky plus white noise rather than the structured CMB sky), severe uncorrected look-elsewhere effects across search radii, and few-pixel point-like artifacts that artificially depress annular baseline variances. When proper null simulations, parameter marginalization, and artifact screening are applied, the statistical anomalies completely disappear. Furthermore, CCC's theoretical mechanisms face unresolved foundational challenges: mass fade-out lacks any known particle-physics basis, and quantum information analyses show black-hole evaporation increases global entropy rather than resetting it.
+
+    Steelman for CCC: CCC was formulated well before the data searches took place (Penrose 2006) and is not a post-hoc curve fit. Proponents rightly emphasize that two observational claims remain unrefuted by direct, apples-to-apples counter-simulations: the sky-twist procedure showing a sharp drop in concentric structure abundance under slight ellipticity, and the dramatic spatial clustering wherein 83% of concentric ring triples lie within just 3% of the sky.
+
+    Sensitivity: The single evidence record whose removal would most change this assessment is CCC-E012 (Bodnia et al. 2024), which provides the mechanistic artifact explanation (few-pixel spots generating false rings) and a comprehensive machine-learning null. Nonetheless, the case verdict of 'contradicted' comfortably survives without it, as five earlier independent reanalyses (Wehus & Eriksen, Moss et al., Hajian, DeAbreu et al., and Jow & Scott) had already demonstrated that the reported circle and spot significances dissolve under standard ΛCDM nulls.
+  steelman: >-
+    The sharp drop in concentric ring prevalence under minor elliptical deformation demonstrated by Gurzadyan and Penrose's sky-twist procedure (EPJ Plus 2013) has never been re-evaluated against an ellipse-matched, artifact-screened ΛCDM null ensemble.
+claimAssessments:
+  - claimId: CCC-C009
+    verdict: contradicted
+    confidence: high
+    reasoning: >-
+      Five independent reanalyses (Wehus & Eriksen 2011; Moss, Scott & Zibin 2011; Hajian 2011; DeAbreu et al. 2015; Bodnia et al. 2024) show that the observed concentric low-variance circles appear at chance abundance in standard ΛCDM simulations, while Hawking-point significance collapses under look-elsewhere marginalization (Jow & Scott 2020) and machine-learning tests. Additionally, Bodnia et al. demonstrated that few-pixel temperature artifacts artificially manufacture the concentric circle patterns. The strongest opposing consideration is that the specific circularity-versus-ellipticity drop in the sky-twist test and the 83% spatial concentration of ring triples remain unrebutted by direct counter-simulations.
+  - claimId: CCC-C010
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Independent reanalyses across multiple teams demonstrate that the reported circle excesses disappear when evaluated against simulations drawing on the empirical ΛCDM power spectrum, and Hawking-point significance plummets from 99.98% to 87% (~1σ) after marginalizing over ring radius. Bodnia et al. (2024) further showed that few-pixel extreme spots erroneously generate concentric low-variance circles under the proponents' search criteria. The strongest opposing consideration is that the sharp sensitivity to ellipticity in the 2013 sky-twist test has not been independently replicated with an ellipse-matched ΛCDM null ensemble.
+  - claimId: CCC-C002
+    verdict: contradicted
+    confidence: high
+    reasoning: >-
+      Independent analyses by Wehus & Eriksen (2011), Moss et al. (2011), Hajian (2011), Bielewicz et al. (2013), DeAbreu et al. (2015), and Bodnia et al. (2024) confirm that low-variance concentric circles occur with identical frequency and variance in standard Gaussian ΛCDM skies. The reported 6σ significance was an artifact of comparing the data against a featureless white-noise null sky rather than one incorporating the known CMB power spectrum. The strongest opposing consideration is the proponents' argument that real CMB fluctuations should not be treated as purely random Gaussian noise because they allegedly contain deterministic pre-aeon imprints.
+  - claimId: CCC-C004
+    verdict: contradicted
+    confidence: high
+    reasoning: >-
+      Jow & Scott (2020) proved that the 99.98% confidence level was driven by look-elsewhere effects; marginalizing over ring size reduces the confidence to 87% (~1σ), with one-third of the signal driven by a single point. Independent searches using synthetic CCC validation (López et al. 2022) and deep learning (Bodnia et al. 2024) found no statistically significant excess of Hawking points and ruled out the claimed parameter space. The strongest opposing consideration is the empirical co-location of the five most prominent hot spots between the independent WMAP and Planck datasets.
+  - claimId: CCC-C001
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Multiple independent groups (Wehus & Eriksen 2011, Moss et al. 2011, DeAbreu et al. 2015) successfully executed the published search algorithms on WMAP and Planck data and confirmed that the annular low-variance structures and concentric families are present at the reported sky coordinates. The features are genuine geometric properties of the temperature maps rather than software bugs. The strongest opposing consideration is that these rings can be manufactured by isolated few-pixel artifacts rather than coherent physical ring structures.
+  - claimId: CCC-C003
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Both sides of the debate explicitly document this exact methodological divergence in the literature: Gurzadyan & Penrose (2010b) confirmed they used a pure Gaussian sky plus noise, while independent critics (Wehus & Eriksen 2011, Moss et al. 2011, Bodnia et al. 2024) evaluated significance against skies drawn from the full ΛCDM angular power spectrum. The root cause of the conflicting statistical conclusions is undisputed. The strongest opposing consideration is the proponents' conceptual claim that the ΛCDM power spectrum is an invalid null because it subsumes deterministic pre-aeon structure.
+  - claimId: CCC-C011
+    verdict: established
+    confidence: high
+    reasoning: >-
+      The literature review compiled in Study CCC-S001 and Jow & Scott (2020) establishes that every search conducted between 2010 and 2024 selected search statistics, ring radii, filter sizes, and thresholds post hoc after examining the data. Neither positive detections nor negative rebuttals used preregistered protocols or blind analysis. The strongest opposing consideration is that DeAbreu et al. (2015) strictly froze their analysis to the proponents' previously published parameter values, providing a de facto prespecified replication, though not a formally preregistered one.
+  - claimId: CCC-C503
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Gurzadyan and Penrose (2013, EPJ Plus) explicitly published these exact findings: concentric low-variance ring counts dropped precipitously when perturbed into elliptical annuli using their sky-twist procedure, and detected ring radii terminated below 20 degrees. The claim is a factual report of what the published paper presented. The strongest opposing consideration is that the sky-twist metric and threshold criteria were designed a posteriori without comparison against an equivalent synthetic ΛCDM null ensemble.
+  - claimId: CCC-C504
+    verdict: established
+    confidence: high
+    reasoning: >-
+      An, Meissner, Nurowski, and Penrose (2020, MNRAS) explicitly reported that 83% of the 1134 concentric triple centers identified in their search clustered within three regions covering approximately 3% of the searched sky. The claim accurately describes the authors' published empirical findings. The strongest opposing consideration is that Bielewicz et al. (2013) demonstrated that regional ring clustering naturally stems from known large-scale CMB anomalies at low multipoles (ℓ ≤ 7) rather than localized physical sources.
+  - claimId: CCC-C501
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Meissner, Nurowski, and Ruszczycki (2013, Proc. R. Soc. A) explicitly reported finding ring-type structures in WMAP data at a 99.7% confidence level relative to artificial maps of identical harmonic content. The statement is an accurate factual record of the published claim. The strongest opposing consideration is that the authors selected their detection statistic and thresholds post hoc, exposing the reported significance to uncorrected look-elsewhere effects.
+  - claimId: CCC-C509
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Jow & Scott (2020, JCAP) measured the mean nearest-neighbor distance of the 30 most significant Hawking points in Planck 2018 SMICA maps and found separations of 0.20 and 0.19 radians at the two claimed scales, falling directly within 1σ of the Gaussian expectation (0.20 ± 0.03 rad). The measurement is precise and unrefuted in the ledger. The strongest opposing consideration is that the test used only 100 simulations and evaluated only the top 30 candidates, which could limit sensitivity to subtle, broad-scale clustering.
+  - claimId: CCC-C523
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Bielewicz, Wandelt, and Banday (2013) demonstrated that replacing the low-order multipoles (ℓ ≤ 7) in simulated ΛCDM skies with the empirical values observed in WMAP resolves the deficit of variance in large-radius rings (>10°). This directly links the observed variance anomaly to known large-scale CMB multipole anomalies. The strongest opposing consideration is that the anomalous nature of the low-order multipoles themselves remains unexplained within standard inflationary cosmology.
+  - claimId: CCC-C524
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Bielewicz et al. (2013) showed via rotation tests and low-multipole conditioning that the concentration of low-variance ring centers in specific regions traces to diffuse, large-angular-scale temperature configurations rather than discrete, localized collision sources. This provides a conventional, established mechanism for the observed anisotropy. The strongest opposing consideration is the proponents' interpretation that such spatial clustering represents previous-aeon superclusters of colliding black holes.
+  - claimId: CCC-C005
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Penrose (2018, Found. Phys.) explicitly conceded that CCC's conformal matching requires rest mass to asymptotically decay and acknowledged this as "an admittedly unconventional hypothesis" without an accepted particle-physics mechanism. Tod (2022) independently emphasized mass fade-out, particularly for charged particles, as a critical unresolved theoretical problem. The strongest opposing consideration is Penrose's theoretical suggestion that rest mass may not be a strict Casimir invariant in de Sitter space with positive cosmological constant.
+  - claimId: CCC-C006
+    verdict: contradicted
+    confidence: moderate
+    reasoning: >-
+      Eckstein (2023) demonstrated that black-hole information loss in quantum mechanics increases global entropy rather than resetting it, directly undermining CCC's proposed entropy renormalization mechanism across the crossover hypersurface. Tod (2022) also highlighted the entropy reset and perturbation derivation as major open problems. The strongest opposing consideration is Penrose's original argument that the total destruction of information and phase-space degrees of freedom in black-hole singularities genuinely lowers gravitational entropy.
+  - claimId: CCC-C007
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Penrose (2017, 2018) explicitly proposed that dark matter comprises Planck-mass (~10⁻⁵ g) particles called erebons created at crossover, interacting only gravitationally, decaying over ~10¹¹ years, and potentially producing impulsive signals in gravitational-wave detectors. The statement accurately summarizes the published theoretical prediction. The strongest opposing consideration is that Allen (2020) demonstrated that gravitational radiation from such decays would be dozens of orders of magnitude below existing detector sensitivity.
+  - claimId: CCC-C008
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Penrose (2018) explicitly stated that "there is no inflation in CCC" and proposed that the near scale-invariance of CMB temperature perturbations is produced by erebon decays during the exponential expansion of the prior aeon. The claim accurately represents the theory's structural claims. The strongest opposing consideration is that CCC has not yet quantitatively derived the observed scalar spectral index (n_s ≈ 0.965) or acoustic peak structure from this speculative mechanism.
+  - claimId: CCC-C505
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Penrose (2017, arXiv:1707.04169) explicitly conjectured that the correlated inter-detector noise reported by Creswell et al. for GW150914 could represent impulsive gravitational signals from decaying erebons. The claim accurately reflects Penrose's published proposal. The strongest opposing consideration is that Nielsen et al. (2019) subsequently demonstrated that subtracting the maximum-likelihood waveform removes any statistically significant Hanford–Livingston residual correlation.
+  - claimId: CCC-C519
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Allen (2020, Phys. Rev. Research) rigorously calculated that for Planck-mass dark matter decaying to two gravitons with a lifetime exceeding the Hubble time, the direct gravitational-wave background at 25 Hz satisfies Ω_GW < 2 × 10⁻¹⁰³, which is 95 orders of magnitude below the LIGO O1+O2 observational bound. The claim is an exact factual statement of this published mathematical calculation. The strongest opposing consideration is that Allen's calculation assumes a homogeneous cosmological background rather than localized impulsive events or galactic dark-matter concentrations.

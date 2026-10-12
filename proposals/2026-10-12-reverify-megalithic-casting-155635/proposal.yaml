@@ -1,0 +1,177 @@
+# Proposal — a change to domain records, in one envelope (docs/AUTOMATION.md).
+# Never citable; nothing here is a record until adopted through the gate.
+runId: 2026-10-12-reverify-megalithic-casting-155635
+date: 2026-10-12
+case: megalithic-casting
+producer: reverify
+model: null
+promptVersion: resubmit-v1
+basis:
+  ledgerHash: 928eeaba27e3d8609347a5a2744c09b56753e56b062c38c01a85c1bcf714beb2
+rationale: "Re-submission of 8 record(s) that verification blocked in proposals/2026-09-09-draft-megalithic-casting-004619 — anchor source not retrievable (no source id on the anchor) and no accepted evidence cites the claim | source text not retrievable: no URL on the source record — proposed again under fresh ids against the ledger as it stands by the reverify run 2026-10-12-reverify-megalithic-casting-155635, a deterministic transformation (resubmit-v1) and not a model's work. The records were drafted by claude-fable-5-1 in 2026-09-09-draft-megalithic-casting-004619 on 2026-09-09: on each claim's and evidence record's origin, and at the head of each source's verification note, with the lineage appended. The texts are fetched again and the records read as newly proposed."
+adds:
+  sources: []
+  evidence:
+    - id: GEO-E067
+      title: Engelbach's own one-hour hand-pounding trial, his rejection of hand pounding for the trench, and his rammer hypothesis (§13)
+      claimIds:
+        - GEO-C502
+      sourceId: SRC-ENGELBACH-1922
+      direction: qualifies
+      strength: moderate
+      sourceStatement: Engelbach states that, to see how much headway could be made by hand, he tried pounding on the trench bottom and found that "after an hour’s hard work, I had extracted about five millimetres" off the surface of a foot × half-trench-width area, adding that with practice he could perhaps have done more. He then writes that he is "certain that they were not used entirely by hand" in the regular work of cutting the trench, because the work would go very slowly and would not have the regular appearance it has, and concludes that "the pounders were attached to rammers" worked on the principle of the modern mindâlah, with two or more men at the trench top and a third below directing the blows; he says he is uncertain how pounders were attached.
+      editorInference: "GEO-C502 is right that the trial was a single self-conducted hour and that no mass was measured (the record is a depth over an area). It is wrong in what it makes Engelbach's basis for: he does not rest a hand-pounding orthodoxy on the trial; he uses it to reject hand pounding for the trench and to propose rammers. The proponent characterisation therefore attacks a position the monograph does not hold. This is my reading; the source's own words are above."
+      exactLocator: §13, pp. 12–13 of the 1922 print (Project Gutenberg HTML, page markers {12}–{13})
+      limitations:
+        - Gutenberg transcription, not the printed monograph; text shown through §44 of 56.
+        - The rammer mechanism is Engelbach's conjecture, offered with stated uncertainty about attachment.
+      reviewState: ai_extracted
+      origin:
+        ref: "report 2026-09-08-report-megalithic-casting-161414; re-submitted from proposals/2026-09-09-draft-megalithic-casting-004619 (was GEO-E037; blocked 2026-09-09: source text not retrievable: no URL on the source record)"
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-004619
+        date: 2026-09-09
+    - id: GEO-E068
+      title: Engelbach's trench-time estimate uses an assumed rammer rate and a workforce inferred from groove spacing (§§14–15)
+      claimIds:
+        - GEO-C502
+      sourceId: SRC-ENGELBACH-1922
+      direction: qualifies
+      strength: moderate
+      sourceStatement: Engelbach reasons from the trench bottom that the best arrangement is "for each man to have two ‘feet’ marked out for him" along the trench, each man squatting with his back to the obelisk and working one foot while spoiling onto the other; he cites Plate III no. 1 as showing there is just room for a man to squat with a foot between neighbours. For the time taken he writes, "Assuming that, with rammers, the men can extract 8 millimetres in an hour" in each quarter of the double-foot task, the deepest part (4.2 + 1.0 m) gives (4 × 5.2)/(.008 × 12 × 30) = 7.22 months of twelve-hour days, and applies the same formula to Hatshepsut's obelisk (4.4 months), which he compares with her recorded seven months.
+      editorInference: In the shown text the workforce arrangement is inferred from trench-floor groove spacing and the 8 mm/h figure is explicitly an assumption, not a measurement; the shown §§22–24 workforce numbers concern levering, computed from moments. No 'count divided by four' heuristic appears anywhere in the shown portions. GEO-C502's account of the workforce estimate is therefore not what the monograph states, so far as the shown text goes. My inference; Engelbach's arithmetic is his.
+      exactLocator: §§14–15, pp. 13–15 of the 1922 print (Project Gutenberg HTML, page markers {13}–{15})
+      limitations:
+        - Text shown through §44; §§45–56 (miscellaneous objects, bibliography) unseen.
+        - The 8 mm/h figure is unmeasured by Engelbach's own statement.
+      reviewState: ai_extracted
+      origin:
+        ref: "report 2026-09-08-report-megalithic-casting-161414; re-submitted from proposals/2026-09-09-draft-megalithic-casting-004619 (was GEO-E038; blocked 2026-09-09: source text not retrievable: no URL on the source record)"
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-004619
+        date: 2026-09-09
+    - id: GEO-E069
+      title: Engelbach's 1922 reading of the deep shafts and squarish holes as test-shafts (§6)
+      claimIds:
+        - GEO-C006
+      sourceId: SRC-ENGELBACH-1922
+      direction: qualifies
+      strength: weak
+      sourceStatement: Engelbach describes squarish holes at intervals in the trench, generally going down to about the intended bottom level of the obelisk, and the deep holes C and D on Plate I. He believes the holes C and D were "made at the very commencement of the work to study the quality" of the granite, that the holes along the trench were made with the same purpose and "as a means of setting out the perimeter of the obelisk", and that there are indications they were made while "the removal of the top layers of rock were still in progress".
+      editorInference: GEO-C006 states the shafts are too narrow for effective pounding at their bottom. Engelbach's reading neither confirms nor denies their narrowness; it supplies a function — prospecting pits sunk before the trench existed — under which no one needed to pound at their bottom, so the narrowness ceases to be anomalous. It is an interpretation, not a measurement, hence weak; but the ledger and article currently imply no conventional reading exists, and one has since 1922. My inference.
+      exactLocator: §6, p. 6 of the 1922 print (Project Gutenberg HTML, page marker {6})
+      limitations:
+        - Interpretation by the excavator, without dimensions or section drawings of the holes in the shown text.
+        - Gutenberg transcription.
+      reviewState: ai_extracted
+      origin:
+        ref: "report 2026-09-08-report-megalithic-casting-161414; re-submitted from proposals/2026-09-09-draft-megalithic-casting-004619 (was GEO-E039; blocked 2026-09-09: source text not retrievable: no URL on the source record)"
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-004619
+        date: 2026-09-09
+    - id: GEO-E070
+      title: A prior conventional function for the Aswan shafts — Engelbach's test-shafts — against the settling-vessel reading
+      claimIds:
+        - GEO-C536
+      sourceId: SRC-ENGELBACH-1922
+      direction: undermines
+      strength: weak
+      sourceStatement: Engelbach reads the deep holes C and D and the squarish holes along the trench as having been "made at the very commencement of the work to study the quality" of the granite and "as a means of setting out the perimeter of the obelisk", with indications they predate completion of the removal of the top rock layers.
+      editorInference: GEO-C536 reads the shafts as sodium-silicate settling and decanting vessels sited at trench bottoms. Engelbach's account gives a reason for their placement (they were sunk from the original surface before the trench was cut around them) that requires no processing function, and notes the holes can be traced up the side of the obelisk itself. The natron reading must now beat a specific prior interpretation rather than fill a vacuum. Weak because Engelbach's reading is itself unmeasured conjecture. My inference.
+      exactLocator: §6, p. 6 of the 1922 print (Project Gutenberg HTML, page marker {6})
+      limitations:
+        - No survey of the shafts' geometry or wall condition in either reading.
+        - Gutenberg transcription.
+      reviewState: ai_extracted
+      origin:
+        ref: "report 2026-09-08-report-megalithic-casting-161414; re-submitted from proposals/2026-09-09-draft-megalithic-casting-004619 (was GEO-E040; blocked 2026-09-09: source text not retrievable: no URL on the source record)"
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-004619
+        date: 2026-09-09
+    - id: GEO-E071
+      title: Engelbach documents fire-setting (burnt bricks, burnt granite chips) for removing the upper rock at the obelisk quarry (§4)
+      claimIds:
+        - GEO-C001
+        - GEO-C002
+      sourceId: SRC-ENGELBACH-1922
+      direction: context
+      strength: weak
+      sourceStatement: 'Engelbach states there are abundant traces that the rock was reduced to level by burning and wedging, burning being used wherever possible: in the excavations "a large quantity of burnt and semi-burnt mud bricks were noticed", and a considerable percentage of chips round the obelisk and other quarries had "the pinkish-brown colour and crumbling texture peculiar to burnt granite". He describes stacks of dried reeds banked with brick near fissures, suggests water was poured on the hot stone, and notes so much stone has been removed without wedge or chisel marks that burning is the only explanation; a footnote adds there is no trace of burning within six feet of the obelisk.'
+      editorInference: "This does not bear on the truth of GEO-C001 (a measured pounding rate) or GEO-C002 (tourist attempts on a test block); it is weightless toward both. It matters to what the rate is inferred to stress: Engelbach's own account of the quarry already includes fire-setting for the upper layers, so a slow pounding rate constrains one technique among several. Recorded as context so the inference is not drawn against a pounding-only straw man. My inference."
+      exactLocator: §4, pp. 4–5 of the 1922 print (Project Gutenberg HTML, page markers {4}–{5})
+      limitations:
+        - "Fire-setting is documented for removing upper layers, not for cutting the trench itself (Engelbach: no burning within six feet of the obelisk)."
+        - Gutenberg transcription.
+      reviewState: ai_extracted
+      origin:
+        ref: "report 2026-09-08-report-megalithic-casting-161414; re-submitted from proposals/2026-09-09-draft-megalithic-casting-004619 (was GEO-E041; blocked 2026-09-09: source text not retrievable: no URL on the source record)"
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-004619
+        date: 2026-09-09
+    - id: GEO-E072
+      title: Engelbach's observations of pounder wear, breakage and non-local origin (§§13–14)
+      claimIds:
+        - GEO-C511
+        - GEO-C537
+      sourceId: SRC-ENGELBACH-1922
+      direction: undermines
+      strength: weak
+      sourceStatement: Engelbach describes the pounders as nearly spherical dolerite balls, 8–13 inches and 9–15 lb, of almost natural water-worn formation, with the Geological Museum report identifying dolerite (specific gravity 2.93–3.05). He states the wear is not distributed evenly but in patches, showing that "the pounders were used in one position until the bruising surface" in use had become flat and useless; that in very many cases "the pounder had been broken by the great force of the blows" delivered with it, which he could not reproduce by hand; and that his examination of the Aswân quarries "has not revealed stone of precisely the same quality" as the pounders, so that "Since the pounders were imported, a certain economy was essential". He reports burying some hundreds of them under the west retaining wall to stop souvenir-hunting.
+      editorInference: "For GEO-C511: flat bruising facets and percussion fracture are the wear a stone acquires striking harder or equally hard rock, and Engelbach reports them on pounders found around the obelisk and all Aswan quarry work; this is direct if qualitative evidence for pounding use, though his 'imported' judgment does agree with the claim's 'transported' premise (Kelany et al. disagree, GEO-E709). For GEO-C537: the predicted signature is mortar-and-pestle abrasion on glassy foam; the observed signature Engelbach records is facet bruising and brittle fracture from blows. Weak because no microwear study exists on either side; the buried deposit is a recoverable test population. My inference."
+      exactLocator: §§13–14, pp. 12–14 of the 1922 print (Project Gutenberg HTML, page markers {12}–{14})
+      limitations:
+        - Qualitative 1922 observations; no microwear or fracture analysis.
+        - Engelbach's origin judgment is his own field comparison and conflicts with Kelany et al. 2009 (dykes in the granitoids).
+      reviewState: ai_extracted
+      origin:
+        ref: "report 2026-09-08-report-megalithic-casting-161414; re-submitted from proposals/2026-09-09-draft-megalithic-casting-004619 (was GEO-E042; blocked 2026-09-09: source text not retrievable: no URL on the source record)"
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-004619
+        date: 2026-09-09
+  claims:
+    - id: GEO-C919
+      statement: Engelbach's 1922 monograph reports a self-conducted one-hour hand-pounding trial at the Aswan trench bottom that removed about five millimetres over a foot × half-trench-width area, states he was certain pounders were not used entirely by hand for the trench, and proposes pounders attached to rammers worked from the trench top.
+      theme: tool-marks
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: §13, pp. 12–13 of the 1922 print (Project Gutenberg HTML)
+        quote: certain that they were not used entirely by hand
+        sourceId: SRC-ENGELBACH-1922
+      parentClaimIds:
+        - GEO-C502
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: "report 2026-09-08-report-megalithic-casting-161414; re-submitted from proposals/2026-09-09-draft-megalithic-casting-004619 (was GEO-C908; blocked 2026-09-09: anchor source not retrievable (no source id on the anchor) and no accepted evidence cites the claim)"
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-004619
+        date: 2026-09-09
+    - id: GEO-C920
+      statement: Engelbach (1922) interpreted the deep holes C and D and the squarish holes along the Aswan obelisk trench as test-shafts made at the very start of work to study granite quality and set out the obelisk's perimeter, with indications they were made while the top rock layers were still being removed.
+      theme: site-morphology
+      rung: observation
+      claimType: historical
+      sourceAnchor:
+        locator: §6, p. 6 of the 1922 print (Project Gutenberg HTML)
+        quote: made at the very commencement of the work to study the quality
+        sourceId: SRC-ENGELBACH-1922
+      parentClaimIds:
+        - GEO-C006
+      dependsOnClaimIds: []
+      reviewState: ai_extracted
+      origin:
+        ref: "report 2026-09-08-report-megalithic-casting-161414; re-submitted from proposals/2026-09-09-draft-megalithic-casting-004619 (was GEO-C909; blocked 2026-09-09: anchor source not retrievable (no source id on the anchor) and no accepted evidence cites the claim)"
+        extractedBy: claude-fable-5-1
+        runId: 2026-09-09-draft-megalithic-casting-004619
+        date: 2026-09-09
+  research: []
+  images: []
+corrections: []
+dispositions: []
+report: proposals/2026-09-08-report-megalithic-casting-161414/report.md (re-submission 2026-10-12-reverify-megalithic-casting-155635 of records blocked at verification)
+resubmission:
+  from: proposals/2026-09-09-draft-megalithic-casting-004619
+  model: claude-fable-5-1
+  promptVersion: draft-v2
+  date: 2026-09-09

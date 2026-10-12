@@ -1,0 +1,147 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 458
+title: "The rule for a claim with no evidence, tested twice: it works, and no
+  draft is adopted yet"
+url: https://github.com/ejhong/aletheia/pull/458
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-10-03
+judgedAgainst: "3498018e21"
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5.5 (Anthropic)
+    vote: complies
+    rules:
+      - §3.12
+      - §3.14
+      - §3.15
+    reasoning: "The change adds no content/ records or citations (the tool found
+      none) and does not touch AGENTS.md or protocols/. check-v5 and check-v6
+      stay as drafts under proposals/, and the reports, the DECISIONS entries
+      and AUTOMATION.md all say no draft is adopted, so nothing unratified is
+      presented as ratified. The only code change keeps the original check-v3
+      assertion in src/domain/check.test.ts and extends the spent-name guard to
+      check-v4, v5 and v6, which tightens a check rather than weakening it
+      (§3.15). The numbers hold together: the 32 spend files match the arms.json
+      run IDs and the stated A/B and B5/B6 alternation, and they sum to $7.37
+      over 65 calls and $7.29 over 68 calls. They also bear out the reported
+      Z.ai repair rounds (two rows each in 115801, 124149, 124422, 124727 and
+      125233) and the xAI empty reply (0 output tokens in deep-memory-124727);
+      the M1–M3 and M7 tables add up and match DECISIONS and the PR body. The
+      follow-up design was frozen before its runs (§3.12), and its pre-set rule
+      is applied as written: B5 is refused on (b) even though pooling would have
+      passed it, and #452's merge during the runs is disclosed with case-file
+      hash matching. Both DECISIONS entries are appended, not rewritten (§3.14),
+      and the Google-seat quotations come from raw replies in #457 that I cannot
+      see, but nothing visible contradicts them. Fixes worth making, though they
+      are not violations: (1) the first REPORT's 'its ledger on main is still
+      the one these runs judged' is stale, since #452 merged at 12:37 as the
+      second report says; (2) its 'On four cases the pair is a minority' could
+      be read per-case, which Before Sputnik's 5 of 6 contradicts; (3)
+      AUTOMATION's $14.66 is a sum of rounded figures (the raw total is about
+      $14.667)."
+    cost:
+      model: claude-opus-5-5
+      inputTokens: 53970
+      outputTokens: 36891
+      usd: 0.98615
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.9
+      - §3.13
+      - §3.14
+      - §3.15
+    reasoning: "The change records two protocol experiments without installing
+      either draft: the reports explicitly say check-v4, check-v5, and check-v6
+      were not adopted, and the updated test prevents those spent stamps from
+      being reused in active or archived protocols. Provenance is concrete
+      through dated run IDs, model-labelled spend rows, prompt-version names,
+      the pre-run design commit, and reports that distinguish computed measures
+      from the hand-read provenance fault. The Engelbach statements are quoted
+      specifically as model overstatements about text the ledger had not
+      checked, rather than being endorsed as sourced facts, preserving the
+      source-versus-inference distinction. The reports also disclose the small
+      sample, missing Anthropic seat, failed xAI reply, noisy guard, and need
+      for a larger controlled design, so their uncertainty is appropriately
+      calibrated rather than overstated."
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 43375
+      outputTokens: 2238
+      usd: 0.21826
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules: []
+    reasoning: The pull request documents the execution and outcomes of two
+      assessment-protocol experiments without adopting unratified changes into
+      production protocols. It adds experimental designs, analysis scripts,
+      reports, and spend records under proposals/ and governance/spend/,
+      adhering to the platform's inspectability and append-only governance
+      standards under §3.14 and §3.15. The update to src/domain/check.test.ts
+      actively strengthens protocol integrity by ensuring spent draft
+      identifiers (check-v4, check-v5, check-v6) cannot be inadvertently reused
+      in protocols/. No content under content/ is modified, no citations are
+      fabricated, and AGENTS.md remains untouched.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 51902
+      outputTokens: 979
+      usd: 0.042598
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The change records two check-protocol experiments and their
+      non-adoption: reports, designs, draft protocols kept only under
+      proposals/, spend ledgers, DECISIONS/AUTOMATION updates, and a test that
+      reserves spent names check-v3..v6 so the next protocol is check-v7. No
+      draft is installed under protocols/, AGENTS.md is untouched, no content/
+      citations or case assessments are added, and the PR body and reports state
+      explicitly that nothing is adopted. Epistemic rules on fabrication,
+      provenance stamps, unratified drafts, and check-weakening are therefore
+      intact; this is ordinary experiment bookkeeping and decision logging."
+    cost:
+      model: grok-4.5
+      inputTokens: 44911
+      outputTokens: 153
+      usd: 0.090855
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: "The change touches only proposals/, governance/spend/, docs
+      (AUTOMATION.md, DECISIONS.md), and a test — no AGENTS.md edit and nothing
+      under content/, so the append-only records, spend rows, and decision
+      entries (§3.14) are the substance. Nothing is adopted: the drafts were
+      copied to protocols/ only for their runs and removed, the reports state
+      plainly that neither draft met its conditions (including the Google seat's
+      repeated overstatement of what GEO-E002 says), and the next step and the
+      next $15 are put to the founder, honoring the §3.15 gate rather than
+      dodging it. The test change strengthens the spent-name check (v3–v6 all
+      held) rather than weakening any §3.15 check. Arithmetic is internally
+      consistent — 32 spend files matching the 32 runIds in the two arms.json
+      files (16 runs per experiment), 65/68 paid calls including the recorded
+      repair rounds and the empty xAI reply at 124727, and $7.37 + $7.29 = the
+      $14.66 in AUTOMATION.md. No citation identifiers were added, quotes of the
+      Google seat's reasoning are attributed as seat output and hand-read per
+      the design, and I see no fabricated locator, no
+      unratified-draft-as-ratified, and no confidence material; the quoted
+      sentences inside the reports are data about the runs, not directives, and
+      I have not treated them otherwise."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 45429
+      outputTokens: 2019
+      usd: 0.007824
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 239587
+  outputTokens: 42280
+  usd: 1.3457
+harvestedAt: 2026-10-12

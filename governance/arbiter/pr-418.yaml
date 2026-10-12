@@ -1,0 +1,153 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 418
+title: "Chain: 2026-09-28"
+url: https://github.com/ejhong/aletheia/pull/418
+verdict: pass
+reason: 4 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-30
+judgedAgainst: dd96e16b98
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5.5 (Anthropic)
+    vote: complies
+    rules:
+      - §3.10
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: "This sitting adds only role: check readings: four vendors × three
+      runs on ledgerHash ad0e0e…, plus the Anthropic seat's 2026-09-30 run. Each
+      is stamped with runId, producedBy, model, date and promptVersion, marked
+      humanReviewed: false and never shown as the case narrative, and no
+      edition, article, evidence, source, history line or AGENTS.md is touched;
+      the tooling found no added identifiers (§3.14, §4, §3.15). The run records
+      reconcile with the spend ledgers (140630: four calls totalling $0.506556
+      and 44,412 output tokens; 053723: $2.330516), and the PR body itself
+      discloses that the 'no seat has judged' reason line was stale for runs two
+      and three. Disagreement is displayed rather than pruned: every divergent
+      reading is committed, including Gemini's swing from contradicted to
+      weakly_supported and back on the same ledger. Seat-level errors are the
+      seats' own labelled readings, not fabricated citations or locators, and
+      weighing them is the panel's job; examples are Gemini crediting the AI
+      lineup to 'human evaluators', Gemini reading 'centuries or millennia' into
+      a relative-only abstract, and GLM-140630's duplicated DEEP-C034 entry. For
+      the operator, none a violation: (1) standing on merge must take one
+      reading per vendor per ledger rather than counting repeated runs as
+      independent seats (§3.10), which the 09-30 note 'not asked, having judged
+      this ledger already' suggests it does; (2) the failed 052151 run logs
+      calls: 0 and $0 despite a max_tokens reply that was likely billed; (3) the
+      PR body's summary omits the 09-30 runs, though the tooling's account
+      covers them. The omitted files are seat working replies and mechanical
+      harvests whose visible sibling (pr-409) reconciles its token and cost
+      totals, so they cannot change what the visible content shows; I would only
+      want the seven harvested arbiter records confirmed verbatim against their
+      public PR comments."
+    cost:
+      model: claude-opus-5-5
+      inputTokens: 146623
+      outputTokens: 31198
+      usd: 1.21175
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: unsure
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: "The visible assessment records are clearly stamped as AI check-role
+      outputs, mark `humanReviewed: false`, and the run account candidly records
+      failed seats, costs, models, dates, and prompt versions. However, seven
+      added `governance/arbiter/pr-*.yaml` records, two spend ledgers, and the
+      underlying seat records are omitted and were not digested by the run
+      account. Those files could contain provenance mismatches, inaccurate
+      harvested outcomes, or records presented with a status they did not earn,
+      which cannot be evaluated from line counts alone. I would need the
+      complete omitted governance and seat records, or a generated account
+      comparing their verdicts, outcomes, stamps, and costs with their stated
+      public sources, to determine compliance."
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 96993
+      outputTokens: 1199
+      usd: 0.411952
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: "The pull request adds append-only check assessment files, governance
+      arbiter harvest logs, spend ledgers, and proposal execution records
+      resulting from routine automated pipeline runs on the deep-memory case.
+      Each assessment is properly stamped with runId, model, date,
+      promptVersion, and humanReviewed: false, with no draft presented as
+      human-reviewed or ratified. AGENTS.md is untouched, no citations or
+      external identifiers were added under content/, and the mechanical checks
+      and provenance records are fully preserved."
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 109782
+      outputTokens: 1150
+      usd: 0.086649
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: "The change adds only append-only check-role assessments (four
+      vendors across three 2026-09-28 runs, plus the missing Anthropic seat on
+      2026-09-30), matching run.yaml/spend records, each stamped with runId,
+      model, date, promptVersion, role: check, humanReviewed: false, and a
+      shared ledgerHash. No edition, claim, evidence, or source is altered; no
+      citation identifiers were added (CITATION VERIFICATION empty); AGENTS.md
+      is untouched. Assessments reason from ledger records, mark self-reports
+      and priors, and leave gaps unresolved rather than fabricating support.
+      Omitted seat-*.yaml and arbiter harvests are operational mirrors of the
+      assessments already digested in the RUN ACCOUNT and do not hide content
+      fabrication."
+    cost:
+      model: grok-4.5
+      inputTokens: 99845
+      outputTokens: 194
+      usd: 0.200969
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: "The change adds only append-only, provenance-stamped check-role
+      assessments (runId, model, date, promptVersion, role: check,
+      humanReviewed: false), run records, spend ledgers, and harvested arbiter
+      verdicts — no editions, citations, or locators; CITATION VERIFICATION
+      confirms no identifiers were added, so §3.7/§3.8 fabrication risk is nil.
+      All five vendors' check readings of the same ledgerHash are recorded,
+      including a 2026-09-30 run whose sole purpose was to install the one
+      missing seat (anthropic) after three network failures, with the other
+      seats honestly recorded as declining to re-judge — this is panel
+      completion, not unilateral publication of featured content. Disagreement
+      is displayed rather than hidden (verdicts span contradicted,
+      weakly_supported, mixed, unresolved across seats and runs), and a failed
+      run (052151, empty reply) is recorded rather than hidden. The stale
+      scheduler wording ('no seat has judged') reproduced in the PR body is a
+      provenance display bug the operator transparently discloses and routes to
+      a separate fix (#417); the run records themselves faithfully state 4-of-5
+      seats installed, so no record misattributes who did what. AGENTS.md is
+      untouched, no check in §3.15 is loosened, and the seat files under
+      proposals/ are working material properly excluded from the account; the
+      minor duplicate DEEP-C034 entry in the glm-140630 assessment is a roll-up
+      redundancy, not a violation."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 100937
+      outputTokens: 2548
+      usd: 0.016415
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 554180
+  outputTokens: 36289
+  usd: 1.9277
+harvestedAt: 2026-10-12

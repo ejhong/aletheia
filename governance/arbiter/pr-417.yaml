@@ -1,0 +1,144 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 417
+title: "One failing seat no longer stalls the loop: the Anthropic seat streams,
+  a panel is stale only when it cannot speak, and a failed sitting says so"
+url: https://github.com/ejhong/aletheia/pull/417
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-30
+judgedAgainst: 531da59fd2
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5.5 (Anthropic)
+    vote: complies
+    rules: []
+    reasoning: "This is a pipeline and CI change. It does not touch AGENTS.md or
+      content/, and it adds no citations, records or assessments, so §3.2–§3.13
+      do not come into play. The key question is §3.15 check-weakening.
+      `ratification()` is untouched, and the new `checksStale` adopts the same
+      four-current-seat threshold (RATIFICATION_MIN_PANEL). Its reconsideration
+      clause is now stricter, since it filters to current checks. The only
+      relaxation is scheduling priority when four seats are current and a fifth
+      is stale. The PR's own account of 2026-09-28 is consistent with the claim
+      that standing was already derived from the current seats in that
+      situation: four seats installed and the standing came out contested.
+      Asking only `seatsOwed` means a seat's answer on a ledger is no longer
+      re-rolled by default, which if anything protects independence. `--seats`
+      overrides are recorded in the run reason via `heldNote`. Streaming changes
+      only transport: the test shows thinking is excluded from the reply, and a
+      stream cut before message_stop fails the seat rather than producing half
+      an opinion. The workflow's token pre-check preserves the 'money spent is
+      recorded' guarantee, because the PR step still runs whenever the chain
+      could have run. The failure notice is a public issue, so it is not an
+      unrecorded contact. The DECISIONS entry records the founder's direction
+      with date and channel, as §3.15's amendment permits, and honestly
+      discloses the unrecorded spend. A minor, non-constitutional note:
+      MAINTENANCE.md's 'the next sitting's check re-panels it' line may now
+      overstate promptness for a reconsideration that has one fresh check, since
+      those re-checks wait for rule 5b."
+    cost:
+      model: claude-opus-5-5
+      inputTokens: 35328
+      outputTokens: 29579
+      usd: 0.765342
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.10
+      - §3.14
+      - §3.15
+    reasoning: The change does not alter the four-seat ratification threshold or
+      standing derivation; it changes scheduling so completed judgments on the
+      same ledger are retained while only missing seats are asked, preserving
+      independence without silently multiplying one seat’s evidence.
+      Reconsiderations still exclude checks they answered, and fewer than four
+      current seats remain stale, so the publication gate is not weakened. The
+      Anthropic stream assembler rejects incomplete responses before
+      `message_stop`, and failed seats are recorded rather than converted into
+      opinions. The decisions entry identifies the run, dates, uncertainty about
+      unrecorded cost, and founder direction without presenting the unavailable
+      amount as known; no content citations, confidential material, AGENTS.md
+      edit, or fabricated locator is added.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 27314
+      outputTokens: 2462
+      usd: 0.158496
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: The change addresses operational pipeline stalls without altering the
+      epistemic ratification thresholds established under §3.15. Specifically,
+      `checksStale` now aligns with ratification rules by recognizing that four
+      concurring seats constitute a valid panel, while owed seats are tracked
+      and scheduled independently. Refactoring the Anthropic panel seat
+      transport to stream responses resolves Node timeout drops without changing
+      what the seat evaluates. All workflow error reporting and secret
+      pre-checks improve inspectability and operational resilience while leaving
+      AGENTS.md untouched and keeping change histories properly recorded.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 30398
+      outputTokens: 859
+      usd: 0.02602
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff is automation and domain scheduling only: Anthropic seat
+      streaming, aligning checksStale/seatsOwed with existing ratification’s
+      four-current-seat rule, a same-step repeat stop, token preflight, and
+      failed-sitting issues. AGENTS.md is untouched; no content/ citations,
+      confidence material, or run overlays are added. Standing derivation is
+      explicitly unchanged—scheduler and check verb only decide whom to ask and
+      when, so a short panel cannot raise a standing and seats already current
+      are not re-paid. That tightens the loop against the 2026-09-28 stall
+      rather than loosening §3.15 gates. DECISIONS/MAINTENANCE/AUTOMATION
+      updates record the founder’s 2026-09-29 direction with ordinary
+      provenance."
+    cost:
+      model: grok-4.5
+      inputTokens: 28543
+      outputTokens: 181
+      usd: 0.058287
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.14
+    reasoning: "This is an operations/infrastructure change, not a content change:
+      it does not touch AGENTS.md, adds no citations, and carries no run
+      records, so the fabrication, confidence, and constitution triggers do not
+      apply. The central question is whether the new staleness rule weakens the
+      §3.15 checks, and it does not: ratification itself is untouched and still
+      requires four seats to have judged the current ledger (the tests confirm
+      four seats ratify, three do not), the check verb now asks only seats that
+      have not judged the ledger as it stands, and a failed or missing seat is
+      pursued on a doubling cadence rather than by re-paying four seats to
+      answer the same question — which the diff shows happened three times on
+      2026-09-28 with one seat's verdict flipping between steps. The change to
+      not retry a request that met Node's five-minute header window reduces
+      duplicate spend, not scrutiny, and the failure is thrown and recorded
+      rather than swallowed. Provenance is honest throughout: the decisions
+      entry is stamped with the founder's session direction and date, the
+      un-recoverable cost of the nine unanswered requests is explicitly declared
+      as unrecorded rather than invented, and the failed-sitting notice
+      discloses the run URL, steps, and mend. Nothing in the material
+      contradicts its own stated history, and the verification tooling found no
+      citation identifiers to check."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 28382
+      outputTokens: 925
+      usd: 0.00472
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 149965
+  outputTokens: 34006
+  usd: 1.0129
+harvestedAt: 2026-10-12

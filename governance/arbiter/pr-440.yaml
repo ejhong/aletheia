@@ -1,0 +1,145 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 440
+title: "A reply's research-status entries are traced to the research file before
+  it is called carried (review note #438)"
+url: https://github.com/ejhong/aletheia/pull/440
+verdict: pass
+reason: "4 of 5 seats affirm compliance; one seat's objection is a review note
+  the operator answers on the record: GPT-5.6 Sol (OpenAI) (§3.15;
+  check-weakening)"
+outcome: merged
+outcomeAt: 2026-09-30
+judgedAgainst: 518fd83919
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5.5 (Anthropic)
+    vote: complies
+    rules:
+      - §3.15
+    reasoning: "This change only tightens when the run account may call an edition
+      reply 'carried' and cut it from the diff. researchStatus entries, which
+      were counted but not compared, must now be found on the named research
+      item with matching status and statusNote. A missing item, an unreadable
+      research file (the default when no file is passed, since research = null)
+      or a non-list entry is each a difference, so every new branch fails closed
+      toward showing seats more, and no existing comparison is removed. The
+      three further checks (component keys beyond label/state/note, a claim
+      assessed twice, a question/accounts/article/rationale of the wrong kind)
+      are also purely additive, and the new tests cover each branch, including
+      the account keeping an untraced reply in the diff with carried left empty.
+      Nothing under content/, no citation, no protocol text and no AGENTS.md
+      changes, so the constitution, confidence and check-weakening concerns of
+      §3.15 do not arise. The DECISIONS entry describes the change accurately
+      and credits the OpenAI seat's #438 and the Anthropic seat's notes. Its
+      'Supervised-by: founder (direction in session, 2026-09-29)' stamp repeats
+      the stamp on the #437 entry it amends, and I see no positive evidence of
+      misattribution. One residual gap for a follow-up, not a violation: an
+      accepted researchStatus entry is checked only for status and note, so an
+      entry with another key (e.g. a 'reason' holding prose) would still be
+      dropped unread while the reply is called 'carried whole', contrary to the
+      doc comment's 'at any depth'; flag any entry key other than
+      id/status/note, as is now done for components. Relatedly, accounts entries
+      are String()-coerced rather than type-checked, and the carried line's
+      'status and note as written' overstates for no-op open/empty-note entries
+      on items that already hold a note."
+    cost:
+      model: claude-opus-5-5
+      inputTokens: 8450
+      outputTokens: 16513
+      usd: 0.365358
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: The revised check can still be dodged because
+      `editionReplyDifferences` does not reject extra fields inside a
+      `researchStatus` entry. For example, `{id:"X-R001", status:"answered",
+      note:"Study X-S001 collected the rows.", aside:"unexamined text"}` matches
+      the research item and produces no difference, so `runAccount` calls the
+      reply “carried whole” and may remove it from the diff even though `aside`
+      was neither installed nor reported. That contradicts the new comment and
+      account language claiming every field is compared, and defeats §3.15’s
+      fail-closed, inspectable review process. The entry must be required to be
+      a mapping with only the installed fields—or every additional nonempty
+      field must be reported as a difference—before it can be called carried
+      whole.
+    paradigm: check-weakening
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 9799
+      outputTokens: 3639
+      usd: 0.111976
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.15
+    reasoning: The change directly addresses a previously identified gap where
+      `researchStatus` entries in working reply files were counted rather than
+      verified against the target research item, preventing dropped or refused
+      notes from being silently omitted from review diffs. In
+      `src/lib/arbiter-core.mjs`, `editionReplyDifferences` now verifies that
+      each `researchStatus` entry matches the status and note recorded in the
+      case's `research.yaml`, and adds stricter validation for extra component
+      fields, malformed types, and duplicate claim assessments. These changes
+      strengthen fail-closed mechanical verification under §3.15, leave
+      AGENTS.md untouched, and add thorough unit tests.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 10657
+      outputTokens: 701
+      usd: 0.010622
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff tightens run-account comparison of edition replies:
+      researchStatus entries are now traced to the head-revision research file
+      (status and note as written), and the three gaps named on #437 (extra
+      component fields, duplicate claim assessments, wrong-kind fields) become
+      differences instead of silent pass-through. That strengthens §3.15
+      inspectability rather than weakening it. docs/DECISIONS.md only appends a
+      dated decision entry for review note #438; AGENTS.md is untouched; no
+      content/, citations, confidence material, or run records are added. Tests
+      cover carried, refused, missing-item, unreadable-file, and wrong-kind
+      cases. Complete diff with nothing omitted."
+    cost:
+      model: grok-4.5
+      inputTokens: 10131
+      outputTokens: 164
+      usd: 0.021361
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.14
+    reasoning: "This change tightens the repository's own verification tooling
+      rather than weakening it: `editionReplyDifferences` previously counted
+      `researchStatus` entries without comparing them, so a refused entry's text
+      could sit in a reply that was nonetheless called carried — exactly the gap
+      review note #438 named. The fix traces each entry to the research item it
+      names, adds differences for untraceable entries, unreadable research
+      files, duplicate claim assessments, wrong-kind fields, and extra component
+      fields, and fails toward keeping the reply in the diff (fail-closed
+      direction, consistent with §3.15's mechanical checks). The new tests in
+      arbiter.test.ts cover each difference case, including the account-level
+      carry/refuse behavior. No content/ files change, no citations are added
+      (verification confirms none), no AGENTS.md text is touched — the
+      DECISIONS.md entry is the operator's decisions log with the founder's
+      supervision stamp, which §3.15 permits. I see no fabricated provenance, no
+      confidence material, and no check dodged; the lone reservation I'd note
+      for the record is that the comparison runs against the head-revision
+      research file rather than the revision the run installed, but that only
+      risks spurious differences (keeping replies in the diff), never silently
+      passing text through."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 8578
+      outputTokens: 637
+      usd: 0.001951
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 47615
+  outputTokens: 21654
+  usd: 0.5113
+harvestedAt: 2026-10-12

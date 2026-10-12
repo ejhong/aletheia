@@ -1,0 +1,172 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 443
+title: Collapse, Not Computation, re-told within the reader's budget; a panel of
+  four ratifies it
+url: https://github.com/ejhong/aletheia/pull/443
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-30
+judgedAgainst: 518fd83919
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5.5 (Anthropic)
+    vote: complies
+    rules:
+      - §3.4
+      - §3.9
+      - §3.14
+      - §3.15
+    reasoning: "The diff does not edit AGENTS.md, config or any check, adds no
+      citation, identifier or locator (verification found none), and touches no
+      claim, evidence or source record. It adds an edition, append-only draft
+      and check assessments (stamped runId/model/date/promptVersion,
+      humanReviewed: false), two research-status updates, a stamped history
+      line, spend ledgers and run records. The article moves toward ledger
+      fidelity: it withdraws the incumbent's unsupported sentence that a
+      radical-pair model reproduces the xenon potencies, tells ORCH-C046 and
+      C057 as reports, and marks the corpus survey and xenon re-analysis as the
+      site's own work. The one verdict change (ORCH-C046 to unresolved) is
+      reasoned openly, with no attached record and the prior grade disclosed.
+      All four seats disagree on C046 and C012, and that disagreement is
+      displayed through the installed seat readings, not hidden. No file asserts
+      'ratified'; standing is left to derive from the checks, and the reported
+      split list (C012, C046) is consistent with a within-one-step majority on
+      the load-bearing C010, C030, C002 and C013. The Anthropic seat's
+      max_tokens failure is disclosed in run.yaml and the spend ledger (128,000
+      output tokens, $2.96). R008 and R010 are marked answered with statusBy,
+      statusDate and a history entry anchored to S001/S002 and E035–E040, and
+      the residual work is pointed at R014/R011. The omitted drafter replies are
+      fully accounted for by the run account. Minor notes, not breaches: the
+      Grok seat's `sensitivity` block was dropped at install (the raw reply
+      survives under proposals/, but the verb should carry or note such fields);
+      the draft's C012 'mixed' reasoning leans on diagnosticity rather than the
+      claim's truth condition; and the PR body's '5 exact' does not match the
+      seven unanimous-exact claims."
+    cost:
+      model: claude-opus-5-5
+      inputTokens: 128691
+      outputTokens: 54993
+      usd: 1.615922
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.4
+      - §3.9
+      - §3.10
+      - §3.11
+      - §3.13
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: The edition and adopted assessment are explicitly stamped as
+      AI-generated drafts with runId, model, date, prompt version, and
+      humanReviewed:false, while the four independent check assessments preserve
+      their own verdicts and the failed Anthropic call is recorded rather than
+      concealed. Three of the four returned seats are within one step of the
+      draft’s unresolved verdict, and the account reports no split on any draft
+      load-bearing claim; the contradicted seat and the two non-load-bearing
+      claim splits remain visible. The article carefully separates measurements
+      from interpretation, identifies same-program or partial independence,
+      presents contrary animal results and underground nulls, and uses
+      calibrated labels rather than a truth score. It also withdraws a
+      proposition carried only by refused records and frames ORCH-C046 and
+      ORCH-C057 as reports or assertions rather than verified findings. The two
+      research-status changes are accompanied by status provenance and an
+      append-only history entry naming the responsible run and rationale. The
+      only omitted files are drafter replies that the RUN ACCOUNT compared
+      against the installed edition and assessment, so they do not leave a
+      material unseen gap.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 83918
+      outputTokens: 2864
+      usd: 0.393464
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: "The pull request cleanly updates the Orch OR edition to bring the
+      article within length guidelines while preserving the unresolved case
+      verdict and faithfully representing the underlying evidence ledger. The
+      multi-model check panel operated under check-v2 protocol and achieved
+      concurrence (three of four installed seats within one step of the draft's
+      unresolved verdict: Gemini weakly_supported, GLM unresolved, Grok
+      unresolved, and GPT-5.6 contradicted), with Anthropic's empty max-token
+      response transparently logged in spend and run manifests. Research agenda
+      updates (ORCH-R008 and ORCH-R010 marked answered) are properly justified
+      by existing studies in the ledger and recorded in history.yaml. No
+      constitutional rules were modified or weakened, and provenance records
+      across all spend and run files are complete and honest."
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 93051
+      outputTokens: 1171
+      usd: 0.074179
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The change is an append-only edition rewrite plus a blind check
+      panel on the existing ledger: no claim, evidence, or source records are
+      added or altered, and citation verification found no new identifiers. The
+      draft assessment stays labelled role: draft / humanReviewed: false, stamps
+      runId/model/date/promptVersion, and the article now says only what the
+      ledger holds (withdrawing the refused radical-pair potency sentence;
+      reporting C046/C057 as reports). ORCH-C046 moves to unresolved because no
+      admitted evidence is attached to that claim while the same bound remains
+      weighed on C030 — honest provenance, not fabrication. Research status
+      flips for R008/R010 are stamped to the edition run with notes tying them
+      to S001/S002, and history is append-only. Four of five check seats
+      installed (Anthropic empty at max_tokens, recorded); three of four are
+      within one step of unresolved, disagreement is displayed rather than
+      hidden, and AGENTS.md is untouched."
+    cost:
+      model: grok-4.5
+      inputTokens: 85647
+      outputTokens: 224
+      usd: 0.172753
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+      - §3.9
+      - §4
+    reasoning: "No AGENTS.md edit, no new citations (verification found none added),
+      and no claim/evidence/source record is touched, so the append-only and
+      real-citation rules are not implicated. The ratification path is honest
+      and follows the concurrence mechanism: four independent vendors' seats
+      answered blind (the Anthropic seat's failure is recorded in the run notes
+      and spend ledger with the exact token ceiling, billed, and the seat is
+      owed a re-ask rather than silently dropped), three of four sit within one
+      step of the draft's unresolved verdict, and the two split claims
+      (ORCH-C012, ORCH-C046) are not in the draft's load-bearing set, so the
+      standing 'ratified by three of four' matches §3.15's scale, with every
+      seat's word displayed. Provenance is properly stamped throughout (runId,
+      model, promptVersion, date, humanReviewed: false, role: check/draft), the
+      withdrawn radical-pair sentence was dropped because its records were
+      refused at intake — the article now says only what the ledger holds — and
+      the ORCH-C046 move to unresolved is explicitly labeled as following the
+      no-attached-evidence rule rather than doubt about the paper, with the
+      bound still weighed at ORCH-C030. The one blemish — the xai seat's raw
+      reply carrying a sensitivity field the installed assessment omits — is
+      itself printed by the repository's own comparison tooling and the raw file
+      is committed, so nothing is hidden or misattributed; the two
+      research-status changes are stamped with statusBy/statusDate and a history
+      entry. I see no fabricated citation, no confidence exposure, no weakened
+      check, and no misattributed provenance."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 85890
+      outputTokens: 2387
+      usd: 0.014423
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 477197
+  outputTokens: 61639
+  usd: 2.2707
+harvestedAt: 2026-10-12

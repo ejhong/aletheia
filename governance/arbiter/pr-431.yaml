@@ -1,0 +1,155 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 431
+title: "Two cases re-told within the reader's budget: State, Not Scar and Cast,
+  Not Carved"
+url: https://github.com/ejhong/aletheia/pull/431
+verdict: pass
+reason: 4 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-30
+judgedAgainst: 62f7f29732
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5.5 (Anthropic)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+      - §4
+      - §3.9
+    reasoning: "The diff adds only two editions, the draft assessments they adopt,
+      and their run, comparison, errors and spend records; no claim, evidence or
+      source record, no check, and not AGENTS.md is touched, and the tooling
+      found no new citation identifiers under content/. Both assessments carry
+      runId, producedBy, model, date and promptVersion, and are marked role:
+      draft and humanReviewed: false; the PR states that standing shows as not
+      yet ratified pending blind checks, so no draft is presented as ratified
+      (§3.15, §4). The only judgment change is disclosed in the rationale, the
+      verb's measured line and the PR body, each with its reason and basis
+      records (§3.14): GEO-C913 and GEO-C918 move from well to provisionally
+      supported (GEO-E057 and GEO-E058 on parent GEO-C004), and GEO-C502 moves
+      to unresolved (GEO-E002 flags it unverified); the earlier run that moved a
+      verdict silently was discarded, and its spend is still recorded. The
+      provenance I could check is internally consistent: each run.yaml's usd,
+      input tokens (including 384 cache-read) and output tokens equal its spend
+      rows; the discarded runs total $1.83 and $1.76; seat presentation orders
+      match the PR's first/second counts; errors.md matches the repairs,
+      including the three ']' closers visible in the geopolymer reply.json.
+      Every article claim link is featured and graded, and the figures track the
+      assessments (216 cm³/h, PI 8.3 vs 3.0, 11/11 vs 4/11 sites). Unverified
+      sources and editorial inferences are labeled as such (the second essay,
+      Klemm & Klemm, 'This edition reads that as a lead'), per §3.9. The one
+      omitted file is the superseded first vasocomputation reply, a working file
+      whose shape (23 claim assessments, ~3,029-word article) matches the
+      documented failure and whose adopted successor is fully visible, so it
+      cannot change the outcome. Remaining nits are ordinary imperfection for
+      the next drafter, not violation: for example, GEO-C594 is stated flatly
+      though graded provisional and unaudited beyond Giza."
+    cost:
+      model: claude-opus-5-5
+      inputTokens: 148341
+      outputTokens: 37621
+      usd: 1.347082
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: unsure
+    rules:
+      - §3.8
+      - §3.15
+      - §4
+    reasoning: The visible installed assessments are honestly marked as AI-generated
+      drafts, identify model/run/date/prompt version, and state that standing
+      still requires blind checks; the comparison records also explicitly say
+      they judge the tellings rather than the verdicts. The articles generally
+      preserve uncertainty, competing accounts, evidence dependence, and the
+      distinction between source reports and editorial inference. However,
+      proposals/2026-09-30-edition-vasocomputation-071302/reply.json is omitted
+      and is a newly committed public-git artifact containing a full article and
+      assessment, so I cannot verify that it contains no fabricated locator,
+      mismatched provenance, or confidential supplied material. I would need
+      that complete omitted file, or equivalent repository-tool verification of
+      its substantive claims and provenance, before finding the whole change
+      compliant.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 99127
+      outputTokens: 1744
+      usd: 0.4319
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: "The pull request adds two shortened editions and their corresponding
+      assessments for 'geopolymer' and 'vasocomputation' without modifying the
+      underlying claim/evidence ledger or editing AGENTS.md. Both editions were
+      produced via documented pipelines with repair rounds recorded, compared
+      against their incumbents by five-model panels (where all seats preferred
+      the candidates), and explicitly labeled as unreviewed AI drafts
+      (`humanReviewed: false`, `role: draft`). Exact provenance stamps, run
+      records, spend logs, and basis hashes are preserved intact, fully
+      complying with constitutional standards."
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 110241
+      outputTokens: 668
+      usd: 0.085186
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The change adds two draft editions and their assessments, plus spend
+      rows and proposal artifacts for the completed runs (and two discarded
+      ones). Both assessments are stamped role: draft, humanReviewed: false,
+      with model/runId/date/promptVersion and ledgerHash basis; no claim,
+      evidence, or source records are touched. Case verdicts stay unresolved;
+      the three GEO claim moves are disclosed in the rationale as applying the
+      source-statement-alone rule, with provisional/unresolved grades and
+      disclosed parent-evidence bases. Comparison seats preferred both
+      candidates 5–0; repair rounds are recorded. No AGENTS.md edit, no
+      fabricated citations (none added), and no confidence material."
+    cost:
+      model: grok-4.5
+      inputTokens: 102471
+      outputTokens: 159
+      usd: 0.206011
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.8
+      - §3.13
+      - §3.14
+      - §4
+    reasoning: "The change adds only draft assessments, editions, spend records and
+      working files; no AGENTS.md edit and no new citation identifiers appear
+      (verification found none), so no fabrication check is triggered by the
+      diff. The assessments and editions are stamped with runId, model, date and
+      promptVersion, carry humanReviewed: false and 'NOT human reviewed'
+      headers, and are labeled AI drafts — no unratified material is presented
+      as ratified; the PR body explicitly states both cases stand unratified
+      pending blind checks, and the comparison files self-describe as AI
+      judgments. Verdict movements (GEO-C502, GEO-C913, GEO-C918) are honest
+      disclosures that claims rest on source statements or parent-claim
+      evidence, moving toward lower confidence rather than overstating support,
+      consistent with §3.8's unverified-locator rule and the rule on claims held
+      on source statements alone. Provenance is internally consistent: each
+      run.yaml 'wrote' list matches the files added, and the spend ledgers sum
+      to the run.yaml costs (4.331452 and 2.899427), with the two discarded
+      runs' spend honestly included; the raw malformed reply.json is preserved
+      unmodified as a working record rather than silently cleaned. The repair
+      rounds (errors.md) show the budget and marker checks being enforced, not
+      weakened, and I found no confidence material, fabricated locator, or
+      check-dodging reclassification in what is shown."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 101827
+      outputTokens: 1894
+      usd: 0.016567
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 562007
+  outputTokens: 42086
+  usd: 2.0867
+harvestedAt: 2026-10-12

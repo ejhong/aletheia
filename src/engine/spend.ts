@@ -10,7 +10,7 @@ import { readSpendFile, spendRunFile } from "../domain/spend.ts";
 export { readSpend, readSpendFile, spendByCase, spendDir, spendFile, spendFor, spendRunFile, sumCost } from "../domain/spend.ts";
 
 /**
- * The spend ledger (docs/AUTOMATION.md, "The code"): one place, inside the
+ * The spend ledger (docs/archive/AUTOMATION.md, "The code"): one place, inside the
  * model transport, so every paid call is recorded by construction. Rows
  * carry the vendor's reported tokens; dollars are computed ONLY from a
  * reviewed tariff in config/tariffs.yaml, and are null otherwise — the

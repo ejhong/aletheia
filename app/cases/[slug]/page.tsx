@@ -142,6 +142,14 @@ export default async function CasePage({
       />
 
       <div className="mx-auto max-w-6xl px-5">
+        {site.caseNotice ? (
+          // The notice the site's rules ask every case page to carry (config/site.yaml): on a site about living
+          // people and active proceedings, the presumption of innocence and the way to ask for a correction.
+          <aside aria-label={site.caseNotice.title} className="mt-6 border border-line bg-paper-deep/50 px-5 py-4">
+            <p className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-copper">{site.caseNotice.title}</p>
+            <p className="mt-1.5 text-[13.5px] leading-relaxed text-ink-soft">{site.caseNotice.text}</p>
+          </aside>
+        ) : null}
         <div className="pt-8">
           <AtAGlance
             slug={slug}

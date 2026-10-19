@@ -1,7 +1,7 @@
 /**
  * The reader's budget: how long an edition's article and the fields a reader
  * meets first may be. Mechanical, so that "better is not longer"
- * (docs/AUTOMATION.md, "The goal") is a property of every edition and not a
+ * (docs/archive/AUTOMATION.md, "The goal") is a property of every edition and not a
  * hope: between 2026-09-08 and 2026-09-23 every case the loop touched grew
  * its article — one from 2,178 words to 7,502 over twenty editions, counted
  * without markup as the budget counts — and the header's three answers grew

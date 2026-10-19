@@ -13,7 +13,7 @@ import type {
 } from "./schema.ts";
 
 /**
- * The one view the reader-facing pages read (docs/AUTOMATION.md, "The code"):
+ * The one view the reader-facing pages read (docs/archive/AUTOMATION.md, "The code"):
  * the ledger joined with the current edition. Every live claim appears once,
  * with its judgment from the adopted assessment or none; the featured set
  * and its order come from the edition. Pages hold no logic about how

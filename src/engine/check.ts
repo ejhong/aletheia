@@ -16,7 +16,7 @@ import { assertSeatsWithinBudget, callSeat, seatAvailable, VENDORS, type Reply }
 import type { Meter } from "./spend.ts";
 
 /**
- * `aletheia check <case>` — the blind panel (docs/AUTOMATION.md, "The verbs";
+ * `aletheia check <case>` — the blind panel (docs/archive/AUTOMATION.md, "The verbs";
  * protocol check-v1). Each seat of the roster's panel receives the ledger
  * only — case identity, claims without grades, evidence, sources, research —
  * and returns one assessment run, validated fail-closed against the site's
@@ -140,7 +140,7 @@ export interface CheckOptions {
   deps?: { call?: SeatCaller; now?: () => Date; cases?: () => LoadedCase[]; budget?: BudgetGuard };
 }
 
-/** The budget guard over a set of seat calls about to be made: throws `BudgetExceeded` when they would pass a cap (src/pipeline/transport.ts, `assertSeatsWithinBudget`). */
+/** The budget guard over a set of seat calls about to be made: throws `BudgetExceeded` when they would pass a cap (src/engine/transport.ts, `assertSeatsWithinBudget`). */
 export type BudgetGuard = (calls: { seat: string; prompt: { system: string; user: string; maxTokens?: number } }[], meter: Meter) => number;
 
 export interface CheckOutcome extends RunOutcome {
@@ -176,7 +176,7 @@ export async function runCheck(caseKey: string, opts: CheckOptions = {}): Promis
   if (opts.dryRun) {
     writeWorkingFile(runId, "packet.md", packet, root);
     writeWorkingFile(runId, "instructions.md", instructions, root);
-    return { ...closeRun(run, "dry-run", { reason: `would ask ${active.join(", ")}${skipped.length ? ` (no key: ${skipped.join(", ")})` : ""}${heldNote}; packet and instructions under proposals/${runId}/; nothing sent` }), installed: [], failed: [] };
+    return { ...closeRun(run, "dry-run", { reason: `would ask ${active.join(", ")}${skipped.length ? ` (no key: ${skipped.join(", ")})` : ""}${heldNote}; packet and instructions under runs/${runId}/; nothing sent` }), installed: [], failed: [] };
   }
 
   const userFor = (seat: string) => `RUN HEADER:\n  TAG: ${VENDORS[seat].tag}\n  MODEL_LABEL: ${VENDORS[seat].label}, independent check run\n\nCASE FILE FOLLOWS:\n\n${packet}`;

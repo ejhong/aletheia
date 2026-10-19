@@ -335,7 +335,7 @@ export function claimAnchorErrors(
 }
 
 /**
- * Edition integrity (docs/AUTOMATION.md, "The objects"): the reader's unit
+ * Edition integrity (docs/archive/AUTOMATION.md, "The objects"): the reader's unit
  * must be whole. Every featured id is a live claim with a treatment in the
  * adopted assessment; the adopted assessment exists and its content hash
  * matches (an edited overlay can never silently change the verdict beneath

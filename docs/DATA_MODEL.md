@@ -1,6 +1,6 @@
 # Aletheia Data Model
 
-Nine kinds of record in three groups (docs/AUTOMATION.md, "The objects").
+Nine kinds of record in three groups (docs/archive/AUTOMATION.md, "The objects").
 The authoritative schema is the Zod definitions in `src/domain/schema.ts`;
 this document explains the concepts and the one rule that decides where a
 field lives.
@@ -216,7 +216,7 @@ Pages hold no logic about how judgments are made.
 
 Research items are crux-directed projects (title, summary, `claimIds`,
 effort tier, information gain, track). Studies are pre-registered desk
-workpapers with frozen criteria (`docs/AUTOMATION.md`, the Bench). Images
+workpapers with frozen criteria (`docs/archive/AUTOMATION.md`, the Bench). Images
 are plates (real, with provenance and license; AI-generated images may
 never be plates) or covers (generated, credited as such).
 

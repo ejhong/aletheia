@@ -9,7 +9,7 @@ import {
 } from "./schema.ts";
 
 /**
- * The intake objects (docs/AUTOMATION.md, "The objects"): everything that
+ * The intake objects (docs/archive/AUTOMATION.md, "The objects"): everything that
  * ever tried to enter, and what became of it.
  *
  * - A **Proposal** is a change to domain records in one envelope. Its
@@ -226,7 +226,7 @@ export type SpendRow = z.infer<typeof SpendRowSchema>;
 export type SpendRowInput = z.input<typeof SpendRowSchema>;
 
 /**
- * Saturation, derived (docs/AUTOMATION.md): the number of consecutive
+ * Saturation, derived (docs/archive/AUTOMATION.md): the number of consecutive
  * producer runs for a case whose candidates landed nothing — no `in` row
  * names the run. Never stored, never self-reported. `lastIn` is the date
  * of the most recent `in` row.

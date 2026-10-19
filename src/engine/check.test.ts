@@ -93,7 +93,7 @@ describe("the check verb", () => {
     const cases = loadAllCases();
     const dry = await runCheck("megalithic-casting", { seats: ["anthropic"], dryRun: true, root, deps: { cases: () => cases, call: async () => ({ text: "", model: "m", usage: { inputTokens: 0, outputTokens: 0 }, usd: 0 }) } });
     expect(dry.outcome).toBe("dry-run");
-    expect(fs.existsSync(path.join(root, "proposals", dry.runId, "packet.md"))).toBe(true);
+    expect(fs.existsSync(path.join(root, "runs", dry.runId, "packet.md"))).toBe(true);
 
     let calls = 0;
     const bad = await runCheck("megalithic-casting", {
@@ -105,7 +105,7 @@ describe("the check verb", () => {
     expect(bad.outcome).toBe("failed");
     expect(bad.installed).toEqual([]);
     expect(bad.failed[0]).toMatch(/^anthropic:/);
-    const dir = path.join(root, "proposals", bad.runId);
+    const dir = path.join(root, "runs", bad.runId);
     expect(fs.existsSync(path.join(dir, "seat-anthropic.yaml"))).toBe(true);
     expect(fs.existsSync(path.join(dir, "seat-anthropic.repaired.yaml"))).toBe(true);
     expect(fs.existsSync(path.join(dir, "seat-anthropic.problems.txt"))).toBe(true);
@@ -113,7 +113,7 @@ describe("the check verb", () => {
     expect(readRuns(root).find((r) => r.runId === bad.runId)?.verb).toBe("check");
     // The run record says what file the seats were sent, whatever became of their replies: the packet's hash, the
     // same for every run over one ledger (the dry run's packet.md is that file) and another when the ledger differs.
-    const sent = sha256Hex(fs.readFileSync(path.join(root, "proposals", dry.runId, "packet.md"), "utf8"));
+    const sent = sha256Hex(fs.readFileSync(path.join(root, "runs", dry.runId, "packet.md"), "utf8"));
     const recorded = (id: string) => readRuns(root).find((r) => r.runId === id)?.inputHash;
     expect(recorded(bad.runId)).toBe(sent);
     expect(recorded(dry.runId)).toBe(sent);
@@ -156,7 +156,7 @@ describe("the check verb", () => {
     expect(asked).toEqual(["gemini", "anthropic"]);
     expect(out.failed).toHaveLength(1);
     expect(out.failed[0]).toMatch(/^gemini: .*not asked again: per-day cap/);
-    const dir = path.join(root, "proposals", out.runId);
+    const dir = path.join(root, "runs", out.runId);
     expect(fs.existsSync(path.join(dir, "seat-gemini.repaired.yaml"))).toBe(false);
     expect(fs.readFileSync(path.join(dir, "seat-gemini.problems.txt"), "utf8")).toContain("not asked again");
     // The seat that answered whole is installed as it would have been.

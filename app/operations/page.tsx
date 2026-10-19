@@ -8,9 +8,8 @@ import { seatTallies, unanimousRejections, voteSummary } from "@/src/domain/gate
 import { loadArbiterRecords } from "@/src/domain/governance";
 import { loadAllCases } from "@/src/domain/load";
 import { operationsView } from "@/src/domain/operations";
-import { readRuns } from "@/src/domain/runs";
-import { draftedFrom, inboxPending, nextAction } from "@/src/domain/schedule";
 import { assessmentLabels } from "@/src/domain/schema";
+import { site } from "@/src/config/site";
 import {
   caseStandings,
   dissentGallery,
@@ -20,7 +19,7 @@ import {
 
 export const metadata: Metadata = pageMeta({
   title: "Operations",
-  description: "How Aletheia runs itself and how it is going: the state of the automation, what it has spent, what the panel of independent models has judged, and where they disagree.",
+  description: `How ${site.name} runs itself and how it is going: what the operator did, how every change was reviewed, what it has spent, what the panel of independent models has judged, and where they disagree.`,
   path: "/operations/",
 });
 
@@ -59,9 +58,9 @@ export default function OperationsPage() {
 
   const ops = operationsView();
   const cases = loadAllCases();
-  const runs = readRuns();
-  const next = nextAction(cases, runs, ops.spend.today, draftedFrom(runs), inboxPending(cases));
-  const caseTitle = (slug: string) => cases.find((c) => c.record.slug === slug)?.record.title ?? slug;
+  const caseTitle = (slug: string) => cases.find((c) => c.record.slug === slug || c.dir === slug)?.record.title ?? slug;
+  const caseSlug = (key: string) => cases.find((c) => c.record.slug === key || c.dir === key)?.record.slug ?? null;
+  const published = ops.reviews.filter((r) => r.outcome === "merged").length;
   const usd = (n: number | null) => (n === null ? "unpriced in part" : `$${n.toFixed(2)}`);
   const panelUsd = verdictsCost(loadArbiterRecords());
   const verdicts = loadArbiterRecords();
@@ -75,13 +74,16 @@ export default function OperationsPage() {
         How this site runs, and how it is going
       </h1>
       <p className="mt-4 font-serif text-lg italic text-ink-soft max-w-3xl">
-        Aletheia is operated by AI under a constitution. A weekly sitting
-        chooses a case and a verb, spends within caps the founder set, and
-        opens a pull request; five independent models — different vendors,
-        judging blind — ratify or contest every assessment and vote on
-        every consequential change. This page is the public record of all
-        of it, derived from the ledger at every build. Disagreement is
-        displayed, never resolved by hiding it.
+        {site.name} is operated by AI under a constitution. An AI agent — the
+        operator — reads the sources, writes the records and the articles,
+        and proposes every change as a pull request. Models from four other
+        companies review each change before it publishes: is the site better
+        or worse for it, and would publishing it do harm. Five models from
+        five companies judge each case blind, and their agreement is the
+        standing a judgment carries. The founder holds two powers only: the
+        kill switch and the constitution. This page is the public record of
+        all of it, derived from the repository at every build. Disagreement
+        is displayed, never resolved by hiding it.
       </p>
 
       {/* ── state, schedule, what is next ─────────────────────────── */}
@@ -95,15 +97,15 @@ export default function OperationsPage() {
             <p className="mt-1.5 text-[12px] leading-relaxed text-faint">{ops.operation.reason}</p>
           </div>
           <div className="border border-line bg-paper-deep/40 px-4 py-3">
-            <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-faint">the sitting</p>
-            <p className="mt-1 font-serif text-2xl">{ops.schedule.cron ? "scheduled" : "by hand"}</p>
+            <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-faint">the operator</p>
+            <p className="mt-1 font-serif text-2xl">{ops.schedule.cron ? "at work" : "by hand"}</p>
             <p className="mt-1 text-[12.5px] text-ink-soft">{ops.schedule.human}</p>
-            <p className="mt-1.5 text-[12px] leading-relaxed text-faint">Three budgeted choices a sitting; each opens one pull request the panel judges. The founder can dispatch a sitting at any time, and the state above is the kill switch.</p>
+            <p className="mt-1.5 text-[12px] leading-relaxed text-faint">One session at a time, each under a hard spending cap, choosing what most needs doing: answering reviewers, opening a new question, searching for what has appeared since. Its instructions are in the repository, and every session leaves a log.</p>
           </div>
           <div className="border border-line bg-paper-deep/40 px-4 py-3">
-            <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-faint">what the ledger wants next</p>
-            <p className="mt-1 font-serif text-2xl">{next.verb}{next.case ? <span className="text-ink-soft"> · {caseTitle(next.case)}</span> : null}</p>
-            <p className="mt-1.5 text-[12px] leading-relaxed text-faint">{next.reason}</p>
+            <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-faint">the review</p>
+            <p className="mt-1 font-serif text-2xl">{ops.reviews.length ? `${published} of ${ops.reviews.length} published` : "no review yet"}</p>
+            <p className="mt-1.5 text-[12px] leading-relaxed text-faint">Every change is read by models from vendors other than the operator&apos;s. It publishes when most judge it better, at most one worse, and none flags a harm; their notes become the operator&apos;s next work.</p>
           </div>
         </div>
       </section>
@@ -135,14 +137,21 @@ export default function OperationsPage() {
 
       {/* ── recent sittings ───────────────────────────────────────── */}
       <section id="sittings" className="mt-14 scroll-mt-24">
-        <h2 className="font-serif text-3xl tracking-tight">Recent sittings</h2>
-        <p className="mt-2 text-[14px] text-ink-soft max-w-2xl">What the loop did lately, across cases, in a reader&apos;s words; each line is a run record, and each case&apos;s page carries its full record.</p>
+        <h2 className="font-serif text-3xl tracking-tight">Recent work</h2>
+        <p className="mt-2 text-[14px] text-ink-soft max-w-2xl">What was done lately, across cases: the operator&apos;s sessions, each with its log, and the panel&apos;s checks — and, before 2026-10-19, the steps of the fixed pipeline that preceded the operator. Each line is a run record; each case&apos;s page carries its full record.</p>
         <ul className="mt-4 border border-line bg-paper">
           {ops.sittings.map((r) => (
             <li key={r.runId} className="flex flex-wrap gap-x-3 gap-y-0.5 border-b border-line/60 last:border-b-0 px-4 py-2 text-[13px] leading-relaxed text-ink-soft">
               <span className="font-mono text-[10.5px] tracking-[0.06em] text-faint w-[6.5rem] shrink-0">{r.date}</span>
               <span className="font-mono text-[10.5px] uppercase tracking-[0.12em] text-copper w-[4.5rem] shrink-0">{r.verb}</span>
-              <Link href={`/cases/${r.case}/record/#sitting-${r.runId}`} className="w-[12rem] shrink-0 truncate hover:text-copper">{caseTitle(r.case)}</Link>
+              {caseSlug(r.case) ? (
+                <Link href={`/cases/${caseSlug(r.case)}/record/#sitting-${r.runId}`} className="w-[12rem] shrink-0 truncate hover:text-copper">{caseTitle(r.case)}</Link>
+              ) : (
+                <span className="w-[12rem] shrink-0 truncate">across the site</span>
+              )}
+              {r.verb === "session" ? (
+                <a href={`${site.repoUrl}/blob/main/runs/${r.runId}/log.md`} className="font-mono text-[10px] uppercase tracking-[0.12em] underline underline-offset-2 hover:text-copper">the log</a>
+              ) : null}
               <span className="min-w-0">
                 {r.summary}
                 {r.outcome !== "completed" ? <span className="ml-2 font-mono text-[10px] uppercase tracking-[0.12em] text-ochre">{r.outcome}</span> : null}
@@ -153,14 +162,43 @@ export default function OperationsPage() {
         </ul>
       </section>
 
-      {/* ── review notes ──────────────────────────────────────────── */}
-      <section id="review-notes" className="mt-14 scroll-mt-24">
-        <h2 className="font-serif text-3xl tracking-tight">Review notes</h2>
+      {/* ── reviews ───────────────────────────────────────────────── */}
+      <section id="reviews" className="mt-14 scroll-mt-24">
+        <h2 className="font-serif text-3xl tracking-tight">Reviews</h2>
         <p className="mt-2 text-[14px] text-ink-soft max-w-2xl">
-          When four seats pass a change over one seat&apos;s objection, the objection is not lost: it becomes an issue the operator answers on the record — by a fix, or by a reply saying why not. A reply by the operator that opens &ldquo;Answered on the record&rdquo; is the receipt — the last such reply, not any comment; a note closed without one is shown as closed without an answer. A note names the commit it was raised on, so the PR&apos;s final verdict, given after the fix, may read differently. Open notes are the queue.
+          Every change the operator proposes is read, before it publishes, by models from vendors other than the operator&apos;s. Each says whether the change leaves the site better, no better or worse for a reader seeking the truth, whether publishing it would cause a harm that cannot be taken back — a fabricated or misattributed source, confidential material, an unsupported statement about a living person — and what would improve it. A change publishes when most judge it better, at most one worse, and no harm stands. The notes never block; they are the operator&apos;s next work.
+        </p>
+        {ops.reviews.length === 0 ? (
+          <p className="mt-3 text-[13.5px] text-faint">No change has been reviewed under this rule yet; the first reviews arrive with the operator&apos;s first sessions.</p>
+        ) : (
+          <ul className="mt-4 border border-line bg-paper">
+            {ops.reviews.slice(0, 20).map((r) => {
+              const last = r.rounds.at(-1)!;
+              const count = (v: string) => last.seats.filter((s) => s.verdict === v).length;
+              const harms = last.seats.filter((s) => s.harm);
+              return (
+                <li key={r.pr} className="flex flex-wrap gap-x-3 gap-y-0.5 border-b border-line/60 last:border-b-0 px-4 py-2 text-[13px] leading-relaxed text-ink-soft">
+                  <span className={`font-mono text-[10px] uppercase tracking-[0.14em] w-[5.5rem] shrink-0 ${r.outcome === "merged" ? "text-verdigris" : "text-faint"}`}>{r.outcome === "merged" ? "published" : "withdrawn"}</span>
+                  <span className="font-mono text-[10.5px] tracking-[0.06em] text-faint w-[6.5rem] shrink-0">{r.outcomeAt.slice(0, 10)}</span>
+                  <span className="min-w-0 flex-1">
+                    <a href={r.url} className="hover:text-copper">#{r.pr} — {r.title}</a>
+                    <span className="block font-mono text-[10.5px] text-faint">
+                      {count("better")} better · {count("no_better")} no better · {count("worse")} worse{harms.length ? ` · harm flagged: ${harms.map((h) => h.harm!.kind).join(", ")}` : ""}
+                      {r.rounds.length > 1 ? ` · ${r.rounds.length} rounds` : ""}
+                    </span>
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+        <details className="mt-6">
+          <summary className="cursor-pointer font-mono text-[11px] uppercase tracking-[0.14em] text-faint hover:text-copper">The constitutional gate&apos;s review notes, 2026-09-09 to 2026-10-19</summary>
+        <p className="mt-2 text-[14px] text-ink-soft max-w-2xl">
+          Before 2026-10-19 every change faced a constitutional gate that voted complies or violates; when four seats passed a change over one seat&apos;s objection, the objection became an issue the operator answered on the record. That gate was replaced by the review above (founder amendment of AGENTS.md §3.15, 2026-10-19); its notes are kept here as they stood.
         </p>
         {ops.reviewNotes.length === 0 ? (
-          <p className="mt-3 text-[13.5px] text-faint">None harvested yet; the sitting copies them in.</p>
+          <p className="mt-3 text-[13.5px] text-faint">None.</p>
         ) : (
           <ul className="mt-4 border border-line bg-paper">
             {ops.reviewNotes.map((n) => (
@@ -185,6 +223,7 @@ export default function OperationsPage() {
             ))}
           </ul>
         )}
+        </details>
       </section>
 
       {/* ── standings ─────────────────────────────────────────────── */}
@@ -364,13 +403,16 @@ export default function OperationsPage() {
       {/* ── the gate ──────────────────────────────────────────────── */}
       {verdicts.length > 0 && (
         <section id="gate" className="mt-14 scroll-mt-24">
-          <h2 className="font-serif text-3xl tracking-tight">The gate</h2>
+          <h2 className="font-serif text-3xl tracking-tight">The constitutional gate, 2026-09-09 to 2026-10-19</h2>
           <p className="mt-2 text-[14px] text-ink-soft max-w-2xl">
-            Every consequential change is judged by the constitutional panel
-            before it merges: {verdicts.filter((r) => r.verdict === "pass").length} passed
-            and {verdicts.filter((r) => r.verdict === "park").length} parked so far. The latest
-            are below; each opens to every seat&apos;s vote, the rules it
-            cited, and its reasoning in full.
+            Before the review above, every consequential change was judged by a
+            constitutional panel voting complies or violates:{" "}
+            {verdicts.filter((r) => r.verdict === "pass").length} passed and{" "}
+            {verdicts.filter((r) => r.verdict === "park").length} parked. It
+            asked whether a change could be defended, not whether it made the
+            site truer, and one seat cast nearly every objection; the founder
+            replaced it on 2026-10-19. Its record is kept: each verdict opens
+            to every seat&apos;s vote and reasoning in full.
           </p>
           <ul className="mt-5 border border-line bg-paper">
             {verdicts.slice(0, VERDICTS_SHOWN).map((r) => (

@@ -67,6 +67,8 @@ export function stripHtml(html: string): string {
     .replace(/&quot;/g, '"')
     .replace(/&#39;|&apos;/g, "'")
     .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(Number(n)))
+    .replace(/&#x([0-9a-f]+);/gi, (_, n) => String.fromCodePoint(parseInt(n, 16)))
+    .replace(/&(mdash|ndash|hellip|lsquo|rsquo|ldquo|rdquo);/g, (_, e: string) => ({ mdash: "—", ndash: "–", hellip: "…", lsquo: "‘", rsquo: "’", ldquo: "“", rdquo: "”" })[e as "mdash"])
     .replace(/[ \t]+/g, " ")
     .replace(/\n[ \t]+/g, "\n")
     .replace(/[ \t]+\n/g, "\n")
@@ -392,9 +394,35 @@ export function arxivIdOf(url: string | null | undefined): string | null {
  * OpenAlex knows for its DOI. The result keeps the original `url` as its
  * key and says in `via` where the text came from.
  */
+/** The status id an X (Twitter) post's URL carries, or null. */
+export function xStatusOf(url: string | null | undefined): string | null {
+  return /^https?:\/\/(?:www\.|mobile\.)?(?:x|twitter)\.com\/[^/?#]+\/status(?:es)?\/(\d+)/i.exec(url ?? "")?.[1] ?? null;
+}
+
+/**
+ * A post on X, read through X's own embed service (publish.twitter.com/oembed): the post's page serves its text only
+ * to a signed-in browser, but the embed service returns the post as the block a website embeds — its text, its
+ * author and its date — to anyone. Read under the post's own URL, and said so.
+ */
+async function xPost(url: string, opts: FetchOptions): Promise<FetchedSource> {
+  const fetchImpl = opts.fetchImpl ?? fetch;
+  const embed = `https://publish.twitter.com/oembed?omit_script=1&dnt=1&url=${encodeURIComponent(url)}`;
+  try {
+    const res = await fetchImpl(embed, { headers: { "User-Agent": UA, Accept: "application/json" }, signal: AbortSignal.timeout(opts.timeoutMs ?? 60_000) });
+    if (!res.ok) return { url, ok: false, status: res.status, contentType: null, text: null, reason: `X embed service HTTP ${res.status} (a deleted, private or age-restricted post is not served)` };
+    const data = (await res.json()) as { html?: string; author_name?: string };
+    const text = stripHtml(data.html ?? "");
+    if (!text) return { url, ok: false, status: res.status, contentType: null, text: null, reason: "X embed service returned no text" };
+    return { url, ok: true, status: res.status, contentType: "text/html", text, via: `X's embed service (publish.twitter.com/oembed) for the post`, ...(data.author_name ? { pageTitle: `${data.author_name} on X` } : {}) };
+  } catch (e) {
+    return { url, ok: false, status: null, contentType: null, text: null, reason: `X embed service failed: ${(e as Error).message}` };
+  }
+}
+
 export async function retrieve(target: RetrievalTarget, opts: FetchOptions & { retryDelayMs?: number } = {}): Promise<FetchedSource> {
   const doi = target.doi ?? (target.url ? doiFromUrl(target.url) : null);
   const key = target.url ?? (doi ? `https://doi.org/${doi}` : "");
+  if (target.url && xStatusOf(target.url)) return xPost(target.url, opts);
   // An arXiv abstract page is the record's public locator, but the paper's text is the PDF: read that
   // first, under the abstract's key, and say so. (2026-09-10: a drafter read two preprints as PDFs from the
   // links a post supplied and recorded the sources by their abstract pages; the verifier fetched the

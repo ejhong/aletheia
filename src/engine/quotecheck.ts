@@ -6,7 +6,7 @@ import { canonicalJson } from "../domain/hash.ts";
 import { verifyCitations } from "./citations.mjs";
 import { doiFromUrl } from "./fetch.ts";
 import { quoteOccurs, quotedSpans } from "./quotes.ts";
-import { pagesContaining, readSource } from "./read.ts";
+import { pagesContaining, pagesOf, readSource } from "./read.ts";
 
 /**
  * The quote check (AGENTS.md §3.15: "every quoted passage found in the text
@@ -130,11 +130,15 @@ export async function quoteCheck(opts: QuoteCheckOptions): Promise<QuoteCheckRes
       const { text, reason } = await textOf(source);
       if (text === null) return fail(record, `the text of ${source.id} could not be read (${reason}); a record whose text cannot be read enters as provisional, with the route to the text`);
       for (const span of spans) if (!quoteOccurs(span, text)) fail(record, `quoted passage not found in the text of ${source.id}: "${span.slice(0, 160)}"`);
+      // A locator names the page as the reading tool numbers it (the PDF's own page, [p. N]). A page past the end of
+      // the document is a journal's pagination, which the text does not carry: said, not failed.
       const pages = locatorPages(locator);
       if (!pages || !/\[p\. \d+\]/.test(text)) return;
+      const last = Math.max(...pagesOf(text).keys());
+      if (pages[0] > last) return warn(record, `locator "${locator}" names a page past the document's ${last} (a journal's pagination?); name the page as the reading tool shows it`);
       for (const span of spans) {
         const on = pagesContaining(text, span);
-        if (on.length && !on.some((p) => p >= pages[0] - 1 && p <= pages[1] + 1)) {
+        if (on.length && !on.some((p) => p >= pages[0] && p <= pages[1])) {
           fail(record, `locator "${locator}" names p. ${pages[0] === pages[1] ? pages[0] : `${pages[0]}–${pages[1]}`}; the passage "${span.slice(0, 80)}" is on p. ${on.join(", ")}`);
         }
       }

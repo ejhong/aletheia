@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Editions migration (docs/AUTOMATION.md, build step 2) — one reversible,
+ * Editions migration (docs/archive/AUTOMATION.md, build step 2) — one reversible,
  * idempotent run over every case.
  *
  *   node scripts/migrations/2026-09-08-editions.ts [--dry-run]
@@ -255,7 +255,7 @@ function migrateCase(dir: string): string[] {
   const edDoc = new Document(edition);
   const art = edDoc.get("article", true);
   if (isScalar(art)) (art as Scalar).type = Scalar.BLOCK_LITERAL;
-  edDoc.commentBefore = ` Edition — the reader's unit (docs/AUTOMATION.md). Append-only; the
+  edDoc.commentBefore = ` Edition — the reader's unit (docs/archive/AUTOMATION.md). Append-only; the
  current edition is the latest by date. This first edition was produced by
  the migration of ${DATE} and adopts the migration assessment above.`;
   fs.mkdirSync(path.join(dir, "editions"), { recursive: true });
@@ -273,7 +273,7 @@ function migrateCase(dir: string): string[] {
     hist.createNode({
       date: DATE,
       change:
-        `Migrated to editions (docs/AUTOMATION.md, build step 2). The article, the ${featured.length}-claim featured set, and the displayed judgment now live in edition ${edition.runId}, which adopts the migration assessment ${run.runId}. Claim records carry propositions and anchors only; evaluative fields moved into the adopted assessment's per-claim treatment; the dossier header, research priority, and component verdicts moved from case.yaml into the assessment; claims-catalog.yaml merged into claims.yaml (tiers ended). No judgment changed.` +
+        `Migrated to editions (docs/archive/AUTOMATION.md, build step 2). The article, the ${featured.length}-claim featured set, and the displayed judgment now live in edition ${edition.runId}, which adopts the migration assessment ${run.runId}. Claim records carry propositions and anchors only; evaluative fields moved into the adopted assessment's per-claim treatment; the dossier header, research priority, and component verdicts moved from case.yaml into the assessment; claims-catalog.yaml merged into claims.yaml (tiers ended). No judgment changed.` +
         (disagreements.length
           ? ` Where a claim record's hand-written credibility differed from the draft overlay's verdict, the record's value (what claim pages displayed) was carried: ${disagreements.join("; ")}.`
           : ""),

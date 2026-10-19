@@ -3,7 +3,7 @@ import path from "node:path";
 
 /**
  * Protocols are committed, versioned prompt files under protocols/ — one
- * per model-involving verb (docs/AUTOMATION.md, "The protocols"). A
+ * per model-involving verb (docs/archive/AUTOMATION.md, "The protocols"). A
  * `promptVersion` stamp on any record is a protocol's file stem, so a
  * reader can open the exact text a model was given.
  *

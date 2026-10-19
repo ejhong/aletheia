@@ -2,60 +2,54 @@
 
 **Contested claims, mapped to evidence and experiments.**
 
-Aletheia decomposes contested hypotheses into atomic claims, maps the evidence for and against each one with honest provenance labels, and points at the test that would settle the dispute. It is operated by AI as a declared experiment: every consequential change is judged by a panel of independent models against the constitution in `AGENTS.md`, and the whole record — verdicts, dissents, reverts — is public in this repository and on the site's `/operations` page.
+Aletheia decomposes contested hypotheses into atomic claims, maps the
+evidence for and against each one with honest provenance labels, and points
+at the test that would settle the dispute. It is operated by AI as a
+declared experiment: an AI agent does the work, models from four other
+companies review every change before it publishes, five models judge each
+case blind, and the whole record — sessions, reviews, verdicts, dissents —
+is public in this repository and on the site's `/operations` page.
 
-Eleven cases are live (`content/cases/`): megalithic casting, vasocomputation, Orch OR, VASCO transients, the Model of Pragmatic Information, Zero Worlds, Conformal Cyclic Cosmology, the Younger Dryas impact hypothesis, the Immortality Key, the pre-Columbian Amazon, and Deep Memory.
+## Read these
 
-## Three documents
-
-| Read this | For |
+| | |
 | --- | --- |
-| `AGENTS.md` | The constitution: epistemic rules, code rules, what AI may and may not do. Amended only by the founder. |
-| `docs/AUTOMATION.md` | The design of the self-running site (two layers, one workflow) **and its current status** — what is built, what is working, what is next. |
-| `docs/MAINTENANCE.md` | The runbook: what runs when, what each run produces, how to feed the inbox, and what to check when something looks wrong. |
+| `AGENTS.md` | The constitution: the epistemic rules, and what AI may and may not do. Amended only by the founder. |
+| `docs/DESIGN.md` | How the site runs: the operator, the checks, the review, the panel, the money, the two sites. |
+| `docs/RUNBOOK.md` | What to do when: the founder's levers, the secrets, what to check when something looks wrong. |
+| `docs/DECISIONS.md` | Why things are the way they are: the decisions in force, then the log. |
+| `operator/charter.md` | The operator's standing instructions. |
 
-`docs/DECISIONS.md` is the append-only history of why things are the way they are. Read it when a rule seems odd; it is not a manual.
-
-Narrower references: `docs/CONTENT_POLICY.md` (verification labels, real-citations-only), `docs/DATA_MODEL.md` (the domain objects in prose; `src/domain/schema.ts` is authoritative), `docs/IMAGE_STYLE.md` (the two image registers), `docs/CHAT_BRIEFS.md` (chat-seeded case construction), `inbox/README.md` (the drop conventions).
+Narrower references: `docs/DATA_MODEL.md` (the records in prose;
+`src/domain/schema.ts` is authoritative), `docs/CONTENT_POLICY.md`
+(verification labels, real citations only), `docs/IMAGE_STYLE.md` (the two
+image registers), `inbox/README.md` (dropping material in). The history of
+the September pipeline is in `docs/archive/`.
 
 ## Commands
 
 ```bash
-npm install        # once
-npm run dev        # dev server at localhost:3000
-npm run typecheck  # tsc --noEmit
-npm run lint       # eslint
-npm test           # vitest
-npm run build      # static export to out/ (fails loudly on invalid content)
-node scripts/aletheia.ts next   # what the ledger wants next, and why
+npm install
+npm run dev                          # the site at localhost:3000
+npm test && npm run build            # what CI runs (the build fails on invalid content)
+node scripts/site.ts                 # the engine's command line: status, read, ids, stamp, check-quotes, panel, …
 ```
-
-## Architecture
-
-Three zones, one-way flow:
-
-1. **Content** (`content/cases/<case>/`) — YAML + markdown per case: `case.yaml`, `editions/` (the current telling: article with `[text]{claim=GEO-C001}` refs), `claims.yaml`, `evidence.yaml`, `sources.yaml`, `research.yaml`, `history.yaml`, optional `studies/`, `inputs/`, `watch.yaml`, `resources.yaml`, and append-only AI assessment overlays in `assessments/<runId>.yaml`.
-2. **Domain** (`src/domain/`) — Zod schemas, the loader (fails the build on dangling IDs, uncited sources, or unresolved claim refs), derived standing and governance.
-3. **UI** (`src/components/`, `app/`) — pure components, one per domain concept. Routes: home, cases, the case page (for reading the case) with its claim explorer, evidence ledger, resources, studies and record (how it was made, run by run); claim detail; source record; method; operations, with a page for each of the gate's verdicts; a sitemap and a feed of the verdicts that moved.
-
-Dependencies are deliberately minimal: Next.js (static export) + TypeScript strict + Tailwind + Zod + yaml; vitest dev-only; all visuals hand-built.
-
-## Deployment
-
-Static export served from git: pushing to `main` runs CI and deploys to GitHub Pages (`.github/workflows/deploy.yml`). The base path is injected by the workflow.
-
-## Images
-
-Two registers, never confused (full rules in `docs/IMAGE_STYLE.md`): AI-generated editorial artwork in the house style, always credited, never depicting evidence; and **plates** — real photographs with provenance, shown as numbered museum plates. Add a plate from Wikimedia Commons with `node scripts/add-commons-image.mjs "File:..." <case-slug>`. Every image needs a manifest entry with license and credit or the build fails; AI-generated images can never be plates — enforced by the schema.
 
 ## Layout
 
-| Path | Role |
+| Path | |
 | --- | --- |
-| `content/cases/<slug>/` | One published case |
-| `inbox/` | Drop zone: notes, link lists, documents (see `inbox/README.md`) |
-| `proposals/` | Machine output, one directory per run (report, draft, verify, edition, check, inbox) with its `run.yaml` and working files; earlier watch, agenda and import artifacts kept as history |
-| `governance/arbiter/` | Harvested panel verdicts, one per settled PR |
-| `research/` | The founder's own essays and commissioned reports (founding inputs for cases) |
-| `briefs/` | Chat-seeded case briefs in progress (never citable) |
-| `scripts/` | Entry points only (the CLI, the arbiter, the harvest); the logic they share is in `src/` |
+| `content/cases/<case>/` | One case: `case.yaml`, `claims.yaml`, `evidence.yaml`, `sources.yaml`, `research.yaml`, `editions/` (the article as readers see it), `assessments/` (append-only judgments: the operator's drafts and the panel's blind checks), `history.yaml`, and optionally `studies/`, `inputs/`, `images.yaml` |
+| `inbox/` | The founder's door |
+| `runs/` | One directory per session, panel or review: its record and its log |
+| `proposals/` | The September pipeline's runs, kept as history |
+| `governance/` | The spend ledger, the reviews of every change, the kill switch (`operation.yaml`), and the September gate's record |
+| `config/` | The site's identity, theme and rules for models; the models; the budget; the tariffs |
+| `protocols/` | The prompts the review and the panel are given (retired ones in `archive/`) |
+| `src/domain/`, `src/components/`, `app/` | The site: schemas and the loader, pure components, pages |
+| `src/engine/`, `scripts/site.ts` | The engine: reading sources, the quote check, stamping editions, the review, the panel, spend |
+| `research/` | The founder's own essays (founding inputs) |
+
+Static export, served from git: a merge to `main` deploys to GitHub Pages.
+Dependencies are deliberately few — Next.js, TypeScript strict, Tailwind,
+Zod, yaml; vitest and pdfjs for development and the engine.

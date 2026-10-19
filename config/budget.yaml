@@ -1,13 +1,19 @@
-# The spend ceiling (docs/AUTOMATION.md, "The code": budgets in one config).
-# Enforced by the model transport before every paid call (build step 3b):
-# a call that would carry the run, the day, or the month past its cap is
-# refused and the run ends `failed` with the reason — never a silent
-# partial. Founder-set, 2026-09-08, for the two tests (Cast, Not Carved;
-# Deep Memory); revisit when the first unattended cadence is chosen.
+# The spend ceiling. Every paid call is guarded before it is made — the
+# panel's seats by the transport, the operator's session by the hard cap
+# Claude Code is given — and a call that would carry the run, the session,
+# the day or the month past its cap is refused with the reason, never
+# trimmed. The review is not under the caps (it judges every change put to
+# it) and is on the bill.
+#
+# Standing caps: the founder's direction of 2026-10-19, in session — "keep
+# the cost lower per month if possible — maybe like $100 or something like
+# that" — for both sites; this site's share is $60 (Erebus's is $40, in its
+# own config). They hold from 2026-11-01, when the crunch below ends.
 usd:
-  perRun: 20      # one report or one edition; the first house-seat report cost $37.86 uncached, ~$13 is the cached estimate
-  perDay: 30      # standing caps: the steady state — a settled case is searched on a cadence that doubles after each pass that lands nothing (7 → 90 days) and re-judged only when its ledger moves; these bound the system, they are not its plan
-  perMonth: 150
+  perRun: 15      # one blind panel on a case: five seats, the Anthropic seat at max effort ($2–3 of it)
+  perSession: 10  # one operator session (Claude Code's --max-budget-usd), when the day and the month leave that much
+  perDay: 15
+  perMonth: 60
 # The crunch: caps that hold until a date, then fall to the standing caps —
 # the bootstrap sweep (every case through the closed loop at least once,
 # founding essays taken in, panels re-judged) is the expensive part, and it

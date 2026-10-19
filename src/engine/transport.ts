@@ -6,7 +6,7 @@ import { loadTariffs, priceOf, recordSpend, type Meter } from "./spend.ts";
 export type { Meter } from "./spend.ts";
 
 /**
- * The model transport (docs/AUTOMATION.md, "The code"): the one path a
+ * The model transport (docs/archive/AUTOMATION.md, "The code"): the one path a
  * verb takes to a model, with the spend ledger inside it. A call names the
  * run it belongs to; the reply comes back with the vendor's usage, and a
  * spend row is written before the caller sees the text. No verb calls a

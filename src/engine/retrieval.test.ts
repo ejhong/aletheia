@@ -265,3 +265,25 @@ describe("a second client for a page that challenged the first", () => {
     expect(calls.some((u) => u.includes("europepmc"))).toBe(false);
   });
 });
+
+describe("a post on X", () => {
+  it("is read through X's embed service, under the post's own URL, saying so", async () => {
+    const { xStatusOf } = await import("./fetch.ts");
+    expect(xStatusOf("https://x.com/someone/status/1866000000000000001?s=20")).toBe("1866000000000000001");
+    expect(xStatusOf("https://twitter.com/someone/statuses/20")).toBe("20");
+    expect(xStatusOf("https://x.com/someone")).toBeNull();
+    const fetchImpl = (async (url: string) => {
+      expect(url).toMatch(/^https:\/\/publish\.twitter\.com\/oembed\?/);
+      return new Response(JSON.stringify({ author_name: "Someone", html: '<blockquote class="twitter-tweet"><p lang="en" dir="ltr">The footage shows the &quot;same shoes&quot; &amp; the same bag.</p>&mdash; Someone (@someone) <a href="https://x.com/someone/status/1">January 6, 2026</a></blockquote>' }), { headers: { "content-type": "application/json" } });
+    }) as typeof fetch;
+    const r = await retrieve({ url: "https://x.com/someone/status/1" }, { fetchImpl });
+    expect(r.ok).toBe(true);
+    expect(r.url).toBe("https://x.com/someone/status/1");
+    expect(r.via).toMatch(/embed service/);
+    expect(r.text).toContain('The footage shows the "same shoes" & the same bag.');
+    expect(r.text).toContain("— Someone (@someone) January 6, 2026");
+    const gone = await retrieve({ url: "https://x.com/someone/status/2" }, { fetchImpl: (async () => new Response("", { status: 404 })) as typeof fetch });
+    expect(gone.ok).toBe(false);
+    expect(gone.reason).toMatch(/HTTP 404/);
+  });
+});

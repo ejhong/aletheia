@@ -134,7 +134,7 @@ export function engagedChecks(draft: AssessmentRun, checks: AssessmentRun[]): As
 
 /**
  * Has the ledger moved since this run judged it? Staleness is a hash, not a
- * date (docs/AUTOMATION.md): a run that recorded the ledger hash it judged
+ * date (docs/archive/AUTOMATION.md): a run that recorded the ledger hash it judged
  * is stale exactly when the current ledger hashes differently. Runs from
  * before the field existed fall back to the date rule — content-bearing
  * history newer than the run. Returns a short reason, or null when current.

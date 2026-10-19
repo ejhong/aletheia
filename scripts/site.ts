@@ -13,7 +13,7 @@
  *   archive <url>                           a Wayback Machine snapshot for a source's archivedUrl
  *   check-quotes [--base REF]               every quoted passage a change adds, found in its source (CI)
  *   panel <case> [--seats a,b] [--dry-run]  the blind check: the panel judges the ledger as it stands
- *   review --base REF --title T [--body-file F] [--previous F] [--out F] [--json F]
+ *   review --base REF --title T [--body-file F] [--previous F | --previous-comments F] [--out F] [--json F]
  *                                           the review of a change (the gate; the review workflow)
  *   harvest                                 closed changes' reviews into governance/reviews/ (and their cost)
  *   budget [--cap]                          the budget as it stands; --cap prints what a session may spend
@@ -29,7 +29,7 @@ import { harvest } from "../src/engine/harvest.ts";
 import { nextIds, type Kind, KINDS } from "../src/engine/ids.ts";
 import { formatQuoteCheck, quoteCheck } from "../src/engine/quotecheck.ts";
 import { findInText, pagesOf, readSource } from "../src/engine/read.ts";
-import { reviewBlob, reviewComment, runReview } from "../src/engine/review.ts";
+import { blobFromComment, reviewBlob, reviewComment, runReview } from "../src/engine/review.ts";
 import { closeSession, type SessionReport } from "../src/engine/session.ts";
 import { stamp } from "../src/engine/stamp.ts";
 import { budgetState, formatStatus, siteStatus } from "../src/engine/status.ts";
@@ -137,7 +137,9 @@ async function main() {
       return;
     }
     case "review": {
-      const previous = flag("previous") && fs.existsSync(flag("previous")!) ? JSON.parse(fs.readFileSync(flag("previous")!, "utf8")) : [];
+      // Earlier rounds: their machine records, given directly (--previous) or as the PR's comment bodies (--previous-comments).
+      const read = (f: string | undefined) => (f && fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, "utf8")) : null);
+      const previous = read(flag("previous")) ?? ((read(flag("previous-comments")) as string[] | null) ?? []).map(blobFromComment).filter(Boolean);
       const r = await runReview({
         root: process.cwd(),
         base: need("base"),

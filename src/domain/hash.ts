@@ -10,7 +10,7 @@ import type {
 } from "./schema.ts";
 
 /**
- * Content hashes for editions (docs/AUTOMATION.md, "The objects").
+ * Content hashes for editions (docs/archive/AUTOMATION.md, "The objects").
  *
  * An edition names the exact assessment it adopts by runId AND by the hash
  * of that run's parsed content, so an edited overlay can never silently

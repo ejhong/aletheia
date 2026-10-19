@@ -52,7 +52,7 @@ export function blindPacket(loaded: LoadedCase, root = process.cwd()): string {
 
 /**
  * The featured claims that no admitted evidence record cites: held on their source alone, and a source is not
- * evidence (AGENTS.md §3.6). Counted as the edition packet counts them (src/pipeline/packet.ts, `evidence: 0`): a
+ * evidence (AGENTS.md §3.6). Counted as the edition packet counts them (the retired edition packet, `evidence: 0`): a
  * rejected or provisional record is not an admitted one.
  */
 export function unevidencedClaims(loaded: Pick<LoadedCase, "evidence">, featuredIds: string[]): string[] {

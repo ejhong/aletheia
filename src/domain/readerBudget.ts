@@ -21,7 +21,7 @@
  * exactly.
  *
  * Pure. The edition verb enforces it on what a candidate writes
- * (src/pipeline/edition.ts); an incumbent written before the budget is not
+ * (the retired edition verb, and since 2026-10-19 src/engine/stamp.ts); an incumbent written before the budget is not
  * made invalid by it.
  */
 import type { AssessmentRun } from "./schema.ts";

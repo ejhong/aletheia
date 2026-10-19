@@ -1,7 +1,7 @@
 /**
  * The streamed shape of an Anthropic Messages response, read and reassembled.
  * Shared by the two paths that call the vendor: the verbs' house model
- * (src/pipeline/models.ts) and the panel's Anthropic seat
+ * (the retired pipeline's models.ts) and the panel's Anthropic seat
  * (src/lib/vendors.mjs). Both stream for one reason — a reply that takes
  * longer than the five minutes Node's fetch waits for response headers is
  * otherwise lost, and paid for (2026-09-08 on the house path; 2026-09-28 on

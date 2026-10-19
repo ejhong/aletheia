@@ -823,7 +823,7 @@ export type SeatPreference = z.infer<typeof SeatPreferenceSchema>;
 
 /**
  * The panel's seats reading a candidate edition beside the incumbent, as a
- * reader would, and what they chose (src/pipeline/compare.ts). An AI
+ * reader would, and what they chose (the retired pipeline's compare.ts, 2026-09-30 to 2026-10-19). An AI
  * judgment of two tellings — not a human's, and not a judgment of the
  * verdicts, which the blind check makes.
  */

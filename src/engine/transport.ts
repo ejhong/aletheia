@@ -43,7 +43,7 @@ export function seatAvailable(name: string): boolean {
  * summed, because a verb asks its seats at once and none of them is on the ledger when the others are sent. A seat
  * without a reviewed tariff cannot be budgeted, so the set is refused. Throws BudgetExceeded; returns the estimate.
  *
- * Until 2026-09-30 only the house model's calls were guarded (src/pipeline/models.ts): a blind check asked its five
+ * Until 2026-09-30 only the house model's calls were guarded (the retired pipeline's models.ts): a blind check asked its five
  * seats whatever the caps said, and one seat at max effort had come to cost more than the other four together. The
  * constitutional panel (scripts/arbiter.mjs) is not under the caps and does not call this: the gate judges every
  * change put to it, and reports its cost in its verdict.

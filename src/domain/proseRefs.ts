@@ -101,7 +101,7 @@ export function compoundClause(statement: string): string | null {
   return m ? m[0].trim() : null;
 }
 
-/** The page a quote sits on in text paged `[p. N]` (src/pipeline/fetch.ts), or null when the quote or the markers are absent. */
+/** The page a quote sits on in text paged `[p. N]` (src/engine/fetch.ts), or null when the quote or the markers are absent. */
 export function pageOfQuote(text: string, quote: string | undefined): number | null {
   if (!quote) return null;
   const at = text.indexOf(quote);

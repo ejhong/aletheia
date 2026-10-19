@@ -26,6 +26,8 @@ jobs:
       - run: npx tsc --noEmit
       - run: npx eslint .
       - run: npm test
+      - name: No forbidden name on the rendered site
+        run: node scripts/site.ts check-names
       - name: Every quoted passage the change adds is in its source
         if: github.event_name == 'pull_request'
         run: node scripts/site.ts check-quotes --base "origin/${{ github.base_ref }}"

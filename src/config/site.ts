@@ -31,6 +31,12 @@ const SiteSchema = z.object({
    * later, so a site's records from before it ran the engine are judged by the rules they were written under.
    */
   engineSince: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
+  /**
+   * Names the rendered site must never contain, in any casing — checked over content/, src/, app/ and public/ by
+   * `node scripts/site.ts check-names` in CI. A site running the engine under another name keeps the engine's own
+   * name off its pages this way (its constitution may require it).
+   */
+  forbiddenNames: z.array(z.string().min(3)).default([]),
 });
 
 export type SiteConfig = z.infer<typeof SiteSchema>;

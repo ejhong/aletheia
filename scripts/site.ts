@@ -12,6 +12,7 @@
  *   stamp <case>                            bind editions/new.yaml (and assessments/new.yaml) to the ledger
  *   archive <url>                           a Wayback Machine snapshot for a source's archivedUrl
  *   check-quotes [--base REF]               every quoted passage a change adds, found in its source (CI)
+ *   check-names                             no forbidden name (config/site.yaml) on the rendered site (CI)
  *   panel <case> [--seats a,b] [--dry-run]  the blind check: the panel judges the ledger as it stands
  *   review --base REF --title T [--body-file F] [--previous F | --previous-comments F] [--out F] [--json F]
  *                                           the review of a change (the gate; the review workflow)
@@ -126,6 +127,26 @@ async function main() {
       const url = positional[0] ?? fail("usage: archive <url>");
       const a = await archiveUrl(url);
       console.log(a.archivedUrl ?? `no snapshot: ${a.note}`);
+      return;
+    }
+    case "check-names": {
+      // The names the rendered site must never contain (config/site.yaml, `forbiddenNames`), in any casing.
+      const names = site.forbiddenNames.map((n) => n.toLowerCase());
+      const hits: string[] = [];
+      const walk = (dir: string) => {
+        if (!fs.existsSync(dir)) return;
+        for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+          const p = `${dir}/${e.name}`;
+          if (e.isDirectory()) walk(p);
+          else if (!/\.(png|jpe?g|gif|webp|ico|pdf|woff2?)$/i.test(e.name)) {
+            const text = fs.readFileSync(p, "utf8").toLowerCase();
+            for (const n of names) if (text.includes(n)) hits.push(`${p}: contains "${n}"`);
+          }
+        }
+      };
+      if (names.length) for (const d of ["content", "src", "app", "public"]) walk(d);
+      console.log(hits.length ? hits.join("\n") : `no forbidden name in content/, src/, app/, public/ (${names.length} checked)`);
+      if (hits.length) process.exit(1);
       return;
     }
     case "check-quotes": {

@@ -1,7 +1,7 @@
 /**
  * The comparison in a reader's words: how the panel's seats, reading an
  * edition beside the one it replaced, chose between them
- * (src/pipeline/compare.ts writes the record; this reads it for the page).
+ * (the retired pipeline's compare.ts wrote the record; this reads it for the page).
  * Pure. It says what models preferred and never that the edition is
  * better: a preference among five AI readers is what it is.
  */

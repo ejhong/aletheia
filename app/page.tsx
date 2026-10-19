@@ -31,7 +31,7 @@ export default function HomePage() {
           {site.subtitle}
         </p>
         <h1 className="font-serif text-3xl sm:text-[2.6rem] tracking-tight mt-3 leading-[1.12] max-w-3xl">
-          Controversies are argued at the wrong scale. We take them apart.
+          {site.headline}
         </h1>
         <p className="mt-5 text-[16px] leading-relaxed text-ink-soft max-w-2xl">
           {site.mission}
@@ -41,7 +41,7 @@ export default function HomePage() {
             href="/method/"
             className="font-mono text-[11px] uppercase tracking-[0.14em] text-copper underline underline-offset-4 hover:text-ink"
           >
-            How the atlas works →
+            How the {site.kind.split(" ").at(-1)} works →
           </Link>
           {cases.length > 0 ? (
             <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-faint">
@@ -102,7 +102,7 @@ export default function HomePage() {
       <section className="bg-dossier text-dossier-text mt-12">
         <div className="mx-auto max-w-6xl px-5 py-12">
           <h2 className="font-mono text-[11px] uppercase tracking-[0.2em] text-copper">
-            how the atlas works
+            how the {site.kind.split(" ").at(-1)} works
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-dossier-line border border-dossier-line mt-5">
             {[
@@ -120,7 +120,7 @@ export default function HomePage() {
               ],
               [
                 "04 · Honest provenance",
-                "The site is written, checked and maintained by AI, and says so on every page. No assessment stands on one model's word: models from rival vendors judge each case blind, and where they disagree is published, not smoothed over. Every run and every refusal is on the record.",
+                "The site is written and maintained by an AI operator, and says so on every page. Nothing it writes publishes on its word alone: every quotation is checked against its source, models from four other companies review every change, and five judge each case blind — where they disagree is published, not smoothed over. Every session and every review is on the record.",
               ],
             ].map(([title, text]) => (
               <div key={title} className="bg-dossier-soft p-6">
@@ -153,27 +153,31 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* engraved strata divider */}
-      <div aria-hidden className="mx-auto max-w-3xl px-5 pt-14">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={assetPath(divider.file)}
-          alt=""
-          loading="lazy"
-          className="block w-full h-16 object-cover opacity-80"
-        />
-      </div>
+      {/* engraved strata divider, where the site has one */}
+      {divider ? (
+        <div aria-hidden className="mx-auto max-w-3xl px-5 pt-14">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={assetPath(divider.file)}
+            alt=""
+            loading="lazy"
+            className="block w-full h-16 object-cover opacity-80"
+          />
+        </div>
+      ) : null}
 
-      {/* tailpiece ornament */}
-      <div aria-hidden className="mx-auto max-w-xs px-5 pt-10 pb-4">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={assetPath(tailpiece.file)}
-          alt=""
-          loading="lazy"
-          className="block w-full mix-blend-multiply opacity-90"
-        />
-      </div>
+      {/* tailpiece ornament, where the site has one */}
+      {tailpiece ? (
+        <div aria-hidden className="mx-auto max-w-xs px-5 pt-10 pb-4">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={assetPath(tailpiece.file)}
+            alt=""
+            loading="lazy"
+            className="block w-full mix-blend-multiply opacity-90"
+          />
+        </div>
+      ) : null}
     </div>
   );
 }

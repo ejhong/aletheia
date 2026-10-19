@@ -10,6 +10,8 @@ import { loadConfig } from "./config.ts";
 export const BudgetSchema = z.object({
   usd: z.object({
     perRun: z.number().positive(),
+    /** One operator session: the hard cap Claude Code is given (`--max-budget-usd`), when the day and the month leave that much. */
+    perSession: z.number().positive().default(10),
     perDay: z.number().positive(),
     perMonth: z.number().positive(),
   }),

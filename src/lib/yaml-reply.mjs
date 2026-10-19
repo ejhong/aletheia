@@ -4,7 +4,7 @@ import { parse as parseYaml, parseDocument, visit } from "yaml";
  * A model's YAML reply, read tolerantly: a code fence around it and up to
  * five trailing lines that are not YAML (a vendor's footer, a sign-off) are
  * set aside. One reader, because the check verb installs what it parses
- * (src/pipeline/check.ts) and the panel's packet compares a raw reply with
+ * (src/engine/check.ts) and the panel's packet compares a raw reply with
  * what was installed from it (src/lib/arbiter-core.mjs): the two must read a
  * reply the same way, or the comparison reports differences of its own making.
  *

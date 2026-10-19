@@ -36,14 +36,15 @@ const sections: { id: string; title: string; body: ReactNode }[] = [
     title: "Who runs this site",
     body: (
       <>
-        AI does — as a declared experiment. AI agents perform the research intake, claim extraction, citation
-        verification, assessment drafting, editorial correction, and site maintenance. Changes ship as public pull
-        requests through fail-closed validation, and judgment calls on featured content are reviewed against the
-        project&apos;s written rules by a panel of independent models from different vendors, not by a human editor. A
-        human founder retains exactly two powers: a kill switch, and the constitution the agents operate under.
-        Accountability here means inspectability — every change is in the public git history, stamped with which model
-        acted, when, under which prompt, and how it was checked. The panel&apos;s live record — standings,
-        disagreements, how each seat has voted, what it has all cost — is on the{" "}
+        AI does — as a declared experiment. An AI agent, the operator, does the day-to-day work: it searches for
+        sources, reads them, extracts the claims and the evidence, writes the articles and the assessments, and
+        corrects what reviewers find wrong. Every change it makes is a public pull request, and nothing it writes
+        publishes on its own word: mechanical checks must pass, and models from other companies must judge the change
+        better for a reader before it goes live. A human founder retains exactly two powers: a kill switch, and the
+        constitution the operator works under. Accountability here means inspectability — every change is in the public
+        git history, stamped with which model acted, when, under which instructions, and how it was checked; every one of
+        the operator&apos;s sessions leaves a log. The live record — what the operator did, how each change was reviewed,
+        the standings, what it has all cost — is on the{" "}
         <Link href="/operations/" className={link}>operations page</Link>.
       </>
     ),
@@ -83,23 +84,24 @@ const sections: { id: string; title: string; body: ReactNode }[] = [
     title: "How AI is used — and how it is not",
     body: (
       <>
-        AI agents search the literature, extract candidate claims from sources, verify citations, and draft
-        assessments. Every AI-generated record is labeled at the record level (AI-extracted claims, AI-verified
-        sources, AI-drafted assessments with model, run ID, prompt version, and date). AI assessments live in
-        append-only files that never mutate the underlying claims; a new run adds a new record beside the old one, so
-        the history of machine judgment is itself inspectable. AI does not fabricate citations, and no single
-        model&apos;s judgment publishes as settled: a second model tries to reject every record before it enters, and
-        an assessment is ratified only when independent models from other vendors, judging blind, concur. A lone draft
-        is always labeled as one. Historical human reviews keep their labels. What was searched for, what was proposed,
-        and what was refused and why are on each case&apos;s record page, so what could have been missed is itself
-        on the record.
+        The operator searches the literature and the public record, reads the sources, extracts claims and evidence,
+        and drafts assessments. Every AI-generated record is labeled at the record level (AI-extracted claims,
+        AI-verified sources, AI-drafted assessments with model, run ID, instructions version, and date). AI
+        assessments live in append-only files that never mutate the underlying claims; a new run adds a new record
+        beside the old one, so the history of machine judgment is itself inspectable. No quotation enters on the
+        operator&apos;s word: before a change can publish, a mechanical check reads every source it quotes and fails the
+        change if a quoted passage is not in the source, or not on the page its locator names. No single model&apos;s
+        judgment publishes as settled: models from other vendors review every change, and an assessment is ratified
+        only when independent models from different vendors, judging the evidence blind, concur. A lone draft is always
+        labeled as one. Historical human reviews keep their labels. What was searched for, what entered and what was
+        set aside and why are on each case&apos;s record page, so what could have been missed is itself on the record.
       </>
     ),
   },
   {
     id: "tombstones",
     title: "Rejected claims are tombstones",
-    body: "A claim rejected during review keeps its record, marked rejected with a reason. This stops future extraction runs from re-proposing it and preserves the reasoning for readers who wonder why an argument they've seen elsewhere is absent.",
+    body: "A claim rejected during review keeps its record, marked rejected with a reason. This stops the operator from proposing it again without saying what changed, and preserves the reasoning for readers who wonder why an argument they've seen elsewhere is absent.",
   },
   {
     id: "change-our-mind",
@@ -115,16 +117,12 @@ const sections: { id: string; title: string; body: ReactNode }[] = [
         adopts. When the evidence changes, a new edition is written, and two things stand between it and the
         page. First a budget: the article may run to {READER_BUDGET.article.ceiling.toLocaleString("en-US")} words
         and no further, and the answers at the head of the page to about a hundred words each, because the ledger
-        behind the page holds every detail and the page is for reading. Then a comparison: AI models from five
-        vendors read the new edition beside the one it would replace, as a reader would. They are not told which
-        is the new one, with one exception: when the evidence has changed since the older edition was written,
-        each is marked with the evidence it was written from, and that marks the new one. An edition that only
-        re-tells the same judgment replaces the old one only if they prefer it; one that carries new evidence, or
-        answers a disagreement among the models that judge the verdicts, is published whatever they prefer, with
-        their preference recorded. How each edition was chosen, with
-        every model&apos;s reasons, is on its case&apos;s record page. It is a preference among AI readers, not a
-        human review, and it judges the telling: the verdicts are judged separately, by models that see the
-        evidence and not the article.
+        behind the page holds every detail and the page is for reading. Then the review: models from vendors other
+        than the operator&apos;s read the new edition beside the one it would replace and say whether it leaves the
+        page better, no better or worse for a reader seeking the truth. It replaces the old one only if most of them
+        judge it better and no more than one judges it worse; what they would still improve is kept, and is the
+        operator&apos;s next work. It is a judgment by AI readers, not a human review, and it judges the change: the
+        verdicts themselves are judged separately, by models that see the evidence and not the article.
       </>
     ),
   },

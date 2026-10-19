@@ -5,7 +5,7 @@ import { SpendRowSchema, type Cost, type SpendRow } from "./intake.ts";
 
 /**
  * The spend ledger, read side (governance/spend.yaml): every paid model
- * call, appended by the pipeline's transport, priced only from a reviewed
+ * call, appended by the transport and by the record of each operator session, priced only from a reviewed
  * tariff and null otherwise. The pages and the budget guard read it here.
  */
 /** The original single ledger: every row through 2026-09-16. Read, never written to, since then. */

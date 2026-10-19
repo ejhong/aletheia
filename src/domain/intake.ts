@@ -9,7 +9,7 @@ import {
 } from "./schema.ts";
 
 /**
- * The intake objects (docs/AUTOMATION.md, "The objects"): everything that
+ * The intake objects (docs/archive/AUTOMATION.md, "The objects"): everything that
  * ever tried to enter, and what became of it.
  *
  * - A **Proposal** is a change to domain records in one envelope. Its
@@ -67,6 +67,10 @@ export const Verb = z.enum([
   "watch",
   "agenda",
   "migration",
+  /** One working session of the operator — the AI agent that runs the site (2026-10-19; runs/<runId>/). */
+  "session",
+  /** One review of a change by the reviewers of other vendors (AGENTS.md §3.15, 2026-10-19). */
+  "review",
 ]);
 export type Verb = z.infer<typeof Verb>;
 
@@ -222,7 +226,7 @@ export type SpendRow = z.infer<typeof SpendRowSchema>;
 export type SpendRowInput = z.input<typeof SpendRowSchema>;
 
 /**
- * Saturation, derived (docs/AUTOMATION.md): the number of consecutive
+ * Saturation, derived (docs/archive/AUTOMATION.md): the number of consecutive
  * producer runs for a case whose candidates landed nothing — no `in` row
  * names the run. Never stored, never self-reported. `lastIn` is the date
  * of the most recent `in` row.

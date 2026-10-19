@@ -1,3 +1,11 @@
+# The mechanical checks (AGENTS.md §3.15): fail-closed, on every change and on
+# main. Schemas, record ids and every edition's integrity are the loader's
+# (the build fails on any of them); every quoted passage a change adds must be
+# found in the text of its source, every new DOI must resolve, and every
+# locator that names a page must name the page the passage is on
+# (src/engine/quotecheck.ts). On a pull request the quote check runs in the
+# review, from main's code (.github/workflows/review.yml); here it runs on
+# every push to main, so that nothing merged by hand escapes it.
 name: CI
 
 on:
@@ -10,6 +18,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -18,5 +29,10 @@ jobs:
       - run: npx tsc --noEmit
       - run: npx eslint .
       - run: npm test
+      - name: No forbidden name on the rendered site
+        run: node scripts/site.ts check-names
+      - name: Every quoted passage a push to main adds is in its source
+        if: github.event_name == 'push' && github.event.before != '0000000000000000000000000000000000000000'
+        run: node scripts/site.ts check-quotes --base "${{ github.event.before }}"
       - run: npm run build
       - run: npm run check:links

@@ -58,8 +58,8 @@ describe("reading the content once", () => {
     const pkg = JSON.parse(fs.readFileSync("package.json", "utf8")) as { scripts: Record<string, string> };
     expect(pkg.scripts.build).toBe("ALETHEIA_CONTENT_FROZEN=1 next build");
     for (const [name, script] of Object.entries(pkg.scripts)) if (name !== "build") expect(script, name).not.toContain("ALETHEIA_CONTENT_FROZEN");
-    // No workflow and no pipeline script sets it for a verb.
-    for (const dir of [".github/workflows", "scripts", "src/pipeline"]) {
+    // No workflow, script or engine tool sets it.
+    for (const dir of [".github/workflows", "scripts", "src/engine"]) {
       for (const f of fs.readdirSync(dir, { withFileTypes: true })) {
         if (f.isFile()) expect(fs.readFileSync(`${dir}/${f.name}`, "utf8"), `${dir}/${f.name}`).not.toContain("ALETHEIA_CONTENT_FROZEN");
       }

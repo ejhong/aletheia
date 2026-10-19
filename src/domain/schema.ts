@@ -716,7 +716,7 @@ export const AssessmentRunSchema = z.object({
     /** The argued structural roll-up over the ladder. Not a score. */
     synthesis: z.string().min(100),
     /**
-     * The steelman field (docs/AUTOMATION.md, "epistemic counterweights"):
+     * The steelman field (docs/archive/AUTOMATION.md, "epistemic counterweights"):
      * the strongest argument FOR the featured hypothesis that this
      * assessment does not answer, stated by the same model that wrote the
      * assessment — a limitations section, not a rebuttal and not a vote.
@@ -773,24 +773,28 @@ export type AssessmentRun = z.infer<typeof AssessmentRunSchema>;
 export const STEELMAN_REQUIRED_FROM = "2026-09-04";
 
 /** The steelman requirement as a pure rule, so the loader and tests share it. */
-export function steelmanRequirementError(run: {
-  runId: string;
-  date: string;
-  migratedFrom?: string;
-  caseAssessment: { steelman?: string };
-}): string | null {
-  if (run.date < STEELMAN_REQUIRED_FROM) return null;
+export function steelmanRequirementError(
+  run: {
+    runId: string;
+    date: string;
+    migratedFrom?: string;
+    caseAssessment: { steelman?: string };
+  },
+  /** The date the rule binds this site from (src/domain/load.ts, `ruleFrom`). */
+  from = STEELMAN_REQUIRED_FROM,
+): string | null {
+  if (run.date < from) return null;
   // A migration run asserts nothing its source draft did not; the
   // requirement binds judgments, and this is a transfer.
   if (run.migratedFrom) return null;
   if (run.caseAssessment.steelman && run.caseAssessment.steelman.trim().length > 0)
     return null;
-  return `assessment run ${run.runId} (${run.date}) is missing caseAssessment.steelman — every run dated on or after ${STEELMAN_REQUIRED_FROM} must state the strongest argument for the featured hypothesis it does not answer`;
+  return `assessment run ${run.runId} (${run.date}) is missing caseAssessment.steelman — every run dated on or after ${from} must state the strongest argument for the featured hypothesis it does not answer`;
 }
 
 
 /**
- * An Edition — the reader's unit, and the case's compression (docs/AUTOMATION.md).
+ * An Edition — the reader's unit, and the case's compression (docs/archive/AUTOMATION.md).
  *
  * One immutable file binds what a reader experiences as one telling: the
  * exact assessment run it adopts (by runId and content hash, so an edited
@@ -823,7 +827,7 @@ export type SeatPreference = z.infer<typeof SeatPreferenceSchema>;
 
 /**
  * The panel's seats reading a candidate edition beside the incumbent, as a
- * reader would, and what they chose (src/pipeline/compare.ts). An AI
+ * reader would, and what they chose (the retired pipeline's compare.ts, 2026-09-30 to 2026-10-19). An AI
  * judgment of two tellings — not a human's, and not a judgment of the
  * verdicts, which the blind check makes.
  */
@@ -1173,7 +1177,7 @@ export type CaseRecord = z.infer<typeof CaseSchema>;
 
 /** A fully loaded, integrity-checked case. */
 /**
- * Narrative inputs (docs/AUTOMATION.md, "the anti-drift anchor"): the
+ * Narrative inputs (docs/archive/AUTOMATION.md, "the anti-drift anchor"): the
  * founding texts a case was built from, committed with the founder's
  * license and consulted by every narrative-revision run so rewrites
  * drink from the original well rather than a fading copy. Inputs are

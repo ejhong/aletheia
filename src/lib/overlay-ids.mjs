@@ -11,7 +11,7 @@
  * branching off the same `main` each saw no file and each took the same
  * name, colliding on merge and — since the id IS the runId — minting two
  * panel runs under one runId, which breaks revert-by-runId
- * (docs/MAINTENANCE.md) and the §3.15 reconstruction guarantee. A clock
+ * (docs/RUNBOOK.md) and the §3.15 reconstruction guarantee. A clock
  * reading needs no lookup, so concurrent runs cannot agree on it.
  *
  * MONOTONIC, NOT MERELY UNIQUE. `latestCheckPerModel` in

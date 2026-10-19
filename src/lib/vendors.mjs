@@ -82,7 +82,7 @@ export async function fetchWithRetry(name, url, init, attempts = 3) {
 /**
  * The most tokens a seat's request lets it produce, thinking and reply
  * together — the figure its request carries (`buildRequest`), and so the
- * figure the budget's estimate must use (src/pipeline/transport.ts). On the
+ * figure the budget's estimate must use (src/engine/transport.ts). On the
  * Anthropic seat that is the roster's ceiling when it names one, whatever
  * the caller asks; elsewhere it is the caller's.
  * @param {string} name
@@ -206,7 +206,7 @@ export function buildRequest(name, { system, user, maxTokens = 16000, cachedPref
  */
 /**
  * The same call, returning the reply text with the vendor's reported token
- * usage — what the spend ledger (src/pipeline/spend.ts) records. Usage is
+ * usage — what the spend ledger (src/engine/spend.ts) records. Usage is
  * whatever the vendor reports; when a vendor omits it, the counts are 0 and
  * the caller records that honestly rather than estimating.
  */

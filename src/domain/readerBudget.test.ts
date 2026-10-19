@@ -4,7 +4,6 @@ import { loadAllCases } from "./load.ts";
 import { articleBudgetErrors, assessmentBudgetErrors, openingWords, proseWords, READER_BUDGET, readerBudgetText } from "./readerBudget.ts";
 import type { AssessmentRun } from "./schema.ts";
 import { articleWords } from "./text.ts";
-import { loadProtocol, renderProtocol } from "../pipeline/protocols.ts";
 
 /**
  * The reader's budget is the floor under "better is not longer": an edition
@@ -90,24 +89,22 @@ describe("the reader's budget", () => {
       expect(text).toContain(limit.ceiling.toLocaleString("en-US"));
       expect(text).toContain(limit.target.toLocaleString("en-US"));
     }
-    // The edition protocol states these very lines, as literal text: a changed figure fails here until the protocol
-    // is given a new version, so a stamp always points at the text that ran.
-    const protocol = loadProtocol("edition");
-    expect(renderProtocol(protocol, {})).toContain(text);
-    expect(Number(protocol.version.match(/-v(\d+)$/)?.[1])).toBeGreaterThanOrEqual(14);
   });
 
   it("reads the real cases: every edition written under the budget is within it", () => {
     // The floor's claim about the site. An edition from before protocol v13 may be over (the budget did not exist);
-    // one written under v13 or later was refused if it was, so none can be.
+    // one written under v13 or later was refused if it was, and so is every edition the engine stamps (since
+    // 2026-10-19, src/engine/stamp.ts), so none can be.
     for (const c of loadAllCases()) {
       const edition = currentEdition(c);
       const version = Number(edition.promptVersion.match(/^edition-v(\d+)$/)?.[1] ?? 0);
-      if (version < 13) continue;
+      // A mechanical migration carries the words it moved, as it found them; the next edition restates them within
+      // the budget (src/engine/stamp.ts refuses one that re-adopts an assessment over it).
+      if ((version < 13 && edition.date < "2026-10-19") || edition.promptVersion.startsWith("migration")) continue;
       expect(articleBudgetErrors(edition.article), c.record.slug).toEqual([]);
       const run = adoptedAssessment(c);
       const assessedUnder = Number(run?.promptVersion.match(/^edition-v(\d+)$/)?.[1] ?? 0);
-      if (run && assessedUnder >= 13) expect(assessmentBudgetErrors(run), c.record.slug).toEqual([]);
+      if (run && !run.migratedFrom && (assessedUnder >= 13 || run.date >= "2026-10-19")) expect(assessmentBudgetErrors(run), c.record.slug).toEqual([]);
     }
   });
 });

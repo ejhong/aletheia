@@ -101,7 +101,7 @@ const byEditionVerb = (run: AssessmentRun): boolean => /^edition-v\d+$/.test(run
  * agreement between the two is no longer independent and they cannot vouch for it. Deriving a standing from them
  * would let a draft clear by converging on its judges instead of on the evidence.
  *
- * The `edition` verb shows its drafter every check current on the ledger (src/pipeline/packet.ts, `panel`),
+ * The `edition` verb shows its drafter every check current on the ledger (the retired edition packet, `panel`),
  * contested or not. For a draft that verb wrote, what was in hand is decided by the clock first and the stamps
  * second, so that a stamp can add to the set and never take from it:
  *
@@ -134,7 +134,7 @@ export function engagedChecks(draft: AssessmentRun, checks: AssessmentRun[]): As
 
 /**
  * Has the ledger moved since this run judged it? Staleness is a hash, not a
- * date (docs/AUTOMATION.md): a run that recorded the ledger hash it judged
+ * date (docs/archive/AUTOMATION.md): a run that recorded the ledger hash it judged
  * is stale exactly when the current ledger hashes differently. Runs from
  * before the field existed fall back to the date rule — content-bearing
  * history newer than the run. Returns a short reason, or null when current.

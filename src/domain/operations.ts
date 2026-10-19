@@ -1,15 +1,16 @@
 /**
- * The operations view (the /operations page): the operation state, the
- * schedule, spend against the caps in force, the sittings across cases,
- * the review notes. Everything here is derived at build time from the
- * files the loop writes and the founder's configuration; nothing is
- * authored for the page.
+ * The operations view (the /operations page): the operation state, when the
+ * operator works, spend against the caps in force, the recent runs across
+ * cases — the operator's sessions, the panel's checks, and before
+ * 2026-10-19 the pipeline's verbs — and the reviews of every change.
+ * Everything here is derived at build time from the files the site writes
+ * and the founder's configuration; nothing is authored for the page.
  */
 import fs from "node:fs";
 import path from "node:path";
 import type { Cost, SpendRow } from "./intake.ts";
 import { capsFor, loadBudget, type Budget } from "./budget.ts";
-import { loadOperation, loadReviewNotes } from "./governance.ts";
+import { loadOperation, loadReviewNotes, loadReviewRecords, type ReviewRecord } from "./governance.ts";
 import type { ReviewNoteRecord } from "./schema.ts";
 import { describeRunAsPublished, readRuns } from "./runs.ts";
 import { readSpend, spentOn, sumCost } from "./spend.ts";
@@ -27,12 +28,15 @@ export interface Operations {
     byVerb: { verb: string; usd: number | null; rows: number }[];
   };
   sittings: { runId: string; case: string; verb: string; date: string; outcome: string; summary: string; usd: number | null }[];
+  /** The reviews of changes since 2026-10-19, newest first. */
+  reviews: ReviewRecord[];
+  /** The constitutional gate's review notes, 2026-09-09 to 2026-10-19: its record, kept. */
   reviewNotes: ReviewNoteRecord[];
 }
 
 const DAYS = ["Sundays", "Mondays", "Tuesdays", "Wednesdays", "Thursdays", "Fridays", "Saturdays"];
 
-/** A five-field cron in a reader's words, for the shapes the chain uses; anything else is shown as written. */
+/** A five-field cron in a reader's words, for the shapes the workflows use; anything else is shown as written. */
 export function cronHuman(cron: string): string {
   const m = cron.trim().match(/^(\d{1,2}) (\d{1,2}) \* \* (\*|\d(?:,\d)*)$/);
   if (!m) return `on the schedule \`${cron}\` (UTC)`;
@@ -43,9 +47,9 @@ export function cronHuman(cron: string): string {
   return `${days.length === 1 ? "weekly, " : ""}${days.join(" and ")} at ${hh}:${mm} UTC`;
 }
 
-/** The chain's active cron line, if the schedule is uncommented in the workflow file. */
-export function chainCron(root = process.cwd()): string | null {
-  const file = path.join(root, ".github", "workflows", "chain.yml");
+/** A workflow's active cron line — the operator's by default — if its schedule is uncommented. */
+export function workflowCron(root = process.cwd(), workflow = "operator.yml"): string | null {
+  const file = path.join(root, ".github", "workflows", workflow);
   if (!fs.existsSync(file)) return null;
   const text = fs.readFileSync(file, "utf8");
   const on = text.match(/^on:\n([\s\S]*?)^(?:concurrency|permissions|jobs):/m)?.[1] ?? text;
@@ -58,10 +62,10 @@ export function operationsView(root = process.cwd(), today = new Date().toISOStr
   const budget = loadBudget(root);
   const byVerb = new Map<string, SpendRow[]>();
   for (const r of rows) byVerb.set(r.verb, [...(byVerb.get(r.verb) ?? []), r]);
-  const cron = chainCron(root);
+  const cron = workflowCron(root);
   return {
     operation: loadOperation(root),
-    schedule: { cron, human: cron ? cronHuman(cron) : "no schedule: a sitting runs when the founder dispatches one" },
+    schedule: { cron, human: cron ? cronHuman(cron) : "no schedule: the operator works when the founder starts a session" },
     spend: {
       today,
       day: spentOn(rows, today),
@@ -75,6 +79,7 @@ export function operationsView(root = process.cwd(), today = new Date().toISOStr
       .reverse()
       .slice(0, 24)
       .map((r) => ({ runId: r.runId, case: r.case, verb: r.verb, date: r.date, outcome: r.outcome, summary: describeRunAsPublished(r, root), usd: r.cost?.usd ?? null })),
+    reviews: loadReviewRecords(root),
     reviewNotes: loadReviewNotes(),
   };
 }

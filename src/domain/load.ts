@@ -1,17 +1,27 @@
 /** Loading and validation: the case files parsed, checked, and assembled into a LoadedCase — fail-closed. Editions, standing and history live beside this in their own modules (split 2026-09-09). */
 import { readOnce } from "./frozen.ts";
 import fs from "node:fs";
+import { site } from "../config/site.ts";
 import path from "node:path";
 import { parse as parseYaml } from "yaml";
 import { extractClaimRefs, extractPlateRefs, markerErrors } from "./article.ts";
 import { assessmentHash, ledgerHash } from "./hash.ts";
 import { DispositionSchema, type Disposition } from "./intake.ts";
-import { AssessmentRunSchema, CaseSchema, ChangeLogEntrySchema, CLAIM_ANCHOR_REQUIRED_FROM, ClaimSchema, CuratedResourceSchema, EditionSchema, EvidenceSchema, ImageSchema, ResearchOpportunitySchema, SourceSchema, steelmanRequirementError, StudySchema, NarrativeInputSchema, WatchConfigSchema, type AssessmentRun, type Claim, type CuratedResource, type Edition, type Evidence, type ImageRecord, type LoadedCase, type Source, type Study, type NarrativeInput, type WatchConfig } from "./schema.ts";
+import { AssessmentRunSchema, CaseSchema, ChangeLogEntrySchema, CLAIM_ANCHOR_REQUIRED_FROM, STEELMAN_REQUIRED_FROM, ClaimSchema, CuratedResourceSchema, EditionSchema, EvidenceSchema, ImageSchema, ResearchOpportunitySchema, SourceSchema, steelmanRequirementError, StudySchema, NarrativeInputSchema, WatchConfigSchema, type AssessmentRun, type Claim, type CuratedResource, type Edition, type Evidence, type ImageRecord, type LoadedCase, type Source, type Study, type NarrativeInput, type WatchConfig } from "./schema.ts";
 import { studyIntegrityErrors } from "./studies.ts";
 import { danglingProseRefs } from "./proseRefs.ts";
 import { orderEditions } from "./editions.ts";
 
 const CONTENT_DIR = path.join(process.cwd(), "content", "cases");
+
+/**
+ * The date a dated rule binds this site from: the rule's own date, or the day the site took up the engine
+ * (config/site.yaml, `engineSince`), whichever is later — a site's records from before it ran the engine are judged by
+ * the rules they were written under.
+ */
+export function ruleFrom(date: string): string {
+  return site.engineSince && site.engineSince > date ? site.engineSince : date;
+}
 const SITE_IMAGES_FILE = path.join(process.cwd(), "content", "images.yaml");
 const PUBLIC_DIR = path.join(process.cwd(), "public");
 
@@ -113,7 +123,7 @@ export function stampErrors(run: AssessmentRun, runs: AssessmentRun[]): string[]
   return errors;
 }
 
-export function checkIntegrity(caseDir: string, loaded: LoadedCase): void {
+export function checkIntegrity(caseDir: string, loaded: LoadedCase, opts: { opening?: boolean } = {}): void {
   const claimById = new Map(loaded.claims.map((c) => [c.id, c]));
   // An id written in prose must name a record that exists — every record, no
   // cutoff (2026-09-11: five research summaries cited the drafter's provisional
@@ -269,7 +279,7 @@ export function checkIntegrity(caseDir: string, loaded: LoadedCase): void {
     for (const err of stampErrors(run, loaded.assessmentRuns)) throw new ContentError(caseDir, err);
     // The epistemic counterweight, fail-closed: new runs must disclose the
     // strongest argument for the featured hypothesis they do not answer.
-    const steelmanError = steelmanRequirementError(run);
+    const steelmanError = steelmanRequirementError(run, ruleFrom(STEELMAN_REQUIRED_FROM));
     if (steelmanError) {
       throw new ContentError(caseDir, steelmanError);
     }
@@ -277,8 +287,12 @@ export function checkIntegrity(caseDir: string, loaded: LoadedCase): void {
 
   checkImages(caseDir, loaded.images, requireLiveClaim);
 
-  for (const err of editionErrors(loaded)) {
-    throw new ContentError(caseDir, err);
+  // A case being opened has no edition yet: its first is the one being stamped (src/engine/stamp.ts), and the
+  // stamped case is loaded again under every rule.
+  if (!(opts.opening && loaded.editions.length === 0)) {
+    for (const err of editionErrors(loaded)) {
+      throw new ContentError(caseDir, err);
+    }
   }
 
   for (const err of dispositionErrors(loaded)) {
@@ -325,7 +339,7 @@ export function claimAnchorErrors(
   const errors: string[] = [];
   for (const c of claims) {
     if (c.reviewState === "rejected") continue;
-    if (c.origin.date < CLAIM_ANCHOR_REQUIRED_FROM) continue;
+    if (c.origin.date < ruleFrom(CLAIM_ANCHOR_REQUIRED_FROM)) continue;
     if (c.sourceAnchor || cited.has(c.id)) continue;
     errors.push(
       `claim ${c.id} (${c.origin.date}) has neither a source anchor nor an evidence record citing it — every claim dated on or after ${CLAIM_ANCHOR_REQUIRED_FROM} must be anchored`,
@@ -335,7 +349,7 @@ export function claimAnchorErrors(
 }
 
 /**
- * Edition integrity (docs/AUTOMATION.md, "The objects"): the reader's unit
+ * Edition integrity (docs/archive/AUTOMATION.md, "The objects"): the reader's unit
  * must be whole. Every featured id is a live claim with a treatment in the
  * adopted assessment; the adopted assessment exists and its content hash
  * matches (an edited overlay can never silently change the verdict beneath
@@ -482,7 +496,8 @@ export function sourceAdmissionErrors(
   return errors;
 }
 
-export function loadCase(caseDir: string): LoadedCase {
+/** A case and its integrity. `opening`: the case may have no edition yet, because the stamp is writing its first. */
+export function loadCase(caseDir: string, opts: { opening?: boolean } = {}): LoadedCase {
   const record = CaseSchema.parse(readYaml(caseDir, "case.yaml"));
 
   const claims = parseList<Claim>(
@@ -693,7 +708,7 @@ export function loadCase(caseDir: string): LoadedCase {
     studies,
     narrativeInputs,
   };
-  checkIntegrity(caseDir, loaded);
+  checkIntegrity(caseDir, loaded, opts);
   return loaded;
 }
 
@@ -715,10 +730,9 @@ export function loadSiteImages(): ImageRecord[] {
   return images;
 }
 
-export function siteImage(id: string): ImageRecord {
-  const found = loadSiteImages().find((i) => i.id === id);
-  if (!found) throw new Error(`no site image with id ${id}`);
-  return found;
+/** A site-level image by id, or null when the site has none by that id (a site's ornaments are its own). */
+export function siteImage(id: string): ImageRecord | null {
+  return loadSiteImages().find((i) => i.id === id) ?? null;
 }
 
 export function caseCover(loaded: LoadedCase): ImageRecord | null {

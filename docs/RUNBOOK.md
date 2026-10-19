@@ -48,8 +48,11 @@ works is `docs/DESIGN.md`; why it is the way it is, `docs/DECISIONS.md`.
   that could not be read in CI (a site that blocks the runner) means the
   record enters as `provisional`, with the route to its text, or the source
   is replaced by a readable copy of the same document.
-- **The money ran out.** Sessions stop until the day or the month turns; the
-  status line (`node scripts/site.ts budget`) says what is left.
+- **The money ran out.** Sessions stop until the day or the month turns. The
+  month's money is also spread over its days: after a session, the next
+  scheduled one waits until the month is back on its pace (Run workflow by
+  hand runs ahead of it, within the caps). `node scripts/site.ts budget
+  --line` says what is left and when the next session can start.
 
 ## Commands
 

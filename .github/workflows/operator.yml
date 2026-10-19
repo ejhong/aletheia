@@ -56,14 +56,17 @@ jobs:
         id: gate
         run: |
           state=$(node -e 'const y=require("yaml");console.log(y.parse(require("fs").readFileSync("governance/operation.yaml","utf8")).state)')
-          cap=$(node scripts/site.ts budget --cap)
+          # A session started by hand runs ahead of the month's pace, within the caps (src/engine/status.ts).
+          ahead=""
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then ahead="--ahead"; fi
+          cap=$(node scripts/site.ts budget --cap $ahead)
           echo "cap=$cap" >> "$GITHUB_OUTPUT"
           if [ "$state" != "live" ]; then
             echo "::notice::governance/operation.yaml says $state; no session starts"; echo "go=no" >> "$GITHUB_OUTPUT"
           elif node -e "process.exit(Number('$cap') >= 2 ? 0 : 1)"; then
             echo "go=yes" >> "$GITHUB_OUTPUT"
           else
-            echo "::notice::the day or the month leaves \$$cap; no session starts until it turns"; echo "go=no" >> "$GITHUB_OUTPUT"
+            echo "::notice::$(node scripts/site.ts budget --line $ahead) No session starts today."; echo "go=no" >> "$GITHUB_OUTPUT"
           fi
 
       - name: What this session is for

@@ -39,7 +39,9 @@ person.
 ## A session
 
 1. The workflow starts (daily, or when the founder dispatches one). If the
-   site is paused, or the month's money is spent, it stops.
+   site is paused, or the month's money is spent, or the month has spent
+   more than its share of the days gone (the pace that spreads the money
+   over the month; a session started by hand runs ahead of it), it stops.
 2. It harvests the reviews of changes that have closed since the last
    session into `governance/reviews/` (and their cost into the ledger).
 3. If one of the operator's own changes is held or sent back by the
@@ -94,11 +96,13 @@ on Erebus, the living-persons rules). Money and models are per site
 
 The founder's direction of 2026-10-19: about $100 a month across both
 sites — Aletheia $60, Erebus $40 — after a one-time start that October's
-granted caps already cover. At that rate the live cases are checked weekly
-for anything new, one or two cases a week get a deep pass, and each quiet
-case is refreshed every two or three months; about $250 would give every
-case a deep pass a month. More money buys depth and breadth, not
-correctness: the checks and the review are the same at any budget.
+granted caps already cover. The month's money is spread over its days, so
+at $10 a session, with the review and the panels on the same bill, this
+site gets a session about every five or six days and Erebus about one a
+week: enough to check the live cases for anything new and to give a case a
+deep pass every few weeks. About $250 a month would give every case a deep
+pass a month. More money buys depth and breadth, not correctness: the
+checks and the review are the same at any budget.
 
 ## What was replaced on 2026-10-19, and why
 

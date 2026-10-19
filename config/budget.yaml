@@ -3,7 +3,10 @@
 # Claude Code is given — and a call that would carry the run, the session,
 # the day or the month past its cap is refused with the reason, never
 # trimmed. The review is not under the caps (it judges every change put to
-# it) and is on the bill.
+# it) and is on the bill. The month's money is spread over its days: a
+# scheduled session starts only when the month has spent no more than its
+# share of the days gone; a session the founder starts by hand runs ahead
+# of that pace, within the caps.
 #
 # Standing caps: the founder's direction of 2026-10-19, in session — "keep
 # the cost lower per month if possible — maybe like $100 or something like
@@ -11,7 +14,7 @@
 # own config). They hold from 2026-11-01, when the crunch below ends.
 usd:
   perRun: 15      # one blind panel on a case: five seats, the Anthropic seat at max effort ($2–3 of it)
-  perSession: 10  # one operator session (Claude Code's --max-budget-usd), when the day and the month leave that much
+  perSession: 10  # one operator session (Claude Code's --max-budget-usd), when the day and the month leave that much and the month is on its pace
   perDay: 15
   perMonth: 60
 # The crunch: caps that hold until a date, then fall to the standing caps —

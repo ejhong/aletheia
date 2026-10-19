@@ -50,8 +50,30 @@ export interface BudgetState {
   perDay: number;
   perMonth: number;
   perSession: number;
-  /** What one session may spend now: the session cap, or what the day and the month leave, whichever is least. */
+  /** The month's money spread over its days: its share of the days gone, through today. */
+  pace: number;
+  /** What one session may spend now: the session cap, or what the day and the month leave, whichever is least — and
+   *  nothing while the month has spent more than its pace, unless the session was started by hand. */
   sessionCap: number;
+  /** When the month is ahead of its pace, the first date a scheduled session can start again. */
+  nextSession: string | null;
+}
+
+/**
+ * The month's money is spread over its days: a scheduled session starts only when the month has spent no more than
+ * its share of the days gone. The schedule is daily, and without a pace the month's money would go in its first week
+ * and the rest of the month would stand idle. A session the founder starts by hand runs ahead of the pace (`ahead`),
+ * within the caps.
+ */
+export function sessionCapFor(p: { perSession: number; perDay: number; perMonth: number; spentToday: number; spentMonth: number; today: string; ahead?: boolean }) {
+  const [y, m, d] = p.today.split("-").map(Number);
+  const daysInMonth = new Date(Date.UTC(y, m, 0)).getUTCDate();
+  const pace = (p.perMonth * d) / daysInMonth;
+  const cap = Math.max(0, Math.min(p.perSession, p.perDay - p.spentToday, p.perMonth - p.spentMonth));
+  if (p.ahead || p.spentMonth <= pace) return { pace, sessionCap: cap, nextSession: null };
+  const day = Math.ceil((p.spentMonth * daysInMonth) / p.perMonth);
+  const nextSession = day <= daysInMonth ? `${p.today.slice(0, 8)}${String(day).padStart(2, "0")}` : new Date(Date.UTC(y, m, 1)).toISOString().slice(0, 10);
+  return { pace, sessionCap: 0, nextSession };
 }
 
 const days = (from: string, to: string) => Math.round((Date.parse(to) - Date.parse(from)) / 86_400_000);
@@ -103,15 +125,32 @@ export function caseStatus(c: LoadedCase, opts: { today: string; reviews: Review
   };
 }
 
-export function budgetState(root = process.cwd(), today = new Date().toISOString().slice(0, 10)): BudgetState {
+export function budgetState(root = process.cwd(), today = new Date().toISOString().slice(0, 10), opts: { ahead?: boolean } = {}): BudgetState {
   const budget = loadBudget(root);
   const caps = capsFor(budget, today);
   const rows = readSpend(root);
   const spentToday = spentOn(rows, today).usd;
   const spentMonth = spentOn(rows, today.slice(0, 7)).usd;
   const perSession = budget.usd.perSession;
-  const sessionCap = Math.max(0, Math.min(perSession, caps.perDay - spentToday, caps.perMonth - spentMonth));
-  return { phase: caps.phase, today, spentToday, spentMonth, perDay: caps.perDay, perMonth: caps.perMonth, perSession, sessionCap: Number(sessionCap.toFixed(2)) };
+  const { pace, sessionCap, nextSession } = sessionCapFor({ perSession, perDay: caps.perDay, perMonth: caps.perMonth, spentToday, spentMonth, today, ahead: opts.ahead });
+  return {
+    phase: caps.phase,
+    today,
+    spentToday,
+    spentMonth,
+    perDay: caps.perDay,
+    perMonth: caps.perMonth,
+    perSession,
+    pace: Number(pace.toFixed(2)),
+    sessionCap: Number(sessionCap.toFixed(2)),
+    nextSession,
+  };
+}
+
+/** The money in a line, as the status, the workflow's notice and the founder read it. */
+export function budgetLine(b: BudgetState): string {
+  const ahead = b.nextSession ? `; the month is ahead of its pace, so the next scheduled session starts on ${b.nextSession}` : "";
+  return `Budget (${b.phase}): $${b.spentToday.toFixed(2)} of $${b.perDay} today, $${b.spentMonth.toFixed(2)} of $${b.perMonth} this month (its pace allows $${b.pace.toFixed(2)} by today); a session may spend $${b.sessionCap.toFixed(2)} now${ahead}.`;
 }
 
 export function siteStatus(root = process.cwd(), today = new Date().toISOString().slice(0, 10)) {
@@ -126,11 +165,7 @@ export function siteStatus(root = process.cwd(), today = new Date().toISOString(
 
 /** The status as the operator and the founder read it: one block per case, most in need of work first. */
 export function formatStatus(s: ReturnType<typeof siteStatus>): string {
-  const b = s.budget;
-  const lines = [
-    `Budget (${b.phase}): $${b.spentToday.toFixed(2)} of $${b.perDay} today, $${b.spentMonth.toFixed(2)} of $${b.perMonth} this month; a session may spend $${b.sessionCap.toFixed(2)} now.`,
-    "",
-  ];
+  const lines = [budgetLine(s.budget), ""];
   const order = [...s.cases].sort((a, b2) => (b2.lastWorkedDays ?? 999) - (a.lastWorkedDays ?? 999));
   for (const c of order) {
     lines.push(`${c.slug} — ${c.title}`);

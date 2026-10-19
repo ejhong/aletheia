@@ -17,7 +17,8 @@
  *   review --base REF --title T [--body-file F] [--previous F | --previous-comments F] [--out F] [--json F]
  *                                           the review of a change (the gate; the review workflow)
  *   harvest                                 closed changes' reviews into governance/reviews/ (and their cost)
- *   budget [--cap]                          the budget as it stands; --cap prints what a session may spend
+ *   budget [--cap|--line] [--ahead]         the budget as it stands; --cap prints what a session may spend, --line says it
+ *                                           in a sentence; --ahead for a session started by hand, which runs ahead of the pace
  *   session-close --report F --run ID --subject S --model M --prompt-version V
  *                                           an operator session's run record and spend rows
  *   plan-session [--rounds F]               the session's mode: answer a held change, or new work (the workflow)
@@ -40,7 +41,7 @@ import { findInText, pagesOf, readSource } from "../src/engine/read.ts";
 import { blobFromComment, reviewBlob, reviewComment, runReview } from "../src/engine/review.ts";
 import { closeSession, type SessionReport } from "../src/engine/session.ts";
 import { stamp } from "../src/engine/stamp.ts";
-import { budgetState, formatStatus, siteStatus } from "../src/engine/status.ts";
+import { budgetLine, budgetState, formatStatus, siteStatus } from "../src/engine/status.ts";
 import { site } from "../src/config/site.ts";
 
 const [command, ...rest] = process.argv.slice(2);
@@ -190,8 +191,8 @@ async function main() {
       return;
     }
     case "budget": {
-      const b = budgetState();
-      console.log(flags.has("cap") ? b.sessionCap.toFixed(2) : JSON.stringify(b, null, 2));
+      const b = budgetState(undefined, undefined, { ahead: flags.has("ahead") });
+      console.log(flags.has("cap") ? b.sessionCap.toFixed(2) : flags.has("line") ? budgetLine(b) : JSON.stringify(b, null, 2));
       return;
     }
     case "plan-session": {

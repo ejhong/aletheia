@@ -12,6 +12,10 @@ import { z } from "zod";
 const SiteSchema = z.object({
   name: z.string().min(1),
   subtitle: z.string().min(1),
+  /** What the site calls itself in the masthead and its links ("evidence atlas", "evidence map"). */
+  kind: z.string().min(1),
+  /** The home page's headline. */
+  headline: z.string().min(1),
   mission: z.string().min(1),
   nav: z.array(z.object({ label: z.string().min(1), href: z.string().startsWith("/") })).min(1),
   url: z.string().url().nullable(),

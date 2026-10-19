@@ -725,10 +725,9 @@ export function loadSiteImages(): ImageRecord[] {
   return images;
 }
 
-export function siteImage(id: string): ImageRecord {
-  const found = loadSiteImages().find((i) => i.id === id);
-  if (!found) throw new Error(`no site image with id ${id}`);
-  return found;
+/** A site-level image by id, or null when the site has none by that id (a site's ornaments are its own). */
+export function siteImage(id: string): ImageRecord | null {
+  return loadSiteImages().find((i) => i.id === id) ?? null;
 }
 
 export function caseCover(loaded: LoadedCase): ImageRecord | null {

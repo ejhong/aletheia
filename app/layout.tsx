@@ -80,7 +80,7 @@ export default function RootLayout({
                 {site.name}
               </span>
               <span className="hidden sm:inline font-mono text-[11px] uppercase tracking-[0.18em] text-faint group-hover:text-copper">
-                evidence atlas
+                {site.kind}
               </span>
             </Link>
             <nav className="flex items-baseline gap-6">

@@ -21,6 +21,8 @@ next-env.d.ts
 !.env.example
 
 # Logs and caches
+# Claude Code's own local state, from an operator session (never the site's)
+.claude/
 # Source texts the reading tool and the quote check fetch (src/engine/read.ts): other people's work, never committed
 .cache/
 npm-debug.log*

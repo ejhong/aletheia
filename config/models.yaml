@@ -7,6 +7,15 @@
 # silently change which judge we are running; the pinned level is part of
 # the seat's identity and is recorded with each verdict.
 
+# The operator: the AI agent that does the site's day-to-day work — reading,
+# extracting, drafting, editing, coding — one session at a time, run by
+# Claude Code (operator/charter.md, .github/workflows/operator.yml). It drafts;
+# it never reviews or judges its own work (AGENTS.md §3.15).
+operator:
+  vendor: anthropic
+  model: claude-opus-5-5
+  effort: high
+
 # The five-seat cross-vendor panel: the blind check that gives a judgment its
 # standing (src/engine/check.ts), one seat per API vendor. Seat selection 2026-09-05 (docs/DECISIONS.md, "the
 # budget panel"): every seat scores 56–59 on the Artificial Analysis

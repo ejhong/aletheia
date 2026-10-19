@@ -1,0 +1,185 @@
+# The operator: one working session of the AI agent that runs this site
+# (docs/DESIGN.md; operator/charter.md). Claude Code, run headless under a hard
+# spending cap, with the constitution (CLAUDE.md), its charter and the site's
+# rules; it reads the site's state, chooses the work, does it, and writes its
+# log. This workflow does everything around it that an agent should not: the
+# kill switch and the money first, the choice between answering a held change
+# and new work, the harvest of closed reviews, the session's cost, the blind
+# panel when the log asks for it, and the pull request. The review then judges
+# the change (.github/workflows/review.yml); nothing publishes on the
+# operator's word.
+#
+# The schedule below is the founder's toggle: comment it out, or set
+# governance/operation.yaml to paused, and no session starts.
+name: Operator
+
+on:
+  schedule:
+    - cron: "17 7 * * *"   # daily, 07:17 UTC
+  workflow_dispatch:
+    inputs:
+      case:
+        description: "A case to work on (its slug); empty lets the operator choose"
+        default: ""
+        required: false
+      focus:
+        description: "What the session should do, in a sentence; empty lets the operator choose"
+        default: ""
+        required: false
+
+concurrency:
+  group: operator
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  session:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          # The maintenance token, so that the pull request the session opens fires CI and the review.
+          token: ${{ secrets.MAINTENANCE_PAT }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      - name: The kill switch and the money
+        id: gate
+        run: |
+          state=$(node -e 'const y=require("yaml");console.log(y.parse(require("fs").readFileSync("governance/operation.yaml","utf8")).state)')
+          cap=$(node scripts/site.ts budget --cap)
+          echo "cap=$cap" >> "$GITHUB_OUTPUT"
+          if [ "$state" != "live" ]; then
+            echo "::notice::governance/operation.yaml says $state; no session starts"; echo "go=no" >> "$GITHUB_OUTPUT"
+          elif node -e "process.exit(Number('$cap') >= 2 ? 0 : 1)"; then
+            echo "go=yes" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::the day or the month leaves \$$cap; no session starts until it turns"; echo "go=no" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: What this session is for
+        id: plan
+        if: steps.gate.outputs.go == 'yes'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CASE: ${{ github.event.inputs.case }}
+        run: |
+          plan=$(node scripts/site.ts plan-session --rounds review-rounds.md)
+          echo "$plan"
+          mode=$(node -e 'console.log(JSON.parse(process.argv[1]).mode)' "$plan")
+          echo "mode=$mode" >> "$GITHUB_OUTPUT"
+          subject="${CASE:-site}"
+          [[ "$subject" =~ ^[a-z0-9][a-z0-9-]{0,79}$ ]] || { echo "::error::case must be a case slug"; exit 2; }
+          run="$(date -u +%Y-%m-%d)-session-${subject}-$(date -u +%H%M%S)"
+          echo "run=$run" >> "$GITHUB_OUTPUT"
+          if [ "$mode" = "answer" ]; then
+            echo "pr=$(node -e 'console.log(JSON.parse(process.argv[1]).pr)' "$plan")" >> "$GITHUB_OUTPUT"
+            branch=$(node -e 'console.log(JSON.parse(process.argv[1]).branch)' "$plan")
+            git fetch -q origin "$branch" && git checkout -q "$branch"
+          else
+            branch="operator/${run}"
+            git checkout -q -b "$branch"
+          fi
+          echo "branch=$branch" >> "$GITHUB_OUTPUT"
+          echo "charter=charter@$(git log -1 --format=%h -- operator/charter.md)" >> "$GITHUB_OUTPUT"
+          echo "model=$(node -e 'const y=require("yaml");console.log(y.parse(require("fs").readFileSync("config/models.yaml","utf8")).operator.model)')" >> "$GITHUB_OUTPUT"
+          echo "effort=$(node -e 'const y=require("yaml");console.log(y.parse(require("fs").readFileSync("config/models.yaml","utf8")).operator.effort)')" >> "$GITHUB_OUTPUT"
+
+      - name: The reviews of changes that have closed
+        if: steps.gate.outputs.go == 'yes' && steps.plan.outputs.mode == 'new'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/site.ts harvest || echo "::warning::the harvest failed; the session goes on"
+
+      - name: The session
+        id: session
+        if: steps.gate.outputs.go == 'yes'
+        env:
+          # The operator's own key, and nothing else: no other vendor's key, no GitHub token.
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SESSION_RUN_ID: ${{ steps.plan.outputs.run }}
+          OPERATOR_MODEL: ${{ steps.plan.outputs.model }}
+          OPERATOR_PROMPT_VERSION: ${{ steps.plan.outputs.charter }}
+          CASE: ${{ github.event.inputs.case }}
+          FOCUS: ${{ github.event.inputs.focus }}
+        run: |
+          npm install -g @anthropic-ai/claude-code@2.1.303 > /dev/null
+          args=(kickoff --run "$SESSION_RUN_ID" --mode "${{ steps.plan.outputs.mode }}" --cap "${{ steps.gate.outputs.cap }}")
+          [ "${{ steps.plan.outputs.mode }}" = "answer" ] && args+=(--pr "${{ steps.plan.outputs.pr }}" --branch "${{ steps.plan.outputs.branch }}" --rounds review-rounds.md)
+          [ -n "$CASE" ] && args+=(--case "$CASE")
+          [ -n "$FOCUS" ] && args+=(--focus "$FOCUS")
+          node scripts/site.ts "${args[@]}" > kickoff.md
+          cat operator/charter.md config/site-rules.md > instructions.md
+          set +e
+          claude -p "$(cat kickoff.md)" \
+            --append-system-prompt "$(cat instructions.md)" \
+            --model "$OPERATOR_MODEL" --effort "${{ steps.plan.outputs.effort }}" \
+            --max-budget-usd "${{ steps.gate.outputs.cap }}" \
+            --output-format json --permission-mode dontAsk \
+            --allowedTools "Read Edit Write Glob Grep WebSearch WebFetch Bash(node scripts/site.ts:*) Bash(node scripts/add-commons-image.mjs:*) Bash(npm test:*) Bash(npm run build:*) Bash(npm run typecheck:*) Bash(npx vitest:*) Bash(npx tsc:*) Bash(npx eslint:*) Bash(git status:*) Bash(git diff:*) Bash(git log:*) Bash(git show:*) Bash(ls:*)" \
+            > session.json
+          echo "code=$?" >> "$GITHUB_OUTPUT"
+          rm -f kickoff.md instructions.md review-rounds.md
+
+      - name: What the session cost
+        if: always() && steps.gate.outputs.go == 'yes' && hashFiles('session.json') != ''
+        run: |
+          node scripts/site.ts session-close --report session.json --run "${{ steps.plan.outputs.run }}" \
+            --subject "${{ github.event.inputs.case || 'site' }}" --model "${{ steps.plan.outputs.model }}" --prompt-version "${{ steps.plan.outputs.charter }}"
+          rm -f session.json
+
+      - name: The panel, when the session asks for it
+        if: always() && steps.gate.outputs.go == 'yes'
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
+          VENICE_API_KEY: ${{ secrets.VENICE_API_KEY }}
+        run: |
+          for c in $(node scripts/site.ts log-meta --run "${{ steps.plan.outputs.run }}" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>console.log(JSON.parse(s).panel.join(" ")))'); do
+            [[ "$c" =~ ^[a-z0-9][a-z0-9-]{0,79}$ ]] || { echo "::warning::not a case slug: $c"; continue; }
+            node scripts/site.ts panel "$c" || echo "::warning::the panel on $c failed; the change goes to review without it"
+          done
+
+      - name: The pull request
+        id: pr
+        if: always() && steps.gate.outputs.go == 'yes'
+        env:
+          GH_TOKEN: ${{ secrets.MAINTENANCE_PAT }}
+        run: |
+          git add -A
+          if git diff --cached --quiet; then echo "the session changed nothing"; exit 0; fi
+          meta=$(node scripts/site.ts log-meta --run "${{ steps.plan.outputs.run }}")
+          title=$(node -e 'console.log(JSON.parse(process.argv[1]).title || "Operator session ${{ steps.plan.outputs.run }}")' "$meta")
+          git config user.name "operator"
+          git config user.email "operator@users.noreply.github.com"
+          git commit -q -m "$title" -m "Operator session ${{ steps.plan.outputs.run }} (${{ steps.plan.outputs.model }}, ${{ steps.plan.outputs.charter }}); its log is runs/${{ steps.plan.outputs.run }}/log.md."
+          git push -q -u origin "${{ steps.plan.outputs.branch }}"
+          if [ "${{ steps.plan.outputs.mode }}" = "new" ]; then
+            log="runs/${{ steps.plan.outputs.run }}/log.md"
+            [ -f "$log" ] || log=/dev/null
+            gh pr create --title "$title" --body-file "$log" --head "${{ steps.plan.outputs.branch }}"
+          else
+            gh pr comment "${{ steps.plan.outputs.pr }}" --body "The operator answered the review in session ${{ steps.plan.outputs.run }}: runs/${{ steps.plan.outputs.run }}/log.md. The reviewers read it again."
+          fi
+
+      - name: Say so when the session failed
+        if: failure() && steps.gate.outputs.go == 'yes'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          title="The operator's session failed"
+          open=$(gh issue list --state open --search "\"$title\" in:title" --json number --jq '.[0].number // empty')
+          body="Session ${{ steps.plan.outputs.run }} failed: $RUN_URL"
+          if [ -n "$open" ]; then gh issue comment "$open" --body "$body"; else gh issue create --title "$title" --body "$body"; fi

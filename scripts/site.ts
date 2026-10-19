@@ -19,9 +19,16 @@
  *   budget [--cap]                          the budget as it stands; --cap prints what a session may spend
  *   session-close --report F --run ID --subject S --model M --prompt-version V
  *                                           an operator session's run record and spend rows
+ *   plan-session [--rounds F]               the session's mode: answer a held change, or new work (the workflow)
+ *   kickoff --run ID --mode M --cap N [--pr N --branch B --rounds F] [--case C] [--focus T]
+ *                                           the session's first message (the workflow)
+ *   log-meta --run ID                       a session log's front matter: title, cases, panel (the workflow)
  */
+import { execFileSync } from "node:child_process";
 import fs from "node:fs";
+import { parse as parseYaml } from "yaml";
 import { loadOperation } from "../src/domain/governance.ts";
+import { openChanges, planSession, roundsForOperator } from "../src/engine/operator.ts";
 import { loadModels } from "../src/lib/models.mjs";
 import { archiveUrl } from "../src/engine/archive.ts";
 import { runCheck } from "../src/engine/check.ts";
@@ -166,6 +173,41 @@ async function main() {
       console.log(flags.has("cap") ? b.sessionCap.toFixed(2) : JSON.stringify(b, null, 2));
       return;
     }
+    case "plan-session": {
+      // The session's mode, before the operator starts: answer a held change, else new work; withdraw what was
+      // answered twice without publishing (src/engine/operator.ts).
+      const plan = planSession(openChanges());
+      for (const c of plan.withdraw) {
+        execFileSync("gh", ["pr", "close", String(c.number), "--comment", `Withdrawn: reviewed ${c.rounds.length} times without being judged better (the last round: ${c.rounds.at(-1)!.reason}). The branch and every review stay on the record; a later session may take the work up again from what the reviewers said. (src/engine/operator.ts)`], { stdio: "inherit" });
+      }
+      if (plan.mode === "answer") fs.writeFileSync(flag("rounds") ?? "review-rounds.md", roundsForOperator(plan.change));
+      console.log(JSON.stringify(plan.mode === "answer" ? { mode: "answer", pr: plan.change.number, branch: plan.change.branch } : { mode: "new", waiting: plan.waiting }));
+      return;
+    }
+    case "kickoff": {
+      // The session's first message: what it is for and what it may spend. Its standing instructions are the charter.
+      const mode = need("mode");
+      const rounds = flag("rounds") && fs.existsSync(flag("rounds")!) ? fs.readFileSync(flag("rounds")!, "utf8") : "";
+      const lines = [
+        `This is operator session ${need("run")} on ${site.name}, ${new Date().toISOString().slice(0, 10)}. Your standing instructions are operator/charter.md and config/site-rules.md, which you have.`,
+        mode === "answer"
+          ? `This session answers the review of your change #${need("pr")} (branch ${need("branch")}, checked out). Read every round below, answer each harm and note — by a fix or by a reasoned reply in your log — and change nothing else.`
+          : `This session is new work.${flag("case") ? ` The founder asks for work on the case ${flag("case")}.` : " Choose it by the charter."}${flag("focus") ? ` The founder's focus: ${flag("focus")}` : ""}`,
+        `You may spend up to $${need("cap")}; the session ends at the cap.`,
+        `Begin with \`node scripts/site.ts status\`. Write your log at runs/${need("run")}/log.md, its front matter first. You do not commit, push or open pull requests: when you finish, the workflow records your session, convenes the panel on any case your log names under \`panel:\`, and opens the pull request with your log as its description.`,
+      ];
+      console.log(lines.join("\n\n") + (rounds ? `\n\n## The review rounds\n\n${rounds}` : ""));
+      return;
+    }
+    case "log-meta": {
+      // A session log's front matter, for the workflow: the pull request's title, the cases, the panel asked for.
+      const file = `runs/${need("run")}/log.md`;
+      const text = fs.existsSync(file) ? fs.readFileSync(file, "utf8") : "";
+      const m = /^---\n([\s\S]*?)\n---/.exec(text);
+      const meta = (m ? parseYaml(m[1]) : {}) as { title?: string; cases?: string[]; panel?: string[] };
+      console.log(JSON.stringify({ title: meta.title ?? null, cases: meta.cases ?? [], panel: meta.panel ?? [] }));
+      return;
+    }
     case "session-close": {
       const report = JSON.parse(fs.readFileSync(need("report"), "utf8")) as SessionReport;
       const r = closeSession({
@@ -180,7 +222,10 @@ async function main() {
       return;
     }
     default:
-      console.error(fs.readFileSync(new URL(import.meta.url), "utf8").split("\n").slice(2, 26).join("\n").replace(/^ \* ?/gm, ""));
+      {
+        const own = fs.readFileSync(new URL(import.meta.url), "utf8").split("\n");
+        console.error(own.slice(2, own.findIndex((l) => l.startsWith(" */"))).join("\n").replace(/^ \* ?/gm, ""));
+      }
       process.exit(command ? 2 : 0);
   }
 }

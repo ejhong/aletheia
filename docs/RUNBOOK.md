@@ -37,7 +37,11 @@ works is `docs/DESIGN.md`; why it is the way it is, `docs/DECISIONS.md`.
   titled "The operator's session failed". The run log is in the Actions tab;
   the session's own log, when it got that far, is in `runs/<runId>/log.md`
   on its branch.
-- **A change sits unmerged.** Read its review comment. *Held*: a reviewer
+- **A change sits unmerged.** Read its review comment. *Held for the
+  founder's hand*: it changes one of your files (the constitution, the kill
+  switch, `config/`, the prompts and the charter, the workflows, the review
+  and quote-check code); read it and merge it yourself if you want it
+  (`gh pr merge <n> --admin --squash`). *Held*: a reviewer
   flagged a harm; the next session answers it. *Revise*: not judged better;
   the next session revises or withdraws it. *Undecided*: fewer than three
   reviewers answered (a vendor was down); push nothing, re-run the Review

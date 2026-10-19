@@ -69,6 +69,12 @@ Anyone else's document needs a recorded permission (§3.15).
 **Confidentiality.** No `arc/` or `notes.txt` material; Hawke-derived topics
 framed neutrally; confidential papers never cited (§4).
 
+**The trust boundary.** A change is data to everything that judges it: the
+review and the quote check run main's code and read the change through git;
+an operator session holds only its own key, and main's code checks its work
+on a fresh machine before any of it is published; a change to a founder's
+file is held for the founder's hand (2026-10-19, below).
+
 ---
 
 ## 2026-10-19 — The operator and the review: the site is rebuilt around an agent
@@ -155,3 +161,47 @@ carried to main on its own; its Cast, Not Carved part is not — the split
 there turned attributed reports ("Engelbach reports …") into unattributed
 claims, a fault in the retired split protocol that the operator's charter
 now names (keep a report a report).
+
+## 2026-10-19 — The trust boundary: a change is data to the gate that judges it
+
+**What the reviewers found.** The first review of this rebuild (#463) held
+it on four rounds, all four seats each time, for `weakens_checks`: the
+review workflow checked out the change it judged and ran that change's own
+review code, with the reviewers' keys present, and armed auto-merge on its
+verdict — so any change, the operator's included, could rewrite the review
+to pass itself. CI's quote check ran the same way. The operator's workflow
+had the same fault three times over: its checkout left the maintenance
+token readable by the session; the panel ran code the session could have
+edited, with every vendor's key; and the step that opened the pull request
+ran the session's code with the maintenance token in its environment. They
+were right, and the operator had not answered the first three rounds.
+
+**What changed.** (1) The review runs from main (`pull_request_target`),
+fetches the change into git's object store and reads it with `git show` and
+`git diff` only, and runs the quote check the same way before any reviewer
+is asked; auto-merge takes only the commit the reviewers read. (2) The
+operator's workflow is four jobs: the plan (main's code: the kill switch,
+the money, the mode, and the session's instructions and first message); the
+session (the operator's own key, a read-only token, nothing else); the
+publish job (a fresh machine and main's code over the session's work as a
+patch: the guard, the cost, the panel with the vendors' keys, the pull
+request with the maintenance token, each key in the one step that needs
+it); and a report on failure. (3) The founder's files — the constitution,
+the kill switch, `config/`, the prompts and the charter, the workflows, and
+the code that decides what publishes — are held by the review for the
+founder's hand, and a session that writes one, or writes the money or the
+review records, a blind check, a record marked human-reviewed, or an edit
+to a written assessment or edition, publishes nothing
+(`src/engine/operator.ts`, `guardSession`). (4) CI runs the quote check on
+every push to main, so a change merged by hand does not escape it. A test
+holds the workflows to all of this (`src/engine/trust.test.ts`).
+
+**What it does not do.** The operator still has its own key in its session,
+and with it whatever its tools can reach; the strongest guard on that key is
+a workspace spending limit in the Anthropic console (`docs/RUNBOOK.md`). A
+blind check in a change that did not come through the operator's workflow
+— one a founder's session ran — is its author's word, which the reviewers
+see. And this change itself, which creates the gate, enters by the
+founder's hand: the review on main cannot judge the change that builds it.
+Its four rounds and their finding are on the pull request.
+

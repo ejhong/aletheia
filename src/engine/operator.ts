@@ -1,5 +1,6 @@
 import { execFileSync } from "node:child_process";
-import { blobFromComment, type ReviewBlob } from "./review.ts";
+import { parse as parseYaml } from "yaml";
+import { blobFromComment, isFounderFile, type ReviewBlob } from "./review.ts";
 import { REVIEW_LOGIN } from "./harvest.ts";
 
 /**
@@ -82,4 +83,38 @@ export function openChanges(): OpenChange[] {
     const rounds = comments.filter((c) => c.author === REVIEW_LOGIN).map((c) => blobFromComment(c.body)).filter((b): b is ReviewBlob => b !== null);
     return { number: p.number, title: p.title, branch: p.headRefName, head: p.headRefOid, draft: p.isDraft, rounds };
   });
+}
+
+/**
+ * What a session's work may not contain, checked by main's code on a fresh machine before anything of it is
+ * published (the workflow's publish job): the session's tree is the operator's to write, so everything in it is
+ * data, and these are the files only the founder or the engine writes —
+ *
+ *  - the founder's files (FOUNDER_FILES: the constitution, the kill switch, the configuration, the workflows);
+ *  - the money and the reviews (`governance/spend/`, `governance/reviews/`), which the workflow writes from what the
+ *    session and the vendors report;
+ *  - a blind check: the panel's, written by the workflow's panel from main's code, never by the session;
+ *  - a record that says a human reviewed it, which no AI record may say;
+ *  - an edit to or a removal of an assessment or an edition, which are append-only;
+ *  - another session's run record.
+ *
+ * A session whose work holds any of these publishes nothing: the guard says what, and the work waits for the founder.
+ * Pure over the changed files and a reader of their new contents.
+ */
+export function guardSession(files: { status: string; file: string }[], read: (file: string) => string | null, run: string): string[] {
+  const problems: string[] = [];
+  for (const { status, file } of files) {
+    if (isFounderFile(file)) problems.push(`${file}: a founder's file; the operator may not change it`);
+    else if (/^governance\/(spend|reviews)\//.test(file)) problems.push(`${file}: written by the workflow from what the session and the vendors report, not by the session`);
+    else if (/^(runs|proposals)\/([^/]+)\//.test(file) && !file.startsWith(`runs/${run}/`)) problems.push(`${file}: another run's record`);
+    else if (/^content\/cases\/[^/]+\/(assessments|editions)\/[^/]+\.yaml$/.test(file)) {
+      if (status !== "A") problems.push(`${file}: assessments and editions are append-only; a session adds them and never edits or removes one`);
+      else {
+        const record = (parseYaml(read(file) ?? "null") ?? {}) as { role?: string; humanReviewed?: boolean };
+        if (record.role === "check") problems.push(`${file}: a blind check is the panel's, written by the workflow from main's code`);
+        if (record.humanReviewed === true) problems.push(`${file}: says a human reviewed it; no AI record may`);
+      }
+    }
+  }
+  return problems;
 }

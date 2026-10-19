@@ -8,13 +8,21 @@
 # and no harm stands; the notes never block. Each round is a new comment, so
 # the next round — after the operator's answer — reads the earlier ones.
 #
+# The trust boundary: this workflow runs main's code, as main holds it
+# (`pull_request_target`), and reads the change through git as data — it never
+# checks the change out, installs it or runs it. So a change cannot alter the
+# review that judges it, the quote check it must pass, the models that read
+# it or the keys they are called with; a change to those files is held for the
+# founder's hand (src/engine/review.ts, FOUNDER_FILES). The quote check runs
+# here for the same reason, before any reviewer is asked.
+#
 # The job is named `arbiter`, the required check on main's branch protection,
 # kept from the constitutional gate this replaced; `classify` is kept for the
 # same reason. Renaming the required checks is a settings change, the founder's.
 name: Review
 
 on:
-  pull_request:
+  pull_request_target:
     types: [opened, synchronize, reopened, ready_for_review]
 
 concurrency:
@@ -38,13 +46,26 @@ jobs:
 
   review:
     name: arbiter
-    if: github.event.pull_request.draft == false
+    # This repository's own branches; a change from a fork waits for the founder.
+    if: github.event.pull_request.draft == false && github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
+      - name: The engine, as main holds it
+        uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.pull_request.base.ref }}
           fetch-depth: 0
-          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - name: The change, as data
+        env:
+          PR: ${{ github.event.pull_request.number }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Into git's object store only: read with `git show` and `git diff`, never checked out or run.
+          auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
+          git -c "http.https://github.com/.extraheader=$auth" fetch -q --no-tags origin "+refs/pull/${PR}/head:refs/remotes/pr/head"
+          echo "reviewing $(git rev-parse refs/remotes/pr/head) against origin/${{ github.event.pull_request.base.ref }}"
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -57,8 +78,30 @@ jobs:
           gh api "repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments" --paginate \
             --jq '[.[] | select(.user.login == "github-actions[bot]") | select(.body | startswith("<!-- site-review -->")) | .body]' \
             | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const pages=s.split(/\n(?=\[)/).filter(Boolean).flatMap(p=>JSON.parse(p));require("fs").writeFileSync("rounds.json",JSON.stringify(pages))})'
+      - name: Every quoted passage the change adds is in its source
+        id: quotes
+        run: |
+          set +e
+          node scripts/site.ts check-quotes --base "origin/${{ github.event.pull_request.base.ref }}" --head refs/remotes/pr/head > quotes.txt
+          code=$?
+          cat quotes.txt
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+      - name: Held when a quoted passage is not in its source
+        if: steps.quotes.outputs.code != '0'
+        run: |
+          {
+            echo "<!-- site-review -->"
+            echo "## Review — ⏸ Held — the quote check failed"
+            echo
+            echo "Every quoted passage a change adds must be found in the text of its source before the reviewers read it (AGENTS.md §3.15). The check, run from main's code on commit $(git rev-parse --short=10 refs/remotes/pr/head):"
+            echo
+            echo '```'
+            cat quotes.txt
+            echo '```'
+          } > review.md
       - name: The reviewers read the change
         id: review
+        if: steps.quotes.outputs.code == '0'
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -70,7 +113,7 @@ jobs:
         run: |
           printf '%s' "$PR_BODY" > body.md
           set +e
-          node scripts/site.ts review --base "origin/${{ github.base_ref }}" --title "$PR_TITLE" --body-file body.md --previous-comments rounds.json --out review.md --json review.json
+          node scripts/site.ts review --base "origin/${{ github.event.pull_request.base.ref }}" --head refs/remotes/pr/head --title "$PR_TITLE" --body-file body.md --previous-comments rounds.json --out review.md --json review.json
           echo "code=$?" >> "$GITHUB_OUTPUT"
       - name: Post the review
         if: always() && hashFiles('review.md') != ''
@@ -82,7 +125,10 @@ jobs:
         env:
           # The maintenance token, so that the merge fires the deploy (merges made with the Actions token trigger nothing).
           GH_TOKEN: ${{ secrets.MAINTENANCE_PAT }}
-        run: gh pr merge --auto --squash "${{ github.event.pull_request.number }}" -R "${{ github.repository }}" || echo "::warning::could not enable auto-merge; the change waits with a green review"
+        run: |
+          # Only the commit the reviewers read: a later push is reviewed again before anything merges.
+          gh pr merge --auto --squash --match-head-commit "$(git rev-parse refs/remotes/pr/head)" "${{ github.event.pull_request.number }}" -R "${{ github.repository }}" \
+            || echo "::warning::could not enable auto-merge; the change waits with a green review"
       - name: The verdict is the check
         run: |
           code="${{ steps.review.outputs.code }}"

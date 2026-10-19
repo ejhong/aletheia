@@ -1,6 +1,4 @@
 import { execFileSync } from "node:child_process";
-import fs from "node:fs";
-import path from "node:path";
 import { parse as parseYaml } from "yaml";
 import { z } from "zod";
 import { assessmentLabels, type AssessmentRun, type AssessmentState, type Edition } from "../domain/schema.ts";
@@ -26,11 +24,38 @@ import { loadTariffs, priceOf } from "./spend.ts";
  *  - revise: not judged better — the notes say why; the operator may revise;
  *  - undecided: fewer than three reviewers answered — asked again later.
  *
- * An edit to AGENTS.md is held mechanically, without asking anyone: the
- * founder alone amends it, and merges it by hand. Notes never block. The
- * gate is not under the spending caps (it judges every change put to it);
- * its cost rides in its verdict, and the harvest writes it to the ledger.
+ * A change to a founder's file (FOUNDER_FILES: the constitution, the kill
+ * switch, the site's configuration, the workflows that hold the checks) is
+ * held mechanically, without asking anyone, and merges only by the founder's
+ * hand. Notes never block. The gate is not under the spending caps (it judges
+ * every change put to it); its cost rides in its verdict, and the harvest
+ * writes it to the ledger.
+ *
+ * The change is read as data: everything about it comes from git, at the
+ * commit under review (`head`), and nothing in it is run. The review workflow
+ * runs this module from main's code, so a change cannot alter the review that
+ * judges it (.github/workflows/review.yml).
  */
+
+/**
+ * Files only the founder changes: the constitution; the kill switch; the site's configuration — its identity, its
+ * money, its models, their prices, the rules every model is given; the instructions the models work under (the
+ * protocols, the operator's charter); and the gate — the workflows, which hold the checks and the operator's tools,
+ * and the code that decides what publishes (the review, the quote check, the session guard). A change to any of them
+ * is held mechanically, and an operator session may not write them at all (src/engine/operator.ts, `guardSession`):
+ * a change cannot rewrite the instructions or the rules it is judged by.
+ */
+export const FOUNDER_FILES: RegExp[] = [
+  /^AGENTS\.md$/,
+  /^CLAUDE\.md$/,
+  /^governance\/operation\.yaml$/,
+  /^config\//,
+  /^\.github\//,
+  /^protocols\//,
+  /^operator\//,
+  /^src\/engine\/(review|quotecheck|quotes|operator)\.ts$/,
+];
+export const isFounderFile = (file: string) => FOUNDER_FILES.some((re) => re.test(file));
 
 export const HARM_KINDS = ["fabrication", "misattribution", "confidential", "living_person", "draft_as_ratified", "constitution", "weakens_checks"] as const;
 
@@ -122,8 +147,8 @@ export interface ChangedFile {
   file: string;
 }
 
-export function changedFiles(root: string, base: string): ChangedFile[] {
-  return git(root, "diff", "--name-status", `${base}...HEAD`)
+export function changedFiles(root: string, base: string, head = "HEAD"): ChangedFile[] {
+  return git(root, "diff", "--name-status", `${base}...${head}`)
     .trim()
     .split("\n")
     .filter(Boolean)
@@ -134,17 +159,16 @@ export function changedFiles(root: string, base: string): ChangedFile[] {
 }
 
 /** What a reader will see differently, case by case: the telling before and after, the verdicts that moved, the records added or changed. */
-function caseSection(root: string, base: string, dir: string, files: ChangedFile[]): string {
+function caseSection(root: string, base: string, head: string, dir: string, files: ChangedFile[]): string {
   const rel = (f: string) => `content/cases/${dir}/${f}`;
   const out: string[] = [];
-  const caseYaml = parseYaml(fs.readFileSync(path.join(root, rel("case.yaml")), "utf8")) as { title: string; subtitle: string };
-  out.push(`## Case: ${caseYaml.title} (content/cases/${dir})`);
+  const caseYaml = parseYaml(atRef(root, head, rel("case.yaml")) ?? "{}") as { title?: string };
+  out.push(`## Case: ${caseYaml.title ?? dir} (content/cases/${dir})`);
   const added = (prefix: string) => files.filter((f) => f.status === "A" && f.file.startsWith(rel(prefix)));
-  const newEditions = added("editions/").map((f) => parseYaml(fs.readFileSync(path.join(root, f.file), "utf8")) as Edition);
-  const newAssessments = added("assessments/").map((f) => parseYaml(fs.readFileSync(path.join(root, f.file), "utf8")) as AssessmentRun);
-  const assessmentById = (runId: string, ref: string | null): AssessmentRun | null => {
-    const f = rel(`assessments/${runId}.yaml`);
-    const text = ref ? atRef(root, ref, f) : fs.existsSync(path.join(root, f)) ? fs.readFileSync(path.join(root, f), "utf8") : null;
+  const newEditions = added("editions/").map((f) => parseYaml(atRef(root, head, f.file) ?? "null") as Edition).filter(Boolean);
+  const newAssessments = added("assessments/").map((f) => parseYaml(atRef(root, head, f.file) ?? "null") as AssessmentRun).filter(Boolean);
+  const assessmentById = (runId: string, ref: string): AssessmentRun | null => {
+    const text = atRef(root, ref, rel(`assessments/${runId}.yaml`));
     return text ? (parseYaml(text) as AssessmentRun) : null;
   };
   for (const ed of newEditions) {
@@ -152,7 +176,7 @@ function caseSection(root: string, base: string, dir: string, files: ChangedFile
     out.push(`### New edition ${ed.runId} (replacing ${ed.previous ?? "nothing"})`);
     out.push(`Question: ${ed.question ?? "(unchanged)"}\nAccounts: ${(ed.accounts ?? []).map((a) => `\n- ${a}`).join("") || "(unchanged)"}\nFeatured claims: ${ed.featuredClaimIds.join(", ")}`);
     out.push(`Operator's rationale:\n${clipText(ed.rationale, 6000)}`);
-    const now = ed.assessment ? assessmentById(ed.assessment.runId, null) : null;
+    const now = ed.assessment ? assessmentById(ed.assessment.runId, head) : null;
     const was = prev?.assessment ? assessmentById(prev.assessment.runId, base) : null;
     if (now && was && now.runId !== was.runId) {
       const before = new Map(was.claimAssessments.map((c) => [c.claimId, c.verdict]));
@@ -171,7 +195,7 @@ function caseSection(root: string, base: string, dir: string, files: ChangedFile
   for (const [name, label] of [["claims.yaml", "Claims"], ["evidence.yaml", "Evidence"], ["sources.yaml", "Sources"], ["research.yaml", "Research agenda"]] as const) {
     if (!files.some((f) => f.file === rel(name))) continue;
     const before = yamlList(atRef(root, base, rel(name)));
-    const after = yamlList(fs.existsSync(path.join(root, rel(name))) ? fs.readFileSync(path.join(root, rel(name)), "utf8") : null);
+    const after = yamlList(atRef(root, head, rel(name)));
     const changed = changedRecords(before, after);
     if (!changed.length) continue;
     const isNew = new Set(changed.filter((r) => !before.some((b) => b.id === r.id)).map((r) => r.id));
@@ -184,6 +208,8 @@ function caseSection(root: string, base: string, dir: string, files: ChangedFile
 export interface PacketInput {
   root: string;
   base: string;
+  /** The commit under review, read through git and never run; the working tree's HEAD by default. */
+  head?: string;
   title: string;
   body: string;
   /** Earlier review rounds on this change, as their machine records hold them. */
@@ -192,18 +218,19 @@ export interface PacketInput {
 
 export const PACKET_LIMIT = 320_000;
 
-export function reviewPacket(input: PacketInput): { packet: string; files: ChangedFile[]; constitutionEdited: boolean } {
+export function reviewPacket(input: PacketInput): { packet: string; files: ChangedFile[]; founderFiles: string[] } {
   const { root, base } = input;
-  const files = changedFiles(root, base);
+  const head = input.head ?? "HEAD";
+  const files = changedFiles(root, base, head);
   const parts: string[] = [`# The change: ${input.title}\n\n${clipText(input.body, 8000)}`];
   parts.push(`Files changed (${files.length}):\n${files.map((f) => `${f.status} ${f.file}`).join("\n")}`);
   const logs = files.filter((f) => f.status !== "D" && /^runs\/[^/]+\/log\.md$/.test(f.file));
-  for (const l of logs) parts.push(`# The operator's notes for this change (${l.file})\n\n${clipText(fs.readFileSync(path.join(root, l.file), "utf8"), 20000)}`);
-  const dirs = [...new Set(files.map((f) => /^content\/cases\/([^/]+)\//.exec(f.file)?.[1]).filter((d): d is string => Boolean(d) && fs.existsSync(path.join(root, "content", "cases", d!, "case.yaml"))))];
-  for (const dir of dirs) parts.push(caseSection(root, base, dir, files));
+  for (const l of logs) parts.push(`# The operator's notes for this change (${l.file})\n\n${clipText(atRef(root, head, l.file) ?? "", 20000)}`);
+  const dirs = [...new Set(files.map((f) => /^content\/cases\/([^/]+)\//.exec(f.file)?.[1]).filter((d): d is string => Boolean(d) && atRef(root, head, `content/cases/${d}/case.yaml`) !== null))];
+  for (const dir of dirs) parts.push(caseSection(root, base, head, dir, files));
   const other = files.filter((f) => !f.file.startsWith("content/cases/") && !f.file.startsWith("runs/") && !f.file.startsWith("governance/spend/") && !f.file.startsWith("proposals/"));
   if (other.length) {
-    const diff = git(root, "diff", `${base}...HEAD`, "--", ...other.map((f) => f.file));
+    const diff = git(root, "diff", `${base}...${head}`, "--", ...other.map((f) => f.file));
     parts.push(`# Changes to code, configuration and documents\n\n${clipText(diff, 120000)}`);
   }
   if (input.previous?.length) {
@@ -215,7 +242,7 @@ export function reviewPacket(input: PacketInput): { packet: string; files: Chang
   }
   let packet = parts.join("\n\n---\n\n");
   if (packet.length > PACKET_LIMIT) packet = clipText(packet, PACKET_LIMIT);
-  return { packet, files, constitutionEdited: files.some((f) => f.file === "AGENTS.md") };
+  return { packet, files, founderFiles: files.map((f) => f.file).filter(isFounderFile) };
 }
 
 // ------------------------------------------------------------------ the review
@@ -232,13 +259,18 @@ export type SeatCall = (seat: string, prompt: { system: string; user: string; ma
 
 export async function runReview(input: PacketInput & { siteName: string; today?: string; call?: SeatCall }): Promise<ReviewResult> {
   const { root, base } = input;
-  const commit = git(root, "rev-parse", "HEAD").trim();
+  const commit = git(root, "rev-parse", input.head ?? "HEAD").trim();
   const date = input.today ?? new Date().toISOString().slice(0, 10);
   const protocol = loadProtocol("review");
-  const { packet, constitutionEdited } = reviewPacket(input);
+  const { packet, founderFiles } = reviewPacket(input);
   const seats: SeatReview[] = [];
-  const mechanical = constitutionEdited ? [{ kind: "constitution", where: "AGENTS.md", why: "the change edits the constitution, which the founder alone amends; it merges only by the founder's hand" }] : [];
-  if (constitutionEdited) return { commit, date, protocol: protocol.version, tally: tally([], mechanical), seats };
+  if (founderFiles.length) {
+    const constitution = founderFiles.includes("AGENTS.md");
+    const why = constitution
+      ? "the change edits the constitution, which the founder alone amends; it merges only by the founder's hand"
+      : "the change edits files only the founder changes (the kill switch, the site's configuration, the workflows that hold the checks); it merges only by the founder's hand";
+    return { commit, date, protocol: protocol.version, tally: tally([], [{ kind: constitution ? "constitution" : "founder_files", where: founderFiles.join(", "), why }]), seats };
+  }
   const system = renderProtocol(protocol, {
     site: input.siteName,
     today: date,
@@ -276,7 +308,7 @@ export async function runReview(input: PacketInput & { siteName: string; today?:
     }),
   );
   seats.sort((a, b) => MODELS.review.seats.indexOf(a.seat) - MODELS.review.seats.indexOf(b.seat));
-  return { commit, date, protocol: protocol.version, tally: tally(seats, mechanical), seats };
+  return { commit, date, protocol: protocol.version, tally: tally(seats), seats };
 }
 
 // ------------------------------------------------------------------ the record

@@ -30,7 +30,7 @@ person.
 | --- | --- | --- |
 | The ledger | Each case's claims, evidence (verbatim quotes with exact locators), sources, research agenda, studies, images; append-only judgments; editions (the reader's telling). The model is unchanged from September. | `content/cases/<case>/`; schema `src/domain/schema.ts`; prose `docs/DATA_MODEL.md` |
 | The operator | Claude Code, run headless in GitHub Actions under a hard spending cap per session, with the constitution (`AGENTS.md`, loaded as `CLAUDE.md`) and its charter (`operator/charter.md`). It decides what most needs doing and does it. | `.github/workflows/operator.yml`; the tools it uses: `node scripts/site.ts` |
-| The checks | Types, lint, tests; the loader (schemas, ids, edition integrity, the reader's budget — the build fails on any of them); the quote check (every quoted passage a change adds is read in its source; a page locator must name the page; a new DOI must resolve); links. | `.github/workflows/ci.yml`; `src/engine/quotecheck.ts` |
+| The checks | Types, lint, tests; the loader (schemas, ids, edition integrity, the reader's budget — the build fails on any of them); the quote check (every quoted passage a change adds is read in its source; a page locator must name the page; a new DOI must resolve), run in the review from main's code and again on every push to main; links. | `.github/workflows/ci.yml`, `.github/workflows/review.yml`; `src/engine/quotecheck.ts` |
 | The review | Four seats (OpenAI, Google, xAI, Venice/GLM), each answering: better / no better / worse; a harm or none; up to three notes. Publishes when ≥3 answer, a majority say better, ≤1 says worse, no harm. A harm holds the change until the operator answers it. Notes never block. | `.github/workflows/review.yml`; `src/engine/review.ts`; `protocols/review-v1.md` |
 | The panel | Five seats, one per vendor, judging each case's ledger blind (no article, no grades). Their concurrence with the operator's draft judgment is its standing: ratified, contested, or not yet ratified. | `src/engine/check.ts`; `protocols/check-v2.md`; `src/domain/standing.ts` |
 | The money | Caps per session, day and month (`config/budget.yaml`); every paid call is a row in `governance/spend/`. The operator's session cost is what Claude Code reports; the panel's and the review's are the vendors' own usage, priced from `config/tariffs.yaml`. | `src/engine/budget.ts`, `src/engine/session.ts` |
@@ -62,23 +62,52 @@ person.
    change carries its own standing.
 6. It writes its log (`runs/<runId>/log.md`): what it did, why, what it
    left undone, what it would do next.
-7. The workflow records the session's cost, commits, and opens the pull
-   request. CI and the review take it from there.
+7. On a fresh machine, main's code takes the session's work as a patch and
+   checks it (`site guard-session`: nothing the founder or the engine
+   alone writes), records the session's cost, convenes the panel when the
+   log asks for it, commits, and opens the pull request. CI and the review
+   take it from there.
+
+## The trust boundary
+
+A change is data to everything that judges it. The session can write and
+run anything in its own tree, so it holds only the operator's own key and a
+token that can only read; its instructions and first message are written
+from main before it starts. Everything after it runs main's code on a fresh
+machine: the guard, the cost, the panel (the only step with the other
+vendors' keys) and the pull request (the only step with the maintenance
+token). The review runs main's code too (`pull_request_target`), reading
+the change through git at the commit under review — never checking it out,
+installing it or running it — and runs the quote check the same way, so a
+change cannot alter the review that judges it, the models that read it or
+the check it must pass. Auto-merge takes only the commit the reviewers
+read. The files that define all this are the founder's (below); an
+operator session that touches one publishes nothing, and any other change
+to one is held for the founder's hand. A blind check in a change that did
+not come through the operator's workflow is its author's word, which the
+reviewers see. (Founded on the review of #463, whose four reviewers held
+the rebuild because its first gate ran the code it judged, with the keys
+present.)
 
 ## What a change must pass
 
-- **Mechanically (CI):** everything the loader enforces; every quoted span
-  in a new or changed evidence record or claim anchor found in its source's
-  text, read as the operator reads it; a locator's page the page the span
-  is on; a new source's DOI or arXiv id resolving. A record whose text
-  cannot be read enters only as `provisional` and carries no weight.
+- **Mechanically (CI and the review, from main's code):** everything the
+  loader enforces; every quoted span in a new or changed evidence record or
+  claim anchor found in its source's text, read as the operator reads it; a
+  locator's page the page the span is on; a new source's DOI or arXiv id
+  resolving. A record whose text cannot be read enters only as
+  `provisional` and carries no weight.
 - **The review:** better for a reader, no harm. The harms are the ones
   publication itself causes: a fabricated or misattributed source,
   quotation, locator or provenance detail; confidential material; a
   statement about a living person the record does not support; a draft
   presented as ratified; an edit to the constitution; a weakened check.
-- **The founder's hand:** only for an edit to `AGENTS.md`, which the
-  review always holds.
+- **The founder's hand:** for a change to a founder's file, which the
+  review always holds: the constitution (`AGENTS.md`, `CLAUDE.md`), the kill
+  switch (`governance/operation.yaml`), the configuration (`config/`), the
+  instructions (`protocols/`, `operator/`), and the gate — the workflows
+  (`.github/`) and the code that decides what publishes
+  (`src/engine/review.ts`, `quotecheck.ts`, `quotes.ts`, `operator.ts`).
 
 ## Two sites, one engine
 

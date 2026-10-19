@@ -50,12 +50,23 @@ const readYaml = (text: string | null): Rec[] => {
   return Array.isArray(v) ? (v as Rec[]) : [];
 };
 
-/** A file as the base ref holds it, or null when the base has none. */
-function atBase(base: string, file: string, root: string): string | null {
+/** A file as a commit holds it, or null when the commit has none. */
+function atRef(ref: string, file: string, root: string): string | null {
   try {
-    return execFileSync("git", ["show", `${base}:${file}`], { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"], maxBuffer: 64 * 1024 * 1024 });
+    return execFileSync("git", ["show", `${ref}:${file}`], { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"], maxBuffer: 64 * 1024 * 1024 });
   } catch {
     return null;
+  }
+}
+
+/** The case folders a commit holds. */
+function caseDirsAt(ref: string, root: string): string[] {
+  try {
+    return execFileSync("git", ["ls-tree", "--name-only", "-d", `${ref}:content/cases`], { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] })
+      .split("\n")
+      .filter(Boolean);
+  } catch {
+    return [];
   }
 }
 
@@ -96,6 +107,8 @@ const targetOf = (source: Source) => {
 
 export interface QuoteCheckOptions {
   base: string;
+  /** The commit under review, read through git and never run (the review workflow); the working tree when absent (the operator, before it commits). */
+  head?: string;
   root?: string;
   /** Test seam: the text of a source, or null with a reason. */
   read?: (source: Source) => Promise<{ text: string | null; reason?: string }>;
@@ -126,10 +139,12 @@ export async function quoteCheck(opts: QuoteCheckOptions): Promise<QuoteCheckRes
     return texts.get(s.id)!;
   };
 
-  for (const dir of fs.readdirSync(casesDir).filter((d) => fs.statSync(path.join(casesDir, d)).isDirectory())) {
-    const file = (name: string) => path.join("content", "cases", dir, name);
-    const now = (name: string) => readYaml(fs.existsSync(path.join(root, file(name))) ? fs.readFileSync(path.join(root, file(name)), "utf8") : null);
-    const then = (name: string) => readYaml(atBase(opts.base, file(name), root));
+  const dirs = opts.head ? caseDirsAt(opts.head, root) : fs.readdirSync(casesDir).filter((d) => fs.statSync(path.join(casesDir, d)).isDirectory());
+  for (const dir of dirs) {
+    const file = (name: string) => path.posix.join("content", "cases", dir, name);
+    const now = (name: string) =>
+      readYaml(opts.head ? atRef(opts.head, file(name), root) : fs.existsSync(path.join(root, file(name))) ? fs.readFileSync(path.join(root, file(name)), "utf8") : null);
+    const then = (name: string) => readYaml(atRef(opts.base, file(name), root));
     const sources = new Map((now("sources.yaml") as Source[]).map((s) => [s.id, s]));
     const fail = (record: string, problem: string) => result.failures.push({ case: dir, record, problem });
     const warn = (record: string, problem: string) => result.warnings.push({ case: dir, record, problem });

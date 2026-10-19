@@ -11,11 +11,14 @@
  *                                           the next free record ids for a case
  *   stamp <case>                            bind editions/new.yaml (and assessments/new.yaml) to the ledger
  *   archive <url>                           a Wayback Machine snapshot for a source's archivedUrl
- *   check-quotes [--base REF]               every quoted passage a change adds, found in its source (CI)
+ *   check-quotes [--base REF] [--head REF]  every quoted passage a change adds, found in its source (the review); --head
+ *                                           reads the change from that commit instead of the working tree
  *   check-names                             no forbidden name (config/site.yaml) on the rendered site (CI)
  *   panel <case> [--seats a,b] [--dry-run]  the blind check: the panel judges the ledger as it stands
- *   review --base REF --title T [--body-file F] [--previous F | --previous-comments F] [--out F] [--json F]
- *                                           the review of a change (the gate; the review workflow)
+ *   review --base REF [--head REF] --title T [--body-file F] [--previous F | --previous-comments F] [--out F] [--json F]
+ *                                           the review of a change (the gate; the review workflow), read from git
+ *   guard-session --run ID                  the staged work of an operator session holds nothing only the founder or
+ *                                           the engine writes (the workflow's publish job, from main's code)
  *   harvest                                 closed changes' reviews into governance/reviews/ (and their cost)
  *   budget [--cap|--line] [--ahead]         the budget as it stands; --cap prints what a session may spend, --line says it
  *                                           in a sentence; --ahead for a session started by hand, which runs ahead of the pace
@@ -30,7 +33,7 @@ import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import { parse as parseYaml } from "yaml";
 import { loadOperation } from "../src/domain/governance.ts";
-import { openChanges, planSession, roundsForOperator } from "../src/engine/operator.ts";
+import { guardSession, openChanges, planSession, roundsForOperator } from "../src/engine/operator.ts";
 import { loadModels } from "../src/lib/models.mjs";
 import { archiveUrl } from "../src/engine/archive.ts";
 import { runCheck } from "../src/engine/check.ts";
@@ -151,9 +154,27 @@ async function main() {
       return;
     }
     case "check-quotes": {
-      const r = await quoteCheck({ base: flag("base") ?? "origin/main" });
+      const r = await quoteCheck({ base: flag("base") ?? "origin/main", head: flag("head") });
       console.log(formatQuoteCheck(r));
       if (r.failures.length) process.exit(1);
+      return;
+    }
+    case "guard-session": {
+      // The session's work, staged in a fresh tree by the publish job: data, checked by main's code before any of it is published.
+      const run = need("run");
+      const files = execFileSync("git", ["diff", "--cached", "--name-status", "--no-renames"], { encoding: "utf8" })
+        .split("\n")
+        .filter(Boolean)
+        .map((line) => {
+          const [status, file] = line.split("\t");
+          return { status: status[0], file };
+        });
+      const problems = guardSession(files, (f) => (fs.existsSync(f) ? fs.readFileSync(f, "utf8") : null), run);
+      if (problems.length) {
+        console.log(`The session's work holds what only the founder or the engine writes, so none of it is published:\n${problems.map((p) => `- ${p}`).join("\n")}`);
+        process.exit(1);
+      }
+      console.log(`${files.length} file(s) changed; none of them is the founder's or the engine's to write.`);
       return;
     }
     case "panel": {
@@ -172,6 +193,7 @@ async function main() {
       const r = await runReview({
         root: process.cwd(),
         base: need("base"),
+        head: flag("head"),
         title: need("title"),
         body: flag("body-file") && fs.existsSync(flag("body-file")!) ? fs.readFileSync(flag("body-file")!, "utf8") : "",
         previous,

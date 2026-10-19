@@ -59,11 +59,16 @@ function atBase(base: string, file: string, root: string): string | null {
   }
 }
 
-/** Records new on HEAD, or changed since the base, by id. */
-export function changedRecords<T extends Rec>(before: Rec[], after: Rec[]): T[] {
-  const was = new Map(before.map((r) => [r.id, canonicalJson(r)]));
-  return after.filter((r) => was.get(r.id) !== canonicalJson(r)) as T[];
+/** Records new on HEAD, or changed since the base, by id — compared by what `view` takes of them (all of a record by default). */
+export function changedRecords<T extends Rec>(before: Rec[], after: Rec[], view: (r: Rec) => unknown = (r) => r): T[] {
+  const was = new Map(before.map((r) => [r.id, canonicalJson(view(r))]));
+  return after.filter((r) => was.get(r.id) !== canonicalJson(view(r))) as T[];
 }
+
+/** What a quoted passage is: its words, where it is said to be, and the source it is said to be in. A record whose
+ *  passage did not change adds none, whatever else about it changed (a migration that drops a field quotes nothing). */
+const evidencePassage = (r: Rec) => ({ statement: r.sourceStatement, locator: r.exactLocator, source: r.sourceId, state: r.reviewState });
+const claimPassage = (r: Rec) => ({ anchor: r.sourceAnchor, state: r.reviewState });
 
 /** The pages a locator names ("p. 12", "pp. 12–14", "page 7"), or null when it names none. */
 export function locatorPages(locator: string | undefined): [number, number] | null {
@@ -151,7 +156,7 @@ export async function quoteCheck(opts: QuoteCheckOptions): Promise<QuoteCheckRes
       }
     };
 
-    for (const e of changedRecords<Evidence>(then("evidence.yaml"), now("evidence.yaml"))) {
+    for (const e of changedRecords<Evidence>(then("evidence.yaml"), now("evidence.yaml"), evidencePassage)) {
       if (e.reviewState === "rejected" || e.reviewState === "provisional") continue;
       const spans = quotedSpans(e.sourceStatement);
       if (!spans.length) {
@@ -161,7 +166,7 @@ export async function quoteCheck(opts: QuoteCheckOptions): Promise<QuoteCheckRes
       await checkSpans(e.id, e.sourceId, spans, e.exactLocator);
       result.checked.push({ case: dir, record: e.id, spans: spans.length });
     }
-    for (const c of changedRecords<Claim>(then("claims.yaml"), now("claims.yaml"))) {
+    for (const c of changedRecords<Claim>(then("claims.yaml"), now("claims.yaml"), claimPassage)) {
       if (c.reviewState === "rejected" || c.reviewState === "provisional" || !c.sourceAnchor?.quote) continue;
       const a = c.sourceAnchor;
       await checkSpans(c.id, a.sourceId, [a.quote!], a.locator);

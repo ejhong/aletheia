@@ -106,3 +106,18 @@ describe("the check's parts", () => {
     expect(findInText(TEXT, "bruising   SURFACE", { context: 10 })).toEqual([{ page: 2, excerpt: "until the bruising surface had becom" }]);
   });
 });
+
+describe("what counts as a passage added", () => {
+  it("is a change to the quoted words, their locator, their source or the record's state — not to anything else on the record", async () => {
+    const root = repo([ev("X-E001", '"the pounders were used in one position"')]);
+    // Commit that record as the base, then change only a field that carries no passage.
+    const git = (...a: string[]) => execFileSync("git", a, { cwd: root, stdio: "ignore" });
+    git("-c", "user.email=t@t", "-c", "user.name=t", "commit", "-qam", "evidence");
+    const file = path.join(root, "content", "cases", "x", "evidence.yaml");
+    fs.writeFileSync(file, stringify([{ ...ev("X-E001", '"the pounders were used in one position"'), limitations: ["a note added later"] }]));
+    const unread = async () => ({ text: null, reason: "never read" });
+    expect((await quoteCheck({ base: "HEAD", root, read: unread, resolve })).checked).toEqual([]);
+    fs.writeFileSync(file, stringify([ev("X-E001", '"the pounders were used in one position until"')]));
+    expect((await quoteCheck({ base: "HEAD", root, read, resolve })).checked.map((c) => c.record)).toEqual(["X-E001"]);
+  });
+});

@@ -107,7 +107,14 @@ export async function quoteCheck(opts: QuoteCheckOptions): Promise<QuoteCheckRes
     opts.read ??
     (async (s: Source) => {
       const r = await readSource(targetOf(s), { root });
-      return r.ok ? { text: r.text } : { text: null, reason: r.reason ?? "not readable" };
+      if (r.ok) return { text: r.text };
+      // A dead link is common and is not a missing source: the archived copy the record names is the same document.
+      if (s.archivedUrl && s.archivedUrl !== s.url) {
+        const archived = await readSource({ url: s.archivedUrl }, { root });
+        if (archived.ok) return { text: archived.text };
+        return { text: null, reason: `${r.reason ?? "not readable"}; its archived copy: ${archived.reason ?? "not readable"}` };
+      }
+      return { text: null, reason: r.reason ?? "not readable" };
     });
   const textOf = (s: Source) => {
     if (!texts.has(s.id)) texts.set(s.id, read(s));

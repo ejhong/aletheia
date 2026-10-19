@@ -92,3 +92,59 @@ export function loadPromotionsLedger(): PromotionEntry[] {
     return [];
   }
 }
+
+/**
+ * A harvested review (AGENTS.md §3.15, founder amendment 2026-10-19): every round in which the reviewers — models
+ * of vendors other than the operator's — read one change and said whether it leaves the site better, no better or
+ * worse, whether it would cause a harm, and what would improve it (src/engine/review.ts). Copied from the change's
+ * pull-request comments after it closed (src/engine/harvest.ts), so the site shows how every change was judged.
+ */
+const ReviewSeatSchema = z.object({
+  seat: z.string(),
+  label: z.string(),
+  model: z.string(),
+  verdict: z.enum(["better", "no_better", "worse"]).optional(),
+  harm: z.object({ kind: z.string(), where: z.string(), why: z.string() }).nullable().optional(),
+  notes: z.array(z.string()).optional(),
+  summary: z.string().optional(),
+  failure: z.string().optional(),
+  cost: z.object({ inputTokens: z.number().int().nonnegative(), outputTokens: z.number().int().nonnegative(), usd: z.number().nullable() }).optional(),
+});
+export const ReviewRoundSchema = z.object({
+  commit: z.string(),
+  date: z.string(),
+  protocol: z.string(),
+  outcome: z.enum(["publish", "hold", "revise", "undecided"]),
+  reason: z.string(),
+  seats: z.array(ReviewSeatSchema),
+});
+export const ReviewRecordSchema = z.object({
+  pr: z.number().int(),
+  title: z.string(),
+  url: z.string().url(),
+  outcome: z.enum(["merged", "closed"]),
+  outcomeAt: z.string(),
+  /** The case directories the change touched. */
+  cases: z.array(z.string()).default([]),
+  rounds: z.array(ReviewRoundSchema).min(1),
+  harvestedAt: z.string(),
+});
+export type ReviewRecord = z.infer<typeof ReviewRecordSchema>;
+export type ReviewRound = z.infer<typeof ReviewRoundSchema>;
+
+export const reviewsDir = (root = process.cwd()) => path.join(root, "governance", "reviews");
+
+/** Every harvested review, newest outcome first. Absent directory = none yet; a file that fails validation fails the build. */
+export function loadReviewRecords(root = process.cwd()): ReviewRecord[] {
+  const dir = reviewsDir(root);
+  if (!fs.existsSync(dir)) return [];
+  return fs
+    .readdirSync(dir)
+    .filter((f) => f.endsWith(".yaml"))
+    .map((f) => {
+      const parsed = ReviewRecordSchema.safeParse(parseYaml(fs.readFileSync(path.join(dir, f), "utf8")));
+      if (!parsed.success) throw new Error(`governance/reviews/${f}: ${parsed.error.issues.map((i) => `${i.path.join(".")}: ${i.message}`).join("; ")}`);
+      return parsed.data;
+    })
+    .sort((a, b) => b.outcomeAt.localeCompare(a.outcomeAt) || b.pr - a.pr);
+}

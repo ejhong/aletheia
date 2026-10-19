@@ -67,6 +67,10 @@ export const Verb = z.enum([
   "watch",
   "agenda",
   "migration",
+  /** One working session of the operator — the AI agent that runs the site (2026-10-19; runs/<runId>/). */
+  "session",
+  /** One review of a change by the reviewers of other vendors (AGENTS.md §3.15, 2026-10-19). */
+  "review",
 ]);
 export type Verb = z.infer<typeof Verb>;
 

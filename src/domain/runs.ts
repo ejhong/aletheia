@@ -1,7 +1,11 @@
 /**
- * Run records (proposals/<runId>/run.yaml): what each verb did, when, at
- * what cost, with what outcome. Read here by the domain so the pages and
- * the pipeline see the same records; the pipeline's store writes them.
+ * Run records: what each run did, when, at what cost, with what outcome.
+ * Since 2026-10-19 they are written under runs/<runId>/ — the operator's
+ * sessions, the panel's checks, the reviews of changes. The pipeline that
+ * ran from 2026-09-08 to 2026-10-19 wrote under proposals/<runId>/, and
+ * those records are read where they are: they are the history of every
+ * case they touched. Read here so the pages and the engine see the same
+ * records; the engine's store writes them.
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -9,8 +13,11 @@ import { parse as parseYaml } from "yaml";
 import { ProposalSchema, RunRecordSchema, type Proposal, type RunRecord } from "./intake.ts";
 
 export const proposalsDir = (root = process.cwd()) => path.join(root, "proposals");
+export const runsDir = (root = process.cwd()) => path.join(root, "runs");
+/** Where a run's record and working files are: under runs/ since 2026-10-19, under proposals/ before. */
 export function runDir(runId: string, root = process.cwd()): string {
-  return path.join(proposalsDir(root), runId);
+  const legacy = path.join(proposalsDir(root), runId);
+  return fs.existsSync(legacy) ? legacy : path.join(runsDir(root), runId);
 }
 
 /** A run's proposal envelope, when it wrote one. */
@@ -22,14 +29,15 @@ export function readProposal(runId: string, root = process.cwd()): Proposal | nu
 
 /** Every run record, oldest first (date, then runId). Unparsable records are skipped, never repaired. */
 export function readRuns(root = process.cwd()): RunRecord[] {
-  const dir = proposalsDir(root);
-  if (!fs.existsSync(dir)) return [];
   const runs: RunRecord[] = [];
-  for (const name of fs.readdirSync(dir)) {
-    const f = path.join(dir, name, "run.yaml");
-    if (!fs.existsSync(f)) continue;
-    const parsed = RunRecordSchema.safeParse(parseYaml(fs.readFileSync(f, "utf8")));
-    if (parsed.success) runs.push(parsed.data);
+  for (const dir of [proposalsDir(root), runsDir(root)]) {
+    if (!fs.existsSync(dir)) continue;
+    for (const name of fs.readdirSync(dir)) {
+      const f = path.join(dir, name, "run.yaml");
+      if (!fs.existsSync(f)) continue;
+      const parsed = RunRecordSchema.safeParse(parseYaml(fs.readFileSync(f, "utf8")));
+      if (parsed.success) runs.push(parsed.data);
+    }
   }
   return runs.sort((a, b) => a.date.localeCompare(b.date) || a.runId.localeCompare(b.runId));
 }

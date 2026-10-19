@@ -1,55 +1,14 @@
 # Every model Aletheia calls, named once. To change a model, change it here:
 # nothing under src/ or scripts/ names one. Every model named here needs a
-# row in config/tariffs.yaml (priced, or honestly null); the verb chain
-# refuses to call a model whose row is unpriced (config/budget.yaml).
-#
-# `fallback` (Anthropic only) is the vendor's server-side fallback: when the
-# primary model's safety classifier declines, the same request is re-run on
-# the fallback inside the same call, and the run records the model that
-# actually served — never the one that was asked. A decline by both fails
-# the run. Panel seats never fall back: a refusing seat is a failed seat.
+# row in config/tariffs.yaml (priced, or honestly null); a seat whose row is
+# unpriced cannot be budgeted, and is not called (config/budget.yaml).
 #
 # `effort` pins reasoning depth so that a vendor's changing default cannot
 # silently change which judge we are running; the pinned level is part of
 # the seat's identity and is recorded with each verdict.
 
-# The house model: the drafter, the editor, and the maintenance scripts
-# that predate the verb chain (scripts/*.mjs via scripts/lib/llm.mjs).
-# 2026-09-22: Opus 5.5 replaced Fable 5.1 here. It scores above it on the
-# Artificial Analysis Intelligence Index (58 at max effort, 54 at the high
-# effort the structured-output path asks for, against Fable 5.1's 53) and
-# costs 60% less ($4/$20 per 1M against $10/$50, cache hits $0.20 against
-# $0.25); the house model was 82% of September's spend. Fable 5.1 keeps its
-# tariff row: the runs it served are stamped with it and stay priced.
-house:
-  model: claude-opus-5-5
-  fallback: claude-opus-5
-
-# The verifier's second reader — a different model from the drafter.
-# Vendor independence is the panel's job, not the reader's.
-reader:
-  model: claude-sonnet-5
-
-# The seats `aletheia report` can use; `default` is used when --seat is not
-# given. anthropic: Messages with the web search and web fetch server tools.
-# openai: the Responses API with the web_search tool, high reasoning effort,
-# background mode. (OpenAI's dedicated deep-research models are no longer
-# listed for this key or on the pricing page, checked 2026-09-08.)
-research:
-  default: anthropic
-  seats:
-    anthropic:
-      model: claude-opus-5-5      # 2026-09-22: with the house model, and for the same reasons
-      fallback: claude-opus-5
-      maxSearches: 30
-      maxFetches: 15
-    openai:
-      model: gpt-5.6-sol             # the panel's OpenAI seat, browsing
-      effort: high
-      maxToolCalls: 40
-
-# The five-seat cross-vendor panel (check runs, the arbiter, agenda scoring):
-# one seat per API vendor. Seat selection 2026-09-05 (docs/DECISIONS.md, "the
+# The five-seat cross-vendor panel: the blind check that gives a judgment its
+# standing (src/engine/check.ts), one seat per API vendor. Seat selection 2026-09-05 (docs/DECISIONS.md, "the
 # budget panel"): every seat scores 56–59 on the Artificial Analysis
 # Intelligence Index v4.2 at the effort pinned here. The /panel seat records
 # start a new row for a new model.
@@ -87,8 +46,8 @@ panel:
     tag: glm
     effort: high          # open weights (MIT), Venice-hosted, $0.15/$0.50 per 1M; AA 57, $0.09/task; "high" is Venice's deepest level
 
-# The OpenAI chat model the maintenance scripts use when only an OpenAI key
-# is configured (scripts/lib/llm.mjs); the house model is preferred.
-legacy:
-  openaiChat:
-    model: gpt-4o
+# The reviewers of a change (src/engine/review.ts; AGENTS.md §3.15): the
+# panel's seats from vendors other than the one whose model drafted the
+# change, so that no vendor reviews its own model's work.
+review:
+  seats: [openai, gemini, xai, venice]

@@ -286,4 +286,26 @@ describe("a post on X", () => {
     expect(gone.ok).toBe(false);
     expect(gone.reason).toMatch(/HTTP 404/);
   });
+
+  it("takes a long post's whole text from the mirror when the embed cuts it short, and keeps the embed's otherwise", async () => {
+    const embed = '<blockquote class="twitter-tweet"><p lang="en" dir="ltr">1. The camera numbers were in the video. 2. The video begins at…<a href="https://t.co/x">pic.twitter.com/abc</a></p>&mdash; Someone (@someone) <a href="https://x.com/someone/status/3">October 19, 2026</a></blockquote>';
+    const fetchImpl = (async (url: string) => {
+      if (url.startsWith("https://publish.twitter.com/oembed")) return new Response(JSON.stringify({ author_name: "Someone", html: embed }), { headers: { "content-type": "application/json" } });
+      expect(url).toBe("https://api.fxtwitter.com/status/3");
+      return new Response(JSON.stringify({ code: 200, tweet: { id: "3", text: "1. The camera numbers were in the video. 2. The video begins at 7:57pm, for anyone to check." } }), { headers: { "content-type": "application/json" } });
+    }) as typeof fetch;
+    const r = await retrieve({ url: "https://x.com/someone/status/3" }, { fetchImpl });
+    expect(r.ok).toBe(true);
+    expect(r.text).toContain("The video begins at 7:57pm, for anyone to check.");
+    expect(r.text).toContain("— Someone (@someone) October 19, 2026");
+    expect(r.via).toMatch(/FxTwitter mirror/);
+    // The mirror down: the embed's own text, cut short, rather than nothing.
+    const fallback = await retrieve({ url: "https://x.com/someone/status/3" }, {
+      fetchImpl: (async (url: string) =>
+        url.startsWith("https://publish.twitter.com/oembed") ? new Response(JSON.stringify({ html: embed }), { headers: { "content-type": "application/json" } }) : new Response("", { status: 503 })) as typeof fetch,
+    });
+    expect(fallback.ok).toBe(true);
+    expect(fallback.text).toContain("The video begins at…");
+    expect(fallback.via).toMatch(/embed service \(publish/);
+  });
 });

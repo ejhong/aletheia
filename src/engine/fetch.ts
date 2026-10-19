@@ -403,7 +403,25 @@ export function xStatusOf(url: string | null | undefined): string | null {
  * A post on X, read through X's own embed service (publish.twitter.com/oembed): the post's page serves its text only
  * to a signed-in browser, but the embed service returns the post as the block a website embeds — its text, its
  * author and its date — to anyone. Read under the post's own URL, and said so.
+ *
+ * The embed service cuts a long post short, with an ellipsis before the links and the attribution. For such a post
+ * the whole text comes from the FxTwitter mirror (api.fxtwitter.com), an open service that relays X's own data for the
+ * same post id; the embed's attribution line is kept, and `via` names both.
  */
+const CUT_SHORT = /…\s*(?:(?:https?:\/\/t\.co\/\S+|pic\.twitter\.com\/\S+)\s*)*—[^—]*$/;
+
+async function xFullText(id: string, opts: FetchOptions): Promise<string | null> {
+  const fetchImpl = opts.fetchImpl ?? fetch;
+  try {
+    const res = await fetchImpl(`https://api.fxtwitter.com/status/${id}`, { headers: { "User-Agent": UA, Accept: "application/json" }, signal: AbortSignal.timeout(opts.timeoutMs ?? 60_000) });
+    if (!res.ok) return null;
+    const data = (await res.json()) as { tweet?: { id?: string; text?: string } };
+    return data.tweet?.id === id && data.tweet.text ? data.tweet.text : null;
+  } catch {
+    return null;
+  }
+}
+
 async function xPost(url: string, opts: FetchOptions): Promise<FetchedSource> {
   const fetchImpl = opts.fetchImpl ?? fetch;
   const embed = `https://publish.twitter.com/oembed?omit_script=1&dnt=1&url=${encodeURIComponent(url)}`;
@@ -413,7 +431,15 @@ async function xPost(url: string, opts: FetchOptions): Promise<FetchedSource> {
     const data = (await res.json()) as { html?: string; author_name?: string };
     const text = stripHtml(data.html ?? "");
     if (!text) return { url, ok: false, status: res.status, contentType: null, text: null, reason: "X embed service returned no text" };
-    return { url, ok: true, status: res.status, contentType: "text/html", text, via: `X's embed service (publish.twitter.com/oembed) for the post`, ...(data.author_name ? { pageTitle: `${data.author_name} on X` } : {}) };
+    const title = data.author_name ? { pageTitle: `${data.author_name} on X` } : {};
+    if (CUT_SHORT.test(text)) {
+      const full = await xFullText(xStatusOf(url)!, opts);
+      if (full) {
+        const attribution = text.slice(text.lastIndexOf("—"));
+        return { url, ok: true, status: res.status, contentType: "text/html", text: `${full}\n\n${attribution}`, via: `X's embed service for the post, which cuts a long post short; the whole text from the FxTwitter mirror (api.fxtwitter.com), which relays X's data for the same post`, ...title };
+      }
+    }
+    return { url, ok: true, status: res.status, contentType: "text/html", text, via: `X's embed service (publish.twitter.com/oembed) for the post`, ...title };
   } catch (e) {
     return { url, ok: false, status: null, contentType: null, text: null, reason: `X embed service failed: ${(e as Error).message}` };
   }

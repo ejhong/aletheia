@@ -21,6 +21,12 @@ const SiteSchema = z.object({
   researchHubRfpLabel: z.string(),
   footerNote: z.string().min(1),
   caseNotice: z.object({ title: z.string().min(1), text: z.string().min(1) }).nullable(),
+  /**
+   * The day this site took up the engine's rules, when it came to the engine with content of its own: a dated rule
+   * (a steelman on every assessment, an anchor on every claim) binds from its own date or this one, whichever is
+   * later, so a site's records from before it ran the engine are judged by the rules they were written under.
+   */
+  engineSince: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
 });
 
 export type SiteConfig = z.infer<typeof SiteSchema>;

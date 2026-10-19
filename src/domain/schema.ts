@@ -773,19 +773,23 @@ export type AssessmentRun = z.infer<typeof AssessmentRunSchema>;
 export const STEELMAN_REQUIRED_FROM = "2026-09-04";
 
 /** The steelman requirement as a pure rule, so the loader and tests share it. */
-export function steelmanRequirementError(run: {
-  runId: string;
-  date: string;
-  migratedFrom?: string;
-  caseAssessment: { steelman?: string };
-}): string | null {
-  if (run.date < STEELMAN_REQUIRED_FROM) return null;
+export function steelmanRequirementError(
+  run: {
+    runId: string;
+    date: string;
+    migratedFrom?: string;
+    caseAssessment: { steelman?: string };
+  },
+  /** The date the rule binds this site from (src/domain/load.ts, `ruleFrom`). */
+  from = STEELMAN_REQUIRED_FROM,
+): string | null {
+  if (run.date < from) return null;
   // A migration run asserts nothing its source draft did not; the
   // requirement binds judgments, and this is a transfer.
   if (run.migratedFrom) return null;
   if (run.caseAssessment.steelman && run.caseAssessment.steelman.trim().length > 0)
     return null;
-  return `assessment run ${run.runId} (${run.date}) is missing caseAssessment.steelman — every run dated on or after ${STEELMAN_REQUIRED_FROM} must state the strongest argument for the featured hypothesis it does not answer`;
+  return `assessment run ${run.runId} (${run.date}) is missing caseAssessment.steelman — every run dated on or after ${from} must state the strongest argument for the featured hypothesis it does not answer`;
 }
 
 

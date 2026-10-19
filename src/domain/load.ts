@@ -1,17 +1,27 @@
 /** Loading and validation: the case files parsed, checked, and assembled into a LoadedCase — fail-closed. Editions, standing and history live beside this in their own modules (split 2026-09-09). */
 import { readOnce } from "./frozen.ts";
 import fs from "node:fs";
+import { site } from "../config/site.ts";
 import path from "node:path";
 import { parse as parseYaml } from "yaml";
 import { extractClaimRefs, extractPlateRefs, markerErrors } from "./article.ts";
 import { assessmentHash, ledgerHash } from "./hash.ts";
 import { DispositionSchema, type Disposition } from "./intake.ts";
-import { AssessmentRunSchema, CaseSchema, ChangeLogEntrySchema, CLAIM_ANCHOR_REQUIRED_FROM, ClaimSchema, CuratedResourceSchema, EditionSchema, EvidenceSchema, ImageSchema, ResearchOpportunitySchema, SourceSchema, steelmanRequirementError, StudySchema, NarrativeInputSchema, WatchConfigSchema, type AssessmentRun, type Claim, type CuratedResource, type Edition, type Evidence, type ImageRecord, type LoadedCase, type Source, type Study, type NarrativeInput, type WatchConfig } from "./schema.ts";
+import { AssessmentRunSchema, CaseSchema, ChangeLogEntrySchema, CLAIM_ANCHOR_REQUIRED_FROM, STEELMAN_REQUIRED_FROM, ClaimSchema, CuratedResourceSchema, EditionSchema, EvidenceSchema, ImageSchema, ResearchOpportunitySchema, SourceSchema, steelmanRequirementError, StudySchema, NarrativeInputSchema, WatchConfigSchema, type AssessmentRun, type Claim, type CuratedResource, type Edition, type Evidence, type ImageRecord, type LoadedCase, type Source, type Study, type NarrativeInput, type WatchConfig } from "./schema.ts";
 import { studyIntegrityErrors } from "./studies.ts";
 import { danglingProseRefs } from "./proseRefs.ts";
 import { orderEditions } from "./editions.ts";
 
 const CONTENT_DIR = path.join(process.cwd(), "content", "cases");
+
+/**
+ * The date a dated rule binds this site from: the rule's own date, or the day the site took up the engine
+ * (config/site.yaml, `engineSince`), whichever is later — a site's records from before it ran the engine are judged by
+ * the rules they were written under.
+ */
+export function ruleFrom(date: string): string {
+  return site.engineSince && site.engineSince > date ? site.engineSince : date;
+}
 const SITE_IMAGES_FILE = path.join(process.cwd(), "content", "images.yaml");
 const PUBLIC_DIR = path.join(process.cwd(), "public");
 
@@ -269,7 +279,7 @@ export function checkIntegrity(caseDir: string, loaded: LoadedCase): void {
     for (const err of stampErrors(run, loaded.assessmentRuns)) throw new ContentError(caseDir, err);
     // The epistemic counterweight, fail-closed: new runs must disclose the
     // strongest argument for the featured hypothesis they do not answer.
-    const steelmanError = steelmanRequirementError(run);
+    const steelmanError = steelmanRequirementError(run, ruleFrom(STEELMAN_REQUIRED_FROM));
     if (steelmanError) {
       throw new ContentError(caseDir, steelmanError);
     }
@@ -325,7 +335,7 @@ export function claimAnchorErrors(
   const errors: string[] = [];
   for (const c of claims) {
     if (c.reviewState === "rejected") continue;
-    if (c.origin.date < CLAIM_ANCHOR_REQUIRED_FROM) continue;
+    if (c.origin.date < ruleFrom(CLAIM_ANCHOR_REQUIRED_FROM)) continue;
     if (c.sourceAnchor || cited.has(c.id)) continue;
     errors.push(
       `claim ${c.id} (${c.origin.date}) has neither a source anchor nor an evidence record citing it — every claim dated on or after ${CLAIM_ANCHOR_REQUIRED_FROM} must be anchored`,

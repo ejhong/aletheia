@@ -1,0 +1,143 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 426
+title: "Experiment: do written definitions of the verdict words make a seat
+  agree with itself? Design and first arm"
+url: https://github.com/ejhong/aletheia/pull/426
+verdict: pass
+reason: "4 of 5 seats affirm compliance; one seat's objection is a review note
+  the operator answers on the record: GPT-5.6 Sol (OpenAI) (§3.8, §3.15;
+  check-weakening)"
+outcome: merged
+outcomeAt: 2026-09-30
+judgedAgainst: 0d5d0309bf
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5.5 (Anthropic)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.12
+      - §3.13
+      - §3.14
+    reasoning: "The diff touches only a proposals/ experiment folder and three
+      governance/spend files. Nothing under content/, protocols/, src/ or
+      AGENTS.md changes, so there are no new citations and Deep Memory's record
+      and standing are unchanged. check-v3-draft.md is labelled a draft for the
+      experiment, not a ratified protocol (§3.15). The provenance present
+      reconciles: each run.yaml equals the sum of its spend rows (e.g. 075451:
+      138916 input + 384 cache = 139300, 47204 output, $0.533612), the three
+      runs total $1.11 as claimed, and every seat reply carries humanReviewed:
+      false. I recomputed the PR body's table from the committed replies (openai
+      13/17, gemini 10/16, xai 16/23, venice 13/14), and all twelve case
+      verdicts match. The draft's verdict order and lib.mts RANK place
+      unresolved/presently_untestable between weakly_supported and mixed, as
+      §3.15's amendment requires. The measures use the repo's own withinOneStep,
+      and the design states its small-sample limits (§3.12, §3.13). Not
+      installing experimental check runs is disclosed and the raw replies are
+      public, so no disagreement is hidden. Notes for the report PR, not
+      violations: inputHash is null and the removed assessment files (which per
+      the protocol carried basis.ledgerHash) are gone. That leaves the 'same
+      ledger as 2026-09-28' claim, and the README's 'raw replies hold everything
+      those files held', uncheckable from what is committed, so record the hash.
+      Also, the wrote:/'4 of 4 installed' lines name files absent from the tree
+      (the README explains why), and the off-standard location made the
+      run-account tooling report no runs, though the full diff was shown."
+    cost:
+      model: claude-opus-5-5
+      inputTokens: 91913
+      outputTokens: 38375
+      usd: 1.13645
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: violates
+    rules:
+      - §3.8
+      - §3.15
+    reasoning: "The diff adds three actual check-pipeline `run.yaml` records and
+      twelve seat replies, but places them outside the canonical
+      `proposals/<runId>/` structure; consequently the repository tooling
+      reports “this change carries no run records” and supplies no RUN ACCOUNT.
+      That reclassification bypasses a run-review check, contrary to §3.15’s
+      prohibition on weakening checks or reclassifying changes to dodge them.
+      Provenance is also incomplete: every added run has `inputHash: null`
+      despite `DESIGN.md` claiming the run records carry the ledger hash, and
+      each seat reuses the same internal runId across all three repetitions. The
+      runs should use a tooling-recognized location (or extend the tooling
+      first), carry the immutable ledger/input hash, and have uniquely
+      attributable run stamps."
+    paradigm: check-weakening
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 62539
+      outputTokens: 2785
+      usd: 0.305856
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules: []
+    reasoning: The pull request adds an experimental design, draft protocol,
+      analysis scripts, and initial control run data under
+      `proposals/assessment-experiments/2026-09-30-verdict-definitions/`,
+      alongside corresponding spend logs in `governance/spend/`. It introduces
+      no modifications to `AGENTS.md`, does not alter active protocols, and
+      makes no changes to case content or published assessments under
+      `content/`. The experimental runs and raw replies are documented
+      transparently without presenting unratified drafts as ratified site
+      judgments (§3.15). All changes are scoped to off-line methodological
+      research and fully comply with constitutional requirements.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 70316
+      outputTokens: 1062
+      usd: 0.056719
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The PR adds only an experiment under
+      proposals/assessment-experiments/: DESIGN.md (pre-run), a check-v3-draft
+      kept as draft, analyse scripts, spend ledgers, and three control-arm check
+      runs' raw seat replies plus run.yaml. No content/ case files, assessments,
+      standing, AGENTS.md, or live protocols are changed; the runs README and
+      DESIGN state assessments were analysed then removed and Deep Memory is
+      untouched. Citation verification found no added identifiers. The materials
+      are labeled as experiment/control, not ratified judgments, so §3.15 and
+      the epistemic rules are respected."
+    cost:
+      model: grok-4.5
+      inputTokens: 64039
+      outputTokens: 144
+      usd: 0.129057
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules: []
+    reasoning: "The change touches no case content, no site code, and no AGENTS.md;
+      it is a self-contained experiment under proposals/, and the check-v3-draft
+      protocol is explicitly and repeatedly labeled a draft for the experiment,
+      not a ratified site protocol, so §3.15's unratified-draft and
+      check-weakening rules are not implicated — indeed the adoption rule in
+      DESIGN.md pre-registers the criteria and leaves adoption to a later,
+      separate change. Nothing from the runs is installed in the case; the run
+      records honestly document what was written to the experiment's working
+      tree and the raw replies are preserved, which is transparent rather than a
+      §3.14/§3.15 problem. No citations or external identifiers are added
+      (verification found none), no confidential material (no arc/, notes.txt,
+      or Hawke-derived confidential material) appears, and the seat replies are
+      stamped humanReviewed: false and role: check, so no AI record masquerades
+      as a human one. I spot-checked the spend arithmetic: each run record's
+      cost matches its spend rows (0.533612, 0.296551, 0.276798) and the PR's
+      $1.11 total matches the sum, so the money trail is honest. One minor
+      imperfection — the new run records carry inputHash: null even though the
+      design discusses ledger-hash continuity — but that is an omission the
+      forthcoming report is expected to state, not a fabricated locator or
+      provenance misattribution, and not grounds to park."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 65150
+      outputTokens: 1579
+      usd: 0.010562
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 353957
+  outputTokens: 43945
+  usd: 1.6386
+harvestedAt: 2026-10-19

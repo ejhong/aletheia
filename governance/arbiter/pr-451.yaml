@@ -1,0 +1,162 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 451
+title: Before Sputnik, re-told within the reader's budget; a fresh panel
+  contests one claim the case rests on
+url: https://github.com/ejhong/aletheia/pull/451
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-30
+judgedAgainst: 4f2c33ea1f
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5.5 (Anthropic)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.9
+      - §3.14
+      - §3.15
+    reasoning: "The diff adds only new append-only files: an edition, its draft
+      assessment, five check-role seat assessments from five vendors, spend
+      ledgers and run records. It edits no AGENTS.md, claim, evidence, source,
+      schema or check code, and the tooling found no new citation identifiers.
+      Every AI record carries runId, producedBy, model, date and promptVersion,
+      is marked humanReviewed: false with a draft or check role, and shares one
+      ledgerHash; both spend ledgers reconcile exactly with their run.yaml
+      totals (for example $5.890462 and 280,081 output tokens for the check
+      run). The PR's concurrence summary matches the seat files. The case
+      verdict is 4 unresolved and 1 mixed, and the split claims are TRN-C101,
+      C102 and C104. Load-bearing TRN-C101 is unresolved in the draft and
+      well_supported or established in all five seats, so the standing is shown
+      as contested, not hidden, as §3.15 requires. The article moves toward
+      honesty: it withdraws the Castle Yankee 'one night' proportion whose
+      evidence was declined, and it tells anchor-only claims as reports ('not
+      yet checked here', 'not read in full', 'asserted but has never been
+      measured'). It also stops using record ids on claims they are not attached
+      to (§3.2, §3.9). The Anthropic seat's truncated first reply and the
+      drafter's first reply with malformed brackets are both preserved, and the
+      tooling accounts for the omitted working files as carried whole. The
+      re-asked seat's 15 overlapping verdicts and confidences are identical to
+      the first reply's, so the retry was not verdict-shopping. Minor note for
+      the reconsideration, not a violation: the lede's claim that the patterns
+      fail 'in one rebuilt from scratch' overgeneralizes. Only nuclear timing
+      was tested on Hayes's rebuilt catalog; the shadow deficit failed only
+      under Watters's null on related data, and the hotspots have not been
+      tested independently."
+    cost:
+      model: claude-opus-5-5
+      inputTokens: 139979
+      outputTokens: 41483
+      usd: 1.422026
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.9
+      - §3.13
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: "The edition and assessment are explicitly stamped with runId, model,
+      date, promptVersion, role `draft`, and `humanReviewed: false`, while all
+      five independent check assessments retain their own verdicts and
+      reasoning. The load-bearing disagreement on TRN-C101 is not hidden: the
+      draft grades it unresolved, every check seat grades it well supported or
+      established, and the public check records make the resulting contested
+      standing reconstructible. The article uses calibrated language for thinly
+      verified material, calling source-only claims reports, identifying
+      unchecked figures, and describing the original-negative result as an
+      unreviewed and unblinded preprint. The repaired Anthropic response is
+      recorded transparently, carried whole into its installed assessment, and
+      the incomplete first response remains preserved rather than being
+      misrepresented. No new external citation identifier fails verification, no
+      AGENTS.md edit or confidence material appears, and the omitted working
+      replies were mechanically compared with the installed records in the run
+      account."
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 93375
+      outputTokens: 4199
+      usd: 0.457992
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: The PR adds a tightened edition candidate and a full five-seat
+      cross-model check run without modifying underlying claims, evidence, or
+      sources. The comparison round unanimous preference (5-0) and subsequent
+      blind check results are documented with complete provenance, including
+      spend ledgers, run manifests, raw and repaired seat replies, and accurate
+      metadata stamps. The check's contested standing regarding load-bearing
+      claim TRN-C101 is openly reported rather than concealed, following §3.15's
+      requirement that disagreement is displayed rather than published silently.
+      All citations and claim references correspond to existing ledger records,
+      and no unratified draft is presented as human-reviewed or uncontested.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 106826
+      outputTokens: 2502
+      usd: 0.089502
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The change adds only an edition-v14 draft that restates the prior
+      unresolved judgment within the reader budget (no claim/evidence/source
+      records altered) and five append-only check-v2 seat assessments under the
+      same ledgerHash, plus matching run/spend/comparison artifacts. The article
+      withdraws the unsupported Castle Yankee proportion, tells source-only
+      claims as reports, and drops mis-attached record ids from reasonings; the
+      repaired drafter reply is carried whole into the installed edition and
+      draft. The check panel is honest about standing: four unresolved and one
+      mixed case verdicts (all within one step), with an explicit split on
+      load-bearing TRN-C101 that the draft itself grades unresolved for lack of
+      an attached evidence record. Labels, AI stamps, disagreement display, and
+      the repair of the truncated Anthropic seat satisfy §3.13–§3.15; citation
+      verification found no new identifiers to resolve."
+    cost:
+      model: grok-4.5
+      inputTokens: 96913
+      outputTokens: 210
+      usd: 0.195201
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.14
+      - §3.8
+      - §3.13
+    reasoning: "The change touches no claim, evidence, or source records — only
+      assessments, an edition, spend ledgers, and run records — and the citation
+      verification found no added citation identifiers to check. Provenance is
+      stamped throughout (runId, model, promptVersion, date, humanReviewed:
+      false, role: check/draft), assessments are append-only and labeled
+      AI-generated, and the run account shows the seat replies were mechanically
+      compared with the installed files, including honest disclosure that the
+      Anthropic seat's truncated first reply was not carried whole and a
+      disclosed repair round for malformed claim markers. The disagreement is
+      handled exactly as §3.15 requires: the case verdict concurs (four seats
+      unresolved, one mixed, all within one step), the split on load-bearing
+      claim TRN-C101 is displayed as a contested standing rather than hidden,
+      every seat's word is on the record, and the reconsideration is scheduled
+      on the record with the spending cap stated. Withdrawing the Castle Yankee
+      sentence whose supporting evidence was declined at intake, telling
+      anchor-only claims as reports, and removing record citations from
+      reasonings where the record is not attached to the claim all improve
+      honesty rather than weaken any check; no AGENTS.md edit, no confidence
+      material, and no fabrication is visible."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 98181
+      outputTokens: 2868
+      usd: 0.016161
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 535274
+  outputTokens: 51262
+  usd: 2.1809
+harvestedAt: 2026-10-19

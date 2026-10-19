@@ -1,0 +1,164 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 452
+title: "Cast, Not Carved: the record the panels tripped on is refused, the case
+  re-told, and a fresh panel judges it"
+url: https://github.com/ejhong/aletheia/pull/452
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-10-03
+judgedAgainst: 02b18f323d
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5.5 (Anthropic)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: "The parked defect is fixed, not relabelled. None of the four
+      published 115839 checks grades GEO-C502 or leans on GEO-E002, and the run
+      account says each is carried whole from its seat's reply. Opus says
+      outright that GEO-E002 'has been rejected and plays no part here', and the
+      2026-09-30 GPT sentence survives only as a raw reply under proposals/
+      beside panel.withheld.txt, not under content/. GEO-E002 and GEO-C502 are
+      kept as refused records (reviewState: rejected), with reasons in
+      evidence.yaml, dispositions and history, all attributed to the
+      claude-sonnet-5 answer run. The reader's 'section 13 / sections 21-23'
+      appears only inside an attributed refusal reason, and DECISIONS lists the
+      proper read-in as owed, so no unverified locator is admitted. Withholding
+      the Gemini check fits §3.8 and §3.15 rather than weakening a check: its
+      GEO-C010 reasoning does cite '(GEO-E010, GEO-E016)' for 850 °C, its reply
+      is kept whole, and its note (including its 'contradicted' verdict) is
+      printed on the record page and flagged under the panel. By my count
+      GEO-C030 splits against the draft's 'mixed' with or without Gemini (only
+      GPT is within one step), so leaving it out cannot raise the standing,
+      which stays contested. Spend rows reconcile exactly with each run.yaml,
+      the new assessments are append-only files stamped with runId, model,
+      promptVersion, date and humanReviewed:false, AGENTS.md is untouched, and
+      the new test requires a withheld note for any run whose recorded output is
+      absent. Minor items worth fixing, none a breach: (1) the edition rationale
+      says GEO-E002 'is no longer in the ledger', though it remains as a refused
+      record; (2) DECISIONS says 'none of the ten' 2026-09-30 checks where six
+      are visible; (3) Grok's GEO-C020 reasoning credits the four petrographic
+      studies with finding no 'C–S–H binder enrichment', which they did not
+      test; (4) GEO-C911's parent link was cleared without a history line. The
+      only text I could not read is the clipped tails of the Opus check and the
+      draft assessment, whose visible parts show no sign of the Engelbach
+      problem."
+    cost:
+      model: claude-opus-5-5
+      inputTokens: 153847
+      outputTokens: 42179
+      usd: 1.491418
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.2
+      - §3.8
+      - §3.9
+      - §3.14
+      - §3.15
+    reasoning: The change refuses GEO-E002 and GEO-C502 rather than continuing to
+      rely on their unanchored, compound account, records the refusal reasons,
+      and removes C502 from the featured edition. The replacement edition and
+      assessment are stamped as AI-generated drafts with run, model, date,
+      prompt version, hashes, and append-only history, and they no longer treat
+      the secondary account as confirmation of Engelbach’s text. The fresh
+      panel’s four published assessments are carried whole from their seat
+      replies; the Gemini reply is preserved in the run record but withheld
+      because it visibly attributes furnace-temperature support to GEO-E010,
+      which the ledger describes as a natron-source study. That withholding is
+      disclosed beside the standing and in the record, and the standing was
+      computed both with and without the reply and did not improve when it was
+      omitted, so disagreement is not silently hidden or used to evade
+      concurrence.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 102947
+      outputTokens: 5835
+      usd: 0.528488
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.9
+      - §3.14
+      - §3.15
+    reasoning: "The change directly resolves the prior park on #452 by formally
+      re-reading and refusing GEO-E002 and GEO-C502 for missing locators,
+      quotes, and compound propositions, recording the refusals honestly in
+      claims, evidence, dispositions, and history. A new edition removes the
+      refused claim and updates the article, ratified by panel preference. A
+      fresh panel check across independent model families evaluates the
+      corrected ledger, transparently recording and explaining the withholding
+      of one seat that misstated evidence while verifying that withholding does
+      not raise the standing. All additions adhere to append-only provenance,
+      public inspectability, and fail-closed gate standards without modifying
+      the constitution."
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 115539
+      outputTokens: 1326
+      usd: 0.091627
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The change answers the prior fabrication park by re-reading
+      GEO-E002/GEO-C502 against the primary monograph, refusing both with honest
+      reasons (no quote/locator; unanchored claim), recording dispositions and
+      history, and keeping them as rejected rather than deleting. A fresh
+      edition drops C502 and the secondary Engelbach account; the adopted draft
+      and four published check seats are carried whole from their replies,
+      stamped, and do not rest on the refused records. The Google seat is
+      withheld with an on-record note for mis-citing GEO-E010 on temperatures,
+      standing is recomputed both ways without raising it, and UI/tests surface
+      unpublished checks instead of silently publishing or editing them. No
+      AGENTS.md edit, no new fabricated citations, and provenance of what ran
+      versus what is shown is explicit.
+    cost:
+      model: grok-4.5
+      inputTokens: 104991
+      outputTokens: 186
+      usd: 0.211213
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.9
+      - §3.14
+      - §3.15
+      - §4
+    reasoning: "The change answers the parked fabrication objection the
+      constitution's own way: the two records the OpenAI seat named (GEO-E002,
+      GEO-C502) were re-read against the primary text and refused with recorded
+      reasons in dispositions, history, and the run's verification.md — no
+      unverified secondary account is published as confirmed, and the offender's
+      sentence is not republished anywhere. The fresh panel publishes four
+      seats, withholds the Google seat's check for misstating GEO-E010 (a
+      fabrication-grade misstatement), keeps the withheld reply whole beside a
+      stamped note, computes the standing both ways so withholding cannot raise
+      it, and adds a CI-tested rule that every run either publishes what it
+      wrote or carries a note — strengthening, not weakening, the §3.15 checks.
+      Provenance is stamped throughout (runIds, spend rows, withheld notes
+      signed and dated, history entries naming the second reader), the article
+      and adopted assessment no longer carry the refused claim, and citation
+      verification finds no added identifiers to verify. The only blemish I see
+      is the decisions entry's phrase 'none of the ten' where this packet shows
+      six checks from 2026-09-30 (five plus the Google re-run) — likely counting
+      other checks of that date outside this case, but the operator should
+      confirm that count on the record; it is not itself a fabricated citation,
+      locator, or assessment."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 106989
+      outputTokens: 2128
+      usd: 0.017112
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 584313
+  outputTokens: 51654
+  usd: 2.3399
+harvestedAt: 2026-10-19

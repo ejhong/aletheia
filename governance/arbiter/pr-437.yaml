@@ -1,0 +1,145 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 437
+title: The panel is told what a drafter's replies hold that the edition does not
+url: https://github.com/ejhong/aletheia/pull/437
+verdict: pass
+reason: "4 of 5 seats affirm compliance; one seat's objection is a review note
+  the operator answers on the record: GPT-5.6 Sol (OpenAI) (§3.15;
+  check-weakening)"
+outcome: merged
+outcomeAt: 2026-09-30
+judgedAgainst: 1f940baf48
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5.5 (Anthropic)
+    vote: complies
+    rules:
+      - §3.15
+    reasoning: "The change touches only tooling (src/lib/arbiter-core.mjs), its
+      tests, and a DECISIONS.md entry. It does not edit AGENTS.md, does not
+      touch content/ or citations, and does not alter any vote threshold,
+      parking rule, or CI check. It does not weaken the §3.15 concurrence check.
+      It only reorders diff-capping so that a drafter reply is cut first when
+      the tool has found it reproduced by the edition and draft its run
+      installed (strings exact, with two stated allowances), or, for a first
+      reply, when everything it holds beyond the repaired reply is printed in
+      the account. A reply with any difference stays in the diff at its old
+      OVERLAY_TIER, and the omitted note says where the reply was compared.
+      Compared with the #431 situation, where a reply could be cut with no
+      accounting at all, this gives the panel more information, and the one
+      uncompared field (researchStatus) is disclosed on each reply's line. The
+      DECISIONS stamp \"direction in session, 2026-09-29\" follows the
+      convention the preceding entry explains: it gives the date of the
+      direction, and the founder has not reviewed these changes. I see no
+      provenance misattribution. Imperfections the operator should fix: (1) the
+      component projection to {label, state, note} silently drops any other key
+      in a reply's components, which contradicts the stated rule that a field
+      the verb does not install is a difference; (2) duplicate claimIds are
+      checked only through the first `find` match; (3) a non-string question or
+      a non-array accounts value is skipped rather than flagged; (4) a reply
+      with non-empty researchStatus is still cut first even though that field is
+      uncompared. The fix would be to flag extra component keys, duplicates, and
+      malformed fields, and either compare researchStatus against the research
+      file or keep such replies out of CARRIED_TIER."
+    cost:
+      model: claude-opus-5-5
+      inputTokens: 17618
+      outputTokens: 25165
+      usd: 0.606222
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: The new omission path can mark an edition reply “carried whole” and
+      give it CARRIED_TIER even though `researchStatus` is expressly excluded
+      from `editionReplyDifferences`. The account prints only the number of
+      those entries and does not compare their values with the research files
+      said to receive them. Consequently, the raw reply may be omitted while
+      retaining unique text or provenance details that the panel has neither
+      seen nor mechanically traced into installed records. That replaces
+      scrutiny of the file with an incomplete equivalence check and therefore
+      weakens or dodges the §3.15 gate. Compare every `researchStatus` entry
+      against the exact installed research records, or keep any reply with
+      nonempty `researchStatus` in the diff.
+    paradigm: check-weakening
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 15799
+      outputTokens: 2576
+      usd: 0.114716
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+    reasoning: This pull request updates the panel packet generation tooling
+      (`src/lib/arbiter-core.mjs`) to mechanically verify and summarize drafter
+      replies against installed edition and assessment files, mirroring the
+      existing mechanism for check seat replies. AGENTS.md is not modified, no
+      content or epistemic checks are weakened, and all added logic is
+      thoroughly covered by tests. The change enhances packet transparency and
+      inspection efficiency without compromising constitutional gates.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 17460
+      outputTokens: 477
+      usd: 0.014884
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: The diff only extends run-account tooling in arbiter-core.mjs (plus
+      tests and a DECISIONS.md log entry) so edition drafter replies are
+      mechanically compared to the installed edition and draft assessment,
+      allowing carried replies to be omitted with an explicit note. No AGENTS.md
+      edit, no content/ ledger changes, no citations, and no confidence
+      material. The comparison strengthens panel visibility rather than
+      loosening §3.15 checks, and the decision entry is stamped to the founder
+      direction already on record.
+    cost:
+      model: grok-4.5
+      inputTokens: 16399
+      outputTokens: 124
+      usd: 0.033657
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.8
+      - §4
+    reasoning: "The change touches only docs/DECISIONS.md (the operating record, not
+      the reserved constitution file) and tooling/tests; no content/ records
+      change and no citation identifiers are added, so no fabrication question
+      arises. Far from weakening §3.15's checks, it extends the #422 seat-reply
+      comparison to edition runs: the repository's own tooling now mechanically
+      verifies field-by-field that the verb installed exactly what the drafter
+      wrote (strings exact, with only two narrow, stated allowances — the verb's
+      'Measured by the verb' rationale paragraph and the one-character
+      bracket/brace span closure), and it prints a first reply's own divergent
+      text so a seat need not say 'unsure' for unseen files as happened on #431.
+      Cutting a carried reply from the packet does not hide material from the
+      panel, because what 'carried' means is that the reply's text is present in
+      the installed edition and draft assessment, which the account and diff
+      display directly; researchStatus, though uncompared, lands in the research
+      file that the records digest covers, and a reply the comparison faults
+      stays in the diff. A first reply past the 12,000-character print limit is
+      not marked carried and is left to the diff, preserving scrutiny rather
+      than dodging it. The terms of the comparison are stated in the account and
+      in the updated header, so the panel knows exactly what 'carried whole'
+      rests on — honest labeling consistent with §3.8 and §4. I note one minor
+      robustness issue for the operator's record: in omittedNotes, an edition
+      reply omitted from an over-cap diff without being carried could render an
+      undefined comparison target in the omitted-list note; that is routine
+      polish, not a constitutional violation."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 16891
+      outputTokens: 2894
+      usd: 0.003981
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 84167
+  outputTokens: 31236
+  usd: 0.7735
+harvestedAt: 2026-10-19

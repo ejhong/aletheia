@@ -1,0 +1,151 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 433
+title: A judgment written with the panel's verdicts in hand cannot be ratified
+  by them, contested or not
+url: https://github.com/ejhong/aletheia/pull/433
+verdict: pass
+reason: "4 of 5 seats affirm compliance; one seat's objection is a review note
+  the operator answers on the record: GPT-5.6 Sol (OpenAI) (§3.15;
+  check-weakening)"
+outcome: merged
+outcomeAt: 2026-09-30
+judgedAgainst: 7645d3c511
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5.5 (Anthropic)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.14
+    reasoning: "The diff does not touch AGENTS.md or anything under content/, adds
+      no citations, and carries no run records, so fabrication, confidence and
+      constitution concerns do not arise. The change tightens a §3.15
+      ratification check rather than weakening it. The new `engagedChecks`
+      treats reconciles-stamped and pre-stamp reconsiderations exactly as the
+      old `isReconsiderationRun`/`freshChecksFor` pair did. It also stops
+      edition-verb drafts from being ratified by checks they were shown, either
+      exactly via the new `shownChecks` stamp or, when unstamped, by counting as
+      seen any check not provably made later. `checksStale` and `seatsOwed` use
+      the same derivation, so more seats are re-asked, not fewer; no test
+      assertions are removed, and new tests cover the stamped, unstamped,
+      same-day-clock and one-fresh-check cases. The rule that one fresh check
+      restores the ordinary derivation is the existing 2026-08-26 rule, not a
+      new relaxation. In StandingPanel, concurs/disputes is replaced with \"this
+      judgment was written after seeing it\" only when every counted seat was in
+      hand. Each seat's own verdict badge and the claim-level split tally still
+      show, so disagreement is not hidden and nothing unratified reads as
+      ratified. Two minor notes for the operator, not objections: in that state
+      a draft the earlier panel disputes reads \"not yet ratified\" rather than
+      \"contested\" until the fresh check (as reconsiderations already did); and
+      the DECISIONS entry's \"Supervised-by: founder (direction in session,
+      2026-09-29)\" predates the 2026-09-30 run it describes, which is plausible
+      for a session spanning midnight but worth confirming is not copied from
+      the previous entry."
+    cost:
+      model: claude-opus-5-5
+      inputTokens: 17010
+      outputTokens: 20066
+      usd: 0.50181
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: violates
+    rules:
+      - §3.15
+    reasoning: "The new `shownChecks` provenance stamp is a fail-open override:
+      `engagedChecks` treats any present array as exact and disables the
+      conservative temporal fallback. `AssessmentRunSchema` accepts arbitrary
+      strings, while the diff adds no integrity check that the IDs exist or that
+      the list matches the checks actually available to the edition packet. The
+      test explicitly codifies that an edition draft with `shownChecks: []` is
+      ratified by earlier checks, so an incorrect empty or fabricated list can
+      bypass the independence gate. This violates §3.15’s fail-closed
+      provenance-completeness and no-check-weakening requirements; inconsistent
+      or dangling stamps must fail validation, or uncertainty about the stamp
+      must conservatively keep the prior checks engaged."
+    paradigm: check-weakening
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 15242
+      outputTokens: 2766
+      usd: 0.116288
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.10
+      - §3.15
+    reasoning: The change closes an epistemic loophole where an edition draft
+      written with the panel's check verdicts in hand could retain or claim
+      ratification from those non-blind checks. By recording `shownChecks` in
+      `AssessmentRunSchema` and requiring fresh independent checks in
+      `engagedChecks` before ratification can be derived, the PR directly
+      enforces independence (§3.10) and prevents non-independent agreement from
+      counting as genuine multi-model concurrence (§3.15). The implementation
+      updates standing derivation, UI explanation, and scheduler rules honestly
+      without weakening checks or editing AGENTS.md. Comprehensive unit tests
+      verify both stamped and legacy unstamped behaviors.
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 33373
+      outputTokens: 1618
+      usd: 0.031097
+    askedAgain: >-
+      the first reply could not be read as JSON (SyntaxError: Unexpected token
+      '§', ..."["§3.10", §3.15],
+        "... is not valid JSON); this verdict is the second asking, both replies billed
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules:
+      - §3.15
+    reasoning: "The diff closes a real independence hole: edition drafts always
+      receive current panel verdicts, but only contested reconciliations were
+      previously excluded from vouching. Stamping shownChecks, deriving
+      engagedChecks so those runs cannot ratify the draft, resetting standing
+      until a fresh blind check, and labeling the UI accordingly strengthen
+      §3.15 concurrence rather than weaken it. AGENTS.md is untouched;
+      DECISIONS.md/AUTOMATION.md record the founder-directed rule; schema,
+      scheduler, and tests match; no content/, citations, or confidence material
+      are added."
+    cost:
+      model: grok-4.5
+      inputTokens: 15704
+      outputTokens: 139
+      usd: 0.032357
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.15
+      - §3.14
+      - §3.13
+    reasoning: "This change strengthens, not weakens, the §3.15 checks: it extends
+      the existing 2026-08-26 rule (checks a draft was written with in hand
+      cannot ratify it) from reconsiderations to every assessment the edition
+      verb writes, closing a real independence hole in which a re-telling of a
+      ratified case re-graded nine claim verdicts toward the very panel checks
+      it had been shown and kept a 'ratified' standing on them. The direction of
+      the standing logic is conservative throughout — unstamped edition-verb
+      drafts count every check not provably made after them as engaged
+      ('anything else fails down'), the fresh-blind-check requirement is
+      preserved verbatim, and `reconciles` semantics are untouched, so no check
+      in §3.15 is loosened or dodged. AGENTS.md is not edited; the DECISIONS.md
+      entry is an append-only record of the decision with date, channel, and the
+      recorded founder direction, which §3.15 expressly permits, and the new
+      `shownChecks` stamp plus the StandingPanel disclosure ('this judgment was
+      written after seeing it') improve provenance honesty (§3.14) and
+      calibrated display rather than implying ratification that has not
+      occurred. The Amazon re-telling is explicitly not published and awaits a
+      fresh blind check, so no unratified draft is presented as ratified. No
+      content/ files change, no citations are added, and the tests cover both
+      the stamped and legacy unstamped paths; I see no fabrication, confidence
+      exposure, or misattribution in what is shown."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 16333
+      outputTokens: 1662
+      usd: 0.003281
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 97662
+  outputTokens: 26251
+  usd: 0.6848
+harvestedAt: 2026-10-19

@@ -1,0 +1,138 @@
+# Harvested arbiter verdict — verbatim machine record of the public PR
+# comment; append-only. See scripts/harvest-governance.mjs.
+pr: 455
+title: "Corrections to #453: the direction of a split, the strip's date, the
+  rule on stamps (review note #454)"
+url: https://github.com/ejhong/aletheia/pull/455
+verdict: pass
+reason: 5 of 5 seats affirm compliance; no seat finds a violation
+outcome: merged
+outcomeAt: 2026-09-30
+judgedAgainst: 2964a3af0b
+promptVersion: panel-v3
+seats:
+  - seat: Opus 5.5 (Anthropic)
+    vote: complies
+    rules:
+      - §3.14
+      - §3.15
+      - §7
+    reasoning: "The diff touches only docs, an experiment README and script, and one
+      UI label. No content/ record, citation or AGENTS.md line changes, and the
+      citation tool found nothing to check. The count.mts change is a comment
+      and an output string only; `higher`/`lower` were already computed over
+      `far`, so the corrected wording ('every seat more than one step from the
+      judgment') now matches what the script counted, and the README's output
+      matches the new template exactly (20/14/0/6). The DECISIONS.md fix is made
+      in place but discloses the first wording, cites review note #454 and gives
+      the AMZ-C023 counterexample. That is the §3.15 review-note process working
+      as intended and keeps the revision visible under §3.14. The stamp-rule
+      edit narrows a doc sentence to match unchanged code (`engagedChecks`, the
+      2026-08-26 decision); documenting an existing exception loosens no check
+      and improves inspectability. The LatestStrip relabel ('records last
+      changed <date> · the change history') fixes a label that was false on
+      three cases and better serves §7's 'last content-update date, linking to
+      the case changelog'. Minor note, not a violation: the Before Sputnik line
+      was strengthened from 'grade it higher' to 'all five seats are more than
+      one step above' without mention in the PR body. It is consistent with the
+      split rule and the 14-of-20 tally, but the operator should confirm it
+      against the README's per-seat table."
+    cost:
+      model: claude-opus-5-5
+      inputTokens: 5412
+      outputTokens: 11708
+      usd: 0.288258
+  - seat: GPT-5.6 Sol (OpenAI)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.9
+      - §3.14
+      - §3.15
+    reasoning: The change corrects the description of split direction to match the
+      shown computation, which filters seats to those more than one step from
+      the judgment before counting higher and lower verdicts. The decisions
+      entry preserves the provenance of the former wording and identifies the
+      concrete AMZ-C023 counterexample and review note, while git retains the
+      prior revision. The UI label is corrected so it no longer claims that the
+      displayed non-housekeeping date is the history’s literal last entry. No
+      citations, content records, ratification records, constitutional text, or
+      checks are added, removed, or weakened.
+    cost:
+      model: gpt-5.6-sol
+      inputTokens: 6579
+      outputTokens: 799
+      usd: 0.042808
+  - seat: Gemini 3.8 Flash (Google)
+    vote: complies
+    rules:
+      - §3.8
+      - §3.14
+      - §3.15
+    reasoning: "This pull request directly addresses review note #454 and panel
+      observations from PR #453. It accurately clarifies the definition used for
+      the direction of a split across documentation and analysis scripts,
+      corrects an overstatement regarding seat directions on split claims,
+      clarifies the rule on stamps for older reconsiderations, and corrects the
+      UI text in `LatestStrip.tsx` to honestly reflect that the displayed date
+      is the last substantive record change rather than strictly the latest
+      history entry. No constitutional rules are violated, AGENTS.md is
+      untouched, and the changes enhance precision and transparency."
+    cost:
+      model: gemini-3.8-flash
+      inputTokens: 8483
+      outputTokens: 401
+      usd: 0.007866
+  - seat: Grok 4.5 (xAI)
+    vote: complies
+    rules: []
+    reasoning: "The diff only corrects prose and a UI label that #453 got wrong,
+      answering review note #454 and two smaller seat notes. The split-direction
+      wording now matches what count.mts already computed (seats more than one
+      step from the judgment); DECISIONS and AUTOMATION give the honest counts
+      and the AMZ-C023 counterexample; the stamp sentence now states both the
+      edition-verb rule and the pre-existing reconciles path without changing
+      code or loosening §3.15; LatestStrip relabels lastContentUpdate so it is
+      true when the newest history entry is housekeeping. No AGENTS.md edit, no
+      citations, no case ledger, no confidence material, no fabricated
+      provenance."
+    cost:
+      model: grok-4.5
+      inputTokens: 8045
+      outputTokens: 162
+      usd: 0.017177
+  - seat: GLM 5.3 Flash (Z.ai, via Venice)
+    vote: complies
+    rules:
+      - §3.9
+      - §3.14
+      - §3.15
+    reasoning: "This PR makes three documentation and labeling corrections in
+      response to a review note, touching only docs, a counting script's output
+      wording, and one UI label — no case content, no assessments, no citations,
+      and no edit to AGENTS.md. The corrections move in the constitution's
+      direction: the split-direction statistic is restated to match what the
+      code actually counts (seats more than one step from the judgment), with
+      the earlier miswording openly recorded in DECISIONS.md rather than
+      silently erased, which honors §3.14's requirement that changes record what
+      changed and why. The LatestStrip label fix replaces a demonstrably false
+      label ('the change history, last entry') with an accurate one ('records
+      last changed <date> · the change history') plus a code comment explaining
+      the discrepancy, serving §3.9's honest distinction between what a record
+      shows and what a reader might infer. The AUTOMATION.md sentence about
+      stamps is narrowed to match the 2026-08-26 decision as implemented in
+      engagedChecks — a clarification, not a weakening of any §3.15 check; the
+      code is unchanged. No fabrication, confidence exposure, constitution edit,
+      or check-dodging is visible anywhere in the diff."
+    cost:
+      model: z-ai-glm-5-3-flash
+      inputTokens: 8974
+      outputTokens: 415
+      usd: 0.001554
+cost:
+  seats: 5
+  complete: true
+  inputTokens: 37493
+  outputTokens: 13485
+  usd: 0.3577
+harvestedAt: 2026-10-19

@@ -82,6 +82,7 @@ export function stamp(caseKey: string, opts: StampOptions): StampResult {
   if (!fs.existsSync(draftEditionFile)) return { ok: false, errors: [`no draft: write content/cases/${dir}/editions/new.yaml`] };
 
   // The drafts stand aside while the case is loaded as it otherwise is: the ledger they were written against.
+  fs.mkdirSync(path.join(root, ".cache"), { recursive: true });
   const aside = fs.mkdtempSync(path.join(root, ".cache", "stamp-"));
   const moved: [string, string][] = [];
   const setAside = (f: string) => {
@@ -94,7 +95,6 @@ export function stamp(caseKey: string, opts: StampOptions): StampResult {
     for (const [from, to] of moved) if (fs.existsSync(from)) fs.renameSync(from, to);
     fs.rmSync(aside, { recursive: true, force: true });
   };
-  fs.mkdirSync(path.join(root, ".cache"), { recursive: true });
   const draftEdition = parseYaml(fs.readFileSync(draftEditionFile, "utf8")) as DraftEdition;
   const draftAssessment = fs.existsSync(draftAssessmentFile) ? (parseYaml(fs.readFileSync(draftAssessmentFile, "utf8")) as DraftAssessment) : null;
   setAside(draftEditionFile);
@@ -102,7 +102,8 @@ export function stamp(caseKey: string, opts: StampOptions): StampResult {
 
   let loaded: LoadedCase;
   try {
-    loaded = loadCase(dir);
+    // A case with no edition is being opened: the edition stamped here is its first.
+    loaded = loadCase(dir, { opening: true });
   } catch (e) {
     restore();
     return { ok: false, errors: [`the case does not load without the drafts: ${(e as Error).message}`] };
@@ -110,7 +111,7 @@ export function stamp(caseKey: string, opts: StampOptions): StampResult {
   const date = isoDate(now);
   const time = hhmmssUTC(now);
   const errors: string[] = [];
-  const incumbent = currentEdition(loaded);
+  const incumbent = loaded.editions.length ? currentEdition(loaded) : null;
 
   let assessment: AssessmentRun | null = null;
   if (draftAssessment) {
@@ -134,13 +135,16 @@ export function stamp(caseKey: string, opts: StampOptions): StampResult {
       errors.push(...assessmentBudgetErrors(assessment));
     }
   } else {
-    const kept = adoptedAssessment(loaded);
+    const kept = incumbent ? adoptedAssessment(loaded) : null;
     const over = kept ? assessmentBudgetErrors(kept) : [];
     if (over.length) errors.push(`the edition re-adopts assessment ${kept!.runId}, which is over the reader's budget (${over.slice(0, 3).join("; ")}); write assessments/new.yaml restating the same judgment within it`);
   }
   errors.push(...articleBudgetErrors(draftEdition.article ?? ""));
-  const adoptedRef = assessment ? { runId: assessment.runId, hash: assessmentHash(assessment) } : incumbent.assessment;
-  const measured = `Measured by the engine: article ${articleWords(incumbent.article)} → ${articleWords(draftEdition.article ?? "")} words, without markup.`;
+  const adoptedRef = assessment ? { runId: assessment.runId, hash: assessmentHash(assessment) } : (incumbent?.assessment ?? null);
+  const words = articleWords(draftEdition.article ?? "");
+  const measured = incumbent
+    ? `Measured by the engine: article ${articleWords(incumbent.article)} → ${words} words, without markup.`
+    : `Measured by the engine: article of ${words} words, without markup; the case's first edition.`;
   const parsedEdition = EditionSchema.safeParse({
     runId: `edition-${date}-${time}`,
     producedBy: opts.producedBy,
@@ -149,12 +153,12 @@ export function stamp(caseKey: string, opts: StampOptions): StampResult {
     promptVersion: opts.promptVersion,
     rationale: `${String(draftEdition.rationale ?? "").trim()}\n\n${measured}`,
     basis: { ledgerHash: loaded.ledgerHash, inputsHash: inputsHashOf(loaded, root) },
-    previous: incumbent.runId,
-    assessment: adoptedRef ?? null,
+    previous: incumbent?.runId ?? null,
+    assessment: adoptedRef,
     featuredClaimIds: draftEdition.featuredClaimIds,
-    cruxOrder: draftEdition.cruxOrder ?? incumbent.cruxOrder,
-    ...((draftEdition.question ?? incumbent.question) ? { question: draftEdition.question ?? incumbent.question } : {}),
-    ...((draftEdition.accounts ?? incumbent.accounts) ? { accounts: draftEdition.accounts ?? incumbent.accounts } : {}),
+    cruxOrder: draftEdition.cruxOrder ?? incumbent?.cruxOrder ?? [],
+    ...((draftEdition.question ?? incumbent?.question) ? { question: draftEdition.question ?? incumbent?.question } : {}),
+    ...((draftEdition.accounts ?? incumbent?.accounts) ? { accounts: draftEdition.accounts ?? incumbent?.accounts } : {}),
     article: draftEdition.article,
   });
   if (!parsedEdition.success) errors.push(...parsedEdition.error.issues.map((i) => `edition ${i.path.join(".")}: ${i.message}`));
@@ -177,7 +181,9 @@ export function stamp(caseKey: string, opts: StampOptions): StampResult {
     [
       {
         date,
-        change: `New edition ${edition.runId}${assessment ? `, adopting a new draft assessment ${assessment.runId} (its standing waits for the blind panel)` : `, re-adopting assessment ${edition.assessment?.runId}`}.`,
+        change: incumbent
+          ? `New edition ${edition.runId}${assessment ? `, adopting a new draft assessment ${assessment.runId} (its standing waits for the blind panel)` : `, re-adopting assessment ${edition.assessment?.runId}`}.`
+          : `Opened the case: its first edition ${edition.runId}${assessment ? `, adopting a draft assessment ${assessment.runId} (its standing waits for the blind panel)` : ", the question only"}.`,
         reason: String(draftEdition.rationale ?? "").trim().split(/\n\s*\n/)[0].slice(0, 1200),
         actor: `operator (${opts.model}), session ${opts.producedBy}`,
         runId: opts.producedBy,

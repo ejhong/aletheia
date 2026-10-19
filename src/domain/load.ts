@@ -123,7 +123,7 @@ export function stampErrors(run: AssessmentRun, runs: AssessmentRun[]): string[]
   return errors;
 }
 
-export function checkIntegrity(caseDir: string, loaded: LoadedCase): void {
+export function checkIntegrity(caseDir: string, loaded: LoadedCase, opts: { opening?: boolean } = {}): void {
   const claimById = new Map(loaded.claims.map((c) => [c.id, c]));
   // An id written in prose must name a record that exists — every record, no
   // cutoff (2026-09-11: five research summaries cited the drafter's provisional
@@ -287,8 +287,12 @@ export function checkIntegrity(caseDir: string, loaded: LoadedCase): void {
 
   checkImages(caseDir, loaded.images, requireLiveClaim);
 
-  for (const err of editionErrors(loaded)) {
-    throw new ContentError(caseDir, err);
+  // A case being opened has no edition yet: its first is the one being stamped (src/engine/stamp.ts), and the
+  // stamped case is loaded again under every rule.
+  if (!(opts.opening && loaded.editions.length === 0)) {
+    for (const err of editionErrors(loaded)) {
+      throw new ContentError(caseDir, err);
+    }
   }
 
   for (const err of dispositionErrors(loaded)) {
@@ -492,7 +496,8 @@ export function sourceAdmissionErrors(
   return errors;
 }
 
-export function loadCase(caseDir: string): LoadedCase {
+/** A case and its integrity. `opening`: the case may have no edition yet, because the stamp is writing its first. */
+export function loadCase(caseDir: string, opts: { opening?: boolean } = {}): LoadedCase {
   const record = CaseSchema.parse(readYaml(caseDir, "case.yaml"));
 
   const claims = parseList<Claim>(
@@ -703,7 +708,7 @@ export function loadCase(caseDir: string): LoadedCase {
     studies,
     narrativeInputs,
   };
-  checkIntegrity(caseDir, loaded);
+  checkIntegrity(caseDir, loaded, opts);
   return loaded;
 }
 

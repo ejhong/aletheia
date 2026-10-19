@@ -132,7 +132,11 @@ current judgment.
 
 Run `node scripts/site.ts stamp <case>`. It binds both to the ledger,
 checks the budget, appends the history entry, and refuses what the loader
-would refuse.
+would refuse. A new case opens the same way: its folder under
+`content/cases/` (`case.yaml`, `claims.yaml`, `evidence.yaml`,
+`sources.yaml`, `research.yaml`, a `history.yaml` that says what was
+written and why), then `editions/new.yaml` with its question and accounts,
+and the stamp makes its first edition.
 
 ### 6. Check your work
 

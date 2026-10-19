@@ -268,7 +268,7 @@ describe("an image's size, read from its header", () => {
 describe("the text colours can be read", () => {
   it("every text colour meets 4.5:1 on the grounds it is set on, in both registers", async () => {
     const fs = await import("node:fs");
-    const css = fs.readFileSync("app/globals.css", "utf8");
+    const css = fs.readFileSync("config/theme.css", "utf8"); // the site's palette: every site running the engine is held to it
     const block = (selector: string) => Object.fromEntries([...(css.split(selector)[1]?.split("}")[0] ?? "").matchAll(/(--[a-z-]+):\s*(#[0-9a-f]{6})/g)].map((m) => [m[1], m[2]]));
     const light = block(".bg-paper-deep {");
     const dark = block(".bg-dossier-soft {");

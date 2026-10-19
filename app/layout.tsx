@@ -1,21 +1,41 @@
 import { loadOperation } from "@/src/domain/governance";
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, Newsreader } from "next/font/google";
+import { IBM_Plex_Mono, Inter, Newsreader, Space_Grotesk } from "next/font/google";
 import Link from "next/link";
 import { assetPath } from "@/src/config/assets";
 import { site } from "@/src/config/site";
 import "./globals.css";
 
+/*
+ * The engine's typefaces, each offered as a CSS variable; a site's theme
+ * (config/theme.css) chooses which of them its display, body and mono faces
+ * are. A face the theme does not use is never downloaded, so none is
+ * preloaded: the browser fetches what the page's CSS asks for.
+ */
 const newsreader = Newsreader({
   subsets: ["latin"],
   style: ["normal", "italic"],
   variable: "--font-newsreader",
+  preload: false,
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-display",
+  preload: false,
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-body",
+  preload: false,
 });
 
 const plexMono = IBM_Plex_Mono({
   subsets: ["latin"],
   weight: ["400", "500"],
   variable: "--font-plex-mono",
+  preload: false,
 });
 
 export const metadata: Metadata = {
@@ -46,7 +66,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   const operation = loadOperation();
   return (
-    <html lang="en" className={`${newsreader.variable} ${plexMono.variable}`}>
+    <html lang="en" className={`${newsreader.variable} ${spaceGrotesk.variable} ${inter.variable} ${plexMono.variable}`}>
       <body className="min-h-screen flex flex-col">
         {/* The feed of the days a case's verdicts moved (app/feed.xml), announced on every page; a page's own metadata cannot drop it. */}
         <link rel="alternate" type="application/atom+xml" title={`${site.name}: where the assessments moved`} href={assetPath("/feed.xml")} />

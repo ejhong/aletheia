@@ -98,11 +98,13 @@ describe("the reader's budget", () => {
     for (const c of loadAllCases()) {
       const edition = currentEdition(c);
       const version = Number(edition.promptVersion.match(/^edition-v(\d+)$/)?.[1] ?? 0);
-      if (version < 13 && edition.date < "2026-10-19") continue;
+      // A mechanical migration carries the words it moved, as it found them; the next edition restates them within
+      // the budget (src/engine/stamp.ts refuses one that re-adopts an assessment over it).
+      if ((version < 13 && edition.date < "2026-10-19") || edition.promptVersion.startsWith("migration")) continue;
       expect(articleBudgetErrors(edition.article), c.record.slug).toEqual([]);
       const run = adoptedAssessment(c);
       const assessedUnder = Number(run?.promptVersion.match(/^edition-v(\d+)$/)?.[1] ?? 0);
-      if (run && (assessedUnder >= 13 || run.date >= "2026-10-19")) expect(assessmentBudgetErrors(run), c.record.slug).toEqual([]);
+      if (run && !run.migratedFrom && (assessedUnder >= 13 || run.date >= "2026-10-19")) expect(assessmentBudgetErrors(run), c.record.slug).toEqual([]);
     }
   });
 });

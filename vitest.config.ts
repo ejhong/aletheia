@@ -21,6 +21,7 @@ const CONTENT_FIXTURE_TESTS = [
   "src/domain/intake.test.ts",
   "src/domain/load.test.ts",
   "src/domain/operations.test.ts",
+  "src/domain/panel.test.ts",
   "src/domain/record.test.ts",
   "src/domain/recordLinks.test.ts",
   "src/domain/resources.test.ts",

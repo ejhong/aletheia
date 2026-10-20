@@ -64,9 +64,13 @@ person.
    left undone, what it would do next.
 7. On a fresh machine, main's code takes the session's work as a patch and
    checks it (`site guard-session`: nothing the founder or the engine
-   alone writes), records the session's cost, convenes the panel when the
-   log asks for it, commits, and opens the pull request. CI and the review
-   take it from there.
+   alone writes), records the session's cost, keeps the digest of its
+   trace (`runs/<runId>/trace.yaml`: its tool calls, what failed, what its
+   permissions refused, the hosts it fetched and the sources it read),
+   convenes the panel when the log asks for it, commits, and opens the pull
+   request, with the digest beneath the session's log. CI and the review
+   take it from there, and the next session's `status` begins with what
+   the last sessions' traces recorded.
 
 ## The trust boundary
 
@@ -76,7 +80,14 @@ token that can only read; its instructions and first message are written
 from main before it starts. Everything after it runs main's code on a fresh
 machine: the guard, the cost, the panel (the only step with the other
 vendors' keys) and the pull request (the only step with the maintenance
-token). The review runs main's code too (`pull_request_target`), reading
+token). One step runs after the session on its own machine: main's
+script, copied into the plan before the session, digests the session's
+trace there (`src/engine/trace.ts`), so that the trace — everything the
+session called and read — never leaves that machine. The digest keeps
+counts, tool names, the leading words of commands, hosts and DOIs, and no
+text; like the cost report it is data from a machine the session
+controlled, checked by main's code before it is kept, and it decides
+nothing. The review runs main's code too (`pull_request_target`), reading
 the change through git at the commit under review — never checking it out,
 installing it or running it — and runs the quote check the same way, so a
 change cannot alter the review that judges it, the models that read it or

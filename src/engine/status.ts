@@ -9,11 +9,14 @@ import { readRuns } from "../domain/runs.ts";
 import { researchStatus, type LoadedCase } from "../domain/schema.ts";
 import { readSpend, spentOn } from "../domain/spend.ts";
 import { checksStale, crossModelSummary, ratification } from "../domain/standing.ts";
+import { readTraces } from "./session.ts";
+import { traceLine } from "./trace.ts";
 
 /**
  * Where everything stands, for the operator's planning and for the founder:
  * each case's standing and freshness, what the reviewers last asked of it,
- * what waits in its inbox, and the money left. Derived from the files; the
+ * what waits in its inbox, the money left, and what the last sessions' traces
+ * recorded of what they did. Derived from the files; the
  * operator reads it at the start of a session to choose what most needs doing
  * (operator/charter.md), and `site status` prints it.
  */
@@ -157,6 +160,8 @@ export function siteStatus(root = process.cwd(), today = new Date().toISOString(
   const reviews = loadReviewRecords(root);
   return {
     budget: budgetState(root, today),
+    // What the last sessions did, from their traces: the workflow's record, beside each session's own log.
+    sessions: readTraces(root).slice(-3),
     cases: loadAllCases().map((c) => caseStatus(c, { today, reviews, root })),
     // Dispositions declined most recently, so the operator does not propose again what was set aside without saying what changed.
     declined: loadAllCases().map((c) => ({ dir: c.dir, declined: [...latestByKey(c.dispositions).values()].filter((d) => d.disposition !== "in").length })),
@@ -166,7 +171,12 @@ export function siteStatus(root = process.cwd(), today = new Date().toISOString(
 /** The status as the operator and the founder read it: one block per case, most in need of work first. */
 export function formatStatus(s: ReturnType<typeof siteStatus>): string {
   const lines = [budgetLine(s.budget), ""];
-  const order = [...s.cases].sort((a, b2) => (b2.lastWorkedDays ?? 999) - (a.lastWorkedDays ?? 999));
+  if (s.sessions.length) {
+    lines.push("The last sessions, as their traces recorded them (the workflow's digest, beside each session's own log):");
+    for (const t of s.sessions) lines.push(`  ${traceLine(t.runId, t.digest)}`);
+    lines.push("");
+  }
+  const order =[...s.cases].sort((a, b2) => (b2.lastWorkedDays ?? 999) - (a.lastWorkedDays ?? 999));
   for (const c of order) {
     lines.push(`${c.slug} — ${c.title}`);
     lines.push(`  question: ${c.question}`);

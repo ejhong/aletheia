@@ -1,0 +1,63 @@
+# Review of #464, harvested from its pull request (src/engine/harvest.ts). Append-only.
+pr: 464
+title: "Spend: the four run records of the interrupted 2026-10-12 chain"
+url: https://github.com/ejhong/aletheia/pull/464
+outcome: merged
+outcomeAt: 2026-10-20T02:20:28Z
+cases: []
+rounds:
+  - commit: 17b56f266ea5ea47b8c81eeca5b4ddbf41fa5205
+    date: 2026-10-20
+    protocol: review-v1
+    outcome: publish
+    reason: 4 of 4 reviewers judge it better; no harm flagged
+    seats:
+      - seat: openai
+        label: GPT-5.6 Sol (OpenAI)
+        model: gpt-5.6-sol
+        verdict: better
+        harm: null
+        notes:
+          - "In the spend records or adjacent ledger documentation, retain a durable provenance reference to PR #460 and commit 6740911 so the copied run records remain auditable after the stale branch disappears."
+        summary: The change restores four spend records from an interrupted run without publishing its obsolete case work. This improves budget accuracy by preventing October spending from being understated and leaves content and review checks unchanged.
+        cost:
+          inputTokens: 4705
+          outputTokens: 392
+          usd: 0.02666
+      - seat: gemini
+        label: Gemini 3.8 Flash (Google)
+        model: gemini-3.8-flash
+        verdict: better
+        harm: null
+        notes: []
+        summary: This change imports four spend records from an interrupted run on 2026-10-12 into governance/spend/. Recording these expenditures prevents undercounting in October's operational budget tracking and ensures financial ledger integrity without modifying case content. It leaves the site better documented and financially accurate.
+        cost:
+          inputTokens: 5085
+          outputTokens: 435
+          usd: 0.005445
+      - seat: xai
+        label: Grok 4.5 (xAI)
+        model: grok-4.5
+        verdict: better
+        harm: null
+        notes: []
+        summary: The change adds four unchanged spend records from the interrupted 2026-10-12 chain so October's ledger matches money actually spent, raising recorded spend from $19.26 to $23.82. No case content, assessments, or checks are touched. Accurate budget accounting strengthens the gate and the public record, so the site is left better than it was found.
+        cost:
+          inputTokens: 4844
+          outputTokens: 97
+          usd: 0.010385
+      - seat: venice
+        label: GLM 5.3 Flash (Z.ai, via Venice)
+        model: z-ai-glm-5-3-flash
+        verdict: better
+        harm: null
+        notes:
+          - "The four records were written under the retired chain loop; if any of them reference the case work (CCC edition, panel check) whose outputs #463 superseded, add a one-line note in each record or the changelog that the associated work was never published and is to be redone under the new review — otherwise a reader tracing spend to ledger content may look for outputs that are not there."
+          - "Check that the copied records validate against the current spend schema as amended by #463 (field names, runId format); if the chain-loop schema changed, mechanical validation may reject them and the copy will need a faithful transform rather than an unchanged copy."
+          - "Record the provenance of the copy in the changelog (source PR #460, head commit 6740911, copied unchanged) so the budget history shows why four runs from an interrupted chain appear outside their original change."
+        summary: "The change adds four spend-record YAML files from the closed, interrupted chain run #460, raising October's recorded spend from $19.26 to $23.82 with no content changes. Recording money actually spent makes the budget ledger more accurate, and nothing true is lost; the unpublished case work from that run is correctly left out. No harm is apparent, subject to the mechanical checks confirming the files as they stand in #460's head."
+        cost:
+          inputTokens: 5790
+          outputTokens: 748
+          usd: 0.001242
+harvestedAt: 2026-10-20T13:03:53.974Z

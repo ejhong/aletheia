@@ -1,0 +1,296 @@
+# Review of #463, harvested from its pull request (src/engine/harvest.ts). Append-only.
+pr: 463
+title: "The operator and the review: the site rebuilt around an agent"
+url: https://github.com/ejhong/aletheia/pull/463
+outcome: merged
+outcomeAt: 2026-10-19T19:23:59Z
+cases: []
+rounds:
+  - commit: bc25732b0c202c5107a235609bbb6e964f474772
+    date: 2026-10-19
+    protocol: review-v1
+    outcome: hold
+    reason: "held for a harm until answered: weakens_checks (GPT-5.6 Sol (OpenAI))"
+    seats:
+      - seat: openai
+        label: GPT-5.6 Sol (OpenAI)
+        model: gpt-5.6-sol
+        verdict: worse
+        harm:
+          kind: weakens_checks
+          where: .github/workflows/review.yml, the checkout and “The reviewers read the change” steps
+          why: The workflow checks out the pull request head and executes that head’s `scripts/site.ts review` with reviewer credentials; a change can therefore alter the review implementation to return success without obtaining the constitutionally required independent judgments, after which the workflow enables auto-merge.
+        notes:
+          - In `.github/workflows/review.yml`, run the reviewer implementation and dependencies from a trusted base-revision worktree while passing it the base/head commits to inspect. Add a regression test demonstrating that modifications to `scripts/site.ts`, `src/engine/review.ts`, or `config/models.yaml` in the reviewed head cannot change that round’s gate.
+          - "Apply the same trust boundary to `.github/workflows/ci.yml`: `check-quotes` and `check-names` currently execute the pull request’s own checker. Run the base revision’s mechanical checker against head content, especially when the change modifies the checker, CI workflow, schemas, or command dispatcher."
+          - "In `.github/workflows/operator.yml`, set `persist-credentials: false` for the checkout and provide the maintenance token only to the final push/PR step. Also run the panel from trusted main code in a separate job or workflow, so code edited during an unreviewed operator session never executes with all five vendors’ API keys."
+        summary: The change replaces a stalled fixed pipeline with a clearer agent workflow, truth-oriented cross-vendor review, stronger source checks, and substantially clearer public documentation. However, the central publication gate executes the code it is supposed to police, allowing a pull request to approve itself without independent review. That failure of the constitutional check outweighs the architectural and editorial gains in the proposed form.
+        cost:
+          inputTokens: 37906
+          outputTokens: 6807
+          usd: 0.287764
+      - seat: gemini
+        label: Gemini 3.8 Flash (Google)
+        model: gemini-3.8-flash
+        verdict: better
+        harm: null
+        notes:
+          - ".github/workflows/ci.yml: `check-quotes` is restricted to `pull_request` events; consider also running quote checks (or an audit mode) on pushes to `main` so manual merges or admin pushes do not bypass quote verification."
+          - ".github/workflows/operator.yml: `npm install -g @anthropic-ai/claude-code@2.1.303` runs on every scheduled workflow; adding tool caching or fallback error handling will prevent session aborts caused by transient npm registry failures."
+          - "app/cases/[slug]/page.tsx: `site.caseNotice` is displayed at the case level; consider whether child routes (such as claim explorer and source pages) should also display this disclaimer when active proceedings or living persons are involved."
+        summary: This change successfully overhauls the automation architecture to implement the founder's 2026-10-19 constitutional mandate, replacing an over-constrained multi-verb pipeline with a flexible Claude Code operator under strict budget and verification controls. The new multi-model review workflow in `.github/workflows/review.yml` faithfully operationalizes the amended AGENTS.md §3.15 consensus mechanism, while automated quote and locator checks are promoted to CI. The refactoring eliminates over 17,000 lines of brittle pipeline code, preserves all historical ledgers, and cleanly decouples site configuration for multi-tenant re-use.
+        cost:
+          inputTokens: 41995
+          outputTokens: 2559
+          usd: 0.041092
+      - seat: xai
+        label: Grok 4.5 (xAI)
+        model: grok-4.5
+        verdict: better
+        harm: null
+        notes:
+          - docs/RUNBOOK.md — add an explicit post-merge check that main branch protection still requires the check job named `arbiter` (review.yml keeps that name only for compatibility); a renamed required check would let auto-merge arm without the multi-vendor review.
+          - "src/engine/quotecheck.test.ts / .github/workflows/ci.yml — keep a committed regression where a deliberately wrong quote and a bad page locator fail `site.ts check-quotes` in CI, not only the ad-hoc #460 run cited in the PR, so the new §3.15 mechanical check cannot be silenced by a future refactor."
+          - operator/charter.md — spell out that a session whose quote-check, stamp, or requested panel fails must still open or update the PR only with the failure and partial ledger in `runs/<id>/log.md`, never as if the work had cleared the checks.
+        summary: "This change replaces the stuck September verb-chain and constitutional complies/violates gate with the operator-plus-review design the founder wrote into AGENTS.md §3.15 on 2026-10-19: daily capped operator sessions, four other-vendor reviewers judging better/worse/harm, stronger CI quote and DOI checks, and honest method/operations copy. Old pipeline records and gate history remain visible; AGENTS.md is not edited here; the mechanical and multi-vendor guarantees look preserved or tightened rather than weakened. For a reader seeking truth the site is better set up to do real corrective work again, with residual operational risks called out in notes rather than as publication harms."
+        cost:
+          inputTokens: 39660
+          outputTokens: 348
+          usd: 0.081523
+      - seat: venice
+        label: GLM 5.3 Flash (Z.ai, via Venice)
+        model: z-ai-glm-5-3-flash
+        verdict: better
+        harm: null
+        notes:
+          - The operator's allowedTools grants unrestricted Edit/Write, and no mechanical guard stops an operator-authored PR from touching AGENTS.md, config/site-rules.md, or governance/operation.yaml (the kill switch); only reviewer attention stands there. Add a fail-closed CI step that fails any change from an operator branch which modifies those paths without an explicit founder-stamped marker — the same way check-names guards forbidden names.
+          - check-quotes and check-names run on pull_request events only; a founder/admin merge straight to main (exactly the path this bootstrap PR takes) bypasses the quotation and locator checks. Run them on push to main as well — they are cheap and fail-closed, and main is what deploys.
+          - config/site-rules.md says its rules 'bind as the constitution does', but unlike AGENTS.md nothing records who may amend them; state in the file (and docs/DESIGN.md) that only the founder changes them, and record this bootstrap PR's own review verdict in the harvested record shown on the operations page so the founder-merge exception is itself on the record.
+        summary: The change replaces a stalled weekly pipeline and a constitutional gate that had become one seat's taste with a daily AI operator under a hard spend cap and a four-seat cross-vendor review, moving the mechanical checks (quote-in-source, page locators, DOI resolution, forbidden names) into fail-closed CI. The visible workflow, configuration and page changes are coherent with the founder's 2026-10-19 amendment already in the base constitution, preserve all historical records, and honestly disclose that this bootstrap PR merges by the founder's hand while the new review still runs on it for the record. Nothing in what I can see fabricates, misattributes, or weakens a check the amended constitution requires; the review gate is broader than the old one (all non-draft PRs, no low-risk skip). I judge it better, with the guard gaps above as the next pass's work.
+        cost:
+          inputTokens: 38980
+          outputTokens: 3109
+          usd: 0.007402
+  - commit: 481b95c9ff42cc6d933ef0d0a2735a6ab75ad94a
+    date: 2026-10-19
+    protocol: review-v1
+    outcome: hold
+    reason: "held for 4 harms until answered: weakens_checks (GPT-5.6 Sol (OpenAI)); weakens_checks (Gemini 3.8 Flash (Google)); weakens_checks (Grok 4.5 (xAI)); weakens_checks (GLM 5.3 Flash (Z.ai, via Venice))"
+    seats:
+      - seat: openai
+        label: GPT-5.6 Sol (OpenAI)
+        model: gpt-5.6-sol
+        verdict: worse
+        harm:
+          kind: weakens_checks
+          where: .github/workflows/review.yml — checkout of the PR head followed by `node scripts/site.ts review` in “The reviewers read the change”
+          why: The required review executes reviewer code and configuration supplied by the change being reviewed while reviewer credentials are present. A PR can therefore alter that code to report success without obtaining the constitutionally required independent judgments and then enable auto-merge.
+        notes:
+          - In `.github/workflows/review.yml`, execute the review engine, protocol, model configuration, and dependencies from a trusted base/default-branch worktree, treating the proposed head only as data to inspect; add a regression test proving head changes to `scripts/site.ts`, `src/engine/review.ts`, `protocols/review-v1.md`, or `config/models.yaml` cannot control that review round.
+          - "Apply the same trust boundary to `.github/workflows/ci.yml`: run quote, locator, DOI, name, schema, and integrity checks from trusted code against the proposed tree, and run an audit on pushes to `main` so admin merges cannot bypass them."
+          - "In `.github/workflows/operator.yml`, use `persist-credentials: false` and isolate the panel in a trusted-code job or workflow; currently an unreviewed operator tree is later executed with the maintenance credential available through checkout and with all five panel API keys."
+        summary: The change replaces the stalled fixed pipeline with an AI operator, cross-vendor change review, stronger provenance checks, public logs, and a simpler operational model. Those are substantial potential improvements, but the new constitutional gate trusts executable code from the very PR it is meant to judge, allowing that PR to bypass independent review and auto-merge. Because this weakens a non-negotiable publication check and the earlier flagged harm remains unanswered in the shown workflow, the change leaves the site worse.
+        cost:
+          inputTokens: 38848
+          outputTokens: 1356
+          usd: 0.182512
+      - seat: gemini
+        label: Gemini 3.8 Flash (Google)
+        model: gemini-3.8-flash
+        verdict: worse
+        harm:
+          kind: weakens_checks
+          where: .github/workflows/review.yml
+          why: The workflow executes `scripts/site.ts review` from the pull request head rather than the base branch; a pull request can modify the review runner to bypass model calls and exit 0, enabling auto-merge without the independent review required by AGENTS.md §3.15.
+        notes:
+          - ".github/workflows/review.yml: Run the review script from a trusted base worktree (or run review logic isolated from PR modifications) so changes to `scripts/site.ts`, `src/engine/review.ts`, or reviewer configurations cannot self-approve."
+          - ".github/workflows/ci.yml: Execute `check-quotes` and `check-names` from the base revision to ensure PR code cannot bypass mechanical checks, and also run quote verification on push to main."
+          - ".github/workflows/operator.yml: Restrict write tokens to the PR creation/push steps and guard constitutional/governance paths (`AGENTS.md`, `config/site-rules.md`, `governance/operation.yaml`) against automated operator modification."
+        summary: "This change refactors the site's maintenance architecture around a headless agent operator, CI quote/locator checks, and a multi-vendor review workflow. While the architectural simplification and mechanical checks are valuable improvements, the previously flagged harm remains unanswered: `.github/workflows/review.yml` runs review execution from the PR's own head commit, allowing a PR to subvert the constitutional check and merge automatically. The verdict is worse until this execution boundary is resolved."
+        cost:
+          inputTokens: 3047
+          outputTokens: 2245
+          usd: 0.0137
+      - seat: xai
+        label: Grok 4.5 (xAI)
+        model: grok-4.5
+        verdict: better
+        harm:
+          kind: weakens_checks
+          where: .github/workflows/review.yml (checkout of PR head + `node scripts/site.ts review`); also `.github/workflows/ci.yml` quote/name checks
+          why: "Round 1's weakens_checks flag is unanswered: the workflow still checks out the pull-request head and runs that head's review/checker with reviewer credentials, so a change can rewrite the gate to exit success and arm auto-merge without the constitutionally required independent judgments or real quote checks."
+        notes:
+          - .github/workflows/review.yml — run the review implementation from a trusted base/main worktree (not the reviewed head), passing only base/head SHAs and the diff to inspect; add a regression that head edits to scripts/site.ts, src/engine/review.ts, or config/models.yaml cannot alter that round's gate.
+          - .github/workflows/ci.yml — run check-quotes and check-names from the base revision against head content (and on push to main), especially when the checker, schemas, or dispatcher change in the PR.
+          - ".github/workflows/operator.yml — set persist-credentials: false on checkout and give MAINTENANCE_PAT only to the final push/PR step; run the panel from trusted main in a separate job so session-edited code never executes with all vendor keys."
+        summary: This rebuild replaces the stuck verb/scheduler/arbiter pipeline with a capped daily AI operator, multi-vendor better/worse/harm review, CI quote/DOI/name checks, a thinner multi-site engine, and docs/UI that match the 2026-10-19 §3.15 amendment. That is a real improvement for truth-seeking operation and for getting useful work unblocked. It must not publish until the review/CI trust boundary is fixed so head cannot grade or auto-merge itself.
+        cost:
+          inputTokens: 40617
+          outputTokens: 409
+          usd: 0.083803
+      - seat: venice
+        label: GLM 5.3 Flash (Z.ai, via Venice)
+        model: z-ai-glm-5-3-flash
+        verdict: no_better
+        harm:
+          kind: weakens_checks
+          where: .github/workflows/review.yml (checkout of the PR head and the 'The reviewers read the change' step running node scripts/site.ts review from that head), and likewise .github/workflows/ci.yml's check-quotes/check-names steps
+          why: "The gate this change institutes is executed from the code under review: a change can modify src/engine/review.ts, scripts/site.ts, or config/models.yaml so the 'review' emits fabricated seat verdicts (or skips the vendors entirely) and returns success, after which the workflow arms auto-merge — and the same head-executed pattern lets a change silence its own quotation check. The harm flagged in round 1 has not been answered in the material shown, so it stands; run the reviewer and checker implementations from a trusted base-revision worktree, passing them the base/head refs to inspect, before this merges."
+        notes:
+          - "Trust boundary for the gate: in review.yml and ci.yml, check out the base revision into a separate worktree and run the review, panel, check-quotes and check-names implementations from there, passing --base/--head so they inspect the PR's content; add a regression test showing that edits to scripts/site.ts, src/engine/review.ts, src/engine/quotecheck.ts or config/models.yaml within the reviewed head cannot alter the outcome of the round that reviews them."
+          - ".github/workflows/operator.yml: set persist-credentials: false on the checkout and confine the maintenance token to the final push/PR steps; the panel step hands all five vendor keys to scripts/site.ts from the same worktree an unreviewed operator session has just edited — run the panel from trusted main code in a separate job."
+          - "Run check-quotes and check-names on push to main as well as pull_request (they are cheap and fail-closed): founder/admin merges — exactly the path this bootstrap PR takes — currently bypass the quotation and locator checks entirely, and main is what deploys."
+        summary: "This change replaces the stalled September pipeline (report/draft/verify/edition chain, arbiter gate, ~17,600 lines) with a daily AI operator session, a four-vendor pre-merge review implementing the founder's 2026-10-19 §3.15 amendment in code, and mechanical quote/DOI/locator checks in CI — a design that, on its face, serves the site's purpose better than the stalled loop it removes. But the checks it institutes do not all hold: the review gate and the quote check execute the reviewed head's own code with live credentials, so a change can silence the very judgment that must approve it, a harm that stands unanswered from round 1. With that trust boundary fixed this would be a clear better; as submitted it is no_better."
+        cost:
+          inputTokens: 1004
+          outputTokens: 2820
+          usd: 0.007397
+  - commit: 47dbf68fb434113d79735d7bd600f544fe51fd6d
+    date: 2026-10-19
+    protocol: review-v1
+    outcome: hold
+    reason: "held for 4 harms until answered: weakens_checks (GPT-5.6 Sol (OpenAI)); weakens_checks (Gemini 3.8 Flash (Google)); weakens_checks (Grok 4.5 (xAI)); weakens_checks (GLM 5.3 Flash (Z.ai, via Venice))"
+    seats:
+      - seat: openai
+        label: GPT-5.6 Sol (OpenAI)
+        model: gpt-5.6-sol
+        verdict: worse
+        harm:
+          kind: weakens_checks
+          where: .github/workflows/review.yml — the PR-head checkout followed by `node scripts/site.ts review` in “The reviewers read the change”
+          why: "The unanswered flaw from both earlier rounds remains: reviewer code and configuration supplied by the change itself run with reviewer credentials. A same-repository change can make that command return success without obtaining the constitutionally required independent judgments, after which auto-merge is enabled."
+        notes:
+          - In `.github/workflows/review.yml`, execute the review engine, protocol, model configuration, and dependencies from a trusted base/default-branch worktree, treating the proposed head solely as input; add a regression proving head edits to `scripts/site.ts`, `src/engine/review.ts`, `protocols/review-v1.md`, or `config/models.yaml` cannot control their own review.
+          - "Apply the same trust boundary in `.github/workflows/ci.yml`: run quote, locator, DOI, name, schema, and integrity check implementations from trusted code against the proposed tree, including an audit on pushes to `main` so the stated admin merge path cannot bypass them."
+          - "In `.github/workflows/operator.yml`, set checkout `persist-credentials: false`, isolate the panel in a trusted-code job, and expose the maintenance token only to the final push/PR operation; session-editable code should not run with repository credentials or all panel vendors' keys."
+        summary: The redesign substantially simplifies the operating model and adds clearer public review, provenance, and session records. However, its central publication gate executes code controlled by the very change being judged, leaving the previously flagged constitutional bypass unresolved. Because this can permit publication without genuine independent review, the change as presented leaves the system worse despite its broader improvements.
+        cost:
+          inputTokens: 40151
+          outputTokens: 887
+          usd: 0.178344
+      - seat: gemini
+        label: Gemini 3.8 Flash (Google)
+        model: gemini-3.8-flash
+        verdict: worse
+        harm:
+          kind: weakens_checks
+          where: .github/workflows/review.yml (checkout of PR head and execution of `scripts/site.ts review` before auto-merge)
+          why: The review workflow executes the review runner and configuration directly from the unmerged pull request head while reviewer secrets are present, allowing a pull request to bypass the multi-vendor panel required by AGENTS.md §3.15 and trigger auto-merge.
+        notes:
+          - ".github/workflows/review.yml: Execute the review runner, protocols, and model configuration from a trusted base worktree (or default branch), treating the PR head strictly as the diff under inspection."
+          - ".github/workflows/ci.yml: Run `check-quotes` and `check-names` from the base revision so PR edits cannot alter mechanical check enforcement, and run quote checks on push to main as well."
+          - ".github/workflows/operator.yml: Set `persist-credentials: false` on checkout, pass `MAINTENANCE_PAT` only to the push/PR creation step, and execute the panel from trusted base code rather than running code modified during the session with all vendor API keys."
+        summary: "The change rebuilds Aletheia around an AI operator with multi-vendor change review and CI-level mechanical quote verification. However, the critical harm flagged across all seats in earlier rounds remains unanswered: `.github/workflows/review.yml` runs review logic directly from the pull request head and enables auto-merge, undermining the constitutional guarantee of independent review."
+        cost:
+          inputTokens: 44393
+          outputTokens: 2070
+          usd: 0.041057
+      - seat: xai
+        label: Grok 4.5 (xAI)
+        model: grok-4.5
+        verdict: worse
+        harm:
+          kind: weakens_checks
+          where: .github/workflows/review.yml (checkout of PR head + `node scripts/site.ts review`); also `.github/workflows/ci.yml` check-quotes/check-names
+          why: Rounds 1–2 flagged that the required gate still runs reviewer/checker code from the change under review with credentials present; a PR can alter scripts/site.ts, src/engine/review.ts, or config/models.yaml to exit 0 and arm auto-merge without real independent judgments or quote checks. No fix or reasoned reply answering that boundary appears in this material, so the harm stands.
+        notes:
+          - .github/workflows/review.yml — run review engine, protocol, models.yaml, and dependencies from a trusted base/main worktree; treat the PR head only as data (base/head SHAs + diff). Add a regression that head edits to scripts/site.ts, src/engine/review.ts, protocols/review-v1.md, or config/models.yaml cannot control that round’s outcome.
+          - .github/workflows/ci.yml — run check-quotes, check-names, and related mechanical checks from the base revision against head content, and also on push to main so admin/founder merges cannot bypass §3.15 quote/locator/DOI guards.
+          - ".github/workflows/operator.yml — persist-credentials: false on checkout; give MAINTENANCE_PAT only to the final push/PR step; run the panel from trusted main in a separate job so session-edited code never executes with all vendor keys. Guard AGENTS.md, config/site-rules.md, and governance/operation.yaml against operator-branch edits without a founder marker."
+        summary: This rebuilds Aletheia around a daily AI operator, multi-vendor better/worse/harm review, CI quote checks, and a shared engine—aligned with the 2026-10-19 §3.15 direction and clearer than the stalled verb chain. It is still worse to publish as-is because the new constitutional gate and mechanical checkers execute from the PR head, so a change can rewrite or silence the very checks AGENTS.md requires and then auto-merge; that weakens_checks harm was flagged twice and remains unanswered. Fix the trust boundary (and operator credential/panel isolation) before this system becomes the path to main.
+        cost:
+          inputTokens: 41966
+          outputTokens: 506
+          usd: 0.087083
+      - seat: venice
+        label: GLM 5.3 Flash (Z.ai, via Venice)
+        model: z-ai-glm-5-3-flash
+        verdict: worse
+        harm:
+          kind: weakens_checks
+          where: .github/workflows/review.yml — the checkout of the pull-request head and the 'The reviewers read the change' step running `node scripts/site.ts review` from that head; same pattern in .github/workflows/ci.yml (check-quotes/check-names) and operator.yml's panel step
+          why: "The gate executes the code under review with reviewer credentials present: a change can modify src/engine/review.ts, scripts/site.ts or config/models.yaml so the review emits fabricated seat verdicts, returns success, and arms auto-merge — publishing without the constitutionally required independent judgments. The harm flagged by all four seats in rounds 1 and 2 has been neither fixed nor answered in the material shown, so it stands."
+        notes:
+          - "Establish a trust boundary for the gate itself: in review.yml and ci.yml, check out the base revision into a separate worktree and run the review, panel, check-quotes and check-names implementations from there, passing --base/--head so they inspect the PR's content as data; add a regression test proving that head edits to scripts/site.ts, src/engine/review.ts, src/engine/quotecheck.ts, protocols/review-v1.md or config/models.yaml cannot change the outcome of the round that reviews them. Until then the method page's promise that 'nothing publishes on one model's word' is not enforced."
+          - "In .github/workflows/operator.yml, set persist-credentials: false on the checkout and confine MAINTENANCE_PAT to the final push/PR step; run the blind panel from trusted main code in a separate job, since the panel step currently hands all five vendors' API keys to scripts/site.ts from the same worktree an unreviewed operator session has just been free to edit."
+          - Run check-quotes and check-names on push to main as well as pull_request (founder/admin merges — exactly the path this bootstrap PR takes — currently bypass the quotation and locator checks), and record in docs/DECISIONS.md or the operations page that this change entered by the founder's admin merge, with this review round's verdict on the record, so the exception is itself inspectable.
+        summary: "The change replaces the weekly pipeline with a daily AI operator and a code-enforced cross-vendor review — a sound design in principle, with honest documentation and real mechanical checks — but its central guarantee is unenforced: the review and quote checks run from the reviewed PR's own head, so a change can silence the gate that judges it and self-publish, voiding the 'nothing publishes on one model's word' promise the site now makes to readers more prominently than before. The weakens_checks harm flagged unanimously in rounds 1 and 2 stands unanswered, and a change whose headline guarantee can be silently bypassed leaves the reader worse off than a clumsier but honest gate."
+        cost:
+          inputTokens: 41206
+          outputTokens: 2653
+          usd: 0.007507
+  - commit: 45f063b7fb1ee4bd62b82459bccd208633053378
+    date: 2026-10-19
+    protocol: review-v1
+    outcome: hold
+    reason: "held for 4 harms until answered: weakens_checks (GPT-5.6 Sol (OpenAI)); weakens_checks (Gemini 3.8 Flash (Google)); weakens_checks (Grok 4.5 (xAI)); weakens_checks (GLM 5.3 Flash (Z.ai, via Venice))"
+    seats:
+      - seat: openai
+        label: GPT-5.6 Sol (OpenAI)
+        model: gpt-5.6-sol
+        verdict: worse
+        harm:
+          kind: weakens_checks
+          where: .github/workflows/review.yml — checkout of the pull-request head followed by `node scripts/site.ts review` with reviewer credentials
+          why: "The unresolved flaw from all earlier rounds remains: the change under review controls its own reviewer implementation, protocol, configuration, and dependencies. It can return success without obtaining the constitutionally required independent judgments and then enable auto-merge."
+        notes:
+          - In `.github/workflows/review.yml`, execute the review engine, protocol, model configuration, and dependencies from a trusted base/default-branch worktree, treating the proposed head only as data; add a regression proving head edits to `scripts/site.ts`, `src/engine/review.ts`, `protocols/review-v1.md`, or `config/models.yaml` cannot control their own review.
+          - "Apply the same trust boundary to `.github/workflows/ci.yml`: run quote, locator, DOI, name, schema, and integrity checks from trusted code against the proposed tree, and run the quote audit on pushes to `main` or prohibit every path that could bypass the pull-request audit."
+          - "In `.github/workflows/operator.yml`, set `persist-credentials: false`, expose the maintenance token only during the final push/PR operation, and run the blind panel from trusted code in a separate job so session-edited code never executes with all panel vendors' credentials."
+        summary: The change substantially simplifies operations and introduces a clearer better/no-better/worse review model, but its publication gate executes code supplied by the change it is judging. That permits self-approval without the required independent reviews, directly weakening the constitutional check. The same harm was repeatedly flagged in three earlier rounds and no fix or reasoned answer appears here.
+        cost:
+          inputTokens: 37601
+          outputTokens: 882
+          usd: 0.169649
+      - seat: gemini
+        label: Gemini 3.8 Flash (Google)
+        model: gemini-3.8-flash
+        verdict: worse
+        harm:
+          kind: weakens_checks
+          where: .github/workflows/review.yml — checkout of the pull request head and executing `node scripts/site.ts review` in “The reviewers read the change”
+          why: The workflow executes review engine code and configuration directly from the unmerged pull request head while reviewer API secrets are exposed, allowing a change to modify its own review gate to exit 0 and arm auto-merge without independent multi-vendor review as mandated by AGENTS.md §3.15. This harm from rounds 1–3 remains unaddressed.
+        notes:
+          - In `.github/workflows/review.yml`, run the review engine, review protocol, and models configuration from a trusted base worktree, treating the pull request head strictly as input data to be inspected.
+          - In `.github/workflows/ci.yml`, run mechanical checks (`check-quotes` and `check-names`) from the trusted base branch, and run quotation verification on push to `main` as well.
+          - "In `.github/workflows/operator.yml`, set `persist-credentials: false` on checkout, limit `MAINTENANCE_PAT` access strictly to the push/PR creation step, and execute blind panel runs from trusted base code rather than running code modified during an unreviewed operator session with all vendor API keys."
+        summary: "This change overhauls the site around a headless AI operator, replacing the previous pipeline with a multi-vendor review workflow and automated mechanical checks in CI. However, the `weakens_checks` harm flagged in rounds 1–3 remains unanswered: `.github/workflows/review.yml` checks out and runs reviewer code from the untrusted pull request head while supplying vendor credentials, allowing a PR to bypass the review checks required by AGENTS.md §3.15."
+        cost:
+          inputTokens: 45949
+          outputTokens: 1384
+          usd: 0.039652
+      - seat: xai
+        label: Grok 4.5 (xAI)
+        model: grok-4.5
+        verdict: worse
+        harm:
+          kind: weakens_checks
+          where: .github/workflows/review.yml — checkout of PR head then `node scripts/site.ts review` (also ci.yml check-quotes/check-names; operator.yml panel on session tree)
+          why: Rounds 1–3 flagged that the required §3.15 gate still runs reviewer/checker code from the change under review with credentials present; a same-repo PR can alter scripts/site.ts, src/engine/review.ts, or config/models.yaml to exit 0 and arm auto-merge without real independent judgments. No fix or reasoned reply answering that trust boundary appears in this material, so the harm stands.
+        notes:
+          - .github/workflows/review.yml — run the review engine, protocol, models.yaml, and dependencies from a trusted base/main worktree; treat the PR head only as data (base/head SHAs + diff). Add a regression that head edits to scripts/site.ts, src/engine/review.ts, protocols/review-v1.md, or config/models.yaml cannot control that round’s outcome.
+          - .github/workflows/ci.yml — run check-quotes, check-names, and related mechanical checks from the base revision against head content, and also on push to main so admin/founder merges cannot bypass §3.15 quote/locator/DOI guards.
+          - ".github/workflows/operator.yml — persist-credentials: false on checkout; give MAINTENANCE_PAT only to the final push/PR step; run the panel from trusted main in a separate job so session-edited code never executes with all vendor keys. Guard AGENTS.md, config/site-rules.md, and governance/operation.yaml against operator-branch edits without a founder marker."
+        summary: This change rebuilds Aletheia around a daily AI operator, multi-vendor better/worse/harm review, quote/DOI/name checks in CI, and a thinner engine shared with other sites, replacing the stalled September chain and arbiter. That product direction is clearer and more operable, but the constitutional gate still executes the PR head’s own review and checker code with secrets present, so a change can self-approve and auto-merge. Until the trust boundary is fixed or answered, publishing leaves the site worse at holding §3.15 checks.
+        cost:
+          inputTokens: 43464
+          outputTokens: 495
+          usd: 0.090013
+      - seat: venice
+        label: GLM 5.3 Flash (Z.ai, via Venice)
+        model: z-ai-glm-5-3-flash
+        verdict: worse
+        harm:
+          kind: weakens_checks
+          where: .github/workflows/review.yml — the checkout of the pull-request head followed by the 'The reviewers read the change' step running `node scripts/site.ts review` from that head; the same head-executed pattern governs .github/workflows/ci.yml's check-quotes/check-names and operator.yml's panel step
+          why: "The gate this change institutes executes the code under review with reviewer credentials present: a change can modify src/engine/review.ts, scripts/site.ts or config/models.yaml so the review emits fabricated seat verdicts or exits success without any vendor being called, and the workflow then arms auto-merge — publishing without the constitutionally required independent judgments. The same flaw was flagged by all four seats in rounds 1–3 and no fix or reasoned reply from the operator appears in the material shown, so it stands."
+        notes:
+          - "Establish a trust boundary for the gate itself: in review.yml and ci.yml, check out the base revision into a separate worktree and run the review, panel, check-quotes and check-names implementations from there, passing --base/--head so they inspect the PR's content strictly as data; add a regression test proving that head edits to scripts/site.ts, src/engine/review.ts, src/engine/quotecheck.ts, protocols/review-v1.md or config/models.yaml cannot alter the outcome of the round that reviews them. Until then the method page's promise that nothing publishes on one model's word is not enforced by the machinery."
+          - "In .github/workflows/operator.yml, set persist-credentials: false on the checkout and confine MAINTENANCE_PAT to the final push/PR step; run the blind panel from trusted main code in a separate job, since the panel step currently hands all five vendors' API keys to scripts/site.ts from the same worktree an unreviewed operator session has just been free to edit. Add a fail-closed guard against operator-branch edits to AGENTS.md, config/site-rules.md and governance/operation.yaml without a founder-stamped marker."
+          - Run check-quotes and check-names on push to main as well as pull_request — founder/admin merges, exactly the path this bootstrap PR takes, currently bypass the quotation, locator and name checks entirely — and record in docs/DECISIONS.md or on the operations page that this change entered by the founder's admin merge, with this review's verdict on the record, so the exception is itself inspectable.
+        summary: "The change replaces the stalled weekly pipeline with a daily AI operator and a four-vendor review — a sound architectural direction that matches the founder's amendment, and the removal of the dead pipeline is a real simplification. But it fails on its own central promise: the review, the mechanical quote checks and the panel all execute code from the change under review with credentials present, so a change can silence its own gate and arm auto-merge. That weakness of the §3.15 checks was flagged by every seat in three earlier rounds and is neither fixed nor answered here, so the harm stands and the change cannot leave the site better while its guarantees are self-defeating."
+        cost:
+          inputTokens: 42657
+          outputTokens: 1163
+          usd: 0.00698
+harvestedAt: 2026-10-20T13:03:53.974Z

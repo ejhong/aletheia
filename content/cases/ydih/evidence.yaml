@@ -1065,3 +1065,152 @@
     extractedBy: "Fable (AI agent)"
     runId: "ydih-extract-2026-08"
     date: "2026-08-22"
+
+# ── The Greenland platinum, re-dated (session 2026-10-20) ──────────────────
+
+- id: YDIH-E038
+  title: "Svensson et al. 2020: the platinum spike falls after the cooling began"
+  claimIds: [YDIH-C507]
+  sourceId: SRC-SVENSSON-2020
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    Placing the GISP2 platinum data on the synchronised Greenland
+    chronology, the paper states: "The Pt spike occurs about 45 years after
+    the volcanic quadruplet" — the "four large acidity spikes" by which the
+    paper synchronizes the Younger Dryas onset between the hemispheres —
+    that is, after Greenland cooling had begun and before it reached its
+    minimum (its supplementary Fig. S1b).
+  editorInference: >-
+    The first published placement of the Greenland platinum on the GICC05
+    timescale used for the cooling itself. If the onset and the spike are
+    both read from the same synchronised ice, the platinum arrives decades
+    into the cooling — so whatever delivered it cannot be what started the
+    cooling, whatever its source.
+  exactLocator: "p. 6, §3.1 \"The termination of GI-1/onset of the Younger Dryas\"; supplementary Fig. S1b"
+  limitations:
+    - "A one-sentence aside in a chronology paper; the analysis itself is in the supplement, not set out in the main text."
+    - "The offset depends on transferring the Petaev et al. depth series onto GICC05; it is a re-dating of one existing measurement, not a new measurement."
+    - "Says nothing about the platinum's source, and nothing about the sediment platinum in North America."
+  reviewState: ai_extracted
+  origin:
+    ref: "Svensson et al. 2020, PDF read in full through scripts/site.ts read, 2026-10-20"
+    extractedBy: "Claude Opus 5.5 (operator), session 2026-10-20-session-site-124745"
+    runId: "2026-10-20-session-site-124745"
+    date: "2026-10-20"
+
+- id: YDIH-E039
+  title: "Green et al. 2025: an independent re-dating confirms the decades-long lag"
+  claimIds: [YDIH-C507]
+  sourceId: SRC-GREEN-2025
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    Comparing the GISP2 platinum series with annually resolved NGRIP oxygen
+    isotopes, Greenland and Antarctic volcanic sulphate and a Spanish
+    stalagmite record on the GICC05 timescale, the authors place the
+    platinum peak at 12,822 yr BP and the cooling's onset about 45 years
+    earlier. They write that their timing work "was conducted independently
+    and in parallel with these works, without any knowledge of their
+    results," and conclude: "Our results confirm the conclusions of these
+    other works, that the Pt spike occurs several decades after the onset
+    of the YDE, so whatever caused the Pt spike occurred too late to be a
+    causal mechanism of the YDE."
+  editorInference: >-
+    Four analyses (Svensson 2020, Abbott 2021, Holliday 2023, and this one)
+    now agree on the lag, the last carried out without sight of the others.
+    The case's best-attested single observation therefore cannot be the
+    trigger's signature: if an impact cooled the North Atlantic, the
+    Greenland platinum is not its fallout, or the fallout came decades
+    after the cooling started. A multi-year debris-stream encounter of the
+    kind the Taurid scenario describes would not by itself remove the
+    problem, because the platinum still arrives after the cooling had
+    begun.
+  exactLocator: "Results, 'Timing of events'; Discussion, 'Timing of the GISP2 Pt anomaly' (PMC12445550)"
+  limitations:
+    - "Same platinum data and same GICC05 chronology as the earlier analyses: the agreement shows the transfer is reproducible, not that a second core shows the same lag. The authors' own first recommendation is to replicate the platinum signal in another deep Greenland core."
+    - "The authors are advocates of a rival (volcanic) trigger; the timing result does not depend on that view, but the paper's framing does."
+  reviewState: ai_extracted
+  origin:
+    ref: "Green et al. 2025, full text read through scripts/site.ts read (PMC), 2026-10-20"
+    extractedBy: "Claude Opus 5.5 (operator), session 2026-10-20-session-site-124745"
+    runId: "2026-10-20-session-site-124745"
+    date: "2026-10-20"
+
+- id: YDIH-E040
+  title: "Green et al. 2025: the platinum's chemistry and duration read as volcanic, not as one impact"
+  claimIds: [YDIH-C011]
+  sourceId: SRC-GREEN-2025
+  direction: undermines
+  strength: weak
+  sourceStatement: >-
+    The authors find that elevated platinum spans 12,833–12,819 yr BP and
+    write that this "suggests a persistent yet variable flux of Pt lasting
+    about 14 years, rather than a short-lived event like a single explosive
+    eruption or a bolide impact." Comparing elemental ratios with
+    meteorites, magmas, impact sediments and volcanic products, they report
+    that "The most closely matching geochemical signature is that of
+    volcanic gas condensates," and conclude: "Although we cannot rule out
+    the impact of an unknown type of meteorite, the simplest explanation is
+    that the Pt spike instead probably reflects a relatively small
+    Icelandic fissure eruption." Their new measurements of Laacher See
+    tephra find it platinum-poor, and they conclude the results "very
+    strongly suggest that the LSE was not responsible for the GISP2 Pt
+    anomaly."
+  editorInference: >-
+    A terrestrial source for the Greenland platinum is now a published,
+    specified proposal rather than a bare possibility, and the one named
+    volcanic candidate that had been suggested (Laacher See) is ruled out
+    by direct measurement. Carried as weak: the volcanic reading rests on
+    which reference materials the spike's ratios sit nearest, and the
+    spike resembles nothing well; it narrows the impact reading of the
+    platinum without discriminating the source the way osmium isotopes
+    would.
+  exactLocator: "Discussion, 'Timing of the GISP2 Pt anomaly' and 'Geochemical constraints on the origin of the GISP2 Pt anomaly'; Conclusions (PMC12445550)"
+  limitations:
+    - "The authors also write that \"we cannot rule out post-depositional diffusion of Pt within the ice to produce the Pt spike profile\" — which weakens the duration argument they rest on the 14-year spread."
+    - "The ice-core spike's Pt/Al values are far from every reference group, volcanic condensates included; nearest is not matching."
+    - "No isotopic source tracer was measured; the decisive measurement (osmium isotopes on the same ice) remains undone."
+    - "Their 14-year span counts the elevated interval differently from the ~21-year span in the 2026 correction's characterization; both describe the same measurements."
+  reviewState: ai_extracted
+  origin:
+    ref: "Green et al. 2025, full text read through scripts/site.ts read (PMC), 2026-10-20"
+    extractedBy: "Claude Opus 5.5 (operator), session 2026-10-20-session-site-124745"
+    runId: "2026-10-20-session-site-124745"
+    date: "2026-10-20"
+
+- id: YDIH-E041
+  title: "Abbott et al. 2021: a cluster of large eruptions just before the cooling"
+  claimIds: [YDIH-C508, YDIH-C502]
+  sourceId: SRC-ABBOTT-2021
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    Using synchronised sulphate and sulphur records from Greenland and
+    Antarctic ice cores for 13,200 to 12,800 years before 1950, the authors
+    write that their reconstruction "highlights a ~110-year cluster of four
+    major bipolar volcanic signals alongside several smaller events just
+    prior to the YD inception," that "The cumulative Northern Hemisphere
+    aerosol burden and radiative forcing from this cluster exceeds the most
+    volcanically active periods during the Common Era," and that this
+    "highlights the need to consider stratospheric sulphur injections and
+    their radiative forcing in future analyses and climate model
+    experiments."
+  editorInference: >-
+    The volcanic candidate's ice-core basis: the eruptions are measured in
+    both hemispheres' ice and sit at the right moment, unlike the Greenland
+    platinum. That makes volcanic forcing a trigger candidate with an
+    observed, correctly timed forcing behind it — something neither the
+    meltwater account nor the impact account has in the same ice. It is a
+    timed forcing, not a demonstrated cause.
+  exactLocator: "p. 1 (abstract); p. 3 (cluster between 12,980 and 12,870 a BP); p. 7 (conclusions)"
+  limitations:
+    - "Shows the forcing occurred; whether it could tip the deglacial climate into the Younger Dryas is left to model experiments the paper calls for, not demonstrated."
+    - "Comparable eruptions occur elsewhere in the glacial record: Green et al. 2025, citing a 2022 catalogue of 1,113 eruptions in Greenland cores, rank the eruptions at 12,978 and ~12,870 yr BP 16th and 17th by sulphur released. Coincidence in time is not causation."
+    - "The eruptions' sources are unidentified; the paper's tentative Laacher See candidates sit a century before the onset."
+  reviewState: ai_extracted
+  origin:
+    ref: "Abbott et al. 2021, published version read in full through scripts/site.ts read (Aarhus repository), 2026-10-20"
+    extractedBy: "Claude Opus 5.5 (operator), session 2026-10-20-session-site-124745"
+    runId: "2026-10-20-session-site-124745"
+    date: "2026-10-20"

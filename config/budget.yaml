@@ -11,7 +11,8 @@
 # Standing caps: the founder's direction of 2026-10-19, in session — "keep
 # the cost lower per month if possible — maybe like $100 or something like
 # that" — for both sites; this site's share is $60 (Erebus's is $40, in its
-# own config). They hold from 2026-11-01, when the crunch below ends.
+# own config). They hold from 2026-10-20, the founder having ended the crunch
+# below early (it was to run to 2026-10-31).
 usd:
   perRun: 15      # one blind panel on a case: five seats, the Anthropic seat at max effort ($2–3 of it)
   perSession: 10  # one operator session (Claude Code's --max-budget-usd), when the day and the month leave that much and the month is on its pace
@@ -22,11 +23,11 @@ usd:
 # founding essays taken in, panels re-judged) is the expensive part, and it
 # ends. Founder-granted, dated, reasoned; the founder moves the date.
 crunch:
-  until: "2026-10-31"
+  until: "2026-10-19"
   perDay: 60
   perMonth: 400
-  reason: "Founder direction (2026-09-09, in session): the system may crunch at the start and must settle to almost no cost in steady state. The crunch is the bootstrap sweep; the standing caps above are the steady state."
-  by: "founder (direction in session, 2026-09-09)"
+  reason: "Founder direction (2026-09-09, in session): the system may crunch at the start and must settle to almost no cost in steady state. The crunch is the bootstrap sweep; the standing caps above are the steady state. Ended early by the founder's direction of 2026-10-20, in session (\"i'd like to make the total spend for the month about $100 for both sites\"): from 2026-10-20 October falls to the standing caps, so the two sites together stay near $100 this month."
+  by: "founder (direction in session, 2026-09-09; ended early by direction in session, 2026-10-20)"
 # Dated exceptions to the caps, granted by the founder, on the record and
 # self-expiring: for one date, or a span (`until`, inclusive) as the crunch
 # is dated. The guard uses the exemption's perDay and, when given, its

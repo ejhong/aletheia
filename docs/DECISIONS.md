@@ -75,6 +75,13 @@ an operator session holds only its own key, and main's code checks its work
 on a fresh machine before any of it is published; a change to a founder's
 file is held for the founder's hand (2026-10-19, below).
 
+**The session's trace.** Every session's trace is digested on its own
+machine by main's script — counts, tool names, the leading words of
+commands, hosts and DOIs, never text — and kept as
+`runs/<runId>/trace.yaml`, beneath the session's log in its pull request,
+and at the head of the next session's `status`; the trace itself never
+leaves the machine (2026-10-20, below).
+
 ---
 
 ## 2026-10-19 — The operator and the review: the site is rebuilt around an agent
@@ -205,3 +212,53 @@ see. And this change itself, which creates the gate, enters by the
 founder's hand: the review on main cannot judge the change that builds it.
 Its four rounds and their finding are on the pull request.
 
+## 2026-10-20 — The session's trace: what a session did, beside what it says it did
+
+**Why.** The first unattended sessions ran on 2026-10-20 (#466 here,
+erebus#131) and left two accounts of themselves: Claude Code's final report
+— cost, tokens, turns — and the operator's own log. Neither recorded what
+the session did: the tools it called, what failed, what its permissions
+refused, what it read. The charter grounds engine work on exactly that (a
+tool that failed, a check that missed something, a step every session
+repeats by hand), and the only witness to it was the session's word about
+itself; the reviewers, likewise, could not set a log beside the work it
+describes. Asked in session whether a roundup of agent practice applied
+here (Austen Allred, on X, 2026-10-20: as models become cheap and
+interchangeable, what lasts is the harness, the traces, the provenance and
+the checking), the founder directed the change if it would make the site
+much better ("if you think it will make things much better - you know the
+overall goal", in session, 2026-10-20). It is the loop's own feedback: more
+AI makes the site better only if each session can see what the last ones
+did and where they failed.
+
+**What changed.** (1) The session runs with `--output-format stream-json
+--verbose`: Claude Code writes its trace a message a line as it goes, so a
+session cut off by the clock leaves its trace up to then. (2) On the
+session's machine, main's script from the plan (`scripts/session-trace.ts`
+and `src/engine/trace.ts`, which imports nothing) takes from the trace its
+final report — the cost, recorded as before — and a digest: how the session
+ended, its turns, time and cost; its calls by tool; its commands by their
+leading words; the hosts of the pages it fetched; the DOIs and hosts of the
+sources it read with `site read`; what failed; what its permissions
+refused; the calls it repeated after they had failed; how many files it
+wrote. Only those two leave the machine. (3) On the fresh machine, main's
+code checks the digest against a schema that admits only counts and the
+names the digest's own rules produce (`TraceDigestSchema`,
+`src/engine/session.ts`) and keeps it as `runs/<runId>/trace.yaml`. The
+pull request gives it beneath the session's log, marked as the workflow's
+record and not the operator's, and `site status` gives the last three, so
+each session starts from what the last ones did as well as what they said.
+(4) A session may not write its own run record or trace digest
+(`guardSession`). A test holds the workflow to all of this
+(`src/engine/trust.test.ts`).
+
+**What it does not do.** It keeps no text: no page, no quotation, no search
+query, no path or query of a URL, no file's contents or name. The trace
+holds names the sites do not print, and a run's artifacts on a public
+repository can be downloaded by anyone signed in to GitHub, so the trace
+itself is never uploaded. A host is kept, and a host can be a person's own
+site, as a source's address in the ledger can be. The digest is made on a
+machine the session controlled, so like the cost report it is data: it
+informs the next session and the reviewers and decides nothing; the guard,
+the quote check and the review are unchanged. It says what a session did,
+not whether it did it well; that stays the reviewers' question.

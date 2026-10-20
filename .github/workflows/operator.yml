@@ -4,17 +4,21 @@
 # rules; it reads the site's state, chooses the work, does it, and writes its
 # log. This workflow does everything around it that an agent should not: the
 # kill switch and the money first, the choice between answering a held change
-# and new work, the harvest of closed reviews, the session's cost, the blind
-# panel when the log asks for it, and the pull request. The review then judges
-# the change (.github/workflows/review.yml); nothing publishes on the
-# operator's word.
+# and new work, the harvest of closed reviews, the session's cost, the digest
+# of what it did, the blind panel when the log asks for it, and the pull
+# request. The review then judges the change (.github/workflows/review.yml);
+# nothing publishes on the operator's word.
 #
 # The trust boundary. The session holds the operator's own key and a token that
 # can only read; it can write and run anything in its own tree, so from the
 # moment it starts, that tree is data. What it leaves goes to a fresh machine
 # as a patch, where main's code — never the session's — checks it, records its
 # cost, convenes the panel with the other vendors' keys, and opens the pull
-# request with the maintenance token, which no session code ever sees.
+# request with the maintenance token, which no session code ever sees. Its
+# trace — the stream of everything it called and read — never leaves its own
+# machine: main's script, from the plan, digests it there (src/engine/trace.ts),
+# and the digest goes on as data, like the cost report, checked before it is
+# kept.
 #
 # The schedule below is the founder's toggle: comment it out, or set
 # governance/operation.yaml to paused, and no session starts.
@@ -116,6 +120,11 @@ jobs:
           touch plan/review-rounds.md
           # The session's instructions and first message, from main: never from the tree the session works in.
           cat operator/charter.md config/site-rules.md > plan/instructions.md
+          # And the script that digests its trace on its machine afterwards: main's too, whatever the session changes.
+          mkdir -p plan/trace/scripts plan/trace/src/engine
+          cp scripts/session-trace.ts plan/trace/scripts/
+          cp src/engine/trace.ts plan/trace/src/engine/
+          echo '{"type": "module"}' > plan/trace/package.json
           args=(kickoff --run "$run" --mode "$mode" --cap "${{ steps.gate.outputs.cap }}")
           [ "$mode" = "answer" ] && args+=(--pr "$(node -e 'console.log(JSON.parse(process.argv[1]).pr)' "$plan")" --branch "$branch" --rounds plan/review-rounds.md)
           [ -n "$CASE" ] && args+=(--case "$CASE")
@@ -171,14 +180,28 @@ jobs:
           npm install -g @anthropic-ai/claude-code@2.1.303 > /dev/null
           mkdir -p "$T/session"
           set +e
+          # The trace, a message a line as the session runs, so a session cut off leaves what it did up to then.
+          # It is written outside session/, which is all of this machine that is uploaded.
           claude -p "$(cat "$T/plan/kickoff.md")" \
             --append-system-prompt "$(cat "$T/plan/instructions.md")" \
             --model "$OPERATOR_MODEL" --effort "${{ needs.plan.outputs.effort }}" \
             --max-budget-usd "${{ needs.plan.outputs.cap }}" \
-            --output-format json --permission-mode dontAsk \
+            --output-format stream-json --verbose --permission-mode dontAsk \
             --allowedTools "Read Edit Write Glob Grep WebSearch WebFetch Bash(node scripts/site.ts:*) Bash(node scripts/add-commons-image.mjs:*) Bash(npm test:*) Bash(npm run build:*) Bash(npm run typecheck:*) Bash(npx vitest:*) Bash(npx tsc:*) Bash(npx eslint:*) Bash(git status:*) Bash(git diff:*) Bash(git log:*) Bash(git show:*) Bash(ls:*)" \
-            > "$T/session/session.json"
+            > "$T/trace.jsonl"
           echo "code=$?" >> "$GITHUB_OUTPUT"
+
+      - name: What the session did, as a digest
+        if: always()
+        env:
+          T: ${{ runner.temp }}
+        run: |
+          # The trace holds everything the session read, so only two things leave this machine: its final report (the
+          # cost, as before), and the digest main's script makes of it — counts, tool names, command words, hosts.
+          mkdir -p "$T/session"
+          if [ ! -s "$T/trace.jsonl" ]; then echo "::warning::the session left no trace"; exit 0; fi
+          jq -cR 'fromjson? | select(type == "object" and .type == "result")' "$T/trace.jsonl" | tail -n 1 > "$T/session/session.json"
+          node "$T/plan/trace/scripts/session-trace.ts" "$T/trace.jsonl" "$T/session/digest.json" || echo "::warning::the trace could not be digested; the session's work goes on without it"
 
       - name: The session's work, as a patch
         if: always()
@@ -253,6 +276,17 @@ jobs:
             echo "::warning::the session left no report; its cost is not recorded here (its hard cap was \$${{ needs.plan.outputs.cap }})"
           fi
 
+      - name: What the session did, from its trace
+        working-directory: site
+        run: |
+          # The digest made on the session's machine is data: kept as runs/<run>/trace.yaml only once main's schema finds
+          # it a digest, and never in the way of the session's work.
+          if [ -s ../session/digest.json ]; then
+            node ../trusted/scripts/site.ts session-trace --digest ../session/digest.json --run "$RUN" || echo "::warning::the trace's digest was refused; the session's work goes on without it"
+          else
+            echo "::warning::the session left no digest of its trace"
+          fi
+
       - name: The reviews of changes that have closed
         if: needs.plan.outputs.mode == 'new'
         working-directory: site
@@ -282,6 +316,14 @@ jobs:
           title=$(node ../trusted/scripts/site.ts log-meta --run "$RUN" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const t=String(JSON.parse(s).title||"").replace(/[\r\n]+/g," ").trim().slice(0,200);console.log(t||"Operator session "+process.env.RUN)})')
           echo "title=$title" >> "$GITHUB_OUTPUT"
 
+      - name: The description
+        working-directory: site
+        run: |
+          # The session's log, its own account of its work; beneath it, the workflow's digest of what it did.
+          log="runs/$RUN/log.md"
+          [ -f "$log" ] || log=/dev/null
+          { cat "$log"; node ../trusted/scripts/site.ts session-trace --run "$RUN" --summary || true; } > ../description.md
+
       - name: The pull request
         working-directory: site
         env:
@@ -301,9 +343,7 @@ jobs:
           auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$PAT" | base64 -w0)"
           git -c "http.https://github.com/.extraheader=$auth" push -q -u origin "$BRANCH"
           if [ "$MODE" = "new" ]; then
-            log="runs/$RUN/log.md"
-            [ -f "$log" ] || log=/dev/null
-            gh pr create --title "$TITLE" --body-file "$log" --head "$BRANCH"
+            gh pr create --title "$TITLE" --body-file ../description.md --head "$BRANCH"
           else
             gh pr comment "$PR" --body "The operator answered the review in session $RUN: runs/$RUN/log.md. The reviewers read it again."
           fi

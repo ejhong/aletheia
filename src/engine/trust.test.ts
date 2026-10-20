@@ -107,6 +107,8 @@ describe("the session guard", () => {
         { status: "A", file: "content/cases/x/assessments/2099-01-01-operator-000000.yaml" },
         { status: "M", file: "content/cases/x/editions/edition-2099-01-01-000000.yaml" },
         { status: "A", file: "runs/another-run/log.md" },
+        { status: "A", file: "runs/this-run/run.yaml" },
+        { status: "A", file: "runs/this-run/trace.yaml" },
       ],
       read({
         "content/cases/x/assessments/2099-01-01-check-gpt.yaml": { role: "check" },
@@ -114,7 +116,7 @@ describe("the session guard", () => {
       }),
       "this-run",
     );
-    expect(problems).toHaveLength(10);
+    expect(problems).toHaveLength(12);
   });
   it("lets the session's own work through", () => {
     const problems = guardSession(
@@ -175,5 +177,25 @@ describe("the workflows hold the boundary", () => {
     expect(withSecret("MAINTENANCE_PAT")).toEqual(["The pull request"]);
     for (const k of ["OPENAI_API_KEY", "GEMINI_API_KEY", "XAI_API_KEY", "VENICE_API_KEY", "ANTHROPIC_API_KEY"]) expect(withSecret(k), k).toEqual(["The panel, when the session asks for it"]);
     expect(publish.steps.find((s) => s.name === "The session's work, checked by main's code")?.run).toMatch(/guard-session/);
+  });
+
+  it("the session's trace never leaves its machine: main's script digests it there, and main's code checks the digest", () => {
+    const w = workflow("operator.yml");
+    const session = w.jobs.session.steps;
+    const run = session.find((s) => s.name === "The session")?.run ?? "";
+    expect(run).toMatch(/--output-format stream-json --verbose/);
+    expect(run).toMatch(/> "\$T\/trace\.jsonl"/);
+    // Nothing uploaded holds it: the trace is written outside session/, and no upload takes the whole of the machine's temp.
+    for (const job of Object.values(w.jobs)) {
+      for (const s of job.steps.filter((x) => x.uses?.startsWith("actions/upload-artifact"))) expect(String(s.with?.path), job === w.jobs.plan ? "plan" : "session").not.toMatch(/trace\.jsonl|runner\.temp \}\}\/?$/);
+    }
+    // The script is main's, copied into the plan before the session; the session's machine runs that copy, not its tree's.
+    expect(w.jobs.plan.steps.find((s) => s.name === "What this session is for")?.run).toMatch(/cp src\/engine\/trace\.ts plan\/trace\/src\/engine\//);
+    expect(session.find((s) => s.name === "What the session did, as a digest")?.run).toMatch(/node "\$T\/plan\/trace\/scripts\/session-trace\.ts" "\$T\/trace\.jsonl" "\$T\/session\/digest\.json"/);
+    expect(w.jobs.publish.steps.find((s) => s.name === "What the session did, from its trace")?.run).toMatch(/node \.\.\/trusted\/scripts\/site\.ts session-trace --digest \.\.\/session\/digest\.json/);
+    // The script the plan copies imports nothing of the engine but the digest itself, so the copy runs alone.
+    const imports = (f: string) => [...fs.readFileSync(path.join(process.cwd(), f), "utf8").matchAll(/^import .* from "([^"]+)";$/gm)].map((m) => m[1]);
+    expect(imports("scripts/session-trace.ts").filter((m) => !m.startsWith("node:"))).toEqual(["../src/engine/trace.ts"]);
+    expect(imports("src/engine/trace.ts")).toEqual([]);
   });
 });

@@ -24,6 +24,9 @@
  *                                           in a sentence; --ahead for a session started by hand, which runs ahead of the pace
  *   session-close --report F --run ID --subject S --model M --prompt-version V
  *                                           an operator session's run record and spend rows
+ *   session-trace --run ID (--digest F | --summary)
+ *                                           the digest of a session's trace (made on its machine by scripts/session-trace.ts),
+ *                                           checked and kept as runs/<ID>/trace.yaml; --summary says it for the pull request
  *   plan-session [--rounds F]               the session's mode: answer a held change, or new work (the workflow)
  *   kickoff --run ID --mode M --cap N [--pr N --branch B --rounds F] [--case C] [--focus T]
  *                                           the session's first message (the workflow)
@@ -42,7 +45,7 @@ import { nextIds, type Kind, KINDS } from "../src/engine/ids.ts";
 import { formatQuoteCheck, quoteCheck } from "../src/engine/quotecheck.ts";
 import { findInText, pagesOf, readSource } from "../src/engine/read.ts";
 import { blobFromComment, reviewBlob, reviewComment, runReview } from "../src/engine/review.ts";
-import { closeSession, type SessionReport } from "../src/engine/session.ts";
+import { closeSession, traceSummary, writeTrace, type SessionReport } from "../src/engine/session.ts";
 import { stamp } from "../src/engine/stamp.ts";
 import { budgetLine, budgetState, formatStatus, siteStatus } from "../src/engine/status.ts";
 import { site } from "../src/config/site.ts";
@@ -263,6 +266,16 @@ async function main() {
         report,
       });
       console.log(`${r.files.join("\n")}\ncost: ${r.usd === null ? "unpriced" : `$${r.usd.toFixed(2)}`}`);
+      return;
+    }
+    case "session-trace": {
+      // The digest arrives from the session's machine: data, kept only once main's schema finds it a digest.
+      const run = need("run");
+      if (flags.has("summary")) {
+        console.log(traceSummary(run));
+        return;
+      }
+      console.log(writeTrace(run, JSON.parse(fs.readFileSync(need("digest"), "utf8"))));
       return;
     }
     default:

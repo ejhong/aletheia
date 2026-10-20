@@ -96,7 +96,8 @@ export function openChanges(): OpenChange[] {
  *  - a blind check: the panel's, written by the workflow's panel from main's code, never by the session;
  *  - a record that says a human reviewed it, which no AI record may say;
  *  - an edit to or a removal of an assessment or an edition, which are append-only;
- *  - another session's run record.
+ *  - another session's run record, or the session's own run record or trace digest (`runs/<runId>/run.yaml`,
+ *    `trace.yaml`), which the workflow writes from what Claude Code reports.
  *
  * A session whose work holds any of these publishes nothing: the guard says what, and the work waits for the founder.
  * Pure over the changed files and a reader of their new contents.
@@ -107,6 +108,7 @@ export function guardSession(files: { status: string; file: string }[], read: (f
     if (isFounderFile(file)) problems.push(`${file}: a founder's file; the operator may not change it`);
     else if (/^governance\/(spend|reviews)\//.test(file)) problems.push(`${file}: written by the workflow from what the session and the vendors report, not by the session`);
     else if (/^(runs|proposals)\/([^/]+)\//.test(file) && !file.startsWith(`runs/${run}/`)) problems.push(`${file}: another run's record`);
+    else if (file === `runs/${run}/run.yaml` || file === `runs/${run}/trace.yaml`) problems.push(`${file}: written by the workflow from what Claude Code reports, not by the session`);
     else if (/^content\/cases\/[^/]+\/(assessments|editions)\/[^/]+\.yaml$/.test(file)) {
       if (status !== "A") problems.push(`${file}: assessments and editions are append-only; a session adds them and never edits or removes one`);
       else {

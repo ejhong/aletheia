@@ -27,16 +27,38 @@ works is `docs/DESIGN.md`; why it is the way it is, `docs/DECISIONS.md`.
 
 | Secret | Used by | Note |
 | --- | --- | --- |
-| `ANTHROPIC_API_KEY` | the operator; the panel's Anthropic seat | A key from a workspace with its own monthly spend limit in the Anthropic console is the strongest guard on the operator's spend. |
+| `ANTHROPIC_API_KEY` | the operator; the panel's Anthropic seat | A key from a workspace with its own monthly spend limit in the Anthropic console is the strongest guard on the operator's spend (below). |
 | `OPENAI_API_KEY`, `GEMINI_API_KEY`, `XAI_API_KEY`, `VENICE_API_KEY` | the review; the panel | The review never sees the Anthropic key. |
 | `MAINTENANCE_PAT` | opening the operator's pull requests; arming auto-merge | A fine-grained token with contents and pull-requests write on this repository. It expires: a session whose token fails stops before spending, and says so in an issue. |
+
+### The operator's key
+
+A session can run code it writes, so its key is the one secret a session
+could take, and the caps in `config/budget.yaml` bind the workflow, not a
+stolen key. A spend limit at Anthropic binds the key itself:
+
+1. In the Claude Console, open Workspaces
+   (`platform.claude.com/settings/workspaces`) and click **Create
+   workspace**. The Default Workspace cannot take a spend limit.
+2. Select the new workspace and, in its panel, **Spend limits**: a monthly
+   limit near the sites' caps together ($100), with an alert below it.
+3. Create an API key in that workspace; a key runs in the workspace it was
+   created in.
+4. In each repository that runs an operator (this one and Erebus):
+   Settings → Secrets and variables → Actions → `ANTHROPIC_API_KEY` →
+   update it to the new key.
+5. Once a session has run on the new key, revoke the old one in the
+   Console, if nothing else uses it.
+
+(`platform.claude.com/docs/en/manage-claude/workspaces`.)
 
 ## When something looks wrong
 
 - **A session failed.** The workflow opens (or comments on) one issue
   titled "The operator's session failed". The run log is in the Actions tab;
   the session's own log, when it got that far, is in `runs/<runId>/log.md`
-  on its branch.
+  on its branch, and what it did — the tools that failed, the commands its
+  permissions refused — in `runs/<runId>/trace.yaml` beside it.
 - **A change sits unmerged.** Read its review comment. *Held for the
   founder's hand*: it changes one of your files (the constitution, the kill
   switch, `config/`, the prompts and the charter, the workflows, the review

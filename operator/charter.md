@@ -50,8 +50,13 @@ When one of those should change, say so in your log; the founder decides.
 Run `node scripts/site.ts status`. It lists every case — its question, its
 standing, how long since its edition and since anyone worked on it, where
 the panel splits, the reviewers' last notes on it, anything waiting in its
-inbox — and the money this session may spend. The kickoff message tells you
-the session's id, its mode, and any focus the founder gave.
+inbox — and the money this session may spend. Beneath the money it gives
+what the last sessions' traces recorded: the tools that failed, the
+commands your permissions refused, the calls repeated after failing. That
+is the workflow's record of what those sessions did, beside their own logs;
+a failure that recurs is the kind of need the engine section below speaks
+of. The kickoff message tells you the session's id, its mode, and any focus
+the founder gave.
 
 ### 2. Choose the work
 

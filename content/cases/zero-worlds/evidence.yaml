@@ -580,3 +580,176 @@
     extractedBy: maintenance pipeline (promotion step, anthropic/claude-fable-5)
     runId: 2026-09-01-promote-33512756583
     date: 2026-09-01
+
+# ── 2026-10-21 operator session (2026-10-21-session-site-130024) ─────────────
+
+- id: ZW-E020
+  title: "Gorard 2020: the Wolfram program's formal quantum paper calls its derivation a conjecture and assumes the Born rule"
+  claimIds: [ZW-C505, ZW-C007]
+  sourceId: SRC-GORARD-2020-QM
+  direction: qualifies
+  strength: moderate
+  sourceStatement: >-
+    The abstract claims more than an embedding: the author says he proves
+    "that the geometry of the multiway evolution graph converges to that of
+    complex projective Hilbert space in the continuum limit", and lists "the
+    derivation of the path integral" and "the derivation of the discrete
+    Schrödinger equation" among the paper's consequences (p. 1). The body
+    frames the quantum claim itself as unproven: "our central conjecture in
+    this paper is that discrete forms of quantum mechanics" (and quantum
+    field theory) can be derived from the principle of multiway invariance
+    (p. 29). The probability rule is introduced, not derived. Branch states
+    are taken as a basis "By assumption, these eigenstates form an
+    orthonormal basis for the Hilbert space" (p. 16), and outcome
+    probabilities are "given by the multiway Born rule for evolution path
+    weights" (p. 17). Bell-type correlations come from explicit nonlocality:
+    "one is able to prove violation of the CHSH inequality in much the same
+    way as one does for other standard deterministic and nonlocal
+    interpretations of quantum mechanics" (p. 52).
+  editorInference: >-
+    The case had described the Wolfram program's formal quantum results as
+    an embedding of an existing quantum calculus (ZW-E014), which shows
+    compatibility and nothing more. This paper is a more ambitious formal
+    attempt, and the case should have weighed it. Read against the
+    calibration this case uses (ZW-C502), it still falls short of the
+    distinctively quantum benchmarks. The Born rule is stipulated for path
+    weights. CHSH violation is obtained the way any explicitly nonlocal
+    deterministic model obtains it, which says nothing about the Tsirelson
+    cap of 2√2. The derivation of quantum mechanics is labelled a
+    conjecture by its author. None of it starts from the two observer
+    features (computational boundedness, belief in persistence) that
+    Wolfram's 2023 essay names as sufficient: the observer enters here as a
+    chosen foliation of the multiway graph.
+  exactLocator: "PDF pp. 1–52, at p. 1 (abstract), 16–17 (Knuth–Bendix completion as measurement; eqs. 26 and 29), 29 (statement of the central conjecture), 51–52 (Bell's theorem and the CHSH inequality)"
+  limitations:
+    - "This session searched the 62-page text for the Born rule, CHSH, Tsirelson, conjectures and assumptions, and read those passages; it did not check the convergence proof itself, which would take a mathematician's audit."
+    - "Published in a journal founded by Stephen Wolfram, by an author then at Wolfram Research. No outside group has rederived or refuted the results, as far as this session found."
+    - "A 2020 paper. Later formal work in the program (for example on axiomatic quantum field theory in multiway causal structure, 2023) was noted in the search but not read."
+  reviewState: ai_extracted
+  origin:
+    ref: "Gorard 2020, full PDF read through scripts/site.ts read, 2026-10-21"
+    extractedBy: "Claude Opus 5.5 (operator), session 2026-10-21-session-site-130024"
+    runId: "2026-10-21-session-site-130024"
+    date: "2026-10-21"
+
+- id: ZW-E021
+  title: "McQueen & Müller: both sides agree the framework's probabilities cannot yet be tested by repeated, shared experiments"
+  claimIds: [ZW-C503, ZW-C008]
+  sourceId: SRC-MCQUEEN-MULLER-2026
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    The critic (McQueen) argues: "The state transition postulate is
+    therefore not well-defined: there appears to be no good option for
+    spelling out what the probabilities are probabilities of" (p. 13). The
+    advocate (Müller) answers that the framework's goal is to answer this
+    question "for private experiments that are not necessarily
+    intersubjectively verifiable, such as duplication or simulation
+    scenarios" (p. 14). In their joint evaluation the two state that "our
+    adversarial collaboration has uncovered two valid objections". The
+    first is that Algorithmic Idealism "cannot (yet) appeal to scientific
+    practice and experimental pragmatism", because "it is not in general
+    possible to relate probability assignments to statistical claims about
+    outcomes of an experiment that is repeated a large number of times
+    under identical conditions, and analyzed from an intersubjective
+    third-person perspective". They add: "Thus, the proponent agrees with
+    the critic that this point has to be developed in greater detail and
+    clarity" (p. 18).
+  editorInference: >-
+    The framework's author concedes in print the point ZW-C503 makes: its
+    distinctive first-person predictions do not yet connect to repeatable,
+    publicly comparable frequencies. That is why the featured thesis
+    (ZW-C008) is graded presently untestable rather than refuted. The
+    concession is about operational meaning, not about whether the
+    framework is coherent. Neither author says the postulates must change.
+  exactLocator: "arXiv:2607.16379v1, PDF pp. 13–18, at p. 13 (§IV.A), 14 (§V.A), 18 (§V.C, objection O1)"
+  limitations:
+    - "An unrefereed preprint by two authors; 'valid objection' is their joint characterization, not an outside verdict."
+    - "The objection concerns how the probabilities are to be interpreted and checked. It does not show the framework's theorems are wrong."
+  reviewState: ai_extracted
+  origin:
+    ref: "McQueen & Müller 2026, full text read through scripts/site.ts read, 2026-10-21"
+    extractedBy: "Claude Opus 5.5 (operator), session 2026-10-21-session-site-130024"
+    runId: "2026-10-21-session-site-130024"
+    date: "2026-10-21"
+
+- id: ZW-E022
+  title: "McQueen & Müller: the Boltzmann-brain resolution is challenged, defended, and left needing further work"
+  claimIds: [ZW-C004]
+  sourceId: SRC-MCQUEEN-MULLER-2026
+  direction: qualifies
+  strength: moderate
+  sourceStatement: >-
+    The critic argues that a Boltzmann brain's self-state, like the
+    framework's own example of an insect at a table's edge, would carry
+    information about its environment, so that its next disintegrating
+    state would be predictable: "But then the framework cannot produce the
+    result that we are probably not Boltzmann brains" (p. 14). The advocate
+    replies that most Boltzmann-brain realizations are nearly uncorrelated
+    with their environment, which is why such futures are "much less likely
+    than ordinary ones, regardless of the number of BBs in the universe".
+    He adds that "the analysis here gives valid intuition, but not the
+    exact technical arguments" (p. 16). In the joint evaluation, the second
+    valid objection (O2) records that "the critic has pointed at an
+    important fact that has so far insufficiently been discussed in
+    existing publications of Algorithmic Idealism": only part of the
+    self-state is accessible to the agent (p. 18).
+  editorInference: >-
+    ZW-C004 says the standard puzzles "dissolve" under first-person
+    reasoning. For the Boltzmann-brain puzzle that is the proponent's
+    position, now contested in print and defended there. The two authors
+    agree that how agents should predict from a partly inaccessible
+    self-state needs further work. The emergence theorems themselves are
+    not challenged here. The "dissolution" is better described as a
+    defended claim than a settled result.
+  exactLocator: "arXiv:2607.16379v1, PDF pp. 14–18, at p. 14 (§IV.B), 16 (§V.B), 18 (§V.C, objection O2)"
+  limitations:
+    - "A single exchange in an unrefereed preprint. The advocate holds that the reply suffices for the conclusion that Boltzmann-brain counting cannot rule out cosmological models; the critic's final view is not separately stated."
+  reviewState: ai_extracted
+  origin:
+    ref: "McQueen & Müller 2026, full text read through scripts/site.ts read, 2026-10-21"
+    extractedBy: "Claude Opus 5.5 (operator), session 2026-10-21-session-site-130024"
+    runId: "2026-10-21-session-site-130024"
+    date: "2026-10-21"
+
+- id: ZW-E023
+  title: "Müller 2026 (conclusions): quantum phenomena are the framework's test, and resemblance does not count"
+  claimIds: [ZW-C002, ZW-C502, ZW-C504]
+  sourceId: SRC-MULLER-2026
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    In the paper's conclusions Müller names "two main open technical
+    problems". The first is the bit model's lack of forgetting, "which is
+    unmotivated, unrealistic, and an artefact of the way that Solomonoff
+    induction has been formulated in Algorithmic Information Theory". The
+    second is that "a successful formalization of algorithmic idealism
+    should predict some phenomenal aspects of Quantum Theory". Its target
+    is "phenomena that are genuinely quantum, such as the violation of Bell
+    inequalities together with compliance with the no-signalling principle"
+    (p. 28). An explanation of Bell violation "has been sketched in [2],
+    but it needs further elaboration". He adds: "Note that it is not enough
+    to point at mathematical elements" that resemble those of quantum
+    theory, since "the main question is whether the statistical results of
+    experiments are predicted to behave in genuinely nonclassical ways".
+    Building the formalism in would defeat the test: "it would be
+    methodologically wrong to build the quantum formalism into algorithmic
+    idealism by construction" (p. 29).
+  editorInference: >-
+    The framework's peer-reviewed statement agrees with the case on two
+    points. It names the quantum derivation as open (ZW-C002), and it sets
+    the same bar this case borrows from Spekkens (ZW-C502): nonclassical
+    statistics, not resembling equations. This record also supersedes the
+    abstract-level characterization in ZW-E002 with the paper's own words,
+    and quotes the erasure problem (ZW-C504) from the published paper
+    rather than the author's web page.
+  exactLocator: "arXiv:2412.02826v2 (the open copy of Foundations of Physics 56: 11), PDF pp. 28–29, §VIII Conclusions"
+  limitations:
+    - "Read from the arXiv version dated 24 July 2025. The Springer version was not separately compared."
+    - "The proponent setting his own test is not evidence that the test can or cannot be passed."
+  reviewState: ai_extracted
+  origin:
+    ref: "Müller 2026 (arXiv:2412.02826v2), conclusions read in full through scripts/site.ts read, 2026-10-21"
+    extractedBy: "Claude Opus 5.5 (operator), session 2026-10-21-session-site-130024"
+    runId: "2026-10-21-session-site-130024"
+    date: "2026-10-21"

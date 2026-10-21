@@ -1,0 +1,89 @@
+# Edition written by the operator (claude-opus-5-5) in session 2026-10-21-session-site-130024, stamped by the engine (src/engine/stamp.ts).
+# Append-only: a later edition replaces it; this file is never edited.
+
+runId: edition-2026-10-21-131026
+producedBy: 2026-10-21-session-site-130024
+date: 2026-10-21
+model: claude-opus-5-5
+promptVersion: charter@5f90651
+rationale: |-
+  The case had never been worked since it was built in August, and the panel split on its Wolfram claim (ZW-C007): the draft graded it mixed, four of five seats well supported. Reading the program's own record settled the split more precisely than either. The case had described the Wolfram program's formal quantum results as an embedding only; it had missed Gorard's 62-page 2020 paper in Complex Systems, which claims a proof that multiway geometry converges to projective Hilbert space — but which states the derivation of quantum mechanics as its "central conjecture", introduces the Born rule by assumption, and obtains CHSH violation from explicit nonlocality. This edition adds that paper (with its provenance: a journal Wolfram founded) as a new featured claim, ZW-C505, and regrades ZW-C007 well supported: the report is accurate, and its substance — no demonstrated inevitability — holds. Two primary texts the case had characterized only from abstracts were read in full. Müller's peer-reviewed 2026 paper names quantum phenomena as the framework's test and says resembling mathematics does not count, which now carries the case's central gap claim in the proponent's own words. The McQueen–Müller adversarial collaboration records two objections both authors accept: that the framework's probabilities cannot yet be tied to repeated, shared experiments, and that its Boltzmann-brain resolution needs further work. The article gains a section on that exchange and a revised paragraph on the gap; the case verdict, presently untestable, is unchanged. A research item asks for an outside audit of the multiway quantum results.
+
+  Measured by the engine: article 1452 → 1922 words, without markup.
+basis:
+  ledgerHash: 026c14f808a5cb9369ac1a1d7838195373fff789161ee9ab11cc594804c4a41c
+  inputsHash: 5ec679afd04c652ac3d0ab1caed136cf3b02108f7cf205bd9d7b279e4c2206eb
+previous: edition-2026-09-08-migration
+assessment:
+  runId: 2026-10-21-operator-131026
+  hash: 7d3163616dbec9dca7f05faf31d40a48371ecf2641094536fa55ec66fc87bc03
+featuredClaimIds:
+  - ZW-C001
+  - ZW-C002
+  - ZW-C003
+  - ZW-C004
+  - ZW-C005
+  - ZW-C006
+  - ZW-C007
+  - ZW-C505
+  - ZW-C008
+  - ZW-C009
+  - ZW-C010
+cruxOrder:
+  - ZW-R001
+  - ZW-R002
+  - ZW-R003
+  - ZW-R007
+  - ZW-R004
+  - ZW-R005
+  - ZW-R006
+article: |
+  In July 2026, a philosopher and a physicist published a structured disagreement about whether anything exists. Kelvin McQueen defends the view nearly everyone holds without noticing: reality is an external physical world, governed by laws, and observers arise inside it. Markus Müller — group leader at the Institute for Quantum Optics and Quantum Information in Vienna, and co-author of one of the rigorous derivations of quantum theory — defends the reverse: reality fundamentally consists of first-person states, and the physical world, laws and all, is output. Not one world, not the branching many worlds of Everett. Zero.
+
+  What makes this a case rather than a seminar topic is that the zero-worlds side has theorems. Not enough theorems — that is the crux — but real ones, in refereed journals, and its proponents are unusually candid about exactly where the mathematics stops.
+
+  ## The wager
+
+  Müller's framework, algorithmic idealism, rests on two postulates. There is a set of self-states: finite informational patterns encoding everything true of an observer at a moment, memory included. An observer is not fundamentally *in* spacetime; it *is* its self-state. And there is a law of state change: the probability of what you experience next is fixed by universal induction — Solomonoff's prior, the mathematically exact version of Occam's razor, under which simple continuations of your data are likely and random ones vanishingly rare.
+
+  From this solipsistic seed, an external world provably grows. Because algorithmically simple continuations dominate, [an observer should expect, with probability approaching one, to find itself embedded in a stable, computable, lawful external world — objective reality as a theorem rather than an axiom]{claim=ZW-C004}. The framework also claims to dissolve inherited paradoxes: you should never bet on being a Boltzmann brain, however many of them cosmology manufactures, because the transition from a rich lawful history into thermal noise is algorithmically disfavored — the disorderly continuation shares no information with your biography, and induction bets against it.
+
+  Two neighbours make the same demotion of the world with different tools. Donald Hoffman arrives from evolutionary biology: [a proven game-theoretic result — the Fitness-Beats-Truth theorem — plus a published correspondence between networks of "conscious agents" and the free-particle wavefunction]{claim=ZW-C006}, wrapped around the ontological proposal that consciousness, not matter, is fundamental. Stephen Wolfram arrives from computation: [the ruliad — the entangled limit of all possible computational processes — is claimed to look like general relativity, quantum mechanics, and thermodynamics to any observer who is computationally bounded and believes itself persistent in time]{claim=ZW-C007}. The family resemblance is real, and so are the splits: Hoffman's primitive is experience, Müller's is information; Wolfram keeps one enormous world underneath (all of computation), Müller keeps none.
+
+  ## The theorems that set the bar
+
+  Here the case takes its distinctive shape, because the target of all this ambition is not vague. Since 2001, a rigorous literature has shown that [finite-dimensional quantum mechanics — complex Hilbert space, superposition, entanglement, the Born rule — can be derived, theorem-style, from a handful of operational axioms about information]{claim=ZW-C001}: how systems compose, what can be distinguished, that mixed states can be purified, that reversible transformations are continuous. Hardy's original version has a famous punchline — keep his five axioms but delete the single word *continuous*, and you get classical probability theory instead. One of the strongest reconstructions is by Masanes and Müller. The same man has proven the right-hand half of the bridge his idealism needs.
+
+  So a two-stage architecture presents itself. Stage two — from operational axioms to quantum mechanics — is done, refereed, uncontested. Stage one — from observer-first postulates to those operational axioms — is the entire open question. And the bar for stage one is high, because quantum *resemblance* is cheap: Spekkens' toy theory manufactures interference analogues, no-cloning, teleportation, and entanglement-like correlations out of classical states plus a restriction on knowledge, while failing exactly at Bell violation and contextuality. Wave equations and complex numbers prove nothing. The bar is the genuinely nonclassical correlation structure, capped at the Tsirelson bound.
+
+  Müller sets the same bar for himself. In the conclusions of his 2026 paper in *Foundations of Physics*, he writes that a successful formalization of his framework "should predict some phenomenal aspects of Quantum Theory", that "it is not enough to point at mathematical elements" resembling the quantum formalism, and that "it would be methodologically wrong to build the quantum formalism into algorithmic idealism by construction." A theory that names its own test in advance has exposed itself to failing it.
+
+  ## The gap
+
+  Measured against that bar, [no observer-first program has derived the quantum package from its own primitives — and the flagship's author says so]{claim=ZW-C002}. Müller lists it as one of the framework's "two main open technical problems"; the other is that his model cannot yet forget. What exists today: [asymptotic consistency with quantum mechanics — which is unselective, since universal induction would learn any computable law — plus one genuine foothold, a 2020 theorem that Bell violation with no-signalling "can sometimes be expected," which its own author labels preliminary because it rests on too many assumptions]{claim=ZW-C005}. Hoffman's wavefunction correspondence is a form-match with one simple quantum object.
+
+  Wolfram's essays are informal ("we seem to be able to derive—"), and he concedes the observer concept at the center of his program is "at least on the face of it circular." His program's formal work goes further than the essays, and further than an earlier version of this account allowed. A 62-page paper by Jonathan Gorard, then at Wolfram Research, in the journal Wolfram founded, claims to prove that the branching structure of its rewriting systems takes on the geometry of quantum state space, and to derive the path integral and a discrete Schrödinger equation in those terms. But [the same paper calls the derivation of quantum mechanics its "central conjecture," writes in the Born rule for path weights rather than deriving it, and gets Bell-type correlations the way any openly nonlocal model does, without deriving the quantum limit on their strength]{claim=ZW-C505}. Its observer is a chosen slicing of the branching graph, not the bounded, persistent observer of the essays. No audit of it from outside the program has turned up.
+
+  None of this is scandal. It is the normal condition of young research programs, reported here mostly in the proponents' own words. But it fixes what the case is about: a promissory note, precisely drafted, not yet paid.
+
+  ## What the experiments do and don't say
+
+  The laboratory record disciplines this dispute without deciding it. [Loophole-free Bell tests and the "local friendliness" Wigner's-friend experiment constrain what any theory may assume — but they cannot separate observer-first ontologies from ordinary physicalist quantum mechanics, because every serious contender predicts the same statistics]{claim=ZW-C003}. Hensen's electrons violated the CHSH bound at S = 2.42 ± 0.20; Bong's theorem prices the conjunction of observer-independent facts, locality, and no-superdeterminism more steeply than Bell did. Neither result establishes that observation creates reality — the experimental "friend" in the latter is a photon path, not a mind. And in a twist the case preserves with some pleasure, Müller's own group published the deflationary reading: the Wigner's-friend structure can be reproduced classically, by duplicating agents, so it is not even specifically quantum. The experiments are benchmarks. The benchmarks are what stage one must hit.
+
+  ## The realist and the idealist, in one paper
+
+  The July exchange is worth reading for what both sides concede. McQueen pressed two objections. The first asks what the framework's probabilities are probabilities *of*: if selves are fundamental, they can be counted, though the Boltzmann-brain argument relied on there being no such count; if they are bundles of states, nothing in an unordered set of abstract strings bundles them. Müller answers that the framework, like operational quantum theory, needs no definition of "me" to make predictions, and that its predictions concern private experiments such as duplication and simulation. The two then agree on the cost: the framework "cannot (yet) appeal to scientific practice and experimental pragmatism," because its probabilities cannot in general be related to an experiment repeated many times and "analyzed from an intersubjective third-person perspective."
+
+  The second objection targets the Boltzmann-brain result. A self-state carries more than conscious experience; a fluctuating brain's full state might encode its hostile surroundings, making its disintegration predictable rather than improbable. Müller replies that almost all such brains are uncorrelated with their surroundings, and calls his analysis "valid intuition, but not the exact technical arguments." Both authors record the point as a valid objection needing further work. The emergence theorems are untouched; the dissolution of the paradox is now a defended claim rather than a settled one.
+
+  ## The steelman: complexity relocated
+
+  The conventional position deserves its full strength, and it is strong. [Universal induction explains why *some* lawful world appears — but it would have "predicted" a classical world, a stochastic world, or a post-quantum world with exactly the same serenity, so nothing specifically quantum has been explained; the explanatory compression on offer is already delivered, ontology-free, by the reconstruction theorems; and physicalist quantum theory keeps its decisive advantage, since no observer-first program computes a Hamiltonian, a particle spectrum, or a cross-section]{claim=ZW-C009}. QBism — the mature framework closest in spirit to all of this — concedes the point in its flagship paper: the Born rule enters as "an empirical addition to Bayesian reasoning itself." Imported, not derived — as it is, by stipulation, in the Wolfram program's formal paper. A theory with only self-states in its ontology wins parsimony only if its laws recover the structure it deleted; otherwise the complexity has migrated from the noun list into an uncomputable transition rule, and the books merely look cleaner.
+
+  The steelman is exposed in one place, and honesty requires displaying it: it predicts the bridge theorems will never arrive. Every reconstruction axiom derived from first-person postulates, every strengthening of the preliminary Bell result toward the Tsirelson bound, is a direct hit on its central charge. This rival does not hide from the mathematics; it has bet against it.
+
+  ## The crux
+
+  So the case comes down to something unusual for a metaphysical dispute: [a precisely posed, currently unsolved mathematical problem — whether observer-first postulates entail the operational principles from which quantum theory provably follows]{claim=ZW-C010}. Derive a convex operational state space from self-states and induction. Derive purification, the axiom that carries the quantum content in one reconstruction — as a theorem, not a metaphor. Shrink the assumptions under the 2020 Bell result until the correlations cap at 2√2, not merely exceed 2. Ask an outside referee whether the multiway construction forces the Born rule and that same cap, or merely hosts them. Or prove any of it impossible.
+
+  Until then, [the featured thesis — no world underneath, first-person states and an inductive law as the whole inventory]{claim=ZW-C008} — carries the only label the evidence permits: presently untestable. Its distinctive empirical content lives in scenarios no one can run — duplicated observers, terminated simulations, teletransporters — its own author agrees its probabilities do not yet connect to repeatable shared experiments, and its quantum content is conceded to be underived. That is not a refutation. It is a status, datable and revisable, and this case exists to revise it. A theory that abolishes the external world has one obligation above all others: to show that the world it hands back is *ours* — quantum mechanics included — and not merely *a* world. The mathematics that would discharge that obligation has been specified with rare precision. It has not yet been done.

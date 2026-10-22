@@ -1,0 +1,72 @@
+# Review of #466, harvested from its pull request (src/engine/harvest.ts). Append-only.
+pr: 466
+title: "Fire From the Sky: the Greenland platinum dates to decades after the cooling began, and a volcanic cluster sits at the onset"
+url: https://github.com/ejhong/aletheia/pull/466
+outcome: merged
+outcomeAt: 2026-10-20T13:22:16Z
+cases:
+  - ydih
+rounds:
+  - commit: b045311a03636c44aa8cc19e3b5b96023a1b0e44
+    date: 2026-10-20
+    protocol: review-v1
+    outcome: publish
+    reason: 4 of 4 reviewers judge it better; no harm flagged
+    seats:
+      - seat: openai
+        label: GPT-5.6 Sol (OpenAI)
+        model: gpt-5.6-sol
+        verdict: better
+        harm: null
+        notes:
+          - "YDIH-C508, YDIH-E041, and “The consequences, audited”: split the observed bipolar sulphate cluster from the reconstructed cumulative radiative forcing, and replace “measured, correctly timed forcing” with “reconstructed/estimated forcing.” The present wording conflicts with the record’s own limitation that forcing was estimated rather than observed."
+          - "Assessment 2026-10-20-operator-130005 and the synthesis/article discussion of YDIH-C021: change “no correctly timed physical marker” to “no securely established, correctly timed impact marker.” Several proposed markers are claimed at the boundary; their chronology and attribution are disputed rather than literally absent."
+          - "Assessment display/history: all five blind seats judge the case “Contradicted,” while the operator draft remains “Weakly supported.” Ensure that this disagreement is prominently surfaced as contested and that the operator verdict is not presented as the standing judgment."
+        summary: The change adds important, directly sourced chronology showing that the Greenland platinum anomaly postdates cooling onset by about 45 years, alongside a relevant volcanic cluster and concrete replication tests. It materially improves the reader’s understanding while openly recording the shared-data limitation and the uncertainty of volcanic attribution. Some wording overstates estimated volcanic forcing and the absence of proposed impact markers, but those are correctable qualifications rather than reasons to withhold the substantial gain.
+        cost:
+          inputTokens: 29737
+          outputTokens: 2727
+          usd: 0.173488
+      - seat: gemini
+        label: Gemini 3.8 Flash (Google)
+        model: gemini-3.8-flash
+        verdict: better
+        harm: null
+        notes:
+          - Follow up on accessing Sweatman, Powell & West (2024) or related proponent publications to incorporate their direct counterarguments regarding the GISP2 platinum lag on GICC05 once paywall/redirect obstacles are resolved.
+          - Upgrade evidence record YDIH-E029 (Nana Yobo et al. 2026) from a secondary paraphrase to verified direct quotations from the primary paper.
+          - Ensure that the divergence between the operator's case verdict ('weakly supported') and the unanimous panel check verdict ('contradicted') is surfaced clearly on the case standing display per AGENTS.md §3.15.
+        summary: This change significantly sharpens the Younger Dryas impact case by incorporating rigorous chronological analyses of the GISP2 platinum anomaly (Svensson et al. 2020, Green et al. 2025) and pre-onset volcanic aerosol forcing (Abbott et al. 2021). It carefully separates the robust chronological finding (a ~45-year post-onset lag) from weaker geochemical inferences regarding a volcanic origin, while noting that all timing re-evaluations currently rest on a single core. The additions are well-sourced, scrupulously quoted, and leave the narrative and claim graph substantially more accurate.
+        cost:
+          inputTokens: 32710
+          outputTokens: 2070
+          usd: 0.032295
+      - seat: xai
+        label: Grok 4.5 (xAI)
+        model: grok-4.5
+        verdict: better
+        harm: null
+        notes:
+          - Find and read the proponents' reply on the platinum lag (Sweatman, Powell & West 2024 ESR 104960 or later work) and add it as evidence with the same quote-and-limit care used for Green/Svensson/Abbott; the steelman currently invents their strongest answer without attributing a source.
+          - Replace the still-paraphrased Nana Yobo et al. 2026 record (YDIH-E029) with full-text quotations once the paper is read, as the operator already flagged.
+          - In the article platinum paragraph and YDIH-E039, state explicitly that the elevated-Pt interval itself (not only the peak) begins after onset on GICC05, so a multi-year debris-stream story must still explain deposition that starts decades into the cold.
+        summary: "This change corrects a material omission: the GISP2 platinum, long treated as the case’s strongest thread “near the onset,” is placed ~45 years after cooling began on the GICC05 timescale, with a correctly timed bipolar volcanic cluster added at the onset and both limits stated (one core; forcing ≠ cause). New claims, quoted evidence, sources, research tests, assessment reasoning, and a short edition update improve accuracy and fairness without dropping true residue or overstating the volcanic reading. The site is left better for a reader seeking the truth about the trigger."
+        cost:
+          inputTokens: 30408
+          outputTokens: 308
+          usd: 0.062779
+      - seat: venice
+        label: GLM 5.3 Flash (Z.ai, via Venice)
+        model: z-ai-glm-5-3-flash
+        verdict: better
+        harm: null
+        notes:
+          - All five blind-check seats in this very change (runs/2026-10-20-check-ydih-130442) judge the case Contradicted while the operator's draft keeps Weakly supported — on the graded scale that is a disputing panel, not a concurrence. §3.15 requires every seat's own word displayed beside the standing with neighbours included; make sure the case page shows the dispute rather than letting 'unratified pending the panel' hold indefinitely, and treat where the seats part as the next research question.
+          - YDIH-E040's limitation attributes the ~21-year span to 'the 2026 correction's characterization', but YDIH-C001 and the article attribute the ~21-year figure to the 2013 Harvard discovery paper. Check which source actually characterizes the span and correct whichever record misattributes it.
+          - The article's 'later analyses have confirmed it' rests, for Abbott 2021 and Holliday 2023, only on Green et al.'s own confirmation statement; only Svensson 2020 was read in full. Soften the sentence to name Green et al. as the reporter, or prioritize reading the Holliday/Abbott platinum-timing passages directly next pass so the confirmation is first-hand.
+        summary: The change adds three read-in-full sources, two observation-rung claims (the ~45-year platinum lag on GICC05 and the pre-onset volcanic cluster), four quoted evidence records with their limits stated, a concrete second-core research test, and an edition that honestly moves the best-attested anomaly off the trigger's timing while keeping the case verdict unchanged and expanding the steelman. The limits (one core, re-dating not new measurement, forcing is not causation, proponents' reply unread) are recorded on the records themselves. Nothing true is lost and no fabrication or misattribution is apparent, so the site is better; the panel disagreement above is the main item to surface.
+        cost:
+          inputTokens: 62818
+          outputTokens: 5680
+          usd: 0.012263
+harvestedAt: 2026-10-21T13:14:12.536Z

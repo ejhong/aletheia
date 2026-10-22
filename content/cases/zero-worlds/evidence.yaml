@@ -63,6 +63,7 @@
   exactLocator: "Foundations of Physics 56: 11 (2026)"
   limitations:
     - "Characterized from the arXiv abstract (2412.02826) and the author's exposition; the Springer full text sits behind a redirect wall and was not retrieved this run."
+    - "Added 2026-10-22: the paper's conclusions have since been read from its open arXiv copy and are quoted in ZW-E023, which states the quantum test and the open problems in the author's own words."
   reviewState: ai_extracted
   origin:
     ref: "Verification batch 2026-08-22 (Springer listing + arXiv + PhilPapers)"
@@ -584,8 +585,55 @@
 # ── 2026-10-21 operator session (2026-10-21-session-site-130024) ─────────────
 
 - id: ZW-E020
-  title: "Gorard 2020: the Wolfram program's formal quantum paper calls its derivation a conjecture and assumes the Born rule"
-  claimIds: [ZW-C505, ZW-C007]
+  title: "Gorard 2020: the Wolfram program's formal quantum paper calls its derivation a conjecture and states the Born rule without deriving it"
+  claimIds: [ZW-C505]
+  sourceId: SRC-GORARD-2020-QM
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    The body frames the quantum claim as unproven: "our central conjecture
+    in this paper is that discrete forms of quantum mechanics" (and quantum
+    field theory) can be derived from the principle of multiway invariance
+    (p. 29). Branch states are taken as a basis: "By assumption, these
+    eigenstates form an orthonormal basis for the Hilbert space" (p. 16).
+    Outcome probabilities are then stated: the a priori probability of
+    collapse to an eigenstate is "given by the multiway Born rule for
+    evolution path weights" (p. 17). Bell-type correlations come from
+    explicit nonlocality: "one is able to prove violation of the CHSH
+    inequality in much the same way as one does for other standard
+    deterministic and nonlocal interpretations of quantum mechanics"
+    (p. 52).
+  editorInference: >-
+    "By assumption" governs the orthonormal basis, not the probability
+    rule. The probability rule is a separate step: on p. 17 the Born rule
+    is stated for path weights, with no derivation given there, and a
+    search of the paper's full text finds no other passage that names the
+    Born rule or derives its squared form. The same search finds no mention
+    or derivation of the Tsirelson bound: the Bell passages (pp. 51–52)
+    obtain CHSH violation the way any explicitly nonlocal deterministic
+    model obtains it, which says nothing about the cap of 2√2. Read against
+    the calibration this case uses (ZW-C502), the paper therefore does not
+    reach the distinctively quantum benchmarks, and its author labels the
+    derivation of quantum mechanics a conjecture. None of it starts from
+    the two observer features (computational boundedness, belief in
+    persistence) that Wolfram's 2023 essay names as sufficient: the
+    observer enters here as a chosen foliation of the multiway graph.
+  exactLocator: "PDF pp. 16–52, at p. 16 (eq. 26, orthonormal basis), 17 (eq. 29, the multiway Born rule), 29 (statement of the central conjecture), 52 (Bell's theorem and the CHSH inequality)"
+  limitations:
+    - "The paper was not read in full or audited. Its full text (62 pages) was retrieved and searched for the Born rule, Bell, CHSH, Tsirelson, conjecture and assumption, and the passages found were read (on 2026-10-21, and again on 2026-10-22). The statements that no derivation of the Born rule or the Tsirelson bound appears rest on that search. A derivation in other words, not caught by those terms, cannot be excluded without a full reading."
+    - "The convergence proof itself was not checked; that would take a mathematician's audit (ZW-R007)."
+    - "Published in a journal founded by Stephen Wolfram, by an author then at Wolfram Research. This case's search found no outside group that has rederived or refuted the results."
+    - "A 2020 paper. Later formal work in the program (for example on axiomatic quantum field theory in multiway causal structure, 2023) was noted in the search but not read."
+  reviewState: ai_extracted
+  origin:
+    ref: "Gorard 2020, full text retrieved through scripts/site.ts read and searched; the passages quoted were read, 2026-10-21; re-checked and narrowed to ZW-C505, 2026-10-22 (session 2026-10-22-session-site-130201)"
+    extractedBy: "Claude Opus 5.5 (operator), session 2026-10-21-session-site-130024"
+    runId: "2026-10-21-session-site-130024"
+    date: "2026-10-21"
+
+- id: ZW-E024
+  title: "Gorard 2020: the program's formal paper claims more than an embedding, but states its quantum derivation as a conjecture"
+  claimIds: [ZW-C007]
   sourceId: SRC-GORARD-2020-QM
   direction: qualifies
   strength: moderate
@@ -595,46 +643,33 @@
     complex projective Hilbert space in the continuum limit", and lists "the
     derivation of the path integral" and "the derivation of the discrete
     Schrödinger equation" among the paper's consequences (p. 1). The body
-    frames the quantum claim itself as unproven: "our central conjecture in
+    states the quantum claim itself as unproven: "our central conjecture in
     this paper is that discrete forms of quantum mechanics" (and quantum
     field theory) can be derived from the principle of multiway invariance
-    (p. 29). The probability rule is introduced, not derived. Branch states
-    are taken as a basis "By assumption, these eigenstates form an
-    orthonormal basis for the Hilbert space" (p. 16), and outcome
-    probabilities are "given by the multiway Born rule for evolution path
-    weights" (p. 17). Bell-type correlations come from explicit nonlocality:
-    "one is able to prove violation of the CHSH inequality in much the same
-    way as one does for other standard deterministic and nonlocal
-    interpretations of quantum mechanics" (p. 52).
+    (p. 29).
   editorInference: >-
-    The case had described the Wolfram program's formal quantum results as
-    an embedding of an existing quantum calculus (ZW-E014), which shows
-    compatibility and nothing more. This paper is a more ambitious formal
-    attempt, and the case should have weighed it. Read against the
-    calibration this case uses (ZW-C502), it still falls short of the
-    distinctively quantum benchmarks. The Born rule is stipulated for path
-    weights. CHSH violation is obtained the way any explicitly nonlocal
-    deterministic model obtains it, which says nothing about the Tsirelson
-    cap of 2√2. The derivation of quantum mechanics is labelled a
-    conjecture by its author. None of it starts from the two observer
-    features (computational boundedness, belief in persistence) that
-    Wolfram's 2023 essay names as sufficient: the observer enters here as a
-    chosen foliation of the multiway graph.
-  exactLocator: "PDF pp. 1–52, at p. 1 (abstract), 16–17 (Knuth–Bendix completion as measurement; eqs. 26 and 29), 29 (statement of the central conjecture), 51–52 (Bell's theorem and the CHSH inequality)"
+    ZW-C007 says the program's formal results "demonstrate embedding rather
+    than inevitability". The first half of that clause understates the
+    record: the case had weighed only the ZX-calculus embedding (ZW-E014),
+    and this paper claims a convergence proof and derivations in the
+    program's own terms. The second half holds: the derivation of quantum
+    mechanics is stated by its author as a conjecture, not a result. The
+    record therefore qualifies ZW-C007 rather than supporting or undermining
+    it.
+  exactLocator: "PDF pp. 1–29, at p. 1 (abstract) and 29 (statement of the central conjecture)"
   limitations:
-    - "This session searched the 62-page text for the Born rule, CHSH, Tsirelson, conjectures and assumptions, and read those passages; it did not check the convergence proof itself, which would take a mathematician's audit."
-    - "Published in a journal founded by Stephen Wolfram, by an author then at Wolfram Research. No outside group has rederived or refuted the results, as far as this session found."
-    - "A 2020 paper. Later formal work in the program (for example on axiomatic quantum field theory in multiway causal structure, 2023) was noted in the search but not read."
+    - "The paper was not read in full or audited: its full text was retrieved and searched, and the abstract and the passages found were read. The convergence proof was not checked (ZW-R007)."
+    - "Published in a journal founded by Stephen Wolfram, by an author then at Wolfram Research."
   reviewState: ai_extracted
   origin:
-    ref: "Gorard 2020, full PDF read through scripts/site.ts read, 2026-10-21"
-    extractedBy: "Claude Opus 5.5 (operator), session 2026-10-21-session-site-130024"
-    runId: "2026-10-21-session-site-130024"
-    date: "2026-10-21"
+    ref: "Gorard 2020, full text retrieved through scripts/site.ts read; abstract and p. 29 read, 2026-10-21 and 2026-10-22; split from ZW-E020 so that each record has one direction"
+    extractedBy: "Claude Opus 5.5 (operator), session 2026-10-22-session-site-130201"
+    runId: "2026-10-22-session-site-130201"
+    date: "2026-10-22"
 
 - id: ZW-E021
   title: "McQueen & Müller: both sides agree the framework's probabilities cannot yet be tested by repeated, shared experiments"
-  claimIds: [ZW-C503, ZW-C008]
+  claimIds: [ZW-C503]
   sourceId: SRC-MCQUEEN-MULLER-2026
   direction: supports
   strength: moderate
@@ -658,20 +693,53 @@
   editorInference: >-
     The framework's author concedes in print the point ZW-C503 makes: its
     distinctive first-person predictions do not yet connect to repeatable,
-    publicly comparable frequencies. That is why the featured thesis
-    (ZW-C008) is graded presently untestable rather than refuted. The
-    concession is about operational meaning, not about whether the
-    framework is coherent. Neither author says the postulates must change.
+    publicly comparable frequencies. The concession is about operational
+    meaning, not about whether the framework is coherent. Neither author
+    says the postulates must change. What the concession means for the
+    featured thesis is recorded separately (ZW-E025).
   exactLocator: "arXiv:2607.16379v1, PDF pp. 13–18, at p. 13 (§IV.A), 14 (§V.A), 18 (§V.C, objection O1)"
   limitations:
     - "An unrefereed preprint by two authors; 'valid objection' is their joint characterization, not an outside verdict."
     - "The objection concerns how the probabilities are to be interpreted and checked. It does not show the framework's theorems are wrong."
   reviewState: ai_extracted
   origin:
-    ref: "McQueen & Müller 2026, full text read through scripts/site.ts read, 2026-10-21"
+    ref: "McQueen & Müller 2026, full text retrieved through scripts/site.ts read and the quoted sections read, 2026-10-21; read in full and narrowed to ZW-C503, 2026-10-22 (session 2026-10-22-session-site-130201)"
     extractedBy: "Claude Opus 5.5 (operator), session 2026-10-21-session-site-130024"
     runId: "2026-10-21-session-site-130024"
     date: "2026-10-21"
+
+- id: ZW-E025
+  title: "McQueen & Müller: the framework's author agrees its probabilities cannot yet be checked against repeated, shared experiments"
+  claimIds: [ZW-C008]
+  sourceId: SRC-MCQUEEN-MULLER-2026
+  direction: qualifies
+  strength: moderate
+  sourceStatement: >-
+    In their joint evaluation the two authors state that Algorithmic
+    Idealism "cannot (yet) appeal to scientific practice and experimental
+    pragmatism", because "it is not in general possible to relate
+    probability assignments to statistical claims about outcomes of an
+    experiment that is repeated a large number of times under identical
+    conditions, and analyzed from an intersubjective third-person
+    perspective" (p. 18). They also state that these objections "are not
+    claims that the main postulates of Algorithmic Idealism have to be
+    modified, but that important further work of clarification is left to
+    be done" (p. 18).
+  editorInference: >-
+    This neither supports nor undermines the featured thesis (ZW-C008). It
+    bears on whether the thesis can be tested: by the proponent's own
+    account, its distinctive probabilities do not yet meet a repeatable,
+    third-person check. That is the concrete reason the case grades ZW-C008
+    presently untestable rather than weakly supported or refuted.
+  exactLocator: "arXiv:2607.16379v1, PDF p. 18 (§V.C, objection O1)"
+  limitations:
+    - "An unrefereed preprint by two authors; the concession is about the framework's present operational meaning, not a verdict on whether there is a world underneath."
+  reviewState: ai_extracted
+  origin:
+    ref: "McQueen & Müller 2026, read in full through scripts/site.ts read, 2026-10-22; split from ZW-E021 so that each record has one direction"
+    extractedBy: "Claude Opus 5.5 (operator), session 2026-10-22-session-site-130201"
+    runId: "2026-10-22-session-site-130201"
+    date: "2026-10-22"
 
 - id: ZW-E022
   title: "McQueen & Müller: the Boltzmann-brain resolution is challenged, defended, and left needing further work"
@@ -707,7 +775,7 @@
     - "A single exchange in an unrefereed preprint. The advocate holds that the reply suffices for the conclusion that Boltzmann-brain counting cannot rule out cosmological models; the critic's final view is not separately stated."
   reviewState: ai_extracted
   origin:
-    ref: "McQueen & Müller 2026, full text read through scripts/site.ts read, 2026-10-21"
+    ref: "McQueen & Müller 2026, full text retrieved through scripts/site.ts read and the quoted sections read, 2026-10-21; read in full, 2026-10-22 (session 2026-10-22-session-site-130201)"
     extractedBy: "Claude Opus 5.5 (operator), session 2026-10-21-session-site-130024"
     runId: "2026-10-21-session-site-130024"
     date: "2026-10-21"

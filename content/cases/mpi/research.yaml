@@ -43,11 +43,19 @@
   title: "True-RNG versus pseudo-RNG factorial matrix experiment"
   summary: >-
     The 2023 online replication reported the effect with an
-    atmospheric-noise source but not a deterministic pseudo-RNG — the split
-    quantum-flavored theories require, at uneven power. Run the comparison
+    atmospheric-noise source but, in its full-sample analysis, not with a
+    pseudo-random generator: the split quantum-flavored theories require.
+    But the arms had uneven power, and the pseudo-random generator was
+    seeded from participants' own swipe timestamps. Its arm was also
+    significant under the paper's averaged analysis, and no test of the
+    difference was reported. Run the comparison
     as a preregistered factorial design with equal power per arm: same
-    participants, interleaved sources, blind analysis. MPI-family theories
-    predict source-dependence; every conventional account predicts none.
+    participants, interleaved sources concealed from participant and
+    experimenter (as in Grote's 2021 split), a pseudo-random arm seeded
+    independently of anything the participant does, a prespecified test
+    of the difference between arms, and permutation statistics that
+    respect the dependence among matrix cells. MPI-family theories predict
+    source-dependence; every conventional account predicts none.
   claimIds: [MPI-C503, MPI-C007]
   track: either
   effortTier: lab

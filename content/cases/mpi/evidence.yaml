@@ -184,34 +184,53 @@
     date: "2026-08-22"
 
 - id: MPI-E007
-  title: "Flores 2021: five in-house replications, three significant under permutation tests"
+  title: "Flores 2021: three of five studies significant, under an analysis adopted after the registered one"
   claimIds: [MPI-C007, MPI-C009]
   sourceId: SRC-FLORES-2021
   direction: qualifies
   strength: moderate
   sourceStatement: >-
-    A doctoral thesis under Watt and Walach ran five replication studies,
-    the first two exact replications using Lucadou's own RNG, software, and
-    protocol, with new control and analysis methods introduced and compared
-    against the originals. Per the successor preprint's summary, Flores
-    "still reports significant results in three out of five studies," while
-    her Monte Carlo work found that high intercorrelations among
-    psychological variables had inflated the original studies' significance.
+    A doctoral thesis at Edinburgh's Koestler Unit ran five replication
+    studies, the first two exact replications using Lucadou's own RNG,
+    software and protocol. For Study 1, under the registered method, the
+    thesis reports that "hypothesis 1 is accepted as more significant
+    correlations were produced in the experimental session than in the
+    control condition with the original method used by von Lucadou" — and
+    in the same passage that "This Z showed to overestimate results." It
+    records that "Two years later the first Z analysis, a permutation
+    analysis was introduced to replace the original method of control." In
+    the conclusion chapter (pp. 283–288, letter-spaced text, paraphrased
+    here) the thesis reports Studies 1, 2 and 3 significant under the
+    permutation analysis (p = 0.0002, 0.0002 and 0.0003 for the upper-right
+    region of the matrix); the prediction not verified in Study 4 and no
+    significant results in Study 5 (for Study 4 the thesis says the
+    hypothesis has to be rejected, p. 240); and significance again only when the Study 4 and 5
+    data were pooled post hoc (chapter 8). It also records agreeing with the
+    physicist Thomas Filk that, once the data are permuted, the 900-cell
+    upper-right analysis has no relevance (pp. 284–285).
   editorInference: >-
-    The most double-edged record in the case: partial positive results that
-    survive her own dependence-aware analyses, produced inside the same
-    project that sharpened the strongest statistical critique of the
-    founding experiments. It qualifies both the clean-null narrative and
-    the founding results at once.
-  exactLocator: "Edinburgh Research Archive, handle 1842/38225"
+    This replaces the earlier reading of this record, which took the
+    three-of-five from the successor preprint's summary and said the
+    positives "survive her own dependence-aware analyses". Read in full, the
+    positives are weaker than that. The registered analysis is the one the
+    author herself says overestimates. The permutation analysis behind the
+    three positives was introduced later. Its methods were not specified in
+    the registration (MPI-E018). One of the three positive studies had a
+    single participant, the researcher (MPI-E019). The two studies that
+    added a second generator did not confirm the prediction. The record
+    still qualifies the clean-null narrative: these are reported positives
+    from a team that published its own nulls. But it gives the anomaly
+    reading less than the case previously credited.
+  exactLocator: "pp. 166–167 (quoted passages); conclusion chapter pp. 276–291 and p. 240 (paraphrased; PDF pages as the reading tool numbers them)"
   limitations:
     - "Thesis examination rather than journal peer review; the five studies share equipment, personnel, and analytic choices, so they are not five independent confirmations."
+    - "The conclusion chapter and most results text extract as letter-spaced characters, so the per-study results are paraphrased with page locators rather than quoted; they can be checked against the PDF."
   reviewState: ai_extracted
   origin:
-    ref: "Verification batch 2026-08-22 (ERA record + Flores 2023 preprint)"
-    extractedBy: "Fable (AI agent)"
-    runId: "mpi-case-2026-08-22"
-    date: "2026-08-22"
+    ref: "Verification batch 2026-08-22 (ERA record + Flores 2023 preprint); rewritten 2026-10-23 from the thesis full text, read through scripts/site.ts read"
+    extractedBy: "Fable (AI agent); revised by Claude Opus 5.5 (operator), session 2026-10-23-session-site-124118"
+    runId: "2026-10-23-session-site-124118"
+    date: "2026-10-23"
 
 - id: MPI-E008
   title: "Flores & Rapazote-Flores 2023: large online replication splits by RNG type"
@@ -233,6 +252,7 @@
   limitations:
     - "Preprint; not peer reviewed."
     - "The pseudo-RNG arm had lower achieved power, so the split is weaker evidence than the headline p-values suggest."
+    - "Read in full (2026-10-23): the pseudo-random generator was seeded from participants' finger-swipe timestamps (MPI-E021); its arm was significant under the paper's averaged analysis (MPI-E022); and the tests treat the 4,096 matrix cells as independent samples (MPI-E023). The paper reports the two arms separately and does not test the difference between them."
   reviewState: ai_extracted
   origin:
     ref: "Verification batch 2026-08-22 (preprint full text)"
@@ -504,3 +524,252 @@
     extractedBy: "Fable (AI agent)"
     runId: "mpi-case-2026-08-22"
     date: "2026-08-22"
+
+# ── Read in full, 2026-10-23: the Flores thesis and preprint, Grote's split ──
+
+- id: MPI-E018
+  title: "Flores 2021: the replications were registered as exploratory, with the permutation methods left unspecified"
+  claimIds: [MPI-C002, MPI-C007]
+  sourceId: SRC-FLORES-2021
+  direction: qualifies
+  strength: moderate
+  sourceStatement: >-
+    The registration forms reproduced in the thesis appendices label
+    Study 1's hypotheses exploratory: "H1- Exploratory hypothesis: the
+    original Z Difference analysis method as used by Walach and von Lucadou
+    will be applied to the full matrix", and a second exploratory hypothesis
+    for a permutation or simulation analysis of the above-diagonal cells,
+    for which "The specific methods for conducting the permutation or
+    simulation analysis are not pre-specified for this initial exploratory
+    study." Study 2's form states: "Although this is an exact replication
+    study, it is not registered as confirmatory because the CMM method is
+    under development by a research consortium and the preferred method of
+    analysis has not yet been determined by the consortium."
+  editorInference: >-
+    Flores's studies were registered before data collection, which is to
+    their credit, but as exploratory studies. The analysis the positives
+    rest on (MPI-E007) had no specified method in advance. So they belong
+    with neither the preregistered confirmatory replications, which were
+    null (MPI-E003, MPI-E004), nor with clean successes. The case
+    previously cited them as positives under analyses "designed to respect
+    dependence". This record says how much weight that can bear: some, as
+    reported results, but not the weight of a prespecified test.
+  exactLocator: "pp. 317–321 (Appendices 4 and 5, registration forms for Studies 1 and 2; PDF pages as the reading tool numbers them)"
+  limitations:
+    - "Only the forms for Studies 1 and 2 were read closely; the forms for Studies 3–5 (pp. 327–342) were read only for Study 3's design."
+    - "Labelling a hypothesis exploratory is the honest choice when the analysis is not settled; it is a limit on what the results can show, not a fault in the researcher."
+  reviewState: ai_extracted
+  origin:
+    ref: "Flores 2021 thesis full text, read through scripts/site.ts read, 2026-10-23"
+    extractedBy: "Claude Opus 5.5 (operator), session 2026-10-23-session-site-124118"
+    runId: "2026-10-23-session-site-124118"
+    date: "2026-10-23"
+
+- id: MPI-E019
+  title: "Flores 2021: one of the three positive studies had a single participant, the researcher"
+  claimIds: [MPI-C007]
+  sourceId: SRC-FLORES-2021
+  direction: qualifies
+  strength: moderate
+  sourceStatement: >-
+    Study 3's design is described as the same as Study 1's "with the
+    difference that there is only one participant in this study." The next
+    lines (letter-spaced in the extracted text, paraphrased here) identify
+    that participant as the researcher, who ran the 200 registered sessions
+    herself, alone in the room, on different days. The conclusion chapter
+    reports Study 3 significant under the permutation analysis (p = 0.0003,
+    p. 284). It also notes that causal correlations appeared in parts of the
+    raw data.
+  editorInference: >-
+    The design was registered in advance and openly reported, and the
+    single-participant question is a legitimate one for this paradigm. But
+    a study in which the experimenter is the only subject has no
+    separation between the person who knows the hypothesis and the person
+    producing the behavioural data. It cannot count as an independent
+    replication of a mind–matter effect. Of the "three of five" positives,
+    therefore, two came from conventional samples.
+  exactLocator: "p. 207 (Study 3 design and participant; PDF pages as the reading tool numbers them)"
+  limitations:
+    - "The participant's identity is paraphrased from letter-spaced text the quote check cannot match; the page can be checked against the PDF."
+  reviewState: ai_extracted
+  origin:
+    ref: "Flores 2021 thesis full text, read through scripts/site.ts read, 2026-10-23"
+    extractedBy: "Claude Opus 5.5 (operator), session 2026-10-23-session-site-124118"
+    runId: "2026-10-23-session-site-124118"
+    date: "2026-10-23"
+
+- id: MPI-E020
+  title: "The program's own 2016 registration: matrix cells are not independent, which makes results look more significant"
+  claimIds: [MPI-C009]
+  sourceId: SRC-FLORES-2021
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    Study 1's registration, filed before data collection and reproduced in
+    the thesis, explains why a permutation analysis is preferable to the
+    Z Difference test used in the earlier studies: "Also Z Difference and 2
+    * 2 analyses are based on the assumption that each event (correlation)
+    is independent, which is not true for these studies. The effects of
+    dependencies are difficult to predict, but one of the most common
+    effects is increased variance relative to the assumption of
+    independence - which makes an outcome appear more significant than is
+    actually the case."
+  editorInference: >-
+    The first half of MPI-C009, that the founding analyses' independence
+    assumption is violated, is stated in the program's own registration in
+    2016, before any of the critical replications reported. That is a
+    primary, pre-data statement, stronger than the successor preprint's
+    summary the claim was anchored on. The second half, that a
+    dependence-aware reanalysis of the founding datasets substantially
+    diminishes them, is not shown here. The thesis reanalyses its own
+    replications, not Lucadou's original data, and reports that the
+    permutation analysis lowered the counts compared with the original
+    method (MPI-E007).
+  exactLocator: "p. 317 (Appendix 4, registration form for Study 1; PDF pages as the reading tool numbers them)"
+  limitations:
+    - "A methodological statement, not a measurement of how much the dependence inflated any particular published result."
+  reviewState: ai_extracted
+  origin:
+    ref: "Flores 2021 thesis full text, read through scripts/site.ts read, 2026-10-23"
+    extractedBy: "Claude Opus 5.5 (operator), session 2026-10-23-session-site-124118"
+    runId: "2026-10-23-session-site-124118"
+    date: "2026-10-23"
+
+- id: MPI-E021
+  title: "Flores & Rapazote-Flores 2023: the 'pseudo-random' arm was seeded from participants' swipe timestamps"
+  claimIds: [MPI-C503]
+  sourceId: SRC-FLORES-2023
+  direction: qualifies
+  strength: moderate
+  sourceStatement: >-
+    Physical variables were generated as follows: "In the experimental
+    session, each participant’s finger swipe communicated with the RNG,
+    generating four random numbers per swipe". Of the Mersenne Twister the
+    paper says: "It is deterministic, but we utilized participant finger
+    swipes to provide a timestamp seed, ensuring true non-deterministic
+    random values." Among the psychological variables correlated with those
+    numbers is timestep, the "time between the player's last two moves."
+  editorInference: >-
+    The contrast the case had described, a true random source against a
+    deterministic one, is not what was run. By the authors' account, the
+    second arm was a pseudo-random algorithm reseeded from the participant's
+    own swipe timing, which they intended to make non-deterministic. This
+    matters both ways. As a test of the quantum-flavoured prediction that
+    only genuine indeterminacy should carry an effect, the arm is
+    ambiguous. As a control, it links participant behaviour to the
+    "physical" numbers by an ordinary route, through the seed. The text
+    does not say whether the generator was reseeded at every swipe or once
+    per session, or how control-session numbers were seeded.
+  exactLocator: "pp. 6–7 (Physical Variables; Mersenne Twister; Qeios version 1, PDF pages as the reading tool numbers them)"
+  limitations:
+    - "A good pseudo-random generator reseeded from a timestamp should show no usable correlation with that timestamp; this record shows a design ambiguity, not that an artifact occurred."
+  reviewState: ai_extracted
+  origin:
+    ref: "Flores & Rapazote-Flores 2023, Qeios version 1 PDF, read in full through scripts/site.ts read, 2026-10-23"
+    extractedBy: "Claude Opus 5.5 (operator), session 2026-10-23-session-site-124118"
+    runId: "2026-10-23-session-site-124118"
+    date: "2026-10-23"
+
+- id: MPI-E022
+  title: "Flores & Rapazote-Flores 2023: the pseudo-random arm was also significant under the averaged analysis"
+  claimIds: [MPI-C503]
+  sourceId: SRC-FLORES-2023
+  direction: qualifies
+  strength: moderate
+  sourceStatement: >-
+    The paper reports two analyses for each generator: the full-sample
+    matrix (its headline result) and the average over 22 or 23 cumulative
+    matrices. For the Mersenne Twister, "the T-test resulted in a value of
+    2,972, yielding a p-value of 0,0029 for the average analysis across the
+    23 datapoints." The authors summarise: "Results from both RNGs show, on
+    average, statistically significant outcomes". They classify the
+    Mersenne Twister result as not significant by their own combined rule,
+    which requires p below 0.05, power of at least 0.9 and an effect above
+    a computed minimum (0.0716; the averaged effect was 0.0656).
+  editorInference: >-
+    "Significant with the true source, null with the pseudo-random one"
+    holds for the full-sample analysis only. Under the paper's other
+    reported analysis, both arms clear p < 0.05 in the same direction, and
+    the split rests on a power-and-effect-size rule. No test of the
+    difference between the arms is reported. The defensible reading is
+    that both arms leaned the same way, the true-random arm more strongly.
+    That is weaker than a dissociation.
+  exactLocator: "pp. 11–14 (Results A.2 and B; Qeios version 1, PDF pages as the reading tool numbers them)"
+  limitations:
+    - "The averaged analysis pools cumulative matrices that share data (each includes all earlier sessions), so its p-value is not independent of the full-sample result."
+  reviewState: ai_extracted
+  origin:
+    ref: "Flores & Rapazote-Flores 2023, Qeios version 1 PDF, read in full through scripts/site.ts read, 2026-10-23"
+    extractedBy: "Claude Opus 5.5 (operator), session 2026-10-23-session-site-124118"
+    runId: "2026-10-23-session-site-124118"
+    date: "2026-10-23"
+
+- id: MPI-E023
+  title: "Flores & Rapazote-Flores 2023: a 4,096-cell matrix built from four variables a side, tested as 4,096 samples"
+  claimIds: [MPI-C007]
+  sourceId: SRC-FLORES-2023
+  direction: qualifies
+  strength: moderate
+  sourceStatement: >-
+    The 64×64 matrix was built from four psychological and four physical
+    variables: "240 elements of each variable were fragmented in 16 groups
+    of columns with 15 elements per column, for each of the 4 variables."
+    Experimental and control matrices were compared with a Welch t-test on
+    the distributions of their cell correlations, and the minimum effect
+    size was computed with the "sample size represented by the matrix cells
+    amounting to 4.096". The Monte Carlo step shuffled the physical
+    variables only, and "the current study employed 100 simulations". Its
+    results are reported as statistical power.
+  editorInference: >-
+    The newest positive in the case uses the same kind of analysis the
+    program's own 2016 registration warned against (MPI-E020). Its 4,096
+    cells are 16 fragments each of four variables a side, and they are
+    treated as independent samples. Cells that share a variable, or that
+    share fragments of one participant's correlated behaviour, are not
+    independent. Treating them as if they were understates the standard
+    error, by an amount the paper does not estimate. A permutation p-value
+    for the experimental–control difference, which would respect that
+    structure, is not reported. This is the operator's reading of the
+    methods as described, not a reanalysis; the raw data are available
+    from the authors on request.
+  exactLocator: "pp. 8–12 (Building correlation matrix; Statistical analysis; Results A.4; Qeios version 1, PDF pages as the reading tool numbers them)"
+  limitations:
+    - "An inference from the described methods; how much the dependence inflates this particular result is unknown without the data."
+  reviewState: ai_extracted
+  origin:
+    ref: "Flores & Rapazote-Flores 2023, Qeios version 1 PDF, read in full through scripts/site.ts read, 2026-10-23"
+    extractedBy: "Claude Opus 5.5 (operator), session 2026-10-23-session-site-124118"
+    runId: "2026-10-23-session-site-124118"
+    date: "2026-10-23"
+
+- id: MPI-E024
+  title: "Grote 2021: the blind experiment split its random source in two, and both halves were null"
+  claimIds: [MPI-C503]
+  sourceId: SRC-GROTE-2021
+  direction: context
+  strength: weak
+  sourceStatement: >-
+    Grote's blind-analysis experiment assigned each participant at random,
+    unknown to participant and experimenter, either to bits generated in
+    real time or to hardware-random words combined with a Mersenne Twister
+    stream and pre-recorded 15–30 minutes earlier. "When splitting the main
+    analysis (for the upper matrix) into the two types of random data used,
+    the p -values are p = 0.5876 for the real-time random data (RT-bits),
+    and p = 0.4321 for the XOR’d and pre-recorded random data (XPR-bits)."
+  editorInference: >-
+    This is the corpus's only blinded comparison of random sources inside a
+    matrix experiment, and it shows no difference because neither arm
+    shows anything. It is not the same contrast as Flores's: both of
+    Grote's arms contain hardware randomness, and they differ in
+    pre-recording and pseudo-random mixing. But it is the design precedent
+    for an equal-power source comparison (MPI-R003): randomised,
+    concealed from participant and experimenter, and analysed blind.
+  exactLocator: "p. 14 (Results, Experiment 1)"
+  limitations:
+    - "Each arm had about 100 participants; a null split inside a null overall result has little power to show a difference."
+  reviewState: ai_extracted
+  origin:
+    ref: "Grote 2021 full text (open-access copy via OpenAlex), read through scripts/site.ts read, 2026-10-23; design described at pp. 5–6"
+    extractedBy: "Claude Opus 5.5 (operator), session 2026-10-23-session-site-124118"
+    runId: "2026-10-23-session-site-124118"
+    date: "2026-10-23"

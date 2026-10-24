@@ -1,0 +1,82 @@
+runId: "2026-10-24-check-gemini"
+model: "Gemini 3.8 Flash (Google), independent check run"
+date: "2026-10-24"
+promptVersion: "check-v2"
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: contradicted
+  loadBearing:
+    - MPI-C002
+    - MPI-C007
+    - MPI-C008
+    - MPI-C010
+  weakestLinks:
+    - MPI-C007
+    - MPI-C009
+  synthesis: >-
+    The Model of Pragmatic Information (MPI) represents an ambitious theoretical effort to formalize parapsychology's persistent replication failures through Generalized Quantum Theory (GQT). Under MPI's no-transmission axiom, anomalous psychophysical entanglement cannot function as an exploitable signal; consequently, any protocol attempting to confirm, amplify, or harness the effect forces it to decline, invert, or displace into other observables. To test this without triggering decline, proponents created the correlation-matrix method (CMM), spreading potential correlations across thousands of variable pairs. Proponents support this framework by citing two decades of positive matrix studies (Lucadou 1986–2006, Walach et al. 2020), field observations of evasive poltergeist phenomena, and modern split results where matrix correlations appeared with a true physical random source but vanished with pseudo-random numbers (Flores & Rapazote-Flores 2023).
+
+    However, the empirical and methodological evidence provided in the ledger firmly contradicts the hypothesis that this decline pattern reflects a novel law of nature rather than conventional statistical noise. When the correlation-matrix paradigm was subjected to rigorous methodological safeguards—namely, an OSF-preregistered consensus protocol by the proponents' own team (Walach et al. 2021) and a pre-coded blind analysis by an independent physicist (Grote 2021)—the excess correlations vanished entirely. Furthermore, the founding positive matrix results relied on naive independence assumptions; when Monte Carlo simulations and permutation tests accounted for the natural intercorrelations among psychological variables, the purported anomalies diminished substantially (Flores 2021). Parallel attempts to test decline as an objective physical signature—such as preregistered damped oscillations in micro-PK data—failed to outperform random permutations (Dechamps & Maier 2019, Grote 2018).
+
+    Crucially, as deployed by proponents, MPI functions as an unfalsifiable conceptual framework: positive replications are claimed as psychophysical entanglement, whereas failed replications are interpreted as direct confirmation of the predicted decline (MPI-E003, MPI-E022). While Lucadou noted that a repeatable, exploitable signal would refute MPI, he simultaneously maintained that any experiment demonstrating such a signal must necessarily suffer from conventional sensory leakage or fraud (MPI-E023). Ordinary statistical mechanisms—analytic flexibility, publication bias, regression to the mean, and variable dependence—are jointly sufficient to explain the historical trajectory without invoking anomalous non-local causation.
+
+    Sensitivity analysis: The single evidence record whose removal would most challenge this verdict is MPI-E003 (Walach et al. 2021), in which the model's core proponent team conceded after two preregistered failures that the matrix paradigm is not replicable. If MPI-E003 were removed, the case verdict of contradicted would comfortably survive: Grote's (2021) independent blind analysis (MPI-E004) independently established the null result under strict controls, while Flores's dependency critique (MPI-E007) accounts for the historical false positives.
+  steelman: >-
+    Flores and Rapazote-Flores (2023) observed that an online 64x64 correlation matrix yielded statistically significant excess correlations with a physical atmospheric-noise source (Random.org, p = 0.00013, power 94%) but not with a deterministic algorithmic generator (Mersenne Twister, p = 0.070), fulfilling Generalized Quantum Theory's specific prerequisite that genuine physical indeterminacy is required for non-local psychophysical correlations.
+claimAssessments:
+  - claimId: MPI-C001
+    verdict: established
+    confidence: high
+    reasoning: >-
+      The original papers published by Lucadou and colleagues between 1986 and 2006 explicitly reported finding statistically significant surpluses of correlations between psychological and physical variables in experimental sessions relative to controls. The claim addresses the historical fact of what these foundational studies reported, which is confirmed across multiple subsequent reviews and meta-summaries. The strongest opposing consideration is that these published surpluses were calculated under uncorrected independence assumptions that inflated statistical significance.
+  - claimId: MPI-C002
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      The most rigorous independent and proponent-led replications employing prospective OSF preregistration or blinded analysis software have consistently failed to detect significant excess correlations. In particular, Walach et al.'s (2021) preregistered consensus replications and Grote's (2021) live-unblinded replication yielded entirely null primary outcomes. The strongest opposing consideration is Flores's (2021) doctoral thesis, which reported that three out of five matrix replication experiments retained statistical significance under permutation tests.
+  - claimId: MPI-C003
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Across both proponent and independent experimental series, individual significant correlation pairs and specific matrix configurations systematically failed to replicate across successive runs, either disappearing or shifting to post-hoc metrics. This empirical instability is acknowledged by both skeptics (who view it as regression to the mean) and proponents (who interpret it as predicted displacement). The strongest opposing consideration is that proponents do not view variable displacement as instability, but rather as the necessary operational expression of non-local entanglement under Generalized Quantum Theory.
+  - claimId: MPI-C004
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Generalized Quantum Theory was formally developed and published in Foundations of Physics by Atmanspacher, Römer, and Walach (2002) as an axiomatic extension of quantum concepts to macroscopic systems, and Lucadou subsequently integrated it with pragmatic information theory. The formal literature clearly documents the mathematical and conceptual architecture of the model. The strongest opposing consideration is that GQT strips away Hilbert-space geometry and Planck's constant, leaving it without the quantitative predictive apparatus that characterizes physical quantum mechanics.
+  - claimId: MPI-C005
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Lucadou, Römer, and Walach (2007) explicitly derived the decline and displacement effects directly from their foundational no-transmission axiom in advance of the recent preregistered replication failures. The paper clearly articulates that any attempt to stabilize psychophysical correlations into an exploitable signal must extinguish the effect. The strongest opposing consideration is that the derivation is largely qualitative and conceptual, lacking a formal mathematical proof demonstrating that decline is the unique solution to the absence of signal transmission.
+  - claimId: MPI-C006
+    verdict: established
+    confidence: high
+    reasoning: >-
+      The published literature establishes that the correlation-matrix method was deliberately designed by Lucadou and his co-theorists as the nominated empirical vehicle for MPI, intended to capture non-local correlations dispersed across many variables without allowing signal transmission. The design rationale explicitly stated that simultaneously monitoring thousands of correlations would accommodate the evasion phenomenon. The strongest opposing consideration is that critics interpret the high-dimensional matrix design not as a theoretical accommodation of quantum constraints, but as an experimental mechanism that inherently maximizes multiple testing and false-positive potential.
+  - claimId: MPI-C007
+    verdict: contradicted
+    confidence: high
+    reasoning: >-
+      The empirical record demonstrates that excess correlations disappear whenever experiments implement strict preregistration, pre-written blinded analysis software, and controls for statistical dependence among variables. The initial positive results are readily explained by intercorrelations among psychological measures and analytical flexibility rather than non-local psychophysical phenomena. The strongest opposing consideration is Flores & Rapazote-Flores's (2023) preprint reporting significant matrix effects specifically on a physical atmospheric-noise RNG (Random.org) but not on an algorithmic pseudo-RNG.
+  - claimId: MPI-C008
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Mundane methodological factors—specifically statistical dependence among psychological metrics, selective analysis flexibility, publication bias, and regression to the mean—fully account for the historical matrix results. This sufficiency is reinforced by empirical demonstrations of coding errors creating artifactual effects (Maier & Dechamps 2022) and simulation studies showing that matrix surpluses diminish under dependence-aware permutation tests. The strongest opposing consideration is Bierman's (2016) simulation in related ganzfeld datasets showing that questionable research practices at empirically observed rates could not fully explain the entire reported effect size.
+  - claimId: MPI-C009
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      Methodological investigations by Flores (2021, 2023) revealed that the original matrix experiments violated assumptions of independence due to substantial intercorrelations among the psychological variables, and Monte Carlo reanalyses accounting for this dependence substantially reduced the historical surplus of correlations. This identifies a concrete mathematical flaw in the founding analytic framework. The strongest opposing consideration is that the original 1986–2006 raw data have not been subjected to an independent, peer-reviewed reanalysis published in a major journal.
+  - claimId: MPI-C010
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      In scientific practice, proponents of MPI treat both positive and negative experimental outcomes as supportive of the model, interpreting significant correlations as psi and null replications as the predicted decline effect. While Lucadou argued that demonstrating a reliable signal would falsify MPI, he simultaneously claimed that any experiment showing a reliable signal must contain sensory leakage or fraud, insulating the model from disconfirmation. The strongest opposing consideration is that MPI makes testable prospective claims outside the lab—such as documentation suppressing spontaneous haunting phenomena (Watt & Tierney 2013)—which could theoretically yield disconfirming evidence if adequately powered.
+  - claimId: MPI-C504
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Dechamps and Maier's (2019) preregistered micro-PK study formally tested whether a damped harmonic oscillation model predicted new data from 203 participants better than 10,000 chance simulations, and the experimental data failed to reach statistical significance on all three preregistered criteria (p = 0.187, p = 0.194, and p = 0.053). This statistical outcome is an uncontested empirical result documented in the primary publication. The strongest opposing consideration is that the authors identified post-hoc trajectory measures (Fourier transform and Bayes factor energy) that they claimed differentiated the experimental data from chance at p < 0.01.

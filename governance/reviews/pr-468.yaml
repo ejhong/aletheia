@@ -1,0 +1,137 @@
+# Review of #468, harvested from its pull request (src/engine/harvest.ts). Append-only.
+pr: 468
+title: "Zero Worlds: the Wolfram program's formal quantum paper calls its derivation a conjecture, and the McQueen–Müller exchange is read in full"
+url: https://github.com/ejhong/aletheia/pull/468
+outcome: merged
+outcomeAt: 2026-10-22T13:28:30Z
+cases:
+  - zero-worlds
+rounds:
+  - commit: d07fd0c0f6cd59c34f00e2fcd6fa26f341164d15
+    date: 2026-10-21
+    protocol: review-v1
+    outcome: hold
+    reason: "held for a harm until answered: fabrication (GPT-5.6 Sol (OpenAI))"
+    seats:
+      - seat: openai
+        label: GPT-5.6 Sol (OpenAI)
+        model: gpt-5.6-sol
+        verdict: better
+        harm:
+          kind: fabrication
+          where: SRC-GORARD-2020-QM verificationNote and the “full PDF read/read in full” provenance for ZW-E020 and ZW-C505
+          why: These records say the 62-page paper was read in full, while the operator’s own limitations say it searched for selected terms and read the relevant passages without auditing the paper. That falsely upgrades the recorded scope of source verification, especially for claims based on the absence of a derivation.
+        notes:
+          - In SRC-GORARD-2020-QM, ZW-E020, ZW-C505’s origin, and the assessment rationale, replace “read in full” with “full text retrieved; targeted passages searched and read” unless the complete paper is actually reviewed.
+          - In ZW-C505, ZW-E020, and the article’s Wolfram paragraph, the quoted “By assumption” concerns the orthonormal basis, not expressly the Born probability rule. Either identify the passage establishing that the rule is stipulated, or soften this to “uses a multiway Born rule whose derivation was not found in this targeted review”; similarly scope the Tsirelson, “most extended,” and no-outside-audit statements to the search actually conducted.
+          - "Correct evidence directionality: ZW-E021 qualifies ZW-C008 rather than supporting the zero-worlds thesis, while ZW-E020 directly supports ZW-C505 but qualifies ZW-C007. Split records if the schema cannot express claim-specific directions."
+        summary: The change materially improves the case by correcting its omission of Gorard’s formal paper and replacing abstract-level characterizations with direct quotations from Müller and the McQueen–Müller exchange. It also fairly records concessions, objections, funding, and a useful external-audit research crux while retaining the appropriately unsettled case verdict. The main publication-blocking defect is the inaccurate claim that Gorard’s entire paper was read, compounded by several conclusions that should be scoped to the targeted search.
+        cost:
+          inputTokens: 21553
+          outputTokens: 4210
+          usd: 0.170412
+      - seat: gemini
+        label: Gemini 3.8 Flash (Google)
+        model: gemini-3.8-flash
+        verdict: better
+        harm: null
+        notes:
+          - Upgrade ZW-E001 (Müller 2020) and ZW-E004 (Jones & Müller 2021) from abstract-level summaries to direct full-text quotations, as both papers are open access in Quantum.
+          - Search for independent post-2020 citations or peer responses to Gorard (2020) in quantum foundations literature to determine if outside physicists have engaged with the multiway Hilbert space convergence claim.
+          - On the case standing display, ensure the multi-model blind check divergence (ranging from 'Presently untestable' to 'Mixed', 'Unresolved', and 'Weakly supported') is clearly surfaced with each seat's rationale visible per AGENTS.md §3.15.
+        summary: This change significantly strengthens the Zero Worlds case by incorporating Jonathan Gorard's 62-page 2020 formal paper on quantum mechanics in the Wolfram model, accurately documenting where its derivations stop and where postulates/conjectures remain. It also incorporates full-text readings and direct quotations from Markus Müller's 2026 Foundations of Physics paper and the McQueen–Müller adversarial collaboration, documenting both authors' concessions regarding experimental testability and Boltzmann brains. The resulting claims and narrative are more rigorous, better evidenced, and fairer to all sides.
+        cost:
+          inputTokens: 23396
+          outputTokens: 1686
+          usd: 0.023869
+      - seat: xai
+        label: Grok 4.5 (xAI)
+        model: grok-4.5
+        verdict: better
+        harm: null
+        notes:
+          - Quote ZW-E001 (Müller 2020) and ZW-E004 (Jones & Müller) from their full open-access texts; both still carry abstract-only paraphrases while the case now holds other Müller sources to full-text standard.
+          - Read Gorard & Dannemann-Freitag 2023 (and any later multiway QFT/quantum formal work) against ZW-C505’s open questions—Born form and a Tsirelson-style cap—before treating the 2020 paper as the program’s last word.
+          - On ZW-C505 / ZW-E020, either get an outside check of the claimed Hilbert-space convergence proof or keep the assessment wording tighter that the Tsirelson clause is a full-text search negative and the convergence proof is unaudited.
+        summary: The change adds the missed Gorard 2020 formal quantum paper (with journal/author provenance), full-text reads of Müller 2026 and the McQueen–Müller exchange, a precise observation claim ZW-C505, four quoted evidence records, a concrete outside-audit research item, a missing steelman, and an edition that corrects the earlier “embedding only” understatement without moving the case verdict. C007 is regraded on the report’s accuracy rather than the program’s success, and the new primary quotes make the gap and the untestable status sharper and fairer. Limits are recorded honestly; nothing true is dropped. The site is better for a reader seeking the truth about the question.
+        cost:
+          inputTokens: 21790
+          outputTokens: 341
+          usd: 0.045741
+      - seat: venice
+        label: GLM 5.3 Flash (Z.ai, via Venice)
+        model: z-ai-glm-5-3-flash
+        verdict: better
+        harm: null
+        notes:
+          - The ZW-E020 exactLocator ('PDF pp. 1–52, at p. 1…') is written to satisfy the single-range limitation in src/engine/quotecheck.ts, so the mechanical check does not actually pin each of that record's five quotations to its own page. The locator is honest and the per-quote pages are given in sourceStatement, so this is not a fabrication, but the founder should be asked to extend quotecheck to verify every listed range, and ZW-E020 should then be split or re-located so each quote is checked against its own pages.
+          - ZW-C505 states 'without deriving the Tsirelson bound' as flat fact, but the record itself discloses this rests on a keyword search of the 62-page text, not an audit, and the convergence proof is also unaudited. Consider softening the claim statement or the article clause to 'no derivation of the Tsirelson bound was found on a full-text search', and keep ZW-R007's outside audit as the item that would settle it.
+          - ZW-E002 still tells readers the Springer text was not retrieved while ZW-E023 now carries the paper's conclusions verbatim. Add a pointer on ZW-E002 (e.g. in its limitations or a relationship record) to ZW-E023 so a reader landing on the older abstract-level record is not left with a stale characterization.
+        summary: The change supplies a genuinely missed primary source (Gorard 2020, with its provenance stated from the record), upgrades two abstract-level characterizations to full-text quotations, and resolves the panel split on ZW-C007 with reasoning that concedes where the earlier account understated the program — the regrade is a judgment, told honestly, not a harm. Limitations are recorded on the records themselves, the case verdict is unchanged, and a missing steelman is added. The 470 added words buy a new section, claim, and research test, so they are earned; the only structural weakness is the locator workaround for the single-range quote check, which is disclosed and belongs to the founder's engine, not this change.
+        cost:
+          inputTokens: 22871
+          outputTokens: 2558
+          usd: 0.00471
+  - commit: 528add27a38ad4bd1d2c1423f317e38c79855d64
+    date: 2026-10-22
+    protocol: review-v1
+    outcome: publish
+    reason: 4 of 4 reviewers judge it better; no harm flagged
+    seats:
+      - seat: openai
+        label: GPT-5.6 Sol (OpenAI)
+        model: gpt-5.6-sol
+        verdict: better
+        harm: null
+        notes:
+          - edition-2026-10-21-131026 and its history entry still contain the superseded “read in full” and Born-rule-by-assumption wording; ensure the public revision view visibly marks them as corrected and links directly to edition-2026-10-22-130845.
+          - In the latest article’s steelman, change “with no derivation to be found” to “with no derivation found by this account’s full-text search,” preserving the nearby methodological qualification wherever the conclusion recurs.
+          - "ZW-E001 and ZW-E004: replace the remaining abstract-level paraphrases with quotations and exact locators from their open full texts; then read Gorard & Dannemann-Freitag 2023 before treating the 2020 search findings as representative of the program’s current formal work."
+        summary: "The change materially improves the case by adding primary-text evidence from Gorard, Müller, and the McQueen–Müller exchange, while distinguishing formal achievements from still-conjectural or operationally untestable steps. The second session adequately answers the earlier fabrication harm: it corrects the claimed reading scope, separates the basis assumption from the Born rule, scopes negative findings to a disclosed text search, and fixes evidence directionality. The added length earns its place by making the central testability gap and the Boltzmann-brain dispute substantially more concrete and fair."
+        cost:
+          inputTokens: 30782
+          outputTokens: 1330
+          usd: 0.149728
+      - seat: gemini
+        label: Gemini 3.8 Flash (Google)
+        model: gemini-3.8-flash
+        verdict: better
+        harm: null
+        notes:
+          - In the next pass, update ZW-E001 (Müller 2020) and ZW-E004 (Jones & Müller 2021) with direct full-text quotations from their open-access texts in Quantum, replacing the remaining abstract-level summaries.
+          - Check Gorard & Dannemann-Freitag (2023) or subsequent multiway quantum formal papers to verify whether subsequent work attempts to derive the Born rule or a correlation bound from the multiway structure.
+          - Consider asking the founder to update src/engine/quotecheck.ts to validate non-contiguous page ranges so covering ranges (e.g. pp. 16–52) are no longer needed to satisfy the checker.
+        summary: The operator directly resolved the round-1 harm by replacing all 'read in full' claims for Gorard (2020) with precise descriptions of text search and passage reviews, scoping all negative derivation findings accordingly. It also cleanly separated basis assumptions from probability rules, split mixed-direction evidence records, and incorporated exact quotations and acknowledgments from the McQueen–Müller adversarial collaboration and Müller's 2026 paper. These additions significantly increase the precision and fairness of the case without overstating the record.
+        cost:
+          inputTokens: 33727
+          outputTokens: 701
+          usd: 0.027924
+      - seat: xai
+        label: Grok 4.5 (xAI)
+        model: grok-4.5
+        verdict: better
+        harm: null
+        notes:
+          - Quote ZW-E001 (Müller 2020, Quantum) and ZW-E004 (Jones & Müller) from their open full texts; both still rest on abstract-level paraphrase while newer Müller records are held to full-text quotes.
+          - Read Gorard & Dannemann-Freitag 2023 (and any later multiway quantum/QFT work) and search foundations literature for outside responses to Gorard 2020, so C505’s search negatives and the ‘no outside audit’ line can be updated from this case’s searches alone.
+          - If a full reading of Gorard 2020 is done next, promote or revise C505’s Born-rule and Tsirelson clauses from search negatives to reading negatives (or correct them if a derivation in other terms appears).
+        summary: The change adds the missed Gorard 2020 formal paper, Müller’s own peer-reviewed statement of the quantum test, and a full reading of the McQueen–Müller exchange, with quoted evidence, scoped search limitations, split directions, a new observation claim, and a concrete audit crux. The prior fabrication (‘read in full’ for a searched paper) is corrected on the live records and article without changing verdicts. The ledger and article are more accurate, better evidenced, and clearer about what is conjecture versus derived, so the site is better for a reader seeking the truth.
+        cost:
+          inputTokens: 31167
+          outputTokens: 307
+          usd: 0.064291
+      - seat: venice
+        label: GLM 5.3 Flash (Z.ai, via Venice)
+        model: z-ai-glm-5-3-flash
+        verdict: better
+        harm: null
+        notes:
+          - src/engine/quotecheck.ts still verifies only the first page range in a locator, so ZW-E020's covering range 'PDF pp. 16–52' does not mechanically pin its four quotations (pp. 16, 17, 29, 52) each to their own page; the operator's manual page-marker check is reassuring but this remains a founder-level tightening — extend the check to every listed range, then give each quotation its own locator range.
+          - ZW-E001 (Müller 2020, Quantum) and ZW-E004 (Jones & Müller, Quantum) are still abstract-level paraphrases while the case now holds other Müller sources to full-text quotation; both are open access and are already the top item for the next session. Gorard & Dannemann-Freitag 2023 should also be read against ZW-C505's open questions before the 2020 paper is treated as the program's last word.
+          - ZW-C505's 'no derivation of the Tsirelson bound found' now correctly rests on a keyword search, but a full reading of the 62-page text (and a targeted search for outside responses to Gorard 2020) would turn these search negatives into reading negatives one way or the other; ZW-R007 already frames the audit, and C505's 'what would change our mind' should keep pointing there.
+        summary: "This second round fixes the fabrication harm flagged in round 1: every record now states that Gorard 2020 was searched and its found passages read, not read in full, and the claim, evidence, source note and article all scope the absence-of-derivation findings to that search. The 'By assumption' quote is correctly attributed to the orthonormal basis rather than the Born rule, evidence directions are split so each record carries one direction (E024 qualifies C007, E025 qualifies C008), and ZW-E002 gains a dated pointer to the full-text quotations in ZW-E023. The new assessment and edition keep every verdict unchanged while making the reader-facing text more accurate and honest about the limits of its own reading, so the site is left better with nothing true lost."
+        cost:
+          inputTokens: 32201
+          outputTokens: 2159
+          usd: 0.00591
+harvestedAt: 2026-10-24T12:21:41.836Z

@@ -504,3 +504,302 @@
     extractedBy: "Fable (AI agent)"
     runId: "mpi-case-2026-08-22"
     date: "2026-08-22"
+
+# ── Added 2026-10-24 (operator session 2026-10-24-session-site-120419) ──────
+# The attempts to make decline a testable signature, and the published
+# argument over whether MPI can be falsified.
+
+- id: MPI-E018
+  title: "Dechamps & Maier 2019: a preregistered decline-as-oscillation prediction does not beat random simulations"
+  claimIds: [MPI-C504]
+  sourceId: SRC-DECHAMPS-MAIER-2019
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    From two earlier smoker studies (297 participants) that showed a strong
+    early micro-PK effect and then a decline, the authors fitted a dampened
+    harmonic oscillation and extrapolated it as a prediction for 203 newly
+    tested smokers, preregistered (the paper cites osf.io/wn5b7, p. 27).
+    Three preregistered statistics compared the new data with 10,000
+    simulated datasets generated on the same random generator. Area between
+    curves: "Of all 10,000 simulations, 18.71% revealed a smaller area
+    between them and the prediction" (p. 16). Turning point: "In sum, 19.42%
+    of simulations showed a smaller distance for their turning points to the
+    prediction" (p. 17). End point: "Of all simulations, only 5.28% showed a
+    smaller distance to the prediction" (p. 17). The authors summarise:
+    "Even though the experimental data are closer to the prediction than
+    most simulations", they did not stand out significantly (p. 18).
+  editorInference: >-
+    This is the nearest thing in the record to a prospective, quantitative
+    test of decline fine structure: a shape for the decline stated before
+    the data and scored against an ensemble of chance runs. On the
+    preregistered statistics it failed. It is not a test of MPI itself —
+    the authors say their systematic oscillation departs from MPI's
+    unsystematic decline (MPI-E019) — so its weight falls on the project of
+    turning decline into a checkable prediction, not on the model's core.
+  exactLocator: "JSE 33(3): 406–434, PDF pp. 16–18 (Main Results; Discussion of the Main Analyses), p. 27 (note 1)"
+  limitations:
+    - "One study of 203 new participants; the authors attribute the null partly to a prediction too undistinctive to separate random from non-random data."
+    - "Tests an extension proposed by the Munich group, not a prediction the MPI's own theorists endorsed in advance."
+    - "The preregistration itself (osf.io/wn5b7) was not read; that the three statistics were preregistered is the paper's account."
+  reviewState: ai_extracted
+  origin:
+    ref: "Dechamps & Maier 2019, full text retrieved through scripts/site.ts read (LMU open-access copy), main results and discussions read, 2026-10-24"
+    extractedBy: "Claude Opus 5.5 (operator), session 2026-10-24-session-site-120419"
+    runId: "2026-10-24-session-site-120419"
+    date: "2026-10-24"
+
+- id: MPI-E019
+  title: "Dechamps & Maier 2019: post hoc trajectory measures distinguish the data from simulations, by the authors' account"
+  claimIds: [MPI-C504]
+  sourceId: SRC-DECHAMPS-MAIER-2019
+  direction: qualifies
+  strength: weak
+  sourceStatement: >-
+    After the preregistered tests, the authors looked for other ways "of
+    assessing the development of the effect on a post hoc basis" (p. 26) —
+    the highest Bayes factor reached, the energy of the Bayes-factor curve,
+    and a Fourier transform of it — and report: "Both these methods could
+    reliably distinguish between an experimental sample and a control group
+    or simulated data at a 1% level" (p. 26). They place their proposal
+    against the MPI: "There is one critical difference from the MPI,
+    however: We predict that the interplay between effect and countereffect
+    leads to a systematic pattern in the development of the effect itself;
+    in principle, this is something that can be predicted and tested"
+    (p. 26). They describe MPI's authors as concluding that psi effects are
+    "not accessible to reproducibility-oriented research" (p. 25).
+  editorInference: >-
+    The post hoc measures are the authors' reason to think the oscillation
+    idea still has life, and they are recorded here for fairness. They were
+    chosen after the preregistered tests did not separate the data from
+    chance, which is the pattern of analytic flexibility the conventional
+    account (MPI-C008) warns of; they become evidence only when frozen and
+    applied to new data (MPI-R006). The passage on MPI is a third party's
+    reading of the model, not the model's own words.
+  exactLocator: "JSE 33(3): 406–434, PDF pp. 25–26 (General Discussion)"
+  limitations:
+    - "Post hoc; the paper reports a later application of the same measures to another dataset (Dechamps, Maier & Pflitsch 2019), which was not read."
+    - "The control group and simulations are the authors' own; no independent reanalysis was found."
+  reviewState: ai_extracted
+  origin:
+    ref: "Dechamps & Maier 2019, full text retrieved through scripts/site.ts read, general discussion read, 2026-10-24; split from MPI-E018 so that each record has one direction"
+    extractedBy: "Claude Opus 5.5 (operator), session 2026-10-24-session-site-120419"
+    runId: "2026-10-24-session-site-120419"
+    date: "2026-10-24"
+
+- id: MPI-E020
+  title: "Maier et al. 2018: a 12,571-participant micro-PK test favours the null, and a post-hoc oscillation is related to MPI"
+  claimIds: [MPI-C505]
+  sourceId: SRC-MAIER-2018
+  direction: undermines
+  strength: weak
+  sourceStatement: >-
+    The abstract reports that "The Bayesian analysis revealed strong
+    evidence for H 0 (BF 01 = 10.07). Thus, micro-PK did not exist in the
+    data." In additional analyses the authors fitted a dampened harmonic
+    oscillation to the cumulative z-score and compared its frequency with a
+    single simulated control run of 12,571 sessions: "we compared the
+    95%-confidence intervals for both frequency scores and found indeed
+    that they did not overlap" (Additional Analysis). They state that the
+    hypothesis was "applied to the data collected and described here on a
+    post hoc basis only" and that "For now, it is not considered as
+    evidence for micro-PK in the present data." The abstract says "The
+    possible role of entropy and the relation to the model of pragmatic
+    information from von Lucadou (2015) is discussed."
+  editorInference: >-
+    The authors' own reading of the oscillation is the case against
+    MPI-C505: they found the human data oscillating faster than their
+    simulated control. They offer it as a lead, not as evidence, and the
+    comparison is against one control run rather than an ensemble — the
+    point Grote's commentary tests (MPI-E021).
+  exactLocator: "Frontiers in Psychology 9: 379, Abstract; Additional Analysis (Comparing Human and Simulated Data); Discussion of the additional analyses"
+  limitations:
+    - "A mean-shift micro-PK experiment, not a correlation-matrix experiment; it bears on MPI through its decline prediction only."
+    - "Whether the 12,254-subject dataset behind the corrected correlational effect in MPI-E017 was drawn from this same online collection was not checked."
+  reviewState: ai_extracted
+  origin:
+    ref: "Maier, Dechamps & Pflitsch 2018, full text read on PubMed Central through scripts/site.ts read, 2026-10-24"
+    extractedBy: "Claude Opus 5.5 (operator), session 2026-10-24-session-site-120419"
+    runId: "2026-10-24-session-site-120419"
+    date: "2026-10-24"
+
+- id: MPI-E021
+  title: "Grote 2018: permuted data reproduce the post-hoc oscillation (p = 0.328)"
+  claimIds: [MPI-C505]
+  sourceId: SRC-GROTE-2018
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    Grote generated 1,000 random permutations of the experiment's 12,571
+    data points and fitted the same decaying oscillation to each: "The main
+    experimental result as presented in Maier et al. ( 2018 ) lies at ω =
+    0.0018 (red square) with 386 results of the 1,000 simulated data sets
+    having larger ω -values than that." Restricting to fits no worse than
+    the original, "the variation in the data motivating the hypothesis
+    under test, would show up just by chance with a probability of p =
+    0.328 under a null hypothesis." He reports the result held using the
+    single control data set and a pseudo-random generator, and notes that
+    "A constant oscillation of an original effect size always leads to a
+    decline of oscillations in a cumulative z-score plot, as more data goes
+    into the z-score calculation."
+  editorInference: >-
+    The one quantitative decline signature offered from this data set falls
+    within what reshuffled data produce, and the commentary names why a
+    single control run cannot test it. The last quotation bears on the
+    whole decline literature: a cumulative score's swings shrink as data
+    accumulate whether or not anything real is there, which is part of why
+    the decline pattern (MPI-C003) cannot by itself favour MPI.
+  exactLocator: "Frontiers in Psychology 9: 1350, main text (Figure 1 and the paragraphs before and after it)"
+  limitations:
+    - "Tests one post-hoc pattern in one experiment; it does not address the correlation-matrix record."
+    - "Its listed reviewers included an author of the paper under comment and one of MPI's theorists; that is provenance, not a sign of bias either way."
+  reviewState: ai_extracted
+  origin:
+    ref: "Grote 2018, full text read on PubMed Central through scripts/site.ts read, 2026-10-24"
+    extractedBy: "Claude Opus 5.5 (operator), session 2026-10-24-session-site-120419"
+    runId: "2026-10-24-session-site-120419"
+    date: "2026-10-24"
+
+- id: MPI-E022
+  title: "Maier & Dechamps, quoted in Maier et al. 2018: true nulls cannot be told from decline under MPI"
+  claimIds: [MPI-C010]
+  sourceId: SRC-MAIER-2018
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    Summarising von Lucadou's model, the authors write that "the novelty of
+    a finding is complementary related to its likelihood of confirmation"
+    and that the effect "might unsystematically re-appear on other
+    indicators that were not initially studied." They then quote their own
+    paper, then in press: "the theoretical problem with this approach
+    however is that real null effects documented by replication failures of
+    spurious findings cannot be distinguished from decline effects. The
+    consequence is that with the standard scientific replication approach
+    micro-psychokinesis effects cannot be scientifically studied."
+  editorInference: >-
+    A concession from researchers who work inside micro-PK and take MPI
+    seriously enough to try to repair it: as they read the model, a failed
+    replication cannot count against it, which is the substance of
+    MPI-C010. It is their reading, not the model's author's — von Lucadou's
+    own statement of what would refute the model is MPI-E023.
+  exactLocator: "Frontiers in Psychology 9: 379, Additional Analysis (opening paragraphs)"
+  limitations:
+    - "A characterisation of MPI by third parties, quoted from their own 2018 JSE paper (Maier & Dechamps 2018), which was not separately read."
+  reviewState: ai_extracted
+  origin:
+    ref: "Maier, Dechamps & Pflitsch 2018, full text read on PubMed Central through scripts/site.ts read, 2026-10-24"
+    extractedBy: "Claude Opus 5.5 (operator), session 2026-10-24-session-site-120419"
+    runId: "2026-10-24-session-site-120419"
+    date: "2026-10-24"
+
+- id: MPI-E023
+  title: "Lucadou 2005: MPI is falsifiable — by a reliable signal, which he predicts would always contain a sensory leak"
+  claimIds: [MPI-C010]
+  sourceId: SRC-LUCADOU-GUIARD-2005
+  direction: qualifies
+  strength: moderate
+  sourceStatement: >-
+    In his English abstract (PDF p. 2) von Lucadou states that the MPI's
+    predictions differ from the null hypothesis and that the model can in
+    principle be falsified by existing or future experimental data. In the
+    section on falsifiability (p. 10) he writes: "Daher ist das MPI also nicht
+    unfalsifizierbar, wie Guiard suggeriert"; the demonstration of reliable
+    signal transmission by PK or ESP "würde es sofort zu Fall bringen". He
+    continues: "Jedes Psi-Experiment, bei dem zuverlässig Information vom
+    Sender auf den Empfänger übertragen werden kann, enthält ein
+    sensorisches Leck", adding in parentheses that this includes fraud.
+  editorInference: >-
+    In English: "So the MPI is not unfalsifiable, as Guiard suggests"; a
+    reliable signal "would bring it down at once"; and "every psi
+    experiment in which information can be reliably transmitted from sender
+    to receiver contains a sensory leak." The model's author does name a
+    refuting outcome, which is the strongest reply to MPI-C010. But in the
+    same breath he predicts that any experiment showing that outcome will
+    have a conventional flaw — so the named refutation is, in his framing,
+    already assigned to a leak. It is also not an outcome of the matrix
+    experiment the model nominated (MPI-C006), which is the scope MPI-C010
+    is about.
+  exactLocator: "Zeitschrift für Anomalistik 5 (2005), PDF p. 10 (journal p. 102, section 'Das MPI, Makro-PK und seine Falsifizierbarkeit'); the English abstract's summary is at PDF p. 2"
+  limitations:
+    - "One statement, from 2005; the model's later formulations (2007, 2015) were not checked for a different or more specific criterion."
+    - "Translation is the editor's; the German is quoted verbatim."
+    - "Lucadou also says in the same section that MPI makes statements about haunting cases, sitter groups and social conflict; whether those yield bindable predictions is not assessed here."
+  reviewState: ai_extracted
+  origin:
+    ref: "von Lucadou 2005 with Guiard's reply, Zeitschrift für Anomalistik 5: 93–125, full text retrieved through scripts/site.ts read and the falsifiability sections read, 2026-10-24"
+    extractedBy: "Claude Opus 5.5 (operator), session 2026-10-24-session-site-120419"
+    runId: "2026-10-24-session-site-120419"
+    date: "2026-10-24"
+
+- id: MPI-E024
+  title: "Guiard 2005: the decline-and-displacement postulate gives no criterion that separates a PK process from chance"
+  claimIds: [MPI-C010]
+  sourceId: SRC-LUCADOU-GUIARD-2005
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    In his reply, Guiard addresses the postulate that an attempted signal
+    makes the correlation vanish or change unpredictably, possibly showing
+    up in other parameters of the random process. He writes: "Man muss nur
+    lange genug irgendwelche Parameter aus den Prozessdaten berechnen,
+    irgendwann wird sich ein Parameter als signifikant erweisen" and that
+    "um nicht in den Verdacht der Selbstimmunisierung zu geraten, sollte
+    Lucadou ein präzises Kriterium angeben, mit dem ein PK-Prozess von
+    einem üblichen Zufallsprozess unterschieden werden kann. Diese präzise
+    Formulierung des MPI steht noch aus" (p. 27). On the matrix
+    experiment's constant correlation density, which Lucadou says may not
+    itself be used as the observed criterion, Guiard concludes: "Damit
+    hätte er aber das einzige Kriterium zur Unterscheidung zwischen einem
+    PK-Prozess und einem reinen Zufallsprozess abgelehnt" (p. 28).
+  editorInference: >-
+    In English: "One need only compute enough parameters from the process
+    data and one of them will eventually prove significant"; "to avoid the
+    suspicion of self-immunisation, Lucadou should give a precise criterion
+    by which a PK process can be distinguished from an ordinary random
+    process. This precise formulation of the MPI is still outstanding"; and
+    "he would thereby have rejected the only criterion for distinguishing a
+    PK process from a purely random one." This is MPI-C010's charge made by
+    a named critic, in print, to the model's author, and aimed at the
+    matrix experiment's own statistic. Guiard also records agreement with
+    Lucadou that ordinary accumulation is allowed where no signal can be
+    sent (p. 29), so the dispute is narrower than a blanket charge of
+    unfalsifiability.
+  exactLocator: "Zeitschrift für Anomalistik 5 (2005), PDF pp. 27–28 (journal pp. 119–120, section 'Falsifizierbarkeitsprobleme wegen Hauptsatz 2')"
+  limitations:
+    - "A critic's argument, not a test; Lucadou's answer to this rejoinder, if any, was not searched for."
+    - "Translation is the editor's; the German is quoted verbatim."
+  reviewState: ai_extracted
+  origin:
+    ref: "von Lucadou 2005 with Guiard's reply, Zeitschrift für Anomalistik 5: 93–125, full text retrieved through scripts/site.ts read, reply pp. 14–15 and 26–30 read, 2026-10-24"
+    extractedBy: "Claude Opus 5.5 (operator), session 2026-10-24-session-site-120419"
+    runId: "2026-10-24-session-site-120419"
+    date: "2026-10-24"
+
+- id: MPI-E025
+  title: "Maier et al. 2018 on Maier & Dechamps: a strong micro-PK effect, then a strong null in its preregistered replication"
+  claimIds: [MPI-C502]
+  sourceId: SRC-MAIER-2018
+  direction: supports
+  strength: weak
+  sourceStatement: >-
+    Describing their own earlier smoker studies, the authors write: "The
+    authors reported strong evidence supporting micro-PK in Study 1 (BF 10
+    = 66.7). However, in Study 2, a pre-registered, high-quality
+    replication of Study 1, they found strong evidence for the null effect
+    (BF 01 = 11.07)." The same introduction notes that a multi-laboratory
+    replication of a benchmark PEAR study "failed to confirm the original
+    results."
+  editorInference: >-
+    Another documented instance of the field-wide decline pattern
+    (MPI-C502), outside the correlation-matrix paradigm and in a Bayesian
+    design. Like the others, it fits both rival accounts: a real effect
+    that faded, or a first study that was a false positive.
+  exactLocator: "Frontiers in Psychology 9: 379, Introduction"
+  limitations:
+    - "The authors' summary of their own paper (Maier & Dechamps 2018, JSE 32(2)), which was not separately read."
+  reviewState: ai_extracted
+  origin:
+    ref: "Maier, Dechamps & Pflitsch 2018, full text read on PubMed Central through scripts/site.ts read, 2026-10-24"
+    extractedBy: "Claude Opus 5.5 (operator), session 2026-10-24-session-site-120419"
+    runId: "2026-10-24-session-site-120419"
+    date: "2026-10-24"

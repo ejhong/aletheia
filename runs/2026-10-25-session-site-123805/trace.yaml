@@ -1,0 +1,116 @@
+# What operator session 2026-10-25-session-site-123805 did, as its trace recorded it: the digest the workflow made on the session's machine
+# (src/engine/trace.ts), checked here (src/engine/session.ts). The session's own account of its work is its log.
+version: 1
+ended: success
+model: claude-opus-5-5
+permissionMode: dontAsk
+turns: 102
+minutes: 15.7
+usd: 5.01
+compactions: 0
+unreadableLines: 0
+tools:
+  - tool: Bash
+    calls: 32
+    failed: 3
+    refused: 3
+  - tool: Read
+    calls: 20
+    failed: 0
+    refused: 0
+  - tool: Grep
+    calls: 18
+    failed: 1
+    refused: 0
+  - tool: Edit
+    calls: 17
+    failed: 0
+    refused: 0
+  - tool: WebSearch
+    calls: 8
+    failed: 0
+    refused: 0
+  - tool: Write
+    calls: 3
+    failed: 0
+    refused: 0
+  - tool: Glob
+    calls: 1
+    failed: 0
+    refused: 0
+  - tool: ToolSearch
+    calls: 1
+    failed: 0
+    refused: 0
+  - tool: WebFetch
+    calls: 1
+    failed: 0
+    refused: 0
+commands:
+  - command: node scripts/site.ts read
+    calls: 14
+    failed: 3
+    refused: 0
+  - command: cat
+    calls: 3
+    failed: 0
+    refused: 1
+  - command: cd
+    calls: 2
+    failed: 0
+    refused: 0
+  - command: ls
+    calls: 2
+    failed: 0
+    refused: 1
+  - command: node scripts/site.ts check-quotes
+    calls: 2
+    failed: 0
+    refused: 0
+  - command: node scripts/site.ts ids
+    calls: 2
+    failed: 0
+    refused: 0
+  - command: node scripts/site.ts status
+    calls: 2
+    failed: 0
+    refused: 0
+  - command: for
+    calls: 1
+    failed: 0
+    refused: 1
+  - command: git status
+    calls: 1
+    failed: 0
+    refused: 0
+  - command: node scripts/site.ts stamp
+    calls: 1
+    failed: 0
+    refused: 0
+  - command: npm run build
+    calls: 1
+    failed: 0
+    refused: 0
+  - command: npm test
+    calls: 1
+    failed: 0
+    refused: 0
+fetched:
+  - host: era.ed.ac.uk
+    calls: 1
+    failed: 0
+read:
+  - source: qeios.com
+    calls: 7
+    failed: 0
+  - source: era.ed.ac.uk
+    calls: 4
+    failed: 0
+  - source: fundacaobial.com
+    calls: 2
+    failed: 2
+  - source: open-data.spr.ac.uk
+    calls: 1
+    failed: 1
+filesEdited: 9
+repeatedFailures: 0

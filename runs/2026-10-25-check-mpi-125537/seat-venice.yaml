@@ -1,0 +1,189 @@
+runId: "2026-10-25-check-glm"
+model: "GLM 5.3 Flash (Z.ai, via Venice), independent check run"
+date: "2026-10-25"
+promptVersion: "check-v2"
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: contradicted
+  loadBearing: [MPI-C002, MPI-C003, MPI-C007, MPI-C009, MPI-C010]
+  weakestLinks: [MPI-C008, MPI-C009]
+  synthesis: >-
+    The case separates cleanly into rungs, and they do not reinforce each other. The
+    observation rung is solid: the correlation-matrix program really did produce early
+    positives that then declined, changed sign, or displaced (MPI-C001, MPI-C002,
+    MPI-C003), and this pattern is documented both within the program (Grote 2015→2017→2021;
+    Flores Studies 1–5) and field-wide (Kennedy 2003). The mechanism rung is genuine but
+    thin: the no-transmission axiom and the decline/displacement predictions were in print
+    by 2007 (MPI-E009), before the strict failures, and the matrix design was explicitly
+    nominated as the model's own test (MPI-E011). The attribution rung is where the case
+    fails. MPI's account requires genuine excess correlations to exist in the first place;
+    the founding positives are author-run, pre-preregistration, never independently
+    reanalyzed with raw data, and now undercut from inside the program by the dependence
+    critique (MPI-E018) and by the flagship 2020 replication's own authors, who called its
+    significance "fragile" and broken by improved analysis (MPI-E002). Every methodologically
+    stringent test in the file — Grote's full blind analysis of 200 participants, the two
+    consensus-protocol replications run by proponents themselves, and Flores's preregistered
+    prediction of no decline, which failed with a sign reversal — returned null. The one
+    forward-looking contrast, the 2023 true-vs-pseudo-random split, dissolves on reading:
+    it holds on only one of the paper's two emphasized analyses, and the "deterministic"
+    arm was seeded from participants' own swipes (MPI-E021, MPI-E022). Meanwhile the model
+    absorbs every outcome (MPI-C010): success reads as entanglement, failure as predicted
+    decline, statistical objections apply "only to causal signals," and each replication
+    must introduce novelty so no null counts as a failure to replicate. A hypothesis that
+    requires anomalies yet treats all evidence as confirmation, whose anomalous evidence
+    base has dissolved under exactly the controls it was offered, is contradicted as an
+    attribution even though its decline observation is confirmed — and shared with the null.
+    Steelmanning the conventional side: Bösch's small-study effect, Grote 2017's live
+    post-hoc conjuring, and the Maier–Dechamps coding error show each needed artifact
+    operating in this literature; steelmanning MPI: the 2007 prediction's temporal priority
+    and distinctive fine structure, and Bierman 2016's finding that QRPs do not cover the
+    whole of the neighboring ganzfeld effect. Sensitivity: removing MPI-E018 would most
+    change this verdict, since it is the only primary-text evidence that the founding
+    counting method was inflated; the verdict nonetheless survives without it at reduced
+    confidence, because the preregistered null record (MPI-E003, MPI-E004, MPI-E020) and
+    the 2020 authors' own fragility concession still carry the attribution failure, leaving
+    the artifact mechanism resting on design analogy (MPI-E023) rather than direct reanalysis.
+  steelman: >-
+    The decline, sign-change, and displacement predictions were published in 2007
+    (MPI-E009), including the distinctive strength–reproducibility reciprocity, and the
+    subsequent record then showed precisely that fine structure — decline within a single
+    careful experimenter's series (Grote 2015→2021), a preregistered prediction of no
+    decline failing with a sign reversal (MPI-E020), and effects shifting across variables
+    and cells — before any critic had proposed a comparably specific forward prediction.
+    No record in this file contains a prespecified, quantitative, conventionally-derived
+    prediction that replications would fail in this pattern, the dependence-aware reanalysis
+    of the founding datasets that would convict them of artifact has never been run
+    (MPI-R002), and Bierman 2016 shows questionable practices demonstrably do not explain
+    the whole of the best-studied neighboring psi database. A proponent can rightly ask
+    what the null account predicted in advance, other than everything and its opposite.
+claimAssessments:
+  - claimId: MPI-C001
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      Both the 2006 proceedings paper and the 2020 two-lab replication are on record as
+      reporting excess correlations, and successor papers describe the founding series the
+      same way. The claim is about what was reported, and the reporting is well attested.
+      The strongest opposing consideration is that every attestation traces to the author's
+      own group, full texts of the original series were not examined, and the raw data have
+      never been released — so the claim establishes the record, not the effect.
+  - claimId: MPI-C002
+    verdict: established
+    confidence: moderate
+    reasoning: >-
+      The failure record is the best-documented element in the file: two preregistered
+      consensus-protocol replications by the proponents' own team ("neither of the two
+      experiments was significant"), a full blind analysis of 200 participants with the
+      software frozen before unblinding, Grote 2017's null preplanned analyses, and Flores's
+      preregistered Studies 4–5. The strongest opposing consideration is that Flores's
+      Studies 1–3 were also preregistered and significant, so "predominantly" must do real
+      work — but the tally still favors failure, and the surviving positives carry the
+      caveats documented in MPI-E007.
+  - claimId: MPI-C003
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      The instability pattern is documented study by study: Grote 2015 significant, 2017
+      null on all preplanned analyses with only a post-hoc variant significant, 2021 null
+      under blinding; Flores Study 4 reversed sign against a preregistered no-decline
+      prediction; Kennedy 2003 catalogs the same pattern field-wide. The strongest opposing
+      consideration is that "shifted to different variables or cells" is partly a reading of
+      patterns the proponents themselves narrate, and no single reanalysis has traced one
+      effect's displacement quantitatively.
+  - claimId: MPI-C004
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      The Atmanspacher–Römer–Walach 2002 paper genuinely axiomatizes complementarity and
+      entanglement without Hilbert-space structure in a physics venue, and the 2007 JCS
+      paper instantiates MPI within it. The claim is about the formalism's existence and
+      content, which the records establish. The strongest opposing consideration is that
+      "formally explicit" overstates predictive content: the framework deliberately drops
+      the machinery that yields quantified probabilities, so it cannot say how large any
+      effect should be.
+  - claimId: MPI-C005
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      The 2007 paper states the no-transmission axiom verbatim and derives the decline,
+      sign-change, and displacement consequences in print, before the 2015–2021 failures —
+      so the prediction is genuinely a priori relative to the data. The strongest opposing
+      consideration is that the derivation is asserted rather than proven: without
+      quantitative structure, "entails" rests on the theorists' own argument, and no
+      independent formal verification of the deduction exists in the file.
+  - claimId: MPI-C006
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      The design rationale is quoted directly from the 2007 text: register many
+      correlations simultaneously so effects appear as transitory jumping patterns without
+      enabling signal use, with the candid admission that this will never convince every
+      skeptic. The claim accurately reports the design's intent and its binding to the
+      matrix paradigm. The strongest opposing consideration is that the same passage can be
+      read as pre-announcing non-replicability, so the record establishes intent while
+      leaving the design's stated virtue (detecting without exploiting) untested as a
+      statistical matter.
+  - claimId: MPI-C007
+    verdict: contradicted
+    confidence: moderate
+    reasoning: >-
+      The attribution has no surviving support in the file: the founding positives are
+      author-run and pre-preregistration, the 2020 flagship was self-described as fragile,
+      the founding method's Z-score inflation is documented from inside the program
+      (MPI-E018), and the strictest independent and proponent-run tests are all null,
+      including a failed preregistered no-decline prediction with a sign reversal. The one
+      theoretically suggestive positive, the 2023 RNG split, fails on reading (MPI-E021,
+      MPI-E022). The strongest opposing consideration is that nulls alone cannot strictly
+      contradict a model that predicts them — the contradiction is structural, resting on
+      the dissolution of every positive the model needs — and no direct reanalysis of the
+      founding datasets has been published.
+  - claimId: MPI-C503
+    verdict: contradicted
+    confidence: moderate
+    reasoning: >-
+      The claim as stated is undercut by the paper's own full text: the true/pseudo split
+      holds for the final cumulative matrix but not for the average analysis, where both
+      arms are significant (MPI-E021), and the "deterministic" Mersenne Twister arm was
+      seeded from participants' finger-swipe timestamps, so it was neither deterministic
+      nor independent of the behavior correlated with it (MPI-E022). The strongest opposing
+      consideration is that the abstract's headline contrast is genuinely reported for one
+      prespecified-feeling analysis, and the authors defend the split on power and
+      minimum-effect grounds that this record does not refute.
+  - claimId: MPI-C008
+    verdict: weakly_supported
+    confidence: low
+    reasoning: >-
+      Each named factor is documented operating in or near this literature: publication
+      bias and small-study effects across 380 REG studies (Bösch), analytic flexibility
+      conjuring significance from null data within Grote 2017 itself, a coding error
+      manufacturing a false positive (Maier & Dechamps), and dependence inflating matrix
+      counts (MPI-E018, MPI-E023). The strongest opposing consideration is that "jointly
+      sufficient" is unproven: Bierman 2016 estimates QRPs explain only about 60% of the
+      neighboring ganzfeld effect, and no quantitative demonstration covers the matrix
+      record's full arc without residue.
+  - claimId: MPI-C009
+    verdict: mixed
+    confidence: moderate
+    reasoning: >-
+      The first half is directly evidenced in primary text: the thesis states the original Z
+      "overestimates results, due to the dependency of the variables," and the 2023 online
+      study repeats the same design flaw with 4,096 cells from four-by-four variables
+      (MPI-E023). The second half — that dependence-aware reanalyses diminish the founding
+      results themselves — remains inferred, since the thesis reanalyzed its own replication
+      data, not Lucadou's 1986–2006 datasets, and no published reanalysis of the originals
+      exists. The strongest opposing consideration is that the permutation reanalyses that
+      do exist still showed an experimental excess, so dependence awareness diminished but
+      did not obviously erase the effect in the one dataset tested.
+  - claimId: MPI-C010
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      The insulation is documented in practice: the 2021 failure is read as "likely part of
+      the systematic nature of such effects," the author answers the dependence objection by
+      confining it to causal signals and requiring each replication to introduce novelty,
+      and the failed preregistered no-decline prediction was absorbed into a list of
+      explanations in which the model was not counted as having failed. The strongest
+      opposing consideration is that the program did write and expose a failable
+      preregistered prediction (MPI-E020), which is conduct in tension with total
+      insulation — though the outcome shows the absorption the claim describes.

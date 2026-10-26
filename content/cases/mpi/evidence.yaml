@@ -106,19 +106,22 @@
     participants under a blind-analysis protocol in which the complete
     analysis software was written and tested before the data were analyzed;
     the unblinding was performed live at the 2019 Parapsychological
-    Association convention. "The main result was found to be not
-    statistically significant and fell well within the expected random
-    distribution of possible results." Two secondary/post-hoc analyses each
-    yielded p = 0.06.
+    Association convention. "The main result was found not to be
+    statistically significant" (p. 1), falling well within the expected
+    random distribution of possible results. Of the place and date, the
+    results section states that the pre-registered analysis "was unblinded
+    live during a presentation at the PA convention in Paris on July 6,
+    2019" (p. 12). Two secondary/post-hoc analyses each yielded p = 0.06.
   editorInference: >-
     The methodologically strictest test in the corpus, by an experimenter
     independent of Lucadou's group, on the model's nominated paradigm:
     null. Under the conventional account this is the expected result; under
     MPI it is absorbed as decline — which is why this record weighs more
     against MPI-C007 than any single positive weighs for it.
-  exactLocator: "JSE 35(2): 287–310, abstract"
+  exactLocator: "pp. 1–12 (abstract on p. 1; Results, Experiment 1, on p. 12); JSE 35(2): 287–310"
   limitations:
     - "The two p = 0.06 secondary results are reported by the author as suggestive anecdota, not confirmations."
+    - "The quotations were checked against the open-access full text on 2026-10-26 (session 2026-10-26-session-site-142302), which confirmed the Paris venue and the date; the rest of the paper has not yet been read in full for this record."
   reviewState: ai_extracted
   origin:
     ref: "Verification batch 2026-08-22 (DOI + journal page)"
@@ -681,19 +684,26 @@
     deterministic, but we utilized participant" finger swipes "to provide a
     timestamp seed, ensuring true non-deterministic random values" (p. 8).
   editorInference: >-
-    The arm described in this case as a deterministic generator was, by the
-    authors' account, seeded from the timing of the participant's own
-    actions — so its output was neither deterministic nor independent of
-    the behaviour it was then correlated with. That removes the contrast the
-    claim depends on: if anything distinguishes the two arms, it is not
-    indeterminacy versus determinism. The paper does not say whether the
-    seed was set once per session or at each swipe; if at each swipe, the
-    physical values would be a function of swipe timing, one of the
-    psychological variables, which is an ordinary route to correlation.
+    The Mersenne Twister remains a deterministic algorithm: given its seed,
+    its output is fixed. What the seeding changes is where the seed comes
+    from. Because it was taken from the timing of the participant's own
+    swipes, the sequence was not fixed before the session and is causally
+    linked to the behaviour it was then correlated with. That does not
+    erase the difference between an algorithm and an atmospheric-noise
+    source, and it does not by itself show any statistical dependence
+    between the two sets of variables; it does mean the arm was not the
+    clean "predetermined sequence" condition the contrast is usually taken
+    to test. The paper does not say whether the seed was set once per
+    session or at each swipe; if at each swipe, the physical values would
+    be a function of swipe timing, one of the psychological variables,
+    which is an ordinary route to correlation. The stronger point against
+    the claim is MPI-E021's: the reported split itself depends on which
+    analysis is read.
   exactLocator: "p. 8 (Methods, Mersenne Twister)"
   limitations:
     - "The word 'finger' falls outside the quoted spans because the PDF's text layer drops the 'fi' ligature."
     - "How the seed was applied is not stated; the possible classical pathway is an inference, not a finding."
+    - "The authors' phrase 'true non-deterministic random values' is their description; it is not shown here that timestamp seeding makes the sequence non-deterministic in any sense beyond the unpredictability of the seed."
   reviewState: ai_extracted
   origin:
     ref: "Flores & Rapazote-Flores 2023, Qeios v2 PDF read in full 2026-10-25"
@@ -713,16 +723,23 @@
     of participant intervention" (p. 5). The 64×64 matrix is made by cutting
     each session's series into sixteen segments: "Without fragmentation, the
     matrix resolution would be limited to 4x4 (4 psychological variables
-    with 4 physical variables)" (p. 9). The power analysis then takes "a
-    sample size represented by the matrix cells amounting to 4,096" (p. 14).
-    The Monte Carlo check shuffled the physical variables only, and "the
-    current study employed 100 simulations" (p. 10).
+    with 4 physical variables)" (p. 9). The main test is "a comparison
+    between the distribution of correlations derived from experimental and
+    control sessions using Welch’s T-test" (p. 9). The power analysis then
+    takes "a sample size represented by the matrix cells amounting to
+    4,096" (p. 14). The Monte Carlo check shuffled the physical variables
+    only, and "the current study employed 100 simulations" (p. 10).
   editorInference: >-
-    The large positive result of the online study rests on statistics that
-    treat its 4,096 cells as independent observations, though they are
-    built from four psychological and four physical variables cut into
-    segments — the same kind of dependence that inflated the founding
-    counts. The experimental and control series are also generated by
+    The online study's power analysis counts its 4,096 matrix cells as the
+    sample, and its main test compares the distributions of cell
+    correlations between experimental and control sessions; a Welch test
+    takes its observations as independent. The cells are built from four
+    psychological and four physical variables cut into segments, so they
+    may well be dependent — the same kind of dependence that inflated the
+    founding counts. The paper does not discuss whether the cells are
+    independent, and this record does not show that their dependence
+    changes the result: it is a suspected weakness, not a demonstrated
+    error. The experimental and control series are also generated by
     different procedures, so a difference between them need not be
     anomalous. The paper, read in full, describes no preregistration. None
     of this shows the result is an artefact; it shows the result has not
@@ -730,6 +747,7 @@
   exactLocator: "pp. 5–14 (Methods; Statistical analysis; Results A.4)"
   limitations:
     - "Design observations, not a reanalysis; the raw data are available only on request and no independent reanalysis has been published."
+    - "Whether the paper's Monte Carlo step, which shuffles only the physical variables, was used to calibrate the test against the cells' dependence is not clear from the text; this record does not assume it was not."
   reviewState: ai_extracted
   origin:
     ref: "Flores & Rapazote-Flores 2023, Qeios v2 PDF read in full 2026-10-25"

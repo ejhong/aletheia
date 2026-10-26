@@ -1,0 +1,77 @@
+runId: "2026-10-26-check-gemini"
+model: "Gemini 3.8 Flash (Google), independent check run"
+date: "2026-10-26"
+promptVersion: "check-v2"
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: contradicted
+  loadBearing:
+    - MPI-C002
+    - MPI-C007
+    - MPI-C008
+    - MPI-C009
+    - MPI-C010
+  weakestLinks:
+    - MPI-C007
+    - MPI-C009
+  synthesis: >-
+    The Model of Pragmatic Information (MPI) represents one of the most sophisticated theoretical efforts in anomalous cognition, attempting to resolve parapsychology's pervasive replication crisis by formalizing the decline effect as a lawful consequence of Generalized Quantum Theory. The proponent steelman must acknowledge that MPI was not retrofitted to recent failures: its foundational authors derived the decline, displacement, and strength-reproducibility reciprocity effects in print in 2007 (MPI-E009) long before the modern wave of preregistered replications. Furthermore, the correlation-matrix method was explicitly constructed as an operational workaround to detect unexploitable non-local correlations across dispersed observables (MPI-E011), and proponents have repeatedly subjected their own paradigms to testing (MPI-E002, MPI-E003, MPI-E007). Nevertheless, the empirical record decisively contradicts the claim that genuine non-local psychophysical entanglement drives these phenomena (MPI-C007). Methodological and statistical mechanisms fully explain the entire forty-year trajectory (MPI-C008). The foundational excess-correlation counts of early studies were fatally confounded by intercorrelation among psychological variables, violating independence assumptions and creating an artificial surplus (MPI-E018). When rigorous preregistration, blind analyses, and dependency-aware tests were introduced, the primary effect systematically evaporated (MPI-E003, MPI-E004, MPI-E020). Meanwhile, apparent anomalies in subsequent studies stem from analytic flexibility (MPI-E006), software errors (MPI-E017), or treating dependent matrix cells as independent samples (MPI-E023). Crucially, the model is insulated from falsification by interpreting both significant replications as entanglement and null replications as predicted decline (MPI-C010, MPI-E019). Because standard regression to the mean and variable dependency fully account for the observations without requiring new physics, the featured hypothesis that the decline traces an anomalous law of nature is contradicted. In sensitivity analysis, the single evidence record whose removal would most soften this conclusion is Walach et al. 2021 (MPI-E003), which documented the proponents' own failed preregistered replications; however, the case verdict survives its removal on the independent strength of Grote's blind-analysis null (MPI-E004), Flores's preregistered failures (MPI-E020), and the dependency demonstration (MPI-E018).
+  steelman: >-
+    MPI uniquely derived an ex-ante, non-trivial prediction in 2007: an exact mathematical reciprocity between initial effect size and the rate of subsequent replication decline, a fine-structure dynamic that conventional regression to the mean has never formally modeled or quantitatively falsified across parapsychological datasets.
+claimAssessments:
+  - claimId: MPI-C001
+    verdict: established
+    confidence: high
+    reasoning: >-
+      The historical record confirms that Lucadou's matrix experiments from 1986 to 2006 consistently reported a statistically significant surplus of correlations between psychological and physical variables relative to control sessions (MPI-E001, MPI-E002). This excess correlation served as the foundational empirical justification for the entire research program. The strongest opposing consideration is that the original datasets have never been made available for independent audit or modern statistical verification, leaving open the degree to which raw scoring errors or uncorrected dependencies inflated the published counts.
+  - claimId: MPI-C002
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Across every study where strict preregistration or blind analysis was enforced, the excess-correlation effect failed to replicate. Walach et al.'s preregistered two-lab replication was null across both cohorts (MPI-E003), Grote's pre-unblinded analysis showed chance performance (MPI-E004), and Flores's preregistered Study 4 failed with a negative reversal (MPI-E020). The strongest opposing consideration is Flores's early thesis studies (MPI-E007), which reported significant permutation tests under preregistered protocols, though one of these studies relied exclusively on the author as the sole participant.
+  - claimId: MPI-C003
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Instability is the defining empirical characteristic of the correlation-matrix record, with significant findings systematically attenuating, reversing direction, or shifting to disparate variables upon subsequent testing (MPI-E003, MPI-E005, MPI-E006, MPI-E020). Kennedy's literature review confirms this evasive behavior is ubiquitous throughout anomalous cognition research (MPI-E014). The strongest opposing consideration is the theoretical argument advanced by proponents that this instability is not methodological error, but rather the lawful physical signature of non-transmissible psychophysical entanglement.
+  - claimId: MPI-C004
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Generalized Quantum Theory was published in a peer-reviewed foundations of physics journal as an axiomatic formalism extending complementarity and entanglement to generalized systems without Hilbert-space constraints (MPI-E010), and Lucadou operationalized it for psychophysical systems using pragmatic information (MPI-E009). The formal framework is established in print. The strongest opposing consideration is that GQT achieves generality by discarding Planck's constant and state-vector dynamics, leaving the model lacking in specific quantitative predictive power compared to standard physical theories.
+  - claimId: MPI-C005
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      The formal derivation connecting the no-transmission axiom to the inevitable decline and displacement of anomalous correlations was published explicitly in 2007 (MPI-E009). This confirms that MPI predicted replication decline before the execution of the modern preregistered replication series. The strongest opposing consideration is that the derivation is qualitative rather than quantitative, leaving the exact velocity, magnitude, and spatial displacement parameters unspecified and therefore untestable against specific null thresholds.
+  - claimId: MPI-C006
+    verdict: established
+    confidence: high
+    reasoning: >-
+      The published literature establishes that Lucadou and co-theorists specifically introduced the correlation-matrix design as an empirical tool to capture transitory, jumping entanglement correlations without facilitating signal transmission (MPI-E011, MPI-E012). It was explicitly designated by its architects as the optimal testbed for MPI. The strongest opposing consideration is that the design fundamentally conflates the search for non-local entanglement with severe multi-testing and variable dependency issues that make conventional statistical interpretation treacherous.
+  - claimId: MPI-C007
+    verdict: contradicted
+    confidence: high
+    reasoning: >-
+      The empirical record directly contradicts the attribution of the correlation-matrix pattern to genuine psychophysical entanglement. The initial surplus of correlations was an artifact of statistical dependence among psychological variables (MPI-E018), and strict preregistered or blinded trials consistently return null results (MPI-E003, MPI-E004, MPI-E020). The strongest opposing consideration is the large online dataset by Flores and Rapazote-Flores (MPI-E008), which reported an overall surplus, though that study treated dependent cells as independent observations and suffered from internal inconsistencies (MPI-E021, MPI-E023).
+  - claimId: MPI-C503
+    verdict: contradicted
+    confidence: high
+    reasoning: >-
+      The claim that the 2023 online study showed an effect exclusively with a true-random generator is contradicted by the full data analysis in the paper. While the abstract highlighted a split at the final datapoint, the authors' second primary analysis across the cumulative matrix showed that the pseudo-random Mersenne Twister arm also achieved a statistically significant effect (p = 0.002; MPI-E021). Furthermore, the pseudo-random arm was dynamically seeded from participant swipes, violating the condition of an independent deterministic sequence (MPI-E022). The strongest opposing consideration is that the authors argued the pseudo-random arm missed their secondary effect-size and statistical power thresholds.
+  - claimId: MPI-C008
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Standard statistical artifacts—including publication bias (MPI-E015), post-hoc analytic selection (MPI-E006), software errors (MPI-E017), and severe variable intercorrelations (MPI-E018, MPI-E023)—are fully sufficient to explain the emergence and subsequent disappearance of matrix correlations without invoking anomalous physics. Regression to the mean naturally produces the observed decline curve when initial extreme positive noise is re-tested under rigorous conditions. The strongest opposing consideration is Bierman et al.'s simulation showing that questionable research practices explained only about 60% of effect size in an adjacent ganzfeld database (MPI-E016).
+  - claimId: MPI-C009
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      Replication analyses by Flores demonstrated that psychological variables share high mutual intercorrelations, violating the independence assumption of the original Z-score and heavily inflating significance counts (MPI-E018). When permutation testing corrected for these dependencies, the excess-correlation effect was substantially reduced. The strongest opposing consideration is that a direct dependence-aware reanalysis has only been performed on modern replication data; the original 1986–2006 datasets have never been made available to demonstrate this reduction directly on the founding runs.
+  - claimId: MPI-C010
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Proponents systematically insulate MPI from empirical disconfirmation by interpreting significant outcomes as evidence of entanglement and null outcomes as evidence of predicted decline (MPI-E003). Methodological critiques regarding variable dependency have been dismissed as applying only to causal signals, and when preregistered predictions of 'no decline' fail, auxiliary ad-hoc explanations regarding experimenter effects or insufficient novelty are invoked (MPI-E019, MPI-E020). The strongest opposing consideration is that proponents have willingly collaborated on adversarial preregistrations and openly published null findings in field journals.

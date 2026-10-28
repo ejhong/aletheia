@@ -41,4 +41,15 @@ describe("a session's mode", () => {
     expect(text).toContain("HARM (fabrication) at X-E001: not in the source");
     expect(text).toContain("- tighten the opening");
   });
+  it("answers a change the quote check held, and shows each failure with what answers it", () => {
+    // 2026-10-28: the check's hold carried no record, so the planner read it as "not yet reviewed" and nothing answered it.
+    const held: ReviewBlob = { commit: "q", date: "2099-01-01", protocol: "review-v1", outcome: "hold", reason: "held until answered: the quote check failed (1 failure)", seats: [], checks: ["x X-E004: quoted passage not found in the text of SRC-A"] };
+    const plan = planSession([change(4, [held])]);
+    expect(plan.mode).toBe("answer");
+    const text = roundsForOperator(change(4, [held]));
+    expect(text).toContain("### Round 1 (commit q, 2099-01-01): hold — held until answered: the quote check failed (1 failure)");
+    expect(text).toContain("- x X-E004: quoted passage not found in the text of SRC-A");
+    expect(text).toMatch(/never by a reply/);
+    expect(text).toMatch(/check-quotes --fresh/);
+  });
 });

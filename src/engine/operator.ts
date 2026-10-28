@@ -48,10 +48,21 @@ export function planSession(changes: OpenChange[]): Plan {
   return answer ? { mode: "answer", change: answer, withdraw } : { mode: "new", withdraw, waiting };
 }
 
+/** What answers a quote check's failure, said to the operator beside the failures (operator/charter.md, "Answering a review"). */
+const QUOTE_ANSWERS = [
+  "Each failure is answered in the records, never by a reply:",
+  "- the passage copied exactly from the text the check reads (`node scripts/site.ts read <the record's URL> --fresh --find \"words\"`);",
+  "- or the source pointed at the text the passage was quoted from (its URL, when a DOI's page shows only the abstract);",
+  "- or a Wayback capture of the source's own URL named as its `archivedUrl` (`node scripts/site.ts archive <url>`), which the check reads when the live page is unreadable or lacks the passage;",
+  "- or the record entered as `provisional`, with the route to its text.",
+  "Run `node scripts/site.ts check-quotes --fresh` before you finish: it reads every source again, as the review's machine will.",
+].join("\n");
+
 /** The review rounds of a change, as the operator reads them when it answers. */
 export function roundsForOperator(c: OpenChange): string {
   return c.rounds
     .map((r, i) => {
+      if (r.checks?.length) return `### Round ${i + 1} (commit ${r.commit.slice(0, 10)}, ${r.date}): ${r.outcome} — ${r.reason}\n\n${r.checks.map((x) => `- ${x}`).join("\n")}\n\n${QUOTE_ANSWERS}`;
       const seats = r.seats
         .map((s) => {
           if (!s.verdict) return `- ${s.label}: no answer (${s.failure ?? "no reply"})`;

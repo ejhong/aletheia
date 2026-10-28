@@ -183,7 +183,7 @@ export default function OperationsPage() {
                   <span className="min-w-0 flex-1">
                     <a href={r.url} className="hover:text-copper">#{r.pr} — {r.title}</a>
                     <span className="block font-mono text-[10.5px] text-faint">
-                      {count("better")} better · {count("no_better")} no better · {count("worse")} worse{harms.length ? ` · harm flagged: ${harms.map((h) => h.harm!.kind).join(", ")}` : ""}
+                      {last.seats.length ? `${count("better")} better · ${count("no_better")} no better · ${count("worse")} worse` : last.reason}{harms.length ? ` · harm flagged: ${harms.map((h) => h.harm!.kind).join(", ")}` : ""}
                       {r.rounds.length > 1 ? ` · ${r.rounds.length} rounds` : ""}
                     </span>
                   </span>

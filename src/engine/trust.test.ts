@@ -153,6 +153,9 @@ describe("the workflows hold the boundary", () => {
     for (const s of steps) expect(s.run ?? "", s.name).not.toMatch(/git (checkout|switch|worktree)|pull_request\.head\.(sha|ref)/);
     expect(steps.find((s) => s.name?.startsWith("The change"))?.run).toMatch(/fetch .*refs\/remotes\/pr\/head/);
     expect(steps.find((s) => s.name?.startsWith("Every quoted passage"))?.run).toMatch(/check-quotes .*--head refs\/remotes\/pr\/head/);
+    // The quote check's hold is written by main's code with its machine record, so the planner answers it (2026-10-28).
+    expect(steps.find((s) => s.name?.startsWith("Every quoted passage"))?.run).toMatch(/check-quotes .*--hold-comment review\.md/);
+    for (const s of steps) expect(s.run ?? "", s.name).not.toMatch(/echo .*site-review/);
     expect(steps.find((s) => s.name === "The reviewers read the change")?.run).toMatch(/review .*--head refs\/remotes\/pr\/head/);
   });
 

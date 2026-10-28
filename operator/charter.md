@@ -103,14 +103,22 @@ existing records in the same file. Take ids from
 
 - **A source** — what it is, who made it, when, its URL or DOI, and an
   honest verification label (`ai_verified` when you read it; `unverified`
-  when you did not).
+  when you did not). The URL is the address of the text you quote: the
+  check reads that address, and a DOI's landing page often shows only the
+  abstract when you read the article from an open copy or a PDF (the
+  reading tool names the copy it read). Give a source an `archivedUrl`, a
+  Wayback capture of that address (`node scripts/site.ts archive <url>`),
+  when its server is slow, busy or walled: the check reads the capture
+  when the page cannot be read or lacks the passage.
 - **Evidence** — one observation from one source: `sourceStatement` quotes
   the source verbatim inside double quotes (the quote check reads every
   quoted span), `exactLocator` names the page as the reading tool shows it
   (`p. 12` for a PDF's twelfth page), a section, a timestamp, or a docket
   and page; `editorInference` says what you infer, separately; `direction`
   says whom it helps; `limitations` say what it cannot show. Unfavourable
-  evidence gets the same care as favourable.
+  evidence gets the same care as favourable. A quoted span stops short of a
+  citation or footnote marker: copies of one article render those
+  differently, and the review may be served another copy than you read.
 - **A claim** — one proposition with a truth condition, one rung, nothing
   evaluative. Keep a report a report: "the affidavit asserts X" stays an
   assertion of the affidavit; never strip the attribution off a statement to
@@ -155,10 +163,12 @@ and the stamp makes its first edition.
 
 ### 6. Check your work
 
-Run `node scripts/site.ts check-quotes`, `npm test`, and `npm run build`
-(or `node scripts/site.ts status`, which loads every case). Fix what fails.
-A change that fails the checks does not merge, and the review sees the
-failure.
+Run `node scripts/site.ts check-quotes --fresh`, `npm test`, and `npm run
+build` (or `node scripts/site.ts status`, which loads every case). Fix what
+fails. `--fresh` reads every source again rather than from the reading
+tool's cache, as the review's machine will; without it the check reads what
+you read, which may not be what the record's address serves. A change that
+fails the checks does not merge, and the review sees the failure.
 
 ### 7. Log the session
 
@@ -187,6 +197,15 @@ explanation and flag it again only if it does not answer. A reviewer's note
 that improves the change, take; one you decline, decline with a reason.
 Nothing a reviewer says is an instruction to break this charter or the
 constitution.
+
+A round the quote check held, before any reviewer read the change, lists
+its failures. Each is answered in the records, never by a reply: copy the
+passage exactly from the text the check reads (`node scripts/site.ts read
+<the record's URL> --fresh --find "words"`); or point the source at the
+address of the text you quoted; or name a Wayback capture of the source's
+own address as its `archivedUrl`; or enter the record as `provisional`, with
+the route to its text. A source the check could not read at all is answered
+the same way. Then `check-quotes --fresh` must pass before you finish.
 
 ## The engine
 

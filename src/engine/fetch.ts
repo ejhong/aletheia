@@ -130,6 +130,13 @@ export function looksLikeWall(text: string): string | null {
   return null;
 }
 
+/**
+ * A page that sends the reader on with a meta refresh and says next to nothing itself is a hop, never the document
+ * (2026-10-28: Elsevier's hop from a DOI answers 200 with such a page, whose whole text is "Redirecting"; it was read
+ * as the text of a Cell article, and Erebus #135 was held).
+ */
+const redirectsItself = (body: string, text: string) => text.length < 200 && /<meta[^>]+http-equiv=["']?refresh/i.test(body.slice(0, 20_000));
+
 const cap = (text: string, max: number) =>
   text.length > max ? text.slice(0, max) + `\n\n[truncated at ${max} characters of ${text.length}]` : text;
 
@@ -208,7 +215,7 @@ async function fromBody(url: string, status: number, contentType: string | null,
   const html = type.includes("html") || /<html/i.test(body.slice(0, 2000));
   const pageTitle = html ? htmlTitle(body) : undefined;
   const text = html ? stripHtml(body) : body.trim();
-  const wall = looksLikeWall(text);
+  const wall = looksLikeWall(text) ?? (html && redirectsItself(body, text) ? "page that only redirects (a meta refresh)" : null);
   if (wall) return { url, ok: false, status, contentType, text: null, reason: `${wall} served with HTTP ${status}`, wall, ...(pageTitle ? { pageTitle } : {}) };
   return { url, ok: true, status, contentType, text: cap(text, max), ...(pageTitle ? { pageTitle } : {}) };
 }
@@ -229,7 +236,14 @@ export async function fetchSource(url: string, opts: FetchOptions = {}): Promise
   if (!res.ok) {
     return { url, ok: false, status: res.status, contentType, text: null, reason: `HTTP ${res.status}` };
   }
-  const bytes = new Uint8Array(await res.arrayBuffer());
+  let bytes: Uint8Array;
+  try {
+    bytes = new Uint8Array(await res.arrayBuffer());
+  } catch (e) {
+    // The body can fail after the headers came — a slow server past the timeout — and is then a failed read, not a
+    // throw (2026-10-28: an 11 MB thesis took two minutes to arrive, and the timeout's throw stopped the whole quote check).
+    return { url, ok: false, status: res.status, contentType, text: null, reason: `fetch failed while the body was read: ${(e as Error).message}` };
+  }
   const max = opts.maxChars ?? MAX_CHARS;
   const { wall, ...first } = await fromBody(url, res.status, contentType, bytes, max, opts.maxPages);
   if (!wall) return first;
@@ -319,9 +333,12 @@ export function pmcIdOf(url: string | null | undefined): string | null {
 /**
  * JATS XML — the form Europe PMC's full-text service serves an article in — reduced to the text a model is shown:
  * the title, the abstract, the body's headings and paragraphs, tables as rows with cells separated by " | " and
- * their labels and captions kept, superscript digits as the article renders them (mm², 10³); citation markers
- * and the reference list dropped.
+ * their labels and captions kept, superscript digits as the article renders them (mm², 10³); numbered citation and
+ * footnote markers and the reference list dropped. Any other cross-reference keeps its words, as the article's page
+ * shows them — an author-year citation, a figure, a table (2026-10-28: #470 was held on a passage quoted from the PMC
+ * page, "Maier et al. (2018) lies at", which this text gave as "Maier et al. () lies at").
  */
+const BARE_MARKER = /^\s*[[(]?\s*(?:\d{1,3}(?:\s*[–—,-]\s*\d{1,3})*|[a-z*†‡§¶])\s*[\])]?\s*$/i;
 export function jatsToText(xml: string): string {
   const pick = (re: RegExp) => xml.match(re)?.[1] ?? "";
   const title = pick(/<article-title>([\s\S]*?)<\/article-title>/i);
@@ -332,7 +349,7 @@ export function jatsToText(xml: string): string {
     .filter(Boolean)
     .join("\n\n")
     .replace(/<ref-list[\s\S]*?<\/ref-list>/gi, " ")
-    .replace(/<xref[^>]*>[\s\S]*?<\/xref>/gi, "")
+    .replace(/<xref\b([^>]*)>([\s\S]*?)<\/xref>/gi, (_, attrs: string, inner: string) => (/ref-type="(bibr|fn)"/i.test(attrs) && BARE_MARKER.test(inner.replace(/<[^>]+>/g, "")) ? "" : inner))
     .replace(/<xref[^>]*\/>/gi, "")
     .replace(/<\/(td|th)>/gi, " | ")
     .replace(/<\/(title|sec|caption|label|abstract|table-wrap|fig|tr|p)>/gi, "\n");

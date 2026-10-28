@@ -57,7 +57,7 @@ export function reviewRecordOf(pr: PullRequest, gh: Gh, harvestedAt: string): Re
     outcome: pr.mergedAt ? "merged" : "closed",
     outcomeAt: pr.mergedAt ?? pr.closedAt ?? harvestedAt,
     cases,
-    rounds: rounds.map((r) => ({ commit: r.commit, date: r.date, protocol: r.protocol, outcome: r.outcome, reason: r.reason, seats: r.seats })),
+    rounds: rounds.map((r) => ({ commit: r.commit, date: r.date, protocol: r.protocol, outcome: r.outcome, reason: r.reason, seats: r.seats, ...(r.checks?.length ? { checks: r.checks } : {}) })),
     harvestedAt,
   });
 }

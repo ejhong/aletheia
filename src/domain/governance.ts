@@ -117,6 +117,8 @@ export const ReviewRoundSchema = z.object({
   outcome: z.enum(["publish", "hold", "revise", "undecided"]),
   reason: z.string(),
   seats: z.array(ReviewSeatSchema),
+  /** The quote check's failures, when it held the change before any reviewer read it. */
+  checks: z.array(z.string()).optional(),
 });
 export const ReviewRecordSchema = z.object({
   pr: z.number().int(),

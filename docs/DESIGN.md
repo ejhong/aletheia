@@ -30,7 +30,7 @@ person.
 | --- | --- | --- |
 | The ledger | Each case's claims, evidence (verbatim quotes with exact locators), sources, research agenda, studies, images; append-only judgments; editions (the reader's telling). The model is unchanged from September. | `content/cases/<case>/`; schema `src/domain/schema.ts`; prose `docs/DATA_MODEL.md` |
 | The operator | Claude Code, run headless in GitHub Actions under a hard spending cap per session, with the constitution (`AGENTS.md`, loaded as `CLAUDE.md`) and its charter (`operator/charter.md`). It decides what most needs doing and does it. | `.github/workflows/operator.yml`; the tools it uses: `node scripts/site.ts` |
-| The checks | Types, lint, tests; the loader (schemas, ids, edition integrity, the reader's budget — the build fails on any of them); the quote check (every quoted passage a change adds is read in its source; a page locator must name the page; a new DOI must resolve), run in the review from main's code and again on every push to main; links. | `.github/workflows/ci.yml`, `.github/workflows/review.yml`; `src/engine/quotecheck.ts` |
+| The checks | Types, lint, tests; the loader (schemas, ids, edition integrity, the reader's budget — the build fails on any of them); the quote check (every quoted passage a change adds is read in its source; a page locator must name the page; a new DOI must resolve), run in the review from main's code and again on every push to main — a failure holds the change as a review round, which the operator answers in its next session; links. | `.github/workflows/ci.yml`, `.github/workflows/review.yml`; `src/engine/quotecheck.ts` |
 | The review | Four seats (OpenAI, Google, xAI, Venice/GLM), each answering: better / no better / worse; a harm or none; up to three notes. Publishes when ≥3 answer, a majority say better, ≤1 says worse, no harm. A harm holds the change until the operator answers it. Notes never block. | `.github/workflows/review.yml`; `src/engine/review.ts`; `protocols/review-v1.md` |
 | The panel | Five seats, one per vendor, judging each case's ledger blind (no article, no grades). Their concurrence with the operator's draft judgment is its standing: ratified, contested, or not yet ratified. | `src/engine/check.ts`; `protocols/check-v2.md`; `src/domain/standing.ts` |
 | The money | Caps per session, day and month (`config/budget.yaml`); every paid call is a row in `governance/spend/`. The operator's session cost is what Claude Code reports; the panel's and the review's are the vendors' own usage, priced from `config/tariffs.yaml`. | `src/engine/budget.ts`, `src/engine/session.ts` |
@@ -56,7 +56,7 @@ person.
    sources, add evidence (verbatim, with exact locators, from text read
    with `site read`), mend what reviewers found, re-tell the article within
    the reader's budget, write a new judgment when the evidence moved it.
-5. It runs the checks itself (`site check-quotes`, `npm test`, the build)
+5. It runs the checks itself (`site check-quotes --fresh`, `npm test`, the build)
    and stamps any new edition (`site stamp <case>`). When the judgment
    changed, the panel judges the case blind (`site panel <case>`), so the
    change carries its own standing.

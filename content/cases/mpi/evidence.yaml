@@ -231,8 +231,9 @@
     preprint with an uneven power split between the two arms, and the
     gamified online protocol departs far from the laboratory paradigm.
   limitations:
-    - "Preprint; not peer reviewed."
+    - "A Qeios preprint with open reviews on the platform; not journal peer review."
     - "The pseudo-RNG arm had lower achieved power, so the split is weaker evidence than the headline p-values suggest."
+    - "The split holds for the paper's last-datapoint analysis only; on its average analysis the pseudo-RNG arm is significant too (MPI-E021), and its test takes the matrix cells as independent observations (MPI-E022). Added 2026-10-27 (session 2026-10-27-session-site-132125)."
   reviewState: ai_extracted
   origin:
     ref: "Verification batch 2026-08-22 (preprint full text)"
@@ -504,3 +505,237 @@
     extractedBy: "Fable (AI agent)"
     runId: "mpi-case-2026-08-22"
     date: "2026-08-22"
+
+# ── 2026-10-27 operator session (2026-10-27-session-site-132125) ─────────────
+# The thesis and the online replication read at full text, where the case had
+# characterized them from a later preprint's one-paragraph summary.
+
+- id: MPI-E018
+  title: "Flores 2021, independent validation appendix: the matrix cells are not independent, and studies 1–3 keep their surplus under permutation"
+  claimIds: [MPI-C009, MPI-C007]
+  sourceId: SRC-FLORES-2021
+  direction: qualifies
+  strength: moderate
+  sourceStatement: >-
+    The thesis's Appendix 11 is an independent re-analysis of Flores's raw
+    data by the physicist Thomas Filk, using programs he wrote himself. It
+    states the dependence problem directly: "The 45 × 45 = 2025 entries in
+    the correlation matrices are not independent." It then compares each
+    study's experimental matrix with 10,000 matrices built by pairing each
+    experiment's psychological data with the physical data of a different,
+    randomly chosen experiment. For study 1 (213 experiments), the
+    experimental matrix has 316 correlations at or above 0.12; the control
+    matrix has 142; the permuted matrices average 163, and 2 of the 10,000
+    reach 316 (p. 400). Filk reports that comparing against permuted
+    physical data from the experiment or from the control run makes almost
+    no difference, which "justifies that in study 4 and 5 no control runs
+    were made but only experimental runs" (p. 398).
+  editorInference: >-
+    This is the only dependence-aware analysis in the ledger whose numbers
+    can be read at first hand, and it cuts both ways. It confirms the
+    critique's premise: the cells are not independent. In study 1 the
+    permutation null (163) sits above the old control count (142), so a
+    control-based comparison overstated the surplus. But the surplus
+    survives the correction by a wide margin in study 1, and, in the
+    appendix's table, in studies 2 and 3 as well. What it does not do is
+    reanalyse Lucadou's 1986–2006 data. MPI-C009 says those founding
+    results shrink, but the appendix analyses only the thesis's own
+    replications.
+  exactLocator: "Edinburgh Research Archive PDF (FloresA_2021.pdf), Appendix 11, PDF pp. 395–400"
+  limitations:
+    - "Filk co-authored papers on Generalized Quantum Theory (Atmanspacher, Filk & Römer 2006; Filk & Römer 2011, as listed in the thesis bibliography), and the thesis describes him as knowledgeable on the matrix method; the appendix is an independent re-computation, not an adversarial audit."
+    - "Studies 1–3 used the original equipment and shared the experimenter; study 3 had one participant (MPI-E020). Their surpluses are not three independent confirmations."
+    - "The passages read report no preregistration of the permutation analysis. The thesis says the method was adopted from the 2017 consensus protocol after the data had already been analysed with the earlier Z-score formula (PDF pp. 241–242)."
+  reviewState: ai_extracted
+  origin:
+    ref: "Flores 2021 thesis PDF, Appendix 11 (PDF pp. 391–400) read through scripts/site.ts read, 2026-10-27"
+    extractedBy: "Claude Opus 5.5 (operator), session 2026-10-27-session-site-132125"
+    runId: "2026-10-27-session-site-132125"
+    date: "2026-10-27"
+
+- id: MPI-E019
+  title: "Flores 2021: the two later studies show no surplus, and one reverses"
+  claimIds: [MPI-C003]
+  sourceId: SRC-FLORES-2021
+  direction: supports
+  strength: moderate
+  sourceStatement: >-
+    Studies 4 and 5 added a second random generator, which the thesis
+    calls a true RNG, beside the original one and dropped the separate control runs. The thesis's
+    independent validator reports on them: "For study 4C (classic RNG) the
+    situation is reversed as compared to the other studies: the
+    correlations in the experimental matrix are exceptionally small.
+    Studies 4T and 5C and 5T do not show any particular signs of
+    abnormality." The thesis's concluding chapter (PDF pp. 286–287) also
+    says the matrix prediction was not verified in study 4 and that study 5
+    had no significant results. It reports a significant result for these
+    two studies only in a post hoc analysis that pooled them to about 200
+    sessions per generator (PDF p. 289).
+  editorInference: >-
+    Within one doctoral program, run by one experimenter, the pattern is
+    the one this case describes for the paradigm as a whole: three early
+    studies with a surplus, then two without, and a positive found only
+    after post hoc pooling. The "three of five" the article reported is
+    accurate. But under the planned analysis the other two studies were
+    null or reversed, and they were the ones that added the new generator
+    and the permutation control. Both rival accounts expect this pattern.
+  exactLocator: "Edinburgh Research Archive PDF (FloresA_2021.pdf), Appendix 11, PDF p. 399; concluding chapter, PDF pp. 286–289"
+  limitations:
+    - "The concluding chapter's text layer is letter-spaced; its content is paraphrased here from PDF pp. 286–289, and only the appendix sentences are quoted."
+    - "The thesis offers its own explanations for studies 4 and 5: a new researcher, instructions given differently, participant boredom, half the sessions per generator. This record does not adjudicate them."
+  reviewState: ai_extracted
+  origin:
+    ref: "Flores 2021 thesis PDF, Appendix 11 and Chapter 9 read through scripts/site.ts read, 2026-10-27"
+    extractedBy: "Claude Opus 5.5 (operator), session 2026-10-27-session-site-132125"
+    runId: "2026-10-27-session-site-132125"
+    date: "2026-10-27"
+
+- id: MPI-E020
+  title: "Flores 2021: one of the three positive studies had a single participant"
+  claimIds: [MPI-C007]
+  sourceId: SRC-FLORES-2021
+  direction: qualifies
+  strength: weak
+  sourceStatement: >-
+    Study 3's results table is captioned: "Shows significant correlations
+    from study with only one participant, using the original control
+    (Zscore) for 2025 cells." That participant ran all 200 sessions, on
+    different days and at different hours. The concluding chapter
+    (PDF pp. 283–284) identifies the participant as the author herself. It
+    adds that, despite the care taken, causal correlations appeared in
+    parts of the raw data.
+  editorInference: >-
+    One of the three thesis studies that kept a surplus is the
+    experimenter testing herself. Under MPI that need not be a defect,
+    since the model treats the participant's involvement as part of the
+    system. Under the conventional account it removes the separation
+    between participant and analyst that blinding exists to provide.
+    Either way, the "three of five" result rests mainly on studies 1 and 2.
+  exactLocator: "Edinburgh Research Archive PDF (FloresA_2021.pdf), Table 6-3, PDF p. 211; concluding chapter, PDF pp. 283–284"
+  limitations:
+    - "That the single participant was the author, and the remark about causal correlations, are paraphrased from the letter-spaced concluding chapter (PDF pp. 283–284), not quoted."
+  reviewState: ai_extracted
+  origin:
+    ref: "Flores 2021 thesis PDF, Table 6-3 and Chapter 9 read through scripts/site.ts read, 2026-10-27"
+    extractedBy: "Claude Opus 5.5 (operator), session 2026-10-27-session-site-132125"
+    runId: "2026-10-27-session-site-132125"
+    date: "2026-10-27"
+
+- id: MPI-E021
+  title: "Flores & Rapazote-Flores 2023: on the paper's average analysis, the pseudo-random arm is significant too"
+  claimIds: [MPI-C503]
+  sourceId: SRC-FLORES-2023
+  direction: qualifies
+  strength: moderate
+  sourceStatement: >-
+    The paper reports two analyses for each generator: the last datapoint
+    (all sessions in one matrix) and the average over cumulative matrices
+    built in steps of 250 sessions. In the Mersenne Twister arm the
+    last-datapoint result is not significant (t = 1.813), but the average
+    analysis is: "Specifically, the T-test resulted in a value of 2,972,
+    yielding a p-value of 0,0029 for the average analysis across the 23
+    datapoints" (p. 11). Both arms show the same sign pattern: "The average
+    correlations from experimental sessions are always positive, while
+    most control session averages are negative" (p. 10). Of the Mersenne
+    Twister the paper says: "It is deterministic, but we utilized
+    participant finger swipes to provide a timestamp seed, ensuring true
+    non-deterministic random values" (p. 7).
+  editorInference: >-
+    The headline split (significant with a true random source, not with a
+    pseudo-random one) holds only for the last-datapoint analysis. On the
+    paper's other primary analysis, both generators differ from control in
+    the same direction: in both, the experimental mean is positive and the
+    control mean mostly negative. The paper never tests whether the two
+    generators differ from each other, and one result being significant
+    while the other is not does not show a difference between them. And
+    because the pseudo-random arm was seeded from the participant's swipe
+    timing, it is not a deterministic comparison condition, whatever the
+    generator's algorithm.
+  exactLocator: "Qeios 0PAHC2 v1 (27 Dec 2023), PDF pp. 7–11 (at pp. 7, 10 and 11)"
+  limitations:
+    - "The paper cannot settle whether the shared sign pattern reflects a procedural difference between experimental and control sessions or an effect common to both arms. The raw data are available only on request."
+  reviewState: ai_extracted
+  origin:
+    ref: "Flores & Rapazote-Flores 2023 v1 PDF read in full through scripts/site.ts read, 2026-10-27; v2 also read"
+    extractedBy: "Claude Opus 5.5 (operator), session 2026-10-27-session-site-132125"
+    runId: "2026-10-27-session-site-132125"
+    date: "2026-10-27"
+
+- id: MPI-E022
+  title: "Flores & Rapazote-Flores 2023: the significance test takes the 4,096 matrix cells as its sample"
+  claimIds: [MPI-C007]
+  sourceId: SRC-FLORES-2023
+  direction: qualifies
+  strength: moderate
+  sourceStatement: >-
+    The 64×64 matrix is built from four psychological and four physical
+    variables: "240 elements of each variable were fragmented in 16 groups
+    of columns with 15 elements per column, for each of the 4 variables"
+    (p. 8). The experimental and control matrices are compared "using
+    Welch's T-test, assuming the normal distribution of the data" (p. 8).
+    The power analysis takes as its "sample size represented by the matrix
+    cells amounting to 4.096" (p. 12). The control data are produced
+    differently from the experimental data. During play, each swipe calls
+    the generator for four numbers (p. 6). The control session "runs
+    automatically on the participant's device after the completion of the
+    experimental session without their knowledge" (p. 5). The Monte Carlo
+    check uses 100 shuffles of the physical variables (p. 9).
+  editorInference: >-
+    The test treats the 4,096 cells as independent observations. They are
+    built from four variables on each side, each cut into sixteen pieces.
+    This is the dependence problem the program's own critique raised
+    against the founding experiments (MPI-C504), and the reported p-value
+    and power assume it away. The control is also produced by a different
+    procedure, so a systematic difference between the matrices need not be
+    a mind–matter effect. Neither point shows that the result is an
+    artifact, but both mean its p-value cannot be taken at face value.
+  exactLocator: "Qeios 0PAHC2 v1 (27 Dec 2023), PDF pp. 5–12 (at pp. 5, 6, 8, 9 and 12)"
+  limitations:
+    - "The paper does not say how often the Mersenne Twister was reseeded, or exactly how the control session requested its numbers, so how far the two procedures differ is not fully known."
+    - "The raw data are not deposited (available on request, per v2 p. 19), so the dependence cannot be checked independently."
+  reviewState: ai_extracted
+  origin:
+    ref: "Flores & Rapazote-Flores 2023 v1 PDF read in full through scripts/site.ts read, 2026-10-27"
+    extractedBy: "Claude Opus 5.5 (operator), session 2026-10-27-session-site-132125"
+    runId: "2026-10-27-session-site-132125"
+    date: "2026-10-27"
+
+# ── 2026-10-28 operator session (2026-10-28-session-site-140632) ─────────────
+# Answering the review of change #472: the dependence critique's premise,
+# split from MPI-C009 as MPI-C504, gets its own record.
+
+- id: MPI-E024
+  title: "Flores 2021, independent validation appendix: why the matrix cells are not independent"
+  claimIds: [MPI-C504]
+  sourceId: SRC-FLORES-2021
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    The thesis's independent validator, Thomas Filk, opens his permutation
+    section with the dependence problem: "The 45 × 45 = 2025 entries in the
+    correlation matrices are not independent. One simple reason is that
+    there are only 2 × 45 (almost) independent variables for which one
+    calculates correlations. But even these 90 variables are not completely
+    independent because, e.g., more “left key pressures” imply less “right
+    key pressures” etc." (p. 395). He goes on to compare the experimental
+    matrices with matrices built by permuting whole experiments, which
+    keeps the dependence among cells intact (MPI-E018).
+  editorInference: >-
+    The premise of the dependence critique holds for this design, and it
+    holds for a structural reason: 2,025 cells come from about 90
+    variables, some of them partly redundant, so significant cells arrive
+    in bundles. A count of significant cells therefore cannot be compared
+    with a chance level computed as if each cell were a separate test.
+    This record supports the premise only. Whether a dependence-aware
+    analysis shrinks Lucadou's founding results is MPI-C009, and this
+    appendix does not analyse those data.
+  exactLocator: "Edinburgh Research Archive PDF (FloresA_2021.pdf), Appendix 11, section 3, PDF p. 395"
+  limitations:
+    - "Same source and same appendix as MPI-E018; the two records are not independent evidence. This one carries the methodological premise, MPI-E018 the permutation results."
+    - "The appendix concerns the thesis's 45 × 45 matrices. That the founding matrices share the structure rests on their described design (a few variables on each side generating many cells), not on a reading of Lucadou's 2006 paper."
+  reviewState: ai_extracted
+  origin:
+    ref: "Flores 2021 thesis PDF, Appendix 11, PDF p. 395, read through scripts/site.ts read, 2026-10-28"
+    extractedBy: "Claude Opus 5.5 (operator), session 2026-10-28-session-site-140632"
+    runId: "2026-10-28-session-site-140632"
+    date: "2026-10-28"

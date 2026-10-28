@@ -1,0 +1,312 @@
+# Cross-model check run — an independent judge (Opus 5.5 (Anthropic)), blind to all
+# prior assessments and to the editions (aletheia check, check-v2; run 2026-10-27-check-mpi-133850).
+# role: check — never displayed as the case narrative; feeds the concurrence panel.
+# basis.ledgerHash is the ledger it judged. Append-only; NOT human reviewed.
+runId: 2026-10-27-check-opus-133850
+producedBy: 2026-10-27-check-mpi-133850
+model: Opus 5.5 (Anthropic) — independent check run via claude-opus-5-5
+date: 2026-10-27
+promptVersion: check-v2
+humanReviewed: false
+role: check
+basis:
+  ledgerHash: 88b610256dbe4eb790604a58929d30c456bc955a5ec118c00842cf7ae2b4c84e
+caseAssessment:
+  verdict: weakly_supported
+  components: []
+  loadBearing:
+    - MPI-C002
+    - MPI-C005
+    - MPI-C007
+    - MPI-C008
+    - MPI-C010
+  weakestLinks:
+    - MPI-C007
+    - MPI-C009
+    - MPI-C503
+  synthesis: >-
+    The ladder is sound at the bottom and thins toward the top, and its rungs do
+    not lend each other credit. The observations hold. The founding experiments
+    are consistently reported as positive (MPI-C001). Every prespecified or
+    blind replication in the ledger is null on its primary test (MPI-C002).
+    These are the proponents' own two OSF-deposited consensus-protocol studies,
+    Grote's 200-participant blind analysis, and Grote's three preplanned 2017
+    analyses. The program's results have also not held still (MPI-C003). Walach
+    2020's surplus was conceded by its own authors to be "significant but
+    fragile." Flores's studies 1–3 kept a surplus while studies 4–5 went null or
+    reversed. Positives in otherwise null studies appeared only in post hoc
+    variants. The mechanism rung is genuine but thin. The no-transmission axiom
+    and its decline, sign-change and displacement derivation are verbatim in
+    print in 2007, years before the strict tests (MPI-C005). The matrix design
+    is explicitly built around them (MPI-C006). The decline was not retrofitted.
+
+    That is where the hypothesis's credit stops. A null effect passed through
+    flexible early analyses predicts the same decline. MPI as deployed also
+    accepts every feasible matrix outcome (MPI-C010): surplus as entanglement,
+    null as decline, reversal as sign change, new cells as displacement. So the
+    fulfilled prediction ran no risk against the null and cannot discriminate.
+    The features that do discriminate mostly favor the conventional account.
+    Walach 2020's significance broke down under re-analysis of data already
+    collected. No decline mechanism can act on a finished dataset, but analytic
+    flexibility can. Positives cluster where analyses were chosen late: Grote
+    2017's post hoc p = 0.012 sits beside three preplanned nulls, and Flores 4–5
+    turn positive only after post hoc pooling. Nulls appear wherever the
+    analysis was frozen. The case's one forward-looking discriminator, the
+    true-RNG/pseudo-RNG split (MPI-C503), does not survive a full reading. The
+    pseudo-RNG arm is significant on the paper's average analysis, and the
+    generators are never contrasted. The "pseudo" source was seeded from
+    participants' swipe timing. The test also treats 4,096 dependent cells as
+    independent.
+
+    Steelman for the hypothesis: the conventional account has not discharged its
+    own burden. Its sufficiency claim (MPI-C008) borrows base rates from
+    neighboring paradigms. In the best-studied of them, QRP simulation covered
+    about 60% of the effect, not all of it. Its claim that dependence-aware
+    reanalysis shrinks the founding data (MPI-C009) rests on one unreferenced
+    preprint sentence. Meanwhile, the one such analysis readable at first hand
+    finds Flores's replications on Lucadou's equipment keeping a large surplus
+    under session-level permutation. MPI's one piece of distinctive fine
+    structure, the 2007 strength–reproducibility reciprocity, has never been
+    tested at all. Steelman against: those surviving studies were not
+    preregistered and shared equipment and experimenter. One had the
+    experimenter as its sole participant. The paradigm has failed every time the
+    analysis was frozen in advance, including in its proponents' own hands. The
+    largest positive dataset carries both the dependence flaw and a control
+    produced by a different procedure.
+
+    Net: weakly supported. The model's distinctive prediction came true, but in
+    a form the null also predicts. Its insulation denies it the credit a risky
+    prediction would earn. The residue it can point to is small, unreplicated
+    under prespecification, and compromised. It is not contradicted, because
+    MPI's structure absorbs nulls and the Flores residue has not been traced to
+    any artifact. The judgment that an unidentified artifact is a likelier
+    source of that residue than a new psychophysical principle leans on priors,
+    not on any record.
+
+    Sensitivity: the single most influential record is MPI-E018. It is the only
+    first-hand dependence-aware analysis and the anchor of that residue. Without
+    it, the Flores positives would rest on a one-paragraph secondhand summary
+    (MPI-E007), and the hypothesis would sit closer to contradiction. The
+    verdict survives its removal, because both of its pillars stand on more than
+    one record. Those pillars are the frozen-analysis nulls (MPI-E003, MPI-E004,
+    MPI-E006) and MPI's own stated outcome space (MPI-E009, MPI-E011). The
+    verdict does not hang on a single thread.
+  steelman: "The steelman rests on the only dependence-aware analysis whose
+    numbers can be read first-hand: Thomas Filk's independent recomputation in
+    Appendix 11 of the Flores thesis. In study 1, an exact replication on
+    Lucadou's own RNG, software and protocol, 316 correlations reached 0.12 or
+    above. The cross-session permutation mean was 163, and only 2 of 10,000
+    permuted matrices reached 316. Studies 2 and 3 also exceeded their
+    permutation nulls. That correction neutralizes exactly the cell dependence
+    the conventional critique relies on (MPI-C009). The permutation method was
+    taken from the 2017 consensus protocol rather than invented for these data.
+    Publication bias cannot operate inside a thesis that reported all five
+    studies, nulls included. Regression to the mean accounts for the later
+    decline in studies 4–5, not for the original surplus. This assessment
+    discounts the result on generic grounds: no preregistration of the
+    permutation analysis, shared equipment and experimenter, and a self-tested
+    single participant in study 3. But it names no specific artifact that would
+    produce a surplus of that size. Until the surplus is traced to a concrete
+    mechanism or fails a frozen-analysis rerun, a proponent can rightly say
+    this: the conventional account's sufficiency (MPI-C008) is assumed, not
+    shown, for the program's best exact replications."
+claimAssessments:
+  - claimId: MPI-C001
+    verdict: well_supported
+    reasoning: "This is a claim about what was reported, and the descriptions in the
+      ledger agree. MPI-E001 records the original series as reported to yield
+      more significant psychological–physical correlations than chance or the
+      control matrices. That characterization comes from successor papers,
+      including Walach et al. 2021, whose full text says the experiments
+      \"produced more significant correlations than expected by chance and more
+      than seen in a control matrix.\" The thesis's reference to \"the original
+      control (Zscore)\" (MPI-E020) fits a control-based significance
+      comparison. MPI-E002 concerns the 2020 replication, not the 1986–2006
+      series, and adds nothing here. The strongest opposing consideration is
+      that no one in this ledger has read the primary reports: MPI-E001 is
+      second-hand, the 1986–1987 series appeared mainly in German-language
+      venues, and raw data were never published. Whether the reported
+      significance was valid is a separate question, taken up under MPI-C009."
+    confidence: moderate
+  - claimId: MPI-C002
+    verdict: well_supported
+    reasoning: "Every prespecified or blind matrix test in the ledger is null on its
+      primary analysis. That covers the proponents' own two consensus-protocol
+      replications deposited on OSF before commencement (\"Neither of the two
+      experiments was significant,\" MPI-E003). It covers Grote's
+      200-participant blind analysis, with software frozen before a live
+      unblinding (MPI-E004). It covers Grote's three preplanned 2017 analyses
+      (combined p = 0.315, MPI-E006). The positives in the record come from
+      analyses that were not prespecified: the thesis adopted its permutation
+      method after a first Z-score analysis (MPI-E018). The strongest opposing
+      consideration is the small size of the class: four studies from two
+      research groups, all with power computed after the fact. The second Walach
+      replication (power 0.69) and Grote 2017 (20 participants) cannot
+      individually exclude modest effects. \"Predominantly\" understates rather
+      than overstates what the records show."
+    confidence: high
+  - claimId: MPI-C003
+    verdict: well_supported
+    reasoning: The instability is documented study by study. Walach 2020's surplus
+      failed both preregistered successors, and its authors conceded it broke
+      down under improved analysis (MPI-E002, MPI-E003). Grote's 2015
+      significant result gave way to null 2017 and 2021 studies (MPI-E005,
+      MPI-E006, MPI-E004). In Flores's program, studies 1–3 kept a surplus,
+      study 4C reversed, and 4T, 5C and 5T showed nothing, with a positive
+      recovered only by post hoc pooling (MPI-E019). The claim is a disjunction,
+      and the weakening disjunct alone satisfies it; a sign change is documented
+      once and migration into post hoc analyses twice. The strongest opposing
+      consideration is that the vocabulary is theory-laden. No record documents
+      cell-by-cell displacement onto specific new variables, and "shifted"
+      describes equally well what noise and flexibility produce. So this local
+      truth gives MPI nothing the null does not share. Kennedy 2003 (MPI-E014)
+      shows the same pattern field-wide but is not matrix-specific.
+    confidence: high
+  - claimId: MPI-C004
+    verdict: provisionally_supported
+    reasoning: "The first half is supported. Atmanspacher, Römer & Walach 2002
+      axiomatize a \"weak\" quantum theory that keeps complementarity and
+      entanglement for arbitrary systems, published in a physics-foundations
+      venue (MPI-E010). The 2007 paper places synchronistic phenomena and MPI's
+      axiom explicitly inside that framework (MPI-E009, MPI-E011). The second
+      half is thinner than its wording. No record shows how pragmatic
+      information functions formally as an \"ordering quantity.\" \"Formally
+      explicit\" holds for the abstract axioms, not for any psychophysical
+      instantiation with defined observables. MPI-E010 is also recorded at
+      Crossref level rather than from the full text. The strongest opposing
+      consideration is the one MPI-E010 itself states: by dropping Hilbert-space
+      structure and Planck's constant, GQT gives up quantified probabilities, so
+      it cannot say how large a matrix surplus should be. None of this bears on
+      whether psychophysical entanglement exists."
+    confidence: moderate
+  - claimId: MPI-C005
+    verdict: provisionally_supported
+    reasoning: 'MPI-E009 gives, verbatim from the 2007 full text, the
+      no-transmission axiom and the derivation built on it. An apparent effect
+      "will be wiped out" under attempts to corroborate it, may "change sign or
+      disappear altogether," or may reappear "in different observables." This
+      was in print years before the strict replications, so it was not
+      retrofitted to them. Read with its own antecedent, the inference is close
+      to analytic: if a stable correlation would be a usable channel and the
+      axiom forbids channels, stability is excluded. But that moves the content
+      into deciding which protocols count as exploitable. The 2007 derivation
+      treats ordinary replication as exploitation, a premise the axiom does not
+      supply. In ordinary quantum mechanics, no-signalling coexists with fully
+      stable, replicable correlations; this is a background prior, not a ledger
+      record. The strongest opposing consideration is the source itself, which
+      calls decline "the well known and often experienced decline effect."
+      Priority therefore holds against the nominated tests, not against the
+      phenomenon the axiom was built to accommodate.'
+    confidence: moderate
+  - claimId: MPI-C006
+    verdict: well_supported
+    reasoning: The design rationale is verbatim in the 2007 theory paper (MPI-E011).
+      It says to make "positive use of the evasion phenomenon" through
+      "simultaneous registration of as many different correlations as possible,"
+      so that psi shows up as "transitory, jumping" matrix patterns. The 2015
+      anthology chapter presents the method as MPI's answer to the repeatability
+      problem (MPI-E012). This matches the claim's spread-across-pairs,
+      no-single-channel logic. The strongest opposing consideration is the gap
+      between a detection strategy premised on the model and a test of it. The
+      same passage concedes the design will "never" overcome decline completely.
+      Watt & Tierney called their 2013 field study the first systematic test of
+      MPI (MPI-E013). The 2007 rationale also postdates the 1986 start of the
+      experiments, so these records cannot show whether the design came from the
+      model or was later rationalized by it. Both supporting records come from
+      the model's own authors.
+    confidence: moderate
+  - claimId: MPI-C007
+    verdict: weakly_supported
+    reasoning: "The pattern itself does not discriminate: decline after early
+      positives is what the 2007 paper predicts and also what a null filtered
+      through flexible early analyses produces. The features that do
+      discriminate mostly favor the rival. Walach 2020's significance broke down
+      on re-analysis of data already collected, which no decline mechanism can
+      act on (MPI-E002). Every frozen-analysis test is null (MPI-E003, MPI-E004,
+      MPI-E006), and the generator split dissolves on full reading (MPI-E021).
+      The 2023 positive treats dependent cells as independent and uses a
+      differently produced control (MPI-E022). One of Flores's three positive
+      studies was the experimenter testing herself (MPI-E020), and the only
+      field test is too small to weigh (MPI-E013). The strongest opposing
+      consideration is MPI-E018: in study 1, 316 correlations against a
+      permutation mean of 163 (2 of 10,000 reaching it) survive the very
+      dependence correction the critique relies on, with no identified artifact.
+      Reading that residue as an unidentified artifact rather than a new
+      principle leans on priors, which is why this is weak support rather than
+      contradiction."
+    confidence: moderate
+  - claimId: MPI-C008
+    verdict: provisionally_supported
+    reasoning: "Each named mechanism is documented in or near this literature.
+      Flexibility produced Grote 2017's post hoc p = 0.012 beside preplanned
+      nulls (MPI-E006). Publication bias is, on a contested reading, the most
+      encompassing explanation of 380 REG studies (MPI-E015). Walach 2020 failed
+      improved analysis (MPI-E002), and the 2023 positive assumes away cell
+      dependence (MPI-E022). The record's shape (positives where analysis was
+      chosen late, nulls where it was frozen) is what this account predicts. But
+      joint sufficiency is asserted, not demonstrated: no sufficiency analysis
+      has been run on the matrix corpus, and much of the base-rate support comes
+      from other paradigms. In ganzfeld, QRPs covered only about 60% of the
+      effect (MPI-E016). The strongest opposing consideration is MPI-E018.
+      Flores's studies 1–3 keep their surplus under permutation, publication
+      bias cannot apply to an all-studies thesis, and regression explains the
+      decline, not the original surplus. That leaves unquantified flexibility,
+      or unlisted mechanisms such as procedural coupling or coding errors
+      (MPI-E017), to cover the residue. Treating those as the likelier cover is
+      a prior-informed judgment."
+    confidence: moderate
+  - claimId: MPI-C009
+    verdict: weakly_supported
+    reasoning: The first conjunct is confirmed at first hand. The thesis's validator
+      states that "the 45 × 45 = 2025 entries in the correlation matrices are
+      not independent." In study 1 the permutation null (163) sits above the old
+      control count (142), so control-based comparisons overstate the surplus
+      (MPI-E018). The second conjunct says dependence-aware reanalyses
+      substantially diminish the founding 1986–2006 results. It rests on one
+      unreferenced preprint sentence and the secondhand summary in MPI-E007,
+      whose referent is ambiguous between Lucadou's data and Flores's own first
+      analyses. The only first-hand dependence-aware analysis covers the
+      thesis's replications, not the founding data. There the correction trims
+      the margin while the surplus survives by a wide margin, which is indirect
+      evidence against "substantially." The strongest opposing consideration is
+      that the shrinkage is asserted by the researcher who ran the simulations
+      with the data in hand. MPI-E018 confirms its direction, so the claim may
+      be under-documented rather than wrong.
+    confidence: moderate
+  - claimId: MPI-C010
+    verdict: provisionally_supported
+    reasoning: Both halves of the two-sided reading appear in the proponents' own
+      papers. The 2020 positive was published as "evidence for anomalistic
+      correlations" (MPI-E002). The preregistered failures were read as "likely
+      part of the systematic nature of such effects" (MPI-E003). The 2007 theory
+      admits decline, sign change, disappearance and displacement while
+      conceding the matrix will "never" overcome decline (MPI-E009, MPI-E011).
+      With no quantified effect sizes in GQT (MPI-E010), the model clearly
+      forbids only a stable, exploitable signal. A design that spreads effects
+      across 2,025 or 4,096 cells is built not to produce one. The strongest
+      opposing consideration is that the record of deployment is thin,
+      essentially one team's interpretive sentence. The model also carries
+      latent disconfirmable content. The 2007 strength–reproducibility
+      reciprocity has never been targeted with a prespecified metric, and Watt &
+      Tierney showed a field prediction can be operationalized (MPI-E013). No
+      record shows proponents refusing binding criteria, only that none have
+      been offered.
+    confidence: moderate
+  - claimId: MPI-C503
+    verdict: contradicted
+    reasoning: The claim says the experimental–control difference depended on the
+      random source, but the paper never tests that dependence. Each generator
+      is compared only with its own control, and one result clearing a threshold
+      while the other misses it is not a difference between them. The paper's
+      other primary analysis is the average over 23 cumulative matrices. On it,
+      the Mersenne Twister arm is significant too (t = 2.972, p = 0.0029), with
+      the same sign pattern as the true-RNG arm (MPI-E021). So "absent with a
+      pseudo-random generator" is false on the paper's own terms. The
+      "pseudo-random" arm was also seeded from swipe timing, "ensuring true
+      non-deterministic random values," and both arms' p-values treat 4,096
+      dependent cells as independent (MPI-E022). The strongest opposing
+      consideration is that the last-datapoint split stands as reported (t =
+      3.811 against 1.813). The cumulative average is built from overlapping
+      data and is itself suspect. With raw data available only on request, no
+      direct generator contrast has been run.
+    confidence: moderate

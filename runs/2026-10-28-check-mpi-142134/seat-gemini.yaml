@@ -1,0 +1,79 @@
+runId: "2026-10-28-check-gemini"
+model: "Gemini 3.8 Flash (Google), independent check run"
+date: "2026-10-28"
+promptVersion: "check-v2"
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: contradicted
+  loadBearing: [MPI-C002, MPI-C008, MPI-C504]
+  weakestLinks: [MPI-C007, MPI-C009, MPI-C010]
+  synthesis: >-
+    The Model of Pragmatic Information (MPI) presents a sophisticated theoretical framework aimed at formalizing the notorious elusiveness of anomalous psychophysical phenomena through Generalized Quantum Theory. The proponent steelman rests on legitimate theoretical and empirical points: the model's central prediction—that psychophysical correlations must decline, shift, or disappear whenever an experimental protocol attempts to stabilize them as a reliable signal—was not post-hoc hand-waving but was formally derived and published in 2007 (MPI-C005), years ahead of the preregistered replication crisis. Furthermore, proponents can point to empirical anomalies that did not simply vanish under conventional controls: in Flores's doctoral thesis (MPI-E018), permutation tests that explicitly held within-matrix variable dependencies constant still yielded an excess of correlations in Studies 1 and 2 (e.g., Study 1 yielding 316 correlations versus a permuted mean of 163, p = 0.0002).
+
+    However, the conventional steelman decisively accounts for the macro-level record without requiring anomalous physics. When methodological stringency is maximized through preregistered consensus protocols and pre-unblinding analysis software, the effect disappears entirely: Walach et al.'s 2021 multi-lab preregistered replication found no significant surplus across both experiments (MPI-E003), leading the authors themselves to concede that the matrix experiment is not replicable. Similarly, Grote's independent 2021 blind analysis of 200 participants yielded a completely null result conforming to chance expectation (MPI-E004). The historical arc of early large surpluses decaying upon replication matches the universal profile of statistical regression to the mean, publication bias (MPI-E015), researcher degrees of freedom (MPI-E006), and coding errors (MPI-E017). Crucially, the foundational assumption of the matrix paradigm—that counts of significant cells reflect independent anomalous events—is structurally false due to massive cell-level intercorrelations (MPI-C504, MPI-E024). When proponents interpret every null replication as confirming the model's evasion axiom, the hypothesis ceases to function as a testable empirical theory and becomes an unfalsifiable protective belt (MPI-C010).
+
+    In sensitivity analysis, the single record whose removal would most weaken this negative verdict is Walach et al. 2021 (MPI-E003), as it captures the model architects failing on their own pre-frozen protocol. Nonetheless, the verdict robustly survives without it: Grote's 2021 blind replication (MPI-E004) independently demonstrates a complete null under ideal methodological blinding, and the mathematical invalidity of cell-independence testing (MPI-E024, MPI-E022) undermines the positive claims across the literature.
+  steelman: >-
+    In Flores's 2021 doctoral thesis (Appendix 11), permutation testing of Study 1 that permuted session data across participants—explicitly preserving the true intercorrelation structure of the matrix—still produced 316 correlations exceeding the threshold against a permutation expectation of 163 (p = 0.0002), an empirical surplus that cannot be dismissed purely as an artifact of matrix cell dependence.
+claimAssessments:
+  - claimId: MPI-C001
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Lucadou's group consistently reported statistically significant excesses of correlation cells between psychological and physical variables across their 1986–2006 experimental series relative to control conditions. This founding record is extensively cited and documented in both proponent reviews and subsequent critical evaluations (MPI-E001, MPI-E002). The strongest opposing consideration is that the original raw data were never made publicly available for independent auditing and relied heavily on German-language proceedings with unverified cell-independence assumptions, but as a historical matter of what the group reported, the claim is uncontested.
+  - claimId: MPI-C002
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Methodologically rigorous replications that utilized preregistration or software blinding have consistently failed to detect the excess-correlation effect. The proponents' own preregistered consensus protocol across two cohorts failed to achieve statistical significance (Walach et al. 2021, MPI-E003), and Grote's preregistered, fully blinded analysis of 200 participants fell entirely within chance expectations (MPI-E004). The strongest opposing consideration is that secondary or post-hoc explorations within these studies occasionally hovered near marginal thresholds (such as Grote's two exploratory analyses at p = 0.06), but on all primary, prespecified criteria, strict replications have returned null findings.
+  - claimId: MPI-C003
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Across every sequential replication effort in the ledger, originally reported effect patterns failed to remain stable, either decaying to statistical non-significance, reversing direction, or migrating across variables. This unstable trajectory is documented across Grote's progression from 2015 to 2021 (MPI-E004, MPI-E005, MPI-E006), Walach's shift from 2020 to 2021 (MPI-E002, MPI-E003), and Flores's series where Studies 4 and 5 failed after Studies 1–3, with Study 4C showing an inverted effect (MPI-E019). The strongest opposing consideration is that proponents view this instability not as experimental failure but as the direct manifestation of the theoretical evasion phenomenon, yet both paradigms agree on the empirical reality of the pattern itself.
+  - claimId: MPI-C004
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      The formal framework of Generalized Quantum Theory (GQT) was rigorously defined in Foundations of Physics by Atmanspacher, Römer, and Walach (2002), providing an axiomatic extension of quantum concepts like complementarity and entanglement by abstracting away Hilbert spaces and Planck's constant (MPI-E010). The Model of Pragmatic Information instantiates this formalism for psychophysical interactions by deploying pragmatic information as the ordering metric (MPI-E009). The strongest opposing consideration is that by discarding the quantitative mathematics of standard quantum theory, the framework loses specific probabilistic predictive power, functioning more as a qualitative conceptual model than a fully predictive physical theory.
+  - claimId: MPI-C005
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      The theoretical deduction that anomalous correlations must decline, reverse sign, or displace when subjected to replication attempts was published in peer-reviewed literature in 2007 (MPI-E009), well before the major preregistered replication failures of 2017–2021. The theorists explicitly argued from the No-Transmission axiom that psychophysical entanglement cannot carry a usable signal, predicting an inverse relationship between effect strength and replicability. The strongest opposing consideration is that the mathematical link between macroscopic entanglement analogies and specific behavioral correlation decay rates remains heuristic rather than a rigorously bounded quantitative theorem.
+  - claimId: MPI-C006
+    verdict: established
+    confidence: high
+    reasoning: >-
+      The correlation-matrix method was deliberately designed by Lucadou and his co-theorists as the designated empirical test for MPI, intending to capture dispersed, jumping entanglement correlations across multiple channels while preventing the formation of a stable, transmissible signal (MPI-E011, MPI-E012). Proponent literature explicitly cites the matrix architecture as a method to work with the evasion phenomenon rather than fight it. The strongest opposing consideration is that parapsychologists sometimes employ multivariate matrices for ordinary exploratory screening, but within MPI's lineage, the paradigm was explicitly constructed as its operational testbed.
+  - claimId: MPI-C007
+    verdict: contradicted
+    confidence: moderate
+    reasoning: >-
+      The attribution of matrix correlation patterns to genuine non-local psychophysical correlations is contradicted by the empirical failure of every rigorous, preregistered, and blinded replication (MPI-E003, MPI-E004). Where positive surpluses have been reported, they are confounded by fatal statistical dependence among cells (MPI-E022, MPI-E024), single-participant self-experimentation (MPI-E020), or fragile analyses that vanish upon methodological improvement (MPI-E002, MPI-E003). The strongest opposing consideration is that permutation analyses in Flores's doctoral thesis (MPI-E018) showed that correlation counts in Studies 1 and 2 exceeded permuted control baselines even when inter-variable correlations were preserved.
+  - claimId: MPI-C008
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Standard methodological and statistical phenomena—including publication bias (MPI-E015), questionable research practices and analytic flexibility (MPI-E006, MPI-E016), coding mistakes (MPI-E017), and severe statistical dependence among matrix cells (MPI-E022, MPI-E024)—are jointly sufficient to explain the historical appearance and subsequent decline of matrix effects without invoking anomalous physics. When strict preregistration and blinded software pipelines eliminate these degrees of freedom, the excess correlations predictably vanish (MPI-E003, MPI-E004). The strongest opposing consideration is Bierman's simulation finding that QRPs could only account for approximately 60% of effect size in neighboring parapsychological datasets, suggesting mundane biases might not explain every historical anomaly.
+  - claimId: MPI-C009
+    verdict: unresolved
+    confidence: moderate
+    reasoning: >-
+      While Flores & Rapazote-Flores (2023) state in passing that simulations accounting for statistical dependence diminished the significant results of earlier studies, the provided records show that Lucadou's original 1986–2006 raw datasets have never been published or subjected to a reviewed, standalone dependence-aware reanalysis (MPI-E001, MPI-R002). The detailed permutation reanalysis conducted by Filk in Flores's 2021 thesis examined only Flores's own replication data, not Lucadou's founding data (MPI-E018). The strongest opposing consideration is that the physical and psychological variables in Lucadou's setup are structurally identical in their high intercorrelations to later setups (MPI-E024), making it highly probable that founding results were similarly inflated, but the reanalysis itself has not been conducted on those specific primary datasets.
+  - claimId: MPI-C504
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Filk's mathematical evaluation in Flores (2021, Appendix 11) conclusively demonstrates that the 2,025 entries of a 45×45 matrix derived from roughly 90 intercorrelated variables violate statistical independence (MPI-E024). Because psychological responses (such as left versus right key presses) and physical variables share internal covariance, significant correlation cells inevitably cluster in dependent bundles, completely invalidating standard binomial or independent z-score tests. The strongest opposing consideration is that permutation resampling across intact session vectors can establish an empirical null distribution that accounts for this dependence, but the necessity of doing so confirms the underlying premise that the cells themselves are not independent.
+  - claimId: MPI-C010
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      In practical experimental deployment, proponents treat successful matrix replications as evidence of psychophysical entanglement and failed replications as confirmation of MPI's predicted decline, effectively preventing any experimental outcome from counting as disconfirmation. When the consensus replication failed, the authors concluded that the paradigm itself is inherently non-replicable rather than admitting evidence against the model (MPI-E003, Walach et al. 2021). The strongest opposing consideration is that MPI formulates specific structural relationships, such as the reciprocal proportionality between initial effect strength and decline rate, which could theoretically provide binding falsification criteria if proponents were willing to prespecify them quantitatively (MPI-R001, MPI-R004).
+  - claimId: MPI-C503
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Flores & Rapazote-Flores (2023) directly report that in their terminal last-datapoint analysis across all sessions, the true atmospheric-noise generator arm (Random.org) produced a statistically significant experimental–control difference (Welch's t = 3.811, p = 0.00013) whereas the Mersenne Twister pseudo-RNG arm did not (t = 1.813, p = 0.06987) (MPI-E008, MPI-E021). The claim accurately summarizes the published statistical results for that specific analysis. The strongest opposing consideration is that this generator divergence disappears in the paper's cumulative average analysis, where the Mersenne Twister arm is also statistically significant (p = 0.0029, MPI-E021), and the test improperly treated 4,096 matrix cells as independent samples (MPI-E022).

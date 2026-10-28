@@ -684,7 +684,7 @@
     The test treats the 4,096 cells as independent observations. They are
     built from four variables on each side, each cut into sixteen pieces.
     This is the dependence problem the program's own critique raised
-    against the founding experiments (MPI-C009), and the reported p-value
+    against the founding experiments (MPI-C504), and the reported p-value
     and power assume it away. The control is also produced by a different
     procedure, so a systematic difference between the matrices need not be
     a mind–matter effect. Neither point shows that the result is an
@@ -699,3 +699,43 @@
     extractedBy: "Claude Opus 5.5 (operator), session 2026-10-27-session-site-132125"
     runId: "2026-10-27-session-site-132125"
     date: "2026-10-27"
+
+# ── 2026-10-28 operator session (2026-10-28-session-site-140632) ─────────────
+# Answering the review of change #472: the dependence critique's premise,
+# split from MPI-C009 as MPI-C504, gets its own record.
+
+- id: MPI-E024
+  title: "Flores 2021, independent validation appendix: why the matrix cells are not independent"
+  claimIds: [MPI-C504]
+  sourceId: SRC-FLORES-2021
+  direction: supports
+  strength: strong
+  sourceStatement: >-
+    The thesis's independent validator, Thomas Filk, opens his permutation
+    section with the dependence problem: "The 45 × 45 = 2025 entries in the
+    correlation matrices are not independent. One simple reason is that
+    there are only 2 × 45 (almost) independent variables for which one
+    calculates correlations. But even these 90 variables are not completely
+    independent because, e.g., more “left key pressures” imply less “right
+    key pressures” etc." (p. 395). He goes on to compare the experimental
+    matrices with matrices built by permuting whole experiments, which
+    keeps the dependence among cells intact (MPI-E018).
+  editorInference: >-
+    The premise of the dependence critique holds for this design, and it
+    holds for a structural reason: 2,025 cells come from about 90
+    variables, some of them partly redundant, so significant cells arrive
+    in bundles. A count of significant cells therefore cannot be compared
+    with a chance level computed as if each cell were a separate test.
+    This record supports the premise only. Whether a dependence-aware
+    analysis shrinks Lucadou's founding results is MPI-C009, and this
+    appendix does not analyse those data.
+  exactLocator: "Edinburgh Research Archive PDF (FloresA_2021.pdf), Appendix 11, section 3, PDF p. 395"
+  limitations:
+    - "Same source and same appendix as MPI-E018; the two records are not independent evidence. This one carries the methodological premise, MPI-E018 the permutation results."
+    - "The appendix concerns the thesis's 45 × 45 matrices. That the founding matrices share the structure rests on their described design (a few variables on each side generating many cells), not on a reading of Lucadou's 2006 paper."
+  reviewState: ai_extracted
+  origin:
+    ref: "Flores 2021 thesis PDF, Appendix 11, PDF p. 395, read through scripts/site.ts read, 2026-10-28"
+    extractedBy: "Claude Opus 5.5 (operator), session 2026-10-28-session-site-140632"
+    runId: "2026-10-28-session-site-140632"
+    date: "2026-10-28"

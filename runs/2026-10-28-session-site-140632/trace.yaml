@@ -1,0 +1,119 @@
+# What operator session 2026-10-28-session-site-140632 did, as its trace recorded it: the digest the workflow made on the session's machine
+# (src/engine/trace.ts), checked here (src/engine/session.ts). The session's own account of its work is its log.
+version: 1
+ended: success
+model: claude-opus-5-5
+permissionMode: dontAsk
+turns: 3
+minutes: 0.3
+usd: 3.4551
+compactions: 0
+unreadableLines: 0
+tools:
+  - tool: Bash
+    calls: 36
+    failed: 4
+    refused: 0
+  - tool: Edit
+    calls: 12
+    failed: 0
+    refused: 0
+  - tool: Read
+    calls: 9
+    failed: 0
+    refused: 0
+  - tool: Grep
+    calls: 8
+    failed: 0
+    refused: 0
+  - tool: Write
+    calls: 5
+    failed: 0
+    refused: 0
+  - tool: Monitor
+    calls: 1
+    failed: 0
+    refused: 0
+  - tool: ToolSearch
+    calls: 1
+    failed: 0
+    refused: 0
+commands:
+  - command: sed
+    calls: 6
+    failed: 1
+    refused: 0
+  - command: grep
+    calls: 5
+    failed: 0
+    refused: 0
+  - command: node scripts/site.ts check-quotes
+    calls: 3
+    failed: 0
+    refused: 0
+  - command: node scripts/site.ts read
+    calls: 3
+    failed: 0
+    refused: 0
+  - command: cat
+    calls: 2
+    failed: 0
+    refused: 0
+  - command: cd
+    calls: 2
+    failed: 0
+    refused: 0
+  - command: node scripts/site.ts ids
+    calls: 2
+    failed: 0
+    refused: 0
+  - command: node scripts/site.ts stamp
+    calls: 2
+    failed: 0
+    refused: 0
+  - command: node scripts/site.ts status
+    calls: 2
+    failed: 0
+    refused: 0
+  - command: npm test
+    calls: 2
+    failed: 0
+    refused: 0
+  - command: (other)
+    calls: 1
+    failed: 0
+    refused: 0
+  - command: cp
+    calls: 1
+    failed: 1
+    refused: 0
+  - command: git status
+    calls: 1
+    failed: 0
+    refused: 0
+  - command: ls
+    calls: 1
+    failed: 0
+    refused: 0
+  - command: npm run build
+    calls: 1
+    failed: 0
+    refused: 0
+  - command: python3
+    calls: 1
+    failed: 1
+    refused: 0
+  - command: rm
+    calls: 1
+    failed: 1
+    refused: 0
+fetched: []
+read:
+  - source: qeios.com
+    calls: 2
+    failed: 0
+  - source: era.ed.ac.uk
+    calls: 1
+    failed: 0
+filesEdited: 7
+repeatedFailures: 0

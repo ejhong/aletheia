@@ -158,13 +158,13 @@
 
 - id: MPI-C009
   statement: >-
-    Intercorrelation among the psychological variables violated the independence assumptions of the original correlation-matrix analyses, and dependence-aware reanalyses substantially diminish the founding excess-correlation results.
+    Dependence-aware reanalyses of Lucadou's original 1986–2006 correlation-matrix data substantially diminish their reported excess of significant correlations.
   theme: conventional
   rung: attribution
   claimType: methodological
   reviewState: ai_extracted
   origin:
-    ref: "Verification batch 2026-08-22 — Flores 2021 thesis and Flores & Rapazote-Flores 2023"
+    ref: "Verification batch 2026-08-22 — Flores 2021 thesis and Flores & Rapazote-Flores 2023. Restated 2026-10-28 by Claude Opus 5.5 (operator, session 2026-10-28-session-site-140632) at the reviewers' request: the original statement joined this consequence to the premise that the matrix cells are not independent, which now stands alone as MPI-C504."
     extractedBy: "Fable (AI agent)"
     runId: "mpi-case-2026-08-22"
     date: "2026-08-22"
@@ -174,7 +174,7 @@
       It was found that psychological variables exhibited high intercorrelations, and simulations provided a means to overcome the statistical dependence that may have influenced the initial significant results. When simulations of data were incorporated, the results from these studies diminished.
     sourceId: SRC-FLORES-2023
   parentClaimIds: [ MPI-C008 ]
-  dependsOnClaimIds: []
+  dependsOnClaimIds: [ MPI-C504 ]
 
 - id: MPI-C010
   statement: >-
@@ -234,18 +234,42 @@
 
 - id: MPI-C503
   statement: >-
-    In the 2023 online correlation-matrix replication, the experimental–control difference depended on the random source: it was present with a true (atmospheric-noise) random source and absent with a pseudo-random generator (Mersenne Twister).
+    The 2023 online correlation-matrix replication reports, in its last-datapoint analysis (all sessions in one matrix), a statistically significant experimental–control difference with a true (atmospheric-noise) random source and none with a pseudo-random generator (Mersenne Twister).
   theme: replications
   rung: observation
   claimType: statistical
   reviewState: ai_extracted
   origin:
-    ref: "Flores & Rapazote-Flores 2023 preprint, abstract"
+    ref: "Flores & Rapazote-Flores 2023 preprint, abstract. Restated 2026-10-27 by Claude Opus 5.5 (operator, session 2026-10-27-session-site-132125), and again 2026-10-28 (session 2026-10-28-session-site-140632) at the reviewers' request: now a report of the paper's last-datapoint analysis with its scope stated, anchored to the paper's discussion rather than its abstract."
     extractedBy: "Fable (AI agent)"
     runId: "mpi-case-2026-08-22"
     date: "2026-08-22"
   sourceAnchor:
-    locator: "Flores & Rapazote-Flores 2023, abstract"
+    locator: "Qeios 0PAHC2 v1 (27 Dec 2023), PDF p. 14"
     quote: >-
-      The analysis using Random.org indicated statistically significant differences between experimental and control sessions... The analysis using Mersenne Twister did not exhibit statistically significant differences concerning the same matrix.
+      To Random.org, concerning the last datapoint, an effect size of 0,0842 (above the minimum requirement of 0,071) was detected with a power of 94% within the 4.096 matrix cells, maintaining an alpha level below 0,05 (alpha = 0,00013; Welch T-test = 3,8112).
     sourceId: SRC-FLORES-2023
+    also:
+      - locator: "Qeios 0PAHC2 v1 (27 Dec 2023), PDF p. 14"
+        quote: >-
+          For Mersenne Twister regarding the last datapoint, an effect size of 0,0400 (below the minimum meaningful requirement of 0,071) was identified with a power of less than 90% (67%) within the 4.096 matrix cells, maintaining an alpha level above 0,05 (alpha = 0,06987; Welch T-test = 1,813).
+
+- id: MPI-C504
+  statement: >-
+    The cells of a correlation matrix built from a few intercorrelated psychological and physical variables are not statistically independent, so a count of significant cells cannot be evaluated as if each cell were a separate test.
+  theme: conventional
+  rung: observation
+  claimType: methodological
+  reviewState: ai_extracted
+  origin:
+    ref: "Split from MPI-C009 at the reviewers' request (review of change #472): the premise of the dependence critique, stated alone. Anchored in the thesis's independent validation appendix (MPI-E024)."
+    extractedBy: "Claude Opus 5.5 (operator), session 2026-10-28-session-site-140632"
+    runId: "2026-10-28-session-site-140632"
+    date: "2026-10-28"
+  sourceAnchor:
+    locator: "Edinburgh Research Archive PDF (FloresA_2021.pdf), Appendix 11, PDF p. 395"
+    quote: >-
+      The 45 × 45 = 2025 entries in the correlation matrices are not independent.
+    sourceId: SRC-FLORES-2021
+  parentClaimIds: [ MPI-C008 ]
+  dependsOnClaimIds: []

@@ -69,11 +69,35 @@ describe("retrieval", () => {
   });
 });
 
+describe("a body that fails after the headers", () => {
+  it("is a failed read, said, not a throw", async () => {
+    // 2026-10-28: an 11 MB thesis outran the timeout while its body arrived, and the throw stopped the whole quote check.
+    const fetchImpl = (async () => new Response(new ReadableStream({ start: (c) => c.error(new DOMException("The operation was aborted due to timeout", "TimeoutError")) }), { headers: { "content-type": "application/pdf" } })) as typeof fetch;
+    const r = await retrieve({ url: "https://repo.test/thesis.pdf" }, { fetchImpl });
+    expect(r.ok).toBe(false);
+    expect(r.reason).toMatch(/^fetch failed while the body was read: .*timeout/);
+  });
+});
+
 describe("walls", () => {
   it("a short challenge page served with 200 is not a retrieval", () => {
     expect(looksLikeWall("Client Challenge\nA required part of this site couldn’t load. This may be due to a browser extension.")).toBe("bot challenge page");
     expect(looksLikeWall("Just a moment...\nEnable JavaScript and cookies to continue")).toBe("bot challenge page");
     expect(looksLikeWall("The Queen's Chamber — Pyramid of Khufu. " + "Petrie measured the chamber in 1881. ".repeat(200))).toBeNull();
+  });
+  it("a page that only redirects is not the document, and the open copy is read instead", async () => {
+    // 2026-10-28: Elsevier's hop from a DOI answers 200 with a meta-refresh page whose whole text is "Redirecting".
+    const hop = `<html><head><meta HTTP-EQUIV="REFRESH" content="2; url='/retrieve/articleSelectPrefsTemp?Redirect=x'"/><title>Redirecting</title></head><body>Redirecting</body></html>`;
+    const fetchImpl = (async (input: string | URL | Request) => {
+      const url = String(input);
+      if (url.startsWith("https://api.openalex.org/")) return new Response(JSON.stringify({ best_oa_location: { pdf_url: "https://repo.test/cell.pdf" } }), { headers: { "content-type": "application/json" } });
+      if (url === "https://repo.test/cell.pdf") return new Response(Buffer.from(miniPdf("The article itself")), { headers: { "content-type": "application/pdf" } });
+      return new Response(hop, { headers: { "content-type": "text/html;charset=UTF-8" } });
+    }) as typeof fetch;
+    const r = await retrieve({ url: "https://doi.org/10.1016/j.cell.2024.08.010" }, { fetchImpl });
+    expect(r.ok).toBe(true);
+    expect(r.text).toContain("The article itself");
+    expect(r.via).toMatch(/open-access copy/);
   });
 });
 
@@ -186,6 +210,16 @@ describe("PubMed Central: the page is the key, Europe PMC's JATS is the text", (
     // The same rendering for HTML, so a quote of a unit reads alike whichever route served the article.
     const { stripHtml } = await import("./fetch.ts");
     expect(stripHtml("<p>area (28 mm<sup>2</sup> vs. 17 mm<sup>2</sup>, p = 0.014)</p>")).toBe("area (28 mm² vs. 17 mm², p = 0.014)");
+  });
+  it("keeps the words of an author-year citation and of a figure or table reference, as the article's page shows them", async () => {
+    // 2026-10-28: #470 was held on "Maier et al. (2018) lies at", which this text gave as "Maier et al. () lies at".
+    const { jatsToText } = await import("./fetch.ts");
+    const text = jatsToText(
+      `<article><body><p>The result in Maier et al. (<xref rid="B1" ref-type="bibr">2018</xref>) lies at 0.0018 (<xref rid="F2" ref-type="fig">Figure 2</xref>; Table <xref rid="T1" ref-type="table">1</xref>), as before<sup><xref rid="B4" ref-type="bibr">4</xref>,<xref rid="B5" ref-type="bibr">5</xref></sup> and since [<xref rid="B6" ref-type="bibr">6–8</xref>].<xref rid="fn1" ref-type="fn">a</xref></p></body></article>`,
+    );
+    expect(text).toContain("The result in Maier et al. (2018) lies at 0.0018 (Figure 2; Table 1), as before");
+    // Numbered citation and footnote markers are dropped, as they were.
+    expect(text.slice(text.indexOf("as before"))).not.toMatch(/\d|a\s*$/);
   });
   it("reads Europe PMC's full text when the PMC page serves a challenge, keeps the page as the key and says so; a page that serves is read as itself", async () => {
     const calls: string[] = [];

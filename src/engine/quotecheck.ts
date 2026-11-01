@@ -6,7 +6,7 @@ import { canonicalJson } from "../domain/hash.ts";
 import { verifyCitations } from "./citations.mjs";
 import { doiFromUrl } from "./fetch.ts";
 import { quoteOccurs, quotedSpans } from "./quotes.ts";
-import { pagesContaining, pagesOf, readSource } from "./read.ts";
+import { pagesContaining, pagesOf, readKey, readSource } from "./read.ts";
 
 /**
  * The quote check (AGENTS.md §3.15: "every quoted passage found in the text
@@ -22,6 +22,14 @@ import { pagesContaining, pagesOf, readSource } from "./read.ts";
  * Fail-closed: a span that is not found, a source that cannot be read, an
  * evidence record with no quoted span, a locator on the wrong page — each is
  * a failure, said plainly, and the change does not merge.
+ *
+ * The review's machine reads every source fresh, from a cloud address, and a
+ * server may answer it otherwise than it answered the session: busy (read
+ * once more after a pause), or with another page than the session read. A
+ * record's archived copy stands in when its live text cannot be read, and a
+ * Wayback capture of the record's own URL is read for a passage the live page
+ * lacks — the same page, as the archive took it; a passage found only there
+ * passes with a warning.
  */
 
 interface Rec {
@@ -105,13 +113,39 @@ const targetOf = (source: Source) => {
   return { url: source.url ?? source.archivedUrl, doi: c?.kind === "doi" ? c.id : undefined };
 };
 
+/** The address a Wayback Machine capture is of, or null when `url` is not a capture. */
+export function waybackOriginal(url: string | undefined): string | null {
+  return /^https?:\/\/web\.archive\.org\/web\/\d{1,14}(?:[a-z]{2}_)?\/(.+)$/i.exec(url ?? "")?.[1] ?? null;
+}
+
+/** Whether `archived` is a Wayback capture of `url` itself — the same address, its scheme, a leading "www." and a closing slash aside. */
+export function isCaptureOf(archived: string | undefined, url: string | undefined): boolean {
+  const original = waybackOriginal(archived);
+  const bare = (u: string) =>
+    u
+      .replace(/#.*$/, "")
+      .replace(/^https?:\/\//i, "")
+      .replace(/^www\./i, "")
+      .replace(/\/+$/, "")
+      .replace(/^[^/]+/, (host) => host.toLowerCase());
+  return Boolean(original && url && bare(original) === bare(url));
+}
+
+type Text = { text: string | null; reason?: string; from?: string };
+
 export interface QuoteCheckOptions {
   base: string;
   /** The commit under review, read through git and never run (the review workflow); the working tree when absent (the operator, before it commits). */
   head?: string;
   root?: string;
-  /** Test seam: the text of a source, or null with a reason. */
-  read?: (source: Source) => Promise<{ text: string | null; reason?: string }>;
+  /** Every source read again, not from the reading tool's cache: the text the review's machine, which has no cache, will read. */
+  fresh?: boolean;
+  /** The pause before a source whose server answered busy (HTTP 429 or 5xx) is read once more; 15 s when absent. */
+  retryDelayMs?: number;
+  /** Test seam: the network under the default read. */
+  fetchImpl?: typeof fetch;
+  /** Test seam: the text at a target — a source's URL and DOI, or an archived copy's URL alone — or null with a reason; `from` says what was read. */
+  read?: (target: { url?: string; doi?: string }) => Promise<Text>;
   /** Test seam: resolve citations. */
   resolve?: (cs: { kind: string; id: string }[]) => Promise<{ kind: string; id: string; status: string; note: string }[]>;
 }
@@ -120,24 +154,29 @@ export async function quoteCheck(opts: QuoteCheckOptions): Promise<QuoteCheckRes
   const root = opts.root ?? process.cwd();
   const casesDir = path.join(root, "content", "cases");
   const result: QuoteCheckResult = { checked: [], failures: [], warnings: [] };
-  const texts = new Map<string, Promise<{ text: string | null; reason?: string }>>();
   const read =
     opts.read ??
-    (async (s: Source) => {
-      const r = await readSource(targetOf(s), { root });
-      if (r.ok) return { text: r.text };
-      // A dead link is common and is not a missing source: the archived copy the record names is the same document.
-      if (s.archivedUrl && s.archivedUrl !== s.url) {
-        const archived = await readSource({ url: s.archivedUrl }, { root });
-        if (archived.ok) return { text: archived.text };
-        return { text: null, reason: `${r.reason ?? "not readable"}; its archived copy: ${archived.reason ?? "not readable"}` };
+    (async (target: { url?: string; doi?: string }): Promise<Text> => {
+      const how = { root, fresh: opts.fresh, ...(opts.fetchImpl ? { fetchImpl: opts.fetchImpl } : {}) };
+      let r = await readSource(target, how);
+      // A server that answers busy is asked once more after a pause (2026-10-28: a thesis's repository answered the
+      // review's machine HTTP 503 and held #469; the session had read the thesis whole).
+      if (!r.ok && r.status !== null && (r.status === 429 || r.status >= 500)) {
+        await new Promise((done) => setTimeout(done, opts.retryDelayMs ?? 15_000));
+        r = await readSource(target, how);
       }
-      return { text: null, reason: r.reason ?? "not readable" };
+      if (!r.ok || r.text === null) return { text: null, reason: r.reason ?? "not readable" };
+      return { text: r.text, from: `${readKey(target)}${r.via ? ` (${r.via})` : ""}` };
     });
-  const textOf = (s: Source) => {
-    if (!texts.has(s.id)) texts.set(s.id, read(s));
-    return texts.get(s.id)!;
+  const once = (memo: Map<string, Promise<Text>>, id: string, f: () => Promise<Text>) => {
+    if (!memo.has(id)) memo.set(id, f());
+    return memo.get(id)!;
   };
+  const live = new Map<string, Promise<Text>>();
+  const archive = new Map<string, Promise<Text>>();
+  const textOf = (s: Source) => once(live, s.id, () => read(targetOf(s)));
+  // The archived copy is read as itself, by its address alone: an open copy found by DOI is not the capture.
+  const archivedOf = (s: Source) => once(archive, s.id, () => read({ url: s.archivedUrl }));
 
   const dirs = opts.head ? caseDirsAt(opts.head, root) : fs.readdirSync(casesDir).filter((d) => fs.statSync(path.join(casesDir, d)).isDirectory());
   for (const dir of dirs) {
@@ -154,19 +193,52 @@ export async function quoteCheck(opts: QuoteCheckOptions): Promise<QuoteCheckRes
       const source = sourceId ? sources.get(sourceId) : undefined;
       if (!source) return fail(record, sourceId ? `cites ${sourceId}, which sources.yaml does not hold` : "quotes a passage but names no source");
       if (source.sourceType === "workpaper") return warn(record, `cites the study workpaper ${source.id}; its text is the study file, not checked here`);
-      const { text, reason } = await textOf(source);
-      if (text === null) return fail(record, `the text of ${source.id} could not be read (${reason}); a record whose text cannot be read enters as provisional, with the route to the text`);
-      for (const span of spans) if (!quoteOccurs(span, text)) fail(record, `quoted passage not found in the text of ${source.id}: "${span.slice(0, 160)}"`);
+      const copy = source.archivedUrl && source.archivedUrl !== source.url ? source.archivedUrl : null;
+      let text = await textOf(source);
+      let fromCopy = false;
+      if (text.text === null && copy) {
+        // A dead link is common and is not a missing source: the archived copy the record names is the same document.
+        const archived = await archivedOf(source);
+        if (archived.text !== null) [text, fromCopy] = [archived, true];
+        else text = { text: null, reason: `${text.reason ?? "not readable"}; its archived copy: ${archived.reason ?? "not readable"}` };
+      }
+      if (text.text === null) return fail(record, `the text of ${source.id} could not be read (${text.reason}); a record whose text cannot be read enters as provisional, with the route to the text`);
+      // A live page can lack a passage the session read on it: a server serves the review's machine another page (a
+      // challenge, the abstract) than it served the session's. A Wayback capture of the record's own URL is that page
+      // as the archive took it, and a passage found there passes, said (2026-10-28).
+      const capture = !fromCopy && copy && isCaptureOf(copy, source.url) ? copy : null;
+      const found: { span: string; in: string }[] = [];
+      for (const span of spans) {
+        if (quoteOccurs(span, text.text)) {
+          found.push({ span, in: text.text });
+          continue;
+        }
+        const archived = capture ? await archivedOf(source) : null;
+        if (archived?.text && quoteOccurs(span, archived.text)) {
+          warn(record, `quoted passage found only in the archived copy of ${source.id} (${capture}), not in the live page${text.from ? ` as read from ${text.from}` : ""}: "${span.slice(0, 80)}"`);
+          found.push({ span, in: archived.text });
+          continue;
+        }
+        const seen = text.from ? ` (read from ${text.from}, ${text.text.length.toLocaleString("en-US")} characters)` : "";
+        const also = capture ? (archived?.text ? ", nor in its archived copy" : `; its archived copy could not be read (${archived?.reason ?? "not readable"})`) : "";
+        fail(record, `quoted passage not found in the text of ${source.id}${seen}${also}: "${span.slice(0, 160)}"`);
+      }
       // A locator names the page as the reading tool numbers it (the PDF's own page, [p. N]). A page past the end of
       // the document is a journal's pagination, which the text does not carry: said, not failed.
       const pages = locatorPages(locator);
-      if (!pages || !/\[p\. \d+\]/.test(text)) return;
-      const last = Math.max(...pagesOf(text).keys());
-      if (pages[0] > last) return warn(record, `locator "${locator}" names a page past the document's ${last} (a journal's pagination?); name the page as the reading tool shows it`);
-      for (const span of spans) {
-        const on = pagesContaining(text, span);
-        if (on.length && !on.some((p) => p >= pages[0] && p <= pages[1])) {
-          fail(record, `locator "${locator}" names p. ${pages[0] === pages[1] ? pages[0] : `${pages[0]}–${pages[1]}`}; the passage "${span.slice(0, 80)}" is on p. ${on.join(", ")}`);
+      if (!pages) return;
+      for (const t of new Set(found.map((f) => f.in))) {
+        if (!/\[p\. \d+\]/.test(t)) continue;
+        const last = Math.max(...pagesOf(t).keys());
+        if (pages[0] > last) {
+          warn(record, `locator "${locator}" names a page past the document's ${last} (a journal's pagination?); name the page as the reading tool shows it`);
+          continue;
+        }
+        for (const { span } of found.filter((f) => f.in === t)) {
+          const on = pagesContaining(t, span);
+          if (on.length && !on.some((p) => p >= pages[0] && p <= pages[1])) {
+            fail(record, `locator "${locator}" names p. ${pages[0] === pages[1] ? pages[0] : `${pages[0]}–${pages[1]}`}; the passage "${span.slice(0, 80)}" is on p. ${on.join(", ")}`);
+          }
         }
       }
     };

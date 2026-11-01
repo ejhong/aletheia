@@ -11,8 +11,11 @@
  *                                           the next free record ids for a case
  *   stamp <case>                            bind editions/new.yaml (and assessments/new.yaml) to the ledger
  *   archive <url>                           a Wayback Machine snapshot for a source's archivedUrl
- *   check-quotes [--base REF] [--head REF]  every quoted passage a change adds, found in its source (the review); --head
- *                                           reads the change from that commit instead of the working tree
+ *   check-quotes [--base REF] [--head REF] [--fresh] [--hold-comment F]
+ *                                           every quoted passage a change adds, found in its source (the review); --head
+ *                                           reads the change from that commit instead of the working tree; --fresh reads
+ *                                           every source again, as the review's machine will; --hold-comment writes the
+ *                                           failures as a review round to F (the review workflow)
  *   check-names                             no forbidden name (config/site.yaml) on the rendered site (CI)
  *   panel <case> [--seats a,b] [--dry-run]  the blind check: the panel judges the ledger as it stands
  *   review --base REF [--head REF] --title T [--body-file F] [--previous F | --previous-comments F] [--out F] [--json F]
@@ -44,7 +47,8 @@ import { harvest } from "../src/engine/harvest.ts";
 import { nextIds, type Kind, KINDS } from "../src/engine/ids.ts";
 import { formatQuoteCheck, quoteCheck } from "../src/engine/quotecheck.ts";
 import { findInText, pagesOf, readSource } from "../src/engine/read.ts";
-import { blobFromComment, reviewBlob, reviewComment, runReview } from "../src/engine/review.ts";
+import { loadProtocol } from "../src/engine/protocols.ts";
+import { blobFromComment, quoteHoldComment, reviewBlob, reviewComment, runReview } from "../src/engine/review.ts";
 import { closeSession, traceSummary, writeTrace, type SessionReport } from "../src/engine/session.ts";
 import { stamp } from "../src/engine/stamp.ts";
 import { budgetLine, budgetState, formatStatus, siteStatus } from "../src/engine/status.ts";
@@ -157,9 +161,25 @@ async function main() {
       return;
     }
     case "check-quotes": {
-      const r = await quoteCheck({ base: flag("base") ?? "origin/main", head: flag("head") });
-      console.log(formatQuoteCheck(r));
-      if (r.failures.length) process.exit(1);
+      const head = flag("head");
+      let report: string;
+      let failures: string[];
+      try {
+        const r = await quoteCheck({ base: flag("base") ?? "origin/main", head, fresh: flags.has("fresh") });
+        report = formatQuoteCheck(r);
+        failures = r.failures.map((f) => `${f.case} ${f.record}: ${f.problem}`);
+      } catch (e) {
+        // A check that cannot run holds the change as a failure does, and says why: never a silent pass, never a hold no one can answer.
+        report = `The quote check could not run: ${(e as Error).message}`;
+        failures = [report];
+      }
+      console.log(report);
+      if (failures.length && flag("hold-comment")) {
+        // The hold as a review round, with its machine record, so the operator's planner answers it (the review workflow).
+        const commit = execFileSync("git", ["rev-parse", head ?? "HEAD"], { encoding: "utf8" }).trim();
+        fs.writeFileSync(flag("hold-comment")!, quoteHoldComment({ commit, date: new Date().toISOString().slice(0, 10), protocol: loadProtocol("review").version, report, failures }));
+      }
+      if (failures.length) process.exit(1);
       return;
     }
     case "guard-session": {

@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { blobFromComment, parseReviewReply, reviewComment, tally, type ReviewReply, type ReviewResult } from "./review.ts";
+import { REVIEW_LOGIN, reviewRecordOf } from "./harvest.ts";
+import { blobFromComment, parseReviewReply, quoteHoldComment, reviewComment, tally, type ReviewReply, type ReviewResult } from "./review.ts";
 
 /**
  * The review's rule is the constitution's (AGENTS.md §3.15, 2026-10-19): a change publishes when at least three
@@ -59,5 +60,22 @@ describe("the review's record", () => {
     expect(blob.outcome).toBe("publish");
     expect(blob.seats[2].notes).toEqual(["mind the --> marker"]);
     expect(body).toContain("| Seat 0 | better | none |");
+  });
+
+  it("records a quote check's hold as a round, with its failures, which the harvest keeps", () => {
+    const failures = ["x X-E001: quoted passage not found in the text of SRC-A: \"a --> b\"", "x X-E002: the text of SRC-B could not be read (HTTP 503)"];
+    const body = quoteHoldComment({ commit: "0123456789abcdef0123456789abcdef01234567", date: "2099-01-01", protocol: "review-v1", report: `Quote check: 2 record(s) checked\nFAIL ${failures.join("\nFAIL ")}`, failures });
+    expect(body.startsWith("<!-- site-review -->")).toBe(true);
+    expect(body).toContain("## Review — ⏸ Held — the quote check failed");
+    expect(body).toContain("commit 0123456789:");
+    const blob = blobFromComment(body)!;
+    expect(blob).toMatchObject({ commit: "0123456789abcdef0123456789abcdef01234567", outcome: "hold", seats: [], checks: failures });
+    expect(blob.reason).toBe("held until answered: the quote check failed (2 failures)");
+    const record = reviewRecordOf(
+      { number: 9, title: "t", url: "https://github.com/o/r/pull/9", mergedAt: null, closedAt: "2099-01-02T00:00:00Z" },
+      { closedPulls: () => [], comments: () => [{ author: REVIEW_LOGIN, body, createdAt: "2099-01-01T00:00:00Z" }], files: () => ["content/cases/x/evidence.yaml"] },
+      "2099-01-03",
+    )!;
+    expect(record.rounds[0]).toMatchObject({ outcome: "hold", seats: [], checks: failures });
   });
 });

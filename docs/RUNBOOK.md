@@ -69,11 +69,15 @@ stolen key. A spend limit at Anthropic binds the key itself:
   reviewers answered (a vendor was down); push nothing, re-run the Review
   workflow on the pull request. A change answered twice without publishing
   is withdrawn by the next session, its attempt on record.
-- **CI fails on the quote check.** The failure names the record, the source
-  and the passage. A quoted span not in the source is a real error; a source
-  that could not be read in CI (a site that blocks the runner) means the
-  record enters as `provisional`, with the route to its text, or the source
-  is replaced by a readable copy of the same document.
+- **CI fails on the quote check.** The failure names the record, the source,
+  the passage, and the text the check read (its address, the copy it came
+  from, its length). A quoted span not in the source is a real error; a
+  source that could not be read in CI (a site that blocks the runner) means
+  the record enters as `provisional`, with the route to its text, or the
+  source is given the address of a readable copy of the same document, or a
+  Wayback capture of its own address as `archivedUrl`. In the review, the
+  failure is a held round with its machine record, and the next session
+  answers it like a harm (2026-10-28).
 - **The money ran out.** Sessions stop until the day or the month turns. The
   month's money is also spread over its days: after a session, the next
   scheduled one waits until the month is back on its pace (Run workflow by
@@ -85,7 +89,7 @@ stolen key. A spend limit at Anthropic binds the key itself:
 ```bash
 node scripts/site.ts status           # every case, the reviewers' notes, the money left
 node scripts/site.ts read <url|doi>   # a source's text, as the quote check reads it
-node scripts/site.ts check-quotes     # the quote check against origin/main
+node scripts/site.ts check-quotes --fresh  # the quote check against origin/main, every source read again
 node scripts/site.ts ids <case>       # the next free record ids
 node scripts/site.ts stamp <case>     # bind a new edition to the ledger
 node scripts/site.ts panel <case>     # the blind panel on a case (paid)

@@ -6,7 +6,8 @@
 # (protocols/review-v1.md, src/engine/review.ts). A change publishes when at
 # least three answer, a majority judge it better, at most one judges it worse,
 # and no harm stands; the notes never block. Each round is a new comment, so
-# the next round — after the operator's answer — reads the earlier ones.
+# the next round — after the operator's answer — reads the earlier ones; a
+# change the quote check holds is a round too, answered the same way.
 #
 # The trust boundary: this workflow runs main's code, as main holds it
 # (`pull_request_target`), and reads the change through git as data — it never
@@ -82,23 +83,12 @@ jobs:
         id: quotes
         run: |
           set +e
-          node scripts/site.ts check-quotes --base "origin/${{ github.event.pull_request.base.ref }}" --head refs/remotes/pr/head > quotes.txt
+          # A failure is held as a review round, with its machine record, so that the operator answers it like any
+          # other round (src/engine/review.ts, quoteHoldComment); the reviewers are not asked.
+          node scripts/site.ts check-quotes --base "origin/${{ github.event.pull_request.base.ref }}" --head refs/remotes/pr/head --hold-comment review.md > quotes.txt
           code=$?
           cat quotes.txt
           echo "code=$code" >> "$GITHUB_OUTPUT"
-      - name: Held when a quoted passage is not in its source
-        if: steps.quotes.outputs.code != '0'
-        run: |
-          {
-            echo "<!-- site-review -->"
-            echo "## Review — ⏸ Held — the quote check failed"
-            echo
-            echo "Every quoted passage a change adds must be found in the text of its source before the reviewers read it (AGENTS.md §3.15). The check, run from main's code on commit $(git rev-parse --short=10 refs/remotes/pr/head):"
-            echo
-            echo '```'
-            cat quotes.txt
-            echo '```'
-          } > review.md
       - name: The reviewers read the change
         id: review
         if: steps.quotes.outputs.code == '0'

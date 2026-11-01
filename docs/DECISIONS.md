@@ -82,6 +82,12 @@ commands, hosts and DOIs, never text — and kept as
 and at the head of the next session's `status`; the trace itself never
 leaves the machine (2026-10-20, below).
 
+**The quote check's hold is a round.** A change the quote check holds gets a
+review round with its machine record, which the operator answers in the
+records like a harm and which counts toward the three rounds before a
+change is withdrawn; the operator's last check reads every source fresh,
+as the review's machine does (2026-10-28, below).
+
 ---
 
 ## 2026-10-19 — The operator and the review: the site is rebuilt around an agent
@@ -262,3 +268,95 @@ machine the session controlled, so like the cost report it is data: it
 informs the next session and the reviewers and decides nothing; the guard,
 the quote check and the review are unchanged. It says what a session did,
 not whether it did it well; that stays the reviewers' question.
+
+## 2026-10-28 — The quote check's hold is a round the operator answers
+
+**What happened.** From 2026-10-23 every new operator change on both sites
+was held, five of them by the quote check (Aletheia #469–#471, Erebus #135
+and #137), and none was ever answered. The review workflow wrote the
+check's hold comment by hand, without the machine record the planner reads
+(`openChanges`, `src/engine/operator.ts`). So the planner read each held
+change as "not yet reviewed", and each next session started new work on the
+same case beside it, and the changes conflicted with one another. Each
+session's own check had passed, as its log says. The review's machine reads
+every source fresh, and it was served something else:
+
+- #469: the thesis's repository answered HTTP 503.
+- #470: the passage was quoted from a PMC page as "Maier et al. (2018) lies
+  at". Europe PMC's text of the same article, which the reader uses when PMC
+  serves a challenge, gave it as "Maier et al. () lies at": the reader
+  dropped every citation from that text.
+- #471: the source's address was its DOI, whose page holds only the abstract
+  (3,297 characters). The session had quoted the article's full text.
+- Erebus #135: Elsevier's hop from the DOI answers HTTP 200 with a page that
+  only redirects with a meta refresh. Its whole text is "Redirecting", and
+  the reader took that for the article.
+- Erebus #137: the session's passage carried "()" where Europe PMC's text had
+  dropped two citations. The open-copy fallback reads other copies: read
+  from here on 2026-10-28, it gave the bioRxiv preprint once and the PMC
+  page the next time.
+
+By the founder's direction (2026-10-28, in session), the five were closed
+with their branches kept, and their spend was carried to main on its own
+(Aletheia #473, Erebus #139). Sessions are paused until 1 November.
+
+**What changes.**
+
+1. *The hold is a round.* `site check-quotes --hold-comment F` writes the
+   hold as a review comment with its machine record: outcome `hold`, no
+   seats, the failures as `checks` (`quoteHoldComment`,
+   `src/engine/review.ts`). The review workflow posts it in place of the
+   comment it wrote by hand. The planner answers it as it answers a harm,
+   and it counts toward the three rounds before a change is withdrawn.
+   - The operator sees each failure and what answers it (`roundsForOperator`).
+   - The next round's reviewers see it among the earlier rounds.
+   - The harvest keeps the failures (`checks` on a round in
+     `governance/reviews/`).
+   - The operations page gives the reason for a round that had no reviewers.
+   - A check that cannot run holds the change the same way, and says why.
+2. *The operator's last check reads fresh.* `check-quotes --fresh` reads
+   every source again instead of from the reading tool's cache, as the
+   review's machine will. The charter asks for it before a session finishes.
+   It also tells the operator to:
+   - give a source the address of the text it quotes;
+   - end a quoted span before a citation marker;
+   - name a Wayback capture as `archivedUrl` when a server is slow, busy or
+     walled.
+3. *The check says what it read.* When a passage is not found, the failure
+   names the address read, the copy the text came from, and its length
+   ("3,297 characters" is an abstract).
+4. *The reader is steadier.*
+   - A server that answers 429 or 5xx is asked once more after 15 seconds.
+   - A download that fails after the headers arrive is a failed read, not a
+     throw that stops the whole check. From here, the 11 MB thesis behind
+     #469 takes two minutes to arrive.
+   - A page that only redirects with a meta refresh is a hop, so the reader
+     goes on to an open copy.
+   - Europe PMC's text keeps the words of an author-year citation and of a
+     figure or table reference. It drops only numbered citation and footnote
+     markers.
+5. *The page as the archive took it.* A Wayback capture of the source's own
+   address, named as its `archivedUrl`, is read for a passage the live page
+   lacks. A passage found only there passes, with a warning. A capture of
+   any other address does not stand for the page. As before, the archived
+   copy stands in when the live page cannot be read at all.
+
+**Why the check is no weaker.** Every passage must still be found word for
+word in a text of the cited document, read by main's code at review time.
+The texts the check may now also read are the same page as the archive took
+it, and the article's own words where its page shows citations. None is a
+text the operator supplies. The difference is that a failure the operator
+never saw is now one it is shown and must answer.
+
+**Not done.** The open-copy fallback orders OpenAlex's copies PDFs first,
+whatever their version. It can therefore read a preprint for a published
+article, or a repository's landing page: for Erebus #135 it now reaches a
+HAL page of 1,228 characters, not the article. Its choice can also differ
+between reads. Ordering the copies by OpenAlex's `version`, published
+first, is the next change to the reader. Until then the failure message
+names the copy, and the operator gives the source the address of the text
+it quoted.
+
+This change edits founder's files (`.github/workflows/review.yml`,
+`operator/charter.md`, `src/engine/review.ts`, `quotecheck.ts` and
+`operator.ts`), so it merges by the founder's hand.

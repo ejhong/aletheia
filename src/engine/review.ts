@@ -213,7 +213,7 @@ export interface PacketInput {
   title: string;
   body: string;
   /** Earlier review rounds on this change, as their machine records hold them. */
-  previous?: { commit: string; outcome: string; seats: { label: string; verdict?: string; harm?: unknown; notes?: string[] }[] }[];
+  previous?: { commit: string; outcome: string; reason?: string; checks?: string[]; seats: { label: string; verdict?: string; harm?: unknown; notes?: string[] }[] }[];
 }
 
 export const PACKET_LIMIT = 320_000;
@@ -236,7 +236,11 @@ export function reviewPacket(input: PacketInput): { packet: string; files: Chang
   if (input.previous?.length) {
     parts.push(
       `# Earlier review rounds on this change\n\n${input.previous
-        .map((r, i) => `Round ${i + 1} (commit ${r.commit.slice(0, 10)}): ${r.outcome}\n${r.seats.map((s) => `- ${s.label}: ${s.verdict ?? "no answer"}${s.harm ? `; harm flagged: ${JSON.stringify(s.harm)}` : ""}${s.notes?.length ? `; notes: ${s.notes.join(" | ")}` : ""}`).join("\n")}`)
+        .map((r, i) =>
+          r.checks?.length
+            ? `Round ${i + 1} (commit ${r.commit.slice(0, 10)}): ${r.outcome} — ${r.reason ?? "the quote check failed"}, before any reviewer read it\n${r.checks.map((c) => `- ${c}`).join("\n")}`
+            : `Round ${i + 1} (commit ${r.commit.slice(0, 10)}): ${r.outcome}\n${r.seats.map((s) => `- ${s.label}: ${s.verdict ?? "no answer"}${s.harm ? `; harm flagged: ${JSON.stringify(s.harm)}` : ""}${s.notes?.length ? `; notes: ${s.notes.join(" | ")}` : ""}`).join("\n")}`,
+        )
         .join("\n\n")}`,
     );
   }
@@ -323,6 +327,8 @@ export interface ReviewBlob {
   outcome: Outcome;
   reason: string;
   seats: { seat: string; label: string; model: string; verdict?: string; harm?: ReviewReply["harm"]; notes?: string[]; summary?: string; failure?: string; cost?: SeatReview["cost"] }[];
+  /** The quote check's failures, a line each, when it held the change before any reviewer read it (`quoteHoldComment`). */
+  checks?: string[];
 }
 
 export function reviewBlob(r: ReviewResult): ReviewBlob {
@@ -377,5 +383,37 @@ export function reviewComment(r: ReviewResult): string {
     `<sub>Reviewers are models from vendors other than the operator's. Notes never block; the operator works on them in its next session. Cost of this review: $${cost.toFixed(2)}.</sub>`,
     ``,
     `<!-- site-review-data ${blob} -->`,
+  ].join("\n");
+}
+
+/**
+ * The PR comment when the quote check holds a change, before any reviewer reads it — a round like any other, with its
+ * machine record, so the operator's planner answers it as it answers a harm (src/engine/operator.ts). (2026-10-28: the
+ * workflow wrote this comment by hand, without the record; the planner read every change the check held as "not yet
+ * reviewed", none was ever answered, and each next session started the same case again beside it.)
+ */
+export function quoteHoldComment(input: { commit: string; date: string; protocol: string; report: string; failures: string[] }): string {
+  const blob: ReviewBlob = {
+    commit: input.commit,
+    date: input.date,
+    protocol: input.protocol,
+    outcome: "hold",
+    reason: `held until answered: the quote check failed (${input.failures.length} failure${input.failures.length === 1 ? "" : "s"})`,
+    seats: [],
+    checks: input.failures,
+  };
+  return [
+    REVIEW_MARKER,
+    `## Review — ⏸ Held — the quote check failed`,
+    ``,
+    `Every quoted passage a change adds must be found in the text of its source before the reviewers read it (AGENTS.md §3.15). The check, run from main's code on commit ${input.commit.slice(0, 10)}:`,
+    ``,
+    "```",
+    input.report.trim(),
+    "```",
+    ``,
+    `<sub>The operator answers each failure in its next session, in the records: the passage copied from the text the check reads, the source pointed at the text it was quoted from or given a Wayback capture of its address, or the record entered as provisional with the route to its text.</sub>`,
+    ``,
+    `<!-- site-review-data ${JSON.stringify(blob).replace(/-->/g, "--\\u003e")} -->`,
   ].join("\n");
 }

@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { stringify } from "yaml";
-import { changedRecords, citationOf, locatorPages, quoteCheck } from "./quotecheck.ts";
+import { changedRecords, citationOf, isCaptureOf, locatorPages, quoteCheck } from "./quotecheck.ts";
 import { findInText, pagesContaining, pagesOf } from "./read.ts";
 
 /**
@@ -78,6 +78,48 @@ describe("the quote check", () => {
     ];
     const r = await quoteCheck({ base: "HEAD", root: repo([], [], sources), read, resolve });
     expect(r.failures).toEqual([{ case: "x", record: "SRC-B", problem: "doi 10.9999/bad.doi does not resolve (test)" }]);
+  });
+});
+
+describe("when the review's machine is served otherwise than the session was", () => {
+  // 2026-10-28: five changes were held by passages their sessions had read — a repository answered the review's
+  // machine 503, a page served it another copy — and the check said only "not found".
+  const U = "https://example.test/a.pdf";
+  const CAPTURE = `https://web.archive.org/web/20991231000000/${U}`;
+  const withCopy = (archivedUrl: string) => [{ id: "SRC-A", title: "A", url: U, archivedUrl, sourceType: "report" }];
+
+  it("passes a passage the live page lacks and a Wayback capture of the record's own URL holds, and says so", async () => {
+    const root = repo([ev("X-E001", '"the bruising surface had become flat"', "p. 2")], [], withCopy(CAPTURE));
+    const r = await quoteCheck({ base: "HEAD", root, read: async (t) => ({ text: t.url === CAPTURE ? TEXT : "[p. 1]\nOnly the abstract." }), resolve });
+    expect(r.failures).toEqual([]);
+    expect(r.warnings.map((w) => w.problem)).toEqual([expect.stringMatching(/^quoted passage found only in the archived copy of SRC-A/)]);
+  });
+  it("does not take a capture of another address for the page", async () => {
+    const other = "https://web.archive.org/web/20991231000000/https://example.test/b.pdf";
+    const root = repo([ev("X-E001", '"the bruising surface had become flat"')], [], withCopy(other));
+    const r = await quoteCheck({ base: "HEAD", root, read: async (t) => ({ text: t.url === other ? TEXT : "Only the abstract." }), resolve });
+    expect(r.failures.map((f) => f.problem)).toEqual([expect.stringMatching(/^quoted passage not found in the text of SRC-A: /)]);
+    expect(r.warnings).toEqual([]);
+  });
+  it("reads the archived copy the record names when the live page cannot be read at all", async () => {
+    const old = "https://web.archive.org/web/20991231000000/https://example.test/old-a.pdf";
+    const root = repo([ev("X-E001", '"the bruising surface had become flat"')], [], withCopy(old));
+    const r = await quoteCheck({ base: "HEAD", root, read: async (t) => (t.url === old ? { text: TEXT } : { text: null, reason: "HTTP 404" }), resolve });
+    expect(r.failures).toEqual([]);
+  });
+  it("asks a busy server once more after a pause, and names the text it read when a passage is not in it", async () => {
+    let calls = 0;
+    const fetchImpl = (async () => (++calls === 1 ? new Response("busy", { status: 503 }) : new Response(TEXT, { headers: { "content-type": "text/plain" } }))) as typeof fetch;
+    const root = repo([ev("X-E001", '"the pounders were used in one position"'), ev("X-E002", '"a passage nobody wrote at all"')], [], [{ id: "SRC-A", title: "A", url: "https://example.test/a", sourceType: "report" }]);
+    const r = await quoteCheck({ base: "HEAD", root, fetchImpl, retryDelayMs: 0, resolve });
+    expect(calls).toBe(2);
+    expect(r.failures).toEqual([{ case: "x", record: "X-E002", problem: `quoted passage not found in the text of SRC-A (read from https://example.test/a, ${TEXT.length} characters): "a passage nobody wrote at all"` }]);
+  });
+  it("knows a Wayback capture of an address, whatever its scheme, its www. or its closing slash", () => {
+    expect(isCaptureOf("https://web.archive.org/web/20240101000000/https://www.example.test/a/", "http://example.test/a")).toBe(true);
+    expect(isCaptureOf("https://web.archive.org/web/20240101000000id_/https://example.test/a", "https://example.test/a")).toBe(true);
+    expect(isCaptureOf("https://web.archive.org/web/20240101000000/https://example.test/a", "https://example.test/b")).toBe(false);
+    expect(isCaptureOf("https://example.test/mirror/a", "https://example.test/a")).toBe(false);
   });
 });
 

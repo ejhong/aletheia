@@ -1,0 +1,75 @@
+# Review of #471, harvested from its pull request (src/engine/harvest.ts). Append-only.
+pr: 471
+title: "Elusive by Law: the Flores thesis and the 2023 online replication read in full — the 'three of five' narrows and the true-vs-pseudo-random split depends on the analysis"
+url: https://github.com/ejhong/aletheia/pull/471
+outcome: closed
+outcomeAt: 2026-10-28T17:34:12Z
+cases:
+  - mpi
+rounds:
+  - commit: e5dc8227ff3ad75e4601c86ca50d83d1a4257dbc
+    date: 2026-10-25
+    protocol: review-v1
+    outcome: hold
+    reason: "held for a harm until answered: living_person (GPT-5.6 Sol (OpenAI))"
+    seats:
+      - seat: openai
+        label: GPT-5.6 Sol (OpenAI)
+        model: gpt-5.6-sol
+        verdict: better
+        harm:
+          kind: living_person
+          where: "content/cases/mpi/editions/edition-2026-10-25-125112.yaml, opening sentence: “In July 2019, at a conference in Paris...”"
+          why: This states a location as fact about living Hartmut Grote, while the operator explicitly says the ledger supports the 2019 convention but not Paris and that Grote 2021 has not been checked. Remove the city or verify it from a cited record before publication.
+        notes:
+          - "MPI-E023 and the online-study paragraph: the source shows that the power analysis used 4,096 cells as its sample, not necessarily that every reported statistic treated them as independent observations. Limit the statement to the power analysis unless the Welch test’s observational unit and independence assumption are established, and distinguish suspected dependence from a demonstrated analytic error."
+          - "MPI-E022, MPI-C503, and the article: clarify that Mersenne Twister remains deterministic conditional on its seed. Swipe-timestamp seeding prevents advance fixation and creates causal linkage to participant behavior, but does not by itself prove statistical dependence or erase the distinction between a pseudorandom algorithm and an atmospheric-noise source; retain the stronger, well-supported point that the reported source split is analysis-dependent."
+          - "Assessment/public standing: three blind seats judge the case contradicted and two weakly supported. Ensure the public interface marks that standing as contested and does not present the operator’s weakly-supported draft as the panel’s ratified judgment."
+        summary: The change substantially improves the case by replacing summary-level characterizations with primary-text evidence, narrowing the Flores thesis result, exposing a preregistered reversal, and showing that the online source contrast depends on the chosen analysis. It also adds useful methodological qualifications and concrete reanalysis proposals, although its claims about cell independence and timestamp-seeded pseudorandomness need tighter wording. Publication is held only because the new edition repeats an acknowledged unsupported location claim about a living researcher.
+        cost:
+          inputTokens: 24724
+          outputTokens: 3360
+          usd: 0.166096
+      - seat: gemini
+        label: Gemini 3.8 Flash (Google)
+        model: gemini-3.8-flash
+        verdict: better
+        harm: null
+        notes:
+          - "Verify Grote 2021 (DOI: 10.31275/20211931) in full to confirm the Paris convention details cited in the article opening and solidify MPI-E004."
+          - "Inspect the full text of Walach et al. 2020 (DOI: 10.1037/cns0000199) to verify whether its protocol was formally preregistered."
+          - Address the engine's PDF extraction limitations (letter-spacing and missing 'fi'/'fl' ligatures) in a subsequent engine pass so that the paraphrased sections in Flores 2021 Chapters 6–9 can be mechanically validated with verbatim quotations.
+        summary: "This change significantly strengthens the 'mpi' case by replacing abstract-level and second-hand summaries of the Flores 2021 doctoral thesis and 2023 online replication with full-text extractions. It reveals critical methodological nuances: that Study 3 had the author as sole participant, Study 4's preregistered no-decline prediction reversed, the pseudo-random arm in 2023 was seeded from participant swipes, and the true vs. pseudo-random split vanishes in the average analysis. The resulting evidence ledger, claim evaluations, and article revisions are much more rigorous, accurate, and fair."
+        cost:
+          inputTokens: 27351
+          outputTokens: 1446
+          usd: 0.025936
+      - seat: xai
+        label: Grok 4.5 (xAI)
+        model: grok-4.5
+        verdict: better
+        harm: null
+        notes:
+          - Verify or qualify the opening line’s “conference in Paris” (edition-2026-10-25-125112) against Grote 2021’s full text; the ledger records the 2019 PA convention but not the city, and the operator left the unverified detail in place.
+          - Repair the two existing 2023-PDF quotes that the text layer breaks on the “fi” ligature (MPI-C503’s anchor and MPI-E008) so a future quote-check does not fail on already-published wording; map ligature gaps or re-quote from a clean layer.
+          - Identify and read the Lucadou 2016 source behind MPI-E019 (still second-hand via the thesis) and, as queued, Walach et al. 2020 and Grote 2021 full texts so the dependence reply and the lingering “preregistered / adequately powered” residue rest on primaries.
+        summary: This change replaces summary-level handling of Flores’s 2021 thesis and the 2023 online study with full-text extractions, fixes the MPI-E007 provenance mis-pointing, adds six primary-grounded evidence records, and rewrites the article so “three of five,” the true-vs-pseudo split, and “roughly twice as many” no longer overclaim. MPI-C503 is featured and graded mixed on the record; the case verdict stays weakly supported with clearer steelman, crux, and research items. For a reader seeking the truth the ledger and narrative are more accurate, better evidenced, and fairer, with nothing true dropped and no publication harm identified.
+        cost:
+          inputTokens: 25250
+          outputTokens: 362
+          usd: 0.052787
+      - seat: venice
+        label: GLM 5.3 Flash (Z.ai, via Venice)
+        model: z-ai-glm-5-3-flash
+        verdict: better
+        harm: null
+        notes:
+          - "The edition still asserts the 2019 unblinding was 'at a conference in Paris' — a detail the operator's own notes flag as unsupported by any ledger record. The change's own standard (it removed the unsupported 'roughly twice as many' this same pass) argues for not leaving a known-unverified detail standing: either verify it against Grote 2021 before this edition publishes or soften the sentence to 'at a conference' pending the check."
+          - Three of the five blind-check seats returned Contradicted, which on the §3.15 scale is two steps from the draft's Weakly supported — a disputed case verdict, not a concurred one. Confirm the standing display marks the case as contested with each seat's word beside it, as the amendment requires; the packet shows the raw seats but not how the public standing renders the split.
+          - The article's steelman says Flores's first two studies 'stayed significant under her stricter analysis,' but MPI-E018's limitations record that the thesis itself reports Filk's objection (which the author sympathises with) that the permutation p-values for the upper-right block carry no special weight. One qualifying clause in that sentence would keep the concession from being stronger than its own record.
+        summary: "The change replaces two summary-level pillars of the mpi case with full reads of the primary texts, fixing a genuine provenance mis-pointing in MPI-E007 (the preprint's words sat under the thesis's source id), narrowing the overstated 'three of five,' adding the thesis's in-program dependence concession and failed preregistered prediction, and showing that the online study's true-vs-pseudo-random split holds on only one of its two emphasised analyses — while also removing an unsupported 'roughly twice as many' and correcting a stale assessment error about Walach 2020. The letter-spaced and ligature-damaged pages are handled honestly: paraphrased, located, and disclosed, with nothing quoted that the checker cannot find. The record is more accurate, fairer to both sides, and the added words are earned; no harm I can point to survives the disclosures, so this is better."
+        cost:
+          inputTokens: 26065
+          outputTokens: 4688
+          usd: 0.006254
+harvestedAt: 2026-11-01T14:44:04.425Z

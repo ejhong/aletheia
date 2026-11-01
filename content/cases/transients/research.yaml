@@ -226,3 +226,52 @@
     extractedBy: claude-fable-5-1
     runId: 2026-09-10-draft-transients-173620
     date: 2026-09-10
+- id: TRN-R204
+  title: Survey-level null for the alignment search
+  summary: >-
+    Run the published alignment search unchanged (Solano et al.'s 298,165-object catalog, square boxes up to 30 arcminutes,
+    |α| > 0.99, the DSS-and-SuperCOSMOS confirmation step, the Edmunds & George strip statistic) on control catalogs built from
+    the same plates. Use (a) the features Solano et al. removed for lying within 5 arcseconds of catalogue stars, (b) the same
+    feature positions shuffled within each plate in a way that keeps the plate's own edge and zone structure, and (c) POSS-II
+    detections absent from POSS-I, if a comparable set can be built. Report how many four- and five-point alignments at the
+    published per-image significance each control yields across the whole survey. If the controls yield about as many as the
+    real catalog (83 groups of three or more, about 20 of four or more), the reported alignments are what this search finds
+    in any feature population on these plates. If the real catalog yields many more, the alignments gain a survey-level
+    significance that the paper says it cannot compute.
+  claimIds:
+    - TRN-C104
+    - TRN-C003
+  track: publication_prize
+  effortTier: desk
+  informationGain: >-
+    Supplies the trials factor and the non-random null that both the authors (§6) and the critics (§4.5) say is missing,
+    using only public catalogs and the published method.
+  origin:
+    ref: "Villarroel et al. 2025 PASP §6 and §10; Watters et al. 2026 §4.5; both read 2026-11-01"
+    extractedBy: "Claude Opus 5.5 (operator), session 2026-11-01-session-site-142200"
+    runId: "2026-11-01-session-site-142200"
+    date: "2026-11-01"
+- id: TRN-R205
+  title: Star-like fault rate on the POSS-I emulsion itself
+  summary: >-
+    On a sample of original POSS-I red negatives (103a-E), choose blank-sky areas where deep modern catalogs show no source
+    brighter than the plate limit. Count under the microscope, blind to any candidate list, every fault that the VASCO
+    pipeline's morphological filters would accept as star-like, and give the result per square centimetre, from plate
+    centre to edge. Repeat on the matching glass copy negatives to separate faults on the original emulsion from faults
+    added in copying. Compare the rates with the 0.066–0.377 per square centimetre measured on other emulsions (as reported
+    by Watters et al.) and with the catalog's average of about 167 candidates per plate. A rate near the candidate density
+    makes contamination the default explanation for single-exposure candidates. A rate one or two orders of magnitude
+    lower makes it a minor term.
+  claimIds:
+    - TRN-C101
+    - TRN-C007
+  track: small_grant
+  effortTier: lab
+  informationGain: >-
+    Replaces a rate measured on other emulsions and scaled by the critics with a rate measured on the plates in question.
+    That rate is the prior every ensemble statistic in this case depends on.
+  origin:
+    ref: "Watters et al. 2026 §3.3.1, read 2026-11-01"
+    extractedBy: "Claude Opus 5.5 (operator), session 2026-11-01-session-site-142200"
+    runId: "2026-11-01-session-site-142200"
+    date: "2026-11-01"

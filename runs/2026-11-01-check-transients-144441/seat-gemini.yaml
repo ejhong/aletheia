@@ -1,0 +1,141 @@
+runId: "2026-11-01-check-gemini"
+model: "Gemini 3.8 Flash (Google), independent check run"
+date: "2026-11-01"
+promptVersion: "check-v2"
+humanReviewed: false
+role: check
+caseAssessment:
+  verdict: weakly_supported
+  loadBearing: [TRN-C001, TRN-C005, TRN-C020, TRN-C021]
+  weakestLinks: [TRN-C020, TRN-C021, TRN-C022, TRN-C108]
+  synthesis: >-
+    The "Before Sputnik" hypothesis posits that star-like transient point sources on 1950s photographic survey plates record optical flashes from reflective objects in orbit near Earth before the launch of Sputnik 1. Evaluating this claim requires an attribution ladder: (1) physical marks exist on plate media; (2) marks were produced by optical photons entering the telescope optics; (3) the light originated from objects near Earth; and (4) the objects were artificial or extraterrestrial.
+
+    The proponent case presents genuine, intriguing anomalies. The canonical April 1950 nine-transient cluster and July 1952 triple transient are physically confirmed on surviving glass plates and original telescope negatives, absent in subsequent exposures and deep modern CCD imaging. Their recovery across independent digitizations and automated pipelines confirms they are not modern scanning or software artifacts. Furthermore, sub-second flashes naturally bypass minutes of seeing, wind-shake, and tracking errors, providing a physical mechanism for why the 1950 marks are systematically sharper than normal stars. Crucially, preliminary evaluations of an independent archive (Hamburg Observatory) report transient candidates displaying off-axis optical coma aberration—a signature expected of real light entering telescope optics that surface defects cannot naturally reproduce.
+
+    However, the skeptical counter-case undermines every higher rung of the ladder. Star-like emulsion and copying flaws are endemic on historical plates, occurring at rates sufficient to contaminate single-exposure catalogs. When an experienced microscopist inspected the original April 1950 plate, the candidates—situated in a defect-prone corner—were judged to be emulsion flaws, with microscopy inherently unable to separate sub-second flashes from chemical blemishes. At the ensemble level, the statistical arguments disintegrate: the Earth-shadow deficit disappears when replacing a uniform geometric assumption with an empirical null accounting for spatial plate heterogeneity, the nuclear-test temporal correlation vanishes under independent candidate extraction and tracking of Palomar's observing schedule, and spatial clustering silhouette scores are matched by random controls.
+
+    Sensitivity: The single evidence record whose removal would most change this case verdict is TRN-E014 (optical coma aberration in Hamburg plates). If TRN-E014 is removed, the case loses its only affirmative empirical evidence for optical photons passing through telescope optics, pushing the overall verdict toward contradicted. With TRN-E014 retained, the possibility of an optical origin remains viable, leaving the featured hypothesis weakly supported.
+  steelman: >-
+    The presence of off-axis optical coma aberration matching telescope optics on fast transient candidates in Hamburg Observatory plates, which plate-surface chemistry and emulsion flaws cannot naturally replicate.
+claimAssessments:
+  - claimId: TRN-C022
+    verdict: weakly_supported
+    confidence: high
+    reasoning: >-
+      No direct historical, physical, or aerospace evidence establishes the existence of artificial satellites or orbital craft prior to Sputnik 1. The proposition depends entirely on an unbroken chain of speculative inferences from disputed photographic marks and catalog correlations. Strongest opposing consideration: The complete absence of independent physical, launch, or radar records of pre-1957 artificial orbital objects.
+  - claimId: TRN-C023
+    verdict: presently_untestable
+    confidence: high
+    reasoning: >-
+      The hypothesis that plate transients represent extraterrestrial technological artifacts is explicitly conceded by its proponents to be unfalsifiable with available archival survey data. It requires accepting multiple unverified prerequisite claims regarding photon origin, near-Earth location, and artificiality before reaching extraterrestrial attribution. Strongest opposing consideration: The proponents' own published admission that the intelligence hypothesis cannot be falsified by the available photographic data.
+  - claimId: TRN-C021
+    verdict: weakly_supported
+    confidence: moderate
+    reasoning: >-
+      The attribution of transients to near-Earth solar reflections relies primarily on the reported Earth-shadow deficit and modeled orbital altitudes. However, the shadow deficit fails to survive spatial null corrections, and the underlying marks have not been established as optical flashes. Strongest opposing consideration: The reported Earth-shadow deficit that defines the near-Earth altitude constraint dissolves under spatial null models that account for plate edge effects.
+  - claimId: TRN-C020
+    verdict: unresolved
+    confidence: moderate
+    reasoning: >-
+      Although the canonical April 1950 marks are confirmed to exist physically on the original glass negative, the examining microscopist attributed them to plate-corner emulsion defects rather than optical flashes. While optical coma aberration reported in preliminary Hamburg plates provides potential evidence of light entering telescope optics, it has not been blind-validated or replicated on Palomar plates. Strongest opposing consideration: The inspecting microscopist's expert assessment attributing the canonical 1950 features to emulsion defects in a blemish-prone plate corner.
+  - claimId: TRN-C007
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Archival documentation confirms that both DSS and SuperCOSMOS scans trace back to separate copy negatives produced from a single common intermediate glass positive. This photographic genealogy establishes that any flaw born on the intermediate positive appears in both modern digital surveys without existing on the original negative. Strongest opposing consideration: The nine canonical 1950 candidates were physically located on the original telescope negative, proving that this specific copy-defect mechanism was not responsible for that specific event.
+  - claimId: TRN-C001
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Visual inspection of surviving glass copy plates at the Royal Observatory Edinburgh and original negatives at Caltech independently verified the physical presence of all nine point-like marks at their reported coordinates. Deep modern follow-up imaging down to magnitude 26 confirms the absence of any persistent astronomical counterparts. Strongest opposing consideration: Inspection of the overlapping plate E0086 revealed over one hundred similar star-like blemish detections absent from E0070, demonstrating high localized defect density.
+  - claimId: TRN-C024
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      Microscopy of the original April 1950 glass plate at the Caltech archives confirmed that all nine cataloged sources exist physically on the original emulsion at their published coordinates. The result is documented in an unreviewed preprint, but the inspection was conducted with precise stellar registration and coordinated with independent plate experts. Strongest opposing consideration: The registration and microscopic examination were conducted unblinded by the proponent research group and await independent peer-reviewed confirmation.
+  - claimId: TRN-C002
+    verdict: established
+    confidence: high
+    reasoning: >-
+      SuperCOSMOS profile measurements confirmed by Hambly & Blair demonstrate that all nine 1950 candidates exhibit sharper and more concentrated profiles than comparable stars, with a joint probability of order 10^-9 under the stellar distribution. Both proponent and skeptical literature accept this measurement as an empirical fact, disputing only its physical interpretation. Strongest opposing consideration: Fainter photographic images on non-linear emulsions naturally exhibit narrower profiles, although these candidates were compared against matched stellar distributions.
+  - claimId: TRN-C003
+    verdict: established
+    confidence: high
+    reasoning: >-
+      The July 1952 triple transient is peer-reviewed, confirmed on surviving copy plates and original survey digitizations, and recovered by independent automated pipelines. Modern Gran Telescopio Canarias follow-up down to magnitude 25.5 confirms complete disappearance, implying dimming of over 10 magnitudes within an hour. Strongest opposing consideration: Unlike the 1950 event, independent microscopic examination of the physical 1952 original negative has not been published.
+  - claimId: TRN-C004
+    verdict: established
+    confidence: high
+    reasoning: >-
+      An independent, from-scratch detection pipeline developed by Hayes successfully recovered eight of nine April 1950 sources, all three July 1952 sources, and roughly 64% of Solano et al.'s published catalog from digitized images. This demonstrates that the detection of the canonical events and majority catalog candidates is computationally reproducible and does not rely on proprietary software. Strongest opposing consideration: The independent extraction operated on the same digitized DSS imagery and identified millions of uncalibrated background candidates under loose thresholds.
+  - claimId: TRN-C101
+    verdict: established
+    confidence: high
+    reasoning: >-
+      Laboratory experiments on historical plates document endemic star-like emulsion faults at rates translating to 83–475 defects per POSS-I plate, and overlap inspections show over 100 spurious detections on single copy plates. Proponents explicitly concede that authentic transients coexist with numerous star-like defects and that the catalog false-positive rate remains unknown. Strongest opposing consideration: Kodak 103a-E emulsions used in POSS-I are coarser than the fine-grained emulsions where classical microdot artifacts are best documented.
+  - claimId: TRN-C102
+    verdict: well_supported
+    confidence: moderate
+    reasoning: >-
+      Standard optical and atmospheric physics dictates that an optical flash lasting under a second does not integrate the tracking jitter, wind-shake, and low-frequency seeing motion that broaden a 45-minute stellar exposure. However, atmospheric seeing is frozen on millisecond timescales rather than full seconds, and the exact magnitude of sharpening has never been experimentally calibrated on historical emulsions. Strongest opposing consideration: No controlled laboratory exposures of sub-second flashes on historical Schmidt emulsions have been conducted to quantify the expected profile width.
+  - claimId: TRN-C010
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: >-
+      A preliminary search of 41 rapidly repeated plate pairs from the Hamburg Observatory 1.2-m Schmidt telescope identified transient candidates with narrow FWHM profiles analogous to POSS-I events. This represents an independent telescope, emulsion stock, archive, and digitization lineage, though the findings remain preliminary and uncalibrated against false positives. Strongest opposing consideration: The finding is an explicitly preliminary, single-author preprint without injection-recovery completeness tests or measured defect base rates.
+  - claimId: TRN-C011
+    verdict: provisionally_supported
+    confidence: moderate
+    reasoning: >-
+      Busko reported that transient candidates on plates from the Hamburg 0.6-m reflector display off-axis optical coma matching the telescope's optical system, providing a physical mechanism capable of differentiating optical photons from plate-surface blemishes. This signature provides a compelling discriminator, but it is currently documented in an unreviewed single-author preprint and applies only to Hamburg candidates. Strongest opposing consideration: The coma classification has not undergone blind validation against known emulsion flaws, dust, or directional digitization artifacts.
+  - claimId: TRN-C005
+    verdict: mixed
+    confidence: moderate
+    reasoning: >-
+      Doherty reproduced the arithmetic Earth-shadow deficit (0.46% observed vs. 1.4% expected) on the author-supplied 107,875-object catalog. However, Watters et al. demonstrated that the deficit evaporates when replacing the uniform-random background model with an empirical null that accounts for plate-edge defects and spatial clustering. Strongest opposing consideration: Watters et al. proved that spatial voids, edge clustering, and non-uniform defect distributions explain the apparent shadow deficit without invoking celestial geometry.
+  - claimId: TRN-C129
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Applying the group's machine-learning quality filter (p > 0.7) to the 107,875-object catalog yields a larger calculated shadow deficit across all tested altitudes (20,000–60,000 km), peaking at 35,000 km. As an empirical property of the authors' dataset and filtering pipeline, the claim holds as stated. Strongest opposing consideration: The machine-learning filter was trained on subjective visual inspection labels, and the quality-filtered sample contains only 17 shadow-bound candidates at high altitudes.
+  - claimId: TRN-C108
+    verdict: weakly_supported
+    confidence: moderate
+    reasoning: >-
+      The 20,000–35,000 km altitude range is inferred from fitting an idealized spherical-shell model to an Earth-shadow deficit that is itself challenged as a spatial defect artifact. The resulting chi-squared fits are poor (reduced chi-squared 3.5–5.4), and the authors explicitly concede the range represents variation across arbitrary fitting parameters rather than a statistical confidence interval. Strongest opposing consideration: The authors acknowledge that the altitude range is not a formal confidence interval and derives from an unvalidated candidate catalog.
+  - claimId: TRN-C006
+    verdict: mixed
+    confidence: moderate
+    reasoning: >-
+      The elevated transient rate within one day of atmospheric nuclear tests replicates arithmetically on the author-supplied catalog and survives basic weather controls. However, Hayes's independently extracted catalog showed no significant nuclear association, and Watters et al. demonstrated that the correlation is heavily confounded by the Palomar observing schedule. Strongest opposing consideration: The nuclear correlation vanishes when tested on an independently extracted candidate catalog and is driven by Palomar observing calendar structure.
+  - claimId: TRN-C103
+    verdict: provisionally_supported
+    confidence: low
+    reasoning: >-
+      Cann documented a monotonic decline in transient detection rates across five Kp geomagnetic activity bins within the VASCO catalog, which survived plate sensitivity baseline checks. However, this finding is reported in an unreviewed preprint analyzing the unvetted working catalog, sharing all of that catalog's unresolved defect vulnerabilities. Strongest opposing consideration: The association has not been tested on an independently extracted candidate dataset or validated against plate defect distributions.
+  - claimId: TRN-C104
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Villarroel et al. (2025, PASP) reported five shortlisted linear alignments of four or more transients exhibiting per-image significance of 2.5σ to 4σ. While the report itself is verified, the authors acknowledge they cannot compute a survey-wide chance probability, and Watters et al. noted that a third of the aligned points sit on catalog stars or asymmetric marks. Strongest opposing consideration: The authors admit that no survey-wide trials correction is possible, and several aligned points match catalog stars or display defect-like asymmetry.
+  - claimId: TRN-C119
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Bruehl et al. report that projecting 11,418 high-probability transients onto a 35,786 km shell produces 16 Earth-fixed 5°×5° cells with Bonferroni-significant excesses relative to random controls. As a description of the paper's statistical output, the claim is accurate, though the physical reality of the hotspots is dependent on an assumed fixed altitude and localized plate defect rates. Strongest opposing consideration: Hotspot locations shift entirely under different assumed altitudes, and two of the most significant cells derive entirely from a single plate (XE435).
+  - claimId: TRN-C122
+    verdict: well_supported
+    confidence: high
+    reasoning: >-
+      Bruehl et al. explicitly report that random control samples clustered by their two-step procedure yielded silhouette scores of 0.50 to 0.60, meeting or exceeding their own adopted threshold for non-random clustering. This negative control demonstrates that the clustering metric captures survey geometry and plate pointing constraints rather than genuine physical groupings. Strongest opposing consideration: The authors evaluated only three random control samples rather than establishing a full empirical null distribution.
+  - claimId: TRN-C117
+    verdict: weakly_supported
+    confidence: moderate
+    reasoning: >-
+      The mathematical mismatch between millimeter-scale dusty plasma particles and centimeter-to-meter facets holds under the authors' specular reflection model, but that model depends on unverified assumptions regarding flash duration, albedo, and orbit. Excluding an alternative physical hypothesis on the basis of an uncalibrated theoretical toy model provides minimal evidentiary weight. Strongest opposing consideration: The inferred facet size is not an empirical measurement but a theoretical deduction based on unverified assumptions about flash durations and surface reflectivity.
+  - claimId: TRN-C118
+    verdict: weakly_supported
+    confidence: high
+    reasoning: >-
+      The VASCO preprint does argue that an NHI scenario is the only toy model among those considered that accommodates all five reported features, but this is an informal argument of elimination over an arbitrary selection of models. Furthermore, most of the five underlying observational features (shadow deficit, nuclear association, Kp trend) are heavily disputed or unverified. Strongest opposing consideration: Several of the five underlying empirical features fail to survive rigorous null modeling or independent source extraction.

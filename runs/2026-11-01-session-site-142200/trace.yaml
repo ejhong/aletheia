@@ -1,0 +1,144 @@
+# What operator session 2026-11-01-session-site-142200 did, as its trace recorded it: the digest the workflow made on the session's machine
+# (src/engine/trace.ts), checked here (src/engine/session.ts). The session's own account of its work is its log.
+version: 1
+ended: success
+model: claude-opus-5-5
+permissionMode: dontAsk
+turns: 124
+minutes: 19.5
+usd: 6.3215
+compactions: 0
+unreadableLines: 0
+tools:
+  - tool: Bash
+    calls: 49
+    failed: 0
+    refused: 5
+  - tool: Read
+    calls: 32
+    failed: 0
+    refused: 0
+  - tool: Grep
+    calls: 24
+    failed: 0
+    refused: 0
+  - tool: Edit
+    calls: 10
+    failed: 0
+    refused: 0
+  - tool: WebSearch
+    calls: 3
+    failed: 0
+    refused: 0
+  - tool: Write
+    calls: 3
+    failed: 0
+    refused: 0
+  - tool: Glob
+    calls: 1
+    failed: 0
+    refused: 0
+  - tool: ToolSearch
+    calls: 1
+    failed: 0
+    refused: 0
+commands:
+  - command: node scripts/site.ts read
+    calls: 16
+    failed: 0
+    refused: 0
+  - command: sed
+    calls: 4
+    failed: 0
+    refused: 1
+  - command: tail
+    calls: 4
+    failed: 0
+    refused: 0
+  - command: cd
+    calls: 3
+    failed: 0
+    refused: 1
+  - command: grep
+    calls: 3
+    failed: 0
+    refused: 0
+  - command: node scripts/site.ts check-quotes
+    calls: 3
+    failed: 0
+    refused: 0
+  - command: node scripts/site.ts status
+    calls: 3
+    failed: 0
+    refused: 0
+  - command: git show
+    calls: 2
+    failed: 0
+    refused: 1
+  - command: head
+    calls: 2
+    failed: 0
+    refused: 0
+  - command: ls
+    calls: 2
+    failed: 0
+    refused: 0
+  - command: cat
+    calls: 1
+    failed: 0
+    refused: 1
+  - command: for
+    calls: 1
+    failed: 0
+    refused: 1
+  - command: node scripts/site.ts ids
+    calls: 1
+    failed: 0
+    refused: 0
+  - command: node scripts/site.ts stamp
+    calls: 1
+    failed: 0
+    refused: 0
+  - command: npm run build
+    calls: 1
+    failed: 0
+    refused: 0
+  - command: npm test
+    calls: 1
+    failed: 0
+    refused: 0
+  - command: wc
+    calls: 1
+    failed: 0
+    refused: 0
+fetched: []
+read:
+  - source: arxiv.org
+    calls: 4
+    failed: 0
+  - source: export.arxiv.org
+    calls: 4
+    failed: 0
+  - source: 10.1088/1538-3873/ae0afe
+    calls: 2
+    failed: 0
+  - source: (other)
+    calls: 1
+    failed: 0
+  - source: 10.1017/pasa.2026.10230
+    calls: 1
+    failed: 0
+  - source: 10.1086/342683
+    calls: 1
+    failed: 0
+  - source: 10.1093/rasti/rzae004
+    calls: 1
+    failed: 0
+  - source: api.crossref.org
+    calls: 1
+    failed: 0
+  - source: en.wikipedia.org
+    calls: 1
+    failed: 0
+filesEdited: 8
+repeatedFailures: 0

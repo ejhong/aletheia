@@ -1,0 +1,143 @@
+# Review of #472, harvested from its pull request (src/engine/harvest.ts). Append-only.
+pr: 472
+title: "Elusive by Law: the matrix thesis and the online replication read from their own texts — the dependence critique and the true-vs-pseudo-random split are both weaker than the case said"
+url: https://github.com/ejhong/aletheia/pull/472
+outcome: merged
+outcomeAt: 2026-10-28T14:42:45Z
+cases:
+  - mpi
+rounds:
+  - commit: 6bac33786bee14b2c3c06b76ec1a577575d36072
+    date: 2026-10-27
+    protocol: review-v1
+    outcome: hold
+    reason: "held for 3 harms until answered: fabrication (GPT-5.6 Sol (OpenAI)); fabrication (Grok 4.5 (xAI)); fabrication (GLM 5.3 Flash (Z.ai, via Venice))"
+    seats:
+      - seat: openai
+        label: GPT-5.6 Sol (OpenAI)
+        model: gpt-5.6-sol
+        verdict: better
+        harm:
+          kind: fabrication
+          where: "content/cases/mpi/assessments/2026-10-27-operator-133315.yaml, synthesis opening: “reading the thesis and the online replication in full”"
+          why: The operator records that only selected chapters, pages, and an appendix of the 402-page thesis were read. Saying it was read in full falsely upgrades the scope of source verification, even though other records disclose the actual scope.
+        notes:
+          - Restamp assessment 2026-10-27-operator-133315 and regenerate the hash-bound edition after replacing “reading the thesis and the online replication in full” with wording that distinguishes the full preprint reading from the selected thesis sections.
+          - "SRC-FLORES-2021 verificationNote: include Appendix 11 (PDF pp. 391–400) and Table 6-3 (p. 211) among the material read, and replace “the rest was not” with an exact description of what remained unread."
+          - "MPI-C009: split the well-supported premise that matrix cells are dependent from the unsupported consequence that dependence-aware analysis diminishes Lucadou’s founding results; then attach MPI-E018 and the article wording to the appropriate atomic claims."
+        summary: The change materially improves the case by replacing second-hand summaries with primary-text evidence, correcting the account of Flores’s later studies, and showing why the online generator split is much weaker than its abstract suggests. The expanded article is more accurate, balanced, and useful, while preserving the overall verdict. Publication must nevertheless wait for correction of the assessment’s admitted false claim that the entire thesis was read.
+        cost:
+          inputTokens: 24510
+          outputTokens: 2929
+          usd: 0.15662
+      - seat: gemini
+        label: Gemini 3.8 Flash (Google)
+        model: gemini-3.8-flash
+        verdict: better
+        harm: null
+        notes:
+          - In the next assessment pass, restate the synthesis opening phrase ('reading the thesis and the online replication in full') to accurately match the reading scope of the thesis, as noted in the session log.
+          - "Split compound claim MPI-C009 into two atomic claims per AGENTS.md §3.2: one on the methodological non-independence of matrix cells (well supported) and one on the empirical shrinkage of Lucadou's 1986–2006 results under dependence-aware reanalysis (currently unevidenced)."
+          - Retrieve the full texts of Walach et al. 2020 and Lucadou 2006 to replace remaining second-hand characterizations in the foundational evidence base.
+        summary: "This change significantly upgrades the Elusive by Law case by replacing second-hand characterizations of Flores's 2021 Edinburgh doctoral thesis and Flores & Rapazote-Flores's 2023 online-game replication with direct primary readings. It corrects two major overstatements: showing that the dependence critique has not yet been demonstrated against Lucadou's original datasets, and revealing that the online replication's true-versus-pseudo-random split is absent in its average analysis and burdened by dependent-cell assumptions. The added evidence records, research agenda item, and narrative revisions materially advance accuracy and fairness without altering the well-calibrated case verdict."
+        cost:
+          inputTokens: 27159
+          outputTokens: 2307
+          usd: 0.029021
+      - seat: xai
+        label: Grok 4.5 (xAI)
+        model: grok-4.5
+        verdict: better
+        harm:
+          kind: fabrication
+          where: 'assessments/2026-10-27-operator-133315.yaml synthesis (and the edition-bound New synthesis: "reading the thesis and the online replication in full")'
+          why: The assessment states the thesis was read in full, but the operator’s own log, source note, rationale and history record only the concluding chapter, study-4 discussion and Appendix 11 of the 402-page PDF. That is a false provenance upgrade of the same kind previously held on this site.
+        notes:
+          - "Restate the assessment synthesis (and any bound edition copy) so it matches SRC-FLORES-2021: thesis parts actually read, preprint in full — then restamp so the edition hash binds the corrected text."
+          - Split MPI-C009 into the well-supported non-independence premise and the unsupported consequence for Lucadou 1986–2006, rather than grading the conjunction mixed (operator already flagged this).
+          - In the article steelman and C009 gloss, keep the unreferenced “diminished” sentence clearly attributed to the 2023 preprint’s introduction, not to any reanalysis the ledger holds.
+        summary: The change replaces second-hand one-paragraph characterizations of Flores 2021 and the 2023 online replication with first-hand evidence, correctly weakens the dependence critique and the true-vs-pseudo split, adds studies 4–5/author-participant qualifications, fixes the stale Walach-2020 “preregistered” line, and adds a concrete data-reanalysis crux — all without moving the case verdict or dropping true material. That leaves the case substantially more accurate and fairer. Publication is still blocked by the unfixed “thesis … in full” provenance claim in the stamped assessment synthesis.
+        cost:
+          inputTokens: 24983
+          outputTokens: 389
+          usd: 0.052415
+      - seat: venice
+        label: GLM 5.3 Flash (Z.ai, via Venice)
+        model: z-ai-glm-5-3-flash
+        verdict: better
+        harm:
+          kind: fabrication
+          where: 'content/cases/mpi/assessments/2026-10-27-operator-133315.yaml — synthesis opening sentence: "reading the thesis and the online replication in full"'
+          why: "The operator's own disclosure states this is false for the thesis: only the concluding chapter, the study-4 discussion and Appendix 11 (about 30 of 402 pages) were read, and the sources record says so. Publishing a stamped, hash-bound assessment whose synthesis asserts a full reading that did not happen is a false provenance detail — the same defect reviewers held PR #468 for until it was fixed — and here it is disclosed but not fixed, so publication itself places the false statement on the record."
+        notes:
+          - "Answer the harm before or with publication: since the hash binding blocks editing, either have the founder add the proposed `unstamp`/restamp verb and republish a corrected assessment, or have the new assessment explicitly supersede the false sentence at first opportunity — do not let the next-session plan be its only correction, because the stamped false record persists in history meanwhile. Re-measure the word count through the engine as well: 1989 was hand-entered after post-stamp edits, so the rationale's 'measured by the engine: 1824 → 1989' is no longer an engine measurement."
+          - Never hand-edit stamped files again, even for improvements made before commit — the disclosed edits to the stamped edition and history entry are exactly the practice the stamp exists to prevent. Bundle the two founder-level requests the session surfaced (an `unstamp` verb; teaching `normalizeForMatch` to collapse single-letter spacing in quotes.ts) into one written request, since both block honest provenance on letter-spaced sources.
+          - MPI-C503's statement asserts that the experimental–control difference *depended on* the random source, yet the assessment's own rationale concludes 'a dependence on the random source is not shown' and the supporting split holds on only one of the paper's two primary analyses. Either restate the claim as the observation-rung report (that the paper reports the split, with the split's scope stated) or grade it unresolved rather than weakly supported; and once restated, re-anchor its sourceAnchor to the passages in MPI-E021 instead of the abstract, which still reads as endorsing the clean split.
+        summary: "The change reads the two central sources at first hand for the first time and correctly downgrades two of the case's cleanest stories: the dependence critique (confirmed premise, unsupported consequence for Lucadou's data, surplus surviving where the correction can be read) and the online replication's true-vs-pseudo-random split (one of two primary analyses, no direct arm contrast, dependent cells treated as independent). It also fixes a carried-over error about Walach 2020 and adds a concrete research item, and the disclosures about reading scope are candid. It clearly leaves the site better for a reader — except that the stamped assessment's synthesis asserts the thesis was read 'in full', which the operator itself states is false and could not repair; that false provenance detail holds the change until it is answered."
+        cost:
+          inputTokens: 25857
+          outputTokens: 3910
+          usd: 0.005834
+  - commit: 33b407f7fec88f40f75be2fd44635d01fb46f773
+    date: 2026-10-28
+    protocol: review-v1
+    outcome: publish
+    reason: 4 of 4 reviewers judge it better; no harm flagged
+    seats:
+      - seat: openai
+        label: GPT-5.6 Sol (OpenAI)
+        model: gpt-5.6-sol
+        verdict: better
+        harm: null
+        notes:
+          - "In the latest article’s “The steelman: what noise does,” replace “Counting significant cells in a matrix only means something if the cells are independent” with the narrower point that such counts cannot be evaluated against a cellwise-independent null; permutation methods can validly evaluate counts while preserving dependence."
+          - In MPI-C009 and the article, scope “no re-run of Lucadou’s original data has been published” to “none was located or cited in the records reviewed” unless a sufficiently comprehensive literature search supports the global negative. Prioritize obtaining Lucadou 2006 and Walach et al. 2020 to replace the remaining second-hand account.
+          - Correct MPI-R003’s description of the online game’s Mersenne Twister as “deterministic”; its algorithm is deterministic, but the paper reports seeding it from participant swipe timestamps.
+        summary: The change replaces second-hand summaries with direct readings, adds important limitations to Flores’s thesis results and the online replication, and cleanly separates the well-supported dependence premise from the unsupported claim about Lucadou’s founding data. It also adequately answers the earlier fabrication harm by superseding the false full-thesis-reading statement with a corrected, hash-bound assessment and edition. The remaining wording issues are narrower than the substantial gain in evidential accuracy and fairness.
+        cost:
+          inputTokens: 36686
+          outputTokens: 1790
+          usd: 0.182544
+      - seat: gemini
+        label: Gemini 3.8 Flash (Google)
+        model: gemini-3.8-flash
+        verdict: better
+        harm: null
+        notes:
+          - In SRC-FLORES-2020/2021 or next operator session, retrieve the full texts of Walach et al. 2020 and Lucadou 2006 to eliminate the remaining second-hand characterizations in the foundational evidence base.
+          - Correct MPI-R003's summary where it still refers to the 2023 online game's pseudo-random generator as 'deterministic', noting the paper's statement that it was seeded from participant swipe timestamps.
+          - Consider having the founder add the requested `unstamp` verb and handle letter-spaced text normalization in `quotes.ts` to prevent append-only workarounds when minor text or quote alignment adjustments are required post-stamp.
+        summary: This change resolves the round-1 fabrication harm by superseding the flawed draft with a clean assessment and edition that accurately scopes what was read of the Flores thesis versus the preprint. It also splits the compound dependence critique (MPI-C009) into a validated structural premise (MPI-C504) and an unverified empirical consequence on Lucadou's founding data, while appropriately scoping the online replication's true-versus-pseudo RNG findings. The resulting ledger and narrative are substantially more precise, transparent, and fair.
+        cost:
+          inputTokens: 40740
+          outputTokens: 1003
+          usd: 0.034316
+      - seat: xai
+        label: Grok 4.5 (xAI)
+        model: grok-4.5
+        verdict: better
+        harm: null
+        notes:
+          - In research.yaml MPI-R003, drop or rephrase the remaining 'deterministic' label for the online game's pseudo-random generator so it matches SRC-FLORES-2023 / MPI-E021 (Mersenne Twister seeded from swipe timestamps) and the restated MPI-C503.
+          - Fetch Walach et al. 2020 and Lucadou 2006 full texts and replace the still second-hand characterizations of the founding surplus and the 2020 replication that the ledger still carries through successors.
+          - MPI-E017 (Maier & Dechamps 2022) still has no verbatim quote or exact locator; quote it or mark the gap on the record so it does not sit beside the new full-text Flores evidence as if equally verified.
+        summary: "This change leaves Elusive by Law better for a truth-seeking reader: Flores 2021 (scoped pages) and the 2023 online replication are now read from their own texts, five new evidence records pin dependence, decline-within-thesis, author-as-sole-participant, and the thin true-vs-pseudo split, and the compound dependence claim is split into a well-supported premise (MPI-C504) and an unresolved consequence for Lucadou’s data (MPI-C009). MPI-C503 is restated as a scoped observation-rung report with honest diagnosticity. The prior fabrication harm (‘thesis read in full’) is answered by a superseding assessment and edition in the same change, so the false sentence never publishes as live. Case verdict stays weakly supported on a fairer ledger; remaining notes are non-blocking cleanup."
+        cost:
+          inputTokens: 37329
+          outputTokens: 360
+          usd: 0.076933
+      - seat: venice
+        label: GLM 5.3 Flash (Z.ai, via Venice)
+        model: z-ai-glm-5-3-flash
+        verdict: better
+        harm: null
+        notes:
+          - "Mark the superseded edition-2026-10-27-133315 in the public revision view as corrected by edition-2026-10-28-141801, with a direct link — its bound synthesis still carries the false 'reading the thesis... in full' sentence and the hand-edited stamp, and a reader reaching it through history should not meet it uncorrected (the same display treatment #468's second round asked for)."
+          - MPI-R003's summary still calls the online game's pseudo-random generator 'deterministic'; the paper (quoted in MPI-E021, p. 7) says it was seeded from participant swipe timestamps. Correct the summary next session, as the operator's own notes already plan — the article no longer repeats the error, but the research record still does.
+          - "Keep pressure on the two founder-level requests, which still block honest provenance on this case: the `unstamp` verb (this session's double stamp left two superseded pairs where one corrected pair would do) and teaching `normalizeForMatch` in quotes.ts to collapse single-letter spacing, which would let the load-bearing paraphrases from the thesis's letter-spaced concluding chapter (MPI-E019, MPI-E020 — including the identification of study 3's sole participant as the author) become mechanically checkable quotations."
+        summary: "The change reads the two centre-piece sources at first hand, corrects the overstated dependence critique (split into the well-supported premise MPI-C504 and the unresolved consequence MPI-C009), restates MPI-C503 as the observation the paper actually reports with its scope and weaknesses attached, and fixes a carried-over assessment error — all with the case verdict unchanged and the disagreements of the blind seats told honestly. The round-1 fabrication harm (the 'thesis read in full' sentence) is answered by a fix within this same change: the new assessment and edition carry the corrected synthesis, the false sentence never reaches the published site, and the superseded draft stays in history without standing, following the precedent the reviewers accepted on #468. My own round-1 notes are all answered, including the engine re-measurement of the word count and the abandonment of hand-editing stamped files. The site is left more accurate, better evidenced, and fairer to both readings of the record."
+        cost:
+          inputTokens: 38203
+          outputTokens: 2066
+          usd: 0.006763
+harvestedAt: 2026-11-02T17:36:25.991Z

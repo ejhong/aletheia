@@ -162,4 +162,21 @@ describe("what counts as a passage added", () => {
     fs.writeFileSync(file, stringify([ev("X-E001", '"the pounders were used in one position until"')]));
     expect((await quoteCheck({ base: "HEAD", root, read, resolve })).checked.map((c) => c.record)).toEqual(["X-E001"]);
   });
+
+  it("is the change's own: a record the base rewrote after the change branched is not the change's (#475, 2026-11-02)", async () => {
+    const root = repo([ev("X-E000", "an older record that quotes nothing")]);
+    const git = (...a: string[]) => execFileSync("git", a, { cwd: root, stdio: "ignore" });
+    const commit = (m: string) => git("-c", "user.email=t@t", "-c", "user.name=t", "commit", "-qam", m);
+    const file = path.join(root, "content", "cases", "x", "evidence.yaml");
+    commit("an older record");
+    git("checkout", "-qb", "change");
+    fs.writeFileSync(file, stringify([ev("X-E000", "an older record that quotes nothing"), ev("X-E001", '"the pounders were used in one position"')]));
+    commit("the change");
+    git("checkout", "-q", "-");
+    fs.writeFileSync(file, stringify([ev("X-E000", '"the bruising surface had become flat"')]));
+    commit("the base moves on");
+    const r = await quoteCheck({ base: "HEAD", head: "change", root, read, resolve });
+    expect(r.checked.map((c) => c.record)).toEqual(["X-E001"]);
+    expect(r.failures).toEqual([]);
+  });
 });

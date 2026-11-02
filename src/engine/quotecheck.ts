@@ -67,6 +67,19 @@ function atRef(ref: string, file: string, root: string): string | null {
   }
 }
 
+/**
+ * Where the change left the base. A change is compared from there, as the reviewers' diff is (`base...head`, review.ts):
+ * records the base gained after the change branched were checked when they merged, and are not the change's
+ * (2026-11-02: #475, a day behind main, was charged with failures in records #476 had rewritten).
+ */
+function forkPoint(base: string, head: string, root: string): string {
+  try {
+    return execFileSync("git", ["merge-base", base, head], { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim() || base;
+  } catch {
+    return base;
+  }
+}
+
 /** The case folders a commit holds. */
 function caseDirsAt(ref: string, root: string): string[] {
   try {
@@ -178,12 +191,13 @@ export async function quoteCheck(opts: QuoteCheckOptions): Promise<QuoteCheckRes
   // The archived copy is read as itself, by its address alone: an open copy found by DOI is not the capture.
   const archivedOf = (s: Source) => once(archive, s.id, () => read({ url: s.archivedUrl }));
 
+  const base = forkPoint(opts.base, opts.head ?? "HEAD", root);
   const dirs = opts.head ? caseDirsAt(opts.head, root) : fs.readdirSync(casesDir).filter((d) => fs.statSync(path.join(casesDir, d)).isDirectory());
   for (const dir of dirs) {
     const file = (name: string) => path.posix.join("content", "cases", dir, name);
     const now = (name: string) =>
       readYaml(opts.head ? atRef(opts.head, file(name), root) : fs.existsSync(path.join(root, file(name))) ? fs.readFileSync(path.join(root, file(name)), "utf8") : null);
-    const then = (name: string) => readYaml(atRef(opts.base, file(name), root));
+    const then = (name: string) => readYaml(atRef(base, file(name), root));
     const sources = new Map((now("sources.yaml") as Source[]).map((s) => [s.id, s]));
     const fail = (record: string, problem: string) => result.failures.push({ case: dir, record, problem });
     const warn = (record: string, problem: string) => result.warnings.push({ case: dir, record, problem });

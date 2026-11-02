@@ -16,8 +16,8 @@ import { VerdictMoves } from "@/src/components/VerdictMoves";
 import { pageMeta } from "@/src/config/meta";
 import { site } from "@/src/config/site";
 import { articleLengths, comparisonInWords } from "@/src/domain/comparison";
-import { caseAccounts, caseQuestion, currentEdition, questionRestatedBy } from "@/src/domain/editions";
-import { historyNewestFirst, isHousekeepingEntry, lastContentUpdate } from "@/src/domain/history";
+import { caseAccounts, caseQuestion, caseUpdated, currentEdition, questionRestatedBy } from "@/src/domain/editions";
+import { historyNewestFirst, isHousekeepingEntry } from "@/src/domain/history";
 import { caseCover, liveClaims, liveEvidence, loadAllCases, verifiedEvidence } from "@/src/domain/load";
 import { currentMoves, verdictMoves } from "@/src/domain/moves";
 import { unpublishedChecks } from "@/src/domain/record";
@@ -135,7 +135,7 @@ export default async function CasePage({
         questionNote={restated ? `as restated by the edition of ${restated.date} (${restated.runId}); the founding question: ${loaded.record.subtitle}` : undefined}
         header={view.header}
         // An edition is an update too: a case re-told today was updated today, whatever the ledger's changelog last says.
-        lastUpdated={[lastContentUpdate(loaded), currentEdition(loaded).date].sort().at(-1)!}
+        lastUpdated={caseUpdated(loaded)}
         verdict={shown?.run.caseAssessment.verdict ?? null}
         standing={shown?.ratification ?? null}
         cover={caseCover(loaded)}

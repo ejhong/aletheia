@@ -10,7 +10,7 @@ import type {
   ResearchPriorityLevel,
 } from "@/src/domain/schema";
 import { standingGlosses, standingInWords, type Ratification } from "@/src/domain/standing";
-import { withoutIdList } from "@/src/domain/text";
+import { shortDate, withoutIdList } from "@/src/domain/text";
 
 /** Component verdicts shown on a card before "and N more": a card is a glance, the case page has them all. */
 const COMPONENTS_SHOWN = 4;
@@ -36,10 +36,13 @@ export function CaseCard({
   reviewCoverage,
   cover,
   question,
+  updated,
 }: {
   record: CaseRecord;
   /** The case's question as it stands (load.ts caseQuestion). */
   question?: string;
+  /** The date the case last changed for a reader (editions.ts caseUpdated). */
+  updated?: string;
   components: CaseComponent[];
   priority: ResearchPriorityLevel | null;
   verdict: AssessmentState | null;
@@ -67,6 +70,11 @@ export function CaseCard({
         <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
           <span className="font-mono text-[10px] tracking-[0.16em] text-copper">{record.id}</span>
           <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-faint">{record.domain}</span>
+          {updated ? (
+            <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-faint">
+              updated <time dateTime={updated}>{shortDate(updated)}</time>
+            </span>
+          ) : null}
         </div>
         <h3 className="font-serif text-2xl tracking-tight mt-2">
           <Link

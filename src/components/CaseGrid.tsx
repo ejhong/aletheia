@@ -1,5 +1,5 @@
 import { CaseCard } from "./CaseCard";
-import { caseQuestion } from "@/src/domain/editions";
+import { caseQuestion, caseUpdated } from "@/src/domain/editions";
 import { caseCover } from "@/src/domain/load";
 import type { LoadedCase } from "@/src/domain/schema";
 import { caseView, reviewCoverage } from "@/src/domain/view";
@@ -15,6 +15,7 @@ export function CaseGrid({ cases }: { cases: LoadedCase[] }) {
             key={c.record.id}
             record={c.record}
             question={caseQuestion(c)}
+            updated={caseUpdated(c)}
             components={view.header.components}
             priority={view.header.researchPriority?.level ?? null}
             verdict={view.assessment?.caseAssessment.verdict ?? null}

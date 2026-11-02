@@ -5,7 +5,7 @@ import { liveClaims, loadAllCases } from "./load.ts";
 import { currentMoves, dailyMoves, recentMoves, verdictMoves } from "./moves.ts";
 import { assessmentGlosses, assessmentLabels, type ArbiterRecord, type AssessmentState } from "./schema.ts";
 import { standingGlosses, standingInWords } from "./standing.ts";
-import { articleWords, clip, lede, longDate, readingMinutes, withoutIdList } from "./text.ts";
+import { articleWords, clip, lede, longDate, readingMinutes, shortDate, withoutIdList } from "./text.ts";
 import { pageMeta } from "../config/meta.ts";
 import { site } from "../config/site.ts";
 
@@ -184,6 +184,9 @@ describe("what a reader is shown first", () => {
     expect(readingMinutes(2300)).toBe(10);
     expect(longDate("2026-09-23")).toBe("23 September 2026");
     expect(longDate("not a date")).toBe("not a date");
+    expect(shortDate("2026-09-23")).toBe("23 Sep 2026");
+    expect(shortDate("2026-05-01")).toBe("1 May 2026");
+    expect(shortDate("not a date")).toBe("not a date");
   });
 
   it("clips at a word, and takes a trailing list of record ids off a label", () => {

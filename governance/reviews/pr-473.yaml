@@ -1,0 +1,67 @@
+# Review of #473, harvested from its pull request (src/engine/harvest.ts). Append-only.
+pr: 473
+title: "Spend: the eight run records of the held changes #469–#471"
+url: https://github.com/ejhong/aletheia/pull/473
+outcome: merged
+outcomeAt: 2026-10-28T17:37:10Z
+cases: []
+rounds:
+  - commit: 34694c00f0e88cb38036aabd5032d6056dbc505e
+    date: 2026-10-28
+    protocol: review-v1
+    outcome: publish
+    reason: 4 of 4 reviewers judge it better; no harm flagged
+    seats:
+      - seat: openai
+        label: GPT-5.6 Sol (OpenAI)
+        model: gpt-5.6-sol
+        verdict: better
+        harm: null
+        notes:
+          - "governance/spend/: add or confirm provenance linking each imported record to its originating PR and head commit (#469/971caf0, #470/37051ad, or #471/3f251dc), so the copied records can be audited without relying on the pull-request description."
+          - "src/engine/operator.ts: complete the planned follow-up so quote-check holds produce a planner-visible round and can be answered rather than leaving otherwise valid changes stranded."
+        summary: The change restores eight genuine session and check costs from closed branches to the spend ledger, correcting October’s capped spend by $26.44. The listed costs sum to $26.44 and reconcile the stated total from $56.66 to $83.10, allowing the budget gate to prevent further October sessions as intended. It changes no case content and does not weaken review checks.
+        cost:
+          inputTokens: 5042
+          outputTokens: 576
+          usd: 0.031688
+      - seat: gemini
+        label: Gemini 3.8 Flash (Google)
+        model: gemini-3.8-flash
+        verdict: better
+        harm: null
+        notes: []
+        summary: This change imports eight spend records from closed and held pull requests (#469–#471) into governance/spend. This ensures the budget tracking accurately reflects incurred costs ($83.10 vs. $56.66 against the $60 cap) and correctly halts new automated sessions until November 1, preserving financial accountability.
+        cost:
+          inputTokens: 5558
+          outputTokens: 574
+          usd: 0.006321
+      - seat: xai
+        label: Grok 4.5 (xAI)
+        model: grok-4.5
+        verdict: better
+        harm: null
+        notes:
+          - Confirm each of the eight YAML bodies still match the heads they were copied from (971caf0, 37051ad, 3f251dc) so amounts, runIds and timestamps are not drifted.
+          - "In the next engine PR that handles quote-check holds, note that #469–#471 case work was dropped for redo so the planner does not treat these spend records as evidence those content changes landed."
+          - "Optional: a one-line October ledger note that review-pr-468 spend was already on main via #472 avoids a future double-count question."
+        summary: "The change adds eight unchanged session and check spend records from held PRs #469–#471 so October’s ledger reflects the $26.44 actually spent. That raises recorded spend from $56.66 to $83.10 against the $60 cap and correctly stops further October sessions per the founder’s direction. No content, checks, or constitution text are altered. For site purpose this is better: the budget gate stops undercounting and will not open sessions the cap no longer allows."
+        cost:
+          inputTokens: 5201
+          outputTokens: 239
+          usd: 0.011951
+      - seat: venice
+        label: GLM 5.3 Flash (Z.ai, via Venice)
+        model: z-ai-glm-5-3-flash
+        verdict: better
+        harm: null
+        notes:
+          - "The eight records are said to be copied unchanged from the heads of #469–#471, but spend records for changes that were held and closed should say so in the record itself (a `carried_from`/status field or comment naming the PR and that its content never merged), so a later reader of the budget ledger does not mistake closed-change spend for spend behind published work."
+          - State the founder's 2026-10-28 direction (October sessions stop, resume November 1) in docs/DECISIONS.md if it is not already there — it is the operating record that justifies the over-cap state persisting until 2026-11-01, and it should be as findable as the spend records that depend on it.
+          - When the promised engine fix lands, have it cover not just answering quote-check holds but also reconciling spend from abandoned changes automatically, so the budget gate never again depends on a manual carry-over PR like this one to be accurate.
+        summary: "The change carries eight spend records from three held-and-closed changes into main, with no content changes, so the October budget gate reads the true $83.10 against the $60 cap and correctly defers the next session to November 1. This makes the ledger's accounting accurate and preserves a check (the cap) rather than weakening it; the case work from #469–#471 is explicitly left unpublished and to be redone. No harm is apparent: the records document real spend, disclose the holds and the conflict with #472, and publish nothing from the abandoned drafts."
+        cost:
+          inputTokens: 6138
+          outputTokens: 814
+          usd: 0.001328
+harvestedAt: 2026-11-02T17:36:25.991Z

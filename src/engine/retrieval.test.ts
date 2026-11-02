@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { snapshotFrom } from "./archive.ts";
-import { archiveItemOf, doiFromUrl, doisInText, looksLikeWall, oaCandidates, pdfText, retrieve } from "./fetch.ts";
+import { archiveItemOf, doiFromUrl, doisInText, looksLikeWall, oaCandidates, oaCopies, pdfText, retrieve } from "./fetch.ts";
 import { noticeNote } from "./citations.mjs";
 
 /** A one-page PDF built by hand, so the extractor is tested without a fixture file. */
@@ -260,6 +260,61 @@ describe("PubMed Central: the page is the key, Europe PMC's JATS is the text", (
     expect(r.url).toBe("https://www.nature.com/articles/s41598-025-00001-1");
     expect(r.text).toContain("The full text by DOI.");
     expect(r.via).toBe("Europe PMC full text (JATS XML) for PMC12647689, found by DOI 10.1038/s41598-025-00001-1");
+  });
+});
+
+describe("the version of an open copy", () => {
+  // 2026-11-02: OpenAlex's record of Bloom 2023 (Virus Evolution), as served: the bioRxiv preprint is called "acceptedVersion"
+  // and listed ahead of PubMed Central's copy. erebus#138's review was read the preprint, and the quoted passage was not in it.
+  const bloom = {
+    best_oa_location: { is_oa: true, version: "publishedVersion", pdf_url: "https://academic.oup.com/ve/vead050.pdf", landing_page_url: "https://doi.org/10.1093/ve/vead050" },
+    open_access: { oa_url: "https://academic.oup.com/ve/vead050.pdf" },
+    locations: [
+      { is_oa: true, version: "publishedVersion", pdf_url: "https://academic.oup.com/ve/vead050.pdf", landing_page_url: "https://doi.org/10.1093/ve/vead050" },
+      { is_oa: true, version: "acceptedVersion", pdf_url: "https://www.biorxiv.org/content/2023.04.25.538336.full.pdf", landing_page_url: "https://doi.org/10.1101/2023.04.25.538336" },
+      { is_oa: true, version: "publishedVersion", pdf_url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC11314060/pdf/vead050.pdf", landing_page_url: "https://www.ncbi.nlm.nih.gov/pmc/articles/11314060" },
+      { is_oa: true, landing_page_url: "https://repo.test/bloom" },
+    ],
+  };
+
+  it("puts the published article first, copies of unknown version next, and preprints and accepted manuscripts last", () => {
+    expect(oaCopies(bloom)).toEqual([
+      { url: "https://academic.oup.com/ve/vead050.pdf", version: "published" },
+      { url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC11314060/pdf/vead050.pdf", version: "published" },
+      { url: "https://doi.org/10.1093/ve/vead050", version: "published" },
+      { url: "https://www.ncbi.nlm.nih.gov/pmc/articles/11314060", version: "published" },
+      { url: "https://repo.test/bloom", version: "unknown" },
+      { url: "https://www.biorxiv.org/content/2023.04.25.538336.full.pdf", version: "earlier" },
+      { url: "https://doi.org/10.1101/2023.04.25.538336", version: "earlier" },
+    ]);
+  });
+
+  it("counts a preprint server's copy as an earlier version whatever OpenAlex calls it", () => {
+    const work = { best_oa_location: { is_oa: true, version: "publishedVersion", pdf_url: "https://www.medrxiv.org/x.full.pdf" } };
+    expect(oaCopies(work)).toEqual([{ url: "https://www.medrxiv.org/x.full.pdf", version: "earlier" }]);
+  });
+
+  it("reads Europe PMC's text of the published article before a preprint, and names a preprint as one when it is all there is", async () => {
+    const preprint = (async (input: string | URL | Request) => {
+      const url = String(input);
+      if (url.startsWith("https://api.openalex.org/")) return new Response(JSON.stringify(bloom), { headers: { "content-type": "application/json" } });
+      if (url.includes("biorxiv.org")) return new Response(Buffer.from(miniPdf("The preprint words")), { headers: { "content-type": "application/pdf" } });
+      if (url.includes("europepmc/webservices/rest/search")) return new Response(JSON.stringify({ resultList: { result: [{ pmcid: "PMC11314060", doi: "10.1093/ve/vead050" }] } }), { headers: { "content-type": "application/json" } });
+      if (url.endsWith("/PMC11314060/fullTextXML")) return new Response("<article><body><sec><p>The published words.</p></sec></body></article>", { headers: { "content-type": "application/xml" } });
+      return new Response("forbidden", { status: 403 });
+    }) as typeof fetch;
+    const r = await retrieve({ url: "https://doi.org/10.1093/ve/vead050", doi: "10.1093/ve/vead050" }, { fetchImpl: preprint });
+    expect(r.text).toContain("The published words.");
+    expect(r.via).toContain("Europe PMC full text (JATS XML) for PMC11314060");
+
+    const noPmc = (async (input: string | URL | Request) => {
+      const url = String(input);
+      if (url.includes("europepmc")) return new Response(JSON.stringify({ resultList: { result: [] } }), { headers: { "content-type": "application/json" } });
+      return preprint(input);
+    }) as typeof fetch;
+    const only = await retrieve({ url: "https://doi.org/10.1093/ve/vead050", doi: "10.1093/ve/vead050" }, { fetchImpl: noPmc });
+    expect(only.text).toContain("The preprint words");
+    expect(only.via).toContain("an earlier version (preprint or accepted manuscript), not the published article");
   });
 });
 

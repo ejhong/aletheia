@@ -282,29 +282,61 @@ export function doisInText(text: string): string[] {
   return [...seen];
 }
 
+type OpenAlexLocation = { is_oa?: boolean; pdf_url?: string | null; landing_page_url?: string | null; version?: string | null };
 type OpenAlexWork = {
-  best_oa_location?: { pdf_url?: string | null; landing_page_url?: string | null } | null;
+  best_oa_location?: OpenAlexLocation | null;
   open_access?: { oa_url?: string | null } | null;
-  locations?: { is_oa?: boolean; pdf_url?: string | null; landing_page_url?: string | null }[];
+  locations?: OpenAlexLocation[];
 };
 
-/** Open-access URLs an OpenAlex work record offers, PDFs first, deduplicated. */
-export function oaCandidates(work: OpenAlexWork): string[] {
-  const pdfs = [work.best_oa_location?.pdf_url, ...(work.locations ?? []).filter((l) => l.is_oa).map((l) => l.pdf_url)];
-  const pages = [work.open_access?.oa_url, work.best_oa_location?.landing_page_url, ...(work.locations ?? []).filter((l) => l.is_oa).map((l) => l.landing_page_url)];
-  const out: string[] = [];
-  for (const u of [...pdfs, ...pages]) if (u && !out.includes(u)) out.push(u);
-  return out;
+/** An open-access copy, and whether it is the published article, a copy of unknown version, or an earlier version. */
+export type OaCopy = { url: string; version: "published" | "unknown" | "earlier" };
+
+/** Servers whose copies are preprints whatever OpenAlex calls them (it calls bioRxiv's copy of a published article "acceptedVersion"). */
+const PREPRINT_HOST = /(^|\.)(biorxiv\.org|medrxiv\.org|arxiv\.org|ssrn\.com|preprints\.org|researchsquare\.com|osf\.io|psyarxiv\.com|zenodo\.org)$/i;
+
+function versionOf(url: string, version: string | null | undefined): OaCopy["version"] {
+  let host = "";
+  try {
+    host = new URL(url).hostname;
+  } catch {
+    // not a URL: judged by OpenAlex's word alone
+  }
+  if (PREPRINT_HOST.test(host)) return "earlier";
+  if (version === "publishedVersion") return "published";
+  if (version === "acceptedVersion" || version === "submittedVersion") return "earlier";
+  return "unknown";
 }
 
-export async function openAccessUrls(doi: string, fetchImpl: typeof fetch = fetch): Promise<string[]> {
+/**
+ * Open-access copies an OpenAlex work record offers: the published article first, then copies of unknown version,
+ * then earlier versions (accepted manuscripts, preprints); PDFs first within each; deduplicated. A preprint's words
+ * are not the article's (2026-11-02: erebus#138's review was read the bioRxiv preprint of a published article,
+ * listed ahead of PubMed Central's copy, and the quoted passage was not in it).
+ */
+export function oaCopies(work: OpenAlexWork): OaCopy[] {
+  const oa = [...(work.best_oa_location ? [work.best_oa_location] : []), ...(work.locations ?? []).filter((l) => l.is_oa)];
+  const pdfs = oa.map((l) => [l.pdf_url, l.version] as const);
+  const pages = [[work.open_access?.oa_url, work.best_oa_location?.version] as const, ...oa.map((l) => [l.landing_page_url, l.version] as const)];
+  const seen = new Map<string, OaCopy>();
+  for (const [url, version] of [...pdfs, ...pages]) if (url && !seen.has(url)) seen.set(url, { url, version: versionOf(url, version) });
+  const rank = { published: 0, unknown: 1, earlier: 2 } as const;
+  return [...seen.values()].sort((a, b) => rank[a.version] - rank[b.version]);
+}
+
+/** The copies' addresses alone, in the same order. */
+export function oaCandidates(work: OpenAlexWork): string[] {
+  return oaCopies(work).map((c) => c.url);
+}
+
+export async function openAccessUrls(doi: string, fetchImpl: typeof fetch = fetch): Promise<OaCopy[]> {
   try {
     const res = await fetchImpl(`https://api.openalex.org/works/https://doi.org/${encodeURIComponent(doi)}`, {
       headers: { "User-Agent": UA, Accept: "application/json" },
       signal: AbortSignal.timeout(20_000),
     });
     if (!res.ok) return [];
-    return oaCandidates((await res.json()) as OpenAlexWork);
+    return oaCopies((await res.json()) as OpenAlexWork);
   } catch {
     return [];
   }
@@ -515,17 +547,27 @@ export async function retrieve(target: RetrievalTarget, opts: FetchOptions & { r
   const first = target.url ? await fetchSource(target.url, opts) : null;
   if (first?.ok) return first;
   if (doi) {
-    for (const candidate of await openAccessUrls(doi, opts.fetchImpl)) {
-      if (candidate === target.url) continue;
-      const r = await fetchSource(candidate, opts);
-      if (r.ok) return { ...r, url: key, via: `open-access copy via OpenAlex: ${candidate}`, substitute: true };
+    const copies = (await openAccessUrls(doi, opts.fetchImpl)).filter((c) => c.url !== target.url);
+    const tryCopy = async (c: OaCopy): Promise<FetchedSource | null> => {
+      const r = await fetchSource(c.url, opts);
+      const what = c.version === "earlier" ? "an earlier version (preprint or accepted manuscript), not the published article, " : "";
+      return r.ok ? { ...r, url: key, via: `open-access copy via OpenAlex: ${what}${c.url}`, substitute: true } : null;
+    };
+    for (const c of copies.filter((c) => c.version === "published")) {
+      const r = await tryCopy(c);
+      if (r) return r;
     }
-    // A walled page with no open copy OpenAlex knows may still be in PubMed Central: Europe PMC's index gives
-    // the PMCID for the DOI, and its full-text service the article.
+    // The published article may still be in PubMed Central when no published copy would serve: Europe PMC's index
+    // gives the PMCID for the DOI, and its full-text service the article. It comes before any copy of unknown or
+    // earlier version.
     const viaDoi = await pmcIdForDoi(doi, opts.fetchImpl);
     if (viaDoi) {
       const epmc = await europePmcFullText(viaDoi, key, opts);
       if (epmc.ok) return { ...epmc, via: `Europe PMC full text (JATS XML) for ${viaDoi}, found by DOI ${doi}` };
+    }
+    for (const c of copies.filter((c) => c.version !== "published")) {
+      const r = await tryCopy(c);
+      if (r) return r;
     }
   }
   return (

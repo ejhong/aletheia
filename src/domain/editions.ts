@@ -1,4 +1,5 @@
 /** Editions: their order, the current one, the question and accounts as they stand, and the assessment the current edition adopts. */
+import { lastContentUpdate } from "./history.ts";
 import { type AssessmentRun, type Edition, type LoadedCase } from "./schema.ts";
 
 /**
@@ -32,6 +33,15 @@ export function currentEdition(loaded: LoadedCase): Edition {
   const ed = loaded.editions.at(-1);
   if (!ed) throw new Error(`[content:${loaded.record.slug}] no edition`);
   return ed;
+}
+
+/**
+ * The date a case last changed for a reader: its newest content entry in the
+ * change log or its current edition, whichever is later. The dossier header
+ * and the case card both show it.
+ */
+export function caseUpdated(loaded: LoadedCase): string {
+  return [lastContentUpdate(loaded), currentEdition(loaded).date].sort().at(-1)!;
 }
 
 /** The case's question as it stands: the current edition's restatement, else the case file's subtitle — the founding question. */

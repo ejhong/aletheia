@@ -80,3 +80,9 @@ export function longDate(iso: string): string {
   const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   return `${Number(m[3])} ${months[Number(m[2]) - 1]} ${m[1]}`;
 }
+
+/** The same date where space is short, as on a case card: 2026-09-23 → 23 Sep 2026. */
+export function shortDate(iso: string): string {
+  const long = longDate(iso);
+  return long === iso ? iso : long.replace(/ (\w{3})\w* /, " $1 ");
+}

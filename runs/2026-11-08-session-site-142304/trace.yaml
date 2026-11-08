@@ -1,0 +1,151 @@
+# What operator session 2026-11-08-session-site-142304 did, as its trace recorded it: the digest the workflow made on the session's machine
+# (src/engine/trace.ts), checked here (src/engine/session.ts). The session's own account of its work is its log.
+version: 1
+ended: success
+model: claude-opus-5-5
+permissionMode: dontAsk
+turns: 142
+minutes: 18.5
+usd: 6.7751
+compactions: 0
+unreadableLines: 0
+tools:
+  - tool: Bash
+    calls: 48
+    failed: 0
+    refused: 6
+  - tool: Grep
+    calls: 36
+    failed: 2
+    refused: 0
+  - tool: Read
+    calls: 26
+    failed: 0
+    refused: 0
+  - tool: Edit
+    calls: 22
+    failed: 1
+    refused: 0
+  - tool: Write
+    calls: 3
+    failed: 0
+    refused: 0
+  - tool: ToolSearch
+    calls: 2
+    failed: 0
+    refused: 0
+  - tool: WebSearch
+    calls: 2
+    failed: 0
+    refused: 0
+  - tool: Glob
+    calls: 1
+    failed: 0
+    refused: 0
+  - tool: WebFetch
+    calls: 1
+    failed: 0
+    refused: 0
+commands:
+  - command: node scripts/site.ts read
+    calls: 22
+    failed: 0
+    refused: 0
+  - command: cd
+    calls: 4
+    failed: 0
+    refused: 2
+  - command: node scripts/site.ts check-quotes
+    calls: 4
+    failed: 0
+    refused: 0
+  - command: ls
+    calls: 3
+    failed: 0
+    refused: 0
+  - command: node scripts/site.ts archive
+    calls: 2
+    failed: 0
+    refused: 0
+  - command: tail
+    calls: 2
+    failed: 0
+    refused: 0
+  - command: (other)
+    calls: 1
+    failed: 0
+    refused: 1
+  - command: awk
+    calls: 1
+    failed: 0
+    refused: 1
+  - command: for
+    calls: 1
+    failed: 0
+    refused: 1
+  - command: git status
+    calls: 1
+    failed: 0
+    refused: 0
+  - command: grep
+    calls: 1
+    failed: 0
+    refused: 0
+  - command: head
+    calls: 1
+    failed: 0
+    refused: 1
+  - command: node scripts/site.ts ids
+    calls: 1
+    failed: 0
+    refused: 0
+  - command: node scripts/site.ts stamp
+    calls: 1
+    failed: 0
+    refused: 0
+  - command: node scripts/site.ts status
+    calls: 1
+    failed: 0
+    refused: 0
+  - command: npm run build
+    calls: 1
+    failed: 0
+    refused: 0
+  - command: sed
+    calls: 1
+    failed: 0
+    refused: 0
+fetched:
+  - host: api.crossref.org
+    calls: 1
+    failed: 0
+read:
+  - source: arxiv.org
+    calls: 6
+    failed: 0
+  - source: export.arxiv.org
+    calls: 5
+    failed: 0
+  - source: web.archive.org
+    calls: 4
+    failed: 0
+  - source: 10.1088/1538-3873/ae0afe
+    calls: 2
+    failed: 0
+  - source: 10.1017/pasa.2026.10230
+    calls: 1
+    failed: 0
+  - source: 10.1093/rasti/rzae004
+    calls: 1
+    failed: 0
+  - source: api.crossref.org
+    calls: 1
+    failed: 0
+  - source: articles.adsabs.harvard.edu
+    calls: 1
+    failed: 0
+  - source: ui.adsabs.harvard.edu
+    calls: 1
+    failed: 0
+filesEdited: 8
+repeatedFailures: 0

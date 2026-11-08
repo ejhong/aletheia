@@ -226,3 +226,17 @@
     extractedBy: claude-fable-5-1
     runId: 2026-09-10-draft-transients-173620
     date: 2026-09-10
+- id: TRN-R204
+  title: Search-wide alignment test against shuffled and independent controls
+  summary: Rerun the published alignment search (the same box sizes, the same 0.99 correlation threshold, the same minimum of four aligned members) over the whole 298,165-row catalog, and over at least 1,000 control catalogs in which each plate's transients are moved to random positions drawn from that plate's own detection density (so that edge-crowding and defect clustering are kept, and only the line-up is destroyed). Repeat on Hayes's independently extracted candidate list and on the vetted 5,399-row set. Report how many four- and five-point alignments the real catalog yields against the control distribution, and recount each shortlisted group after dropping members within 5 arcseconds of a NeoWISE position. The reported alignments gain standing as a non-chance pattern if the real catalog's count of four-plus alignments lies far outside the control distribution on both catalogs; they lose it if the controls produce as many, or if the shortlist dissolves once infrared-matched members are removed.
+  claimIds:
+    - TRN-C104
+    - TRN-C022
+  track: publication_prize
+  effortTier: desk
+  informationGain: Supplies the search-wide correction the alignment paper says it cannot estimate, using the plates' own clustering as the null rather than a uniform sky; one desk computation decides whether the alignments are a signal or what any clustered population of marks produces.
+  origin:
+    ref: "operator session 2026-11-08-session-site-142304 — from the full reading of SRC-VILLARROEL-2025-PASP §6 and SRC-WATTERS-2026 §4.5"
+    extractedBy: claude-opus-5-5
+    runId: 2026-11-08-session-site-142304
+    date: "2026-11-08"
